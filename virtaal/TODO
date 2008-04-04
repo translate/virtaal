@@ -1,0 +1,30 @@
+First release
+=============
+Select group of testers < 10
+Technically confident people (can install)
+Should be able to complete a translation / update task in the tool only
+
+
+Modes - quick translate
+
+Navigation  Ctrl+PgUp goes a page up in the document / top of file   Ctrl+UpArrow goes one unit up
+soek met highlighting
+Search/Replace
+multiple files
+Undo
+template
+edit comments
+edit header
+
+pofilter checks
+terminology help 
+TM
+autocomplete
+
+
+setup.py
+windows installer
+
+
+Nicolas
+

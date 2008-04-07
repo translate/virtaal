@@ -299,7 +299,7 @@ def dosetup(name, version, packages, **kwargs):
           author="Translate.org.za",
           author_email="translate-devel@lists.sourceforge.net",
           url="http://translate.sourceforge.net/wiki/virtaal/index",
-          download_url="http://sourceforge.net/project/showfiles.php?group_id=91920&package_id=97082",
+          download_url="http://sourceforge.net/project/showfiles.php?group_id=91920&package_id=270877",
           platforms=["any"],
           classifiers=classifiers,
           packages=packages,

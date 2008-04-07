@@ -1,0 +1,108 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2008-04-07 15:00+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: virtaal/unitrenderer.py:71
+msgid "_Copy original"
+msgstr ""
+
+#: virtaal/unitrenderer.py:81
+msgid "F_uzzy"
+msgstr ""
+
+#: virtaal/unitrenderer.py:196
+msgid "Could not initialize spell checking"
+msgstr ""
+
+#: virtaal/unitrenderer.py:236
+msgid "Developer comments"
+msgstr ""
+
+#: virtaal/unitrenderer.py:247
+msgid "Translator comments"
+msgstr ""
+
+#: virtaal/tips.py:8
+msgid ""
+"At the end of a translation, simply press <Enter> to continue with the next "
+"one."
+msgstr ""
+
+#: virtaal/tips.py:10
+msgid ""
+"To copy the original string into the target field, simply press <Alt+C>."
+msgstr ""
+
+#: virtaal/tips.py:11
+msgid ""
+"When editing a fuzzy translation, the fuzzy marker will automatically be "
+"removed."
+msgstr ""
+
+#: virtaal/tips.py:13
+msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
+msgstr ""
+
+#: virtaal/MainWindow.py:53
+msgid "PO files"
+msgstr ""
+
+#: virtaal/MainWindow.py:54
+msgid "XLIFF files"
+msgstr ""
+
+#: virtaal/MainWindow.py:55
+msgid "TBX files"
+msgstr ""
+
+#: virtaal/MainWindow.py:56
+msgid "TMX files"
+msgstr ""
+
+#: virtaal/MainWindow.py:57
+msgid "MO files"
+msgstr ""
+
+#: virtaal/MainWindow.py:58
+msgid "All files"
+msgstr ""
+
+#: virtaal/MainWindow.py:95
+msgid ""
+"The current file was modified, but is not yet saved. Are you sure you want "
+"to leave without saving?"
+msgstr ""
+
+#: virtaal/MainWindow.py:107
+msgid "Choose a translation file"
+msgstr ""
+
+#: virtaal/MainWindow.py:144
+msgid ""
+"The current file was modified, but is not yet saved. Are you sure you want "
+"to open a new file without saving the previous one?"
+msgstr ""
+
+#: virtaal/MainWindow.py:156
+msgid ""
+"You selected the currently open file for opening. Do you want to reload the "
+"file?"
+msgstr ""
+
+#: virtaal/MainWindow.py:250
+msgid "Save as..."
+msgstr ""

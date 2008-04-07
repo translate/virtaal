@@ -296,9 +296,9 @@ def dosetup(name, version, packages, **kwargs):
           license="GNU General Public License (GPL)",
           description=description,
           long_description=long_description,
-          author="David Fraser, translate.org.za",
+          author="Translate.org.za",
           author_email="translate-devel@lists.sourceforge.net",
-          url="http://translate.sourceforge.net/",
+          url="http://translate.sourceforge.net/wiki/virtaal/index",
           download_url="http://sourceforge.net/project/showfiles.php?group_id=91920&package_id=97082",
           platforms=["any"],
           classifiers=classifiers,
@@ -315,4 +315,4 @@ def standardsetup(name, version, custompackages=[], customdatafiles=[]):
 
     
 if __name__ == "__main__":
-    standardsetup("virtaal", "0.1")
+    standardsetup("VirTaal", "0.1")

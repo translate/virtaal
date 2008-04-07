@@ -1,7 +1,6 @@
 #!/bin/bash
 
-xgettext --language=Python \
-         --msgid-bugs-address=translate-devel@lists.sourceforge.net \
+xgettext --msgid-bugs-address=translate-devel@lists.sourceforge.net \
          --copyright-holder="Zuza Software Foundation (Translate.org.za)" \
          --output=po/virtaal.pot \
-         $(find virtaal/ -name "*.py")
+         $(find virtaal/ -name "*.py" -o -name "*.glade")

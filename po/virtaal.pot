@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2008-04-07 15:00+0200\n"
+"POT-Creation-Date: 2008-04-07 16:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,6 +55,22 @@ msgstr ""
 
 #: virtaal/tips.py:13
 msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
+msgstr ""
+
+#: virtaal/data/virtaal.glade:13
+msgid "VirTaal"
+msgstr ""
+
+#: virtaal/data/virtaal.glade:138 virtaal/data/virtaal.glade:184
+msgid "Comments"
+msgstr ""
+
+#: virtaal/data/virtaal.glade:215
+msgid "Copy original"
+msgstr ""
+
+#: virtaal/data/virtaal.glade:224
+msgid "Fuzzy"
 msgstr ""
 
 #: virtaal/MainWindow.py:53

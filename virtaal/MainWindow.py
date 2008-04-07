@@ -25,13 +25,13 @@ try:
     import pygtk
     pygtk.require("2.0")
 except:
-    pass
+    print "PyGTK 2.0 or higher is required. Please visit pygtk.org and download this package"
 
 try:
     import gtk
     import gtk.glade
 except:
-    print "a"
+    print "The Glade library for Python is not installed. Please visit pygtk.org and download this package."
     sys.exit(1)
 
 import os.path as path
@@ -42,10 +42,12 @@ from translate.storage import poheader
 
 import Globals
 from EntryDialog import *
+
 import unitgrid
 import unitrenderer
 
-_ = lambda x: x
+from i18n import _
+import gui
 
 supported_types = [
     (_("PO files"), "*.po"),
@@ -56,47 +58,52 @@ supported_types = [
     (_("All files"), "*"),
 ]
 
+GLADE_FILE = path.join(path.dirname(__file__), "data", "virtaal.glade")
+
+
+handlers = {}
+
+def gui_handler(name):
+    def make_handler(f):
+        handlers[name] = f
+        
+    return make_handler
+
+
 class VirTaal:
 
     def __init__(self):
-            
-        #Set the Glade file
-        self.gladefile = path.join(path.dirname(__file__), "data", "virtaal.glade")  
-        self.gui = gtk.glade.XML(self.gladefile) 
+        self.gui = gtk.glade.XML(GLADE_FILE) 
+        gui.connect(self.gui, self)
         
-        #Create our dictionay and connect it
-        dic = { 
-                "on_mainwindow_destroy" : gtk.main_quit,
-                "on_mainwindow_delete" : self._on_mainwindow_delete,
-                "on_open_activate" : self._on_file_open,
-                "on_save_activate" : self._on_file_save,
-                "on_saveas_activate" : self._on_file_saveas,
-                }
-        self.gui.signal_autoconnect(dic)
-
-        self.sw = self.gui.get_widget("scrolledwindow1")
-        edit_menu = self.gui.get_widget("menuitem2")
-        edit_menu.set_sensitive(False)
-        self.main_window = self.gui.get_widget("MainWindow")
-        self.main_window.show()
         self.modified = False
         self.filename = None
 
-    def _on_mainwindow_delete(self, widget, event):
+        self.main_window = self.gui.get_widget("mainWindow")
+        self.main_window.show()
+
+
+    on_mainwindow_destroy = gtk.main_quit
+
+
+    def on_mainwindow_delete(self, widget, event):
         if self.modified:
             dialog = gtk.MessageDialog(self.main_window,
                             gtk.DIALOG_MODAL,
                             gtk.MESSAGE_QUESTION,
                             gtk.BUTTONS_YES_NO,
                             _("The current file was modified, but is not yet saved. Are you sure you want to leave without saving?"))
+            
             dialog.set_default_response(gtk.RESPONSE_NO)
             response = dialog.run()
             dialog.destroy()
             if response in [gtk.RESPONSE_NO, gtk.RESPONSE_DELETE_EVENT]:
                 return True
+        
         return False
 
-    def _on_file_open(self, widget, destroyCallback=None):
+
+    def on_open_activate(self, widget, destroyCallback=None):
         chooser = gtk.FileChooserDialog((_('Choose a translation file')), None, gtk.FILE_CHOOSER_ACTION_OPEN, (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         chooser.set_current_folder(Globals.settings.general["lastdir"])
 
@@ -126,6 +133,7 @@ class VirTaal:
                 break
 
         chooser.destroy()
+
 
     def open_file(self, filename, dialog):
         if self.modified:
@@ -177,17 +185,20 @@ class VirTaal:
         menuitem.set_sensitive(True)
         return True
 
+
     def _set_saveable(self, value):
         menuitem = self.gui.get_widget("save_menuitem")
         menuitem.set_sensitive(value)
         self.modified = value
+
 
     def _on_modified(self, widget):
         if not self.modified:
             self.main_window.set_title("* " + self.main_window.get_title())
             self._set_saveable(True)
 
-    def _on_file_save(self, widget, filename=None):
+
+    def on_save_activate(self, widget, filename=None):
         if self.modified:
             self.unit_grid.update_for_save()
         if filename is None or filename == self.filename:
@@ -232,7 +243,8 @@ class VirTaal:
         self._set_saveable(False)
         self.main_window.set_title(path.basename(self.filename))
 
-    def _on_file_saveas(self, widget=None):
+
+    def on_saveas_activate(self, widget=None):
             buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_SAVE, gtk.RESPONSE_OK)
             # TODO: use stock text for Save as..."
             chooser = gtk.FileChooserDialog(_("Save as..."), self.main_window, gtk.FILE_CHOOSER_ACTION_SAVE, buttons)
@@ -250,6 +262,7 @@ class VirTaal:
                     Globals.settings.write()
             chooser.destroy()
             
+
     def run(self):
         gtk.main()
 

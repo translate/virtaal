@@ -230,5 +230,7 @@ class UnitGrid(gtk.TreeView):
         return False
 
     def on_key_press(self, widget, event, data=None):
-        return False
+    	# The TreeView does interesting things with combos like SHIFT+TAB.
+    	# So we're going to stop it from doing this.
+        return True
 

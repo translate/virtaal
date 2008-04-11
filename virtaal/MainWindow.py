@@ -169,6 +169,7 @@ class VirTaal:
         self.unit_grid.connect("modified", self._on_modified)
         self.sw.remove(self.sw.get_child())
         self.sw.add(self.unit_grid)
+        self.main_window.connect("configure-event", self.unit_grid.on_configure_event)
         self.main_window.show_all()
         self.unit_grid.grab_focus()
         self._set_saveable(False)

@@ -129,8 +129,27 @@ class UnitGrid(gtk.TreeView):
         # drawn as editable. If it happens too soon (the widget is not yet 
         # realised) then it might end up not being in editing mode once
         # visible.
-        gobject.timeout_add(50, self._activate_editing_path, (0,))
-        gobject.timeout_add(800, self._activate_editing_path, (0,))
+        #gobject.timeout_add(50, self._activate_editing_path, (0,))
+        #gobject.timeout_add(800, self._activate_editing_path, (0,))
+
+        gobject.idle_add(self._activate_editing_path, (0,))
+
+
+    def on_configure_event(self, event, *user_args):
+    	path, column = self.get_cursor()
+
+    	# Horrible hack.
+    	# We use set_cursor to cause the editable area to be recreated so that
+    	# it can be drawn correctly. This has to be delayed (we used idle_add),
+    	# since calling it immediately after columns_autosize() does not work.
+    	def reset_cursor():
+    		self.set_cursor(path, column, start_editing=True)
+    		return False
+
+    	self.columns_autosize()
+    	gobject.idle_add(reset_cursor)
+
+    	return False
 
     def _on_modified(self, widget):
         self._modified_widget = widget

@@ -8,4 +8,4 @@ TryExec=virtaal
 Exec=virtaal %f
 #Icon=
 MimeType=application/x-wordfasttm;application/x-gettext;
-#Categories=
+Categories=Development;Translation;GTK;

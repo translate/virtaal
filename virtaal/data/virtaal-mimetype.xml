@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
+  <mime-type type="application/x-tmx">
+    <sub-class-of type="application/xml"/>
+    <comment>TMX Translation Memory</comment>
+    <acronym>TMX</acronym>
+    <expanded-acronym>Translation Memory eXchange</expanded-acronym>
+    <glob pattern="*.tmx"/>
+    <magic priority="80">
+      <match value="&lt;tmx" type="string" offset="0:256"/>
+    </magic>
+    <!-- <root-XML namespaceURI='http://www.lisa.org/tmx14' localName='tmx'/> -->
+  </mime-type>
+  <mime-type type="application/x-tbx">
+    <sub-class-of type="application/xml"/>
+    <comment>TBX Glossary</comment>
+    <acronym>TBX</acronym>
+    <expanded-acronym>TermBase eXchange</expanded-acronym>
+    <glob pattern="*.tbx"/>
+    <magic priority="80">
+      <match value="&lt;martif type=&quot;TBX&quot;" type="string" offset="0:256"/>
+    </magic>
+  </mime-type>
+  <mime-type type="application/x-wordfast">
+    <sub-class-of type="application/xml"/>
+    <comment>Wordfast Translation Memory</comment>
+    <glob pattern="*.txt"/>
+    <magic priority="80">
+      <match value="%Wordfast TM" type="string" offset="0:256"/>
+    </magic>
+  </mime-type>
+  <!-- Qt Linguist is copied from the standard DB but is yuck there -->
+  <mime-type type="application/x-linguist">
+    <sub-class-of type="application/xml"/>
+    <comment>Qt Linguist message catalog</comment>
+    <glob pattern="*.ts"/>
+  </mime-type>
+  <mime-type type="application/x-qm">
+    <comment>translated messages (machine-readable)</comment>
+    <glob pattern="*.qm"/>
+  </mime-type>
+  <mime-type type="application/x-ini">
+    <comment>Initialization file</comment>
+    <glob pattern="*.ini"/>
+  </mime-type>
+  <mime-type type="application/x-properties">
+    <comment>Java properties file</comment>
+    <glob pattern="*.properties"/>
+  </mime-type>
+  <mime-type type="application/x-sdf">
+    <comment>OpenOffice.org SDF file</comment>
+    <glob pattern="*.sdf"/>
+  </mime-type>
+  <mime-type type="application/x-xliff+xml">
+    <sub-class-of type="application/xml"/>
+    <comment>XLIFF translation file</comment>
+    <acronym>XLIFF</acronym>
+    <expanded-acronym>XML Localization Interchange File Format</expanded-acronym>
+    <glob pattern="*.xlf"/>
+    <glob pattern="*.xliff"/>
+    <magic priority="80">
+      <match value="&lt;xliff" type="string" offset="0:256"/>
+    </magic>
+    <root-XML namespaceURI='urn:oasis:names:tc:xliff:document:1.' localName='xliff'/>
+  </mime-type>
+</mime-info>

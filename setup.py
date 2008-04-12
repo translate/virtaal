@@ -311,6 +311,7 @@ def standardsetup(name, version, custompackages=[], customdatafiles=[]):
     dosetup(name, version,
             packages=['virtaal'],
             data_files=[('virtaal', ['virtaal/data/virtaal.glade']),
+                        ('mime/packages', ['virtaal/data/virtaal-mimetype.xml']),
                         ('applications', ['virtaal/data/virtaal.desktop'])],
             scripts=['run_virtaal.py'])
 

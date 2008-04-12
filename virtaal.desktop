@@ -2,10 +2,17 @@
 Version=1.0
 Type=Application
 Name=VirTaal
-GenericName=Localization Editor
+GenericName=Translation Tool
 Comment=A translation tool to help a human translator translate files into other languages
 TryExec=virtaal
 Exec=virtaal %f
 #Icon=
-MimeType=application/x-wordfasttm;application/x-gettext;
+MimeType=text/x-gettext-translation;text/x-gettext-translation-template;application/x-gettext;application/x-gettext-translation;application/x-xliff+xml;application/x-xliff;application/x-wordfast;application/x-tmx;application/x-tbx;
+# Not yet supported
+# application/x-linguist;
+# application/x-sdf;
+# application/x-qm;
+# Monolingual
+# application/x-ini;
+# application/x-properties;
 Categories=Development;Translation;GTK;

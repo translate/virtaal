@@ -310,7 +310,8 @@ def dosetup(name, version, packages, **kwargs):
 def standardsetup(name, version, custompackages=[], customdatafiles=[]):        
     dosetup(name, version,
             packages=['virtaal'],
-            data_files=[('virtaal/data', ['virtaal/data/virtaal.glade'])],
+            data_files=[('virtaal', ['virtaal/data/virtaal.glade']),
+                        ('applications', ['virtaal.desktop'])],
             scripts=['run_virtaal.py'])
 
     

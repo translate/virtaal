@@ -93,4 +93,25 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
       <match value="::msgcat::mcset" type="string" offset="0:160"/>
     </magic>
   </mime-type>
+
+  <mime-type type="application/x-javascript-msg">
+    <sub-class-of type="application/javascript"/>
+    <comment>JavaScript error message file</comment>
+    <glob pattern="*.msg"/>
+    <magic priority="50">
+      <match value="MSG_DEF(" type="string" offset="0:2560"/>
+    </magic>
+  </mime-type>
+
+  <mime-type type="text/x-gettext-translation-template">
+    <sub-class-of type="text/plain"/>
+    <comment>Gettext Translation Template</comment>
+    <glob pattern="*.pot"/>
+    <magic priority="50">
+      <match value="msgid" type="string" offset="0:256"/>
+      <match value="msgstr" type="string" offset="0:256"/>
+      <match value="msgctxt" type="string" offset="0:256"/>
+    </magic>
+  </mime-type>
+
 </mime-info>

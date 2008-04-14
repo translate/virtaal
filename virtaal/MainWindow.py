@@ -148,14 +148,14 @@ class VirTaal:
             if response in [gtk.RESPONSE_NO, gtk.RESPONSE_DELETE_EVENT]:
                 return True
 
-        self.load_file(filename, dialog=dialog)
+        return self.load_file(filename, dialog=dialog)
 
-    def load_file(self, filename, parent_dialog=None):
+    def load_file(self, filename, dialog=None):
         """Do the actual loading of the file into the GUI"""
         try:
             self.translation_store = factory.getobject(filename)
         except Exception, e:
-            dialog = gtk.MessageDialog(parent_dialog or self.main_window,
+            dialog = gtk.MessageDialog(dialog or self.main_window,
                             gtk.DIALOG_MODAL,
                             gtk.MESSAGE_ERROR,
                             gtk.BUTTONS_OK,

@@ -21,8 +21,8 @@
       <match value="&lt;martif type=&quot;TBX&quot;" type="string" offset="0:256"/>
     </magic>
   </mime-type>
-  <mime-type type="application/x-wordfast">
-    <sub-class-of type="application/xml"/>
+  <mime-type type="text/x-wordfast">
+    <sub-class-of type="text/tab-separated-values"/>
     <comment>Wordfast Translation Memory</comment>
     <glob pattern="*.txt"/>
     <magic priority="80">
@@ -39,16 +39,19 @@
     <comment>translated messages (machine-readable)</comment>
     <glob pattern="*.qm"/>
   </mime-type>
-  <mime-type type="application/x-ini">
+  <mime-type type="text/x-ini">
+    <sub-class-of type="text/plain"/>
     <comment>Initialization file</comment>
     <glob pattern="*.ini"/>
   </mime-type>
-  <mime-type type="application/x-properties">
+  <mime-type type="text/x-properties">
+    <sub-class-of type="text/plain"/>
     <comment>Java properties file</comment>
     <glob pattern="*.properties"/>
   </mime-type>
-  <mime-type type="application/x-sdf">
-    <comment>OpenOffice.org SDF file</comment>
+  <mime-type type="text/x-sdf">
+    <sub-class-of type="text/tab-separated-values"/>
+    <comment>OpenOffice.org translation file</comment>
     <glob pattern="*.sdf"/>
   </mime-type>
   <mime-type type="application/x-xliff+xml">

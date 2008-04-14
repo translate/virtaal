@@ -56,8 +56,12 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
   </mime-type>
   <mime-type type="text/x-ini">
     <sub-class-of type="text/plain"/>
-    <comment>Initialization file</comment>
+    <comment>INI File</comment>
+    <acronym>INI</acronym>
+    <expanded-acronym>Initialization</expanded-acronym>
     <glob pattern="*.ini"/>
+    <!-- <alias type="application/textedit"/> -->
+    <alias type="zz-application/zz-winassoc-ini"/>
   </mime-type>
   <mime-type type="text/x-properties">
     <sub-class-of type="text/plain"/>

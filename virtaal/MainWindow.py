@@ -27,12 +27,8 @@ try:
 except:
     pass
 
-try:
-    import gtk
-    import gtk.glade
-except:
-    print "a"
-    sys.exit(1)
+import gtk
+import gtk.glade
 
 import os.path as path
 import time

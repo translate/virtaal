@@ -63,4 +63,17 @@
     </magic>
     <root-XML namespaceURI='urn:oasis:names:tc:xliff:document:1.' localName='xliff'/>
   </mime-type>
+  <mime-type type="text/x-rc">
+    <sub-class-of type="text/x-csrc"/>
+    <comment>Windows Resource File</comment>
+    <glob pattern="*.rc"/>
+  </mime-type>
+  <mime-type type="text/x-msg">
+    <sub-class-of type="text/x-tcl"/>
+    <comment>Tcl translations</comment>
+    <glob pattern="*.msg"/>
+    <magic priority="50">
+      <match value="::msgcat::mcset" type="string" offset="0:160"/>
+    </magic>
+  </mime-type>
 </mime-info>

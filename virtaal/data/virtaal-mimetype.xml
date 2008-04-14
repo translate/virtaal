@@ -41,6 +41,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
     <glob pattern="*.txt"/>
     <magic priority="80">
       <match value="%Wordfast TM" type="string" offset="0:256"/>
+      <match value="\0%\0W\0o\0r\0d\0f\0a\0s\0t\0 \0T\0M" type="string" offset="0:256"/>
     </magic>
   </mime-type>
   <!-- Qt Linguist is copied from the standard DB but is yuck there -->

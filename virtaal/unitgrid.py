@@ -143,6 +143,7 @@ class UnitGrid(gtk.TreeView):
     	# it can be drawn correctly. This has to be delayed (we used idle_add),
     	# since calling it immediately after columns_autosize() does not work.
     	def reset_cursor():
+    		self.editor.update_for_save()
     		self.set_cursor(path, column, start_editing=True)
     		return False
 

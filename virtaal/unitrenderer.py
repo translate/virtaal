@@ -461,5 +461,6 @@ class UnitRenderer(gtk.GenericCellRenderer):
         editor.connect("editing-done", self._on_editor_done)
         editor.connect("modified", self._on_modified)
         editor.show()
+        widget.editor = editor
         self._editor = editor
         return editor

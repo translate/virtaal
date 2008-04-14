@@ -148,10 +148,14 @@ class VirTaal:
             if response in [gtk.RESPONSE_NO, gtk.RESPONSE_DELETE_EVENT]:
                 return True
 
+        self.load_file(filename, dialog=dialog)
+
+    def load_file(self, filename, parent_dialog=None):
+        """Do the actual loading of the file into the GUI"""
         try:
             self.translation_store = factory.getobject(filename)
         except Exception, e:
-            dialog = gtk.MessageDialog(dialog,
+            dialog = gtk.MessageDialog(parent_dialog or self.main_window,
                             gtk.DIALOG_MODAL,
                             gtk.MESSAGE_ERROR,
                             gtk.BUTTONS_OK,
@@ -248,6 +252,8 @@ class VirTaal:
             chooser.destroy()
             
     def run(self):
+        if len(sys.argv) > 1:
+            self.load_file(sys.argv[1])
         gtk.main()
 
 #    import hotshot

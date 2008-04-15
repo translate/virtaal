@@ -99,6 +99,8 @@ class Settings:
             self.general[key] = value
         for key, value in self.config.items("language"):
             self.language[key] = value
+        for key, value in self.config.items("undo"):
+            self.undo[key] = value
         
     def write(self):
         """Write the configuration file."""        
@@ -108,6 +110,8 @@ class Settings:
             self.config.set("general", key, self.general[key])
         for key in self.language:
             self.config.set("language", key, self.language[key])
+        for key in self.undo:
+            self.config.set("undo", key, self.undo[key])
 
         # make sure that the configuration directory exists
         project_dir = os.path.split(self.filename)[0]

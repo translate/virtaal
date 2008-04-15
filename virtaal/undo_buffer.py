@@ -31,15 +31,11 @@ class BoundedQueue(collections.deque):
         self.get_size = get_size
     
         
-    def enqueue(self, item):
+    def push(self, item):
         while len(self) > self.get_size():
-            self.dequeue()
+            self.popleft()
             
         self.append(item)
-        
-    
-    def dequeue(self):
-        return self.popleft()
 
 
 def make_undo_buffer():
@@ -72,43 +68,39 @@ def execute_without_signals(self, action):
 
 def undo(undo_list):
     if len(undo_list) > 0:
-        action = undo_list.dequeue()
+        action = undo_list.pop()
         return action()
     
     return False
     
        
 def on_delete_range(buffer, start_iter, end_iter, undo_list):
+    offset = start_iter.get_offset()
     text = buffer.get_text(start_iter, end_iter)
-    start_mark = buffer.create_mark(None, start_iter, False) 
 
     def undo():
-        execute_without_signals(buffer, lambda: buffer.insert(buffer.get_iter_at_mark(start_mark), text))
-        buffer.delete_mark(start_mark)
+        start_iter = buffer.get_iter_at_offset(offset)
+        execute_without_signals(buffer, lambda: buffer.insert(start_iter, text))
         
         return True
     
-    undo_list.enqueue(undo)    
+    undo_list.push(undo)    
     
     return True
     
     
 def on_insert_text(buffer, iter, text, length, undo_list):
-    start_mark = buffer.create_mark(None, iter, left_gravity=True)
+    offset = iter.get_offset()
     
     def undo():
-        start_iter = buffer.get_iter_at_mark(start_mark)
-        
-        end_iter   = start_iter.copy()
-        end_iter.forward_chars(length)
-        
+        start_iter = buffer.get_iter_at_offset(offset)
+        end_iter = buffer.get_iter_at_offset(offset + length)
+                        
         execute_without_signals(buffer, lambda: buffer.delete(start_iter, end_iter))
-        buffer.delete_mark(start_mark)
         
         return True
 
-    undo_list.enqueue(undo)
+    undo_list.push(undo)
     
     return True
 
-  

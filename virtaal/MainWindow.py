@@ -27,7 +27,6 @@ try:
 except:
     pass
 
-import gtk
 import gtk.glade
 
 import os.path as path

@@ -15,7 +15,7 @@ _ = gettext.gettext
 from __version__ import ver
 
 x_generator = 'VirTaal ' + ver
-default_config = "~/.wordforge/virtaal.ini"
+default_config = "~/.locamotion/virtaal.ini"
 
 def name():
     # pwd is only available on UNIX

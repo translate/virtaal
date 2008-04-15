@@ -47,11 +47,11 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
   <!-- Qt Linguist is copied from the standard DB but is yuck there -->
   <mime-type type="application/x-linguist">
     <sub-class-of type="application/xml"/>
-    <comment>Qt Linguist message catalog</comment>
+    <comment>Qt Linguist Translation File</comment>
     <glob pattern="*.ts"/>
   </mime-type>
   <mime-type type="application/x-qm">
-    <comment>translated messages (machine-readable)</comment>
+    <comment>Qt Message File</comment>
     <glob pattern="*.qm"/>
   </mime-type>
   <mime-type type="text/x-ini">
@@ -65,17 +65,17 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
   </mime-type>
   <mime-type type="text/x-properties">
     <sub-class-of type="text/plain"/>
-    <comment>Java properties file</comment>
+    <comment>Java Properties File</comment>
     <glob pattern="*.properties"/>
   </mime-type>
   <mime-type type="text/x-sdf">
     <sub-class-of type="text/tab-separated-values"/>
-    <comment>OpenOffice.org translation file</comment>
+    <comment>OpenOffice.org Translation File</comment>
     <glob pattern="*.sdf"/>
   </mime-type>
   <mime-type type="application/x-xliff+xml">
     <sub-class-of type="application/xml"/>
-    <comment>XLIFF translation file</comment>
+    <comment>XLIFF Translation File</comment>
     <acronym>XLIFF</acronym>
     <expanded-acronym>XML Localization Interchange File Format</expanded-acronym>
     <glob pattern="*.xlf"/>
@@ -87,12 +87,14 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
   </mime-type>
   <mime-type type="text/x-rc">
     <sub-class-of type="text/x-csrc"/>
-    <comment>Windows Resource File</comment>
+    <comment>C++ RC File</comment>
+    <acronym>RC</acronym>
+    <expanded-acronym>Resource Compiler</expanded-acronym>
     <glob pattern="*.rc"/>
   </mime-type>
   <mime-type type="text/x-msg">
     <sub-class-of type="text/x-tcl"/>
-    <comment>Tcl translations</comment>
+    <comment>Tcl Translation File</comment>
     <glob pattern="*.msg"/>
     <magic priority="50">
       <match value="::msgcat::mcset" type="string" offset="0:160"/>

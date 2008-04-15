@@ -49,7 +49,10 @@ cursor initially."""
 def on_size_allocate(widget, allocation):
     widget.child.set_size_request(allocation.width - 2, -1)
 
-    
+
+def undo(tree_view):
+    undo_buffer.undo(CellUnitView.undo_list[tree_view.get_buffer()])
+
 
 class CellUnitView(gtk.EventBox, gtk.CellEditable):
     """Text view suitable for cell renderer use."""
@@ -62,9 +65,9 @@ class CellUnitView(gtk.EventBox, gtk.CellEditable):
     
     
     __unit_buffers = weakref.WeakKeyDictionary()
-    __undo_list    = weakref.WeakKeyDictionary()
+    undo_list    = weakref.WeakKeyDictionary()
     
-    
+        
     def __init__(self, nplurals=None):
         gtk.EventBox.__init__(self)
 #        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color(0, 0, 50000))
@@ -204,7 +207,7 @@ class CellUnitView(gtk.EventBox, gtk.CellEditable):
             
             for buffer, undo_list in [undo_buffer.make_undo_buffer() for target in targets]:
                 CellUnitView.__unit_buffers[unit].append(buffer)
-                CellUnitView.__undo_list[buffer] = undo_list
+                CellUnitView.undo_list[buffer] = undo_list
         
         for target, buffer in zip(targets, CellUnitView.__unit_buffers[unit]):
             textview = gtk.TextView(buffer)
@@ -232,8 +235,9 @@ class CellUnitView(gtk.EventBox, gtk.CellEditable):
 #            textview.connect("set-scroll-adjustments", self._on_source_scroll)
 
             buffer = textview.get_buffer()
-            buffer.set_text(markup.escape(target))
+            undo_buffer.execute_without_signals(buffer, lambda: buffer.set_text(markup.escape(target)))
             buffer.set_modified(False)
+
             buffer.connect("modified-changed", self._on_modified)
             self.buffers.append(buffer)
         

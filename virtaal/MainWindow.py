@@ -52,6 +52,15 @@ supported_types = [
     (_("All files"), "*"),
 ]
 
+
+def on_undo(accel_group, acceleratable, keyval, modifier):
+    unitrenderer.undo(acceleratable.focus_widget)
+
+TEXT_VIEW_ACCELS = gtk.AccelGroup()
+key, modifier = gtk.accelerator_parse("<Control>z")
+TEXT_VIEW_ACCELS.connect_group(key, modifier, gtk.ACCEL_VISIBLE, on_undo)
+
+
 class VirTaal:
 
     def __init__(self):
@@ -73,8 +82,10 @@ class VirTaal:
         self.sw = self.gui.get_widget("scrolledwindow1")
         edit_menu = self.gui.get_widget("menuitem2")
         edit_menu.set_sensitive(False)
-        self.main_window = self.gui.get_widget("MainWindow")
+        self.main_window = self.gui.get_widget("MainWindow")        
+        self.main_window.add_accel_group(TEXT_VIEW_ACCELS)
         self.main_window.show()
+
         self.modified = False
         self.filename = None
 

@@ -206,7 +206,7 @@ class CellUnitView(gtk.EventBox, gtk.CellEditable):
                 CellUnitView.__unit_buffers[unit].append(buffer)
                 CellUnitView.__undo_list[buffer] = undo_list
         
-        for target, buffer in zip(targets, __unit_buffers[unit]):
+        for target, buffer in zip(targets, CellUnitView.__unit_buffers[unit]):
             textview = gtk.TextView(buffer)
             if gtkspell:
                 try:

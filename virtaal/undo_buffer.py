@@ -1,12 +1,12 @@
-
+import gtk
 
 def make_undo_buffer():
     buffer = gtk.TextBuffer()
     undo_list = []
     
     #self.connect("begin-user-action", on_begin_user_action, undo_list)
-    self.connect("insert-text",       on_insert_text,       undo_list)
-    self.connect("delete-range",      on_delete_range,      undo_list)
+    buffer.connect("insert-text",       on_insert_text,       undo_list)
+    buffer.connect("delete-range",      on_delete_range,      undo_list)
     #self.connect("end-user-action",   on_end_user_action,   undo_list)
     
     return buffer, undo_list
@@ -21,7 +21,7 @@ def undo(undo_list):
     return action()
     
        
-def on_delete_range(textbuffer, start, end, undo_list):
+def on_delete_range(buffer, start, end, undo_list):
     text = self.buffer.get_text(start_iter, end_iter)
     start_mark = buffer.create_mark("start-mark", start_iter, True)        
 
@@ -40,10 +40,10 @@ def on_delete_range(textbuffer, start, end, undo_list):
 #    return True
 
   
-def on_insert_text(textbuffer, iter, text, length, undo_list):
+def on_insert_text(buffer, iter, text, length, undo_list):
     start_mark = buffer.create_mark("start-mark", iter)
     end_iter   = iter.copy()
-    end_iter.forward(length)
+    end_iter.forward_chars(length)
     end_mark   = buffer.create_mark("end-mark", end_iter)
     
     def undo():

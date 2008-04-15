@@ -21,6 +21,8 @@
 
 import gtk
 
+"""This provides a simple dialog with a text entry field."""
+
 def EntryDialog(title):
     dlg = gtk.Dialog(title)
     dlg.set_size_request(450, 100)

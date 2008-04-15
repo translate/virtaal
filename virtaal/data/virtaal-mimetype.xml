@@ -14,6 +14,7 @@ Naming convention:
 See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-latest.html
 -->
 <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
+
   <mime-type type="application/x-tmx">
     <sub-class-of type="application/xml"/>
     <comment>TMX Translation Memory</comment>
@@ -25,6 +26,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
     </magic>
     <!-- <root-XML namespaceURI='http://www.lisa.org/tmx14' localName='tmx'/> -->
   </mime-type>
+
   <mime-type type="application/x-tbx">
     <sub-class-of type="application/xml"/>
     <comment>TBX Glossary</comment>
@@ -35,6 +37,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
       <match value="&lt;martif type=&quot;TBX&quot;" type="string" offset="0:256"/>
     </magic>
   </mime-type>
+
   <mime-type type="text/x-wordfast">
     <sub-class-of type="text/tab-separated-values"/>
     <comment>Wordfast Translation Memory</comment>
@@ -44,16 +47,19 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
       <match value="\0%\0W\0o\0r\0d\0f\0a\0s\0t\0 \0T\0M" type="string" offset="0:256"/>
     </magic>
   </mime-type>
+
   <!-- Qt Linguist is copied from the standard DB but is yuck there -->
   <mime-type type="application/x-linguist">
     <sub-class-of type="application/xml"/>
     <comment>Qt Linguist Translation File</comment>
     <glob pattern="*.ts"/>
   </mime-type>
+
   <mime-type type="application/x-qm">
     <comment>Qt Message File</comment>
     <glob pattern="*.qm"/>
   </mime-type>
+
   <mime-type type="text/x-ini">
     <sub-class-of type="text/plain"/>
     <comment>INI File</comment>
@@ -63,11 +69,13 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
     <!-- <alias type="application/textedit"/> -->
     <alias type="zz-application/zz-winassoc-ini"/>
   </mime-type>
+
   <mime-type type="text/x-properties">
     <sub-class-of type="text/plain"/>
     <comment>Java Properties File</comment>
     <glob pattern="*.properties"/>
   </mime-type>
+
   <mime-type type="text/x-sdf">
     <sub-class-of type="text/tab-separated-values"/>
     <comment>OpenOffice.org Translation File</comment>
@@ -86,6 +94,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
     <root-XML namespaceURI='urn:oasis:names:tc:xliff:document:1.' localName='xliff'/>
     <alias type="application/x-xliff"/>
   </mime-type>
+
   <mime-type type="text/x-rc">
     <sub-class-of type="text/x-csrc"/>
     <comment>C++ RC File</comment>
@@ -93,6 +102,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
     <expanded-acronym>Resource Compiler</expanded-acronym>
     <glob pattern="*.rc"/>
   </mime-type>
+
   <mime-type type="text/x-msg">
     <sub-class-of type="text/x-tcl"/>
     <comment>Tcl Translation File</comment>

@@ -37,7 +37,6 @@ from translate.misc.multistring import multistring
 import Globals
 import markup
 
-import weakref
 import undo_buffer
 
 _ = lambda x: x
@@ -51,7 +50,7 @@ def on_size_allocate(widget, allocation):
 
 
 def undo(tree_view):
-    undo_buffer.undo(CellUnitView.undo_list[tree_view.get_buffer()])
+    undo_buffer.undo(tree_view.get_buffer().undo_list)
 
 
 class CellUnitView(gtk.EventBox, gtk.CellEditable):
@@ -62,11 +61,7 @@ class CellUnitView(gtk.EventBox, gtk.CellEditable):
     __gsignals__ = {
         'modified':(gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
     }
-    
-    
-    __unit_buffers = weakref.WeakKeyDictionary()
-    undo_list    = weakref.WeakKeyDictionary()
-    
+        
         
     def __init__(self, nplurals=None):
         gtk.EventBox.__init__(self)
@@ -202,14 +197,14 @@ class CellUnitView(gtk.EventBox, gtk.CellEditable):
 
         global gtkspell
 
-        if unit not in CellUnitView.__unit_buffers:
-            CellUnitView.__unit_buffers[unit] = []
+        if not hasattr(unit, 'buffers'):
+            unit.buffers = []
             
             for buffer, undo_list in [undo_buffer.make_undo_buffer() for target in targets]:
-                CellUnitView.__unit_buffers[unit].append(buffer)
-                CellUnitView.undo_list[buffer] = undo_list
+                unit.buffers.append(buffer)
+                buffer.undo_list = undo_list
         
-        for target, buffer in zip(targets, CellUnitView.__unit_buffers[unit]):
+        for target, buffer in zip(targets, unit.buffers):
             textview = gtk.TextView(buffer)
             if gtkspell:
                 try:

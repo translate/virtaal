@@ -29,7 +29,7 @@ def name():
 class Settings:
     """Handles loading/saving settings from/to a configuration file."""
 
-    sections = ["translator", "general", "language"]
+    sections = ["translator", "general", "language", "undo"]
 
     translator =    {
             "name": name(),
@@ -44,6 +44,9 @@ class Settings:
     language =      {
             "uilang": None,
             "contentlang": None,
+    }
+    undo = {
+            "depth": 50,
     }
 
     def __init__(self, filename = None):

@@ -37,6 +37,9 @@ from translate.misc.multistring import multistring
 import Globals
 import markup
 
+import weakref
+import undo_buffer
+
 _ = lambda x: x
 
 first_word_re = re.compile("(?m)(?u)^(<[^>]+>|\\\\[nt]|[\W$^\n])*(\\b|\\Z)")
@@ -46,12 +49,22 @@ cursor initially."""
 def on_size_allocate(widget, allocation):
     widget.child.set_size_request(allocation.width - 2, -1)
 
+    
+
 class CellUnitView(gtk.EventBox, gtk.CellEditable):
     """Text view suitable for cell renderer use."""
+    
     __gtype_name__ = "CellUnitView"
+    
     __gsignals__ = {
         'modified':(gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
     }
+    
+    
+    __unit_buffers = weakref.WeakKeyDictionary()
+    __undo_list    = weakref.WeakKeyDictionary()
+    
+    
     def __init__(self, nplurals=None):
         gtk.EventBox.__init__(self)
 #        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color(0, 0, 50000))
@@ -186,8 +199,15 @@ class CellUnitView(gtk.EventBox, gtk.CellEditable):
 
         global gtkspell
 
-        for target in targets:
-            textview = gtk.TextView()
+        if unit not in CellUnitView.__unit_buffers:
+            CellUnitView.__unit_buffers[unit] = []
+            
+            for buffer, undo_list in [undo_buffer.make_undo_buffer() for target in targets]:
+                CellUnitView.__unit_buffers[unit].append(buffer)
+                CellUnitView.__undo_list[buffer] = undo_list
+        
+        for target, buffer in zip(targets, __unit_buffers[unit]):
+            textview = gtk.TextView(buffer)
             if gtkspell:
                 try:
                     spell = gtkspell.Spell(textview)

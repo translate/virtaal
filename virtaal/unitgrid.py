@@ -129,9 +129,6 @@ class UnitGrid(gtk.TreeView):
         # drawn as editable. If it happens too soon (the widget is not yet 
         # realised) then it might end up not being in editing mode once
         # visible.
-        #gobject.timeout_add(50, self._activate_editing_path, (0,))
-        #gobject.timeout_add(800, self._activate_editing_path, (0,))
-
         gobject.idle_add(self._activate_editing_path, (0,))
 
 

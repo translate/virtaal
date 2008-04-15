@@ -84,6 +84,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
       <match value="&lt;xliff" type="string" offset="0:256"/>
     </magic>
     <root-XML namespaceURI='urn:oasis:names:tc:xliff:document:1.' localName='xliff'/>
+    <alias type="application/x-xliff"/>
   </mime-type>
   <mime-type type="text/x-rc">
     <sub-class-of type="text/x-csrc"/>

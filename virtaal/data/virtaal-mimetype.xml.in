@@ -17,9 +17,9 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
 
   <mime-type type="application/x-tmx">
     <sub-class-of type="application/xml"/>
-    <comment>TMX Translation Memory</comment>
-    <acronym>TMX</acronym>
-    <expanded-acronym>Translation Memory eXchange</expanded-acronym>
+    <_comment>TMX Translation Memory</_comment>
+    <_acronym>TMX</_acronym>
+    <_expanded-acronym>Translation Memory eXchange</_expanded-acronym>
     <glob pattern="*.tmx"/>
     <magic priority="80">
       <match value="&lt;tmx" type="string" offset="0:256"/>
@@ -29,9 +29,9 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
 
   <mime-type type="application/x-tbx">
     <sub-class-of type="application/xml"/>
-    <comment>TBX Glossary</comment>
-    <acronym>TBX</acronym>
-    <expanded-acronym>TermBase eXchange</expanded-acronym>
+    <_comment>TBX Glossary</_comment>
+    <_acronym>TBX</_acronym>
+    <_expanded-acronym>TermBase eXchange</_expanded-acronym>
     <glob pattern="*.tbx"/>
     <magic priority="80">
       <match value="&lt;martif type=&quot;TBX&quot;" type="string" offset="0:256"/>
@@ -40,7 +40,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
 
   <mime-type type="text/x-wordfast">
     <sub-class-of type="text/tab-separated-values"/>
-    <comment>Wordfast Translation Memory</comment>
+    <_comment>Wordfast Translation Memory</_comment>
     <glob pattern="*.txt"/>
     <magic priority="80">
       <match value="%Wordfast TM" type="string" offset="0:256"/>
@@ -51,20 +51,20 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
   <!-- Qt Linguist is copied from the standard DB but is yuck there -->
   <mime-type type="application/x-linguist">
     <sub-class-of type="application/xml"/>
-    <comment>Qt Linguist Translation File</comment>
+    <_comment>Qt Linguist Translation File</_comment>
     <glob pattern="*.ts"/>
   </mime-type>
 
   <mime-type type="application/x-qm">
-    <comment>Qt Message File</comment>
+    <_comment>Qt Message File</_comment>
     <glob pattern="*.qm"/>
   </mime-type>
 
   <mime-type type="text/x-ini">
     <sub-class-of type="text/plain"/>
-    <comment>INI File</comment>
-    <acronym>INI</acronym>
-    <expanded-acronym>Initialization</expanded-acronym>
+    <_comment>INI File</_comment>
+    <_acronym>INI</_acronym>
+    <_expanded-acronym>Initialization</_expanded-acronym>
     <glob pattern="*.ini"/>
     <!-- <alias type="application/textedit"/> -->
     <alias type="zz-application/zz-winassoc-ini"/>
@@ -72,20 +72,20 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
 
   <mime-type type="text/x-properties">
     <sub-class-of type="text/plain"/>
-    <comment>Java Properties File</comment>
+    <_comment>Java Properties File</_comment>
     <glob pattern="*.properties"/>
   </mime-type>
 
   <mime-type type="text/x-sdf">
     <sub-class-of type="text/tab-separated-values"/>
-    <comment>OpenOffice.org Translation File</comment>
+    <_comment>OpenOffice.org Translation File</_comment>
     <glob pattern="*.sdf"/>
   </mime-type>
   <mime-type type="application/x-xliff+xml">
     <sub-class-of type="application/xml"/>
-    <comment>XLIFF Translation File</comment>
-    <acronym>XLIFF</acronym>
-    <expanded-acronym>XML Localization Interchange File Format</expanded-acronym>
+    <_comment>XLIFF Translation File</_comment>
+    <_acronym>XLIFF</_acronym>
+    <_expanded-acronym>XML Localization Interchange File Format</_expanded-acronym>
     <glob pattern="*.xlf"/>
     <glob pattern="*.xliff"/>
     <magic priority="80">
@@ -97,15 +97,15 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
 
   <mime-type type="text/x-rc">
     <sub-class-of type="text/x-csrc"/>
-    <comment>C++ RC File</comment>
-    <acronym>RC</acronym>
-    <expanded-acronym>Resource Compiler</expanded-acronym>
+    <_comment>C++ RC File</_comment>
+    <_acronym>RC</_acronym>
+    <_expanded-acronym>Resource Compiler</_expanded-acronym>
     <glob pattern="*.rc"/>
   </mime-type>
 
   <mime-type type="text/x-msg">
     <sub-class-of type="text/x-tcl"/>
-    <comment>Tcl Translation File</comment>
+    <_comment>Tcl Translation File</_comment>
     <glob pattern="*.msg"/>
     <magic priority="50">
       <match value="::msgcat::mcset" type="string" offset="0:160"/>
@@ -114,7 +114,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
 
   <mime-type type="application/x-javascript-msg">
     <sub-class-of type="application/javascript"/>
-    <comment>JavaScript error message file</comment>
+    <_comment>JavaScript error message file</_comment>
     <glob pattern="*.msg"/>
     <magic priority="50">
       <match value="MSG_DEF(" type="string" offset="0:2560"/>
@@ -123,7 +123,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
 
   <mime-type type="text/x-gettext-translation-template">
     <sub-class-of type="text/plain"/>
-    <comment>Gettext Translation Template</comment>
+    <_comment>Gettext Translation Template</_comment>
     <glob pattern="*.pot"/>
     <magic priority="50">
       <match value="msgid" type="string" offset="0:256"/>

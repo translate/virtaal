@@ -1,0 +1,4 @@
+#!/bin/bash
+
+intltool-merge --xml-style po virtaal/data/virtaal-mimetype.xml.in virtaal/data/virtaal-mimetype.xml
+intltool-merge --desktop-style po virtaal/data/virtaal.desktop.in virtaal/data/virtaal.desktop

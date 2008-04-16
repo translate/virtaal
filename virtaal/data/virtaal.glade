@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!-- Generated with glade3
+<!--Generated with glade3 3.4.0 on Wed Apr 16 16:40:17 2008 
 	Version: 3.0.1
 	Date: Thu Dec  6 12:30:34 2007
 	User: fwolff
@@ -10,7 +10,7 @@
   <widget class="GtkWindow" id="MainWindow">
     <property name="width_request">620</property>
     <property name="height_request">400</property>
-    <property name="title">VirTaal</property>
+    <property name="title" translatable="yes">VirTaal</property>
     <signal name="destroy" handler="on_mainwindow_destroy"/>
     <signal name="delete_event" handler="on_mainwindow_delete"/>
     <child>
@@ -161,6 +161,7 @@
         <child>
           <widget class="GtkScrolledWindow" id="scrolledwindow1">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="hscrollbar_policy">GTK_POLICY_NEVER</property>
             <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
             <child>

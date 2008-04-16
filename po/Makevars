@@ -1,4 +1,4 @@
 top_builddir = ..
 DOMAIN = virtaal
 MSGID_BUGS_ADDRESS = translate-devel@lists.sourceforge.net
-XGETTEXT_OPTIONS =  --copyright-holder="Zuza Software Foundation (Translate.org.za)"
+#XGETTEXT_OPTIONS =  --copyright-holder="Zuza Software Foundation (Translate.org.za)"

@@ -24,6 +24,10 @@ import re
 
 import gobject
 import gtk
+try:
+    import gtkspell
+except ImportError, e:
+    gtkspell = None
 
 from translate.misc.multistring import multistring
 

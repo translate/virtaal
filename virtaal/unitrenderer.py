@@ -24,10 +24,6 @@
 import gobject
 import gtk
 import pango
-try:
-    import gtkspell
-except ImportError, e:
-    gtkspell = None
 
 import markup
 import undo_buffer

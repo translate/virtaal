@@ -3,9 +3,9 @@
 # 
 # Copyright 2007 Zuza Software Foundation
 # 
-# This file is part of translate.
+# This file is part of virtaal.
 #
-# translate is free software; you can redistribute it and/or modify
+# virtaal is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
@@ -36,7 +36,7 @@ from translate.storage import factory
 from translate.storage import poheader
 
 import Globals
-from EntryDialog import *
+from EntryDialog import EntryDialog
 import unitgrid
 import unitrenderer
 
@@ -52,7 +52,7 @@ supported_types = [
 ]
 
 
-def on_undo(accel_group, acceleratable, keyval, modifier):
+def on_undo(_accel_group, acceleratable, _keyval, _modifier):
     unitrenderer.undo(acceleratable.focus_widget)
 
 TEXT_VIEW_ACCELS = gtk.AccelGroup()
@@ -87,8 +87,11 @@ class VirTaal:
 
         self.modified = False
         self.filename = None
+        
+        self.translation_store = None
+        self.unit_grid = None
 
-    def _on_mainwindow_delete(self, widget, event):
+    def _on_mainwindow_delete(self, _widget, _event):
         if self.modified:
             dialog = gtk.MessageDialog(self.main_window,
                             gtk.DIALOG_MODAL,
@@ -102,7 +105,7 @@ class VirTaal:
                 return True
         return False
 
-    def _on_file_open(self, widget, destroyCallback=None):
+    def _on_file_open(self, _widget, destroyCallback=None):
         chooser = gtk.FileChooserDialog((_('Choose a translation file')), None, gtk.FILE_CHOOSER_ACTION_OPEN, (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         chooser.set_current_folder(Globals.settings.general["lastdir"])
 
@@ -193,12 +196,12 @@ class VirTaal:
         menuitem.set_sensitive(value)
         self.modified = value
 
-    def _on_modified(self, widget):
+    def _on_modified(self, _widget):
         if not self.modified:
             self.main_window.set_title("* " + self.main_window.get_title())
             self._set_saveable(True)
 
-    def _on_file_save(self, widget, filename=None):
+    def _on_file_save(self, _widget, filename=None):
         if self.modified:
             self.unit_grid.update_for_save()
         if filename is None or filename == self.filename:
@@ -244,22 +247,22 @@ class VirTaal:
         self.main_window.set_title(path.basename(self.filename))
 
     def _on_file_saveas(self, widget=None):
-            buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_SAVE, gtk.RESPONSE_OK)
-            # TODO: use stock text for Save as..."
-            chooser = gtk.FileChooserDialog(_("Save as..."), self.main_window, gtk.FILE_CHOOSER_ACTION_SAVE, buttons)
-            chooser.set_do_overwrite_confirmation(True)
-            directory, filename = path.split(self.filename)
-            chooser.set_current_name(filename)
-            chooser.set_default_response(gtk.RESPONSE_OK)
-            chooser.set_current_folder(directory)
+        buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_SAVE, gtk.RESPONSE_OK)
+        # TODO: use stock text for Save as..."
+        chooser = gtk.FileChooserDialog(_("Save as..."), self.main_window, gtk.FILE_CHOOSER_ACTION_SAVE, buttons)
+        chooser.set_do_overwrite_confirmation(True)
+        directory, filename = path.split(self.filename)
+        chooser.set_current_name(filename)
+        chooser.set_default_response(gtk.RESPONSE_OK)
+        chooser.set_current_folder(directory)
 
-            response = chooser.run()
-            if response == gtk.RESPONSE_OK:
-                    filename = chooser.get_filename()
-                    self._on_file_save(widget, filename)
-                    Globals.settings.general["lastdir"] = path.dirname(filename)
-                    Globals.settings.write()
-            chooser.destroy()
+        response = chooser.run()
+        if response == gtk.RESPONSE_OK:
+            filename = chooser.get_filename()
+            self._on_file_save(widget, filename)
+            Globals.settings.general["lastdir"] = path.dirname(filename)
+            Globals.settings.write()
+        chooser.destroy()
             
     def run(self):
         if len(sys.argv) > 1:

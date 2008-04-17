@@ -5,9 +5,9 @@
 # Copyright (C) 2007 Zuza Software Foundation
 #
 # This file was part of Gaupol.
-# This file is part of Translate.
+# This file is part of virtaal.
 #
-# Gaupol is free software: you can redistribute it and/or modify it under the
+# virtaal is free software: you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation, either version 3 of the License, or (at your option) any later
 # version.
@@ -35,15 +35,14 @@ import sys
 from translate.misc.multistring import multistring
 
 import Globals
+from Globals import _
 import markup
 
 import undo_buffer
 
-_ = lambda x: x
-
+#A regular expression to help us find a meaningful place to position the 
+#cursor initially.
 first_word_re = re.compile("(?m)(?u)^(<[^>]+>|\\\\[nt]|[\W$^\n])*(\\b|\\Z)")
-"""A regular expression to help us find a meaningful place to position the 
-cursor initially."""
 
 def on_size_allocate(widget, allocation):
     widget.child.set_size_request(allocation.width - 2, -1)
@@ -99,20 +98,20 @@ class CellUnitView(gtk.EventBox, gtk.CellEditable):
         self._unit = None
         self._nplurals = nplurals
 
-    def do_editing_done(self, *args):
+    def do_editing_done(self, *_args):
         """End editing."""
         self.update_for_save()
         self.remove_widget()
 
-    def do_remove_widget(self, *args):
+    def do_remove_widget(self, *_args):
         """Remove widget."""
         pass
 
-    def do_start_editing(self, *args):
+    def do_start_editing(self, *_args):
         """Start editing."""
         self.textviews[0].grab_focus()
 
-    def _on_focus(self, widget, direction):
+    def _on_focus(self, widget, _direction):
         self.recent_textview = widget
         return False
 
@@ -134,11 +133,12 @@ class CellUnitView(gtk.EventBox, gtk.CellEditable):
 
     def reset_modified(self):
         """Resets all the buffers to not modified."""
-        map(lambda b: b.set_modified(False), self.buffers)
+        for b in self.buffers:
+            b.set_modified(False)
         self._modified = False
 
     def get_text(self):
-        targets = map(lambda b:b.props.text, self.buffers)
+        targets = [b.props.text for b in self.buffers]
         if len(targets) == 1:
             return targets[0]
         else:
@@ -156,9 +156,6 @@ class CellUnitView(gtk.EventBox, gtk.CellEditable):
         self._unit = unit
         if unit is None:
             return
-
-        width, height = self.get_size_request()
-#        self.vbox.set_size_request(width / 2, height)
 
         if unit.hasplural():
             sources = unit.source.strings
@@ -187,8 +184,8 @@ class CellUnitView(gtk.EventBox, gtk.CellEditable):
     #        source_view.connect("key-press-event", self._on_textview_key_press_event)
     #        source_view.set_border_window_size(gtk.TEXT_WINDOW_BOTTOM, 1)
     #        source_view.set_wrap_mode(gtk.WRAP_WORD)
-    #        buffer = source_view.get_buffer()
-    #        buffer.set_text(markup.escape(unit.source))
+    #        buf = source_view.get_buffer()
+    #        buf.set_text(markup.escape(unit.source))
     #        source_view.set_editable(False)
     #        scrolledwindow = gtk.ScrolledWindow()
     #        scrolledwindow.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
@@ -200,20 +197,23 @@ class CellUnitView(gtk.EventBox, gtk.CellEditable):
         if not hasattr(unit, 'buffers'):
             unit.buffers = []
             
-            for buffer, undo_list in [undo_buffer.make_undo_buffer() for target in targets]:
-                unit.buffers.append(buffer)
-                buffer.undo_list = undo_list
+            for buf, undo_list in [undo_buffer.make_undo_buffer() for target in targets]:
+                unit.buffers.append(buf)
+                buf.undo_list = undo_list
         
-        for target, buffer in zip(targets, unit.buffers):
-            textview = gtk.TextView(buffer)
+        for target, buf in zip(targets, unit.buffers):
+            textview = gtk.TextView(buf)
             if gtkspell:
                 try:
                     spell = gtkspell.Spell(textview)
                     spell.set_language(Globals.settings.language["contentlang"])
-                except Exception, e:
+                except:
+                    import traceback
+                    
                     print >> sys.stderr, _("Could not initialize spell checking")
-                    print >> sys.stderr, str(e)
+                    traceback.print_exc(file=sys.stderr)
                     gtkspell = None
+                    
             textview.set_wrap_mode(gtk.WRAP_WORD)
             textview.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)
             textview.connect("key-press-event", self._on_textview_key_press_event)
@@ -229,12 +229,12 @@ class CellUnitView(gtk.EventBox, gtk.CellEditable):
 #            textview.connect("move-viewport", self._on_source_scroll)
 #            textview.connect("set-scroll-adjustments", self._on_source_scroll)
 
-            buffer = textview.get_buffer()
-            undo_buffer.execute_without_signals(buffer, lambda: buffer.set_text(markup.escape(target)))
-            buffer.set_modified(False)
+            buf = textview.get_buffer()
+            undo_buffer.execute_without_signals(buf, lambda: buf.set_text(markup.escape(target)))
+            buf.set_modified(False)
 
-            buffer.connect("modified-changed", self._on_modified)
-            self.buffers.append(buffer)
+            buf.connect("modified-changed", self._on_modified)
+            self.buffers.append(buf)
         
         # Let's show_all now while most of the important things are in place
         # We'll show_all again later
@@ -278,13 +278,13 @@ class CellUnitView(gtk.EventBox, gtk.CellEditable):
 
     def _place_cursor(self, index=0):
         """Place the cursor in a place, trying to guess a useful starting point."""
-        buffer = self.buffers[index]
-        text = buffer.props.text
+        buf = self.buffers[index]
+        text = buf.props.text
         if not text:
             return
         # TODO: handle a non-match (re is supposed to be impossible not to match)
         translation_start = first_word_re.match(text).span()[1]
-        buffer.place_cursor(buffer.get_iter_at_offset(translation_start))
+        buf.place_cursor(buf.get_iter_at_offset(translation_start))
 
     def _on_textview_key_press_event(self, textview, event):
         """Handle special keypresses in the textarea."""
@@ -300,30 +300,30 @@ class CellUnitView(gtk.EventBox, gtk.CellEditable):
             return True
         # Automatically move to the next line if \n is entered
         if event.keyval == keysyms.n:
-            buffer = textview.get_buffer()
-            cursor_position = buffer.get_iter_at_offset(buffer.props.cursor_position)
-            one_back = buffer.get_iter_at_offset(buffer.props.cursor_position-1)
-            previous = buffer.get_text(one_back, cursor_position)
+            buf = textview.get_buffer()
+            cursor_position = buf.get_iter_at_offset(buf.props.cursor_position)
+            one_back = buf.get_iter_at_offset(buf.props.cursor_position-1)
+            previous = buf.get_text(one_back, cursor_position)
             if previous == '\\':
-                buffer.insert_at_cursor('n\n')
+                buf.insert_at_cursor('n\n')
                 self.recent_textview.place_cursor_onscreen()
             else:
                 # Just a normal 'n' - nothing special
-                buffer.insert_at_cursor('n')
+                buf.insert_at_cursor('n')
             # We have to return true, otherwise another 'n' will be inserted
             return True
         return False
 
-    def _on_source_scroll(self, textview, step_size, count, extend_selection):
+    def _on_source_scroll(self, _textview, _step_size, _count, _extend_selection):
         #XXX scroll the source???
         return True
 
-    def _on_insert_at_cursor(self, textview, string):
+    def _on_insert_at_cursor(self, _textview, _string):
         return True
 
-    def _on_copy_original(self, widget):
-        for buffer in self.buffers:
-            buffer.set_text(markup.escape(self._unit.source))
+    def _on_copy_original(self, _widget):
+        for buf in self.buffers:
+            buf.set_text(markup.escape(self._unit.source))
             self._place_cursor()
         return True
 
@@ -358,6 +358,9 @@ class UnitRenderer(gtk.GenericCellRenderer):
         self.editable = False
         self._editor = None
         self._nplurals = nplurals
+        self._modified_widget = None
+        self.source_layout = None
+        self.target_layout = None
 
     def init_widget(self):
         if self.unit.isfuzzy():
@@ -375,10 +378,10 @@ class UnitRenderer(gtk.GenericCellRenderer):
     def do_get_property(self, pspec):
         return getattr(self, pspec.name)
 
-    def on_render(self, window, widget, background_area, cell_area, expose_area, flags):
+    def on_render(self, window, widget, _background_area, cell_area, _expose_area, _flags):
         if self.editable:
             return True
-        x_offset, y_offset, width, height = self.do_get_size(widget, cell_area)
+        x_offset, y_offset, width, _height = self.do_get_size(widget, cell_area)
 #        halfwidth = width / 2 - x_offset * 2
 #        source_layout = self.get_layout(widget, self.unit.source, halfwidth)
 #        target_layout = self.get_layout(widget, self.unit.target, halfwidth)
@@ -409,7 +412,7 @@ class UnitRenderer(gtk.GenericCellRenderer):
         layout.set_markup(markup.markuptext(text))
         return layout
 
-    def do_get_size(self, widget, cell_area):
+    def do_get_size(self, widget, _cell_area):
         xpad = 2
         ypad = 2
 
@@ -418,8 +421,8 @@ class UnitRenderer(gtk.GenericCellRenderer):
         width = widget.get_toplevel().get_allocation().width - 32
         self.source_layout = self.get_layout(widget, self.unit.source, width / 2)
         self.target_layout = self.get_layout(widget, self.unit.target, width / 2)
-        layout_width, source_height = self.source_layout.get_pixel_size()
-        layout_width, target_height = self.target_layout.get_pixel_size()
+        _layout_width, source_height = self.source_layout.get_pixel_size()
+        _layout_width, target_height = self.target_layout.get_pixel_size()
 
 #        unit = self.unit
 #        source = unit.source
@@ -461,7 +464,7 @@ class UnitRenderer(gtk.GenericCellRenderer):
         self.emit("modified")
         return True
 
-    def update_for_save(self, away=False):
+    def update_for_save(self, _away=False):
         """Prepare all data structures for saving.
 
         away indicates that this is because we want to move to another cell."""
@@ -470,7 +473,7 @@ class UnitRenderer(gtk.GenericCellRenderer):
 #            if away:
 #                self._modified_widget.editing_done()
 
-    def do_start_editing(self, event, widget, path, bg_area, cell_area, flags):
+    def do_start_editing(self, _event, widget, path, _bg_area, cell_area, _flags):
         """Initialize and return the editor widget."""
         editor = CellUnitView(self._nplurals)
         editor.set_unit(self.unit)

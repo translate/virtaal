@@ -5,7 +5,7 @@
 # 
 # This file is part of virtaal.
 #
-# translate is free software; you can redistribute it and/or modify
+# virtaal is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
@@ -23,26 +23,23 @@ import pygtk
 pygtk.require('2.0')
 import gtk
 import gobject
-import pango
 
 from translate.storage.poheader import poheader
-from translate.lang import data as langdata
 from translate.lang import factory as langfactory
 
 import Globals
-from EntryDialog import *
+from EntryDialog import EntryDialog
 from unitrenderer import UnitRenderer
 import markup
-_ = lambda x: x
 
 (
-	COLUMN_SOURCE, 
-	COLUMN_TARGET,
-	COLUMN_NOTE,
-	COLUMN_PROGRAMMER_NOTE,
-	COLUMN_TRANSLATOR_NOTE,
-	COLUMN_UNIT,
-        COLUMN_EDITABLE,
+    COLUMN_SOURCE, 
+    COLUMN_TARGET,
+    COLUMN_NOTE,
+    COLUMN_PROGRAMMER_NOTE,
+    COLUMN_TRANSLATOR_NOTE,
+    COLUMN_UNIT,
+    COLUMN_EDITABLE,
 ) = range(7)
 
 class UnitGrid(gtk.TreeView):
@@ -68,7 +65,7 @@ class UnitGrid(gtk.TreeView):
                             if entry is None:
                                 return
                             nplurals = int(entry)
-                        except ValueError, e:
+                        except ValueError, _e:
                             continue
                         plural = EntryDialog("Please enter the plural equation to use")
                         Globals.settings.language["nplurals"] = nplurals
@@ -88,9 +85,9 @@ class UnitGrid(gtk.TreeView):
         for unit in store.units:
             if not unit.istranslatable():
                 continue
-            iter = model.append()
+            itr = model.append()
 
-            model.set (iter,
+            model.set (itr,
                COLUMN_SOURCE, markup.markuptext(unit.source),
                COLUMN_TARGET, markup.markuptext(unit.target),
                COLUMN_NOTE, unit.getnotes() or None,
@@ -132,22 +129,22 @@ class UnitGrid(gtk.TreeView):
         gobject.idle_add(self._activate_editing_path, (0,))
 
 
-    def on_configure_event(self, event, *user_args):
-    	path, column = self.get_cursor()
+    def on_configure_event(self, _event, *_user_args):
+        path, column = self.get_cursor()
 
-    	# Horrible hack.
-    	# We use set_cursor to cause the editable area to be recreated so that
-    	# it can be drawn correctly. This has to be delayed (we used idle_add),
-    	# since calling it immediately after columns_autosize() does not work.
-    	def reset_cursor():
-    		self.update_for_save()
-    		self.set_cursor(path, column, start_editing=True)
-    		return False
+        # Horrible hack.
+        # We use set_cursor to cause the editable area to be recreated so that
+        # it can be drawn correctly. This has to be delayed (we used idle_add),
+        # since calling it immediately after columns_autosize() does not work.
+        def reset_cursor():
+            self.update_for_save()
+            self.set_cursor(path, column, start_editing=True)
+            return False
 
-    	self.columns_autosize()
-    	gobject.idle_add(reset_cursor)
+        self.columns_autosize()
+        gobject.idle_add(reset_cursor)
 
-    	return False
+        return False
 
     def _on_modified(self, widget):
         self._modified_widget = widget
@@ -158,27 +155,26 @@ class UnitGrid(gtk.TreeView):
         if self._modified_widget:
             self._modified_widget.update_for_save(away)
 
-    def on_cell_edited(self, cell, path_string, new_target, must_advance, modified, model):
-        iter = model.get_iter_from_string(path_string)
-        path = model.get_path(iter)
-        unit = model.get_value(iter, COLUMN_UNIT)
+    def on_cell_edited(self, _cell, path_string, new_target, must_advance, modified, model):
+        itr = model.get_iter_from_string(path_string)
+        path = model.get_path(itr)
 
         if modified:
-            model.set(iter, COLUMN_TARGET, markup.markuptext(new_target))
+            model.set(itr, COLUMN_TARGET, markup.markuptext(new_target))
             self.emit("modified")
 
-        model.set(iter, COLUMN_EDITABLE, False)
+        model.set(itr, COLUMN_EDITABLE, False)
         if must_advance:
             self._activate_editing_path((path[0]+1,))
         return True
 
-    def on_row_activated(self, treeview, path, view_column):
+    def on_row_activated(self, _treeview, path, view_column):
         if view_column != self.targetcolumn:
             self.set_cursor(path, self.targetcolumn, start_editing=True)
         return True
         
     def on_cursor_changed(self, treeview):
-        path, column = self.get_cursor()
+        path, _column = self.get_cursor()
         
         # We defer the scrolling until GTK has finished all its current drawing
         # tasks, hence the gobject.idle_add. If we don't wait, then the TreeView
@@ -193,19 +189,19 @@ class UnitGrid(gtk.TreeView):
         gobject.idle_add(do_scroll)
         
         model = treeview.get_model()
-        iter = model.get_iter(path)
-        if not model.get_value(iter, COLUMN_EDITABLE):
-            model.set(iter, COLUMN_EDITABLE, True)
+        itr = model.get_iter(path)
+        if not model.get_value(itr, COLUMN_EDITABLE):
+            model.set(itr, COLUMN_EDITABLE, True)
         return True
 
-    def on_move_cursor(self, widget, step, count):
-        path, column = self.get_cursor()
-        iter = self.model.get_iter(path)
+    def on_move_cursor(self, _widget, step, _count):
+        path, _column = self.get_cursor()
+        itr = self.model.get_iter(path)
         if step in [gtk.MOVEMENT_DISPLAY_LINES, gtk.MOVEMENT_PAGES]:
-            self.model.set(iter, COLUMN_EDITABLE, False)
+            self.model.set(itr, COLUMN_EDITABLE, False)
         return True
 
-    def on_button_press(self, widget, event):
+    def on_button_press(self, _widget, event):
 #        if self._modified_widget:
 #            self._modified_widget.stop_editing(canceled=False)
         # XXX - emit modified
@@ -213,11 +209,11 @@ class UnitGrid(gtk.TreeView):
         if answer is None:
             print "marakas! geen path gevind by (x,y) nie!"
             return True
-        old_path, old_column = self.get_cursor()
-        path, column, x, y = answer
+        old_path, _old_column = self.get_cursor()
+        path, _column, _x, _y = answer
         if old_path != path:
-            iter = self.model.get_iter(old_path)
-            self.model.set(iter, COLUMN_EDITABLE, False)
+            itr = self.model.get_iter(old_path)
+            self.model.set(itr, COLUMN_EDITABLE, False)
             self._activate_editing_path(path)
             self.update_for_save(away=True)
         return True
@@ -225,21 +221,27 @@ class UnitGrid(gtk.TreeView):
     def _activate_editing_path(self, path):
         """Activates the given path for editing."""
         try:
-            iter = self.model.get_iter(path)
-            self.model.set(iter, COLUMN_EDITABLE, True)
+            itr = self.model.get_iter(path)
+            self.model.set(itr, COLUMN_EDITABLE, True)
             self.set_cursor(path, self.targetcolumn, start_editing=True)
-        except Exception, e:
+        except:
             # Something could go wrong with .get_iter() if a non-existing path
             # was given - an expected result when trying to advance past the 
             # last row, for example
             # TODO: offer to save file, or give indication of some kind that 
-            # the current run in finished
-            print str(e)
-            pass
+            # the current run in finished            test_code = ""
+            import traceback
+            import sys
+            
+            print "Exception in user code:"
+            print '-'*60
+            traceback.print_exc(file=sys.stdout)
+            print '-'*60                    
+
         return False
 
-    def on_key_press(self, widget, event, data=None):
-    	# The TreeView does interesting things with combos like SHIFT+TAB.
-    	# So we're going to stop it from doing this.
+    def on_key_press(self, _widget, _event, _data=None):
+        # The TreeView does interesting things with combos like SHIFT+TAB.
+        # So we're going to stop it from doing this.
         return True
 

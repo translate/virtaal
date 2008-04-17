@@ -312,7 +312,8 @@ def standardsetup(name, version, custompackages=[], customdatafiles=[]):
             packages=['virtaal'],
             data_files=[('virtaal', ['virtaal/data/virtaal.glade']),
                         ('mime/packages', ['virtaal/data/virtaal-mimetype.xml']),
-                        ('applications', ['virtaal/data/virtaal.desktop'])],
+                        ('applications', ['virtaal/data/virtaal.desktop']),
+                        ('icons', ['virtaal.png'])],
             scripts=['run_virtaal.py'])
 
     

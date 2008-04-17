@@ -32,13 +32,11 @@ class BoundedQueue(collections.deque):
         self.current_pos = 0
         self.get_size = get_size
     
-        
     def push(self, item):
         while len(self) > self.get_size():
             self.popleft()
             
         self.append(item)
-
 
 def make_undo_buffer():
     buffer = gtk.TextBuffer()
@@ -49,33 +47,26 @@ def make_undo_buffer():
     
     return buffer, undo_list
     
-
 def block_change_signals(self):
     self.handler_block(self.insert_handler)
     self.handler_block(self.delete_handler)
-
 
 def unblock_change_signals(self):
     self.handler_unblock(self.insert_handler)
     self.handler_unblock(self.delete_handler)
 
-
 def execute_without_signals(self, action):
     block_change_signals(self)
     result = action()
     unblock_change_signals(self)
-    
     return result
-
 
 def undo(undo_list):
     if len(undo_list) > 0:
         action = undo_list.pop()
         return action()
-    
     return False
     
-       
 def on_delete_range(buffer, start_iter, end_iter, undo_list):
     offset = start_iter.get_offset()
     text = buffer.get_text(start_iter, end_iter)
@@ -83,13 +74,10 @@ def on_delete_range(buffer, start_iter, end_iter, undo_list):
     def undo():
         start_iter = buffer.get_iter_at_offset(offset)
         execute_without_signals(buffer, lambda: buffer.insert(start_iter, text))
-        
         return True
     
     undo_list.push(undo)    
-    
     return True
-    
     
 def on_insert_text(buffer, iter, text, length, undo_list):
     offset = iter.get_offset()
@@ -97,12 +85,9 @@ def on_insert_text(buffer, iter, text, length, undo_list):
     def undo():
         start_iter = buffer.get_iter_at_offset(offset)
         end_iter = buffer.get_iter_at_offset(offset + length)
-                        
         execute_without_signals(buffer, lambda: buffer.delete(start_iter, end_iter))
-        
         return True
 
     undo_list.push(undo)
-    
     return True
 

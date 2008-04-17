@@ -40,10 +40,10 @@ first_word_re = re.compile("(?m)(?u)^(<[^>]+>|\\\\[nt]|[\W$^\n])*(\\b|\\Z)")
 def on_size_allocate(widget, allocation):
     widget.child.set_size_request(allocation.width - 2, -1)
 
-class CellUnitView(gtk.EventBox, gtk.CellEditable):
+class UnitEditor(gtk.EventBox, gtk.CellEditable):
     """Text view suitable for cell renderer use."""
     
-    __gtype_name__ = "CellUnitView"
+    __gtype_name__ = "UnitEditor"
     
     __gsignals__ = {
         'modified':(gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())

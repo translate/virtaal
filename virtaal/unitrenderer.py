@@ -31,7 +31,7 @@ except ImportError, e:
 
 import markup
 import undo_buffer
-from unit_editor import CellUnitView
+from unit_editor import UnitEditor
 
 
 def undo(tree_view):
@@ -185,7 +185,7 @@ class UnitRenderer(gtk.GenericCellRenderer):
 
     def do_start_editing(self, _event, widget, path, _bg_area, cell_area, _flags):
         """Initialize and return the editor widget."""
-        editor = CellUnitView(self._nplurals)
+        editor = UnitEditor(self._nplurals)
         editor.set_unit(self.unit)
         editor.set_size_request(cell_area.width, cell_area.height-2)
         editor.set_border_width(min(self.props.xpad, self.props.ypad))

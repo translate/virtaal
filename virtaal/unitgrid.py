@@ -159,7 +159,6 @@ class UnitGrid(gtk.TreeView):
             self._modified_widget.update_for_save(away)
 
     def on_cell_edited(self, cell, path_string, new_target, must_advance, modified, model):
-#        print "on_cell_edited(must_advance=%s)" % must_advance
         iter = model.get_iter_from_string(path_string)
         path = model.get_path(iter)
         unit = model.get_value(iter, COLUMN_UNIT)
@@ -174,13 +173,11 @@ class UnitGrid(gtk.TreeView):
         return True
 
     def on_row_activated(self, treeview, path, view_column):
-#        print "on_row_activated(.., %s, ...)" % path
         if view_column != self.targetcolumn:
             self.set_cursor(path, self.targetcolumn, start_editing=True)
         return True
         
     def on_cursor_changed(self, treeview):
-#        print "on_cursor_changed(...)"
         path, column = self.get_cursor()
         
         # We defer the scrolling until GTK has finished all its current drawing
@@ -195,7 +192,6 @@ class UnitGrid(gtk.TreeView):
 
         gobject.idle_add(do_scroll)
         
-        #self.scroll_to_cell(path, self.targetcolumn, True, 0.5, 0.0)
         model = treeview.get_model()
         iter = model.get_iter(path)
         if not model.get_value(iter, COLUMN_EDITABLE):
@@ -203,7 +199,6 @@ class UnitGrid(gtk.TreeView):
         return True
 
     def on_move_cursor(self, widget, step, count):
-#        print "on_move_cursor(%s, %s, %s)" % (widget, step, count)
         path, column = self.get_cursor()
         iter = self.model.get_iter(path)
         if step in [gtk.MOVEMENT_DISPLAY_LINES, gtk.MOVEMENT_PAGES]:
@@ -225,14 +220,11 @@ class UnitGrid(gtk.TreeView):
             self.model.set(iter, COLUMN_EDITABLE, False)
             self._activate_editing_path(path)
             self.update_for_save(away=True)
-        else:
-            print "'n ander geur marakas!"
         return True
 
     def _activate_editing_path(self, path):
         """Activates the given path for editing."""
         try:
-#            print "_activate_editing_path(%s)" % path
             iter = self.model.get_iter(path)
             self.model.set(iter, COLUMN_EDITABLE, True)
             self.set_cursor(path, self.targetcolumn, start_editing=True)

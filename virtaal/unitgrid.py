@@ -100,6 +100,7 @@ class UnitGrid(gtk.TreeView):
         self.model = model
         gtk.TreeView.__init__(self, model)
         self.set_headers_visible(False)
+        self.set_direction(gtk.TEXT_DIR_LTR)
         
         renderer = UnitRenderer(self._nplurals)
         renderer.connect("unit-edited", self.on_cell_edited, model)

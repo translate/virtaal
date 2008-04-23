@@ -244,6 +244,15 @@ def make_vlist(layout):
 def make_hlist(layout):
     return fill_list(layout, gtk.HBox())
 
+def focus_text_view(text_view):
+    text_view.grab_focus()
+
+    buf = text_view.get_buffer()
+    text = buf.get_text(buf.get_start_iter(), buf.get_end_iter())
+    
+    translation_start = first_word_re.match(text).span()[1]
+    buf.place_cursor(buf.get_iter_at_offset(translation_start))
+
 @specialize_make_widget(unit_layout.TextBox)
 def make_text_box(layout):
     text_view = gtk.TextView()
@@ -299,9 +308,10 @@ def make_text_box(layout):
             layout = text_view.parent.__layout
             if layout.next != None:
                 next_text_view = layout.next.__widget.child
-                next_text_view.grab_focus()
+                focus_text_view(next_text_view)
+                
             else:
-                must_advance = True
+                #self.must_advance = True
                 text_view.parent.emit('key-press-event', event)
             return True
         return False
@@ -397,8 +407,7 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
 
     def do_start_editing(self, *_args):
         """Start editing."""
-        self._widget_dict['source-0'].grab_focus()
-        #self.textviews[0].grab_focus()
+        focus_text_view(self._widget_dict['source-0'].child)
 
     def _on_focus(self, widget, _direction):
         self.recent_textview = widget
@@ -432,16 +441,6 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
             return targets[0]
         else:
             return multistring(targets)
-
-    def _place_cursor(self, index=0):
-        """Place the cursor in a place, trying to guess a useful starting point."""
-        buf = self.buffers[index]
-        text = buf.props.text
-        if not text:
-            return
-        # TODO: handle a non-match (re is supposed to be impossible not to match)
-        translation_start = first_word_re.match(text).span()[1]
-        buf.place_cursor(buf.get_iter_at_offset(translation_start))
 
     def _on_source_scroll(self, _textview, _step_size, _count, _extend_selection):
         #XXX scroll the source???

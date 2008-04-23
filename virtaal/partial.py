@@ -19,6 +19,8 @@
 # along with translate; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+__all__ = ['partial', 'compose', 'post']
+
 def copy_attrs(source_func, target_func):
     for attr in ('__module__', '__name__', '__doc__'):
         setattr(target_func, attr, getattr(source_func, attr))

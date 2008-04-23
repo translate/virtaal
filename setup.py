@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from distutils.core import setup, Extension, Distribution, Command
+from distutils.core import setup, Distribution, Command
 import os.path as path
 import os
 
@@ -54,10 +54,10 @@ class InnoScript:
     def create(self, pathname=None):
         """creates the InnoSetup script"""
         if pathname is None:
-          self.pathname = path.join(self.dist_dir, self.name + os.extsep + "iss")
+            self.pathname = path.join(self.dist_dir, self.name + os.extsep + "iss")
           
         else:
-          self.pathname = pathname
+            self.pathname = pathname
           
 # See http://www.jrsoftware.org/isfaq.php for more InnoSetup config options.
         ofi = self.file = open(self.pathname, "w")
@@ -158,12 +158,12 @@ class build_exe_map(build_exe):
                 datadir, files = f
                 datadir = map_data_file(datadir)
                 if datadir is None:
-                  f = None
+                    f = None
                 else:
-                  f = datadir, files
+                    f = datadir, files
                   
             if f is not None:
-              new_data_files.append(f)
+                new_data_files.append(f)
               
         return new_data_files
 

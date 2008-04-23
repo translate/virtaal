@@ -20,7 +20,6 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 import sys
 import re
-import weakref
 
 import gobject
 import pango
@@ -38,7 +37,7 @@ from simplegeneric import generic
 import Globals
 from Globals import _
 import label_expander
-from partial import *
+from partial import post, compose
 
 def properties_generator(widget, *prop_list):
     for prop in prop_list:
@@ -127,7 +126,7 @@ def h_padding_option(_text_box):
     # See gtkcheckbutton.c 
     # requisition->width += (indicator_size + indicator_spacing * 3 + 2 * (focus_width + focus_pad));
     return STYLE[gtk.CheckButton]['indicator-size'] + STYLE[gtk.CheckButton]['indicator-spacing'] * 3 + \
-           2 * (STYLE[gtk.Widget]['focus-line-width'] + STYLE[gtk.Widget]['focus-padding']);
+           2 * (STYLE[gtk.Widget]['focus-line-width'] + STYLE[gtk.Widget]['focus-padding'])
 
 
 def cache_height(h, layout, widget, width):

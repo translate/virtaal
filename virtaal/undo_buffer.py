@@ -30,6 +30,7 @@ from partial import partial
 
 class BoundedQueue(collections.deque):
     def __init__(self, get_size):
+        super(BoundedQueue, self).__init__()
         self.current_pos = 0
         self.get_size = get_size
     
@@ -80,13 +81,13 @@ def on_delete_range(buffer, start_iter, end_iter, undo_list):
     undo_list.push(undo)    
     return True
     
-def on_insert_text(buffer, iter, text, length, undo_list):
+def on_insert_text(buf, iter, text, length, undo_list):
     offset = iter.get_offset()
     
     def undo():
-        start_iter = buffer.get_iter_at_offset(offset)
-        end_iter = buffer.get_iter_at_offset(offset + length)
-        execute_without_signals(buffer, partial(buffer.delete, start_iter, end_iter))
+        start_iter = buf.get_iter_at_offset(offset)
+        end_iter = buf.get_iter_at_offset(offset + length)
+        execute_without_signals(buf, partial(buf.delete, start_iter, end_iter))
         return True
 
     undo_list.push(undo)

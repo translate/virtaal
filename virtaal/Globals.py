@@ -28,8 +28,6 @@ import os
 import locale, gettext
 import pygtk
 pygtk.require("2.0")
-import gobject, gtk
-import gettext
 _ = gettext.gettext
 
 from __version__ import ver

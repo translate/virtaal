@@ -1,5 +1,10 @@
 import gtk
 import gobject
+import pango
+
+def label_escape(text):
+    escapes = [("\n", '\\n'), ("\r", '\\r')]
+    return reduce(lambda text, escape: text.replace(*escape), escapes, text)    
 
 class LabelExpander(gtk.EventBox):
     __gproperties__ = {
@@ -15,7 +20,7 @@ class LabelExpander(gtk.EventBox):
 
         label_text = gtk.Label()
         label_text.set_single_line_mode(True)
-        label_text.set_ellipsize(True)
+        label_text.set_ellipsize(pango.ELLIPSIZE_END)
         label_text.set_justify(gtk.JUSTIFY_LEFT)
         
         self.label = gtk.EventBox()
@@ -45,7 +50,7 @@ class LabelExpander(gtk.EventBox):
             self.add(self.widget)   
         else:
             self.add(self.label)
-            self.label.child.set_text(self.get_text())
+            self.label.child.set_text(label_escape(self.get_text()))
             
         self.child.show()
         

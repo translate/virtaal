@@ -31,13 +31,16 @@ class Layout(Widget):
         self.child = child
         
 class List(Widget):
-    def __init__(self, name):
+    def __init__(self, name, children=None):
         super(List, self).__init__(name)
         
         self.hpadding = 2
         self.vpadding = 2
-        self.children = []
-        
+        if children != None:
+            self.children = children
+        else:
+            self.children = []
+
     def add(self, widget):
         self.children.append(widget)
         
@@ -46,16 +49,16 @@ class VList(List):
             
 class HList(List):
     pass
-        
+
 class TextBox(Widget):
     def __init__(self, name, get_text, set_text):
         super(TextBox, self).__init__(name)
         self.get_text = get_text
         self.set_text = set_text
 
-class Comment(Widget):
-    def __init__(self, name):
-        super(Comment, self).__init__(name)
+class Comment(TextBox):
+    def __init__(self, name, get_text, set_text):
+        super(Comment, self).__init__(name, get_text, set_text)
         
 def get_source(unit, index):
     if unit.hasplural():
@@ -113,25 +116,34 @@ def build_layout(unit, nplurals):
     
     @param unit: A translation unit used by the translate toolkit.
     @param nplurals: The number of plurals in the 
-    """    
-    source_list = VList('sources')
-    for i in xrange(num_sources(unit)):
-        source_list.children.append(TextBox('source-%d' % i, 
-                                            partial(get_source, unit, i),
-                                            partial(set_source, unit, i)))
-        
-    target_list = VList('targets')
-    for i in xrange(num_targets(unit, nplurals)):
-        target_list.children.append(TextBox('target-%d' % i,
-                                            partial(get_target, unit, nplurals, i),
-                                            partial(set_target, unit, i)))
-                                    
-    main_list = VList('main_list')
-    main_list.children.append(source_list)
-    main_list.children.append(target_list)
+    """
     
-    return Layout('main_layout', main_list)
+    programmer_comments = Comment('programmer', 
+                                  partial(unit.getnotes, 'programmer'),
+                                  lambda x: None)
+    
+    source_list = VList('sources',
+                        [TextBox('source-%d' % i, 
+                                 partial(get_source, unit, i),
+                                 partial(set_source, unit, i))
+                         for i in xrange(num_sources(unit))])
+        
+    target_list = VList('targets', 
+                        [TextBox('target-%d' % i, 
+                                 partial(get_target, unit, nplurals, i),
+                                 partial(set_target, unit, i)) 
+                         for i in xrange(num_targets(unit, nplurals))])
 
+    translator_comments = Comment('translator', 
+                                  partial(unit.getnotes, 'translator'),
+                                  lambda x: None)
+                                    
+    return Layout('layout', 
+                  VList('main_list', [programmer_comments,
+                                      source_list,
+                                      target_list,
+                                      translator_comments]))
+    
 def get_blueprints(unit, nplurals):
     """Return a layout description used to construct UnitEditors
     

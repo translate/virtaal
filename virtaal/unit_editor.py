@@ -32,10 +32,56 @@ except ImportError, e:
 from translate.misc.multistring import multistring
 
 import markup
+import unit_layout
+from simplegeneric import generic
 import Globals
 from Globals import _
-import undo_buffer
 
+@generic
+def make_widget(layout):
+    raise NotImplementedError()
+
+def fill_list(layout, box):
+    names = {layout.name: box}
+    for child in layout.children:
+        child_widget, child_names = make_widget(child)
+        box.pack_start(child_widget, expand=True, fill=True)
+        names.update(child_names)
+    return box, names
+
+@make_widget.when_type(unit_layout.VList)
+def make_vlist(layout):
+    return fill_list(layout, gtk.VBox())
+
+@make_widget.when_type(unit_layout.HList)
+def make_hlist(layout):
+    return fill_list(layout, gtk.HBox())
+
+@make_widget.when_type(unit_layout.TextBox)
+def make_text_box(layout):
+    text_view = gtk.TextView()
+    text_view.get_buffer().set_text(layout.get_text())
+
+    global gtkspell
+    if gtkspell:
+        try:
+            spell = gtkspell.Spell(text_view)
+            spell.set_language(Globals.settings.language["contentlang"])
+        except:
+            import traceback
+            
+            print >> sys.stderr, _("Could not initialize spell checking")
+            traceback.print_exc(file=sys.stderr)
+            gtkspell = None
+
+    text_view.set_wrap_mode(gtk.WRAP_WORD)
+    text_view.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)
+
+    scrolled_window = gtk.ScrolledWindow()
+    scrolled_window.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+    scrolled_window.add(text_view)
+
+    return scrolled_window, {layout.name: scrolled_window}
 
 #A regular expression to help us find a meaningful place to position the 
 #cursor initially.
@@ -43,6 +89,7 @@ first_word_re = re.compile("(?m)(?u)^(<[^>]+>|\\\\[nt]|[\W$^\n])*(\\b|\\Z)")
 
 def on_size_allocate(widget, allocation):
     widget.child.set_size_request(allocation.width - 2, -1)
+
 
 class UnitEditor(gtk.EventBox, gtk.CellEditable):
     """Text view suitable for cell renderer use."""
@@ -52,43 +99,33 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
     __gsignals__ = {
         'modified':(gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
     }
-        
-        
-    def __init__(self, nplurals=None):
+   
+    def __init__(self, parent, unit):
         gtk.EventBox.__init__(self)
 #        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color(0, 0, 50000))
 
         self.table = gtk.Table(rows=1, columns=4, homogeneous=True)
         self.add(self.table)
 
-        self.vbox = gtk.VBox()
+        self.editor, sub_widgets = make_widget(unit_layout.get_blueprints(unit, parent))
+        self.table.attach(self.editor, 1, 3, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL|gtk.EXPAND)
 
-        self.table.attach(self.vbox, 1, 3, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL|gtk.EXPAND)
+        #blueprints['copy_button'].connect("activate", self._on_copy_original)
+        #editor_names['copy_button'].connect("clicked", self._on_copy_original)
+        #editor_names['copy_button'].set_relief(gtk.RELIEF_NONE)
 
-        self.textviews = []
-        self.recent_textview = None
-        self.buffers = []
-        self._modified = False
-
-        copy_button = gtk.Button(_("_Copy original"))
-        copy_button.connect("activate", self._on_copy_original)
-        copy_button.connect("clicked", self._on_copy_original)
-        copy_button.set_relief(gtk.RELIEF_NONE)
-        hbox = gtk.HBox()
-        hbox.pack_start(gtk.Arrow(gtk.ARROW_DOWN, gtk.SHADOW_NONE), expand=False, fill=False)
-        hbox.pack_start(copy_button, expand=False, fill=False)
-
-        #TODO: get these state like variables from the format
-        # eg, fuzzy for PO, or approved, etc. for XLIFF
-        self.fuzzy_checkbox = gtk.CheckButton(_("F_uzzy"))
-        self.fuzzy_checkbox.connect("toggled", self._on_modified)
-        hbox.pack_start(self.fuzzy_checkbox, expand=False, fill=False)
-        self.vbox.pack_end(hbox, expand=False, fill=False)
-#        self.set_flags(gtk.NO_WINDOW)
+        #editor_names['fuzzy_checkbox'].connect("toggled", self._on_modified)
 
         self.must_advance = False
-        self._unit = None
-        self._nplurals = nplurals
+        self._modified = False
+        self._unit = unit
+        self._sub_widgets = sub_widgets
+
+#        self._place_cursor()
+#        self.recent_textview = self.textviews[0]
+#        self.recent_textview.place_cursor_onscreen()
+#        self.fuzzy_checkbox.set_active(unit.isfuzzy())
+
 
     def do_editing_done(self, *_args):
         """End editing."""
@@ -101,7 +138,8 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
 
     def do_start_editing(self, *_args):
         """Start editing."""
-        self.textviews[0].grab_focus()
+        self._sub_widgets['source-0'].grab_focus()
+        #self.textviews[0].grab_focus()
 
     def _on_focus(self, widget, _direction):
         self.recent_textview = widget
@@ -135,138 +173,6 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
             return targets[0]
         else:
             return multistring(targets)
-
-    def get_unit(self):
-        """Get the text."""
-        #XXX comments?
-        self._unit.target = markup.unescape(self.get_text())
-        self._unit.markfuzzy(self.fuzzy_checkbox.get_active())
-        return self._unit
-
-    def set_unit(self, unit):
-        """Set the text."""
-        self._unit = unit
-        if unit is None:
-            return
-
-        if unit.hasplural():
-            sources = unit.source.strings
-            targets = unit.target.strings
-            nplurals = self._nplurals
-            if len(targets) != nplurals:
-                targets = targets[:nplurals]
-                targets.extend([u""]* (nplurals-len(targets)))
-        else:
-            sources = [unit.source]
-            targets = [unit.target]
-            self._nplurals = 1
-        
-        for source in sources:
-            label = gtk.Label()
-            label.set_markup(markup.markuptext(source))
-            label.set_line_wrap(True)
-            label.set_selectable(True)
-            scrolledwindow = gtk.ScrolledWindow()
-            scrolledwindow.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-            scrolledwindow.add_with_viewport(label)
-            scrolledwindow.child.connect('size-allocate', on_size_allocate)
-            self.vbox.pack_start(scrolledwindow, expand=True, fill=True)
-
-    #        source_view = self.source_view = gtk.TextView()
-    #        source_view.connect("key-press-event", self._on_textview_key_press_event)
-    #        source_view.set_border_window_size(gtk.TEXT_WINDOW_BOTTOM, 1)
-    #        source_view.set_wrap_mode(gtk.WRAP_WORD)
-    #        buf = source_view.get_buffer()
-    #        buf.set_text(markup.escape(unit.source))
-    #        source_view.set_editable(False)
-    #        scrolledwindow = gtk.ScrolledWindow()
-    #        scrolledwindow.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-    #        scrolledwindow.add(source_view)
-    #        self.vbox.pack_start(scrolledwindow, expand=True, fill=True)
-
-        global gtkspell
-
-        if not hasattr(unit, 'buffers'):
-            unit.buffers = []
-            
-            for buf, undo_list in [undo_buffer.make_undo_buffer() for target in targets]:
-                unit.buffers.append(buf)
-                buf.undo_list = undo_list
-        
-        for target, buf in zip(targets, unit.buffers):
-            textview = gtk.TextView(buf)
-            if gtkspell:
-                try:
-                    spell = gtkspell.Spell(textview)
-                    spell.set_language(Globals.settings.language["contentlang"])
-                except:
-                    import traceback
-                    
-                    print >> sys.stderr, _("Could not initialize spell checking")
-                    traceback.print_exc(file=sys.stderr)
-                    gtkspell = None
-                    
-            textview.set_wrap_mode(gtk.WRAP_WORD)
-            textview.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)
-            textview.connect("key-press-event", self._on_textview_key_press_event)
-            textview.connect("focus-in-event", self._on_focus)
-            self.textviews.append(textview)
-
-            scrolledwindow = gtk.ScrolledWindow()
-            scrolledwindow.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-            scrolledwindow.add(textview)
-            self.vbox.pack_start(scrolledwindow, expand=True, fill=True)
-            textview.connect("move-cursor", self._on_source_scroll)
-#            textview.connect("insert-at-cursor", self._on_insert_at_cursor)
-#            textview.connect("move-viewport", self._on_source_scroll)
-#            textview.connect("set-scroll-adjustments", self._on_source_scroll)
-
-            buf = textview.get_buffer()
-            undo_buffer.execute_without_signals(buf, lambda: buf.set_text(markup.escape(target)))
-            buf.set_modified(False)
-
-            buf.connect("modified-changed", self._on_modified)
-            self.buffers.append(buf)
-        
-        # Let's show_all now while most of the important things are in place
-        # We'll show_all again later
-        self.show_all()
-        #XXX - markup
-        self._place_cursor()
-        self.recent_textview = self.textviews[0]
-        self.recent_textview.place_cursor_onscreen()
-        self.fuzzy_checkbox.set_active(unit.isfuzzy())
-
-        # comments
-        developer_comments = unit.getnotes("developer")
-        translator_comments = unit.getnotes("translator")
-
-        vbox = gtk.VBox()
-        self.table.attach(vbox, 0, 1, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL|gtk.EXPAND)
-        if developer_comments:
-            frame = gtk.Frame(_("Developer comments"))
-            vbox.pack_start(frame)
-            frame.set_border_width(2)
-            frame.set_label_align(1.0, 0.5)
-            frame.connect('size-allocate', on_size_allocate)
-            label = gtk.Label(developer_comments)
-            frame.add(label)
-            label.set_alignment(xalign=0.0, yalign=0.0)
-            label.set_line_wrap(True)
-
-        if translator_comments:
-            frame = gtk.Frame(_("Translator comments"))
-            vbox.pack_end(frame)
-            frame.set_border_width(2)
-            frame.set_label_align(1.0, 0.5)
-            frame.connect('size-allocate', on_size_allocate)
-            label = gtk.Label(translator_comments)
-            frame.add(label)
-            label.set_alignment(xalign=0.0, yalign=0.0)
-            label.set_line_wrap(True)
-
-        self.show_all()
-        self.reset_modified()
 
     def _place_cursor(self, index=0):
         """Place the cursor in a place, trying to guess a useful starting point."""

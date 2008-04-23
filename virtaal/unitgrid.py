@@ -46,6 +46,7 @@ class UnitGrid(gtk.TreeView):
     __gsignals__ = {
         'modified':(gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
     }
+    
     def __init__(self, store):
         # Let's figure out if there are plurals and ensure we have everything
         nplurals = None

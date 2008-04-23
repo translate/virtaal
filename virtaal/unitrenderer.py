@@ -28,16 +28,17 @@ import pango
 import markup
 import undo_buffer
 from unit_editor import UnitEditor
+import unit_layout
 
 
 def undo(tree_view):
     undo_buffer.undo(tree_view.get_buffer().undo_list)
 
-
 class UnitRenderer(gtk.GenericCellRenderer):
     """Cell renderer for multiline text data."""
 
     __gtype_name__ = "UnitRenderer"
+    
     __gproperties__ = {
         "unit":     (gobject.TYPE_PYOBJECT, 
                     "The unit",
@@ -60,7 +61,7 @@ class UnitRenderer(gtk.GenericCellRenderer):
         gtk.GenericCellRenderer.__init__(self)
         self.set_property('mode', gtk.CELL_RENDERER_MODE_EDITABLE)
 
-        self.unit = None
+        self.__unit = None
         self.editable = False
         self._editor = None
         self._nplurals = nplurals
@@ -68,18 +69,23 @@ class UnitRenderer(gtk.GenericCellRenderer):
         self.source_layout = None
         self.target_layout = None
 
-    def init_widget(self):
-        if self.unit.isfuzzy():
+    def get_unit(self):
+        return self.__unit
+
+    def set_unit(self, value):        
+        if value.isfuzzy():
             self.props.cell_background = "gray"
             self.props.cell_background_set = True
-#            self.style.base[gtk.
+
         else:
             self.props.cell_background_set = False
+        
+        self.__unit = value
+
+    unit = property(get_unit, set_unit, None, None)
 
     def do_set_property(self, pspec, value):
         setattr(self, pspec.name, value)
-        if pspec.name == 'unit':
-            self.init_widget()
 
     def do_get_property(self, pspec):
         return getattr(self, pspec.name)
@@ -88,17 +94,6 @@ class UnitRenderer(gtk.GenericCellRenderer):
         if self.editable:
             return True
         x_offset, y_offset, width, _height = self.do_get_size(widget, cell_area)
-#        halfwidth = width / 2 - x_offset * 2
-#        source_layout = self.get_layout(widget, self.unit.source, halfwidth)
-#        target_layout = self.get_layout(widget, self.unit.target, halfwidth)
-
-#        window.draw_layout(widget.get_pango_context(), cell_area.x, cell_area.y, layout)
-#        widget.get_style().paint_layout(window, gtk.STATE_NORMAL, True, 
-#                cell_area, widget, '', cell_area.x + x_offset, 
-#                cell_area.y + y_offset, source_layout)
-#        widget.get_style().paint_layout(window, gtk.STATE_NORMAL, True, 
-#                cell_area, widget, '', cell_area.x + x_offset + width/2, 
-#                cell_area.y + y_offset, target_layout)
         x = cell_area.x + x_offset
         y = cell_area.y + y_offset
         widget.get_style().paint_layout(window, gtk.STATE_NORMAL, True, 
@@ -106,7 +101,7 @@ class UnitRenderer(gtk.GenericCellRenderer):
         widget.get_style().paint_layout(window, gtk.STATE_NORMAL, True, 
                 cell_area, widget, '', x + width/2, y, self.target_layout)
 
-    def get_layout(self, widget, text, width):
+    def get_pango_layout(self, widget, text, width):
         '''Gets the Pango layout used in the cell in a TreeView widget.'''
         layout = pango.Layout(widget.get_pango_context())
         layout.set_wrap(pango.WRAP_WORD_CHAR)
@@ -117,49 +112,32 @@ class UnitRenderer(gtk.GenericCellRenderer):
 #        layout.set_text(text)
         layout.set_markup(markup.markuptext(text))
         return layout
+    
+    def compute_cell_height(self, widget, width):
+        self.source_layout = self.get_pango_layout(widget, self.unit.source, width / 2)
+        self.target_layout = self.get_pango_layout(widget, self.unit.target, width / 2)
+        _layout_width, source_height = self.source_layout.get_pixel_size()
+        _layout_width, target_height = self.target_layout.get_pixel_size()
+        return max(source_height, target_height)
 
     def do_get_size(self, widget, _cell_area):
         xpad = 2
         ypad = 2
 
         #TODO: store last unitid and computed dimensions
-
         width = widget.get_toplevel().get_allocation().width - 32
-        self.source_layout = self.get_layout(widget, self.unit.source, width / 2)
-        self.target_layout = self.get_layout(widget, self.unit.target, width / 2)
-        _layout_width, source_height = self.source_layout.get_pixel_size()
-        _layout_width, target_height = self.target_layout.get_pixel_size()
-
-#        unit = self.unit
-#        source = unit.source
-#        target = unit.target
-#        if len(target) < len(source) / 2:
-#            target = source
-#        layout = self.get_layout(widget, '\n'.join([source, target, unit.getcontext()]), width / 2)
-#        layout_width, height = layout.get_pixel_size()
 
         if self.editable:
-#            height = height * 2 + 34
-            if self.unit.hasplural():
-                # Don't change without testing in languages with lots of plurals
-                height = (source_height + 2) * 2 + (target_height + 4) * self._nplurals + 32
-            else:
-                height = max(source_height, target_height) * 2 + 34
-#                height = source_height + target_height + 30
+            height = unit_layout.get_blueprints(self.unit, widget).height(width)
         else:
-            height = max(source_height, target_height)
+            height = self.compute_cell_height(widget, width)
 
         # XXX - comments
-
-        # TODO: remove these:
-        x_offset = xpad
-        y_offset = ypad
-
         width  = width  + (xpad * 2)
         height = height + (ypad * 2)
 
         height = min(height, 600)
-        return x_offset, y_offset, width, height
+        return xpad, ypad, width, height
 
     def _on_editor_done(self, editor):
         self.emit("unit-edited", editor.get_data("path"), editor.get_text(), editor.must_advance, editor.get_modified())
@@ -181,14 +159,13 @@ class UnitRenderer(gtk.GenericCellRenderer):
 
     def do_start_editing(self, _event, widget, path, _bg_area, cell_area, _flags):
         """Initialize and return the editor widget."""
-        editor = UnitEditor(self._nplurals)
-        editor.set_unit(self.unit)
+        editor = UnitEditor(widget, self.unit)
         editor.set_size_request(cell_area.width, cell_area.height-2)
         editor.set_border_width(min(self.props.xpad, self.props.ypad))
         editor.set_data("path", path)
         editor.connect("editing-done", self._on_editor_done)
         editor.connect("modified", self._on_modified)
-        editor.show()
+        editor.show_all()
         widget.editor = editor
         self._editor = editor
         return editor

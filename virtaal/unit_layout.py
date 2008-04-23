@@ -58,7 +58,7 @@ class TextBox(Widget):
         self.set_text = set_text
 
 class Comment(TextBox):
-    def __init__(self, name, get_text, set_text):
+    def __init__(self, name, get_text, set_text=lambda value: None):
         super(Comment, self).__init__(name, get_text, set_text)
 
 class Option(Widget):
@@ -132,19 +132,18 @@ def build_layout(unit, nplurals):
     return Layout('layout', 
                   VList('main_list', list(chain(
                         [Comment('programmer',
-                                 partial(unit.getnotes, 'programmer'),
-                                 lambda x: None)],
+                                 partial(unit.getnotes, 'programmer'))],
                         [TextBox('source-%d' % i,
                                  partial(get_source, unit, i),
                                  partial(set_source, unit, i))
                          for i in xrange(num_sources(unit))],
+                        [Comment('context', unit.getcontext)],
                         [TextBox('target-%d' % i,
                                  partial(get_target, unit, nplurals, i),
                                  partial(set_target, unit, i)) 
                          for i in xrange(num_targets(unit, nplurals))],
                         [Comment('translator',
-                                 partial(unit.getnotes, 'translator'),
-                                 lambda x: None)],
+                                 partial(unit.getnotes, 'translator'))],
                         get_options(unit)))))
 
 def get_blueprints(unit, nplurals):

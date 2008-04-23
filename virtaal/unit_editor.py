@@ -174,9 +174,9 @@ def height_text_box(text_box, widget, width):
 def height_comment(comment, widget, width):
     # TODO: The calculations here yield incorrect results. We'll have to look at this.
     text = comment.get_text()
-    if text != "":     # If we have a non-empty string, we're only going to use the first
-        text = text[0] # character for the height calculation.
-    _w, h = make_pango_layout(comment, text, widget, width).get_pixel_size()    
+    if text == "":     # If we have an empty string, we squash the comment box
+        return 0
+    _w, h = make_pango_layout(comment, text[0], widget, width).get_pixel_size()    
     return h + v_padding(comment)
     #return height_text_box(comment, widget, 100000)
 

@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with translate; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+import weakref
 import sys
 import re
 
@@ -61,10 +62,13 @@ def make_style():
         gtk.Widget:         properties(gtk.Button(),         'focus-line-width', 'focus-padding')
     }
 
-#    used_width = widget.get_property('indicator-size') + widget.get_property('indicator-spacing') * 3 + \
-#                 2 * (widget.get_property('focus-line-width') + widget.get_property('focus-padding'));
-
 STYLE = make_style()
+
+def on_key_press_event(widget, event, *args):
+    if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
+        widget.parent.emit('key-press-event', event)
+        return True
+    return False
 
 @generic
 def spacing(layout):
@@ -196,8 +200,23 @@ def set_size(widget_and_names, layout):
         widget.set_size_request(-1, layout.__height)
     return widget, names
 
+def associate_layout_and_widget(widget_and_names, layout):
+    widget, names = widget_and_names
+    layout.__widget = widget
+    widget.__layout = layout
+    return widget_and_names
+
+def skip_enter_processing(widget_and_names, layout):
+    if type(layout) != unit_layout.Layout:
+        widget, names = widget_and_names
+        widget.connect('key-press-event', on_key_press_event)
+    return widget_and_names
+
 def specialize_make_widget(type):
-    return compose(make_widget.when_type(type), post(set_size))
+    return compose(make_widget.when_type(type), 
+                   post(associate_layout_and_widget), 
+                   post(skip_enter_processing), 
+                   post(set_size))
 
 @specialize_make_widget(unit_layout.Layout)
 def make_layout(layout):
@@ -206,6 +225,15 @@ def make_layout(layout):
     child, child_names = make_widget(layout.child)
     table.attach(child, 1, 3, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL|gtk.EXPAND)
     names.update(child_names)
+    
+    def on_key_release_event(event_box, event, *_args):
+        if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
+            print "ha ha ha"
+    
+#    event_box = gtk.EventBox()
+#    event_box.add(table)
+    table.connect('key-press-event', on_key_release_event)
+    
     return table, names
 
 def fill_list(lst, box):
@@ -214,6 +242,7 @@ def fill_list(lst, box):
         child_widget, child_names = make_widget(child)
         box.pack_start(child_widget, fill=True, expand=True)
         names.update(child_names)
+    #box.connect('key-press-event', on_key_press_event)
     return box, names
 
 @specialize_make_widget(unit_layout.VList)
@@ -240,12 +269,54 @@ def make_text_box(layout):
             traceback.print_exc(file=sys.stderr)
             gtkspell = None
 
-    text_view.get_buffer().set_text(layout.get_text())
+#    def _on_textview_key_press_event(textview, event):
+#        """Handle special keypresses in the textarea."""
+#        # End editing on <Return>
+#        if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
+#            if self._nplurals == 1 or self.textviews.index(textview) == self._nplurals - 1:
+#                self.must_advance = True
+#                self.editing_done()
+#            else:
+#                new_index = self.textviews.index(textview) + 1
+#                self.textviews[new_index].grab_focus()
+#                self._place_cursor(new_index)
+#            return True
+#        # Automatically move to the next line if \n is entered
+#        if event.keyval == gtk.keysyms.n:
+#            buf = textview.get_buffer()
+#            cursor_position = buf.get_iter_at_offset(buf.props.cursor_position)
+#            one_back = buf.get_iter_at_offset(buf.props.cursor_position-1)
+#            previous = buf.get_text(one_back, cursor_position)
+#            if previous == '\\':
+#                buf.insert_at_cursor('n\n')
+#                self.recent_textview.place_cursor_onscreen()
+#            else:
+#                # Just a normal 'n' - nothing special
+#                buf.insert_at_cursor('n')
+#            # We have to return true, otherwise another 'n' will be inserted
+#            return True
+#        return False
+
     def on_change(buf):
         layout.set_text(buf.get_text(buf.get_start_iter(), buf.get_end_iter()))
+
+    text_view.get_buffer().set_text(layout.get_text())
     text_view.get_buffer().connect('changed', on_change)
+
+    def on_text_view_key_press_event(text_view, event, *args):
+        if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
+            layout = text_view.parent.__layout
+            if layout.next != None:
+                next_text_view = layout.next.__widget.child
+                next_text_view.grab_focus()
+            else:
+                text_view.parent.emit('key-press-event', event)
+            return True
+        return False
+    
     text_view.set_wrap_mode(gtk.WRAP_WORD)
     text_view.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)
+    text_view.connect('key-press-event', on_text_view_key_press_event)
 
     scrolled_window = gtk.ScrolledWindow()
     scrolled_window.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
@@ -372,34 +443,6 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         # TODO: handle a non-match (re is supposed to be impossible not to match)
         translation_start = first_word_re.match(text).span()[1]
         buf.place_cursor(buf.get_iter_at_offset(translation_start))
-
-    def _on_textview_key_press_event(self, textview, event):
-        """Handle special keypresses in the textarea."""
-        # End editing on <Return>
-        if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
-            if self._nplurals == 1 or self.textviews.index(textview) == self._nplurals - 1:
-                self.must_advance = True
-                self.editing_done()
-            else:
-                new_index = self.textviews.index(textview) + 1
-                self.textviews[new_index].grab_focus()
-                self._place_cursor(new_index)
-            return True
-        # Automatically move to the next line if \n is entered
-        if event.keyval == gtk.keysyms.n:
-            buf = textview.get_buffer()
-            cursor_position = buf.get_iter_at_offset(buf.props.cursor_position)
-            one_back = buf.get_iter_at_offset(buf.props.cursor_position-1)
-            previous = buf.get_text(one_back, cursor_position)
-            if previous == '\\':
-                buf.insert_at_cursor('n\n')
-                self.recent_textview.place_cursor_onscreen()
-            else:
-                # Just a normal 'n' - nothing special
-                buf.insert_at_cursor('n')
-            # We have to return true, otherwise another 'n' will be inserted
-            return True
-        return False
 
     def _on_source_scroll(self, _textview, _step_size, _count, _extend_selection):
         #XXX scroll the source???

@@ -56,6 +56,7 @@ class TextBox(Widget):
         super(TextBox, self).__init__(name)
         self.get_text = get_text
         self.set_text = set_text
+        self.next     = None
 
 class Comment(TextBox):
     def __init__(self, name, get_text, set_text=lambda value: None):
@@ -128,20 +129,28 @@ def build_layout(unit, nplurals):
     @param unit: A translation unit used by the translate toolkit.
     @param nplurals: The number of plurals in the 
     """
+    
+    sources = [TextBox('source-%d' % i,
+                       partial(get_source, unit, i),
+                       partial(set_source, unit, i))
+               for i in xrange(num_sources(unit))]
+    
+    targets = [TextBox('target-%d' % i,
+                       partial(get_target, unit, nplurals, i),
+                       partial(set_target, unit, i)) 
+               for i in xrange(num_targets(unit, nplurals))]
+
+    all_text = list(chain(sources, targets))
+    for first, second in zip(all_text, all_text[1:]):
+        first.next = second
 
     return Layout('layout', 
                   VList('main_list', list(chain(
                         [Comment('programmer',
                                  partial(unit.getnotes, 'programmer'))],
-                        [TextBox('source-%d' % i,
-                                 partial(get_source, unit, i),
-                                 partial(set_source, unit, i))
-                         for i in xrange(num_sources(unit))],
+                        sources,
                         [Comment('context', unit.getcontext)],
-                        [TextBox('target-%d' % i,
-                                 partial(get_target, unit, nplurals, i),
-                                 partial(set_target, unit, i)) 
-                         for i in xrange(num_targets(unit, nplurals))],
+                        targets,
                         [Comment('translator',
                                  partial(unit.getnotes, 'translator'))],
                         get_options(unit)))))

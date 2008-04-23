@@ -53,9 +53,9 @@ class UnitRenderer(gtk.GenericCellRenderer):
     }
  
     __gsignals__ = {
-        "unit-edited":  (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
-                        (gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_BOOLEAN, gobject.TYPE_BOOLEAN)),
-        "modified":     (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
+        "editing-done":  (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
+                         (gobject.TYPE_STRING, gobject.TYPE_BOOLEAN, gobject.TYPE_BOOLEAN)),
+        "modified":      (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
     }
 
     def __init__(self, nplurals=None):
@@ -141,7 +141,7 @@ class UnitRenderer(gtk.GenericCellRenderer):
         return xpad, ypad, width, height
 
     def _on_editor_done(self, editor):
-        self.emit("unit-edited", editor.get_data("path"), editor.get_text(), editor.must_advance, editor.get_modified())
+        self.emit("editing-done", editor.get_data("path"), editor.must_advance, editor.get_modified())
         return True
 
     def _on_modified(self, editor):
@@ -158,15 +158,16 @@ class UnitRenderer(gtk.GenericCellRenderer):
 #            if away:
 #                self._modified_widget.editing_done()
 
-    def do_start_editing(self, _event, widget, path, _bg_area, cell_area, _flags):
+    def do_start_editing(self, _event, tree_view, path, _bg_area, cell_area, _flags):
         """Initialize and return the editor widget."""
-        editor = UnitEditor(widget, self.unit)
+        editor = UnitEditor(tree_view, self.unit)
         editor.set_size_request(cell_area.width, cell_area.height-2)
         editor.set_border_width(min(self.props.xpad, self.props.ypad))
         editor.set_data("path", path)
         editor.connect("editing-done", self._on_editor_done)
-        editor.connect("modified", self._on_modified)
+
+#        editor.connect("editing-done", self._on_editor_done)
+#        editor.connect("modified", self._on_modified)
         editor.show_all()
-        widget.editor = editor
         self._editor = editor
         return editor

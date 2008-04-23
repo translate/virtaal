@@ -207,9 +207,8 @@ def associate_layout_and_widget(widget_and_names, layout):
     return widget_and_names
 
 def skip_enter_processing(widget_and_names, layout):
-    if type(layout) != unit_layout.Layout:
-        widget, names = widget_and_names
-        widget.connect('key-press-event', on_key_press_event)
+    widget, names = widget_and_names
+    widget.connect('key-press-event', on_key_press_event)
     return widget_and_names
 
 def specialize_make_widget(type):
@@ -225,15 +224,7 @@ def make_layout(layout):
     child, child_names = make_widget(layout.child)
     table.attach(child, 1, 3, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL|gtk.EXPAND)
     names.update(child_names)
-    
-    def on_key_release_event(event_box, event, *_args):
-        if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
-            print "ha ha ha"
-    
-#    event_box = gtk.EventBox()
-#    event_box.add(table)
-    table.connect('key-press-event', on_key_release_event)
-    
+        
     return table, names
 
 def fill_list(lst, box):
@@ -310,6 +301,7 @@ def make_text_box(layout):
                 next_text_view = layout.next.__widget.child
                 next_text_view.grab_focus()
             else:
+                must_advance = True
                 text_view.parent.emit('key-press-event', event)
             return True
         return False
@@ -381,20 +373,27 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         self._unit = unit
         self._widget_dict = widget_dict
 
+        self.connect('key-press-event', self.on_key_press_event)
+
 #        self._place_cursor()
 #        self.recent_textview = self.textviews[0]
 #        self.recent_textview.place_cursor_onscreen()
 #        self.fuzzy_checkbox.set_active(unit.isfuzzy())
 
+    def on_key_press_event(self, widget, event, *args):
+        if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
+            self.must_advance = True
+            self.editing_done()
 
-    def do_editing_done(self, *_args):
-        """End editing."""
-        self.update_for_save()
-        self.remove_widget()
 
-    def do_remove_widget(self, *_args):
-        """Remove widget."""
-        pass
+#    def do_editing_done(self, *_args):
+#        """End editing."""
+#        self.update_for_save()
+#        self.remove_widget()
+#
+#    def do_remove_widget(self, *_args):
+#        """Remove widget."""
+#        pass
 
     def do_start_editing(self, *_args):
         """Start editing."""

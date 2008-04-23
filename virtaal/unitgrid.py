@@ -104,7 +104,7 @@ class UnitGrid(gtk.TreeView):
         self.set_direction(gtk.TEXT_DIR_LTR)
         
         renderer = UnitRenderer(self._nplurals)
-        renderer.connect("unit-edited", self.on_cell_edited, model)
+        renderer.connect("editing-done", self.on_cell_edited, model)
         renderer.connect("modified", self._on_modified)
 
         column = gtk.TreeViewColumn(None, renderer, unit=COLUMN_UNIT, editable=COLUMN_EDITABLE)
@@ -157,13 +157,13 @@ class UnitGrid(gtk.TreeView):
         if self._modified_widget:
             self._modified_widget.update_for_save(away)
 
-    def on_cell_edited(self, _cell, path_string, new_target, must_advance, modified, model):
+    def on_cell_edited(self, _cell, path_string, must_advance, modified, model):
         itr = model.get_iter_from_string(path_string)
         path = model.get_path(itr)
 
-        if modified:
-            model.set(itr, COLUMN_TARGET, markup.markuptext(new_target))
-            self.emit("modified")
+#        if modified:
+#            model.set(itr, COLUMN_TARGET, markup.markuptext(new_target))
+#            self.emit("modified")
 
         model.set(itr, COLUMN_EDITABLE, False)
         if must_advance:

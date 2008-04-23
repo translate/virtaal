@@ -13,6 +13,7 @@ except ImportError:
     py2exe = None
     build_exe = Command
 
+from virtaal.__version__ import ver as virtaal_version
 
 ##############################################################################
 # Windows building functions and classes
@@ -318,4 +319,4 @@ def standardsetup(name, version, custompackages=[], customdatafiles=[]):
 
     
 if __name__ == "__main__":
-    standardsetup("VirTaal", "0.1")
+    standardsetup("VirTaal", virtaal_version)

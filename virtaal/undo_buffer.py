@@ -25,6 +25,7 @@ import collections
 import gtk
 
 import Globals
+from partial import partial
 
 
 class BoundedQueue(collections.deque):
@@ -73,7 +74,7 @@ def on_delete_range(buffer, start_iter, end_iter, undo_list):
 
     def undo():
         start_iter = buffer.get_iter_at_offset(offset)
-        execute_without_signals(buffer, lambda: buffer.insert(start_iter, text))
+        execute_without_signals(buffer, partial(buffer.insert, start_iter, text))
         return True
     
     undo_list.push(undo)    
@@ -85,7 +86,7 @@ def on_insert_text(buffer, iter, text, length, undo_list):
     def undo():
         start_iter = buffer.get_iter_at_offset(offset)
         end_iter = buffer.get_iter_at_offset(offset + length)
-        execute_without_signals(buffer, lambda: buffer.delete(start_iter, end_iter))
+        execute_without_signals(buffer, partial(buffer.delete, start_iter, end_iter))
         return True
 
     undo_list.push(undo)

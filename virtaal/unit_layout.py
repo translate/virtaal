@@ -117,33 +117,23 @@ def build_layout(unit, nplurals):
     @param unit: A translation unit used by the translate toolkit.
     @param nplurals: The number of plurals in the 
     """
-    
-    programmer_comments = Comment('programmer', 
-                                  partial(unit.getnotes, 'programmer'),
-                                  lambda x: None)
-    
-    source_list = VList('sources',
-                        [TextBox('source-%d' % i, 
-                                 partial(get_source, unit, i),
-                                 partial(set_source, unit, i))
-                         for i in xrange(num_sources(unit))])
-        
-    target_list = VList('targets', 
-                        [TextBox('target-%d' % i, 
-                                 partial(get_target, unit, nplurals, i),
-                                 partial(set_target, unit, i)) 
-                         for i in xrange(num_targets(unit, nplurals))])
 
-    translator_comments = Comment('translator', 
-                                  partial(unit.getnotes, 'translator'),
-                                  lambda x: None)
-                                    
     return Layout('layout', 
-                  VList('main_list', [programmer_comments,
-                                      source_list,
-                                      target_list,
-                                      translator_comments]))
-    
+                  VList('main_list', [Comment('programmer', 
+                                              partial(unit.getnotes, 'programmer'),
+                                              lambda x: None)] +
+                                     [TextBox('source-%d' % i, 
+                                              partial(get_source, unit, i),
+                                              partial(set_source, unit, i))
+                                      for i in xrange(num_sources(unit))] +
+                                     [TextBox('target-%d' % i, 
+                                              partial(get_target, unit, nplurals, i),
+                                              partial(set_target, unit, i)) 
+                                      for i in xrange(num_targets(unit, nplurals))] +
+                                     [Comment('translator', 
+                                              partial(unit.getnotes, 'translator'),
+                                              lambda x: None)]))
+        
 def get_blueprints(unit, nplurals):
     """Return a layout description used to construct UnitEditors
     

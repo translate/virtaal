@@ -94,17 +94,18 @@ def height_h_list(h_list, widget, width):
 
 @height.when_type(unit_layout.TextBox)
 def height_text_box(text_box, widget, width):
-    # The calculations here yield incorrect results. We'll have to look at this.
+    # TODO: The calculations here yield incorrect results. We'll have to look at this.    
     pango_layout = widget.create_pango_layout(text_box.get_text())
     pango_layout.set_width(width * pango.SCALE)
     pango_layout.set_wrap(pango.WRAP_WORD)
+    pango_layout.set_markup(text_box.get_text())
     _w, h = pango_layout.get_pixel_size()
     
-    return h + 4
+    return h + 8 # XXX: The added 8 is bogus.
 
 @height.when_type(label_expander.LabelExpander)
 def height_label_expander(text_box, widget, width):
-    return 100
+    return 100 # XXX: Compute the height!
 
 
 @generic
@@ -120,21 +121,21 @@ def make_layout(layout):
     names.update(child_names)
     return table, names
 
-def fill_list(layout, box):
-    names = {layout.name: box}
-    for child in layout.children:
+def fill_list(lst, box):
+    names = {lst.name: box}
+    for child in lst.children:
         child_widget, child_names = make_widget(child)
-        box.pack_start(child_widget, expand=True, fill=True)
+        box.pack_start(child_widget, fill=True, expand=True)
         names.update(child_names)
     return box, names
 
 @make_widget.when_type(unit_layout.VList)
 def make_vlist(layout):
-    return fill_list(layout, gtk.VBox())
+    return fill_list(layout, gtk.VBox())#homogeneous=False))
 
 @make_widget.when_type(unit_layout.HList)
 def make_hlist(layout):
-    return fill_list(layout, gtk.HBox())
+    return fill_list(layout, gtk.HBox())#homogeneous=False))
 
 @make_widget.when_type(unit_layout.TextBox)
 def make_text_box(layout):
@@ -163,6 +164,8 @@ def make_text_box(layout):
     scrolled_window.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
     scrolled_window.add(text_view)
 
+    scrolled_window.connect('size-allocate', on_size_allocate)
+
     return scrolled_window, {layout.name: scrolled_window}
 
 #A regular expression to help us find a meaningful place to position the 
@@ -170,6 +173,8 @@ def make_text_box(layout):
 first_word_re = re.compile("(?m)(?u)^(<[^>]+>|\\\\[nt]|[\W$^\n])*(\\b|\\Z)")
 
 def on_size_allocate(widget, allocation):
+    # TODO: replace the 2 in allocation.width - 2 with a GTK function which
+    # gives the border width of widget.
     widget.child.set_size_request(allocation.width - 2, -1)
 
 

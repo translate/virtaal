@@ -165,9 +165,11 @@ class UnitGrid(gtk.TreeView):
 #            model.set(itr, COLUMN_TARGET, markup.markuptext(new_target))
 #            self.emit("modified")
 
-        model.set(itr, COLUMN_EDITABLE, False)
         if must_advance:
-            self._activate_editing_path((path[0]+1,))
+            new_path = (path[0]+1,)
+            if new_path[0] < model.iter_n_children(None):
+                model.set(itr, COLUMN_EDITABLE, False)
+                self._activate_editing_path(new_path)
         return True
 
     def on_row_activated(self, _treeview, path, view_column):

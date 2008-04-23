@@ -227,7 +227,10 @@ class UnitGrid(gtk.TreeView):
         try:
             itr = self.model.get_iter(path)
             self.model.set(itr, COLUMN_EDITABLE, True)
-            self.set_cursor(path, self.targetcolumn, start_editing=True)
+            def move_cursor():
+                self.set_cursor(path, self.targetcolumn, start_editing=True)
+            #TODO: look at using higher priority
+            gobject.idle_add(move_cursor)
         except:
             # Something could go wrong with .get_iter() if a non-existing path
             # was given - an expected result when trying to advance past the 

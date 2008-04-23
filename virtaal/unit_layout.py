@@ -19,7 +19,10 @@
 # along with translate; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from itertools import chain
+
 from partial import partial
+from Globals import _
 
 class Widget(object):
     def __init__(self, name):
@@ -57,7 +60,14 @@ class TextBox(Widget):
 class Comment(TextBox):
     def __init__(self, name, get_text, set_text):
         super(Comment, self).__init__(name, get_text, set_text)
-        
+
+class Option(Widget):
+    def __init__(self, name, label, get_option, set_option):
+        super(Option, self).__init__(name)
+        self.label = label
+        self.get_option = get_option
+        self.set_option = set_option
+
 def get_source(unit, index):
     if unit.hasplural():
         return unit.source.strings[index]
@@ -107,6 +117,9 @@ def num_targets(unit, nplurals):
     else:
         return 1
 
+def get_options(unit):
+    return [Option('option-fuzzy', _('Fuzzy'), lambda: unit.isfuzzy(), lambda value: unit.markfuzzy())]
+
 def build_layout(unit, nplurals):
     """Construct a blueprint which can be used to build editor widgets
     or to compute the height required to display editor widgets; this
@@ -117,21 +130,23 @@ def build_layout(unit, nplurals):
     """
 
     return Layout('layout', 
-                  VList('main_list', [Comment('programmer', 
-                                              partial(unit.getnotes, 'programmer'),
-                                              lambda x: None)] +
-                                     [TextBox('source-%d' % i, 
-                                              partial(get_source, unit, i),
-                                              partial(set_source, unit, i))
-                                      for i in xrange(num_sources(unit))] +
-                                     [TextBox('target-%d' % i, 
-                                              partial(get_target, unit, nplurals, i),
-                                              partial(set_target, unit, i)) 
-                                      for i in xrange(num_targets(unit, nplurals))] +
-                                     [Comment('translator', 
-                                              partial(unit.getnotes, 'translator'),
-                                              lambda x: None)]))
-        
+                  VList('main_list', list(chain(
+                        [Comment('programmer',
+                                 partial(unit.getnotes, 'programmer'),
+                                 lambda x: None)],
+                        [TextBox('source-%d' % i,
+                                 partial(get_source, unit, i),
+                                 partial(set_source, unit, i))
+                         for i in xrange(num_sources(unit))],
+                        [TextBox('target-%d' % i,
+                                 partial(get_target, unit, nplurals, i),
+                                 partial(set_target, unit, i)) 
+                         for i in xrange(num_targets(unit, nplurals))],
+                        [Comment('translator',
+                                 partial(unit.getnotes, 'translator'),
+                                 lambda x: None)],
+                        get_options(unit)))))
+
 def get_blueprints(unit, nplurals):
     """Return a layout description used to construct UnitEditors
     

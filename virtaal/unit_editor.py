@@ -40,25 +40,30 @@ from Globals import _
 import label_expander
 from partial import *
 
-def make_style():
-    text_view = gtk.TextView()
-    scrolled_window = gtk.ScrolledWindow()
+def properties_generator(widget, *prop_list):
+    for prop in prop_list:
+        try:
+            yield (prop, widget.get_property(prop))
+        except TypeError, e:
+            try:
+                yield (prop, widget.style_get_property(prop))
+            except TypeError, e:
+                yield (prop, getattr(widget, prop))
 
+def properties(*spec):
+    return dict(properties_generator(*spec))
+
+def make_style():
     return {
-        gtk.TextView: {
-            'focus-line-width': text_view.style_get_property('focus-line-width'),
-            'left-margin':      text_view.get_property('left-margin'),
-            'right-margin':     text_view.get_property('right-margin'),
-        },
-        
-        gtk.ScrolledWindow: {
-            'scrollbar-spacing': scrolled_window.style_get_property('scrollbar-spacing'),
-        },
-        
-        gtk.Container: {
-            'border-width': text_view.border_width,
-        },
+        gtk.TextView:       properties(gtk.TextView(),       'left-margin', 'right-margin'),
+        gtk.ScrolledWindow: properties(gtk.ScrolledWindow(), 'scrollbar-spacing'),        
+        gtk.Container:      properties(gtk.TextView(),       'border-width'),
+        gtk.CheckButton:    properties(gtk.CheckButton(),    'indicator-size', 'indicator-spacing'),
+        gtk.Widget:         properties(gtk.Button(),         'focus-line-width', 'focus-padding')
     }
+
+#    used_width = widget.get_property('indicator-size') + widget.get_property('indicator-spacing') * 3 + \
+#                 2 * (widget.get_property('focus-line-width') + widget.get_property('focus-padding'));
 
 STYLE = make_style()
 
@@ -89,7 +94,11 @@ def v_padding_text_box(text_box):
     # See gtkscrolledwindow.c:gtk_scrolled_window_size_request and 
     # gtktextview.c:gtk_text_view_size_request in the GTK source for the source of this
     # calculation.
-    return 2*STYLE[gtk.TextView]['focus-line-width'] + 2*STYLE[gtk.Container]['border-width']
+    return 2*STYLE[gtk.Widget]['focus-line-width'] + 2*STYLE[gtk.Container]['border-width']
+
+@v_padding.when_type(unit_layout.Option)
+def v_padding_comment(option):
+    return 2
 
 
 @generic
@@ -112,6 +121,13 @@ def h_padding_text_box(_text_box):
     # calculation.
     return STYLE[gtk.TextView]['left-margin'] + STYLE[gtk.TextView]['right-margin'] + \
            2*STYLE[gtk.Container]['border-width']
+
+@h_padding.when_type(unit_layout.Option)
+def h_padding_option(_text_box):
+    # See gtkcheckbutton.c 
+    # requisition->width += (indicator_size + indicator_spacing * 3 + 2 * (focus_width + focus_pad));
+    return STYLE[gtk.CheckButton]['indicator-size'] + STYLE[gtk.CheckButton]['indicator-spacing'] * 3 + \
+           2 * (STYLE[gtk.Widget]['focus-line-width'] + STYLE[gtk.Widget]['focus-padding']);
 
 
 def cache_height(h, layout, widget, width):
@@ -164,6 +180,12 @@ def height_comment(comment, widget, width):
     _w, h = make_pango_layout(comment, text, widget, width).get_pixel_size()    
     return h + v_padding(comment)
     #return height_text_box(comment, widget, 100000)
+
+@specialize_height(unit_layout.Option)
+def height_option(option, widget, width):
+    _w, h = make_pango_layout(option, option.label, widget, width).get_pixel_size()    
+    return h + v_padding(option)
+    
 
 @generic
 def make_widget(layout):
@@ -238,6 +260,19 @@ def make_comment(comment):
     expander = label_expander.LabelExpander(text_box, comment.get_text)
     return expander, names
 
+@specialize_make_widget(unit_layout.Option)
+def make_option(option):
+    def on_toggled(widget, *_args):
+        if widget.get_active():
+            option.set_option(True)
+        else:
+            option.set_option(False)
+    
+    check_button = gtk.CheckButton(label=option.label)
+    check_button.connect('toggled', on_toggled)
+    if option.get_option():
+        check_button.set_active(True)
+    return check_button, {'option-%s' % option.name: check_button}
 
 #A regular expression to help us find a meaningful place to position the 
 #cursor initially.

@@ -1,8 +1,6 @@
 import gtk
 import gobject
 
-from partial import partial
-
 class LabelExpander(gtk.EventBox):
     __gproperties__ = {
         "expanded": (gobject.TYPE_BOOLEAN,

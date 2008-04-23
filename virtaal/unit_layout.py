@@ -26,10 +26,7 @@ import markup
 class Widget(object):
     def __init__(self, name):
         self.name = name
-    
-    def height(self, width):
-        raise NotImplementedError()
-    
+        
 class List(Widget):
     def __init__(self, name):
         super(List, self).__init__(name)
@@ -37,21 +34,15 @@ class List(Widget):
         self.hpadding = 2
         self.vpadding = 2
         self.children = []
-    
-    def total_padding_space(self, padding):
-        return (len(self.children) + 1) * padding
-    
+        
     def add(self, widget):
         self.children.append(widget)
         
 class VList(List):
-    def height(self, width):
-        item_width = (width - self.total_padding_space(self.hpadding)) / len(self.children)
-        return 2*self.vpadding + max(child.height(item_width) for child in self.children)
+    pass
             
 class HList(List):
-    def height(self, width):
-        return sum(child.height(width - 2*self.hpadding) for child in self.children) + self.total_padding_space(self.vpadding)
+    pass
         
 class TextBox(Widget):
     def __init__(self, name, widget, get_text):
@@ -60,13 +51,6 @@ class TextBox(Widget):
         self.get_text = get_text
         self.layout = pango.Layout(widget.get_pango_context())
         self.layout.set_wrap(pango.WRAP_WORD_CHAR)
-
-    def height(self, width):
-        self.layout.set_width(width * pango.SCALE)
-        self.layout.set_markup(markup.markuptext(self.get_text()))
-        __, height = self.layout.get_pixel_size()
-        
-        return height
 
 def get_sources(unit):
     if unit.hasplural():

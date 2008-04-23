@@ -23,6 +23,7 @@ import sys
 import re
 
 import gobject
+import pango
 import gtk
 try:
     import gtkspell
@@ -36,6 +37,67 @@ import unit_layout
 from simplegeneric import generic
 import Globals
 from Globals import _
+
+
+@generic
+def v_padding(layout):
+    raise NotImplementedError()
+
+@v_padding.when_type(unit_layout.VList)
+def v_padding_v_list(_v_list):
+    return 2
+
+@v_padding.when_type(unit_layout.HList)
+def v_padding_h_list(_h_list):
+    return 2
+
+@v_padding.when_type(unit_layout.TextBox)
+def v_padding_text_box(_text_box):
+    return 2
+
+
+@generic
+def h_padding(layout):
+    raise NotImplementedError()
+
+@h_padding.when_type(unit_layout.VList)
+def h_padding_v_list(_v_list):
+    return 2
+
+@h_padding.when_type(unit_layout.HList)
+def h_padding_h_list(_h_list):
+    return 2
+
+@h_padding.when_type(unit_layout.TextBox)
+def h_padding_text_box(_text_box):
+    return 2
+
+
+@generic
+def height(layout, width):
+    raise NotImplementedError()
+
+#    def total_padding_space(self, padding):
+#        return (len(self.children) + 1) * padding
+
+@height.when_type(unit_layout.VList)
+def height_v_list(v_list, width):
+    item_width = (width - len(v_list.children) * (h_padding(v_list) + 1)) / len(v_list.children)
+    return 2*v_padding(v_list) + max(height(child, item_width) for child in v_list.children)
+
+@height.when_type(unit_layout.HList)
+def height_h_list(h_list, width):
+    return sum(height(child, (width - 2*h_padding(h_list))) for child in h_list.children) + \
+           len(h_list.children) * (v_padding(h_list) + 1)
+
+@height.when_type(unit_layout.TextBox)
+def height_text_box(text_box, width):
+    text_box.layout.set_width((width - 2*h_padding(text_box)) * pango.SCALE)
+    text_box.layout.set_markup(markup.markuptext(text_box.get_text()))
+    _w, h = text_box.layout.get_pixel_size()
+    
+    return h + 2*v_padding(text_box)
+
 
 @generic
 def make_widget(layout):

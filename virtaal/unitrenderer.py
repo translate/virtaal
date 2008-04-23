@@ -18,6 +18,7 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # Translate.  If not, see <http://www.gnu.org/licenses/>.
+from virtaal import unit_editor
 
 """Cell renderer for multiline text data."""
 
@@ -128,7 +129,7 @@ class UnitRenderer(gtk.GenericCellRenderer):
         width = widget.get_toplevel().get_allocation().width - 32
 
         if self.editable:
-            height = unit_layout.get_blueprints(self.unit, widget).height(width)
+            height = unit_editor.height(unit_layout.get_blueprints(self.unit, widget), width)
         else:
             height = self.compute_cell_height(widget, width)
 

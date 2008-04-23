@@ -18,9 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with translate; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
 import sys
 import re
+import weakref
 
 import gobject
 import pango
@@ -38,6 +38,37 @@ from simplegeneric import generic
 import Globals
 from Globals import _
 import label_expander
+from partial import *
+
+def make_style():
+    text_view = gtk.TextView()
+    scrolled_window = gtk.ScrolledWindow()
+
+    return {
+        gtk.TextView: {
+            'focus-line-width': text_view.style_get_property('focus-line-width'),
+            'left-margin':      text_view.get_property('left-margin'),
+            'right-margin':     text_view.get_property('right-margin'),
+        },
+        
+        gtk.ScrolledWindow: {
+            'scrollbar-spacing': scrolled_window.style_get_property('scrollbar-spacing'),
+        },
+        
+        gtk.Container: {
+            'border-width': text_view.border_width,
+        },
+    }
+
+STYLE = make_style()
+
+@generic
+def spacing(layout):
+    raise NotImplementedError()
+
+@spacing.when_type(unit_layout.VList)
+def spacing_v_list(_layout):
+    return 2
 
 
 @generic
@@ -46,15 +77,19 @@ def v_padding(layout):
 
 @v_padding.when_type(unit_layout.VList)
 def v_padding_v_list(_v_list):
-    return 2
+    return 0
 
 @v_padding.when_type(unit_layout.HList)
 def v_padding_h_list(_h_list):
-    return 2
+    return 0
 
 @v_padding.when_type(unit_layout.TextBox)
-def v_padding_text_box(_text_box):
-    return 2
+def v_padding_text_box(text_box):
+    # A TextBox in Virtaal is composed of a ScrolledWindow which contains a TextView.
+    # See gtkscrolledwindow.c:gtk_scrolled_window_size_request and 
+    # gtktextview.c:gtk_text_view_size_request in the GTK source for the source of this
+    # calculation.
+    return 2*STYLE[gtk.TextView]['focus-line-width'] + 2*STYLE[gtk.Container]['border-width']
 
 
 @generic
@@ -71,48 +106,79 @@ def h_padding_h_list(_h_list):
 
 @h_padding.when_type(unit_layout.TextBox)
 def h_padding_text_box(_text_box):
-    return 2
+    # A TextBox in Virtaal is composed of a ScrolledWindow which contains a TextView.
+    # See gtkscrolledwindow.c:gtk_scrolled_window_size_request and 
+    # gtktextview.c:gtk_text_view_size_request in the GTK source for the source of this
+    # calculation.
+    return STYLE[gtk.TextView]['left-margin'] + STYLE[gtk.TextView]['right-margin'] + \
+           2*STYLE[gtk.Container]['border-width']
 
 
+def cache_height(h, layout, widget, width):
+    layout.__height = h
+    return h
+        
 @generic
 def height(layout, widget, width):
     raise NotImplementedError()
 
-@height.when_type(unit_layout.Layout)
+def specialize_height(type):
+    # Create a composite decorator which first applies the decorator post(cache_height)
+    # and then the decorator height.when_type(type).
+    return compose(height.when_type(type), post(cache_height))
+
+@specialize_height(unit_layout.Layout)
 def height_layout(layout, widget, width):
     return height(layout.child, widget, width / 2)
 
-@height.when_type(unit_layout.VList)
-def height_v_list(v_list, widget, width):
+@specialize_height(unit_layout.HList)
+def height_h_list(v_list, widget, width):
     item_width = (width - len(v_list.children) * (h_padding(v_list) + 1)) / len(v_list.children)
     return 2*v_padding(v_list) + max(height(child, widget, item_width) for child in v_list.children)
 
-@height.when_type(unit_layout.HList)
-def height_h_list(h_list, widget, width):
-    return sum(height(child, widget, (width - 2*h_padding(h_list))) for child in h_list.children) + \
-           len(h_list.children) * (v_padding(h_list) + 1)
+@specialize_height(unit_layout.VList)
+def height_v_list(v_list, widget, width):
+    return sum(height(child, widget, width) for child in v_list.children) + \
+           v_padding(v_list) * (len(v_list.children) - 1)
 
-@height.when_type(unit_layout.TextBox)
-def height_text_box(text_box, widget, width):
-    # TODO: The calculations here yield incorrect results. We'll have to look at this.    
-    pango_layout = widget.create_pango_layout(text_box.get_text())
-    pango_layout.set_width(width * pango.SCALE)
+def make_pango_layout(layout, text, widget, width):
+    pango_layout = pango.Layout(widget.get_pango_context())
+    pango_layout.set_width((width - h_padding(layout)) * pango.SCALE)
     pango_layout.set_wrap(pango.WRAP_WORD)
-    pango_layout.set_markup(text_box.get_text())
-    _w, h = pango_layout.get_pixel_size()
+    pango_layout.set_text(text)
+    return pango_layout
+
+@specialize_height(unit_layout.TextBox)
+def height_text_box(text_box, widget, width):
+    # TODO: Look at GTK C Source to get precise height calculations
+    _w, h = make_pango_layout(text_box, text_box.get_text(), widget, width).get_pixel_size()
     
-    return h + 8 # XXX: The added 8 is bogus.
+    return h + v_padding(text_box)
 
-@height.when_type(label_expander.LabelExpander)
-def height_label_expander(text_box, widget, width):
-    return 100 # XXX: Compute the height!
-
+@specialize_height(unit_layout.Comment)
+def height_comment(comment, widget, width):
+    # TODO: The calculations here yield incorrect results. We'll have to look at this.
+    text = comment.get_text()
+    if text != "":     # If we have a non-empty string, we're only going to use the first
+        text = text[0] # character for the height calculation.
+    _w, h = make_pango_layout(comment, text, widget, width).get_pixel_size()    
+    return h + v_padding(comment)
+    #return height_text_box(comment, widget, 100000)
 
 @generic
 def make_widget(layout):
     raise NotImplementedError()
 
-@make_widget.when_type(unit_layout.Layout)
+def set_size(widget_and_names, layout):
+    widget, names = widget_and_names
+    if hasattr(layout, '__height'):
+        widget.set_size_request(-1, layout.__height)
+    return widget, names
+
+def specialize_make_widget(type):
+    return compose(make_widget.when_type(type), post(set_size))
+
+@specialize_make_widget(unit_layout.Layout)
 def make_layout(layout):
     table = gtk.Table(rows=1, columns=4, homogeneous=True)
     names = {layout.name: table}
@@ -129,15 +195,15 @@ def fill_list(lst, box):
         names.update(child_names)
     return box, names
 
-@make_widget.when_type(unit_layout.VList)
+@specialize_make_widget(unit_layout.VList)
 def make_vlist(layout):
-    return fill_list(layout, gtk.VBox())#homogeneous=False))
+    return fill_list(layout, gtk.VBox(v_padding(layout)))
 
-@make_widget.when_type(unit_layout.HList)
+@specialize_make_widget(unit_layout.HList)
 def make_hlist(layout):
-    return fill_list(layout, gtk.HBox())#homogeneous=False))
+    return fill_list(layout, gtk.HBox())
 
-@make_widget.when_type(unit_layout.TextBox)
+@specialize_make_widget(unit_layout.TextBox)
 def make_text_box(layout):
     text_view = gtk.TextView()
 
@@ -164,9 +230,14 @@ def make_text_box(layout):
     scrolled_window.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
     scrolled_window.add(text_view)
 
-    scrolled_window.connect('size-allocate', on_size_allocate)
-
     return scrolled_window, {layout.name: scrolled_window}
+
+@specialize_make_widget(unit_layout.Comment)
+def make_comment(comment):
+    text_box, names = make_text_box(comment)
+    expander = label_expander.LabelExpander(text_box, comment.get_text)
+    return expander, names
+
 
 #A regular expression to help us find a meaningful place to position the 
 #cursor initially.

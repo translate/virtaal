@@ -34,8 +34,6 @@ class List(Widget):
     def __init__(self, name, children=None):
         super(List, self).__init__(name)
         
-        self.hpadding = 2
-        self.vpadding = 2
         if children != None:
             self.children = children
         else:

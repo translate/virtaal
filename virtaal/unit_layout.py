@@ -19,13 +19,16 @@
 # along with translate; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import pango
-
-import markup
+from partial import partial
 
 class Widget(object):
     def __init__(self, name):
         self.name = name
+        
+class Layout(Widget):
+    def __init__(self, name, child):
+        super(Layout, self).__init__(name)
+        self.child = child
         
 class List(Widget):
     def __init__(self, name):
@@ -45,67 +48,97 @@ class HList(List):
     pass
         
 class TextBox(Widget):
-    def __init__(self, name, widget, get_text):
+    def __init__(self, name, get_text, set_text):
         super(TextBox, self).__init__(name)
-        
         self.get_text = get_text
-        self.layout = pango.Layout(widget.get_pango_context())
-        self.layout.set_wrap(pango.WRAP_WORD_CHAR)
+        self.set_text = set_text
 
-def get_sources(unit):
+class Comment(Widget):
+    def __init__(self, name):
+        super(Comment, self).__init__(name)
+        
+def get_source(unit, index):
     if unit.hasplural():
-        return unit.source.strings
+        return unit.source.strings[index]
+    elif index == 0:
+        return unit.source
     else:
-        return [unit.source]
+        raise IndexError()
+
+def get_target(unit, nplurals, index):
+    if unit.hasplural():
+        if nplurals != len(unit.target.strings):        
+            targets = nplurals * [u""]
+            targets[:len(unit.target.strings)] = unit.target.strings
+            unit.target = targets
+
+        return unit.target.strings[index]
+    elif index == 0:
+        return unit.target
+    else:
+        raise IndexError()    
     
-def get_targets(unit, nplurals):
+def set(unit, attr, index, value):
     if unit.hasplural():
-        targets = nplurals * [u""]
-        targets[:len(unit.target.strings)] = unit.target.strings
-        return targets
+        str_list = list(getattr(unit, attr).strings)
+        str_list[index] = value
+        setattr(unit, attr, str_list)
+    elif index == 0:
+        setattr(unit, attr, value)
     else:
-        return [unit.target]
+        raise IndexError()
 
-def get_source_and_target(unit, nplurals):
-    return get_sources(unit), get_targets(unit, nplurals)
+def set_source(unit, index, value):
+    set(unit, 'source', index, value)
+    
+def set_target(unit, index, value):
+    set(unit, 'target', index, value)
 
-def build_layout(widget, unit, nplurals):
+def num_sources(unit):
+    if unit.hasplural():
+        return len(unit.source.strings)
+    else:
+        return 1
+    
+def num_targets(unit, nplurals):
+    if unit.hasplural():
+        return nplurals
+    else:
+        return 1
+
+def build_layout(unit, nplurals):
     """Construct a blueprint which can be used to build editor widgets
     or to compute the height required to display editor widgets; this
     latter operation is required by the TreeView.
     
-    @param widget: Any valid GTK widget. This abstraction leak is required 
-                   because the computation of Pango layout sizes requires
-                   a proper widget to be passed to the Pango routines.
     @param unit: A translation unit used by the translate toolkit.
     @param nplurals: The number of plurals in the 
-    """
-    
+    """    
     source_list = VList('sources')
-    for i in xrange(len(get_sources(unit))):
-        source_list.children.append(TextBox('source-%d' % i, widget, lambda: unicode(get_sources(unit)[i])))
+    for i in xrange(num_sources(unit)):
+        source_list.children.append(TextBox('source-%d' % i, 
+                                            partial(get_source, unit, i),
+                                            partial(set_source, unit, i)))
         
     target_list = VList('targets')
-    for i in xrange(len(get_targets(unit, nplurals))):
-        target_list.children.append(TextBox('target-%d' % i, widget, lambda: unicode(get_targets(unit, nplurals)[i])))
+    for i in xrange(num_targets(unit, nplurals)):
+        target_list.children.append(TextBox('target-%d' % i,
+                                            partial(get_target, unit, nplurals, i),
+                                            partial(set_target, unit, i)))
                                     
     main_list = VList('main_list')
     main_list.children.append(source_list)
     main_list.children.append(target_list)
     
-    return main_list
+    return Layout('main_layout', main_list)
 
-def get_blueprints(unit, widget):
+def get_blueprints(unit, nplurals):
     """Return a layout description used to construct UnitEditors
     
     @param unit: A translation unit (from the translate toolkit)
-    @param widget: A valid GTK widget. This should always be a 
-                   gtk.TreeView.
     """
     if not hasattr(unit, '__blueprints'):
-        # TODO: We should not obtain the number of plurals from the TreeView
-        # widget. At some point, nplurals won't be stored in the TreeView anymore
-        unit.__blueprints = build_layout(widget, unit, widget._nplurals)
+        unit.__blueprints = build_layout(unit, nplurals)
     return unit.__blueprints
 
 

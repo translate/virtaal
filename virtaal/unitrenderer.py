@@ -129,7 +129,7 @@ class UnitRenderer(gtk.GenericCellRenderer):
         width = widget.get_toplevel().get_allocation().width - 32
 
         if self.editable:
-            height = unit_editor.height(unit_layout.get_blueprints(self.unit, widget), width)
+            height = unit_editor.height(unit_layout.get_blueprints(self.unit, widget._nplurals), widget, width)
         else:
             height = self.compute_cell_height(widget, width)
 

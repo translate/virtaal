@@ -37,6 +37,7 @@ import unit_layout
 from simplegeneric import generic
 import Globals
 from Globals import _
+import label_expander
 
 
 @generic
@@ -74,34 +75,50 @@ def h_padding_text_box(_text_box):
 
 
 @generic
-def height(layout, width):
+def height(layout, widget, width):
     raise NotImplementedError()
 
-#    def total_padding_space(self, padding):
-#        return (len(self.children) + 1) * padding
+@height.when_type(unit_layout.Layout)
+def height_layout(layout, widget, width):
+    return height(layout.child, widget, width / 2)
 
 @height.when_type(unit_layout.VList)
-def height_v_list(v_list, width):
+def height_v_list(v_list, widget, width):
     item_width = (width - len(v_list.children) * (h_padding(v_list) + 1)) / len(v_list.children)
-    return 2*v_padding(v_list) + max(height(child, item_width) for child in v_list.children)
+    return 2*v_padding(v_list) + max(height(child, widget, item_width) for child in v_list.children)
 
 @height.when_type(unit_layout.HList)
-def height_h_list(h_list, width):
-    return sum(height(child, (width - 2*h_padding(h_list))) for child in h_list.children) + \
+def height_h_list(h_list, widget, width):
+    return sum(height(child, widget, (width - 2*h_padding(h_list))) for child in h_list.children) + \
            len(h_list.children) * (v_padding(h_list) + 1)
 
 @height.when_type(unit_layout.TextBox)
-def height_text_box(text_box, width):
-    text_box.layout.set_width((width - 2*h_padding(text_box)) * pango.SCALE)
-    text_box.layout.set_markup(markup.markuptext(text_box.get_text()))
-    _w, h = text_box.layout.get_pixel_size()
+def height_text_box(text_box, widget, width):
+    # The calculations here yield incorrect results. We'll have to look at this.
+    pango_layout = widget.create_pango_layout(text_box.get_text())
+    pango_layout.set_width(width * pango.SCALE)
+    pango_layout.set_wrap(pango.WRAP_WORD)
+    _w, h = pango_layout.get_pixel_size()
     
-    return h + 2*v_padding(text_box)
+    return h + 4
+
+@height.when_type(label_expander.LabelExpander)
+def height_label_expander(text_box, widget, width):
+    return 100
 
 
 @generic
 def make_widget(layout):
     raise NotImplementedError()
+
+@make_widget.when_type(unit_layout.Layout)
+def make_layout(layout):
+    table = gtk.Table(rows=1, columns=4, homogeneous=True)
+    names = {layout.name: table}
+    child, child_names = make_widget(layout.child)
+    table.attach(child, 1, 3, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL|gtk.EXPAND)
+    names.update(child_names)
+    return table, names
 
 def fill_list(layout, box):
     names = {layout.name: box}
@@ -122,7 +139,6 @@ def make_hlist(layout):
 @make_widget.when_type(unit_layout.TextBox)
 def make_text_box(layout):
     text_view = gtk.TextView()
-    text_view.get_buffer().set_text(layout.get_text())
 
     global gtkspell
     if gtkspell:
@@ -136,6 +152,10 @@ def make_text_box(layout):
             traceback.print_exc(file=sys.stderr)
             gtkspell = None
 
+    text_view.get_buffer().set_text(layout.get_text())
+    def on_change(buf):
+        layout.set_text(buf.get_text(buf.get_start_iter(), buf.get_end_iter()))
+    text_view.get_buffer().connect('changed', on_change)
     text_view.set_wrap_mode(gtk.WRAP_WORD)
     text_view.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)
 
@@ -166,11 +186,8 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         gtk.EventBox.__init__(self)
 #        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color(0, 0, 50000))
 
-        self.table = gtk.Table(rows=1, columns=4, homogeneous=True)
-        self.add(self.table)
-
-        self.editor, sub_widgets = make_widget(unit_layout.get_blueprints(unit, parent))
-        self.table.attach(self.editor, 1, 3, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL|gtk.EXPAND)
+        self.layout, widget_dict = make_widget(unit_layout.get_blueprints(unit, parent))
+        self.add(self.layout)
 
         #blueprints['copy_button'].connect("activate", self._on_copy_original)
         #editor_names['copy_button'].connect("clicked", self._on_copy_original)
@@ -181,7 +198,7 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         self.must_advance = False
         self._modified = False
         self._unit = unit
-        self._sub_widgets = sub_widgets
+        self._widget_dict = widget_dict
 
 #        self._place_cursor()
 #        self.recent_textview = self.textviews[0]
@@ -200,7 +217,7 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
 
     def do_start_editing(self, *_args):
         """Start editing."""
-        self._sub_widgets['source-0'].grab_focus()
+        self._widget_dict['source-0'].grab_focus()
         #self.textviews[0].grab_focus()
 
     def _on_focus(self, widget, _direction):

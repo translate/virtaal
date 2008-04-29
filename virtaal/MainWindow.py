@@ -39,6 +39,7 @@ import Globals
 from EntryDialog import EntryDialog
 import unitgrid
 import unitrenderer
+from about import About
 
 _ = lambda x: x
 
@@ -78,6 +79,7 @@ class VirTaal:
                 "on_open_activate" : self._on_file_open,
                 "on_save_activate" : self._on_file_save,
                 "on_saveas_activate" : self._on_file_saveas,
+                "on_about_activate" : self._on_help_about,
                 }
         self.gui.signal_autoconnect(dic)
 
@@ -282,6 +284,9 @@ class VirTaal:
             Globals.settings.write()
         chooser.destroy()
             
+    def _on_help_about(self, widget=None):
+        About(self.main_window)
+
     def run(self):
         if len(sys.argv) > 1:
             self.load_file(sys.argv[1])

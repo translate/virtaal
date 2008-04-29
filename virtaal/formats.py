@@ -39,7 +39,12 @@ supported_types = [
 ]
 
 def file_open_chooser(self, destroyCallback=None):
-    chooser = gtk.FileChooserDialog((_('Choose a translation file')), None, gtk.FILE_CHOOSER_ACTION_OPEN, (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+    chooser = gtk.FileChooserDialog(
+            _('Choose a translation file'),
+            None,
+            gtk.FILE_CHOOSER_ACTION_OPEN,
+            (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK)
+    )
     chooser.set_current_folder(Globals.settings.general["lastdir"])
 
     chooser.set_default_response(gtk.RESPONSE_OK)
@@ -71,44 +76,3 @@ def file_open_chooser(self, destroyCallback=None):
         chooser.connect("destroy", destroyCallback)
 
     return chooser
-    
-    while True:
-        response = chooser.run()
-        if response == gtk.RESPONSE_OK:
-            filename = chooser.get_filename()
-            Globals.settings.general["lastdir"] = path.dirname(filename)
-            Globals.settings.write()
-            if self.open_file(filename, chooser):
-                break
-        elif response == gtk.RESPONSE_CANCEL or response == gtk.RESPONSE_DELETE_EVENT:
-            break
-
-    chooser.destroy()
-
-    def open_file(self, filename, dialog):
-        if self.modified:
-            dialog = gtk.MessageDialog(dialog,
-                            gtk.DIALOG_MODAL,
-                            gtk.MESSAGE_QUESTION,
-                            gtk.BUTTONS_YES_NO,
-                            _("The current file was modified, but is not yet saved. Are you sure you want to open a new file without saving the previous one?"))
-            dialog.set_default_response(gtk.RESPONSE_NO)
-            response = dialog.run()
-            dialog.destroy()
-            if response in [gtk.RESPONSE_NO, gtk.RESPONSE_DELETE_EVENT]:
-                return True
-
-        if filename == self.filename:
-            dialog = gtk.MessageDialog(dialog,
-                            gtk.DIALOG_MODAL,
-                            gtk.MESSAGE_QUESTION,
-                            gtk.BUTTONS_YES_NO,
-                            _("You selected the currently open file for opening. Do you want to reload the file?"))
-            dialog.set_default_response(gtk.RESPONSE_NO)
-            response = dialog.run()
-            dialog.destroy()
-            if response in [gtk.RESPONSE_NO, gtk.RESPONSE_DELETE_EVENT]:
-                return True
-
-        return self.load_file(filename, dialog=dialog)
-

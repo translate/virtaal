@@ -40,21 +40,9 @@ from EntryDialog import EntryDialog
 import unitgrid
 import unitrenderer
 from about import About
+import formats
 
 _ = lambda x: x
-
-supported_types = [
-    (_("Gettext PO files"), ("*.po", "*.pot"), ("text/x-gettext-translation", "text/x-gettext-translation-template", "application/x-gettext", 
-"application/x-gettext-translation")),
-    (_("XLIFF files"), ("*.xlf", "*.xliff"), ("application/x-xliff", "application/x-xliff+xml")),
-    (_("TBX files"), ("*.tbx", ), ("application/x-tbx", )),
-    (_("TMX files"), ("*.tmx", ), ("application/x-tmx", )),
-    (_("Wordfast TM files"), None, ("text/x-wordfast", )),
-    #(_("Qt Linguist files"), ("*.ts", ), ("application/x-linguist", )),
-    #(_("Qt .qm files"), ("*.qm", ), ("application/x-qm", )),
-    (_("Gettext MO files"), ("*.mo", "*.gmo"), ("application/x-gettext-translation", )),
-]
-
 
 def on_undo(_accel_group, acceleratable, _keyval, _modifier):
     unitrenderer.undo(acceleratable.focus_widget)
@@ -111,37 +99,8 @@ class VirTaal:
         return False
 
     def _on_file_open(self, _widget, destroyCallback=None):
-        chooser = gtk.FileChooserDialog((_('Choose a translation file')), None, gtk.FILE_CHOOSER_ACTION_OPEN, (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK))
-        chooser.set_current_folder(Globals.settings.general["lastdir"])
-
-        chooser.set_default_response(gtk.RESPONSE_OK)
+        chooser = formats.file_open_chooser(destroyCallback)
         chooser.set_transient_for(self.main_window)
-        
-        all_supported_filter = gtk.FileFilter()
-        all_supported_filter.set_name(_("All Supported Files"))
-        chooser.add_filter(all_supported_filter)
-        for name, wildcards, mimetypes in supported_types:
-            new_filter = gtk.FileFilter()
-            new_filter.set_name(name)
-            if wildcards:
-                for wildcard in wildcards:
-                    new_filter.add_pattern(wildcard)
-                    all_supported_filter.add_pattern(wildcard)
-                    for extension in factory.decompressclass.keys():
-                        new_filter.add_pattern("%s.%s" % (wildcard, extension))
-                        all_supported_filter.add_pattern("%s.%s" % (wildcard, extension))
-            if mimetypes:
-                for mimetype in mimetypes:
-                    new_filter.add_mime_type(mimetype)
-                    all_supported_filter.add_mime_type(mimetype)
-            chooser.add_filter(new_filter)
-        all_filter = gtk.FileFilter()
-        all_filter.set_name(_("All Files"))
-        all_filter.add_pattern("*")
-        chooser.add_filter(all_filter)
-        
-        if destroyCallback:
-            chooser.connect("destroy", destroyCallback)
         
         while True:
             response = chooser.run()

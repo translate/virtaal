@@ -22,7 +22,7 @@
             <child>
               <widget class="GtkMenuItem" id="menuitem1">
                 <property name="visible">True</property>
-                <property name="label">_File</property>
+                <property name="label" translatable="yes">_File</property>
                 <property name="use_underline">True</property>
                 <child>
                   <widget class="GtkMenu" id="menu1">
@@ -85,7 +85,7 @@
             <child>
               <widget class="GtkMenuItem" id="menuitem2">
                 <property name="visible">True</property>
-                <property name="label">_Edit</property>
+                <property name="label" translatable="yes">_Edit</property>
                 <property name="use_underline">True</property>
                 <child>
                   <widget class="GtkMenu" id="menu2">
@@ -129,14 +129,14 @@
             <child>
               <widget class="GtkMenuItem" id="menuitem3">
                 <property name="visible">True</property>
-                <property name="label">_View</property>
+                <property name="label" translatable="yes">_View</property>
                 <property name="use_underline">True</property>
               </widget>
             </child>
             <child>
               <widget class="GtkMenuItem" id="menuitem4">
                 <property name="visible">True</property>
-                <property name="label">_Help</property>
+                <property name="label" translatable="yes">_Help</property>
                 <property name="use_underline">True</property>
                 <child>
                   <widget class="GtkMenu" id="menu3">

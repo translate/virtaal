@@ -66,7 +66,7 @@ class InnoScript:
 ; will be overwritten the next time py2exe is run!
 
 [Setup]
-AppName=%(name)
+AppName=%(name)s
 AppVerName=%(name)s %(version)s
 DefaultDirName={pf}\%(name)s
 DefaultGroupName=%(name)s
@@ -74,8 +74,8 @@ OutputBaseFilename=%(name)s-%(version)s-setup
 ChangesEnvironment=yes
 
 [Files]''' % {'name': self.name, 'version': self.version}
-        for path in self.exe_files + self.other_files:
-            print >> ofi, r'Source: \"%s\"; DestDir: "{app}\%s"; Flags: ignoreversion' % (path, os.path.dirname(path))
+        for fpath in self.exe_files + self.other_files:
+            print >> ofi, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (fpath, os.path.dirname(fpath))
         print >> ofi, r'''
 [Icons]
 Name: "{group}\Uninstall %(name)s"; Filename: "{uninstallexe}"''' % {'name': self.name}
@@ -83,14 +83,14 @@ Name: "{group}\Uninstall %(name)s"; Filename: "{uninstallexe}"''' % {'name': sel
         if self.install_scripts:
             print >> ofi, r"[Run]"
             
-            for path in self.install_scripts:
-                print >> ofi, r'Filename: "{app}\%s"; WorkingDir: "{app}"; Parameters: "-install"' % path
+            for fpath in self.install_scripts:
+                print >> ofi, r'Filename: "{app}\%s"; WorkingDir: "{app}"; Parameters: "-install"' % fpath
                 
             print >> ofi
             print >> ofi, r"[UninstallRun]"
             
-            for path in self.install_scripts:
-                print >> ofi, r'Filename: "{app}\%s"; WorkingDir: "{app}"; Parameters: "-remove"' % path
+            for fpath in self.install_scripts:
+                print >> ofi, r'Filename: "{app}\%s"; WorkingDir: "{app}"; Parameters: "-remove"' % fpath
                 
         print >> ofi
         ofi.close()
@@ -188,11 +188,12 @@ class build_installer(build_exe_map):
         # create the Installer, using the files py2exe has created.
         exe_files = self.windows_exe_files + self.console_exe_files
         
+        install_scripts = self.install_script
         if isinstance(install_scripts, (str, unicode)):
             install_scripts = [install_scripts]
             
         script = InnoScript(self.distribution.metadata.name, self.lib_dir, self.dist_dir, exe_files, self.lib_files,
-                            version=self.distribution.metadata.version, install_scripts=self.install_scripts)
+                            version=self.distribution.metadata.version, install_scripts=install_scripts)
         print "*** creating the inno setup script***"
         script.create()
         print "*** compiling the inno setup script***"

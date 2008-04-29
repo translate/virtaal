@@ -32,6 +32,8 @@ from EntryDialog import EntryDialog
 from unitrenderer import UnitRenderer
 import markup
 
+_ = lambda x: x
+
 (
     COLUMN_SOURCE, 
     COLUMN_TARGET,
@@ -103,6 +105,9 @@ class UnitGrid(gtk.TreeView):
         self.set_headers_visible(False)
         self.set_direction(gtk.TEXT_DIR_LTR)
         
+        if len(model) == 0:
+            raise ValueError(_("The file did not contain anything to translate."))
+            
         renderer = UnitRenderer(self._nplurals)
         renderer.connect("editing-done", self.on_cell_edited, model)
         renderer.connect("modified", self._on_modified)

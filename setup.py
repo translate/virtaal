@@ -72,6 +72,7 @@ DefaultDirName={pf}\%(name)s
 DefaultGroupName=%(name)s
 OutputBaseFilename=%(name)s-%(version)s-setup
 ChangesEnvironment=yes
+SetupIconFile=icons\virtaal.ico
 
 [Files]''' % {'name': self.name, 'version': self.version}
         for fpath in self.exe_files + self.other_files:
@@ -313,7 +314,7 @@ def standardsetup(name, version, custompackages=[], customdatafiles=[]):
             data_files=[('virtaal', ['virtaal/data/virtaal.glade']),
                         ('mime/packages', ['virtaal/data/virtaal-mimetype.xml']),
                         ('applications', ['virtaal/data/virtaal.desktop']),
-                        ('icons', ['virtaal.png'])],
+                        ('icons', ['virtaal.png', 'virtaal.ico'])],
             scripts=['run_virtaal.py'])
 
     

@@ -146,7 +146,6 @@ class VirTaal:
         """Do the actual loading of the file into the GUI"""
         try:
             self.translation_store = factory.getobject(filename)
-            self.filename = filename
             self.unit_grid = unitgrid.UnitGrid(self.translation_store)
             self.unit_grid.connect("modified", self._on_modified)
             self.sw.remove(self.sw.get_child())
@@ -154,10 +153,6 @@ class VirTaal:
             self.main_window.connect("configure-event", self.unit_grid.on_configure_event)
             self.main_window.show_all()
             self.unit_grid.grab_focus()
-            self._set_saveable(False)
-            self.main_window.set_title(path.basename(filename))
-            menuitem = self.gui.get_widget("saveas_menuitem")
-            menuitem.set_sensitive(True)
         except Exception, e:
             dialog = gtk.MessageDialog(dialog or self.main_window,
                             gtk.DIALOG_MODAL,
@@ -167,6 +162,13 @@ class VirTaal:
             dialog.run()
             dialog.destroy()
             return False
+
+        # Now we can change state (filename, save states, etc.)
+        self.filename = filename
+        self.main_window.set_title(path.basename(filename))
+        self._set_saveable(False)
+        menuitem = self.gui.get_widget("saveas_menuitem")
+        menuitem.set_sensitive(True)
         return True
 
     def _set_saveable(self, value):

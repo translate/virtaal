@@ -228,19 +228,19 @@ class VirTaal:
                 email = Globals.settings.translator["email"]
                 team = Globals.settings.translator["team"]
                 if not name:
-                    name = EntryDialog("Please enter your name")
+                    name = EntryDialog(_("Please enter your name"))
                     if name is None:
                         # User cancelled
                         return
                     Globals.settings.translator["name"] = name
                 if not email:
-                    email = EntryDialog("Please enter your e-mail address")
+                    email = EntryDialog(_("Please enter your e-mail address"))
                     if email is None:
                         # User cancelled
                         return
                     Globals.settings.translator["email"] = email
                 if not team:
-                    team = EntryDialog("Please enter your team's information")
+                    team = EntryDialog(_("Please enter your team's information"))
                     if team is None:
                         # User cancelled
                         return

@@ -78,8 +78,6 @@ ChangesEnvironment=yes
             print >> ofi, r'Source: \"%s\"; DestDir: "{app}\%s"; Flags: ignoreversion' % (path, os.path.dirname(path))
         print >> ofi, r'''
 [Icons]
-Name: "{group}\Documentation"; Filename: "{app}\doc\index.html"
-Name: "{group}\Translate Toolkit Command Prompt"; Filename: "cmd.exe"
 Name: "{group}\Uninstall %(name)s"; Filename: "{uninstallexe}"''' % {'name': self.name}
 
         if self.install_scripts:

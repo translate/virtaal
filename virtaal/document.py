@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# 
+#
 # Copyright 2007-2008 Zuza Software Foundation
-# 
+#
 # This file is part of virtaal.
 #
 # virtaal is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # translate is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -20,6 +20,8 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 from translate.storage.poheader import poheader
+from translate.storage import statsdb, factory
+from translate.filters import checks
 from translate.lang import factory as langfactory
 
 import Globals
@@ -43,8 +45,8 @@ def get_document(obj):
 class Document(object):
     """Contains user state about a translate store which stores information like
     GUI-toolkit-independent state (for example bookmarks) and index remappings
-    which are needed to """
-    
+    which are needed to"""
+
     def compute_nplurals(self):
         nplurals = None
         if isinstance(self.store, poheader):
@@ -70,12 +72,13 @@ class Document(object):
                         Globals.settings.language["plural"] = plural
                     self.store.updateheaderplural(nplurals, plural)
         return int(nplurals or 0)
-    
-    def __init__(self, store):
-        self.store = store
+
+    def __init__(self, filename):
+        self.store = factory.getobject(filename)
+        self.stats = statsdb.StatsCache().filestats(filename, checks.UnitChecker(), self.store)
         self._lang = None
         self.nplurals = self.compute_nplurals()
-        self.unit_index_remap = [i for i, unit in enumerate(self.store.units) if unit.istranslatable()]
-        self.mode = modes.DefaultMode(self.store.units)
+        self.mode = None
 
-    
+    def set_mode(self, name):
+        self.mode = modes.MODES[name](self.stats)

@@ -146,15 +146,7 @@ class VirTaal:
     def load_file(self, filename, dialog=None):
         """Do the actual loading of the file into the GUI"""
         try:
-            self.translation_store = factory.getobject(filename)
-            self.unit_grid = unitgrid.UnitGrid(self.translation_store)
-            self.unit_grid.connect("modified", self._on_modified)
-            self.sw.remove(self.sw.get_child())
-            self.sw.add(self.unit_grid)
-            self.main_window.connect("configure-event", self.unit_grid.on_configure_event)
-            self.main_window.show_all()
-            self.unit_grid.grab_focus()
-            self.document = document.Document(factory.getobject(filename))
+            self.document = document.Document(filename)
         except Exception, e:
             dialog = gtk.MessageDialog(dialog or self.main_window,
                             gtk.DIALOG_MODAL,

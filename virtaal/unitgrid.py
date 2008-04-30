@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# 
+#
 # Copyright 2007-2008 Zuza Software Foundation
-# 
+#
 # This file is part of virtaal.
 #
 # virtaal is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # translate is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -32,17 +32,18 @@ class UnitGrid(gtk.TreeView):
     __gsignals__ = {
         'modified':(gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
     }
-    
+
     document = property(lambda self: self._owner.document)
-    
+
     def __init__(self, owner):
-        gtk.TreeView.__init__(self, gtk.ListStore(gobject.TYPE_STRING, 
-                                                  gobject.TYPE_PYOBJECT, 
+        gtk.TreeView.__init__(self, gtk.ListStore(gobject.TYPE_STRING,
+                                                  gobject.TYPE_PYOBJECT,
                                                   gobject.TYPE_BOOLEAN))
 
         self._owner = owner
 
         # The default mode should give us all the units we need
+        self.document.set_mode('Default')
         for unit in (self.document.store.units[i] for i in self.document.mode):
             itr = self.get_model().append()
 
@@ -54,10 +55,10 @@ class UnitGrid(gtk.TreeView):
 
         self.set_headers_visible(False)
         self.set_direction(gtk.TEXT_DIR_LTR)
-        
+
         if len(model) == 0:
             raise ValueError(_("The file did not contain anything to translate."))
-            
+
         renderer = UnitRenderer(self)
         renderer.connect("editing-done", self.on_cell_edited, self.get_model())
         renderer.connect("modified", self._on_modified)
@@ -100,7 +101,7 @@ class UnitGrid(gtk.TreeView):
     def _on_modified(self, widget):
         self.emit("modified")
         return True
-    
+
     def on_cell_edited(self, _cell, path_string, must_advance, modified, model):
         itr = model.get_iter_from_string(path_string)
         path = model.get_path(itr)
@@ -120,22 +121,22 @@ class UnitGrid(gtk.TreeView):
         if view_column != self.targetcolumn:
             self.set_cursor(path, self.targetcolumn, start_editing=True)
         return True
-        
+
     def on_cursor_changed(self, treeview):
         path, _column = self.get_cursor()
-        
+
         # We defer the scrolling until GTK has finished all its current drawing
         # tasks, hence the gobject.idle_add. If we don't wait, then the TreeView
         # draws the editor widget in the wrong position. Presumably GTK issues
         # a redraw event for the editor widget at a given x-y position and then also
         # issues a TreeView scroll; thus, the editor widget gets drawn at the wrong
-        # position.  
+        # position.
         def do_scroll():
             self.scroll_to_cell(path, self.targetcolumn, True, 0.5, 0.0)
             return False
 
         gobject.idle_add(do_scroll)
-        
+
         model = treeview.get_model()
         itr = model.get_iter(path)
         if not model.get_value(itr, COLUMN_EDITABLE):
@@ -174,17 +175,17 @@ class UnitGrid(gtk.TreeView):
             self.set_cursor(path, self.targetcolumn, start_editing=True)
         except:
             # Something could go wrong with .get_iter() if a non-existing path
-            # was given - an expected result when trying to advance past the 
+            # was given - an expected result when trying to advance past the
             # last row, for example
-            # TODO: offer to save file, or give indication of some kind that 
+            # TODO: offer to save file, or give indication of some kind that
             # the current run in finished            test_code = ""
             import traceback
             import sys
-            
+
             print "Exception in user code:"
             print '-'*60
             traceback.print_exc(file=sys.stdout)
-            print '-'*60                    
+            print '-'*60
 
         return False
 

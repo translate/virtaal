@@ -21,9 +21,7 @@
 
 """These are some tips that are displayed to the user."""
 
-import gettext
-
-_ = gettext.gettext
+from Globals import _
 
 tips = [
 _("At the end of a translation, simply press <Enter> to continue with the next one."),

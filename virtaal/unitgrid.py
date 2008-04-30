@@ -34,7 +34,6 @@ class UnitGrid(gtk.TreeView):
     }
     
     def __init__(self, document):
-        # Let's figure out if there are plurals and ensure we have everything
         gtk.TreeView.__init__(self, gtk.ListStore(gobject.TYPE_STRING, 
                                                   gobject.TYPE_PYOBJECT, 
                                                   gobject.TYPE_BOOLEAN))
@@ -75,12 +74,6 @@ class UnitGrid(gtk.TreeView):
         self.connect("move-cursor", self.on_move_cursor)
         self.connect("button-press-event", self.on_button_press)
 
-        self._modified_widget = None
-
-        # This is an ugly hack to ensure that the activated path is actually 
-        # drawn as editable. If it happens too soon (the widget is not yet 
-        # realised) then it might end up not being in editing mode once
-        # visible.
         gobject.idle_add(self._activate_editing_path, (0,))
 
 
@@ -92,7 +85,7 @@ class UnitGrid(gtk.TreeView):
         # it can be drawn correctly. This has to be delayed (we used idle_add),
         # since calling it immediately after columns_autosize() does not work.
         def reset_cursor():
-            self.update_for_save()
+            #self.update_for_save()
             self.set_cursor(path, column, start_editing=True)
             return False
 
@@ -102,14 +95,9 @@ class UnitGrid(gtk.TreeView):
         return False
 
     def _on_modified(self, widget):
-        self._modified_widget = widget
         self.emit("modified")
         return True
     
-    def update_for_save(self, away=False):
-        if self._modified_widget:
-            self._modified_widget.update_for_save(away)
-
     def on_cell_edited(self, _cell, path_string, must_advance, modified, model):
         itr = model.get_iter_from_string(path_string)
         path = model.get_path(itr)
@@ -172,7 +160,7 @@ class UnitGrid(gtk.TreeView):
             itr = self.get_model().get_iter(old_path)
             self.get_model().set(itr, COLUMN_EDITABLE, False)
             self._activate_editing_path(path)
-            self.update_for_save(away=True)
+            #self.update_for_save(away=True)
         return True
 
     def _activate_editing_path(self, path):

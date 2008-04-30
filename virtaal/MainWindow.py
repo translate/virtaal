@@ -36,14 +36,13 @@ from translate.storage import factory
 from translate.storage import poheader
 
 import Globals
+from Globals import _
 from EntryDialog import EntryDialog
 import unitgrid
 import unitrenderer
 from about import About
 import formats
 import document
-
-_ = lambda x: x
 
 def on_undo(_accel_group, acceleratable, _keyval, _modifier):
     unitrenderer.undo(acceleratable.focus_widget)
@@ -225,15 +224,15 @@ class VirTaal:
                 header_updates["X_Generator"] = Globals.x_generator
                 if name or email:
                     header_updates["Last_Translator"] = u"%s <%s>" % (name, email)
-                    self.translation_store.updatecontributor(name, email)
+                    self.document.store.updatecontributor(name, email)
                 if team:
                     header_updates["Language-Team"] = team
-                self.translation_store.updateheader(add=True, **header_updates)
+                self.document.store.updateheader(add=True, **header_updates)
                 
-            self.translation_store.save()
+            self.document.store.save()
         else:
             self.filename = filename
-            self.translation_store.savefile(filename)
+            self.document.store.savefile(filename)
         self._set_saveable(False)
         self.main_window.set_title(path.basename(self.filename))
 

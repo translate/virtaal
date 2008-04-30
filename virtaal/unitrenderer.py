@@ -66,7 +66,6 @@ class UnitRenderer(gtk.GenericCellRenderer):
         self.__unit = None
         self.editable = False
         self._editor = None
-        self._modified_widget = None
         self.source_layout = None
         self.target_layout = None
 
@@ -143,20 +142,6 @@ class UnitRenderer(gtk.GenericCellRenderer):
     def _on_editor_done(self, editor):
         self.emit("editing-done", editor.get_data("path"), editor.must_advance, editor.get_modified())
         return True
-
-    def _on_modified(self, editor):
-        self._modified_widget = editor
-        self.emit("modified")
-        return True
-
-    def update_for_save(self, _away=False):
-        """Prepare all data structures for saving.
-
-        away indicates that this is because we want to move to another cell."""
-        if self._modified_widget:
-            self._modified_widget.update_for_save()
-#            if away:
-#                self._modified_widget.editing_done()
 
     def do_start_editing(self, _event, tree_view, path, _bg_area, cell_area, _flags):
         """Initialize and return the editor widget."""

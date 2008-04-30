@@ -57,8 +57,8 @@ class VirTaal:
     def __init__(self):
             
         #Set the Glade file
-        self.gladefile = path.join(path.dirname(__file__), "data", "virtaal.glade")  
-        self.gui = gtk.glade.XML(self.gladefile) 
+        self.gladefile = path.join(path.dirname(__file__), "data", "virtaal.glade")
+        self.gui = gtk.glade.XML(self.gladefile)
         
         #Create our dictionay and connect it
         dic = { 
@@ -74,7 +74,7 @@ class VirTaal:
         self.sw = self.gui.get_widget("scrolledwindow1")
         edit_menu = self.gui.get_widget("menuitem2")
         edit_menu.set_sensitive(False)
-        self.main_window = self.gui.get_widget("MainWindow")        
+        self.main_window = self.gui.get_widget("MainWindow")
         self.main_window.add_accel_group(TEXT_VIEW_ACCELS)
         self.main_window.show()
 
@@ -110,7 +110,8 @@ class VirTaal:
                 Globals.settings.write()
                 if self.open_file(filename, chooser):
                     break
-            elif response == gtk.RESPONSE_CANCEL or response == gtk.RESPONSE_DELETE_EVENT:
+            elif response == gtk.RESPONSE_CANCEL or \
+                    response == gtk.RESPONSE_DELETE_EVENT:
                 break
 
         chooser.destroy()
@@ -229,7 +230,12 @@ class VirTaal:
     def _on_file_saveas(self, widget=None):
         buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_SAVE, gtk.RESPONSE_OK)
         # TODO: use stock text for Save as..."
-        chooser = gtk.FileChooserDialog(_("Save as..."), self.main_window, gtk.FILE_CHOOSER_ACTION_SAVE, buttons)
+        chooser = gtk.FileChooserDialog(
+                _("Save as..."),
+                self.main_window,
+                gtk.FILE_CHOOSER_ACTION_SAVE,
+                buttons
+        )
         chooser.set_do_overwrite_confirmation(True)
         directory, filename = path.split(self.filename)
         chooser.set_current_name(filename)

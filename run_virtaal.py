@@ -20,10 +20,18 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import os
+import sys
+
 from virtaal.MainWindow import VirTaal
-#import virtaal.MainWindow 
+
+def module_path():
+    """This will get us the program's directory, even if we are frozen using py2exe"""
+    if hasattr(sys, "frozen"):
+        return os.path.dirname(unicode(sys.executable, sys.getfilesystemencoding()))
+    return os.path.dirname(unicode(__file__, sys.getfilesystemencoding( )))
 
 if __name__ == "__main__":
-    hwg = VirTaal()
+    hwg = VirTaal(module_path())
     hwg.run()
 

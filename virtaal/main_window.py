@@ -32,6 +32,7 @@ import gtk
 from gtk import gdk
 from gtk import glade
 
+import os
 import os.path as path
 import time
 

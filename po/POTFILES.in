@@ -1,8 +1,12 @@
 [encoding: UTF-8]
-virtaal/MainWindow.py
+data/virtaal.desktop.in
+data/virtaal.glade
+data/virtaal-mimetype.xml.in
+virtaal/about.py
+virtaal/document.py
+virtaal/formats.py
+virtaal/main_window.py
 virtaal/tips.py
-virtaal/unitrenderer.py
-virtaal/data/virtaal.glade
-virtaal/data/virtaal.desktop.in
-virtaal/data/virtaal-mimetype.xml.in
-
+virtaal/unit_editor.py
+virtaal/unit_grid.py
+virtaal/unit_layout.py

@@ -167,7 +167,7 @@ class VirTaal:
 
         # Now we can change state (filename, save states, etc.)
         self.filename = filename
-        self.unit_grid = unitgrid.UnitGrid(self.document)
+        self.unit_grid = unitgrid.UnitGrid(self)
         self.unit_grid.connect("modified", self._on_modified)
         self.sw.remove(self.sw.get_child())
         self.sw.add(self.unit_grid)

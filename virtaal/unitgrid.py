@@ -33,14 +33,17 @@ class UnitGrid(gtk.TreeView):
         'modified':(gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
     }
     
-    def __init__(self, document):
+    document = property(lambda self: self._owner.document)
+    
+    def __init__(self, owner):
         gtk.TreeView.__init__(self, gtk.ListStore(gobject.TYPE_STRING, 
                                                   gobject.TYPE_PYOBJECT, 
                                                   gobject.TYPE_BOOLEAN))
 
-        self.document = document
+        self._owner = owner
 
-        for unit in self.document.get_translatable_units():                
+        # The default mode should give us all the units we need
+        for unit in (self.document.store.units[i] for i in self.document.mode):
             itr = self.get_model().append()
 
             self.get_model().set (itr,

@@ -24,6 +24,7 @@ from translate.lang import factory as langfactory
 
 import Globals
 from EntryDialog import EntryDialog
+import modes
 
 def get_document(obj):
     """See whether obj contains an attribute called 'document'.
@@ -75,11 +76,6 @@ class Document(object):
         self._lang = None
         self.nplurals = self.compute_nplurals()
         self.unit_index_remap = [i for i, unit in enumerate(self.store.units) if unit.istranslatable()]
+        self.mode = modes.DefaultMode(self.store.units)
 
-    def get_translatable_units(self):
-        def yield_units():
-            for i in self.unit_index_remap:
-                yield self.store.units[i]
-        return yield_units()
-        
     

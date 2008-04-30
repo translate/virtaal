@@ -18,7 +18,7 @@ from virtaal.formats import supported_types
 
 def if_none(var, new_val):
     if var == None:
-        return val
+        return new_val
     else:
         return var
 

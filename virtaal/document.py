@@ -27,7 +27,7 @@ from translate.filters import checks
 from translate.lang import factory as langfactory
 
 import globals
-from Globals import _
+from globals import _
 from widgets.entry_dialog import EntryDialog
 import modes
 

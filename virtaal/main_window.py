@@ -92,6 +92,9 @@ class VirTaal:
         self.main_window.add_accel_group(self.accel_group)
 
         gtk.accel_map_add_entry("<VirTaal>/Edit/Undo", ord('z'), gdk.CONTROL_MASK)
+        gtk.accel_map_add_entry("<VirTaal>/Navigation/Up", gtk.accelerator_parse("Up")[0], gdk.CONTROL_MASK)
+        gtk.accel_map_add_entry("<VirTaal>/Navigation/Down", gtk.accelerator_parse("Down")[0], gdk.CONTROL_MASK)
+
         self.accel_group.connect_by_path("<VirTaal>/Edit/Undo", self._on_undo)
 
     def _on_undo(self, accel_group, acceleratable, keyval, modifier):

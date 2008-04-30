@@ -19,6 +19,7 @@
 # along with translate; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 from bisect import bisect_left
+from virtaal.support.sorted_set import SortedSet
 
 import gobject
 
@@ -30,11 +31,15 @@ class UnionSetEnumerator(gobject.GObject):
     def __init__(self, *sets):
         gobject.GObject.__init__(self)
 
-        self.sets = sets
-        self.set = reduce(lambda big_set, set: big_set.union(set), sets[1:], sets[0])
-        for set in self.sets:
-            set.connect('before-add', self._before_add)
-            set.connect('before-remove', self._before_remove)
+        if len(sets) > 0:
+            self.sets = sets
+            self.set = reduce(lambda big_set, set: big_set.union(set), sets[1:], sets[0])
+            for set in self.sets:
+                set.connect('before-add', self._before_add)
+                set.connect('before-remove', self._before_remove)
+        else:
+            self.sets = [SortedSet([])]
+            self.set = SortedSet([])
 
         self._current_index = -1
 
@@ -57,13 +62,16 @@ class UnionSetEnumerator(gobject.GObject):
                 self._current_index -= 1
 
     def __iter__(self):
-        return self
+        def iterator():
+            for item in self.set.data:
+                yield item
+
+        return iterator()
 
     def next(self):
-        if self._current_index < len(self.set.data):
-            val = self.current()
+        if self._current_index < len(self.set.data) - 1:
             self._current_index += 1
-            return val
+            return self.current()
         else:
             raise StopIteration()
 
@@ -71,10 +79,9 @@ class UnionSetEnumerator(gobject.GObject):
         return self.set.data[self._current_index]
 
     def prev(self):
-        if self._current_index >= 0:
-            val = self.current()
+        if self._current_index > 0:
             self._current_index -= 1
-            return val
+            return self.current()
         else:
             raise StopIteration()
 

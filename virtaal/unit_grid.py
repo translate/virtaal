@@ -44,6 +44,11 @@ class UnitGrid(gtk.TreeView):
 
         # The default mode should give us all the units we need
         self.document.set_mode('Default')
+
+        self.display_index = len(self.document.store.units) * [-1]
+        for i, unit_index in enumerate(self.document.mode):
+            self.display_index[unit_index] = i
+
         for unit in (self.document.store.units[i] for i in self.document.mode):
             itr = self.get_model().append()
 
@@ -78,8 +83,38 @@ class UnitGrid(gtk.TreeView):
         self.connect("move-cursor", self.on_move_cursor)
         self.connect("button-press-event", self.on_button_press)
 
-        gobject.idle_add(self._activate_editing_path, (0,))
+        #self.accel_group = gtk.AccelGroup()
+        #self.add_accel_group(self.accel_group)
 
+        self._owner.accel_group.connect_by_path("<VirTaal>/Navigation/Up", self._on_move_up)
+        self._owner.accel_group.connect_by_path("<VirTaal>/Navigation/Down", self._on_move_down)
+
+        gobject.idle_add(self._activate_editing_path, (0,))
+        self.document.mode.next()
+
+    def _on_move_up(self, accel_group, acceleratable, keyval, modifier):
+        try:
+            #if new_path[0] < model.iter_n_children(None):
+            current_path = self.display_index[self.document.mode.current()]
+            new_path = self.display_index[self.document.mode.prev()]
+            self.get_model().set(self.get_model().get_iter(current_path), COLUMN_EDITABLE, False)
+            self._activate_editing_path((new_path,))
+        except StopIteration:
+            pass
+
+        return True
+
+    def _on_move_down(self, accel_group, acceleratable, keyval, modifier):
+        try:
+            #if new_path[0] < model.iter_n_children(None):
+            current_path = self.display_index[self.document.mode.current()]
+            new_path = self.display_index[self.document.mode.next()]
+            self.get_model().set(self.get_model().get_iter(current_path), COLUMN_EDITABLE, False)
+            self._activate_editing_path((new_path,))
+        except StopIteration:
+            pass
+
+        return True
 
     def on_configure_event(self, _event, *_user_args):
         path, column = self.get_cursor()

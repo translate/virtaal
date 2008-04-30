@@ -60,7 +60,7 @@ class UnitGrid(gtk.TreeView):
         self.set_headers_visible(False)
         self.set_direction(gtk.TEXT_DIR_LTR)
 
-        if len(model) == 0:
+        if len(self.get_model()) == 0:
             raise ValueError(_("The file did not contain anything to translate."))
 
         renderer = UnitRenderer(self)
@@ -179,7 +179,7 @@ class UnitGrid(gtk.TreeView):
 
     def on_cell_edited(self, _cell, path_string, must_advance, modified, model):
         if must_advance:
-            return self._move(self.document.mode.current, self.document.mode.next)
+            return self._keyboard_move(1)
         return True
 
     def on_cursor_changed(self, treeview):

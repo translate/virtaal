@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# 
+#
 # Copyright 2008 Zuza Software Foundation
-# 
+#
 # This file is part of virtaal.
 #
 # virtaal is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # translate is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -22,12 +22,12 @@
 import gtk
 
 from translate.storage import factory
-import Globals
+import globals
 
 _ = lambda x: x
 
 supported_types = [
-    (_("Gettext PO files"), ("*.po", "*.pot"), ("text/x-gettext-translation", "text/x-gettext-translation-template", "application/x-gettext", 
+    (_("Gettext PO files"), ("*.po", "*.pot"), ("text/x-gettext-translation", "text/x-gettext-translation-template", "application/x-gettext",
 "application/x-gettext-translation")),
     (_("XLIFF files"), ("*.xlf", "*.xliff"), ("application/x-xliff", "application/x-xliff+xml")),
     (_("TBX files"), ("*.tbx", ), ("application/x-tbx", )),
@@ -45,10 +45,10 @@ def file_open_chooser(self, destroyCallback=None):
             gtk.FILE_CHOOSER_ACTION_OPEN,
             (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK)
     )
-    chooser.set_current_folder(Globals.settings.general["lastdir"])
+    chooser.set_current_folder(globals.settings.general["lastdir"])
 
     chooser.set_default_response(gtk.RESPONSE_OK)
-    
+
     all_supported_filter = gtk.FileFilter()
     all_supported_filter.set_name(_("All Supported Files"))
     chooser.add_filter(all_supported_filter)
@@ -71,7 +71,7 @@ def file_open_chooser(self, destroyCallback=None):
     all_filter.set_name(_("All Files"))
     all_filter.add_pattern("*")
     chooser.add_filter(all_filter)
-    
+
     if destroyCallback:
         chooser.connect("destroy", destroyCallback)
 

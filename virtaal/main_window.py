@@ -27,7 +27,9 @@ try:
 except:
     pass
 
-import gtk.glade
+import gtk
+from gtk import gdk
+from gtk import glade
 
 import os.path as path
 import time
@@ -53,6 +55,7 @@ TEXT_VIEW_ACCELS.connect_group(key, modifier, gtk.ACCEL_VISIBLE, on_undo)
 
 
 class VirTaal:
+    """The entry point class for VirTaal"""
 
     def __init__(self, basepath=None):
         #Set the Glade file
@@ -74,7 +77,7 @@ class VirTaal:
         edit_menu = self.gui.get_widget("menuitem2")
         edit_menu.set_sensitive(False)
         self.main_window = self.gui.get_widget("MainWindow")
-        self.main_window.add_accel_group(TEXT_VIEW_ACCELS)
+        self._setup_key_bindings()
         self.main_window.show()
 
         self.modified = False
@@ -83,6 +86,16 @@ class VirTaal:
         self.translation_store = None
         self.unit_grid = None
         self.document = None
+
+    def _setup_key_bindings(self):
+        self.accel_group = gtk.AccelGroup()
+        self.main_window.add_accel_group(self.accel_group)
+
+        gtk.accel_map_add_entry("<VirTaal>/Edit/Undo", ord('z'), gdk.CONTROL_MASK)
+        self.accel_group.connect_by_path("<VirTaal>/Edit/Undo", self._on_undo)
+
+    def _on_undo(self, accel_group, acceleratable, keyval, modifier):
+        unit_renderer.undo(acceleratable.focus_widget)
 
     def _on_mainwindow_delete(self, _widget, _event):
         if self.modified:

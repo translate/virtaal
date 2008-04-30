@@ -19,7 +19,7 @@
 # along with translate; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from Globals import _
+from globals import _
 from support.set_enumerator import UnionSetEnumerator
 from virtaal.support.sorted_set import SortedSet
 

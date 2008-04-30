@@ -24,7 +24,7 @@ pygtk.require('2.0')
 import gtk
 import gobject
 
-from unitrenderer import UnitRenderer
+from unit_renderer import UnitRenderer
 
 COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE = 0, 1, 2
 

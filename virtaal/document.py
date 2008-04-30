@@ -24,8 +24,8 @@ from translate.storage import statsdb, factory
 from translate.filters import checks
 from translate.lang import factory as langfactory
 
-import Globals
-from EntryDialog import EntryDialog
+import globals
+from widgets.entry_dialog import EntryDialog
 import modes
 
 def get_document(obj):
@@ -55,7 +55,7 @@ class Document(object):
                 # XXX: BUG: Got files from GNOME with plurals but without this header
                 nplurals, plural = self.store.getheaderplural()
                 if nplurals is None:
-                    langcode = Globals.settings.language["contentlang"]
+                    langcode = globals.settings.language["contentlang"]
                     self._lang = langfactory.getlanguage(langcode)
                     nplurals = self._lang.nplurals
                     plural = self._lang.pluralequation
@@ -68,8 +68,8 @@ class Document(object):
                         except ValueError, _e:
                             continue
                         plural = EntryDialog("Please enter the plural equation to use")
-                        Globals.settings.language["nplurals"] = nplurals
-                        Globals.settings.language["plural"] = plural
+                        globals.settings.language["nplurals"] = nplurals
+                        globals.settings.language["plural"] = plural
                     self.store.updateheaderplural(nplurals, plural)
         return int(nplurals or 0)
 

@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# 
+#
 # Copyright 2007-2008 Zuza Software Foundation
-# 
+#
 # This file is part of virtaal.
 #
 # virtaal is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # translate is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -35,17 +35,17 @@ import time
 from translate.storage import factory
 from translate.storage import poheader
 
-import Globals
-from Globals import _
-from EntryDialog import EntryDialog
-import unitgrid
-import unitrenderer
+import globals
+from globals import _
+from widgets.entry_dialog import EntryDialog
+import unit_grid
+import unit_renderer
 from about import About
 import formats
 import document
 
 def on_undo(_accel_group, acceleratable, _keyval, _modifier):
-    unitrenderer.undo(acceleratable.focus_widget)
+    unit_renderer.undo(acceleratable.focus_widget)
 
 TEXT_VIEW_ACCELS = gtk.AccelGroup()
 key, modifier = gtk.accelerator_parse("<Control>z")
@@ -55,13 +55,12 @@ TEXT_VIEW_ACCELS.connect_group(key, modifier, gtk.ACCEL_VISIBLE, on_undo)
 class VirTaal:
 
     def __init__(self, basepath=None):
-            
         #Set the Glade file
         self.gladefile = path.join(basepath or path.dirname(__file__), "data", "virtaal.glade")
         self.gui = gtk.glade.XML(self.gladefile)
-        
+
         #Create our dictionay and connect it
-        dic = { 
+        dic = {
                 "on_mainwindow_destroy" : gtk.main_quit,
                 "on_mainwindow_delete" : self._on_mainwindow_delete,
                 "on_open_activate" : self._on_file_open,
@@ -80,7 +79,7 @@ class VirTaal:
 
         self.modified = False
         self.filename = None
-        
+
         self.translation_store = None
         self.unit_grid = None
 
@@ -101,13 +100,13 @@ class VirTaal:
     def _on_file_open(self, _widget, destroyCallback=None):
         chooser = formats.file_open_chooser(destroyCallback)
         chooser.set_transient_for(self.main_window)
-        
+
         while True:
             response = chooser.run()
             if response == gtk.RESPONSE_OK:
                 filename = chooser.get_filename()
-                Globals.settings.general["lastdir"] = path.dirname(filename)
-                Globals.settings.write()
+                globals.settings.general["lastdir"] = path.dirname(filename)
+                globals.settings.write()
                 if self.open_file(filename, chooser):
                     break
             elif response == gtk.RESPONSE_CANCEL or \
@@ -159,7 +158,7 @@ class VirTaal:
 
         # Now we can change state (filename, save states, etc.)
         self.filename = filename
-        self.unit_grid = unitgrid.UnitGrid(self)
+        self.unit_grid = unit_grid.UnitGrid(self)
         self.unit_grid.connect("modified", self._on_modified)
         self.sw.remove(self.sw.get_child())
         self.sw.add(self.unit_grid)
@@ -188,39 +187,39 @@ class VirTaal:
             self.unit_grid.update_for_save()
         if filename is None or filename == self.filename:
             if isinstance(self.translation_store, poheader.poheader):
-                name = Globals.settings.translator["name"]
-                email = Globals.settings.translator["email"]
-                team = Globals.settings.translator["team"]
+                name = globals.settings.translator["name"]
+                email = globals.settings.translator["email"]
+                team = globals.settings.translator["team"]
                 if not name:
                     name = EntryDialog(_("Please enter your name"))
                     if name is None:
                         # User cancelled
                         return
-                    Globals.settings.translator["name"] = name
+                    globals.settings.translator["name"] = name
                 if not email:
                     email = EntryDialog(_("Please enter your e-mail address"))
                     if email is None:
                         # User cancelled
                         return
-                    Globals.settings.translator["email"] = email
+                    globals.settings.translator["email"] = email
                 if not team:
                     team = EntryDialog(_("Please enter your team's information"))
                     if team is None:
                         # User cancelled
                         return
-                    Globals.settings.translator["team"] = team
-                Globals.settings.write()
+                    globals.settings.translator["team"] = team
+                globals.settings.write()
                 po_revision_date = time.strftime("%F %H:%M%z")
                 header_updates = {}
                 header_updates["PO_Revision_Date"] = po_revision_date
-                header_updates["X_Generator"] = Globals.x_generator
+                header_updates["X_Generator"] = globals.x_generator
                 if name or email:
                     header_updates["Last_Translator"] = u"%s <%s>" % (name, email)
                     self.document.store.updatecontributor(name, email)
                 if team:
                     header_updates["Language-Team"] = team
                 self.document.store.updateheader(add=True, **header_updates)
-                
+
             self.document.store.save()
         else:
             self.filename = filename
@@ -247,10 +246,10 @@ class VirTaal:
         if response == gtk.RESPONSE_OK:
             filename = chooser.get_filename()
             self._on_file_save(widget, filename)
-            Globals.settings.general["lastdir"] = path.dirname(filename)
-            Globals.settings.write()
+            globals.settings.general["lastdir"] = path.dirname(filename)
+            globals.settings.write()
         chooser.destroy()
-            
+
     def _on_help_about(self, widget=None):
         About(self.main_window)
 

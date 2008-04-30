@@ -22,7 +22,7 @@
 from itertools import chain
 
 from support.partial import partial
-from Globals import _
+from globals import _
 
 class Widget(object):
     def __init__(self, name):

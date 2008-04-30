@@ -35,8 +35,8 @@ from translate.misc.multistring import multistring
 import markup
 import unit_layout
 from support.simplegeneric import generic
-import Globals
-from Globals import _
+import globals
+from globals import _
 import widgets.label_expander as label_expander
 from support.partial import post, compose
 
@@ -261,7 +261,7 @@ def make_text_box(layout):
     if gtkspell:
         try:
             spell = gtkspell.Spell(text_view)
-            spell.set_language(Globals.settings.language["contentlang"])
+            spell.set_language(globals.settings.language["contentlang"])
         except:
             import traceback
 

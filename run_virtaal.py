@@ -23,7 +23,7 @@
 import os
 import sys
 
-from virtaal.MainWindow import VirTaal
+from virtaal.main_window import VirTaal
 
 def module_path():
     """This will get us the program's directory, even if we are frozen using py2exe"""

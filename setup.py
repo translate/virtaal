@@ -14,6 +14,7 @@ except ImportError:
     build_exe = Command
 
 from virtaal.__version__ import ver as virtaal_version
+from virtaal.formats import supported_types
 
 ##############################################################################
 # Windows building functions and classes
@@ -72,6 +73,7 @@ DefaultDirName={pf}\%(name)s
 DefaultGroupName=%(name)s
 OutputBaseFilename=%(name)s-%(version)s-setup
 ChangesEnvironment=yes
+ChangesAssociations=yes
 SetupIconFile=icons\virtaal.ico
 
 [Files]''' % {'name': self.name, 'version': self.version}
@@ -94,6 +96,34 @@ Name: "{group}\Uninstall %(name)s"; Filename: "{uninstallexe}"''' % {'name': sel
             for fpath in self.install_scripts:
                 print >> ofi, r'Filename: "{app}\%s"; WorkingDir: "{app}"; Parameters: "-remove"' % fpath
                 
+        # File associations. This depends on "ChangesAssociations=yes" above.
+        print >> ofi, r'''
+[Registry]'''
+        # Things should look something like this:
+        r'''
+;File extension:
+Root: HKCR; Subkey: ".po"; ValueType: string; ValueName: ""; ValueData: "virtaal_po"; Flags: uninsdeletevalue
+;Description of the file type
+Root: HKCR; Subkey: "virtaal_po"; ValueType: string; ValueName: ""; ValueData: "Gettext PO"; Flags: uninsdeletekey
+;Icon to use in Explorer
+Root: HKCR; Subkey: "virtaal_po\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icons\virtaal.ico"
+;The command to open the file
+Root: HKCR; Subkey: "virtaal_po\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\run_virtaal.exe"" ""%1"""
+'''
+        for (description, extentions, mimetypes) in supported_types:
+            # We skip those types where we depend on mime types, not extentions
+            if not extentions:
+                continue
+            # Form a key from the first extention for internal only
+            key = extentions[0].replace('*.', '')
+            # Associate each extention with the file type
+            for extention in extentions:
+                extention = extention.replace('*', '')
+                print >> ofi, r'Root: HKCR; Subkey: "%(extention)s"; ValueType: string; ValueName: ""; ValueData: "virtaal_%(key)s"; Flags: uninsdeletevalue' % {'extention': extention, 'key': key}
+            print >> ofi, r'''Root: HKCR; Subkey: "virtaal_%(key)s"; ValueType: string; ValueName: ""; ValueData: "%(description)s"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "virtaal_%(key)s\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icons\virtaal.ico"
+Root: HKCR; Subkey: "virtaal_%(key)s\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\run_virtaal.exe"" ""%%1"""''' % {'key': key, 'description': description}
+
         print >> ofi
         ofi.close()
 

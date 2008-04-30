@@ -142,6 +142,24 @@
                   <widget class="GtkMenu" id="menu3">
                     <property name="visible">True</property>
                     <child>
+                      <widget class="GtkImageMenuItem" id="menuitem_localization_guide">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Localization Guide</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_localization_guide_activate"/>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="menu-item-image2">
+                            <property name="stock">gtk-help</property>
+                          </widget>
+                        </child>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkSeparatorMenuItem" id="separator1">
+                        <property name="visible">True</property>
+                      </widget>
+                    </child>
+                    <child>
                       <widget class="GtkImageMenuItem" id="imagemenuitem10">
                         <property name="visible">True</property>
                         <property name="label">gtk-about</property>

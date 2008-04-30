@@ -104,6 +104,7 @@ class VirTaal:
                 "on_save_activate" : self._on_file_save,
                 "on_saveas_activate" : self._on_file_saveas,
                 "on_about_activate" : self._on_help_about,
+                "on_localization_guide_activate" : self._on_localization_guide,
                 }
         self.gui.signal_autoconnect(dic)
 
@@ -318,6 +319,12 @@ class VirTaal:
 
     def _on_help_about(self, widget=None):
         About(self.main_window)
+
+    def _on_localization_guide(self, widget=None):
+        # Should be more redundent
+        # If the guide is installed and no internet then open local
+        # If Internet then go live, if no Internet or guide then disable
+        os.system("xdg-open http://translate.sourceforge.net/wiki/guide/start")
 
     def run(self):
         if len(sys.argv) > 1:

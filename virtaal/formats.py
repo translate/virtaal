@@ -23,8 +23,7 @@ import gtk
 
 from translate.storage import factory
 import globals
-
-_ = lambda x: x
+from globals import _
 
 supported_types = [
     (_("Gettext PO files"), ("*.po", "*.pot"), ("text/x-gettext-translation", "text/x-gettext-translation-template", "application/x-gettext",

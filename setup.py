@@ -14,7 +14,6 @@ except ImportError:
     build_exe = Command
 
 from virtaal.__version__ import ver as virtaal_version
-from virtaal.formats import supported_types
 
 def if_none(var, new_val):
     if var == None:
@@ -120,6 +119,7 @@ Root: HKCR; Subkey: "virtaal_po\DefaultIcon"; ValueType: string; ValueName: ""; 
 ;The command to open the file
 Root: HKCR; Subkey: "virtaal_po\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\run_virtaal.exe"" ""%1"""
 '''
+        from virtaal.formats import supported_types
         for (description, extentions, mimetypes) in supported_types:
             # We skip those types where we depend on mime types, not extentions
             if not extentions:
@@ -356,9 +356,9 @@ def standardsetup(name, version, custompackages=None, customdatafiles=None):
 
     dosetup(name, version,
             packages=['virtaal'],
-            data_files=[('virtaal', ['virtaal/data/virtaal.glade']),
-                        ('mime/packages', ['virtaal/data/virtaal-mimetype.xml']),
-                        ('applications', ['virtaal/data/virtaal.desktop']),
+            data_files=[('virtaal', ['data/virtaal.glade']),
+                        ('mime/packages', ['data/virtaal-mimetype.xml']),
+                        ('applications', ['data/virtaal.desktop']),
                         ('icons', ['virtaal.png', 'virtaal.ico'])],
             scripts=['run_virtaal.py'])
 

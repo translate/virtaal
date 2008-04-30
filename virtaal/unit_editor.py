@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# 
+#
 # Copyright 2007-2008 Zuza Software Foundation
-# 
+#
 # This file is part of virtaal.
 #
 # virtaal is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # translate is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -34,11 +34,11 @@ from translate.misc.multistring import multistring
 
 import markup
 import unit_layout
-from simplegeneric import generic
+from support.simplegeneric import generic
 import Globals
 from Globals import _
-import label_expander
-from partial import post, compose
+import widgets.label_expander as label_expander
+from support.partial import post, compose
 
 def properties_generator(widget, *prop_list):
     for prop in prop_list:
@@ -56,7 +56,7 @@ def properties(*spec):
 def make_style():
     return {
         gtk.TextView:       properties(gtk.TextView(),       'left-margin', 'right-margin'),
-        gtk.ScrolledWindow: properties(gtk.ScrolledWindow(), 'scrollbar-spacing'),        
+        gtk.ScrolledWindow: properties(gtk.ScrolledWindow(), 'scrollbar-spacing'),
         gtk.Container:      properties(gtk.TextView(),       'border-width'),
         gtk.CheckButton:    properties(gtk.CheckButton(),    'indicator-size', 'indicator-spacing'),
         gtk.Widget:         properties(gtk.Button(),         'focus-line-width', 'focus-padding')
@@ -94,7 +94,7 @@ def v_padding_h_list(_h_list):
 @v_padding.when_type(unit_layout.TextBox)
 def v_padding_text_box(text_box):
     # A TextBox in Virtaal is composed of a ScrolledWindow which contains a TextView.
-    # See gtkscrolledwindow.c:gtk_scrolled_window_size_request and 
+    # See gtkscrolledwindow.c:gtk_scrolled_window_size_request and
     # gtktextview.c:gtk_text_view_size_request in the GTK source for the source of this
     # calculation.
     return 2*STYLE[gtk.Widget]['focus-line-width'] + 2*STYLE[gtk.Container]['border-width']
@@ -119,7 +119,7 @@ def h_padding_h_list(_h_list):
 @h_padding.when_type(unit_layout.TextBox)
 def h_padding_text_box(_text_box):
     # A TextBox in Virtaal is composed of a ScrolledWindow which contains a TextView.
-    # See gtkscrolledwindow.c:gtk_scrolled_window_size_request and 
+    # See gtkscrolledwindow.c:gtk_scrolled_window_size_request and
     # gtktextview.c:gtk_text_view_size_request in the GTK source for the source of this
     # calculation.
     return STYLE[gtk.TextView]['left-margin'] + STYLE[gtk.TextView]['right-margin'] + \
@@ -127,7 +127,7 @@ def h_padding_text_box(_text_box):
 
 @h_padding.when_type(unit_layout.Option)
 def h_padding_option(_text_box):
-    # See gtkcheckbutton.c 
+    # See gtkcheckbutton.c
     # requisition->width += (indicator_size + indicator_spacing * 3 + 2 * (focus_width + focus_pad));
     return STYLE[gtk.CheckButton]['indicator-size'] + STYLE[gtk.CheckButton]['indicator-spacing'] * 3 + \
            2 * (STYLE[gtk.Widget]['focus-line-width'] + STYLE[gtk.Widget]['focus-padding'])
@@ -136,7 +136,7 @@ def h_padding_option(_text_box):
 def cache_height(h, layout, widget, width):
     layout.__height = h
     return h
-        
+
 @generic
 def height(layout, widget, width):
     raise NotImplementedError()
@@ -171,7 +171,7 @@ def make_pango_layout(layout, text, widget, width):
 def height_text_box(text_box, widget, width):
     # TODO: Look at GTK C Source to get precise height calculations
     _w, h = make_pango_layout(text_box, text_box.get_text(), widget, width).get_pixel_size()
-    
+
     return h + v_padding(text_box)
 
 @specialize_height(unit_layout.Comment)
@@ -180,15 +180,15 @@ def height_comment(comment, widget, width):
     text = comment.get_text()
     if text == "":     # If we have an empty string, we squash the comment box
         return 0
-    _w, h = make_pango_layout(comment, text[0], widget, width).get_pixel_size()    
+    _w, h = make_pango_layout(comment, text[0], widget, width).get_pixel_size()
     return h + v_padding(comment)
     #return height_text_box(comment, widget, 100000)
 
 @specialize_height(unit_layout.Option)
 def height_option(option, widget, width):
-    _w, h = make_pango_layout(option, option.label, widget, width).get_pixel_size()    
+    _w, h = make_pango_layout(option, option.label, widget, width).get_pixel_size()
     return h + v_padding(option)
-    
+
 
 @generic
 def make_widget(layout):
@@ -212,9 +212,9 @@ def skip_enter_processing(widget_and_names, layout):
     return widget_and_names
 
 def specialize_make_widget(type):
-    return compose(make_widget.when_type(type), 
-                   post(associate_layout_and_widget), 
-                   post(skip_enter_processing), 
+    return compose(make_widget.when_type(type),
+                   post(associate_layout_and_widget),
+                   post(skip_enter_processing),
                    post(set_size))
 
 @specialize_make_widget(unit_layout.Layout)
@@ -224,7 +224,7 @@ def make_layout(layout):
     child, child_names = make_widget(layout.child)
     table.attach(child, 1, 3, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL|gtk.EXPAND)
     names.update(child_names)
-        
+
     return table, names
 
 def fill_list(lst, box):
@@ -249,7 +249,7 @@ def focus_text_view(text_view):
 
     buf = text_view.get_buffer()
     text = buf.get_text(buf.get_start_iter(), buf.get_end_iter())
-    
+
     translation_start = first_word_re.match(text).span()[1]
     buf.place_cursor(buf.get_iter_at_offset(translation_start))
 
@@ -264,7 +264,7 @@ def make_text_box(layout):
             spell.set_language(Globals.settings.language["contentlang"])
         except:
             import traceback
-            
+
             print >> sys.stderr, _("Could not initialize spell checking")
             traceback.print_exc(file=sys.stderr)
             gtkspell = None
@@ -309,13 +309,13 @@ def make_text_box(layout):
             if layout.next != None:
                 next_text_view = layout.next.__widget.child
                 focus_text_view(next_text_view)
-                
+
             else:
                 #self.must_advance = True
                 text_view.parent.emit('key-press-event', event)
             return True
         return False
-    
+
     text_view.set_wrap_mode(gtk.WRAP_WORD)
     text_view.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)
     text_view.connect('key-press-event', on_text_view_key_press_event)
@@ -339,14 +339,14 @@ def make_option(option):
             option.set_option(True)
         else:
             option.set_option(False)
-    
+
     check_button = gtk.CheckButton(label=option.label)
     check_button.connect('toggled', on_toggled)
     if option.get_option():
         check_button.set_active(True)
     return check_button, {'option-%s' % option.name: check_button}
 
-#A regular expression to help us find a meaningful place to position the 
+#A regular expression to help us find a meaningful place to position the
 #cursor initially.
 first_word_re = re.compile("(?m)(?u)^(<[^>]+>|\\\\[nt]|[\W$^\n])*(\\b|\\Z)")
 
@@ -358,13 +358,13 @@ def on_size_allocate(widget, allocation):
 
 class UnitEditor(gtk.EventBox, gtk.CellEditable):
     """Text view suitable for cell renderer use."""
-    
+
     __gtype_name__ = "UnitEditor"
-    
+
     __gsignals__ = {
         'modified':(gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
     }
-   
+
     def __init__(self, parent, unit):
         gtk.EventBox.__init__(self)
 #        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color(0, 0, 50000))

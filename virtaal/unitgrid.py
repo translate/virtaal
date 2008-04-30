@@ -24,11 +24,6 @@ pygtk.require('2.0')
 import gtk
 import gobject
 
-from translate.storage.poheader import poheader
-from translate.lang import factory as langfactory
-
-import Globals
-from EntryDialog import EntryDialog
 from unitrenderer import UnitRenderer
 import markup
 
@@ -49,48 +44,23 @@ class UnitGrid(gtk.TreeView):
         'modified':(gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
     }
     
-    def __init__(self, store):
+    def __init__(self, document):
         # Let's figure out if there are plurals and ensure we have everything
-        nplurals = None
-        if isinstance(store, poheader):
-            header = store.parseheader()
-            if 'Plural-Forms' in header:
-                # XXX: BUG: Got files from GNOME with plurals but without this header
-                nplurals, plural = store.getheaderplural()
-                if nplurals is None:
-                    langcode = Globals.settings.language["contentlang"]
-                    self._lang = langfactory.getlanguage(langcode)
-                    nplurals = self._lang.nplurals
-                    plural = self._lang.pluralequation
-                    while not nplurals:
-                        try:
-                            entry = EntryDialog("Please enter the number of noun forms (plurals) to use")
-                            if entry is None:
-                                return
-                            nplurals = int(entry)
-                        except ValueError, _e:
-                            continue
-                        plural = EntryDialog("Please enter the plural equation to use")
-                        Globals.settings.language["nplurals"] = nplurals
-                        Globals.settings.language["plural"] = plural
-                    store.updateheaderplural(nplurals, plural)
-        self._nplurals = int(nplurals or 0)
-
-        model = gtk.ListStore(
+        gtk.TreeView.__init__(self, gtk.ListStore(
             gobject.TYPE_STRING,
             gobject.TYPE_STRING,
             gobject.TYPE_STRING,
             gobject.TYPE_STRING,
             gobject.TYPE_STRING,
             gobject.TYPE_PYOBJECT,
-            gobject.TYPE_BOOLEAN,
-        )
-        for unit in store.units:
-            if not unit.istranslatable():
-                continue
-            itr = model.append()
+            gobject.TYPE_BOOLEAN))
 
-            model.set (itr,
+        self.document = document
+
+        for unit in self.document.get_translatable_units():                
+            itr = self.get_model().append()
+
+            self.get_model().set (itr,
                COLUMN_SOURCE, markup.markuptext(unit.source),
                COLUMN_TARGET, markup.markuptext(unit.target),
                COLUMN_NOTE, unit.getnotes() or None,
@@ -100,16 +70,14 @@ class UnitGrid(gtk.TreeView):
                COLUMN_EDITABLE, False,
             )
 
-        self.model = model
-        gtk.TreeView.__init__(self, model)
         self.set_headers_visible(False)
         self.set_direction(gtk.TEXT_DIR_LTR)
         
         if len(model) == 0:
             raise ValueError(_("The file did not contain anything to translate."))
             
-        renderer = UnitRenderer(self._nplurals)
-        renderer.connect("editing-done", self.on_cell_edited, model)
+        renderer = UnitRenderer(self)
+        renderer.connect("editing-done", self.on_cell_edited, self.get_model())
         renderer.connect("modified", self._on_modified)
 
         column = gtk.TreeViewColumn(None, renderer, unit=COLUMN_UNIT, editable=COLUMN_EDITABLE)
@@ -205,9 +173,9 @@ class UnitGrid(gtk.TreeView):
 
     def on_move_cursor(self, _widget, step, _count):
         path, _column = self.get_cursor()
-        itr = self.model.get_iter(path)
+        itr = self.get_model().get_iter(path)
         if step in [gtk.MOVEMENT_DISPLAY_LINES, gtk.MOVEMENT_PAGES]:
-            self.model.set(itr, COLUMN_EDITABLE, False)
+            self.get_model().set(itr, COLUMN_EDITABLE, False)
         return True
 
     def on_button_press(self, _widget, event):
@@ -221,8 +189,8 @@ class UnitGrid(gtk.TreeView):
         old_path, _old_column = self.get_cursor()
         path, _column, _x, _y = answer
         if old_path != path:
-            itr = self.model.get_iter(old_path)
-            self.model.set(itr, COLUMN_EDITABLE, False)
+            itr = self.get_model().get_iter(old_path)
+            self.get_model().set(itr, COLUMN_EDITABLE, False)
             self._activate_editing_path(path)
             self.update_for_save(away=True)
         return True
@@ -230,12 +198,9 @@ class UnitGrid(gtk.TreeView):
     def _activate_editing_path(self, path):
         """Activates the given path for editing."""
         try:
-            itr = self.model.get_iter(path)
-            self.model.set(itr, COLUMN_EDITABLE, True)
-            def move_cursor():
-                self.set_cursor(path, self.targetcolumn, start_editing=True)
-            #TODO: look at using higher priority
-            gobject.idle_add(move_cursor)
+            itr = self.get_model().get_iter(path)
+            self.get_model().set(itr, COLUMN_EDITABLE, True)
+            self.set_cursor(path, self.targetcolumn, start_editing=True)
         except:
             # Something could go wrong with .get_iter() if a non-existing path
             # was given - an expected result when trying to advance past the 

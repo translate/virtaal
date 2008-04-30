@@ -41,6 +41,7 @@ import unitgrid
 import unitrenderer
 from about import About
 import formats
+import document
 
 _ = lambda x: x
 
@@ -154,6 +155,7 @@ class VirTaal:
             self.main_window.connect("configure-event", self.unit_grid.on_configure_event)
             self.main_window.show_all()
             self.unit_grid.grab_focus()
+            self.document = document.Document(factory.getobject(filename))
         except Exception, e:
             dialog = gtk.MessageDialog(dialog or self.main_window,
                             gtk.DIALOG_MODAL,
@@ -166,6 +168,14 @@ class VirTaal:
 
         # Now we can change state (filename, save states, etc.)
         self.filename = filename
+        self.unit_grid = unitgrid.UnitGrid(self.document)
+        self.unit_grid.connect("modified", self._on_modified)
+        self.sw.remove(self.sw.get_child())
+        self.sw.add(self.unit_grid)
+        self.main_window.connect("configure-event", self.unit_grid.on_configure_event)
+        self.main_window.show_all()
+        self.unit_grid.grab_focus()
+        self._set_saveable(False)
         self.main_window.set_title(path.basename(filename))
         self._set_saveable(False)
         menuitem = self.gui.get_widget("saveas_menuitem")

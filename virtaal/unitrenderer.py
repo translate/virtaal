@@ -30,7 +30,7 @@ import markup
 import undo_buffer
 from unit_editor import UnitEditor
 import unit_layout
-
+from document import get_document
 
 def undo(tree_view):
     undo_buffer.undo(tree_view.get_buffer().undo_list)
@@ -58,14 +58,14 @@ class UnitRenderer(gtk.GenericCellRenderer):
         "modified":      (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
     }
 
-    def __init__(self, nplurals=None):
+    def __init__(self, parent):
         gtk.GenericCellRenderer.__init__(self)
         self.set_property('mode', gtk.CELL_RENDERER_MODE_EDITABLE)
 
+        self.parent = parent
         self.__unit = None
         self.editable = False
         self._editor = None
-        self._nplurals = nplurals
         self._modified_widget = None
         self.source_layout = None
         self.target_layout = None
@@ -129,7 +129,7 @@ class UnitRenderer(gtk.GenericCellRenderer):
         width = widget.get_toplevel().get_allocation().width - 32
 
         if self.editable:
-            height = unit_editor.height(unit_layout.get_blueprints(self.unit, widget._nplurals), widget, width)
+            height = unit_editor.height(unit_layout.get_blueprints(self.unit, get_document(widget).nplurals), widget, width)
         else:
             height = self.compute_cell_height(widget, width)
 

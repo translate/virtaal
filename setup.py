@@ -79,6 +79,7 @@ SetupIconFile=icons\virtaal.ico
             print >> ofi, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (fpath, os.path.dirname(fpath))
         print >> ofi, r'''
 [Icons]
+Name: "{group}\VirTaal Translation Editor"; Filename: "{app}\run_virtaal.exe";
 Name: "{group}\Uninstall %(name)s"; Filename: "{uninstallexe}"''' % {'name': self.name}
 
         if self.install_scripts:
@@ -266,14 +267,15 @@ class TranslateDistribution(Distribution):
                         "compressed": True,
                         "excludes":   ["PyLucene", "Tkconstants", "Tkinter", "tcl", "translate.misc._csv"],
                         "dist_dir":   "virtaal-win32",
-                        "includes":   ["lxml", "lxml._elementpath", "psyco", "cairo", "pango", "pangocairo", "atk", "gobject"]
+                        "includes":   ["lxml", "lxml._elementpath", "psyco", "cairo", "pango", "pangocairo", "atk", "gobject"],
+                        "optimize":   2,
                     }
                 },
 
                 "windows": [
                     {
-                        'script': 'run_virtaal.py'#,
-                        #'icon_resources': [(1, "handytool.ico")],
+                        'script': 'run_virtaal.py',
+                        'icon_resources': [(1, "icons/virtaal.ico")],
                     }
                 ],
                 

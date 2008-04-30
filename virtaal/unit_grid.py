@@ -92,29 +92,23 @@ class UnitGrid(gtk.TreeView):
         gobject.idle_add(self._activate_editing_path, (0,))
         self.document.mode.next()
 
-    def _on_move_up(self, accel_group, acceleratable, keyval, modifier):
+    def _move(self, current_pos, new_pos):
         try:
             #if new_path[0] < model.iter_n_children(None):
-            current_path = self.display_index[self.document.mode.current()]
-            new_path = self.display_index[self.document.mode.prev()]
+            current_path = self.display_index[current_pos]
+            new_path = self.display_index[new_pos]
             self.get_model().set(self.get_model().get_iter(current_path), COLUMN_EDITABLE, False)
             self._activate_editing_path((new_path,))
         except StopIteration:
             pass
 
         return True
+
+    def _on_move_up(self, accel_group, acceleratable, keyval, modifier):
+        return self._move(self.document.mode.current(), self.document.mode.prev())
 
     def _on_move_down(self, accel_group, acceleratable, keyval, modifier):
-        try:
-            #if new_path[0] < model.iter_n_children(None):
-            current_path = self.display_index[self.document.mode.current()]
-            new_path = self.display_index[self.document.mode.next()]
-            self.get_model().set(self.get_model().get_iter(current_path), COLUMN_EDITABLE, False)
-            self._activate_editing_path((new_path,))
-        except StopIteration:
-            pass
-
-        return True
+        return self._move(self.document.mode.current(), self.document.mode.next())
 
     def on_configure_event(self, _event, *_user_args):
         path, column = self.get_cursor()
@@ -138,18 +132,8 @@ class UnitGrid(gtk.TreeView):
         return True
 
     def on_cell_edited(self, _cell, path_string, must_advance, modified, model):
-        itr = model.get_iter_from_string(path_string)
-        path = model.get_path(itr)
-
-#        if modified:
-#            model.set(itr, COLUMN_TARGET, markup.markuptext(new_target))
-#            self.emit("modified")
-
         if must_advance:
-            new_path = (path[0]+1,)
-            if new_path[0] < model.iter_n_children(None):
-                model.set(itr, COLUMN_EDITABLE, False)
-                self._activate_editing_path(new_path)
+            return self._move(self.document.mode.current(), self.document.mode.next())
         return True
 
     def on_row_activated(self, _treeview, path, view_column):

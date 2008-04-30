@@ -140,7 +140,14 @@ class UnitGrid(gtk.TreeView):
     def _move_down(self, _accel_group, _acceleratable, _keyval, _modifier):
         return self._keyboard_move(1)
 
-    def on_button_press(self, _widget, event):
+    def on_button_press(self, widget, event):
+        # If the event did not happen in the treeview, but in the
+        # editing widget, then the event window will not correspond to
+        # the treeview's drawing window. This happens when the
+        # user clicks on the edit widget. But if this happens, then
+        # we don't want anything to happen, so we return True.
+        if event.window != widget.get_bin_window():
+            return True
         answer = self.get_path_at_pos(int(event.x), int(event.y))
         if answer is None:
             print "marakas! geen path gevind by (x,y) nie!"

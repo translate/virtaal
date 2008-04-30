@@ -25,6 +25,7 @@ import gtk
 import gobject
 
 from unit_renderer import UnitRenderer
+from virtaal.support import bijection
 
 COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE = 0, 1, 2
 
@@ -44,11 +45,13 @@ class UnitGrid(gtk.TreeView):
 
         # The default mode should give us all the units we need
         self.document.set_mode('Default')
-
-        self.display_index = len(self.document.store.units) * [-1]
-        for i, unit_index in enumerate(self.document.mode):
-            self.display_index[unit_index] = i
-
+        # Create a bidirectional mapping between TreeView indices and
+        # translation unit indices (thus, we have
+        # B: TreeView index <-> Translation unit index. This is necessary
+        # because not all translation units are displayed and thus when we
+        # are given a TreeView index, we need to be able to compute how it
+        # relates to the index of its unit in the translation store.
+        self.display_index = bijection.Bijection(enumerate(self.document.mode))
         for unit in (self.document.store.units[i] for i in self.document.mode):
             itr = self.get_model().append()
 
@@ -78,9 +81,7 @@ class UnitGrid(gtk.TreeView):
         self.set_rules_hint(True)
 
         self.connect('key-press-event', self.on_key_press)
-        self.connect("row-activated", self.on_row_activated)
         self.connect("cursor-changed", self.on_cursor_changed)
-        #self.connect("move-cursor", self.on_move_cursor)
         self.connect("button-press-event", self.on_button_press)
 
         #self.accel_group = gtk.AccelGroup()
@@ -89,32 +90,32 @@ class UnitGrid(gtk.TreeView):
         self._owner.accel_group.connect_by_path("<VirTaal>/Navigation/Up", self._on_move_up)
         self._owner.accel_group.connect_by_path("<VirTaal>/Navigation/Down", self._on_move_down)
 
-        gobject.idle_add(self._activate_editing_path, (0,))
-        self.document.mode.next()
+        gobject.idle_add(self._activate_editing_path, (0,), (0,))
 
-    def _activate_editing_path(self, path):
+    def _activate_editing_path(self, old_path, path):
         """Activates the given path for editing."""
-        itr = self.get_model().get_iter(path)
-        self.get_model().set(itr, COLUMN_EDITABLE, True)
-        self.set_cursor(path, self.targetcolumn, start_editing=True)
+        item_index = self.display_index[path[0]]
+        self.document.mode.cursor = self.document.mode.get_cursor(item_index)
+        self.get_model().set(self.get_model().get_iter(old_path), COLUMN_EDITABLE, False)
+        self.get_model().set(self.get_model().get_iter(path),     COLUMN_EDITABLE, True)
+        def change_cursor():
+            self.set_cursor(path, self.targetcolumn, start_editing=True)
+        gobject.idle_add(change_cursor, priority=gobject.PRIORITY_DEFAULT_IDLE)
 
-    def _move(self, get_current_pos, get_new_pos):
+    def _move(self, offset):
         try:
-            #if new_path[0] < model.iter_n_children(None):
-            current_path = self.display_index[get_current_pos()]
-            new_path = self.display_index[get_new_pos()]
-            self.get_model().set(self.get_model().get_iter(current_path), COLUMN_EDITABLE, False)
-            self._activate_editing_path((new_path,))
-        except StopIteration:
+            path, _column = self.get_cursor()
+            self._activate_editing_path(path, (path[0] + offset,))
+        except KeyError:
             pass
 
         return True
 
     def _on_move_up(self, accel_group, acceleratable, keyval, modifier):
-        return self._move(self.document.mode.current, self.document.mode.prev)
+        return self._move(-1)
 
     def _on_move_down(self, accel_group, acceleratable, keyval, modifier):
-        return self._move(self.document.mode.current, self.document.mode.next)
+        return self._move(1)
 
     def on_button_press(self, _widget, event):
         answer = self.get_path_at_pos(int(event.x), int(event.y))
@@ -124,9 +125,7 @@ class UnitGrid(gtk.TreeView):
         old_path, _old_column = self.get_cursor()
         path, _column, _x, _y = answer
         if old_path != path:
-            itr = self.get_model().get_iter(old_path)
-            self.get_model().set(itr, COLUMN_EDITABLE, False)
-            self._activate_editing_path(path)
+            self._activate_editing_path(old_path, path)
         return True
 
     def on_configure_event(self, _event, *_user_args):
@@ -137,7 +136,6 @@ class UnitGrid(gtk.TreeView):
         # it can be drawn correctly. This has to be delayed (we used idle_add),
         # since calling it immediately after columns_autosize() does not work.
         def reset_cursor():
-            #self.update_for_save()
             self.set_cursor(path, column, start_editing=True)
             return False
 
@@ -155,11 +153,6 @@ class UnitGrid(gtk.TreeView):
             return self._move(self.document.mode.current, self.document.mode.next)
         return True
 
-    def on_row_activated(self, _treeview, path, view_column):
-        if view_column != self.targetcolumn:
-            self.set_cursor(path, self.targetcolumn, start_editing=True)
-        return True
-
     def on_cursor_changed(self, treeview):
         path, _column = self.get_cursor()
 
@@ -174,18 +167,6 @@ class UnitGrid(gtk.TreeView):
             return False
 
         gobject.idle_add(do_scroll)
-
-        model = treeview.get_model()
-        itr = model.get_iter(path)
-        if not model.get_value(itr, COLUMN_EDITABLE):
-            model.set(itr, COLUMN_EDITABLE, True)
-        return True
-
-    def on_move_cursor(self, _widget, step, _count):
-        path, _column = self.get_cursor()
-        itr = self.get_model().get_iter(path)
-        if step in [gtk.MOVEMENT_DISPLAY_LINES, gtk.MOVEMENT_PAGES]:
-            self.get_model().set(itr, COLUMN_EDITABLE, False)
         return True
 
     def on_key_press(self, _widget, _event, _data=None):

@@ -41,7 +41,16 @@ class UnionSetEnumerator(gobject.GObject):
             self.sets = [SortedSet([])]
             self.set = SortedSet([])
 
-        self._current_index = -1
+        self._item_to_cursor_map = dict((item, index) for index, item in enumerate(self))
+        self._cursor = -1
+
+    def _set_cursor(self, value):
+        if 0 <= value < len(self.set.data):
+            self._current_index = value
+        else:
+            raise IndexError()
+
+    cursor = property(lambda self: self._current_index, _set_cursor)
 
     def _in_set(self, item):
         try:
@@ -52,12 +61,15 @@ class UnionSetEnumerator(gobject.GObject):
     def _before_add(self, src, pos, item):
         if not self._in_set(item):
             self.set.add(item)
-            if self._current_index >= bisect_left(self.set.data, item):
+            add_index = bisect_left(self.set.data, item)
+            self._item_to_cursor_map[item] = add_index
+            if self._current_index >= add_index:
                 self._current_index += 1
 
     def _before_remove(self, src, pos, item):
         if self._in_set(item):
             self.set.remove(item)
+            del self._item_to_cursor_map[item]
             if self._current_index >= bisect_left(self.set.data, item):
                 self._current_index -= 1
 
@@ -68,22 +80,11 @@ class UnionSetEnumerator(gobject.GObject):
 
         return iterator()
 
-    def next(self):
-        if self._current_index < len(self.set.data) - 1:
-            self._current_index += 1
-            return self.current()
-        else:
-            raise StopIteration()
+    def get_cursor(self, item):
+        return self._item_to_cursor_map[item]
 
-    def current(self):
-        return self.set.data[self._current_index]
-
-    def prev(self):
-        if self._current_index > 0:
-            self._current_index -= 1
-            return self.current()
-        else:
-            raise StopIteration()
+    def __getitem__(self, cursor):
+        return self.set.data[self.cursor]
 
     def remove(self, item):
         for set in self.sets:

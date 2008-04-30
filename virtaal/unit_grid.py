@@ -80,7 +80,7 @@ class UnitGrid(gtk.TreeView):
         self.connect('key-press-event', self.on_key_press)
         self.connect("row-activated", self.on_row_activated)
         self.connect("cursor-changed", self.on_cursor_changed)
-        self.connect("move-cursor", self.on_move_cursor)
+        #self.connect("move-cursor", self.on_move_cursor)
         self.connect("button-press-event", self.on_button_press)
 
         #self.accel_group = gtk.AccelGroup()
@@ -92,11 +92,17 @@ class UnitGrid(gtk.TreeView):
         gobject.idle_add(self._activate_editing_path, (0,))
         self.document.mode.next()
 
-    def _move(self, current_pos, new_pos):
+    def _activate_editing_path(self, path):
+        """Activates the given path for editing."""
+        itr = self.get_model().get_iter(path)
+        self.get_model().set(itr, COLUMN_EDITABLE, True)
+        self.set_cursor(path, self.targetcolumn, start_editing=True)
+
+    def _move(self, get_current_pos, get_new_pos):
         try:
             #if new_path[0] < model.iter_n_children(None):
-            current_path = self.display_index[current_pos]
-            new_path = self.display_index[new_pos]
+            current_path = self.display_index[get_current_pos()]
+            new_path = self.display_index[get_new_pos()]
             self.get_model().set(self.get_model().get_iter(current_path), COLUMN_EDITABLE, False)
             self._activate_editing_path((new_path,))
         except StopIteration:
@@ -105,10 +111,23 @@ class UnitGrid(gtk.TreeView):
         return True
 
     def _on_move_up(self, accel_group, acceleratable, keyval, modifier):
-        return self._move(self.document.mode.current(), self.document.mode.prev())
+        return self._move(self.document.mode.current, self.document.mode.prev)
 
     def _on_move_down(self, accel_group, acceleratable, keyval, modifier):
-        return self._move(self.document.mode.current(), self.document.mode.next())
+        return self._move(self.document.mode.current, self.document.mode.next)
+
+    def on_button_press(self, _widget, event):
+        answer = self.get_path_at_pos(int(event.x), int(event.y))
+        if answer is None:
+            print "marakas! geen path gevind by (x,y) nie!"
+            return True
+        old_path, _old_column = self.get_cursor()
+        path, _column, _x, _y = answer
+        if old_path != path:
+            itr = self.get_model().get_iter(old_path)
+            self.get_model().set(itr, COLUMN_EDITABLE, False)
+            self._activate_editing_path(path)
+        return True
 
     def on_configure_event(self, _event, *_user_args):
         path, column = self.get_cursor()
@@ -133,7 +152,7 @@ class UnitGrid(gtk.TreeView):
 
     def on_cell_edited(self, _cell, path_string, must_advance, modified, model):
         if must_advance:
-            return self._move(self.document.mode.current(), self.document.mode.next())
+            return self._move(self.document.mode.current, self.document.mode.next)
         return True
 
     def on_row_activated(self, _treeview, path, view_column):
@@ -168,41 +187,6 @@ class UnitGrid(gtk.TreeView):
         if step in [gtk.MOVEMENT_DISPLAY_LINES, gtk.MOVEMENT_PAGES]:
             self.get_model().set(itr, COLUMN_EDITABLE, False)
         return True
-
-    def on_button_press(self, _widget, event):
-        answer = self.get_path_at_pos(int(event.x), int(event.y))
-        if answer is None:
-            print "marakas! geen path gevind by (x,y) nie!"
-            return True
-        old_path, _old_column = self.get_cursor()
-        path, _column, _x, _y = answer
-        if old_path != path:
-            itr = self.get_model().get_iter(old_path)
-            self.get_model().set(itr, COLUMN_EDITABLE, False)
-            self._activate_editing_path(path)
-        return True
-
-    def _activate_editing_path(self, path):
-        """Activates the given path for editing."""
-        try:
-            itr = self.get_model().get_iter(path)
-            self.get_model().set(itr, COLUMN_EDITABLE, True)
-            self.set_cursor(path, self.targetcolumn, start_editing=True)
-        except:
-            # Something could go wrong with .get_iter() if a non-existing path
-            # was given - an expected result when trying to advance past the
-            # last row, for example
-            # TODO: offer to save file, or give indication of some kind that
-            # the current run in finished            test_code = ""
-            import traceback
-            import sys
-
-            print "Exception in user code:"
-            print '-'*60
-            traceback.print_exc(file=sys.stdout)
-            print '-'*60
-
-        return False
 
     def on_key_press(self, _widget, _event, _data=None):
         # The TreeView does interesting things with combos like SHIFT+TAB.

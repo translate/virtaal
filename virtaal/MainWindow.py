@@ -54,10 +54,10 @@ TEXT_VIEW_ACCELS.connect_group(key, modifier, gtk.ACCEL_VISIBLE, on_undo)
 
 class VirTaal:
 
-    def __init__(self):
+    def __init__(self, basepath=None):
             
         #Set the Glade file
-        self.gladefile = path.join(path.dirname(__file__), "data", "virtaal.glade")
+        self.gladefile = path.join(basepath or path.dirname(__file__), "data", "virtaal.glade")
         self.gui = gtk.glade.XML(self.gladefile)
         
         #Create our dictionay and connect it

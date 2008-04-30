@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# 
+#
 # Copyright 2008 Zuza Software Foundation
-# 
+#
 # This file is part of virtaal.
 # This file was originally part of the PEAK project:
-#   http://peak.telecommunity.com/DevCenter/FrontPage 
+#   http://peak.telecommunity.com/DevCenter/FrontPage
 #
 # virtaal is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # translate is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -57,11 +57,6 @@ def generic(func):
             return f
         return decorate
 
-
-
-
-
-
     _by_object = {}
     _gbo = _by_object.get
 
@@ -74,7 +69,6 @@ def generic(func):
                 )
             return f
         return decorate
-
 
     def dispatch(*args, **kw):
         f = _gbo(id(args[0]), _sentinel)
@@ -100,47 +94,9 @@ def generic(func):
     dispatch.has_type   = lambda t: t in _by_type
     return dispatch
 
-
-
-
 def test_suite():
     import doctest
     return doctest.DocFileSuite(
         'README.txt',
         optionflags=doctest.ELLIPSIS|doctest.REPORT_ONLY_FIRST_FAILURE,
     )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

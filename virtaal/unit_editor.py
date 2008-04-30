@@ -201,18 +201,18 @@ def set_size(widget_and_names, layout):
     return widget, names
 
 def associate_layout_and_widget(widget_and_names, layout):
-    widget, names = widget_and_names
+    widget, _names = widget_and_names
     layout.__widget = widget
     widget.__layout = layout
     return widget_and_names
 
 def skip_enter_processing(widget_and_names, layout):
-    widget, names = widget_and_names
+    widget, _names = widget_and_names
     widget.connect('key-press-event', on_key_press_event)
     return widget_and_names
 
-def specialize_make_widget(type):
-    return compose(make_widget.when_type(type),
+def specialize_make_widget(type_desc):
+    return compose(make_widget.when_type(type_desc),
                    post(associate_layout_and_widget),
                    post(skip_enter_processing),
                    post(set_size))
@@ -410,6 +410,8 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         focus_text_view(self._widget_dict['source-0'].child)
 
     def _on_focus(self, widget, _direction):
+        # TODO: Check whether we do need to refocus the last edited text_view when
+        #       our program gets focus after having lost it.
         self.recent_textview = widget
         return False
 
@@ -442,9 +444,9 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         else:
             return multistring(targets)
 
-    def _on_source_scroll(self, _textview, _step_size, _count, _extend_selection):
-        #XXX scroll the source???
-        return True
+#    def _on_source_scroll(self, _textview, _step_size, _count, _extend_selection):
+#        #XXX scroll the source???
+#        return True
 
     def _on_insert_at_cursor(self, _textview, _string):
         return True

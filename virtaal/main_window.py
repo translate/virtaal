@@ -82,6 +82,7 @@ class VirTaal:
 
         self.translation_store = None
         self.unit_grid = None
+        self.document = None
 
     def _on_mainwindow_delete(self, _widget, _event):
         if self.modified:

@@ -151,9 +151,6 @@ class UnitGrid(gtk.TreeView):
         return True
 
     def on_button_press(self, _widget, event):
-#        if self._modified_widget:
-#            self._modified_widget.stop_editing(canceled=False)
-        # XXX - emit modified
         answer = self.get_path_at_pos(int(event.x), int(event.y))
         if answer is None:
             print "marakas! geen path gevind by (x,y) nie!"
@@ -164,7 +161,6 @@ class UnitGrid(gtk.TreeView):
             itr = self.get_model().get_iter(old_path)
             self.get_model().set(itr, COLUMN_EDITABLE, False)
             self._activate_editing_path(path)
-            #self.update_for_save(away=True)
         return True
 
     def _activate_editing_path(self, path):

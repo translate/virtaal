@@ -8,7 +8,7 @@ try:
     import py2exe
     build_exe = py2exe.build_exe.py2exe
     Distribution = py2exe.Distribution
-    
+
 except ImportError:
     py2exe = None
     build_exe = Command
@@ -16,18 +16,28 @@ except ImportError:
 from virtaal.__version__ import ver as virtaal_version
 from virtaal.formats import supported_types
 
+def if_none(var, new_val):
+    if var == None:
+        return val
+    else:
+        return var
+
 ##############################################################################
 # Windows building functions and classes
 
 class InnoScript:
     """class that builds an InnoSetup script"""
-    
-    def __init__(self, name, lib_dir, dist_dir, exe_files = [], other_files = [], install_scripts = [], version = "1.0"):
+
+    def __init__(self, name, lib_dir, dist_dir, exe_files=None, other_files=None, install_scripts=None, version = "1.0"):
+        exe_files = if_none(exe_files, [])
+        other_files = if_none(other_files, [])
+        install_scripts = if_none(install_scripts, [])
+
         self.lib_dir = lib_dir
         self.dist_dir = dist_dir
         if not self.dist_dir.endswith(os.sep):
             self.dist_dir += os.sep
-            
+
         self.name = name
         self.version = version
         self.exe_files = [self.chop(p) for p in exe_files]
@@ -41,7 +51,7 @@ class InnoScript:
             compile_key = _winreg.OpenKey(_winreg.HKEY_CLASSES_ROOT, "innosetupscriptfile\\shell\\compile\\command")
             compilecommand = _winreg.QueryValue(compile_key, "")
             compile_key.Close()
-            
+
         except:
             compilecommand = "compil32.exe"
         return compilecommand
@@ -57,10 +67,10 @@ class InnoScript:
         """creates the InnoSetup script"""
         if pathname is None:
             self.pathname = path.join(self.dist_dir, self.name + os.extsep + "iss")
-          
+
         else:
             self.pathname = pathname
-          
+
 # See http://www.jrsoftware.org/isfaq.php for more InnoSetup config options.
         ofi = self.file = open(self.pathname, "w")
         print >> ofi, r'''; WARNING: This script has been created by py2exe. Changes to this script
@@ -142,25 +152,25 @@ Root: HKCR; Subkey: "virtaal_%(key)s\shell\open\command"; ValueType: string; Val
 def map_data_file (data_file):
     """remaps a data_file (could be a directory) to a different location
     This version gets rid of Lib\\site-packages, etc"""
-    
+
     data_parts = data_file.split(os.sep)
-    
+
     if data_parts[:2] == ["Lib", "site-packages"]:
         data_parts = data_parts[2:]
         if data_parts:
             data_file = path.join(*data_parts)
-            
+
         else:
             data_file = ""
-            
+
     if data_parts[:1] == ["translate"]:
         data_parts = data_parts[1:]
         if data_parts:
             data_file = path.join(*data_parts)
-            
+
         else:
             data_file = ""
-            
+
     return data_file
 
 
@@ -173,18 +183,18 @@ class build_exe_map(build_exe):
             install_data = build_exe.reinitialize_command(self, command, reinit_subcommands)
             install_data.data_files = self.remap_data_files(install_data.data_files)
             return install_data
-          
+
         return build_exe.reinitialize_command(self, command, reinit_subcommands)
 
 
     def remap_data_files(self, data_files):
         """maps the given data files to different locations using external map_data_file function"""
         new_data_files = []
-        
+
         for f in data_files:
             if type(f) in (str, unicode):
                 f = map_data_file(f)
-                
+
             else:
                 datadir, files = f
                 datadir = map_data_file(datadir)
@@ -192,10 +202,10 @@ class build_exe_map(build_exe):
                     f = None
                 else:
                     f = datadir, files
-                  
+
             if f is not None:
                 new_data_files.append(f)
-              
+
         return new_data_files
 
 
@@ -203,7 +213,7 @@ class build_installer(build_exe_map):
     """distutils class that first builds the exe file(s), then creates a Windows installer using InnoSetup"""
 
     description = "create an executable installer for MS Windows using InnoSetup and py2exe"
-    
+
     user_options = getattr(build_exe, 'user_options', []) + \
         [('install-script=', None,
           "basename of installation script to be run after installation or before deinstallation")]
@@ -259,7 +269,7 @@ def findGTKBin():
         files = [path.join(p, f) for f in os.listdir(p) if path.isfile(path.join(p, f)) and f.startswith(GTK_NAME)]
         if len(files) > 0:
             return p
-        
+
     raise Exception("""Could not find the GTK runtime.
 Please place bin directory of your GTK installation in the program path.""")
 
@@ -267,7 +277,7 @@ Please place bin directory of your GTK installation in the program path.""")
 def findGTKFiles():
     def parent(dir):
         return path.abspath(path.join(path.abspath(dir), '..'))
-        
+
     def stripLeadingPath(leadingPath, p):
         return p[len(leadingPath) + 1:]
 
@@ -280,7 +290,7 @@ def findGTKFiles():
                 dataFiles.append((stripLeadingPath(gtkPath, dirName), files))
 
     return dataFiles
-    
+
 
 class TranslateDistribution(Distribution):
     """a modified distribution class for translate"""
@@ -289,7 +299,7 @@ class TranslateDistribution(Distribution):
 
         if py2exe:
             attrs.setdefault('data_files', []).extend(findGTKFiles())
-            
+
             baseattrs = {
                 "options": {
                     "py2exe": {
@@ -308,11 +318,11 @@ class TranslateDistribution(Distribution):
                         'icon_resources': [(1, "icons/virtaal.ico")],
                     }
                 ],
-                
+
                 'zipfile':  "virtaal.zip",
                 'cmdclass':  {"py2exe": build_exe_map, "innosetup": build_installer}
             }
-            
+
             baseattrs["options"]["innosetup"] = baseattrs["options"]["py2exe"].copy()
             baseattrs["options"]["innosetup"]["install_script"] = []
 
@@ -322,7 +332,7 @@ class TranslateDistribution(Distribution):
 
 def dosetup(name, version, packages, **kwargs):
     long_description = __doc__
-    #description = __doc__.split("\n", 1)[0]    
+    #description = __doc__.split("\n", 1)[0]
     description = "A program to do translations."
     setup(name=name,
           version=version,
@@ -340,7 +350,10 @@ def dosetup(name, version, packages, **kwargs):
           **kwargs)
 
 
-def standardsetup(name, version, custompackages=[], customdatafiles=[]):        
+def standardsetup(name, version, custompackages=None, customdatafiles=None):
+    custompackages = if_none(custompackages, [])
+    customdatafiles = if_none(customdatafiles, [])
+
     dosetup(name, version,
             packages=['virtaal'],
             data_files=[('virtaal', ['virtaal/data/virtaal.glade']),
@@ -349,6 +362,6 @@ def standardsetup(name, version, custompackages=[], customdatafiles=[]):
                         ('icons', ['virtaal.png', 'virtaal.ico'])],
             scripts=['run_virtaal.py'])
 
-    
+
 if __name__ == "__main__":
     standardsetup("VirTaal", virtaal_version)

@@ -27,6 +27,7 @@ from translate.filters import checks
 from translate.lang import factory as langfactory
 
 import globals
+from Globals import _
 from widgets.entry_dialog import EntryDialog
 import modes
 
@@ -69,13 +70,13 @@ class Document(gobject.GObject):
                     plural = self._lang.pluralequation
                     while not nplurals:
                         try:
-                            entry = EntryDialog("Please enter the number of noun forms (plurals) to use")
+                            entry = EntryDialog(_("Please enter the number of noun forms (plurals) to use"))
                             if entry is None:
                                 return
                             nplurals = int(entry)
                         except ValueError, _e:
                             continue
-                        plural = EntryDialog("Please enter the plural equation to use")
+                        plural = EntryDialog(_("Please enter the plural equation to use"))
                         globals.settings.language["nplurals"] = nplurals
                         globals.settings.language["plural"] = plural
                     self.store.updateheaderplural(nplurals, plural)

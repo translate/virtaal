@@ -25,19 +25,8 @@ import gtk
 import gobject
 
 from unitrenderer import UnitRenderer
-import markup
 
-_ = lambda x: x
-
-(
-    COLUMN_SOURCE, 
-    COLUMN_TARGET,
-    COLUMN_NOTE,
-    COLUMN_PROGRAMMER_NOTE,
-    COLUMN_TRANSLATOR_NOTE,
-    COLUMN_UNIT,
-    COLUMN_EDITABLE,
-) = range(7)
+COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE = 0, 1, 2
 
 class UnitGrid(gtk.TreeView):
     __gsignals__ = {
@@ -46,14 +35,9 @@ class UnitGrid(gtk.TreeView):
     
     def __init__(self, document):
         # Let's figure out if there are plurals and ensure we have everything
-        gtk.TreeView.__init__(self, gtk.ListStore(
-            gobject.TYPE_STRING,
-            gobject.TYPE_STRING,
-            gobject.TYPE_STRING,
-            gobject.TYPE_STRING,
-            gobject.TYPE_STRING,
-            gobject.TYPE_PYOBJECT,
-            gobject.TYPE_BOOLEAN))
+        gtk.TreeView.__init__(self, gtk.ListStore(gobject.TYPE_STRING, 
+                                                  gobject.TYPE_PYOBJECT, 
+                                                  gobject.TYPE_BOOLEAN))
 
         self.document = document
 
@@ -61,11 +45,7 @@ class UnitGrid(gtk.TreeView):
             itr = self.get_model().append()
 
             self.get_model().set (itr,
-               COLUMN_SOURCE, markup.markuptext(unit.source),
-               COLUMN_TARGET, markup.markuptext(unit.target),
                COLUMN_NOTE, unit.getnotes() or None,
-               COLUMN_PROGRAMMER_NOTE, unit.getnotes("programmer") or None,
-               COLUMN_TRANSLATOR_NOTE, unit.getnotes("translator") or None,
                COLUMN_UNIT, unit,
                COLUMN_EDITABLE, False,
             )

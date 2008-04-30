@@ -27,6 +27,7 @@ try:
 except:
     pass
 
+import gobject
 import gtk
 from gtk import gdk
 from gtk import glade
@@ -45,6 +46,7 @@ import unit_renderer
 from about import About
 import formats
 import document
+from virtaal.support import bijection
 
 def on_undo(_accel_group, acceleratable, _keyval, _modifier):
     unit_renderer.undo(acceleratable.focus_widget)
@@ -54,13 +56,45 @@ key, modifier = gtk.accelerator_parse("<Control>z")
 TEXT_VIEW_ACCELS.connect_group(key, modifier, gtk.ACCEL_VISIBLE, on_undo)
 
 
+class ModeBox(gtk.HBox):
+    __gtype_name__ = "ModeBox"
+
+    __gsignals__ = {
+        "mode-selected": (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
+    }
+
+    def __init__(self, modes):
+        gtk.HBox.__init__(self)
+
+        def make_label(text):
+            label_box = gtk.EventBox()
+            label = gtk.Label()
+            label.set_text(text)
+            label_box.add(label)
+            return label_box
+
+        self.mode_to_label = bijection.Bijection((mode, make_label(mode.user_name)) for mode in modes)
+
+        for label in self.mode_to_label.itervalues():
+            self.pack_start(label)
+            label.connect('button-release-event', self._on_label_click)
+
+    def set_mode(self, mode):
+        for label in self.get_children():
+            label.child.set_label(self.mode_to_label.inverse[label].user_name)
+
+        self.mode_to_label[mode].child.set_markup('<b>%s</b>' % self.mode_to_label[mode].child.get_text())
+
+    def _on_label_click(self, clicked_label, _event):
+        self.emit('mode-selected', self.mode_to_label.inverse[clicked_label])
+
 class VirTaal:
     """The entry point class for VirTaal"""
 
     def __init__(self, basepath=None):
         #Set the Glade file
         self.gladefile = path.join(basepath or path.dirname(__file__), "data", "virtaal.glade")
-        self.gui = gtk.glade.XML(self.gladefile)
+        self.gui = glade.XML(self.gladefile)
 
         #Create our dictionay and connect it
         dic = {
@@ -73,6 +107,7 @@ class VirTaal:
                 }
         self.gui.signal_autoconnect(dic)
 
+        self.status_box = self.gui.get_widget("status_box")
         self.sw = self.gui.get_widget("scrolledwindow1")
         edit_menu = self.gui.get_widget("menuitem2")
         edit_menu.set_sensitive(False)
@@ -159,10 +194,17 @@ class VirTaal:
 
         return self.load_file(filename, dialog=dialog)
 
+    def _on_gui_mode_change(self, mode_box, mode):
+        self.document.set_mode(mode.mode_name)
+
+    def _on_mode_change(self, document, mode):
+        self.mode_box.set_mode(mode.__class__)
+
     def load_file(self, filename, dialog=None):
         """Do the actual loading of the file into the GUI"""
         try:
             self.document = document.Document(filename)
+            self.document.connect('mode-changed', self._on_mode_change)
         except Exception, e:
             dialog = gtk.MessageDialog(dialog or self.main_window,
                             gtk.DIALOG_MODAL,
@@ -173,7 +215,13 @@ class VirTaal:
             dialog.destroy()
             return False
 
-        # Now we can change state (filename, save states, etc.)
+        self.status_box.remove(self.status_box.get_children()[0])
+        self.mode_box = ModeBox(self.document.get_modes())
+        self.status_box.pack_start(self.mode_box)
+        self.status_box.reorder_child(self.mode_box, 0)
+        self.mode_box.connect('mode-selected', self._on_gui_mode_change)
+        self.document.set_mode('Default')
+
         self.filename = filename
         self.unit_grid = unit_grid.UnitGrid(self)
         self.unit_grid.connect("modified", self._on_modified)
@@ -187,6 +235,7 @@ class VirTaal:
         self._set_saveable(False)
         menuitem = self.gui.get_widget("saveas_menuitem")
         menuitem.set_sensitive(True)
+        self.document.set_mode('Default')
         return True
 
     def _set_saveable(self, value):

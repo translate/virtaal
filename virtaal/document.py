@@ -19,6 +19,8 @@
 # along with translate; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+import gobject
+
 from translate.storage.poheader import poheader
 from translate.storage import statsdb, factory
 from translate.filters import checks
@@ -42,10 +44,16 @@ def get_document(obj):
     else:
         return getattr(obj, 'document')
 
-class Document(object):
+class Document(gobject.GObject):
     """Contains user state about a translate store which stores information like
     GUI-toolkit-independent state (for example bookmarks) and index remappings
     which are needed to"""
+
+    __gtype_name__ = "Document"
+
+    __gsignals__ = {
+        "mode-changed": (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
+    }
 
     def compute_nplurals(self):
         nplurals = None
@@ -74,11 +82,36 @@ class Document(object):
         return int(nplurals or 0)
 
     def __init__(self, filename):
+        gobject.GObject.__init__(self)
         self.store = factory.getobject(filename)
         self.stats = statsdb.StatsCache().filestats(filename, checks.UnitChecker(), self.store)
         self._lang = None
         self.nplurals = self.compute_nplurals()
         self.mode = None
+        self.mode_cursor = None
 
     def set_mode(self, name):
+        print "Changing mode to %s" % name
         self.mode = modes.MODES[name](self.stats)
+        try:
+            if self.mode_cursor != None:
+                self.mode_cursor = self.mode.cursor_from_element(self.mode_cursor.deref())
+            else:
+                self.mode_cursor = self.mode.cursor_from_element()
+
+            if self.mode_cursor.get_pos() < 0:
+                try:
+                    self.mode_cursor.move(1)
+                except IndexError:
+                    pass
+
+            self.emit('mode-changed', self.mode)
+        except IndexError:
+            pass
+
+    def get_modes(self):
+        # We isolate the rest of the program logic from the modes which
+        # might be associated with a document. This allows us to supply
+        # modes based on the document type.
+        return modes.MODES.itervalues()
+

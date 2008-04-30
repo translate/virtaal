@@ -27,8 +27,8 @@ be included in any release."""
 import hotshot
 from hotshot import stats
 
-import MainWindow
-prog = MainWindow.VirTaal()
+import main_window
+prog = main_window.VirTaal()
 
 profile = hotshot.Profile("Virtaal.profile", lineevents=1)
 profile.runcall(prog.run)

@@ -34,25 +34,21 @@ class UnitGrid(gtk.TreeView):
         'modified':(gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
     }
 
-    document = property(lambda self: self._owner.document)
-
     def __init__(self, owner):
         gtk.TreeView.__init__(self, gtk.ListStore(gobject.TYPE_STRING,
                                                   gobject.TYPE_PYOBJECT,
                                                   gobject.TYPE_BOOLEAN))
 
         self._owner = owner
-
-        # The default mode should give us all the units we need
-        self.document.set_mode('Default')
+        self.document = self._owner.document
         # Create a bidirectional mapping between TreeView indices and
         # translation unit indices (thus, we have
         # B: TreeView index <-> Translation unit index. This is necessary
         # because not all translation units are displayed and thus when we
         # are given a TreeView index, we need to be able to compute how it
         # relates to the index of its unit in the translation store.
-        self.display_index = bijection.Bijection(enumerate(self.document.mode))
-        for unit in (self.document.store.units[i] for i in self.document.mode):
+        self._path_to_store_index_map = bijection.Bijection(enumerate(self.document.mode_cursor))
+        for unit in (self.document.store.units[i] for i in self.document.mode_cursor):
             itr = self.get_model().append()
 
             self.get_model().set (itr,
@@ -80,6 +76,8 @@ class UnitGrid(gtk.TreeView):
             self.set_tooltip_column(COLUMN_NOTE)
         self.set_rules_hint(True)
 
+        self.document.connect("mode-changed", self._on_mode_changed)
+
         self.connect('key-press-event', self.on_key_press)
         self.connect("cursor-changed", self.on_cursor_changed)
         self.connect("button-press-event", self.on_button_press)
@@ -87,35 +85,60 @@ class UnitGrid(gtk.TreeView):
         #self.accel_group = gtk.AccelGroup()
         #self.add_accel_group(self.accel_group)
 
-        self._owner.accel_group.connect_by_path("<VirTaal>/Navigation/Up", self._on_move_up)
-        self._owner.accel_group.connect_by_path("<VirTaal>/Navigation/Down", self._on_move_down)
+        self._owner.accel_group.connect_by_path("<VirTaal>/Navigation/Up", self._move_up)
+        self._owner.accel_group.connect_by_path("<VirTaal>/Navigation/Down", self._move_down)
 
-        gobject.idle_add(self._activate_editing_path, (0,), (0,))
+        gobject.idle_add(self._activate_editing_path,
+                         self.convert_store_index_to_path(self.document.mode_cursor.deref()))
 
-    def _activate_editing_path(self, old_path, path):
+    def _on_mode_changed(self, widget, mode):
+        path = self.convert_store_index_to_path(self.document.mode_cursor.deref())
+        self._activate_editing_path(path)
+
+    def convert_path_to_store_index(self, path):
+        return self._path_to_store_index_map[path[0]]
+
+    def convert_store_index_to_path(self, index):
+        return (self._path_to_store_index_map.inverse[index],)
+
+    def set_model_by_store_index(self, index, *args):
+        path = self.convert_store_index_to_path(index)
+        self.get_model().set(self.get_model().get_iter(path), *args)
+
+    def set_cursor_by_store_index(self, index, *args, **kwargs):
+        path = self.convert_store_index_to_path(index)
+        self.set_cursor(path, *args, **kwargs)
+
+    def get_store_index(self):
+        path, _col = self.get_cursor()
+        return self.convert_path_to_store_index(path)
+
+    def _activate_editing_path(self, new_path):
         """Activates the given path for editing."""
-        item_index = self.display_index[path[0]]
-        self.document.mode.cursor = self.document.mode.get_cursor(item_index)
+        # get the index of the translation unit in the translation store
+        old_path, _col = self.get_cursor()
         self.get_model().set(self.get_model().get_iter(old_path), COLUMN_EDITABLE, False)
-        self.get_model().set(self.get_model().get_iter(path),     COLUMN_EDITABLE, True)
+        self.get_model().set(self.get_model().get_iter(new_path), COLUMN_EDITABLE, True)
         def change_cursor():
-            self.set_cursor(path, self.targetcolumn, start_editing=True)
+            self.set_cursor(new_path, self.get_columns()[0], start_editing=True)
         gobject.idle_add(change_cursor, priority=gobject.PRIORITY_DEFAULT_IDLE)
 
-    def _move(self, offset):
+    def _keyboard_move(self, offset):
         try:
-            path, _column = self.get_cursor()
-            self._activate_editing_path(path, (path[0] + offset,))
-        except KeyError:
+            #old_path = self.convert_store_index_to_path(self.document.mode_cursor.deref())
+            self.document.mode_cursor.move(offset)
+            path = self.convert_store_index_to_path(self.document.mode_cursor.deref())
+            self._activate_editing_path(path)
+        except IndexError:
             pass
 
         return True
 
-    def _on_move_up(self, accel_group, acceleratable, keyval, modifier):
-        return self._move(-1)
+    def _move_up(self, _accel_group, _acceleratable, _keyval, _modifier):
+        return self._keyboard_move(-1)
 
-    def _on_move_down(self, accel_group, acceleratable, keyval, modifier):
-        return self._move(1)
+    def _move_down(self, _accel_group, _acceleratable, _keyval, _modifier):
+        return self._keyboard_move(1)
 
     def on_button_press(self, _widget, event):
         answer = self.get_path_at_pos(int(event.x), int(event.y))
@@ -125,7 +148,13 @@ class UnitGrid(gtk.TreeView):
         old_path, _old_column = self.get_cursor()
         path, _column, _x, _y = answer
         if old_path != path:
-            self._activate_editing_path(old_path, path)
+            index = self.convert_path_to_store_index(path)
+            if index not in self.document.mode:
+                print "Falling to default"
+                self.document.set_mode('Default')
+
+            self.document.mode_cursor = self.document.mode.cursor_from_element(index)
+            self._activate_editing_path(path)
         return True
 
     def on_configure_event(self, _event, *_user_args):

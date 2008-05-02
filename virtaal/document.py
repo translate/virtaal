@@ -82,9 +82,12 @@ class Document(gobject.GObject):
                     self.store.updateheaderplural(nplurals, plural)
         return int(nplurals or 0)
 
-    def __init__(self, filename):
+    def __init__(self, filename, store=None):
         gobject.GObject.__init__(self)
-        self.store = factory.getobject(filename)
+        if store:
+            self.store = store
+        else:
+            self.store = factory.getobject(filename)
         self.stats = statsdb.StatsCache().filestats(filename, checks.UnitChecker(), self.store)
         self._lang = None
         self.nplurals = self.compute_nplurals()

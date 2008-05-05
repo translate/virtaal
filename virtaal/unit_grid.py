@@ -19,6 +19,8 @@
 # along with translate; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+import logging
+
 import pygtk
 pygtk.require('2.0')
 import gtk
@@ -150,14 +152,14 @@ class UnitGrid(gtk.TreeView):
             return True
         answer = self.get_path_at_pos(int(event.x), int(event.y))
         if answer is None:
-            print "marakas! geen path gevind by (x,y) nie!"
+            logging.debug("Not path found at (%d,%d)" % (int(event.x), int(event.y)))
             return True
         old_path, _old_column = self.get_cursor()
         path, _column, _x, _y = answer
         if old_path != path:
             index = self.convert_path_to_store_index(path)
             if index not in self.document.mode:
-                print "Falling to default"
+                logging.debug("Falling to default")
                 self.document.set_mode('Default')
 
             self.document.mode_cursor = self.document.mode.cursor_from_element(index)

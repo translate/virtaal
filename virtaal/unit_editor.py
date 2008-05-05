@@ -21,6 +21,7 @@
 
 import sys
 import re
+import logging
 
 import gobject
 import pango
@@ -264,9 +265,9 @@ def make_text_box(layout):
             spell.set_language(globals.settings.language["contentlang"])
         except:
             import traceback
-
-            print >> sys.stderr, _("Could not initialize spell checking")
-            traceback.print_exc(file=sys.stderr)
+            logging.info(_("Could not initialize spell checking"))
+#            print >> sys.stderr, _("Could not initialize spell checking")
+#            traceback.print_exc(file=sys.stderr)
             gtkspell = None
 
 #    def _on_textview_key_press_event(textview, event):

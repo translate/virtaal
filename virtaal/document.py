@@ -19,6 +19,8 @@
 # along with translate; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+import logging
+
 import gobject
 
 from translate.storage.poheader import poheader
@@ -95,7 +97,7 @@ class Document(gobject.GObject):
         self.mode_cursor = None
 
     def set_mode(self, name):
-        print "Changing mode to %s" % name
+        logging.debug("Changing mode to %s" % name)
         self.mode = modes.MODES[name](self.stats)
         try:
             if self.mode_cursor != None:

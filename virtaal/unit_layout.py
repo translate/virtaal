@@ -52,15 +52,16 @@ class HList(List):
     pass
 
 class TextBox(Widget):
-    def __init__(self, name, get_text, set_text):
+    def __init__(self, name, get_text, set_text, editable):
         super(TextBox, self).__init__(name)
         self.get_text = get_text
         self.set_text = set_text
         self.next     = None
+        self.editable = editable
 
 class Comment(TextBox):
     def __init__(self, name, get_text, set_text=lambda value: None):
-        super(Comment, self).__init__(name, get_text, set_text)
+        super(Comment, self).__init__(name, get_text, set_text, False)
 
 class Option(Widget):
     def __init__(self, name, label, get_option, set_option):
@@ -132,12 +133,14 @@ def build_layout(unit, nplurals):
 
     sources = [TextBox('source-%d' % i,
                        partial(get_source, unit, i),
-                       partial(set_source, unit, i))
+                       partial(set_source, unit, i),
+                       False)
                for i in xrange(num_sources(unit))]
 
     targets = [TextBox('target-%d' % i,
                        partial(get_target, unit, nplurals, i),
-                       partial(set_target, unit, i))
+                       partial(set_target, unit, i),
+                       True)
                for i in xrange(num_targets(unit, nplurals))]
 
     all_text = list(chain(sources, targets))

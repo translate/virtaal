@@ -316,6 +316,7 @@ def make_text_box(layout):
             return True
         return False
 
+    text_view.set_editable(layout.editable)
     text_view.set_wrap_mode(gtk.WRAP_WORD)
     text_view.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)
     text_view.connect('key-press-event', on_text_view_key_press_event)

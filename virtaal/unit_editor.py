@@ -207,6 +207,12 @@ def associate_layout_and_widget(widget_and_names, layout):
     widget.__layout = layout
     return widget_and_names
 
+def get_layout(widget):
+    return widget.__layout
+
+def get_widget(layout):
+    return layout.__widget
+
 def skip_enter_processing(widget_and_names, layout):
     widget, _names = widget_and_names
     widget.connect('key-press-event', on_key_press_event)
@@ -306,9 +312,9 @@ def make_text_box(layout):
 
     def on_text_view_key_press_event(text_view, event, *args):
         if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
-            layout = text_view.parent.__layout
+            layout = get_layout(text_view.parent)
             if layout.next != None:
-                next_text_view = layout.next.__widget.child
+                next_text_view = get_widget(layout.next).child
                 focus_text_view(next_text_view)
 
             else:

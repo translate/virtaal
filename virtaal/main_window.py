@@ -20,6 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 import sys
+import logging
 
 try:
     import pygtk
@@ -328,8 +329,14 @@ class VirTaal:
         os.system("xdg-open http://translate.sourceforge.net/wiki/guide/start")
 
     def run(self):
+        logging.basicConfig(level=logging.INFO,
+                            format='%(asctime)s %(levelname)s %(message)s',
+                            filename='virtaal.log',
+                            filemode='w')
+
         if len(sys.argv) > 1:
             self.load_file(sys.argv[1])
+
         gtk.main()
 
 #    import hotshot

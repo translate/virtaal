@@ -62,13 +62,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.""")
         self.show()
 
     def on_url(self, dialog, uri, data):
-        try:
-            if data == "mail":
-                os.system("xdg-email " + link)
-            elif data == "url":
-                os.system("xdg-open " + link)
-        except:
-            pass
+        if data == "mail":
+            os.system("xdg-email " + uri)
+        elif data == "url":
+            os.system("xdg-open " + uri)
 
     def _register_uri_handlers(self):
         """Register the URL and email handlers

@@ -199,12 +199,6 @@ def height_option(option, widget, width):
 def make_widget(layout):
     raise NotImplementedError()
 
-def set_size(widget_and_names, layout):
-    widget, names = widget_and_names
-    if hasattr(layout, '__height'):
-        widget.set_size_request(-1, layout.__height)
-    return widget, names
-
 def associate_layout_and_widget(widget_and_names, layout):
     widget, _names = widget_and_names
     layout.__widget = widget
@@ -225,8 +219,7 @@ def skip_enter_processing(widget_and_names, layout):
 def specialize_make_widget(type_desc):
     return compose(make_widget.when_type(type_desc),
                    post(associate_layout_and_widget),
-                   post(skip_enter_processing),
-                   post(set_size))
+                   post(skip_enter_processing))
 
 @specialize_make_widget(unit_layout.Layout)
 def make_layout(layout):

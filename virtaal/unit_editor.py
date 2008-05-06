@@ -422,7 +422,7 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
 
     def do_start_editing(self, *_args):
         """Start editing."""
-        focus_text_view(self._widget_dict['source-0'].child)
+        focus_text_view(self._widget_dict['target-0'].child)
 
     def _on_focus(self, widget, _direction):
         # TODO: Check whether we do need to refocus the last edited text_view when

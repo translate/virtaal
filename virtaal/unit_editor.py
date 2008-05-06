@@ -37,8 +37,8 @@ from translate.misc.multistring import multistring
 import markup
 import unit_layout
 from support.simplegeneric import generic
-import globals
-from globals import _
+import pan_app
+from pan_app import _
 import widgets.label_expander as label_expander
 from support.partial import post, compose
 
@@ -272,7 +272,7 @@ def make_text_box(layout):
     if gtkspell:
         try:
             spell = gtkspell.Spell(text_view)
-            spell.set_language(globals.settings.language["contentlang"])
+            spell.set_language(pan_app.settings.language["contentlang"])
         except:
             import traceback
             logging.info(_("Could not initialize spell checking"))

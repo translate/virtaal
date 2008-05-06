@@ -22,8 +22,8 @@
 import gtk
 
 from translate.storage import factory
-import globals
-from globals import _
+import pan_app
+from pan_app import _
 
 supported_types = [
     (_("Gettext PO files"), ("*.po", "*.pot"), ("text/x-gettext-translation", "text/x-gettext-translation-template", "application/x-gettext",
@@ -44,7 +44,7 @@ def file_open_chooser(self, destroyCallback=None):
             gtk.FILE_CHOOSER_ACTION_OPEN,
             (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK)
     )
-    chooser.set_current_folder(globals.settings.general["lastdir"])
+    chooser.set_current_folder(pan_app.settings.general["lastdir"])
 
     chooser.set_default_response(gtk.RESPONSE_OK)
 

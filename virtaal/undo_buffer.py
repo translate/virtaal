@@ -24,7 +24,7 @@
 import collections
 import gtk
 
-import globals
+import pan_app
 from support.partial import partial
 
 
@@ -42,7 +42,7 @@ class BoundedQueue(collections.deque):
 
 def make_undo_buffer():
     buffer = gtk.TextBuffer()
-    undo_list = BoundedQueue(lambda: globals.settings.undo['depth'])
+    undo_list = BoundedQueue(lambda: pan_app.settings.undo['depth'])
 
     buffer.insert_handler = buffer.connect("insert-text",       on_insert_text,       undo_list)
     buffer.delete_handler = buffer.connect("delete-range",      on_delete_range,      undo_list)

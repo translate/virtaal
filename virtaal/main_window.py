@@ -40,8 +40,8 @@ import time
 from translate.storage import factory
 from translate.storage import poheader
 
-import globals
-from globals import _
+import pan_app
+from pan_app import _
 from widgets.entry_dialog import EntryDialog
 import unit_grid
 import unit_renderer
@@ -160,8 +160,8 @@ class VirTaal:
             response = chooser.run()
             if response == gtk.RESPONSE_OK:
                 filename = chooser.get_filename()
-                globals.settings.general["lastdir"] = path.dirname(filename)
-                globals.settings.write()
+                pan_app.settings.general["lastdir"] = path.dirname(filename)
+                pan_app.settings.write()
                 if self.open_file(filename, chooser):
                     break
             elif response == gtk.RESPONSE_CANCEL or \
@@ -256,32 +256,32 @@ class VirTaal:
             self.unit_grid.update_for_save()
         if filename is None or filename == self.filename:
             if isinstance(self.translation_store, poheader.poheader):
-                name = globals.settings.translator["name"]
-                email = globals.settings.translator["email"]
-                team = globals.settings.translator["team"]
+                name = pan_app.settings.translator["name"]
+                email = pan_app.settings.translator["email"]
+                team = pan_app.settings.translator["team"]
                 if not name:
                     name = EntryDialog(_("Please enter your name"))
                     if name is None:
                         # User cancelled
                         return
-                    globals.settings.translator["name"] = name
+                    pan_app.settings.translator["name"] = name
                 if not email:
                     email = EntryDialog(_("Please enter your e-mail address"))
                     if email is None:
                         # User cancelled
                         return
-                    globals.settings.translator["email"] = email
+                    pan_app.settings.translator["email"] = email
                 if not team:
                     team = EntryDialog(_("Please enter your team's information"))
                     if team is None:
                         # User cancelled
                         return
-                    globals.settings.translator["team"] = team
-                globals.settings.write()
+                    pan_app.settings.translator["team"] = team
+                pan_app.settings.write()
                 po_revision_date = time.strftime("%F %H:%M%z")
                 header_updates = {}
                 header_updates["PO_Revision_Date"] = po_revision_date
-                header_updates["X_Generator"] = globals.x_generator
+                header_updates["X_Generator"] = pan_app.x_generator
                 if name or email:
                     header_updates["Last_Translator"] = u"%s <%s>" % (name, email)
                     self.document.store.updatecontributor(name, email)
@@ -315,8 +315,8 @@ class VirTaal:
         if response == gtk.RESPONSE_OK:
             filename = chooser.get_filename()
             self._on_file_save(widget, filename)
-            globals.settings.general["lastdir"] = path.dirname(filename)
-            globals.settings.write()
+            pan_app.settings.general["lastdir"] = path.dirname(filename)
+            pan_app.settings.write()
         chooser.destroy()
 
     def _on_help_about(self, widget=None):

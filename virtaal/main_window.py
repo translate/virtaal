@@ -256,42 +256,41 @@ class VirTaal:
     def _on_file_save(self, _widget=None, filename=None):
 #        if self.modified:
 #            self.unit_grid.update_for_save()
-        if filename is None or filename == self.filename:
-            #TODO: this code about name, email, etc. should not be dependent on the filename change
-            if isinstance(self.document.store, poheader.poheader):
-                name = pan_app.settings.translator["name"]
-                email = pan_app.settings.translator["email"]
-                team = pan_app.settings.translator["team"]
-                if not name:
-                    name = EntryDialog(_("Please enter your name"))
-                    if name is None:
-                        # User cancelled
-                        return True
-                    pan_app.settings.translator["name"] = name
-                if not email:
-                    email = EntryDialog(_("Please enter your e-mail address"))
-                    if email is None:
-                        # User cancelled
-                        return True
-                    pan_app.settings.translator["email"] = email
-                if not team:
-                    team = EntryDialog(_("Please enter your team's information"))
-                    if team is None:
-                        # User cancelled
-                        return True
-                    pan_app.settings.translator["team"] = team
-                pan_app.settings.write()
-                po_revision_date = time.strftime("%F %H:%M%z")
-                header_updates = {}
-                header_updates["PO_Revision_Date"] = po_revision_date
-                header_updates["X_Generator"] = pan_app.x_generator
-                if name or email:
-                    header_updates["Last_Translator"] = u"%s <%s>" % (name, email)
-                    self.document.store.updatecontributor(name, email)
-                if team:
-                    header_updates["Language-Team"] = team
-                self.document.store.updateheader(add=True, **header_updates)
+        if isinstance(self.document.store, poheader.poheader):
+            name = pan_app.settings.translator["name"]
+            email = pan_app.settings.translator["email"]
+            team = pan_app.settings.translator["team"]
+            if not name:
+                name = EntryDialog(_("Please enter your name"))
+                if name is None:
+                    # User cancelled
+                    return True
+                pan_app.settings.translator["name"] = name
+            if not email:
+                email = EntryDialog(_("Please enter your e-mail address"))
+                if email is None:
+                    # User cancelled
+                    return True
+                pan_app.settings.translator["email"] = email
+            if not team:
+                team = EntryDialog(_("Please enter your team's information"))
+                if team is None:
+                    # User cancelled
+                    return True
+                pan_app.settings.translator["team"] = team
+            pan_app.settings.write()
+            po_revision_date = time.strftime("%F %H:%M%z")
+            header_updates = {}
+            header_updates["PO_Revision_Date"] = po_revision_date
+            header_updates["X_Generator"] = pan_app.x_generator
+            if name or email:
+                header_updates["Last_Translator"] = u"%s <%s>" % (name, email)
+                self.document.store.updatecontributor(name, email)
+            if team:
+                header_updates["Language-Team"] = team
+            self.document.store.updateheader(add=True, **header_updates)
 
+        if filename is None or filename == self.filename:
             self.document.store.save()
         else:
             self.filename = filename

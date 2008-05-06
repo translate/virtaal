@@ -261,7 +261,7 @@ def add_spell_checking(text_view, language):
     if gtkspell:
         try:
             spell = gtkspell.Spell(text_view)
-            spell.set_language(pan_app.settings.language["contentlang"])
+            spell.set_language(language)
         except:
             import traceback
             logging.info(_("Could not initialize spell checking"))

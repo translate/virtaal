@@ -140,17 +140,8 @@ class VirTaal:
         unit_renderer.undo(acceleratable.focus_widget)
 
     def _on_mainwindow_delete(self, _widget, _event):
-        if self.modified:
-            dialog = gtk.MessageDialog(self.main_window,
-                            gtk.DIALOG_MODAL,
-                            gtk.MESSAGE_QUESTION,
-                            gtk.BUTTONS_YES_NO,
-                            _("The current file was modified, but is not yet saved. Are you sure you want to leave without saving?"))
-            dialog.set_default_response(gtk.RESPONSE_NO)
-            response = dialog.run()
-            dialog.destroy()
-            if response in [gtk.RESPONSE_NO, gtk.RESPONSE_DELETE_EVENT]:
-                return True
+        if self._confirm_unsaved(self.main_window):
+            return True
         return False
 
     def _on_file_open(self, _widget, destroyCallback=None):
@@ -176,15 +167,16 @@ class VirTaal:
             dialog = gtk.MessageDialog(dialog,
                             gtk.DIALOG_MODAL,
                             gtk.MESSAGE_QUESTION,
-                            gtk.BUTTONS_YES_NO_CANCEL,
+                            gtk.BUTTONS_YES_NO,
                             _("The current file was modified, but is not yet saved. Do you want to save it now?"))
             dialog.set_default_response(gtk.RESPONSE_YES)
             response = dialog.run()
             dialog.destroy()
             if response in [gtk.RESPONSE_CANCEL, gtk.RESPONSE_DELETE_EVENT]:
                 return True
-            elif reponse == gtk.RESPONSE_YES:
-                self._on_file_save()
+            elif response == gtk.RESPONSE_YES:
+                if self._on_file_save():
+                    return True
 
     def open_file(self, filename, dialog, reload=False):
         if self._confirm_unsaved(dialog):
@@ -249,19 +241,23 @@ class VirTaal:
     def _set_saveable(self, value):
         menuitem = self.gui.get_widget("save_menuitem")
         menuitem.set_sensitive(value)
-        if value and self.filename:
+        if self.filename:
             window_title = path.basename(self.filename)
-            self.main_window.set_title("* " + window_title)
+            if value:
+                self.main_window.set_title("* " + window_title)
+            else:
+                self.main_window.set_title(window_title)
         self.modified = value
 
     def _on_modified(self, _widget):
         if not self.modified:
             self._set_saveable(True)
 
-    def _on_file_save(self, _widget, filename=None):
-        if self.modified:
-            self.unit_grid.update_for_save()
+    def _on_file_save(self, _widget=None, filename=None):
+#        if self.modified:
+#            self.unit_grid.update_for_save()
         if filename is None or filename == self.filename:
+            #TODO: this code about name, email, etc. should not be dependent on the filename change
             if isinstance(self.document.store, poheader.poheader):
                 name = pan_app.settings.translator["name"]
                 email = pan_app.settings.translator["email"]
@@ -270,19 +266,19 @@ class VirTaal:
                     name = EntryDialog(_("Please enter your name"))
                     if name is None:
                         # User cancelled
-                        return
+                        return True
                     pan_app.settings.translator["name"] = name
                 if not email:
                     email = EntryDialog(_("Please enter your e-mail address"))
                     if email is None:
                         # User cancelled
-                        return
+                        return True
                     pan_app.settings.translator["email"] = email
                 if not team:
                     team = EntryDialog(_("Please enter your team's information"))
                     if team is None:
                         # User cancelled
-                        return
+                        return True
                     pan_app.settings.translator["team"] = team
                 pan_app.settings.write()
                 po_revision_date = time.strftime("%F %H:%M%z")
@@ -301,6 +297,7 @@ class VirTaal:
             self.filename = filename
             self.document.store.savefile(filename)
         self._set_saveable(False)
+        return False #continue normally
 
     def _on_file_saveas(self, widget=None):
         buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_SAVE, gtk.RESPONSE_OK)

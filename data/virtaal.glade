@@ -134,13 +134,27 @@
               </widget>
             </child>
             <child>
-              <widget class="GtkMenuItem" id="menuitem4">
+              <widget class="GtkMenuItem" id="menuitem_help">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">_Help</property>
                 <property name="use_underline">True</property>
                 <child>
-                  <widget class="GtkMenu" id="menu3">
+                  <widget class="GtkMenu" id="menu_help">
                     <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkImageMenuItem" id="menuitem_documentation">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Online Help</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_menuitem_documentation_activate"/>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="menu-item-image3">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-help</property>
+                          </widget>
+                        </child>
+                      </widget>
+                    </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="menuitem_localization_guide">
                         <property name="visible">True</property>
@@ -149,7 +163,21 @@
                         <signal name="activate" handler="on_localization_guide_activate"/>
                         <child internal-child="image">
                           <widget class="GtkImage" id="menu-item-image2">
-                            <property name="stock">gtk-help</property>
+                            <property name="stock">gtk-dialog-info</property>
+                          </widget>
+                        </child>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkImageMenuItem" id="menuitem_report_bug">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Report a _Bug</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_menuitem_report_bug_activate"/>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="menu-item-image4">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-dialog-error</property>
                           </widget>
                         </child>
                       </widget>
@@ -160,7 +188,7 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="imagemenuitem10">
+                      <widget class="GtkImageMenuItem" id="imagemenuitem_about">
                         <property name="visible">True</property>
                         <property name="label">gtk-about</property>
                         <property name="use_underline">True</property>

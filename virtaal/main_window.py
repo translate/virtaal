@@ -107,6 +107,8 @@ class VirTaal:
                 "on_saveas_activate" : self._on_file_saveas,
                 "on_about_activate" : self._on_help_about,
                 "on_localization_guide_activate" : self._on_localization_guide,
+                "on_menuitem_documentation_activate" : self._on_documentation,
+                "on_menuitem_report_bug_activate" : self._on_report_bug,
                 }
         self.gui.signal_autoconnect(dic)
 
@@ -327,6 +329,12 @@ class VirTaal:
         # If the guide is installed and no internet then open local
         # If Internet then go live, if no Internet or guide then disable
         os.system("xdg-open http://translate.sourceforge.net/wiki/guide/start")
+
+    def _on_documentation(self, widget=None):
+        os.system("xdg-open http://translate.sourceforge.net/wiki/virtaal/index")
+        
+    def _on_report_bug(self, widget=None):
+        os.system("xdg-open http://bugs.locamotion.org/enter_bug.cgi?product=VirTaal")
 
     def run(self):
         logging.basicConfig(level=logging.INFO,

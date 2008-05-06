@@ -19,6 +19,7 @@
 # You should have received a copy of the GNU General Public License along with
 # Translate.  If not, see <http://www.gnu.org/licenses/>.
 from virtaal import unit_editor
+from virtaal.unit_editor import get_layout, get_widget, height, get_cached_height
 
 """Cell renderer for multiline text data."""
 
@@ -145,14 +146,20 @@ class UnitRenderer(gtk.GenericCellRenderer):
 
     def do_start_editing(self, _event, tree_view, path, _bg_area, cell_area, _flags):
         """Initialize and return the editor widget."""
-        editor = UnitEditor(tree_view, self.unit)
-        editor.set_size_request(cell_area.width, cell_area.height-2)
-        editor.set_border_width(min(self.props.xpad, self.props.ypad))
-        editor.set_data("path", path)
-        editor.connect("editing-done", self._on_editor_done)
+        if not hasattr(self.unit, '__editor'):
+            editor = UnitEditor(tree_view, self.unit)
+            editor.connect("editing-done", self._on_editor_done)
+            editor.set_border_width(min(self.props.xpad, self.props.ypad))
+            editor.show_all()
+            setattr(self.unit, '__editor', editor)
 
-#        editor.connect("editing-done", self._on_editor_done)
-#        editor.connect("modified", self._on_modified)
-        editor.show_all()
+        def set_heights(layout):
+            for child in layout.children:
+                set_heights(child)
+            get_widget(layout).set_size_request(-1, get_cached_height(layout))
+
+        editor = getattr(self.unit, '__editor')
+        set_heights(get_layout(editor.layout))
+        editor.set_size_request(cell_area.width, cell_area.height)
         self._editor = editor
         return editor

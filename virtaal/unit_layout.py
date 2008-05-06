@@ -21,17 +21,22 @@
 
 from itertools import chain
 
+from support.simplegeneric import generic
 from support.partial import partial
 from globals import _
 
 class Widget(object):
     def __init__(self, name):
         self.name = name
+        self.parent = None
+        self.children = []
 
 class Layout(Widget):
     def __init__(self, name, child):
         super(Layout, self).__init__(name)
         self.child = child
+        self.children.append(self.child)
+        self.child.parent = self
 
 class List(Widget):
     def __init__(self, name, children=None):
@@ -39,8 +44,9 @@ class List(Widget):
 
         if children != None:
             self.children = children
-        else:
-            self.children = []
+
+        for child in self.children:
+            child.parent = self
 
     def add(self, widget):
         self.children.append(widget)

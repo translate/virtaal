@@ -138,6 +138,9 @@ def cache_height(h, layout, widget, width):
     layout.__height = h
     return h
 
+def get_cached_height(layout):
+    return layout.__height
+
 @generic
 def height(layout, widget, width):
     raise NotImplementedError()

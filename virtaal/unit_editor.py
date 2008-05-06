@@ -446,5 +446,5 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
     def _on_copy_original(self, _widget):
         for buf in self.buffers:
             buf.set_text(markup.escape(self._unit.source))
-            self._place_cursor()
+            self.do_start_editing()
         return True

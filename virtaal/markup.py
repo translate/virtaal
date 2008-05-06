@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# 
+#
 # Copyright 2007 Zuza Software Foundation
-# 
+#
 # This file is part of virtaal.
 #
 # translate is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # translate is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -31,7 +31,7 @@ def fancyspaces(string):
     return '<span underline="low" foreground="grey"> </span>' * len(spaces)
 
 def markuptext(text, fancyspaces=False, stripescapes=False):
-    """Replace special characters &, <, >, add and handle escapes if asked."""
+    """Replace special characters &, <, >, add and handle escapes if asked for Pango."""
     if not text:
         return ""
     text = text.replace("&", "&amp;") # Must be done first!
@@ -39,7 +39,7 @@ def markuptext(text, fancyspaces=False, stripescapes=False):
     fancy_xml = lambda escape: \
             '<span foreground="darkred">%s</span>' % escape.group()
     text = xml_re.sub(fancy_xml, text)
-    
+
     if stripescapes:
         text = text.replace("\n", '<br />')
         text = text.replace("\r", '<br />')
@@ -72,6 +72,7 @@ def addfancyspaces(text):
     return text
 
 def escape(text):
+    """This is to escape text for use with gtk.TextView"""
     if not text:
         return ""
     text = text.replace("\\", '\\\\')
@@ -84,6 +85,7 @@ def escape(text):
     return text
 
 def unescape(text):
+    """This is to unescape text for use with gtk.TextView"""
     if not text:
         return ""
     text = text.replace("\t", "")

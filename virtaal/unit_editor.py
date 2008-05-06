@@ -175,7 +175,7 @@ def make_pango_layout(layout, text, widget, width):
 @specialize_height(unit_layout.TextBox)
 def height_text_box(text_box, widget, width):
     # TODO: Look at GTK C Source to get precise height calculations
-    _w, h = make_pango_layout(text_box, text_box.get_text(), widget, width).get_pixel_size()
+    _w, h = make_pango_layout(text_box, markup.escape(text_box.get_text()), widget, width).get_pixel_size()
 
     return h + v_padding(text_box)
 
@@ -280,44 +280,32 @@ def make_text_box(layout):
 #            traceback.print_exc(file=sys.stderr)
             gtkspell = None
 
-#    def _on_textview_key_press_event(textview, event):
-#        """Handle special keypresses in the textarea."""
-#        # End editing on <Return>
-#        if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
-#            if self._nplurals == 1 or self.textviews.index(textview) == self._nplurals - 1:
-#                self.must_advance = True
-#                self.editing_done()
-#            else:
-#                new_index = self.textviews.index(textview) + 1
-#                self.textviews[new_index].grab_focus()
-#                self._place_cursor(new_index)
-#            return True
-#        # Automatically move to the next line if \n is entered
-#        if event.keyval == gtk.keysyms.n:
-#            buf = textview.get_buffer()
-#            cursor_position = buf.get_iter_at_offset(buf.props.cursor_position)
-#            one_back = buf.get_iter_at_offset(buf.props.cursor_position-1)
-#            previous = buf.get_text(one_back, cursor_position)
-#            if previous == '\\':
-#                buf.insert_at_cursor('n\n')
-#                self.recent_textview.place_cursor_onscreen()
-#            else:
-#                # Just a normal 'n' - nothing special
-#                buf.insert_at_cursor('n')
-#            # We have to return true, otherwise another 'n' will be inserted
-#            return True
-#        return False
+    def get_range(buf, left_offset, right_offset):
+        return buf.get_text(buf.get_iter_at_offset(left_offset),
+                            buf.get_iter_at_offset(right_offset))
+
+    def on_text_view_key_press_event(text_view, event):
+        """Handle special keypresses in the textarea."""
+        # Automatically move to the next line if \n is entered
+
+        if event.keyval == gtk.keysyms.n:
+            buf = text_view.get_buffer()
+            if get_range(buf, buf.props.cursor_position-1, buf.props.cursor_position) == "\\":
+                buf.insert_at_cursor('n\n')
+                text_view.scroll_mark_onscreen(buf.get_insert())
+                return True
+        return False
 
     def on_change(buf):
-        layout.set_text(buf.get_text(buf.get_start_iter(), buf.get_end_iter()))
+        layout.set_text(markup.unescape(buf.get_text(buf.get_start_iter(), buf.get_end_iter())))
 
     buf, undo_stack = undo_buffer.make_undo_buffer()
     buf.__undo_stack = undo_stack
-    undo_buffer.execute_without_signals(buf, lambda: buf.set_text(layout.get_text()))
+    undo_buffer.execute_without_signals(buf, lambda: buf.set_text(markup.escape(layout.get_text())))
     buf.connect('changed', on_change)
     text_view.set_buffer(buf)
 
-    def on_text_view_key_press_event(text_view, event, *args):
+    def on_text_view_n_press_event(text_view, event, *args):
         if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
             layout = get_layout(text_view.parent)
             if layout.next != None:
@@ -333,6 +321,7 @@ def make_text_box(layout):
     text_view.set_editable(layout.editable)
     text_view.set_wrap_mode(gtk.WRAP_WORD)
     text_view.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)
+    text_view.connect('key-press-event', on_text_view_n_press_event)
     text_view.connect('key-press-event', on_text_view_key_press_event)
 
     scrolled_window = gtk.ScrolledWindow()

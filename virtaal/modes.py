@@ -64,6 +64,6 @@ class QuickTranslateMode(UnionSetEnumerator):
     def __init__(self, stats):
         UnionSetEnumerator.__init__(self, SortedSet(stats['fuzzy']), SortedSet(stats['untranslated']))
 
-MODES = dict((val.mode_name, val) for val in pan_app().itervalues() if hasattr(val, 'mode_name'))
+MODES = dict((val.mode_name, val) for val in globals().itervalues() if hasattr(val, 'mode_name'))
 
 

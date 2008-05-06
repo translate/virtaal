@@ -123,7 +123,6 @@ class VirTaal:
         self.modified = False
         self.filename = None
 
-        self.translation_store = None
         self.unit_grid = None
         self.document = None
 
@@ -172,20 +171,26 @@ class VirTaal:
 
         chooser.destroy()
 
-    def open_file(self, filename, dialog):
+    def _confirm_unsaved(self, dialog):
         if self.modified:
             dialog = gtk.MessageDialog(dialog,
                             gtk.DIALOG_MODAL,
                             gtk.MESSAGE_QUESTION,
-                            gtk.BUTTONS_YES_NO,
-                            _("The current file was modified, but is not yet saved. Are you sure you want to open a new file without saving the previous one?"))
-            dialog.set_default_response(gtk.RESPONSE_NO)
+                            gtk.BUTTONS_YES_NO_CANCEL,
+                            _("The current file was modified, but is not yet saved. Do you want to save it now?"))
+            dialog.set_default_response(gtk.RESPONSE_YES)
             response = dialog.run()
             dialog.destroy()
-            if response in [gtk.RESPONSE_NO, gtk.RESPONSE_DELETE_EVENT]:
+            if response in [gtk.RESPONSE_CANCEL, gtk.RESPONSE_DELETE_EVENT]:
                 return True
+            elif reponse == gtk.RESPONSE_YES:
+                self._on_file_save()
 
-        if filename == self.filename:
+    def open_file(self, filename, dialog, reload=False):
+        if self._confirm_unsaved(dialog):
+            return True
+
+        if filename == self.filename and not reload:
             dialog = gtk.MessageDialog(dialog,
                             gtk.DIALOG_MODAL,
                             gtk.MESSAGE_QUESTION,
@@ -205,10 +210,10 @@ class VirTaal:
     def _on_mode_change(self, document, mode):
         self.mode_box.set_mode(mode.__class__)
 
-    def load_file(self, filename, dialog=None):
+    def load_file(self, filename, dialog=None, store=None):
         """Do the actual loading of the file into the GUI"""
         try:
-            self.document = document.Document(filename)
+            self.document = document.Document(filename, store=store)
             self.document.connect('mode-changed', self._on_mode_change)
         except Exception, e:
             dialog = gtk.MessageDialog(dialog or self.main_window,
@@ -236,8 +241,6 @@ class VirTaal:
         self.main_window.show_all()
         self.unit_grid.grab_focus()
         self._set_saveable(False)
-        self.main_window.set_title(path.basename(filename))
-        self._set_saveable(False)
         menuitem = self.gui.get_widget("saveas_menuitem")
         menuitem.set_sensitive(True)
         self.document.set_mode('Default')
@@ -246,18 +249,20 @@ class VirTaal:
     def _set_saveable(self, value):
         menuitem = self.gui.get_widget("save_menuitem")
         menuitem.set_sensitive(value)
+        if value and self.filename:
+            window_title = path.basename(self.filename)
+            self.main_window.set_title("* " + window_title)
         self.modified = value
 
     def _on_modified(self, _widget):
         if not self.modified:
-            self.main_window.set_title("* " + self.main_window.get_title())
             self._set_saveable(True)
 
     def _on_file_save(self, _widget, filename=None):
         if self.modified:
             self.unit_grid.update_for_save()
         if filename is None or filename == self.filename:
-            if isinstance(self.translation_store, poheader.poheader):
+            if isinstance(self.document.store, poheader.poheader):
                 name = pan_app.settings.translator["name"]
                 email = pan_app.settings.translator["email"]
                 team = pan_app.settings.translator["team"]
@@ -296,7 +301,6 @@ class VirTaal:
             self.filename = filename
             self.document.store.savefile(filename)
         self._set_saveable(False)
-        self.main_window.set_title(path.basename(self.filename))
 
     def _on_file_saveas(self, widget=None):
         buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_SAVE, gtk.RESPONSE_OK)

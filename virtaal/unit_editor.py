@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with translate; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+from virtaal import undo_buffer
 
 import sys
 import re
@@ -310,8 +311,11 @@ def make_text_box(layout):
     def on_change(buf):
         layout.set_text(buf.get_text(buf.get_start_iter(), buf.get_end_iter()))
 
-    text_view.get_buffer().set_text(layout.get_text())
-    text_view.get_buffer().connect('changed', on_change)
+    buf, undo_stack = undo_buffer.make_undo_buffer()
+    buf.__undo_stack = undo_stack
+    undo_buffer.execute_without_signals(buf, lambda: buf.set_text(layout.get_text()))
+    buf.connect('changed', on_change)
+    text_view.set_buffer(buf)
 
     def on_text_view_key_press_event(text_view, event, *args):
         if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:

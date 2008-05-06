@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# 
+#
 # Copyright (C) 2005-2007 Osmo Salomaa
 # Copyright (C) 2007 Zuza Software Foundation
 #
@@ -34,25 +34,25 @@ import unit_layout
 from document import get_document
 
 def undo(tree_view):
-    undo_buffer.undo(tree_view.get_buffer().undo_list)
+    undo_buffer.undo(tree_view.get_buffer().__undo_stack)
 
 class UnitRenderer(gtk.GenericCellRenderer):
     """Cell renderer for multiline text data."""
 
     __gtype_name__ = "UnitRenderer"
-    
+
     __gproperties__ = {
-        "unit":     (gobject.TYPE_PYOBJECT, 
+        "unit":     (gobject.TYPE_PYOBJECT,
                     "The unit",
                     "The unit that this renderer is currently handling",
                     gobject.PARAM_READWRITE),
         "editable": (gobject.TYPE_BOOLEAN,
-                    "editable", 
+                    "editable",
                     "A boolean indicating whether this unit is currently editable",
                     False,
                     gobject.PARAM_READWRITE),
     }
- 
+
     __gsignals__ = {
         "editing-done":  (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
                          (gobject.TYPE_STRING, gobject.TYPE_BOOLEAN, gobject.TYPE_BOOLEAN)),
@@ -73,14 +73,14 @@ class UnitRenderer(gtk.GenericCellRenderer):
     def get_unit(self):
         return self.__unit
 
-    def set_unit(self, value):        
+    def set_unit(self, value):
         if value.isfuzzy():
             self.props.cell_background = "gray"
             self.props.cell_background_set = True
 
         else:
             self.props.cell_background_set = False
-        
+
         self.__unit = value
 
     unit = property(get_unit, set_unit, None, None)
@@ -97,9 +97,9 @@ class UnitRenderer(gtk.GenericCellRenderer):
         x_offset, y_offset, width, _height = self.do_get_size(widget, cell_area)
         x = cell_area.x + x_offset
         y = cell_area.y + y_offset
-        widget.get_style().paint_layout(window, gtk.STATE_NORMAL, True, 
+        widget.get_style().paint_layout(window, gtk.STATE_NORMAL, True,
                 cell_area, widget, '', x, y, self.source_layout)
-        widget.get_style().paint_layout(window, gtk.STATE_NORMAL, True, 
+        widget.get_style().paint_layout(window, gtk.STATE_NORMAL, True,
                 cell_area, widget, '', x + width/2, y, self.target_layout)
 
     def get_pango_layout(self, widget, text, width):
@@ -113,7 +113,7 @@ class UnitRenderer(gtk.GenericCellRenderer):
 #        layout.set_text(text)
         layout.set_markup(markup.markuptext(text))
         return layout
-    
+
     def compute_cell_height(self, widget, width):
         self.source_layout = self.get_pango_layout(widget, self.unit.source, width / 2)
         self.target_layout = self.get_pango_layout(widget, self.unit.target, width / 2)

@@ -20,7 +20,6 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 from virtaal import undo_buffer
 
-import sys
 import re
 import logging
 
@@ -36,10 +35,10 @@ from translate.misc.multistring import multistring
 
 import markup
 import unit_layout
-from support.simplegeneric import generic
 import pan_app
 from pan_app import _
 import widgets.label_expander as label_expander
+from support.simplegeneric import generic
 from support.partial import post, compose
 
 def properties_generator(widget, *prop_list):
@@ -309,13 +308,6 @@ def make_target_text_box(layout):
                 return True
         return False
 
-    def on_change(buf):
-        layout.set_text(markup.unescape(buf.get_text(buf.get_start_iter(), buf.get_end_iter())))
-
-    buf = undo_buffer.add_undo_to_buffer(text_view.get_buffer())
-    undo_buffer.execute_without_signals(buf, lambda: buf.set_text(markup.escape(layout.get_text())))
-    buf.connect('changed', on_change)
-
     def on_text_view_n_press_event(text_view, event, *args):
         if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
             layout = get_layout(text_view.parent)
@@ -328,6 +320,13 @@ def make_target_text_box(layout):
                 text_view.parent.emit('key-press-event', event)
             return True
         return False
+
+    def on_change(buf):
+        layout.set_text(markup.unescape(buf.get_text(buf.get_start_iter(), buf.get_end_iter())))
+
+    buf = undo_buffer.add_undo_to_buffer(text_view.get_buffer())
+    undo_buffer.execute_without_signals(buf, lambda: buf.set_text(markup.escape(layout.get_text())))
+    buf.connect('changed', on_change)
 
     text_view.set_editable(layout.editable)
     text_view.set_wrap_mode(gtk.WRAP_WORD)
@@ -400,25 +399,10 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
 
         self.connect('key-press-event', self.on_key_press_event)
 
-#        self._place_cursor()
-#        self.recent_textview = self.textviews[0]
-#        self.recent_textview.place_cursor_onscreen()
-#        self.fuzzy_checkbox.set_active(unit.isfuzzy())
-
     def on_key_press_event(self, widget, event, *args):
         if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
             self.must_advance = True
             self.editing_done()
-
-
-#    def do_editing_done(self, *_args):
-#        """End editing."""
-#        self.update_for_save()
-#        self.remove_widget()
-#
-#    def do_remove_widget(self, *_args):
-#        """Remove widget."""
-#        pass
 
     def do_start_editing(self, *_args):
         """Start editing."""
@@ -458,13 +442,6 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
             return targets[0]
         else:
             return multistring(targets)
-
-#    def _on_source_scroll(self, _textview, _step_size, _count, _extend_selection):
-#        #XXX scroll the source???
-#        return True
-
-    def _on_insert_at_cursor(self, _textview, _string):
-        return True
 
     def _on_copy_original(self, _widget):
         for buf in self.buffers:

@@ -168,7 +168,7 @@ def make_pango_layout(layout, text, widget, width):
     pango_layout = pango.Layout(widget.get_pango_context())
     pango_layout.set_width((width - h_padding(layout)) * pango.SCALE)
     pango_layout.set_wrap(pango.WRAP_WORD)
-    pango_layout.set_text(text)
+    pango_layout.set_text(text or "")
     return pango_layout
 
 @specialize_height(unit_layout.TextBox)

@@ -26,6 +26,7 @@ pygtk.require('2.0')
 import gtk
 import gobject
 
+from pan_app import _
 from unit_renderer import UnitRenderer
 from virtaal.support import bijection
 

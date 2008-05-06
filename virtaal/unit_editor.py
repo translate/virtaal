@@ -364,12 +364,6 @@ def make_option(option):
 #cursor initially.
 first_word_re = re.compile("(?m)(?u)^(<[^>]+>|\\\\[nt]|[\W$^\n])*(\\b|\\Z)")
 
-def on_size_allocate(widget, allocation):
-    # TODO: replace the 2 in allocation.width - 2 with a GTK function which
-    # gives the border width of widget.
-    widget.child.set_size_request(allocation.width - 2, -1)
-
-
 class UnitEditor(gtk.EventBox, gtk.CellEditable):
     """Text view suitable for cell renderer use."""
 

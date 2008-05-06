@@ -264,10 +264,7 @@ def focus_text_view(text_view):
     translation_start = first_word_re.match(text).span()[1]
     buf.place_cursor(buf.get_iter_at_offset(translation_start))
 
-@specialize_make_widget(unit_layout.TextBox)
-def make_text_box(layout):
-    text_view = gtk.TextView()
-
+def add_spell_checking(text_view, language):
     global gtkspell
     if gtkspell:
         try:
@@ -279,6 +276,29 @@ def make_text_box(layout):
 #            print >> sys.stderr, _("Could not initialize spell checking")
 #            traceback.print_exc(file=sys.stderr)
             gtkspell = None
+
+@specialize_make_widget(unit_layout.SourceTextBox)
+def make_source_text_box(layout):
+    text_view = gtk.TextView()
+
+    add_spell_checking(text_view, pan_app.settings.language["sourcelang"])
+
+    text_view.get_buffer().set_text(markup.escape(layout.get_text()))
+    text_view.set_editable(layout.editable)
+    text_view.set_wrap_mode(gtk.WRAP_WORD)
+    text_view.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)
+
+    scrolled_window = gtk.ScrolledWindow()
+    scrolled_window.set_policy(gtk.POLICY_NEVER, gtk.POLICY_NEVER)
+    scrolled_window.add(text_view)
+
+    return scrolled_window, {layout.name: scrolled_window}
+
+@specialize_make_widget(unit_layout.TargetTextBox)
+def make_target_text_box(layout):
+    text_view = gtk.TextView()
+
+    add_spell_checking(text_view, pan_app.settings.language["contentlang"])
 
     def get_range(buf, left_offset, right_offset):
         return buf.get_text(buf.get_iter_at_offset(left_offset),
@@ -330,7 +350,7 @@ def make_text_box(layout):
 
 @specialize_make_widget(unit_layout.Comment)
 def make_comment(comment):
-    text_box, names = make_text_box(comment)
+    text_box, names = make_source_text_box(comment)
     expander = label_expander.LabelExpander(text_box, comment.get_text)
     return expander, names
 

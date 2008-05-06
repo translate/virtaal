@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# 
+#
 # Copyright 2007-2008 Zuza Software Foundation
-# 
+#
 # This file is part of virtaal.
 #
 # translate is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # translate is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -61,6 +61,7 @@ class Settings:
     }
     language =      {
             "uilang": None,
+            "sourcelang": "en",
             "contentlang": None,
     }
     undo = {
@@ -86,11 +87,11 @@ class Settings:
     def read(self):
         """Read the configuration file and set the dictionaries up."""
         self.config.read(self.filename)
-    
+
         for section in self.sections:
             if not self.config.has_section(section):
                 self.config.add_section(section)
-    
+
         for key, value in self.config.items("translator"):
             self.translator[key] = value
         for key, value in self.config.items("general"):
@@ -99,9 +100,9 @@ class Settings:
             self.language[key] = value
         for key, value in self.config.items("undo"):
             self.undo[key] = value
-        
+
     def write(self):
-        """Write the configuration file."""        
+        """Write the configuration file."""
         for key in self.translator:
             self.config.set("translator", key, self.translator[key])
         for key in self.general:
@@ -113,10 +114,10 @@ class Settings:
 
         # make sure that the configuration directory exists
         project_dir = os.path.split(self.filename)[0]
-        if not os.path.isdir(project_dir): 
+        if not os.path.isdir(project_dir):
             os.makedirs(project_dir)
         file = open(self.filename, 'w')
         self.config.write(file)
         file.close()
- 
+
 settings = Settings()

@@ -65,6 +65,14 @@ class TextBox(Widget):
         self.next     = None
         self.editable = editable
 
+class SourceTextBox(TextBox):
+    def __init__(self, name, get_text, set_text):
+        super(SourceTextBox, self).__init__(name, get_text, set_text, False)
+
+class TargetTextBox(TextBox):
+    def __init__(self, name, get_text, set_text):
+        super(TargetTextBox, self).__init__(name, get_text, set_text, True)
+
 class Comment(TextBox):
     def __init__(self, name, get_text, set_text=lambda value: None):
         super(Comment, self).__init__(name, get_text, set_text, False)
@@ -137,16 +145,14 @@ def build_layout(unit, nplurals):
     @param nplurals: The number of plurals in the
     """
 
-    sources = [TextBox('source-%d' % i,
+    sources = [SourceTextBox('source-%d' % i,
                        partial(get_source, unit, i),
-                       partial(set_source, unit, i),
-                       False)
+                       partial(set_source, unit, i))
                for i in xrange(num_sources(unit))]
 
-    targets = [TextBox('target-%d' % i,
+    targets = [TargetTextBox('target-%d' % i,
                        partial(get_target, unit, nplurals, i),
-                       partial(set_target, unit, i),
-                       True)
+                       partial(set_target, unit, i))
                for i in xrange(num_targets(unit, nplurals))]
 
     all_text = list(chain(sources, targets))

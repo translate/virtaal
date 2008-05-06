@@ -40,14 +40,13 @@ class BoundedQueue(collections.deque):
 
         self.append(item)
 
-def make_undo_buffer():
-    buffer = gtk.TextBuffer()
-    undo_list = BoundedQueue(lambda: pan_app.settings.undo['depth'])
+def add_undo_to_buffer(buf):
+    buf.__undo_stack = BoundedQueue(lambda: pan_app.settings.undo['depth'])
 
-    buffer.insert_handler = buffer.connect("insert-text",       on_insert_text,       undo_list)
-    buffer.delete_handler = buffer.connect("delete-range",      on_delete_range,      undo_list)
+    buf.insert_handler = buf.connect("insert-text",  on_insert_text,  buf.__undo_stack)
+    buf.delete_handler = buf.connect("delete-range", on_delete_range, buf.__undo_stack)
 
-    return buffer, undo_list
+    return buf
 
 def block_change_signals(self):
     self.handler_block(self.insert_handler)

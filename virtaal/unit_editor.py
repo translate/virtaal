@@ -299,11 +299,9 @@ def make_text_box(layout):
     def on_change(buf):
         layout.set_text(markup.unescape(buf.get_text(buf.get_start_iter(), buf.get_end_iter())))
 
-    buf, undo_stack = undo_buffer.make_undo_buffer()
-    buf.__undo_stack = undo_stack
+    buf = undo_buffer.add_undo_to_buffer(text_view.get_buffer())
     undo_buffer.execute_without_signals(buf, lambda: buf.set_text(markup.escape(layout.get_text())))
     buf.connect('changed', on_change)
-    text_view.set_buffer(buf)
 
     def on_text_view_n_press_event(text_view, event, *args):
         if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:

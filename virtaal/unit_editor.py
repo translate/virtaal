@@ -380,6 +380,9 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         self.layout, widget_dict = make_widget(unit_layout.get_blueprints(unit, parent))
         self.add(self.layout)
 
+        for target_widget in (get_widget(s) for s in unit_layout.get_targets(get_layout(self.layout))):
+            target_widget.child.get_buffer().connect("changed", self._on_modify)
+
         #blueprints['copy_button'].connect("activate", self._on_copy_original)
         #editor_names['copy_button'].connect("clicked", self._on_copy_original)
         #editor_names['copy_button'].set_relief(gtk.RELIEF_NONE)
@@ -392,6 +395,9 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         self._widget_dict = widget_dict
 
         self.connect('key-press-event', self.on_key_press_event)
+
+    def _on_modify(self, buf):
+        self.emit('modified')
 
     def on_key_press_event(self, widget, event, *args):
         if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:

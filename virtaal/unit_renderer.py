@@ -144,11 +144,15 @@ class UnitRenderer(gtk.GenericCellRenderer):
         self.emit("editing-done", editor.get_data("path"), editor.must_advance, editor.get_modified())
         return True
 
+    def _on_modified(self, widget):
+        self.emit("modified")
+
     def do_start_editing(self, _event, tree_view, path, _bg_area, cell_area, _flags):
         """Initialize and return the editor widget."""
         if not hasattr(self.unit, '__editor'):
             editor = UnitEditor(tree_view, self.unit)
             editor.connect("editing-done", self._on_editor_done)
+            editor.connect("modified", self._on_modified)
             editor.set_border_width(min(self.props.xpad, self.props.ypad))
             editor.show_all()
             setattr(self.unit, '__editor', editor)

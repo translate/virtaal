@@ -159,7 +159,7 @@ def build_layout(unit, nplurals):
     for first, second in zip(all_text, all_text[1:]):
         first.next = second
 
-    return Layout('layout',
+    layout = Layout('layout',
                   VList('main_list', list(chain(
                         [Comment('programmer',
                                  partial(unit.getnotes, 'programmer'))],
@@ -169,6 +169,19 @@ def build_layout(unit, nplurals):
                         [Comment('translator',
                                  partial(unit.getnotes, 'translator'))],
                         get_options(unit)))))
+
+    # This is somewhat ugly. These private variables will be used by get_sources
+    # and get_targets (both defined elsewhere in this file).
+    layout.__sources = sources
+    layout.__targets = targets
+
+    return layout
+
+def get_sources(layout):
+    return layout.__sources
+
+def get_targets(layout):
+    return layout.__targets
 
 def get_blueprints(unit, nplurals):
     """Return a layout description used to construct UnitEditors

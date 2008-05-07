@@ -25,6 +25,8 @@ import sys
 
 from virtaal.main_window import VirTaal
 
+PROFILE = True
+
 def module_path():
     """This will get us the program's directory, even if we are frozen using py2exe"""
     if hasattr(sys, "frozen"):
@@ -33,5 +35,15 @@ def module_path():
 
 if __name__ == "__main__":
     hwg = VirTaal(module_path())
-    hwg.run()
+    if PROFILE:
+        import cProfile
+        import source_tree_infrastructure.lsprofcalltree as lsprofcalltree
+        profiler = cProfile.Profile()
+        profiler.run('hwg.run()')
+        k_cache_grind = lsprofcalltree.KCacheGrind(profiler)
+        f = open('virtaal.kgrind', 'w+')
+        k_cache_grind.output(f)
+        f.close()
+    else:
+        hwg.run()
 

@@ -342,15 +342,18 @@ class VirTaal:
 
     def _on_documentation(self, widget=None):
         os.system("xdg-open http://translate.sourceforge.net/wiki/virtaal/index")
-        
+
     def _on_report_bug(self, widget=None):
         os.system("xdg-open http://bugs.locamotion.org/enter_bug.cgi?product=VirTaal")
 
     def run(self):
-        logging.basicConfig(level=logging.INFO,
-                            format='%(asctime)s %(levelname)s %(message)s',
-                            filename='virtaal.log',
-                            filemode='w')
+        try:
+            logging.basicConfig(level=logging.INFO,
+                                format='%(asctime)s %(levelname)s %(message)s',
+                                filename='virtaal.log',
+                                filemode='w')
+        except IOError:
+            print "Could not open log file"
 
         if len(sys.argv) > 1:
             self.load_file(sys.argv[1])

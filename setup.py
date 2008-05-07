@@ -329,7 +329,6 @@ class TranslateDistribution(Distribution):
         baseattrs.update(attrs)
         Distribution.__init__(self, baseattrs)
 
-
 def dosetup(name, version, packages, **kwargs):
     long_description = __doc__
     #description = __doc__.split("\n", 1)[0]
@@ -355,7 +354,7 @@ def standardsetup(name, version, custompackages=None, customdatafiles=None):
     customdatafiles = if_none(customdatafiles, [])
 
     dosetup(name, version,
-            packages=['virtaal'],
+            packages=['virtaal', 'virtaal/widgets', 'virtaal/support'],
             data_files=[('virtaal', ['data/virtaal.glade']),
                         ('mime/packages', ['data/virtaal-mimetype.xml']),
                         ('applications', ['data/virtaal.desktop']),

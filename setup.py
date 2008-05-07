@@ -48,54 +48,6 @@ options = {
 #    targetpath = path.dirname(path.join("share/", filepath))
 #    I18NFILES.append((targetpath, [filepath]))
 
-def map_data_file (data_file):
-    """remaps a data_file (could be a directory) to a different location
-    This version gets rid of Lib\\site-packages, etc"""
-
-    data_parts = data_file.split(os.sep)
-    if data_parts[:2] == ["Lib", "site-packages"]:
-        data_parts = data_parts[2:]
-        if data_parts:
-            data_file = path.join(*data_parts)
-        else:
-            data_file = ""
-    if data_parts[:1] == ["translate"]:
-        data_parts = data_parts[1:]
-        if data_parts:
-            data_file = path.join(*data_parts)
-        else:
-            data_file = ""
-    return data_file
-
-def remap_data_files(self, data_files):
-    """maps the given data files to different locations using external map_data_file function"""
-    new_data_files = []
-
-    for f in data_files:
-        if type(f) in (str, unicode):
-            f = map_data_file(f)
-        else:
-            datadir, files = f
-            datadir = map_data_file(datadir)
-            if datadir is None:
-                f = None
-            else:
-                f = datadir, files
-        if f is not None:
-            new_data_files.append(f)
-    return new_data_files
-
-class BuildWin32Exe(build_exe):
-    """distutils py2exe-based class that builds the exe file(s) but allows mapping data files"""
-
-    # Override
-    def reinitialize_command(self, command, reinit_subcommands=0):
-        if command == "install_data":
-            install_data = build_exe.reinitialize_command(self, command, reinit_subcommands)
-            install_data.data_files = self.remap_data_files(install_data.data_files)
-            return install_data
-        return build_exe.reinitialize_command(self, command, reinit_subcommands)
-
 def find_gtk_bin_directory():
     GTK_NAME = "libgtk"
     # Look for GTK in the user's Path as well as in some familiar locations
@@ -155,7 +107,7 @@ def add_win32_options(options):
                 "innosetup": innosetup_options
             },
             'cmdclass':  {
-                "py2exe":    BuildWin32Exe,
+                "py2exe":    build_exe,
 #                "innosetup": build_win32_installer
             }
         })

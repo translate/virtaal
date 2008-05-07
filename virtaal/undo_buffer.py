@@ -68,13 +68,13 @@ def undo(undo_list):
         return action()
     return False
 
-def on_delete_range(buffer, start_iter, end_iter, undo_list):
+def on_delete_range(buf, start_iter, end_iter, undo_list):
     offset = start_iter.get_offset()
-    text = buffer.get_text(start_iter, end_iter)
+    text = buf.get_text(start_iter, end_iter)
 
     def undo():
-        start_iter = buffer.get_iter_at_offset(offset)
-        execute_without_signals(buffer, partial(buffer.insert, start_iter, text))
+        start_iter = buf.get_iter_at_offset(offset)
+        execute_without_signals(buf, partial(buf.insert, start_iter, text))
         return True
 
     undo_list.push(undo)

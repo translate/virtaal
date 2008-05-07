@@ -91,6 +91,7 @@ class ModeBox(gtk.HBox):
         self.emit('mode-selected', self.mode_to_label.inverse[clicked_label])
 
 GLADE_DIRS = [
+    ["..", "share", "virtaal"],
     ["share", "virtaal"],
     ["data"]
 ]
@@ -101,7 +102,7 @@ def load_glade_file(basepath, filename):
         if path.exists(gladefile):
             gui = glade.XML(gladefile)
             return gladefile, gui
-    return None, None
+    raise Exception("Could not find %s" % (filename,))
 
 class VirTaal:
     """The entry point class for VirTaal"""

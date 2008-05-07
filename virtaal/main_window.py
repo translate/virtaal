@@ -114,8 +114,6 @@ class VirTaal:
 
         self.status_box = self.gui.get_widget("status_box")
         self.sw = self.gui.get_widget("scrolledwindow1")
-        edit_menu = self.gui.get_widget("menuitem2")
-        edit_menu.set_sensitive(False)
         self.main_window = self.gui.get_widget("MainWindow")
         self._setup_key_bindings()
         self.main_window.show()

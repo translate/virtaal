@@ -78,10 +78,15 @@ class InnoScript:
 [Setup]
 AppName=%(name)s
 AppVerName=%(name)s %(version)s
+AppPublisher=Zuza Software Foundation
+AppPublisherURL=http://www.translate.org.za/
+AppVersion=%(version)s
+AppSupportURL=http://translate.sourceforge.net/
+;AppComments=
+;AppCopyright=Copyright (C) 2007-2008 Zuza Software Foundation
 DefaultDirName={pf}\%(name)s
 DefaultGroupName=%(name)s
 OutputBaseFilename=%(name)s-%(version)s-setup
-ChangesEnvironment=yes
 ChangesAssociations=yes
 SetupIconFile=icons\virtaal.ico
 
@@ -90,8 +95,8 @@ SetupIconFile=icons\virtaal.ico
             print >> ofi, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (fpath, os.path.dirname(fpath))
         print >> ofi, r'''
 [Icons]
-Name: "{group}\VirTaal Translation Editor"; Filename: "{app}\run_virtaal.exe";
-Name: "{group}\Uninstall %(name)s"; Filename: "{uninstallexe}"''' % {'name': self.name}
+Name: "{group}\%(name)s Translation Editor"; Filename: "{app}\run_virtaal.exe";
+Name: "{group}\%(name)s (uninstall)"; Filename: "{uninstallexe}"''' % {'name': self.name}
 
         if self.install_scripts:
             print >> ofi, r"[Run]"
@@ -105,7 +110,12 @@ Name: "{group}\Uninstall %(name)s"; Filename: "{uninstallexe}"''' % {'name': sel
             for fpath in self.install_scripts:
                 print >> ofi, r'Filename: "{app}\%s"; WorkingDir: "{app}"; Parameters: "-remove"' % fpath
                 
-        # File associations. This depends on "ChangesAssociations=yes" above.
+        # File associations. Note the directive "ChangesAssociations=yes" above
+        # that causes the installer to tell Explorer to refresh associations.
+        # This part might cause the created installer to need administrative 
+        # priviledges. An alternative might be to rather write to 
+        # HKCU\Software\Classes, but this won't be system usable then. Didn't 
+        # see a way to test and alter the behaviour.
         print >> ofi, r'''
 [Registry]'''
         # Things should look something like this:
@@ -133,6 +143,11 @@ Root: HKCR; Subkey: "virtaal_po\shell\open\command"; ValueType: string; ValueNam
             print >> ofi, r'''Root: HKCR; Subkey: "virtaal_%(key)s"; ValueType: string; ValueName: ""; ValueData: "%(description)s"; Flags: uninsdeletekey
 Root: HKCR; Subkey: "virtaal_%(key)s\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icons\virtaal.ico"
 Root: HKCR; Subkey: "virtaal_%(key)s\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\run_virtaal.exe"" ""%%1"""''' % {'key': key, 'description': description}
+
+        # Show a "Launch VirTaal" checkbox on the last installer screen
+        print >> ofi, r'''
+[Run]
+Filename: "{app}\run_virtaal.exe"; Description: "{cm:LaunchProgram,%(name)s}"; Flags: nowait postinstall skipifsilent''' % {'name': self.name}
 
         print >> ofi
         ofi.close()

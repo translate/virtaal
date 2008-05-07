@@ -3,7 +3,8 @@
 from distutils.core import setup, Distribution, Command
 from virtaal.__version__ import ver as virtaal_version
 import glob
-import os.path
+import os
+import os.path as path
 
 try:
     import py2exe
@@ -27,19 +28,9 @@ classifiers = [
     "Operating System :: Unix"
 ]
 
-def path(unix_path_str):
-    """Convert a UNIX path to a platform independent path.
-
-    Although distutils will convert UNIX paths to platform independent
-    paths, functions like glob.glob won't.
-
-    Naturally this function will only yield expected results for
-    relative paths."""
-    return os.path.join(*unix_path_str.split('/'))
-
 options = {
     'data_files': [
-        ('data', glob.glob(path("data/*"))),
+        ('data', glob.glob(path.join("data", "*"))),
     ],
     'scripts': [
         "run_virtaal.py"
@@ -54,7 +45,7 @@ options = {
 ##Create an array with all the locale filenames
 #I18NFILES = []
 #for filepath in glob.glob("locale/*/LC_MESSAGES/*.mo"):
-#    targetpath = os.path.dirname(os.path.join("share/", filepath))
+#    targetpath = path.dirname(path.join("share/", filepath))
 #    I18NFILES.append((targetpath, [filepath]))
 
 def map_data_file (data_file):

@@ -31,7 +31,8 @@ classifiers = [
 
 options = {
     'data_files': [
-        ('share/virtaal', glob.glob(path.join("data", "*"))),
+        ('share/virtaal', (path.join("data", "virtaal.desktop"), (path.join("data", "virtaal-mimetype.xml")))),
+        ('share/virtaal', ("virtaal.png",)),
     ],
     'scripts': [
         "run_virtaal.py"

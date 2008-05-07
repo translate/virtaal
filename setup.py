@@ -119,6 +119,16 @@ def add_platform_specific_options(options):
 
 options = add_platform_specific_options(options)
 
+def create_manifest(data_files):
+    f = open('MANIFEST.in', 'w+')
+    for _dest_path, data_file_list in data_files:
+        f.write("include ")
+        f.write(" ".join(data_file_list))
+        f.write("\n")
+    f.close()
+
+create_manifest(options['data_files'])
+
 setup(name="virtaal",
       version=virtaal_version,
       license="GNU General Public License (GPL)",

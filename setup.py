@@ -315,7 +315,7 @@ class TranslateDistribution(Distribution):
                 "windows": [
                     {
                         'script': 'run_virtaal.py',
-                        'icon_resources': [(1, "icons/virtaal.ico")],
+                        'icon_resources': [(1, "virtaal.ico")],
                     }
                 ],
 

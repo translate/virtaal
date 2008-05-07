@@ -75,6 +75,7 @@ def on_delete_range(buf, start_iter, end_iter, undo_list):
     def undo():
         start_iter = buf.get_iter_at_offset(offset)
         execute_without_signals(buf, partial(buf.insert, start_iter, text))
+        buf.place_cursor(start_iter)
         return True
 
     undo_list.push(undo)
@@ -87,6 +88,7 @@ def on_insert_text(buf, iter, text, length, undo_list):
         start_iter = buf.get_iter_at_offset(offset)
         end_iter = buf.get_iter_at_offset(offset + length)
         execute_without_signals(buf, partial(buf.delete, start_iter, end_iter))
+        buf.place_cursor(start_iter)
         return True
 
     undo_list.push(undo)

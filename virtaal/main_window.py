@@ -90,13 +90,25 @@ class ModeBox(gtk.HBox):
     def _on_label_click(self, clicked_label, _event):
         self.emit('mode-selected', self.mode_to_label.inverse[clicked_label])
 
+GLADE_DIRS = [
+    ["share", "virtaal"],
+    ["data"]
+]
+def load_glade_file(basepath, filename):
+    for dir in GLADE_DIRS:
+        dir_and_filename = dir + [filename]
+        gladefile = path.join(basepath or path.dirname(__file__), *dir_and_filename)
+        if path.exists(gladefile):
+            gui = glade.XML(gladefile)
+            return gladefile, gui
+    return None, None
+
 class VirTaal:
     """The entry point class for VirTaal"""
 
     def __init__(self, basepath=None):
         #Set the Glade file
-        self.gladefile = path.join(basepath or path.dirname(__file__), "data", "virtaal.glade")
-        self.gui = glade.XML(self.gladefile)
+        self.gladefile, self.gui = load_glade_file(basepath, "virtaal.glade")
 
         #Create our dictionay and connect it
         dic = {

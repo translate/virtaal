@@ -5,6 +5,7 @@ from virtaal.__version__ import ver as virtaal_version
 import glob
 import os
 import os.path as path
+import sys
 
 try:
     import py2exe
@@ -82,7 +83,7 @@ def add_win32_options(options):
     @return: A 2-tuple (data_files, options), where data_files is a list of Windows
              specific data files (this would include the GTK binaries) and where
              options are the options required by py2exe."""
-    if py2exe != None:
+    if py2exe != None and ('py2exe' in sys.argv or 'innosetup' in sys.argv):
         options['data_files'].extend(find_gtk_files())
 
         py2exe_options = {

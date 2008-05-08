@@ -218,6 +218,25 @@ class VirTaal:
         try:
             self.document = document.Document(filename, store=store)
             self.document.connect('mode-changed', self._on_mode_change)
+            self.status_box.remove(self.status_box.get_children()[0])
+            self.mode_box = ModeBox(self.document.get_modes())
+            self.status_box.pack_start(self.mode_box)
+            self.status_box.reorder_child(self.mode_box, 0)
+            self.mode_box.connect('mode-selected', self._on_gui_mode_change)
+            self.document.set_mode('Default')
+
+            self.filename = filename
+            self.unit_grid = unit_grid.UnitGrid(self)
+            self.unit_grid.connect("modified", self._on_modified)
+            self.sw.remove(self.sw.get_child())
+            self.sw.add(self.unit_grid)
+            self.main_window.connect("configure-event", self.unit_grid.on_configure_event)
+            self.main_window.show_all()
+            self.unit_grid.grab_focus()
+            self._set_saveable(False)
+            menuitem = self.gui.get_widget("saveas_menuitem")
+            menuitem.set_sensitive(True)
+            self.document.set_mode('Default')
         except Exception, e:
             dialog = gtk.MessageDialog(dialog or self.main_window,
                             gtk.DIALOG_MODAL,
@@ -227,26 +246,6 @@ class VirTaal:
             dialog.run()
             dialog.destroy()
             return False
-
-        self.status_box.remove(self.status_box.get_children()[0])
-        self.mode_box = ModeBox(self.document.get_modes())
-        self.status_box.pack_start(self.mode_box)
-        self.status_box.reorder_child(self.mode_box, 0)
-        self.mode_box.connect('mode-selected', self._on_gui_mode_change)
-        self.document.set_mode('Default')
-
-        self.filename = filename
-        self.unit_grid = unit_grid.UnitGrid(self)
-        self.unit_grid.connect("modified", self._on_modified)
-        self.sw.remove(self.sw.get_child())
-        self.sw.add(self.unit_grid)
-        self.main_window.connect("configure-event", self.unit_grid.on_configure_event)
-        self.main_window.show_all()
-        self.unit_grid.grab_focus()
-        self._set_saveable(False)
-        menuitem = self.gui.get_widget("saveas_menuitem")
-        menuitem.set_sensitive(True)
-        self.document.set_mode('Default')
         return True
 
     def _set_saveable(self, value):

@@ -85,14 +85,17 @@ class UnitGrid(gtk.TreeView):
         self.connect("cursor-changed", self.on_cursor_changed)
         self.connect("button-press-event", self.on_button_press)
 
-        #self.accel_group = gtk.AccelGroup()
-        #self.add_accel_group(self.accel_group)
-
-        self._owner.accel_group.connect_by_path("<VirTaal>/Navigation/Up", self._move_up)
-        self._owner.accel_group.connect_by_path("<VirTaal>/Navigation/Down", self._move_down)
+        self.accel_group = gtk.AccelGroup()
+        self._owner.main_window.add_accel_group(self.accel_group)
+        self.accel_group.connect_by_path("<VirTaal>/Navigation/Up", self._move_up)
+        self.accel_group.connect_by_path("<VirTaal>/Navigation/Down", self._move_down)
+        self.connect("destroy", self._on_destroy)
 
         gobject.idle_add(self._activate_editing_path,
                          self.convert_store_index_to_path(self.document.mode_cursor.deref()))
+
+    def _on_destroy(self, *args):
+        self._owner.main_window.remove_accel_group(self.accel_group)
 
     def _on_mode_changed(self, widget, mode):
         path = self.convert_store_index_to_path(self.document.mode_cursor.deref())

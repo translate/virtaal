@@ -53,11 +53,6 @@ from virtaal.support import bijection
 def on_undo(_accel_group, acceleratable, _keyval, _modifier):
     unit_renderer.undo(acceleratable.focus_widget)
 
-TEXT_VIEW_ACCELS = gtk.AccelGroup()
-key, modifier = gtk.accelerator_parse("<Control>z")
-TEXT_VIEW_ACCELS.connect_group(key, modifier, gtk.ACCEL_VISIBLE, on_undo)
-
-
 class ModeBox(gtk.HBox):
     __gtype_name__ = "ModeBox"
 
@@ -218,7 +213,9 @@ class VirTaal:
         try:
             self.document = document.Document(filename, store=store)
             self.document.connect('mode-changed', self._on_mode_change)
-            self.status_box.remove(self.status_box.get_children()[0])
+            child = self.status_box.get_children()[0]
+            self.status_box.remove(child)
+            child.destroy()
             self.mode_box = ModeBox(self.document.get_modes())
             self.status_box.pack_start(self.mode_box)
             self.status_box.reorder_child(self.mode_box, 0)
@@ -228,7 +225,9 @@ class VirTaal:
             self.filename = filename
             self.unit_grid = unit_grid.UnitGrid(self)
             self.unit_grid.connect("modified", self._on_modified)
-            self.sw.remove(self.sw.get_child())
+            child = self.sw.get_child()
+            self.sw.remove(child)
+            child.destroy()
             self.sw.add(self.unit_grid)
             self.main_window.connect("configure-event", self.unit_grid.on_configure_event)
             self.main_window.show_all()

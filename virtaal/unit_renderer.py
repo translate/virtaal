@@ -97,10 +97,16 @@ class UnitRenderer(gtk.GenericCellRenderer):
         x_offset, y_offset, width, _height = self.do_get_size(widget, cell_area)
         x = cell_area.x + x_offset
         y = cell_area.y + y_offset
-        widget.get_style().paint_layout(window, gtk.STATE_NORMAL, True,
-                cell_area, widget, '', x, y, self.source_layout)
-        widget.get_style().paint_layout(window, gtk.STATE_NORMAL, True,
-                cell_area, widget, '', x + width/2, y, self.target_layout)
+        source_x = x
+        target_x = x
+        if widget.get_direction() == gtk.TEXT_DIR_LTR:
+            target_x += width/2
+        else:
+            source_x += width/2
+        widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False,  
+                cell_area, widget, '', source_x, y, self.source_layout)
+        widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False, 
+                cell_area, widget, '', target_x, y, self.target_layout)
 
     def get_pango_layout(self, widget, text, width):
         '''Gets the Pango layout used in the cell in a TreeView widget.'''
@@ -117,6 +123,11 @@ class UnitRenderer(gtk.GenericCellRenderer):
     def compute_cell_height(self, widget, width):
         self.source_layout = self.get_pango_layout(widget, self.unit.source, width / 2)
         self.target_layout = self.get_pango_layout(widget, self.unit.target, width / 2)
+	# This makes no sense, but has the desired effect to align things correctly for
+        # both LTR and RTL languages:
+        if widget.get_direction() == gtk.TEXT_DIR_RTL:
+	    self.source_layout.set_alignment(pango.ALIGN_RIGHT)
+	    self.target_layout.set_alignment(pango.ALIGN_RIGHT)
         _layout_width, source_height = self.source_layout.get_pixel_size()
         _layout_width, target_height = self.target_layout.get_pixel_size()
         return max(source_height, target_height)

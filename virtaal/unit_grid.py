@@ -61,7 +61,7 @@ class UnitGrid(gtk.TreeView):
             )
 
         self.set_headers_visible(False)
-        self.set_direction(gtk.TEXT_DIR_LTR)
+#        self.set_direction(gtk.TEXT_DIR_LTR)
 
         if len(self.get_model()) == 0:
             raise ValueError(_("The file did not contain anything to translate."))

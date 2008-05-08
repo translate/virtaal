@@ -46,6 +46,143 @@ options = {
 #############################
 # WIN 32 specifics
 
+def get_compile_command(self):
+    try:
+        import _winreg
+        compile_key = _winreg.OpenKey(_winreg.HKEY_CLASSES_ROOT, "innosetupscriptfile\\shell\\compile\\command")
+        compilecommand = _winreg.QueryValue(compile_key, "")
+        compile_key.Close()
+
+    except:
+        compilecommand = "compil32.exe"
+    return compilecommand
+
+def chop(dist_dir, pathname):
+    """returns the path relative to self.dist_dir"""
+    assert pathname.startswith(dist_dir)
+    return pathname[len(dist_dir):]
+
+def create_inno_script(self, name, lib_dir, dist_dir, exe_files, other_files, version = "1.0"):
+    if not dist_dir.endswith(os.sep):
+        dist_dir += os.sep
+    exe_files = [self.chop(dist_dir, p) for p in exe_files]
+    other_files = [self.chop(dist_dir, p) for p in other_files]
+    pathname = path.join(dist_dir, self.name + os.extsep + "iss")
+
+# See http://www.jrsoftware.org/isfaq.php for more InnoSetup config options.
+    ofi = self.file = open(pathname, "w")
+    print >> ofi, r'''; WARNING: This script has been created by py2exe. Changes to this script
+; will be overwritten the next time py2exe is run!
+
+[Setup]
+AppName=%(name)s
+AppVerName=%(name)s %(version)s
+AppPublisher=Zuza Software Foundation
+AppPublisherURL=http://www.translate.org.za/
+AppVersion=%(version)s
+AppSupportURL=http://translate.sourceforge.net/
+;AppComments=
+;AppCopyright=Copyright (C) 2007-2008 Zuza Software Foundation
+DefaultDirName={pf}\%(name)s
+DefaultGroupName=%(name)s
+OutputBaseFilename=%(name)s-%(version)s-setup
+ChangesAssociations=yes
+SetupIconFile=icons\virtaal.ico
+
+[Files]''' % {'name': self.name, 'version': self.version}
+    for fpath in self.exe_files + self.other_files:
+        print >> ofi, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (fpath, os.path.dirname(fpath))
+    print >> ofi, r'''
+[Icons]
+Name: "{group}\%(name)s Translation Editor"; Filename: "{app}\run_virtaal.exe";
+Name: "{group}\%(name)s (uninstall)"; Filename: "{uninstallexe}"''' % {'name': self.name}
+
+    if self.install_scripts:
+        print >> ofi, r"[Run]"
+
+        for fpath in self.install_scripts:
+            print >> ofi, r'Filename: "{app}\%s"; WorkingDir: "{app}"; Parameters: "-install"' % fpath
+
+        print >> ofi
+        print >> ofi, r"[UninstallRun]"
+
+        for fpath in self.install_scripts:
+            print >> ofi, r'Filename: "{app}\%s"; WorkingDir: "{app}"; Parameters: "-remove"' % fpath
+
+    # File associations. Note the directive "ChangesAssociations=yes" above
+    # that causes the installer to tell Explorer to refresh associations.
+    # This part might cause the created installer to need administrative
+    # privileges. An alternative might be to rather write to
+    # HKCU\Software\Classes, but this won't be system usable then. Didn't
+    # see a way to test and alter the behaviour.
+    print >> ofi, r'''
+[Registry]'''
+    # Things should look something like this:
+    r'''
+;File extension:
+Root: HKCR; Subkey: ".po"; ValueType: string; ValueName: ""; ValueData: "virtaal_po"; Flags: uninsdeletevalue
+;Description of the file type
+Root: HKCR; Subkey: "virtaal_po"; ValueType: string; ValueName: ""; ValueData: "Gettext PO"; Flags: uninsdeletekey
+;Icon to use in Explorer
+Root: HKCR; Subkey: "virtaal_po\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icons\virtaal.ico"
+;The command to open the file
+Root: HKCR; Subkey: "virtaal_po\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\run_virtaal.exe"" ""%1"""
+'''
+    from virtaal.formats import supported_types
+    for description, extentions, _mimetypes in supported_types:
+        # We skip those types where we depend on mime types, not extentions
+        if not extentions:
+            continue
+        # Form a key from the first extention for internal only
+        key = extentions[0].replace('*.', '')
+        # Associate each extention with the file type
+        for extention in extentions:
+            extention = extention.replace('*', '')
+            print >> ofi, r'Root: HKCR; Subkey: "%(extention)s"; ValueType: string; ValueName: ""; ValueData: "virtaal_%(key)s"; Flags: uninsdeletevalue' % {'extention': extention, 'key': key}
+        print >> ofi, r'''Root: HKCR; Subkey: "virtaal_%(key)s"; ValueType: string; ValueName: ""; ValueData: "%(description)s"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "virtaal_%(key)s\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icons\virtaal.ico"
+Root: HKCR; Subkey: "virtaal_%(key)s\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\run_virtaal.exe"" ""%%1"""''' % {'key': key, 'description': description}
+
+    # Show a "Launch VirTaal" checkbox on the last installer screen
+    print >> ofi, r'''
+[Run]
+Filename: "{app}\run_virtaal.exe"; Description: "{cm:LaunchProgram,%(name)s}"; Flags: nowait postinstall skipifsilent''' % {'name': self.name}
+    print >> ofi
+    ofi.close()
+    return pathname
+
+def compile_inno_script(script_path):
+    """compiles the script using InnoSetup"""
+    shell_compile_command = get_compile_command()
+    compile_command = shell_compile_command.replace('"%1"', script_path)
+    result = os.system(compile_command)
+    if result:
+        print "Error compiling iss file"
+        print "Opening iss file, use InnoSetup GUI to compile manually"
+        os.startfile(script_path)
+
+class BuildWin32Installer(build_exe):
+    """distutils class that first builds the exe file(s), then creates a Windows installer using InnoSetup"""
+    description = "create an executable installer for MS Windows using InnoSetup and py2exe"
+    user_options = getattr(build_exe, 'user_options', []) + \
+        [('install-script=', None,
+          "basename of installation script to be run after installation or before deinstallation")]
+
+    def initialize_options(self):
+        build_exe.initialize_options(self)
+
+    def run(self):
+        # First, let py2exe do it's work.
+        build_exe.run(self)
+        # create the Installer, using the files py2exe has created.
+        exe_files = self.windows_exe_files + self.console_exe_files
+        print "*** creating the inno setup script***"
+        script_path = create_inno_script(self.distribution.metadata.name, self.lib_dir, self.dist_dir, exe_files, self.lib_files,
+                                         version=self.distribution.metadata.version)
+        print "*** compiling the inno setup script***"
+        compile_inno_script(script_path)
+        # Note: By default the final setup.exe will be in an Output subdirectory.
+
 def find_gtk_bin_directory():
     GTK_NAME = "libgtk"
     # Look for GTK in the user's Path as well as in some familiar locations
@@ -106,7 +243,7 @@ def add_win32_options(options):
             },
             'cmdclass':  {
                 "py2exe":    build_exe,
-#                "innosetup": build_win32_installer
+                "innosetup": BuildWin32Installer
             }
         })
     return options
@@ -126,7 +263,7 @@ def create_manifest(data_files):
         f.write("\n")
     f.close()
 
-def main():
+def main(options):
     options = add_platform_specific_options(options)
     create_manifest(options['data_files'])
     setup(name="virtaal",
@@ -146,4 +283,4 @@ def main():
           **options)
 
 if __name__ == '__main__':
-    main()
+    main(options)

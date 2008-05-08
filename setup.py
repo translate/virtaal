@@ -15,6 +15,9 @@ except ImportError:
     py2exe = None
     build_exe = Command
 
+SOURCE_DATA_DIR = "data"
+TARGET_DATA_DIR = path.join("share", "virtaal")
+
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
@@ -30,8 +33,7 @@ classifiers = [
 
 options = {
     'data_files': [
-        ('share/virtaal', (path.join("data", "virtaal.desktop"), (path.join("data", "virtaal-mimetype.xml")))),
-        ('share/virtaal', ("virtaal.png",)),
+        (TARGET_DATA_DIR, glob.glob(path.join("data", "*"))),
     ],
     'scripts': [
         "run_virtaal.py"
@@ -46,7 +48,7 @@ options = {
 #############################
 # WIN 32 specifics
 
-def get_compile_command(self):
+def get_compile_command():
     try:
         import _winreg
         compile_key = _winreg.OpenKey(_winreg.HKEY_CLASSES_ROOT, "innosetupscriptfile\\shell\\compile\\command")
@@ -58,19 +60,19 @@ def get_compile_command(self):
     return compilecommand
 
 def chop(dist_dir, pathname):
-    """returns the path relative to self.dist_dir"""
+    """returns the path relative to dist_dir"""
     assert pathname.startswith(dist_dir)
     return pathname[len(dist_dir):]
 
-def create_inno_script(self, name, lib_dir, dist_dir, exe_files, other_files, version = "1.0"):
+def create_inno_script(name, lib_dir, dist_dir, exe_files, other_files, version = "1.0"):
     if not dist_dir.endswith(os.sep):
         dist_dir += os.sep
-    exe_files = [self.chop(dist_dir, p) for p in exe_files]
-    other_files = [self.chop(dist_dir, p) for p in other_files]
-    pathname = path.join(dist_dir, self.name + os.extsep + "iss")
+    exe_files = [chop(dist_dir, p) for p in exe_files]
+    other_files = [chop(dist_dir, p) for p in other_files]
+    pathname = path.join(dist_dir, name + os.extsep + "iss")
 
 # See http://www.jrsoftware.org/isfaq.php for more InnoSetup config options.
-    ofi = self.file = open(pathname, "w")
+    ofi = open(pathname, "w")
     print >> ofi, r'''; WARNING: This script has been created by py2exe. Changes to this script
 ; will be overwritten the next time py2exe is run!
 
@@ -87,27 +89,28 @@ DefaultDirName={pf}\%(name)s
 DefaultGroupName=%(name)s
 OutputBaseFilename=%(name)s-%(version)s-setup
 ChangesAssociations=yes
-SetupIconFile=icons\virtaal.ico
+SetupIconFile=%(icon_path)s
 
-[Files]''' % {'name': self.name, 'version': self.version}
-    for fpath in self.exe_files + self.other_files:
+[Files]''' % {'name': name, 'version': version, 'icon_path': path.join(TARGET_DATA_DIR, "virtaal.ico")}
+    for fpath in exe_files + other_files:
         print >> ofi, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (fpath, os.path.dirname(fpath))
     print >> ofi, r'''
 [Icons]
 Name: "{group}\%(name)s Translation Editor"; Filename: "{app}\run_virtaal.exe";
-Name: "{group}\%(name)s (uninstall)"; Filename: "{uninstallexe}"''' % {'name': self.name}
+Name: "{group}\%(name)s (uninstall)"; Filename: "{uninstallexe}"''' % {'name': name}
 
-    if self.install_scripts:
-        print >> ofi, r"[Run]"
-
-        for fpath in self.install_scripts:
-            print >> ofi, r'Filename: "{app}\%s"; WorkingDir: "{app}"; Parameters: "-install"' % fpath
-
-        print >> ofi
-        print >> ofi, r"[UninstallRun]"
-
-        for fpath in self.install_scripts:
-            print >> ofi, r'Filename: "{app}\%s"; WorkingDir: "{app}"; Parameters: "-remove"' % fpath
+#    For now we don't worry about install scripts
+#    if install_scripts:
+#        print >> ofi, r"[Run]"
+#
+#        for fpath in install_scripts:
+#            print >> ofi, r'Filename: "{app}\%s"; WorkingDir: "{app}"; Parameters: "-install"' % fpath
+#
+#        print >> ofi
+#        print >> ofi, r"[UninstallRun]"
+#
+#        for fpath in install_scripts:
+#            print >> ofi, r'Filename: "{app}\%s"; WorkingDir: "{app}"; Parameters: "-remove"' % fpath
 
     # File associations. Note the directive "ChangesAssociations=yes" above
     # that causes the installer to tell Explorer to refresh associations.
@@ -146,7 +149,7 @@ Root: HKCR; Subkey: "virtaal_%(key)s\shell\open\command"; ValueType: string; Val
     # Show a "Launch VirTaal" checkbox on the last installer screen
     print >> ofi, r'''
 [Run]
-Filename: "{app}\run_virtaal.exe"; Description: "{cm:LaunchProgram,%(name)s}"; Flags: nowait postinstall skipifsilent''' % {'name': self.name}
+Filename: "{app}\run_virtaal.exe"; Description: "{cm:LaunchProgram,%(name)s}"; Flags: nowait postinstall skipifsilent''' % {'name': name}
     print >> ofi
     ofi.close()
     return pathname
@@ -233,7 +236,7 @@ def add_win32_options(options):
             "windows": [
                 {
                     'script': 'run_virtaal.py',
-                    'icon_resources': [(1, "virtaal.ico")],
+                    'icon_resources': [(1, path.join(SOURCE_DATA_DIR, "virtaal.ico"))],
                 }
             ],
             'zipfile':  "virtaal.zip",

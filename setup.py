@@ -19,7 +19,6 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
     "Intended Audience :: Developers",
-
     "License :: OSI Approved :: GNU General Public License (GPL)",
     "Programming Language :: Python",
     "Topic :: Software Development :: Localization",
@@ -44,11 +43,8 @@ options = {
     ],
 }
 
-##Create an array with all the locale filenames
-#I18NFILES = []
-#for filepath in glob.glob("locale/*/LC_MESSAGES/*.mo"):
-#    targetpath = path.dirname(path.join("share/", filepath))
-#    I18NFILES.append((targetpath, [filepath]))
+#############################
+# WIN 32 specifics
 
 def find_gtk_bin_directory():
     GTK_NAME = "libgtk"
@@ -115,11 +111,12 @@ def add_win32_options(options):
         })
     return options
 
+#############################
+# General functions
+
 def add_platform_specific_options(options):
     # For now, we only have win32 to worry about
     return add_win32_options(options)
-
-options = add_platform_specific_options(options)
 
 def create_manifest(data_files):
     f = open('MANIFEST.in', 'w+')
@@ -129,20 +126,24 @@ def create_manifest(data_files):
         f.write("\n")
     f.close()
 
-create_manifest(options['data_files'])
+def main():
+    options = add_platform_specific_options(options)
+    create_manifest(options['data_files'])
+    setup(name="virtaal",
+          version=virtaal_version,
+          license="GNU General Public License (GPL)",
+          description="A tool to create program translations.",
+          long_description="""VirTaal is used to create program translations.
 
-setup(name="virtaal",
-      version=virtaal_version,
-      license="GNU General Public License (GPL)",
-      description="A tool to create program translations.",
-      long_description="""VirTaal is used to create program translations.
+          It uses the Translate Toolkit to get access to translation files and therefore
+          can edit a variety of files (including PO and XLIFF files).""",
+          author="Translate.org.za",
+          author_email="translate-devel@lists.sourceforge.net",
+          url="http://translate.sourceforge.net/wiki/virtaal/index",
+          download_url="http://sourceforge.net/project/showfiles.php?group_id=91920&package_id=270877",
+          platforms=["any"],
+          classifiers=classifiers,
+          **options)
 
-      It uses the Translate Toolkit to get access to translation files and therefore
-      can edit a variety of files (including PO and XLIFF files).""",
-      author="Translate.org.za",
-      author_email="translate-devel@lists.sourceforge.net",
-      url="http://translate.sourceforge.net/wiki/virtaal/index",
-      download_url="http://sourceforge.net/project/showfiles.php?group_id=91920&package_id=270877",
-      platforms=["any"],
-      classifiers=classifiers,
-      **options)
+if __name__ == '__main__':
+    main()

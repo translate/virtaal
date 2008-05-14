@@ -74,6 +74,11 @@ class UnitGrid(gtk.TreeView):
         column.set_expand(True)
         self.append_column(column)
         self.targetcolumn = column
+        self._waiting_for_row_change = 0 # This must be changed to a mutex if you ever consider 
+                                         # writing multi-threaded code. However, the motivation
+                                         # for this horrid little variable is so dubious that you'd
+                                         # be better off writing better code. I'm sorry to leave it
+                                         # to you.
 
         if hasattr(self, "set_tooltip_column"):
             self.set_tooltip_column(COLUMN_NOTE)
@@ -127,9 +132,19 @@ class UnitGrid(gtk.TreeView):
         self.get_model().set(self.get_model().get_iter(new_path), COLUMN_EDITABLE, True)
         def change_cursor():
             self.set_cursor(new_path, self.get_columns()[0], start_editing=True)
+            self._waiting_for_row_change -= 1
+        self._waiting_for_row_change += 1
         gobject.idle_add(change_cursor, priority=gobject.PRIORITY_DEFAULT_IDLE)
 
     def _keyboard_move(self, offset):
+        # We don't want to process keyboard move events until we have finished updating 
+        # the display after a move event. So we use this awful, awful, terrible scheme to
+        # keep track of pending draw events. In reality, it should be impossible for 
+        # self._waiting_for_row_change to be larger than 1, but my superstition led me
+        # to be safe about it. 
+        if self._waiting_for_row_change > 0:
+            return True
+        
         try:
             #old_path = self.convert_store_index_to_path(self.document.mode_cursor.deref())
             self.document.mode_cursor.move(offset)

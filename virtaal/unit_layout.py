@@ -134,7 +134,7 @@ def num_targets(unit, nplurals):
         return 1
 
 def get_options(unit):
-    return [Option('option-fuzzy', _('F_uzzy'), lambda: unit.isfuzzy(), lambda value: unit.markfuzzy())]
+    return [Option('option-fuzzy', _('F_uzzy'), lambda: unit.isfuzzy(), lambda value: unit.markfuzzy(value))]
 
 def build_layout(unit, nplurals):
     """Construct a blueprint which can be used to build editor widgets

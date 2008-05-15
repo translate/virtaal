@@ -19,6 +19,8 @@
 # along with translate; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from os import path
+
 import gtk
 
 from translate.storage import factory
@@ -44,7 +46,8 @@ def file_open_chooser(self, destroyCallback=None):
             gtk.FILE_CHOOSER_ACTION_OPEN,
             (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK)
     )
-    chooser.set_current_folder(pan_app.settings.general["lastdir"])
+    if path.exists(pan_app.settings.general["lastdir"]):
+        chooser.set_current_folder(pan_app.settings.general["lastdir"])
 
     chooser.set_default_response(gtk.RESPONSE_OK)
 

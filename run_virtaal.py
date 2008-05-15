@@ -69,7 +69,7 @@ def main(args):
     global startup_file
     options, args = parser.parse_args()
     
-    if options.log != None:        
+    if options.log != None:
         try:
             logging.basicConfig(level=logging.DEBUG,
                                 format='%(asctime)s %(levelname)s %(message)s',

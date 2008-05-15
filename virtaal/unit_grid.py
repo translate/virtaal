@@ -99,10 +99,10 @@ class UnitGrid(gtk.TreeView):
         gobject.idle_add(self._activate_editing_path,
                          self.convert_store_index_to_path(self.document.mode_cursor.deref()))
 
-    def _on_destroy(self, *args):
+    def _on_destroy(self, *_args):
         self._owner.main_window.remove_accel_group(self.accel_group)
 
-    def _on_mode_changed(self, widget, mode):
+    def _on_mode_changed(self, _widget, _mode):
         path = self.convert_store_index_to_path(self.document.mode_cursor.deref())
         self._activate_editing_path(path)
 
@@ -202,16 +202,16 @@ class UnitGrid(gtk.TreeView):
 
         return False
 
-    def _on_modified(self, widget):
+    def _on_modified(self, _widget):
         self.emit("modified")
         return True
 
-    def on_cell_edited(self, _cell, path_string, must_advance, modified, model):
+    def on_cell_edited(self, _cell, _path_string, must_advance, _modified, _model):
         if must_advance:
             return self._keyboard_move(1)
         return True
 
-    def on_cursor_changed(self, treeview):
+    def on_cursor_changed(self, _treeview):
         path, _column = self.get_cursor()
 
         # We defer the scrolling until GTK has finished all its current drawing

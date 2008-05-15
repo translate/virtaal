@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with translate; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+import logging
 
 try:
     #from iniparse import ConfigParser
@@ -40,7 +41,7 @@ def name():
     try:
         import pwd
         import getpass
-    except ImportError, e:
+    except ImportError, _e:
         return u""
     return pwd.getpwnam(getpass.getuser())[4]
 
@@ -80,7 +81,7 @@ class Settings:
             self.language["uilang"] = lang
             self.language["contentlang"] = lang
         except:
-            pass
+            logging.info(_("Could not get locale"))
         self.config = ConfigParser.ConfigParser()
 
     def read(self):

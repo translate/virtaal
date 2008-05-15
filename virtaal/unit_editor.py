@@ -45,10 +45,10 @@ def properties_generator(widget, *prop_list):
     for prop in prop_list:
         try:
             yield (prop, widget.get_property(prop))
-        except TypeError, e:
+        except TypeError:
             try:
                 yield (prop, widget.style_get_property(prop))
-            except TypeError, e:
+            except TypeError:
                 yield (prop, getattr(widget, prop))
 
 def properties(*spec):
@@ -65,7 +65,7 @@ def make_style():
 
 STYLE = make_style()
 
-def on_key_press_event(widget, event, *args):
+def on_key_press_event(widget, event, *_args):
     if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
         widget.parent.emit('key-press-event', event)
         return True
@@ -93,7 +93,7 @@ def v_padding_h_list(_h_list):
     return 0
 
 @v_padding.when_type(unit_layout.TextBox)
-def v_padding_text_box(text_box):
+def v_padding_text_box(_text_box):
     # A TextBox in Virtaal is composed of a ScrolledWindow which contains a TextView.
     # See gtkscrolledwindow.c:gtk_scrolled_window_size_request and
     # gtktextview.c:gtk_text_view_size_request in the GTK source for the source of this
@@ -101,12 +101,12 @@ def v_padding_text_box(text_box):
     return 2*STYLE[gtk.Widget]['focus-line-width'] + 2*STYLE[gtk.Container]['border-width']
 
 @v_padding.when_type(unit_layout.Option)
-def v_padding_comment(option):
+def v_padding_comment(_option):
     return 2
 
 
 @generic
-def h_padding(layout):
+def h_padding(_layout):
     raise NotImplementedError()
 
 @h_padding.when_type(unit_layout.VList)
@@ -134,7 +134,7 @@ def h_padding_option(_text_box):
            2 * (STYLE[gtk.Widget]['focus-line-width'] + STYLE[gtk.Widget]['focus-padding'])
 
 
-def cache_height(h, layout, widget, width):
+def cache_height(h, layout, _widget, _width):
     layout.__height = h
     return h
 
@@ -210,7 +210,7 @@ def get_layout(widget):
 def get_widget(layout):
     return layout.__widget
 
-def skip_enter_processing(widget_and_names, layout):
+def skip_enter_processing(widget_and_names, _layout):
     widget, _names = widget_and_names
     widget.connect('key-press-event', on_key_press_event)
     return widget_and_names
@@ -263,10 +263,7 @@ def add_spell_checking(text_view, language):
             spell = gtkspell.Spell(text_view)
             spell.set_language(language)
         except:
-            import traceback
             logging.info(_("Could not initialize spell checking"))
-#            print >> sys.stderr, _("Could not initialize spell checking")
-#            traceback.print_exc(file=sys.stderr)
             gtkspell = None
 
 @specialize_make_widget(unit_layout.SourceTextBox)
@@ -308,7 +305,7 @@ def make_target_text_box(layout):
                 return True
         return False
 
-    def on_text_view_n_press_event(text_view, event, *args):
+    def on_text_view_n_press_event(text_view, event, *_args):
         if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
             layout = get_layout(text_view.parent)
             if layout.next != None:
@@ -396,10 +393,10 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
 
         self.connect('key-press-event', self.on_key_press_event)
 
-    def _on_modify(self, buf):
+    def _on_modify(self, _buf):
         self.emit('modified')
 
-    def on_key_press_event(self, widget, event, *args):
+    def on_key_press_event(self, _widget, event, *_args):
         if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
             self.must_advance = True
             self.editing_done()

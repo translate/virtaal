@@ -19,8 +19,6 @@
 # along with translate; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import sys
-import logging
 import os
 import os.path as path
 import time
@@ -89,8 +87,8 @@ GLADE_DIRS = [
     ["data"]
 ]
 def load_glade_file(basepath, filename):
-    for dir in GLADE_DIRS:
-        dir_and_filename = dir + [filename]
+    for glade_dir in GLADE_DIRS:
+        dir_and_filename = glade_dir + [filename]
         gladefile = path.join(basepath or path.dirname(__file__), *dir_and_filename)
         if path.exists(gladefile):
             gui = glade.XML(gladefile)
@@ -142,7 +140,7 @@ class VirTaal:
 
         self.accel_group.connect_by_path("<VirTaal>/Edit/Undo", self._on_undo)
 
-    def _on_undo(self, accel_group, acceleratable, keyval, modifier):
+    def _on_undo(self, _accel_group, acceleratable, _keyval, _modifier):
         unit_renderer.undo(acceleratable.focus_widget)
 
     def _on_mainwindow_delete(self, _widget, _event):
@@ -202,10 +200,10 @@ class VirTaal:
 
         return self.load_file(filename, dialog=dialog)
 
-    def _on_gui_mode_change(self, mode_box, mode):
+    def _on_gui_mode_change(self, _mode_box, mode):
         self.document.set_mode(mode.mode_name)
 
-    def _on_mode_change(self, document, mode):
+    def _on_mode_change(self, _document, mode):
         self.mode_box.set_mode(mode.__class__)
 
     def load_file(self, filename, dialog=None, store=None):
@@ -330,19 +328,19 @@ class VirTaal:
             pan_app.settings.write()
         chooser.destroy()
 
-    def _on_help_about(self, widget=None):
+    def _on_help_about(self, _widget=None):
         About(self.main_window)
 
-    def _on_localization_guide(self, widget=None):
+    def _on_localization_guide(self, _widget=None):
         # Should be more redundent
         # If the guide is installed and no internet then open local
         # If Internet then go live, if no Internet or guide then disable
         os.system("xdg-open http://translate.sourceforge.net/wiki/guide/start")
 
-    def _on_documentation(self, widget=None):
+    def _on_documentation(self, _widget=None):
         os.system("xdg-open http://translate.sourceforge.net/wiki/virtaal/index")
 
-    def _on_report_bug(self, widget=None):
+    def _on_report_bug(self, _widget=None):
         os.system("xdg-open http://bugs.locamotion.org/enter_bug.cgi?product=VirTaal")
 
     def run(self):

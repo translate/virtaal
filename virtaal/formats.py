@@ -39,7 +39,7 @@ supported_types = [
     (_("Gettext MO files"), ("*.mo", "*.gmo"), ("application/x-gettext-translation", )),
 ]
 
-def file_open_chooser(self, destroyCallback=None):
+def file_open_chooser(_self, destroyCallback=None):
     chooser = gtk.FileChooserDialog(
             _('Choose a translation file'),
             None,

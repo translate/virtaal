@@ -21,7 +21,6 @@
 
 from itertools import chain
 
-from support.simplegeneric import generic
 from support.partial import partial
 from pan_app import _
 

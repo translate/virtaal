@@ -71,7 +71,7 @@ def main(args):
     
     if options.log != None:        
         try:
-            logging.basicConfig(level=logging.INFO,
+            logging.basicConfig(level=logging.DEBUG,
                                 format='%(asctime)s %(levelname)s %(message)s',
                                 filename=options.log,
                                 filemode='w')

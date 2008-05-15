@@ -82,7 +82,6 @@ class Settings:
         except:
             pass
         self.config = ConfigParser.ConfigParser()
-        self.read()
 
     def read(self):
         """Read the configuration file and set the dictionaries up."""

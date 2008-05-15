@@ -21,6 +21,9 @@
 
 import sys
 import logging
+import os
+import os.path as path
+import time
 
 try:
     import pygtk
@@ -33,11 +36,6 @@ import gtk
 from gtk import gdk
 from gtk import glade
 
-import os
-import os.path as path
-import time
-
-from translate.storage import factory
 from translate.storage import poheader
 
 import pan_app
@@ -48,7 +46,7 @@ import unit_renderer
 from about import About
 import formats
 import document
-from virtaal.support import bijection
+from support import bijection
 
 def on_undo(_accel_group, acceleratable, _keyval, _modifier):
     unit_renderer.undo(acceleratable.focus_widget)
@@ -102,7 +100,7 @@ def load_glade_file(basepath, filename):
 class VirTaal:
     """The entry point class for VirTaal"""
 
-    def __init__(self, basepath=None):
+    def __init__(self, basepath=None, startup_file=None):
         #Set the Glade file
         self.gladefile, self.gui = load_glade_file(basepath, "virtaal.glade")
 
@@ -131,6 +129,8 @@ class VirTaal:
 
         self.unit_grid = None
         self.document = None
+        if startup_file != None:
+            self.load_file(startup_file)
 
     def _setup_key_bindings(self):
         self.accel_group = gtk.AccelGroup()
@@ -346,17 +346,6 @@ class VirTaal:
         os.system("xdg-open http://bugs.locamotion.org/enter_bug.cgi?product=VirTaal")
 
     def run(self):
-        try:
-            logging.basicConfig(level=logging.INFO,
-                                format='%(asctime)s %(levelname)s %(message)s',
-                                filename='virtaal.log',
-                                filemode='w')
-        except IOError:
-            print "Could not open log file"
-
-        if len(sys.argv) > 1:
-            self.load_file(sys.argv[1])
-
         gtk.main()
 
 #    import hotshot

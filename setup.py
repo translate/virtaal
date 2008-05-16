@@ -64,7 +64,7 @@ def chop(dist_dir, pathname):
     assert pathname.startswith(dist_dir)
     return pathname[len(dist_dir):]
 
-def create_inno_script(name, lib_dir, dist_dir, exe_files, other_files, version = "1.0"):
+def create_inno_script(name, _lib_dir, dist_dir, exe_files, other_files, version = "1.0"):
     if not dist_dir.endswith(os.sep):
         dist_dir += os.sep
     exe_files = [chop(dist_dir, p) for p in exe_files]
@@ -121,16 +121,16 @@ Name: "{group}\%(name)s (uninstall)"; Filename: "{uninstallexe}"''' % {'name': n
     print >> ofi, r'''
 [Registry]'''
     # Things should look something like this:
-    r'''
-;File extension:
-Root: HKCR; Subkey: ".po"; ValueType: string; ValueName: ""; ValueData: "virtaal_po"; Flags: uninsdeletevalue
-;Description of the file type
-Root: HKCR; Subkey: "virtaal_po"; ValueType: string; ValueName: ""; ValueData: "Gettext PO"; Flags: uninsdeletekey
-;Icon to use in Explorer
-Root: HKCR; Subkey: "virtaal_po\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icons\virtaal.ico"
-;The command to open the file
-Root: HKCR; Subkey: "virtaal_po\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\run_virtaal.exe"" ""%1"""
-'''
+#    r'''
+#;File extension:
+#Root: HKCR; Subkey: ".po"; ValueType: string; ValueName: ""; ValueData: "virtaal_po"; Flags: uninsdeletevalue
+#;Description of the file type
+#Root: HKCR; Subkey: "virtaal_po"; ValueType: string; ValueName: ""; ValueData: "Gettext PO"; Flags: uninsdeletekey
+#;Icon to use in Explorer
+#Root: HKCR; Subkey: "virtaal_po\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icons\virtaal.ico"
+#;The command to open the file
+#Root: HKCR; Subkey: "virtaal_po\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\run_virtaal.exe"" ""%1"""
+#'''
     from virtaal.formats import supported_types
     for description, extentions, _mimetypes in supported_types:
         # We skip those types where we depend on mime types, not extentions
@@ -198,16 +198,16 @@ def find_gtk_bin_directory():
 Please place bin directory of your GTK installation in the program path.""")
 
 def find_gtk_files():
-    def parent(dir):
-        return path.abspath(path.join(path.abspath(dir), '..'))
+    def parent(dir_path):
+        return path.abspath(path.join(path.abspath(dir_path), '..'))
 
     def strip_leading_path(leadingPath, p):
         return p[len(leadingPath) + 1:]
 
     data_files = []
     gtk_path = parent(find_gtk_bin_directory())
-    for dir in [path.join(gtk_path, p) for p in ('etc', 'share', 'lib')]:
-        for dir_name, _, files in os.walk(dir):
+    for dir_path in [path.join(gtk_path, p) for p in ('etc', 'share', 'lib')]:
+        for dir_name, _, files in os.walk(dir_path):
             files = [path.abspath(path.join(dir_name, f)) for f in files]
             if len(files) > 0:
                 data_files.append((strip_leading_path(gtk_path, dir_name), files))

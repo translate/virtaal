@@ -118,17 +118,19 @@ Name: "{group}\%(name)s (uninstall)"; Filename: "{uninstallexe}"''' % {'name': n
     # privileges. An alternative might be to rather write to
     # HKCU\Software\Classes, but this won't be system usable then. Didn't
     # see a way to test and alter the behaviour.
-    print >> ofi, r'''
-[Registry]
-#;File extension:
-#Root: HKCR; Subkey: ".po"; ValueType: string; ValueName: ""; ValueData: "virtaal_po"; Flags: uninsdeletevalue
-#;Description of the file type
-#Root: HKCR; Subkey: "virtaal_po"; ValueType: string; ValueName: ""; ValueData: "Gettext PO"; Flags: uninsdeletekey
-#;Icon to use in Explorer
-#Root: HKCR; Subkey: "virtaal_po\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icons\virtaal.ico"
-#;The command to open the file
-#Root: HKCR; Subkey: "virtaal_po\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\run_virtaal.exe"" ""%1"""
-#'''
+
+    # For each file type we should have something like this:
+    #
+    #;File extension:
+    #Root: HKCR; Subkey: ".po"; ValueType: string; ValueName: ""; ValueData: "virtaal_po"; Flags: uninsdeletevalue
+    #;Description of the file type
+    #Root: HKCR; Subkey: "virtaal_po"; ValueType: string; ValueName: ""; ValueData: "Gettext PO"; Flags: uninsdeletekey
+    #;Icon to use in Explorer
+    #Root: HKCR; Subkey: "virtaal_po\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icons\virtaal.ico"
+    #;The command to open the file
+    #Root: HKCR; Subkey: "virtaal_po\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\run_virtaal.exe"" ""%1"""
+
+    print >> ofi, "[Registry]"
     from virtaal.formats import supported_types
     for description, extentions, _mimetypes in supported_types:
         # We skip those types where we depend on mime types, not extentions

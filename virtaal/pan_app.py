@@ -84,13 +84,13 @@ class Settings:
             logging.info(_("Could not get locale"))
         self.config = ConfigParser.ConfigParser()
 
-    def read(self):
-        """Read the configuration file and set the dictionaries up."""
-        self.config.read(self.filename)
-
         for section in self.sections:
             if not self.config.has_section(section):
                 self.config.add_section(section)
+
+    def read(self):
+        """Read the configuration file and set the dictionaries up."""
+        self.config.read(self.filename)
 
         for key, value in self.config.items("translator"):
             self.translator[key] = value

@@ -9,9 +9,31 @@ from os import environ, path, remove
 environ['LANGUAGE']='en_US.UTF-8'
 config.config.defaults['absoluteNodePaths'] = True
 
-def test_basic():
-    os.chdir(path.dirname(__file__))
-    run("../run_virtaal.py --no_config", timeout=0)
+os.chdir(path.dirname(__file__))
+
+ini_file = open("test_open_and_close.ini", "w+")
+ini_file.write("""
+[translator]
+email = 
+name = 
+team = 
+
+[undo]
+depth = 50
+
+[language]
+uilang = af_ZA
+contentlang = af_ZA
+sourcelang = en
+
+[general]
+windowheight = 620
+windowwidth = 400
+""")
+ini_file.close()
+
+def test_basic():    
+    run("../run_virtaal.py --config=test_open_and_close.ini", timeout=0)
     
     if path.exists("hello_world.po"):
         os.unlink("hello_world.po")
@@ -50,6 +72,12 @@ def test_basic():
     
     save_button = dlg.button(buttonName="Save")
     save_button.click()
+
+    name_wnd = virtaal.child(name="Please enter your name")
+    name_box = name_wnd.textentry(textEntryName="")
+    name_box.typeText("Hello Person")
+    ok_button = name_wnd.button(buttonName="OK")
+    ok_button.click()
     
     email_wnd = virtaal.child(name="Please enter your e-mail address")
     email_box = email_wnd.textentry(textEntryName="")

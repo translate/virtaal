@@ -24,6 +24,7 @@ import os
 import sys
 import logging
 from optparse import OptionParser, make_option
+from os import path
 
 from virtaal.main_window import VirTaal
 from virtaal import pan_app
@@ -40,10 +41,10 @@ option_list = [
                 help=_("Perform profiling, storing the result to the supplied filename.")),
     make_option("--log",
                 action="store", type="string", dest="log",
-                help=_("Turn on logging, storing the result to the supplied filename")),
-    make_option("--no_config",
-                action="store_true", dest="no_config", default=False,
-                help=_("Do not load the stored configuration. This is mostly useful for testing.")),
+                help=_("Turn on logging, storing the result to the supplied filename.")),
+    make_option("--config",
+                action="store", type="string", dest="config",
+                help=_("Use the configuration file given by the supplied filename.")),
 ]
 parser = OptionParser(option_list=option_list, usage=usage)
 
@@ -75,13 +76,17 @@ def main(args):
         try:
             logging.basicConfig(level=logging.DEBUG,
                                 format='%(asctime)s %(levelname)s %(message)s',
-                                filename=options.log,
+                                filename=path.abspath(options.log),
                                 filemode='w')
         except IOError:
             parser.error(_("Could not open log file '%s'") % options.log)
 
-    if not options.no_config:
+    try:
+        if options.config != None:
+            pan_app.settings = pan_app.Settings(path.abspath(options.config))
         pan_app.settings.read()
+    except:
+        parser.error(_("Could not read configuration file '%s'") % options.config)        
 
     if len(args) > 1:
         parser.error(_("invalid number of arguments"))

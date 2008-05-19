@@ -119,9 +119,7 @@ Name: "{group}\%(name)s (uninstall)"; Filename: "{uninstallexe}"''' % {'name': n
     # HKCU\Software\Classes, but this won't be system usable then. Didn't
     # see a way to test and alter the behaviour.
     print >> ofi, r'''
-[Registry]'''
-    # Things should look something like this:
-#    r'''
+[Registry]
 #;File extension:
 #Root: HKCR; Subkey: ".po"; ValueType: string; ValueName: ""; ValueData: "virtaal_po"; Flags: uninsdeletevalue
 #;Description of the file type

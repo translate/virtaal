@@ -9,6 +9,8 @@ import po2pot
 
 environ['LANGUAGE']='en_US.UTF-8'
 config.config.defaults['absoluteNodePaths'] = True
+config.config.defaults['typingDelay'] = 0.02
+config.config.defaults['actionDelay'] = 0.3
 
 def find_app(exe_name):
     full_exe_name = path.abspath(exe_name)
@@ -78,6 +80,28 @@ class BaseGuiTest(object):
 
     def get_app(self):
         return tree.root.application(self.virtaal_cmd)
+
+class LoadSaveTest(BaseGuiTest):
+    def after_open(self, node):
+        pass
+    
+    def after_save(self, node):
+        pass
+    
+    def load_save_test(self, config_file, source_file, target_file, after_open=lambda x: x, after_save=lambda x: x):
+        dirname, filename = path.split(target_file)
+        test_target_file = path.join(dirname, "test_" + filename)
+        source_file = strip_translations(self.abspath(target_file))
+        virtaal = self.run(config=self.abspath(config_file)) 
+        
+        gui_openfile(virtaal, source_file)
+        self.after_open(virtaal)
+        gui_saveas(virtaal, test_target_file)
+        self.after_save(virtaal)
+        gui_quit(virtaal)
+    
+        contents = read_file(test_target_file).split("\n\n")
+        assert "\n\n".join(contents[1:]).strip("\n") == read_file(target_file).strip("\n")
 
 def click_file_open(node):
     node.menuItem("File").menuItem("Open").click()

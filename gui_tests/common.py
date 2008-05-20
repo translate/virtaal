@@ -103,6 +103,26 @@ class LoadSaveTest(BaseGuiTest):
         contents = read_file(test_target_file).split("\n\n")
         assert "\n\n".join(contents[1:]).strip("\n") == read_file(target_file).strip("\n")
 
+def standard_ini_file(filename):
+    return write_file(filename, """
+[translator]
+email = hello@world.com
+name = Person
+team = Team
+
+[undo]
+depth = 50
+
+[language]
+uilang = af_ZA
+contentlang = af_ZA
+sourcelang = en
+
+[general]
+windowheight = 620
+windowwidth = 400""")
+
+
 def click_file_open(node):
     node.menuItem("File").menuItem("Open").click()
     return node.child(roleName="dialog")

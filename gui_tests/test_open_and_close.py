@@ -30,6 +30,12 @@ msgid "Hello, world!"
 msgstr "Hello, wereld!"
 """)
 
+def create_pot_file(filename):
+    return common.write_file(filename, """
+msgid "Hello, world!"
+msgstr ""
+""")
+
 def handle_popup_query(node, dialog_title, input_text):
     wnd = node.child(name=dialog_title)
     box = wnd.textentry(textEntryName="")
@@ -50,6 +56,6 @@ class TestOpenAndClose(common.LoadSaveTest):
         handle_popup_query(virtaal, "Please enter your team's information", "Hello Team")
         
     def test_open_and_close(self):
-        po_file = create_po_file(self.abspath("hello_world.po"))
         self.load_save_test(create_ini_file(self.abspath("config.ini")), 
-                            common.strip_translations(po_file), po_file)
+                            create_po_file(self.abspath("hello_world.pot")), 
+                            create_po_file(self.abspath("hello_world.po")))

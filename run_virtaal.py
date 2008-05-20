@@ -68,9 +68,9 @@ def profile(profile_file):
     k_cache_grind.output(profile_file)
     profile_file.close()
 
-def main(args):
+def main(argv):
     global startup_file
-    options, args = parser.parse_args()
+    options, args = parser.parse_args(argv[1:])
     
     if options.log != None:
         try:

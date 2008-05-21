@@ -72,127 +72,49 @@ def on_key_press_event(widget, event, *_args):
     return False
 
 @generic
-def spacing(layout):
+def set_optimal_height(widget, width):
     raise NotImplementedError()
 
-@spacing.when_type(unit_layout.VList)
-def spacing_v_list(_layout):
-    return 2
+@set_optimal_height.when_type(gtk.Widget)
+def gtk_widget_set_optimal_height(widget, width):
+    pass
 
+@set_optimal_height.when_type(gtk.Container)
+def gtk_container_set_optimal_height(widget, width):
+    for child in widget.get_children():
+        set_optimal_height(child, width)
 
-@generic
-def v_padding(layout):
-    raise NotImplementedError()
-
-@v_padding.when_type(unit_layout.VList)
-def v_padding_v_list(_v_list):
-    return 0
-
-@v_padding.when_type(unit_layout.HList)
-def v_padding_h_list(_h_list):
-    return 0
-
-@v_padding.when_type(unit_layout.TextBox)
-def v_padding_text_box(_text_box):
-    # A TextBox in Virtaal is composed of a ScrolledWindow which contains a TextView.
-    # See gtkscrolledwindow.c:gtk_scrolled_window_size_request and
-    # gtktextview.c:gtk_text_view_size_request in the GTK source for the source of this
-    # calculation.
-    return 2*STYLE[gtk.Widget]['focus-line-width'] + 2*STYLE[gtk.Container]['border-width']
-
-@v_padding.when_type(unit_layout.Option)
-def v_padding_comment(_option):
-    return 2
-
-
-@generic
-def h_padding(_layout):
-    raise NotImplementedError()
-
-@h_padding.when_type(unit_layout.VList)
-def h_padding_v_list(_v_list):
-    return 2
-
-@h_padding.when_type(unit_layout.HList)
-def h_padding_h_list(_h_list):
-    return 2
-
-@h_padding.when_type(unit_layout.TextBox)
-def h_padding_text_box(_text_box):
-    # A TextBox in Virtaal is composed of a ScrolledWindow which contains a TextView.
-    # See gtkscrolledwindow.c:gtk_scrolled_window_size_request and
-    # gtktextview.c:gtk_text_view_size_request in the GTK source for the source of this
-    # calculation.
-    return STYLE[gtk.TextView]['left-margin'] + STYLE[gtk.TextView]['right-margin'] + \
-           2*STYLE[gtk.Container]['border-width']
-
-@h_padding.when_type(unit_layout.Option)
-def h_padding_option(_text_box):
-    # See gtkcheckbutton.c
-    # requisition->width += (indicator_size + indicator_spacing * 3 + 2 * (focus_width + focus_pad));
-    return STYLE[gtk.CheckButton]['indicator-size'] + STYLE[gtk.CheckButton]['indicator-spacing'] * 3 + \
-           2 * (STYLE[gtk.Widget]['focus-line-width'] + STYLE[gtk.Widget]['focus-padding'])
-
-
-def cache_height(h, layout, _widget, _width):
-    layout.__height = h
-    return h
-
-def get_cached_height(layout):
-    return layout.__height
-
-@generic
-def height(layout, widget, width):
-    raise NotImplementedError()
-
-def specialize_height(type):
-    # Create a composite decorator which first applies the decorator post(cache_height)
-    # and then the decorator height.when_type(type).
-    return compose(height.when_type(type), post(cache_height))
-
-@specialize_height(unit_layout.Layout)
-def height_layout(layout, widget, width):
-    return height(layout.child, widget, width / 2)
-
-@specialize_height(unit_layout.HList)
-def height_h_list(v_list, widget, width):
-    item_width = (width - len(v_list.children) * (h_padding(v_list) + 1)) / len(v_list.children)
-    return 2*v_padding(v_list) + max(height(child, widget, item_width) for child in v_list.children)
-
-@specialize_height(unit_layout.VList)
-def height_v_list(v_list, widget, width):
-    return sum(height(child, widget, width) for child in v_list.children) + \
-           v_padding(v_list) * (len(v_list.children) - 1)
+@set_optimal_height.when_type(gtk.Table)
+def gtk_table_set_optimal_height(widget, width):
+    for child in widget.get_children():
+        set_optimal_height(child, width / 2)
 
 def make_pango_layout(layout, text, widget, width):
     pango_layout = pango.Layout(widget.get_pango_context())
-    pango_layout.set_width((width - h_padding(layout)) * pango.SCALE)
+    pango_layout.set_width(width * pango.SCALE)
     pango_layout.set_wrap(pango.WRAP_WORD)
     pango_layout.set_text(text or "")
     return pango_layout
 
-@specialize_height(unit_layout.TextBox)
-def height_text_box(text_box, widget, width):
-    # TODO: Look at GTK C Source to get precise height calculations
-    _w, h = make_pango_layout(text_box, markup.escape(text_box.get_text()), widget, width).get_pixel_size()
+@set_optimal_height.when_type(gtk.TextView)
+def gtk_textview_set_optimal_height(widget, width):
+    l = gtk.Layout()
+    buf = widget.get_buffer()
+    # For border calculations, see gtktextview.c:gtk_text_view_size_request in the GTK source 
+    border = 2 * widget.border_width - 2 * widget.parent.border_width
+    if widget.style_get_property("interior-focus"):
+        border += 2 * widget.style_get_property("focus-line-width")
+    _w, h = make_pango_layout(widget, buf.get_text(buf.get_start_iter(), buf.get_end_iter()), l, width - border).get_pixel_size()
+    widget.parent.set_size_request(-1, h + border)
 
-    return h + v_padding(text_box)
-
-@specialize_height(unit_layout.Comment)
-def height_comment(comment, widget, width):
-    # TODO: The calculations here yield incorrect results. We'll have to look at this.
-    text = comment.get_text()
-    if text == "":     # If we have an empty string, we squash the comment box
-        return 0
-    _w, h = make_pango_layout(comment, text[0], widget, width).get_pixel_size()
-    return h + v_padding(comment)
-    #return height_text_box(comment, widget, 100000)
-
-@specialize_height(unit_layout.Option)
-def height_option(option, widget, width):
-    _w, h = make_pango_layout(option, option.label, widget, width).get_pixel_size()
-    return h + v_padding(option)
-
+@set_optimal_height.when_type(label_expander.LabelExpander)
+def gtk_labelexpander_set_optimal_height(widget, width):
+    if widget.label.child.get_text().strip() == "":
+        widget.set_size_request(-1, 0)
+    else:
+        l = gtk.Layout()
+        _w, h = make_pango_layout(widget, widget.label.child.get_label()[0], l, width).get_pixel_size()
+        widget.set_size_request(-1, h + 4)
 
 @generic
 def make_widget(layout):
@@ -225,7 +147,7 @@ def make_layout(layout):
     table = gtk.Table(rows=1, columns=4, homogeneous=True)
     names = {layout.name: table}
     child, child_names = make_widget(layout.child)
-    table.attach(child, 1, 3, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL|gtk.EXPAND)
+    table.attach(child, 1, 3, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL)
     names.update(child_names)
 
     return table, names
@@ -234,14 +156,14 @@ def fill_list(lst, box):
     names = {lst.name: box}
     for child in lst.children:
         child_widget, child_names = make_widget(child)
-        box.pack_start(child_widget, fill=True, expand=True)
+        box.pack_start(child_widget, fill=True, expand=False)
         names.update(child_names)
     #box.connect('key-press-event', on_key_press_event)
     return box, names
 
 @specialize_make_widget(unit_layout.VList)
 def make_vlist(layout):
-    return fill_list(layout, gtk.VBox(v_padding(layout)))
+    return fill_list(layout, gtk.VBox())
 
 @specialize_make_widget(unit_layout.HList)
 def make_hlist(layout):

@@ -19,7 +19,6 @@
 # You should have received a copy of the GNU General Public License along with
 # Translate.  If not, see <http://www.gnu.org/licenses/>.
 from virtaal import unit_editor
-from virtaal.unit_editor import get_layout, get_widget, height, get_cached_height
 
 """Cell renderer for multiline text data."""
 
@@ -133,23 +132,18 @@ class UnitRenderer(gtk.GenericCellRenderer):
         return max(source_height, target_height)
 
     def do_get_size(self, widget, _cell_area):
-        xpad = 2
-        ypad = 2
-
         #TODO: store last unitid and computed dimensions
         width = widget.get_toplevel().get_allocation().width - 32
 
         if self.editable:
-            height = unit_editor.height(unit_layout.get_blueprints(self.unit, get_document(widget).nplurals), widget, width)
+            editor = self.get_editor(widget)
+            unit_editor.set_optimal_height(editor, width)
+            _width, height = editor.size_request()
         else:
             height = self.compute_cell_height(widget, width)
 
-        # XXX - comments
-        width  = width  + (xpad * 2)
-        height = height + (ypad * 2)
-
         height = min(height, 600)
-        return xpad, ypad, width, height
+        return 0, 0, width, height
 
     def _on_editor_done(self, editor):
         self.emit("editing-done", editor.get_data("path"), editor.must_advance, editor.get_modified())
@@ -157,24 +151,20 @@ class UnitRenderer(gtk.GenericCellRenderer):
 
     def _on_modified(self, widget):
         self.emit("modified")
-
-    def do_start_editing(self, _event, tree_view, path, _bg_area, cell_area, _flags):
-        """Initialize and return the editor widget."""
+        
+    def get_editor(self, parent):
         if not hasattr(self.unit, '__editor'):
-            editor = UnitEditor(tree_view, self.unit)
+            editor = UnitEditor(parent, self.unit)
             editor.connect("editing-done", self._on_editor_done)
             editor.connect("modified", self._on_modified)
             editor.set_border_width(min(self.props.xpad, self.props.ypad))
             editor.show_all()
             setattr(self.unit, '__editor', editor)
+        return getattr(self.unit, '__editor')
 
-        def set_heights(layout):
-            for child in layout.children:
-                set_heights(child)
-            get_widget(layout).set_size_request(-1, get_cached_height(layout))
+    def do_start_editing(self, _event, tree_view, path, _bg_area, cell_area, _flags):
+        """Initialize and return the editor widget."""
 
-        editor = getattr(self.unit, '__editor')
-        set_heights(get_layout(editor.layout))
+        editor = self.get_editor(tree_view)
         editor.set_size_request(cell_area.width, cell_area.height)
-        self._editor = editor
         return editor

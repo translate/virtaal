@@ -48,22 +48,22 @@ def on_key_press_event(widget, event, *_args):
     return False
 
 @generic
-def set_optimal_height(widget, width):
+def compute_optimal_height(widget, width):
     raise NotImplementedError()
 
-@set_optimal_height.when_type(gtk.Widget)
-def gtk_widget_set_optimal_height(widget, width):
+@compute_optimal_height.when_type(gtk.Widget)
+def gtk_widget_compute_optimal_height(widget, width):
     pass
 
-@set_optimal_height.when_type(gtk.Container)
-def gtk_container_set_optimal_height(widget, width):
+@compute_optimal_height.when_type(gtk.Container)
+def gtk_container_compute_optimal_height(widget, width):
     for child in widget.get_children():
-        set_optimal_height(child, width)
+        compute_optimal_height(child, width)
 
-@set_optimal_height.when_type(gtk.Table)
-def gtk_table_set_optimal_height(widget, width):
+@compute_optimal_height.when_type(gtk.Table)
+def gtk_table_compute_optimal_height(widget, width):
     for child in widget.get_children():
-        set_optimal_height(child, width / 2)
+        compute_optimal_height(child, width / 2)
 
 def make_pango_layout(layout, text, widget, width):
     pango_layout = pango.Layout(widget.get_pango_context())
@@ -72,8 +72,8 @@ def make_pango_layout(layout, text, widget, width):
     pango_layout.set_text(text or "")
     return pango_layout
 
-@set_optimal_height.when_type(gtk.TextView)
-def gtk_textview_set_optimal_height(widget, width):
+@compute_optimal_height.when_type(gtk.TextView)
+def gtk_textview_compute_optimal_height(widget, width):
     l = gtk.Layout()
     buf = widget.get_buffer()
     # For border calculations, see gtktextview.c:gtk_text_view_size_request in the GTK source 
@@ -83,8 +83,8 @@ def gtk_textview_set_optimal_height(widget, width):
     _w, h = make_pango_layout(widget, buf.get_text(buf.get_start_iter(), buf.get_end_iter()), l, width - border).get_pixel_size()
     widget.parent.set_size_request(-1, h + border)
 
-@set_optimal_height.when_type(label_expander.LabelExpander)
-def gtk_labelexpander_set_optimal_height(widget, width):
+@compute_optimal_height.when_type(label_expander.LabelExpander)
+def gtk_labelexpander_compute_optimal_height(widget, width):
     if widget.label.child.get_text().strip() == "":
         widget.set_size_request(-1, 0)
     else:

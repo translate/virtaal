@@ -138,7 +138,7 @@ class UnitRenderer(gtk.GenericCellRenderer):
         if self.editable:
             editor = self.get_editor(widget)
             editor.set_size_request(width, -1)
-            unit_editor.set_optimal_height(editor, width)
+            unit_editor.compute_optimal_height(editor, width)
             _width, height = editor.size_request()
         else:
             height = self.compute_cell_height(widget, width)

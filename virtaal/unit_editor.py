@@ -41,30 +41,6 @@ import widgets.label_expander as label_expander
 from support.simplegeneric import generic
 from support.partial import post, compose
 
-def properties_generator(widget, *prop_list):
-    for prop in prop_list:
-        try:
-            yield (prop, widget.get_property(prop))
-        except TypeError:
-            try:
-                yield (prop, widget.style_get_property(prop))
-            except TypeError:
-                yield (prop, getattr(widget, prop))
-
-def properties(*spec):
-    return dict(properties_generator(*spec))
-
-def make_style():
-    return {
-        gtk.TextView:       properties(gtk.TextView(),       'left-margin', 'right-margin'),
-        gtk.ScrolledWindow: properties(gtk.ScrolledWindow(), 'scrollbar-spacing'),
-        gtk.Container:      properties(gtk.TextView(),       'border-width'),
-        gtk.CheckButton:    properties(gtk.CheckButton(),    'indicator-size', 'indicator-spacing'),
-        gtk.Widget:         properties(gtk.Button(),         'focus-line-width', 'focus-padding')
-    }
-
-STYLE = make_style()
-
 def on_key_press_event(widget, event, *_args):
     if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
         widget.parent.emit('key-press-event', event)

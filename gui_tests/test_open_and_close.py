@@ -106,3 +106,15 @@ msgstr ""
         self.load_save_test(common.standard_ini_file(self.abspath("config.ini")), 
                             self.create_po_file(self.abspath("three_strings.pot")), 
                             self.create_po_file(self.abspath("three_strings.po")))
+
+class TestReload(common.BaseGuiTest):
+    def test_reload(self):
+        po_file = common.write_file(self.abspath("test.po"), """
+msgid "I like jam and cheese"
+msgstr "Ek hou van konfyt en kaas"
+""")
+        virtaal = self.run(config=common.standard_ini_file(self.abspath("config.ini")))
+        common.gui_openfile(virtaal, po_file)
+        common.gui_openfile(virtaal, po_file)
+        virtaal.child(roleName="alert").child(roleName="push button", name="Yes").click()
+        common.gui_quit(virtaal)

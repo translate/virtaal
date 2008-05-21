@@ -29,8 +29,6 @@ import pango
 import markup
 import undo_buffer
 from unit_editor import UnitEditor
-import unit_layout
-from document import get_document
 
 def undo(tree_view):
     undo_buffer.undo(tree_view.get_buffer().__undo_stack)
@@ -69,10 +67,10 @@ class UnitRenderer(gtk.GenericCellRenderer):
         self.source_layout = None
         self.target_layout = None
 
-    def get_unit(self):
+    def _get_unit(self):
         return self.__unit
 
-    def set_unit(self, value):
+    def _set_unit(self, value):
         if value.isfuzzy():
             self.props.cell_background = "gray"
             self.props.cell_background_set = True
@@ -82,7 +80,7 @@ class UnitRenderer(gtk.GenericCellRenderer):
 
         self.__unit = value
 
-    unit = property(get_unit, set_unit, None, None)
+    unit = property(_get_unit, _set_unit, None, None)
 
     def do_set_property(self, pspec, value):
         setattr(self, pspec.name, value)
@@ -107,7 +105,7 @@ class UnitRenderer(gtk.GenericCellRenderer):
         widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False, 
                 cell_area, widget, '', target_x, y, self.target_layout)
 
-    def get_pango_layout(self, widget, text, width):
+    def _get_pango_layout(self, widget, text, width):
         '''Gets the Pango layout used in the cell in a TreeView widget.'''
         layout = pango.Layout(widget.get_pango_context())
         layout.set_wrap(pango.WRAP_WORD_CHAR)
@@ -120,13 +118,13 @@ class UnitRenderer(gtk.GenericCellRenderer):
         return layout
 
     def compute_cell_height(self, widget, width):
-        self.source_layout = self.get_pango_layout(widget, self.unit.source, width / 2)
-        self.target_layout = self.get_pango_layout(widget, self.unit.target, width / 2)
-	# This makes no sense, but has the desired effect to align things correctly for
+        self.source_layout = self._get_pango_layout(widget, self.unit.source, width / 2)
+        self.target_layout = self._get_pango_layout(widget, self.unit.target, width / 2)
+        # This makes no sense, but has the desired effect to align things correctly for
         # both LTR and RTL languages:
         if widget.get_direction() == gtk.TEXT_DIR_RTL:
-	    self.source_layout.set_alignment(pango.ALIGN_RIGHT)
-	    self.target_layout.set_alignment(pango.ALIGN_RIGHT)
+            self.source_layout.set_alignment(pango.ALIGN_RIGHT)
+            self.target_layout.set_alignment(pango.ALIGN_RIGHT)
         _layout_width, source_height = self.source_layout.get_pixel_size()
         _layout_width, target_height = self.target_layout.get_pixel_size()
         return max(source_height, target_height)

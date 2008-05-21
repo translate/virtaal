@@ -67,7 +67,7 @@ class UnitGrid(gtk.TreeView):
             raise ValueError(_("The file did not contain anything to translate."))
 
         renderer = UnitRenderer(self)
-        renderer.connect("editing-done", self.on_cell_edited, self.get_model())
+        renderer.connect("editing-done", self._on_cell_edited, self.get_model())
         renderer.connect("modified", self._on_modified)
 
         column = gtk.TreeViewColumn(None, renderer, unit=COLUMN_UNIT, editable=COLUMN_EDITABLE)
@@ -86,9 +86,9 @@ class UnitGrid(gtk.TreeView):
 
         self.document.connect("mode-changed", self._on_mode_changed)
 
-        self.connect('key-press-event', self.on_key_press)
-        self.connect("cursor-changed", self.on_cursor_changed)
-        self.connect("button-press-event", self.on_button_press)
+        self.connect('key-press-event', self._on_key_press)
+        self.connect("cursor-changed", self._on_cursor_changed)
+        self.connect("button-press-event", self._on_button_press)
 
         self.accel_group = gtk.AccelGroup()
         self._owner.main_window.add_accel_group(self.accel_group)
@@ -161,7 +161,7 @@ class UnitGrid(gtk.TreeView):
     def _move_down(self, _accel_group, _acceleratable, _keyval, _modifier):
         return self._keyboard_move(1)
 
-    def on_button_press(self, widget, event):
+    def _on_button_press(self, widget, event):
         # If the event did not happen in the treeview, but in the
         # editing widget, then the event window will not correspond to
         # the treeview's drawing window. This happens when the
@@ -206,12 +206,12 @@ class UnitGrid(gtk.TreeView):
         self.emit("modified")
         return True
 
-    def on_cell_edited(self, _cell, _path_string, must_advance, _modified, _model):
+    def _on_cell_edited(self, _cell, _path_string, must_advance, _modified, _model):
         if must_advance:
             return self._keyboard_move(1)
         return True
 
-    def on_cursor_changed(self, _treeview):
+    def _on_cursor_changed(self, _treeview):
         path, _column = self.get_cursor()
 
         # We defer the scrolling until GTK has finished all its current drawing
@@ -227,7 +227,7 @@ class UnitGrid(gtk.TreeView):
         gobject.idle_add(do_scroll)
         return True
 
-    def on_key_press(self, _widget, _event, _data=None):
+    def _on_key_press(self, _widget, _event, _data=None):
         # The TreeView does interesting things with combos like SHIFT+TAB.
         # So we're going to stop it from doing this.
         return True

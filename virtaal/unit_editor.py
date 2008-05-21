@@ -191,7 +191,7 @@ def make_target_text_box(layout):
         return buf.get_text(buf.get_iter_at_offset(left_offset),
                             buf.get_iter_at_offset(right_offset))
 
-    def on_text_view_key_press_event(text_view, event):
+    def on_text_view_n_press_event(text_view, event):
         """Handle special keypresses in the textarea."""
         # Automatically move to the next line if \n is entered
 
@@ -203,7 +203,7 @@ def make_target_text_box(layout):
                 return True
         return False
 
-    def on_text_view_n_press_event(text_view, event, *_args):
+    def on_text_view_key_press_event(text_view, event, *_args):
         if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
             layout = get_layout(text_view.parent)
             if layout.next != None:
@@ -278,23 +278,17 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         for target_widget in (get_widget(s) for s in unit_layout.get_targets(get_layout(self.layout))):
             target_widget.child.get_buffer().connect("changed", self._on_modify)
 
-        #blueprints['copy_button'].connect("activate", self._on_copy_original)
-        #editor_names['copy_button'].connect("clicked", self._on_copy_original)
-        #editor_names['copy_button'].set_relief(gtk.RELIEF_NONE)
-
-        #editor_names['fuzzy_checkbox'].connect("toggled", self._on_modified)
-
         self.must_advance = False
         self._modified = False
         self._unit = unit
         self._widget_dict = widget_dict
 
-        self.connect('key-press-event', self.on_key_press_event)
+        self.connect('key-press-event', self._on_key_press_event)
 
     def _on_modify(self, _buf):
         self.emit('modified')
 
-    def on_key_press_event(self, _widget, event, *_args):
+    def _on_key_press_event(self, _widget, event, *_args):
         if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
             self.must_advance = True
             self.editing_done()
@@ -318,18 +312,8 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         self._modified = True
         return False
 
-    def update_for_save(self):
-        self.get_unit()
-        self.reset_modified()
-
     def get_modified(self):
         return self._modified
-
-    def reset_modified(self):
-        """Resets all the buffers to not modified."""
-        for b in self.buffers:
-            b.set_modified(False)
-        self._modified = False
 
     def get_text(self):
         targets = [b.props.text for b in self.buffers]

@@ -1,4 +1,3 @@
-from translate.convert import pot2po
 import os
 from os import path, environ
 
@@ -8,9 +7,18 @@ from dogtail.utils import run
 import po2pot
 
 environ['LANGUAGE']='en_US.UTF-8'
-config.config.defaults['absoluteNodePaths'] = True
-config.config.defaults['typingDelay'] = 0.02
-config.config.defaults['actionDelay'] = 0.3
+
+if environ.has_key('TEST_TURBO'):
+    config.config.defaults['absoluteNodePaths'] = True
+    config.config.defaults['typingDelay'] = 0.01
+    config.config.defaults['actionDelay'] = 0.1
+    #config.config.defaults['defaultDelay'] = 0.1
+    config.config.defaults['runTimeout'] = 0.01
+    config.config.defaults['searchCutoffCount'] = 2
+else:
+    config.config.defaults['absoluteNodePaths'] = True
+    config.config.defaults['typingDelay'] = 0.02
+    config.config.defaults['actionDelay'] = 0.3
 
 def find_app(exe_name):
     full_exe_name = path.abspath(exe_name)

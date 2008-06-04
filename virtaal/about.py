@@ -73,10 +73,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.""")
 
         Use open and mailto from virtaal.support.openmailto
         """
-        if os.name == "posix":
-            gtk.about_dialog_set_url_hook(self.on_url, "url")
-            gtk.about_dialog_set_email_hook(self.on_url, "mail")
-        else:
-            pass
+        gtk.about_dialog_set_url_hook(self.on_url, "url")
+        gtk.about_dialog_set_email_hook(self.on_url, "mail")
 
 

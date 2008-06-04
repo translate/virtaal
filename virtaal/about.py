@@ -21,6 +21,7 @@
 import gtk
 import os
 import __version__
+from support import openmailto
 
 _ = lambda x: x
 
@@ -63,14 +64,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.""")
 
     def on_url(self, dialog, uri, data):
         if data == "mail":
-            os.system("xdg-email " + uri)
+            openmailto.mailto(uri)
         elif data == "url":
-            os.system("xdg-open " + uri)
+            openmailto.open(uri)
 
     def _register_uri_handlers(self):
         """Register the URL and email handlers
 
-        Use xdg-open and xdg-email on Unix, ignore this on other platforms
+        Use open and mailto from virtaal.support.openmailto
         """
         if os.name == "posix":
             gtk.about_dialog_set_url_hook(self.on_url, "url")

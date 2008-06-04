@@ -3,21 +3,21 @@
 #
 # Copyright 2007-2008 Zuza Software Foundation
 #
-# This file is part of virtaal.
+# This file is part of Virtaal.
 #
-# virtaal is free software; you can redistribute it and/or modify
+# This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 #
-# translate is distributed in the hope that it will be useful,
+# This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with translate; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import os
 import os.path as path
@@ -35,9 +35,10 @@ from gtk import gdk
 from gtk import glade
 
 from translate.storage import poheader
+from support import openmailto
 
 import pan_app
-from pan_app import _
+from pan_app import _ # _() is the gettext function to use
 from widgets.entry_dialog import EntryDialog
 import unit_grid
 import unit_renderer
@@ -335,13 +336,13 @@ class VirTaal:
         # Should be more redundent
         # If the guide is installed and no internet then open local
         # If Internet then go live, if no Internet or guide then disable
-        os.system("xdg-open http://translate.sourceforge.net/wiki/guide/start")
+        openmailto.open("http://translate.sourceforge.net/wiki/guide/start")
 
     def _on_documentation(self, _widget=None):
-        os.system("xdg-open http://translate.sourceforge.net/wiki/virtaal/index")
+        openmailto.open("http://translate.sourceforge.net/wiki/virtaal/index")
 
     def _on_report_bug(self, _widget=None):
-        os.system("xdg-open http://bugs.locamotion.org/enter_bug.cgi?product=VirTaal")
+        openmailto.open("http://bugs.locamotion.org/enter_bug.cgi?product=VirTaal")
 
     def run(self):
         gtk.main()

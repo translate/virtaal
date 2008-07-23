@@ -34,7 +34,7 @@ from support.partial import partial
 from support.simplegeneric import generic
 import markup
 import undo_buffer
-from widgets import label_expander 
+from widgets import label_expander
 
 @generic
 def get_children(widget):
@@ -46,7 +46,6 @@ def get_children_container(widget):
 
 def forall_widgets(f, widget):
     f(widget)
-
     for child in get_children(widget):
         forall_widgets(f, child)
 
@@ -157,13 +156,12 @@ def target_text_box(get_text, set_text):
             set_text(markup.unescape(buf.get_text(buf.get_start_iter(), buf.get_end_iter())))
     
         text_view, scrolled_window = make_scrolled_text_view(get_text, True, gtk.POLICY_AUTOMATIC, "contentlang")
+        text_view.connect('key-press-event', on_text_view_n_press_event)
+        text_view._is_target = True
 
         buf = undo_buffer.add_undo_to_buffer(text_view.get_buffer())
         undo_buffer.execute_without_signals(buf, lambda: buf.set_text(markup.escape(get_text())))
         buf.connect('changed', on_change)
-
-        text_view.connect('key-press-event', on_text_view_n_press_event)
-        text_view._is_target = True
 
         return scrolled_window
     return make
@@ -187,7 +185,6 @@ def connect_target_text_views(child):
         for target, next_target in zip(targets, targets[1:]):
             target.connect('key-press-event', target_key_press_event, next_target)
         targets[-1].connect('key-press-event', end_target_key_press_event)
-        
         return widget
     return make
 
@@ -207,8 +204,7 @@ def option(label, get_option, set_option):
     
         check_button = gtk.CheckButton(label=label)
         check_button.connect('toggled', on_toggled)
-        if get_option():
-            check_button.set_active(True)
+        check_button.set_active(get_option())
         return check_button
     return make
 
@@ -223,26 +219,23 @@ def build_layout(unit, nplurals):
     @param nplurals: The number of plurals in the
     """
 
-    def get_source(unit, index):
+    def get(multistring, unit, i):
         if unit.hasplural():
-            return unit.source.strings[index]
-        elif index == 0:
-            return unit.source
+            return multistring.strings[i]
+        elif i == 0:
+            return multistring
         else:
             raise IndexError()
+
+    def get_source(unit, index):
+        return get(unit.source, unit, index)
     
     def get_target(unit, nplurals, index):
-        if unit.hasplural():
-            if nplurals != len(unit.target.strings):
-                targets = nplurals * [u""]
-                targets[:len(unit.target.strings)] = unit.target.strings
-                unit.target = targets
-    
-            return unit.target.strings[index]
-        elif index == 0:
-            return unit.target
-        else:
-            raise IndexError()
+        if unit.hasplural() and nplurals != len(unit.target.strings):
+            targets = nplurals * [u""]
+            targets[:len(unit.target.strings)] = unit.target.strings
+            unit.target = targets
+        return get(unit.target, unit, index)
     
     def set(unit, attr, index, value):
         if unit.hasplural():
@@ -263,14 +256,12 @@ def build_layout(unit, nplurals):
     def num_sources(unit):
         if unit.hasplural():
             return len(unit.source.strings)
-        else:
-            return 1
+        return 1
     
     def num_targets(unit, nplurals):
         if unit.hasplural():
             return nplurals
-        else:
-            return 1
+        return 1
 
     maker = layout(vlist(
                  comment(partial(unit.getnotes, 'programmer')),

@@ -191,6 +191,7 @@ def make_source_text_box(layout):
 @make_widget.when_type(TargetTextBox)
 def make_target_text_box(layout):
     text_view = gtk.TextView()
+    text_view._is_target = True
 
     add_spell_checking(text_view, pan_app.settings.language["contentlang"])
 
@@ -348,25 +349,30 @@ def build_layout(unit, nplurals):
                                  partial(unit.getnotes, 'translator'))],
                         get_options(unit)))))
 
-    # This is somewhat ugly. These private variables will be used by get_sources
-    # and get_targets (both defined elsewhere in this file).
-    layout.__sources = sources
-    layout.__targets = targets
+    return make_widget(layout)
 
-    return layout
 
-def get_sources(layout):
-    return layout.__sources
+@generic
+def get_children(widget):
+    return []
+  
+@get_children.when_type(gtk.Container)
+def get_children_container(widget):
+    return widget.get_children()
 
-def get_targets(layout):
-    return layout.__targets
+def forall_widgets(f, widget):
+    f(widget)
 
-def get_blueprints(unit, nplurals):
-    """Return a layout description used to construct UnitEditors
+    for child in get_children(widget):
+        forall_widgets(f, child)
 
-    @param unit: A translation unit (from the translate toolkit)
-    """
-    if not hasattr(unit, '__blueprints'):
-        unit.__blueprints = build_layout(unit, nplurals)
-    return unit.__blueprints
-
+def get_targets(widget):
+    def add_targets_to_list(lst):
+        def do(widget):
+            if '_is_target' in widget.__dict__:
+                lst.append(widget)
+        return do
+  
+    result = []
+    forall_widgets(add_targets_to_list(result), widget)
+    return result

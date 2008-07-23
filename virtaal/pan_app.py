@@ -27,8 +27,6 @@ except ImportError, e:
     import ConfigParser
 import os
 import locale, gettext
-import pygtk
-pygtk.require("2.0")
 _ = gettext.gettext
 
 from __version__ import ver

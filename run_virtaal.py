@@ -48,29 +48,23 @@ option_list = [
 ]
 parser = OptionParser(option_list=option_list, usage=usage)
 
-def module_path():
-    """This will get us the program's directory, even if we are frozen using py2exe"""
-    if hasattr(sys, "frozen"):
-        return os.path.dirname(unicode(sys.executable, sys.getfilesystemencoding()))
-    return os.path.dirname(unicode(__file__, sys.getfilesystemencoding( )))
-
-def run_virtaal():
-    prog = VirTaal(module_path(), startup_file)
+def run_virtaal(startup_file):
+    prog = VirTaal(startup_file)
     prog.run()
 
-def profile(profile_file):
+def profile(profile_file, startup_file):
     import cProfile
     import source_tree_infrastructure.lsprofcalltree as lsprofcalltree
     logging.info('Staring profiling run')
     profiler = cProfile.Profile()
-    profiler.run('run_virtaal()')
+    profiler.runcall(run_virtaal, startup_file)
     k_cache_grind = lsprofcalltree.KCacheGrind(profiler)
     k_cache_grind.output(profile_file)
     profile_file.close()
 
 def main(argv):
-    global startup_file
     options, args = parser.parse_args(argv[1:])
+    startup_file  = None
     
     if options.log != None:
         try:
@@ -95,11 +89,11 @@ def main(argv):
  
     if options.profile != None:
         try:
-            profile(open(options.profile, 'w+'))                
+            profile(open(options.profile, 'w+'), startup_file)                
         except IOError:
             parser.error(_("Could not open profile file '%s'") % options.profile)
     else:
-        run_virtaal()
+        run_virtaal(startup_file)
 
 if __name__ == "__main__":    
     main(sys.argv)

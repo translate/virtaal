@@ -25,15 +25,21 @@ class UnitModel(gtk.GenericCellRenderer):
     def __init__(self, store, editable_indices):
         self._store = store
         self._editable_indices
+        self._current_editable = 0
 
     def on_get_flags(self):
         return gtk.TREE_MODEL_ITERS_PERSIST | gtk.TREE_MODEL_LIST_ONLY
 
     def on_get_n_columns(self):
-        return 1
+        return 3
 
     def on_get_column_type(self, index):
-        return gobject.TYPE_PYOBJECT
+        if index == 0:
+            return gobject.TYPE_STRING
+        elif index == 1:
+            return gobject.TYPE_PYOBJECT
+        else:
+            return gobject.TYPE_BOOLEAN
 
     def on_get_iter(self, path):
         return path[0]
@@ -42,7 +48,14 @@ class UnitModel(gtk.GenericCellRenderer):
         return (rowref,)
 
     def on_get_value(self, rowref, column):
-        return self._store.units[self._editable_indices[rowref]]
+        if column <= 1:
+            unit = self._store.units[self._editable_indices[rowref]]
+            if column == 0:
+                return unit.getnotes() or None
+            else:
+                return unit
+        else:
+            return self._current_editable == rowref
 
     def on_iter_next(self, rowref):
         if rowref < len(self._editable_indices) - 1:
@@ -73,3 +86,9 @@ class UnitModel(gtk.GenericCellRenderer):
 
     def on_iter_parent(self, child):
         return None
+
+    # Non-model-interface methods
+    
+    def set_editable(self, rowref):
+        self._current_editable = rowref
+

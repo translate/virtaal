@@ -27,6 +27,7 @@ import gobject
 from pan_app import _
 from unit_renderer import UnitRenderer
 from virtaal.support import bijection
+import unit_model
 
 COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE = 0, 1, 2
 
@@ -36,31 +37,14 @@ class UnitGrid(gtk.TreeView):
     }
 
     def __init__(self, owner):
-        gtk.TreeView.__init__(self, gtk.ListStore(gobject.TYPE_STRING,
-                                                  gobject.TYPE_PYOBJECT,
-                                                  gobject.TYPE_BOOLEAN))
+        gtk.TreeView.__init__(self, unit_model.UnitModel(owner.document.store, list(self.document.mode_cursor)))
 
         self._owner = owner
         self.document = self._owner.document
-        # Create a bidirectional mapping between TreeView indices and
-        # translation unit indices (thus, we have
-        # B: TreeView index <-> Translation unit index. This is necessary
-        # because not all translation units are displayed and thus when we
-        # are given a TreeView index, we need to be able to compute how it
-        # relates to the index of its unit in the translation store.
-        self._path_to_store_index_map = bijection.Bijection(enumerate(self.document.mode_cursor))
-        for unit in (self.document.store.units[i] for i in self.document.mode_cursor):
-            itr = self.get_model().append()
-
-            self.get_model().set (itr,
-               COLUMN_NOTE, unit.getnotes() or None,
-               COLUMN_UNIT, unit,
-               COLUMN_EDITABLE, False,
-            )
-
         self.set_headers_visible(False)
 #        self.set_direction(gtk.TEXT_DIR_LTR)
 
+        # TODO: Is this really necessary?
         if len(self.get_model()) == 0:
             raise ValueError(_("The file did not contain anything to translate."))
 
@@ -95,28 +79,17 @@ class UnitGrid(gtk.TreeView):
         self.connect("destroy", self._on_destroy)
 
         gobject.idle_add(self._activate_editing_path,
-                         self.convert_store_index_to_path(self.document.mode_cursor.deref()))
+                         self.get_model().store_index_to_path(self.document.mode_cursor.deref()))
 
     def _on_destroy(self, *_args):
         self._owner.main_window.remove_accel_group(self.accel_group)
 
     def _on_mode_changed(self, _widget, _mode):
-        path = self.convert_store_index_to_path(self.document.mode_cursor.deref())
+        path = self.get_model().store_index_to_path(self.document.mode_cursor.deref())
         self._activate_editing_path(path)
 
     def convert_path_to_store_index(self, path):
         return self._path_to_store_index_map[path[0]]
-
-    def convert_store_index_to_path(self, index):
-        return (self._path_to_store_index_map.inverse[index],)
-
-    def set_model_by_store_index(self, index, *args):
-        path = self.convert_store_index_to_path(index)
-        self.get_model().set(self.get_model().get_iter(path), *args)
-
-    def set_cursor_by_store_index(self, index, *args, **kwargs):
-        path = self.convert_store_index_to_path(index)
-        self.set_cursor(path, *args, **kwargs)
 
     def get_store_index(self):
         path, _col = self.get_cursor()
@@ -125,8 +98,6 @@ class UnitGrid(gtk.TreeView):
     def _activate_editing_path(self, new_path):
         """Activates the given path for editing."""
         # get the index of the translation unit in the translation store
-        old_path, _col = self.get_cursor()
-        self.get_model().set(self.get_model().get_iter(old_path), COLUMN_EDITABLE, False)
         self.get_model().set(self.get_model().get_iter(new_path), COLUMN_EDITABLE, True)
         def change_cursor():
             self.set_cursor(new_path, self.get_columns()[0], start_editing=True)
@@ -144,9 +115,8 @@ class UnitGrid(gtk.TreeView):
             return True
         
         try:
-            #old_path = self.convert_store_index_to_path(self.document.mode_cursor.deref())
             self.document.mode_cursor.move(offset)
-            path = self.convert_store_index_to_path(self.document.mode_cursor.deref())
+            path = self.get_model().store_index_to_path(self.document.mode_cursor.deref())
             self._activate_editing_path(path)
         except IndexError:
             pass

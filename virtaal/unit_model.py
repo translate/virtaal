@@ -18,13 +18,16 @@
 # along with translate; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from bisect import bisect_left
+
 import gobject
 import gtk
 
 class UnitModel(gtk.GenericCellRenderer):
     def __init__(self, store, editable_indices):
+        gtk.GenericCellRenderer.__init__(self)
         self._store = store
-        self._editable_indices
+        self._editable_indices = editable_indices
         self._current_editable = 0
 
     def on_get_flags(self):
@@ -90,5 +93,17 @@ class UnitModel(gtk.GenericCellRenderer):
     # Non-model-interface methods
     
     def set_editable(self, rowref):
+        old_editable = self._current_editable
         self._current_editable = rowref
+        self.row_changed((old_editable,), old_editable)
+        self.row_changed((rowref,), rowref)
+
+    def store_index_to_path(self, store_index):
+        itr = bisect_left(self._editable_indices, store_index)
+        if self._editable_indices[itr] == store_index:
+            return self.get_path(itr)
+        else:
+            raise IndexError()
+
+        
 

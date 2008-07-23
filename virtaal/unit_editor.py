@@ -96,11 +96,12 @@ def gtk_labelexpander_compute_optimal_height(widget, width):
 def make_widget(layout):
     raise NotImplementedError()
 
-def associate_layout_and_widget(widget_and_names, layout):
-    widget, _names = widget_and_names
+def post_make_widget(widget, names, layout):
     layout.__widget = widget
     widget.__layout = layout
-    return widget_and_names
+    # Skip Enter key processing
+    widget.connect('key-press-event', on_key_press_event)
+    return widget, names
 
 def get_layout(widget):
     return widget.__layout
@@ -108,17 +109,7 @@ def get_layout(widget):
 def get_widget(layout):
     return layout.__widget
 
-def skip_enter_processing(widget_and_names, _layout):
-    widget, _names = widget_and_names
-    widget.connect('key-press-event', on_key_press_event)
-    return widget_and_names
-
-def specialize_make_widget(type_desc):
-    return compose(make_widget.when_type(type_desc),
-                   post(associate_layout_and_widget),
-                   post(skip_enter_processing))
-
-@specialize_make_widget(unit_layout.Layout)
+@make_widget.when_type(unit_layout.Layout)
 def make_layout(layout):
     table = gtk.Table(rows=1, columns=4, homogeneous=True)
     names = {layout.name: table}
@@ -126,7 +117,7 @@ def make_layout(layout):
     table.attach(child, 1, 3, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL)
     names.update(child_names)
 
-    return table, names
+    return post_make_widget(table, names, layout)
 
 def fill_list(lst, box):
     names = {lst.name: box}
@@ -137,13 +128,15 @@ def fill_list(lst, box):
     #box.connect('key-press-event', on_key_press_event)
     return box, names
 
-@specialize_make_widget(unit_layout.VList)
+@make_widget.when_type(unit_layout.VList)
 def make_vlist(layout):
-    return fill_list(layout, gtk.VBox())
+    box, names = fill_list(layout, gtk.VBox())
+    return post_make_widget(box, names, layout)
 
-@specialize_make_widget(unit_layout.HList)
+@make_widget.when_type(unit_layout.HList)
 def make_hlist(layout):
-    return fill_list(layout, gtk.HBox())
+    box, names = fill_list(layout, gtk.HBox())
+    return post_make_widget(box, names, layout)
 
 def focus_text_view(text_view):
     text_view.grab_focus()
@@ -164,7 +157,7 @@ def add_spell_checking(text_view, language):
             logging.info(_("Could not initialize spell checking"))
             gtkspell = None
 
-@specialize_make_widget(unit_layout.SourceTextBox)
+@make_widget.when_type(unit_layout.SourceTextBox)
 def make_source_text_box(layout):
     text_view = gtk.TextView()
 
@@ -179,9 +172,9 @@ def make_source_text_box(layout):
     scrolled_window.set_policy(gtk.POLICY_NEVER, gtk.POLICY_NEVER)
     scrolled_window.add(text_view)
 
-    return scrolled_window, {layout.name: scrolled_window}
+    return post_make_widget(scrolled_window, {layout.name: scrolled_window}, layout)
 
-@specialize_make_widget(unit_layout.TargetTextBox)
+@make_widget.when_type(unit_layout.TargetTextBox)
 def make_target_text_box(layout):
     text_view = gtk.TextView()
 
@@ -233,15 +226,15 @@ def make_target_text_box(layout):
     scrolled_window.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
     scrolled_window.add(text_view)
 
-    return scrolled_window, {layout.name: scrolled_window}
+    return post_make_widget(scrolled_window, {layout.name: scrolled_window}, layout)
 
-@specialize_make_widget(unit_layout.Comment)
+@make_widget.when_type(unit_layout.Comment)
 def make_comment(comment):
     text_box, names = make_source_text_box(comment)
     expander = label_expander.LabelExpander(text_box, comment.get_text)
-    return expander, names
+    return post_make_widget(expander, names, comment)
 
-@specialize_make_widget(unit_layout.Option)
+@make_widget.when_type(unit_layout.Option)
 def make_option(option):
     def on_toggled(widget, *_args):
         if widget.get_active():
@@ -253,7 +246,7 @@ def make_option(option):
     check_button.connect('toggled', on_toggled)
     if option.get_option():
         check_button.set_active(True)
-    return check_button, {'option-%s' % option.name: check_button}
+    return post_make_widget(check_button, {'option-%s' % option.name: check_button}, option)
 
 #A regular expression to help us find a meaningful place to position the
 #cursor initially.

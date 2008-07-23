@@ -23,9 +23,9 @@ from bisect import bisect_left
 import gobject
 import gtk
 
-class UnitModel(gtk.GenericCellRenderer):
+class UnitModel(gtk.GenericTreeModel):
     def __init__(self, store, editable_indices):
-        gtk.GenericCellRenderer.__init__(self)
+        gtk.GenericTreeModel.__init__(self)
         self._store = store
         self._editable_indices = editable_indices
         self._current_editable = 0
@@ -92,18 +92,20 @@ class UnitModel(gtk.GenericCellRenderer):
 
     # Non-model-interface methods
     
-    def set_editable(self, rowref):
-        old_editable = self._current_editable
-        self._current_editable = rowref
-        self.row_changed((old_editable,), old_editable)
-        self.row_changed((rowref,), rowref)
+    def set_editable(self, new_path):
+        old_path = (self._current_editable,)
+        self._current_editable = new_path[0]
+        self.row_changed(old_path, self.get_iter(old_path))
+        self.row_changed(new_path, self.get_iter(new_path))
 
     def store_index_to_path(self, store_index):
         itr = bisect_left(self._editable_indices, store_index)
         if self._editable_indices[itr] == store_index:
-            return self.get_path(itr)
+            return self.on_get_path(itr)
         else:
             raise IndexError()
 
+    def path_to_store_index(self, path):
+        return self._editable_indices[path[0]]
         
 

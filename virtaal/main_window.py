@@ -243,7 +243,7 @@ class VirTaal:
             menuitem = self.gui.get_widget("saveas_menuitem")
             menuitem.set_sensitive(True)
             self.document.set_mode('Default')
-        except Exception, e:
+        except IOError, e:
             dialog = gtk.MessageDialog(dialog or self.main_window,
                             gtk.DIALOG_MODAL,
                             gtk.MESSAGE_ERROR,

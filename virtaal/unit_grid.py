@@ -26,7 +26,6 @@ import gobject
 
 from pan_app import _
 from unit_renderer import UnitRenderer
-from virtaal.support import bijection
 import unit_model
 
 COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE = 0, 1, 2
@@ -37,7 +36,7 @@ class UnitGrid(gtk.TreeView):
     }
 
     def __init__(self, owner):
-        gtk.TreeView.__init__(self, unit_model.UnitModel(owner.document.store, list(self.document.mode_cursor)))
+        gtk.TreeView.__init__(self, unit_model.UnitModel(owner.document.store, list(owner.document.mode_cursor)))
 
         self._owner = owner
         self.document = self._owner.document
@@ -88,17 +87,11 @@ class UnitGrid(gtk.TreeView):
         path = self.get_model().store_index_to_path(self.document.mode_cursor.deref())
         self._activate_editing_path(path)
 
-    def convert_path_to_store_index(self, path):
-        return self._path_to_store_index_map[path[0]]
-
-    def get_store_index(self):
-        path, _col = self.get_cursor()
-        return self.convert_path_to_store_index(path)
-
     def _activate_editing_path(self, new_path):
         """Activates the given path for editing."""
         # get the index of the translation unit in the translation store
-        self.get_model().set(self.get_model().get_iter(new_path), COLUMN_EDITABLE, True)
+        #self.get_model().set(self.get_model().get_iter(new_path), COLUMN_EDITABLE, True)
+        self.get_model().set_editable(new_path)
         def change_cursor():
             self.set_cursor(new_path, self.get_columns()[0], start_editing=True)
             self._waiting_for_row_change -= 1
@@ -144,7 +137,7 @@ class UnitGrid(gtk.TreeView):
         old_path, _old_column = self.get_cursor()
         path, _column, _x, _y = answer
         if old_path != path:
-            index = self.convert_path_to_store_index(path)
+            index = self.get_model().path_to_store_index(path)
             if index not in self.document.mode:
                 logging.debug("Falling to default")
                 self.document.set_mode('Default')

@@ -272,7 +272,7 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         gtk.EventBox.__init__(self)
 #        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color(0, 0, 50000))
 
-        self.layout, widget_dict = make_widget(unit_layout.get_blueprints(unit, parent))
+        self.layout, widget_dict = make_widget(unit_layout.get_blueprints(unit, parent.document.nplurals))
         self.add(self.layout)
 
         for target_widget in (get_widget(s) for s in unit_layout.get_targets(get_layout(self.layout))):

@@ -62,26 +62,25 @@ class Document(gobject.GObject):
         nplurals = None
         if isinstance(self.store, poheader):
             header = self.store.parseheader()
-            if 'Plural-Forms' in header:
-                # XXX: BUG: Got files from GNOME with plurals but without this header
-                nplurals, plural = self.store.getheaderplural()
-                if nplurals is None:
-                    langcode = pan_app.settings.language["contentlang"]
-                    self._lang = langfactory.getlanguage(langcode)
-                    nplurals = self._lang.nplurals
-                    plural = self._lang.pluralequation
-                    while not nplurals:
-                        try:
-                            entry = EntryDialog(_("Please enter the number of noun forms (plurals) to use"))
-                            if entry is None:
-                                return
-                            nplurals = int(entry)
-                        except ValueError, _e:
-                            continue
-                        plural = EntryDialog(_("Please enter the plural equation to use"))
-                        pan_app.settings.language["nplurals"] = nplurals
-                        pan_app.settings.language["plural"] = plural
-                    self.store.updateheaderplural(nplurals, plural)
+            # XXX: BUG: Got files from GNOME with plurals but without this header
+            nplurals, plural = self.store.getheaderplural()
+            if nplurals is None:
+                langcode = pan_app.settings.language["contentlang"]
+                self._lang = langfactory.getlanguage(langcode)
+                nplurals = self._lang.nplurals
+                plural = self._lang.pluralequation
+                while not nplurals:
+                    try:
+                        entry = EntryDialog(_("Please enter the number of noun forms (plurals) to use"))
+                        if entry is None:
+                            return
+                        nplurals = int(entry)
+                    except ValueError, _e:
+                        continue
+                    plural = EntryDialog(_("Please enter the plural equation to use"))
+                    pan_app.settings.language["nplurals"] = nplurals
+                    pan_app.settings.language["plural"] = plural
+                self.store.updateheaderplural(nplurals, plural)                    
         return int(nplurals or 0)
 
     def __init__(self, filename, store=None):

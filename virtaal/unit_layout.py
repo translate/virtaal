@@ -37,6 +37,31 @@ import markup
 import undo_buffer
 from widgets import label_expander 
 
+@generic
+def get_children(widget):
+    return []
+  
+@get_children.when_type(gtk.Container)
+def get_children_container(widget):
+    return widget.get_children()
+
+def forall_widgets(f, widget):
+    f(widget)
+
+    for child in get_children(widget):
+        forall_widgets(f, child)
+
+def get_targets(widget):
+    def add_targets_to_list(lst):
+        def do(widget):
+            if '_is_target' in widget.__dict__:
+                lst.append(widget)
+        return do
+  
+    result = []
+    forall_widgets(add_targets_to_list(result), widget)
+    return result
+
 class Widget(object):
     def __init__(self, name):
         self.name = name
@@ -211,19 +236,6 @@ def make_target_text_box(layout):
                 return True
         return False
 
-    def on_text_view_key_press_event(text_view, event, *_args):
-        if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
-            layout = get_layout(text_view.parent)
-            if layout.next != None:
-                next_text_view = get_widget(layout.next).child
-                focus_text_view(next_text_view)
-
-            else:
-                #self.must_advance = True
-                text_view.parent.emit('key-press-event', event)
-            return True
-        return False
-
     def on_change(buf):
         layout.set_text(markup.unescape(buf.get_text(buf.get_start_iter(), buf.get_end_iter())))
 
@@ -235,7 +247,6 @@ def make_target_text_box(layout):
     text_view.set_wrap_mode(gtk.WRAP_WORD)
     text_view.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)
     text_view.connect('key-press-event', on_text_view_n_press_event)
-    text_view.connect('key-press-event', on_text_view_key_press_event)
 
     scrolled_window = gtk.ScrolledWindow()
     scrolled_window.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
@@ -315,6 +326,24 @@ def num_targets(unit, nplurals):
 def get_options(unit):
     return [Option('option-fuzzy', _('F_uzzy'), lambda: unit.isfuzzy(), lambda value: unit.markfuzzy(value))]
 
+def connect_target_text_views(widget):
+    def target_key_press_event(text_view, event, next_text_view):
+        if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
+            focus_text_view(next_text_view)
+            return True
+        return False
+
+    def end_target_key_press_event(text_view, event, *_args):
+        if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
+            text_view.parent.emit('key-press-event', event)
+            return True
+        return False
+
+    targets = get_targets(widget)
+    for target, next_target in zip(targets, targets[1:]):
+        target.connect('key-press-event', target_key_press_event, next_target)
+    targets[-1].connect('key-press-event', end_target_key_press_event)
+
 def build_layout(unit, nplurals):
     """Construct a blueprint which can be used to build editor widgets
     or to compute the height required to display editor widgets; this
@@ -349,30 +378,8 @@ def build_layout(unit, nplurals):
                                  partial(unit.getnotes, 'translator'))],
                         get_options(unit)))))
 
-    return make_widget(layout)
+    widget = make_widget(layout)[0]
+    connect_target_text_views(widget)
+    return widget
 
 
-@generic
-def get_children(widget):
-    return []
-  
-@get_children.when_type(gtk.Container)
-def get_children_container(widget):
-    return widget.get_children()
-
-def forall_widgets(f, widget):
-    f(widget)
-
-    for child in get_children(widget):
-        forall_widgets(f, child)
-
-def get_targets(widget):
-    def add_targets_to_list(lst):
-        def do(widget):
-            if '_is_target' in widget.__dict__:
-                lst.append(widget)
-        return do
-  
-    result = []
-    forall_widgets(add_targets_to_list(result), widget)
-    return result

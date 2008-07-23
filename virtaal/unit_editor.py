@@ -87,7 +87,7 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         gtk.EventBox.__init__(self)
 #        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color(0, 0, 50000))
 
-        self.layout, widget_dict = unit_layout.build_layout(unit, parent.document.nplurals)
+        self.layout = unit_layout.build_layout(unit, parent.document.nplurals)
         self.add(self.layout)
 
         for target in unit_layout.get_targets(self.layout):   
@@ -96,7 +96,6 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         self.must_advance = False
         self._modified = False
         self._unit = unit
-        self._widget_dict = widget_dict
 
         self.connect('key-press-event', self._on_key_press_event)
 
@@ -111,7 +110,6 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
     def do_start_editing(self, *_args):
         """Start editing."""
         unit_layout.focus_text_view(unit_layout.get_targets(self)[0])
-        #unit_layout.focus_text_view(self._widget_dict['target-0'].child)
 
     def _on_focus(self, widget, _direction):
         # TODO: Check whether we do need to refocus the last edited text_view when

@@ -37,15 +37,12 @@ class BoundedQueue(collections.deque):
     def push(self, item):
         while len(self) > self.get_size():
             self.popleft()
-
         self.append(item)
 
 def add_undo_to_buffer(buf):
     buf.__undo_stack = BoundedQueue(lambda: pan_app.settings.undo['depth'])
-
     buf.insert_handler = buf.connect("insert-text",  on_insert_text,  buf.__undo_stack)
     buf.delete_handler = buf.connect("delete-range", on_delete_range, buf.__undo_stack)
-
     return buf
 
 def block_change_signals(self):

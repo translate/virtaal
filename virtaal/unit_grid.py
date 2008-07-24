@@ -41,7 +41,7 @@ class UnitGrid(gtk.TreeView):
         self._owner = owner
         self.document = self._owner.document
         self.set_headers_visible(False)
-#        self.set_direction(gtk.TEXT_DIR_LTR)
+        #self.set_direction(gtk.TEXT_DIR_LTR)
 
         # TODO: Is this really necessary?
         if len(self.get_model()) == 0:
@@ -106,14 +106,12 @@ class UnitGrid(gtk.TreeView):
         # to be safe about it. 
         if self._waiting_for_row_change > 0:
             return True
-        
         try:
             self.document.mode_cursor.move(offset)
             path = self.get_model().store_index_to_path(self.document.mode_cursor.deref())
             self._activate_editing_path(path)
         except IndexError:
             pass
-
         return True
 
     def _move_up(self, _accel_group, _acceleratable, _keyval, _modifier):
@@ -141,14 +139,12 @@ class UnitGrid(gtk.TreeView):
             if index not in self.document.mode:
                 logging.debug("Falling to default")
                 self.document.set_mode('Default')
-
             self.document.mode_cursor = self.document.mode.cursor_from_element(index)
             self._activate_editing_path(path)
         return True
 
     def on_configure_event(self, _event, *_user_args):
         path, column = self.get_cursor()
-
         # Horrible hack.
         # We use set_cursor to cause the editable area to be recreated so that
         # it can be drawn correctly. This has to be delayed (we used idle_add),
@@ -157,10 +153,8 @@ class UnitGrid(gtk.TreeView):
             if path != None:
                 self.set_cursor(path, column, start_editing=True)
             return False
-
         self.columns_autosize()
         gobject.idle_add(reset_cursor)
-
         return False
 
     def _on_modified(self, _widget):

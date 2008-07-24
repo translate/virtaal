@@ -142,11 +142,9 @@ class VirTaal:
     def _setup_key_bindings(self):
         self.accel_group = gtk.AccelGroup()
         self.main_window.add_accel_group(self.accel_group)
-
         gtk.accel_map_add_entry("<VirTaal>/Edit/Undo", ord('z'), gdk.CONTROL_MASK)
         gtk.accel_map_add_entry("<VirTaal>/Navigation/Up", gtk.accelerator_parse("Up")[0], gdk.CONTROL_MASK)
         gtk.accel_map_add_entry("<VirTaal>/Navigation/Down", gtk.accelerator_parse("Down")[0], gdk.CONTROL_MASK)
-
         self.accel_group.connect_by_path("<VirTaal>/Edit/Undo", self._on_undo)
 
     def _on_undo(self, _accel_group, acceleratable, _keyval, _modifier):
@@ -160,7 +158,6 @@ class VirTaal:
     def _on_file_open(self, _widget, destroyCallback=None):
         chooser = formats.file_open_chooser(destroyCallback)
         chooser.set_transient_for(self.main_window)
-
         while True:
             response = chooser.run()
             if response == gtk.RESPONSE_OK:
@@ -172,7 +169,6 @@ class VirTaal:
             elif response == gtk.RESPONSE_CANCEL or \
                     response == gtk.RESPONSE_DELETE_EVENT:
                 break
-
         chooser.destroy()
 
     def _confirm_unsaved(self, dialog):
@@ -194,7 +190,6 @@ class VirTaal:
     def open_file(self, filename, dialog, reload=False):
         if self._confirm_unsaved(dialog):
             return True
-
         if filename == self.filename and not reload:
             dialog = gtk.MessageDialog(dialog,
                             gtk.DIALOG_MODAL,
@@ -206,7 +201,6 @@ class VirTaal:
             dialog.destroy()
             if response in [gtk.RESPONSE_NO, gtk.RESPONSE_DELETE_EVENT]:
                 return True
-
         return self.load_file(filename, dialog=dialog)
 
     def _on_gui_mode_change(self, _mode_box, mode):
@@ -270,8 +264,6 @@ class VirTaal:
             self._set_saveable(True)
 
     def _on_file_save(self, _widget=None, filename=None):
-#        if self.modified:
-#            self.unit_grid.update_for_save()
         if isinstance(self.document.store, poheader.poheader):
             name = pan_app.settings.translator["name"]
             email = pan_app.settings.translator["email"]
@@ -354,8 +346,3 @@ class VirTaal:
 
     def run(self):
         gtk.main()
-
-#    import hotshot
-#    prof = hotshot.Profile("virtaal.prof")
-#    prof.runcall(gtk.main)
-#    prof.close()

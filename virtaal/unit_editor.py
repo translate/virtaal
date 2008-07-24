@@ -85,8 +85,6 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
 
     def __init__(self, parent, unit):
         gtk.EventBox.__init__(self)
-#        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color(0, 0, 50000))
-
         self.layout = unit_layout.build_layout(unit, parent.document.nplurals)
         self.add(self.layout)
 

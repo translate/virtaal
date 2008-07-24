@@ -109,7 +109,6 @@ class Document(gobject.GObject):
                     self.mode_cursor.move(1)
                 except IndexError:
                     pass
-
             self.emit('mode-changed', self.mode)
         except IndexError:
             pass

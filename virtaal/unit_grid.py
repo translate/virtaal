@@ -1,23 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2007-2008 Zuza Software Foundation
+# Copyright 2008 Zuza Software Foundation
 #
-# This file is part of virtaal.
+# This file is part of VirTaal.
 #
-# virtaal is free software; you can redistribute it and/or modify
+# This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 #
-# translate is distributed in the hope that it will be useful,
+# This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with translate; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import logging
 
@@ -27,6 +26,8 @@ import gobject
 from pan_app import _
 from unit_renderer import UnitRenderer
 import unit_model
+
+# FIXME: Add docstrings!
 
 COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE = 0, 1, 2
 
@@ -99,19 +100,21 @@ class UnitGrid(gtk.TreeView):
         gobject.idle_add(change_cursor, priority=gobject.PRIORITY_DEFAULT_IDLE)
 
     def _keyboard_move(self, offset):
-        # We don't want to process keyboard move events until we have finished updating 
+        # We don't want to process keyboard move events until we have finished updating
         # the display after a move event. So we use this awful, awful, terrible scheme to
-        # keep track of pending draw events. In reality, it should be impossible for 
+        # keep track of pending draw events. In reality, it should be impossible for
         # self._waiting_for_row_change to be larger than 1, but my superstition led me
-        # to be safe about it. 
+        # to be safe about it.
         if self._waiting_for_row_change > 0:
             return True
+
         try:
             self.document.mode_cursor.move(offset)
             path = self.get_model().store_index_to_path(self.document.mode_cursor.deref())
             self._activate_editing_path(path)
         except IndexError:
             pass
+
         return True
 
     def _move_up(self, _accel_group, _acceleratable, _keyval, _modifier):
@@ -139,12 +142,14 @@ class UnitGrid(gtk.TreeView):
             if index not in self.document.mode:
                 logging.debug("Falling to default")
                 self.document.set_mode('Default')
+
             self.document.mode_cursor = self.document.mode.cursor_from_element(index)
             self._activate_editing_path(path)
         return True
 
     def on_configure_event(self, _event, *_user_args):
         path, column = self.get_cursor()
+
         # Horrible hack.
         # We use set_cursor to cause the editable area to be recreated so that
         # it can be drawn correctly. This has to be delayed (we used idle_add),
@@ -153,8 +158,10 @@ class UnitGrid(gtk.TreeView):
             if path != None:
                 self.set_cursor(path, column, start_editing=True)
             return False
+
         self.columns_autosize()
         gobject.idle_add(reset_cursor)
+
         return False
 
     def _on_modified(self, _widget):

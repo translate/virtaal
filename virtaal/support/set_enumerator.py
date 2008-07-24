@@ -3,7 +3,7 @@
 #
 # Copyright 2007 Zuza Software Foundation
 #
-# This file is part of virtaal.
+# This file is part of VirTaal.
 #
 # virtaal is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@ from bisect import bisect_left
 from virtaal.support.sorted_set import SortedSet
 
 import gobject
+
+# FIXME: Add docstrings!
 
 class Cursor(gobject.GObject):
     __gtype_name__ = "Cursor"

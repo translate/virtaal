@@ -2,22 +2,24 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2005-2007 Osmo Salomaa
-# Copyright (C) 2007 Zuza Software Foundation
+# Copyright (C) 2008 Zuza Software Foundation
 #
 # This file was part of Gaupol.
-# This file is part of virtaal.
+# This file is part of VirTaal.
 #
-# virtaal is free software: you can redistribute it and/or modify it under the
-# terms of the GNU General Public License as published by the Free Software
-# Foundation, either version 3 of the License, or (at your option) any later
-# version.
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
-# Translate is distributed in the hope that it will be useful, but WITHOUT ANY
-# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-# You should have received a copy of the GNU General Public License along with
-# Translate.  If not, see <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <http://www.gnu.org/licenses/>.
+
 from virtaal import unit_editor
 
 """Cell renderer for multiline text data."""
@@ -29,6 +31,8 @@ import pango
 import markup
 import undo_buffer
 from unit_editor import UnitEditor
+
+# FIXME: Add docstrings!
 
 def undo(tree_view):
     undo_buffer.undo(tree_view.get_buffer().__undo_stack)
@@ -143,7 +147,7 @@ class UnitRenderer(gtk.GenericCellRenderer):
 
     def _on_modified(self, widget):
         self.emit("modified")
-        
+
     def get_editor(self, parent):
         if not hasattr(self.unit, '__editor'):
             editor = UnitEditor(parent, self.unit)

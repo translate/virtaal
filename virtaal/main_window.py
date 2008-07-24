@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2007-2008 Zuza Software Foundation
+# Copyright 2008 Zuza Software Foundation
 #
-# This file is part of Virtaal.
+# This file is part of VirTaal.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,8 +16,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import os
 import os.path as path
@@ -46,6 +45,8 @@ from about import About
 import formats
 import document
 from support import bijection
+
+# FIXME: Add docstrings!
 
 def on_undo(_accel_group, acceleratable, _keyval, _modifier):
     unit_renderer.undo(acceleratable.focus_widget)
@@ -92,8 +93,7 @@ def load_glade_file(filename):
 
     GLADE_DIRS = [
         ["..", "share", "virtaal"],
-        ["share", "virtaal"],
-        ["..", "data"]
+        ["share", "virtaal"]
     ]
 
     for basepath, glade_dir in ((x, y) for x in BASE_DIRS for y in GLADE_DIRS):
@@ -111,7 +111,7 @@ class VirTaal:
         #Set the Glade file
         self.gladefile, self.gui = load_glade_file("virtaal.glade")
 
-        #Create our dictionay and connect it
+        #Create our events dictionary and connect it
         dic = {
                 "on_mainwindow_destroy" : gtk.main_quit,
                 "on_mainwindow_delete" : self._on_mainwindow_delete,
@@ -142,7 +142,7 @@ class VirTaal:
     def _setup_key_bindings(self):
         self.accel_group = gtk.AccelGroup()
         self.main_window.add_accel_group(self.accel_group)
-        gtk.accel_map_add_entry("<VirTaal>/Edit/Undo", ord('z'), gdk.CONTROL_MASK)
+        gtk.accel_map_add_entry("<VirTaal>/Edit/Undo", gtk.keysyms.z, gdk.CONTROL_MASK)
         gtk.accel_map_add_entry("<VirTaal>/Navigation/Up", gtk.accelerator_parse("Up")[0], gdk.CONTROL_MASK)
         gtk.accel_map_add_entry("<VirTaal>/Navigation/Down", gtk.accelerator_parse("Down")[0], gdk.CONTROL_MASK)
         self.accel_group.connect_by_path("<VirTaal>/Edit/Undo", self._on_undo)
@@ -252,9 +252,9 @@ class VirTaal:
         menuitem = self.gui.get_widget("save_menuitem")
         menuitem.set_sensitive(value)
         if self.filename:
-            window_title = path.basename(self.filename)
+            window_title = _('VirTaal - %s') % (path.basename(self.filename))
             if value:
-                self.main_window.set_title("* " + window_title)
+                self.main_window.set_title(window_title + " *")
             else:
                 self.main_window.set_title(window_title)
         self.modified = value

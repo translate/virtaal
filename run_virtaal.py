@@ -65,7 +65,7 @@ def profile(profile_file, startup_file):
 def main(argv):
     options, args = parser.parse_args(argv[1:])
     startup_file  = None
-    
+
     if options.log != None:
         try:
             logging.basicConfig(level=logging.DEBUG,
@@ -80,20 +80,20 @@ def main(argv):
             pan_app.settings = pan_app.Settings(path.abspath(options.config))
         pan_app.settings.read()
     except:
-        parser.error(_("Could not read configuration file '%s'") % options.config)        
+        parser.error(_("Could not read configuration file '%s'") % options.config)
 
     if len(args) > 1:
         parser.error(_("invalid number of arguments"))
     elif len(args) == 1:
         startup_file = args[0]
- 
+
     if options.profile != None:
         try:
-            profile(open(options.profile, 'w+'), startup_file)                
+            profile(open(options.profile, 'w+'), startup_file)
         except IOError:
             parser.error(_("Could not open profile file '%s'") % options.profile)
     else:
         run_virtaal(startup_file)
 
-if __name__ == "__main__":    
+if __name__ == "__main__":
     main(sys.argv)

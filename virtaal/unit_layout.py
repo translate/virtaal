@@ -19,6 +19,8 @@
 # along with translate; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+__all__ = ['build_layout', 'get_targets']
+
 import logging
 import re
 
@@ -31,23 +33,9 @@ except ImportError, e:
 import pan_app
 from pan_app import _
 from support.partial import partial
-from support.simplegeneric import generic
 import markup
 import undo_buffer
-from widgets import label_expander
-
-@generic
-def get_children(widget):
-    return []
-  
-@get_children.when_type(gtk.Container)
-def get_children_container(widget):
-    return widget.get_children()
-
-def forall_widgets(f, widget):
-    f(widget)
-    for child in get_children(widget):
-        forall_widgets(f, child)
+from widgets import label_expander, util
 
 def get_targets(widget):
     def add_targets_to_list(lst):
@@ -57,10 +45,8 @@ def get_targets(widget):
         return do
   
     result = []
-    forall_widgets(add_targets_to_list(result), widget)
+    util.forall_widgets(add_targets_to_list(result), widget)
     return result
-
-################################################################################
 
 #A regular expression to help us find a meaningful place to position the
 #cursor initially.
@@ -275,5 +261,5 @@ def build_layout(unit, nplurals):
                             for i in xrange(num_targets(unit, nplurals))))),
                  comment(partial(unit.getnotes, 'translator')),
                  option(_('F_uzzy'), unit.isfuzzy,
-                                     lambda value: unit.markfuzzy(value))))
+                                     partial(unit.markfuzzy, value))))
     return maker()

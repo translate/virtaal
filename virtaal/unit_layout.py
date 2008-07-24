@@ -74,10 +74,15 @@ def add_events(widget):
     widget.connect('key-press-event', on_key_press_event)
     return widget
 
-def layout(child):
+def layout(left=None, middle=None, right=None):
     def make():
         table = gtk.Table(rows=1, columns=4, homogeneous=True)
-        table.attach(child(), 1, 3, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL)
+        if left != None:
+            table.attach(left(), 0, 1, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL)
+        if middle != None:
+            table.attach(middle(), 1, 3, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL)
+        if right != None:
+            table.attach(right(), 3, 4, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL)
         return add_events(table)
     return make
 
@@ -249,7 +254,7 @@ def build_layout(unit, nplurals):
             return nplurals
         return 1
 
-    maker = layout(vlist(
+    maker = layout(middle=vlist(
                  comment(partial(unit.getnotes, 'programmer')),
                  vlist(*(source_text_box(partial(get_source, unit, i), 
                                          partial(set_source, unit, i))
@@ -260,6 +265,5 @@ def build_layout(unit, nplurals):
                                             partial(set_target, unit, i))
                             for i in xrange(num_targets(unit, nplurals))))),
                  comment(partial(unit.getnotes, 'translator')),
-                 option(_('F_uzzy'), unit.isfuzzy,
-                                     partial(unit.markfuzzy, value))))
+                 option(_('F_uzzy'), unit.isfuzzy, unit.markfuzzy)))
     return maker()

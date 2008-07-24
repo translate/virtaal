@@ -15,7 +15,7 @@ except ImportError:
     py2exe = None
     build_exe = Command
 
-SOURCE_DATA_DIR = "data"
+SOURCE_DATA_DIR = path.join('share', 'virtaal')
 TARGET_DATA_DIR = path.join("share", "virtaal")
 
 classifiers = [
@@ -33,7 +33,7 @@ classifiers = [
 
 options = {
     'data_files': [
-        (TARGET_DATA_DIR, glob.glob(path.join("data", "*"))),
+        (TARGET_DATA_DIR, glob.glob(path.join(SOURCE_DATA_DIR, "*"))),
     ],
     'scripts': [
         "run_virtaal.py"

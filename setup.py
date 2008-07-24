@@ -228,7 +228,7 @@ def add_win32_options(options):
             "compressed": True,
             "excludes":   ["PyLucene", "Tkconstants", "Tkinter", "tcl", "translate.misc._csv"],
             "dist_dir":   "virtaal-win32",
-            "includes":   ["lxml", "lxml._elementpath", "psyco", "cairo", "pango", "pangocairo", "atk", "gobject"],
+            "includes":   ["lxml", "lxml._elementpath", "psyco", "cairo", "pango", "pangocairo", "atk", "gobject", "gtk.keysyms"],
             "optimize":   2,
         }
         innosetup_options = py2exe_options.copy()

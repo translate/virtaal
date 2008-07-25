@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008 Zuza Software Foundation
+# Copyright 2007-2008 Zuza Software Foundation
 #
 # This file is part of VirTaal.
 #
@@ -51,6 +51,7 @@ class UnitGrid(gtk.TreeView):
         renderer = UnitRenderer(self)
         renderer.connect("editing-done", self._on_cell_edited, self.get_model())
         renderer.connect("modified", self._on_modified)
+        self.renderer = renderer
 
         column = gtk.TreeViewColumn(None, renderer, unit=COLUMN_UNIT, editable=COLUMN_EDITABLE)
         column.set_expand(True)

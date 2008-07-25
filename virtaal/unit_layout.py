@@ -1,23 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008 Zuza Software Foundation
+# Copyright 2007-2008 Zuza Software Foundation
 #
-# This file is part of virtaal.
+# This file is part of VirTaal.
 #
-# virtaal is free software; you can redistribute it and/or modify
+# This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 #
-# translate is distributed in the hope that it will be useful,
+# This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with translate; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 __all__ = ['build_layout', 'get_targets']
 
@@ -43,7 +42,7 @@ def get_targets(widget):
             if '_is_target' in widget.__dict__:
                 lst.append(widget)
         return do
-  
+
     result = []
     util.forall_widgets(add_targets_to_list(result), widget)
     return result
@@ -124,13 +123,13 @@ def source_text_box(get_text, set_text):
         _text_view, scrolled_window = make_scrolled_text_view(get_text, False, gtk.POLICY_NEVER, "sourcelang")
         return scrolled_window
     return make
-  
+
 def target_text_box(get_text, set_text):
-    def make():            
+    def make():
         def get_range(buf, left_offset, right_offset):
             return buf.get_text(buf.get_iter_at_offset(left_offset),
                                 buf.get_iter_at_offset(right_offset))
-    
+
         def on_text_view_n_press_event(text_view, event):
             """Handle special keypresses in the textarea."""
             # Automatically move to the next line if \n is entered
@@ -142,10 +141,10 @@ def target_text_box(get_text, set_text):
                     text_view.scroll_mark_onscreen(buf.get_insert())
                     return True
             return False
-    
+
         def on_change(buf):
             set_text(markup.unescape(buf.get_text(buf.get_start_iter(), buf.get_end_iter())))
-    
+
         text_view, scrolled_window = make_scrolled_text_view(get_text, True, gtk.POLICY_AUTOMATIC, "contentlang")
         text_view.connect('key-press-event', on_text_view_n_press_event)
         text_view._is_target = True
@@ -220,14 +219,14 @@ def build_layout(unit, nplurals):
 
     def get_source(unit, index):
         return get(unit.source, unit, index)
-    
+
     def get_target(unit, nplurals, index):
         if unit.hasplural() and nplurals != len(unit.target.strings):
             targets = nplurals * [u""]
             targets[:len(unit.target.strings)] = unit.target.strings
             unit.target = targets
         return get(unit.target, unit, index)
-    
+
     def set(unit, attr, index, value):
         if unit.hasplural():
             str_list = list(getattr(unit, attr).strings)
@@ -237,10 +236,10 @@ def build_layout(unit, nplurals):
             setattr(unit, attr, value)
         else:
             raise IndexError()
-    
+
     def set_source(unit, index, value):
         set(unit, 'source', index, value)
-    
+
     def set_target(unit, index, value):
         set(unit, 'target', index, value)
 
@@ -248,7 +247,7 @@ def build_layout(unit, nplurals):
         if unit.hasplural():
             return len(unit.source.strings)
         return 1
-    
+
     def num_targets(unit, nplurals):
         if unit.hasplural():
             return nplurals
@@ -256,12 +255,12 @@ def build_layout(unit, nplurals):
 
     maker = layout(middle=vlist(
                  comment(partial(unit.getnotes, 'programmer')),
-                 vlist(*(source_text_box(partial(get_source, unit, i), 
+                 vlist(*(source_text_box(partial(get_source, unit, i),
                                          partial(set_source, unit, i))
                          for i in xrange(num_sources(unit)))),
                  comment(unit.getcontext),
                  connect_target_text_views(
-                    vlist(*(target_text_box(partial(get_target, unit, nplurals, i), 
+                    vlist(*(target_text_box(partial(get_target, unit, nplurals, i),
                                             partial(set_target, unit, i))
                             for i in xrange(num_targets(unit, nplurals))))),
                  comment(partial(unit.getnotes, 'translator')),

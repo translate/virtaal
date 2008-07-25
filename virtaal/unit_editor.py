@@ -3,21 +3,20 @@
 #
 # Copyright 2007-2008 Zuza Software Foundation
 #
-# This file is part of virtaal.
+# This file is part of VirTaal.
 #
-# virtaal is free software; you can redistribute it and/or modify
+# This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 #
-# translate is distributed in the hope that it will be useful,
+# This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with translate; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# along with this program; if not, see <http://www.gnu.org/licenses/>.
 import gobject
 import pango
 import gtk
@@ -87,8 +86,10 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         gtk.EventBox.__init__(self)
         self.layout = unit_layout.build_layout(unit, parent.document.nplurals)
         self.add(self.layout)
+        self.targets = []
         for target in unit_layout.get_targets(self.layout):
             target.get_buffer().connect("changed", self._on_modify)
+            self.targets.append(target)
         self.must_advance = False
         self._modified = False
         self._unit = unit

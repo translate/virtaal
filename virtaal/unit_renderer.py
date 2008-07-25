@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2005-2007 Osmo Salomaa
-# Copyright (C) 2008 Zuza Software Foundation
+# Copyright (C) 2007-2008 Zuza Software Foundation
 #
 # This file was part of Gaupol.
 # This file is part of VirTaal.

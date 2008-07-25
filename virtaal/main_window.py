@@ -83,7 +83,14 @@ class ModeBox(gtk.HBox):
     def _on_label_click(self, clicked_label, _event):
         self.emit('mode-selected', self.mode_to_label.inverse[clicked_label])
 
-def load_glade_file(filename):
+def get_data_file_abs_name(filename):
+    """Get the absolute path to the given file- or directory name in VirTaal's
+        data directory.
+
+        @type  filename: str
+        @param filename: The file- or directory name to look for in the data
+            directory.
+        """
     import sys
 
     BASE_DIRS = [
@@ -91,18 +98,22 @@ def load_glade_file(filename):
         os.path.dirname(unicode(sys.executable, sys.getfilesystemencoding()))
     ]
 
-    GLADE_DIRS = [
+    DATA_DIRS = [
         ["..", "share", "virtaal"],
         ["share", "virtaal"]
     ]
 
-    for basepath, glade_dir in ((x, y) for x in BASE_DIRS for y in GLADE_DIRS):
-        dir_and_filename = glade_dir + [filename]
-        gladefile = path.join(basepath or path.dirname(__file__), *dir_and_filename)
-        if path.exists(gladefile):
-            gui = glade.XML(gladefile)
-            return gladefile, gui
-    raise Exception("Could not find %s" % (filename,))
+    for basepath, data_dir in ((x, y) for x in BASE_DIRS for y in DATA_DIRS):
+        dir_and_filename = data_dir + [filename]
+        datafile = path.join(basepath or path.dirname(__file__), *dir_and_filename)
+        if path.exists(datafile):
+            return datafile
+    raise Exception('Could not find "%s"' % (filename,))
+
+def load_glade_file(filename):
+    gladename = get_data_file_abs_name(filename)
+    gui = glade.XML(gladename)
+    return gladename, gui
 
 class VirTaal:
     """The entry point class for VirTaal"""

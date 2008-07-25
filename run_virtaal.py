@@ -28,6 +28,7 @@ from os import path
 
 from virtaal.main_window import VirTaal
 from virtaal import pan_app
+from virtaal import __version__
 
 # This has to be a global variable so that cProfile can get access to it 
 # (see below in the profiling code).
@@ -45,7 +46,7 @@ option_list = [
                 action="store", type="string", dest="config", metavar=_("CONFIG"),
                 help=_("Use the configuration file given by the supplied filename.")),
 ]
-parser = OptionParser(option_list=option_list, usage=usage)
+parser = OptionParser(option_list=option_list, usage=usage, version=__version__.ver)
 
 def run_virtaal(startup_file):
     prog = VirTaal(startup_file)

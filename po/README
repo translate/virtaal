@@ -2,8 +2,8 @@ Updating translations
 ---------------------
 from po/
 
-intltool-update --pot
-intltool-update xy
+./intltool-update --pot
+./intltool-update xy
 
 Generating the .xml and .desktop files
 --------------------------------------

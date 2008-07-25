@@ -34,7 +34,7 @@ from virtaal.pan_app import _
 # (see below in the profiling code).
 startup_file = None
 
-usage = "usage: %prog [options] [translation_file]"
+usage = _("%prog [options] [translation_file]")
 option_list = [
     make_option("--profile",
                 action="store", type="string", dest="profile",

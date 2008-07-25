@@ -80,7 +80,7 @@ def main(argv):
             pan_app.settings = pan_app.Settings(path.abspath(options.config))
         pan_app.settings.read()
     except:
-        parser.error(_("Could not read configuration file '%(filename)s'") % {"filename": options.config}`)
+        parser.error(_("Could not read configuration file '%(filename)s'") % {"filename": options.config})
 
     if len(args) > 1:
         parser.error(_("invalid number of arguments"))

@@ -6,119 +6,153 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: VirTaal 0.1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2008-04-07 16:57+0200\n"
+"POT-Creation-Date: 2008-07-25 18:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: virtaal/unitrenderer.py:71
-msgid "_Copy original"
+#: ../run_virtaal.py:41
+msgid "Perform profiling, storing the result to the supplied filename."
 msgstr ""
 
-#: virtaal/unitrenderer.py:81
-msgid "F_uzzy"
+#: ../run_virtaal.py:44
+msgid "Turn on logging, storing the result to the supplied filename."
 msgstr ""
 
-#: virtaal/unitrenderer.py:196
-msgid "Could not initialize spell checking"
+#: ../run_virtaal.py:47
+msgid "Use the configuration file given by the supplied filename."
 msgstr ""
 
-#: virtaal/unitrenderer.py:236
-msgid "Developer comments"
+#: ../run_virtaal.py:76
+#, python-format
+msgid "Could not open log file '%s'"
 msgstr ""
 
-#: virtaal/unitrenderer.py:247
-msgid "Translator comments"
+#: ../run_virtaal.py:83
+#, python-format
+msgid "Could not read configuration file '%s'"
 msgstr ""
 
-#: virtaal/tips.py:8
+#: ../run_virtaal.py:86
+msgid "invalid number of arguments"
+msgstr ""
+
+#: ../run_virtaal.py:94
+#, python-format
+msgid "Could not open profile file '%s'"
+msgstr ""
+
+#: ../virtaal/about.py:34
+msgid "© Copyright 2007-2008 Zuza Software Foundation"
+msgstr ""
+
+#: ../virtaal/about.py:35
 msgid ""
-"At the end of a translation, simply press <Enter> to continue with the next "
-"one."
+"Advanced Computer Aided Translation (CAT) tool for localization and "
+"translation"
 msgstr ""
 
-#: virtaal/tips.py:10
-msgid ""
-"To copy the original string into the target field, simply press <Alt+C>."
+#: ../virtaal/about.py:50
+msgid "VirTaal website"
 msgstr ""
 
-#: virtaal/tips.py:11
-msgid ""
-"When editing a fuzzy translation, the fuzzy marker will automatically be "
-"removed."
+#: ../virtaal/about.py:56
+msgid "translator-credits"
 msgstr ""
 
-#: virtaal/tips.py:13
-msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
+#: ../virtaal/document.py:75
+msgid "Please enter the number of noun forms (plurals) to use"
 msgstr ""
 
-#: virtaal/data/virtaal.glade:13
-msgid "VirTaal"
+#: ../virtaal/document.py:81
+msgid "Please enter the plural equation to use"
 msgstr ""
 
-#: virtaal/data/virtaal.glade:138 virtaal/data/virtaal.glade:184
-msgid "Comments"
-msgstr ""
-
-#: virtaal/data/virtaal.glade:215
-msgid "Copy original"
-msgstr ""
-
-#: virtaal/data/virtaal.glade:224
-msgid "Fuzzy"
-msgstr ""
-
-#: virtaal/MainWindow.py:53
-msgid "PO files"
-msgstr ""
-
-#: virtaal/MainWindow.py:54
-msgid "XLIFF files"
-msgstr ""
-
-#: virtaal/MainWindow.py:55
-msgid "TBX files"
-msgstr ""
-
-#: virtaal/MainWindow.py:56
-msgid "TMX files"
-msgstr ""
-
-#: virtaal/MainWindow.py:57
-msgid "MO files"
-msgstr ""
-
-#: virtaal/MainWindow.py:58
-msgid "All files"
-msgstr ""
-
-#: virtaal/MainWindow.py:95
-msgid ""
-"The current file was modified, but is not yet saved. Are you sure you want "
-"to leave without saving?"
-msgstr ""
-
-#: virtaal/MainWindow.py:107
+#: ../virtaal/formats.py:32
 msgid "Choose a translation file"
 msgstr ""
 
-#: virtaal/MainWindow.py:144
-msgid ""
-"The current file was modified, but is not yet saved. Are you sure you want "
-"to open a new file without saving the previous one?"
+#: ../virtaal/formats.py:43
+msgid "All Supported Files"
 msgstr ""
 
-#: virtaal/MainWindow.py:156
+#: ../virtaal/formats.py:61
+msgid "All Files"
+msgstr ""
+
+#: ../virtaal/main_window.py:180
+msgid ""
+"The current file was modified, but is not yet saved. Do you want to save it "
+"now?"
+msgstr ""
+
+#: ../virtaal/main_window.py:198
 msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
 msgstr ""
 
-#: virtaal/MainWindow.py:250
+#: ../virtaal/main_window.py:258
+#, python-format
+msgid "VirTaal - %(current_file)s %(modified_marker)s"
+msgstr ""
+
+#: ../virtaal/main_window.py:271
+msgid "Please enter your name"
+msgstr ""
+
+#: ../virtaal/main_window.py:277
+msgid "Please enter your e-mail address"
+msgstr ""
+
+#: ../virtaal/main_window.py:283
+msgid "Please enter your team's information"
+msgstr ""
+
+#: ../virtaal/main_window.py:312
 msgid "Save as..."
+msgstr ""
+
+#: ../virtaal/pan_app.py:82
+msgid "Could not get locale"
+msgstr ""
+
+#: ../virtaal/tips.py:27
+msgid ""
+"At the end of a translation, simply press <Enter> to continue with the next "
+"one."
+msgstr ""
+
+#. l10n: Refer to the translation of "Copy to target" to find the appropriate shortcut key to recommend
+#: ../virtaal/tips.py:29
+msgid ""
+"To copy the original string into the target field, simply press <Alt+C>."
+msgstr ""
+
+#: ../virtaal/tips.py:30
+msgid ""
+"When editing a fuzzy translation, the fuzzy marker will automatically be "
+"removed."
+msgstr ""
+
+#. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
+#: ../virtaal/tips.py:32
+msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
+msgstr ""
+
+#: ../virtaal/unit_grid.py:49
+msgid "The file did not contain anything to translate."
+msgstr ""
+
+#: ../virtaal/unit_layout.py:104
+msgid "Could not initialize spell checking"
+msgstr ""
+
+#: ../virtaal/unit_layout.py:268
+msgid "F_uzzy"
 msgstr ""

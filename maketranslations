@@ -1,5 +1,5 @@
 #!/bin/bash
 cache="--cache po/.intltool-merge-cache"
 
-intltool-merge --xml-style $cache po data/virtaal-mimetype.xml.in data/virtaal-mimetype.xml
-intltool-merge --desktop-style $cache po data/virtaal.desktop.in data/virtaal.desktop
+intltool-merge --xml-style $cache po share/virtaal/virtaal-mimetype.xml.in share/virtaal/virtaal-mimetype.xml
+intltool-merge --desktop-style $cache po share/virtaal/virtaal.desktop.in share/virtaal/virtaal.desktop

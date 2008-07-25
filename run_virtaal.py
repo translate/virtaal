@@ -73,14 +73,14 @@ def main(argv):
                                 filename=path.abspath(options.log),
                                 filemode='w')
         except IOError:
-            parser.error(_("Could not open log file '%s'") % options.log)
+            parser.error(_("Could not open log file '%(filename)s'") % {"filename": options.log})
 
     try:
         if options.config != None:
             pan_app.settings = pan_app.Settings(path.abspath(options.config))
         pan_app.settings.read()
     except:
-        parser.error(_("Could not read configuration file '%s'") % options.config)
+        parser.error(_("Could not read configuration file '%(filename)s'") % {"filename": options.config}`)
 
     if len(args) > 1:
         parser.error(_("invalid number of arguments"))
@@ -91,7 +91,7 @@ def main(argv):
         try:
             profile(open(options.profile, 'w+'), startup_file)
         except IOError:
-            parser.error(_("Could not open profile file '%s'") % options.profile)
+            parser.error(_("Could not open profile file '%(filename)s'") % {"filename":options.profile})
     else:
         run_virtaal(startup_file)
 

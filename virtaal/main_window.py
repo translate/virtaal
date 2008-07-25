@@ -252,7 +252,7 @@ class VirTaal:
         menuitem = self.gui.get_widget("save_menuitem")
         menuitem.set_sensitive(value)
         if self.filename:
-            window_title = _('VirTaal - %s') % (path.basename(self.filename))
+            window_title = _('VirTaal - %(current_file)s') % {"current_file": path.basename(self.filename)}
             if value:
                 self.main_window.set_title(window_title + " *")
             else:

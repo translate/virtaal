@@ -110,9 +110,9 @@ def get_data_file_abs_name(filename):
             return datafile
     raise Exception('Could not find "%s"' % (filename,))
 
-def load_glade_file(filename):
+def load_glade_file(filename, domain):
     gladename = get_data_file_abs_name(filename)
-    gui = glade.XML(gladename)
+    gui = glade.XML(gladename, domain=domain)
     return gladename, gui
 
 class VirTaal:
@@ -120,7 +120,7 @@ class VirTaal:
 
     def __init__(self, startup_file=None):
         #Set the Glade file
-        self.gladefile, self.gui = load_glade_file("virtaal.glade")
+        self.gladefile, self.gui = load_glade_file("virtaal.glade", "virtaal")
 
         #Create our events dictionary and connect it
         dic = {

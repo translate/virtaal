@@ -1,4 +1,3 @@
 top_builddir = ..
 DOMAIN = virtaal
 MSGID_BUGS_ADDRESS = translate-devel@lists.sourceforge.net
-XGETTEXT_OPTIONS =  --copyright-holder="Zuza Software Foundation (Translate.org.za)" --package-name="VirTaal" --package-version=`egrep "^ver " ../virtaal/__version__.py | sed "s/ver = //;s/\"//g"`

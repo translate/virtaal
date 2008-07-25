@@ -44,6 +44,7 @@ from about import About
 import formats
 import document
 from support import bijection
+from autocorrector import AutoCorrector
 
 # FIXME: Add docstrings!
 
@@ -146,6 +147,9 @@ class VirTaal:
 
         self.unit_grid = None
         self.document = None
+
+        self.autocorr = AutoCorrector(acorpath=get_data_file_abs_name('autocorr'))
+
         if startup_file != None:
             self.load_file(startup_file)
 
@@ -247,6 +251,9 @@ class VirTaal:
             menuitem = self.gui.get_widget("saveas_menuitem")
             menuitem.set_sensitive(True)
             self.document.set_mode('Default')
+
+            self.autocorr.load_dictionary(lang=pan_app.settings.language['contentlang'])
+            self.unit_grid.connect('cursor-changed', self._on_grid_cursor_changed)
         except IOError, e:
             dialog = gtk.MessageDialog(dialog or self.main_window,
                             gtk.DIALOG_MODAL,
@@ -267,6 +274,13 @@ class VirTaal:
                 modified = "*"
             self.main_window.set_title((_('VirTaal - %(current_file)s %(modified_marker)s') % {"current_file": path.basename(self.filename), "modified_marker": modified}).rstrip())
         self.modified = value
+
+    def _on_grid_cursor_changed(self, grid):
+        assert grid is self.unit_grid
+
+        self.autocorr.clear_widgets()
+        for target in grid.renderer.get_editor(grid).targets:
+            self.autocorr.add_widget(target)
 
     def _on_modified(self, _widget):
         if not self.modified:

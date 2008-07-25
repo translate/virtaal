@@ -197,4 +197,3 @@ def strip_translations(po_filename):
     pot_filename = fname + ".pot"
     po2pot.main([po_filename, pot_filename])
     return pot_filename
-    

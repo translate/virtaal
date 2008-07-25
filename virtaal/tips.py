@@ -21,8 +21,6 @@
 
 """These are some tips that are displayed to the user."""
 
-from pan_app import _
-
 tips = [
 _("At the end of a translation, simply press <Enter> to continue with the next one."),
 # l10n: Refer to the translation of "Copy to target" to find the appropriate shortcut key to recommend

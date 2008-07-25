@@ -37,7 +37,6 @@ from translate.storage import poheader
 from support import openmailto
 
 import pan_app
-from pan_app import _ # _() is the gettext function to use
 from widgets.entry_dialog import EntryDialog
 import unit_grid
 import unit_renderer

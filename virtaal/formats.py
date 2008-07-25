@@ -25,7 +25,6 @@ import gtk
 
 from translate.storage import factory
 import pan_app
-from pan_app import _
 
 def file_open_chooser(_self, destroyCallback=None):
     chooser = gtk.FileChooserDialog(

@@ -26,9 +26,7 @@ except ImportError, e:
     import ConfigParser
 import os
 import locale, gettext
-_ = gettext.gettext
-gettext.bindtextdomain('virtaal')
-gettext.textdomain('virtaal')
+gettext.install("virtaal")
 
 from __version__ import ver
 

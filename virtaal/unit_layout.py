@@ -30,7 +30,6 @@ except ImportError, e:
     gtkspell = None
 
 import pan_app
-from pan_app import _
 from support.partial import partial
 import markup
 import undo_buffer

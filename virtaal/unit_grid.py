@@ -23,7 +23,6 @@ import logging
 import gtk
 import gobject
 
-from pan_app import _
 from unit_renderer import UnitRenderer
 import unit_model
 

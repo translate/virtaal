@@ -18,7 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from pan_app import _
 from support.set_enumerator import UnionSetEnumerator
 from virtaal.support.sorted_set import SortedSet
 

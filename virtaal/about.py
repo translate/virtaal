@@ -23,8 +23,6 @@ import os
 import __version__
 from support import openmailto
 
-_ = lambda x: x
-
 class About(gtk.AboutDialog):
     def __init__(self, parent):
         gtk.AboutDialog.__init__(self)

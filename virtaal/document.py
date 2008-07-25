@@ -28,7 +28,6 @@ from translate.filters import checks
 from translate.lang import factory as langfactory
 
 import pan_app
-from pan_app import _
 from widgets.entry_dialog import EntryDialog
 import modes
 

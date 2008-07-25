@@ -28,7 +28,6 @@ from os import path
 
 from virtaal.main_window import VirTaal
 from virtaal import pan_app
-from virtaal.pan_app import _
 
 # This has to be a global variable so that cProfile can get access to it 
 # (see below in the profiling code).

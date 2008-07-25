@@ -37,13 +37,13 @@ startup_file = None
 usage = _("%prog [options] [translation_file]")
 option_list = [
     make_option("--profile",
-                action="store", type="string", dest="profile",
+                action="store", type="string", dest="profile", metavar=_("PROFILE"),
                 help=_("Perform profiling, storing the result to the supplied filename.")),
     make_option("--log",
-                action="store", type="string", dest="log",
+                action="store", type="string", dest="log", metavar=_("LOG"),
                 help=_("Turn on logging, storing the result to the supplied filename.")),
     make_option("--config",
-                action="store", type="string", dest="config",
+                action="store", type="string", dest="config", metavar=_("CONFIG"),
                 help=_("Use the configuration file given by the supplied filename.")),
 ]
 parser = OptionParser(option_list=option_list, usage=usage)

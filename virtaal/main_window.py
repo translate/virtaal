@@ -252,11 +252,10 @@ class VirTaal:
         menuitem = self.gui.get_widget("save_menuitem")
         menuitem.set_sensitive(value)
         if self.filename:
-            window_title = _('VirTaal - %(current_file)s') % {"current_file": path.basename(self.filename)}
+            modified = ""
             if value:
-                self.main_window.set_title(window_title + " *")
-            else:
-                self.main_window.set_title(window_title)
+                modified = "*"
+            self.main_window.set_title((_('VirTaal - %(current_file)s %(modified_marker)s') % {"current_file": path.basename(self.filename), "modified_marker": modified}).rstrip())
         self.modified = value
 
     def _on_modified(self, _widget):

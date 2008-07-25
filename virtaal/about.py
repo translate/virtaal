@@ -31,7 +31,7 @@ class About(gtk.AboutDialog):
         self._register_uri_handlers()
         self.set_name("VirTaal")
         self.set_version(__version__.ver)
-        self.set_copyright(_("© Copyright 2007-2008 Zuza Software Foundation"))
+        self.set_copyright(_(u"© Copyright 2007-2008 Zuza Software Foundation"))
         self.set_comments(_("Advanced Computer Aided Translation (CAT) tool for localization and translation"))
         self.set_license("""This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

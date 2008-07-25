@@ -1,7 +1,7 @@
 [encoding: UTF-8]
-data/virtaal.desktop.in
-data/virtaal.glade
-data/virtaal-mimetype.xml.in
+share/virtaal/virtaal.desktop.in
+share/virtaal/virtaal.glade
+share/virtaal/virtaal-mimetype.xml.in
 virtaal/about.py
 virtaal/document.py
 virtaal/formats.py

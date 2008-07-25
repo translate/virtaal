@@ -1,0 +1,15 @@
+#!/bin/bash
+
+./intltool-update --pot
+podebug -P --rewrite=xxx -f "" --progress=none virtaal.pot de_DE.po
+for po in $(ls *.po)
+do
+	modir=mo/$(basename $po .po)/LC_MESSAGES
+	mkdir -p $modir
+	msgfmt -o $modir/virtaal.mo $po
+done
+
+lang=$1
+export LANGUAGE=../../../$(pwd)/mo/${lang:-de_DE}
+echo $LANGUAGE
+run_virtaal.py

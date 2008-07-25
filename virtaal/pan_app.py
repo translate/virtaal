@@ -27,6 +27,8 @@ except ImportError, e:
 import os
 import locale, gettext
 _ = gettext.gettext
+gettext.bindtextdomain('virtaal')
+gettext.textdomain('virtaal')
 
 from __version__ import ver
 
@@ -72,6 +74,8 @@ class Settings:
             self.filename = os.path.expanduser(default_config)
         else:
             self.filename = filename
+            if not os.path.isfile(self.filename):
+                raise Exception
 
         try:
             lang = locale.getlocale()[0]

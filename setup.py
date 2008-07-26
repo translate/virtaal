@@ -33,7 +33,8 @@ classifiers = [
 
 options = {
     'data_files': [
-        (TARGET_DATA_DIR, glob.glob(path.join(SOURCE_DATA_DIR, "*"))),
+        (path.join(TARGET_DATA_DIR, "autocorr"), glob.glob(path.join(SOURCE_DATA_DIR, "autocorr", "*"))),
+        (TARGET_DATA_DIR, glob.glob(path.join(SOURCE_DATA_DIR, "*.*"))), 
     ],
     'scripts': [
         "run_virtaal.py"

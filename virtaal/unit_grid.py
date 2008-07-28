@@ -49,7 +49,6 @@ class UnitGrid(gtk.TreeView):
         self._owner.main_window.add_accel_group(self.accel_group)
         self.accel_group.connect_by_path("<VirTaal>/Navigation/Up", self._move_up)
         self.accel_group.connect_by_path("<VirTaal>/Navigation/Down", self._move_down)
-        self.connect("destroy", self._on_destroy)
 
     def enable_tooltips(self):
         if hasattr(self, "set_tooltip_column"):
@@ -90,9 +89,6 @@ class UnitGrid(gtk.TreeView):
                                          # for this horrid little variable is so dubious that you'd
                                          # be better off writing better code. I'm sorry to leave it
                                          # to you.
-
-    def _on_destroy(self, *_args):
-        self._owner.main_window.remove_accel_group(self.accel_group)
 
     def _on_mode_changed(self, _widget, _mode):
         path = self.get_model().store_index_to_path(self.document.mode_cursor.deref())

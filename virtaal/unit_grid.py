@@ -28,12 +28,40 @@ import unit_model
 
 COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE = 0, 1, 2
 
+def make_renderer(grid):
+    renderer = UnitRenderer(grid)
+    renderer.connect("editing-done", grid._on_cell_edited, grid.get_model())
+    renderer.connect("modified", grid._on_modified)
+    return renderer
+
+def make_column(renderer):
+    column = gtk.TreeViewColumn(None, renderer, unit=COLUMN_UNIT, editable=COLUMN_EDITABLE)
+    column.set_expand(True)
+    return column
+
 class UnitGrid(gtk.TreeView):
     __gsignals__ = {
         'modified':(gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
     }
 
-    def __init__(self, owner):
+    def add_accelerator_bindings(self):
+        self.accel_group = gtk.AccelGroup()
+        self._owner.main_window.add_accel_group(self.accel_group)
+        self.accel_group.connect_by_path("<VirTaal>/Navigation/Up", self._move_up)
+        self.accel_group.connect_by_path("<VirTaal>/Navigation/Down", self._move_down)
+        self.connect("destroy", self._on_destroy)
+
+    def enable_tooltips(self):
+        if hasattr(self, "set_tooltip_column"):
+            self.set_tooltip_column(COLUMN_NOTE)
+        self.set_rules_hint(True)
+
+    def install_callbacks(self):
+        self.connect('key-press-event', self._on_key_press)
+        self.connect("cursor-changed", self._on_cursor_changed)
+        self.connect("button-press-event", self._on_button_press)
+    
+    def __init__(self, owner):      
         gtk.TreeView.__init__(self, unit_model.UnitModel(owner.document.store, list(owner.document.mode_cursor)))
 
         self._owner = owner
@@ -45,39 +73,23 @@ class UnitGrid(gtk.TreeView):
         if len(self.get_model()) == 0:
             raise ValueError(_("The file did not contain anything to translate."))
 
-        renderer = UnitRenderer(self)
-        renderer.connect("editing-done", self._on_cell_edited, self.get_model())
-        renderer.connect("modified", self._on_modified)
-        self.renderer = renderer
+        self.renderer = make_renderer(self)
+        self.append_column(make_column(self.renderer))
+        self.enable_tooltips()
 
-        column = gtk.TreeViewColumn(None, renderer, unit=COLUMN_UNIT, editable=COLUMN_EDITABLE)
-        column.set_expand(True)
-        self.append_column(column)
-        self.targetcolumn = column
+        self.document.connect("mode-changed", self._on_mode_changed)
+
+        self.install_callbacks()
+        self.add_accelerator_bindings()
+
+        gobject.idle_add(self._activate_editing_path,
+                         self.get_model().store_index_to_path(self.document.mode_cursor.deref()))
+
         self._waiting_for_row_change = 0 # This must be changed to a mutex if you ever consider 
                                          # writing multi-threaded code. However, the motivation
                                          # for this horrid little variable is so dubious that you'd
                                          # be better off writing better code. I'm sorry to leave it
                                          # to you.
-
-        if hasattr(self, "set_tooltip_column"):
-            self.set_tooltip_column(COLUMN_NOTE)
-        self.set_rules_hint(True)
-
-        self.document.connect("mode-changed", self._on_mode_changed)
-
-        self.connect('key-press-event', self._on_key_press)
-        self.connect("cursor-changed", self._on_cursor_changed)
-        self.connect("button-press-event", self._on_button_press)
-
-        self.accel_group = gtk.AccelGroup()
-        self._owner.main_window.add_accel_group(self.accel_group)
-        self.accel_group.connect_by_path("<VirTaal>/Navigation/Up", self._move_up)
-        self.accel_group.connect_by_path("<VirTaal>/Navigation/Down", self._move_down)
-        self.connect("destroy", self._on_destroy)
-
-        gobject.idle_add(self._activate_editing_path,
-                         self.get_model().store_index_to_path(self.document.mode_cursor.deref()))
 
     def _on_destroy(self, *_args):
         self._owner.main_window.remove_accel_group(self.accel_group)
@@ -181,7 +193,7 @@ class UnitGrid(gtk.TreeView):
         # issues a TreeView scroll; thus, the editor widget gets drawn at the wrong
         # position.
         def do_scroll():
-            self.scroll_to_cell(path, self.targetcolumn, True, 0.5, 0.0)
+            self.scroll_to_cell(path, self.get_column(0), True, 0.5, 0.0)
             return False
 
         gobject.idle_add(do_scroll)

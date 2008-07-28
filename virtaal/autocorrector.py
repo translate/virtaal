@@ -89,7 +89,7 @@ class AutoCorrector(object):
                 (C{inserted + src[endindex:]}).
             """
         if not self.correctiondict:
-            return None, ''
+            return None, u''
 
         candidate = src[:endindex]
         postfix = inserted + src[endindex:]
@@ -97,7 +97,7 @@ class AutoCorrector(object):
         for key in self.correctiondict:
             if candidate.endswith(key):
                 replacement = self.correctiondict[key]
-                corrected = ''.join([candidate[:-len(key)], replacement])
+                corrected = u''.join([candidate[:-len(key)], replacement])
                 return corrected, postfix
 
         return None, postfix # No corrections done
@@ -203,7 +203,8 @@ class AutoCorrector(object):
         self.widgets.add(textview)
 
     def _on_insert_text(self, buffer, iter, text, length):
-        bufftext = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter())
+        bufftext = unicode(buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter()))
+        iteroffset = iter.get_offset() + len(text)
 
         if (self.wordsep_re.match(text)):
             res, postfix = self.autocorrect(bufftext, iter.get_offset(), text)
@@ -212,7 +213,7 @@ class AutoCorrector(object):
                 # and its side effects are taken care of. We abuse
                 # gobject.idle_add for that.
                 def correct_text():
-                    buffer.props.text = ''.join([res, postfix])
+                    buffer.props.text = u''.join([res, postfix])
                     buffer.place_cursor( buffer.get_iter_at_offset(len(res) + len(text)) )
                     return False
                 gobject.idle_add(correct_text)

@@ -44,6 +44,7 @@ from about import About
 import formats
 import document
 from support import bijection
+from autocompletor import AutoCompletor
 from autocorrector import AutoCorrector
 
 # FIXME: Add docstrings!
@@ -148,6 +149,7 @@ class VirTaal:
         self.store_grid = None
         self.document = None
 
+        self.autocomp = AutoCompletor()
         self.autocorr = AutoCorrector(acorpath=get_data_file_abs_name('autocorr'))
 
         if startup_file != None:
@@ -252,6 +254,7 @@ class VirTaal:
             menuitem.set_sensitive(True)
             self.document.set_mode('Default')
 
+            self.autocomp.get_words_from_store(self.document.store)
             self.autocorr.load_dictionary(lang=pan_app.settings.language['contentlang'])
             self.store_grid.connect('cursor-changed', self._on_grid_cursor_changed)
         except IOError, e:
@@ -278,8 +281,10 @@ class VirTaal:
     def _on_grid_cursor_changed(self, grid):
         assert grid is self.store_grid
 
+        self.autocomp.clear_widgets()
         self.autocorr.clear_widgets()
         for target in grid.renderer.get_editor(grid).targets:
+            self.autocomp.add_widget(target)
             self.autocorr.add_widget(target)
 
     def _on_modified(self, _widget):

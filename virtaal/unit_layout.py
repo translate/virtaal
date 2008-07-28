@@ -34,6 +34,8 @@ from support.partial import partial
 import markup
 import undo_buffer
 from widgets import label_expander, util
+from translate.search import match
+from terminology import get_suggestion_store
 
 def get_targets(widget):
     def add_targets_to_list(lst):
@@ -101,26 +103,37 @@ def add_spell_checking(text_view, language):
         except:
             logging.info(_("Could not initialize spell checking"))
             gtkspell = None
+    return text_view
 
-def make_scrolled_text_view(get_text, editable, scroll_vertical, language):
+def set_text(text_view, txt):
+    text_view.get_buffer().set_text(markup.escape(txt))
+    return text_view
+
+def text_view(editable):
     text_view = gtk.TextView()
-
-    text_view.get_buffer().set_text(markup.escape(get_text()))
-    text_view.set_editable(scroll_vertical)
+    text_view.set_editable(editable)
     text_view.set_wrap_mode(gtk.WRAP_WORD)
     text_view.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)
-    add_spell_checking(text_view, pan_app.settings.language[language])
+    return text_view
 
+def scrolled_window(widget, scroll_vertical):
     scrolled_window = gtk.ScrolledWindow()
     scrolled_window.set_policy(gtk.POLICY_NEVER, scroll_vertical)
-    scrolled_window.add(text_view)
-    
-    return text_view, add_events(scrolled_window)
+    scrolled_window.add(widget)
+    return add_events(scrolled_window)
+
+def make_scrolled_text_view(get_text, editable, scroll_vertical, language):
+    return scrolled_window(
+               add_spell_checking(
+                   set_text(
+                       text_view(editable), 
+                       get_text()), 
+                   pan_app.settings.language[language]),
+               scroll_vertical)
 
 def source_text_box(get_text, set_text):
     def make():
-        _text_view, scrolled_window = make_scrolled_text_view(get_text, False, gtk.POLICY_NEVER, "sourcelang")
-        return scrolled_window
+        return make_scrolled_text_view(get_text, False, gtk.POLICY_NEVER, "sourcelang")
     return make
 
 def target_text_box(get_text, set_text):
@@ -143,8 +156,9 @@ def target_text_box(get_text, set_text):
 
         def on_change(buf):
             set_text(markup.unescape(buf.get_text(buf.get_start_iter(), buf.get_end_iter())))
-
-        text_view, scrolled_window = make_scrolled_text_view(get_text, True, gtk.POLICY_AUTOMATIC, "contentlang")
+    
+        scrolled_window = make_scrolled_text_view(get_text, True, gtk.POLICY_AUTOMATIC, "contentlang")
+        text_view = scrolled_window.get_child()
         text_view.connect('key-press-event', on_text_view_n_press_event)
         text_view._is_target = True
 

@@ -139,7 +139,7 @@ class AutoCorrector(object):
         lang = lang.replace('_', '-')
         try:
             acor = zipfile.ZipFile(os.path.join(self.acorpath, 'acor_%s.dat' % lang))
-        except IOError, exc:
+        except IOError, _exc:
             # Try to find a file that starts with 'acor_%s' % (lang[0]) (where
             # lang[0] is the part of lang before the '-') and ends with '.dat'
             langparts = lang.split('-')

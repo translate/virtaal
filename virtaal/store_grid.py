@@ -84,11 +84,12 @@ class UnitGrid(gtk.TreeView):
         gobject.idle_add(self._activate_editing_path,
                          self.get_model().store_index_to_path(self.document.mode_cursor.deref()))
 
-        self._waiting_for_row_change = 0 # This must be changed to a mutex if you ever consider 
-                                         # writing multi-threaded code. However, the motivation
-                                         # for this horrid little variable is so dubious that you'd
-                                         # be better off writing better code. I'm sorry to leave it
-                                         # to you.
+        # This must be changed to a mutex if you ever consider 
+        # writing multi-threaded code. However, the motivation
+        # for this horrid little variable is so dubious that you'd
+        # be better off writing better code. I'm sorry to leave it
+        # to you.
+        self._waiting_for_row_change = 0 
 
     def _on_mode_changed(self, _widget, _mode):
         path = self.get_model().store_index_to_path(self.document.mode_cursor.deref())

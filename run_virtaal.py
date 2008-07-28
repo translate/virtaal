@@ -19,11 +19,12 @@
 # along with translate; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-
 import sys
 import logging
 from optparse import OptionParser, make_option, OptionValueError
 from os import path
+
+from translate.storage import factory
 
 from virtaal.main_window import VirTaal
 from virtaal import pan_app
@@ -31,9 +32,14 @@ from virtaal import __version__
 from virtaal import terminology
 
 def set_termininology_dir(option, opt_str, value, parser):
-    if not path.isdir(value):
-        raise OptionValueError(_("You must specify a directory for --terminology"))
-    parser.values.terminology = value
+    def get_term(value):
+        if not path.isdir(value):
+            try:
+                return factory.getobject(value)
+            except ValueError:
+                raise OptionValueError(_("You must specify a directory or a translation store file for --terminology"))
+        return value
+    parser.values.terminology = get_term(value)
 
 usage = _("%prog [options] [translation_file]")
 option_list = [
@@ -112,7 +118,7 @@ def main(argv):
     options, args = parser.parse_args(argv[1:])
     set_config(options)
     set_logging(options)
-    terminology.set_terminology_directory(options.terminology)
+    terminology.set_terminology_source(options.terminology)
     startup_file = get_startup_file(options)
     runner = get_virtaal_runner(options)
     runner(startup_file)

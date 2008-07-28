@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 __all__ = ['get_terminology_matcher', 
-           'set_terminology_directory']
+           'set_terminology_source']
 
 import os
 import os.path as path
@@ -28,8 +28,10 @@ import os.path as path
 from translate.storage import factory
 
 import pan_app
-from support.memoize import memoize, invalidates_memoization
 from translate.search import match
+
+match_store = None # This is if the user specifies a terminology file (as opposed to a directory) on the commmand line
+matchers = {}
 
 def get_terminology_directory():
     return pan_app.settings.general["terminology-dir"]
@@ -37,14 +39,16 @@ def get_terminology_directory():
 def get_suggestion_stores(lang_code):
     """Return a suggestion store which is an amalgamation of all the translation
     stores under <termininology_directory>/<lang_code>."""
-    for base, _dirnames, filenames in os.walk(path.join(get_terminology_directory(), lang_code)):
-        for filename in filenames:
-            try: # Try to load filename as a translation store...
-                yield factory.getobject(path.join(base, filename))
-            except ValueError: # If filename isn't a translation store, we just do nothing
-                pass
+    if match_store != None:
+        yield match_store
+    else:
+        for base, _dirnames, filenames in os.walk(path.join(get_terminology_directory(), lang_code)):
+            for filename in filenames:
+                try: # Try to load filename as a translation store...
+                    yield factory.getobject(path.join(base, filename))
+                except ValueError: # If filename isn't a translation store, we just do nothing
+                    pass
 
-@memoize
 def get_terminology_matcher(lang_code):
     """Return a terminology matcher based on a translation store which is an
     amalgamation of all translation stores under 
@@ -54,9 +58,16 @@ def get_terminology_matcher(lang_code):
     <lang_code> is the supplied parameter.
     
     @return: a translate.search.match.terminologymatcher"""
-    return match.terminologymatcher(list(get_suggestion_stores(pan_app.settings.language["contentlang"])))
+    if lang_code not in matchers:
+        stores = list(get_suggestion_stores(pan_app.settings.language["contentlang"]))
+        matchers[lang_code] = match.terminologymatcher(stores)
+    return matchers[lang_code]
 
-@invalidates_memoization(get_terminology_matcher)
-def set_terminology_directory(directory):
-    pan_app.settings.general["terminology-dir"] = directory
+def set_terminology_source(src):
+    global match_store
+    if isinstance(src, (str, unicode)):
+        pan_app.settings.general["terminology-dir"] = src
+    else:
+        match_store = src
+
     

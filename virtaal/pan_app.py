@@ -56,6 +56,7 @@ class Settings:
             "lastdir": "",
             "windowheight": 620,
             "windowwidth": 400,
+            "terminology-dir": "",
     }
     language =      {
             "uilang": None,

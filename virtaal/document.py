@@ -47,8 +47,11 @@ def get_document(obj):
 
 def compute_nplurals(store):        
     def ask_for_language_details():
-        def ask_for_content_lang():
-            return EntryDialog(_("Please enter the language code for the target language"))
+        def get_content_lang():
+            if pan_app.settings.language["contentlang"] != None:
+                return pan_app.settings.language["contentlang"]
+            else:
+                return EntryDialog(_("Please enter the language code for the target language"))
 
         def ask_for_number_of_plurals():
             while True:
@@ -61,7 +64,7 @@ def compute_nplurals(store):
         def ask_for_plurals_equation():
             return EntryDialog(_("Please enter the number of noun forms (plurals) to use"))
 
-        lang     = langfactory.getlanguage(ask_for_content_lang())
+        lang     = langfactory.getlanguage(get_content_lang())
         nplurals = lang.nplurals or ask_for_number_of_plurals()
         if nplurals > 1 and lang.pluralequation == "0":
             return nplurals, ask_for_plurals_equation()

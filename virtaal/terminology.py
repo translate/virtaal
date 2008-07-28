@@ -32,7 +32,7 @@ from support.memoize import memoize, invalidates_memoization
 from translate.search import match
 
 def get_terminology_directory():
-    return pan_app.settings.general["termininology-dir"]
+    return pan_app.settings.general["terminology-dir"]
 
 def get_suggestion_store(lang_code):
     """Return a suggestion store which is an amalgamation of all the translation
@@ -80,5 +80,5 @@ def get_terminology_matcher(lang_code):
 
 @invalidates_memoization(get_terminology_matcher)
 def set_terminology_directory(directory):
-    pan_app.settings.general["termininology-dir"] = directory
+    pan_app.settings.general["terminology-dir"] = directory
     

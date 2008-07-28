@@ -34,8 +34,7 @@ from support.partial import partial
 import markup
 import undo_buffer
 from widgets import label_expander, util
-from translate.search import match
-from terminology import get_suggestion_store
+from terminology import get_terminology_matcher
 
 def get_targets(widget):
     def add_targets_to_list(lst):
@@ -84,11 +83,16 @@ def layout(left=None, middle=None, right=None):
         table.attach(right, 3, 4, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL)
     return add_events(table)
 
-def vlist(*children):
-    box = gtk.VBox()
+def fill_list(lst, children):
     for child in children:
-        box.pack_start(child, fill=True, expand=False)
-    return add_events(box)
+        lst.pack_start(child, fill=True, expand=False)
+    return lst
+    
+def vlist(*children):
+    return add_events(fill_list(gtk.VBox(), children))
+
+def hlist(*children):
+    return fill_list(gtk.HBox(), children)
 
 def add_spell_checking(text_view, language):
     global gtkspell
@@ -112,10 +116,13 @@ def text_view(editable):
     text_view.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)
     return text_view
 
-def scrolled_window(widget, scroll_vertical):
+def scrolled_window(widget, scroll_vertical=gtk.POLICY_AUTOMATIC, add_viewport=False):
     scrolled_window = gtk.ScrolledWindow()
     scrolled_window.set_policy(gtk.POLICY_NEVER, scroll_vertical)
-    scrolled_window.add(widget)
+    if not add_viewport:
+        scrolled_window.add(widget)
+    else:
+        scrolled_window.add_with_viewport(widget)
     return add_events(scrolled_window)
 
 def make_scrolled_text_view(get_text, editable, scroll_vertical, language):
@@ -196,6 +203,33 @@ def option(label, get_option, set_option):
     check_button.set_active(get_option())
     return check_button
 
+def terminology_source(txt):
+    label = gtk.Label()
+    label.set_justify(gtk.JUSTIFY_RIGHT)
+    label.set_markup("<b>%s</b>:" % txt)
+    return label
+
+def terminology_target(txt):
+    label = gtk.Label()
+    label.set_justify(gtk.JUSTIFY_LEFT)
+    label.set_text(txt)
+    return label
+
+def terminology_grid(matches):
+    table = gtk.Table(rows=len(matches), columns=2)
+    table.set_col_spacing(0, 4)
+    xoptions = gtk.FILL | gtk.EXPAND
+    yoptions = gtk.FILL
+    for row, match in enumerate(matches):
+        table.attach(terminology_source(match.source), 0, 1, row, row + 1, xoptions=xoptions, yoptions=yoptions)
+        table.attach(terminology_target(match.target), 1, 2, row, row + 1, xoptions=xoptions, yoptions=yoptions)
+    return table
+
+def terminology_list(sources):
+    matcher = get_terminology_matcher(pan_app.settings.language["contentlang"])
+    results = matcher.matches(" ".join(sources))
+    return scrolled_window(terminology_grid(results), add_viewport=True)
+    
 ################################################################################
 
 def build_layout(unit, nplurals):
@@ -251,7 +285,8 @@ def build_layout(unit, nplurals):
             return nplurals
         return 1
 
-    return layout(middle=vlist(
+    return layout(
+               middle=vlist(
                  comment(partial(unit.getnotes, 'programmer')),
                  vlist(*(source_text_box(partial(get_source, unit, i),
                                          partial(set_source, unit, i))
@@ -262,4 +297,5 @@ def build_layout(unit, nplurals):
                                             partial(set_target, unit, i))
                             for i in xrange(num_targets(unit, nplurals))))),
                  comment(partial(unit.getnotes, 'translator')),
-                 option(_('F_uzzy'), unit.isfuzzy, unit.markfuzzy)))
+                 option(_('F_uzzy'), unit.isfuzzy, unit.markfuzzy)),
+               right=terminology_list([get_source(unit, i) for i in xrange(num_sources(unit))]))

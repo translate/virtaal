@@ -75,7 +75,7 @@ def compute_nplurals(store):
             pan_app.settings.language["nplurals"] = nplurals
             pan_app.settings.language["plural"]   = pluralequation
             store.updateheaderplural(nplurals, pluralequation)
-        return nplurals
+        return int(nplurals)
     else:
         return 1
 

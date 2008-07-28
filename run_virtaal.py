@@ -20,7 +20,6 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import os
 import sys
 import logging
 from optparse import OptionParser, make_option
@@ -29,10 +28,6 @@ from os import path
 from virtaal.main_window import VirTaal
 from virtaal import pan_app
 from virtaal import __version__
-
-# This has to be a global variable so that cProfile can get access to it 
-# (see below in the profiling code).
-startup_file = None
 
 usage = _("%prog [options] [translation_file]")
 option_list = [

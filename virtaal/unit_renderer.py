@@ -32,8 +32,6 @@ import markup
 import undo_buffer
 from unit_editor import UnitEditor
 
-# FIXME: Add docstrings!
-
 def undo(tree_view):
     undo_buffer.undo(tree_view.get_buffer().__undo_stack)
 

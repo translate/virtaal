@@ -31,8 +31,6 @@ import pan_app
 from widgets.entry_dialog import EntryDialog
 import modes
 
-# FIXME: Add docstrings!
-
 def get_document(obj):
     """See whether obj contains an attribute called 'document'.
     If it does, return the attribute value. Otherwise, see if
@@ -47,6 +45,40 @@ def get_document(obj):
     else:
         return getattr(obj, 'document')
 
+def compute_nplurals(store):        
+    def ask_for_language_details():
+        def ask_for_content_lang():
+            return EntryDialog(_("Please enter the language code for the target language"))
+
+        def ask_for_number_of_plurals():
+            while True:
+                try:
+                    entry = EntryDialog(_("Please enter the number of noun forms (plurals) to use"))
+                    return int(entry)
+                except ValueError, _e:
+                    pass
+                  
+        def ask_for_plurals_equation():
+            return EntryDialog(_("Please enter the number of noun forms (plurals) to use"))
+
+        lang     = langfactory.getlanguage(ask_for_content_lang())
+        nplurals = lang.nplurals or ask_for_number_of_plurals()
+        if nplurals > 1 and lang.pluralequation == "0":
+            return nplurals, ask_for_plurals_equation()
+        else:
+            return nplurals, lang.pluralequation
+    
+    if isinstance(store, poheader):
+        nplurals, _pluralequation = store.getheaderplural()
+        if nplurals is None:
+            nplurals, pluralequation = ask_for_language_details()
+            pan_app.settings.language["nplurals"] = nplurals
+            pan_app.settings.language["plural"]   = pluralequation
+            store.updateheaderplural(nplurals, pluralequation)
+        return nplurals
+    else:
+        return 1
+
 class Document(gobject.GObject):
     """Contains user state about a translate store which stores information like
     GUI-toolkit-independent state (for example bookmarks) and index remappings
@@ -58,31 +90,6 @@ class Document(gobject.GObject):
         "mode-changed": (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
     }
 
-    def compute_nplurals(self):
-        nplurals = None
-        if isinstance(self.store, poheader):
-            header = self.store.parseheader()
-            # XXX: BUG: Got files from GNOME with plurals but without this header
-            nplurals, plural = self.store.getheaderplural()
-            if nplurals is None:
-                langcode = pan_app.settings.language["contentlang"]
-                self._lang = langfactory.getlanguage(langcode)
-                nplurals = self._lang.nplurals
-                plural = self._lang.pluralequation
-                while not nplurals:
-                    try:
-                        entry = EntryDialog(_("Please enter the number of noun forms (plurals) to use"))
-                        if entry is None:
-                            return
-                        nplurals = int(entry)
-                    except ValueError, _e:
-                        continue
-                    plural = EntryDialog(_("Please enter the plural equation to use"))
-                    pan_app.settings.language["nplurals"] = nplurals
-                    pan_app.settings.language["plural"] = plural
-                self.store.updateheaderplural(nplurals, plural)                    
-        return int(nplurals or 0)
-
     def __init__(self, filename, store=None):
         gobject.GObject.__init__(self)
         if store:
@@ -90,8 +97,7 @@ class Document(gobject.GObject):
         else:
             self.store = factory.getobject(filename)
         self.stats = statsdb.StatsCache().filestats(filename, checks.UnitChecker(), self.store)
-        self._lang = None
-        self.nplurals = self.compute_nplurals()
+        self.nplurals = compute_nplurals(self.store)
         self.mode = None
         self.mode_cursor = None
 

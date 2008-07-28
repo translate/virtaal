@@ -22,11 +22,9 @@
 """This provides the data structure for keeping the undo data."""
 
 import collections
-import gtk
 
 import pan_app
 from support.partial import partial
-
 
 class BoundedQueue(collections.deque):
     def __init__(self, get_size):

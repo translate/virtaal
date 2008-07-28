@@ -26,8 +26,6 @@ import gobject
 from unit_renderer import UnitRenderer
 import unit_model
 
-# FIXME: Add docstrings!
-
 COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE = 0, 1, 2
 
 class UnitGrid(gtk.TreeView):

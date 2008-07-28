@@ -75,24 +75,20 @@ def add_events(widget):
     return widget
 
 def layout(left=None, middle=None, right=None):
-    def make():
-        table = gtk.Table(rows=1, columns=4, homogeneous=True)
-        if left != None:
-            table.attach(left(), 0, 1, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL)
-        if middle != None:
-            table.attach(middle(), 1, 3, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL)
-        if right != None:
-            table.attach(right(), 3, 4, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL)
-        return add_events(table)
-    return make
+    table = gtk.Table(rows=1, columns=4, homogeneous=True)
+    if left != None:
+        table.attach(left, 0, 1, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL)
+    if middle != None:
+        table.attach(middle, 1, 3, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL)
+    if right != None:
+        table.attach(right, 3, 4, 0, 1, xoptions=gtk.FILL|gtk.EXPAND, yoptions=gtk.FILL)
+    return add_events(table)
 
 def vlist(*children):
-    def make():
-        box = gtk.VBox()
-        for child in children:
-            box.pack_start(child(), fill=True, expand=False)
-        return add_events(box)
-    return make
+    box = gtk.VBox()
+    for child in children:
+        box.pack_start(child, fill=True, expand=False)
+    return add_events(box)
 
 def add_spell_checking(text_view, language):
     global gtkspell
@@ -132,84 +128,73 @@ def make_scrolled_text_view(get_text, editable, scroll_vertical, language):
                scroll_vertical)
 
 def source_text_box(get_text, set_text):
-    def make():
-        return make_scrolled_text_view(get_text, False, gtk.POLICY_NEVER, "sourcelang")
-    return make
+    return make_scrolled_text_view(get_text, False, gtk.POLICY_NEVER, "sourcelang")
 
 def target_text_box(get_text, set_text):
-    def make():
-        def get_range(buf, left_offset, right_offset):
-            return buf.get_text(buf.get_iter_at_offset(left_offset),
-                                buf.get_iter_at_offset(right_offset))
+    def get_range(buf, left_offset, right_offset):
+        return buf.get_text(buf.get_iter_at_offset(left_offset),
+                            buf.get_iter_at_offset(right_offset))
 
-        def on_text_view_n_press_event(text_view, event):
-            """Handle special keypresses in the textarea."""
-            # Automatically move to the next line if \n is entered
-    
-            if event.keyval == gtk.keysyms.n:
-                buf = text_view.get_buffer()
-                if get_range(buf, buf.props.cursor_position-1, buf.props.cursor_position) == "\\":
-                    buf.insert_at_cursor('n\n')
-                    text_view.scroll_mark_onscreen(buf.get_insert())
-                    return True
-            return False
+    def on_text_view_n_press_event(text_view, event):
+        """Handle special keypresses in the textarea."""
+        # Automatically move to the next line if \n is entered
 
-        def on_change(buf):
-            set_text(markup.unescape(buf.get_text(buf.get_start_iter(), buf.get_end_iter())))
-    
-        scrolled_window = make_scrolled_text_view(get_text, True, gtk.POLICY_AUTOMATIC, "contentlang")
-        text_view = scrolled_window.get_child()
-        text_view.connect('key-press-event', on_text_view_n_press_event)
-        text_view._is_target = True
+        if event.keyval == gtk.keysyms.n:
+            buf = text_view.get_buffer()
+            if get_range(buf, buf.props.cursor_position-1, buf.props.cursor_position) == "\\":
+                buf.insert_at_cursor('n\n')
+                text_view.scroll_mark_onscreen(buf.get_insert())
+                return True
+        return False
 
-        buf = undo_buffer.add_undo_to_buffer(text_view.get_buffer())
-        undo_buffer.execute_without_signals(buf, lambda: buf.set_text(markup.escape(get_text())))
-        buf.connect('changed', on_change)
+    def on_change(buf):
+        set_text(markup.unescape(buf.get_text(buf.get_start_iter(), buf.get_end_iter())))
 
-        return scrolled_window
-    return make
+    scrolled_window = make_scrolled_text_view(get_text, True, gtk.POLICY_AUTOMATIC, "contentlang")
+    text_view = scrolled_window.get_child()
+    text_view.connect('key-press-event', on_text_view_n_press_event)
+    text_view._is_target = True
+
+    buf = undo_buffer.add_undo_to_buffer(text_view.get_buffer())
+    undo_buffer.execute_without_signals(buf, lambda: buf.set_text(markup.escape(get_text())))
+    buf.connect('changed', on_change)
+
+    return scrolled_window
 
 def connect_target_text_views(child):
-    def make():
-        def target_key_press_event(text_view, event, next_text_view):
-            if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
-                focus_text_view(next_text_view)
-                return True
-            return False
-    
-        def end_target_key_press_event(text_view, event, *_args):
-            if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
-                text_view.parent.emit('key-press-event', event)
-                return True
-            return False
-    
-        widget = child()
-        targets = get_targets(widget)
-        for target, next_target in zip(targets, targets[1:]):
-            target.connect('key-press-event', target_key_press_event, next_target)
-        targets[-1].connect('key-press-event', end_target_key_press_event)
-        return widget
-    return make
+    def target_key_press_event(text_view, event, next_text_view):
+        if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
+            focus_text_view(next_text_view)
+            return True
+        return False
+
+    def end_target_key_press_event(text_view, event, *_args):
+        if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
+            text_view.parent.emit('key-press-event', event)
+            return True
+        return False
+
+    targets = get_targets(child)
+    for target, next_target in zip(targets, targets[1:]):
+        target.connect('key-press-event', target_key_press_event, next_target)
+    targets[-1].connect('key-press-event', end_target_key_press_event)
+    return child
 
 def comment(get_text, set_text=lambda value: None):
-    def make():
-        text_box = source_text_box(get_text, set_text)()
-        return label_expander.LabelExpander(text_box, get_text)
-    return make
+    text_box = source_text_box(get_text, set_text)
+    return label_expander.LabelExpander(text_box, get_text)
   
 def option(label, get_option, set_option):
-    def make():
-        def on_toggled(widget, *_args):
-            if widget.get_active():
-                set_option(True)
-            else:
-                set_option(False)
-    
-        check_button = gtk.CheckButton(label=label)
-        check_button.connect('toggled', on_toggled)
-        check_button.set_active(get_option())
-        return check_button
-    return make
+    def on_toggled(widget, *_args):
+        if widget.get_active():
+            set_option(True)
+        else:
+            set_option(False)
+
+    check_button = gtk.CheckButton(label=label)
+    check_button.connect('toggled', on_toggled)
+    check_button.set_active(get_option())
+    return check_button
 
 ################################################################################
 
@@ -266,7 +251,7 @@ def build_layout(unit, nplurals):
             return nplurals
         return 1
 
-    maker = layout(middle=vlist(
+    return layout(middle=vlist(
                  comment(partial(unit.getnotes, 'programmer')),
                  vlist(*(source_text_box(partial(get_source, unit, i),
                                          partial(set_source, unit, i))
@@ -278,4 +263,3 @@ def build_layout(unit, nplurals):
                             for i in xrange(num_targets(unit, nplurals))))),
                  comment(partial(unit.getnotes, 'translator')),
                  option(_('F_uzzy'), unit.isfuzzy, unit.markfuzzy)))
-    return maker()

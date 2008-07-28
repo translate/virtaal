@@ -33,8 +33,7 @@ from virtaal import terminology
 def set_termininology_dir(option, opt_str, value, parser):
     if not path.isdir(value):
         raise OptionValueError(_("You must specify a directory for --terminology"))
-    else:
-        terminology.set_terminology_directory(value)
+    parser.values.terminology = value
 
 usage = _("%prog [options] [translation_file]")
 option_list = [
@@ -111,8 +110,9 @@ def main(argv):
             return default_runner
   
     options, args = parser.parse_args(argv[1:])
-    set_logging(options)
     set_config(options)
+    set_logging(options)
+    terminology.set_terminology_directory(options.terminology)
     startup_file = get_startup_file(options)
     runner = get_virtaal_runner(options)
     runner(startup_file)

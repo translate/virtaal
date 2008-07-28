@@ -48,52 +48,68 @@ option_list = [
 ]
 parser = OptionParser(option_list=option_list, usage=usage, version=__version__.ver)
 
-def run_virtaal(startup_file):
-    prog = VirTaal(startup_file)
-    prog.run()
-
-def profile(profile_file, startup_file):
-    import cProfile
-    import source_tree_infrastructure.lsprofcalltree as lsprofcalltree
-    logging.info('Staring profiling run')
-    profiler = cProfile.Profile()
-    profiler.runcall(run_virtaal, startup_file)
-    k_cache_grind = lsprofcalltree.KCacheGrind(profiler)
-    k_cache_grind.output(profile_file)
-    profile_file.close()
-
 def main(argv):
+    def set_logging(options):
+        if options.log != None:
+            try:
+                logging.basicConfig(level=logging.DEBUG,
+                                    format='%(asctime)s %(levelname)s %(message)s',
+                                    filename=path.abspath(options.log),
+                                    filemode='w')
+            except IOError:
+                parser.error(_("Could not open log file '%(filename)s'") % {"filename": options.log})
+
+    def set_config(options):
+        try:
+            if options.config != None:
+                pan_app.settings = pan_app.Settings(path.abspath(options.config))
+            pan_app.settings.read()
+        except:
+            parser.error(_("Could not read configuration file '%(filename)s'") % {"filename": options.config})
+
+    def get_startup_file(options):
+        if len(args) > 1:
+            parser.error(_("invalid number of arguments"))
+        elif len(args) == 1:
+            return args[0]
+        else:
+            return None
+  
+    def get_virtaal_runner(options):
+        def run_virtaal(startup_file):
+            prog = VirTaal(startup_file)
+            prog.run()
+
+        def profile_runner(startup_file):            
+            def profile(profile_file, startup_file):
+                import cProfile
+                import source_tree_infrastructure.lsprofcalltree as lsprofcalltree
+                logging.info('Staring profiling run')
+                profiler = cProfile.Profile()
+                profiler.runcall(run_virtaal, startup_file)
+                k_cache_grind = lsprofcalltree.KCacheGrind(profiler)
+                k_cache_grind.output(profile_file)
+                profile_file.close()
+
+            try:
+                profile(open(options.profile, 'w+'), startup_file)
+            except IOError:
+                parser.error(_("Could not open profile file '%(filename)s'") % {"filename":options.profile})
+
+        def default_runner(startup_file):
+            run_virtaal(startup_file)
+
+        if options.profile != None:
+            return profile_runner
+        else:
+            return default_runner
+  
     options, args = parser.parse_args(argv[1:])
-    startup_file  = None
-
-    if options.log != None:
-        try:
-            logging.basicConfig(level=logging.DEBUG,
-                                format='%(asctime)s %(levelname)s %(message)s',
-                                filename=path.abspath(options.log),
-                                filemode='w')
-        except IOError:
-            parser.error(_("Could not open log file '%(filename)s'") % {"filename": options.log})
-
-    try:
-        if options.config != None:
-            pan_app.settings = pan_app.Settings(path.abspath(options.config))
-        pan_app.settings.read()
-    except:
-        parser.error(_("Could not read configuration file '%(filename)s'") % {"filename": options.config})
-
-    if len(args) > 1:
-        parser.error(_("invalid number of arguments"))
-    elif len(args) == 1:
-        startup_file = args[0]
-
-    if options.profile != None:
-        try:
-            profile(open(options.profile, 'w+'), startup_file)
-        except IOError:
-            parser.error(_("Could not open profile file '%(filename)s'") % {"filename":options.profile})
-    else:
-        run_virtaal(startup_file)
+    set_logging(options)
+    set_config(options)
+    startup_file = get_startup_file(options)
+    runner = get_virtaal_runner(options)
+    runner(startup_file)
 
 if __name__ == "__main__":
     main(sys.argv)

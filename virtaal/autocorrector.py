@@ -34,7 +34,7 @@ class AutoCorrector(object):
     correction files.
     """
 
-    wordsep_re = re.compile('^\W', re.UNICODE)
+    wordsep_re = re.compile('\W+', re.UNICODE)
 
     def __init__(self, lang='', acorpath=None):
         """Create a new AutoCorrector instance and load the OpenOffice.org
@@ -95,7 +95,7 @@ class AutoCorrector(object):
         postfix = inserted + src[endindex:]
 
         for key in self.correctiondict:
-            if candidate.endswith(key):
+            if self.wordsep_re.split(candidate)[-1] == key:
                 replacement = self.correctiondict[key]
                 corrected = u''.join([candidate[:-len(key)], replacement])
                 return corrected, postfix
@@ -206,7 +206,7 @@ class AutoCorrector(object):
         bufftext = unicode(buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter()))
         iteroffset = iter.get_offset() + len(text)
 
-        if (self.wordsep_re.match(text)):
+        if not self.wordsep_re.split(text)[-1]:
             res, postfix = self.autocorrect(bufftext, iter.get_offset(), text)
             if res is not None:
                 # Updating of the buffer is deferred until after this signal
@@ -215,6 +215,19 @@ class AutoCorrector(object):
                 def correct_text():
                     buffer.props.text = u''.join([res, postfix])
                     buffer.place_cursor( buffer.get_iter_at_offset(len(res) + len(text)) )
+
+                    # Combine the last two undo-actions into one
+                    if hasattr(buffer, '__undo_stack'):
+                        undostack = getattr(buffer, '__undo_stack')
+                        undos = (undostack.pop(), undostack.pop())
+
+                        def undo():
+                            undos[0]() and undos[1]()
+                            buffer.place_cursor(buffer.get_iter_at_offset(iteroffset))
+                            return True
+
+                        undostack.push(undo)
+
                     return False
                 gobject.idle_add(correct_text)
 

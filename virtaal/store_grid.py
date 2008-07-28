@@ -24,7 +24,7 @@ import gtk
 import gobject
 
 from unit_renderer import UnitRenderer
-import unit_model
+import store_model
 
 COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE = 0, 1, 2
 
@@ -61,7 +61,7 @@ class UnitGrid(gtk.TreeView):
         self.connect("button-press-event", self._on_button_press)
     
     def __init__(self, owner):      
-        gtk.TreeView.__init__(self, unit_model.UnitModel(owner.document.store, list(owner.document.mode_cursor)))
+        gtk.TreeView.__init__(self, store_model.UnitModel(owner.document.store, list(owner.document.mode_cursor)))
 
         self._owner = owner
         self.document = self._owner.document

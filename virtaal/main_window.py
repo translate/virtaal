@@ -38,7 +38,7 @@ from support import openmailto
 
 import pan_app
 from widgets.entry_dialog import EntryDialog
-import unit_grid
+import store_grid
 import unit_renderer
 from about import About
 import formats
@@ -145,7 +145,7 @@ class VirTaal:
         self.modified = False
         self.filename = None
 
-        self.unit_grid = None
+        self.store_grid = None
         self.document = None
 
         self.autocorr = AutoCorrector(acorpath=get_data_file_abs_name('autocorr'))
@@ -238,22 +238,22 @@ class VirTaal:
             self.document.set_mode('Default')
 
             self.filename = filename
-            self.unit_grid = unit_grid.UnitGrid(self)
-            self.unit_grid.connect("modified", self._on_modified)
+            self.store_grid = store_grid.UnitGrid(self)
+            self.store_grid.connect("modified", self._on_modified)
             child = self.sw.get_child()
             self.sw.remove(child)
             child.destroy()
-            self.sw.add(self.unit_grid)
-            self.main_window.connect("configure-event", self.unit_grid.on_configure_event)
+            self.sw.add(self.store_grid)
+            self.main_window.connect("configure-event", self.store_grid.on_configure_event)
             self.main_window.show_all()
-            self.unit_grid.grab_focus()
+            self.store_grid.grab_focus()
             self._set_saveable(False)
             menuitem = self.gui.get_widget("saveas_menuitem")
             menuitem.set_sensitive(True)
             self.document.set_mode('Default')
 
             self.autocorr.load_dictionary(lang=pan_app.settings.language['contentlang'])
-            self.unit_grid.connect('cursor-changed', self._on_grid_cursor_changed)
+            self.store_grid.connect('cursor-changed', self._on_grid_cursor_changed)
         except IOError, e:
             dialog = gtk.MessageDialog(dialog or self.main_window,
                             gtk.DIALOG_MODAL,
@@ -276,7 +276,7 @@ class VirTaal:
         self.modified = value
 
     def _on_grid_cursor_changed(self, grid):
-        assert grid is self.unit_grid
+        assert grid is self.store_grid
 
         self.autocorr.clear_widgets()
         for target in grid.renderer.get_editor(grid).targets:

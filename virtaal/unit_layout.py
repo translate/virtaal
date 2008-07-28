@@ -17,6 +17,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+import gobject
 
 __all__ = ['build_layout', 'get_targets']
 
@@ -215,20 +216,29 @@ def terminology_target(txt):
     label.set_text(txt)
     return label
 
+def list_model(types, data_list):
+    model = gtk.ListStore(*types)
+    for data_row in data_list:
+        last_row = model.append()
+        for i, data_element in enumerate(data_row):
+            model.set(last_row, i, data_element)
+    return model
+
+def treeview(model):
+    v = gtk.TreeView(model)
+    v.set_headers_visible(False)
+    text_renderer = gtk.CellRendererText()
+    for i in xrange(model.get_n_columns()):
+        v.append_column(gtk.TreeViewColumn(None, text_renderer, text=i))
+    return v
+
 def terminology_grid(matches):
-    table = gtk.Table(rows=len(matches), columns=2)
-    table.set_col_spacing(0, 4)
-    xoptions = gtk.FILL | gtk.EXPAND
-    yoptions = gtk.FILL
-    for row, match in enumerate(matches):
-        table.attach(terminology_source(match.source), 0, 1, row, row + 1, xoptions=xoptions, yoptions=yoptions)
-        table.attach(terminology_target(match.target), 1, 2, row, row + 1, xoptions=xoptions, yoptions=yoptions)
-    return table
+    return treeview(list_model([str, str], ((unicode(u.source), unicode(u.target)) for u in matches)))
 
 def terminology_list(sources):
     matcher = get_terminology_matcher(pan_app.settings.language["contentlang"])
     results = matcher.matches(" ".join(sources))
-    return scrolled_window(terminology_grid(results), add_viewport=True)
+    return scrolled_window(terminology_grid(results))
     
 ################################################################################
 

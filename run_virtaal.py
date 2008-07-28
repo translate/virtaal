@@ -22,12 +22,19 @@
 
 import sys
 import logging
-from optparse import OptionParser, make_option
+from optparse import OptionParser, make_option, OptionValueError
 from os import path
 
 from virtaal.main_window import VirTaal
 from virtaal import pan_app
 from virtaal import __version__
+from virtaal import terminology
+
+def set_termininology_dir(option, opt_str, value, parser):
+    if not path.isdir(value):
+        raise OptionValueError(_("You must specify a directory for --terminology"))
+    else:
+        terminology.set_terminology_directory(value)
 
 usage = _("%prog [options] [translation_file]")
 option_list = [
@@ -40,6 +47,10 @@ option_list = [
     make_option("--config",
                 action="store", type="string", dest="config", metavar=_("CONFIG"),
                 help=_("Use the configuration file given by the supplied filename.")),
+    make_option("--terminology", metavar=_("TERMINOLOGY"),
+                action="callback", type="string", 
+                callback=set_termininology_dir, nargs=1,
+                help=_("Specify a directory containing terminology files"))                
 ]
 parser = OptionParser(option_list=option_list, usage=usage, version=__version__.ver)
 

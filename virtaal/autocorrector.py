@@ -93,13 +93,11 @@ class AutoCorrector(object):
 
         candidate = src[:endindex]
         postfix = inserted + src[endindex:]
-        #print 'Auto-correction cadidate: "%s"' % (candidate)
 
         for key in self.correctiondict:
             if candidate.endswith(key):
                 replacement = self.correctiondict[key]
                 corrected = ''.join([candidate[:-len(key)], replacement])
-                #print 'Corrected string: "%s"' % (corrected)
                 return corrected, postfix
 
         return None, postfix # No corrections done
@@ -147,17 +145,15 @@ class AutoCorrector(object):
             langparts = lang.split('-')
             filenames = [fn for fn in os.listdir(self.acorpath) if fn.startswith('acor_%s' % langparts[0])
                                                                    and fn.endswith('.dat')]
-            found = False
             for fn in filenames:
                 try:
                     acor = zipfile.ZipFile(os.path.join(self.acorpath, fn))
-                    found = True
                     break
                 except IOError:
                     pass
 
-            if not found:
-                # If no acceptable auto-correction file was file, we create an
+            else:
+                # If no acceptable auto-correction file was found, we create an
                 # empty dictionary.
                 self.correctiondict = {}
                 self.lang = ''
@@ -166,7 +162,7 @@ class AutoCorrector(object):
         xmlstr = acor.read('DocumentList.xml')
         xml = etree.fromstring(xmlstr)
         # Sample element from DocumentList.xml (it has no root element!):
-        #   <block-list:block block-list:abbreviated-name="onmidelliker" block-list:name="onmiddelliker"/>
+        #   <block-list:block block-list:abbreviated-name="teh" block-list:name="the"/>
         # This means that xml.iterchildren() will return an iterator over all
         # of <block-list> elements and entry.values() will return a 2-tuple
         # with the values of the "abbreviated-name" and "name" attributes.
@@ -208,7 +204,6 @@ class AutoCorrector(object):
 
     def _on_insert_text(self, buffer, iter, text, length):
         bufftext = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter())
-        #print 'Added "%s" into buffer "%s" at %s' % (text, bufftext, iter.get_offset())
 
         if (self.wordsep_re.match(text)):
             res, postfix = self.autocorrect(bufftext, iter.get_offset(), text)
@@ -221,7 +216,6 @@ class AutoCorrector(object):
                     buffer.place_cursor( buffer.get_iter_at_offset(len(res) + len(text)) )
                     return False
                 gobject.idle_add(correct_text)
-                #print 'Buffer text is now: "%s"' % (buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter()))
 
     def _remove_textview(self, textview):
         """Remove the given C{gtk.TextView} from the list of widgets to do

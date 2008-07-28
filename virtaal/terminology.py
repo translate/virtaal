@@ -19,8 +19,7 @@
 # along with translate; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-__all__ = ['get_terminology_directory', 
-           'get_suggestion_store', 
+__all__ = ['get_terminology_matcher', 
            'set_terminology_directory']
 
 import os
@@ -28,8 +27,9 @@ import os.path as path
 
 from translate.storage import factory
 
-from pan_app import settings
+import pan_app
 from support.memoize import memoize, invalidates_memoization
+from translate.search import match
 
 def add_to_store(unit_dict, unit_builder, store):
     for unit in store.units:
@@ -38,9 +38,8 @@ def add_to_store(unit_dict, unit_builder, store):
             unit_dict[key] = unit_builder(unit)
 
 def get_terminology_directory():
-    return settings.general["termininology-dir"]
+    return pan_app.settings.general["termininology-dir"]
 
-@memoize
 def get_suggestion_store(lang_code):
     store = factory.getclass("tmp.po")()
     unit_dict = {}
@@ -54,7 +53,11 @@ def get_suggestion_store(lang_code):
         store.addunit(unit)
     return store
 
-@invalidates_memoization(get_suggestion_store)
+@memoize
+def get_terminology_matcher(lang_code):
+    return match.terminologymatcher(get_suggestion_store(pan_app.settings.language["contentlang"]))
+
+@invalidates_memoization(get_terminology_matcher)
 def set_terminology_directory(directory):
-    settings.general["termininology-dir"] = directory
+    pan_app.settings.general["termininology-dir"] = directory
     

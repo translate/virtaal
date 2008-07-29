@@ -64,22 +64,7 @@ class AutoCompletor(object):
         else:
             self._word_list += list(set(words))
 
-    def autocomplete(self, word):
-        for w in self._word_list:
-            if w.startswith(word):
-                return w, w[len(word):]
-        return None, u''
-
-    def clear_widgets(self):
-        """Release all registered widgets from the spell of auto-completion."""
-        for w in set(self.widgets):
-            self.remove_widget(w)
-
-    def clear_words(self):
-        """Remove all registered words; effectively turns off auto-completion."""
-        self.words.clear()
-
-    def get_words_from_store(self, store):
+    def add_words_from_store(self, store):
         """Collect all words from the given translation store to use for
             auto-completion.
 
@@ -105,7 +90,22 @@ class AutoCompletor(object):
 
         wordlist = [items[0] for items in wordlist]
 
-        self._word_list = list(set(wordlist))
+        self._word_list += list(set(wordlist))
+
+    def autocomplete(self, word):
+        for w in self._word_list:
+            if w.startswith(word):
+                return w, w[len(word):]
+        return None, u''
+
+    def clear_widgets(self):
+        """Release all registered widgets from the spell of auto-completion."""
+        for w in set(self.widgets):
+            self.remove_widget(w)
+
+    def clear_words(self):
+        """Remove all registered words; effectively turns off auto-completion."""
+        self.words.clear()
 
     def remove_widget(self, widget):
         """Remove a widget (currently only C{gtk.TextView}s are accepted) from

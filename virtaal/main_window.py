@@ -281,6 +281,12 @@ class VirTaal:
     def _on_grid_cursor_changed(self, grid):
         assert grid is self.store_grid
 
+        # Add words from previously handled widgets to the auto-completion list
+        for textview in self.autocomp.widgets:
+            buffer = textview.get_buffer()
+            bufftext = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter())
+            self.autocomp.add_words(self.autocomp.wordsep_re.split(bufftext))
+
         self.autocomp.clear_widgets()
         self.autocorr.clear_widgets()
         for target in grid.renderer.get_editor(grid).targets:

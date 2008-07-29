@@ -92,7 +92,7 @@ class AutoCompletor(object):
         wordcounts = {}
 
         for unit in store.getunits():
-            for word in self.wordsep_re.split( str(unit.gettarget()) ):
+            for word in self.wordsep_re.split( unicode(unit.gettarget()) ):
                 if len(word) > self.comp_len:
                     try:
                         wordcounts[word] += 1
@@ -100,17 +100,11 @@ class AutoCompletor(object):
                         wordcounts[word] = 1
 
         # Sort found words according to frequency
-        wordlist = []
-
-        for word, count in wordcounts.items():
-            if not wordlist:
-                wordlist.append((word, count))
-            elif count <= wordlist[-1][1]:
-                wordlist.append((word, count))
-            elif count >= wordlist[0][1]:
-                wordlist[:0] = [(word, count)]
+        wordlist = wordcounts.items()
+        wordlist.sort(key=lambda x:x[1])
 
         wordlist = [items[0] for items in wordlist]
+
         self._word_list = list(set(wordlist))
 
     def remove_widget(self, widget):

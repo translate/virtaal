@@ -36,6 +36,8 @@ class AutoCorrector(object):
 
     wordsep_re = re.compile('\W+', re.UNICODE)
 
+    REPLACEMENT, REGEX = range(2)
+
     def __init__(self, lang='', acorpath=None):
         """Create a new AutoCorrector instance and load the OpenOffice.org
             auto-correction diction for language code 'lang'.
@@ -95,9 +97,9 @@ class AutoCorrector(object):
         postfix = inserted + src[endindex:]
 
         for key in self.correctiondict:
-            if self.wordsep_re.split(candidate)[-1] == key:
-                replacement = self.correctiondict[key]
-                corrected = u''.join([candidate[:-len(key)], replacement])
+            if self.correctiondict[key][self.REGEX].match(candidate):
+                replacement = self.correctiondict[key][self.REPLACEMENT]
+                corrected   = re.sub(r'%s$' % (re.escape(key)), replacement, candidate)
                 return corrected, postfix
 
         return None, postfix # No corrections done
@@ -168,6 +170,10 @@ class AutoCorrector(object):
         # with the values of the "abbreviated-name" and "name" attributes.
         # That is how I got to the simple line below.
         self.correctiondict = dict([entry.values() for entry in xml.iterchildren()])
+
+        # Add auto-correction regex for each loaded word.
+        for key, value in self.correctiondict.items():
+            self.correctiondict[key] = (value, re.compile(r'.*\b%s$' % (re.escape(key)), re.UNICODE))
 
         self.lang = lang
         return self.correctiondict

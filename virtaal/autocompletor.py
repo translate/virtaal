@@ -62,7 +62,8 @@ class AutoCompletor(object):
         if isinstance(words, basestring):
             self._word_list.append(words)
         else:
-            self._word_list += list(set(words))
+            self._word_list += list(words)
+        self._word_list = list(set(self._word_list)) # Remove duplicates
 
     def add_words_from_store(self, store):
         """Collect all words from the given translation store to use for

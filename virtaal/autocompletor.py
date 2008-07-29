@@ -30,7 +30,7 @@ class AutoCompletor(object):
     Does auto-completion of registered words in registered widgets.
     """
 
-    wordsep_re = re.compile(r'\W', re.UNICODE)
+    wordsep_re = re.compile(r'\W+', re.UNICODE)
 
     DEFAULT_COMPLETION_LENGTH = 4 # The default minimum length of a word that may
                                   # be auto-completed.

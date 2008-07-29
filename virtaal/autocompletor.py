@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2007-2008 Zuza Software Foundation
+# Copyright 2008 Zuza Software Foundation
 #
 # This file is part of VirTaal.
 #
@@ -99,7 +99,7 @@ class AutoCompletor(object):
                     except KeyError:
                         wordcounts[word] = 1
 
-        # Sort found words according to occurrances
+        # Sort found words according to frequency
         wordlist = []
 
         for word, count in wordcounts.items():

@@ -254,7 +254,7 @@ class VirTaal:
             menuitem.set_sensitive(True)
             self.document.set_mode('Default')
 
-            self.autocomp.get_words_from_store(self.document.store)
+            self.autocomp.add_words_from_store(self.document.store)
             self.autocorr.load_dictionary(lang=pan_app.settings.language['contentlang'])
             self.store_grid.connect('cursor-changed', self._on_grid_cursor_changed)
         except IOError, e:

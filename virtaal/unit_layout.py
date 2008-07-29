@@ -237,7 +237,10 @@ def terminology_grid(matches):
 def terminology_list(sources):
     matcher = get_terminology_matcher(pan_app.settings.language["contentlang"])
     results = matcher.matches(" ".join(sources))
-    return scrolled_window(terminology_grid(results))
+    if len(results) > 0:
+        return scrolled_window(terminology_grid(results))
+    else:
+        return None
     
 ################################################################################
 

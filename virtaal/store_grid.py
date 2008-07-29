@@ -59,8 +59,8 @@ class UnitGrid(gtk.TreeView):
         self.connect('key-press-event', self._on_key_press)
         self.connect("cursor-changed", self._on_cursor_changed)
         self.connect("button-press-event", self._on_button_press)
-    
-    def __init__(self, owner):      
+
+    def __init__(self, owner):
         gtk.TreeView.__init__(self, store_model.UnitModel(owner.document.store, list(owner.document.mode_cursor)))
 
         self._owner = owner
@@ -84,12 +84,12 @@ class UnitGrid(gtk.TreeView):
         gobject.idle_add(self._activate_editing_path,
                          self.get_model().store_index_to_path(self.document.mode_cursor.deref()))
 
-        # This must be changed to a mutex if you ever consider 
+        # This must be changed to a mutex if you ever consider
         # writing multi-threaded code. However, the motivation
         # for this horrid little variable is so dubious that you'd
         # be better off writing better code. I'm sorry to leave it
         # to you.
-        self._waiting_for_row_change = 0 
+        self._waiting_for_row_change = 0
 
     def _on_mode_changed(self, _widget, _mode):
         path = self.get_model().store_index_to_path(self.document.mode_cursor.deref())

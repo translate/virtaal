@@ -201,6 +201,8 @@ def option(label, get_option, set_option):
     check_button = gtk.CheckButton(label=label)
     check_button.connect('toggled', on_toggled)
     check_button.set_active(get_option())
+    # FIXME: not allowing focus willprobably raise various issues related to keyboard accesss.
+    check_button.set_property("can-focus", False)
     return check_button
 
 def terminology_source(txt):

@@ -16,6 +16,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+##. Configuration: Direction
+#msgid "default:LTR"
+#msgstr ""
+
 #. File->Open
 msgid "_Open"
 msgstr ""
@@ -76,12 +80,24 @@ msgstr ""
 msgid "_Add"
 msgstr ""
 
+#. File dialog - Add button - tooltip
+msgid "Add the folder '%s' to the bookmarks"
+msgstr ""
+
 #. File dialog - Remove button
 msgid "_Remove"
 msgstr ""
 
+#. File dialog - Remove button - tooltip
+msgid "Remove the bookmark '%s'"
+msgstr ""
+
 #. File dialog - Location - Label
 msgid "_Location:"
+msgstr ""
+
+#. File dialog - Location - Open/Close button - Tooltip
+msgid "Type a file name"
 msgstr ""
 
 #. File dialog - Places - Grid label - Places
@@ -96,6 +112,14 @@ msgstr ""
 msgid "Desktop"
 msgstr ""
 
+#. File dialog - Places - Right-Click - Remove
+msgid "Remove"
+msgstr ""
+
+#. File dialog - Places - Right-Click - Rename...
+msgid "Rename..."
+msgstr ""
+
 #. File dialog - Files - Grid label - Name
 msgid "Name"
 msgstr ""
@@ -104,4 +128,22 @@ msgstr ""
 msgid "Modified"
 msgstr ""
 
+#. File dialog - Files - Table - Date formats - Today at
+msgid "Today at %H:%M"
+msgstr ""
 
+#. File dialog - Files - Table - Date formats - Yesterday at
+msgid "Yesterday at %H:%M"
+msgstr ""
+
+#. File dialog - Files - Right click - Show Hidden Files
+msgid "Show _Hidden Files"
+msgstr ""
+
+#. File dialog - Files - Right click - Add to Bookmarks
+msgid "_Add to Bookmarks"
+msgstr ""
+
+#. File dialog - File type list - tooltip
+msgid "Select which types of files are shown"
+msgstr ""

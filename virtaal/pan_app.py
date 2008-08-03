@@ -40,7 +40,7 @@ def name():
         import getpass
     except ImportError, _e:
         return u""
-    return pwd.getpwnam(getpass.getuser())[4]
+    return pwd.getpwnam(getpass.getuser())[4].split(",")[0]
 
 class Settings:
     """Handles loading/saving settings from/to a configuration file."""

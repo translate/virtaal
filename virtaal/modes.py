@@ -50,14 +50,14 @@ class BidiIterator(object):
 
 class DefaultMode(UnionSetEnumerator):
     mode_name = "Default"
-    user_name = _(mode_name)
+    user_name = _("Default")
 
     def __init__(self, stats):
         UnionSetEnumerator.__init__(self, SortedSet(stats['total']))
 
 class QuickTranslateMode(UnionSetEnumerator):
     mode_name = "Quick Translate"
-    user_name = _(mode_name)
+    user_name = _("Quick Translate")
 
     def __init__(self, stats):
         UnionSetEnumerator.__init__(self, SortedSet(stats['fuzzy']), SortedSet(stats['untranslated']))

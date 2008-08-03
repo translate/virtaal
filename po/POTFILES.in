@@ -7,6 +7,7 @@ virtaal/about.py
 virtaal/document.py
 virtaal/formats.py
 virtaal/main_window.py
+virtaal/modes.py
 virtaal/pan_app.py
 virtaal/store_grid.py
 virtaal/tips.py

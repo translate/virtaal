@@ -16,9 +16,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-##. Configuration: Direction
-#msgid "default:LTR"
-#msgstr ""
+#. Translate to default:RTL if you want your widgets
+#. * to be RTL, otherwise translate to default:LTR.
+#. * Do *not* translate it to "predefinito:LTR", if it
+#. * it isn't default:LTR or default:RTL it will not work
+#.
+#. Configuration: Direction
+msgid "default:LTR"
+msgstr ""
 
 #. File->Open
 msgid "_Open"

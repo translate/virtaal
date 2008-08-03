@@ -189,17 +189,23 @@ class VirTaal:
 
     def _confirm_unsaved(self, dialog):
         if self.modified:
+            (RESPONSE_SAVE, RESPONSE_DISCARD) = (gtk.RESPONSE_YES, gtk.RESPONSE_NO)
             dialog = gtk.MessageDialog(dialog,
                             gtk.DIALOG_MODAL,
                             gtk.MESSAGE_QUESTION,
-                            gtk.BUTTONS_YES_NO,
-                            _("The current file was modified, but is not yet saved. Do you want to save it now?"))
-            dialog.set_default_response(gtk.RESPONSE_YES)
+                            gtk.BUTTONS_NONE,
+                            _("The current file has been modified.\nDo you want to save your changes?"))
+            dialog.add_buttons(gtk.STOCK_SAVE, RESPONSE_SAVE)
+            dialog.add_buttons(_("_Discard"), RESPONSE_DISCARD)
+            dialog.add_buttons(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
+            dialog.set_default_response(RESPONSE_SAVE)
             response = dialog.run()
             dialog.destroy()
-            if response in [gtk.RESPONSE_CANCEL, gtk.RESPONSE_DELETE_EVENT]:
+            if response == RESPONSE_DISCARD:
+                return False
+            elif response in [gtk.RESPONSE_CANCEL, gtk.RESPONSE_DELETE_EVENT]:
                 return True
-            elif response == gtk.RESPONSE_YES:
+            elif response == RESPONSE_SAVE:
                 if self._on_file_save():
                     return True
 

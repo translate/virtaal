@@ -81,7 +81,7 @@ class Settings:
             self.language["uilang"] = lang
             self.language["contentlang"] = lang
         except:
-            logging.info(_("Could not get locale"))
+            logging.info("Could not get locale")
         self.config = ConfigParser.ConfigParser()
 
         for section in self.sections:

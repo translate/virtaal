@@ -344,7 +344,7 @@ class VirTaal:
         buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_SAVE, gtk.RESPONSE_OK)
         # TODO: use stock text for Save as..."
         chooser = gtk.FileChooserDialog(
-                _("Save as..."),
+                _("Save"),
                 self.main_window,
                 gtk.FILE_CHOOSER_ACTION_SAVE,
                 buttons

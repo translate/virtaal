@@ -89,6 +89,10 @@ msgstr ""
 msgid "Add the folder '%s' to the bookmarks"
 msgstr ""
 
+#. File dialog - Add button - tooltip
+msgid "Add the current folder to the bookmarks"
+msgstr ""
+
 #. File dialog - Remove button
 msgid "_Remove"
 msgstr ""
@@ -96,6 +100,10 @@ msgstr ""
 #. File dialog - Remove button - tooltip
 msgid "Remove the bookmark '%s'"
 msgstr ""
+
+#. File dialog - Remove button - tooltip
+msgid "Remove the selected bookmark"
+msgstr "De geselecteerde bladwijzer verwijderen"
 
 #. File dialog - Location - Label
 msgid "_Location:"
@@ -152,3 +160,20 @@ msgstr ""
 #. File dialog - File type list - tooltip
 msgid "Select which types of files are shown"
 msgstr ""
+
+#. File save dialog - Name:
+msgid "_Name:"
+msgstr ""
+
+#. File save dialog - Save in folder:
+msgid "Save in _folder:"
+msgstr ""
+
+#. File save dialog - Browse for other folders
+msgid "_Browse for other folders"
+msgstr ""
+
+#. File save dialog - Create folder button
+msgid "Create Fo_lder"
+msgstr ""
+

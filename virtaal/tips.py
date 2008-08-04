@@ -28,4 +28,5 @@ _("To copy the original string into the target field, simply press <Alt+C>."),
 _("When editing a fuzzy translation, the fuzzy marker will automatically be removed."),
 # l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
 _("To mark the current translation as fuzzy, simply press <Alt+U>."),
+_("Use Ctrl+Up or Ctrl+Down to move between translations."),
 ]

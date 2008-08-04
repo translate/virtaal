@@ -161,6 +161,8 @@ class VirTaal:
         gtk.accel_map_add_entry("<VirTaal>/Edit/Undo", gtk.keysyms.z, gdk.CONTROL_MASK)
         gtk.accel_map_add_entry("<VirTaal>/Navigation/Up", gtk.accelerator_parse("Up")[0], gdk.CONTROL_MASK)
         gtk.accel_map_add_entry("<VirTaal>/Navigation/Down", gtk.accelerator_parse("Down")[0], gdk.CONTROL_MASK)
+        gtk.accel_map_add_entry("<VirTaal>/Navigation/PgUp", gtk.accelerator_parse("Page_Up")[0], gdk.CONTROL_MASK)
+        gtk.accel_map_add_entry("<VirTaal>/Navigation/PgDown", gtk.accelerator_parse("Page_Down")[0], gdk.CONTROL_MASK)
         self.accel_group.connect_by_path("<VirTaal>/Edit/Undo", self._on_undo)
 
     def _on_undo(self, _accel_group, acceleratable, _keyval, _modifier):

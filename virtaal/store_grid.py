@@ -49,6 +49,8 @@ class UnitGrid(gtk.TreeView):
         self._owner.main_window.add_accel_group(self.accel_group)
         self.accel_group.connect_by_path("<VirTaal>/Navigation/Up", self._move_up)
         self.accel_group.connect_by_path("<VirTaal>/Navigation/Down", self._move_down)
+        self.accel_group.connect_by_path("<VirTaal>/Navigation/PgUp", self._move_pgup)
+        self.accel_group.connect_by_path("<VirTaal>/Navigation/PgDown", self._move_pgdown)
 
     def enable_tooltips(self):
         if hasattr(self, "set_tooltip_column"):
@@ -129,6 +131,12 @@ class UnitGrid(gtk.TreeView):
 
     def _move_down(self, _accel_group, _acceleratable, _keyval, _modifier):
         return self._keyboard_move(1)
+
+    def _move_pgup(self, _accel_group, _acceleratable, _keyval, _modifier):
+        return self._keyboard_move(-10)
+
+    def _move_pgdown(self, _accel_group, _acceleratable, _keyval, _modifier):
+        return self._keyboard_move(10)
 
     def _on_button_press(self, widget, event):
         # If the event did not happen in the treeview, but in the

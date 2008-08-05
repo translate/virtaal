@@ -235,46 +235,53 @@ class VirTaal:
 
     def load_file(self, filename, dialog=None, store=None):
         """Do the actual loading of the file into the GUI"""
-        try:
-            self.document = document.Document(filename, store=store)
-            self.document.connect('mode-changed', self._on_mode_change)
-            child = self.status_box.get_children()[0]
-            self.status_box.remove(child)
-            child.destroy()
-            self.mode_box = ModeBox(self.document.get_modes())
-            self.status_box.pack_start(self.mode_box)
-            self.status_box.reorder_child(self.mode_box, 0)
-            self.mode_box.connect('mode-selected', self._on_gui_mode_change)
-            self.document.set_mode('Default')
+        if path.isfile(filename):
+            try:
+                self.document = document.Document(filename, store=store)
+                self.document.connect('mode-changed', self._on_mode_change)
+                child = self.status_box.get_children()[0]
+                self.status_box.remove(child)
+                child.destroy()
+                self.mode_box = ModeBox(self.document.get_modes())
+                self.status_box.pack_start(self.mode_box)
+                self.status_box.reorder_child(self.mode_box, 0)
+                self.mode_box.connect('mode-selected', self._on_gui_mode_change)
+                self.document.set_mode('Default')
 
-            self.filename = filename
-            self.store_grid = store_grid.UnitGrid(self)
-            self.store_grid.connect("modified", self._on_modified)
-            child = self.sw.get_child()
-            self.sw.remove(child)
-            child.destroy()
-            self.sw.add(self.store_grid)
-            self.main_window.connect("configure-event", self.store_grid.on_configure_event)
-            self.main_window.show_all()
-            self.store_grid.grab_focus()
-            self._set_saveable(False)
-            menuitem = self.gui.get_widget("saveas_menuitem")
-            menuitem.set_sensitive(True)
-            self.document.set_mode('Default')
+                self.filename = filename
+                self.store_grid = store_grid.UnitGrid(self)
+                self.store_grid.connect("modified", self._on_modified)
+                child = self.sw.get_child()
+                self.sw.remove(child)
+                child.destroy()
+                self.sw.add(self.store_grid)
+                self.main_window.connect("configure-event", self.store_grid.on_configure_event)
+                self.main_window.show_all()
+                self.store_grid.grab_focus()
+                self._set_saveable(False)
+                menuitem = self.gui.get_widget("saveas_menuitem")
+                menuitem.set_sensitive(True)
+                self.document.set_mode('Default')
 
-            self.autocomp.add_words_from_store(self.document.store)
-            self.autocorr.load_dictionary(lang=pan_app.settings.language['contentlang'])
-            self.store_grid.connect('cursor-changed', self._on_grid_cursor_changed)
-        except IOError, e:
-            dialog = gtk.MessageDialog(dialog or self.main_window,
-                            gtk.DIALOG_MODAL,
-                            gtk.MESSAGE_ERROR,
-                            gtk.BUTTONS_OK,
-                            (str(e)))
-            dialog.run()
-            dialog.destroy()
-            return False
-        return True
+                self.autocomp.add_words_from_store(self.document.store)
+                self.autocorr.load_dictionary(lang=pan_app.settings.language['contentlang'])
+                self.store_grid.connect('cursor-changed', self._on_grid_cursor_changed)
+                return True
+            except IOError, e:
+                dialog = gtk.MessageDialog(dialog or self.main_window,
+                                gtk.DIALOG_MODAL,
+                                gtk.MESSAGE_ERROR,
+                                gtk.BUTTONS_OK,
+                                (str(e)))
+        else:
+                dialog = gtk.MessageDialog(dialog or self.main_window,
+                                gtk.DIALOG_MODAL,
+                                gtk.MESSAGE_ERROR,
+                                gtk.BUTTONS_OK,
+                                _("%(filename)s does not exist." % {"filename": filename}))
+        dialog.run()
+        dialog.destroy()
+        return False
 
     def _set_saveable(self, value):
         menuitem = self.gui.get_widget("save_menuitem")

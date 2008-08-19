@@ -1,6 +1,9 @@
 #!/bin/bash
 
-XGETTEXT_ARGS='--copyright-holder="Zuza Software Foundation (Translate.org.za)"  --package-name "VirTaal" --package-version `egrep "^ver " ../virtaal/__version__.py | sed "s/ver = //;s/\"//g"`'
+packagename=VirTaal
+package=virtaal
+
+XGETTEXT_ARGS='--copyright-holder="Zuza Software Foundation (Translate.org.za)"  --package-name "'$packagename'" --package-version `egrep "^ver " ../'$package'/__version__.py | sed "s/ver = //;s/\"//g"`'
 export XGETTEXT_ARGS
 
 intltool-update $*

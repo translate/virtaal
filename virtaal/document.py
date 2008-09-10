@@ -45,7 +45,7 @@ def get_document(obj):
     else:
         return getattr(obj, 'document')
 
-def compute_nplurals(store):        
+def compute_nplurals(store):
     def ask_for_language_details():
         def get_content_lang():
             if pan_app.settings.language["contentlang"] != None:

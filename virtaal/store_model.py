@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008 Zuza Software Foundation
@@ -109,5 +110,3 @@ class UnitModel(gtk.GenericTreeModel):
 
     def path_to_store_index(self, path):
         return self._editable_indices[path[0]]
-        
-

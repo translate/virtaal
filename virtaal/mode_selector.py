@@ -49,19 +49,16 @@ class ModeSelector(gtk.HBox):
             i += 1
 
     def set_mode(self, mode):
-        logging.debug('Mode: %s' % (self.cmb_modes.get_active_text()))
         # Remove previous mode's widgets
         if self.cmb_modes.get_active() > -1:
             for w in self.get_children():
                 if w is not self.cmb_modes:
-                    logging.debug('Removing widget: %s' % (w))
                     self.remove(w)
 
         # Select new mode and add its widgets
         self.cmb_modes.set_active(self.mode_index[mode])
         for w in mode.widgets:
             if w.get_parent() is None:
-                logging.debug('Packing widget: %s' % (w))
                 self.pack_start(w, expand=False, padding=2)
 
         self.show_all()

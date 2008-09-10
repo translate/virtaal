@@ -29,7 +29,6 @@ from translate.lang import factory as langfactory
 
 import pan_app
 from widgets.entry_dialog import EntryDialog
-import modes
 
 def get_document(obj):
     """See whether obj contains an attribute called 'document'.
@@ -106,7 +105,7 @@ class Document(gobject.GObject):
 
     def set_mode(self, mode):
         logging.debug("Changing mode to %s" % mode.mode_name)
-        mode.refresh(self.stats)
+        mode.refresh(self)
         self.mode = mode
         try:
             if self.mode_cursor != None:

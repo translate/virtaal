@@ -156,7 +156,8 @@ class UnitGrid(gtk.TreeView):
             index = self.get_model().path_to_store_index(path)
             if index not in self.document.mode:
                 logging.debug("Falling to default")
-                self.document.set_mode('Default')
+                from virtaal.modes import MODES
+                self.document.set_mode(MODES['Default']) # FIXME: This module should not need to import modes
 
             self.document.mode_cursor = self.document.mode.cursor_from_element(index)
             self._activate_editing_path(path)

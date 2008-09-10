@@ -104,9 +104,10 @@ class Document(gobject.GObject):
         self.mode = None
         self.mode_cursor = None
 
-    def set_mode(self, name):
-        logging.debug("Changing mode to %s" % name)
-        self.mode = modes.MODES[name](self.stats)
+    def set_mode(self, mode):
+        logging.debug("Changing mode to %s" % mode.mode_name)
+        mode.refresh(self.stats)
+        self.mode = mode
         try:
             if self.mode_cursor != None:
                 self.mode_cursor = self.mode.cursor_from_element(self.mode_cursor.deref())
@@ -121,10 +122,3 @@ class Document(gobject.GObject):
             self.emit('mode-changed', self.mode)
         except IndexError:
             pass
-
-    def get_modes(self):
-        # We isolate the rest of the program logic from the modes which
-        # might be associated with a document. This allows us to supply
-        # modes based on the document type.
-        return modes.MODES.itervalues()
-

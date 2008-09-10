@@ -22,6 +22,8 @@ import gobject
 import gtk
 import logging
 
+import virtaal.modes
+
 class ModeSelector(gtk.HBox):
     """A composite widget for selecting modes."""
 
@@ -31,7 +33,9 @@ class ModeSelector(gtk.HBox):
         "mode-selected": (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
     }
 
-    def __init__(self, modes):
+    DEFAULT_MODE_NAME = 'Default'
+
+    def __init__(self):
         gtk.HBox.__init__(self)
 
         # Add mode-selection combo box
@@ -42,11 +46,16 @@ class ModeSelector(gtk.HBox):
         self.mode_names = {}
         self.mode_index = {}
         i = 0
-        for mode in modes:
+        self.default_mode = None
+
+        for mode in virtaal.modes.MODES.itervalues():
             self.cmb_modes.append_text(mode.user_name)
             self.mode_names[mode.user_name] = mode
             self.mode_index[mode] = i
             i += 1
+
+            if mode.mode_name == self.DEFAULT_MODE_NAME:
+                self.default_mode = mode
 
     def set_mode(self, mode):
         # Remove previous mode's widgets

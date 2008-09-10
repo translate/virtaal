@@ -53,39 +53,6 @@ from mode_selector import ModeSelector
 def on_undo(_accel_group, acceleratable, _keyval, _modifier):
     unit_renderer.undo(acceleratable.focus_widget)
 
-class ModeBox(gtk.HBox):
-    __gtype_name__ = "ModeBox"
-
-    __gsignals__ = {
-        "mode-selected": (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
-    }
-
-    def __init__(self, modes):
-        gtk.HBox.__init__(self)
-
-        def make_label(text):
-            label_box = gtk.EventBox()
-            label = gtk.Label()
-            label.set_text(text)
-            label_box.add(label)
-            return label_box
-
-        self.mode_to_label = bijection.Bijection((mode, make_label(mode.user_name)) for mode in modes)
-
-        for label in self.mode_to_label.itervalues():
-            self.pack_start(label)
-            label.connect('button-release-event', self._on_label_click)
-
-    def set_mode(self, mode):
-        for label in self.get_children():
-            label.child.set_label(self.mode_to_label.inverse[label].user_name)
-
-        self.mode_to_label[mode].child.set_markup('<b>%s</b>' % self.mode_to_label[mode].child.get_text())
-
-    def _on_label_click(self, clicked_label, _event):
-        self.emit('mode-selected', self.mode_to_label.inverse[clicked_label])
-
-
 def get_data_file_abs_name(filename):
     """Get the absolute path to the given file- or directory name in VirTaal's
         data directory.
@@ -230,10 +197,10 @@ class VirTaal:
         return self.load_file(filename, dialog=dialog)
 
     def _on_gui_mode_change(self, _mode_box, mode):
-        self.document.set_mode(mode.mode_name)
+        self.document.set_mode(mode)
 
     def _on_mode_change(self, _document, mode):
-        self.mode_box.set_mode(mode.__class__)
+        self.mode_box.set_mode(mode)
 
     def load_file(self, filename, dialog=None, store=None):
         """Do the actual loading of the file into the GUI"""
@@ -244,11 +211,11 @@ class VirTaal:
                 child = self.status_box.get_children()[0]
                 self.status_box.remove(child)
                 child.destroy()
-                self.mode_box = ModeSelector(self.document.get_modes())
+                self.mode_box = ModeSelector()
                 self.status_box.pack_start(self.mode_box)
                 self.status_box.reorder_child(self.mode_box, 0)
                 self.mode_box.connect('mode-selected', self._on_gui_mode_change)
-                self.document.set_mode('Default')
+                self.document.set_mode(self.mode_box.default_mode)
 
                 self.filename = filename
                 self.store_grid = store_grid.UnitGrid(self)
@@ -263,7 +230,6 @@ class VirTaal:
                 self._set_saveable(False)
                 menuitem = self.gui.get_widget("saveas_menuitem")
                 menuitem.set_sensitive(True)
-                self.document.set_mode('Default')
 
                 self.autocomp.add_words_from_store(self.document.store)
                 self.autocorr.load_dictionary(lang=pan_app.settings.language['contentlang'])

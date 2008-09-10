@@ -56,7 +56,10 @@ class DefaultMode(UnionSetEnumerator):
     user_name = _("Default")
     widgets = []
 
-    def __init__(self, stats):
+    def __init__(self):
+        UnionSetEnumerator.__init__(self)
+
+    def refresh(self, stats):
         UnionSetEnumerator.__init__(self, SortedSet(stats['total']))
 
 class QuickTranslateMode(UnionSetEnumerator):
@@ -64,7 +67,10 @@ class QuickTranslateMode(UnionSetEnumerator):
     user_name = _("Quick Translate")
     widgets = []
 
-    def __init__(self, stats):
+    def __init__(self):
+        UnionSetEnumerator.__init__(self)
+
+    def refresh(self, stats):
         UnionSetEnumerator.__init__(self, SortedSet(stats['fuzzy']), SortedSet(stats['untranslated']))
 
 class SearchMode(UnionSetEnumerator):
@@ -72,19 +78,17 @@ class SearchMode(UnionSetEnumerator):
     user_name = _("Search")
     widgets = [gtk.Entry()]
 
-    def __init__(self, stats):
-        UnionSetEnumerator.__init__(self, SortedSet(stats['total']))
-        self.stats = stats
+    def __init__(self):
+        UnionSetEnumerator.__init__(self)
         self.ent_search = self.widgets[0]
+        self.ent_search.connect('changed', self._on_search_text_changed)
 
-        if hasattr(self.__class__, 'changed_handler_id'):
-            self.ent_search.disconnect(self.__class__.changed_handler_id)
-        self.__class__.changed_handler_id = self.ent_search.connect('changed', self._on_search_text_changed)
+    def refresh(self, stats):
+        self.stats = stats
+        UnionSetEnumerator.__init__(self, SortedSet(stats['total']))
 
     def _on_search_text_changed(self, entry):
         # Filter stats with text in "entry"
         logging.debug('Search text: %s' % (entry.get_text()))
 
-MODES = dict((val.mode_name, val) for val in globals().itervalues() if hasattr(val, 'mode_name'))
-
-
+MODES = dict( (klass.mode_name, klass()) for klass in globals().itervalues() if hasattr(klass, 'mode_name') )

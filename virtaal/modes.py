@@ -18,6 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import gtk
+import logging
+
 from support.set_enumerator import UnionSetEnumerator
 from virtaal.support.sorted_set import SortedSet
 
@@ -51,6 +54,7 @@ class BidiIterator(object):
 class DefaultMode(UnionSetEnumerator):
     mode_name = "Default"
     user_name = _("Default")
+    widgets = []
 
     def __init__(self, stats):
         UnionSetEnumerator.__init__(self, SortedSet(stats['total']))
@@ -58,9 +62,27 @@ class DefaultMode(UnionSetEnumerator):
 class QuickTranslateMode(UnionSetEnumerator):
     mode_name = "Quick Translate"
     user_name = _("Quick Translate")
+    widgets = []
 
     def __init__(self, stats):
         UnionSetEnumerator.__init__(self, SortedSet(stats['fuzzy']), SortedSet(stats['untranslated']))
+
+class SearchMode(UnionSetEnumerator):
+    mode_name = "Search"
+    user_name = _("Search")
+    widgets = [gtk.Entry()]
+
+    def __init__(self, stats):
+        UnionSetEnumerator.__init__(self, SortedSet(stats['total']))
+        self.stats = stats
+
+        if not hasattr(self, 'ent_search'):
+            self.ent_search = self.widgets[0]
+            self.ent_search.connect('changed', self._on_search_text_changed)
+
+    def _on_search_text_changed(self, entry):
+        # Filter stats with text in "entry"
+        logging.debug('Search text: %s' % (entry.get_text()))
 
 MODES = dict((val.mode_name, val) for val in globals().itervalues() if hasattr(val, 'mode_name'))
 

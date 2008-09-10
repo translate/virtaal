@@ -46,6 +46,7 @@ import document
 from support import bijection
 from autocompletor import AutoCompletor
 from autocorrector import AutoCorrector
+from mode_selector import ModeSelector
 
 # FIXME: Add docstrings!
 
@@ -83,6 +84,7 @@ class ModeBox(gtk.HBox):
 
     def _on_label_click(self, clicked_label, _event):
         self.emit('mode-selected', self.mode_to_label.inverse[clicked_label])
+
 
 def get_data_file_abs_name(filename):
     """Get the absolute path to the given file- or directory name in VirTaal's
@@ -242,7 +244,7 @@ class VirTaal:
                 child = self.status_box.get_children()[0]
                 self.status_box.remove(child)
                 child.destroy()
-                self.mode_box = ModeBox(self.document.get_modes())
+                self.mode_box = ModeSelector(self.document.get_modes())
                 self.status_box.pack_start(self.mode_box)
                 self.status_box.reorder_child(self.mode_box, 0)
                 self.mode_box.connect('mode-selected', self._on_gui_mode_change)

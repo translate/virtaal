@@ -75,10 +75,11 @@ class SearchMode(UnionSetEnumerator):
     def __init__(self, stats):
         UnionSetEnumerator.__init__(self, SortedSet(stats['total']))
         self.stats = stats
+        self.ent_search = self.widgets[0]
 
-        if not hasattr(self, 'ent_search'):
-            self.ent_search = self.widgets[0]
-            self.ent_search.connect('changed', self._on_search_text_changed)
+        if hasattr(self.__class__, 'changed_handler_id'):
+            self.ent_search.disconnect(self.__class__.changed_handler_id)
+        self.__class__.changed_handler_id = self.ent_search.connect('changed', self._on_search_text_changed)
 
     def _on_search_text_changed(self, entry):
         # Filter stats with text in "entry"

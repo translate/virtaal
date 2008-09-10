@@ -39,8 +39,10 @@ class ModeSelector(gtk.HBox):
         gtk.HBox.__init__(self)
 
         # Add mode-selection combo box
+        self.lbl_mode = gtk.Label(_('Mode: '))
         self.cmb_modes = gtk.combo_box_new_text()
         self.cmb_modes.connect('changed', self._on_cmbmode_change)
+        self.pack_start(self.lbl_mode, expand=False)
         self.pack_start(self.cmb_modes, expand=False)
 
         self.mode_names = {}
@@ -61,7 +63,7 @@ class ModeSelector(gtk.HBox):
         # Remove previous mode's widgets
         if self.cmb_modes.get_active() > -1:
             for w in self.get_children():
-                if w is not self.cmb_modes:
+                if w is not self.cmb_modes and w is not self.lbl_mode:
                     self.remove(w)
 
         # Select new mode and add its widgets

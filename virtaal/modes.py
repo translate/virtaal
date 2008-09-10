@@ -53,7 +53,7 @@ class BidiIterator(object):
 
 class DefaultMode(UnionSetEnumerator):
     mode_name = "Default"
-    user_name = _("Default")
+    user_name = _("All")
     widgets = []
 
     def __init__(self):
@@ -64,7 +64,7 @@ class DefaultMode(UnionSetEnumerator):
 
 class QuickTranslateMode(UnionSetEnumerator):
     mode_name = "Quick Translate"
-    user_name = _("Quick Translate")
+    user_name = _("Incomplete")
     widgets = []
 
     def __init__(self):

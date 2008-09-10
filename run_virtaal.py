@@ -62,13 +62,18 @@ parser = OptionParser(option_list=option_list, usage=usage, version=__version__.
 def main(argv):
     def set_logging(options):
         if options.log != None:
-            try:
+            if options.log.upper() in ('-', 'STDOUT'):
                 logging.basicConfig(level=logging.DEBUG,
                                     format='%(asctime)s %(levelname)s %(message)s',
-                                    filename=path.abspath(options.log),
-                                    filemode='w')
-            except IOError:
-                parser.error(_("Could not open log file '%(filename)s'") % {"filename": options.log})
+                                    stream=sys.stdout)
+            else:
+                try:
+                    logging.basicConfig(level=logging.DEBUG,
+                                        format='%(asctime)s %(levelname)s %(message)s',
+                                        filename=path.abspath(options.log),
+                                        filemode='w')
+                except IOError:
+                    parser.error(_("Could not open log file '%(filename)s'") % {"filename": options.log})
 
     def set_config(options):
         try:

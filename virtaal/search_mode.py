@@ -23,6 +23,9 @@ import logging
 
 from translate.tools.pogrep import GrepFilter
 
+from virtaal.support.set_enumerator import UnionSetEnumerator
+from virtaal.support.sorted_set import SortedSet
+
 
 class SearchMode(UnionSetEnumerator):
     mode_name = "Search"
@@ -34,9 +37,21 @@ class SearchMode(UnionSetEnumerator):
         self.ent_search = gtk.Entry()
         self.ent_search.connect('changed', self._on_search_text_changed)
         self.chk_casesensitive = gtk.CheckButton(_('Case sensitive'))
+        self.chk_casesensitive.connect('toggled', self._refresh_proxy)
         self.chk_regex = gtk.CheckButton(_("Regex matching"))
+        self.chk_regex.connect('toggled', self._refresh_proxy)
 
         self.widgets = [self.ent_search, self.chk_casesensitive, self.chk_regex]
+
+        self.makefilter()
+
+    def makefilter(self):
+        searchstring = self.ent_search.get_text()
+        searchparts = ('source', 'target')
+        ignorecase = not self.chk_casesensitive.get_active()
+        useregexp = self.chk_regex.get_active()
+
+        self.filter = GrepFilter(searchstring, searchparts, ignorecase, useregexp)
 
     def refresh(self, document):
         self.document = document
@@ -46,15 +61,18 @@ class SearchMode(UnionSetEnumerator):
             self._on_search_text_changed(self.ent_search)
 
     def _on_search_text_changed(self, entry):
-        search_text = entry.get_text()
-        logging.debug('Search text: %s' % (search_text))
+        logging.debug('Search text: %s' % (entry.get_text()))
+        self.makefilter()
 
         # Filter stats with text in "entry"
         filtered = []
         i = 0
         for unit in self.document.store.units:
-            if search_text in unit.source or search_text in unit.target:
+            if self.filter.filterunit(unit):
                 filtered.append(i)
             i += 1
 
         UnionSetEnumerator.__init__(self, SortedSet(filtered))
+
+    def _refresh_proxy(self, *args):
+        self._on_search_text_changed(self.ent_search)

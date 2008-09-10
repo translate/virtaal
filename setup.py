@@ -37,7 +37,7 @@ options = {
         (TARGET_DATA_DIR, glob.glob(path.join(SOURCE_DATA_DIR, "*.*"))), 
     ],
     'scripts': [
-        "run_virtaal.py"
+        "bin/virtaal"
     ],
     'packages': [
         "virtaal",
@@ -97,7 +97,7 @@ SetupIconFile=%(icon_path)s
         print >> ofi, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (fpath, os.path.dirname(fpath))
     print >> ofi, r'''
 [Icons]
-Name: "{group}\%(name)s Translation Editor"; Filename: "{app}\run_virtaal.exe";
+Name: "{group}\%(name)s Translation Editor"; Filename: "{app}\virtaal.exe";
 Name: "{group}\%(name)s (uninstall)"; Filename: "{uninstallexe}"''' % {'name': name}
 
 #    For now we don't worry about install scripts
@@ -129,7 +129,7 @@ Name: "{group}\%(name)s (uninstall)"; Filename: "{uninstallexe}"''' % {'name': n
     #;Icon to use in Explorer
     #Root: HKCR; Subkey: "virtaal_po\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icons\virtaal.ico"
     #;The command to open the file
-    #Root: HKCR; Subkey: "virtaal_po\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\run_virtaal.exe"" ""%1"""
+    #Root: HKCR; Subkey: "virtaal_po\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\virtaal.exe"" ""%1"""
 
     print >> ofi, "[Registry]"
     from virtaal.formats import supported_types
@@ -145,12 +145,12 @@ Name: "{group}\%(name)s (uninstall)"; Filename: "{uninstallexe}"''' % {'name': n
             print >> ofi, r'Root: HKCR; Subkey: "%(extention)s"; ValueType: string; ValueName: ""; ValueData: "virtaal_%(key)s"; Flags: uninsdeletevalue' % {'extention': extention, 'key': key}
         print >> ofi, r'''Root: HKCR; Subkey: "virtaal_%(key)s"; ValueType: string; ValueName: ""; ValueData: "%(description)s"; Flags: uninsdeletekey
 Root: HKCR; Subkey: "virtaal_%(key)s\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icons\virtaal.ico"
-Root: HKCR; Subkey: "virtaal_%(key)s\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\run_virtaal.exe"" ""%%1"""''' % {'key': key, 'description': description}
+Root: HKCR; Subkey: "virtaal_%(key)s\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\virtaal.exe"" ""%%1"""''' % {'key': key, 'description': description}
 
     # Show a "Launch VirTaal" checkbox on the last installer screen
     print >> ofi, r'''
 [Run]
-Filename: "{app}\run_virtaal.exe"; Description: "{cm:LaunchProgram,%(name)s}"; Flags: nowait postinstall skipifsilent''' % {'name': name}
+Filename: "{app}\virtaal.exe"; Description: "{cm:LaunchProgram,%(name)s}"; Flags: nowait postinstall skipifsilent''' % {'name': name}
     print >> ofi
     ofi.close()
     return pathname
@@ -236,7 +236,7 @@ def add_win32_options(options):
         options.update({
             "windows": [
                 {
-                    'script': 'run_virtaal.py',
+                    'script': 'bin/virtaal',
                     'icon_resources': [(1, path.join(SOURCE_DATA_DIR, "virtaal.ico"))],
                 }
             ],

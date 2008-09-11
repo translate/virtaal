@@ -37,6 +37,8 @@ class SearchMode(UnionSetEnumerator):
         UnionSetEnumerator.__init__(self)
         self.ent_search = gtk.Entry()
         self.ent_search.connect('changed', self._on_search_text_changed)
+        self.default_base = gtk.widget_get_default_style().base[gtk.STATE_NORMAL]
+        self.default_text = gtk.widget_get_default_style().text[gtk.STATE_NORMAL]
         self.chk_casesensitive = gtk.CheckButton(_('Case sensitive'))
         self.chk_casesensitive.connect('toggled', self._refresh_proxy)
         self.chk_regex = gtk.CheckButton(_("Regex matching"))
@@ -73,7 +75,6 @@ class SearchMode(UnionSetEnumerator):
         gobject.timeout_add(100, grab_focus)
 
     def _on_search_text_changed(self, entry):
-        logging.debug('Search text: %s' % (entry.get_text()))
         self.makefilter()
 
         # Filter stats with text in "entry"
@@ -83,6 +84,15 @@ class SearchMode(UnionSetEnumerator):
             if self.filter.filterunit(unit):
                 filtered.append(i)
             i += 1
+
+        logging.debug('Search text: %s (%d matches)' % (entry.get_text(), len(filtered)))
+
+        if filtered:
+            self.ent_search.modify_base(gtk.STATE_NORMAL, self.default_base)
+            self.ent_search.modify_text(gtk.STATE_NORMAL, self.default_text)
+        else:
+            self.ent_search.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse('#f66'))
+            self.ent_search.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse('#fff'))
 
         UnionSetEnumerator.__init__(self, SortedSet(filtered))
 

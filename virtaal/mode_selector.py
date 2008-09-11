@@ -45,8 +45,8 @@ class ModeSelector(gtk.HBox):
         self.pack_start(self.lbl_mode, expand=False)
         self.pack_start(self.cmb_modes, expand=False)
 
-        self.mode_names = {}
-        self.mode_index = {}
+        self.mode_names = {} # mode_name to mode instance map
+        self.mode_index = {} # mode instance to index (in cmb_modes) map
         i = 0
         self.default_mode = None
 

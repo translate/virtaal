@@ -196,11 +196,11 @@ class VirTaal:
                 return True
         return self.load_file(filename, dialog=dialog)
 
-    def _on_gui_mode_change(self, _mode_box, mode):
+    def _on_gui_mode_change(self, _mode_selector, mode):
         self.document.set_mode(mode)
 
     def _on_mode_change(self, _document, mode):
-        self.mode_box.set_mode(mode)
+        self.mode_selector.set_mode(mode)
 
     def load_file(self, filename, dialog=None, store=None):
         """Do the actual loading of the file into the GUI"""
@@ -211,11 +211,11 @@ class VirTaal:
                 child = self.status_box.get_children()[0]
                 self.status_box.remove(child)
                 child.destroy()
-                self.mode_box = ModeSelector()
-                self.status_box.pack_start(self.mode_box)
-                self.status_box.reorder_child(self.mode_box, 0)
-                self.mode_box.connect('mode-selected', self._on_gui_mode_change)
-                self.document.set_mode(self.mode_box.default_mode)
+                self.mode_selector = ModeSelector()
+                self.status_box.pack_start(self.mode_selector)
+                self.status_box.reorder_child(self.mode_selector, 0)
+                self.mode_selector.connect('mode-selected', self._on_gui_mode_change)
+                self.document.set_mode(self.mode_selector.default_mode)
 
                 self.filename = filename
                 self.store_grid = store_grid.UnitGrid(self)

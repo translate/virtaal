@@ -104,7 +104,7 @@ class Document(gobject.GObject):
         self.mode_cursor = None
 
     def set_mode(self, mode):
-        logging.debug("Changing mode to %s" % mode.mode_name)
+        logging.debug("Changing document mode to %s" % mode.mode_name)
         mode.refresh(self)
         self.mode = mode
         try:

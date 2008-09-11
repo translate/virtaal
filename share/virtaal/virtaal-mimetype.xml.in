@@ -6,7 +6,7 @@ supported by VirTaal.
 Naming convention:
 * TM -> XXX Translation Memory
 * Translatable file -> XXX Translation File
-* Translattion template file -> XXX Translation Template
+* Translation template file -> XXX Translation Template
 * Compiled translations -> XXXX Message File
 * Other files (dual use) -> Traditional name: Java Propeties File, INI File, Windows Resource File
 * Use Title Case

@@ -128,14 +128,19 @@ class VirTaal:
         self.accel_group = gtk.AccelGroup()
         self.main_window.add_accel_group(self.accel_group)
         gtk.accel_map_add_entry("<VirTaal>/Edit/Undo", gtk.keysyms.z, gdk.CONTROL_MASK)
+        gtk.accel_map_add_entry("<VirTaal>/Edit/Search", gtk.keysyms.F3, 0)
         gtk.accel_map_add_entry("<VirTaal>/Navigation/Up", gtk.accelerator_parse("Up")[0], gdk.CONTROL_MASK)
         gtk.accel_map_add_entry("<VirTaal>/Navigation/Down", gtk.accelerator_parse("Down")[0], gdk.CONTROL_MASK)
         gtk.accel_map_add_entry("<VirTaal>/Navigation/PgUp", gtk.accelerator_parse("Page_Up")[0], gdk.CONTROL_MASK)
         gtk.accel_map_add_entry("<VirTaal>/Navigation/PgDown", gtk.accelerator_parse("Page_Down")[0], gdk.CONTROL_MASK)
         self.accel_group.connect_by_path("<VirTaal>/Edit/Undo", self._on_undo)
+        self.accel_group.connect_by_path("<VirTaal>/Edit/Search", self._on_search)
 
     def _on_undo(self, _accel_group, acceleratable, _keyval, _modifier):
         unit_renderer.undo(acceleratable.focus_widget)
+
+    def _on_search(self, _accel_group, acceleratable, _keyval, _modifier):
+        self.mode_selector.select_mode_by_name('Search')
 
     def _on_mainwindow_delete(self, _widget, _event):
         if self._confirm_unsaved(self.main_window):

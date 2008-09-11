@@ -59,6 +59,12 @@ class ModeSelector(gtk.HBox):
             if mode.mode_name == self.DEFAULT_MODE_NAME:
                 self.default_mode = mode
 
+    def select_mode_by_name(self, mode_name):
+        if mode_name in self.mode_names:
+            self.cmb_modes.set_active(self.mode_index[self.mode_names[mode_name]])
+        else:
+            raise ValueError('Unknown mode specified.')
+
     def set_mode(self, mode):
         # Remove previous mode's widgets
         if self.cmb_modes.get_active() > -1:
@@ -67,12 +73,12 @@ class ModeSelector(gtk.HBox):
                     self.remove(w)
 
         # Select new mode and add its widgets
-        self.cmb_modes.set_active(self.mode_index[mode])
         for w in mode.widgets:
             if w.get_parent() is None:
                 self.pack_start(w, expand=False, padding=2)
 
         self.show_all()
+        mode.selected()
 
     def _on_cmbmode_change(self, combo):
         self.emit('mode-selected', self.mode_names[combo.get_active_text()])

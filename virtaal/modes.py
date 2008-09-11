@@ -60,6 +60,11 @@ class DefaultMode(UnionSetEnumerator):
     def refresh(self, document):
         UnionSetEnumerator.__init__(self, SortedSet(document.stats['total']))
 
+    def selected(self):
+        """There is nothing to do after this mode has been selected, so this
+            method does exactly that: nothing."""
+        pass
+
 class QuickTranslateMode(UnionSetEnumerator):
     mode_name = "Quick Translate"
     user_name = _("Incomplete")
@@ -70,6 +75,11 @@ class QuickTranslateMode(UnionSetEnumerator):
 
     def refresh(self, document):
         UnionSetEnumerator.__init__(self, SortedSet(document.stats['fuzzy']), SortedSet(document.stats['untranslated']))
+
+    def selected(self):
+        """There is nothing to do after this mode has been selected, so this
+            method does exactly that: nothing."""
+        pass
 
 
 MODES = dict( (klass.mode_name, klass()) for klass in globals().itervalues() if hasattr(klass, 'mode_name') )

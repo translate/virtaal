@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import gobject
 import gtk
 import logging
 
@@ -59,6 +60,17 @@ class SearchMode(UnionSetEnumerator):
             UnionSetEnumerator.__init__(self, SortedSet(document.stats['total']))
         else:
             self._on_search_text_changed(self.ent_search)
+
+    def selected(self):
+        """Focus the search entry.
+
+            This method should only be called after this mode has been selected."""
+        def grab_focus():
+            self.ent_search.grab_focus()
+            return False
+
+        # FIXME: The following line is a VERY UGLY HACK, but at least it works.
+        gobject.timeout_add(100, grab_focus)
 
     def _on_search_text_changed(self, entry):
         logging.debug('Search text: %s' % (entry.get_text()))

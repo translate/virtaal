@@ -309,9 +309,8 @@ class VirTaal:
                     return True
                 pan_app.settings.translator["team"] = team
             pan_app.settings.write()
-            po_revision_date = time.strftime("%F %H:%M%z")
             header_updates = {}
-            header_updates["PO_Revision_Date"] = po_revision_date
+            header_updates["PO_Revision_Date"] = time.strftime("%Y-%m-%d %H:%M") +  self.document.store.poheader.tzstring()
             header_updates["X_Generator"] = pan_app.x_generator
             if name or email:
                 header_updates["Last_Translator"] = u"%s <%s>" % (name, email)

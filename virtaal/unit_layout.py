@@ -146,7 +146,10 @@ def make_scrolled_text_view(get_text, editable, scroll_vertical, language):
                scroll_vertical)
 
 def source_text_box(get_text, set_text):
-    return make_scrolled_text_view(get_text, False, gtk.POLICY_NEVER, "sourcelang")
+    scrolled_window = make_scrolled_text_view(get_text, False, gtk.POLICY_NEVER, "sourcelang")
+    text_view = scrolled_window.get_child()
+    text_view._is_source = True
+    return scrolled_window
 
 def target_text_box(get_text, set_text):
     def get_range(buf, left_offset, right_offset):

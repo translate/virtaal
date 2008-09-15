@@ -46,6 +46,8 @@ class SearchMode(UnionSetEnumerator):
         self.chk_regex.connect('toggled', self._refresh_proxy)
 
         self.prev_editor = None
+        self.search_re = None
+        self.re_flags = 0
         self.widgets = [self.ent_search, self.chk_casesensitive, self.chk_regex]
 
         self.makefilter()
@@ -72,9 +74,14 @@ class SearchMode(UnionSetEnumerator):
             return
 
         hlstart, hlend = '||'
-        repl = r'%s\1%s' % (hlstart, hlend)
         if self.prev_editor is not None:
-            pass
+            unhl_re = re.compile(r'%s(%s)%s' % (hlstart, self.ent_search.get_text(), hlend), self.re_flags)
+            for textview in self.prev_editor.sources + self.prev_editor.targets:
+                buff = textview.get_buffer()
+                s = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
+                buff.set_text(unhl_re.sub(r'\1', s))
+
+        repl = r'%s\1%s' % (hlstart, hlend)
         for textview in editor.sources + editor.targets:
             buff = textview.get_buffer()
             s = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
@@ -117,10 +124,12 @@ class SearchMode(UnionSetEnumerator):
             if not self.chk_regex:
                 searchstr = re.escape(searchstr)
             self.search_re = re.compile('(%s)' % (entry.get_text()), flags)
+            self.re_flags = flags
         else:
             self.ent_search.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse('#f66'))
             self.ent_search.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse('#fff'))
             self.search_re = None
+            self.re_flags = 0
 
         UnionSetEnumerator.__init__(self, SortedSet(filtered))
 

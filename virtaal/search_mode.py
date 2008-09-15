@@ -63,6 +63,11 @@ class SearchMode(UnionSetEnumerator):
         else:
             self._on_search_text_changed(self.ent_search)
 
+    def handle_unit(self, editor):
+        """Highlights all occurances of the search string in the newly selected unit."""
+        if self.chk_regex.get_active():
+            return
+
     def selected(self):
         """Focus the search entry.
 

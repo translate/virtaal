@@ -281,6 +281,10 @@ class VirTaal:
             self.autocomp.add_widget(target)
             self.autocorr.add_widget(target)
 
+        # Let the mode selector know that about the cursor change so that it can
+        # perform any mode-specific actions needed.
+        self.mode_selector.cursor_changed(grid)
+
     def _on_modified(self, _widget):
         if not self.modified:
             self._set_saveable(True)

@@ -59,6 +59,20 @@ class ModeSelector(gtk.HBox):
             if mode.mode_name == self.DEFAULT_MODE_NAME:
                 self.default_mode = mode
 
+    def cursor_changed(self, grid):
+        """Indirect handler for C{VirTaal.store_grid}'s "cursor-changed" event.
+
+            This method gets the C{UnitEditor} object for the newly selected
+            unit and passes it on to all modes' C{handle_unit()} methods. It
+            should only be called by a direct handler of the "cursor-changed"
+            event.
+
+            @type  grid: UnitGrid
+            @param grid: The unit grid object that emitted the original signal.
+            """
+        for mode in self.mode_index:
+            mode.handle_unit(grid.renderer.get_editor(grid))
+
     def select_mode_by_name(self, mode_name):
         if mode_name in self.mode_names:
             self.cmb_modes.set_active(self.mode_index[self.mode_names[mode_name]])

@@ -57,6 +57,10 @@ class DefaultMode(UnionSetEnumerator):
     def __init__(self):
         UnionSetEnumerator.__init__(self)
 
+    def handle_unit(self, editor):
+        """This mode has nothing to do with selected units."""
+        pass
+
     def refresh(self, document):
         UnionSetEnumerator.__init__(self, SortedSet(document.stats['total']))
 
@@ -72,6 +76,10 @@ class QuickTranslateMode(UnionSetEnumerator):
 
     def __init__(self):
         UnionSetEnumerator.__init__(self)
+
+    def handle_unit(self, editor):
+        """This mode has nothing to do with selected units."""
+        pass
 
     def refresh(self, document):
         UnionSetEnumerator.__init__(self, SortedSet(document.stats['fuzzy']), SortedSet(document.stats['untranslated']))

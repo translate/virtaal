@@ -72,7 +72,7 @@ class ModeSelector(gtk.HBox):
             @type  grid: UnitGrid
             @param grid: The unit grid object that emitted the original signal.
             """
-        self.current_mode.unit_changed(grid.renderer.get_editor(grid)):
+        self.current_mode.unit_changed(grid.renderer.get_editor(grid))
 
     def select_mode_by_name(self, mode_name):
         if mode_name in self.mode_names:

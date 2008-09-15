@@ -55,6 +55,7 @@ class SearchMode(BaseMode):
         self.re_flags = 0
         self.widgets = [self.ent_search, self.chk_casesensitive, self.chk_regex]
         self.filter = self.makefilter()
+        self.select_first_match = True
 
     def makefilter(self):
         searchstring = self.ent_search.get_text()
@@ -111,9 +112,20 @@ class SearchMode(BaseMode):
             except ValueError:
                 pass
 
+            select_iters = []
             for match in self.re_search.finditer(buffstr.decode('utf-8')):
                 start_iter, end_iter = buff.get_iter_at_offset(match.start()), buff.get_iter_at_offset(match.end())
                 buff.apply_tag_by_name('highlight', start_iter, end_iter)
+
+                if textview in editor.targets and not select_iters and self.select_first_match:
+                    select_iters = [start_iter, end_iter]
+
+            if select_iters:
+                def do_selection():
+                    buff.move_mark_by_name('selection_bound', select_iters[0])
+                    buff.move_mark_by_name('insert', select_iters[1])
+                    return False
+                gobject.idle_add(do_selection)
 
     def _unhighlight_previous_matches(self):
         if self.prev_editor is None:

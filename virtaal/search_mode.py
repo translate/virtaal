@@ -29,10 +29,14 @@ from virtaal.support.set_enumerator import UnionSetEnumerator
 from virtaal.support.sorted_set import SortedSet
 
 
+HL_START, HL_END = range(2) # Indexes into SearchMode.highlight_marks
+
 class SearchMode(UnionSetEnumerator):
     mode_name = "Search"
     user_name = _("Search")
     widgets = []
+
+    highlight_marks = '[]'
 
     def __init__(self):
         UnionSetEnumerator.__init__(self)
@@ -46,11 +50,10 @@ class SearchMode(UnionSetEnumerator):
         self.chk_regex.connect('toggled', self._refresh_proxy)
 
         self.prev_editor = None
-        self.search_re = None
+        self.re_search = None
         self.re_flags = 0
         self.widgets = [self.ent_search, self.chk_casesensitive, self.chk_regex]
-
-        self.makefilter()
+        self.filter = self.makefilter()
 
     def makefilter(self):
         searchstring = self.ent_search.get_text()
@@ -58,8 +61,7 @@ class SearchMode(UnionSetEnumerator):
         ignorecase = not self.chk_casesensitive.get_active()
         useregexp = self.chk_regex.get_active()
 
-        self.filter = GrepFilter(searchstring, searchparts, ignorecase, useregexp)
-        return self.filter
+        return GrepFilter(searchstring, searchparts, ignorecase, useregexp)
 
     def refresh(self, document):
         self.document = document
@@ -68,24 +70,19 @@ class SearchMode(UnionSetEnumerator):
         else:
             self._on_search_text_changed(self.ent_search)
 
+    def _make_highlight_tag(self):
+        tag = gtk.TextTag(name='highlight')
+        tag.set_property('background', 'blue')
+        tag.set_property('foreground', 'white')
+        return tag
+
     def handle_unit(self, editor):
         """Highlights all occurances of the search string in the newly selected unit."""
         if not self.ent_search.get_text():
             return
 
-        hlstart, hlend = '||'
-        if self.prev_editor is not None:
-            unhl_re = re.compile(r'%s(%s)%s' % (hlstart, self.ent_search.get_text(), hlend), self.re_flags)
-            for textview in self.prev_editor.sources + self.prev_editor.targets:
-                buff = textview.get_buffer()
-                s = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
-                buff.set_text(unhl_re.sub(r'\1', s))
-
-        repl = r'%s\1%s' % (hlstart, hlend)
-        for textview in editor.sources + editor.targets:
-            buff = textview.get_buffer()
-            s = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
-            buff.set_text(self.search_re.sub(repl, s))
+        self._unhighlight_previous_matches()
+        self._highlight_matches(editor)
 
         self.prev_editor = editor
 
@@ -100,8 +97,32 @@ class SearchMode(UnionSetEnumerator):
         # FIXME: The following line is a VERY UGLY HACK, but at least it works.
         gobject.timeout_add(100, grab_focus)
 
+    def _highlight_matches(self, editor):
+        for textview in editor.sources + editor.targets:
+            buff = textview.get_buffer()
+            buffstr = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
+
+            # First make sure that the current buffer contains a highlighting tag
+            # 
+            try:
+                buff.get_tag_table().add(self._make_highlight_tag())
+            except ValueError:
+                pass
+
+            for match in self.re_search.finditer(buffstr.decode('utf-8')):
+                start_iter, end_iter = buff.get_iter_at_offset(match.start()), buff.get_iter_at_offset(match.end())
+                buff.apply_tag_by_name('highlight', start_iter, end_iter)
+
+    def _unhighlight_previous_matches(self):
+        if self.prev_editor is None:
+            return
+
+        for textview in self.prev_editor.sources + self.prev_editor.targets:
+            buff = textview.get_buffer()
+            buff.remove_all_tags(buff.get_start_iter(), buff.get_end_iter())
+
     def _on_search_text_changed(self, entry):
-        self.makefilter()
+        self.filter = self.makefilter()
 
         # Filter stats with text in "entry"
         filtered = []
@@ -123,12 +144,12 @@ class SearchMode(UnionSetEnumerator):
                 flags |= re.IGNORECASE
             if not self.chk_regex:
                 searchstr = re.escape(searchstr)
-            self.search_re = re.compile('(%s)' % (entry.get_text()), flags)
+            self.re_search = re.compile('(%s)' % (entry.get_text().decode('utf-8')), flags)
             self.re_flags = flags
         else:
             self.ent_search.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse('#f66'))
             self.ent_search.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse('#fff'))
-            self.search_re = None
+            self.re_search = None
             self.re_flags = 0
 
         UnionSetEnumerator.__init__(self, SortedSet(filtered))

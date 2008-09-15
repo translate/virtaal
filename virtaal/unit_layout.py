@@ -36,6 +36,17 @@ import undo_buffer
 from widgets import label_expander, util
 from terminology import get_terminology_matcher
 
+def get_sources(widget):
+    def add_sources_to_list(lst):
+        def do(widget):
+            if '_is_source' in widget.__dict__:
+                lst.append(widget)
+        return do
+
+    result = []
+    util.forall_widgets(add_sources_to_list(result), widget)
+    return result
+
 def get_targets(widget):
     def add_targets_to_list(lst):
         def do(widget):

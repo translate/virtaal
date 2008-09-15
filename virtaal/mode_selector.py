@@ -87,6 +87,8 @@ class ModeSelector(gtk.HBox):
                     self.remove(w)
 
         # Select new mode and add its widgets
+        self.cmb_modes.set_active(self.mode_index[mode])
+        # The line above is needed to make sure that the combo is updated for direct calls to this method.
         for w in mode.widgets:
             if w.get_parent() is None:
                 self.pack_start(w, expand=False, padding=2)

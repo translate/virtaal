@@ -49,6 +49,7 @@ class ModeSelector(gtk.HBox):
         self.mode_index = {} # mode instance to index (in cmb_modes) map
         i = 0
         self.default_mode = None
+        self.current_mode = None
 
         for mode in virtaal.modes.MODES.itervalues():
             self.cmb_modes.append_text(mode.user_name)
@@ -70,8 +71,7 @@ class ModeSelector(gtk.HBox):
             @type  grid: UnitGrid
             @param grid: The unit grid object that emitted the original signal.
             """
-        for mode in self.mode_index:
-            mode.handle_unit(grid.renderer.get_editor(grid))
+        self.current_mode.handle_unit(grid.renderer.get_editor(grid))
 
     def select_mode_by_name(self, mode_name):
         if mode_name in self.mode_names:
@@ -93,6 +93,7 @@ class ModeSelector(gtk.HBox):
 
         self.show_all()
         mode.selected()
+        self.current_mode = mode
 
     def _on_cmbmode_change(self, combo):
         self.emit('mode-selected', self.mode_names[combo.get_active_text()])

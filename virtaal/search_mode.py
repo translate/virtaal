@@ -21,6 +21,7 @@
 import gobject
 import gtk
 import logging
+import re
 
 from translate.tools.pogrep import GrepFilter
 
@@ -44,6 +45,7 @@ class SearchMode(UnionSetEnumerator):
         self.chk_regex = gtk.CheckButton(_("Regex matching"))
         self.chk_regex.connect('toggled', self._refresh_proxy)
 
+        self.prev_editor = None
         self.widgets = [self.ent_search, self.chk_casesensitive, self.chk_regex]
 
         self.makefilter()
@@ -55,6 +57,7 @@ class SearchMode(UnionSetEnumerator):
         useregexp = self.chk_regex.get_active()
 
         self.filter = GrepFilter(searchstring, searchparts, ignorecase, useregexp)
+        return self.filter
 
     def refresh(self, document):
         self.document = document
@@ -65,8 +68,19 @@ class SearchMode(UnionSetEnumerator):
 
     def handle_unit(self, editor):
         """Highlights all occurances of the search string in the newly selected unit."""
-        if self.chk_regex.get_active():
+        if not self.ent_search.get_text():
             return
+
+        hlstart, hlend = '||'
+        repl = r'%s\1%s' % (hlstart, hlend)
+        if self.prev_editor is not None:
+            pass
+        for textview in editor.sources + editor.targets:
+            buff = textview.get_buffer()
+            s = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
+            buff.set_text(self.search_re.sub(repl, s))
+
+        self.prev_editor = editor
 
     def selected(self):
         """Focus the search entry.
@@ -95,9 +109,18 @@ class SearchMode(UnionSetEnumerator):
         if filtered:
             self.ent_search.modify_base(gtk.STATE_NORMAL, self.default_base)
             self.ent_search.modify_text(gtk.STATE_NORMAL, self.default_text)
+
+            searchstr = entry.get_text()
+            flags = re.LOCALE | re.MULTILINE
+            if self.chk_casesensitive.get_active():
+                flags |= re.IGNORECASE
+            if not self.chk_regex:
+                searchstr = re.escape(searchstr)
+            self.search_re = re.compile('(%s)' % (entry.get_text()), flags)
         else:
             self.ent_search.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse('#f66'))
             self.ent_search.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse('#fff'))
+            self.search_re = None
 
         UnionSetEnumerator.__init__(self, SortedSet(filtered))
 

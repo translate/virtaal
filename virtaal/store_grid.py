@@ -78,7 +78,7 @@ class UnitGrid(gtk.TreeView):
         self.append_column(make_column(self.renderer))
         self.enable_tooltips()
 
-        self.document.connect("mode-changed", self._on_mode_changed)
+        self.document.connect("cursor-changed", self._on_document_cursor_changed)
 
         self.install_callbacks()
         self.add_accelerator_bindings()
@@ -93,7 +93,8 @@ class UnitGrid(gtk.TreeView):
         # to you.
         self._waiting_for_row_change = 0
 
-    def _on_mode_changed(self, _widget, _mode):
+    def _on_document_cursor_changed(self, _document):
+        # Select and edit the new row indicated by the new cursor position
         path = self.get_model().store_index_to_path(self.document.mode_cursor.deref())
         self._activate_editing_path(path)
 

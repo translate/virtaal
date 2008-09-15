@@ -30,13 +30,14 @@ class ModeSelector(gtk.HBox):
     __gtype_name__ = "ModeSelector"
 
     __gsignals__ = {
-        "mode-selected": (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
+        "mode-combo-changed":  (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
     }
 
     DEFAULT_MODE_NAME = 'Default'
 
-    def __init__(self):
+    def __init__(self, document):
         gtk.HBox.__init__(self)
+        self.document = document
 
         # Add mode-selection combo box
         self.lbl_mode = gtk.Label(_('Mode: '))
@@ -71,7 +72,7 @@ class ModeSelector(gtk.HBox):
             @type  grid: UnitGrid
             @param grid: The unit grid object that emitted the original signal.
             """
-        self.current_mode.handle_unit(grid.renderer.get_editor(grid))
+        self.current_mode.unit_changed(grid.renderer.get_editor(grid)):
 
     def select_mode_by_name(self, mode_name):
         if mode_name in self.mode_names:
@@ -94,8 +95,11 @@ class ModeSelector(gtk.HBox):
                 self.pack_start(w, expand=False, padding=2)
 
         self.show_all()
-        mode.selected()
+        mode.selected(self.document)
+
+        if self.current_mode:
+            self.current_mode.unselected()
         self.current_mode = mode
 
     def _on_cmbmode_change(self, combo):
-        self.emit('mode-selected', self.mode_names[combo.get_active_text()])
+        self.emit('mode-combo-changed', self.mode_names[combo.get_active_text()])

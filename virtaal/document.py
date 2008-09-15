@@ -29,6 +29,7 @@ from translate.lang import factory as langfactory
 
 import pan_app
 from widgets.entry_dialog import EntryDialog
+from mode_selector import ModeSelector
 
 def get_document(obj):
     """See whether obj contains an attribute called 'document'.
@@ -89,25 +90,30 @@ class Document(gobject.GObject):
     __gtype_name__ = "Document"
 
     __gsignals__ = {
+        "cursor-changed": (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
         "mode-changed": (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
     }
 
-    def __init__(self, filename, store=None):
+    def __init__(self, filename, store=None, mode_selector=None):
         gobject.GObject.__init__(self)
         if store:
             self.store = store
         else:
             self.store = factory.getobject(filename)
+        if mode_selector is None:
+            mode_selector = ModeSelector(self)
         self.stats = statsdb.StatsCache().filestats(filename, checks.UnitChecker(), self.store)
         self.nplurals = compute_nplurals(self.store)
         self.mode = None
         self.mode_cursor = None
+        self.mode_selector = mode_selector
 
-    def set_mode(self, mode):
-        logging.debug("Changing document mode to %s" % mode.mode_name)
-        mode.refresh(self)
-        self.mode = mode
+        self.set_mode(self.mode_selector.default_mode)
+        self.mode_selector.connect('mode-combo-changed', self._on_mode_combo_changed)
+
+    def refresh_cursor(self):
         try:
+            old_cursor = self.mode_cursor
             if self.mode_cursor != None:
                 self.mode_cursor = self.mode.cursor_from_element(self.mode_cursor.deref())
             else:
@@ -118,6 +124,20 @@ class Document(gobject.GObject):
                     self.mode_cursor.move(1)
                 except IndexError:
                     pass
-            self.emit('mode-changed', self.mode)
+            if old_cursor != self.mode_cursor:
+                self.emit('cursor-changed')
+            return True
         except IndexError:
-            pass
+            return False
+
+    def set_mode(self, mode):
+        logging.debug("Changing document mode to %s" % mode.mode_name)
+
+        self.mode_selector.set_mode(mode)
+        self.mode = mode
+
+        if self.refresh_cursor():
+            self.emit('mode-changed', mode)
+
+    def _on_mode_combo_changed(self, _mode_selector, mode):
+        self.set_mode(mode)

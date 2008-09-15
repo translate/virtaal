@@ -25,13 +25,14 @@ import re
 
 from translate.tools.pogrep import GrepFilter
 
+from virtaal.modes import BaseMode
 from virtaal.support.set_enumerator import UnionSetEnumerator
 from virtaal.support.sorted_set import SortedSet
 
 
 HL_START, HL_END = range(2) # Indexes into SearchMode.highlight_marks
 
-class SearchMode(UnionSetEnumerator):
+class SearchMode(BaseMode):
     mode_name = "Search"
     user_name = _("Search")
     widgets = []
@@ -63,33 +64,16 @@ class SearchMode(UnionSetEnumerator):
 
         return GrepFilter(searchstring, searchparts, ignorecase, useregexp)
 
-    def refresh(self, document):
+    def selected(self, document):
+        """Focus the search entry.
+
+            This method should only be called after this mode has been selected."""
         self.document = document
         if not self.ent_search.get_text():
             UnionSetEnumerator.__init__(self, SortedSet(document.stats['total']))
         else:
             self._on_search_text_changed(self.ent_search)
 
-    def _make_highlight_tag(self):
-        tag = gtk.TextTag(name='highlight')
-        tag.set_property('background', 'blue')
-        tag.set_property('foreground', 'white')
-        return tag
-
-    def handle_unit(self, editor):
-        """Highlights all occurances of the search string in the newly selected unit."""
-        if not self.ent_search.get_text():
-            return
-
-        self._unhighlight_previous_matches()
-        self._highlight_matches(editor)
-
-        self.prev_editor = editor
-
-    def selected(self):
-        """Focus the search entry.
-
-            This method should only be called after this mode has been selected."""
         def grab_focus():
             self.ent_search.grab_focus()
             return False
@@ -97,13 +81,31 @@ class SearchMode(UnionSetEnumerator):
         # FIXME: The following line is a VERY UGLY HACK, but at least it works.
         gobject.timeout_add(100, grab_focus)
 
+    def unit_changed(self, editor):
+        """Highlights all occurances of the search string in the newly selected unit."""
+        self._unhighlight_previous_matches()
+        if not self.ent_search.get_text():
+            return
+        self._highlight_matches(editor)
+        self.prev_editor = editor
+
+    def unselected(self):
+        """This mode has been unselected, so any current highlighting should be removed."""
+        self._unhighlight_previous_matches()
+
     def _highlight_matches(self, editor):
+        if self.re_search is None:
+            return
+
         for textview in editor.sources + editor.targets:
             buff = textview.get_buffer()
             buffstr = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
 
-            # First make sure that the current buffer contains a highlighting tag
-            # 
+            # First make sure that the current buffer contains a highlighting tag.
+            # Because a gtk.TextTag can only be associated with one gtk.TagTable,
+            # we make copies (created by _make_highlight_tag()) to add to all
+            # TagTables. If the tag is already added to a given table, a
+            # ValueError is raised which we can safely ignore.
             try:
                 buff.get_tag_table().add(self._make_highlight_tag())
             except ValueError:
@@ -120,6 +122,12 @@ class SearchMode(UnionSetEnumerator):
         for textview in self.prev_editor.sources + self.prev_editor.targets:
             buff = textview.get_buffer()
             buff.remove_all_tags(buff.get_start_iter(), buff.get_end_iter())
+
+    def _make_highlight_tag(self):
+        tag = gtk.TextTag(name='highlight')
+        tag.set_property('background', 'blue')
+        tag.set_property('foreground', 'white')
+        return tag
 
     def _on_search_text_changed(self, entry):
         self.filter = self.makefilter()
@@ -146,13 +154,20 @@ class SearchMode(UnionSetEnumerator):
                 searchstr = re.escape(searchstr)
             self.re_search = re.compile('(%s)' % (entry.get_text().decode('utf-8')), flags)
             self.re_flags = flags
+            UnionSetEnumerator.__init__(self, SortedSet(filtered))
         else:
             self.ent_search.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse('#f66'))
             self.ent_search.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse('#fff'))
             self.re_search = None
             self.re_flags = 0
+            UnionSetEnumerator.__init__(self, SortedSet(self.document.stats['total']))
+        self.document.refresh_cursor()
 
-        UnionSetEnumerator.__init__(self, SortedSet(filtered))
+        def grabfocus():
+            self.ent_search.grab_focus()
+            self.ent_search.set_position(-1)
+            return False
+        gobject.idle_add(grabfocus)
 
     def _refresh_proxy(self, *args):
         self._on_search_text_changed(self.ent_search)

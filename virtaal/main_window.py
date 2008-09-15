@@ -140,7 +140,9 @@ class VirTaal:
         unit_renderer.undo(acceleratable.focus_widget)
 
     def _on_search(self, _accel_group, acceleratable, _keyval, _modifier):
-        self.mode_selector.select_mode_by_name('Search')
+        self.document.mode_selector.select_mode_by_name('Search')
+        # FIXME: Hack to make sure that the search entry has focus after pressing F3:
+        self.document.mode_selector.current_mode.ent_search.grab_focus()
 
     def _on_mainwindow_delete(self, _widget, _event):
         if self._confirm_unsaved(self.main_window):
@@ -201,26 +203,16 @@ class VirTaal:
                 return True
         return self.load_file(filename, dialog=dialog)
 
-    def _on_gui_mode_change(self, _mode_selector, mode):
-        self.document.set_mode(mode)
-
-    def _on_mode_change(self, _document, mode):
-        self.mode_selector.set_mode(mode)
-
     def load_file(self, filename, dialog=None, store=None):
         """Do the actual loading of the file into the GUI"""
         if path.isfile(filename):
             try:
                 self.document = document.Document(filename, store=store)
-                self.document.connect('mode-changed', self._on_mode_change)
                 child = self.status_box.get_children()[0]
                 self.status_box.remove(child)
                 child.destroy()
-                self.mode_selector = ModeSelector()
-                self.status_box.pack_start(self.mode_selector)
-                self.status_box.reorder_child(self.mode_selector, 0)
-                self.mode_selector.connect('mode-selected', self._on_gui_mode_change)
-                self.document.set_mode(self.mode_selector.default_mode)
+                self.status_box.pack_start(self.document.mode_selector)
+                self.status_box.reorder_child(self.document.mode_selector, 0)
 
                 self.filename = filename
                 self.store_grid = store_grid.UnitGrid(self)
@@ -283,7 +275,7 @@ class VirTaal:
 
         # Let the mode selector know that about the cursor change so that it can
         # perform any mode-specific actions needed.
-        self.mode_selector.cursor_changed(grid)
+        self.document.mode_selector.cursor_changed(grid)
 
     def _on_modified(self, _widget):
         if not self.modified:

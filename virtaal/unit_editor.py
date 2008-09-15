@@ -86,6 +86,7 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         gtk.EventBox.__init__(self)
         self.layout = unit_layout.build_layout(unit, parent.document.nplurals)
         self.add(self.layout)
+        self.sources = [src for src in unit_layout.get_sources(self.layout)]
         self.targets = []
         for target in unit_layout.get_targets(self.layout):
             target.get_buffer().connect("changed", self._on_modify)

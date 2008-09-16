@@ -39,6 +39,8 @@ class SearchMode(BaseMode):
 
     highlight_marks = '[]'
 
+    SEARCH_DELAY = 500
+
     def __init__(self):
         UnionSetEnumerator.__init__(self)
         self.ent_search = gtk.Entry()
@@ -57,6 +59,7 @@ class SearchMode(BaseMode):
         self.widgets = [self.ent_search, self.chk_casesensitive, self.chk_regex]
         self.filter = self.makefilter()
         self.select_first_match = True
+        self._search_timeout = 0
 
     def makefilter(self):
         searchstring = self.ent_search.get_text()
@@ -94,6 +97,46 @@ class SearchMode(BaseMode):
     def unselected(self):
         """This mode has been unselected, so any current highlighting should be removed."""
         self._unhighlight_previous_matches()
+
+    def update_search(self):
+        self.filter = self.makefilter()
+
+        # Filter stats with text in "self.ent_search"
+        filtered = []
+        i = 0
+        for unit in self.document.store.units:
+            if self.filter.filterunit(unit):
+                filtered.append(i)
+            i += 1
+
+        logging.debug('Search text: %s (%d matches)' % (self.ent_search.get_text(), len(filtered)))
+
+        if filtered:
+            self.ent_search.modify_base(gtk.STATE_NORMAL, self.default_base)
+            self.ent_search.modify_text(gtk.STATE_NORMAL, self.default_text)
+
+            searchstr = self.ent_search.get_text()
+            flags = re.LOCALE | re.MULTILINE
+            if self.chk_casesensitive.get_active():
+                flags |= re.IGNORECASE
+            if not self.chk_regex:
+                searchstr = re.escape(searchstr)
+            self.re_search = re.compile('(%s)' % (self.ent_search.get_text().decode('utf-8')), flags)
+            self.re_flags = flags
+            UnionSetEnumerator.__init__(self, SortedSet(filtered))
+        else:
+            self.ent_search.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse('#f66'))
+            self.ent_search.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse('#fff'))
+            self.re_search = None
+            self.re_flags = 0
+            UnionSetEnumerator.__init__(self, SortedSet(self.document.stats['total']))
+        self.document.refresh_cursor()
+
+        def grabfocus():
+            self.ent_search.grab_focus()
+            self.ent_search.set_position(-1)
+            return False
+        gobject.idle_add(grabfocus)
 
     def _highlight_matches(self, editor):
         if self.re_search is None:
@@ -149,44 +192,11 @@ class SearchMode(BaseMode):
         self.document.cursor_changed()
 
     def _on_search_text_changed(self, entry):
-        self.filter = self.makefilter()
+        if self._search_timeout:
+            gobject.source_remove(self._search_timeout)
+            self._search_timeout = 0
 
-        # Filter stats with text in "entry"
-        filtered = []
-        i = 0
-        for unit in self.document.store.units:
-            if self.filter.filterunit(unit):
-                filtered.append(i)
-            i += 1
-
-        logging.debug('Search text: %s (%d matches)' % (entry.get_text(), len(filtered)))
-
-        if filtered:
-            self.ent_search.modify_base(gtk.STATE_NORMAL, self.default_base)
-            self.ent_search.modify_text(gtk.STATE_NORMAL, self.default_text)
-
-            searchstr = entry.get_text()
-            flags = re.LOCALE | re.MULTILINE
-            if self.chk_casesensitive.get_active():
-                flags |= re.IGNORECASE
-            if not self.chk_regex:
-                searchstr = re.escape(searchstr)
-            self.re_search = re.compile('(%s)' % (entry.get_text().decode('utf-8')), flags)
-            self.re_flags = flags
-            UnionSetEnumerator.__init__(self, SortedSet(filtered))
-        else:
-            self.ent_search.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse('#f66'))
-            self.ent_search.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse('#fff'))
-            self.re_search = None
-            self.re_flags = 0
-            UnionSetEnumerator.__init__(self, SortedSet(self.document.stats['total']))
-        self.document.refresh_cursor()
-
-        def grabfocus():
-            self.ent_search.grab_focus()
-            self.ent_search.set_position(-1)
-            return False
-        gobject.idle_add(grabfocus)
+        self._search_timeout = gobject.timeout_add(self.SEARCH_DELAY, self.update_search)
 
     def _refresh_proxy(self, *args):
         self._on_search_text_changed(self.ent_search)

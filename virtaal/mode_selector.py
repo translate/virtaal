@@ -40,9 +40,11 @@ class ModeSelector(gtk.HBox):
         self.document = document
 
         # Add mode-selection combo box
-        self.lbl_mode = gtk.Label(_('Mode: '))
         self.cmb_modes = gtk.combo_box_new_text()
         self.cmb_modes.connect('changed', self._on_cmbmode_change)
+        self.lbl_mode = gtk.Label()
+        self.lbl_mode.set_markup_with_mnemonic(_('_Mode: '))
+        self.lbl_mode.set_mnemonic_widget(self.cmb_modes)
         self.pack_start(self.lbl_mode, expand=False)
         self.pack_start(self.cmb_modes, expand=False)
 

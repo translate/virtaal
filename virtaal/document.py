@@ -91,7 +91,6 @@ class Document(gobject.GObject):
 
     __gsignals__ = {
         "cursor-changed": (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
-        "mode-changed": (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
     }
 
     def __init__(self, filename, store=None, mode_selector=None):
@@ -111,6 +110,10 @@ class Document(gobject.GObject):
         self.set_mode(self.mode_selector.default_mode)
         self.mode_selector.connect('mode-combo-changed', self._on_mode_combo_changed)
 
+    def cursor_changed(self):
+        """Emits the "cursor-changed" event, no questions asked."""
+        self.emit('cursor-changed')
+
     def refresh_cursor(self):
         try:
             old_cursor = self.mode_cursor
@@ -125,7 +128,7 @@ class Document(gobject.GObject):
                 except IndexError:
                     pass
             if old_cursor != self.mode_cursor:
-                self.emit('cursor-changed')
+                self.cursor_changed()
             return True
         except IndexError:
             return False
@@ -136,8 +139,7 @@ class Document(gobject.GObject):
         self.mode_selector.set_mode(mode)
         self.mode = mode
 
-        if self.refresh_cursor():
-            self.emit('mode-changed', mode)
+        self.refresh_cursor()
 
     def _on_mode_combo_changed(self, _mode_selector, mode):
         self.set_mode(mode)

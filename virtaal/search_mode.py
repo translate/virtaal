@@ -43,6 +43,7 @@ class SearchMode(BaseMode):
         UnionSetEnumerator.__init__(self)
         self.ent_search = gtk.Entry()
         self.ent_search.connect('changed', self._on_search_text_changed)
+        self.ent_search.connect('activate', self._on_entry_activate)
         self.default_base = gtk.widget_get_default_style().base[gtk.STATE_NORMAL]
         self.default_text = gtk.widget_get_default_style().text[gtk.STATE_NORMAL]
         self.chk_casesensitive = gtk.CheckButton(_('Case sensitive'))
@@ -140,6 +141,12 @@ class SearchMode(BaseMode):
         tag.set_property('background', 'blue')
         tag.set_property('foreground', 'white')
         return tag
+
+    def _on_entry_activate(self, entry):
+        if self.document is None:
+            return
+        print 'self.document.cursor_changed()'
+        self.document.cursor_changed()
 
     def _on_search_text_changed(self, entry):
         self.filter = self.makefilter()

@@ -117,7 +117,7 @@ class SearchMode(BaseMode):
 
             searchstr = self.ent_search.get_text()
             flags = re.LOCALE | re.MULTILINE
-            if self.chk_casesensitive.get_active():
+            if not self.chk_casesensitive.get_active():
                 flags |= re.IGNORECASE
             if not self.chk_regex:
                 searchstr = re.escape(searchstr)

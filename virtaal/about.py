@@ -50,6 +50,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.""")
                 "Friedel Wolff <friedel@translate.org.za>", 
                 "Wynand Winterbach <wynand@translate.org.za>", 
                 "Dwayne Bailey <dwayne@translate.org.za>",
+                "Walter Leibbrandt <walter@translate.org.za>",
                 ])
         self.set_translator_credits(_("translator-credits"))
         self.set_icon(parent.get_icon())

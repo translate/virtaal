@@ -118,7 +118,7 @@ class SearchMode(BaseMode):
             flags = re.LOCALE | re.MULTILINE
             if not self.chk_casesensitive.get_active():
                 searchstr = searchstr.lower()
-            if not self.chk_regex:
+            if not self.chk_regex.get_active():
                 searchstr = re.escape(searchstr)
             self.re_search = re.compile(u'(%s)' % searchstr, flags)
             UnionSetEnumerator.__init__(self, SortedSet(filtered))

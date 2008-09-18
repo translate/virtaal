@@ -55,7 +55,6 @@ class SearchMode(BaseMode):
 
         self.prev_editor = None
         self.re_search = None
-        self.re_flags = 0
         self.widgets = [self.ent_search, self.chk_casesensitive, self.chk_regex]
         self.filter = self.makefilter()
         self.select_first_match = True
@@ -115,20 +114,18 @@ class SearchMode(BaseMode):
             self.ent_search.modify_base(gtk.STATE_NORMAL, self.default_base)
             self.ent_search.modify_text(gtk.STATE_NORMAL, self.default_text)
 
-            searchstr = self.ent_search.get_text()
+            searchstr = self.ent_search.get_text().decode('utf-8')
             flags = re.LOCALE | re.MULTILINE
             if not self.chk_casesensitive.get_active():
-                flags |= re.IGNORECASE
+                searchstr = searchstr.lower()
             if not self.chk_regex:
                 searchstr = re.escape(searchstr)
-            self.re_search = re.compile('(%s)' % (self.ent_search.get_text().decode('utf-8')), flags)
-            self.re_flags = flags
+            self.re_search = re.compile(u'(%s)' % searchstr, flags)
             UnionSetEnumerator.__init__(self, SortedSet(filtered))
         else:
             self.ent_search.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse('#f66'))
             self.ent_search.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse('#fff'))
             self.re_search = None
-            self.re_flags = 0
             UnionSetEnumerator.__init__(self, SortedSet(self.document.stats['total']))
         self.document.refresh_cursor()
 
@@ -144,7 +141,9 @@ class SearchMode(BaseMode):
 
         for textview in editor.sources + editor.targets:
             buff = textview.get_buffer()
-            buffstr = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
+            buffstr = buff.get_text(buff.get_start_iter(), buff.get_end_iter()).decode('utf-8')
+            if not self.chk_casesensitive.get_active():
+                buffstr = buffstr.lower()
 
             # First make sure that the current buffer contains a highlighting tag.
             # Because a gtk.TextTag can only be associated with one gtk.TagTable,
@@ -157,7 +156,7 @@ class SearchMode(BaseMode):
                 pass
 
             select_iters = []
-            for match in self.re_search.finditer(buffstr.decode('utf-8')):
+            for match in self.re_search.finditer(buffstr):
                 start_iter, end_iter = buff.get_iter_at_offset(match.start()), buff.get_iter_at_offset(match.end())
                 buff.apply_tag_by_name('highlight', start_iter, end_iter)
 

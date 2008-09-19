@@ -110,6 +110,7 @@ class VirTaal:
         self.status_box = self.gui.get_widget("status_box")
         self.sw = self.gui.get_widget("scrolledwindow1")
         self.main_window = self.gui.get_widget("MainWindow")
+        self.main_window.set_icon_from_file(get_data_file_abs_name("virtaal.ico"))
         self._setup_key_bindings()
         self.main_window.show()
 

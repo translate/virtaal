@@ -191,6 +191,7 @@ class VirTaal:
             elif response == RESPONSE_SAVE:
                 if self._on_file_save():
                     return True
+        return False
 
     def open_file(self, filename, dialog, reload=False):
         if self._confirm_unsaved(dialog):

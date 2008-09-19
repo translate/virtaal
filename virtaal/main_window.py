@@ -165,9 +165,10 @@ class VirTaal:
             response = chooser.run()
             if response == gtk.RESPONSE_OK:
                 filename = chooser.get_filename()
+                uri = chooser.get_uri()
                 pan_app.settings.general["lastdir"] = path.dirname(filename)
                 pan_app.settings.write()
-                if self.open_file(filename, chooser):
+                if self.open_file(filename, chooser, uri=uri):
                     break
             elif response == gtk.RESPONSE_CANCEL or \
                     response == gtk.RESPONSE_DELETE_EVENT:
@@ -197,7 +198,7 @@ class VirTaal:
                     return True
         return False
 
-    def open_file(self, filename, dialog, reload=False):
+    def open_file(self, filename, dialog, reload=False, uri=None):
         if self._confirm_unsaved(dialog):
             return True
         if filename == self.filename and not reload:
@@ -211,9 +212,9 @@ class VirTaal:
             dialog.destroy()
             if response in [gtk.RESPONSE_NO, gtk.RESPONSE_DELETE_EVENT]:
                 return True
-        return self.load_file(filename, dialog=dialog)
+        return self.load_file(filename, dialog=dialog, uri=uri)
 
-    def load_file(self, filename, dialog=None, store=None):
+    def load_file(self, filename, dialog=None, store=None, uri=None):
         """Do the actual loading of the file into the GUI"""
         if path.isfile(filename):
             try:
@@ -245,6 +246,8 @@ class VirTaal:
                     self.autocomp.add_words_from_store(self.document.store)
                     self.autocorr.load_dictionary(lang=pan_app.settings.language['contentlang'])
                     self.store_grid.connect('cursor-changed', self._on_grid_cursor_changed)
+                    if uri:
+                        recent.rm.add_item(uri)
                     gobject.idle_add(self.main_window.window.set_cursor, None, priority=gobject.PRIORITY_LOW)
 
                 self.main_window.window.set_cursor(gdk.Cursor(gdk.WATCH))

@@ -99,6 +99,7 @@ class VirTaal:
                 "on_open_activate" : self._on_file_open,
                 "on_save_activate" : self._on_file_save,
                 "on_saveas_activate" : self._on_file_saveas,
+                "on_quit" : self._on_quit,
                 "on_about_activate" : self._on_help_about,
                 "on_localization_guide_activate" : self._on_localization_guide,
                 "on_menuitem_documentation_activate" : self._on_documentation,
@@ -145,8 +146,12 @@ class VirTaal:
         self.document.mode_selector.current_mode.ent_search.grab_focus()
 
     def _on_mainwindow_delete(self, _widget, _event):
+        return self._on_quit(_event)
+
+    def _on_quit(self, _event):
         if self._confirm_unsaved(self.main_window):
             return True
+        gtk.main_quit()
         return False
 
     def _on_file_open(self, _widget, destroyCallback=None):

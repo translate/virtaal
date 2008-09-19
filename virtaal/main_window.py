@@ -208,8 +208,8 @@ class VirTaal:
         if path.isfile(filename):
             try:
                 # To ensure that the WATCH cursor gets a chance to be displayed
-                # before we block the GUI, we need to add it to the 
-                # idle processing 
+                # before we block the GUI, we need to add it to the idle
+                # processing 
                 def hard_work():
                     self.document = document.Document(filename, store=store)
                     child = self.status_box.get_children()[0]
@@ -235,7 +235,7 @@ class VirTaal:
                     self.autocomp.add_words_from_store(self.document.store)
                     self.autocorr.load_dictionary(lang=pan_app.settings.language['contentlang'])
                     self.store_grid.connect('cursor-changed', self._on_grid_cursor_changed)
-                    self.main_window.window.set_cursor(None)
+                    gobject.idle_add(self.main_window.window.set_cursor, None, priority=gobject.PRIORITY_LOW)
 
                 self.main_window.window.set_cursor(gdk.Cursor(gdk.WATCH))
                 gobject.idle_add(hard_work)

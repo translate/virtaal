@@ -113,6 +113,7 @@ class VirTaal:
         self.main_window = self.gui.get_widget("MainWindow")
         self.main_window.set_icon_from_file(get_data_file_abs_name("virtaal.ico"))
         recent_files = self.gui.get_widget("recent_files")
+        recent.rc.connect("item-activated", self._on_recent_file_activated)
         recent_files.set_submenu(recent.rc)
         self._setup_key_bindings()
         self.main_window.show()
@@ -174,6 +175,13 @@ class VirTaal:
                     response == gtk.RESPONSE_DELETE_EVENT:
                 break
         chooser.destroy()
+
+    def _on_recent_file_activated(self, chooser):
+        item = chooser.get_current_item()
+        if item.exists():
+            # For now we only handle local files, and limited the recent
+            # manager to only give us those anyway, so we can get the filename
+            self.open_file(item.get_uri()[len('file://'):], self.main_window, uri=item.get_uri())
 
     def _confirm_unsaved(self, dialog):
         if self.modified:

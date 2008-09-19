@@ -41,8 +41,11 @@ for name, extensions, mimetypes in factory.supported_files():
 rm = gtk.recent_manager_get_default()
 
 rc = gtk.RecentChooserMenu()
+# For now we don't handle non-local files yet
+rc.set_local_only(True)
 rc.set_show_not_found(False)
 rc.set_show_numbers(True)
 rc.set_show_tips(True)
+rc.set_sort_type(gtk.RECENT_SORT_MRU)
 rc.add_filter(rf)
 rc.set_limit(-1)

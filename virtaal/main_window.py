@@ -207,30 +207,38 @@ class VirTaal:
         """Do the actual loading of the file into the GUI"""
         if path.isfile(filename):
             try:
-                self.document = document.Document(filename, store=store)
-                child = self.status_box.get_children()[0]
-                self.status_box.remove(child)
-                child.destroy()
-                self.status_box.pack_start(self.document.mode_selector)
-                self.status_box.reorder_child(self.document.mode_selector, 0)
+                # To ensure that the WATCH cursor gets a chance to be displayed
+                # before we block the GUI, we need to add it to the 
+                # idle processing 
+                def hard_work():
+                    self.document = document.Document(filename, store=store)
+                    child = self.status_box.get_children()[0]
+                    self.status_box.remove(child)
+                    child.destroy()
+                    self.status_box.pack_start(self.document.mode_selector)
+                    self.status_box.reorder_child(self.document.mode_selector, 0)
 
-                self.filename = filename
-                self.store_grid = store_grid.UnitGrid(self)
-                self.store_grid.connect("modified", self._on_modified)
-                child = self.sw.get_child()
-                self.sw.remove(child)
-                child.destroy()
-                self.sw.add(self.store_grid)
-                self.main_window.connect("configure-event", self.store_grid.on_configure_event)
-                self.main_window.show_all()
-                self.store_grid.grab_focus()
-                self._set_saveable(False)
-                menuitem = self.gui.get_widget("saveas_menuitem")
-                menuitem.set_sensitive(True)
+                    self.filename = filename
+                    self.store_grid = store_grid.UnitGrid(self)
+                    self.store_grid.connect("modified", self._on_modified)
+                    child = self.sw.get_child()
+                    self.sw.remove(child)
+                    child.destroy()
+                    self.sw.add(self.store_grid)
+                    self.main_window.connect("configure-event", self.store_grid.on_configure_event)
+                    self.main_window.show_all()
+                    self.store_grid.grab_focus()
+                    self._set_saveable(False)
+                    menuitem = self.gui.get_widget("saveas_menuitem")
+                    menuitem.set_sensitive(True)
 
-                self.autocomp.add_words_from_store(self.document.store)
-                self.autocorr.load_dictionary(lang=pan_app.settings.language['contentlang'])
-                self.store_grid.connect('cursor-changed', self._on_grid_cursor_changed)
+                    self.autocomp.add_words_from_store(self.document.store)
+                    self.autocorr.load_dictionary(lang=pan_app.settings.language['contentlang'])
+                    self.store_grid.connect('cursor-changed', self._on_grid_cursor_changed)
+                    self.main_window.window.set_cursor(None)
+
+                self.main_window.window.set_cursor(gdk.Cursor(gdk.WATCH))
+                gobject.idle_add(hard_work)
                 return True
             except IOError, e:
                 dialog = gtk.MessageDialog(dialog or self.main_window,
@@ -244,6 +252,7 @@ class VirTaal:
                                 gtk.MESSAGE_ERROR,
                                 gtk.BUTTONS_OK,
                                 _("%(filename)s does not exist." % {"filename": filename}))
+        self.main_window.window.set_cursor(None)
         dialog.run()
         dialog.destroy()
         return False

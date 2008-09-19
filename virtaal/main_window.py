@@ -43,6 +43,7 @@ import unit_renderer
 from about import About
 import formats
 import document
+import recent
 from support import bijection
 from autocompletor import AutoCompletor
 from autocorrector import AutoCorrector
@@ -111,6 +112,8 @@ class VirTaal:
         self.sw = self.gui.get_widget("scrolledwindow1")
         self.main_window = self.gui.get_widget("MainWindow")
         self.main_window.set_icon_from_file(get_data_file_abs_name("virtaal.ico"))
+        recent_files = self.gui.get_widget("recent_files")
+        recent_files.set_submenu(recent.rc)
         self._setup_key_bindings()
         self.main_window.show()
 

@@ -23,6 +23,7 @@ import logging
 import gobject
 
 from translate.storage.poheader import poheader
+from translate.storage import ts2 as ts
 from translate.storage import statsdb, factory
 from translate.filters import checks
 from translate.lang import factory as langfactory
@@ -71,6 +72,7 @@ def compute_nplurals(store):
         else:
             return nplurals, lang.pluralequation
     
+    # FIXME this needs to be pushed back into the stores, we don't want to import each format
     if isinstance(store, poheader):
         nplurals, _pluralequation = store.getheaderplural()
         if nplurals is None:
@@ -79,6 +81,8 @@ def compute_nplurals(store):
             pan_app.settings.language["plural"]   = pluralequation
             store.updateheaderplural(nplurals, pluralequation)
         return int(nplurals)
+    elif isinstance(store, ts.tsfile):
+        return store.nplural()
     else:
         return 1
 

@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-__all__ = ['build_layout', 'get_targets']
+__all__ = ['build_layout', 'get_targets', 'get_options']
 
 import logging
 import re
@@ -57,6 +57,18 @@ def get_targets(widget):
     result = []
     util.forall_widgets(add_targets_to_list(result), widget)
     return result
+
+def get_options(widget):
+    def add_options_to_list(lst):
+        def do(widget):
+            if isinstance(widget, gtk.CheckButton):
+                lst.append(widget)
+        return do
+
+    result = []
+    util.forall_widgets(add_options_to_list(result), widget)
+    return result
+
 
 #A regular expression to help us find a meaningful place to position the
 #cursor initially.

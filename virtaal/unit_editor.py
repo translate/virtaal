@@ -91,6 +91,8 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         for target in unit_layout.get_targets(self.layout):
             target.get_buffer().connect("changed", self._on_modify)
             self.targets.append(target)
+        for option in unit_layout.get_options(self.layout):
+            option.connect("toggled", self._on_modify)
         self.must_advance = False
         self._modified = False
         self._unit = unit

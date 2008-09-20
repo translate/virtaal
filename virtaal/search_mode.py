@@ -115,9 +115,9 @@ class SearchMode(BaseMode):
             self.ent_search.modify_text(gtk.STATE_NORMAL, self.default_text)
 
             searchstr = self.ent_search.get_text().decode('utf-8')
-            flags = re.LOCALE | re.MULTILINE
+            flags = re.UNICODE | re.MULTILINE
             if not self.chk_casesensitive.get_active():
-                searchstr = searchstr.lower()
+                flags |= re.IGNORECASE
             if not self.chk_regex.get_active():
                 searchstr = re.escape(searchstr)
             self.re_search = re.compile(u'(%s)' % searchstr, flags)
@@ -142,8 +142,6 @@ class SearchMode(BaseMode):
         for textview in editor.sources + editor.targets:
             buff = textview.get_buffer()
             buffstr = buff.get_text(buff.get_start_iter(), buff.get_end_iter()).decode('utf-8')
-            if not self.chk_casesensitive.get_active():
-                buffstr = buffstr.lower()
 
             # First make sure that the current buffer contains a highlighting tag.
             # Because a gtk.TextTag can only be associated with one gtk.TagTable,

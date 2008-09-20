@@ -84,6 +84,7 @@ class Settings:
             logging.info("Could not get locale")
         self.config = ConfigParser.ConfigParser()
 
+        self.read()
         for section in self.sections:
             if not self.config.has_section(section):
                 self.config.add_section(section)

@@ -294,7 +294,7 @@ class VirTaal:
         # Add words from previously handled widgets to the auto-completion list
         for textview in self.autocomp.widgets:
             buffer = textview.get_buffer()
-            bufftext = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter())
+            bufftext = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter()).decode('utf-8')
             self.autocomp.add_words(self.autocomp.wordsep_re.split(bufftext))
 
         self.autocomp.clear_widgets()

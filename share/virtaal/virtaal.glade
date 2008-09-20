@@ -64,7 +64,7 @@
                     <child>
                       <widget class="GtkMenuItem" id="recent_files">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Recent files</property>
+                        <property name="label" translatable="yes">_Recent Files</property>
                         <property name="use_underline">True</property>
                       </widget>
                     </child>

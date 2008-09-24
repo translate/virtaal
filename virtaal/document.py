@@ -155,3 +155,19 @@ class Document(gobject.GObject):
 
     def _on_mode_combo_changed(self, _mode_selector, mode):
         self.set_mode(mode)
+
+    def get_source_language(self):
+        """Return the current document's source language."""
+        candidate = self.store.getsourcelanguage()
+        if candidate and not candidate in ['und', 'en', 'en_US']:
+            return candidate
+        else:
+            return pan_app.settings.language["sourcelang"]
+
+    def get_target_language(self):
+        """Return the current document's target language."""
+        candidate = self.store.gettargetlanguage()
+        if candidate and candidate != 'und':
+            return candidate
+        else:
+            return pan_app.settings.language["contentlang"]

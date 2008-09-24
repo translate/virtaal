@@ -27,6 +27,7 @@ import re
 import zipfile
 from lxml import etree
 
+import undo_buffer
 
 class AutoCorrector(object):
     """
@@ -221,20 +222,9 @@ class AutoCorrector(object):
                 def correct_text():
                     buffer.props.text = u''.join([res, postfix])
                     buffer.place_cursor( buffer.get_iter_at_offset(len(res) + len(text)) )
-
-                    # Combine the last two undo-actions into one
-                    if hasattr(buffer, '__undo_stack'):
-                        undostack = getattr(buffer, '__undo_stack')
-                        undos = (undostack.pop(), undostack.pop())
-
-                        def undo():
-                            undos[0]() and undos[1]()
-                            buffer.place_cursor(buffer.get_iter_at_offset(iteroffset))
-                            return True
-
-                        undostack.push(undo)
-
+                    undo_buffer.merge_actions(buffer, iteroffset)
                     return False
+
                 gobject.idle_add(correct_text)
 
     def _remove_textview(self, textview):

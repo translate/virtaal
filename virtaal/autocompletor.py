@@ -24,6 +24,7 @@ import gobject
 import gtk
 import re
 
+import undo_buffer
 
 class AutoCompletor(object):
     """
@@ -172,20 +173,9 @@ class AutoCompletor(object):
                     sel_iter_start = buffer.get_iter_at_offset(len(prefix))
                     sel_iter_end   = buffer.get_iter_at_offset(len(completed_prefix))
                     buffer.select_range(sel_iter_start, sel_iter_end)
-
-                    # Combine the last two undo-actions into one
-                    if hasattr(buffer, '__undo_stack'):
-                        undostack = getattr(buffer, '__undo_stack')
-                        undos = (undostack.pop(), undostack.pop())
-
-                        def undo():
-                            undos[0]() and undos[1]()
-                            buffer.place_cursor(buffer.get_iter_at_offset(len(prefix)))
-                            return True
-
-                        undostack.push(undo)
-
+                    undo_buffer.merge_actions(buffer, len(prefix))
                     return False
+
                 gobject.idle_add(complete_text)
 
     def _on_textview_keypress(self, textview, event):

@@ -70,16 +70,24 @@ def compute_nplurals(store):
         if nplurals > 1 and lang.pluralequation == "0":
             return nplurals, ask_for_plurals_equation()
         else:
+            # Note that if nplurals == 1, the default equation "0" is correct
             return nplurals, lang.pluralequation
     
     # FIXME this needs to be pushed back into the stores, we don't want to import each format
     if isinstance(store, poheader):
         nplurals, _pluralequation = store.getheaderplural()
         if nplurals is None:
-            nplurals, pluralequation = ask_for_language_details()
-            pan_app.settings.language["nplurals"] = nplurals
-            pan_app.settings.language["plural"]   = pluralequation
+            # Nothing in the header, so let's use the global settings
+            settings = pan_app.settings
+            nplurals = settings.language["nplurals"]
+            pluralequation = settings.language["plural"]
+            if not (int(nplurals) > 0 and pluralequation):
+                nplurals, pluralequation = ask_for_language_details()
+                pan_app.settings.language["nplurals"] = nplurals
+                pan_app.settings.language["plural"]   = pluralequation
             store.updateheaderplural(nplurals, pluralequation)
+            # If we actually updated something significant, of course the file
+            # won't appear changed yet, which is probably what we want.
         return int(nplurals)
     elif isinstance(store, ts.tsfile):
         return store.nplural()

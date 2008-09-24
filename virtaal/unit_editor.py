@@ -110,21 +110,6 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         """Start editing."""
         unit_layout.focus_text_view(unit_layout.get_targets(self)[0])
 
-    def _on_focus(self, widget, _direction):
-        # TODO: Check whether we do need to refocus the last edited text_view when
-        #       our program gets focus after having lost it.
-        self.recent_textview = widget
-        return False
-
-    def _on_modified(self, widget):
-        if widget in self.buffers:
-            self.fuzzy_checkbox.set_active(False)
-        elif self.recent_textview:
-            self.recent_textview.grab_focus()
-        self.emit("modified")
-        self._modified = True
-        return False
-
     def get_modified(self):
         return self._modified
 

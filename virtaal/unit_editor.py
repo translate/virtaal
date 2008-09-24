@@ -22,7 +22,9 @@ import pango
 import gtk
 
 from translate.misc.multistring import multistring
+from translate.lang import factory
 
+import pan_app
 import markup
 import undo_buffer
 import unit_layout
@@ -85,7 +87,8 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
 
     def __init__(self, parent, unit):
         gtk.EventBox.__init__(self)
-        self.layout = unit_layout.build_layout(unit, parent.document.nplurals)
+        self._document = parent.document
+        self.layout = unit_layout.build_layout(unit, self._document.nplurals)
         self.add(self.layout)
         self.sources = [src for src in unit_layout.get_sources(self.layout)]
         self.targets = []
@@ -134,7 +137,8 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
     def copy_original(self, text_view):
         buf = text_view.get_buffer()
         position = buf.props.cursor_position
-        buf.set_text(markup.escape(self._unit.source))
+        lang = factory.getlanguage(self._document.get_target_language())
+        buf.set_text(markup.escape(lang.punctranslate(self._unit.source)))
         undo_buffer.merge_actions(buf, position)
         unit_layout.focus_text_view(text_view)
         return False

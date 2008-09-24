@@ -63,7 +63,7 @@ def compute_nplurals(store):
                     pass
                   
         def ask_for_plurals_equation():
-            return EntryDialog(_("Please enter the number of noun forms (plurals) to use"))
+            return EntryDialog(_("Please enter the plural equation to use"))
 
         lang     = langfactory.getlanguage(get_content_lang())
         nplurals = lang.nplurals or ask_for_number_of_plurals()

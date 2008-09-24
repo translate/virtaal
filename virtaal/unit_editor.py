@@ -24,6 +24,7 @@ import gtk
 from translate.misc.multistring import multistring
 
 import markup
+import undo_buffer
 import unit_layout
 import widgets.label_expander as label_expander
 from support.simplegeneric import generic
@@ -89,6 +90,7 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         self.sources = [src for src in unit_layout.get_sources(self.layout)]
         self.targets = []
         for target in unit_layout.get_targets(self.layout):
+            target.connect('key-press-event', self._on_text_view_key_press_event)
             target.get_buffer().connect("changed", self._on_modify)
             self.targets.append(target)
         for option in unit_layout.get_options(self.layout):
@@ -105,6 +107,15 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
             self.must_advance = True
             self.editing_done()
+            return True
+        return False
+
+    def _on_text_view_key_press_event(self, widget, event, *_args):
+        # Alt-Down
+        if event.keyval == gtk.keysyms.Down and event.state & gtk.gdk.MOD1_MASK:
+            gobject.idle_add(self.copy_original, widget)
+            return True
+        return False
 
     def do_start_editing(self, *_args):
         """Start editing."""
@@ -120,8 +131,10 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         else:
             return multistring(targets)
 
-    def _on_copy_original(self, _widget):
-        for buf in self.buffers:
-            buf.set_text(markup.escape(self._unit.source))
-            self.do_start_editing()
-        return True
+    def copy_original(self, text_view):
+        buf = text_view.get_buffer()
+        position = buf.props.cursor_position
+        buf.set_text(markup.escape(self._unit.source))
+        undo_buffer.merge_actions(buf, position)
+        unit_layout.focus_text_view(text_view)
+        return False

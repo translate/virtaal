@@ -51,7 +51,7 @@ class AutoCorrector(object):
             @param acorpath: The path to the directory containing the
                 OpenOffice.org auto-correction data files (acor_*.dat).
             """
-        self.lang = 'xx' # Select non-existant language for now. Will be changed by load_dictionary()
+        self.lang = None
         if acorpath is None or not os.path.isdir(acorpath):
             acorpath = os.path.curdir
         self.acorpath = acorpath
@@ -132,12 +132,12 @@ class AutoCorrector(object):
             """
         # Change "af_ZA" to "af-ZA", which OOo uses to store acor files.
         if lang == self.lang:
-            return self.correctiondict
+            return
 
         if not lang:
             self.correctiondict = {}
             self.lang = ''
-            return self.correctiondict
+            return
 
         lang = lang.replace('_', '-')
         try:
@@ -160,7 +160,7 @@ class AutoCorrector(object):
                 # empty dictionary.
                 self.correctiondict = {}
                 self.lang = ''
-                return self.correctiondict
+                return
 
         xmlstr = acor.read('DocumentList.xml')
         xml = etree.fromstring(xmlstr)
@@ -177,7 +177,7 @@ class AutoCorrector(object):
             self.correctiondict[key] = (value, re.compile(r'.*\b%s$' % (re.escape(key)), re.UNICODE))
 
         self.lang = lang
-        return self.correctiondict
+        return
 
     def remove_widget(self, widget):
         """Remove a widget (currently only C{gtk.TextView}s are accepted) from

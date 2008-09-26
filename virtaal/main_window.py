@@ -51,9 +51,6 @@ from mode_selector import ModeSelector
 
 # FIXME: Add docstrings!
 
-def on_undo(_accel_group, acceleratable, _keyval, _modifier):
-    unit_renderer.undo(acceleratable.focus_widget)
-
 def get_data_file_abs_name(filename):
     """Get the absolute path to the given file- or directory name in VirTaal's
         data directory.

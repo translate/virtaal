@@ -70,9 +70,6 @@ class AutoCompletor(object):
         """Collect all words from the given translation store to use for
             auto-completion.
 
-            The translation units obtained from C{store.getunits()} are assumed
-            to have a C{gettarget()} method.
-
             @type  store: translate.storage.pypo.pofile
             @param store: The translation store to collect words from.
             """

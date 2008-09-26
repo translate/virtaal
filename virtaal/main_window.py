@@ -89,6 +89,8 @@ def load_glade_file(filename, domain):
 class VirTaal:
     """The entry point class for VirTaal"""
 
+    WRAP_DELAY = 0.25
+
     def __init__(self, startup_file=None):
         #Set the Glade file
         self.gladefile, self.gui = load_glade_file("virtaal.glade", "virtaal")
@@ -108,7 +110,9 @@ class VirTaal:
                 }
         self.gui.signal_autoconnect(dic)
 
-        self.status_box = self.gui.get_widget("status_box")
+        self.mode_bar = self.gui.get_widget("mode_bar")
+        self.status_bar = self.gui.get_widget("status_bar")
+        self.statusbar_context_id = self.status_bar.get_context_id("statusbar")
         self.sw = self.gui.get_widget("scrolledwindow1")
         self.main_window = self.gui.get_widget("MainWindow")
         self.main_window.set_icon_from_file(get_data_file_abs_name("virtaal.ico"))
@@ -231,11 +235,11 @@ class VirTaal:
                 # processing 
                 def hard_work():
                     self.document = document.Document(filename, store=store)
-                    child = self.status_box.get_children()[0]
-                    self.status_box.remove(child)
+                    child = self.mode_bar.get_children()[0]
+                    self.mode_bar.remove(child)
                     child.destroy()
-                    self.status_box.pack_start(self.document.mode_selector)
-                    self.status_box.reorder_child(self.document.mode_selector, 0)
+                    self.mode_bar.pack_start(self.document.mode_selector)
+                    self.mode_bar.reorder_child(self.document.mode_selector, 0)
 
                     self.filename = filename
                     self.store_grid = store_grid.UnitGrid(self)
@@ -277,6 +281,12 @@ class VirTaal:
         dialog.run()
         dialog.destroy()
         return False
+
+    def set_statusbar_message(self, msg):
+        self.status_bar.pop(self.statusbar_context_id)
+        self.status_bar.push(self.statusbar_context_id, msg)
+        if msg:
+            time.sleep(self.WRAP_DELAY)
 
     def _set_saveable(self, value):
         menuitem = self.gui.get_widget("save_menuitem")

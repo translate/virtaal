@@ -119,7 +119,7 @@ class UnitGrid(gtk.TreeView):
             return True
 
         try:
-            self.document.mode_cursor.move(offset)
+            self._owner.set_statusbar_message(self.document.mode_cursor.move(offset))
             path = self.get_model().store_index_to_path(self.document.mode_cursor.deref())
             self._activate_editing_path(path)
         except IndexError:

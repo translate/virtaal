@@ -53,15 +53,19 @@ class Cursor(gobject.GObject):
 
     def move(self, offset):
         newpos = self._pos + offset
+        statusmsg = ''
         try:
             self._assert_valid_index(newpos)
         except IndexError:
             if newpos < 0:
                 newpos += len(self.union_set.set.data)
+                statusmsg = _('Top of page reached, continuing at the bottom')
             else:
                 # If we get here, newpos > len(self.union_set.set.data)
                 newpos -= len(self.union_set.set.data)
+                statusmsg = _('End of page reached, continuing at the top')
         self._pos = newpos
+        return statusmsg
 
     def deref(self, index=None):
         if index == None:

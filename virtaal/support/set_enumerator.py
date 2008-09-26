@@ -52,8 +52,16 @@ class Cursor(gobject.GObject):
             raise IndexError()
 
     def move(self, offset):
-        self._assert_valid_index(self._pos + offset)
-        self._pos += offset
+        newpos = self._pos + offset
+        try:
+            self._assert_valid_index(newpos)
+        except IndexError:
+            if newpos < 0:
+                newpos += len(self.union_set.set.data)
+            else:
+                # If we get here, newpos > len(self.union_set.set.data)
+                newpos -= len(self.union_set.set.data)
+        self._pos = newpos
 
     def deref(self, index=None):
         if index == None:

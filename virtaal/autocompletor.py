@@ -131,25 +131,38 @@ class AutoCompletor(object):
         """Add the given I{gtk.TextView} to the list of widgets to do auto-
             correction on.
             """
-        if not hasattr(self, '_textbuffer_handler_ids'):
-            self._textbuffer_handler_ids = {}
-
-        if not hasattr(self, '_textview_handler_ids'):
-            self._textview_handler_ids = {}
-
-        handler_id = textview.get_buffer().connect(
-            'insert-text',
-            self._on_insert_text
+        id_dict_names = (
+            '_textbuffer_handler_ids',
+            '_textview_button_press_ids',
+            '_textview_focus_out_ids',
+            '_textview_key_press_ids',
+            '_textview_move_cursor_ids'
         )
+        for name in id_dict_names:
+            if not hasattr(self, name):
+                setattr(self, name, {})
+
+        handler_id = textview.get_buffer().connect('insert-text', self._on_insert_text)
         self._textbuffer_handler_ids[textview] = handler_id
 
-        handler_id = textview.connect(
-            'key-press-event',
-            self._on_textview_keypress
-        )
-        self._textview_handler_ids[textview] = handler_id
+        handler_id = textview.connect('button-press-event', self._on_textview_button_press)
+        self._textview_button_press_ids[textview] = handler_id
+
+        handler_id = textview.connect('key-press-event', self._on_textview_keypress)
+        self._textview_key_press_ids[textview] = handler_id
+
+        handler_id = textview.connect('focus-out-event', self._on_textview_focus_out)
+        self._textview_focus_out_ids[textview] = handler_id
+
+        handler_id = textview.connect('move-cursor', self._on_textview_move_cursor)
+        self._textview_move_cursor_ids[textview] = handler_id
 
         self.widgets.add(textview)
+
+    def _check_delete_selection(self, buffer):
+        """Deletes the current selection if said selection was created by the auto-completor."""
+        if hasattr(buffer, '_remove_selection') and buffer._remove_selection:
+            buffer.delete_selection(False, True)
 
     def _on_insert_text(self, buffer, iter, text, length):
         if self.wordsep_re.match(text):
@@ -161,6 +174,7 @@ class AutoCompletor(object):
         if len(lastword) >= self.comp_len:
             completed_word, word_postfix = self.autocomplete(lastword)
             if completed_word == lastword:
+                buffer._remove_selection = False
                 return
 
             if completed_word:
@@ -174,9 +188,23 @@ class AutoCompletor(object):
                     sel_iter_end   = buffer.get_iter_at_offset(len(completed_prefix))
                     buffer.select_range(sel_iter_start, sel_iter_end)
                     undo_buffer.merge_actions(buffer, len(prefix))
+                    buffer._remove_selection = True
                     return False
 
                 gobject.idle_add(complete_text)
+            else:
+                buffer._remove_selection = False
+        else:
+            buffer._remove_selection = False
+
+    def _on_textview_button_press(self, textview, event):
+        self._check_delete_selection(textview.get_buffer())
+
+    def _on_textview_focus_out(self, textview, event):
+        self._check_delete_selection(textview.get_buffer())
+
+    def _on_textview_move_cursor(self, textview, step_size, count, expand_selection):
+        self._check_delete_selection(textview.get_buffer())
 
     def _on_textview_keypress(self, textview, event):
         """Catch tabs to the C{gtk.TextView} and make it keep the current selection."""
@@ -195,9 +223,19 @@ class AutoCompletor(object):
         # Disconnect the "insert-text" event handler
         textview.get_buffer().disconnect(self._textbuffer_handler_ids[textview])
 
-        if not hasattr(self, '_textview_handler_ids'):
+        if not hasattr(self, '_textview_focus_out_ids'):
+            return
+        # Disconnect the "focus-out-event" event handler
+        textview.disconnect(self._textview_focus_out_ids[textview])
+
+        if not hasattr(self, '_textview_key_press_ids'):
             return
         # Disconnect the "key-press-event" event handler
-        textview.disconnect(self._textview_handler_ids[textview])
+        textview.disconnect(self._textview_key_press_ids[textview])
+
+        if not hasattr(self, '_textview_move_cursor_ids'):
+            return
+        # Disconnect the "move-cursor" event handler
+        textview.disconnect(self._textview_move_cursor_ids[textview])
 
         self.widgets.remove(textview)

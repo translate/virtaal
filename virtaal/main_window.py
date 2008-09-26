@@ -229,11 +229,11 @@ class VirTaal:
     def load_file(self, filename, dialog=None, store=None, uri=None):
         """Do the actual loading of the file into the GUI"""
         if path.isfile(filename):
-            try:
-                # To ensure that the WATCH cursor gets a chance to be displayed
-                # before we block the GUI, we need to add it to the idle
-                # processing 
-                def hard_work():
+            # To ensure that the WATCH cursor gets a chance to be displayed
+            # before we block the GUI, we need to add it to the idle
+            # processing 
+            def hard_work(dialog=None):
+                try:
                     self.document = document.Document(filename, store=store)
                     child = self.mode_bar.get_children()[0]
                     self.mode_bar.remove(child)
@@ -262,21 +262,27 @@ class VirTaal:
                         recent.rm.add_item(uri)
                     gobject.idle_add(self.main_window.window.set_cursor, None, priority=gobject.PRIORITY_LOW)
 
-                self.main_window.window.set_cursor(gdk.Cursor(gdk.WATCH))
-                gobject.idle_add(hard_work)
-                return True
-            except IOError, e:
-                dialog = gtk.MessageDialog(dialog or self.main_window,
-                                gtk.DIALOG_MODAL,
-                                gtk.MESSAGE_ERROR,
-                                gtk.BUTTONS_OK,
-                                (str(e)))
-        else:
-                dialog = gtk.MessageDialog(dialog or self.main_window,
-                                gtk.DIALOG_MODAL,
-                                gtk.MESSAGE_ERROR,
-                                gtk.BUTTONS_OK,
-                                _("%(filename)s does not exist." % {"filename": filename}))
+                except Exception, e:
+                    dialog = gtk.MessageDialog(dialog or self.main_window,
+                                    gtk.DIALOG_MODAL,
+                                    gtk.MESSAGE_ERROR,
+                                    gtk.BUTTONS_OK,
+                                    ("%s\n\n%s" % (_("Error opening file:"), str(e))))
+                    self.main_window.window.set_cursor(None)
+                    dialog.run()
+                    dialog.destroy()
+                return False
+
+            self.main_window.window.set_cursor(gdk.Cursor(gdk.WATCH))
+            gobject.idle_add(hard_work, dialog)
+            return True
+
+        # File doesn't exist
+        dialog = gtk.MessageDialog(dialog or self.main_window,
+                        gtk.DIALOG_MODAL,
+                        gtk.MESSAGE_ERROR,
+                        gtk.BUTTONS_OK,
+                        _("%(filename)s does not exist." % {"filename": filename}))
         self.main_window.window.set_cursor(None)
         dialog.run()
         dialog.destroy()
@@ -355,12 +361,23 @@ class VirTaal:
                 header_updates["Language-Team"] = team
             self.document.store.updateheader(add=True, **header_updates)
 
-        if filename is None or filename == self.filename:
-            self.document.store.save()
-        else:
-            self.filename = filename
-            self.document.store.savefile(filename)
-        self._set_saveable(False)
+        try:
+            if filename is None or filename == self.filename:
+                self.document.store.save()
+            else:
+                self.filename = filename
+                self.document.store.savefile(filename)
+            self._set_saveable(False)
+        except IOError, e:
+                dialog = gtk.MessageDialog(self.main_window,
+                                gtk.DIALOG_MODAL,
+                                gtk.MESSAGE_ERROR,
+                                gtk.BUTTONS_OK,
+                                _("Could not save file.\n\n%s\n\nTry saving at a different location." % (str(e))))
+                dialog.set_title(_("Error"))
+                response = dialog.run()
+                dialog.destroy()
+
         return False #continue normally
 
     def _on_file_saveas(self, widget=None):

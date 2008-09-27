@@ -37,25 +37,25 @@ class BoundedQueue(collections.deque):
             self.popleft()
         self.append(item)
 
+    def block_change_signals(self):
+        self.handler_block(self.insert_handler)
+        self.handler_block(self.delete_handler)
+
+    def unblock_change_signals(self):
+        self.handler_unblock(self.insert_handler)
+        self.handler_unblock(self.delete_handler)
+
+    def execute_without_signals(self, action):
+        block_change_signals(self)
+        result = action()
+        unblock_change_signals(self)
+        return result
+
 def add_undo_to_buffer(buf):
     buf.__undo_stack = BoundedQueue(lambda: pan_app.settings.undo['depth'])
     buf.insert_handler = buf.connect("insert-text",  on_insert_text,  buf.__undo_stack)
     buf.delete_handler = buf.connect("delete-range", on_delete_range, buf.__undo_stack)
     return buf
-
-def block_change_signals(self):
-    self.handler_block(self.insert_handler)
-    self.handler_block(self.delete_handler)
-
-def unblock_change_signals(self):
-    self.handler_unblock(self.insert_handler)
-    self.handler_unblock(self.delete_handler)
-
-def execute_without_signals(self, action):
-    block_change_signals(self)
-    result = action()
-    unblock_change_signals(self)
-    return result
 
 def undo(undo_list):
     if len(undo_list) > 0:

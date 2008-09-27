@@ -43,18 +43,18 @@ def add_undo_to_buffer(buf):
     buf.delete_handler = buf.connect("delete-range", on_delete_range, buf.__undo_stack)
     return buf
 
-def block_change_signals(self):
-    self.handler_block(self.insert_handler)
-    self.handler_block(self.delete_handler)
+def block_change_signals(buf):
+    buf.handler_block(buf.insert_handler)
+    buf.handler_block(buf.delete_handler)
 
-def unblock_change_signals(self):
-    self.handler_unblock(self.insert_handler)
-    self.handler_unblock(self.delete_handler)
+def unblock_change_signals(buf):
+    buf.handler_unblock(buf.insert_handler)
+    buf.handler_unblock(buf.delete_handler)
 
-def execute_without_signals(self, action):
-    block_change_signals(self)
+def execute_without_signals(buf, action):
+    block_change_signals(buf)
     result = action()
-    unblock_change_signals(self)
+    unblock_change_signals(buf)
     return result
 
 def undo(undo_list):

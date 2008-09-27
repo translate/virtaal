@@ -86,7 +86,7 @@ class AutoCorrector(object):
             @type  inserted: basestring
             @param inserted: The string that was inserted at I{endindex}
 
-            @rtype : 2-tuple
+            @rtype: 2-tuple
             @return: The corrected substring (C{src[:endindex]}) (or None if no
                 corrections were made) and the postfix
                 (C{inserted + src[endindex:]}).

@@ -296,15 +296,15 @@ def mailto(address, to=None, cc=None, bcc=None, subject=None, body=None,
     the user's e-mail composer. The user will have the opportunity to
     change any of this information before actually sending the e-mail.
 
-    address - specify the destination recipient
-    cc      - specify a recipient to be copied on the e-mail
-    bcc     - specify a recipient to be blindly copied on the e-mail
-    subject - specify a subject for the e-mail
-    body    - specify a body for the e-mail. Since the user will be able
+    @param address: destination recipient
+    @param cc: recipient to be copied on the e-mail
+    @param bcc: recipient to be blindly copied on the e-mail
+    @param subject: subject for the e-mail
+    @param body: body of the e-mail. Since the user will be able
               to make changes before actually sending the e-mail, this
               can be used to provide the user with a template for the
               e-mail text may contain linebreaks
-    attach  - specify an attachment for the e-mail. file must point to
+    @param attach: an attachment for the e-mail. file must point to
               an existing file
 
     '''

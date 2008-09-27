@@ -53,9 +53,9 @@ def partial(f, *args, **kwargs):
 def compose(*funcs):
     """Compose two or more functions into a single function.
 
-    This operates as mathematical composition. Thus, compose(a, b, c)
-    is equivalent to a . b . c in mathematical notation. In Python,
-    this can also be written as lambda *args: a(b(c(*args))).
+    This operates as mathematical composition. Thus, C{compose(a, b, c)}
+    is equivalent to M{a . b . c} in mathematical notation. In Python,
+    this can also be written as C{lambda *args: a(b(c(*args)))}.
     """
     def new_f(args):
         return reduce(lambda args, f: f(args), reversed(funcs), args)
@@ -76,37 +76,37 @@ def post(post_f):
     executed.
 
     For example, suppose that you have a function foo. If you want the code in
-    bar to be executed after the code in foo, you can decorate foo as follows:
+    bar to be executed after the code in foo, you can decorate foo as follows::
 
-    @post(bar)
-    def foo(a, b, c, ...)
+        @post(bar)
+        def foo(a, b, c, ...)
 
-    The function bar needs to have a signature as follows:
-    def bar(foo_return_value, a, b, c, ...)
+    The function bar needs to have a signature as follows::
+        def bar(foo_return_value, a, b, c, ...)
 
     Thus, the first parameter of bar is the return value of foo and the rest of
     its parameters are identical to that of foo (this is so that bar has access to
     the parameters.
 
-    As a concrete example, an implementation of bar might look something like:
-    def bar(foo_return, a, *args):
-        print 'The return value of the function that ran before me is %s' % repr(foo_return)
-        print 'The first parameter is %s'% repr(a)
+    As a concrete example, an implementation of bar might look something like::
+        def bar(foo_return, a, *args):
+            print 'The return value of the function that ran before me is %s' % repr(foo_return)
+            print 'The first parameter is %s'% repr(a)
 
-        return foo_return + 42
+            return foo_return + 42
 
-    and the definition of foo something like:
-    @post(bar)
-    def foo(a, b, c):
-        print 'I am foo'
-        return 0
+    and the definition of foo something like::
+        @post(bar)
+        def foo(a, b, c):
+            print 'I am foo'
+            return 0
 
-    Thus
-    >>> foo(1, 2, 3)
-    ... I am foo
-    ... The return value of the function that ran before me is 0
-    ... The first parameter is 1
-    ... 42
+    Thus::
+        >>> foo(1, 2, 3)
+        ... I am foo
+        ... The return value of the function that ran before me is 0
+        ... The first parameter is 1
+        ... 42
     """
     def decorator(f):
         def new_f(*args, **kwargs):

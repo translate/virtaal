@@ -120,12 +120,12 @@ class AutoCorrector(object):
             handle (for example) "af", "af_ZA" or "af-ZA" to load the Afrikaans
             data file. Here are the steps taken in trying to find the correct
             data file:
-            - Underscores are replaced with hyphens in C{lang} ("af_ZA" ->
-              "af-ZA").
-            - The file for C{lang} is opened ("acor_af-ZA.dat").
-            - If the open fails, the language code ("af") is extracted and the
-              first file found starting with "acor_af" and ending in ".dat" is
-              used.
+              - Underscores are replaced with hyphens in C{lang} ("af_ZA" ->
+                "af-ZA").
+              - The file for C{lang} is opened ("acor_af-ZA.dat").
+              - If the open fails, the language code ("af") is extracted and the
+                first file found starting with "acor_af" and ending in ".dat" is
+                used.
 
             These steps imply that if "af" is given as lang, the data file
             "acor_af-ZA.dat" will end up being loaded.

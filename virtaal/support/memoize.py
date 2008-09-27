@@ -27,10 +27,11 @@ def get_full_fn_name(f):
     return "%s.%s" % (f.__module__,  f.__name__)
 
 def memoize(f):
-    """A general memoization decorator. Use it as follows:
-    
-    @memoize
-    my_function(a, b, c):
+    """A general memoization decorator.
+
+    Use it as follows::
+        @memoize
+        my_function(a, b, c):
         ...    
     """
     memoize_dict = {}

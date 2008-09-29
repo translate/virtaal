@@ -209,7 +209,7 @@ msgstr "XML Localization Interchange File Format"
 
 #: ../virtaal/about.py:32
 msgid "© Copyright 2007-2008 Zuza Software Foundation"
-msgstr "©Kopiereg 2007-2008 Zuza Sagteware Stigting"
+msgstr "© Kopiereg 2007-2008 Zuza Sagteware Stigting"
 
 #: ../virtaal/about.py:33
 msgid ""

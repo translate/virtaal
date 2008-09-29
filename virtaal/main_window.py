@@ -147,6 +147,8 @@ class VirTaal:
         unit_renderer.undo(acceleratable.focus_widget)
 
     def _on_search(self, _accel_group, acceleratable, _keyval, _modifier):
+        if not self.document:
+            return
         self.document.mode_selector.select_mode_by_name('Search')
         # FIXME: Hack to make sure that the search entry has focus after pressing F3:
         self.document.mode_selector.current_mode.ent_search.grab_focus()

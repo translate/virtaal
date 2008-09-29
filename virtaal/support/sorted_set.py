@@ -27,36 +27,36 @@ Implements set operations using sorted lists as the underlying data structure.
 
 Advantages:
 
-  * Space savings -- lists are much more compact than a dictionary
+  - Space savings -- lists are much more compact than a dictionary
     based implementation.
 
-  * Flexibility -- elements do not need to be hashable, only __cmp__
+  - Flexibility -- elements do not need to be hashable, only __cmp__
     is required.
 
-  * Fast operations depending on the underlying data patterns.
+  - Fast operations depending on the underlying data patterns.
     Non-overlapping sets get united, intersected, or differenced
     with only log(N) element comparisons.  Results are built using
     fast-slicing.
 
-  * Algorithms are designed to minimize the number of compares
+  - Algorithms are designed to minimize the number of compares
     which can be expensive.
 
-  * Natural support for sets of sets.  No special accomodation needs to
+  - Natural support for sets of sets.  No special accomodation needs to
     be made to use a set or dict as a set member, but users need to be
     careful to not mutate a member of a set since that may breaks its
     sort invariant.
 
 Disadvantages:
 
-  * Set construction uses list.sort() with potentially N log(N)
+  - Set construction uses list.sort() with potentially N log(N)
     comparisons.
 
-  * Membership testing and element addition use log(N) comparisons.
+  - Membership testing and element addition use log(N) comparisons.
     Element addition uses list.insert() with takes O(N) time.
 
 ToDo:
 
-   * Make the search routine adapt to the data; falling backing to
+   - Make the search routine adapt to the data; falling backing to
      a linear search when encountering random data.
 
 """

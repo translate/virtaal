@@ -48,7 +48,7 @@ class Cursor(gobject.GObject):
             self._pos -= 1
 
     def _assert_valid_index(self, index):
-        if not 0 <= index < len(self.union_set.set.data):
+        if not 0 <= index < len(self.union_set):
             raise IndexError()
 
     def move(self, offset):
@@ -58,7 +58,7 @@ class Cursor(gobject.GObject):
             self._assert_valid_index(newpos)
         except IndexError:
             if newpos < 0:
-                newpos += len(self.union_set.set.data)
+                newpos += len(self.union_set)
                 statusmsg = _('Top of page reached, continuing at the bottom')
             else:
                 # If we get here, newpos > len(self.union_set.set.data)
@@ -83,7 +83,7 @@ class Cursor(gobject.GObject):
 
         return iterator()
 
-class UnionSetEnumerator(gobject.GObject, ):
+class UnionSetEnumerator(gobject.GObject):
     __gtype_name__ = "UnionSetEnumerator"
 
     __gsignals__ = {

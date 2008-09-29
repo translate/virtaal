@@ -126,6 +126,7 @@ class SearchMode(BaseMode):
             self.ent_search.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse('#f66'))
             self.ent_search.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse('#fff'))
             self.re_search = None
+            # Act like the "Default" mode...
             UnionSetEnumerator.__init__(self, SortedSet(self.document.stats['total']))
         self.document.refresh_cursor()
 

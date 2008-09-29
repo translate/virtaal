@@ -244,7 +244,7 @@ class AutoCompletor(object):
             return True
         elif event.state & gtk.gdk.CONTROL_MASK and \
                 event.keyval == gtk.keysyms.Z or event.keyval== gtk.keysyms.BackSpace:
-            # An undo/delete event will unselect the suggestion and make it hang 
+            # An undo/delete event will unselect the suggestion and make it hang
             # around. Therefore weneed to remove the suggestion manually.
             self._check_delete_selection(textview.get_buffer())
             return False

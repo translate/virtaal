@@ -78,6 +78,9 @@ def on_delete_range(buf, start_iter, end_iter, undo_list):
     return True
 
 def on_insert_text(buf, iter, text, length, undo_list):
+    # some weird zero length events waste our time; let's ignore them
+    if length < 1:
+        return True
     offset = iter.get_offset()
 
     def undo():

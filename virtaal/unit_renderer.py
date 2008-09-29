@@ -27,6 +27,8 @@ import gobject
 import gtk
 import pango
 
+import pan_app
+import rendering
 import markup
 import undo_buffer
 import unit_editor
@@ -105,9 +107,10 @@ class UnitRenderer(gtk.GenericCellRenderer):
         widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False, 
                 cell_area, widget, '', target_x, y, self.target_layout)
 
-    def _get_pango_layout(self, widget, text, width):
+    def _get_pango_layout(self, widget, text, width, font_description):
         '''Gets the Pango layout used in the cell in a TreeView widget.'''
         layout = pango.Layout(widget.get_pango_context())
+        layout.set_font_description(font_description)
         layout.set_wrap(pango.WRAP_WORD_CHAR)
         layout.set_width(width * pango.SCALE)
         #XXX - plurals?
@@ -116,8 +119,12 @@ class UnitRenderer(gtk.GenericCellRenderer):
         return layout
 
     def compute_cell_height(self, widget, width):
-        self.source_layout = self._get_pango_layout(widget, self.unit.source, width / 2)
-        self.target_layout = self._get_pango_layout(widget, self.unit.target, width / 2)
+        self.source_layout = self._get_pango_layout(widget, self.unit.source, width / 2, 
+                rendering.get_source_font_description())
+        self.source_layout.get_context().set_language(rendering.get_source_language())
+        self.target_layout = self._get_pango_layout(widget, self.unit.target, width / 2, 
+                rendering.get_target_font_description())
+        self.target_layout.get_context().set_language(rendering.get_target_language())
         # This makes no sense, but has the desired effect to align things correctly for
         # both LTR and RTL languages:
         if widget.get_direction() == gtk.TEXT_DIR_RTL:

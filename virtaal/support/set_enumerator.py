@@ -33,7 +33,8 @@ class Cursor(gobject.GObject):
     def __init__(self, union_set, pos=-1):
         gobject.GObject.__init__(self)
         if pos >= len(union_set):
-            raise IndexError()
+            # TODO: Push new status message: 'End of page reached, continuing at the top'
+            pos = 0
         self.union_set = union_set
         self.union_set.connect('add', self._on_add)
         self.union_set.connect('remove', self._on_remove)

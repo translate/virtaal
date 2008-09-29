@@ -110,6 +110,8 @@ class SearchMode(BaseMode):
 
         logging.debug('Search text: %s (%d matches)' % (self.ent_search.get_text(), len(filtered)))
 
+        old_elem = self.document.mode_cursor.deref()
+
         if filtered:
             self.ent_search.modify_base(gtk.STATE_NORMAL, self.default_base)
             self.ent_search.modify_text(gtk.STATE_NORMAL, self.default_text)
@@ -128,7 +130,9 @@ class SearchMode(BaseMode):
             self.re_search = None
             # Act like the "Default" mode...
             UnionSetEnumerator.__init__(self, SortedSet(self.document.stats['total']))
-        self.document.refresh_cursor()
+
+        self.document.mode_cursor = self.document.mode.cursor_from_element(old_elem)
+        self.document.cursor_changed()
 
         def grabfocus():
             self.ent_search.grab_focus()
@@ -186,7 +190,6 @@ class SearchMode(BaseMode):
     def _on_entry_activate(self, entry):
         if self.document is None:
             return
-        print 'self.document.cursor_changed()'
         self.document.cursor_changed()
 
     def _on_search_text_changed(self, entry):

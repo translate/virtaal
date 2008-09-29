@@ -139,8 +139,10 @@ class Document(gobject.GObject):
                     self.mode_cursor.move(1)
                 except IndexError:
                     pass
-            if old_cursor != self.mode_cursor:
+
+            if old_cursor and self.mode_cursor and old_cursor.get_pos() != self.mode_cursor.get_pos():
                 self.cursor_changed()
+
             return True
         except IndexError:
             return False

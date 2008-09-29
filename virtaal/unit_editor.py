@@ -17,6 +17,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+
 import gobject
 import pango
 import gtk
@@ -30,6 +31,7 @@ import undo_buffer
 import unit_layout
 import widgets.label_expander as label_expander
 from support.simplegeneric import generic
+
 
 @generic
 def compute_optimal_height(widget, width):
@@ -75,6 +77,7 @@ def gtk_labelexpander_compute_optimal_height(widget, width):
         l = gtk.Layout()
         _w, h = make_pango_layout(widget, widget.label.child.get_label()[0], l, width).get_pixel_size()
         widget.set_size_request(-1, h + 4)
+
 
 class UnitEditor(gtk.EventBox, gtk.CellEditable):
     """Text view suitable for cell renderer use."""

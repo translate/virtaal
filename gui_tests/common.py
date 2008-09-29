@@ -1,3 +1,23 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# Copyright 2008 Zuza Software Foundation
+#
+# This file is part of Virtaal.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <http://www.gnu.org/licenses/>.
+
 import os
 from os import path, environ
 
@@ -5,6 +25,7 @@ from dogtail import tree, config
 from dogtail.utils import run
 
 import po2pot
+
 
 environ['LANGUAGE']='en_US.UTF-8'
 
@@ -33,6 +54,7 @@ def find_app(exe_name):
         return full_exe_name
     else:
         return find_app(path.join("..", exe_name))    
+
 
 class BaseGuiTest(object):
     """Tests running actual commands on files"""
@@ -89,6 +111,7 @@ class BaseGuiTest(object):
     def get_app(self):
         return tree.root.application(self.virtaal_cmd)
 
+
 class LoadSaveTest(BaseGuiTest):
     def after_open(self, node):
         pass
@@ -110,6 +133,7 @@ class LoadSaveTest(BaseGuiTest):
     
         contents = read_file(test_target_file).split("\n\n")
         assert "\n\n".join(contents[1:]).strip("\n") == read_file(target_file).strip("\n")
+
 
 def standard_ini_file(filename):
     return write_file(filename, """

@@ -3,7 +3,7 @@
 #
 # Copyright 2008 Zuza Software Foundation
 #
-# This file is part of VirTaal.
+# This file is part of Virtaal.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 from virtaal.support.set_enumerator import UnionSetEnumerator
 from virtaal.support.sorted_set import SortedSet
+
 
 class BidiIterator(object):
     def __init__(self, itr):
@@ -48,6 +49,7 @@ class BidiIterator(object):
     def __iter__(self):
         return self
 
+
 class BaseMode(UnionSetEnumerator):
     """Interface for other modes."""
     mode_name = 'BaseMode'
@@ -73,6 +75,7 @@ class BaseMode(UnionSetEnumerator):
         """Signals that this mode is unselected."""
         raise NotImplementedError()
 
+
 class DefaultMode(BaseMode):
     mode_name = "Default"
     user_name = _("All")
@@ -93,6 +96,7 @@ class DefaultMode(BaseMode):
         """This mode has nothing to do when unselected."""
         pass
 
+
 class QuickTranslateMode(BaseMode):
     mode_name = "Quick Translate"
     user_name = _("Incomplete")
@@ -112,6 +116,7 @@ class QuickTranslateMode(BaseMode):
     def unselected(self):
         """This mode has nothing to do when unselected."""
         pass
+
 
 from virtaal.search_mode import SearchMode
 

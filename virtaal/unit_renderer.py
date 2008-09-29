@@ -5,7 +5,7 @@
 # Copyright (C) 2007-2008 Zuza Software Foundation
 #
 # This file was part of Gaupol.
-# This file is part of VirTaal.
+# This file is part of Virtaal.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from virtaal import unit_editor
 
 """Cell renderer for multiline text data."""
 
@@ -30,10 +29,12 @@ import pango
 
 import markup
 import undo_buffer
-from unit_editor import UnitEditor
+import unit_editor
+
 
 def undo(tree_view):
     undo_buffer.undo(tree_view.get_buffer().__undo_stack)
+
 
 class UnitRenderer(gtk.GenericCellRenderer):
     """Cell renderer for multiline text data."""
@@ -148,7 +149,7 @@ class UnitRenderer(gtk.GenericCellRenderer):
 
     def get_editor(self, parent):
         if not hasattr(self.unit, '__editor'):
-            editor = UnitEditor(parent, self.unit)
+            editor = unit_editor.UnitEditor(parent, self.unit)
             editor.connect("editing-done", self._on_editor_done)
             editor.connect("modified", self._on_modified)
             editor.set_border_width(min(self.props.xpad, self.props.ypad))

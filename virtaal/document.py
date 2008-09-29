@@ -3,7 +3,7 @@
 #
 # Copyright 2008 Zuza Software Foundation
 #
-# This file is part of VirTaal.
+# This file is part of Virtaal.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ from translate.lang import factory as langfactory
 import pan_app
 from widgets.entry_dialog import EntryDialog
 from mode_selector import ModeSelector
+
 
 def get_document(obj):
     """See whether obj contains an attribute called 'document'.

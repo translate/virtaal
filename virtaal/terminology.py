@@ -3,23 +3,22 @@
 #
 # Copyright 2008 Zuza Software Foundation
 #
-# This file is part of virtaal.
+# This file is part of Virtaal.
 #
-# VirTaal is free software; you can redistribute it and/or modify
+# This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 #
-# translate is distributed in the hope that it will be useful,
+# This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with translate; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-__all__ = ['get_terminology_matcher', 
+__all__ = ['get_terminology_matcher',
            'set_terminology_source']
 
 import os
@@ -29,6 +28,7 @@ from translate.storage import factory
 
 import pan_app
 from translate.search import match
+
 
 match_store = None # This is if the user specifies a terminology file (as opposed to a directory) on the commmand line
 matchers = {}
@@ -69,5 +69,3 @@ def set_terminology_source(src):
         pan_app.settings.general["terminology-dir"] = src
     else:
         match_store = src
-
-    

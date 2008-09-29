@@ -3,7 +3,7 @@
 #
 # Copyright 2008 Zuza Software Foundation
 #
-# This file is part of VirTaal.
+# This file is part of Virtaal.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -82,6 +82,7 @@ def load_glade_file(filename, domain):
     gladename = get_data_file_abs_name(filename)
     gui = glade.XML(gladename, domain=domain)
     return gladename, gui
+
 
 class VirTaal:
     """The entry point class for VirTaal"""

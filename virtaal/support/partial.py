@@ -3,7 +3,7 @@
 #
 # Copyright 2008 Zuza Software Foundation
 #
-# This file is part of VirTaal.
+# This file is part of Virtaal.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 __all__ = ['partial', 'compose', 'post']
+
 
 def copy_attrs(source_func, target_func):
     for attr in ('__module__', '__name__', '__doc__'):
@@ -119,13 +120,3 @@ def post(post_f):
 
     copy_attrs(post_f, decorator)
     return decorator
-
-#def pre(pre_f):
-#    def decorator(f):
-#        def new_f(*args, **kwargs):
-#            return f(*pre_f(*args, **kwargs))
-#
-#        return new_f
-
-#    return decorator
-

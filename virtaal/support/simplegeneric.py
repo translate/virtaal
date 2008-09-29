@@ -3,7 +3,7 @@
 #
 # Copyright 2008 Zuza Software Foundation
 #
-# This file is part of VirTaal.
+# This file is part of Virtaal.
 # This file was originally part of the PEAK project:
 #   http://peak.telecommunity.com/DevCenter/FrontPage
 #
@@ -24,6 +24,7 @@ __all__ = ["generic"]
 
 from types import ClassType, InstanceType
 classtypes = type, ClassType
+
 
 def generic(func):
     """Create a simple generic function"""

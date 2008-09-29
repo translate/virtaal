@@ -22,6 +22,7 @@ from translate.storage import factory
 
 import gtk
 
+
 rf = gtk.RecentFilter()
 for name, extensions, mimetypes in factory.supported_files():
     if extensions:

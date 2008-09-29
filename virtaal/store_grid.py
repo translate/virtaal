@@ -3,7 +3,7 @@
 #
 # Copyright 2007-2008 Zuza Software Foundation
 #
-# This file is part of VirTaal.
+# This file is part of Virtaal.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ import gobject
 from unit_renderer import UnitRenderer
 import store_model
 
+
 COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE = 0, 1, 2
 
 def make_renderer(grid):
@@ -38,6 +39,7 @@ def make_column(renderer):
     column = gtk.TreeViewColumn(None, renderer, unit=COLUMN_UNIT, editable=COLUMN_EDITABLE)
     column.set_expand(True)
     return column
+
 
 class UnitGrid(gtk.TreeView):
     __gsignals__ = {
@@ -210,4 +212,3 @@ class UnitGrid(gtk.TreeView):
         # The TreeView does interesting things with combos like SHIFT+TAB.
         # So we're going to stop it from doing this.
         return True
-

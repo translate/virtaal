@@ -3,7 +3,7 @@
 #
 # Copyright 2007-2008 Zuza Software Foundation
 #
-# This file is part of VirTaal.
+# This file is part of Virtaal.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,11 +30,12 @@ except ImportError, e:
     gtkspell = None
 
 import pan_app
-from support.partial import partial
 import markup
 import undo_buffer
+from support.partial import partial
 from widgets import label_expander, util
 from terminology import get_terminology_matcher
+
 
 def get_sources(widget):
     def add_sources_to_list(lst):
@@ -110,7 +111,7 @@ def fill_list(lst, children):
     for child in children:
         lst.pack_start(child, fill=True, expand=False)
     return lst
-    
+
 def vlist(*children):
     return add_events(fill_list(gtk.VBox(), children))
 
@@ -152,8 +153,8 @@ def make_scrolled_text_view(get_text, editable, scroll_vertical, language):
     return scrolled_window(
                add_spell_checking(
                    set_text(
-                       text_view(editable), 
-                       get_text()), 
+                       text_view(editable),
+                       get_text()),
                    pan_app.settings.language[language]),
                scroll_vertical)
 
@@ -216,7 +217,7 @@ def connect_target_text_views(child):
 def comment(get_text, set_text=lambda value: None):
     text_box = source_text_box(get_text, set_text)
     return label_expander.LabelExpander(text_box, get_text)
-  
+
 def option(label, get_option, set_option):
     def on_toggled(widget, *_args):
         if widget.get_active():
@@ -269,7 +270,7 @@ def terminology_list(sources):
         return scrolled_window(terminology_grid(results))
     else:
         return None
-    
+
 ################################################################################
 
 def build_layout(unit, nplurals):

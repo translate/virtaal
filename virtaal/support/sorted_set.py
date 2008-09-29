@@ -1,26 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2007 Zuza Software Foundation
+# Copyright 2007-2008 Zuza Software Foundation
 #
-# This file is part of virtaal.
+# This file is part of Virtaal.
 # The file was taken from
 # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/230113
 # and was written by Raymond Hettinger.
 #
-# translate is free software; you can redistribute it and/or modify
+# This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 #
-# translate is distributed in the hope that it will be useful,
+# This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with translate; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 """ altsets.py -- An alternate implementation of Sets.py
 
@@ -65,6 +64,7 @@ ToDo:
 from bisect import bisect_left
 
 import gobject
+
 
 class SortedSet(gobject.GObject):
     __gtype_name__ = "SortedSet"
@@ -214,4 +214,3 @@ class SortedSet(gobject.GObject):
             extend(x[i:])
             extend(y[j:])
         return result
-

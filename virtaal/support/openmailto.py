@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008 Zuza Software Foundation
@@ -26,10 +25,8 @@
 #   Obtained from http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/511443
 #   which is licensed under the Python license.
 
-'''Utilities for opening files or URLs in the registered default application
-and for sending e-mail using the user's preferred composer.
-
-'''
+"""Utilities for opening files or URLs in the registered default application
+and for sending e-mail using the user's preferred composer."""
 
 __version__ = '1.0'
 __all__ = ['open', 'mailto']
@@ -40,6 +37,7 @@ import webbrowser
 import subprocess
 
 from email.Utils import encode_rfc2231
+
 
 _controllers = {}
 _open = None
@@ -362,4 +360,3 @@ if __name__ == '__main__':
             else:
                 success = True
         sys.exit(success)
-

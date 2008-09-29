@@ -3,7 +3,7 @@
 #
 # Copyright 2007-2008 Zuza Software Foundation
 #
-# This file is part of VirTaal.
+# This file is part of Virtaal.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,18 +17,20 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+
 import logging
 
 try:
-    #from iniparse import ConfigParser
     import iniparse as ConfigParser
 except ImportError, e:
     import ConfigParser
 import os
+
 import locale, gettext
 gettext.install("virtaal")
 
 from __version__ import ver
+
 
 x_generator = 'VirTaal ' + ver
 default_config = "~/.locamotion/virtaal.ini"
@@ -41,6 +43,7 @@ def name():
     except ImportError, _e:
         return u""
     return pwd.getpwnam(getpass.getuser())[4].split(",")[0]
+
 
 class Settings:
     """Handles loading/saving settings from/to a configuration file."""

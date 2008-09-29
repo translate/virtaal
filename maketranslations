@@ -20,4 +20,6 @@ if [ -d po ]; then
 	if [ -f  $share/${desktop}.in ]; then
 		intltool-merge --desktop-style $cache po $share/${desktop}.in $share/$desktop
 	fi
+else
+	echo "$0: No translation directory"
 fi

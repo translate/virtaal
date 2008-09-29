@@ -171,6 +171,10 @@ class AutoCompletor(object):
     def _on_insert_text(self, buffer, iter, text, length):
         if self.wordsep_re.match(text):
             return
+        # We are only interested in single character insertions, otherwise we
+        # react similarly for paste and similar events
+        if len(text.decode('utf-8')) > 1:
+            return
         prefix = unicode(buffer.get_text(buffer.get_start_iter(), iter) + text)
         postfix = unicode(buffer.get_text(iter, buffer.get_end_iter()))
         lastword = self.wordsep_re.split(prefix)[-1]

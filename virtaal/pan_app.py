@@ -65,6 +65,10 @@ class Settings:
             "uilang": None,
             "sourcelang": "en",
             "contentlang": None,
+            "sourcefont": "mono",
+            "targetfont": "mono",
+            "nplurals": 0,
+            "plural": None,
     }
     undo = {
             "depth": 50,
@@ -86,15 +90,14 @@ class Settings:
         except:
             logging.info("Could not get locale")
         self.config = ConfigParser.ConfigParser()
-
         self.read()
-        for section in self.sections:
-            if not self.config.has_section(section):
-                self.config.add_section(section)
 
     def read(self):
         """Read the configuration file and set the dictionaries up."""
         self.config.read(self.filename)
+        for section in self.sections:
+            if not self.config.has_section(section):
+                self.config.add_section(section)
 
         for key, value in self.config.items("translator"):
             self.translator[key] = value

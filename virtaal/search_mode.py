@@ -48,9 +48,9 @@ class SearchMode(BaseMode):
         self.ent_search.connect('activate', self._on_entry_activate)
         self.default_base = gtk.widget_get_default_style().base[gtk.STATE_NORMAL]
         self.default_text = gtk.widget_get_default_style().text[gtk.STATE_NORMAL]
-        self.chk_casesensitive = gtk.CheckButton(_('Case sensitive'))
+        self.chk_casesensitive = gtk.CheckButton(_('_Case sensitive'))
         self.chk_casesensitive.connect('toggled', self._refresh_proxy)
-        self.chk_regex = gtk.CheckButton(_("Regex matching"))
+        self.chk_regex = gtk.CheckButton(_("_Regular expression"))
         self.chk_regex.connect('toggled', self._refresh_proxy)
 
         self.prev_editor = None

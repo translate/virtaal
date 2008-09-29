@@ -115,6 +115,7 @@ class Document(gobject.GObject):
         if mode_selector is None:
             mode_selector = ModeSelector(self)
         self.stats = statsdb.StatsCache().filestats(filename, checks.UnitChecker(), self.store)
+        self._correct_header()
         self.nplurals = compute_nplurals(self.store)
         self.mode = None
         self.mode_cursor = None
@@ -122,6 +123,16 @@ class Document(gobject.GObject):
 
         self.set_mode(self.mode_selector.default_mode)
         self.mode_selector.connect('mode-combo-changed', self._on_mode_combo_changed)
+
+    def _correct_header(self):
+        """This ensures that the file has a header if it is a poheader type of 
+        file, and fixes the statistics if we had to add a header."""
+        if isinstance(self.store, poheader) and not self.store.header():
+            self.store.updateheader(add=True)
+            new_stats = {}
+            for key, values in self.stats.iteritems():
+                new_stats[key] = [value+1 for value in values]
+            self.stats = new_stats
 
     def cursor_changed(self):
         """Emits the "cursor-changed" event, no questions asked."""

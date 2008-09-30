@@ -49,24 +49,24 @@ def gtk_container_compute_optimal_height(widget, width):
 @compute_optimal_height.when_type(gtk.Table)
 def gtk_table_compute_optimal_height(widget, width):
     for child in widget.get_children():
+        # width / 2 because we use half of the available width
         compute_optimal_height(child, width / 2)
 
-def make_pango_layout(layout, text, widget, width):
+def make_pango_layout(widget, text, width):
     pango_layout = pango.Layout(widget.get_pango_context())
     pango_layout.set_width(width * pango.SCALE)
-    pango_layout.set_wrap(pango.WRAP_WORD)
+    pango_layout.set_wrap(pango.WRAP_WORD_CHAR)
     pango_layout.set_text(text or "")
     return pango_layout
 
 @compute_optimal_height.when_type(gtk.TextView)
 def gtk_textview_compute_optimal_height(widget, width):
-    l = gtk.Layout()
     buf = widget.get_buffer()
     # For border calculations, see gtktextview.c:gtk_text_view_size_request in the GTK source
     border = 2 * widget.border_width - 2 * widget.parent.border_width
     if widget.style_get_property("interior-focus"):
         border += 2 * widget.style_get_property("focus-line-width")
-    _w, h = make_pango_layout(widget, buf.get_text(buf.get_start_iter(), buf.get_end_iter()), l, width - border).get_pixel_size()
+    _w, h = make_pango_layout(widget, buf.get_text(buf.get_start_iter(), buf.get_end_iter()), width - border).get_pixel_size()
     widget.parent.set_size_request(-1, h + border)
 
 @compute_optimal_height.when_type(label_expander.LabelExpander)
@@ -74,8 +74,7 @@ def gtk_labelexpander_compute_optimal_height(widget, width):
     if widget.label.child.get_text().strip() == "":
         widget.set_size_request(-1, 0)
     else:
-        l = gtk.Layout()
-        _w, h = make_pango_layout(widget, widget.label.child.get_label()[0], l, width).get_pixel_size()
+        _w, h = make_pango_layout(widget, widget.label.child.get_label()[0], width).get_pixel_size()
         widget.set_size_request(-1, h + 4)
 
 

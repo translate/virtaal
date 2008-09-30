@@ -151,8 +151,8 @@ Name: "{group}\%(name)s (uninstall)"; Filename: "{uninstallexe}"''' % {'name': n
     #Root: HKCR; Subkey: "virtaal_po\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\virtaal.exe"" ""%1"""
 
     print >> ofi, "[Registry]"
-    from virtaal.formats import supported_types
-    for description, extentions, _mimetypes in supported_types:
+    from translate.storage import factory
+    for description, extentions, _mimetypes in factory.supported_files():
         # We skip those types where we depend on mime types, not extentions
         if not extentions:
             continue

@@ -21,6 +21,7 @@
 import os
 import os.path as path
 import time
+import traceback
 
 try:
     import pygtk
@@ -269,6 +270,7 @@ class VirTaal:
                                     gtk.BUTTONS_OK,
                                     ("%s\n\n%s" % (_("Error opening file:"), str(e))))
                     self.main_window.window.set_cursor(None)
+                    traceback.print_exc()
                     dialog.run()
                     dialog.destroy()
                 return False

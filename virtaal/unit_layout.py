@@ -30,6 +30,7 @@ except ImportError, e:
     gtkspell = None
 
 import pan_app
+import rendering
 import markup
 import undo_buffer
 from support.partial import partial
@@ -161,6 +162,10 @@ def make_scrolled_text_view(get_text, editable, scroll_vertical, language):
 def source_text_box(get_text, set_text):
     scrolled_window = make_scrolled_text_view(get_text, False, gtk.POLICY_NEVER, "sourcelang")
     text_view = scrolled_window.get_child()
+    text_view.modify_font(rendering.get_source_font_description())
+    # This causes some problems, so commented out for now
+    #text_view.get_pango_context().set_font_description(rendering.get_source_font_description())
+    text_view.get_pango_context().set_language(rendering.get_source_language())
     text_view._is_source = True
     return scrolled_window
 
@@ -186,6 +191,9 @@ def target_text_box(get_text, set_text):
 
     scrolled_window = make_scrolled_text_view(get_text, True, gtk.POLICY_AUTOMATIC, "contentlang")
     text_view = scrolled_window.get_child()
+    text_view.modify_font(rendering.get_target_font_description())
+    text_view.get_pango_context().set_font_description(rendering.get_target_font_description())
+    text_view.get_pango_context().set_language(rendering.get_target_language())
     text_view.connect('key-press-event', on_text_view_n_press_event)
     text_view._is_target = True
 

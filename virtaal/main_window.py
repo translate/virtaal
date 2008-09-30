@@ -186,7 +186,7 @@ class Virtaal:
         if item.exists():
             # For now we only handle local files, and limited the recent
             # manager to only give us those anyway, so we can get the filename
-            self.open_file(item.get_uri()[len('file://'):], self.main_window, uri=item.get_uri())
+            self.open_file(item.get_uri_display(), self.main_window, uri=item.get_uri())
 
     def _confirm_unsaved(self, dialog):
         if self.modified:

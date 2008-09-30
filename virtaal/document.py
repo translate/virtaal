@@ -62,7 +62,7 @@ def compute_nplurals(store):
                     return int(entry)
                 except ValueError, _e:
                     pass
-                  
+
         def ask_for_plurals_equation():
             return EntryDialog(_("Please enter the plural equation to use"))
 
@@ -73,7 +73,7 @@ def compute_nplurals(store):
         else:
             # Note that if nplurals == 1, the default equation "0" is correct
             return nplurals, lang.pluralequation
-    
+
     # FIXME this needs to be pushed back into the stores, we don't want to import each format
     if isinstance(store, poheader):
         nplurals, _pluralequation = store.getheaderplural()
@@ -127,7 +127,7 @@ class Document(gobject.GObject):
         self.mode_selector.connect('mode-combo-changed', self._on_mode_combo_changed)
 
     def _correct_header(self):
-        """This ensures that the file has a header if it is a poheader type of 
+        """This ensures that the file has a header if it is a poheader type of
         file, and fixes the statistics if we had to add a header."""
         if isinstance(self.store, poheader) and not self.store.header():
             self.store.updateheader(add=True)

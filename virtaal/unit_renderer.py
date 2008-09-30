@@ -102,9 +102,9 @@ class UnitRenderer(gtk.GenericCellRenderer):
             target_x += width/2
         else:
             source_x += width/2
-        widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False,  
+        widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False,
                 cell_area, widget, '', source_x, y, self.source_layout)
-        widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False, 
+        widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False,
                 cell_area, widget, '', target_x, y, self.target_layout)
 
     def _get_pango_layout(self, widget, text, width, font_description):
@@ -119,10 +119,10 @@ class UnitRenderer(gtk.GenericCellRenderer):
         return layout
 
     def compute_cell_height(self, widget, width):
-        self.source_layout = self._get_pango_layout(widget, self.unit.source, width / 2, 
+        self.source_layout = self._get_pango_layout(widget, self.unit.source, width / 2,
                 rendering.get_source_font_description())
         self.source_layout.get_context().set_language(rendering.get_source_language())
-        self.target_layout = self._get_pango_layout(widget, self.unit.target, width / 2, 
+        self.target_layout = self._get_pango_layout(widget, self.unit.target, width / 2,
                 rendering.get_target_font_description())
         self.target_layout.get_context().set_language(rendering.get_target_language())
         # This makes no sense, but has the desired effect to align things correctly for

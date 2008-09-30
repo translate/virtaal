@@ -124,8 +124,8 @@ msgstr ""
         cells[2].keyCombo("<Alt>u")
 
     def test_open_and_close(self):
-        self.load_save_test(common.standard_ini_file(self.abspath("config.ini")), 
-                            self.create_po_file(self.abspath("three_strings.pot")), 
+        self.load_save_test(common.standard_ini_file(self.abspath("config.ini")),
+                            self.create_po_file(self.abspath("three_strings.pot")),
                             self.create_po_file(self.abspath("three_strings.po")))
 
 class TestReload(common.BaseGuiTest):

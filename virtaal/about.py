@@ -48,8 +48,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.""")
         self.set_website("http://translate.sourceforge.net/wiki/virtaal/index")
         self.set_website_label(_("Virtaal website"))
         self.set_authors([
-                "Friedel Wolff <friedel@translate.org.za>", 
-                "Wynand Winterbach <wynand@translate.org.za>", 
+                "Friedel Wolff <friedel@translate.org.za>",
+                "Wynand Winterbach <wynand@translate.org.za>",
                 "Dwayne Bailey <dwayne@translate.org.za>",
                 "Walter Leibbrandt <walter@translate.org.za>",
                 ])

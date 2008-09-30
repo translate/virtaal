@@ -232,7 +232,7 @@ class Virtaal:
         if path.isfile(filename):
             # To ensure that the WATCH cursor gets a chance to be displayed
             # before we block the GUI, we need to add it to the idle
-            # processing 
+            # processing
             def hard_work(dialog=None):
                 try:
                     mode_selector = getattr(self.document, 'mode_selector', None)

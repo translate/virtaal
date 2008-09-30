@@ -96,14 +96,14 @@ def on_insert_text(buf, iter, text, length, undo_list):
     return True
 
 def merge_actions(buf, position):
-    """Combine the last two undo actions into one. This is useful when we are 
-    replacing all the buffer contents and such events are seen as a delete 
+    """Combine the last two undo actions into one. This is useful when we are
+    replacing all the buffer contents and such events are seen as a delete
     followed by an insert.
 
         @type  buf: gtk.TextBuffer
         @param buf: the buffer where the undo actions should be merged
         @type  position: int
-        @param position: the wanted position of the cursor if these "two" 
+        @param position: the wanted position of the cursor if these "two"
             events are to be undone
     """
     if hasattr(buf, '__undo_stack'):

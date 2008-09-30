@@ -31,7 +31,7 @@ def memoize(f):
     Use it as follows::
         @memoize
         my_function(a, b, c):
-        ...    
+        ...
     """
     memoize_dict = {}
     memoize_table[get_full_fn_name(f)] = memoize_dict
@@ -46,7 +46,7 @@ def memoize(f):
     return memoized_f
 
 def get_real_fn(f):
-    """Peel away any memoization layers from around a function 
+    """Peel away any memoization layers from around a function
     and return the unmemoized function."""
     if hasattr(f, '_original_f'):
         return get_real_fn(f._original_f)
@@ -56,7 +56,7 @@ def get_real_fn(f):
 def invalidates_memoization(*functions):
     def invalid_applicator(f):
         function_names = [get_full_fn_name(get_real_fn(fn)) for fn in functions]
-        def invalidating_f(*args, **kw_args): 
+        def invalidating_f(*args, **kw_args):
             for function_name in function_names:
                 memoize_table[function_name].clear()
             return f(*args, **kw_args)

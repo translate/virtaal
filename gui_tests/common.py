@@ -44,31 +44,31 @@ else:
 def find_app(exe_name):
     full_exe_name = path.abspath(exe_name)
     full_exe_dir_name = path.dirname(full_exe_name)
-    
+
     # If the parent of the current pathname is the same as the current pathname,
     # we've hit the topmost directory and we give up, returning None
     if full_exe_dir_name == path.abspath(path.join(full_exe_dir_name, "..")):
         return None
-    
+
     if path.exists(full_exe_name):
         return full_exe_name
     else:
-        return find_app(path.join("..", exe_name))    
+        return find_app(path.join("..", exe_name))
 
 
 class BaseGuiTest(object):
     """Tests running actual commands on files"""
     defaultoptions = {}
     virtaal_cmd = "run_virtaal.py"
-    
+
     def __init__(self):
         self.config_file = None
         self.testdir = None
         self.rundir = None
-    
+
     def abspath(self, partial_fname):
         return path.abspath(path.join(self.testdir, partial_fname))
-    
+
     def setup_method(self, method):
         """creates a clean test directory for the given method"""
         self.testdir = "%s_%s" % (self.__class__.__name__, method.__name__)
@@ -115,22 +115,22 @@ class BaseGuiTest(object):
 class LoadSaveTest(BaseGuiTest):
     def after_open(self, node):
         pass
-    
+
     def after_save(self, node):
         pass
-    
+
     def load_save_test(self, config_file, source_file, target_file, after_open=lambda x: x, after_save=lambda x: x):
         dirname, filename = path.split(target_file)
         test_target_file = path.join(dirname, "test_" + filename)
         source_file = strip_translations(self.abspath(target_file))
-        virtaal = self.run(config=self.abspath(config_file)) 
-        
+        virtaal = self.run(config=self.abspath(config_file))
+
         gui_openfile(virtaal, source_file)
         self.after_open(virtaal)
         gui_saveas(virtaal, test_target_file)
         self.after_save(virtaal)
         gui_quit(virtaal)
-    
+
         contents = read_file(test_target_file).split("\n\n")
         assert "\n\n".join(contents[1:]).strip("\n") == read_file(target_file).strip("\n")
 
@@ -161,12 +161,12 @@ def click_file_open(node):
 
 def gui_openfile(node, filename):
     dlg = click_file_open(node)
-    
+
     filename_box = dlg.child(label='Location:')
     filename_box.grabFocus()
     filename_box.keyCombo("BackSpace")
     filename_box.typeText(filename)
-    
+
     ok_button = dlg.child(roleName="push button", name="Open")
     ok_button.click()
 
@@ -182,7 +182,7 @@ def gui_saveas(node, filename):
     filename_box.keyCombo("<Ctrl>a")
     filename_box.keyCombo("BackSpace")
     filename_box.typeText(filename)
-    
+
     save_button = dlg.button(buttonName="Save")
     save_button.click()
 

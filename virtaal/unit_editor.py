@@ -62,7 +62,7 @@ def make_pango_layout(layout, text, widget, width):
 def gtk_textview_compute_optimal_height(widget, width):
     l = gtk.Layout()
     buf = widget.get_buffer()
-    # For border calculations, see gtktextview.c:gtk_text_view_size_request in the GTK source 
+    # For border calculations, see gtktextview.c:gtk_text_view_size_request in the GTK source
     border = 2 * widget.border_width - 2 * widget.parent.border_width
     if widget.style_get_property("interior-focus"):
         border += 2 * widget.style_get_property("focus-line-width")

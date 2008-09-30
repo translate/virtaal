@@ -94,7 +94,7 @@ class UnitModel(gtk.GenericTreeModel):
         return None
 
     # Non-model-interface methods
-    
+
     def set_editable(self, new_path):
         old_path = (self._current_editable,)
         self._current_editable = new_path[0]

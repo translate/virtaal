@@ -51,12 +51,12 @@ def get_suggestion_stores(lang_code):
 
 def get_terminology_matcher(lang_code):
     """Return a terminology matcher based on a translation store which is an
-    amalgamation of all translation stores under 
+    amalgamation of all translation stores under
     <termininology_directory>/<lang_code>
-    
+
     <termininology_directory> is the globally specified termininology directory.
     <lang_code> is the supplied parameter.
-    
+
     @return: a translate.search.match.terminologymatcher"""
     if lang_code not in matchers:
         stores = list(get_suggestion_stores(pan_app.settings.language["contentlang"]))

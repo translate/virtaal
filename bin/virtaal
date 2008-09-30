@@ -3,7 +3,7 @@
 #
 # Copyright 2007-2008 Zuza Software Foundation
 #
-# This file is part of VirTaal
+# This file is part of Virtaal
 #
 # translate is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ from os import path
 
 from translate.storage import factory
 
-from virtaal.main_window import VirTaal
+from virtaal.main_window import Virtaal
 from virtaal import pan_app
 from virtaal import __version__
 from virtaal import terminology
@@ -92,7 +92,7 @@ def main(argv):
   
     def get_virtaal_runner(options):
         def run_virtaal(startup_file):
-            prog = VirTaal(startup_file)
+            prog = Virtaal(startup_file)
             prog.run()
 
         def profile_runner(startup_file):            

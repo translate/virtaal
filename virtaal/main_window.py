@@ -53,7 +53,7 @@ from mode_selector import ModeSelector
 # FIXME: Add docstrings!
 
 def get_data_file_abs_name(filename):
-    """Get the absolute path to the given file- or directory name in VirTaal's
+    """Get the absolute path to the given file- or directory name in Virtaal's
         data directory.
 
         @type  filename: str
@@ -85,8 +85,8 @@ def load_glade_file(filename, domain):
     return gladename, gui
 
 
-class VirTaal:
-    """The entry point class for VirTaal"""
+class Virtaal:
+    """The entry point class for Virtaal"""
 
     WRAP_DELAY = 0.25
 
@@ -136,14 +136,14 @@ class VirTaal:
     def _setup_key_bindings(self):
         self.accel_group = gtk.AccelGroup()
         self.main_window.add_accel_group(self.accel_group)
-        gtk.accel_map_add_entry("<VirTaal>/Edit/Undo", gtk.keysyms.z, gdk.CONTROL_MASK)
-        gtk.accel_map_add_entry("<VirTaal>/Edit/Search", gtk.keysyms.F3, 0)
-        gtk.accel_map_add_entry("<VirTaal>/Navigation/Up", gtk.accelerator_parse("Up")[0], gdk.CONTROL_MASK)
-        gtk.accel_map_add_entry("<VirTaal>/Navigation/Down", gtk.accelerator_parse("Down")[0], gdk.CONTROL_MASK)
-        gtk.accel_map_add_entry("<VirTaal>/Navigation/PgUp", gtk.accelerator_parse("Page_Up")[0], gdk.CONTROL_MASK)
-        gtk.accel_map_add_entry("<VirTaal>/Navigation/PgDown", gtk.accelerator_parse("Page_Down")[0], gdk.CONTROL_MASK)
-        self.accel_group.connect_by_path("<VirTaal>/Edit/Undo", self._on_undo)
-        self.accel_group.connect_by_path("<VirTaal>/Edit/Search", self._on_search)
+        gtk.accel_map_add_entry("<Virtaal>/Edit/Undo", gtk.keysyms.z, gdk.CONTROL_MASK)
+        gtk.accel_map_add_entry("<Virtaal>/Edit/Search", gtk.keysyms.F3, 0)
+        gtk.accel_map_add_entry("<Virtaal>/Navigation/Up", gtk.accelerator_parse("Up")[0], gdk.CONTROL_MASK)
+        gtk.accel_map_add_entry("<Virtaal>/Navigation/Down", gtk.accelerator_parse("Down")[0], gdk.CONTROL_MASK)
+        gtk.accel_map_add_entry("<Virtaal>/Navigation/PgUp", gtk.accelerator_parse("Page_Up")[0], gdk.CONTROL_MASK)
+        gtk.accel_map_add_entry("<Virtaal>/Navigation/PgDown", gtk.accelerator_parse("Page_Down")[0], gdk.CONTROL_MASK)
+        self.accel_group.connect_by_path("<Virtaal>/Edit/Undo", self._on_undo)
+        self.accel_group.connect_by_path("<Virtaal>/Edit/Search", self._on_search)
 
     def _on_undo(self, _accel_group, acceleratable, _keyval, _modifier):
         unit_renderer.undo(acceleratable.focus_widget)
@@ -303,7 +303,7 @@ class VirTaal:
             modified = ""
             if value:
                 modified = "*"
-            self.main_window.set_title((_('VirTaal - %(current_file)s %(modified_marker)s') % {"current_file": path.basename(self.filename), "modified_marker": modified}).rstrip())
+            self.main_window.set_title((_('Virtaal - %(current_file)s %(modified_marker)s') % {"current_file": path.basename(self.filename), "modified_marker": modified}).rstrip())
         self.modified = value
 
     def _on_grid_cursor_changed(self, grid):
@@ -418,7 +418,7 @@ class VirTaal:
         openmailto.open("http://translate.sourceforge.net/wiki/virtaal/index")
 
     def _on_report_bug(self, _widget=None):
-        openmailto.open("http://bugs.locamotion.org/enter_bug.cgi?product=VirTaal")
+        openmailto.open("http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal")
 
     def run(self):
         gtk.main()

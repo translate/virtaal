@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-_Name=VirTaal
+_Name=Virtaal
 _GenericName=Translation Tool
 _Comment=A translation tool to help a human translator translate files into other languages
 TryExec=virtaal

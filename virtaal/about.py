@@ -28,7 +28,7 @@ class About(gtk.AboutDialog):
     def __init__(self, parent):
         gtk.AboutDialog.__init__(self)
         self._register_uri_handlers()
-        self.set_name("VirTaal")
+        self.set_name("Virtaal")
         self.set_version(__version__.ver)
         self.set_copyright(_(u"© Copyright 2007-2008 Zuza Software Foundation"))
         self.set_comments(_("Advanced Computer Aided Translation (CAT) tool for localization and translation"))
@@ -46,7 +46,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.""")
         self.set_website("http://translate.sourceforge.net/wiki/virtaal/index")
-        self.set_website_label(_("VirTaal website"))
+        self.set_website_label(_("Virtaal website"))
         self.set_authors([
                 "Friedel Wolff <friedel@translate.org.za>", 
                 "Wynand Winterbach <wynand@translate.org.za>", 

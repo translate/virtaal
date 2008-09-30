@@ -49,10 +49,10 @@ class UnitGrid(gtk.TreeView):
     def add_accelerator_bindings(self):
         self.accel_group = gtk.AccelGroup()
         self._owner.main_window.add_accel_group(self.accel_group)
-        self.accel_group.connect_by_path("<VirTaal>/Navigation/Up", self._move_up)
-        self.accel_group.connect_by_path("<VirTaal>/Navigation/Down", self._move_down)
-        self.accel_group.connect_by_path("<VirTaal>/Navigation/PgUp", self._move_pgup)
-        self.accel_group.connect_by_path("<VirTaal>/Navigation/PgDown", self._move_pgdown)
+        self.accel_group.connect_by_path("<Virtaal>/Navigation/Up", self._move_up)
+        self.accel_group.connect_by_path("<Virtaal>/Navigation/Down", self._move_down)
+        self.accel_group.connect_by_path("<Virtaal>/Navigation/PgUp", self._move_pgup)
+        self.accel_group.connect_by_path("<Virtaal>/Navigation/PgDown", self._move_pgdown)
 
     def enable_tooltips(self):
         if hasattr(self, "set_tooltip_column"):

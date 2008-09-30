@@ -6,7 +6,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: VirTaal 0.1\n"
+"Project-Id-Version: Virtaal 0.1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2008-07-25 18:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -58,7 +58,7 @@ msgid ""
 msgstr ""
 
 #: ../virtaal/about.py:50
-msgid "VirTaal website"
+msgid "Virtaal website"
 msgstr ""
 
 #: ../virtaal/about.py:56
@@ -99,7 +99,7 @@ msgstr ""
 
 #: ../virtaal/main_window.py:258
 #, python-format
-msgid "VirTaal - %(current_file)s %(modified_marker)s"
+msgid "Virtaal - %(current_file)s %(modified_marker)s"
 msgstr ""
 
 #: ../virtaal/main_window.py:271

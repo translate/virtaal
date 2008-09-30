@@ -32,7 +32,7 @@ gettext.install("virtaal")
 from __version__ import ver
 
 
-x_generator = 'VirTaal ' + ver
+x_generator = 'Virtaal ' + ver
 default_config = "~/.locamotion/virtaal.ini"
 
 def name():

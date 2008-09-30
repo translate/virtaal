@@ -166,7 +166,7 @@ Name: "{group}\%(name)s (uninstall)"; Filename: "{uninstallexe}"''' % {'name': n
 Root: HKCR; Subkey: "virtaal_%(key)s\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icons\virtaal.ico"
 Root: HKCR; Subkey: "virtaal_%(key)s\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\virtaal.exe"" ""%%1"""''' % {'key': key, 'description': description}
 
-    # Show a "Launch VirTaal" checkbox on the last installer screen
+    # Show a "Launch Virtaal" checkbox on the last installer screen
     print >> ofi, r'''
 [Run]
 Filename: "{app}\virtaal.exe"; Description: "{cm:LaunchProgram,%(name)s}"; Flags: nowait postinstall skipifsilent''' % {'name': name}
@@ -293,7 +293,7 @@ def main(options):
           version=virtaal_version,
           license="GNU General Public License (GPL)",
           description="A tool to create program translations.",
-          long_description="""VirTaal is used to create program translations.
+          long_description="""Virtaal is used to create program translations.
 
           It uses the Translate Toolkit to get access to translation files and therefore
           can edit a variety of files (including PO and XLIFF files).""",

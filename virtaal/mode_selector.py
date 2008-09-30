@@ -65,7 +65,7 @@ class ModeSelector(gtk.HBox):
                 self.default_mode = mode
 
     def cursor_changed(self, grid):
-        """Indirect handler for C{VirTaal.store_grid}'s "cursor-changed" event.
+        """Indirect handler for C{Virtaal.store_grid}'s "cursor-changed" event.
 
             This method gets the C{UnitEditor} object for the newly selected
             unit and passes it on to all modes' C{handle_unit()} methods. It

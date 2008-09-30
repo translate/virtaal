@@ -109,7 +109,10 @@ class UnitRenderer(gtk.GenericCellRenderer):
 
     def _get_pango_layout(self, widget, text, width, font_description):
         '''Gets the Pango layout used in the cell in a TreeView widget.'''
-        layout = pango.Layout(widget.get_pango_context())
+        # We can't use widget.get_pango_context() because we'll end up
+        # overwriting the language and font settings if we don't have a
+        # new one
+        layout = pango.Layout(widget.create_pango_context())
         layout.set_font_description(font_description)
         layout.set_wrap(pango.WRAP_WORD_CHAR)
         layout.set_width(width * pango.SCALE)

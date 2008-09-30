@@ -114,6 +114,8 @@ class Document(gobject.GObject):
             self.store = factory.getobject(filename)
         if mode_selector is None:
             mode_selector = ModeSelector(self)
+        else:
+            mode_selector.document = self
         self.stats = statsdb.StatsCache().filestats(filename, checks.UnitChecker(), self.store)
         self._correct_header()
         self.nplurals = compute_nplurals(self.store)

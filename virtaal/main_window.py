@@ -234,10 +234,10 @@ class VirTaal:
             # processing 
             def hard_work(dialog=None):
                 try:
-                    self.document = document.Document(filename, store=store)
+                    mode_selector = getattr(self.document, 'mode_selector', None)
+                    self.document = document.Document(filename, store=store, mode_selector=mode_selector)
                     child = self.mode_bar.get_children()[0]
                     self.mode_bar.remove(child)
-                    child.destroy()
                     self.mode_bar.pack_start(self.document.mode_selector)
                     self.mode_bar.reorder_child(self.document.mode_selector, 0)
 

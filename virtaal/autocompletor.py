@@ -77,6 +77,8 @@ class AutoCompletor(object):
         wordcounts = {}
 
         for unit in store.units:
+            if not unit.target:
+                continue
             for word in self.wordsep_re.split(unit.target):
                 if len(word) > self.comp_len:
                     try:

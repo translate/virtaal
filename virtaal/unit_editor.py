@@ -141,7 +141,14 @@ class UnitEditor(gtk.EventBox, gtk.CellEditable):
         buf = text_view.get_buffer()
         position = buf.props.cursor_position
         lang = factory.getlanguage(self._document.get_target_language())
-        buf.set_text(markup.escape(lang.punctranslate(self._unit.source)))
+        new_source = lang.punctranslate(self._unit.source)
+        # if punctranslate actually changed something, let's insert that as an
+        # undo step
+        if new_source != self._unit.source:
+            buf.set_text(markup.escape(self._unit.source))
+            # TODO: consider a better position to return to on undo
+            undo_buffer.merge_actions(buf, position)
+        buf.set_text(markup.escape(new_source))
         undo_buffer.merge_actions(buf, position)
         unit_layout.focus_text_view(text_view)
         return False

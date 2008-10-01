@@ -66,7 +66,12 @@ def gtk_textview_compute_optimal_height(widget, width):
     border = 2 * widget.border_width - 2 * widget.parent.border_width
     if widget.style_get_property("interior-focus"):
         border += 2 * widget.style_get_property("focus-line-width")
-    _w, h = make_pango_layout(widget, buf.get_text(buf.get_start_iter(), buf.get_end_iter()), width - border).get_pixel_size()
+
+    buftext = buf.get_text(buf.get_start_iter(), buf.get_end_iter())
+    if not buftext:
+        buftext = getattr(widget, '_source_text', "")
+
+    _w, h = make_pango_layout(widget, buftext, width - border).get_pixel_size()
     widget.parent.set_size_request(-1, h + border)
 
 @compute_optimal_height.when_type(label_expander.LabelExpander)

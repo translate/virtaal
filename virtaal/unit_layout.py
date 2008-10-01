@@ -169,7 +169,7 @@ def source_text_box(get_text, set_text):
     text_view._is_source = True
     return scrolled_window
 
-def target_text_box(get_text, set_text):
+def target_text_box(get_text, set_text, source_text):
     def get_range(buf, left_offset, right_offset):
         return buf.get_text(buf.get_iter_at_offset(left_offset),
                             buf.get_iter_at_offset(right_offset))
@@ -196,6 +196,7 @@ def target_text_box(get_text, set_text):
     text_view.get_pango_context().set_language(rendering.get_target_language())
     text_view.connect('key-press-event', on_text_view_n_press_event)
     text_view._is_target = True
+    text_view._source_text = source_text
 
     buf = undo_buffer.add_undo_to_buffer(text_view.get_buffer())
     undo_buffer.execute_without_signals(buf, lambda: buf.set_text(markup.escape(get_text())))
@@ -339,7 +340,7 @@ def build_layout(unit, nplurals):
     sources = [source_text_box(partial(get_source, unit, i), partial(set_source, unit, i))
                for i in xrange(num_sources(unit))]
 
-    targets = [target_text_box(partial(get_target, unit, nplurals, i), partial(set_target, unit, i))
+    targets = [target_text_box(partial(get_target, unit, nplurals, i), partial(set_target, unit, i), unit.source)
                for i in xrange(num_targets(unit, nplurals))]
 
     widget = layout(

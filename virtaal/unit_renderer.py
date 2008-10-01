@@ -61,6 +61,9 @@ class UnitRenderer(gtk.GenericCellRenderer):
         "modified":      (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
     }
 
+    ROW_PADDING = 10
+    """The number of pixels between rows."""
+
     def __init__(self, parent):
         gtk.GenericCellRenderer.__init__(self)
         self.set_property('mode', gtk.CELL_RENDERER_MODE_EDITABLE)
@@ -135,7 +138,7 @@ class UnitRenderer(gtk.GenericCellRenderer):
             self.target_layout.set_alignment(pango.ALIGN_RIGHT)
         _layout_width, source_height = self.source_layout.get_pixel_size()
         _layout_width, target_height = self.target_layout.get_pixel_size()
-        return max(source_height, target_height)
+        return max(source_height, target_height) + self.ROW_PADDING
 
     def do_get_size(self, widget, _cell_area):
         #TODO: store last unitid and computed dimensions
@@ -148,7 +151,8 @@ class UnitRenderer(gtk.GenericCellRenderer):
         else:
             height = self.compute_cell_height(widget, width)
         height = min(height, 600)
-        return 0, 0, width, height
+        y_offset = self.ROW_PADDING / 2
+        return 0, y_offset, width, height
 
     def _on_editor_done(self, editor):
         self.emit("editing-done", editor.get_data("path"), editor.must_advance, editor.get_modified())

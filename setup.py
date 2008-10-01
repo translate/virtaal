@@ -306,7 +306,7 @@ def add_mac_options(options):
                     } for description, extentions, mimetypes in factory.supported_files()]
                 }
             }
-        }
+        }})
     return options
 
 #############################
@@ -317,6 +317,8 @@ def add_platform_specific_options(options):
         return add_win32_options(options)
     if sys.platform == 'darwin':
         return add_mac_options(options)
+    else:
+        return options
 
 def create_manifest(data_files):
     f = open('MANIFEST.in', 'w+')

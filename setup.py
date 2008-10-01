@@ -329,7 +329,7 @@ def create_manifest(data_files):
 def main(options):
     options = add_platform_specific_options(options)
     create_manifest(options['data_files'])
-    setup(name="virtaal",
+    setup(name="Virtaal",
           version=virtaal_version,
           license="GNU General Public License (GPL)",
           description=virtaal_description,

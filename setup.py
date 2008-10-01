@@ -146,7 +146,7 @@ Name: "{group}\%(name)s (uninstall)"; Filename: "{uninstallexe}"''' % {'name': n
     #;Description of the file type
     #Root: HKCR; Subkey: "virtaal_po"; ValueType: string; ValueName: ""; ValueData: "Gettext PO"; Flags: uninsdeletekey
     #;Icon to use in Explorer
-    #Root: HKCR; Subkey: "virtaal_po\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icons\virtaal.ico"
+    #Root: HKCR; Subkey: "virtaal_po\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\share\virtaal\virtaal.ico"
     #;The command to open the file
     #Root: HKCR; Subkey: "virtaal_po\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\virtaal.exe"" ""%1"""
 
@@ -162,7 +162,7 @@ Name: "{group}\%(name)s (uninstall)"; Filename: "{uninstallexe}"''' % {'name': n
         for extention in extentions:
             print >> ofi, r'Root: HKCR; Subkey: ".%(extention)s"; ValueType: string; ValueName: ""; ValueData: "virtaal_%(key)s"; Flags: uninsdeletevalue' % {'extention': extention, 'key': key}
         print >> ofi, r'''Root: HKCR; Subkey: "virtaal_%(key)s"; ValueType: string; ValueName: ""; ValueData: "%(description)s"; Flags: uninsdeletekey
-Root: HKCR; Subkey: "virtaal_%(key)s\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icons\virtaal.ico"
+Root: HKCR; Subkey: "virtaal_%(key)s\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\share\virtaal\virtaal.ico"
 Root: HKCR; Subkey: "virtaal_%(key)s\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\virtaal.exe"" ""%%1"""''' % {'key': key, 'description': description}
 
     # Show a "Launch Virtaal" checkbox on the last installer screen

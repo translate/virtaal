@@ -52,35 +52,8 @@ from mode_selector import ModeSelector
 
 # FIXME: Add docstrings!
 
-def get_data_file_abs_name(filename):
-    """Get the absolute path to the given file- or directory name in Virtaal's
-        data directory.
-
-        @type  filename: str
-        @param filename: The file- or directory name to look for in the data
-            directory.
-        """
-    import sys
-
-    BASE_DIRS = [
-        os.path.dirname(unicode(__file__, sys.getfilesystemencoding())),
-        os.path.dirname(unicode(sys.executable, sys.getfilesystemencoding()))
-    ]
-
-    DATA_DIRS = [
-        ["..", "share", "virtaal"],
-        ["share", "virtaal"]
-    ]
-
-    for basepath, data_dir in ((x, y) for x in BASE_DIRS for y in DATA_DIRS):
-        dir_and_filename = data_dir + [filename]
-        datafile = path.join(basepath or path.dirname(__file__), *dir_and_filename)
-        if path.exists(datafile):
-            return datafile
-    raise Exception('Could not find "%s"' % (filename,))
-
 def load_glade_file(filename, domain):
-    gladename = get_data_file_abs_name(filename)
+    gladename = pan_app.get_abs_data_filename(filename)
     gui = glade.XML(gladename, domain=domain)
     return gladename, gui
 
@@ -114,7 +87,7 @@ class Virtaal:
         self.statusbar_context_id = self.status_bar.get_context_id("statusbar")
         self.sw = self.gui.get_widget("scrolledwindow1")
         self.main_window = self.gui.get_widget("MainWindow")
-        self.main_window.set_icon_from_file(get_data_file_abs_name("virtaal.ico"))
+        self.main_window.set_icon_from_file(pan_app.get_abs_data_filename("virtaal.ico"))
         recent_files = self.gui.get_widget("recent_files")
         recent.rc.connect("item-activated", self._on_recent_file_activated)
         recent_files.set_submenu(recent.rc)
@@ -128,7 +101,7 @@ class Virtaal:
         self.document = None
 
         self.autocomp = AutoCompletor()
-        self.autocorr = AutoCorrector(acorpath=get_data_file_abs_name('autocorr'))
+        self.autocorr = AutoCorrector(acorpath=pan_app.get_abs_data_filename('autocorr'))
 
         if startup_file != None:
             self.load_file(startup_file)

@@ -25,7 +25,7 @@ try:
 except ImportError, e:
     import ConfigParser
 import os
-
+import sys
 import locale, gettext
 gettext.install("virtaal")
 
@@ -128,3 +128,30 @@ class Settings:
         file.close()
 
 settings = Settings()
+
+
+def get_abs_data_filename(filename):
+    """Get the absolute path to the given file- or directory name in Virtaal's
+        data directory.
+
+        @type  filename: str
+        @param filename: The file- or directory name to look for in the data
+            directory.
+        """
+
+    BASE_DIRS = [
+        os.path.dirname(unicode(__file__, sys.getfilesystemencoding())),
+        os.path.dirname(unicode(sys.executable, sys.getfilesystemencoding()))
+    ]
+
+    DATA_DIRS = [
+        ["..", "share", "virtaal"],
+        ["share", "virtaal"]
+    ]
+
+    for basepath, data_dir in ((x, y) for x in BASE_DIRS for y in DATA_DIRS):
+        dir_and_filename = data_dir + [filename]
+        datafile = os.path.join(basepath or os.path.dirname(__file__), *dir_and_filename)
+        if os.path.exists(datafile):
+            return datafile
+    raise Exception('Could not find "%s"' % (filename,))

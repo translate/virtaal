@@ -25,6 +25,8 @@ from bisect import bisect_left
 import gobject
 import gtk
 
+from markup import markuptext
+
 
 class UnitModel(gtk.GenericTreeModel):
     def __init__(self, store, editable_indices):
@@ -57,7 +59,7 @@ class UnitModel(gtk.GenericTreeModel):
         if column <= 1:
             unit = self._store.units[self._editable_indices[rowref]]
             if column == 0:
-                return unit.getnotes() or None
+                return markuptext(unit.getnotes(), markupescapes=False) or None
             else:
                 return unit
         else:

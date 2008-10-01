@@ -30,7 +30,7 @@ def fancyspaces(string):
 #        spaces = spaces[1:]
     return '<span underline="low" foreground="grey"> </span>' * len(spaces)
 
-def markuptext(text, fancyspaces=False, stripescapes=False):
+def markuptext(text, fancyspaces=False, markupescapes=True):
     """Replace special characters &, <, >, add and handle escapes if asked for Pango."""
     if not text:
         return ""
@@ -40,17 +40,14 @@ def markuptext(text, fancyspaces=False, stripescapes=False):
             '<span foreground="darkred">%s</span>' % escape.group()
     text = xml_re.sub(fancy_xml, text)
 
-    if stripescapes:
-        text = text.replace("\n", '<br />')
-        text = text.replace("\r", '<br />')
-    else:
+    if markupescapes:
         fancyescape = lambda escape: \
                 '<span foreground="purple">%s</span>' % escape
 
-        text = text.replace("\r\n", fancyescape('\\r\\n') + '\n')
-        text = text.replace("\n", fancyescape('\\n') + '\n')
-        text = text.replace("\r", fancyescape('\\r') + '\n')
-        text = text.replace("\t", fancyescape('\\t'))
+        text = text.replace("\r\n", fancyescape(r'\r\n') + '\n')
+        text = text.replace("\n", fancyescape(r'\n') + '\n')
+        text = text.replace("\r", fancyescape(r'\r') + '\n')
+        text = text.replace("\t", fancyescape(r'\t'))
     # we don't need it at the end of the string
     if text.endswith("\n"):
         text = text[:-len("\n")]

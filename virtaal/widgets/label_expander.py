@@ -44,6 +44,7 @@ class LabelExpander(gtk.EventBox):
         label_text.set_single_line_mode(True)
         label_text.set_ellipsize(pango.ELLIPSIZE_END)
         label_text.set_justify(gtk.JUSTIFY_LEFT)
+        label_text.set_use_markup(True)
 
         self.label = gtk.EventBox()
         self.label.add(label_text)

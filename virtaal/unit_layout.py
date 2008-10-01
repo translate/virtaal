@@ -334,17 +334,26 @@ def build_layout(unit, nplurals):
             return nplurals
         return 1
 
-    return layout(
+    first_source = source_text_box(partial(get_source, unit, 0), partial(set_source, unit, 0))
+
+    sources = [source_text_box(partial(get_source, unit, i), partial(set_source, unit, i))
+               for i in xrange(num_sources(unit))]
+
+    targets = [target_text_box(partial(get_target, unit, nplurals, i), partial(set_target, unit, i))
+               for i in xrange(num_targets(unit, nplurals))]
+
+    widget = layout(
                middle=vlist(
                  comment(partial(unit.getnotes, 'programmer')),
-                 vlist(*(source_text_box(partial(get_source, unit, i),
-                                         partial(set_source, unit, i))
-                         for i in xrange(num_sources(unit)))),
+                 vlist(*sources),
                  comment(unit.getcontext),
                  connect_target_text_views(
-                    vlist(*(target_text_box(partial(get_target, unit, nplurals, i),
-                                            partial(set_target, unit, i))
-                            for i in xrange(num_targets(unit, nplurals))))),
+                    vlist(*targets)),
                  comment(partial(unit.getnotes, 'translator')),
                  option(_('F_uzzy'), unit.isfuzzy, unit.markfuzzy)),
                right=terminology_list([get_source(unit, i) for i in xrange(num_sources(unit))]))
+
+    widget.sources = sources
+    widget.target = targets
+    return widget
+

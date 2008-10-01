@@ -33,22 +33,31 @@ except ImportError:
     py2exe = None
     build_exe = Command
 
+try:
+    import py2app
+except ImportError:
+    py2app = None
 
 SOURCE_DATA_DIR = path.join('share', 'virtaal')
 TARGET_DATA_DIR = path.join("share", "virtaal")
+
+virtaal_description="A tool to create program translations."
 
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
     "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Information Technology",
     "License :: OSI Approved :: GNU General Public License (GPL)",
     "Programming Language :: Python",
     "Topic :: Software Development :: Localization",
-    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Linguistic"
     "Operating System :: OS Independent",
     "Operating System :: Microsoft :: Windows",
     "Operating System :: Unix"
 ]
+#TODO: add Natural Language classifiers
 
 options = {
     'data_files': [
@@ -270,12 +279,44 @@ def add_win32_options(options):
         })
     return options
 
+def add_mac_options(options):
+    # http://svn.pythonmac.org/py2app/py2app/trunk/doc/index.html#tweaking-your-info-plist
+    # http://developer.apple.com/documentation/MacOSX/Conceptual/BPRuntimeConfig/Articles/PListKeys.html
+    if py2app is None:
+        return options
+    options.update({"options": {
+        "app": "bin/virtaal",
+        "py2app": {
+            #"semi_standalone": True,
+            "compressed": True,
+            "argv_emulation": True,
+            "plist" = {
+                "CFBundleGetInfoString": virtaal_description,
+                "CFBundleGetInfoString": "Virtaal",
+                "CFBundleIconFile": "virtaal.icns",
+                "CFBundleShortVersionString": virtaal_version,
+                #"LSHasLocalizedDisplayName": "1",
+                #"LSMinimumSystemVersion": ???,
+                "NSHumanReadableCopyright": "Copyright (C) 2007-2008 Zuza Software Foundation",
+                "CFBundleDocumentTypes": [{
+                    "CFBundleTypeExtensions": [extention.lstrip("*.") for extention in extentions],
+                    "CFBundleTypeIconFile": "virtaal.icns",
+                    "CFBundleTypeMIMETypes": mimetypes,
+                    "CFBundleTypeName": description, #????
+                    } for description, extentions, mimetypes in factory.supported_files()]
+                }
+            }
+        }
+    return options
+
 #############################
 # General functions
 
 def add_platform_specific_options(options):
-    # For now, we only have win32 to worry about
-    return add_win32_options(options)
+    if sys.platform == 'win32':
+        return add_win32_options(options)
+    if sys.platform == 'darwin':
+        return add_mac_options(options)
 
 def create_manifest(data_files):
     f = open('MANIFEST.in', 'w+')
@@ -291,7 +332,7 @@ def main(options):
     setup(name="virtaal",
           version=virtaal_version,
           license="GNU General Public License (GPL)",
-          description="A tool to create program translations.",
+          description=virtaal_description,
           long_description="""Virtaal is used to create program translations.
 
           It uses the Translate Toolkit to get access to translation files and therefore

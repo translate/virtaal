@@ -156,6 +156,8 @@ Name: "{group}\%(name)s (uninstall)"; Filename: "{uninstallexe}"''' % {'name': n
         # We skip those types where we depend on mime types, not extentions
         if not extentions:
             continue
+        # Form a key from the first extention for internal only
+        key = extentions[0]
         # Associate each extention with the file type
         for extention in extentions:
             print >> ofi, r'Root: HKCR; Subkey: ".%(extention)s"; ValueType: string; ValueName: ""; ValueData: "virtaal_%(key)s"; Flags: uninsdeletevalue' % {'extention': extention, 'key': key}

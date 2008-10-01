@@ -290,7 +290,7 @@ def add_mac_options(options):
             #"semi_standalone": True,
             "compressed": True,
             "argv_emulation": True,
-            "plist" = {
+            "plist":  {
                 "CFBundleGetInfoString": virtaal_description,
                 "CFBundleGetInfoString": "Virtaal",
                 "CFBundleIconFile": "virtaal.icns",

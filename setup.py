@@ -63,7 +63,7 @@ mo_files=[]
 for f in glob.glob(path.join('po', '*.mo')):
     lang = path.split(f[:-3])[1] # Get "af" from "po/af.mo"
     mo_files.append(
-        ( path.join(TARGET_DATA_DIR, "locale", lang, "LC_MESSAGES", "virtaal.mo"), f )
+        ( path.join(TARGET_DATA_DIR, "locale", lang, "LC_MESSAGES", "virtaal.mo"), [f] )
     )
 
 # Some of these depend on some files to be built externally before running 

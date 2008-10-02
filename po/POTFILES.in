@@ -1,8 +1,8 @@
 [encoding: UTF-8]
 bin/virtaal
-share/virtaal/virtaal.desktop.in
+share/applications/virtaal.desktop.in
 share/virtaal/virtaal.glade
-share/virtaal/virtaal-mimetype.xml.in
+share/mime/packages/virtaal-mimetype.xml.in
 virtaal/about.py
 virtaal/document.py
 virtaal/formats.py

@@ -65,8 +65,7 @@ options = {
     'data_files': [
         (path.join(TARGET_DATA_DIR, "virtaal"), glob.glob(path.join(SOURCE_DATA_DIR, "virtaal", "*.*"))),
         (path.join(TARGET_DATA_DIR, "virtaal", "autocorr"), glob.glob(path.join(SOURCE_DATA_DIR, "virtaal", "autocorr", "*"))),
-        (path.join(TARGET_DATA_DIR, "mime", "packages"), glob.glob(path.join(SOURCE_DATA_DIR, "mime", "packages", "*.xml"))),
-        (path.join(TARGET_DATA_DIR, "applications"), glob.glob(path.join(SOURCE_DATA_DIR, "applications", "*.desktop"))),
+        (path.join(TARGET_DATA_DIR, "icons"), glob.glob(path.join(SOURCE_DATA_DIR, "icons", "*.*"))),
         ("po", glob.glob(path.join("po", "*.*"))),
     ],
     'scripts': [

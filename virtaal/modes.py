@@ -53,7 +53,7 @@ class BidiIterator(object):
 class BaseMode(UnionSetEnumerator):
     """Interface for other modes."""
     mode_name = 'BaseMode'
-    user_name = _('')
+    user_name = '' # Sublcasses should mark this for translation with _()
     widgets = []
 
     def __init__(self):

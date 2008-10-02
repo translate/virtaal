@@ -348,7 +348,7 @@ class Virtaal:
                                 gtk.DIALOG_MODAL,
                                 gtk.MESSAGE_ERROR,
                                 gtk.BUTTONS_OK,
-                                _("Could not save file.\n\n%s\n\nTry saving at a different location." % (str(e))))
+                                _("Could not save file.\n\n%(error_message)s\n\nTry saving at a different location." % {error_message: str(e)))
                 dialog.set_title(_("Error"))
                 response = dialog.run()
                 dialog.destroy()

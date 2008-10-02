@@ -84,7 +84,7 @@ class Settings:
                 raise Exception
 
         try:
-            lang = locale.getlocale()[0]
+            lang = locale.getdefaultlocale()[0]
             self.language["uilang"] = lang
             self.language["contentlang"] = lang
         except:

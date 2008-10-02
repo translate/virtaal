@@ -59,6 +59,13 @@ classifiers = [
 ]
 #TODO: add Natural Language classifiers
 
+mo_files=[]
+for f in glob.glob(path.join('po', '*.mo')):
+    lang = path.split(f[:-3])[1] # Get "af" from "po/af.mo"
+    mo_files.append(
+        ( path.join(TARGET_DATA_DIR, "locale", lang, "LC_MESSAGES", "virtaal.mo"), f )
+    )
+
 # Some of these depend on some files to be built externally before running 
 # setup.py, like the .xml and .desktop files
 options = {
@@ -66,8 +73,7 @@ options = {
         (path.join(TARGET_DATA_DIR, "virtaal"), glob.glob(path.join(SOURCE_DATA_DIR, "virtaal", "*.*"))),
         (path.join(TARGET_DATA_DIR, "virtaal", "autocorr"), glob.glob(path.join(SOURCE_DATA_DIR, "virtaal", "autocorr", "*"))),
         (path.join(TARGET_DATA_DIR, "icons"), glob.glob(path.join(SOURCE_DATA_DIR, "icons", "*.*"))),
-        ("po", glob.glob(path.join("po", "*.*"))),
-    ],
+    ] + mo_files,
     'scripts': [
         "bin/virtaal"
     ],

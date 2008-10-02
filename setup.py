@@ -38,6 +38,7 @@ try:
 except ImportError:
     py2app = None
 
+PRETTY_NAME = "Virtaal"
 SOURCE_DATA_DIR = path.join('share')
 TARGET_DATA_DIR = path.join("share")
 
@@ -222,7 +223,7 @@ class BuildWin32Installer(build_exe):
         # create the Installer, using the files py2exe has created.
         exe_files = self.windows_exe_files + self.console_exe_files
         print "*** creating the inno setup script***"
-        script_path = create_inno_script(self.distribution.metadata.name, self.lib_dir, self.dist_dir, exe_files, self.lib_files,
+        script_path = create_inno_script(PRETTY_NAME, self.lib_dir, self.dist_dir, exe_files, self.lib_files,
                                          version=self.distribution.metadata.version)
         print "*** compiling the inno setup script***"
         compile_inno_script(script_path)
@@ -352,7 +353,7 @@ def create_manifest(data_files, extra_files):
 def main(options):
     options = add_platform_specific_options(options)
     create_manifest(options['data_files'], no_install_files)
-    setup(name="Virtaal",
+    setup(name="virtaal",
           version=virtaal_version,
           license="GNU General Public License (GPL)",
           description=virtaal_description,

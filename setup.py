@@ -89,6 +89,8 @@ no_install_files = [
     ['LICENSE', 'maketranslations']
 ]
 
+no_install_dirs = ['po']
+
 #############################
 # WIN 32 specifics
 
@@ -342,17 +344,17 @@ def add_platform_specific_options(options):
     else:
         return add_freedesktop_options(options)
 
-def create_manifest(data_files, extra_files):
+def create_manifest(data_files, extra_files, extra_dirs):
     f = open('MANIFEST.in', 'w+')
     for data_file_list in [d[1] for d in data_files] + extra_files:
-        f.write("include ")
-        f.write(" ".join(data_file_list))
-        f.write("\n")
+        f.write("include %s\n" % (" ".join( data_file_list )))
+    for dir in extra_dirs:
+        f.write("graft %s\n" % (dir))
     f.close()
 
 def main(options):
     options = add_platform_specific_options(options)
-    create_manifest(options['data_files'], no_install_files)
+    create_manifest(options['data_files'], no_install_files, no_install_dirs)
     setup(name="virtaal",
           version=virtaal_version,
           license="GNU General Public License (GPL)",

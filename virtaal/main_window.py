@@ -52,8 +52,8 @@ from mode_selector import ModeSelector
 
 # FIXME: Add docstrings!
 
-def load_glade_file(filename, domain):
-    gladename = pan_app.get_abs_data_filename(filename)
+def load_glade_file(path_parts, domain):
+    gladename = pan_app.get_abs_data_filename(path_parts)
     gui = glade.XML(gladename, domain=domain)
     return gladename, gui
 
@@ -65,7 +65,7 @@ class Virtaal:
 
     def __init__(self, startup_file=None):
         #Set the Glade file
-        self.gladefile, self.gui = load_glade_file("virtaal.glade", "virtaal")
+        self.gladefile, self.gui = load_glade_file(["virtaal", "virtaal.glade"], "virtaal")
 
         #Create our events dictionary and connect it
         dic = {
@@ -87,7 +87,7 @@ class Virtaal:
         self.statusbar_context_id = self.status_bar.get_context_id("statusbar")
         self.sw = self.gui.get_widget("scrolledwindow1")
         self.main_window = self.gui.get_widget("MainWindow")
-        self.main_window.set_icon_from_file(pan_app.get_abs_data_filename("virtaal.ico"))
+        self.main_window.set_icon_from_file(pan_app.get_abs_data_filename(["icons", "virtaal.ico"]))
         recent_files = self.gui.get_widget("recent_files")
         recent.rc.connect("item-activated", self._on_recent_file_activated)
         recent_files.set_submenu(recent.rc)
@@ -101,7 +101,7 @@ class Virtaal:
         self.document = None
 
         self.autocomp = AutoCompletor()
-        self.autocorr = AutoCorrector(acorpath=pan_app.get_abs_data_filename('autocorr'))
+        self.autocorr = AutoCorrector(acorpath=pan_app.get_abs_data_filename(['virtaal', 'autocorr']))
 
         if startup_file != None:
             self.load_file(startup_file)

@@ -56,7 +56,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.""")
                 ])
         self.set_translator_credits(_("translator-credits"))
         self.set_icon(parent.get_icon())
-        self.set_logo(gtk.gdk.pixbuf_new_from_file(pan_app.get_abs_data_filename("virtaal_logo.png")))
+        self.set_logo(gtk.gdk.pixbuf_new_from_file(pan_app.get_abs_data_filename(["virtaal", "virtaal_logo.png"])))
         self.set_artists([
                 "Heather Bailey <heather@translate.org.za>",
                 ])

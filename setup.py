@@ -38,8 +38,8 @@ try:
 except ImportError:
     py2app = None
 
-SOURCE_DATA_DIR = path.join('share', 'virtaal')
-TARGET_DATA_DIR = path.join("share", "virtaal")
+SOURCE_DATA_DIR = path.join('share')
+TARGET_DATA_DIR = path.join("share")
 
 virtaal_description="A tool to create program translations."
 
@@ -59,10 +59,14 @@ classifiers = [
 ]
 #TODO: add Natural Language classifiers
 
+# Some of these depend on some files to be built externally before running 
+# setup.py, like the .xml and .desktop files
 options = {
     'data_files': [
-        (path.join(TARGET_DATA_DIR, "autocorr"), glob.glob(path.join(SOURCE_DATA_DIR, "autocorr", "*"))),
-        (TARGET_DATA_DIR, glob.glob(path.join(SOURCE_DATA_DIR, "*.*"))),
+        (path.join(TARGET_DATA_DIR, "virtaal"), glob.glob(path.join(SOURCE_DATA_DIR, "virtaal", "*.*"))),
+        (path.join(TARGET_DATA_DIR, "virtaal", "autocorr"), glob.glob(path.join(SOURCE_DATA_DIR, "virtaal", "autocorr", "*"))),
+        (path.join(TARGET_DATA_DIR, "mime", "packages"), glob.glob(path.join(SOURCE_DATA_DIR, "mime", "packages", "*.xml"))),
+        (path.join(TARGET_DATA_DIR, "applications"), glob.glob(path.join(SOURCE_DATA_DIR, "applications", "*.desktop"))),
         ("po", glob.glob(path.join("po", "*.*"))),
     ],
     'scripts': [
@@ -310,6 +314,13 @@ def add_mac_options(options):
         }})
     return options
 
+def add_freedesktop_options(options):
+    options['data_files'].extend([
+        (path.join(TARGET_DATA_DIR, "mime", "packages"), glob.glob(path.join(SOURCE_DATA_DIR, "mime", "packages", "*.xml"))),
+        (path.join(TARGET_DATA_DIR, "applications"), glob.glob(path.join(SOURCE_DATA_DIR, "applications", "*.desktop"))),
+    ])
+    return options
+
 #############################
 # General functions
 
@@ -319,7 +330,7 @@ def add_platform_specific_options(options):
     if sys.platform == 'darwin':
         return add_mac_options(options)
     else:
-        return options
+        return add_freedesktop_options(options)
 
 def create_manifest(data_files):
     f = open('MANIFEST.in', 'w+')

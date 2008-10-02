@@ -130,14 +130,16 @@ class Settings:
 settings = Settings()
 
 
-def get_abs_data_filename(filename):
+def get_abs_data_filename(path_parts):
     """Get the absolute path to the given file- or directory name in Virtaal's
         data directory.
 
-        @type  filename: str
-        @param filename: The file- or directory name to look for in the data
-            directory.
+        @type  path_parts: list
+        @param path_parts: The path parts that can be joined by os.path.join().
         """
+
+    if isinstance(path_parts, str):
+        path_parts = [path_parts]
 
     BASE_DIRS = [
         os.path.dirname(unicode(__file__, sys.getfilesystemencoding())),
@@ -145,13 +147,14 @@ def get_abs_data_filename(filename):
     ]
 
     DATA_DIRS = [
-        ["..", "share", "virtaal"],
-        ["share", "virtaal"]
+        ["..", "share"],
+        ["share"]
     ]
 
     for basepath, data_dir in ((x, y) for x in BASE_DIRS for y in DATA_DIRS):
-        dir_and_filename = data_dir + [filename]
+        dir_and_filename = data_dir + path_parts
         datafile = os.path.join(basepath or os.path.dirname(__file__), *dir_and_filename)
+        print datafile
         if os.path.exists(datafile):
             return datafile
-    raise Exception('Could not find "%s"' % (filename,))
+    raise Exception('Could not find "%s"' % (os.path.join(*path_parts)))

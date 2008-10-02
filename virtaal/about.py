@@ -56,6 +56,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.""")
                 "Dwayne Bailey <dwayne@translate.org.za>",
                 "Walter Leibbrandt <walter@translate.org.za>",
                 ])
+        # l10n: Rather than translating, fill in the names of the translators
         self.set_translator_credits(_("translator-credits"))
         self.set_icon(parent.get_icon())
         self.set_logo(gtk.gdk.pixbuf_new_from_file(pan_app.get_abs_data_filename(["virtaal", "virtaal_logo.png"])))

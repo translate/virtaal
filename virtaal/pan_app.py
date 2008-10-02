@@ -154,7 +154,6 @@ def get_abs_data_filename(path_parts):
     for basepath, data_dir in ((x, y) for x in BASE_DIRS for y in DATA_DIRS):
         dir_and_filename = data_dir + path_parts
         datafile = os.path.join(basepath or os.path.dirname(__file__), *dir_and_filename)
-        print datafile
         if os.path.exists(datafile):
             return datafile
     raise Exception('Could not find "%s"' % (os.path.join(*path_parts)))

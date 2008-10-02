@@ -348,8 +348,8 @@ def main(options):
           description=virtaal_description,
           long_description="""Virtaal is used to create program translations.
 
-          It uses the Translate Toolkit to get access to translation files and therefore
-          can edit a variety of files (including PO and XLIFF files).""",
+It uses the Translate Toolkit to get access to translation files and therefore
+can edit a variety of files (including PO and XLIFF files).""",
           author="Translate.org.za",
           author_email="translate-devel@lists.sourceforge.net",
           url="http://translate.sourceforge.net/wiki/virtaal/index",

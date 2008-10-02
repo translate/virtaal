@@ -125,7 +125,7 @@ OutputBaseFilename=%(name)s-%(version)s-setup
 ChangesAssociations=yes
 SetupIconFile=%(icon_path)s
 
-[Files]''' % {'name': name, 'version': version, 'icon_path': path.join(TARGET_DATA_DIR, "virtaal.ico")}
+[Files]''' % {'name': name, 'version': version, 'icon_path': path.join(TARGET_DATA_DIR, "icons", "virtaal.ico")}
     for fpath in exe_files + other_files:
         print >> ofi, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (fpath, os.path.dirname(fpath))
     print >> ofi, r'''
@@ -160,7 +160,7 @@ Name: "{group}\%(name)s (uninstall)"; Filename: "{uninstallexe}"''' % {'name': n
     #;Description of the file type
     #Root: HKCR; Subkey: "virtaal_po"; ValueType: string; ValueName: ""; ValueData: "Gettext PO"; Flags: uninsdeletekey
     #;Icon to use in Explorer
-    #Root: HKCR; Subkey: "virtaal_po\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\share\virtaal\virtaal.ico"
+    #Root: HKCR; Subkey: "virtaal_po\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\share\icons\virtaal.ico"
     #;The command to open the file
     #Root: HKCR; Subkey: "virtaal_po\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\virtaal.exe"" ""%1"""
 
@@ -176,7 +176,7 @@ Name: "{group}\%(name)s (uninstall)"; Filename: "{uninstallexe}"''' % {'name': n
         for extention in extentions:
             print >> ofi, r'Root: HKCR; Subkey: ".%(extention)s"; ValueType: string; ValueName: ""; ValueData: "virtaal_%(key)s"; Flags: uninsdeletevalue' % {'extention': extention, 'key': key}
         print >> ofi, r'''Root: HKCR; Subkey: "virtaal_%(key)s"; ValueType: string; ValueName: ""; ValueData: "%(description)s"; Flags: uninsdeletekey
-Root: HKCR; Subkey: "virtaal_%(key)s\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\share\virtaal\virtaal.ico"
+Root: HKCR; Subkey: "virtaal_%(key)s\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\share\icons\virtaal.ico"
 Root: HKCR; Subkey: "virtaal_%(key)s\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\virtaal.exe"" ""%%1"""''' % {'key': key, 'description': description}
 
     # Show a "Launch Virtaal" checkbox on the last installer screen
@@ -269,7 +269,7 @@ def add_win32_options(options):
             "windows": [
                 {
                     'script': 'bin/virtaal',
-                    'icon_resources': [(1, path.join(SOURCE_DATA_DIR, "virtaal.ico"))],
+                    'icon_resources': [(1, path.join(SOURCE_DATA_DIR, "icons", "virtaal.ico"))],
                 }
             ],
             'zipfile':  "virtaal.zip",

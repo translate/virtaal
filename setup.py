@@ -186,6 +186,9 @@ Name: "{group}\%(name)s (uninstall)"; Filename: "{uninstallexe}"''' % {'name': n
         key = extentions[0]
         # Associate each extention with the file type
         for extention in extentions:
+            # We don't want to associate with all .txt files, so let's skip it
+            if extention == "txt":
+                continue
             print >> ofi, r'Root: HKCR; Subkey: ".%(extention)s"; ValueType: string; ValueName: ""; ValueData: "virtaal_%(key)s"; Flags: uninsdeletevalue' % {'extention': extention, 'key': key}
         print >> ofi, r'''Root: HKCR; Subkey: "virtaal_%(key)s"; ValueType: string; ValueName: ""; ValueData: "%(description)s"; Flags: uninsdeletekey
 Root: HKCR; Subkey: "virtaal_%(key)s\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\share\icons\virtaal.ico"

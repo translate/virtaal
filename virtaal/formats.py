@@ -43,7 +43,7 @@ def file_open_chooser(_self, destroyCallback=None):
     chooser.add_filter(all_supported_filter)
     for name, extensions, mimetypes in factory.supported_files():
         new_filter = gtk.FileFilter()
-        new_filter.set_name(name)
+        new_filter.set_name(_(name))
         if extensions:
             for extension in extensions:
                 new_filter.add_pattern("*." + extension)

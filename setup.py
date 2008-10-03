@@ -237,7 +237,7 @@ class BuildWin32Installer(build_exe):
 def find_gtk_bin_directory():
     GTK_NAME = "libgtk"
     # Look for GTK in the user's Path as well as in some familiar locations
-    paths = os.environ['Path'].split(';') + [r'C:\GTK\bin', r'C:\Program Files\GTK\bin']
+    paths = os.environ['Path'].split(';') + [r'C:\GTK\bin', r'C:\Program Files\GTK\bin' r'C:\Program Files\GTK2-Runtime']
     for p in paths:
         files = [path.join(p, f) for f in os.listdir(p) if path.isfile(path.join(p, f)) and f.startswith(GTK_NAME)]
         if len(files) > 0:

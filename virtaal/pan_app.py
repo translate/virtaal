@@ -27,7 +27,7 @@ except ImportError, e:
 import os
 import sys
 import locale, gettext
-gettext.install("virtaal")
+gettext.install("virtaal", unicode=1)
 
 from __version__ import ver
 

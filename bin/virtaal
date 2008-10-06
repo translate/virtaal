@@ -37,7 +37,7 @@ def set_termininology_dir(option, opt_str, value, parser):
             try:
                 return factory.getobject(value)
             except ValueError:
-                raise OptionValueError(_("You must specify a directory or a translation store file for --terminology"))
+                raise OptionValueError(_("You must specify a directory or a translation file for --terminology"))
         return value
     parser.values.terminology = get_term(value)
 
@@ -45,6 +45,7 @@ usage = _("%prog [options] [translation_file]")
 option_list = [
     make_option("--profile",
                 action="store", type="string", dest="profile", metavar=_("PROFILE"),
+                # l10n: 'profiling' refers to performance testing
                 help=_("Perform profiling, storing the result to the supplied filename.")),
     make_option("--log",
                 action="store", type="string", dest="log", metavar=_("LOG"),

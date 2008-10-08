@@ -37,6 +37,10 @@ msgstr ""
 msgid "Save _As"
 msgstr ""
 
+#. File->Recent Files->tooltip
+msgid "Open '%s'"
+msgstr ""
+
 #. File->Quit
 msgid "_Quit"
 msgstr ""
@@ -71,6 +75,10 @@ msgstr ""
 
 #. About Dialog - Credits dialog - Tab - Translated by
 msgid "Translated by"
+msgstr ""
+
+#. About Dialog - Credits dialog - Tab - Artwork by
+msgid "Artwork by"
 msgstr ""
 
 #. About Dialog - License dialog - Title

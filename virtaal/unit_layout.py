@@ -139,6 +139,8 @@ def text_view(editable):
     text_view.set_editable(editable)
     text_view.set_wrap_mode(gtk.WRAP_WORD)
     text_view.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)
+    text_view.set_left_margin(2)
+    text_view.set_right_margin(2)
     return text_view
 
 def scrolled_window(widget, scroll_vertical=gtk.POLICY_AUTOMATIC, add_viewport=False):

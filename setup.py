@@ -306,29 +306,31 @@ def add_mac_options(options):
     # http://developer.apple.com/documentation/MacOSX/Conceptual/BPRuntimeConfig/Articles/PListKeys.html
     if py2app is None:
         return options
-    options.update({"options": {
-        "app": "bin/virtaal",
-        "py2app": {
-            #"semi_standalone": True,
-            "compressed": True,
-            "argv_emulation": True,
-            "plist":  {
-                "CFBundleGetInfoString": virtaal_description,
-                "CFBundleGetInfoString": "Virtaal",
-                "CFBundleIconFile": "virtaal.icns",
-                "CFBundleShortVersionString": virtaal_version,
-                #"LSHasLocalizedDisplayName": "1",
-                #"LSMinimumSystemVersion": ???,
-                "NSHumanReadableCopyright": "Copyright (C) 2007-2008 Zuza Software Foundation",
-                "CFBundleDocumentTypes": [{
-                    "CFBundleTypeExtensions": [extention.lstrip("*.") for extention in extentions],
-                    "CFBundleTypeIconFile": "virtaal.icns",
-                    "CFBundleTypeMIMETypes": mimetypes,
-                    "CFBundleTypeName": description, #????
-                    } for description, extentions, mimetypes in factory.supported_files()]
+    from translate.storage import factory
+    options.update({
+        "app": ["bin/virtaal"],
+        "options": {
+            "py2app": {
+                #"semi_standalone": True,
+                "compressed": True,
+                "argv_emulation": True,
+                "plist":  {
+                    "CFBundleGetInfoString": virtaal_description,
+                    "CFBundleGetInfoString": "Virtaal",
+                    "CFBundleIconFile": "virtaal.icns",
+                    "CFBundleShortVersionString": virtaal_version,
+                    #"LSHasLocalizedDisplayName": "1",
+                    #"LSMinimumSystemVersion": ???,
+                    "NSHumanReadableCopyright": "Copyright (C) 2007-2008 Zuza Software Foundation",
+                    "CFBundleDocumentTypes": [{
+                        "CFBundleTypeExtensions": [extention.lstrip("*.") for extention in extentions],
+                        "CFBundleTypeIconFile": "virtaal.icns",
+                        "CFBundleTypeMIMETypes": mimetypes,
+                        "CFBundleTypeName": description, #????
+                        } for description, extentions, mimetypes in factory.supported_files()]
+                    }
                 }
-            }
-        }})
+            }})
     return options
 
 def add_freedesktop_options(options):

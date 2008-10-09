@@ -63,6 +63,7 @@ class UnitGrid(gtk.TreeView):
         self.connect('key-press-event', self._on_key_press)
         self.connect("cursor-changed", self._on_cursor_changed)
         self.connect("button-press-event", self._on_button_press)
+        self.connect('focus-in-event', self.on_configure_event)
 
     def __init__(self, owner):
         gtk.TreeView.__init__(self, store_model.UnitModel(owner.document.store, list(owner.document.mode_cursor)))

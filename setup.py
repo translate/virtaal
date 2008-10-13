@@ -60,6 +60,13 @@ classifiers = [
 ]
 #TODO: add Natural Language classifiers
 
+# Compile .mo files from available .po files
+from translate.tools.pocompile import convertmo
+for po_filename in glob.glob(path.join('po', '*.po')):
+    mo_filename = po_filename[:-2] + 'mo'
+    convertmo(open(po_filename), open(mo_filename, 'w'), None)
+
+# Locate all .mo files so we can include them as data files
 mo_files=[]
 for f in glob.glob(path.join('po', '*.mo')):
     lang = path.split(f[:-3])[1] # Get "af" from "po/af.mo"

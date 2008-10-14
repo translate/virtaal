@@ -21,6 +21,7 @@
 #
 import sys
 import logging
+import optparse
 from optparse import OptionParser, make_option, OptionValueError
 from os import path
 
@@ -41,6 +42,7 @@ def set_termininology_dir(option, opt_str, value, parser):
         return value
     parser.values.terminology = get_term(value)
 
+optparse._ = _
 usage = _("%prog [options] [translation_file]")
 option_list = [
     make_option("--profile",

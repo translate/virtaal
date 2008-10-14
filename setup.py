@@ -62,16 +62,19 @@ classifiers = [
 
 # Compile .mo files from available .po files
 from translate.tools.pocompile import convertmo
+mo_files = []
+
 for po_filename in glob.glob(path.join('po', '*.po')):
-    mo_filename = po_filename[:-2] + 'mo'
+    lang = path.split(po_filename[:-3])[1] # Chop off '.po'
+    mo_filename = path.join('mo', lang, 'virtaal.mo')
+
+    if not path.exists(path.join('mo', lang)):
+        os.makedirs(path.join('mo', lang))
+
     convertmo(open(po_filename), open(mo_filename, 'w'), None)
 
-# Locate all .mo files so we can include them as data files
-mo_files=[]
-for f in glob.glob(path.join('po', '*.mo')):
-    lang = path.split(f[:-3])[1] # Get "af" from "po/af.mo"
     mo_files.append(
-        ( path.join(TARGET_DATA_DIR, "locale", lang, "LC_MESSAGES", "virtaal.mo"), [f] )
+        ( path.join(TARGET_DATA_DIR, 'locale', lang, 'LC_MESSAGES'), [mo_filename])
     )
 
 # Some of these depend on some files to be built externally before running 

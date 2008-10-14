@@ -16,3 +16,4 @@ virtaal/support/set_enumerator.py
 virtaal/tips.py
 virtaal/unit_editor.py
 virtaal/unit_layout.py
+source_tree_infrastructure/optparse.py

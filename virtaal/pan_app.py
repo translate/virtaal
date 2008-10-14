@@ -33,7 +33,13 @@ from __version__ import ver
 
 
 x_generator = 'Virtaal ' + ver
-default_config = "~/.locamotion/virtaal.ini"
+default_config_name = "virtaal.ini"
+
+def get_config_dir():
+    if os.name == 'nt':
+        return os.path.join(os.environ['APPDATA'], 'Virtaal')
+    else:
+        return os.path.expanduser('~/.virtaal')
 
 def name():
     # pwd is only available on UNIX
@@ -77,7 +83,7 @@ class Settings:
     def __init__(self, filename = None):
         """Load settings, using the given or default filename"""
         if not filename:
-            self.filename = os.path.expanduser(default_config)
+            self.filename = os.path.join(get_config_dir(), default_config_name)
         else:
             self.filename = filename
             if not os.path.isfile(self.filename):

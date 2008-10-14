@@ -37,9 +37,14 @@ default_config_name = "virtaal.ini"
 
 def get_config_dir():
     if os.name == 'nt':
-        return os.path.join(os.environ['APPDATA'], 'Virtaal')
+        confdir = os.path.join(os.environ['APPDATA'], 'Virtaal')
     else:
-        return os.path.expanduser('~/.virtaal')
+        confdir = os.path.expanduser('~/.virtaal')
+
+    if not os.path.exists(confdir):
+        os.makedirs(confdir)
+
+    return confdir
 
 def name():
     # pwd is only available on UNIX

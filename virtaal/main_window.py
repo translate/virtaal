@@ -64,6 +64,13 @@ class Virtaal:
     WRAP_DELAY = 0.25
 
     def __init__(self, startup_file=None):
+        # Before we do anything else, make sure that stdout and stderr are properly handled.
+        if os.name == 'nt':
+            import sys
+            dirname = pan_app.get_config_dir()
+            sys.stdout = open(os.path.join(dirname, 'stdout.txt'), 'ab')
+            sys.stderr = open(os.path.join(dirname, 'stderr.txt'), 'ab')
+
         #Set the Glade file
         self.gladefile, self.gui = load_glade_file(["virtaal", "virtaal.glade"], "virtaal")
 

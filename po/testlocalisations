@@ -15,6 +15,7 @@ do
 done
 
 lang=$1
-export LANGUAGE=../../../$(pwd)/mo/${lang:-de_DE}
+export LANGUAGE=../../../../../../../../$(pwd)/mo/${lang:-de_DE}:$LANGUAGE
 echo $LANGUAGE
-run_virtaal.py
+# This assumes that the following executable is in your PATH
+virtaal

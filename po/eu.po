@@ -1,26 +1,25 @@
-# translation of virtaal.po to Euskara
+# translation of virtaal to Basque
 # Piarres Beobide <pi@beobide.net>, 2008.
-# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
+# Julen Ruiz Aizpuru <julenx@gmail.com>, 2008.
+# Copyright (C) 2008 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the PACKAGE package.
 msgid ""
 msgstr ""
 "Project-Id-Version: virtaal\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2008-10-02 15:37+0200\n"
-"PO-Revision-Date: 2008-10-03 22:51+0200\n"
-"Last-Translator: pi <pi@beobide.net>\n"
-"Language-Team: debian-l10n-basque@lists.debian-org\n"
+"PO-Revision-Date: 2008-10-06 20:18+0200\n"
+"Last-Translator: Julen Ruiz Aizpuru <julenx@gmail.com>\n"
+"Language-Team: Basque <librezale@librezale.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.2-rc1\n"
+"Plural-Forms: nplurals=2; plural= (n != 1)\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: ../bin/virtaal:40
-msgid "You must specify a directory or a translation store file for --terminology"
-msgstr ""
-"Direktorio bat edo itzulpen \"denda\" bat ezarri behar duzu --terminology "
-"erabiltzeko"
+msgid "You must specify a directory or a translation file for --terminology"
+msgstr "Direktorio bat edo itzulpen-fitxategi bat ezarri behar duzu --terminology erabiltzeko"
 
 #: ../bin/virtaal:44
 #, c-format
@@ -33,7 +32,7 @@ msgstr "PROFILA"
 
 #: ../bin/virtaal:48
 msgid "Perform profiling, storing the result to the supplied filename."
-msgstr "Profilak erabili, emaitza emandako fitxategian gordetzen."
+msgstr "Egin errendimenduaren azterketa eta gorde emaitza emandako fitxategian."
 
 #: ../bin/virtaal:50
 msgid "LOG"
@@ -41,7 +40,7 @@ msgstr "ERREGISTROA"
 
 #: ../bin/virtaal:51
 msgid "Turn on logging, storing the result to the supplied filename."
-msgstr "Erregistroa gaitu emaitzak emandako fitxategian gordeaz."
+msgstr "Gaitu erregistroa eta gorde emaitzak emandako fitxategian."
 
 #: ../bin/virtaal:53
 msgid "CONFIG"
@@ -49,7 +48,7 @@ msgstr "KONFIG"
 
 #: ../bin/virtaal:54
 msgid "Use the configuration file given by the supplied filename."
-msgstr "Emandako fitxategiko konfigurazioa erabili."
+msgstr "Erabili emandako fitxategiko konfigurazioa."
 
 #: ../bin/virtaal:55
 msgid "TERMINOLOGY"
@@ -57,15 +56,15 @@ msgstr "TERMINOLOGIA"
 
 #: ../bin/virtaal:58
 msgid "Specify a directory containing terminology files"
-msgstr "Ezarri terminologia fitxategiak dituen direktorioa"
+msgstr "Zehaztu terminologia fitxategiak dituen direktorioa"
 
 #: ../bin/virtaal:76
 msgid "Could not open log file '%(filename)s'"
-msgstr "Ezin da '%(filename)s'erregistro-fitxategia ireki"
+msgstr "Ezin da '%(filename)s' erregistro-fitxategia ireki"
 
 #: ../bin/virtaal:83
 msgid "Could not read configuration file '%(filename)s'"
-msgstr "Ezin da '%(filename)s' fitxategitik konfigurazioa irakurri."
+msgstr "Ezin da '%(filename)s' fitxategitik konfigurazioa irakurri"
 
 #: ../bin/virtaal:87
 msgid "invalid number of arguments"
@@ -79,11 +78,11 @@ msgstr "Ezin da '%(filename)s' profil fitxategia ireki"
 msgid ""
 "A translation tool to help a human translator translate files into other "
 "languages"
-msgstr "Gizakiei fitxategiak itzultzen laguntzeko itzulpen lanabesa"
+msgstr "Gizakiei fitxategiak itzultzen laguntzeko itzulpen tresna"
 
 #: ../share/applications/virtaal.desktop.in.h:2
 msgid "Translation Tool"
-msgstr "Itzulpen lanabesa"
+msgstr "Itzulpen tresna"
 
 #: ../share/applications/virtaal.desktop.in.h:3
 #: ../share/virtaal/virtaal.glade.h:2
@@ -92,7 +91,7 @@ msgstr "Virtaal"
 
 #: ../share/virtaal/virtaal.glade.h:1
 msgid "Report a _Bug"
-msgstr "Programa-errore _baten berri ema"
+msgstr "Eman programa-errore _baten berri"
 
 #: ../share/virtaal/virtaal.glade.h:3
 msgid "_File"
@@ -116,7 +115,7 @@ msgstr "_Azken fitxategiak"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
 msgid "C++ RC File"
-msgstr "C++ RC Fitxategia"
+msgstr "C++ RC fitxategia"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:2
 msgid "Gettext Translation Template"
@@ -164,7 +163,7 @@ msgstr "RC"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:13
 msgid "Resource Compiler"
-msgstr "Errekurtso konpilatzailea"
+msgstr "Baliabide konpilatzailea"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:14
 msgid "TBX"
@@ -180,7 +179,7 @@ msgstr "TMX"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:17
 msgid "TMX Translation Memory"
-msgstr "TMX itzulpen memoriak"
+msgstr "TMX itzulpen memoria"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:18
 msgid "Tcl Translation File"
@@ -196,7 +195,7 @@ msgstr "Trados etiketa editorea"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:21
 msgid "Translation Memory eXchange"
-msgstr "Itzulpen memoria trukaketa"
+msgstr "Itzulpen memorien trukaketa"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:22
 msgid "Wordfast Translation Memory"
@@ -229,10 +228,7 @@ msgid ""
 "The initial focus is on software translation (localisation or l10n), but we "
 "definitely intend it to be useful as a general purpose tool for Computer "
 "Aided Translation (CAT)."
-msgstr ""
-"Hasiera batetan software itzulpengintzara bideraturik (lokalizazio edo "
-"l10n), baina erabilera orokorrerako erabilgarri den lanabes bat egiten "
-"saiatzen ari gara "
+msgstr "Hasiera batean software itzulpengintzara bideraturik (lokalizazio edo l10n) dago, baina erabilera orokorrerako tresna bat egiten saiatzen ari gara."
 
 #: ../virtaal/about.py:52
 msgid "Virtaal website"
@@ -241,7 +237,7 @@ msgstr "Virtaal webgunea"
 #. l10n: Rather than translating, fill in the names of the translators
 #: ../virtaal/about.py:60
 msgid "translator-credits"
-msgstr "Piarres Beobide <pi@beobide.net> "
+msgstr "Piarres Beobide <pi@beobide.net>"
 
 #: ../virtaal/document.py:56
 msgid "Please enter the language code for the target language"
@@ -249,7 +245,7 @@ msgstr "Mesedez idatzi helburu hizkuntzaren hizkuntza kodea"
 
 #: ../virtaal/document.py:61
 msgid "Please enter the number of noun forms (plurals) to use"
-msgstr "Mesdez idatzi erabili behar diren plural kopurua"
+msgstr "Mesedez idatzi erabili behar diren plural kopurua"
 
 #: ../virtaal/document.py:67
 msgid "Please enter the plural equation to use"
@@ -273,7 +269,7 @@ msgid ""
 "Do you want to save your changes?"
 msgstr ""
 "Erabiltzen ari zaren fitxategia aldatu egin da.\n"
-"Aldaketak gorde nahi al dituzu?"
+"Aldaketak gorde nahi dituzu?"
 
 #: ../virtaal/main_window.py:173
 msgid "_Discard"
@@ -283,9 +279,7 @@ msgstr "_Baztertu"
 msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
-msgstr ""
-"Irekirik duzun fitxategi hautatu duzu irekitzeko. Fixtategi berriz ireki "
-"nahi duzu?"
+msgstr "Irekirik duzun fitxategia hautatu duzu irekitzeko. Fitxategia berriz ireki nahi duzu?"
 
 #: ../virtaal/main_window.py:244
 msgid "Error opening file:"
@@ -303,15 +297,15 @@ msgstr "Virtaal - %(current_file)s %(modified_marker)s"
 
 #: ../virtaal/main_window.py:311
 msgid "Please enter your name"
-msgstr "Mesedez idatzi zure izena"
+msgstr "Idatzi zure izena"
 
 #: ../virtaal/main_window.py:317
 msgid "Please enter your e-mail address"
-msgstr "Mesedez idatzi zure eposta helbidea"
+msgstr "Idatzi zure e-posta helbidea"
 
 #: ../virtaal/main_window.py:323
 msgid "Please enter your team's information"
-msgstr "Mesedez idatzi zure taldearen argibideak"
+msgstr "Idatzi zure taldearen argibideak"
 
 #: ../virtaal/main_window.py:351
 #, python-format
@@ -322,11 +316,11 @@ msgid ""
 "\n"
 "Try saving at a different location."
 msgstr ""
-"Ezinda fitxategia gorde.\n"
+"Ezin da fitxategia gorde.\n"
 "\n"
 "%(error_message)s\n"
 "\n"
-"Beste kokaleku batetan gordetzen saiatu."
+"Saiatu beste kokaleku batean gordetzen."
 
 #: ../virtaal/main_window.py:352
 msgid "Error"
@@ -346,7 +340,7 @@ msgstr "Osatugabea"
 
 #: ../virtaal/mode_selector.py:47
 msgid "_Mode: "
-msgstr "_Modua:"
+msgstr "_Modua: "
 
 #: ../virtaal/search_mode.py:37
 msgid "Search"
@@ -354,57 +348,54 @@ msgstr "Bilaketa"
 
 #: ../virtaal/search_mode.py:51
 msgid "_Case sensitive"
-msgstr "La_rri/minuskulak"
+msgstr "Maius_kulak/minuskulak"
 
 #: ../virtaal/search_mode.py:53
 msgid "_Regular expression"
-msgstr "Espresioa e_rregularra"
+msgstr "Adierazpen e_rregularra"
 
 #: ../virtaal/store_grid.py:77
 msgid "The file did not contain anything to translate."
-msgstr "Fitxatuegiak ez du ezer itzultzeko."
+msgstr "Fitxategiak ez du itzultzeko ezer."
 
 #: ../virtaal/support/set_enumerator.py:62
 msgid "Top of page reached, continuing at the bottom"
-msgstr "Orriaren goialdera iritsia, behetik jarraituko da."
+msgstr "Orriaren goialdera iritsi da, behetik jarraituko da"
 
 #: ../virtaal/support/set_enumerator.py:66
 msgid "End of page reached, continuing at the top"
-msgstr "Orriaren amaierara iritsia, hasieratik jarraituko da"
+msgstr "Orriaren amaierara iritsi da, hasieratik jarraituko da"
 
 #: ../virtaal/tips.py:24
 msgid ""
 "At the end of a translation, simply press <Enter> to continue with the next "
 "one."
-msgstr "Itzultzez amaitzean, sinpleki <Enter> sakatu hurrengoarekin jarraitzeko."
+msgstr "Itzultzen amaitzean, sinpleki sakatu <Enter> hurrengoarekin jarraitzeko."
 
 #: ../virtaal/tips.py:25
 msgid "To copy the original string into the target field, simply press <Alt+Down>."
-msgstr "Jatorrizko katea helburuan kopiatzeko, <ALT + Behera> sakatu."
+msgstr "Jatorrizko katea helburuan kopiatzeko, sakatu <Alt+Behera>."
 
 #: ../virtaal/tips.py:26
 msgid ""
 "When editing a fuzzy translation, the fuzzy marker will automatically be "
 "removed."
-msgstr ""
-"Nahasia bezala markaturiko itzulpen bat editatzean, nahasi etiketa "
-"automatikoki ezabatuko da."
+msgstr "Zalantzazko bezala markaturiko itzulpen bat editatzean, zalantzazko etiketa automatikoki ezabatuko da."
 
 #. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
 #: ../virtaal/tips.py:28
 msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
-msgstr "Uneko itzulpena nahasi bezala markatzeko, <Alt+U> sakatu."
+msgstr "Uneko itzulpena zalantzazko bezala markatzeko, sakatu <Alt+Z>."
 
 #: ../virtaal/tips.py:29
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
-msgstr "Ktrl+Gora edo Ktrl+Behera erabili itzulpenen artean mugitzeko"
+msgstr "Erabili Ktrl+Gora edo Ktrl+Behera itzulpenen artean mugitzeko."
 
 #: ../virtaal/tips.py:30
 msgid "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
-msgstr ""
-"Ktrl+OrGora edo Ktrl+OrBehera erabili itzulpenen artean pausu handiagotan "
-"mugitzeko"
+msgstr "Erabili Ktrl+OrGora edo Ktrl+OrBehera itzulpenen artean pausu handiagotan mugitzeko."
 
 #: ../virtaal/unit_layout.py:362
 msgid "F_uzzy"
-msgstr "Na_hasia"
+msgstr "_Zalantzazkoa"
+

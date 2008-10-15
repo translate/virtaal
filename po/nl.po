@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.2-rc1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2008-10-02 15:37+0200\n"
-"PO-Revision-Date: 2008-10-09 20:48+0800\n"
+"POT-Creation-Date: 2008-10-15 07:27+0200\n"
+"PO-Revision-Date: 2008-10-15 14:15+0800\n"
 "Last-Translator: Tom Verlinden<verlinden.tom@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,66 +16,67 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootling 0.2\n"
 
-# Not sure about the translation of 'translation store file'. I understand it as any file containing translations and paraphrased it
-#: ../bin/virtaal:40
-msgid ""
-"You must specify a directory or a translation store file for --terminology"
-msgstr ""
-"U moet een map of een bestand met vertalingen opgeven voor --terminologie"
+#: ../bin/virtaal:41
+msgid "You must specify a directory or a translation file for --terminology"
+msgstr "U moet een map of een vertaalbestand opgeven voor --terminologie"
 
-#: ../bin/virtaal:44
+#: ../bin/virtaal:46
 #, c-format
 msgid "%prog [options] [translation_file]"
 msgstr "%prog [opties] [vertaalbestand]"
 
-#: ../bin/virtaal:47
+# Ik heb dit niet vertaald omdat het een programma-optie is (denk ik) (TV 2008-10-15)
+#: ../bin/virtaal:49
 msgid "PROFILE"
 msgstr "PROFILE"
 
-#: ../bin/virtaal:48
+#: ../bin/virtaal:51
 msgid "Perform profiling, storing the result to the supplied filename."
 msgstr ""
 "Profileren en het resultaat opslaan in het bestand met de opgegeven naam."
 
-#: ../bin/virtaal:50
+# Ik heb dit niet vertaald omdat het een programma-optie is (denk ik) (TV 2008-10-15)
+#: ../bin/virtaal:53
 msgid "LOG"
 msgstr "LOG"
 
-#: ../bin/virtaal:51
+#: ../bin/virtaal:54
 msgid "Turn on logging, storing the result to the supplied filename."
 msgstr ""
 "Loggen inschakelen en het resultaat opslaan in het bestand met de opgegeven "
 "naam."
 
-#: ../bin/virtaal:53
+# Ik heb dit niet vertaald omdat het een programma-optie is (denk ik) (TV 2008-10-15)
+#: ../bin/virtaal:56
 msgid "CONFIG"
 msgstr "CONFIG"
 
-#: ../bin/virtaal:54
+#: ../bin/virtaal:57
 msgid "Use the configuration file given by the supplied filename."
 msgstr "Gebruik het configuratiebestand met de opgegeven bestandsnaam."
 
-#: ../bin/virtaal:55
+# Ik heb dit niet vertaald omdat het een programma-optie is (denk ik) (TV 2008-10-15)
+#: ../bin/virtaal:58
 msgid "TERMINOLOGY"
 msgstr "TERMINOLOGY"
 
-#: ../bin/virtaal:58
+#: ../bin/virtaal:61
 msgid "Specify a directory containing terminology files"
 msgstr "Geef een map met terminologiebestanden op."
 
-#: ../bin/virtaal:76
+#: ../bin/virtaal:79
 msgid "Could not open log file '%(filename)s'"
 msgstr "Kon het logboekbestand '%(filename)s' niet openen"
 
-#: ../bin/virtaal:83
+#: ../bin/virtaal:86
 msgid "Could not read configuration file '%(filename)s'"
 msgstr "Kon het configuratiebestand '%(filename)s' niet lezen"
 
-#: ../bin/virtaal:87
+#: ../bin/virtaal:90
 msgid "invalid number of arguments"
 msgstr "ongeldig aantal argumenten"
 
-#: ../bin/virtaal:112
+#: ../bin/virtaal:115
 msgid "Could not open profile file '%(filename)s'"
 msgstr "Kon het profielbestand '%(filename)s' niet lezen"
 
@@ -273,7 +274,7 @@ msgstr "Alle ondersteunde bestanden"
 msgid "All Files"
 msgstr "Alle bestanden"
 
-#: ../virtaal/main_window.py:171
+#: ../virtaal/main_window.py:177
 msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
@@ -281,11 +282,11 @@ msgstr ""
 "Het huidige bestand werd gewijzigd.\n"
 "Wilt u de veranderingen opslaan?"
 
-#: ../virtaal/main_window.py:173
+#: ../virtaal/main_window.py:179
 msgid "_Discard"
 msgstr "_Verwerpen"
 
-#: ../virtaal/main_window.py:195
+#: ../virtaal/main_window.py:201
 msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
@@ -293,33 +294,33 @@ msgstr ""
 "U hebt ervoor gekozen het momenteel geopende bestand te openen. Wilt u het "
 "bestand herladen?"
 
-#: ../virtaal/main_window.py:244
+#: ../virtaal/main_window.py:250
 msgid "Error opening file:"
 msgstr "Fout bij openen van bestand:"
 
-#: ../virtaal/main_window.py:260
+#: ../virtaal/main_window.py:266
 #, python-format
 msgid "%(filename)s does not exist."
 msgstr "%(filename)s bestaat niet."
 
-#: ../virtaal/main_window.py:279
+#: ../virtaal/main_window.py:285
 #, python-format
 msgid "Virtaal - %(current_file)s %(modified_marker)s"
 msgstr "Virtaal - %(current_file)s %(modified_marker)s"
 
-#: ../virtaal/main_window.py:311
+#: ../virtaal/main_window.py:317
 msgid "Please enter your name"
 msgstr "Voer a.u.b. uw naam in"
 
-#: ../virtaal/main_window.py:317
+#: ../virtaal/main_window.py:323
 msgid "Please enter your e-mail address"
 msgstr "Voer a.u.b. uw e-mailadres in"
 
-#: ../virtaal/main_window.py:323
+#: ../virtaal/main_window.py:329
 msgid "Please enter your team's information"
 msgstr "Voer a.u.b uw team-informatie in"
 
-#: ../virtaal/main_window.py:351
+#: ../virtaal/main_window.py:357
 #, python-format
 msgid ""
 "Could not save file.\n"
@@ -334,11 +335,11 @@ msgstr ""
 "\n"
 "Probeer op een andere lokatie op te slaan."
 
-#: ../virtaal/main_window.py:352
+#: ../virtaal/main_window.py:358
 msgid "Error"
 msgstr "Fout"
 
-#: ../virtaal/main_window.py:362
+#: ../virtaal/main_window.py:368
 msgid "Save"
 msgstr "Opslaan"
 
@@ -366,7 +367,7 @@ msgstr "Hoofdletter_gevoelig"
 msgid "_Regular expression"
 msgstr "Reguliere e_xpressie"
 
-#: ../virtaal/store_grid.py:77
+#: ../virtaal/store_grid.py:78
 msgid "The file did not contain anything to translate."
 msgstr "Het bestand bevatte geen te vertalen tekst."
 
@@ -390,8 +391,8 @@ msgstr ""
 msgid ""
 "To copy the original string into the target field, simply press <Alt+Down>."
 msgstr ""
-"Om de brontekst naar het doeltaalveld te kopiëren, moet u gewoon "
-"<Alt+PijlOmlaag> indrukken."
+"Om de brontekst naar het doeltaalveld te kopiëren, moet u gewoon <Alt"
+"+PijlOmlaag> indrukken."
 
 #: ../virtaal/tips.py:26
 msgid ""
@@ -421,6 +422,84 @@ msgstr ""
 "Gebruik <Ctrl+PgUp> of <Ctrl+PgDown> om met grote stappen door de "
 "vertalingen te bewegen."
 
-#: ../virtaal/unit_layout.py:362
+#: ../virtaal/unit_layout.py:364
 msgid "F_uzzy"
 msgstr "_Wazig"
+
+#: ../source_tree_infrastructure/optparse.py:134
+#, python-format
+msgid "no such option: %s"
+msgstr "optie bestaat niet: %s"
+
+#: ../source_tree_infrastructure/optparse.py:145
+#, python-format
+msgid "ambiguous option: %s (%s?)"
+msgstr "dubbelzinnige optie: %s (%s?)"
+
+#: ../source_tree_infrastructure/optparse.py:368
+#, python-format
+msgid "Usage: %s\n"
+msgstr "Gebruik: %s\n"
+
+#: ../source_tree_infrastructure/optparse.py:387
+msgid "Usage"
+msgstr "Gebruik"
+
+#: ../source_tree_infrastructure/optparse.py:412
+msgid "integer"
+msgstr "integer (geheel getal)"
+
+#: ../source_tree_infrastructure/optparse.py:413
+msgid "long integer"
+msgstr "long integer (lang geheel getal)"
+
+#: ../source_tree_infrastructure/optparse.py:414
+msgid "floating-point"
+msgstr "floating-point getal(drijvende-komma-getal)"
+
+#: ../source_tree_infrastructure/optparse.py:415
+msgid "complex"
+msgstr "complex getal"
+
+#: ../source_tree_infrastructure/optparse.py:423
+#, python-format
+msgid "option %s: invalid %s value: %r"
+msgstr "optie %s: ongeldig(e) %s waarde: %r"
+
+#: ../source_tree_infrastructure/optparse.py:431
+#, python-format
+msgid "option %s: invalid choice: %r (choose from %s)"
+msgstr "optie %s: ongeldige keuze: %r (kies uit %s)"
+
+#: ../source_tree_infrastructure/optparse.py:1246
+msgid "show this help message and exit"
+msgstr "deze hulpboodschap tonen en stoppen"
+
+#: ../source_tree_infrastructure/optparse.py:1251
+msgid "show program's version number and exit"
+msgstr "versienummer van het programma tonen en stoppen "
+
+#: ../source_tree_infrastructure/optparse.py:1274
+msgid "%prog [options]"
+msgstr "%prog [opties]"
+
+#: ../source_tree_infrastructure/optparse.py:1484
+#: ../source_tree_infrastructure/optparse.py:1523
+#, python-format
+msgid "%s option requires an argument"
+msgstr "optie %s vereist een argument"
+
+#: ../source_tree_infrastructure/optparse.py:1486
+#: ../source_tree_infrastructure/optparse.py:1525
+#, python-format
+msgid "%s option requires %d arguments"
+msgstr "optie %s vereist %d argumenten"
+
+#: ../source_tree_infrastructure/optparse.py:1495
+#, python-format
+msgid "%s option does not take a value"
+msgstr "optie %s kan geen waarde hebben "
+
+#: ../source_tree_infrastructure/optparse.py:1612
+msgid "Options"
+msgstr "Opties"

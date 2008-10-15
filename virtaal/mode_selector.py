@@ -50,6 +50,7 @@ class ModeSelector(gtk.HBox):
         self.pack_start(self.cmb_modes, expand=False)
 
         self.mode_names = {} # mode_name to mode instance map
+        self.mode_user_names = {} # mode_name to mode instance map
         self.mode_index = {} # mode instance to index (in cmb_modes) map
         i = 0
         self.default_mode = None
@@ -57,7 +58,8 @@ class ModeSelector(gtk.HBox):
 
         for mode in virtaal.modes.MODES.itervalues():
             self.cmb_modes.append_text(mode.user_name)
-            self.mode_names[mode.user_name] = mode
+            self.mode_names[mode.mode_name] = mode
+            self.mode_user_names[mode.user_name] = mode
             self.mode_index[mode] = i
             i += 1
 
@@ -81,7 +83,7 @@ class ModeSelector(gtk.HBox):
         if mode_name in self.mode_names:
             self.cmb_modes.set_active(self.mode_index[self.mode_names[mode_name]])
         else:
-            raise ValueError('Unknown mode specified.')
+            raise ValueError('Unknown mode specified: %s' % (mode_name))
 
     def set_mode(self, mode):
         # Remove previous mode's widgets
@@ -105,4 +107,4 @@ class ModeSelector(gtk.HBox):
         self.current_mode = mode
 
     def _on_cmbmode_change(self, combo):
-        self.emit('mode-combo-changed', self.mode_names[combo.get_active_text()])
+        self.emit('mode-combo-changed', self.mode_user_names[combo.get_active_text()])

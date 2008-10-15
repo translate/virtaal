@@ -1,0 +1,419 @@
+# translation of virtaal messages to French
+# Copyright (C) 2008 Christian Perrier <bubulle@debian.org>
+# This file is distributed under the same license as the virtaal software.
+#
+# Christian Perrier <bubulle@debian.org>, 2008.
+msgid ""
+msgstr ""
+"Project-Id-Version: Virtaal 0.2\n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2008-10-02 15:37+0200\n"
+"PO-Revision-Date: 2008-10-12 19:09+0200\n"
+"Last-Translator: Christian Perrier <bubulle@debian.org>\n"
+"Language-Team: French <debian-l10n-french@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: ../bin/virtaal:40
+msgid ""
+"You must specify a directory or a translation store file for --terminology"
+msgstr ""
+"Vous devez indiquer un répertoire ou un fichier de destination pour --"
+"terminology"
+
+#: ../bin/virtaal:44
+#, c-format
+msgid "%prog [options] [translation_file]"
+msgstr "%prog [options] [fichier_de_traduction]"
+
+#: ../bin/virtaal:47
+msgid "PROFILE"
+msgstr "PROFILAGE"
+
+#: ../bin/virtaal:48
+msgid "Perform profiling, storing the result to the supplied filename."
+msgstr "Exécute le profilage dans le fichier indiqué."
+
+#: ../bin/virtaal:50
+msgid "LOG"
+msgstr "JOURNALISATION"
+
+#: ../bin/virtaal:51
+msgid "Turn on logging, storing the result to the supplied filename."
+msgstr "Active la journalisation dans le fichier indiqué."
+
+#: ../bin/virtaal:53
+msgid "CONFIG"
+msgstr "CONFIGURATION"
+
+#: ../bin/virtaal:54
+msgid "Use the configuration file given by the supplied filename."
+msgstr "Utilise le fichier de configuration indiqué."
+
+#: ../bin/virtaal:55
+msgid "TERMINOLOGY"
+msgstr "TERMINOLOGIE"
+
+#: ../bin/virtaal:58
+msgid "Specify a directory containing terminology files"
+msgstr "Indique le répertoire contenant les fichiers de terminologie."
+
+#: ../bin/virtaal:76
+msgid "Could not open log file '%(filename)s'"
+msgstr "Impossible d'ouvrir le fichier de journalisation « %(filename)s »"
+
+#: ../bin/virtaal:83
+msgid "Could not read configuration file '%(filename)s'"
+msgstr "Impossible de lire le fichier de configuration « %(filename)s »"
+
+#: ../bin/virtaal:87
+msgid "invalid number of arguments"
+msgstr "nombre incorrect de paramètres"
+
+#: ../bin/virtaal:112
+msgid "Could not open profile file '%(filename)s'"
+msgstr "Impossible d'ouvrir le fichier de profilage « %(filename)s »"
+
+#: ../share/applications/virtaal.desktop.in.h:1
+msgid ""
+"A translation tool to help a human translator translate files into other "
+"languages"
+msgstr ""
+"Outil aidant un traducteur à traduire des fichiers dans d'autres langues"
+
+#: ../share/applications/virtaal.desktop.in.h:2
+msgid "Translation Tool"
+msgstr "Outil de traduction"
+
+#: ../share/applications/virtaal.desktop.in.h:3
+#: ../share/virtaal/virtaal.glade.h:2
+msgid "Virtaal"
+msgstr "Virtaal"
+
+#: ../share/virtaal/virtaal.glade.h:1
+msgid "Report a _Bug"
+msgstr "Envoyer un rapport de _bogue"
+
+#: ../share/virtaal/virtaal.glade.h:3
+msgid "_File"
+msgstr "_Fichier"
+
+#: ../share/virtaal/virtaal.glade.h:4
+msgid "_Help"
+msgstr "_Aide"
+
+#: ../share/virtaal/virtaal.glade.h:5
+msgid "_Localization Guide"
+msgstr "Guide de _localisation"
+
+#: ../share/virtaal/virtaal.glade.h:6
+msgid "_Online Help"
+msgstr "Aide en li_gne"
+
+#: ../share/virtaal/virtaal.glade.h:7
+msgid "_Recent Files"
+msgstr "Fichiers _récemment utilisés"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
+msgid "C++ RC File"
+msgstr "Fichier de ressources C++"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:2
+msgid "Gettext Translation Template"
+msgstr "mode gettext"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:3
+msgid "INI"
+msgstr "INI"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:4
+msgid "INI File"
+msgstr "Fichier INI"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:5
+msgid "Initialization"
+msgstr "Initialisation"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:6
+msgid "Java Properties File"
+msgstr "Fichier de propriétés Java"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:7
+msgid "JavaScript error message file"
+msgstr "Fichier de messages d'erreur Java"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:8
+msgid "OpenOffice.org Translation File"
+msgstr "Fichier OpenOffice.org"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:9
+msgid "Qt Linguist Translation File"
+msgstr "Fichier Qt Linguist"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:10
+msgid "Qt Message File"
+msgstr "Fichier de messages de Qt"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:11
+msgid "Qt Phrase Book"
+msgstr "Livre de phrases de Qt"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:12
+msgid "RC"
+msgstr "RC"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:13
+msgid "Resource Compiler"
+msgstr "Compilateur de ressources"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:14
+msgid "TBX"
+msgstr "TBX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:15
+msgid "TBX Glossary"
+msgstr "Glossaire TBX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:16
+msgid "TMX"
+msgstr "TMX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:17
+msgid "TMX Translation Memory"
+msgstr "Mémoire de traduction TMX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:18
+msgid "Tcl Translation File"
+msgstr "Fichier Tcl"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:19
+msgid "TermBase eXchange"
+msgstr "Échange de termes de base"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:20
+msgid "Trados Tag Editor"
+msgstr "Éditeur d'étiquettes Trados"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:21
+msgid "Translation Memory eXchange"
+msgstr "Échange de mémoires de traduction"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:22
+msgid "Wordfast Translation Memory"
+msgstr "Mémoire de traduction Wordfast"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:23
+msgid "XLIFF"
+msgstr "XLIFF"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:24
+msgid "XLIFF Translation File"
+msgstr "Fichier XLIFF"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:25
+msgid "XML Localization Interchange File Format"
+msgstr "XML Localization Interchange File Format"
+
+#: ../virtaal/about.py:34
+msgid "Copyright © 2007-2008 Zuza Software Foundation"
+msgstr "Copyright © 2007-2008 Zuza Software Foundation"
+
+#. l10n: Please retain the literal name "Virtaal", but feel free to
+#. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
+#: ../virtaal/about.py:37
+msgid "Virtaal is a program for doing translation."
+msgstr "Virtaal est un programme permettant de travailler sur des traductions."
+
+#: ../virtaal/about.py:38
+msgid ""
+"The initial focus is on software translation (localisation or l10n), but we "
+"definitely intend it to be useful as a general purpose tool for Computer "
+"Aided Translation (CAT)."
+msgstr ""
+"Son champ initial est la traduction de logiciels (« localisation » ou l10n) "
+"mais il est prévu pour évoluer vers un outil généraliste de traduction "
+"assistée par ordinateur."
+
+#: ../virtaal/about.py:52
+msgid "Virtaal website"
+msgstr "Site web de Virtaal"
+
+#. l10n: Rather than translating, fill in the names of the translators
+#: ../virtaal/about.py:60
+msgid "translator-credits"
+msgstr ""
+"Christian Perrier et l'équipe de traduction francophone de Debian"
+
+#: ../virtaal/document.py:56
+msgid "Please enter the language code for the target language"
+msgstr "Veuillez indiquer le code de la langue cible"
+
+#: ../virtaal/document.py:61
+msgid "Please enter the number of noun forms (plurals) to use"
+msgstr "Veuillez indiquer le nombre de formes plurielles à utiliser"
+
+#: ../virtaal/document.py:67
+msgid "Please enter the plural equation to use"
+msgstr "Veuillez indiquer l'équation de forme plurielle à utiliser"
+
+#: ../virtaal/formats.py:31
+msgid "Choose a translation file"
+msgstr "Fichier de traduction"
+
+#: ../virtaal/formats.py:42
+msgid "All Supported Files"
+msgstr "Tous les fichiers gérés"
+
+#: ../virtaal/formats.py:60
+msgid "All Files"
+msgstr "Tous les fichiers"
+
+#: ../virtaal/main_window.py:171
+msgid ""
+"The current file has been modified.\n"
+"Do you want to save your changes?"
+msgstr ""
+"Le fichier en cours a été modifié.\n"
+"Voulez-vous enregistrer les modifications ?"
+
+#: ../virtaal/main_window.py:173
+msgid "_Discard"
+msgstr "_Abandonner"
+
+#: ../virtaal/main_window.py:195
+msgid ""
+"You selected the currently open file for opening. Do you want to reload the "
+"file?"
+msgstr ""
+"Vous avez choisi d'ouvrir un fichier déjà ouvert. Voulez-vous charger à "
+"nouveau ce fichier ?"
+
+#: ../virtaal/main_window.py:244
+msgid "Error opening file:"
+msgstr "Erreur à l'ouverture du fichier :"
+
+#: ../virtaal/main_window.py:260
+#, python-format
+msgid "%(filename)s does not exist."
+msgstr "%(filename)s n'existe pas."
+
+#: ../virtaal/main_window.py:279
+#, python-format
+msgid "Virtaal - %(current_file)s %(modified_marker)s"
+msgstr "Virtaal - %(current_file)s %(modified_marker)s"
+
+#: ../virtaal/main_window.py:311
+msgid "Please enter your name"
+msgstr "Veuillez indiquer votre nom"
+
+#: ../virtaal/main_window.py:317
+msgid "Please enter your e-mail address"
+msgstr "Veuillez indiquer votre adresse électronique"
+
+#: ../virtaal/main_window.py:323
+msgid "Please enter your team's information"
+msgstr "Veuillez indiquer le nom de votre équipe de traduction"
+
+#: ../virtaal/main_window.py:351
+#, python-format
+msgid ""
+"Could not save file.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Try saving at a different location."
+msgstr ""
+"Impossible d'enregistrer le fichier.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Veuillez essayer de l'enregistrer à un autre emplacement."
+
+#: ../virtaal/main_window.py:352
+msgid "Error"
+msgstr "Erreur"
+
+#: ../virtaal/main_window.py:362
+msgid "Save"
+msgstr "Enregistrer"
+
+#: ../virtaal/modes.py:81
+msgid "All"
+msgstr "Tous"
+
+#: ../virtaal/modes.py:102
+msgid "Incomplete"
+msgstr "Incomplet"
+
+#: ../virtaal/mode_selector.py:47
+msgid "_Mode: "
+msgstr "_Mode :"
+
+#: ../virtaal/search_mode.py:37
+msgid "Search"
+msgstr "Rechercher"
+
+#: ../virtaal/search_mode.py:51
+msgid "_Case sensitive"
+msgstr "Sensible à la _casse"
+
+#: ../virtaal/search_mode.py:53
+msgid "_Regular expression"
+msgstr "Expression _rationnelle"
+
+#: ../virtaal/store_grid.py:77
+msgid "The file did not contain anything to translate."
+msgstr "Le fichier ne contient rien à traduire."
+
+#: ../virtaal/support/set_enumerator.py:62
+msgid "Top of page reached, continuing at the bottom"
+msgstr "Haut de page atteint. Continuation en bas de page"
+
+#: ../virtaal/support/set_enumerator.py:66
+msgid "End of page reached, continuing at the top"
+msgstr "Fin de page atteinte. Continuation en haut de page"
+
+#: ../virtaal/tips.py:24
+msgid ""
+"At the end of a translation, simply press <Enter> to continue with the next "
+"one."
+msgstr ""
+"Après avoir terminé une traduction, veuillez appuyer sur la touche <Entrée> "
+"pour passer à la suivante."
+
+#: ../virtaal/tips.py:25
+msgid ""
+"To copy the original string into the target field, simply press <Alt+Down>."
+msgstr ""
+"Pour copier le message d'origine dans le champ de traduction, utilisez <Alt"
+"+Flèche Bas>"
+
+#: ../virtaal/tips.py:26
+msgid ""
+"When editing a fuzzy translation, the fuzzy marker will automatically be "
+"removed."
+msgstr ""
+"Lors de la modification d'une traduction floue, le marqueur « fuzzy » sera "
+"automatiquement supprimé."
+
+#. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
+#: ../virtaal/tips.py:28
+msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
+msgstr "Pour marquer une chaîne comme floue (« fuzzy »), utilisez <Alt+U>."
+
+#: ../virtaal/tips.py:29
+msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
+msgstr ""
+"Utilisez <Ctrl+Haut> ou <Ctrl+Bas> pour passer d'une traduction à l'autre."
+
+#: ../virtaal/tips.py:30
+msgid ""
+"Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
+msgstr ""
+"Utilisez Ctrl+PgHaut ou Ctrl+PgBas pour naviguer entre les traductions."
+
+#: ../virtaal/unit_layout.py:362
+msgid "F_uzzy"
+msgstr "Flo_u (fuzzy)"

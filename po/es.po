@@ -2,13 +2,14 @@
 # Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the PACKAGE package.
 # Alexander Dupuy <alex.dupuy@mac.com>, 2008
+# Julen Ruiz Aizpuru <julenx@gmail.com>, 2008
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.2\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2008-10-14 15:22+0200\n"
-"PO-Revision-Date: 2008-10-15 16:32-0400\n"
-"Last-Translator: Alexander Dupuy <>\n"
+"PO-Revision-Date: 2008-10-15 23:00+0200\n"
+"Last-Translator: Julen Ruiz Aizpuru <julenx@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,7 +32,8 @@ msgstr "PERFIL"
 
 #: ../bin/virtaal:49
 msgid "Perform profiling, storing the result to the supplied filename."
-msgstr "Hacer perfilado, guardando el resultado al nombre de archivo indicado."
+msgstr ""
+"Hacer perfilado, guardando el resultado en el nombre de archivo indicado."
 
 #: ../bin/virtaal:51
 msgid "LOG"
@@ -39,7 +41,8 @@ msgstr "REGISTRO"
 
 #: ../bin/virtaal:52
 msgid "Turn on logging, storing the result to the supplied filename."
-msgstr "Activar registro, guardando el resultado al nombre de archivo indicado."
+msgstr ""
+"Activar registro, guardando el resultado en el nombre de archivo indicado."
 
 #: ../bin/virtaal:54
 msgid "CONFIG"
@@ -55,15 +58,15 @@ msgstr "TERMINOLOGIA"
 
 #: ../bin/virtaal:59
 msgid "Specify a directory containing terminology files"
-msgstr "Indicar un directorio que contiene archivos de terminologia."
+msgstr "Indicar un directorio que contiene archivos de terminología."
 
 #: ../bin/virtaal:77
 msgid "Could not open log file '%(filename)s'"
-msgstr "No se pudo abrir archivo de registro '%(filename)s'"
+msgstr "No se pudo abrir el archivo de registro '%(filename)s'"
 
 #: ../bin/virtaal:84
 msgid "Could not read configuration file '%(filename)s'"
-msgstr "No se pudo leer archivo de configuración '%(filename)s'"
+msgstr "No se pudo leer el archivo de configuración '%(filename)s'"
 
 #: ../bin/virtaal:88
 msgid "invalid number of arguments"
@@ -71,18 +74,19 @@ msgstr "número no válido de argumentos"
 
 #: ../bin/virtaal:113
 msgid "Could not open profile file '%(filename)s'"
-msgstr "No se pudo abrir archivo de perfil '%(filename)s'"
+msgstr "No se pudo abrir el archivo de perfil '%(filename)s'"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 msgid ""
 "A translation tool to help a human translator translate files into other "
 "languages"
-msgstr "Una herramienta de traducción para ayudar un traductor humano a "
-"traducir archivos a otros idiomas"
+msgstr ""
+"Una herramienta de traducción para ayudar a un traductor humano a traducir "
+"archivos a otros idiomas"
 
 #: ../share/applications/virtaal.desktop.in.h:2
 msgid "Translation Tool"
-msgstr "Herramienta de Traducción"
+msgstr "Herramienta de traducción"
 
 #: ../share/applications/virtaal.desktop.in.h:3
 #: ../share/virtaal/virtaal.glade.h:2
@@ -91,7 +95,7 @@ msgstr "Virtaal"
 
 #: ../share/virtaal/virtaal.glade.h:1
 msgid "Report a _Bug"
-msgstr "Informar de un _Fallo"
+msgstr "Informar de un _fallo"
 
 #: ../share/virtaal/virtaal.glade.h:3
 msgid "_File"
@@ -103,15 +107,15 @@ msgstr "Ay_uda"
 
 #: ../share/virtaal/virtaal.glade.h:5
 msgid "_Localization Guide"
-msgstr "_Guía de Localización"
+msgstr "_Guía de localización"
 
 #: ../share/virtaal/virtaal.glade.h:6
 msgid "_Online Help"
-msgstr "Ayuda En _Linea"
+msgstr "Ayuda en _linea"
 
 #: ../share/virtaal/virtaal.glade.h:7
 msgid "_Recent Files"
-msgstr "Archivos _Recientes"
+msgstr "Archivos _recientes"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
 msgid "C++ RC File"
@@ -131,7 +135,7 @@ msgstr "Archivo INI"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:5
 msgid "Initialization"
-msgstr "Initialización"
+msgstr "Inicialización"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:6
 msgid "Java Properties File"
@@ -143,7 +147,7 @@ msgstr "Archivo de mensajes de errores de JavaScript"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:8
 msgid "OpenOffice.org Translation File"
-msgstr "Archivo de traducción de OpenOffice"
+msgstr "Archivo de traducción de OpenOffice.org"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:9
 msgid "Qt Linguist Translation File"
@@ -221,7 +225,7 @@ msgstr "Copyright © 2007-2008 Zuza Software Foundation"
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
 #: ../virtaal/about.py:37
 msgid "Virtaal is a program for doing translation."
-msgstr "Virtaal (Para Idioma) es un programa para hacer traducciones"
+msgstr "Virtaal (Para el idioma) es un programa para hacer traducciones."
 
 #: ../virtaal/about.py:38
 msgid ""
@@ -229,9 +233,9 @@ msgid ""
 "definitely intend it to be useful as a general purpose tool for Computer "
 "Aided Translation (CAT)."
 msgstr ""
-"El meta inicial es para traducción de programas (localización o l10n), pero "
-"definitivamente tenemos la intención que sirve también como herramienta de "
-"uso general para Traducción asistida por ordenador (TAO)."
+"La meta inicial se centra en la traducción de programas (localización o "
+"l10n), pero tenemos la intención de que también sirva como herramienta de "
+"uso general para la Traducción asistida por ordenador (TAO)."
 
 #: ../virtaal/about.py:52
 msgid "Virtaal website"
@@ -244,15 +248,15 @@ msgstr "Alexander Dupuy <alex.dupuy@mac.com>"
 
 #: ../virtaal/document.py:56
 msgid "Please enter the language code for the target language"
-msgstr "Introduzca el código de idioma para el idioma destino, por favor"
+msgstr "Por favor, introduzca el código de idioma para el idioma destino"
 
 #: ../virtaal/document.py:61
 msgid "Please enter the number of noun forms (plurals) to use"
-msgstr "Introduzca la cantidad de formas nominales (plurales), por favor"
+msgstr "Por favor, introduzca la cantidad de formas nominales (plurales)"
 
 #: ../virtaal/document.py:67
 msgid "Please enter the plural equation to use"
-msgstr "Introduzca la ecuación de plurales, por favor"
+msgstr "Por favor, introduzca la ecuación de plurales"
 
 #: ../virtaal/formats.py:31
 msgid "Choose a translation file"
@@ -260,7 +264,7 @@ msgstr "Elegir un archivo de traducción"
 
 #: ../virtaal/formats.py:42
 msgid "All Supported Files"
-msgstr "Todos los archives suportados"
+msgstr "Todos los archivos soportados"
 
 #: ../virtaal/formats.py:60
 msgid "All Files"
@@ -281,12 +285,13 @@ msgstr "_Descartar"
 msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
-msgstr "Usted seleccionado el archivo actual para abrir. ¿Quiere recargar el "
+msgstr ""
+"Ha seleccionado para abrir el archivo ya abierto. ¿Quiere recargar el "
 "archivo?"
 
 #: ../virtaal/main_window.py:244
 msgid "Error opening file:"
-msgstr "Error al abrir el archivo"
+msgstr "Error al abrir el archivo:"
 
 #: ../virtaal/main_window.py:260
 #, python-format
@@ -300,15 +305,15 @@ msgstr "Virtaal - %(current_file)s %(modified_marker)s"
 
 #: ../virtaal/main_window.py:311
 msgid "Please enter your name"
-msgstr "Introduzca su nombre, por favor"
+msgstr "Por favor, introduzca su nombre"
 
 #: ../virtaal/main_window.py:317
 msgid "Please enter your e-mail address"
-msgstr "Introduzca su dirección de correo electrónico, por favor"
+msgstr "Por favor, introduzca su dirección de correo electrónico"
 
 #: ../virtaal/main_window.py:323
 msgid "Please enter your team's information"
-msgstr "Introduzca los datas de su equipo"
+msgstr "Por favor, introduzca los datos de su equipo"
 
 #: ../virtaal/main_window.py:351
 #, python-format
@@ -363,52 +368,51 @@ msgstr "El archivo no contiene nada para traducir."
 
 #: ../virtaal/support/set_enumerator.py:62
 msgid "Top of page reached, continuing at the bottom"
-msgstr "Parte superior de página encontrada, continuando al parte inferior"
+msgstr "Parte superior de página encontrada, continuando por la parte inferior"
 
 #: ../virtaal/support/set_enumerator.py:66
 msgid "End of page reached, continuing at the top"
-msgstr "Parte inferior de página encontrada, continuando al parte superior"
+msgstr "Parte inferior de página encontrada, continuando por la parte superior"
 
 #: ../virtaal/tips.py:24
 msgid ""
 "At the end of a translation, simply press <Enter> to continue with the next "
 "one."
 msgstr ""
-"Al final de una traducción, sólo pulse <Intro> para continuar al siguiente."
+"En el fin de la traducción, pulse <Intro> para continuar con el siguiente."
 
 #: ../virtaal/tips.py:25
 msgid ""
 "To copy the original string into the target field, simply press <Alt+Down>."
-msgstr ""
-"Para copiar el mensaje original al campo destina, sólo pulse <Alt+Bajo>."
+msgstr "Para copiar el mensaje original al campo de destino, pulse <Alt+Bajo>."
 
 #: ../virtaal/tips.py:26
 msgid ""
 "When editing a fuzzy translation, the fuzzy marker will automatically be "
 "removed."
 msgstr ""
-"Mientras editando una traducción con imprecisiones, el marcador de "
+"Mientras esté editando una traducción con imprecisiones, el marcador de "
 "imprecisiones será eliminado automaticamente."
 
 #. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
 #: ../virtaal/tips.py:28
 msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
-msgstr "Para marcar la traducción actual con imprecisiones, sólo pulse <Alt+I>."
+msgstr "Para marcar la traducción actual como imprecisa, pulse <Alt+I>."
 
 #: ../virtaal/tips.py:29
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
-msgstr "Pulse Ctrl+Arriba o Ctrl+Abajo para mover entre traducciones."
+msgstr "Pulse Ctrl+Arriba o Ctrl+Abajo para moverse entre traducciones."
 
 #: ../virtaal/tips.py:30
 msgid ""
 "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
 msgstr ""
-"Pulse Ctrl+RePág o Ctrl+AvPág para mover en pasos grandes entre "
-"traducciones."
+"Pulse Ctrl+RePág o Ctrl+AvPág para moverse entre traducciones a pasos "
+"grandes."
 
 #: ../virtaal/unit_layout.py:364
 msgid "F_uzzy"
-msgstr "Con _Imprecisiones"
+msgstr "Con _imprecisiones"
 
 #: ../source_tree_infrastructure/optparse.py:134
 #, python-format
@@ -471,18 +475,18 @@ msgstr "%prog [opciones]"
 #: ../source_tree_infrastructure/optparse.py:1523
 #, python-format
 msgid "%s option requires an argument"
-msgstr "opción %s necesita un argumento"
+msgstr "la opción %s necesita un argumento"
 
 #: ../source_tree_infrastructure/optparse.py:1486
 #: ../source_tree_infrastructure/optparse.py:1525
 #, python-format
 msgid "%s option requires %d arguments"
-msgstr "opción %s necesita %d argumentos"
+msgstr "la opción %s necesita %d argumentos"
 
 #: ../source_tree_infrastructure/optparse.py:1495
 #, python-format
 msgid "%s option does not take a value"
-msgstr "opción %s no acepta argumentos"
+msgstr "la opción %s no acepta argumentos"
 
 #: ../source_tree_infrastructure/optparse.py:1612
 msgid "Options"

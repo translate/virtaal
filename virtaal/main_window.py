@@ -70,6 +70,16 @@ class Virtaal:
             sys.stdout = open(os.path.join(pan_app.get_config_dir(), 'virtaal_log.txt'), 'ab')
             sys.stderr = sys.stdout
 
+            # Make sure that rule-hints are shown in Windows
+            rc_string = """
+                style "show-rules"
+                {
+                    GtkTreeView::allow-rules = 1
+                }
+                class "GtkTreeView" style "show-rules"
+                """
+            gtk.rc_parse_string(rc_string)
+
         #Set the Glade file
         self.gladefile, self.gui = load_glade_file(["virtaal", "virtaal.glade"], "virtaal")
 

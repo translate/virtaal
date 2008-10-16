@@ -5,6 +5,7 @@ if [ $# == 1 ]; then
 	targetapp=$1
 else
 	targetapp=$(basename $(pwd))
+	echo "Guessing application name is \"${targetapp}\""
 fi
 
 share=share/$targetapp

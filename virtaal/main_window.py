@@ -45,6 +45,7 @@ from about import About
 import formats
 import document
 import recent
+import __version__
 from support import bijection
 from autocompletor import AutoCompletor
 from autocorrector import AutoCorrector
@@ -407,7 +408,7 @@ class Virtaal:
         openmailto.open("http://translate.sourceforge.net/wiki/virtaal/index")
 
     def _on_report_bug(self, _widget=None):
-        openmailto.open("http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal")
+        openmailto.open("http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal&version=%s" % __version__.ver)
 
     def run(self):
         gtk.main()

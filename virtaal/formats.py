@@ -42,6 +42,9 @@ def file_open_chooser(_self, destroyCallback=None):
     all_supported_filter.set_name(_("All Supported Files"))
     chooser.add_filter(all_supported_filter)
     for name, extensions, mimetypes in factory.supported_files():
+        #XXX: Remove when the fixed toolkit is released
+        if "csv" in extensions or "qm" in extensions:
+            continue
         new_filter = gtk.FileFilter()
         new_filter.set_name(_(name))
         if extensions:

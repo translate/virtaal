@@ -197,7 +197,7 @@ Name: "{group}\%(name)s (uninstall)"; Filename: "{uninstallexe}"''' % {'name': n
         # Associate each extention with the file type
         for extention in extentions:
             # We don't want to associate with all .txt or .pot (PowerPoint template) files, so let's skip it
-            if extention in ["txt", "pot"]:
+            if extention in ["txt", "pot", "csv"]:
                 continue
             print >> ofi, r'Root: HKCR; Subkey: ".%(extention)s"; ValueType: string; ValueName: ""; ValueData: "virtaal_%(key)s"; Flags: uninsdeletevalue' % {'extention': extention, 'key': key}
         print >> ofi, r'''Root: HKCR; Subkey: "virtaal_%(key)s"; ValueType: string; ValueName: ""; ValueData: "%(description)s"; Flags: uninsdeletekey

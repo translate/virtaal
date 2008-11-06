@@ -185,3 +185,22 @@ msgstr ""
 msgid "Create Fo_lder"
 msgstr ""
 
+#. Right Click (on empty) -> Cut
+msgid "Cu_t"
+msgstr ""
+
+#. Right Click (on empty) -> Copy
+msgid "_Copy"
+msgstr ""
+
+#. Right Click (on empty) -> Paste
+msgid "_Paste"
+msgstr ""
+
+#. Right Click (on empty) -> Delete
+msgid "_Delete"
+msgstr ""
+
+#. Right Click (on empty) -> Select All
+msgid "Select _All"
+msgstr ""

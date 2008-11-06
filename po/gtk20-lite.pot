@@ -185,6 +185,10 @@ msgstr ""
 msgid "Create Fo_lder"
 msgstr ""
 
+#. File save dialg - Create folder button (after pressing) - Type name of new folder
+msgid "Type name of new folder"
+msgstr ""
+
 #. Right Click (on empty) -> Cut
 msgid "Cu_t"
 msgstr ""

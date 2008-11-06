@@ -3,14 +3,19 @@
 ./intltool-update --pot
 podebug --rewrite=xxx -f "" --progress=none virtaal.pot de_DE.po
 podebug --rewrite=xxx -f "" --progress=none gtk20-lite.pot de_DE-lite.po
+podebug --rewrite=xxx -f "" --progress=none gtk-spell.pot de_DE-spell.po
 for po in $(ls *.po | egrep -v lite)
 do
 	modir=mo/$(basename $po .po)/LC_MESSAGES
         gtklite=$(basename $po .po)-lite.po
+        gtkspell=$(basename $po .po)-spell.po
 	mkdir -p $modir
 	msgfmt -o $modir/virtaal.mo $po
         if [ -f $gtklite ]; then
 		msgfmt -o $modir/gtk20.mo $gtklite
+	fi
+        if [ -f $gtkspell ]; then
+		msgfmt -o $modir/gtkspell.mo $gtkspell
 	fi
 done
 

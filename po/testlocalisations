@@ -27,6 +27,6 @@ done
 
 lang=$(echo $1 |sed "s/\.po$//")
 export LANGUAGE=../../../../../../../../$(pwd)/mo/${lang:-de_DE}:$LANGUAGE
-echo $LANGUAGE
+echo "LANGUAGE=$LANGUAGE"
 # This assumes that the following executable is in your PATH
 virtaal

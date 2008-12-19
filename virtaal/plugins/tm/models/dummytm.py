@@ -20,23 +20,16 @@
 
 import gobject
 
-from virtaal.models import BaseModel
+from virtaal.plugins.tm.basetmmodel import BaseTMModel
 
-
-class TMModel(BaseModel):
+class TMModel(BaseTMModel):
     """This is a dummy (testing) translation memory model."""
 
     __gtype_name__ = 'DummyTMModel'
-    __gsignals__ = {
-        'match-found': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING, gobject.TYPE_PYOBJECT,))
-    }
 
     # INITIALIZERS #
     def __init__(self, controller):
-        super(TMModel, self).__init__()
-
-        self.controller = controller
-        self.controller.connect('start-query', self.query)
+        super(TMModel, self).__init__(controller)
 
 
     # METHODS #

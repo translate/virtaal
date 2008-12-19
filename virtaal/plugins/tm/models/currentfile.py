@@ -23,36 +23,25 @@ import gobject
 
 from translate.search import match
 
-from virtaal.models import BaseModel
+from virtaal.plugins.tm.basetmmodel import BaseTMModel
 
 
-class TMModel(BaseModel):
+class TMModel(BaseTMModel):
     """Translation memory model that matches against translated strings from current file"""
 
     __gtype_name__ = 'CurrentFileTMModel'
-    __gsignals__ = {
-        'match-found': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING, gobject.TYPE_PYOBJECT,))
-    }
 
     # INITIALIZERS #
     def __init__(self, controller):
-        super(TMModel, self).__init__()
+        super(TMModel, self).__init__(controller)
 
-        self.controller = controller
-
-        #TODO: tm server connection settings should come from configs
         self.matcher = None
-        self.cache = {}
-
-        self.controller.connect('start-query', self.query)
         self.controller.main_controller.store_controller.connect('store-loaded', self.recreate_matcher)
-
 
     # METHODS #
     def recreate_matcher(self, storecontroller):
         store = storecontroller.get_store()._trans_store
         self.matcher = match.matcher(store)
-        
         
     def query(self, tmcontroller, query_str):
         if self.cache.has_key(query_str):

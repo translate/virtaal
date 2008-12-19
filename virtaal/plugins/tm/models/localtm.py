@@ -22,34 +22,25 @@ import gobject
 
 from translate.services import tmclient
 
-from virtaal.models import BaseModel
+from virtaal.plugins.tm.basetmmodel import BaseTMModel
 
 
-class TMModel(BaseModel):
+class TMModel(BaseTMModel):
     """This is the translation memory model."""
 
     __gtype_name__ = 'LocalTMModel'
-    __gsignals__ = {
-        'match-found': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING, gobject.TYPE_PYOBJECT,))
-    }
 
     # INITIALIZERS #
     def __init__(self, controller):
-        super(TMModel, self).__init__()
-
-        self.controller = controller
+        super(TMModel, self).__init__(controller)
 
         #TODO: tm server connection settings should come from configs
         self.tmclient = tmclient.TMClient("http://localhost:8080/tmserver")
-        self.cache = {}
-
-        self.controller.connect('start-query', self.query)
-
 
     # METHODS #
     def query(self, tmcontroller, query_str):
         if self.cache.has_key(query_str):
-            self.controller.accept_response(query_str, self.cache[query_str])
+            self.emit('match-found', query_str, self.cache[query_str])
         else:
             self.tmclient.translate_unit(query_str, self.handle_matches)
 

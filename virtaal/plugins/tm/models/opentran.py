@@ -23,37 +23,29 @@ import gobject
 from translate.services import opentranclient
 from translate.search.lshtein import LevenshteinComparer
 
-from virtaal.models import BaseModel
+from virtaal.plugins.tm.basetmmodel import BaseTMModel
 from virtaal.common import pan_app
 
 
-class TMModel(BaseModel):
+class TMModel(BaseTMModel):
     """This is the translation memory model."""
 
     __gtype_name__ = 'OpenTranTMModel'
-    __gsignals__ = {
-        'match-found': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING, gobject.TYPE_PYOBJECT,))
-    }
 
     # INITIALIZERS #
     def __init__(self, controller):
-        super(TMModel, self).__init__()
+        super(TMModel, self).__init__(controller)
 
-        self.controller = controller
         self.comparer = LevenshteinComparer()
-
         language = pan_app.settings.language["contentlang"]
         #TODO: open-tran connection settings should come from configs
         self.tmclient = opentranclient.OpenTranClient("http://open-tran.eu/RPC2", language)
-        self.cache = {}
-
-        self.controller.connect('start-query', self.query)
 
 
     # METHODS #
     def query(self, tmcontroller, query_str):
         if self.cache.has_key(query_str):
-            self.controller.accept_response(query_str, self.cache[query_str])
+            self.emit('match-found', query_str, self.cache[query_str])
         else:
             self.tmclient.translate_unit(query_str, self.handle_matches)
 

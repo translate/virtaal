@@ -82,6 +82,7 @@ class Settings:
             "plural": None,
     }
     plugin_state =  {
+        "HelloWorld": "disabled"
     }
     undo = {
             "depth": 50,
@@ -186,6 +187,8 @@ def load_config(filename, section=None):
     parser.read(filename)
 
     if section:
+        if section not in parser.sections():
+            return {}
         return dict(parser.items(section))
 
     conf = {}

@@ -36,6 +36,10 @@ class TMModel(BaseTMModel):
     def query(self, tmcontroller, query_str):
         tm_matches = []
         tm_matches.append({
+            'source': 'This match has no "quality" field',
+            'target': 'Hierdie woordeboek het geen "quality"-veld nie.'
+        })
+        tm_matches.append({
             'source': query_str.lower(),
             'target': query_str.upper(),
             'quality': 100
@@ -47,10 +51,6 @@ class TMModel(BaseTMModel):
             'source': reverse_str.lower(),
             'target': reverse_str.upper(),
             'quality': 32
-        })
-        tm_matches.append({
-            'source': 'This match has no "quality" field',
-            'target': 'Hierdie woordeboek het geen "quality"-veld nie.'
         })
 
         self.emit('match-found', query_str, tm_matches)

@@ -18,6 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import os
+
+from virtaal.common import pan_app
 
 class BasePlugin(object):
     """The base interface to be implemented by all plug-ins."""
@@ -25,7 +28,7 @@ class BasePlugin(object):
     """The plug-in's name, suitable for display."""
     version = 0
     """The plug-in's version number."""
-
+    default_config = {}
     def __new__(cls, *args, **kwargs):
         """Create a new plug-in instance and check that it is valid."""
         if not cls.name:
@@ -41,3 +44,14 @@ class BasePlugin(object):
         """This method is called by C{PluginController.shutdown()} and should be
             implemented by all plug-ins that need to do clean-up."""
         pass
+
+    def load_config(self):
+        """load plugin config from default location"""
+        self.config = self.default_config
+        config_file = os.path.join(pan_app.get_config_dir(), "plugins.ini")
+        self.config.update(pan_app.load_config(config_file, self.name))
+        
+    def save_config(self):
+        """save plugin config to default location"""
+        config_file = os.path.join(pan_app.get_config_dir(), "plugins.ini")
+        pan_app.save_config(config_file, self.config, self.name)

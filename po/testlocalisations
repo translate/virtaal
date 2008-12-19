@@ -7,15 +7,21 @@ podebug --rewrite=xxx -f "" --progress=none gtk-spell.pot de_DE-spell.po
 for po in $(ls *.po | egrep -v lite)
 do
 	modir=mo/$(basename $po .po)/LC_MESSAGES
-        gtklite=$(basename $po .po)-lite.po
-        gtkspell=$(basename $po .po)-spell.po
+	gtklite=$(basename $po .po)-lite.po
+	gtkreal=/usr/share/locale/$(basename $po .po)/LC_MESSAGES/gtk20.mo
+	gtkspell=$(basename $po .po)-spell.po
+	gtkspellreal=/usr/share/locale/$(basename $po .po)/LC_MESSAGES/gtkspell.mo
 	mkdir -p $modir
 	msgfmt -o $modir/virtaal.mo $po
         if [ -f $gtklite ]; then
 		msgfmt -o $modir/gtk20.mo $gtklite
+	elif [ -f $gtkreal ]; then
+		cp $gtkreal $modir
 	fi
         if [ -f $gtkspell ]; then
 		msgfmt -o $modir/gtkspell.mo $gtkspell
+	elif [ -f $gtkspellreal ]; then
+		cp $gtkspellreal $modir
 	fi
 done
 

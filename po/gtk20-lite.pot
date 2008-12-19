@@ -37,6 +37,10 @@ msgstr ""
 msgid "Save _As"
 msgstr ""
 
+#. File->Revert
+msgid "_Revert"
+msgstr ""
+
 #. File->Recent Files->tooltip
 msgid "Open '%s'"
 msgstr ""
@@ -207,4 +211,16 @@ msgstr ""
 
 #. Right Click (on empty) -> Select All
 msgid "Select _All"
+msgstr ""
+
+#. Revert Confirmation Dialog -> Yes
+msgid "_Yes"
+msgstr ""
+
+#. Revert Confirmation Dialog -> No
+msgid "_No"
+msgstr ""
+
+#. Error Dialog -> OK
+msgid "_OK"
 msgstr ""

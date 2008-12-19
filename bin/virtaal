@@ -27,20 +27,8 @@ from os import path
 
 from translate.storage import factory
 
-from virtaal.main_window import Virtaal
-from virtaal import pan_app
-from virtaal import __version__
-from virtaal import terminology
-
-def set_termininology_dir(option, opt_str, value, parser):
-    def get_term(value):
-        if not path.isdir(value):
-            try:
-                return factory.getobject(value)
-            except ValueError:
-                raise OptionValueError(_("You must specify a directory or a translation file for --terminology"))
-        return value
-    parser.values.terminology = get_term(value)
+from virtaal.main import Virtaal
+from virtaal.common import pan_app, __version__
 
 optparse._ = _
 usage = _("%prog [options] [translation_file]")
@@ -55,10 +43,6 @@ option_list = [
     make_option("--config",
                 action="store", type="string", dest="config", metavar=_("CONFIG"),
                 help=_("use the configuration file given by the supplied filename.")),
-    make_option("--terminology", metavar=_("TERMINOLOGY"),
-                action="callback", type="string", 
-                callback=set_termininology_dir, nargs=1,
-                help=_("specify a directory containing terminology files"))                
 ]
 parser = OptionParser(option_list=option_list, usage=usage, version=__version__.ver)
 
@@ -92,20 +76,20 @@ def main(argv):
             return args[0]
         else:
             return None
-  
+
     def get_virtaal_runner(options):
         def run_virtaal(startup_file):
             prog = Virtaal(startup_file)
             prog.run()
 
-        def profile_runner(startup_file):            
+        def profile_runner(startup_file):
             def profile(profile_file, startup_file):
                 import cProfile
-                import source_tree_infrastructure.lsprofcalltree as lsprofcalltree
+                import devsupport.profiling as profiling
                 logging.info('Staring profiling run')
                 profiler = cProfile.Profile()
                 profiler.runcall(run_virtaal, startup_file)
-                k_cache_grind = lsprofcalltree.KCacheGrind(profiler)
+                k_cache_grind = profiling.KCacheGrind(profiler)
                 k_cache_grind.output(profile_file)
                 profile_file.close()
 
@@ -115,22 +99,21 @@ def main(argv):
                 parser.error(_("Could not open profile file '%(filename)s'") % {"filename":options.profile})
 
         def default_runner(startup_file):
-            try:
-                import psyco
-                psyco.full()
-            except Exception:
-                pass
+            #try:
+            #    import psyco
+            #    psyco.full()
+            #except Exception:
+            #    pass
             run_virtaal(startup_file)
 
         if options.profile != None:
             return profile_runner
         else:
             return default_runner
-  
+
     options, args = parser.parse_args(argv[1:])
     set_config(options)
     set_logging(options)
-    terminology.set_terminology_source(options.terminology)
     startup_file = get_startup_file(options)
     runner = get_virtaal_runner(options)
     runner(startup_file)

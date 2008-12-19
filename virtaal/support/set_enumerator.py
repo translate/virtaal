@@ -26,64 +26,6 @@ from virtaal.support.sorted_set import SortedSet
 
 # FIXME: Add docstrings!
 
-class Cursor(gobject.GObject):
-    __gtype_name__ = "Cursor"
-
-    def __init__(self, union_set, pos=-1):
-        gobject.GObject.__init__(self)
-        if pos >= len(union_set):
-            # TODO: Push new status message: 'End of page reached, continuing at the top'
-            pos = 0
-        self.union_set = union_set
-        self.union_set.connect('add', self._on_add)
-        self.union_set.connect('remove', self._on_remove)
-        self._pos = pos
-
-    def _on_add(self, _src, cursor_pos, _element):
-        if self._pos >= cursor_pos:
-            self._pos += 1
-
-    def _on_remove(self, _src, cursor_pos, _element):
-        if self._pos >= cursor_pos:
-            self._pos -= 1
-
-    def _assert_valid_index(self, index):
-        if not 0 <= index < len(self.union_set):
-            raise IndexError()
-
-    def move(self, offset):
-        newpos = self._pos + offset
-        statusmsg = ''
-        try:
-            self._assert_valid_index(newpos)
-        except IndexError:
-            if newpos < 0:
-                newpos += len(self.union_set)
-                statusmsg = _('Top of page reached, continuing at the bottom')
-            else:
-                # If we get here, newpos > len(self.union_set.set.data)
-                newpos -= len(self.union_set.set.data)
-                statusmsg = _('End of page reached, continuing at the top')
-        self._pos = newpos
-        return statusmsg
-
-    def deref(self, index=None):
-        if index == None:
-            index = self._pos
-        self._assert_valid_index(index)
-        return self.union_set.set.data[index]
-
-    def get_pos(self):
-        return self._pos
-
-    def __iter__(self):
-        def iterator():
-            for element in self.union_set.set.data:
-                yield element
-
-        return iterator()
-
-
 class UnionSetEnumerator(gobject.GObject):
     __gtype_name__ = "UnionSetEnumerator"
 
@@ -98,9 +40,6 @@ class UnionSetEnumerator(gobject.GObject):
         if len(sets) > 0:
             self.sets = sets
             self.set = reduce(lambda big_set, set: big_set.union(set), sets[1:], sets[0])
-            for set_ in self.sets:
-                set_.connect('before-add', self._before_add)
-                set_.connect('before-remove', self._before_remove)
         else:
             self.sets = [SortedSet([])]
             self.set = SortedSet([])

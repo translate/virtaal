@@ -40,7 +40,6 @@ class TMModel(BaseTMModel):
 
     # INITIALIZERS #
     def __init__(self, controller):
-        super(TMModel, self).__init__(controller)
         self.load_config()
         command = ["tmserver.py",
                    "-b", self.config["tmserver_bind"],
@@ -52,6 +51,7 @@ class TMModel(BaseTMModel):
         url = "http://%s:%s/tmserver" % (self.config["tmserver_bind"], self.config["tmserver_port"])
 
         self.tmclient = tmclient.TMClient(url)
+        super(TMModel, self).__init__(controller)
 
     # METHODS #
     def query(self, tmcontroller, query_str):

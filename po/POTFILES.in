@@ -11,8 +11,8 @@ virtaal/modes/searchmode.py
 virtaal/plugins/migration.py
 virtaal/plugins/tm/tmview.py
 virtaal/plugins/tm/tmwidgets.py
-virtaal/views/aboutdialog.py
 virtaal/views/mainview.py
 virtaal/views/modeview.py
 virtaal/views/unitview.py
+virtaal/views/widgets/aboutdialog.py
 devsupport/optparse.py

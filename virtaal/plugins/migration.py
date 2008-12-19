@@ -156,8 +156,7 @@ class Plugin(BasePlugin):
         logging.debug('%d units migrated from Poedit TM: %s.' % (len(sources), lang))
         sources.close()
         targets.close()
-        #l10n: The parameter is the language code of the translation memory database
-        self.migrated.append(_("Poedit's Translation Memory: %s") % lang)
+        self.migrated.append(_("Poedit's Translation Memory: %(database_language_code)s") % {"database_language_code": lang})
 
     def kbabel_tm_import(self):
         """Attempt to import the Translation Memory used in KBabel."""
@@ -209,6 +208,5 @@ class Plugin(BasePlugin):
         cursor.execute("""SELECT english, target from tm_main;""")
         self.tm.extend(cursor.fetchall())
         connection.close()
-        #l10n: the parameter is the name of the database
-        self.migrated.append(_("Lokalize's Translation Memory: %s") % path.basename(filename))
+        self.migrated.append(_("Lokalize's Translation Memory: %(database_name)s") % {"database_name": path.basename(filename)})
 

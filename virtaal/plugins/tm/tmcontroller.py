@@ -76,6 +76,12 @@ class TMController(BaseController):
         """Accept a query-response from the model.
             (This method is used as Model-Controller communications)"""
         if query_str == self.current_query:
+            # Perform some sanity checks on matches first
+            for match in matches:
+                if 'quality' not in match or match['quality'] is None:
+                    match['quality'] = 0
+                elif not isinstance(match['quality'], int):
+                    match['quality'] = int(match['quality'])
             self.view.display_matches(matches)
 
     def destroy(self):

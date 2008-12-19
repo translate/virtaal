@@ -34,3 +34,6 @@ class Plugin(BasePlugin):
 
     def _init_plugin(self):
         self.tmcontroller = TMController(self.main_controller)
+
+    def destroy(self):
+        self.tmcontroller.destroy()

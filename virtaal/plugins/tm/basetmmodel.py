@@ -47,11 +47,14 @@ class BaseTMModel(BaseModel):
     def __init__(self, controller):
         super(BaseTMModel, self).__init__()
         self.controller = controller
-        self.controller.connect('start-query', self.query)
+        self._start_query_id = self.controller.connect('start-query', self.query)
         
         #static suggestion cache for slow TM queries
         #TODO: cache invalidation, maybe decorate query to automate cache handling?
         self.cache = {}
+
+    def destroy(self):
+        self.controller.disconnect(self._start_query_id)
 
     def query(self, tmcontroller, query_str):
         """all tm backends must implement this method, check for

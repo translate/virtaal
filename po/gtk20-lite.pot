@@ -72,6 +72,29 @@ msgstr ""
 msgid "Open '%s'"
 msgstr ""
 
+#. This is the label format that is used for the first 10 items
+#. * in a recent files menu. The %d is the number of the item,
+#. * the %s is the name of the item. Please keep the _ in front
+#. * of the number to give these menu items a mnemonic.
+#. *
+#. * Don't include the prefix "recent menu label|" in the translation.
+#.
+#. GTK <=2.14
+#. File->Recent Files->Selection label
+msgid "recent menu label|_%d. %s"
+msgstr ""
+
+#. This is the label format that is used for the first 10 items
+#. * in a recent files menu. The %d is the number of the item,
+#. * the %s is the name of the item. Please keep the _ in front
+#. * of the number to give these menu items a mnemonic.
+#.
+#. GTK HEAD (allows future proofing)
+#. File->Recent Files->Selection label
+msgctxt "recent menu label"
+msgid "_%d. %s"
+msgstr ""
+
 #. File->Quit
 msgid "_Quit"
 msgstr ""

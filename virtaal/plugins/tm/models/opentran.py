@@ -21,7 +21,6 @@
 import gobject
 
 from translate.services import opentranclient
-from translate.search.lshtein import LevenshteinComparer
 
 from virtaal.plugins.tm.basetmmodel import BaseTMModel
 from virtaal.common import pan_app
@@ -32,14 +31,20 @@ class TMModel(BaseTMModel):
 
     __gtype_name__ = 'OpenTranTMModel'
 
+    default_config = {
+        "url" : "http://open-tran.eu/RPC2"
+        }
     # INITIALIZERS #
     def __init__(self, controller):
         super(TMModel, self).__init__(controller)
+        self.load_config()
 
-        self.comparer = LevenshteinComparer()
-        language = pan_app.settings.language["contentlang"]
-        #TODO: open-tran connection settings should come from configs
-        self.tmclient = opentranclient.OpenTranClient("http://open-tran.eu/RPC2", language)
+        self.tmclient = opentranclient.OpenTranClient(
+            self.config["url"], 
+            pan_app.settings.language["contentlang"],
+            max_candidates=self.config["max_candidates"], 
+            min_similarity=self.config["min_similarity"])
+        
 
 
     # METHODS #

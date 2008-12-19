@@ -35,7 +35,11 @@ class BaseTMModel(BaseModel):
     __gsignals__ = {
         'match-found': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING, gobject.TYPE_PYOBJECT,))
     }
-
+    
+    shared_config = {
+        "max_candidates" : 3,
+        "min_similarity" : 75,
+        }
 
     default_config = {}
 
@@ -56,7 +60,8 @@ class BaseTMModel(BaseModel):
 
     def load_config(self):
         """load TM backend config from default location"""
-        self.config = self.default_config
+        self.config = self.shared_config
+        self.config.update(self.default_config)
         config_file = os.path.join(pan_app.get_config_dir(), "tm.ini")
         self.config.update(pan_app.load_config(config_file, self.__gtype_name__))
         

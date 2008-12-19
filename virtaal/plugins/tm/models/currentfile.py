@@ -37,11 +37,15 @@ class TMModel(BaseTMModel):
 
         self.matcher = None
         self.controller.main_controller.store_controller.connect('store-loaded', self.recreate_matcher)
+        self.load_config()
 
     # METHODS #
     def recreate_matcher(self, storecontroller):
         store = storecontroller.get_store()._trans_store
-        self.matcher = match.matcher(store)
+        self.matcher = match.matcher(store,
+                                     max_candidates=self.config['max_candidates'], 
+                                     min_similarity=self.config['min_similarity'], 
+                                     max_length=1000)
         
     def query(self, tmcontroller, query_str):
         if self.cache.has_key(query_str):

@@ -95,6 +95,29 @@ msgctxt "recent menu label"
 msgid "_%d. %s"
 msgstr ""
 
+#. This is the format that is used for items in a recent files menu.
+#. * The %d is the number of the item, the %s is the name of the item.
+#. *
+#. * Don't include the prefix "recent menu label|" in the translation.
+#.
+#. GTK <=2.14
+#: ../gtk/gtkrecentchoosermenu.c:788
+#, c-format
+msgid "recent menu label|%d. %s"
+msgstr "%d. %s"
+
+#. This is the label format that is used for the first 10 items
+#. * in a recent files menu. The %d is the number of the item,
+#. * the %s is the name of the item. Please keep the _ in front
+#. * of the number to give these menu items a mnemonic.
+#.
+#. GTK HEAD (allows future proofing)
+#: ../gtk/gtkrecentchoosermenu.c:779
+#, c-format
+msgctxt "recent menu label"
+msgid "_%d. %s"
+msgstr ""
+
 #. File->Quit
 msgid "_Quit"
 msgstr ""

@@ -42,12 +42,12 @@ class TMModel(BaseTMModel):
     def __init__(self, controller):
         super(TMModel, self).__init__(controller)
         self.load_config()
-        command = ["tmserver.py", 
+        command = ["tmserver.py",
                    "-b", self.config["tmserver_bind"],
                    "-p", self.config["tmserver_port"],
                    "-t", self.config["tm_store"],
                    ]
-        
+
         self.tmserver = subprocess.Popen(command)
         url = "http://%s:%s/tmserver" % (self.config["tmserver_bind"], self.config["tmserver_port"])
 
@@ -71,6 +71,3 @@ class TMModel(BaseTMModel):
         else:
             import signal
             os.kill(self.tmserver.pid, signal.SIGTERM)
-
-        
-

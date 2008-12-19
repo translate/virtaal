@@ -29,6 +29,8 @@ class BasePlugin(object):
     version = 0
     """The plug-in's version number."""
     default_config = {}
+
+    # INITIALIZERS #
     def __new__(cls, *args, **kwargs):
         """Create a new plug-in instance and check that it is valid."""
         if not cls.name:
@@ -40,18 +42,19 @@ class BasePlugin(object):
     def __init__(self):
         raise NotImplementedError('This interface cannot be instantiated.')
 
+    # METHODS #
     def destroy(self):
         """This method is called by C{PluginController.shutdown()} and should be
             implemented by all plug-ins that need to do clean-up."""
         pass
 
     def load_config(self):
-        """load plugin config from default location"""
+        """Load plugin config from default location."""
         self.config = self.default_config
         config_file = os.path.join(pan_app.get_config_dir(), "plugins.ini")
         self.config.update(pan_app.load_config(config_file, self.name))
 
     def save_config(self):
-        """save plugin config to default location"""
+        """Save plugin config to default location."""
         config_file = os.path.join(pan_app.get_config_dir(), "plugins.ini")
         pan_app.save_config(config_file, self.config, self.name)

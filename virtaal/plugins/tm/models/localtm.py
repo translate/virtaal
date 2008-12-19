@@ -17,25 +17,41 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+import os
+import subprocess
 
 import gobject
 
 from translate.services import tmclient
 
+from virtaal.common import pan_app
 from virtaal.plugins.tm.basetmmodel import BaseTMModel
-
 
 class TMModel(BaseTMModel):
     """This is the translation memory model."""
 
     __gtype_name__ = 'LocalTMModel'
 
+    default_config = {
+        "tmserver_bind" : "localhost",
+        "tmserver_port" : "8080",
+        "tm_store" : os.path.join(pan_app.get_config_dir(), "tm.po")
+        }
+
     # INITIALIZERS #
     def __init__(self, controller):
         super(TMModel, self).__init__(controller)
+        self.load_config()
+        command = ["tmserver.py", 
+                   "-b", self.config["tmserver_bind"],
+                   "-p", self.config["tmserver_port"],
+                   "-t", self.config["tm_store"],
+                   ]
+        
+        self.tmserver = subprocess.Popen(command)
+        url = "http://%s:%s/tmserver" % (self.config["tmserver_bind"], self.config["tmserver_port"])
 
-        #TODO: tm server connection settings should come from configs
-        self.tmclient = tmclient.TMClient("http://localhost:8080/tmserver")
+        self.tmclient = tmclient.TMClient(url)
 
     # METHODS #
     def query(self, tmcontroller, query_str):
@@ -47,3 +63,14 @@ class TMModel(BaseTMModel):
     def handle_matches(self, widget, query_str, matches):
         self.cache[query_str] = matches
         self.emit('match-found', query_str, matches)
+
+    def destroy(self):
+        if os.name == "nt":
+            import ctypes
+            ctypes.windll.kernel32.TerminateProcess(int(self.tmserver._handle), -1)
+        else:
+            import signal
+            os.kill(self.tmserver.pid, signal.SIGTERM)
+
+        
+

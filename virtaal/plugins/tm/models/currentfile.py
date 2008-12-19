@@ -52,18 +52,6 @@ class TMModel(BaseTMModel):
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])
         else:
-            self.cache[query_str] = [_unit2dict(candidate) for candidate in self.matcher.matches(unicode(query_str, "utf-8"))]
+            self.cache[query_str] = [match.unit2dict(candidate) for candidate in self.matcher.matches(unicode(query_str, "utf-8"))]
             self.emit('match-found', query_str, self.cache[query_str])
 
-
-def _unit2dict(unit):
-    """converts a pounit to a simple dict structure for use over the web"""
-    return {"source": unit.source, "target": unit.target,
-            "quality": _parse_quality(unit.othercomments), "context": unit.getcontext()}
-
-def _parse_quality(comments):
-    """extracts match quality from po comments"""
-    for comment in comments:
-        quality = re.search('([0-9]+)%', comment)
-        if quality:
-            return quality.group(1)

@@ -165,7 +165,7 @@ msgstr ""
 
 #. File dialog - Remove button - tooltip
 msgid "Remove the selected bookmark"
-msgstr "De geselecteerde bladwijzer verwijderen"
+msgstr ""
 
 #. File dialog - Location - Label
 msgid "_Location:"

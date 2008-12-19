@@ -84,7 +84,17 @@ class TMView(BaseView, GObjectWrapper):
         """Add the list of TM matches to those available and show the TM window."""
         liststore = self.tmwindow.liststore
 
+        rows = [tuple(row)[0] for row in liststore]
+        curr_targets = [str(row['target']) for row in rows]
         for match in matches:
+            if str(match['target']) not in curr_targets:
+                rows.append(match)
+        rows.sort(key=lambda x: 'quality' in x and x['quality'] or 0)
+        rows.reverse()
+        rows = rows[:self.max_matches]
+
+        liststore.clear()
+        for match in rows:
             tooltip = ''
             if len(liststore) <= 9:
                 tooltip = _('Ctrl+%(number_key)d') % {"number_key": len(liststore)+1}

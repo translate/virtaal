@@ -141,6 +141,10 @@ msgstr ""
 msgid "Desktop"
 msgstr ""
 
+#. File dialog - Places - Entry - File System
+msgid "File System"
+msgstr ""
+
 #. File dialog - Places - Right-Click - Remove
 msgid "Remove"
 msgstr ""

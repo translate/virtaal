@@ -152,21 +152,15 @@ class TMMatchRenderer(gtk.GenericCellRenderer):
 
 
     # INTERFACE METHODS #
-    def do_get_size(self, widget, cell_area):
-        if cell_area:
-            width = cell_area.width
-        else:
-            perc_column_width = widget.get_columns()[0].get_width()
-            horiz_sep_width = widget.style_get_property('horizontal-separator')
-            width = widget.get_allocation().width - perc_column_width - horiz_sep_width
-            if width <= 1:
-                width = -1
-        if width < -1:
-            width = -1
+    def on_get_size(self, widget, cell_area):
+        width = self.view.get_target_width() - self.BOX_MARGIN
+        height = self._compute_cell_height(widget, width)
+        height = min(height, 600)
+        #print 'do_get_size() (w, h):', width, height
 
-        height = min(self._compute_cell_height(widget, width), 600)
+        x_offset = 0
         y_offset = self.ROW_PADDING / 2
-        return 0, y_offset, width, height
+        return x_offset, y_offset, width, height
 
     def do_get_property(self, pspec):
         return getattr(self, pspec.name)
@@ -174,11 +168,11 @@ class TMMatchRenderer(gtk.GenericCellRenderer):
     def do_set_property(self, pspec, value):
         setattr(self, pspec.name, value)
 
-    def do_start_editing(self, _event, tree_view, path, _bg_area, cell_area, _flags):
-        return None # We should never be editing
-
     def on_render(self, window, widget, _background_area, cell_area, _expose_area, _flags):
-        x_offset, y_offset, width, height = self.do_get_size(widget, cell_area)
+        x_offset = 0
+        y_offset = self.ROW_PADDING / 2
+        width = cell_area.width
+        height = self._compute_cell_height(widget, width)
 
         x = cell_area.x + x_offset
         source_height = self.source_layout.get_pixel_size()[1]

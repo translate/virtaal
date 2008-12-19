@@ -93,6 +93,13 @@ class TMView(BaseView, GObjectWrapper):
             self.show()
             self.update_geometry()
 
+    def get_target_width(self):
+        if not hasattr(self.controller, 'unit_view'):
+            return -1
+        n = self.controller.unit_view.focused_target_n
+        textview = self.controller.unit_view.targets[n]
+        return textview.get_allocation().width
+
     def hide(self):
         """Hide the TM window."""
         self.tmwindow.hide()

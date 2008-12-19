@@ -41,6 +41,10 @@ msgstr ""
 msgid "_Revert"
 msgstr ""
 
+#. File ->Recent Files->No items found
+msgid "No items found"
+msgstr ""
+
 #. File->Recent Files->tooltip
 msgid "Open '%s'"
 msgstr ""

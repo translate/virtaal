@@ -26,6 +26,9 @@ from tmcontroller import TMController
 class Plugin(BasePlugin):
     name = 'Translation Memory'
     version = 0.1
+    default_config = {
+        'max_matches': '5'
+    }
 
     # INITIALIZERS #
     def __init__(self, main_controller):
@@ -33,7 +36,9 @@ class Plugin(BasePlugin):
         self._init_plugin()
 
     def _init_plugin(self):
-        self.tmcontroller = TMController(self.main_controller)
+        self.load_config()
+        max_matches = int(self.config['max_matches'])
+        self.tmcontroller = TMController(self.main_controller, max_matches=max_matches)
 
     def destroy(self):
         self.tmcontroller.destroy()

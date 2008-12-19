@@ -41,11 +41,11 @@ class TMController(BaseController):
         before the TM is queried."""
 
     # INITIALIZERS #
-    def __init__(self, main_controller):
+    def __init__(self, main_controller, max_matches):
         GObjectWrapper.__init__(self)
 
         self.main_controller = main_controller
-        self.view = TMView(self)
+        self.view = TMView(self, max_matches)
         self._load_models()
 
         self._connect_plugin()

@@ -38,11 +38,12 @@ class TMView(BaseView, GObjectWrapper):
     }
 
     # INITIALIZERS #
-    def __init__(self, controller):
+    def __init__(self, controller, max_matches):
         GObjectWrapper.__init__(self)
 
         self.controller = controller
         self.isvisible = False
+        self.max_matches = max_matches
         self._may_show_tmwindow = False
         self._should_show_tmwindow = False
 

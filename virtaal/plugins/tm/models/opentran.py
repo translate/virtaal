@@ -33,7 +33,8 @@ class TMModel(BaseTMModel):
 
     default_config = {
         "url" : "http://open-tran.eu/RPC2"
-        }
+    }
+
     # INITIALIZERS #
     def __init__(self, controller):
         super(TMModel, self).__init__(controller)

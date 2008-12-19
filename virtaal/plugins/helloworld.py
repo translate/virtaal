@@ -35,13 +35,15 @@ class Plugin(BasePlugin):
         "name": "Hello World",
         "question": "Stop annoying you?",
         "info": "Store loaded!"
-        }
+    }
+
+    # INITIALIZERS #
     def __init__(self, main_controller):
         self.main_controller = main_controller
 
         self._init_plugin()
         logging.debug('HelloWorld loaded')
-        
+
         self.annoy = True
         self.load_config()
 
@@ -49,14 +51,17 @@ class Plugin(BasePlugin):
         from virtaal.common import pan_app
         self.main_controller.store_controller.connect('store-loaded', self.on_store_loaded)
 
+
+    # METHODS #
+    def destroy(self):
+        self.save_config()
+
+
+    # EVENT HANDLERS #
     def on_store_loaded(self, storecontroller):
         self.main_controller.show_info(self.config["name"], self.config["info"])
         storecontroller.cursor.connect('cursor-changed', self.on_cursor_change)
-        
+
     def on_cursor_change(self, cursor):
         if self.annoy:
             self.annoy = not self.main_controller.show_prompt(self.config["name"], self.config["question"])
-
-
-    def destroy(self):
-        self.save_config()

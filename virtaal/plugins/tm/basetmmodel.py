@@ -35,11 +35,11 @@ class BaseTMModel(BaseModel):
     __gsignals__ = {
         'match-found': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING, gobject.TYPE_PYOBJECT,))
     }
-    
+
     shared_config = {
         "max_candidates" : 3,
         "min_similarity" : 75,
-        }
+    }
 
     default_config = {}
 
@@ -48,11 +48,13 @@ class BaseTMModel(BaseModel):
         super(BaseTMModel, self).__init__()
         self.controller = controller
         self._start_query_id = self.controller.connect('start-query', self.query)
-        
+
         #static suggestion cache for slow TM queries
         #TODO: cache invalidation, maybe decorate query to automate cache handling?
         self.cache = {}
 
+
+    # METHODS #
     def destroy(self):
         self.controller.disconnect(self._start_query_id)
 
@@ -67,7 +69,7 @@ class BaseTMModel(BaseModel):
         self.config.update(self.default_config)
         config_file = os.path.join(pan_app.get_config_dir(), "tm.ini")
         self.config.update(pan_app.load_config(config_file, self.__gtype_name__))
-        
+
     def save_config(self):
         """save TM backend config to default location"""
         config_file = os.path.join(pan_app.get_config_dir(), "tm.ini")

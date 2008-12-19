@@ -50,7 +50,7 @@ class BasePlugin(object):
         self.config = self.default_config
         config_file = os.path.join(pan_app.get_config_dir(), "plugins.ini")
         self.config.update(pan_app.load_config(config_file, self.name))
-        
+
     def save_config(self):
         """save plugin config to default location"""
         config_file = os.path.join(pan_app.get_config_dir(), "plugins.ini")

@@ -39,14 +39,15 @@ class TMModel(BaseTMModel):
         self.controller.main_controller.store_controller.connect('store-loaded', self.recreate_matcher)
         self.load_config()
 
+
     # METHODS #
     def recreate_matcher(self, storecontroller):
         store = storecontroller.get_store()._trans_store
         self.matcher = match.matcher(store,
-                                     max_candidates=self.config['max_candidates'], 
-                                     min_similarity=self.config['min_similarity'], 
+                                     max_candidates=self.config['max_candidates'],
+                                     min_similarity=self.config['min_similarity'],
                                      max_length=1000)
-        
+
     def query(self, tmcontroller, query_str):
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])
@@ -57,7 +58,7 @@ class TMModel(BaseTMModel):
 
 def _unit2dict(unit):
     """converts a pounit to a simple dict structure for use over the web"""
-    return {"source": unit.source, "target": unit.target, 
+    return {"source": unit.source, "target": unit.target,
             "quality": _parse_quality(unit.othercomments), "context": unit.getcontext()}
 
 def _parse_quality(comments):

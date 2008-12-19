@@ -91,11 +91,16 @@ class TMWindow(gtk.Window):
         gdkwin = widget.get_window(gtk.TEXT_WINDOW_WIDGET)
         if gdkwin is None:
             return
+        vscrollbar = self.scrolled_window.get_vscrollbar()
+        scrollbar_width = vscrollbar.props.visible and vscrollbar.get_allocation().width + 1 or 0
+
         x, y = gdkwin.get_origin()
+
         if widget.get_direction() == gtk.TEXT_DIR_LTR:
             x -= self.tvc_perc.get_width()
         y += widget_alloc.height + 2
-        width = widget_alloc.width + self.tvc_perc.get_width()
+
+        width = widget_alloc.width + self.tvc_perc.get_width() + scrollbar_width
         height = min(self.rows_height(), self.MAX_HEIGHT)
 
         logging.debug('-> %dx%d +%d+%d' % (width, height, x, y))

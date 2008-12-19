@@ -25,7 +25,7 @@ do
 	fi
 done
 
-lang=$1
+lang=$(basename $1 .po)
 export LANGUAGE=../../../../../../../../$(pwd)/mo/${lang:-de_DE}:$LANGUAGE
 echo $LANGUAGE
 # This assumes that the following executable is in your PATH

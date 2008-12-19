@@ -25,6 +25,29 @@ msgstr ""
 msgid "default:LTR"
 msgstr ""
 
+#. This is the text that should appear next to menu accelerators
+#. * that use the control key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#. *
+#. * Don't include the prefix "keyboard label|" in the translation.
+#.
+#. GTK <=2.14
+#. Configuration: Ctrl modifier label
+msgid "keyboard label|Ctrl"
+msgstr ""
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the control key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#. GTK HEAD (allows future proofing)
+#. Configuration: Ctrl modifier label
+msgctxt "keyboard label"
+msgid "Ctrl"
+msgstr ""
+
 #. File->Open
 msgid "_Open"
 msgstr ""

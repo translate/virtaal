@@ -45,8 +45,9 @@ class TMModel(BaseTMModel):
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])
         else:
-            self.tmclient.translate_unit(query_str, self.handle_matches)
+            self.tmclient.translate_unit(query_str, self._handle_matches)
 
-    def handle_matches(self, widget, query_str, matches):
+    def _handle_matches(self, widget, query_str, matches):
+        """Handle the matches when returned from self.tmclient."""
         self.cache[query_str] = matches
         self.emit('match-found', query_str, matches)

@@ -59,13 +59,15 @@ class TMModel(BaseTMModel):
         matches = []
         # Uncomment this if you don't trust the results
         #results = self._db.execute("""select * from tinytm_get_fuzzy_matches('en', 'de', 'THE EUROPEAN ECONOMIC COMMUNITY', '', '')""")
-        results = self._db.execute("""select * from tinytm_get_fuzzy_matches($1, $2, $3, '', '')""", (self._from, self._to, query_str))
+        results = self._db.execute(
+                """SELECT * FROM tinytm_get_fuzzy_matches($1, $2, $3, '', '')""", 
+                (self._from, self._to, query_str))
         for result in results.fetchall():
             #print result
             matches.append({
                 'source': result[1],
                 'target': result[2],
-                'quality': result[0] 
+                'quality': result[0],
             })
 
         self.emit('match-found', query_str, matches)

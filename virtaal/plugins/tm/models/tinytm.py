@@ -39,7 +39,6 @@ class TMModel(BaseTMModel):
 
     # INITIALIZERS #
     def __init__(self, controller):
-        super(TMModel, self).__init__(controller)
         self.load_config()
 
         self._from = pan_app.settings.language["sourcelang"]
@@ -53,6 +52,7 @@ class TMModel(BaseTMModel):
                 host=self.config["server"]
         )
 
+        super(TMModel, self).__init__(controller)
 
     # METHODS #
     def query(self, tmcontroller, query_str):

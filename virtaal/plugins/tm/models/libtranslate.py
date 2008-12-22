@@ -22,6 +22,7 @@ from virtaal.plugins.tm.basetmmodel import BaseTMModel
 from virtaal.common import pan_app
 from translate.misc import quote
 
+import logging
 from ctypes import *
 import ctypes.util
 

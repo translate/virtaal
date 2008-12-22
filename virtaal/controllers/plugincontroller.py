@@ -71,26 +71,26 @@ class PluginController(BaseController):
 
         # The following line makes sure that we have a valid module name to import from
         modulename = '.'.join([part for part in [self.PLUGIN_MODULE, name] if part])
-        if modulename and name not in self.pluginmodules:
-            module = __import__(
-                modulename,
-                globals=globals(),
-                fromlist=[self.PLUGIN_CLASSNAME]
-            )
-
-            plugin_class = getattr(module, self.PLUGIN_CLASSNAME, None)
-            if plugin_class is None:
-                raise Exception('Plugin "%s" has no class called "%s"' % (name, self.PLUGIN_CLASSNAME))
-
-            if self.PLUGIN_INTERFACE is not None:
-                if (getattr(plugin_class, '__bases__', None) is None) or (self.PLUGIN_INTERFACE not in plugin_class.__bases__):
-                    raise Exception(
-                        'Plugin "%s" contains a member called "%s" which is not a valid plug-in class.' % (name, self.PLUGIN_CLASSNAME)
-                    )
-
-            self.pluginmodules[name] = module
-
         try:
+            if modulename and name not in self.pluginmodules:
+                module = __import__(
+                    modulename,
+                    globals=globals(),
+                    fromlist=[self.PLUGIN_CLASSNAME]
+                )
+
+                plugin_class = getattr(module, self.PLUGIN_CLASSNAME, None)
+                if plugin_class is None:
+                    raise Exception('Plugin "%s" has no class called "%s"' % (name, self.PLUGIN_CLASSNAME))
+
+                if self.PLUGIN_INTERFACE is not None:
+                    if (getattr(plugin_class, '__bases__', None) is None) or (self.PLUGIN_INTERFACE not in plugin_class.__bases__):
+                        raise Exception(
+                            'Plugin "%s" contains a member called "%s" which is not a valid plug-in class.' % (name, self.PLUGIN_CLASSNAME)
+                        )
+
+                self.pluginmodules[name] = module
+
             self.plugins[name] = plugin_class(self.controller)
             logging.info('    - ' + getattr(self.plugins[name], self.PLUGIN_NAME_ATTRIB, name))
             return self.plugins[name]

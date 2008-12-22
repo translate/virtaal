@@ -62,9 +62,8 @@ class TMModel(BaseTMModel):
         err = c_int()
         if not self.lt.translate_init(err):
             # TODO: cleanup memory used by err
-            print "Unable to initialise libtranslate: %s" % err
-            return
-   
+            raise Exception("Unable to initialise libtranslate: %s" % err)
+
         services = self.lt.translate_get_services()
         self.session = self.lt.translate_session_new(services)
         # TODO see file:///usr/share/gtk-doc/html/libtranslate/tutorials.html
@@ -79,7 +78,7 @@ class TMModel(BaseTMModel):
         result = self.lt.translate_session_translate_text(self.session, query_str, self._from, self._to, None, None, err)
         if result is None:
             # TODO handle errors and cleanup errors
-            print "An error occured while getting a translation: %s" % err
+            logging.warning("An error occured while getting a translation: %s" % err)
             return
         translation.append({
             'source': query_str,

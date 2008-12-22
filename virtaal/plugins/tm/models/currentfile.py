@@ -51,6 +51,7 @@ class TMModel(BaseTMModel):
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])
         else:
-            self.cache[query_str] = [match.unit2dict(candidate) for candidate in self.matcher.matches(unicode(query_str, "utf-8"))]
+            matches = [match.unit2dict(candidate) for candidate in self.matcher.matches(unicode(query_str, "utf-8"))]
+            self.cache[query_str] = filter(lambda m: m['quality'] != u'100', matches)
             self.emit('match-found', query_str, self.cache[query_str])
 

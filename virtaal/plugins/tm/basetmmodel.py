@@ -19,7 +19,6 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import os
-
 import gobject
 
 from virtaal.models import BaseModel
@@ -27,7 +26,6 @@ from virtaal.common import pan_app
 
 class BaseTMModel(BaseModel):
     """The base interface to be implemented by all TM backend models."""
-
 
     __gtype_name__ = None
     """The backend's name, suitable for display."""
@@ -45,6 +43,10 @@ class BaseTMModel(BaseModel):
 
     # INITIALIZERS #
     def __init__(self, controller):
+        """Initialise the model and connects it to the appropriate events.
+
+        Only call this from child classes once the object was successfully 
+        created and want to be connected to signals."""
         super(BaseTMModel, self).__init__()
         self.controller = controller
         self._start_query_id = self.controller.connect('start-query', self.query)
@@ -59,8 +61,11 @@ class BaseTMModel(BaseModel):
         self.controller.disconnect(self._start_query_id)
 
     def query(self, tmcontroller, query_str):
-        """all tm backends must implement this method, check for
-        suggested translations to query_str, emit match-found on success"""
+        """Attempt to give suggestions applicable to query_str.
+
+        All tm backends must implement this method, check for
+        suggested translations to query_str, emit match-found on success.
+        Note that query_str is from gobject, therefore not unicode."""
         pass
 
     def load_config(self):

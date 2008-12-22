@@ -18,9 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
-import pgsql
-
 from virtaal.plugins.tm.basetmmodel import BaseTMModel
 from virtaal.common import pan_app
 
@@ -48,7 +45,13 @@ class TMModel(BaseTMModel):
         self._from = pan_app.settings.language["sourcelang"]
         self._to = pan_app.settings.language["contentlang"]
 
-        self._db = pgsql.connect(database=self.config["database"], user=self.config["username"], password=self.config["password"], host=self.config["server"])
+        import pgsql
+        self._db = pgsql.connect(
+                database=self.config["database"],
+                user=self.config["username"],
+                password=self.config["password"],
+                host=self.config["server"]
+        )
 
 
     # METHODS #

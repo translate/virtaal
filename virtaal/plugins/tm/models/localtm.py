@@ -45,11 +45,14 @@ class TMModel(BaseTMModel):
                    "-p", self.config["tmserver_port"],
                    "-t", self.config["tm_store"],
                    ]
+        try:
+            self.tmserver = subprocess.Popen(command)
+            url = "http://%s:%s/tmserver" % (self.config["tmserver_bind"], self.config["tmserver_port"])
 
-        self.tmserver = subprocess.Popen(command)
-        url = "http://%s:%s/tmserver" % (self.config["tmserver_bind"], self.config["tmserver_port"])
-
-        self.tmclient = tmclient.TMClient(url)
+            self.tmclient = tmclient.TMClient(url)
+        except OSError, e:
+            message = "Failed to start TM server: %s" % str(e)
+            raise OSError(message)
         super(TMModel, self).__init__(controller)
 
     # METHODS #

@@ -83,7 +83,9 @@ class TMController(BaseController):
                     match['quality'] = 0
                 elif not isinstance(match['quality'], int):
                     match['quality'] = int(match['quality'])
-            self.view.display_matches(matches)
+            # Only call display_matches if necessary:
+            if matches:
+                self.view.display_matches(matches)
 
     def destroy(self):
         self.main_controller.store_controller.disconnect(self._store_loaded_id)

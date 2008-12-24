@@ -55,6 +55,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.""")
                 "Wynand Winterbach <wynand@translate.org.za>",
                 "Dwayne Bailey <dwayne@translate.org.za>",
                 "Walter Leibbrandt <walter@translate.org.za>",
+                "Alaa Abd El Fattah <alaa@translate.org.za>",
                 ])
         # l10n: Rather than translating, fill in the names of the translators
         self.set_translator_credits(_("translator-credits"))

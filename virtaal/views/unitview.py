@@ -31,6 +31,20 @@ import rendering
 from baseview import BaseView
 from widgets.label_expander import LabelExpander
 
+# FIXME: Move add_spell_checking() and its call below to a more appropriate place.
+def add_spell_checking(text_view, language):
+    try:
+        import gtkspell
+    except ImportError, e:
+        gtkspell = None
+    if gtkspell:
+        try:
+            spell = gtkspell.Spell(text_view)
+            spell.set_language(language)
+        except:
+            logging.info("Could not initialize spell checking")
+            gtkspell = None
+
 
 class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     """View for translation units and its actions."""
@@ -233,6 +247,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                     scroll_policy=gtk.POLICY_NEVER
                 )
             textview = source.get_child()
+            add_spell_checking(textview, pan_app.settings.language['sourcelang'])
             textview.modify_font(rendering.get_source_font_description())
             # This causes some problems, so commented out for now
             #textview.get_pango_context().set_font_description(rendering.get_source_font_description())
@@ -256,20 +271,6 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         num_targets = 1
         if self.unit.hasplural():
             num_targets = self.controller.nplurals
-
-        # FIXME: Move add_spell_checking() and its call below to a more appropriate place.
-        def add_spell_checking(text_view, language):
-            try:
-                import gtkspell
-            except ImportError, e:
-                gtkspell = None
-            if gtkspell:
-                try:
-                    spell = gtkspell.Spell(text_view)
-                    spell.set_language(language)
-                except:
-                    logging.info("Could not initialize spell checking")
-                    gtkspell = None
 
         def on_text_view_n_press_event(text_view, event):
             """Handle special keypresses in the textarea."""

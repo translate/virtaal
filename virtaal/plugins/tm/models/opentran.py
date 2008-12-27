@@ -35,7 +35,6 @@ class TMModel(BaseTMModel):
 
     # INITIALIZERS #
     def __init__(self, controller):
-        super(TMModel, self).__init__(controller)
         self.load_config()
 
         self.tmclient = opentranclient.OpenTranClient(
@@ -43,6 +42,7 @@ class TMModel(BaseTMModel):
             pan_app.settings.language["contentlang"],
             max_candidates=self.config["max_candidates"],
             min_similarity=self.config["min_similarity"])
+        super(TMModel, self).__init__(controller)
 
 
 

@@ -94,7 +94,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     def get_target_n(self, n):
         buff = self.targets[n].get_buffer()
-        return buff.get_text(buff.get_start_iter(), buff.get_end_iter())
+        return markup.unescape(buff.get_text(buff.get_start_iter(), buff.get_end_iter()))
 
     def set_target_n(self, n, newtext, cursor_pos=-1):
         # TODO: Save cursor position and set after assignment
@@ -361,7 +361,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         return False
 
     def _on_target_changed(self, buffer, index):
-        newtext = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter())
+        newtext = self.get_target_n(index)
         if self.unit.hasplural():
             # FIXME: The following two lines are necessary because self.unit.target always
             # returns a new multistring, so you can't assign to an index directly.

@@ -199,7 +199,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     def _create_textbox(self, text='', editable=True, scroll_policy=gtk.POLICY_AUTOMATIC):
         textview = gtk.TextView()
         textview.set_editable(editable)
-        textview.set_wrap_mode(gtk.WRAP_WORD)
+        textview.set_wrap_mode(gtk.WRAP_WORD_CHAR)
         textview.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)
         textview.set_left_margin(2)
         textview.set_right_margin(2)

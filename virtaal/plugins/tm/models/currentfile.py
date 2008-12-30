@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import re
+import logging
 
 from translate.search import match
 
@@ -42,10 +43,18 @@ class TMModel(BaseTMModel):
     # METHODS #
     def recreate_matcher(self, storecontroller):
         store = storecontroller.get_store()._trans_store
-        self.matcher = match.matcher(store,
-                                     max_candidates=self.config['max_candidates'],
-                                     min_similarity=self.config['min_similarity'],
-                                     max_length=1000)
+        options = {'max_length': 1000}
+        try:
+            options['max_candidates'] = int(self.config['max_candidates'])
+        except ValueError, e:
+            logging.warning("Invalid setting for 'max_candidates': %s" % \
+                    self.config['max_candidates'])
+        try:
+            options['min_similarity'] = int(self.config['min_similarity'])
+        except ValueError, e:
+            logging.warning("Invalid setting for 'min_similarity': %s" % \
+                    self.config['max_candidates'])
+        self.matcher = match.matcher(store, **options)
 
     def query(self, tmcontroller, query_str):
         if self.cache.has_key(query_str):

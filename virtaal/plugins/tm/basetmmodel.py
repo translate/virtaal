@@ -70,7 +70,8 @@ class BaseTMModel(BaseModel):
 
     def load_config(self):
         """load TM backend config from default location"""
-        self.config = self.shared_config
+        self.config = {}
+        self.config.update(self.shared_config)
         self.config.update(self.default_config)
         config_file = os.path.join(pan_app.get_config_dir(), "tm.ini")
         self.config.update(pan_app.load_config(config_file, self.__gtype_name__))

@@ -120,7 +120,11 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         buf.set_text(markup.escape(new_source))
         if old_text:
             self.controller.main_controller.undo_controller.remove_blank_undo()
-        self.focus_text_view(text_view)
+
+        # The following 2 lines were copied from focus_text_view() below
+        translation_start = self.first_word_re.match(markup.escape(new_source)).span()[1]
+        buf.place_cursor(buf.get_iter_at_offset(translation_start))
+
         return False
 
     def do_start_editing(self, *_args):

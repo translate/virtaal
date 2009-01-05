@@ -88,7 +88,9 @@ class TMView(BaseView, GObjectWrapper):
         curr_targets = [str(row['target']) for row in rows]
         for match in matches:
             if str(match['target']) not in curr_targets:
-                rows.append(match)
+                # Let's insert at the start to help with sort stability of the 
+                # list (existing 100% will be above a new 100%
+                rows.insert(0, match)
         rows.sort(key=lambda x: 'quality' in x and x['quality'] or 0)
         rows.reverse()
         rows = rows[:self.max_matches]

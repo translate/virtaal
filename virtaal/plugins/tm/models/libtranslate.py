@@ -43,8 +43,6 @@ class TMModel(BaseTMModel):
 
     # INITIALIZERS #
     def __init__(self, controller):
-        super(TMModel, self).__init__(controller)
-
         self._from = pan_app.settings.language["sourcelang"]
         self._to = pan_app.settings.language["contentlang"]
 
@@ -70,6 +68,8 @@ class TMModel(BaseTMModel):
         # TODO see file:///usr/share/gtk-doc/html/libtranslate/tutorials.html
         # g_slist_foreach(services, (GFunc) g_object_unref, NULL);
         # g_slist_free(services);
+
+        super(TMModel, self).__init__(controller)
 
 
     # METHODS #

@@ -95,8 +95,7 @@ class TMView(BaseView, GObjectWrapper):
                 anything_new = True
         if not anything_new:
             return
-        rows.sort(key=lambda x: 'quality' in x and x['quality'] or 0)
-        rows.reverse()
+        rows.sort(key=lambda x: 'quality' in x and x['quality'] or 0, reverse=True)
         rows = rows[:self.max_matches]
 
         liststore.clear()

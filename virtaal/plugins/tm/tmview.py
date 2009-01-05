@@ -86,11 +86,15 @@ class TMView(BaseView, GObjectWrapper):
 
         rows = [tuple(row)[0] for row in liststore]
         curr_targets = [str(row['target']) for row in rows]
+        anything_new = False
         for match in matches:
             if str(match['target']) not in curr_targets:
                 # Let's insert at the start to help with sort stability of the 
                 # list (existing 100% will be above a new 100%
                 rows.insert(0, match)
+                anything_new = True
+        if not anything_new:
+            return
         rows.sort(key=lambda x: 'quality' in x and x['quality'] or 0)
         rows.reverse()
         rows = rows[:self.max_matches]

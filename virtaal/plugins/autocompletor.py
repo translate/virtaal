@@ -42,8 +42,7 @@ class AutoCompletor(object):
         """Constructor.
 
             @type  word_list: iterable
-            @param word_list: A list of words that should be auto-completed.
-        """
+            @param word_list: A list of words that should be auto-completed."""
         self.main_controller = main_controller
         assert isinstance(word_list, list)
         self.comp_len = comp_len
@@ -131,8 +130,7 @@ class AutoCompletor(object):
 
     def _add_text_view(self, textview):
         """Add the given I{gtk.TextView} to the list of widgets to do auto-
-            correction on.
-            """
+            correction on."""
         id_dict_names = (
             '_textbuffer_insert_ids',
             '_textbuffer_delete_ids',

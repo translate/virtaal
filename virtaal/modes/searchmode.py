@@ -249,6 +249,11 @@ class SearchMode(BaseMode):
                             SearchMatch(unit, part=part, part_n=part_n, start=matchobj.start(), end=matchobj.end())
                         )
                     part_n += 1
+            # A search for a single letter or an all-inclusive regular 
+            # expression could give enough results to cause performance 
+            # problems. The answer is probably not very useful at this scale.
+            if len(matches) > 1000:
+                raise Exception("Too many matches for search")
 
         return matches
 

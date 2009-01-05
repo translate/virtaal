@@ -46,7 +46,8 @@ class AutoCompletor(object):
         self.main_controller = main_controller
         assert isinstance(word_list, list)
         self.comp_len = comp_len
-        self._word_list = list(set(word_list))
+        self._word_freq = dict(map(lambda word: (word, 1), word_list))
+        self._update_word_list()
         self.widgets = set()
 
     def add_widget(self, widget):
@@ -64,8 +65,17 @@ class AutoCompletor(object):
         """Add a word or words to the list of words to auto-complete."""
         if isinstance(words, basestring):
             self._word_list.append(words)
+            try:
+                self._word_freq[words] += 1
+            except KeyError:
+                self._word_freq[words] = 1
         else:
             self._word_list += list(words)
+            for word in words:
+                try:
+                    self._word_freq[word] += 1
+                except KeyError:
+                    self._word_freq[word] = 1
         self._word_list = list(set(self._word_list)) # Remove duplicates
 
     def add_words_from_units(self, units):
@@ -87,13 +97,13 @@ class AutoCompletor(object):
                     except KeyError:
                         wordcounts[word] = 1
 
-        # Sort found words according to frequency
-        wordlist = wordcounts.items()
-        wordlist.sort(key=lambda x:x[1])
+        for word, count in wordcounts.items():
+            if word in self._word_freq:
+                self._word_freq[word] += wordcounts[word]
+            else:
+                self._word_freq[word] = wordcounts[word]
 
-        wordlist = [items[0] for items in wordlist]
-
-        self._word_list += list(set(wordlist))
+        self._update_word_list()
 
     def autocomplete(self, word):
         for w in self._word_list:
@@ -108,7 +118,8 @@ class AutoCompletor(object):
 
     def clear_words(self):
         """Remove all registered words; effectively turns off auto-completion."""
-        self.words.clear()
+        self._word_freq.clear()
+        self._word_list.clear()
 
     def remove_widget(self, widget):
         """Remove a widget (currently only C{gtk.TextView}s are accepted) from
@@ -120,10 +131,12 @@ class AutoCompletor(object):
     def remove_words(self, words):
         """Remove a word or words from the list of words to auto-complete."""
         if isinstance(words, basestring):
+            del self._word_freq[words]
             self._word_list.remove(words)
         else:
             for w in words:
                 try:
+                    del self._word_freq[w]
                     self._word_list.remove(w)
                 except KeyError:
                     pass
@@ -285,6 +298,13 @@ class AutoCompletor(object):
         textview.disconnect(self._textview_move_cursor_ids[textview])
 
         self.widgets.remove(textview)
+
+    def _update_word_list(self):
+        """Update and sort found words according to frequency."""
+        wordlist = self._word_freq.items()
+        wordlist.sort(key=lambda x:x[1])
+        wordlist = [items[0] for items in wordlist]
+        self._word_list = list(set(wordlist))
 
 
 class Plugin(BasePlugin):

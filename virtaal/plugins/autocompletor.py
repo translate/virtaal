@@ -180,8 +180,15 @@ class AutoCompletor(object):
         # react similarly for paste and similar events
         if len(text.decode('utf-8')) > 1:
             return
+
         prefix = unicode(buffer.get_text(buffer.get_start_iter(), iter) + text)
         postfix = unicode(buffer.get_text(iter, buffer.get_end_iter()))
+
+        # Quick fix to check that we don't autocomplete in the middle of a word.
+        right_lim = len(postfix) > 0 and postfix[0] or ' '
+        if not self.wordsep_re.match(right_lim):
+            return
+
         lastword = self.wordsep_re.split(prefix)[-1]
 
         if len(lastword) >= self.comp_len:

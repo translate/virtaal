@@ -32,6 +32,7 @@ class UnitController(BaseController):
     __gtype_name__ = "UnitController"
     __gsignals__ = {
         'unit-editor-created': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
+        'unit-done':           (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
         'unit-modified':       (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
         'unit-delete-text':    (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT, TYPE_STRING, TYPE_INT, TYPE_INT, TYPE_INT, TYPE_INT)),
         'unit-insert-text':    (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT, TYPE_STRING, TYPE_STRING, TYPE_INT, TYPE_INT)),
@@ -80,6 +81,7 @@ class UnitController(BaseController):
         self.view.connect('delete-text', self._unit_delete_text)
         self.view.connect('insert-text', self._unit_insert_text)
         self.view.connect('modified', self._unit_modified)
+        self.view.connect('unit-done', self._unit_done)
         self.view.enable_signals()
 
     def _unit_delete_text(self, unitview, old_text, start_offset, end_offset, cursor_pos, target_num):
@@ -90,3 +92,6 @@ class UnitController(BaseController):
 
     def _unit_modified(self, *args):
         self.emit('unit-modified', self.current_unit)
+
+    def _unit_done(self, widget, unit):
+        self.emit('unit-done', unit)

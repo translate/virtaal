@@ -54,6 +54,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         'delete-text': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_STRING, TYPE_INT, TYPE_INT, TYPE_INT, TYPE_INT)),
         'insert-text': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_INT, TYPE_INT)),
         'modified': (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
+        'unit-done': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
         'target-focused': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_INT,)),
     }
 
@@ -125,6 +126,9 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     def do_start_editing(self, *_args):
         """C{gtk.CellEditable.start_editing()}"""
         self.focus_text_view(self.targets[0])
+
+    def do_editing_done(self, *_args):
+        self.emit('unit-done', self.unit)
 
     def focus_text_view(self, text_view):
         text_view.grab_focus()

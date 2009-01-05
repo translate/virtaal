@@ -37,8 +37,8 @@ class TMModel(BaseTMModel):
 
         self.matcher = None
         self.controller.main_controller.store_controller.connect('store-loaded', self.recreate_matcher)
+        self.controller.main_controller.store_controller.unit_controller.connect('unit-done', self._on_unit_modified)
         self.load_config()
-
 
     # METHODS #
     def recreate_matcher(self, storecontroller):
@@ -64,3 +64,8 @@ class TMModel(BaseTMModel):
             self.cache[query_str] = filter(lambda m: m['quality'] != u'100', matches)
             self.emit('match-found', query_str, self.cache[query_str])
 
+    def _on_unit_modified(self, widget, new_unit):
+        """Add the new translation unit to the TM."""
+        if new_unit.istranslated():
+            self.matcher.extendtm(new_unit)
+            self.cache = {}

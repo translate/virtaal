@@ -426,6 +426,7 @@ class SearchMode(BaseMode):
     # EVENT HANDLERS #
     def _on_entry_activate(self, entry):
         self.update_search()
+        self._move_match(0) # Select the current match.
 
     def _on_cursor_changed(self, cursor):
         assert cursor is self.storecursor

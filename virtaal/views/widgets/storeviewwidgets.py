@@ -88,6 +88,7 @@ class StoreTreeModel(gtk.GenericTreeModel):
     def __init__(self, storemodel):
         gtk.GenericTreeModel.__init__(self)
         self._store = storemodel
+        self._store_len = len(storemodel)
         self._current_editable = 0
 
     def on_get_flags(self):
@@ -121,13 +122,13 @@ class StoreTreeModel(gtk.GenericTreeModel):
             return self._current_editable == rowref
 
     def on_iter_next(self, rowref):
-        if rowref < len(self._store) - 1:
+        if rowref < self._store_len) - 1:
             return rowref + 1
         else:
             return None
 
     def on_iter_children(self, parent):
-        if parent == None and len(self._store) > 0:
+        if parent == None and self._store_len > 0:
             return 0
         else:
             return None
@@ -137,7 +138,7 @@ class StoreTreeModel(gtk.GenericTreeModel):
 
     def on_iter_n_children(self, rowref):
         if rowref == None:
-            return len(self._store)
+            return self._store_len
         else:
             return 0
 

@@ -49,7 +49,7 @@ class TMModel(BaseTMModel):
     def query(self, tmcontroller, query_str):
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])
-        else:
+        elif self.tmclient.lang_supported:
             self.tmclient.translate_unit(query_str, self._handle_matches)
 
     def _handle_matches(self, widget, query_str, matches):

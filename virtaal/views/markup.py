@@ -28,7 +28,7 @@ def fancyspaces(string):
     spaces = string.group()
 #    while spaces[0] in "\t\n\r":
 #        spaces = spaces[1:]
-    return '<span underline="error" foreground="grey"> </span>' * len(spaces)
+    return u'<span underline="error" foreground="grey">%s</span>' % u' ' * len(spaces)
 
 def markuptext(text, fancyspaces=True, markupescapes=True):
     """Replace special characters &, <, >, add and handle escapes if asked for Pango."""
@@ -57,17 +57,17 @@ def markuptext(text, fancyspaces=True, markupescapes=True):
         text = text[:-len("\n")]
     return text
 
+
+# We want to draw unexpected spaces specially so that users can spot them
+# easily without having to resort to showing all spaces weirdly
+fancy_spaces_re = re.compile(r"""[ ]{2,}|   #More than two consecutive
+                                  ^[ ]+|     #At start of string
+                                  (?m)^[ ]+  #After newline
+                                  (?m)[ ]+$  #At end of string""", re.VERBOSE)
+
 def addfancyspaces(text):
     """Insert fancy spaces"""
-    #More than two consecutive:
-    text = re.sub("[ ]{2,}", fancyspaces, text)
-    #At start of string
-    text = re.sub("^[ ]+", fancyspaces, text)
-    #After newline
-    text = re.sub("(?m)^[ ]+", fancyspaces, text)
-    #At end of string
-    text = re.sub("(?m)[ ]+$", fancyspaces, text)
-    return text
+    return fancy_spaces_re.sub(fancyspaces, text)
 
 def escape(text):
     """This is to escape text for use with gtk.TextView"""

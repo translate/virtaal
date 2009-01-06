@@ -26,9 +26,11 @@ from gtk import gdk
 
 from virtaal.support.simplegeneric import generic
 from virtaal.views import markup, rendering
+from virtaal.common import pan_app
 
 import label_expander
 
+from translate.lang import factory
 
 @generic
 def compute_optimal_height(widget, width):
@@ -66,7 +68,11 @@ def gtk_textview_compute_optimal_height(widget, width):
 
     buftext = buf.get_text(buf.get_start_iter(), buf.get_end_iter())
     if not buftext:
-        buftext = getattr(widget, '_source_text', "")
+        text = getattr(widget, '_source_text', "")
+        if text:
+            lang = factory.getlanguage(pan_app.settings.language["contentlang"])
+            buftext = lang.alter_length(text)
+            buftext = markup.escape(buftext)
 
     _w, h = make_pango_layout(widget, buftext, width - border).get_pixel_size()
     widget.parent.set_size_request(-1, h + border)

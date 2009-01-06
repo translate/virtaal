@@ -21,17 +21,18 @@
 from virtaal.plugins.tm.basetmmodel import BaseTMModel
 from virtaal.common import pan_app
 
+
 class TMModel(BaseTMModel):
     """This is a TinyTM translation memory model.
 
-    Built according the l{protocol<http://tinytm.org/en/technology/protocol.html>} defined 
+    Built according the l{protocol<http://tinytm.org/en/technology/protocol.html>} defined
     by the TinyTM project.
     """
 
     __gtype_name__ = 'TinyTmTMModel'
 
     default_config = {
-        "server": "www.tinytm.org",
+        "server":   "www.tinytm.org",
         "username": "bbigboss",
         "password": "ben",
         "database": "projop",
@@ -46,22 +47,24 @@ class TMModel(BaseTMModel):
 
         import pgsql
         self._db = pgsql.connect(
-                database=self.config["database"],
-                user=self.config["username"],
-                password=self.config["password"],
-                host=self.config["server"]
+            database=self.config["database"],
+            user=self.config["username"],
+            password=self.config["password"],
+            host=self.config["server"]
         )
 
         super(TMModel, self).__init__(controller)
+
 
     # METHODS #
     def query(self, tmcontroller, query_str):
         matches = []
         # Uncomment this if you don't trust the results
-        #results = self._db.execute("""select * from tinytm_get_fuzzy_matches('en', 'de', 'THE EUROPEAN ECONOMIC COMMUNITY', '', '')""")
+        #results = self._db.execute("""SELECT * FROM tinytm_get_fuzzy_matches('en', 'de', 'THE EUROPEAN ECONOMIC COMMUNITY', '', '')""")
         results = self._db.execute(
-                """SELECT * FROM tinytm_get_fuzzy_matches($1, $2, $3, '', '')""", 
-                (self._from, self._to, query_str))
+            """SELECT * FROM tinytm_get_fuzzy_matches($1, $2, $3, '', '')""",
+            (self._from, self._to, query_str)
+        )
         for result in results.fetchall():
             #print result
             matches.append({

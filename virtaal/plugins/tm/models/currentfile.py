@@ -20,7 +20,6 @@
 
 import re
 import logging
-
 from translate.search import match
 
 from virtaal.plugins.tm.basetmmodel import BaseTMModel
@@ -40,6 +39,7 @@ class TMModel(BaseTMModel):
         self.controller.main_controller.store_controller.unit_controller.connect('unit-done', self._on_unit_modified)
         self.load_config()
 
+
     # METHODS #
     def recreate_matcher(self, storecontroller):
         store = storecontroller.get_store()._trans_store
@@ -47,13 +47,11 @@ class TMModel(BaseTMModel):
         try:
             options['max_candidates'] = int(self.config['max_candidates'])
         except ValueError, e:
-            logging.warning("Invalid setting for 'max_candidates': %s" % \
-                    self.config['max_candidates'])
+            logging.warning("Invalid setting for 'max_candidates': %s" % self.config['max_candidates'])
         try:
             options['min_similarity'] = int(self.config['min_similarity'])
         except ValueError, e:
-            logging.warning("Invalid setting for 'min_similarity': %s" % \
-                    self.config['max_candidates'])
+            logging.warning("Invalid setting for 'min_similarity': %s" % self.config['max_candidates'])
         self.matcher = match.matcher(store, **options)
 
     def query(self, tmcontroller, query_str):

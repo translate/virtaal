@@ -22,6 +22,7 @@ from translate.services import tmclient
 
 from virtaal.plugins.tm.basetmmodel import BaseTMModel
 
+
 class TMModel(BaseTMModel):
     """This is the translation memory model."""
 
@@ -30,7 +31,7 @@ class TMModel(BaseTMModel):
     default_config = {
         "host" : "localhost",
         "port" : "8080",
-        }
+    }
 
     # INITIALIZERS #
     def __init__(self, controller):
@@ -39,6 +40,7 @@ class TMModel(BaseTMModel):
 
         self.tmclient = tmclient.TMClient(url)
         super(TMModel, self).__init__(controller)
+
 
     # METHODS #
     def query(self, tmcontroller, query_str):

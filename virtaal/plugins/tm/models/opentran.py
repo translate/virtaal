@@ -45,7 +45,6 @@ class TMModel(BaseTMModel):
         super(TMModel, self).__init__(controller)
 
 
-
     # METHODS #
     def query(self, tmcontroller, query_str):
         if self.cache.has_key(query_str):

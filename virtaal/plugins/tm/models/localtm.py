@@ -20,11 +20,11 @@
 
 import os
 import subprocess
-
 from translate.services import tmclient
 
 from virtaal.common import pan_app
 from virtaal.plugins.tm.basetmmodel import BaseTMModel
+
 
 class TMModel(BaseTMModel):
     """This is the translation memory model."""
@@ -35,16 +35,17 @@ class TMModel(BaseTMModel):
         "tmserver_bind" : "localhost",
         "tmserver_port" : "8080",
         "tm_store" : os.path.join(pan_app.get_config_dir(), "tm.po")
-        }
+    }
 
     # INITIALIZERS #
     def __init__(self, controller):
         self.load_config()
-        command = ["tmserver.py",
-                   "-b", self.config["tmserver_bind"],
-                   "-p", self.config["tmserver_port"],
-                   "-t", self.config["tm_store"],
-                   ]
+        command = [
+            "tmserver.py",
+            "-b", self.config["tmserver_bind"],
+            "-p", self.config["tmserver_port"],
+            "-t", self.config["tm_store"],
+        ]
         try:
             self.tmserver = subprocess.Popen(command)
             url = "http://%s:%s/tmserver" % (self.config["tmserver_bind"], self.config["tmserver_port"])
@@ -54,6 +55,7 @@ class TMModel(BaseTMModel):
             message = "Failed to start TM server: %s" % str(e)
             raise OSError(message)
         super(TMModel, self).__init__(controller)
+
 
     # METHODS #
     def query(self, tmcontroller, query_str):

@@ -20,6 +20,7 @@
 
 from virtaal.plugins.tm.basetmmodel import BaseTMModel
 
+
 class TMModel(BaseTMModel):
     """This is a dummy (testing) translation memory model."""
 

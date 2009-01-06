@@ -50,6 +50,8 @@ class TMView(BaseView, GObjectWrapper):
         self.tmwindow = TMWindow(self)
         self.tmwindow.treeview.connect('row-activated', self._on_row_activated)
 
+        controller.main_controller.store_controller.view.parent_widget.get_vscrollbar().connect('value-changed', self._on_store_view_scroll)
+
         main_window = self.controller.main_controller.view.main_window
         main_window.connect('focus-in-event', self._on_focus_in_mainwindow)
         main_window.connect('focus-out-event', self._on_focus_out_mainwindow)
@@ -197,3 +199,7 @@ class TMView(BaseView, GObjectWrapper):
 
     def _on_select_match(self, accel_group, acceleratable, keyval, modifier):
         self.select_match_index(int(keyval - gtk.keysyms._0))
+
+    def _on_store_view_scroll(self, *args):
+        if self.isvisible:
+            self.hide()

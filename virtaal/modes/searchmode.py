@@ -130,6 +130,7 @@ class SearchMode(BaseMode):
     display_name = _("Search")
     widgets = []
 
+    MAX_RESULTS = 100000
     SEARCH_DELAY = 500
 
     # INITIALIZERS #
@@ -208,8 +209,11 @@ class SearchMode(BaseMode):
         self.re_search = re.compile(u'(%s)' % (searchstring), flags)
 
         matches = []
+        indexes = []
 
-        for unit in units:
+        for index, unit in enumerate(units):
+            unit_matches = False
+
             if 'target' in searchparts:
                 part = 'target'
                 part_n = 0
@@ -218,6 +222,7 @@ class SearchMode(BaseMode):
                         matches.append(
                             SearchMatch(unit, part=part, part_n=part_n, start=matchobj.start(), end=matchobj.end())
                         )
+                        unit_matches = True
                     part_n += 1
 
             if 'source' in searchparts:
@@ -228,6 +233,7 @@ class SearchMode(BaseMode):
                         matches.append(
                             SearchMatch(unit, part=part, part_n=part_n, start=matchobj.start(), end=matchobj.end())
                         )
+                        unit_matches = True
                     part_n += 1
 
             if 'notes' in searchparts:
@@ -238,6 +244,7 @@ class SearchMode(BaseMode):
                         matches.append(
                             SearchMatch(unit, part=part, part_n=part_n, start=matchobj.start(), end=matchobj.end())
                         )
+                        unit_matches = True
                     part_n += 1
 
             if 'locations' in searchparts:
@@ -248,14 +255,19 @@ class SearchMode(BaseMode):
                         matches.append(
                             SearchMatch(unit, part=part, part_n=part_n, start=matchobj.start(), end=matchobj.end())
                         )
+                        unit_matches = True
                     part_n += 1
-            # A search for a single letter or an all-inclusive regular 
-            # expression could give enough results to cause performance 
+
+            # A search for a single letter or an all-inclusive regular
+            # expression could give enough results to cause performance
             # problems. The answer is probably not very useful at this scale.
-            if len(matches) > 1000:
+            if len(matches) > self.MAX_RESULTS:
                 raise Exception("Too many matches for search")
 
-        return matches
+            if unit_matches:
+                indexes.append(index)
+
+        return matches, indexes
 
     def selected(self):
         # XXX: Assumption: This method is called when a new file is loaded and that is
@@ -279,9 +291,38 @@ class SearchMode(BaseMode):
         gobject.timeout_add(100, grab_focus)
 
     def update_search(self):
-        self.matches = self.get_matches(self.storecursor.model.get_units())
+        store_units = self.storecursor.model.get_units()
+        self.matches, indexes = self.get_matches(store_units)
         self.matchcursor = Cursor(self.matches, range(len(self.matches)))
-        self._recalculate_match_indexes()
+
+        logging.debug('Search text: %s (%d matches)' % (self.ent_search.get_text(), len(indexes)))
+
+        if indexes:
+            self.ent_search.modify_base(gtk.STATE_NORMAL, self.default_base)
+            self.ent_search.modify_text(gtk.STATE_NORMAL, self.default_text)
+
+            self.storecursor.indices = indexes
+            # Select initial match for in the current unit.
+            match_index = 0
+            selected_unit = self.storecursor.model[self.storecursor.index]
+            for match in self.matches:
+                if match.unit is selected_unit:
+                    break
+                match_index += 1
+            self.matchcursor.index = match_index
+        else:
+            self.ent_search.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse('#f66'))
+            self.ent_search.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse('#fff'))
+            self.re_search = None
+            # Act like the "Default" mode...
+            self.storecursor.indices = self.storecursor.model.stats['total']
+        self._highlight_matches()
+
+        def grabfocus():
+            self.ent_search.grab_focus()
+            self.ent_search.set_position(-1)
+            return False
+        gobject.idle_add(grabfocus)
 
     def unselected(self):
         # TODO: Unhightlight the previously selected unit
@@ -368,41 +409,6 @@ class SearchMode(BaseMode):
 
         self.matchcursor.move(offset)
         self.matches[self.matchcursor.index].select(self.controller.main_controller)
-
-    def _recalculate_match_indexes(self):
-        store_units = self.storecursor.model.get_units()
-        indexes = [store_units.index(match.unit) for match in self.matches]
-        indexes = list(set(indexes)) # Remove duplicates
-        indexes.sort()
-
-        logging.debug('Search text: %s (%d matches)' % (self.ent_search.get_text(), len(indexes)))
-
-        if indexes:
-            self.ent_search.modify_base(gtk.STATE_NORMAL, self.default_base)
-            self.ent_search.modify_text(gtk.STATE_NORMAL, self.default_text)
-
-            self.storecursor.indices = indexes
-            # Select initial match for in the current unit.
-            match_index = 0
-            selected_unit = self.storecursor.model[self.storecursor.index]
-            for match in self.matches:
-                if match.unit is selected_unit:
-                    break
-                match_index += 1
-            self.matchcursor.index = match_index
-        else:
-            self.ent_search.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse('#f66'))
-            self.ent_search.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse('#fff'))
-            self.re_search = None
-            # Act like the "Default" mode...
-            self.storecursor.indices = self.storecursor.model.stats['total']
-        self._highlight_matches()
-
-        def grabfocus():
-            self.ent_search.grab_focus()
-            self.ent_search.set_position(-1)
-            return False
-        gobject.idle_add(grabfocus)
 
     def _replace_all(self):
         for match in self.matches:

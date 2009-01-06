@@ -30,6 +30,7 @@ class TMModel(BaseTMModel):
     """This is the translation memory model."""
 
     __gtype_name__ = 'LocalTMModel'
+    name = __name__.split('.')[-1] # Use the module name as the TM model plug-in name.
 
     default_config = {
         "tmserver_bind" : "localhost",

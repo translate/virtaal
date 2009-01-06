@@ -37,6 +37,7 @@ class TMModel(BaseTMModel):
     """
 
     __gtype_name__ = 'LibtranslateTMModel'
+    name = __name__.split('.')[-1] # Use the module name as the TM model plug-in name.
 
     # TODO - allow the user to configure which systems to query for translations, default will be all`
 

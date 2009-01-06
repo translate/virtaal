@@ -79,4 +79,4 @@ class BaseTMModel(BaseModel):
     def save_config(self):
         """save TM backend config to default location"""
         config_file = os.path.join(pan_app.get_config_dir(), "tm.ini")
-        pan_app.save_config(config_file, self.config, self.__gtype_name__)
+        pan_app.save_config(config_file, self.config, self.name)

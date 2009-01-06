@@ -30,6 +30,7 @@ class TMModel(BaseTMModel):
     """
 
     __gtype_name__ = 'TinyTmTMModel'
+    name = __name__.split('.')[-1] # Use the module name as the TM model plug-in name.
 
     default_config = {
         "server":   "www.tinytm.org",

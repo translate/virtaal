@@ -29,6 +29,7 @@ class TMModel(BaseTMModel):
     """Translation memory model that matches against translated strings from current file"""
 
     __gtype_name__ = 'CurrentFileTMModel'
+    name = __name__.split('.')[-1] # Use the module name as the TM model plug-in name.
 
     # INITIALIZERS #
     def __init__(self, controller):

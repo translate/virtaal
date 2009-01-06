@@ -64,7 +64,6 @@ class TMController(BaseController):
         self.plugin_controller.PLUGIN_DIRS = [os.path.dirname(models.__file__)]
         self.plugin_controller.PLUGIN_INTERFACE = BaseTMModel
         self.plugin_controller.PLUGIN_MODULE = 'virtaal.plugins.tm.models'
-        self.plugin_controller.PLUGIN_NAME_ATTRIB = '__gtype_name__'
         self.plugin_controller.load_plugins()
 
         self._model_signal_ids = {}

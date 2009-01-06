@@ -115,7 +115,7 @@ class StoreTreeModel(gtk.GenericTreeModel):
         if column <= 1:
             unit = self._store[rowref]
             if column == 0:
-                return markup.markuptext(unit.getnotes(), markupescapes=False) or None
+                return markup.markuptext(unit.getnotes(), fancyspaces=False, markupescapes=False) or None
             else:
                 return unit
         else:

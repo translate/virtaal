@@ -42,11 +42,15 @@ class TMController(BaseController):
         before the TM is queried."""
 
     # INITIALIZERS #
-    def __init__(self, main_controller, max_matches):
+    def __init__(self, main_controller, config={}):
         GObjectWrapper.__init__(self)
 
         self.main_controller = main_controller
-        self.view = TMView(self, max_matches)
+        self.disabled_model_names = config.get('disabled_models', [])
+        self.max_matches = config.get('max_matches', 5)
+        self.min_quality = config.get('min_quality', 75)
+
+        self.view = TMView(self, self.max_matches)
         self._load_models()
 
         self._connect_plugin()
@@ -64,6 +68,7 @@ class TMController(BaseController):
         self.plugin_controller.PLUGIN_DIRS = [os.path.dirname(models.__file__)]
         self.plugin_controller.PLUGIN_INTERFACE = BaseTMModel
         self.plugin_controller.PLUGIN_MODULE = 'virtaal.plugins.tm.models'
+        self.plugin_controller.get_disabled_plugins = lambda *args: self.disabled_model_names
         self.plugin_controller.load_plugins()
 
         self._model_signal_ids = {}

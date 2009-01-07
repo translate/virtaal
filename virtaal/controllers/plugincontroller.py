@@ -103,7 +103,7 @@ class PluginController(BaseController):
         """Load plugins from the "plugins" directory."""
         self.plugins       = {}
         self.pluginmodules = {}
-        disabled_plugins = self._get_disabled_plugins()
+        disabled_plugins = self.get_disabled_plugins()
 
         logging.info('Loading plug-ins:')
         for name in self._find_plugin_names():
@@ -136,5 +136,5 @@ class PluginController(BaseController):
         logging.debug('Found plugins: %s' % (plugin_names))
         return plugin_names
 
-    def _get_disabled_plugins(self):
+    def get_disabled_plugins(self):
         return [plugin_name for (plugin_name, state) in pan_app.settings.plugin_state.items() if state.lower() == 'disabled']

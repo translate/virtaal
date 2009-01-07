@@ -40,8 +40,12 @@ class Plugin(BasePlugin):
 
     def _init_plugin(self):
         self.load_config()
-        max_matches = int(self.config['max_matches'])
-        self.tmcontroller = TMController(self.main_controller, max_matches=max_matches)
+        self.config['disabled_models'] = self.config['disabled_models'].split(',')
+        self.config['max_matches'] = int(self.config['max_matches'])
+        self.config['min_quality'] = int(self.config['min_quality'])
+
+        self.tmcontroller = TMController(self.main_controller, self.config)
 
     def destroy(self):
+        self.save_config()
         self.tmcontroller.destroy()

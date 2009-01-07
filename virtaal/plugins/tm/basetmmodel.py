@@ -28,26 +28,24 @@ class BaseTMModel(BaseModel):
     """The base interface to be implemented by all TM backend models."""
 
     __gtype_name__ = None
-    """The backend's name, suitable for display."""
-
     __gsignals__ = {
         'match-found': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING, gobject.TYPE_PYOBJECT,))
     }
 
-    shared_config = {
-        "max_candidates" : 3,
-        "min_similarity" : 75,
-    }
+    display_name = None
+    """The backend's name, suitable for display."""
 
     default_config = {}
+    """Default configuration shared by all TM model plug-ins."""
 
     # INITIALIZERS #
     def __init__(self, controller):
         """Initialise the model and connects it to the appropriate events.
 
-        Only call this from child classes once the object was successfully 
-        created and want to be connected to signals."""
+            Only call this from child classes once the object was successfully
+            created and want to be connected to signals."""
         super(BaseTMModel, self).__init__()
+        self.config = {}
         self.controller = controller
         self._start_query_id = self.controller.connect('start-query', self.query)
 
@@ -58,6 +56,7 @@ class BaseTMModel(BaseModel):
 
     # METHODS #
     def destroy(self):
+        self.save_config()
         self.controller.disconnect(self._start_query_id)
 
     def query(self, tmcontroller, query_str):
@@ -71,12 +70,11 @@ class BaseTMModel(BaseModel):
     def load_config(self):
         """load TM backend config from default location"""
         self.config = {}
-        self.config.update(self.shared_config)
         self.config.update(self.default_config)
         config_file = os.path.join(pan_app.get_config_dir(), "tm.ini")
-        self.config.update(pan_app.load_config(config_file, self.name))
+        self.config.update(pan_app.load_config(config_file, self.internal_name))
 
     def save_config(self):
         """save TM backend config to default location"""
         config_file = os.path.join(pan_app.get_config_dir(), "tm.ini")
-        pan_app.save_config(config_file, self.config, self.name)
+        pan_app.save_config(config_file, self.config, self.internal_name)

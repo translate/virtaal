@@ -40,8 +40,10 @@ class TMModel(BaseTMModel):
         self.tmclient = opentranclient.OpenTranClient(
             self.config["url"],
             pan_app.settings.language["contentlang"],
-            max_candidates=self.config["max_candidates"],
-            min_similarity=self.config["min_similarity"])
+            max_candidates=controller.max_matches,
+            min_similarity=controller.min_quality
+        )
+
         super(TMModel, self).__init__(controller)
 
 

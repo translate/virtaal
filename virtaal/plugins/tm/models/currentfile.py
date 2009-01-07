@@ -47,15 +47,11 @@ class TMModel(BaseTMModel):
     # METHODS #
     def recreate_matcher(self, storecontroller):
         store = storecontroller.get_store()._trans_store
-        options = {'max_length': 1000}
-        try:
-            options['max_candidates'] = int(self.config['max_candidates'])
-        except ValueError, e:
-            logging.warning("Invalid setting for 'max_candidates': %s" % self.config['max_candidates'])
-        try:
-            options['min_similarity'] = int(self.config['min_similarity'])
-        except ValueError, e:
-            logging.warning("Invalid setting for 'min_similarity': %s" % self.config['max_candidates'])
+        options = {
+            'max_length': int(self.config['max_length']),
+            'max_candidates': self.controller.max_matches,
+            'min_similarity': self.controller.min_quality
+        }
         self.matcher = match.matcher(store, **options)
 
     def query(self, tmcontroller, query_str):

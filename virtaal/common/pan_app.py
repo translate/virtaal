@@ -83,13 +83,9 @@ class Settings:
     }
     plugin_state =  {
         "helloworld": "disabled",
-        "dummytm": "disabled",
-        "remotetm": "disabled",
-        # This is a problem, since we can't start a line with "rem":
-        # iniparse/ini.py line 166
     }
     undo = {
-            "depth": 50,
+        "depth": 50,
     }
 
     def __init__(self, filename = None):

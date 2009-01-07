@@ -96,6 +96,7 @@ options = {
         "virtaal.modes",
         "virtaal.plugins",
         "virtaal.plugins.tm",
+        "virtaal.plugins.tm.models",
         "virtaal.support",
         "virtaal.test",
         "virtaal.views",

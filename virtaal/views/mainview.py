@@ -22,7 +22,6 @@ import gobject
 import gtk
 import os
 from gtk import gdk
-from gtk import glade
 from translate.storage import factory
 from translate.lang import factory as langfactory
 

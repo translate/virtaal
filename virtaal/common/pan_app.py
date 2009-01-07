@@ -164,6 +164,9 @@ def get_abs_data_filename(path_parts):
         os.path.dirname(unicode(sys.executable, sys.getfilesystemencoding()))
     ]
 
+    if 'XDG_DATA_DIRS' in os.environ:
+        BASE_DIRS += os.environ['XDG_DATA_DIRS'].split(':')
+
     DATA_DIRS = [
         ["..", "share"],
         ["..", "..", "share"]

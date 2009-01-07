@@ -84,7 +84,7 @@ class TMController(BaseController):
             # Perform some sanity checks on matches first
             for match in matches:
                 if 'quality' not in match or match['quality'] is None:
-                    match['quality'] = 0
+                    match['quality'] = self.min_quality
                 elif not isinstance(match['quality'], int):
                     match['quality'] = int(match['quality'])
             # Only call display_matches if necessary:

@@ -47,6 +47,7 @@ class AutoCompletor(object):
         assert isinstance(word_list, list)
         self.comp_len = comp_len
         self._word_freq = dict(map(lambda word: (word, 1), word_list))
+        self._word_freq.setdefault(0)
         self._update_word_list()
         self.widgets = set()
 
@@ -65,17 +66,11 @@ class AutoCompletor(object):
         """Add a word or words to the list of words to auto-complete."""
         if isinstance(words, basestring):
             self._word_list.append(words)
-            try:
-                self._word_freq[words] += 1
-            except KeyError:
-                self._word_freq[words] = 1
+            self._word_freq[words] += 1
         else:
             self._word_list += list(words)
             for word in words:
-                try:
-                    self._word_freq[word] += 1
-                except KeyError:
-                    self._word_freq[word] = 1
+                self._word_freq[word] += 1
         self._word_list = list(set(self._word_list)) # Remove duplicates
 
     def add_words_from_units(self, units):
@@ -85,23 +80,13 @@ class AutoCompletor(object):
             @type  units: list
             @param units: The translation units to collect words from.
             """
-        wordcounts = {}
-
         for unit in units:
-            if not unit.target:
+            target = unit.target
+            if not target:
                 continue
-            for word in self.wordsep_re.split(unit.target):
+            for word in self.wordsep_re.split(target):
                 if len(word) > self.comp_len:
-                    try:
-                        wordcounts[word] += 1
-                    except KeyError:
-                        wordcounts[word] = 1
-
-        for word, count in wordcounts.items():
-            if word in self._word_freq:
-                self._word_freq[word] += wordcounts[word]
-            else:
-                self._word_freq[word] = wordcounts[word]
+                    self._word_freq[word] += 1
 
         self._update_word_list()
 

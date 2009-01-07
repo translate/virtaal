@@ -1,5 +1,6 @@
 [encoding: UTF-8]
 bin/virtaal
+devsupport/optparse.py
 share/applications/virtaal.desktop.in
 share/virtaal/virtaal.glade
 share/mime/packages/virtaal-mimetype.xml.in
@@ -8,11 +9,19 @@ virtaal/controllers/maincontroller.py
 virtaal/modes/defaultmode.py
 virtaal/modes/quicktransmode.py
 virtaal/modes/searchmode.py
+virtaal/plugins/autocompletor.py
+virtaal/plugins/autocorrector.py
 virtaal/plugins/migration.py
+virtaal/plugins/tm/models/currentfile.py
+virtaal/plugins/tm/models/dummytm.py
+virtaal/plugins/tm/models/libtranslate.py
+virtaal/plugins/tm/models/localtm.py
+virtaal/plugins/tm/models/opentran.py
+virtaal/plugins/tm/models/remotetm.py
+virtaal/plugins/tm/models/tinytm.py
 virtaal/plugins/tm/tmview.py
 virtaal/plugins/tm/tmwidgets.py
 virtaal/views/mainview.py
 virtaal/views/modeview.py
 virtaal/views/unitview.py
 virtaal/views/widgets/aboutdialog.py
-devsupport/optparse.py

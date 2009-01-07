@@ -24,6 +24,7 @@ import gobject
 import gtk
 import logging
 import re
+from collections import defaultdict
 
 from virtaal.controllers import BasePlugin
 
@@ -46,8 +47,9 @@ class AutoCompletor(object):
         self.main_controller = main_controller
         assert isinstance(word_list, list)
         self.comp_len = comp_len
-        self._word_freq = dict(map(lambda word: (word, 1), word_list))
-        self._word_freq.setdefault(0)
+        self._word_list = []
+        self._word_freq = defaultdict(lambda: 0)
+        self.add_words(word_list)
         self._update_word_list()
         self.widgets = set()
 
@@ -71,7 +73,7 @@ class AutoCompletor(object):
             self._word_list += list(words)
             for word in words:
                 self._word_freq[word] += 1
-        self._word_list = list(set(self._word_list)) # Remove duplicates
+        self._update_word_list()
 
     def add_words_from_units(self, units):
         """Collect all words from the given translation units to use for
@@ -288,8 +290,7 @@ class AutoCompletor(object):
         """Update and sort found words according to frequency."""
         wordlist = self._word_freq.items()
         wordlist.sort(key=lambda x:x[1])
-        wordlist = [items[0] for items in wordlist]
-        self._word_list = list(set(wordlist))
+        self._word_list = [items[0] for items in wordlist]
 
 
 class Plugin(BasePlugin):

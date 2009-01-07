@@ -24,14 +24,17 @@ from tmcontroller import TMController
 
 
 class Plugin(BasePlugin):
-    name = 'Translation Memory'
+    display_name = 'Translation Memory'
     version = 0.1
     default_config = {
-        'max_matches': '5'
+        'disabled_models': 'dummytm,libtranslate,opentran,remotetm,tinytm',
+        'max_matches': '5',
+        'min_quality': '75'
     }
 
     # INITIALIZERS #
-    def __init__(self, main_controller):
+    def __init__(self, internal_name, main_controller):
+        self.internal_name = internal_name
         self.main_controller = main_controller
         self._init_plugin()
 

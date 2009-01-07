@@ -30,7 +30,7 @@ class TMModel(BaseTMModel):
     """This is the translation memory model."""
 
     __gtype_name__ = 'LocalTMModel'
-    name = __name__.split('.')[-1] # Use the module name as the TM model plug-in name.
+    display_name = _('Local Virtaal TM back-end')
 
     default_config = {
         "tmserver_bind" : "localhost",
@@ -39,8 +39,10 @@ class TMModel(BaseTMModel):
     }
 
     # INITIALIZERS #
-    def __init__(self, controller):
+    def __init__(self, internal_name, controller):
+        self.internal_name = internal_name
         self.load_config()
+
         command = [
             "tmserver.py",
             "-b", self.config["tmserver_bind"],
@@ -55,6 +57,7 @@ class TMModel(BaseTMModel):
         except OSError, e:
             message = "Failed to start TM server: %s" % str(e)
             raise OSError(message)
+
         super(TMModel, self).__init__(controller)
 
 

@@ -24,7 +24,8 @@ from virtaal.common import pan_app
 
 class BasePlugin(object):
     """The base interface to be implemented by all plug-ins."""
-    name = ''
+
+    display_name = ''
     """The plug-in's name, suitable for display."""
     version = 0
     """The plug-in's version number."""
@@ -33,7 +34,7 @@ class BasePlugin(object):
     # INITIALIZERS #
     def __new__(cls, *args, **kwargs):
         """Create a new plug-in instance and check that it is valid."""
-        if not cls.name:
+        if not cls.display_name:
             raise Exception('No name specified')
         if cls.version <= 0:
             raise Exception('Invalid version number specified')
@@ -52,9 +53,9 @@ class BasePlugin(object):
         """Load plugin config from default location."""
         self.config = self.default_config
         config_file = os.path.join(pan_app.get_config_dir(), "plugins.ini")
-        self.config.update(pan_app.load_config(config_file, self.name))
+        self.config.update(pan_app.load_config(config_file, self.internal_name))
 
     def save_config(self):
         """Save plugin config to default location."""
         config_file = os.path.join(pan_app.get_config_dir(), "plugins.ini")
-        pan_app.save_config(config_file, self.config, self.name)
+        pan_app.save_config(config_file, self.config, self.internal_name)

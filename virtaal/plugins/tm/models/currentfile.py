@@ -29,13 +29,16 @@ class TMModel(BaseTMModel):
     """Translation memory model that matches against translated strings from current file"""
 
     __gtype_name__ = 'CurrentFileTMModel'
-    name = __name__.split('.')[-1] # Use the module name as the TM model plug-in name.
+    display_name = _('Current file TM back-end')
+
+    default_config = { 'max_length': 1000 }
 
     # INITIALIZERS #
-    def __init__(self, controller):
+    def __init__(self, internal_name, controller):
         super(TMModel, self).__init__(controller)
 
         self.matcher = None
+        self.internal_name = internal_name
         self.controller.main_controller.store_controller.connect('store-loaded', self.recreate_matcher)
         self.controller.main_controller.store_controller.unit_controller.connect('unit-done', self._on_unit_modified)
         self.load_config()

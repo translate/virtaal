@@ -29,7 +29,7 @@ from virtaal.controllers import BasePlugin
 
 
 class Plugin(BasePlugin):
-    name = 'HelloWorld'
+    display_name = _('HelloWorld')
     version = '0.1'
     default_config = {
         "name": "Hello World",
@@ -38,7 +38,8 @@ class Plugin(BasePlugin):
     }
 
     # INITIALIZERS #
-    def __init__(self, main_controller):
+    def __init__(self, internal_name, main_controller):
+        self.internal_name = internal_name
         self.main_controller = main_controller
 
         self._init_plugin()

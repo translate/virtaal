@@ -30,7 +30,7 @@ class TMModel(BaseTMModel):
     """
 
     __gtype_name__ = 'TinyTmTMModel'
-    name = __name__.split('.')[-1] # Use the module name as the TM model plug-in name.
+    display_name = _('TinyTM TM back-end')
 
     default_config = {
         "server":   "www.tinytm.org",
@@ -40,7 +40,8 @@ class TMModel(BaseTMModel):
     }
 
     # INITIALIZERS #
-    def __init__(self, controller):
+    def __init__(self, internal_name, controller):
+        self.internal_name = internal_name
         self.load_config()
 
         self._from = pan_app.settings.language["sourcelang"]

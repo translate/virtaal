@@ -25,10 +25,11 @@ class TMModel(BaseTMModel):
     """This is a dummy (testing) translation memory model."""
 
     __gtype_name__ = 'DummyTMModel'
-    name = __name__.split('.')[-1] # Use the module name as the TM model plug-in name.
+    display_name = _('Dummy (testing) TM model')
 
     # INITIALIZERS #
-    def __init__(self, controller):
+    def __init__(self, internal_name, controller):
+        self.internal_name = internal_name
         super(TMModel, self).__init__(controller)
 
 

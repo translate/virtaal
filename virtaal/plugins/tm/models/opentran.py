@@ -28,14 +28,13 @@ class TMModel(BaseTMModel):
     """This is the translation memory model."""
 
     __gtype_name__ = 'OpenTranTMModel'
-    name = __name__.split('.')[-1] # Use the module name as the TM model plug-in name.
+    display_name = _('OpenTran TM model')
 
-    default_config = {
-        "url" : "http://open-tran.eu/RPC2"
-    }
+    default_config = { "url" : "http://open-tran.eu/RPC2" }
 
     # INITIALIZERS #
-    def __init__(self, controller):
+    def __init__(self, internal_name, controller):
+        self.internal_name = internal_name
         self.load_config()
 
         self.tmclient = opentranclient.OpenTranClient(

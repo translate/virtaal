@@ -294,10 +294,11 @@ class AutoCompletor(object):
 
 
 class Plugin(BasePlugin):
-    name = 'AutoCompletor'
+    display_name = _('AutoCompletor')
     version = 0.1
 
-    def __init__(self, main_controller):
+    def __init__(self, internal_name, main_controller):
+        self.internal_name = internal_name
         self.main_controller = main_controller
 
         self._init_plugin()

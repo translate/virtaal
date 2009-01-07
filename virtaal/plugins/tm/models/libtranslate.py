@@ -37,15 +37,16 @@ class TMModel(BaseTMModel):
     """
 
     __gtype_name__ = 'LibtranslateTMModel'
-    name = __name__.split('.')[-1] # Use the module name as the TM model plug-in name.
+    display_name = _('Libtranslate TM back-end')
 
     # TODO - allow the user to configure which systems to query for translations, default will be all`
 
 
     # INITIALIZERS #
-    def __init__(self, controller):
+    def __init__(self, internal_name, controller):
         self._from = pan_app.settings.language["sourcelang"]
         self._to = pan_app.settings.language["contentlang"]
+        self.internal_name = internal_name
 
         self.lt = cdll.LoadLibrary(ctypes.util.find_library("translate"))
 

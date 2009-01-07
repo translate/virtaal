@@ -126,7 +126,6 @@ class SearchMatch(object):
 class SearchMode(BaseMode):
     """Search mode - Includes only units matching the given search term."""
 
-    name = 'Search'
     display_name = _("Search")
     widgets = []
 

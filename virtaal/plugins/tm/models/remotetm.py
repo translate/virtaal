@@ -27,7 +27,7 @@ class TMModel(BaseTMModel):
     """This is the translation memory model."""
 
     __gtype_name__ = 'RemoteTMModel'
-    name = __name__.split('.')[-1] # Use the module name as the TM model plug-in name.
+    display_name = _('Remote server TM model')
 
     default_config = {
         "host" : "localhost",
@@ -35,7 +35,8 @@ class TMModel(BaseTMModel):
     }
 
     # INITIALIZERS #
-    def __init__(self, controller):
+    def __init__(self, internal_name, controller):
+        self.internal_name = internal_name
         self.load_config()
         url = "http://%s:%s/tmserver" % (self.config["host"], self.config["port"])
 

@@ -217,7 +217,11 @@ class SearchMode(BaseMode):
             if 'target' in searchparts:
                 part = 'target'
                 part_n = 0
-                for target in unit.target.strings:
+                if unit.hasplural():
+                    targets = unit.target.strings
+                else:
+                    targets = [unit.target]
+                for target in targets:
                     for matchobj in self.re_search.finditer(target):
                         matches.append(
                             SearchMatch(unit, part=part, part_n=part_n, start=matchobj.start(), end=matchobj.end())
@@ -228,7 +232,11 @@ class SearchMode(BaseMode):
             if 'source' in searchparts:
                 part = 'source'
                 part_n = 0
-                for source in unit.source.strings:
+                if unit.hasplural():
+                    sources = unit.source.strings
+                else:
+                    sources = [unit.source]
+                for source in sources:
                     for matchobj in self.re_search.finditer(source):
                         matches.append(
                             SearchMatch(unit, part=part, part_n=part_n, start=matchobj.start(), end=matchobj.end())

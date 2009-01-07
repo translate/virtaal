@@ -210,4 +210,3 @@ class Plugin(BasePlugin):
         self.tm.extend(cursor.fetchall())
         connection.close()
         self.migrated.append(_("Lokalize's Translation Memory: %(database_name)s") % {"database_name": path.basename(filename)})
-

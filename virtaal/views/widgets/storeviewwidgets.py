@@ -128,7 +128,7 @@ class StoreTreeModel(gtk.GenericTreeModel):
             return self._current_editable == rowref
 
     def on_iter_next(self, rowref):
-        if rowref < self._store_len) - 1:
+        if rowref < self._store_len - 1:
             return rowref + 1
         else:
             return None

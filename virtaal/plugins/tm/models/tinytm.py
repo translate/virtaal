@@ -46,8 +46,12 @@ class TMModel(BaseTMModel):
         self._from = pan_app.settings.language["sourcelang"]
         self._to = pan_app.settings.language["contentlang"]
 
-        import pgsql
-        self._db = pgsql.connect(
+        try:
+            import psycopg2 as psycopg
+        except ImportError:
+            import psycopg
+
+        self._db_con = psycopg.connect(
             database=self.config["database"],
             user=self.config["username"],
             password=self.config["password"],
@@ -62,11 +66,12 @@ class TMModel(BaseTMModel):
         matches = []
         # Uncomment this if you don't trust the results
         #results = self._db.execute("""SELECT * FROM tinytm_get_fuzzy_matches('en', 'de', 'THE EUROPEAN ECONOMIC COMMUNITY', '', '')""")
-        results = self._db.execute(
-            """SELECT * FROM tinytm_get_fuzzy_matches($1, $2, $3, '', '')""",
+        cursor = self._db_con.cursor()
+        cursor.execute(
+            """SELECT * FROM tinytm_get_fuzzy_matches(%s, %s, %s, '', '')""",
             (self._from, self._to, query_str)
         )
-        for result in results.fetchall():
+        for result in cursor.fetchall():
             #print result
             matches.append({
                 'source': result[1],
@@ -78,4 +83,4 @@ class TMModel(BaseTMModel):
 
     def destroy(self):
         self.save_config()
-        self._db.close()
+        self._db_con.close()

@@ -214,6 +214,8 @@ def save_config(filename, config, section=None):
         if section not in parser.sections():
             parser.add_section(section)
         for key, value in section_conf.items():
+            if isinstance(value, list):
+                value = ','.join(value)
             parser.set(section, key, value)
 
     conffile = open(filename, 'w')

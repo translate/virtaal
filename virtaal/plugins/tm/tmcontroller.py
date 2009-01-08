@@ -21,7 +21,7 @@
 import gobject
 import os.path
 
-from virtaal.common import GObjectWrapper
+from virtaal.common import GObjectWrapper, pan_app
 from virtaal.controllers import BaseController, PluginController
 from virtaal.plugins.tm import models
 from virtaal.plugins.tm.basetmmodel import BaseTMModel
@@ -63,11 +63,15 @@ class TMController(BaseController):
             self._mode_selected_id = modecontroller.connect('mode-selected', self._on_mode_selected)
 
     def _load_models(self):
+        print 'TMController._load_models()'
         self.plugin_controller = PluginController(self)
         self.plugin_controller.PLUGIN_CLASSNAME = 'TMModel'
-        self.plugin_controller.PLUGIN_DIRS = [os.path.dirname(models.__file__)]
+        self.plugin_controller.PLUGIN_DIRS = [
+            os.path.join(pan_app.get_config_dir(), 'virtaal_plugins', 'tm', 'models'),
+            os.path.dirname(models.__file__)
+        ]
         self.plugin_controller.PLUGIN_INTERFACE = BaseTMModel
-        self.plugin_controller.PLUGIN_MODULE = ['virtaal_plugins.tm.models', 'virtaal.plugins.tm.models']
+        self.plugin_controller.PLUGIN_MODULES = ['virtaal_plugins.tm.models', 'virtaal.plugins.tm.models']
         self.plugin_controller.get_disabled_plugins = lambda *args: self.disabled_model_names
         self.plugin_controller.load_plugins()
 

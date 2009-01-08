@@ -42,7 +42,7 @@ class PluginController(BaseController):
     # To use this class to manage any other plug-ins, these will (most likely) have to be changed.
     PLUGIN_CLASSNAME = 'Plugin'
     """The name of the class that will be instantiated from the plug-in module."""
-    PLUGIN_DIRS = [os.path.dirname(plugins.__file__)]
+    PLUGIN_DIRS = [os.path.join(pan_app.get_config_dir(), 'virtaal_plugins'), os.path.dirname(plugins.__file__)]
     """The directories to search for plug-in names."""
     PLUGIN_INTERFACE = BasePlugin
     """The interface class that the plug-in class must inherit from."""
@@ -73,11 +73,13 @@ class PluginController(BaseController):
 
     def enable_plugin(self, name):
         """Load the plug-in with the given name and instantiate it."""
+        logging.debug('Enabling plugin: %s' % (name))
         if name in self.plugins:
             return None
 
         try:
             if name not in self.pluginmodules:
+                module = None
                 for plugin_module in self.PLUGIN_MODULES:
                     # The following line makes sure that we have a valid module name to import from
                     modulename = '.'.join([part for part in [plugin_module, name] if part])
@@ -90,6 +92,9 @@ class PluginController(BaseController):
                         break
                     except ImportError:
                         pass
+
+                if module is None:
+                    raise Exception('Could not find plug-in "%s"' % (name))
 
                 plugin_class = getattr(module, self.PLUGIN_CLASSNAME, None)
                 if plugin_class is None:
@@ -133,6 +138,8 @@ class PluginController(BaseController):
         plugin_names = []
 
         for dir in self.PLUGIN_DIRS:
+            if not os.path.isdir(dir):
+                continue
             for name in os.listdir(dir):
                 if name.startswith('.'):
                     continue

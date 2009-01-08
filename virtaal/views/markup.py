@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2007-2008 Zuza Software Foundation
+# Copyright 2007-2009 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -21,56 +21,69 @@
 import re
 
 
-def fancyspaces(string):
-    """Returns the fancy spaces that are easily visible."""
+# We want to draw unexpected spaces specially so that users can spot them
+# easily without having to resort to showing all spaces weirdly
+
+fancy_spaces_re = re.compile(r"""(?m)  #Multiline expression
+        [ ]{2,}|     #More than two consecutive
+        ^[ ]+|       #At start of a line
+        [ ]+$        #At end of line""", re.VERBOSE)
+"""A regular expression object to find all unusual spaces we want to show"""
+
+def _fancyspaces(string):
+    """Indicate the fancy spaces with a grey squigly."""
     spaces = string.group()
 #    while spaces[0] in "\t\n\r":
 #        spaces = spaces[1:]
     return u'<span underline="error" foreground="grey">%s</span>' % spaces
 
+
+# Highligting for XML
+
 xml_re = re.compile("&lt;[^>]+>")
 def fancy_xml(escape):
+    """Marks up the XML to appear dard red."""
     return u'<span foreground="darkred">%s</span>' % escape.group()
 
-def fancyescape_n(escape):
+
+# Highlighting for escapes
+
+def _fancyescape_n(escape):
+    """Marks up the given escape to appear purple with a newline appended for
+    the sake of wrapping."""
     return u'<span foreground="purple">%s</span>\n' % escape
 
-def fancyescape(escape):
+def _fancyescape(escape):
+    """Marks up the given escape to appear purple without a newline appended."""
     return u'<span foreground="purple">%s</span>' % escape
 
+
+# Public methods
+
 def markuptext(text, fancyspaces=True, markupescapes=True):
-    """Replace special characters &, <, >, add and handle escapes if asked for Pango."""
+    """Markup the given text to be pretty Pango markup.
+
+    Special characters (&, <) are converted, XML markup highligthed with
+    escapes and unusual spaces optionally being indicated."""
     if not text:
         return ""
     text = text.replace(u"&", u"&amp;") # Must be done first!
     text = text.replace(u"<", u"&lt;")
     text = xml_re.sub(fancy_xml, text)
 
-     # moet ons dalk die escapes nou doen sodat dit op 'n korter string werk?
     if fancyspaces:
-        text = addfancyspaces(text)
+        text = fancy_spaces_re.sub(_fancyspaces, text)
 
     if markupescapes:
-#        text = text.replace("\\", fancyescape(r'\\'))
-        text = text.replace(u"\r\n", fancyescape_n(ur'\r\n'))
-        text = text.replace(u"\n", fancyescape_n(ur'\n'))
-        text = text.replace(u"\r", fancyescape_n(ur'\r'))
-        text = text.replace(u"\t", fancyescape(ur'\t'))
+#        text = text.replace("\\", _fancyescape(r'\\'))
+        text = text.replace(u"\r\n", _fancyescape_n(ur'\r\n'))
+        text = text.replace(u"\n", _fancyescape_n(ur'\n'))
+        text = text.replace(u"\r", _fancyescape_n(ur'\r'))
+        text = text.replace(u"\t", _fancyescape(ur'\t'))
         # we don't need it at the end of the string
         if text.endswith(u"\n"):
             text = text[:-1]
     return text
-
-
-# We want to draw unexpected spaces specially so that users can spot them
-# easily without having to resort to showing all spaces weirdly
-fancy_spaces_re = re.compile(r"""(?m)[ ]{2,}|   #More than two consecutive
-                                  ^[ ]+|       #At start of a line
-                                  [ ]+$        #At end of line""", re.VERBOSE)
-
-def addfancyspaces(text):
-    """Insert fancy spaces"""
-    return fancy_spaces_re.sub(fancyspaces, text)
 
 def escape(text):
     """This is to escape text for use with gtk.TextView"""

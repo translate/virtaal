@@ -20,6 +20,7 @@
 
 import logging
 import os
+import sys
 
 from virtaal.common import pan_app, GObjectWrapper
 from virtaal import plugins
@@ -27,6 +28,10 @@ from virtaal import plugins
 from basecontroller import BaseController
 from baseplugin import BasePlugin
 
+
+# The following line allows us to import user plug-ins from ~/.virtaal/virtaal_plugins
+# (see PluginController.PLUGIN_MODULES)
+sys.path.insert(0, pan_app.get_config_dir())
 
 class PluginController(BaseController):
     """This controller is responsible for all plug-in management."""
@@ -41,7 +46,7 @@ class PluginController(BaseController):
     """The directories to search for plug-in names."""
     PLUGIN_INTERFACE = BasePlugin
     """The interface class that the plug-in class must inherit from."""
-    PLUGIN_MODULE = 'virtaal.plugins'
+    PLUGIN_MODULES = ['virtaal_plugins', 'virtaal.plugins']
     """The module name to import the plugin from. This is prepended to the
         plug-in's name as found by C{_find_plugin_names()} and passed to
         C{__import__()}."""
@@ -53,6 +58,8 @@ class PluginController(BaseController):
         GObjectWrapper.__init__(self)
 
         self.controller = controller
+        self.plugins       = {}
+        self.pluginmodules = {}
 
 
     # METHODS #
@@ -69,15 +76,20 @@ class PluginController(BaseController):
         if name in self.plugins:
             return None
 
-        # The following line makes sure that we have a valid module name to import from
-        modulename = '.'.join([part for part in [self.PLUGIN_MODULE, name] if part])
         try:
-            if modulename and name not in self.pluginmodules:
-                module = __import__(
-                    modulename,
-                    globals=globals(),
-                    fromlist=[self.PLUGIN_CLASSNAME]
-                )
+            if name not in self.pluginmodules:
+                for plugin_module in self.PLUGIN_MODULES:
+                    # The following line makes sure that we have a valid module name to import from
+                    modulename = '.'.join([part for part in [plugin_module, name] if part])
+                    try:
+                        module = __import__(
+                            modulename,
+                            globals=globals(),
+                            fromlist=[self.PLUGIN_CLASSNAME]
+                        )
+                        break
+                    except ImportError:
+                        pass
 
                 plugin_class = getattr(module, self.PLUGIN_CLASSNAME, None)
                 if plugin_class is None:

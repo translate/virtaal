@@ -50,7 +50,6 @@ class AutoCompletor(object):
         self._word_list = []
         self._word_freq = defaultdict(lambda: 0)
         self.add_words(word_list)
-        self._update_word_list()
         self.widgets = set()
 
     def add_widget(self, widget):
@@ -67,10 +66,8 @@ class AutoCompletor(object):
     def add_words(self, words):
         """Add a word or words to the list of words to auto-complete."""
         if isinstance(words, basestring):
-            self._word_list.append(words)
             self._word_freq[words] += 1
         else:
-            self._word_list += list(words)
             for word in words:
                 self._word_freq[word] += 1
         self._update_word_list()

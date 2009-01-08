@@ -21,49 +21,52 @@
 import re
 
 
-xml_re = re.compile("&lt;[^>]+>")
-
 def fancyspaces(string):
     """Returns the fancy spaces that are easily visible."""
     spaces = string.group()
 #    while spaces[0] in "\t\n\r":
 #        spaces = spaces[1:]
-    return u'<span underline="error" foreground="grey">%s</span>' % u' ' * len(spaces)
+    return u'<span underline="error" foreground="grey">%s</span>' % spaces
+
+xml_re = re.compile("&lt;[^>]+>")
+def fancy_xml(escape):
+    return u'<span foreground="darkred">%s</span>' % escape.group()
+
+def fancyescape_n(escape):
+    return u'<span foreground="purple">%s</span>\n' % escape
+
+def fancyescape(escape):
+    return u'<span foreground="purple">%s</span>' % escape
 
 def markuptext(text, fancyspaces=True, markupescapes=True):
     """Replace special characters &, <, >, add and handle escapes if asked for Pango."""
     if not text:
         return ""
-    text = text.replace("&", "&amp;") # Must be done first!
-    text = text.replace("<", "&lt;")
-    fancy_xml = lambda escape: \
-            '<span foreground="darkred">%s</span>' % escape.group()
+    text = text.replace(u"&", u"&amp;") # Must be done first!
+    text = text.replace(u"<", u"&lt;")
     text = xml_re.sub(fancy_xml, text)
 
+     # moet ons dalk die escapes nou doen sodat dit op 'n korter string werk?
     if fancyspaces:
         text = addfancyspaces(text)
 
     if markupescapes:
-        fancyescape = lambda escape: \
-                '<span foreground="purple">%s</span>' % escape
-
 #        text = text.replace("\\", fancyescape(r'\\'))
-        text = text.replace("\r\n", fancyescape(r'\r\n') + '\n')
-        text = text.replace("\n", fancyescape(r'\n') + '\n')
-        text = text.replace("\r", fancyescape(r'\r') + '\n')
-        text = text.replace("\t", fancyescape(r'\t'))
-    # we don't need it at the end of the string
-    if text.endswith("\n"):
-        text = text[:-len("\n")]
+        text = text.replace(u"\r\n", fancyescape_n(ur'\r\n'))
+        text = text.replace(u"\n", fancyescape_n(ur'\n'))
+        text = text.replace(u"\r", fancyescape_n(ur'\r'))
+        text = text.replace(u"\t", fancyescape(ur'\t'))
+        # we don't need it at the end of the string
+        if text.endswith(u"\n"):
+            text = text[:-1]
     return text
 
 
 # We want to draw unexpected spaces specially so that users can spot them
 # easily without having to resort to showing all spaces weirdly
-fancy_spaces_re = re.compile(r"""[ ]{2,}|   #More than two consecutive
-                                  ^[ ]+|     #At start of string
-                                  (?m)^[ ]+  #After newline
-                                  (?m)[ ]+$  #At end of string""", re.VERBOSE)
+fancy_spaces_re = re.compile(r"""(?m)[ ]{2,}|   #More than two consecutive
+                                  ^[ ]+|       #At start of a line
+                                  [ ]+$        #At end of line""", re.VERBOSE)
 
 def addfancyspaces(text):
     """Insert fancy spaces"""

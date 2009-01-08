@@ -28,6 +28,7 @@ import os
 import sys
 import locale, gettext
 gettext.install("virtaal", unicode=1)
+from translate.misc import file_discovery
 
 from __version__ import ver
 
@@ -155,29 +156,10 @@ def get_abs_data_filename(path_parts):
         @type  path_parts: list
         @param path_parts: The path parts that can be joined by os.path.join().
         """
-
-    if isinstance(path_parts, str):
-        path_parts = [path_parts]
-
-    BASE_DIRS = [
-        os.path.dirname(unicode(__file__, sys.getfilesystemencoding())),
-        os.path.dirname(unicode(sys.executable, sys.getfilesystemencoding()))
+    basedirs = [
+        os.path.join(os.path.dirname(unicode(__file__, sys.getfilesystemencoding())), os.path.pardir),
     ]
-
-    if 'XDG_DATA_DIRS' in os.environ:
-        BASE_DIRS += os.environ['XDG_DATA_DIRS'].split(os.path.pathsep)
-
-    DATA_DIRS = [
-        ["..", "share"],
-        ["..", "..", "share"]
-    ]
-
-    for basepath, data_dir in ((x, y) for x in BASE_DIRS for y in DATA_DIRS):
-        dir_and_filename = data_dir + path_parts
-        datafile = os.path.join(basepath or os.path.dirname(__file__), *dir_and_filename)
-        if os.path.exists(datafile):
-            return datafile
-    raise Exception('Could not find "%s"' % (os.path.join(*path_parts)))
+    return file_discovery.get_abs_data_filename(path_parts, basedirs=basedirs)
 
 def load_config(filename, section=None):
     """Load the configuration from the given filename (and optional section

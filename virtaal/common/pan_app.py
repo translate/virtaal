@@ -77,8 +77,8 @@ class Settings:
             "uilang": None,
             "sourcelang": "en",
             "contentlang": None,
-            "sourcefont": "mono 9",
-            "targetfont": "mono 9",
+            "sourcefont": "monospace 9",
+            "targetfont": "monospace 9",
             "nplurals": 0,
             "plural": None,
     }

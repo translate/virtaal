@@ -35,7 +35,7 @@ class AboutDialog(gtk.AboutDialog):
         # l10n: Please retain the literal name "Virtaal", but feel free to
         # additionally transliterate the name and to add a translation of "For Language", which is what the name means.
         self.set_comments(_("Virtaal is a program for doing translation.") + "\n\n" +
-            _("The initial focus is on software translation (localisation or l10n), but we definitely intend it to be useful as a general purpose tool for Computer Aided Translation (CAT)."))
+            _("The initial focus is on software translation (localization or l10n), but we definitely intend it to be useful as a general purpose tool for Computer Aided Translation (CAT)."))
         self.set_license("""This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or

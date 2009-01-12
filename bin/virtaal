@@ -50,12 +50,12 @@ def main(argv):
     def set_logging(options):
         if options.log != None:
             if options.log.upper() in ('-', 'STDOUT'):
-                logging.basicConfig(level=logging.DEBUG,
+                logging.basicConfig(level=logging.INFO,
                                     format='%(asctime)s %(levelname)s %(message)s',
                                     stream=sys.stdout)
             else:
                 try:
-                    logging.basicConfig(level=logging.DEBUG,
+                    logging.basicConfig(level=logging.INFO,
                                         format='%(asctime)s %(levelname)s %(message)s',
                                         filename=path.abspath(options.log),
                                         filemode='w')

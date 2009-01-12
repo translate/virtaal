@@ -22,7 +22,7 @@ import re
 import logging
 from translate.search import match
 
-from virtaal.plugins.tm.basetmmodel import BaseTMModel
+from basetmmodel import BaseTMModel
 
 
 class TMModel(BaseTMModel):

@@ -20,8 +20,9 @@
 
 from translate.services import opentranclient
 
-from virtaal.plugins.tm.basetmmodel import BaseTMModel
 from virtaal.common import pan_app
+
+from basetmmodel import BaseTMModel
 
 
 class TMModel(BaseTMModel):

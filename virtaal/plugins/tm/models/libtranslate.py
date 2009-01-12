@@ -24,7 +24,8 @@ from ctypes import *
 from translate.misc import quote
 
 from virtaal.common import pan_app
-from virtaal.plugins.tm.basetmmodel import BaseTMModel
+
+from basetmmodel import BaseTMModel
 
 
 class TMModel(BaseTMModel):

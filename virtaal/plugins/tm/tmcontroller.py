@@ -23,9 +23,9 @@ import os.path
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.controllers import BaseController, PluginController
-from virtaal.plugins.tm import models
-from virtaal.plugins.tm.basetmmodel import BaseTMModel
 
+import models
+from models.basetmmodel import BaseTMModel
 from tmview import TMView
 
 

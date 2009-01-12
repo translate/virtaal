@@ -20,7 +20,7 @@
 
 from translate.services import tmclient
 
-from virtaal.plugins.tm.basetmmodel import BaseTMModel
+from basetmmodel import BaseTMModel
 
 
 class TMModel(BaseTMModel):

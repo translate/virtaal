@@ -66,7 +66,7 @@ class AutoCompletor(object):
     def usable(self, word):
         """Returns a value indicating if the given word should be kept as a
         suggestion for autocomplete."""
-        return len(word) > self.comp_len
+        return len(word) > self.comp_len + 2
 
     def add_words(self, words, update=True):
         """Add a word or words to the list of words to auto-complete."""

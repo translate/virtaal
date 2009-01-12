@@ -121,7 +121,7 @@ if os.name == 'nt':
     ]
 
 no_install_files = [
-    ['LICENSE', 'maketranslations']
+    ['LICENSE', 'maketranslations', path.join('devsupport', 'virtaal_innosetup.bmp')]
 ]
 
 no_install_dirs = ['po']
@@ -177,7 +177,7 @@ WizardImageFile=%(wizard_image)s
     'name': name,
     'version': version,
     'icon_path': path.join(TARGET_DATA_DIR, "icons", "virtaal.ico"),
-    'wizard_image': path.join(TARGET_DATA_DIR, "virtaal", "virtaal_innosetup.bmp")
+    'wizard_image': path.join(os.pardir, "devsupport", "virtaal_innosetup.bmp")
 }
     for fpath in exe_files + other_files:
         print >> ofi, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (fpath, os.path.dirname(fpath))

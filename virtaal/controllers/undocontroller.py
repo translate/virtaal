@@ -71,18 +71,6 @@ class UndoController(BaseController):
 
 
     # METHODS #
-    def _disable_unit_signals(self):
-        """Disable all signals emitted by the unit view.
-            This should always be followed, as soon as possible, by
-            C{self._enable_unit_signals()}."""
-        self.unit_controller.view.disable_signals()
-
-    def _enable_unit_signals(self):
-        """Enable all signals emitted by the unit view.
-            This should always follow, as soon as possible, after a call to
-            C{self._disable_unit_signals()}."""
-        self.unit_controller.view.enable_signals()
-
     def remove_blank_undo(self):
         """Removes items from the top of the undo stack with no C{value} or
             C{action} values. The "top of the stack" is one of the top 2 items.
@@ -102,6 +90,32 @@ class UndoController(BaseController):
             self.undo_stack.index -= 1
             self.undo_stack.undo_stack.remove(item)
 
+    def record_stop(self):
+        self.undo_stack.recording = False
+
+    def record_start(self):
+        self.undo_stack.recording = True
+
+    def _disable_unit_signals(self):
+        """Disable all signals emitted by the unit view.
+            This should always be followed, as soon as possible, by
+            C{self._enable_unit_signals()}."""
+        self.unit_controller.view.disable_signals()
+
+    def _enable_unit_signals(self):
+        """Enable all signals emitted by the unit view.
+            This should always follow, as soon as possible, after a call to
+            C{self._disable_unit_signals()}."""
+        self.unit_controller.view.enable_signals()
+
+    def _perform_undo(self, undo_info):
+        self._select_unit(undo_info['unit'])
+        self._disable_unit_signals()
+        self.unit_controller.set_unit_target(undo_info['targetn'], undo_info['value'], undo_info['cursorpos'])
+        if 'action' in undo_info and callable(undo_info['action']):
+            undo_info['action'](undo_info['unit'])
+        self._enable_unit_signals()
+
     def _select_unit(self, unit):
         """Select the given unit in the store view.
             This is to select the unit where the undo-action took place.
@@ -119,12 +133,11 @@ class UndoController(BaseController):
         if not undo_info:
             return
 
-        self._select_unit(undo_info['unit'])
-        self._disable_unit_signals()
-        self.unit_controller.set_unit_target(undo_info['targetn'], undo_info['value'], undo_info['cursorpos'])
-        if 'action' in undo_info and callable(undo_info['action']):
-            undo_info['action'](undo_info['unit'])
-        self._enable_unit_signals()
+        if isinstance(undo_info, list):
+            for ui in reversed(undo_info):
+                self._perform_undo(ui)
+        else:
+            self._perform_undo(undo_info)
 
     def _on_unit_delete_text(self, _unit_controller, unit, old_text, start_offset, end_offset, cursor_pos, target_num):
         logging.debug('_on_unit_delete_text(%s, "%s", %d, %d, %d)' % (repr(unit), old_text, start_offset, end_offset, target_num))

@@ -418,8 +418,10 @@ class SearchMode(BaseMode):
         self.matches[self.matchcursor.index].select(self.controller.main_controller)
 
     def _replace_all(self):
+        self.controller.main_controller.undo_controller.record_start()
         for match in self.matches:
             match.replace(self.ent_replace.get_text(), self.controller.main_controller)
+        self.controller.main_controller.undo_controller.record_stop()
 
     def _unhighlight_previous_matches(self):
         if not getattr(self, '_prev_unitview', ''):

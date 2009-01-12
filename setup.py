@@ -316,6 +316,7 @@ def add_win32_options(options):
             "includes":   ["lxml", "lxml._elementpath", "psyco", "cairo", "pango", "pangocairo", "atk", "gobject", "gtk.keysyms"],
             "optimize":   2,
         }
+        py2exe_options['includes'] += ["bsddb", "zipfile"] # Dependencies for the migration and auto-correction plug-ins, respectively.
         innosetup_options = py2exe_options.copy()
         options.update({
             "windows": [

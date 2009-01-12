@@ -166,7 +166,7 @@ class PluginController(BaseController):
                     plugin_names.append(plugname)
 
         plugin_names = list(set(plugin_names))
-        logging.debug('Found plugins: %s' % (plugin_names))
+        logging.debug('Found plugins: %s' % (', '.join(plugin_names)))
         return plugin_names
 
     def get_disabled_plugins(self):

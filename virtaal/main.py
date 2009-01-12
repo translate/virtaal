@@ -50,6 +50,13 @@ class Virtaal(object):
         self.main_controller.run()
 
 
+def checkversions():
+    """Checks that version dependencies are met"""
+    from translate import __version__ as toolkitversion
+    if not hasattr(toolkitversion, "ver") or toolkitversion.ver < (1, 2, 1):
+        raise RuntimeError("requires Translate Toolkit version >= 1.2.1.  Current installed version is: %s" % toolkitversion.sver)
+
 if __name__ == '__main__':
+    check_toolkit_version()
     virtaal = Virtaal()
     virtaal.run()

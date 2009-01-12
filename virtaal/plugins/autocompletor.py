@@ -63,14 +63,18 @@ class AutoCompletor(object):
 
         raise ValueError("Widget type %s not supported." % (type(widget)))
 
-    def add_words(self, words):
+    def usable(self, word):
+        """Returns a value indicating if the given word should be kept as a
+        suggestion for autocomplete."""
+        return len(word) > self.comp_len
+
+    def add_words(self, words, update=True):
         """Add a word or words to the list of words to auto-complete."""
-        if isinstance(words, basestring):
-            self._word_freq[words] += 1
-        else:
-            for word in words:
+        for word in words:
+            if self.usable(word):
                 self._word_freq[word] += 1
-        self._update_word_list()
+        if update:
+            self._update_word_list()
 
     def add_words_from_units(self, units):
         """Collect all words from the given translation units to use for
@@ -83,9 +87,7 @@ class AutoCompletor(object):
             target = unit.target
             if not target:
                 continue
-            for word in self.wordsep_re.split(target):
-                if len(word) > self.comp_len:
-                    self._word_freq[word] += 1
+            self.add_words(self.wordsep_re.split(target), update=False)
 
         self._update_word_list()
 

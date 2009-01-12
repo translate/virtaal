@@ -171,8 +171,14 @@ DefaultGroupName=%(name)s
 OutputBaseFilename=%(name)s-%(version)s-setup
 ChangesAssociations=yes
 SetupIconFile=%(icon_path)s
+WizardImageFile=%(wizard_image)s
 
-[Files]''' % {'name': name, 'version': version, 'icon_path': path.join(TARGET_DATA_DIR, "icons", "virtaal.ico")}
+[Files]''' % {
+    'name': name,
+    'version': version,
+    'icon_path': path.join(TARGET_DATA_DIR, "icons", "virtaal.ico"),
+    'wizard_image': path.join(TARGET_DATA_DIR, "virtaal", "virtaal_innosetup.bmp")
+}
     for fpath in exe_files + other_files:
         print >> ofi, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (fpath, os.path.dirname(fpath))
     print >> ofi, r'''

@@ -157,6 +157,28 @@ def create_inno_script(name, _lib_dir, dist_dir, exe_files, other_files, version
     print >> ofi, r'''; WARNING: This script has been created by py2exe. Changes to this script
 ; will be overwritten the next time py2exe is run!
 
+[Languages]
+Name: "en"; MessagesFile; "compiler:Default.isl"
+Name: "eu"; MessagesFile: Basque.isl"
+Name: "ca"; MessagesFile: Catalan.isl"
+Name: "cz"; MessagesFile: Czech.isl"
+Name: "da"; MessagesFile: Danish.isl"
+Name: "nl"; MessagesFile: Dutch.isl"
+Name: "fi"; MessagesFile: Finnish.isl"
+Name: "fr"; MessagesFile: French.isl"
+Name: "de"; MessagesFile: German.isl"
+Name: "he"; MessagesFile: Hebrew.isl"
+Name: "hu"; MessagesFile: Hungarian.isl"
+Name: "it"; MessagesFile: Italian.isl"
+Name: "nb"; MessagesFile: Norwegian.isl"
+Name: "pl"; MessagesFile: Polish.isl"
+Name: "pt-BR"; MessagesFile: BrazilianPortuguese.isl"
+Name: "pt"; MessagesFile: Portuguese.isl"
+Name: "ru"; MessagesFile: Russian.isl"
+Name: "sk"; MessagesFile: Slovak.isl"
+Name: "sl"; MessagesFile: Slovenian.isl"
+Name: "es"; MessagesFile: Spanish.isl"
+
 [Setup]
 AppName=%(name)s
 AppVerName=%(name)s %(version)s

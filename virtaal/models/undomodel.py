@@ -31,8 +31,9 @@ class UndoModel(BaseModel):
         self.controller = controller
 
         super(UndoModel, self).__init__()
-        self.undo_stack = []
         self.index = -1
+        self.recording = False
+        self.undo_stack = []
 
 
     # METHODS #
@@ -67,7 +68,6 @@ class UndoModel(BaseModel):
             return None
 
         if not permanent:
-            logging.debug('pop()  (index, len) => (%s, %s)' % (self.index, len(self.undo_stack)))
             self.index -= 1
             return self.undo_stack[self.index+1]
 
@@ -96,6 +96,10 @@ class UndoModel(BaseModel):
         if self.index != len(self.undo_stack) - 1:
             self.undo_stack = self.undo_stack[:self.index]
 
-        self.undo_stack.append(undo_dict)
+        if self.recording:
+            if not self.undo_stack or not isinstance(self.undo_stack[-1], list):
+                self.undo_stack.append([])
+            self.undo_stack[-1].append(undo_dict)
+        else:
+            self.undo_stack.append(undo_dict)
         self.index = len(self.undo_stack) - 1
-        logging.debug('push() (index, len) => (%s, %s)' % (self.index, len(self.undo_stack)))

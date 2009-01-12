@@ -148,6 +148,12 @@ class Settings:
 
 settings = Settings()
 
+# Determine the directory the main executable is running from
+main_dir = u''
+if getattr(sys, 'frozen', False):
+    main_dir = os.path.dirname(unicode(sys.executable, sys.getfilesystemencoding()))
+else:
+    main_dir = os.path.dirname(unicode(sys.argv[0], sys.getfilesystemencoding()))
 
 def get_abs_data_filename(path_parts):
     """Get the absolute path to the given file- or directory name in Virtaal's

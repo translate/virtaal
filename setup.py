@@ -104,6 +104,22 @@ options = {
     ],
 }
 
+# For Windows, we need to treat the plug-ins as data files.
+if os.name == 'nt':
+    noplugins = []
+    for pkg in options['packages']:
+        if 'plugins' not in pkg:
+            noplugins.append(pkg)
+    options['packages'] = noplugins
+
+    plugin_src = path.join('virtaal', 'plugins')
+    plugin_dest = 'virtaal_plugins'
+    options['data_files'] += [
+        (plugin_dest, glob.glob(path.join(plugin_src, '*.py'))),
+        (path.join(plugin_dest, 'tm'), glob.glob(path.join(plugin_src, 'tm', '*.py'))),
+        (path.join(plugin_dest, 'tm', 'models'), glob.glob(path.join(plugin_src, 'tm', 'models', '*.py'))),
+    ]
+
 no_install_files = [
     ['LICENSE', 'maketranslations']
 ]

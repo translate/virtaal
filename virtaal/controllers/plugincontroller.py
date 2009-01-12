@@ -23,11 +23,13 @@ import os
 import sys
 
 from virtaal.common import pan_app, GObjectWrapper
-from virtaal import plugins
 
 from basecontroller import BaseController
 from baseplugin import BasePlugin
 
+
+if os.name == 'nt':
+    sys.path.insert(0, pan_app.main_dir)
 
 # The following line allows us to import user plug-ins from ~/.virtaal/virtaal_plugins
 # (see PluginController.PLUGIN_MODULES)
@@ -44,7 +46,10 @@ class PluginController(BaseController):
     # To use this class to manage any other plug-ins, these will (most likely) have to be changed.
     PLUGIN_CLASSNAME = 'Plugin'
     """The name of the class that will be instantiated from the plug-in module."""
-    PLUGIN_DIRS = [os.path.join(pan_app.get_config_dir(), 'virtaal_plugins'), os.path.dirname(plugins.__file__)]
+    PLUGIN_DIRS = [
+        os.path.join(pan_app.get_config_dir(), 'virtaal_plugins'),
+        os.path.join(os.path.dirname(__file__), '..', 'plugins')
+    ]
     """The directories to search for plug-in names."""
     PLUGIN_INTERFACE = BasePlugin
     """The interface class that the plug-in class must inherit from."""
@@ -62,6 +67,9 @@ class PluginController(BaseController):
         self.controller = controller
         self.plugins       = {}
         self.pluginmodules = {}
+
+        if os.name == 'nt':
+            self.PLUGIN_DIRS.insert(0, os.path.join(pan_app.main_dir, 'virtaal_plugins'))
 
 
     # METHODS #

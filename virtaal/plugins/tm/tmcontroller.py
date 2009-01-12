@@ -63,13 +63,30 @@ class TMController(BaseController):
             self._mode_selected_id = modecontroller.connect('mode-selected', self._on_mode_selected)
 
     def _load_models(self):
-        print 'TMController._load_models()'
+        import sys
+        dirs = [
+            os.path.join(pan_app.get_config_dir(), 'virtaal_plugins', 'tm', 'models'),
+            os.path.join(
+                pan_app.main_dir,
+                os.path.join(os.path.dirname(unicode(__file__, sys.getfilesystemencoding())), 'models')
+            )
+        ]
+        if os.name == 'nt':
+            dirs.insert(0, os.path.join(
+                pan_app.main_dir,
+                'virtaal_plugins', 'tm', 'models')
+            )
+
+        existing_dirs = []
+        for dir in dirs:
+            if os.path.isdir(dir):
+                existing_dirs.append(dir)
+        if not existing_dirs:
+            raise Exception('No TM models found!')
+
         self.plugin_controller = PluginController(self)
         self.plugin_controller.PLUGIN_CLASSNAME = 'TMModel'
-        self.plugin_controller.PLUGIN_DIRS = [
-            os.path.join(pan_app.get_config_dir(), 'virtaal_plugins', 'tm', 'models'),
-            os.path.dirname(models.__file__)
-        ]
+        self.plugin_controller.PLUGIN_DIRS = existing_dirs
         self.plugin_controller.PLUGIN_INTERFACE = BaseTMModel
         self.plugin_controller.PLUGIN_MODULES = ['virtaal_plugins.tm.models', 'virtaal.plugins.tm.models']
         self.plugin_controller.get_disabled_plugins = lambda *args: self.disabled_model_names

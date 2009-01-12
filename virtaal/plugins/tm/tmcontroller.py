@@ -46,7 +46,7 @@ class TMController(BaseController):
         GObjectWrapper.__init__(self)
 
         self.main_controller = main_controller
-        self.disabled_model_names = config.get('disabled_models', [])
+        self.disabled_model_names = ['basetmmodel'] + config.get('disabled_models', [])
         self.max_matches = config.get('max_matches', 5)
         self.min_quality = config.get('min_quality', 75)
 

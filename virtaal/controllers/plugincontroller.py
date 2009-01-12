@@ -40,8 +40,6 @@ class PluginController(BaseController):
 
     __gtype_name__ = 'PluginController'
 
-    DEBUG = False
-    """If C{True}, allows exceptions during plug-in load to bubble up, in stead of being caught."""
     # The following class variables are set for the main plug-in controller.
     # To use this class to manage any other plug-ins, these will (most likely) have to be changed.
     PLUGIN_CLASSNAME = 'Plugin'
@@ -103,6 +101,8 @@ class PluginController(BaseController):
                         break
                     except ImportError, ie:
                         logging.debug('ImportError for %s: %s' % (modulename, ie))
+                        from traceback import format_exc
+                        logging.debug(format_exc())
                         pass
 
                 if module is None:
@@ -125,8 +125,8 @@ class PluginController(BaseController):
             return self.plugins[name]
         except Exception, exc:
             logging.warning('Failed to load plugin "%s": %s' % (name, exc))
-            if self.DEBUG:
-                raise
+            from traceback import format_exc
+            logging.debug(format_exc())
 
         return None
 

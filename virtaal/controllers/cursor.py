@@ -100,6 +100,16 @@ class Cursor(GObjectWrapper):
     indices = property(_get_indices, _set_indices)
 
     # METHODS #
+    def deref(self):
+        """Dereference the cursor to the item in the model that the cursor is
+            currently pointing to.
+
+            @returns: C{self.model[self.index]}, or C{None} if any error occurred."""
+        try:
+            return self.model[self.index]
+        except Exception:
+            return None
+
     def force_index(self, index):
         """Force the cursor to move to the given index, even if it is not in the
             C{self.indices} list.

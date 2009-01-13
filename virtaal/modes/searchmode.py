@@ -153,14 +153,20 @@ class SearchMode(BaseMode):
         # Using unit_controller directly is a hack to make sure that the replacement changes are immediately displayed.
         if match.part != 'target':
             return
-        strings = match.unit.target.strings
-        string_n = strings[match.part_n]
+
         if unit_controller is None:
-            strings[match.part_n] = string_n[:match.start] + replace_str + string_n[match.end:]
-            match.unit.target = strings
+            if match.unit.hasplural():
+                string_n = match.unit.target.strings[match.part_n]
+                strings[match.part_n] = string_n[:match.start] + replace_str + string_n[match.end:]
+                match.unit.target = strings
+            else:
+                rstring = match.unit.target
+                rstring = rstring[:match.start] + replace_str + rstring[match.end:]
+                match.unit.target = rstring
         else:
             main_controller.select_unit(match.unit)
-            unit_controller.set_unit_target(match.part_n, string_n[:match.start] + replace_str + string_n[match.end:])
+            rstring = unit_controller.get_unit_target(match.part_n)
+            unit_controller.set_unit_target(match.part_n, rstring[:match.start] + replace_str + rstring[match.end:])
 
     def update_search(self):
         self.filter = GrepFilter(
@@ -329,14 +335,15 @@ class SearchMode(BaseMode):
         if self.chk_replace_all.get_active():
             self._replace_all()
         else:
-            current_unit = self.storecursor.model[self.storecursor.index]
+            current_unit = self.storecursor.deref()
             # Find matches in the current unit.
             unit_matches = [match for match in self.matches if match.unit is current_unit and match.part == 'target']
             if len(unit_matches) > 0:
+                i = self.matches.index(unit_matches[0])
                 self.replace_match(unit_matches[0], self.ent_replace.get_text())
                 self.controller.main_controller.undo_controller.undo_stack.pop()
                 self.controller.main_controller.undo_controller.undo_stack.undo_stack.pop()
-                self.matches.remove(unit_matches[0])
+                del self.matches[i]
             else:
                 self.storecursor.move(1)
 

@@ -21,8 +21,10 @@
 
 class BaseMode(object):
     """Interface for other modes."""
-    name = 'BaseMode' """The internal name of the mode."""
-    display_name = '' """Sublcasses should mark this for translation with _()"""
+    name = 'BaseMode'
+    """The internal name of the mode."""
+    display_name = ''
+    """Sublcasses should mark this for translation with _()"""
     widgets = []
 
     # INITIALIZERS #

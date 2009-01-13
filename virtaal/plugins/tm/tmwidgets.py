@@ -43,6 +43,7 @@ class TMWindow(gtk.Window):
     def _build_gui(self):
         self.scrolled_window = gtk.ScrolledWindow()
         self.scrolled_window.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        self.scrolled_window.set_shadow_type(gtk.SHADOW_IN)
 
         self.treeview = self._create_treeview()
 
@@ -101,7 +102,7 @@ class TMWindow(gtk.Window):
         y += widget_alloc.height + 2
 
         width = widget_alloc.width + self.tvc_perc.get_width() + scrollbar_width
-        height = min(self.rows_height(), self.MAX_HEIGHT)
+        height = min(self.rows_height(), self.MAX_HEIGHT) + 2
 
         logging.debug('-> %dx%d +%d+%d' % (width, height, x, y))
         self.set_size_request(width, height)
@@ -139,7 +140,7 @@ class TMMatchRenderer(gtk.GenericCellRenderer):
         ),
     }
 
-    BOX_MARGIN = 2
+    BOX_MARGIN = 3
     """The number of pixels between where the source box is drawn and where the
         text layout begins."""
     LINE_SEPARATION = 10

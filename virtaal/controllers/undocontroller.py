@@ -46,14 +46,16 @@ class UndoController(BaseController):
         self.unit_controller = self.main_controller.store_controller.unit_controller
 
         self.undo_stack = UndoModel(self)
+        self._paste_undo_info = None
 
         self._setup_key_bindings()
         self._connect_undo_signals()
 
     def _connect_undo_signals(self):
         # First connect to the unit controller
-        self.unit_controller.connect('unit-insert-text', self._on_unit_insert_text)
         self.unit_controller.connect('unit-delete-text', self._on_unit_delete_text)
+        self.unit_controller.connect('unit-insert-text', self._on_unit_insert_text)
+        self.unit_controller.connect('unit-paste-start', self._on_unit_paste_start)
         self.main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
 
     def _setup_key_bindings(self):
@@ -140,6 +142,11 @@ class UndoController(BaseController):
             self._perform_undo(undo_info)
 
     def _on_unit_delete_text(self, _unit_controller, unit, old_text, start_offset, end_offset, cursor_pos, target_num):
+        if self._paste_undo_info:
+            self.undo_stack.push(self._paste_undo_info)
+            self._paste_undo_info = None
+            return
+
         logging.debug('_on_unit_delete_text(%s, "%s", %d, %d, %d)' % (repr(unit), old_text, start_offset, end_offset, target_num))
         self.undo_stack.push({
             'unit': unit,
@@ -149,6 +156,9 @@ class UndoController(BaseController):
         })
 
     def _on_unit_insert_text(self, _unit_controller, unit, old_text, ins_text, offset, target_num):
+        if self._paste_undo_info:
+            return
+
         logging.debug('_on_unit_insert_text(%s, "%s", "%s", %d, %d)' % (repr(unit), old_text, ins_text, offset, target_num))
         self.undo_stack.push({
             'unit': unit,
@@ -156,3 +166,15 @@ class UndoController(BaseController):
             'value': old_text,
             'cursorpos': offset
         })
+
+    def _on_unit_paste_start(self, _unit_controller, unit, old_text, offsets, target_num):
+        if offsets['insert_offset'] == offsets['selection_offset']:
+            # If there is no selection, a paste is equivalent to an insert action
+            return
+
+        self._paste_undo_info = {
+            'unit': unit,
+            'targetn': target_num,
+            'value': old_text,
+            'cursorpos': offsets['insert_offset']
+        }

@@ -51,10 +51,11 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     __gtype_name__ = "UnitView"
     __gsignals__ = {
-        'delete-text': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_STRING, TYPE_INT, TYPE_INT, TYPE_INT, TYPE_INT)),
-        'insert-text': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_INT, TYPE_INT)),
-        'modified': (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
-        'unit-done': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
+        'delete-text':    (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_STRING, TYPE_INT, TYPE_INT, TYPE_INT, TYPE_INT)),
+        'insert-text':    (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_INT, TYPE_INT)),
+        'paste-start':    (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_STRING, TYPE_PYOBJECT, TYPE_INT)),
+        'modified':       (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
+        'unit-done':      (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
         'target-focused': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_INT,)),
     }
 
@@ -160,7 +161,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         for target in self.targets:
             target._source_text = unit.source # FIXME: Find a better way to do this!
             buff = target.get_buffer()
-            target.connect('key-press-event', self._on_text_view_key_press_event)
+            target.connect('key-press-event', self._on_textview_key_press_event)
+            target.connect('paste-clipboard', self._on_textview_paste_clipboard, i)
             buff.connect('changed', self._on_target_changed, i)
             buff.connect('insert-text', self._on_target_insert_text, i)
             buff.connect('delete-range', self._on_target_delete_range, i)
@@ -398,7 +400,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
         self.emit('delete-text', old_text, start_offset, end_offset, cursor_pos, target_num)
 
-    def _on_text_view_key_press_event(self, widget, event, *_args):
+    def _on_textview_key_press_event(self, widget, event, *_args):
         if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
             self.must_advance = True
             self.editing_done()
@@ -409,3 +411,16 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             idle_add(self.copy_original, widget)
             return True
         return False
+
+    def _on_textview_paste_clipboard(self, textview, target_num):
+        buff = textview.get_buffer()
+        old_text = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
+        ins_iter  = buff.get_iter_at_mark(buff.get_insert())
+        selb_iter = buff.get_iter_at_mark(buff.get_selection_bound())
+
+        offsets = {
+            'insert_offset': ins_iter.get_offset(),
+            'selection_offset': selb_iter.get_offset()
+        }
+
+        self.emit('paste-start', old_text, offsets, target_num)

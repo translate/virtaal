@@ -196,8 +196,13 @@ class SearchMode(BaseMode):
                 match_index += 1
             self.matchcursor.index = match_index
         else:
-            self.ent_search.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse('#f66'))
-            self.ent_search.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse('#fff'))
+            if self.ent_search.get_text():
+                self.ent_search.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse('#f66'))
+                self.ent_search.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse('#fff'))
+            else:
+                self.ent_search.modify_base(gtk.STATE_NORMAL, self.default_base)
+                self.ent_search.modify_text(gtk.STATE_NORMAL, self.default_text)
+
             self.filter.re_search = None
             # Act like the "Default" mode...
             self.storecursor.indices = self.storecursor.model.stats['total']

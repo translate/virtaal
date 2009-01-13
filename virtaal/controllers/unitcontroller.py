@@ -36,6 +36,7 @@ class UnitController(BaseController):
         'unit-modified':       (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
         'unit-delete-text':    (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT, TYPE_STRING, TYPE_INT, TYPE_INT, TYPE_INT, TYPE_INT)),
         'unit-insert-text':    (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT, TYPE_STRING, TYPE_STRING, TYPE_INT, TYPE_INT)),
+        'unit-paste-start':    (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT, TYPE_STRING, TYPE_PYOBJECT, TYPE_INT)),
     }
 
     # INITIALIZERS #
@@ -80,6 +81,7 @@ class UnitController(BaseController):
         self.unit_views[unit] = self.view = UnitView(self, unit)
         self.view.connect('delete-text', self._unit_delete_text)
         self.view.connect('insert-text', self._unit_insert_text)
+        self.view.connect('paste-start', self._unit_paste_start)
         self.view.connect('modified', self._unit_modified)
         self.view.connect('unit-done', self._unit_done)
         self.view.enable_signals()
@@ -89,6 +91,9 @@ class UnitController(BaseController):
 
     def _unit_insert_text(self, unitview, old_text, ins_text, offset, target_num):
         self.emit('unit-insert-text', self.current_unit, old_text, ins_text, offset, target_num)
+
+    def _unit_paste_start(self, unitview, old_text, offsets, target_num):
+        self.emit('unit-paste-start', self.current_unit, old_text, offsets, target_num)
 
     def _unit_modified(self, *args):
         self.emit('unit-modified', self.current_unit)

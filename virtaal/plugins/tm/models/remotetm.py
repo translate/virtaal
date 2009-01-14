@@ -38,7 +38,9 @@ class TMModel(BaseTMModel):
     def __init__(self, internal_name, controller):
         self.internal_name = internal_name
         self.load_config()
-        url = "http://%s:%s/tmserver" % (self.config["host"], self.config["port"])
+        self.slang = pan_app.settings.language["sourcelang"]
+        self.tlang = pan_app.settings.language["contentlang"]
+        url = "http://%s:%s/tmserver/%s/%s" % (self.config["host"], self.config["port"], self.slang, self.tlang)
 
         self.tmclient = tmclient.TMClient(url)
         super(TMModel, self).__init__(controller)

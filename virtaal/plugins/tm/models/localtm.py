@@ -36,7 +36,7 @@ class TMModel(BaseTMModel):
     default_config = {
         "tmserver_bind" : "localhost",
         "tmserver_port" : "8080",
-        "tm_store" : os.path.join(pan_app.get_config_dir(), "tm.po")
+        "tm_db" : os.path.join(pan_app.get_config_dir(), "tm.db")
     }
 
     # INITIALIZERS #
@@ -48,11 +48,13 @@ class TMModel(BaseTMModel):
             "tmserver.py",
             "-b", self.config["tmserver_bind"],
             "-p", self.config["tmserver_port"],
-            "-t", self.config["tm_store"],
+            "-d", self.config["tm_db"],
         ]
+        self.slang = pan_app.settings.language["sourcelang"]
+        self.tlang = pan_app.settings.language["contentlang"]
         try:
             self.tmserver = subprocess.Popen(command)
-            url = "http://%s:%s/tmserver" % (self.config["tmserver_bind"], self.config["tmserver_port"])
+            url = "http://%s:%s/tmserver/%s/%s" % (self.config["tmserver_bind"], self.config["tmserver_port"], self.slang, self.tlang)
 
             self.tmclient = tmclient.TMClient(url)
         except OSError, e:
@@ -64,6 +66,7 @@ class TMModel(BaseTMModel):
 
     # METHODS #
     def query(self, tmcontroller, query_str):
+        #figure out languages
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])
         else:

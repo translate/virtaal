@@ -113,7 +113,7 @@ class UndoController(BaseController):
     def _perform_undo(self, undo_info):
         self._select_unit(undo_info['unit'])
         self._disable_unit_signals()
-        self.unit_controller.set_unit_target(undo_info['targetn'], undo_info['value'], undo_info['cursorpos'])
+        self.unit_controller.set_unit_target(undo_info['targetn'], undo_info['value'], undo_info['cursorpos'], escape=False)
         if 'action' in undo_info and callable(undo_info['action']):
             undo_info['action'](undo_info['unit'])
         self._enable_unit_signals()

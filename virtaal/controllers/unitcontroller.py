@@ -59,8 +59,8 @@ class UnitController(BaseController):
     def get_unit_target(self, target_index):
         return self.view.get_target_n(target_index)
 
-    def set_unit_target(self, target_index, value, cursor_pos=-1):
-        self.view.set_target_n(target_index, value, cursor_pos)
+    def set_unit_target(self, target_index, value, cursor_pos=-1, escape=True):
+        self.view.set_target_n(target_index, value, cursor_pos, escape=escape)
 
 
     # METHODS #

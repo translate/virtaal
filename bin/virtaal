@@ -43,19 +43,23 @@ option_list = [
     make_option("--config",
                 action="store", type="string", dest="config", metavar=_("CONFIG"),
                 help=_("use the configuration file given by the supplied filename.")),
+    make_option("--debug",
+                action="store_true", dest="debug", default=False,
+                help=_("enable debugging features")),
 ]
 parser = OptionParser(option_list=option_list, usage=usage, version=__version__.ver)
 
 def main(argv):
     def set_logging(options):
         if options.log != None:
+            level = options.debug and logging.DEBUG or logging.INFO
             if options.log.upper() in ('-', 'STDOUT'):
-                logging.basicConfig(level=logging.INFO,
+                logging.basicConfig(level=level,
                                     format='%(asctime)s %(levelname)s %(message)s',
                                     stream=sys.stdout)
             else:
                 try:
-                    logging.basicConfig(level=logging.INFO,
+                    logging.basicConfig(level=level,
                                         format='%(asctime)s %(levelname)s %(message)s',
                                         filename=path.abspath(options.log),
                                         filemode='w')
@@ -99,11 +103,13 @@ def main(argv):
                 parser.error(_("Could not open profile file '%(filename)s'") % {"filename":options.profile})
 
         def default_runner(startup_file):
-            #try:
-            #    import psyco
-            #    psyco.full()
-            #except Exception:
-            #    pass
+            if not options.debug:
+                try:
+                    import psyco
+                    psyco.full()
+                except Exception:
+                    pass
+            pan_app.DEBUG = options.debug
             run_virtaal(startup_file)
 
         if options.profile != None:

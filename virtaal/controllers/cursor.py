@@ -89,7 +89,6 @@ class Cursor(GObjectWrapper):
         oldindex = self.index
         oldpos = self.pos
 
-        logging.debug('%s -> %s' % (self._indices, list(value)))
         self._indices = list(value)
 
         self.index = oldindex

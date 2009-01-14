@@ -228,6 +228,10 @@ msgstr ""
 msgid "Modified"
 msgstr ""
 
+#. File dialog - Files - Table - Date formats - HH:MM
+msgid "%H:%M"
+msgstr ""
+
 #. File dialog - Files - Table - Date formats - Today at
 msgid "Today at %H:%M"
 msgstr ""

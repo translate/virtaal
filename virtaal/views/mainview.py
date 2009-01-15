@@ -141,6 +141,10 @@ class MainView(GObjectWrapper, BaseView):
         self.statusbar_context_id = self.status_bar.get_context_id("statusbar")
         self.main_window = self.gui.get_widget("MainWindow")
         self.main_window.set_icon_from_file(pan_app.get_abs_data_filename(["icons", "virtaal.ico"]))
+        self.main_window.resize(
+            int(pan_app.settings.general['windowwidth']),
+            int(pan_app.settings.general['windowheight'])
+        )
         self._top_window = self.main_window
         recent_files = self.gui.get_widget("recent_files")
         recent.rc.connect("item-activated", self._on_recent_file_activated)
@@ -343,6 +347,10 @@ class MainView(GObjectWrapper, BaseView):
             return nplurals, lang.pluralequation
 
     def quit(self):
+        width, height = self.main_window.get_size()
+        pan_app.settings.general['windowwidth'] = width
+        pan_app.settings.general['windowheight'] = height
+        pan_app.settings.write()
         gtk.main_quit()
 
     def show(self):

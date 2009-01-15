@@ -459,6 +459,7 @@ class MainView(GObjectWrapper, BaseView):
         while self.lst_langs.iter_is_valid(i):
             if self.lst_langs.get_value(i, 0) == lang_code:
                 break
+            i = self.lst_langs.iter_next(i)
 
         if self.lst_langs.iter_is_valid(i) and i != combo.get_active_iter():
             combo.set_active_iter(i)

@@ -32,15 +32,20 @@ class MainController(BaseController):
 
     __gtype_name__ = 'MainController'
     __gsignals__ = {
-        'controller-registered': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
+        'controller-registered': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
+        'source-lang-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
+        'target-lang-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
     }
 
     # INITIALIZERS #
     def __init__(self):
         GObjectWrapper.__init__(self)
         self.store_controller = None # This is set by StoreController itself when it is created
-        self.view = MainView(self)
         self._force_saveas = False
+
+        self.view = MainView(self)
+        self.view.connect('source-lang-changed', self._on_source_lang_changed)
+        self.view.connect('target-lang-changed', self._on_target_lang_changed)
 
     # ACCESSORS #
     def get_store(self):
@@ -227,3 +232,11 @@ class MainController(BaseController):
     def run(self):
         pan_app.settings.write() # Make sure that we have a settings file.
         self.view.show()
+
+
+    # EVENT HANDLERS #
+    def _on_source_lang_changed(self, _sender, langcode):
+        self.emit('source-lang-changed', langcode)
+
+    def _on_target_lang_changed(self, _sender, langcode):
+        self.emit('target-lang-changed', langcode)

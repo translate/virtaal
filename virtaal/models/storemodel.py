@@ -70,6 +70,12 @@ class StoreModel(BaseModel):
         if len(self._trans_store.units) <= 0:
             return pan_app.settings.language["sourcelang"]
         candidate = self._trans_store.units[0].getsourcelanguage()
+        # If we couldn't get the language from the first unit, try the store
+        if candidate is None:
+            try:
+                candidate = self._trans_store.getsourcelanguage()
+            except Exception:
+                pass
         if candidate and not candidate in ['und', 'en', 'en_US']:
             return candidate
         else:
@@ -84,6 +90,12 @@ class StoreModel(BaseModel):
         if len(self._trans_store.units) <= 0:
             return pan_app.settings.language['contentlang']
         candidate = self._trans_store.units[0].gettargetlanguage()
+        # If we couldn't get the language from the first unit, try the store
+        if candidate is None:
+            try:
+                candidate = self._trans_store.gettargetlanguage()
+            except Exception:
+                pass
         if candidate and candidate != 'und':
             return candidate
         else:

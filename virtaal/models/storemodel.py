@@ -75,6 +75,9 @@ class StoreModel(BaseModel):
         else:
             return pan_app.settings.language["sourcelang"]
 
+    def set_source_language(self, langcode):
+        self._trans_store.setsourcelanguage(langcode)
+
     def get_target_language(self):
         """Return the current store's target language."""
         # Copied as-is from Document.get_target_language()
@@ -85,6 +88,9 @@ class StoreModel(BaseModel):
             return candidate
         else:
             return pan_app.settings.language["contentlang"]
+
+    def set_target_language(self, langcode):
+        self._trans_store.settargetlanguage(langcode)
 
     def get_unit(self, index):
         """Get a specific unit by index."""

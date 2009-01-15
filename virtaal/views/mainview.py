@@ -256,14 +256,13 @@ class MainView(GObjectWrapper, BaseView):
         self.cmb_tgtlang.set_cell_data_func(tgt_cell, render_lang)
         self.cmb_tgtlang.connect('changed', self._on_lang_changed, 'target')
 
-        widgets = [
-            gtk.Label(_('Source language:')),
-            self.cmb_srclang,
-            gtk.Label(_('Target language:')),
-            self.cmb_tgtlang
-        ]
-        for widget in widgets:
-            self.status_bar.add(widget)
+        lbl_srclang = gtk.Label(_('  Source language:'))
+        lbl_srclang.set_alignment(1.0, 0.5)
+        lbl_tgtlang = gtk.Label(_('  Target language:'))
+        lbl_tgtlang.set_alignment(1.0, 0.5)
+
+        for widget in [lbl_srclang, self.cmb_srclang, lbl_tgtlang, self.cmb_tgtlang]:
+            self.status_bar.pack_start(widget, expand=False)
         self.status_bar.set_homogeneous(False)
         self.status_bar.set_sensitive(False)
         self.status_bar.show_all()

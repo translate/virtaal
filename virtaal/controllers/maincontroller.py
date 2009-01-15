@@ -93,6 +93,12 @@ class MainController(BaseController):
     def get_force_saveas(self):
         return self._force_saveas
 
+    def set_source_lang(self, langcode):
+        self.view.set_source_lang(langcode)
+
+    def set_target_lang(self, langcode):
+        self.view.set_target_lang(langcode)
+
     def _get_mode_controller(self):
         return getattr(self, '_mode_controller', None)
     def _set_mode_controller(self, value):

@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import logging
 import os
 
 from virtaal.controllers import *
@@ -28,17 +29,24 @@ class Virtaal(object):
 
     def __init__(self, startupfile):
         self.main_controller = MainController()
+        logging.debug('MainController created')
         self.plugin_controller = PluginController(self.main_controller)
         self.main_controller.plugin_controller = self.plugin_controller
+        logging.debug('PluginController created')
         self.store_controller = StoreController(self.main_controller)
+        logging.debug('StoreController created')
         self.unit_controller = UnitController(self.store_controller)
+        logging.debug('UnitController created')
 
         # Load additional built-in modules
         self.undo_controller = UndoController(self.main_controller)
+        logging.debug('UndoController created')
         self.mode_controller = ModeController(self.main_controller)
+        logging.debug('ModeController created')
 
         # Load plug-ins
         self.plugin_controller.load_plugins()
+        logging.debug('Plugins loaded')
 
         # Load the file given on the command-line, if any
         if startupfile and os.path.isfile(startupfile):

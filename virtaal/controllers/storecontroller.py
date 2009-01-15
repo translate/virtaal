@@ -51,6 +51,10 @@ class StoreController(BaseController):
         self.store = None
         self.view = StoreView(self)
 
+        self.main_controller.connect('source-lang-changed', self._on_source_lang_changed)
+        self.main_controller.connect('target-lang-changed', self._on_target_lang_changed)
+        self._may_update_langs = True
+
 
     # ACCESSORS #
     def get_nplurals(self, store=None):
@@ -118,6 +122,11 @@ class StoreController(BaseController):
         self.view.load_store(self.store)
         self.view.show()
 
+        self._may_update_langs = False
+        self.main_controller.set_source_lang(self.store.get_source_language())
+        self.main_controller.set_target_lang(self.store.get_target_language())
+        self._may_update_langs = True
+
         self.emit('store-loaded')
 
     def save_file(self, filename=None):
@@ -180,3 +189,13 @@ After:
     def _unit_modified(self, emitter, unit):
         self._modified = True
         self.main_controller.set_saveable(self._modified)
+
+
+    # EVENT HANDLERS #
+    def _on_source_lang_changed(self, _sender, langcode):
+        if self._may_update_langs:
+            self.store.set_source_language(langcode)
+
+    def _on_target_lang_changed(self, _sender, langcode):
+        if self._may_update_langs:
+            self.store.set_target_language(langcode)

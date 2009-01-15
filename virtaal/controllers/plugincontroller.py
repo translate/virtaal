@@ -92,17 +92,14 @@ class PluginController(BaseController):
                     # The following line makes sure that we have a valid module name to import from
                     modulename = '.'.join([part for part in [plugin_module, name] if part])
                     try:
-                        logging.debug('from %s import %s' % (modulename, self.PLUGIN_CLASSNAME))
                         module = __import__(
                             modulename,
                             globals=globals(),
                             fromlist=[self.PLUGIN_CLASSNAME]
                         )
                         break
-                    except ImportError, ie:
-                        logging.debug('ImportError for %s: %s' % (modulename, ie))
-                        from traceback import format_exc
-                        logging.debug(format_exc())
+                    except ImportError:
+                        logging.exception('from %s import %s' % (modulename, self.PLUGIN_CLASSNAME))
                         pass
 
                 if module is None:
@@ -123,10 +120,8 @@ class PluginController(BaseController):
             self.plugins[name] = plugin_class(name, self.controller)
             logging.info('    - ' + getattr(self.plugins[name], self.PLUGIN_NAME_ATTRIB, name))
             return self.plugins[name]
-        except Exception, exc:
-            logging.warning('Failed to load plugin "%s": %s' % (name, exc))
-            from traceback import format_exc
-            logging.debug(format_exc())
+        except Exception:
+            logging.exception('Failed to load plugin "%s"' % (name))
 
         return None
 

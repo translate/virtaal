@@ -42,7 +42,7 @@ def add_spell_checking(text_view, language):
             spell = gtkspell.Spell(text_view)
             spell.set_language(language)
         except:
-            logging.info("Could not initialize spell checking")
+            logging.exception("Could not initialize spell checking")
             gtkspell = None
 
 

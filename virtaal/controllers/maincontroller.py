@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gobject
+import logging
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.views import MainView
@@ -156,6 +157,7 @@ class MainController(BaseController):
             self.mode_controller.refresh_mode()
             return True
         except Exception, exc:
+            logging.exception('MainController.open_file(filename="%s", uri="%s")' % (filename, uri))
             self.show_error(
                 _("Could not open file.\n\n%(error_message)s\n\nTry opening a different file.") % {'error_message': str(exc)}
             )
@@ -169,6 +171,7 @@ class MainController(BaseController):
                 _("Could not save file.\n\n%(error_message)s\n\nTry saving at a different location.") % {'error_message': str(exc)}
             )
         except Exception, exc:
+            logging.exception('MainController.save_file(filename="%s")' % (filename))
             self.show_error(
                 _("Could not save file.\n\n%(error_message)s" % {'error_message': str(exc)})
             )
@@ -199,6 +202,7 @@ class MainController(BaseController):
             self.mode_controller.refresh_mode()
             return True
         except Exception, exc:
+            logging.exception('MainController.update_file(filename="%s", uri="%s")' % (filename, uri))
             self.show_error(
                 _("Could not open file.\n\n%(error_message)s\n\nTry opening a different file.") % {'error_message': str(exc)}
             )

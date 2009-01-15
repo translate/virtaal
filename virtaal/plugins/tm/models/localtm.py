@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import logging
 import os
 import subprocess
 from translate.services import tmclient
@@ -59,7 +60,8 @@ class TMModel(BaseTMModel):
             self.tmclient = tmclient.TMClient(url)
         except OSError, e:
             message = "Failed to start TM server: %s" % str(e)
-            raise OSError(message)
+            logging.exception('Failed to start TM server')
+            raise
 
         super(TMModel, self).__init__(controller)
 

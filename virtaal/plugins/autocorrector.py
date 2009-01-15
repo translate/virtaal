@@ -157,7 +157,7 @@ class AutoCorrector(object):
                     acor = zipfile.ZipFile(os.path.join(self.acorpath, fn))
                     break
                 except IOError:
-                    pass
+                    logging.exception('Unable to load auto-correction data file for language %s' % (lang))
 
             else:
                 # If no acceptable auto-correction file was found, we create an

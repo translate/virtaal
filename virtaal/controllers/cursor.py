@@ -107,6 +107,7 @@ class Cursor(GObjectWrapper):
         try:
             return self.model[self.index]
         except Exception:
+            logging.debug('Unable to dereference cursor')
             return None
 
     def force_index(self, index):

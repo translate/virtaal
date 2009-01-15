@@ -235,16 +235,18 @@ class MainView(GObjectWrapper, BaseView):
     def _create_language_widgets(self):
         self.lst_langs = gtk.ListStore(str, str, int, str)
         # Add the language data from the toolkit to the list store, ordered by the language name
-        from translate.lang.data import languages
+        from translate.lang.data import languages, tr_lang
         langs = [[code] + list(data) for code, data in languages.items()]
         langs.sort(key=lambda x: x[1])
         for langdata in langs:
             self.lst_langs.append(langdata)
 
+        gettext_lang = tr_lang(pan_app.settings.language["uilang"])
+
         def render_lang(layout, cell, model, iter):
             code = model.get_value(iter, 0)
-            langname = model.get_value(iter, 1)
-            cell.set_property('text', '%s (%s)' % (langname, code))
+            langname = gettext_lang(model.get_value(iter, 1))
+            cell.set_property('text', u'%s (%s)' % (langname, code))
 
         src_cell = gtk.CellRendererText()
         self.cmb_srclang = gtk.ComboBox()

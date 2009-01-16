@@ -121,11 +121,21 @@ class MainView(GObjectWrapper, BaseView):
         # Set the Glade file
         self.gladefile, self.gui = self.load_glade_file(["virtaal", "virtaal.glade"], root='MainWindow', domain="virtaal")
 
-	if sys.platform == 'darwin':
+        if sys.platform == 'darwin':
             try:
                 gtk.rc_parse(pan_app.get_abs_data_filename(["OSX_Leopard_theme", "gtkrc"]))
             except:
                 logging.exception("Couldn't find OSX_Leopard_theme")
+            # Sometimes we have two resize grips: one from GTK, one from Aqua. We
+            # might want to disable the GTK one:
+            #self.gui.get_widget('status_bar').set_property("has-resize-grip", False)
+            try:
+                import igemacintegration
+                menubar = self.gui.get_widget('menubar1')
+                igemacintegration.ige_mac_menu_set_menu_bar(menubar)
+                menubar.hide()
+            except ImportError, e:
+                logging.debug("igemacintegration module not found. Excpect zero integration with the mac desktop.")
 
         # Create our events dictionary and connect it
         dic = {

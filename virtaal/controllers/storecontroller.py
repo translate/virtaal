@@ -18,12 +18,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import re
+
 import gobject
 
 from virtaal.common import GObjectWrapper
 from virtaal.models import StoreModel
 from virtaal.views import StoreView
-
 from basecontroller import BaseController
 from cursor import Cursor
 
@@ -113,10 +114,17 @@ class StoreController(BaseController):
             self.store = StoreModel(filename, self)
         else:
             self.store.load_file(filename)
-
+        
         self._modified = False
-        self.main_controller.set_saveable(self._modified)
 
+        # if file is a template force saveas
+        pot_regexp = re.compile("\.pot(\.gz|\.bz2){0,1}$")
+        if pot_regexp.search(filename):
+            self.main_controller.set_force_saveas(True)
+            self.store._trans_store.filename = pot_regexp.sub('.po', filename)
+
+        self.main_controller.set_saveable(self._modified)
+            
         self.cursor = Cursor(self.store, self.store.stats['total'])
 
         self.view.load_store(self.store)

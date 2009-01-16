@@ -371,11 +371,19 @@ def add_mac_options(options):
     # http://developer.apple.com/documentation/MacOSX/Conceptual/BPRuntimeConfig/Articles/PListKeys.html
     if py2app is None:
         return options
+    options['data_files'].extend([('share/OSX_Leopard_theme', glob.glob(path.join('devsupport', 'OSX_Leopard_theme', '*')))])
+    options['data_files'].extend([('', ['devsupport/virtaal.icns'])])
+    
+    # For some reason py2app can't handle bin/virtaal since it doesn't end in .py
+    import shutil
+    shutil.copy2('bin/virtaal', 'bin/run_virtaal.py')
+    
     from translate.storage import factory
     options.update({
-        "app": ["bin/virtaal"],
+        "app": ["bin/run_virtaal.py"],
         "options": {
             "py2app": {
+            "includes":   ["lxml", "lxml._elementpath", "lxml.etree", "glib", "gio", "psyco", "cairo", "pango", "pangocairo", "atk", "gobject", "gtk.keysyms"],
                 #"semi_standalone": True,
                 "compressed": True,
                 "argv_emulation": True,
@@ -445,3 +453,14 @@ can edit a variety of files (including PO and XLIFF files).""",
 
 if __name__ == '__main__':
     main(options)
+    # For some reason, Resources/lib/python2.5/lib-dynload is not in the Python
+    # path. We need to get it in, therefore this hack.
+    if sys.platform == 'darwin':
+        f = open('dist/virtaal.app/Contents/Resources/__boot__.py', "r+")
+        s = f.read()
+        f.truncate(0)
+        s = s.replace("base = os.environ['RESOURCEPATH']", r"""base = os.environ['RESOURCEPATH']
+    sys.path = [os.path.join(base, "lib", "python2.5", "lib-dynload")] + sys.path""")
+        f.seek(0)
+        f.write(s)
+        f.close()

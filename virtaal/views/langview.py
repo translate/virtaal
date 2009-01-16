@@ -74,8 +74,9 @@ class LanguageView(BaseView):
         pair = (srclang, tgtlang)
         if pair in self.recent_pairs:
             self.recent_pairs.remove(pair)
-
         self.recent_pairs.insert(0, pair)
+        self.recent_pairs = self.recent_pairs[:self.NUM_RECENT]
+
         self.controller.source_lang = srclang
         self.controller.target_lang = tgtlang
         self._update_recent_pairs()

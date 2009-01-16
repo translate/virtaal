@@ -58,8 +58,9 @@ class BaseTMModel(BaseModel):
         self.target_lang = None
         self._set_source_lang(None, pan_app.settings.language["sourcelang"])
         self._set_target_lang(None, pan_app.settings.language["contentlang"])
-        self._connect_ids.append((self.controller.main_controller.connect('source-lang-changed', self._set_source_lang), self.controller.main_controller))
-        self._connect_ids.append((self.controller.main_controller.connect('target-lang-changed', self._set_target_lang), self.controller.main_controller))
+        lang_controller = self.controller.main_controller.lang_controller
+        self._connect_ids.append((lang_controller.connect('source-lang-changed', self._set_source_lang), lang_controller))
+        self._connect_ids.append((lang_controller.connect('target-lang-changed', self._set_target_lang), lang_controller))
 
 
     # METHODS #

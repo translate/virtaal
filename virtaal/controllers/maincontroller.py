@@ -34,8 +34,6 @@ class MainController(BaseController):
     __gtype_name__ = 'MainController'
     __gsignals__ = {
         'controller-registered': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
-        'source-lang-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
-        'target-lang-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
     }
 
     # INITIALIZERS #
@@ -45,8 +43,6 @@ class MainController(BaseController):
         self._force_saveas = False
 
         self.view = MainView(self)
-        self.view.connect('source-lang-changed', self._on_source_lang_changed)
-        self.view.connect('target-lang-changed', self._on_target_lang_changed)
 
     # ACCESSORS #
     def get_store(self):
@@ -94,11 +90,12 @@ class MainController(BaseController):
     def get_force_saveas(self):
         return self._force_saveas
 
-    def set_source_lang(self, langcode):
-        self.view.set_source_lang(langcode)
-
-    def set_target_lang(self, langcode):
-        self.view.set_target_lang(langcode)
+    def _get_lang_controller(self):
+        return getattr(self, '_lang_controller', None)
+    def _set_lang_controller(self, value):
+        self._lang_controller = value
+        self.emit('controller-registered', self._lang_controller)
+    lang_controller = property(_get_lang_controller, _set_lang_controller)
 
     def _get_mode_controller(self):
         return getattr(self, '_mode_controller', None)
@@ -242,11 +239,3 @@ class MainController(BaseController):
     def run(self):
         pan_app.settings.write() # Make sure that we have a settings file.
         self.view.show()
-
-
-    # EVENT HANDLERS #
-    def _on_source_lang_changed(self, _sender, langcode):
-        self.emit('source-lang-changed', langcode)
-
-    def _on_target_lang_changed(self, _sender, langcode):
-        self.emit('target-lang-changed', langcode)

@@ -86,21 +86,14 @@ class EntryDialog(gtk.Dialog):
         super(EntryDialog, self).set_title(title)
 
 # XXX: This class is based on main_window.py:Virtaal from the pre-MVC days (Virtaal 0.2).
-class MainView(GObjectWrapper, BaseView):
+class MainView(BaseView):
     """The view containing the main window and menus."""
-
-    __gtype_name__ = 'MainView'
-    __gsignals__ = {
-        'source-lang-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
-        'target-lang-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
-    }
 
     # INITIALIZERS #
     def __init__(self, controller):
         """Constructor.
             @type  controller: virtaal.controllers.MainController
             @param controller: The controller that this view is "connected" to."""
-        GObjectWrapper.__init__(self)
         self.controller = controller
 
         if os.name == 'nt':
@@ -169,7 +162,6 @@ class MainView(GObjectWrapper, BaseView):
 
         self.controller.connect('controller-registered', self._on_controller_registered)
         self._create_dialogs()
-        self._create_language_widgets()
         self._setup_key_bindings()
 
     def _create_dialogs(self):
@@ -248,47 +240,6 @@ class MainView(GObjectWrapper, BaseView):
         self.confirm_dialog.add_buttons(_("_Discard"), RESPONSE_DISCARD)
         self.confirm_dialog.add_buttons(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
         self.confirm_dialog.set_default_response(RESPONSE_SAVE)
-
-    def _create_language_widgets(self):
-        self.lst_langs = gtk.ListStore(str, str, int, str)
-        # Add the language data from the toolkit to the list store, ordered by the language name
-        from translate.lang.data import languages, tr_lang
-        langs = [[code] + list(data) for code, data in languages.items()]
-        langs.sort(key=lambda x: x[1])
-        for langdata in langs:
-            self.lst_langs.append(langdata)
-
-        gettext_lang = tr_lang(pan_app.settings.language["uilang"])
-
-        def render_lang(layout, cell, model, iter):
-            code = model.get_value(iter, 0)
-            langname = gettext_lang(model.get_value(iter, 1))
-            cell.set_property('text', u'%s (%s)' % (langname, code))
-
-        src_cell = gtk.CellRendererText()
-        self.cmb_srclang = gtk.ComboBox()
-        self.cmb_srclang.set_model(self.lst_langs)
-        self.cmb_srclang.pack_start(src_cell)
-        self.cmb_srclang.set_cell_data_func(src_cell, render_lang)
-        self.cmb_srclang.connect('changed', self._on_lang_changed, 'source')
-
-        tgt_cell = gtk.CellRendererText()
-        self.cmb_tgtlang = gtk.ComboBox()
-        self.cmb_tgtlang.set_model(self.lst_langs)
-        self.cmb_tgtlang.pack_start(tgt_cell)
-        self.cmb_tgtlang.set_cell_data_func(tgt_cell, render_lang)
-        self.cmb_tgtlang.connect('changed', self._on_lang_changed, 'target')
-
-        lbl_srclang = gtk.Label(_('  Source language:'))
-        lbl_srclang.set_alignment(1.0, 0.5)
-        lbl_tgtlang = gtk.Label(_('  Target language:'))
-        lbl_tgtlang.set_alignment(1.0, 0.5)
-
-        for widget in [lbl_srclang, self.cmb_srclang, lbl_tgtlang, self.cmb_tgtlang]:
-            self.status_bar.pack_start(widget, expand=False)
-        self.status_bar.set_homogeneous(False)
-        self.status_bar.set_sensitive(False)
-        self.status_bar.show_all()
 
     def _setup_key_bindings(self):
         self.accel_group = gtk.AccelGroup()
@@ -549,11 +500,6 @@ class MainView(GObjectWrapper, BaseView):
 
     def _on_help_about(self, _widget=None):
         AboutDialog(self.main_window)
-
-    def _on_lang_changed(self, combo, lang_use):
-        itr = combo.get_active_iter()
-        langcode = self.lst_langs.get_value(itr, 0)
-        self.emit('%s-lang-changed' % (lang_use), langcode)
 
     def _on_mainwindow_delete(self, _widget, _event):
         self.controller.quit()

@@ -52,9 +52,7 @@ class StoreController(BaseController):
         self.store = None
         self.view = StoreView(self)
 
-        self.main_controller.connect('source-lang-changed', self._on_source_lang_changed)
-        self.main_controller.connect('target-lang-changed', self._on_target_lang_changed)
-        self._may_update_langs = True
+        self._controller_register_id = self.main_controller.connect('controller-registered', self._on_controller_registered)
 
 
     # ACCESSORS #
@@ -130,11 +128,6 @@ class StoreController(BaseController):
         self.view.load_store(self.store)
         self.view.show()
 
-        self._may_update_langs = False
-        self.main_controller.set_source_lang(self.store.get_source_language())
-        self.main_controller.set_target_lang(self.store.get_target_language())
-        self._may_update_langs = True
-
         self.emit('store-loaded')
 
     def save_file(self, filename=None):
@@ -192,18 +185,19 @@ After:
         self.main_controller.show_info("File updated", output)
 
 
-
     # EVENT HANDLERS #
+    def _on_controller_registered(self, main_controller, controller):
+        if controller is main_controller.lang_controller:
+            main_controller.disconnect(self._controller_register_id)
+            main_controller.lang_controller.connect('source-lang-changed', self._on_source_lang_changed)
+            main_controller.lang_controller.connect('target-lang-changed', self._on_target_lang_changed)
+
+    def _on_source_lang_changed(self, _sender, langcode):
+        self.store.set_source_language(langcode)
+
+    def _on_target_lang_changed(self, _sender, langcode):
+        self.store.set_target_language(langcode)
+
     def _unit_modified(self, emitter, unit):
         self._modified = True
         self.main_controller.set_saveable(self._modified)
-
-
-    # EVENT HANDLERS #
-    def _on_source_lang_changed(self, _sender, langcode):
-        if self._may_update_langs:
-            self.store.set_source_language(langcode)
-
-    def _on_target_lang_changed(self, _sender, langcode):
-        if self._may_update_langs:
-            self.store.set_target_language(langcode)

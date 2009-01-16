@@ -148,6 +148,7 @@ class MainView(BaseView):
         self.gui.signal_autoconnect(dic)
 
         self.status_bar = self.gui.get_widget("status_bar")
+        self.status_bar.set_sensitive(False)
         self.statusbar_context_id = self.status_bar.get_context_id("statusbar")
         self.main_window = self.gui.get_widget("MainWindow")
         self.main_window.set_icon_from_file(pan_app.get_abs_data_filename(["icons", "virtaal.ico"]))

@@ -21,6 +21,8 @@
 import gobject
 import gtk
 import os
+import sys
+import logging
 from gtk import gdk
 from translate.storage import factory
 from translate.lang import factory as langfactory
@@ -103,7 +105,6 @@ class MainView(GObjectWrapper, BaseView):
 
         if os.name == 'nt':
             # Before we do anything else, make sure that stdout and stderr are properly handled.
-            import sys
             sys.stdout = open(os.path.join(pan_app.get_config_dir(), 'virtaal_log.txt'), 'ab')
             sys.stderr = sys.stdout
 
@@ -119,6 +120,12 @@ class MainView(GObjectWrapper, BaseView):
 
         # Set the Glade file
         self.gladefile, self.gui = self.load_glade_file(["virtaal", "virtaal.glade"], root='MainWindow', domain="virtaal")
+
+	if sys.platform == 'darwin':
+            try:
+                gtk.rc_parse(pan_app.get_abs_data_filename(["OSX_Leopard_theme", "gtkrc"]))
+            except:
+                logging.exception("Couldn't find OSX_Leopard_theme")
 
         # Create our events dictionary and connect it
         dic = {

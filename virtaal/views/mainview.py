@@ -124,11 +124,25 @@ class MainView(BaseView):
             #self.gui.get_widget('status_bar').set_property("has-resize-grip", False)
             try:
                 import igemacintegration
+                # Move the menu bar to the mac menu
                 menubar = self.gui.get_widget('menubar1')
                 igemacintegration.ige_mac_menu_set_menu_bar(menubar)
                 menubar.hide()
+                self.main_window = self.gui.get_widget("MainWindow")
+                igemacintegration.ige_mac_menu_connect_window_key_handler(self.main_window)
+                # Move the quit menu item
+                mnu_quit = self.gui.get_widget("mnu_quit")
+                igemacintegration.ige_mac_menu_set_quit_menu_item(mnu_quit)
+                mnu_quit.hide()
+                self.gui.get_widget("separatormenuitem2").hide()
+                # Move the about menu item
+                mnu_about = self.gui.get_widget("mnu_about")
+                group = igemacintegration.ige_mac_menu_add_app_menu_group()
+                igemacintegration.ige_mac_menu_add_app_menu_item(group, mnu_about, None)
+                self.gui.get_widget("separator1").hide()
             except ImportError, e:
-                logging.debug("igemacintegration module not found. Excpect zero integration with the mac desktop.")
+
+                logging.debug("igemacintegration module not found. Expect zero integration with the mac desktop.")
 
         # Create our events dictionary and connect it
         dic = {
@@ -150,7 +164,6 @@ class MainView(BaseView):
         self.status_bar = self.gui.get_widget("status_bar")
         self.status_bar.set_sensitive(False)
         self.statusbar_context_id = self.status_bar.get_context_id("statusbar")
-        self.main_window = self.gui.get_widget("MainWindow")
         self.main_window.set_icon_from_file(pan_app.get_abs_data_filename(["icons", "virtaal.ico"]))
         self.main_window.resize(
             int(pan_app.settings.general['windowwidth']),

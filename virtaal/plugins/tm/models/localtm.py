@@ -51,11 +51,9 @@ class TMModel(BaseTMModel):
             "-p", self.config["tmserver_port"],
             "-d", self.config["tm_db"],
         ]
-        self.slang = pan_app.settings.language["sourcelang"]
-        self.tlang = pan_app.settings.language["contentlang"]
         try:
             self.tmserver = subprocess.Popen(command)
-            url = "http://%s:%s/tmserver/%s/%s" % (self.config["tmserver_bind"], self.config["tmserver_port"], self.slang, self.tlang)
+            url = "http://%s:%s/tmserver" % (self.config["tmserver_bind"], self.config["tmserver_port"])
 
             self.tmclient = tmclient.TMClient(url)
         except OSError, e:
@@ -72,7 +70,7 @@ class TMModel(BaseTMModel):
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])
         else:
-            self.tmclient.translate_unit(query_str, self._handle_matches)
+            self.tmclient.translate_unit(query_str, self.source_lang, self.target_lang, self._handle_matches)
 
     def _handle_matches(self, widget, query_str, matches):
         """Handle the matches when returned from self.tmclient."""

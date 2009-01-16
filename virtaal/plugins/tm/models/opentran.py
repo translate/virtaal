@@ -40,7 +40,6 @@ class TMModel(BaseTMModel):
 
         self.tmclient = opentranclient.OpenTranClient(
             self.config["url"],
-            pan_app.settings.language["contentlang"],
             max_candidates=controller.max_matches,
             min_similarity=controller.min_quality
         )
@@ -49,10 +48,16 @@ class TMModel(BaseTMModel):
 
 
     # METHODS #
+    def set_source_lang(self, language):
+        self.tmclient.set_source_lang(language)
+
+    def set_target_lang(self, language):
+        self.tmclient.set_target_lang(language)
+        
     def query(self, tmcontroller, query_str):
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])
-        elif self.tmclient.lang_supported:
+        else:
             self.tmclient.translate_unit(query_str, self._handle_matches)
 
     def _handle_matches(self, widget, query_str, matches):

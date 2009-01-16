@@ -99,7 +99,7 @@ class PluginController(BaseController):
                         )
                         break
                     except ImportError:
-                        logging.exception('from %s import %s' % (modulename, self.PLUGIN_CLASSNAME))
+                        #logging.exception('from %s import %s' % (modulename, self.PLUGIN_CLASSNAME))
                         pass
 
                 if module is None:

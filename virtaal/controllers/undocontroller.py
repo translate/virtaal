@@ -147,7 +147,7 @@ class UndoController(BaseController):
             self._paste_undo_info = None
             return
 
-        logging.debug('_on_unit_delete_text(%s, "%s", %d, %d, %d)' % (repr(unit), old_text, start_offset, end_offset, target_num))
+        #logging.debug('_on_unit_delete_text(%s, "%s", %d, %d, %d)' % (repr(unit), old_text, start_offset, end_offset, target_num))
         self.undo_stack.push({
             'unit': unit,
             'targetn': target_num,

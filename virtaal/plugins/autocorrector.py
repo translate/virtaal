@@ -251,7 +251,6 @@ class Plugin(BasePlugin):
         self.main_controller = main_controller
 
         self._init_plugin()
-        logging.debug('AutoCorrector loaded')
 
     def _init_plugin(self):
         self.autocorr = AutoCorrector(self.main_controller, acorpath=pan_app.get_abs_data_filename(['virtaal', 'autocorr']))

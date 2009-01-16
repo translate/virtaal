@@ -251,7 +251,7 @@ class StoreTreeView(gtk.TreeView):
         selected_path = isinstance(selected[1], gtk.TreeIter) and model.get_path(selected[1]) or None
 
         if selected[1] is None or (selected_path and selected_path != newpath):
-            logging.debug('select_index()->self.set_cursor(path="%s")' % (newpath))
+            #logging.debug('select_index()->self.set_cursor(path="%s")' % (newpath))
             self.set_cursor(newpath, self.get_columns()[0], start_editing=True)
             self._activate_editing_path(newpath)
 

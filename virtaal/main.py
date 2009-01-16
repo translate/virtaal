@@ -43,6 +43,8 @@ class Virtaal(object):
         logging.debug('UndoController created')
         self.mode_controller = ModeController(self.main_controller)
         logging.debug('ModeController created')
+        self.lang_controller = LanguageController(self.main_controller)
+        logging.debug('LanguageController created')
 
         # Load plug-ins
         self.plugin_controller.load_plugins()

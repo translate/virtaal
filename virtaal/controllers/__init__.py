@@ -21,6 +21,7 @@
 from basecontroller   import BaseController
 from baseplugin       import BasePlugin
 from cursor           import Cursor
+from langcontroller   import LanguageController
 from maincontroller   import MainController
 from modecontroller   import ModeController
 from storecontroller  import StoreController
@@ -32,6 +33,7 @@ __all__ = [
     'BaseController',
     'BasePlugin',
     'Cursor',
+    'LanguageController',
     'MainController',
     'ModeController',
     'PluginController',

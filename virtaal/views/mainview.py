@@ -113,6 +113,7 @@ class MainView(BaseView):
 
         # Set the Glade file
         self.gladefile, self.gui = self.load_glade_file(["virtaal", "virtaal.glade"], root='MainWindow', domain="virtaal")
+        self.main_window = self.gui.get_widget("MainWindow")
 
         if sys.platform == 'darwin':
             try:
@@ -128,7 +129,6 @@ class MainView(BaseView):
                 menubar = self.gui.get_widget('menubar1')
                 igemacintegration.ige_mac_menu_set_menu_bar(menubar)
                 menubar.hide()
-                self.main_window = self.gui.get_widget("MainWindow")
                 igemacintegration.ige_mac_menu_connect_window_key_handler(self.main_window)
                 # Move the quit menu item
                 mnu_quit = self.gui.get_widget("mnu_quit")

@@ -47,17 +47,26 @@ class BaseTMModel(BaseModel):
         super(BaseTMModel, self).__init__()
         self.config = {}
         self.controller = controller
-        self._start_query_id = self.controller.connect('start-query', self.query)
-
+        self._connect_ids = []
+        self._connect_ids.append((self.controller.connect('start-query', self.query), self.controller))
+        
         #static suggestion cache for slow TM queries
         #TODO: cache invalidation, maybe decorate query to automate cache handling?
         self.cache = {}
+
+        self.source_lang = None
+        self.target_lang = None
+        self._set_source_lang(None, pan_app.settings.language["sourcelang"])
+        self._set_target_lang(None, pan_app.settings.language["contentlang"])
+        self._connect_ids.append((self.controller.main_controller.connect('source-lang-changed', self._set_source_lang), self.controller.main_controller))
+        self._connect_ids.append((self.controller.main_controller.connect('target-lang-changed', self._set_target_lang), self.controller.main_controller))
 
 
     # METHODS #
     def destroy(self):
         self.save_config()
-        self.controller.disconnect(self._start_query_id)
+        #disconnect all signals
+        [widget.disconnect(cid) for (cid, widget) in self._connect_ids]
 
     def query(self, tmcontroller, query_str):
         """Attempt to give suggestions applicable to query_str.
@@ -78,3 +87,31 @@ class BaseTMModel(BaseModel):
         """save TM backend config to default location"""
         config_file = os.path.join(pan_app.get_config_dir(), "tm.ini")
         pan_app.save_config(config_file, self.config, self.internal_name)
+
+    def set_source_lang(self, language):
+        """models override this to implement their own
+        source-lang-changed event handlers"""
+        pass
+
+    def set_target_lang(self, language):
+        """models override this to implement their own
+        target-lang-changed event handlers"""
+        pass
+    
+    def _set_source_lang(self, controller, language):
+        """private method for baseline handling of source language
+        change events"""
+        if (language != self.source_lang):
+            self.source_lang = language
+            self.cache = {}
+            self.set_source_lang(language)
+
+    def _set_target_lang(self, controller, language):
+        """private method for baseline handling of target language change events"""
+        if (language != self.target_lang):
+            self.target_lang = language
+            self.cache = {}
+            self.set_target_lang(language)
+
+    
+            

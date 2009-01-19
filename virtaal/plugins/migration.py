@@ -32,9 +32,9 @@ import bsddb
 import struct
 import StringIO
 try:
-    from pysqlite2 import dbapi2
-except ImportError:
     from sqlite3 import dbapi2
+except ImportError:
+        from pysqlite2 import dbapi2
 try:
     import iniparse as ConfigParser
 except ImportError, e:
@@ -44,6 +44,7 @@ from virtaal.common import pan_app
 from virtaal.controllers import BasePlugin
 
 from translate.storage.pypo import extractpoline
+from translate.storage import tmdb
 from translate.lang import data
 
 
@@ -57,9 +58,14 @@ class Plugin(BasePlugin):
     display_name = _('Migration assistant')
     version = 0.1
 
+    default_config = {
+        "tmdb": os.path.join(pan_app.get_config_dir(), "tm.db")
+    } 
+
     def __init__(self, internal_name, main_controller):
         self.internal_name = internal_name
         self.main_controller = main_controller
+        self.load_config()
         self._init_plugin()
 
     def _init_plugin(self):
@@ -74,7 +80,7 @@ class Plugin(BasePlugin):
             return
 
         # We'll store the tm here:
-        self.tm = []
+        self.tmdb = tmdb.TMDB(self.config["tmdb"])
         # We actually need source, target, context, targetlanguage
         self.migrated = []
 
@@ -130,48 +136,42 @@ class Plugin(BasePlugin):
         """Attempt to import the Translation Memory used in KBabel."""
         if not hasattr(self, "poedit_config"):
             return
-        # We need to work out wich language code to import, or do all, but
-        # separately. For now, we look for the contentlang in the poedit
-        #language list from the TM section of the config.
-        lang = pan_app.settings.language["contentlang"]
-        while lang:
-            if lang in self.poedit_languages:
-                break
-            else:
-                lang = data.simplercode(lang)
-        else:
-            return
 
-        sources = bsddb.hashopen(path.join(self.poedit_database_path, lang, 'strings.db'), 'r')
-        targets = bsddb.rnopen(path.join(self.poedit_database_path, lang, 'translations.db'), 'r')
+        # import each language seperately
+        for lang in self.poedit_languages:
+            sources = bsddb.hashopen(path.join(self.poedit_database_path, lang, 'strings.db'), 'r')
+            targets = bsddb.rnopen(path.join(self.poedit_database_path, lang, 'translations.db'), 'r')
+            for source, str_index in sources.iteritems():
+                unit = {"context" : ""}
+                # the index is a four byte integer encoded as a string
+                # was little endian on my machine, not sure if it is universal
+                index = struct.unpack('i', str_index)
+                target = targets[index[0]][:-1] # null-terminated
+                unit["source"] = _prepare_db_string(source)
+                unit["target"] = _prepare_db_string(target)
+                self.tmdb.add_dict(unit, "en", lang)
 
-        for source, str_index in sources.iteritems():
-            # the index is a four byte integer encoded as a string
-            # was little endian on my machine, not sure if it is universal
-            index = struct.unpack('i', str_index)
-            target = targets[index[0]][:-1] # null-terminated
-            source = _prepare_db_string(source)
-            target = _prepare_db_string(target)
-            self.tm.append((source, target))
-
-        logging.debug('%d units migrated from Poedit TM: %s.' % (len(sources), lang))
-        sources.close()
-        targets.close()
-        self.migrated.append(_("Poedit's Translation Memory: %(database_language_code)s") % {"database_language_code": lang})
+            logging.debug('%d units migrated from Poedit TM: %s.' % (len(sources), lang))
+            sources.close()
+            targets.close()
+            self.migrated.append(_("Poedit's Translation Memory: %(database_language_code)s") % {"database_language_code": lang})
 
     def kbabel_tm_import(self):
         """Attempt to import the Translation Memory used in KBabel."""
+        lang = pan_app.settings.language["contentlang"]
         tm_filename = path.join(self.kbabel_dir, 'translations.af.db')
         if not path.exists(tm_filename):
             return
         translations = bsddb.btopen(tm_filename, 'r')
 
         for source, target in translations.iteritems():
+            unit = {"context" : ""}
             source = source[:-1] # null-terminated
             target = target[16:-1] # 16 bytes of padding, null-terminated
-            source = _prepare_db_string(source)
-            target = _prepare_db_string(target)
-            self.tm.append((source, target))
+            unit["source"] = _prepare_db_string(source)
+            unit["target"] = _prepare_db_string(target)
+            print unit
+            self.tmdb.add_dict(unit, "en", lang)
 
         logging.debug('%d units migrated from KBabel TM.' % len(translations))
         translations.close()
@@ -204,9 +204,16 @@ class Plugin(BasePlugin):
 
     def do_lokalize_tm_import(self, filename):
         """Import the given Translation Memory file used by Lokalize."""
+        lang = pan_app.settings.language["contentlang"]
         connection = dbapi2.connect(filename)
         cursor = connection.cursor()
         cursor.execute("""SELECT english, target from tm_main;""")
-        self.tm.extend(cursor.fetchall())
+        for (source, target) in cursor:
+            unit = { "source" : source,
+                     "target" : target,
+                     "context" : ""
+                     }
+            print unit
+            self.tmdb.add_dict(unit, "en", lang)
         connection.close()
         self.migrated.append(_("Lokalize's Translation Memory: %(database_name)s") % {"database_name": path.basename(filename)})

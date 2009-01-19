@@ -49,7 +49,7 @@ class BaseTMModel(BaseModel):
         self.controller = controller
         self._connect_ids = []
         self._connect_ids.append((self.controller.connect('start-query', self.query), self.controller))
-        
+
         #static suggestion cache for slow TM queries
         #TODO: cache invalidation, maybe decorate query to automate cache handling?
         self.cache = {}
@@ -98,7 +98,7 @@ class BaseTMModel(BaseModel):
         """models override this to implement their own
         target-lang-changed event handlers"""
         pass
-    
+
     def _set_source_lang(self, controller, language):
         """private method for baseline handling of source language
         change events"""
@@ -113,6 +113,3 @@ class BaseTMModel(BaseModel):
             self.target_lang = language
             self.cache = {}
             self.set_target_lang(language)
-
-    
-            

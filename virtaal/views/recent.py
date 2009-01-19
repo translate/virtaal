@@ -27,6 +27,8 @@ rf = gtk.RecentFilter()
 for name, extensions, mimetypes in factory.supported_files():
     if extensions:
         for extension in extensions:
+            if extension in ("txt"):
+                continue
             rf.add_pattern("*.%s" % extension)
             for compress_extension in factory.decompressclass.keys():
                 rf.add_pattern("*.%s.%s" % (extension, compress_extension))

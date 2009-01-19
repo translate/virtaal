@@ -34,6 +34,7 @@ class MainController(BaseController):
     __gtype_name__ = 'MainController'
     __gsignals__ = {
         'controller-registered': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
+        'quit': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (,)),
     }
 
     # INITIALIZERS #
@@ -234,6 +235,7 @@ class MainController(BaseController):
                 return
 
         self.plugin_controller.shutdown()
+        self.emit('quit')
         self.view.quit()
 
     def run(self):

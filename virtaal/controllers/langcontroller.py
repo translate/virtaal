@@ -102,7 +102,7 @@ class LanguageController(BaseController):
     # METHODS #
     def _load_recent(self):
         # TODO: Load codes below from the config file
-        codes = [('ar', 'en'), ('en', 'af'), ('en', 'ar'), ('en_UK', 'af')]
+        codes = [('ar', 'en'), ('en', 'af'), ('en', 'ar'), ('en_GB', 'af')]
 
         recent_pairs = []
         for srccode, tgtcode in codes:

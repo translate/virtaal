@@ -211,8 +211,9 @@ class MainView(BaseView):
         all_supported_filter.set_name(_("All Supported Files"))
         self.open_chooser.add_filter(all_supported_filter)
         for name, extensions, mimetypes in factory.supported_files():
-            #XXX: Remove when the fixed toolkit is released
-            if "csv" in extensions or "qm" in extensions:
+            #XXX: we can't open generic .csv formats, so listing it is probably
+            # more harmful than good.
+            if "csv" in extensions:
                 continue
             new_filter = gtk.FileFilter()
             new_filter.set_name(_(name))

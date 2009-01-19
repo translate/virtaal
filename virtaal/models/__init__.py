@@ -19,7 +19,8 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 from basemodel  import BaseModel
+from langmodel  import LanguageModel
 from storemodel import StoreModel
 from undomodel  import UndoModel
 
-__all__ = ['BaseModel', 'StoreModel', 'UndoModel']
+__all__ = ['BaseModel', 'LanguageModel', 'StoreModel', 'UndoModel']

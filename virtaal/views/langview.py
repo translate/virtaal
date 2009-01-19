@@ -23,8 +23,10 @@ import gtk
 import logging
 
 from virtaal.common import GObjectWrapper, pan_app
+from virtaal.models import LanguageModel
 
 from baseview import BaseView
+from widgets.langselectdialog import LanguageSelectDialog
 from widgets.popupbutton import PopupButton
 
 
@@ -108,7 +110,15 @@ class LanguageView(BaseView):
 
     # EVENT HANDLERS #
     def _on_other_activated(self, menuitem):
-        pass
+        if not getattr(self, 'select_dialog', None):
+            from translate.lang.data import languages
+            langs = [LanguageModel(lc) for lc in languages]
+            self.select_dialog = LanguageSelectDialog(langs)
+        if self.select_dialog.run(self.controller.source_lang.code, self.controller.target_lang.code):
+            self.controller.set_language_pair(
+                self.select_dialog.get_selected_source_lang(),
+                self.select_dialog.get_selected_target_lang()
+            )
 
     def _on_pairitem_activated(self, menuitem, item_n):
         pair = self.controller.recent_pairs[item_n]

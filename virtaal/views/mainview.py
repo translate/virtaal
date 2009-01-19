@@ -446,16 +446,6 @@ class MainView(BaseView):
             return 'cancel'
         return ''
 
-    def _set_lang_in_combo(self, combo, lang_code):
-        i = self.lst_langs.get_iter_first()
-        while i is not None and self.lst_langs.iter_is_valid(i):
-            if self.lst_langs.get_value(i, 0) == lang_code:
-                break
-            i = self.lst_langs.iter_next(i)
-
-        if i is not None and self.lst_langs.iter_is_valid(i) and i != combo.get_active_iter():
-            combo.set_active_iter(i)
-
 
     # SIGNAL HANDLERS #
     def _on_controller_registered(self, main_controller, new_controller):

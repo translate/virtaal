@@ -21,6 +21,8 @@
 import logging
 import os
 import subprocess
+import socket
+import random
 from translate.services import tmclient
 
 from virtaal.common import pan_app
@@ -36,8 +38,8 @@ class TMModel(BaseTMModel):
 
     default_config = {
         "tmserver_bind" : "localhost",
-        "tmserver_port" : "8080",
-        "tm_db" : os.path.join(pan_app.get_config_dir(), "tm.db")
+        "tmserver_port" : "55555",
+        "tmdb" : os.path.join(pan_app.get_config_dir(), "tm.db")
     }
 
     # INITIALIZERS #
@@ -45,11 +47,18 @@ class TMModel(BaseTMModel):
         self.internal_name = internal_name
         self.load_config()
 
+        # test if port specified in config is free
+        self.config["tmserver_port"] = int(self.config["tmserver_port"])
+        if test_port(self.config["tmserver_bind"], self.config["tmserver_port"]):
+            port = self.config["tmserver_port"]
+        else:
+            port = find_free_port(self.config["tmserver_bind"], 49152, 65535)
+                    
         command = [
             "tmserver.py",
             "-b", self.config["tmserver_bind"],
-            "-p", self.config["tmserver_port"],
-            "-d", self.config["tm_db"],
+            "-p", str(port),
+            "-d", self.config["tmdb"],
         ]
         try:
             self.tmserver = subprocess.Popen(command)
@@ -84,3 +93,21 @@ class TMModel(BaseTMModel):
         else:
             import signal
             os.kill(self.tmserver.pid, signal.SIGTERM)
+
+
+def test_port(host, port):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        s.bind((host, port))
+        return True
+    except socket.error:
+        return False
+
+def find_free_port(host, min_port, max_port):
+    port_range = range(min_port, max_port)
+    random.shuffle(port_range)
+    for port in port_range:
+        if test_port(host, port):
+            return port
+    #FIXME: shall we throw an exception if no free port is found?
+    return None

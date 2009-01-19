@@ -34,7 +34,7 @@ class MainController(BaseController):
     __gtype_name__ = 'MainController'
     __gsignals__ = {
         'controller-registered': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
-        'quit': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (,)),
+        'quit': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, tuple()),
     }
 
     # INITIALIZERS #

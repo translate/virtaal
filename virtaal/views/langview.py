@@ -21,7 +21,6 @@
 import gobject
 import gtk
 import logging
-from translate.lang.data import tr_lang
 
 from virtaal.common import GObjectWrapper, pan_app
 
@@ -35,14 +34,9 @@ class LanguageView(BaseView):
     C{LanguageController}.
     """
 
-    NUM_RECENT = 5
-    """The number of recent language pairs to save/display."""
-
     # INITIALIZERS #
     def __init__(self, controller):
         self.controller = controller
-        self.recent_pairs = self._load_recent_pairs()
-        self.gettext_lang = tr_lang(pan_app.settings.language["uilang"])
         self._init_gui()
 
     def _init_gui(self):
@@ -51,7 +45,7 @@ class LanguageView(BaseView):
         self.popupbutton.set_menu(self.menu)
 
         self.recent_items = []
-        for i in range(self.NUM_RECENT):
+        for i in range(self.controller.NUM_RECENT):
             item = gtk.MenuItem('')
             item.connect('activate', self._on_pairitem_activated, i)
             self.recent_items.append(item)
@@ -59,28 +53,21 @@ class LanguageView(BaseView):
         self.other_item = gtk.MenuItem('Other...')
         self.other_item.connect('activate', self._on_other_activated)
         [self.menu.append(item) for item in (seperator, self.other_item)]
-        self._update_recent_pairs()
-
-    def _load_recent_pairs(self):
-        # TODO: Implement this for real
-        return [('ar', 'en'), ('en', 'af'), ('en', 'ar'), ('ar', 'en'), ('en_UK', 'af')]
+        self.update_recent_pairs()
 
 
     # METHODS #
-    def set_language_pair(self, srclang, tgtlang):
-        if srclang == 'en-US':
-            srclang = 'en'
-
-        pair = (srclang, tgtlang)
-        if pair in self.recent_pairs:
-            self.recent_pairs.remove(pair)
-        self.recent_pairs.insert(0, pair)
-        self.recent_pairs = self.recent_pairs[:self.NUM_RECENT]
-
-        self.controller.source_lang = srclang
-        self.controller.target_lang = tgtlang
-        self._update_recent_pairs()
-        self.popupbutton.text = self.recent_items[0].get_child().get_text()
+    def _get_display_string(self, srclang, tgtlang):
+        if self.menu.get_direction() == gtk.TEXT_DIR_RTL:
+            # We need to make sure we get the direction correct if the
+            # language names are untranslated. The right-to-left embedding
+            # (LRE) characters ensure that untranslated language names will
+            # still diplay with the correct direction as they are present
+            # in the interface.
+            pairlabel = u'\u202b%s ← \u202b%s' % (srclang.name, tgtlang.name)
+        else:
+            pairlabel = u'%s → %s' % (srclang.name, tgtlang.name)
+        return pairlabel
 
     def show(self):
         """Add the managed C{PopupButton} to the C{MainView}'s status bar."""
@@ -93,28 +80,30 @@ class LanguageView(BaseView):
         statusbar.pack_start(self.popupbutton, expand=False)
         statusbar.show_all()
 
-    def _update_recent_pairs(self):
-        for i in range(self.NUM_RECENT):
+    def update_recent_pairs(self):
+        # Clear all menu items
+        for i in range(self.controller.NUM_RECENT):
             item = self.recent_items[i]
             if item.parent is self.menu:
                 item.get_child().set_text('')
                 self.menu.remove(item)
 
+        # Update menu items' strings
         i = 0
-        for srclang, tgtlang in self.recent_pairs:
-            srcinfo = self.controller.lookup_lang(srclang)
-            tgtinfo = self.controller.lookup_lang(tgtlang)
-
-            pairlabel = '%s -> %s' % (self.gettext_lang(srcinfo['name']), self.gettext_lang(tgtinfo['name']))
-            self.recent_items[i].get_child().set_text(pairlabel)
+        for pair in self.controller.recent_pairs:
+            if i not in range(self.controller.NUM_RECENT):
+                break
+            self.recent_items[i].get_child().set_text(self._get_display_string(*pair))
             i += 1
 
-        for i in range(self.NUM_RECENT):
+        # Re-add menu items that have something to show
+        for i in range(self.controller.NUM_RECENT):
             item = self.recent_items[i]
             if item.get_child().get_text():
                 self.menu.insert(item, i)
 
         self.menu.show_all()
+        self.popupbutton.text = self.recent_items[0].get_child().get_text()
 
 
     # EVENT HANDLERS #
@@ -122,5 +111,6 @@ class LanguageView(BaseView):
         pass
 
     def _on_pairitem_activated(self, menuitem, item_n):
-        self.set_language_pair(*self.recent_pairs[item_n])
+        pair = self.controller.recent_pairs[item_n]
+        self.controller.set_language_pair(*pair)
         logging.debug('Selected language pair: %s' % (self.recent_items[item_n].get_child().get_text()))

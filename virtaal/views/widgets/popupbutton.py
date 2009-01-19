@@ -21,27 +21,56 @@
 import gtk
 
 
-class PopupButton(gtk.MenuToolButton):
+class PopupButton(gtk.ToggleButton):
     """A toggle button that displays a pop-up menu when clicked."""
 
     # INITIALIZERS #
     def __init__(self):
-        # This method is adapted from the code by Karl Ostmo from http://www.daa.com.au/pipermail/pygtk/2008-September/015918.html
-        gtk.MenuToolButton.__init__(self, None, None)
+        gtk.ToggleButton.__init__(self)
+        self.set_relief(gtk.RELIEF_NONE)
 
-        self.label = gtk.Label('')
-        hbox = self.get_child()
-        button, toggle_button = hbox.get_children()
-        hbox.remove(button)
-        toggle_button.remove(toggle_button.get_child())
-        hbox = gtk.HBox()
-        hbox.pack_start(self.label, False, False)
-        toggle_button.add(hbox)
+        self.set_menu(gtk.Menu())
+
+        self.connect('toggled', self._on_toggled)
+        self.connect('focus-out-event', lambda *args: self.popdown())
 
 
     # ACCESSORS #
+    def set_menu(self, menu):
+        if getattr(self, '_menu_selection_done_id', None):
+            self.menu.disconnect(self._menu_selection_done_id)
+        self.menu = menu
+        self._menu_selection_done_id = self.menu.connect('selection-done', self._on_menu_selection_done)
+
     def _get_text(self):
-        return unicode(self.label.get_text())
+        return unicode(self.get_label())
     def _set_text(self, value):
-        self.label.set_text(value)
+        self.set_label(value)
     text = property(_get_text, _set_text)
+
+
+    # METHODS #
+    def _calculate_popup_pos(self, menu):
+        alloc = self.get_allocation()
+        return (alloc.x, alloc.y, True)
+
+    def popdown(self):
+        self.menu.popdown()
+        return True
+
+    def popup(self):
+        self.menu.show_all()
+        self.menu.popup(None, None, self._calculate_popup_pos, 0, 0)
+
+
+    # EVENT HANDLERS #
+    def _on_menu_selection_done(self, menu):
+        self.set_active(False)
+
+    def _on_toggled(self, togglebutton):
+        assert self is togglebutton
+
+        if self.get_active():
+            self.popup()
+        else:
+            self.popdown()

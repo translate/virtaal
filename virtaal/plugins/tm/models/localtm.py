@@ -62,7 +62,7 @@ class TMModel(BaseTMModel):
         ]
         try:
             self.tmserver = subprocess.Popen(command)
-            url = "http://%s:%s/tmserver" % (self.config["tmserver_bind"], self.config["tmserver_port"])
+            url = "http://%s:%d/tmserver" % (self.config["tmserver_bind"], port)
 
             self.tmclient = tmclient.TMClient(url)
         except OSError, e:

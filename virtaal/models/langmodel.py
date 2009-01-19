@@ -40,8 +40,7 @@ class LanguageModel(BaseModel):
             (C{langcode})."""
         super(LanguageModel, self).__init__()
         self.gettext_lang = tr_lang(pan_app.settings.language["uilang"])
-        self.languages = languages
-        self.languages.update(more_langs)
+        languages.update(more_langs)
         self.load(langcode)
 
 
@@ -65,10 +64,10 @@ class LanguageModel(BaseModel):
         if langcode == 'en-US':
             langcode = 'en'
 
-        if langcode not in self.languages:
+        if langcode not in languages:
             raise Exception('Language not found: %s' % (langcode))
 
-        self.name = self.gettext_lang(self.languages[langcode][0])
+        self.name = self.gettext_lang(languages[langcode][0])
         self.code = langcode
-        self.nplurals = self.languages[langcode][1]
-        self.plural = self.languages[langcode][2]
+        self.nplurals = languages[langcode][1]
+        self.plural = languages[langcode][2]

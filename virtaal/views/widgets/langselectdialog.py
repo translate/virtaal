@@ -20,22 +20,20 @@
 
 import gobject
 import gtk
-from gtk import glade
 
-from virtaal.common import GObjectWrapper, pan_app
+from virtaal.common import pan_app
 from virtaal.views import BaseView
 
 
-class LanguageSelectDialog(GObjectWrapper):
+class LanguageSelectDialog(object):
     """
     Represents and manages an instance of the dialog used for language-selection.
     """
 
-    __gtype_name__ = 'LanguageSelectDialog'
-    __gsignals__ = {}
-
     # INITIALIZERS #
     def __init__(self, languages):
+        super(LanguageSelectDialog, self).__init__()
+
         self.gladefilename, self.gui = BaseView.load_glade_file(
             ["virtaal", "virtaal.glade"],
             root='LanguageSelector',

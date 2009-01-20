@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008 Zuza Software Foundation
+# Copyright 2009 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -26,6 +26,7 @@ from virtaal.common import GObjectWrapper, pan_app
 from virtaal.models import LanguageModel
 
 from baseview import BaseView
+from widgets.langadddialog import LanguageAddDialog
 from widgets.langselectdialog import LanguageSelectDialog
 from widgets.popupbutton import PopupButton
 
@@ -40,6 +41,15 @@ class LanguageView(BaseView):
     def __init__(self, controller):
         self.controller = controller
         self._init_gui()
+
+    def _create_dialogs(self):
+        langs = [LanguageModel(lc) for lc in LanguageModel.languages]
+        langs.sort(key=lambda x: x.name)
+        self.select_dialog = LanguageSelectDialog(langs)
+        self.select_dialog.dialog.set_transient_for(self.controller.main_controller.view.main_window)
+        self.select_dialog.btn_add.connect('clicked', self._on_addlang_clicked)
+
+        self.add_dialog = LanguageAddDialog(parent=self.select_dialog.dialog)
 
     def _init_gui(self):
         self.menu = gtk.Menu()
@@ -109,12 +119,35 @@ class LanguageView(BaseView):
 
 
     # EVENT HANDLERS #
+    def _on_addlang_clicked(self, button):
+        if not self.add_dialog.run():
+            return
+
+        err = self.add_dialog.check_input_sanity()
+        if err:
+            self.controller.main_controller.show_error(err)
+            return
+
+        name = self.add_dialog.langname
+        code = self.add_dialog.langcode
+        nplurals = self.add_dialog.nplurals
+        plural = self.add_dialog.plural
+
+        if self.add_dialog.langcode in LanguageModel.languages:
+            raise Exception('Language code %s already used.' % (code))
+
+        LanguageModel.languages[code] = (name, nplurals, plural)
+
+        # Reload the language data in the selection dialog.
+        self.select_dialog.clear_langs()
+        langs = [LanguageModel(lc) for lc in LanguageModel.languages]
+        langs.sort(key=lambda x: x.name)
+        self.select_dialog.update_languages(langs)
+
+
     def _on_other_activated(self, menuitem):
         if not getattr(self, 'select_dialog', None):
-            from translate.lang.data import languages
-            langs = [LanguageModel(lc) for lc in languages]
-            langs.sort(key=lambda x: x.name)
-            self.select_dialog = LanguageSelectDialog(langs)
+            self._create_dialogs()
         if self.select_dialog.run(self.controller.source_lang.code, self.controller.target_lang.code):
             self.controller.set_language_pair(
                 self.select_dialog.get_selected_source_lang(),

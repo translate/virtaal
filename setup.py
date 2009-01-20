@@ -373,11 +373,11 @@ def add_mac_options(options):
         return options
     options['data_files'].extend([('share/OSX_Leopard_theme', glob.glob(path.join('devsupport', 'OSX_Leopard_theme', '*')))])
     options['data_files'].extend([('', ['devsupport/virtaal.icns'])])
-    
+
     # For some reason py2app can't handle bin/virtaal since it doesn't end in .py
     import shutil
     shutil.copy2('bin/virtaal', 'bin/run_virtaal.py')
-    
+
     from translate.storage import factory
     options.update({
         "app": ["bin/run_virtaal.py"],

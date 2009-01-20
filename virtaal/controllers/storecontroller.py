@@ -112,7 +112,7 @@ class StoreController(BaseController):
             self.store = StoreModel(filename, self)
         else:
             self.store.load_file(filename)
-        
+
         self._modified = False
 
         # if file is a template force saveas
@@ -122,7 +122,7 @@ class StoreController(BaseController):
             self.store._trans_store.filename = pot_regexp.sub('.po', filename)
 
         self.main_controller.set_saveable(self._modified)
-            
+
         self.cursor = Cursor(self.store, self.store.stats['total'])
 
         self.view.load_store(self.store)

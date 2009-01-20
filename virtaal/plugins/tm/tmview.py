@@ -91,7 +91,7 @@ class TMView(BaseView, GObjectWrapper):
         anything_new = False
         for match in matches:
             if str(match['target']) not in curr_targets:
-                # Let's insert at the start to help with sort stability of the 
+                # Let's insert at the start to help with sort stability of the
                 # list (existing 100% will be above a new 100%
                 rows.insert(0, match)
                 anything_new = True

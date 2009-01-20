@@ -32,7 +32,7 @@ class TMModel(BaseTMModel):
     """This is a libtranslate translation memory model.
 
     The plugin does the following: intialise libtranslate, get the services, get a session.
-    During operartion is simply queries libtranslate for a translation.  This follows the 
+    During operartion is simply queries libtranslate for a translation.  This follows the
     pattern outlined in file:///usr/share/gtk-doc/html/libtranslate/tutorials.html (sorry
     no online version found, use the one packaged with libtranslate).
     """

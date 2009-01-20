@@ -53,7 +53,7 @@ class TMModel(BaseTMModel):
 
     def set_target_lang(self, language):
         self.tmclient.set_target_lang(language)
-        
+
     def query(self, tmcontroller, query_str):
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])

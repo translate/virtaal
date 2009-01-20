@@ -60,7 +60,7 @@ class Plugin(BasePlugin):
 
     default_config = {
         "tmdb": os.path.join(pan_app.get_config_dir(), "tm.db")
-    } 
+    }
 
     def __init__(self, internal_name, main_controller):
         self.internal_name = internal_name

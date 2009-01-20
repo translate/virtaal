@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from translate.lang.data import languages, tr_lang
+from translate.lang.data import languages as toolkit_langs, tr_lang
 
 from virtaal.common import pan_app
 
@@ -33,6 +33,8 @@ class LanguageModel(BaseModel):
 
     __gtype_name__ = 'LanguageModel'
 
+    languages = {}
+
     # INITIALIZERS #
     def __init__(self, langcode='und', more_langs={}):
         """Constructor.
@@ -40,7 +42,9 @@ class LanguageModel(BaseModel):
             (C{langcode})."""
         super(LanguageModel, self).__init__()
         self.gettext_lang = tr_lang(pan_app.settings.language["uilang"])
-        languages.update(more_langs)
+        if not self.languages:
+            self.languages.update(toolkit_langs)
+        self.languages.update(more_langs)
         self.load(langcode)
 
 
@@ -64,10 +68,10 @@ class LanguageModel(BaseModel):
         if langcode == 'en-US':
             langcode = 'en'
 
-        if langcode not in languages:
+        if langcode not in self.languages:
             raise Exception('Language not found: %s' % (langcode))
 
-        self.name = self.gettext_lang(languages[langcode][0])
+        self.name = self.gettext_lang(self.languages[langcode][0])
         self.code = langcode
-        self.nplurals = languages[langcode][1]
-        self.plural = languages[langcode][2]
+        self.nplurals = self.languages[langcode][1]
+        self.plural = self.languages[langcode][2]

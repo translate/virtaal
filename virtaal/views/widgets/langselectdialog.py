@@ -61,6 +61,14 @@ class LanguageSelectDialog(GObjectWrapper):
         self.tvw_sourcelang.set_model(self.lst_langs)
         self.tvw_targetlang.set_model(self.lst_langs)
 
+        def searchfunc(model, column, key, iter):
+            if  model.get_value(iter, 0).lower().startswith(key.lower()) or \
+                model.get_value(iter, 1).lower().startswith(key.lower()):
+                return False
+            return True
+        self.tvw_sourcelang.set_search_equal_func(searchfunc)
+        self.tvw_targetlang.set_search_equal_func(searchfunc)
+
         cell = gtk.CellRendererText()
         col = gtk.TreeViewColumn(_('Language'))
         col.pack_start(cell)

@@ -32,7 +32,6 @@ class PopupButton(gtk.ToggleButton):
         self.set_menu(gtk.Menu())
 
         self.connect('toggled', self._on_toggled)
-        self.connect('focus-out-event', lambda *args: self.popdown())
 
 
     # ACCESSORS #

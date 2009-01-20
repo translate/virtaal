@@ -96,8 +96,11 @@ class LanguageAddDialog(object):
     def check_input_sanity(self):
         # TODO: Add more sanity checks
         code = self.langcode
-        if not isinstance(code, str):
+        try:
+            ascii_code = unicode(code, 'ascii')
+        except UnicodeDecodeError:
             return _('Language code must be an ASCII string.')
+
         if len(code) < 2:
             return _('Language code must be at least 2 characters long.')
 

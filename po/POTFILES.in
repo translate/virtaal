@@ -25,4 +25,6 @@ virtaal/views/mainview.py
 virtaal/views/modeview.py
 virtaal/views/unitview.py
 virtaal/views/widgets/aboutdialog.py
+virtaal/views/widgets/langadddialog.py
+virtaal/views/widgets/langselectdialog.py
 devsupport/optparse.py

@@ -149,7 +149,8 @@ class Plugin(BasePlugin):
                 target = targets[index[0]][:-1] # null-terminated
                 unit["source"] = _prepare_db_string(source)
                 unit["target"] = _prepare_db_string(target)
-                self.tmdb.add_dict(unit, "en", lang)
+                self.tmdb.add_dict(unit, "en", lang, commit=False)
+            self.tmdb.connection.commit()
 
             logging.debug('%d units migrated from Poedit TM: %s.' % (len(sources), lang))
             sources.close()
@@ -170,8 +171,8 @@ class Plugin(BasePlugin):
             target = target[16:-1] # 16 bytes of padding, null-terminated
             unit["source"] = _prepare_db_string(source)
             unit["target"] = _prepare_db_string(target)
-            print unit
-            self.tmdb.add_dict(unit, "en", lang)
+            self.tmdb.add_dict(unit, "en", lang, commit=False)
+        self.tmdb.connection.commit()
 
         logging.debug('%d units migrated from KBabel TM.' % len(translations))
         translations.close()
@@ -214,6 +215,7 @@ class Plugin(BasePlugin):
                      "context" : ""
                      }
             print unit
-            self.tmdb.add_dict(unit, "en", lang)
+            self.tmdb.add_dict(unit, "en", lang, commit=False)
+        self.tmdb.connection.commit()
         connection.close()
         self.migrated.append(_("Lokalize's Translation Memory: %(database_name)s") % {"database_name": path.basename(filename)})

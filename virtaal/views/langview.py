@@ -113,6 +113,7 @@ class LanguageView(BaseView):
         if not getattr(self, 'select_dialog', None):
             from translate.lang.data import languages
             langs = [LanguageModel(lc) for lc in languages]
+            langs.sort(key=lambda x: x.name)
             self.select_dialog = LanguageSelectDialog(langs)
         if self.select_dialog.run(self.controller.source_lang.code, self.controller.target_lang.code):
             self.controller.set_language_pair(

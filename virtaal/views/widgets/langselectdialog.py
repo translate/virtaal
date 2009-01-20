@@ -54,6 +54,9 @@ class LanguageSelectDialog(object):
 
         self.dialog = self.gui.get_widget('LanguageSelector')
 
+        self.btn_ok.connect('clicked', lambda *args: self.dialog.response(gtk.RESPONSE_OK))
+        self.btn_cancel.connect('clicked', lambda *args: self.dialog.response(gtk.RESPONSE_CANCEL))
+
     def _init_treeviews(self):
         self.lst_langs = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
         self.tvw_sourcelang.set_model(self.lst_langs)

@@ -29,6 +29,7 @@ import sys
 import locale, gettext
 gettext.install("virtaal", unicode=1)
 from translate.misc import file_discovery
+from translate.lang import data
 
 from __version__ import ver
 
@@ -99,9 +100,11 @@ class Settings:
                 raise Exception
 
         try:
-            lang = locale.getdefaultlocale()[0]
+            lang = locale.getdefaultlocale(('LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG'))[0]
             self.language["uilang"] = lang
-            self.language["contentlang"] = lang
+            # guess default target lang based on locale, simplify to commonly used form
+            lang = locale.getdefaultlocale(('LANGUAGE', 'LC_ALL', 'LANG'))[0]
+            self.language["contentlang"] = data.simplify_to_common(lang)
         except:
             logging.info("Could not get locale")
         self.config = ConfigParser.ConfigParser()

@@ -113,6 +113,7 @@ class LanguageSelectDialog(GObjectWrapper):
         self._select_lang(self.tvw_targetlang, tgtlang)
 
         self.dialog.show()
+        self.tvw_targetlang.grab_focus()
         response = self.dialog.run() == gtk.RESPONSE_OK
         self.dialog.hide()
         return response

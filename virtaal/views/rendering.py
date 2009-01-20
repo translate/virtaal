@@ -18,19 +18,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
 import pango
 
 from virtaal.common import pan_app
 
 _font_descriptions = {}
 
-def get_font_description(description):
+def get_font_description(code):
     """Provide a pango.FontDescription and keep it for reuse."""
     global _font_descriptions
-    if not description in _font_descriptions:
-        _font_descriptions[description] = pango.FontDescription(description)
-    return _font_descriptions[description]
+    if not code in _font_descriptions:
+        _font_descriptions[code] = pango.FontDescription(code)
+    return _font_descriptions[code]
 
 def get_source_font_description():
     return get_font_description(pan_app.settings.language["sourcefont"])
@@ -41,12 +40,12 @@ def get_target_font_description():
 
 _languages = {}
 
-def get_language(language):
+def get_language(code):
     """Provide a pango.Language and keep it for reuse."""
     global _languages
-    if not language in _languages:
-        _languages[language] = pango.Language(language)
-    return _languages[language]
+    if not code in _languages:
+        _languages[code] = pango.Language(code)
+    return _languages[code]
 
 def get_source_language():
     return get_language(pan_app.settings.language["sourcelang"])

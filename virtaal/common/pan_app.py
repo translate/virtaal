@@ -77,7 +77,7 @@ class Settings:
     language =      {
             "uilang": None,
             "sourcelang": "en",
-            "contentlang": None,
+            "targetlang": None,
             "sourcefont": "monospace 9",
             "targetfont": "monospace 9",
             "nplurals": 0,
@@ -104,7 +104,7 @@ class Settings:
             self.language["uilang"] = lang
             # guess default target lang based on locale, simplify to commonly used form
             lang = locale.getdefaultlocale(('LANGUAGE', 'LC_ALL', 'LANG'))[0]
-            self.language["contentlang"] = data.simplify_to_common(lang)
+            self.language["targetlang"] = data.simplify_to_common(lang)
         except:
             logging.info("Could not get locale")
         self.config = ConfigParser.ConfigParser()

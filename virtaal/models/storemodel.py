@@ -88,7 +88,7 @@ class StoreModel(BaseModel):
         """Return the current store's target language."""
         # Copied as-is from Document.get_target_language()
         if len(self._trans_store.units) <= 0:
-            return pan_app.settings.language['contentlang']
+            return pan_app.settings.language['targetlang']
         candidate = self._trans_store.units[0].gettargetlanguage()
         # If we couldn't get the language from the first unit, try the store
         if candidate is None:
@@ -99,7 +99,7 @@ class StoreModel(BaseModel):
         if candidate and candidate != 'und':
             return candidate
         else:
-            return pan_app.settings.language["contentlang"]
+            return pan_app.settings.language["targetlang"]
 
     def set_target_language(self, langcode):
         self._trans_store.settargetlanguage(langcode)

@@ -52,5 +52,4 @@ def get_source_language():
     return get_language(pan_app.settings.language["sourcelang"])
 
 def get_target_language():
-    return get_language(pan_app.settings.language["contentlang"])
-
+    return get_language(pan_app.settings.language["targetlang"])

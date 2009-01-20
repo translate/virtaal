@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Jan 19 13:51:25 2009 
+<!--Generated with glade3 3.4.5 on Mon Jan 19 17:53:26 2009 
 	Version: 3.0.1
 	Date: Thu Dec  6 12:30:34 2007
 	User: fwolff
@@ -418,7 +418,8 @@ u 'n taal kan kies en verder aanjaag.</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="label" translatable="yes">Swap</property>
+                        <property name="label" translatable="yes">_Swap</property>
+                        <property name="use_underline">True</property>
                         <property name="response_id">0</property>
                       </widget>
                     </child>

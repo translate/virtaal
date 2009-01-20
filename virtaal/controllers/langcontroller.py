@@ -21,7 +21,7 @@
 import gobject
 import logging
 
-from virtaal.common import GObjectWrapper
+from virtaal.common import GObjectWrapper, pan_app
 from virtaal.models import LanguageModel
 from virtaal.views import LanguageView
 
@@ -49,13 +49,23 @@ class LanguageController(BaseController):
         self.main_controller = main_controller
         self.main_controller.lang_controller = self
         self.recent_pairs = self._load_recent()
-        self._source_lang = None
-        self._target_lang = None
+        self._init_langs()
 
         self.main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
 
         self.view = LanguageView(self)
         self.view.show()
+
+    def _init_langs(self):
+        try:
+            self._source_lang = LanguageModel(pan_app.settings.language['sourcelang'])
+        except Exception:
+            self._source_lang = None
+
+        try:
+            self._target_lang = LanguageModel(pan_app.settings.language['targetlang'])
+        except Exception:
+            self._target_lang = None
 
 
     # ACCESSORS #

@@ -264,7 +264,7 @@ class Plugin(BasePlugin):
             gobject.idle_add(add_widgets)
 
         def on_store_loaded(storecontroller):
-            self.autocorr.load_dictionary(lang=pan_app.settings.language['contentlang'])
+            self.autocorr.load_dictionary(lang=self.main_controller.lang_controller.target_lang.code)
             self._cursor_changed_id = storecontroller.cursor.connect('cursor-changed', on_cursor_change)
             on_cursor_change(storecontroller.cursor)
 

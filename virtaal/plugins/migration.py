@@ -159,7 +159,7 @@ class Plugin(BasePlugin):
 
     def kbabel_tm_import(self):
         """Attempt to import the Translation Memory used in KBabel."""
-        lang = pan_app.settings.language["contentlang"]
+        lang = self.main_controller.lang_controller.target_lang.code
         tm_filename = path.join(self.kbabel_dir, 'translations.af.db')
         if not path.exists(tm_filename):
             return
@@ -205,7 +205,7 @@ class Plugin(BasePlugin):
 
     def do_lokalize_tm_import(self, filename):
         """Import the given Translation Memory file used by Lokalize."""
-        lang = pan_app.settings.language["contentlang"]
+        lang = self.main_controller.lang_controller.target_lang.code
         connection = dbapi2.connect(filename)
         cursor = connection.cursor()
         cursor.execute("""SELECT english, target from tm_main;""")

@@ -25,7 +25,6 @@ import sys
 import logging
 from gtk import gdk
 from translate.storage import factory
-from translate.lang import factory as langfactory
 
 from virtaal.views import recent
 from virtaal.common import pan_app, __version__, GObjectWrapper
@@ -293,12 +292,6 @@ class MainView(BaseView):
         if msg:
             time.sleep(self.WRAP_DELAY)
 
-    def set_source_lang(self, lang_code):
-        self._set_lang_in_combo(self.cmb_srclang, lang_code)
-
-    def set_target_lang(self, lang_code):
-        self._set_lang_in_combo(self.cmb_tgtlang, lang_code)
-
 
     # METHODS #
     def ask_plural_info(self):
@@ -306,12 +299,6 @@ class MainView(BaseView):
             @returns: A 2-tuple containing the number of plurals as the first
                 element and the plural equation as the second element."""
         # Adapted from Virtaal 0.2's document.py:compute_nplurals
-        def get_content_lang():
-            if pan_app.settings.language["contentlang"] != None:
-                return pan_app.settings.language["contentlang"]
-            else:
-                return self.show_input_dialog(message=_("Please enter the language code for the target language"))
-
         def ask_for_number_of_plurals():
             while True:
                 try:
@@ -323,7 +310,8 @@ class MainView(BaseView):
         def ask_for_plurals_equation():
             return self.show_input_dialog(message=_("Please enter the plural equation to use"))
 
-        lang     = langfactory.getlanguage(get_content_lang())
+        from translate.lang import factory as langfactory
+        lang     = langfactory.getlanguage(self.controller.lang_controller.target_lang.code)
         nplurals = lang.nplurals or ask_for_number_of_plurals()
         if nplurals > 1 and lang.pluralequation == "0":
             return nplurals, ask_for_plurals_equation()

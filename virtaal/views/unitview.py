@@ -113,7 +113,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         buf = text_view.get_buffer()
         position = buf.props.cursor_position
         old_text = buf.get_text(buf.get_start_iter(), buf.get_end_iter())
-        lang = factory.getlanguage(self.controller.get_target_language())
+        lang = factory.getlanguage(self.controller.main_controller.lang_controller.target_lang.code)
         new_source = lang.punctranslate(self.unit.source)
         # if punctranslate actually changed something, let's insert that as an
         # undo step
@@ -259,7 +259,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                     scroll_policy=gtk.POLICY_NEVER
                 )
             textview = source.get_child()
-            add_spell_checking(textview, pan_app.settings.language['sourcelang'])
+            add_spell_checking(textview, self.controller.main_controller.lang_controller.source_lang.code)
             textview.modify_font(rendering.get_source_font_description())
             # This causes some problems, so commented out for now
             #textview.get_pango_context().set_font_description(rendering.get_source_font_description())
@@ -339,7 +339,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             textview.get_pango_context().set_language(rendering.get_target_language())
             textview.connect('key-press-event', on_text_view_n_press_event)
 
-            add_spell_checking(textview, pan_app.settings.language['contentlang'])
+            add_spell_checking(textview, self.controller.main_controller.lang_controller.target_lang.code)
 
             self.widgets['vbox_targets'].add(target)
             self.targets.append(textview)

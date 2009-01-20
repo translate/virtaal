@@ -64,11 +64,6 @@ class StoreController(BaseController):
     def get_store(self):
         return self.store
 
-    def get_target_language(self, store=None):
-        if not store:
-            store = self.store
-        return store and store.get_target_language() or 'und'
-
     def get_unit_celleditor(self, unit):
         """Load the given unit in via the C{UnitController} and return
             the C{gtk.CellEditable} it creates."""

@@ -389,12 +389,12 @@ def add_mac_options(options):
                 "argv_emulation": True,
                 "plist":  {
                     "CFBundleGetInfoString": virtaal_description,
-                    "CFBundleGetInfoString": "Virtaal",
+                    "CFBundleName": PRETTY_NAME,
                     "CFBundleIconFile": "virtaal.icns",
                     "CFBundleShortVersionString": virtaal_version,
                     #"LSHasLocalizedDisplayName": "1",
                     #"LSMinimumSystemVersion": ???,
-                    "NSHumanReadableCopyright": "Copyright (C) 2007-2008 Zuza Software Foundation",
+                    "NSHumanReadableCopyright": "Copyright (C) 2007-2009 Zuza Software Foundation",
                     "CFBundleDocumentTypes": [{
                         "CFBundleTypeExtensions": [extention.lstrip("*.") for extention in extentions],
                         "CFBundleTypeIconFile": "virtaal.icns",
@@ -464,3 +464,5 @@ if __name__ == '__main__':
         f.seek(0)
         f.write(s)
         f.close()
+        # hdiutil create -imagekey zlib-level=9 -srcfolder dist/virtaal.app dist/virtaal.dmg
+        # hdiutil create -fs HFS+ -volname "RUR-PLE" -srcfolder dist dist_mac/RUR-PLE.dmg

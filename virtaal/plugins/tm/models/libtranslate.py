@@ -45,8 +45,6 @@ class TMModel(BaseTMModel):
 
     # INITIALIZERS #
     def __init__(self, internal_name, controller):
-        self._from = pan_app.settings.language["sourcelang"]
-        self._to = pan_app.settings.language["contentlang"]
         self.internal_name = internal_name
 
         self.lt = cdll.LoadLibrary(ctypes.util.find_library("translate"))
@@ -79,7 +77,11 @@ class TMModel(BaseTMModel):
     def query(self, tmcontroller, query_str):
         translation = []
         err = c_int()
-        result = self.lt.translate_session_translate_text(self.session, query_str, self._from, self._to, None, None, err)
+        result = self.lt.translate_session_translate_text(
+            self.session, query_str,
+            self.source_lang, self.target_lang,
+            None, None, err
+        )
         if result is None:
             # TODO handle errors and cleanup errors
             logging.warning("An error occured while getting a translation: %s" % err)

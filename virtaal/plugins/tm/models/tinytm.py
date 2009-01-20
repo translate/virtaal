@@ -45,9 +45,6 @@ class TMModel(BaseTMModel):
         self.internal_name = internal_name
         self.load_config()
 
-        self._from = pan_app.settings.language["sourcelang"]
-        self._to = pan_app.settings.language["contentlang"]
-
         try:
             import psycopg2 as psycopg
         except ImportError:
@@ -71,7 +68,7 @@ class TMModel(BaseTMModel):
         cursor = self._db_con.cursor()
         cursor.execute(
             """SELECT * FROM tinytm_get_fuzzy_matches(%s, %s, %s, '', '')""",
-            (self._from, self._to, query_str)
+            (self.source_lang, self.target_lang, query_str)
         )
         for result in cursor.fetchall():
             #print result

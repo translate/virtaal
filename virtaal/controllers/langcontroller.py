@@ -35,8 +35,8 @@ class LanguageController(BaseController):
 
     __gtype_name__ = 'LanguageController'
     __gsignals__ = {
-        'source-lang-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
-        'target-lang-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
+        'source-lang-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
+        'target-lang-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
     }
 
     NUM_RECENT = 5

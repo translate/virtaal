@@ -95,11 +95,15 @@ class LanguageSelectDialog(object):
     # ACCESSORS #
     def get_selected_source_lang(self):
         model, i = self.tvw_sourcelang.get_selection().get_selected()
-        return model.get_value(i, 1)
+        if i is not None and model.iter_is_valid(i):
+            return model.get_value(i, 1)
+        return ''
 
     def get_selected_target_lang(self):
         model, i = self.tvw_targetlang.get_selection().get_selected()
-        return model.get_value(i, 1)
+        if i is not None and model.iter_is_valid(i):
+            return model.get_value(i, 1)
+        return ''
 
 
     # METHODS #
@@ -107,18 +111,32 @@ class LanguageSelectDialog(object):
         self.lst_langs.clear()
 
     def run(self, srclang, tgtlang):
+        self.curr_srclang = srclang
+        self.curr_tgtlang = tgtlang
+
         self._select_lang(self.tvw_sourcelang, srclang)
         self._select_lang(self.tvw_targetlang, tgtlang)
 
-        self.dialog.show()
         self.tvw_targetlang.grab_focus()
         response = self.dialog.run() == gtk.RESPONSE_OK
         self.dialog.hide()
         return response
 
     def update_languages(self, langs):
+        selected_srccode = self.get_selected_source_lang()
+        selected_tgtcode = self.get_selected_target_lang()
+
         for lang in langs:
             self.lst_langs.append([lang.name, lang.code])
+
+        if selected_srccode:
+            self._select_lang(self.tvw_sourcelang, selected_srccode)
+        else:
+            self._select_lang(self.tvw_sourcelang, getattr(self, 'curr_srclang', 'en'))
+        if selected_tgtcode:
+            self._select_lang(self.tvw_targetlang, selected_tgtcode)
+        else:
+            self._select_lang(self.tvw_targetlang, getattr(self, 'curr_tgtlang', 'en'))
 
     def _select_lang(self, treeview, langcode):
         model = treeview.get_model()

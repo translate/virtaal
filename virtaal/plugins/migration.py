@@ -164,24 +164,28 @@ class Plugin(BasePlugin):
 
     def kbabel_tm_import(self):
         """Attempt to import the Translation Memory used in KBabel."""
-        lang = self.main_controller.lang_controller.target_lang.code
-        tm_filename = path.join(self.kbabel_dir, 'translations.af.db')
-        if not path.exists(tm_filename):
+        if not path.exists(self.kbabel_dir):
             return
-        translations = bsddb.btopen(tm_filename, 'r')
+        for tm_filename in os.listdir(self.kbabel_dir):
+            if not tm_filename.startswith("translations.") or not tm_filename.endswith(".db"):
+                continue
+            tm_file = path.join(self.kbabel_dir, tm_filename)
+            lang = tm_filename.replace("translations.", "").replace(".db", "")
+            translations = bsddb.btopen(tm_file, 'r')
 
-        for source, target in translations.iteritems():
-            unit = {"context" : ""}
-            source = source[:-1] # null-terminated
-            target = target[16:-1] # 16 bytes of padding, null-terminated
-            unit["source"] = _prepare_db_string(source)
-            unit["target"] = _prepare_db_string(target)
-            self.tmdb.add_dict(unit, "en", lang, commit=False)
-        self.tmdb.connection.commit()
+            for source, target in translations.iteritems():
+                unit = {"context" : ""}
+                source = source[:-1] # null-terminated
+                target = target[16:-1] # 16 bytes of padding, null-terminated
+                unit["source"] = _prepare_db_string(source)
+                unit["target"] = _prepare_db_string(target)
+                self.tmdb.add_dict(unit, "en", lang, commit=False)
+            self.tmdb.connection.commit()
 
-        logging.debug('%d units migrated from KBabel TM.' % len(translations))
-        translations.close()
-        self.migrated.append(_("KBabel's Translation Memory"))
+            logging.debug('%d units migrated from KBabel %s TM.' % (len(translations), lang))
+            translations.close()
+            self.migrated.append(_("KBabel's Translation Memory: %(database_language_code)s") % \
+                      {"database_language_code": lang})
 
     def lokalize_settings_import(self):
         """Attempt to import the settings from Lokalize."""

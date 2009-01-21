@@ -216,7 +216,6 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             except Exception:
                 pass
             if spell is None:
-                logging.debug('New spell checker')
                 spell = gtkspell.Spell(text_view)
             spell.set_language(language)
             spell.recheck_all()

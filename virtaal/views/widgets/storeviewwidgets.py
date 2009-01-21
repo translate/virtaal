@@ -448,7 +448,7 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
         if self.editable:
             editor = self.view.get_unit_celleditor(self.unit)
             editor.set_size_request(width, -1)
-            editor.show_all()
+            editor.show()
             compute_optimal_height(editor, width)
             _width, height = editor.size_request()
             height = max(height, 70)
@@ -465,7 +465,7 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
         editor.connect("editing-done", self._on_editor_done)
         editor.connect("modified", self._on_modified)
         editor.set_border_width(min(self.props.xpad, self.props.ypad))
-        editor.show_all()
+        editor.show()
         return editor
 
     def on_render(self, window, widget, _background_area, cell_area, _expose_area, _flags):

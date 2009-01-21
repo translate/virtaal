@@ -180,7 +180,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         self.emit('modified')
 
     def show(self):
-        self.show()
+        self.show_all()
 
     def _build_default_editor(self):
         """Build the default editor with the following components:

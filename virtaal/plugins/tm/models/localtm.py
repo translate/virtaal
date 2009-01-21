@@ -71,6 +71,7 @@ class TMModel(BaseTMModel):
             raise
 
         super(TMModel, self).__init__(controller)
+        self.controller.main_controller.store_controller.connect("store-saved", self.push_store)
 
 
     # METHODS #
@@ -85,6 +86,20 @@ class TMModel(BaseTMModel):
         """Handle the matches when returned from self.tmclient."""
         self.cache[query_str] = matches
         self.emit('match-found', query_str, matches)
+
+    def push_store(self, widget, store):
+        """add units in store to tmdb on save"""
+        units = []
+        for unit in store.units:
+            if unit.istranslatable() and unit.istranslated():
+                units.append(unit2dict(unit))
+        self.tmclient.add_store(store.filename, units, self.source_lang, self.target_lang)
+        self.cache = {}
+        
+    def upload_store(self, widget, store):
+        """upload store to tmserver"""
+        self.tmclient.upload_store(store, self.source_lang, self.target_lang)
+        self.cache = {}
 
     def destroy(self):
         if os.name == "nt":
@@ -111,3 +126,6 @@ def find_free_port(host, min_port, max_port):
             return port
     #FIXME: shall we throw an exception if no free port is found?
     return None
+
+def unit2dict(unit):
+    return {"source": unit.source, "target": unit.target, "context": unit.getcontext()}

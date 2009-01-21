@@ -505,6 +505,7 @@ class MainView(BaseView):
         if item.exists():
             # For now we only handle local files, and limited the recent
             # manager to only give us those anyway, so we can get the filename
+            self._uri = item.get_uri()
             self.controller.open_file(item.get_uri_display(), uri=item.get_uri())
 
     def _on_report_bug(self, _widget=None):

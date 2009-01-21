@@ -66,6 +66,7 @@ class UnitController(BaseController):
 
         if unit in self.unit_views:
             self.view = self.unit_views[unit]
+            self.view.update_spell_checker()
             return self.unit_views[unit]
 
         self._create_unitview(unit)

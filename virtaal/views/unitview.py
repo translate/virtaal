@@ -168,6 +168,15 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     def show(self):
         self.show_all()
 
+    def update_spell_checker(self):
+        srclang = self.controller.main_controller.lang_controller.source_lang.code
+        tgtlang = self.controller.main_controller.lang_controller.target_lang.code
+
+        for textview in self.sources:
+            self._update_textview_spell_checker(textview, srclang)
+        for textview in self.targets:
+            self._update_textview_spell_checker(textview, tgtlang)
+
     def _build_default_editor(self):
         """Build the default editor with the following components:
             - A C{gtk.TextView} for each source

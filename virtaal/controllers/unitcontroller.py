@@ -50,6 +50,8 @@ class UnitController(BaseController):
 
         self.unit_views = {}
 
+        self.main_controller.connect('controller-registered', self._on_controller_registered)
+
 
     # ACCESSORS #
     def get_unit_target(self, target_index):
@@ -96,3 +98,14 @@ class UnitController(BaseController):
 
     def _unit_done(self, widget, unit):
         self.emit('unit-done', unit)
+
+
+    # EVENT HANDLERS #
+    def _on_controller_registered(self, main_controller, controller):
+        if controller is main_controller.lang_controller:
+            self.main_controller.lang_controller.connect('source-lang-changed', self._on_language_changed)
+            self.main_controller.lang_controller.connect('target-lang-changed', self._on_language_changed)
+
+    def _on_language_changed(self, lang_controller, langcode):
+        if hasattr(self, 'view'):
+            self.view.update_spell_checker()

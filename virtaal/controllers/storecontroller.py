@@ -109,6 +109,9 @@ class StoreController(BaseController):
         else:
             self.store.load_file(filename)
 
+        if len(self.store.get_units()) < 1:
+            raise Exception('File is empty.')
+
         self._modified = False
 
         # if file is a template force saveas

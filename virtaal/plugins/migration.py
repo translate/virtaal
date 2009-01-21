@@ -139,8 +139,12 @@ class Plugin(BasePlugin):
 
         # import each language seperately
         for lang in self.poedit_languages:
-            sources = bsddb.hashopen(path.join(self.poedit_database_path, lang, 'strings.db'), 'r')
-            targets = bsddb.rnopen(path.join(self.poedit_database_path, lang, 'translations.db'), 'r')
+            strings_db_file = path.join(self.poedit_database_path, lang, 'strings.db')
+            translations_db_file = path.join(self.poedit_database_path, lang, 'translations.db')
+            if not path.exists(strings_db_file) or not path.exists(translations_db_file):
+                continue
+            sources = bsddb.hashopen(strings_db_file, 'r')
+            targets = bsddb.rnopen(translations_db_file, 'r')
             for source, str_index in sources.iteritems():
                 unit = {"context" : ""}
                 # the index is a four byte integer encoded as a string

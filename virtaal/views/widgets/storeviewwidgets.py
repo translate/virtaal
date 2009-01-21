@@ -502,12 +502,14 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
         return layout
 
     def compute_cell_height(self, widget, width):
+        srclang = self.view.controller.main_controller.lang_controller.source_lang.code
+        tgtlang = self.view.controller.main_controller.lang_controller.target_lang.code
         self.source_layout = self._get_pango_layout(widget, self.unit.source, width / 2,
-                rendering.get_source_font_description())
-        self.source_layout.get_context().set_language(rendering.get_source_language())
+                rendering.get_font_description(srclang))
+        self.source_layout.get_context().set_language(rendering.get_language(srclang))
         self.target_layout = self._get_pango_layout(widget, self.unit.target, width / 2,
-                rendering.get_target_font_description())
-        self.target_layout.get_context().set_language(rendering.get_target_language())
+                rendering.get_font_description(tgtlang))
+        self.target_layout.get_context().set_language(rendering.get_language(tgtlang))
         # This makes no sense, but has the desired effect to align things correctly for
         # both LTR and RTL languages:
         if widget.get_direction() == gtk.TEXT_DIR_RTL:

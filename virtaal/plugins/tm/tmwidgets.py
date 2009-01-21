@@ -198,17 +198,20 @@ class TMMatchRenderer(gtk.GenericCellRenderer):
 
     # METHODS #
     def _compute_cell_height(self, widget, width):
+        srclang = self.view.controller.main_controller.lang_controller.source_lang.code
+        tgtlang = self.view.controller.main_controller.lang_controller.target_lang.code
+
         self.source_layout = self._get_pango_layout(
             widget, self.matchdata['source'], width - (2*self.BOX_MARGIN),
-            rendering.get_source_font_description()
+            rendering.get_font_description(srclang)
         )
-        self.source_layout.get_context().set_language(rendering.get_source_language())
+        self.source_layout.get_context().set_language(rendering.get_language(srclang))
 
         self.target_layout = self._get_pango_layout(
             widget, self.matchdata['target'], width - (2*self.BOX_MARGIN),
-            rendering.get_target_font_description()
+            rendering.get_font_description(tgtlang)
         )
-        self.target_layout.get_context().set_language(rendering.get_target_language())
+        self.target_layout.get_context().set_language(rendering.get_language(tgtlang))
 
         height = self.source_layout.get_pixel_size()[1] + self.target_layout.get_pixel_size()[1]
         return height + self.LINE_SEPARATION + self.ROW_PADDING

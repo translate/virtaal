@@ -239,6 +239,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             self.widgets['vbox_middle'].reorder_child(labelexpander, 4)
 
     def _layout_add_sources(self):
+        langcode = self.controller.main_controller.lang_controller.source_lang.code
         num_sources = 1
         if self.unit.hasplural():
             num_sources = len(self.unit.source.strings)
@@ -259,11 +260,11 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                     scroll_policy=gtk.POLICY_NEVER
                 )
             textview = source.get_child()
-            add_spell_checking(textview, self.controller.main_controller.lang_controller.source_lang.code)
-            textview.modify_font(rendering.get_source_font_description())
+            add_spell_checking(textview, langcode)
+            textview.modify_font(rendering.get_font_description(langcode))
             # This causes some problems, so commented out for now
             #textview.get_pango_context().set_font_description(rendering.get_source_font_description())
-            textview.get_pango_context().set_language(rendering.get_source_language())
+            textview.get_pango_context().set_language(rendering.get_language(langcode))
             self.widgets['vbox_sources'].add(source)
             self.sources.append(textview)
 
@@ -280,6 +281,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         self.widgets['vbox_middle'].reorder_child(labelexpander, 2)
 
     def _layout_add_targets(self):
+        langcode = self.controller.main_controller.lang_controller.target_lang.code
         num_targets = 1
         if self.unit.hasplural():
             num_targets = self.controller.nplurals
@@ -334,12 +336,12 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                     scroll_policy=gtk.POLICY_AUTOMATIC
                 )
             textview = target.get_child()
-            textview.modify_font(rendering.get_target_font_description())
-            textview.get_pango_context().set_font_description(rendering.get_target_font_description())
-            textview.get_pango_context().set_language(rendering.get_target_language())
+            textview.modify_font(rendering.get_font_description(langcode))
+            textview.get_pango_context().set_font_description(rendering.get_font_description(langcode))
+            textview.get_pango_context().set_language(rendering.get_language(langcode))
             textview.connect('key-press-event', on_text_view_n_press_event)
 
-            add_spell_checking(textview, self.controller.main_controller.lang_controller.target_lang.code)
+            add_spell_checking(textview, langcode)
 
             self.widgets['vbox_targets'].add(target)
             self.targets.append(textview)

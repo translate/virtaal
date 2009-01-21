@@ -31,13 +31,6 @@ def get_font_description(code):
         _font_descriptions[code] = pango.FontDescription(code)
     return _font_descriptions[code]
 
-def get_source_font_description():
-    return get_font_description(pan_app.settings.language["sourcefont"])
-
-def get_target_font_description():
-    return get_font_description(pan_app.settings.language["targetfont"])
-
-
 _languages = {}
 
 def get_language(code):
@@ -46,9 +39,3 @@ def get_language(code):
     if not code in _languages:
         _languages[code] = pango.Language(code)
     return _languages[code]
-
-def get_source_language():
-    return get_language(pan_app.settings.language["sourcelang"])
-
-def get_target_language():
-    return get_language(pan_app.settings.language["targetlang"])

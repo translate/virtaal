@@ -52,6 +52,8 @@ class LanguageController(BaseController):
         self._init_langs()
 
         self.main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
+        self.connect('source-lang-changed', lambda *args: self.save_recent())
+        self.connect('target-lang-changed', lambda *args: self.save_recent())
 
         self.view = LanguageView(self)
         self.view.show()
@@ -111,8 +113,10 @@ class LanguageController(BaseController):
 
     # METHODS #
     def _load_recent(self):
-        # TODO: Load codes below from the config file
-        codes = [('ar', 'en'), ('en', 'af'), ('en', 'ar'), ('en_GB', 'af')]
+        code_pairs = pan_app.settings.language['recentlangs'].split('|')
+        codes = [pair.split(',') for pair in code_pairs]
+        if codes == [['']]:
+            return []
 
         recent_pairs = []
         for srccode, tgtcode in codes:
@@ -123,7 +127,9 @@ class LanguageController(BaseController):
         return recent_pairs
 
     def save_recent(self):
-        pass
+        pairs = [','.join([src.code, tgt.code]) for (src, tgt) in self.recent_pairs]
+        recent = '|'.join(pairs)
+        pan_app.settings.language['recentlangs'] = recent
 
 
     # EVENT HANDLERS #

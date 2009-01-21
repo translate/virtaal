@@ -75,13 +75,14 @@ class Settings:
             "terminology-dir": "",
     }
     language =      {
-            "uilang": None,
-            "sourcelang": "en",
-            "targetlang": None,
-            "sourcefont": "monospace 9",
-            "targetfont": "monospace 9",
             "nplurals": 0,
             "plural": None,
+            "recentlangs": "",
+            "sourcefont": "monospace 9",
+            "sourcelang": "en",
+            "targetfont": "monospace 9",
+            "targetlang": None,
+            "uilang": None,
     }
     plugin_state =  {
         "helloworld": "disabled",

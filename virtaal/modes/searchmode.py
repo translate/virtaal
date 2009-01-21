@@ -28,6 +28,7 @@ from translate.tools.pogrep import GrepFilter
 from virtaal.controllers import Cursor
 
 from basemode import BaseMode
+from virtaal.views import markup
 
 
 class SearchMode(BaseMode):
@@ -257,6 +258,7 @@ class SearchMode(BaseMode):
         for textview in unitview.sources + unitview.targets:
             buff = textview.get_buffer()
             buffstr = buff.get_text(buff.get_start_iter(), buff.get_end_iter()).decode('utf-8')
+            unescaped = markup.unescape(buffstr)
 
             # First make sure that the current buffer contains a highlighting tag.
             # Because a gtk.TextTag can only be associated with one gtk.TagTable,
@@ -273,7 +275,14 @@ class SearchMode(BaseMode):
                 if  (textview in unitview.sources and not match.part == 'source') or \
                     (textview in unitview.targets and not match.part == 'target'):
                     continue
-                start_iter, end_iter = buff.get_iter_at_offset(match.start), buff.get_iter_at_offset(match.end)
+                # Escaping might mean that the indexes should be offset, so we
+                # test to see  escaping comes into play. The unescaped version
+                # will help us calculate how much we need to adjust.
+                leading_segment = unescaped[:match.end]
+                lines = leading_segment.count(u'\n') + leading_segment.count(u'\t')
+                start = match.start + lines * 2
+                end = match.end + lines * 2
+                start_iter, end_iter = buff.get_iter_at_offset(start), buff.get_iter_at_offset(end)
                 buff.apply_tag_by_name('highlight', start_iter, end_iter)
 
                 if textview in unitview.targets and not select_iters and self.select_first_match:

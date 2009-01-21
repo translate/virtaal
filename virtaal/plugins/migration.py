@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008 Zuza Software Foundation
+# Copyright 2008-2009 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -25,7 +25,6 @@ Lokalize. Translation Memory can be imported from Poedit and Lokalize.
 """
 
 import logging
-from gtk import gdk
 import os
 from os import path
 import bsddb
@@ -34,7 +33,7 @@ import StringIO
 try:
     from sqlite3 import dbapi2
 except ImportError:
-        from pysqlite2 import dbapi2
+    from pysqlite2 import dbapi2
 try:
     import iniparse as ConfigParser
 except ImportError, e:
@@ -45,7 +44,6 @@ from virtaal.controllers import BasePlugin
 
 from translate.storage.pypo import extractpoline
 from translate.storage import tmdb
-from translate.lang import data
 
 
 def _prepare_db_string(string):
@@ -59,7 +57,7 @@ class Plugin(BasePlugin):
     version = 0.1
 
     default_config = {
-        "tmdb": os.path.join(pan_app.get_config_dir(), "tm.db")
+        "tmdb": path.join(pan_app.get_config_dir(), "tm.db")
     }
 
     def __init__(self, internal_name, main_controller):
@@ -103,6 +101,8 @@ class Plugin(BasePlugin):
         if self.migrated:
             message = _('Migration was successfully completed') + '\n\n'
             message += _('The following items were migrated:') + '\n\n'
+            #l10n: This message indicates the formatting of a bullet point. Most
+            #languages wouldn't need to change it.
             message += u"\n".join([u" • %s" % item for item in self.migrated])
             self.main_controller.show_info(_('Migration completed'), message)
         else:
@@ -155,7 +155,8 @@ class Plugin(BasePlugin):
             logging.debug('%d units migrated from Poedit TM: %s.' % (len(sources), lang))
             sources.close()
             targets.close()
-            self.migrated.append(_("Poedit's Translation Memory: %(database_language_code)s") % {"database_language_code": lang})
+            self.migrated.append(_("Poedit's Translation Memory: %(database_language_code)s") % \
+                    {"database_language_code": lang})
 
     def kbabel_tm_import(self):
         """Attempt to import the Translation Memory used in KBabel."""
@@ -218,4 +219,5 @@ class Plugin(BasePlugin):
             self.tmdb.add_dict(unit, "en", lang, commit=False)
         self.tmdb.connection.commit()
         connection.close()
-        self.migrated.append(_("Lokalize's Translation Memory: %(database_name)s") % {"database_name": path.basename(filename)})
+        self.migrated.append(_("Lokalize's Translation Memory: %(database_name)s") % \
+                {"database_name": path.basename(filename)})

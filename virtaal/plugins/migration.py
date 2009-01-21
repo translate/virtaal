@@ -123,9 +123,9 @@ class Plugin(BasePlugin):
         self.poedit_config.readfp(contents)
         poedit_general = dict(self.poedit_config.items('poedit_headerless_file'))
 
-        pan_app.settings.general['lastdir'] = poedit_general['last_file_path']
-        pan_app.settings.translator['name'] = poedit_general['translator_name']
-        pan_app.settings.translator['email'] = poedit_general['translator_email']
+        pan_app.settings.general['lastdir'] = poedit_general.get('last_file_path', None)
+        pan_app.settings.translator['name'] = poedit_general.get('translator_name', None)
+        pan_app.settings.translator['email'] = poedit_general.get('translator_email', None)
         pan_app.settings.write()
         poedit_tm_dict = dict(self.poedit_config.items('TM'))
         self.poedit_database_path = poedit_tm_dict['database_path']

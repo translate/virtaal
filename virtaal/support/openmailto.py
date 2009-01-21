@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008 Zuza Software Foundation
+# Copyright 2008-2009 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -35,6 +35,7 @@ import os
 import sys
 import webbrowser
 import subprocess
+import logging
 
 from email.Utils import encode_rfc2231
 
@@ -356,7 +357,7 @@ if __name__ == '__main__':
         success = False
         for arg in args:
             if not open(arg):
-                print 'Unable to open "%s"' % arg
+                logging.debug('Unable to open "%s"', arg)
             else:
                 success = True
         sys.exit(success)

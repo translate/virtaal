@@ -31,20 +31,6 @@ import rendering
 from baseview import BaseView
 from widgets.label_expander import LabelExpander
 
-# FIXME: Move add_spell_checking() and its call below to a more appropriate place.
-def add_spell_checking(text_view, language):
-    try:
-        import gtkspell
-    except ImportError, e:
-        gtkspell = None
-    if gtkspell:
-        try:
-            spell = gtkspell.Spell(text_view)
-            spell.set_language(language)
-        except:
-            logging.exception("Could not initialize spell checking")
-            gtkspell = None
-
 
 class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     """View for translation units and its actions."""
@@ -206,6 +192,29 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         for name in widget_names:
             self.widgets[name] = self.gui.get_widget(name)
 
+    def _update_textview_spell_checker(self, text_view, language):
+        try:
+            import gtkspell
+        except ImportError, e:
+            gtkspell = None
+        if gtkspell is None:
+            return
+
+        try:
+            spell = None
+            try:
+                spell = gtkspell.get_from_text_view(text_view)
+            except Exception:
+                pass
+            if spell is None:
+                logging.debug('New spell checker')
+                spell = gtkspell.Spell(text_view)
+            spell.set_language(language)
+            spell.recheck_all()
+        except Exception:
+            logging.exception("Could not initialize spell checking")
+            gtkspell = None
+
 
     # GUI BUILDING CODE #
     def _create_textbox(self, text='', editable=True, scroll_policy=gtk.POLICY_AUTOMATIC):
@@ -260,7 +269,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                     scroll_policy=gtk.POLICY_NEVER
                 )
             textview = source.get_child()
-            add_spell_checking(textview, langcode)
+            self._update_textview_spell_checker(textview, langcode)
             textview.modify_font(rendering.get_font_description(langcode))
             # This causes some problems, so commented out for now
             #textview.get_pango_context().set_font_description(rendering.get_source_font_description())
@@ -341,7 +350,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             textview.get_pango_context().set_language(rendering.get_language(langcode))
             textview.connect('key-press-event', on_text_view_n_press_event)
 
-            add_spell_checking(textview, langcode)
+            self._update_textview_spell_checker(textview, langcode)
 
             self.widgets['vbox_targets'].add(target)
             self.targets.append(textview)

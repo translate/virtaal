@@ -104,10 +104,7 @@ class StoreController(BaseController):
             self.cursor.index = i
 
     def open_file(self, filename, uri=''):
-        if not self.store:
-            self.store = StoreModel(filename, self)
-        else:
-            self.store.load_file(filename)
+        self.store = StoreModel(filename, self)
 
         if len(self.store.get_units()) < 1:
             raise Exception('File is empty.')

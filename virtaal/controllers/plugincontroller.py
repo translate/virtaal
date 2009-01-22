@@ -22,6 +22,8 @@ import logging
 import os
 import sys
 
+from translate.misc import file_discovery
+
 from virtaal.common import pan_app, GObjectWrapper
 
 from basecontroller import BaseController
@@ -30,6 +32,8 @@ from baseplugin import BasePlugin
 
 if os.name == 'nt':
     sys.path.insert(0, pan_app.main_dir)
+if 'RESOURCEPATH' in os.environ:
+    sys.path.insert(0, os.path.join(os.environ['RESOURCEPATH']))
 
 # The following line allows us to import user plug-ins from ~/.virtaal/virtaal_plugins
 # (see PluginController.PLUGIN_MODULES)
@@ -68,6 +72,8 @@ class PluginController(BaseController):
 
         if os.name == 'nt':
             self.PLUGIN_DIRS.insert(0, os.path.join(pan_app.main_dir, 'virtaal_plugins'))
+        if 'RESOURCEPATH' in os.environ:
+            self.PLUGIN_DIRS.insert(0, os.path.join(os.environ['RESOURCEPATH'], 'virtaal_plugins'))
 
 
     # METHODS #

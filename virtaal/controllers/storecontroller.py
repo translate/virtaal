@@ -96,7 +96,7 @@ class StoreController(BaseController):
             i += 1
 
         if not i < len(self.get_store().get_units()):
-            raise ValueError('Unit not found.')
+            raise ValueError(_('Unit not found.'))
 
         if force:
             self.cursor.force_index(i)
@@ -107,7 +107,7 @@ class StoreController(BaseController):
         self.store = StoreModel(filename, self)
 
         if len(self.store.get_units()) < 1:
-            raise Exception('File is empty.')
+            raise Exception(_('The file contains nothing to translate.'))
 
         self._modified = False
 

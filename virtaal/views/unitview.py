@@ -214,6 +214,13 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             return
 
         try:
+            import enchant
+        except ImportError:
+            return
+        if language not in enchant.list_languages():
+            return
+
+        try:
             spell = None
             try:
                 spell = gtkspell.get_from_text_view(text_view)

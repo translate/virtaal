@@ -27,9 +27,9 @@ class Plugin(BasePlugin):
     display_name = 'Translation Memory'
     version = 0.1
     default_config = {
-        'disabled_models': 'dummytm,libtranslate,opentran,remotetm,tinytm',
+        'disabled_models': 'dummytm,libtranslate,remotetm,tinytm',
         'max_matches': '5',
-        'min_quality': '75'
+        'min_quality': '70'
     }
 
     # INITIALIZERS #

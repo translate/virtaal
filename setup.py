@@ -86,7 +86,7 @@ options = {
         (path.join(TARGET_DATA_DIR, "icons"), glob.glob(path.join(SOURCE_DATA_DIR, "icons", "*.*"))),
     ] + mo_files,
     'scripts': [
-        "bin/virtaal"
+        "bin/virtaal",
         "../translate/services/tmserver"
     ],
     'packages': [

@@ -36,7 +36,7 @@ class StoreController(BaseController):
     __gtype_name__ = 'StoreController'
     __gsignals__ = {
         'store-loaded': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
-        'store-saved':  (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
+        'store-saved':  (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
     }
 
     # INITIALIZERS #
@@ -130,7 +130,7 @@ class StoreController(BaseController):
         self.store.save_file(filename) # store.save_file() will raise an appropriate exception if necessary
         self._modified = False
         self.main_controller.set_saveable(False)
-        self.emit('store-saved', self.store._trans_store)
+        self.emit('store-saved')
 
     def revert_file(self):
         self.open_file(self.store.filename)

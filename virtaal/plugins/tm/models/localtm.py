@@ -87,18 +87,20 @@ class TMModel(BaseTMModel):
         self.cache[query_str] = matches
         self.emit('match-found', query_str, matches)
 
-    def push_store(self, widget, store):
+    def push_store(self, store_controller):
         """add units in store to tmdb on save"""
         units = []
-        for unit in store.units:
-            if unit.istranslatable() and unit.istranslated():
+        for unit in store_controller.store.get_units():
+            if  unit.istranslated():
                 units.append(unit2dict(unit))
-        self.tmclient.add_store(store.filename, units, self.source_lang, self.target_lang)
+        #FIXME: do we get source and target langs from
+        #store_controller or from tm state?
+        self.tmclient.add_store(store_controller.store.get_filename(), units, self.source_lang, self.target_lang)
         self.cache = {}
         
-    def upload_store(self, widget, store):
+    def upload_store(self, store_controller):
         """upload store to tmserver"""
-        self.tmclient.upload_store(store, self.source_lang, self.target_lang)
+        self.tmclient.upload_store(store_controller.store._trans_store, self.source_lang, self.target_lang)
         self.cache = {}
 
     def destroy(self):

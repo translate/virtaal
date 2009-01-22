@@ -154,6 +154,7 @@ class MainView(BaseView):
                 "on_revert_activate" : self._on_file_revert,
                 "on_quit" : self._on_quit,
                 "on_about_activate" : self._on_help_about,
+                "on_tutorial_activate" : self._on_tutorial,
                 "on_localization_guide_activate" : self._on_localization_guide,
                 "on_menuitem_documentation_activate" : self._on_documentation,
                 "on_menuitem_report_bug_activate" : self._on_report_bug,
@@ -485,6 +486,10 @@ class MainView(BaseView):
     def _on_file_revert(self, widget=None):
         self.controller.revert_file()
 
+    def _on_tutorial(self, widget=None):
+        filename = pan_app.get_abs_data_filename(["virtaal", "tutorial.pot"])
+        self.controller.open_file(filename)
+                                                 
     def _on_localization_guide(self, _widget=None):
         # Should be more redundent
         # If the guide is installed and no internet then open local

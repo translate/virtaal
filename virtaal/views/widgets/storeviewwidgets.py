@@ -82,7 +82,7 @@ def gtk_labelexpander_compute_optimal_height(widget, width):
     if widget.label.child.get_text().strip() == "":
         widget.set_size_request(-1, 0)
     else:
-        _w, h = make_pango_layout(widget, widget.label.child.get_label()[0], width).get_pixel_size()
+        _w, h = widget.label.child.get_layout().get_pixel_size()
         widget.set_size_request(-1, h + 4)
 
 
@@ -121,7 +121,12 @@ class StoreTreeModel(gtk.GenericTreeModel):
         if column <= 1:
             unit = self._store[rowref]
             if column == 0:
-                return markup.markuptext(unit.getnotes(), fancyspaces=False, markupescapes=False) or None
+                note_text = unit.getnotes()
+                if not note_text:
+                    locations = unit.getlocations()
+                    if locations:
+                        note_text = unit.getlocations()[0]
+                return markup.markuptext(note_text, fancyspaces=False, markupescapes=False) or None
             else:
                 return unit
         else:

@@ -5,6 +5,7 @@ share/virtaal/virtaal.glade
 share/mime/packages/virtaal-mimetype.xml.in
 virtaal/tips.py
 virtaal/controllers/maincontroller.py
+virtaal/controllers/storecontroller.py
 virtaal/modes/defaultmode.py
 virtaal/modes/quicktransmode.py
 virtaal/modes/searchmode.py

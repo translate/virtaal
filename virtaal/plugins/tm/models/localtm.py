@@ -53,13 +53,19 @@ class TMModel(BaseTMModel):
             port = self.config["tmserver_port"]
         else:
             port = find_free_port(self.config["tmserver_bind"], 49152, 65535)
+        if os.name == "nt":
+            executable = os.path.abspath(os.path.join(pan_app.main_dir, "tmserver.exe"))
+        else:
+            executable = "tmserver"
 
         command = [
-            "tmserver",
+            executable,
             "-b", self.config["tmserver_bind"],
             "-p", str(port),
             "-d", self.config["tmdb"],
         ]
+
+        logging.debug("launching tmserver with command %s" % " ".join(command))
         try:
             self.tmserver = subprocess.Popen(command)
             url = "http://%s:%d/tmserver" % (self.config["tmserver_bind"], port)

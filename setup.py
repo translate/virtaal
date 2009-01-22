@@ -87,6 +87,7 @@ options = {
     ] + mo_files,
     'scripts': [
         "bin/virtaal"
+        "../translate/services/tmserver"
     ],
     'packages': [
         "virtaal",
@@ -354,6 +355,7 @@ def add_win32_options(options):
                     'icon_resources': [(1, path.join(SOURCE_DATA_DIR, "icons", "virtaal.ico"))],
                 }
             ],
+            "console": ["../translate/services/tmserver"],
             'zipfile':  "virtaal.zip",
             "options": {
                 "py2exe":    py2exe_options,

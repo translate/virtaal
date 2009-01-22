@@ -104,8 +104,8 @@ options = {
     ],
 }
 
-# For Windows, we need to treat the plug-ins as data files.
-if os.name == 'nt':
+# For innosetup and py2app, we need to treat the plug-ins as data files.
+if os.name == 'nt' or sys.platform == 'darwin':
     noplugins = []
     for pkg in options['packages']:
         if 'plugins' not in pkg:
@@ -342,7 +342,7 @@ def add_win32_options(options):
             "compressed": True,
             "excludes":   ["PyLucene", "Tkconstants", "Tkinter", "tcl", "translate.misc._csv"],
             "dist_dir":   "virtaal-win32",
-            "includes":   ["lxml", "lxml._elementpath", "psyco", "cairo", "pango", "pangocairo", "atk", "gobject", "gtk.keysyms"],
+            "includes":   ["lxml", "lxml._elementpath", "psyco", "cairo", "pango", "pangocairo", "atk", "gobject", "gtk.keysyms", "translate.services", "translate.services.tmclient", "translate.services.opentranclient"],
             "optimize":   2,
         }
         py2exe_options['includes'] += ["bsddb", "zipfile"] # Dependencies for the migration and auto-correction plug-ins, respectively.
@@ -383,7 +383,7 @@ def add_mac_options(options):
         "app": ["bin/run_virtaal.py"],
         "options": {
             "py2app": {
-            "includes":   ["lxml", "lxml._elementpath", "lxml.etree", "glib", "gio", "psyco", "cairo", "pango", "pangocairo", "atk", "gobject", "gtk.keysyms"],
+            "includes":   ["lxml", "lxml._elementpath", "lxml.etree", "glib", "gio", "psyco", "cairo", "pango", "pangocairo", "atk", "gobject", "gtk.keysyms", "pycurl", "translate.services", "translate.services.tmclient", "translate.services.opentranclient"],
                 #"semi_standalone": True,
                 "compressed": True,
                 "argv_emulation": True,

@@ -55,7 +55,7 @@ class TMModel(BaseTMModel):
             port = find_free_port(self.config["tmserver_bind"], 49152, 65535)
 
         command = [
-            "tmserver.py",
+            "tmserver",
             "-b", self.config["tmserver_bind"],
             "-p", str(port),
             "-d", self.config["tmdb"],

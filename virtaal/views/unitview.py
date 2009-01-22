@@ -223,6 +223,11 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             logging.exception("Could not initialize spell checking")
             gtkspell = None
 
+    try:
+        import psyco
+        psyco.cannotcompile(_update_textview_spell_checker)
+    except ImportError, e:
+        pass
 
     # GUI BUILDING CODE #
     def _create_textbox(self, text='', editable=True, scroll_policy=gtk.POLICY_AUTOMATIC):

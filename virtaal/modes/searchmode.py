@@ -250,7 +250,7 @@ class SearchMode(BaseMode):
     def _highlight_matches(self):
         self._unhighlight_previous_matches()
 
-        if self.filter.re_search is None:
+        if not hasattr(self, 'filter') or not hasattr(self.filter, 're_search') or self.filter.re_search is None:
             return
 
         unitview = self.controller.main_controller.unit_controller.view

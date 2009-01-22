@@ -284,7 +284,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                 )
             textview = source.get_child()
             self._update_textview_spell_checker(textview, langcode)
-            textview.modify_font(rendering.get_font_description(langcode))
+            textview.modify_font(rendering.get_source_font_description())
             # This causes some problems, so commented out for now
             #textview.get_pango_context().set_font_description(rendering.get_source_font_description())
             textview.get_pango_context().set_language(rendering.get_language(langcode))
@@ -359,8 +359,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                     scroll_policy=gtk.POLICY_AUTOMATIC
                 )
             textview = target.get_child()
-            textview.modify_font(rendering.get_font_description(langcode))
-            textview.get_pango_context().set_font_description(rendering.get_font_description(langcode))
+            textview.modify_font(rendering.get_target_font_description())
+            textview.get_pango_context().set_font_description(rendering.get_target_font_description())
             textview.get_pango_context().set_language(rendering.get_language(langcode))
             textview.connect('key-press-event', on_text_view_n_press_event)
 

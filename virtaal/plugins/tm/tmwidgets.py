@@ -203,13 +203,13 @@ class TMMatchRenderer(gtk.GenericCellRenderer):
 
         self.source_layout = self._get_pango_layout(
             widget, self.matchdata['source'], width - (2*self.BOX_MARGIN),
-            rendering.get_font_description(srclang)
+            rendering.get_source_font_description()
         )
         self.source_layout.get_context().set_language(rendering.get_language(srclang))
 
         self.target_layout = self._get_pango_layout(
             widget, self.matchdata['target'], width - (2*self.BOX_MARGIN),
-            rendering.get_font_description(tgtlang)
+            rendering.get_target_font_description()
         )
         self.target_layout.get_context().set_language(rendering.get_language(tgtlang))
 

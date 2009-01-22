@@ -206,6 +206,9 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             self.widgets[name] = self.gui.get_widget(name)
 
     def _update_textview_spell_checker(self, text_view, language):
+        if getattr(text_view, 'spell_lang', None) == language:
+            return
+
         global gtkspell
         if gtkspell is None:
             return
@@ -214,12 +217,13 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             spell = None
             try:
                 spell = gtkspell.get_from_text_view(text_view)
-            except Exception:
+            except SystemError:
                 pass
             if spell is None:
                 spell = gtkspell.Spell(text_view)
             spell.set_language(language)
             spell.recheck_all()
+            text_view.spell_lang = language
         except Exception:
             logging.exception("Could not initialize spell checking")
             gtkspell = None

@@ -19,14 +19,11 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gtk
+import gtk.gdk
 import gobject
 import pango
 
-
-def label_escape(text):
-    escapes = [("\n", '\\n'), ("\r", '\\r')]
-    return reduce(lambda text, escape: text.replace(*escape), escapes, text)
-
+from virtaal.views import markup
 
 class LabelExpander(gtk.EventBox):
     __gproperties__ = {
@@ -41,9 +38,9 @@ class LabelExpander(gtk.EventBox):
         super(LabelExpander, self).__init__()
 
         label_text = gtk.Label()
-        label_text.set_single_line_mode(True)
-        label_text.set_ellipsize(pango.ELLIPSIZE_END)
-        label_text.set_justify(gtk.JUSTIFY_LEFT)
+        label_text.set_single_line_mode(False)
+        label_text.set_line_wrap(True)
+        label_text.set_justify(gtk.JUSTIFY_FILL)
         label_text.set_use_markup(True)
 
         self.label = gtk.EventBox()
@@ -73,7 +70,7 @@ class LabelExpander(gtk.EventBox):
             self.add(self.widget)
         else:
             self.add(self.label)
-            self.label.child.set_text(label_escape(self.get_text()))
+            self.label.child.set_markup(markup.markuptext(self.get_text(), fancyspaces=False, markupescapes=False))
 
         self.child.show()
 

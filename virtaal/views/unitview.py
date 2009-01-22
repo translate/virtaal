@@ -258,13 +258,16 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         return scrollwnd
 
     def _layout_add_notes(self, origin):
+        note_text = self.unit.getnotes(origin) or u""
+        if origin == "programmer" and len(note_text) < 15:
+            note_text += u"  " + u" ".join(self.unit.getlocations()[:3])
         textbox = self._create_textbox(
-                self.unit.getnotes(origin),
+                note_text,
                 editable=False,
                 scroll_policy=gtk.POLICY_NEVER
             )
         textview = textbox.get_child()
-        labelexpander = LabelExpander(textbox, lambda *args: self.unit.getnotes(origin))
+        labelexpander = LabelExpander(textbox, lambda *args: note_text)
 
         self.widgets['vbox_middle'].add(labelexpander)
         if origin == 'programmer':

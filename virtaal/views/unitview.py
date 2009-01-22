@@ -23,6 +23,10 @@ import logging
 import re
 from gobject import idle_add, GObject, SIGNAL_RUN_FIRST, TYPE_INT, TYPE_NONE, TYPE_PYOBJECT, TYPE_STRING
 from translate.lang import factory
+try:
+    import gtkspell
+except ImportError, e:
+    gtkspell = None
 
 from virtaal.common import GObjectWrapper, pan_app
 
@@ -202,10 +206,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             self.widgets[name] = self.gui.get_widget(name)
 
     def _update_textview_spell_checker(self, text_view, language):
-        try:
-            import gtkspell
-        except ImportError, e:
-            gtkspell = None
+        global gtkspell
         if gtkspell is None:
             return
 

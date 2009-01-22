@@ -217,7 +217,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             import enchant
         except ImportError:
             return
-        if not enchant.dict_exists(language):
+        if not enchant.dict_exists(str(language)):
             return
 
         try:

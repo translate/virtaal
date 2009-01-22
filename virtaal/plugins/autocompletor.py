@@ -36,6 +36,7 @@ class AutoCompletor(object):
 
     wordsep_re = re.compile(r'\W+', re.UNICODE)
 
+    MAX_WORDS = 10000
     DEFAULT_COMPLETION_LENGTH = 4 # The default minimum length of a word that may
                                   # be auto-completed.
 
@@ -88,6 +89,8 @@ class AutoCompletor(object):
             if not target:
                 continue
             self.add_words(self.wordsep_re.split(target), update=False)
+            if len(self._word_freq) > self.MAX_WORDS:
+                break
 
         self._update_word_list()
 

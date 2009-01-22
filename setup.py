@@ -353,9 +353,9 @@ def add_win32_options(options):
                 {
                     'script': 'bin/virtaal',
                     'icon_resources': [(1, path.join(SOURCE_DATA_DIR, "icons", "virtaal.ico"))],
-                }
+                },
+                { 'script': "../translate/services/tmserver"}
             ],
-            "console": ["../translate/services/tmserver"],
             'zipfile':  "virtaal.zip",
             "options": {
                 "py2exe":    py2exe_options,

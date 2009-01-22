@@ -38,3 +38,7 @@ msgstr ""
 #: ../gtkspell/gtkspell.c:468
 msgid "Spelling Suggestions"
 msgstr ""
+
+# New menu entry added in v2.0.15 (no available current POT file)
+msgid "Languages"
+msgstr ""

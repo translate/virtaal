@@ -20,10 +20,7 @@
 
 """example plugin."""
 
-import gobject
-import gtk
 import logging
-
 
 from virtaal.controllers import BasePlugin
 
@@ -49,7 +46,6 @@ class Plugin(BasePlugin):
         self.load_config()
 
     def _init_plugin(self):
-        from virtaal.common import pan_app
         self.main_controller.store_controller.connect('store-loaded', self.on_store_loaded)
 
 

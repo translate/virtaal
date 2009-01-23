@@ -77,15 +77,7 @@ class Plugin(BasePlugin):
             # We actually need source, target, context, targetlanguage
             self.migrated = []
 
-            #TODO: confirm Windows home for Poedit
             self.poedit_dir = path.expanduser('~/.poedit')
-            try:
-                from _winreg import *
-                register = ConnectRegistry(None, HKEY_CURRENT_USER)
-                key = OpenKey(register, r"Software\Vaclav Slavik\Poedit\TM")
-                _a, self.poedit_dir, _b = EnumValue(key, 0)
-            except Exception, e:
-                pass
 
             #TODO: check if we can do better than hardcoding the kbabel location
             #this path is specified in ~/.kde/config/kbabel.defaultproject and kbabeldictrc
@@ -117,30 +109,56 @@ class Plugin(BasePlugin):
     def poedit_settings_import(self):
         """Attempt to import the settings from Poedit."""
         config_filename = path.join(self.poedit_dir, 'config')
+        get_thing = None
         if not path.exists(config_filename):
+            try:
+                import _winreg
+            except Exception, e:
+                return
+
+            def get_thing(section, item):
+                key = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r"Software\Vaclav Slavik\Poedit\%s" % section)
+                data = None
+                try:
+                    # This is very inefficient, but who cares?
+                    for i in range(100):
+                        name, data, type = _winreg.EnumValue(key, i)
+                        if name == item:
+                            break
+                except EnvironmentError, e:
+                    pass
+                except Exception, e:
+                    logging.exception("Error obtaining from registry: %s, %s", section, item)
+                return data
+
+        else:
+            self.poedit_config = ConfigParser.ConfigParser()
+            poedit_config_file = open(config_filename, 'r')
+            contents = StringIO.StringIO('[poedit_headerless_file]\n' + poedit_config_file.read())
+            poedit_config_file.close()
+            self.poedit_config.readfp(contents)
+            def get_thing(section, item):
+                dictionary = dict(self.poedit_config.items(section or 'poedit_headerless_file'))
+                return dictionary.get(item, None)
+
+        if get_thing is None:
             return
 
-        self.poedit_config = ConfigParser.ConfigParser()
-        poedit_config_file = open(config_filename, 'r')
-        contents = StringIO.StringIO('[poedit_headerless_file]\n' + poedit_config_file.read())
-        poedit_config_file.close()
-        self.poedit_config.readfp(contents)
-        poedit_general = dict(self.poedit_config.items('poedit_headerless_file'))
-
-        pan_app.settings.general['lastdir'] = poedit_general.get('last_file_path', None)
-        pan_app.settings.translator['name'] = poedit_general.get('translator_name', None)
-        pan_app.settings.translator['email'] = poedit_general.get('translator_email', None)
+        pan_app.settings.general['lastdir'] = get_thing('', 'last_file_path')
+        pan_app.settings.translator['name'] = get_thing('', 'translator_name')
+        pan_app.settings.translator['email'] = get_thing('', 'translator_email')
         pan_app.settings.write()
-        poedit_tm_dict = dict(self.poedit_config.items('TM'))
-        self.poedit_database_path = poedit_tm_dict['database_path']
+        self.poedit_database_path = get_thing('TM', 'database_path')
         self.poedit_languages = []
-        if 'languages' in poedit_tm_dict and poedit_tm_dict['languages']:
-            self.poedit_languages = poedit_tm_dict['languages'].split(':')
+        languages = get_thing('TM', 'languages')
+        if languages:
+            self.poedit_languages = languages.split(':')
+
         self.migrated.append(_("Poedit settings"))
 
     def poedit_tm_import(self):
         """Attempt to import the Translation Memory used in KBabel."""
-        if not hasattr(self, "poedit_config"):
+        if not hasattr(self, "poedit_database_path"):
             return
 
         # import each language seperately

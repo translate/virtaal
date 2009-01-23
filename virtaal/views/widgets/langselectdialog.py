@@ -42,12 +42,11 @@ class LanguageSelectDialog(object):
 
         self._get_widgets()
         self._init_treeviews()
-        self.btn_swap.connect('clicked', self._on_swap_clicked)
         self.update_languages(languages)
 
     def _get_widgets(self):
         """Load the Glade file and get the widgets we would like to use."""
-        widget_names = ('btn_add', 'btn_cancel', 'btn_ok', 'btn_swap', 'tvw_sourcelang', 'tvw_targetlang')
+        widget_names = ('btn_add', 'btn_cancel', 'btn_ok', 'tvw_sourcelang', 'tvw_targetlang')
 
         for name in widget_names:
             setattr(self, name, self.gui.get_widget(name))
@@ -156,9 +155,3 @@ class LanguageSelectDialog(object):
         treeview.get_selection().select_iter(i)
         treeview.scroll_to_cell(path)
 
-
-    # EVENT HANDLERS #
-    def _on_swap_clicked(self, button):
-        old_selected = (self.get_selected_source_lang(), self.get_selected_target_lang())
-        self._select_lang(self.tvw_sourcelang, old_selected[1])
-        self._select_lang(self.tvw_targetlang, old_selected[0])

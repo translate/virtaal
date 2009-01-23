@@ -67,48 +67,46 @@ class Plugin(BasePlugin):
         self._init_plugin()
 
     def _init_plugin(self):
-        if path.exists(pan_app.settings.filename):
-            logging.debug('Migration plugin not executed due to existing configuration')
-            return
-
-        message = _('It seems you have not yet used Virtaal.\n\nShould Virtaal try to import settings and data from other applications?')
+        message = _('Should Virtaal try to import settings and data from other applications?')
         must_migrate = self.main_controller.show_prompt(_('Import data from other applications?'), message)
         if not must_migrate:
             logging.debug('Migration not done due to user choice')
-            return
-
-        # We'll store the tm here:
-        self.tmdb = tmdb.TMDB(self.config["tmdb"])
-        # We actually need source, target, context, targetlanguage
-        self.migrated = []
-
-        #TODO: confirm Windows home for Poedit
-        self.poedit_dir = path.expanduser('~/.poedit')
-
-        #TODO: check if we can do better than hardcoding the kbabel location
-        #this path is specified in ~/.kde/config/kbabel.defaultproject and kbabeldictrc
-        self.kbabel_dir = path.expanduser('~/.kde/share/apps/kbabeldict/dbsearchengine')
-
-        self.lokalize_rc = path.expanduser('~/.kde/share/config/lokalizerc')
-        self.lokalize_tm_dir = path.expanduser('~/.kde/share/apps/lokalize/')
-
-        self.poedit_settings_import()
-        self.poedit_tm_import()
-        self.kbabel_tm_import()
-        self.lokalize_settings_import()
-        self.lokalize_tm_import()
-
-        if self.migrated:
-            message = _('Migration was successfully completed') + '\n\n'
-            message += _('The following items were migrated:') + '\n\n'
-            #l10n: This message indicates the formatting of a bullet point. Most
-            #languages wouldn't need to change it.
-            message += u"\n".join([_(u" • %s") % item for item in self.migrated])
-            self.main_controller.show_info(_('Migration completed'), message)
         else:
-            message = _("Virtaal was not able to migrate any settings or data")
-            self.main_controller.show_info(_('Nothing migrated'), message)
-        logging.debug('Migration plugin executed')
+            # We'll store the tm here:
+            self.tmdb = tmdb.TMDB(self.config["tmdb"])
+            # We actually need source, target, context, targetlanguage
+            self.migrated = []
+            
+            #TODO: confirm Windows home for Poedit
+            self.poedit_dir = path.expanduser('~/.poedit')
+            
+            #TODO: check if we can do better than hardcoding the kbabel location
+            #this path is specified in ~/.kde/config/kbabel.defaultproject and kbabeldictrc
+            self.kbabel_dir = path.expanduser('~/.kde/share/apps/kbabeldict/dbsearchengine')
+            
+            self.lokalize_rc = path.expanduser('~/.kde/share/config/lokalizerc')
+            self.lokalize_tm_dir = path.expanduser('~/.kde/share/apps/lokalize/')
+
+            self.poedit_settings_import()
+            self.poedit_tm_import()
+            self.kbabel_tm_import()
+            self.lokalize_settings_import()
+            self.lokalize_tm_import()
+
+            if self.migrated:
+                message = _('Migration was successfully completed') + '\n\n'
+                message += _('The following items were migrated:') + '\n\n'
+                #l10n: This message indicates the formatting of a bullet point. Most
+                #languages wouldn't need to change it.
+                message += u"\n".join([_(u" • %s") % item for item in self.migrated])
+                self.main_controller.show_info(_('Migration completed'), message)
+            else:
+                message = _("Virtaal was not able to migrate any settings or data")
+                self.main_controller.show_info(_('Nothing migrated'), message)
+            logging.debug('Migration plugin executed')
+            
+        pan_app.settings.plugin_state[self.internal_name] = "disabled"
+
 
     def poedit_settings_import(self):
         """Attempt to import the settings from Poedit."""

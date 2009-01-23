@@ -72,15 +72,14 @@ class Settings:
             "lastdir": "",
             "windowheight": 796,
             "windowwidth": 544,
-            "terminology-dir": "",
     }
     language =      {
             "nplurals": 0,
             "plural": None,
             "recentlangs": "",
-            "sourcefont": "monospace 9",
+            "sourcefont": "monospace",
             "sourcelang": "en",
-            "targetfont": "monospace 9",
+            "targetfont": "monospace",
             "targetlang": None,
             "uilang": None,
     }
@@ -88,7 +87,7 @@ class Settings:
         "helloworld": "disabled",
     }
     undo = {
-        "depth": 50,
+        "depth": 10000,
     }
 
     def __init__(self, filename = None):

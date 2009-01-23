@@ -206,8 +206,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             self.widgets[name] = self.gui.get_widget(name)
 
     def _update_textview_spell_checker(self, text_view, language):
-        if getattr(text_view, 'spell_lang', None) == language:
-            return
+        language = str(language)
 
         global gtkspell
         if gtkspell is None:
@@ -217,7 +216,22 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             import enchant
         except ImportError:
             return
-        if not enchant.dict_exists(str(language)):
+
+        if not enchant.dict_exists(language):
+            # Sometimes enchants *wants* a country code, other times it does not.
+            # For the cases where it requires one, we look for the first language
+            # code that enchant supports and use that one.
+            if len(language) > 4:
+                return
+
+            for code in enchant.list_languages():
+                if code.startswith(language):
+                    language = code
+                    break
+            else:
+                return
+
+        if getattr(text_view, 'spell_lang', None) == language:
             return
 
         try:

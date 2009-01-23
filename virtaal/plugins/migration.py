@@ -133,7 +133,9 @@ class Plugin(BasePlugin):
         pan_app.settings.write()
         poedit_tm_dict = dict(self.poedit_config.items('TM'))
         self.poedit_database_path = poedit_tm_dict['database_path']
-        self.poedit_languages = poedit_tm_dict['languages'].split(':')
+        self.poedit_languages = []
+        if 'languages' in poedit_tm_dict and poedit_tm_dict['languages']:
+            self.poedit_languages = poedit_tm_dict['languages'].split(':')
         self.migrated.append(_("Poedit settings"))
 
     def poedit_tm_import(self):

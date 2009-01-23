@@ -70,8 +70,8 @@ class Settings:
     }
     general =       {
             "lastdir": "",
-            "windowheight": 796,
-            "windowwidth": 544,
+            "windowwidth": 796,
+            "windowheight": 544,
     }
     language =      {
             "nplurals": 0,

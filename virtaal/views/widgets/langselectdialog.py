@@ -82,6 +82,7 @@ class LanguageSelectDialog(object):
         self.tvw_targetlang.append_column(col)
 
         cell = gtk.CellRendererText()
+        #l10n: This is the column heading for the language code
         col = gtk.TreeViewColumn(_('Code'))
         col.pack_start(cell)
         col.add_attribute(cell, 'text', 1)

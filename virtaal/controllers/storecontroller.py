@@ -95,8 +95,8 @@ class StoreController(BaseController):
                 break
             i += 1
 
-        if not i < len(self.get_store().get_units()):
-            raise ValueError(_('Unit not found.'))
+        if i >= len(self.get_store().get_units()):
+            logging.debug('Unit not found.')
 
         if force:
             self.cursor.force_index(i)

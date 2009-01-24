@@ -31,7 +31,7 @@ class TMModel(BaseTMModel):
     """
 
     __gtype_name__ = 'TinyTmTMModel'
-    display_name = _('TinyTM TM back-end')
+    display_name = _('TinyTM')
 
     default_config = {
         "server":   "www.tinytm.org",

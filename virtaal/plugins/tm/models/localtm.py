@@ -34,7 +34,7 @@ class TMModel(BaseTMModel):
     """This is the translation memory model."""
 
     __gtype_name__ = 'LocalTMModel'
-    display_name = _('Local Virtaal TM back-end')
+    display_name = _('Local Translation Memory')
 
     default_config = {
         "tmserver_bind" : "localhost",

@@ -38,7 +38,7 @@ class TMModel(BaseTMModel):
     """
 
     __gtype_name__ = 'LibtranslateTMModel'
-    display_name = _('Libtranslate TM back-end')
+    display_name = _('Machine Translation with libtranslate')
 
     # TODO - allow the user to configure which systems to query for translations, default will be all`
 

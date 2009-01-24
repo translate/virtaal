@@ -29,7 +29,7 @@ class TMModel(BaseTMModel):
     """Translation memory model that matches against translated strings from current file"""
 
     __gtype_name__ = 'CurrentFileTMModel'
-    display_name = _('Current file TM back-end')
+    display_name = _('Currently open file')
 
     default_config = { 'max_length': 1000 }
 

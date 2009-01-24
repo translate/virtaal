@@ -97,7 +97,8 @@ class Plugin(BasePlugin):
                 message += _('The following items were migrated:') + '\n\n'
                 #l10n: This message indicates the formatting of a bullet point. Most
                 #languages wouldn't need to change it.
-                message += u"\n".join([_(u" • %s") % item for item in self.migrated])
+                message += u"\n".join([u" • %s" % item for item in self.migrated])
+                #   (we can mark this ^^^ for translation if somebody asks)
                 self.main_controller.show_info(_('Migration completed'), message)
             else:
                 message = _("Virtaal was not able to migrate any settings or data")

@@ -248,7 +248,6 @@ class Plugin(BasePlugin):
                      "target" : target,
                      "context" : ""
                      }
-            print unit
             self.tmdb.add_dict(unit, "en", lang, commit=False)
         self.tmdb.connection.commit()
         connection.close()

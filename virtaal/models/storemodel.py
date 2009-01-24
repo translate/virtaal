@@ -133,7 +133,6 @@ class StoreModel(BaseModel):
 
     def update_file(self, filename):
         # Adapted from Document.__init__()
-        print 'Loading template', filename
         newstore = factory.getobject(filename)
         oldfilename = self._trans_store.filename
 

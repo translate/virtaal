@@ -26,7 +26,7 @@ from gettext import gettext as _
 tips = [
     _("At the end of a translation, simply press <Enter> to continue with the next one."),
     _("To copy the original string into the target field, simply press <Alt+Down>."),
-    _("When editing a fuzzy translation, the fuzzy marker will automatically be removed."),
+    #_("When editing a fuzzy translation, the fuzzy marker will automatically be removed."),
     # l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
     _("To mark the current translation as fuzzy, simply press <Alt+U>."),
     _("Use Ctrl+Up or Ctrl+Down to move between translations."),

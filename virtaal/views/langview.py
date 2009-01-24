@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import os
 import gobject
 import gtk
 import logging
@@ -79,6 +80,11 @@ class LanguageView(BaseView):
             pairlabel = u'\u202b%s ← \u202b%s' % (srclang.name, tgtlang.name)
         else:
             pairlabel = u'%s → %s' % (srclang.name, tgtlang.name)
+        # While it seems that the arrows are not well supported on Windows
+        # systems, we fall back to using the French quotes. It automatically
+        # does the right thing for RTL.
+        if os.name == 'nt':
+            pairlabel = u'%s » %s' % (srclang.name, tgtlang.name)
         return pairlabel
 
     def show(self):

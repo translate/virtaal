@@ -50,8 +50,9 @@ class Virtaal(object):
         self.plugin_controller.load_plugins()
         logging.debug('Plugins loaded')
 
-        # Load the file given on the command-line
-        self.main_controller.open_file(startupfile)
+        # Load the file given on the command-line, if any
+        if startupfile:
+            self.main_controller.open_file(startupfile)
 
 
     # METHODS #

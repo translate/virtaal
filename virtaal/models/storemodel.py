@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import os
 import gobject
 import logging
 import time
@@ -116,6 +117,10 @@ class StoreModel(BaseModel):
     # METHODS #
     def load_file(self, filename):
         # Adapted from Document.__init__()
+        if not os.path.exists(filename):
+            raise IOError(_('The file "%s" does not exist.') % filename)
+        if not os.path.isfile(filename):
+            raise IOError(_('"%s" is not a usable file.') % filename)
         logging.info('Loading file %s' % (filename))
         self._trans_store = factory.getobject(filename)
         self.filename = filename

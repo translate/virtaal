@@ -88,7 +88,7 @@ def main(argv):
             def profile(profile_file, startup_file):
                 import cProfile
                 import devsupport.profiling as profiling
-                logging.info('Staring profiling run')
+                logging.info('Starting profiling run')
                 profiler = cProfile.Profile()
                 profiler.runcall(run_virtaal, startup_file)
                 k_cache_grind = profiling.KCacheGrind(profiler)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.3 on Fri Jan 23 11:09:37 2009 
+<!--Generated with glade3 3.4.3 on Sat Jan 24 09:38:14 2009 
 	Version: 3.0.1
 	Date: Thu Dec  6 12:30:34 2007
 	User: fwolff
@@ -475,7 +475,9 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="label" translatable="yes">Missing Language...</property>
+                        <property name="has_tooltip">True</property>
+                        <property name="tooltip_text">Click here to add a language that is not listed</property>
+                        <property name="label" translatable="yes" comments="This button will take the user to a dialogue to add a language that is not listed yet for selection.">Missing Language...</property>
                         <property name="response_id">0</property>
                       </widget>
                     </child>

@@ -79,6 +79,7 @@ class PluginController(BaseController):
     # METHODS #
     def disable_plugin(self, name):
         """Destroy the plug-in with the given name."""
+        logging.debug('Disabling plugin: %s' % (name))
         if name in self.plugins:
             self.plugins[name].destroy()
             del self.plugins[name]

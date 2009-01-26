@@ -26,6 +26,7 @@ from maincontroller   import MainController
 from modecontroller   import ModeController
 from storecontroller  import StoreController
 from plugincontroller import PluginController
+from prefscontroller  import PreferencesController
 from undocontroller   import UndoController
 from unitcontroller   import UnitController
 
@@ -37,6 +38,7 @@ __all__ = [
     'MainController',
     'ModeController',
     'PluginController',
+    'PreferencesController',
     'StoreController',
     'UndoController',
     'UnitController'

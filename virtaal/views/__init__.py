@@ -25,7 +25,19 @@ from baseview  import BaseView
 from langview  import LanguageView
 from mainview  import MainView
 from modeview  import ModeView
+from prefsview import PreferencesView
 from storeview import StoreView
 from unitview  import UnitView
 
-__all__ = ['markup', 'recent', 'rendering', 'BaseView', 'LanguageView', 'MainView', 'ModeView', 'StoreView', 'UnitView']
+__all__ = [
+    'markup',
+    'recent',
+    'rendering',
+    'BaseView',
+    'LanguageView',
+    'MainView',
+    'ModeView',
+    'PreferencesView',
+    'StoreView',
+    'UnitView'
+]

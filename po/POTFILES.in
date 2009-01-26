@@ -1,8 +1,6 @@
 [encoding: UTF-8]
-bin/virtaal
 share/applications/virtaal.desktop.in
 share/virtaal/virtaal.glade
-share/mime/packages/virtaal-mimetype.xml.in
 virtaal/tips.py
 virtaal/controllers/maincontroller.py
 virtaal/controllers/storecontroller.py
@@ -28,4 +26,6 @@ virtaal/views/unitview.py
 virtaal/views/widgets/aboutdialog.py
 virtaal/views/widgets/langadddialog.py
 virtaal/views/widgets/langselectdialog.py
+share/mime/packages/virtaal-mimetype.xml.in
+bin/virtaal
 devsupport/optparse.py

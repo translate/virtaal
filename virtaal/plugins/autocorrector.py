@@ -270,6 +270,10 @@ class Plugin(BasePlugin):
 
         self._store_loaded_id = self.main_controller.store_controller.connect('store-loaded', on_store_loaded)
 
+        if self.main_controller.store_controller.get_store():
+            # Connect to already loaded store. This happens when the plug-in is enabled after loading a store.
+            on_store_loaded(self.main_controller.store_controller)
+
     def destroy(self):
         """Remove all signal-connections."""
         self.autocorr.clear_widgets()

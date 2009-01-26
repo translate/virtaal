@@ -45,6 +45,7 @@ class PreferencesView(BaseView):
             self._widgets[name] = self.gui.get_widget(name)
 
         self._widgets['dialog'] = self.gui.get_widget('PreferencesDlg')
+        self._widgets['dialog'].set_transient_for(self.controller.main_controller.view.main_window)
 
     def _init_gui(self):
         self._get_widgets()

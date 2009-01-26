@@ -272,6 +272,7 @@ class Plugin(BasePlugin):
 
     def destroy(self):
         """Remove all signal-connections."""
+        self.autocorr.clear_widgets()
         self.main_controller.store_controller.disconnect(self._store_loaded_id)
         if getattr(self, '_cursor_changed_id', None):
             self.main_controller.store_controller.cursor.disconnect(self._cursor_changed_id)

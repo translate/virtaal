@@ -107,8 +107,8 @@ class AutoCompletor(object):
 
     def clear_words(self):
         """Remove all registered words; effectively turns off auto-completion."""
-        self._word_freq.clear()
-        self._word_list.clear()
+        self._word_freq = []
+        self._word_list = defaultdict(lambda: 0)
 
     def remove_widget(self, widget):
         """Remove a widget (currently only C{gtk.TextView}s are accepted) from
@@ -329,8 +329,14 @@ class Plugin(BasePlugin):
 
         self._store_loaded_id = self.main_controller.store_controller.connect('store-loaded', on_store_loaded)
 
+        if self.main_controller.store_controller.get_store():
+            # Connect to already loaded store. This happens when the plug-in is enabled after loading a store.
+            on_store_loaded(self.main_controller.store_controller)
+
     def destroy(self):
         """Remove all signal-connections."""
+        self.autocomp.clear_words()
+        self.autocomp.clear_widgets()
         self.main_controller.store_controller.disconnect(self._store_loaded_id)
         if getattr(self, '_cursor_changed_id', None):
             self.main_controller.store_controller.cursor.disconnect(self._cursor_changed_id)

@@ -11,6 +11,7 @@ virtaal/views/prefsview.py
 virtaal/plugins/autocompletor.py
 virtaal/plugins/autocorrector.py
 virtaal/plugins/migration.py
+virtaal/plugins/tm/__init__.py
 virtaal/plugins/tm/models/currentfile.py
 virtaal/plugins/tm/models/dummytm.py
 virtaal/plugins/tm/models/libtranslate.py

@@ -24,7 +24,7 @@ from tmcontroller import TMController
 
 
 class Plugin(BasePlugin):
-    display_name = 'Translation Memory'
+    display_name = _('Translation Memory')
     version = 0.1
     default_config = {
         'disabled_models': 'dummytm,libtranslate,remotetm,tinytm',

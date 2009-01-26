@@ -48,12 +48,13 @@ class PreferencesController(BaseController):
 
     def update_prefs_gui_data(self):
         plugin_data = []
-        disabled = self.plugin_controller.get_disabled_plugins()
         for found_plugin in self.plugin_controller._find_plugin_names():
-            if found_plugin in disabled:
-                plugin_data.append((False, found_plugin, found_plugin))
-            elif found_plugin in self.plugin_controller.plugins:
+            if found_plugin in self.plugin_controller.plugins:
                 plugin = self.plugin_controller.plugins[found_plugin]
                 plugin_data.append((True, plugin.display_name, found_plugin))
+            else:
+                plugin_data.append((False, found_plugin, found_plugin))
+        # XXX: Note that we ignore plugin_controller.get_disabled_plugins(), because we need to know
+        #      which plug-ins are currently enabled/disabled (not dependant on config).
 
         self.view.plugin_data = plugin_data

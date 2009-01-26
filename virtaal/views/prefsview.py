@@ -108,13 +108,11 @@ class PreferencesView(BaseView):
 
     # METHODS #
     def show(self):
+        self._widgets['tvw_plugins'].get_selection().unselect_all()
         self.controller.update_prefs_gui_data()
-        response = self._widgets['dialog'].run()
+        #logging.debug('Plug-in data: %s' % (str(self.plugin_data)))
+        self._widgets['dialog'].run()
         self._widgets['dialog'].hide()
-
-        if response != gtk.RESPONSE_OK:
-            return False
-        return True
 
 
     # EVENT HANDLERS #

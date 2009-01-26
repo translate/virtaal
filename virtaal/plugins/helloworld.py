@@ -39,25 +39,31 @@ class Plugin(BasePlugin):
         self.internal_name = internal_name
         self.main_controller = main_controller
 
+        self.load_config()
         self._init_plugin()
         logging.debug('HelloWorld loaded')
 
         self.annoy = True
-        self.load_config()
 
     def _init_plugin(self):
-        self.main_controller.store_controller.connect('store-loaded', self.on_store_loaded)
+        self._store_loaded_id = self.main_controller.store_controller.connect('store-loaded', self.on_store_loaded)
+
+        if self.main_controller.store_controller.get_store():
+            self.on_store_loaded(self.main_controller.store_controller)
 
 
     # METHODS #
     def destroy(self):
+        self.main_controller.store_controller.disconnect(self._store_loaded_id)
+        if getattr(self, '_cursor_changed_id', None):
+            self.main_controller.store_controller.cursor.disconnect(self._cursor_changed_id)
         self.save_config()
 
 
     # EVENT HANDLERS #
     def on_store_loaded(self, storecontroller):
         self.main_controller.show_info(self.config["name"], self.config["info"])
-        storecontroller.cursor.connect('cursor-changed', self.on_cursor_change)
+        self._cursor_changed_id = storecontroller.cursor.connect('cursor-changed', self.on_cursor_change)
 
     def on_cursor_change(self, cursor):
         if self.annoy:

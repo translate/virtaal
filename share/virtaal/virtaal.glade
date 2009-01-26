@@ -116,7 +116,7 @@
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_cut">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">gtk-cut</property>
+                        <property name="label">gtk-cut</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                       </widget>
@@ -124,7 +124,7 @@
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_copy">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">gtk-copy</property>
+                        <property name="label">gtk-copy</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                       </widget>
@@ -132,7 +132,7 @@
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_paste">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">gtk-paste</property>
+                        <property name="label">gtk-paste</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                       </widget>
@@ -146,7 +146,7 @@
                       <widget class="GtkImageMenuItem" id="mnu_prefs">
                         <property name="visible">True</property>
                         <property name="accel_path">&lt;Virtaal&gt;/Edit/Preferences</property>
-                        <property name="label" translatable="yes">gtk-preferences</property>
+                        <property name="label">gtk-preferences</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                       </widget>
@@ -929,7 +929,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="label" translatable="yes">gtk-close</property>
+                <property name="label">gtk-close</property>
                 <property name="use_stock">True</property>
                 <property name="response_id">0</property>
               </widget>

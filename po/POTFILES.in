@@ -7,6 +7,7 @@ virtaal/controllers/storecontroller.py
 virtaal/modes/defaultmode.py
 virtaal/modes/quicktransmode.py
 virtaal/modes/searchmode.py
+virtaal/views/prefsview.py
 virtaal/plugins/autocompletor.py
 virtaal/plugins/autocorrector.py
 virtaal/plugins/migration.py
@@ -26,6 +27,7 @@ virtaal/views/unitview.py
 virtaal/views/widgets/aboutdialog.py
 virtaal/views/widgets/langadddialog.py
 virtaal/views/widgets/langselectdialog.py
+virtaal/models/storemodel.py
 share/mime/packages/virtaal-mimetype.xml.in
 bin/virtaal
 devsupport/optparse.py

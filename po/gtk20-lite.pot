@@ -120,6 +120,10 @@ msgstr ""
 msgid "_Quit"
 msgstr ""
 
+#. Edit->Preferences
+msgid "_Preferences"
+msgstr ""
+
 #. Help->About
 msgid "_About"
 msgstr ""

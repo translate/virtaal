@@ -96,6 +96,11 @@ class TMController(BaseController):
                 self.view.display_matches(matches)
 
     def destroy(self):
+        # Destroy TMView
+        self.view.hide()
+        self.view.destroy()
+
+        # Disconnect signals
         self.main_controller.store_controller.disconnect(self._store_loaded_id)
         if getattr(self, '_cursor_changed_id', None):
             self.main_controller.store_controller.cursor.disconnect(self._cursor_changed_id)
@@ -104,6 +109,7 @@ class TMController(BaseController):
         if getattr(self, '_target_focused_id', None):
             self.main_controller.unit_controller.view.disconnect(self._target_focused_id)
 
+        # Destroy TM plug-ins
         for model_name in self._model_signal_ids:
             self.plugin_controller.plugins[model_name].disconnect(self._model_signal_ids[model_name])
 

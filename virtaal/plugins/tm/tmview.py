@@ -46,15 +46,28 @@ class TMView(BaseView, GObjectWrapper):
         self.max_matches = max_matches
         self._may_show_tmwindow = False
         self._should_show_tmwindow = False
+        self._signal_ids = []
 
         self.tmwindow = TMWindow(self)
-        self.tmwindow.treeview.connect('row-activated', self._on_row_activated)
-
-        controller.main_controller.store_controller.view.parent_widget.get_vscrollbar().connect('value-changed', self._on_store_view_scroll)
-
         main_window = self.controller.main_controller.view.main_window
-        main_window.connect('focus-in-event', self._on_focus_in_mainwindow)
-        main_window.connect('focus-out-event', self._on_focus_out_mainwindow)
+
+        self._signal_ids.append((
+            self.tmwindow.treeview,
+            self.tmwindow.treeview.connect('row-activated', self._on_row_activated)
+        ))
+        self._signal_ids.append((
+            controller.main_controller.store_controller.view.parent_widget.get_vscrollbar(),
+            controller.main_controller.store_controller.view.parent_widget.get_vscrollbar().connect('value-changed', self._on_store_view_scroll)
+        ))
+        self._signal_ids.append((
+            main_window,
+            main_window.connect('focus-in-event', self._on_focus_in_mainwindow)
+        ))
+        self._signal_ids.append((
+            main_window,
+            main_window.connect('focus-out-event', self._on_focus_out_mainwindow)
+        ))
+
         self._setup_key_bindings()
 
     def _setup_key_bindings(self):
@@ -81,6 +94,10 @@ class TMView(BaseView, GObjectWrapper):
         """Clear the TM matches."""
         self.tmwindow.liststore.clear()
         self.hide()
+
+    def destroy(self):
+        for gobj, signal_id in self._signal_ids:
+            gobj.disconnect(signal_id)
 
     def display_matches(self, matches):
         """Add the list of TM matches to those available and show the TM window."""

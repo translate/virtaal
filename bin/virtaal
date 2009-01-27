@@ -27,7 +27,6 @@ from os import path
 
 from translate.storage import factory
 
-from virtaal.main import Virtaal
 from virtaal.common import pan_app, __version__
 
 optparse._ = _
@@ -81,6 +80,10 @@ def main(argv):
 
     def get_virtaal_runner(options):
         def run_virtaal(startup_file):
+            # The Virtaal class is importer here to allow changes made in this script (eg. pan_app.DEBUG)
+            # to be visible to the rest of the program, seeing as Virtaal imports all controllers, which
+            # basically imports the the whole core.
+            from virtaal.main import Virtaal
             prog = Virtaal(startup_file)
             prog.run()
 
@@ -101,13 +104,12 @@ def main(argv):
                 parser.error(_("Could not open profile file '%(filename)s'") % {"filename":options.profile})
 
         def default_runner(startup_file):
-            if not options.debug:
+            if not pan_app.DEBUG:
                 try:
                     import psyco
                     psyco.full()
                 except Exception:
                     pass
-            pan_app.DEBUG = options.debug
             run_virtaal(startup_file)
 
         if options.profile != None:
@@ -116,6 +118,7 @@ def main(argv):
             return default_runner
 
     options, args = parser.parse_args(argv[1:])
+    pan_app.DEBUG = options.debug
     set_config(options)
     set_logging(options)
     startup_file = get_startup_file(options)

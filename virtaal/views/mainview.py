@@ -158,6 +158,7 @@ class MainView(BaseView):
                 "on_update_activate" : self._on_file_update,
                 "on_revert_activate" : self._on_file_revert,
                 "on_quit" : self._on_quit,
+                "on_menuitem_fullscreen_toggled" : self._on_fullscreen,
                 "on_about_activate" : self._on_help_about,
                 "on_tutorial_activate" : self._on_tutorial,
                 "on_localization_guide_activate" : self._on_localization_guide,
@@ -175,6 +176,9 @@ class MainView(BaseView):
             int(pan_app.settings.general['windowheight'])
         )
         self._top_window = self.main_window
+
+        self.main_window.connect('window-state-event', self._on_window_state_event)
+
         recent_files = self.gui.get_widget("recent_files")
         recent.rc.connect("item-activated", self._on_recent_file_activated)
         recent_files.set_submenu(recent.rc)
@@ -491,10 +495,16 @@ class MainView(BaseView):
     def _on_file_revert(self, widget=None):
         self.controller.revert_file()
 
+    def _on_fullscreen(self, widget=None):
+        if widget.get_active():
+            self.main_window.fullscreen()
+        else:
+            self.main_window.unfullscreen()
+
     def _on_tutorial(self, widget=None):
         filename = pan_app.get_abs_data_filename(["virtaal", "tutorial.pot"])
         self.controller.open_file(filename)
-                                                 
+
     def _on_localization_guide(self, _widget=None):
         # Should be more redundent
         # If the guide is installed and no internet then open local
@@ -527,3 +537,7 @@ class MainView(BaseView):
         self.status_bar.set_sensitive(True)
         if getattr(self, '_uri', None):
             recent.rm.add_item(self._uri)
+
+    def _on_window_state_event(self, widget, event):
+        mnu_fullscreen = self.gui.get_widget('menuitem_fullscreen')
+        mnu_fullscreen.set_active(event.new_window_state & gdk.WINDOW_STATE_FULLSCREEN)

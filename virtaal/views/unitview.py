@@ -282,12 +282,6 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     def _create_targets(self):
         def on_text_view_n_press_event(text_view, event):
             """Handle special keypresses in the textarea."""
-            # Enter
-            if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
-                self.must_advance = True
-                self.editing_done()
-                return True
-
             # Alt-Down
             if event.keyval == gtk.keysyms.Down and event.state & gtk.gdk.MOD1_MASK:
                 idle_add(self.copy_original, text_view)
@@ -310,7 +304,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
         def target_key_press_event(text_view, event, next_text_view):
             if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
-                if next_text_view.props.visible:
+                if next_text_view is not None and next_text_view.props.visible:
                     self.focus_text_view(next_text_view)
                 else:
                     # text_view is the last text view in this unit, so we need to move on
@@ -332,7 +326,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             self._widgets['vbox_targets'].pack_start(target)
             self.targets.append(textview)
 
-        for target, next_target in zip(self.targets, self.targets[1:]):
+        for target, next_target in zip(self.targets, self.targets[1:] + [None]):
             target.connect('key-press-event', target_key_press_event, next_target)
 
 

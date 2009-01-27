@@ -139,6 +139,11 @@ class MainView(BaseView):
                 group = igemacintegration.ige_mac_menu_add_app_menu_group()
                 igemacintegration.ige_mac_menu_add_app_menu_item(group, mnu_about, None)
                 self.gui.get_widget("separator1").hide()
+                # Move the preferences menu item
+                mnu_about = self.gui.get_widget("mnu_prefs")
+                group = igemacintegration.ige_mac_menu_add_app_menu_group()
+                igemacintegration.ige_mac_menu_add_app_menu_item(group, mnu_about, None)
+                self.gui.get_widget("menuitem5").hide()
             except ImportError, e:
 
                 logging.debug("igemacintegration module not found. Expect zero integration with the mac desktop.")

@@ -393,9 +393,9 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                 # The above condition should *never* be False
                 txtview = self.sources[0]
                 txtview.get_buffer().set_text('')
-                txtview.show()
+                txtview.parent.show()
             for i in range(1, num_source_widgets):
-                self.sources[i].hide()
+                self.sources[i].parent.hide_all()
             return
 
         num_unit_sources = 1
@@ -414,9 +414,10 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
                 self.sources[i].modify_font(rendering.get_source_font_description())
                 self.sources[i].get_buffer().set_text(markup.escape(sourcestr))
-                self.sources[i].parent.show()
+                self.sources[i].parent.show_all()
+                #logging.debug('Showing source #%d: %s' % (i, self.sources[i]))
             else:
-                #logging.debug('Hiding target #%d' % (i))
+                #logging.debug('Hiding source #%d: %s' % (i, self.sources[i]))
                 self.sources[i].parent.hide_all()
 
     def _layout_update_context_info(self):
@@ -455,9 +456,9 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                 # The above condition should *never* be False
                 txtview = self.targets[0]
                 txtview.get_buffer().set_text('')
-                txtview.show()
+                txtview.parent.show_all()
             for i in range(1, num_target_widgets):
-                self.targets[i].hide()
+                self.targets[i].parent.hide_all()
             return
 
         num_unit_targets = 1
@@ -476,9 +477,10 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
                 self.targets[i].modify_font(rendering.get_target_font_description())
                 self.targets[i].get_buffer().set_text(markup.escape(targetstr))
-                self.targets[i].parent.show()
+                self.targets[i].parent.show_all()
+                #logging.debug('Showing target #%d: %s' % (i, self.targets[i]))
             else:
-                #logging.debug('Hiding target #%d' % (i))
+                #logging.debug('Hiding target #%d: %s' % (i, self.targets[i]))
                 self.targets[i].parent.hide_all()
 
     def _layout_update_fuzzy(self):

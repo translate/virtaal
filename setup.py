@@ -385,7 +385,8 @@ def add_mac_options(options):
         "app": ["bin/run_virtaal.py"],
         "options": {
             "py2app": {
-            "includes":   ["lxml", "lxml._elementpath", "lxml.etree", "glib", "gio", "psyco", "cairo", "pango", "pangocairo", "atk", "gobject", "gtk.keysyms", "pycurl", "translate.services", "translate.services.tmclient", "translate.services.opentranclient"],
+            "packages": ["CoreFoundation", "objc"],
+            "includes":   ["lxml", "lxml._elementpath", "lxml.etree", "glib", "gio", "psyco", "cairo", "pango", "pangocairo", "atk", "gobject", "gtk.keysyms", "pycurl", "translate.services", "translate.services.tmclient", "translate.services.opentranclient", "CoreFoundation"],
                 #"semi_standalone": True,
                 "compressed": True,
                 "argv_emulation": True,
@@ -461,8 +462,11 @@ if __name__ == '__main__':
         f = open('dist/virtaal.app/Contents/Resources/__boot__.py', "r+")
         s = f.read()
         f.truncate(0)
-        s = s.replace("base = os.environ['RESOURCEPATH']", r"""base = os.environ['RESOURCEPATH']
-    sys.path = [os.path.join(base, "lib", "python2.5", "lib-dynload")] + sys.path""")
+        s = s.replace("base = os.environ['RESOURCEPATH']", r"""
+    base = os.environ['RESOURCEPATH']
+    sys.path = [os.path.join(base, "lib", "python2.5", "lib-dynload")] + sys.path
+    sys.path = [os.path.join(base, "lib", "python2.5")] + sys.path
+""")
         f.seek(0)
         f.write(s)
         f.close()

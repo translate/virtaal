@@ -57,6 +57,10 @@ def name():
         return u""
     return pwd.getpwnam(getpass.getuser())[4].split(",")[0]
 
+def osx_lang():
+    """Do some non-posix things to get the language no OSX."""
+    import CoreFoundation
+    return CoreFoundation.CFLocaleCopyPreferredLanguages()[0]
 
 class Settings:
     """Handles loading/saving settings from/to a configuration file."""
@@ -101,9 +105,13 @@ class Settings:
 
         try:
             lang = locale.getdefaultlocale(('LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG'))[0]
+            if not lang and sys.platform == "darwin":
+               lang = osx_lang()
             self.language["uilang"] = lang
             # guess default target lang based on locale, simplify to commonly used form
             lang = locale.getdefaultlocale(('LANGUAGE', 'LC_ALL', 'LANG'))[0]
+            if not lang and sys.platform == "darwin":
+               lang = osx_lang()
             self.language["targetlang"] = data.simplify_to_common(lang)
         except:
             logging.info("Could not get locale")

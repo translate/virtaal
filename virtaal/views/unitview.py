@@ -354,6 +354,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     def _layout_update_notes(self, origin):
         if origin not in self._widgets['notes']:
             label = gtk.Label()
+            label.set_line_wrap(True)
 
             self._widgets['vbox_middle'].pack_start(label)
             if origin == 'programmer':

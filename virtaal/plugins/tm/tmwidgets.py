@@ -105,7 +105,7 @@ class TMWindow(gtk.Window):
         height = min(self.rows_height(), self.MAX_HEIGHT) + 4
         # TODO: Replace the hard-coded value above with a query to the theme. It represents the width of the shadow of self.scrolled_window
 
-        logging.debug('TMWindow.update_geometry(%dx%d +%d+%d)' % (width, height, x, y))
+        #logging.debug('TMWindow.update_geometry(%dx%d +%d+%d)' % (width, height, x, y))
         self.set_size_request(width, height)
         self.reshow_with_initial_size()
         self.move(x, y)

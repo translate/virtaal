@@ -42,6 +42,8 @@ def gtk_widget_compute_optimal_height(widget, width):
 
 @compute_optimal_height.when_type(gtk.Container)
 def gtk_container_compute_optimal_height(widget, width):
+    if not widget.props.visible:
+        return
     for child in widget.get_children():
         compute_optimal_height(child, width)
 
@@ -60,6 +62,8 @@ def make_pango_layout(widget, text, width):
 
 @compute_optimal_height.when_type(gtk.TextView)
 def gtk_textview_compute_optimal_height(widget, width):
+    if not widget.props.visible:
+        return
     buf = widget.get_buffer()
     # For border calculations, see gtktextview.c:gtk_text_view_size_request in the GTK source
     border = 2 * widget.border_width - 2 * widget.parent.border_width
@@ -82,6 +86,8 @@ def gtk_labelexpander_compute_optimal_height(widget, width):
     if widget.label.child.get_text().strip() == "":
         widget.set_size_request(-1, 0)
     else:
+#        _w, h = make_pango_layout(widget, widget.label.child.get_label()[0], width).get_pixel_size()
+#        _w, h = make_pango_layout(widget, widget.label.child.get_label(), width).get_pixel_size()
         _w, h = widget.label.child.get_layout().get_pixel_size()
         widget.set_size_request(-1, h + 4)
 

@@ -49,28 +49,38 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         'target-focused': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_INT,)),
     }
 
-    # A regular expression to help us find a meaningful place to position the
-    # cursor initially.
     first_word_re = re.compile("(?m)(?u)^(<[^>]+>|\\\\[nt]|[\W$^\n])*(\\b|\\Z)")
+    """A regular expression to help us find a meaningful place to position the
+        cursor initially."""
+
+    MAX_SOURCES = 6
+    """The number of text boxes to manage as sources."""
+    MAX_TARGETS = 6
+    """The number of text boxes to manage as targets."""
 
     # INITIALIZERS #
-    def __init__(self, controller, unit):
+    def __init__(self, controller, unit=None):
         gtk.EventBox.__init__(self)
         GObjectWrapper.__init__(self)
 
         self.controller = controller
         self._focused_target_n = None
         self.gladefilename, self.gui = self.load_glade_file(["virtaal", "virtaal.glade"], root='UnitEditor', domain="virtaal")
-        self.sources = []
-        self.targets = []
-        self.options = {}
 
         self.must_advance = False
         self._modified = False
 
         self.connect('key-press-event', self._on_key_press_event)
 
+        self._widgets = {
+            'context_info': None,
+            'fuzzy': None,
+            'notes': {},
+            'sources': [],
+            'targets': []
+        }
         self._get_widgets()
+        self.unit = None
         self.load_unit(unit)
 
 
@@ -96,6 +106,9 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         buff.set_text(newtext)
         if cursor_pos > -1:
             buff.place_cursor(buff.get_iter_at_offset(cursor_pos))
+
+    sources = property(lambda self: self._widgets['sources'])
+    targets = property(lambda self: self._widgets['targets'])
 
 
     # METHODS #
@@ -125,6 +138,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         self.focus_text_view(self.targets[0])
 
     def do_editing_done(self, *_args):
+        #logging.debug('emit("unit-done", self.unit=%s)' % (self.unit))
         self.emit('unit-done', self.unit)
 
     def focus_text_view(self, text_view):
@@ -137,51 +151,60 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         buf.place_cursor(buf.get_iter_at_offset(translation_start))
 
         self._focused_target_n = self.targets.index(text_view)
+        #logging.debug('emit("target-focused", focused_target_n=%d)' % (self._focused_target_n))
         self.emit('target-focused', self._focused_target_n)
 
     def load_unit(self, unit):
         """Load a GUI (C{gtk.CellEditable}) for the given unit."""
-        if not unit:
-            return None
-
+        if unit is self.unit and unit is not None:
+            return
         self.unit = unit
-        self._get_widgets()
-        self._build_default_editor()
-        self.widgets['tbl_editor'].reparent(self)
+        self.disable_signals(['modified', 'insert-text', 'delete-text'])
+        self._update_editor_gui()
+        self.enable_signals(['modified', 'insert-text', 'delete-text'])
+        self._widgets['tbl_editor'].reparent(self)
 
-        i = 0
-        for target in self.targets:
-            target._source_text = unit.source # FIXME: Find a better way to do this!
-            buff = target.get_buffer()
-            target.connect('key-press-event', self._on_textview_key_press_event)
-            target.connect('paste-clipboard', self._on_textview_paste_clipboard, i)
-            buff.connect('changed', self._on_target_changed, i)
-            buff.connect('insert-text', self._on_target_insert_text, i)
-            buff.connect('delete-range', self._on_target_delete_range, i)
-            i += 1
-
-        for option in self.options.values():
-            option.connect("toggled", self._on_fuzzy_toggled)
+        if unit is not None:
+            for i in range(len(self.targets)):
+                self.targets[i]._source_text = unit.source # FIXME: Find a better way to do this!
 
         self._modified = False
 
     def modified(self):
         self._modified = True
+        #logging.debug('emit("modified")')
         self.emit('modified')
 
     def show(self):
-        self.show_all()
+        super(UnitView, self).show()
 
-    def update_spell_checker(self):
+    def update_languages(self):
         srclang = self.controller.main_controller.lang_controller.source_lang.code
         tgtlang = self.controller.main_controller.lang_controller.target_lang.code
 
         for textview in self.sources:
-            self._update_textview_spell_checker(textview, srclang)
+            self._update_textview_language(textview, srclang)
+            textview.modify_font(rendering.get_source_font_description())
+            # This causes some problems, so commented out for now
+            #textview.get_pango_context().set_font_description(rendering.get_source_font_description())
         for textview in self.targets:
-            self._update_textview_spell_checker(textview, tgtlang)
+            self._update_textview_language(textview, tgtlang)
+            textview.modify_font(rendering.get_target_font_description())
+            textview.get_pango_context().set_font_description(rendering.get_target_font_description())
 
-    def _build_default_editor(self):
+    def _get_widgets(self):
+        """Get the widgets we would like to use from the loaded Glade XML object."""
+        if not getattr(self, '_widgets', None):
+            self._widgets = {}
+
+        widget_names = ('tbl_editor', 'vbox_middle', 'vbox_sources', 'vbox_targets', 'vbox_options')
+
+        for name in widget_names:
+            self._widgets[name] = self.gui.get_widget(name)
+
+        self._widgets['vbox_targets'].connect('key-press-event', self._on_key_press_event)
+
+    def _update_editor_gui(self):
         """Build the default editor with the following components:
             - A C{gtk.TextView} for each source
             - A C{gtk.TextView} for each target
@@ -189,24 +212,16 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             - A C{widgets.LabelExpander} for programmer notes
             - A C{widgets.LabelExpander} for translator notes
             - A C{widgets.LabelExpander} for context info"""
-        self._layout_add_notes('programmer')
-        self._layout_add_sources()
-        self._layout_add_context_info()
-        self._layout_add_targets()
-        self._layout_add_notes('translator')
-        self._layout_add_fuzzy()
+        self._layout_update_notes('programmer')
+        self._layout_update_sources()
+        self._layout_update_context_info()
+        self._layout_update_targets()
+        self._layout_update_notes('translator')
+        self._layout_update_fuzzy()
 
-    def _get_widgets(self):
-        """Load the Glade file and get the widgets we would like to use."""
-        self.widgets = {}
-
-        widget_names = ('tbl_editor', 'vbox_middle', 'vbox_sources', 'vbox_targets', 'vbox_options')
-
-        for name in widget_names:
-            self.widgets[name] = self.gui.get_widget(name)
-
-    def _update_textview_spell_checker(self, text_view, language):
+    def _update_textview_language(self, text_view, language):
         language = str(language)
+        text_view.get_pango_context().set_language(rendering.get_language(language))
 
         global gtkspell
         if gtkspell is None:
@@ -252,11 +267,75 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     if not pan_app.DEBUG:
         try:
             import psyco
-            psyco.cannotcompile(_update_textview_spell_checker)
+            psyco.cannotcompile(_update_textview_language)
         except ImportError, e:
             pass
 
     # GUI BUILDING CODE #
+    def _create_sources(self):
+        for i in range(len(self.sources), self.MAX_SOURCES):
+            source = self._create_textbox('', editable=False, scroll_policy=gtk.POLICY_NEVER)
+            textview = source.get_child()
+            self._widgets['vbox_sources'].pack_start(source)
+            self.sources.append(textview)
+
+    def _create_targets(self):
+        def on_text_view_n_press_event(text_view, event):
+            """Handle special keypresses in the textarea."""
+            # Enter
+            if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
+                self.must_advance = True
+                self.editing_done()
+                return True
+
+            # Alt-Down
+            if event.keyval == gtk.keysyms.Down and event.state & gtk.gdk.MOD1_MASK:
+                idle_add(self.copy_original, text_view)
+                return True
+
+            # Automatically move to the next line if \n is entered
+            if event.keyval == gtk.keysyms.n:
+                buf = text_view.get_buffer()
+                curpos = buf.props.cursor_position
+                lastchar = buf.get_text(
+                    buf.get_iter_at_offset(curpos-1),
+                    buf.get_iter_at_offset(curpos)
+                )
+                if lastchar == "\\":
+                    buf.insert_at_cursor('n\n')
+                    text_view.scroll_mark_onscreen(buf.get_insert())
+                    return True
+
+            return False
+
+        def target_key_press_event(text_view, event, next_text_view):
+            if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
+                if next_text_view.props.visible:
+                    self.focus_text_view(next_text_view)
+                else:
+                    # text_view is the last text view in this unit, so we need to move on
+                    # to the next one.
+                    text_view.parent.parent.emit('key-press-event', event)
+                return True
+            return False
+
+        for i in range(len(self.targets), self.MAX_TARGETS):
+            target = self._create_textbox('', editable=True, scroll_policy=gtk.POLICY_AUTOMATIC)
+            textview = target.get_child()
+            buff = textview.get_buffer()
+            textview.connect('key-press-event', on_text_view_n_press_event)
+            textview.connect('paste-clipboard', self._on_textview_paste_clipboard, i)
+            buff.connect('changed', self._on_target_changed, i)
+            buff.connect('insert-text', self._on_target_insert_text, i)
+            buff.connect('delete-range', self._on_target_delete_range, i)
+
+            self._widgets['vbox_targets'].pack_start(target)
+            self.targets.append(textview)
+
+        for target, next_target in zip(self.targets, self.targets[1:]):
+            target.connect('key-press-event', target_key_press_event, next_target)
+
+
     def _create_textbox(self, text='', editable=True, scroll_policy=gtk.POLICY_AUTOMATIC):
         textview = gtk.TextView()
         textview.set_editable(editable)
@@ -272,150 +351,153 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
         return scrollwnd
 
-    def _layout_add_notes(self, origin):
-        note_text = self.unit.getnotes(origin) or u""
-        if origin == "programmer" and len(note_text) < 15:
+    def _layout_update_notes(self, origin):
+        if origin not in self._widgets['notes']:
+            label = gtk.Label()
+
+            self._widgets['vbox_middle'].pack_start(label)
+            if origin == 'programmer':
+                self._widgets['vbox_middle'].reorder_child(label, 0)
+            elif origin == 'translator':
+                self._widgets['vbox_middle'].reorder_child(label, 4)
+
+            self._widgets['notes'][origin] = label
+
+        if self.unit is None:
+            note_text = u""
+        else:
+            note_text = self.unit.getnotes(origin) or u""
+
+        if origin == "programmer" and len(note_text) < 15 and self.unit is not None:
             note_text += u"  " + u" ".join(self.unit.getlocations()[:3])
-        textbox = self._create_textbox(
-                note_text,
-                editable=False,
-                scroll_policy=gtk.POLICY_NEVER
-            )
-        textview = textbox.get_child()
-        labelexpander = LabelExpander(textbox, lambda *args: note_text)
 
-        self.widgets['vbox_middle'].add(labelexpander)
-        if origin == 'programmer':
-            self.widgets['vbox_middle'].reorder_child(labelexpander, 0)
-        elif origin == 'translator':
-            self.widgets['vbox_middle'].reorder_child(labelexpander, 4)
+        self._widgets['notes'][origin].set_text(note_text)
 
-    def _layout_add_sources(self):
-        langcode = self.controller.main_controller.lang_controller.source_lang.code
-        num_sources = 1
+        if note_text:
+            self._widgets['notes'][origin].show_all()
+        else:
+            self._widgets['notes'][origin].hide()
+
+    def _layout_update_sources(self):
+        num_source_widgets = len(self.sources)
+
+        if num_source_widgets < self.MAX_SOURCES:
+            # Technically the condition above will only be True when num_target_widgets == 0, ie.
+            # no target text boxes has been created yet.
+            self._create_sources()
+            num_source_widgets = len(self.sources)
+
+        if self.unit is None:
+            if num_source_widgets >= 1:
+                # The above condition should *never* be False
+                txtview = self.sources[0]
+                txtview.get_buffer().set_text('')
+                txtview.show()
+            for i in range(1, num_source_widgets):
+                self.sources[i].hide()
+            return
+
+        num_unit_sources = 1
         if self.unit.hasplural():
-            num_sources = len(self.unit.source.strings)
+            num_unit_sources = len(self.unit.source.strings)
 
-        self.sources = []
-        for i in range(num_sources):
-            sourcestr = ''
-            if self.unit.hasplural():
-                sourcestr = self.unit.source.strings[i]
-            elif i == 0:
-                sourcestr = self.unit.source
+        for i in range(self.MAX_SOURCES):
+            if i < num_unit_sources:
+                sourcestr = ''
+                if self.unit.hasplural():
+                    sourcestr = self.unit.source.strings[i]
+                elif i == 0:
+                    sourcestr = self.unit.source
+                else:
+                    raise IndexError()
+
+                self.sources[i].modify_font(rendering.get_source_font_description())
+                self.sources[i].get_buffer().set_text(markup.escape(sourcestr))
+                self.sources[i].parent.show()
             else:
-                raise IndexError()
+                #logging.debug('Hiding target #%d' % (i))
+                self.sources[i].parent.hide_all()
 
-            source = self._create_textbox(
-                    markup.escape(sourcestr),
-                    editable=False,
-                    scroll_policy=gtk.POLICY_NEVER
-                )
-            textview = source.get_child()
-            self._update_textview_spell_checker(textview, langcode)
-            textview.modify_font(rendering.get_source_font_description())
-            # This causes some problems, so commented out for now
-            #textview.get_pango_context().set_font_description(rendering.get_source_font_description())
-            textview.get_pango_context().set_language(rendering.get_language(langcode))
-            self.widgets['vbox_sources'].add(source)
-            self.sources.append(textview)
+    def _layout_update_context_info(self):
+        if self.unit is None:
+            if self._widgets['context_info']:
+                self._widgets['context_info'].hide()
+            return
 
-    def _layout_add_context_info(self):
-        textbox = self._create_textbox(
+        if self._widgets['context_info']:
+            self._widgets['context_info'].show()
+            self._widgets['context_info'].get_buffer().set_text(self.unit.getcontext())
+        else:
+            textbox = self._create_textbox(
                 self.unit.getcontext(),
                 editable=False,
                 scroll_policy=gtk.POLICY_NEVER
             )
-        textview = textbox.get_child()
-        labelexpander = LabelExpander(textbox, lambda *args: self.unit.getcontext())
+            textview = textbox.get_child()
+            labelexpander = LabelExpander(textbox, lambda *args: self.unit.getcontext())
 
-        self.widgets['vbox_middle'].add(labelexpander)
-        self.widgets['vbox_middle'].reorder_child(labelexpander, 2)
+            self._widgets['vbox_middle'].pack_start(labelexpander)
+            self._widgets['vbox_middle'].reorder_child(labelexpander, 2)
+            self._widgets['context_info'] = textview
 
-    def _layout_add_targets(self):
-        langcode = self.controller.main_controller.lang_controller.target_lang.code
-        num_targets = 1
+    def _layout_update_targets(self):
+        num_target_widgets = len(self.targets)
+
+        if num_target_widgets < self.MAX_TARGETS:
+            # Technically the condition above will only be True when num_target_widgets == 0, ie.
+            # no target text boxes has been created yet.
+            self._create_targets()
+            num_target_widgets = len(self.targets)
+
+        if self.unit is None:
+            if num_target_widgets >= 1:
+                # The above condition should *never* be False
+                txtview = self.targets[0]
+                txtview.get_buffer().set_text('')
+                txtview.show()
+            for i in range(1, num_target_widgets):
+                self.targets[i].hide()
+            return
+
+        num_unit_targets = 1
         if self.unit.hasplural():
-            num_targets = self.controller.nplurals
+            num_unit_targets = len(self.unit.target.strings)
 
-        def on_text_view_n_press_event(text_view, event):
-            """Handle special keypresses in the textarea."""
-            # Automatically move to the next line if \n is entered
+        for i in range(self.MAX_TARGETS):
+            if i < num_unit_targets:
+                targetstr = ''
+                if self.unit.hasplural():
+                    targetstr = self.unit.target.strings[i]
+                elif i == 0:
+                    targetstr = self.unit.target
+                else:
+                    raise IndexError()
 
-            if event.keyval == gtk.keysyms.n:
-                buf = text_view.get_buffer()
-                curpos = buf.props.cursor_position
-                lastchar = buf.get_text(
-                        buf.get_iter_at_offset(curpos-1),
-                        buf.get_iter_at_offset(curpos)
-                    )
-                if lastchar == "\\":
-                    buf.insert_at_cursor('n\n')
-                    text_view.scroll_mark_onscreen(buf.get_insert())
-                    return True
-            return False
-
-        def target_key_press_event(text_view, event, next_text_view):
-            if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
-                self.focus_text_view(next_text_view)
-                return True
-            return False
-
-        def end_target_key_press_event(text_view, event, *_args):
-            if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
-                text_view.parent.parent.emit('key-press-event', event)
-                return True
-            return False
-
-        self.targets = []
-        for i in range(num_targets):
-            if self.unit.hasplural() and self.controller.nplurals != len(self.unit.target.strings):
-                targets = self.controller.nplurals * [u'']
-                targets[:len(self.unit.target.strings)] = self.unit.target.strings
-                self.unit.target = targets
-
-            targetstr = ''
-            if self.unit.hasplural():
-                targetstr = self.unit.target.strings[i]
-            elif i == 0:
-                targetstr = self.unit.target
+                self.targets[i].modify_font(rendering.get_target_font_description())
+                self.targets[i].get_buffer().set_text(markup.escape(targetstr))
+                self.targets[i].parent.show()
             else:
-                raise IndexError()
+                #logging.debug('Hiding target #%d' % (i))
+                self.targets[i].parent.hide_all()
 
-            target = self._create_textbox(
-                    markup.escape(targetstr),
-                    editable=True,
-                    scroll_policy=gtk.POLICY_AUTOMATIC
-                )
-            textview = target.get_child()
-            textview.modify_font(rendering.get_target_font_description())
-            textview.get_pango_context().set_font_description(rendering.get_target_font_description())
-            textview.get_pango_context().set_language(rendering.get_language(langcode))
-            textview.connect('key-press-event', on_text_view_n_press_event)
+    def _layout_update_fuzzy(self):
+        if not self._widgets['fuzzy']:
+            fuzzy = gtk.CheckButton(label=_('F_uzzy'))
+            # FIXME: not allowing focus will probably raise various issues related to keyboard accesss.
+            fuzzy.set_property("can-focus", False)
+            fuzzy.connect('toggled', self._on_fuzzy_toggled)
+            self._widgets['vbox_options'].pack_start(fuzzy)
+            self._widgets['fuzzy'] = fuzzy
 
-            self._update_textview_spell_checker(textview, langcode)
-
-            self.widgets['vbox_targets'].add(target)
-            self.targets.append(textview)
-
-        self.widgets['vbox_targets'].connect('key-press-event', self._on_key_press_event)
-
-        for target, next_target in zip(self.targets, self.targets[1:]):
-            target.connect('key-press-event', target_key_press_event, next_target)
-        self.targets[-1].connect('key-press-event', end_target_key_press_event)
-
-    def _layout_add_fuzzy(self):
-        check_button = gtk.CheckButton(label=_('F_uzzy'))
-        check_button.set_active(self.unit.isfuzzy())
-        # FIXME: not allowing focus will probably raise various issues related to keyboard accesss.
-        check_button.set_property("can-focus", False)
-
-        self.options['fuzzy'] = check_button
-        self.widgets['vbox_options'].add(check_button)
+        if self.unit is not None:
+            self._widgets['fuzzy'].show()
+            self._widgets['fuzzy'].set_active(self.unit.isfuzzy())
 
 
     # EVENT HANLDERS #
     def _on_fuzzy_toggled(self, toggle_button, *args):
+        if self.unit is None:
+            return
         self.unit.markfuzzy(toggle_button.get_active())
         self.modified()
 
@@ -445,6 +527,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         old_text = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
         offset = len(buff.get_text(buff.get_start_iter(), iter)) # FIXME: Isn't there a better way to do this?
 
+        #logging.debug('emit("insert-text", old_text="%s", ins_text="%s", offset=%d, target_num=%d)' % (old_text, ins_text, offset, target_num))
         self.emit('insert-text', old_text, ins_text, offset, target_num)
 
     def _on_target_delete_range(self, buff, start_iter, end_iter, target_num):
@@ -454,19 +537,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         start_offset = len(buff.get_text(buff.get_start_iter(), start_iter)) # FIXME: Isn't there a better way to do this?
         end_offset = len(buff.get_text(buff.get_start_iter(), end_iter)) # FIXME: Isn't there a better way to do this?
 
+        #logging.debug('emit("delete-text", old_text="%s", start_offset=%d, end_offset=%d, cursor_pos=%d, target_num=%d)' % (old_text, start_offset, end_offset, cursor_pos, target_num))
         self.emit('delete-text', old_text, start_offset, end_offset, cursor_pos, target_num)
-
-    def _on_textview_key_press_event(self, widget, event, *_args):
-        if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
-            self.must_advance = True
-            self.editing_done()
-            return True
-
-        # Alt-Down
-        if event.keyval == gtk.keysyms.Down and event.state & gtk.gdk.MOD1_MASK:
-            idle_add(self.copy_original, widget)
-            return True
-        return False
 
     def _on_textview_paste_clipboard(self, textview, target_num):
         buff = textview.get_buffer()
@@ -479,4 +551,5 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             'selection_offset': selb_iter.get_offset()
         }
 
+        #logging.debug('emit("paste-start", old_text="%s", offsets=%d, target_num=%d)' % (old_text, offsets, target_num))
         self.emit('paste-start', old_text, offsets, target_num)

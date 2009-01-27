@@ -31,7 +31,6 @@ class UnitController(BaseController):
 
     __gtype_name__ = "UnitController"
     __gsignals__ = {
-        'unit-editor-created': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
         'unit-done':           (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
         'unit-modified':       (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
         'unit-delete-text':    (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT, TYPE_STRING, TYPE_INT, TYPE_INT, TYPE_INT, TYPE_INT)),
@@ -48,7 +47,13 @@ class UnitController(BaseController):
         self.store_controller = store_controller
         self.store_controller.unit_controller = self
 
-        self.unit_views = {}
+        self.view = UnitView(self)
+        self.view.connect('delete-text', self._unit_delete_text)
+        self.view.connect('insert-text', self._unit_insert_text)
+        self.view.connect('paste-start', self._unit_paste_start)
+        self.view.connect('modified', self._unit_modified)
+        self.view.connect('unit-done', self._unit_done)
+        self.view.enable_signals()
 
         self.main_controller.connect('controller-registered', self._on_controller_registered)
 
@@ -66,23 +71,8 @@ class UnitController(BaseController):
         self.current_unit = unit
         self.nplurals = self.store_controller.get_nplurals()
 
-        if unit in self.unit_views:
-            self.view = self.unit_views[unit]
-            self.view.update_spell_checker()
-            return self.unit_views[unit]
-
-        self._create_unitview(unit)
-        self.emit('unit-editor-created', self.view)
+        self.view.load_unit(unit)
         return self.view
-
-    def _create_unitview(self, unit):
-        self.unit_views[unit] = self.view = UnitView(self, unit)
-        self.view.connect('delete-text', self._unit_delete_text)
-        self.view.connect('insert-text', self._unit_insert_text)
-        self.view.connect('paste-start', self._unit_paste_start)
-        self.view.connect('modified', self._unit_modified)
-        self.view.connect('unit-done', self._unit_done)
-        self.view.enable_signals()
 
     def _unit_delete_text(self, unitview, old_text, start_offset, end_offset, cursor_pos, target_num):
         self.emit('unit-delete-text', self.current_unit, old_text, start_offset, end_offset, cursor_pos, target_num)
@@ -108,4 +98,4 @@ class UnitController(BaseController):
 
     def _on_language_changed(self, lang_controller, langcode):
         if hasattr(self, 'view'):
-            self.view.update_spell_checker()
+            self.view.update_languages()

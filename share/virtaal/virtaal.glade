@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Jan 26 18:54:32 2009 
+<!--Generated with glade3 3.4.5 on Tue Jan 27 22:26:02 2009 
 	Version: 3.0.1
 	Date: Thu Dec  6 12:30:34 2007
 	User: fwolff
@@ -166,7 +166,7 @@
                     <child>
                       <widget class="GtkCheckMenuItem" id="menuitem_fullscreen">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Full Screen</property>
+                        <property name="label" translatable="yes">_Full Screen</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_menuitem_fullscreen_toggled"/>
                         <accelerator key="F11" modifiers="" signal="activate"/>

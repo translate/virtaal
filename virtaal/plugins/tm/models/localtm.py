@@ -77,7 +77,10 @@ class TMModel(BaseTMModel):
             raise
 
         super(TMModel, self).__init__(controller)
-        self.controller.main_controller.store_controller.connect("store-saved", self.push_store)
+        self._connect_ids.append((
+            self.controller.main_controller.store_controller.connect("store-saved", self.push_store),
+            self.controller.main_controller.store_controller
+        ))
 
 
     # METHODS #

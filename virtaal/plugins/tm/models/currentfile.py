@@ -39,9 +39,21 @@ class TMModel(BaseTMModel):
 
         self.matcher = None
         self.internal_name = internal_name
-        self.controller.main_controller.store_controller.connect('store-loaded', self.recreate_matcher)
-        self.controller.main_controller.store_controller.unit_controller.connect('unit-done', self._on_unit_modified)
         self.load_config()
+
+        self._connect_ids.append((
+            self.controller.main_controller.store_controller.connect('store-loaded', self.recreate_matcher),
+            self.controller.main_controller.store_controller
+        ))
+        if self.controller.main_controller.store_controller.get_store() is not None:
+            self.recreate_matcher(self.controller.main_controller.store_controller)
+
+        self._connect_ids.append((
+            self.controller.main_controller.store_controller.unit_controller.connect('unit-done', self._on_unit_modified),
+            self.controller.main_controller.store_controller.unit_controller
+        ))
+        if self.controller.main_controller.store_controller.cursor and self.controller.main_controller.store_controller.cursor.deref():
+            self._on_unit_modified(None, self.controller.main_controller.store_controller.cursor.deref())
 
 
     # METHODS #

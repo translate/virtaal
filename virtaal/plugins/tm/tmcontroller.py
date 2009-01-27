@@ -57,10 +57,11 @@ class TMController(BaseController):
 
     def _connect_plugin(self):
         self._store_loaded_id = self.main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
+        if self.main_controller.store_controller.get_store() is not None:
+            self._on_store_loaded(self.main_controller.store_controller)
 
-        modecontroller = getattr(self.main_controller, 'mode_controller', None)
-        if modecontroller is not None:
-            self._mode_selected_id = modecontroller.connect('mode-selected', self._on_mode_selected)
+        if self.main_controller.mode_controller is not None:
+            self._mode_selected_id = self.main_controller.mode_controller.connect('mode-selected', self._on_mode_selected)
 
     def _load_models(self):
         self.plugin_controller = PluginController(self)
@@ -69,7 +70,7 @@ class TMController(BaseController):
         for dir in self.plugin_controller.PLUGIN_DIRS:
            new_dirs.append(os.path.join(dir, 'tm', 'models'))
         self.plugin_controller.PLUGIN_DIRS = new_dirs
-        
+
         self.plugin_controller.PLUGIN_INTERFACE = BaseTMModel
         self.plugin_controller.PLUGIN_MODULES = ['virtaal_plugins.tm.models', 'virtaal.plugins.tm.models']
         self.plugin_controller.get_disabled_plugins = lambda *args: self.disabled_model_names
@@ -109,7 +110,7 @@ class TMController(BaseController):
         if getattr(self, '_target_focused_id', None):
             self.main_controller.unit_controller.view.disconnect(self._target_focused_id)
 
-        # Destroy TM plug-ins
+        # Disconnect from and destroy TM plug-ins
         for model_name in self._model_signal_ids:
             self.plugin_controller.plugins[model_name].disconnect(self._model_signal_ids[model_name])
 

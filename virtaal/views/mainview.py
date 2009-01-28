@@ -220,13 +220,17 @@ class MainView(BaseView):
         all_supported_filter = gtk.FileFilter()
         all_supported_filter.set_name(_("All Supported Files"))
         self.open_chooser.add_filter(all_supported_filter)
-        for name, extensions, mimetypes in factory.supported_files():
+        supported_files_dict = dict([ (_(name), (extension, mimetype)) for name, extension, mimetype in factory.supported_files() ])
+        supported_file_names = supported_files_dict.keys()
+        supported_file_names.sort()
+        for name in supported_file_names:
+            extensions, mimetypes = supported_files_dict[name]
             #XXX: we can't open generic .csv formats, so listing it is probably
             # more harmful than good.
             if "csv" in extensions:
                 continue
             new_filter = gtk.FileFilter()
-            new_filter.set_name(_(name))
+            new_filter.set_name(name)
             if extensions:
                 for extension in extensions:
                     new_filter.add_pattern("*." + extension)

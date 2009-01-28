@@ -25,7 +25,7 @@
                 <property name="label" translatable="yes">_File</property>
                 <property name="use_underline">True</property>
                 <child>
-                  <widget class="GtkMenu" id="menu1">
+                  <widget class="GtkMenu" id="menu_file">
                     <property name="visible">True</property>
                     <child>
                       <widget class="GtkImageMenuItem" id="imagemenuitem2">
@@ -111,7 +111,7 @@
                 <property name="label" translatable="yes">_Edit</property>
                 <property name="use_underline">True</property>
                 <child>
-                  <widget class="GtkMenu" id="menu2">
+                  <widget class="GtkMenu" id="menu_edit">
                     <property name="visible">True</property>
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_cut">
@@ -161,7 +161,7 @@
                 <property name="label" translatable="yes">_View</property>
                 <property name="use_underline">True</property>
                 <child>
-                  <widget class="GtkMenu" id="menu3">
+                  <widget class="GtkMenu" id="menu_view">
                     <property name="visible">True</property>
                     <child>
                       <widget class="GtkCheckMenuItem" id="menuitem_fullscreen">

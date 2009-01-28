@@ -57,7 +57,7 @@ class ModeView(GObjectWrapper, BaseView):
         self.cmb_modes.connect('changed', self._on_cmbmode_change)
 
         self.lbl_mode = gtk.Label()
-        #l10n: This refers to the'mode' that determines how Virtaal moves
+        #l10n: This refers to the 'mode' that determines how Virtaal moves
         #between units.
         self.lbl_mode.set_markup_with_mnemonic(_('_Navigation: '))
         self.lbl_mode.set_mnemonic_widget(self.cmb_modes)

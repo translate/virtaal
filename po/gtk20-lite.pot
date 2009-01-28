@@ -48,6 +48,106 @@ msgctxt "keyboard label"
 msgid "Ctrl"
 msgstr ""
 
+#. This is the text that should appear next to menu accelerators
+#. * If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#. *
+#. * Don't include the prefix "keyboard label|" in the translation.
+#.
+#. GTK <=2.14
+#. Configuration: Up key label
+msgid "keyboard label|Up"
+msgstr ""
+
+#. This is the text that should appear next to menu accelerators
+#. * If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#. *
+#. * Don't include the prefix "keyboard label|" in the translation.
+#.
+#. GTK HEAD (allows future proofing)
+#. Configuration: Up key label
+msgctxt "keyboard label"
+msgid "Up"
+msgstr ""
+
+#. This is the text that should appear next to menu accelerators
+#. * If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#. *
+#. * Don't include the prefix "keyboard label|" in the translation.
+#.
+#. GTK <=2.14
+#. Configuration: Down key label
+msgid "keyboard label|Down"
+msgstr ""
+
+#. This is the text that should appear next to menu accelerators
+#. * If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#. *
+#. * Don't include the prefix "keyboard label|" in the translation.
+#.
+#. GTK HEAD (allows future proofing)
+#. Configuration: Down key label
+msgctxt "keyboard label"
+msgid "Down"
+msgstr ""
+
+#. This is the text that should appear next to menu accelerators
+#. * If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#. *
+#. * Don't include the prefix "keyboard label|" in the translation.
+#.
+#. GTK <=2.14
+#. Configuration: Page_Up key label
+msgid "keyboard label|Page_Up"
+msgstr ""
+
+#. This is the text that should appear next to menu accelerators
+#. * If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#. *
+#. * Don't include the prefix "keyboard label|" in the translation.
+#.
+#. GTK HEAD (allows future proofing)
+#. Configuration: Page_Up key label
+msgctxt "keyboard label"
+msgid "Page_Up"
+msgstr ""
+
+#. This is the text that should appear next to menu accelerators
+#. * If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#. *
+#. * Don't include the prefix "keyboard label|" in the translation.
+#.
+#. GTK <=2.14
+#. Configuration: Page_Down key label
+msgid "keyboard label|Page_Down"
+msgstr ""
+
+#. This is the text that should appear next to menu accelerators
+#. * If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#. *
+#. * Don't include the prefix "keyboard label|" in the translation.
+#.
+#. GTK HEAD (allows future proofing)
+#. Configuration: Page_Down key label
+msgctxt "keyboard label"
+msgid "Page_Down"
+msgstr ""
+
 #. File->Open
 msgid "_Open"
 msgstr ""
@@ -122,6 +222,26 @@ msgstr ""
 
 #. Edit->Preferences
 msgid "_Preferences"
+msgstr ""
+
+#. Navigation->Up
+msgid "Navigation|_Up"
+msgstr ""
+
+#. Navigation->Up
+#. GTK HEAD (allows future proofing)
+msgctxt "Navigation"
+msgid "_Up"
+msgstr ""
+
+#. Navigation->Down
+msgid "Navigation|_Down"
+msgstr ""
+
+#. Navigation->Down
+#. GTK HEAD (allows future proofing)
+msgctxt "Navigation"
+msgid "_Down"
 msgstr ""
 
 #. Help->About

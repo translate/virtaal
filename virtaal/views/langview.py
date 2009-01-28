@@ -111,7 +111,7 @@ class LanguageView(BaseView):
         for pair in self.controller.recent_pairs:
             if i not in range(self.controller.NUM_RECENT):
                 break
-            self.recent_items[i].get_child().set_text(self._get_display_string(*pair))
+            self.recent_items[i].get_child().set_text_with_mnemonic("_%(accesskey)d. %(language_pair)s" % {"accesskey": i + 1, "language_pair": self._get_display_string(*pair)})
             i += 1
 
         # Re-add menu items that have something to show
@@ -121,7 +121,7 @@ class LanguageView(BaseView):
                 self.menu.insert(item, i)
 
         self.menu.show_all()
-        self.popupbutton.text = self.recent_items[0].get_child().get_text()
+        self.popupbutton.text = self.recent_items[0].get_child().get_text()[3:]
 
 
     # EVENT HANDLERS #

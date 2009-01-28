@@ -7,7 +7,7 @@ XGETTEXT_ARGS='\
 --add-comments=l10n \
 --copyright-holder="Zuza Software Foundation (Translate.org.za)" \
 --package-name "'$packagename'" \
---package-version `egrep "^ver " ../'$package'/common/__version__.py | sed "s/ver = //;s/\"//g"` \
+--package-version `egrep "^ver " ../'$package'/__version__.py | sed "s/ver = //;s/\"//g"` \
 '
 export XGETTEXT_ARGS
 

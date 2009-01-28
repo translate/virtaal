@@ -69,6 +69,7 @@ class TMView(BaseView, GObjectWrapper):
         ))
 
         self._setup_key_bindings()
+        self._setup_menu_item()
 
     def _setup_key_bindings(self):
         """Setup Gtk+ key bindings (accelerators)."""
@@ -88,6 +89,23 @@ class TMView(BaseView, GObjectWrapper):
         mainview = self.controller.main_controller.view
         mainview.add_accel_group(self.accel_group)
 
+    def _setup_menu_item(self):
+        self.menu = self.controller.main_controller.view.gui.get_widget('menu_view')
+        self.menuitem = gtk.CheckMenuItem(label=_('Available _Suggestions'))
+        self.menuitem.show()
+        self.menu.append(self.menuitem)
+
+        gtk.accel_map_add_entry("<Virtaal>/TM/Toggle Show TM", gtk.keysyms.F9, 0)
+        accel_group = self.menu.get_accel_group()
+        if accel_group is None:
+            accel_group = self.accel_group
+            self.menu.set_accel_group(self.accel_group)
+        accel_group.connect_by_path("<Virtaal>/TM/Toggle Show TM", self._on_toggle_show_tm)
+        self.menuitem.set_accel_path("<Virtaal>/TM/Toggle Show TM")
+        self.menu.set_accel_group(accel_group)
+
+        self.menuitem.connect('activate', self._on_toggle_show_tm)
+
 
     # METHODS #
     def clear(self):
@@ -98,6 +116,8 @@ class TMView(BaseView, GObjectWrapper):
     def destroy(self):
         for gobj, signal_id in self._signal_ids:
             gobj.disconnect(signal_id)
+
+        self.menu.remove(self.menuitem)
 
     def display_matches(self, matches):
         """Add the list of TM matches to those available and show the TM window."""
@@ -149,7 +169,7 @@ class TMView(BaseView, GObjectWrapper):
             This method causes a row in the TM window's C{gtk.TreeView} to be
             selected and activated. This runs this class's C{_on_select_match()}
             method which runs C{select_match()}."""
-        if index < 0:
+        if index < 0 or not self.isvisible:
             return
 
         logging.debug('Selecting index %d' % (index))
@@ -222,3 +242,6 @@ class TMView(BaseView, GObjectWrapper):
     def _on_store_view_scroll(self, *args):
         if self.isvisible:
             self.hide()
+
+    def _on_toggle_show_tm(self, *args):
+        pass

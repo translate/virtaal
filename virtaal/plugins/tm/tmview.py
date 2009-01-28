@@ -100,11 +100,17 @@ class TMView(BaseView, GObjectWrapper):
         if accel_group is None:
             accel_group = self.accel_group
             self.menu.set_accel_group(self.accel_group)
-        accel_group.connect_by_path("<Virtaal>/TM/Toggle Show TM", self._on_toggle_show_tm)
         self.menuitem.set_accel_path("<Virtaal>/TM/Toggle Show TM")
         self.menu.set_accel_group(accel_group)
 
-        self.menuitem.connect('activate', self._on_toggle_show_tm)
+        self.menuitem.connect('toggled', self._on_toggle_show_tm)
+        self.menuitem.set_active(True)
+
+
+    # ACCESSORS #
+    def _get_active(self):
+        return self.menuitem.get_active()
+    active = property(_get_active)
 
 
     # METHODS #
@@ -190,7 +196,7 @@ class TMView(BaseView, GObjectWrapper):
 
     def show(self, force=False):
         """Show the TM window."""
-        if (self.isvisible and not force) or not self._may_show_tmwindow:
+        if not self.active or (self.isvisible and not force) or not self._may_show_tmwindow:
             return # This window is already visible
         self.tmwindow.show_all()
         self.isvisible = True
@@ -244,4 +250,8 @@ class TMView(BaseView, GObjectWrapper):
             self.hide()
 
     def _on_toggle_show_tm(self, *args):
-        pass
+        if not self.active and self.isvisible:
+            self.hide()
+        elif self.active and not self.isvisible:
+            self.update_geometry()
+            self.show()

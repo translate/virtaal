@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.3beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-01-26 12:20+0200\n"
+"POT-Creation-Date: 2009-01-28 17:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,95 +27,129 @@ msgid "Translation Tool"
 msgstr ""
 
 #: ../share/applications/virtaal.desktop.in.h:3
-#: ../share/virtaal/virtaal.glade.h:16
+#: ../share/virtaal/virtaal.glade.h:17
 msgid "Virtaal"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:1
-msgid "<b>Information</b>"
-msgstr ""
-
-#: ../share/virtaal/virtaal.glade.h:2
 msgid "<b>Language information</b>"
 msgstr ""
 
+#: ../share/virtaal/virtaal.glade.h:2
+msgid "<b>Original</b>"
+msgstr ""
+
 #: ../share/virtaal/virtaal.glade.h:3
-msgid "<b>Source language</b>"
+msgid "<b>Translation</b>"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:4
-msgid "<b>Target language</b>"
-msgstr ""
-
-#: ../share/virtaal/virtaal.glade.h:5
-msgid "Add Language"
-msgstr ""
-
-#: ../share/virtaal/virtaal.glade.h:6
 msgid ""
 "Depending on the translation task, the plural information might be optional."
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:7
+#: ../share/virtaal/virtaal.glade.h:5
+msgid "General"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:6
 msgid "ISO code:"
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:8
-msgid "Language Pair"
-msgstr ""
-
-#: ../share/virtaal/virtaal.glade.h:9
+#: ../share/virtaal/virtaal.glade.h:7
 msgid "Language name:"
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:11
-msgid "Missing Language..."
+#: ../share/virtaal/virtaal.glade.h:8
+msgid "Languages"
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:12
+#: ../share/virtaal/virtaal.glade.h:9
+msgid "Missing Language"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:10
+msgid "New Language Pair"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:11
 msgid "Number of plurals:"
 msgstr ""
 
+#: ../share/virtaal/virtaal.glade.h:12
+msgid "P_age Up"
+msgstr ""
+
 #: ../share/virtaal/virtaal.glade.h:13
-msgid "Plural expression:"
+msgid "Personal Information"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:14
-msgid "Report a _Bug"
+msgid "Plug-ins"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:15
-msgid ""
-"The source language is the language you are translating from. The target "
-"language is the language you are translating into."
+msgid "Plural expression:"
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:17
-msgid "_File"
+#: ../share/virtaal/virtaal.glade.h:16
+msgid "Report a _Bug"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:18
-msgid "_Help"
+msgid "Virtaal Preferences"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:19
-msgid "_Localization Guide"
+msgid "_Edit"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:20
-msgid "_Online Help"
+msgid "_File"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:21
-msgid "_Recent Files"
+msgid "_Full Screen"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:22
-msgid "_Tutorial"
+msgid "_Help"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:23
+msgid "_Localization Guide"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:25
+msgid "_Missing Language..."
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:26
+msgid "_Navigation"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:27
+msgid "_Online Help"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:28
+msgid "_Page Down"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:29
+msgid "_Recent Files"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:30
+msgid "_Tutorial"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:31
 msgid "_Update to template"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:32
+msgid "_View"
 msgstr ""
 
 #: ../virtaal/tips.py:27
@@ -240,7 +274,15 @@ msgstr ""
 msgid "Replace _All"
 msgstr ""
 
-#: ../virtaal/plugins/autocompletor.py:299
+#: ../virtaal/views/prefsview.py:65
+msgid "Enabled"
+msgstr ""
+
+#: ../virtaal/views/prefsview.py:66
+msgid "Name"
+msgstr ""
+
+#: ../virtaal/plugins/autocompletor.py:301
 msgid "AutoCompletor"
 msgstr ""
 
@@ -303,6 +345,10 @@ msgstr ""
 msgid "Lokalize's Translation Memory: %(database_name)s"
 msgstr ""
 
+#: ../virtaal/plugins/tm/__init__.py:27
+msgid "Translation Memory"
+msgstr ""
+
 #: ../virtaal/plugins/tm/models/currentfile.py:32
 msgid "Currently open file"
 msgstr ""
@@ -327,7 +373,11 @@ msgstr ""
 msgid "TinyTM"
 msgstr ""
 
-#: ../virtaal/plugins/tm/tmview.py:107
+#: ../virtaal/plugins/tm/tmview.py:94
+msgid "Available _Suggestions"
+msgstr ""
+
+#: ../virtaal/plugins/tm/tmview.py:144
 #, python-format
 msgid "Ctrl+%(number_key)d"
 msgstr ""
@@ -347,85 +397,85 @@ msgid "%(match_quality)s%%"
 msgstr ""
 
 #: ../virtaal/views/langview.py:66
-msgid "New language pair..."
+msgid "_New Language Pair..."
 msgstr ""
 
-#: ../virtaal/views/mainview.py:188
+#: ../virtaal/views/mainview.py:198
 msgid "Error"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:204
+#: ../virtaal/views/mainview.py:214
 msgid "Choose a translation file"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:211
+#: ../virtaal/views/mainview.py:221
 msgid "All Supported Files"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:233
+#: ../virtaal/views/mainview.py:243
 msgid "All Files"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:238
+#: ../virtaal/views/mainview.py:248
 msgid "Save"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:252
+#: ../virtaal/views/mainview.py:262
 msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:255
+#: ../virtaal/views/mainview.py:265
 msgid "_Discard"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:281
+#: ../virtaal/views/mainview.py:291
 #, python-format
 msgid "Virtaal - %(current_file)s %(modified_marker)s"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:306
+#: ../virtaal/views/mainview.py:316
 msgid "Please enter the number of noun forms (plurals) to use"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:312
+#: ../virtaal/views/mainview.py:322
 msgid "Please enter the plural equation to use"
 msgstr ""
 
-#. l10n: This refers to the'mode' that determines how Virtaal moves
+#. l10n: This refers to the 'mode' that determines how Virtaal moves
 #. between units.
 #: ../virtaal/views/modeview.py:62
 msgid "_Navigation: "
 msgstr ""
 
-#: ../virtaal/views/unitview.py:393
+#: ../virtaal/views/unitview.py:482
 msgid "F_uzzy"
 msgstr ""
 
-#: ../virtaal/views/widgets/aboutdialog.py:34
+#: ../virtaal/views/widgets/aboutdialog.py:35
 msgid "Copyright © 2007-2009 Zuza Software Foundation"
 msgstr ""
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
-#: ../virtaal/views/widgets/aboutdialog.py:37
+#: ../virtaal/views/widgets/aboutdialog.py:38
 msgid "Virtaal is a program for doing translation."
 msgstr ""
 
-#: ../virtaal/views/widgets/aboutdialog.py:38
+#: ../virtaal/views/widgets/aboutdialog.py:39
 msgid ""
 "The initial focus is on software translation (localization or l10n), but we "
 "definitely intend it to be useful as a general purpose tool for Computer "
 "Aided Translation (CAT)."
 msgstr ""
 
-#: ../virtaal/views/widgets/aboutdialog.py:52
+#: ../virtaal/views/widgets/aboutdialog.py:53
 msgid "Virtaal website"
 msgstr ""
 
 #. l10n: Rather than translating, fill in the names of the translators
-#: ../virtaal/views/widgets/aboutdialog.py:61
+#: ../virtaal/views/widgets/aboutdialog.py:62
 msgid "translator-credits"
 msgstr ""
 
@@ -446,6 +496,16 @@ msgstr ""
 #: ../virtaal/views/widgets/langselectdialog.py:86
 #: ../virtaal/views/widgets/langselectdialog.py:92
 msgid "Code"
+msgstr ""
+
+#: ../virtaal/models/storemodel.py:121
+#, python-format
+msgid "The file \"%s\" does not exist."
+msgstr ""
+
+#: ../virtaal/models/storemodel.py:123
+#, python-format
+msgid "\"%s\" is not a usable file."
 msgstr ""
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
@@ -548,52 +608,52 @@ msgstr ""
 msgid "XML Localization Interchange File Format"
 msgstr ""
 
-#: ../bin/virtaal:34
+#: ../bin/virtaal:33
 #, c-format
 msgid "%prog [options] [translation_file]"
 msgstr ""
 
-#: ../bin/virtaal:37
+#: ../bin/virtaal:36
 msgid "PROFILE"
 msgstr ""
 
-#: ../bin/virtaal:39
+#: ../bin/virtaal:38
 msgid "perform profiling, storing the result to the supplied filename."
 msgstr ""
 
-#: ../bin/virtaal:41
+#: ../bin/virtaal:40
 msgid "LOG"
 msgstr ""
 
-#: ../bin/virtaal:42
+#: ../bin/virtaal:41
 msgid "turn on logging, storing the result to the supplied filename."
 msgstr ""
 
-#: ../bin/virtaal:44
+#: ../bin/virtaal:43
 msgid "CONFIG"
 msgstr ""
 
-#: ../bin/virtaal:45
+#: ../bin/virtaal:44
 msgid "use the configuration file given by the supplied filename."
 msgstr ""
 
-#: ../bin/virtaal:48
+#: ../bin/virtaal:47
 msgid "enable debugging features"
 msgstr ""
 
-#: ../bin/virtaal:65
+#: ../bin/virtaal:64
 msgid "Could not open log file '%(filename)s'"
 msgstr ""
 
-#: ../bin/virtaal:72
+#: ../bin/virtaal:71
 msgid "Could not read configuration file '%(filename)s'"
 msgstr ""
 
-#: ../bin/virtaal:76
+#: ../bin/virtaal:75
 msgid "invalid number of arguments"
 msgstr ""
 
-#: ../bin/virtaal:101
+#: ../bin/virtaal:104
 msgid "Could not open profile file '%(filename)s'"
 msgstr ""
 

@@ -548,7 +548,8 @@
                         <property name="receives_default">True</property>
                         <property name="has_tooltip">True</property>
                         <property name="tooltip_text">Click here to add a language that is not listed</property>
-                        <property name="label" translatable="yes" comments="This button will take the user to a dialogue to add a language that is not listed yet for selection.">Missing Language...</property>
+                        <property name="label" translatable="yes" comments="This button will take the user to a dialogue to add a language that is not listed yet for selection.">_Missing Language...</property>
+                        <property name="use_underline">True</property>
                         <property name="response_id">0</property>
                       </widget>
                     </child>

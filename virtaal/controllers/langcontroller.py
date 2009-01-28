@@ -20,6 +20,7 @@
 
 import gobject
 import logging
+import os
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.models import LanguageModel
@@ -48,10 +49,12 @@ class LanguageController(BaseController):
 
         self.main_controller = main_controller
         self.main_controller.lang_controller = self
-        self.recent_pairs = self._load_recent()
+        self.new_langs = []
         self._init_langs()
+        self.recent_pairs = self._load_recent()
 
         self.main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
+        self.main_controller.connect('quit', self._on_quit)
         self.connect('source-lang-changed', lambda *args: self.save_recent())
         self.connect('target-lang-changed', lambda *args: self.save_recent())
 
@@ -68,6 +71,18 @@ class LanguageController(BaseController):
             self._target_lang = LanguageModel(pan_app.settings.language['targetlang'])
         except Exception:
             self._target_lang = None
+
+        # Load previously-saved (new) languages
+        filename = os.path.join(pan_app.get_config_dir(), 'langs.ini')
+        if os.path.isfile(filename):
+            languages = pan_app.load_config(filename)
+            for code in languages:
+                languages[code] = (
+                    languages[code]['name'],
+                    int(languages[code]['nplurals']),
+                    languages[code]['plural']
+                )
+            LanguageModel.languages.update(languages)
 
 
     # ACCESSORS #
@@ -133,6 +148,25 @@ class LanguageController(BaseController):
 
 
     # EVENT HANDLERS #
+    def _on_quit(self, main_controller):
+        if not self.new_langs:
+            return
+
+        langs = {}
+        filename = os.path.join(pan_app.get_config_dir(), 'langs.ini')
+        if os.path.isfile(filename):
+            langs = pan_app.load_config(filename)
+
+        newlangdict = {}
+        for code in self.new_langs:
+            newlangdict[code] = {}
+            newlangdict[code]['name'] = LanguageModel.languages[code][0]
+            newlangdict[code]['nplurals'] = LanguageModel.languages[code][1]
+            newlangdict[code]['plural'] = LanguageModel.languages[code][2]
+        langs.update(newlangdict)
+
+        pan_app.save_config(filename, langs)
+
     def _on_store_loaded(self, store_controller):
         srclang = store_controller.store.get_source_language()
         tgtlang = store_controller.store.get_target_language()

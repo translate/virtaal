@@ -143,13 +143,13 @@ class LanguageView(BaseView):
             raise Exception('Language code %s already used.' % (code))
 
         LanguageModel.languages[code] = (name, nplurals, plural)
+        self.controller.new_langs.append(code)
 
         # Reload the language data in the selection dialog.
         self.select_dialog.clear_langs()
         langs = [LanguageModel(lc) for lc in LanguageModel.languages]
         langs.sort(key=lambda x: x.name)
         self.select_dialog.update_languages(langs)
-
 
     def _on_other_activated(self, menuitem):
         if not getattr(self, 'select_dialog', None):

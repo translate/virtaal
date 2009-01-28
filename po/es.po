@@ -1,6 +1,6 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the PACKAGE package.
+# Translation of Virtaal to Spanish
+# Copyright (C) 2008-2009 Zuza Software Foundation (Translate.org.za)
+# This file is distributed under the same license as the Virtaal package.
 # Alexander Dupuy <alex.dupuy@mac.com>, 2008-2009
 # Julen Ruiz Aizpuru <julenx@gmail.com>, 2008
 msgid ""

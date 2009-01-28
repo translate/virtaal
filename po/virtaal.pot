@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.3beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-01-28 17:26+0200\n"
+"POT-Creation-Date: 2009-01-28 17:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,7 +27,7 @@ msgid "Translation Tool"
 msgstr ""
 
 #: ../share/applications/virtaal.desktop.in.h:3
-#: ../share/virtaal/virtaal.glade.h:17
+#: ../share/virtaal/virtaal.glade.h:23
 msgid "Virtaal"
 msgstr ""
 
@@ -96,59 +96,77 @@ msgstr ""
 msgid "Report a _Bug"
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:18
-msgid "Virtaal Preferences"
-msgstr ""
-
-#: ../share/virtaal/virtaal.glade.h:19
-msgid "_Edit"
+#: ../share/virtaal/virtaal.glade.h:17
+msgid ""
+"The <b>Original</b> is the language from which you are translating, also "
+"called the source language.\n"
+"\n"
+"If you are translating from English to French then English would be your "
+"original or source language."
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:20
-msgid "_File"
+msgid ""
+"The <b>Translation</b> is the language into which you are translating, also "
+"called the target language.\n"
+"\n"
+"If you are translating from English to French then French would be your "
+"translation or target language."
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:21
-msgid "_Full Screen"
-msgstr ""
-
-#: ../share/virtaal/virtaal.glade.h:22
-msgid "_Help"
-msgstr ""
-
-#: ../share/virtaal/virtaal.glade.h:23
-msgid "_Localization Guide"
+#: ../share/virtaal/virtaal.glade.h:24
+msgid "Virtaal Preferences"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:25
-msgid "_Missing Language..."
+msgid "_Edit"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:26
-msgid "_Navigation"
+msgid "_File"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:27
-msgid "_Online Help"
+msgid "_Full Screen"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:28
-msgid "_Page Down"
+msgid "_Help"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:29
-msgid "_Recent Files"
-msgstr ""
-
-#: ../share/virtaal/virtaal.glade.h:30
-msgid "_Tutorial"
+msgid "_Localization Guide"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:31
-msgid "_Update to template"
+msgid "_Missing Language..."
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:32
+msgid "_Navigation"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:33
+msgid "_Online Help"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:34
+msgid "_Page Down"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:35
+msgid "_Recent Files"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:36
+msgid "_Tutorial"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:37
+msgid "_Update to template"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:38
 msgid "_View"
 msgstr ""
 
@@ -282,7 +300,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: ../virtaal/plugins/autocompletor.py:301
+#: ../virtaal/plugins/autocompletor.py:299
 msgid "AutoCompletor"
 msgstr ""
 

@@ -180,6 +180,8 @@ class TMView(BaseView, GObjectWrapper):
         """Update the TM window's position and size."""
         def update():
             n = self.controller.main_controller.unit_controller.view.focused_target_n
+            if n is None:
+                return
             selected = self.controller.main_controller.unit_controller.view.targets[n]
             self.tmwindow.update_geometry(selected)
         gobject.idle_add(update)

@@ -227,8 +227,13 @@ class StoreTreeView(gtk.TreeView):
         self.accel_group.connect_by_path("<Virtaal>/Navigation/PgUp", self._move_pgup)
         self.accel_group.connect_by_path("<Virtaal>/Navigation/PgDown", self._move_pgdown)
 
-        mainview = self.view.controller.main_controller.view # FIXME: Is this acceptable?
+        mainview = self.view.controller.main_controller.view
         mainview.add_accel_group(self.accel_group)
+        mainview.gui.get_widget('menu_navigation').set_accel_group(self.accel_group)
+        mainview.gui.get_widget('mnu_up').set_accel_path('<Virtaal>/Navigation/Up')
+        mainview.gui.get_widget('mnu_down').set_accel_path('<Virtaal>/Navigation/Down')
+        mainview.gui.get_widget('mnu_pageup').set_accel_path('<Virtaal>/Navigation/PgUp')
+        mainview.gui.get_widget('mnu_pagedown').set_accel_path('<Virtaal>/Navigation/PgDown')
 
     def _enable_tooltips(self):
         if hasattr(self, "set_tooltip_column"):
@@ -240,6 +245,15 @@ class StoreTreeView(gtk.TreeView):
         self.connect("cursor-changed", self._on_cursor_changed)
         self.connect("button-press-event", self._on_button_press)
         self.connect('focus-in-event', self.on_configure_event)
+
+        # The following connections are necessary, because Gtk+ apparently *only* uses accelerators
+        # to add pretty key-bindings next to menu items and does not really care if an accelerator
+        # path has a connected handler.
+        mainview = self.view.controller.main_controller.view
+        mainview.gui.get_widget('mnu_up').connect('activate', lambda *args: self._move_up(None, None, None, None))
+        mainview.gui.get_widget('mnu_down').connect('activate', lambda *args: self._move_down(None, None, None, None))
+        mainview.gui.get_widget('mnu_pageup').connect('activate', lambda *args: self._move_pgup(None, None, None, None))
+        mainview.gui.get_widget('mnu_pagedown').connect('activate', lambda *args: self._move_pgdown(None, None, None, None))
 
     def _make_renderer(self):
         renderer = StoreCellRenderer(self.view)

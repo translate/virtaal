@@ -337,7 +337,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         textview.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)
         textview.set_left_margin(2)
         textview.set_right_margin(2)
-        textview.get_buffer().set_text(text)
+        textview.get_buffer().set_text(text or '')
 
         scrollwnd = gtk.ScrolledWindow()
         scrollwnd.set_policy(gtk.POLICY_NEVER, scroll_policy)

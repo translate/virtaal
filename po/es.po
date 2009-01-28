@@ -2,14 +2,14 @@
 # Copyright (C) 2008-2009 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # Alexander Dupuy <alex.dupuy@mac.com>, 2008-2009
-# Julen Ruiz Aizpuru <julenx@gmail.com>, 2008
+# Julen Ruiz Aizpuru <julenx@gmail.com>, 2008-2009
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.2\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-01-28 17:56+0200\n"
-"PO-Revision-Date: 2009-01-28 15:19-0400\n"
-"Last-Translator: Alexander Dupuy <alex.dupuy@mac.com>\n"
+"POT-Creation-Date: 2009-01-28 23:08+0200\n"
+"PO-Revision-Date: 2009-01-28 23:49+0200\n"
+"Last-Translator: Julen Ruiz Aizpuru <julenx@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -64,7 +64,7 @@ msgstr "Código ISO:"
 
 #: ../share/virtaal/virtaal.glade.h:7
 msgid "Language name:"
-msgstr "Nombre de idioma"
+msgstr "Nombre del idioma:"
 
 #: ../share/virtaal/virtaal.glade.h:8
 msgid "Languages"
@@ -76,7 +76,7 @@ msgstr "Idioma ausente"
 
 #: ../share/virtaal/virtaal.glade.h:10
 msgid "New Language Pair"
-msgstr "Pareja nueva de idiomas"
+msgstr "Nueva pareja de idiomas"
 
 #: ../share/virtaal/virtaal.glade.h:11
 msgid "Number of plurals:"
@@ -84,7 +84,7 @@ msgstr "Número de plurales:"
 
 #: ../share/virtaal/virtaal.glade.h:12
 msgid "P_age Up"
-msgstr "Página _arriba"
+msgstr "R_etroceder página"
 
 #: ../share/virtaal/virtaal.glade.h:13
 msgid "Personal Information"
@@ -110,11 +110,11 @@ msgid ""
 "If you are translating from English to French then English would be your "
 "original or source language."
 msgstr ""
-"El idioma de <b>origen</b> es lo desde cual está traduciendo, también "
-"llamado el idioma fuente.\n"
-"\n"
-"Si está traduciendo de inglés a francés, el inglés sería el idioma de origen "
-"o idioma fuente."
+"El idioma de <b>origen</b> es el idioma por el que está traduciendo, también "
+"llamado el idioma de origen.\\n\n"
+"\\n\n"
+"Si está traduciendo del inglés al francés, el inglés sería el idioma de "
+"origen o idioma fuente."
 
 #: ../share/virtaal/virtaal.glade.h:20
 msgid ""
@@ -125,10 +125,10 @@ msgid ""
 "translation or target language."
 msgstr ""
 "La <b>traducción</b> es el idioma a cual está traduciendo, también llamado "
-"el idioma objetivo.\n"
-"\n"
-"Si está traduciendo de inglés a francés, el francés sería el idioma de "
-"origen o idioma fuente."
+"el idioma de destino.\\n\n"
+"\\n\n"
+"Si está traduciendo del inglés al francés, el francés sería su traducción o "
+"idioma de destino."
 
 #: ../share/virtaal/virtaal.glade.h:24
 msgid "Virtaal Preferences"
@@ -160,7 +160,7 @@ msgstr "_Idioma ausente..."
 
 #: ../share/virtaal/virtaal.glade.h:32
 msgid "_Navigation"
-msgstr "_Navigación"
+msgstr "_Navegación"
 
 #: ../share/virtaal/virtaal.glade.h:33
 msgid "_Online Help"
@@ -168,7 +168,7 @@ msgstr "Ayuda en _linea"
 
 #: ../share/virtaal/virtaal.glade.h:34
 msgid "_Page Down"
-msgstr "_Página baja"
+msgstr "Avanzar _página"
 
 #: ../share/virtaal/virtaal.glade.h:35
 msgid "_Recent Files"
@@ -191,12 +191,12 @@ msgid ""
 "At the end of a translation, simply press <Enter> to continue with the next "
 "one."
 msgstr ""
-"En el fin de la traducción, pulse <Intro> para continuar con el siguiente."
+"Al final de la traducción, pulse <Intro> para continuar con el siguiente."
 
 #: ../virtaal/tips.py:28
 msgid ""
 "To copy the original string into the target field, simply press <Alt+Down>."
-msgstr "Para copiar el mensaje original al campo de destino, pulse <Alt+Bajo>."
+msgstr "Para copiar el mensaje original al campo de destino, pulse <Alt+Abajo>."
 
 #. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
 #: ../virtaal/tips.py:31
@@ -205,7 +205,7 @@ msgstr "Para marcar la traducción actual como imprecisa, pulse <Alt+I>."
 
 #: ../virtaal/tips.py:32
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
-msgstr "Pulse Ctrl+Arriba o Ctrl+Abajo para moverse entre traducciones."
+msgstr "Pulse Ctrl+Arriba o Ctrl+Abajo para moverse entre las traducciones."
 
 #: ../virtaal/tips.py:33
 msgid ""
@@ -238,8 +238,7 @@ msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
 msgstr ""
-"Ha seleccionado para abrir el archivo ya abierto. ¿Quiere recargar el "
-"archivo?"
+"Ha seleccionado abrir el archivo ya abierto. ¿Quiere recargar el archivo?"
 
 #: ../virtaal/controllers/maincontroller.py:160
 #: ../virtaal/controllers/maincontroller.py:205
@@ -286,9 +285,9 @@ msgid "Reload File"
 msgstr "Recargar archivo"
 
 #: ../virtaal/controllers/maincontroller.py:178
-msgid "Reload file from last saved copy and loose all changes?"
+msgid "Reload file from last saved copy and lose all changes?"
 msgstr ""
-"¿Recargar archivo de la última copia guardada y perdir todos los cambios?"
+"¿Recargar archivo de la última copia guardada y perder todos los cambios?"
 
 #: ../virtaal/controllers/storecontroller.py:110
 msgid "The file contains nothing to translate."
@@ -324,7 +323,7 @@ msgstr "Reemplazar"
 
 #: ../virtaal/modes/searchmode.py:76
 msgid "Replace _All"
-msgstr "Reemplazar _Todos"
+msgstr "Reemplazar _todos"
 
 #: ../virtaal/views/prefsview.py:65
 msgid "Enabled"
@@ -334,7 +333,7 @@ msgstr "Activado"
 msgid "Name"
 msgstr "Nombre"
 
-#: ../virtaal/plugins/autocompletor.py:299
+#: ../virtaal/plugins/autocompletor.py:301
 msgid "AutoCompletor"
 msgstr "Autocompletado"
 
@@ -349,7 +348,7 @@ msgstr "Asistente de migración"
 #: ../virtaal/plugins/migration.py:70
 msgid "Should Virtaal try to import settings and data from other applications?"
 msgstr ""
-"¿Debería Virtall tratar de importar configuraciones y datos desde otras "
+"¿Debería Virtaal tratar de importar configuraciones y datos desde otras "
 "aplicaciones?"
 
 #: ../virtaal/plugins/migration.py:71
@@ -362,19 +361,19 @@ msgstr "Migración completado con éxito"
 
 #: ../virtaal/plugins/migration.py:97
 msgid "The following items were migrated:"
-msgstr "Los siguentes elementos se han migrado:"
+msgstr "Los siguentes elementos han sido migrados:"
 
 #: ../virtaal/plugins/migration.py:102
 msgid "Migration completed"
-msgstr "Migración completo"
+msgstr "Migración completada"
 
 #: ../virtaal/plugins/migration.py:104
 msgid "Virtaal was not able to migrate any settings or data"
-msgstr "Virtaal no podía migrar ninguna configuración o datos"
+msgstr "Virtaal no ha podido migrar ninguna configuración o datos"
 
 #: ../virtaal/plugins/migration.py:105
 msgid "Nothing migrated"
-msgstr "Ninguna configuración se ha migrado"
+msgstr "Ninguna configuración migrada"
 
 #: ../virtaal/plugins/migration.py:158
 msgid "Poedit settings"
@@ -431,7 +430,7 @@ msgstr "TinyTM"
 msgid "Available _Suggestions"
 msgstr "_Sugerencias disponibles"
 
-#: ../virtaal/plugins/tm/tmview.py:144
+#: ../virtaal/plugins/tm/tmview.py:150
 #, python-format
 msgid "Ctrl+%(number_key)d"
 msgstr "Ctrl+%(number_key)d"
@@ -452,7 +451,7 @@ msgstr "%(match_quality)s%%"
 
 #: ../virtaal/views/langview.py:66
 msgid "_New Language Pair..."
-msgstr "Pareja _nueva de idiomas..."
+msgstr "_Nueva pareja de idiomas..."
 
 #: ../virtaal/views/mainview.py:198
 msgid "Error"
@@ -466,15 +465,15 @@ msgstr "Elegir un archivo de traducción"
 msgid "All Supported Files"
 msgstr "Todos los archivos soportados"
 
-#: ../virtaal/views/mainview.py:243
+#: ../virtaal/views/mainview.py:247
 msgid "All Files"
 msgstr "Todos los archivos"
 
-#: ../virtaal/views/mainview.py:248
+#: ../virtaal/views/mainview.py:252
 msgid "Save"
 msgstr "Guardar"
 
-#: ../virtaal/views/mainview.py:262
+#: ../virtaal/views/mainview.py:266
 msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
@@ -482,20 +481,20 @@ msgstr ""
 "El archivo actual se ha modificado.\n"
 "¿Quiere guardar sus cambios?"
 
-#: ../virtaal/views/mainview.py:265
+#: ../virtaal/views/mainview.py:269
 msgid "_Discard"
 msgstr "_Descartar"
 
-#: ../virtaal/views/mainview.py:291
+#: ../virtaal/views/mainview.py:295
 #, python-format
 msgid "Virtaal - %(current_file)s %(modified_marker)s"
 msgstr "Virtaal - %(current_file)s %(modified_marker)s"
 
-#: ../virtaal/views/mainview.py:316
+#: ../virtaal/views/mainview.py:320
 msgid "Please enter the number of noun forms (plurals) to use"
 msgstr "Por favor, introduzca la cantidad de formas nominales (plurales)"
 
-#: ../virtaal/views/mainview.py:322
+#: ../virtaal/views/mainview.py:326
 msgid "Please enter the plural equation to use"
 msgstr "Por favor, introduzca la ecuación de plurales"
 
@@ -503,7 +502,7 @@ msgstr "Por favor, introduzca la ecuación de plurales"
 #. between units.
 #: ../virtaal/views/modeview.py:62
 msgid "_Navigation: "
-msgstr "_Navigación:"
+msgstr "_Navegación:"
 
 #: ../virtaal/views/unitview.py:482
 msgid "F_uzzy"
@@ -542,11 +541,11 @@ msgstr ""
 
 #: ../virtaal/views/widgets/langadddialog.py:102
 msgid "Language code must be an ASCII string."
-msgstr "El código de idioma debe ser una cadena ASCII."
+msgstr "El código del idioma debe ser una cadena ASCII."
 
 #: ../virtaal/views/widgets/langadddialog.py:105
 msgid "Language code must be at least 2 characters long."
-msgstr "El código de idioma debe contiene un mínimo de 2 caracteres."
+msgstr "El código del idioma debe contener un mínimo de 2 caracteres."
 
 #: ../virtaal/views/widgets/langselectdialog.py:73
 #: ../virtaal/views/widgets/langselectdialog.py:79
@@ -704,7 +703,7 @@ msgstr "usar el archivo de configuración indicado por el nombre de archivo."
 
 #: ../bin/virtaal:47
 msgid "enable debugging features"
-msgstr "activar funciónes de depuración"
+msgstr "activar funciones de depuración"
 
 #: ../bin/virtaal:64
 msgid "Could not open log file '%(filename)s'"

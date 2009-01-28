@@ -175,7 +175,7 @@ class MainController(BaseController):
             )
 
     def revert_file(self, filename=None):
-        confirm = self.show_prompt(_("Reload File"), _("Reload file from last saved copy and loose all changes?"))
+        confirm = self.show_prompt(_("Reload File"), _("Reload file from last saved copy and lose all changes?"))
         if confirm:
             self.store_controller.revert_file()
 

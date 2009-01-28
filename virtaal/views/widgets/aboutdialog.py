@@ -21,7 +21,8 @@
 import gtk
 import os
 
-from virtaal.common import pan_app, __version__
+from virtaal import __version__
+from virtaal.common import pan_app
 from virtaal.support import openmailto
 
 

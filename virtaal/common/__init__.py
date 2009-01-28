@@ -18,8 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import __version__
 import pan_app
 from gobjectwrapper import GObjectWrapper
 
-__all__ = ['__version__', 'pan_app', 'GObjectWrapper']
+__all__ = ['pan_app', 'GObjectWrapper']

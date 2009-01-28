@@ -31,7 +31,7 @@ gettext.install("virtaal", unicode=1)
 from translate.misc import file_discovery
 from translate.lang import data
 
-from __version__ import ver
+from virtaal.__version__ import ver
 
 
 x_generator = 'Virtaal ' + ver

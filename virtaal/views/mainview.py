@@ -26,8 +26,9 @@ import logging
 from gtk import gdk
 from translate.storage import factory
 
+from virtaal import __version__
 from virtaal.views import recent
-from virtaal.common import pan_app, __version__, GObjectWrapper
+from virtaal.common import pan_app, GObjectWrapper
 from virtaal.support import openmailto
 
 from widgets.aboutdialog import AboutDialog

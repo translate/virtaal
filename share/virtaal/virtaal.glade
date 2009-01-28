@@ -188,7 +188,7 @@
                       <widget class="GtkImageMenuItem" id="mnu_up">
                         <property name="visible">True</property>
                         <property name="accel_path">&lt;Virtaal&gt;/Navigation/Up</property>
-                        <property name="label" translatable="yes">gtk-go-up</property>
+                        <property name="label">gtk-go-up</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                       </widget>
@@ -197,7 +197,7 @@
                       <widget class="GtkImageMenuItem" id="mnu_down">
                         <property name="visible">True</property>
                         <property name="accel_path">&lt;Virtaal&gt;/Navigation/Down</property>
-                        <property name="label" translatable="yes">gtk-go-down</property>
+                        <property name="label">gtk-go-down</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                       </widget>

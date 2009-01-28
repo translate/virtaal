@@ -59,6 +59,7 @@ class TMController(BaseController):
         self._store_loaded_id = self.main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
         if self.main_controller.store_controller.get_store() is not None:
             self._on_store_loaded(self.main_controller.store_controller)
+            self.view._should_show_tmwindow = True
 
         if self.main_controller.mode_controller is not None:
             self._mode_selected_id = self.main_controller.mode_controller.connect('mode-selected', self._on_mode_selected)

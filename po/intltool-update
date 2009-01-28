@@ -11,4 +11,4 @@ XGETTEXT_ARGS='\
 '
 export XGETTEXT_ARGS
 
-intltool-update --verbose $*
+intltool-update $*

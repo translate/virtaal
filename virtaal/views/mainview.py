@@ -376,6 +376,7 @@ class MainView(BaseView):
         self._top_window = old_top
 
         if response:
+            pan_app.settings.general["lastdir"] = os.path.dirname(self.open_chooser.get_filename())
             return (self.open_chooser.get_filename(), self.open_chooser.get_uri())
         else:
             return ()

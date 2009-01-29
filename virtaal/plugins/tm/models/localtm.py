@@ -65,6 +65,9 @@ class TMModel(remotetm.TMModel):
             "-d", self.config["tmdb"],
         ]
 
+        if logging.root.level == logging.DEBUG:
+            command.append("--debug")
+            
         logging.debug("launching tmserver with command %s" % " ".join(command))
         try:
             self.tmserver = subprocess.Popen(command)

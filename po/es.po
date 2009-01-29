@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.2\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-01-28 23:08+0200\n"
-"PO-Revision-Date: 2009-01-28 23:49+0200\n"
-"Last-Translator: Julen Ruiz Aizpuru <julenx@gmail.com>\n"
+"PO-Revision-Date: 2009-01-29 03:28-0400\n"
+"Last-Translator: Alexander Dupuy <alex.dupuy@mac.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -111,8 +111,8 @@ msgid ""
 "original or source language."
 msgstr ""
 "El idioma de <b>origen</b> es el idioma por el que está traduciendo, también "
-"llamado el idioma de origen.\\n\n"
-"\\n\n"
+"llamado el idioma fuente.\n"
+"\n"
 "Si está traduciendo del inglés al francés, el inglés sería el idioma de "
 "origen o idioma fuente."
 
@@ -125,8 +125,8 @@ msgid ""
 "translation or target language."
 msgstr ""
 "La <b>traducción</b> es el idioma a cual está traduciendo, también llamado "
-"el idioma de destino.\\n\n"
-"\\n\n"
+"el idioma de destino.\n"
+"\n"
 "Si está traduciendo del inglés al francés, el francés sería su traducción o "
 "idioma de destino."
 
@@ -502,7 +502,7 @@ msgstr "Por favor, introduzca la ecuación de plurales"
 #. between units.
 #: ../virtaal/views/modeview.py:62
 msgid "_Navigation: "
-msgstr "_Navegación:"
+msgstr "_Navegación: "
 
 #: ../virtaal/views/unitview.py:482
 msgid "F_uzzy"
@@ -561,7 +561,7 @@ msgstr "Código"
 #: ../virtaal/models/storemodel.py:121
 #, python-format
 msgid "The file \"%s\" does not exist."
-msgstr "%(filename)s no existe."
+msgstr "El archivo \"%s\" no existe."
 
 #: ../virtaal/models/storemodel.py:123
 #, python-format

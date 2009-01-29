@@ -88,7 +88,6 @@ class PluginController(BaseController):
 
     def enable_plugin(self, name):
         """Load the plug-in with the given name and instantiate it."""
-        logging.debug('Enabling plugin: %s' % (name))
         if name in self.plugins:
             return None
 
@@ -111,6 +110,8 @@ class PluginController(BaseController):
                         pass
 
                 if module is None:
+                    # XXX: Uncomment the following logging statement to find out what exactly went wrong when trying to import the plug-in.
+                    #logging.exception('Could not find plug-in "%s"' % (name))
                     raise Exception('Could not find plug-in "%s"' % (name))
 
                 plugin_class = getattr(module, self.PLUGIN_CLASSNAME, None)

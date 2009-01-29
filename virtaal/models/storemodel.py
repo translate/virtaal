@@ -131,10 +131,14 @@ class StoreModel(BaseModel):
 
     def save_file(self, filename=None):
         self._update_header()
-        if filename is None or filename == self.filename:
+        if filename is None:
+            filename = self.filename
+        if filename == self.filename:
             self._trans_store.save()
         else:
             self._trans_store.savefile(filename)
+        self.stats = statsdb.StatsCache().filestats(filename, checks.UnitChecker(), self._trans_store)
+        self._get_valid_units()
 
     def update_file(self, filename):
         # Adapted from Document.__init__()

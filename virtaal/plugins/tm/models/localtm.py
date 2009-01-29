@@ -23,7 +23,7 @@ import os
 import subprocess
 import socket
 import random
-from translate.services import tmclient
+from virtaal.support import tmclient
 
 from virtaal.common import pan_app
 from basetmmodel import BaseTMModel

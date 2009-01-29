@@ -101,8 +101,9 @@ class PluginController(BaseController):
                     try:
                         module = __import__(
                             modulename,
-                            globals=globals(),
-                            fromlist=[self.PLUGIN_CLASSNAME]
+                            globals(),              # globals
+                            [],                     # locals
+                            [self.PLUGIN_CLASSNAME] # fromlist
                         )
                         break
                     except ImportError:

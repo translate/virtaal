@@ -232,11 +232,12 @@ class MainController(BaseController):
             if response == 'save':
                 self.store_controller.save_file()
             elif response == 'cancel':
-                return
+                return True
 
         self.plugin_controller.shutdown()
         self.emit('quit')
         self.view.quit()
+        return False
 
     def run(self):
         pan_app.settings.write() # Make sure that we have a settings file.

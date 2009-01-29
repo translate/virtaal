@@ -151,8 +151,8 @@ class MainView(BaseView):
 
         # Create our events dictionary and connect it
         dic = {
-                "on_mainwindow_destroy" : gtk.main_quit,
-                "on_mainwindow_delete" : self._on_mainwindow_delete,
+                "on_mainwindow_destroy" : self._on_quit,
+                "on_mainwindow_delete" : self._on_quit,
                 "on_open_activate" : self._on_file_open,
                 "on_save_activate" : self._on_file_save,
                 "on_saveas_activate" : self._on_file_saveas,
@@ -520,11 +520,9 @@ class MainView(BaseView):
     def _on_help_about(self, _widget=None):
         AboutDialog(self.main_window)
 
-    def _on_mainwindow_delete(self, _widget, _event):
+    def _on_quit(self, *args):
         self.controller.quit()
-
-    def _on_quit(self, _event):
-        self.controller.quit()
+        return True
 
     def _on_recent_file_activated(self, chooser):
         item = chooser.get_current_item()

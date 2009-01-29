@@ -30,6 +30,7 @@ from translate.storage import factory
 
 from virtaal import __version__
 from virtaal.common import pan_app
+from virtaal.support.libi18n.locale import fix_locale
 
 
 optparse._ = _
@@ -52,6 +53,8 @@ option_list = [
 parser = OptionParser(option_list=option_list, usage=usage, version=__version__.ver)
 
 def main(argv):
+    fix_locale() # Fix the locale environment variables on Windows
+
     def set_logging(options):
         if options.log != None:
             format = '%(asctime)s %(levelname)s %(message)s'

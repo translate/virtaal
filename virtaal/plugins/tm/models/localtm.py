@@ -65,7 +65,7 @@ class TMModel(remotetm.TMModel):
             "-d", self.config["tmdb"],
         ]
 
-        if logging.root.level == logging.DEBUG:
+        if pan_app.DEBUG:
             command.append("--debug")
             
         logging.debug("launching tmserver with command %s" % " ".join(command))

@@ -27,7 +27,8 @@ from os import path
 
 from translate.storage import factory
 
-from virtaal.common import pan_app, __version__
+from virtaal import __version__
+from virtaal.common import pan_app
 
 optparse._ = _
 usage = _("%prog [options] [translation_file]")

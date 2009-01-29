@@ -56,20 +56,23 @@ def main(argv):
     fix_locale() # Fix the locale environment variables on Windows
 
     def set_logging(options):
-        if options.log != None:
+        level = options.debug and logging.DEBUG or logging.INFO
+        if options.debug:
+            format = '%(levelname)7s %(module)s.%(funcName)s:%(lineno)d: %(message)s'
+            if sys.version_info[:2] < (2, 5):
+                format = '%(levelname)7s %(module)s [%(filename)s:%(lineno)d]: %(message)s'
+        else:
             format = '%(asctime)s %(levelname)s %(message)s'
-            level = options.debug and logging.DEBUG or logging.INFO
-            if options.debug:
-                format = '%(levelname)7s %(module)s.%(funcName)s:%(lineno)d: %(message)s'
-                if sys.version_info[:2] < (2, 5):
-                    format = '%(levelname)7s %(module)s [%(filename)s:%(lineno)d]: %(message)s'
-            if options.log.upper() in ('-', 'STDOUT'):
-                logging.basicConfig(level=level, format=format, stream=sys.stdout)
-            else:
-                try:
-                    logging.basicConfig(level=level, format=format, filename=path.abspath(options.log), filemode='w')
-                except IOError:
-                    parser.error(_("Could not open log file '%(filename)s'") % {"filename": options.log})
+        if options.log is None:
+            logging.basicConfig(level=level, format=format, stream=sys.stderr)
+        elif options.log.upper() in ('-', 'STDOUT'):
+            logging.basicConfig(level=level, format=format, stream=sys.stdout)
+        else:
+            try:
+                logging.basicConfig(level=level, format=format, filename=path.abspath(options.log), filemode='w')
+            except IOError:
+                parser.error(_("Could not open log file '%(filename)s'") % {"filename": options.log})
+            
 
     def set_config(options):
         try:

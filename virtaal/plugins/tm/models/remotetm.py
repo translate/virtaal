@@ -31,7 +31,7 @@ class TMModel(BaseTMModel):
 
     default_config = {
         "host" : "localhost",
-        "port" : "8080",
+        "port" : "55555",
     }
 
     # INITIALIZERS #
@@ -45,7 +45,9 @@ class TMModel(BaseTMModel):
 
 
     # METHODS #
+    # METHODS #
     def query(self, tmcontroller, query_str):
+        #figure out languages
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])
         else:
@@ -55,3 +57,22 @@ class TMModel(BaseTMModel):
         """Handle the matches when returned from self.tmclient."""
         self.cache[query_str] = matches
         self.emit('match-found', query_str, matches)
+
+    def push_store(self, store_controller):
+        """add units in store to tmdb on save"""
+        units = []
+        for unit in store_controller.store.get_units():
+            if  unit.istranslated():
+                units.append(unit2dict(unit))
+        #FIXME: do we get source and target langs from
+        #store_controller or from tm state?
+        self.tmclient.add_store(store_controller.store.get_filename(), units, self.source_lang, self.target_lang)
+        self.cache = {}
+        
+    def upload_store(self, store_controller):
+        """upload store to tmserver"""
+        self.tmclient.upload_store(store_controller.store._trans_store, self.source_lang, self.target_lang)
+        self.cache = {}
+
+def unit2dict(unit):
+    return {"source": unit.source, "target": unit.target, "context": unit.getcontext()}

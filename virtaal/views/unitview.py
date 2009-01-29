@@ -23,6 +23,7 @@ import logging
 import re
 from gobject import idle_add, GObject, SIGNAL_RUN_FIRST, TYPE_INT, TYPE_NONE, TYPE_PYOBJECT, TYPE_STRING
 from translate.lang import factory
+from translate.lang import data
 try:
     import gtkspell
 except ImportError, e:
@@ -96,7 +97,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     def get_target_n(self, n):
         buff = self.targets[n].get_buffer()
-        return markup.unescape(buff.get_text(buff.get_start_iter(), buff.get_end_iter()))
+        return data.forceunicode(markup.unescape(buff.get_text(buff.get_start_iter(), buff.get_end_iter())))
 
     def set_target_n(self, n, newtext, cursor_pos=-1, escape=True):
         # TODO: Save cursor position and set after assignment

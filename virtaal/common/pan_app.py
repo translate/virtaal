@@ -166,14 +166,14 @@ if getattr(sys, 'frozen', False):
 else:
     main_dir = os.path.dirname(unicode(sys.argv[0], sys.getfilesystemencoding()))
 
-def get_abs_data_filename(path_parts):
+def get_abs_data_filename(path_parts, basedirs=[]):
     """Get the absolute path to the given file- or directory name in Virtaal's
         data directory.
 
         @type  path_parts: list
         @param path_parts: The path parts that can be joined by os.path.join().
         """
-    basedirs = [
+    basedirs += [
         os.path.join(os.path.dirname(unicode(__file__, sys.getfilesystemencoding())), os.path.pardir),
     ]
     return file_discovery.get_abs_data_filename(path_parts, basedirs=basedirs)

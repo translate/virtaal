@@ -24,7 +24,18 @@ import gobject
 import gtk
 import logging
 import re
-from collections import defaultdict
+try:
+    from collections import defaultdict
+except ImportError:
+    class defaultdict(dict):
+        def __init__(self, default_factory=lambda: None):
+            self.__factory = default_factory
+
+        def __getitem__(self, key):
+            if key in self:
+                return super(defaultdict, self).__getitem__(key)
+            else:
+                return self.__factory()
 
 from virtaal.controllers import BasePlugin
 

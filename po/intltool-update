@@ -11,4 +11,11 @@ XGETTEXT_ARGS='\
 '
 export XGETTEXT_ARGS
 
-intltool-update $*
+# Hack around the fact that intltool-update does not do --previous
+if [ $# -eq 1 -a -f $1.po ]; then
+	# We are trying to update an existing translation
+	# intltool-update xy ==> intltool-update --pot && intltool-update --dist xy
+	intltool-update --pot && msgmerge --previous --update $1.po $package.pot
+else
+	intltool-update $*
+fi

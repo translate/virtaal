@@ -1,47 +1,48 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# Alaa Abd El Fattah <alaa@translate.org.za>, 2009
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.3beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-01-30 15:39+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2009-01-28 23:08+0200\n"
+"PO-Revision-Date: 2009-01-30 16:19+0200\n"
+"Last-Translator: Alaa Abd El Fattah <alaa@translate.org.za>\n"
+"Language-Team: Translate.org.za\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.3beta1\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 msgid ""
 "A translation tool to help a human translator translate files into other "
 "languages"
-msgstr ""
+msgstr "أداة لترجمة الملفات من لغة الى أخرى"
 
 #: ../share/applications/virtaal.desktop.in.h:2
 msgid "Translation Tool"
-msgstr ""
+msgstr "أداة ترجمة"
 
 #: ../share/applications/virtaal.desktop.in.h:3
 #: ../share/virtaal/virtaal.glade.h:23
 msgid "Virtaal"
-msgstr ""
+msgstr "فِرتال"
 
 #: ../share/virtaal/virtaal.glade.h:1
 msgid "<b>Language information</b>"
-msgstr ""
+msgstr "<b>خصائص اللغة</b>"
 
 #: ../share/virtaal/virtaal.glade.h:2
 msgid "<b>Original</b>"
-msgstr ""
+msgstr "<b>الأصل</b>"
 
 #: ../share/virtaal/virtaal.glade.h:3
 msgid "<b>Translation</b>"
-msgstr ""
+msgstr "<b>الترجمة</b>"
 
 #: ../share/virtaal/virtaal.glade.h:4
 msgid ""
@@ -50,27 +51,27 @@ msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:5
 msgid "General"
-msgstr ""
+msgstr "عمومي"
 
 #: ../share/virtaal/virtaal.glade.h:6
 msgid "ISO code:"
-msgstr ""
+msgstr "كود أيزو:"
 
 #: ../share/virtaal/virtaal.glade.h:7
 msgid "Language name:"
-msgstr ""
+msgstr "اسم اللغة:"
 
 #: ../share/virtaal/virtaal.glade.h:8
 msgid "Languages"
-msgstr ""
+msgstr "اللّغات"
 
 #: ../share/virtaal/virtaal.glade.h:9
 msgid "Missing Language"
-msgstr ""
+msgstr "لغة ناقصة؟"
 
 #: ../share/virtaal/virtaal.glade.h:10
 msgid "New Language Pair"
-msgstr ""
+msgstr "أضف زوج لغات"
 
 #: ../share/virtaal/virtaal.glade.h:11
 msgid "Number of plurals:"
@@ -78,15 +79,16 @@ msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:12
 msgid "P_age Up"
-msgstr ""
+msgstr "صفحة للأعلى"
 
 #: ../share/virtaal/virtaal.glade.h:13
 msgid "Personal Information"
-msgstr ""
+msgstr "بيانات شخصية"
 
 #: ../share/virtaal/virtaal.glade.h:14
+#, fuzzy
 msgid "Plug-ins"
-msgstr ""
+msgstr "ملحقات"
 
 #: ../share/virtaal/virtaal.glade.h:15
 msgid "Plural expression:"
@@ -94,7 +96,7 @@ msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:16
 msgid "Report a _Bug"
-msgstr ""
+msgstr "بلغ عن _خلل"
 
 #: ../share/virtaal/virtaal.glade.h:17
 msgid ""
@@ -116,70 +118,70 @@ msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:24
 msgid "Virtaal Preferences"
-msgstr ""
+msgstr "اعدادات فِرتال"
 
 #: ../share/virtaal/virtaal.glade.h:25
 msgid "_Edit"
-msgstr ""
+msgstr "_تحرير"
 
 #: ../share/virtaal/virtaal.glade.h:26
 msgid "_File"
-msgstr ""
+msgstr "_ملف"
 
 #: ../share/virtaal/virtaal.glade.h:27
 msgid "_Full Screen"
-msgstr ""
+msgstr "_ملء الشّاشة"
 
 #: ../share/virtaal/virtaal.glade.h:28
 msgid "_Help"
-msgstr ""
+msgstr "م_ساعدة"
 
 #: ../share/virtaal/virtaal.glade.h:29
 msgid "_Localization Guide"
-msgstr ""
+msgstr "_دليل الترجمة"
 
 #: ../share/virtaal/virtaal.glade.h:31
 msgid "_Missing Language..."
-msgstr ""
+msgstr "لغة _ناقصة؟..."
 
 #: ../share/virtaal/virtaal.glade.h:32
 msgid "_Navigation"
-msgstr ""
+msgstr "_تنقّل"
 
 #: ../share/virtaal/virtaal.glade.h:33
 msgid "_Online Help"
-msgstr ""
+msgstr "المساعدة على الخط"
 
 #: ../share/virtaal/virtaal.glade.h:34
 msgid "_Page Down"
-msgstr ""
+msgstr "صفحة للأسفل"
 
 #: ../share/virtaal/virtaal.glade.h:35
 msgid "_Recent Files"
-msgstr ""
+msgstr "الملفات الأ_خيرة"
 
 #: ../share/virtaal/virtaal.glade.h:36
 msgid "_Tutorial"
-msgstr ""
+msgstr "درس _تعليمي"
 
 #: ../share/virtaal/virtaal.glade.h:37
 msgid "_Update to template"
-msgstr ""
+msgstr "_حدث طبقا لقالب"
 
 #: ../share/virtaal/virtaal.glade.h:38
 msgid "_View"
-msgstr ""
+msgstr "_عرِض"
 
 #: ../virtaal/tips.py:27
 msgid ""
 "At the end of a translation, simply press <Enter> to continue with the next "
 "one."
-msgstr ""
+msgstr "للانتقال الى النص التالي. بعد اتمام ترجمة نص اضغط <ادخال>"
 
 #: ../virtaal/tips.py:28
 msgid ""
 "To copy the original string into the target field, simply press <Alt+Down>."
-msgstr ""
+msgstr "لنسخ النص الأصلي في خانة النص المترجم اضغط <Alt+Down>"
 
 #. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
 #: ../virtaal/tips.py:31
@@ -188,30 +190,30 @@ msgstr ""
 
 #: ../virtaal/tips.py:32
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
-msgstr ""
+msgstr "للانتقال بين النصوص اضغط Ctrl+Up أو Ctrl+Down"
 
 #: ../virtaal/tips.py:33
 msgid ""
 "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
-msgstr ""
+msgstr "للانتقال بخطوات كبيرة بين النصوص اضغط Ctrl+PgUp أو Ctrl+PgDown"
 
 #: ../virtaal/controllers/maincontroller.py:62
 #: ../virtaal/controllers/maincontroller.py:71
 #: ../virtaal/controllers/maincontroller.py:80
 msgid "Header information"
-msgstr ""
+msgstr "بيانات الترويسة"
 
 #: ../virtaal/controllers/maincontroller.py:63
 msgid "Please enter your name"
-msgstr ""
+msgstr "رجاء ادخل إسمك"
 
 #: ../virtaal/controllers/maincontroller.py:72
 msgid "Please enter your e-mail address"
-msgstr ""
+msgstr "الرجاء إدخال عنوان بريدك الألكتروني"
 
 #: ../virtaal/controllers/maincontroller.py:81
 msgid "Please enter your team's information"
-msgstr ""
+msgstr "الرجاء إدخال بيانات فريق العمل"
 
 #: ../virtaal/controllers/maincontroller.py:149
 #: ../virtaal/controllers/maincontroller.py:194
@@ -229,6 +231,10 @@ msgid ""
 "\n"
 "Try opening a different file."
 msgstr ""
+"تعذر فتح الملف.\n"
+"%(error_message)s\n"
+"\n"
+"اختر ملف مختلف."
 
 #: ../virtaal/controllers/maincontroller.py:169
 #, python-format
@@ -239,6 +245,11 @@ msgid ""
 "\n"
 "Try saving at a different location."
 msgstr ""
+"تعذر حفظ الملف.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"اختر موضع مختلف."
 
 #: ../virtaal/controllers/maincontroller.py:174
 #, python-format
@@ -247,10 +258,13 @@ msgid ""
 "\n"
 "%(error_message)s"
 msgstr ""
+"تعذر حفظ الملف.\n"
+"\n"
+"%(error_message)s\n"
 
 #: ../virtaal/controllers/maincontroller.py:178
 msgid "Reload File"
-msgstr ""
+msgstr "أعد تحميل الملف"
 
 #: ../virtaal/controllers/maincontroller.py:178
 msgid "Reload file from last saved copy and lose all changes?"
@@ -262,55 +276,56 @@ msgstr ""
 
 #: ../virtaal/modes/defaultmode.py:28
 msgid "All"
-msgstr ""
+msgstr "الكل"
 
 #: ../virtaal/modes/quicktransmode.py:31
 msgid "Incomplete"
-msgstr ""
+msgstr "غير مكتمل"
 
 #: ../virtaal/modes/searchmode.py:37 ../virtaal/modes/searchmode.py:64
 msgid "Search"
-msgstr ""
+msgstr "بحث"
 
 #: ../virtaal/modes/searchmode.py:66
+#, fuzzy
 msgid "_Case sensitive"
-msgstr ""
+msgstr "_حسّاس لحالة الأحرف"
 
 #: ../virtaal/modes/searchmode.py:68
 msgid "_Regular expression"
-msgstr ""
+msgstr "تعبير قياسي"
 
 #: ../virtaal/modes/searchmode.py:72
 msgid "Replace with"
-msgstr ""
+msgstr "استبدِل بـ"
 
 #: ../virtaal/modes/searchmode.py:74
 msgid "Replace"
-msgstr ""
+msgstr "إستبدِل"
 
 #: ../virtaal/modes/searchmode.py:76
 msgid "Replace _All"
-msgstr ""
+msgstr "استبدِل ال_كل"
 
 #: ../virtaal/views/prefsview.py:65
 msgid "Enabled"
-msgstr ""
+msgstr "مفعّل"
 
 #: ../virtaal/views/prefsview.py:66
 msgid "Name"
-msgstr ""
+msgstr "الإسم"
 
-#: ../virtaal/plugins/autocompletor.py:321
+#: ../virtaal/plugins/autocompletor.py:301
 msgid "AutoCompletor"
-msgstr ""
+msgstr "الإكمال الآلي"
 
 #: ../virtaal/plugins/autocorrector.py:246
 msgid "AutoCorrector"
-msgstr ""
+msgstr "التصحيح الآلي"
 
 #: ../virtaal/plugins/migration.py:56
 msgid "Migration assistant"
-msgstr ""
+msgstr "مساعد الانتقال"
 
 #: ../virtaal/plugins/migration.py:70
 msgid "Should Virtaal try to import settings and data from other applications?"
@@ -365,7 +380,7 @@ msgstr ""
 
 #: ../virtaal/plugins/tm/__init__.py:27
 msgid "Translation Memory"
-msgstr ""
+msgstr "ذاكرة الترجمة"
 
 #: ../virtaal/plugins/tm/models/currentfile.py:32
 msgid "Currently open file"
@@ -381,33 +396,33 @@ msgstr ""
 
 #: ../virtaal/plugins/tm/models/opentran.py:32
 msgid "Open-Tran.eu"
-msgstr ""
+msgstr "Open-Tran.eu"
 
 #: ../virtaal/plugins/tm/models/remotetm.py:30
 msgid "Remote server"
-msgstr ""
+msgstr "خادم بعيد"
 
 #: ../virtaal/plugins/tm/models/tinytm.py:34
 msgid "TinyTM"
-msgstr ""
+msgstr "TinyTM"
 
 #: ../virtaal/plugins/tm/tmview.py:94
 msgid "Available _Suggestions"
-msgstr ""
+msgstr "المقترحات المتاحة"
 
 #: ../virtaal/plugins/tm/tmview.py:150
 #, python-format
 msgid "Ctrl+%(number_key)d"
-msgstr ""
+msgstr "Ctrl+%(number_key)d"
 
 #. l10n: match quality column label
 #: ../virtaal/plugins/tm/tmwidgets.py:63
 msgid "%"
-msgstr ""
+msgstr "٪"
 
 #: ../virtaal/plugins/tm/tmwidgets.py:65
 msgid "Matches"
-msgstr ""
+msgstr "مطابقات"
 
 #: ../virtaal/plugins/tm/tmwidgets.py:120
 #, python-format
@@ -415,8 +430,9 @@ msgid "%(match_quality)s%%"
 msgstr ""
 
 #: ../virtaal/views/langview.py:66
+#, fuzzy
 msgid "_New Language Pair..."
-msgstr ""
+msgstr "زوج لغات"
 
 #: ../virtaal/views/mainview.py:198
 msgid "Error"
@@ -432,26 +448,28 @@ msgstr ""
 
 #: ../virtaal/views/mainview.py:247
 msgid "All Files"
-msgstr ""
+msgstr "كل الملفات"
 
 #: ../virtaal/views/mainview.py:252
 msgid "Save"
-msgstr ""
+msgstr "احفظ"
 
 #: ../virtaal/views/mainview.py:266
 msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
 msgstr ""
+"حصل تغيير في الملف الحالي.\n"
+"هل تريد حفظه ؟"
 
 #: ../virtaal/views/mainview.py:269
 msgid "_Discard"
-msgstr ""
+msgstr "ت_جاهل"
 
 #: ../virtaal/views/mainview.py:295
 #, python-format
 msgid "Virtaal - %(current_file)s %(modified_marker)s"
-msgstr ""
+msgstr "فِرتال - %(current_file)s %(modified_marker)s"
 
 #: ../virtaal/views/mainview.py:320
 msgid "Please enter the number of noun forms (plurals) to use"
@@ -467,9 +485,10 @@ msgstr ""
 msgid "_Navigation: "
 msgstr ""
 
-#: ../virtaal/views/unitview.py:498
+#: ../virtaal/views/unitview.py:482
+#, fuzzy
 msgid "F_uzzy"
-msgstr ""
+msgstr "مب_هم"
 
 #: ../virtaal/views/widgets/aboutdialog.py:35
 msgid "Copyright © 2007-2009 Zuza Software Foundation"
@@ -490,7 +509,7 @@ msgstr ""
 
 #: ../virtaal/views/widgets/aboutdialog.py:53
 msgid "Virtaal website"
-msgstr ""
+msgstr "موقع فِرتال"
 
 #. l10n: Rather than translating, fill in the names of the translators
 #: ../virtaal/views/widgets/aboutdialog.py:62
@@ -508,7 +527,7 @@ msgstr ""
 #: ../virtaal/views/widgets/langselectdialog.py:73
 #: ../virtaal/views/widgets/langselectdialog.py:79
 msgid "Language"
-msgstr ""
+msgstr "اللّغة"
 
 #. l10n: This is the column heading for the language code
 #: ../virtaal/views/widgets/langselectdialog.py:86
@@ -626,52 +645,52 @@ msgstr ""
 msgid "XML Localization Interchange File Format"
 msgstr ""
 
-#: ../bin/virtaal:36
+#: ../bin/virtaal:33
 #, c-format
 msgid "%prog [options] [translation_file]"
 msgstr ""
 
-#: ../bin/virtaal:39
+#: ../bin/virtaal:36
 msgid "PROFILE"
 msgstr ""
 
-#: ../bin/virtaal:41
+#: ../bin/virtaal:38
 msgid "perform profiling, storing the result to the supplied filename."
 msgstr ""
 
-#: ../bin/virtaal:43
+#: ../bin/virtaal:40
 msgid "LOG"
 msgstr ""
 
-#: ../bin/virtaal:44
+#: ../bin/virtaal:41
 msgid "turn on logging, storing the result to the supplied filename."
 msgstr ""
 
-#: ../bin/virtaal:46
+#: ../bin/virtaal:43
 msgid "CONFIG"
 msgstr ""
 
-#: ../bin/virtaal:47
+#: ../bin/virtaal:44
 msgid "use the configuration file given by the supplied filename."
 msgstr ""
 
-#: ../bin/virtaal:50
+#: ../bin/virtaal:47
 msgid "enable debugging features"
 msgstr ""
 
-#: ../bin/virtaal:71
+#: ../bin/virtaal:64
 msgid "Could not open log file '%(filename)s'"
 msgstr ""
 
-#: ../bin/virtaal:79
+#: ../bin/virtaal:71
 msgid "Could not read configuration file '%(filename)s'"
 msgstr ""
 
-#: ../bin/virtaal:83
+#: ../bin/virtaal:75
 msgid "invalid number of arguments"
 msgstr ""
 
-#: ../bin/virtaal:112
+#: ../bin/virtaal:104
 msgid "Could not open profile file '%(filename)s'"
 msgstr ""
 
@@ -749,4 +768,16 @@ msgstr ""
 
 #: ../devsupport/optparse.py:1612
 msgid "Options"
-msgstr ""
+msgstr "خيارات"
+
+#~ msgid "<b>Information</b>"
+#~ msgstr "<b>تعليمات</b>"
+
+#~ msgid "<b>Source language</b>"
+#~ msgstr "<b>لغة النص الأصلي</b>"
+
+#~ msgid "<b>Target language</b>"
+#~ msgstr "<b>لغة الترجمة</b>"
+
+#~ msgid "Add Language"
+#~ msgstr "أضِف لغة"

@@ -45,6 +45,7 @@ class UndoController(BaseController):
         self.main_controller.undo_controller = self
         self.unit_controller = self.main_controller.store_controller.unit_controller
 
+        self.enabled = True
         self.model = UndoModel(self)
         self._paste_undo_info = None
 
@@ -72,7 +73,21 @@ class UndoController(BaseController):
         mainview.add_accel_group(self.accel_group)
 
 
+    # DECORATORS #
+    def if_enabled(method):
+        def enabled_method(self, *args, **kwargs):
+            if self.enabled:
+                return method(self, *args, **kwargs)
+        return enabled_method
+
+
     # METHODS #
+    def disable(self):
+        self.enabled = False
+
+    def enable(self):
+        self.enabled = True
+
     def remove_blank_undo(self):
         """Removes items from the top of the undo stack with no C{value} or
             C{action} values. The "top of the stack" is one of the top 2 items.
@@ -130,6 +145,7 @@ class UndoController(BaseController):
     def _on_store_loaded(self, storecontroller):
         self.model.clear()
 
+    @if_enabled
     def _on_undo_activated(self, _accel_group, _acceleratable, _keyval, _modifier):
         undo_info = self.model.pop()
         if not undo_info:
@@ -141,6 +157,7 @@ class UndoController(BaseController):
         else:
             self._perform_undo(undo_info)
 
+    @if_enabled
     def _on_unit_delete_text(self, _unit_controller, unit, old_text, start_offset, end_offset, cursor_pos, target_num):
         if self._paste_undo_info:
             self.model.push(self._paste_undo_info)
@@ -156,6 +173,7 @@ class UndoController(BaseController):
             'cursorpos': cursor_pos
         })
 
+    @if_enabled
     def _on_unit_insert_text(self, _unit_controller, unit, old_text, ins_text, offset, target_num):
         if self._paste_undo_info:
             return
@@ -169,6 +187,7 @@ class UndoController(BaseController):
             'cursorpos': offset
         })
 
+    @if_enabled
     def _on_unit_paste_start(self, _unit_controller, unit, old_text, offsets, target_num):
         if offsets['insert_offset'] == offsets['selection_offset']:
             # If there is no selection, a paste is equivalent to an insert action

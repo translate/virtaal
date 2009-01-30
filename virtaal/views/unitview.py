@@ -379,7 +379,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         else:
             note_text = self.unit.getnotes(origin) or u""
 
-        if origin == "programmer" and len(note_text) < 15 and self.unit is not None:
+        if origin == "programmer" and len(note_text) < 15 and self.unit is not None and self.unit.getlocations():
             note_text += u"  " + u" ".join(self.unit.getlocations()[:3])
 
         self._widgets['notes'][origin].set_text(note_text)

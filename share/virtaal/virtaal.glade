@@ -114,6 +114,19 @@
                   <widget class="GtkMenu" id="menu_edit">
                     <property name="visible">True</property>
                     <child>
+                      <widget class="GtkImageMenuItem" id="mnu_undo">
+                        <property name="visible">True</property>
+                        <property name="label">gtk-undo</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkSeparatorMenuItem" id="menuitem4">
+                        <property name="visible">True</property>
+                      </widget>
+                    </child>
+                    <child>
                       <widget class="GtkImageMenuItem" id="mnu_cut">
                         <property name="visible">True</property>
                         <property name="label">gtk-cut</property>

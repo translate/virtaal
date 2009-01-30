@@ -59,6 +59,11 @@ class UndoController(BaseController):
         self.unit_controller.connect('unit-paste-start', self._on_unit_paste_start)
         self.main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
 
+        mainview = self.main_controller.view
+        mainview.gui.get_widget('menu_edit').set_accel_group(self.accel_group)
+        mainview.gui.get_widget('mnu_undo').set_accel_path('<Virtaal>/Edit/Undo')
+        mainview.gui.get_widget('mnu_undo').connect('activate', self._on_undo_activated)
+
     def _setup_key_bindings(self):
         """Setup Gtk+ key bindings (accelerators).
             This method *may* need to be moved into a view object, but if it is,
@@ -67,7 +72,9 @@ class UndoController(BaseController):
         gtk.accel_map_add_entry("<Virtaal>/Edit/Undo", gtk.keysyms.z, gdk.CONTROL_MASK)
 
         self.accel_group = gtk.AccelGroup()
-        self.accel_group.connect_by_path("<Virtaal>/Edit/Undo", self._on_undo_activated)
+        # The following line was commented out, because it caused a double undo when pressing
+        # Ctrl+Z, but only one if done through the menu item. This way it all works as expected.
+        #self.accel_group.connect_by_path("<Virtaal>/Edit/Undo", self._on_undo_activated)
 
         mainview = self.main_controller.view # FIXME: Is this acceptable?
         mainview.add_accel_group(self.accel_group)
@@ -146,7 +153,7 @@ class UndoController(BaseController):
         self.model.clear()
 
     @if_enabled
-    def _on_undo_activated(self, _accel_group, _acceleratable, _keyval, _modifier):
+    def _on_undo_activated(self, *args):
         undo_info = self.model.pop()
         if not undo_info:
             return

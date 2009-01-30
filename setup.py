@@ -87,7 +87,6 @@ options = {
     ] + mo_files,
     'scripts': [
         "bin/virtaal",
-        "../translate/services/tmserver"
     ],
     'packages': [
         "virtaal",
@@ -337,6 +336,9 @@ def add_win32_options(options):
              options are the options required by py2exe."""
     if py2exe != None and ('py2exe' in sys.argv or 'innosetup' in sys.argv):
         options['data_files'].extend(find_gtk_files())
+        #This depends on setup.py being run from a checkout with the translate
+        #toolkit in place.
+        options['scripts'].append("../translate/services/tmserver")
 
         py2exe_options = {
             "packages":   ["encodings", "virtaal"],
@@ -429,6 +431,9 @@ def add_platform_specific_options(options):
 
 def create_manifest(data_files, extra_files, extra_dirs):
     f = open('MANIFEST.in', 'w+')
+    f.write("# informational files")
+    for infofile in ("README", "TODO", "ChangeLog", "COPYING", "LICENSE", "*.txt"):
+        f.write("global-include %s" % infofile)
     for data_file_list in [d[1] for d in data_files] + extra_files:
         f.write("include %s\n" % (" ".join( data_file_list )))
     for dir in extra_dirs:

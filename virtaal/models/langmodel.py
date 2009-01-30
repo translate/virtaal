@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from translate.lang.data import languages as toolkit_langs, tr_lang
+from translate.lang.data import languages as toolkit_langs, tr_lang, simplify_to_common
 
 from virtaal.common import pan_app
 
@@ -63,13 +63,11 @@ class LanguageModel(BaseModel):
 
     # METHODS #
     def load(self, langcode):
-        #TODO: langcode = getstandardcode(langcode)
-        # FIXME: HACKS below
-        if langcode == 'en-US':
-            langcode = 'en'
-
+        #FIXME: what if we get language code with different capitalization?
         if langcode not in self.languages:
-            raise Exception('Language not found: %s' % (langcode))
+            langcode = simplify_to_common(langcode, self.languages)
+            if langcode not in self.languages:
+                raise Exception('Language not found: %s' % (langcode))
 
         self.name = self.gettext_lang(self.languages[langcode][0])
         self.code = langcode

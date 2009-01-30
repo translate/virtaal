@@ -170,4 +170,18 @@ class LanguageController(BaseController):
     def _on_store_loaded(self, store_controller):
         srclang = store_controller.store.get_source_language()
         tgtlang = store_controller.store.get_target_language()
-        self.set_language_pair(srclang, tgtlang)
+        try:
+            self.set_language_pair(srclang, tgtlang)
+        except Exception:
+            self.main_controller.view.main_window.connect("show", self._handle_unkown_language)
+        
+    def _handle_unkown_language(self, window):
+        srclang = self.main_controller.store_controller.store.get_source_language()
+        tgtlang = self.main_controller.store_controller.store.get_target_language()
+        self.main_controller.show_error(
+            _("The language codes used in this file are unknown. Please select a language pair that matches the languages used.")
+            )
+        if not getattr(self.view, 'select_dialog', None):
+            self.view._create_dialogs()
+        if self.view.select_dialog.run(srclang, tgtlang):
+            self.set_language_pair(srclang, tgtlang)

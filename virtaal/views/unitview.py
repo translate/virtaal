@@ -81,8 +81,23 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             'targets': []
         }
         self._get_widgets()
+        self._setup_menus()
         self.unit = None
         self.load_unit(unit)
+
+    def _setup_menus(self):
+        clipboard = gtk.Clipboard(selection=gtk.gdk.SELECTION_CLIPBOARD)
+        def on_cut(menuitem):
+            self.targets[self.focused_target_n].get_buffer().cut_clipboard(clipboard, True)
+        def on_copy(menuitem):
+            self.targets[self.focused_target_n].get_buffer().copy_clipboard(clipboard)
+        def on_paste(menuitem):
+            self.targets[self.focused_target_n].get_buffer().paste_clipboard(clipboard, None, True)
+
+        maingui = self.controller.main_controller.view.gui
+        maingui.get_widget('mnu_cut').connect('activate', on_cut)
+        maingui.get_widget('mnu_copy').connect('activate', on_copy)
+        maingui.get_widget('mnu_paste').connect('activate', on_paste)
 
 
     # ACCESSORS #

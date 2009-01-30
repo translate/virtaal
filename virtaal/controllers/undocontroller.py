@@ -45,7 +45,7 @@ class UndoController(BaseController):
         self.main_controller.undo_controller = self
         self.unit_controller = self.main_controller.store_controller.unit_controller
 
-        self.undo_stack = UndoModel(self)
+        self.model = UndoModel(self)
         self._paste_undo_info = None
 
         self._setup_key_bindings()
@@ -79,24 +79,24 @@ class UndoController(BaseController):
 
             This is a convenience method that can be used by any code that
             directly sets unit values."""
-        if not self.undo_stack.undo_stack:
+        if not self.model.undo_stack:
             return
 
-        head = self.undo_stack.head()
+        head = self.model.head()
         if not head['value'] and ('action' in head and not head['action'] or True):
-            self.undo_stack.pop(permanent=True)
+            self.model.pop(permanent=True)
             return
 
-        item = self.undo_stack.peek(offset=-1)
+        item = self.model.peek(offset=-1)
         if not item['value'] and ('action' in item and not item['action'] or True):
-            self.undo_stack.index -= 1
-            self.undo_stack.undo_stack.remove(item)
+            self.model.index -= 1
+            self.model.undo_stack.remove(item)
 
     def record_stop(self):
-        self.undo_stack.recording = False
+        self.model.recording = False
 
     def record_start(self):
-        self.undo_stack.recording = True
+        self.model.recording = True
 
     def _disable_unit_signals(self):
         """Disable all signals emitted by the unit view.
@@ -128,10 +128,10 @@ class UndoController(BaseController):
 
     # EVENT HANDLERS #
     def _on_store_loaded(self, storecontroller):
-        self.undo_stack.clear()
+        self.model.clear()
 
     def _on_undo_activated(self, _accel_group, _acceleratable, _keyval, _modifier):
-        undo_info = self.undo_stack.pop()
+        undo_info = self.model.pop()
         if not undo_info:
             return
 
@@ -143,12 +143,12 @@ class UndoController(BaseController):
 
     def _on_unit_delete_text(self, _unit_controller, unit, old_text, start_offset, end_offset, cursor_pos, target_num):
         if self._paste_undo_info:
-            self.undo_stack.push(self._paste_undo_info)
+            self.model.push(self._paste_undo_info)
             self._paste_undo_info = None
             return
 
         #logging.debug('_on_unit_delete_text(%s, "%s", %d, %d, %d)' % (repr(unit), old_text, start_offset, end_offset, target_num))
-        self.undo_stack.push({
+        self.model.push({
             'unit': unit,
             'targetn': target_num,
             'value': old_text,
@@ -160,7 +160,7 @@ class UndoController(BaseController):
             return
 
         #logging.debug('_on_unit_insert_text(%s, "%s", "%s", %d, %d)' % (repr(unit), old_text, ins_text, offset, target_num))
-        self.undo_stack.push({
+        self.model.push({
             'unit': unit,
             'targetn': target_num,
             'value': old_text,

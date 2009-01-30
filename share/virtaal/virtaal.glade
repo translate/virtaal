@@ -387,10 +387,17 @@
         <property name="n_columns">4</property>
         <property name="homogeneous">True</property>
         <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
+          <widget class="GtkVBox" id="vbox_right">
+            <property name="visible">True</property>
+            <child>
+              <placeholder/>
+            </child>
+          </widget>
+          <packing>
+            <property name="left_attach">3</property>
+            <property name="right_attach">4</property>
+            <property name="x_padding">5</property>
+          </packing>
         </child>
         <child>
           <widget class="GtkVBox" id="vbox_middle">

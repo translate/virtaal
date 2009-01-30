@@ -213,7 +213,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         if not getattr(self, '_widgets', None):
             self._widgets = {}
 
-        widget_names = ('tbl_editor', 'vbox_middle', 'vbox_sources', 'vbox_targets', 'vbox_options')
+        widget_names = ('tbl_editor', 'vbox_middle', 'vbox_sources', 'vbox_targets', 'vbox_options', 'vbox_right')
 
         for name in widget_names:
             self._widgets[name] = self.gui.get_widget(name)
@@ -499,7 +499,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             # FIXME: not allowing focus will probably raise various issues related to keyboard accesss.
             fuzzy.set_property("can-focus", False)
             fuzzy.connect('toggled', self._on_fuzzy_toggled)
-            self._widgets['vbox_options'].pack_start(fuzzy)
+            self._widgets['vbox_right'].pack_end(fuzzy, expand=False, fill=False)
             self._widgets['fuzzy'] = fuzzy
 
         if self.unit is not None:

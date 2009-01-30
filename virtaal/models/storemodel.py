@@ -148,7 +148,7 @@ class StoreModel(BaseModel):
         #get a copy of old stats before we convert
         oldstats = statsdb.StatsCache().filestats(oldfilename, checks.UnitChecker(), self._trans_store)
 
-        self._trans_store = pot2po.convert_stores(newstore, self._trans_store)
+        self._trans_store = pot2po.convert_stores(newstore, self._trans_store, fuzzymatching=False)
 
         #FIXME: ugly tempfile hack, can we please have a pure store implementation of statsdb
         import tempfile

@@ -260,7 +260,7 @@ msgid ""
 msgstr ""
 "تعذر حفظ الملف.\n"
 "\n"
-"%(error_message)s\n"
+"%(error_message)s"
 
 #: ../virtaal/controllers/maincontroller.py:178
 msgid "Reload File"

@@ -214,12 +214,20 @@ class AutoCompletor(object):
                 # and its side effects are taken care of. We abuse
                 # gobject.idle_add for that.
                 def suggest_completion():
+                    # The undo_controller.{disable,enable}() calls ensures that the insertion
+                    # of the suggestion string is not added to the undo stack.
+                    # See _on_delete_range() below for a related undo stack (delete event) hack.
+                    self.main_controller.undo_controller.disable()
                     buffer.handler_block(self._textbuffer_insert_ids[buffer])
+                    #logging.debug('buffer.insert_at_cursor("%s")' % (word_postfix))
                     buffer.insert_at_cursor(word_postfix)
                     buffer.handler_unblock(self._textbuffer_insert_ids[buffer])
+                    self.main_controller.undo_controller.enable()
+
                     sel_iter_start = buffer.get_iter_at_offset(len(prefix))
                     sel_iter_end   = buffer.get_iter_at_offset(len(prefix+word_postfix))
                     buffer.select_range(sel_iter_start, sel_iter_end)
+
                     buffer._suggestion = (sel_iter_start, sel_iter_end)
                     return False
 
@@ -234,6 +242,9 @@ class AutoCompletor(object):
         if suggestion:
             selection = buf.get_selection_bounds()
             if selection and suggestion[0].equal(selection[0]) and suggestion[1].equal(selection[1]):
+                # This removes the deletion of the suggestion from the undo stack.
+                # See _on_insert_text() above for a related undo stack (insert event) hack.
+                self.main_controller.undo_controller.model.pop(permanent=True)
                 return False
             else:
                 self._check_delete_selection(buf)

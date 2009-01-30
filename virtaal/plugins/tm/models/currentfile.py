@@ -59,12 +59,18 @@ class TMModel(BaseTMModel):
     # METHODS #
     def recreate_matcher(self, storecontroller):
         store = storecontroller.get_store()._trans_store
-        options = {
-            'max_length': int(self.config['max_length']),
-            'max_candidates': self.controller.max_matches,
-            'min_similarity': self.controller.min_quality
-        }
-        self.matcher = match.matcher(store, **options)
+        if self.matcher is None:
+            options = {
+                'max_length': int(self.config['max_length']),
+                'max_candidates': self.controller.max_matches,
+                'min_similarity': self.controller.min_quality
+                }
+            self.matcher = match.matcher(store, **options)
+        else:
+            for unit in store.units:
+                if unit.istranslatable() and unit.istranslated():
+                    self.matcher.extendtm(unit)
+        self.cache = {}
 
     def query(self, tmcontroller, query_str):
         if self.cache.has_key(query_str):

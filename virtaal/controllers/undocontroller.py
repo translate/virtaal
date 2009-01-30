@@ -147,7 +147,8 @@ class UndoController(BaseController):
             self._paste_undo_info = None
             return
 
-        #logging.debug('_on_unit_delete_text(%s, "%s", %d, %d, %d)' % (repr(unit), old_text, start_offset, end_offset, target_num))
+        #logging.debug('_on_unit_delete_text(old_text="%s", offsets=(%d, %d), target_n=%d)' % (old_text, start_offset, end_offset, target_num))
+
         self.model.push({
             'unit': unit,
             'targetn': target_num,
@@ -159,7 +160,8 @@ class UndoController(BaseController):
         if self._paste_undo_info:
             return
 
-        #logging.debug('_on_unit_insert_text(%s, "%s", "%s", %d, %d)' % (repr(unit), old_text, ins_text, offset, target_num))
+        #logging.debug('_on_unit_insert_text(old_text="%s", ins_text="%s", offset=%d, target_n=%d)' % (old_text, ins_text, offset, target_num))
+
         self.model.push({
             'unit': unit,
             'targetn': target_num,

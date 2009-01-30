@@ -161,6 +161,7 @@ class LanguageView(BaseView):
             )
 
     def _on_pairitem_activated(self, menuitem, item_n):
+        logging.debug('Selected language pair: %s' % (self.recent_items[item_n].get_child().get_text()))
         pair = self.controller.recent_pairs[item_n]
         self.controller.set_language_pair(*pair)
-        logging.debug('Selected language pair: %s' % (self.recent_items[item_n].get_child().get_text()))
+

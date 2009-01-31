@@ -1,6 +1,6 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the PACKAGE package.
+# Arabic (ar) localisation of Virtaal.
+# Copyright (C) 2009 Zuza Software Foundation (Translate.org.za)
+# This file is distributed under the same license as the Virtaal package.
 # Alaa Abd El Fattah <alaa@translate.org.za>, 2009
 # Khaled Hosny <khaledhosny@eglug.org>, 2009
 msgid ""
@@ -10,7 +10,7 @@ msgstr ""
 "POT-Creation-Date: 2009-01-28 23:08+0200\n"
 "PO-Revision-Date: 2009-01-30 18:59+0200\n"
 "Last-Translator: Alaa Abd El Fattah <alaa@translate.org.za>\n"
-"Language-Team: Translate.org.za\n"
+"Language-Team: Translate.org.za <translate-devel@translate.org.za>\n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

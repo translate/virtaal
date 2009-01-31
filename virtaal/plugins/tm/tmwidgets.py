@@ -117,6 +117,7 @@ class TMWindow(gtk.Window):
         if 'quality' in match_data and match_data['quality'] is not None:
             quality = int(match_data['quality'])
             cell_renderer.set_property('value', quality)
+            #l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
             cell_renderer.set_property('text', _("%(match_quality)s%%") % \
                     {"match_quality": quality})
             return

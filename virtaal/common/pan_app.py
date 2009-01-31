@@ -85,7 +85,6 @@ class Settings:
             "sourcelang": "en",
             "targetfont": "monospace",
             "targetlang": None,
-            "uilang": None,
     }
     plugin_state =  {
         "helloworld": "disabled",
@@ -104,10 +103,11 @@ class Settings:
                 raise Exception
 
         try:
-            lang = locale.getdefaultlocale(('LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG'))[0]
-            if not lang and sys.platform == "darwin":
-               lang = osx_lang()
-            self.language["uilang"] = lang
+            #if we wanted to determine the UI language ourselves, this should work:
+            #lang = locale.getdefaultlocale(('LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG'))[0]
+            #if not lang and sys.platform == "darwin":
+            #   lang = osx_lang()
+
             # guess default target lang based on locale, simplify to commonly used form
             lang = locale.getdefaultlocale(('LANGUAGE', 'LC_ALL', 'LANG'))[0]
             if not lang and sys.platform == "darwin":

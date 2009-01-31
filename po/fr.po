@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: virtaal-fr\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-01-28 23:08+0200\n"
-"PO-Revision-Date: 2009-01-30 18:54+0100\n"
+"PO-Revision-Date: 2009-01-31 12:16+0100\n"
 "Last-Translator: Christian Perrier <bubulle@debian.org>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,8 @@ msgstr ""
 msgid ""
 "A translation tool to help a human translator translate files into other "
 "languages"
-msgstr "Outil aidant un traducteur à traduire des fichiers dans d'autres langues"
+msgstr ""
+"Outil d'aide à la traduction de fichiers dans d'autres langues"
 
 #: ../share/applications/virtaal.desktop.in.h:2
 msgid "Translation Tool"
@@ -46,8 +47,11 @@ msgid "<b>Translation</b>"
 msgstr "<b>Traduction</b>"
 
 #: ../share/virtaal/virtaal.glade.h:4
-msgid "Depending on the translation task, the plural information might be optional."
-msgstr "Selon le type de traduction, les informations sur les formes plurielles peuvent être optionnelles."
+msgid ""
+"Depending on the translation task, the plural information might be optional."
+msgstr ""
+"Selon le type de traduction, les informations sur les formes plurielles "
+"peuvent être optionnelles."
 
 #: ../share/virtaal/virtaal.glade.h:5
 msgid "General"
@@ -79,7 +83,7 @@ msgstr "Nombre de pluriels :"
 
 #: ../share/virtaal/virtaal.glade.h:12
 msgid "P_age Up"
-msgstr "Page vers le _haut"
+msgstr "_Page vers le haut"
 
 #: ../share/virtaal/virtaal.glade.h:13
 msgid "Personal Information"
@@ -105,9 +109,11 @@ msgid ""
 "If you are translating from English to French then English would be your "
 "original or source language."
 msgstr ""
-"L'<b>Original</b> est la langue à partir de laquelle la traduction est effectuée, également appelée la langue source.\n"
+"L'<b>Original</b> est la langue à partir de laquelle la traduction est "
+"effectuée, également appelée la langue source.\n"
 "\n"
-"Par exemple, pour une traduction de l'anglais vers le français, l'anglais sera la langue originale ou langue source."
+"Par exemple, pour une traduction de l'anglais vers le français, l'anglais "
+"sera la langue originale ou langue source."
 
 #: ../share/virtaal/virtaal.glade.h:20
 msgid ""
@@ -117,9 +123,11 @@ msgid ""
 "If you are translating from English to French then French would be your "
 "translation or target language."
 msgstr ""
-"La <b>Traduction</b> est la langue dans laquelle la traduction se fait, également appelée la langue cible.\n"
+"La <b>Traduction</b> est la langue dans laquelle la traduction se fait, "
+"également appelée la langue cible.\n"
 "\n"
-"Par exemple, pour une traduction de l'anglais vers le français, le français sera la langue de traduction ou langue cible."
+"Par exemple, pour une traduction de l'anglais vers le français, le français "
+"sera la langue de traduction ou langue cible."
 
 #: ../share/virtaal/virtaal.glade.h:24
 msgid "Virtaal Preferences"
@@ -159,7 +167,7 @@ msgstr "Aide en li_gne"
 
 #: ../share/virtaal/virtaal.glade.h:34
 msgid "_Page Down"
-msgstr "Page vers le _bas"
+msgstr "Pa_ge vers le bas"
 
 #: ../share/virtaal/virtaal.glade.h:35
 msgid "_Recent Files"
@@ -186,7 +194,8 @@ msgstr ""
 "pour passer à la suivante."
 
 #: ../virtaal/tips.py:28
-msgid "To copy the original string into the target field, simply press <Alt+Down>."
+msgid ""
+"To copy the original string into the target field, simply press <Alt+Down>."
 msgstr ""
 "Pour copier le message d'origine dans le champ de traduction, utilisez <Alt"
 "+Flèche Bas>"
@@ -198,11 +207,14 @@ msgstr "Pour marquer une chaîne comme floue (« fuzzy »), utilisez <Alt+U>."
 
 #: ../virtaal/tips.py:32
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
-msgstr "Utilisez <Ctrl+Haut> ou <Ctrl+Bas> pour passer d'une traduction à l'autre."
+msgstr ""
+"Utilisez <Ctrl+Haut> ou <Ctrl+Bas> pour passer d'une traduction à l'autre."
 
 #: ../virtaal/tips.py:33
-msgid "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
-msgstr "Utilisez Ctrl+PgHaut ou Ctrl+PgBas pour naviguer entre les traductions."
+msgid ""
+"Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
+msgstr ""
+"Utilisez Ctrl+PgHaut ou Ctrl+PgBas pour naviguer entre les traductions."
 
 #: ../virtaal/controllers/maincontroller.py:62
 #: ../virtaal/controllers/maincontroller.py:71
@@ -273,11 +285,13 @@ msgstr ""
 
 #: ../virtaal/controllers/maincontroller.py:178
 msgid "Reload File"
-msgstr "Rechar_ger le fichier"
+msgstr "Recharger le fichier"
 
 #: ../virtaal/controllers/maincontroller.py:178
 msgid "Reload file from last saved copy and lose all changes?"
-msgstr "Faut-il recharger le fichier depuis sa dernière sauvegarde et perdre toutes les modifications ?"
+msgstr ""
+"Faut-il recharger le fichier depuis sa dernière sauvegarde et perdre toutes "
+"les modifications ?"
 
 #: ../virtaal/controllers/storecontroller.py:110
 msgid "The file contains nothing to translate."
@@ -337,7 +351,9 @@ msgstr "Assistant de migration"
 
 #: ../virtaal/plugins/migration.py:70
 msgid "Should Virtaal try to import settings and data from other applications?"
-msgstr "Faut-il essayer d'importer les préférences et les données d'autres applications ?"
+msgstr ""
+"Faut-il essayer d'importer les préférences et les données d'autres "
+"applications ?"
 
 #: ../virtaal/plugins/migration.py:71
 msgid "Import data from other applications?"
@@ -375,7 +391,7 @@ msgstr "Mémoire de traduction de Poedit : %(database_language_code)s"
 #: ../virtaal/plugins/migration.py:212
 #, python-format
 msgid "KBabel's Translation Memory: %(database_language_code)s"
-msgstr "Mémoire de traduction de KBabel : %(database_language_code)s"
+msgstr "Mémoire de traduction de KBabel : %(database_language_code)s"
 
 #: ../virtaal/plugins/migration.py:230
 msgid "Lokalize settings"
@@ -384,7 +400,7 @@ msgstr "Réglages de Lokalize"
 #: ../virtaal/plugins/migration.py:254
 #, python-format
 msgid "Lokalize's Translation Memory: %(database_name)s"
-msgstr "Mémoire de traduction de Lokalize : %(database_name)s"
+msgstr "Mémoire de traduction de Lokalize : %(database_name)s"
 
 #: ../virtaal/plugins/tm/__init__.py:27
 msgid "Translation Memory"
@@ -512,7 +528,7 @@ msgid ""
 "definitely intend it to be useful as a general purpose tool for Computer "
 "Aided Translation (CAT)."
 msgstr ""
-"Son champ initial est la traduction de logiciels (« localisation » ou l10n) "
+"Son champ initial est la traduction de logiciels (« localisation » ou l10n), "
 "mais il est prévu pour évoluer vers un outil généraliste de traduction "
 "assistée par ordinateur."
 
@@ -560,7 +576,7 @@ msgstr "Fichier de ressources C++"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:2
 msgid "Gettext Translation Template"
-msgstr "mode gettext"
+msgstr "Mode gettext"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:3
 msgid "INI"
@@ -746,7 +762,7 @@ msgstr "option %s : valeur %s non valable : %r"
 #: ../devsupport/optparse.py:431
 #, python-format
 msgid "option %s: invalid choice: %r (choose from %s)"
-msgstr "option %s: choix non valable : %r (choisi depuis %s)"
+msgstr "option %s : choix non valable : %r (choisi depuis %s)"
 
 #: ../devsupport/optparse.py:1246
 msgid "show this help message and exit"
@@ -773,9 +789,8 @@ msgstr "l'option %s a besoin de %d paramètres"
 #: ../devsupport/optparse.py:1495
 #, python-format
 msgid "%s option does not take a value"
-msgstr "l'option %s n'utilise pas de valeurs"
+msgstr "l'option %s n'utilise pas de valeur"
 
 #: ../devsupport/optparse.py:1612
 msgid "Options"
 msgstr "Options"
-

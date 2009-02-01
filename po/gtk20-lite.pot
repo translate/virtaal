@@ -220,6 +220,10 @@ msgstr ""
 msgid "_Quit"
 msgstr ""
 
+#. Edit->Undo
+msgid "_Undo"
+msgstr ""
+
 #. Edit->Preferences
 msgid "_Preferences"
 msgstr ""

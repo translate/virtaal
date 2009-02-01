@@ -533,8 +533,8 @@ msgstr "Virtaal-webwerf"
 #: ../virtaal/views/widgets/aboutdialog.py:62
 msgid "translator-credits"
 msgstr ""
-"Dwayne Bailey\n"
-"Friedel Wolff"
+"Friedel Wolff\n"
+"Dwayne Bailey"
 
 #: ../virtaal/views/widgets/langadddialog.py:102
 msgid "Language code must be an ASCII string."

@@ -41,4 +41,4 @@ export LANGUAGE=../../../../../../../../$(pwd)/mo/${lang:-de_DE}:$LANGUAGE
 echo "LANGUAGE=$LANGUAGE"
 # This assumes that the following executable is in your PATH
 virtaal
-rm -f $potfile
+rm -f $potfile de_DE*

@@ -1,7 +1,10 @@
 #!/bin/bash
 
-./intltool-update --pot
-podebug --rewrite=xxx -f "" --progress=none virtaal.pot de_DE.po
+package=xx$(egrep "^DOMAIN" Makevars | sed "s/DOMAIN = //g")xx
+potfile=${package}.pot
+
+./intltool-update --pot --gettext-package=$package
+podebug --rewrite=xxx -f "" --progress=none $potfile de_DE.po
 podebug --rewrite=xxx -f "" --ignore=gtk --progress=none gtk20-lite.pot de_DE-lite.po
 podebug --rewrite=xxx -f "" --progress=none gtk-spell.pot de_DE-spell.po
 for po in $(ls *.po | egrep -v lite)
@@ -11,6 +14,8 @@ do
 	gtkreal=/usr/share/locale/$(basename $po .po)/LC_MESSAGES/gtk20.mo
 	gtkspell=$(basename $po .po)-spell.po
 	gtkspellreal=/usr/share/locale/$(basename $po .po)/LC_MESSAGES/gtkspell.mo
+	iso639=/usr/share/locale/$(basename $po .po)/LC_MESSAGES/iso_639.mo
+	iso3166=/usr/share/locale/$(basename $po .po)/LC_MESSAGES/iso_3166.mo
 	mkdir -p $modir
 	msgfmt -o $modir/virtaal.mo $po
         if [ -f $gtklite ]; then
@@ -23,6 +28,12 @@ do
 	elif [ -f $gtkspellreal ]; then
 		cp $gtkspellreal $modir
 	fi
+	if [ -f $iso639 ]; then
+		cp $iso639 $modir
+	fi
+	if [ -f $iso3166 ]; then
+		cp $iso3166 $modir
+	fi
 done
 
 lang=$(echo $1 |sed "s/\.po$//")
@@ -30,3 +41,4 @@ export LANGUAGE=../../../../../../../../$(pwd)/mo/${lang:-de_DE}:$LANGUAGE
 echo "LANGUAGE=$LANGUAGE"
 # This assumes that the following executable is in your PATH
 virtaal
+rm -f $potfile

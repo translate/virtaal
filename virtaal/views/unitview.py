@@ -473,7 +473,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             return
 
         num_unit_targets = 1
-        nplurals = None
+        nplurals = 1
         if self.unit.hasplural():
             num_unit_targets = len(self.unit.target.strings)
             nplurals = self.controller.main_controller.lang_controller.target_lang.nplurals

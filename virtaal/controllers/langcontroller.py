@@ -168,10 +168,9 @@ class LanguageController(BaseController):
         pan_app.save_config(filename, langs)
 
     def _on_store_loaded(self, store_controller):
-        srclang = store_controller.store.get_source_language()
-        tgtlang = store_controller.store.get_target_language()
+        srclang = store_controller.store.get_source_language() or self.source_lang.code
+        tgtlang = store_controller.store.get_target_language() or self.target_lang.code
         self.set_language_pair(srclang, tgtlang)
-        print self.target_lang.nplurals
         if store_controller.get_nplurals():
             self.target_lang.nplurals = store_controller.get_nplurals()
 

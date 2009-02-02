@@ -171,5 +171,7 @@ class LanguageController(BaseController):
         srclang = store_controller.store.get_source_language()
         tgtlang = store_controller.store.get_target_language()
         self.set_language_pair(srclang, tgtlang)
+        print self.target_lang.nplurals
+        if store_controller.get_nplurals():
+            self.target_lang.nplurals = store_controller.get_nplurals()
 
-            

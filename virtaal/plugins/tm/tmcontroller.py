@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gobject
+import logging
 import os.path
 
 from virtaal.common import GObjectWrapper, pan_app
@@ -137,16 +138,23 @@ class TMController(BaseController):
         self.view.clear()
         self.emit('start-query', self.current_query)
 
-
-    # EVENT HANDLERS #
-    def _on_cursor_changed(self, cursor):
+    def start_query(self):
         """Start a TM query after C{self.QUERY_DELAY} milliseconds."""
+        if not hasattr(self, 'storecursor'):
+            return False
+
+        cursor = self.storecursor
+        self.unit_view = self.main_controller.unit_controller.view
         if getattr(self, '_target_focused_id', None) and getattr(self, 'unit_view', None):
             self.unit_view.disconnect(self._target_focused_id)
-        self.unit_view = self.main_controller.unit_controller.view
         self._target_focused_id = self.unit_view.connect('target-focused', self._on_target_focused)
         self.unit = cursor.model[cursor.index]
         self.view.hide()
+
+        if self.unit.istranslated():
+            # Don't start a TM query for already-translated units.
+            # FIXME: TranslationUnit.istranslated() does not take plurals into account.
+            return False
 
         def start_query():
             self.send_tm_query()
@@ -154,6 +162,12 @@ class TMController(BaseController):
         if getattr(self, '_delay_id', 0):
             gobject.source_remove(self._delay_id)
         self._delay_id = gobject.timeout_add(self.QUERY_DELAY, start_query)
+
+
+    # EVENT HANDLERS #
+    def _on_cursor_changed(self, cursor):
+        self.storecursor = cursor
+        return self.start_query()
 
     def _on_mode_selected(self, modecontroller, mode):
         self.view.update_geometry()
@@ -166,9 +180,10 @@ class TMController(BaseController):
         self._cursor_changed_id = self.storecursor.connect('cursor-changed', self._on_cursor_changed)
 
         def handle_first_unit():
-            self._on_cursor_changed(self.storecursor)
+            self.start_query()
             return False
         gobject.idle_add(handle_first_unit)
 
     def _on_target_focused(self, unitcontroller, target_n):
+        #logging.debug('target_n: %d' % (target_n))
         self.view.update_geometry()

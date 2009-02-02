@@ -256,5 +256,4 @@ class TMView(BaseView, GObjectWrapper):
         if not self.active and self.isvisible:
             self.hide()
         elif self.active and not self.isvisible:
-            self.update_geometry()
-            self.show()
+            self.controller.start_query()

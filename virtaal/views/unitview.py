@@ -155,7 +155,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     def do_editing_done(self, *_args):
         #logging.debug('emit("unit-done", self.unit=%s)' % (self.unit))
-        self.emit('unit-done', self.unit)
+        #self.emit('unit-done', self.unit)
+        pass
 
     def focus_text_view(self, text_view):
         text_view.grab_focus()
@@ -524,6 +525,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     def _on_key_press_event(self, _widget, event, *_args):
         if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
             self.must_advance = True
+            self.emit('unit-done', self.unit)
             self.editing_done()
             return True
         return False

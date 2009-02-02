@@ -479,23 +479,19 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             nplurals = self.controller.main_controller.lang_controller.target_lang.nplurals
 
         for i in range(self.MAX_TARGETS):
-            if i < num_unit_targets:
+            if i < nplurals:
                 # plural forms already in file
-                targetstr = ''
-                if self.unit.hasplural():
+                if self.unit.hasplural() and i < num_unit_targets:
                     targetstr = self.unit.target.strings[i]
                 elif i == 0:
                     targetstr = self.unit.target
                 else:
-                    raise IndexError()
+                    targetstr = ''
 
                 self.targets[i].modify_font(rendering.get_target_font_description())
                 self.targets[i].get_buffer().set_text(markup.escape(targetstr))
                 self.targets[i].parent.show_all()
                 #logging.debug('Showing target #%d: %s' % (i, self.targets[i]))
-            elif nplurals and i < nplurals:
-                # plural forms not in file
-                self.targets[i].parent.show_all()
             else:
                 # outside plural range
                 #logging.debug('Hiding target #%d: %s' % (i, self.targets[i]))
@@ -533,9 +529,13 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     def _on_target_changed(self, buffer, index):
         newtext = self.get_target_n(index)
         if self.unit.hasplural():
+            nplurals = self.controller.main_controller.lang_controller.target_lang.nplurals
             # FIXME: The following two lines are necessary because self.unit.target always
             # returns a new multistring, so you can't assign to an index directly.
             target = self.unit.target.strings
+            if len(target) < nplurals:
+                # pad the target with empty strings
+                target += (nplurals - len(target)) * [u""]
             target[index] = newtext
             self.unit.target = target
         elif index == 0:

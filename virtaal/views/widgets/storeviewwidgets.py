@@ -493,8 +493,10 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
         """Initialize and return the editor widget."""
         editor = self.view.get_unit_celleditor(self.unit)
         editor.set_size_request(cell_area.width, cell_area.height)
-        editor.connect("editing-done", self._on_editor_done)
-        editor.connect("modified", self._on_modified)
+        if not getattr(self, '_editor_editing_done_id', None):
+            self._editor_editing_done_id = editor.connect("editing-done", self._on_editor_done)
+        if not getattr(self, '_editor_modified_id', None):
+            self._editor_modified_id = editor.connect("modified", self._on_modified)
         editor.set_border_width(min(self.props.xpad, self.props.ypad))
         editor.show()
         return editor

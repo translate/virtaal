@@ -438,7 +438,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
         if self._widgets['context_info']:
             self._widgets['context_info'].show()
-            self._widgets['context_info'].get_buffer().set_text(self.unit.getcontext())
+            self._widgets['context_info'].get_buffer().set_text(self.unit.getcontext() or u"")
         else:
             textbox = self._create_textbox(
                 self.unit.getcontext(),

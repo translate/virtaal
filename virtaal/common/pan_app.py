@@ -27,6 +27,7 @@ except ImportError, e:
 import os
 import sys
 import locale, gettext
+locale.setlocale(locale.LC_ALL)
 gettext.install("virtaal", unicode=1)
 from translate.misc import file_discovery
 from translate.lang import data

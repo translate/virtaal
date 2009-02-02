@@ -237,6 +237,7 @@ class StoreModel(BaseModel):
                 self._trans_store.updatecontributor(name, email)
             if team:
                 header_updates["Language-Team"] = team
+            header_updates["Language"] = pan_app.settings.language['targetlang']
             self._trans_store.updateheader(add=True, **header_updates)
 
 

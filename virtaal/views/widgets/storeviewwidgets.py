@@ -79,6 +79,11 @@ def gtk_textview_compute_optimal_height(widget, width):
             buftext = markup.escape(buftext)
 
     _w, h = make_pango_layout(widget, buftext, width - border).get_pixel_size()
+    if h == 0:
+        # No idea why this bug happens, but it often happens for the first unit
+        # directly after the file is opened. For now we try to guess a more
+        # useful default than 0. This should look much better than 0, at least.
+        h = 28
     widget.parent.set_size_request(-1, h + border)
 
 @compute_optimal_height.when_type(label_expander.LabelExpander)

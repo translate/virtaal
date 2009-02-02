@@ -143,18 +143,14 @@ class TMController(BaseController):
         if not hasattr(self, 'storecursor'):
             return False
 
-        cursor = self.storecursor
+        if not hasattr(self, 'unit'):
+            self.unit = self.storecursor.deref()
+
         self.unit_view = self.main_controller.unit_controller.view
         if getattr(self, '_target_focused_id', None) and getattr(self, 'unit_view', None):
             self.unit_view.disconnect(self._target_focused_id)
         self._target_focused_id = self.unit_view.connect('target-focused', self._on_target_focused)
-        self.unit = cursor.model[cursor.index]
         self.view.hide()
-
-        if self.unit.istranslated():
-            # Don't start a TM query for already-translated units.
-            # FIXME: TranslationUnit.istranslated() does not take plurals into account.
-            return False
 
         def start_query():
             self.send_tm_query()
@@ -167,6 +163,13 @@ class TMController(BaseController):
     # EVENT HANDLERS #
     def _on_cursor_changed(self, cursor):
         self.storecursor = cursor
+        self.unit = cursor.deref()
+
+        if self.view.active and self.unit.istranslated():
+            self.view.menuitem.set_active(False)
+        elif not self.view.active and not self.unit.istranslated():
+            self.view.menuitem.set_active(True)
+
         return self.start_query()
 
     def _on_mode_selected(self, modecontroller, mode):
@@ -180,7 +183,7 @@ class TMController(BaseController):
         self._cursor_changed_id = self.storecursor.connect('cursor-changed', self._on_cursor_changed)
 
         def handle_first_unit():
-            self.start_query()
+            self._on_cursor_changed(self.storecursor)
             return False
         gobject.idle_add(handle_first_unit)
 

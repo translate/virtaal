@@ -173,24 +173,12 @@ class StoreModel(BaseModel):
         if isinstance(store, poheader):
             nplurals, _pluralequation = store.getheaderplural()
             if nplurals is None:
-                # Nothing in the header, so let's use the global settings
-                settings = pan_app.settings
-                nplurals = settings.language["nplurals"]
-                pluralequation = settings.language["plural"]
-                if not (int(nplurals) > 0 and pluralequation):
-                    # TODO: If we get here, we have to ask the user for "nplurals" and "plural"
-                    nplurals, pluralequation = self.controller.main_controller.view.ask_plural_info()
-                    pan_app.settings.language["nplurals"] = nplurals
-                    pan_app.settings.language["plural"]   = pluralequation
-                store.updateheaderplural(nplurals, pluralequation)
-                # If we actually updated something significant, of course the file
-                # won't appear changed yet, which is probably what we want.
+                return
             return int(nplurals)
         elif isinstance(store, ts.tsfile):
             return store.nplural()
-        else:
-            return 1
 
+        
     def _correct_header(self, store):
         """This ensures that the file has a header if it is a poheader type of
         file, and fixes the statistics if we had to add a header."""
@@ -237,7 +225,9 @@ class StoreModel(BaseModel):
                 self._trans_store.updatecontributor(name, email)
             if team:
                 header_updates["Language-Team"] = team
-            header_updates["Language"] = pan_app.settings.language['targetlang']
+            header_updates["Language"] = self.controller.main_controller.lang_controller.target_lang.code
+            if self.controller.main_controller.lang_controller.target_lang.plural:
+                self._trans_store.updateheaderplural(self.controller.main_controller.lang_controller.target_lang.nplurals, self.controller.main_controller.lang_controller.target_lang.plural)
             self._trans_store.updateheader(add=True, **header_updates)
 
 

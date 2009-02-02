@@ -18,6 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import logging
+
 from translate.lang.data import languages as toolkit_langs, tr_lang, simplify_to_common
 
 from virtaal.common import pan_app
@@ -67,8 +69,13 @@ class LanguageModel(BaseModel):
         if langcode not in self.languages:
             langcode = simplify_to_common(langcode, self.languages)
             if langcode not in self.languages:
-                raise Exception('Language not found: %s' % (langcode))
-
+                logging.info("unkown language %s" % langcode)
+                self.name = langcode
+                self.code = langcode
+                self.nplurals = 0
+                self.plural = ""
+                return
+            
         self.name = self.gettext_lang(self.languages[langcode][0])
         self.code = langcode
         self.nplurals = self.languages[langcode][1]

@@ -20,7 +20,8 @@
 
 import logging
 
-from translate.lang.data import languages as toolkit_langs, tr_lang, simplify_to_common
+from translate.lang.data import languages as toolkit_langs, tr_lang
+from translate.lang import data
 
 from virtaal.common import pan_app
 
@@ -67,16 +68,29 @@ class LanguageModel(BaseModel):
     def load(self, langcode):
         #FIXME: what if we get language code with different capitalization?
         if langcode not in self.languages:
-            langcode = simplify_to_common(langcode, self.languages)
-            if langcode not in self.languages:
-                logging.info("unkown language %s" % langcode)
-                self.name = langcode
-                self.code = langcode
-                self.nplurals = 0
-                self.plural = ""
-                return
+            try:
+                langcode = self._match_normalized_langcode(langcode)
+            except ValueError:                
+                langcode = data.simplify_to_common(langcode, self.languages)
+                if langcode not in self.languages:
+                    try:
+                        langcode = self._match_normalized_langcode(langcode)
+                    except ValueError:
+                        logging.info("unkown language %s" % langcode)
+                        self.name = langcode
+                        self.code = langcode
+                        self.nplurals = 0
+                        self.plural = ""
+                        return
             
         self.name = self.gettext_lang(self.languages[langcode][0])
         self.code = langcode
         self.nplurals = self.languages[langcode][1]
         self.plural = self.languages[langcode][2]
+
+    def _match_normalized_langcode(self, langcode):
+        languages_keys = self.languages.keys()
+        normalized_keys = [data.normalize_code(lang) for lang in languages_keys]
+        i =  normalized_keys.index(data.normalize_code(langcode))
+        return languages_keys[i]
+

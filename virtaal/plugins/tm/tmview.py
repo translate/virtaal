@@ -205,12 +205,15 @@ class TMView(BaseView, GObjectWrapper):
     def update_geometry(self):
         """Update the TM window's position and size."""
         def update():
-            n = self.controller.main_controller.unit_controller.view.focused_target_n
-            if n is None:
-                return
-            selected = self.controller.main_controller.unit_controller.view.targets[n]
+            selected = self._get_selected_unit_view()
             self.tmwindow.update_geometry(selected)
         gobject.idle_add(update)
+
+    def _get_selected_unit_view(self):
+        n = self.controller.main_controller.unit_controller.view.focused_target_n
+        if n is None:
+            n = 0
+        return self.controller.main_controller.unit_controller.view.targets[n]
 
 
     # EVENT HANDLERS #
@@ -220,7 +223,7 @@ class TMView(BaseView, GObjectWrapper):
             return
         self.show()
 
-        selected = self.controller.main_controller.unit_controller.view.targets[0]
+        selected = self._get_selected_unit_view()
         self.tmwindow.update_geometry(selected)
 
     def _on_focus_out_mainwindow(self, widget, event):

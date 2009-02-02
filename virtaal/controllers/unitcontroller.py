@@ -69,7 +69,7 @@ class UnitController(BaseController):
     # METHODS #
     def load_unit(self, unit):
         self.current_unit = unit
-        self.nplurals = self.store_controller.get_nplurals()
+        self.nplurals = self.main_controller.lang_controller.target_lang.nplurals
 
         self.view.load_unit(unit)
         return self.view
@@ -97,5 +97,6 @@ class UnitController(BaseController):
             self.main_controller.lang_controller.connect('target-lang-changed', self._on_language_changed)
 
     def _on_language_changed(self, lang_controller, langcode):
+        self.nplurals = lang_controller.target_lang.nplurals
         if hasattr(self, 'view'):
             self.view.update_languages()

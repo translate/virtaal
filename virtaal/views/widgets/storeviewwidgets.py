@@ -74,7 +74,7 @@ def gtk_textview_compute_optimal_height(widget, width):
     if not buftext:
         text = getattr(widget, '_source_text', "")
         if text:
-            lang = factory.getlanguage(self.view.controller.main_controller.lang_controller.target_lang.code)
+            lang = factory.getlanguage(pan_app.settings.language["targetlang"])
             buftext = lang.alter_length(text)
             buftext = markup.escape(buftext)
 

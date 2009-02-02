@@ -20,6 +20,7 @@
 
 import gobject
 import gtk
+import locale
 import os
 import sys
 import logging
@@ -222,7 +223,7 @@ class MainView(BaseView):
         self.open_chooser.add_filter(all_supported_filter)
         supported_files_dict = dict([ (_(name), (extension, mimetype)) for name, extension, mimetype in factory.supported_files() ])
         supported_file_names = supported_files_dict.keys()
-        supported_file_names.sort()
+        supported_file_names.sort(cmp=locale.strcoll)
         for name in supported_file_names:
             extensions, mimetypes = supported_files_dict[name]
             #XXX: we can't open generic .csv formats, so listing it is probably

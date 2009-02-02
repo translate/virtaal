@@ -472,11 +472,14 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             return
 
         num_unit_targets = 1
+        nplurals = None
         if self.unit.hasplural():
             num_unit_targets = len(self.unit.target.strings)
+            nplurals = self.controller.main_controller.lang_controller.target_lang.nplurals
 
         for i in range(self.MAX_TARGETS):
             if i < num_unit_targets:
+                # plural forms already in file
                 targetstr = ''
                 if self.unit.hasplural():
                     targetstr = self.unit.target.strings[i]
@@ -489,7 +492,11 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                 self.targets[i].get_buffer().set_text(markup.escape(targetstr))
                 self.targets[i].parent.show_all()
                 #logging.debug('Showing target #%d: %s' % (i, self.targets[i]))
+            elif nplurals and i < nplurals:
+                # plural forms not in file
+                self.targets[i].parent.show_all()
             else:
+                # outside plural range
                 #logging.debug('Hiding target #%d: %s' % (i, self.targets[i]))
                 self.targets[i].parent.hide_all()
 

@@ -5,73 +5,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Virtaal 0.2\n"
+"Project-Id-Version: Virtaal 0.3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2008-10-14 15:22+0200\n"
-"PO-Revision-Date: 2008-10-16 20:09+0100\n"
+"POT-Creation-Date: 2009-02-02 21:43+0100\n"
+"PO-Revision-Date: 2009-02-02 21:58+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
-"Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: ../bin/virtaal:40
-msgid "You must specify a directory or a translation file for --terminology"
-msgstr "Du måste ange en katalog eller en översättningsfil för --terminology"
-
-#: ../bin/virtaal:44
-#, c-format
-msgid "%prog [options] [translation_file]"
-msgstr "%prog [flaggor] [översättningsfil]"
-
-#: ../bin/virtaal:47
-msgid "PROFILE"
-msgstr "PROFIL"
-
-#: ../bin/virtaal:49
-msgid "Perform profiling, storing the result to the supplied filename."
-msgstr "Genomför profilering, lagra resultatet med angivet filnamn."
-
-#: ../bin/virtaal:51
-msgid "LOG"
-msgstr "LOGG"
-
-#: ../bin/virtaal:52
-msgid "Turn on logging, storing the result to the supplied filename."
-msgstr "Slå på loggning, lagra resultatet med angivet filnamn."
-
-#: ../bin/virtaal:54
-msgid "CONFIG"
-msgstr "KONFIG"
-
-#: ../bin/virtaal:55
-msgid "Use the configuration file given by the supplied filename."
-msgstr "Använd angiven konfigurationsfil."
-
-#: ../bin/virtaal:56
-msgid "TERMINOLOGY"
-msgstr "TERMINOLOGI"
-
-#: ../bin/virtaal:59
-msgid "Specify a directory containing terminology files"
-msgstr "Ange en katalog som innehåller terminologifiler"
-
-#: ../bin/virtaal:77
-msgid "Could not open log file '%(filename)s'"
-msgstr "Kunde inte öppna loggfilen \"%(filename)s\""
-
-#: ../bin/virtaal:84
-msgid "Could not read configuration file '%(filename)s'"
-msgstr "Kunde inte läsa konfigurationsfilen \"%(filename)s\""
-
-#: ../bin/virtaal:88
-msgid "invalid number of arguments"
-msgstr "ogiltigt antal argument"
-
-#: ../bin/virtaal:113
-msgid "Could not open profile file '%(filename)s'"
-msgstr "Kunde inte öppna profilfilen \"%(filename)s\""
+"Language: sv\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 msgid "A translation tool to help a human translator translate files into other languages"
@@ -82,33 +25,520 @@ msgid "Translation Tool"
 msgstr "Översättningsverktyg"
 
 #: ../share/applications/virtaal.desktop.in.h:3
-#: ../share/virtaal/virtaal.glade.h:2
+#: ../share/virtaal/virtaal.glade.h:23
 msgid "Virtaal"
 msgstr "Virtaal"
 
 #: ../share/virtaal/virtaal.glade.h:1
+msgid "<b>Language information</b>"
+msgstr "<b>Språkinformation</b>"
+
+#: ../share/virtaal/virtaal.glade.h:2
+msgid "<b>Original</b>"
+msgstr "<b>Ursprunglig</b>"
+
+#: ../share/virtaal/virtaal.glade.h:3
+msgid "<b>Translation</b>"
+msgstr "<b>Översättning</b>"
+
+#: ../share/virtaal/virtaal.glade.h:4
+msgid "Depending on the translation task, the plural information might be optional."
+msgstr "Beroende på översättningsuppgift så kan pluralinformationen vara valfri."
+
+#: ../share/virtaal/virtaal.glade.h:5
+msgid "General"
+msgstr "Allmänt"
+
+#: ../share/virtaal/virtaal.glade.h:6
+msgid "ISO code:"
+msgstr "ISO-kod:"
+
+#: ../share/virtaal/virtaal.glade.h:7
+msgid "Language name:"
+msgstr "Språknamn:"
+
+#: ../share/virtaal/virtaal.glade.h:8
+msgid "Languages"
+msgstr "Språk"
+
+#: ../share/virtaal/virtaal.glade.h:9
+msgid "Missing Language"
+msgstr "Saknat språk"
+
+#: ../share/virtaal/virtaal.glade.h:10
+msgid "New Language Pair"
+msgstr "Nytt språkpar"
+
+#: ../share/virtaal/virtaal.glade.h:11
+msgid "Number of plurals:"
+msgstr "Antal pluralformer:"
+
+#: ../share/virtaal/virtaal.glade.h:12
+msgid "P_age Up"
+msgstr "Si_da upp"
+
+#: ../share/virtaal/virtaal.glade.h:13
+msgid "Personal Information"
+msgstr "Personlig information"
+
+#: ../share/virtaal/virtaal.glade.h:14
+msgid "Plug-ins"
+msgstr "Insticksmoduler"
+
+#: ../share/virtaal/virtaal.glade.h:15
+msgid "Plural expression:"
+msgstr "Pluraluttryck:"
+
+#: ../share/virtaal/virtaal.glade.h:16
 msgid "Report a _Bug"
 msgstr "Rapportera ett _problem"
 
-#: ../share/virtaal/virtaal.glade.h:3
+#: ../share/virtaal/virtaal.glade.h:17
+msgid ""
+"The <b>Original</b> is the language from which you are translating, also called the source language.\n"
+"\n"
+"If you are translating from English to French then English would be your original or source language."
+msgstr ""
+"<b>Ursprunglig</b> är språket från vilket du översätter, även kallat källspråket.\n"
+"\n"
+"Om du översätter från engelska till franska så kommer engelska att vara det ursprungliga, eller källspråk."
+
+#: ../share/virtaal/virtaal.glade.h:20
+msgid ""
+"The <b>Translation</b> is the language into which you are translating, also called the target language.\n"
+"\n"
+"If you are translating from English to French then French would be your translation or target language."
+msgstr ""
+"<b>Översättning</b> är språket till vilket du översätter, även kallat målspråket.\n"
+"\n"
+"Om du översätter från engelska till franska så kommer franska att vara det översätta, eller målspråk."
+
+#: ../share/virtaal/virtaal.glade.h:24
+msgid "Virtaal Preferences"
+msgstr "Inställningar för Virtaal"
+
+#: ../share/virtaal/virtaal.glade.h:25
+msgid "_Edit"
+msgstr "R_edigera"
+
+#: ../share/virtaal/virtaal.glade.h:26
 msgid "_File"
 msgstr "_Arkiv"
 
-#: ../share/virtaal/virtaal.glade.h:4
+#: ../share/virtaal/virtaal.glade.h:27
+msgid "_Full Screen"
+msgstr "_Helskärm"
+
+#: ../share/virtaal/virtaal.glade.h:28
 msgid "_Help"
 msgstr "_Hjälp"
 
-#: ../share/virtaal/virtaal.glade.h:5
+#: ../share/virtaal/virtaal.glade.h:29
 msgid "_Localization Guide"
 msgstr "_Lokalanpassningsguide"
 
-#: ../share/virtaal/virtaal.glade.h:6
+#. This button will take the user to a dialogue to add a language that is not listed yet for selection.
+#: ../share/virtaal/virtaal.glade.h:31
+msgid "_Missing Language..."
+msgstr "Sa_knat språk..."
+
+#: ../share/virtaal/virtaal.glade.h:32
+msgid "_Navigation"
+msgstr "_Navigering"
+
+#: ../share/virtaal/virtaal.glade.h:33
 msgid "_Online Help"
 msgstr "_Hjälp på nätet"
 
-#: ../share/virtaal/virtaal.glade.h:7
+#: ../share/virtaal/virtaal.glade.h:34
+msgid "_Page Down"
+msgstr "_Sida ned"
+
+#: ../share/virtaal/virtaal.glade.h:35
 msgid "_Recent Files"
 msgstr "_Tidigare filer"
+
+#: ../share/virtaal/virtaal.glade.h:36
+msgid "_Tutorial"
+msgstr "Handl_edning"
+
+#: ../share/virtaal/virtaal.glade.h:37
+msgid "_Update to template"
+msgstr "_Uppdatera till mall"
+
+#: ../share/virtaal/virtaal.glade.h:38
+msgid "_View"
+msgstr "_Visa"
+
+#: ../virtaal/tips.py:27
+msgid "At the end of a translation, simply press <Enter> to continue with the next one."
+msgstr "Tryck helt enkelt <Enter> vid slutet av en översättning för att fortsätta med nästa."
+
+#: ../virtaal/tips.py:28
+msgid "To copy the original string into the target field, simply press <Alt+Down>."
+msgstr "Tryck helt enkelt <Alt+Ned> för att kopiera ursprungssträngen till målfältet."
+
+#. _("When editing a fuzzy translation, the fuzzy marker will automatically be removed."),
+#. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
+#: ../virtaal/tips.py:31
+msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
+msgstr "Tryck helt enkelt <Alt+U> för att markera den aktuella översättningen som luddig."
+
+#: ../virtaal/tips.py:32
+msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
+msgstr "Använd Ctrl+Upp eller Ctrl+Ned för att hoppa mellan översättningar."
+
+#: ../virtaal/tips.py:33
+msgid "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
+msgstr "Använd Ctrl+PgUp eller Ctrl+PgDown för att hoppa i större steg mellan översättningar."
+
+#: ../virtaal/controllers/maincontroller.py:62
+#: ../virtaal/controllers/maincontroller.py:71
+#: ../virtaal/controllers/maincontroller.py:80
+msgid "Header information"
+msgstr "Rubrikinformation"
+
+#: ../virtaal/controllers/maincontroller.py:63
+msgid "Please enter your name"
+msgstr "Ange ditt namn"
+
+#: ../virtaal/controllers/maincontroller.py:72
+msgid "Please enter your e-mail address"
+msgstr "Ange din e-postadress"
+
+#: ../virtaal/controllers/maincontroller.py:81
+msgid "Please enter your team's information"
+msgstr "Ange information om din översättningsgrupp"
+
+#: ../virtaal/controllers/maincontroller.py:149
+#: ../virtaal/controllers/maincontroller.py:194
+msgid "You selected the currently open file for opening. Do you want to reload the file?"
+msgstr "Du valde den för närvarande öppnade filen för öppning. Vill du läsa om filen?"
+
+#: ../virtaal/controllers/maincontroller.py:160
+#: ../virtaal/controllers/maincontroller.py:205
+#, python-format
+msgid ""
+"Could not open file.\n"
+"%(error_message)s\n"
+"\n"
+"Try opening a different file."
+msgstr ""
+"Kunde inte öppna filen.\n"
+"%(error_message)s\n"
+"\n"
+"Prova att öppna en annan fil."
+
+#: ../virtaal/controllers/maincontroller.py:169
+#, python-format
+msgid ""
+"Could not save file.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Try saving at a different location."
+msgstr ""
+"Kunde inte spara filen.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Prova att spara den på någon annan plats."
+
+#: ../virtaal/controllers/maincontroller.py:174
+#, python-format
+msgid ""
+"Could not save file.\n"
+"\n"
+"%(error_message)s"
+msgstr ""
+"Kunde inte spara filen.\n"
+"\n"
+"%(error_message)s"
+
+#: ../virtaal/controllers/maincontroller.py:178
+msgid "Reload File"
+msgstr "Läs om fil"
+
+#: ../virtaal/controllers/maincontroller.py:178
+msgid "Reload file from last saved copy and lose all changes?"
+msgstr "Läs om filen från senaste sparade kopia och förlora alla ändringar?"
+
+#: ../virtaal/controllers/storecontroller.py:110
+msgid "The file contains nothing to translate."
+msgstr "Filen innehåller ingenting att översätta."
+
+#: ../virtaal/modes/defaultmode.py:28
+msgid "All"
+msgstr "Alla"
+
+#: ../virtaal/modes/quicktransmode.py:31
+msgid "Incomplete"
+msgstr "Inkomplett"
+
+#: ../virtaal/modes/searchmode.py:37
+#: ../virtaal/modes/searchmode.py:64
+msgid "Search"
+msgstr "Sök"
+
+#: ../virtaal/modes/searchmode.py:66
+msgid "_Case sensitive"
+msgstr "_Skiftlägeskänslig"
+
+#: ../virtaal/modes/searchmode.py:68
+msgid "_Regular expression"
+msgstr "_Reguljärt uttryck"
+
+#. Widgets for replace (second row)
+#: ../virtaal/modes/searchmode.py:72
+msgid "Replace with"
+msgstr "Ersätt med"
+
+#: ../virtaal/modes/searchmode.py:74
+msgid "Replace"
+msgstr "Ersätt"
+
+#: ../virtaal/modes/searchmode.py:76
+msgid "Replace _All"
+msgstr "Ersätt _alla"
+
+#: ../virtaal/views/prefsview.py:65
+msgid "Enabled"
+msgstr "Aktiverad"
+
+#: ../virtaal/views/prefsview.py:66
+msgid "Name"
+msgstr "Namn"
+
+#: ../virtaal/plugins/autocompletor.py:321
+msgid "AutoCompletor"
+msgstr "Automatisk komplettering"
+
+#: ../virtaal/plugins/autocorrector.py:246
+msgid "AutoCorrector"
+msgstr "Automatisk korrigering"
+
+#: ../virtaal/plugins/migration.py:56
+msgid "Migration assistant"
+msgstr "Migrationsguide"
+
+#: ../virtaal/plugins/migration.py:70
+msgid "Should Virtaal try to import settings and data from other applications?"
+msgstr "Ska Virtaal försöka att importera inställningar och data från andra program?"
+
+#: ../virtaal/plugins/migration.py:71
+msgid "Import data from other applications?"
+msgstr "Importera data från andra program?"
+
+#: ../virtaal/plugins/migration.py:96
+msgid "Migration was successfully completed"
+msgstr "Migreringen lyckades"
+
+#: ../virtaal/plugins/migration.py:97
+msgid "The following items were migrated:"
+msgstr "Följande objekt migrerades:"
+
+#. (we can mark this ^^^ for translation if somebody asks)
+#: ../virtaal/plugins/migration.py:102
+msgid "Migration completed"
+msgstr "Migreringen är färdig"
+
+#: ../virtaal/plugins/migration.py:104
+msgid "Virtaal was not able to migrate any settings or data"
+msgstr "Virtaal kunde inte migrera några inställningar eller data"
+
+#: ../virtaal/plugins/migration.py:105
+msgid "Nothing migrated"
+msgstr "Ingenting migrerades"
+
+#: ../virtaal/plugins/migration.py:158
+msgid "Poedit settings"
+msgstr "Inställningar för Poedit"
+
+#: ../virtaal/plugins/migration.py:187
+#, python-format
+msgid "Poedit's Translation Memory: %(database_language_code)s"
+msgstr "Poedits översättningsminne: %(database_language_code)s"
+
+#: ../virtaal/plugins/migration.py:212
+#, python-format
+msgid "KBabel's Translation Memory: %(database_language_code)s"
+msgstr "KBabels översättningsminne: %(database_language_code)s"
+
+#: ../virtaal/plugins/migration.py:230
+msgid "Lokalize settings"
+msgstr "Inställningar för Lokalize"
+
+#: ../virtaal/plugins/migration.py:254
+#, python-format
+msgid "Lokalize's Translation Memory: %(database_name)s"
+msgstr "Lokalizes översättningsminne: %(database_name)s"
+
+#: ../virtaal/plugins/tm/__init__.py:27
+msgid "Translation Memory"
+msgstr "Översättningsminne"
+
+#: ../virtaal/plugins/tm/models/currentfile.py:32
+msgid "Currently open file"
+msgstr "Aktuellt öppnad fil"
+
+#: ../virtaal/plugins/tm/models/libtranslate.py:41
+msgid "Machine Translation with libtranslate"
+msgstr "Maskinöversätt med libtranslate"
+
+#: ../virtaal/plugins/tm/models/localtm.py:37
+msgid "Local Translation Memory"
+msgstr "Lokalt översättningsminne"
+
+#: ../virtaal/plugins/tm/models/opentran.py:32
+msgid "Open-Tran.eu"
+msgstr "Open-Tran.eu"
+
+#: ../virtaal/plugins/tm/models/remotetm.py:30
+msgid "Remote server"
+msgstr "Fjärrserver"
+
+#: ../virtaal/plugins/tm/models/tinytm.py:34
+msgid "TinyTM"
+msgstr "TinyTM"
+
+#: ../virtaal/plugins/tm/tmview.py:94
+msgid "Available _Suggestions"
+msgstr "Tillgängliga _förslag"
+
+#: ../virtaal/plugins/tm/tmview.py:150
+#, python-format
+msgid "Ctrl+%(number_key)d"
+msgstr "Ctrl+%(number_key)d"
+
+#. l10n: match quality column label
+#: ../virtaal/plugins/tm/tmwidgets.py:63
+msgid "%"
+msgstr "%"
+
+#: ../virtaal/plugins/tm/tmwidgets.py:65
+msgid "Matches"
+msgstr "Träffar"
+
+#. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
+#: ../virtaal/plugins/tm/tmwidgets.py:121
+#, python-format
+msgid "%(match_quality)s%%"
+msgstr "%(match_quality)s%%"
+
+#: ../virtaal/views/langview.py:66
+msgid "_New Language Pair..."
+msgstr "_Nytt språkpar..."
+
+#: ../virtaal/views/mainview.py:199
+msgid "Error"
+msgstr "Fel"
+
+#: ../virtaal/views/mainview.py:215
+msgid "Choose a translation file"
+msgstr "Välj en översättningsfil"
+
+#: ../virtaal/views/mainview.py:222
+msgid "All Supported Files"
+msgstr "Alla filer som stöds"
+
+#: ../virtaal/views/mainview.py:248
+msgid "All Files"
+msgstr "Alla filer"
+
+#: ../virtaal/views/mainview.py:253
+msgid "Save"
+msgstr "Spara"
+
+#: ../virtaal/views/mainview.py:267
+msgid ""
+"The current file has been modified.\n"
+"Do you want to save your changes?"
+msgstr ""
+"Den aktuella filen har ändrats.\n"
+"Vill du spara dina ändringar?"
+
+#: ../virtaal/views/mainview.py:270
+msgid "_Discard"
+msgstr "_Förkasta"
+
+#: ../virtaal/views/mainview.py:296
+#, python-format
+msgid "Virtaal - %(current_file)s %(modified_marker)s"
+msgstr "Virtaal - %(current_file)s %(modified_marker)s"
+
+#: ../virtaal/views/mainview.py:321
+msgid "Please enter the number of noun forms (plurals) to use"
+msgstr "Ange antal pluralisformer att använda"
+
+#: ../virtaal/views/mainview.py:327
+msgid "Please enter the plural equation to use"
+msgstr "Ange pluralisekvationen att använda"
+
+#. l10n: This refers to the 'mode' that determines how Virtaal moves
+#. between units.
+#: ../virtaal/views/modeview.py:62
+msgid "_Navigation: "
+msgstr "_Navigering: "
+
+#: ../virtaal/views/unitview.py:502
+msgid "F_uzzy"
+msgstr "L_uddig"
+
+#: ../virtaal/views/widgets/aboutdialog.py:35
+msgid "Copyright © 2007-2009 Zuza Software Foundation"
+msgstr "Copyright © 2007-2009 Zuza Software Foundation"
+
+#. l10n: Please retain the literal name "Virtaal", but feel free to
+#. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
+#: ../virtaal/views/widgets/aboutdialog.py:38
+msgid "Virtaal is a program for doing translation."
+msgstr "Virtaal är ett översättningsprogram."
+
+#: ../virtaal/views/widgets/aboutdialog.py:39
+msgid "The initial focus is on software translation (localization or l10n), but we definitely intend it to be useful as a general purpose tool for Computer Aided Translation (CAT)."
+msgstr "Fokus ligger på programöversättningar (lokalanpassning eller l10n) men vi tänker definitivt att det ska vara användbart som ett allmänt verktyg för datoriserad översättning (CAT)."
+
+#: ../virtaal/views/widgets/aboutdialog.py:53
+msgid "Virtaal website"
+msgstr "Virtaals webbplats"
+
+#. l10n: Rather than translating, fill in the names of the translators
+#: ../virtaal/views/widgets/aboutdialog.py:62
+msgid "translator-credits"
+msgstr ""
+"Daniel Nylander <po@danielnylander.se>\n"
+"\n"
+"Skicka synpunkter på översättningen\n"
+"till <tp-sv@listor.tp-sv.se>."
+
+#: ../virtaal/views/widgets/langadddialog.py:102
+msgid "Language code must be an ASCII string."
+msgstr "Språkkoden måste vara en ASCII-sträng."
+
+#: ../virtaal/views/widgets/langadddialog.py:105
+msgid "Language code must be at least 2 characters long."
+msgstr "Språkkoden måste vara minst 2 tecken lång."
+
+#: ../virtaal/views/widgets/langselectdialog.py:73
+#: ../virtaal/views/widgets/langselectdialog.py:79
+msgid "Language"
+msgstr "Språk"
+
+#. l10n: This is the column heading for the language code
+#: ../virtaal/views/widgets/langselectdialog.py:86
+#: ../virtaal/views/widgets/langselectdialog.py:92
+msgid "Code"
+msgstr "Kod"
+
+#: ../virtaal/models/storemodel.py:111
+#, python-format
+msgid "The file \"%s\" does not exist."
+msgstr "Filen \"%s\" finns inte."
+
+#: ../virtaal/models/storemodel.py:113
+#, python-format
+msgid "\"%s\" is not a usable file."
+msgstr "\"%s\" är inte en användbar fil."
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
 msgid "C++ RC File"
@@ -210,262 +640,152 @@ msgstr "XLIFF-översättningsfil"
 msgid "XML Localization Interchange File Format"
 msgstr "XML Localization Interchange File Format"
 
-#: ../virtaal/about.py:34
-msgid "Copyright © 2007-2008 Zuza Software Foundation"
-msgstr "Copyright © 2007-2008 Zuza Software Foundation"
+#: ../bin/virtaal:36
+#, c-format
+msgid "%prog [options] [translation_file]"
+msgstr "%prog [flaggor] [översättningsfil]"
 
-#. l10n: Please retain the literal name "Virtaal", but feel free to
-#. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
-#: ../virtaal/about.py:37
-msgid "Virtaal is a program for doing translation."
-msgstr "Virtaal är ett översättningsprogram."
+#: ../bin/virtaal:39
+msgid "PROFILE"
+msgstr "PROFIL"
 
-#: ../virtaal/about.py:38
-msgid "The initial focus is on software translation (localisation or l10n), but we definitely intend it to be useful as a general purpose tool for Computer Aided Translation (CAT)."
-msgstr "Fokus ligger på programöversättningar (lokalanpassning eller l10n) men vi tänker definitivt vara användbara som ett allmänt verktyg för datoriserad översättning (CAT)."
+#: ../bin/virtaal:41
+msgid "perform profiling, storing the result to the supplied filename."
+msgstr "genomför profilering, lagrar resultatet till det angivna filnamnet."
 
-#: ../virtaal/about.py:52
-msgid "Virtaal website"
-msgstr "Virtaals webbplats"
+#: ../bin/virtaal:43
+msgid "LOG"
+msgstr "LOGG"
 
-#. l10n: Rather than translating, fill in the names of the translators
-#: ../virtaal/about.py:60
-msgid "translator-credits"
-msgstr ""
-"Daniel Nylander <po@danielnylander.se>\n"
-"\n"
-"Skicka synpunkter på översättningen\n"
-"till tp-sv@listor.tp-sv.se"
+#: ../bin/virtaal:44
+msgid "turn on logging, storing the result to the supplied filename."
+msgstr "slå på loggning, lagrar resultatet till det angivna filnamnet."
 
-#: ../virtaal/document.py:56
-msgid "Please enter the language code for the target language"
-msgstr "Ange språkkoden för målspråket"
+#: ../bin/virtaal:46
+msgid "CONFIG"
+msgstr "KONFIG"
 
-#: ../virtaal/document.py:61
-msgid "Please enter the number of noun forms (plurals) to use"
-msgstr "Ange antal pluralisformer att använda"
+#: ../bin/virtaal:47
+msgid "use the configuration file given by the supplied filename."
+msgstr "använd konfigurationsfilen som angetts av filnamnet."
 
-#: ../virtaal/document.py:67
-msgid "Please enter the plural equation to use"
-msgstr "Ange pluralisekvationen att använda"
+#: ../bin/virtaal:50
+msgid "enable debugging features"
+msgstr "aktivera felsökningsfunktioner"
 
-#: ../virtaal/formats.py:31
-msgid "Choose a translation file"
-msgstr "Välj en översättningsfil"
+#: ../bin/virtaal:74
+msgid "Could not open log file '%(filename)s'"
+msgstr "Kunde inte öppna loggfilen \"%(filename)s\""
 
-#: ../virtaal/formats.py:42
-msgid "All Supported Files"
-msgstr "Alla filer som stöds"
+#: ../bin/virtaal:82
+msgid "Could not read configuration file '%(filename)s'"
+msgstr "Kunde inte läsa konfigurationsfilen \"%(filename)s\""
 
-#: ../virtaal/formats.py:60
-msgid "All Files"
-msgstr "Alla filer"
+#: ../bin/virtaal:86
+msgid "invalid number of arguments"
+msgstr "ogiltigt antal argument"
 
-#: ../virtaal/main_window.py:171
-msgid ""
-"The current file has been modified.\n"
-"Do you want to save your changes?"
-msgstr ""
-"Den aktuella filen har ändrats.\n"
-"Vill du spara dina ändringar?"
+#: ../bin/virtaal:115
+msgid "Could not open profile file '%(filename)s'"
+msgstr "Kunde inte öppna profilfilen \"%(filename)s\""
 
-#: ../virtaal/main_window.py:173
-msgid "_Discard"
-msgstr "_Förkasta"
-
-#: ../virtaal/main_window.py:195
-msgid "You selected the currently open file for opening. Do you want to reload the file?"
-msgstr "Du valde den för närvarande öppnade filen för öppning. Vill du läsa om filen?"
-
-#: ../virtaal/main_window.py:244
-msgid "Error opening file:"
-msgstr "Fel vid öppnade av filen:"
-
-#: ../virtaal/main_window.py:260
-#, python-format
-msgid "%(filename)s does not exist."
-msgstr "%(filename)s finns inte."
-
-#: ../virtaal/main_window.py:279
-#, python-format
-msgid "Virtaal - %(current_file)s %(modified_marker)s"
-msgstr "Virtaal - %(current_file)s %(modified_marker)s"
-
-#: ../virtaal/main_window.py:311
-msgid "Please enter your name"
-msgstr "Ange ditt namn"
-
-#: ../virtaal/main_window.py:317
-msgid "Please enter your e-mail address"
-msgstr "Ange din e-postadress"
-
-#: ../virtaal/main_window.py:323
-msgid "Please enter your team's information"
-msgstr "Ange information om din översättningsgrupp"
-
-#: ../virtaal/main_window.py:351
-#, python-format
-msgid ""
-"Could not save file.\n"
-"\n"
-"%(error_message)s\n"
-"\n"
-"Try saving at a different location."
-msgstr ""
-"Kunde inte spara filen.\n"
-"\n"
-"%(error_message)s\n"
-"\n"
-"Prova att spara den på någon annan plats."
-
-#: ../virtaal/main_window.py:352
-msgid "Error"
-msgstr "Fel"
-
-#: ../virtaal/main_window.py:362
-msgid "Save"
-msgstr "Spara"
-
-#: ../virtaal/modes.py:81
-msgid "All"
-msgstr "Alla"
-
-#: ../virtaal/modes.py:102
-msgid "Incomplete"
-msgstr "Inkomplett"
-
-#: ../virtaal/mode_selector.py:47
-msgid "_Mode: "
-msgstr "_Läge: "
-
-#: ../virtaal/search_mode.py:37
-msgid "Search"
-msgstr "Sök"
-
-#: ../virtaal/search_mode.py:51
-msgid "_Case sensitive"
-msgstr "_Skiftlägeskänslig"
-
-#: ../virtaal/search_mode.py:53
-msgid "_Regular expression"
-msgstr "_Reguljärt uttryck"
-
-#: ../virtaal/store_grid.py:78
-msgid "The file did not contain anything to translate."
-msgstr "Filen innehåller ingenting att översätta."
-
-#: ../virtaal/support/set_enumerator.py:62
-msgid "Top of page reached, continuing at the bottom"
-msgstr "Översta delen av sidan nåddes, fortsätter nederst"
-
-#: ../virtaal/support/set_enumerator.py:66
-msgid "End of page reached, continuing at the top"
-msgstr "Nedersta delen av sidan nåddes, fortsätter överst"
-
-#: ../virtaal/tips.py:24
-msgid "At the end of a translation, simply press <Enter> to continue with the next one."
-msgstr "Tryck helt enkelt <Enter> vid slutet av en översättning för att fortsätta med nästa."
-
-#: ../virtaal/tips.py:25
-msgid "To copy the original string into the target field, simply press <Alt+Down>."
-msgstr "Tryck helt enkelt <Alt+Ned> för att kopiera ursprungssträngen till målfältet."
-
-#: ../virtaal/tips.py:26
-msgid "When editing a fuzzy translation, the fuzzy marker will automatically be removed."
-msgstr "Luddighetsmarkören kommer automatiskt att tas bort när en luddig översättning redigeras."
-
-#. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
-#: ../virtaal/tips.py:28
-msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
-msgstr "Tryck helt enkelt <Alt+U> för att markera den aktuella översättningen som luddig."
-
-#: ../virtaal/tips.py:29
-msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
-msgstr "Använd Ctrl+Upp eller Ctrl+Ned för att hoppa mellan översättningar."
-
-#: ../virtaal/tips.py:30
-msgid "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
-msgstr "Använd Ctrl+PgUp eller Ctrl+PgDown för att hoppa i större steg mellan översättningar."
-
-#: ../virtaal/unit_layout.py:364
-msgid "F_uzzy"
-msgstr "L_uddig"
-
-#: ../source_tree_infrastructure/optparse.py:134
+#: ../devsupport/optparse.py:134
 #, python-format
 msgid "no such option: %s"
 msgstr "ingen sådan flagga: %s"
 
-#: ../source_tree_infrastructure/optparse.py:145
+#: ../devsupport/optparse.py:145
 #, python-format
 msgid "ambiguous option: %s (%s?)"
 msgstr "tvetydig flagga: %s (%s?)"
 
-#: ../source_tree_infrastructure/optparse.py:368
+#: ../devsupport/optparse.py:368
 #, python-format
 msgid "Usage: %s\n"
 msgstr "Användning: %s\n"
 
-#: ../source_tree_infrastructure/optparse.py:387
+#: ../devsupport/optparse.py:387
 msgid "Usage"
 msgstr "Användning"
 
-#: ../source_tree_infrastructure/optparse.py:412
+#: ../devsupport/optparse.py:412
 msgid "integer"
 msgstr "heltal"
 
-#: ../source_tree_infrastructure/optparse.py:413
+#: ../devsupport/optparse.py:413
 msgid "long integer"
 msgstr "långt heltal"
 
-#: ../source_tree_infrastructure/optparse.py:414
+#: ../devsupport/optparse.py:414
 msgid "floating-point"
 msgstr "flyttal"
 
-#: ../source_tree_infrastructure/optparse.py:415
+#: ../devsupport/optparse.py:415
 msgid "complex"
 msgstr "komplex"
 
-#: ../source_tree_infrastructure/optparse.py:423
+#: ../devsupport/optparse.py:423
 #, python-format
 msgid "option %s: invalid %s value: %r"
 msgstr "flagga %s: ogiltigt %s-värde: %r"
 
-#: ../source_tree_infrastructure/optparse.py:431
+#: ../devsupport/optparse.py:431
 #, python-format
 msgid "option %s: invalid choice: %r (choose from %s)"
 msgstr "flagga %s: ogiltigt val: %r (välj från %s)"
 
-#: ../source_tree_infrastructure/optparse.py:1246
+#: ../devsupport/optparse.py:1246
 msgid "show this help message and exit"
 msgstr "visa detta hjälpmeddelande och avsluta"
 
-#: ../source_tree_infrastructure/optparse.py:1251
+#: ../devsupport/optparse.py:1251
 msgid "show program's version number and exit"
 msgstr "visa programmets versionsnummer och avsluta"
 
-#: ../source_tree_infrastructure/optparse.py:1274
+#: ../devsupport/optparse.py:1274
 msgid "%prog [options]"
 msgstr "%prog [flaggor]"
 
-#: ../source_tree_infrastructure/optparse.py:1484
-#: ../source_tree_infrastructure/optparse.py:1523
+#: ../devsupport/optparse.py:1484
+#: ../devsupport/optparse.py:1523
 #, python-format
 msgid "%s option requires an argument"
 msgstr "flaggan %s kräver ett argument"
 
-#: ../source_tree_infrastructure/optparse.py:1486
-#: ../source_tree_infrastructure/optparse.py:1525
+#: ../devsupport/optparse.py:1486
+#: ../devsupport/optparse.py:1525
 #, python-format
 msgid "%s option requires %d arguments"
 msgstr "flaggan %s kräver %d argument"
 
-#: ../source_tree_infrastructure/optparse.py:1495
+#: ../devsupport/optparse.py:1495
 #, python-format
 msgid "%s option does not take a value"
 msgstr "flaggan %s tar inte ett värde"
 
-#: ../source_tree_infrastructure/optparse.py:1612
+#: ../devsupport/optparse.py:1612
 msgid "Options"
 msgstr "Flaggor"
+
+#~ msgid "You must specify a directory or a translation file for --terminology"
+#~ msgstr ""
+#~ "Du måste ange en katalog eller en översättningsfil för --terminology"
+#~ msgid "TERMINOLOGY"
+#~ msgstr "TERMINOLOGI"
+#~ msgid "Specify a directory containing terminology files"
+#~ msgstr "Ange en katalog som innehåller terminologifiler"
+#~ msgid "Please enter the language code for the target language"
+#~ msgstr "Ange språkkoden för målspråket"
+#~ msgid "_Mode: "
+#~ msgstr "_Läge: "
+#~ msgid "Top of page reached, continuing at the bottom"
+#~ msgstr "Översta delen av sidan nåddes, fortsätter nederst"
+#~ msgid "End of page reached, continuing at the top"
+#~ msgstr "Nedersta delen av sidan nåddes, fortsätter överst"
+#~ msgid ""
+#~ "When editing a fuzzy translation, the fuzzy marker will automatically be "
+#~ "removed."
+#~ msgstr ""
+#~ "Luddighetsmarkören kommer automatiskt att tas bort när en luddig "
+#~ "översättning redigeras."
 

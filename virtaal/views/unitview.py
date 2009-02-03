@@ -296,6 +296,13 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             self._widgets['vbox_sources'].pack_start(source)
             self.sources.append(textview)
 
+            # The following fixes a very weird crash (bug #810)
+            def ignore_tab(text_view, event):
+                if event.keyval in (gtk.keysyms.Tab, gtk.keysyms.ISO_Left_Tab):
+                    self.focused_target_n = 0
+                    return True
+            textview.connect('key-press-event', ignore_tab)
+
     def _create_targets(self):
         def on_text_view_n_press_event(text_view, event):
             """Handle special keypresses in the textarea."""

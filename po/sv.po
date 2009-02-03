@@ -1,7 +1,7 @@
-# Swedish translation for virtaal.
-# Copyright (C) 2008 Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the virtaal package.
-# Daniel Nylander <po@danielnylander.se>, 2008.
+# Swedish translation for Virtaal.
+# Copyright (C) 2008-2009 Zuza Software Foundation (Translate.org.za)
+# This file is distributed under the same license as the Virtaal package.
+# Daniel Nylander <po@danielnylander.se>, 2008, 2009
 #
 msgid ""
 msgstr ""

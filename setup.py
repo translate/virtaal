@@ -433,7 +433,7 @@ def create_manifest(data_files, extra_files, extra_dirs):
     f = open('MANIFEST.in', 'w+')
     f.write("# informational files")
     for infofile in ("README", "TODO", "ChangeLog", "COPYING", "LICENSE", "*.txt"):
-        f.write("global-include %s" % infofile)
+        f.write("global-include %s\n" % infofile)
     for data_file_list in [d[1] for d in data_files] + extra_files:
         f.write("include %s\n" % (" ".join( data_file_list )))
     for dir in extra_dirs:

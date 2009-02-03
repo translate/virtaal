@@ -770,18 +770,25 @@ msgstr "Flaggor"
 #~ msgid "You must specify a directory or a translation file for --terminology"
 #~ msgstr ""
 #~ "Du måste ange en katalog eller en översättningsfil för --terminology"
+
 #~ msgid "TERMINOLOGY"
 #~ msgstr "TERMINOLOGI"
+
 #~ msgid "Specify a directory containing terminology files"
 #~ msgstr "Ange en katalog som innehåller terminologifiler"
+
 #~ msgid "Please enter the language code for the target language"
 #~ msgstr "Ange språkkoden för målspråket"
+
 #~ msgid "_Mode: "
 #~ msgstr "_Läge: "
+
 #~ msgid "Top of page reached, continuing at the bottom"
 #~ msgstr "Översta delen av sidan nåddes, fortsätter nederst"
+
 #~ msgid "End of page reached, continuing at the top"
 #~ msgstr "Nedersta delen av sidan nåddes, fortsätter överst"
+
 #~ msgid ""
 #~ "When editing a fuzzy translation, the fuzzy marker will automatically be "
 #~ "removed."

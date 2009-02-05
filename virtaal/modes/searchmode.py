@@ -334,9 +334,16 @@ class SearchMode(BaseMode):
 
     def _replace_all(self):
         self.controller.main_controller.undo_controller.record_start()
-        for match in self.matches:
-            self.replace_match(match, self.ent_replace.get_text())
+
+        repl_str = self.ent_replace.get_text()
+        unit_matches = self._get_unit_matches_dict()
+
+        for unit, matches in unit_matches.items():
+            for match in reversed(matches):
+                self.replace_match(match, repl_str)
+
         self.controller.main_controller.undo_controller.record_stop()
+        self.update_search()
 
     def _unhighlight_previous_matches(self):
         if not getattr(self, '_prev_unitview', ''):

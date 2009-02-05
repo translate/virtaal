@@ -231,7 +231,7 @@ class MainController(BaseController):
             response = self.view.show_save_confirm_dialog()
             if response == 'save':
                 self.store_controller.save_file()
-            elif response == 'cancel':
+            elif response != 'discard':
                 return True
 
         self.plugin_controller.shutdown()

@@ -253,6 +253,14 @@ class SearchMode(BaseMode):
     def _get_matches_for_unit(self, unit):
         return [match for match in self.matches if match.unit is unit]
 
+    def _get_unit_matches_dict(self):
+        d = {}
+        for match in self.matches:
+            if match.unit not in d:
+                d[match.unit] = []
+            d[match.unit].append(match)
+        return d
+
     def _escaped_indexes(self, unescaped, start, end):
         """Returns the indexes of start and end in the escaped version of the
         given unescaped string."""

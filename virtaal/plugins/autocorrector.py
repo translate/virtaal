@@ -224,9 +224,10 @@ class AutoCorrector(object):
                 # and its side effects are taken care of. We abuse
                 # gobject.idle_add for that.
                 def correct_text():
+                    self.main_controller.undo_controller.record_start()
                     buffer.props.text = u''.join([res, postfix])
+                    self.main_controller.undo_controller.record_stop()
                     buffer.place_cursor( buffer.get_iter_at_offset(len(res) + len(text)) )
-                    self.main_controller.undo_controller.remove_blank_undo()
                     return False
 
                 gobject.idle_add(correct_text)

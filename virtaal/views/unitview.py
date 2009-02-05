@@ -137,11 +137,13 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         # if punctranslate actually changed something, let's insert that as an
         # undo step
         if new_source != self.unit.source:
+            self.controller.main_controller.undo_controller.record_start()
             buf.set_text(markup.escape(self.unit.source))
-            self.controller.main_controller.undo_controller.remove_blank_undo()
+            self.controller.main_controller.undo_controller.record_stop()
+
+        self.controller.main_controller.undo_controller.record_start()
         buf.set_text(markup.escape(new_source))
-        if old_text:
-            self.controller.main_controller.undo_controller.remove_blank_undo()
+        self.controller.main_controller.undo_controller.record_stop()
 
         # The following 2 lines were copied from focus_text_view() below
         translation_start = self.first_word_re.match(markup.escape(new_source)).span()[1]

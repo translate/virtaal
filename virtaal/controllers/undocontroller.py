@@ -115,10 +115,10 @@ class UndoController(BaseController):
             self.model.undo_stack.remove(item)
 
     def record_stop(self):
-        self.model.recording = False
+        self.model.record_stop()
 
     def record_start(self):
-        self.model.recording = True
+        self.model.record_start()
 
     def _disable_unit_signals(self):
         """Disable all signals emitted by the unit view.

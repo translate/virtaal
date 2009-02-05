@@ -71,6 +71,9 @@ class UndoModel(BaseModel):
             self.index -= 1
             return self.undo_stack[self.index+1]
 
+        # self.index does not necessarily point to the last element in the list, so we have
+        # to throw away the rest of the list first.
+        self.undo_stack = self.undo_stack[:self.index]
         item = self.undo_stack.pop()
         self.index = len(self.undo_stack) - 1
         return item
@@ -91,15 +94,30 @@ class UndoModel(BaseModel):
             if not key in undo_dict:
                 raise ValueError('Invalid undo dictionary!')
 
+        if self.recording:
+            self.undo_stack[-1].append(undo_dict)
+        else:
+            if self.index < 0:
+                self.index = 0
+            if self.index != len(self.undo_stack) - 1:
+                self.undo_stack = self.undo_stack[:self.index]
+            self.undo_stack.append(undo_dict)
+        self.index = len(self.undo_stack) - 1
+
+    def record_start(self):
+        if self.recording:
+            raise Exception('Undo already recording.')
+
         if self.index < 0:
             self.index = 0
         if self.index != len(self.undo_stack) - 1:
             self.undo_stack = self.undo_stack[:self.index]
 
-        if self.recording:
-            if not self.undo_stack or not isinstance(self.undo_stack[-1], list):
-                self.undo_stack.append([])
-            self.undo_stack[-1].append(undo_dict)
-        else:
-            self.undo_stack.append(undo_dict)
-        self.index = len(self.undo_stack) - 1
+        self.undo_stack.append([])
+        self.recording = True
+
+    def record_stop(self):
+        if not self.recording:
+            raise Exception("Undo can't stop recording if it was not recording in the first place.")
+
+        self.recording = False

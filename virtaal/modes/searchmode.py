@@ -132,8 +132,11 @@ class SearchMode(BaseMode):
                 target = view.targets[match.part_n]
                 target.grab_focus()
                 buff = target.get_buffer()
-                start_iter = buff.get_iter_at_offset(match.start)
-                end_iter = buff.get_iter_at_offset(match.end)
+                buffstr = buff.get_text(buff.get_start_iter(), buff.get_end_iter()).decode('utf-8')
+                unescaped = markup.unescape(buffstr)
+                start, end = self._escaped_indexes(unescaped, match.start, match.end)
+                start_iter = buff.get_iter_at_offset(start)
+                end_iter = buff.get_iter_at_offset(end)
                 buff.select_range(end_iter, start_iter)
                 return False
         elif match.part == 'source':
@@ -141,6 +144,9 @@ class SearchMode(BaseMode):
                 source = view.sources[match.part_n]
                 source.grab_focus()
                 buff = source.get_buffer()
+                buffstr = buff.get_text(buff.get_start_iter(), buff.get_end_iter()).decode('utf-8')
+                unescaped = markup.unescape(buffstr)
+                start, end = self._escaped_indexes(unescaped, match.start, match.end)
                 start_iter = buff.get_iter_at_offset(match.start)
                 end_iter = buff.get_iter_at_offset(match.end)
                 buff.select_range(end_iter, start_iter)
@@ -247,6 +253,18 @@ class SearchMode(BaseMode):
     def _get_matches_for_unit(self, unit):
         return [match for match in self.matches if match.unit is unit]
 
+    def _escaped_indexes(self, unescaped, start, end):
+        """Returns the indexes of start and end in the escaped version of the
+        given unescaped string."""
+        # Escaping might mean that the indexes should be offset, so we
+        # test to see if escaping comes into play. The unescaped version
+        # will help us calculate how much we need to adjust.
+        leading_segment = unescaped[:end]
+        lines = leading_segment.count(u'\n') + leading_segment.count(u'\t')
+        start = start + lines * 2
+        end = end + lines * 2
+        return (start, end)
+
     def _highlight_matches(self):
         self._unhighlight_previous_matches()
 
@@ -275,13 +293,7 @@ class SearchMode(BaseMode):
                 if  (textview in unitview.sources and not match.part == 'source') or \
                     (textview in unitview.targets and not match.part == 'target'):
                     continue
-                # Escaping might mean that the indexes should be offset, so we
-                # test to see  escaping comes into play. The unescaped version
-                # will help us calculate how much we need to adjust.
-                leading_segment = unescaped[:match.end]
-                lines = leading_segment.count(u'\n') + leading_segment.count(u'\t')
-                start = match.start + lines * 2
-                end = match.end + lines * 2
+                start, end = self._escaped_indexes(unescaped, match.start, match.end)
                 start_iter, end_iter = buff.get_iter_at_offset(start), buff.get_iter_at_offset(end)
                 buff.apply_tag_by_name('highlight', start_iter, end_iter)
 

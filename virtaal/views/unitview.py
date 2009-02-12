@@ -240,15 +240,18 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     def _update_textview_language(self, text_view, language):
         language = str(language)
+        #logging.debug('Updating text view for language %s' % (language))
         text_view.get_pango_context().set_language(rendering.get_language(language))
 
         global gtkspell
         if gtkspell is None:
+            #logging.debug('No gtkspell!')
             return
 
         try:
             import enchant
         except ImportError:
+            #logging.debug('No enchant!')
             return
 
         if not enchant.dict_exists(language):
@@ -256,6 +259,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             # For the cases where it requires one, we look for the first language
             # code that enchant supports and use that one.
             if len(language) > 4:
+                #logging.debug('len("%s") > 4' % (language))
                 return
 
             for code in enchant.list_languages():
@@ -263,9 +267,21 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                     language = code
                     break
             else:
+                #logging.debug('No code in enchant.list_languages() that starts with "%s"' % (language))
+                # We couldn't find a dictionary for "language", so we should make sure that we don't
+                # have a spell checker for a different language on the text view. See bug 717.
+                spell = None
+                try:
+                    spell = gtkspell.get_from_text_view(text_view)
+                except SystemError:
+                    pass
+                if not spell is None:
+                    spell.detach()
+                text_view.spell_lang = None
                 return
 
         if getattr(text_view, 'spell_lang', None) == language:
+            #logging.debug('text_view.spell_lang == "%s"' % (language))
             return
 
         try:

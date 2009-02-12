@@ -449,7 +449,7 @@ msgstr "%(match_quality)s%%"
 
 #: ../virtaal/views/langview.py:66
 msgid "_New Language Pair..."
-msgstr "_Nuova copia di lingue..."
+msgstr "_Nuova coppia di lingue..."
 
 #: ../virtaal/views/mainview.py:198
 msgid "Error"

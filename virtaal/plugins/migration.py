@@ -162,7 +162,7 @@ class Plugin(BasePlugin):
         if not hasattr(self, "poedit_database_path"):
             return
 
-        # import each language seperately
+        # import each language separately
         for lang in self.poedit_languages:
             strings_db_file = path.join(self.poedit_database_path, lang, 'strings.db')
             translations_db_file = path.join(self.poedit_database_path, lang, 'translations.db')

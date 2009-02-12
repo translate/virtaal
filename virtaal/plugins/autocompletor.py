@@ -359,11 +359,11 @@ class Plugin(BasePlugin):
                 if self.lastunit.hasplural():
                     for target in self.lastunit.target:
                         if target:
-                            logging.debug('Adding words: %s' % (self.autocomp.wordsep_re.split(unicode(target))))
+                            #logging.debug('Adding words: %s' % (self.autocomp.wordsep_re.split(unicode(target))))
                             self.autocomp.add_words(self.autocomp.wordsep_re.split(unicode(target)))
                 else:
                     if self.lastunit.target:
-                        logging.debug('Adding words: %s' % (self.autocomp.wordsep_re.split(unicode(self.lastunit.target))))
+                        #logging.debug('Adding words: %s' % (self.autocomp.wordsep_re.split(unicode(self.lastunit.target))))
                         self.autocomp.add_words(self.autocomp.wordsep_re.split(unicode(self.lastunit.target)))
             self.lastunit = cursor.deref()
         gobject.idle_add(add_widgets)

@@ -20,6 +20,7 @@
 
 import gobject
 import gtk
+import locale
 
 from virtaal.common import pan_app
 from virtaal.views import BaseView
@@ -57,9 +58,10 @@ class LanguageSelectDialog(object):
         self.btn_cancel.connect('clicked', lambda *args: self.dialog.response(gtk.RESPONSE_CANCEL))
 
     def _init_treeviews(self):
-        self.lst_langs = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
-        self.tvw_sourcelang.set_model(self.lst_langs)
-        self.tvw_targetlang.set_model(self.lst_langs)
+        self.lst_langs_src = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
+        self.lst_langs_tgt = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
+        self.tvw_sourcelang.set_model(self.lst_langs_src)
+        self.tvw_targetlang.set_model(self.lst_langs_tgt)
 
         def searchfunc(model, column, key, iter):
             if  model.get_value(iter, 0).lower().startswith(key.lower()) or \
@@ -73,12 +75,14 @@ class LanguageSelectDialog(object):
         col = gtk.TreeViewColumn(_('Language'))
         col.pack_start(cell)
         col.add_attribute(cell, 'text', 0)
+        col.set_sort_column_id(0)
         self.tvw_sourcelang.append_column(col)
 
         cell = gtk.CellRendererText()
         col = gtk.TreeViewColumn(_('Language'))
         col.pack_start(cell)
         col.add_attribute(cell, 'text', 0)
+        col.set_sort_column_id(0)
         self.tvw_targetlang.append_column(col)
 
         cell = gtk.CellRendererText()
@@ -86,13 +90,22 @@ class LanguageSelectDialog(object):
         col = gtk.TreeViewColumn(_('Code'))
         col.pack_start(cell)
         col.add_attribute(cell, 'text', 1)
+        col.set_sort_column_id(1)
         self.tvw_sourcelang.append_column(col)
 
         cell = gtk.CellRendererText()
         col = gtk.TreeViewColumn(_('Code'))
         col.pack_start(cell)
         col.add_attribute(cell, 'text', 1)
+        col.set_sort_column_id(1)
         self.tvw_targetlang.append_column(col)
+
+        def sortfunc(model, iter1, iter2, col):
+            return locale.strcoll(model.get_value(iter1, col), model.get_value(iter2, col))
+        self.lst_langs_src.set_sort_func(0, sortfunc, 0)
+        self.lst_langs_src.set_sort_func(1, sortfunc, 1)
+        self.lst_langs_tgt.set_sort_func(0, sortfunc, 0)
+        self.lst_langs_tgt.set_sort_func(1, sortfunc, 1)
 
 
     # ACCESSORS #
@@ -111,7 +124,8 @@ class LanguageSelectDialog(object):
 
     # METHODS #
     def clear_langs(self):
-        self.lst_langs.clear()
+        self.lst_langs_src.clear()
+        self.lst_langs_tgt.clear()
 
     def run(self, srclang, tgtlang):
         self.curr_srclang = srclang
@@ -130,7 +144,8 @@ class LanguageSelectDialog(object):
         selected_tgtcode = self.get_selected_target_lang()
 
         for lang in langs:
-            self.lst_langs.append([lang.name, lang.code])
+            self.lst_langs_src.append([lang.name, lang.code])
+            self.lst_langs_tgt.append([lang.name, lang.code])
 
         if selected_srccode:
             self._select_lang(self.tvw_sourcelang, selected_srccode)

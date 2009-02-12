@@ -149,6 +149,9 @@ class LanguageController(BaseController):
 
     # EVENT HANDLERS #
     def _on_quit(self, main_controller):
+        pan_app.settings.language['sourcelang'] = self.source_lang.code
+        pan_app.settings.language['targetlang'] = self.target_lang.code
+
         if not self.new_langs:
             return
 

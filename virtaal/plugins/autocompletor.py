@@ -321,6 +321,7 @@ class Plugin(BasePlugin):
     display_name = _('AutoCompletor')
     version = 0.1
 
+    # INITIALIZERS #
     def __init__(self, internal_name, main_controller):
         self.internal_name = internal_name
         self.main_controller = main_controller
@@ -331,34 +332,17 @@ class Plugin(BasePlugin):
         from virtaal.common import pan_app
         self.autocomp = AutoCompletor(self.main_controller)
 
-        def on_cursor_change(cursor):
-            def add_widgets():
-                for textview in self.autocomp.widgets:
-                    buffer = textview.get_buffer()
-                    bufftext = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter()).decode('utf-8')
-                    self.autocomp.add_words(self.autocomp.wordsep_re.split(bufftext))
+        self._store_loaded_id = self.main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
 
-                self.autocomp.clear_widgets()
-                for target in self.main_controller.unit_controller.view.targets:
-                    self.autocomp.add_widget(target)
-                return False
-            gobject.idle_add(add_widgets)
-
-        def on_store_loaded(storecontroller):
-            self.autocomp.add_words_from_units(storecontroller.get_store().get_units())
-
-            if getattr(self, '_cursor_changed_id', None):
-                self.store_cursor.disconnect(self._cursor_changed_id)
-            self.store_cursor = storecontroller.cursor
-            self._cursor_changed_id = self.store_cursor.connect('cursor-changed', on_cursor_change)
-            on_cursor_change(self.store_cursor)
-
-        self._store_loaded_id = self.main_controller.store_controller.connect('store-loaded', on_store_loaded)
+        for target in self.main_controller.unit_controller.view.targets:
+            self.autocomp.add_widget(target)
 
         if self.main_controller.store_controller.get_store():
             # Connect to already loaded store. This happens when the plug-in is enabled after loading a store.
-            on_store_loaded(self.main_controller.store_controller)
+            self._on_store_loaded(self.main_controller.store_controller)
 
+
+    # METHDOS #
     def destroy(self):
         """Remove all signal-connections."""
         self.autocomp.clear_words()
@@ -366,3 +350,29 @@ class Plugin(BasePlugin):
         self.main_controller.store_controller.disconnect(self._store_loaded_id)
         if getattr(self, '_cursor_changed_id', None):
             self.store_cursor.disconnect(self._cursor_changed_id)
+
+
+    # EVENT HANDLERS #
+    def _on_cursor_change(self, cursor):
+        def add_widgets():
+            if hasattr(self, 'lastunit'):
+                if self.lastunit.hasplural():
+                    for target in self.lastunit.target:
+                        if target:
+                            logging.debug('Adding words: %s' % (self.autocomp.wordsep_re.split(unicode(target))))
+                            self.autocomp.add_words(self.autocomp.wordsep_re.split(unicode(target)))
+                else:
+                    if self.lastunit.target:
+                        logging.debug('Adding words: %s' % (self.autocomp.wordsep_re.split(unicode(self.lastunit.target))))
+                        self.autocomp.add_words(self.autocomp.wordsep_re.split(unicode(self.lastunit.target)))
+            self.lastunit = cursor.deref()
+        gobject.idle_add(add_widgets)
+
+    def _on_store_loaded(self, storecontroller):
+        self.autocomp.add_words_from_units(storecontroller.get_store().get_units())
+
+        if hasattr(self, '_cursor_changed_id'):
+            self.store_cursor.disconnect(self._cursor_changed_id)
+        self.store_cursor = storecontroller.cursor
+        self._cursor_changed_id = self.store_cursor.connect('cursor-changed', self._on_cursor_change)
+        self._on_cursor_change(self.store_cursor)

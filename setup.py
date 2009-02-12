@@ -341,7 +341,7 @@ def add_win32_options(options):
         options['scripts'].append("../translate/services/tmserver")
 
         py2exe_options = {
-            "packages":   ["encodings", "virtaal"],
+            "packages":   ["encodings", "translate.lang", "virtaal"],
             "compressed": True,
             "excludes":   ["PyLucene", "Tkconstants", "Tkinter", "tcl", "translate.misc._csv"],
             "dist_dir":   "virtaal-win32",

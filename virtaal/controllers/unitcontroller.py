@@ -55,6 +55,7 @@ class UnitController(BaseController):
         self.view.connect('unit-done', self._unit_done)
         self.view.enable_signals()
 
+        self.store_controller.connect('store-loaded', self._on_store_loaded)
         self.main_controller.connect('controller-registered', self._on_controller_registered)
 
 
@@ -100,3 +101,21 @@ class UnitController(BaseController):
         self.nplurals = lang_controller.target_lang.nplurals
         if hasattr(self, 'view'):
             self.view.update_languages()
+
+    def _on_store_loaded(self, store_controller):
+        """Call C{_on_language_changed()}.
+
+            If the target language loaded at start-up (from config) is the same
+            as that of the first opened file, C{self.view.update_languages()} is
+            not called, because the L{LangController}'s C{"target-lang-changed"}
+            signal is never emitted, because the language has not really
+            changed.
+
+            This event handler ensures that it is loaded. As a side-effect,
+            C{self.view.update_languages()} is called twice if language before
+            and after a store load is different. But we'll just have to live
+            with that."""
+        self._on_language_changed(
+            self.main_controller.lang_controller,
+            self.main_controller.lang_controller.target_lang.code
+        )

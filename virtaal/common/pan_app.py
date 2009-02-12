@@ -115,7 +115,7 @@ class Settings:
                lang = osx_lang()
             self.language["targetlang"] = data.simplify_to_common(lang)
         except:
-            logging.info("Could not get locale")
+            logging.exception("Could not get locale")
         self.config = ConfigParser.ConfigParser()
         self.read()
 

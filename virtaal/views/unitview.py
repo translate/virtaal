@@ -355,7 +355,6 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         for target, next_target in zip(self.targets, self.targets[1:] + [None]):
             target.connect('key-press-event', target_key_press_event, next_target)
 
-
     def _create_textbox(self, text='', editable=True, scroll_policy=gtk.POLICY_AUTOMATIC):
         textview = gtk.TextView()
         textview.set_editable(editable)

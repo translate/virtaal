@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gobject
+import logging
 
 
 class GObjectWrapper(gobject.GObject):
@@ -55,4 +56,5 @@ class GObjectWrapper(gobject.GObject):
 
     def emit(self, signame, *args):
         if signame in self._enabled_signals:
+            #logging.debug('emit("%s", %s)' % (signame, ','.join([repr(arg) for arg in args])))
             gobject.GObject.emit(self, signame, *args)

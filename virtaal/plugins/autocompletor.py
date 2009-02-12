@@ -346,8 +346,12 @@ class Plugin(BasePlugin):
 
         def on_store_loaded(storecontroller):
             self.autocomp.add_words_from_units(storecontroller.get_store().get_units())
-            self._cursor_changed_id = storecontroller.cursor.connect('cursor-changed', on_cursor_change)
-            on_cursor_change(storecontroller.cursor)
+
+            if getattr(self, '_cursor_changed_id', None):
+                self.store_cursor.disconnect(self._cursor_changed_id)
+            self.store_cursor = storecontroller.cursor
+            self._cursor_changed_id = self.store_cursor.connect('cursor-changed', on_cursor_change)
+            on_cursor_change(self.store_cursor)
 
         self._store_loaded_id = self.main_controller.store_controller.connect('store-loaded', on_store_loaded)
 
@@ -361,4 +365,4 @@ class Plugin(BasePlugin):
         self.autocomp.clear_widgets()
         self.main_controller.store_controller.disconnect(self._store_loaded_id)
         if getattr(self, '_cursor_changed_id', None):
-            self.main_controller.store_controller.cursor.disconnect(self._cursor_changed_id)
+            self.store_cursor.disconnect(self._cursor_changed_id)

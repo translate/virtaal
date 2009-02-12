@@ -45,6 +45,7 @@ class OpenTranClient(restclient.RESTClient):
         self.target_lang = None
         #detect supported language
 
+
     def translate_unit(self, unit_source, callback=None):
         if self.source_lang is None or self.target_lang is None:
             return
@@ -60,7 +61,6 @@ class OpenTranClient(restclient.RESTClient):
         if callback:
             request.connect("REST-success",
                             lambda widget, id, response: callback(widget, id, self.format_suggestions(id, response)))
-
 
     def lang_negotiate(self, language, callback):
         request_body = xmlrpclib.dumps((language,), "supported")
@@ -91,7 +91,6 @@ class OpenTranClient(restclient.RESTClient):
                 # language not supported
                 self.source_lang = None
                 logging.debug("target language %s not supported" % language)
-                
 
     def _handle_source_lang(self, request, language, response):
         (result,), fish = xmlrpclib.loads(response)
@@ -105,7 +104,6 @@ class OpenTranClient(restclient.RESTClient):
             else:
                 self.source_lang = None
                 logging.debug("source language %s not supported" % language)
-
 
     def format_suggestions(self, id, response):
         """clean up open tran suggestion and use the same format as tmserver"""

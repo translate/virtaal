@@ -68,7 +68,7 @@ class TMModel(BaseTMModel):
         #store_controller or from tm state?
         self.tmclient.add_store(store_controller.store.get_filename(), units, self.source_lang, self.target_lang)
         self.cache = {}
-        
+
     def upload_store(self, store_controller):
         """upload store to tmserver"""
         self.tmclient.upload_store(store_controller.store._trans_store, self.source_lang, self.target_lang)

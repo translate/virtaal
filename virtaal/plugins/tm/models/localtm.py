@@ -67,7 +67,7 @@ class TMModel(remotetm.TMModel):
 
         if pan_app.DEBUG:
             command.append("--debug")
-            
+
         logging.debug("launching tmserver with command %s" % " ".join(command))
         try:
             self.tmserver = subprocess.Popen(command)
@@ -111,4 +111,3 @@ def find_free_port(host, min_port, max_port):
             return port
     #FIXME: shall we throw an exception if no free port is found?
     return None
-

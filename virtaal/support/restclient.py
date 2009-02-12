@@ -25,7 +25,7 @@ import logging
 import gobject
 import pycurl
 
-from virtaal.common.gobjectwrapper import GObjectWrapper 
+from virtaal.common.gobjectwrapper import GObjectWrapper
 
 class RESTClient(object):
     """Nonblocking client that can handle multiple HTTP REST requests"""
@@ -34,7 +34,7 @@ class RESTClient(object):
         """Single HTTP REST request, blocking if used standalone"""
         __gtype_name__ = 'RestClientRequest'
         __gsignals__ = {
-            "REST-success": (gobject.SIGNAL_RUN_LAST, 
+            "REST-success": (gobject.SIGNAL_RUN_LAST,
                              gobject.TYPE_NONE,
                              (gobject.TYPE_PYOBJECT, gobject.TYPE_PYOBJECT)),
             "REST-client-error": (gobject.SIGNAL_RUN_LAST,
@@ -44,7 +44,7 @@ class RESTClient(object):
                                   gobject.TYPE_NONE,
                                   (gobject.TYPE_PYOBJECT, gobject.TYPE_PYOBJECT)),
         }
-        
+
         def __init__(self, url, id, method='GET', data=None, headers=None, callback=None):
             GObjectWrapper.__init__(self)
             self.result = StringIO.StringIO()
@@ -62,7 +62,7 @@ class RESTClient(object):
             self.curl = pycurl.Curl()
             if (logging.root.level == logging.DEBUG):
                 self.curl.setopt(pycurl.VERBOSE, 1)
-                
+
             self.curl.setopt(pycurl.WRITEFUNCTION, self.result.write)
             self.curl.setopt(pycurl.HEADERFUNCTION, self.result_headers.write)
             self.curl.setopt(pycurl.URL, self.url + "/" + urllib.quote_plus(id))

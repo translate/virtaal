@@ -168,7 +168,6 @@ class StoreModel(BaseModel):
         elif isinstance(store, ts.tsfile):
             return store.nplural()
 
-        
     def _correct_header(self, store):
         """This ensures that the file has a header if it is a poheader type of
         file, and fixes the statistics if we had to add a header."""
@@ -219,5 +218,3 @@ class StoreModel(BaseModel):
             if self.controller.main_controller.lang_controller.target_lang.plural:
                 self._trans_store.updateheaderplural(self.controller.main_controller.lang_controller.target_lang.nplurals, self.controller.main_controller.lang_controller.target_lang.plural)
             self._trans_store.updateheader(add=True, **header_updates)
-
-

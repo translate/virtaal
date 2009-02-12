@@ -70,7 +70,7 @@ class LanguageModel(BaseModel):
         if langcode not in self.languages:
             try:
                 langcode = self._match_normalized_langcode(langcode)
-            except ValueError:                
+            except ValueError:
                 langcode = data.simplify_to_common(langcode, self.languages)
                 if langcode not in self.languages:
                     try:
@@ -82,7 +82,7 @@ class LanguageModel(BaseModel):
                         self.nplurals = 0
                         self.plural = ""
                         return
-            
+
         self.name = self.gettext_lang(self.languages[langcode][0])
         self.code = langcode
         self.nplurals = self.languages[langcode][1]

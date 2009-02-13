@@ -231,7 +231,7 @@ class AutoCompletor(object):
                     buffer._suggestion = (sel_iter_start, sel_iter_end)
                     return False
 
-                gobject.idle_add(suggest_completion)
+                gobject.idle_add(suggest_completion, priority=gobject.PRIORITY_HIGH)
             else:
                 buffer._suggestion = None
         else:

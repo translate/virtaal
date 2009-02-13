@@ -75,15 +75,10 @@ class AutoCompletor(object):
 
         raise ValueError("Widget type %s not supported." % (type(widget)))
 
-    def usable(self, word):
-        """Returns a value indicating if the given word should be kept as a
-        suggestion for autocomplete."""
-        return len(word) > self.comp_len + 2
-
     def add_words(self, words, update=True):
         """Add a word or words to the list of words to auto-complete."""
         for word in words:
-            if self.usable(word):
+            if self.isusable(word):
                 self._word_freq[word] += 1
         if update:
             self._update_word_list()
@@ -120,6 +115,11 @@ class AutoCompletor(object):
         """Remove all registered words; effectively turns off auto-completion."""
         self._word_freq = []
         self._word_list = defaultdict(lambda: 0)
+
+    def isusable(self, word):
+        """Returns a value indicating if the given word should be kept as a
+        suggestion for autocomplete."""
+        return len(word) > self.comp_len + 2
 
     def remove_widget(self, widget):
         """Remove a widget (currently only C{gtk.TextView}s are accepted) from

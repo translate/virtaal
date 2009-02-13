@@ -422,7 +422,8 @@ class MainView(BaseView):
             self.save_chooser.set_title(title)
 
         directory, filename = os.path.split(self.controller.get_store().get_filename())
-        self.save_chooser.set_current_folder(directory)
+        if os.access(directory, os.F_OK | os.R_OK | os.X_OK | os.W_OK):
+            self.save_chooser.set_current_folder(directory)
 
         self.save_chooser.set_transient_for(self._top_window)
         old_top = self._top_window

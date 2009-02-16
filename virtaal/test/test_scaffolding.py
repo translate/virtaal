@@ -35,14 +35,14 @@ class TestScaffolding(object):
         self.undo_controller = UndoController(self.main_controller)
         self.mode_controller = ModeController(self.main_controller)
 
-        po_contents = """# Afrikaans (af) localisation of VirTaal.
+        po_contents = """# Afrikaans (af) localisation of Virtaal.
 # Copyright (C) 2008 Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the VirTaal package.
+# This file is distributed under the same license as the Virtaal package.
 # Dwayne Bailey <dwayne@translate.org.za>, 2008
 # F Wolff <friedel@translate.org.za>, 2008
 msgid ""
 msgstr ""
-"Project-Id-Version: VirTaal 0.1\n"
+"Project-Id-Version: Virtaal 0.1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2008-10-14 15:33+0200\n"
 "PO-Revision-Date: 2008-10-14 15:46+0200\n"

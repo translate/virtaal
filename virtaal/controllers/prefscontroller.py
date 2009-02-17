@@ -41,10 +41,18 @@ class PreferencesController(BaseController):
     # METHODS #
     def set_plugin_enabled(self, plugin_name, enabled):
         """Enabled or disable a plug-in with the given name."""
-        if enabled:
-            self.plugin_controller.enable_plugin(plugin_name)
-        else:
-            self.plugin_controller.disable_plugin(plugin_name)
+        getattr(self.plugin_controller, enabled and 'enable_plugin' or 'disable_plugin')(plugin_name)
+        self.update_config_plugin_state(plugin_name=plugin_name, disabled=not enabled)
+
+    def update_config_plugin_state(self, plugin_name, disabled):
+        """Make sure that the plug-in with the given name is enabled/disabled
+            in the main configuration file."""
+        # A plug-in is considered "enabled" as long as pan_app.settings.plugin_state[plugin_name].lower() != 'disabled',
+        # even if not pan_app.settings.plugin_state.has_key(plugin_name).
+        # This method is put here in stead of in PluginController, because it is not safe to assume that the plug-ins
+        # being managed my any given PluginController instance is enabled/disabled via the main virtaal.ini's
+        # "[plugin_state]" section.
+        pan_app.settings.plugin_state[plugin_name] = disabled and 'disabled' or 'enabled'
 
     def update_prefs_gui_data(self):
         plugin_data = []

@@ -152,7 +152,20 @@ class PluginController(BaseController):
         for name in list(self.plugins.keys()):
             self.disable_plugin(name)
 
+    def get_disabled_plugins(self):
+        """Returns a list of names of plug-ins that are disabled in the
+            configuration.
+
+            This method should be replaced if an instance is not used for
+            normal plug-ins."""
+        return [plugin_name for (plugin_name, state) in pan_app.settings.plugin_state.items() if state.lower() == 'disabled']
+
     def _find_plugin_names(self):
+        """Look in C{self.PLUGIN_DIRS} for importable Python modules.
+            @note: Hidden files/directories are ignored.
+            @note: If a plug-in is in a directory, it's C{self.PLUGIN_CLASSNAME}
+                class should be exposed in the plug-in's __init__.py file.
+            @returns: A list of module names, assumed to be plug-ins."""
         plugin_names = []
 
         for dir in self.PLUGIN_DIRS:
@@ -166,12 +179,9 @@ class PluginController(BaseController):
                     # XXX: The plug-in system assumes that a plug-in in a directory makes the Plugin class accessible via it's __init__.py
                     plugin_names.append(name)
                 elif os.path.isfile(fullpath) and not name.startswith('__init__.py'):
-                    plugname = '.'.join(name.split('.')[:-1]) # Effectively removes extension, preserving other .'s int he name
+                    plugname = '.'.join(name.split(os.extsep)[:-1]) # Effectively removes extension, preserving other .'s in the name
                     plugin_names.append(plugname)
 
         plugin_names = list(set(plugin_names))
         logging.debug('Found plugins: %s' % (', '.join(plugin_names)))
         return plugin_names
-
-    def get_disabled_plugins(self):
-        return [plugin_name for (plugin_name, state) in pan_app.settings.plugin_state.items() if state.lower() == 'disabled']

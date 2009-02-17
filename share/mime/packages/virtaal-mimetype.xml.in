@@ -17,6 +17,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
 
   <mime-type type="application/x-tmx">
     <sub-class-of type="application/xml"/>
+    <icon name="x-translation"/>
     <_comment>TMX Translation Memory</_comment>
     <_acronym>TMX</_acronym>
     <_expanded-acronym>Translation Memory eXchange</_expanded-acronym>
@@ -29,6 +30,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
 
   <mime-type type="application/x-tbx">
     <sub-class-of type="application/xml"/>
+    <icon name="x-translation"/>
     <_comment>TBX Glossary</_comment>
     <_acronym>TBX</_acronym>
     <_expanded-acronym>TermBase eXchange</_expanded-acronym>
@@ -40,6 +42,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
 
   <mime-type type="text/x-wordfast">
     <sub-class-of type="text/tab-separated-values"/>
+    <icon name="x-translation"/>
     <_comment>Wordfast Translation Memory</_comment>
     <glob pattern="*.txt"/>
     <magic priority="80">
@@ -51,6 +54,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
   <!-- Qt Linguist is copied from the standard DB but is yuck there -->
   <mime-type type="application/x-linguist">
     <sub-class-of type="application/xml"/>
+    <icon name="x-translation"/>
     <_comment>Qt Linguist Translation File</_comment>
     <glob pattern="*.ts"/>
   </mime-type>
@@ -61,6 +65,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
   </mime-type>
 
   <mime-type type="application/x-qph">
+    <icon name="x-translation"/>
     <_comment>Qt Phrase Book</_comment>
     <glob pattern="*.qph"/>
     <magic priority="50">
@@ -92,6 +97,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
 
   <mime-type type="application/x-xliff+xml">
     <sub-class-of type="application/xml"/>
+    <icon name="x-translation"/>
     <_comment>XLIFF Translation File</_comment>
     <_acronym>XLIFF</_acronym>
     <_expanded-acronym>XML Localization Interchange File Format</_expanded-acronym>
@@ -132,6 +138,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
 
   <mime-type type="text/x-gettext-translation-template">
     <sub-class-of type="text/plain"/>
+    <icon name="x-translation"/>
     <_comment>Gettext Translation Template</_comment>
     <glob pattern="*.pot"/>
     <magic priority="50">

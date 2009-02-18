@@ -221,7 +221,7 @@ class Plugin(BasePlugin):
         lokalize_config.read(self.lokalize_rc)
         lokalize_identity = dict(lokalize_config.items('Identity'))
 
-        pan_app.settings.translator['name'] = lokalize_identity['authorlocalizedname']
+        pan_app.settings.translator['name'] = lokalize_identity['authorname']
         pan_app.settings.translator['email'] = lokalize_identity['authoremail']
         pan_app.settings.translator['team'] = lokalize_identity['defaultmailinglist']
         pan_app.settings.general['lastdir'] = path.dirname(dict(lokalize_config.items('State'))['project'])

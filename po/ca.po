@@ -1,0 +1,800 @@
+# translate of virtaal to Catalan.
+# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
+# This file is distributed under the same license as the PACKAGE package.
+# Toni Hermoso Pulido <toniher@softcatala.org>, 2009
+msgid ""
+msgstr ""
+"Project-Id-Version: Virtaal 0.3beta1\n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2009-01-30 15:39+0200\n"
+"PO-Revision-Date: 2009-02-18 21:05+0200\n"
+"Last-Translator: Toni Hermoso Pulido <toniher@softcatala.cat>\n"
+"Language-Team: Softcatalà\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.3.0\n"
+
+#: ../share/applications/virtaal.desktop.in.h:1
+msgid ""
+"A translation tool to help a human translator translate files into other "
+"languages"
+msgstr ""
+"Una eina de traducció per a ajudar un traductor humà a traduir fitxers en "
+"altres llengües"
+
+#: ../share/applications/virtaal.desktop.in.h:2
+msgid "Translation Tool"
+msgstr "Eina de traducció"
+
+#: ../share/applications/virtaal.desktop.in.h:3
+#: ../share/virtaal/virtaal.glade.h:23
+msgid "Virtaal"
+msgstr "Virtaal"
+
+#: ../share/virtaal/virtaal.glade.h:1
+msgid "<b>Language information</b>"
+msgstr "<b>Informació de la llengua</b>"
+
+#: ../share/virtaal/virtaal.glade.h:2
+msgid "<b>Original</b>"
+msgstr "<b>Original</b>"
+
+#: ../share/virtaal/virtaal.glade.h:3
+msgid "<b>Translation</b>"
+msgstr "<b>Traducció</b>"
+
+#: ../share/virtaal/virtaal.glade.h:4
+msgid ""
+"Depending on the translation task, the plural information might be optional."
+msgstr ""
+"Depenenent de la tasca de traducció, la informació del plural pot ser "
+"opcional."
+
+#: ../share/virtaal/virtaal.glade.h:5
+msgid "General"
+msgstr "General"
+
+#: ../share/virtaal/virtaal.glade.h:6
+msgid "ISO code:"
+msgstr "Codi ISO:"
+
+#: ../share/virtaal/virtaal.glade.h:7
+msgid "Language name:"
+msgstr "Nom de la llengua:"
+
+#: ../share/virtaal/virtaal.glade.h:8
+msgid "Languages"
+msgstr "Llengües"
+
+#: ../share/virtaal/virtaal.glade.h:9
+msgid "Missing Language"
+msgstr "Llengua absent"
+
+#: ../share/virtaal/virtaal.glade.h:10
+msgid "New Language Pair"
+msgstr "Nou parell de llengües"
+
+#: ../share/virtaal/virtaal.glade.h:11
+msgid "Number of plurals:"
+msgstr "Nombre de plurals:"
+
+#: ../share/virtaal/virtaal.glade.h:12
+msgid "P_age Up"
+msgstr "Pàgin_a amunt"
+
+#: ../share/virtaal/virtaal.glade.h:13
+msgid "Personal Information"
+msgstr "Informació personal"
+
+#: ../share/virtaal/virtaal.glade.h:14
+msgid "Plug-ins"
+msgstr "Connectors"
+
+#: ../share/virtaal/virtaal.glade.h:15
+msgid "Plural expression:"
+msgstr "Expressió del plural:"
+
+#: ../share/virtaal/virtaal.glade.h:16
+msgid "Report a _Bug"
+msgstr "_Informa d'un error"
+
+#: ../share/virtaal/virtaal.glade.h:17
+msgid ""
+"The <b>Original</b> is the language from which you are translating, also "
+"called the source language.\n"
+"\n"
+"If you are translating from English to French then English would be your "
+"original or source language."
+msgstr ""
+"L'<b>original</b> és la llengua a partir de la qual esteu traduint, que "
+"també rep el nom de llengua d'origen.\n"
+"\n"
+"Si esteu traduint de l'anglès al francès, l'anglès seria llavors la llengua "
+"original o d'origen."
+
+#: ../share/virtaal/virtaal.glade.h:20
+msgid ""
+"The <b>Translation</b> is the language into which you are translating, also "
+"called the target language.\n"
+"\n"
+"If you are translating from English to French then French would be your "
+"translation or target language."
+msgstr ""
+"La <b>traducció</b> és la llengua en la qual traduïu, que també rep el nom "
+"de llengua de destinació.\n"
+"\n"
+"Si esteu traduint de l'anglès al francès, el francès seria llavors la "
+"llengua de destinació."
+
+#: ../share/virtaal/virtaal.glade.h:24
+msgid "Virtaal Preferences"
+msgstr "Preferències del Virtaal"
+
+#: ../share/virtaal/virtaal.glade.h:25
+msgid "_Edit"
+msgstr "_Edita"
+
+#: ../share/virtaal/virtaal.glade.h:26
+msgid "_File"
+msgstr "_Fitxer"
+
+#: ../share/virtaal/virtaal.glade.h:27
+msgid "_Full Screen"
+msgstr "_Pantalla completa"
+
+#: ../share/virtaal/virtaal.glade.h:28
+msgid "_Help"
+msgstr "A_juda"
+
+#: ../share/virtaal/virtaal.glade.h:29
+msgid "_Localization Guide"
+msgstr "Guia de _localització"
+
+#: ../share/virtaal/virtaal.glade.h:31
+msgid "_Missing Language..."
+msgstr "Llengua a_bsent…"
+
+#: ../share/virtaal/virtaal.glade.h:32
+msgid "_Navigation"
+msgstr "_Navegació"
+
+#: ../share/virtaal/virtaal.glade.h:33
+msgid "_Online Help"
+msgstr "Ajuda en lí_nia"
+
+#: ../share/virtaal/virtaal.glade.h:34
+msgid "_Page Down"
+msgstr "_Pàgina avall"
+
+#: ../share/virtaal/virtaal.glade.h:35
+msgid "_Recent Files"
+msgstr "Fitxers _recents"
+
+#: ../share/virtaal/virtaal.glade.h:36
+msgid "_Tutorial"
+msgstr "_Guia d'aprenentatge"
+
+#: ../share/virtaal/virtaal.glade.h:37
+msgid "_Update to template"
+msgstr "Act_ualitza amb la plantilla"
+
+#: ../share/virtaal/virtaal.glade.h:38
+msgid "_View"
+msgstr "_Visualitza"
+
+#: ../virtaal/tips.py:27
+msgid ""
+"At the end of a translation, simply press <Enter> to continue with the next "
+"one."
+msgstr ""
+"Al final de la traducció, premeu simplement <Retorn> per a continuar amb la "
+"següent."
+
+#: ../virtaal/tips.py:28
+msgid ""
+"To copy the original string into the target field, simply press <Alt+Down>."
+msgstr ""
+"Per a copiar la cadena original al camp de destinació, premeu simplement "
+"<Alt+Avall>."
+
+#. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
+#: ../virtaal/tips.py:31
+msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
+msgstr ""
+"Per a marcar la traducció actual com a dubtosa, premeu simplement <Alt+U>"
+
+#: ../virtaal/tips.py:32
+msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
+msgstr ""
+"Feu servir Ctrl+Amunt o Ctrl+Avall per a moure-vos al llarg de la traducció."
+
+#: ../virtaal/tips.py:33
+msgid ""
+"Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
+msgstr ""
+"Feu servir Ctrl+PàgAmunt o Ctrl+PàgAvall per a moure-vos a grans passos al "
+"llarg de la traducció."
+
+#: ../virtaal/controllers/maincontroller.py:62
+#: ../virtaal/controllers/maincontroller.py:71
+#: ../virtaal/controllers/maincontroller.py:80
+msgid "Header information"
+msgstr "Informació de la capçalera"
+
+#: ../virtaal/controllers/maincontroller.py:63
+msgid "Please enter your name"
+msgstr "Introduïu el vostre nom"
+
+#: ../virtaal/controllers/maincontroller.py:72
+msgid "Please enter your e-mail address"
+msgstr "Introduïu la vostra adreça de correu electrònic"
+
+#: ../virtaal/controllers/maincontroller.py:81
+msgid "Please enter your team's information"
+msgstr "Introduïu la informació del vostre equip"
+
+#: ../virtaal/controllers/maincontroller.py:149
+#: ../virtaal/controllers/maincontroller.py:194
+msgid ""
+"You selected the currently open file for opening. Do you want to reload the "
+"file?"
+msgstr ""
+"Heu seleccionat obrir el fitxer que ja està obert actualment. Voleu tornar a "
+"carregar-lo?"
+
+#: ../virtaal/controllers/maincontroller.py:160
+#: ../virtaal/controllers/maincontroller.py:205
+#, python-format
+msgid ""
+"Could not open file.\n"
+"%(error_message)s\n"
+"\n"
+"Try opening a different file."
+msgstr ""
+"No s'ha pogut obrir el fitxer.\n"
+"%(error_message)s\n"
+"\n"
+"Proveu d'obrir un altre fitxer."
+
+#: ../virtaal/controllers/maincontroller.py:169
+#, python-format
+msgid ""
+"Could not save file.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Try saving at a different location."
+msgstr ""
+"No s'ha pogut desar el fitxer.\n"
+"\n"
+"%(error_message)s\n"
+"Proveu de desar-lo en una altra ubicació."
+
+#: ../virtaal/controllers/maincontroller.py:174
+#, python-format
+msgid ""
+"Could not save file.\n"
+"\n"
+"%(error_message)s"
+msgstr ""
+"No s'ha pogut desar el fitxer.\n"
+"\n"
+"%(error_message)s"
+
+#: ../virtaal/controllers/maincontroller.py:178
+msgid "Reload File"
+msgstr "Torna a carregar el fitxer"
+
+#: ../virtaal/controllers/maincontroller.py:178
+msgid "Reload file from last saved copy and lose all changes?"
+msgstr ""
+"Voleu tornar a carregar el fitxer des de la darrera còpia desada i perdre "
+"tots els canvis?"
+
+#: ../virtaal/controllers/storecontroller.py:110
+msgid "The file contains nothing to translate."
+msgstr "El fitxer no té res per traduir."
+
+#: ../virtaal/modes/defaultmode.py:28
+msgid "All"
+msgstr "Tot"
+
+#: ../virtaal/modes/quicktransmode.py:31
+msgid "Incomplete"
+msgstr "Incomplet"
+
+#: ../virtaal/modes/searchmode.py:37 ../virtaal/modes/searchmode.py:64
+msgid "Search"
+msgstr "Cerca"
+
+#: ../virtaal/modes/searchmode.py:66
+msgid "_Case sensitive"
+msgstr "Sensible a les majús_cules"
+
+#: ../virtaal/modes/searchmode.py:68
+msgid "_Regular expression"
+msgstr "Expressió _regular"
+
+#: ../virtaal/modes/searchmode.py:72
+msgid "Replace with"
+msgstr "Reemplaça amb"
+
+#: ../virtaal/modes/searchmode.py:74
+msgid "Replace"
+msgstr "Reemplaça"
+
+#: ../virtaal/modes/searchmode.py:76
+msgid "Replace _All"
+msgstr "Reempl_aça-ho tot"
+
+#: ../virtaal/views/prefsview.py:65
+msgid "Enabled"
+msgstr "Habilitat"
+
+#: ../virtaal/views/prefsview.py:66
+msgid "Name"
+msgstr "Nom"
+
+#: ../virtaal/plugins/autocompletor.py:321
+msgid "AutoCompletor"
+msgstr "Completador automàtic"
+
+#: ../virtaal/plugins/autocorrector.py:246
+msgid "AutoCorrector"
+msgstr "Corrector automàtic"
+
+#: ../virtaal/plugins/migration.py:56
+msgid "Migration assistant"
+msgstr "Auxiliar de migració"
+
+#: ../virtaal/plugins/migration.py:70
+msgid "Should Virtaal try to import settings and data from other applications?"
+msgstr ""
+"Voleu que el Virtaal provi d'importar els paràmetres i les dades d'altres "
+"aplicacions?"
+
+#: ../virtaal/plugins/migration.py:71
+msgid "Import data from other applications?"
+msgstr "Voleu importar dades d'altres aplicacions?"
+
+#: ../virtaal/plugins/migration.py:96
+msgid "Migration was successfully completed"
+msgstr "La migració s'ha completat amb èxit"
+
+#: ../virtaal/plugins/migration.py:97
+msgid "The following items were migrated:"
+msgstr "S'han migrat els elements següents:"
+
+#: ../virtaal/plugins/migration.py:102
+msgid "Migration completed"
+msgstr "S'ha completat la migració"
+
+#: ../virtaal/plugins/migration.py:104
+msgid "Virtaal was not able to migrate any settings or data"
+msgstr "El Virtaal no ha pogut migrar cap paràmetre o dada"
+
+#: ../virtaal/plugins/migration.py:105
+msgid "Nothing migrated"
+msgstr "No s'ha migrat res"
+
+#: ../virtaal/plugins/migration.py:158
+msgid "Poedit settings"
+msgstr "Paràmetres del Poedit"
+
+#: ../virtaal/plugins/migration.py:187
+#, python-format
+msgid "Poedit's Translation Memory: %(database_language_code)s"
+msgstr "Memòria de traducció del Poedit: %(database_language_code)s"
+
+#: ../virtaal/plugins/migration.py:212
+#, python-format
+msgid "KBabel's Translation Memory: %(database_language_code)s"
+msgstr "Memòria de traducció del KBabel: %(database_language_code)s"
+
+#: ../virtaal/plugins/migration.py:230
+msgid "Lokalize settings"
+msgstr "Paràmetres del Lokalize"
+
+#: ../virtaal/plugins/migration.py:254
+#, python-format
+msgid "Lokalize's Translation Memory: %(database_name)s"
+msgstr "Memòria de traducció del Lokalize: %(database_name)s"
+
+#: ../virtaal/plugins/tm/__init__.py:27
+msgid "Translation Memory"
+msgstr "Memòria de traducció"
+
+#: ../virtaal/plugins/tm/models/currentfile.py:32
+msgid "Currently open file"
+msgstr "Fitxer obert actualment"
+
+#: ../virtaal/plugins/tm/models/libtranslate.py:41
+msgid "Machine Translation with libtranslate"
+msgstr "Tradueix automàticament amb libtranslate"
+
+#: ../virtaal/plugins/tm/models/localtm.py:37
+msgid "Local Translation Memory"
+msgstr "Memòria de traducció local"
+
+#: ../virtaal/plugins/tm/models/opentran.py:32
+msgid "Open-Tran.eu"
+msgstr "Open-Tran.eu"
+
+#: ../virtaal/plugins/tm/models/remotetm.py:30
+msgid "Remote server"
+msgstr "Servidor remot"
+
+#: ../virtaal/plugins/tm/models/tinytm.py:34
+msgid "TinyTM"
+msgstr "TinyTM"
+
+#: ../virtaal/plugins/tm/tmview.py:94
+msgid "Available _Suggestions"
+msgstr "_Suggeriments disponibles"
+
+#: ../virtaal/plugins/tm/tmview.py:150
+#, python-format
+msgid "Ctrl+%(number_key)d"
+msgstr "Ctrl+%(number_key)d"
+
+#. l10n: match quality column label
+#: ../virtaal/plugins/tm/tmwidgets.py:63
+msgid "%"
+msgstr "%"
+
+#: ../virtaal/plugins/tm/tmwidgets.py:65
+msgid "Matches"
+msgstr "Coincidències"
+
+#: ../virtaal/plugins/tm/tmwidgets.py:120
+#, python-format
+msgid "%(match_quality)s%%"
+msgstr "%(match_quality)s%%"
+
+#: ../virtaal/views/langview.py:66
+msgid "_New Language Pair..."
+msgstr "_Nou parell de llengües…"
+
+#: ../virtaal/views/mainview.py:198
+msgid "Error"
+msgstr "Error"
+
+#: ../virtaal/views/mainview.py:214
+msgid "Choose a translation file"
+msgstr "Trieu un fitxer de traducció"
+
+#: ../virtaal/views/mainview.py:221
+msgid "All Supported Files"
+msgstr "Tots els fitxers permesos"
+
+#: ../virtaal/views/mainview.py:247
+msgid "All Files"
+msgstr "Tots els fitxers"
+
+#: ../virtaal/views/mainview.py:252
+msgid "Save"
+msgstr "Desa"
+
+#: ../virtaal/views/mainview.py:266
+msgid ""
+"The current file has been modified.\n"
+"Do you want to save your changes?"
+msgstr ""
+"S'ha modificat el fitxer actual.\n"
+"Voleu desar els vostres canvis?"
+
+#: ../virtaal/views/mainview.py:269
+msgid "_Discard"
+msgstr "_Descarta-ho"
+
+#: ../virtaal/views/mainview.py:295
+#, python-format
+msgid "Virtaal - %(current_file)s %(modified_marker)s"
+msgstr "Virtaal - %(current_file)s %(modified_marker)s"
+
+#: ../virtaal/views/mainview.py:320
+msgid "Please enter the number of noun forms (plurals) to use"
+msgstr "Introduïu el nombre de formes de substantius (plurals) que s'utilitzarà"
+
+#: ../virtaal/views/mainview.py:326
+msgid "Please enter the plural equation to use"
+msgstr "Introduïu l'equació de plural que s'utilitzarà"
+
+#. l10n: This refers to the 'mode' that determines how Virtaal moves
+#. between units.
+#: ../virtaal/views/modeview.py:62
+msgid "_Navigation: "
+msgstr "_Navegació:"
+
+#: ../virtaal/views/unitview.py:498
+msgid "F_uzzy"
+msgstr "D_ubtosa"
+
+#: ../virtaal/views/widgets/aboutdialog.py:35
+msgid "Copyright © 2007-2009 Zuza Software Foundation"
+msgstr "Copyright © 2007-2009 Zuza Software Foundation"
+
+#. l10n: Please retain the literal name "Virtaal", but feel free to
+#. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
+#: ../virtaal/views/widgets/aboutdialog.py:38
+msgid "Virtaal is a program for doing translation."
+msgstr "El Virtaal és un programa per a fer traduccions."
+
+#: ../virtaal/views/widgets/aboutdialog.py:39
+msgid ""
+"The initial focus is on software translation (localization or l10n), but we "
+"definitely intend it to be useful as a general purpose tool for Computer "
+"Aided Translation (CAT)."
+msgstr ""
+"L'objectiu inicial és la traducció de programari (localització o l10n), però "
+"també pretenem que pugui ser útil com a eina d'ús general per a la "
+"traducció assistida per ordinador (CAT)."
+
+#: ../virtaal/views/widgets/aboutdialog.py:53
+msgid "Virtaal website"
+msgstr "Lloc web del Virtaal"
+
+#. l10n: Rather than translating, fill in the names of the translators
+#: ../virtaal/views/widgets/aboutdialog.py:62
+msgid "translator-credits"
+msgstr "Crèdits de traducció"
+
+#: ../virtaal/views/widgets/langadddialog.py:102
+msgid "Language code must be an ASCII string."
+msgstr "El codi de llengua cal que sigui una cadena ASCII"
+
+#: ../virtaal/views/widgets/langadddialog.py:105
+msgid "Language code must be at least 2 characters long."
+msgstr "El codi de llengua cal que tingui com a mínim dos caràcters."
+
+#: ../virtaal/views/widgets/langselectdialog.py:73
+#: ../virtaal/views/widgets/langselectdialog.py:79
+msgid "Language"
+msgstr "Llengua"
+
+#. l10n: This is the column heading for the language code
+#: ../virtaal/views/widgets/langselectdialog.py:86
+#: ../virtaal/views/widgets/langselectdialog.py:92
+msgid "Code"
+msgstr "Codi"
+
+#: ../virtaal/models/storemodel.py:121
+#, python-format
+msgid "The file \"%s\" does not exist."
+msgstr "El fitxer «%s» no existeix."
+
+#: ../virtaal/models/storemodel.py:123
+#, python-format
+msgid "\"%s\" is not a usable file."
+msgstr "«%s» no és un fitxer usable."
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
+msgid "C++ RC File"
+msgstr "Fitxer RC de C++"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:2
+msgid "Gettext Translation Template"
+msgstr "Plantilla de traducció de Gettext"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:3
+msgid "INI"
+msgstr "INI"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:4
+msgid "INI File"
+msgstr "Fitxer INI"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:5
+msgid "Initialization"
+msgstr "Inicialització"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:6
+msgid "Java Properties File"
+msgstr "Fitxer de propietats de Java"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:7
+msgid "JavaScript error message file"
+msgstr "Fitxer de missatges d'error de JavaScript"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:8
+msgid "OpenOffice.org Translation File"
+msgstr "Fitxer de traducció de l'OpenOffice.org"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:9
+msgid "Qt Linguist Translation File"
+msgstr "Fitxer de traducció del Qt Linguist"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:10
+msgid "Qt Message File"
+msgstr "Fitxer de missatges de QT"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:11
+msgid "Qt Phrase Book"
+msgstr "Llibres de frases de QT"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:12
+msgid "RC"
+msgstr "RC"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:13
+msgid "Resource Compiler"
+msgstr "Compilador de recursos"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:14
+msgid "TBX"
+msgstr "TBX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:15
+msgid "TBX Glossary"
+msgstr "Glossari del TBX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:16
+msgid "TMX"
+msgstr "TMX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:17
+msgid "TMX Translation Memory"
+msgstr "Memòria de traducció del TMX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:18
+msgid "Tcl Translation File"
+msgstr "Fitxer de traducció de Tcl"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:19
+msgid "TermBase eXchange"
+msgstr "TermBase exChange"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:20
+msgid "Trados Tag Editor"
+msgstr "Editor d'etiquetes del Trados"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:21
+msgid "Translation Memory eXchange"
+msgstr "Translation Memory eXchange"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:22
+msgid "Wordfast Translation Memory"
+msgstr "Memòria de traducció del Wordfast"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:23
+msgid "XLIFF"
+msgstr "XLIFF"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:24
+msgid "XLIFF Translation File"
+msgstr "Fitxer de traducció XLIFF"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:25
+msgid "XML Localization Interchange File Format"
+msgstr "Format de fitxer d'intercanvi de localització XML"
+
+#: ../bin/virtaal:36
+#, c-format
+msgid "%prog [options] [translation_file]"
+msgstr "%prog [opcions] [fitxer_traducció]"
+
+#: ../bin/virtaal:39
+msgid "PROFILE"
+msgstr "PERFIL"
+
+#: ../bin/virtaal:41
+msgid "perform profiling, storing the result to the supplied filename."
+msgstr ""
+"s'habiliten els perfils, el result s'emmagatzema al fitxer que es "
+"proporciona."
+
+#: ../bin/virtaal:43
+msgid "LOG"
+msgstr "REGISTRE"
+
+#: ../bin/virtaal:44
+msgid "turn on logging, storing the result to the supplied filename."
+msgstr ""
+"activa el registre, el resultat s'emmagatzema al fitxer que es proporciona."
+
+#: ../bin/virtaal:46
+msgid "CONFIG"
+msgstr "CONFIGURACIÓ"
+
+#: ../bin/virtaal:47
+msgid "use the configuration file given by the supplied filename."
+msgstr "utilitza el fitxer de configuració que es proporciona."
+
+#: ../bin/virtaal:50
+msgid "enable debugging features"
+msgstr "habilita les característiques de depuració"
+
+#: ../bin/virtaal:71
+msgid "Could not open log file '%(filename)s'"
+msgstr "No s'ha pogut obrir el fitxer de registre «%(filename)s»"
+
+#: ../bin/virtaal:79
+msgid "Could not read configuration file '%(filename)s'"
+msgstr "No s'ha pogut llegir el fitxer de configuració «%(filename)s»"
+
+#: ../bin/virtaal:83
+msgid "invalid number of arguments"
+msgstr "el nombre d'arguments no és vàlid"
+
+#: ../bin/virtaal:112
+msgid "Could not open profile file '%(filename)s'"
+msgstr "No s'ha pogut obrir el fitxer de perfil «%(filename)s»"
+
+#: ../devsupport/optparse.py:134
+#, python-format
+msgid "no such option: %s"
+msgstr "no hi ha cap opció així: %s"
+
+#: ../devsupport/optparse.py:145
+#, python-format
+msgid "ambiguous option: %s (%s?)"
+msgstr "opció ambígua: %s (%s?)"
+
+#: ../devsupport/optparse.py:368
+#, python-format
+msgid "Usage: %s\n"
+msgstr "Ús: %s\n"
+
+#: ../devsupport/optparse.py:387
+msgid "Usage"
+msgstr "Ús"
+
+#: ../devsupport/optparse.py:412
+msgid "integer"
+msgstr "enter"
+
+#: ../devsupport/optparse.py:413
+msgid "long integer"
+msgstr "enter gran"
+
+#: ../devsupport/optparse.py:414
+msgid "floating-point"
+msgstr "coma flotant"
+
+#: ../devsupport/optparse.py:415
+msgid "complex"
+msgstr "complex"
+
+#: ../devsupport/optparse.py:423
+#, python-format
+msgid "option %s: invalid %s value: %r"
+msgstr "opció %s: el valor de %s no és vàlida: %r"
+
+#: ../devsupport/optparse.py:431
+#, python-format
+msgid "option %s: invalid choice: %r (choose from %s)"
+msgstr "opció %s: la tria no és vàlida: %r (trieu-ne de %s)"
+
+#: ../devsupport/optparse.py:1246
+msgid "show this help message and exit"
+msgstr "mostra aquest missatge d'ajuda i surt"
+
+#: ../devsupport/optparse.py:1251
+msgid "show program's version number and exit"
+msgstr "mostra el número de versió del programa i surt"
+
+#: ../devsupport/optparse.py:1274
+msgid "%prog [options]"
+msgstr "%prog [opcions]"
+
+#: ../devsupport/optparse.py:1484 ../devsupport/optparse.py:1523
+#, python-format
+msgid "%s option requires an argument"
+msgstr "l'opció %s requereix un argument"
+
+#: ../devsupport/optparse.py:1486 ../devsupport/optparse.py:1525
+#, python-format
+msgid "%s option requires %d arguments"
+msgstr "l'opció %s requereix %d arguments"
+
+#: ../devsupport/optparse.py:1495
+#, python-format
+msgid "%s option does not take a value"
+msgstr "l'opció %s no pren cap valor"
+
+#: ../devsupport/optparse.py:1612
+msgid "Options"
+msgstr "Opcions"

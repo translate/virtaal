@@ -310,7 +310,7 @@ class Plugin(BasePlugin):
     def _setup_key_bindings(self):
         """Setup Gtk+ key bindings (accelerators)."""
 
-        gtk.accel_map_add_entry("<Virtaal>/View/Python Console", gtk.keysyms.c, gdk.CONTROL_MASK)
+        gtk.accel_map_add_entry("<Virtaal>/View/Python Console", gtk.keysyms.y, gdk.CONTROL_MASK)
 
         self.accel_group = gtk.AccelGroup()
         self.accel_group.connect_by_path("<Virtaal>/View/Python Console", self._on_menuitem_activated)
@@ -319,7 +319,7 @@ class Plugin(BasePlugin):
 
     def _setup_menu_item(self):
         self.menu = self.main_controller.view.gui.get_widget('menu_view')
-        self.menuitem = gtk.MenuItem(label=_('Python _Console'))
+        self.menuitem = gtk.MenuItem(label=_('P_ython Console'))
         self.menuitem.show()
         self.menu.append(self.menuitem)
 

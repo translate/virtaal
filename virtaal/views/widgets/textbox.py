@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
+import gobject
 import gtk
 
 from translate.misc.typecheck import accepts, Self, IsOneOf
@@ -102,9 +103,19 @@ class TextBox(gtk.TextView):
     def __init__(self):
         super(TextBox, self).__init__()
         self.buffer = self.get_buffer()
+        self.elem = None
+        self.__connect_default_handlers()
+
+    def __connect_default_handlers(self):
+        self.buffer.connect('changed', self._on_changed)
+        self.buffer.connect('insert-text', self._on_insert_text)
+        self.buffer.connect('delete-range', self._on_delete_range)
 
 
     # OVERRIDDEN METHODS #
+    def get_stringelem(self):
+        return elem_parse(self.get_text())
+
     def get_text(self, start_iter=None, end_iter=None):
         """Return the text rendered in this text box.
             Uses C{gtk.TextBuffer.get_text()}."""
@@ -121,13 +132,7 @@ class TextBox(gtk.TextView):
             @type  text: str|unicode|L{StringElem}
             @param text: The text to render in this text box."""
         self.buffer.set_text(unicode(text))
-
-        if not isinstance(text, StringElem):
-            text = elem_parse(text)
-            self.add_default_gui_info(text)
-
-        # At this point we have a tree of string elements with GUI info.
-        self.apply_tags(text)
+        self.update_tree(text)
 
 
     # METHODS #
@@ -174,3 +179,55 @@ class TextBox(gtk.TextView):
             if isinstance(sub, StringElem):
                 self.apply_tags(sub, offset=offset+offset_delta)
             offset_delta += len(sub)
+
+    def update_tree(self, text=None):
+        if text is None:
+            text = self.get_text()
+        if not isinstance(text, StringElem):
+            text = elem_parse(text)
+            self.add_default_gui_info(text)
+        self.elem = text
+
+        tagtable = self.buffer.get_tag_table()
+        def remtag(tag, data):
+            tagtable.remove(tag)
+        tagtable.foreach(remtag)
+        # At this point we have a tree of string elements with GUI info.
+        self.apply_tags(text)
+
+    def __delayed_update_tree(self):
+        gobject.idle_add(self.update_tree)
+
+    # EVENT HANDLERS #
+    def _on_changed(self, buffer):
+        pass
+
+    def _on_delete_range(self, buffer, start_iter, end_iter):
+        if not self.elem:
+            return
+
+        for i in (start_iter.get_offset(), end_iter.get_offset()-1):
+            elem = self.elem.elem_at_offset(i)
+            if not elem:
+                continue
+            if self.elem and not elem.iseditable:
+                self.buffer.stop_emission('delete-range')
+                return True
+
+        self.__delayed_update_tree()
+
+    def _on_insert_text(self, buffer, iter, ins_text, length):
+        if not self.elem:
+            return
+
+        elem = self.elem.elem_at_offset(iter.get_offset())
+        if not elem:
+            return
+        if iter.get_offset() == self.elem.elem_offset(elem):
+            return
+
+        if self.elem and not elem.iseditable:
+            self.buffer.stop_emission('insert-text')
+            return True
+
+        self.__delayed_update_tree()

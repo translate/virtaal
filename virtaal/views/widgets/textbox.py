@@ -99,6 +99,12 @@ class TextBox(gtk.TextView):
     strings.
     """
 
+    __gtype_name__ = 'TextBox'
+    __gsignals__ = {
+        'before-apply-tags': (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
+        'after-apply-tags': (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
+    }
+
     # INITIALIZERS #
     def __init__(self):
         super(TextBox, self).__init__()
@@ -164,6 +170,8 @@ class TextBox(gtk.TextView):
 
     @accepts(Self(), [StringElem])
     def apply_tags(self, elem, offset=0):
+        self.emit('before-apply-tags')
+
         iters = (
             self.buffer.get_iter_at_offset(offset),
             self.buffer.get_iter_at_offset(offset + len(elem))
@@ -179,6 +187,8 @@ class TextBox(gtk.TextView):
             if isinstance(sub, StringElem):
                 self.apply_tags(sub, offset=offset+offset_delta)
             offset_delta += len(sub)
+
+        self.emit('after-apply-tags')
 
     def update_tree(self, text=None):
         if text is None:

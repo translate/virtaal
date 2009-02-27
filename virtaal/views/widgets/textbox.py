@@ -34,12 +34,8 @@ class StringElemGUI(object):
     # MEMBERS #
     fg = '#000000'
     """The current foreground colour."""
-    bg = '#00ff00'
+    bg = '#ffffff'
     """The current background colour."""
-    default_fg = '#000000'
-    """The default foreground colour. This should be class-constant."""
-    default_bg = '#ffffff'
-    """The default background colour. This should be class-constant."""
 
     cursor_allowed = True
     """Whether the cursor is allowed to enter this element."""
@@ -55,7 +51,7 @@ class StringElemGUI(object):
         self.textbox = textbox
         self.marks = {}
 
-        attribs = ('fg', 'bg', 'default_fg', 'default_bg', 'cursor_allowed')
+        attribs = ('fg', 'bg', 'cursor_allowed')
         for kw in kwargs:
             if kw in attribs:
                 setattr(self, kw, kwargs[kw])
@@ -65,22 +61,23 @@ class StringElemGUI(object):
         tag = gtk.TextTag()
         if self.fg:
             tag.props.foreground = self.fg
-        else:
-            tag.props.foreground = self.default_fg
 
         if self.bg:
             tag.props.background = self.bg
-        else:
-            tag.props.background = self.default_bg
 
         return tag
 
     def copy(self):
-        return StringElemGUI(self.textbox,
+        return StringElemGUI(
+            elem=self.elem, textbox=self.textbox,
             fg=self.fg, bg=self.bg,
-            default_fg=self.default_fg, default_bg=self.default_bg,
             cursor_allowed=self.cursor_allowed
         )
+
+
+class XMLEntityGUI(StringElemGUI):
+    fg = '#ffffff'
+    bg = '#0000ff'
 
 
 class XMLTagGUI(StringElemGUI):
@@ -89,7 +86,8 @@ class XMLTagGUI(StringElemGUI):
 
 
 element_gui_map = {
-    placeables.XMLTagPlaceable: XMLTagGUI
+    placeables.XMLEntityPlaceable: XMLEntityGUI,
+    placeables.XMLTagPlaceable:    XMLTagGUI,
 }
 
 

@@ -21,6 +21,7 @@
 
 import gobject
 import gtk
+from gobject import SIGNAL_RUN_FIRST, TYPE_NONE, TYPE_PYOBJECT, TYPE_STRING
 
 from translate.misc.typecheck import accepts, Self, IsOneOf
 from translate.storage.placeables import parse as elem_parse, placeables, StringElem
@@ -99,18 +100,29 @@ class TextBox(gtk.TextView):
 
     __gtype_name__ = 'TextBox'
     __gsignals__ = {
-        'before-apply-tags': (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
-        'after-apply-tags': (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
+        'after-apply-tags': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
+        'before-apply-tags': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
+        'key-pressed': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT, TYPE_STRING)),
     }
+
+    SPECIAL_KEYS = {
+        'alt-down': [(gtk.keysyms.Down, gtk.gdk.MOD1_MASK)],
+        'enter':    [(gtk.keysyms.Return, None), (gtk.keysyms.KP_Enter, None)],
+    }
+    """A table of name-keybinding mappings. The name (key) is passed as the
+    second parameter to the 'key-pressed' event."""
 
     # INITIALIZERS #
     def __init__(self):
         super(TextBox, self).__init__()
         self.buffer = self.get_buffer()
         self.elem = None
+        self.selected_elem = None
+        self.selected_elem_index = 0
         self.__connect_default_handlers()
 
     def __connect_default_handlers(self):
+        self.connect('key-press-event', self._on_key_pressed)
         self.buffer.connect('changed', self._on_changed)
         self.buffer.connect('insert-text', self._on_insert_text)
         self.buffer.connect('delete-range', self._on_delete_range)
@@ -167,8 +179,9 @@ class TextBox(gtk.TextView):
             self.add_default_gui_info(sub)
 
     @accepts(Self(), [StringElem])
-    def apply_tags(self, elem, offset=0):
-        self.emit('before-apply-tags')
+    def apply_tags(self, elem):
+        offset = self.elem.find(elem) or 0
+        self.emit('before-apply-tags', elem)
 
         iters = (
             self.buffer.get_iter_at_offset(offset),
@@ -180,14 +193,37 @@ class TextBox(gtk.TextView):
                 self.buffer.get_tag_table().add(tag)
                 self.buffer.apply_tag(tag, iters[0], iters[1])
 
-        offset_delta = 0
         for sub in elem.subelems:
             if isinstance(sub, StringElem):
-                self.apply_tags(sub, offset=offset+offset_delta)
-            offset_delta += len(sub)
+                self.apply_tags(sub)
 
-        self.emit('after-apply-tags')
+        self.emit('after-apply-tags', elem)
 
+    @accepts(Self(), [[StringElem, None], [int, None]])
+    def select_elem(self, elem=None, offset=None):
+        if elem is None and offset is None:
+            raise ValueError('Either "elem" or "offset" must be specified.')
+
+        all_elems = self.elem.depth_first()
+        if elem is None and offset is not None:
+            return self.select_elem(elem=self.elem.depth_first()[offset % len(all_elems)])
+
+        if not elem in all_elems:
+            return
+
+        # Reset the default tag for the previously selected element
+        if self.selected_elem:
+            self.selected_elem.gui_info = None
+            self.add_default_gui_info(self.selected_elem)
+            self.apply_tags(self.selected_elem)
+
+        self.selected_elem = elem
+        self.selected_elem_index = all_elems.index(elem)
+        print 'Selected element is now %s' % (elem)
+        elem.gui_info = StringElemGUI(elem, self, fg='#ff0000', bg='#000000')
+        self.apply_tags(elem)
+
+    @accepts(Self(), [[StringElem, basestring]])
     def update_tree(self, text=None):
         if text is None:
             text = self.get_text()
@@ -205,6 +241,11 @@ class TextBox(gtk.TextView):
 
     def __delayed_update_tree(self):
         gobject.idle_add(self.update_tree)
+
+    @accepts(Self(), [int])
+    def __move_elem_selection(self, offset):
+        self.select_elem(offset=self.selected_elem_index + offset)
+
 
     # EVENT HANDLERS #
     def _on_changed(self, buffer):
@@ -239,3 +280,18 @@ class TextBox(gtk.TextView):
             return True
 
         self.__delayed_update_tree()
+
+    def _on_key_pressed(self, widget, event, *args):
+        evname = None
+        # Alt-Left
+        if event.keyval == gtk.keysyms.Left and event.state & gtk.gdk.MOD1_MASK:
+            self.__move_elem_selection(-1)
+        # Alt-Right
+        elif event.keyval == gtk.keysyms.Right and event.state & gtk.gdk.MOD1_MASK:
+            self.__move_elem_selection(1)
+
+        for name, keyslist in self.SPECIAL_KEYS.items():
+            for keyval, state in keyslist:
+                if event.keyval == keyval and event.state & state:
+                    evname = name
+        self.emit('key-pressed', event, name)

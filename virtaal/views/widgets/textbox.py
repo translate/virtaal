@@ -178,9 +178,10 @@ class TextBox(gtk.TextView):
         for sub in elem.subelems:
             self.add_default_gui_info(sub)
 
-    @accepts(Self(), [StringElem])
-    def apply_tags(self, elem):
+    @accepts(Self(), [StringElem, bool])
+    def apply_tags(self, elem, include_subtree=True):
         offset = self.elem.find(elem) or 0
+        #print '[%s] at offset %d' % (unicode(elem).encode('utf-8'), offset)
         self.emit('before-apply-tags', elem)
 
         iters = (
@@ -193,9 +194,10 @@ class TextBox(gtk.TextView):
                 self.buffer.get_tag_table().add(tag)
                 self.buffer.apply_tag(tag, iters[0], iters[1])
 
-        for sub in elem.subelems:
-            if isinstance(sub, StringElem):
-                self.apply_tags(sub)
+        if include_subtree:
+            for sub in elem.subelems:
+                if isinstance(sub, StringElem):
+                    self.apply_tags(sub)
 
         self.emit('after-apply-tags', elem)
 
@@ -221,7 +223,7 @@ class TextBox(gtk.TextView):
         self.selected_elem_index = all_elems.index(elem)
         print 'Selected element is now %s' % (elem)
         elem.gui_info = StringElemGUI(elem, self, fg='#ff0000', bg='#000000')
-        self.apply_tags(elem)
+        self.apply_tags(elem, include_subtree=False)
 
     @accepts(Self(), [[StringElem, basestring]])
     def update_tree(self, text=None):

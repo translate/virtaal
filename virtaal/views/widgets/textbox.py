@@ -279,7 +279,7 @@ class TextBox(gtk.TextView):
             self.buffer.stop_emission('insert-text')
             return True
 
-        self.update_tree()
+        self.__delayed_update_tree()
 
     def _on_key_pressed(self, widget, event, *args):
         evname = None

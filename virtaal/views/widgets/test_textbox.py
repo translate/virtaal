@@ -36,7 +36,7 @@ class TextWindow(gtk.Window):
         self.vbox.add(textbox)
 
         self.connect('destroy', lambda *args: gtk.main_quit())
-        self.set_size_request(500, 200)
+        self.set_size_request(600, 100)
 
 
 class TestTextBox(object):

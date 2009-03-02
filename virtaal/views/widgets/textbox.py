@@ -274,7 +274,7 @@ class TextBox(gtk.TextView):
         elem = self.elem.elem_at_offset(iter.get_offset())
         if not elem:
             return
-        between_elems = iter.get_offset() == self.elem.elem_offset(elem)
+        between_elems = (iter.get_offset() == self.elem.elem_offset(elem)) or (iter.get_offset() == len(self.elem))
         if self.elem and not elem.iseditable and not between_elems:
             self.buffer.stop_emission('insert-text')
             return True

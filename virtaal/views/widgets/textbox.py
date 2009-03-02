@@ -107,7 +107,7 @@ class TextBox(gtk.TextView):
 
     SPECIAL_KEYS = {
         'alt-down': [(gtk.keysyms.Down, gtk.gdk.MOD1_MASK)],
-        'enter':    [(gtk.keysyms.Return, None), (gtk.keysyms.KP_Enter, None)],
+        'enter':    [(gtk.keysyms.Return, 0), (gtk.keysyms.KP_Enter, 0)],
     }
     """A table of name-keybinding mappings. The name (key) is passed as the
     second parameter to the 'key-pressed' event."""

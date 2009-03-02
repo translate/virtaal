@@ -225,10 +225,10 @@ class TextBox(gtk.TextView):
         elem.gui_info = StringElemGUI(elem, self, fg='#ff0000', bg='#000000')
         self.apply_tags(elem, include_subtree=False)
 
-    @accepts(Self(), [[StringElem, basestring]])
+    @accepts(Self(), [[StringElem, basestring, None]])
     def update_tree(self, text=None):
         if text is None:
-            text = self.get_text()
+            text = self.get_text().decode('utf-8')
         if not isinstance(text, StringElem):
             text = elem_parse(text)
             self.add_default_gui_info(text)
@@ -274,14 +274,12 @@ class TextBox(gtk.TextView):
         elem = self.elem.elem_at_offset(iter.get_offset())
         if not elem:
             return
-        if iter.get_offset() == self.elem.elem_offset(elem):
-            return
-
-        if self.elem and not elem.iseditable:
+        between_elems = iter.get_offset() == self.elem.elem_offset(elem)
+        if self.elem and not elem.iseditable and not between_elems:
             self.buffer.stop_emission('insert-text')
             return True
 
-        self.__delayed_update_tree()
+        self.update_tree()
 
     def _on_key_pressed(self, widget, event, *args):
         evname = None

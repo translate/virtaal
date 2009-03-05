@@ -473,21 +473,18 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                 self._widgets['context_info'].hide()
             return
 
-        if self._widgets['context_info']:
-            self._widgets['context_info'].show()
-            self._widgets['context_info'].get_buffer().set_text(self.unit.getcontext() or u"")
-        else:
-            textbox = self._create_textbox(
-                self.unit.getcontext(),
-                editable=False,
-                scroll_policy=gtk.POLICY_NEVER
-            )
-            textview = textbox.get_child()
-            labelexpander = LabelExpander(textbox, lambda *args: self.unit.getcontext())
+        if not self._widgets['context_info']:
+            label = gtk.Label()
+            label.set_line_wrap(True)
+            self._widgets['vbox_middle'].pack_start(label)
+            self._widgets['vbox_middle'].reorder_child(label, 2)
+            self._widgets['context_info'] = label
 
-            self._widgets['vbox_middle'].pack_start(labelexpander)
-            self._widgets['vbox_middle'].reorder_child(labelexpander, 2)
-            self._widgets['context_info'] = textview
+        if self.unit.getcontext():
+            self._widgets['context_info'].show()
+            self._widgets['context_info'].set_text(self.unit.getcontext() or u"")
+        else:
+            self._widgets['context_info'].hide()
 
     def _layout_update_targets(self):
         num_target_widgets = len(self.targets)

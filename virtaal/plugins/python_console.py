@@ -5,6 +5,7 @@ import gtk
 import pango
 import re
 import sys
+import traceback
 from gtk import gdk
 
 from virtaal.controllers import BasePlugin

@@ -481,6 +481,7 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
             editor.show()
             compute_optimal_height(editor, width)
             _width, height = editor.size_request()
+            height += self.ROW_PADDING
             #We used to have a minimum height. Do we want this?
             #height = max(height, 70)
         else:

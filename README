@@ -10,6 +10,19 @@ References
 Website: http://translate.sourceforge.net/wiki/virtaal/index
 Bug tracker: http://bugs.locamotion.org/
 
+Installation
+============
+The easiest way for most users to install Virtaal is through the provided
+packages, or through the packaging system of their distribution. On the
+Virtaal website there should be packages for Windows and seveal other systems.
+If you want to install from source code, you will need to ensure you have all
+the dependencies. For more information on building Virtaal to install it
+yourself, please consult the website here:
+http://translate.sourceforge.net/wiki/virtaal/building
+
+Note that you will probably already want the Translate Toolkit installed and
+working before you attempt to install Virtaal.
+
 Design principles
 =================
 Good looking
@@ -18,5 +31,3 @@ No necessity for mouse
 The most important information must be visible by default
 Only relevant (actional) widgets should be shown
 Maximum functionality without setup
-
-Aanbeveelbaarheid

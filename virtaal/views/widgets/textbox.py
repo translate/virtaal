@@ -24,7 +24,7 @@ import gtk
 from gobject import SIGNAL_RUN_FIRST, TYPE_NONE, TYPE_PYOBJECT, TYPE_STRING
 
 from translate.misc.typecheck import accepts, Self, IsOneOf
-from translate.storage.placeables import parse as elem_parse, placeables, StringElem
+from translate.storage.placeables import base, general, parse as elem_parse, StringElem
 
 
 class StringElemGUI(object):
@@ -76,19 +76,13 @@ class StringElemGUI(object):
         )
 
 
-class XMLEntityGUI(StringElemGUI):
+class PhGUI(StringElemGUI):
     fg = '#ffffff'
     bg = '#0000ff'
 
 
-class XMLTagGUI(StringElemGUI):
-    fg = '#ffffff'
-    bg = '#550099'
-
-
 element_gui_map = {
-    placeables.XMLEntityPlaceable: XMLEntityGUI,
-    placeables.XMLTagPlaceable:    XMLTagGUI,
+    base.Ph: PhGUI,
 }
 
 
@@ -105,6 +99,9 @@ class TextBox(gtk.TextView):
         'key-pressed': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT, TYPE_STRING)),
     }
 
+    parsers = general.parsers
+    """A list of parser functions to be used when parsing placeables.
+    @see translate.storage.placeables.parse"""
     SPECIAL_KEYS = {
         'alt-down': [(gtk.keysyms.Down, gtk.gdk.MOD1_MASK)],
         'enter':    [(gtk.keysyms.Return, 0), (gtk.keysyms.KP_Enter, 0)],
@@ -130,7 +127,7 @@ class TextBox(gtk.TextView):
 
     # OVERRIDDEN METHODS #
     def get_stringelem(self):
-        return elem_parse(self.get_text())
+        return elem_parse(self.get_text(), self.parsers)
 
     def get_text(self, start_iter=None, end_iter=None):
         """Return the text rendered in this text box.
@@ -168,12 +165,12 @@ class TextBox(gtk.TextView):
             return
 
         if not hasattr(elem, 'gui_info') or not elem.gui_info:
-            if  len(elem.subelems) == 1 and isinstance(elem.subelems[0], basestring):
-                gui_info_class = element_gui_map.get(elem.__class__, StringElemGUI)
-                elem.gui_info = gui_info_class(elem=elem, textbox=self)
+            for klass, guiclass in element_gui_map.items():
+                if isinstance(elem, klass):
+                    elem.gui_info = guiclass(elem=elem, textbox=self)
+                    break
             else:
-                # Do we need default UI info for non-leaf nodes?
-                elem.gui_info = None
+                elem.gui_info = StringElemGUI(elem=elem, textbox=self)
 
         for sub in elem.subelems:
             self.add_default_gui_info(sub)
@@ -230,7 +227,7 @@ class TextBox(gtk.TextView):
         if text is None:
             text = self.get_text().decode('utf-8')
         if not isinstance(text, StringElem):
-            text = elem_parse(text)
+            text = elem_parse(text, self.parsers)
             self.add_default_gui_info(text)
         self.elem = text
 

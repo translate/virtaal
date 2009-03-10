@@ -23,6 +23,15 @@ http://translate.sourceforge.net/wiki/virtaal/building
 Note that you will probably already want the Translate Toolkit installed and
 working before you attempt to install Virtaal.
 
+Reporting bugs
+==============
+Please report bugs by clicking on 'Help->Report bug...' from within Virtaal
+(this requires a bugzilla account).  Alternatively report directly using this
+URL: http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal
+
+Taking the time to create a bugzilla account will help ensure that you can track
+progress, provide feedback and allows others to see your bug report.
+
 Design principles
 =================
 Good looking

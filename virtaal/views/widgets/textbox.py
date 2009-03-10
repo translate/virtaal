@@ -188,8 +188,9 @@ class TextBox(gtk.TextView):
         if getattr(elem, 'gui_info', None):
             tag = elem.gui_info.create_tag()
             if tag:
-                self.buffer.get_tag_table().add(tag)
-                self.buffer.apply_tag(tag, iters[0], iters[1])
+                if not include_subtree or elem.gui_info.fg != StringElemGUI.fg or elem.gui_info.bg != StringElemGUI.bg:
+                    self.buffer.get_tag_table().add(tag)
+                    self.buffer.apply_tag(tag, iters[0], iters[1])
 
         if include_subtree:
             for sub in elem.subelems:
@@ -214,12 +215,13 @@ class TextBox(gtk.TextView):
         if self.selected_elem:
             self.selected_elem.gui_info = None
             self.add_default_gui_info(self.selected_elem)
-            self.apply_tags(self.selected_elem)
 
         self.selected_elem = elem
         self.selected_elem_index = all_elems.index(elem)
         print 'Selected element is now %s' % (elem)
         elem.gui_info = StringElemGUI(elem, self, fg='#ff0000', bg='#000000')
+        self.apply_tags(self.elem, include_subtree=False)
+        self.apply_tags(self.elem)
         self.apply_tags(elem, include_subtree=False)
 
     @accepts(Self(), [[StringElem, basestring, None]])
@@ -236,6 +238,7 @@ class TextBox(gtk.TextView):
             tagtable.remove(tag)
         tagtable.foreach(remtag)
         # At this point we have a tree of string elements with GUI info.
+        self.apply_tags(text, include_subtree=False)
         self.apply_tags(text)
 
     def __delayed_update_tree(self):

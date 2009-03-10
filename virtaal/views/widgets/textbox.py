@@ -291,4 +291,4 @@ class TextBox(gtk.TextView):
             for keyval, state in keyslist:
                 if event.keyval == keyval and event.state & state:
                     evname = name
-        self.emit('key-pressed', event, name)
+        self.emit('key-pressed', event, evname)

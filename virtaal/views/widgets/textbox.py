@@ -199,20 +199,21 @@ class TextBox(gtk.TextView):
 
     @accepts(Self(), [StringElem, bool])
     def apply_tags(self, elem, include_subtree=True):
-        offset = self.elem.find(elem) or 0
-        #print '[%s] at offset %d' % (unicode(elem).encode('utf-8'), offset)
-        self.emit('before-apply-tags', elem)
+        offset = self.elem.elem_offset(elem)
+        if offset >= 0:
+            #print '[%s] at offset %d' % (unicode(elem).encode('utf-8'), offset)
+            self.emit('before-apply-tags', elem)
 
-        iters = (
-            self.buffer.get_iter_at_offset(offset),
-            self.buffer.get_iter_at_offset(offset + len(elem))
-        )
-        if getattr(elem, 'gui_info', None):
-            tag = elem.gui_info.create_tag()
-            if tag:
-                if not include_subtree or elem.gui_info.fg != StringElemGUI.fg or elem.gui_info.bg != StringElemGUI.bg:
-                    self.buffer.get_tag_table().add(tag)
-                    self.buffer.apply_tag(tag, iters[0], iters[1])
+            iters = (
+                self.buffer.get_iter_at_offset(offset),
+                self.buffer.get_iter_at_offset(offset + len(elem))
+            )
+            if getattr(elem, 'gui_info', None):
+                tag = elem.gui_info.create_tag()
+                if tag:
+                    if not include_subtree or elem.gui_info.fg != StringElemGUI.fg or elem.gui_info.bg != StringElemGUI.bg:
+                        self.buffer.get_tag_table().add(tag)
+                        self.buffer.apply_tag(tag, iters[0], iters[1])
 
         if include_subtree:
             for sub in elem.subelems:

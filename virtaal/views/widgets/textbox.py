@@ -228,6 +228,8 @@ class TextBox(gtk.TextView):
         self.apply_tags(self.elem, include_subtree=False)
         self.apply_tags(self.elem)
         self.apply_tags(elem, include_subtree=False)
+        cursor_offset = self.elem.find(self.selected_elem) + len(self.selected_elem)
+        self.buffer.place_cursor(self.buffer.get_iter_at_offset(cursor_offset))
 
     @accepts(Self(), [[StringElem, basestring, None]])
     def update_tree(self, text=None):

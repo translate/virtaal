@@ -256,7 +256,8 @@ class TextBox(gtk.TextView):
         tagtable = self.buffer.get_tag_table()
         def remtag(tag, data):
             tagtable.remove(tag)
-        tagtable.foreach(remtag)
+        # The following line caused the program to segfault, so it's removed (for now).
+        #tagtable.foreach(remtag)
         # At this point we have a tree of string elements with GUI info.
         self.apply_tags(text, include_subtree=False)
         self.apply_tags(text)

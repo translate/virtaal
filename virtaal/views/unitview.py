@@ -140,7 +140,11 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     # METHODS #
     def copy_original(self, textbox):
-        position = textbox.buffer.props.cursor_position
+        if textbox.selector_textbox is not textbox and \
+            textbox.selector_textbox.selected_elem is not None:
+            textbox.buffer.insert_at_cursor(unicode(textbox.selector_textbox.selected_elem))
+            return
+
         old_text = textbox.get_text()
         lang = factory.getlanguage(self.controller.main_controller.lang_controller.target_lang.code)
         new_source = lang.punctranslate(self.unit.source)

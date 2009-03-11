@@ -113,13 +113,22 @@ class TextBox(gtk.TextView):
     Alt+Left or Alt+Right."""
 
     # INITIALIZERS #
-    def __init__(self):
+    def __init__(self, text=None, selector_textbox=None):
+        """Constructor.
+        @type  text: String
+        @param text: The initial text to set in the new text box. Optional.
+        @type  selector_textbox: C{TextBox}
+        @param selector_textbox: The text box in which placeable selection
+            (@see{select_elem}) should happen. Optional."""
         super(TextBox, self).__init__()
         self.buffer = self.get_buffer()
         self.elem = None
+        self.selector_textbox = selector_textbox or self
         self.selected_elem = None
         self.selected_elem_index = None
         self.__connect_default_handlers()
+        if text:
+            self.set_text(text)
 
     def __connect_default_handlers(self):
         self.connect('key-press-event', self._on_key_pressed)
@@ -256,7 +265,7 @@ class TextBox(gtk.TextView):
         tagtable = self.buffer.get_tag_table()
         def remtag(tag, data):
             tagtable.remove(tag)
-        # The following line caused the program to segfault, so it's removed (for now).
+        # FIXME: The following line caused the program to segfault, so it's removed (for now).
         #tagtable.foreach(remtag)
         # At this point we have a tree of string elements with GUI info.
         self.apply_tags(text, include_subtree=False)
@@ -267,13 +276,13 @@ class TextBox(gtk.TextView):
 
     @accepts(Self(), [int])
     def __move_elem_selection(self, offset):
-        if self.selected_elem_index is None:
+        if self.selector_textbox.selected_elem_index is None:
             if offset <= 0:
-                self.select_elem(offset=offset)
+                self.selector_textbox.select_elem(offset=offset)
             else:
-                self.select_elem(offset=offset-1)
+                self.selector_textbox.select_elem(offset=offset-1)
         else:
-            self.select_elem(offset=self.selected_elem_index + offset)
+            self.selector_textbox.select_elem(offset=self.selector_textbox.selected_elem_index + offset)
 
 
     # EVENT HANDLERS #

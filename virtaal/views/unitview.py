@@ -362,6 +362,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         for i in range(len(self.targets), self.MAX_TARGETS):
             target = self._create_textbox('', editable=True, scroll_policy=gtk.POLICY_AUTOMATIC)
             textbox = target.get_child()
+            textbox.selector_textbox = self.sources[0]
             textbox.connect('key-pressed', on_textbox_n_press_event)
             textbox.connect('paste-clipboard', self._on_textbox_paste_clipboard, i)
             textbox.buffer.connect('changed', self._on_target_changed, i)

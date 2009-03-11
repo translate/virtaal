@@ -103,8 +103,10 @@ class TextBox(gtk.TextView):
     """A list of parser functions to be used when parsing placeables.
     @see translate.storage.placeables.parse"""
     SPECIAL_KEYS = {
-        'alt-down': [(gtk.keysyms.Down, gtk.gdk.MOD1_MASK)],
-        'enter':    [(gtk.keysyms.Return, 0), (gtk.keysyms.KP_Enter, 0)],
+        'alt-down':  [(gtk.keysyms.Down,  gtk.gdk.MOD1_MASK)],
+        'alt-left':  [(gtk.keysyms.Left,  gtk.gdk.MOD1_MASK)],
+        'alt-right': [(gtk.keysyms.Right, gtk.gdk.MOD1_MASK)],
+        'enter':     [(gtk.keysyms.Return, 0), (gtk.keysyms.KP_Enter, 0)],
     }
     """A table of name-keybinding mappings. The name (key) is passed as the
     second parameter to the 'key-pressed' event."""

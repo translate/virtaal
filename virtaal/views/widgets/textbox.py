@@ -243,7 +243,7 @@ class TextBox(gtk.TextView):
 
         self.selected_elem = elem
         self.selected_elem_index = filtered_elems.index(elem)
-        elem.gui_info = StringElemGUI(elem, self, fg='#ff0000', bg='#000000')
+        elem.gui_info = StringElemGUI(elem, self, fg='#000000', bg='#90ee90')
         self.apply_tags(self.elem, include_subtree=False)
         self.apply_tags(self.elem)
         self.apply_tags(elem, include_subtree=False)

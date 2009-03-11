@@ -108,6 +108,9 @@ class TextBox(gtk.TextView):
     }
     """A table of name-keybinding mappings. The name (key) is passed as the
     second parameter to the 'key-pressed' event."""
+    unselectables = [StringElem]
+    """A list of C{StringElem} sub-classes that should not be selectable with
+    Alt+Left or Alt+Right."""
 
     # INITIALIZERS #
     def __init__(self):
@@ -204,11 +207,14 @@ class TextBox(gtk.TextView):
         if elem is None and offset is None:
             raise ValueError('Either "elem" or "offset" must be specified.')
 
-        all_elems = self.elem.depth_first()
-        if elem is None and offset is not None:
-            return self.select_elem(elem=self.elem.depth_first()[offset % len(all_elems)])
+        filtered_elems = [e for e in self.elem.depth_first() if e.__class__ not in self.unselectables]
+        if not filtered_elems:
+            return
 
-        if not elem in all_elems:
+        if elem is None and offset is not None:
+            return self.select_elem(elem=filtered_elems[offset % len(filtered_elems)])
+
+        if not elem in filtered_elems:
             return
 
         # Reset the default tag for the previously selected element
@@ -217,8 +223,7 @@ class TextBox(gtk.TextView):
             self.add_default_gui_info(self.selected_elem)
 
         self.selected_elem = elem
-        self.selected_elem_index = all_elems.index(elem)
-        print 'Selected element is now %s' % (elem)
+        self.selected_elem_index = filtered_elems.index(elem)
         elem.gui_info = StringElemGUI(elem, self, fg='#ff0000', bg='#000000')
         self.apply_tags(self.elem, include_subtree=False)
         self.apply_tags(self.elem)

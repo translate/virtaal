@@ -283,13 +283,13 @@ class TextBox(gtk.TextView):
         if not self.elem:
             return
 
-        for i in (start_iter.get_offset(), end_iter.get_offset()-1):
-            elem = self.elem.elem_at_offset(i)
-            if not elem:
-                continue
-            if self.elem and not elem.iseditable:
-                self.buffer.stop_emission('delete-range')
-                return True
+        #for i in (start_iter.get_offset(), end_iter.get_offset()-1):
+        #    elem = self.elem.elem_at_offset(i)
+        #    if not elem:
+        #        continue
+        #    if self.elem and not elem.iseditable:
+        #        self.buffer.stop_emission('delete-range')
+        #        return True
 
         self.__delayed_update_tree()
 
@@ -300,10 +300,10 @@ class TextBox(gtk.TextView):
         elem = self.elem.elem_at_offset(iter.get_offset())
         if not elem:
             return
-        between_elems = (iter.get_offset() == self.elem.elem_offset(elem)) or (iter.get_offset() == len(self.elem))
-        if self.elem and not elem.iseditable and not between_elems:
-            self.buffer.stop_emission('insert-text')
-            return True
+        #between_elems = (iter.get_offset() == self.elem.elem_offset(elem)) or (iter.get_offset() == len(self.elem))
+        #if self.elem and not elem.iseditable and not between_elems:
+        #    self.buffer.stop_emission('insert-text')
+        #    return True
 
         self.__delayed_update_tree()
 

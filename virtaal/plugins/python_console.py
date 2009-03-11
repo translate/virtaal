@@ -342,7 +342,10 @@ class Plugin(BasePlugin):
                 '__builtins__' : __builtins__,
                 'mc': self.main_controller,
                 'sc': self.main_controller.store_controller,
-                'uc': self.main_controller.unit_controller
+                'uc': self.main_controller.unit_controller,
+                'mv': self.main_controller.view,
+                'sv': self.main_controller.store_controller.view,
+                'uv': self.main_controller.unit_controller.view,
             }
             console = PythonConsole(namespace = ns, destroy_cb = self._on_console_destroyed)
             console.set_size_request(600, 400)

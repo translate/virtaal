@@ -134,10 +134,9 @@ class TextBox(gtk.TextView):
 
     def __connect_default_handlers(self):
         self.connect('key-press-event', self._on_key_pressed)
-        self.buffer_signals = {}
-        self.buffer_signals['changed'] = self.buffer.connect('changed', self._on_changed)
-        self.buffer_signals['insert']  = self.buffer.connect('insert-text', self._on_insert_text)
-        self.buffer_signals['delete']  = self.buffer.connect('delete-range', self._on_delete_range)
+        self.buffer.connect('changed', self._on_changed)
+        self.buffer.connect('insert-text', self._on_insert_text)
+        self.buffer.connect('delete-range', self._on_delete_range)
 
 
     # OVERRIDDEN METHODS #
@@ -162,15 +161,11 @@ class TextBox(gtk.TextView):
         self.selected_elem = None
         self.selected_elem_index = None
 
-        if self.buffer_signals['delete']:
-            self.buffer.handler_block(self.buffer_signals['delete'])
-        if self.buffer_signals['insert']:
-            self.buffer.handler_block(self.buffer_signals['insert'])
+        self.buffer.handler_block_by_func(self._on_delete_range)
+        self.buffer.handler_block_by_func(self._on_insert_text)
         self.buffer.set_text(unicode(text))
-        if self.buffer_signals['delete']:
-            self.buffer.handler_unblock(self.buffer_signals['delete'])
-        if self.buffer_signals['insert']:
-            self.buffer.handler_unblock(self.buffer_signals['insert'])
+        self.buffer.handler_unblock_by_func(self._on_delete_range)
+        self.buffer.handler_unblock_by_func(self._on_insert_text)
 
         self.update_tree(text)
 

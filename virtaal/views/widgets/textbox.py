@@ -118,7 +118,7 @@ class TextBox(gtk.TextView):
         self.buffer = self.get_buffer()
         self.elem = None
         self.selected_elem = None
-        self.selected_elem_index = 0
+        self.selected_elem_index = None
         self.__connect_default_handlers()
 
     def __connect_default_handlers(self):
@@ -253,7 +253,13 @@ class TextBox(gtk.TextView):
 
     @accepts(Self(), [int])
     def __move_elem_selection(self, offset):
-        self.select_elem(offset=self.selected_elem_index + offset)
+        if self.selected_elem_index is None:
+            if offset <= 0:
+                self.select_elem(offset=offset)
+            else:
+                self.select_elem(offset=offset-1)
+        else:
+            self.select_elem(offset=self.selected_elem_index + offset)
 
 
     # EVENT HANDLERS #

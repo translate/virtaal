@@ -35,6 +35,7 @@ import markup
 import rendering
 from baseview import BaseView
 from widgets.label_expander import LabelExpander
+from widgets.textbox import TextBox
 
 
 class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
@@ -123,43 +124,40 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     focused_target_n = property(_get_focused_target_n, _set_focused_target_n)
 
     def get_target_n(self, n):
-        buff = self.targets[n].get_buffer()
-        return data.forceunicode(markup.unescape(buff.get_text(buff.get_start_iter(), buff.get_end_iter())))
+        return data.forceunicode(markup.unescape(self.targets[n].get_text()))
 
     def set_target_n(self, n, newtext, cursor_pos=-1, escape=True):
         # TODO: Save cursor position and set after assignment
-        buff = self.targets[n].get_buffer()
         if escape:
             newtext = markup.escape(newtext)
-        buff.set_text(newtext)
+        self.targets[n].set_text(newtext)
         if cursor_pos > -1:
-            buff.place_cursor(buff.get_iter_at_offset(cursor_pos))
+            self.targets[n].buffer.place_cursor(self.targets[n].buffer.get_iter_at_offset(cursor_pos))
 
     sources = property(lambda self: self._widgets['sources'])
     targets = property(lambda self: self._widgets['targets'])
 
 
     # METHODS #
-    def copy_original(self, text_view):
-        buf = text_view.get_buffer()
-        position = buf.props.cursor_position
-        old_text = buf.get_text(buf.get_start_iter(), buf.get_end_iter())
+    def copy_original(self, textbox):
+        position = textbox.buffer.props.cursor_position
+        old_text = textbox.get_text()
         lang = factory.getlanguage(self.controller.main_controller.lang_controller.target_lang.code)
         new_source = lang.punctranslate(self.unit.source)
         # if punctranslate actually changed something, let's insert that as an
         # undo step
         if new_source != self.unit.source:
             self.controller.main_controller.undo_controller.record_start()
-            buf.set_text(markup.escape(self.unit.source))
+            textbox.set_text(markup.escape(self.unit.source))
             self.controller.main_controller.undo_controller.record_stop()
 
         self.controller.main_controller.undo_controller.record_start()
-        buf.set_text(markup.escape(new_source))
+        textbox.set_text(markup.escape(new_source))
         self.controller.main_controller.undo_controller.record_stop()
 
         # The following 2 lines were copied from focus_text_view() below
         translation_start = self.first_word_re.match(markup.escape(new_source)).span()[1]
-        buf.place_cursor(buf.get_iter_at_offset(translation_start))
+        textbox.buffer.place_cursor(textbox.buffer.get_iter_at_offset(translation_start))
 
         return False
 
@@ -172,16 +170,14 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         #self.emit('unit-done', self.unit)
         pass
 
-    def focus_text_view(self, text_view):
-        text_view.grab_focus()
+    def focus_text_view(self, textbox):
+        textbox.grab_focus()
 
-        buf = text_view.get_buffer()
-        text = buf.get_text(buf.get_start_iter(), buf.get_end_iter())
-
+        text = textbox.get_text()
         translation_start = self.first_word_re.match(text).span()[1]
-        buf.place_cursor(buf.get_iter_at_offset(translation_start))
+        textbox.buffer.place_cursor(textbox.buffer.get_iter_at_offset(translation_start))
 
-        self._focused_target_n = self.targets.index(text_view)
+        self._focused_target_n = self.targets.index(textbox)
         #logging.debug('emit("target-focused", focused_target_n=%d)' % (self._focused_target_n))
         self.emit('target-focused', self._focused_target_n)
 
@@ -322,79 +318,74 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     def _create_sources(self):
         for i in range(len(self.sources), self.MAX_SOURCES):
             source = self._create_textbox('', editable=False, scroll_policy=gtk.POLICY_NEVER)
-            textview = source.get_child()
+            textbox = source.get_child()
             self._widgets['vbox_sources'].pack_start(source)
-            self.sources.append(textview)
+            self.sources.append(textbox)
 
             # The following fixes a very weird crash (bug #810)
-            def ignore_tab(text_view, event):
+            def ignore_tab(txtbx, event, eventname):
                 if event.keyval in (gtk.keysyms.Tab, gtk.keysyms.ISO_Left_Tab):
                     self.focused_target_n = 0
                     return True
-            textview.connect('key-press-event', ignore_tab)
+            textbox.connect('key-pressed', ignore_tab)
 
     def _create_targets(self):
-        def on_text_view_n_press_event(text_view, event):
+        def on_textbox_n_press_event(textbox, event, eventname):
             """Handle special keypresses in the textarea."""
             # Alt-Down
-            if event.keyval == gtk.keysyms.Down and event.state & gtk.gdk.MOD1_MASK:
-                idle_add(self.copy_original, text_view)
+            if eventname == 'alt-down':
+                idle_add(self.copy_original, textbox)
                 return True
 
             # Automatically move to the next line if \n is entered
             if event.keyval == gtk.keysyms.n:
-                buf = text_view.get_buffer()
-                curpos = buf.props.cursor_position
-                lastchar = buf.get_text(
-                    buf.get_iter_at_offset(curpos-1),
-                    buf.get_iter_at_offset(curpos)
-                )
+                curpos = textbox.buffer.props.cursor_position
+                lastchar = textbox.get_text()
                 if lastchar == "\\":
-                    buf.insert_at_cursor('n\n')
-                    text_view.scroll_mark_onscreen(buf.get_insert())
+                    textbox.buffer.insert_at_cursor('n\n')
+                    textbox.scroll_mark_onscreen(textbox.buffer.get_insert())
                     return True
 
             return False
 
-        def target_key_press_event(text_view, event, next_text_view):
-            if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
-                if next_text_view is not None and next_text_view.props.visible:
-                    self.focus_text_view(next_text_view)
+        def target_key_press_event(textbox, event, eventname, next_textbox):
+            if eventname == 'enter':
+                if next_textbox is not None and next_textbox.props.visible:
+                    self.focus_text_view(next_textbox)
                 else:
-                    # text_view is the last text view in this unit, so we need to move on
+                    # textbox is the last text view in this unit, so we need to move on
                     # to the next one.
-                    text_view.parent.parent.emit('key-press-event', event)
+                    textbox.parent.parent.emit('key-press-event', event)
                 return True
             return False
 
         for i in range(len(self.targets), self.MAX_TARGETS):
             target = self._create_textbox('', editable=True, scroll_policy=gtk.POLICY_AUTOMATIC)
-            textview = target.get_child()
-            buff = textview.get_buffer()
-            textview.connect('key-press-event', on_text_view_n_press_event)
-            textview.connect('paste-clipboard', self._on_textview_paste_clipboard, i)
-            buff.connect('changed', self._on_target_changed, i)
-            buff.connect('insert-text', self._on_target_insert_text, i)
-            buff.connect('delete-range', self._on_target_delete_range, i)
+            textbox = target.get_child()
+            textbox.connect('key-pressed', on_textbox_n_press_event)
+            textbox.connect('paste-clipboard', self._on_textbox_paste_clipboard, i)
+            textbox.buffer.connect('changed', self._on_target_changed, i)
+            textbox.buffer.connect('insert-text', self._on_target_insert_text, i)
+            textbox.buffer.connect('delete-range', self._on_target_delete_range, i)
 
             self._widgets['vbox_targets'].pack_start(target)
-            self.targets.append(textview)
+            self.targets.append(textbox)
 
         for target, next_target in zip(self.targets, self.targets[1:] + [None]):
-            target.connect('key-press-event', target_key_press_event, next_target)
+            target.connect('key-pressed', target_key_press_event, next_target)
 
     def _create_textbox(self, text='', editable=True, scroll_policy=gtk.POLICY_AUTOMATIC):
-        textview = gtk.TextView()
-        textview.set_editable(editable)
-        textview.set_wrap_mode(gtk.WRAP_WORD_CHAR)
-        textview.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)
-        textview.set_left_margin(2)
-        textview.set_right_margin(2)
-        textview.get_buffer().set_text(text or '')
+        textbox = TextBox()
+        textbox.set_editable(editable)
+        textbox.set_wrap_mode(gtk.WRAP_WORD_CHAR)
+        textbox.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)
+        textbox.set_left_margin(2)
+        textbox.set_right_margin(2)
+        textbox.set_text(text or '')
 
         scrollwnd = gtk.ScrolledWindow()
         scrollwnd.set_policy(gtk.POLICY_NEVER, scroll_policy)
-        scrollwnd.add(textview)
+        scrollwnd.add(textbox)
 
         return scrollwnd
 
@@ -438,9 +429,9 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         if self.unit is None:
             if num_source_widgets >= 1:
                 # The above condition should *never* be False
-                txtview = self.sources[0]
-                txtview.get_buffer().set_text('')
-                txtview.parent.show()
+                textbox = self.sources[0]
+                textbox.set_text('')
+                textbox.parent.show()
             for i in range(1, num_source_widgets):
                 self.sources[i].parent.hide_all()
             return
@@ -460,7 +451,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                     raise IndexError()
 
                 self.sources[i].modify_font(rendering.get_source_font_description())
-                self.sources[i].get_buffer().set_text(markup.escape(sourcestr))
+                self.sources[i].set_text(markup.escape(sourcestr))
                 self.sources[i].parent.show_all()
                 #logging.debug('Showing source #%d: %s' % (i, self.sources[i]))
             else:
@@ -498,9 +489,9 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         if self.unit is None:
             if num_target_widgets >= 1:
                 # The above condition should *never* be False
-                txtview = self.targets[0]
-                txtview.get_buffer().set_text('')
-                txtview.parent.show_all()
+                textbox = self.targets[0]
+                textbox.set_text('')
+                textbox.parent.show_all()
             for i in range(1, num_target_widgets):
                 self.targets[i].parent.hide_all()
             return
@@ -522,7 +513,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                     targetstr = ''
 
                 self.targets[i].modify_font(rendering.get_target_font_description())
-                self.targets[i].get_buffer().set_text(markup.escape(targetstr))
+                self.targets[i].set_text(markup.escape(targetstr))
                 self.targets[i].parent.show_all()
                 #logging.debug('Showing target #%d: %s' % (i, self.targets[i]))
             else:
@@ -595,9 +586,9 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         #logging.debug('emit("delete-text", old_text="%s", start_offset=%d, end_offset=%d, cursor_pos=%d, target_num=%d)' % (old_text, start_offset, end_offset, cursor_pos, target_num))
         self.emit('delete-text', old_text, start_offset, end_offset, cursor_pos, target_num)
 
-    def _on_textview_paste_clipboard(self, textview, target_num):
-        buff = textview.get_buffer()
-        old_text = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
+    def _on_textbox_paste_clipboard(self, textbox, target_num):
+        buff = textbox.buffer
+        old_text = textbox.get_text()
         ins_iter  = buff.get_iter_at_mark(buff.get_insert())
         selb_iter = buff.get_iter_at_mark(buff.get_selection_bound())
 

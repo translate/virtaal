@@ -21,7 +21,7 @@
 
 import gobject
 import gtk
-from gobject import SIGNAL_RUN_FIRST, TYPE_NONE, TYPE_PYOBJECT, TYPE_STRING
+from gobject import SIGNAL_RUN_FIRST, SIGNAL_RUN_LAST, TYPE_BOOLEAN, TYPE_NONE, TYPE_PYOBJECT, TYPE_STRING
 
 from translate.misc.typecheck import accepts, Self, IsOneOf
 from translate.storage.placeables import base, general, parse as elem_parse, StringElem
@@ -96,7 +96,7 @@ class TextBox(gtk.TextView):
     __gsignals__ = {
         'after-apply-tags': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
         'before-apply-tags': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
-        'key-pressed': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT, TYPE_STRING)),
+        'key-pressed': (SIGNAL_RUN_LAST, TYPE_BOOLEAN, (TYPE_PYOBJECT, TYPE_STRING)),
     }
 
     parsers = general.parsers
@@ -296,12 +296,23 @@ class TextBox(gtk.TextView):
         if not self.elem:
             return
 
+        text = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter())
         start_offset = start_iter.get_offset()
         end_offset = end_iter.get_offset()
 
+        if text[start_offset:end_offset] == '\n' and text[:start_offset].endswith('\\n'):
+            start_iter.set_offset(start_offset-2)
+
         start_elem = self.elem.elem_at_offset(start_offset)
         end_elem = self.elem.elem_at_offset(end_offset)
-        #print '%s[%s]%s [%s|%s]' % (text[:start_offset], text[start_offset:end_offset], text[end_offset:], elems[0], elems[1])
+
+        #print '%s[%s]%s [%s|%s]' % (
+        #    text[:start_offset],
+        #    text[start_offset:end_offset],
+        #    text[end_offset:],
+        #    start_elem, end_elem
+        #)
+
         if not start_elem.iseditable:
             if start_elem is end_elem and start_offset == self.elem.elem_offset(end_elem):
                 # Delete was pressed before a placeable
@@ -347,4 +358,4 @@ class TextBox(gtk.TextView):
             for keyval, state in keyslist:
                 if event.keyval == keyval and event.state == (state | gtk.gdk.MOD2_MASK):
                     evname = name
-        self.emit('key-pressed', event, evname)
+        return self.emit('key-pressed', event, evname)

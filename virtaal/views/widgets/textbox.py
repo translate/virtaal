@@ -222,10 +222,20 @@ class TextBox(gtk.TextView):
 
         self.emit('after-apply-tags', elem)
 
+    @accepts(Self(), [int])
+    def move_elem_selection(self, offset):
+        if self.selector_textbox.selected_elem_index is None:
+            if offset <= 0:
+                self.selector_textbox.select_elem(offset=offset)
+            else:
+                self.selector_textbox.select_elem(offset=offset-1)
+        else:
+            self.selector_textbox.select_elem(offset=self.selector_textbox.selected_elem_index + offset)
+
     @accepts(Self(), [[StringElem, None], [int, None]])
     def select_elem(self, elem=None, offset=None):
-        if elem is None and offset is None:
-            raise ValueError('Either "elem" or "offset" must be specified.')
+        if (elem is None and offset is None) or (elem is not None and offset is not None):
+            raise ValueError('Exactly one of "elem" or "offset" must be specified.')
 
         filtered_elems = [e for e in self.elem.depth_first() if e.__class__ not in self.unselectables]
         if not filtered_elems:
@@ -242,8 +252,13 @@ class TextBox(gtk.TextView):
             self.selected_elem.gui_info = None
             self.add_default_gui_info(self.selected_elem)
 
+        i = 0
+        for fe in filtered_elems:
+            if fe is elem:
+                break
+            i += 1
+        self.selected_elem_index = i
         self.selected_elem = elem
-        self.selected_elem_index = filtered_elems.index(elem)
         elem.gui_info = StringElemGUI(elem, self, fg='#000000', bg='#90ee90')
         self.apply_tags(self.elem, include_subtree=False)
         self.apply_tags(self.elem)
@@ -271,16 +286,6 @@ class TextBox(gtk.TextView):
 
     def __delayed_update_tree(self):
         gobject.idle_add(self.update_tree)
-
-    @accepts(Self(), [int])
-    def __move_elem_selection(self, offset):
-        if self.selector_textbox.selected_elem_index is None:
-            if offset <= 0:
-                self.selector_textbox.select_elem(offset=offset)
-            else:
-                self.selector_textbox.select_elem(offset=offset-1)
-        else:
-            self.selector_textbox.select_elem(offset=self.selector_textbox.selected_elem_index + offset)
 
 
     # EVENT HANDLERS #
@@ -333,10 +338,10 @@ class TextBox(gtk.TextView):
         evname = None
         # Alt-Left
         if event.keyval == gtk.keysyms.Left and event.state & gtk.gdk.MOD1_MASK:
-            self.__move_elem_selection(-1)
+            self.move_elem_selection(-1)
         # Alt-Right
         elif event.keyval == gtk.keysyms.Right and event.state & gtk.gdk.MOD1_MASK:
-            self.__move_elem_selection(1)
+            self.move_elem_selection(1)
 
         for name, keyslist in self.SPECIAL_KEYS.items():
             for keyval, state in keyslist:

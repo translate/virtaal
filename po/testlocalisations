@@ -3,6 +3,10 @@
 package=xx$(egrep "^DOMAIN" Makevars | sed "s/DOMAIN = //g")xx
 potfile=${package}.pot
 
+lang=$(echo $1 |sed "s/\.po$//")
+export LANGUAGE=../../../../../../../../$(pwd)/mo/${lang:-de_DE}:$lang
+echo "LANGUAGE=$LANGUAGE"
+
 ./intltool-update --pot --gettext-package=$package
 podebug --rewrite=xxx -f "" --progress=none $potfile de_DE.po
 podebug --rewrite=xxx -f "" --ignore=gtk --progress=none gtk20-lite.pot de_DE-lite.po
@@ -53,9 +57,6 @@ do
 	fi
 done
 
-lang=$(echo $1 |sed "s/\.po$//")
-export LANGUAGE=../../../../../../../../$(pwd)/mo/${lang:-de_DE}:$lang
-echo "LANGUAGE=$LANGUAGE"
 # This assumes that the following executable is in your PATH
 virtaal
 rm -f $potfile de_DE*

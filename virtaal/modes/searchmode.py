@@ -303,7 +303,7 @@ class SearchMode(BaseMode):
                     continue
                 start, end = self._escaped_indexes(unescaped, match.start, match.end)
                 start_iter, end_iter = buff.get_iter_at_offset(start), buff.get_iter_at_offset(end)
-                buff.apply_tag_by_name('highlight', start_iter, end_iter)
+                buff.apply_tag_by_name('search_highlight', start_iter, end_iter)
 
                 if textview in unitview.targets and not select_iters and self.select_first_match:
                     select_iters = [start_iter, end_iter]
@@ -313,7 +313,7 @@ class SearchMode(BaseMode):
                 return
 
     def _make_highlight_tag(self):
-        tag = gtk.TextTag(name='highlight')
+        tag = gtk.TextTag(name='search_highlight')
         tag.set_property('background', 'yellow')
         tag.set_property('foreground', 'black')
         return tag
@@ -351,7 +351,8 @@ class SearchMode(BaseMode):
 
         for textview in self._prev_unitview.sources + self._prev_unitview.targets:
             buff = textview.get_buffer()
-            buff.remove_all_tags(buff.get_start_iter(), buff.get_end_iter())
+            if buff.get_tag_table().lookup('search_highlight') is not None:
+                buff.remove_tag_by_name('search_highlight', buff.get_start_iter(), buff.get_end_iter())
 
 
     # EVENT HANDLERS #

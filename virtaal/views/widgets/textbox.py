@@ -291,6 +291,20 @@ class TextBox(gtk.TextView):
         if not self.elem:
             return
 
+        start_offset = start_iter.get_offset()
+        end_offset = end_iter.get_offset()
+
+        start_elem = self.elem.elem_at_offset(start_offset)
+        end_elem = self.elem.elem_at_offset(end_offset)
+        #print '%s[%s]%s [%s|%s]' % (text[:start_offset], text[start_offset:end_offset], text[end_offset:], elems[0], elems[1])
+        if not start_elem.iseditable:
+            if start_elem is end_elem and start_offset == self.elem.elem_offset(end_elem):
+                # Delete was pressed before a placeable
+                end_iter.set_offset(end_offset + len(end_elem) - 1)
+            elif start_offset == (self.elem.elem_offset(start_elem) + len(start_elem) - 1) and end_offset - start_offset == 1:
+                # Backspace was pressed after a placeable
+                start_iter.set_offset(self.elem.elem_offset(start_elem))
+
         #for i in (start_iter.get_offset(), end_iter.get_offset()-1):
         #    elem = self.elem.elem_at_offset(i)
         #    if not elem:

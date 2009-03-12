@@ -54,8 +54,9 @@ do
 done
 
 lang=$(echo $1 |sed "s/\.po$//")
-export LANGUAGE=../../../../../../../../$(pwd)/mo/${lang:-de_DE}:$LANGUAGE
+export LANGUAGE=../../../../../../../../$(pwd)/mo/${lang:-de_DE}:$lang
 echo "LANGUAGE=$LANGUAGE"
 # This assumes that the following executable is in your PATH
 virtaal
 rm -f $potfile de_DE*
+rm -rf mo

@@ -306,14 +306,15 @@ class TextBox(gtk.TextView):
         start_elem = self.elem.elem_at_offset(start_offset)
         end_elem = self.elem.elem_at_offset(end_offset)
 
-        #print '%s[%s]%s [%s|%s]' % (
+        #print '%s[%s]%s [%s|%s] (%d, %d)' % (
         #    text[:start_offset],
         #    text[start_offset:end_offset],
         #    text[end_offset:],
-        #    start_elem, end_elem
+        #    start_elem, end_elem,
+        #    start_offset, end_offset
         #)
 
-        if not start_elem.iseditable:
+        if start_elem is not None and not start_elem.iseditable:
             if start_elem is end_elem and start_offset == self.elem.elem_offset(end_elem):
                 # Delete was pressed before a placeable
                 end_iter.set_offset(end_offset + len(end_elem) - 1)

@@ -306,11 +306,12 @@ class TextBox(gtk.TextView):
         start_elem = self.elem.elem_at_offset(start_offset)
         end_elem = self.elem.elem_at_offset(end_offset)
 
-        #print '%s[%s]%s [%s|%s] (%d, %d)' % (
+        #print '{%s} %s[%s]%s [%s|%s] (%d, %d)' % (
+        #    repr(self.elem),
         #    text[:start_offset],
         #    text[start_offset:end_offset],
         #    text[end_offset:],
-        #    start_elem, end_elem,
+        #    repr(start_elem), repr(end_elem),
         #    start_offset, end_offset
         #)
 

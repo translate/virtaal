@@ -77,8 +77,8 @@ class StringElemGUI(object):
 
 
 class PhGUI(StringElemGUI):
-    fg = '#ffffff'
-    bg = '#0000ff'
+    fg = '#000000'
+    bg = '#7Deeff'
 
 
 element_gui_map = {

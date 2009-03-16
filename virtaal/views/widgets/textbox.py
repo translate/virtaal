@@ -194,7 +194,7 @@ class TextBox(gtk.TextView):
             else:
                 elem.gui_info = StringElemGUI(elem=elem, textbox=self)
 
-        for sub in elem.subelems:
+        for sub in elem.sub:
             self.add_default_gui_info(sub)
 
     @accepts(Self(), [StringElem, bool])
@@ -216,7 +216,7 @@ class TextBox(gtk.TextView):
                         self.buffer.apply_tag(tag, iters[0], iters[1])
 
         if include_subtree:
-            for sub in elem.subelems:
+            for sub in elem.sub:
                 if isinstance(sub, StringElem):
                     self.apply_tags(sub)
 

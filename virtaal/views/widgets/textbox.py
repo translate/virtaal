@@ -24,7 +24,7 @@ import gtk
 from gobject import SIGNAL_RUN_FIRST, SIGNAL_RUN_LAST, TYPE_BOOLEAN, TYPE_NONE, TYPE_PYOBJECT, TYPE_STRING
 
 from translate.misc.typecheck import accepts, Self, IsOneOf
-from translate.storage.placeables import base, general, parse as elem_parse, StringElem
+from translate.storage.placeables import base, general, parse as elem_parse, terminology, StringElem
 
 
 class StringElemGUI(object):
@@ -85,6 +85,28 @@ element_gui_map = {
     base.Ph: PhGUI,
 }
 
+## The commented-out block below is for testing terminology placeables.
+#from translate.search.match import terminologymatcher
+#from translate.storage.pypo import pofile
+#from StringIO import StringIO
+#TERMINOLOGY = """
+#msgid "name"
+#msgstr "naam"
+#
+#msgid "file"
+#msgstr "lêer"
+#
+#msgid "files"
+#msgstr "LêErS"
+#
+#msgid "file name th"
+#msgstr "lêernaam wat?"
+#
+#msgid "file name"
+#msgstr "lêernaam"
+#"""
+#terminology.TerminologyPlaceable.matchers.append(terminologymatcher(pofile(StringIO(TERMINOLOGY))))
+
 
 class TextBox(gtk.TextView):
     """
@@ -99,7 +121,7 @@ class TextBox(gtk.TextView):
         'key-pressed': (SIGNAL_RUN_LAST, TYPE_BOOLEAN, (TYPE_PYOBJECT, TYPE_STRING)),
     }
 
-    parsers = general.parsers
+    parsers = general.parsers + terminology.parsers
     """A list of parser functions to be used when parsing placeables.
     @see translate.storage.placeables.parse"""
     SPECIAL_KEYS = {

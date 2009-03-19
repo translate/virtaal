@@ -142,7 +142,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     def copy_original(self, textbox):
         if textbox.selector_textbox is not textbox and \
             textbox.selector_textbox.selected_elem is not None:
-            textbox.buffer.insert_at_cursor(unicode(textbox.selector_textbox.selected_elem))
+            textbox.buffer.insert_at_cursor(textbox.selector_textbox.selected_elem.translate())
             textbox.selector_textbox.move_elem_selection(1)
             return
 

@@ -105,9 +105,9 @@ class PluginController(BaseController):
                             [self.PLUGIN_CLASSNAME] # fromlist
                         )
                         break
-                    except ImportError:
-                        #logging.exception('from %s import %s' % (modulename, self.PLUGIN_CLASSNAME))
-                        pass
+                    except ImportError, ie:
+                        if not ie.message.startswith('No module named') and pan_app.DEBUG:
+                            logging.exception('from %s import %s' % (modulename, self.PLUGIN_CLASSNAME))
 
                 if module is None:
                     # XXX: Uncomment the following logging statement to find out what exactly went wrong when trying to import the plug-in.

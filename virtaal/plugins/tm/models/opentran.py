@@ -29,7 +29,7 @@ class TMModel(BaseTMModel):
     """This is the translation memory model."""
 
     __gtype_name__ = 'OpenTranTMModel'
-    display_name = _('Open-Tran.eu')
+    display_name = _('Open-Tran.eu TM')
 
     default_config = { "url" : "http://open-tran.eu/RPC2" }
 

@@ -105,6 +105,13 @@ class MainController(BaseController):
         self.emit('controller-registered', self._mode_controller)
     mode_controller = property(_get_mode_controller, _set_mode_controller)
 
+    def _get_placeables_controller(self):
+        return getattr(self, '_placeables_controller', None)
+    def _set_placeables_controller(self, value):
+        self._placeables_controller = value
+        self.emit('controller-registered', self._placeables_controller)
+    placeables_controller = property(_get_placeables_controller, _set_placeables_controller)
+
     def _get_plugin_controller(self):
         return getattr(self, '_plugin_controller', None)
     def _set_plugin_controller(self, value):

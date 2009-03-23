@@ -47,6 +47,8 @@ class Virtaal(object):
         logging.debug('LanguageController created')
         self.prefs_controller = PreferencesController(self.main_controller)
         logging.debug('PreferencesController created')
+        self.placeables_controller = PlaceablesController(self.main_controller)
+        logging.debug('PlaceablesController created')
 
         # Load plug-ins
         self.plugin_controller.load_plugins()

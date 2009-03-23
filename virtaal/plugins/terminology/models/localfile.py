@@ -60,6 +60,8 @@ class TerminologyModel(BaseTerminologyModel):
 
         stores = []
         for filename in self.config['files'].split('|'):
+            if not filename:
+                continue
             if not os.path.isfile(filename):
                 logging.debug('Not a file: "%s"' % (filename))
                 continue

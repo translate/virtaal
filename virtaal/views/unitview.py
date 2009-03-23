@@ -382,7 +382,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             target.connect('key-pressed', target_key_press_event, next_target)
 
     def _create_textbox(self, text='', editable=True, scroll_policy=gtk.POLICY_AUTOMATIC):
-        textbox = TextBox()
+        textbox = TextBox(self.controller.main_controller)
         textbox.set_editable(editable)
         textbox.set_wrap_mode(gtk.WRAP_WORD_CHAR)
         textbox.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)

@@ -121,9 +121,6 @@ class TextBox(gtk.TextView):
         'key-pressed': (SIGNAL_RUN_LAST, TYPE_BOOLEAN, (TYPE_PYOBJECT, TYPE_STRING)),
     }
 
-    parsers = general.parsers + terminology.parsers
-    """A list of parser functions to be used when parsing placeables.
-    @see translate.storage.placeables.parse"""
     SPECIAL_KEYS = {
         'alt-down':  [(gtk.keysyms.Down,  gtk.gdk.MOD1_MASK)],
         'alt-left':  [(gtk.keysyms.Left,  gtk.gdk.MOD1_MASK)],
@@ -137,8 +134,10 @@ class TextBox(gtk.TextView):
     Alt+Left or Alt+Right."""
 
     # INITIALIZERS #
-    def __init__(self, text=None, selector_textbox=None):
+    def __init__(self, main_controller, text=None, selector_textbox=None):
         """Constructor.
+        @type  main_controller: L{virtaal.controllers.main_controller}
+        @param main_controller: The main controller instance.
         @type  text: String
         @param text: The initial text to set in the new text box. Optional.
         @type  selector_textbox: C{TextBox}
@@ -147,10 +146,14 @@ class TextBox(gtk.TextView):
         super(TextBox, self).__init__()
         self.buffer = self.get_buffer()
         self.elem = None
+        self.main_controller = main_controller
         self.selector_textbox = selector_textbox or self
         self.selected_elem = None
         self.selected_elem_index = None
         self.__connect_default_handlers()
+        self.placeables_controller = main_controller.placeables_controller
+        if self.placeables_controller is None:
+            self.__controller_connect_id = main_controller.connect('controller-registered', self.__on_controller_register)
         if text:
             self.set_text(text)
 
@@ -163,7 +166,7 @@ class TextBox(gtk.TextView):
 
     # OVERRIDDEN METHODS #
     def get_stringelem(self):
-        return elem_parse(self.get_text(), self.parsers)
+        return elem_parse(self.get_text(), self.placeables_controller.parsers)
 
     def get_text(self, start_iter=None, end_iter=None):
         """Return the text rendered in this text box.
@@ -209,12 +212,7 @@ class TextBox(gtk.TextView):
             return
 
         if not hasattr(elem, 'gui_info') or not elem.gui_info:
-            for klass, guiclass in element_gui_map.items():
-                if isinstance(elem, klass):
-                    elem.gui_info = guiclass(elem=elem, textbox=self)
-                    break
-            else:
-                elem.gui_info = StringElemGUI(elem=elem, textbox=self)
+            elem.gui_info = self.placeables_controller.get_gui_info(elem)(elem=elem, textbox=self)
 
         for sub in elem.sub:
             self.add_default_gui_info(sub)
@@ -290,10 +288,12 @@ class TextBox(gtk.TextView):
 
     @accepts(Self(), [[StringElem, basestring, None]])
     def update_tree(self, text=None):
+        if not self.placeables_controller:
+            return
         if text is None:
             text = self.get_text().decode('utf-8')
         if not isinstance(text, StringElem):
-            text = elem_parse(text, self.parsers)
+            text = elem_parse(unicode(text), self.placeables_controller.parsers)
             self.add_default_gui_info(text)
         self.elem = text
 
@@ -313,6 +313,11 @@ class TextBox(gtk.TextView):
     # EVENT HANDLERS #
     def _on_changed(self, buffer):
         pass
+
+    def __on_controller_register(self, main_controller, controller):
+        if controller is main_controller.placeables_controller:
+            self.placeables_controller = controller
+            main_controller.disconnect(self.__controller_connect_id)
 
     def _on_delete_range(self, buffer, start_iter, end_iter):
         if not self.elem:

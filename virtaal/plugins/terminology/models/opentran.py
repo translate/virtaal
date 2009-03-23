@@ -87,13 +87,11 @@ class TerminologyModel(BaseTerminologyModel):
 
 
     # EVENT HANDLERS #
-    def _on_match_found(self, sender, query_str, matches):
+    def _on_match_found(self, *args):
         """
         Grab the last suggestions from the TM client.
 
-        @param sender: The TM model plug-in that generated the signal.
-        @param query_str: The query string that the matches are applicable to.
-        @param matches: The acceptable matches received by the TM.
+        @param args: Arguments we don't care about.
         """
         if self.opentrantm.tmclient.last_suggestions is None:
             return

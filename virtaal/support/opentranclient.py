@@ -38,6 +38,7 @@ class OpenTranClient(restclient.RESTClient):
         self.max_candidates = max_candidates
         self.min_similarity = min_similarity
         self.comparer = LevenshteinComparer(max_length)
+        self.last_suggestions = None
 
         self.url = url
 
@@ -108,6 +109,7 @@ class OpenTranClient(restclient.RESTClient):
     def format_suggestions(self, id, response):
         """clean up open tran suggestion and use the same format as tmserver"""
         (suggestions,), fish = xmlrpclib.loads(response)
+        self.last_suggestions = suggestions
         results = []
         for suggestion in suggestions:
             result = {}

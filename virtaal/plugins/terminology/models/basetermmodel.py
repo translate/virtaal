@@ -48,19 +48,10 @@ class BaseTerminologyModel(BaseModel):
         self.config = {}
         self.controller = controller
         self._connect_ids = []
-        self._connect_ids.append((self.controller.connect('start-query', self.query), self.controller))
 
         #static suggestion cache for slow terminology queries
         #TODO: cache invalidation, maybe decorate query to automate cache handling?
         self.cache = {}
-
-        self.source_lang = None
-        self.target_lang = None
-        self._set_source_lang(None, controller.main_controller.lang_controller.source_lang.code)
-        self._set_target_lang(None, controller.main_controller.lang_controller.target_lang.code)
-        lang_controller = self.controller.main_controller.lang_controller
-        self._connect_ids.append((lang_controller.connect('source-lang-changed', self._set_source_lang), lang_controller))
-        self._connect_ids.append((lang_controller.connect('target-lang-changed', self._set_target_lang), lang_controller))
 
 
     # METHODS #
@@ -76,40 +67,7 @@ class BaseTerminologyModel(BaseModel):
         config_file = os.path.join(pan_app.get_config_dir(), "terminology.ini")
         self.config.update(pan_app.load_config(config_file, self.internal_name))
 
-    def query(self, controller, qstr):
-        """Attempt to give suggestions applicable to C{qstr}.
-
-        All terminology backends must implement this method, check for
-        suggested translations to C{qstr}, emit "match-found" on success.
-        Note that C{qstr} is from C{gobject}, therefore not Unicode."""
-        pass
-
     def save_config(self):
         """Save terminology backend config to default location"""
         config_file = os.path.join(pan_app.get_config_dir(), "terminology.ini")
         pan_app.save_config(config_file, self.config, self.internal_name)
-
-    def set_source_lang(self, language):
-        """models override this to implement their own
-        source-lang-changed event handlers"""
-        pass
-
-    def set_target_lang(self, language):
-        """models override this to implement their own
-        target-lang-changed event handlers"""
-        pass
-
-    def _set_source_lang(self, controller, language):
-        """private method for baseline handling of source language
-        change events"""
-        if (language != self.source_lang):
-            self.source_lang = language
-            self.cache = {}
-            self.set_source_lang(language)
-
-    def _set_target_lang(self, controller, language):
-        """private method for baseline handling of target language change events"""
-        if (language != self.target_lang):
-            self.target_lang = language
-            self.cache = {}
-            self.set_target_lang(language)

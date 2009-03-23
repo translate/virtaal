@@ -21,13 +21,19 @@
 import gobject
 import logging
 import os.path
-from translate.storage.placeables.terminology import parsers as term_parsers
+from translate.storage.placeables import terminology
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.controllers import BaseController, PluginController, PlaceablesController
+from virtaal.views import placeablesguiinfo
 
 import models
 from models.basetermmodel import BaseTerminologyModel
+
+
+class TerminologyGUIInfo(placeablesguiinfo.StringElemGUI):
+    fg = '#ffffff'
+    bg = '#0000ff'
 
 
 class TerminologyController(BaseController):
@@ -50,9 +56,10 @@ class TerminologyController(BaseController):
         self.placeables_controller = main_controller.placeables_controller
 
         self.disabled_model_names = ['basetermmodel'] + config.get('disabled_models', [])
-        self.placeables_controller.add_parsers(*term_parsers)
-        self.max_matches = config.get('max_matches', 5)
-        self.min_quality = config.get('min_quality', 75)
+        self.placeables_controller.add_parsers(*terminology.parsers)
+
+        if not (terminology.TerminologyPlaceable, TerminologyGUIInfo) in placeablesguiinfo.element_gui_map:
+            placeablesguiinfo.element_gui_map.insert(0, (terminology.TerminologyPlaceable, TerminologyGUIInfo))
 
         self._load_models()
 

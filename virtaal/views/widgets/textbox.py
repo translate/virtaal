@@ -18,94 +18,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-
 import gobject
 import gtk
+import logging
 from gobject import SIGNAL_RUN_FIRST, SIGNAL_RUN_LAST, TYPE_BOOLEAN, TYPE_NONE, TYPE_PYOBJECT, TYPE_STRING
 
 from translate.misc.typecheck import accepts, Self, IsOneOf
 from translate.storage.placeables import base, general, parse as elem_parse, terminology, StringElem
 
-
-class StringElemGUI(object):
-    """
-    A convenient container for all GUI properties of a L{StringElem}.
-    """
-
-    # MEMBERS #
-    fg = '#000000'
-    """The current foreground colour."""
-    bg = '#ffffff'
-    """The current background colour."""
-
-    cursor_allowed = True
-    """Whether the cursor is allowed to enter this element."""
-
-
-    # INITIALIZERS #
-    def __init__(self, elem, textbox, **kwargs):
-        if not isinstance(elem, StringElem):
-            raise ValueError('"elem" parameter must be a StringElem.')
-        if not isinstance(textbox, TextBox):
-            raise ValueError('"textbox" parameter must be a TextBox.')
-        self.elem = elem
-        self.textbox = textbox
-        self.marks = {}
-
-        attribs = ('fg', 'bg', 'cursor_allowed')
-        for kw in kwargs:
-            if kw in attribs:
-                setattr(self, kw, kwargs[kw])
-
-    # METHODS #
-    def create_tag(self):
-        tag = gtk.TextTag()
-        if self.fg:
-            tag.props.foreground = self.fg
-
-        if self.bg:
-            tag.props.background = self.bg
-
-        return tag
-
-    def copy(self):
-        return StringElemGUI(
-            elem=self.elem, textbox=self.textbox,
-            fg=self.fg, bg=self.bg,
-            cursor_allowed=self.cursor_allowed
-        )
-
-
-class PhGUI(StringElemGUI):
-    fg = '#000000'
-    bg = '#7Deeff'
-
-
-element_gui_map = {
-    base.Ph: PhGUI,
-}
-
-## The commented-out block below is for testing terminology placeables.
-#from translate.search.match import terminologymatcher
-#from translate.storage.pypo import pofile
-#from StringIO import StringIO
-#TERMINOLOGY = """
-#msgid "name"
-#msgstr "naam"
-#
-#msgid "file"
-#msgstr "lêer"
-#
-#msgid "files"
-#msgstr "LêErS"
-#
-#msgid "file name th"
-#msgstr "lêernaam wat?"
-#
-#msgid "file name"
-#msgstr "lêernaam"
-#"""
-#terminology.TerminologyPlaceable.matchers.append(terminologymatcher(pofile(StringIO(TERMINOLOGY))))
+from virtaal.views import placeablesguiinfo
 
 
 class TextBox(gtk.TextView):
@@ -231,7 +152,9 @@ class TextBox(gtk.TextView):
             if getattr(elem, 'gui_info', None):
                 tag = elem.gui_info.create_tag()
                 if tag:
-                    if not include_subtree or elem.gui_info.fg != StringElemGUI.fg or elem.gui_info.bg != StringElemGUI.bg:
+                    if not include_subtree or \
+                            elem.gui_info.fg != placeablesguiinfo.StringElemGUI.fg or \
+                            elem.gui_info.bg != placeablesguiinfo.StringElemGUI.bg:
                         self.buffer.get_tag_table().add(tag)
                         self.buffer.apply_tag(tag, iters[0], iters[1])
 
@@ -279,7 +202,7 @@ class TextBox(gtk.TextView):
             i += 1
         self.selected_elem_index = i
         self.selected_elem = elem
-        elem.gui_info = StringElemGUI(elem, self, fg='#000000', bg='#90ee90')
+        elem.gui_info = placeablesguiinfo.StringElemGUI(elem, self, fg='#000000', bg='#90ee90')
         self.apply_tags(self.elem, include_subtree=False)
         self.apply_tags(self.elem)
         self.apply_tags(elem, include_subtree=False)

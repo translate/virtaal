@@ -111,8 +111,7 @@ class TerminologyModel(BaseTerminologyModel):
             query_str = unitview.sources[0].source
             if not self.cache.has_key(query_str):
                 self.cache[query_str] = None
-                self.opentranclient.translate_unit(query_str, self._on_match_found)
-                self._on_match_found()
+                self.opentranclient.translate_unit(query_str, lambda *args: self.add_last_suggestions(self.opentranclient))
 
         store_ctrlr = self.main_controller.store_controller
         def store_loaded(store_ctrlr):
@@ -150,6 +149,29 @@ class TerminologyModel(BaseTerminologyModel):
 
 
     # METHODS #
+    def add_last_suggestions(self, opentranclient):
+        """Grab the last suggestions from the TM client."""
+        if opentranclient.last_suggestions is not None:
+            added = False
+            curr_sources = [u.source for u in self.store.units]
+            for sugg in opentranclient.last_suggestions:
+                for proj in sugg['projects']:
+                    if proj['flags'] != 0:
+                        # Skip fuzzy matches
+                        continue
+                    if proj['orig_phrase'] in curr_sources:
+                        # Skip phrases already found
+                        continue
+                    unit = TranslationUnit(proj['orig_phrase'])
+                    unit.target = sugg['text']
+                    self.store.addunit(unit)
+                    added = True
+            if added:
+                self.matcher.inittm(self.store)
+        unitview = self.main_controller.unit_controller.view
+        for src in unitview.sources:
+            src.update_tree()
+
     def destroy(self):
         super(TerminologyModel, self).destroy()
         if self.matcher in TerminologyPlaceable.matchers:
@@ -158,31 +180,4 @@ class TerminologyModel(BaseTerminologyModel):
 
     # EVENT HANDLERS #
     def _on_match_found(self, *args):
-        """
-        Grab the last suggestions from the TM client.
-
-        @param args: Arguments we don't care about.
-        """
-        if self.opentrantm.tmclient.last_suggestions is None:
-            return
-
-        added = False
-        curr_sources = [u.source for u in self.store.units]
-        for sugg in self.opentrantm.tmclient.last_suggestions:
-            for proj in sugg['projects']:
-                if proj['flags'] != 0:
-                    # Skip fuzzy matches
-                    continue
-                if proj['orig_phrase'] in curr_sources:
-                    # Skip phrases already found
-                    continue
-                unit = TranslationUnit(proj['orig_phrase'])
-                unit.target = sugg['text']
-                #logging.debug('Adding terminology unit: "%s" => "%s"' % (unit.source, unit.target))
-                self.store.addunit(unit)
-                added = True
-        if added:
-            self.matcher.inittm(self.store)
-            unitview = self.main_controller.unit_controller.view
-            for src in unitview.sources:
-                src.update_tree()
+        self.add_last_suggestions(self.opentrantm.tmclient)

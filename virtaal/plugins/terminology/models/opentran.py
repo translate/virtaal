@@ -44,12 +44,15 @@ class TerminologyModel(BaseTerminologyModel):
         self.internal_name = internal_name
         self.load_config()
 
+        self.main_controller = controller.main_controller
         self.term_controller = controller
         self.matcher = None
         self._init_matcher()
         self.opentrantm = self._find_opentran_tm()
 
-        if self.opentrantm:
+        if self.opentrantm is None:
+            self._init_opentran_client()
+        else:
             self.opentrantm.connect('match-found', self._on_match_found)
 
     def _find_opentran_tm(self):
@@ -57,7 +60,7 @@ class TerminologyModel(BaseTerminologyModel):
         Try and find an existing OpenTranClient instance, used by the OpenTran
         TM model.
         """
-        plugin_ctrl = self.term_controller.main_controller.plugin_controller
+        plugin_ctrl = self.main_controller.plugin_controller
         if 'tm' not in plugin_ctrl.plugins:
             return None
 
@@ -77,6 +80,73 @@ class TerminologyModel(BaseTerminologyModel):
         self.store = TranslationStore()
         self.matcher = terminologymatcher(self.store)
         TerminologyPlaceable.matchers.append(self.matcher)
+
+    def _init_opentran_client(self):
+        """
+        Create and initialize a new Open-Tran client. This should only happen
+        when the Open-Tran TM model plug-in is not loaded.
+        """
+        # First try to get max_candidates and min_quality from the TM plug-in
+        plugin_ctrl = self.term_controller.main_controller.plugin_controller
+        # The following two values were copied from plugins/tm/__init__.py
+        max_candidates = 5
+        min_quality = 70
+
+        if 'tm' in plugin_ctrl.plugins:
+            max_candidates = plugin_ctrl.plugins['tm'].max_candidates
+            min_quality = plugin_ctrl.plugins['tm'].min_quality
+
+        self.opentranclient = opentranclient.OpenTranClient(
+            self.config['url'],
+            max_candidates=max_candidates,
+            min_quality=min_quality
+        )
+
+        self.__setup_lang_watchers()
+        self.__setup_cursor_watcher()
+
+    def __setup_cursor_watcher(self):
+        unitview = self.main_controller.unit_controller.view
+        def cursor_changed(cursor):
+            query_str = unitview.sources[0].source
+            if not self.cache.has_key(query_str):
+                self.cache[query_str] = None
+                self.opentranclient.translate_unit(query_str, self._on_match_found)
+                self._on_match_found()
+
+        store_ctrlr = self.main_controller.store_controller
+        def store_loaded(store_ctrlr):
+            if hasattr(self, '_cursor_connect_id'):
+                self.cursor.disconnect(self._cursor_connect_id)
+            self.cursor = store_ctrlr.cursor
+            self._cursor_connect_id = self.cursor.connect('cursor-changed', cursor_changed)
+
+        store_ctrlr.connect('store-loaded', store_loaded)
+        if store_ctrlr.store:
+            store_loaded(store_ctrlr)
+
+    def __setup_lang_watchers(self):
+        lang_controller = self.main_controller.lang_controller
+        def set_source_lang(ctrlr, lang):
+            if lang == self.source_lang:
+                return
+            self.source_lang = language
+            self.cache = {}
+            self.opentranclient.set_source_lang(lang)
+        def set_target_lang(ctrlr, lang):
+            if lang == self.target_lang:
+                return
+            self.target_lang = language
+            self.cache = {}
+            self.opentranclient.set_target_lang(language)
+        self._connect_ids.append((
+            lang_controller.connect('source-lang-changed', set_source_lang),
+            lang_controller
+        ))
+        self._connect_ids.append((
+            lang_controller.connect('target-lang-changed', set_target_lang),
+            lang_controller
+        ))
 
 
     # METHODS #
@@ -113,6 +183,6 @@ class TerminologyModel(BaseTerminologyModel):
                 added = True
         if added:
             self.matcher.inittm(self.store)
-            unitview = self.controller.main_controller.unit_controller.view
+            unitview = self.main_controller.unit_controller.view
             for src in unitview.sources:
                 src.update_tree()

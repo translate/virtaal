@@ -24,6 +24,8 @@ from translate.search.match import terminologymatcher
 from translate.storage.placeables.terminology import TerminologyPlaceable
 from translate.storage.base import TranslationStore, TranslationUnit
 
+from virtaal.support import opentranclient
+
 from basetermmodel import BaseTerminologyModel
 
 
@@ -86,21 +88,24 @@ class TerminologyModel(BaseTerminologyModel):
         Create and initialize a new Open-Tran client. This should only happen
         when the Open-Tran TM model plug-in is not loaded.
         """
-        # First try to get max_candidates and min_quality from the TM plug-in
-        plugin_ctrl = self.term_controller.main_controller.plugin_controller
+        plugin_ctrlr = self.main_controller.plugin_controller
+        lang_ctrlr = self.main_controller.lang_controller
         # The following two values were copied from plugins/tm/__init__.py
         max_candidates = 5
-        min_quality = 70
+        min_similarity = 70
 
-        if 'tm' in plugin_ctrl.plugins:
-            max_candidates = plugin_ctrl.plugins['tm'].max_candidates
-            min_quality = plugin_ctrl.plugins['tm'].min_quality
+        # Try to get max_candidates and min_quality from the TM plug-in
+        if 'tm' in plugin_ctrlr.plugins:
+            max_candidates = plugin_ctrlr.plugins['tm'].config['max_matches']
+            min_similarity = plugin_ctrlr.plugins['tm'].config['min_quality']
 
         self.opentranclient = opentranclient.OpenTranClient(
             self.config['url'],
             max_candidates=max_candidates,
-            min_quality=min_quality
+            min_similarity=min_similarity
         )
+        self.opentranclient.source_lang = lang_ctrlr.source_lang.code
+        self.opentranclient.target_lang = lang_ctrlr.target_lang.code
 
         self.__setup_lang_watchers()
         self.__setup_cursor_watcher()
@@ -108,7 +113,7 @@ class TerminologyModel(BaseTerminologyModel):
     def __setup_cursor_watcher(self):
         unitview = self.main_controller.unit_controller.view
         def cursor_changed(cursor):
-            query_str = unitview.sources[0].source
+            query_str = unitview.sources[0].get_text()
             if not self.cache.has_key(query_str):
                 self.cache[query_str] = None
                 self.opentranclient.translate_unit(query_str, lambda *args: self.add_last_suggestions(self.opentranclient))

@@ -320,6 +320,6 @@ class TextBox(gtk.TextView):
 
         for name, keyslist in self.SPECIAL_KEYS.items():
             for keyval, state in keyslist:
-                if event.keyval == keyval and event.state == (state | gtk.gdk.MOD2_MASK):
+                if event.keyval == keyval and (event.state == state or event.state == (state | gtk.gdk.MOD2_MASK)):
                     evname = name
         return self.emit('key-pressed', event, evname)

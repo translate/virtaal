@@ -32,8 +32,8 @@ from models.basetermmodel import BaseTerminologyModel
 
 
 class TerminologyGUIInfo(placeablesguiinfo.StringElemGUI):
-    fg = '#ffffff'
-    bg = '#0000ff'
+    bg = '#eeffee'
+    fg = '#006600'
 
 
 class TerminologyController(BaseController):

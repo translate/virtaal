@@ -306,6 +306,18 @@ class TextBox(gtk.TextView):
         elif event.keyval == gtk.keysyms.Right and event.state & gtk.gdk.MOD1_MASK:
             self.move_elem_selection(1)
 
+        # Uncomment the following block to get nice textual logging of key presses in the textbox
+        #keyname = '<unknown>'
+        #for attr in dir(gtk.keysyms):
+        #    if getattr(gtk.keysyms, attr) == event.keyval:
+        #        keyname = attr
+        #statenames = []
+        #for attr in [a for a in ('MOD1_MASK', 'MOD2_MASK', 'MOD3_MASK', 'MOD4_MASK', 'MOD5_MASK', 'CONTROL_MASK', 'SHIFT_MASK', 'RELEASE_MASK')]:
+        #    if event.state & getattr(gtk.gdk, attr):
+        #        statenames.append(attr)
+        #statenames = '|'.join(statenames)
+        #logging.debug('Key pressed: %s (%s)' % (keyname, statenames))
+
         for name, keyslist in self.SPECIAL_KEYS.items():
             for keyval, state in keyslist:
                 if event.keyval == keyval and event.state == (state | gtk.gdk.MOD2_MASK):

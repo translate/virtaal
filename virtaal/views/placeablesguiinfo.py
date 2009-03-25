@@ -70,8 +70,8 @@ class StringElemGUI(object):
 
 
 class PhGUI(StringElemGUI):
-    fg = '#000000'
-    bg = '#7Deeff'
+    fg = 'darkred'
+    bg = '#f7f7f7'
 
 
 element_gui_map = [

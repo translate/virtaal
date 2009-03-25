@@ -20,6 +20,7 @@
 
 import logging
 import os
+import re
 from translate.search.match import terminologymatcher
 from translate.storage.placeables.terminology import TerminologyPlaceable
 from translate.storage.base import TranslationStore, TranslationUnit
@@ -158,24 +159,40 @@ class TerminologyModel(BaseTerminologyModel):
         """Grab the last suggestions from the TM client."""
         if opentranclient.last_suggestions is not None:
             added = False
-            curr_sources = [u.source for u in self.store.units]
             for sugg in opentranclient.last_suggestions:
-                for proj in sugg['projects']:
-                    if proj['flags'] != 0:
-                        # Skip fuzzy matches
-                        continue
-                    if proj['orig_phrase'] in curr_sources:
-                        # Skip phrases already found
-                        continue
-                    unit = TranslationUnit(proj['orig_phrase'])
-                    unit.target = sugg['text']
-                    self.store.addunit(unit)
+                units = self.create_suggestions(sugg)
+                if units:
+                    for u in units:
+                        self.store.addunit(u)
                     added = True
             if added:
                 self.matcher.inittm(self.store)
         unitview = self.main_controller.unit_controller.view
         for src in unitview.sources:
             src.update_tree()
+
+    def create_suggestions(self, suggestion):
+        # Skip any suggestions where the suggested translation contains parenthesis
+        if re.match(r'\(.*\)', suggestion['text']):
+            return []
+
+        curr_sources = [u.source for u in self.store.units]
+        units = []
+
+        for proj in suggestion['projects']:
+            # Skip fuzzy matches:
+            if proj['flags'] != 0:
+                continue
+            # Skip phrases already found:
+            if proj['orig_phrase'] in curr_sources:
+                continue
+            # Skip any units containing parenthesis
+            if re.match(r'\(.*\)', proj['orig_phrase']):
+                continue
+            unit = TranslationUnit(proj['orig_phrase'])
+            unit.target = suggestion['text']
+            units.append(unit)
+        return units
 
     def destroy(self):
         super(TerminologyModel, self).destroy()

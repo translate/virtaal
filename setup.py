@@ -445,6 +445,16 @@ def create_manifest(data_files, extra_files, extra_dirs):
         f.write("graft %s\n" % (dir))
     f.close()
 
+import distutils.command.install
+class DepCheckInstall(distutils.command.install.install):
+    def __init__(self, *args, **kwargs):
+        from virtaal.support import depcheck
+        failed = depcheck.check_dependencies()
+        if failed:
+            print 'Failed dependencies: %s' % (', '.join(failed))
+            exit(0)
+        distutils.command.install.install.__init__(self, *args, **kwargs)
+
 def main(options):
     options = add_platform_specific_options(options)
     create_manifest(options['data_files'], no_install_files, no_install_dirs)
@@ -462,6 +472,7 @@ can edit a variety of files (including PO and XLIFF files).""",
           download_url="http://sourceforge.net/project/showfiles.php?group_id=91920&package_id=270877",
           platforms=["any"],
           classifiers=classifiers,
+          cmdclass = {'install': DepCheckInstall},
           **options)
 
 if __name__ == '__main__':

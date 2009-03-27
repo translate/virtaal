@@ -70,9 +70,9 @@ def test_import(modname):
         return False
     return True
 
-def check_dependencies():
+def check_dependencies(module_names=import_checks):
     """Returns a list of modules that could not be imported."""
-    return [name for name in import_checks if not test_import(name) or not extra_tests.get(name, lambda: True)()]
+    return [name for name in module_names if not test_import(name) or not extra_tests.get(name, lambda: True)()]
 
 
 

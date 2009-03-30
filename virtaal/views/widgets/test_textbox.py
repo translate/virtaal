@@ -20,7 +20,7 @@
 
 import gtk
 
-from textbox import *
+from textbox import TextBox
 
 
 class TextWindow(gtk.Window):

@@ -29,11 +29,7 @@ from virtaal.views import placeablesguiinfo
 
 import models
 from models.basetermmodel import BaseTerminologyModel
-
-
-class TerminologyGUIInfo(placeablesguiinfo.StringElemGUI):
-    bg = '#eeffee'
-    fg = '#006600'
+from termview import TerminologyGUIInfo
 
 
 class TerminologyController(BaseController):

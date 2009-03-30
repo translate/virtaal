@@ -34,6 +34,10 @@ from translate.lang import data
 
 from virtaal.__version__ import ver
 
+DEBUG = True # Enable debugging by default, while bin/virtaal still disables it by default.
+             # This means that if Virtaal (or parts thereof) is run in some other strange way,
+             # debugging is enabled.
+
 
 x_generator = 'Virtaal ' + ver
 default_config_name = "virtaal.ini"

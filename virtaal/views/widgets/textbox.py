@@ -165,6 +165,19 @@ class TextBox(gtk.TextView):
 
         self.emit('after-apply-tags', elem)
 
+    @accepts(Self(), [StringElem])
+    def insert_translation(self, elem):
+        widget = elem.gui_info.create_widget()
+        if widget:
+            cursor_iter = self.buffer.get_iter_at_offset(self.buffer.props.cursor_position)
+            anchor = self.buffer.create_child_anchor(cursor_iter)
+            self.add_child_at_anchor(widget, anchor)
+            widget.show_all()
+            if hasattr(widget, 'inserted'):
+                widget.inserted(cursor_iter, anchor)
+        else:
+            self.buffer.insert_at_cursor(elem.translate())
+
     @accepts(Self(), [int])
     def move_elem_selection(self, offset):
         if self.selector_textbox.selected_elem_index is None:

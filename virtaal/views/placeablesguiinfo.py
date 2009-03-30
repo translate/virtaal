@@ -61,6 +61,9 @@ class StringElemGUI(object):
 
         return tag
 
+    def create_widget(self):
+        return None
+
     def copy(self):
         return StringElemGUI(
             elem=self.elem, textbox=self.textbox,

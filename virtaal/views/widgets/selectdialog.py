@@ -1,0 +1,84 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# Copyright 2009 Zuza Software Foundation
+#
+# This file is part of Virtaal.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <http://www.gnu.org/licenses/>.
+
+import gtk
+from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+
+from virtaal.common import GObjectWrapper
+
+from selectview import SelectView
+
+
+class SelectDialog(GObjectWrapper):
+    """
+    A dialog wrapper to easily select items from a list.
+    """
+
+    __gtype_name__ = 'SelectDialog'
+    __gsignals__ = {
+        'item-enabled':   (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'item-disabled':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'item-selected':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'selection-done': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+    }
+
+    # INITIALIZERS #
+    def __init__(self, items=None):
+        super(SelectDialog, self).__init__()
+        self.sview = SelectView(items)
+        self._create_gui()
+        self._connect_signals()
+
+    def _connect_signals(self):
+        self.sview.connect('item-enabled',  self._on_item_enabled)
+        self.sview.connect('item-disabled', self._on_item_disabled)
+        self.sview.connect('item-selected', self._on_item_selected)
+
+    def _create_gui(self):
+        self.dialog = gtk.Dialog()
+        self.dialog.child.add(self.sview)
+        self.dialog.add_buttons(
+            gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+            gtk.STOCK_OK,     gtk.RESPONSE_OK
+        )
+
+
+    # METHODS #
+    def run(self, items=None, parent=None):
+        if items is not None:
+            self.sview.set_model(items)
+        if isinstance(parent, gtk.Widget):
+            self.dialog.reparent(parent)
+        self.dialog.show_all()
+        self.response = self.dialog.run()
+        self.dialog.hide()
+        self.emit('selection-done', self.dialog.get_all_items())
+        return self.response
+
+
+    # EVENT HANDLERS #
+    def _on_item_enabled(self, selectview, item):
+        self.emit('item-enabled', item)
+
+    def _on_item_disabled(self, selectview, item):
+        self.emit('item-disabled', item)
+
+    def _on_item_selected(self, selectview, item):
+        self.emit('item-selected', item)

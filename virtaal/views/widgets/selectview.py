@@ -19,7 +19,6 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gtk
-import gtk.glade
 from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 
 from virtaal.common import GObjectWrapper

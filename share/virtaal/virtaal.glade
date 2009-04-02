@@ -17,7 +17,7 @@
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
         <child>
-          <widget class="GtkMenuBar" id="menubar1">
+          <widget class="GtkMenuBar" id="menubar">
             <property name="visible">True</property>
             <child>
               <widget class="GtkMenuItem" id="menuitem1">

@@ -72,7 +72,7 @@ class SelectDialog(GObjectWrapper):
         self.dialog.show_all()
         self.response = self.dialog.run()
         self.dialog.hide()
-        self.emit('selection-done', self.dialog.get_all_items())
+        self.emit('selection-done', self.sview.get_all_items())
         return self.response
 
 

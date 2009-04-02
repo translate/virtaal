@@ -64,6 +64,12 @@ class SelectDialog(GObjectWrapper):
 
 
     # METHODS #
+    def get_message(self):
+        return self.message.get_text()
+
+    def set_message(self, msg):
+        self.message.set_text(msg)
+
     def run(self, items=None, parent=None):
         if items is not None:
             self.sview.set_model(items)

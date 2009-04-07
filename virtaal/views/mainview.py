@@ -152,21 +152,21 @@ class MainView(BaseView):
 
         # Create our events dictionary and connect it
         dic = {
-                "on_mainwindow_destroy" : self._on_quit,
-                "on_mainwindow_delete" : self._on_quit,
-                "on_open_activate" : self._on_file_open,
-                "on_save_activate" : self._on_file_save,
-                "on_saveas_activate" : self._on_file_saveas,
-                "on_update_activate" : self._on_file_update,
-                "on_revert_activate" : self._on_file_revert,
-                "on_quit" : self._on_quit,
-                "on_menuitem_fullscreen_toggled" : self._on_fullscreen,
-                "on_about_activate" : self._on_help_about,
-                "on_tutorial_activate" : self._on_tutorial,
-                "on_localization_guide_activate" : self._on_localization_guide,
-                "on_menuitem_documentation_activate" : self._on_documentation,
-                "on_menuitem_report_bug_activate" : self._on_report_bug,
-                }
+            "on_mainwindow_destroy" : self._on_quit,
+            "on_mainwindow_delete" : self._on_quit,
+            "on_open_activate" : self._on_file_open,
+            "on_save_activate" : self._on_file_save,
+            "on_saveas_activate" : self._on_file_saveas,
+            "on_update_activate" : self._on_file_update,
+            "on_revert_activate" : self._on_file_revert,
+            "on_quit" : self._on_quit,
+            "on_menuitem_fullscreen_toggled" : self._on_fullscreen,
+            "on_about_activate" : self._on_help_about,
+            "on_tutorial_activate" : self._on_tutorial,
+            "on_localization_guide_activate" : self._on_localization_guide,
+            "on_menuitem_documentation_activate" : self._on_documentation,
+            "on_menuitem_report_bug_activate" : self._on_report_bug,
+        }
         self.gui.signal_autoconnect(dic)
 
         self.menubar = self.gui.get_widget('menubar')

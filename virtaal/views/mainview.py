@@ -127,7 +127,7 @@ class MainView(BaseView):
             try:
                 import igemacintegration
                 # Move the menu bar to the mac menu
-                menubar = self.gui.get_widget('menubar1')
+                menubar = self.gui.get_widget('menubar')
                 igemacintegration.ige_mac_menu_set_menu_bar(menubar)
                 menubar.hide()
                 igemacintegration.ige_mac_menu_connect_window_key_handler(self.main_window)

@@ -51,6 +51,7 @@ class TMController(BaseController):
         self.max_matches = config.get('max_matches', 5)
         self.min_quality = config.get('min_quality', 75)
 
+        self._signal_ids = {}
         self.view = TMView(self, self.max_matches)
         self._load_models()
 
@@ -76,11 +77,16 @@ class TMController(BaseController):
         self.plugin_controller.PLUGIN_INTERFACE = BaseTMModel
         self.plugin_controller.PLUGIN_MODULES = ['virtaal_plugins.tm.models', 'virtaal.plugins.tm.models']
         self.plugin_controller.get_disabled_plugins = lambda *args: self.disabled_model_names
-        self.plugin_controller.load_plugins()
 
         self._model_signal_ids = {}
-        for model_name in self.plugin_controller.plugins:
-            self._model_signal_ids[model_name] = self.plugin_controller.plugins[model_name].connect('match-found', self.accept_response)
+        def on_plugin_enabled(plugin_ctrlr, plugin):
+            self._model_signal_ids[plugin] = plugin.connect('match-found', self.accept_response)
+        def on_plugin_disabled(plugin_ctrlr, plugin):
+            plugin.disconnect(self._model_signal_ids[plugin])
+        self._signal_ids['plugin-enabled']  = self.plugin_controller.connect('plugin-enabled',  on_plugin_enabled)
+        self._signal_ids['plugin-disabled'] = self.plugin_controller.connect('plugin-disabled', on_plugin_disabled)
+
+        self.plugin_controller.load_plugins()
 
 
     # METHODS #
@@ -111,10 +117,6 @@ class TMController(BaseController):
             self.main_controller.mode_controller.disconnect(self._mode_selected_id)
         if getattr(self, '_target_focused_id', None):
             self.main_controller.unit_controller.view.disconnect(self._target_focused_id)
-
-        # Disconnect from and destroy TM plug-ins
-        for model_name in self._model_signal_ids:
-            self.plugin_controller.plugins[model_name].disconnect(self._model_signal_ids[model_name])
 
         self.plugin_controller.shutdown()
 

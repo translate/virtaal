@@ -143,5 +143,5 @@ class SelectView(gtk.TreeView, GObjectWrapper):
 
     def _on_selection_change(self, selection):
         model, iter = selection.get_selected()
-        if None is not model is self._model and self._model.iter_is_valid(iter):
+        if isinstance(model, gtk.TreeIter) and model is self._model and self._model.iter_is_valid(iter):
             self.emit('item-selected', self.get_item(iter))

@@ -29,7 +29,7 @@ from virtaal.views import placeablesguiinfo
 
 import models
 from models.basetermmodel import BaseTerminologyModel
-from termview import TerminologyGUIInfo
+from termview import TerminologyGUIInfo, TerminologyView
 
 
 class TerminologyController(BaseController):
@@ -58,6 +58,7 @@ class TerminologyController(BaseController):
             placeablesguiinfo.element_gui_map.insert(0, (terminology.TerminologyPlaceable, TerminologyGUIInfo))
 
         self._load_models()
+        self.view = TerminologyView(self)
 
     def _load_models(self):
         self.plugin_controller = PluginController(self)
@@ -75,4 +76,5 @@ class TerminologyController(BaseController):
 
     # METHODS #
     def destroy(self):
+        self.view.destroy()
         self.plugin_controller.shutdown()

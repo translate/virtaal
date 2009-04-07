@@ -45,7 +45,6 @@ class TMModel(BaseTMModel):
 
 
     # METHODS #
-    # METHODS #
     def query(self, tmcontroller, query_str):
         #figure out languages
         if self.cache.has_key(query_str):

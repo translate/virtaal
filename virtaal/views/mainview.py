@@ -169,6 +169,7 @@ class MainView(BaseView):
                 }
         self.gui.signal_autoconnect(dic)
 
+        self.menubar = self.gui.get_widget('menubar')
         self.status_bar = self.gui.get_widget("status_bar")
         self.status_bar.set_sensitive(False)
         self.statusbar_context_id = self.status_bar.get_context_id("statusbar")
@@ -334,6 +335,58 @@ class MainView(BaseView):
         else:
             # Note that if nplurals == 1, the default equation "0" is correct
             return nplurals, lang.pluralequation
+
+    def append_menu(self, name):
+        """Add a menu with the given name to the menu bar."""
+        menu = gtk.Menu()
+        menuitem = gtk.MenuItem(name)
+        menuitem.set_submenu(menu)
+        self.menubar.append(menuitem)
+        self.menubar.show_all()
+        return menuitem
+
+    def append_menu_item(self, name, menu):
+        """Add a new menu item with the given name to the menu with the given
+            name (C{menu_name})."""
+        parent_item = None
+        if isinstance(menu, gtk.MenuItem):
+            parent_item = menu
+        else:
+            parent_item = self.find_menu(menu)
+        if parent_item is None:
+            return None
+        parent_menu = parent_item.get_submenu()
+        menuitem = gtk.MenuItem(name)
+        parent_menu.add(menuitem)
+        self.menubar.show_all()
+        return menuitem
+
+    def find_menu(self, label):
+        """Find the menu with the given label on the menu bar."""
+        for menuitem in self.menubar.get_children():
+            if menuitem.get_child() and menuitem.get_child().get_text() == label:
+                return menuitem
+        return None
+
+    def find_menu_item(self, label, menu=None):
+        """Find the menu item with the given label and in the menu with the
+            given name (if it exists).
+
+            @param label: The label of the menu item to find.
+            @param menu: The (optional) (name of the) menu to search in."""
+        if not isinstance(menu, gtk.MenuItem):
+            menu = self.find_menu(menu_name)
+        if menu is not None:
+            menus = [menu]
+        else:
+            menus = [mi for mi in self.menubar.get_children()]
+
+        for menuitem in menus:
+            for item in menuitem.get_submenu().get_children():
+                if item.get_child() and item.get_child().get_text() == label:
+                    return item, menuitem
+        return None, None
+
 
     def quit(self):
         width, height = self.main_window.get_size()

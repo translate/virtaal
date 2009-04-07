@@ -21,6 +21,7 @@
 import logging
 import os
 import sys
+from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 
 from translate.misc import file_discovery
 
@@ -43,6 +44,10 @@ class PluginController(BaseController):
     """This controller is responsible for all plug-in management."""
 
     __gtype_name__ = 'PluginController'
+    __gsignals__ = {
+        'plugin-enabled':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'plugin-disabled': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+    }
 
     # The following class variables are set for the main plug-in controller.
     # To use this class to manage any other plug-ins, these will (most likely) have to be changed.
@@ -80,7 +85,9 @@ class PluginController(BaseController):
     def disable_plugin(self, name):
         """Destroy the plug-in with the given name."""
         logging.debug('Disabling plugin: %s' % (name))
+
         if name in self.plugins:
+            self.emit('plugin-disabled', self.plugins[name])
             self.plugins[name].destroy()
             del self.plugins[name]
         if name in self.pluginmodules:
@@ -127,6 +134,7 @@ class PluginController(BaseController):
                 self.pluginmodules[name] = module
 
             self.plugins[name] = plugin_class(name, self.controller)
+            self.emit('plugin-enabled', self.plugins[name])
             logging.info('    - ' + getattr(self.plugins[name], self.PLUGIN_NAME_ATTRIB, name))
             return self.plugins[name]
         except Exception:

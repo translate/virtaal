@@ -168,9 +168,9 @@ class TMController(BaseController):
         self.unit = cursor.deref()
 
         if self.view.active and self.unit.istranslated():
-            self.view.menuitem.set_active(False)
+            self.view.mnu_suggestions.set_active(False)
         elif not self.view.active and not self.unit.istranslated():
-            self.view.menuitem.set_active(True)
+            self.view.mnu_suggestions.set_active(True)
 
         return self.start_query()
 

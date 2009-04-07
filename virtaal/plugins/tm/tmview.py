@@ -69,7 +69,7 @@ class TMView(BaseView, GObjectWrapper):
         ))
 
         self._setup_key_bindings()
-        self._setup_menu_item()
+        self._setup_menu_items()
 
     def _setup_key_bindings(self):
         """Setup Gtk+ key bindings (accelerators)."""
@@ -89,27 +89,39 @@ class TMView(BaseView, GObjectWrapper):
         mainview = self.controller.main_controller.view
         mainview.add_accel_group(self.accel_group)
 
-    def _setup_menu_item(self):
-        self.menu = self.controller.main_controller.view.gui.get_widget('menu_view')
-        self.menuitem = gtk.CheckMenuItem(label=_('Available _Suggestions'))
-        self.menuitem.show()
-        self.menu.append(self.menuitem)
+    def _setup_menu_items(self):
+        mainview = self.controller.main_controller.view
+        menubar = mainview.menubar
+        self.mnu_tm = mainview.find_menu(_('T_M'))
+        if self.mnu_tm is None:
+            self.mnu_tm = mainview.append_menu(_('T_M'))
+        self.menu = self.mnu_tm.get_submenu()
+
+        self.mnu_suggestions = gtk.CheckMenuItem(label=_('Available _Suggestions'))
+        self.mnu_suggestions.show()
+        self.menu.append(self.mnu_suggestions)
 
         gtk.accel_map_add_entry("<Virtaal>/TM/Toggle Show TM", gtk.keysyms.F9, 0)
         accel_group = self.menu.get_accel_group()
         if accel_group is None:
             accel_group = self.accel_group
             self.menu.set_accel_group(self.accel_group)
-        self.menuitem.set_accel_path("<Virtaal>/TM/Toggle Show TM")
+        self.mnu_suggestions.set_accel_path("<Virtaal>/TM/Toggle Show TM")
         self.menu.set_accel_group(accel_group)
 
-        self.menuitem.connect('toggled', self._on_toggle_show_tm)
-        self.menuitem.set_active(True)
+        self.mnu_suggestions.connect('toggled', self._on_toggle_show_tm)
+        self.mnu_suggestions.set_active(True)
+
+        # Check if there exists a "Select back-ends" menu item.
+        self.mnu_backends, _menu = mainview.find_menu_item(_('Select back-ends...'), self.mnu_tm)
+        if not self.mnu_backends:
+            self.mnu_backends = mainview.append_menu_item(_('Select back-ends...'), self.mnu_tm)
+        self.mnu_backends.connect('activate', self._on_select_backends)
 
 
     # ACCESSORS #
     def _get_active(self):
-        return self.menuitem.get_active()
+        return self.mnu_suggestions.get_active()
     active = property(_get_active)
 
 
@@ -123,7 +135,8 @@ class TMView(BaseView, GObjectWrapper):
         for gobj, signal_id in self._signal_ids:
             gobj.disconnect(signal_id)
 
-        self.menu.remove(self.menuitem)
+        menubar = self.controller.main_controller.view.menubar
+        menubar.remove(self.mnu_tm)
 
     def display_matches(self, matches):
         """Add the list of TM matches to those available and show the TM window."""

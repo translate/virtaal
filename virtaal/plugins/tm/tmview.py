@@ -25,6 +25,7 @@ from gtk import gdk
 
 from virtaal.common import GObjectWrapper
 from virtaal.views import BaseView
+from virtaal.views.widgets.selectdialog import SelectDialog
 
 from tmwidgets import *
 
@@ -257,6 +258,36 @@ class TMView(BaseView, GObjectWrapper):
         match_data = liststore.get_value(itr, 0)
 
         self.select_match(match_data)
+
+    def _on_select_backends(self, menuitem):
+        selectdlg = SelectDialog(
+            title='Select TM back-ends',
+            message='Please select the TM back-ends you would like to have enabled.'
+        )
+
+        items = []
+        plugin_controller = self.controller.plugin_controller
+        disabled_plugins = plugin_controller.get_disabled_plugins()
+        for plugin_name in plugin_controller._find_plugin_names():
+            if plugin_name in disabled_plugins:
+                continue
+            item = {'name': plugin_name}
+            if plugin_name in plugin_controller.plugins:
+                plugin = plugin_controller.plugins[plugin_name]
+                item.update({
+                    'desc': getattr(plugin, plugin_controller.PLUGIN_NAME_ATTRIB),
+                    'enabled': True
+                })
+            else:
+                item['enabled'] = False
+            items.append(item)
+
+        if selectdlg.run(items=items) == gtk.RESPONSE_OK:
+            for item in selectdlg.sview.get_all_items():
+                if item['enabled']:
+                    plugin_controller.enable_plugin(item['name'])
+                else:
+                    plugin_controller.disable_plugin(item['name'])
 
     def _on_select_match(self, accel_group, acceleratable, keyval, modifier):
         self.select_match_index(int(keyval - gtk.keysyms._0))

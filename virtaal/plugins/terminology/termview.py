@@ -21,7 +21,9 @@
 import gtk
 import logging
 
+from virtaal.views import BaseView
 from virtaal.views.placeablesguiinfo import StringElemGUI
+from virtaal.views.widgets.selectdialog import SelectDialog
 
 
 class TerminologyGUIInfo(StringElemGUI):
@@ -104,3 +106,71 @@ class TerminologyCombo(gtk.ComboBox):
     # EVENT HANDLERS #
     def _on_selection_done(self, menushell):
         self.insert_selected()
+
+
+class TerminologyView(BaseView):
+    """
+    Does general GUI setup for the terminology plug-in.
+    """
+
+    # INITIALIZERS #
+    def __init__(self, controller):
+        self.controller = controller
+        self._signal_ids = []
+        self._setup_menus()
+
+    def _setup_menus(self):
+        mainview = self.controller.main_controller.view
+        self.mnu_term = mainview.find_menu(_('_Terminology'))
+        if self.mnu_term is None:
+            self.mnu_term = mainview.append_menu(_('_Terminology'))
+        self.menu = self.mnu_term.get_submenu()
+
+        self.mnu_backends, _menu = mainview.find_menu_item(_('Select back-ends...'), self.mnu_term)
+        if not self.mnu_backends:
+            self.mnu_backends = mainview.append_menu_item(_('Select back-ends...'), self.mnu_term)
+        self._signal_ids.append((
+            self.mnu_backends,
+            self.mnu_backends.connect('activate', self._on_select_backends)
+        ))
+
+
+    # METHODS #
+    def destroy(self):
+        for gobj, signal_id in self._signal_ids:
+            gobj.disconnect(signal_id)
+
+        menubar = self.controller.main_controller.view.menubar
+        menubar.remove(self.mnu_term)
+
+
+    # EVENT HANDLERS #
+    def _on_select_backends(self, menuitem):
+        selectdlg = SelectDialog(
+            title='Select TM back-ends',
+            message='Please select the TM back-ends you would like to have enabled.'
+        )
+
+        items = []
+        plugin_controller = self.controller.plugin_controller
+        disabled_plugins = plugin_controller.get_disabled_plugins()
+        for plugin_name in plugin_controller._find_plugin_names():
+            if plugin_name in disabled_plugins:
+                continue
+            item = {'name': plugin_name}
+            if plugin_name in plugin_controller.plugins:
+                plugin = plugin_controller.plugins[plugin_name]
+                item.update({
+                    'desc': getattr(plugin, plugin_controller.PLUGIN_NAME_ATTRIB),
+                    'enabled': True
+                })
+            else:
+                item['enabled'] = False
+            items.append(item)
+
+        if selectdlg.run(items=items) == gtk.RESPONSE_OK:
+            for item in selectdlg.sview.get_all_items():
+                if item['enabled']:
+                    plugin_controller.enable_plugin(item['name'])
+                else:
+                    plugin_controller.disable_plugin(item['name'])

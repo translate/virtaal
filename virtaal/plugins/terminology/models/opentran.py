@@ -24,11 +24,17 @@ import re
 from translate.search.match import terminologymatcher
 from translate.storage.placeables.terminology import TerminologyPlaceable
 from translate.storage.base import TranslationStore, TranslationUnit
+from translate.lang import data
 
 from virtaal.support import opentranclient
 
 from basetermmodel import BaseTerminologyModel
 
+
+caps_re = re.compile('([a-z][A-Z])|([A-Z]{2,})')
+def is_case_sensitive(text):
+    """Tries to detect camel or other cases where casing might be significant."""
+    return caps_re.search(text) is not None
 
 class TerminologyModel(BaseTerminologyModel):
     """
@@ -190,7 +196,19 @@ class TerminologyModel(BaseTerminologyModel):
             if re.match(r'\(.*\)', proj['orig_phrase']):
                 continue
             unit = TranslationUnit(proj['orig_phrase'])
-            unit.target = suggestion['text']
+            target = suggestion['text']
+            # We mostly want to work with lowercase strings, but in German (and
+            # some languages with a related writing style), this will probably
+            # irritate more often than help, since nouns are always written to
+            # start with capital letters.
+            target_lang_code = self.main_controller.lang_controller.target_lang.code
+            if not data.normalize_code(target_lang_code) in ('de', 'de-de', 'lb', 'als', 'ksh', 'stq'):
+                # unless the string contains multiple consecutive uppercase
+                # characters or using some type of camel case, we take it to
+                # lower case
+                if not is_case_sensitive(target):
+                    target = target.lower()
+            unit.target = target
             units.append(unit)
         return units
 

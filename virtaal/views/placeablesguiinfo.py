@@ -93,6 +93,18 @@ class PhGUI(StringElemGUI):
     bg = '#f7f7f7'
 
 
+class GPlaceableGUI(StringElemGUI):
+    fg = '#f7f7f7'
+    bg = 'darkred'
+
+    def get_prefix(self):
+        return u'%s{' % (self.elem.id)
+
+    def get_postfix(self):
+        return u'}'
+
+
 element_gui_map = [
     (base.Ph, PhGUI),
+    (base.G, GPlaceableGUI),
 ]

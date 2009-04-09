@@ -109,7 +109,13 @@ class TextBox(gtk.TextView):
 
         self.buffer.handler_block_by_func(self._on_delete_range)
         self.buffer.handler_block_by_func(self._on_insert_text)
-        self.buffer.set_text(unicode(text))
+        if isinstance(text, StringElem):
+            self.elem = text
+            self.add_default_gui_info(text)
+            self.buffer.set_text(unicode(text.gui_info))
+        else:
+            self.elem = None
+            self.buffer.set_text(unicode(text))
         self.buffer.handler_unblock_by_func(self._on_delete_range)
         self.buffer.handler_unblock_by_func(self._on_insert_text)
 

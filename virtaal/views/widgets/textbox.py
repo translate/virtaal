@@ -221,6 +221,7 @@ class TextBox(gtk.TextView):
             i += 1
         self.selected_elem_index = i
         self.selected_elem = elem
+        #logging.debug('Selected element: %s (%s)' % (repr(self.selected_elem), unicode(self.selected_elem)))
         if not hasattr(elem, 'gui_info') or not elem.gui_info:
             elem.gui_info = placeablesguiinfo.StringElemGUI(elem, self, fg='#000000', bg='#90ee90')
         else:

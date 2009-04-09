@@ -75,7 +75,7 @@ class StringElemGUI(object):
         return None
 
     def copy(self):
-        return StringElemGUI(
+        return self.__class__(
             elem=self.elem, textbox=self.textbox,
             fg=self.fg, bg=self.bg,
             cursor_allowed=self.cursor_allowed

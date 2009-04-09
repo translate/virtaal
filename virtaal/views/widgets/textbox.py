@@ -24,7 +24,7 @@ import logging
 from gobject import SIGNAL_RUN_FIRST, SIGNAL_RUN_LAST, TYPE_BOOLEAN, TYPE_NONE, TYPE_PYOBJECT, TYPE_STRING
 
 from translate.misc.typecheck import accepts, Self, IsOneOf
-from translate.storage.placeables import base, general, parse as elem_parse, terminology, StringElem
+from translate.storage.placeables import StringElem
 
 from virtaal.views import placeablesguiinfo
 

@@ -50,16 +50,6 @@ class StringElemGUI(object):
             if kw in attribs:
                 setattr(self, kw, kwargs[kw])
 
-    # SPECIAL METHODS #
-    def __unicode__(self):
-        childstr = u''
-        for sub in self.elem.sub:
-            if isinstance(sub, StringElem) and hasattr(sub, 'gui_info'):
-                childstr += unicode(sub.gui_info)
-            else:
-                childstr += unicode(sub)
-        return u'%s%s%s' % (self.get_prefix(), childstr, self.get_postfix())
-
     # METHODS #
     def create_tag(self):
         tag = gtk.TextTag()
@@ -86,6 +76,13 @@ class StringElemGUI(object):
 
     def get_postfix(self):
         return ''
+
+    def render(self, elem):
+        assert elem is self.elem
+        childstr = u''
+        for sub in self.elem.sub:
+            childstr += unicode(sub)
+        return u'%s%s%s' % (self.get_prefix(), childstr, self.get_postfix())
 
 
 class PhGUI(StringElemGUI):

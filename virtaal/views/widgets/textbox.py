@@ -230,12 +230,10 @@ class TextBox(gtk.TextView):
     def update_tree(self, text=None):
         if not self.placeables_controller:
             return
-        if text is None:
-            text = self.get_text().decode('utf-8')
         if not isinstance(text, StringElem):
-            text = elem_parse(unicode(text), self.placeables_controller.parsers)
-            self.add_default_gui_info(text)
+            return
         self.elem = text
+        self.add_default_gui_info(self.elem)
 
         tagtable = self.buffer.get_tag_table()
         def remtag(tag, data):

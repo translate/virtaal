@@ -140,6 +140,7 @@ class TextBox(gtk.TextView):
 
         if not hasattr(elem, 'gui_info') or not elem.gui_info:
             elem.gui_info = self.placeables_controller.get_gui_info(elem)(elem=elem, textbox=self)
+            elem.renderer = elem.gui_info.render
 
         for sub in elem.sub:
             self.add_default_gui_info(sub)

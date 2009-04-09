@@ -449,16 +449,9 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
         for i in range(self.MAX_SOURCES):
             if i < num_unit_sources:
-                sourcestr = ''
-                if self.unit.hasplural():
-                    sourcestr = self.unit.source.strings[i]
-                elif i == 0:
-                    sourcestr = self.unit.source
-                else:
-                    raise IndexError()
-
+                sourcestr = self.unit.rich_source[i]
                 self.sources[i].modify_font(rendering.get_source_font_description())
-                self.sources[i].set_text(markup.escape(sourcestr))
+                self.sources[i].set_text(sourcestr)
                 self.sources[i].parent.show_all()
                 #logging.debug('Showing source #%d: %s' % (i, self.sources[i]))
             else:
@@ -512,15 +505,9 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         for i in range(self.MAX_TARGETS):
             if i < nplurals:
                 # plural forms already in file
-                if self.unit.hasplural() and i < num_unit_targets:
-                    targetstr = self.unit.target.strings[i]
-                elif i == 0:
-                    targetstr = self.unit.target
-                else:
-                    targetstr = ''
-
+                targetstr = self.unit.rich_target[i]
                 self.targets[i].modify_font(rendering.get_target_font_description())
-                self.targets[i].set_text(markup.escape(targetstr))
+                self.targets[i].set_text(targetstr)
                 self.targets[i].parent.show_all()
                 #logging.debug('Showing target #%d: %s' % (i, self.targets[i]))
             else:

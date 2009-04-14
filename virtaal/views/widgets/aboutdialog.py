@@ -52,18 +52,24 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.""")
         self.set_website("http://translate.sourceforge.net/wiki/virtaal/index")
         self.set_website_label(_("Virtaal website"))
         self.set_authors([
-                "Friedel Wolff <friedel@translate.org.za>",
-                "Wynand Winterbach <wynand@translate.org.za>",
-                "Dwayne Bailey <dwayne@translate.org.za>",
-                "Walter Leibbrandt <walter@translate.org.za>",
-                "Alaa Abd El Fattah <alaa@translate.org.za>",
+                "Friedel Wolff",
+                "Wynand Winterbach",
+                "Dwayne Bailey",
+                "Walter Leibbrandt",
+                "Alaa Abd El Fattah",
+                "",
+                _("We thank our donors:"),
+                _("International Development and Research Centre"),
+                "\thttp://idrc.ca/",
+                _("Mozilla Corporation"),
+                "\thttp://mozilla.com/",
                 ])
         # l10n: Rather than translating, fill in the names of the translators
         self.set_translator_credits(_("translator-credits"))
         self.set_icon(parent.get_icon())
         self.set_logo(gtk.gdk.pixbuf_new_from_file(pan_app.get_abs_data_filename(["virtaal", "virtaal_logo.png"])))
         self.set_artists([
-                "Heather Bailey <heather@translate.org.za>",
+                "Heather Bailey",
                 ])
         # FIXME entries that we may want to add
         #self.set_documenters()

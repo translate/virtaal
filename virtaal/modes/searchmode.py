@@ -235,15 +235,16 @@ class SearchMode(BaseMode):
     def _add_widgets(self):
         table = self.controller.view.mode_box
 
-        table.attach(self.ent_search, 2, 3, 0, 1)
-        table.attach(self.btn_search, 3, 4, 0, 1)
-        table.attach(self.chk_casesensitive, 4, 5, 0, 1)
-        table.attach(self.chk_regex, 5, 6, 0, 1)
+        xoptions = gtk.FILL
+        table.attach(self.ent_search, 2, 3, 0, 1, xoptions=xoptions)
+        table.attach(self.btn_search, 3, 4, 0, 1, xoptions=xoptions)
+        table.attach(self.chk_casesensitive, 4, 5, 0, 1, xoptions=xoptions)
+        table.attach(self.chk_regex, 5, 6, 0, 1, xoptions=xoptions)
 
-        table.attach(self.lbl_replace, 1, 2, 1, 2)
-        table.attach(self.ent_replace, 2, 3, 1, 2)
-        table.attach(self.btn_replace, 3, 4, 1, 2)
-        table.attach(self.chk_replace_all, 4, 5, 1, 2)
+        table.attach(self.lbl_replace, 1, 2, 1, 2, xoptions=xoptions)
+        table.attach(self.ent_replace, 2, 3, 1, 2, xoptions=xoptions)
+        table.attach(self.btn_replace, 3, 4, 1, 2, xoptions=xoptions)
+        table.attach(self.chk_replace_all, 4, 5, 1, 2, xoptions=xoptions)
 
         table.show_all()
 

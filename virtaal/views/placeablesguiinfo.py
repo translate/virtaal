@@ -51,7 +51,7 @@ class StringElemGUI(object):
                 setattr(self, kw, kwargs[kw])
 
     # METHODS #
-    def create_tag(self):
+    def create_tags(self):
         tag = gtk.TextTag()
         if self.fg:
             tag.props.foreground = self.fg
@@ -59,7 +59,7 @@ class StringElemGUI(object):
         if self.bg:
             tag.props.background = self.bg
 
-        return tag
+        return [(tag, None, None)]
 
     def create_widget(self):
         return None
@@ -93,6 +93,21 @@ class PhGUI(StringElemGUI):
 class GPlaceableGUI(StringElemGUI):
     fg = '#f7f7f7'
     bg = 'darkred'
+
+    def create_tags(self):
+        metatag = gtk.TextTag()
+        metatag.props.foreground = self.fg
+        metatag.props.background = self.bg
+
+        ttag = gtk.TextTag()
+        ttag.props.foreground = StringElemGUI.fg
+        ttag.props.background = 'yellow'
+
+        prefixlen = len(self.get_prefix())
+        return [
+            (metatag, 0, -1),
+            (ttag, prefixlen, -2),
+        ]
 
     def get_prefix(self):
         return u'%s{' % (self.elem.id)

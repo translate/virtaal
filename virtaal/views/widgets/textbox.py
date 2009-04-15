@@ -151,13 +151,37 @@ class TextBox(gtk.TextView):
             #print '[%s] at offset %d' % (unicode(elem).encode('utf-8'), offset)
             self.emit('before-apply-tags', elem)
 
-            iters = (
-                self.buffer.get_iter_at_offset(offset),
-                self.buffer.get_iter_at_offset(offset + len(elem))
-            )
             if getattr(elem, 'gui_info', None):
-                tag = elem.gui_info.create_tag()
-                if tag:
+                start_index = offset
+                end_index = offset + len(elem)
+                interval = end_index - start_index
+                for tag, tag_start, tag_end in elem.gui_info.create_tags():
+                    if tag is None:
+                        continue
+                    # Calculate tag start and end offsets
+                    if tag_start is None:
+                        tag_start = start_index
+                    if tag_end is None:
+                        tag_end = end_index
+                    if tag_start < 0:
+                        tag_start += interval + 1
+                    else:
+                        tag_start += start_index
+                    if tag_end < 0:
+                        tag_end += end_index + 1
+                    else:
+                        tag_end += start_index
+                    if tag_start < start_index:
+                        tag_start = start_index
+                    if tag_end > end_index:
+                        tag_end = end_index
+
+                    iters = (
+                        self.buffer.get_iter_at_offset(tag_start),
+                        self.buffer.get_iter_at_offset(tag_end)
+                    )
+                    #print '  Apply tag at interval (%d, %d) [%s]' % (tag_start, tag_end, self.get_text(*iters))
+
                     if not include_subtree or \
                             elem.gui_info.fg != placeablesguiinfo.StringElemGUI.fg or \
                             elem.gui_info.bg != placeablesguiinfo.StringElemGUI.bg:

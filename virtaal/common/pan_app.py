@@ -93,6 +93,8 @@ class Settings:
     }
     plugin_state =  {
         "helloworld": "disabled",
+        "ipython_console": "disabled",
+        "python_console": "disabled",
     }
     undo = {
         "depth": 10000,

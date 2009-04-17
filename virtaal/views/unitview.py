@@ -545,21 +545,27 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         return False
 
     def _on_target_changed(self, buffer, index):
-        newtext = self.get_target_n(index)
-        if self.unit.hasplural():
-            nplurals = self.controller.main_controller.lang_controller.target_lang.nplurals
-            # FIXME: The following two lines are necessary because self.unit.target always
-            # returns a new multistring, so you can't assign to an index directly.
-            target = self.unit.target.strings
-            if len(target) < nplurals:
-                # pad the target with empty strings
-                target += (nplurals - len(target)) * [u""]
-            target[index] = newtext
-            self.unit.target = target
-        elif index == 0:
-            self.unit.target = newtext
+        tgt = self.targets[index]
+        if tgt.elem:
+            rich_target = self.unit.rich_target
+            rich_target[index] = tgt.elem
+            self.unit.rich_target = rich_target
         else:
-            raise IndexError()
+            newtext = self.get_target_n(index)
+            if self.unit.hasplural():
+                nplurals = self.controller.main_controller.lang_controller.target_lang.nplurals
+                # FIXME: The following two lines are necessary because self.unit.target always
+                # returns a new multistring, so you can't assign to an index directly.
+                target = self.unit.target.strings
+                if len(target) < nplurals:
+                    # pad the target with empty strings
+                    target += (nplurals - len(target)) * [u""]
+                target[index] = newtext
+                self.unit.target = target
+            elif index == 0:
+                self.unit.target = newtext
+            else:
+                raise IndexError()
 
         self.modified()
 

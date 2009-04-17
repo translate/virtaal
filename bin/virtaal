@@ -23,7 +23,7 @@
 
 # Let's check for dependencies before we do anything else
 from virtaal.support import depcheck
-optional_modules = ['psyco', 'enchant', 'gtkspell', 'psycopg']
+optional_modules = ['enchant', 'gtkspell', 'psycopg']
 error_messages = {
     'translate':  'Translate Toolkit >= 1.3.0 is required for Virtaal to function.',
     'gtk':        'PyGtk >= 2.12.0 is required for Virtaal to function.',
@@ -33,7 +33,6 @@ error_messages = {
     'pycurl':     'PyCurl is required for certain TM- and terminology back-ends.',
     'sqlite3':    'SQLite3 is required for Virtaal to function.',
     'wsgiref':    'WSGIRef is required for Virtaal to function.',
-    'psyco':      'Psyco not installed: Some operations may be slower.',
     'enchant':    'Enchant not installed: Spell checking will not work.',
     'gtkspell':   'GtkSpell not installed: Spell checking will not work.',
     'psycopg':    'PsycoPG not installed: The TinyTM plug-in will not work.'

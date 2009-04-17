@@ -65,7 +65,7 @@ extra_tests = {
 #############################
 def test_import(modname):
     try:
-        __import__(modname, {}, [], [])
+        __import__(modname, {}, {}, [])
     except ImportError:
         return False
     return True

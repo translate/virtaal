@@ -45,7 +45,7 @@ class RESTClient(object):
                                   (gobject.TYPE_PYOBJECT, gobject.TYPE_PYOBJECT)),
         }
 
-        def __init__(self, url, id, method='GET', data=None, headers=None, callback=None):
+        def __init__(self, url, id, method='GET', data=None, headers=None):
             GObjectWrapper.__init__(self)
             self.result = StringIO.StringIO()
             self.result_headers = StringIO.StringIO()

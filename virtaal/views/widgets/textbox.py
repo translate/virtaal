@@ -147,9 +147,9 @@ class TextBox(gtk.TextView):
     @accepts(Self(), [StringElem, bool])
     def apply_tags(self, elem, include_subtree=True):
         offset = self.elem.gui_info.index(elem)
-        logging.debug('offset for %s: %d' % (repr(elem), offset))
+        #logging.debug('offset for %s: %d' % (repr(elem), offset))
         if offset >= 0:
-            logging.debug('[%s] at offset %d' % (unicode(elem).encode('utf-8'), offset))
+            #logging.debug('[%s] at offset %d' % (unicode(elem).encode('utf-8'), offset))
             self.emit('before-apply-tags', elem)
 
             if getattr(elem, 'gui_info', None):
@@ -181,7 +181,7 @@ class TextBox(gtk.TextView):
                         self.buffer.get_iter_at_offset(tag_start),
                         self.buffer.get_iter_at_offset(tag_end)
                     )
-                    logging.debug('  Apply tag at interval (%d, %d) [%s]' % (tag_start, tag_end, self.get_text(*iters)))
+                    #logging.debug('  Apply tag at interval (%d, %d) [%s]' % (tag_start, tag_end, self.get_text(*iters)))
 
                     if not include_subtree or \
                             elem.gui_info.fg != placeablesguiinfo.StringElemGUI.fg or \

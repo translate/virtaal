@@ -149,8 +149,19 @@ class GPlaceableGUI(StringElemGUI):
     def get_postfix(self):
         return u'}'
 
+class XPlaceableGUI(StringElemGUI):
+    fg = '#ffffff'
+    bg = '#000000'
+
+    def get_prefix(self):
+        return u'{%s' % (self.elem.id)
+
+    def get_postfix(self):
+        return u'}'
+
 
 element_gui_map = [
     (base.Ph, PhGUI),
     (base.G, GPlaceableGUI),
+    (base.X, XPlaceableGUI),
 ]

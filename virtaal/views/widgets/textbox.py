@@ -50,9 +50,8 @@ class TextBox(gtk.TextView):
     }
     """A table of name-keybinding mappings. The name (key) is passed as the
     second parameter to the 'key-pressed' event."""
-    unselectables = [StringElem]
-    """A list of C{StringElem} sub-classes that should not be selectable with
-    Alt+Left or Alt+Right."""
+    unselectables = [StringElem, str, unicode]
+    """A list of classes that should not be selectable with Alt+Left or Alt+Right."""
 
     # INITIALIZERS #
     def __init__(self, main_controller, text=None, selector_textbox=None):

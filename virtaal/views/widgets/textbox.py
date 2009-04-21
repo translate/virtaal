@@ -146,9 +146,10 @@ class TextBox(gtk.TextView):
 
     @accepts(Self(), [StringElem, bool])
     def apply_tags(self, elem, include_subtree=True):
-        offset = self.elem.elem_offset(elem)
+        offset = self.elem.gui_info.index(elem)
+        logging.debug('offset for %s: %d' % (repr(elem), offset))
         if offset >= 0:
-            #print '[%s] at offset %d' % (unicode(elem).encode('utf-8'), offset)
+            logging.debug('[%s] at offset %d' % (unicode(elem).encode('utf-8'), offset))
             self.emit('before-apply-tags', elem)
 
             if getattr(elem, 'gui_info', None):
@@ -180,7 +181,7 @@ class TextBox(gtk.TextView):
                         self.buffer.get_iter_at_offset(tag_start),
                         self.buffer.get_iter_at_offset(tag_end)
                     )
-                    #print '  Apply tag at interval (%d, %d) [%s]' % (tag_start, tag_end, self.get_text(*iters))
+                    logging.debug('  Apply tag at interval (%d, %d) [%s]' % (tag_start, tag_end, self.get_text(*iters)))
 
                     if not include_subtree or \
                             elem.gui_info.fg != placeablesguiinfo.StringElemGUI.fg or \
@@ -298,28 +299,28 @@ class TextBox(gtk.TextView):
         if text[start_offset:end_offset] == '\n' and text[:start_offset].endswith('\\n'):
             start_iter.set_offset(start_offset-2)
 
-        start_elem = self.elem.elem_at_offset(start_offset)
-        end_elem = self.elem.elem_at_offset(end_offset)
+        start_elem = self.elem.gui_info.elem_at_offset(start_offset)
+        end_elem = self.elem.gui_info.elem_at_offset(end_offset)
 
-        #print '{%s} %s[%s]%s [%s|%s] (%d, %d)' % (
+        #logging.debug('{%s} %s[%s]%s [%s|%s] (%d, %d)' % (
         #    repr(self.elem),
         #    text[:start_offset],
         #    text[start_offset:end_offset],
         #    text[end_offset:],
         #    repr(start_elem), repr(end_elem),
         #    start_offset, end_offset
-        #)
+        #))
 
         if start_elem is not None and not start_elem.iseditable:
-            if start_elem is end_elem and start_offset == self.elem.elem_offset(end_elem):
+            if start_elem is end_elem and start_offset == self.elem.gui_info.index(end_elem):
                 # Delete was pressed before a placeable
                 end_iter.set_offset(end_offset + len(end_elem) - 1)
-            elif start_offset == (self.elem.elem_offset(start_elem) + len(start_elem) - 1) and end_offset - start_offset == 1:
+            elif start_offset == (self.elem.gui_info.index(start_elem) + len(start_elem) - 1) and end_offset - start_offset == 1:
                 # Backspace was pressed after a placeable
-                start_iter.set_offset(self.elem.elem_offset(start_elem))
+                start_iter.set_offset(self.elem.gui_info.index(start_elem))
 
         #for i in (start_iter.get_offset(), end_iter.get_offset()-1):
-        #    elem = self.elem.elem_at_offset(i)
+        #    elem = self.elem.gui_info.elem_at_offset(i)
         #    if not elem:
         #        continue
         #    if self.elem and not elem.iseditable:
@@ -332,10 +333,10 @@ class TextBox(gtk.TextView):
         if not self.elem:
             return
 
-        elem = self.elem.elem_at_offset(iter.get_offset())
+        elem = self.elem.gui_info.elem_at_offset(iter.get_offset())
         if not elem:
             return
-        #between_elems = (iter.get_offset() == self.elem.elem_offset(elem)) or (iter.get_offset() == len(self.elem))
+        #between_elems = (iter.get_offset() == self.elem.gui_info.index(elem)) or (iter.get_offset() == len(self.elem))
         #if self.elem and not elem.iseditable and not between_elems:
         #    self.buffer.stop_emission('insert-text')
         #    return True

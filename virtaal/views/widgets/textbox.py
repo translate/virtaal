@@ -160,7 +160,7 @@ class TextBox(gtk.TextView):
                         continue
                     # Calculate tag start and end offsets
                     if tag_start is None:
-                        tag_start = start_index
+                        tag_start = 0
                     if tag_end is None:
                         tag_end = end_index
                     if tag_start < 0:

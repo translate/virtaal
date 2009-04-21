@@ -272,7 +272,6 @@ class TextBox(gtk.TextView):
         # FIXME: The following line caused the program to segfault, so it's removed (for now).
         #tagtable.foreach(remtag)
         # At this point we have a tree of string elements with GUI info.
-        self.apply_tags(text, include_subtree=False)
         self.apply_tags(text)
 
     def __delayed_update_tree(self):

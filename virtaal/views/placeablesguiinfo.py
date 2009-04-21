@@ -33,6 +33,8 @@ class StringElemGUI(object):
     bg = '#ffffff'
     """The current background colour."""
 
+    child_offsets = {}
+    """Offsets of child strings in the "rendered" string."""
     cursor_allowed = True
     """Whether the cursor is allowed to enter this element."""
 
@@ -41,6 +43,7 @@ class StringElemGUI(object):
     def __init__(self, elem, textbox, **kwargs):
         if not isinstance(elem, StringElem):
             raise ValueError('"elem" parameter must be a StringElem.')
+        self.child_offsets = {}
         self.elem = elem
         self.textbox = textbox
         self.marks = {}
@@ -71,16 +74,47 @@ class StringElemGUI(object):
             cursor_allowed=self.cursor_allowed
         )
 
+    def elem_at_offset(self, offset):
+        """Find the C{StringElem} at the given offset.
+            This method is used in Virtaal as a replacement for
+            C{StringElem.elem_at_offset}, because this method takes the
+            transformations by L{render}() into account."""
+        sorted_offsets = self.child_offsets.items()
+        sorted_offsets.sort(lambda a, b: cmp(a[1], b[1]))
+        if offset < sorted_offsets[0][1]:
+            return sorted_offsets[0][0]
+        for i in range(len(sorted_offsets)-1):
+            if sorted_offsets[i][1] <= offset < sorted_offsets[i+1][1]:
+                return sorted_offsets[i][0]
+        return sorted_offsets[-1][0]
+
     def get_prefix(self):
         return ''
 
     def get_postfix(self):
         return ''
 
+    def index(self, elem):
+        """Replacement for C{StringElem.elem_offset()} to be aware of the
+            changes made by L{render()}."""
+        if elem is self.elem:
+            return 0
+        for e in self.elem.sub:
+            if e is elem and e in self.child_offsets:
+                return self.child_offsets[elem]
+            if hasattr(e, 'gui_info'):
+                idx = e.gui_info.index(elem)
+                if idx >= 0:
+                    return self.child_offsets[e] + idx
+        return -1
+
     def render(self, elem):
         assert elem is self.elem
         childstr = u''
+        prefixoffset = len(self.get_prefix())
+        offset = 0
         for sub in self.elem.sub:
+            self.child_offsets[sub] = prefixoffset + len(childstr)
             childstr += unicode(sub)
         return u'%s%s%s' % (self.get_prefix(), childstr, self.get_postfix())
 

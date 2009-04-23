@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 from gobject import GObject, SIGNAL_RUN_FIRST, TYPE_INT, TYPE_NONE, TYPE_PYOBJECT, TYPE_STRING
+from translate.storage.placeables import parse as parse_placeables
 
 from virtaal.common import GObjectWrapper
 from virtaal.views import UnitView
@@ -46,6 +47,7 @@ class UnitController(BaseController):
         self.main_controller.unit_controller = self
         self.store_controller = store_controller
         self.store_controller.unit_controller = self
+        self.placeables_parsers = []
 
         self.view = UnitView(self)
         self.view.connect('delete-text', self._unit_delete_text)
@@ -72,6 +74,12 @@ class UnitController(BaseController):
         self.current_unit = unit
         self.nplurals = self.main_controller.lang_controller.target_lang.nplurals
 
+        if self.placeables_parsers:
+            rich_source = self.current_unit.rich_source
+            for i in range(len(rich_source)):
+                rich_source[i] = parse_placeables(rich_source[i], self.placeables_parsers)
+            self.current_unit.rich_source = rich_source
+
         self.view.load_unit(unit)
         return self.view
 
@@ -96,11 +104,17 @@ class UnitController(BaseController):
         if controller is main_controller.lang_controller:
             self.main_controller.lang_controller.connect('source-lang-changed', self._on_language_changed)
             self.main_controller.lang_controller.connect('target-lang-changed', self._on_language_changed)
+        elif controller is main_controller.placeables_controller:
+            main_controller.placeables_controller.connect('parsers-changed', self._on_parsers_changed)
+            self._on_parsers_changed(main_controller.placeables_controller)
 
     def _on_language_changed(self, lang_controller, langcode):
         self.nplurals = lang_controller.target_lang.nplurals
         if hasattr(self, 'view'):
             self.view.update_languages()
+
+    def _on_parsers_changed(self, placeables_controller):
+        self.placeables_parsers = placeables_controller.parsers
 
     def _on_store_loaded(self, store_controller):
         """Call C{_on_language_changed()}.

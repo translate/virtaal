@@ -103,16 +103,15 @@ class TextBox(gtk.TextView):
             Uses C{gtk.TextBuffer.set_text()}.
             @type  text: str|unicode|L{StringElem}
             @param text: The text to render in this text box."""
+        if not isinstance(text, StringElem):
+            text = StringElem(text)
         self.selected_elem = None
         self.selected_elem_index = None
 
         self.buffer.handler_block_by_func(self._on_delete_range)
         self.buffer.handler_block_by_func(self._on_insert_text)
-        if isinstance(text, StringElem):
-            self.elem = text
-            self.add_default_gui_info(text)
-        else:
-            self.elem = None
+        self.elem = text
+        self.add_default_gui_info(text)
         self.buffer.set_text(unicode(text))
         self.buffer.handler_unblock_by_func(self._on_delete_range)
         self.buffer.handler_unblock_by_func(self._on_insert_text)

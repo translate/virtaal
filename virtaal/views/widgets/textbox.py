@@ -50,7 +50,7 @@ class TextBox(gtk.TextView):
     }
     """A table of name-keybinding mappings. The name (key) is passed as the
     second parameter to the 'key-pressed' event."""
-    unselectables = [StringElem, str, unicode]
+    unselectables = [StringElem]
     """A list of classes that should not be selectable with Alt+Left or Alt+Right."""
 
     # INITIALIZERS #

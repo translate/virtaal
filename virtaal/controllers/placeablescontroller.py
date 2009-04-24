@@ -20,7 +20,7 @@
 
 import gobject
 import logging
-from translate.storage.placeables import general, StringElem
+from translate.storage.placeables import general, parse as parse_placeables, StringElem
 
 from virtaal.common import GObjectWrapper
 from virtaal.views import placeablesguiinfo
@@ -58,6 +58,24 @@ class PlaceablesController(BaseController):
 
         self.parsers.extend(newparsers)
         self.emit('parsers-changed')
+
+    def apply_parsers(self, elems):
+        """Apply all selected placeable parsers to the list of string elements
+            given.
+
+            @param elems: The list of C{StringElem}s to apply the parsers to."""
+        if not isinstance(elems, list) and isinstance(elems, StringElem):
+            elems = [elems]
+
+        for elem in elems:
+            leaves = elem.flatten()
+            for leaf in leaves:
+                parsed = parse_placeables(leaf, self.parsers)
+                if isinstance(leaf, (str, unicode)) and parsed != StringElem(leaf):
+                    parent = elem.get_parent_elem(leaf)
+                    if parent is not None:
+                        parent.sub[parent.sub.index(leaf)] = StringElem(parsed)
+        return elems
 
     def get_gui_info(self, placeable):
         """Get an appropriate C{StringElemGUI} or sub-class instance based on

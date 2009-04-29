@@ -37,9 +37,11 @@ class TextBox(gtk.TextView):
 
     __gtype_name__ = 'TextBox'
     __gsignals__ = {
-        'after-apply-tags': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'after-apply-tags':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'before-apply-tags': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'key-pressed': (SIGNAL_RUN_LAST, bool, (TYPE_PYOBJECT, str)),
+        'key-pressed':       (SIGNAL_RUN_LAST,  bool, (TYPE_PYOBJECT, str)),
+        'text-deleted':      (SIGNAL_RUN_LAST,  bool, (int, int, str, TYPE_PYOBJECT)),
+        'text-inserted':     (SIGNAL_RUN_LAST,  bool, (str, TYPE_PYOBJECT)),
     }
 
     SPECIAL_KEYS = {

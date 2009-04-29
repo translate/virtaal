@@ -79,7 +79,6 @@ class TextBox(gtk.TextView):
 
     def __connect_default_handlers(self):
         self.connect('key-press-event', self._on_key_pressed)
-        self.buffer.connect('changed', self._on_changed)
         self.buffer.connect('insert-text', self._on_insert_text)
         self.buffer.connect('delete-range', self._on_delete_range)
 
@@ -280,9 +279,6 @@ class TextBox(gtk.TextView):
 
 
     # EVENT HANDLERS #
-    def _on_changed(self, buffer):
-        pass
-
     def __on_controller_register(self, main_controller, controller):
         if controller is main_controller.placeables_controller:
             self.placeables_controller = controller

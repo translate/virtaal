@@ -21,7 +21,7 @@
 import gobject
 import gtk
 import logging
-from gobject import SIGNAL_RUN_FIRST, SIGNAL_RUN_LAST, TYPE_BOOLEAN, TYPE_NONE, TYPE_PYOBJECT, TYPE_STRING
+from gobject import SIGNAL_RUN_FIRST, SIGNAL_RUN_LAST, TYPE_PYOBJECT
 
 from translate.misc.typecheck import accepts, Self, IsOneOf
 from translate.storage.placeables import StringElem
@@ -37,9 +37,9 @@ class TextBox(gtk.TextView):
 
     __gtype_name__ = 'TextBox'
     __gsignals__ = {
-        'after-apply-tags': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
-        'before-apply-tags': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
-        'key-pressed': (SIGNAL_RUN_LAST, TYPE_BOOLEAN, (TYPE_PYOBJECT, TYPE_STRING)),
+        'after-apply-tags': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'before-apply-tags': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'key-pressed': (SIGNAL_RUN_LAST, bool, (TYPE_PYOBJECT, str)),
     }
 
     SPECIAL_KEYS = {

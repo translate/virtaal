@@ -290,55 +290,19 @@ class TextBox(gtk.TextView):
         if not self.elem:
             return
 
-        text = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter())
-        start_offset = start_iter.get_offset()
-        end_offset = end_iter.get_offset()
+        deleted = self.elem.delete_range(start_iter.get_offset(), end_iter.get_offset())
 
-        if text[start_offset:end_offset] == '\n' and text[:start_offset].endswith('\\n'):
-            start_iter.set_offset(start_offset-2)
-
-        start_elem = self.elem.gui_info.elem_at_offset(start_offset)
-        end_elem = self.elem.gui_info.elem_at_offset(end_offset)
-
-        #logging.debug('{%s} %s[%s]%s [%s|%s] (%d, %d)' % (
-        #    repr(self.elem),
-        #    text[:start_offset],
-        #    text[start_offset:end_offset],
-        #    text[end_offset:],
-        #    repr(start_elem), repr(end_elem),
-        #    start_offset, end_offset
-        #))
-
-        if start_elem is not None and not start_elem.iseditable:
-            if start_elem is end_elem and start_offset == self.elem.gui_info.index(end_elem):
-                # Delete was pressed before a placeable
-                end_iter.set_offset(end_offset + len(end_elem) - 1)
-            elif start_offset == (self.elem.gui_info.index(start_elem) + len(start_elem) - 1) and end_offset - start_offset == 1:
-                # Backspace was pressed after a placeable
-                start_iter.set_offset(self.elem.gui_info.index(start_elem))
-
-        #for i in (start_iter.get_offset(), end_iter.get_offset()-1):
-        #    elem = self.elem.gui_info.elem_at_offset(i)
-        #    if not elem:
-        #        continue
-        #    if self.elem and not elem.iseditable:
-        #        self.buffer.stop_emission('delete-range')
-        #        return True
-
+        self.emit('text-deleted', start_iter.get_offset(), end_iter.get_offset(), deleted, self.elem)
         self.__delayed_update_tree()
 
     def _on_insert_text(self, buffer, iter, ins_text, length):
         if not self.elem:
             return
 
-        elem = self.elem.gui_info.elem_at_offset(iter.get_offset())
-        if not elem:
-            return
-        #between_elems = (iter.get_offset() == self.elem.gui_info.index(elem)) or (iter.get_offset() == len(self.elem))
-        #if self.elem and not elem.iseditable and not between_elems:
-        #    self.buffer.stop_emission('insert-text')
-        #    return True
+        self.elem.insert(iter.get_offset(), ins_text)
 
+        #self.buffer.stop_emission('insert-text')
+        self.emit('text-inserted', ins_text, self.elem)
         self.__delayed_update_tree()
 
     def _on_key_pressed(self, widget, event, *args):

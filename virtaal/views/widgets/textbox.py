@@ -201,8 +201,18 @@ class TextBox(gtk.TextView):
     def insert_translation(self, elem):
         widget = elem.gui_info.create_widget()
         if widget:
-            cursor_iter = self.buffer.get_iter_at_offset(self.buffer.props.cursor_position)
+            cursor_pos = self.buffer.props.cursor_position
+            cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)
             anchor = self.buffer.create_child_anchor(cursor_iter)
+            # It is necessary to recreate cursor_iter becuase, for some inexplicable reason,
+            # the Gtk guys thought it acceptable to have create_child_anchor() above CHANGE
+            # THE PARAMETER ITER'S VALUE! But only in some cases, while the moon is 73.8% full
+            # and it's after 16:33. Documenting this is obviously also too much to ask.
+            # Nevermind the fact that there isn't simply a gtk.TextBuffer.remove_anchor() method
+            # or something similar. Why would you want to remove anything from a TextView that
+            # you have added anyway!?
+            # It's crap like this that'll make me ditch Gtk.
+            cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)
             self.add_child_at_anchor(widget, anchor)
             widget.show_all()
             if hasattr(widget, 'inserted'):

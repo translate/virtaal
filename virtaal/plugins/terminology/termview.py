@@ -92,12 +92,11 @@ class TerminologyCombo(gtk.ComboBox):
             self.parent.grab_focus()
 
         buffer = self.parent.get_buffer()
+        self.parent.remove(self)
         if self.insert_iter:
             iternext = buffer.get_iter_at_offset(self.insert_iter.get_offset() + 1)
             if iternext:
-                # FIXME: Not sure if the following is the best way to remove the combo box
-                # from the text view.
-                buffer.backspace(iternext, False, True)
+                buffer.delete(self.insert_iter, iternext)
 
         if self.selected_string:
             buffer.insert_at_cursor(self.selected_string)

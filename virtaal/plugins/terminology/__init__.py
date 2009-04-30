@@ -47,5 +47,6 @@ class Plugin(BasePlugin):
         self.termcontroller = TerminologyController(self.main_controller, self.config)
 
     def destroy(self):
+        self.config = self.termcontroller.config
         self.save_config()
         self.termcontroller.destroy()

@@ -172,5 +172,9 @@ class TerminologyView(BaseView):
             for item in selectdlg.sview.get_all_items():
                 if item['enabled']:
                     plugin_controller.enable_plugin(item['name'])
+                    if item['name'] in self.controller.config['disabled_models']:
+                        self.controller.config['disabled_models'].remove(item['name'])
                 else:
                     plugin_controller.disable_plugin(item['name'])
+                    if item['name'] not in self.controller.config['disabled_models']:
+                        self.controller.config['disabled_models'].append(item['name'])

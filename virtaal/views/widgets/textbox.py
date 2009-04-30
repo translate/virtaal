@@ -300,8 +300,25 @@ class TextBox(gtk.TextView):
         if not self.elem:
             return
 
-        deleted = self.elem.delete_range(start_iter.get_offset(), end_iter.get_offset())
+        text = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter())
+        start_offset = start_iter.get_offset()
+        end_offset = end_iter.get_offset()
 
+        if text[start_offset:end_offset] == '\n' and text[:start_offset].endswith('\\n'):
+            start_iter.set_offset(start_offset-2)
+
+        start_elem = self.elem.gui_info.elem_at_offset(start_offset)
+        end_elem = self.elem.gui_info.elem_at_offset(end_offset)
+
+        if start_elem is not None and not start_elem.iseditable:
+            if start_elem is end_elem and start_offset == self.elem.gui_info.index(end_elem):
+                # Delete was pressed before a placeable
+                end_iter.set_offset(end_offset + len(end_elem) - 1)
+            elif start_offset == (self.elem.gui_info.index(start_elem) + len(start_elem) - 1) and end_offset - start_offset == 1:
+                # Backspace was pressed after a placeable
+                start_iter.set_offset(self.elem.gui_info.index(start_elem))
+
+        deleted = self.elem.delete_range(start_iter.get_offset(), end_iter.get_offset())
         self.emit('text-deleted', start_iter.get_offset(), end_iter.get_offset(), deleted, self.elem)
         self.__delayed_update_tree()
 

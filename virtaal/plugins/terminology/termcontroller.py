@@ -48,10 +48,11 @@ class TerminologyController(BaseController):
     def __init__(self, main_controller, config={}):
         GObjectWrapper.__init__(self)
 
+        self.config = config
         self.main_controller = main_controller
         self.placeables_controller = main_controller.placeables_controller
 
-        self.disabled_model_names = ['basetermmodel'] + config.get('disabled_models', [])
+        self.disabled_model_names = ['basetermmodel'] + self.config.get('disabled_models', [])
         self.placeables_controller.add_parsers(*terminology.parsers)
 
         if not (terminology.TerminologyPlaceable, TerminologyGUIInfo) in placeablesguiinfo.element_gui_map:

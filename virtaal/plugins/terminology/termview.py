@@ -147,8 +147,8 @@ class TerminologyView(BaseView):
     # EVENT HANDLERS #
     def _on_select_backends(self, menuitem):
         selectdlg = SelectDialog(
-            title='Select TM back-ends',
-            message='Please select the TM back-ends you would like to have enabled.'
+            title=_('Select Terminology back-ends'),
+            message=_('Please select the terminology back-ends you would like to have enabled.')
         )
 
         items = []

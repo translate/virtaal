@@ -97,6 +97,8 @@ class StringElemGUI(object):
     def index(self, elem):
         """Replacement for C{StringElem.elem_offset()} to be aware of the
             changes made by L{render()}."""
+        if not isinstance(elem, StringElem) and self.elem.isleaf():
+            return 0
         if elem is self.elem:
             return 0
         for e in self.elem.sub:
@@ -114,7 +116,10 @@ class StringElemGUI(object):
         prefixoffset = len(self.get_prefix())
         offset = 0
         for sub in self.elem.sub:
-            self.child_offsets[sub] = prefixoffset + len(childstr)
+            key = sub
+            if not isinstance(sub, StringElem):
+                key = self.elem
+            self.child_offsets[key] = prefixoffset + len(childstr)
             childstr += unicode(sub)
         return u'%s%s%s' % (self.get_prefix(), childstr, self.get_postfix())
 

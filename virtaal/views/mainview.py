@@ -366,6 +366,10 @@ class MainView(BaseView):
         for menuitem in self.menubar.get_children():
             if menuitem.get_child() and menuitem.get_child().get_text() == label:
                 return menuitem
+
+        if '_' in label:
+            return self.find_menu(label.replace('_', ''))
+
         return None
 
     def find_menu_item(self, label, menu=None):
@@ -375,7 +379,7 @@ class MainView(BaseView):
             @param label: The label of the menu item to find.
             @param menu: The (optional) (name of the) menu to search in."""
         if not isinstance(menu, gtk.MenuItem):
-            menu = self.find_menu(menu_name)
+            menu = self.find_menu(label)
         if menu is not None:
             menus = [menu]
         else:
@@ -385,8 +389,11 @@ class MainView(BaseView):
             for item in menuitem.get_submenu().get_children():
                 if item.get_child() and item.get_child().get_text() == label:
                     return item, menuitem
-        return None, None
 
+        if '_' in label:
+            return self.find_menu_item(label.replace('_', ''), menu)
+
+        return None, None
 
     def quit(self):
         width, height = self.main_window.get_size()

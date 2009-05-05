@@ -24,7 +24,10 @@ from translate.search.match import terminologymatcher
 from translate.storage.placeables.terminology import TerminologyPlaceable
 from translate.storage.pypo import pofile
 
-from basetermmodel import BaseTerminologyModel
+#FIXME: The following line will cause this model to not work if plug-ins are loaded from ~/.virtaal/virtaal_plugins (probably)
+from virtaal.plugins.terminology.models.basetermmodel import BaseTerminologyModel
+
+from localfileview import LocalFileView
 
 
 class TerminologyModel(BaseTerminologyModel):
@@ -43,6 +46,7 @@ class TerminologyModel(BaseTerminologyModel):
 
         self.matcher = None
         self.internal_name = internal_name
+        self.view = LocalFileView(self)
 
         self.load_config()
         self.load_files()
@@ -50,6 +54,8 @@ class TerminologyModel(BaseTerminologyModel):
 
     # METHODS #
     def destroy(self):
+        self.view.destroy()
+        self.save_config()
         super(TerminologyModel, self).destroy()
         if self.matcher in TerminologyPlaceable.matchers:
             TerminologyPlaceable.matchers.remove(self.matcher)

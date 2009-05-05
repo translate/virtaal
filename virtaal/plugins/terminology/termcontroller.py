@@ -58,8 +58,8 @@ class TerminologyController(BaseController):
         if not (terminology.TerminologyPlaceable, TerminologyGUIInfo) in placeablesguiinfo.element_gui_map:
             placeablesguiinfo.element_gui_map.insert(0, (terminology.TerminologyPlaceable, TerminologyGUIInfo))
 
-        self._load_models()
         self.view = TerminologyView(self)
+        self._load_models()
 
     def _load_models(self):
         self.plugin_controller = PluginController(self)

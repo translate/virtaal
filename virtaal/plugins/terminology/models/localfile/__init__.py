@@ -65,7 +65,7 @@ class TerminologyModel(BaseTerminologyModel):
             TerminologyPlaceable.matchers.remove(self.matcher)
 
         stores = []
-        for filename in self.config['files'].split('|'):
+        for filename in self.config['files'].split(','):
             if not filename:
                 continue
             if not os.path.isfile(filename):

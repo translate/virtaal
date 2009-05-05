@@ -39,6 +39,7 @@ class TextBox(gtk.TextView):
     __gsignals__ = {
         'after-apply-tags':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'before-apply-tags': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'element-selected':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'key-pressed':       (SIGNAL_RUN_LAST,  bool, (TYPE_PYOBJECT, str)),
         'text-deleted':      (SIGNAL_RUN_LAST,  bool, (int, int, str, TYPE_PYOBJECT)),
         'text-inserted':     (SIGNAL_RUN_LAST,  bool, (str, TYPE_PYOBJECT)),
@@ -268,6 +269,7 @@ class TextBox(gtk.TextView):
         self.apply_tags(elem, include_subtree=False)
         cursor_offset = self.elem.find(self.selected_elem) + len(self.selected_elem)
         self.buffer.place_cursor(self.buffer.get_iter_at_offset(cursor_offset))
+        self.emit('element-selected', self.selected_elem)
 
     @accepts(Self(), [[StringElem, basestring, None]])
     def update_tree(self, text=None):

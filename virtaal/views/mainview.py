@@ -347,7 +347,7 @@ class MainView(BaseView):
 
     def append_menu_item(self, name, menu):
         """Add a new menu item with the given name to the menu with the given
-            name (C{menu_name})."""
+            name (C{menu})."""
         parent_item = None
         if isinstance(menu, gtk.MenuItem):
             parent_item = menu

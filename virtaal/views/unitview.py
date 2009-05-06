@@ -129,7 +129,6 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         if not accel_group:
             accel_group = gtk.AccelGroup()
 
-        accel_group.connect_by_path("<Virtaal>/Edit/Transfer", on_transfer)
         self.controller.main_controller.view.add_accel_group(accel_group)
         menu_edit.set_accel_group(accel_group)
         mnu_transfer.set_accel_path("<Virtaal>/Edit/Transfer")

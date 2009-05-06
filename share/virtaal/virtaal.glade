@@ -1,18 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.3 on Wed Jan 28 15:52:46 2009 
-	Version: 3.0.1
-	Date: Thu Dec  6 12:30:34 2007
-	User: fwolff
-	Host: dhcppc3
--->
+<?xml version="1.0"?>
 <glade-interface>
+  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="MainWindow">
     <property name="width_request">620</property>
     <property name="height_request">400</property>
     <property name="title" translatable="yes">Virtaal</property>
-    <signal name="destroy" handler="on_mainwindow_destroy"/>
-    <signal name="delete_event" handler="on_mainwindow_delete"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
@@ -29,8 +22,8 @@
                     <property name="visible">True</property>
                     <child>
                       <widget class="GtkImageMenuItem" id="imagemenuitem2">
-                        <property name="visible">True</property>
                         <property name="label">gtk-open</property>
+                        <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_open_activate"/>
@@ -38,9 +31,9 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="save_menuitem">
+                        <property name="label">gtk-save</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
-                        <property name="label">gtk-save</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_save_activate"/>
@@ -48,9 +41,9 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="saveas_menuitem">
+                        <property name="label">gtk-save-as</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
-                        <property name="label">gtk-save-as</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_saveas_activate"/>
@@ -58,9 +51,9 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="revert_menuitem">
+                        <property name="label">gtk-revert-to-saved</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
-                        <property name="label">gtk-revert-to-saved</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_revert_activate"/>
@@ -68,10 +61,11 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="update_menuitem">
+                        <property name="label">_Update to template</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
-                        <property name="label" translatable="yes">_Update to template</property>
                         <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
                         <signal name="activate" handler="on_update_activate"/>
                       </widget>
                     </child>
@@ -94,8 +88,8 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_quit">
-                        <property name="visible">True</property>
                         <property name="label">gtk-quit</property>
+                        <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_quit"/>
@@ -115,8 +109,8 @@
                     <property name="visible">True</property>
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_undo">
-                        <property name="visible">True</property>
                         <property name="label">gtk-undo</property>
+                        <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                       </widget>
@@ -128,24 +122,24 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_cut">
-                        <property name="visible">True</property>
                         <property name="label">gtk-cut</property>
+                        <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                       </widget>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_copy">
-                        <property name="visible">True</property>
                         <property name="label">gtk-copy</property>
+                        <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                       </widget>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_paste">
-                        <property name="visible">True</property>
                         <property name="label">gtk-paste</property>
+                        <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                       </widget>
@@ -156,10 +150,30 @@
                       </widget>
                     </child>
                     <child>
+                      <widget class="GtkImageMenuItem" id="mnu_transfer">
+                        <property name="label" translatable="yes" comments="Activating this menu item copies the whole source (or part thereof) to the target. The &quot;copy&quot; is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.">Transfer from source</property>
+                        <property name="visible">True</property>
+                        <property name="accel_path">&lt;Virtaal&gt;/Edit/Transfer</property>
+                        <property name="use_stock">False</property>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="image1">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-goto-bottom</property>
+                            <property name="icon-size">1</property>
+                          </widget>
+                        </child>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkSeparatorMenuItem" id="separatormenuitem3">
+                        <property name="visible">True</property>
+                      </widget>
+                    </child>
+                    <child>
                       <widget class="GtkImageMenuItem" id="mnu_prefs">
+                        <property name="label">gtk-preferences</property>
                         <property name="visible">True</property>
                         <property name="accel_path">&lt;Virtaal&gt;/Edit/Preferences</property>
-                        <property name="label">gtk-preferences</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                       </widget>
@@ -182,7 +196,7 @@
                         <property name="label" translatable="yes">_Full Screen</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_menuitem_fullscreen_toggled"/>
-                        <accelerator key="F11" modifiers="" signal="activate"/>
+                        <accelerator key="F11" signal="activate"/>
                       </widget>
                     </child>
                   </widget>
@@ -199,18 +213,18 @@
                     <property name="visible">True</property>
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_up">
+                        <property name="label">gtk-go-up</property>
                         <property name="visible">True</property>
                         <property name="accel_path">&lt;Virtaal&gt;/Navigation/Up</property>
-                        <property name="label">gtk-go-up</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                       </widget>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_down">
+                        <property name="label">gtk-go-down</property>
                         <property name="visible">True</property>
                         <property name="accel_path">&lt;Virtaal&gt;/Navigation/Down</property>
-                        <property name="label">gtk-go-down</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                       </widget>
@@ -245,51 +259,38 @@
                     <property name="visible">True</property>
                     <child>
                       <widget class="GtkImageMenuItem" id="menuitem_documentation">
+                        <property name="label">_Online Help</property>
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Online Help</property>
                         <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
                         <signal name="activate" handler="on_menuitem_documentation_activate"/>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="menu-item-image3">
-                            <property name="visible">True</property>
-                            <property name="stock">gtk-help</property>
-                          </widget>
-                        </child>
                       </widget>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="menuitem_tutorial">
+                        <property name="label">_Tutorial</property>
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Tutorial</property>
                         <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
                         <signal name="activate" handler="on_tutorial_activate"/>
                       </widget>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="menuitem_localization_guide">
+                        <property name="label">_Localization Guide</property>
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Localization Guide</property>
                         <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
                         <signal name="activate" handler="on_localization_guide_activate"/>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="menu-item-image2">
-                            <property name="stock">gtk-dialog-info</property>
-                          </widget>
-                        </child>
                       </widget>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="menuitem_report_bug">
+                        <property name="label">Report a _Bug</property>
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Report a _Bug</property>
                         <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
                         <signal name="activate" handler="on_menuitem_report_bug_activate"/>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="menu-item-image4">
-                            <property name="visible">True</property>
-                            <property name="stock">gtk-dialog-error</property>
-                          </widget>
-                        </child>
                       </widget>
                     </child>
                     <child>
@@ -299,8 +300,8 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_about">
-                        <property name="visible">True</property>
                         <property name="label">gtk-about</property>
+                        <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_about_activate"/>
@@ -313,6 +314,7 @@
           </widget>
           <packing>
             <property name="expand">False</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -367,8 +369,8 @@
           <widget class="GtkScrolledWindow" id="scrolledwindow1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="hscrollbar_policy">GTK_POLICY_NEVER</property>
-            <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+            <property name="hscrollbar_policy">never</property>
+            <property name="vscrollbar_policy">automatic</property>
             <child>
               <widget class="GtkTreeView" id="unitTree">
                 <property name="visible">True</property>
@@ -463,6 +465,9 @@
             <property name="right_attach">3</property>
           </packing>
         </child>
+        <child>
+          <placeholder/>
+        </child>
       </widget>
     </child>
   </widget>
@@ -471,8 +476,8 @@
     <property name="height_request">500</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">New Language Pair</property>
-    <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox1">
@@ -493,9 +498,6 @@
                   <widget class="GtkFrame" id="frame3">
                     <property name="visible">True</property>
                     <property name="has_tooltip">True</property>
-                    <property name="tooltip_markup" translatable="yes">The &lt;b&gt;Original&lt;/b&gt; is the language from which you are translating, also called the source language.
-
-If you are translating from English to French then English would be your original or source language.</property>
                     <property name="label_xalign">0</property>
                     <child>
                       <widget class="GtkAlignment" id="alignment3">
@@ -504,8 +506,8 @@ If you are translating from English to French then English would be your origina
                           <widget class="GtkScrolledWindow" id="scrolledwindow2">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                            <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                            <property name="hscrollbar_policy">automatic</property>
+                            <property name="vscrollbar_policy">automatic</property>
                             <child>
                               <widget class="GtkTreeView" id="tvw_sourcelang">
                                 <property name="visible">True</property>
@@ -527,14 +529,14 @@ If you are translating from English to French then English would be your origina
                       </packing>
                     </child>
                   </widget>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
                 <child>
                   <widget class="GtkFrame" id="frame4">
                     <property name="visible">True</property>
                     <property name="has_tooltip">True</property>
-                    <property name="tooltip_markup" translatable="yes">The &lt;b&gt;Translation&lt;/b&gt; is the language into which you are translating, also called the target language.
-
-If you are translating from English to French then French would be your translation or target language.</property>
                     <property name="label_xalign">0</property>
                     <child>
                       <widget class="GtkAlignment" id="alignment4">
@@ -543,8 +545,8 @@ If you are translating from English to French then French would be your translat
                           <widget class="GtkScrolledWindow" id="scrolledwindow3">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                            <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                            <property name="hscrollbar_policy">automatic</property>
+                            <property name="vscrollbar_policy">automatic</property>
                             <child>
                               <widget class="GtkTreeView" id="tvw_targetlang">
                                 <property name="visible">True</property>
@@ -581,48 +583,57 @@ If you are translating from English to French then French would be your translat
                 <child>
                   <widget class="GtkHButtonBox" id="hbuttonbox2">
                     <property name="visible">True</property>
-                    <property name="layout_style">GTK_BUTTONBOX_START</property>
+                    <property name="layout_style">start</property>
                     <child>
                       <widget class="GtkButton" id="btn_add">
+                        <property name="label" translatable="yes" comments="This button will take the user to a dialogue to add a language that is not listed yet for selection.">_Missing Language...</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip_text">Click here to add a language that is not listed</property>
-                        <property name="label" translatable="yes" comments="This button will take the user to a dialogue to add a language that is not listed yet for selection.">_Missing Language...</property>
                         <property name="use_underline">True</property>
-                        <property name="response_id">0</property>
                       </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
                     </child>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
                   <widget class="GtkHButtonBox" id="hbuttonbox1">
                     <property name="visible">True</property>
-                    <property name="layout_style">GTK_BUTTONBOX_END</property>
+                    <property name="layout_style">end</property>
                     <child>
                       <widget class="GtkButton" id="btn_cancel">
+                        <property name="label">gtk-cancel</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="label">gtk-cancel</property>
                         <property name="use_stock">True</property>
-                        <property name="response_id">-6</property>
                       </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
                     </child>
                     <child>
                       <widget class="GtkButton" id="btn_ok">
+                        <property name="label">gtk-ok</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="label">gtk-ok</property>
                         <property name="use_stock">True</property>
-                        <property name="response_id">-5</property>
                       </widget>
                       <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -645,11 +656,12 @@ If you are translating from English to French then French would be your translat
         <child internal-child="action_area">
           <widget class="GtkHButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <property name="layout_style">end</property>
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </widget>
@@ -658,8 +670,8 @@ If you are translating from English to French then French would be your translat
   <widget class="GtkDialog" id="LanguageAdder">
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Missing Language</property>
-    <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox2">
@@ -806,7 +818,7 @@ If you are translating from English to French then French would be your translat
                             <property name="yalign">0.10000000149011612</property>
                             <property name="label" translatable="yes">Depending on the translation task, the plural information might be optional.</property>
                             <property name="wrap">True</property>
-                            <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
+                            <property name="wrap_mode">word-char</property>
                           </widget>
                           <packing>
                             <property name="right_attach">2</property>
@@ -829,6 +841,9 @@ If you are translating from English to French then French would be your translat
                   </packing>
                 </child>
               </widget>
+              <packing>
+                <property name="position">0</property>
+              </packing>
             </child>
           </widget>
           <packing>
@@ -838,34 +853,42 @@ If you are translating from English to French then French would be your translat
         <child internal-child="action_area">
           <widget class="GtkHButtonBox" id="dialog-action_area2">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <property name="layout_style">end</property>
             <child>
               <widget class="GtkButton" id="btn_add_cancel">
+                <property name="label">gtk-cancel</property>
+                <property name="response_id">-6</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="label">gtk-cancel</property>
                 <property name="use_stock">True</property>
-                <property name="response_id">-6</property>
               </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
             </child>
             <child>
               <widget class="GtkButton" id="btn_add_ok">
+                <property name="label">gtk-ok</property>
+                <property name="response_id">-5</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="label">gtk-ok</property>
                 <property name="use_stock">True</property>
-                <property name="response_id">-5</property>
               </widget>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </widget>
@@ -876,8 +899,8 @@ If you are translating from English to French then French would be your translat
     <property name="height_request">400</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Virtaal Preferences</property>
-    <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox3">
@@ -896,8 +919,8 @@ If you are translating from English to French then French would be your translat
                 <property name="label" translatable="yes">General</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -909,9 +932,9 @@ If you are translating from English to French then French would be your translat
                 <property name="label" translatable="yes">Personal Information</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">1</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
             <child>
@@ -923,17 +946,17 @@ If you are translating from English to French then French would be your translat
                 <property name="label" translatable="yes">Languages</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">2</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
             <child>
               <widget class="GtkScrolledWindow" id="scrolledwindow4">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <property name="vscrollbar_policy">automatic</property>
                 <child>
                   <widget class="GtkTreeView" id="tvw_plugins">
                     <property name="visible">True</property>
@@ -952,9 +975,9 @@ If you are translating from English to French then French would be your translat
                 <property name="label" translatable="yes">Plug-ins</property>
               </widget>
               <packing>
-                <property name="type">tab</property>
                 <property name="position">3</property>
                 <property name="tab_fill">False</property>
+                <property name="type">tab</property>
               </packing>
             </child>
           </widget>
@@ -965,21 +988,26 @@ If you are translating from English to French then French would be your translat
         <child internal-child="action_area">
           <widget class="GtkHButtonBox" id="dialog-action_area3">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <property name="layout_style">end</property>
             <child>
               <widget class="GtkButton" id="button1">
+                <property name="label">gtk-close</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="label">gtk-close</property>
                 <property name="use_stock">True</property>
-                <property name="response_id">0</property>
               </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
             </child>
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </widget>

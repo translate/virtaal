@@ -112,6 +112,28 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         maingui.get_widget('mnu_copy').connect('activate', on_copy)
         maingui.get_widget('mnu_paste').connect('activate', on_paste)
 
+        # And now for the "Transfer from source" menu item
+        mnu_transfer = maingui.get_widget('mnu_transfer')
+        menu_edit = maingui.get_widget('menu_edit')
+        def on_transfer(*args):
+            ev = gtk.gdk.Event(gtk.gdk.KEY_PRESS)
+            ev.state = gtk.gdk.MOD1_MASK
+            ev.keyval = gtk.keysyms.Down
+            ev.window = self.targets[self.focused_target_n].props.window
+            ev.put()
+        mnu_transfer.connect('activate', on_transfer)
+
+        gtk.accel_map_add_entry("<Virtaal>/Edit/Transfer", gtk.keysyms.Down, gtk.gdk.MOD1_MASK)
+
+        accel_group = menu_edit.get_accel_group()
+        if not accel_group:
+            accel_group = gtk.AccelGroup()
+
+        accel_group.connect_by_path("<Virtaal>/Edit/Transfer", on_transfer)
+        self.controller.main_controller.view.add_accel_group(accel_group)
+        menu_edit.set_accel_group(accel_group)
+        mnu_transfer.set_accel_path("<Virtaal>/Edit/Transfer")
+
 
     # ACCESSORS #
     def is_modified(self):

@@ -280,7 +280,7 @@ class MainView(BaseView):
     # ACCESSORS #
     def add_accel_group(self, accel_group):
         """Add the given accelerator group to the main window.
-            @type accel_group: gtk.AccelGroup()"""
+            @type accel_group: gtk.AccelGroup"""
         self.main_window.add_accel_group(accel_group)
 
     def set_saveable(self, value):

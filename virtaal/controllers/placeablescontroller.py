@@ -59,7 +59,7 @@ class PlaceablesController(BaseController):
         self.parsers.extend(newparsers)
         self.emit('parsers-changed')
 
-    def apply_parsers(self, elems):
+    def apply_parsers(self, elems, parsers=None):
         """Apply all selected placeable parsers to the list of string elements
             given.
 
@@ -67,10 +67,13 @@ class PlaceablesController(BaseController):
         if not isinstance(elems, list) and isinstance(elems, StringElem):
             elems = [elems]
 
+        if parsers is None:
+            parsers = self.parsers
+
         for elem in elems:
             leaves = elem.flatten()
             for leaf in leaves:
-                parsed = parse_placeables(leaf, self.parsers)
+                parsed = parse_placeables(leaf, parsers)
                 if isinstance(leaf, (str, unicode)) and parsed != StringElem(leaf):
                     parent = elem.get_parent_elem(leaf)
                     if parent is not None:

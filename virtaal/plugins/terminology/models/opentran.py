@@ -131,6 +131,7 @@ class TerminologyModel(BaseTerminologyModel):
                 self.cursor.disconnect(self._cursor_connect_id)
             self.cursor = store_ctrlr.cursor
             self._cursor_connect_id = self.cursor.connect('cursor-changed', cursor_changed)
+            cursor_changed(self.cursor)
 
         store_ctrlr.connect('store-loaded', store_loaded)
         if store_ctrlr.store:
@@ -174,8 +175,12 @@ class TerminologyModel(BaseTerminologyModel):
             if added:
                 self.matcher.inittm(self.store)
         unitview = self.main_controller.unit_controller.view
+        self.main_controller.placeables_controller.apply_parsers(
+            elems=[src.elem for src in unitview.sources],
+            parsers=[TerminologyPlaceable.parse]
+        )
         for src in unitview.sources:
-            src.update_tree()
+            src.update_tree(src.elem)
 
     def create_suggestions(self, suggestion):
         # Skip any suggestions where the suggested translation contains parenthesis

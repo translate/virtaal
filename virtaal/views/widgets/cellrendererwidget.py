@@ -56,13 +56,18 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         xpad = ypad = 2
 
         width = widget.get_toplevel().get_allocation().width
+        if width <= 1:
+            width = -1
+        font = widget.get_pango_context().get_font_description()
         layout = self.create_pango_layout(self.strfunc(self.widget), widget, width)
+        layout.set_font_description(font)
         lw, lh = layout.get_pixel_size()
 
-        if self.widget in self.editablemap:
-            w, h = self.editablemap[self.widget].get_size_request()
+        if self.widget:
+            w, h = self.widget.get_size_request()
             height = max(lh, h)
 
+        #print 'width %d | height %d | lw %d | lh %d' % (width, height, lw, lh)
         height += ypad * 2
         width  += xpad * 2
 

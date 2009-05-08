@@ -20,7 +20,7 @@
 
 import gtk
 import pango
-from gobject import PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from gobject import idle_add, PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 
 
 def flagstr(flags):
@@ -47,6 +47,7 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         self.props.mode = gtk.CELL_RENDERER_MODE_EDITABLE
 
         self.editablemap = {}
+        self._starting_edit = False
         self.strfunc = strfunc
         self.widget = None
 
@@ -73,6 +74,8 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         lw, lh = layout.get_pixel_size()
 
         if self.widget:
+            self.widget.set_size_request(width, -1)
+            self.widget.show()
             w, h = self.widget.get_size_request()
             height = max(lh, h)
 
@@ -85,6 +88,7 @@ class CellRendererWidget(gtk.GenericCellRenderer):
     def on_render(self, window, widget, bg_area, cell_area, expose_area, flags):
         #print '%s>> on_render(flags=%s)' % (self.strfunc(self.widget), flagstr(flags))
         if flags & gtk.CELL_RENDERER_SELECTED:
+            self._start_editing(widget) # FIXME: This is obviously a hack, but what more do you want?
             return True
         xo, yo, w, h = self.get_size(widget, cell_area)
         x = cell_area.x + xo
@@ -114,6 +118,24 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         layout.set_markup(string)
         return layout
 
+    def _start_editing(self, treeview):
+        """Force the cell to enter editing mode by going through the parent
+            gtk.TextView."""
+        if self._starting_edit:
+            return
+        self._starting_edit = True
+
+        model, iter = treeview.get_selection().get_selected()
+        path = model.get_path(iter)
+        col = [c for c in treeview.get_columns() if self in c.get_cell_renderers()]
+        if len(col) < 1:
+            return
+        treeview.set_cursor_on_cell(path, col[0], self, True)
+
+        # XXX: Hack to make sure that the lock (_start_editing) is not released before the next on_render() is called.
+        def update_lock():
+            self._starting_edit = False
+        idle_add(update_lock)
 
 
 class CellWidget(gtk.HBox, gtk.CellEditable):

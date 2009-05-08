@@ -58,9 +58,7 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         width = widget.get_toplevel().get_allocation().width
         if width <= 1:
             width = -1
-        font = widget.get_pango_context().get_font_description()
         layout = self.create_pango_layout(self.strfunc(self.widget), widget, width)
-        layout.set_font_description(font)
         lw, lh = layout.get_pixel_size()
 
         if self.widget:
@@ -97,10 +95,12 @@ class CellRendererWidget(gtk.GenericCellRenderer):
 
     # METHODS #
     def create_pango_layout(self, string, widget, width):
+        font = widget.get_pango_context().get_font_description()
         layout = pango.Layout(widget.get_pango_context())
+        layout.set_font_description(font)
         layout.set_wrap(pango.WRAP_WORD_CHAR)
         layout.set_width(width * pango.SCALE)
-        layout.set_text(string)
+        layout.set_markup(string)
         return layout
 
     def flagstr(self, flags):
@@ -148,7 +148,7 @@ if __name__ == "__main__":
             self.set_headers_visible(True)
 
             self.append_column(gtk.TreeViewColumn('First', gtk.CellRendererText(), text=0))
-            self.append_column(gtk.TreeViewColumn('Second', CellRendererWidget(lambda widget: widget.get_label()), widget=1))
+            self.append_column(gtk.TreeViewColumn('Second', CellRendererWidget(lambda widget: '<b>' + widget.get_label() + '</b>'), widget=1))
 
         def insert(self, name):
             iter = self.store.append()

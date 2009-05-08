@@ -23,6 +23,17 @@ import pango
 from gobject import PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 
 
+def flagstr(flags):
+    """Create a string-representation for the given flags structure."""
+    fset = []
+    for f in dir(gtk):
+        if not f.startswith('CELL_RENDERER_'):
+            continue
+        if flags & getattr(gtk, f):
+            fset.append(f)
+    return '|'.join(fset)
+
+
 class CellRendererWidget(gtk.GenericCellRenderer):
     __gtype_name__ = 'CellRendererWidget'
     __gproperties__ = {
@@ -72,7 +83,7 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         return xpad, ypad, width, height
 
     def on_render(self, window, widget, bg_area, cell_area, expose_area, flags):
-        #print '%s>> on_render(flags=%s)' % (self.strfunc(self.widget), self.flagstr(flags))
+        #print '%s>> on_render(flags=%s)' % (self.strfunc(self.widget), flagstr(flags))
         if flags & gtk.CELL_RENDERER_SELECTED:
             return True
         xo, yo, w, h = self.get_size(widget, cell_area)
@@ -82,7 +93,7 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         widget.get_style().paint_layout(window, gtk.STATE_NORMAL, True, cell_area, widget, '', x, y, layout)
 
     def on_start_editing(self, event, tree_view, path, bg_area, cell_area, flags):
-        #print '%s>> on_start_editing(flags=%s, event=%s)' % (self.strfunc(self.widget), self.flagstr(flags), event)
+        #print '%s>> on_start_editing(flags=%s, event=%s)' % (self.strfunc(self.widget), flagstr(flags), event)
         if self.widget not in self.editablemap:
             editable = CellWidget(self.widget)
             editable.connect('editing-done', lambda *args: True)
@@ -103,14 +114,6 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         layout.set_markup(string)
         return layout
 
-    def flagstr(self, flags):
-        fset = []
-        for f in dir(gtk):
-            if not f.startswith('CELL_RENDERER_'):
-                continue
-            if flags & getattr(gtk, f):
-                fset.append(f)
-        return '|'.join(fset)
 
 
 class CellWidget(gtk.HBox, gtk.CellEditable):

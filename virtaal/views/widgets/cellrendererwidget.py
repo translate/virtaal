@@ -51,7 +51,7 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         pass
 
     def on_get_size(self, widget, cell_area=None):
-        print '%s>> on_get_size(cell_area=%s)' % (self.strfunc(self.widget), cell_area)
+        #print '%s>> on_get_size(cell_area=%s)' % (self.strfunc(self.widget), cell_area)
         height = width = 0
         xpad = ypad = 2
 
@@ -69,11 +69,8 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         return xpad, ypad, width, height
 
     def on_render(self, window, widget, bg_area, cell_area, expose_area, flags):
-        print '%s>> on_render(flags=%s)' % (self.strfunc(self.widget), self.flagstr(flags))
+        #print '%s>> on_render(flags=%s)' % (self.strfunc(self.widget), self.flagstr(flags))
         if flags & gtk.CELL_RENDERER_SELECTED:
-            print self.activate(gtk.gdk.Event(gtk.gdk.NOTHING), widget, '', bg_area, cell_area, flags)
-            if self.widget in self.editablemap:
-                self.editablemap[self.widget].start_editing(gtk.gdk.Event(gtk.gdk.NOTHING))
             return True
         xo, yo, w, h = self.get_size(widget, cell_area)
         x = cell_area.x + xo
@@ -82,12 +79,16 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         widget.get_style().paint_layout(window, gtk.STATE_NORMAL, True, cell_area, widget, '', x, y, layout)
 
     def on_start_editing(self, event, tree_view, path, bg_area, cell_area, flags):
-        print '%s>> on_start_editing(flags=%s, event=%s)' % (self.strfunc(self.widget), self.flagstr(flags), event)
+        #print '%s>> on_start_editing(flags=%s, event=%s)' % (self.strfunc(self.widget), self.flagstr(flags), event)
         if self.widget not in self.editablemap:
-            self.editablemap[self.widget] = CellWidget(self.widget)
-        self.editablemap[self.widget].set_size_request(cell_area.width, cell_area.height)
-        self.editablemap[self.widget].show_all()
-        return self.editablemap[self.widget]
+            editable = CellWidget(self.widget)
+            editable.connect('editing-done', lambda *args: True)
+            editable.connect('key-press-event', lambda *args: True)
+            self.editablemap[self.widget] = editable
+        editable = self.editablemap[self.widget]
+        editable.set_size_request(cell_area.width, cell_area.height)
+        editable.show_all()
+        return editable
 
     # METHODS #
     def create_pango_layout(self, string, widget, width):

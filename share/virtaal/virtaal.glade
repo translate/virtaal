@@ -63,7 +63,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="update_menuitem">
-                        <property name="label">_Update to template</property>
+                        <property name="label" translatable="yes">_Update to template</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
@@ -261,7 +261,7 @@
                     <property name="visible">True</property>
                     <child>
                       <widget class="GtkImageMenuItem" id="menuitem_documentation">
-                        <property name="label">_Online Help</property>
+                        <property name="label" translatable="yes">_Online Help</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
@@ -285,7 +285,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="menuitem_localization_guide">
-                        <property name="label">_Localization Guide</property>
+                        <property name="label" translatable="yes">_Localization Guide</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
@@ -301,7 +301,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="menuitem_report_bug">
-                        <property name="label">Report a _Bug</property>
+                        <property name="label" translatable="yes">Report a _Bug</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>

@@ -1,2 +1,4 @@
 devsupport/profiling.py
 virtaal/plugins/helloworld.py
+virtaal/plugins/ipython_console/__init__.py
+virtaal/plugins/python_console.py

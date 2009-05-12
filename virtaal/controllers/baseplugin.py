@@ -25,6 +25,10 @@ from virtaal.common import pan_app
 class BasePlugin(object):
     """The base interface to be implemented by all plug-ins."""
 
+    configure_func = None
+    """A function that starts the plug-in's configuration, if available."""
+    description = ''
+    """A description about the plug-in's purpose."""
     display_name = ''
     """The plug-in's name, suitable for display."""
     version = 0

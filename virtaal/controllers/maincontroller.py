@@ -233,8 +233,8 @@ class MainController(BaseController):
         """Shortcut for C{self.view.show_info_dialog()}"""
         return self.view.show_info_dialog(title=title, message=msg)
 
-    def quit(self):
-        if self.store_controller.is_modified():
+    def quit(self, force=False):
+        if self.store_controller.is_modified() and not force:
             response = self.view.show_save_confirm_dialog()
             if response == 'save':
                 self.store_controller.save_file()

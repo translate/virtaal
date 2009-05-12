@@ -98,6 +98,12 @@ class SelectView(gtk.TreeView, GObjectWrapper):
             vbox.lbl_desc = lbl
 
         btnconf = gtk.Button(_('Configure...'))
+        if 'config' in item and callable(item['config']):
+            def clicked(button):
+                item['config']()
+            btnconf.connect('clicked', clicked)
+        else:
+            btnconf.set_sensitive(False)
         vbox.btn_conf = btnconf
 
         hbox.pack_start(vbox)

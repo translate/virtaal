@@ -6,6 +6,8 @@
     <property name="width_request">620</property>
     <property name="height_request">400</property>
     <property name="title" translatable="yes">Virtaal</property>
+    <signal name="destroy" handler="on_mainwindow_destroy"/>
+    <signal name="delete_event" handler="on_mainwindow_delete"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>

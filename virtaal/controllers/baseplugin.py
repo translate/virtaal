@@ -38,7 +38,7 @@ class BasePlugin(object):
             raise Exception('No name specified')
         if cls.version <= 0:
             raise Exception('Invalid version number specified')
-        return super(BasePlugin, cls).__new__(cls, *args, **kwargs)
+        return super(BasePlugin, cls).__new__(cls)
 
     def __init__(self):
         raise NotImplementedError('This interface cannot be instantiated.')

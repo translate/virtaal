@@ -113,7 +113,7 @@ class PluginController(BaseController):
                         )
                         break
                     except ImportError, ie:
-                        if not ie.message.startswith('No module named') and pan_app.DEBUG:
+                        if not ie.args[0].startswith('No module named') and pan_app.DEBUG:
                             logging.exception('from %s import %s' % (modulename, self.PLUGIN_CLASSNAME))
 
                 if module is None:

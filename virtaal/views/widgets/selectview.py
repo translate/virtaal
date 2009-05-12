@@ -49,10 +49,10 @@ class SelectView(gtk.TreeView, GObjectWrapper):
         gtk.TreeView.__init__(self)
         GObjectWrapper.__init__(self)
 
+        self.bold_name = bold_name
         if not items:
             items = gtk.ListStore(bool, str, str, TYPE_PYOBJECT, TYPE_PYOBJECT)
         self.set_model(items)
-        self.bold_name = bold_name
 
         self._add_columns()
         self._set_defaults()

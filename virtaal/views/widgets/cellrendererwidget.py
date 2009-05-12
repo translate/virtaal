@@ -67,7 +67,7 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         height = width = 0
         xpad = ypad = 2
 
-        width = widget.get_toplevel().get_allocation().width
+        width = widget.get_allocation().width
         if width <= 1:
             width = -1
         layout = self.create_pango_layout(self.strfunc(self.widget), widget, width)
@@ -77,7 +77,8 @@ class CellRendererWidget(gtk.GenericCellRenderer):
             self.widget.set_size_request(width, -1)
             self.widget.show()
             w, h = self.widget.get_size_request()
-            height = max(lh, h)
+            width =  max(lw, w, hasattr(self.widget, 'min_width')  and self.widget.min_width  or 0)
+            height = max(lh, h, hasattr(self.widget, 'min_height') and self.widget.min_height or 0)
 
         #print 'width %d | height %d | lw %d | lh %d' % (width, height, lw, lh)
         height += ypad * 2
@@ -104,8 +105,8 @@ class CellRendererWidget(gtk.GenericCellRenderer):
             editable.connect('key-press-event', lambda *args: True)
             self.editablemap[self.widget] = editable
         editable = self.editablemap[self.widget]
-        editable.set_size_request(cell_area.width, cell_area.height)
         editable.show_all()
+        editable.grab_focus()
         return editable
 
     # METHODS #
@@ -177,7 +178,9 @@ if __name__ == "__main__":
 
         def insert(self, name):
             iter = self.store.append()
-            self.store.set(iter, 0, name, 1, gtk.Button(name), 2, True)
+            btn = gtk.Button(name)
+            btn.min_height = 30
+            self.store.set(iter, 0, name, 1, btn, 2, True)
 
     w = gtk.Window()
     w.set_position(gtk.WIN_POS_CENTER)

@@ -40,10 +40,10 @@ class SelectDialog(GObjectWrapper):
     }
 
     # INITIALIZERS #
-    def __init__(self, items=None, title=None, message=None):
+    def __init__(self, items=None, title=None, message=None, parent=None):
         super(SelectDialog, self).__init__()
         self.sview = SelectView(items)
-        self._create_gui(title, message)
+        self._create_gui(title, message, parent)
         self._connect_signals()
 
     def _connect_signals(self):
@@ -51,8 +51,11 @@ class SelectDialog(GObjectWrapper):
         self.sview.connect('item-disabled', self._on_item_disabled)
         self.sview.connect('item-selected', self._on_item_selected)
 
-    def _create_gui(self, title, message):
+    def _create_gui(self, title, message, parent):
         self.dialog = gtk.Dialog()
+        self.dialog.set_modal(True)
+        if isinstance(parent, gtk.Widget):
+            self.dialog.set_parent(parent)
         self.dialog.set_title(title is not None and title or 'Select items')
         self.message = gtk.Label(message is not None and message or '')
         self.dialog.child.add(self.message)

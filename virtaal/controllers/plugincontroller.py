@@ -99,40 +99,7 @@ class PluginController(BaseController):
             return None
 
         try:
-            if name not in self.pluginmodules:
-                module = None
-                for plugin_module in self.PLUGIN_MODULES:
-                    # The following line makes sure that we have a valid module name to import from
-                    modulename = '.'.join([part for part in [plugin_module, name] if part])
-                    try:
-                        module = __import__(
-                            modulename,
-                            globals(),              # globals
-                            [],                     # locals
-                            [self.PLUGIN_CLASSNAME] # fromlist
-                        )
-                        break
-                    except ImportError, ie:
-                        if not ie.args[0].startswith('No module named') and pan_app.DEBUG:
-                            logging.exception('from %s import %s' % (modulename, self.PLUGIN_CLASSNAME))
-
-                if module is None:
-                    # XXX: Uncomment the following logging statement to find out what exactly went wrong when trying to import the plug-in.
-                    #logging.exception('Could not find plug-in "%s"' % (name))
-                    raise Exception('Could not find plug-in "%s"' % (name))
-
-                plugin_class = getattr(module, self.PLUGIN_CLASSNAME, None)
-                if plugin_class is None:
-                    raise Exception('Plugin "%s" has no class called "%s"' % (name, self.PLUGIN_CLASSNAME))
-
-                if self.PLUGIN_INTERFACE is not None:
-                    if not issubclass(plugin_class, self.PLUGIN_INTERFACE):
-                        raise Exception(
-                            'Plugin "%s" contains a member called "%s" which is not a valid plug-in class.' % (name, self.PLUGIN_CLASSNAME)
-                        )
-
-                self.pluginmodules[name] = module
-
+            plugin_class = self._get_plugin_class(name)
             self.plugins[name] = plugin_class(name, self.controller)
             self.emit('plugin-enabled', self.plugins[name])
             logging.info('    - ' + getattr(self.plugins[name], self.PLUGIN_NAME_ATTRIB, name))
@@ -167,6 +134,44 @@ class PluginController(BaseController):
             This method should be replaced if an instance is not used for
             normal plug-ins."""
         return [plugin_name for (plugin_name, state) in pan_app.settings.plugin_state.items() if state.lower() == 'disabled']
+
+    def _get_plugin_class(self, name):
+        if name in self.plugins:
+            return self.plugins[name].__class__
+
+        module = None
+        for plugin_module in self.PLUGIN_MODULES:
+            # The following line makes sure that we have a valid module name to import from
+            modulename = '.'.join([part for part in [plugin_module, name] if part])
+            try:
+                module = __import__(
+                    modulename,
+                    globals(),              # globals
+                    [],                     # locals
+                    [self.PLUGIN_CLASSNAME] # fromlist
+                )
+                break
+            except ImportError, ie:
+                if not ie.args[0].startswith('No module named') and pan_app.DEBUG:
+                    logging.exception('from %s import %s' % (modulename, self.PLUGIN_CLASSNAME))
+
+        if module is None:
+            # XXX: Uncomment the following logging statement to find out what exactly went wrong when trying to import the plug-in.
+            #logging.exception('Could not find plug-in "%s"' % (name))
+            raise Exception('Could not find plug-in "%s"' % (name))
+
+        plugin_class = getattr(module, self.PLUGIN_CLASSNAME, None)
+        if plugin_class is None:
+            raise Exception('Plugin "%s" has no class called "%s"' % (name, self.PLUGIN_CLASSNAME))
+
+        if self.PLUGIN_INTERFACE is not None:
+            if not issubclass(plugin_class, self.PLUGIN_INTERFACE):
+                raise Exception(
+                    'Plugin "%s" contains a member called "%s" which is not a valid plug-in class.' % (name, self.PLUGIN_CLASSNAME)
+                )
+
+        self.pluginmodules[name] = module
+        return plugin_class
 
     def _find_plugin_names(self):
         """Look in C{self.PLUGIN_DIRS} for importable Python modules.

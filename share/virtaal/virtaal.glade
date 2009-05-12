@@ -974,17 +974,13 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkScrolledWindow" id="scrolledwindow4">
+              <widget class="GtkScrolledWindow" id="scrwnd_plugins">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="hscrollbar_policy">automatic</property>
                 <property name="vscrollbar_policy">automatic</property>
                 <child>
-                  <widget class="GtkTreeView" id="tvw_plugins">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="rules_hint">True</property>
-                  </widget>
+                  <placeholder/>
                 </child>
               </widget>
               <packing>

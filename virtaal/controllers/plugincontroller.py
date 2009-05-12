@@ -53,6 +53,8 @@ class PluginController(BaseController):
     # To use this class to manage any other plug-ins, these will (most likely) have to be changed.
     PLUGIN_CLASSNAME = 'Plugin'
     """The name of the class that will be instantiated from the plug-in module."""
+    PLUGIN_CLASS_INFO_ATTRIBS = ['description', 'display_name', 'version']
+    """Attributes of the plug-in class that contain info about it. Should contain PLUGIN_NAME_ATTRIB."""
     PLUGIN_DIRS = [
         os.path.join(pan_app.get_config_dir(), 'virtaal_plugins'),
         os.path.join(os.path.dirname(__file__), '..', 'plugins')
@@ -108,6 +110,13 @@ class PluginController(BaseController):
             logging.exception('Failed to load plugin "%s"' % (name))
 
         return None
+
+    def get_plugin_info(self, name):
+        plugin_class = self._get_plugin_class(name)
+        item = {}
+        for attrib in self.PLUGIN_CLASS_INFO_ATTRIBS:
+            item[attrib] = getattr(plugin_class, attrib, None)
+        return item
 
     def load_plugins(self):
         """Load plugins from the "plugins" directory."""

@@ -244,6 +244,7 @@ class AutoCorrector(object):
 
 
 class Plugin(BasePlugin):
+    description = _('Automatically correct text using OpenOffice.org auto-correction files.')
     display_name = _('AutoCorrector')
     version = 0.1
 

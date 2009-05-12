@@ -292,6 +292,7 @@ class gtkoutfile:
 
 
 class Plugin(BasePlugin):
+    description = _("Run-time access to Virtaal's internals (for developers).")
     display_name = _('Python Console')
     version = 0.1
 

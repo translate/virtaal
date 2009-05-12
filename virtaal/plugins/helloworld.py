@@ -26,7 +26,8 @@ from virtaal.controllers import BasePlugin
 
 
 class Plugin(BasePlugin):
-    display_name = _('HelloWorld')
+    description = _('Simple plug-in that serves as an example to developers.')
+    display_name = _('Hello World')
     version = '0.1'
     default_config = {
         "name": "Hello World",

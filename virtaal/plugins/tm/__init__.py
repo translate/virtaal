@@ -24,6 +24,7 @@ from tmcontroller import TMController
 
 
 class Plugin(BasePlugin):
+    description = _('Provide translation memory suggestions from configurable sources.')
     display_name = _('Translation Memory')
     version = 0.1
     default_config = {

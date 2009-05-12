@@ -33,6 +33,7 @@ class IPythonWindow(gtk.Window):
 
 
 class Plugin(BasePlugin):
+    description = _("Run-time access to Virtaal's internals (for developers).")
     display_name = _('IPython Console')
     version = 0.1
 

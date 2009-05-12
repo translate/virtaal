@@ -22,6 +22,7 @@ import gtk
 from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 
 from virtaal.common import GObjectWrapper
+from virtaal.views.widgets.cellrendererwidget import CellRendererWidget
 
 __all__ = ['COL_ENABLED', 'COL_NAME', 'COL_DESC', 'COL_DATA', 'SelectView']
 
@@ -49,7 +50,7 @@ class SelectView(gtk.TreeView, GObjectWrapper):
         GObjectWrapper.__init__(self)
 
         if not items:
-            items = gtk.ListStore(bool, str, str, TYPE_PYOBJECT)
+            items = gtk.ListStore(bool, str, str, TYPE_PYOBJECT, TYPE_PYOBJECT)
         self.set_model(items)
         self.bold_name = bold_name
 
@@ -63,9 +64,8 @@ class SelectView(gtk.TreeView, GObjectWrapper):
         self.select_col = gtk.TreeViewColumn(_('Enabled'), cell, active=COL_ENABLED)
         self.append_column(self.select_col)
 
-        cell = gtk.CellRendererText()
-        self.namedesc_col = gtk.TreeViewColumn(_('Name'), cell)
-        self.namedesc_col.set_cell_data_func(cell, self._name_cell_data_func)
+        cell = CellRendererWidget(strfunc=self._get_widget_string)
+        self.namedesc_col = gtk.TreeViewColumn(_('Name'), cell, widget=4)
         self.append_column(self.namedesc_col)
 
     def _connect_events(self):
@@ -76,6 +76,44 @@ class SelectView(gtk.TreeView, GObjectWrapper):
 
 
     # METHODS #
+    def _create_widget_for_item(self, item):
+        hbox = gtk.HBox()
+        vbox = gtk.VBox()
+        vbox.min_height = 60
+        vbox.lbl_name = None
+        if 'name' in item and item['name']:
+            name = (self.bold_name and '<b>%s</b>' or '%s') % (item['name'])
+            lbl = gtk.Label()
+            lbl.set_alignment(0, 0)
+            lbl.set_text(name)
+            lbl.set_use_markup(self.bold_name)
+            vbox.pack_start(lbl)
+            vbox.lbl_name = lbl
+        vbox.lbl_desc = None
+        if 'desc' in item and item['desc']:
+            lbl = gtk.Label()
+            lbl.set_alignment(0, 0)
+            lbl.set_text(item['desc'])
+            vbox.pack_start(lbl)
+            vbox.lbl_desc = lbl
+
+        btnconf = gtk.Button(_('Configure...'))
+        vbox.btn_conf = btnconf
+
+        hbox.pack_start(vbox)
+        hbox.pack_start(btnconf, expand=False)
+
+        return hbox
+
+    def _get_widget_string(self, widget):
+        s = ''
+        widget = widget.get_children()[0]
+        if widget.lbl_name:
+            s = widget.lbl_name.get_text()
+        if widget.lbl_desc:
+            s += '\n' + widget.lbl_desc.get_text()
+        return s
+
     def get_all_items(self):
         if not self._model:
             return None
@@ -105,29 +143,20 @@ class SelectView(gtk.TreeView, GObjectWrapper):
         if isinstance(items, gtk.ListStore):
             self._model = items
         else:
-            self._model = gtk.ListStore(bool, str, str, TYPE_PYOBJECT)
+            self._model = gtk.ListStore(bool, str, str, TYPE_PYOBJECT, TYPE_PYOBJECT)
             for row in items:
                 self._model.append([
                     row.get('enabled', False),
                     row.get('name', ''),
                     row.get('desc', ''),
-                    row.get('data', None)
+                    row.get('data', None),
+                    self._create_widget_for_item(row)
                 ])
 
         gtk.TreeView.set_model(self, self._model)
 
 
     # EVENT HANDLERS #
-    def _name_cell_data_func(self, column, cell_renderer, tree_model, iter):
-        name = tree_model.get_value(iter, COL_NAME)
-        desc = tree_model.get_value(iter, COL_DESC)
-        if self.bold_name:
-            cell_renderer.props.markup = "<b>%s</b>\n%s" % (name, desc)
-        elif name:
-            cell_renderer.props.text = '%s\n%s' % (name, desc)
-        else:
-            cell_renderer.props.text = desc
-
     def _on_item_toggled(self, cellr, path):
         iter = self._model.get_iter(path)
         if not iter:

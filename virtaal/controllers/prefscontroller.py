@@ -53,7 +53,7 @@ class PreferencesController(BaseController):
     def update_config_placeables_state(self, parser, disabled):
         """Make sure that the placeable with the given name is enabled/disabled
             in the main configuration file."""
-        classname = parser.__self__.__name__
+        classname = parser.im_self.__name__
         pan_app.settings.placeable_state[classname] = disabled and 'disabled' or 'enabled'
 
     def update_config_plugin_state(self, plugin_name, disabled):

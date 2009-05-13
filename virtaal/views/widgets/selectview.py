@@ -100,6 +100,7 @@ class SelectView(gtk.TreeView, GObjectWrapper):
             lbl.set_text(item['desc'])
             vbox.pack_start(lbl)
             vbox.lbl_desc = lbl
+        hbox.pack_start(vbox)
 
         btnconf = gtk.Button(_('Configure...'))
         if 'config' in item and callable(item['config']):
@@ -107,13 +108,8 @@ class SelectView(gtk.TreeView, GObjectWrapper):
                 item['config'](self.parent)
             btnconf.connect('clicked', clicked)
             btnconf.config_func = item['config']
-        else:
-            btnconf.set_sensitive(False)
-            btnconf.config_func = None
-        vbox.btn_conf = btnconf
-
-        hbox.pack_start(vbox)
-        hbox.pack_start(btnconf, expand=False)
+            vbox.btn_conf = btnconf
+            hbox.pack_start(btnconf, expand=False)
 
         return hbox
 
@@ -146,10 +142,13 @@ class SelectView(gtk.TreeView, GObjectWrapper):
 
         config = None
         widget = self._model.get_value(iter, COL_WIDGET)
-        if widget:
-            widget = widget.get_children()[1]
-        if widget:
-            config = widget.config_func
+        try:
+            if widget:
+                widget = widget.get_children()[1]
+            if widget:
+                config = widget.config_func
+        except IndexError:
+            pass
 
         item = {
             'enabled': self._model.get_value(iter, COL_ENABLED),

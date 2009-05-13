@@ -156,24 +156,25 @@ class TerminologyView(BaseView):
         for plugin_name in plugin_controller._find_plugin_names():
             if plugin_name == 'basetermmodel':
                 continue
-            item = {'name': plugin_name}
-            if plugin_name in plugin_controller.plugins:
-                plugin = plugin_controller.plugins[plugin_name]
-                item.update({
-                    'desc': getattr(plugin, plugin_controller.PLUGIN_NAME_ATTRIB),
-                    'enabled': True
-                })
-            else:
-                item['enabled'] = False
-            items.append(item)
+            info = plugin_controller.get_plugin_info(plugin_name)
+            enabled = plugin_name in plugin_controller.plugins
+            config = enabled and plugin_controller.plugins[plugin_name] or None
+            items.append({
+                'name': info['display_name'],
+                'desc': info['description'],
+                'data': {'internal_name': plugin_name},
+                'enabled': enabled,
+                'config': config,
+            })
 
         if selectdlg.run(items=items) == gtk.RESPONSE_OK:
             for item in selectdlg.sview.get_all_items():
+                internal_name = item['data']['internal_name']
                 if item['enabled']:
-                    plugin_controller.enable_plugin(item['name'])
-                    if item['name'] in self.controller.config['disabled_models']:
-                        self.controller.config['disabled_models'].remove(item['name'])
+                    plugin_controller.enable_plugin(internal_name)
+                    if internal_name in self.controller.config['disabled_models']:
+                        self.controller.config['disabled_models'].remove(internal_name)
                 else:
                     plugin_controller.disable_plugin(item['name'])
-                    if item['name'] not in self.controller.config['disabled_models']:
-                        self.controller.config['disabled_models'].append(item['name'])
+                    if internal_name not in self.controller.config['disabled_models']:
+                        self.controller.config['disabled_models'].append(internal_name)

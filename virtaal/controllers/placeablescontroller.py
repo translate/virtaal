@@ -77,8 +77,8 @@ class PlaceablesController(BaseController):
 
         # Test for presence of parser classes by hand
         self.parser_info[general.AltAttrPlaceable.parse] = (
-            '"alt" attribute placeable',
-            'Placeable for alt="..." tags (as found in HTML).'
+            _('"alt" attribute placeable'),
+            _('Placeable for alt="..." tags (as found in HTML).')
         )
         self.parser_info[general.EmailPlaceable.parse] = (
             _('E-mail'),

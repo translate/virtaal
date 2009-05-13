@@ -21,6 +21,8 @@
 import gtk
 import gtk.gdk
 
+from virtaal.views.widgets.selectview import SelectView
+
 from baseview import BaseView
 
 
@@ -40,7 +42,7 @@ class PreferencesView(BaseView):
         )
 
         self._widgets = {}
-        widget_names = ('tvw_plugins',)
+        widget_names = ('scrwnd_plugins',)
         for name in widget_names:
             self._widgets[name] = self.gui.get_widget(name)
 
@@ -54,19 +56,11 @@ class PreferencesView(BaseView):
         self._init_plugins_page()
 
     def _init_plugins_page(self):
-        self.lst_plugins = gtk.ListStore(bool, str, str)
-        tvw_plugins = self._widgets['tvw_plugins']
-        tvw_plugins.set_model(self.lst_plugins)
-
-        toggle_renderer = gtk.CellRendererToggle()
-        toggle_renderer.connect('toggled', self._on_plugin_toggled)
-        text_renderer = gtk.CellRendererText()
-
-        tvc_enabled = gtk.TreeViewColumn(_('Enabled'), toggle_renderer, active=0)
-        tvc_name = gtk.TreeViewColumn(_('Name'), text_renderer, text=1)
-
-        tvw_plugins.append_column(tvc_enabled)
-        tvw_plugins.append_column(tvc_name)
+        self.plugins_select = SelectView()
+        self.plugins_select.connect('item-enabled', self._on_plugin_toggled)
+        self.plugins_select.connect('item-disabled', self._on_plugin_toggled)
+        self._widgets['scrwnd_plugins'].add(self.plugins_select)
+        self._widgets['scrwnd_plugins'].show_all()
 
     def _setup_key_bindings(self):
         gtk.accel_map_add_entry("<Virtaal>/Edit/Preferences", gtk.keysyms.p, gtk.gdk.CONTROL_MASK)
@@ -84,32 +78,17 @@ class PreferencesView(BaseView):
 
     # ACCESSORS #
     def _get_plugin_data(self):
-        return tuple([ (row[0], row[1], row[2]) for row in self.lst_plugins ])
+        return self.plugins_select.get_all_items()
     def _set_plugin_data(self, value):
-        tvw_plugins = self._widgets['tvw_plugins']
-        model, selected_iter = tvw_plugins.get_selection().get_selected()
-
-        if selected_iter is None or not self.lst_plugins.iter_is_valid(selected_iter):
-            selected_name = ''
-        else:
-            selected_name = self.lst_plugins.get_value(selected_iter, 2)
-
-        self.lst_plugins.clear()
-        for enabled, name, int_name in value:
-            self.lst_plugins.append([enabled, name, int_name])
-
-        itr = self.lst_plugins.get_iter_first()
-        while itr is not None and self.lst_plugins.iter_is_valid(itr):
-            if self.lst_plugins.get_value(itr, 2) == selected_name:
-                tvw_plugins.get_selection().select_iter(itr)
-                break
-            itr = self.lst_plugins.iter_next(itr)
+        selected = self.plugins_select.get_selected_item()
+        self.plugins_select.set_model(value)
+        self.plugins_select.select_item(selected)
     plugin_data = property(_get_plugin_data, _set_plugin_data)
 
 
     # METHODS #
     def show(self):
-        self._widgets['tvw_plugins'].get_selection().unselect_all()
+        self.plugins_select.select_item(None)
         self.controller.update_prefs_gui_data()
         #logging.debug('Plug-in data: %s' % (str(self.plugin_data)))
         self._widgets['dialog'].run()
@@ -117,13 +96,11 @@ class PreferencesView(BaseView):
 
 
     # EVENT HANDLERS #
-    def _on_plugin_toggled(self, cell, path):
-        itr = self.lst_plugins.get_iter(path)
-        enabled = not self.lst_plugins.get_value(itr, 0)
-        internal_plugin_name = self.lst_plugins.get_value(itr, 2)
-
-        self.controller.set_plugin_enabled(plugin_name=internal_plugin_name, enabled=enabled)
-        self.lst_plugins.set_value(itr, 0, enabled)
+    def _on_plugin_toggled(self, item):
+        self.controller.set_plugin_enabled(
+            plugin_name=item['data']['internal_name'],
+            enabled=item['enabled']
+        )
 
     def _show_preferences(self, *args):
         self.show()

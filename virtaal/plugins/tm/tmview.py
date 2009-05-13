@@ -117,7 +117,7 @@ class TMView(BaseView, GObjectWrapper):
         self.mnu_backends, _menu = mainview.find_menu_item(_('Select back-ends...'), self.mnu_tm)
         if not self.mnu_backends:
             self.mnu_backends = mainview.append_menu_item(_('Select back-ends...'), self.mnu_tm)
-        self.mnu_backends.connect('activate', self._on_select_backends)
+        self.mnu_backends.connect('activate', self.on_select_backends)
 
 
     # ACCESSORS #
@@ -259,7 +259,7 @@ class TMView(BaseView, GObjectWrapper):
 
         self.select_match(match_data)
 
-    def _on_select_backends(self, menuitem):
+    def on_select_backends(self, menuitem):
         selectdlg = SelectDialog(
             title=_('Select TM back-ends'),
             message=_('Please select the TM back-ends you would like to have enabled.')

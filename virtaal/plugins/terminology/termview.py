@@ -175,6 +175,6 @@ class TerminologyView(BaseView):
                     if internal_name in self.controller.config['disabled_models']:
                         self.controller.config['disabled_models'].remove(internal_name)
                 else:
-                    plugin_controller.disable_plugin(item['name'])
+                    plugin_controller.disable_plugin(internal_name)
                     if internal_name not in self.controller.config['disabled_models']:
                         self.controller.config['disabled_models'].append(internal_name)

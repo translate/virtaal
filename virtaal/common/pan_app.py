@@ -70,7 +70,7 @@ def osx_lang():
 class Settings:
     """Handles loading/saving settings from/to a configuration file."""
 
-    sections = ["translator", "general", "language", "plugin_state", "undo"]
+    sections = ["translator", "general", "language", "placeable_state", "plugin_state", "undo"]
 
     translator =    {
             "name": name(),
@@ -90,6 +90,10 @@ class Settings:
             "sourcelang": "en",
             "targetfont": "monospace",
             "targetlang": None,
+    }
+    placeable_state = {
+        "altattrplaceable": "disabled",
+        "punctuationplaceable": "disabled",
     }
     plugin_state =  {
         "helloworld": "disabled",
@@ -138,6 +142,8 @@ class Settings:
             self.general[key] = value
         for key, value in self.config.items("language"):
             self.language[key] = value
+        for key, value in self.config.items("placeable_state"):
+            self.placeable_state[key] = value
         for key, value in self.config.items("plugin_state"):
             self.plugin_state[key] = value
         for key, value in self.config.items("undo"):
@@ -151,6 +157,8 @@ class Settings:
             self.config.set("general", key, self.general[key])
         for key in self.language:
             self.config.set("language", key, self.language[key])
+        for key in self.placeable_state:
+            self.config.set("placeable_state", key, self.placeable_state[key])
         for key in self.plugin_state:
             self.config.set("plugin_state", key, self.plugin_state[key])
         for key in self.undo:

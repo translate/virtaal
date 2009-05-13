@@ -32,6 +32,8 @@ class BaseTMModel(BaseModel):
         'match-found': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING, gobject.TYPE_PYOBJECT,))
     }
 
+    description = ""
+    """A description of the backend. Will be displayed to users."""
     display_name = None
     """The backend's name, suitable for display."""
 

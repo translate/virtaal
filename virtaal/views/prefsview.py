@@ -96,7 +96,7 @@ class PreferencesView(BaseView):
 
 
     # EVENT HANDLERS #
-    def _on_plugin_toggled(self, item):
+    def _on_plugin_toggled(self, sview, item):
         self.controller.set_plugin_enabled(
             plugin_name=item['data']['internal_name'],
             enabled=item['enabled']

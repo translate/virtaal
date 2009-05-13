@@ -143,12 +143,23 @@ class SelectView(gtk.TreeView, GObjectWrapper):
         if not self._model.iter_is_valid(iter):
             return None
 
-        return {
+        config = None
+        widget = self._model.get_value(iter, COL_WIDGET)
+        if widget:
+            widget = widget.get_children()[1]
+        if widget:
+            config = widget.config_func
+
+        item = {
             'enabled': self._model.get_value(iter, COL_ENABLED),
             'name':    self._model.get_value(iter, COL_NAME),
             'desc':    self._model.get_value(iter, COL_DESC),
             'data':    self._model.get_value(iter, COL_DATA),
         }
+        if config:
+            item['config'] = config
+
+        return item
 
     def set_model(self, items):
         if isinstance(items, gtk.ListStore):

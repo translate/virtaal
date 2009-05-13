@@ -69,6 +69,7 @@ class TMController(BaseController):
     def _load_models(self):
         self.plugin_controller = PluginController(self)
         self.plugin_controller.PLUGIN_CLASSNAME = 'TMModel'
+        self.plugin_controller.PLUGIN_CLASS_INFO_ATTRIBS = ['display_name', 'description']
         new_dirs = []
         for dir in self.plugin_controller.PLUGIN_DIRS:
            new_dirs.append(os.path.join(dir, 'tm', 'models'))

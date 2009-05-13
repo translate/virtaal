@@ -42,6 +42,7 @@ class TerminologyModel(BaseTerminologyModel):
     """
 
     __gtype_name__ = 'OpenTranTerminology'
+    description = _('Query Open-Tran.eu for terminology matches.')
     display_name = _('Open-Tran.eu Terminology')
 
     default_config = { "url" : "http://open-tran.eu/RPC2" }

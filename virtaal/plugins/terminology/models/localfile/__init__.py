@@ -36,6 +36,7 @@ class TerminologyModel(BaseTerminologyModel):
     """
 
     __gtype_name__ = 'LocalFileTerminologyModel'
+    description = _('Use a local translation file as terminology source.')
     display_name = _('Local file')
 
     default_config = { 'files': '' }

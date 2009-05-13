@@ -966,12 +966,23 @@ If you are translating from English to French then French would be your translat
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <widget class="GtkScrolledWindow" id="scrwnd_placeables">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <property name="vscrollbar_policy">automatic</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </widget>
+              <packing>
+                <property name="position">2</property>
+              </packing>
             </child>
             <child>
               <widget class="GtkLabel" id="label14">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Languages</property>
+                <property name="label" translatable="yes">Placeables</property>
               </widget>
               <packing>
                 <property name="position">2</property>

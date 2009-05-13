@@ -48,6 +48,44 @@ class PlaceablesController(BaseController):
         self.main_controller = main_controller
         self.main_controller.placeables_controller = self
         self.parsers = list(general.parsers)
+        self._init_parser_descriptions()
+
+    def _init_parser_descriptions(self):
+        self.parser_info = {}
+
+        # Test for presence of parser classes by hand
+        self.parser_info[general.AltAttrPlaceable.parse] = (
+            '"alt" attribute placeable',
+            'Placeable for alt="..." tags (as found in HTML).'
+        )
+        self.parser_info[general.EmailPlaceable.parse] = (
+            _('E-mail'),
+            _('E-mail addresses are recognised as placeables.')
+        )
+        self.parser_info[general.FilePlaceable.parse] = (
+            _('File location'),
+            _('Handle file locations as placeables.')
+        )
+        self.parser_info[general.FormattingPlaceable.parse] = (
+            _('C printf variables'),
+            _('Placeable matching C printf-style variable formatting.')
+        )
+        self.parser_info[general.PunctuationPlaceable.parse] = (
+            _('Punctuation'),
+            _('Specifically for being able to copy non-standard punctuation easily.')
+        )
+        self.parser_info[general.UrlPlaceable.parse] = (
+            _('URL'),
+            _('Handle URLs as placeables.')
+        )
+        self.parser_info[general.XMLEntityPlaceable.parse] = (
+            _('XML Entities'),
+            _('Recognizes XML entities (such as &amp;foo;) as (constant) placeables.')
+        )
+        self.parser_info[general.XMLTagPlaceable.parse] = (
+            _('XML Tags'),
+            _('Handles XML tags as placeables.')
+        )
 
 
     # METHODS #

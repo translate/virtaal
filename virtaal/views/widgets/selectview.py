@@ -51,6 +51,7 @@ class SelectView(gtk.TreeView, GObjectWrapper):
         GObjectWrapper.__init__(self)
 
         self.bold_name = bold_name
+        self.selected_item = None
         if not items:
             items = gtk.ListStore(bool, str, str, TYPE_PYOBJECT, TYPE_PYOBJECT)
         self.set_model(items)
@@ -161,6 +162,25 @@ class SelectView(gtk.TreeView, GObjectWrapper):
 
         return item
 
+    def get_selected_item(self):
+        return self.selected_item
+
+    def select_item(self, item):
+        if item is None:
+            self.get_selection().unselect_all()
+            return
+        found = False
+        itr = self._model.get_iter_first()
+        while itr is not None and self._model.iter_is_valid(itr):
+            if self.get_item(itr) == item:
+                found = True
+                break
+        if found and itr and self._model.iter_is_valid(itr):
+            self.get_selection().select_iter(itr)
+            self.selected_item = item
+        else:
+            self.selected_item = None
+
     def set_model(self, items):
         if isinstance(items, gtk.ListStore):
             self._model = items
@@ -195,4 +215,5 @@ class SelectView(gtk.TreeView, GObjectWrapper):
     def _on_selection_change(self, selection):
         model, iter = selection.get_selected()
         if isinstance(model, gtk.TreeIter) and model is self._model and self._model.iter_is_valid(iter):
-            self.emit('item-selected', self.get_item(iter))
+            self.selected_item = self.get_item(iter)
+            self.emit('item-selected', self.selected_item)

@@ -35,6 +35,7 @@ class Plugin(BasePlugin):
 
     # INITIALIZERS #
     def __init__(self, internal_name, main_controller):
+        self.configure_func = self.configure
         self.internal_name = internal_name
         self.main_controller = main_controller
         self._init_plugin()
@@ -46,6 +47,9 @@ class Plugin(BasePlugin):
         self.config['min_quality'] = int(self.config['min_quality'])
 
         self.tmcontroller = TMController(self.main_controller, self.config)
+
+    def configure(self, parent):
+        self.tmcontroller.view.on_select_backends(None)
 
     def destroy(self):
         self.save_config()

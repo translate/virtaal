@@ -3,6 +3,7 @@ share/applications/virtaal.desktop.in
 share/virtaal/virtaal.glade
 virtaal/tips.py
 virtaal/controllers/maincontroller.py
+virtaal/controllers/placeablescontroller.py
 virtaal/controllers/storecontroller.py
 virtaal/modes/defaultmode.py
 virtaal/modes/quicktransmode.py

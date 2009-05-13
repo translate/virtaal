@@ -22,7 +22,7 @@ import gobject
 import logging
 from translate.storage.placeables import general, parse as parse_placeables, StringElem
 
-from virtaal.common import GObjectWrapper
+from virtaal.common import pan_app, GObjectWrapper
 from virtaal.views import placeablesguiinfo
 
 from basecontroller import BaseController
@@ -47,9 +47,11 @@ class PlaceablesController(BaseController):
 
         self.main_controller = main_controller
         self.main_controller.placeables_controller = self
-        self.parsers = list(general.parsers)
+        self._init_parsers()
         self._init_parser_descriptions()
         self._init_notarget_list()
+
+        self.main_controller.connect('quit', self._on_quit)
 
     def _init_notarget_list(self):
         self.non_target_placeables = [
@@ -59,6 +61,16 @@ class PlaceablesController(BaseController):
             general.PunctuationPlaceable,
             general.UrlPlaceable,
         ]
+
+    def _init_parsers(self):
+        disabled = [name for name, state in pan_app.settings.placeable_state.items() if state.lower() == 'disabled']
+
+        self.parsers = []
+        for parser in general.parsers:
+            classname = parser.__self__.__name__.lower()
+            if classname in disabled:
+                continue
+            self.parsers.append(parser)
 
     def _init_parser_descriptions(self):
         self.parser_info = {}
@@ -148,3 +160,12 @@ class PlaceablesController(BaseController):
                 changed = True
         if changed:
             self.emit('parsers-changed')
+
+
+    # EVENT HANDLERS #
+    def _on_quit(self, main_ctrlr):
+        for parser in general.parsers:
+            classname = parser.__self__.__name__
+            enabled = parser in self.parsers
+            if classname in pan_app.settings.placeable_state or not enabled:
+                pan_app.settings.placeable_state[classname] = enabled and 'enabled' or 'disabled'

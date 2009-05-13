@@ -42,7 +42,7 @@ class PreferencesView(BaseView):
         )
 
         self._widgets = {}
-        widget_names = ('scrwnd_plugins',)
+        widget_names = ('scrwnd_placeables', 'scrwnd_plugins',)
         for name in widget_names:
             self._widgets[name] = self.gui.get_widget(name)
 
@@ -53,7 +53,15 @@ class PreferencesView(BaseView):
         self._get_widgets()
         self._setup_menu_item()
         self._setup_key_bindings()
+        self._init_placeables_page()
         self._init_plugins_page()
+
+    def _init_placeables_page(self):
+        self.placeables_select = SelectView()
+        self.placeables_select.connect('item-enabled', self._on_placeable_toggled)
+        self.placeables_select.connect('item-disabled', self._on_placeable_toggled)
+        self._widgets['scrwnd_placeables'].add(self.placeables_select)
+        self._widgets['scrwnd_placeables'].show_all()
 
     def _init_plugins_page(self):
         self.plugins_select = SelectView()
@@ -77,6 +85,14 @@ class PreferencesView(BaseView):
         mnu_prefs.connect('activate', self._show_preferences)
 
     # ACCESSORS #
+    def _get_placeables_data(self):
+        return self.placeables_select.get_all_items()
+    def _set_placeables_data(self, value):
+        selected = self.placeables_select.get_selected_item()
+        self.placeables_select.set_model(value)
+        self.placeables_select.select_item(selected)
+    placeables_data = property(_get_placeables_data, _set_placeables_data)
+
     def _get_plugin_data(self):
         return self.plugins_select.get_all_items()
     def _set_plugin_data(self, value):
@@ -88,6 +104,7 @@ class PreferencesView(BaseView):
 
     # METHODS #
     def show(self):
+        self.placeables_select.select_item(None)
         self.plugins_select.select_item(None)
         self.controller.update_prefs_gui_data()
         #logging.debug('Plug-in data: %s' % (str(self.plugin_data)))
@@ -96,6 +113,12 @@ class PreferencesView(BaseView):
 
 
     # EVENT HANDLERS #
+    def _on_placeable_toggled(self, sview, item):
+        self.controller.set_placeable_enabled(
+            parser=item['data'],
+            enabled=item['enabled']
+        )
+
     def _on_plugin_toggled(self, sview, item):
         self.controller.set_plugin_enabled(
             plugin_name=item['data']['internal_name'],

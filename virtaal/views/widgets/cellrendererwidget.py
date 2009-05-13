@@ -64,6 +64,7 @@ class CellRendererWidget(gtk.GenericCellRenderer):
 
     def on_get_size(self, widget, cell_area=None):
         #print '%s>> on_get_size(cell_area=%s)' % (self.strfunc(self.widget), cell_area)
+        # FIXME: This method works fine for unselected cells (rows) and gives the same (wrong) results for selected cells.
         height = width = 0
         xpad = ypad = 2
 

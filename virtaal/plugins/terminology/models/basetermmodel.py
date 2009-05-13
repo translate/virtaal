@@ -32,9 +32,10 @@ class BaseTerminologyModel(BaseModel):
         'match-found': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING, gobject.TYPE_PYOBJECT,))
     }
 
+    configure_func = None
+    """A function that starts the configuration, if available."""
     display_name = None
     """The backend's name, suitable for display."""
-
     default_config = {}
     """Default configuration shared by all terminology model plug-ins."""
 

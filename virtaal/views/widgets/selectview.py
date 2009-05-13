@@ -80,6 +80,7 @@ class SelectView(gtk.TreeView, GObjectWrapper):
         hbox = gtk.HBox()
         vbox = gtk.VBox()
         vbox.min_height = 60
+
         vbox.lbl_name = None
         if 'name' in item and item['name']:
             name = (self.bold_name and '<b>%s</b>' or '%s') % (item['name'])
@@ -89,6 +90,7 @@ class SelectView(gtk.TreeView, GObjectWrapper):
             lbl.set_use_markup(self.bold_name)
             vbox.pack_start(lbl)
             vbox.lbl_name = lbl
+
         vbox.lbl_desc = None
         if 'desc' in item and item['desc']:
             lbl = gtk.Label()
@@ -100,10 +102,12 @@ class SelectView(gtk.TreeView, GObjectWrapper):
         btnconf = gtk.Button(_('Configure...'))
         if 'config' in item and callable(item['config']):
             def clicked(button):
-                item['config']()
+                item['config'](self.parent)
             btnconf.connect('clicked', clicked)
+            btnconf.config_func = item['config']
         else:
             btnconf.set_sensitive(False)
+            btnconf.config_func = None
         vbox.btn_conf = btnconf
 
         hbox.pack_start(vbox)

@@ -119,7 +119,7 @@ class SelectView(gtk.TreeView, GObjectWrapper):
         s = ''
         widget = widget.get_children()[0]
         if widget.lbl_name:
-            s = widget.lbl_name.get_text()
+            s = widget.lbl_name.get_label()
         if widget.lbl_desc:
             s += '\n' + widget.lbl_desc.get_text()
         return s

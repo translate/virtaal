@@ -130,7 +130,7 @@ class TerminologyView(BaseView):
             self.mnu_backends = mainview.append_menu_item(_('Select back-ends...'), self.mnu_term)
         self._signal_ids.append((
             self.mnu_backends,
-            self.mnu_backends.connect('activate', self._on_select_backends)
+            self.mnu_backends.connect('activate', self.on_select_backends)
         ))
 
 
@@ -144,7 +144,7 @@ class TerminologyView(BaseView):
 
 
     # EVENT HANDLERS #
-    def _on_select_backends(self, menuitem):
+    def on_select_backends(self, menuitem):
         selectdlg = SelectDialog(
             title=_('Select Terminology back-ends'),
             message=_('Please select the terminology back-ends you would like to have enabled.')

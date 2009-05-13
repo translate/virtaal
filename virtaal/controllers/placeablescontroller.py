@@ -49,6 +49,16 @@ class PlaceablesController(BaseController):
         self.main_controller.placeables_controller = self
         self.parsers = list(general.parsers)
         self._init_parser_descriptions()
+        self._init_notarget_list()
+
+    def _init_notarget_list(self):
+        self.non_target_placeables = [
+            general.AltAttrPlaceable,
+            general.EmailPlaceable,
+            general.FilePlaceable,
+            general.PunctuationPlaceable,
+            general.UrlPlaceable,
+        ]
 
     def _init_parser_descriptions(self):
         self.parser_info = {}

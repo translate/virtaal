@@ -19,14 +19,15 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gtk
+import logging
 from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 
 from virtaal.common import GObjectWrapper
 from virtaal.views.widgets.cellrendererwidget import CellRendererWidget
 
-__all__ = ['COL_ENABLED', 'COL_NAME', 'COL_DESC', 'COL_DATA', 'SelectView']
+__all__ = ['COL_ENABLED', 'COL_NAME', 'COL_DESC', 'COL_DATA', 'COL_WIDGET', 'SelectView']
 
-COL_ENABLED, COL_NAME, COL_DESC, COL_DATA = range(4)
+COL_ENABLED, COL_NAME, COL_DESC, COL_DATA, COL_WIDGET = range(5)
 
 
 class SelectView(gtk.TreeView, GObjectWrapper):

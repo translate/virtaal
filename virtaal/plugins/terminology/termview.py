@@ -149,6 +149,7 @@ class TerminologyView(BaseView):
             title=_('Select Terminology back-ends'),
             message=_('Please select the terminology back-ends you would like to have enabled.')
         )
+        selectdlg.set_icon(self.controller.main_controller.view.main_window.get_icon())
 
         items = []
         plugin_controller = self.controller.plugin_controller

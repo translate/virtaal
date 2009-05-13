@@ -70,6 +70,10 @@ class SelectDialog(GObjectWrapper):
     def get_message(self):
         return self.message.get_text()
 
+    def set_icon(self, icon):
+        """Simple proxy method to C{self.dialog.set_icon(icon)}."""
+        self.dialog.set_icon(icon)
+
     def set_message(self, msg):
         self.message.set_text(msg)
 

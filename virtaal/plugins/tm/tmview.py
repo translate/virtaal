@@ -264,6 +264,7 @@ class TMView(BaseView, GObjectWrapper):
             title=_('Select TM back-ends'),
             message=_('Please select the TM back-ends you would like to have enabled.')
         )
+        selectdlg.set_icon(self.controller.main_controller.view.main_window.get_icon())
 
         items = []
         plugin_controller = self.controller.plugin_controller

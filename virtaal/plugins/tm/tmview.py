@@ -271,23 +271,29 @@ class TMView(BaseView, GObjectWrapper):
         for plugin_name in plugin_controller._find_plugin_names():
             if plugin_name == 'basetmmodel':
                 continue
+            info = plugin_controller.get_plugin_info(plugin_name)
+            enabled = plugin_name in plugin_controller.plugins
             item = {'name': plugin_name}
-            if plugin_name in plugin_controller.plugins:
-                plugin = plugin_controller.plugins[plugin_name]
-                item.update({
-                    'desc': getattr(plugin, plugin_controller.PLUGIN_NAME_ATTRIB),
-                    'enabled': True
-                })
-            else:
-                item['enabled'] = False
-            items.append(item)
+            config = enabled and plugin_controller.plugins[plugin_name] or None
+            items.append({
+                'name': info['display_name'],
+                'desc': info['description'],
+                'data': {'internal_name': plugin_name},
+                'enabled': enabled,
+                'config': config,
+            })
 
         if selectdlg.run(items=items) == gtk.RESPONSE_OK:
             for item in selectdlg.sview.get_all_items():
+                internal_name = item['data']['internal_name']
                 if item['enabled']:
-                    plugin_controller.enable_plugin(item['name'])
+                    plugin_controller.enable_plugin(internal_name)
+                    if internal_name in self.controller.config['disabled_plugins']:
+                        self.controller.config['disabled_plugins'].remove(internal_name)
                 else:
-                    plugin_controller.disable_plugin(item['name'])
+                    plugin_controller.disable_plugin(internal_name)
+                    if internal_name not in self.controller.config['disable_plugin']:
+                        self.controller.config['disable_plugin'].append(internal_name)
 
     def _on_select_match(self, accel_group, acceleratable, keyval, modifier):
         self.select_match_index(int(keyval - gtk.keysyms._0))

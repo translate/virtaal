@@ -34,15 +34,27 @@ class PreferencesController(BaseController):
         GObjectWrapper.__init__(self)
 
         self.main_controller = main_controller
+        self.placeables_controller = main_controller.placeables_controller
         self.plugin_controller = main_controller.plugin_controller
         self.view = PreferencesView(self)
 
 
     # METHODS #
+    def set_placeable_enabled(self, parser, enabled):
+        """Enable or disable a placeable with the given parser function."""
+        getattr(self.placeables_controller, enabled and 'add_parsers' or 'remove_parsers')(parser)
+        self.update_config_placeables_state(parser=parser, disabled=not enabled)
+
     def set_plugin_enabled(self, plugin_name, enabled):
         """Enabled or disable a plug-in with the given name."""
         getattr(self.plugin_controller, enabled and 'enable_plugin' or 'disable_plugin')(plugin_name)
         self.update_config_plugin_state(plugin_name=plugin_name, disabled=not enabled)
+
+    def update_config_placeables_state(self, parser, disabled):
+        """Make sure that the placeable with the given name is enabled/disabled
+            in the main configuration file."""
+        classname = parser.__self__.__name__
+        pan_app.settings.placeable_state[classname] = disabled and 'disabled' or 'enabled'
 
     def update_config_plugin_state(self, plugin_name, disabled):
         """Make sure that the plug-in with the given name is enabled/disabled
@@ -55,6 +67,23 @@ class PreferencesController(BaseController):
         pan_app.settings.plugin_state[plugin_name] = disabled and 'disabled' or 'enabled'
 
     def update_prefs_gui_data(self):
+        self._update_placeables_gui_data()
+        self._update_plugin_gui_data()
+
+    def _update_placeables_gui_data(self):
+        items = []
+        allparsers = self.placeables_controller.parser_info.items()
+        allparsers.sort(key=lambda x: x[1][0])
+        for parser, (name, desc) in allparsers:
+            items.append({
+                'name': name,
+                'desc': desc,
+                'enabled': parser in self.placeables_controller.parsers,
+                'data': parser
+            })
+        self.view.placeables_data = items
+
+    def _update_plugin_gui_data(self):
         plugin_items = []
         for found_plugin in self.plugin_controller._find_plugin_names():
             if found_plugin in self.plugin_controller.plugins:

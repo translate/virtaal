@@ -54,6 +54,7 @@ class TerminologyController(BaseController):
 
         self.disabled_model_names = ['basetermmodel'] + self.config.get('disabled_models', [])
         self.placeables_controller.add_parsers(*terminology.parsers)
+        self.placeables_controller.connect('parsers-changed', self._on_placeables_changed)
 
         if not (terminology.TerminologyPlaceable, TerminologyGUIInfo) in placeablesguiinfo.element_gui_map:
             placeablesguiinfo.element_gui_map.insert(0, (terminology.TerminologyPlaceable, TerminologyGUIInfo))
@@ -80,3 +81,11 @@ class TerminologyController(BaseController):
     def destroy(self):
         self.view.destroy()
         self.plugin_controller.shutdown()
+        self.placeables_controller.remove_parsers(terminology.parsers)
+
+
+    # EVENT HANDLERS #
+    def _on_placeables_changed(self, placeables_controller):
+        for term_parser in terminology.parsers:
+            if term_parser not in placeables_controller.parsers:
+                placeables_controller.add_parser(term_parser)

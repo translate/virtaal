@@ -24,7 +24,7 @@ import os.path
 from translate.storage.placeables import terminology
 
 from virtaal.common import GObjectWrapper, pan_app
-from virtaal.controllers import BaseController, PluginController, PlaceablesController
+from virtaal.controllers import BaseController, PluginController
 from virtaal.views import placeablesguiinfo
 
 import models

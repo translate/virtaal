@@ -70,7 +70,7 @@ class PlaceablesController(BaseController):
             classname = parser.im_self.__name__.lower()
             if classname in disabled:
                 continue
-            self.parsers.append(parser)
+            self.add_parsers(parser)
 
     def _init_parser_descriptions(self):
         self.parser_info = {}

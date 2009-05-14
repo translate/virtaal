@@ -124,7 +124,18 @@ class PlaceablesController(BaseController):
         if [f for f in newparsers if not callable(f)]:
             raise TypeError('newparsers may only contain callable objects.')
 
-        self.parsers.extend(newparsers)
+        sortedparsers = []
+
+        # First add parsers from general.parsers in order
+        for parser in general.parsers:
+            if parser in (self.parsers + list(newparsers)):
+                sortedparsers.append(parser)
+        # Add parsers not in general.parsers
+        for parser in newparsers:
+            if parser not in general.parsers:
+                sortedparsers.append(parser)
+
+        self.parsers = sortedparsers
         self.emit('parsers-changed')
 
     def apply_parsers(self, elems, parsers=None):

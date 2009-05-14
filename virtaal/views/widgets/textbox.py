@@ -88,7 +88,9 @@ class TextBox(gtk.TextView):
 
     # OVERRIDDEN METHODS #
     def get_stringelem(self):
-        return elem_parse(self.get_text(), self.placeables_controller.parsers)
+        if not self.elem:
+            return None
+        return elem_parse(self.elem, self.placeables_controller.parsers)
 
     def get_text(self, start_iter=None, end_iter=None):
         """Return the text rendered in this text box.

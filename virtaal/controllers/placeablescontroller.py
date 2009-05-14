@@ -92,9 +92,17 @@ class PlaceablesController(BaseController):
             _('C printf variables'),
             _('Placeable matching C printf-style variable formatting.')
         )
+        self.parser_info[general.NumberPlaceable.parse] = (
+            _('Numbers'),
+            _('Handle integer or decimal numbers as placeables.')
+        )
         self.parser_info[general.PunctuationPlaceable.parse] = (
             _('Punctuation'),
             _('Specifically for being able to copy non-standard punctuation easily.')
+        )
+        self.parser_info[general.PythonFormattingPlaceable.parse] = (
+            _('Python variables'),
+            _('Match formatting variables used in Python code as placeables.')
         )
         self.parser_info[general.UrlPlaceable.parse] = (
             _('URL'),

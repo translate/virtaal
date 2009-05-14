@@ -24,7 +24,7 @@ import logging
 from gobject import SIGNAL_RUN_FIRST, SIGNAL_RUN_LAST, TYPE_PYOBJECT
 
 from translate.misc.typecheck import accepts, Self, IsOneOf
-from translate.storage.placeables import StringElem
+from translate.storage.placeables import StringElem, parse as elem_parse
 
 from virtaal.views import placeablesguiinfo
 
@@ -107,12 +107,16 @@ class TextBox(gtk.TextView):
             @param text: The text to render in this text box."""
         if not isinstance(text, StringElem):
             text = StringElem(text)
+
         self.selected_elem = None
         self.selected_elem_index = None
 
         self.buffer.handler_block_by_func(self._on_delete_range)
         self.buffer.handler_block_by_func(self._on_insert_text)
-        self.elem = text
+        if self.placeables_controller:
+            self.elem = elem_parse(text, self.placeables_controller.parsers)
+        else:
+            self.elem = text
         self.add_default_gui_info(text)
         self.buffer.set_text(unicode(text))
         self.buffer.handler_unblock_by_func(self._on_delete_range)

@@ -44,10 +44,8 @@ class CellRendererWidget(gtk.GenericCellRenderer):
     # INITIALIZERS #
     def __init__(self, strfunc):
         gtk.GenericCellRenderer.__init__(self)
-        self.props.mode = gtk.CELL_RENDERER_MODE_EDITABLE
 
         self.editablemap = {}
-        self._starting_edit = False
         self.strfunc = strfunc
         self.widget = None
 
@@ -59,11 +57,8 @@ class CellRendererWidget(gtk.GenericCellRenderer):
     def do_get_property(self, pspec):
         return getattr(self, pspec.name)
 
-    def on_activate(self, *args):
-        pass
-
     def on_get_size(self, widget, cell_area=None):
-        #print '%s>> on_get_size(cell_area=%s)' % (self.strfunc(self.widget), cell_area)
+        #print '%s>> on_get_size()' % (self.strfunc(self.widget))
         # FIXME: This method works fine for unselected cells (rows) and gives the same (wrong) results for selected cells.
         height = width = 0
         xpad = ypad = 2
@@ -72,14 +67,12 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         if width <= 1:
             width = -1
         layout = self.create_pango_layout(self.strfunc(self.widget), widget, width)
-        lw, lh = layout.get_pixel_size()
+        width, height = layout.get_pixel_size()
 
         if self.widget:
-            self.widget.set_size_request(width, -1)
-            self.widget.show()
-            w, h = self.widget.get_size_request()
-            width =  max(lw, w, hasattr(self.widget, 'min_width')  and self.widget.min_width  or 0)
-            height = max(lh, h, hasattr(self.widget, 'min_height') and self.widget.min_height or 0)
+            w, h = self.widget.size_request()
+            width =  max(width,  w)
+            height = max(height, h)
 
         #print 'width %d | height %d | lw %d | lh %d' % (width, height, lw, lh)
         height += ypad * 2
@@ -90,8 +83,13 @@ class CellRendererWidget(gtk.GenericCellRenderer):
     def on_render(self, window, widget, bg_area, cell_area, expose_area, flags):
         #print '%s>> on_render(flags=%s)' % (self.strfunc(self.widget), flagstr(flags))
         if flags & gtk.CELL_RENDERER_SELECTED:
-            self._start_editing(widget) # FIXME: This is obviously a hack, but what more do you want?
+            self.props.mode = gtk.CELL_RENDERER_MODE_EDITABLE
+            if not getattr(self, '__running', False):
+                self.__running = True
+                self._start_editing(widget) # FIXME: This is obviously a hack, but what more do you want?
+                self.__running = False
             return True
+        self.props.mode = gtk.CELL_RENDERER_MODE_INERT
         xo, yo, w, h = self.get_size(widget, cell_area)
         x = cell_area.x + xo
         y = cell_area.y + yo
@@ -102,8 +100,6 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         #print '%s>> on_start_editing(flags=%s, event=%s)' % (self.strfunc(self.widget), flagstr(flags), event)
         if self.widget not in self.editablemap:
             editable = CellWidget(self.widget)
-            editable.connect('editing-done', lambda *args: True)
-            editable.connect('key-press-event', lambda *args: True)
             self.editablemap[self.widget] = editable
         editable = self.editablemap[self.widget]
         editable.show_all()
@@ -123,9 +119,8 @@ class CellRendererWidget(gtk.GenericCellRenderer):
     def _start_editing(self, treeview):
         """Force the cell to enter editing mode by going through the parent
             gtk.TextView."""
-        if self._starting_edit:
+        if self.props.editing:
             return
-        self._starting_edit = True
 
         model, iter = treeview.get_selection().get_selected()
         path = model.get_path(iter)
@@ -133,11 +128,6 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         if len(col) < 1:
             return
         treeview.set_cursor_on_cell(path, col[0], self, True)
-
-        # XXX: Hack to make sure that the lock (_start_editing) is not released before the next on_render() is called.
-        def update_lock():
-            self._starting_edit = False
-        idle_add(update_lock)
 
 
 class CellWidget(gtk.HBox, gtk.CellEditable):
@@ -180,7 +170,6 @@ if __name__ == "__main__":
         def insert(self, name):
             iter = self.store.append()
             btn = gtk.Button(name)
-            btn.min_height = 30
             self.store.set(iter, 0, name, 1, btn, 2, True)
 
     w = gtk.Window()

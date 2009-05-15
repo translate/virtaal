@@ -48,6 +48,7 @@ class CellRendererWidget(gtk.GenericCellRenderer):
     def __init__(self, strfunc):
         gtk.GenericCellRenderer.__init__(self)
 
+        self._editing = False
         self.editablemap = {}
         self.strfunc = strfunc
         self.widget = None
@@ -86,10 +87,7 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         #print '%s>> on_render(flags=%s)' % (self.strfunc(self.widget), flagstr(flags))
         if flags & gtk.CELL_RENDERER_SELECTED:
             self.props.mode = gtk.CELL_RENDERER_MODE_EDITABLE
-            if not getattr(self, '__running', False):
-                self.__running = True
-                self._start_editing(widget) # FIXME: This is obviously a hack, but what more do you want?
-                self.__running = False
+            self._start_editing(widget) # FIXME: This is obviously a hack, but what more do you want?
             return True
         self.props.mode = gtk.CELL_RENDERER_MODE_INERT
         xo, yo, w, h = self.get_size(widget, cell_area)
@@ -121,15 +119,21 @@ class CellRendererWidget(gtk.GenericCellRenderer):
     def _start_editing(self, treeview):
         """Force the cell to enter editing mode by going through the parent
             gtk.TextView."""
-        if self.props.editing:
+        if self._editing:
             return
+        self._editing = True
 
         model, iter = treeview.get_selection().get_selected()
         path = model.get_path(iter)
         col = [c for c in treeview.get_columns() if self in c.get_cell_renderers()]
         if len(col) < 1:
+            self._editing = False
             return
         treeview.set_cursor_on_cell(path, col[0], self, True)
+        # XXX: Hack to make sure that the lock (_start_editing) is not released before the next on_render() is called.
+        def update_lock():
+            self._editing = False
+        idle_add(update_lock)
 
 
 class CellWidget(gtk.HBox, gtk.CellEditable):

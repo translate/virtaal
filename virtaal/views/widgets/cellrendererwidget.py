@@ -40,6 +40,9 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         'widget': (TYPE_PYOBJECT, 'Widget', 'The column containing the widget to render', PARAM_READWRITE),
     }
 
+    XPAD = 2
+    YPAD = 2
+
 
     # INITIALIZERS #
     def __init__(self, strfunc):
@@ -61,7 +64,6 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         #print '%s>> on_get_size()' % (self.strfunc(self.widget))
         # FIXME: This method works fine for unselected cells (rows) and gives the same (wrong) results for selected cells.
         height = width = 0
-        xpad = ypad = 2
 
         width = widget.get_allocation().width
         if width <= 1:
@@ -75,10 +77,10 @@ class CellRendererWidget(gtk.GenericCellRenderer):
             height = max(height, h)
 
         #print 'width %d | height %d | lw %d | lh %d' % (width, height, lw, lh)
-        height += ypad * 2
-        width  += xpad * 2
+        height += self.YPAD * 2
+        width  += self.XPAD * 2
 
-        return xpad, ypad, width, height
+        return self.XPAD, self.YPAD, width, height
 
     def on_render(self, window, widget, bg_area, cell_area, expose_area, flags):
         #print '%s>> on_render(flags=%s)' % (self.strfunc(self.widget), flagstr(flags))

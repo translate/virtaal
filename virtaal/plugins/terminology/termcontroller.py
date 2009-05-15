@@ -88,4 +88,4 @@ class TerminologyController(BaseController):
     def _on_placeables_changed(self, placeables_controller):
         for term_parser in terminology.parsers:
             if term_parser not in placeables_controller.parsers:
-                placeables_controller.add_parser(term_parser)
+                placeables_controller.add_parsers(term_parser)

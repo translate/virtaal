@@ -90,7 +90,7 @@ class TextBox(gtk.TextView):
     def get_stringelem(self):
         if not self.elem:
             return None
-        return elem_parse(self.elem, self.placeables_controller.parsers)
+        return elem_parse(self.elem, self.placeables_controller.get_parsers_for_textbox(self))
 
     def get_text(self, start_iter=None, end_iter=None):
         """Return the text rendered in this text box.
@@ -116,7 +116,7 @@ class TextBox(gtk.TextView):
         self.buffer.handler_block_by_func(self._on_delete_range)
         self.buffer.handler_block_by_func(self._on_insert_text)
         if self.placeables_controller:
-            self.elem = elem_parse(text, self.placeables_controller.parsers)
+            self.elem = elem_parse(text, self.placeables_controller.get_parsers_for_textbox(self))
         else:
             self.elem = text
         self.add_default_gui_info(text)

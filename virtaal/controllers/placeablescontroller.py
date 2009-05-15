@@ -159,6 +159,16 @@ class PlaceablesController(BaseController):
                         parent.sub[parent.sub.index(leaf)] = StringElem(parsed)
         return elems
 
+    def get_parsers_for_textbox(self, textbox):
+        """Get the parsers that should be applied to the given text box.
+            This is intended for use by C{TextBox} to supply it with appropriate
+            parsers, based on whether the text box is used for source- or target
+            text."""
+        if textbox in self.main_controller.unit_controller.view.targets:
+            tgt_parsers = []
+            return [p for p in self.parsers if p.im_self not in self.non_target_placeables]
+        return self.parsers
+
     def get_gui_info(self, placeable):
         """Get an appropriate C{StringElemGUI} or sub-class instance based on
         the type of C{placeable}. The mapping between placeables classes and

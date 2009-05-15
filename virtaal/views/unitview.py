@@ -21,7 +21,7 @@
 import gtk
 import logging
 import re
-from gobject import idle_add, GObject, SIGNAL_RUN_FIRST, TYPE_INT, TYPE_NONE, TYPE_PYOBJECT, TYPE_STRING
+from gobject import idle_add, GObject, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 from translate.lang import factory
 from translate.lang import data
 try:
@@ -43,12 +43,12 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     __gtype_name__ = "UnitView"
     __gsignals__ = {
-        'delete-text':    (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_STRING, TYPE_INT, TYPE_INT, TYPE_INT, TYPE_INT)),
-        'insert-text':    (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_STRING, TYPE_STRING, TYPE_INT, TYPE_INT)),
-        'paste-start':    (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_STRING, TYPE_PYOBJECT, TYPE_INT)),
-        'modified':       (SIGNAL_RUN_FIRST, TYPE_NONE, ()),
-        'unit-done':      (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
-        'target-focused': (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_INT,)),
+        'delete-text':    (SIGNAL_RUN_FIRST, None, (int, int, str, int, TYPE_PYOBJECT, int)),
+        'insert-text':    (SIGNAL_RUN_FIRST, None, (str, int, TYPE_PYOBJECT, int)),
+        'paste-start':    (SIGNAL_RUN_FIRST, None, (str, TYPE_PYOBJECT, int)),
+        'modified':       (SIGNAL_RUN_FIRST, None, ()),
+        'unit-done':      (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'target-focused': (SIGNAL_RUN_FIRST, None, (int,)),
     }
 
     first_word_re = re.compile("(?m)(?u)^(<[^>]+>|\\\\[nt]|[\W$^\n])*(\\b|\\Z)")
@@ -392,9 +392,9 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             textbox.selector_textbox = self.sources[0]
             textbox.connect('key-pressed', on_textbox_n_press_event)
             textbox.connect('paste-clipboard', self._on_textbox_paste_clipboard, i)
+            textbox.connect('text-inserted', self._on_target_insert_text, i)
+            textbox.connect('text-deleted', self._on_target_delete_range, i)
             textbox.buffer.connect('changed', self._on_target_changed, i)
-            textbox.buffer.connect('insert-text', self._on_target_insert_text, i)
-            textbox.buffer.connect('delete-range', self._on_target_delete_range, i)
 
             self._widgets['vbox_targets'].pack_start(target)
             self.targets.append(textbox)
@@ -590,22 +590,13 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
         self.modified()
 
-    def _on_target_insert_text(self, buff, iter, ins_text, length, target_num):
-        old_text = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
-        offset = len(buff.get_text(buff.get_start_iter(), iter)) # FIXME: Isn't there a better way to do this?
+    def _on_target_insert_text(self, textbox, ins_text, offset, elem, target_num):
+        #logging.debug('emit("insert-text", ins_text="%s", offset=%d, elem=%s, target_num=%d)' % (ins_text, offset, repr(elem), target_num))
+        self.emit('insert-text', ins_text, offset, elem, target_num)
 
-        #logging.debug('emit("insert-text", old_text="%s", ins_text="%s", offset=%d, target_num=%d)' % (old_text, ins_text, offset, target_num))
-        self.emit('insert-text', old_text, ins_text, offset, target_num)
-
-    def _on_target_delete_range(self, buff, start_iter, end_iter, target_num):
-        cursor_iter = buff.get_iter_at_mark(buff.get_insert())
-        cursor_pos = len(buff.get_text(buff.get_start_iter(), cursor_iter))
-        old_text = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
-        start_offset = len(buff.get_text(buff.get_start_iter(), start_iter)) # FIXME: Isn't there a better way to do this?
-        end_offset = len(buff.get_text(buff.get_start_iter(), end_iter)) # FIXME: Isn't there a better way to do this?
-
-        #logging.debug('emit("delete-text", old_text="%s", start_offset=%d, end_offset=%d, cursor_pos=%d, target_num=%d)' % (old_text, start_offset, end_offset, cursor_pos, target_num))
-        self.emit('delete-text', old_text, start_offset, end_offset, cursor_pos, target_num)
+    def _on_target_delete_range(self, textbox, start_offset, end_offset, deleted, cursor_pos, elem, target_num):
+        #logging.debug('emit("delete-text", start_offset=%d, end_offset=%d, cursor_pos=%d, elem=%s, target_num=%d)' % (old_text, start_offset, end_offset, cursor_pos, repr(elem), target_num))
+        self.emit('delete-text', start_offset, end_offset, deleted, cursor_pos, elem, target_num)
 
     def _on_textbox_paste_clipboard(self, textbox, target_num):
         buff = textbox.buffer

@@ -83,14 +83,12 @@ class UndoModel(BaseModel):
             @type  undo_dict: dict
             @param undo_dict: A dictionary containing undo information with the
                 following keys:
+                 - "action": Value is a callable that is called (with the "unit"
+                   value, to effect the undo).
                  - "unit": Value is the unit on which the undo-action is applicable.
                  - "targetn": The index of the target on which the undo is applicable.
-                 - "value": Value is the string-value that should be displayed
-                   after the undo was performed.
-                 - "cursorpos": The position of the cursor after the undo.
-                 - "action": Value is a callable that is called (with the "unit"
-                   value, to effect the undo. Optional."""
-        for key in ('unit', 'targetn', 'value', 'cursorpos'):
+                 - "cursorpos": The position of the cursor after the undo."""
+        for key in ('action', 'unit', 'targetn', 'cursorpos'):
             if not key in undo_dict:
                 raise ValueError('Invalid undo dictionary!')
 

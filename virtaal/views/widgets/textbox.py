@@ -41,8 +41,8 @@ class TextBox(gtk.TextView):
         'before-apply-tags': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'element-selected':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'key-pressed':       (SIGNAL_RUN_LAST,  bool, (TYPE_PYOBJECT, str)),
-        'text-deleted':      (SIGNAL_RUN_LAST,  bool, (int, int, str, TYPE_PYOBJECT)),
-        'text-inserted':     (SIGNAL_RUN_LAST,  bool, (str, TYPE_PYOBJECT)),
+        'text-deleted':      (SIGNAL_RUN_LAST,  bool, (int, int, str, int, TYPE_PYOBJECT)),
+        'text-inserted':     (SIGNAL_RUN_LAST,  bool, (str, int, TYPE_PYOBJECT)),
     }
 
     SPECIAL_KEYS = {
@@ -326,8 +326,10 @@ class TextBox(gtk.TextView):
                 # Backspace was pressed after a placeable
                 start_iter.set_offset(self.elem.gui_info.index(start_elem))
 
+        cursor_pos = self.buffer.get_iter_at_mark(self.buffer.get_insert()).get_offset()
+
         deleted = self.elem.delete_range(start_iter.get_offset(), end_iter.get_offset())
-        self.emit('text-deleted', start_iter.get_offset(), end_iter.get_offset(), deleted, self.elem)
+        self.emit('text-deleted', start_iter.get_offset(), end_iter.get_offset(), deleted, cursor_pos, self.elem)
         self.__delayed_update_tree()
 
     def _on_insert_text(self, buffer, iter, ins_text, length):
@@ -337,7 +339,7 @@ class TextBox(gtk.TextView):
         self.elem.insert(iter.get_offset(), ins_text)
 
         #self.buffer.stop_emission('insert-text')
-        self.emit('text-inserted', ins_text, self.elem)
+        self.emit('text-inserted', ins_text, iter.get_offset(), self.elem)
         self.__delayed_update_tree()
 
     def _on_key_pressed(self, widget, event, *args):

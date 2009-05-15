@@ -105,12 +105,12 @@ class UndoController(BaseController):
             return
 
         head = self.model.head()
-        if not head['value'] and ('action' in head and not head['action'] or True):
+        if 'action' in head and not head['action'] or True:
             self.model.pop(permanent=True)
             return
 
         item = self.model.peek(offset=-1)
-        if not item['value'] and ('action' in item and not item['action'] or True):
+        if 'action' in item and not item['action'] or True:
             self.model.index -= 1
             self.model.undo_stack.remove(item)
 
@@ -134,11 +134,11 @@ class UndoController(BaseController):
 
     def _perform_undo(self, undo_info):
         self._select_unit(undo_info['unit'])
+
         self._disable_unit_signals()
-        self.unit_controller.set_unit_target(undo_info['targetn'], undo_info['value'], undo_info['cursorpos'], escape=False)
-        if 'action' in undo_info and callable(undo_info['action']):
-            undo_info['action'](undo_info['unit'])
+        undo_info['action'](undo_info['unit'])
         self._enable_unit_signals()
+        print 'undo done'
 
     def _select_unit(self, unit):
         """Select the given unit in the store view.
@@ -165,32 +165,32 @@ class UndoController(BaseController):
             self._perform_undo(undo_info)
 
     @if_enabled
-    def _on_unit_delete_text(self, _unit_controller, unit, old_text, start_offset, end_offset, cursor_pos, target_num):
+    def _on_unit_delete_text(self, _unit_controller, unit, start_offset, end_offset, deleted, cursor_pos, elem, target_num):
         if self._paste_undo_info:
             self.model.push(self._paste_undo_info)
             self._paste_undo_info = None
             return
 
-        #logging.debug('_on_unit_delete_text(old_text="%s", offsets=(%d, %d), target_n=%d)' % (old_text, start_offset, end_offset, target_num))
+        logging.debug('_on_unit_delete_text(offsets=(%d, %d), deleted="%s", elem=%s, target_n=%d)' % (start_offset, end_offset, deleted, repr(elem), target_num))
 
         self.model.push({
-            'unit': unit,
+            'action': lambda unit: elem.insert(start_offset, deleted),
+            'cursorpos': cursor_pos,
             'targetn': target_num,
-            'value': old_text,
-            'cursorpos': cursor_pos
+            'unit': unit,
         })
 
     @if_enabled
-    def _on_unit_insert_text(self, _unit_controller, unit, old_text, ins_text, offset, target_num):
+    def _on_unit_insert_text(self, _unit_controller, unit, ins_text, offset, elem, target_num):
         if self._paste_undo_info:
             return
 
-        #logging.debug('_on_unit_insert_text(old_text="%s", ins_text="%s", offset=%d, target_n=%d)' % (old_text, ins_text, offset, target_num))
+        logging.debug('_on_unit_insert_text(ins_text="%s", offset=%d, elem=%s, target_n=%d)' % (ins_text, offset, repr(elem), target_num))
 
         self.model.push({
+            'action': lambda unit: elem.delete_range(offset, offset+len(ins_text)),
             'unit': unit,
             'targetn': target_num,
-            'value': old_text,
             'cursorpos': offset
         })
 
@@ -203,6 +203,5 @@ class UndoController(BaseController):
         self._paste_undo_info = {
             'unit': unit,
             'targetn': target_num,
-            'value': old_text,
             'cursorpos': offsets['insert_offset']
         }

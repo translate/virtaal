@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gobject import GObject, SIGNAL_RUN_FIRST, TYPE_INT, TYPE_NONE, TYPE_PYOBJECT, TYPE_STRING
+from gobject import GObject, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 
 from virtaal.common import GObjectWrapper
 from virtaal.views import UnitView
@@ -31,11 +31,11 @@ class UnitController(BaseController):
 
     __gtype_name__ = "UnitController"
     __gsignals__ = {
-        'unit-done':           (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
-        'unit-modified':       (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT,)),
-        'unit-delete-text':    (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT, TYPE_STRING, TYPE_INT, TYPE_INT, TYPE_INT, TYPE_INT)),
-        'unit-insert-text':    (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT, TYPE_STRING, TYPE_STRING, TYPE_INT, TYPE_INT)),
-        'unit-paste-start':    (SIGNAL_RUN_FIRST, TYPE_NONE, (TYPE_PYOBJECT, TYPE_STRING, TYPE_PYOBJECT, TYPE_INT)),
+        'unit-done':           (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'unit-modified':       (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'unit-delete-text':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, int, int, str, int, TYPE_PYOBJECT, int)),
+        'unit-insert-text':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, str, int, TYPE_PYOBJECT, int)),
+        'unit-paste-start':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, str, TYPE_PYOBJECT, int)),
     }
 
     # INITIALIZERS #
@@ -80,11 +80,11 @@ class UnitController(BaseController):
         self.view.load_unit(unit)
         return self.view
 
-    def _unit_delete_text(self, unitview, old_text, start_offset, end_offset, cursor_pos, target_num):
-        self.emit('unit-delete-text', self.current_unit, old_text, start_offset, end_offset, cursor_pos, target_num)
+    def _unit_delete_text(self, unitview, start_offset, end_offset, deleted, cursor_pos, elem, target_num):
+        self.emit('unit-delete-text', self.current_unit, start_offset, end_offset, deleted, cursor_pos, elem, target_num)
 
-    def _unit_insert_text(self, unitview, old_text, ins_text, offset, target_num):
-        self.emit('unit-insert-text', self.current_unit, old_text, ins_text, offset, target_num)
+    def _unit_insert_text(self, unitview, ins_text, offset, elem, target_num):
+        self.emit('unit-insert-text', self.current_unit, ins_text, offset, elem, target_num)
 
     def _unit_paste_start(self, unitview, old_text, offsets, target_num):
         self.emit('unit-paste-start', self.current_unit, old_text, offsets, target_num)

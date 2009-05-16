@@ -119,7 +119,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             ev = gtk.gdk.Event(gtk.gdk.KEY_PRESS)
             ev.state = gtk.gdk.MOD1_MASK
             ev.keyval = gtk.keysyms.Down
-            ev.window = self.targets[self.focused_target_n].props.window
+            ev.window = self.targets[self.focused_target_n].get_window(gtk.TEXT_WINDOW_WIDGET)
             ev.put()
         mnu_transfer.connect('activate', on_transfer)
 

@@ -208,7 +208,7 @@ class TerminologyModel(BaseTerminologyModel):
             # irritate more often than help, since nouns are always written to
             # start with capital letters.
             target_lang_code = self.main_controller.lang_controller.target_lang.code
-            if not data.normalize_code(target_lang_code) in ('de', 'de-de', 'lb', 'als', 'ksh', 'stq'):
+            if not data.normalize_code(target_lang_code) in ('de', 'de-de', 'lb', 'als', 'ksh', 'stq', 'vmf'):
                 # unless the string contains multiple consecutive uppercase
                 # characters or using some type of camel case, we take it to
                 # lower case

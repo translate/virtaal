@@ -19,7 +19,6 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gobject
-import logging
 import os.path
 from translate.storage.placeables import terminology
 
@@ -39,10 +38,6 @@ class TerminologyController(BaseController):
     __gsignals__ = {
         'start-query': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,))
     }
-
-    QUERY_DELAY = 300
-    """The delay after a unit is selected (C{Cursor}'s "cursor-changed" event)
-        before the terminology is queried."""
 
     # INITIALIZERS #
     def __init__(self, main_controller, config={}):

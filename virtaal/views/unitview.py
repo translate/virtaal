@@ -182,7 +182,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         self.controller.main_controller.undo_controller.record_stop()
 
         # The following 2 lines were copied from focus_text_view() below
-        translation_start = self.first_word_re.match(markup.escape(new_source)).span()[1]
+        translation_start = self._get_editing_start_pos(textbox.elem)
         textbox.buffer.place_cursor(textbox.buffer.get_iter_at_offset(translation_start))
 
         return False
@@ -200,7 +200,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         textbox.grab_focus()
 
         text = textbox.get_text()
-        translation_start = self.first_word_re.match(text).span()[1]
+        translation_start = self._get_editing_start_pos(textbox.elem)
         textbox.buffer.place_cursor(textbox.buffer.get_iter_at_offset(translation_start))
 
         self._focused_target_n = self.targets.index(textbox)
@@ -244,6 +244,20 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             self._update_textview_language(textview, tgtlang)
             textview.modify_font(rendering.get_target_font_description())
             textview.get_pango_context().set_font_description(rendering.get_target_font_description())
+
+    def _get_editing_start_pos(self, elem):
+        if not elem:
+            return 0
+        translation_start = self.first_word_re.match(unicode(elem)).span()[1]
+        start_elem = elem.elem_at_offset(translation_start)
+        if not start_elem.iseditable:
+            flattened = elem.flatten()
+            start_index = flattened.index(start_elem)
+            if start_index == len(flattened)-1:
+                return len(elem)
+            next_elem = flattened[start_index+1]
+            return elem.elem_offset(next_elem)
+        return translation_start
 
     def _get_widgets(self):
         """Get the widgets we would like to use from the loaded Glade XML object."""

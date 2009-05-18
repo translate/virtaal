@@ -56,6 +56,8 @@ class PlaceablesController(BaseController):
     def _init_notarget_list(self):
         self.non_target_placeables = [
             general.AltAttrPlaceable,
+            general.CamelCasePlaceable,
+            general.CapsPlaceable,
             general.EmailPlaceable,
             general.FilePlaceable,
             general.PunctuationPlaceable,
@@ -80,6 +82,14 @@ class PlaceablesController(BaseController):
         self.parser_info[general.AltAttrPlaceable.parse] = (
             _('"alt" attribute placeable'),
             _('Placeable for alt="..." tags (as found in HTML).')
+        )
+        self.parser_info[general.CamelCasePlaceable.parse] = (
+            _('Camel-case'),
+            _('Terms in camel-case is probably something special; make them placeable.')
+        )
+        self.parser_info[general.CapsPlaceable.parse] = (
+            _('Capitals'),
+            _('Handle all-capital strings as placeables.')
         )
         self.parser_info[general.EmailPlaceable.parse] = (
             _('E-mail'),

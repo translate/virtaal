@@ -198,4 +198,4 @@ class PlaceablesController(BaseController):
             classname = parser.im_self.__name__
             enabled = parser in self.parsers
             if classname in pan_app.settings.placeable_state or not enabled:
-                pan_app.settings.placeable_state[classname] = enabled and 'enabled' or 'disabled'
+                pan_app.settings.placeable_state[classname.lower()] = enabled and 'enabled' or 'disabled'

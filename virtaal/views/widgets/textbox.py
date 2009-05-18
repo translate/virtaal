@@ -110,8 +110,10 @@ class TextBox(gtk.TextView):
         if not isinstance(text, StringElem):
             text = StringElem(text)
 
-        self.selected_elem = None
-        self.selected_elem_index = None
+        if text is not self.elem:
+            # If text is self.elem, we are busy with a refresh and we should remember the selected element.
+            self.selected_elem = None
+            self.selected_elem_index = None
 
         self.buffer.handler_block_by_func(self._on_delete_range)
         self.buffer.handler_block_by_func(self._on_insert_text)
@@ -236,6 +238,13 @@ class TextBox(gtk.TextView):
                 self.selector_textbox.select_elem(offset=offset-1)
         else:
             self.selector_textbox.select_elem(offset=self.selector_textbox.selected_elem_index + offset)
+
+    def refresh(self):
+        """Refresh the text box by setting its text to the current text."""
+        if self.elem:
+            self.set_text(self.elem)
+        else:
+            self.set_text(self.get_text())
 
     @accepts(Self(), [[StringElem, None], [int, None]])
     def select_elem(self, elem=None, offset=None):

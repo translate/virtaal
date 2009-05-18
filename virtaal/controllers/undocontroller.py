@@ -138,7 +138,6 @@ class UndoController(BaseController):
         self._disable_unit_signals()
         undo_info['action'](undo_info['unit'])
         self._enable_unit_signals()
-        print 'undo done'
         textbox = self.unit_controller.view.targets[self.unit_controller.view.focused_target_n]
         textbox.refresh()
         textbox.buffer.place_cursor(textbox.buffer.get_iter_at_offset(undo_info['cursorpos']))
@@ -168,30 +167,40 @@ class UndoController(BaseController):
             self._perform_undo(undo_info)
 
     @if_enabled
-    def _on_unit_delete_text(self, _unit_controller, unit, start_offset, end_offset, deleted, cursor_pos, elem, target_num):
+    def _on_unit_delete_text(self, unit_controller, unit, start_offset, end_offset, deleted, cursor_pos, elem, target_num):
         if self._paste_undo_info:
             self.model.push(self._paste_undo_info)
             self._paste_undo_info = None
             return
 
-        logging.debug('_on_unit_delete_text(offsets=(%d, %d), deleted="%s", elem=%s, target_n=%d)' % (start_offset, end_offset, deleted, repr(elem), target_num))
+        #logging.debug('_on_unit_delete_text(offsets=(%d, %d), deleted="%s", elem=%s, target_n=%d)' % (start_offset, end_offset, deleted, repr(elem), target_num))
+
+        def undo_action(unit):
+            #logging.debug('(undo) %s.insert(%d, "%s")' % (repr(elem), start_offset, deleted))
+            elem.insert(start_offset, deleted)
+            unit_controller.view.set_target_n(target_num, elem, cursor_pos, escape=False)
 
         self.model.push({
-            'action': lambda unit: elem.insert(start_offset, deleted),
+            'action': undo_action,
             'cursorpos': cursor_pos,
             'targetn': target_num,
             'unit': unit,
         })
 
     @if_enabled
-    def _on_unit_insert_text(self, _unit_controller, unit, ins_text, offset, elem, target_num):
+    def _on_unit_insert_text(self, unit_controller, unit, ins_text, offset, elem, target_num):
         if self._paste_undo_info:
             return
 
-        logging.debug('_on_unit_insert_text(ins_text="%s", offset=%d, elem=%s, target_n=%d)' % (ins_text, offset, repr(elem), target_num))
+        #logging.debug('_on_unit_insert_text(ins_text="%s", offset=%d, elem=%s, target_n=%d)' % (ins_text, offset, repr(elem), target_num))
+
+        def undo_action(unit):
+            #logging.debug('(undo) %s.delete_range(%d, %d)' % (repr(elem), offset, offset+len(ins_text)))
+            elem.delete_range(offset, offset+len(ins_text))
+            unit_controller.view.set_target_n(target_num, elem, escape=False)
 
         self.model.push({
-            'action': lambda unit: elem.delete_range(offset, offset+len(ins_text)),
+            'action': undo_action,
             'unit': unit,
             'targetn': target_num,
             'cursorpos': offset

@@ -19,7 +19,8 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gtk
-from translate.storage.placeables import base, StringElem
+import pango
+from translate.storage.placeables import base, StringElem, general
 
 
 class StringElemGUI(object):
@@ -128,6 +129,16 @@ class PhGUI(StringElemGUI):
     fg = 'darkred'
     bg = '#f7f7f7'
 
+class UrlGUI(StringElemGUI):
+    fg = '#0000ff'
+    bg = '#ffffff'
+
+    def create_tags(self):
+        tag = gtk.TextTag()
+        tag.props.foreground = self.fg
+        tag.props.background = self.bg
+        tag.props.underline = pango.UNDERLINE_SINGLE
+        return [(tag, None, None)]
 
 class GPlaceableGUI(StringElemGUI):
     fg = '#f7f7f7'
@@ -166,6 +177,8 @@ class XPlaceableGUI(StringElemGUI):
 
 
 element_gui_map = [
+    (general.UrlPlaceable, UrlGUI),
+    (general.EmailPlaceable, UrlGUI),
     (base.Ph, PhGUI),
     (base.G, GPlaceableGUI),
     (base.X, XPlaceableGUI),

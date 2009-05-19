@@ -38,8 +38,12 @@ def test_gtk_version():
 
 def test_sqlite3_version():
     try:
-        import sqlite3
-        return sqlite3.version_info >= (2, 3, 0)
+        #TODO: work out if we need certain versions
+        try:
+            from sqlite3 import dbapi2
+        except ImportError:
+            from pysqlite2 import dbapi2
+        return True
     except Exception:
         pass
     return False

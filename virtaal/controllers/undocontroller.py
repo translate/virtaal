@@ -167,7 +167,7 @@ class UndoController(BaseController):
             self._perform_undo(undo_info)
 
     @if_enabled
-    def _on_unit_delete_text(self, unit_controller, unit, start_offset, end_offset, deleted, cursor_pos, elem, target_num):
+    def _on_unit_delete_text(self, unit_controller, unit, start_offset, end_offset, deleted, parent, cursor_pos, elem, target_num):
         if self._paste_undo_info:
             self.model.push(self._paste_undo_info)
             self._paste_undo_info = None
@@ -177,8 +177,18 @@ class UndoController(BaseController):
 
         def undo_action(unit):
             #logging.debug('(undo) %s.insert(%d, "%s")' % (repr(elem), start_offset, deleted))
-            elem.insert(start_offset, deleted)
-            unit_controller.view.set_target_n(target_num, elem, cursor_pos, escape=False)
+            if parent is None:
+                unit_controller.view.set_target_n(target_num, deleted, cursor_pos, escape=False)
+                return
+            parent_offset = elem.elem_offset(parent)
+            prel_offset = start_offset - parent_offset
+            doffset = i = 0
+            while doffset < prel_offset:
+                doffset += len(parent.sub[i])
+                i += 1
+            #logging.debug('parent.sub.insert(%d, %s): ' % (i, repr(deleted)))
+            parent.sub.insert(i, deleted)
+            elem.prune()
 
         self.model.push({
             'action': undo_action,

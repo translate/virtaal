@@ -43,7 +43,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     __gtype_name__ = "UnitView"
     __gsignals__ = {
-        'delete-text':    (SIGNAL_RUN_FIRST, None, (int, int, str, int, TYPE_PYOBJECT, int)),
+        'delete-text':    (SIGNAL_RUN_FIRST, None, (int, int, TYPE_PYOBJECT, TYPE_PYOBJECT, int, TYPE_PYOBJECT, int)),
         'insert-text':    (SIGNAL_RUN_FIRST, None, (str, int, TYPE_PYOBJECT, int)),
         'paste-start':    (SIGNAL_RUN_FIRST, None, (str, TYPE_PYOBJECT, int)),
         'modified':       (SIGNAL_RUN_FIRST, None, ()),
@@ -608,9 +608,9 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         #logging.debug('emit("insert-text", ins_text="%s", offset=%d, elem=%s, target_num=%d)' % (ins_text, offset, repr(elem), target_num))
         self.emit('insert-text', ins_text, offset, elem, target_num)
 
-    def _on_target_delete_range(self, textbox, start_offset, end_offset, deleted, cursor_pos, elem, target_num):
+    def _on_target_delete_range(self, textbox, start_offset, end_offset, deleted, parent, cursor_pos, elem, target_num):
         #logging.debug('emit("delete-text", start_offset=%d, end_offset=%d, cursor_pos=%d, elem=%s, target_num=%d)' % (old_text, start_offset, end_offset, cursor_pos, repr(elem), target_num))
-        self.emit('delete-text', start_offset, end_offset, deleted, cursor_pos, elem, target_num)
+        self.emit('delete-text', start_offset, end_offset, deleted, parent, cursor_pos, elem, target_num)
 
     def _on_textbox_paste_clipboard(self, textbox, target_num):
         buff = textbox.buffer

@@ -242,6 +242,7 @@ class TextBox(gtk.TextView):
     def refresh(self):
         """Refresh the text box by setting its text to the current text."""
         if self.elem:
+            self.elem.prune()
             self.set_text(self.elem)
         else:
             self.set_text(self.get_text())

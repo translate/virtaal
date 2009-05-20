@@ -102,6 +102,8 @@ class StringElemGUI(object):
             return 0
         if elem is self.elem:
             return 0
+        if elem in self.child_offsets:
+            return self.child_offsets[elem]
         for e in self.elem.sub:
             if e is elem and e in self.child_offsets:
                 return self.child_offsets[elem]

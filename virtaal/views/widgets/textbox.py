@@ -329,12 +329,16 @@ class TextBox(gtk.TextView):
         end_elem = self.elem.gui_info.elem_at_offset(end_offset)
 
         if start_elem is not None and not start_elem.iseditable:
+            #logging.debug('%s is not editable: start_elem.iseditable = %s' % (repr(start_elem), start_elem.iseditable))
             if start_elem is end_elem and start_offset == self.elem.gui_info.index(end_elem):
-                # Delete was pressed before a placeable
-                end_iter.set_offset(end_offset + len(end_elem) - 1)
+                offset = end_offset + len(end_elem) - 1
+                #logging.debug('Delete was pressed before a placeable. End offset set to %d' % (offset))
+                end_iter.set_offset(offset)
             elif start_offset == (self.elem.gui_info.index(start_elem) + len(start_elem) - 1) and end_offset - start_offset == 1:
-                # Backspace was pressed after a placeable
-                start_iter.set_offset(self.elem.gui_info.index(start_elem))
+                offset = self.elem.gui_info.index(start_elem)
+                #logging.debug('Backspace was pressed after a placeable. Start offset set to %d' % (offset))
+                start_iter.set_offset(offset)
+        #logging.debug('%s[%d] >===> %s[%d]' % (repr(start_elem), start_iter.get_offset(), repr(end_elem), end_iter.get_offset()))
 
         cursor_pos = self.buffer.get_iter_at_mark(self.buffer.get_insert()).get_offset()
 

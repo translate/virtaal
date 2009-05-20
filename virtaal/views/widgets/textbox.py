@@ -110,6 +110,9 @@ class TextBox(gtk.TextView):
         if not isinstance(text, StringElem):
             text = StringElem(text)
 
+        if self.elem is None:
+            self.elem = StringElem()
+
         if text is not self.elem:
             # If text is self.elem, we are busy with a refresh and we should remember the selected element.
             self.selected_elem = None
@@ -117,16 +120,18 @@ class TextBox(gtk.TextView):
 
         self.buffer.handler_block_by_func(self._on_delete_range)
         self.buffer.handler_block_by_func(self._on_insert_text)
-        if self.placeables_controller:
-            self.elem = elem_parse(text, self.placeables_controller.get_parsers_for_textbox(self))
-        else:
-            self.elem = text
-        self.add_default_gui_info(text)
-        self.buffer.set_text(unicode(text))
+        if text is not self.elem:
+            if self.placeables_controller:
+                self.elem.sub = [elem_parse(text, self.placeables_controller.get_parsers_for_textbox(self))]
+            else:
+                self.elem.sub = [text]
+            self.elem.prune()
+        self.add_default_gui_info(self.elem)
+        self.buffer.set_text(unicode(self.elem))
         self.buffer.handler_unblock_by_func(self._on_delete_range)
         self.buffer.handler_unblock_by_func(self._on_insert_text)
 
-        self.update_tree(text)
+        self.update_tree(self.elem)
 
 
     # METHODS #
@@ -293,7 +298,11 @@ class TextBox(gtk.TextView):
             return
         if not isinstance(text, StringElem):
             return
-        self.elem = text
+        if self.elem is None:
+            self.elem = StringElem()
+        if text is not self.elem:
+            self.elem.sub = [text]
+            self.elem.prune()
         self.add_default_gui_info(self.elem)
 
         tagtable = self.buffer.get_tag_table()

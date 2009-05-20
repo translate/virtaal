@@ -118,6 +118,7 @@ class StringElemGUI(object):
         childstr = u''
         prefixoffset = len(self.get_prefix())
         offset = 0
+        self.child_offsets = {}
         for sub in self.elem.sub:
             key = sub
             if not isinstance(sub, StringElem):

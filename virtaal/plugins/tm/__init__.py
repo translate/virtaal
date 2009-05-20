@@ -52,5 +52,6 @@ class Plugin(BasePlugin):
         self.tmcontroller.view.on_select_backends(None)
 
     def destroy(self):
+        self.config = self.tmcontroller.config
         self.save_config()
         self.tmcontroller.destroy()

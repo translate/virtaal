@@ -46,10 +46,11 @@ class TMController(BaseController):
     def __init__(self, main_controller, config={}):
         GObjectWrapper.__init__(self)
 
+        self.config = config
         self.main_controller = main_controller
-        self.disabled_model_names = ['basetmmodel'] + config.get('disabled_models', [])
-        self.max_matches = config.get('max_matches', 5)
-        self.min_quality = config.get('min_quality', 75)
+        self.disabled_model_names = ['basetmmodel'] + self.config.get('disabled_models', [])
+        self.max_matches = self.config.get('max_matches', 5)
+        self.min_quality = self.config.get('min_quality', 75)
 
         self._signal_ids = {}
         self.view = TMView(self, self.max_matches)

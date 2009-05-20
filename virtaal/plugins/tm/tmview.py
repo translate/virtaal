@@ -268,7 +268,6 @@ class TMView(BaseView, GObjectWrapper):
 
         items = []
         plugin_controller = self.controller.plugin_controller
-        disabled_plugins = plugin_controller.get_disabled_plugins()
         for plugin_name in plugin_controller._find_plugin_names():
             if plugin_name == 'basetmmodel':
                 continue

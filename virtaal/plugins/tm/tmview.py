@@ -288,12 +288,12 @@ class TMView(BaseView, GObjectWrapper):
                 internal_name = item['data']['internal_name']
                 if item['enabled']:
                     plugin_controller.enable_plugin(internal_name)
-                    if internal_name in self.controller.config['disabled_plugins']:
-                        self.controller.config['disabled_plugins'].remove(internal_name)
+                    if internal_name in self.controller.config['disabled_models']:
+                        self.controller.config['disabled_models'].remove(internal_name)
                 else:
                     plugin_controller.disable_plugin(internal_name)
-                    if internal_name not in self.controller.config['disable_plugin']:
-                        self.controller.config['disable_plugin'].append(internal_name)
+                    if internal_name not in self.controller.config['disabled_models']:
+                        self.controller.config['disabled_models'].append(internal_name)
 
     def _on_select_match(self, accel_group, acceleratable, keyval, modifier):
         self.select_match_index(int(keyval - gtk.keysyms._0))

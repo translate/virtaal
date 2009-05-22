@@ -159,9 +159,11 @@ class LanguageView(BaseView):
                 self.select_dialog.get_selected_source_lang(),
                 self.select_dialog.get_selected_target_lang()
             )
+        self.controller.main_controller.unit_controller.view.targets[0].grab_focus()
 
     def _on_pairitem_activated(self, menuitem, item_n):
         logging.debug('Selected language pair: %s' % (self.recent_items[item_n].get_child().get_text()))
         pair = self.controller.recent_pairs[item_n]
         self.controller.set_language_pair(*pair)
+        self.controller.main_controller.unit_controller.view.targets[0].grab_focus()
 

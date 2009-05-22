@@ -56,7 +56,18 @@ class TerminologyController(BaseController):
             placeablesguiinfo.element_gui_map.insert(0, (terminology.TerminologyPlaceable, TerminologyGUIInfo))
 
         self.view = TerminologyView(self)
+        self._connect_signals()
         self._load_models()
+
+    def _connect_signals(self):
+        def lang_changed(ctrlr, lang):
+            for src in self.main_controller.unit_controller.view.sources:
+                src.elem.remove_type(terminology.TerminologyPlaceable)
+                src.refresh()
+
+        lang_controller = self.main_controller.lang_controller
+        lang_controller.connect('source-lang-changed', lang_changed)
+        lang_controller.connect('target-lang-changed', lang_changed)
 
     def _load_models(self):
         self.plugin_controller = PluginController(self)

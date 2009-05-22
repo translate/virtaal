@@ -18,11 +18,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import os
-import xmlrpclib
 import logging
-
+import os
 import pycurl
+import xmlrpclib
 
 from translate.lang import data
 from translate.search.lshtein import LevenshteinComparer
@@ -83,7 +82,7 @@ class OpenTranClient(restclient.RESTClient):
         (result,), fish = xmlrpclib.loads(response)
         if result:
             self.target_lang = language
-            logging.debug("target language %s supported" % language)
+            #logging.debug("target language %s supported" % language)
         else:
             lang = data.simplercode(language)
             if lang:
@@ -97,7 +96,7 @@ class OpenTranClient(restclient.RESTClient):
         (result,), fish = xmlrpclib.loads(response)
         if result:
             self.source_lang = language
-            logging.debug("source language %s supported" % language)
+            #logging.debug("source language %s supported" % language)
         else:
             lang = data.simplercode(language)
             if lang:

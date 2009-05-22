@@ -58,12 +58,13 @@ class TerminologyModel(BaseTerminologyModel):
         self.term_controller = controller
         self.matcher = None
         self._init_matcher()
-        self.opentrantm = self._find_opentran_tm()
 
+        self.opentrantm = self._find_opentran_tm()
         if self.opentrantm is None:
             self._init_opentran_client()
         else:
             self.opentrantm.connect('match-found', self._on_match_found)
+            self.__setup_opentrantm_lang_watchers()
 
     def _find_opentran_tm(self):
         """
@@ -121,10 +122,7 @@ class TerminologyModel(BaseTerminologyModel):
     def __setup_cursor_watcher(self):
         unitview = self.main_controller.unit_controller.view
         def cursor_changed(cursor):
-            query_str = unitview.sources[0].get_text()
-            if not self.cache.has_key(query_str):
-                self.cache[query_str] = None
-                self.opentranclient.translate_unit(query_str, lambda *args: self.add_last_suggestions(self.opentranclient))
+            self.__start_query()
 
         store_ctrlr = self.main_controller.store_controller
         def store_loaded(store_ctrlr):
@@ -139,27 +137,57 @@ class TerminologyModel(BaseTerminologyModel):
             store_loaded(store_ctrlr)
 
     def __setup_lang_watchers(self):
+        def client_lang_changed(client, lang):
+            self.cache = {}
+            self._init_matcher()
+            self.__start_query()
+
+        self._connect_ids.append((
+            self.opentranclient.connect('source-lang-changed', client_lang_changed),
+            self.opentranclient
+        ))
+        self._connect_ids.append((
+            self.opentranclient.connect('target-lang-changed', client_lang_changed),
+            self.opentranclient
+        ))
+
         lang_controller = self.main_controller.lang_controller
-        def set_source_lang(ctrlr, lang):
-            if lang == self.source_lang:
-                return
-            self.source_lang = language
-            self.cache = {}
-            self.opentranclient.set_source_lang(lang)
-        def set_target_lang(ctrlr, lang):
-            if lang == self.target_lang:
-                return
-            self.target_lang = language
-            self.cache = {}
-            self.opentranclient.set_target_lang(language)
         self._connect_ids.append((
-            lang_controller.connect('source-lang-changed', set_source_lang),
+            lang_controller.connect(
+                'source-lang-changed',
+                lambda _c, lang: self.opentranclient.set_source_lang(lang)
+            ),
             lang_controller
         ))
         self._connect_ids.append((
-            lang_controller.connect('target-lang-changed', set_target_lang),
+            lang_controller.connect(
+                'target-lang-changed',
+                lambda _c, lang: self.opentranclient.set_target_lang(lang)
+            ),
             lang_controller
         ))
+
+    def __setup_opentrantm_lang_watchers(self):
+        def set_lang(ctrlr, lang):
+            self.cache = {}
+            self._init_matcher()
+
+        self._connect_ids.append((
+            self.opentrantm.tmclient.connect('source-lang-changed', set_lang),
+            self.opentrantm.tmclient
+        ))
+        self._connect_ids.append((
+            self.opentrantm.tmclient.connect('target-lang-changed', set_lang),
+            self.opentrantm.tmclient
+        ))
+
+    def __start_query(self):
+        unitview = self.main_controller.unit_controller.view
+        query_str = unitview.sources[0].get_text()
+        if not self.cache.has_key(query_str):
+            self.cache[query_str] = None
+            logging.debug('Query string: %s (target lang: %s)' % (query_str, self.opentranclient.target_lang))
+            self.opentranclient.translate_unit(query_str, lambda *args: self.add_last_suggestions(self.opentranclient))
 
 
     # METHODS #

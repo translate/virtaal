@@ -20,7 +20,7 @@
 
 import gobject
 import logging
-from translate.storage.placeables import general, parse as parse_placeables, StringElem, terminology
+from translate.storage.placeables import general, parse as parse_placeables, StringElem
 
 from virtaal.common import pan_app, GObjectWrapper
 from virtaal.views import placeablesguiinfo
@@ -62,7 +62,6 @@ class PlaceablesController(BaseController):
             general.FilePlaceable,
             general.PunctuationPlaceable,
             general.UrlPlaceable,
-            terminology.TerminologyPlaceable,
         ]
 
     def _init_parsers(self):

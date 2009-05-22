@@ -49,6 +49,7 @@ class TerminologyController(BaseController):
 
         self.disabled_model_names = ['basetermmodel'] + self.config.get('disabled_models', [])
         self.placeables_controller.add_parsers(*terminology.parsers)
+        self.placeables_controller.non_target_placeables.append(terminology.TerminologyPlaceable)
         self.placeables_controller.connect('parsers-changed', self._on_placeables_changed)
 
         if not (terminology.TerminologyPlaceable, TerminologyGUIInfo) in placeablesguiinfo.element_gui_map:

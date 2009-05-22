@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import gobject
 import logging
 import os
 import pycurl
@@ -28,10 +29,17 @@ from translate.search.lshtein import LevenshteinComparer
 
 from virtaal.support import restclient
 
-class OpenTranClient(restclient.RESTClient):
+class OpenTranClient(gobject.GObject, restclient.RESTClient):
     """CRUD operations for TM units and stores"""
 
+    __gtype_name__ = 'OpenTranClient'
+    __gsignals__ = {
+        'source-lang-changed': (gobject.SIGNAL_RUN_LAST, None, (str,)),
+        'target-lang-changed': (gobject.SIGNAL_RUN_LAST, None, (str,)),
+    }
+
     def __init__(self, url, max_candidates=3, min_similarity=75, max_length=1000):
+        gobject.GObject.__init__(self)
         restclient.RESTClient.__init__(self)
 
         self.max_candidates = max_candidates
@@ -83,6 +91,7 @@ class OpenTranClient(restclient.RESTClient):
         if result:
             self.target_lang = language
             #logging.debug("target language %s supported" % language)
+            self.emit('target-lang-changed', self.target_lang)
         else:
             lang = data.simplercode(language)
             if lang:
@@ -97,6 +106,7 @@ class OpenTranClient(restclient.RESTClient):
         if result:
             self.source_lang = language
             #logging.debug("source language %s supported" % language)
+            self.emit('source-lang-changed', self.source_lang)
         else:
             lang = data.simplercode(language)
             if lang:

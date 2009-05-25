@@ -34,8 +34,6 @@ class StringElemGUI(object):
     bg = '#ffffff'
     """The current background colour."""
 
-    child_offsets = {}
-    """Offsets of child strings in the "rendered" string."""
     cursor_allowed = True
     """Whether the cursor is allowed to enter this element."""
 
@@ -44,10 +42,10 @@ class StringElemGUI(object):
     def __init__(self, elem, textbox, **kwargs):
         if not isinstance(elem, StringElem):
             raise ValueError('"elem" parameter must be a StringElem.')
-        self.child_offsets = {}
         self.elem = elem
         self.textbox = textbox
-        self.marks = {}
+        self.widgets = []
+        self.create_repr_widgets()
 
         attribs = ('fg', 'bg', 'cursor_allowed')
         for kw in kwargs:
@@ -65,7 +63,9 @@ class StringElemGUI(object):
 
         return [(tag, None, None)]
 
-    def create_widget(self):
+    def create_repr_widgets(self):
+        """Creates the two widgets that are rendered before and after the
+            contained string."""
         return None
 
     def copy(self):
@@ -78,54 +78,83 @@ class StringElemGUI(object):
     def elem_at_offset(self, offset):
         """Find the C{StringElem} at the given offset.
             This method is used in Virtaal as a replacement for
-            C{StringElem.elem_at_offset}, because this method takes the
-            transformations by L{render}() into account."""
-        sorted_offsets = self.child_offsets.items()
-        sorted_offsets.sort(lambda a, b: cmp(a[1], b[1]))
-        if offset < sorted_offsets[0][1]:
-            return sorted_offsets[0][0]
-        for i in range(len(sorted_offsets)-1):
-            if sorted_offsets[i][1] <= offset < sorted_offsets[i+1][1]:
-                return sorted_offsets[i][0]
-        return sorted_offsets[-1][0]
+            C{StringElem.elem_at_offset}, because this method takes the rendered
+            widgets into account."""
+        if self.elem.isleaf():
+            return self.length() + len(self.widgets) < offset and self.elem or None
 
-    def get_prefix(self):
-        return ''
+        i = len(self.widgets) > 0 and 1 or 0
+        for child in self.elem.sub:
+            if isinstance(child, StringElem):
+                elem = child.gui_info.elem_at_offset(offset-i)
+                if elem:
+                    return elem
+                i += child.gui_info.length()
+            else:
+                i += len(child)
 
-    def get_postfix(self):
-        return ''
+        return None
+
+    def get_insert_widget(self):
+        return None
 
     def index(self, elem):
-        """Replacement for C{StringElem.elem_offset()} to be aware of the
-            changes made by L{render()}."""
-        if not isinstance(elem, StringElem) and self.elem.isleaf():
-            return 0
+        """Replacement for C{StringElem.elem_offset()} to be aware of included
+            widgets."""
         if elem is self.elem:
             return 0
-        if elem in self.child_offsets:
-            return self.child_offsets[elem]
-        for e in self.elem.sub:
-            if e is elem and e in self.child_offsets:
-                return self.child_offsets[elem]
-            if hasattr(e, 'gui_info'):
-                idx = e.gui_info.index(elem)
-                if idx >= 0:
-                    return self.child_offsets[e] + idx
+
+        i = 0
+        if len(self.widgets) >= 1:
+            i += 1
+
+        for child in self.elem.sub:
+            if isinstance(child, StringElem):
+                index = child.gui_info.index(elem)
+                if index >= 0:
+                    return index + i
+                i += child.gui_info.length()
+            else:
+                i += len(child)
         return -1
 
-    def render(self, elem):
-        assert elem is self.elem
-        childstr = u''
-        prefixoffset = len(self.get_prefix())
-        offset = 0
-        self.child_offsets = {}
-        for sub in self.elem.sub:
-            key = sub
-            if not isinstance(sub, StringElem):
-                key = self.elem
-            self.child_offsets[key] = prefixoffset + len(childstr)
-            childstr += unicode(sub)
-        return u'%s%s%s' % (self.get_prefix(), childstr, self.get_postfix())
+    def length(self):
+        """Calculate the length of the current element, taking into account
+            possibly included widgets."""
+        length = len([w for w in self.widgets if w is not None])
+        for child in self.elem.sub:
+            if isinstance(child, StringElem):
+                length += child.gui_info.length()
+            else:
+                length += len(child)
+        return length
+
+    def render(self, offset=0):
+        """Render the string element string and its associatd widgets."""
+        buffer = self.textbox.buffer
+        if offset <= 0:
+            offset = 0
+            buffer.set_text('')
+
+        if len(self.widgets) >= 1 and self.widgets[0]:
+            anchor = buffer.create_child_anchor(buffer.get_iter_at_offset(offset))
+            self.textbox.add_child_at_anchor(self.widgets[0], anchor)
+            offset += 1
+
+        for child in self.elem.sub:
+            if isinstance(child, StringElem):
+                child.gui_info.render(offset)
+                offset += child.gui_info.length()
+            else:
+                buffer.insert(buffer.get_iter_at_offset(offset), child)
+                offset += len(child)
+
+        if len(self.widgets) >= 2:
+            anchor = buffer.create_child_anchor(buffer.get_iter_at_offset(offset))
+            self.textbox.add_child_at_anchor(self.widgets[1], anchor)
+            offset += 1
+
+        return offset
 
 
 class PhGUI(StringElemGUI):
@@ -162,21 +191,9 @@ class GPlaceableGUI(StringElemGUI):
             (ttag, prefixlen, -2),
         ]
 
-    def get_prefix(self):
-        return u'%s{' % (self.elem.id)
-
-    def get_postfix(self):
-        return u'}'
-
 class XPlaceableGUI(StringElemGUI):
     fg = '#ffffff'
     bg = '#000000'
-
-    def get_prefix(self):
-        return u'{%s' % (self.elem.id)
-
-    def get_postfix(self):
-        return u'}'
 
 
 element_gui_map = [

@@ -65,14 +65,22 @@ class SearchMode(BaseMode):
         self.btn_search.connect('clicked', self._on_search_clicked)
         self.chk_casesensitive = gtk.CheckButton(_('_Case sensitive'))
         self.chk_casesensitive.connect('toggled', self._refresh_proxy)
+        # l10n: To read about what regular expressions are, see
+        # http://en.wikipedia.org/wiki/Regular_expression
         self.chk_regex = gtk.CheckButton(_("_Regular expression"))
         self.chk_regex.connect('toggled', self._refresh_proxy)
 
         # Widgets for replace (second row)
+        # l10n: This text label shows in front of the text box where the replacement
+        # text is typed. Keep in mind that the text box will appear after this text.
+        # If this sentence construction is hard to use, consdider translating this as
+        # "Replacement"
         self.lbl_replace = gtk.Label(_('Replace with'))
         self.ent_replace = gtk.Entry()
+        # l10n: Button text
         self.btn_replace = gtk.Button(_('Replace'))
         self.btn_replace.connect('clicked', self._on_replace_clicked)
+        # l10n: Check box
         self.chk_replace_all = gtk.CheckButton(_('Replace _All'))
 
         self.widgets = [

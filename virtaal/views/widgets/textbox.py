@@ -37,8 +37,8 @@ class TextBox(gtk.TextView):
 
     __gtype_name__ = 'TextBox'
     __gsignals__ = {
-        'after-apply-tags':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'before-apply-tags': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'after-apply-gui-info':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'before-apply-gui-info': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'element-selected':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'key-pressed':       (SIGNAL_RUN_LAST,  bool, (TYPE_PYOBJECT, str)),
         'text-deleted':      (SIGNAL_RUN_LAST,  bool, (int, int, TYPE_PYOBJECT, TYPE_PYOBJECT, int, TYPE_PYOBJECT)),
@@ -160,12 +160,12 @@ class TextBox(gtk.TextView):
             self.add_default_gui_info(sub)
 
     @accepts(Self(), [StringElem, bool])
-    def apply_tags(self, elem, include_subtree=True):
+    def apply_gui_info(self, elem, include_subtree=True):
         offset = self.elem.gui_info.index(elem)
         #logging.debug('offset for %s: %d' % (repr(elem), offset))
         if offset >= 0:
             #logging.debug('[%s] at offset %d' % (unicode(elem).encode('utf-8'), offset))
-            self.emit('before-apply-tags', elem)
+            self.emit('before-apply-gui-info', elem)
 
             if getattr(elem, 'gui_info', None):
                 start_index = offset
@@ -207,9 +207,9 @@ class TextBox(gtk.TextView):
         if include_subtree:
             for sub in elem.sub:
                 if isinstance(sub, StringElem):
-                    self.apply_tags(sub)
+                    self.apply_gui_info(sub)
 
-        self.emit('after-apply-tags', elem)
+        self.emit('after-apply-gui-info', elem)
 
     @accepts(Self(), [StringElem])
     def insert_translation(self, elem):
@@ -285,9 +285,9 @@ class TextBox(gtk.TextView):
         else:
             elem.gui_info.fg = '#000000'
             elem.gui_info.bg = '#90ee90'
-        self.apply_tags(self.elem, include_subtree=False)
-        self.apply_tags(self.elem)
-        self.apply_tags(elem, include_subtree=False)
+        self.apply_gui_info(self.elem, include_subtree=False)
+        self.apply_gui_info(self.elem)
+        self.apply_gui_info(elem, include_subtree=False)
         cursor_offset = self.elem.find(self.selected_elem) + len(self.selected_elem)
         self.buffer.place_cursor(self.buffer.get_iter_at_offset(cursor_offset))
         self.emit('element-selected', self.selected_elem)
@@ -311,7 +311,7 @@ class TextBox(gtk.TextView):
         # FIXME: The following line caused the program to segfault, so it's removed (for now).
         #tagtable.foreach(remtag)
         # At this point we have a tree of string elements with GUI info.
-        self.apply_tags(text)
+        self.apply_gui_info(text)
 
     def __delayed_update_tree(self):
         gobject.idle_add(self.update_tree)

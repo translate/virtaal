@@ -127,7 +127,8 @@ class TextBox(gtk.TextView):
                 self.elem.sub = [text]
             self.elem.prune()
         self.add_default_gui_info(self.elem)
-        self.buffer.set_text(unicode(self.elem))
+        if hasattr(self.elem, 'gui_info'):
+            self.elem.gui_info.render()
         self.buffer.handler_unblock_by_func(self._on_delete_range)
         self.buffer.handler_unblock_by_func(self._on_insert_text)
 
@@ -154,7 +155,6 @@ class TextBox(gtk.TextView):
             if not self.placeables_controller:
                 return
             elem.gui_info = self.placeables_controller.get_gui_info(elem)(elem=elem, textbox=self)
-            elem.renderer = elem.gui_info.render
 
         for sub in elem.sub:
             self.add_default_gui_info(sub)
@@ -169,7 +169,7 @@ class TextBox(gtk.TextView):
 
             if getattr(elem, 'gui_info', None):
                 start_index = offset
-                end_index = offset + len(elem)
+                end_index = offset + elem.gui_info.length()
                 interval = end_index - start_index
                 for tag, tag_start, tag_end in elem.gui_info.create_tags():
                     if tag is None:
@@ -213,7 +213,7 @@ class TextBox(gtk.TextView):
 
     @accepts(Self(), [StringElem])
     def insert_translation(self, elem):
-        widget = elem.gui_info.create_widget()
+        widget = elem.gui_info.get_insert_widget()
         if widget:
             cursor_pos = self.buffer.props.cursor_position
             cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)
@@ -229,7 +229,7 @@ class TextBox(gtk.TextView):
             cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)
             self.add_child_at_anchor(widget, anchor)
             widget.show_all()
-            if hasattr(widget, 'inserted'):
+            if callable(getattr(widget, 'inserted', None)):
                 widget.inserted(cursor_iter, anchor)
         else:
             self.buffer.insert_at_cursor(elem.translate())
@@ -303,7 +303,15 @@ class TextBox(gtk.TextView):
         if text is not self.elem:
             self.elem.sub = [text]
             self.elem.prune()
+
         self.add_default_gui_info(self.elem)
+
+        self.buffer.handler_block_by_func(self._on_delete_range)
+        self.buffer.handler_block_by_func(self._on_insert_text)
+        self.buffer.set_text('')
+        self.elem.gui_info.render()
+        self.buffer.handler_unblock_by_func(self._on_delete_range)
+        self.buffer.handler_unblock_by_func(self._on_insert_text)
 
         tagtable = self.buffer.get_tag_table()
         def remtag(tag, data):

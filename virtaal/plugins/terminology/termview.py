@@ -41,7 +41,7 @@ class TerminologyGUIInfo(StringElemGUI):
 
 
     # METHODS #
-    def create_widget(self):
+    def get_insert_widget(self):
         if len(self.elem.translations) > 1:
             return TerminologyCombo(self.elem)
         return None

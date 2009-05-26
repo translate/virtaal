@@ -88,6 +88,8 @@ class StringElemGUI(object):
         i = len(self.widgets) > 0 and 1 or 0
         for child in self.elem.sub:
             if isinstance(child, StringElem):
+                if not hasattr(child, 'gui_info'):
+                    child.gui_info = self.textbox.placeables_controller.get_gui_info(child)(elem=child, textbox=self.textbox)
                 elem = child.gui_info.elem_at_offset(offset-i)
                 if elem:
                     return elem

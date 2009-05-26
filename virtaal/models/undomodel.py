@@ -107,11 +107,12 @@ class UndoModel(BaseModel):
             raise Exception('Undo already recording.')
 
         if self.index < 0:
-            self.index = 0
+            self.undo_stack = []
         if self.index != len(self.undo_stack) - 1:
             self.undo_stack = self.undo_stack[:self.index]
 
         self.undo_stack.append([])
+        self.index = len(self.undo_stack) - 1
         self.recording = True
 
     def record_stop(self):

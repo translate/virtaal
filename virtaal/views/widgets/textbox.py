@@ -213,9 +213,9 @@ class TextBox(gtk.TextView):
 
     @accepts(Self(), [StringElem])
     def insert_translation(self, elem):
+        cursor_pos = self.buffer.props.cursor_position
         widget = elem.gui_info.get_insert_widget()
         if widget:
-            cursor_pos = self.buffer.props.cursor_position
             cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)
             anchor = self.buffer.create_child_anchor(cursor_iter)
             # It is necessary to recreate cursor_iter becuase, for some inexplicable reason,
@@ -232,7 +232,27 @@ class TextBox(gtk.TextView):
             if callable(getattr(widget, 'inserted', None)):
                 widget.inserted(cursor_iter, anchor)
         else:
-            self.buffer.insert_at_cursor(elem.translate())
+            translation = elem.translate()
+            if isinstance(translation, StringElem):
+                gui_elem = self.elem.gui_info.elem_at_offset(cursor_pos)
+                if gui_elem is None:
+                    return
+                gui_index = self.elem.gui_info.index(gui_elem)
+                tree_index = self.elem.elem_offset(gui_elem)
+                insert_offset = tree_index + (cursor_pos - gui_index)
+                if gui_elem.gui_info.widgets and gui_elem.gui_info.widgets[0]:
+                    insert_offset -= 1
+                #logging.debug('Inserting %s into %s at offset %d' % (repr(translation), repr(gui_elem), insert_offset))
+                self.elem.insert(insert_offset, translation)
+                gui_elem.prune()
+
+                if not hasattr(translation, 'gui_info'):
+                    translation.gui_info = self.placeables_controller.get_gui_info(translation)(elem=translation, textbox=self)
+                cursor_pos += translation.gui_info.length()
+            else:
+                self.buffer.insert_at_cursor(translation)
+                cursor_pos += len(translation)
+            self.refresh(cursor_pos=cursor_pos)
 
     @accepts(Self(), [int])
     def move_elem_selection(self, offset):

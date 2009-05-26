@@ -81,7 +81,9 @@ class StringElemGUI(object):
             C{StringElem.elem_at_offset}, because this method takes the rendered
             widgets into account."""
         if self.elem.isleaf():
-            return self.length() + len(self.widgets) < offset and self.elem or None
+            if offset <= (self.length() + len(self.widgets)):
+                return self.elem
+            return None
 
         i = len(self.widgets) > 0 and 1 or 0
         for child in self.elem.sub:
@@ -105,7 +107,7 @@ class StringElemGUI(object):
             return 0
 
         i = 0
-        if len(self.widgets) >= 1:
+        if len(self.widgets) >= 1 and self.widgets[0]:
             i += 1
 
         for child in self.elem.sub:

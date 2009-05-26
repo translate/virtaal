@@ -88,7 +88,7 @@ class TextBox(gtk.TextView):
 
     # OVERRIDDEN METHODS #
     def get_stringelem(self):
-        if not self.elem:
+        if self.elem is None:
             return None
         return elem_parse(self.elem, self.placeables_controller.get_parsers_for_textbox(self))
 
@@ -111,7 +111,7 @@ class TextBox(gtk.TextView):
             text = StringElem(text)
 
         if self.elem is None:
-            self.elem = StringElem()
+            self.elem = StringElem('')
 
         if text is not self.elem:
             # If text is self.elem, we are busy with a refresh and we should remember the selected element.
@@ -322,7 +322,7 @@ class TextBox(gtk.TextView):
         if not isinstance(text, StringElem):
             return
         if self.elem is None:
-            self.elem = StringElem()
+            self.elem = StringElem('')
         if text is not self.elem:
             self.elem.sub = [text]
             self.elem.prune()
@@ -355,7 +355,7 @@ class TextBox(gtk.TextView):
             main_controller.disconnect(self.__controller_connect_id)
 
     def _on_delete_range(self, buffer, start_iter, end_iter):
-        if not self.elem:
+        if self.elem is None:
             return
 
         text = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter())

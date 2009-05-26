@@ -244,13 +244,16 @@ class TextBox(gtk.TextView):
         else:
             self.selector_textbox.select_elem(offset=self.selector_textbox.selected_elem_index + offset)
 
-    def refresh(self):
+    def refresh(self, cursor_pos=-1):
         """Refresh the text box by setting its text to the current text."""
         if self.elem:
             self.elem.prune()
             self.set_text(self.elem)
         else:
             self.set_text(self.get_text())
+
+        if cursor_pos >= 0:
+            self.buffer.place_cursor(self.buffer.get_iter_at_offset(cursor_pos))
 
     @accepts(Self(), [[StringElem, None], [int, None]])
     def select_elem(self, elem=None, offset=None):

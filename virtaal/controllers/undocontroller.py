@@ -177,7 +177,7 @@ class UndoController(BaseController):
         def undo_action(unit):
             #logging.debug('(undo) %s.insert(%d, "%s")' % (repr(elem), start_offset, deleted))
             if parent is None:
-                unit_controller.view.set_target_n(target_num, deleted, cursor_pos, escape=False)
+                elem.insert(start_offset, deleted)
                 return
             parent_offset = elem.elem_offset(parent)
             prel_offset = start_offset - parent_offset

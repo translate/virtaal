@@ -80,23 +80,28 @@ class StringElemGUI(object):
             This method is used in Virtaal as a replacement for
             C{StringElem.elem_at_offset}, because this method takes the rendered
             widgets into account."""
-        if self.elem.isleaf():
-            if offset <= (self.length() + len(self.widgets)):
-                return self.elem
+        if offset < 0 or offset >= self.length():
             return None
 
-        i = len(self.widgets) > 0 and 1 or 0
+        if self.elem.isleaf():
+            return self.elem
+
+        pre_len = (self.widgets and self.widgets[0]) and 1 or 0
+
+        childlen = 0
         for child in self.elem.sub:
             if isinstance(child, StringElem):
                 if not hasattr(child, 'gui_info'):
                     child.gui_info = self.textbox.placeables_controller.get_gui_info(child)(elem=child, textbox=self.textbox)
-                elem = child.gui_info.elem_at_offset(offset-i)
+
+                elem = child.gui_info.elem_at_offset(offset - (pre_len+childlen))
                 if elem:
                     return elem
-                i += child.gui_info.length()
+                childlen += child.gui_info.length()
             else:
-                i += len(child)
-
+                if offset <= len(child):
+                    return self.elem
+                childlen += len(child)
         return None
 
     def get_insert_widget(self):

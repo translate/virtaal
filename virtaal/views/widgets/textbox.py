@@ -237,6 +237,7 @@ class TextBox(gtk.TextView):
                 insert_offset = self.elem.gui_info.gui_to_tree_index(cursor_pos)
                 self.elem.insert(insert_offset, translation)
                 self.elem.prune()
+                self.emit('text-inserted', translation, insert_offset, self.elem)
 
                 if not hasattr(translation, 'gui_info'):
                     translation.gui_info = self.placeables_controller.get_gui_info(translation)(elem=translation, textbox=self)

@@ -191,7 +191,7 @@ class UndoController(BaseController):
 
         self.model.push({
             'action': undo_action,
-            'cursorpos': cursor_pos,
+            'cursorpos': start_offset,
             'targetn': target_num,
             'unit': unit,
         })

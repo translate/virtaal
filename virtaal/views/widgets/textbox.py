@@ -385,13 +385,17 @@ class TextBox(gtk.TextView):
         return True
 
     def _on_insert_text(self, buffer, iter, ins_text, length):
-        if not self.elem:
+        if self.elem is None:
             return
 
-        self.elem.insert(iter.get_offset(), ins_text)
+        if self.elem.insert(iter.get_offset(), ins_text):
+            self.elem.prune()
 
-        #self.buffer.stop_emission('insert-text')
-        self.emit('text-inserted', ins_text, iter.get_offset(), self.elem)
+            #logging.debug('text-inserted: %s@%d of %s' % (ins_text, iter.get_offset(), repr(self.elem)))
+            self.__delayed_refresh(self.buffer.props.cursor_position+len(ins_text))
+            self.emit('text-inserted', ins_text, iter.get_offset(), self.elem)
+        else:
+            self.buffer.stop_emission('insert-text')
 
     def _on_key_pressed(self, widget, event, *args):
         evname = None

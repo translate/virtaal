@@ -187,7 +187,7 @@ class UndoController(BaseController):
                 i += 1
             #logging.debug('parent.sub.insert(%d, %s): ' % (i, repr(deleted)))
             parent.sub.insert(i, deleted)
-            elem.prune()
+            parent.prune()
 
         self.model.push({
             'action': undo_action,

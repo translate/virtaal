@@ -234,17 +234,9 @@ class TextBox(gtk.TextView):
         else:
             translation = elem.translate()
             if isinstance(translation, StringElem):
-                gui_elem = self.elem.gui_info.elem_at_offset(cursor_pos)
-                if gui_elem is None:
-                    return
-                gui_index = self.elem.gui_info.index(gui_elem)
-                tree_index = self.elem.elem_offset(gui_elem)
-                insert_offset = tree_index + (cursor_pos - gui_index)
-                if gui_elem.gui_info.widgets and gui_elem.gui_info.widgets[0]:
-                    insert_offset -= 1
-                #logging.debug('Inserting %s into %s at offset %d' % (repr(translation), repr(gui_elem), insert_offset))
+                insert_offset = self.elem.gui_info.gui_to_tree_index(cursor_pos)
                 self.elem.insert(insert_offset, translation)
-                gui_elem.prune()
+                self.elem.prune()
 
                 if not hasattr(translation, 'gui_info'):
                     translation.gui_info = self.placeables_controller.get_gui_info(translation)(elem=translation, textbox=self)

@@ -346,8 +346,10 @@ class TextBox(gtk.TextView):
         # At this point we have a tree of string elements with GUI info.
         self.apply_gui_info(text)
 
-    def __delayed_update_tree(self):
-        gobject.idle_add(self.update_tree)
+    def __delayed_refresh(self, cursor_pos=-1):
+        if cursor_pos < 0:
+            cursor_pos = self.buffer.props.cursor_position
+        gobject.idle_add(self.refresh, cursor_pos)
 
 
     # EVENT HANDLERS #
@@ -386,7 +388,7 @@ class TextBox(gtk.TextView):
 
         deleted, parent = self.elem.delete_range(start_iter.get_offset(), end_iter.get_offset())
         self.emit('text-deleted', start_iter.get_offset(), end_iter.get_offset(), deleted, parent, cursor_pos, self.elem)
-        self.__delayed_update_tree()
+        self.__delayed_refresh(start_iter.get_offset())
         return True
 
     def _on_insert_text(self, buffer, iter, ins_text, length):
@@ -397,7 +399,6 @@ class TextBox(gtk.TextView):
 
         #self.buffer.stop_emission('insert-text')
         self.emit('text-inserted', ins_text, iter.get_offset(), self.elem)
-        self.__delayed_update_tree()
 
     def _on_key_pressed(self, widget, event, *args):
         evname = None

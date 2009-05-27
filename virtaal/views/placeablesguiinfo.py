@@ -109,9 +109,6 @@ class StringElemGUI(object):
             return 0
 
         i = 0
-        if len(self.widgets) >= 1 and self.widgets[0]:
-            i += 1
-
         for child in self.elem.sub:
             if isinstance(child, StringElem):
                 index = child.gui_info.index(elem)

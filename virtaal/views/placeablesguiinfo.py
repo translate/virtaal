@@ -102,6 +102,15 @@ class StringElemGUI(object):
     def get_insert_widget(self):
         return None
 
+    def gui_to_tree_index(self, index):
+        elem = self.elem_at_offset(index)
+        gui_index = self.index(elem)
+        tree_index = self.elem.elem_offset(elem)
+        converted = tree_index + (index - gui_index)
+        if hasattr(elem, 'gui_info') and elem.gui_info.widgets and elem.gui_info.widgets[0]:
+            converted -= 1
+        return converted
+
     def index(self, elem):
         """Replacement for C{StringElem.elem_offset()} to be aware of included
             widgets."""
@@ -156,6 +165,15 @@ class StringElemGUI(object):
             offset += 1
 
         return offset
+
+    def tree_to_gui_index(self, index):
+        elem = self.elem.elem_at_offset(index)
+        gui_index = self.index(elem)
+        tree_index = self.elem.elem_offset(elem)
+        converted = gui_index - (index - tree_index)
+        if hasattr(elem, 'gui_info') and elem.gui_info.widgets and elem.gui_info.widgets[0]:
+            converted += 1
+        return converted
 
 
 class PhGUI(StringElemGUI):

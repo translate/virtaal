@@ -206,7 +206,7 @@ class UndoController(BaseController):
         def undo_action(unit):
             #logging.debug('(undo) %s.delete_range(%d, %d)' % (repr(elem), offset, offset+len(ins_text)))
             elem.delete_range(offset, offset+len(ins_text))
-            unit_controller.view.set_target_n(target_num, elem, escape=False)
+            elem.prune()
 
         self.model.push({
             'action': undo_action,

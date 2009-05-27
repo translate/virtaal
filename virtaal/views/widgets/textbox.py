@@ -377,7 +377,7 @@ class TextBox(gtk.TextView):
                 start_iter.set_offset(offset)
         #logging.debug('%s[%d] >===> %s[%d]' % (repr(start_elem), start_iter.get_offset(), repr(end_elem), end_iter.get_offset()))
 
-        cursor_pos = self.buffer.get_iter_at_mark(self.buffer.get_insert()).get_offset()
+        cursor_pos = self.buffer.props.cursor_position
 
         deleted, parent = self.elem.delete_range(start_iter.get_offset(), end_iter.get_offset())
         self.emit('text-deleted', start_iter.get_offset(), end_iter.get_offset(), deleted, parent, cursor_pos, self.elem)

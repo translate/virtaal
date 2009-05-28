@@ -90,6 +90,10 @@ class PlaceablesController(BaseController):
             _('Capitals'),
             _('Handle all-capital strings as placeables.')
         )
+        self.parser_info[general.OptionPlaceable.parse] = (
+            _('Commandline Options'),
+            _('Application commandline options such as --help, -h and -I.')
+        )
         self.parser_info[general.EmailPlaceable.parse] = (
             _('E-mail'),
             _('E-mail addresses are recognised as placeables.')

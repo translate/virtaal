@@ -363,18 +363,29 @@ class TextBox(gtk.TextView):
             start_iter.set_offset(start_offset-2)
 
         start_elem = self.elem.gui_info.elem_at_offset(start_offset)
+        start_elem_len = start_elem.gui_info.length()
+        start_elem_offset = self.elem.gui_info.index(start_elem)
+
         end_elem = self.elem.gui_info.elem_at_offset(end_offset)
+        end_elem_len = end_elem.gui_info.length()
+        end_elem_offset = self.elem.gui_info.index(end_elem)
 
         if start_elem is not None and not start_elem.iseditable:
-            #logging.debug('%s is not editable: start_elem.iseditable = %s' % (repr(start_elem), start_elem.iseditable))
-            if start_elem is end_elem and start_offset == self.elem.gui_info.index(end_elem):
-                offset = end_offset + len(end_elem) - 1
-                #logging.debug('Delete was pressed before a placeable. End offset set to %d' % (offset))
-                end_iter.set_offset(offset)
-            elif start_offset == (self.elem.gui_info.index(start_elem) + len(start_elem) - 1) and end_offset - start_offset == 1:
-                offset = self.elem.gui_info.index(start_elem)
-                #logging.debug('Backspace was pressed after a placeable. Start offset set to %d' % (offset))
-                start_iter.set_offset(offset)
+            if start_offset+1 == end_offset:
+                # A single character delete on non-editable placeables are only valid at the head or tail.
+                if start_offset == start_elem_offset:
+                    # Delete the first character of a non-editable placeable. This is most likely because the
+                    # user pressed delete with the cursor before the placeable.
+                    end_iter.set_offset(start_elem_offset + start_elem_len)
+                if start_elem_offset + start_elem_len == end_offset:
+                    # Backspace was pressed with the cursor positioned right after the placeable.
+                    start_iter.set_offset(start_elem_offset)
+            elif start_elem_offset + start_elem_len <= end_elem_offset:
+                start_iter.set_offset(start_elem_offset)
+        if end_elem is not None and not end_elem.iseditable:
+            if start_elem_offset + start_elem_len < end_offset:
+                end_iter.set_offset(end_elem_offset + end_elem_len)
+
         #logging.debug('%s[%d] >===> %s[%d]' % (repr(start_elem), start_iter.get_offset(), repr(end_elem), end_iter.get_offset()))
 
         cursor_pos = self.buffer.props.cursor_position

@@ -370,6 +370,11 @@ class TextBox(gtk.TextView):
         end_elem_len = end_elem.gui_info.length()
         end_elem_offset = self.elem.gui_info.index(end_elem)
 
+        #logging.debug('pre-checks: %s[%d:%d]' % (repr(self.elem), start_offset, end_offset))
+        #logging.debug('start_elem_offset= %d\tend_elem_offset= %d' % (start_elem_offset, end_elem_offset))
+        #logging.debug('start_elem_len   = %d\tend_elem_len   = %d' % (start_elem_len, end_elem_len))
+        #logging.debug('start_offset     = %d\tend_offset     = %d' % (start_offset, end_offset))
+
         if start_elem is not None and not start_elem.iseditable:
             if start_offset+1 == end_offset:
                 # A single character delete on non-editable placeables are only valid at the head or tail.

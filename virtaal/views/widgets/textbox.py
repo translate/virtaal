@@ -257,8 +257,10 @@ class TextBox(gtk.TextView):
         else:
             self.selector_textbox.select_elem(offset=self.selector_textbox.selected_elem_index + offset)
 
-    def refresh(self, cursor_pos=-1):
+    def refresh(self, cursor_pos=-1, preserve_selection=True):
         """Refresh the text box by setting its text to the current text."""
+        selection = [itr.get_offset() for itr in self.buffer.get_selection_bounds()]
+
         if self.elem:
             self.elem.prune()
             self.set_text(self.elem)
@@ -269,6 +271,12 @@ class TextBox(gtk.TextView):
             self.buffer.place_cursor(self.buffer.get_iter_at_offset(cursor_pos))
         elif type(cursor_pos) is gtk.TreeIter:
             self.buffer.place_cursor(cursor_pos)
+
+        if preserve_selection and selection:
+            self.buffer.select_range(
+                self.buffer.get_iter_at_offset(selection[0]),
+                self.buffer.get_iter_at_offset(selection[1]),
+            )
 
     @accepts(Self(), [[StringElem, None], [int, None]])
     def select_elem(self, elem=None, offset=None):

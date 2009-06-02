@@ -91,9 +91,9 @@ class AutoCorrector(object):
             @param inserted: The string that was inserted at I{endindex}
 
             @rtype: 2-tuple
-            @return: The corrected substring (C{src[:endindex]}) (or None if no
-                corrections were made) and the postfix
-                (C{inserted + src[endindex:]}).
+            @return: The range in C{src} to be changed (or C{None} if no
+                correction was found) as well as the string to replace that
+                range with.
             """
         if not self.correctiondict:
             return None, u''
@@ -102,12 +102,13 @@ class AutoCorrector(object):
         postfix = inserted + src[endindex:]
 
         for key in self.correctiondict:
-            if self.correctiondict[key][self.REGEX].match(candidate):
+            mobj = self.correctiondict[key][self.REGEX].search(candidate)
+            if mobj:
+                replace_range = mobj.start(), mobj.end()
                 replacement = self.correctiondict[key][self.REPLACEMENT]
-                corrected   = re.sub(r'%s$' % (re.escape(key)), replacement, candidate)
-                return corrected, postfix
+                return replace_range, replacement
 
-        return None, postfix # No corrections done
+        return None, u'' # No corrections done
 
     def clear_widgets(self):
         """Removes references to all widgets that is being auto-corrected."""
@@ -178,7 +179,7 @@ class AutoCorrector(object):
 
         # Add auto-correction regex for each loaded word.
         for key, value in self.correctiondict.items():
-            self.correctiondict[key] = (value, re.compile(r'.*\b%s$' % (re.escape(key)), re.UNICODE))
+            self.correctiondict[key] = (value, re.compile(r'\b%s$' % (re.escape(key)), re.UNICODE))
 
         self.lang = lang
         return
@@ -218,16 +219,19 @@ class AutoCorrector(object):
         iteroffset = iter.get_offset() + len(text)
 
         if not self.wordsep_re.split(text)[-1]:
-            res, postfix = self.autocorrect(bufftext, iter.get_offset(), text)
-            if res is not None:
+            reprange, replacement = self.autocorrect(bufftext, iter.get_offset(), text)
+            if reprange is not None:
                 # Updating of the buffer is deferred until after this signal
                 # and its side effects are taken care of. We abuse
                 # gobject.idle_add for that.
                 def correct_text():
+                    start_iter = buffer.get_iter_at_offset(reprange[0])
+                    end_iter = buffer.get_iter_at_offset(reprange[1])
+
                     self.main_controller.undo_controller.record_start()
-                    buffer.props.text = u''.join([res, postfix])
+                    buffer.delete(start_iter, end_iter)
+                    buffer.insert(start_iter, replacement)
                     self.main_controller.undo_controller.record_stop()
-                    buffer.place_cursor( buffer.get_iter_at_offset(len(res) + len(text)) )
                     return False
 
                 gobject.idle_add(correct_text)

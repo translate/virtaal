@@ -189,9 +189,11 @@ class UndoController(BaseController):
             parent.sub.insert(i, deleted)
             parent.prune()
 
+        desc = 'offsets=(%d, %d), deleted="%s", elem=%s' % (start_offset, end_offset, deleted, repr(elem))
         self.model.push({
             'action': undo_action,
             'cursorpos': start_offset,
+            'desc': desc,
             'targetn': target_num,
             'unit': unit,
         })
@@ -208,8 +210,10 @@ class UndoController(BaseController):
             elem.delete_range(offset, offset+len(ins_text))
             elem.prune()
 
+        desc = 'ins_text="%s", offset=%d, elem=%s' % (ins_text, offset, repr(elem))
         self.model.push({
             'action': undo_action,
+            'desc': desc,
             'unit': unit,
             'targetn': target_num,
             'cursorpos': offset

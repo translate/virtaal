@@ -367,8 +367,13 @@ class TextBox(gtk.TextView):
         start_elem_offset = self.elem.gui_info.index(start_elem)
 
         end_elem = self.elem.gui_info.elem_at_offset(end_offset)
-        end_elem_len = end_elem.gui_info.length()
-        end_elem_offset = self.elem.gui_info.index(end_elem)
+        if end_elem is not None:
+            # end_elem can be None if end_offset == self.elem.gui_info.length()
+            end_elem_len = end_elem.gui_info.length()
+            end_elem_offset = self.elem.gui_info.index(end_elem)
+        else:
+            end_elem_len = 0
+            end_elem_offset = self.elem.gui_info.length()
 
         #logging.debug('pre-checks: %s[%d:%d]' % (repr(self.elem), start_offset, end_offset))
         #logging.debug('start_elem_offset= %d\tend_elem_offset= %d' % (start_elem_offset, end_elem_offset))

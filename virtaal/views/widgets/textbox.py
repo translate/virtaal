@@ -25,6 +25,7 @@ from gobject import SIGNAL_RUN_FIRST, SIGNAL_RUN_LAST, TYPE_PYOBJECT
 
 from translate.misc.typecheck import accepts, Self, IsOneOf
 from translate.storage.placeables import StringElem, parse as elem_parse
+from translate.lang import data
 
 from virtaal.views import placeablesguiinfo
 
@@ -99,7 +100,7 @@ class TextBox(gtk.TextView):
             start_iter = self.buffer.get_start_iter()
         if end_iter is None:
             end_iter = self.buffer.get_end_iter()
-        return self.buffer.get_text(start_iter, end_iter)
+        return data.forceunicode(self.buffer.get_text(start_iter, end_iter))
 
     @accepts(Self(), [[IsOneOf(StringElem, str, unicode)]])
     def set_text(self, text):
@@ -111,7 +112,7 @@ class TextBox(gtk.TextView):
             text = StringElem(text)
 
         if self.elem is None:
-            self.elem = StringElem('')
+            self.elem = StringElem(u'')
 
         if text is not self.elem:
             # If text is self.elem, we are busy with a refresh and we should remember the selected element.
@@ -325,7 +326,7 @@ class TextBox(gtk.TextView):
         if not isinstance(text, StringElem):
             return
         if self.elem is None:
-            self.elem = StringElem('')
+            self.elem = StringElem(u'')
         if text is not self.elem:
             self.elem.sub = [text]
             self.elem.prune()
@@ -334,7 +335,7 @@ class TextBox(gtk.TextView):
 
         self.buffer.handler_block_by_func(self._on_delete_range)
         self.buffer.handler_block_by_func(self._on_insert_text)
-        self.buffer.set_text('')
+        self.buffer.set_text(u'')
         self.elem.gui_info.render()
         self.buffer.handler_unblock_by_func(self._on_delete_range)
         self.buffer.handler_unblock_by_func(self._on_insert_text)
@@ -417,6 +418,7 @@ class TextBox(gtk.TextView):
         if self.elem is None:
             return
 
+        ins_text = data.forceunicode(ins_text)
         if self.elem.insert(iter.get_offset(), ins_text):
             self.elem.prune()
 

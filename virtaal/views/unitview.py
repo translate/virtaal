@@ -357,7 +357,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     # GUI BUILDING CODE #
     def _create_sources(self):
         for i in range(len(self.sources), self.MAX_SOURCES):
-            source = self._create_textbox('', editable=False, scroll_policy=gtk.POLICY_NEVER)
+            source = self._create_textbox(u'', editable=False, scroll_policy=gtk.POLICY_NEVER)
             textbox = source.get_child()
             self._widgets['vbox_sources'].pack_start(source)
             self.sources.append(textbox)
@@ -401,7 +401,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             return False
 
         for i in range(len(self.targets), self.MAX_TARGETS):
-            target = self._create_textbox('', editable=True, scroll_policy=gtk.POLICY_AUTOMATIC)
+            target = self._create_textbox(u'', editable=True, scroll_policy=gtk.POLICY_AUTOMATIC)
             textbox = target.get_child()
             textbox.selector_textbox = self.sources[0]
             textbox.connect('key-pressed', on_textbox_n_press_event)
@@ -416,14 +416,14 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         for target, next_target in zip(self.targets, self.targets[1:] + [None]):
             target.connect('key-pressed', target_key_press_event, next_target)
 
-    def _create_textbox(self, text='', editable=True, scroll_policy=gtk.POLICY_AUTOMATIC):
+    def _create_textbox(self, text=u'', editable=True, scroll_policy=gtk.POLICY_AUTOMATIC):
         textbox = TextBox(self.controller.main_controller)
         textbox.set_editable(editable)
         textbox.set_wrap_mode(gtk.WRAP_WORD_CHAR)
         textbox.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)
         textbox.set_left_margin(2)
         textbox.set_right_margin(2)
-        textbox.set_text(text or '')
+        textbox.set_text(text or u'')
 
         scrollwnd = gtk.ScrolledWindow()
         scrollwnd.set_policy(gtk.POLICY_NEVER, scroll_policy)
@@ -472,7 +472,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             if num_source_widgets >= 1:
                 # The above condition should *never* be False
                 textbox = self.sources[0]
-                textbox.set_text('')
+                textbox.set_text(u'')
                 textbox.parent.show()
             for i in range(1, num_source_widgets):
                 self.sources[i].parent.hide_all()
@@ -525,7 +525,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             if num_target_widgets >= 1:
                 # The above condition should *never* be False
                 textbox = self.targets[0]
-                textbox.set_text('')
+                textbox.set_text(u'')
                 textbox.parent.show_all()
             for i in range(1, num_target_widgets):
                 self.targets[i].parent.hide_all()

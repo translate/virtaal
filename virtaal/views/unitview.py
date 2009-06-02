@@ -381,8 +381,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             if event.keyval == gtk.keysyms.n:
                 curpos = textbox.buffer.props.cursor_position
                 lastchar = textbox.get_text()[curpos-1]
-                if lastchar == "\\":
-                    textbox.buffer.insert_at_cursor('n\n')
+                if lastchar == u"\\":
+                    textbox.buffer.insert_at_cursor(u'n\n')
                     textbox.scroll_mark_onscreen(textbox.buffer.get_insert())
                     textbox.stop_emission('key-pressed')
                     return True

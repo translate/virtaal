@@ -365,10 +365,11 @@ class TextBox(gtk.TextView):
             return
 
         text = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter())
+        text = data.forceunicode(text)
         start_offset = start_iter.get_offset()
         end_offset = end_iter.get_offset()
 
-        if text[start_offset:end_offset] == '\n' and text[:start_offset].endswith('\\n'):
+        if text[start_offset:end_offset] == u'\n' and text[:start_offset].endswith(u'\\n'):
             start_iter.set_offset(start_offset-2)
 
         start_elem = self.elem.gui_info.elem_at_offset(start_offset)

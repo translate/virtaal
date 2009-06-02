@@ -47,10 +47,10 @@ class TerminologyModel(BaseTerminologyModel):
 
         self.matcher = None
         self.internal_name = internal_name
-        self.view = LocalFileView(self)
 
         self.load_config()
         self.load_files()
+        self.view = LocalFileView(self)
 
 
     # METHODS #

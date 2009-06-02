@@ -20,6 +20,8 @@
 
 import gtk
 
+from virtaal.views import BaseView
+
 
 class LocalFileView:
     """
@@ -33,6 +35,7 @@ class LocalFileView:
         self.mainview = model.controller.main_controller.view
         self._signal_ids = []
         self._setup_menus()
+        self.fileselect = FileSelectDialog(model=model)
 
 
     # METHODS #
@@ -59,8 +62,91 @@ class LocalFileView:
 
     # EVENT HANDLERS #
     def _on_select_term_files(self, menuitem):
+        self.fileselect.run(parent=self.mainview)
+
+
+class FileSelectDialog:
+    """
+    Wrapper for the selection dialog, created in Glade, to manage the list of
+    files used by this plug-in.
+    """
+
+    COL_FILE, COL_EXTEND = range(2)
+
+    # INITIALIZERS #
+    def __init__(self, model):
+        self.controller = model.controller
+        self.term_model = model
+        self.gladefilename, self.gui = BaseView.load_glade_file(
+            ["virtaal", "virtaal.glade"],
+            root='TermFilesDlg',
+            domain='virtaal'
+        )
+        self._get_widgets()
+        self._init_treeview()
+
+    def _get_widgets(self):
+        widget_names = ('btn_add_file', 'btn_remove_file', 'tvw_termfiles')
+
+        for name in widget_names:
+            setattr(self, name, self.gui.get_widget(name))
+
+        self.dialog = self.gui.get_widget('TermFilesDlg')
+        self.btn_add_file.connect('clicked', self._on_add_file_clicked)
+        self.btn_remove_file.connect('clicked', self._on_remove_file_clicked)
+
+    def _init_treeview(self):
+        self.lst_files = gtk.ListStore(str, bool)
+        self.tvw_termfiles.set_model(self.lst_files)
+
+        cell = gtk.CellRendererText()
+        col = gtk.TreeViewColumn(_('File'))
+        col.pack_start(cell)
+        col.add_attribute(cell, 'text', self.COL_FILE)
+        col.set_sort_column_id(0)
+        self.tvw_termfiles.append_column(col)
+
+        cell = gtk.CellRendererToggle()
+        cell.set_radio(True)
+        cell.connect('toggled', self._on_toggle)
+        col = gtk.TreeViewColumn(_('Extendible'))
+        col.pack_start(cell)
+        col.add_attribute(cell, 'active', self.COL_EXTEND)
+        self.tvw_termfiles.append_column(col)
+
+        extend_file = self.term_model.config.get('extendfile', '')
+        files = self.term_model.config['files']
+        if not isinstance(files, list):
+            files = [files]
+        for f in files:
+            self.lst_files.append([f, f == extend_file])
+
+        # If there was no extend file, select the first one
+        for row in self.lst_files:
+            if row[self.COL_EXTEND]:
+                break
+        else:
+            itr = self.lst_files.get_iter_first()
+            if itr and self.lst_files.iter_is_valid(itr):
+                self.lst_files.set_value(itr, self.COL_EXTEND, True)
+                self.term_model.config['extendfile'] = self.lst_files.get_value(itr, self.COL_FILE)
+                self.term_model.save_config()
+
+
+    # METHODS #
+    def run(self, parent=None):
+        if isinstance(parent, gtk.Widget):
+            self.dialog.set_transient_for(parent)
+
+        self.dialog.show_all()
+        self.dialog.run()
+        self.dialog.hide()
+
+
+    # EVENT HANDLERS #
+    def _on_add_file_clicked(self, button):
         dlg = gtk.FileChooserDialog(
-            _('Select file(s) to use for terminology...'),
+            _('Select file(s) to add...'),
             self.controller.main_controller.view.main_window,
             gtk.FILE_CHOOSER_ACTION_OPEN,
             (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK)
@@ -73,4 +159,34 @@ class LocalFileView:
         if response != gtk.RESPONSE_OK:
             return
 
-        self.term_model.config['files'] = dlg.get_filenames()
+        currfiles = [row[self.COL_FILE] for row in self.lst_files]
+        addfiles = [f for f in dlg.get_filenames() if f not in currfiles]
+        self.term_model.config['files'] += addfiles
+        self.term_model.save_config()
+
+    def _on_remove_file_clicked(self, button):
+        model, selected = self.tvw_termfiles.get_selection().get_selected()
+        if not selected:
+            return
+
+        remfile = model.get_value(selected, self.COL_FILE)
+        extend = model.get_value(selected, self.COL_EXTEND)
+        self.term_model.config['files'].remove(remfile)
+
+        if extend:
+            self.term_model.config['extendfile'] = ''
+            itr = model.get_iter_first()
+            if itr and model.iter_is_valid(itr):
+                model.set_value(itr, self.COL_EXTEND, True)
+                self.term_model.config['extendfile'] = model.get_value(itr, self.COL_FILE)
+
+        self.term_model.save_config()
+        model.remove(selected)
+
+    def _on_toggle(self, renderer, path):
+        toggled_file = self.lst_files.get_value(self.lst_files.get_iter(path), self.COL_FILE)
+
+        itr = self.lst_files.get_iter_first()
+        while itr is not None and self.lst_files.iter_is_valid(itr):
+            self.lst_files.set_value(itr, self.COL_EXTEND, self.lst_files.get_value(itr, self.COL_FILE) == toggled_file)
+            itr = self.lst_files.iter_next(itr)

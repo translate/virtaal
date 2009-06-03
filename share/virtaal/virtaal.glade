@@ -1050,6 +1050,7 @@ If you are translating from English to French then French would be your translat
   </widget>
   <widget class="GtkDialog" id="TermFilesDlg">
     <property name="border_width">5</property>
+    <property name="title" translatable="yes">Select terminology files</property>
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">

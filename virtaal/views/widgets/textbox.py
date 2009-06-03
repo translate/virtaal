@@ -263,7 +263,7 @@ class TextBox(gtk.TextView):
         """Refresh the text box by setting its text to the current text."""
         selection = [itr.get_offset() for itr in self.buffer.get_selection_bounds()]
 
-        if self.elem:
+        if self.elem is not None:
             self.elem.prune()
             self.set_text(self.elem)
         else:

@@ -59,8 +59,9 @@ class TerminologyCombo(gtk.ComboBox):
         self.elem = elem
         self.insert_iter = None
         self.selected_string = None
-        # FIXME: The following height value should be calculated from the target font.
-        self.set_size_request(-1, 20)
+        # Let's make it as small as possible, since we don't want to see the
+        # combo at all.
+        self.set_size_request(0, 0)
         self.__init_combo()
         self.menu = self.menu_get_for_attach_widget()[0]
         self.menu.connect('selection-done', self._on_selection_done)

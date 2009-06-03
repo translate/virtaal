@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gtk
+import pango
 
 from virtaal.views import BaseView
 
@@ -204,3 +205,73 @@ class FileSelectDialog:
 
         self.term_model.config['extendfile'] = toggled_file
         self.term_model.save_config()
+
+
+class TermAddDialog:
+    """
+    Wrapper for the dialog used to add a new term to the terminology file.
+    """
+
+    # INITIALIZERS #
+    def __init__(self, model):
+        self.term_model = model
+        self.lang_controller = model.controller.main_controller.lang_controller
+        self.unit_controller = model.controller.main_controller.unit_controller
+
+        self.gladefilename, self.gui = BaseView.load_glade_file(
+            ["virtaal", "virtaal.glade"],
+            root='TermAddDlg',
+            domain='virtaal'
+        )
+        self._get_widgets()
+
+    def _get_widgets(self):
+        widget_names = ('ent_source', 'ent_target', 'lbl_srclang', 'lbl_tgtlang', 'lbl_filename', 'txt_comment')
+
+        for name in widget_names:
+            setattr(self, name, self.gui.get_widget(name))
+
+        self.lbl_filename.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
+
+        self.dialog = self.gui.get_widget('TermAddDlg')
+
+
+    # METHODS #
+    def add_term_unit(self, source, target):
+        # TODO: Find the correct way to add a new unit of the correct store's type to the terminology matcher.
+        logging.debug('Adding new terminology term with source and target: [%s] | [%s]' % (source, target))
+
+    def run(self, parent=None):
+        if isinstance(parent, gtk.Widget):
+            self.dialog.set_transient_for(parent)
+
+        unitview = self.unit_controller.view
+
+        source_text = u''
+        for src in unitview.sources:
+            selection = src.buffer.get_selection_bounds()
+            if selection:
+                source_text = src.get_text(*selection)
+                break
+        self.ent_source.set_text(source_text.strip())
+
+        target_text = u''
+        for tgt in unitview.targets:
+            selection = tgt.buffer.get_selection_bounds()
+            if selection:
+                target_text = tgt.get_text(*selection)
+                break
+        self.ent_target.set_text(target_text.strip())
+
+        self.lbl_srclang.set_text(_('Source lang — %(langname)s' % {'langname': self.lang_controller.source_lang.name}))
+        self.lbl_tgtlang.set_text(_('Target lang — %(langname)s' % {'langname': self.lang_controller.target_lang.name}))
+        self.lbl_filename.set_text(self.term_model.config.get('extendfile', ''))
+
+        self.dialog.show_all()
+        response = self.dialog.run()
+        self.dialog.hide()
+
+        if response != gtk.RESPONSE_OK:
+            return
+
+        self.add_term_unit(self.ent_source.get_text(), self.ent_target.get_text())

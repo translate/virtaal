@@ -36,18 +36,28 @@ class LocalFileView:
         self.mainview = model.controller.main_controller.view
         self._signal_ids = []
         self._setup_menus()
+        self.addterm = TermAddDialog(model=model)
         self.fileselect = FileSelectDialog(model=model)
 
 
     # METHODS #
     def _setup_menus(self):
         self.mnu_term = self.mainview.find_menu(_('_Terminology'))
+
         self.mnu_select_files, _menu = self.mainview.find_menu_item(_('Terminology _files...'), self.mnu_term)
         if not self.mnu_select_files:
             self.mnu_select_files = self.mainview.append_menu_item(_('Terminology _files...'), self.mnu_term)
         self._signal_ids.append((
             self.mnu_select_files,
             self.mnu_select_files.connect('activate', self._on_select_term_files)
+        ))
+
+        self.mnu_add_term, _menu = self.mainview.find_menu_item(_('Add _term...'), self.mnu_term)
+        if not self.mnu_add_term:
+            self.mnu_add_term = self.mainview.append_menu_item(_('Add _term...'), self.mnu_term)
+        self._signal_ids.append((
+            self.mnu_add_term,
+            self.mnu_add_term.connect('activate', self._on_add_term)
         ))
 
     def destroy(self):
@@ -62,8 +72,11 @@ class LocalFileView:
 
 
     # EVENT HANDLERS #
+    def _on_add_term(self, menuitem):
+        self.addterm.run(parent=self.mainview.main_window)
+
     def _on_select_term_files(self, menuitem):
-        self.fileselect.run(parent=self.mainview)
+        self.fileselect.run(parent=self.mainview.main_window)
 
 
 class FileSelectDialog:

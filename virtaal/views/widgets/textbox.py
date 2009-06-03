@@ -234,6 +234,7 @@ class TextBox(gtk.TextView):
                 widget.inserted(cursor_iter, anchor)
         else:
             translation = elem.translate()
+            self.add_default_gui_info(translation)
             if isinstance(translation, StringElem):
                 insert_offset = self.elem.gui_info.gui_to_tree_index(cursor_pos)
                 self.elem.insert(insert_offset, translation)

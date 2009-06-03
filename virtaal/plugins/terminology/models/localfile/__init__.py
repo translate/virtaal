@@ -61,12 +61,16 @@ class TerminologyModel(BaseTerminologyModel):
         if self.matcher in TerminologyPlaceable.matchers:
             TerminologyPlaceable.matchers.remove(self.matcher)
 
+    def load_config(self):
+        super(TerminologyModel, self).load_config()
+        self.config['files'] = self.config['files'].split(',')
+
     def load_files(self):
         if self.matcher in TerminologyPlaceable.matchers:
             TerminologyPlaceable.matchers.remove(self.matcher)
 
         stores = []
-        for filename in self.config['files'].split(','):
+        for filename in self.config['files']:
             if not filename:
                 continue
             if not os.path.isfile(filename):

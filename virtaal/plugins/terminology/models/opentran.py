@@ -212,7 +212,7 @@ class TerminologyModel(BaseTerminologyModel):
             parsers=[TerminologyPlaceable.parse]
         )
         for src in unitview.sources:
-            src.update_tree(src.elem)
+            src.refresh()
 
     def create_suggestions(self, suggestion):
         # Skip any suggestions where the suggested translation contains parenthesis

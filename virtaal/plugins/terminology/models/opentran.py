@@ -30,6 +30,7 @@ from virtaal.support import opentranclient
 
 from basetermmodel import BaseTerminologyModel
 
+MIN_TERM_LENGTH = 4
 
 caps_re = re.compile('([a-z][A-Z])|([A-Z]{2,})')
 def is_case_sensitive(text):
@@ -225,11 +226,16 @@ class TerminologyModel(BaseTerminologyModel):
             if proj['flags'] != 0:
                 continue
 
-            # Skip any units containing parenthesis
-            if re.match(r'\(.*\)', proj['orig_phrase']):
+            source = proj['orig_phrase'].strip()
+            # Skip strings that are too short
+            if len(source) < MIN_TERM_LENGTH:
                 continue
-            unit = TranslationUnit(proj['orig_phrase'])
-            target = suggestion['text']
+            # Skip any units containing parenthesis
+            if re.match(r'\(.*\)', source):
+                continue
+            unit = TranslationUnit(source)
+
+            target = suggestion['text'].strip()
 
             # Skip phrases already found:
             old_unit = self.store.findunit(proj['orig_phrase'])

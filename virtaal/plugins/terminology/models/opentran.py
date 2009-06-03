@@ -89,6 +89,7 @@ class TerminologyModel(BaseTerminologyModel):
             TerminologyPlaceable.matchers.remove(self.matcher)
 
         self.store = TranslationStore()
+        self.store.makeindex()
         self.matcher = terminologymatcher(self.store)
         TerminologyPlaceable.matchers.append(self.matcher)
 
@@ -200,6 +201,7 @@ class TerminologyModel(BaseTerminologyModel):
                 if units:
                     for u in units:
                         self.store.addunit(u)
+                        self.store.add_unit_to_index(u)
                     added = True
             if added:
                 self.matcher.inittm(self.store)
@@ -216,21 +218,23 @@ class TerminologyModel(BaseTerminologyModel):
         if re.match(r'\(.*\)', suggestion['text']):
             return []
 
-        curr_sources = [u.source for u in self.store.units]
         units = []
 
         for proj in suggestion['projects']:
             # Skip fuzzy matches:
             if proj['flags'] != 0:
                 continue
-            # Skip phrases already found:
-            if proj['orig_phrase'] in curr_sources:
-                continue
+
             # Skip any units containing parenthesis
             if re.match(r'\(.*\)', proj['orig_phrase']):
                 continue
             unit = TranslationUnit(proj['orig_phrase'])
             target = suggestion['text']
+
+            # Skip phrases already found:
+            old_unit = self.store.findunit(proj['orig_phrase'])
+            if old_unit and old_unit.target == target:
+                continue
             # We mostly want to work with lowercase strings, but in German (and
             # some languages with a related writing style), this will probably
             # irritate more often than help, since nouns are always written to

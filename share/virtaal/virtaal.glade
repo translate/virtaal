@@ -1307,6 +1307,7 @@ If you are translating from English to French then French would be your translat
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="response_id">-6</property>
                 <property name="use_stock">True</property>
               </widget>
               <packing>
@@ -1321,6 +1322,7 @@ If you are translating from English to French then French would be your translat
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="response_id">-5</property>
                 <property name="use_stock">True</property>
               </widget>
               <packing>

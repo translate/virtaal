@@ -116,8 +116,6 @@ class FileSelectDialog:
 
         extend_file = self.term_model.config.get('extendfile', '')
         files = self.term_model.config['files']
-        if not isinstance(files, list):
-            files = [files]
         for f in files:
             self.lst_files.append([f, f == extend_file])
 
@@ -159,9 +157,22 @@ class FileSelectDialog:
         if response != gtk.RESPONSE_OK:
             return
 
+        mainview = self.term_model.controller.main_controller.view
         currfiles = [row[self.COL_FILE] for row in self.lst_files]
-        addfiles = [f for f in dlg.get_filenames() if f not in currfiles]
-        self.term_model.config['files'] += addfiles
+        from translate.storage import factory
+        for filename in dlg.get_filenames():
+            if filename in currfiles:
+                continue
+            # Try and open filename as a translation store
+            try:
+                store = factory.getobject(filename)
+                currfiles.append(filename)
+                self.lst_files.append([filename, False])
+            except Exception, exc:
+                message = _('Unable to load %(filename)s:\n\n%(errormsg)s') % {'filename': filename, 'errormsg': str(exc)}
+                mainview.show_error_dialog(title=_('Error opening file'), message=message)
+
+        self.term_model.config['files'] = currfiles
         self.term_model.save_config()
 
     def _on_remove_file_clicked(self, button):
@@ -190,3 +201,6 @@ class FileSelectDialog:
         while itr is not None and self.lst_files.iter_is_valid(itr):
             self.lst_files.set_value(itr, self.COL_EXTEND, self.lst_files.get_value(itr, self.COL_FILE) == toggled_file)
             itr = self.lst_files.iter_next(itr)
+
+        self.term_model.config['extendfile'] = toggled_file
+        self.term_model.save_config()

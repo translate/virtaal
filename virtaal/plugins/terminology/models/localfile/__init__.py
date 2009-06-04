@@ -22,7 +22,7 @@ import logging
 import os
 from translate.search.match import terminologymatcher
 from translate.storage.placeables.terminology import TerminologyPlaceable
-from translate.storage.pypo import pofile
+from translate.storage import factory
 
 #FIXME: The following line will cause this model to not work if plug-ins are loaded from ~/.virtaal/virtaal_plugins (probably)
 from virtaal.plugins.terminology.models.basetermmodel import BaseTerminologyModel
@@ -47,6 +47,7 @@ class TerminologyModel(BaseTerminologyModel):
 
         self.matcher = None
         self.internal_name = internal_name
+        self.stores = []
 
         self.load_config()
         self.load_files()
@@ -69,13 +70,13 @@ class TerminologyModel(BaseTerminologyModel):
         if self.matcher in TerminologyPlaceable.matchers:
             TerminologyPlaceable.matchers.remove(self.matcher)
 
-        stores = []
+        self.stores = []
         for filename in self.config['files']:
             if not filename:
                 continue
             if not os.path.isfile(filename):
                 logging.debug('Not a file: "%s"' % (filename))
                 continue
-            stores.append(pofile(open(filename)))
-        self.matcher = terminologymatcher(stores)
+            self.stores.append(factory.getobject(filename))
+        self.matcher = terminologymatcher(self.stores)
         TerminologyPlaceable.matchers.append(self.matcher)

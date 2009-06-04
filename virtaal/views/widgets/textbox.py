@@ -288,7 +288,7 @@ class TextBox(gtk.TextView):
         if elem is None and offset is None:
             # Clear current selection
             if self.selected_elem is not None:
-                logging.debug('Selected item *was* %s' % (repr(self.selected_elem)))
+                #logging.debug('Selected item *was* %s' % (repr(self.selected_elem)))
                 self.selected_elem.gui_info = None
                 self.add_default_gui_info(self.selected_elem)
                 self.selected_elem = None

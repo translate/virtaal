@@ -260,6 +260,12 @@ class TermAddDialog:
             return
         unit = store.addsourceunit(source)
         unit.target = target
+
+        buff = self.txt_comment.get_buffer()
+        comments = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
+        if comments:
+            unit.addnote(comments)
+
         store.save()
         self.term_model.matcher.extendtm(unit)
         #logging.debug('Added new term: [%s] => [%s], file=%s' % (source, target, store.filename))

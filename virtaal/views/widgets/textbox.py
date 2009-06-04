@@ -282,8 +282,18 @@ class TextBox(gtk.TextView):
 
     @accepts(Self(), [[StringElem, None], [int, None]])
     def select_elem(self, elem=None, offset=None):
-        if (elem is None and offset is None) or (elem is not None and offset is not None):
-            raise ValueError('Exactly one of "elem" or "offset" must be specified.')
+        if elem is not None and offset is not None:
+            raise ValueError('Only one of "elem" or "offset" may be specified.')
+
+        if elem is None and offset is None:
+            # Clear current selection
+            if self.selected_elem is not None:
+                logging.debug('Selected item *was* %s' % (repr(self.selected_elem)))
+                self.selected_elem.gui_info = None
+                self.add_default_gui_info(self.selected_elem)
+                self.selected_elem = None
+            self.selected_elem_index = None
+            return
 
         filtered_elems = [e for e in self.elem.depth_first() if e.__class__ not in self.unselectables]
         if not filtered_elems:

@@ -278,8 +278,8 @@ class TermAddDialog:
                 break
         self.ent_target.set_text(target_text.strip())
 
-        self.lbl_srclang.set_text(_('Source lang — %(langname)s' % {'langname': self.lang_controller.source_lang.name}))
-        self.lbl_tgtlang.set_text(_('Target lang — %(langname)s' % {'langname': self.lang_controller.target_lang.name}))
+        self.lbl_srclang.set_text(_(u'Source term — %(langname)s') % {'langname': self.lang_controller.source_lang.name})
+        self.lbl_tgtlang.set_text(_(u'Target term — %(langname)s') % {'langname': self.lang_controller.target_lang.name})
         self.lbl_filename.set_text(self.term_model.config.get('extendfile', ''))
 
         self.dialog.show_all()

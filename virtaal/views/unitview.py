@@ -574,6 +574,9 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     def _on_key_press_event(self, _widget, event, *_args):
         if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
             self.must_advance = True
+            # Clear selected elements
+            for src in self.sources:
+                src.select_elem(elem=None)
             self.emit('unit-done', self.unit)
             self.editing_done()
             return True

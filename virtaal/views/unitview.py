@@ -174,12 +174,14 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         # undo step
         if new_source != self.unit.source:
             self.controller.main_controller.undo_controller.record_start()
-            textbox.set_text(markup.escape(self.unit.source))
+            textbox.buffer.set_text(markup.escape(self.unit.source))
             self.controller.main_controller.undo_controller.record_stop()
 
         self.controller.main_controller.undo_controller.record_start()
-        textbox.set_text(markup.escape(new_source))
+        textbox.buffer.set_text(markup.escape(new_source))
         self.controller.main_controller.undo_controller.record_stop()
+        # We use textbox.buffer.set_text() above so that the appropriate "delete-range" and "insert-text" signals are emitted;
+        # it's blocked by TextBox.set_text(). This allows undo to work correctly.
 
         # The following 2 lines were copied from focus_text_view() below
         translation_start = self._get_editing_start_pos(textbox.elem)

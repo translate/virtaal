@@ -1181,7 +1181,7 @@ If you are translating from English to French then French would be your translat
   </widget>
   <widget class="GtkDialog" id="TermAddDlg">
     <property name="border_width">5</property>
-    <property name="title" translatable="yes">Add terminology term</property>
+    <property name="title" translatable="yes">Add terminology entry</property>
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
@@ -1209,6 +1209,7 @@ If you are translating from English to French then French would be your translat
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="invisible_char">&#x25CF;</property>
+                <property name="width_chars">45</property>
               </widget>
               <packing>
                 <property name="position">1</property>
@@ -1230,6 +1231,7 @@ If you are translating from English to French then French would be your translat
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="invisible_char">&#x25CF;</property>
+                <property name="width_chars">45</property>
               </widget>
               <packing>
                 <property name="position">3</property>
@@ -1304,10 +1306,10 @@ If you are translating from English to French then French would be your translat
             <child>
               <widget class="GtkButton" id="button2">
                 <property name="label">gtk-cancel</property>
+                <property name="response_id">-6</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="response_id">-6</property>
                 <property name="use_stock">True</property>
               </widget>
               <packing>
@@ -1319,10 +1321,10 @@ If you are translating from English to French then French would be your translat
             <child>
               <widget class="GtkButton" id="button1">
                 <property name="label">gtk-add</property>
+                <property name="response_id">-5</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="response_id">-5</property>
                 <property name="use_stock">True</property>
               </widget>
               <packing>

@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gtk
+import logging
 import pango
 
 from virtaal.views import BaseView
@@ -253,13 +254,17 @@ class TermAddDialog:
 
     # METHODS #
     def add_term_unit(self, source, target):
-        # TODO: Find the correct way to add a new unit of the correct store's type to the terminology matcher.
-        logging.debug('Adding new terminology term with source and target: [%s] | [%s]' % (source, target))
+        store = self.term_model.get_extend_store()
+        if store is None:
+            logging.debug('No terminology store to extend :(')
+            return
+        unit = store.addsourceunit(source)
+        unit.target = target
+        store.save()
+        self.term_model.matcher.extendtm(unit)
+        #logging.debug('Added new term: [%s] => [%s], file=%s' % (source, target, store.filename))
 
-    def run(self, parent=None):
-        if isinstance(parent, gtk.Widget):
-            self.dialog.set_transient_for(parent)
-
+    def reset(self):
         unitview = self.unit_controller.view
 
         source_text = u''
@@ -281,6 +286,12 @@ class TermAddDialog:
         self.lbl_srclang.set_text(_(u'Source term — %(langname)s') % {'langname': self.lang_controller.source_lang.name})
         self.lbl_tgtlang.set_text(_(u'Target term — %(langname)s') % {'langname': self.lang_controller.target_lang.name})
         self.lbl_filename.set_text(self.term_model.config.get('extendfile', ''))
+
+    def run(self, parent=None):
+        self.reset()
+
+        if isinstance(parent, gtk.Widget):
+            self.dialog.set_transient_for(parent)
 
         self.dialog.show_all()
         response = self.dialog.run()

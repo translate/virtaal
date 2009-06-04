@@ -283,6 +283,8 @@ class TermAddDialog:
                 break
         self.ent_target.set_text(target_text.strip())
 
+        self.txt_comment.get_buffer().set_text('')
+
         self.lbl_srclang.set_text(_(u'Source term — %(langname)s') % {'langname': self.lang_controller.source_lang.name})
         self.lbl_tgtlang.set_text(_(u'Target term — %(langname)s') % {'langname': self.lang_controller.target_lang.name})
         self.lbl_filename.set_text(self.term_model.config.get('extendfile', ''))
@@ -294,6 +296,7 @@ class TermAddDialog:
             self.dialog.set_transient_for(parent)
 
         self.dialog.show_all()
+        self.ent_source.grab_focus()
         response = self.dialog.run()
         self.dialog.hide()
 

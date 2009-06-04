@@ -62,6 +62,13 @@ class TerminologyModel(BaseTerminologyModel):
         if self.matcher in TerminologyPlaceable.matchers:
             TerminologyPlaceable.matchers.remove(self.matcher)
 
+    def get_extend_store(self):
+        extendfile = self.config['extendfile']
+        for store in self.stores:
+            if os.path.abspath(getattr(store, 'filename', '')) == os.path.abspath(extendfile):
+                return store
+        return None
+
     def load_config(self):
         super(TerminologyModel, self).load_config()
         self.config['files'] = self.config['files'].split(',')

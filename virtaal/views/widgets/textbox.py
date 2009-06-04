@@ -214,6 +214,9 @@ class TextBox(gtk.TextView):
 
     @accepts(Self(), [StringElem])
     def insert_translation(self, elem):
+        selection = self.buffer.get_selection_bounds()
+        if selection:
+            self.buffer.delete(*selection)
         cursor_pos = self.buffer.props.cursor_position
         widget = elem.gui_info.get_insert_widget()
         if widget:

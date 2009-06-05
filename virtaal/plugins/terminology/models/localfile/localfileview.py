@@ -110,6 +110,7 @@ class FileSelectDialog:
         self.btn_add_file.connect('clicked', self._on_add_file_clicked)
         self.btn_remove_file.connect('clicked', self._on_remove_file_clicked)
         self.btn_open_termfile.connect('clicked', self._on_open_termfile_clicked)
+        self.tvw_termfiles.get_selection().connect('changed', self._on_selection_changed)
 
     def _init_treeview(self):
         self.lst_files = gtk.ListStore(str, bool)
@@ -148,9 +149,14 @@ class FileSelectDialog:
 
 
     # METHODS #
+    def clear_selection(self):
+        self.tvw_termfiles.get_selection().unselect_all()
+
     def run(self, parent=None):
         if isinstance(parent, gtk.Widget):
             self.dialog.set_transient_for(parent)
+
+        self.clear_selection()
 
         self.dialog.show_all()
         self.dialog.run()
@@ -219,6 +225,12 @@ class FileSelectDialog:
             return
         selected_file = model.get_value(itr, self.COL_FILE)
         self.term_model.controller.main_controller.open_file(selected_file)
+
+    def _on_selection_changed(self, treesel):
+        model, itr = treesel.get_selected()
+        enabled = itr is not None
+        self.btn_open_termfile.set_sensitive(enabled)
+        self.btn_remove_file.set_sensitive(enabled)
 
     def _on_toggle(self, renderer, path):
         toggled_file = self.lst_files.get_value(self.lst_files.get_iter(path), self.COL_FILE)

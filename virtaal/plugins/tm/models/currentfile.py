@@ -78,7 +78,7 @@ class TMModel(BaseTMModel):
             self.emit('match-found', query_str, self.cache[query_str])
         else:
             matches = [match.unit2dict(candidate) for candidate in self.matcher.matches(unicode(query_str, "utf-8"))]
-            self.cache[query_str] = filter(lambda m: m['quality'] != u'100', matches)
+            self.cache[query_str] = [m for m in matches if m['quality'] != u'100']
             self.emit('match-found', query_str, self.cache[query_str])
 
     def _on_unit_modified(self, widget, new_unit):

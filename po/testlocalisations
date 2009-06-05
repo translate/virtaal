@@ -8,34 +8,38 @@ lang=${lang:-de_DE}
 export LANGUAGE=../../../../../../../../$(pwd)/mo/$lang:$lang
 echo "LANGUAGE=$LANGUAGE"
 
+litedir=lite
+
 if [ $lang == "de_DE" ]; then
+	mkdir -p $lang
 	./intltool-update --pot --gettext-package=$package
-	podebug --rewrite=xxx -f "" --progress=none $potfile de_DE.po
-	podebug --rewrite=xxx -f "" --ignore=gtk --progress=none gtk20-lite.pot de_DE-lite.po
-	podebug --rewrite=xxx -f "" --progress=none gtk-spell.pot de_DE-spell.po
+	podebug --rewrite=xxx -f "" --progress=none $potfile $lang.po
+	podebug --rewrite=xxx -f "" --ignore=gtk --progress=none $litedir/gtk20.pot $lang/gtk20.po
+	podebug --rewrite=xxx -f "" --progress=none $litedir/gtkspell.pot $lang/gtkspell.po
 	# Prepare 639 by copying French (which is always 100%), turning it into English
 	# and then making it xxx
-	msgunfmt /usr/share/locale/fr/LC_MESSAGES/iso_639.mo > fr-639-tmp.po
-	podebug --rewrite=en -f "" --progress=none fr-639-tmp.po en-639-tmp.po
-	podebug --rewrite=xxx -f "" --progress=none en-639-tmp.po de_DE-639.po
-	rm en-639-tmp.po fr-639-tmp.po
+	msgunfmt /usr/share/locale/fr/LC_MESSAGES/iso_639.mo > $lang/iso_639.fr.po
+	podebug --rewrite=en -f "" --progress=none $lang/iso_639.fr.po $lang/iso_639.en.po
+	podebug --rewrite=xxx -f "" --progress=none $lang/iso_639.en.po $lang/iso_639.po
+	rm $lang/iso_639.*.po
 	# Do the same for 3166 as 639
-	msgunfmt /usr/share/locale/fr/LC_MESSAGES/iso_3166.mo > fr-3166-tmp.po
-	podebug --rewrite=en -f "" --progress=none fr-3166-tmp.po en-3166-tmp.po
-	podebug --rewrite=xxx -f "" --progress=none en-3166-tmp.po de_DE-3166.po
-	rm en-3166-tmp.po fr-3166-tmp.po
+	msgunfmt /usr/share/locale/fr/LC_MESSAGES/iso_3166.mo > $lang/iso_3166.fr.po
+	podebug --rewrite=en -f "" --progress=none $lang/iso_3166.fr.po $lang/iso_3166.en.po
+	podebug --rewrite=xxx -f "" --progress=none $lang/iso_3166.en.po $lang/iso_3166.po
+	rm $lang/iso_3166.*.po
 fi
 for po in $(ls *.po | egrep -v lite)
 do
-	modir=mo/$(basename $po .po)/LC_MESSAGES
-	gtklite=$(basename $po .po)-lite.po
-	gtkreal=/usr/share/locale/$(basename $po .po)/LC_MESSAGES/gtk20.mo
-	gtkspell=$(basename $po .po)-spell.po
-	gtkspellreal=/usr/share/locale/$(basename $po .po)/LC_MESSAGES/gtkspell.mo
-	iso639lite=$(basename $po .po)-639.po
-	iso639=/usr/share/locale/$(basename $po .po)/LC_MESSAGES/iso_639.mo
-	iso3166lite=$(basename $po .po)-3166.po
-	iso3166=/usr/share/locale/$(basename $po .po)/LC_MESSAGES/iso_3166.mo
+	language=$(basename $po .po)
+	modir=mo/$language/LC_MESSAGES
+	gtklite=$language/gtk20.po
+	gtkreal=/usr/share/locale/$languagge/LC_MESSAGES/gtk20.mo
+	gtkspell=$language/gtkspell.po
+	gtkspellreal=/usr/share/locale/$language/LC_MESSAGES/gtkspell.mo
+	iso639lite=$language/iso_639.po
+	iso639=/usr/share/locale/$language/LC_MESSAGES/iso_639.mo
+	iso3166lite=$language/iso_3166.po
+	iso3166=/usr/share/locale/$language/LC_MESSAGES/iso_3166.mo
 	mkdir -p $modir
 	msgfmt -o $modir/virtaal.mo $po
         if [ -f $gtklite ]; then
@@ -62,5 +66,5 @@ done
 
 # This assumes that the following executable is in your PATH
 virtaal
-rm -f $potfile de_DE*
-rm -rf mo
+rm -f $potfile
+rm -rf mo de_DE

@@ -436,10 +436,11 @@ class TextBox(gtk.TextView):
             return
 
         ins_text = data.forceunicode(ins_text)
-        if self.elem.insert(iter.get_offset(), ins_text):
+        offset = self.elem.gui_info.gui_to_tree_index(iter.get_offset())
+        if self.elem.insert(offset, ins_text):
             self.elem.prune()
 
-            #logging.debug('text-inserted: %s@%d of %s' % (ins_text, iter.get_offset(), repr(self.elem)))
+            #logging.debug('text-inserted: %s@%d of %s' % (ins_text, offset, repr(self.elem)))
             self.__delayed_refresh(self.buffer.props.cursor_position+len(ins_text))
             self.emit('text-inserted', ins_text, iter.get_offset(), self.elem)
         else:

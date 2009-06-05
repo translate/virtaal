@@ -65,7 +65,7 @@ class StringElemGUI(object):
 
     def create_repr_widgets(self):
         """Creates the two widgets that are rendered before and after the
-            contained string."""
+            contained string. The widgets should be placed in C{self.widgets}."""
         return None
 
     def copy(self):
@@ -211,6 +211,7 @@ class UrlGUI(StringElemGUI):
         tag.props.underline = pango.UNDERLINE_SINGLE
         return [(tag, None, None)]
 
+
 class GPlaceableGUI(StringElemGUI):
     fg = '#f7f7f7'
     bg = 'darkred'
@@ -229,6 +230,7 @@ class GPlaceableGUI(StringElemGUI):
             (metatag, 0, -1),
             (ttag, prefixlen, -2),
         ]
+
 
 class XPlaceableGUI(StringElemGUI):
     fg = '#ffffff'

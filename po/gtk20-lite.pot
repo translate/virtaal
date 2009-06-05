@@ -370,12 +370,21 @@ msgstr ""
 msgid "_Location:"
 msgstr ""
 
+#. File dialog - Search - Label
+#. Appears when you select Search from Places
+msgid "_Search:"
+msgstr ""
+
 #. File dialog - Location - Open/Close button - Tooltip
 msgid "Type a file name"
 msgstr ""
 
 #. File dialog - Places - Grid label - Places
 msgid "_Places"
+msgstr ""
+
+#. File dialog - Places - Entry - Search
+msgid "Search"
 msgstr ""
 
 #. File dialog - Places - Entry - Recently used

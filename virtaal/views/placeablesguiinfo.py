@@ -169,6 +169,7 @@ class StringElemGUI(object):
         if len(self.widgets) >= 1 and self.widgets[0]:
             anchor = buffer.create_child_anchor(buffer.get_iter_at_offset(offset))
             self.textbox.add_child_at_anchor(self.widgets[0], anchor)
+            self.widgets[0].show()
             offset += 1
 
         for child in self.elem.sub:
@@ -182,6 +183,7 @@ class StringElemGUI(object):
         if len(self.widgets) >= 2:
             anchor = buffer.create_child_anchor(buffer.get_iter_at_offset(offset))
             self.textbox.add_child_at_anchor(self.widgets[1], anchor)
+            self.widgets[1].show()
             offset += 1
 
         return offset

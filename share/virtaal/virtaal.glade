@@ -1131,6 +1131,7 @@ If you are translating from English to French then French would be your translat
               <packing>
                 <property name="top_attach">1</property>
                 <property name="bottom_attach">2</property>
+                <property name="y_options"></property>
               </packing>
             </child>
             <child>

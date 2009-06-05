@@ -101,7 +101,7 @@ class FileSelectDialog:
         self._init_treeview()
 
     def _get_widgets(self):
-        widget_names = ('btn_add_file', 'btn_remove_file', 'tvw_termfiles')
+        widget_names = ('btn_add_file', 'btn_remove_file', 'btn_open_termfile', 'tvw_termfiles')
 
         for name in widget_names:
             setattr(self, name, self.gui.get_widget(name))
@@ -109,6 +109,7 @@ class FileSelectDialog:
         self.dialog = self.gui.get_widget('TermFilesDlg')
         self.btn_add_file.connect('clicked', self._on_add_file_clicked)
         self.btn_remove_file.connect('clicked', self._on_remove_file_clicked)
+        self.btn_open_termfile.connect('clicked', self._on_open_termfile_clicked)
 
     def _init_treeview(self):
         self.lst_files = gtk.ListStore(str, bool)
@@ -210,6 +211,14 @@ class FileSelectDialog:
         self.term_model.save_config()
         self.term_model.load_files() # FIXME: This could be optimized to only remove the selected file from the terminology matcher.
         model.remove(selected)
+
+    def _on_open_termfile_clicked(self, button):
+        selection = self.tvw_termfiles.get_selection()
+        model, itr = selection.get_selected()
+        if itr is None:
+            return
+        selected_file = model.get_value(itr, self.COL_FILE)
+        self.term_model.controller.main_controller.open_file(selected_file)
 
     def _on_toggle(self, renderer, path):
         toggled_file = self.lst_files.get_value(self.lst_files.get_iter(path), self.COL_FILE)

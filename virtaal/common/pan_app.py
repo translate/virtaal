@@ -63,7 +63,7 @@ def name():
     return pwd.getpwnam(getpass.getuser())[4].split(",")[0]
 
 def osx_lang():
-    """Do some non-posix things to get the language no OSX."""
+    """Do some non-posix things to get the language on OSX."""
     import CoreFoundation
     return CoreFoundation.CFLocaleCopyPreferredLanguages()[0]
 
@@ -93,12 +93,9 @@ class Settings:
     }
     placeable_state = {
         "altattrplaceable": "disabled",
-        "punctuationplaceable": "disabled",
     }
     plugin_state =  {
-        "helloworld": "disabled",
-        "ipython_console": "disabled",
-        "python_console": "disabled",
+        "_helloworld": "disabled",
     }
     undo = {
         "depth": 10000,

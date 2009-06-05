@@ -152,7 +152,17 @@ msgstr ""
 msgid "_Open"
 msgstr ""
 
+#. File->Open
+msgctxt "Stock label"
+msgid "_Open"
+msgstr ""
+
 #. File->Save
+msgid "_Save"
+msgstr ""
+
+#. File->Save
+msgctxt "Stock label"
 msgid "_Save"
 msgstr ""
 
@@ -160,7 +170,17 @@ msgstr ""
 msgid "Save _As"
 msgstr ""
 
+#. File->Save As
+msgctxt "Stock label"
+msgid "Save _As"
+msgstr ""
+
 #. File->Revert
+msgid "_Revert"
+msgstr ""
+
+#. File->Revert
+msgctxt "Stock label"
 msgid "_Revert"
 msgstr ""
 
@@ -220,11 +240,26 @@ msgstr ""
 msgid "_Quit"
 msgstr ""
 
+#. File->Quit
+msgctxt "Stock label"
+msgid "_Quit"
+msgstr ""
+
 #. Edit->Undo
 msgid "_Undo"
 msgstr ""
 
+#. Edit->Undo
+msgctxt "Stock label"
+msgid "_Undo"
+msgstr ""
+
 #. Edit->Preferences
+msgid "_Preferences"
+msgstr ""
+
+#. Edit->Preferences
+msgctxt "Stock label"
 msgid "_Preferences"
 msgstr ""
 
@@ -234,7 +269,7 @@ msgstr ""
 
 #. Navigation->Up
 #. GTK HEAD (allows future proofing)
-msgctxt "Navigation"
+msgctxt "Stock label, navigation"
 msgid "_Up"
 msgstr ""
 
@@ -244,11 +279,16 @@ msgstr ""
 
 #. Navigation->Down
 #. GTK HEAD (allows future proofing)
-msgctxt "Navigation"
+msgctxt "Stock label, navigation"
 msgid "_Down"
 msgstr ""
 
 #. Help->About
+msgid "_About"
+msgstr ""
+
+#. Help->About
+msgctxt "Stock label"
 msgid "_About"
 msgstr ""
 
@@ -265,6 +305,11 @@ msgid "_License"
 msgstr ""
 
 #. About Dialog - Close button
+msgid "_Close"
+msgstr ""
+
+#. About Dialog - Close button
+msgctxt "Stock label"
 msgid "_Close"
 msgstr ""
 
@@ -289,6 +334,11 @@ msgid "License"
 msgstr ""
 
 #. File dialog - Cancel button
+msgid "_Cancel"
+msgstr ""
+
+#. File dialog - Cancel button
+msgctxt "Stock label"
 msgid "_Cancel"
 msgstr ""
 
@@ -404,7 +454,17 @@ msgstr ""
 msgid "Cu_t"
 msgstr ""
 
+#. Right Click (on empty) -> Cut
+msgctxt "Stock label"
+msgid "Cu_t"
+msgstr ""
+
 #. Right Click (on empty) -> Copy
+msgid "_Copy"
+msgstr ""
+
+#. Right Click (on empty) -> Copy
+msgctxt "Stock label"
 msgid "_Copy"
 msgstr ""
 
@@ -412,7 +472,17 @@ msgstr ""
 msgid "_Paste"
 msgstr ""
 
+#. Right Click (on empty) -> Paste
+msgctxt "Stock label"
+msgid "_Paste"
+msgstr ""
+
 #. Right Click (on empty) -> Delete
+msgid "_Delete"
+msgstr ""
+
+#. Right Click (on empty) -> Delete
+msgctxt "Stock label"
 msgid "_Delete"
 msgstr ""
 
@@ -420,7 +490,17 @@ msgstr ""
 msgid "Select _All"
 msgstr ""
 
+#. Right Click (on empty) -> Select All
+msgctxt "Stock label"
+msgid "Select _All"
+msgstr ""
+
 #. Revert Confirmation Dialog -> Yes
+msgid "_Yes"
+msgstr ""
+
+#. Revert Confirmation Dialog -> Yes
+msgctxt "Stock label"
 msgid "_Yes"
 msgstr ""
 
@@ -428,6 +508,16 @@ msgstr ""
 msgid "_No"
 msgstr ""
 
+#. Revert Confirmation Dialog -> No
+msgctxt "Stock label"
+msgid "_No"
+msgstr ""
+
 #. Error Dialog -> OK
+msgid "_OK"
+msgstr ""
+
+#. Error Dialog -> OK
+msgctxt "Stock label"
 msgid "_OK"
 msgstr ""

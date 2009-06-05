@@ -199,10 +199,12 @@ class PluginController(BaseController):
                 fullpath = os.path.join(dir, name)
                 if os.path.isdir(fullpath):
                     # XXX: The plug-in system assumes that a plug-in in a directory makes the Plugin class accessible via it's __init__.py
-                    plugin_names.append(name)
+                    if pan_app.DEBUG or name[0] != '_':
+                        plugin_names.append(name)
                 elif os.path.isfile(fullpath) and not name.startswith('__init__.py'):
                     plugname = '.'.join(name.split(os.extsep)[:-1]) # Effectively removes extension, preserving other .'s in the name
-                    plugin_names.append(plugname)
+                    if pan_app.DEBUG or plugname[0] != '_':
+                        plugin_names.append(plugname)
 
         plugin_names = list(set(plugin_names))
         #logging.debug('Found plugins: %s' % (', '.join(plugin_names)))

@@ -237,16 +237,14 @@ class TextBox(gtk.TextView):
                 widget.inserted(cursor_iter, anchor)
         else:
             translation = elem.translate()
-            self.add_default_gui_info(translation)
             if isinstance(translation, StringElem):
+                self.add_default_gui_info(translation)
                 insert_offset = self.elem.gui_info.gui_to_tree_index(cursor_pos)
                 self.elem.insert(insert_offset, translation)
                 self.elem.prune()
-                self.emit('text-inserted', translation, insert_offset, self.elem)
-
-                if not hasattr(translation, 'gui_info'):
-                    translation.gui_info = self.placeables_controller.get_gui_info(translation)(elem=translation, textbox=self)
                 cursor_pos += translation.gui_info.length()
+
+                self.emit('text-inserted', translation, insert_offset, self.elem)
             else:
                 self.buffer.insert_at_cursor(translation)
                 cursor_pos += len(translation)

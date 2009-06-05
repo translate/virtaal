@@ -21,6 +21,8 @@
 import gtk
 import logging
 import pango
+from locale import strcoll
+from translate.storage import factory
 
 from virtaal.views import BaseView
 
@@ -99,6 +101,7 @@ class FileSelectDialog:
         )
         self._get_widgets()
         self._init_treeview()
+        self._init_add_chooser()
 
     def _get_widgets(self):
         widget_names = ('btn_add_file', 'btn_remove_file', 'btn_open_termfile', 'tvw_termfiles')
@@ -147,6 +150,49 @@ class FileSelectDialog:
                 self.term_model.config['extendfile'] = self.lst_files.get_value(itr, self.COL_FILE)
                 self.term_model.save_config()
 
+    def _init_add_chooser(self):
+        # The following code was mostly copied from virtaal.views.MainView._create_dialogs()
+        dlg = gtk.FileChooserDialog(
+            _('Select file(s) to add...'),
+            self.controller.main_controller.view.main_window,
+            gtk.FILE_CHOOSER_ACTION_OPEN,
+            (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK)
+        )
+        dlg.set_default_response(gtk.RESPONSE_OK)
+        all_supported_filter = gtk.FileFilter()
+        all_supported_filter.set_name(_("All Supported Files"))
+        dlg.add_filter(all_supported_filter)
+        supported_files_dict = dict([ (_(name), (extension, mimetype)) for name, extension, mimetype in factory.supported_files() ])
+        supported_file_names = supported_files_dict.keys()
+        supported_file_names.sort(cmp=strcoll)
+        for name in supported_file_names:
+            extensions, mimetypes = supported_files_dict[name]
+            #XXX: we can't open generic .csv formats, so listing it is probably
+            # more harmful than good.
+            if "csv" in extensions:
+                continue
+            new_filter = gtk.FileFilter()
+            new_filter.set_name(name)
+            if extensions:
+                for extension in extensions:
+                    new_filter.add_pattern("*." + extension)
+                    all_supported_filter.add_pattern("*." + extension)
+                    for compress_extension in factory.decompressclass.keys():
+                        new_filter.add_pattern("*.%s.%s" % (extension, compress_extension))
+                        all_supported_filter.add_pattern("*.%s.%s" % (extension, compress_extension))
+            if mimetypes:
+                for mimetype in mimetypes:
+                    new_filter.add_mime_type(mimetype)
+                    all_supported_filter.add_mime_type(mimetype)
+            dlg.add_filter(new_filter)
+        all_filter = gtk.FileFilter()
+        all_filter.set_name(_("All Files"))
+        all_filter.add_pattern("*")
+        dlg.add_filter(all_filter)
+        dlg.set_select_multiple(True)
+
+        self.add_chooser = dlg
+
 
     # METHODS #
     def clear_selection(self):
@@ -165,16 +211,9 @@ class FileSelectDialog:
 
     # EVENT HANDLERS #
     def _on_add_file_clicked(self, button):
-        dlg = gtk.FileChooserDialog(
-            _('Select file(s) to add...'),
-            self.controller.main_controller.view.main_window,
-            gtk.FILE_CHOOSER_ACTION_OPEN,
-            (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK)
-        )
-        dlg.set_select_multiple(True)
-        dlg.show_all()
-        response = dlg.run()
-        dlg.hide()
+        self.add_chooser.show_all()
+        response = self.add_chooser.run()
+        self.add_chooser.hide()
 
         if response != gtk.RESPONSE_OK:
             return
@@ -182,7 +221,7 @@ class FileSelectDialog:
         mainview = self.term_model.controller.main_controller.view
         currfiles = [row[self.COL_FILE] for row in self.lst_files]
         from translate.storage import factory
-        for filename in dlg.get_filenames():
+        for filename in self.add_chooser.get_filenames():
             if filename in currfiles:
                 continue
             # Try and open filename as a translation store

@@ -80,7 +80,7 @@ class StringElemGUI(object):
             This method is used in Virtaal as a replacement for
             C{StringElem.elem_at_offset}, because this method takes the rendered
             widgets into account."""
-        if offset < 0 or offset >= self.length():
+        if offset < 0 or offset > self.length():
             return None
 
         pre_len = (self.widgets and self.widgets[0]) and 1 or 0

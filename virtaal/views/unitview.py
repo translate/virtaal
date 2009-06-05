@@ -194,8 +194,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         self.focus_text_view(self.targets[0])
 
     def do_editing_done(self, *_args):
-        #logging.debug('emit("unit-done", self.unit=%s)' % (repr(self.unit)))
-        self.emit('unit-done', self.unit)
+        pass
 
     def focus_text_view(self, textbox):
         textbox.grab_focus()
@@ -210,11 +209,15 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     def load_unit(self, unit):
         """Load a GUI (C{gtk.CellEditable}) for the given unit."""
-        if self.unit is not None:
-            for src in self.sources:
-                src.select_elem(elem=None)
         if unit is self.unit and unit is not None:
             return
+
+        if self.unit is not None:
+            logging.debug('emit("unit-done", self.unit=%s)' % (self.unit))
+            self.emit('unit-done', self.unit)
+            for src in self.sources:
+                src.select_elem(elem=None)
+
         self.unit = unit
         self.disable_signals(['modified', 'insert-text', 'delete-text'])
         self._update_editor_gui()

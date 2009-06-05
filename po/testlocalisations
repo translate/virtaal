@@ -67,4 +67,4 @@ done
 # This assumes that the following executable is in your PATH
 virtaal
 rm -f $potfile
-rm -rf mo de_DE
+rm -rf mo de_DE*

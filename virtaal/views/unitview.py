@@ -213,7 +213,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             return
 
         if self.unit is not None:
-            logging.debug('emit("unit-done", self.unit=%s)' % (self.unit))
+            #logging.debug('emit("unit-done", self.unit=%s)' % (self.unit))
             self.emit('unit-done', self.unit)
             for src in self.sources:
                 src.select_elem(elem=None)

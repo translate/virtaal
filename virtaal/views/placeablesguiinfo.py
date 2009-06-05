@@ -83,10 +83,14 @@ class StringElemGUI(object):
         if offset < 0 or offset >= self.length():
             return None
 
+        pre_len = (self.widgets and self.widgets[0]) and 1 or 0
+
+        # First check if offset doesn't point to a widget that does not belong to self.elem
+        if self.textbox.buffer.get_iter_at_offset(offset).get_child_anchor() is not None and pre_len == 0:
+            return None
+
         if self.elem.isleaf():
             return self.elem
-
-        pre_len = (self.widgets and self.widgets[0]) and 1 or 0
 
         childlen = 0
         for child in self.elem.sub:

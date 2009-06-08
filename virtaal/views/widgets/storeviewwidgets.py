@@ -536,8 +536,9 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
         return layout
 
     def compute_cell_height(self, widget, width):
-        srclang = self.view.controller.main_controller.lang_controller.source_lang.code
-        tgtlang = self.view.controller.main_controller.lang_controller.target_lang.code
+        lang_controller = self.view.controller.main_controller.lang_controller
+        srclang = lang_controller.source_lang.code
+        tgtlang = lang_controller.target_lang.code
         self.source_layout = self._get_pango_layout(widget, self.unit.source, width / 2,
                 rendering.get_source_font_description())
         self.source_layout.get_context().set_language(rendering.get_language(srclang))

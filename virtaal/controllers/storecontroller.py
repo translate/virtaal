@@ -89,6 +89,10 @@ class StoreController(BaseController):
         """Select the specified unit and scroll to it.
             Note that, because we change units via the cursor, the unit to
             select must be valid according to the cursor."""
+        if self.cursor.deref() == unit and not force:
+            # Unit is already selected; no need to do more work
+            return
+
         i = 0
         for storeunit in self.get_store().get_units():
             if storeunit == unit:

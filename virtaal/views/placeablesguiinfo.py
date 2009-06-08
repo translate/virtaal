@@ -86,8 +86,20 @@ class StringElemGUI(object):
         pre_len = (self.widgets and self.widgets[0]) and 1 or 0
 
         # First check if offset doesn't point to a widget that does not belong to self.elem
-        if self.textbox.buffer.get_iter_at_offset(offset).get_child_anchor() is not None and pre_len == 0:
-            return None
+        anchor = self.textbox.buffer.get_iter_at_offset(offset).get_child_anchor()
+        if anchor is not None:
+            widget = None
+            try:
+                widget = anchor.get_widgets()[0]
+            except IndexError:
+                pass
+
+            if widget in self.widgets:
+                return self.elem
+            if self.elem.isleaf() or not isinstance(self.elem.sub[0], StringElem):
+                return None
+            if hasattr(self.elem.sub[0], 'gui_info'):
+                return self.elem.sub[0].gui_info.elem_at_offset(offset)
 
         if self.elem.isleaf():
             return self.elem

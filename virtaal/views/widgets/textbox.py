@@ -424,7 +424,10 @@ class TextBox(gtk.TextView):
 
         cursor_pos = self.buffer.props.cursor_position
 
-        deleted, parent = self.elem.delete_range(start_iter.get_offset(), end_iter.get_offset())
+        start_tree_offset = self.elem.gui_info.gui_to_tree_index(start_iter.get_offset())
+        end_tree_offset = self.elem.gui_info.gui_to_tree_index(end_iter.get_offset())
+        deleted, parent = self.elem.delete_range(start_tree_offset, end_tree_offset)
+
         self.emit('text-deleted', start_iter.get_offset(), end_iter.get_offset(), deleted, parent, cursor_pos, self.elem)
         self.__delayed_refresh(start_iter.get_offset())
         return True

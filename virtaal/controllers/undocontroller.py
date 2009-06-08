@@ -135,6 +135,9 @@ class UndoController(BaseController):
     def _perform_undo(self, undo_info):
         self._select_unit(undo_info['unit'])
 
+        #if 'desc' in undo_info:
+        #    logging.debug('Description: %s' % (undo_info['desc']))
+
         self._disable_unit_signals()
         undo_info['action'](undo_info['unit'])
         self._enable_unit_signals()

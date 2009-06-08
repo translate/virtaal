@@ -411,7 +411,7 @@ class TextBox(gtk.TextView):
                     # Delete the first character of a non-editable placeable. This is most likely because the
                     # user pressed delete with the cursor before the placeable.
                     end_iter.set_offset(start_elem_offset + start_elem_len)
-                if start_elem_offset + start_elem_len == end_offset:
+                elif start_elem_offset + start_elem_len == end_offset:
                     # Backspace was pressed with the cursor positioned right after the placeable.
                     start_iter.set_offset(start_elem_offset)
             elif start_elem_offset + start_elem_len <= end_elem_offset:

@@ -215,6 +215,14 @@ class PhGUI(StringElemGUI):
     fg = 'darkred'
     bg = '#f7f7f7'
 
+
+class NewlineGUI(StringElemGUI):
+    def create_repr_widgets(self):
+        lbl = gtk.Label('¶')
+        lbl.modify_fg(gtk.STATE_NORMAL, gtk.gdk.Color('grey'))
+        self.widgets.append(lbl)
+
+
 class UrlGUI(StringElemGUI):
     fg = '#0000ff'
     bg = '#ffffff'
@@ -253,6 +261,7 @@ class XPlaceableGUI(StringElemGUI):
 
 
 element_gui_map = [
+    (general.NewlinePlaceable, NewlineGUI),
     (general.UrlPlaceable, UrlGUI),
     (general.EmailPlaceable, UrlGUI),
     (base.Ph, PhGUI),

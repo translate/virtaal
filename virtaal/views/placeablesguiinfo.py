@@ -75,31 +75,32 @@ class StringElemGUI(object):
             cursor_allowed=self.cursor_allowed
         )
 
-    def elem_at_offset(self, offset):
+    def elem_at_offset(self, offset, child_offset=0):
         """Find the C{StringElem} at the given offset.
             This method is used in Virtaal as a replacement for
             C{StringElem.elem_at_offset}, because this method takes the rendered
             widgets into account."""
-        if offset < 0 or offset > self.length():
+        if offset < 0 or offset >= self.length():
             return None
 
         pre_len = (self.widgets and self.widgets[0]) and 1 or 0
 
         # First check if offset doesn't point to a widget that does not belong to self.elem
-        anchor = self.textbox.buffer.get_iter_at_offset(offset).get_child_anchor()
-        if anchor is not None:
-            widget = None
-            try:
-                widget = anchor.get_widgets()[0]
-            except IndexError:
-                pass
+        if offset in (0, self.length()-1):
+            anchor = self.textbox.buffer.get_iter_at_offset(child_offset+offset).get_child_anchor()
+            if anchor is not None:
+                widget = anchor.get_widgets()
 
-            if widget in self.widgets:
-                return self.elem
-            if self.elem.isleaf() or not isinstance(self.elem.sub[0], StringElem):
-                return None
-            if hasattr(self.elem.sub[0], 'gui_info'):
-                return self.elem.sub[0].gui_info.elem_at_offset(offset)
+                if len(widget) > 0:
+                    widget = widget[0]
+
+                    if widget is not None and [w for w in self.widgets if w is widget]:
+                        return self.elem
+                    if self.elem.isleaf():
+                        # If there's a widget at {offset}, but it does not belong to this widget or
+                        # any of its children (it's a leaf, so no StringElem children), the widget
+                        # can't be part of the sub-tree with {self.elem} at the root.
+                        return None
 
         if self.elem.isleaf():
             return self.elem
@@ -111,14 +112,19 @@ class StringElemGUI(object):
                     gui_info_class = self.textbox.placeables_controller.get_gui_info(child)
                     child.gui_info = gui_info_class(elem=child, textbox=self.textbox)
 
-                elem = child.gui_info.elem_at_offset(offset - (pre_len+childlen))
-                if elem:
-                    return elem
+                try:
+                    child_offset = pre_len + childlen
+                    elem = child.gui_info.elem_at_offset(offset - child_offset, child_offset=child_offset)
+                    if elem:
+                        return elem
+                except AttributeError:
+                    pass
                 childlen += child.gui_info.length()
             else:
                 if offset <= len(child):
                     return self.elem
                 childlen += len(child)
+
         return None
 
     def get_insert_widget(self):

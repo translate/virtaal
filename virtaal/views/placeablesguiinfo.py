@@ -96,7 +96,8 @@ class StringElemGUI(object):
         for child in self.elem.sub:
             if isinstance(child, StringElem):
                 if not hasattr(child, 'gui_info'):
-                    child.gui_info = self.textbox.placeables_controller.get_gui_info(child)(elem=child, textbox=self.textbox)
+                    gui_info_class = self.textbox.placeables_controller.get_gui_info(child)
+                    child.gui_info = gui_info_class(elem=child, textbox=self.textbox)
 
                 elem = child.gui_info.elem_at_offset(offset - (pre_len+childlen))
                 if elem:

@@ -209,8 +209,9 @@ class UndoController(BaseController):
         #logging.debug('_on_unit_insert_text(ins_text="%s", offset=%d, elem=%s, target_n=%d)' % (ins_text, offset, repr(elem), target_num))
 
         def undo_action(unit):
-            #logging.debug('(undo) %s.delete_range(%d, %d)' % (repr(elem), offset, offset+len(ins_text)))
-            elem.delete_range(offset, offset+len(ins_text))
+            tree_offset = elem.gui_info.gui_to_tree_index(offset)
+            #logging.debug('(undo) %s.delete_range(%d, %d)' % (repr(elem), tree_offset, tree_offset+len(ins_text)))
+            elem.delete_range(tree_offset, tree_offset+len(ins_text))
             elem.prune()
 
         desc = 'ins_text="%s", offset=%d, elem=%s' % (ins_text, offset, repr(elem))

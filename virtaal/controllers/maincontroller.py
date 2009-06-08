@@ -43,6 +43,13 @@ class MainController(BaseController):
         self.store_controller = None # This is set by StoreController itself when it is created
         self._force_saveas = False
 
+        self._lang_controller = None
+        self._mode_controller = None
+        self._placeables_controller = None
+        self._plugin_controller = None
+        self._store_controller = None
+        self._undo_controller = None
+        self._unit_controller = None
         self.view = MainView(self)
 
     # ACCESSORS #
@@ -92,49 +99,49 @@ class MainController(BaseController):
         return self._force_saveas
 
     def _get_lang_controller(self):
-        return getattr(self, '_lang_controller', None)
+        return self._lang_controller
     def _set_lang_controller(self, value):
         self._lang_controller = value
         self.emit('controller-registered', self._lang_controller)
     lang_controller = property(_get_lang_controller, _set_lang_controller)
 
     def _get_mode_controller(self):
-        return getattr(self, '_mode_controller', None)
+        return self._mode_controller
     def _set_mode_controller(self, value):
         self._mode_controller = value
         self.emit('controller-registered', self._mode_controller)
     mode_controller = property(_get_mode_controller, _set_mode_controller)
 
     def _get_placeables_controller(self):
-        return getattr(self, '_placeables_controller', None)
+        return self._placeables_controller
     def _set_placeables_controller(self, value):
         self._placeables_controller = value
         self.emit('controller-registered', self._placeables_controller)
     placeables_controller = property(_get_placeables_controller, _set_placeables_controller)
 
     def _get_plugin_controller(self):
-        return getattr(self, '_plugin_controller', None)
+        return self._plugin_controller
     def _set_plugin_controller(self, value):
         self._plugin_controller = value
         self.emit('controller-registered', self._plugin_controller)
     plugin_controller = property(_get_plugin_controller, _set_plugin_controller)
 
     def _get_store_controller(self):
-        return getattr(self, '_store_controller', None)
+        return self._store_controller
     def _set_store_controller(self, value):
         self._store_controller = value
         self.emit('controller-registered', self._store_controller)
     store_controller = property(_get_store_controller, _set_store_controller)
 
     def _get_undo_controller(self):
-        return getattr(self, '_undo_controller', None)
+        return self._undo_controller
     def _set_undo_controller(self, value):
         self._undo_controller = value
         self.emit('controller-registered', self._undo_controller)
     undo_controller = property(_get_undo_controller, _set_undo_controller)
 
     def _get_unit_controller(self):
-        return getattr(self, '_unit_controller', None)
+        return self._unit_controller
     def _set_unit_controller(self, value):
         self._unit_controller = value
         self.emit('controller-registered', self._unit_controller)

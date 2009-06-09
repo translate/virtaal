@@ -82,28 +82,12 @@ class StringElemGUI(object):
             This method is used in Virtaal as a replacement for
             C{StringElem.elem_at_offset}, because this method takes the rendered
             widgets into account."""
-        if offset < 0 or offset > self.length():
+        if offset < 0 or offset >= self.length():
             return None
 
         pre_len = (self.widgets and self.widgets[0]) and 1 or 0
 
         # First check if offset doesn't point to a widget that does not belong to self.elem
-<<<<<<< HEAD:virtaal/virtaal/views/placeablesguiinfo.py
-        anchor = self.textbox.buffer.get_iter_at_offset(offset).get_child_anchor()
-        if anchor is not None:
-            widget = None
-            try:
-                widget = anchor.get_widgets()[0]
-            except IndexError:
-                pass
-
-            if widget in self.widgets:
-                return self.elem
-            if self.elem.isleaf() or not isinstance(self.elem.sub[0], StringElem):
-                return None
-            if hasattr(self.elem.sub[0], 'gui_info'):
-                return self.elem.sub[0].gui_info.elem_at_offset(offset)
-=======
         if offset in (0, self.length()-1):
             anchor = self.textbox.buffer.get_iter_at_offset(child_offset+offset).get_child_anchor()
             if anchor is not None:
@@ -119,7 +103,6 @@ class StringElemGUI(object):
                         # any of its children (it's a leaf, so no StringElem children), the widget
                         # can't be part of the sub-tree with {self.elem} at the root.
                         return None
->>>>>>> 5ac342bc5cd963b98b9907388daefebd97ab26f6:virtaal/virtaal/views/placeablesguiinfo.py
 
         if self.elem.isleaf():
             return self.elem
@@ -131,11 +114,6 @@ class StringElemGUI(object):
                     gui_info_class = self.textbox.placeables_controller.get_gui_info(child)
                     child.gui_info = gui_info_class(elem=child, textbox=self.textbox)
 
-<<<<<<< HEAD:virtaal/virtaal/views/placeablesguiinfo.py
-                elem = child.gui_info.elem_at_offset(offset - (pre_len+childlen))
-                if elem:
-                    return elem
-=======
                 try:
                     child_offset = pre_len + childlen
                     elem = child.gui_info.elem_at_offset(offset - child_offset, child_offset=child_offset)
@@ -143,7 +121,6 @@ class StringElemGUI(object):
                         return elem
                 except AttributeError:
                     pass
->>>>>>> 5ac342bc5cd963b98b9907388daefebd97ab26f6:virtaal/virtaal/views/placeablesguiinfo.py
                 childlen += child.gui_info.length()
             else:
                 if offset <= len(child):

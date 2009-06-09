@@ -282,7 +282,7 @@ class Plugin(BasePlugin):
             self.autocorr.load_dictionary(lang)
             # If the previous language didn't have a correction list, we might
             # have never attached, so let's make sure we attach.
-            on_cursor_change(self.store_cursor)
+            on_cursor_change(None)
 
 
         self._store_loaded_id = self.main_controller.store_controller.connect('store-loaded', on_store_loaded)

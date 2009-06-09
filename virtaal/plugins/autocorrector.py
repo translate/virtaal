@@ -278,11 +278,20 @@ class Plugin(BasePlugin):
             self._cursor_changed_id = self.store_cursor.connect('cursor-changed', on_cursor_change)
             on_cursor_change(self.store_cursor)
 
+        def on_target_lang_changed(lang_controller, lang):
+            self.autocorr.load_dictionary(lang)
+            # If the previous language didn't have a correction list, we might
+            # have never attached, so let's make sure we attach.
+            on_cursor_change(self.store_cursor)
+
+
         self._store_loaded_id = self.main_controller.store_controller.connect('store-loaded', on_store_loaded)
 
         if self.main_controller.store_controller.get_store():
             # Connect to already loaded store. This happens when the plug-in is enabled after loading a store.
             on_store_loaded(self.main_controller.store_controller)
+
+        self._target_lang_changed_id = self.main_controller.lang_controller.connect('target-lang-changed', on_target_lang_changed)
 
     def destroy(self):
         """Remove all signal-connections."""

@@ -195,7 +195,7 @@ class UndoController(BaseController):
         desc = 'offsets=(%d, %d), deleted="%s", elem=%s' % (start_offset, end_offset, deleted, repr(elem))
         self.model.push({
             'action': undo_action,
-            'cursorpos': start_offset,
+            'cursorpos': cursor_pos,
             'desc': desc,
             'targetn': target_num,
             'unit': unit,

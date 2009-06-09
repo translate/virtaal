@@ -492,7 +492,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         for i in range(self.MAX_SOURCES):
             if i < num_unit_sources:
                 sourcestr = self.unit.rich_source[i]
-                self.sources[i].modify_font(rendering.get_source_font_description())
+                self.sources[i].get_pango_context().set_font_description(rendering.get_source_font_description())
                 self.sources[i].set_text(sourcestr)
                 self.sources[i].parent.show_all()
                 #logging.debug('Showing source #%d: %s' % (i, self.sources[i]))

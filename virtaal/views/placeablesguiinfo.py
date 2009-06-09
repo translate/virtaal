@@ -22,6 +22,8 @@ import gtk
 import pango
 from translate.storage.placeables import base, StringElem, general
 
+from virtaal.views.widgets.storeviewwidgets import make_pango_layout
+
 
 class StringElemGUI(object):
     """
@@ -223,9 +225,14 @@ class PhGUI(StringElemGUI):
 
 
 class NewlineGUI(StringElemGUI):
+    SCALE_FACTOR = 1.2 # Experimentally determined
+
     def create_repr_widgets(self):
         lbl = gtk.Label('¶')
         lbl.modify_fg(gtk.STATE_NORMAL, gtk.gdk.Color('grey'))
+        lbl.modify_font(self.textbox.get_pango_context().get_font_description())
+        w, h = make_pango_layout(self.textbox, '¶', 100).get_pixel_size()
+        lbl.set_size_request(-1, int(h/1.2))
         self.widgets.append(lbl)
 
 

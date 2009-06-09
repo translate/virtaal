@@ -84,6 +84,9 @@ def gtk_textview_compute_optimal_height(widget, width):
         # directly after the file is opened. For now we try to guess a more
         # useful default than 0. This should look much better than 0, at least.
         h = 28
+    parent = widget.parent
+    if isinstance(parent, gtk.ScrolledWindow) and parent.get_shadow_type() != gtk.SHADOW_NONE:
+        border += 2 * parent.rc_get_style().ythickness
     widget.parent.set_size_request(-1, h + border)
 
 @compute_optimal_height.when_type(label_expander.LabelExpander)

@@ -434,6 +434,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
         scrollwnd = gtk.ScrolledWindow()
         scrollwnd.set_policy(gtk.POLICY_NEVER, scroll_policy)
+        scrollwnd.set_shadow_type(gtk.SHADOW_IN)
         scrollwnd.add(textbox)
 
         return scrollwnd

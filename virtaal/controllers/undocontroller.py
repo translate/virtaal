@@ -184,12 +184,7 @@ class UndoController(BaseController):
                 return
             parent_offset = elem.elem_offset(parent)
             prel_offset = elem.gui_info.gui_to_tree_index(start_offset) - parent_offset
-            doffset = i = 0
-            while doffset < prel_offset:
-                doffset += len(parent.sub[i])
-                i += 1
-            #logging.debug('parent.sub.insert(%d, %s): ' % (i, repr(deleted)))
-            parent.sub.insert(i, deleted)
+            parent.insert(prel_offset, deleted)
             parent.prune()
 
         desc = 'offsets=(%d, %d), deleted="%s", elem=%s' % (start_offset, end_offset, deleted, repr(elem))

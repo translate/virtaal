@@ -345,9 +345,12 @@ class MainView(BaseView):
         self.menubar.show_all()
         return menuitem
 
-    def append_menu_item(self, name, menu):
+    def append_menu_item(self, name, menu, after=None):
         """Add a new menu item with the given name to the menu with the given
             name (C{menu})."""
+        if isinstance(after, (str, unicode)):
+            after = self.find_menu(after)
+
         parent_item = None
         if isinstance(menu, gtk.MenuItem):
             parent_item = menu
@@ -355,9 +358,14 @@ class MainView(BaseView):
             parent_item = self.find_menu(menu)
         if parent_item is None:
             return None
+
         parent_menu = parent_item.get_submenu()
         menuitem = gtk.MenuItem(name)
-        parent_menu.add(menuitem)
+        if after is None:
+            parent_menu.add(menuitem)
+        else:
+            after_index = parent_menu.get_children().index(after) + 1
+            parent_menu.insert(menuitem, after_index)
         self.menubar.show_all()
         return menuitem
 

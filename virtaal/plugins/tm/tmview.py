@@ -171,6 +171,42 @@ class TMView(BaseView, GObjectWrapper):
         self.tmwindow.hide()
         self.isvisible = False
 
+    def select_backends(self, menuitem):
+        selectdlg = SelectDialog(
+            title=_('Select TM back-ends'),
+            message=_('Please select the TM back-ends you would like to have enabled.')
+        )
+        selectdlg.set_icon(self.controller.main_controller.view.main_window.get_icon())
+
+        items = []
+        plugin_controller = self.controller.plugin_controller
+        for plugin_name in plugin_controller._find_plugin_names():
+            if plugin_name == 'basetmmodel':
+                continue
+            info = plugin_controller.get_plugin_info(plugin_name)
+            enabled = plugin_name in plugin_controller.plugins
+            item = {'name': plugin_name}
+            config = enabled and plugin_controller.plugins[plugin_name] or None
+            items.append({
+                'name': info['display_name'],
+                'desc': info['description'],
+                'data': {'internal_name': plugin_name},
+                'enabled': enabled,
+                'config': config,
+            })
+
+        if selectdlg.run(items=items) == gtk.RESPONSE_OK:
+            for item in selectdlg.sview.get_all_items():
+                internal_name = item['data']['internal_name']
+                if item['enabled']:
+                    plugin_controller.enable_plugin(internal_name)
+                    if internal_name in self.controller.config['disabled_models']:
+                        self.controller.config['disabled_models'].remove(internal_name)
+                else:
+                    plugin_controller.disable_plugin(internal_name)
+                    if internal_name not in self.controller.config['disabled_models']:
+                        self.controller.config['disabled_models'].append(internal_name)
+
     def select_match(self, match_data):
         """Select the match data as accepted by the user."""
         self.controller.select_match(match_data)
@@ -249,42 +285,6 @@ class TMView(BaseView, GObjectWrapper):
         match_data = liststore.get_value(itr, 0)
 
         self.select_match(match_data)
-
-    def on_select_backends(self, menuitem):
-        selectdlg = SelectDialog(
-            title=_('Select Translation Memory sources'),
-            message=_('Select the sources of translation memory to ask for suggestions')
-        )
-        selectdlg.set_icon(self.controller.main_controller.view.main_window.get_icon())
-
-        items = []
-        plugin_controller = self.controller.plugin_controller
-        for plugin_name in plugin_controller._find_plugin_names():
-            if plugin_name == 'basetmmodel':
-                continue
-            info = plugin_controller.get_plugin_info(plugin_name)
-            enabled = plugin_name in plugin_controller.plugins
-            item = {'name': plugin_name}
-            config = enabled and plugin_controller.plugins[plugin_name] or None
-            items.append({
-                'name': info['display_name'],
-                'desc': info['description'],
-                'data': {'internal_name': plugin_name},
-                'enabled': enabled,
-                'config': config,
-            })
-
-        if selectdlg.run(items=items) == gtk.RESPONSE_OK:
-            for item in selectdlg.sview.get_all_items():
-                internal_name = item['data']['internal_name']
-                if item['enabled']:
-                    plugin_controller.enable_plugin(internal_name)
-                    if internal_name in self.controller.config['disabled_models']:
-                        self.controller.config['disabled_models'].remove(internal_name)
-                else:
-                    plugin_controller.disable_plugin(internal_name)
-                    if internal_name not in self.controller.config['disabled_models']:
-                        self.controller.config['disabled_models'].append(internal_name)
 
     def _on_select_match(self, accel_group, acceleratable, keyval, modifier):
         self.select_match_index(int(keyval - gtk.keysyms._0))

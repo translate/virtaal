@@ -124,9 +124,7 @@ class TerminologyView(BaseView):
         for gobj, signal_id in self._signal_ids:
             gobj.disconnect(signal_id)
 
-
-    # EVENT HANDLERS #
-    def on_select_backends(self, menuitem):
+    def select_backends(self, menuitem):
         selectdlg = SelectDialog(
             title=_('Select Terminology Sources'),
             message=_('Select the sources of terminology suggestions')

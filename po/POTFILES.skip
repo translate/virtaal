@@ -1,4 +1,5 @@
 devsupport/profiling.py
-virtaal/plugins/helloworld.py
-virtaal/plugins/ipython_console/__init__.py
-virtaal/plugins/python_console.py
+virtaal/plugins/tm/models/_dummytm.py
+virtaal/plugins/_helloworld.py
+virtaal/plugins/_ipython_console/__init__.py
+virtaal/plugins/_python_console.py

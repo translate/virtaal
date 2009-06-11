@@ -20,7 +20,7 @@
 
 import gobject
 import logging
-from translate.storage.placeables import general, parse as parse_placeables, StringElem
+from translate.storage.placeables import general, StringElem, parse as parse_placeables
 
 from virtaal.common import pan_app, GObjectWrapper
 from virtaal.views import placeablesguiinfo
@@ -79,56 +79,63 @@ class PlaceablesController(BaseController):
 
         # Test for presence of parser classes by hand
         self.parser_info[general.AltAttrPlaceable.parse] = (
-            _('"alt" attribute placeable'),
-            _('Placeable for alt="..." tags (as found in HTML).')
+            _('"alt" Attributes'),
+            _('Placeable for "alt" attributes (as found in HTML)')
         )
         self.parser_info[general.CamelCasePlaceable.parse] = (
-            _('Camel-case'),
-            _('Terms in camel-case is probably something special; make them placeable.')
+            #l10n: See http://en.wikipedia.org/wiki/CamelCase
+            _('CamelCase'),
+            _('Words with internal capitalisation, such as some brand names and WikiWords')
         )
         self.parser_info[general.CapsPlaceable.parse] = (
             _('Capitals'),
-            _('Handle all-capital strings as placeables.')
+            _('Words containing capital letters only')
         )
         self.parser_info[general.OptionPlaceable.parse] = (
             _('Commandline Options'),
-            _('Application commandline options such as --help, -h and -I.')
+            _('Application commandline options, such as --help, -h and -I')
         )
         self.parser_info[general.EmailPlaceable.parse] = (
             _('E-mail'),
-            _('E-mail addresses are recognised as placeables.')
+            _('E-mail addresses')
         )
         self.parser_info[general.FilePlaceable.parse] = (
-            _('File location'),
-            _('Handle file locations as placeables.')
+            _('File Names'),
+            _('Paths referring to file locations')
         )
         self.parser_info[general.FormattingPlaceable.parse] = (
-            _('C printf variables'),
-            _('Placeable matching C printf-style variable formatting.')
+            _('Placeholders (printf)'),
+            _('Placeholders used in "printf" strings')
+        )
+        self.parser_info[general.PythonFormattingPlaceable.parse] = (
+            _('Placeholders (Python)'),
+            _('Placeholders in Python strings')
         )
         self.parser_info[general.NumberPlaceable.parse] = (
             _('Numbers'),
-            _('Handle integer or decimal numbers as placeables.')
+            #l10n: 'decimal fractions' refer to numbers like 0.2 or 499,99
+            _('Integer numbers and decimal fractions')
         )
         self.parser_info[general.PunctuationPlaceable.parse] = (
             _('Punctuation'),
-            _('Specifically for being able to copy non-standard punctuation easily.')
-        )
-        self.parser_info[general.PythonFormattingPlaceable.parse] = (
-            _('Python variables'),
-            _('Match formatting variables used in Python code as placeables.')
+            _('Symbols and punctuation marks used less frequently')
         )
         self.parser_info[general.UrlPlaceable.parse] = (
-            _('URL'),
-            _('Handle URLs as placeables.')
+            _('URLs'),
+            _('URLs, hostnames and IP addresses')
         )
         self.parser_info[general.XMLEntityPlaceable.parse] = (
+            #l10n: see http://en.wikipedia.org/wiki/Character_entity_reference
             _('XML Entities'),
-            _('Recognizes XML entities (such as &amp;foo;) as (constant) placeables.')
+            _('Entity references, such as &amp; and &#169;').replace('&', '&amp;')
         )
         self.parser_info[general.XMLTagPlaceable.parse] = (
             _('XML Tags'),
-            _('Handles XML tags as placeables.')
+            _('XML tags, such as <b> and </i>').replace('<', '&lt;')
+        )
+        self.parser_info[general.SpacesPlaceable.parse] = (
+            _('Spaces'),
+            _('Double spaces and spaces in unexpected positions')
         )
 
 

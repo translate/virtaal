@@ -93,12 +93,10 @@ class TMView(BaseView, GObjectWrapper):
     def _setup_menu_items(self):
         mainview = self.controller.main_controller.view
         menubar = mainview.menubar
-        self.mnu_tm = mainview.find_menu(_('T_M'))
-        if self.mnu_tm is None:
-            self.mnu_tm = mainview.append_menu(_('T_M'))
-        self.menu = self.mnu_tm.get_submenu()
+        self.mnui_view = mainview.gui.get_widget('menuitem_view')
+        self.menu = self.mnui_view.get_submenu()
 
-        self.mnu_suggestions = gtk.CheckMenuItem(label=_('Available _Suggestions'))
+        self.mnu_suggestions = gtk.CheckMenuItem(label=_('Translation _suggestions'))
         self.mnu_suggestions.show()
         self.menu.append(self.mnu_suggestions)
 
@@ -112,12 +110,6 @@ class TMView(BaseView, GObjectWrapper):
 
         self.mnu_suggestions.connect('toggled', self._on_toggle_show_tm)
         self.mnu_suggestions.set_active(True)
-
-        # Check if there exists a "Select back-ends" menu item.
-        self.mnu_backends, _menu = mainview.find_menu_item(_('Select back-ends...'), self.mnu_tm)
-        if not self.mnu_backends:
-            self.mnu_backends = mainview.append_menu_item(_('Select back-ends...'), self.mnu_tm)
-        self.mnu_backends.connect('activate', self.on_select_backends)
 
 
     # ACCESSORS #
@@ -136,8 +128,7 @@ class TMView(BaseView, GObjectWrapper):
         for gobj, signal_id in self._signal_ids:
             gobj.disconnect(signal_id)
 
-        menubar = self.controller.main_controller.view.menubar
-        menubar.remove(self.mnu_tm)
+        self.menu.remove(self.mnu_suggestions)
 
     def display_matches(self, matches):
         """Add the list of TM matches to those available and show the TM window."""

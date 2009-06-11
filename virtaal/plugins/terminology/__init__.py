@@ -24,8 +24,8 @@ from termcontroller import TerminologyController
 
 
 class Plugin(BasePlugin):
-    display_name = _('Terminology')
-    description = _('Provide terminology suggestions from configurable sources.')
+    display_name = _('Terminology Help')
+    description = _('Terminology suggestions')
     version = 0.1
     default_config = {
         'disabled_models': '',

@@ -24,8 +24,8 @@ from tmcontroller import TMController
 
 
 class Plugin(BasePlugin):
-    description = _('Provide translation memory suggestions from configurable sources.')
     display_name = _('Translation Memory')
+    description = _('Translation memory suggestions')
     version = 0.1
     default_config = {
         'disabled_models': 'dummytm,libtranslate,remotetm,tinytm',

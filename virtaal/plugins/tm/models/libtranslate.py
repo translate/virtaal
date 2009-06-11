@@ -38,8 +38,8 @@ class TMModel(BaseTMModel):
     """
 
     __gtype_name__ = 'LibtranslateTMModel'
-    description = _("Extend Virtaal's TM abilities with that of the libtranslate library.")
     display_name = _('Machine Translation with libtranslate')
+    description = _('Unreviewed machine translations')
 
     # TODO - allow the user to configure which systems to query for translations, default will be all`
 

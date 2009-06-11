@@ -147,8 +147,8 @@ class TerminologyView(BaseView):
     # EVENT HANDLERS #
     def on_select_backends(self, menuitem):
         selectdlg = SelectDialog(
-            title=_('Select Terminology back-ends'),
-            message=_('Please select the terminology back-ends you would like to have enabled.')
+            title=_('Select Terminology Sources'),
+            message=_('Select the sources of terminology suggestions')
         )
         selectdlg.set_icon(self.controller.main_controller.view.main_window.get_icon())
 

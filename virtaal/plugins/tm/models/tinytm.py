@@ -31,8 +31,8 @@ class TMModel(BaseTMModel):
     """
 
     __gtype_name__ = 'TinyTmTMModel'
-    description = _('Get translation memory suggestions from the TinyTM project.')
     display_name = _('TinyTM')
+    description = _('A TinyTM translation memory server')
 
     default_config = {
         "server":   "www.tinytm.org",

@@ -129,7 +129,7 @@ class FileSelectDialog:
         cell = gtk.CellRendererToggle()
         cell.set_radio(True)
         cell.connect('toggled', self._on_toggle)
-        col = gtk.TreeViewColumn(_('Extendible'))
+        col = gtk.TreeViewColumn(_('Extendable'))
         col.pack_start(cell)
         col.add_attribute(cell, 'active', self.COL_EXTEND)
         self.tvw_termfiles.append_column(col)

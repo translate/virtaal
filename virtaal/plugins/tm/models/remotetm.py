@@ -27,8 +27,8 @@ class TMModel(BaseTMModel):
     """This is the translation memory model."""
 
     __gtype_name__ = 'RemoteTMModel'
-    description = _('Connect to a remote TM server.')
     display_name = _('Remote server')
+    description = _('A translation memory server')
 
     default_config = {
         "host" : "localhost",

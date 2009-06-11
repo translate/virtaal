@@ -310,7 +310,7 @@ class AutoCompletor(object):
 
 
 class Plugin(BasePlugin):
-    description = _('Automatically complete long words in the current document.')
+    description = _('Automatically complete long words while you type')
     display_name = _('AutoCompletor')
     version = 0.1
 

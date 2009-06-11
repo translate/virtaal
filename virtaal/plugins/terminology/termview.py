@@ -117,22 +117,6 @@ class TerminologyView(BaseView):
     def __init__(self, controller):
         self.controller = controller
         self._signal_ids = []
-        self._setup_menus()
-
-    def _setup_menus(self):
-        mainview = self.controller.main_controller.view
-        self.mnu_term = mainview.find_menu(_('_Terminology'))
-        if self.mnu_term is None:
-            self.mnu_term = mainview.append_menu(_('_Terminology'))
-        self.menu = self.mnu_term.get_submenu()
-
-        self.mnu_backends, _menu = mainview.find_menu_item(_('Select back-ends...'), self.mnu_term)
-        if not self.mnu_backends:
-            self.mnu_backends = mainview.append_menu_item(_('Select back-ends...'), self.mnu_term)
-        self._signal_ids.append((
-            self.mnu_backends,
-            self.mnu_backends.connect('activate', self.on_select_backends)
-        ))
 
 
     # METHODS #

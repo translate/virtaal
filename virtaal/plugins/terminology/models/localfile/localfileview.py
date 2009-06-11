@@ -45,19 +45,21 @@ class LocalFileView:
 
     # METHODS #
     def _setup_menus(self):
-        self.mnu_term = self.mainview.find_menu(_('_Terminology'))
+        mnu_transfer = self.mainview.gui.get_widget('mnu_transfer')
+        self.mnui_edit = self.mainview.gui.get_widget('menuitem_edit')
+        self.menu = self.mnui_edit.get_submenu()
 
-        self.mnu_select_files, _menu = self.mainview.find_menu_item(_('Terminology _files...'), self.mnu_term)
+        self.mnu_select_files, _menu = self.mainview.find_menu_item(_('Terminology _files...'), self.mnui_edit)
         if not self.mnu_select_files:
-            self.mnu_select_files = self.mainview.append_menu_item(_('Terminology _files...'), self.mnu_term)
+            self.mnu_select_files = self.mainview.append_menu_item(_('Terminology _files...'), self.mnui_edit, after=mnu_transfer)
         self._signal_ids.append((
             self.mnu_select_files,
             self.mnu_select_files.connect('activate', self._on_select_term_files)
         ))
 
-        self.mnu_add_term, _menu = self.mainview.find_menu_item(_('Add _term...'), self.mnu_term)
+        self.mnu_add_term, _menu = self.mainview.find_menu_item(_('Add _term...'), self.mnui_edit)
         if not self.mnu_add_term:
-            self.mnu_add_term = self.mainview.append_menu_item(_('Add _term...'), self.mnu_term)
+            self.mnu_add_term = self.mainview.append_menu_item(_('Add _term...'), self.mnui_edit, after=mnu_transfer)
         self._signal_ids.append((
             self.mnu_add_term,
             self.mnu_add_term.connect('activate', self._on_add_term)
@@ -67,11 +69,8 @@ class LocalFileView:
         for gobj, signal_id in self._signal_ids:
             gobj.disconnect(signal_id)
 
-        menuitem, menu = self.mainview.find_menu_item(_('Terminology _files...'), self.mnu_term)
-        if menuitem and menu:
-            assert menu is self.mnu_term
-            assert menuitem is self.mnu_select_files
-            menu.get_submenu().remove(menuitem)
+        self.menu.remove(self.mnu_select_files)
+        self.menu.remove(self.mnu_add_term)
 
 
     # EVENT HANDLERS #

@@ -124,9 +124,6 @@ class TerminologyView(BaseView):
         for gobj, signal_id in self._signal_ids:
             gobj.disconnect(signal_id)
 
-        menubar = self.controller.main_controller.view.menubar
-        menubar.remove(self.mnu_term)
-
 
     # EVENT HANDLERS #
     def on_select_backends(self, menuitem):

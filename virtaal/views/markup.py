@@ -20,11 +20,9 @@
 
 import re
 
-
 # We want to draw unexpected spaces specially so that users can spot them
 # easily without having to resort to showing all spaces weirdly
-
-fancy_spaces_re = re.compile(r"""(?m)  #Multiline expression
+_fancy_spaces_re = re.compile(r"""(?m)  #Multiline expression
         [ ]{2,}|     #More than two consecutive
         ^[ ]+|       #At start of a line
         [ ]+$        #At end of line""", re.VERBOSE)
@@ -40,11 +38,10 @@ def _fancyspaces(string):
 
 # Highligting for XML
 
-xml_re = re.compile("&lt;[^>]+>")
-def fancy_xml(escape):
+_xml_re = re.compile("&lt;[^>]+>")
+def _fancy_xml(escape):
     """Marks up the XML to appear dard red."""
     return u'<span foreground="darkred">%s</span>' % escape.group()
-
 
 def _subtle_escape(escape):
     """Marks up the given escape to appear purple without a newline appended."""
@@ -62,10 +59,10 @@ def markuptext(text, fancyspaces=True, markupescapes=True):
         return ""
     text = text.replace(u"&", u"&amp;") # Must be done first!
     text = text.replace(u"<", u"&lt;")
-    text = xml_re.sub(fancy_xml, text)
+    text = _xml_re.sub(_fancy_xml, text)
 
     if fancyspaces:
-        text = fancy_spaces_re.sub(_fancyspaces, text)
+        text = _fancy_spaces_re.sub(_fancyspaces, text)
 
     if markupescapes:
 #        text = text.replace(u"\r\n", _subtle_escape(u'¶\r\n')

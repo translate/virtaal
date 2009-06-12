@@ -139,7 +139,7 @@ class TMController(BaseController):
         if unit is not None:
             self.unit = unit
 
-        self.current_query = unicode(self.unit.source)
+        self.current_query = self.unit.source
         self.view.clear()
         self.emit('start-query', self.current_query)
 

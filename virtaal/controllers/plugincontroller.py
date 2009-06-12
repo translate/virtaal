@@ -202,6 +202,8 @@ class PluginController(BaseController):
                     if pan_app.DEBUG or name[0] != '_':
                         plugin_names.append(name)
                 elif os.path.isfile(fullpath) and not name.startswith('__init__.py'):
+                    if '.py' not in name:
+                        continue
                     plugname = '.'.join(name.split(os.extsep)[:-1]) # Effectively removes extension, preserving other .'s in the name
                     if pan_app.DEBUG or plugname[0] != '_':
                         plugin_names.append(plugname)

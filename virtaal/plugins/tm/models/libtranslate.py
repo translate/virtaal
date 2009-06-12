@@ -90,6 +90,8 @@ class TMModel(BaseTMModel):
         translation.append({
             'source': query_str,
             'target': quote.rstripeol(result),
+            #l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+            'tmsource': _('libtranslate')
         })
 
         # TODO: drop any memory used by 'result'

@@ -63,5 +63,11 @@ class TMModel(BaseTMModel):
 
     def _handle_matches(self, widget, query_str, matches):
         """Handle the matches when returned from self.tmclient."""
+        for match in matches:
+            if 'tmsource' in match:
+                #l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+                match['tmsource'] = _('OpenTran') + '\n' + match['tmsource']
+            else:
+                match['tmsource'] = _('OpenTran')
         self.cache[query_str] = matches
         self.emit('match-found', query_str, matches)

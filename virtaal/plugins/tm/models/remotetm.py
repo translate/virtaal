@@ -29,6 +29,8 @@ class TMModel(BaseTMModel):
     __gtype_name__ = 'RemoteTMModel'
     display_name = _('Remote server')
     description = _('A translation memory server')
+    #l10n: Try to keep this as short as possible.
+    shortname = _('Remote TM')
 
     default_config = {
         "host" : "localhost",
@@ -56,6 +58,8 @@ class TMModel(BaseTMModel):
     def _handle_matches(self, widget, query_str, matches):
         """Handle the matches when returned from self.tmclient."""
         self.cache[query_str] = matches
+        for match in matches:
+            match['tmsource'] = self.shortname
         self.emit('match-found', query_str, matches)
 
     def push_store(self, store_controller):

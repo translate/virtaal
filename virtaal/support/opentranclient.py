@@ -125,6 +125,7 @@ class OpenTranClient(gobject.GObject, restclient.RESTClient):
             result['target'] = suggestion['text']
             if isinstance(result['target'], unicode):
                 result['target'] = result['target'].encode("utf-8")
+            result['tmsource'] = suggestion['projects'][0]['name']
             result['source'] = suggestion['projects'][0]['orig_phrase']
             #check for fuzzyness at the 'flag' member:
             for project in suggestion['projects']:

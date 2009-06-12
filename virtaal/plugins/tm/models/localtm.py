@@ -36,6 +36,8 @@ class TMModel(remotetm.TMModel):
     __gtype_name__ = 'LocalTMModel'
     display_name = _('Local Translation Memory')
     description = _('Translations previously done in Virtaal')
+    #l10n: Try to keep this as short as possible.
+    shortname = _('Local TM')
 
     default_config = {
         "tmserver_bind" : "localhost",

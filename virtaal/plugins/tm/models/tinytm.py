@@ -77,6 +77,7 @@ class TMModel(BaseTMModel):
                 'source': result[1],
                 'target': result[2],
                 'quality': result[0],
+                'tmsource': self.display_name,
             })
 
         self.emit('match-found', query_str, matches)

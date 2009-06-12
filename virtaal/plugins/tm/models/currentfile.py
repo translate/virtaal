@@ -77,6 +77,12 @@ class TMModel(BaseTMModel):
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])
         else:
+            matches = []
+            for candidate in self.matcher.matches(unicode(query_str, 'utf-8')):
+                m = match.unit2dict(candidate)
+                #l10n: Try to keep this as short as possible.
+                m['tmsource'] = _('This file')
+                matches.append(m)
             matches = [match.unit2dict(candidate) for candidate in self.matcher.matches(unicode(query_str, "utf-8"))]
             self.cache[query_str] = [m for m in matches if m['quality'] != u'100']
             self.emit('match-found', query_str, self.cache[query_str])

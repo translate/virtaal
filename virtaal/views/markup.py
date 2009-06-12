@@ -40,11 +40,11 @@ def _fancyspaces(string):
 
 _xml_re = re.compile("&lt;[^>]+>")
 def _fancy_xml(escape):
-    """Marks up the XML to appear dard red."""
+    """Marks up the XML to appear dark red."""
     return u'<span foreground="darkred">%s</span>' % escape.group()
 
 def _subtle_escape(escape):
-    """Marks up the given escape to appear purple without a newline appended."""
+    """Marks up the given escape to appear dark grey without a newline appended."""
     return u'<span foreground="darkgrey">%s</span>' % escape
 
 

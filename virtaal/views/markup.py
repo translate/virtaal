@@ -46,16 +46,9 @@ def fancy_xml(escape):
     return u'<span foreground="darkred">%s</span>' % escape.group()
 
 
-# Highlighting for escapes
-
-def _fancyescape_n(escape):
-    """Marks up the given escape to appear purple with a newline appended for
-    the sake of wrapping."""
-    return u'<span foreground="purple">%s</span>\n' % escape
-
-def _fancyescape(escape):
+def _subtle_escape(escape):
     """Marks up the given escape to appear purple without a newline appended."""
-    return u'<span foreground="purple">%s</span>' % escape
+    return u'<span foreground="darkgrey">%s</span>' % escape
 
 
 # Public methods
@@ -75,14 +68,9 @@ def markuptext(text, fancyspaces=True, markupescapes=True):
         text = fancy_spaces_re.sub(_fancyspaces, text)
 
     if markupescapes:
-#        text = text.replace("\\", _fancyescape(r'\\'))
-        text = text.replace(u"\r\n", _fancyescape_n(ur'\r\n'))
-        text = text.replace(u"\n", _fancyescape_n(ur'\n'))
-        text = text.replace(u"\r", _fancyescape_n(ur'\r'))
-        text = text.replace(u"\t", _fancyescape(ur'\t'))
-        # we don't need it at the end of the string
-        if text.endswith(u"\n"):
-            text = text[:-1]
+#        text = text.replace(u"\r\n", _subtle_escape(u'¶\r\n')
+        text = text.replace(u"\n", _subtle_escape(u'¶\n'))
+
     return text
 
 def escape(text):

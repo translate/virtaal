@@ -23,7 +23,6 @@ import logging
 import re
 from gobject import idle_add, GObject, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 from translate.lang import factory
-from translate.lang import data
 try:
     import gtkspell
 except ImportError, e:
@@ -145,7 +144,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     focused_target_n = property(_get_focused_target_n, _set_focused_target_n)
 
     def get_target_n(self, n):
-        return data.forceunicode(markup.unescape(self.targets[n].get_text()))
+        return markup.unescape(self.targets[n].get_text())
 
     def set_target_n(self, n, newtext, cursor_pos=-1, escape=True):
         # TODO: Save cursor position and set after assignment

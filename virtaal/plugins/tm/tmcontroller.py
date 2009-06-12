@@ -98,10 +98,6 @@ class TMController(BaseController):
         if query_str == self.current_query:
             # Perform some sanity checks on matches first
             for match in matches:
-                if isinstance(match['source'], str):
-                    match['source'] = unicode(match['source'])
-                if isinstance(match['target'], str):
-                    match['target'] = unicode(match['target'])
                 if 'quality' not in match or match['quality'] is None:
                     match['quality'] = self.min_quality
                 elif not isinstance(match['quality'], int):

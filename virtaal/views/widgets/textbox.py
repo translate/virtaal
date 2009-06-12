@@ -475,8 +475,12 @@ class TextBox(gtk.TextView):
         #logging.debug('Key pressed: %s (%s)' % (keyname, statenames))
         #logging.debug('state (raw): %x' % (event.state,))
 
+        # Ignore numlock and weird state sometimes present with Arabic
+        # keyboard layout. See bug 926.
+        trimmed_state = event.state & ~ (gtk.gdk.MOD2_MASK | gtk.gdk.LEAVE_NOTIFY_MASK)
+
         for name, keyslist in self.SPECIAL_KEYS.items():
             for keyval, state in keyslist:
-                if event.keyval == keyval and (event.state == state or event.state == (state | gtk.gdk.MOD2_MASK)):
+                if event.keyval == keyval and (trimmed_state == state):
                     evname = name
         return self.emit('key-pressed', event, evname)

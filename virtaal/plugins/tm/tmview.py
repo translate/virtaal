@@ -173,8 +173,8 @@ class TMView(BaseView, GObjectWrapper):
 
     def select_backends(self, menuitem):
         selectdlg = SelectDialog(
-            title=_('Select TM back-ends'),
-            message=_('Please select the TM back-ends you would like to have enabled.')
+            title=_('Select sources of Translation Memory'),
+            message=_('Select the sources that should be queried for translation memory')
         )
         selectdlg.set_icon(self.controller.main_controller.view.main_window.get_icon())
 

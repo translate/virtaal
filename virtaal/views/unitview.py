@@ -177,7 +177,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             self.controller.main_controller.undo_controller.record_stop()
 
         self.controller.main_controller.undo_controller.record_start()
-        textbox.buffer.set_text(markup.escape(new_source))
+        textbox.buffer.set_text(new_source)
         self.controller.main_controller.undo_controller.record_stop()
         # We use textbox.buffer.set_text() above so that the appropriate "delete-range" and "insert-text" signals are emitted;
         # it's blocked by TextBox.set_text(). This allows undo to work correctly.

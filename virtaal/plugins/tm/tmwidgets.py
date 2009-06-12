@@ -58,14 +58,17 @@ class TMWindow(gtk.Window):
 
         self.perc_renderer = gtk.CellRendererProgress()
         self.match_renderer = TMMatchRenderer(self.view)
+        self.tm_source_renderer = TMSourceColRenderer(self.view)
 
         # l10n: match quality column label
         self.tvc_perc = gtk.TreeViewColumn(_('%'), self.perc_renderer)
         self.tvc_perc.set_cell_data_func(self.perc_renderer, self._percent_data_func)
         self.tvc_match = gtk.TreeViewColumn(_('Matches'), self.match_renderer, matchdata=0)
+        self.tvc_tm_source = gtk.TreeViewColumn(_('TM Source'), self.tm_source_renderer, matchdata=0)
 
         treeview.append_column(self.tvc_perc)
         treeview.append_column(self.tvc_match)
+        treeview.append_column(self.tvc_tm_source)
         treeview.set_tooltip_column(1)
 
         return treeview
@@ -101,7 +104,7 @@ class TMWindow(gtk.Window):
             x -= self.tvc_perc.get_width()
         y += widget_alloc.height + 2
 
-        width = widget_alloc.width + self.tvc_perc.get_width() + scrollbar_width
+        width = widget_alloc.width + self.tvc_perc.get_width() + self.tvc_tm_source.get_width() + scrollbar_width
         height = min(self.rows_height(), self.MAX_HEIGHT) + 4
         # TODO: Replace the hard-coded value above with a query to the theme. It represents the width of the shadow of self.scrolled_window
 
@@ -123,6 +126,64 @@ class TMWindow(gtk.Window):
             return
         cell_renderer.set_property('value', 0)
         cell_renderer.set_property('text', "")
+
+
+class TMSourceColRenderer(gtk.GenericCellRenderer):
+    """
+    Renders the TM source for the row.
+    """
+
+    __gtype_name__ = "TMSourceColRenderer"
+    __gproperties__ = {
+        "matchdata": (
+            gobject.TYPE_PYOBJECT,
+            "The match data.",
+            "The match data that this renderer is currently handling",
+            gobject.PARAM_READWRITE
+        ),
+    }
+
+    YPAD = 2
+
+    # INITIALIZERS #
+    def __init__(self, view):
+        gtk.GenericCellRenderer.__init__(self)
+
+        self.view = view
+        self.matchdata = None
+
+
+    # INTERFACE METHODS #
+    def on_get_size(self, widget, cell_area):
+        if 'tmsource' not in self.matchdata:
+            return 0, 0, 0, 0
+
+        label = gtk.Label(self.matchdata['tmsource'])
+        label.set_angle(270)
+        size = label.size_request()
+        return 0, 0, size[0], size[1] + self.YPAD*2
+
+    def do_get_property(self, pspec):
+        return getattr(self, pspec.name)
+
+    def do_set_property(self, pspec, value):
+        setattr(self, pspec.name, value)
+
+    def on_render(self, window, widget, _background_area, cell_area, _expose_area, _flags):
+        if 'tmsource' not in self.matchdata:
+            return
+        x_offset = 0
+        y_offset = 0
+
+        x = cell_area.x + x_offset
+        y = cell_area.y + y_offset + self.YPAD
+
+        label = gtk.Label(self.matchdata['tmsource'])
+        label.get_pango_context().set_base_gravity(pango.GRAVITY_AUTO)
+        label.set_angle(270)
+        label.set_alignment(0.5, 0.5)
+        widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False,
+                cell_area, widget, '', x, y, label.get_layout())
 
 
 class TMMatchRenderer(gtk.GenericCellRenderer):

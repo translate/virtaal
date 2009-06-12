@@ -103,6 +103,8 @@ class TMController(BaseController):
                     match['quality'] = self.min_quality
                 elif not isinstance(match['quality'], int):
                     match['quality'] = int(match['quality'])
+                if 'tmsource' not in match or match['tmsource'] is None:
+                    match['tmsource'] = tmmodel.display_name
             # Only call display_matches if necessary:
             if matches:
                 self.view.display_matches(matches)

@@ -39,7 +39,7 @@ class TMModel(BaseTMModel):
         tm_matches = []
         tm_matches.append({
             'source': 'This match has no "quality" field',
-            'target': 'Hierdie woordeboek het geen "quality"-veld nie.'
+            'target': u'Hierdie woordeboek het geen "quality"-veld nie.'
         })
         tm_matches.append({
             'source': query_str.lower(),
@@ -48,7 +48,7 @@ class TMModel(BaseTMModel):
         })
         reverse_str = list(query_str)
         reverse_str.reverse()
-        reverse_str = ''.join(reverse_str)
+        reverse_str = u''.join(reverse_str)
         tm_matches.append({
             'source': reverse_str.lower(),
             'target': reverse_str.upper(),

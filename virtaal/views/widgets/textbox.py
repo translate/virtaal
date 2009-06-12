@@ -468,11 +468,12 @@ class TextBox(gtk.TextView):
         #    if getattr(gtk.keysyms, attr) == event.keyval:
         #        keyname = attr
         #statenames = []
-        #for attr in [a for a in ('MOD1_MASK', 'MOD2_MASK', 'MOD3_MASK', 'MOD4_MASK', 'MOD5_MASK', 'CONTROL_MASK', 'SHIFT_MASK', 'RELEASE_MASK')]:
+        #for attr in [a for a in ('MOD1_MASK', 'MOD2_MASK', 'MOD3_MASK', 'MOD4_MASK', 'MOD5_MASK', 'CONTROL_MASK', 'SHIFT_MASK', 'RELEASE_MASK', 'LOCK_MASK', 'SUPER_MASK', 'HYPER_MASK', 'META_MASK')]:
         #    if event.state & getattr(gtk.gdk, attr):
         #        statenames.append(attr)
         #statenames = '|'.join(statenames)
         #logging.debug('Key pressed: %s (%s)' % (keyname, statenames))
+        #logging.debug('state (raw): %x' % (event.state,))
 
         for name, keyslist in self.SPECIAL_KEYS.items():
             for keyval, state in keyslist:

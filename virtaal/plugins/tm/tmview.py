@@ -135,10 +135,10 @@ class TMView(BaseView, GObjectWrapper):
         liststore = self.tmwindow.liststore
 
         rows = [tuple(row)[0] for row in liststore]
-        curr_targets = [str(row['target']) for row in rows]
+        curr_targets = [row['target'] for row in rows]
         anything_new = False
         for match in matches:
-            if str(match['target']) not in curr_targets:
+            if match['target'] not in curr_targets:
                 # Let's insert at the start to help with sort stability of the
                 # list (existing 100% will be above a new 100%
                 rows.insert(0, match)

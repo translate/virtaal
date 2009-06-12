@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gtk
+import glib
 import logging
 from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 
@@ -98,6 +99,7 @@ class SelectView(gtk.TreeView, GObjectWrapper):
             lbl = gtk.Label()
             lbl.set_alignment(0, 0)
             lbl.set_text(item['desc'])
+            lbl.set_use_markup(False)
             vbox.pack_start(lbl)
             vbox.lbl_desc = lbl
         hbox.pack_start(vbox)
@@ -119,7 +121,7 @@ class SelectView(gtk.TreeView, GObjectWrapper):
         if widget.lbl_name:
             s = widget.lbl_name.get_label()
         if widget.lbl_desc:
-            s += '\n' + widget.lbl_desc.get_text()
+            s += '\n' + glib.markup_escape_text(widget.lbl_desc.get_text())
         return s
 
     def get_all_items(self):

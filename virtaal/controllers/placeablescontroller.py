@@ -19,7 +19,6 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gobject
-import logging
 from translate.storage.placeables import general, StringElem, parse as parse_placeables
 
 from virtaal.common import pan_app, GObjectWrapper
@@ -131,11 +130,11 @@ class PlaceablesController(BaseController):
         self.parser_info[general.XMLEntityPlaceable.parse] = (
             #l10n: see http://en.wikipedia.org/wiki/Character_entity_reference
             _('XML Entities'),
-            _('Entity references, such as &amp; and &#169;').replace('&', '&amp;')
+            _('Entity references, such as &amp; and &#169;')
         )
         self.parser_info[general.XMLTagPlaceable.parse] = (
             _('XML Tags'),
-            _('XML tags, such as <b> and </i>').replace('<', '&lt;')
+            _('XML tags, such as <b> and </i>')
         )
         self.parser_info[general.SpacesPlaceable.parse] = (
             _('Spaces'),

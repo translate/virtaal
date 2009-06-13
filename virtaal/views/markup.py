@@ -67,6 +67,8 @@ def markuptext(text, fancyspaces=True, markupescapes=True):
     if markupescapes:
 #        text = text.replace(u"\r\n", _subtle_escape(u'¶\r\n')
         text = text.replace(u"\n", _subtle_escape(u'¶\n'))
+        if text.endswith(u'\n</span>'):
+            text = text[:-len(u'\n</span>')] + u'</span>'
 
     return text
 

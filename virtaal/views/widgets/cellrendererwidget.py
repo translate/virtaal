@@ -67,6 +67,9 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         # FIXME: This method works fine for unselected cells (rows) and gives the same (wrong) results for selected cells.
         height = width = 0
 
+        if cell_area is not None:
+            return self.XPAD, self.YPAD, cell_area.width - 2*self.XPAD, cell_area.height - 2*self.YPAD
+
         width = widget.get_allocation().width
         if width <= 1:
             width = self.default_width

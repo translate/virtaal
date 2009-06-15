@@ -45,9 +45,10 @@ class CellRendererWidget(gtk.GenericCellRenderer):
 
 
     # INITIALIZERS #
-    def __init__(self, strfunc):
+    def __init__(self, strfunc, default_width=-1):
         gtk.GenericCellRenderer.__init__(self)
 
+        self.default_width = default_width
         self._editing = False
         self.editablemap = {}
         self.strfunc = strfunc
@@ -68,7 +69,7 @@ class CellRendererWidget(gtk.GenericCellRenderer):
 
         width = widget.get_allocation().width
         if width <= 1:
-            width = -1
+            width = self.default_width
         layout = self.create_pango_layout(self.strfunc(self.widget), widget, width)
         width, height = layout.get_pixel_size()
 

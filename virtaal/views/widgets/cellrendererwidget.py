@@ -172,12 +172,16 @@ if __name__ == "__main__":
             self.set_headers_visible(True)
 
             self.append_column(gtk.TreeViewColumn('First', gtk.CellRendererText(), text=0))
-            self.append_column(gtk.TreeViewColumn('Second', CellRendererWidget(lambda widget: '<b>' + widget.get_label() + '</b>'), widget=1))
+            self.append_column(gtk.TreeViewColumn('Second', CellRendererWidget(lambda widget: '<b>' + widget.get_children()[0].get_label() + '</b>'), widget=1))
 
         def insert(self, name):
             iter = self.store.append()
-            btn = gtk.Button(name)
-            self.store.set(iter, 0, name, 1, btn, 2, True)
+            hb = gtk.HBox()
+            hb.pack_start(gtk.Button(name))
+            lbl = gtk.Label((name + ' ') * 20)
+            lbl.set_line_wrap(True)
+            hb.pack_start(lbl, expand=False)
+            self.store.set(iter, 0, name, 1, hb, 2, True)
 
     w = gtk.Window()
     w.set_position(gtk.WIN_POS_CENTER)

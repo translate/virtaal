@@ -98,6 +98,7 @@ class SelectView(gtk.TreeView, GObjectWrapper):
         if 'desc' in item and item['desc']:
             lbl = gtk.Label()
             lbl.set_alignment(0, 0)
+            lbl.set_line_wrap(True)
             lbl.set_text(item['desc'])
             lbl.set_use_markup(False)
             vbox.pack_start(lbl)

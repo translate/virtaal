@@ -43,8 +43,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     __gtype_name__ = "UnitView"
     __gsignals__ = {
         'delete-text':    (SIGNAL_RUN_FIRST, None, (int, int, TYPE_PYOBJECT, TYPE_PYOBJECT, int, TYPE_PYOBJECT, int)),
-        'insert-text':    (SIGNAL_RUN_FIRST, None, (str, int, TYPE_PYOBJECT, int)),
-        'paste-start':    (SIGNAL_RUN_FIRST, None, (str, TYPE_PYOBJECT, int)),
+        'insert-text':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, int, TYPE_PYOBJECT, int)),
+        'paste-start':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT, int)),
         'modified':       (SIGNAL_RUN_FIRST, None, ()),
         'unit-done':      (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'target-focused': (SIGNAL_RUN_FIRST, None, (int,)),

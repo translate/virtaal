@@ -20,7 +20,6 @@
 
 import gobject
 import gtk
-import logging
 from gobject import SIGNAL_RUN_FIRST, SIGNAL_RUN_LAST, TYPE_PYOBJECT
 
 from translate.misc.typecheck import accepts, Self, IsOneOf
@@ -43,7 +42,7 @@ class TextBox(gtk.TextView):
         'element-selected':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'key-pressed':       (SIGNAL_RUN_LAST,  bool, (TYPE_PYOBJECT, str)),
         'text-deleted':      (SIGNAL_RUN_LAST,  bool, (int, int, TYPE_PYOBJECT, TYPE_PYOBJECT, int, TYPE_PYOBJECT)),
-        'text-inserted':     (SIGNAL_RUN_LAST,  bool, (str, int, TYPE_PYOBJECT)),
+        'text-inserted':     (SIGNAL_RUN_LAST,  bool, (TYPE_PYOBJECT, int, TYPE_PYOBJECT)),
     }
 
     SPECIAL_KEYS = {

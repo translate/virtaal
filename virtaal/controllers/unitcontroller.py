@@ -34,8 +34,8 @@ class UnitController(BaseController):
         'unit-done':           (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'unit-modified':       (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'unit-delete-text':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, int, int, TYPE_PYOBJECT, TYPE_PYOBJECT, int, TYPE_PYOBJECT, int)),
-        'unit-insert-text':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, str, int, TYPE_PYOBJECT, int)),
-        'unit-paste-start':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, str, TYPE_PYOBJECT, int)),
+        'unit-insert-text':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT, int, TYPE_PYOBJECT, int)),
+        'unit-paste-start':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT, TYPE_PYOBJECT, int)),
     }
 
     # INITIALIZERS #

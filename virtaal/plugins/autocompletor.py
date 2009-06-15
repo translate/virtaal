@@ -209,18 +209,18 @@ class AutoCompletor(object):
                 return
 
             if completed_word:
-                completed_prefix = prefix[:-len(lastword)] + completed_word
                 # Updating of the buffer is deferred until after this signal
                 # and its side effects are taken care of. We abuse
                 # gobject.idle_add for that.
+                insert_offset = iter.get_offset() + len(text)
                 def suggest_completion():
                     buffer.handler_block(self._textbuffer_insert_ids[buffer])
                     #logging.debug('buffer.insert_at_cursor("%s")' % (word_postfix))
-                    buffer.insert_at_cursor(word_postfix)
+                    buffer.insert(buffer.get_iter_at_offset(insert_offset), word_postfix)
                     buffer.handler_unblock(self._textbuffer_insert_ids[buffer])
 
-                    sel_iter_start = buffer.get_iter_at_offset(len(prefix))
-                    sel_iter_end   = buffer.get_iter_at_offset(len(prefix+word_postfix))
+                    sel_iter_start = buffer.get_iter_at_offset(insert_offset)
+                    sel_iter_end   = buffer.get_iter_at_offset(insert_offset + len(word_postfix))
                     buffer.select_range(sel_iter_start, sel_iter_end)
 
                     buffer._suggestion = (sel_iter_start, sel_iter_end)

@@ -638,6 +638,7 @@ If you are translating from English to French then French would be your translat
                                 <property name="visible">True</property>
                                 <property name="xpad">3</property>
                                 <property name="label" translatable="yes">_Add Missing Language</property>
+                                <property name="use_underline">True</property>
                               </widget>
                               <packing>
                                 <property name="position">1</property>
@@ -722,7 +723,7 @@ If you are translating from English to French then French would be your translat
   </widget>
   <widget class="GtkDialog" id="LanguageAdder">
     <property name="border_width">5</property>
-    <property name="title" translatable="yes">Missing Language</property>
+    <property name="title" translatable="yes">Add Missing Language</property>
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
     <property name="has_separator">False</property>

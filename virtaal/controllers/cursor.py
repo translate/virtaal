@@ -126,9 +126,6 @@ class Cursor(GObjectWrapper):
             self.indices = newindices
         self.index = index
 
-        if oldindex != self.index:
-            self.emit('cursor-changed')
-
     def move(self, offset):
         """Move the cursor C{offset} positions down.
             The cursor will wrap around to the beginning if C{circular=True}

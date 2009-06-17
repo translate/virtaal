@@ -76,11 +76,7 @@ def escape(text):
     """This is to escape text for use with gtk.TextView"""
     if not text:
         return ""
-    text = text.replace("\\", '\\\\')
-    text = text.replace("\n", '\\n\n')
-    text = text.replace("\r", '\\r\n')
-    text = text.replace("\\r\n\\n",'\\r\\n')
-    text = text.replace("\t", '\\t')
+    text = text.replace("\n", u'¶\n')
     if text.endswith("\n"):
         text = text[:-len("\n")]
     return text

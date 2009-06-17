@@ -363,7 +363,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     # GUI BUILDING CODE #
     def _create_sources(self):
         for i in range(len(self.sources), self.MAX_SOURCES):
-            source = self._create_textbox(u'', editable=False, scroll_policy=gtk.POLICY_NEVER)
+            source = self._create_textbox(u'', editable=False)
             textbox = source.get_child()
             self._widgets['vbox_sources'].pack_start(source)
             self.sources.append(textbox)

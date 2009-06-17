@@ -84,6 +84,7 @@ def gtk_textview_compute_optimal_height(widget, width):
         # directly after the file is opened. For now we try to guess a more
         # useful default than 0. This should look much better than 0, at least.
         h = 28
+    h = min(h, 280) # Somewhat arb value chosen so that 2*x + (space for comments) ~~ 600 px
     parent = widget.parent
     if isinstance(parent, gtk.ScrolledWindow) and parent.get_shadow_type() != gtk.SHADOW_NONE:
         border += 2 * parent.rc_get_style().ythickness
@@ -485,11 +486,9 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
             compute_optimal_height(editor, width)
             _width, height = editor.size_request()
             height += self.ROW_PADDING
-            #We used to have a minimum height. Do we want this?
-            #height = max(height, 70)
         else:
             height = self.compute_cell_height(widget, width)
-        height = min(height, 600)
+        #height = min(height, 600)
         y_offset = self.ROW_PADDING / 2
         return 0, y_offset, width, height
 

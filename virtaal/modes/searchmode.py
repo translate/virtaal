@@ -121,8 +121,10 @@ class SearchMode(BaseMode):
         else:
             self.update_search()
 
+        curpos = self.ent_search.props.cursor_position
         def grab_focus():
             self.ent_search.grab_focus()
+            self.ent_search.set_position(curpos)
             return False
 
         # FIXME: The following line is a VERY UGLY HACK, but at least it works.
@@ -223,9 +225,10 @@ class SearchMode(BaseMode):
             self.storecursor.indices = self.storecursor.model.stats['total']
         self._highlight_matches()
 
+        curpos = self.ent_search.props.cursor_position
         def grabfocus():
             self.ent_search.grab_focus()
-            self.ent_search.set_position(-1)
+            self.ent_search.set_position(curpos)
             return False
         gobject.idle_add(grabfocus)
 

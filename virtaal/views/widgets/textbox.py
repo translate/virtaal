@@ -270,15 +270,11 @@ class TextBox(gtk.TextView):
             self.set_text(self.get_text())
 
         if type(cursor_pos) is int and cursor_pos >= 0:
-            def place_cursor():
-                if not self.buffer.get_selection_bounds():
-                    self.buffer.place_cursor(self.buffer.get_iter_at_offset(cursor_pos))
-            gobject.idle_add(place_cursor)
+            if not self.buffer.get_selection_bounds():
+                self.buffer.place_cursor(self.buffer.get_iter_at_offset(cursor_pos))
         elif type(cursor_pos) is gtk.TreeIter:
-            def place_cursor():
-                if not self.buffer.get_selection_bounds():
-                    self.buffer.place_cursor(cursor_pos)
-            gobject.idle_add(place_cursor)
+            if not self.buffer.get_selection_bounds():
+                self.buffer.place_cursor(cursor_pos)
 
         if preserve_selection and selection:
             self.buffer.select_range(

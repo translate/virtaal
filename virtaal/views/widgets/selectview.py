@@ -19,9 +19,9 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gtk
-import glib
 import logging
 from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from xml.sax.saxutils import escape
 
 from virtaal.common import GObjectWrapper
 from virtaal.views.widgets.cellrendererwidget import CellRendererWidget
@@ -126,7 +126,7 @@ class SelectView(gtk.TreeView, GObjectWrapper):
         if widget.lbl_name:
             s = widget.lbl_name.get_label()
         if widget.lbl_desc:
-            s += '\n' + glib.markup_escape_text(widget.lbl_desc.get_text())
+            s += '\n' + escape(widget.lbl_desc.get_text())
         return s
 
     def get_all_items(self):

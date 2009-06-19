@@ -51,7 +51,7 @@ def test_sqlite3_version():
 def test_translate_toolkit_version():
     try:
         from translate.__version__ import ver
-        return ver >= (1, 3, 0)
+        return ver >= (1, 4, 0)
     except Exception:
         pass
     return False

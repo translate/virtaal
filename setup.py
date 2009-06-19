@@ -345,7 +345,7 @@ def add_win32_options(options):
             "compressed": True,
             "excludes":   ["PyLucene", "Tkconstants", "Tkinter", "tcl", "translate.misc._csv"],
             "dist_dir":   "virtaal-win32",
-            "includes":   ["lxml", "lxml._elementpath", "psyco", "cairo", "pango", "pangocairo", "atk", "gobject", "gtk.keysyms", "translate.services", "translate.services.tmclient", "translate.services.opentranclient"],
+            "includes":   ["lxml", "lxml._elementpath", "psyco", "cairo", "pango", "pangocairo", "atk", "gobject", "gtk.keysyms", "translate.services"],
             "optimize":   2,
         }
         py2exe_options['includes'] += ["bsddb", "zipfile"] # Dependencies for the migration and auto-correction plug-ins, respectively.

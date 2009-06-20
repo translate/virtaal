@@ -31,7 +31,7 @@ class UnitController(BaseController):
 
     __gtype_name__ = "UnitController"
     __gsignals__ = {
-        'unit-done':           (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'unit-done':           (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, int)),
         'unit-modified':       (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'unit-delete-text':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, int, int, TYPE_PYOBJECT, TYPE_PYOBJECT, int, TYPE_PYOBJECT, int)),
         'unit-insert-text':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT, int, TYPE_PYOBJECT, int)),
@@ -59,6 +59,8 @@ class UnitController(BaseController):
 
         self.store_controller.connect('store-loaded', self._on_store_loaded)
         self.main_controller.connect('controller-registered', self._on_controller_registered)
+
+        self._current_unit_modified = False
 
 
     # ACCESSORS #
@@ -93,9 +95,11 @@ class UnitController(BaseController):
 
     def _unit_modified(self, *args):
         self.emit('unit-modified', self.current_unit)
+        self._current_unit_modified = True
 
     def _unit_done(self, widget, unit):
-        self.emit('unit-done', unit)
+        self.emit('unit-done', unit, self._current_unit_modified)
+        self._current_unit_modified = False
 
 
     # EVENT HANDLERS #

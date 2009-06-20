@@ -86,8 +86,8 @@ class TMModel(BaseTMModel):
             self.cache[query_str] = [m for m in matches if m['quality'] != u'100']
             self.emit('match-found', query_str, self.cache[query_str])
 
-    def _on_unit_modified(self, widget, new_unit):
+    def _on_unit_modified(self, widget, new_unit, modified):
         """Add the new translation unit to the TM."""
-        if new_unit.istranslated():
+        if modified and new_unit.istranslated():
             self.matcher.extendtm(new_unit)
             self.cache = {}

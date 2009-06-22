@@ -158,7 +158,9 @@ class TMSourceColRenderer(gtk.GenericCellRenderer):
         if 'tmsource' not in self.matchdata:
             return 0, 0, 0, 0
 
-        label = gtk.Label(self.matchdata['tmsource'])
+        label = gtk.Label()
+        label.set_markup(u'<small>%s</small>' % self.matchdata['tmsource'])
+        label.get_pango_context().set_base_gravity(pango.GRAVITY_AUTO)
         label.set_angle(270)
         size = label.size_request()
         return 0, 0, size[0], size[1] + self.YPAD*2
@@ -178,8 +180,9 @@ class TMSourceColRenderer(gtk.GenericCellRenderer):
         x = cell_area.x + x_offset
         y = cell_area.y + y_offset + self.YPAD
 
-        label = gtk.Label(self.matchdata['tmsource'])
-        label.get_pango_context().set_base_gravity(pango.GRAVITY_AUTO)
+        label = gtk.Label()
+        label.set_markup(u'<small>%s</small>' % self.matchdata['tmsource'])
+        label.get_pango_context().set_base_dir(pango.DIRECTION_TTB_LTR)
         label.set_angle(270)
         label.set_alignment(0.5, 0.5)
         widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False,
@@ -245,7 +248,6 @@ class TMMatchRenderer(gtk.GenericCellRenderer):
 
         x = cell_area.x + x_offset
         source_height = self.source_layout.get_pixel_size()[1]
-        target_height = self.target_layout.get_pixel_size()[1]
         source_y = cell_area.y + y_offset
         target_y = cell_area.y + y_offset + source_height + self.LINE_SEPARATION
 

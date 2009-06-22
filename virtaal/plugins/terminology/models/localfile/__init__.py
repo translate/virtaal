@@ -24,8 +24,10 @@ from translate.search.match import terminologymatcher
 from translate.storage.placeables.terminology import TerminologyPlaceable
 from translate.storage import factory
 
-#FIXME: The following line will cause this model to not work if plug-ins are loaded from ~/.virtaal/virtaal_plugins (probably)
-from virtaal.plugins.terminology.models.basetermmodel import BaseTerminologyModel
+try:
+    from virtaal.plugins.terminology.models.basetermmodel import BaseTerminologyModel
+except ImportError:
+    from virtaal_plugins.terminology.models.basetermmodel import BaseTerminologyModel
 
 from localfileview import LocalFileView
 

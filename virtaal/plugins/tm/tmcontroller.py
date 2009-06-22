@@ -99,9 +99,7 @@ class TMController(BaseController):
         if query_str == self.current_query:
             # Perform some sanity checks on matches first
             for match in matches:
-                if 'quality' not in match or match['quality'] is None:
-                    match['quality'] = self.min_quality
-                elif not isinstance(match['quality'], int):
+                if not isinstance(match.get('quality', 0), int):
                     match['quality'] = int(match['quality'])
                 if 'tmsource' not in match or match['tmsource'] is None:
                     match['tmsource'] = tmmodel.display_name

@@ -95,6 +95,9 @@ options = {
         "virtaal.models",
         "virtaal.modes",
         "virtaal.plugins",
+        "virtaal.plugins.terminology",
+        "virtaal.plugins.terminology.models",
+        "virtaal.plugins.terminology.models.localfile",
         "virtaal.plugins.tm",
         "virtaal.plugins.tm.models",
         "virtaal.support",
@@ -116,6 +119,9 @@ if os.name == 'nt' or sys.platform == 'darwin':
     plugin_dest = 'virtaal_plugins'
     options['data_files'] += [
         (plugin_dest, glob.glob(path.join(plugin_src, '*.py'))),
+        (path.join(plugin_dest, 'terminology'), glob.glob(path.join(plugin_src, 'terminology', '*.py'))),
+        (path.join(plugin_dest, 'terminology', 'models'), glob.glob(path.join(plugin_src, 'terminology', 'models', '*.py'))),
+        (path.join(plugin_dest, 'terminology', 'models', 'localfile'), glob.glob(path.join(plugin_src, 'terminology', 'models', 'localfile', '*.py'))),
         (path.join(plugin_dest, 'tm'), glob.glob(path.join(plugin_src, 'tm', '*.py'))),
         (path.join(plugin_dest, 'tm', 'models'), glob.glob(path.join(plugin_src, 'tm', 'models', '*.py'))),
     ]
@@ -345,7 +351,11 @@ def add_win32_options(options):
             "compressed": True,
             "excludes":   ["PyLucene", "Tkconstants", "Tkinter", "tcl", "translate.misc._csv"],
             "dist_dir":   "virtaal-win32",
-            "includes":   ["lxml", "lxml._elementpath", "psyco", "cairo", "pango", "pangocairo", "atk", "gobject", "gtk.keysyms", "translate.services"],
+            "includes":   [
+                    "lxml", "lxml._elementpath", "psyco", "cairo", "pango",
+                    "pangocairo", "atk", "gobject", "gtk.keysyms",
+                    "translate.services", "translate.storage.placeables.terminology"
+                ],
             "optimize":   2,
         }
         py2exe_options['includes'] += ["bsddb", "zipfile"] # Dependencies for the migration and auto-correction plug-ins, respectively.

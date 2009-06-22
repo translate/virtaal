@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gtk
+from gtk import gdk
 import logging
 import pango
 from locale import strcoll
@@ -64,6 +65,14 @@ class LocalFileView:
             self.mnu_add_term,
             self.mnu_add_term.connect('activate', self._on_add_term)
         ))
+
+        gtk.accel_map_add_entry("<Virtaal>/Terminology/Add Term", gtk.keysyms.t, gdk.CONTROL_MASK)
+        accel_group = self.menu.get_accel_group()
+        if accel_group is None:
+            accel_group = gtk.AccelGroup()
+            self.menu.set_accel_group(accel_group)
+        self.mnu_add_term.set_accel_path("<Virtaal>/Terminology/Add Term")
+        self.menu.set_accel_group(accel_group)
 
     def destroy(self):
         for gobj, signal_id in self._signal_ids:

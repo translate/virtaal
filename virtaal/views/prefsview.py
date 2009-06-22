@@ -82,6 +82,7 @@ class PreferencesView(BaseView):
     def _setup_menu_item(self):
         mainview = self.controller.main_controller.view
         mnu_prefs = mainview.gui.get_widget('mnu_prefs')
+        mnu_prefs.set_accel_path("<Virtaal>/Edit/Preferences")
         mnu_prefs.connect('activate', self._show_preferences)
 
     # ACCESSORS #

@@ -183,7 +183,11 @@ class TMView(BaseView, GObjectWrapper):
         for plugin_name in plugin_controller._find_plugin_names():
             if plugin_name == 'basetmmodel':
                 continue
-            info = plugin_controller.get_plugin_info(plugin_name)
+            try:
+                info = plugin_controller.get_plugin_info(plugin_name)
+            except Exception, e:
+                logging.debug('Problem getting information for plugin %s' % plugin_name)
+                continue
             enabled = plugin_name in plugin_controller.plugins
             item = {'name': plugin_name}
             config = enabled and plugin_controller.plugins[plugin_name] or None

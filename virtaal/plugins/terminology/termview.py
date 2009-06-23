@@ -136,7 +136,11 @@ class TerminologyView(BaseView):
         for plugin_name in plugin_controller._find_plugin_names():
             if plugin_name == 'basetermmodel':
                 continue
-            info = plugin_controller.get_plugin_info(plugin_name)
+            try:
+                info = plugin_controller.get_plugin_info(plugin_name)
+            except Exception, e:
+                logging.debug('Problem getting information for plugin %s' % plugin_name)
+                continue
             enabled = plugin_name in plugin_controller.plugins
             config = enabled and plugin_controller.plugins[plugin_name] or None
             items.append({

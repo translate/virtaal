@@ -18,6 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import logging
+
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.views import PreferencesView
 
@@ -104,7 +106,12 @@ class PreferencesController(BaseController):
                     'config': plugin.configure_func
                 })
             else:
-                info = self.plugin_controller.get_plugin_info(found_plugin)
+                try:
+                    info = self.plugin_controller.get_plugin_info(found_plugin)
+                except Exception, e:
+                    logging.debug('Problem getting information for plugin %s' % found_plugin)
+                    continue
+
                 plugin_items.append({
                     'name': info['display_name'],
                     'desc': info['description'],

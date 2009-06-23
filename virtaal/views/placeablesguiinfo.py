@@ -229,7 +229,7 @@ class NewlineGUI(StringElemGUI):
 
     def create_repr_widgets(self):
         lbl = gtk.Label('¶')
-        lbl.modify_fg(gtk.STATE_NORMAL, gtk.gdk.Color('grey'))
+        lbl.modify_fg(gtk.STATE_NORMAL, gtk.gdk.color_parse('grey')) # foreground is light grey
         lbl.modify_font(self.textbox.get_pango_context().get_font_description())
         w, h = make_pango_layout(self.textbox, '¶', 100).get_pixel_size()
         lbl.set_size_request(-1, int(h/1.2))

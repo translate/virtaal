@@ -24,6 +24,7 @@ virtaal/plugins/tm/models/localtm.py
 virtaal/plugins/tm/models/opentran.py
 virtaal/plugins/tm/models/remotetm.py
 virtaal/plugins/tm/models/tinytm.py
+virtaal/plugins/tm/models/apertium.py
 virtaal/plugins/tm/tmview.py
 virtaal/plugins/tm/tmwidgets.py
 virtaal/views/langview.py

@@ -467,6 +467,8 @@ class DepCheckInstall(distutils.command.install.install):
 
 def main(options):
     options = add_platform_specific_options(options)
+    if not 'cmdclass' in options:
+        options['cmdclass'] = {}
     options['cmdclass']['install'] = DepCheckInstall
     create_manifest(options['data_files'], no_install_files, no_install_dirs)
     setup(name="virtaal",

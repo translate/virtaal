@@ -59,6 +59,7 @@ class TerminologyCombo(gtk.ComboBox):
         self.elem = elem
         self.insert_iter = None
         self.selected_string = None
+        self.set_name('termcombo')
         # Let's make it as small as possible, since we don't want to see the
         # combo at all.
         self.set_size_request(0, 0)
@@ -75,6 +76,16 @@ class TerminologyCombo(gtk.ComboBox):
         self._renderer = gtk.CellRendererText()
         self.pack_start(self._renderer)
         self.add_attribute(self._renderer, 'text', 0)
+
+        # Force the "appears-as-list" style property to 0
+        rc_string = """
+            style "not-a-list"
+            {
+                GtkComboBox::appears-as-list = 0
+            }
+            class "GtkComboBox" style "not-a-list"
+            """
+        gtk.rc_parse_string(rc_string)
 
 
     # METHODS #

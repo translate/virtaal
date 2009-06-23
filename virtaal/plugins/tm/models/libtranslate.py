@@ -19,8 +19,11 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import ctypes.util
-import logging
 from ctypes import *
+if not ctypes.util.find_library("translate"):
+    raise ImportError("libtranslate not found")
+
+import logging
 from translate.misc import quote
 
 from virtaal.common import pan_app

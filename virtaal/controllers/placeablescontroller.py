@@ -136,10 +136,16 @@ class PlaceablesController(BaseController):
             _('XML Tags'),
             _('XML tags, such as <b> and </i>')
         )
-        self.parser_info[general.SpacesPlaceable.parse] = (
-            _('Spaces'),
-            _('Double spaces and spaces in unexpected positions')
-        )
+        # This code should eventually be used to add the SpacesPlaceable, but
+        # it is not working well yet. We add the strings for translation so
+        # that we won't need to break the string freeze later when it works.
+#        self.parser_info[general.SpacesPlaceable.parse] = (
+#            _('Spaces'),
+#            _('Double spaces and spaces in unexpected positions')
+#        )
+
+        _('Spaces'),
+        _('Double spaces and spaces in unexpected positions')
 
 
     # METHODS #

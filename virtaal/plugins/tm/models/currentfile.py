@@ -53,8 +53,6 @@ class TMModel(BaseTMModel):
             self.controller.main_controller.store_controller.unit_controller.connect('unit-done', self._on_unit_modified),
             self.controller.main_controller.store_controller.unit_controller
         ))
-        if self.controller.main_controller.store_controller.cursor and self.controller.main_controller.store_controller.cursor.deref():
-            self._on_unit_modified(None, self.controller.main_controller.store_controller.cursor.deref())
 
 
     # METHODS #

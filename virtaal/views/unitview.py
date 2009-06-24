@@ -182,9 +182,12 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         # We use textbox.buffer.set_text() above so that the appropriate "delete-range" and "insert-text" signals are emitted;
         # it's blocked by TextBox.set_text(). This allows undo to work correctly.
 
-        # The following 2 lines were copied from focus_text_view() below
+        placeables_controller = self.controller.main_controller.placeables_controller
+        parsers = placeables_controller.get_parsers_for_textbox(textbox)
+        placeables_controller.apply_parsers(textbox.elem, parsers)
+
         translation_start = self._get_editing_start_pos(textbox.elem)
-        textbox.buffer.place_cursor(textbox.buffer.get_iter_at_offset(translation_start))
+        textbox.refresh(cursor_pos=translation_start)
 
         return False
 

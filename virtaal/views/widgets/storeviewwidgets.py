@@ -305,6 +305,9 @@ class StoreTreeView(gtk.TreeView):
         gobject.idle_add(change_cursor, priority=gobject.PRIORITY_DEFAULT_IDLE)
 
     def _keyboard_move(self, offset):
+        if not self.view.controller.get_store():
+            return
+
         # We don't want to process keyboard move events until we have finished updating
         # the display after a move event. So we use this awful, awful, terrible scheme to
         # keep track of pending draw events. In reality, it should be impossible for

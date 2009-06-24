@@ -19,7 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gtk
-from gtk.gdk
+import gtk.gdk
 import pango
 from translate.storage.placeables import base, StringElem, general
 

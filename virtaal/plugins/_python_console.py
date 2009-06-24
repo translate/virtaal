@@ -355,15 +355,13 @@ class Plugin(BasePlugin):
             self.window.set_title('Virtaal Python Console')
             self.window.add(console)
             self.window.connect('destroy', self._on_console_destroyed)
-            self.window.show_all()
-        else:
-            self.window.show_all()
+        self.window.show_all()
         self.window.grab_focus()
 
 
     # EVENT HANDLERS #
     def _on_console_destroyed(self, *args):
-        pass
+        self.window = None
 
     def _on_menuitem_activated(self, *args):
         self.show_console()

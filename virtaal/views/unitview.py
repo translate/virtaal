@@ -144,12 +144,10 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     focused_target_n = property(_get_focused_target_n, _set_focused_target_n)
 
     def get_target_n(self, n):
-        return markup.unescape(self.targets[n].get_text())
+        return self.targets[n].get_text()
 
-    def set_target_n(self, n, newtext, cursor_pos=-1, escape=True):
+    def set_target_n(self, n, newtext, cursor_pos=-1):
         # TODO: Save cursor position and set after assignment
-        if escape:
-            newtext = markup.escape(newtext)
         self.targets[n].set_text(newtext)
         if cursor_pos > -1:
             self.targets[n].buffer.place_cursor(self.targets[n].buffer.get_iter_at_offset(cursor_pos))

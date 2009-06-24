@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008 Zuza Software Foundation
+# Copyright 2008-2009 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -87,7 +87,7 @@ class RESTClient(object):
             if headers:
                 self.curl.setopt(pycurl.HTTPHEADER, headers)
 
-            # self reference required cause CurlMulti will only return
+            # self reference required, because CurlMulti will only return
             # Curl handles
             self.curl.request = self
 
@@ -118,9 +118,9 @@ class RESTClient(object):
         # event loop
         self.running = False
 
-        # since pycurl doesn't keep references to requests, requests
-        # get garbage collected before they are done. we need  to keep requests in
-        # a set and detroy them manually
+        # Since pycurl doesn't keep references to requests, requests
+        # get garbage collected before they are done. We need  to keep requests in
+        # a set and detroy them manually.
         self.requests = set()
         self.curl = pycurl.CurlMulti()
 

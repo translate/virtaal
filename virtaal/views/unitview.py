@@ -379,22 +379,6 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     def _create_targets(self):
         def on_textbox_n_press_event(textbox, event, eventname):
             """Handle special keypresses in the textarea."""
-            # Alt-Down
-            if eventname == 'alt-down':
-                idle_add(self.copy_original, textbox)
-                return True
-
-            # Automatically move to the next line if \n is entered
-            if event.keyval == gtk.keysyms.n:
-                curpos = textbox.buffer.props.cursor_position
-                lastchar = textbox.get_text()[curpos-1]
-                if lastchar == u"\\":
-                    textbox.buffer.insert_at_cursor(u'n\n')
-                    textbox.scroll_mark_onscreen(textbox.buffer.get_insert())
-                    textbox.stop_emission('key-pressed')
-                    return True
-
-            return False
 
         def target_key_press_event(textbox, event, eventname, next_textbox):
             if eventname == 'enter':
@@ -405,13 +389,18 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                     # to the next one.
                     textbox.parent.parent.emit('key-press-event', event)
                 return True
+
+            # Alt-Down
+            elif eventname == 'alt-down':
+                idle_add(self.copy_original, textbox)
+                return True
+
             return False
 
         for i in range(len(self.targets), self.MAX_TARGETS):
             target = self._create_textbox(u'', editable=True, scroll_policy=gtk.POLICY_AUTOMATIC)
             textbox = target.get_child()
             textbox.selector_textbox = self.sources[0]
-            textbox.connect('key-pressed', on_textbox_n_press_event)
             textbox.connect('paste-clipboard', self._on_textbox_paste_clipboard, i)
             textbox.connect('text-inserted', self._on_target_insert_text, i)
             textbox.connect('text-deleted', self._on_target_delete_range, i)

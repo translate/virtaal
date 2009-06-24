@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gtk
+from gtk.gdk
 import pango
 from translate.storage.placeables import base, StringElem, general
 
@@ -228,10 +229,12 @@ class NewlineGUI(StringElemGUI):
     SCALE_FACTOR = 1.2 # Experimentally determined
 
     def create_repr_widgets(self):
-        lbl = gtk.Label('¶')
+        lbl = gtk.Label(u'¶')
         lbl.modify_fg(gtk.STATE_NORMAL, gtk.gdk.color_parse('grey')) # foreground is light grey
-        lbl.modify_font(self.textbox.get_pango_context().get_font_description())
-        w, h = make_pango_layout(self.textbox, '¶', 100).get_pixel_size()
+        font_desc = self.textbox.style.font_desc
+        lbl.modify_font(font_desc)
+        self.textbox.get_pango_context().set_font_description(font_desc)
+        w, h = make_pango_layout(self.textbox, u'¶', 100).get_pixel_size()
         lbl.set_size_request(-1, int(h/1.2))
         self.widgets.append(lbl)
 

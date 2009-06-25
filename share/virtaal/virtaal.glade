@@ -637,7 +637,7 @@ If you are translating from English to French then French would be your translat
                               <widget class="GtkLabel" id="label1">
                                 <property name="visible">True</property>
                                 <property name="xpad">3</property>
-                                <property name="label" translatable="yes">_Add Missing Language</property>
+                                <property name="label" translatable="yes">_Add Missing Language...</property>
                                 <property name="use_underline">True</property>
                               </widget>
                               <packing>

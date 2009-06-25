@@ -46,7 +46,7 @@ defaultfont = 'monospace'
 # FIXME: This is a work-around to keep Windows from trying to use a
 # 0-sized font and screw everything up.
 if os.name == 'nt':
-    defaultfont += ' 8'
+    defaultfont += ' 9'
 
 def get_config_dir():
     if os.name == 'nt':

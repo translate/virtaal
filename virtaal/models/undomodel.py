@@ -98,7 +98,7 @@ class UndoModel(BaseModel):
             if self.index < 0:
                 self.undo_stack = []
             if self.index != len(self.undo_stack) - 1:
-                self.undo_stack = self.undo_stack[:self.index]
+                self.undo_stack = self.undo_stack[:self.index+1]
             self.undo_stack.append(undo_dict)
         self.index = len(self.undo_stack) - 1
 

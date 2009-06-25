@@ -99,6 +99,7 @@ class Settings:
     }
     placeable_state = {
         "altattrplaceable": "disabled",
+        "fileplaceable": "disabled",
     }
     plugin_state =  {
         "_helloworld": "disabled",

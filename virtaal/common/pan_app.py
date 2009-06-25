@@ -42,6 +42,12 @@ DEBUG = True # Enable debugging by default, while bin/virtaal still disables it 
 x_generator = 'Virtaal ' + ver
 default_config_name = "virtaal.ini"
 
+defaultfont = 'monospace'
+# FIXME: This is a work-around to keep Windows from trying to use a
+# 0-sized font and screw everything up.
+if os.name == 'nt':
+    defaultfont += ' 8'
+
 def get_config_dir():
     if os.name == 'nt':
         confdir = os.path.join(os.environ['APPDATA'], 'Virtaal')
@@ -86,9 +92,9 @@ class Settings:
             "nplurals": 0,
             "plural": None,
             "recentlangs": "",
-            "sourcefont": "monospace",
+            "sourcefont": defaultfont,
             "sourcelang": "en",
-            "targetfont": "monospace",
+            "targetfont": defaultfont,
             "targetlang": None,
     }
     placeable_state = {

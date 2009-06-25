@@ -450,12 +450,6 @@ class TextBox(gtk.TextView):
 
     def _on_key_pressed(self, widget, event, *args):
         evname = None
-        # Alt-Left
-        if event.keyval == gtk.keysyms.Left and event.state & gtk.gdk.MOD1_MASK:
-            self.move_elem_selection(-1)
-        # Alt-Right
-        elif event.keyval == gtk.keysyms.Right and event.state & gtk.gdk.MOD1_MASK:
-            self.move_elem_selection(1)
 
         # Uncomment the following block to get nice textual logging of key presses in the textbox
         #keyname = '<unknown>'
@@ -478,4 +472,10 @@ class TextBox(gtk.TextView):
             for keyval, state in keyslist:
                 if event.keyval == keyval and (trimmed_state == state):
                     evname = name
+
+        if evname == 'alt-left':
+            self.move_elem_selection(-1)
+        elif evname == 'alt-right':
+            self.move_elem_selection(1)
+
         return self.emit('key-pressed', event, evname)

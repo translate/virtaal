@@ -1188,7 +1188,7 @@ If you are translating from English to French then French would be your translat
                                         <child>
                                           <widget class="GtkLabel" id="label11">
                                             <property name="visible">True</property>
-                                            <property name="label" translatable="yes">Use default font</property>
+                                            <property name="label" translatable="yes">Use default fonts</property>
                                           </widget>
                                           <packing>
                                             <property name="position">1</property>

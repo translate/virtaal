@@ -71,6 +71,12 @@ class TerminologyModel(BaseTerminologyModel):
                 return store
         return None
 
+    def get_store_for_filename(self, filename):
+        for store in self.stores:
+            if os.path.abspath(getattr(store, 'filename', '')) == os.path.abspath(filename):
+                return store
+        return None
+
     def load_config(self):
         super(TerminologyModel, self).load_config()
         self.config['files'] = self.config['files'].split(',')

@@ -1520,7 +1520,9 @@ If you are translating from English to French then French would be your translat
               <widget class="GtkLabel" id="lbl_srclang">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
-                <property name="label">Source term &#x2014; English (United States)</property>
+                <property name="label">_Source term &#x2014; English (United States)</property>
+                <property name="use_underline">True</property>
+                <property name="mnemonic_widget">ent_source</property>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -1542,7 +1544,9 @@ If you are translating from English to French then French would be your translat
               <widget class="GtkLabel" id="lbl_tgtlang">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
-                <property name="label">Target term &#x2014; Afrikaans</property>
+                <property name="label">_Target term &#x2014; Afrikaans</property>
+                <property name="use_underline">True</property>
+                <property name="mnemonic_widget">ent_target</property>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -1564,7 +1568,9 @@ If you are translating from English to French then French would be your translat
               <widget class="GtkLabel" id="label4">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
-                <property name="label" translatable="yes">Comments</property>
+                <property name="label" translatable="yes">_Comments</property>
+                <property name="use_underline">True</property>
+                <property name="mnemonic_widget">txt_comment</property>
               </widget>
               <packing>
                 <property name="position">4</property>
@@ -1595,7 +1601,9 @@ If you are translating from English to French then French would be your translat
                 <child>
                   <widget class="GtkLabel" id="label3">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">Terminology file: </property>
+                    <property name="label" translatable="yes">Terminology _file: </property>
+                    <property name="use_underline">True</property>
+                    <property name="mnemonic_widget">cmb_termfile</property>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
@@ -1603,10 +1611,8 @@ If you are translating from English to French then French would be your translat
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="lbl_filename">
+                  <widget class="GtkComboBox" id="cmb_termfile">
                     <property name="visible">True</property>
-                    <property name="xalign">0</property>
-                    <property name="label">/path/to/terminology.po</property>
                   </widget>
                   <packing>
                     <property name="position">1</property>

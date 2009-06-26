@@ -310,19 +310,24 @@ class TermAddDialog:
         self._get_widgets()
 
     def _get_widgets(self):
-        widget_names = ('ent_source', 'ent_target', 'lbl_srclang', 'lbl_tgtlang', 'lbl_filename', 'txt_comment')
+        widget_names = ('cmb_termfile', 'ent_source', 'ent_target', 'lbl_srclang', 'lbl_tgtlang', 'txt_comment')
 
         for name in widget_names:
             setattr(self, name, self.gui.get_widget(name))
 
-        self.lbl_filename.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
-
         self.dialog = self.gui.get_widget('TermAddDlg')
+
+        cellr = gtk.CellRendererText()
+        self.lst_termfiles = gtk.ListStore(str)
+        self.cmb_termfile.set_model(self.lst_termfiles)
+        self.cmb_termfile.pack_start(cellr)
+        self.cmb_termfile.add_attribute(cellr, 'text', 0)
 
 
     # METHODS #
     def add_term_unit(self, source, target):
-        store = self.term_model.get_extend_store()
+        filename = self.cmb_termfile.get_active_text()
+        store = self.term_model.get_store_for_filename(filename)
         if store is None:
             logging.debug('No terminology store to extend :(')
             return
@@ -359,9 +364,24 @@ class TermAddDialog:
 
         self.txt_comment.get_buffer().set_text('')
 
+        # FIXME: Add accelerator to strings below. It doesn't work by
+        # just adding a _ before the appropriate letter. :/
         self.lbl_srclang.set_text(_(u'Source term — %(langname)s') % {'langname': self.lang_controller.source_lang.name})
         self.lbl_tgtlang.set_text(_(u'Target term — %(langname)s') % {'langname': self.lang_controller.target_lang.name})
-        self.lbl_filename.set_text(self.term_model.config.get('extendfile', ''))
+
+        self.lst_termfiles.clear()
+
+        extendfile = self.term_model.config.get('extendfile', None)
+        select_index = -1
+        i = 0
+        for f in self.term_model.config['files']:
+            if f == extendfile:
+                select_index = i
+            self.lst_termfiles.append([f])
+            i += 1
+
+        if select_index >= 0:
+            self.cmb_termfile.set_active(select_index)
 
     def run(self, parent=None):
         self.reset()

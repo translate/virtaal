@@ -572,3 +572,8 @@ msgstr ""
 msgid "_Preview:"
 msgstr ""
 
+#. Font dailog: Preview default text
+#. This is the default text shown in the preview entry, though the user
+#. can set it. Remember that some fonts only have capital letters.
+msgid "abcdefghijk ABCDEFGHIJK"
+msgstr ""

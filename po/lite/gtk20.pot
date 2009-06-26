@@ -551,3 +551,24 @@ msgstr ""
 msgctxt "Stock label"
 msgid "_OK"
 msgstr ""
+
+#. Font dialog: title
+msgid "Pick a Font"
+msgstr ""
+
+#. Font dialog: Family
+msgid "_Family:"
+msgstr ""
+
+#. Font dialog: Style
+msgid "_Style:"
+msgstr ""
+
+#. Font dialog: Size
+msgid "Si_ze:"
+msgstr ""
+
+#. Font dialog: Preview
+msgid "_Preview:"
+msgstr ""
+

@@ -39,6 +39,7 @@ class PreferencesController(BaseController):
         self.placeables_controller = main_controller.placeables_controller
         self.plugin_controller = main_controller.plugin_controller
         self.view = PreferencesView(self)
+        self.view.connect('prefs-done', self._on_prefs_done)
 
 
     # METHODS #
@@ -77,8 +78,16 @@ class PreferencesController(BaseController):
         pan_app.settings.plugin_state[plugin_name] = disabled and 'disabled' or 'enabled'
 
     def update_prefs_gui_data(self):
+        self._update_font_gui_data()
         self._update_placeables_gui_data()
         self._update_plugin_gui_data()
+        self._update_user_gui_data()
+
+    def _update_font_gui_data(self):
+        self.view.font_data = {
+            'source': pan_app.settings.language['sourcefont'],
+            'target': pan_app.settings.language['targetfont'],
+        }
 
     def _update_placeables_gui_data(self):
         items = []
@@ -124,3 +133,24 @@ class PreferencesController(BaseController):
         # (not dependant on config).
 
         self.view.plugin_data = plugin_items
+
+    def _update_user_gui_data(self):
+        self.view.user_data = {
+            'name':  pan_app.settings.translator['name'],
+            'email': pan_app.settings.translator['email'],
+            'team':  pan_app.settings.translator['team'],
+        }
+
+
+    # EVENT HANDLERS #
+    def _on_prefs_done(self, view):
+        # Update pan_app.settings with data from view
+        font_data = view.font_data
+        pan_app.settings.language['sourcefont'] = font_data['source']
+        pan_app.settings.language['targetfont'] = font_data['target']
+        # Reload unit to reload fonts
+        self.main_controller.unit_controller.view.update_languages()
+
+        user_data = view.user_data
+        for key in ('name', 'email', 'team'):
+            pan_app.settings.translator[key] = user_data[key]

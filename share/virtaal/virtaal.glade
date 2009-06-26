@@ -1138,6 +1138,8 @@ If you are translating from English to French then French would be your translat
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <property name="use_font">True</property>
+                                    <property name="use_size">True</property>
                                   </widget>
                                   <packing>
                                     <property name="left_attach">1</property>
@@ -1150,6 +1152,8 @@ If you are translating from English to French then French would be your translat
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <property name="use_font">True</property>
+                                    <property name="use_size">True</property>
                                   </widget>
                                   <packing>
                                     <property name="left_attach">1</property>

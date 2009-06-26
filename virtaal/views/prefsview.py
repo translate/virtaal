@@ -20,17 +20,26 @@
 
 import gtk
 import gtk.gdk
+import pango
+from gobject import SIGNAL_RUN_FIRST
 
+from virtaal.common import GObjectWrapper, pan_app
 from virtaal.views.widgets.selectview import SelectView
 
 from baseview import BaseView
 
 
-class PreferencesView(BaseView):
+class PreferencesView(BaseView, GObjectWrapper):
     """Load, display and control the "Preferences" dialog."""
+
+    __gtype_name__ = 'PreferencesView'
+    __gsignals__ = {
+        'prefs-done': (SIGNAL_RUN_FIRST, None, ()),
+    }
 
     # INITIALIZERS #
     def __init__(self, controller):
+        GObjectWrapper.__init__(self)
         self.controller = controller
         self._init_gui()
 
@@ -42,7 +51,10 @@ class PreferencesView(BaseView):
         )
 
         self._widgets = {}
-        widget_names = ('scrwnd_placeables', 'scrwnd_plugins',)
+        widget_names = (
+            'btn_default_fonts', 'ent_email', 'ent_team', 'ent_translator',
+            'fbtn_source', 'fbtn_target', 'scrwnd_placeables', 'scrwnd_plugins',
+        )
         for name in widget_names:
             self._widgets[name] = self.gui.get_widget(name)
 
@@ -53,8 +65,15 @@ class PreferencesView(BaseView):
         self._get_widgets()
         self._setup_menu_item()
         self._setup_key_bindings()
+        self._init_font_gui()
         self._init_placeables_page()
         self._init_plugins_page()
+
+    def _init_font_gui(self):
+        def reset_fonts(button):
+            self._widgets['fbtn_source'].set_font_name(pan_app.defaultfont)
+            self._widgets['fbtn_target'].set_font_name(pan_app.defaultfont)
+        self._widgets['btn_default_fonts'].connect('clicked', reset_fonts)
 
     def _init_placeables_page(self):
         self.placeables_select = SelectView()
@@ -86,6 +105,25 @@ class PreferencesView(BaseView):
         mnu_prefs.connect('activate', self._show_preferences)
 
     # ACCESSORS #
+    def _get_font_data(self):
+        sourcefont = pango.FontDescription(self._widgets['fbtn_source'].get_font_name())
+        targetfont = pango.FontDescription(self._widgets['fbtn_target'].get_font_name())
+        sourcesize = sourcefont.get_size() > 0 and ' %d' % (sourcefont.get_size() / pango.SCALE) or ''
+        targetsize = targetfont.get_size() > 0 and ' %d' % (targetfont.get_size() / pango.SCALE) or ''
+
+        return {
+            'source': sourcefont.get_family() + sourcesize,
+            'target': targetfont.get_family() + targetsize,
+        }
+    def _set_font_data(self, value):
+        if not isinstance(value, dict) or not 'source' in value or not 'target' in value:
+            raise ValueError('Value must be a dictionary')
+        sourcefont = pango.FontDescription(value['source'])
+        targetfont = pango.FontDescription(value['target'])
+        self._widgets['fbtn_source'].set_font_name(value['source'])
+        self._widgets['fbtn_target'].set_font_name(value['target'])
+    font_data = property(_get_font_data, _set_font_data)
+
     def _get_placeables_data(self):
         return self.placeables_select.get_all_items()
     def _set_placeables_data(self, value):
@@ -102,6 +140,23 @@ class PreferencesView(BaseView):
         self.plugins_select.select_item(selected)
     plugin_data = property(_get_plugin_data, _set_plugin_data)
 
+    def _get_user_data(self):
+        return {
+            'name':  self._widgets['ent_translator'].get_text(),
+            'email': self._widgets['ent_email'].get_text(),
+            'team':  self._widgets['ent_team'].get_text()
+        }
+    def _set_user_data(self, value):
+        if not isinstance(value, dict):
+            raise ValueError('Value must be a dictionary')
+        if 'name' in value:
+            self._widgets['ent_translator'].set_text(value['name'])
+        if 'email' in value:
+            self._widgets['ent_email'].set_text(value['email'])
+        if 'team' in value:
+            self._widgets['ent_team'].set_text(value['team'])
+    user_data = property(_get_user_data, _set_user_data)
+
 
     # METHODS #
     def show(self):
@@ -111,6 +166,7 @@ class PreferencesView(BaseView):
         #logging.debug('Plug-in data: %s' % (str(self.plugin_data)))
         self._widgets['dialog'].run()
         self._widgets['dialog'].hide()
+        self.emit('prefs-done')
 
 
     # EVENT HANDLERS #

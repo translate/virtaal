@@ -364,10 +364,8 @@ class TermAddDialog:
 
         self.txt_comment.get_buffer().set_text('')
 
-        # FIXME: Add accelerator to strings below. It doesn't work by
-        # just adding a _ before the appropriate letter. :/
-        self.lbl_srclang.set_text(_(u'Source term — %(langname)s') % {'langname': self.lang_controller.source_lang.name})
-        self.lbl_tgtlang.set_text(_(u'Target term — %(langname)s') % {'langname': self.lang_controller.target_lang.name})
+        self.lbl_srclang.set_text_with_mnemonic(_(u'_Source term — %(langname)s') % {'langname': self.lang_controller.source_lang.name})
+        self.lbl_tgtlang.set_text_with_mnemonic(_(u'_Target term — %(langname)s') % {'langname': self.lang_controller.target_lang.name})
 
         self.lst_termfiles.clear()
 

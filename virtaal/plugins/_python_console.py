@@ -353,6 +353,7 @@ class Plugin(BasePlugin):
 
             self.window = gtk.Window()
             self.window.set_title('Virtaal Python Console')
+            self.window.set_transient_for(self.main_controller.view.main_window)
             self.window.add(console)
             self.window.connect('destroy', self._on_console_destroyed)
         self.window.show_all()

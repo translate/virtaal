@@ -93,6 +93,7 @@ class Plugin(BasePlugin):
             self.window = IPythonWindow(namespace=ns, destroy_cb=self._on_console_destroyed)
             self.window.set_size_request(600, 400)
             self.window.set_title('Virtaal IPython Console')
+            self.window.set_transient_for(self.main_controller.view.main_window)
             self.window.connect('destroy', self._on_console_destroyed)
         self.window.show_all()
         self.window.grab_focus()

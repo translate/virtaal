@@ -26,6 +26,7 @@ from locale import strcoll
 from translate.storage import factory
 
 from virtaal.views import BaseView
+from virtaal.common import pan_app
 
 
 class LocalFileView:
@@ -352,6 +353,7 @@ class TermAddDialog:
             if selection:
                 source_text = src.get_text(*selection)
                 break
+        self.ent_source.modify_font(pango.FontDescription(pan_app.settings.language['sourcefont']))
         self.ent_source.set_text(source_text.strip())
 
         target_text = u''
@@ -360,6 +362,7 @@ class TermAddDialog:
             if selection:
                 target_text = tgt.get_text(*selection)
                 break
+        self.ent_target.modify_font(pango.FontDescription(pan_app.settings.language['targetfont']))
         self.ent_target.set_text(target_text.strip())
 
         self.txt_comment.get_buffer().set_text('')

@@ -19,9 +19,9 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gtk
-from gtk import gdk
 import logging
 import pango
+from gtk import gdk
 from locale import strcoll
 from translate.storage import factory
 

@@ -84,10 +84,6 @@ def gtk_textview_compute_optimal_height(widget, width):
         # directly after the file is opened. For now we try to guess a more
         # useful default than 0. This should look much better than 0, at least.
         h = 28
-    h = min(h, 280) # Somewhat arb value chosen so that 2*x + (space for comments) ~~ 600 px
-    parent = widget.parent
-    if isinstance(parent, gtk.ScrolledWindow) and parent.get_shadow_type() != gtk.SHADOW_NONE:
-        border += 2 * parent.rc_get_style().ythickness
     widget.parent.set_size_request(-1, h + border)
 
 @compute_optimal_height.when_type(label_expander.LabelExpander)
@@ -487,6 +483,11 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
             editor.set_size_request(width, -1)
             editor.show()
             compute_optimal_height(editor, width)
+            parent_height = widget.get_allocation().height
+            if parent_height < -1:
+                parent_height = widget.size_request()[1]
+            if parent_height > 0:
+                self.check_editor_height(editor, width, parent_height)
             _width, height = editor.size_request()
             height += self.ROW_PADDING
         else:
@@ -558,6 +559,29 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
         _layout_width, source_height = self.source_layout.get_pixel_size()
         _layout_width, target_height = self.target_layout.get_pixel_size()
         return max(source_height, target_height) + self.ROW_PADDING
+
+    def check_editor_height(self, editor, width, parentheight):
+        notesheight = 0
+
+        for note in editor._widgets['notes'].values():
+            notesheight += note.size_request()[1]
+
+        maxheight = parentheight - notesheight
+
+        if maxheight < 0:
+            return
+
+        visible_textboxes = []
+        for textbox in (editor._widgets['sources'] + editor._widgets['targets']):
+            if textbox.props.visible:
+                visible_textboxes.append(textbox)
+
+        max_tb_height = maxheight / len(visible_textboxes)
+
+        for textbox in visible_textboxes:
+            if textbox.props.visible and textbox.parent.size_request()[1] > max_tb_height:
+                textbox.parent.set_size_request(-1, max_tb_height)
+                logging.debug('%s.set_size_request(-1, %d)' % (textbox.parent, max_tb_height))
 
 
     # EVENT HANDLERS #

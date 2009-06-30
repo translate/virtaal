@@ -283,9 +283,9 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             - A C{gtk.TextView} for each source
             - A C{gtk.TextView} for each target
             - A C{gtk.ToggleButton} for the fuzzy option
-            - A C{widgets.LabelExpander} for programmer notes
-            - A C{widgets.LabelExpander} for translator notes
-            - A C{widgets.LabelExpander} for context info"""
+            - A C{gtk.Label} for programmer notes
+            - A C{gtk.Label} for translator notes
+            - A C{gtk.Label} for context info"""
         self._layout_update_notes('programmer')
         self._layout_update_sources()
         self._layout_update_context_info()

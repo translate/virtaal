@@ -21,7 +21,7 @@
 import gtk
 import logging
 
-from virtaal.views import BaseView
+from virtaal.views import BaseView, rendering
 from virtaal.views.placeablesguiinfo import StringElemGUI
 from virtaal.views.widgets.selectdialog import SelectDialog
 
@@ -64,6 +64,10 @@ class TerminologyCombo(gtk.ComboBox):
         # combo at all.
         self.set_size_request(0, 0)
         self.__init_combo()
+        cell_renderers = self.get_cells()
+        # Set the font correctly for the target
+        if cell_renderers:
+            cell_renderers[0].props.font_desc = rendering.get_target_font_description()
         self.menu = self.menu_get_for_attach_widget()[0]
         self.menu.connect('selection-done', self._on_selection_done)
 

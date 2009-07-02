@@ -160,6 +160,8 @@ class StringElemGUI(object):
             return 0
 
         i = 0
+        if len(self.widgets) > 0 and isinstance(self.widgets[0], gtk.Widget):
+            i = 1
         for child in self.elem.sub:
             if isinstance(child, StringElem):
                 index = child.gui_info.index(elem)

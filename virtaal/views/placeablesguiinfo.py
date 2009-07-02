@@ -21,7 +21,7 @@
 import gtk
 import gtk.gdk
 import pango
-from translate.storage.placeables import base, StringElem, general
+from translate.storage.placeables import base, StringElem, general, xliff
 
 from virtaal.views.widgets.storeviewwidgets import make_pango_layout
 
@@ -227,6 +227,34 @@ class PhGUI(StringElemGUI):
     bg = '#f7f7f7'
 
 
+class BxGUI(StringElemGUI):
+    bg = '#E6E6FA'
+
+    def create_repr_widgets(self):
+        self.widgets.append(gtk.Label('(('))
+
+        for lbl in self.widgets:
+            font_desc = self.textbox.style.font_desc
+            lbl.modify_font(font_desc)
+            self.textbox.get_pango_context().set_font_description(font_desc)
+            w, h = make_pango_layout(self.textbox, u'((', 100).get_pixel_size()
+            lbl.set_size_request(-1, int(h/1.2))
+
+
+class ExGUI(StringElemGUI):
+    bg = '#E6E6FA'
+
+    def create_repr_widgets(self):
+        self.widgets.append(gtk.Label('))'))
+
+        for lbl in self.widgets:
+            font_desc = self.textbox.style.font_desc
+            lbl.modify_font(font_desc)
+            self.textbox.get_pango_context().set_font_description(font_desc)
+            w, h = make_pango_layout(self.textbox, u'))', 100).get_pixel_size()
+            lbl.set_size_request(-1, int(h/1.2))
+
+
 class NewlineGUI(StringElemGUI):
     SCALE_FACTOR = 1.2 # Experimentally determined
 
@@ -322,6 +350,8 @@ element_gui_map = [
     (general.UrlPlaceable, UrlGUI),
     (general.EmailPlaceable, UrlGUI),
     (base.Ph, PhGUI),
+    (base.Bx, BxGUI),
+    (base.Ex, ExGUI),
     (base.G, GPlaceableGUI),
     (base.X, XPlaceableGUI),
     (xliff.UnknownXML, UnknownXMLGUI),

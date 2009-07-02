@@ -584,7 +584,7 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
         for textbox in visible_textboxes:
             if textbox.props.visible and textbox.parent.size_request()[1] > max_tb_height:
                 textbox.parent.set_size_request(-1, max_tb_height)
-                logging.debug('%s.set_size_request(-1, %d)' % (textbox.parent, max_tb_height))
+                #logging.debug('%s.set_size_request(-1, %d)' % (textbox.parent, max_tb_height))
 
 
     # EVENT HANDLERS #

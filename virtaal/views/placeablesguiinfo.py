@@ -254,29 +254,68 @@ class UrlGUI(StringElemGUI):
 
 
 class GPlaceableGUI(StringElemGUI):
-    fg = '#f7f7f7'
-    bg = 'darkred'
+    bg = '#ffd27f'
 
-    def create_tags(self):
-        metatag = gtk.TextTag()
-        metatag.props.foreground = self.fg
-        metatag.props.background = self.bg
+    def create_repr_widgets(self):
+        self.widgets.append(gtk.Label('<'))
+        self.widgets.append(gtk.Label('>'))
+        if self.elem.id:
+            self.widgets[0].set_text('<%s|' % (self.elem.id))
 
-        ttag = gtk.TextTag()
-        ttag.props.foreground = StringElemGUI.fg
-        ttag.props.background = 'yellow'
-
-        prefixlen = len(self.get_prefix())
-        return [
-            (metatag, 0, -1),
-            (ttag, prefixlen, -2),
-        ]
+        for lbl in self.widgets:
+            font_desc = self.textbox.style.font_desc
+            lbl.modify_font(font_desc)
+            self.textbox.get_pango_context().set_font_description(font_desc)
+            w, h = make_pango_layout(self.textbox, u'<foo>', 100).get_pixel_size()
+            lbl.set_size_request(-1, int(h/1.2))
 
 
 class XPlaceableGUI(StringElemGUI):
-    fg = '#ffffff'
-    bg = '#000000'
+    bg = '#ff7fef'
 
+    def create_repr_widgets(self):
+        self.widgets.append(gtk.Label('['))
+        self.widgets.append(gtk.Label(']'))
+        if self.elem.id:
+            self.widgets[0].set_text('[%s|' % (self.elem.id))
+
+        for lbl in self.widgets:
+            font_desc = self.textbox.style.font_desc
+            lbl.modify_font(font_desc)
+            self.textbox.get_pango_context().set_font_description(font_desc)
+            w, h = make_pango_layout(self.textbox, u'[foo]', 100).get_pixel_size()
+            lbl.set_size_request(-1, int(h/1.2))
+
+
+class UnknownXMLGUI(StringElemGUI):
+    bg = '#add8e6'
+
+    def create_repr_widgets(self):
+        self.widgets.append(gtk.Label('{'))
+        self.widgets.append(gtk.Label('}'))
+
+        info = ''
+        if self.elem.xml_node.tag:
+            tag = self.elem.xml_node.tag
+            if tag.startswith('{'):
+                # tag is namespaced
+                tag = tag[tag.index('}')+1:]
+            info += tag + '|'
+        if self.elem.id:
+            info += 'id=%s|'  % (self.elem.id)
+        if self.elem.rid:
+            info += 'rid=%s|' % (self.elem.rid)
+        if self.elem.xid:
+            info += 'xid=%s|' % (self.elem.xid)
+        if info:
+            self.widgets[0].set_text('{%s' % (info))
+
+        for lbl in self.widgets:
+            font_desc = self.textbox.style.font_desc
+            lbl.modify_font(font_desc)
+            self.textbox.get_pango_context().set_font_description(font_desc)
+            w, h = make_pango_layout(self.textbox, u'{foo}', 100).get_pixel_size()
+            lbl.set_size_request(-1, int(h/1.2))
 
 element_gui_map = [
     (general.NewlinePlaceable, NewlineGUI),
@@ -285,4 +324,5 @@ element_gui_map = [
     (base.Ph, PhGUI),
     (base.G, GPlaceableGUI),
     (base.X, XPlaceableGUI),
+    (xliff.UnknownXML, UnknownXMLGUI),
 ]

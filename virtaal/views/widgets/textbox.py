@@ -308,7 +308,7 @@ class TextBox(gtk.TextView):
             return
 
         # Reset the default tag for the previously selected element
-        if self.selected_elem:
+        if self.selected_elem is not None:
             self.selected_elem.gui_info = None
             self.add_default_gui_info(self.selected_elem)
 

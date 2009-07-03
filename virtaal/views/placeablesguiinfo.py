@@ -25,6 +25,8 @@ from translate.storage.placeables import base, StringElem, general, xliff
 
 from virtaal.views.widgets.storeviewwidgets import make_pango_layout
 
+import rendering
+
 
 class StringElemGUI(object):
     """
@@ -329,19 +331,18 @@ class UnknownXMLGUI(StringElemGUI):
                 # tag is namespaced
                 tag = tag[tag.index('}')+1:]
             info += tag + '|'
-        if self.elem.id:
-            info += 'id=%s|'  % (self.elem.id)
-        if self.elem.rid:
-            info += 'rid=%s|' % (self.elem.rid)
-        if self.elem.xid:
-            info += 'xid=%s|' % (self.elem.xid)
+        # Uncomment the if's below for more verbose placeables
+        #if self.elem.id:
+        #    info += 'id=%s|'  % (self.elem.id)
+        #if self.elem.rid:
+        #    info += 'rid=%s|' % (self.elem.rid)
+        #if self.elem.xid:
+        #    info += 'xid=%s|' % (self.elem.xid)
         if info:
             self.widgets[0].set_text('{%s' % (info))
 
         for lbl in self.widgets:
-            font_desc = self.textbox.style.font_desc
-            lbl.modify_font(font_desc)
-            self.textbox.get_pango_context().set_font_description(font_desc)
+            lbl.modify_font(rendering.get_role_font_description(self.textbox.role))
             w, h = make_pango_layout(self.textbox, u'{foo}', 100).get_pixel_size()
             lbl.set_size_request(-1, int(h/1.2))
 

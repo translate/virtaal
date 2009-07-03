@@ -364,7 +364,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     # GUI BUILDING CODE #
     def _create_sources(self):
         for i in range(len(self.sources), self.MAX_SOURCES):
-            source = self._create_textbox(u'', editable=False)
+            source = self._create_textbox(u'', editable=False, role='source')
             textbox = source.get_child()
             self._widgets['vbox_sources'].pack_start(source)
             self.sources.append(textbox)
@@ -398,7 +398,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             return False
 
         for i in range(len(self.targets), self.MAX_TARGETS):
-            target = self._create_textbox(u'', editable=True, scroll_policy=gtk.POLICY_AUTOMATIC)
+            target = self._create_textbox(u'', editable=True, role='target', scroll_policy=gtk.POLICY_AUTOMATIC)
             textbox = target.get_child()
             textbox.selector_textbox = self.sources[0]
             textbox.connect('paste-clipboard', self._on_textbox_paste_clipboard, i)
@@ -412,8 +412,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         for target, next_target in zip(self.targets, self.targets[1:] + [None]):
             target.connect('key-pressed', target_key_press_event, next_target)
 
-    def _create_textbox(self, text=u'', editable=True, scroll_policy=gtk.POLICY_AUTOMATIC):
-        textbox = TextBox(self.controller.main_controller)
+    def _create_textbox(self, text=u'', editable=True, role=None, scroll_policy=gtk.POLICY_AUTOMATIC):
+        textbox = TextBox(self.controller.main_controller, role=role)
         textbox.set_editable(editable)
         textbox.set_wrap_mode(gtk.WRAP_WORD_CHAR)
         textbox.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)

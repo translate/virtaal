@@ -366,6 +366,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         for i in range(len(self.sources), self.MAX_SOURCES):
             source = self._create_textbox(u'', editable=False, role='source')
             textbox = source.get_child()
+            textbox.modify_font(rendering.get_source_font_description())
             self._widgets['vbox_sources'].pack_start(source)
             self.sources.append(textbox)
 
@@ -400,6 +401,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         for i in range(len(self.targets), self.MAX_TARGETS):
             target = self._create_textbox(u'', editable=True, role='target', scroll_policy=gtk.POLICY_AUTOMATIC)
             textbox = target.get_child()
+            textbox.modify_font(rendering.get_target_font_description())
             textbox.selector_textbox = self.sources[0]
             textbox.connect('paste-clipboard', self._on_textbox_paste_clipboard, i)
             textbox.connect('text-inserted', self._on_target_insert_text, i)

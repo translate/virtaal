@@ -168,7 +168,10 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         tgt = self.unit.rich_source[0].copy()
         lang = factory.getlanguage(self.controller.main_controller.lang_controller.target_lang.code)
         punctgt = tgt.copy()
-        punctgt.apply_to_strings(lang.punctranslate)
+        punctgt.map(
+            lambda e: e.apply_to_strings(lang.punctranslate),
+            lambda e: e.isleaf() and e.istranslatable
+        )
 
         if punctgt != tgt:
             undocontroller.push_current_text(textbox)

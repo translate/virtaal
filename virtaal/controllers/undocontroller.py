@@ -95,6 +95,28 @@ class UndoController(BaseController):
     def enable(self):
         self.enabled = True
 
+    def push_current_text(self, textbox):
+        """Save the current text in the given (target) text box on the undo stack."""
+        current_text = textbox.elem.copy()
+        unitview = self.unit_controller.view
+
+        curpos = textbox.buffer.props.cursor_position
+        targetn = 0
+        for tgt in unitview.targets:
+            if tgt is textbox:
+                break
+            targetn += 1
+        def undo_set_text(unit):
+            textbox.elem.sub = current_text.sub
+
+        self.model.push({
+            'action': undo_set_text,
+            'cursorpos': curpos,
+            'desc': 'Set target %d text to %s' % (targetn, repr(textbox.elem)),
+            'targetn': targetn,
+            'unit': unitview.unit
+        })
+
     def remove_blank_undo(self):
         """Removes items from the top of the undo stack with no C{value} or
             C{action} values. The "top of the stack" is one of the top 2 items.

@@ -57,7 +57,7 @@ class TextBox(gtk.TextView):
     """A list of classes that should not be selectable with Alt+Left or Alt+Right."""
 
     # INITIALIZERS #
-    def __init__(self, main_controller, text=None, selector_textbox=None):
+    def __init__(self, main_controller, text=None, selector_textbox=None, role=None):
         """Constructor.
         @type  main_controller: L{virtaal.controllers.main_controller}
         @param main_controller: The main controller instance.
@@ -70,6 +70,7 @@ class TextBox(gtk.TextView):
         self.buffer = self.get_buffer()
         self.elem = None
         self.main_controller = main_controller
+        self.role = role
         self.selector_textbox = selector_textbox or self
         self.selected_elem = None
         self.selected_elem_index = None
@@ -120,15 +121,18 @@ class TextBox(gtk.TextView):
 
         self.buffer.handler_block_by_func(self._on_delete_range)
         self.buffer.handler_block_by_func(self._on_insert_text)
+
         if text is not self.elem:
             if self.placeables_controller:
                 self.elem.sub = [elem_parse(text, self.placeables_controller.get_parsers_for_textbox(self))]
             else:
                 self.elem.sub = [text]
             self.elem.prune()
+
         self.add_default_gui_info(self.elem)
         if hasattr(self.elem, 'gui_info'):
             self.elem.gui_info.render()
+
         self.buffer.handler_unblock_by_func(self._on_delete_range)
         self.buffer.handler_unblock_by_func(self._on_insert_text)
 

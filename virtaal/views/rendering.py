@@ -37,6 +37,12 @@ def get_source_font_description():
 def get_target_font_description():
     return get_font_description(pan_app.settings.language["targetfont"])
 
+def get_role_font_description(role):
+    if role == 'source':
+        return get_source_font_description()
+    elif role == 'target':
+        return get_target_font_description()
+
 _languages = {}
 
 def get_language(code):

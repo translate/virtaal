@@ -164,25 +164,23 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             textbox.selector_textbox.move_elem_selection(1)
             return
 
-        old_text = textbox.get_text()
+        undocontroller = self.controller.main_controller.undo_controller
+        tgt = self.unit.rich_source[0].copy()
         lang = factory.getlanguage(self.controller.main_controller.lang_controller.target_lang.code)
-        new_source = lang.punctranslate(self.unit.source)
-        # if punctranslate actually changed something, let's insert that as an
-        # undo step
-        if new_source != self.unit.source:
-            self.controller.main_controller.undo_controller.record_start()
-            textbox.buffer.set_text(markup.escape(self.unit.source))
-            self.controller.main_controller.undo_controller.record_stop()
+        punctgt = tgt.copy()
+        punctgt.apply_to_strings(lang.punctranslate)
 
-        self.controller.main_controller.undo_controller.record_start()
-        textbox.buffer.set_text(new_source)
-        self.controller.main_controller.undo_controller.record_stop()
-        # We use textbox.buffer.set_text() above so that the appropriate "delete-range" and "insert-text" signals are emitted;
-        # it's blocked by TextBox.set_text(). This allows undo to work correctly.
+        if punctgt != tgt:
+            undocontroller.push_current_text(textbox)
+            textbox.set_text(tgt)
+            tgt = punctgt
 
         placeables_controller = self.controller.main_controller.placeables_controller
         parsers = placeables_controller.get_parsers_for_textbox(textbox)
         placeables_controller.apply_parsers(textbox.elem, parsers)
+
+        undocontroller.push_current_text(textbox)
+        textbox.set_text(tgt)
 
         translation_start = self._get_editing_start_pos(textbox.elem)
         textbox.refresh(cursor_pos=translation_start)

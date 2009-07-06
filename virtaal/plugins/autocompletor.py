@@ -38,6 +38,7 @@ except ImportError:
                 return self.__factory()
 
 from virtaal.controllers import BasePlugin
+from virtaal.views.widgets.textbox import TextBox
 
 
 class AutoCompletor(object):
@@ -69,8 +70,8 @@ class AutoCompletor(object):
         if widget in self.widgets:
             return # Widget already added
 
-        if isinstance(widget, gtk.TextView):
-            self._add_text_view(widget)
+        if isinstance(widget, TextBox):
+            self._add_text_box(widget)
             return
 
         raise ValueError("Widget type %s not supported." % (type(widget)))
@@ -122,11 +123,11 @@ class AutoCompletor(object):
         return len(word) > self.comp_len + 2
 
     def remove_widget(self, widget):
-        """Remove a widget (currently only C{gtk.TextView}s are accepted) from
+        """Remove a widget (currently only L{TextBox}s are accepted) from
             the list of widgets to do auto-correction for.
             """
-        if isinstance(widget, gtk.TextView) and widget in self.widgets:
-            self._remove_textview(widget)
+        if isinstance(widget, TextBox) and widget in self.widgets:
+            self._remove_textbox(widget)
 
     def remove_words(self, words):
         """Remove a word or words from the list of words to auto-complete."""
@@ -141,41 +142,40 @@ class AutoCompletor(object):
                 except KeyError:
                     pass
 
-    def _add_text_view(self, textview):
-        """Add the given I{gtk.TextView} to the list of widgets to do auto-
+    def _add_text_box(self, textbox):
+        """Add the given L{TextBox} to the list of widgets to do auto-
             correction on."""
         id_dict_names = (
-            '_textbuffer_insert_ids',
-            '_textbuffer_delete_ids',
-            '_textview_button_press_ids',
-            '_textview_focus_out_ids',
-            '_textview_key_press_ids',
-            '_textview_move_cursor_ids'
+            '_textbox_insert_ids',
+            '_textbox_delete_ids',
+            '_textbox_button_press_ids',
+            '_textbox_focus_out_ids',
+            '_textbox_key_press_ids',
+            '_textbox_move_cursor_ids'
         )
         for name in id_dict_names:
             if not hasattr(self, name):
                 setattr(self, name, {})
 
-        buffer = textview.get_buffer()
-        handler_id = buffer.connect('insert-text', self._on_insert_text)
-        self._textbuffer_insert_ids[buffer] = handler_id
+        handler_id = textbox.connect('text-inserted', self._on_insert_text)
+        self._textbox_insert_ids[textbox] = handler_id
 
-        handler_id = buffer.connect('delete-range', self._on_delete_range)
-        self._textbuffer_delete_ids[buffer] = handler_id
+        handler_id = textbox.connect('text-deleted', self._on_delete_range)
+        self._textbox_delete_ids[textbox] = handler_id
 
-        handler_id = textview.connect('button-press-event', self._on_textview_button_press)
-        self._textview_button_press_ids[textview] = handler_id
+        handler_id = textbox.connect('button-press-event', self._on_textbox_button_press)
+        self._textbox_button_press_ids[textbox] = handler_id
 
-        handler_id = textview.connect('key-press-event', self._on_textview_keypress)
-        self._textview_key_press_ids[textview] = handler_id
+        handler_id = textbox.connect('key-press-event', self._on_textbox_keypress)
+        self._textbox_key_press_ids[textbox] = handler_id
 
-        handler_id = textview.connect('focus-out-event', self._on_textview_focus_out)
-        self._textview_focus_out_ids[textview] = handler_id
+        handler_id = textbox.connect('focus-out-event', self._on_textbox_focus_out)
+        self._textbox_focus_out_ids[textbox] = handler_id
 
-        handler_id = textview.connect('move-cursor', self._on_textview_move_cursor)
-        self._textview_move_cursor_ids[textview] = handler_id
+        handler_id = textbox.connect('move-cursor', self._on_textbox_move_cursor)
+        self._textbox_move_cursor_ids[textbox] = handler_id
 
-        self.widgets.add(textview)
+        self.widgets.add(textbox)
 
     def _check_delete_selection(self, buffer):
         """Deletes the current selection if said selection was created by the auto-completor."""
@@ -184,7 +184,7 @@ class AutoCompletor(object):
             buffer.delete_selection(False, True)
             buffer._suggestion = None
 
-    def _on_insert_text(self, buffer, iter, text, length):
+    def _on_insert_text(self, textbox, text, offset, elem):
         if self.wordsep_re.match(text):
             return
         # We are only interested in single character insertions, otherwise we
@@ -192,8 +192,9 @@ class AutoCompletor(object):
         if len(text.decode('utf-8')) > 1:
             return
 
-        prefix = unicode(buffer.get_text(buffer.get_start_iter(), iter) + text)
-        postfix = unicode(buffer.get_text(iter, buffer.get_end_iter()))
+        prefix = unicode(textbox.get_text(0, offset) + text)
+        postfix = unicode(textbox.get_text(offset))
+        buffer = textbox.buffer
 
         # Quick fix to check that we don't autocomplete in the middle of a word.
         right_lim = len(postfix) > 0 and postfix[0] or ' '
@@ -205,19 +206,18 @@ class AutoCompletor(object):
         if len(lastword) >= self.comp_len:
             completed_word, word_postfix = self.autocomplete(lastword)
             if completed_word == lastword:
-                buffer._suggestion = None
                 return
 
             if completed_word:
                 # Updating of the buffer is deferred until after this signal
                 # and its side effects are taken care of. We abuse
                 # gobject.idle_add for that.
-                insert_offset = iter.get_offset() + len(text)
+                insert_offset = offset + len(text)
                 def suggest_completion():
-                    buffer.handler_block(self._textbuffer_insert_ids[buffer])
+                    textbox.handler_block(self._textbox_insert_ids[textbox])
                     #logging.debug('buffer.insert_at_cursor("%s")' % (word_postfix))
                     buffer.insert(buffer.get_iter_at_offset(insert_offset), word_postfix)
-                    buffer.handler_unblock(self._textbuffer_insert_ids[buffer])
+                    textbox.handler_unblock(self._textbox_insert_ids[textbox])
 
                     sel_iter_start = buffer.get_iter_at_offset(insert_offset)
                     sel_iter_end   = buffer.get_iter_at_offset(insert_offset + len(word_postfix))
@@ -232,33 +232,33 @@ class AutoCompletor(object):
         else:
             buffer._suggestion = None
 
-    def _on_delete_range(self, buf, start_iter, end_iter):
-        suggestion = getattr(buf, '_suggestion', None)
+    def _on_delete_range(self, textbox, start_offset, end_offset, deleted, parent, cursor_pos, elem):
+        suggestion = getattr(textbox.buffer, '_suggestion', None)
         if suggestion:
-            selection = buf.get_selection_bounds()
+            selection = textbox.buffer.get_selection_bounds()
             if selection and suggestion[0].equal(selection[0]) and suggestion[1].equal(selection[1]):
                 return False
             else:
-                self._check_delete_selection(buf)
-        buf._suggestion = None
+                self._check_delete_selection(textbox.buffer)
+        textbox.buffer._suggestion = None
 
-    def _on_textview_button_press(self, textview, event):
-        self._check_delete_selection(textview.get_buffer())
+    def _on_textbox_button_press(self, textbox, event):
+        self._check_delete_selection(textbox.get_buffer())
 
-    def _on_textview_focus_out(self, textview, event):
-        self._check_delete_selection(textview.get_buffer())
+    def _on_textbox_focus_out(self, textbox, event):
+        self._check_delete_selection(textbox.get_buffer())
 
-    def _on_textview_move_cursor(self, textview, step_size, count, expand_selection):
-        self._check_delete_selection(textview.get_buffer())
+    def _on_textbox_move_cursor(self, textbox, step_size, count, expand_selection):
+        self._check_delete_selection(textbox.get_buffer())
 
-    def _on_textview_keypress(self, textview, event):
-        """Catch tabs to the C{gtk.TextView} and make it keep the current selection."""
-        iters = textview.get_buffer().get_selection_bounds()
+    def _on_textbox_keypress(self, textbox, event):
+        """Catch tabs to the L{TextBox} and make it keep the current selection."""
+        iters = textbox.buffer.get_selection_bounds()
 
         if not iters:
             return False
         if event.keyval == gtk.keysyms.Tab:
-            buf = textview.get_buffer()
+            buf = textbox.buffer
             completion = buf.get_text(iters[0], iters[1])
             buf.place_cursor(iters[1])
             buf.move_mark_by_name('selection_bound', iters[1])
@@ -267,40 +267,39 @@ class AutoCompletor(object):
                 event.keyval == gtk.keysyms.Z or event.keyval== gtk.keysyms.BackSpace:
             # An undo/delete event will unselect the suggestion and make it hang
             # around. Therefore we need to remove the suggestion manually.
-            self._check_delete_selection(textview.get_buffer())
+            self._check_delete_selection(textbox.buffer)
             return False
 
-    def _remove_textview(self, textview):
-        """Remove the given C{gtk.TextView} from the list of widgets to do
+    def _remove_textbox(self, textbox):
+        """Remove the given L{TextBox} from the list of widgets to do
             auto-correction on.
             """
-        if not hasattr(self, '_textbuffer_insert_ids'):
+        if not hasattr(self, '_textbox_insert_ids'):
             return
         # Disconnect the "insert-text" event handler
-        buffer = textview.get_buffer()
-        buffer.disconnect(self._textbuffer_insert_ids[buffer])
+        textbox.disconnect(self._textbox_insert_ids[textbox])
 
-        if not hasattr(self, '_textbuffer_delete_ids'):
+        if not hasattr(self, '_textbox_delete_ids'):
             return
         # Disconnect the "delete-range" event handler
-        buffer.disconnect(self._textbuffer_delete_ids[buffer])
+        textbox.disconnect(self._textbox_delete_ids[textbox])
 
-        if not hasattr(self, '_textview_focus_out_ids'):
+        if not hasattr(self, '_textbox_focus_out_ids'):
             return
         # Disconnect the "focus-out-event" event handler
-        textview.disconnect(self._textview_focus_out_ids[textview])
+        textbox.disconnect(self._textbox_focus_out_ids[textbox])
 
-        if not hasattr(self, '_textview_key_press_ids'):
+        if not hasattr(self, '_textbox_key_press_ids'):
             return
         # Disconnect the "key-press-event" event handler
-        textview.disconnect(self._textview_key_press_ids[textview])
+        textbox.disconnect(self._textbox_key_press_ids[textbox])
 
-        if not hasattr(self, '_textview_move_cursor_ids'):
+        if not hasattr(self, '_textbox_move_cursor_ids'):
             return
         # Disconnect the "move-cursor" event handler
-        textview.disconnect(self._textview_move_cursor_ids[textview])
+        textbox.disconnect(self._textbox_move_cursor_ids[textbox])
 
-        self.widgets.remove(textview)
+        self.widgets.remove(textbox)
 
     def _update_word_list(self):
         """Update and sort found words according to frequency."""

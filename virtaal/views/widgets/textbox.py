@@ -96,6 +96,10 @@ class TextBox(gtk.TextView):
     def get_text(self, start_iter=None, end_iter=None):
         """Return the text rendered in this text box.
             Uses C{gtk.TextBuffer.get_text()}."""
+        if isinstance(start_iter, int):
+            start_iter = self.buffer.get_iter_at_offset(start_iter)
+        if isinstance(end_iter, int):
+            end_iter = self.buffer.get_iter_at_offset(end_iter)
         if start_iter is None:
             start_iter = self.buffer.get_start_iter()
         if end_iter is None:

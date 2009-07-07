@@ -115,6 +115,9 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         mnu_next = maingui.get_widget('mnu_placnext')
         mnu_prev = maingui.get_widget('mnu_placprev')
         mnu_transfer = maingui.get_widget('mnu_transfer')
+        self.mnu_next = mnu_next
+        self.mnu_prev = mnu_prev
+        self.mnu_transfer = mnu_transfer
         menu_edit = maingui.get_widget('menu_edit')
 
         def on_next(*args):
@@ -144,6 +147,10 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         mnu_next.set_accel_path("<Virtaal>/Edit/Next Placeable")
         mnu_prev.set_accel_path("<Virtaal>/Edit/Prev Placeable")
         mnu_transfer.set_accel_path("<Virtaal>/Edit/Transfer")
+
+        # Disable the menu items to start with, because we can't assume that a
+        # store is loaded. See _set_menu_items_sensitive() for more activation.
+        self._set_menu_items_sensitive(False)
 
 
     # ACCESSORS #
@@ -292,6 +299,10 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
         self._widgets['vbox_targets'].connect('key-press-event', self._on_key_press_event)
 
+    def _set_menu_items_sensitive(self, sensitive=True):
+        for widget in (self.mnu_next, self.mnu_prev, self.mnu_transfer):
+            widget.set_sensitive(sensitive)
+
     def _update_editor_gui(self):
         """Build the default editor with the following components:
             - A C{gtk.TextView} for each source
@@ -306,6 +317,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         self._layout_update_targets()
         self._layout_update_notes('translator')
         self._layout_update_fuzzy()
+        if self.unit:
+            self._set_menu_items_sensitive(True)
 
     def _update_textview_language(self, text_view, language):
         language = str(language)

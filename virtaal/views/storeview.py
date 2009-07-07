@@ -70,6 +70,8 @@ class StoreView(BaseView):
         self.mnu_pageup.set_accel_path('<Virtaal>/Navigation/PgUp')
         self.mnu_pagedown.set_accel_path('<Virtaal>/Navigation/PgDown')
 
+        self._set_menu_items_sensitive(False)
+
 
     # ACCESSORS #
     def _get_cursor(self):
@@ -88,6 +90,7 @@ class StoreView(BaseView):
         self.store = store
         if store:
             self._treeview.set_model(store)
+            self._set_menu_items_sensitive(True)
             self.cursor.connect('cursor-changed', self._on_cursor_change)
 
     def show(self):
@@ -102,6 +105,10 @@ class StoreView(BaseView):
         if self._treeview.get_model():
             selection = self._treeview.get_selection()
             selection.select_iter(self._treeview.get_model().get_iter_first())
+
+    def _set_menu_items_sensitive(self, sensitive=True):
+        for widget in (self.mnu_up, self.mnu_down, self.mnu_pageup, self.mnu_pagedown):
+            widget.set_sensitive(sensitive)
 
 
     # EVENT HANDLERS #

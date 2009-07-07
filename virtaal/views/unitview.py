@@ -111,17 +111,28 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         maingui.get_widget('mnu_copy').connect('activate', on_copy)
         maingui.get_widget('mnu_paste').connect('activate', on_paste)
 
-        # And now for the "Transfer from source" menu item
+        # And now for the "Transfer from source" and placeable selection menu items
+        mnu_next = maingui.get_widget('mnu_placnext')
+        mnu_prev = maingui.get_widget('mnu_placprev')
         mnu_transfer = maingui.get_widget('mnu_transfer')
         menu_edit = maingui.get_widget('menu_edit')
+
+        def on_next(*args):
+            self.targets[self.focused_target_n].move_elem_selection(1)
+        def on_prev(*args):
+            self.targets[self.focused_target_n].move_elem_selection(-1)
         def on_transfer(*args):
             ev = gtk.gdk.Event(gtk.gdk.KEY_PRESS)
             ev.state = gtk.gdk.MOD1_MASK
             ev.keyval = gtk.keysyms.Down
             ev.window = self.targets[self.focused_target_n].get_window(gtk.TEXT_WINDOW_WIDGET)
             ev.put()
+        mnu_next.connect('activate', on_next)
+        mnu_prev.connect('activate', on_prev)
         mnu_transfer.connect('activate', on_transfer)
 
+        gtk.accel_map_add_entry("<Virtaal>/Edit/Next Placeable", gtk.keysyms.Right, gtk.gdk.MOD1_MASK)
+        gtk.accel_map_add_entry("<Virtaal>/Edit/Prev Placeable", gtk.keysyms.Left, gtk.gdk.MOD1_MASK)
         gtk.accel_map_add_entry("<Virtaal>/Edit/Transfer", gtk.keysyms.Down, gtk.gdk.MOD1_MASK)
 
         accel_group = menu_edit.get_accel_group()
@@ -130,6 +141,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
         self.controller.main_controller.view.add_accel_group(accel_group)
         menu_edit.set_accel_group(accel_group)
+        mnu_next.set_accel_path("<Virtaal>/Edit/Next Placeable")
+        mnu_prev.set_accel_path("<Virtaal>/Edit/Prev Placeable")
         mnu_transfer.set_accel_path("<Virtaal>/Edit/Transfer")
 
 

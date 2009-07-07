@@ -214,7 +214,6 @@ class StoreTreeView(gtk.TreeView):
         self._enable_tooltips()
 
         self._install_callbacks()
-        self._add_accelerator_bindings()
 
         # This must be changed to a mutex if you ever consider
         # writing multi-threaded code. However, the motivation

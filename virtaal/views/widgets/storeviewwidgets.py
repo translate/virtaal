@@ -223,26 +223,6 @@ class StoreTreeView(gtk.TreeView):
         # to you.
         self._waiting_for_row_change = 0
 
-    def _add_accelerator_bindings(self):
-        gtk.accel_map_add_entry("<Virtaal>/Navigation/Up", gtk.accelerator_parse("Up")[0], gdk.CONTROL_MASK)
-        gtk.accel_map_add_entry("<Virtaal>/Navigation/Down", gtk.accelerator_parse("Down")[0], gdk.CONTROL_MASK)
-        gtk.accel_map_add_entry("<Virtaal>/Navigation/PgUp", gtk.accelerator_parse("Page_Up")[0], gdk.CONTROL_MASK)
-        gtk.accel_map_add_entry("<Virtaal>/Navigation/PgDown", gtk.accelerator_parse("Page_Down")[0], gdk.CONTROL_MASK)
-
-        self.accel_group = gtk.AccelGroup()
-        self.accel_group.connect_by_path("<Virtaal>/Navigation/Up", self._move_up)
-        self.accel_group.connect_by_path("<Virtaal>/Navigation/Down", self._move_down)
-        self.accel_group.connect_by_path("<Virtaal>/Navigation/PgUp", self._move_pgup)
-        self.accel_group.connect_by_path("<Virtaal>/Navigation/PgDown", self._move_pgdown)
-
-        mainview = self.view.controller.main_controller.view
-        mainview.add_accel_group(self.accel_group)
-        mainview.gui.get_widget('menu_navigation').set_accel_group(self.accel_group)
-        mainview.gui.get_widget('mnu_up').set_accel_path('<Virtaal>/Navigation/Up')
-        mainview.gui.get_widget('mnu_down').set_accel_path('<Virtaal>/Navigation/Down')
-        mainview.gui.get_widget('mnu_pageup').set_accel_path('<Virtaal>/Navigation/PgUp')
-        mainview.gui.get_widget('mnu_pagedown').set_accel_path('<Virtaal>/Navigation/PgDown')
-
     def _enable_tooltips(self):
         if hasattr(self, "set_tooltip_column"):
             self.set_tooltip_column(COLUMN_NOTE)

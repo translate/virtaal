@@ -38,12 +38,37 @@ class StoreView(BaseView):
         self.parent_widget = self.controller.main_controller.view.gui.get_widget('scrolledwindow1')
 
         self._init_treeview()
+        self._add_accelerator_bindings()
         self.load_store(self.controller.store)
 
         self.controller.main_controller.view.main_window.connect('configure-event', self._treeview.on_configure_event)
 
     def _init_treeview(self):
         self._treeview = StoreTreeView(self)
+
+    def _add_accelerator_bindings(self):
+        gtk.accel_map_add_entry("<Virtaal>/Navigation/Up", gtk.accelerator_parse("Up")[0], gdk.CONTROL_MASK)
+        gtk.accel_map_add_entry("<Virtaal>/Navigation/Down", gtk.accelerator_parse("Down")[0], gdk.CONTROL_MASK)
+        gtk.accel_map_add_entry("<Virtaal>/Navigation/PgUp", gtk.accelerator_parse("Page_Up")[0], gdk.CONTROL_MASK)
+        gtk.accel_map_add_entry("<Virtaal>/Navigation/PgDown", gtk.accelerator_parse("Page_Down")[0], gdk.CONTROL_MASK)
+
+        self.accel_group = gtk.AccelGroup()
+        self.accel_group.connect_by_path("<Virtaal>/Navigation/Up", self._treeview._move_up)
+        self.accel_group.connect_by_path("<Virtaal>/Navigation/Down", self._treeview._move_down)
+        self.accel_group.connect_by_path("<Virtaal>/Navigation/PgUp", self._treeview._move_pgup)
+        self.accel_group.connect_by_path("<Virtaal>/Navigation/PgDown", self._treeview._move_pgdown)
+
+        mainview = self.controller.main_controller.view
+        mainview.add_accel_group(self.accel_group)
+        mainview.gui.get_widget('menu_navigation').set_accel_group(self.accel_group)
+        self.mnu_up = mainview.gui.get_widget('mnu_up')
+        self.mnu_down = mainview.gui.get_widget('mnu_down')
+        self.mnu_pageup = mainview.gui.get_widget('mnu_pageup')
+        self.mnu_pagedown = mainview.gui.get_widget('mnu_pagedown')
+        self.mnu_up.set_accel_path('<Virtaal>/Navigation/Up')
+        self.mnu_down.set_accel_path('<Virtaal>/Navigation/Down')
+        self.mnu_pageup.set_accel_path('<Virtaal>/Navigation/PgUp')
+        self.mnu_pagedown.set_accel_path('<Virtaal>/Navigation/PgDown')
 
 
     # ACCESSORS #

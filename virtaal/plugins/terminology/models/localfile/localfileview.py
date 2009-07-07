@@ -45,7 +45,7 @@ class LocalFileView:
 
     # METHODS #
     def _setup_menus(self):
-        mnu_transfer = self.mainview.gui.get_widget('mnu_transfer')
+        mnu_transfer = self.mainview.gui.get_widget('mnu_placnext')
         self.mnui_edit = self.mainview.gui.get_widget('menuitem_edit')
         self.menu = self.mnui_edit.get_submenu()
 

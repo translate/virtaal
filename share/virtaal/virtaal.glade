@@ -167,6 +167,34 @@
                       </widget>
                     </child>
                     <child>
+                      <widget class="GtkImageMenuItem" id="mnu_placprev">
+                        <property name="label" translatable="yes">P_revious placeable</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">False</property>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="image5">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-go-back</property>
+                          </widget>
+                        </child>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkImageMenuItem" id="mnu_placnext">
+                        <property name="label" translatable="yes">_Next placeable</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">False</property>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="image6">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-go-forward</property>
+                          </widget>
+                        </child>
+                      </widget>
+                    </child>
+                    <child>
                       <widget class="GtkSeparatorMenuItem" id="separatormenuitem3">
                         <property name="visible">True</property>
                       </widget>

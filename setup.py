@@ -457,13 +457,23 @@ def create_manifest(data_files, extra_files, extra_dirs):
 
 import distutils.command.install
 class DepCheckInstall(distutils.command.install.install):
-    def __init__(self, *args, **kwargs):
-        from virtaal.support import depcheck
-        failed = depcheck.check_dependencies()
-        if failed:
-            print 'Failed dependencies: %s' % (', '.join(failed))
-            exit(0)
-        distutils.command.install.install.__init__(self, *args, **kwargs)
+    user_options = distutils.command.install.install.user_options + [
+        ('nodepcheck', None, "don't check dependencies"),
+    ]
+
+    def initialize_options(self):
+        distutils.command.install.install.initialize_options(self)
+        self.nodepcheck = False
+
+    def run(self, *args, **kwargs):
+        if not self.nodepcheck:
+            from virtaal.support import depcheck
+            failed = depcheck.check_dependencies()
+            if failed:
+                print 'Failed dependencies: %s' % (', '.join(failed))
+                print 'Use the --nodepcheck option to ignore dependencies.'
+                exit(0)
+        distutils.command.install.install.run(self, *args, **kwargs)
 
 def main(options):
     options = add_platform_specific_options(options)

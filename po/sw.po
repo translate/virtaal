@@ -142,7 +142,7 @@ msgstr "_Muoongozo wa Kuswahilisha"
 
 #: ../share/virtaal/virtaal.glade.h:31
 msgid "_Missing Language..."
-msgstr "_Lugha Inakosekana"
+msgstr "_Lugha Inakosekana..."
 
 #: ../share/virtaal/virtaal.glade.h:32
 msgid "_Navigation"
@@ -405,7 +405,7 @@ msgstr ""
 #. l10n: match quality column label
 #: ../virtaal/plugins/tm/tmwidgets.py:63
 msgid "%"
-msgstr ""
+msgstr "%"
 
 #: ../virtaal/plugins/tm/tmwidgets.py:65
 msgid "Matches"
@@ -467,7 +467,7 @@ msgstr ""
 #. between units.
 #: ../virtaal/views/modeview.py:62
 msgid "_Navigation: "
-msgstr "_Urambaza:"
+msgstr "_Urambaza: "
 
 #: ../virtaal/views/unitview.py:498
 msgid "F_uzzy"
@@ -497,7 +497,7 @@ msgstr "Tovuti ya Virtaal"
 #. l10n: Rather than translating, fill in the names of the translators
 #: ../virtaal/views/widgets/aboutdialog.py:62
 msgid "translator-credits"
-msgstr "heko-za-watafsiri"
+msgstr "Emanuel Feruzi"
 
 #: ../virtaal/views/widgets/langadddialog.py:102
 msgid "Language code must be an ASCII string."

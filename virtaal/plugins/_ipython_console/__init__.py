@@ -83,11 +83,13 @@ class Plugin(BasePlugin):
             ns = {
                 '__builtins__' : __builtins__,
                 'mc': self.main_controller,
-                'sc': self.main_controller.store_controller,
-                'uc': self.main_controller.unit_controller,
                 'mv': self.main_controller.view,
+                'sc': self.main_controller.store_controller,
                 'sv': self.main_controller.store_controller.view,
+                'uc': self.main_controller.unit_controller,
                 'uv': self.main_controller.unit_controller.view,
+                'src': self.main_controller.unit_controller.view.sources[0],
+                'tgt': self.main_controller.unit_controller.view.targets[0],
             }
 
             self.window = IPythonWindow(namespace=ns, destroy_cb=self._on_console_destroyed)

@@ -43,6 +43,7 @@ class LanguageAddDialog(object):
         self._get_widgets()
         if isinstance(parent, gtk.Widget):
             self.dialog.set_transient_for(parent)
+            self.dialog.set_icon(parent.get_toplevel().get_icon())
 
     def _get_widgets(self):
         """Load the Glade file and get the widgets we would like to use."""

@@ -145,44 +145,11 @@ class AutoCompletor(object):
     def _add_text_box(self, textbox):
         """Add the given L{TextBox} to the list of widgets to do auto-
             correction on."""
-        id_dict_names = (
-            '_textbox_insert_ids',
-            '_textbox_delete_ids',
-            '_textbox_button_press_ids',
-            '_textbox_focus_out_ids',
-            '_textbox_key_press_ids',
-            '_textbox_move_cursor_ids'
-        )
-        for name in id_dict_names:
-            if not hasattr(self, name):
-                setattr(self, name, {})
-
+        if not hasattr(self, '_textbox_insert_ids'):
+            self._textbox_insert_ids = {}
         handler_id = textbox.connect('text-inserted', self._on_insert_text)
         self._textbox_insert_ids[textbox] = handler_id
-
-        handler_id = textbox.connect('text-deleted', self._on_delete_range)
-        self._textbox_delete_ids[textbox] = handler_id
-
-        handler_id = textbox.connect('button-press-event', self._on_textbox_button_press)
-        self._textbox_button_press_ids[textbox] = handler_id
-
-        handler_id = textbox.connect('key-press-event', self._on_textbox_keypress)
-        self._textbox_key_press_ids[textbox] = handler_id
-
-        handler_id = textbox.connect('focus-out-event', self._on_textbox_focus_out)
-        self._textbox_focus_out_ids[textbox] = handler_id
-
-        handler_id = textbox.connect('move-cursor', self._on_textbox_move_cursor)
-        self._textbox_move_cursor_ids[textbox] = handler_id
-
         self.widgets.add(textbox)
-
-    def _check_delete_selection(self, buffer):
-        """Deletes the current selection if said selection was created by the auto-completor."""
-        suggestion = getattr(buffer, '_suggestion', None)
-        if suggestion:
-            buffer.delete_selection(False, True)
-            buffer._suggestion = None
 
     def _on_insert_text(self, textbox, text, offset, elem):
         if self.wordsep_re.match(text):
@@ -215,60 +182,17 @@ class AutoCompletor(object):
                 insert_offset = offset + len(text)
                 def suggest_completion():
                     textbox.handler_block(self._textbox_insert_ids[textbox])
-                    #logging.debug('buffer.insert_at_cursor("%s")' % (word_postfix))
-                    buffer.insert(buffer.get_iter_at_offset(insert_offset), word_postfix)
+                    logging.debug("textbox.suggestion = {'text': u'%s', 'offset': %d}" % (word_postfix, insert_offset))
+                    textbox.suggestion = {'text': word_postfix, 'offset': insert_offset}
                     textbox.handler_unblock(self._textbox_insert_ids[textbox])
 
                     sel_iter_start = buffer.get_iter_at_offset(insert_offset)
                     sel_iter_end   = buffer.get_iter_at_offset(insert_offset + len(word_postfix))
                     buffer.select_range(sel_iter_start, sel_iter_end)
 
-                    buffer._suggestion = (sel_iter_start, sel_iter_end)
                     return False
 
                 gobject.idle_add(suggest_completion, priority=gobject.PRIORITY_HIGH)
-            else:
-                buffer._suggestion = None
-        else:
-            buffer._suggestion = None
-
-    def _on_delete_range(self, textbox, start_offset, end_offset, deleted, parent, cursor_pos, elem):
-        suggestion = getattr(textbox.buffer, '_suggestion', None)
-        if suggestion:
-            selection = textbox.buffer.get_selection_bounds()
-            if selection and suggestion[0].equal(selection[0]) and suggestion[1].equal(selection[1]):
-                return False
-            else:
-                self._check_delete_selection(textbox.buffer)
-        textbox.buffer._suggestion = None
-
-    def _on_textbox_button_press(self, textbox, event):
-        self._check_delete_selection(textbox.get_buffer())
-
-    def _on_textbox_focus_out(self, textbox, event):
-        self._check_delete_selection(textbox.get_buffer())
-
-    def _on_textbox_move_cursor(self, textbox, step_size, count, expand_selection):
-        self._check_delete_selection(textbox.get_buffer())
-
-    def _on_textbox_keypress(self, textbox, event):
-        """Catch tabs to the L{TextBox} and make it keep the current selection."""
-        iters = textbox.buffer.get_selection_bounds()
-
-        if not iters:
-            return False
-        if event.keyval == gtk.keysyms.Tab:
-            buf = textbox.buffer
-            completion = buf.get_text(iters[0], iters[1])
-            buf.place_cursor(iters[1])
-            buf.move_mark_by_name('selection_bound', iters[1])
-            return True
-        elif event.state & gtk.gdk.CONTROL_MASK and \
-                event.keyval == gtk.keysyms.Z or event.keyval== gtk.keysyms.BackSpace:
-            # An undo/delete event will unselect the suggestion and make it hang
-            # around. Therefore we need to remove the suggestion manually.
-            self._check_delete_selection(textbox.buffer)
-            return False
 
     def _remove_textbox(self, textbox):
         """Remove the given L{TextBox} from the list of widgets to do
@@ -278,26 +202,6 @@ class AutoCompletor(object):
             return
         # Disconnect the "insert-text" event handler
         textbox.disconnect(self._textbox_insert_ids[textbox])
-
-        if not hasattr(self, '_textbox_delete_ids'):
-            return
-        # Disconnect the "delete-range" event handler
-        textbox.disconnect(self._textbox_delete_ids[textbox])
-
-        if not hasattr(self, '_textbox_focus_out_ids'):
-            return
-        # Disconnect the "focus-out-event" event handler
-        textbox.disconnect(self._textbox_focus_out_ids[textbox])
-
-        if not hasattr(self, '_textbox_key_press_ids'):
-            return
-        # Disconnect the "key-press-event" event handler
-        textbox.disconnect(self._textbox_key_press_ids[textbox])
-
-        if not hasattr(self, '_textbox_move_cursor_ids'):
-            return
-        # Disconnect the "move-cursor" event handler
-        textbox.disconnect(self._textbox_move_cursor_ids[textbox])
 
         self.widgets.remove(textbox)
 

@@ -73,7 +73,7 @@ class UnitController(BaseController):
 
     # METHODS #
     def load_unit(self, unit):
-        if self.current_unit and self.current_unit == unit:
+        if self.current_unit and self.current_unit is unit:
             return self.view
         self.current_unit = unit
         self.nplurals = self.main_controller.lang_controller.target_lang.nplurals

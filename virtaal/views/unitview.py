@@ -607,7 +607,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     def _on_target_changed(self, buffer, index):
         tgt = self.targets[index]
-        if tgt.elem:
+        if tgt.elem is not None:
             rich_target = self.unit.rich_target
             rich_target[index] = tgt.elem
             self.unit.rich_target = rich_target

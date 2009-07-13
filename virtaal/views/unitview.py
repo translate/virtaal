@@ -185,8 +185,17 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             return
 
         undocontroller = self.controller.main_controller.undo_controller
-        tgt = self.unit.rich_source[0].copy()
         lang = factory.getlanguage(self.controller.main_controller.lang_controller.target_lang.code)
+
+        tgt = self.unit.rich_source[0].copy()
+        placeables_controller = self.controller.main_controller.placeables_controller
+        parsers = placeables_controller.get_parsers_for_textbox(textbox)
+        placeables_controller.apply_parsers(tgt, parsers)
+        if textbox.role == 'target':
+            for plac in placeables_controller.non_target_placeables:
+                tgt.remove_type(plac)
+        tgt.prune()
+
         punctgt = tgt.copy()
         punctgt.map(
             lambda e: e.apply_to_strings(lang.punctranslate),
@@ -197,10 +206,6 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             undocontroller.push_current_text(textbox)
             textbox.set_text(tgt)
             tgt = punctgt
-
-        placeables_controller = self.controller.main_controller.placeables_controller
-        parsers = placeables_controller.get_parsers_for_textbox(textbox)
-        placeables_controller.apply_parsers(textbox.elem, parsers)
 
         undocontroller.push_current_text(textbox)
         textbox.set_text(tgt)

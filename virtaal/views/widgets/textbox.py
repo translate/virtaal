@@ -446,7 +446,7 @@ class TextBox(gtk.TextView):
             start_iter.set_offset(start_offset-2)
 
         start_elem = self.elem.gui_info.elem_at_offset(start_offset)
-        if start_elem is None and (end_offset - start_offset) == 1 and start_iter.get_child_anchor():
+        if start_elem is None or (end_offset - start_offset) == 1 and start_iter.get_child_anchor():
             return
         start_elem_len = start_elem.gui_info.length()
         start_elem_offset = self.elem.gui_info.index(start_elem)

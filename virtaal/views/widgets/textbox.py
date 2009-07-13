@@ -74,6 +74,7 @@ class TextBox(gtk.TextView):
         self.selector_textbox = selector_textbox or self
         self.selected_elem = None
         self.selected_elem_index = None
+        self._suggestion = None
         self.__connect_default_handlers()
         self.placeables_controller = main_controller.placeables_controller
         if self.placeables_controller is None:
@@ -82,10 +83,32 @@ class TextBox(gtk.TextView):
             self.set_text(text)
 
     def __connect_default_handlers(self):
+        self.connect('button-press-event', self._on_event_remove_suggestion)
+        self.connect('focus-out-event', self._on_event_remove_suggestion)
         self.connect('key-press-event', self._on_key_pressed)
+        self.connect('move-cursor', self._on_event_remove_suggestion)
         self.buffer.connect('insert-text', self._on_insert_text)
         self.buffer.connect('delete-range', self._on_delete_range)
 
+
+    def _get_suggestion(self):
+        return self._suggestion
+    def _set_suggestion(self, value):
+        if value is None:
+            self.hide_suggestion()
+            self._suggestion = None
+            return
+
+        if not (isinstance(value, dict) and \
+                'text'   in value and value['text'] and \
+                'offset' in value and value['offset'] >= 0):
+            raise ValueError('invalid suggestion dictionary: %s' % (value))
+
+        if self.suggestion_is_visible():
+            self.suggestion = None
+        self._suggestion = value
+        self.show_suggestion()
+    suggestion = property(_get_suggestion, _set_suggestion)
 
     # OVERRIDDEN METHODS #
     def get_stringelem(self):
@@ -208,6 +231,17 @@ class TextBox(gtk.TextView):
 
         self.emit('after-apply-gui-info', elem)
 
+    def hide_suggestion(self):
+        if not self.suggestion_is_visible():
+            return
+        selection = self.buffer.get_selection_bounds()
+        if not selection:
+            return
+
+        self.buffer.handler_block_by_func(self._on_delete_range)
+        self.buffer.delete(*selection)
+        self.buffer.handler_unblock_by_func(self._on_delete_range)
+
     @accepts(Self(), [StringElem])
     def insert_translation(self, elem):
         selection = self.buffer.get_selection_bounds()
@@ -329,6 +363,35 @@ class TextBox(gtk.TextView):
         self.buffer.place_cursor(self.buffer.get_iter_at_offset(cursor_offset))
         self.emit('element-selected', self.selected_elem)
 
+    def show_suggestion(self, suggestion=None):
+        if isinstance(suggestion, dict):
+            self.suggestion = suggestion
+        if self.suggestion is None:
+            return
+        iters = (self.buffer.get_iter_at_offset(self.suggestion['offset']),)
+        self.buffer.handler_block_by_func(self._on_insert_text)
+        self.buffer.insert(iters[0], self.suggestion['text'])
+        self.buffer.handler_unblock_by_func(self._on_insert_text)
+        iters = (
+            self.buffer.get_iter_at_offset(self.suggestion['offset']),
+            self.buffer.get_iter_at_offset(
+                self.suggestion['offset'] + len(self.suggestion['text'])
+            )
+        )
+        self.buffer.select_range(*iters)
+
+    def suggestion_is_visible(self):
+        """Checks whether the current text suggestion is visible."""
+        selection = self.buffer.get_selection_bounds()
+        if not selection:
+            return False
+        start_offset = selection[0].get_offset()
+        text = self.buffer.get_text(*selection)
+        return self.suggestion['text'] and \
+                self.suggestion['text'] == text and \
+                self.suggestion['offset'] >= 0 and \
+                self.suggestion['offset'] == start_offset
+
     @accepts(Self(), [[StringElem, basestring, None]])
     def update_tree(self, text=None):
         if not self.placeables_controller:
@@ -346,6 +409,7 @@ class TextBox(gtk.TextView):
         self.buffer.handler_block_by_func(self._on_delete_range)
         self.buffer.handler_block_by_func(self._on_insert_text)
         self.elem.gui_info.render()
+        self.show_suggestion()
         self.buffer.handler_unblock_by_func(self._on_delete_range)
         self.buffer.handler_unblock_by_func(self._on_insert_text)
 
@@ -447,6 +511,17 @@ class TextBox(gtk.TextView):
     def _on_key_pressed(self, widget, event, *args):
         evname = None
 
+        if self.suggestion_is_visible():
+            if event.keyval == gtk.keysyms.Tab:
+                self.hide_suggestion()
+                self.buffer.insert(
+                    self.buffer.get_iter_at_offset(self.suggestion['offset']),
+                    self.suggestion['text']
+                )
+                self.suggestion = None
+                return True
+            self.suggestion = None
+
         # Uncomment the following block to get nice textual logging of key presses in the textbox
         #keyname = '<unknown>'
         #for attr in dir(gtk.keysyms):
@@ -475,3 +550,6 @@ class TextBox(gtk.TextView):
             self.move_elem_selection(1)
 
         return self.emit('key-pressed', event, evname)
+
+    def _on_event_remove_suggestion(self, *args):
+        self.suggestion = None

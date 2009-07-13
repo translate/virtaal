@@ -23,12 +23,12 @@ import gtk
 import logging
 import pango
 from gtk import gdk
+from translate.lang import factory
 
 from virtaal.support.simplegeneric import generic
 from virtaal.views import markup, rendering
 from virtaal.common import pan_app
 
-from translate.lang import factory
 
 @generic
 def compute_optimal_height(widget, width):

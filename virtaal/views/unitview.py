@@ -466,6 +466,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         if origin not in self._widgets['notes']:
             label = gtk.Label()
             label.set_line_wrap(True)
+            label.set_justify(gtk.JUSTIFY_FILL)
 
             self._widgets['vbox_middle'].pack_start(label)
             if origin == 'programmer':
@@ -533,6 +534,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         if not self._widgets['context_info']:
             label = gtk.Label()
             label.set_line_wrap(True)
+            label.set_justify(gtk.JUSTIFY_FILL)
             self._widgets['vbox_middle'].pack_start(label)
             self._widgets['vbox_middle'].reorder_child(label, 2)
             self._widgets['context_info'] = label

@@ -46,8 +46,7 @@ class LanguageView(BaseView):
     def _create_dialogs(self):
         langs = [LanguageModel(lc) for lc in LanguageModel.languages]
         langs.sort(key=lambda x: x.name)
-        self.select_dialog = LanguageSelectDialog(langs)
-        self.select_dialog.dialog.set_transient_for(self.controller.main_controller.view.main_window)
+        self.select_dialog = LanguageSelectDialog(langs, parent=self.controller.main_controller.view.main_window)
         self.select_dialog.btn_add.connect('clicked', self._on_addlang_clicked)
 
         self.add_dialog = LanguageAddDialog(parent=self.select_dialog.dialog)

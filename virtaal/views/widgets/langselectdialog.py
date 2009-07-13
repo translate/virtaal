@@ -32,7 +32,7 @@ class LanguageSelectDialog(object):
     """
 
     # INITIALIZERS #
-    def __init__(self, languages):
+    def __init__(self, languages, parent=None):
         super(LanguageSelectDialog, self).__init__()
 
         self.gladefilename, self.gui = BaseView.load_glade_file(
@@ -44,6 +44,10 @@ class LanguageSelectDialog(object):
         self._get_widgets()
         self._init_treeviews()
         self.update_languages(languages)
+
+        if isinstance(parent, gtk.Widget):
+            self.dialog.set_transient_for(parent)
+            self.dialog.set_icon(parent.get_toplevel().get_icon())
 
     def _get_widgets(self):
         """Load the Glade file and get the widgets we would like to use."""

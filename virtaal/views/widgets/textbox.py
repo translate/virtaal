@@ -383,7 +383,7 @@ class TextBox(gtk.TextView):
     def suggestion_is_visible(self):
         """Checks whether the current text suggestion is visible."""
         selection = self.buffer.get_selection_bounds()
-        if not selection:
+        if not selection or self.suggestion is None:
             return False
         start_offset = selection[0].get_offset()
         text = self.buffer.get_text(*selection)

@@ -28,8 +28,6 @@ from virtaal.support.simplegeneric import generic
 from virtaal.views import markup, rendering
 from virtaal.common import pan_app
 
-import label_expander
-
 from translate.lang import factory
 
 @generic
@@ -89,15 +87,13 @@ def gtk_textview_compute_optimal_height(widget, width):
         border += 2 * parent.rc_get_style().ythickness
     widget.parent.set_size_request(-1, h + border)
 
-@compute_optimal_height.when_type(label_expander.LabelExpander)
-def gtk_labelexpander_compute_optimal_height(widget, width):
-    if widget.label.child.get_text().strip() == "":
-        widget.set_size_request(-1, 0)
+@compute_optimal_height.when_type(gtk.Label)
+def gtk_label_compute_optimal_height(widget, width):
+    if widget.get_text().strip() == "":
+        widget.set_size_request(width, 0)
     else:
-#        _w, h = make_pango_layout(widget, widget.label.child.get_label()[0], width).get_pixel_size()
-#        _w, h = make_pango_layout(widget, widget.label.child.get_label(), width).get_pixel_size()
-        _w, h = widget.label.child.get_layout().get_pixel_size()
-        widget.set_size_request(-1, h + 4)
+        _w, h = make_pango_layout(widget, widget.get_label(), width).get_pixel_size()
+        widget.set_size_request(width, h)
 
 
 COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE = 0, 1, 2

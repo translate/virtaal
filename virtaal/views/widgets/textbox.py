@@ -123,22 +123,11 @@ class TextBox(gtk.TextView):
             self.selected_elem = None
             self.selected_elem_index = None
 
-        self.buffer.handler_block_by_func(self._on_delete_range)
-        self.buffer.handler_block_by_func(self._on_insert_text)
-
-        if text is not self.elem:
             if self.placeables_controller:
                 self.elem.sub = [elem_parse(text, self.placeables_controller.get_parsers_for_textbox(self))]
             else:
                 self.elem.sub = [text]
             self.elem.prune()
-
-        self.add_default_gui_info(self.elem)
-        if hasattr(self.elem, 'gui_info'):
-            self.elem.gui_info.render()
-
-        self.buffer.handler_unblock_by_func(self._on_delete_range)
-        self.buffer.handler_unblock_by_func(self._on_insert_text)
 
         self.update_tree(self.elem)
 
@@ -356,7 +345,6 @@ class TextBox(gtk.TextView):
 
         self.buffer.handler_block_by_func(self._on_delete_range)
         self.buffer.handler_block_by_func(self._on_insert_text)
-        self.buffer.set_text(u'')
         self.elem.gui_info.render()
         self.buffer.handler_unblock_by_func(self._on_delete_range)
         self.buffer.handler_unblock_by_func(self._on_insert_text)

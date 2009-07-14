@@ -180,7 +180,7 @@ class MainController(BaseController):
             self.store_controller.save_file(filename)
         except IOError, exc:
             self.show_error(
-                _("Could not save file.\n\n%(error_message)s\n\nTry saving at a different location.") % {'error_message': str(exc)}
+                _("Could not save file.\n\n%(error_message)s\n\nTry saving to a different location.") % {'error_message': str(exc)}
             )
         except Exception, exc:
             logging.exception('MainController.save_file(filename="%s")' % (filename))

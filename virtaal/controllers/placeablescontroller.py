@@ -88,11 +88,12 @@ class PlaceablesController(BaseController):
         )
         self.parser_info[general.CapsPlaceable.parse] = (
             _('Capitals'),
+            #l10n: this refers to "UPPERCASE" letters
             _('Words containing capital letters only')
         )
         self.parser_info[general.OptionPlaceable.parse] = (
-            _('Commandline Options'),
-            _('Application commandline options, such as --help, -h and -I')
+            _('Command line Options'),
+            _('Application command line options, such as --help, -h and -I')
         )
         self.parser_info[general.EmailPlaceable.parse] = (
             _('E-mail'),
@@ -121,7 +122,7 @@ class PlaceablesController(BaseController):
         )
         self.parser_info[general.PunctuationPlaceable.parse] = (
             _('Punctuation'),
-            _('Symbols and punctuation marks used less frequently')
+            _('Symbols and less frequently used punctuation marks')
         )
         self.parser_info[general.UrlPlaceable.parse] = (
             _('URLs'),

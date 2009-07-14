@@ -30,7 +30,7 @@ class TMModel(BaseTMModel):
 
     __gtype_name__ = 'OpenTranTMModel'
     display_name = _('Open-Tran.eu')
-    description = _('Translations previously done for Free and Open Source Software')
+    description = _('Previous translations for Free and Open Source Software')
 
     default_config = { "url" : "http://open-tran.eu/RPC2" }
 

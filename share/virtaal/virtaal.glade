@@ -1283,7 +1283,7 @@ If you are translating from English to French then French would be your translat
                 <child>
                   <widget class="GtkLabel" id="label3">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">Placeables are special parts of the text that can automatically be highlighted and easily inserted into the translation.</property>
+                    <property name="label" translatable="yes">Placeables are special parts of the text that can be automatically highlighted and easily inserted into the translation.</property>
                     <property name="wrap">True</property>
                   </widget>
                   <packing>

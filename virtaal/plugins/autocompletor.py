@@ -182,7 +182,7 @@ class AutoCompletor(object):
                 insert_offset = offset + len(text)
                 def suggest_completion():
                     textbox.handler_block(self._textbox_insert_ids[textbox])
-                    logging.debug("textbox.suggestion = {'text': u'%s', 'offset': %d}" % (word_postfix, insert_offset))
+                    #logging.debug("textbox.suggestion = {'text': u'%s', 'offset': %d}" % (word_postfix, insert_offset))
                     textbox.suggestion = {'text': word_postfix, 'offset': insert_offset}
                     textbox.handler_unblock(self._textbox_insert_ids[textbox])
 

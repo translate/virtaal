@@ -89,7 +89,7 @@ class PlaceablesController(BaseController):
         self.parser_info[general.CapsPlaceable.parse] = (
             _('Capitals'),
             #l10n: this refers to "UPPERCASE" / "CAPITAL" letters
-            _('Words containing upper case letters only')
+            _('Words containing uppercase letters only')
         )
         self.parser_info[general.OptionPlaceable.parse] = (
             _('Command line Options'),

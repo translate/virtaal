@@ -190,8 +190,17 @@ class MainController(BaseController):
 
     def revert_file(self, filename=None):
         confirm = self.show_prompt(_("Reload File"), _("Reload file from last saved copy and lose all changes?"))
-        if confirm:
+        if not confirm:
+            return
+
+        try:
             self.store_controller.revert_file()
+            self.mode_controller.refresh_mode()
+        except Exception, exc:
+            logging.exception('MainController.revert_file(filename="%s")' % (filename))
+            self.show_error(
+                _("Could not open file.\n%(error_message)s\n\nTry opening a different file.") % {'error_message': str(exc)}
+            )
 
     def update_file(self, filename, uri=''):
         """Update the current file using the file given by C{filename} as template.

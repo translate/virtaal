@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-07-15 18:41+0200\n"
-"PO-Revision-Date: 2009-07-15 21:55+0200\n"
+"PO-Revision-Date: 2009-07-15 22:01+0200\n"
 "Last-Translator: Julen Ruiz Aizpuru <julenx@gmail.com>\n"
 "Language-Team: librezale@librezale.org\n"
 "Language: eu\n"
@@ -149,7 +149,7 @@ msgstr "Taldea:"
 
 #: ../share/virtaal/virtaal.glade.h:31
 msgid "Terminology Files"
-msgstr "Terminologia-_fitxategiak"
+msgstr "Terminologia-fitxategiak"
 
 #: ../share/virtaal/virtaal.glade.h:32
 msgid "Terminology _file:"

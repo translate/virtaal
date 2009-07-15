@@ -63,7 +63,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="update_menuitem">
-                        <property name="label" translatable="yes">_Update to template</property>
+                        <property name="label" translatable="yes">_Update to Template</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
@@ -153,7 +153,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_transfer">
-                        <property name="label" translatable="yes" comments="Activating this menu item copies the whole source (or part thereof) to the target. The &quot;copy&quot; is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.">Transfer from source</property>
+                        <property name="label" translatable="yes" comments="Activating this menu item copies the whole source (or part thereof) to the target. The &quot;copy&quot; is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.">Transfer From Source</property>
                         <property name="visible">True</property>
                         <property name="accel_path">&lt;Virtaal&gt;/Edit/Transfer</property>
                         <property name="use_stock">False</property>
@@ -168,7 +168,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_placprev">
-                        <property name="label" translatable="yes">P_revious placeable</property>
+                        <property name="label" translatable="yes">P_revious Placeable</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
@@ -182,7 +182,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_placnext">
-                        <property name="label" translatable="yes">_Next placeable</property>
+                        <property name="label" translatable="yes">_Next Placeable</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
@@ -915,7 +915,7 @@ If you are translating from English to French then French would be your translat
                 <child>
                   <widget class="GtkLabel" id="label9">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Language information&lt;/b&gt;</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Language Information&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </widget>
                   <packing>
@@ -1220,7 +1220,8 @@ If you are translating from English to French then French would be your translat
                                         <child>
                                           <widget class="GtkLabel" id="label11">
                                             <property name="visible">True</property>
-                                            <property name="label" translatable="yes">Use default fonts</property>
+                                            <property name="label" translatable="yes">Use _Default Fonts</property>
+                                            <property name="use_underline">True</property>
                                           </widget>
                                           <packing>
                                             <property name="position">1</property>
@@ -1383,7 +1384,7 @@ If you are translating from English to French then French would be your translat
   <widget class="GtkDialog" id="TermFilesDlg">
     <property name="width_request">400</property>
     <property name="border_width">5</property>
-    <property name="title" translatable="yes">Select terminology files</property>
+    <property name="title" translatable="yes">Terminology Files</property>
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
@@ -1522,7 +1523,7 @@ If you are translating from English to French then French would be your translat
   </widget>
   <widget class="GtkDialog" id="TermAddDlg">
     <property name="border_width">5</property>
-    <property name="title" translatable="yes">Add terminology entry</property>
+    <property name="title" translatable="yes">Add Term</property>
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">

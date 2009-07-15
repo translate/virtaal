@@ -92,7 +92,7 @@ class PlaceablesController(BaseController):
             _('Words containing uppercase letters only')
         )
         self.parser_info[general.OptionPlaceable.parse] = (
-            _('Command line Options'),
+            _('Command Line Options'),
             _('Application command line options, such as --help, -h and -I')
         )
         self.parser_info[general.EmailPlaceable.parse] = (

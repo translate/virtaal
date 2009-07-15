@@ -49,17 +49,17 @@ class LocalFileView:
         self.mnui_edit = self.mainview.gui.get_widget('menuitem_edit')
         self.menu = self.mnui_edit.get_submenu()
 
-        self.mnu_select_files, _menu = self.mainview.find_menu_item(_('Terminology _files...'), self.mnui_edit)
+        self.mnu_select_files, _menu = self.mainview.find_menu_item(_('Terminology _Files...'), self.mnui_edit)
         if not self.mnu_select_files:
-            self.mnu_select_files = self.mainview.append_menu_item(_('Terminology _files...'), self.mnui_edit, after=mnu_transfer)
+            self.mnu_select_files = self.mainview.append_menu_item(_('Terminology _Files...'), self.mnui_edit, after=mnu_transfer)
         self._signal_ids.append((
             self.mnu_select_files,
             self.mnu_select_files.connect('activate', self._on_select_term_files)
         ))
 
-        self.mnu_add_term, _menu = self.mainview.find_menu_item(_('Add _term...'), self.mnui_edit)
+        self.mnu_add_term, _menu = self.mainview.find_menu_item(_('Add _Term...'), self.mnui_edit)
         if not self.mnu_add_term:
-            self.mnu_add_term = self.mainview.append_menu_item(_('Add _term...'), self.mnui_edit, after=mnu_transfer)
+            self.mnu_add_term = self.mainview.append_menu_item(_('Add _Term...'), self.mnui_edit, after=mnu_transfer)
         self._signal_ids.append((
             self.mnu_add_term,
             self.mnu_add_term.connect('activate', self._on_add_term)
@@ -160,7 +160,7 @@ class FileSelectDialog:
     def _init_add_chooser(self):
         # The following code was mostly copied from virtaal.views.MainView._create_dialogs()
         dlg = gtk.FileChooserDialog(
-            _('Select file(s) to add...'),
+            _('Add Files'),
             self.controller.main_controller.view.main_window,
             gtk.FILE_CHOOSER_ACTION_OPEN,
             (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK)

@@ -54,7 +54,7 @@ def _prepare_db_string(string):
 
 class Plugin(BasePlugin):
     description = _('Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal.')
-    display_name = _('Migration assistant')
+    display_name = _('Migration Assistant')
     version = 0.1
 
     default_config = {

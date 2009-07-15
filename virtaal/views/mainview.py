@@ -213,7 +213,7 @@ class MainView(BaseView):
         )
 
         self.open_chooser = gtk.FileChooserDialog(
-            _('Choose a translation file'),
+            _('Choose a Translation File'),
             self.main_window,
             gtk.FILE_CHOOSER_ACTION_OPEN,
             (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK)

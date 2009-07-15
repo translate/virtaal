@@ -153,7 +153,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_transfer">
-                        <property name="label" translatable="yes" comments="Activating this menu item copies the whole source (or part thereof) to the target. The &quot;copy&quot; is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.">Transfer From Source</property>
+                        <property name="label" translatable="yes" comments="l10n: Activating this menu item copies the whole source (or part thereof) to the target. The &quot;copy&quot; is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.">Transfer From Source</property>
                         <property name="visible">True</property>
                         <property name="accel_path">&lt;Virtaal&gt;/Edit/Transfer</property>
                         <property name="use_stock">False</property>
@@ -168,7 +168,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_placprev">
-                        <property name="label" translatable="yes">P_revious Placeable</property>
+                        <property name="label" translatable="yes" comments="l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables">P_revious Placeable</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
@@ -1018,7 +1018,7 @@ If you are translating from English to French then French would be your translat
                                 <property name="visible">True</property>
                                 <property name="tooltip" translatable="yes">The name used in the file headers.</property>
                                 <property name="xalign">1</property>
-                                <property name="label" translatable="yes">Name:</property>
+                                <property name="label" translatable="yes" comments="l10n: This label is for the name of the translator">Name:</property>
                               </widget>
                               <packing>
                                 <property name="x_options">GTK_FILL</property>
@@ -1275,7 +1275,7 @@ If you are translating from English to French then French would be your translat
             <child>
               <widget class="GtkLabel" id="label1">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">General</property>
+                <property name="label" translatable="yes" comments="l10n: This tab label refers to the general preferences">General</property>
               </widget>
               <packing>
                 <property name="tab_fill">False</property>
@@ -1592,7 +1592,7 @@ If you are translating from English to French then French would be your translat
               <widget class="GtkLabel" id="label4">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
-                <property name="label" translatable="yes">C_omments</property>
+                <property name="label" translatable="yes" comments="l10n: This label refers to comments about a new term that is added">C_omments</property>
                 <property name="use_underline">True</property>
                 <property name="mnemonic_widget">txt_comment</property>
               </widget>

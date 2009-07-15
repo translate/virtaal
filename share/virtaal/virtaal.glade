@@ -1018,11 +1018,12 @@ If you are translating from English to French then French would be your translat
                                 <property name="visible">True</property>
                                 <property name="tooltip" translatable="yes">The name used in the file headers.</property>
                                 <property name="xalign">1</property>
-                                <property name="label" translatable="yes">Name: </property>
+                                <property name="label" translatable="yes">Name:</property>
                               </widget>
                               <packing>
                                 <property name="x_options">GTK_FILL</property>
                                 <property name="y_options">GTK_FILL</property>
+                                <property name="x_padding">3</property>
                               </packing>
                             </child>
                             <child>
@@ -1043,13 +1044,14 @@ If you are translating from English to French then French would be your translat
                                 <property name="visible">True</property>
                                 <property name="tooltip" translatable="yes">The name used in the file headers.</property>
                                 <property name="xalign">1</property>
-                                <property name="label" translatable="yes">E-mail address: </property>
+                                <property name="label" translatable="yes">E-mail address:</property>
                               </widget>
                               <packing>
                                 <property name="top_attach">1</property>
                                 <property name="bottom_attach">2</property>
                                 <property name="x_options">GTK_FILL</property>
                                 <property name="y_options">GTK_FILL</property>
+                                <property name="x_padding">3</property>
                               </packing>
                             </child>
                             <child>
@@ -1072,13 +1074,14 @@ If you are translating from English to French then French would be your translat
                                 <property name="visible">True</property>
                                 <property name="tooltip" translatable="yes">The name used in the file headers.</property>
                                 <property name="xalign">1</property>
-                                <property name="label" translatable="yes">Team: </property>
+                                <property name="label" translatable="yes">Team:</property>
                               </widget>
                               <packing>
                                 <property name="top_attach">2</property>
                                 <property name="bottom_attach">3</property>
                                 <property name="x_options">GTK_FILL</property>
                                 <property name="y_options">GTK_FILL</property>
+                                <property name="x_padding">3</property>
                               </packing>
                             </child>
                             <child>
@@ -1141,24 +1144,26 @@ If you are translating from English to French then French would be your translat
                                   <widget class="GtkLabel" id="label8">
                                     <property name="visible">True</property>
                                     <property name="xalign">1</property>
-                                    <property name="label" translatable="yes">Source text: </property>
+                                    <property name="label" translatable="yes">Source text:</property>
                                   </widget>
                                   <packing>
                                     <property name="x_options">GTK_FILL</property>
                                     <property name="y_options">GTK_FILL</property>
+                                    <property name="x_padding">3</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <widget class="GtkLabel" id="label9">
                                     <property name="visible">True</property>
                                     <property name="xalign">1</property>
-                                    <property name="label" translatable="yes">Target text: </property>
+                                    <property name="label" translatable="yes">Target text:</property>
                                   </widget>
                                   <packing>
                                     <property name="top_attach">1</property>
                                     <property name="bottom_attach">2</property>
                                     <property name="x_options">GTK_FILL</property>
                                     <property name="y_options">GTK_FILL</property>
+                                    <property name="x_padding">3</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -1620,12 +1625,13 @@ If you are translating from English to French then French would be your translat
                 <child>
                   <widget class="GtkLabel" id="label3">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">Terminology _file: </property>
+                    <property name="label" translatable="yes">Terminology _file:</property>
                     <property name="use_underline">True</property>
                     <property name="mnemonic_widget">cmb_termfile</property>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="padding">3</property>
                     <property name="position">0</property>
                   </packing>
                 </child>

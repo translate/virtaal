@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Virtaal 0.4\n"
+"Project-Id-Version: Virtaal 0.4.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-07-14 17:14+0200\n"
+"POT-Creation-Date: 2009-07-15 18:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,7 +27,7 @@ msgid "Translation Tool"
 msgstr ""
 
 #: ../share/applications/virtaal.desktop.in.h:3
-#: ../share/virtaal/virtaal.glade.h:39
+#: ../share/virtaal/virtaal.glade.h:43
 msgid "Virtaal"
 msgstr ""
 
@@ -36,7 +36,7 @@ msgid "<b>Fonts</b>"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:2
-msgid "<b>Language information</b>"
+msgid "<b>Language Information</b>"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:3
@@ -56,97 +56,101 @@ msgid "Add Missing Language"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:7
-msgid "Add terminology entry"
+msgid "Add Term"
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:8
+#. l10n: This label refers to comments about a new term that is added
+#: ../share/virtaal/virtaal.glade.h:9
 msgid "C_omments"
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:9
+#: ../share/virtaal/virtaal.glade.h:10
 msgid ""
 "Depending on the translation task, the plural information might be optional."
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:10
-msgid "E-mail address: "
+#: ../share/virtaal/virtaal.glade.h:11
+msgid "E-mail address:"
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:11
+#. l10n: This tab label refers to the general preferences
+#: ../share/virtaal/virtaal.glade.h:13
 msgid "General"
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:12
+#: ../share/virtaal/virtaal.glade.h:14
 msgid "ISO code:"
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:13
+#: ../share/virtaal/virtaal.glade.h:15
 msgid "Language name:"
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:14
-msgid "Name: "
-msgstr ""
-
-#: ../share/virtaal/virtaal.glade.h:15
-msgid "New Language Pair"
-msgstr ""
-
-#: ../share/virtaal/virtaal.glade.h:16
-msgid "Number of plurals:"
-msgstr ""
-
+#. l10n: This label is for the name of the translator
 #: ../share/virtaal/virtaal.glade.h:17
-msgid "P_age Up"
+msgid "Name:"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:18
-msgid "P_revious placeable"
+msgid "New Language Pair"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:19
-msgid "Placeables"
+msgid "Number of plurals:"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:20
+msgid "P_age Up"
+msgstr ""
+
+#. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
+#: ../share/virtaal/virtaal.glade.h:22
+msgid "P_revious Placeable"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:23
+msgid "Placeables"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:24
 msgid ""
 "Placeables are special parts of the text that can be automatically "
 "highlighted and easily inserted into the translation."
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:21
+#: ../share/virtaal/virtaal.glade.h:25
 msgid "Plug-ins"
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:22
+#: ../share/virtaal/virtaal.glade.h:26
 msgid "Plural expression:"
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:23
+#: ../share/virtaal/virtaal.glade.h:27
 msgid "Report a _Bug"
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:24
-msgid "Select terminology files"
-msgstr ""
-
-#: ../share/virtaal/virtaal.glade.h:25
-msgid "Source text: "
-msgstr ""
-
-#: ../share/virtaal/virtaal.glade.h:26
-msgid "Target text: "
-msgstr ""
-
-#: ../share/virtaal/virtaal.glade.h:27
-msgid "Team: "
-msgstr ""
-
 #: ../share/virtaal/virtaal.glade.h:28
-msgid "Terminology _file: "
+msgid "Source text:"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:29
+msgid "Target text:"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:30
+msgid "Team:"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:31
+msgid "Terminology Files"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:32
+msgid "Terminology _file:"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:33
 msgid ""
 "The <b>Original</b> is the language from which you are translating, also "
 "called the source language.\n"
@@ -155,7 +159,7 @@ msgid ""
 "original or source language."
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:32
+#: ../share/virtaal/virtaal.glade.h:36
 msgid ""
 "The <b>Translation</b> is the language into which you are translating, also "
 "called the target language.\n"
@@ -164,75 +168,76 @@ msgid ""
 "translation or target language."
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:35
+#: ../share/virtaal/virtaal.glade.h:39
 msgid "The name used in the file headers."
 msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:37
-msgid "Transfer from source"
-msgstr ""
-
-#: ../share/virtaal/virtaal.glade.h:38
-msgid "Use default fonts"
-msgstr ""
-
-#: ../share/virtaal/virtaal.glade.h:40
-msgid "Virtaal Preferences"
-msgstr ""
-
+#. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
 #: ../share/virtaal/virtaal.glade.h:41
-msgid "_Add Missing Language..."
+msgid "Transfer From Source"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:42
-msgid "_Edit"
-msgstr ""
-
-#: ../share/virtaal/virtaal.glade.h:43
-msgid "_File"
+msgid "Use _Default Fonts"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:44
-msgid "_Full Screen"
+msgid "Virtaal Preferences"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:45
-msgid "_Help"
+msgid "_Add Missing Language..."
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:46
-msgid "_Localization Guide"
+msgid "_Edit"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:47
-msgid "_Navigation"
+msgid "_File"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:48
-msgid "_Next placeable"
+msgid "_Full Screen"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:49
-msgid "_Online Help"
+msgid "_Help"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:50
-msgid "_Page Down"
+msgid "_Localization Guide"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:51
-msgid "_Recent Files"
+msgid "_Navigation"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:52
-msgid "_Tutorial"
+msgid "_Next Placeable"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:53
-msgid "_Update to template"
+msgid "_Online Help"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:54
+msgid "_Page Down"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:55
+msgid "_Recent Files"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:56
+msgid "_Tutorial"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:57
+msgid "_Update to Template"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:58
 msgid "_View"
 msgstr ""
 
@@ -292,6 +297,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Could not open file.\n"
+"\n"
 "%(error_message)s\n"
 "\n"
 "Try opening a different file."
@@ -351,7 +357,7 @@ msgid "Words containing uppercase letters only"
 msgstr ""
 
 #: ../virtaal/controllers/placeablescontroller.py:95
-msgid "Command line Options"
+msgid "Command Line Options"
 msgstr ""
 
 #: ../virtaal/controllers/placeablescontroller.py:96
@@ -509,11 +515,11 @@ msgid "AutoCorrector"
 msgstr ""
 
 #: ../virtaal/plugins/migration.py:56
-msgid "Migrate settings from KBabel, Lokalize and/or POEdit to Virtaal."
+msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
 msgstr ""
 
 #: ../virtaal/plugins/migration.py:57
-msgid "Migration assistant"
+msgid "Migration Assistant"
 msgstr ""
 
 #: ../virtaal/plugins/migration.py:71
@@ -585,12 +591,12 @@ msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:52
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:54
-msgid "Terminology _files..."
+msgid "Terminology _Files..."
 msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:60
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:62
-msgid "Add _term..."
+msgid "Add _Term..."
 msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:130
@@ -602,7 +608,7 @@ msgid "Extendable"
 msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:163
-msgid "Select file(s) to add..."
+msgid "Add Files"
 msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:170
@@ -743,7 +749,7 @@ msgid "Apertium Machine Translation"
 msgstr ""
 
 #: ../virtaal/plugins/tm/tmview.py:99
-msgid "Translation _suggestions"
+msgid "Translation _Suggestions"
 msgstr ""
 
 #: ../virtaal/plugins/tm/tmview.py:156
@@ -787,7 +793,7 @@ msgid "Error"
 msgstr ""
 
 #: ../virtaal/views/mainview.py:216
-msgid "Choose a translation file"
+msgid "Choose a Translation File"
 msgstr ""
 
 #: ../virtaal/views/mainview.py:254
@@ -804,16 +810,20 @@ msgstr ""
 msgid "_Discard"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:297
+#. l10n: This is the title of the main window of Virtaal
+#. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
+#. %(current_file)s is the file name of the current file
+#. most languages will not need to change this
+#: ../virtaal/views/mainview.py:301
 #, python-format
-msgid "Virtaal - %(current_file)s %(modified_marker)s"
+msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:322
+#: ../virtaal/views/mainview.py:326
 msgid "Please enter the number of noun forms (plurals) to use"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:328
+#: ../virtaal/views/mainview.py:332
 msgid "Please enter the plural equation to use"
 msgstr ""
 
@@ -896,12 +906,12 @@ msgstr ""
 msgid "Configure..."
 msgstr ""
 
-#: ../virtaal/models/storemodel.py:111
+#: ../virtaal/models/storemodel.py:105
 #, python-format
 msgid "The file \"%s\" does not exist."
 msgstr ""
 
-#: ../virtaal/models/storemodel.py:113
+#: ../virtaal/models/storemodel.py:107
 #, python-format
 msgid "\"%s\" is not a usable file."
 msgstr ""

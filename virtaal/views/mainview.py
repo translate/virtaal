@@ -294,7 +294,11 @@ class MainView(BaseView):
             if value:
                 modified = "*"
             self.main_window.set_title(
-                    (_('Virtaal - %(current_file)s %(modified_marker)s') %
+                    #l10n: This is the title of the main window of Virtaal
+                    #%(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
+                    #%(current_file)s is the file name of the current file
+                    #most languages will not need to change this
+                    (_('%(modified_marker)s%(current_file)s - Virtaal') %
                         {
                             "current_file": os.path.basename(filename),
                             "modified_marker": modified

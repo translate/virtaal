@@ -1016,7 +1016,7 @@ If you are translating from English to French then French would be your translat
                             <child>
                               <widget class="GtkLabel" id="label6">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">The name used in the file headers.</property>
+                                <property name="tooltip" translatable="yes">The name stored in the file header</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes" comments="l10n: This label is for the name of the translator">Name:</property>
                               </widget>
@@ -1030,7 +1030,7 @@ If you are translating from English to French then French would be your translat
                               <widget class="GtkEntry" id="ent_translator">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="tooltip" translatable="yes">The name used in the file headers.</property>
+                                <property name="tooltip" translatable="yes">The name stored in the file header</property>
                                 <property name="invisible_char">&#x25CF;</property>
                               </widget>
                               <packing>
@@ -1042,7 +1042,7 @@ If you are translating from English to French then French would be your translat
                             <child>
                               <widget class="GtkLabel" id="label10">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">The name used in the file headers.</property>
+                                <property name="tooltip" translatable="yes">The e-mail address stored in the file header</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">E-mail address:</property>
                               </widget>
@@ -1058,7 +1058,7 @@ If you are translating from English to French then French would be your translat
                               <widget class="GtkEntry" id="ent_email">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="tooltip" translatable="yes">The name used in the file headers.</property>
+                                <property name="tooltip" translatable="yes">The e-mail address stored in the file header</property>
                                 <property name="invisible_char">&#x25CF;</property>
                               </widget>
                               <packing>
@@ -1072,7 +1072,7 @@ If you are translating from English to French then French would be your translat
                             <child>
                               <widget class="GtkLabel" id="label5">
                                 <property name="visible">True</property>
-                                <property name="tooltip" translatable="yes">The name used in the file headers.</property>
+                                <property name="tooltip" translatable="yes">The team information stored in the file header. This can be an e-mail address or a URL, for example.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Team:</property>
                               </widget>
@@ -1088,7 +1088,7 @@ If you are translating from English to French then French would be your translat
                               <widget class="GtkEntry" id="ent_team">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="tooltip" translatable="yes">The name used in the file headers.</property>
+                                <property name="tooltip" translatable="yes">The team information stored in the file header. This can be an e-mail address or a URL, for example.</property>
                                 <property name="invisible_char">&#x25CF;</property>
                               </widget>
                               <packing>

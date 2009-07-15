@@ -171,7 +171,7 @@ class MainController(BaseController):
         except Exception, exc:
             logging.exception('MainController.open_file(filename="%s", uri="%s")' % (filename, uri))
             self.show_error(
-                _("Could not open file.\n%(error_message)s\n\nTry opening a different file.") % {'error_message': str(exc)}
+                _("Could not open file.\n\n%(error_message)s\n\nTry opening a different file.") % {'error_message': str(exc)}
             )
             return False
 

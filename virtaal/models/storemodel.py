@@ -70,10 +70,7 @@ class StoreModel(BaseModel):
         candidate = self._trans_store.units[0].getsourcelanguage()
         # If we couldn't get the language from the first unit, try the store
         if candidate is None:
-            try:
-                candidate = self._trans_store.getsourcelanguage()
-            except Exception:
-                pass
+            candidate = self._trans_store.getsourcelanguage()
         if candidate and not candidate in ['und', 'en', 'en_US']:
             return candidate
 
@@ -85,10 +82,7 @@ class StoreModel(BaseModel):
         candidate = self._trans_store.units[0].gettargetlanguage()
         # If we couldn't get the language from the first unit, try the store
         if candidate is None:
-            try:
-                candidate = self._trans_store.gettargetlanguage()
-            except Exception:
-                pass
+            candidate = self._trans_store.gettargetlanguage()
         if candidate and candidate != 'und':
             return candidate
 

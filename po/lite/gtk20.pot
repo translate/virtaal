@@ -159,6 +159,14 @@ msgctxt "keyboard label"
 msgid "Page_Down"
 msgstr ""
 
+msgctxt "keyboard label"
+msgid "Left"
+msgstr ""
+
+msgctxt "keyboard label"
+msgid "Right"
+msgstr ""
+
 #. File->Open
 msgid "_Open"
 msgstr ""

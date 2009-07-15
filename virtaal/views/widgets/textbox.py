@@ -497,7 +497,7 @@ class TextBox(gtk.TextView):
         if self.elem is None:
             return
 
-        ins_text = data.forceunicode(ins_text)
+        ins_text = data.forceunicode(ins_text[:length])
         offset = self.elem.gui_info.gui_to_tree_index(iter.get_offset())
         if self.elem.insert(offset, ins_text):
             self.elem.prune()

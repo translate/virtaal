@@ -65,6 +65,8 @@ class Cursor(GObjectWrapper):
             return # Don't unnecessarily move the cursor (or emit 'cursor-changed', more specifically)
         if value >= len(self.indices):
             self._pos = len(self.indices) - 1
+        elif value < 0:
+            self._pos = 0
         else:
             self._pos = value
         self.emit('cursor-changed')

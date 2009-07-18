@@ -5,18 +5,18 @@
 # F Wolff <friedel@translate.org.za>, 2008, 2009
 msgid ""
 msgstr ""
-"Project-Id-Version: VirTaal 0.1\n"
+"Project-Id-Version: Virtaal 0.4\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-01-31 20:43+0200\n"
-"PO-Revision-Date: 2009-01-31 22:15+0200\n"
+"POT-Creation-Date: 2009-07-15 18:41+0200\n"
+"PO-Revision-Date: 2009-07-18 11:40+0200\n"
 "Last-Translator: F Wolff <friedel@translate.org.za>\n"
-"Language-Team: Afrikaans <translate-discuss-af@lists.sourceforge.net>\n"
+"Language-Team: translate-discuss-af@lists.sourceforge.net\n"
 "Language: af\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.3-rc1\n"
+"X-Generator: Virtaal 0.4.0\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 msgid ""
@@ -30,76 +30,132 @@ msgid "Translation Tool"
 msgstr "Vertaalprogram"
 
 #: ../share/applications/virtaal.desktop.in.h:3
-#: ../share/virtaal/virtaal.glade.h:23
+#: ../share/virtaal/virtaal.glade.h:45
 msgid "Virtaal"
 msgstr "Virtaal"
 
 #: ../share/virtaal/virtaal.glade.h:1
-msgid "<b>Language information</b>"
-msgstr "<b>Taalinligting</b>"
+msgid "<b>Fonts</b>"
+msgstr "<b>Fonte</b>"
 
 #: ../share/virtaal/virtaal.glade.h:2
+msgid "<b>Language Information</b>"
+msgstr "<b>Taalinligting</b>"
+
+#: ../share/virtaal/virtaal.glade.h:3
 msgid "<b>Original</b>"
 msgstr "<b>Oorspronklike</b>"
 
-#: ../share/virtaal/virtaal.glade.h:3
+#: ../share/virtaal/virtaal.glade.h:4
 msgid "<b>Translation</b>"
 msgstr "<b>Vertaling</b>"
 
-#: ../share/virtaal/virtaal.glade.h:4
+#: ../share/virtaal/virtaal.glade.h:5
+msgid "<b>Translator Information</b>"
+msgstr "<b>Vertalerinligting</b>"
+
+#: ../share/virtaal/virtaal.glade.h:6
+msgid "Add Missing Language"
+msgstr "Voeg ontbrekende taal by"
+
+#: ../share/virtaal/virtaal.glade.h:7
+msgid "Add Term"
+msgstr "Voeg term by"
+
+#. l10n: This label refers to comments about a new term that is added
+#: ../share/virtaal/virtaal.glade.h:9
+msgid "C_omments"
+msgstr "_Opmerkings"
+
+#: ../share/virtaal/virtaal.glade.h:10
 msgid ""
 "Depending on the translation task, the plural information might be optional."
 msgstr "Afhangend van die vertaaltaak is die meervoudinligting dalk opsioneel."
 
-#: ../share/virtaal/virtaal.glade.h:5
+#: ../share/virtaal/virtaal.glade.h:11
+msgid "E-mail address:"
+msgstr "E-posadres:"
+
+#. l10n: This tab label refers to the general preferences
+#: ../share/virtaal/virtaal.glade.h:13
 msgid "General"
 msgstr "Algemeen"
 
-#: ../share/virtaal/virtaal.glade.h:6
+#: ../share/virtaal/virtaal.glade.h:14
 msgid "ISO code:"
 msgstr "ISO-kode:"
 
-#: ../share/virtaal/virtaal.glade.h:7
+#: ../share/virtaal/virtaal.glade.h:15
 msgid "Language name:"
 msgstr "Taalnaam:"
 
-#: ../share/virtaal/virtaal.glade.h:8
-msgid "Languages"
-msgstr "Tale"
+#. l10n: This label is for the name of the translator
+#: ../share/virtaal/virtaal.glade.h:17
+msgid "Name:"
+msgstr "Naam:"
 
-#: ../share/virtaal/virtaal.glade.h:9
-msgid "Missing Language"
-msgstr "Ontbrekende taal"
-
-#: ../share/virtaal/virtaal.glade.h:10
+#: ../share/virtaal/virtaal.glade.h:18
 msgid "New Language Pair"
 msgstr "Nuwe taalpaar"
 
-#: ../share/virtaal/virtaal.glade.h:11
+#: ../share/virtaal/virtaal.glade.h:19
 msgid "Number of plurals:"
 msgstr "Aantal meervoude:"
 
-#: ../share/virtaal/virtaal.glade.h:12
+#: ../share/virtaal/virtaal.glade.h:20
 msgid "P_age Up"
 msgstr "Bl_adsy op"
 
-#: ../share/virtaal/virtaal.glade.h:13
-msgid "Personal Information"
-msgstr "Persoonlike inligting"
+#. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
+#: ../share/virtaal/virtaal.glade.h:22
+msgid "P_revious Placeable"
+msgstr "Vo_rige plaasbare item"
 
-#: ../share/virtaal/virtaal.glade.h:14
+#: ../share/virtaal/virtaal.glade.h:23
+msgid "Placeables"
+msgstr "Plaasbare items"
+
+#: ../share/virtaal/virtaal.glade.h:24
+msgid ""
+"Placeables are special parts of the text that can be automatically "
+"highlighted and easily inserted into the translation."
+msgstr ""
+"Plaasbare items is spesiale dele van die teks wat outomaties verlig en "
+"maklik in die vertaling ingevoeg kan word."
+
+#: ../share/virtaal/virtaal.glade.h:25
 msgid "Plug-ins"
 msgstr "Inproppe"
 
-#: ../share/virtaal/virtaal.glade.h:15
+#: ../share/virtaal/virtaal.glade.h:26
 msgid "Plural expression:"
 msgstr "Meervouduitdrukking:"
 
-#: ../share/virtaal/virtaal.glade.h:16
+#: ../share/virtaal/virtaal.glade.h:27
 msgid "Report a _Bug"
 msgstr "Rapporteer 'n _fout"
 
-#: ../share/virtaal/virtaal.glade.h:17
+#: ../share/virtaal/virtaal.glade.h:28
+msgid "Source text:"
+msgstr "Bronteks:"
+
+#: ../share/virtaal/virtaal.glade.h:29
+msgid "Target text:"
+msgstr "Teikenteks:"
+
+#: ../share/virtaal/virtaal.glade.h:30
+msgid "Team:"
+msgstr "Span:"
+
+#: ../share/virtaal/virtaal.glade.h:31
+msgid "Terminology Files"
+msgstr "Terminologielêers"
+
+#: ../share/virtaal/virtaal.glade.h:32
+msgid "Terminology _file:"
+msgstr "Terminologie_lêers:"
+
+#: ../share/virtaal/virtaal.glade.h:33
 msgid ""
 "The <b>Original</b> is the language from which you are translating, also "
 "called the source language.\n"
@@ -110,9 +166,10 @@ msgstr ""
 "Die <b>Oorspronklike</b> is die taal waaruit mens vertaal, ook bekend as die "
 "brontaal.\n"
 "\n"
-"As mens van Engels na Frans vertaal is Engels die oorspronklike of brontaal."
+"As mens van Engels na Frans vertaal, is Engels die oorspronklike of "
+"brontaal."
 
-#: ../share/virtaal/virtaal.glade.h:20
+#: ../share/virtaal/virtaal.glade.h:36
 msgid ""
 "The <b>Translation</b> is the language into which you are translating, also "
 "called the target language.\n"
@@ -121,63 +178,92 @@ msgid ""
 "translation or target language."
 msgstr ""
 "Die <b>Vertaling</b> is die taal waarin mens vertaal, ook bekend as die "
-"teikentaal.\n"
+"teikentaal of doeltaal.\n"
 "\n"
-"As mens van Engels na Frans vertaal is Frans die vertaling of teikentaal."
+"As mens van Engels na Frans vertaal, is Frans die vertaling of teikentaal."
 
-#: ../share/virtaal/virtaal.glade.h:24
+#: ../share/virtaal/virtaal.glade.h:39
+msgid "The e-mail address stored in the file header"
+msgstr "Die e-posadres wat in die lêerkop gestoor word"
+
+#: ../share/virtaal/virtaal.glade.h:40
+msgid "The name stored in the file header"
+msgstr "Die naam wat in die lêerkop gestoor word"
+
+#: ../share/virtaal/virtaal.glade.h:41
+msgid ""
+"The team information stored in the file header. This can be an e-mail "
+"address or a URL, for example."
+msgstr ""
+"Die spaninligting wat in die lêerkop gestoor word. Dit kan byvoorbeeld 'n "
+"e-posadres of URL wees."
+
+#. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
+#: ../share/virtaal/virtaal.glade.h:43
+msgid "Transfer From Source"
+msgstr "Dra oor vanaf bron"
+
+#: ../share/virtaal/virtaal.glade.h:44
+msgid "Use _Default Fonts"
+msgstr "Gebruik _verstekfonte"
+
+#: ../share/virtaal/virtaal.glade.h:46
 msgid "Virtaal Preferences"
 msgstr "Virtaal-voorkeure"
 
-#: ../share/virtaal/virtaal.glade.h:25
+#: ../share/virtaal/virtaal.glade.h:47
+msgid "_Add Missing Language..."
+msgstr "Voeg ontbrekende taal _by..."
+
+#: ../share/virtaal/virtaal.glade.h:48
 msgid "_Edit"
 msgstr "R_edigeer"
 
-#: ../share/virtaal/virtaal.glade.h:26
+#: ../share/virtaal/virtaal.glade.h:49
 msgid "_File"
 msgstr "_Lêer"
 
-#: ../share/virtaal/virtaal.glade.h:27
+#: ../share/virtaal/virtaal.glade.h:50
 msgid "_Full Screen"
 msgstr "_Volskerm"
 
-#: ../share/virtaal/virtaal.glade.h:28
+#: ../share/virtaal/virtaal.glade.h:51
 msgid "_Help"
 msgstr "_Hulp"
 
-#: ../share/virtaal/virtaal.glade.h:29
+#: ../share/virtaal/virtaal.glade.h:52
 msgid "_Localization Guide"
 msgstr "_Lokaliseringsgids"
 
-#: ../share/virtaal/virtaal.glade.h:31
-msgid "_Missing Language..."
-msgstr "_Ontbrekende taal..."
-
-#: ../share/virtaal/virtaal.glade.h:32
+#: ../share/virtaal/virtaal.glade.h:53
 msgid "_Navigation"
 msgstr "_Navigasie"
 
-#: ../share/virtaal/virtaal.glade.h:33
+#: ../share/virtaal/virtaal.glade.h:54
+msgid "_Next Placeable"
+msgstr "Vo_lgende plaasbare item"
+
+#: ../share/virtaal/virtaal.glade.h:55
 msgid "_Online Help"
 msgstr "_Aanlynhulp"
 
-#: ../share/virtaal/virtaal.glade.h:34
+#: ../share/virtaal/virtaal.glade.h:56
 msgid "_Page Down"
 msgstr "_Bladsy af"
 
-#: ../share/virtaal/virtaal.glade.h:35
+#: ../share/virtaal/virtaal.glade.h:57
 msgid "_Recent Files"
 msgstr "_Onlangse lêers"
 
-#: ../share/virtaal/virtaal.glade.h:36
+#: ../share/virtaal/virtaal.glade.h:58
 msgid "_Tutorial"
 msgstr "_Tutoriaal"
 
-#: ../share/virtaal/virtaal.glade.h:37
-msgid "_Update to template"
+#: ../share/virtaal/virtaal.glade.h:59
+msgid "_Update to Template"
 msgstr "_Dateer op na sjabloon"
 
-#: ../share/virtaal/virtaal.glade.h:38
+#: ../share/virtaal/virtaal.glade.h:60
 msgid "_View"
 msgstr "_Aansig"
 
@@ -212,53 +298,56 @@ msgstr ""
 "Gebruik Ctrl+PgUp of Ctrl+PgDn om met groot stappe tussen vertalings te "
 "beweeg."
 
-#: ../virtaal/controllers/maincontroller.py:62
-#: ../virtaal/controllers/maincontroller.py:71
-#: ../virtaal/controllers/maincontroller.py:80
+#: ../virtaal/controllers/maincontroller.py:69
+#: ../virtaal/controllers/maincontroller.py:78
+#: ../virtaal/controllers/maincontroller.py:87
 msgid "Header information"
 msgstr "Inligting vir lêerkop"
 
-#: ../virtaal/controllers/maincontroller.py:63
+#: ../virtaal/controllers/maincontroller.py:70
 msgid "Please enter your name"
 msgstr "Gee asb. u naam"
 
-#: ../virtaal/controllers/maincontroller.py:72
+#: ../virtaal/controllers/maincontroller.py:79
 msgid "Please enter your e-mail address"
 msgstr "Gee asb. u e-posadres"
 
-#: ../virtaal/controllers/maincontroller.py:81
+#: ../virtaal/controllers/maincontroller.py:88
 msgid "Please enter your team's information"
 msgstr "Gee asb. u span se inligting"
 
-#: ../virtaal/controllers/maincontroller.py:149
-#: ../virtaal/controllers/maincontroller.py:194
+#: ../virtaal/controllers/maincontroller.py:163
+#: ../virtaal/controllers/maincontroller.py:217
 msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
 msgstr "Die gekose lêer is die huidige oop lêer. Wil u die lêer herlaai?"
 
-#: ../virtaal/controllers/maincontroller.py:160
-#: ../virtaal/controllers/maincontroller.py:205
+#: ../virtaal/controllers/maincontroller.py:174
+#: ../virtaal/controllers/maincontroller.py:202
+#: ../virtaal/controllers/maincontroller.py:228
 #, python-format
 msgid ""
 "Could not open file.\n"
+"\n"
 "%(error_message)s\n"
 "\n"
 "Try opening a different file."
 msgstr ""
 "Kon nie die lêer open nie.\n"
+"\n"
 "%(error_message)s\n"
 "\n"
 "Probeer om 'n ander lêer oop te maak."
 
-#: ../virtaal/controllers/maincontroller.py:169
+#: ../virtaal/controllers/maincontroller.py:183
 #, python-format
 msgid ""
 "Could not save file.\n"
 "\n"
 "%(error_message)s\n"
 "\n"
-"Try saving at a different location."
+"Try saving to a different location."
 msgstr ""
 "Kon nie lêer stoor nie.\n"
 "\n"
@@ -266,7 +355,7 @@ msgstr ""
 "\n"
 "Probeer op 'n ander plek te stoor."
 
-#: ../virtaal/controllers/maincontroller.py:174
+#: ../virtaal/controllers/maincontroller.py:188
 #, python-format
 msgid ""
 "Could not save file.\n"
@@ -277,17 +366,142 @@ msgstr ""
 "\n"
 "%(error_message)s"
 
-#: ../virtaal/controllers/maincontroller.py:178
+#: ../virtaal/controllers/maincontroller.py:192
 msgid "Reload File"
 msgstr "Herlaai lêer"
 
-#: ../virtaal/controllers/maincontroller.py:178
+#: ../virtaal/controllers/maincontroller.py:192
 msgid "Reload file from last saved copy and lose all changes?"
 msgstr ""
 "Moet die lêer herlaai word vanaf die laaste gestoorde kopie en veranderinge "
 "prysgegee word?"
 
-#: ../virtaal/controllers/storecontroller.py:110
+#: ../virtaal/controllers/placeablescontroller.py:81
+msgid "\"alt\" Attributes"
+msgstr "\"alt\"-attribute"
+
+#: ../virtaal/controllers/placeablescontroller.py:82
+msgid "Placeable for \"alt\" attributes (as found in HTML)"
+msgstr "Plaasbare item vir \"alt\"-attribute (soos in HTML aangetref)"
+
+#. l10n: See http://en.wikipedia.org/wiki/CamelCase
+#: ../virtaal/controllers/placeablescontroller.py:86
+msgid "CamelCase"
+msgstr "Kameelkas"
+
+#: ../virtaal/controllers/placeablescontroller.py:87
+msgid ""
+"Words with internal capitalisation, such as some brand names and WikiWords"
+msgstr "Woorde met interne hoofletters, soos sommige handelsmerke en WikiWoorde"
+
+#: ../virtaal/controllers/placeablescontroller.py:90
+msgid "Capitals"
+msgstr "Hoofletters"
+
+#. l10n: this refers to "UPPERCASE" / "CAPITAL" letters
+#: ../virtaal/controllers/placeablescontroller.py:92
+msgid "Words containing uppercase letters only"
+msgstr "Woorde wat slegs uit hoofletters bestaan"
+
+#: ../virtaal/controllers/placeablescontroller.py:95
+msgid "Command Line Options"
+msgstr "Opdraglynparameters"
+
+#: ../virtaal/controllers/placeablescontroller.py:96
+msgid "Application command line options, such as --help, -h and -I"
+msgstr "Toepassings se opdraglynparameters, soos --help, -h en -I"
+
+#: ../virtaal/controllers/placeablescontroller.py:99
+msgid "E-mail"
+msgstr "E-pos"
+
+#: ../virtaal/controllers/placeablescontroller.py:100
+msgid "E-mail addresses"
+msgstr "E-posadres"
+
+#: ../virtaal/controllers/placeablescontroller.py:103
+msgid "File Names"
+msgstr "Lêername"
+
+#: ../virtaal/controllers/placeablescontroller.py:104
+msgid "Paths referring to file locations"
+msgstr "Paaie wat na lêerliggings verwys"
+
+#: ../virtaal/controllers/placeablescontroller.py:107
+msgid "Placeholders (printf)"
+msgstr "Plekhouers (printf)"
+
+#: ../virtaal/controllers/placeablescontroller.py:108
+msgid "Placeholders used in \"printf\" strings"
+msgstr "Plekhouers in \"printf\"-stringe"
+
+#: ../virtaal/controllers/placeablescontroller.py:111
+msgid "Placeholders (Python)"
+msgstr "Plekhouers (Python)"
+
+#: ../virtaal/controllers/placeablescontroller.py:112
+msgid "Placeholders in Python strings"
+msgstr "Plekhouers in Python-stringe"
+
+#: ../virtaal/controllers/placeablescontroller.py:115
+msgid "Placeholders (Java)"
+msgstr "Plekhouers (Java)"
+
+#: ../virtaal/controllers/placeablescontroller.py:116
+msgid "Placeholders in Java strings"
+msgstr "Plekhouers in Java-stringe"
+
+#: ../virtaal/controllers/placeablescontroller.py:119
+msgid "Numbers"
+msgstr "Getalle"
+
+#. l10n: 'decimal fractions' refer to numbers like 0.2 or 499,99
+#: ../virtaal/controllers/placeablescontroller.py:121
+msgid "Integer numbers and decimal fractions"
+msgstr "Heelgetalle en desimale breuke"
+
+#: ../virtaal/controllers/placeablescontroller.py:124
+msgid "Punctuation"
+msgstr "Leestekens"
+
+#: ../virtaal/controllers/placeablescontroller.py:125
+msgid "Symbols and less frequently used punctuation marks"
+msgstr "Simbole en minder gebruikte leestekens"
+
+#: ../virtaal/controllers/placeablescontroller.py:128
+msgid "URLs"
+msgstr "URL'e"
+
+#: ../virtaal/controllers/placeablescontroller.py:129
+msgid "URLs, hostnames and IP addresses"
+msgstr "URL'e, gasheername en IP-adresse"
+
+#. l10n: see http://en.wikipedia.org/wiki/Character_entity_reference
+#: ../virtaal/controllers/placeablescontroller.py:133
+msgid "XML Entities"
+msgstr "XML-entiteite"
+
+#: ../virtaal/controllers/placeablescontroller.py:134
+msgid "Entity references, such as &amp; and &#169;"
+msgstr "Entiteitverwysings, soos &amp; en &#169;"
+
+#: ../virtaal/controllers/placeablescontroller.py:137
+msgid "XML Tags"
+msgstr "XML-etikette"
+
+#: ../virtaal/controllers/placeablescontroller.py:138
+msgid "XML tags, such as <b> and </i>"
+msgstr "XML-etikette, soos <b> en </i>"
+
+#: ../virtaal/controllers/placeablescontroller.py:148
+msgid "Spaces"
+msgstr "Spasies"
+
+#: ../virtaal/controllers/placeablescontroller.py:149
+msgid "Double spaces and spaces in unexpected positions"
+msgstr "Dubbelspasies en spasies in onverwagte plekke"
+
+#: ../virtaal/controllers/storecontroller.py:114
 msgid "The file contains nothing to translate."
 msgstr "Die lêer bevat niks om te vertaal nie."
 
@@ -307,170 +521,337 @@ msgstr "Soek"
 msgid "_Case sensitive"
 msgstr "_Kassensitief"
 
-#: ../virtaal/modes/searchmode.py:68
+#. l10n: To read about what regular expressions are, see
+#. http://en.wikipedia.org/wiki/Regular_expression
+#: ../virtaal/modes/searchmode.py:70
 msgid "_Regular expression"
 msgstr "_Reguliere uitdrukking"
 
-#: ../virtaal/modes/searchmode.py:72
+#. l10n: This text label shows in front of the text box where the replacement
+#. text is typed. Keep in mind that the text box will appear after this text.
+#. If this sentence construction is hard to use, consdider translating this as
+#. "Replacement"
+#: ../virtaal/modes/searchmode.py:78
 msgid "Replace with"
 msgstr "Vervang met"
 
-#: ../virtaal/modes/searchmode.py:74
+#. l10n: Button text
+#: ../virtaal/modes/searchmode.py:81
 msgid "Replace"
 msgstr "Vervang"
 
-#: ../virtaal/modes/searchmode.py:76
+#. l10n: Check box
+#: ../virtaal/modes/searchmode.py:84
 msgid "Replace _All"
-msgstr "Vervang _almal"
+msgstr "_Vervang almal"
 
-#: ../virtaal/views/prefsview.py:65
-msgid "Enabled"
-msgstr "Geaktiveer"
+#: ../virtaal/plugins/autocompletor.py:218
+msgid "Automatically complete long words while you type"
+msgstr "Voltooi lang woorde outomaties terwyl u tik"
 
-#: ../virtaal/views/prefsview.py:66
-msgid "Name"
-msgstr "Naam"
-
-#: ../virtaal/plugins/autocompletor.py:323
+#: ../virtaal/plugins/autocompletor.py:219
 msgid "AutoCompletor"
 msgstr "Outovoltooiing"
 
-#: ../virtaal/plugins/autocorrector.py:246
+#: ../virtaal/plugins/autocorrector.py:258
+msgid "Automatically correct text while you type"
+msgstr "Korrigeer teks outomaties terwyl u tik"
+
+#: ../virtaal/plugins/autocorrector.py:259
 msgid "AutoCorrector"
 msgstr "Outokorrigering"
 
 #: ../virtaal/plugins/migration.py:56
-msgid "Migration assistant"
+msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
+msgstr "Migreer instellings vanaf KBabel, Lokalize, en/of Poedit na Virtaal."
+
+#: ../virtaal/plugins/migration.py:57
+msgid "Migration Assistant"
 msgstr "Migrasiehulp"
 
-#: ../virtaal/plugins/migration.py:70
+#: ../virtaal/plugins/migration.py:71
 msgid "Should Virtaal try to import settings and data from other applications?"
 msgstr ""
 "Moet Virtaal probeer om instellings en data van ander programme in te voer?"
 
-#: ../virtaal/plugins/migration.py:71
+#: ../virtaal/plugins/migration.py:72
 msgid "Import data from other applications?"
 msgstr "Voer data in vanaf ander programme?"
 
-#: ../virtaal/plugins/migration.py:96
+#: ../virtaal/plugins/migration.py:97
 msgid "Migration was successfully completed"
 msgstr "Migrasie is suksesvol voltooi"
 
-#: ../virtaal/plugins/migration.py:97
+#: ../virtaal/plugins/migration.py:98
 msgid "The following items were migrated:"
 msgstr "Die volgende items is gemigreer:"
 
-#: ../virtaal/plugins/migration.py:102
+#: ../virtaal/plugins/migration.py:103
 msgid "Migration completed"
 msgstr "Migrasie voltooi"
 
-#: ../virtaal/plugins/migration.py:104
+#: ../virtaal/plugins/migration.py:105
 msgid "Virtaal was not able to migrate any settings or data"
 msgstr "Virtaal kon nie enige instellings of data migreer nie"
 
-#: ../virtaal/plugins/migration.py:105
+#: ../virtaal/plugins/migration.py:106
 msgid "Nothing migrated"
 msgstr "Niks gemigreer nie"
 
-#: ../virtaal/plugins/migration.py:158
+#: ../virtaal/plugins/migration.py:159
 msgid "Poedit settings"
 msgstr "Poedit-instellings"
 
-#: ../virtaal/plugins/migration.py:187
+#: ../virtaal/plugins/migration.py:188
 #, python-format
 msgid "Poedit's Translation Memory: %(database_language_code)s"
 msgstr "Poedit se vertaalgeheue: %(database_language_code)s"
 
-#: ../virtaal/plugins/migration.py:212
+#: ../virtaal/plugins/migration.py:213
 #, python-format
 msgid "KBabel's Translation Memory: %(database_language_code)s"
 msgstr "KBabel se vertaalgeheue: %(database_language_code)s"
 
-#: ../virtaal/plugins/migration.py:230
+#: ../virtaal/plugins/migration.py:231
 msgid "Lokalize settings"
 msgstr "Lokalize-instellings"
 
-#: ../virtaal/plugins/migration.py:254
+#: ../virtaal/plugins/migration.py:255
 #, python-format
 msgid "Lokalize's Translation Memory: %(database_name)s"
 msgstr "Lokalize se vertaalgeheue: %(database_name)s"
+
+#: ../virtaal/plugins/terminology/__init__.py:27
+msgid "Terminology Help"
+msgstr "Terminologiehulp"
+
+#: ../virtaal/plugins/terminology/__init__.py:28
+msgid "Terminology suggestions"
+msgstr "Terminologievoorstelle"
+
+#: ../virtaal/plugins/terminology/models/localfile/__init__.py:41
+msgid "Local file"
+msgstr "Plaaslike lêer"
+
+#: ../virtaal/plugins/terminology/models/localfile/__init__.py:42
+msgid "Local translation files"
+msgstr "Plaaslike vertaallêers"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:52
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:54
+msgid "Terminology _Files..."
+msgstr "Terminologie_lêers..."
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:60
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:62
+msgid "Add _Term..."
+msgstr "Voeg _term by..."
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:130
+msgid "File"
+msgstr "Lêer"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:139
+msgid "Extendable"
+msgstr "Uitbreibaar"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:163
+msgid "Add Files"
+msgstr "Voeg lêers by"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:170
+#: ../virtaal/views/mainview.py:223
+msgid "All Supported Files"
+msgstr "Alle ondersteunde lêers"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:196
+#: ../virtaal/views/mainview.py:249
+msgid "All Files"
+msgstr "Alle lêers"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:240
+#, python-format
+msgid ""
+"Unable to load %(filename)s:\n"
+"\n"
+"%(errormsg)s"
+msgstr ""
+"Kan nie %(filename)s laai nie:\n"
+"\n"
+"%(errormsg)s"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:241
+msgid "Error opening file"
+msgstr "Fout met oopmaak van lêer"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:368
+#, python-format
+msgid "_Source term — %(langname)s"
+msgstr "_Bronterm — %(langname)s"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:369
+#, python-format
+msgid "_Target term — %(langname)s"
+msgstr "_Teikenterm — %(langname)s"
+
+#: ../virtaal/plugins/terminology/models/opentran.py:46
+#: ../virtaal/plugins/tm/models/opentran.py:32
+msgid "Open-Tran.eu"
+msgstr "Open-Tran.eu"
+
+#: ../virtaal/plugins/terminology/models/opentran.py:47
+msgid "Terms from Open-Tran.eu"
+msgstr "Terme vanaf Open-Tran.eu"
+
+#: ../virtaal/plugins/terminology/termview.py:144
+msgid "Select Terminology Sources"
+msgstr "Kies terminologiebronne"
+
+#: ../virtaal/plugins/terminology/termview.py:145
+msgid "Select the sources of terminology suggestions"
+msgstr "Kies die bronne van terminologievoorstelle"
 
 #: ../virtaal/plugins/tm/__init__.py:27
 msgid "Translation Memory"
 msgstr "Vertaalgeheue"
 
+#: ../virtaal/plugins/tm/__init__.py:28
+msgid "Translation memory suggestions"
+msgstr "Voorstelle uit die vertaalgeheue"
+
 #: ../virtaal/plugins/tm/models/currentfile.py:32
 msgid "Currently open file"
 msgstr "Huidige oop lêer"
 
-#: ../virtaal/plugins/tm/models/libtranslate.py:41
+#: ../virtaal/plugins/tm/models/currentfile.py:33
+msgid "Translated units from the current file"
+msgstr "Vertaalde eenhede uit die huidige lêer"
+
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/currentfile.py:82
+msgid "This file"
+msgstr "Dié lêer"
+
+#: ../virtaal/plugins/tm/models/libtranslate.py:44
 msgid "Machine Translation with libtranslate"
 msgstr "Masjienvertaling met libtranslate"
+
+#: ../virtaal/plugins/tm/models/libtranslate.py:45
+msgid "Unreviewed machine translations"
+msgstr "Ongekontroleerde masjienvertalings"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+#: ../virtaal/plugins/tm/models/libtranslate.py:97
+msgid "libtranslate"
+msgstr "libtranslate"
 
 #: ../virtaal/plugins/tm/models/localtm.py:37
 msgid "Local Translation Memory"
 msgstr "Plaaslike vertaalgeheue"
 
-#: ../virtaal/plugins/tm/models/opentran.py:32
-msgid "Open-Tran.eu"
-msgstr "Open-Tran.eu"
+#: ../virtaal/plugins/tm/models/localtm.py:38
+msgid "Previous translations you have made"
+msgstr "Vorige vertalings wat gedoen is"
+
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/localtm.py:40
+msgid "Local TM"
+msgstr "Plaaslike TM"
+
+#: ../virtaal/plugins/tm/models/opentran.py:33
+msgid "Previous translations for Free and Open Source Software"
+msgstr "Vorige vertalings van Vry en Oopbronsagteware"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+#: ../virtaal/plugins/tm/models/opentran.py:69
+#: ../virtaal/plugins/tm/models/opentran.py:71
+msgid "OpenTran"
+msgstr "OpenTran"
 
 #: ../virtaal/plugins/tm/models/remotetm.py:30
 msgid "Remote server"
 msgstr "Afgeleë bediener"
 
+#: ../virtaal/plugins/tm/models/remotetm.py:31
+msgid "A translation memory server"
+msgstr "'n Bediener met vertaalgeheue"
+
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/remotetm.py:33
+msgid "Remote TM"
+msgstr "Afgeleë TM"
+
 #: ../virtaal/plugins/tm/models/tinytm.py:34
 msgid "TinyTM"
 msgstr "TinyTM"
 
-#: ../virtaal/plugins/tm/tmview.py:94
-msgid "Available _Suggestions"
-msgstr "Beskikbare _voorstelle"
+#: ../virtaal/plugins/tm/models/tinytm.py:35
+msgid "A TinyTM translation memory server"
+msgstr "'n TinyTM-bediener met vertaalgeheue"
 
-#: ../virtaal/plugins/tm/tmview.py:150
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
+#: ../virtaal/plugins/tm/models/apertium.py:35
+#: ../virtaal/plugins/tm/models/apertium.py:94
+msgid "Apertium"
+msgstr "Apertium"
+
+#: ../virtaal/plugins/tm/models/apertium.py:36
+msgid "Apertium Machine Translation"
+msgstr "Apertium-masjienvertaling"
+
+#: ../virtaal/plugins/tm/tmview.py:99
+msgid "Translation _Suggestions"
+msgstr "Vertaalvoor_stelle"
+
+#: ../virtaal/plugins/tm/tmview.py:156
 #, python-format
 msgid "Ctrl+%(number_key)d"
 msgstr "Ctrl+%(number_key)d"
 
+#: ../virtaal/plugins/tm/tmview.py:177
+msgid "Select sources of Translation Memory"
+msgstr "Kies die bronne van vertaalgeheue"
+
+#: ../virtaal/plugins/tm/tmview.py:178
+msgid "Select the sources that should be queried for translation memory"
+msgstr "Kies watter bronne se vertaalgeheue nagevra moet word"
+
 #. l10n: match quality column label
-#: ../virtaal/plugins/tm/tmwidgets.py:63
+#: ../virtaal/plugins/tm/tmwidgets.py:64
 msgid "%"
 msgstr "%"
 
-#: ../virtaal/plugins/tm/tmwidgets.py:65
+#: ../virtaal/plugins/tm/tmwidgets.py:66
 msgid "Matches"
 msgstr "Voorstelle"
 
-#: ../virtaal/plugins/tm/tmwidgets.py:120
+#: ../virtaal/plugins/tm/tmwidgets.py:67
+msgid "TM Source"
+msgstr "TM-bron"
+
+#. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
+#: ../virtaal/plugins/tm/tmwidgets.py:124
 #, python-format
 msgid "%(match_quality)s%%"
 msgstr "%(match_quality)s%%"
 
-#: ../virtaal/views/langview.py:66
+#: ../virtaal/views/langview.py:65
 msgid "_New Language Pair..."
 msgstr "_Nuwe taalpaar..."
 
-#: ../virtaal/views/mainview.py:198
+#: ../virtaal/views/mainview.py:200
 msgid "Error"
 msgstr "Fout"
 
-#: ../virtaal/views/mainview.py:214
-msgid "Choose a translation file"
+#: ../virtaal/views/mainview.py:216
+msgid "Choose a Translation File"
 msgstr "Kies 'n vertaallêer"
 
-#: ../virtaal/views/mainview.py:221
-msgid "All Supported Files"
-msgstr "Alle ondersteunde lêers"
-
-#: ../virtaal/views/mainview.py:247
-msgid "All Files"
-msgstr "Alle lêers"
-
-#: ../virtaal/views/mainview.py:252
+#: ../virtaal/views/mainview.py:254
 msgid "Save"
 msgstr "Stoor"
 
-#: ../virtaal/views/mainview.py:266
+#: ../virtaal/views/mainview.py:268
 msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
@@ -478,30 +859,34 @@ msgstr ""
 "Die huidige lêer is verander.\n"
 "Wil u die veranderinge stoor?"
 
-#: ../virtaal/views/mainview.py:269
+#: ../virtaal/views/mainview.py:271
 msgid "_Discard"
 msgstr "_Verwerp"
 
-#: ../virtaal/views/mainview.py:295
+#. l10n: This is the title of the main window of Virtaal
+#. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
+#. %(current_file)s is the file name of the current file
+#. most languages will not need to change this
+#: ../virtaal/views/mainview.py:301
 #, python-format
-msgid "Virtaal - %(current_file)s %(modified_marker)s"
-msgstr "Virtaal - %(current_file)s %(modified_marker)s"
+msgid "%(modified_marker)s%(current_file)s - Virtaal"
+msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 
-#: ../virtaal/views/mainview.py:320
+#: ../virtaal/views/mainview.py:326
 msgid "Please enter the number of noun forms (plurals) to use"
 msgstr "Gee asb. die aantal naamwoordvorme (meervoude) om te gebruik"
 
-#: ../virtaal/views/mainview.py:326
+#: ../virtaal/views/mainview.py:332
 msgid "Please enter the plural equation to use"
 msgstr "Gee asb. die meervoudvergelyking om te gebruik"
 
-#. l10n: This refers to the'mode' that determines how Virtaal moves
+#. l10n: This refers to the 'mode' that determines how Virtaal moves
 #. between units.
 #: ../virtaal/views/modeview.py:62
-msgid "_Navigation: "
-msgstr "_Navigasie: "
+msgid "N_avigation:"
+msgstr "N_avigasie:"
 
-#: ../virtaal/views/unitview.py:498
+#: ../virtaal/views/unitview.py:588
 msgid "F_uzzy"
 msgstr "Was_ig"
 
@@ -529,38 +914,62 @@ msgstr ""
 msgid "Virtaal website"
 msgstr "Virtaal-webwerf"
 
-#. l10n: Rather than translating, fill in the names of the translators
 #: ../virtaal/views/widgets/aboutdialog.py:62
+msgid "We thank our donors:"
+msgstr "Ons bedank ons borge:"
+
+#: ../virtaal/views/widgets/aboutdialog.py:63
+msgid "International Development and Research Centre"
+msgstr "Internasionale ontwikkelings- en navorsingsentrum (IDRC)"
+
+#: ../virtaal/views/widgets/aboutdialog.py:65
+msgid "Mozilla Corporation"
+msgstr "Mozilla Korporasie"
+
+#. l10n: Rather than translating, fill in the names of the translators
+#: ../virtaal/views/widgets/aboutdialog.py:69
 msgid "translator-credits"
 msgstr ""
 "Friedel Wolff\n"
 "Dwayne Bailey"
 
-#: ../virtaal/views/widgets/langadddialog.py:102
+#: ../virtaal/views/widgets/langadddialog.py:103
 msgid "Language code must be an ASCII string."
 msgstr "Taalkode moet 'n ASCII-string wees."
 
-#: ../virtaal/views/widgets/langadddialog.py:105
+#: ../virtaal/views/widgets/langadddialog.py:106
 msgid "Language code must be at least 2 characters long."
 msgstr "'n Taalkode moet ten minste twee karakters lank wees."
 
-#: ../virtaal/views/widgets/langselectdialog.py:73
 #: ../virtaal/views/widgets/langselectdialog.py:79
+#: ../virtaal/views/widgets/langselectdialog.py:86
 msgid "Language"
 msgstr "Taal"
 
 #. l10n: This is the column heading for the language code
-#: ../virtaal/views/widgets/langselectdialog.py:86
-#: ../virtaal/views/widgets/langselectdialog.py:92
+#: ../virtaal/views/widgets/langselectdialog.py:94
+#: ../virtaal/views/widgets/langselectdialog.py:101
 msgid "Code"
 msgstr "Kode"
 
-#: ../virtaal/models/storemodel.py:121
+#: ../virtaal/views/widgets/selectview.py:67
+msgid "Enabled"
+msgstr "Geaktiveer"
+
+#: ../virtaal/views/widgets/selectview.py:75
+msgid "Name"
+msgstr "Naam"
+
+#: ../virtaal/views/widgets/selectview.py:113
+msgid "Configure..."
+msgstr "Opstelling..."
+
+#: ../virtaal/models/storemodel.py:105
 #, python-format
 msgid "The file \"%s\" does not exist."
 msgstr "Die lêer \"%s\" bestaan nie."
 
-#: ../virtaal/models/storemodel.py:123
+#: ../virtaal/models/storemodel.py:107
 #, python-format
 msgid "\"%s\" is not a usable file."
 msgstr "\"%s\" is nie 'n bruikbare lêer nie."
@@ -665,52 +1074,52 @@ msgstr "XLIFF-vertaallêer"
 msgid "XML Localization Interchange File Format"
 msgstr "XML Localization Interchange File Format"
 
-#: ../bin/virtaal:36
+#: ../bin/virtaal:70
 #, c-format
 msgid "%prog [options] [translation_file]"
 msgstr "%prog [opsies] [vertaallêer]"
 
-#: ../bin/virtaal:39
+#: ../bin/virtaal:73
 msgid "PROFILE"
 msgstr "PROFIEL"
 
-#: ../bin/virtaal:41
+#: ../bin/virtaal:75
 msgid "perform profiling, storing the result to the supplied filename."
 msgstr "stel 'n profiel op en stoor die resultaat in die gegewe lêernaam."
 
-#: ../bin/virtaal:43
+#: ../bin/virtaal:77
 msgid "LOG"
 msgstr "STAAFLÊER"
 
-#: ../bin/virtaal:44
+#: ../bin/virtaal:78
 msgid "turn on logging, storing the result to the supplied filename."
 msgstr "skryf na 'n joernaal en stoor die resultaat in die gegewe lêernaam."
 
-#: ../bin/virtaal:46
+#: ../bin/virtaal:80
 msgid "CONFIG"
 msgstr "OPSTELLING"
 
-#: ../bin/virtaal:47
+#: ../bin/virtaal:81
 msgid "use the configuration file given by the supplied filename."
 msgstr "gebruik die opstellingslêer by die gegewe lêernaam."
 
-#: ../bin/virtaal:50
+#: ../bin/virtaal:84
 msgid "enable debugging features"
 msgstr "aktiveer ontfoutfunksies"
 
-#: ../bin/virtaal:74
+#: ../bin/virtaal:109
 msgid "Could not open log file '%(filename)s'"
 msgstr "Kon nie staaflêer '%(filename)s' open nie"
 
-#: ../bin/virtaal:82
+#: ../bin/virtaal:117
 msgid "Could not read configuration file '%(filename)s'"
 msgstr "Kon nie konfigurasielêer '%(filename)s' lees nie"
 
-#: ../bin/virtaal:86
+#: ../bin/virtaal:121
 msgid "invalid number of arguments"
 msgstr "verkeerde aantal argumente"
 
-#: ../bin/virtaal:115
+#: ../bin/virtaal:150
 msgid "Could not open profile file '%(filename)s'"
 msgstr "Kon nie profiellêer '%(filename)s' open nie"
 
@@ -789,6 +1198,66 @@ msgstr "%s opsie neem geen waarde nie"
 #: ../devsupport/optparse.py:1612
 msgid "Options"
 msgstr "Opsies"
+
+#~ msgid "<b>Language information</b>"
+#~ msgstr "<b>Taalinligting</b>"
+
+#~ msgid "Languages"
+#~ msgstr "Tale"
+
+#~ msgid "Missing Language"
+#~ msgstr "Ontbrekende taal"
+
+#~ msgid "Personal Information"
+#~ msgstr "Persoonlike inligting"
+
+#~ msgid "_Missing Language..."
+#~ msgstr "_Ontbrekende taal..."
+
+#~ msgid "_Update to template"
+#~ msgstr "_Dateer op na sjabloon"
+
+#, python-format
+#~ msgid ""
+#~ "Could not open file.\n"
+#~ "%(error_message)s\n"
+#~ "\n"
+#~ "Try opening a different file."
+#~ msgstr ""
+#~ "Kon nie die lêer open nie.\n"
+#~ "%(error_message)s\n"
+#~ "\n"
+#~ "Probeer om 'n ander lêer oop te maak."
+
+#, python-format
+#~ msgid ""
+#~ "Could not save file.\n"
+#~ "\n"
+#~ "%(error_message)s\n"
+#~ "\n"
+#~ "Try saving at a different location."
+#~ msgstr ""
+#~ "Kon nie lêer stoor nie.\n"
+#~ "\n"
+#~ "%(error_message)s\n"
+#~ "\n"
+#~ "Probeer op 'n ander plek te stoor."
+
+#~ msgid "Migration assistant"
+#~ msgstr "Migrasiehulp"
+
+#~ msgid "Available _Suggestions"
+#~ msgstr "Beskikbare _voorstelle"
+
+#~ msgid "Choose a translation file"
+#~ msgstr "Kies 'n vertaallêer"
+
+#, python-format
+#~ msgid "Virtaal - %(current_file)s %(modified_marker)s"
+#~ msgstr "Virtaal - %(current_file)s %(modified_marker)s"
+
+#~ msgid "_Navigation: "
+#~ msgstr "_Navigasie: "
 
 #~ msgid "You must specify a directory or a translation file for --terminology"
 #~ msgstr "U moet 'n gids of vertaallêer spesifiseer vir --terminology"

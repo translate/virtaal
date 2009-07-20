@@ -21,6 +21,7 @@
 import os
 
 import simplejson as json
+import urllib
 
 from translate.lang import data
 
@@ -38,7 +39,7 @@ class TMClient(restclient.RESTClient):
         """suggest translations from TM"""
         request = restclient.RESTClient.Request(
                 self.base_url + "/%s/%s/unit" % (source_lang, target_lang),
-                unit_source, "GET")
+                urllib.quote_plus(unit_source), "GET")
         self.add(request)
         if callback:
             request.connect("REST-success",

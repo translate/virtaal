@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-07-15 18:41+0200\n"
-"PO-Revision-Date: 2009-07-15 22:01+0200\n"
+"PO-Revision-Date: 2009-07-20 20:45+0200\n"
 "Last-Translator: Julen Ruiz Aizpuru <julenx@gmail.com>\n"
 "Language-Team: librezale@librezale.org\n"
 "Language: eu\n"
@@ -109,18 +109,18 @@ msgstr "Orri_a gora"
 #. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
 #: ../share/virtaal/virtaal.glade.h:22
 msgid "P_revious Placeable"
-msgstr "Au_rreko barne-elementua"
+msgstr "Au_rreko elementu berezia"
 
 #: ../share/virtaal/virtaal.glade.h:23
 msgid "Placeables"
-msgstr "Barne-elementuak"
+msgstr "Elementu bereziak"
 
 #: ../share/virtaal/virtaal.glade.h:24
 msgid ""
 "Placeables are special parts of the text that can be automatically "
 "highlighted and easily inserted into the translation."
 msgstr ""
-"Barne-elementuak testuaren zati bereziak dira eta automatikoki nabarmen "
+"Elementu bereziak testuaren zati ezohikoak dira eta automatikoki nabarmen "
 "daitezke modu errazean txertatzeko itzulpenean."
 
 #: ../share/virtaal/virtaal.glade.h:25
@@ -242,7 +242,7 @@ msgstr "_Nabigazioa"
 
 #: ../share/virtaal/virtaal.glade.h:54
 msgid "_Next Placeable"
-msgstr "_Hurrengo barne-elementua"
+msgstr "_Hurrengo elementu berezia"
 
 #: ../share/virtaal/virtaal.glade.h:55
 msgid "_Online Help"
@@ -380,7 +380,7 @@ msgstr "\"alt\" atributuak"
 
 #: ../virtaal/controllers/placeablescontroller.py:82
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
-msgstr "Barne-elementua \"alt\" atributuentzat (HTMLn bezala)"
+msgstr "Elementu berezia \"alt\" atributuentzat (HTMLn bezala)"
 
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase
 #: ../virtaal/controllers/placeablescontroller.py:86
@@ -531,7 +531,7 @@ msgstr "Adierazpen e_rregularra"
 #. "Replacement"
 #: ../virtaal/modes/searchmode.py:78
 msgid "Replace with"
-msgstr "Honekin ordezkatu"
+msgstr "Ordezkatu honekin"
 
 #. l10n: Button text
 #: ../virtaal/modes/searchmode.py:81
@@ -541,7 +541,7 @@ msgstr "Ordezkatu"
 #. l10n: Check box
 #: ../virtaal/modes/searchmode.py:84
 msgid "Replace _All"
-msgstr "Ordezkatu guztiak"
+msgstr "Ordezkatu g_uztiak"
 
 #: ../virtaal/plugins/autocompletor.py:218
 msgid "Automatically complete long words while you type"

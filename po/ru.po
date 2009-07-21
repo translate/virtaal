@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.3beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-07-15 18:41+0200\n"
-"PO-Revision-Date: 2009-07-20 15:43+0300\n"
+"PO-Revision-Date: 2009-07-21 10:41+0300\n"
 "Last-Translator: Koptev Oleg <koptev.oleg@gmail.com>\n"
 "Language-Team: Koptev Oleg\n"
 "Language: ru\n"
@@ -28,7 +28,7 @@ msgstr "Инструмент для перевода"
 #: ../share/applications/virtaal.desktop.in.h:3
 #: ../share/virtaal/virtaal.glade.h:45
 msgid "Virtaal"
-msgstr "Virtaal"
+msgstr "Виртаал"
 
 #: ../share/virtaal/virtaal.glade.h:1
 msgid "<b>Fonts</b>"
@@ -104,15 +104,15 @@ msgstr "_Страницу вверх"
 #. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
 #: ../share/virtaal/virtaal.glade.h:22
 msgid "P_revious Placeable"
-msgstr "_Предыдущее спецслово"
+msgstr "_Предыдущий спецобъект"
 
 #: ../share/virtaal/virtaal.glade.h:23
 msgid "Placeables"
-msgstr "Спецслова"
+msgstr "Спецобъекты"
 
 #: ../share/virtaal/virtaal.glade.h:24
 msgid "Placeables are special parts of the text that can be automatically highlighted and easily inserted into the translation."
-msgstr "Спецслова — это специальные части в тексте, которые могут быть автоматически выделены и легко вставлены в перевод."
+msgstr "Спецобъекты — это специальные части в тексте, которые могут быть автоматически выделены и легко вставлены в перевод."
 
 #: ../share/virtaal/virtaal.glade.h:25
 msgid "Plug-ins"
@@ -189,7 +189,7 @@ msgstr "Использовать _шрифты по умолчанию"
 
 #: ../share/virtaal/virtaal.glade.h:46
 msgid "Virtaal Preferences"
-msgstr "Параметры Virtaal"
+msgstr "Параметры Виртаал"
 
 #: ../share/virtaal/virtaal.glade.h:47
 msgid "_Add Missing Language..."
@@ -221,7 +221,7 @@ msgstr "_Навигация"
 
 #: ../share/virtaal/virtaal.glade.h:54
 msgid "_Next Placeable"
-msgstr "_След. спецслово"
+msgstr "_Следующий спецобъект"
 
 #: ../share/virtaal/virtaal.glade.h:55
 msgid "_Online Help"
@@ -348,7 +348,7 @@ msgstr "Атрибуты \"alt\""
 
 #: ../virtaal/controllers/placeablescontroller.py:82
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
-msgstr "Placeable для атрибутов \"alt\" (для HTML)"
+msgstr "Спецобъекты для атрибутов \"alt\" (для HTML)"
 
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase
 #: ../virtaal/controllers/placeablescontroller.py:86
@@ -557,7 +557,7 @@ msgstr "Миграция завершена"
 
 #: ../virtaal/plugins/migration.py:105
 msgid "Virtaal was not able to migrate any settings or data"
-msgstr "Virtaal не смог импортировать никакие настройки и данные"
+msgstr "Виртаал не смог импортировать никакие настройки и данные"
 
 #: ../virtaal/plugins/migration.py:106
 msgid "Nothing migrated"
@@ -721,7 +721,7 @@ msgstr "Предыдущие переводы, сделанные вами"
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/localtm.py:40
 msgid "Local TM"
-msgstr "Локальная база TM"
+msgstr "Локальн. TM"
 
 #: ../virtaal/plugins/tm/models/opentran.py:33
 msgid "Previous translations for Free and Open Source Software"
@@ -739,12 +739,12 @@ msgstr "Удалённый сервер"
 
 #: ../virtaal/plugins/tm/models/remotetm.py:31
 msgid "A translation memory server"
-msgstr "Сервер ТМ"
+msgstr "Сервер памяти переводов"
 
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/remotetm.py:33
 msgid "Remote TM"
-msgstr "Удалённая база ТМ"
+msgstr "Удалённ. TM"
 
 #: ../virtaal/plugins/tm/models/tinytm.py:34
 msgid "TinyTM"
@@ -752,7 +752,7 @@ msgstr "TinyTM"
 
 #: ../virtaal/plugins/tm/models/tinytm.py:35
 msgid "A TinyTM translation memory server"
-msgstr "Сервер ТМ TinyTM"
+msgstr "Сервер памяти переводов TinyTM"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
 #: ../virtaal/plugins/tm/models/apertium.py:35
@@ -779,7 +779,7 @@ msgstr "Выбрать источники памяти переводов"
 
 #: ../virtaal/plugins/tm/tmview.py:178
 msgid "Select the sources that should be queried for translation memory"
-msgstr "Выберите источники, которые будут использоваться как ТМ"
+msgstr "Выберите источники, которые будут использоваться как база памяти переводов"
 
 #. l10n: match quality column label
 #: ../virtaal/plugins/tm/tmwidgets.py:64
@@ -792,7 +792,7 @@ msgstr "Совпадений"
 
 #: ../virtaal/plugins/tm/tmwidgets.py:67
 msgid "TM Source"
-msgstr "Источники ТМ"
+msgstr "Источники памяти переводов"
 
 #. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
 #: ../virtaal/plugins/tm/tmwidgets.py:124
@@ -835,7 +835,7 @@ msgstr "_Не сохранять"
 #: ../virtaal/views/mainview.py:301
 #, python-format
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
-msgstr "%(modified_marker)s%(current_file)s - Virtaal"
+msgstr "%(modified_marker)s%(current_file)s - Виртаал"
 
 #: ../virtaal/views/mainview.py:326
 msgid "Please enter the number of noun forms (plurals) to use"
@@ -863,7 +863,7 @@ msgstr "Авторские права © 2007-2009 Zuza Software Foundation"
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
 #: ../virtaal/views/widgets/aboutdialog.py:38
 msgid "Virtaal is a program for doing translation."
-msgstr "Virtaal (Виртаал) — это программа для переводов."
+msgstr "Виртаал (Virtaal) — это программа для переводов."
 
 #: ../virtaal/views/widgets/aboutdialog.py:39
 msgid "The initial focus is on software translation (localization or l10n), but we definitely intend it to be useful as a general purpose tool for Computer Aided Translation (CAT)."
@@ -871,7 +871,7 @@ msgstr "Эта программа фокусируется, в основном,
 
 #: ../virtaal/views/widgets/aboutdialog.py:53
 msgid "Virtaal website"
-msgstr "Сайт Virtaal"
+msgstr "Сайт Виртаал"
 
 #: ../virtaal/views/widgets/aboutdialog.py:62
 msgid "We thank our donors:"

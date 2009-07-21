@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Virtaal\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-07-15 18:41+0200\n"
-"PO-Revision-Date: 2009-07-21 02:12-0400\n"
+"PO-Revision-Date: 2009-07-21 10:44-0400\n"
 "Last-Translator: Alexander Dupuy <alex.dupuy@mac.com>\n"
 "Language-Team: Brazilian Portuguese <ldp-br@bazar2.conectiva.com.br>\n"
 "Language: pt_BR\n"
@@ -122,8 +122,8 @@ msgid ""
 "Placeables are special parts of the text that can be automatically "
 "highlighted and easily inserted into the translation."
 msgstr ""
-"Objetos colocáveis são partes especiais do texto que podem ser destacada "
-"automaticamente e inserido facilmente na tradução."
+"Os objetos colocáveis são partes especiais do texto que podem ser "
+"destacada automaticamente e inserido facilmente na tradução."
 
 #: ../share/virtaal/virtaal.glade.h:25
 msgid "Plug-ins"
@@ -187,19 +187,19 @@ msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:39
 msgid "The e-mail address stored in the file header"
-msgstr "O endereço de e-mail no cabeçalho do arquivo"
+msgstr "O endereço de e-mail armazenado no cabeçalho do arquivo"
 
 #: ../share/virtaal/virtaal.glade.h:40
 msgid "The name stored in the file header"
-msgstr "O nome no cabeçalho do arquivo"
+msgstr "O nome armazenado no cabeçalho do arquivo"
 
 #: ../share/virtaal/virtaal.glade.h:41
 msgid ""
 "The team information stored in the file header. This can be an e-mail "
 "address or a URL, for example."
 msgstr ""
-"Informações da equipa no cabeçalho do arquivo. Por exemplo, Isso pode ser um "
-"endereço de e-mail ou uma URL."
+"Informações da equipa armazenadas no cabeçalho do arquivo. Por "
+"exemplo, isso pode ser um endereço de e-mail ou uma URL."
 
 #. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
 #: ../share/virtaal/virtaal.glade.h:43
@@ -393,8 +393,8 @@ msgstr "MaiúsculasCamelos"
 msgid ""
 "Words with internal capitalisation, such as some brand names and WikiWords"
 msgstr ""
-"Palavras compostas, onde cada palavra é iniciada com Maiúsculas e unidas sem "
-"espaços, como algumas marcas e PalavrasWiki"
+"Palavras compostas com maiúsculas internas, como algumas marcas e "
+"PalavrasWiki"
 
 #: ../virtaal/controllers/placeablescontroller.py:90
 msgid "Capitals"
@@ -762,7 +762,7 @@ msgstr "TM local"
 
 #: ../virtaal/plugins/tm/models/opentran.py:33
 msgid "Previous translations for Free and Open Source Software"
-msgstr "Traduções anteriores para software libre"
+msgstr "Traduções anteriores de software libre"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
 #: ../virtaal/plugins/tm/models/opentran.py:69
@@ -799,7 +799,7 @@ msgstr "Apertium"
 
 #: ../virtaal/plugins/tm/models/apertium.py:36
 msgid "Apertium Machine Translation"
-msgstr "Tradução automático Apertium"
+msgstr "Tradução automática Apertium"
 
 #: ../virtaal/plugins/tm/tmview.py:99
 msgid "Translation _Suggestions"
@@ -919,7 +919,7 @@ msgstr "Website do Virtaal"
 
 #: ../virtaal/views/widgets/aboutdialog.py:62
 msgid "We thank our donors:"
-msgstr "Agradecemos nossos doadores:"
+msgstr "Agradecemos a nossos doadores:"
 
 #: ../virtaal/views/widgets/aboutdialog.py:63
 msgid "International Development and Research Centre"

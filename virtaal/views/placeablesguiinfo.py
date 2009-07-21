@@ -304,17 +304,16 @@ class XPlaceableGUI(StringElemGUI):
     bg = '#ff7fef'
 
     def create_repr_widgets(self):
-        self.widgets.append(gtk.Label('['))
-        self.widgets.append(gtk.Label(']'))
+        lbl = gtk.Label('[]')
+        self.widgets.append(lbl)
         if self.elem.id:
-            self.widgets[0].set_text('[%s|' % (self.elem.id))
+            lbl.set_text('[%s]' % (self.elem.id))
 
-        for lbl in self.widgets:
-            font_desc = self.textbox.style.font_desc
-            lbl.modify_font(font_desc)
-            self.textbox.get_pango_context().set_font_description(font_desc)
-            w, h = make_pango_layout(self.textbox, u'[foo]', 100).get_pixel_size()
-            lbl.set_size_request(-1, int(h/1.2))
+        font_desc = self.textbox.style.font_desc
+        lbl.modify_font(font_desc)
+        self.textbox.get_pango_context().set_font_description(font_desc)
+        w, h = make_pango_layout(self.textbox, u'[foo]', 100).get_pixel_size()
+        lbl.set_size_request(-1, int(h/1.2))
 
 
 class UnknownXMLGUI(StringElemGUI):

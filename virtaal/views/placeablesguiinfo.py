@@ -84,7 +84,14 @@ class StringElemGUI(object):
         """Find the C{StringElem} at the given offset.
             This method is used in Virtaal as a replacement for
             C{StringElem.elem_at_offset}, because this method takes the rendered
-            widgets into account."""
+            widgets into account.
+
+            @type  offset: int
+            @param offset: The offset into C{self.textbox} to find the the element
+            @type  child_offset: int
+            @param child_offset: The offset of C{self.elem} into the buffer of
+                C{self.textbox}. This is so recursive calls to child elements
+                can be aware of where in the textbox it appears."""
         if offset < 0 or offset >= self.length():
             return None
 
@@ -99,6 +106,8 @@ class StringElemGUI(object):
                 if len(widget) > 0:
                     widget = widget[0]
 
+                    # The list comprehension below is used, in stead of a simple "w in self.widgets",
+                    # because we want to use "is" comparison in stead of __eq__.
                     if widget is not None and [w for w in self.widgets if w is widget]:
                         return self.elem
                     if self.elem.isleaf():
@@ -110,7 +119,7 @@ class StringElemGUI(object):
         if self.elem.isleaf():
             return self.elem
 
-        childlen = 0
+        childlen = 0 # Length of the children already consumed
         for child in self.elem.sub:
             if isinstance(child, StringElem):
                 if not hasattr(child, 'gui_info'):

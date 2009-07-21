@@ -20,8 +20,8 @@
 
 import gobject
 import gtk
-import logging
 from gtk import gdk
+from translate.storage.placeables import StringElem
 
 from virtaal.common import GObjectWrapper
 from virtaal.models import UndoModel
@@ -204,10 +204,13 @@ class UndoController(BaseController):
             if parent is None:
                 elem.sub = deleted.sub
                 return
-            parent_offset = elem.elem_offset(parent)
-            prel_offset = elem.gui_info.gui_to_tree_index(start_offset) - parent_offset
-            parent.insert(prel_offset, deleted)
-            parent.prune()
+            if isinstance(deleted, StringElem):
+                parent_offset = elem.elem_offset(parent)
+                prel_offset = elem.gui_info.gui_to_tree_index(start_offset) - parent_offset
+                parent.insert(prel_offset, deleted)
+                parent.prune()
+            elif isinstance(deleted, list):
+                parent.sub = deleted
 
         desc = 'offsets=(%d, %d), deleted="%s", elem=%s' % (start_offset, end_offset, deleted, repr(elem))
         self.model.push({

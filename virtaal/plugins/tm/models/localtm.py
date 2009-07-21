@@ -66,6 +66,8 @@ class TMModel(remotetm.TMModel):
             "-b", self.config["tmserver_bind"],
             "-p", str(port),
             "-d", self.config["tmdb"],
+            "--min-similarity=%d" % controller.min_quality,
+            "--max-candidates=%d" % controller.max_matches,
         ]
 
         if pan_app.DEBUG:

@@ -65,7 +65,7 @@ class RESTClient(object):
 
             self.curl.setopt(pycurl.WRITEFUNCTION, self.result.write)
             self.curl.setopt(pycurl.HEADERFUNCTION, self.result_headers.write)
-            self.curl.setopt(pycurl.URL, self.url + "/" + urllib.quote_plus(id))
+            self.curl.setopt(pycurl.URL, self.url + "/" + urllib.quote(id, safe=''))
 
             # let's set the HTTP request method
             if method == 'GET':

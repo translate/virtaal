@@ -498,12 +498,26 @@ class TextBox(gtk.TextView):
             return
 
         ins_text = data.forceunicode(ins_text[:length])
-        offset = self.elem.gui_info.gui_to_tree_index(iter.get_offset())
-        if self.elem.insert(offset, ins_text):
-            self.elem.prune()
+        buff_offset = iter.get_offset()
+        gui_info = self.elem.gui_info
+        left = gui_info.elem_at_offset(buff_offset-1)
+        right = gui_info.elem_at_offset(buff_offset)
 
-            #logging.debug('text-inserted: %s@%d of %s' % (ins_text, offset, repr(self.elem)))
+        #logging.debug('%s |"%s"| %s  ||| %s[%d]' % (repr(left), ins_text, repr(right), repr(self.elem), buff_offset))
+        succeeded = False
+        if not (left is None and right is None) and (left is not right or not unicode(left)):
+            succeeded = self.elem.insert_between(left, right, ins_text)
+            #logging.debug('self.elem.insert_between(%s, %s, "%s"): %s' % (repr(left), repr(right), ins_text, succeeded))
+
+        if not succeeded:
+            offset = gui_info.gui_to_tree_index(buff_offset)
+            succeeded = self.elem.insert(offset, ins_text)
+            #logging.debug('self.elem.insert(%d, "%s"): %s' % (offset, ins_text, succeeded))
+
+        if succeeded:
+            self.elem.prune()
             self.__delayed_refresh(self.buffer.props.cursor_position+len(ins_text))
+            #logging.debug('text-inserted: %s@%d of %s' % (ins_text, iter.get_offset(), repr(self.elem)))
             self.emit('text-inserted', ins_text, iter.get_offset(), self.elem)
         else:
             self.buffer.stop_emission('insert-text')

@@ -39,7 +39,7 @@ class TMClient(restclient.RESTClient):
         """suggest translations from TM"""
         request = restclient.RESTClient.Request(
                 self.base_url + "/%s/%s/unit" % (source_lang, target_lang),
-                urllib.quote_plus(unit_source), "GET")
+                unit_source, "GET")
         self.add(request)
         if callback:
             request.connect("REST-success",

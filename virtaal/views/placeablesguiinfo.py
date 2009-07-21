@@ -119,6 +119,9 @@ class StringElemGUI(object):
         if self.elem.isleaf():
             return self.elem
 
+        child_offset += pre_len
+        offset -= pre_len
+
         childlen = 0 # Length of the children already consumed
         for child in self.elem.sub:
             if isinstance(child, StringElem):
@@ -127,9 +130,8 @@ class StringElemGUI(object):
                     child.gui_info = gui_info_class(elem=child, textbox=self.textbox)
 
                 try:
-                    child_offset = pre_len + childlen
-                    elem = child.gui_info.elem_at_offset(offset - child_offset, child_offset=child_offset)
-                    if elem:
+                    elem = child.gui_info.elem_at_offset(offset-childlen, child_offset=child_offset+childlen)
+                    if elem is not None:
                         return elem
                 except AttributeError:
                     pass

@@ -40,7 +40,7 @@ msgstr "<b>Tipos de letra</b>"
 
 #: ../share/virtaal/virtaal.glade.h:2
 msgid "<b>Language Information</b>"
-msgstr "<b>Información de idioma</b>"
+msgstr "<b>Información del idioma</b>"
 
 #: ../share/virtaal/virtaal.glade.h:3
 msgid "<b>Original</b>"
@@ -52,7 +52,7 @@ msgstr "<b>Traducción</b>"
 
 #: ../share/virtaal/virtaal.glade.h:5
 msgid "<b>Translator Information</b>"
-msgstr "<b>Información de Traductor</b>"
+msgstr "<b>Información del traductor</b>"
 
 #: ../share/virtaal/virtaal.glade.h:6
 msgid "Add Missing Language"
@@ -121,8 +121,8 @@ msgid ""
 "Placeables are special parts of the text that can be automatically "
 "highlighted and easily inserted into the translation."
 msgstr ""
-"Objetos colocables son partes especiales del texto que se puede resaltar "
-"automáticamente y insertar fácilmente en la traducción."
+"Los objetos colocables son partes especiales del texto que se pueden resaltar "
+"automáticamente e insertar fácilmente en la traducción."
 
 #: ../share/virtaal/virtaal.glade.h:25
 msgid "Plug-ins"
@@ -186,19 +186,21 @@ msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:39
 msgid "The e-mail address stored in the file header"
-msgstr "La dirección de correo electrónico en la cabecera del archivo"
+msgstr ""
+"La dirección de correo electrónico almacenada en la "
+"cabecera del archivo"
 
 #: ../share/virtaal/virtaal.glade.h:40
 msgid "The name stored in the file header"
-msgstr "El nombre en la cabecera del archivo"
+msgstr "El nombre almacenado en la cabecera del archivo"
 
 #: ../share/virtaal/virtaal.glade.h:41
 msgid ""
 "The team information stored in the file header. This can be an e-mail "
 "address or a URL, for example."
 msgstr ""
-"La información del equipo en la cabecera del archivo. Por ejemplo, este "
-"puede ser una dirección de correo electrónico o un enlace URL."
+"La información del equipo almacenada en la cabecera del archivo. Por "
+"ejemplo, ésta puede ser una dirección de correo electrónico o un enlace URL."
 
 #. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
 #: ../share/virtaal/virtaal.glade.h:43
@@ -207,7 +209,7 @@ msgstr "Transferir desde origen"
 
 #: ../share/virtaal/virtaal.glade.h:44
 msgid "Use _Default Fonts"
-msgstr "Usa tipos de letra _predeterminados"
+msgstr "Usar tipos de letra _predeterminados"
 
 #: ../share/virtaal/virtaal.glade.h:46
 msgid "Virtaal Preferences"
@@ -247,7 +249,7 @@ msgstr "_Siguiente objeto colocable"
 
 #: ../share/virtaal/virtaal.glade.h:55
 msgid "_Online Help"
-msgstr "Ayuda en _linea"
+msgstr "Ayuda en _línea"
 
 #: ../share/virtaal/virtaal.glade.h:56
 msgid "_Page Down"
@@ -259,7 +261,7 @@ msgstr "Archivos _recientes"
 
 #: ../share/virtaal/virtaal.glade.h:58
 msgid "_Tutorial"
-msgstr "_Seminario"
+msgstr "_Tutorial"
 
 #: ../share/virtaal/virtaal.glade.h:59
 msgid "_Update to Template"
@@ -295,14 +297,14 @@ msgstr "Pulse Ctrl+Arriba o Ctrl+Abajo para moverse entre las traducciones."
 msgid ""
 "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
 msgstr ""
-"Pulse Ctrl+RePág o Ctrl+AvPág para moverse entre traducciones a pasos "
+"Pulse Ctrl+RePág o Ctrl+AvPág para moverse entre las traducciones a pasos "
 "grandes."
 
 #: ../virtaal/controllers/maincontroller.py:69
 #: ../virtaal/controllers/maincontroller.py:78
 #: ../virtaal/controllers/maincontroller.py:87
 msgid "Header information"
-msgstr "Información de cabecera"
+msgstr "Información de la cabecera"
 
 #: ../virtaal/controllers/maincontroller.py:70
 msgid "Please enter your name"
@@ -380,7 +382,7 @@ msgstr "Atributos \"alt\""
 
 #: ../virtaal/controllers/placeablescontroller.py:82
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
-msgstr "Objeto colocable para atributos \"alt\" (como se encuentra en HTML)"
+msgstr "Objeto colocable para atributos \"alt\" (como en HTML)"
 
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase
 #: ../virtaal/controllers/placeablescontroller.py:86
@@ -390,9 +392,7 @@ msgstr "MayúsculasCamellos"
 #: ../virtaal/controllers/placeablescontroller.py:87
 msgid ""
 "Words with internal capitalisation, such as some brand names and WikiWords"
-msgstr ""
-"Palabras compuestos sin espacios, con mayúsculas al principio de cada "
-"palabra, como algunas marcas y PalabrasWiki"
+msgstr "Palabras con mayúsculas internas, como algunas marcas y PalabrasWiki"
 
 #: ../virtaal/controllers/placeablescontroller.py:90
 msgid "Capitals"
@@ -433,7 +433,7 @@ msgstr "Comodines (printf)"
 
 #: ../virtaal/controllers/placeablescontroller.py:108
 msgid "Placeholders used in \"printf\" strings"
-msgstr "Comodines usados en cadenas de \"printf\""
+msgstr "Comodines usados en cadenas \"printf\""
 
 #: ../virtaal/controllers/placeablescontroller.py:111
 msgid "Placeholders (Python)"
@@ -547,7 +547,7 @@ msgstr "Reemplazar _todos"
 
 #: ../virtaal/plugins/autocompletor.py:218
 msgid "Automatically complete long words while you type"
-msgstr "Completar palabras largas automáticamente mientras teclar"
+msgstr "Completar palabras largas automáticamente mientras se teclea"
 
 #: ../virtaal/plugins/autocompletor.py:219
 msgid "AutoCompletor"
@@ -555,7 +555,7 @@ msgstr "Autocompletado"
 
 #: ../virtaal/plugins/autocorrector.py:258
 msgid "Automatically correct text while you type"
-msgstr "Corregir texto automáticamente mientras teclar"
+msgstr "Corregir texto automáticamente mientras se teclea"
 
 #: ../virtaal/plugins/autocorrector.py:259
 msgid "AutoCorrector"
@@ -581,7 +581,7 @@ msgstr "¿Importar datos desde otras aplicaciones?"
 
 #: ../virtaal/plugins/migration.py:97
 msgid "Migration was successfully completed"
-msgstr "Migración completado con éxito"
+msgstr "Migración completada con éxito"
 
 #: ../virtaal/plugins/migration.py:98
 msgid "The following items were migrated:"
@@ -761,7 +761,7 @@ msgstr "TM local"
 
 #: ../virtaal/plugins/tm/models/opentran.py:33
 msgid "Previous translations for Free and Open Source Software"
-msgstr "Traducciones anteriores para software libre"
+msgstr "Traducciones anteriores de software libre"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
 #: ../virtaal/plugins/tm/models/opentran.py:69
@@ -798,7 +798,7 @@ msgstr "Apertium"
 
 #: ../virtaal/plugins/tm/models/apertium.py:36
 msgid "Apertium Machine Translation"
-msgstr "Traducción automatico de Apertium"
+msgstr "Traducción automatica de Apertium"
 
 #: ../virtaal/plugins/tm/tmview.py:99
 msgid "Translation _Suggestions"
@@ -816,7 +816,7 @@ msgstr "Elegir fuentes de memoria de traducción"
 #: ../virtaal/plugins/tm/tmview.py:178
 msgid "Select the sources that should be queried for translation memory"
 msgstr ""
-"Elegir las fuentes que debería ser consultadas para memoria de traducción"
+"Elegir las fuentes que deberían ser consultadas para la memoria de traducción"
 
 #. l10n: match quality column label
 #: ../virtaal/plugins/tm/tmwidgets.py:64
@@ -876,7 +876,7 @@ msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 
 #: ../virtaal/views/mainview.py:326
 msgid "Please enter the number of noun forms (plurals) to use"
-msgstr "Por favor, introduzca la cantidad de formas nominales (plurales)"
+msgstr "Por favor, introduzca la cantidad de formas nominales (plurales) a usar"
 
 #: ../virtaal/views/mainview.py:332
 msgid "Please enter the plural equation to use"
@@ -918,7 +918,7 @@ msgstr "Sitio web de Virtaal"
 
 #: ../virtaal/views/widgets/aboutdialog.py:62
 msgid "We thank our donors:"
-msgstr "Agradecemos nuestros donantes:"
+msgstr "Agradecemos a nuestros donantes:"
 
 #: ../virtaal/views/widgets/aboutdialog.py:63
 msgid "International Development and Research Centre"

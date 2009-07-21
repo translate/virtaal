@@ -1,8 +1,7 @@
 # Russian (ru) translation of Virtaal.
 # Copyright (C) 2009 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
-# Koptev Oleg <koptev.oleg@gmail.com>, 2009
-# Koptev Oleg\ <koptev.oleg@gmail.com>, 2009.
+# Koptev Oleg <koptev.oleg@gmail.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.3beta1\n"

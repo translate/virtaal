@@ -491,7 +491,7 @@ class TextBox(gtk.TextView):
 
         self.emit('text-deleted', start_iter.get_offset(), end_iter.get_offset(), deleted, parent, cursor_pos, self.elem)
         self.__delayed_refresh(start_iter.get_offset())
-        return True
+        self.buffer.stop_emission('delete-range')
 
     def _on_insert_text(self, buffer, iter, ins_text, length):
         if self.elem is None:

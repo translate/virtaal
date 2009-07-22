@@ -588,6 +588,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     def _layout_update_fuzzy(self):
         if not self._widgets['fuzzy']:
             fuzzy = gtk.CheckButton(label=_('F_uzzy'))
+            fuzzy.set_property("xalign", 0.0)
             # FIXME: not allowing focus will probably raise various issues related to keyboard accesss.
             fuzzy.set_property("can-focus", False)
             fuzzy.connect('toggled', self._on_fuzzy_toggled)

@@ -529,7 +529,24 @@ class TextBox(gtk.TextView):
         if not (left is None and right is None) and (left is not right or not unicode(left)):
             succeeded = self.elem.insert_between(left, right, ins_text)
             #logging.debug('self.elem.insert_between(%s, %s, "%s"): %s' % (repr(left), repr(right), ins_text, succeeded))
-
+        if not succeeded and left is right and left.isleaf():
+            # This block handles the special case where a the cursor is just
+            # inside a leaf element with a closing widget. In this case both
+            # left and right will point to the element in question, but it
+            # need not be empty to be a leaf. Because the cursor is still
+            # "inside" the element, we want to append to this leaf in stead
+            # of after it, which is what StringElem.insert() will do, seeing
+            # as the position before and after the widget is the same to in
+            # the context of StringElem.
+            anchor = iter.get_child_anchor()
+            if anchor:
+                widgets = anchor.get_widgets()
+                left_widgets = left.gui_info.widgets
+                if len(widgets) > 0 and len(left_widgets) > 1 and \
+                        widgets[0] is left_widgets[1] and \
+                        iter.get_offset() == self.elem.gui_info.length() - 1:
+                    succeeded = left.insert(len(left), ins_text)
+                    #logging.debug('%s.insert(len(%s), "%s")' % (repr(left), repr(left), ins_text))
         if not succeeded:
             offset = gui_info.gui_to_tree_index(buff_offset)
             succeeded = self.elem.insert(offset, ins_text)

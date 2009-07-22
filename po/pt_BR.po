@@ -147,7 +147,7 @@ msgstr "Text do destino:"
 
 #: ../share/virtaal/virtaal.glade.h:30
 msgid "Team:"
-msgstr "Time:"
+msgstr "Equipe:"
 
 #: ../share/virtaal/virtaal.glade.h:31
 msgid "Terminology Files"
@@ -198,7 +198,7 @@ msgid ""
 "The team information stored in the file header. This can be an e-mail "
 "address or a URL, for example."
 msgstr ""
-"Informações da equipa armazenadas no cabeçalho do arquivo. Por "
+"Informações da equipe armazenadas no cabeçalho do arquivo. Por "
 "exemplo, isso pode ser um endereço de e-mail ou uma URL."
 
 #. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
@@ -208,7 +208,7 @@ msgstr "Transferir a partir da fonte"
 
 #: ../share/virtaal/virtaal.glade.h:44
 msgid "Use _Default Fonts"
-msgstr "Usar fontes _padrões"
+msgstr "Usar fontes _padrão"
 
 #: ../share/virtaal/virtaal.glade.h:46
 msgid "Virtaal Preferences"
@@ -342,7 +342,8 @@ msgstr ""
 "\n"
 "Tente abrir um arquivo diferente."
 
-#: ../virtaal/controllers/maincontroller.py:183, python-format
+#: ../virtaal/controllers/maincontroller.py:183
+#, python-format
 msgid ""
 "Could not save file.\n"
 "\n"
@@ -387,7 +388,7 @@ msgstr "Objeto colocável para atributos \"alt\" (como encontrado em HTML)"
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase
 #: ../virtaal/controllers/placeablescontroller.py:86
 msgid "CamelCase"
-msgstr "MaiúsculasCamelos"
+msgstr "CamelCase"
 
 #: ../virtaal/controllers/placeablescontroller.py:87
 msgid ""
@@ -403,7 +404,7 @@ msgstr "Maiúsculas"
 #. l10n: this refers to "UPPERCASE" / "CAPITAL" letters
 #: ../virtaal/controllers/placeablescontroller.py:92
 msgid "Words containing uppercase letters only"
-msgstr "Palavras com letras maiúsculas somente"
+msgstr "Palavras somente com letras maiúsculas"
 
 #: ../virtaal/controllers/placeablescontroller.py:95
 msgid "Command Line Options"
@@ -411,7 +412,7 @@ msgstr "Opções da linha de comando"
 
 #: ../virtaal/controllers/placeablescontroller.py:96
 msgid "Application command line options, such as --help, -h and -I"
-msgstr "Opções da linha de comando de uma aplicação, como --help, -h e -l"
+msgstr "Opções da linha de comando de um aplicativo, como --help, -h e -l"
 
 #: ../virtaal/controllers/placeablescontroller.py:99
 msgid "E-mail"
@@ -468,7 +469,7 @@ msgstr "Pontuação"
 
 #: ../virtaal/controllers/placeablescontroller.py:125
 msgid "Symbols and less frequently used punctuation marks"
-msgstr "Signos de pontuação incomum e símbolos"
+msgstr "Símbolos e pontuação incomum"
 
 #: ../virtaal/controllers/placeablescontroller.py:128
 msgid "URLs"
@@ -501,7 +502,7 @@ msgstr "Espaços"
 
 #: ../virtaal/controllers/placeablescontroller.py:149
 msgid "Double spaces and spaces in unexpected positions"
-msgstr "Espaços dobles e espaços em lugares inesperados"
+msgstr "Espaços duplos e espaços em lugares inesperados"
 
 #: ../virtaal/controllers/storecontroller.py:114
 msgid "The file contains nothing to translate."
@@ -549,7 +550,7 @@ msgstr "Substituir _todas"
 
 #: ../virtaal/plugins/autocompletor.py:218
 msgid "Automatically complete long words while you type"
-msgstr "Complete automaticamente palavras longas enquanto você digita"
+msgstr "Completa automaticamente palavras longas enquanto você digita"
 
 #: ../virtaal/plugins/autocompletor.py:219
 msgid "AutoCompletor"
@@ -557,7 +558,7 @@ msgstr "Completamento automático"
 
 #: ../virtaal/plugins/autocorrector.py:258
 msgid "Automatically correct text while you type"
-msgstr "Corrigir automaticamente texto enquanto você digita"
+msgstr "Corrige automaticamente texto enquanto você digita"
 
 #: ../virtaal/plugins/autocorrector.py:259
 msgid "AutoCorrector"
@@ -565,7 +566,7 @@ msgstr "Corretor automático"
 
 #: ../virtaal/plugins/migration.py:56
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
-msgstr "Migrar as configurações de KBabel, Lokalize e/o Poedit para Virtaal."
+msgstr "Migra as configurações do KBabel, Lokalize e/ou Poedit para Virtaal."
 
 #: ../virtaal/plugins/migration.py:57
 msgid "Migration Assistant"
@@ -727,7 +728,7 @@ msgstr "Arquivo atualmente aberto"
 
 #: ../virtaal/plugins/tm/models/currentfile.py:33
 msgid "Translated units from the current file"
-msgstr "Unidades traduzidas de arquivo actual"
+msgstr "Unidades traduzidas do arquivo atual"
 
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/currentfile.py:82
@@ -740,7 +741,7 @@ msgstr "Tradução automática com libtranslate"
 
 #: ../virtaal/plugins/tm/models/libtranslate.py:45
 msgid "Unreviewed machine translations"
-msgstr "Traduções automáticas sem revisões"
+msgstr "Traduções automáticas não revisadas"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
 #: ../virtaal/plugins/tm/models/libtranslate.py:97
@@ -753,7 +754,7 @@ msgstr "Memória de tradução local"
 
 #: ../virtaal/plugins/tm/models/localtm.py:38
 msgid "Previous translations you have made"
-msgstr "Traduções anteriores que você fizeram"
+msgstr "Traduções anteriores que você fez"
 
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/localtm.py:40
@@ -919,7 +920,7 @@ msgstr "Website do Virtaal"
 
 #: ../virtaal/views/widgets/aboutdialog.py:62
 msgid "We thank our donors:"
-msgstr "Agradecemos a nossos doadores:"
+msgstr "Agradecemos aos nossos doadores:"
 
 #: ../virtaal/views/widgets/aboutdialog.py:63
 msgid "International Development and Research Centre"
@@ -932,7 +933,8 @@ msgstr "Mozilla Corporation"
 #. l10n: Rather than translating, fill in the names of the translators
 #: ../virtaal/views/widgets/aboutdialog.py:69
 msgid "translator-credits"
-msgstr "Leonardo Ferreira Fontenelle <leonardof@gnome.org>"
+msgstr ""
+"Leonardo Ferreira Fontenelle <leonardof@gnome.org>\n"
 "Alexander Dupuy <alex.dupuy@mac.com>"
 
 #: ../virtaal/views/widgets/langadddialog.py:103
@@ -1111,11 +1113,11 @@ msgstr "habilita recursos de depuração"
 
 #: ../bin/virtaal:109
 msgid "Could not open log file '%(filename)s'"
-msgstr "Não foi possível abrir o arquivo de log '%(filename)s'"
+msgstr "Não foi possível abrir o arquivo de log \"%(filename)s\""
 
 #: ../bin/virtaal:117
 msgid "Could not read configuration file '%(filename)s'"
-msgstr "Não foi possível ler o arquivo de configuração '%(filename)s'"
+msgstr "Não foi possível ler o arquivo de configuração \"%(filename)s\""
 
 #: ../bin/virtaal:121
 msgid "invalid number of arguments"
@@ -1123,7 +1125,7 @@ msgstr "número inválido de argumentos"
 
 #: ../bin/virtaal:150
 msgid "Could not open profile file '%(filename)s'"
-msgstr "Não foi possível abrir o arquivo de perfil '%(filename)s'"
+msgstr "Não foi possível abrir o arquivo de perfil \"%(filename)s\""
 
 #: ../devsupport/optparse.py:134
 #, python-format

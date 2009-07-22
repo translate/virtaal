@@ -437,6 +437,7 @@ class TextBox(gtk.TextView):
         if self.elem is None:
             return
 
+        cursor_pos = self.buffer.props.cursor_position
         text = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter())
         text = data.forceunicode(text)
         start_offset = start_iter.get_offset()
@@ -446,8 +447,6 @@ class TextBox(gtk.TextView):
             start_iter.set_offset(start_offset-2)
 
         start_elem = self.elem.gui_info.elem_at_offset(start_offset)
-        if start_elem is None or (end_offset - start_offset) == 1 and start_iter.get_child_anchor():
-            return
         start_elem_len = start_elem.gui_info.length()
         start_elem_offset = self.elem.gui_info.index(start_elem)
 
@@ -464,6 +463,27 @@ class TextBox(gtk.TextView):
         #logging.debug('start_elem_offset= %d\tend_elem_offset= %d' % (start_elem_offset, end_elem_offset))
         #logging.debug('start_elem_len   = %d\tend_elem_len   = %d' % (start_elem_len, end_elem_len))
         #logging.debug('start_offset     = %d\tend_offset     = %d' % (start_offset, end_offset))
+
+        if end_offset - start_offset == 1 and type(start_elem) is not StringElem:
+            deleted = None
+            parent = None
+            if cursor_pos in (start_elem_offset, (start_elem_offset + start_elem_len)):
+                anchor = start_iter.get_child_anchor()
+                if anchor:
+                    widgets = anchor.get_widgets()
+                    if widgets and start_elem.gui_info.widgets and \
+                            widgets[0] in start_elem.gui_info.widgets:
+                        deleted = start_elem
+                        parent = self.elem.get_parent_elem(deleted)
+                        self.elem.delete_elem(start_elem)
+            #logging.debug('deleted %s from parent %s with cursor pos %d' % (repr(deleted), repr(parent), cursor_pos))
+            if deleted is not None and parent is not None:
+                self.emit(
+                    'text-deleted', start_elem_offset, end_offset,
+                    deleted, parent, cursor_pos, self.elem
+                )
+                self.__delayed_refresh(start_elem_offset)
+                self.buffer.stop_emission('delete-range')
 
         if start_elem is not None and not start_elem.iseditable:
             if start_offset+1 == end_offset:
@@ -483,13 +503,14 @@ class TextBox(gtk.TextView):
 
         #logging.debug('%s[%d] >===> %s[%d]' % (repr(start_elem), start_iter.get_offset(), repr(end_elem), end_iter.get_offset()))
 
-        cursor_pos = self.buffer.props.cursor_position
-
         start_tree_offset = self.elem.gui_info.gui_to_tree_index(start_iter.get_offset())
         end_tree_offset = self.elem.gui_info.gui_to_tree_index(end_iter.get_offset())
         deleted, parent = self.elem.delete_range(start_tree_offset, end_tree_offset)
 
-        self.emit('text-deleted', start_iter.get_offset(), end_iter.get_offset(), deleted, parent, cursor_pos, self.elem)
+        self.emit(
+            'text-deleted', start_iter.get_offset(), end_iter.get_offset(),
+            deleted, parent, cursor_pos, self.elem
+        )
         self.__delayed_refresh(start_iter.get_offset())
         self.buffer.stop_emission('delete-range')
 

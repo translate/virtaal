@@ -452,12 +452,12 @@ msgstr ""
 
 #. Right Click (on empty) -> Cut
 msgid "Cu_t"
-msgstr "Si_ka"
+msgstr "_Sika"
 
 #. Right Click (on empty) -> Cut
 msgctxt "Stock label"
 msgid "Cu_t"
-msgstr "Si_ka"
+msgstr "_Sika"
 
 #. Right Click (on empty) -> Copy
 msgid "_Copy"

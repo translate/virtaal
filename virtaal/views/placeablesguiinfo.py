@@ -226,13 +226,17 @@ class StringElemGUI(object):
         return offset
 
     def tree_to_gui_index(self, index):
-        elem = self.elem.elem_at_offset(index)
-        gui_index = self.index(elem)
-        tree_index = self.elem.elem_offset(elem)
-        converted = gui_index - (index - tree_index)
-        if hasattr(elem, 'gui_info') and elem.gui_info.widgets and elem.gui_info.widgets[0]:
+        char_counter = 0
+        converted = 0
+        itr = self.textbox.buffer.get_start_iter()
+
+        while char_counter <= index and not itr.is_end():
+            anchor = itr.get_child_anchor()
+            if anchor is None or not anchor.get_widgets():
+                char_counter += 1
             converted += 1
-        return converted
+            itr.forward_char()
+        return converted-1
 
 
 class PhGUI(StringElemGUI):

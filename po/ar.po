@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.3beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-07-18 15:55+0300\n"
-"PO-Revision-Date: 2009-07-18 22:25+0300\n"
+"PO-Revision-Date: 2009-07-23 17:11+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "Language: ar\n"
@@ -754,7 +754,7 @@ msgstr "ترجماتك السابقة"
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/localtm.py:40
 msgid "Local TM"
-msgstr "ذاكرة ترجمة محلية"
+msgstr "محلية"
 
 #: ../virtaal/plugins/tm/models/opentran.py:33
 msgid "Previous translations for Free and Open Source Software"
@@ -777,7 +777,7 @@ msgstr "خادوم ذاكرة ترجمة"
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/remotetm.py:33
 msgid "Remote TM"
-msgstr "ذاكرة ترجمة بعيدة"
+msgstr "بعيدة"
 
 #: ../virtaal/plugins/tm/models/tinytm.py:34
 msgid "TinyTM"

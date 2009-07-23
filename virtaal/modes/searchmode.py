@@ -136,31 +136,31 @@ class SearchMode(BaseMode):
         main_controller.select_unit(match.unit)
         view = main_controller.unit_controller.view
 
-        # Wait for SearchMode to finish with its highlighting and stuff, and then we do...
         if match.part == 'target':
-            def select_match_text():
-                target = view.targets[match.part_n]
-                target.grab_focus()
-                buff = target.get_buffer()
-                buffstr = buff.get_text(buff.get_start_iter(), buff.get_end_iter()).decode('utf-8')
-                unescaped = markup.unescape(buffstr)
-                start, end = self._escaped_indexes(unescaped, match.start, match.end)
-                start_iter = buff.get_iter_at_offset(start)
-                end_iter = buff.get_iter_at_offset(end)
-                buff.select_range(end_iter, start_iter)
-                return False
+            textbox = view.targets[match.part_n]
         elif match.part == 'source':
-            def select_match_text():
-                source = view.sources[match.part_n]
-                source.grab_focus()
-                buff = source.get_buffer()
-                buffstr = buff.get_text(buff.get_start_iter(), buff.get_end_iter()).decode('utf-8')
-                unescaped = markup.unescape(buffstr)
-                start, end = self._escaped_indexes(unescaped, match.start, match.end)
-                start_iter = buff.get_iter_at_offset(match.start)
-                end_iter = buff.get_iter_at_offset(match.end)
-                buff.select_range(end_iter, start_iter)
-                return False
+            textbox = view.sources[match.part_n]
+
+        if not textbox:
+            return False
+
+        # Wait for SearchMode to finish with its highlighting and stuff, and then we do...
+        def select_match_text():
+            textbox.grab_focus()
+            buff = textbox.buffer
+            buffstr = textbox.get_text()
+            unescaped = markup.unescape(buffstr)
+
+            start, end = self._escaped_indexes(unescaped, match.start, match.end)
+            if hasattr(textbox.elem, 'gui_info'):
+                start = textbox.elem.gui_info.tree_to_gui_index(start)
+                end = textbox.elem.gui_info.tree_to_gui_index(end)
+            start_iter = buff.get_iter_at_offset(start)
+            end_iter = buff.get_iter_at_offset(end)
+
+            buff.select_range(end_iter, start_iter)
+            return False
+
         # TODO: Implement for 'notes' and 'locations' parts
         gobject.idle_add(select_match_text)
 
@@ -293,9 +293,9 @@ class SearchMode(BaseMode):
 
         unitview = self.controller.main_controller.unit_controller.view
         self._prev_unitview = unitview
-        for textview in unitview.sources + unitview.targets:
-            buff = textview.get_buffer()
-            buffstr = buff.get_text(buff.get_start_iter(), buff.get_end_iter()).decode('utf-8')
+        for textbox in unitview.sources + unitview.targets:
+            buff = textbox.buffer
+            buffstr = textbox.get_text()
             unescaped = markup.unescape(buffstr)
 
             # First make sure that the current buffer contains a highlighting tag.
@@ -310,14 +310,17 @@ class SearchMode(BaseMode):
 
             select_iters = []
             for match in [m for m in self.matches if m.unit is unitview.unit]:
-                if  (textview in unitview.sources and not match.part == 'source') or \
-                    (textview in unitview.targets and not match.part == 'target'):
+                if  (textbox in unitview.sources and not match.part == 'source') or \
+                    (textbox in unitview.targets and not match.part == 'target'):
                     continue
                 start, end = self._escaped_indexes(unescaped, match.start, match.end)
+                if hasattr(textbox.elem, 'gui_info'):
+                    start = textbox.elem.gui_info.tree_to_gui_index(start)
+                    end   = textbox.elem.gui_info.tree_to_gui_index(end)
                 start_iter, end_iter = buff.get_iter_at_offset(start), buff.get_iter_at_offset(end)
                 buff.apply_tag_by_name('search_highlight', start_iter, end_iter)
 
-                if textview in unitview.targets and not select_iters and self.select_first_match:
+                if textbox in unitview.targets and not select_iters and self.select_first_match:
                     select_iters = [start_iter, end_iter]
 
             if select_iters:
@@ -361,8 +364,8 @@ class SearchMode(BaseMode):
         if not getattr(self, '_prev_unitview', ''):
             return
 
-        for textview in self._prev_unitview.sources + self._prev_unitview.targets:
-            buff = textview.get_buffer()
+        for textbox in self._prev_unitview.sources + self._prev_unitview.targets:
+            buff = textbox.buffer
             if buff.get_tag_table().lookup('search_highlight') is not None:
                 buff.remove_tag_by_name('search_highlight', buff.get_start_iter(), buff.get_end_iter())
 

@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.3beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-07-18 15:55+0300\n"
-"PO-Revision-Date: 2009-07-18 15:55+0300\n"
+"PO-Revision-Date: 2009-07-18 22:25+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 "X-Generator: Virtaal 0.4.0-beta1\n"
@@ -201,7 +201,7 @@ msgstr "انقل من الأصل"
 
 #: ../share/virtaal/virtaal.glade.h:44
 msgid "Use _Default Fonts"
-msgstr "استخدم الخطوط المبدئية"
+msgstr "استخدم الخطوط ال_مبدئية"
 
 #: ../share/virtaal/virtaal.glade.h:46
 msgid "Virtaal Preferences"
@@ -272,7 +272,7 @@ msgstr "بعد إتمام الترجمة، اضغط <إدخال> للانتقا�
 #: ../virtaal/tips.py:28
 msgid ""
 "To copy the original string into the target field, simply press <Alt+Down>."
-msgstr "لنسخ النص الأصلي في خانة النص المترجم اضغط <Alt+Down>"
+msgstr "لنسخ النص الأصلي في خانة النص المترجم اضغط <Alt+Down>."
 
 #. _("When editing a fuzzy translation, the fuzzy marker will automatically be removed."),
 #. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
@@ -282,12 +282,12 @@ msgstr "اضغط <Alt+U> لتعليم الترجمة الحالية كمبهمة
 
 #: ../virtaal/tips.py:32
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
-msgstr "للانتقال بين النصوص اضغط Ctrl+Up أو Ctrl+Down"
+msgstr "للانتقال بين النصوص اضغط Ctrl+Up أو Ctrl+Down."
 
 #: ../virtaal/tips.py:33
 msgid ""
 "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
-msgstr "للانتقال بخطوات كبيرة بين النصوص اضغط Ctrl+PgUp أو Ctrl+PgDown"
+msgstr "للانتقال بخطوات كبيرة بين النصوص اضغط Ctrl+PgUp أو Ctrl+PgDown."
 
 #: ../virtaal/controllers/maincontroller.py:69
 #: ../virtaal/controllers/maincontroller.py:78
@@ -326,6 +326,7 @@ msgid ""
 "Try opening a different file."
 msgstr ""
 "تعذر فتح الملف.\n"
+"\n"
 "%(error_message)s\n"
 "\n"
 "اختر ملفا مختلفا."
@@ -560,7 +561,7 @@ msgstr "التصحيح الآلي"
 
 #: ../virtaal/plugins/migration.py:56
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
-msgstr "انقل الإعدادات من بابل‌ك، لوكالايز و/أو Poedit إلى فرتال"
+msgstr "انقل الإعدادات من بابل‌ك، لوكالايز و/أو Poedit إلى فرتال."
 
 #: ../virtaal/plugins/migration.py:57
 msgid "Migration Assistant"
@@ -798,7 +799,7 @@ msgstr "ترجمة Apertium الآلية"
 
 #: ../virtaal/plugins/tm/tmview.py:99
 msgid "Translation _Suggestions"
-msgstr "اقتراحات الترجمة"
+msgstr "اقترا_حات الترجمة"
 
 #: ../virtaal/plugins/tm/tmview.py:156
 #, python-format
@@ -897,7 +898,7 @@ msgstr "حقوق النشر © 2007-2009 مؤسسة زوزا للبرمجيات"
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
 #: ../virtaal/views/widgets/aboutdialog.py:38
 msgid "Virtaal is a program for doing translation."
-msgstr "فِرتال (Virtaal) هو برنامج للترجمة"
+msgstr "فِرتال (Virtaal) هو برنامج للترجمة."
 
 #: ../virtaal/views/widgets/aboutdialog.py:39
 msgid ""
@@ -960,17 +961,17 @@ msgstr "الاسم"
 
 #: ../virtaal/views/widgets/selectview.py:112
 msgid "Configure..."
-msgstr "ا_ضبط..."
+msgstr "اضبط..."
 
 #: ../virtaal/models/storemodel.py:105
 #, python-format
 msgid "The file \"%s\" does not exist."
-msgstr "الملف \"%s\" لا وجود له"
+msgstr "الملف \"%s\" لا وجود له."
 
 #: ../virtaal/models/storemodel.py:107
 #, python-format
 msgid "\"%s\" is not a usable file."
-msgstr "\"%s\" ليس ملفا مناسبا"
+msgstr "\"%s\" ليس ملفا مناسبا."
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
 msgid "C++ RC File"

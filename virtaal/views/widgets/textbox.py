@@ -484,6 +484,7 @@ class TextBox(gtk.TextView):
                 )
                 self.__delayed_refresh(start_elem_offset)
                 self.buffer.stop_emission('delete-range')
+                return
 
         if start_elem is not None and not start_elem.iseditable:
             if start_offset+1 == end_offset:

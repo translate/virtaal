@@ -118,6 +118,10 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         layout.set_wrap(pango.WRAP_WORD_CHAR)
         layout.set_width(width * pango.SCALE)
         layout.set_markup(string)
+        # This makes no sense, but mostly has the desired effect to align things correctly for
+        # RTL languages which is otherwise incorrect. Untranslated entries is still wrong.
+        if widget.get_direction() == gtk.TEXT_DIR_RTL:
+            layout.set_alignment(pango.ALIGN_RIGHT)
         return layout
 
     def _start_editing(self, treeview):

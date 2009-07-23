@@ -96,8 +96,9 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         self.props.mode = gtk.CELL_RENDERER_MODE_INERT
         xo, yo, w, h = self.get_size(widget, cell_area)
         x = cell_area.x + xo
-        y = cell_area.y + yo
         layout = self.create_pango_layout(self.strfunc(self.widget), widget, w)
+        layout_w, layout_h = layout.get_pixel_size()
+        y = cell_area.y + yo + (h-layout_h)/2
         widget.get_style().paint_layout(window, gtk.STATE_NORMAL, True, cell_area, widget, '', x, y, layout)
 
     def on_start_editing(self, event, tree_view, path, bg_area, cell_area, flags):

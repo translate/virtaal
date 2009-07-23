@@ -21,7 +21,6 @@
 """Contains the AutoCorrector class."""
 
 import gobject
-import gtk
 import logging
 import os
 import re
@@ -30,6 +29,7 @@ from lxml import etree
 
 from virtaal.common import pan_app
 from virtaal.controllers import BasePlugin
+from virtaal.views.widgets.textbox import TextBox
 
 
 class AutoCorrector(object):
@@ -63,7 +63,7 @@ class AutoCorrector(object):
         self.widgets = set()
 
     def add_widget(self, widget):
-        """Add a widget (currently only C{gtk.TextView}s are accepted) to the
+        """Add a widget (currently only C{TextBox}s are accepted) to the
             list of widgets to do auto-correction for.
             """
         if not self.correctiondict:
@@ -72,8 +72,8 @@ class AutoCorrector(object):
         if widget in self.widgets:
             return # Widget already added
 
-        if isinstance(widget, gtk.TextView):
-            self._add_textview(widget)
+        if isinstance(widget, TextBox):
+            self._add_textbox(widget)
             return
 
         raise ValueError("Widget type %s not supported." % (type(widget)))
@@ -185,14 +185,14 @@ class AutoCorrector(object):
         return
 
     def remove_widget(self, widget):
-        """Remove a widget (currently only C{gtk.TextView}s are accepted) from
+        """Remove a widget (currently only C{TextBox}es are accepted) from
             the list of widgets to do auto-correction for.
             """
         if not self.correctiondict:
             return
 
-        if isinstance(widget, gtk.TextView) and widget in self.widgets:
-            self._remove_textview(widget)
+        if isinstance(widget, TextBox) and widget in self.widgets:
+            self._remove_textbox(widget)
 
     def set_widgets(self, widget_collection):
         """Replace the widgets being auto-corrected with the collection given."""
@@ -200,51 +200,50 @@ class AutoCorrector(object):
         for w in widget_collection:
             self.add_widget(w)
 
-    def _add_textview(self, textview):
-        """Add the given I{gtk.TextView} to the list of widgets to do auto-
+    def _add_textbox(self, textbox):
+        """Add the given C{TextBox} to the list of widgets to do auto-
             correction on.
             """
-        if not hasattr(self, '_textbuffer_handler_ids'):
-            self._textbuffer_handler_ids = {}
+        if not hasattr(self, '_textbox_handler_ids'):
+            self._textbox_handler_ids = {}
 
-        handler_id = textview.get_buffer().connect(
-            'insert-text',
+        handler_id = textbox.connect(
+            'text-inserted',
             self._on_insert_text
         )
-        self._textbuffer_handler_ids[textview] = handler_id
-        self.widgets.add(textview)
+        self._textbox_handler_ids[textbox] = handler_id
+        self.widgets.add(textbox)
 
-    def _on_insert_text(self, buffer, iter, text, length):
-        bufftext = unicode(buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter()))
-        iteroffset = iter.get_offset() + len(text)
-
+    def _on_insert_text(self, textbox, text, cursorpos, elem):
+        if not isinstance(text, basestring):
+            return
         if not self.wordsep_re.split(text)[-1]:
-            reprange, replacement = self.autocorrect(bufftext, iter.get_offset(), text)
+            bufftext = unicode(elem)
+            offset = elem.gui_info.gui_to_tree_index(cursorpos)
+            reprange, replacement = self.autocorrect(bufftext, offset, text)
             if reprange is not None:
                 # Updating of the buffer is deferred until after this signal
                 # and its side effects are taken care of. We abuse
                 # gobject.idle_add for that.
                 def correct_text():
-                    start_iter = buffer.get_iter_at_offset(reprange[0])
-                    end_iter = buffer.get_iter_at_offset(reprange[1])
-
-                    self.main_controller.undo_controller.record_start()
-                    buffer.delete(start_iter, end_iter)
-                    buffer.insert(start_iter, replacement)
-                    self.main_controller.undo_controller.record_stop()
+                    self.main_controller.undo_controller.push_current_text(textbox)
+                    if not elem.delete_range(*reprange):
+                        return False
+                    elem.insert(reprange[0], unicode(replacement))
+                    textbox.refresh(cursor_pos=cursorpos+len(text))
                     return False
 
                 gobject.idle_add(correct_text)
 
-    def _remove_textview(self, textview):
-        """Remove the given C{gtk.TextView} from the list of widgets to do
+    def _remove_textbox(self, textbox):
+        """Remove the given C{TextBox} from the list of widgets to do
             auto-correction on.
             """
-        if not hasattr(self, '_textbuffer_handler_ids'):
+        if not hasattr(self, '_textbox_handler_ids'):
             return
         # Disconnect the "insert-text" event handler
-        textview.get_buffer().disconnect(self._textbuffer_handler_ids[textview])
-        self.widgets.remove(textview)
+        textbox.disconnect(self._textbox_handler_ids[textbox])
+        self.widgets.remove(textbox)
 
 
 class Plugin(BasePlugin):

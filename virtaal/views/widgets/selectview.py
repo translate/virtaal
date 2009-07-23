@@ -20,6 +20,7 @@
 
 import gtk
 import logging
+import locale
 from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 from xml.sax.saxutils import escape
 
@@ -109,6 +110,7 @@ class SelectView(gtk.TreeView, GObjectWrapper):
             vbox.lbl_desc = lbl
         hbox.pack_start(vbox)
 
+        #TODO: ideally we need an accesskey, but it is not currently working
         btnconf = gtk.Button(_('Configure...'))
         if 'config' in item and callable(item['config']):
             def clicked(button):
@@ -192,6 +194,7 @@ class SelectView(gtk.TreeView, GObjectWrapper):
             self._model = items
         else:
             self._model = gtk.ListStore(bool, str, str, TYPE_PYOBJECT, TYPE_PYOBJECT)
+            items.sort(cmp=locale.strcoll, key=lambda x: x.get('name', ''))
             for row in items:
                 self._model.append([
                     row.get('enabled', False),

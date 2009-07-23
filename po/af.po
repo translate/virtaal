@@ -1,6 +1,6 @@
 # Afrikaans (af) localisation of Virtaal.
 # Copyright (C) 2008-2009 Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the VirTaal package.
+# This file is distributed under the same license as the Virtaal package.
 # Dwayne Bailey <dwayne@translate.org.za>, 2008
 # F Wolff <friedel@translate.org.za>, 2008, 2009
 msgid ""

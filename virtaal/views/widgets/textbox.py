@@ -530,7 +530,7 @@ class TextBox(gtk.TextView):
         if not (left is None and right is None) and (left is not right or not unicode(left)):
             succeeded = self.elem.insert_between(left, right, ins_text)
             #logging.debug('self.elem.insert_between(%s, %s, "%s"): %s' % (repr(left), repr(right), ins_text, succeeded))
-        if not succeeded and left is right and left.isleaf():
+        if not succeeded and left is not None and left is right and left.isleaf():
             # This block handles the special case where a the cursor is just
             # inside a leaf element with a closing widget. In this case both
             # left and right will point to the element in question, but it

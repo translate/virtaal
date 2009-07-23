@@ -274,7 +274,7 @@ class TextBox(gtk.TextView):
                 self.elem.prune()
                 cursor_pos += translation.gui_info.length()
 
-                self.emit('text-inserted', unicode(translation), insert_offset, self.elem)
+                self.emit('text-inserted', translation, cursor_pos, self.elem)
             else:
                 self.buffer.insert_at_cursor(translation)
                 cursor_pos += len(translation)

@@ -152,7 +152,7 @@ class AutoCompletor(object):
         self.widgets.add(textbox)
 
     def _on_insert_text(self, textbox, text, offset, elem):
-        if self.wordsep_re.match(text):
+        if not isinstance(text, basestring) or self.wordsep_re.match(text):
             return
         # We are only interested in single character insertions, otherwise we
         # react similarly for paste and similar events

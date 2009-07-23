@@ -618,14 +618,17 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     def _on_target_changed(self, buffer, index):
         tgt = self.targets[index]
+        nplurals = self.controller.main_controller.lang_controller.target_lang.nplurals
         if tgt.elem is not None:
             rich_target = self.unit.rich_target
+            if len(rich_target) < nplurals:
+                # pad the target with empty strings
+                rich_target += (nplurals - len(rich_target)) * [u""]
             rich_target[index] = tgt.elem
             self.unit.rich_target = rich_target
         else:
             newtext = self.get_target_n(index)
             if self.unit.hasplural():
-                nplurals = self.controller.main_controller.lang_controller.target_lang.nplurals
                 # FIXME: The following two lines are necessary because self.unit.target always
                 # returns a new multistring, so you can't assign to an index directly.
                 target = self.unit.target.strings

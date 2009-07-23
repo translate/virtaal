@@ -28,7 +28,7 @@ msgstr "Инструмент для перевода"
 #: ../share/applications/virtaal.desktop.in.h:3
 #: ../share/virtaal/virtaal.glade.h:45
 msgid "Virtaal"
-msgstr "Виртаал"
+msgstr "Фиртаал"
 
 #: ../share/virtaal/virtaal.glade.h:1
 msgid "<b>Fonts</b>"
@@ -189,7 +189,7 @@ msgstr "Использовать _шрифты по умолчанию"
 
 #: ../share/virtaal/virtaal.glade.h:46
 msgid "Virtaal Preferences"
-msgstr "Параметры Виртаал"
+msgstr "Параметры Фиртаал"
 
 #: ../share/virtaal/virtaal.glade.h:47
 msgid "_Add Missing Language..."
@@ -557,7 +557,7 @@ msgstr "Миграция завершена"
 
 #: ../virtaal/plugins/migration.py:105
 msgid "Virtaal was not able to migrate any settings or data"
-msgstr "Виртаал не смог импортировать никакие настройки и данные"
+msgstr "Фиртаал не смог импортировать никакие настройки и данные"
 
 #: ../virtaal/plugins/migration.py:106
 msgid "Nothing migrated"
@@ -835,7 +835,7 @@ msgstr "_Не сохранять"
 #: ../virtaal/views/mainview.py:301
 #, python-format
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
-msgstr "%(modified_marker)s%(current_file)s - Виртаал"
+msgstr "%(modified_marker)s%(current_file)s - Фиртаал"
 
 #: ../virtaal/views/mainview.py:326
 msgid "Please enter the number of noun forms (plurals) to use"
@@ -863,7 +863,7 @@ msgstr "Авторские права © 2007-2009 Zuza Software Foundation"
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
 #: ../virtaal/views/widgets/aboutdialog.py:38
 msgid "Virtaal is a program for doing translation."
-msgstr "Виртаал (Virtaal) — это программа для переводов."
+msgstr "Фиртаал (Virtaal) — это программа для переводов."
 
 #: ../virtaal/views/widgets/aboutdialog.py:39
 msgid "The initial focus is on software translation (localization or l10n), but we definitely intend it to be useful as a general purpose tool for Computer Aided Translation (CAT)."
@@ -871,7 +871,7 @@ msgstr "Эта программа фокусируется, в основном,
 
 #: ../virtaal/views/widgets/aboutdialog.py:53
 msgid "Virtaal website"
-msgstr "Сайт Виртаал"
+msgstr "Сайт Фиртаал"
 
 #: ../virtaal/views/widgets/aboutdialog.py:62
 msgid "We thank our donors:"

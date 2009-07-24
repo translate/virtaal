@@ -497,7 +497,7 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
         if widget.get_direction() == gtk.TEXT_DIR_LTR:
             target_x += width/2
         else:
-            source_x += width/2
+            source_x += (width/2) + 10
         widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False,
                 cell_area, widget, '', source_x, y, self.source_layout)
         widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False,

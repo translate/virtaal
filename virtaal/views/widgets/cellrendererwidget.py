@@ -123,6 +123,7 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         # RTL languages which is otherwise incorrect. Untranslated entries is still wrong.
         if widget.get_direction() == gtk.TEXT_DIR_RTL:
             layout.set_alignment(pango.ALIGN_RIGHT)
+            layout.set_auto_dir(False)
         return layout
 
     def _start_editing(self, treeview):

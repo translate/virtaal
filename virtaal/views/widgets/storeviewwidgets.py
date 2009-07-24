@@ -534,6 +534,7 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
         if widget.get_direction() == gtk.TEXT_DIR_RTL:
             self.source_layout.set_alignment(pango.ALIGN_RIGHT)
             self.target_layout.set_alignment(pango.ALIGN_RIGHT)
+            self.target_layout.set_auto_dir(False)
         _layout_width, source_height = self.source_layout.get_pixel_size()
         _layout_width, target_height = self.target_layout.get_pixel_size()
         return max(source_height, target_height) + self.ROW_PADDING

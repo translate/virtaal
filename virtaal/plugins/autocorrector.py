@@ -226,12 +226,16 @@ class AutoCorrector(object):
                 # and its side effects are taken care of. We abuse
                 # gobject.idle_add for that.
                 def correct_text():
-                    self.main_controller.undo_controller.push_current_text(textbox)
-                    if not elem.delete_range(*reprange):
-                        return False
-                    elem.insert(reprange[0], unicode(replacement))
-                    newcursorpos = (reprange[1]-reprange[0]) + len(replacement) + len(text)
-                    textbox.refresh(cursor_pos=newcursorpos)
+                    buffer = textbox.buffer
+                    repr_iters = [buffer.get_iter_at_offset(i) for i in reprange]
+
+                    self.main_controller.undo_controller.record_start()
+                    buffer.delete(*repr_iters)
+                    buffer.insert(repr_iters[0], unicode(replacement))
+                    self.main_controller.undo_controller.record_stop()
+
+                    newcursorpos = reprange[0] + len(replacement) + len(text)
+                    gobject.idle_add(textbox.refresh, newcursorpos)
                     return False
 
                 gobject.idle_add(correct_text)

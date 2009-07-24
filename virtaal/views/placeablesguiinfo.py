@@ -190,7 +190,7 @@ class StringElemGUI(object):
             possibly included widgets."""
         length = len([w for w in self.widgets if w is not None])
         for child in self.elem.sub:
-            if isinstance(child, StringElem):
+            if isinstance(child, StringElem) and hasattr(child, 'gui_info'):
                 length += child.gui_info.length()
             else:
                 length += len(child)

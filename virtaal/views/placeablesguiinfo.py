@@ -152,7 +152,7 @@ class StringElemGUI(object):
         # of the text buffer and count the positions without widgets.
         i = 0
         itr = self.textbox.buffer.get_start_iter()
-        while itr.get_offset() < index:
+        while itr.get_offset() < index and not itr.is_end():
             if itr.get_child_anchor() is None:
                 i += 1
             itr.forward_char()

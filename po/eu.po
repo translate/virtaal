@@ -230,7 +230,7 @@ msgstr "_Pantaila osoan"
 
 #: ../share/virtaal/virtaal.glade.h:51
 msgid "_Help"
-msgstr "Lagunt_za"
+msgstr "_Laguntza"
 
 #: ../share/virtaal/virtaal.glade.h:52
 msgid "_Localization Guide"

@@ -272,7 +272,7 @@ class TextBox(gtk.TextView):
                 insert_offset = self.elem.gui_info.gui_to_tree_index(cursor_pos)
                 self.elem.insert(insert_offset, translation)
                 self.elem.prune()
-                cursor_pos += translation.gui_info.length()
+                self.__delayed_refresh(cursor_pos + translation.gui_info.length())
 
                 self.emit('text-inserted', translation, cursor_pos, self.elem)
             else:

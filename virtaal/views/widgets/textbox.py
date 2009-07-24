@@ -247,6 +247,10 @@ class TextBox(gtk.TextView):
         selection = self.buffer.get_selection_bounds()
         if selection:
             self.buffer.delete(*selection)
+
+        while gtk.events_pending():
+            gtk.main_iteration()
+
         cursor_pos = self.buffer.props.cursor_position
         widget = elem.gui_info.get_insert_widget()
         if widget:

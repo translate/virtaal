@@ -48,10 +48,11 @@ def test_sqlite3_version():
         pass
     return False
 
+MIN_TRANSLATE_VERSION = (1, 4, 1)
 def test_translate_toolkit_version():
     try:
         from translate.__version__ import ver
-        return ver >= (1, 4, 0)
+        return ver >= MIN_TRANSLATE_VERSION
     except Exception:
         pass
     return False

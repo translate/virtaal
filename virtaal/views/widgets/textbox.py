@@ -559,7 +559,7 @@ class TextBox(gtk.TextView):
             self.elem.prune()
             self.__delayed_refresh(self.buffer.props.cursor_position+len(ins_text))
             #logging.debug('text-inserted: %s@%d of %s' % (ins_text, iter.get_offset(), repr(self.elem)))
-            self.emit('text-inserted', ins_text, iter.get_offset(), self.elem)
+            self.emit('text-inserted', ins_text, buff_offset, self.elem)
         else:
             self.buffer.stop_emission('insert-text')
 

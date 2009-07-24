@@ -230,7 +230,8 @@ class AutoCorrector(object):
                     if not elem.delete_range(*reprange):
                         return False
                     elem.insert(reprange[0], unicode(replacement))
-                    textbox.refresh(cursor_pos=cursorpos+len(text))
+                    newcursorpos = (reprange[1]-reprange[0]) + len(replacement) + len(text)
+                    textbox.refresh(cursor_pos=newcursorpos)
                     return False
 
                 gobject.idle_add(correct_text)

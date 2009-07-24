@@ -147,23 +147,15 @@ class StringElemGUI(object):
         return None
 
     def gui_to_tree_index(self, index):
-        #elem = self.elem_at_offset(index)
-        #gui_index = self.index(elem)
-        #tree_index = self.elem.elem_offset(elem)
-        #converted = tree_index + (index - gui_index)
-        #if hasattr(elem, 'gui_info') and elem.gui_info.widgets and elem.gui_info.widgets[0]:
-        #    converted -= 1
-        #return converted
-
-        # Let's try a different approach: The difference between a GUI offset and a tree offset is
-        # the iter-consuming widgets in the text box. So we just iterate from the start of the text
-        # buffer and count the positions without widgets.
+        # The difference between a GUI offset and a tree offset is the iter-
+        # consuming widgets in the text box. So we just iterate from the start
+        # of the text buffer and count the positions without widgets.
         i = 0
         itr = self.textbox.buffer.get_start_iter()
         while itr.get_offset() < index:
             if itr.get_child_anchor() is None:
                 i += 1
-            itr.set_offset(itr.get_offset()+1)
+            itr.forward_char()
         return i
 
     def index(self, elem):

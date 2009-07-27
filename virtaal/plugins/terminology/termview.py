@@ -115,7 +115,7 @@ class TerminologyCombo(gtk.ComboBox):
                 buffer.delete(self.insert_iter, iternext)
 
         if self.selected_string:
-            buffer.insert_at_cursor(self.selected_string)
+            buffer.insert(self.insert_iter, self.selected_string)
 
 
     # EVENT HANDLERS #

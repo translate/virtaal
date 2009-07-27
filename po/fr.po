@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: virtaal-fr\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-07-15 18:41+0200\n"
-"PO-Revision-Date: 2009-07-19 08:32+0200\n"
+"PO-Revision-Date: 2009-07-25 16:55+0200\n"
 "Last-Translator: Christian Perrier <bubulle@debian.org>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -213,7 +213,7 @@ msgid ""
 "address or a URL, for example."
 msgstr ""
 "Information relative à l'équipe de traduction, conservée dans l'en-tête du "
-"fichier. Cela peut êtr eune adresse de courrier électronique ou un URL, par "
+"fichier. Cela peut être une adresse de courrier électronique ou une URL, par "
 "exemple."
 
 #. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
@@ -505,7 +505,7 @@ msgstr "URL"
 
 #: ../virtaal/controllers/placeablescontroller.py:129
 msgid "URLs, hostnames and IP addresses"
-msgstr "URL, noms d'hôtes and adresses IP"
+msgstr "URL, noms d'hôtes et adresses IP"
 
 #. l10n: see http://en.wikipedia.org/wiki/Character_entity_reference
 #: ../virtaal/controllers/placeablescontroller.py:133

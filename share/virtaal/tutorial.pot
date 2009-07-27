@@ -21,7 +21,7 @@ msgstr ""
 msgid "Welcome"
 msgstr ""
 
-#. Translate this slightly longer message. Spelling mistakes are indicated similarly to word processors. Make sure the correct language is selected in the bottom right of the window.
+#. Translate this slightly longer message. If a spell checker is available, spelling mistakes are indicated similarly to word processors. Make sure the correct language is selected in the bottom right of the window.
 msgid "With this file you can learn about translation using Virtaal"
 msgstr ""
 

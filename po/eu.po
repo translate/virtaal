@@ -121,7 +121,7 @@ msgid ""
 "highlighted and easily inserted into the translation."
 msgstr ""
 "Elementu bereziak testuaren zati ezohikoak dira eta automatikoki nabarmen "
-"daitezke modu errazean txertatzeko itzulpenean."
+"daitezke, itzulpenean modu errazean txertatzeko."
 
 #: ../share/virtaal/virtaal.glade.h:25
 msgid "Plug-ins"

@@ -438,6 +438,7 @@ class TextBox(gtk.TextView):
             main_controller.disconnect(self.__controller_connect_id)
 
     def _on_delete_range(self, buffer, start_iter, end_iter):
+        self.buffer.stop_emission('delete-range')
         if self.elem is None:
             return
 
@@ -489,7 +490,6 @@ class TextBox(gtk.TextView):
                     deleted, parent, cursor_pos, self.elem
                 )
                 self.__delayed_refresh(start_elem_offset)
-                self.buffer.stop_emission('delete-range')
                 return
 
         if start_elem is not None and not start_elem.iseditable:
@@ -519,9 +519,9 @@ class TextBox(gtk.TextView):
             deleted, parent, cursor_pos, self.elem
         )
         self.__delayed_refresh(start_iter.get_offset())
-        self.buffer.stop_emission('delete-range')
 
     def _on_insert_text(self, buffer, iter, ins_text, length):
+        self.buffer.stop_emission('insert-text')
         if self.elem is None:
             return
 
@@ -564,8 +564,6 @@ class TextBox(gtk.TextView):
             self.__delayed_refresh(self.buffer.props.cursor_position+len(ins_text))
             #logging.debug('text-inserted: %s@%d of %s' % (ins_text, iter.get_offset(), repr(self.elem)))
             self.emit('text-inserted', ins_text, buff_offset, self.elem)
-        else:
-            self.buffer.stop_emission('insert-text')
 
     def _on_key_pressed(self, widget, event, *args):
         evname = None

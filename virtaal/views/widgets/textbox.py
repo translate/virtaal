@@ -448,9 +448,6 @@ class TextBox(gtk.TextView):
         start_offset = start_iter.get_offset()
         end_offset = end_iter.get_offset()
 
-        if text[start_offset:end_offset] == u'\n' and text[:start_offset].endswith(u'\\n'):
-            start_iter.set_offset(start_offset-2)
-
         start_elem = self.elem.gui_info.elem_at_offset(start_offset)
         if start_elem is None:
             return

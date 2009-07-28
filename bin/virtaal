@@ -53,6 +53,9 @@ if failed:
         sys.exit(1)
 # OK, dependencies seem to be acceptable
 
+#First of all fix the locale
+from virtaal.support.libi18n.locale import fix_locale
+fix_locale()
 
 import logging
 import optparse

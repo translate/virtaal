@@ -101,6 +101,7 @@ options = {
         "virtaal.plugins.tm",
         "virtaal.plugins.tm.models",
         "virtaal.support",
+        "virtaal.support.libi18n",
         "virtaal.test",
         "virtaal.views",
         "virtaal.views.widgets"

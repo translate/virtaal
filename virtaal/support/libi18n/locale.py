@@ -58,17 +58,17 @@ def _isofromlangid(langid):
             1068:    None,    # Azeri (Latin)
             1069:    'eu',    # Basque
             1059:    'be',    # Belarusian
-            1093:    'bn',    # Bengali (India)
+            1093:    'bn_IN', # Bengali (India)
             2117:    'bn',    # Bengali (Bangladesh)
             5146:    'bs',    # Bosnian (Bosnia/Herzegovina)
             1026:    'bg',    # Bulgarian
             1109:    'my',    # Burmese
             1027:    'ca',    # Catalan
             1116:    None,    # Cherokee - United States
-            2052:    'zh',    # Chinese - People's Republic of China
+            2052:    'zh_CN', # Chinese - People's Republic of China
             4100:    'zh',    # Chinese - Singapore
-            1028:    'zh',    # Chinese - Taiwan
-            3076:    'zh',    # Chinese - Hong Kong SAR
+            1028:    'zh_TW', # Chinese - Taiwan
+            3076:    'zh_HK', # Chinese - Hong Kong SAR
             5124:    'zh',    # Chinese - Macao SAR
             1050:    'hr',    # Croatian
             4122:    'hr',    # Croatian (Bosnia/Herzegovina)
@@ -79,10 +79,10 @@ def _isofromlangid(langid):
             2067:    'nl',    # Dutch - Belgium
             1126:    None,    # Edo
             1033:    'en',    # English - United States
-            2057:    'en',    # English - United Kingdom
+            2057:    'en_UK', # English - United Kingdom
             3081:    'en',    # English - Australia
             10249:   'en',    # English - Belize
-            4105:    'en',    # English - Canada
+            4105:    'en_CA', # English - Canada
             9225:    'en',    # English - Caribbean
             15369:   'en',    # English - Hong Kong SAR
             16393:   'en',    # English - India
@@ -93,7 +93,7 @@ def _isofromlangid(langid):
             5129:    'en',    # English - New Zealand
             13321:   'en',    # English - Philippines
             18441:   'en',    # English - Singapore
-            7177:    'en',    # English - South Africa
+            7177:    'en_ZA', # English - South Africa
             11273:   'en',    # English - Trinidad
             12297:   'en',    # English - Zimbabwe
             1061:    'et',    # Estonian
@@ -176,7 +176,7 @@ def _isofromlangid(langid):
             1145:    None,    # Papiamentu
             1123:    'ps',    # Pashto
             1045:    'pl',    # Polish
-            1046:    'pt',    # Portuguese - Brazil
+            1046:    'pt_BR', # Portuguese - Brazil
             2070:    'pt',    # Portuguese - Portugal
             1094:    'pa',    # Punjabi
             2118:    'pa',    # Punjabi (Pakistan)
@@ -192,7 +192,7 @@ def _isofromlangid(langid):
             1103:    'sa',    # Sanskrit
             1132:    None,    # Sepedi
             3098:    'sr',    # Serbian (Cyrillic)
-            2074:    'sr',    # Serbian (Latin)
+            2074:    'sr@latin',# Serbian (Latin)
             1113:    'sd',    # Sindhi - India
             2137:    'sd',    # Sindhi - Pakistan
             1115:    'si',    # Sinhalese - Sri Lanka
@@ -246,7 +246,7 @@ def _isofromlangid(langid):
             1058:    'uk',    # Ukrainian
             1056:    'ur',    # Urdu
             2080:    'ur',    # Urdu - India
-            2115:    'uz',    # Uzbek (Cyrillic)
+            2115:    'uz@cyrillic',    # Uzbek (Cyrillic)
             1091:    'uz',    # Uzbek (Latin)
             1075:    've',    # Venda
             1066:    'vi',    # Vietnamese

@@ -258,7 +258,7 @@ def _isofromlangid(langid):
             1077:    'zu',    # Zulu
     }
 
-    return lcid[langid]
+    return lcid.get(langid, None)
 
 def _getlang():
     # Start with nothing

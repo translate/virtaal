@@ -1,8 +1,10 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# locale.py - libi18n
 # Copyright (C) 2007-2008 Dieter Verfaillie <dieterv@optionexplicit.be>
+# Copyright 2009 Zuza Software Foundation
 #
+# (NOTE: LGPL)
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
@@ -271,7 +273,9 @@ def _getlang():
     lang = os.getenv('LANG')
     if lang is None:
         from ctypes import windll
-        langid = windll.kernel32.GetUserDefaultUILanguage()
+        #windll.kernel32.GetUserDefaultUILanguage() - Windows UI language
+        #windll.kernel32.GetUserDefaultLangID() - User's locale
+        langid = windll.kernel32.GetUserDefaultLangID()
         if not langid == 0:
             lang = _isofromlangid(langid)
         else:

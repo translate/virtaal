@@ -54,8 +54,8 @@ def _isofromlangid(langid):
             9217:    'ar',    # Arabic - Yemen
             1067:    'hy',    # Armenian - Armenia
             1101:    'as',    # Assamese
-            2092:    None,    # Azeri (Cyrillic)
-            1068:    None,    # Azeri (Latin)
+            2092:    'az',    # Azeri (Cyrillic)
+            1068:    'az',    # Azeri (Latin)
             1069:    'eu',    # Basque
             1059:    'be',    # Belarusian
             1093:    'bn_IN', # Bengali (India)
@@ -98,8 +98,8 @@ def _isofromlangid(langid):
             12297:   'en',    # English - Zimbabwe
             1061:    'et',    # Estonian
             1080:    'fo',    # Faroese
-            1065:    None,    # Farsi
-            1124:    None,    # Filipino
+            1065:    'fa',    # Persian
+            1124:    'fil',   # Filipino #XXX: GTK uses Tagalog (tl)
             1035:    'fi',    # Finnish
             1036:    'fr',    # French - France
             2060:    'fr',    # French - Belgium
@@ -118,7 +118,7 @@ def _isofromlangid(langid):
             4108:    'fr',    # French - Switzerland
             7180:    'fr',    # French - West Indies
             1122:    'fy',    # Frisian - Netherlands
-            1127:    None,    # Fulfulde - Nigeria
+            1127:    'fub',   # Fulfulde - Nigeria
             1071:    'mk',    # FYRO Macedonian
             2108:    'ga',    # Gaelic (Ireland)
             1084:    'gd',    # Gaelic (Scotland)
@@ -137,7 +137,7 @@ def _isofromlangid(langid):
             1037:    'he',    # Hebrew
             1081:    'hi',    # Hindi
             1038:    'hu',    # Hungarian
-            1129:    None,    # Ibibio - Nigeria
+            1129:    'ibb',    # Ibibio - Nigeria
             1039:    'is',    # Icelandic
             1136:    'ig',    # Igbo - Nigeria
             1057:    'id',    # Indonesian
@@ -151,7 +151,7 @@ def _isofromlangid(langid):
             1120:    'ks',    # Kashmiri (Arabic)
             1087:    'kk',    # Kazakh
             1107:    'km',    # Khmer
-            1111:    None,    # Konkani
+            1111:    'knn',   # Konkani
             1042:    'ko',    # Korean
             1088:    'ky',    # Kyrgyz (Cyrillic)
             1108:    'lo',    # Lao
@@ -162,7 +162,7 @@ def _isofromlangid(langid):
             2110:    'ms',    # Malay - Brunei Darussalam
             1100:    'ml',    # Malayalam
             1082:    'mt',    # Maltese
-            1112:    None,    # Manipuri
+            1112:    'mni',   # Manipuri
             1153:    'mi',    # Maori - New Zealand
             1102:    'mr',    # Marathi
             1104:    'mn',    # Mongolian (Cyrillic)
@@ -173,7 +173,7 @@ def _isofromlangid(langid):
             2068:    'no',    # Norwegian (Nynorsk)
             1096:    'or',    # Oriya
             1138:    'om',    # Oromo
-            1145:    None,    # Papiamentu
+            1145:    'pap',   # Papiamentu
             1123:    'ps',    # Pashto
             1045:    'pl',    # Polish
             1046:    'pt_BR', # Portuguese - Brazil
@@ -190,7 +190,7 @@ def _isofromlangid(langid):
             2073:    'ru',    # Russian - Moldava
             1083:    None,    # Sami (Lappish)
             1103:    'sa',    # Sanskrit
-            1132:    None,    # Sepedi
+            1132:    'nso',   # Northern Sotho
             3098:    'sr',    # Serbian (Cyrillic)
             2074:    'sr@latin',# Serbian (Latin)
             1113:    'sd',    # Sindhi - India
@@ -222,11 +222,11 @@ def _isofromlangid(langid):
             21514:   'es',    # Spanish - United States
             14346:   'es',    # Spanish - Uruguay
             8202:    'es',    # Spanish - Venezuela
-            1072:    None,    # Sutu
+            1072:    'st',    # Sutu
             1089:    'sw',    # Swahili
             1053:    'sv',    # Swedish
             2077:    'sv',    # Swedish - Finland
-            1114:    None,    # Syriac
+            1114:    'syc',   # Syriac
             1064:    'tg',    # Tajik
             1119:    None,    # Tamazight (Arabic)
             2143:    None,    # Tamazight (Latin)
@@ -277,7 +277,7 @@ def _getlang():
         #windll.kernel32.GetUserDefaultLangID() - User's locale
         langid = windll.kernel32.GetUserDefaultLangID()
         if not langid == 0:
-            lang = _isofromlangid(langid)
+            lang = _isofromlangid(langid) or 'C'
         else:
             lang = 'C'
 

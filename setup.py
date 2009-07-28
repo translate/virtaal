@@ -197,6 +197,7 @@ AppSupportURL=http://translate.sourceforge.net/
 ;AppCopyright=Copyright (C) 2007-2008 Zuza Software Foundation
 DefaultDirName={pf}\%(name)s
 DefaultGroupName=%(name)s
+LanguageDetectionMethod=locale
 OutputBaseFilename=%(name)s-%(version)s-setup
 ChangesAssociations=yes
 SetupIconFile=%(icon_path)s

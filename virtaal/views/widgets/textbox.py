@@ -70,6 +70,7 @@ class TextBox(gtk.TextView):
         self.buffer = self.get_buffer()
         self.elem = None
         self.main_controller = main_controller
+        self.refresh_cursor_pos = -1
         self.role = role
         self.selector_textbox = selector_textbox or self
         self.selected_elem = None
@@ -294,8 +295,17 @@ class TextBox(gtk.TextView):
         else:
             self.selector_textbox.select_elem(offset=self.selector_textbox.selected_elem_index + offset)
 
-    def refresh(self, cursor_pos=-1, preserve_selection=True):
+    def place_cursor(self, cursor_pos):
+        cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)
+
+        if not cursor_iter:
+            raise ValueError('Could not get TextIter for position %d (%d)' % (cursor_pos, len(self.get_text())))
+        #logging.debug('setting cursor to position %d' % (cursor_pos))
+        self.buffer.place_cursor(self.buffer.get_iter_at_offset(cursor_pos))
+
+    def refresh(self, preserve_selection=True):
         """Refresh the text box by setting its text to the current text."""
+        #logging.debug('self.refresh_cursor_pos = %d' % (self.refresh_cursor_pos))
         selection = [itr.get_offset() for itr in self.buffer.get_selection_bounds()]
 
         if self.elem is not None:
@@ -304,18 +314,15 @@ class TextBox(gtk.TextView):
         else:
             self.set_text(self.get_text())
 
-        if type(cursor_pos) is int and cursor_pos >= 0:
-            if not self.buffer.get_selection_bounds():
-                self.buffer.place_cursor(self.buffer.get_iter_at_offset(cursor_pos))
-        elif type(cursor_pos) is gtk.TreeIter:
-            if not self.buffer.get_selection_bounds():
-                self.buffer.place_cursor(cursor_pos)
-
         if preserve_selection and selection:
             self.buffer.select_range(
                 self.buffer.get_iter_at_offset(selection[0]),
                 self.buffer.get_iter_at_offset(selection[1]),
             )
+
+        if self.refresh_cursor_pos >= 0:
+            self.place_cursor(self.refresh_cursor_pos)
+        self.refresh_cursor_pos = -1
 
     @accepts(Self(), [[StringElem, None], [int, None]])
     def select_elem(self, elem=None, offset=None):

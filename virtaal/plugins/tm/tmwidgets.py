@@ -185,7 +185,10 @@ class TMSourceColRenderer(gtk.GenericCellRenderer):
         label = gtk.Label()
         label.set_markup(u'<small>%s</small>' % self.matchdata['tmsource'])
         label.get_pango_context().set_base_dir(pango.DIRECTION_TTB_LTR)
-        label.set_angle(270)
+        if widget.get_direction() == gtk.TEXT_DIR_RTL:
+            label.set_angle(90)
+        else:
+            label.set_angle(270)
         label.set_alignment(0.5, 0.5)
         widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False,
                 cell_area, widget, '', x, y, label.get_layout())

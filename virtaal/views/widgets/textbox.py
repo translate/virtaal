@@ -70,6 +70,7 @@ class TextBox(gtk.TextView):
         self.buffer = self.get_buffer()
         self.elem = None
         self.main_controller = main_controller
+        self.refresh_actions = []
         self.refresh_cursor_pos = -1
         self.role = role
         self.selector_textbox = selector_textbox or self
@@ -256,21 +257,27 @@ class TextBox(gtk.TextView):
         cursor_pos = self.buffer.props.cursor_position
         widget = elem.gui_info.get_insert_widget()
         if widget:
-            cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)
-            anchor = self.buffer.create_child_anchor(cursor_iter)
-            # It is necessary to recreate cursor_iter becuase, for some inexplicable reason,
-            # the Gtk guys thought it acceptable to have create_child_anchor() above CHANGE
-            # THE PARAMETER ITER'S VALUE! But only in some cases, while the moon is 73.8% full
-            # and it's after 16:33. Documenting this is obviously also too much to ask.
-            # Nevermind the fact that there isn't simply a gtk.TextBuffer.remove_anchor() method
-            # or something similar. Why would you want to remove anything from a TextView that
-            # you have added anyway!?
-            # It's crap like this that'll make me ditch Gtk.
-            cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)
-            self.add_child_at_anchor(widget, anchor)
-            widget.show_all()
-            if callable(getattr(widget, 'inserted', None)):
-                widget.inserted(cursor_iter, anchor)
+            def show_widget():
+                cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)
+                anchor = self.buffer.create_child_anchor(cursor_iter)
+                # It is necessary to recreate cursor_iter becuase, for some inexplicable reason,
+                # the Gtk guys thought it acceptable to have create_child_anchor() above CHANGE
+                # THE PARAMETER ITER'S VALUE! But only in some cases, while the moon is 73.8% full
+                # and it's after 16:33. Documenting this is obviously also too much to ask.
+                # Nevermind the fact that there isn't simply a gtk.TextBuffer.remove_anchor() method
+                # or something similar. Why would you want to remove anything from a TextView that
+                # you have added anyway!?
+                # It's crap like this that'll make me ditch Gtk.
+                cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)
+                self.add_child_at_anchor(widget, anchor)
+                widget.show_all()
+                if callable(getattr(widget, 'inserted', None)):
+                    widget.inserted(cursor_iter, anchor)
+            # show_widget() must be deferred until the refresh() following this
+            # signal's completion. Otherwise the changes made by show_widget()
+            # and those made by the refresh() will wage war on each other and
+            # leave Virtaal as one of the casualties thereof.
+            self.refresh_actions.append(show_widget)
         else:
             translation = elem.translate()
             if isinstance(translation, StringElem):
@@ -329,6 +336,11 @@ class TextBox(gtk.TextView):
         if self.refresh_cursor_pos >= 0:
             self.place_cursor(self.refresh_cursor_pos)
         self.refresh_cursor_pos = -1
+
+        for action in self.refresh_actions:
+            if callable(action):
+                action()
+        self.refresh_actions = []
 
     @accepts(Self(), [[StringElem, None], [int, None]])
     def select_elem(self, elem=None, offset=None):

@@ -95,7 +95,7 @@ class TerminologyCombo(gtk.ComboBox):
     # METHODS #
     def inserted(self, insert_iter, anchor):
         self.anchor = anchor
-        self.insert_iter = insert_iter
+        self.insert_offset = insert_iter.get_offset()
         self.grab_focus()
         self.popup()
 
@@ -109,13 +109,15 @@ class TerminologyCombo(gtk.ComboBox):
 
         buffer = self.parent.get_buffer()
         self.parent.remove(self)
-        if self.insert_iter:
-            iternext = buffer.get_iter_at_offset(self.insert_iter.get_offset() + 1)
+        if self.insert_offset >= 0:
+            iterins  = buffer.get_iter_at_offset(self.insert_offset)
+            iternext = buffer.get_iter_at_offset(self.insert_offset + 1)
             if iternext:
-                buffer.delete(self.insert_iter, iternext)
+                buffer.delete(iterins, iternext)
 
-        if self.selected_string:
-            buffer.insert(self.insert_iter, self.selected_string)
+            iterins  = buffer.get_iter_at_offset(self.insert_offset)
+            if self.selected_string:
+                buffer.insert(iterins, self.selected_string)
 
 
     # EVENT HANDLERS #

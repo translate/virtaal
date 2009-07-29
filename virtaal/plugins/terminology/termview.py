@@ -55,7 +55,6 @@ class TerminologyCombo(gtk.ComboBox):
     # INITIALIZERS #
     def __init__(self, elem):
         super(TerminologyCombo, self).__init__()
-        self.anchor = None
         self.elem = elem
         self.insert_iter = None
         self.selected_string = None
@@ -94,7 +93,6 @@ class TerminologyCombo(gtk.ComboBox):
 
     # METHODS #
     def inserted(self, insert_iter, anchor):
-        self.anchor = anchor
         self.insert_offset = insert_iter.get_offset()
         self.grab_focus()
         self.popup()

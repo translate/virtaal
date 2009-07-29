@@ -90,6 +90,7 @@ class TextBox(gtk.TextView):
         self.connect('move-cursor', self._on_event_remove_suggestion)
         self.buffer.connect('insert-text', self._on_insert_text)
         self.buffer.connect('delete-range', self._on_delete_range)
+        self.buffer.connect('end-user-action', self._on_end_user_action)
 
 
     def _get_suggestion(self):
@@ -277,13 +278,18 @@ class TextBox(gtk.TextView):
                 insert_offset = self.elem.gui_info.gui_to_tree_index(cursor_pos)
                 self.elem.insert(insert_offset, translation)
                 self.elem.prune()
-                self.__delayed_refresh(cursor_pos + translation.gui_info.length())
 
                 self.emit('text-inserted', translation, cursor_pos, self.elem)
+
+                if hasattr(translation, 'gui_info'):
+                    cursor_pos += translation.gui_info.length()
+                else:
+                    cursor_pos += len(translation)
             else:
                 self.buffer.insert_at_cursor(translation)
                 cursor_pos += len(translation)
-            self.refresh(cursor_pos=cursor_pos)
+        self.refresh_cursor_pos = cursor_pos
+        self.refresh()
 
     @accepts(Self(), [int])
     def move_elem_selection(self, offset):
@@ -371,7 +377,7 @@ class TextBox(gtk.TextView):
         self.apply_gui_info(self.elem)
         self.apply_gui_info(elem, include_subtree=False)
         cursor_offset = self.elem.find(self.selected_elem) + len(self.selected_elem)
-        self.buffer.place_cursor(self.buffer.get_iter_at_offset(cursor_offset))
+        self.place_cursor(cursor_offset)
         self.emit('element-selected', self.selected_elem)
 
     def show_suggestion(self, suggestion=None):
@@ -432,11 +438,6 @@ class TextBox(gtk.TextView):
         # At this point we have a tree of string elements with GUI info.
         self.apply_gui_info(text)
 
-    def __delayed_refresh(self, cursor_pos=-1):
-        if cursor_pos < 0:
-            cursor_pos = self.buffer.props.cursor_position
-        gobject.idle_add(self.refresh, cursor_pos)
-
 
     # EVENT HANDLERS #
     def __on_controller_register(self, main_controller, controller):
@@ -444,12 +445,17 @@ class TextBox(gtk.TextView):
             self.placeables_controller = controller
             main_controller.disconnect(self.__controller_connect_id)
 
+    def _on_end_user_action(self, buffer):
+        self.refresh()
+
     def _on_delete_range(self, buffer, start_iter, end_iter):
-        self.buffer.stop_emission('delete-range')
         if self.elem is None:
             return
 
-        cursor_pos = self.buffer.props.cursor_position
+        cursor_pos = self.refresh_cursor_pos
+        if cursor_pos < 0:
+            cursor_pos = self.buffer.props.cursor_position
+
         text = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter())
         text = data.forceunicode(text)
         start_offset = start_iter.get_offset()
@@ -493,7 +499,7 @@ class TextBox(gtk.TextView):
                     'text-deleted', start_elem_offset, end_offset,
                     deleted, parent, cursor_pos, self.elem
                 )
-                self.__delayed_refresh(start_elem_offset)
+                self.refresh_cursor_pos = start_elem_offset
                 return
 
         if start_elem is not None and not start_elem.iseditable:
@@ -502,30 +508,29 @@ class TextBox(gtk.TextView):
                 if start_offset == start_elem_offset:
                     # Delete the first character of a non-editable placeable. This is most likely because the
                     # user pressed delete with the cursor before the placeable.
-                    end_iter.set_offset(start_elem_offset + start_elem_len)
+                    end_offset = start_elem_offset + start_elem_len
                 elif start_elem_offset + start_elem_len == end_offset:
                     # Backspace was pressed with the cursor positioned right after the placeable.
-                    start_iter.set_offset(start_elem_offset)
+                    start_offset = start_elem_offset
             elif start_elem_offset + start_elem_len <= end_elem_offset:
-                start_iter.set_offset(start_elem_offset)
+                start_offset = start_elem_offset
         if end_elem is not None and not end_elem.iseditable:
             if start_elem_offset + start_elem_len < end_offset:
-                end_iter.set_offset(end_elem_offset + end_elem_len)
+                end_offset = end_elem_offset + end_elem_len
 
-        #logging.debug('%s[%d] >===> %s[%d]' % (repr(start_elem), start_iter.get_offset(), repr(end_elem), end_iter.get_offset()))
+        #logging.debug('%s[%d] >===> %s[%d]' % (repr(start_elem), start_offset, repr(end_elem), end_offset))
 
-        start_tree_offset = self.elem.gui_info.gui_to_tree_index(start_iter.get_offset())
-        end_tree_offset = self.elem.gui_info.gui_to_tree_index(end_iter.get_offset())
+        start_tree_offset = self.elem.gui_info.gui_to_tree_index(start_offset)
+        end_tree_offset = self.elem.gui_info.gui_to_tree_index(end_offset)
         deleted, parent = self.elem.delete_range(start_tree_offset, end_tree_offset)
+        self.refresh_cursor_pos = start_offset
 
         self.emit(
-            'text-deleted', start_iter.get_offset(), end_iter.get_offset(),
+            'text-deleted', start_offset, end_offset,
             deleted, parent, cursor_pos, self.elem
         )
-        self.__delayed_refresh(start_iter.get_offset())
 
     def _on_insert_text(self, buffer, iter, ins_text, length):
-        self.buffer.stop_emission('insert-text')
         if self.elem is None:
             return
 
@@ -535,7 +540,14 @@ class TextBox(gtk.TextView):
         left = gui_info.elem_at_offset(buff_offset-1)
         right = gui_info.elem_at_offset(buff_offset)
 
-        #logging.debug('%s |"%s"| %s  ||| %s[%d]' % (repr(left), ins_text, repr(right), repr(self.elem), buff_offset))
+        #logging.debug('"%s[[%s]]%s" | elem=%s[%d] | left=%s right=%s' % (
+        #    buffer.get_text(buffer.get_start_iter(), iter),
+        #    ins_text,
+        #    buffer.get_text(iter, buffer.get_end_iter()),
+        #    repr(self.elem), buff_offset,
+        #    repr(left), repr(right)
+        #))
+
         succeeded = False
         if not (left is None and right is None) and (left is not right or not unicode(left)):
             succeeded = self.elem.insert_between(left, right, ins_text)
@@ -565,7 +577,11 @@ class TextBox(gtk.TextView):
 
         if succeeded:
             self.elem.prune()
-            self.__delayed_refresh(self.buffer.props.cursor_position+len(ins_text))
+            cursor_pos = self.refresh_cursor_pos
+            if cursor_pos < 0:
+                cursor_pos = self.buffer.props.cursor_position
+            cursor_pos += len(ins_text)
+            self.refresh_cursor_pos = cursor_pos
             #logging.debug('text-inserted: %s@%d of %s' % (ins_text, iter.get_offset(), repr(self.elem)))
             self.emit('text-inserted', ins_text, buff_offset, self.elem)
 

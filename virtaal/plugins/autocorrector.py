@@ -235,7 +235,10 @@ class AutoCorrector(object):
                     self.main_controller.undo_controller.record_stop()
 
                     newcursorpos = reprange[0] + len(replacement) + len(text)
-                    gobject.idle_add(textbox.refresh, newcursorpos)
+                    def refresh():
+                        textbox.refresh_cursor_pos = newcursorpos
+                        textbox.refresh()
+                    gobject.idle_add(refresh)
                     return False
 
                 gobject.idle_add(correct_text)

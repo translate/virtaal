@@ -210,8 +210,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         undocontroller.push_current_text(textbox)
         textbox.set_text(tgt)
 
-        translation_start = self._get_editing_start_pos(textbox.elem)
-        textbox.refresh(cursor_pos=translation_start)
+        textbox.refresh_cursor_pos = self._get_editing_start_pos(textbox.elem)
+        textbox.refresh()
 
         return False
 

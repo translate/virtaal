@@ -163,8 +163,12 @@ class UndoController(BaseController):
         self._disable_unit_signals()
         undo_info['action'](undo_info['unit'])
         self._enable_unit_signals()
+
         textbox = self.unit_controller.view.targets[self.unit_controller.view.focused_target_n]
-        gobject.idle_add(lambda: textbox.refresh(cursor_pos=undo_info['cursorpos']))
+        def refresh():
+            textbox.refresh_cursor_pos = undo_info['cursorpos']
+            textbox.refresh()
+        gobject.idle_add(refresh)
 
     def _select_unit(self, unit):
         """Select the given unit in the store view.

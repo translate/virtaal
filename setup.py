@@ -352,25 +352,25 @@ def find_gtk_files():
     ]
     #extensions of files we don't want
     no_package_extensions = [
-            'log',
-            'm4',
+            '.log',
+            '.m4',
             #package config
-            'pc',
+            '.pc',
             #man pages
-            '1',
-            '3',
-            '5',
+            '.1',
+            '.3',
+            '.5',
             #source code
-            'h',
-            'c',
-            'tcl',
+            '.h',
+            '.c',
+            '.tcl',
             #library files
-            'a',
-            'def',
-            'lib',
+            '.a',
+            '.def',
+            '.lib',
             #emacs files
-            'el',
-            'elc',
+            '.el',
+            '.elc',
     ]
 
     #Let's make some dictionaries so that we are not too slow

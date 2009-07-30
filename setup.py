@@ -333,6 +333,45 @@ def find_gtk_files():
             files = [path.abspath(path.join(dir_name, f)) for f in files]
             if len(files) > 0:
                 data_files.append((strip_leading_path(gtk_path, dir_name), files))
+    #names of files in the GTK tree that we don't want
+    no_package_names = [
+            #We want some .mo files, but we won't use these ones
+            'libiconv.mo',
+            'iso_15924.mo',
+            'iso_3166_2.mo',
+            'iso_4217.mo',
+            'iso_639_3.mo',
+            'gtk20-properties.mo',
+            'glib20.mo',
+            'gettext-tools.mo',
+            'gettext-runtime.mo',
+    ]
+    no_package_extensions = [
+            'log',
+            #man pages
+            '1',
+            '3',
+            '5',
+            #source code
+            'h',
+            'c',
+            'tcl',
+            #emacs files
+            'el',
+            'elc',
+            'm4',
+    ]
+    for name in no_package_names:
+        no_package_names_dict[name] = None
+    for extension in no_package_extensions:
+        no_package_extensions_dict[extension] = None
+    for data_file in data_files:
+        name = os.path.basename(data_file)
+        if name in no_package_names_dict:
+            data_files.remove(data_file)
+        ext = os.path.splitext(name)
+        if ext in no_package_extensions_dict:
+            data_files.remove(data_file)
     return data_files
 
 def add_win32_options(options):

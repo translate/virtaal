@@ -326,14 +326,18 @@ def find_gtk_files():
     def strip_leading_path(leadingPath, p):
         return p[len(leadingPath) + 1:]
 
-    data_files = []
-    gtk_path = parent(find_gtk_bin_directory())
-    for dir_path in [path.join(gtk_path, p) for p in ('etc', 'share', 'lib')]:
-        for dir_name, _, files in os.walk(dir_path):
-            files = [path.abspath(path.join(dir_name, f)) for f in files]
-            if len(files) > 0:
-                data_files.append((strip_leading_path(gtk_path, dir_name), files))
-    #names of files in the GTK tree that we don't want
+    def wanted(data_file):
+        """We don't want all the GTK files for the installer. Let's strip out a
+        few ones that are taking too much space."""
+        name = os.path.basename(data_file)
+        if name in no_package_names_dict:
+            return False
+        ext = os.path.splitext(name)
+        if ext in no_package_extensions_dict:
+            return False
+        return True
+
+    #file names that we don't want
     no_package_names = [
             #We want some .mo files, but we won't use these ones
             'libiconv.mo',
@@ -346,8 +350,10 @@ def find_gtk_files():
             'gettext-tools.mo',
             'gettext-runtime.mo',
     ]
+    #extensions of files we don't want
     no_package_extensions = [
             'log',
+            'm4',
             #man pages
             '1',
             '3',
@@ -359,19 +365,25 @@ def find_gtk_files():
             #emacs files
             'el',
             'elc',
-            'm4',
     ]
+
+    #Let's make some dictionaries so that we are not too slow
+    no_package_names_dict = {}
+    no_package_extensions_dict = {}
     for name in no_package_names:
         no_package_names_dict[name] = None
     for extension in no_package_extensions:
         no_package_extensions_dict[extension] = None
-    for data_file in data_files:
-        name = os.path.basename(data_file)
-        if name in no_package_names_dict:
-            data_files.remove(data_file)
-        ext = os.path.splitext(name)
-        if ext in no_package_extensions_dict:
-            data_files.remove(data_file)
+
+
+    data_files = []
+    gtk_path = parent(find_gtk_bin_directory())
+    for dir_path in [path.join(gtk_path, p) for p in ('etc', 'share', 'lib')]:
+        for dir_name, _, files in os.walk(dir_path):
+            files = [path.abspath(path.join(dir_name, f)) for f in files if wanted(f)]
+            if len(files) > 0:
+                data_files.append((strip_leading_path(gtk_path, dir_name), files))
+
     return data_files
 
 def add_win32_options(options):

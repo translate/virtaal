@@ -332,7 +332,7 @@ def find_gtk_files():
         name = os.path.basename(data_file)
         if name in no_package_names_dict:
             return False
-        ext = os.path.splitext(name)
+        _base, ext = os.path.splitext(name)
         if ext in no_package_extensions_dict:
             return False
         return True

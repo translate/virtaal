@@ -354,6 +354,8 @@ def find_gtk_files():
     no_package_extensions = [
             'log',
             'm4',
+            #package config
+            'pc',
             #man pages
             '1',
             '3',
@@ -362,6 +364,10 @@ def find_gtk_files():
             'h',
             'c',
             'tcl',
+            #library files
+            'a',
+            'def',
+            'lib',
             #emacs files
             'el',
             'elc',

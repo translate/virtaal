@@ -24,6 +24,7 @@ from translate.search.match import terminologymatcher
 from translate.storage.placeables.terminology import TerminologyPlaceable
 from translate.storage import factory
 
+from virtaal.common import pan_app
 try:
     from virtaal.plugins.terminology.models.basetermmodel import BaseTerminologyModel
 except ImportError:
@@ -41,7 +42,10 @@ class TerminologyModel(BaseTerminologyModel):
     display_name = _('Local file')
     description = _('Local translation files')
 
-    default_config = { 'files': '' }
+    default_config = {
+        'extendfile': os.path.join(pan_app.get_config_dir(), 'terminology.po'),
+        'files': ''
+    }
 
     # INITIALIZERS #
     def __init__(self, internal_name, controller):
@@ -81,6 +85,9 @@ class TerminologyModel(BaseTerminologyModel):
         super(TerminologyModel, self).load_config()
         self.config['files'] = self.config['files'].split(',')
 
+        if not self.config['extendfile'] in self.config['files']:
+            self.config['files'].append(self.config['extendfile'])
+
     def load_files(self):
         if self.matcher in TerminologyPlaceable.matchers:
             TerminologyPlaceable.matchers.remove(self.matcher)
@@ -91,7 +98,6 @@ class TerminologyModel(BaseTerminologyModel):
                 continue
             if not os.path.isfile(filename):
                 logging.debug('Not a file: "%s"' % (filename))
-                continue
             self.stores.append(factory.getobject(filename))
         self.matcher = terminologymatcher(self.stores)
         TerminologyPlaceable.matchers.append(self.matcher)

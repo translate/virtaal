@@ -576,7 +576,9 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         for i in range(self.MAX_TARGETS):
             if i < nplurals:
                 # plural forms already in file
-                targetstr = (i < rich_target_len) and rich_target[i] or u''
+                targetstr = u''
+                if (i < rich_target_len) or not targetstr[i] is None:
+                    targetstr = rich_target[i]
                 self.targets[i].modify_font(rendering.get_target_font_description())
                 self.targets[i].set_text(targetstr)
                 self.targets[i].parent.show_all()

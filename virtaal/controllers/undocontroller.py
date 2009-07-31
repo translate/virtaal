@@ -195,7 +195,7 @@ class UndoController(BaseController):
             self._perform_undo(undo_info)
 
     @if_enabled
-    def _on_unit_delete_text(self, unit_controller, unit, start_offset, end_offset, deleted, parent, cursor_pos, elem, target_num):
+    def _on_unit_delete_text(self, unit_controller, unit, start_offset, end_offset, deleted, parent, offset, elem, target_num):
         if self._paste_undo_info:
             self.model.push(self._paste_undo_info)
             self._paste_undo_info = None
@@ -209,17 +209,18 @@ class UndoController(BaseController):
                 elem.sub = deleted.sub
                 return
             if isinstance(deleted, StringElem):
-                parent_offset = elem.elem_offset(parent)
-                prel_offset = elem.gui_info.gui_to_tree_index(start_offset) - parent_offset
-                parent.insert(prel_offset, deleted)
-                parent.prune()
-            elif isinstance(deleted, list):
-                parent.sub = deleted
+                parent.insert(offset, deleted)
+                elem.prune()
 
-        desc = 'offsets=(%d, %d), deleted="%s", elem=%s' % (start_offset, end_offset, deleted, repr(elem))
+        if hasattr(deleted, 'gui_info'):
+            del_length = deleted.gui_info.length()
+        else:
+            del_length = len(deleted)
+
+        desc = 'offsets=(%d, %d), offset=%d, deleted="%s", parent=%s, elem=%s' % (start_offset, end_offset, offset, repr(deleted), repr(parent), repr(elem))
         self.model.push({
             'action': undo_action,
-            'cursorpos': cursor_pos,
+            'cursorpos': start_offset + del_length,
             'desc': desc,
             'targetn': target_num,
             'unit': unit,

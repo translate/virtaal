@@ -495,54 +495,130 @@ class TextBox(gtk.TextView):
         #logging.debug('start_elem_len   = %d\tend_elem_len   = %d' % (start_elem_len, end_elem_len))
         #logging.debug('start_offset     = %d\tend_offset     = %d' % (start_offset, end_offset))
 
-        if end_offset - start_offset == 1 and type(start_elem) is not StringElem:
-            deleted = None
-            parent = None
-            if cursor_pos in (start_elem_offset, (start_elem_offset + start_elem_len)):
-                anchor = start_iter.get_child_anchor()
-                if anchor:
-                    widgets = anchor.get_widgets()
-                    if widgets and start_elem.gui_info.widgets and \
-                            widgets[0] in start_elem.gui_info.widgets:
-                        deleted = start_elem
-                        parent = self.elem.get_parent_elem(deleted)
-                        self.elem.delete_elem(start_elem)
-            #logging.debug('deleted %s from parent %s with cursor pos %d' % (repr(deleted), repr(parent), cursor_pos))
-            if deleted is not None and parent is not None:
-                self.emit(
-                    'text-deleted', start_elem_offset, end_offset,
-                    deleted, parent, cursor_pos, self.elem
-                )
-                self.refresh_cursor_pos = start_elem_offset
-                return
+        # Per definition of a selection, cursor_pos must be at either
+        # start_offset or end_offset
+        key_is_delete = cursor_pos == start_offset
+        done = False
 
-        if start_elem is not None and not start_elem.iseditable:
-            if start_offset+1 == end_offset:
-                # A single character delete on non-editable placeables are only valid at the head or tail.
-                if start_offset == start_elem_offset:
-                    # Delete the first character of a non-editable placeable. This is most likely because the
-                    # user pressed delete with the cursor before the placeable.
-                    end_offset = start_elem_offset + start_elem_len
-                elif start_elem_offset + start_elem_len == end_offset:
-                    # Backspace was pressed with the cursor positioned right after the placeable.
-                    start_offset = start_elem_offset
-            elif start_elem_offset + start_elem_len <= end_elem_offset:
-                start_offset = start_elem_offset
-        if end_elem is not None and not end_elem.iseditable:
-            if start_elem_offset + start_elem_len < end_offset:
-                end_offset = end_elem_offset + end_elem_len
+        deleted, parent, index = None, None, None
+
+        if start_offset+1 == end_offset:
+            position = None
+            #################################
+            #  Placeable:  |<<|content|>>|  #
+            #  Cursor:     a  b       c  d  #
+            #===============================#
+            #           Editable            #
+            #===============================#
+            #   |  Backspace  |  Delete     #
+            #---|-------------|-------------#
+            # a |  N/A        |  Placeable  #
+            # b |  Nothing    | @Delete "c" #
+            # c | @Delete "t" |  Nothing    #
+            # d |  Placeable  |  N/A        #
+            #===============================#
+            #         Non-Editable          #
+            #===============================#
+            # a |  N/A        |  Placeable  #
+            # b | *Nothing    | *Nothing    #
+            # c | *Nothing    | *Nothing    #
+            # d |  Placeable  |  N/A        #
+            #################################
+            # The table above specifies what should be deleted for editable and
+            # non-editable placeables when the cursor is at a specific boundry
+            # position (a, b, c, d) and a specified key is pressed (backspace or
+            # delete).
+            #
+            # @ It is unnecessary to handle these cases, as long as control drops
+            #   through to a place where it is handled below.
+            # * Or "Placeable" depending on the value of the XXX flag in the
+            #   placeable's GUI info object
+
+            # First we check if we fall in any of the situations represented by
+            # the table above.
+            has_open_widget = has_close_widget = False
+            if hasattr(start_elem, 'gui_info'):
+                widgets = start_elem.gui_info.widgets
+                has_open_widget  = len(widgets) >= 1 and widgets[0]
+                has_close_widget = len(widgets) >= 2 and widgets[1]
+
+            if has_open_widget and cursor_pos == start_elem_offset:
+                position = 'a'
+            elif (has_open_widget and cursor_pos == start_elem_offset+1) or \
+                    (not has_open_widget and cursor_pos == start_elem_offset):
+                position = 'b'
+            elif (has_close_widget and cursor_pos == start_elem_offset + start_elem_len - 1) or \
+                    (not has_close_widget and cursor_pos == start_elem_offset + start_elem_len):
+                position = 'c'
+            elif has_close_widget and cursor_pos == start_elem_offset + start_elem_len:
+                position = 'd'
+
+            # If the current state is in the table, handle it
+            if position:
+                #logging.debug('(a)<<(b)content(c)>>(d)   pos=%s' % (position))
+                if (position == 'a' and not key_is_delete) or (position == 'd' and key_is_delete):
+                    # "N/A" fields in table
+                    pass
+                elif (position == 'a' and key_is_delete) or (position == 'd' and not key_is_delete):
+                    # "Placeable" fields
+                    if hasattr(start_elem, 'gui_info') and start_elem.gui_info.widgets and start_elem.gui_info.widgets[0]:
+                        deleted = start_elem.copy()
+                        parent = self.elem.get_parent_elem(start_elem)
+                        index = parent.elem_offset(start_elem)
+                        self.elem.delete_elem(start_elem)
+
+                        self.refresh_cursor_pos = start_elem_offset
+                        start_offset = start_elem_offset
+                        end_offset = start_elem_offset + start_elem_len
+                        done = True
+                elif not start_elem.iseditable and position in ('b', 'c'):
+                    # "*Nothing" fields
+                    if start_elem.isfragile:
+                        deleted = start_elem.copy()
+                        parent = self.elem.get_parent_elem(start_elem)
+                        index = parent.elem_offset(start_elem)
+                        self.elem.delete_elem(start_elem)
+
+                        self.refresh_cursor_pos = start_elem_offset
+                        start_offset = start_elem_offset
+                        end_offset = start_elem_offset + start_elem_len
+                    done = True
+                # At this point we have checked for all cases except where
+                # position in ('b', 'c') for editable elements.
+                elif (position == 'c' and not key_is_delete) or (position == 'b' and key_is_delete):
+                    # '@Delete "t"' and '@Delete "c"' fields; handled normally below
+                    pass
+                elif (position == 'b' and not key_is_delete) or (position == 'c' and key_is_delete):
+                    done = True
+                else:
+                    raise Exception('Unreachable code reached. Please close the black hole nearby.')
 
         #logging.debug('%s[%d] >===> %s[%d]' % (repr(start_elem), start_offset, repr(end_elem), end_offset))
 
-        start_tree_offset = self.elem.gui_info.gui_to_tree_index(start_offset)
-        end_tree_offset = self.elem.gui_info.gui_to_tree_index(end_offset)
-        deleted, parent = self.elem.delete_range(start_tree_offset, end_tree_offset)
-        self.refresh_cursor_pos = start_offset
+        if not done:
+            start_tree_offset = self.elem.gui_info.gui_to_tree_index(start_offset)
+            end_tree_offset = self.elem.gui_info.gui_to_tree_index(end_offset)
+            deleted, parent, index = self.elem.delete_range(start_tree_offset, end_tree_offset)
 
-        self.emit(
-            'text-deleted', start_offset, end_offset,
-            deleted, parent, cursor_pos, self.elem
-        )
+            if index is not None:
+                parent_offset = self.elem.gui_info.index(parent)
+                if hasattr(deleted, 'gui_info'):
+                    length = deleted.gui_info.length()
+                else:
+                    length = len(deleted)
+                start_offset = parent_offset + index
+                end_offset = parent_offset + index + length
+            self.refresh_cursor_pos = start_offset
+
+        if index is None:
+            index = start_offset
+
+        if deleted:
+            self.elem.prune()
+            self.emit(
+                'text-deleted', start_offset, end_offset,
+                deleted, parent, index, self.elem
+            )
 
     def _on_insert_text(self, buffer, iter, ins_text, length):
         if self.elem is None:

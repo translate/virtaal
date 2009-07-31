@@ -265,7 +265,7 @@ msgstr "_Dateer op na sjabloon"
 
 #: ../share/virtaal/virtaal.glade.h:60
 msgid "_View"
-msgstr "Aa_nsig"
+msgstr "Aan_sig"
 
 #: ../virtaal/tips.py:27
 msgid ""

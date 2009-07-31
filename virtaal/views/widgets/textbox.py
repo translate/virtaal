@@ -70,6 +70,7 @@ class TextBox(gtk.TextView):
         self.buffer = self.get_buffer()
         self.elem = None
         self.main_controller = main_controller
+        self.placeables_controller = main_controller.placeables_controller
         self.refresh_actions = []
         self.refresh_cursor_pos = -1
         self.role = role
@@ -77,9 +78,14 @@ class TextBox(gtk.TextView):
         self.selected_elem = None
         self.selected_elem_index = None
         self._suggestion = None
+        self.undo_controller = main_controller.undo_controller
+
         self.__connect_default_handlers()
-        self.placeables_controller = main_controller.placeables_controller
-        if self.placeables_controller is None:
+
+        if self.placeables_controller is None or self.undo_controller is None:
+            # This should always happen, because the text boxes are created
+            # when the unit controller is created, which happens before the
+            # creation of the placeables- and undo controllers.
             self.__controller_connect_id = main_controller.connect('controller-registered', self.__on_controller_register)
         if text:
             self.set_text(text)
@@ -91,6 +97,7 @@ class TextBox(gtk.TextView):
         self.connect('move-cursor', self._on_event_remove_suggestion)
         self.buffer.connect('insert-text', self._on_insert_text)
         self.buffer.connect('delete-range', self._on_delete_range)
+        self.buffer.connect('begin-user-action', self._on_begin_user_action)
         self.buffer.connect('end-user-action', self._on_end_user_action)
 
 
@@ -457,9 +464,20 @@ class TextBox(gtk.TextView):
     def __on_controller_register(self, main_controller, controller):
         if controller is main_controller.placeables_controller:
             self.placeables_controller = controller
+        elif controller is main_controller.undo_controller:
+            self.undo_controller = controller
+
+        if self.placeables_controller is not None and \
+                self.undo_controller is not None:
             main_controller.disconnect(self.__controller_connect_id)
 
+    def _on_begin_user_action(self, buffer):
+        if not self.undo_controller.model.recording:
+            self.undo_controller.record_start()
+
     def _on_end_user_action(self, buffer):
+        if self.undo_controller.model.recording:
+            self.undo_controller.record_stop()
         self.refresh()
 
     def _on_delete_range(self, buffer, start_iter, end_iter):

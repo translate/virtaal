@@ -227,14 +227,18 @@ class AutoCorrector(object):
                 # gobject.idle_add for that.
                 def correct_text():
                     buffer = textbox.buffer
-                    repr_iters = [buffer.get_iter_at_offset(i) for i in reprange]
+                    repr_iters = []
+                    for i in reprange:
+                        repr_iters.append(buffer.get_iter_at_offset(
+                            elem.gui_info.tree_to_gui_index(i)
+                        ))
 
                     self.main_controller.undo_controller.record_start()
                     buffer.delete(*repr_iters)
                     buffer.insert(repr_iters[0], unicode(replacement))
                     self.main_controller.undo_controller.record_stop()
 
-                    newcursorpos = reprange[0] + len(replacement) + len(text)
+                    newcursorpos = elem.gui_info.tree_to_gui_index(reprange[0]) + len(replacement) + len(text)
                     def refresh():
                         textbox.refresh_cursor_pos = newcursorpos
                         textbox.refresh()

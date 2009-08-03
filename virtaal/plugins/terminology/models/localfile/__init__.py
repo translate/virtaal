@@ -83,7 +83,15 @@ class TerminologyModel(BaseTerminologyModel):
 
     def load_config(self):
         super(TerminologyModel, self).load_config()
-        self.config['files'] = self.config['files'].split(',')
+        for filename in self.config['files'].split(','):
+            if os.path.exists(filename):
+                self.config['files'].append(filename)
+
+        if not os.path.exists(self.config['extendfile']) and len(self.config['files']) > 0:
+            self.config['extendfile'] = self.config['files'][0]
+
+        if not os.path.exists(self.config['extendfile']):
+            self.config['extendfile'] = self.default_config['extendfile']
 
         if not self.config['extendfile'] in self.config['files']:
             self.config['files'].append(self.config['extendfile'])

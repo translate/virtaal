@@ -41,7 +41,7 @@ class TextBox(gtk.TextView):
         'before-apply-gui-info': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'element-selected':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'key-pressed':       (SIGNAL_RUN_LAST,  bool, (TYPE_PYOBJECT, str)),
-        'text-deleted':      (SIGNAL_RUN_LAST,  bool, (int, int, TYPE_PYOBJECT, TYPE_PYOBJECT, int, TYPE_PYOBJECT)),
+        'text-deleted':      (SIGNAL_RUN_LAST,  bool, (TYPE_PYOBJECT, TYPE_PYOBJECT, int, int, TYPE_PYOBJECT)),
         'text-inserted':     (SIGNAL_RUN_LAST,  bool, (TYPE_PYOBJECT, int, TYPE_PYOBJECT)),
     }
 
@@ -636,8 +636,8 @@ class TextBox(gtk.TextView):
         if deleted:
             self.elem.prune()
             self.emit(
-                'text-deleted', start_offset, end_offset,
-                deleted, parent, index, self.elem
+                'text-deleted', deleted, parent, index,
+                self.buffer.props.cursor_position, self.elem
             )
 
     def _on_insert_text(self, buffer, iter, ins_text, length):

@@ -33,7 +33,7 @@ class UnitController(BaseController):
     __gsignals__ = {
         'unit-done':           (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, int)),
         'unit-modified':       (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'unit-delete-text':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, int, int, TYPE_PYOBJECT, TYPE_PYOBJECT, int, TYPE_PYOBJECT, int)),
+        'unit-delete-text':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT, TYPE_PYOBJECT, int, int, TYPE_PYOBJECT, int)),
         'unit-insert-text':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT, int, TYPE_PYOBJECT, int)),
         'unit-paste-start':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT, TYPE_PYOBJECT, int)),
     }
@@ -84,8 +84,8 @@ class UnitController(BaseController):
         self.view.load_unit(unit)
         return self.view
 
-    def _unit_delete_text(self, unitview, start_offset, end_offset, deleted, parent, cursor_pos, elem, target_num):
-        self.emit('unit-delete-text', self.current_unit, start_offset, end_offset, deleted, parent, cursor_pos, elem, target_num)
+    def _unit_delete_text(self, unitview, deleted, parent, offset, cursor_pos, elem, target_num):
+        self.emit('unit-delete-text', self.current_unit, deleted, parent, offset, cursor_pos, elem, target_num)
 
     def _unit_insert_text(self, unitview, ins_text, offset, elem, target_num):
         self.emit('unit-insert-text', self.current_unit, ins_text, offset, elem, target_num)

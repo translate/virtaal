@@ -545,7 +545,7 @@ class TextBox(gtk.TextView):
             # The table above specifies what should be deleted for editable and
             # non-editable placeables when the cursor is at a specific boundry
             # position (a, b, c, d) and a specified key is pressed (backspace or
-            # delete).
+            # delete). Without widgets, positions b and c fall away.
             #
             # @ It is unnecessary to handle these cases, as long as control drops
             #   through to a place where it is handled below.
@@ -560,15 +560,13 @@ class TextBox(gtk.TextView):
                 has_open_widget  = len(widgets) >= 1 and widgets[0]
                 has_close_widget = len(widgets) >= 2 and widgets[1]
 
-            if has_open_widget and cursor_pos == start_elem_offset:
+            if cursor_pos == start_elem_offset:
                 position = 'a'
-            elif (has_open_widget and cursor_pos == start_elem_offset+1) or \
-                    (not has_open_widget and cursor_pos == start_elem_offset):
+            elif has_open_widget and cursor_pos == start_elem_offset+1:
                 position = 'b'
-            elif (has_close_widget and cursor_pos == start_elem_offset + start_elem_len - 1) or \
-                    (not has_close_widget and cursor_pos == start_elem_offset + start_elem_len):
+            elif has_close_widget and cursor_pos == start_elem_offset + start_elem_len - 1:
                 position = 'c'
-            elif has_close_widget and cursor_pos == start_elem_offset + start_elem_len:
+            elif cursor_pos == start_elem_offset + start_elem_len:
                 position = 'd'
 
             # If the current state is in the table, handle it
@@ -579,7 +577,8 @@ class TextBox(gtk.TextView):
                     pass
                 elif (position == 'a' and key_is_delete) or (position == 'd' and not key_is_delete):
                     # "Placeable" fields
-                    if hasattr(start_elem, 'gui_info') and start_elem.gui_info.widgets and start_elem.gui_info.widgets[0]:
+                    if (position == 'a' and (has_open_widget or not start_elem.iseditable)) or \
+                            (position == 'd' and (has_close_widget or not start_elem.iseditable)):
                         deleted = start_elem.copy()
                         parent = self.elem.get_parent_elem(start_elem)
                         index = parent.elem_offset(start_elem)

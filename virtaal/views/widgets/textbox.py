@@ -620,6 +620,9 @@ class TextBox(gtk.TextView):
 
             if index is not None:
                 parent_offset = self.elem.gui_info.index(parent)
+                if parent_offset < 0:
+                    parent_offset = 0
+
                 if hasattr(deleted, 'gui_info'):
                     length = deleted.gui_info.length()
                 else:

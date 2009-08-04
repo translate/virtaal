@@ -267,9 +267,9 @@ class MainView(BaseView):
             gtk.BUTTONS_NONE,
             _("The current file has been modified.\nDo you want to save your changes?")
         )
-        self.confirm_dialog.add_buttons(gtk.STOCK_SAVE, RESPONSE_SAVE)
-        self.confirm_dialog.add_buttons(_("_Discard"), RESPONSE_DISCARD)
-        self.confirm_dialog.add_buttons(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
+        self.confirm_dialog.__save_button = self.confirm_dialog.add_button(gtk.STOCK_SAVE, RESPONSE_SAVE)
+        self.confirm_dialog.add_button(_("_Discard"), RESPONSE_DISCARD)
+        self.confirm_dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
         self.confirm_dialog.set_default_response(RESPONSE_SAVE)
 
     def _setup_key_bindings(self):
@@ -512,6 +512,7 @@ class MainView(BaseView):
         self.confirm_dialog.set_transient_for(self._top_window)
         old_top = self._top_window
         self._top_window = self.confirm_dialog
+        self.confirm_dialog.__save_button.grab_focus()
         response = self.confirm_dialog.run()
         self.confirm_dialog.hide()
         self._top_window = old_top

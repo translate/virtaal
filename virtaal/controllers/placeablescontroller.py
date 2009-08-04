@@ -77,10 +77,6 @@ class PlaceablesController(BaseController):
         self.parser_info = {}
 
         # Test for presence of parser classes by hand
-        self.parser_info[general.AltAttrPlaceable.parse] = (
-            _('"alt" Attributes'),
-            _('Placeable for "alt" attributes (as found in HTML)')
-        )
         self.parser_info[general.CamelCasePlaceable.parse] = (
             #l10n: See http://en.wikipedia.org/wiki/CamelCase
             _('CamelCase'),
@@ -140,6 +136,10 @@ class PlaceablesController(BaseController):
         # This code should eventually be used to add the SpacesPlaceable, but
         # it is not working well yet. We add the strings for translation so
         # that we won't need to break the string freeze later when it works.
+#        self.parser_info[general.AltAttrPlaceable.parse] = (
+#            _('"alt" Attributes'),
+#            _('Placeable for "alt" attributes (as found in HTML)')
+#        )
 #        self.parser_info[general.SpacesPlaceable.parse] = (
 #            _('Spaces'),
 #            _('Double spaces and spaces in unexpected positions')
@@ -147,6 +147,8 @@ class PlaceablesController(BaseController):
 
         _('Spaces'),
         _('Double spaces and spaces in unexpected positions')
+        _('"alt" Attributes'),
+        _('Placeable for "alt" attributes (as found in HTML)')
 
 
     # METHODS #

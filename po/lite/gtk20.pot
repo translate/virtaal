@@ -440,6 +440,10 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
+#. File dialog - Files - Grid label - Size
+msgid "Size"
+msgstr ""
+
 #. File dialog - Files - Grid label - Modified
 msgid "Modified"
 msgstr ""
@@ -458,6 +462,10 @@ msgstr ""
 
 #. File dialog - Files - Right click - Show Hidden Files
 msgid "Show _Hidden Files"
+msgstr ""
+
+#. File dialog - Files - Right click - Show Size Column
+msgid "Show _Size Column"
 msgstr ""
 
 #. File dialog - Files - Right click - Add to Bookmarks

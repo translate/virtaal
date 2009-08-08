@@ -243,7 +243,7 @@ msgstr ""
 #: ../gtk/gtkrecentchoosermenu.c:788
 #, c-format
 msgid "recent menu label|%d. %s"
-msgstr "%d. %s"
+msgstr ""
 
 #. This is the format that is used for items in a recent files menu.
 #. * The %d is the number of the item, the %s is the name of the item.

@@ -1172,7 +1172,7 @@ msgstr "yazılım sürüm numarasını göster ve çıkış yap"
 
 #: ../devsupport/optparse.py:1274
 msgid "%prog [options]"
-msgstr "%prog [options]"
+msgstr "%prog [seçenekler]"
 
 #: ../devsupport/optparse.py:1484 ../devsupport/optparse.py:1523
 #, python-format

@@ -166,8 +166,7 @@ msgstr ""
 "dildir.\n"
 "\n"
 "Örneğin Türkçeden Uygurcaya çeviri yapıyorsanız, Türkçe sizin özgün diliniz "
-"olacaktır.\n"
-"\n"
+"olacaktır."
 
 #: ../share/virtaal/virtaal.glade.h:36
 msgid ""
@@ -391,7 +390,7 @@ msgstr "CamelCase"
 msgid ""
 "Words with internal capitalisation, such as some brand names and WikiWords"
 msgstr ""
-"Bazı marka isimleri ve WikiWords gibi içinde büyük harf kullanan kelimeler "
+"Bazı marka isimleri ve WikiWords gibi içinde büyük harf kullanan kelimeler"
 
 #: ../virtaal/controllers/placeablescontroller.py:90
 msgid "Capitals"
@@ -1089,7 +1088,7 @@ msgstr "GÜNLÜK"
 
 #: ../bin/virtaal:78
 msgid "turn on logging, storing the result to the supplied filename."
-msgstr "günlük tutarak dosyaya kaydet"
+msgstr "günlük tutarak dosyaya kaydet."
 
 #: ../bin/virtaal:80
 msgid "CONFIG"
@@ -1113,7 +1112,7 @@ msgstr "'%(filename)s' yapılandırma dosyası okunamadı"
 
 #: ../bin/virtaal:121
 msgid "invalid number of arguments"
-msgstr "argüman sayısı geçersiz "
+msgstr "argüman sayısı geçersiz"
 
 #: ../bin/virtaal:150
 msgid "Could not open profile file '%(filename)s'"
@@ -1127,7 +1126,7 @@ msgstr "böyle bir seçenek yoktur: %s"
 #: ../devsupport/optparse.py:145
 #, python-format
 msgid "ambiguous option: %s (%s?)"
-msgstr "belirsiz seçenek: %s (%s)?"
+msgstr "belirsiz seçenek: %s (%s?)"
 
 #: ../devsupport/optparse.py:368
 #, python-format

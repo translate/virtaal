@@ -616,6 +616,8 @@ class MainView(BaseView):
         self.status_bar.set_sensitive(True)
         if getattr(self, '_uri', None):
             recent.rm.add_item(self._uri)
+        else:
+            recent.rm.add_item('file://' + os.path.abspath(store_controller.store.filename))
 
     def _on_window_state_event(self, widget, event):
         mnu_fullscreen = self.gui.get_widget('menuitem_fullscreen')

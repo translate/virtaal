@@ -321,6 +321,7 @@ class TermAddDialog:
         self.dialog = self.gui.get_widget('TermAddDlg')
 
         cellr = gtk.CellRendererText()
+        cellr.props.ellipsize = pango.ELLIPSIZE_MIDDLE
         self.lst_termfiles = gtk.ListStore(str)
         self.cmb_termfile.set_model(self.lst_termfiles)
         self.cmb_termfile.pack_start(cellr)

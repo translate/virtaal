@@ -20,6 +20,7 @@
 
 import gtk
 import logging
+import pango
 from gtk import gdk
 from locale import strcoll
 from translate.storage import factory
@@ -127,9 +128,11 @@ class FileSelectDialog:
         self.tvw_termfiles.set_model(self.lst_files)
 
         cell = gtk.CellRendererText()
+        cell.props.ellipsize = pango.ELLIPSIZE_MIDDLE
         col = gtk.TreeViewColumn(_('File'))
         col.pack_start(cell)
         col.add_attribute(cell, 'text', self.COL_FILE)
+        col.set_expand(True)
         col.set_sort_column_id(0)
         self.tvw_termfiles.append_column(col)
 
@@ -139,6 +142,7 @@ class FileSelectDialog:
         col = gtk.TreeViewColumn(_('Extendable'))
         col.pack_start(cell)
         col.add_attribute(cell, 'active', self.COL_EXTEND)
+        col.set_expand(False)
         self.tvw_termfiles.append_column(col)
 
         extend_file = self.term_model.config.get('extendfile', '')

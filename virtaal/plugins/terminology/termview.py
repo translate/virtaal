@@ -166,14 +166,18 @@ class TerminologyView(BaseView):
                 'config': config,
             })
 
-        if selectdlg.run(items=items) == gtk.RESPONSE_OK:
-            for item in selectdlg.sview.get_all_items():
-                internal_name = item['data']['internal_name']
-                if item['enabled']:
-                    plugin_controller.enable_plugin(internal_name)
-                    if internal_name in self.controller.config['disabled_models']:
-                        self.controller.config['disabled_models'].remove(internal_name)
-                else:
-                    plugin_controller.disable_plugin(internal_name)
-                    if internal_name not in self.controller.config['disabled_models']:
-                        self.controller.config['disabled_models'].append(internal_name)
+        def item_enabled(dlg, item):
+            internal_name = item['data']['internal_name']
+            plugin_controller.enable_plugin(internal_name)
+            if internal_name in self.controller.config['disabled_models']:
+                self.controller.config['disabled_models'].remove(internal_name)
+
+        def item_disabled(dlg, item):
+            internal_name = item['data']['internal_name']
+            plugin_controller.disable_plugin(internal_name)
+            if internal_name not in self.controller.config['disabled_models']:
+                self.controller.config['disabled_models'].append(internal_name)
+
+        selectdlg.connect('item-enabled',  item_enabled)
+        selectdlg.connect('item-disabled', item_disabled)
+        selectdlg.run(items=items)

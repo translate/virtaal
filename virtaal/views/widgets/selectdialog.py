@@ -60,10 +60,7 @@ class SelectDialog(GObjectWrapper):
         self.message = gtk.Label(message is not None and message or '')
         self.dialog.child.add(self.message)
         self.dialog.child.add(self.sview)
-        self.dialog.add_buttons(
-            gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-            gtk.STOCK_OK,     gtk.RESPONSE_OK
-        )
+        self.dialog.add_buttons(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
 
 
     # METHODS #

@@ -42,12 +42,6 @@ DEBUG = True # Enable debugging by default, while bin/virtaal still disables it 
 x_generator = 'Virtaal ' + ver
 default_config_name = "virtaal.ini"
 
-defaultfont = 'monospace'
-# FIXME: This is a work-around to keep Windows from trying to use a
-# 0-sized font and screw everything up.
-if os.name == 'nt':
-    defaultfont += ' 9'
-
 def get_config_dir():
     if os.name == 'nt':
         confdir = os.path.join(os.environ['APPDATA'], 'Virtaal')
@@ -72,6 +66,34 @@ def osx_lang():
     """Do some non-posix things to get the language on OSX."""
     import CoreFoundation
     return CoreFoundation.CFLocaleCopyPreferredLanguages()[0]
+
+def get_default_font():
+    default_font = 'monospace'
+    font_size = ''
+
+    # First try and get the default font size from GConf
+    try:
+        import gconf
+        client = gconf.client_get_default()
+        client.add_dir('/desktop/gnome/interface', gconf.CLIENT_PRELOAD_NONE)
+        font_name = client.get_string('/desktop/gnome/interface/monospace_font_name')
+        font_size = font_name.split(' ')[-1]
+    except ImportError, ie:
+        logging.debug('Unable to import gconf module: %s' % (ie))
+
+    # Get the default font size from Gtk
+    if not font_size:
+        import gtk
+        font_name = gtk.Label().get_settings().props.gtk_font_name
+        font_size = font_name.split(' ')[-1]
+
+    if font_size:
+        default_font += ' ' + font_size
+
+    return default_font
+
+defaultfont = get_default_font()
+
 
 class Settings:
     """Handles loading/saving settings from/to a configuration file."""
@@ -153,8 +175,20 @@ class Settings:
         for key, value in self.config.items("undo"):
             self.undo[key] = value
 
+        # Make sure we have some kind of font names to work with
+        for font in ('sourcefont', 'targetfont'):
+            if not self.language[font]:
+                self.language[font] = defaultfont
+
     def write(self):
         """Write the configuration file."""
+
+        # Don't save the default font to file
+        fonts = (self.language['sourcefont'], self.language['targetfont'])
+        for font in ('sourcefont', 'targetfont'):
+            if self.language[font] == defaultfont:
+                self.language[font] = ''
+
         for key in self.translator:
             self.config.set("translator", key, self.translator[key])
         for key in self.general:
@@ -175,6 +209,9 @@ class Settings:
         file = open(self.filename, 'w')
         self.config.write(file)
         file.close()
+
+        self.language['sourcefont'] = fonts[0]
+        self.language['targetfont'] = fonts[1]
 
 settings = Settings()
 

@@ -21,12 +21,29 @@
 """A TM provider that can query the web service for the Apertium software for
 Machine Translation."""
 
+import re
 import urllib
+import htmlentitydefs
 
 from basetmmodel import BaseTMModel
 
 from virtaal.support.restclient import RESTClient
 
+
+#http://effbot.org/zone/re-sub.htm#unescape-html
+def strip_html(text):
+    def fixup(m):
+        text = m.group(0)
+        entity = htmlentitydefs.entitydefs.get(text[1:-1])
+        if entity:
+            if entity[:2] == "&#":
+                try:
+                    return unichr(int(entity[2:-1]))
+                except ValueError:
+                    pass
+            else:
+                return unicode(entity, "iso-8859-1")
+    return re.sub("(?s)&\w+;", fixup, text)
 
 class TMModel(BaseTMModel):
     """This is the translation memory model."""
@@ -71,7 +88,7 @@ class TMModel(BaseTMModel):
                 'mode': pair,
                 'text': query_str,
                 'mark': 0,
-                'format': 'txt'
+                'format': 'html'
             }
             req = RESTClient.Request(self.url, '', method='POST', \
                     data=urllib.urlencode(values), headers=None)
@@ -87,6 +104,7 @@ class TMModel(BaseTMModel):
     def got_translation(self, val, query_str):
         """Handle the response from the web service now that it came in."""
         val = val[:-1] # Chop off \n
+        val = strip_html(val)
         match = {
             'source': query_str,
             'target': val,

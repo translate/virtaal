@@ -108,14 +108,9 @@ class PreferencesView(BaseView, GObjectWrapper):
 
     # ACCESSORS #
     def _get_font_data(self):
-        sourcefont = pango.FontDescription(self._widgets['fbtn_source'].get_font_name())
-        targetfont = pango.FontDescription(self._widgets['fbtn_target'].get_font_name())
-        sourcesize = sourcefont.get_size() > 0 and ' %d' % (sourcefont.get_size() / pango.SCALE) or ''
-        targetsize = targetfont.get_size() > 0 and ' %d' % (targetfont.get_size() / pango.SCALE) or ''
-
         return {
-            'source': sourcefont.get_family() + sourcesize,
-            'target': targetfont.get_family() + targetsize,
+            'source': self._widgets['fbtn_source'].get_font_name(),
+            'target': self._widgets['fbtn_target'].get_font_name(),
         }
     def _set_font_data(self, value):
         if not isinstance(value, dict) or not 'source' in value or not 'target' in value:

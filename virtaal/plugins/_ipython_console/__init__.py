@@ -66,7 +66,6 @@ class Plugin(BasePlugin):
         self.menuitem.show()
         self.menu.append(self.menuitem)
 
-        gtk.accel_map_add_entry("<Virtaal>/View/IPython Console", gtk.keysyms.F9, 0)
         accel_group = self.menu.get_accel_group()
         if accel_group is None:
             accel_group = self.accel_group

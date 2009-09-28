@@ -92,15 +92,17 @@ class PreferencesView(BaseView, GObjectWrapper):
     def _setup_key_bindings(self):
         gtk.accel_map_add_entry("<Virtaal>/Edit/Preferences", gtk.keysyms.p, gtk.gdk.CONTROL_MASK)
 
-        self.accel_group = gtk.AccelGroup()
-        self.accel_group.connect_by_path("<Virtaal>/Edit/Preferences", self._show_preferences)
-
-        mainview = self.controller.main_controller.view
-        mainview.add_accel_group(self.accel_group)
-
     def _setup_menu_item(self):
         mainview = self.controller.main_controller.view
+        menu_edit = mainview.gui.get_widget('menu_edit')
         mnu_prefs = mainview.gui.get_widget('mnu_prefs')
+
+        accel_group = menu_edit.get_accel_group()
+        if accel_group is None:
+            accel_group = self.accel_group
+            menu_edit.set_accel_path(accel_group)
+        menu_edit.set_accel_group(accel_group)
+
         mnu_prefs.set_accel_path("<Virtaal>/Edit/Preferences")
         mnu_prefs.connect('activate', self._show_preferences)
 

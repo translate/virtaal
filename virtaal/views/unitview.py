@@ -485,6 +485,15 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         if origin == "programmer" and len(note_text) < 15 and self.unit is not None and self.unit.getlocations():
             note_text += u"  " + u" ".join(self.unit.getlocations()[:3])
 
+        # FIXME: This is a temporary quick fix (to bug 1145) to ensure that
+        # excessive translator comments don't cover the whole display.
+        # The labels used for displaying these comments (programmer- as well as
+        # translator comments) should be displayed in a scrollable widget with
+        # proper size limitations.
+        TEXT_LIMIT = 200
+        if origin == "translator" and len(note_text) > TEXT_LIMIT:
+            note_text = note_text[:TEXT_LIMIT] + '...'
+
         self._widgets['notes'][origin].set_text(note_text)
 
         if note_text:

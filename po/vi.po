@@ -20,7 +20,7 @@ msgstr ""
 msgid ""
 "A translation tool to help a human translator translate files into other "
 "languages"
-msgstr "Một công cụ thông dịch để giúp con người dịch sang các ngôn ngữ khác."
+msgstr "Một công cụ thông dịch để giúp con người dịch sang các ngôn ngữ khác"
 
 #: ../share/applications/virtaal.desktop.in.h:2
 msgid "Translation Tool"
@@ -285,7 +285,7 @@ msgstr ""
 msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
 msgstr ""
 "Để đánh dấu chuỗi dịch hiện thời như là « còn mờ » (fuzzy), đơn giản hãy bấm "
-"tổ hợp phím <Alt+U>."
+"tổ hợp phím <Alt+M>."
 
 #: ../virtaal/tips.py:32
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
@@ -568,7 +568,7 @@ msgstr "Bộ tự động sửa"
 
 #: ../virtaal/plugins/migration.py:56
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
-msgstr "Nâng cấp lên Virtaal thiết lập của KBabel, Lokalize và/hay Poedit ."
+msgstr "Nâng cấp lên Virtaal thiết lập của KBabel, Lokalize và/hay Poedit."
 
 #: ../virtaal/plugins/migration.py:57
 msgid "Migration Assistant"
@@ -762,7 +762,7 @@ msgstr "Các chuỗi dịch trước của bạn"
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/localtm.py:40
 msgid "Local TM"
-msgstr "Bản nhớ chuỗi dịch cục bộ"
+msgstr "Cục bộ"
 
 #: ../virtaal/plugins/tm/models/opentran.py:33
 msgid "Previous translations for Free and Open Source Software"
@@ -786,7 +786,7 @@ msgstr "Một máy phục vụ bản nhớ chuỗi dịch"
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/remotetm.py:33
 msgid "Remote TM"
-msgstr "Bản nhớ chuỗi dịch từ xa"
+msgstr "Từ xa"
 
 # Tên: đừng dịch
 #: ../virtaal/plugins/tm/models/tinytm.py:34

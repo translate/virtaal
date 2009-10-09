@@ -73,10 +73,11 @@ class Cursor(GObjectWrapper):
     pos = property(_get_pos, _set_pos)
 
     def _get_index(self):
-        if len(self._indices) < 1:
+        l_indices = len(self._indices)
+        if l_indices < 1:
             return -1
-        if self.pos >= len(self._indices):
-            return len(self._indices) - 1
+        if self.pos >= l_indices:
+            return l_indices - 1
         return self._indices[self.pos]
     def _set_index(self, index):
         """Move the cursor to the cursor to the position specified by C{index}.

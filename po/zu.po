@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.2\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-07-15 18:41+0200\n"
-"PO-Revision-Date: 2009-07-18 18:17+0200\n"
+"PO-Revision-Date: 2009-10-09 11:23+0200\n"
 "Last-Translator: F Wolff <friedel@translate.org.za>\n"
 "Language-Team: translate-discuss-af@lists.sourceforge.net\n"
 "Language: zu\n"
@@ -56,7 +56,7 @@ msgstr "<b>Ukwaziswa komhumushi</b>"
 
 #: ../share/virtaal/virtaal.glade.h:6
 msgid "Add Missing Language"
-msgstr ""
+msgstr "Yongeza ulimi oluswelekile"
 
 #: ../share/virtaal/virtaal.glade.h:7
 #, fuzzy
@@ -628,12 +628,13 @@ msgid "File"
 msgstr "Ifayela"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:139
+#, fuzzy
 msgid "Extendable"
-msgstr ""
+msgstr "Eyandisekayo"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:163
 msgid "Add Files"
-msgstr ""
+msgstr "Yongeza amafayela"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:170
 #: ../virtaal/views/mainview.py:223
@@ -703,7 +704,7 @@ msgstr ""
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/currentfile.py:82
 msgid "This file"
-msgstr ""
+msgstr "Leli fayela"
 
 #: ../virtaal/plugins/tm/models/libtranslate.py:44
 msgid "Machine Translation with libtranslate"
@@ -716,7 +717,7 @@ msgstr ""
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
 #: ../virtaal/plugins/tm/models/libtranslate.py:97
 msgid "libtranslate"
-msgstr ""
+msgstr "i-libtranslate"
 
 #: ../virtaal/plugins/tm/models/localtm.py:37
 #, fuzzy
@@ -740,7 +741,7 @@ msgstr ""
 #: ../virtaal/plugins/tm/models/opentran.py:69
 #: ../virtaal/plugins/tm/models/opentran.py:71
 msgid "OpenTran"
-msgstr ""
+msgstr "i-OpenTran"
 
 #: ../virtaal/plugins/tm/models/remotetm.py:30
 msgid "Remote server"
@@ -767,11 +768,11 @@ msgstr ""
 #: ../virtaal/plugins/tm/models/apertium.py:35
 #: ../virtaal/plugins/tm/models/apertium.py:94
 msgid "Apertium"
-msgstr ""
+msgstr "i-Apertium"
 
 #: ../virtaal/plugins/tm/models/apertium.py:36
 msgid "Apertium Machine Translation"
-msgstr ""
+msgstr "Ukuhumusha ngomshini neApertium"
 
 #: ../virtaal/plugins/tm/tmview.py:99
 msgid "Translation _Suggestions"
@@ -819,7 +820,7 @@ msgstr "Iphuta"
 
 #: ../virtaal/views/mainview.py:216
 msgid "Choose a Translation File"
-msgstr ""
+msgstr "Kheta ifayela yokuhumusha"
 
 #: ../virtaal/views/mainview.py:254
 msgid "Save"

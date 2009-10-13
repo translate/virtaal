@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.4.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-07-15 18:41+0200\n"
-"PO-Revision-Date: 2009-09-30 19:06+0300\n"
+"PO-Revision-Date: 2009-10-13 02:42+0300\n"
 "Last-Translator: Jussi Aalto <jta_lnx@dnainternet.net>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "Language: fi\n"
@@ -519,7 +519,7 @@ msgstr "Haku"
 
 #: ../virtaal/modes/searchmode.py:66
 msgid "_Case sensitive"
-msgstr "H_uomioi kirjainkoko"
+msgstr "_Huomioi kirjainkoko"
 
 #. l10n: To read about what regular expressions are, see
 #. http://en.wikipedia.org/wiki/Regular_expression
@@ -876,7 +876,7 @@ msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 
 #: ../virtaal/views/mainview.py:326
 msgid "Please enter the number of noun forms (plurals) to use"
-msgstr ""
+msgstr "Anna käytettävien nominimuotojen (monikot) määrä"
 
 #: ../virtaal/views/mainview.py:332
 msgid "Please enter the plural equation to use"

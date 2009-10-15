@@ -87,7 +87,7 @@ def get_default_font():
     # Get the default font size from Gtk
     if not font_size:
         import gtk
-        font_name = gtk.Label().get_settings().props.gtk_font_name
+        font_name = str(gtk.Label().rc_get_style().font_desc)
         font_size = font_name.split(' ')[-1]
 
     if font_size:

@@ -105,8 +105,9 @@ class TerminologyCombo(gtk.ComboBox):
         if self.parent:
             self.parent.grab_focus()
 
-        buffer = self.parent.get_buffer()
-        self.parent.remove(self)
+        parent = self.parent
+        buffer = parent.get_buffer()
+        parent.remove(self)
         if self.insert_offset >= 0:
             iterins  = buffer.get_iter_at_offset(self.insert_offset)
             iternext = buffer.get_iter_at_offset(self.insert_offset + 1)
@@ -114,6 +115,7 @@ class TerminologyCombo(gtk.ComboBox):
                 buffer.delete(iterins, iternext)
 
             iterins  = buffer.get_iter_at_offset(self.insert_offset)
+            parent.refresh_cursor_pos = buffer.props.cursor_position
             if self.selected_string:
                 buffer.insert(iterins, self.selected_string)
 

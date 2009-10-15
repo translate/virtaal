@@ -72,17 +72,17 @@ def get_default_font():
     font_size = ''
 
     # First try and get the default font size from GConf
-    import glib
     try:
         import gconf
         client = gconf.client_get_default()
         client.add_dir('/desktop/gnome/interface', gconf.CLIENT_PRELOAD_NONE)
         font_name = client.get_string('/desktop/gnome/interface/monospace_font_name')
         font_size = font_name.split(' ')[-1]
-    except glib.GError, ge:
-        logging.debug("Couldn't get the font size from gconf", ge)
     except ImportError, ie:
         logging.debug('Unable to import gconf module: %s', ie)
+    except Exception:
+        # Ignore any other errors and try the next method
+        pass
 
     # Get the default font size from Gtk
     if not font_size:

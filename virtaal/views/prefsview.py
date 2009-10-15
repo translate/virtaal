@@ -71,8 +71,8 @@ class PreferencesView(BaseView, GObjectWrapper):
 
     def _init_font_gui(self):
         def reset_fonts(button):
-            self._widgets['fbtn_source'].set_font_name(pan_app.defaultfont)
-            self._widgets['fbtn_target'].set_font_name(pan_app.defaultfont)
+            self._widgets['fbtn_source'].set_font_name(pan_app.get_default_font())
+            self._widgets['fbtn_target'].set_font_name(pan_app.get_default_font())
         self._widgets['btn_default_fonts'].connect('clicked', reset_fonts)
 
     def _init_placeables_page(self):

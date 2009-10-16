@@ -32,15 +32,15 @@ def unescape_html_entities(text):
     def fixup(m):
         text = m.group(0)
         entity = htmlentitydefs.entitydefs.get(text[1:-1])
-        if entity:
-            if entity[:2] == "&#":
+        if not entity:
+            if text[:2] == "&#":
                 try:
-                    return unichr(int(entity[2:-1]))
+                    return unichr(int(text[2:-1]))
                 except ValueError:
                     pass
-            else:
-                return unicode(entity, "iso-8859-1")
-    return re.sub("(?s)&\w+;", fixup, text)
+        else:
+            return unicode(entity, "iso-8859-1")
+    return re.sub("&(#[0-9]+|\w+);", fixup, text)
 
 
 class BaseTMModel(BaseModel):

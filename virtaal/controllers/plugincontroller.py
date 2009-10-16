@@ -194,7 +194,7 @@ class PluginController(BaseController):
             if not os.path.isdir(dir):
                 continue
             for name in os.listdir(dir):
-                if name.startswith('.'):
+                if name.startswith('.') or name.startswith('test_'):
                     continue
                 fullpath = os.path.join(dir, name)
                 if os.path.isdir(fullpath):

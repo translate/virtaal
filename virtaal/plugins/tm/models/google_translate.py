@@ -20,7 +20,7 @@
 
 import logging
 
-from basetmmodel import BaseTMModel
+from basetmmodel import BaseTMModel, unescape_html_entities
 
 
 class TMModel(BaseTMModel):
@@ -75,7 +75,7 @@ class TMModel(BaseTMModel):
             tm_match = []
             tm_match.append({
                 'source': query_str,
-                'target': self.translate(query_str, lang_from=self.srclang, lang_to=self.tgtlang),
+                'target': unescape_html_entities(self.translate(query_str, lang_from=self.srclang, lang_to=self.tgtlang)),
                 'tmsource': _('Google')
             })
             self.emit('match-found', query_str, tm_match)

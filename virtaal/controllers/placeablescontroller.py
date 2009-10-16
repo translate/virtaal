@@ -111,6 +111,10 @@ class PlaceablesController(BaseController):
             _('Placeholders (Java)'),
             _('Placeholders in Java strings')
         )
+        self.parser_info[general.QtFormattingPlaceable.parse] = (
+            _('Placeholders (Qt)'),
+            _('Placeholders in Qt strings')
+        )
         self.parser_info[general.NumberPlaceable.parse] = (
             _('Numbers'),
             #l10n: 'decimal fractions' refer to numbers like 0.2 or 499,99

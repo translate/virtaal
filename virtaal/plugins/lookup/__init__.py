@@ -44,7 +44,7 @@ class Plugin(BasePlugin):
 
 
     # METHODS #
-    def configure(self):
+    def configure(self, parent):
         self.controller.view.select_backends(None)
 
     def destroy(self):

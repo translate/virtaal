@@ -25,8 +25,8 @@ class TMModel(BaseTMModel):
     """This is a dummy (testing) translation memory model."""
 
     __gtype_name__ = 'DummyTMModel'
-    display_name = ('Dummy TM provider for testing')
-    description = ('A translation memory suggestion providers that is only useful for testing')
+    display_name = _('Dummy TM provider for testing')
+    description = _('A translation memory suggestion providers that is only useful for testing')
 
     # INITIALIZERS #
     def __init__(self, internal_name, controller):

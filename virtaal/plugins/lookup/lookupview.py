@@ -80,6 +80,9 @@ class LookupView(BaseView):
         for i in menu_items:
             lookup_menu.append(i)
 
+        sep = gtk.SeparatorMenuItem()
+        sep.show()
+        menu.append(sep)
         menu_item.set_submenu(lookup_menu)
         menu_item.show_all()
         menu.append(menu_item)

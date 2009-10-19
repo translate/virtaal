@@ -48,6 +48,8 @@ class Plugin(BasePlugin):
 
         self.tmcontroller = TMController(self.main_controller, self.config)
 
+
+    # METHODS #
     def configure(self, parent):
         self.tmcontroller.view.select_backends(None)
 

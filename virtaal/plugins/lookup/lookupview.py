@@ -21,6 +21,7 @@
 import gtk
 
 from virtaal.views import BaseView
+from virtaal.views.widgets.selectdialog import SelectDialog
 
 
 class LookupView(BaseView):
@@ -50,10 +51,55 @@ class LookupView(BaseView):
         for textbox, id in self._textbox_ids:
             textbox.disconnect(id)
 
+    def select_backends(self, menuitem):
+        selectdlg = SelectDialog(
+            #l10n: The 'services' here refer to different look-up plugins,
+            #such as web look-up, etc.
+            title=_('Select look-up services '),
+            message=_('Select the services that should be used to perform look-ups')
+        )
+        selectdlg.set_icon(self.controller.main_controller.view.main_window.get_icon())
+
+        items = []
+        plugin_controller = self.controller.plugin_controller
+        for plugin_name in plugin_controller._find_plugin_names():
+            if plugin_name == 'baselookupmodel':
+                continue
+            try:
+                info = plugin_controller.get_plugin_info(plugin_name)
+            except Exception, e:
+                logging.debug('Problem getting information for plugin %s' % plugin_name)
+                continue
+            enabled = plugin_name in plugin_controller.plugins
+            item = {'name': plugin_name}
+            config = enabled and plugin_controller.plugins[plugin_name] or None
+            items.append({
+                'name': info['display_name'],
+                'desc': info['description'],
+                'data': {'internal_name': plugin_name},
+                'enabled': enabled,
+                'config': config,
+            })
+
+        def item_enabled(dlg, item):
+            internal_name = item['data']['internal_name']
+            plugin_controller.enable_plugin(internal_name)
+            if internal_name in self.controller.config['disabled_models']:
+                self.controller.config['disabled_models'].remove(internal_name)
+
+        def item_disabled(dlg, item):
+            internal_name = item['data']['internal_name']
+            plugin_controller.disable_plugin(internal_name)
+            if internal_name not in self.controller.config['disabled_models']:
+                self.controller.config['disabled_models'].append(internal_name)
+
+        selectdlg.connect('item-enabled',  item_enabled)
+        selectdlg.connect('item-disabled', item_disabled)
+        selectdlg.run(items=items)
+
 
     # SIGNAL HANDLERS #
     def _on_lookup_selected(self, menuitem, plugin, query, query_is_source):
-
         plugin.lookup(query, query_is_source, srclang, tgtlang)
 
     def _on_populate_popup(self, textbox, menu):

@@ -32,7 +32,11 @@ class LookupModel(BaseLookupModel):
     description = _('Use the selected text as the query string in a web look-ups.')
 
     URLS = (
-        (_('Google'), 'http://www.google.com/search?q=%(query)s'),
+        (
+            _('Google'),
+            'http://www.google.com/search?q=%(query)s',
+            {'quoted': True}
+        ),
     )
 
     # INITIALIZERS #
@@ -43,9 +47,13 @@ class LookupModel(BaseLookupModel):
 
     # METHODS #
     def create_menu_items(self, query, role, srclang, tgtlang):
-        query = urllib.quote('"' + query + '"')
+        query = urllib.quote(query)
         items = []
-        for name, url in self.URLS:
+        for name, url, options in self.URLS:
+            uquery = query
+            if 'quoted' in options and options['quoted']:
+                uquery = '"' + uquery + '"'
+
             i = gtk.MenuItem(name)
             lookup_str = url % {
                 'query':   query,

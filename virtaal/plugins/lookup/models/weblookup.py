@@ -20,6 +20,9 @@
 
 import gtk
 import urllib
+from os import path
+
+from virtaal.common import pan_app
 
 from baselookupmodel import BaseLookupModel
 
@@ -49,6 +52,15 @@ class LookupModel(BaseLookupModel):
         self.controller = controller
         self.internal_name = internal_name
 
+        self.urldata_file = path.join(pan_app.get_config_dir(), "weblookup.ini")
+
+        self._load_urldata()
+
+    def _load_urldata(self):
+        urls = pan_app.load_config(self.urldata_file).values()
+        if urls:
+            self.URLDATA = urls
+
 
     # METHODS #
     def create_menu_items(self, query, role, srclang, tgtlang):
@@ -71,6 +83,10 @@ class LookupModel(BaseLookupModel):
             i.connect('activate', self._on_lookup, lookup_str)
             items.append(i)
         return items
+
+    def destroy(self):
+        config = dict([ (u['display_name'], u) for u in self.URLDATA ])
+        pan_app.save_config(self.urldata_file, config)
 
 
     # SIGNAL HANDLERS #

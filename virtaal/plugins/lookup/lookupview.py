@@ -72,7 +72,10 @@ class LookupView(BaseView):
                 continue
             enabled = plugin_name in plugin_controller.plugins
             item = {'name': plugin_name}
-            config = enabled and plugin_controller.plugins[plugin_name] or None
+            config = None
+            if hasattr(plugin_controller.plugins[plugin_name], 'configure_func'):
+                config = plugin_controller.plugins[plugin_name].configure_func
+
             items.append({
                 'name': info['display_name'],
                 'desc': info['description'],
@@ -123,6 +126,9 @@ class LookupView(BaseView):
             menu_items.extend(
                 plugins[name].create_menu_items(selection, role, srclang, tgtlang)
             )
+        if not menu_items:
+            return
+
         for i in menu_items:
             lookup_menu.append(i)
 

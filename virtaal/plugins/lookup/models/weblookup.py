@@ -37,6 +37,11 @@ class LookupModel(BaseLookupModel):
             'http://www.google.com/search?q=%(query)s',
             {'quoted': True}
         ),
+        (
+            _('WikiPedia'),
+            'http://%(querylang)s.wikipedia.org/%(query)s',
+            {'quoted': False}
+        ),
     )
 
     # INITIALIZERS #
@@ -47,6 +52,7 @@ class LookupModel(BaseLookupModel):
 
     # METHODS #
     def create_menu_items(self, query, role, srclang, tgtlang):
+        querylang = role == 'source' and srclang or tgtlang
         query = urllib.quote(query)
         items = []
         for name, url, options in self.URLS:
@@ -56,10 +62,11 @@ class LookupModel(BaseLookupModel):
 
             i = gtk.MenuItem(name)
             lookup_str = url % {
-                'query':   query,
-                'role':    role,
-                'srclang': srclang,
-                'tgtlang': tgtlang
+                'query':     uquery,
+                'querylang': querylang,
+                'role':      role,
+                'srclang':   srclang,
+                'tgtlang':   tgtlang
             }
             i.connect('activate', self._on_lookup, lookup_str)
             items.append(i)

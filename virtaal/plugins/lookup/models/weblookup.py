@@ -31,17 +31,17 @@ class LookupModel(BaseLookupModel):
     display_name = _('Web Look-up')
     description = _('Use the selected text as the query string in a web look-ups.')
 
-    URLS = (
-        (
-            _('Google'),
-            'http://www.google.com/search?q=%(query)s',
-            {'quoted': True}
-        ),
-        (
-            _('WikiPedia'),
-            'http://%(querylang)s.wikipedia.org/%(query)s',
-            {'quoted': False}
-        ),
+    URLDATA = (
+        {
+            'display_name': _('Google'),
+            'url': 'http://www.google.com/search?q=%(query)s',
+            'quoted': True,
+        },
+        {
+            'display_name': _('WikiPedia'),
+            'url': 'http://%(querylang)s.wikipedia.org/%(query)s',
+            'quoted': False,
+        },
     )
 
     # INITIALIZERS #
@@ -55,13 +55,13 @@ class LookupModel(BaseLookupModel):
         querylang = role == 'source' and srclang or tgtlang
         query = urllib.quote(query)
         items = []
-        for name, url, options in self.URLS:
+        for urlinfo in self.URLDATA:
             uquery = query
-            if 'quoted' in options and options['quoted']:
+            if 'quoted' in urlinfo and urlinfo['quoted']:
                 uquery = '"' + uquery + '"'
 
-            i = gtk.MenuItem(name)
-            lookup_str = url % {
+            i = gtk.MenuItem(urlinfo['name'])
+            lookup_str = urlinfo['url'] % {
                 'query':     uquery,
                 'querylang': querylang,
                 'role':      role,

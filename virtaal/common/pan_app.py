@@ -155,7 +155,7 @@ class Settings:
             self.language["targetlang"] = data.simplify_to_common(lang)
         except:
             logging.exception("Could not get locale")
-        self.config = ConfigParser.ConfigParser()
+        self.config = ConfigParser.RawConfigParser()
         self.read()
 
     def read(self):
@@ -246,7 +246,7 @@ def load_config(filename, section=None):
         @returns: A 2D-dictionary representing the configuration file if no
             section was specified. Otherwise a simple dictionary representing
             the given configuration section."""
-    parser = ConfigParser.ConfigParser()
+    parser = ConfigParser.RawConfigParser()
     parser.read(filename)
 
     if section:

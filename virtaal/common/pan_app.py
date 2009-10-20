@@ -273,6 +273,9 @@ def save_config(filename, config, section=None):
     if section:
         config = {section: config}
 
+    for sect in parser.sections():
+        parser.remove_section(sect)
+
     for section, section_conf in config.items():
         if section not in parser.sections():
             parser.add_section(section)

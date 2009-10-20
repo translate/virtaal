@@ -165,8 +165,8 @@ class PluginController(BaseController):
                     logging.exception('from %s import %s' % (modulename, self.PLUGIN_CLASSNAME))
 
         if module is None:
-            # XXX: Uncomment the following logging statement to find out what exactly went wrong when trying to import the plug-in.
-            #logging.exception('Could not find plug-in "%s"' % (name))
+            if pan_app.DEBUG:
+                logging.exception('Could not find plug-in "%s"' % (name))
             raise Exception('Could not find plug-in "%s"' % (name))
 
         plugin_class = getattr(module, self.PLUGIN_CLASSNAME, None)

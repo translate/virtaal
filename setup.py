@@ -389,7 +389,15 @@ def find_gtk_files():
             files = [path.abspath(path.join(dir_name, f)) for f in files if wanted(f)]
             if len(files) > 0:
                 data_files.append((strip_leading_path(gtk_path, dir_name), files))
+    return data_files
 
+def find_enchant_files():
+    data_files = []
+    import enchant
+    en = enchant.Dict('en')
+    # This should give us something like
+    # C:\Python25\Lib\site-packages\enchant\lib\enchant\libenchant_myspell.dll
+    data_files.append(('lib/enchant', [en.provider.file]))
     return data_files
 
 def add_win32_options(options):
@@ -401,6 +409,7 @@ def add_win32_options(options):
              options are the options required by py2exe."""
     if py2exe != None and ('py2exe' in sys.argv or 'innosetup' in sys.argv):
         options['data_files'].extend(find_gtk_files())
+        options['data_files'].extend(find_enchant_files())
         #This depends on setup.py being run from a checkout with the translate
         #toolkit in place.
         options['scripts'].append("../translate/services/tmserver")
@@ -413,7 +422,9 @@ def add_win32_options(options):
             "includes":   [
                     "lxml", "lxml._elementpath", "psyco", "cairo", "pango",
                     "pangocairo", "atk", "gobject", "gtk.keysyms",
-                    "translate.services", "translate.storage.placeables.terminology"
+                    "gtkspell",
+                    "translate.services",
+                    "translate.storage.placeables.terminology",
                 ],
             "optimize":   2,
         }

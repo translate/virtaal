@@ -81,6 +81,7 @@ class LookupModel(BaseLookupModel):
 
     def create_menu_items(self, query, role, srclang, tgtlang):
         querylang = role == 'source' and srclang or tgtlang
+        nonquerylang = role != 'source' and srclang or tgtlang
         query = urllib.quote(query)
         items = []
         for urlinfo in self.URLDATA:
@@ -90,11 +91,11 @@ class LookupModel(BaseLookupModel):
 
             i = gtk.MenuItem(urlinfo['display_name'])
             lookup_str = urlinfo['url'] % {
-                'query':     uquery,
-                'querylang': querylang,
-                'role':      role,
-                'srclang':   srclang,
-                'tgtlang':   tgtlang
+                'query':        uquery,
+                'querylang':    querylang,
+                'nonquerylang': nonquerylang,
+                'srclang':      srclang,
+                'tgtlang':      tgtlang
             }
             i.connect('activate', self._on_lookup, lookup_str)
             items.append(i)

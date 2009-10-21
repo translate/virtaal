@@ -273,7 +273,7 @@ def save_config(filename, config, section=None):
     if section:
         config = {section: config}
 
-    for sect in parser.sections():
+    for sect in config.keys():
         parser.remove_section(sect)
 
     for section, section_conf in config.items():

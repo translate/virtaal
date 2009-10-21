@@ -38,9 +38,8 @@ class TMModel(BaseTMModel):
     # INITIALIZERS #
     def __init__(self, internal_name, controller):
         self.internal_name = internal_name
-        super(TMModel, self).__init__(controller)
-
         self._init_plugin()
+        super(TMModel, self).__init__(controller)
 
     def _init_plugin(self):
         try:

@@ -39,7 +39,7 @@ class LookupModel(BaseLookupModel):
     display_name = _('Web Look-up')
     description = _('Use the selected text as the query string in web look-ups.')
 
-    URLDATA = (
+    URLDATA = [
         {
             'display_name': _('Google'),
             'url': 'http://www.google.com/search?q=%(query)s',
@@ -55,7 +55,22 @@ class LookupModel(BaseLookupModel):
             'url': 'http://%(querylang)s.%(nonquerylang)s.open-tran.eu/suggest/%(query)s',
             'quoted': True,
         },
-    )
+    ]
+    """A list of dictionaries containing data about each URL:
+    * C{display_name}: The name that will be shown in the context menu
+    * C{url}: The actual URL that will be queried. See below for template
+        variables.
+    * C{quoted}: Whether or not the query string should be put in quotes (").
+
+    Valid template variables in 'url' fields are:
+    * C{%(query)s}: The selected text that makes up the look-up query.
+    * C{%(querylang)s}: The language of the query string (one of C{%(srclang)}
+        or C{%(tgtlang)s}).
+    * C{%(nonquerylang)s}: The source- or target language which is B{not} the
+        language that the query (selected text) is in.
+    * C{%(srclang)s}: The currently selected source language.
+    * C{%(tgtlang)s}: The currently selected target language.
+    """
 
     # INITIALIZERS #
     def __init__(self, internal_name, controller):

@@ -77,9 +77,9 @@ class BaseTMModel(BaseModel):
 
         self.source_lang = None
         self.target_lang = None
-        self._set_source_lang(None, controller.main_controller.lang_controller.source_lang.code)
-        self._set_target_lang(None, controller.main_controller.lang_controller.target_lang.code)
         lang_controller = self.controller.main_controller.lang_controller
+        self._set_source_lang(None, lang_controller.source_lang.code)
+        self._set_target_lang(None, lang_controller.target_lang.code)
         self._connect_ids.append((lang_controller.connect('source-lang-changed', self._set_source_lang), lang_controller))
         self._connect_ids.append((lang_controller.connect('target-lang-changed', self._set_target_lang), lang_controller))
 

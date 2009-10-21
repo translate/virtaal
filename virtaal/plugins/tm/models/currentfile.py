@@ -63,7 +63,7 @@ class TMModel(BaseTMModel):
                 'max_length': int(self.config['max_length']),
                 'max_candidates': self.controller.max_matches,
                 'min_similarity': self.controller.min_quality
-                }
+            }
             self.matcher = match.matcher(store, **options)
         else:
             for unit in store.units:

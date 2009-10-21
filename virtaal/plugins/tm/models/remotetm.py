@@ -24,11 +24,11 @@ from basetmmodel import BaseTMModel
 
 
 class TMModel(BaseTMModel):
-    """This is the translation memory model."""
+    """TM back-end that allows Virtaal to connect to a remote TM server."""
 
     __gtype_name__ = 'RemoteTMModel'
     display_name = _('Remote server')
-    description = _('A translation memory server')
+    description = _('Enables Virtaal to query a remote TM server.')
     #l10n: Try to keep this as short as possible.
     shortname = _('Remote TM')
 
@@ -49,7 +49,7 @@ class TMModel(BaseTMModel):
 
     # METHODS #
     def query(self, tmcontroller, query_str):
-        #figure out languages
+        # Figure out languages
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])
         else:
@@ -63,7 +63,7 @@ class TMModel(BaseTMModel):
         self.emit('match-found', query_str, matches)
 
     def push_store(self, store_controller):
-        """add units in store to tmdb on save"""
+        """Add units in store to TM database on save."""
         units = []
         for unit in store_controller.store.get_units():
             if  unit.istranslated():
@@ -74,9 +74,10 @@ class TMModel(BaseTMModel):
         self.cache = {}
 
     def upload_store(self, store_controller):
-        """upload store to tmserver"""
+        """Upload store to TM server."""
         self.tmclient.upload_store(store_controller.store._trans_store, self.source_lang, self.target_lang)
         self.cache = {}
+
 
 def unit2dict(unit):
     return {"source": unit.source, "target": unit.target, "context": unit.getcontext()}

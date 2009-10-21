@@ -84,7 +84,7 @@ class TMModel(remotetm.TMModel):
             logging.exception('Failed to start TM server')
             raise
 
-        BaseTMModel.__init__(self, controller)
+        super(TMModel, self).__init__(controller)
         self._connect_ids.append((
             self.controller.main_controller.store_controller.connect("store-saved", self.push_store),
             self.controller.main_controller.store_controller

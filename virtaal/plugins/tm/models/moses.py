@@ -42,7 +42,6 @@ class TMModel(BaseTMModel):
 
         self.load_config()
         self.proxy = {}
-        self.srclang = self.tgtlang = ''
 
         self._init_plugin()
 
@@ -58,43 +57,19 @@ class TMModel(BaseTMModel):
                 self.proxy[pair[0]] = {}
             self.proxy[pair[0]].update({pair[1]: xmlrpclib.ServerProxy(server)})
 
-        self.langcontroller = self.controller.main_controller.lang_controller
-        self.srclang = self.langcontroller.source_lang.code
-        self.tgtlang = self.langcontroller.target_lang.code
-
-        self._connect_ids.append((
-            self.langcontroller.connect('source-lang-changed', self._on_lang_changed, 'srclang'),
-            self.langcontroller
-        ))
-        self._connect_ids.append((
-            self.langcontroller.connect('target-lang-changed', self._on_lang_changed, 'tgtlang'),
-            self.langcontroller
-        ))
-
 
     # METHODS #
-    def set_source_lang(self, language):
-        self.srclang = language
-
-    def set_target_lang(self, language):
-        self._wanted_tgtlang = language
-
     def query(self, tmcontroller, query_str):
-        if self.proxy.get(self.srclang, None) is not None:
-            if self.proxy[self.srclang].get(self._wanted_tgtlang, None) is not None:
-                try:
-                    tm_match = []
-                    tm_match.append({
-                        'source': query_str,
-                        'target': self.proxy[self.srclang][self._wanted_tgtlang].translate({'text': query_str})['text'],
-                        #l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
-                        'tmsource': _('Moses'),
-                    })
-                    self.emit('match-found', query_str, tm_match)
-                except Exception, exc:
-                    logging.debug('Moses TM query failed: %s' % (str(exc)))
-
-
-    # SIGNAL HANDLERS #
-    def _on_lang_changed(self, controller, lang_code, langattr):
-        setattr(self, langattr, lang_code)
+        if self.source_lang in self.proxy and self.target_lang in self.proxy[self.source_lang]:
+            try:
+                translate = self.proxy[self.source_lang][self.target_lang].translate
+                tm_match = []
+                tm_match.append({
+                    'source': query_str,
+                    'target': translate({'text': query_str})['text'],
+                    #l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+                    'tmsource': _('Moses'),
+                })
+                self.emit('match-found', query_str, tm_match)
+            except Exception, exc:
+                logging.debug('Moses TM query failed: %s' % (str(exc)))

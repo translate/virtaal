@@ -50,6 +50,11 @@ class LookupModel(BaseLookupModel):
             'url': 'http://%(querylang)s.wikipedia.org/wiki/%(query)s',
             'quoted': False,
         },
+        {
+            'display_name': _('Open-Tran'),
+            'url': 'http://%(querylang)s.%(nonquerylang)s.open-tran.eu/suggest/%(query)s',
+            'quoted': True,
+        },
     )
 
     # INITIALIZERS #

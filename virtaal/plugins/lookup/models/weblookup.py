@@ -64,7 +64,7 @@ class LookupModel(BaseLookupModel):
 
     Valid template variables in 'url' fields are:
     * C{%(query)s}: The selected text that makes up the look-up query.
-    * C{%(querylang)s}: The language of the query string (one of C{%(srclang)}
+    * C{%(querylang)s}: The language of the query string (one of C{%(srclang)s}
         or C{%(tgtlang)s}).
     * C{%(nonquerylang)s}: The source- or target language which is B{not} the
         language that the query (selected text) is in.

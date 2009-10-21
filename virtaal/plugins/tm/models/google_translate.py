@@ -52,37 +52,24 @@ class TMModel(BaseTMModel):
 
         self.translate = Translator().translate
 
-        self.langcontroller = self.controller.main_controller.lang_controller
-        self.srclang = self.langcontroller.source_lang.code
-        self.tgtlang = self.langcontroller.target_lang.code
-
-        self._connect_ids.append((
-            self.langcontroller.connect('source-lang-changed', self._on_lang_changed, 'srclang'),
-            self.langcontroller
-        ))
-        self._connect_ids.append((
-            self.langcontroller.connect('target-lang-changed', self._on_lang_changed, 'tgtlang'),
-            self.langcontroller
-        ))
-
 
     # METHODS #
     def query(self, tmcontroller, query_str):
-        if self.srclang not in self.supported_langs or self.tgtlang not in self.supported_langs:
+        if self.source_lang not in self.supported_langs or self.target_lang not in self.supported_langs:
             return
 
         try:
+            target_unescaped = unescape_html_entities(self.translate(
+                query_str,
+                lang_from=self.source_lang,
+                lang_to=self.target_lang
+            ))
             tm_match = []
             tm_match.append({
                 'source': query_str,
-                'target': unescape_html_entities(self.translate(query_str, lang_from=self.srclang, lang_to=self.tgtlang)),
+                'target': target_unescaped,
                 'tmsource': _('Google')
             })
             self.emit('match-found', query_str, tm_match)
         except self.TranslationError, te:
             logging.exception("Google Translation error!")
-
-
-    # SIGNAL HANDLERS #
-    def _on_lang_changed(self, controller, lang_code, langattr):
-        setattr(self, langattr, lang_code)

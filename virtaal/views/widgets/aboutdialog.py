@@ -59,7 +59,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.""")
                 "Alaa Abd El Fattah",
                 "",
                 _("We thank our donors:"),
-                _("International Development and Research Centre"),
+                _("The International Development Research Centre"),
                 "\thttp://idrc.ca/",
                 _("Mozilla Corporation"),
                 "\thttp://mozilla.com/",

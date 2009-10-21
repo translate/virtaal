@@ -37,7 +37,7 @@ class LookupModel(BaseLookupModel):
 
     __gtype_name__ = 'WebLookupModel'
     display_name = _('Web Look-up')
-    description = _('Use the selected text as the query string in a web look-ups.')
+    description = _('Use the selected text as the query string in web look-ups.')
 
     URLDATA = (
         {
@@ -46,8 +46,8 @@ class LookupModel(BaseLookupModel):
             'quoted': True,
         },
         {
-            'display_name': _('WikiPedia'),
-            'url': 'http://%(querylang)s.wikipedia.org/%(query)s',
+            'display_name': _('Wikipedia'),
+            'url': 'http://%(querylang)s.wikipedia.org/wiki/%(query)s',
             'quoted': False,
         },
     )

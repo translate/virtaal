@@ -23,83 +23,99 @@ import simplejson as json
 from virtaal.support import restclient
 
 
-class TMClient(restclient.RESTClient):
+class TMClient(restclient.HTTPClient):
     """CRUD operations for TM units and stores"""
 
     def __init__(self, base_url):
-        restclient.RESTClient.__init__(self)
+        restclient.HTTPClient.__init__(self)
         self.base_url = base_url
 
     def translate_unit(self, unit_source, source_lang, target_lang, callback=None):
         """suggest translations from TM"""
-        request = restclient.RESTClient.Request(
+        request = restclient.RESTRequest(
                 self.base_url + "/%s/%s/unit" % (source_lang, target_lang),
                 unit_source, "GET")
         self.add(request)
         if callback:
-            request.connect("REST-success",
-                            lambda widget, id, response: callback(widget, id, json.loads(response)))
+            request.connect(
+                "http-success",
+                lambda widget, response: callback(widget, widget.id, json.loads(response))
+            )
 
     def add_unit(self, unit, source_lang, target_lang, callback=None):
-        request = restclient.RESTClient.Request(
+        request = restclient.RESTRequest(
                 self.base_url + "/%s/%s/unit" % (source_lang, target_lang),
                 unit['source'], "PUT", json.dumps(unit))
         self.add(request)
         if callback:
-            request.connect("REST-success",
-                            lambda widget, id, response: callback(widget, id, json.loads(response)))
+            request.connect(
+                "http-success",
+                lambda widget, response: callback(widget, widget.id, json.loads(response))
+            )
 
     def update_unit(self, unit, source_lang, target_lang, callback=None):
-        request = restclient.RESTClient.Request(
+        request = restclient.RESTRequest(
                 self.base_url + "/%s/%s/unit" % (source_lang, target_lang),
                 unit['source'], "POST", json.dumps(unit))
         self.add(request)
         if callback:
-            request.connect("REST-success",
-                            lambda widget, id, response: callback(widget, id, json.loads(response)))
+            request.connect(
+                "http-success",
+                lambda widget, response: callback(widget, widget.id, json.loads(response))
+            )
 
     def forget_unit(self, unit_source, source_lang, target_lang, callback=None):
-        request = restclient.RESTClient.Request(
+        request = restclient.RESTRequest(
                 self.base_url + "/%s/%s/unit" % (source_lang, target_lang),
                 unit_source, "DELETE")
         self.add(request)
         if callback:
-            request.connect("REST-success",
-                            lambda widget, id, response: callback(widget, id, json.loads(response)))
+            request.connect(
+                "http-success",
+                lambda widget, response: callback(widget, widget.id, json.loads(response))
+            )
 
     def get_store_stats(self, store, callback=None):
-        request = restclient.RESTClient.Request(
+        request = restclient.RESTRequest(
                 self.base_url + "/store",
                 store.filename, "GET")
         self.add(request)
         if callback:
-            request.connect("REST-success",
-                            lambda widget, id, response: callback(widget, id, json.loads(response)))
+            request.connect(
+                "http-success",
+                lambda widget, response: callback(widget, widget.id, json.loads(response))
+            )
 
     def upload_store(self, store, source_lang, target_lang, callback=None):
         data = str(store)
-        request = restclient.RESTClient.Request(
+        request = restclient.RESTRequest(
                 self.base_url + "/%s/%s/store" % (source_lang, target_lang),
                 store.filename, "PUT", data)
         self.add(request)
         if callback:
-            request.connect("REST-success",
-                            lambda widget, id, response: callback(widget, id, json.loads(response)))
+            request.connect(
+                "http-success",
+                lambda widget, response: callback(widget, widget.id, json.loads(response))
+            )
 
     def add_store(self, filename, store, source_lang, target_lang, callback=None):
-        request = restclient.RESTClient.Request(
+        request = restclient.RESTRequest(
                 self.base_url + "/%s/%s/store" % (source_lang, target_lang),
                 filename, "POST", json.dumps(store))
         self.add(request)
         if callback:
-            request.connect("REST-success",
-                            lambda widget, id, response: callback(widget, id, json.loads(response)))
+            request.connect(
+                "http-success",
+                lambda widget, response: callback(widget, widget.id, json.loads(response))
+            )
 
     def forget_store(self, store, callback=None):
-        request = restclient.RESTClient.Request(
+        request = restclient.RESTRequest(
                 self.base_url + "/store",
                 store.filename, "DELETE")
         self.add(request)
         if callback:
-            request.connect("REST-success",
-                            lambda widget, id, response: callback(widget, id, json.loads(response)))
+            request.connect(
+                "http-success",
+                lambda widget, response: callback(widget, widget.id, json.loads(response))
+            )

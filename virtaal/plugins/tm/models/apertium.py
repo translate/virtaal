@@ -25,7 +25,7 @@ import urllib
 
 from basetmmodel import BaseTMModel, unescape_html_entities
 
-from virtaal.support.restclient import RESTClient
+from virtaal.support.restclient import HTTPClient, RESTRequest
 
 
 class TMModel(BaseTMModel):
@@ -46,12 +46,14 @@ class TMModel(BaseTMModel):
         self.language_pairs = {}
         self.load_config()
 
-        self.client = RESTClient()
+        self.client = HTTPClient()
         self.url = "http://%s:%s/webservice/ws.php" % (self.config["host"], self.config["port"])
-        langreq = RESTClient.Request(self.url, '', method='GET', data=urllib.urlencode(''), headers=None)
+        langreq = RESTRequest(self.url, '', method='GET', data=urllib.urlencode(''), headers=None)
         self.client.add(langreq)
-        langreq.connect('REST-success', lambda langreq, id, response:\
-                self.got_language_pairs(response))
+        langreq.connect(
+            'http-success',
+            lambda langreq, response: self.got_language_pairs(response)
+        )
 
         super(TMModel, self).__init__(controller)
 
@@ -73,11 +75,13 @@ class TMModel(BaseTMModel):
                 'mark': 0,
                 'format': 'html'
             }
-            req = RESTClient.Request(self.url, '', method='POST', \
+            req = RESTRequest(self.url, '', method='POST', \
                     data=urllib.urlencode(values), headers=None)
             self.client.add(req)
-            req.connect('REST-success', lambda req, id, response:\
-                    self.got_translation(response, query_str))
+            req.connect(
+                'http-success',
+                lambda req, response: self.got_translation(response, query_str)
+            )
 
     def got_language_pairs(self, val):
         """Handle the response from the web service to set up language pairs."""

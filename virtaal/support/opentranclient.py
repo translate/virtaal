@@ -28,7 +28,7 @@ from translate.search.lshtein import LevenshteinComparer
 
 from virtaal.support import restclient
 
-class OpenTranClient(gobject.GObject, restclient.RESTClient):
+class OpenTranClient(gobject.GObject, restclient.HTTPClient):
     """CRUD operations for TM units and stores"""
 
     __gtype_name__ = 'OpenTranClient'
@@ -39,7 +39,7 @@ class OpenTranClient(gobject.GObject, restclient.RESTClient):
 
     def __init__(self, url, max_candidates=3, min_similarity=75, max_length=1000):
         gobject.GObject.__init__(self)
-        restclient.RESTClient.__init__(self)
+        restclient.HTTPClient.__init__(self)
 
         self.max_candidates = max_candidates
         self.min_similarity = min_similarity
@@ -60,22 +60,28 @@ class OpenTranClient(gobject.GObject, restclient.RESTClient):
             unit_source = unit_source.encode("utf-8")
 
         request_body = xmlrpclib.dumps(
-            (unit_source, self.source_lang, self.target_lang), "suggest2")
-        request = restclient.RESTClient.Request(
-                self.url, unit_source, "POST", request_body)
+            (unit_source, self.source_lang, self.target_lang), "suggest2"
+        )
+        request = restclient.RESTRequest(
+            self.url, unit_source, "POST", request_body
+        )
         request.curl.setopt(pycurl.URL, self.url)
         self.add(request)
+        def call_callback(widget, response):
+            return callback(
+                widget, widget.id, self.format_suggestions(widget.id, response)
+            )
+
         if callback:
-            request.connect("REST-success",
-                            lambda widget, id, response: callback(widget, id, self.format_suggestions(id, response)))
+            request.connect("http-success", call_callback)
 
     def lang_negotiate(self, language, callback):
         request_body = xmlrpclib.dumps((language,), "supported")
-        request = restclient.RESTClient.Request(
+        request = restclient.RESTRequest(
             self.url, language, "POST", request_body)
         request.curl.setopt(pycurl.URL, self.url)
         self.add(request)
-        request.connect("REST-success", callback)
+        request.connect("http-success", callback)
 
     def set_source_lang(self, language):
         self.source_lang = None
@@ -85,7 +91,8 @@ class OpenTranClient(gobject.GObject, restclient.RESTClient):
         self.target_lang = None
         self.lang_negotiate(language, self._handle_target_lang)
 
-    def _handle_target_lang(self, request, language, response):
+    def _handle_target_lang(self, request, response):
+        language = request.id
         (result,), fish = xmlrpclib.loads(response)
         if result:
             self.target_lang = language
@@ -100,7 +107,8 @@ class OpenTranClient(gobject.GObject, restclient.RESTClient):
                 self.source_lang = None
                 logging.debug("target language %s not supported" % language)
 
-    def _handle_source_lang(self, request, language, response):
+    def _handle_source_lang(self, request, response):
+        language = request.id
         (result,), fish = xmlrpclib.loads(response)
         if result:
             self.source_lang = language

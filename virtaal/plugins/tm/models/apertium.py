@@ -25,7 +25,7 @@ import urllib
 
 from basetmmodel import BaseTMModel, unescape_html_entities
 
-from virtaal.support.restclient import HTTPClient, RESTRequest
+from virtaal.support.httpclient import HTTPClient, RESTRequest
 
 
 class TMModel(BaseTMModel):

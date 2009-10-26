@@ -20,19 +20,19 @@
 
 import simplejson as json
 
-from virtaal.support import httpclient
+from virtaal.support.httpclient import HTTPClient, RESTRequest
 
 
-class TMClient(httpclient.HTTPClient):
+class TMClient(HTTPClient):
     """CRUD operations for TM units and stores"""
 
     def __init__(self, base_url):
-        httpclient.HTTPClient.__init__(self)
+        HTTPClient.__init__(self)
         self.base_url = base_url
 
     def translate_unit(self, unit_source, source_lang, target_lang, callback=None):
         """suggest translations from TM"""
-        request = httpclient.RESTRequest(
+        request = RESTRequest(
                 self.base_url + "/%s/%s/unit" % (source_lang, target_lang),
                 unit_source, "GET")
         self.add(request)
@@ -43,7 +43,7 @@ class TMClient(httpclient.HTTPClient):
             )
 
     def add_unit(self, unit, source_lang, target_lang, callback=None):
-        request = httpclient.RESTRequest(
+        request = RESTRequest(
                 self.base_url + "/%s/%s/unit" % (source_lang, target_lang),
                 unit['source'], "PUT", json.dumps(unit))
         self.add(request)
@@ -54,7 +54,7 @@ class TMClient(httpclient.HTTPClient):
             )
 
     def update_unit(self, unit, source_lang, target_lang, callback=None):
-        request = httpclient.RESTRequest(
+        request = RESTRequest(
                 self.base_url + "/%s/%s/unit" % (source_lang, target_lang),
                 unit['source'], "POST", json.dumps(unit))
         self.add(request)
@@ -65,7 +65,7 @@ class TMClient(httpclient.HTTPClient):
             )
 
     def forget_unit(self, unit_source, source_lang, target_lang, callback=None):
-        request = httpclient.RESTRequest(
+        request = RESTRequest(
                 self.base_url + "/%s/%s/unit" % (source_lang, target_lang),
                 unit_source, "DELETE")
         self.add(request)
@@ -76,7 +76,7 @@ class TMClient(httpclient.HTTPClient):
             )
 
     def get_store_stats(self, store, callback=None):
-        request = httpclient.RESTRequest(
+        request = RESTRequest(
                 self.base_url + "/store",
                 store.filename, "GET")
         self.add(request)
@@ -88,7 +88,7 @@ class TMClient(httpclient.HTTPClient):
 
     def upload_store(self, store, source_lang, target_lang, callback=None):
         data = str(store)
-        request = httpclient.RESTRequest(
+        request = RESTRequest(
                 self.base_url + "/%s/%s/store" % (source_lang, target_lang),
                 store.filename, "PUT", data)
         self.add(request)
@@ -99,7 +99,7 @@ class TMClient(httpclient.HTTPClient):
             )
 
     def add_store(self, filename, store, source_lang, target_lang, callback=None):
-        request = httpclient.RESTRequest(
+        request = RESTRequest(
                 self.base_url + "/%s/%s/store" % (source_lang, target_lang),
                 filename, "POST", json.dumps(store))
         self.add(request)
@@ -110,7 +110,7 @@ class TMClient(httpclient.HTTPClient):
             )
 
     def forget_store(self, store, callback=None):
-        request = httpclient.RESTRequest(
+        request = RESTRequest(
                 self.base_url + "/store",
                 store.filename, "DELETE")
         self.add(request)

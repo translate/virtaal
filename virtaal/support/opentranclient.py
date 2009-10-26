@@ -26,9 +26,9 @@ import xmlrpclib
 from translate.lang import data
 from translate.search.lshtein import LevenshteinComparer
 
-from virtaal.support import httpclient
+from virtaal.support.httpclient import HTTPClient, RESTRequest
 
-class OpenTranClient(gobject.GObject, httpclient.HTTPClient):
+class OpenTranClient(gobject.GObject, HTTPClient):
     """CRUD operations for TM units and stores"""
 
     __gtype_name__ = 'OpenTranClient'
@@ -39,7 +39,7 @@ class OpenTranClient(gobject.GObject, httpclient.HTTPClient):
 
     def __init__(self, url, max_candidates=3, min_similarity=75, max_length=1000):
         gobject.GObject.__init__(self)
-        httpclient.HTTPClient.__init__(self)
+        HTTPClient.__init__(self)
 
         self.max_candidates = max_candidates
         self.min_similarity = min_similarity
@@ -62,7 +62,7 @@ class OpenTranClient(gobject.GObject, httpclient.HTTPClient):
         request_body = xmlrpclib.dumps(
             (unit_source, self.source_lang, self.target_lang), "suggest2"
         )
-        request = httpclient.RESTRequest(
+        request = RESTRequest(
             self.url, unit_source, "POST", request_body
         )
         request.curl.setopt(pycurl.URL, self.url)
@@ -77,7 +77,7 @@ class OpenTranClient(gobject.GObject, httpclient.HTTPClient):
 
     def lang_negotiate(self, language, callback):
         request_body = xmlrpclib.dumps((language,), "supported")
-        request = httpclient.RESTRequest(
+        request = RESTRequest(
             self.url, language, "POST", request_body)
         request.curl.setopt(pycurl.URL, self.url)
         self.add(request)

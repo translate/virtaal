@@ -41,7 +41,7 @@ class HTTPRequest(GObjectWrapper):
         "http-server-error": (gobject.SIGNAL_RUN_LAST, None, (object,)),
     }
 
-    def __init__(self, url, id, method='GET', data=None, headers=None):
+    def __init__(self, url, id, method='GET', data=None, headers=None, headers_only=False, follow_location=False):
         GObjectWrapper.__init__(self)
         self.result = StringIO.StringIO()
         self.result_headers = StringIO.StringIO()
@@ -82,6 +82,9 @@ class HTTPRequest(GObjectWrapper):
                 self.curl.setopt(pycurl.POSTFIELDSIZE, len(self.data))
         if headers:
             self.curl.setopt(pycurl.HTTPHEADER, headers)
+        if headers_only:
+            self.curl.setopt(pycurl.HEADER, 1)
+            self.curl.setopt(pycurl.NOBODY, 1)
         if follow_location:
             self.curl.setopt(pycurl.FOLLOWLOCATION, 1)
 

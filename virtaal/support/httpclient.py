@@ -41,7 +41,8 @@ class HTTPRequest(GObjectWrapper):
         "http-server-error": (gobject.SIGNAL_RUN_LAST, None, (object,)),
     }
 
-    def __init__(self, url, id, method='GET', data=None, headers=None, headers_only=False, follow_location=False):
+    def __init__(self, url, id, method='GET', data=None, headers=None,
+            headers_only=False, follow_location=False, force_quiet=True):
         GObjectWrapper.__init__(self)
         self.result = StringIO.StringIO()
         self.result_headers = StringIO.StringIO()
@@ -56,7 +57,7 @@ class HTTPRequest(GObjectWrapper):
 
         # the actual curl request object
         self.curl = pycurl.Curl()
-        if (logging.root.level == logging.DEBUG):
+        if (logging.root.level == logging.DEBUG and not force_quiet):
             self.curl.setopt(pycurl.VERBOSE, 1)
 
         self.curl.setopt(pycurl.WRITEFUNCTION, self.result.write)

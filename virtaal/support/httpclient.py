@@ -36,6 +36,7 @@ class HTTPRequest(GObjectWrapper):
     __gtype_name__ = 'HttpClientRequest'
     __gsignals__ = {
         "http-success":      (gobject.SIGNAL_RUN_LAST, None, (object,)),
+        "http-redirect":     (gobject.SIGNAL_RUN_LAST, None, (object,)),
         "http-client-error": (gobject.SIGNAL_RUN_LAST, None, (object,)),
         "http-server-error": (gobject.SIGNAL_RUN_LAST, None, (object,)),
     }
@@ -81,6 +82,8 @@ class HTTPRequest(GObjectWrapper):
                 self.curl.setopt(pycurl.POSTFIELDSIZE, len(self.data))
         if headers:
             self.curl.setopt(pycurl.HTTPHEADER, headers)
+        if follow_location:
+            self.curl.setopt(pycurl.FOLLOWLOCATION, 1)
 
         # self reference required, because CurlMulti will only return
         # Curl handles
@@ -98,6 +101,9 @@ class HTTPRequest(GObjectWrapper):
         if self.status >= 200 and self.status < 300:
             # 2xx indicated success
             self.emit("http-success", self.result.getvalue())
+        elif self.status >= 300 and self.status < 400:
+            # 3xx redirection
+            self.emit("http-redirect", self.result.getvalue())
         elif self.status >= 400 and self.status < 500:
             # 4xx client error
             self.emit("http-client-error", self.status)

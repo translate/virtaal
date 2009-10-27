@@ -42,7 +42,8 @@ class HTTPRequest(GObjectWrapper):
     }
 
     def __init__(self, url, id, method='GET', data=None, headers=None,
-            headers_only=False, follow_location=False, force_quiet=True):
+            headers_only=False, user_agent=None, follow_location=False,
+            force_quiet=True):
         GObjectWrapper.__init__(self)
         self.result = StringIO.StringIO()
         self.result_headers = StringIO.StringIO()
@@ -86,6 +87,8 @@ class HTTPRequest(GObjectWrapper):
         if headers_only:
             self.curl.setopt(pycurl.HEADER, 1)
             self.curl.setopt(pycurl.NOBODY, 1)
+        if user_agent:
+            self.curl.setopt(pycurl.USERAGENT, user_agent)
         if follow_location:
             self.curl.setopt(pycurl.FOLLOWLOCATION, 1)
 

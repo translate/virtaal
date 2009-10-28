@@ -20,13 +20,12 @@
 
 import logging
 import os
-import StringIO
 import sys
 import time
 from datetime import datetime
 from translate.search.match import terminologymatcher
 from translate.storage import factory
-from translate.storage.base import TranslationStore, TranslationUnit
+from translate.storage.base import TranslationStore
 from translate.storage.placeables.terminology import TerminologyPlaceable
 
 from virtaal.__version__ import ver as version

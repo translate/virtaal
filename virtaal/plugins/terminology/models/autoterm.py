@@ -184,7 +184,7 @@ class TerminologyModel(BaseTerminologyModel):
         if os.path.isfile(localfile) and localfile in self.config:
             etag = self.config[os.path.abspath(localfile)]
         url = self.config['url'] % {'srclang': srclang, 'tgtlang': tgtlang}
-        callback = lambda *args: self._process_header(*args, localfile=localfile)
+        callback = lambda *args: self._process_header(localfile=localfile, *args)
         if logging.root.level != logging.DEBUG:
             self.client.get(url, callback, etag)
         else:

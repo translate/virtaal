@@ -27,8 +27,8 @@ class TMModel(BaseTMModel):
     """TM back-end that allows Virtaal to connect to a remote TM server."""
 
     __gtype_name__ = 'RemoteTMModel'
-    display_name = _('Remote server')
-    description = _('Enables Virtaal to query a remote TM server.')
+    display_name = _('Remote Server')
+    description = _('A translation memory server')
     #l10n: Try to keep this as short as possible.
     shortname = _('Remote TM')
 

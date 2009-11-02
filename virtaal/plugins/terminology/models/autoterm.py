@@ -79,8 +79,8 @@ class TerminologyModel(BaseTerminologyModel):
     """A terminology back-end to access the Translate.org.za-managed terminology."""
 
     __gtype_name__ = 'AutoTermTerminology'
-    display_name = _('AutoTerm')
-    description = _('Provides self-managed terminology from Translate.org.za.')
+    display_name = _('Localization Terminology')
+    description = _('Selected localization terminology')
 
     default_config = {
         'last_update': 0,

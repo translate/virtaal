@@ -32,7 +32,7 @@ class TMModel(BaseTMModel):
     """
 
     __gtype_name__ = 'GoogleTranslateTMModel'
-    display_name = _('Machine Translation with Google Translate')
+    display_name = _('Google Translate')
     description = _("Unreviewed machine translations from Google's translation service")
 
     # INITIALIZERS #

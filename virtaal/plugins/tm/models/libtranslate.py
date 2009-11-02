@@ -41,8 +41,9 @@ class TMModel(BaseTMModel):
     """
 
     __gtype_name__ = 'LibtranslateTMModel'
-    display_name = _('Machine Translation with libtranslate')
-    description = _('Unreviewed machine translations')
+    #l10n: This is the name of a software library. You almost definitely don't want to translate this. The lower case 'l' is intentional.
+    display_name = _('libtranslate')
+    description = _('Unreviewed machine translations from various services')
 
     # TODO - allow the user to configure which systems to query for translations, default will be all`
 

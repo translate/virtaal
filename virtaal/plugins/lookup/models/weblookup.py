@@ -37,7 +37,7 @@ class LookupModel(BaseLookupModel):
 
     __gtype_name__ = 'WebLookupModel'
     display_name = _('Web Look-up')
-    description = _('Use the selected text as the query string in web look-ups.')
+    description = _('Look-up the selected text on a web site')
 
     URLDATA = [
         {

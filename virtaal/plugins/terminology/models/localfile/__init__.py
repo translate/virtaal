@@ -39,8 +39,8 @@ class TerminologyModel(BaseTerminologyModel):
     """
 
     __gtype_name__ = 'LocalFileTerminologyModel'
-    display_name = _('Local file')
-    description = _('Local translation files')
+    display_name = _('Local Files')
+    description = _('Local terminology files')
 
     default_config = {
         'extendfile': os.path.join(pan_app.get_config_dir(), 'terminology.po'),

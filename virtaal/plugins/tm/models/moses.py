@@ -30,7 +30,7 @@ class TMModel(BaseTMModel):
     query over RPC for MT suggestions."""
 
     __gtype_name__ = 'MosesTMModel'
-    display_name = _('Moses Machine Translation')
+    display_name = _('Moses')
     description = _('Unreviewed machine translations from a Moses server')
 
     default_config = { "fr->en": "http://localhost:8080", }

@@ -33,7 +33,7 @@ class TMModel(BaseTMModel):
 
     __gtype_name__ = 'ApertiumTMModel'
     display_name = _('Apertium')
-    description = _('Apertium Machine Translation')
+    description = _('Unreviewed machine translations from Apertium')
 
     default_config = {
         "host" : "xixona.dlsi.ua.es",

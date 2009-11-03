@@ -55,7 +55,7 @@ class LookupView(BaseView):
         selectdlg = SelectDialog(
             #l10n: The 'services' here refer to different look-up plugins,
             #such as web look-up, etc.
-            title=_('Select look-up services '),
+            title=_('Select Look-up Services'),
             message=_('Select the services that should be used to perform look-ups')
         )
         selectdlg.set_icon(self.controller.main_controller.view.main_window.get_icon())

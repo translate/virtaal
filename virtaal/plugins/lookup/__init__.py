@@ -26,7 +26,7 @@ from lookupcontroller import LookupController
 
 
 class Plugin(BasePlugin):
-    description = _('Perform look-ups on selected text.')
+    description = _('Perform look-ups on selected text')
     display_name = _('External Look-up')
     version = '0.1'
 

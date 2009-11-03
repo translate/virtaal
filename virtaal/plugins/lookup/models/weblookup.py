@@ -51,7 +51,7 @@ class LookupModel(BaseLookupModel):
             'quoted': False,
         },
         {
-            'display_name': _('Open-Tran'),
+            'display_name': _('Open-Tran.eu'),
             'url': 'http://%(querylang)s.%(nonquerylang)s.open-tran.eu/suggest/%(query)s',
             'quoted': True,
         },

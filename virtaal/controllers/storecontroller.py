@@ -158,18 +158,15 @@ class StoreController(BaseController):
         self.emit('store-loaded')
 
     def compare_stats(self, oldstats, newstats):
-        output = """
-Before:
-      Translated: %d
-      Fuzzy: %d
-      Untranslated: %d
-      Total: %d
-After:
-      Translated: %d
-      Fuzzy: %d
-      Untranslated: %d
-      Total: %d
-"""
+        before = _("Before:")
+        after = _("After:")
+        translated = _("Translated: %d")
+        fuzzy = _("Fuzzy: %d")
+        untranslated = _("Untranslated: %d")
+        total = _("Total: %d")
+        output = "%s\n\t%s\n\t%s\n\t%s\n\t%s\n" % (before, translated, fuzzy, untranslated, total)
+        output += "%s\n\t%s\n\t%s\n\t%s\n\t%s" % (after, translated, fuzzy, untranslated, total)
+
         old_trans = len(oldstats['translated'])
         old_fuzzy = len(oldstats['fuzzy'])
         old_untrans = len(oldstats['untranslated'])
@@ -183,7 +180,8 @@ After:
         output %= (old_trans, old_fuzzy, old_untrans, old_total,
                    new_trans, new_fuzzy, new_untrans, new_total)
 
-        self.main_controller.show_info("File updated", output)
+        #l10n: this refers to updating a file to a new template (POT file)
+        self.main_controller.show_info(_("File Updated"), output)
 
 
     # EVENT HANDLERS #

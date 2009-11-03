@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.5.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-11-03 18:10+0200\n"
+"POT-Creation-Date: 2009-11-03 18:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -585,6 +585,65 @@ msgstr ""
 msgid "AutoCorrector"
 msgstr ""
 
+#: ../virtaal/plugins/lookup/__init__.py:29
+msgid "Perform look-ups on selected text"
+msgstr ""
+
+#: ../virtaal/plugins/lookup/__init__.py:30
+msgid "External Look-up"
+msgstr ""
+
+#. l10n: The 'services' here refer to different look-up plugins,
+#. such as web look-up, etc.
+#: ../virtaal/plugins/lookup/lookupview.py:58
+msgid "Select Look-up Services"
+msgstr ""
+
+#: ../virtaal/plugins/lookup/lookupview.py:59
+msgid "Select the services that should be used to perform look-ups"
+msgstr ""
+
+#: ../virtaal/plugins/lookup/lookupview.py:119
+#, python-format
+msgid "Look-up \"%(selection)s\""
+msgstr ""
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:39
+msgid "Web Look-up"
+msgstr ""
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:40
+msgid "Look-up the selected text on a web site"
+msgstr ""
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:44
+#: ../virtaal/plugins/tm/models/google_translate.py:70
+msgid "Google"
+msgstr ""
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:49
+msgid "Wikipedia"
+msgstr ""
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:54
+#: ../virtaal/plugins/terminology/models/opentran.py:46
+#: ../virtaal/plugins/tm/models/opentran.py:32
+msgid "Open-Tran.eu"
+msgstr ""
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:170
+#: ../virtaal/views/widgets/selectview.py:77
+msgid "Name"
+msgstr ""
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:179
+msgid "URL"
+msgstr ""
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:189
+msgid "Quoted Queries"
+msgstr ""
+
 #: ../virtaal/plugins/migration.py:56
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
 msgstr ""
@@ -652,6 +711,14 @@ msgstr ""
 msgid "Terminology suggestions"
 msgstr ""
 
+#: ../virtaal/plugins/terminology/models/autoterm.py:82
+msgid "Localization Terminology"
+msgstr ""
+
+#: ../virtaal/plugins/terminology/models/autoterm.py:83
+msgid "Selected localization terminology"
+msgstr ""
+
 #: ../virtaal/plugins/terminology/models/localfile/__init__.py:42
 msgid "Local Files"
 msgstr ""
@@ -714,11 +781,6 @@ msgstr ""
 msgid "_Target term — %(langname)s"
 msgstr ""
 
-#: ../virtaal/plugins/terminology/models/opentran.py:46
-#: ../virtaal/plugins/tm/models/opentran.py:32
-msgid "Open-Tran.eu"
-msgstr ""
-
 #: ../virtaal/plugins/terminology/models/opentran.py:47
 msgid "Terms from Open-Tran.eu"
 msgstr ""
@@ -752,6 +814,14 @@ msgstr ""
 msgid "This file"
 msgstr ""
 
+#: ../virtaal/plugins/tm/models/google_translate.py:35
+msgid "Google Translate"
+msgstr ""
+
+#: ../virtaal/plugins/tm/models/google_translate.py:36
+msgid "Unreviewed machine translations from Google's translation service"
+msgstr ""
+
 #. l10n: This is the name of a software library. You almost definitely don't want to translate this. The lower case 'l' is intentional.
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
 #: ../virtaal/plugins/tm/models/libtranslate.py:45
@@ -774,6 +844,16 @@ msgstr ""
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/localtm.py:40
 msgid "Local TM"
+msgstr ""
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+#: ../virtaal/plugins/tm/models/moses.py:33
+#: ../virtaal/plugins/tm/models/moses.py:71
+msgid "Moses"
+msgstr ""
+
+#: ../virtaal/plugins/tm/models/moses.py:34
+msgid "Unreviewed machine translations from a Moses server"
 msgstr ""
 
 #: ../virtaal/plugins/tm/models/opentran.py:33
@@ -967,10 +1047,6 @@ msgstr ""
 
 #: ../virtaal/views/widgets/selectview.py:69
 msgid "Enabled"
-msgstr ""
-
-#: ../virtaal/views/widgets/selectview.py:77
-msgid "Name"
 msgstr ""
 
 #: ../virtaal/views/widgets/selectview.py:118

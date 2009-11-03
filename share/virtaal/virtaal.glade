@@ -1735,7 +1735,7 @@ If you are translating from English to French then French would be your translat
                 <property name="layout_style">center</property>
                 <child>
                   <widget class="GtkButton" id="btn_url_add">
-                    <property name="label" translatable="yes">gtk-add</property>
+                    <property name="label">gtk-add</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -1749,7 +1749,7 @@ If you are translating from English to French then French would be your translat
                 </child>
                 <child>
                   <widget class="GtkButton" id="btn_url_remove">
-                    <property name="label" translatable="yes">gtk-remove</property>
+                    <property name="label">gtk-remove</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -1778,7 +1778,7 @@ If you are translating from English to French then French would be your translat
             <property name="layout_style">end</property>
             <child>
               <widget class="GtkButton" id="btn_close_weblookup">
-                <property name="label" translatable="yes">gtk-close</property>
+                <property name="label">gtk-close</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -1802,7 +1802,7 @@ If you are translating from English to French then French would be your translat
   </widget>
   <widget class="GtkDialog" id="WebLookupAdd">
     <property name="border_width">5</property>
-    <property name="title" translatable="yes">Add URL - Virtaal</property>
+    <property name="title" translatable="yes">Add URL</property>
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
@@ -1912,7 +1912,7 @@ If you are translating from English to French then French would be your translat
             <property name="layout_style">end</property>
             <child>
               <widget class="GtkButton" id="btn_url_cancel">
-                <property name="label" translatable="yes">gtk-cancel</property>
+                <property name="label">gtk-cancel</property>
                 <property name="response_id">-6</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -1927,7 +1927,7 @@ If you are translating from English to French then French would be your translat
             </child>
             <child>
               <widget class="GtkButton" id="btn_url_ok">
-                <property name="label" translatable="yes">gtk-ok</property>
+                <property name="label">gtk-ok</property>
                 <property name="response_id">-5</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>

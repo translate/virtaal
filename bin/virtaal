@@ -60,6 +60,8 @@ import sys
 from optparse import OptionParser, make_option
 from os import path
 
+import translate.i18n
+
 from virtaal import __version__
 from virtaal.common import pan_app
 

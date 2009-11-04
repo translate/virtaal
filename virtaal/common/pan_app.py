@@ -104,23 +104,23 @@ class Settings:
     sections = ["translator", "general", "language", "placeable_state", "plugin_state", "undo"]
 
     translator =    {
-            "name": name(),
-            "email": "",
-            "team": "",
+        "name": name(),
+        "email": "",
+        "team": "",
     }
     general =       {
-            "lastdir": "",
-            "windowwidth": 796,
-            "windowheight": 544,
+        "lastdir": "",
+        "windowwidth": 796,
+        "windowheight": 544,
     }
     language =      {
-            "nplurals": 0,
-            "plural": None,
-            "recentlangs": "",
-            "sourcefont": defaultfont,
-            "sourcelang": "en",
-            "targetfont": defaultfont,
-            "targetlang": None,
+        "nplurals": 0,
+        "plural": None,
+        "recentlangs": "",
+        "sourcefont": defaultfont,
+        "sourcelang": "en",
+        "targetfont": defaultfont,
+        "targetlang": None,
     }
     placeable_state = {
         "altattrplaceable": "disabled",

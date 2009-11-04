@@ -23,7 +23,8 @@ import logging
 import pango
 from gtk import gdk
 from locale import strcoll
-from translate.storage import factory
+from translate.lang import factory as lang_factory
+from translate.storage import factory as store_factory
 
 from virtaal.views import BaseView, rendering
 
@@ -173,7 +174,7 @@ class FileSelectDialog:
         all_supported_filter = gtk.FileFilter()
         all_supported_filter.set_name(_("All Supported Files"))
         dlg.add_filter(all_supported_filter)
-        supported_files_dict = dict([ (_(name), (extension, mimetype)) for name, extension, mimetype in factory.supported_files() ])
+        supported_files_dict = dict([ (_(name), (extension, mimetype)) for name, extension, mimetype in store_factory.supported_files() ])
         supported_file_names = supported_files_dict.keys()
         supported_file_names.sort(cmp=strcoll)
         for name in supported_file_names:
@@ -188,7 +189,7 @@ class FileSelectDialog:
                 for extension in extensions:
                     new_filter.add_pattern("*." + extension)
                     all_supported_filter.add_pattern("*." + extension)
-                    for compress_extension in factory.decompressclass.keys():
+                    for compress_extension in store_factory.decompressclass.keys():
                         new_filter.add_pattern("*.%s.%s" % (extension, compress_extension))
                         all_supported_filter.add_pattern("*.%s.%s" % (extension, compress_extension))
             if mimetypes:
@@ -231,13 +232,12 @@ class FileSelectDialog:
 
         mainview = self.term_model.controller.main_controller.view
         currfiles = [row[self.COL_FILE] for row in self.lst_files]
-        from translate.storage import factory
         for filename in self.add_chooser.get_filenames():
             if filename in currfiles:
                 continue
             # Try and open filename as a translation store
             try:
-                store = factory.getobject(filename)
+                store = store_factory.getobject(filename)
                 currfiles.append(filename)
                 self.lst_files.append([filename, False])
             except Exception, exc:
@@ -313,7 +313,11 @@ class TermAddDialog:
         self._get_widgets()
 
     def _get_widgets(self):
-        widget_names = ('cmb_termfile', 'ent_source', 'ent_target', 'lbl_srclang', 'lbl_tgtlang', 'txt_comment')
+        widget_names = (
+            'btn_add_term', 'cmb_termfile', 'eb_add_term_errors', 'ent_source',
+            'ent_target', 'lbl_add_term_errors', 'lbl_srclang', 'lbl_tgtlang',
+            'txt_comment'
+        )
 
         for name in widget_names:
             setattr(self, name, self.gui.get_widget(name))
@@ -326,6 +330,11 @@ class TermAddDialog:
         self.cmb_termfile.set_model(self.lst_termfiles)
         self.cmb_termfile.pack_start(cellr)
         self.cmb_termfile.add_attribute(cellr, 'text', 0)
+
+        self.ent_source.connect('changed', self._on_entry_changed)
+        self.ent_target.connect('changed', self._on_entry_changed)
+
+        self.eb_add_term_errors.modify_bg(gtk.STATE_NORMAL, gdk.color_parse('#f88'))
 
 
     # METHODS #
@@ -370,6 +379,8 @@ class TermAddDialog:
 
         self.txt_comment.get_buffer().set_text('')
 
+        self.eb_add_term_errors.hide()
+        self.btn_add_term.props.sensitive = True
         self.lbl_srclang.set_text_with_mnemonic(_(u'_Source term — %(langname)s') % {'langname': self.lang_controller.source_lang.name})
         self.lbl_tgtlang.set_text_with_mnemonic(_(u'_Target term — %(langname)s') % {'langname': self.lang_controller.target_lang.name})
 
@@ -393,7 +404,8 @@ class TermAddDialog:
         if isinstance(parent, gtk.Widget):
             self.dialog.set_transient_for(parent)
 
-        self.dialog.show_all()
+        self.dialog.show()
+        self._on_entry_changed(None)
         self.ent_source.grab_focus()
         response = self.dialog.run()
         self.dialog.hide()
@@ -402,3 +414,31 @@ class TermAddDialog:
             return
 
         self.add_term_unit(self.ent_source.get_text(), self.ent_target.get_text())
+
+
+    # EVENT HANDLERS #
+    def _on_entry_changed(self, entry):
+        self.btn_add_term.props.sensitive = True
+        self.eb_add_term_errors.hide()
+
+        src_text = self.ent_source.get_text()
+        tgt_text = self.ent_target.get_text()
+
+        dup = self.term_model.get_duplicates(src_text, tgt_text)
+        if dup:
+            self.lbl_add_term_errors.set_text(_('Duplicate entry already exists!'))
+            self.eb_add_term_errors.show_all()
+            self.btn_add_term.props.sensitive = False
+            return
+
+        same_src_units = self.term_model.get_units_with_source(src_text)
+        if src_text and same_src_units:
+            lang = lang_factory.getlanguage(self.lang_controller.target_lang.code)
+            separator = lang.listseperator
+            translations = separator.join([_('<b>%s</b>') % (u.target) for u in same_src_units])
+            errormsg = _('Existing translations: %(translations)s') % {
+                'translations': translations
+            }
+            self.lbl_add_term_errors.set_markup(errormsg)
+            self.eb_add_term_errors.show_all()
+            return

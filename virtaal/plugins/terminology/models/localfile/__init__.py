@@ -68,6 +68,17 @@ class TerminologyModel(BaseTerminologyModel):
         if self.matcher in TerminologyPlaceable.matchers:
             TerminologyPlaceable.matchers.remove(self.matcher)
 
+    def get_duplicates(self, src_text, tgt_text):
+        base_src_text = src_text.strip()
+        base_tgt_text = tgt_text.strip()
+        units = []
+        for store in self.stores:
+            for unit in store.units:
+                if unit.source.strip() == base_src_text and \
+                        unit.target.strip() == base_tgt_text:
+                    return True
+        return False
+
     def get_extend_store(self):
         extendfile = self.config['extendfile']
         for store in self.stores:
@@ -80,6 +91,15 @@ class TerminologyModel(BaseTerminologyModel):
             if os.path.abspath(getattr(store, 'filename', '')) == os.path.abspath(filename):
                 return store
         return None
+
+    def get_units_with_source(self, src_text):
+        stripped_src_text = src_text.strip().lower()
+        units = []
+        for store in self.stores:
+            for unit in store.units:
+                if unit.source.strip().lower() == stripped_src_text:
+                    units.append(unit)
+        return units
 
     def load_config(self):
         super(TerminologyModel, self).load_config()

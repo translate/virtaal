@@ -36,6 +36,7 @@ class LookupModel(BaseLookupModel):
     """Look-up the selected string on the web."""
 
     __gtype_name__ = 'WebLookupModel'
+    #l10n: plugin name
     display_name = _('Web Look-up')
     description = _('Look-up the selected text on a web site')
 
@@ -186,7 +187,8 @@ class WebLookupConfigDialog(object):
 
         cell = gtk.CellRendererToggle()
         cell.set_radio(False)
-        col = gtk.TreeViewColumn(_('Quoted Queries'))
+        #l10n: Whether the selected text should be surrounded by "quotes"
+        col = gtk.TreeViewColumn(_('Quote Query'))
         col.pack_start(cell)
         col.add_attribute(cell, 'active', self.COL_QUOTE)
         self.tvw_urls.append_column(col)

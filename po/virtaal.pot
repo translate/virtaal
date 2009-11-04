@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.5.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-11-03 18:24+0200\n"
+"POT-Creation-Date: 2009-11-04 18:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -496,36 +496,38 @@ msgstr ""
 msgid "The file contains nothing to translate."
 msgstr ""
 
-#: ../virtaal/controllers/storecontroller.py:161
+#. l10n: The heading of statistics before updating to the new template
+#: ../virtaal/controllers/storecontroller.py:162
 msgid "Before:"
 msgstr ""
 
-#: ../virtaal/controllers/storecontroller.py:162
-msgid "After:"
-msgstr ""
-
-#: ../virtaal/controllers/storecontroller.py:163
-#, python-format
-msgid "Translated: %d"
-msgstr ""
-
+#. l10n: The heading of statistics after updating to the new template
 #: ../virtaal/controllers/storecontroller.py:164
-#, python-format
-msgid "Fuzzy: %d"
+msgid "After:"
 msgstr ""
 
 #: ../virtaal/controllers/storecontroller.py:165
 #, python-format
-msgid "Untranslated: %d"
+msgid "Translated: %d"
 msgstr ""
 
 #: ../virtaal/controllers/storecontroller.py:166
+#, python-format
+msgid "Fuzzy: %d"
+msgstr ""
+
+#: ../virtaal/controllers/storecontroller.py:167
+#, python-format
+msgid "Untranslated: %d"
+msgstr ""
+
+#: ../virtaal/controllers/storecontroller.py:168
 #, python-format
 msgid "Total: %d"
 msgstr ""
 
 #. l10n: this refers to updating a file to a new template (POT file)
-#: ../virtaal/controllers/storecontroller.py:184
+#: ../virtaal/controllers/storecontroller.py:186
 msgid "File Updated"
 msgstr ""
 
@@ -608,40 +610,43 @@ msgstr ""
 msgid "Look-up \"%(selection)s\""
 msgstr ""
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:39
+#. l10n: plugin name
+#: ../virtaal/plugins/lookup/models/weblookup.py:40
 msgid "Web Look-up"
 msgstr ""
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:40
+#: ../virtaal/plugins/lookup/models/weblookup.py:41
 msgid "Look-up the selected text on a web site"
 msgstr ""
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:44
-#: ../virtaal/plugins/tm/models/google_translate.py:70
+#. l10n: Try to keep this as short as possible. Feel free to transliterate.
+#: ../virtaal/plugins/lookup/models/weblookup.py:45
+#: ../virtaal/plugins/tm/models/google_translate.py:72
 msgid "Google"
 msgstr ""
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:49
+#: ../virtaal/plugins/lookup/models/weblookup.py:50
 msgid "Wikipedia"
 msgstr ""
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:54
+#: ../virtaal/plugins/lookup/models/weblookup.py:55
 #: ../virtaal/plugins/terminology/models/opentran.py:46
 #: ../virtaal/plugins/tm/models/opentran.py:32
 msgid "Open-Tran.eu"
 msgstr ""
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:170
+#: ../virtaal/plugins/lookup/models/weblookup.py:171
 #: ../virtaal/views/widgets/selectview.py:77
 msgid "Name"
 msgstr ""
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:179
+#: ../virtaal/plugins/lookup/models/weblookup.py:180
 msgid "URL"
 msgstr ""
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:189
-msgid "Quoted Queries"
+#. l10n: Whether the selected text should be surrounded by "quotes"
+#: ../virtaal/plugins/lookup/models/weblookup.py:191
+msgid "Quote Query"
 msgstr ""
 
 #: ../virtaal/plugins/migration.py:56
@@ -727,34 +732,34 @@ msgstr ""
 msgid "Local terminology files"
 msgstr ""
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:53
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:55
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:54
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:56
 msgid "Terminology _Files..."
 msgstr ""
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:61
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:63
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:62
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:64
 msgid "Add _Term..."
 msgstr ""
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:132
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:133
 msgid "File"
 msgstr ""
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:142
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:143
 msgid "Extendable"
 msgstr ""
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:167
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:168
 msgid "Add Files"
 msgstr ""
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:174
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:175
 #: ../virtaal/views/mainview.py:223
 msgid "All Supported Files"
 msgstr ""
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:200
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:201
 #: ../virtaal/views/mainview.py:249
 msgid "All Files"
 msgstr ""
@@ -771,14 +776,29 @@ msgstr ""
 msgid "Error opening file"
 msgstr ""
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:373
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:384
 #, python-format
 msgid "_Source term — %(langname)s"
 msgstr ""
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:374
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:385
 #, python-format
 msgid "_Target term — %(langname)s"
+msgstr ""
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:429
+msgid "Identical entry already exists."
+msgstr ""
+
+#. l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:439
+#, python-format
+msgid "<b>%s</b>"
+msgstr ""
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:440
+#, python-format
+msgid "Existing translations: %(translations)s"
 msgstr ""
 
 #: ../virtaal/plugins/terminology/models/opentran.py:47
@@ -814,11 +834,12 @@ msgstr ""
 msgid "This file"
 msgstr ""
 
-#: ../virtaal/plugins/tm/models/google_translate.py:35
+#. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
+#: ../virtaal/plugins/tm/models/google_translate.py:36
 msgid "Google Translate"
 msgstr ""
 
-#: ../virtaal/plugins/tm/models/google_translate.py:36
+#: ../virtaal/plugins/tm/models/google_translate.py:37
 msgid "Unreviewed machine translations from Google's translation service"
 msgstr ""
 
@@ -1161,6 +1182,18 @@ msgstr ""
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:25
 msgid "XML Localization Interchange File Format"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py:23
+msgid "Gettext PO file"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py:24
+msgid "Gettext MO file"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py:25
+msgid "Qt .qm file"
 msgstr ""
 
 #: ../bin/virtaal:70

@@ -1589,6 +1589,33 @@ If you are translating from English to French then French would be your translat
               </packing>
             </child>
             <child>
+              <widget class="GtkEventBox" id="eb_add_term_errors">
+                <property name="visible">True</property>
+                <child>
+                  <widget class="GtkLabel" id="lbl_add_term_errors">
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="xpad">2</property>
+                    <property name="ypad">1</property>
+                    <property name="label">Error: </property>
+                    <property name="use_markup">True</property>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkHSeparator" id="hseparator1">
+                <property name="visible">True</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="position">5</property>
+              </packing>
+            </child>
+            <child>
               <widget class="GtkLabel" id="label4">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
@@ -1597,7 +1624,7 @@ If you are translating from English to French then French would be your translat
                 <property name="mnemonic_widget">txt_comment</property>
               </widget>
               <packing>
-                <property name="position">4</property>
+                <property name="position">6</property>
               </packing>
             </child>
             <child>
@@ -1616,7 +1643,7 @@ If you are translating from English to French then French would be your translat
                 </child>
               </widget>
               <packing>
-                <property name="position">5</property>
+                <property name="position">7</property>
               </packing>
             </child>
             <child>
@@ -1645,7 +1672,7 @@ If you are translating from English to French then French would be your translat
                 </child>
               </widget>
               <packing>
-                <property name="position">6</property>
+                <property name="position">8</property>
               </packing>
             </child>
           </widget>
@@ -1673,7 +1700,7 @@ If you are translating from English to French then French would be your translat
               </packing>
             </child>
             <child>
-              <widget class="GtkButton" id="button1">
+              <widget class="GtkButton" id="btn_add_term">
                 <property name="label">gtk-add</property>
                 <property name="response_id">-5</property>
                 <property name="visible">True</property>

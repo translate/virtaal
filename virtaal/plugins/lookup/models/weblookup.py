@@ -221,11 +221,13 @@ class WebLookupConfigDialog(object):
     # SIGNAL HANDLERS #
     def _on_add_clicked(self, button):
         url = self.add_dialog.run()
+        if url is None:
+            return
         self.lst_urls.append((url['display_name'], url['url'], url['quoted'], url))
 
     def _on_remove_clicked(self, button):
         selected = self.tvw_urls.get_selection().get_selected()
-        if not selected:
+        if not selected or not selected[1]:
             return
         selected[0].remove(selected[1])
 

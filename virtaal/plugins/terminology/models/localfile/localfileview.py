@@ -426,7 +426,7 @@ class TermAddDialog:
 
         dup = self.term_model.get_duplicates(src_text, tgt_text)
         if dup:
-            self.lbl_add_term_errors.set_text(_('Duplicate entry already exists!'))
+            self.lbl_add_term_errors.set_text(_('Identical entry already exists.'))
             self.eb_add_term_errors.show_all()
             self.btn_add_term.props.sensitive = False
             return
@@ -435,6 +435,7 @@ class TermAddDialog:
         if src_text and same_src_units:
             lang = lang_factory.getlanguage(self.lang_controller.target_lang.code)
             separator = lang.listseperator
+            #l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
             translations = separator.join([_('<b>%s</b>') % (u.target) for u in same_src_units])
             errormsg = _('Existing translations: %(translations)s') % {
                 'translations': translations

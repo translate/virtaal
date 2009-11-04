@@ -32,6 +32,7 @@ class TMModel(BaseTMModel):
     """
 
     __gtype_name__ = 'GoogleTranslateTMModel'
+    #l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
     display_name = _('Google Translate')
     description = _("Unreviewed machine translations from Google's translation service")
 
@@ -67,6 +68,7 @@ class TMModel(BaseTMModel):
             tm_match.append({
                 'source': query_str,
                 'target': target_unescaped,
+                #l10n: Try to keep this as short as possible. Feel free to transliterate.
                 'tmsource': _('Google')
             })
             self.emit('match-found', query_str, tm_match)

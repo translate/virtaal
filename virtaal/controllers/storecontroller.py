@@ -158,7 +158,9 @@ class StoreController(BaseController):
         self.emit('store-loaded')
 
     def compare_stats(self, oldstats, newstats):
+        #l10n: The heading of statistics before updating to the new template
         before = _("Before:")
+        #l10n: The heading of statistics after updating to the new template
         after = _("After:")
         translated = _("Translated: %d")
         fuzzy = _("Fuzzy: %d")

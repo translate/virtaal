@@ -22,7 +22,7 @@ __all__ = ['check_dependencies', 'extra_tests', 'import_checks']
 
 
 # Modules to try and import:
-import_checks = ['translate', 'gtk', 'gtk.glade', 'lxml.etree', 'simplejson', 'pycurl', 'sqlite3', 'wsgiref']
+import_checks = ['translate', 'gtk', 'gtk.glade', 'lxml.etree', 'json', 'pycurl', 'sqlite3', 'wsgiref']
 
 
 #########################
@@ -48,6 +48,18 @@ def test_sqlite3_version():
         pass
     return False
 
+def test_json():
+    # We can work with simplejson or json (available since Python 2.6)
+    try:
+        try:
+            import json
+        except ImportError:
+            from simplejson import json
+        return True
+    except Exception:
+        pass
+    return False
+
 MIN_TRANSLATE_VERSION = (1, 4, 0)
 def test_translate_toolkit_version():
     try:
@@ -62,6 +74,7 @@ extra_tests = {
     'gtk': test_gtk_version,
     'sqlite3': test_sqlite3_version,
     'translate': test_translate_toolkit_version,
+    'json': test_json,
 }
 
 

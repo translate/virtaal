@@ -27,9 +27,8 @@ if [ $lang == "de_DE" ]; then
 	podebug --rewrite=xxx -f "" --progress=none $litedir/iso_3166/$lang.en.po $litedir/iso_3166/$lang.po
 	rm $litedir/iso_3166/$lang.*.po
 fi
-for po in $(ls *.po | egrep -v lite)
-do
-	language=$(basename $po .po)
+
+	language=$lang
 	modir=mo/$language/LC_MESSAGES
 
 	gtklite=$litedir/gtk20/$language.po
@@ -44,7 +43,7 @@ do
 	iso3166lite=$litedir/iso_3166/$language.po
 	iso3166=/usr/share/locale/$language/LC_MESSAGES/iso_3166.mo
 	mkdir -p $modir
-	msgfmt -o $modir/virtaal.mo $po
+	msgfmt -o $modir/virtaal.mo $lang.po
         if [ -f $gtklite ]; then
 		msgfmt -o $modir/gtk20.mo $gtklite
 	elif [ -f $gtkreal ]; then
@@ -65,7 +64,6 @@ do
 	elif [ -f $iso3166 ]; then
 		cp $iso3166 $modir
 	fi
-done
 
 # This assumes that the following executable is in your PATH
 virtaal

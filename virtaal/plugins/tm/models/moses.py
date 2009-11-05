@@ -51,8 +51,8 @@ class TMModel(BaseTMModel):
         except ImportError, ie:
             raise Exception('Could not import xmlrpclib: %s' % (ie))
 
-        for url_pair, server in self.config.iteritems():
-            pair = url_pair.split("->")
+        for lang_pair, server in self.config.iteritems():
+            pair = lang_pair.split("->")
             if self.proxy.get(pair[0]) is None:
                 self.proxy[pair[0]] = {}
             self.proxy[pair[0]].update({pair[1]: xmlrpclib.ServerProxy(server)})

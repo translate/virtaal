@@ -18,7 +18,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import simplejson as json
+try:
+    import json #available since Python 2.6
+except ImportError:
+    import simplejson as json #API compatible with the json module
 
 from virtaal.support.httpclient import HTTPClient, RESTRequest
 

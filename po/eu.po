@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-11-03 18:24+0200\n"
-"PO-Revision-Date: 2009-11-03 18:35+0200\n"
+"POT-Creation-Date: 2009-11-04 18:02+0200\n"
+"PO-Revision-Date: 2009-11-05 16:51+0200\n"
 "Last-Translator: Julen Ruiz Aizpuru <julenx@gmail.com>\n"
 "Language-Team: librezale@librezale.org\n"
 "Language: eu\n"
@@ -531,36 +531,38 @@ msgstr "Elementu berezia \"alt\" atributuentzat (HTMLn bezala)"
 msgid "The file contains nothing to translate."
 msgstr "Fitxategiak ez du ezer itzultzeko."
 
-#: ../virtaal/controllers/storecontroller.py:161
+#. l10n: The heading of statistics before updating to the new template
+#: ../virtaal/controllers/storecontroller.py:162
 msgid "Before:"
 msgstr "Aurretik:"
 
-#: ../virtaal/controllers/storecontroller.py:162
+#. l10n: The heading of statistics after updating to the new template
+#: ../virtaal/controllers/storecontroller.py:164
 msgid "After:"
 msgstr "Ondoren:"
 
-#: ../virtaal/controllers/storecontroller.py:163
+#: ../virtaal/controllers/storecontroller.py:165
 #, python-format
 msgid "Translated: %d"
 msgstr "Itzulita: %d"
 
-#: ../virtaal/controllers/storecontroller.py:164
+#: ../virtaal/controllers/storecontroller.py:166
 #, python-format
 msgid "Fuzzy: %d"
 msgstr "Zalantzan: %d"
 
-#: ../virtaal/controllers/storecontroller.py:165
+#: ../virtaal/controllers/storecontroller.py:167
 #, python-format
 msgid "Untranslated: %d"
 msgstr "Itzuli gabe: %d"
 
-#: ../virtaal/controllers/storecontroller.py:166
+#: ../virtaal/controllers/storecontroller.py:168
 #, python-format
 msgid "Total: %d"
 msgstr "Guztira: %d"
 
 #. l10n: this refers to updating a file to a new template (POT file)
-#: ../virtaal/controllers/storecontroller.py:184
+#: ../virtaal/controllers/storecontroller.py:186
 msgid "File Updated"
 msgstr "Fitxategia eguneratuta"
 
@@ -643,41 +645,44 @@ msgstr "Hautatu bilaketak egiteko erabili behar diren zerbitzuak"
 msgid "Look-up \"%(selection)s\""
 msgstr "Bilatu \"%(selection)s\""
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:39
+#. l10n: plugin name
+#: ../virtaal/plugins/lookup/models/weblookup.py:40
 msgid "Web Look-up"
 msgstr "Web bilaketa"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:40
+#: ../virtaal/plugins/lookup/models/weblookup.py:41
 msgid "Look-up the selected text on a web site"
 msgstr "Bilatu hautatutako testua webgune batean"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:44
-#: ../virtaal/plugins/tm/models/google_translate.py:70
+#. l10n: Try to keep this as short as possible. Feel free to transliterate.
+#: ../virtaal/plugins/lookup/models/weblookup.py:45
+#: ../virtaal/plugins/tm/models/google_translate.py:72
 msgid "Google"
 msgstr "Google"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:49
+#: ../virtaal/plugins/lookup/models/weblookup.py:50
 msgid "Wikipedia"
 msgstr "Wikipedia"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:54
+#: ../virtaal/plugins/lookup/models/weblookup.py:55
 #: ../virtaal/plugins/terminology/models/opentran.py:46
 #: ../virtaal/plugins/tm/models/opentran.py:32
 msgid "Open-Tran.eu"
 msgstr "Open-Tran.eu"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:170
+#: ../virtaal/plugins/lookup/models/weblookup.py:171
 #: ../virtaal/views/widgets/selectview.py:77
 msgid "Name"
 msgstr "Izena"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:179
+#: ../virtaal/plugins/lookup/models/weblookup.py:180
 msgid "URL"
 msgstr "URLa"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:189
-msgid "Quoted Queries"
-msgstr "Kakotxen arteko bilaketak"
+#. l10n: Whether the selected text should be surrounded by "quotes"
+#: ../virtaal/plugins/lookup/models/weblookup.py:191
+msgid "Quote Query"
+msgstr "Bildu bilaketa kakotxen artean"
 
 #: ../virtaal/plugins/migration.py:56
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
@@ -764,34 +769,34 @@ msgstr "Fitxategi lokalak"
 msgid "Local terminology files"
 msgstr "Terminologia-fitxategi lokalak"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:53
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:55
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:54
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:56
 msgid "Terminology _Files..."
 msgstr "Terminologia-_fitxategiak..."
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:61
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:63
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:62
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:64
 msgid "Add _Term..."
 msgstr "Gehitu _terminoa..."
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:132
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:133
 msgid "File"
 msgstr "Fitxategia"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:142
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:143
 msgid "Extendable"
 msgstr "Hedagarria"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:167
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:168
 msgid "Add Files"
 msgstr "Gehitu fitxategiak"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:174
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:175
 #: ../virtaal/views/mainview.py:223
 msgid "All Supported Files"
 msgstr "Onarturiko fitxategi guztiak"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:200
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:201
 #: ../virtaal/views/mainview.py:249
 msgid "All Files"
 msgstr "Fitxategi guztiak"
@@ -811,15 +816,30 @@ msgstr ""
 msgid "Error opening file"
 msgstr "Errorea fitxategia irekitzean"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:373
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:384
 #, python-format
 msgid "_Source term — %(langname)s"
 msgstr "_Iturburu-terminoa — %(langname)s"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:374
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:385
 #, python-format
 msgid "_Target term — %(langname)s"
 msgstr "_Helburu-terminoa — %(langname)s"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:429
+msgid "Identical entry already exists."
+msgstr "Sarrera bera lehendik badago."
+
+#. l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:439
+#, python-format
+msgid "<b>%s</b>"
+msgstr "<b>%s</b>"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:440
+#, python-format
+msgid "Existing translations: %(translations)s"
+msgstr "Dauden itzulpenak: %(translations)s"
 
 #: ../virtaal/plugins/terminology/models/opentran.py:47
 msgid "Terms from Open-Tran.eu"
@@ -854,11 +874,12 @@ msgstr "Unean irekitako fitxategian itzulita dauden unitateak"
 msgid "This file"
 msgstr "Fitxategi hau"
 
-#: ../virtaal/plugins/tm/models/google_translate.py:35
+#. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
+#: ../virtaal/plugins/tm/models/google_translate.py:36
 msgid "Google Translate"
 msgstr "Google Translate"
 
-#: ../virtaal/plugins/tm/models/google_translate.py:36
+#: ../virtaal/plugins/tm/models/google_translate.py:37
 msgid "Unreviewed machine translations from Google's translation service"
 msgstr "Googleren itzulpen zerbitzuetako berrikusi gabeko itzulpen automatikoak"
 
@@ -1209,6 +1230,18 @@ msgstr "XLIFF itzulpen-fitxategia"
 msgid "XML Localization Interchange File Format"
 msgstr "Lokalizazioak trukatzeko XML fitxategi-formatua"
 
+#: ../devsupport/tmp_strings.py:23
+msgid "Gettext PO file"
+msgstr "Gettext PO fitxategia"
+
+#: ../devsupport/tmp_strings.py:24
+msgid "Gettext MO file"
+msgstr "Gettext MO fitxategia"
+
+#: ../devsupport/tmp_strings.py:25
+msgid "Qt .qm file"
+msgstr "Qt .qm fitxategia"
+
 #: ../bin/virtaal:70
 #, c-format
 msgid "%prog [options] [translation_file]"
@@ -1333,6 +1366,9 @@ msgstr "%s aukerak ez du baliorik hartzen"
 #: ../devsupport/optparse.py:1612
 msgid "Options"
 msgstr "Aukerak"
+
+#~ msgid "Quoted Queries"
+#~ msgstr "Kakotxen arteko bilaketak"
 
 #~ msgid "Local file"
 #~ msgstr "Fitxategi lokala"

@@ -66,6 +66,10 @@ fi
 	fi
 
 # This assumes that the following executable is in your PATH
+# Always show --help text for review:
+echo
+virtaal --help
+echo
 virtaal
 rm -f $potfile
 rm -rf mo de_DE.po $litedir/*/de_DE.po

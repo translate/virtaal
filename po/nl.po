@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.4\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-11-04 18:02+0200\n"
-"PO-Revision-Date: 2009-11-05 15:39+0800\n"
+"PO-Revision-Date: 2009-11-05 19:42+0800\n"
 "Last-Translator: Tom Verlinden <verlinden [DOT] tom [AT] gmail [DOT] com>\n"
 "Language-Team: TOMTT (Tom's One-Man Translation Team)\n"
 "Language: nl\n"
@@ -695,7 +695,7 @@ msgstr "URL"
 #. l10n: Whether the selected text should be surrounded by "quotes"
 #: ../virtaal/plugins/lookup/models/weblookup.py:191
 msgid "Quote Query"
-msgstr "Zoekterm tussen aanhalingstekens zetten"
+msgstr "Met aanhalingstekens"
 
 #: ../virtaal/plugins/migration.py:56
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."

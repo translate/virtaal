@@ -54,7 +54,7 @@ def test_json():
         try:
             import json
         except ImportError:
-            from simplejson import json
+            import simplejson as json
         return True
     except Exception:
         pass

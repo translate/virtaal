@@ -52,9 +52,9 @@ def test_json():
     # We can work with simplejson or json (available since Python 2.6)
     try:
         try:
-            import json
-        except ImportError:
             import simplejson as json
+        except ImportError:
+            import json
         return True
     except Exception:
         pass

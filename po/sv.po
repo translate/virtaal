@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-11-04 18:02+0200\n"
-"PO-Revision-Date: 2009-11-05 23:37+0100\n"
+"PO-Revision-Date: 2009-11-06 15:59+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -111,7 +111,7 @@ msgstr "Si_da upp"
 #. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
 #: ../share/virtaal/virtaal.glade.h:24
 msgid "P_revious Placeable"
-msgstr "F_öregående placerbara"
+msgstr "Fö_regående placerbara"
 
 #: ../share/virtaal/virtaal.glade.h:25
 msgid "Placeables"
@@ -571,7 +571,7 @@ msgstr "Ersätt"
 #. l10n: Check box
 #: ../virtaal/modes/searchmode.py:84
 msgid "Replace _All"
-msgstr "Ersätt _alla"
+msgstr "Ersätt a_lla"
 
 #: ../virtaal/plugins/autocompletor.py:216
 msgid "Automatically complete long words while you type"
@@ -842,7 +842,7 @@ msgstr "Denna fil"
 #. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
 #: ../virtaal/plugins/tm/models/google_translate.py:36
 msgid "Google Translate"
-msgstr "Google Translate"
+msgstr "Google Översätt"
 
 #: ../virtaal/plugins/tm/models/google_translate.py:37
 msgid "Unreviewed machine translations from Google's translation service"
@@ -1010,7 +1010,7 @@ msgstr "Ange pluralisekvationen att använda"
 #. between units.
 #: ../virtaal/views/modeview.py:62
 msgid "N_avigation:"
-msgstr "_Navigering:"
+msgstr "Navi_gering:"
 
 #: ../virtaal/views/unitview.py:603
 msgid "F_uzzy"
@@ -1158,7 +1158,7 @@ msgstr "TMX"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:17
 msgid "TMX Translation Memory"
-msgstr "TMX Translation Memory"
+msgstr "Översättningsminnet TMX"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:18
 msgid "Tcl Translation File"
@@ -1178,7 +1178,7 @@ msgstr "Translation Memory eXchange"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:22
 msgid "Wordfast Translation Memory"
-msgstr "Wordfast Translation Memory"
+msgstr "Översättningsminnet Wordfast"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:23
 msgid "XLIFF"

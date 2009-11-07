@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.4.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-07-15 18:41+0200\n"
-"PO-Revision-Date: 2009-08-10 09:36+0400\n"
+"POT-Creation-Date: 2009-11-04 18:02+0200\n"
+"PO-Revision-Date: 2009-11-07 09:53+0400\n"
 "Last-Translator: Rail Aliev <rail@openoffice.org>\n"
 "Language-Team: Mozilla Türkiye\n"
 "Language: tr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Virtaal 0.4.0-rc2\n"
+"X-Generator: Virtaal 0.4.1\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 msgid ""
@@ -29,7 +29,7 @@ msgid "Translation Tool"
 msgstr "Çeviri aracı"
 
 #: ../share/applications/virtaal.desktop.in.h:3
-#: ../share/virtaal/virtaal.glade.h:45
+#: ../share/virtaal/virtaal.glade.h:49
 msgid "Virtaal"
 msgstr "Virtaal"
 
@@ -42,79 +42,87 @@ msgid "<b>Language Information</b>"
 msgstr "<b>Dil bilgileri</b>"
 
 #: ../share/virtaal/virtaal.glade.h:3
+msgid "<b>Options</b>"
+msgstr "<b>Seçenekler</b>"
+
+#: ../share/virtaal/virtaal.glade.h:4
 msgid "<b>Original</b>"
 msgstr "<b>Özgün</b>"
 
-#: ../share/virtaal/virtaal.glade.h:4
+#: ../share/virtaal/virtaal.glade.h:5
 msgid "<b>Translation</b>"
 msgstr "<b>Çeviri</b>"
 
-#: ../share/virtaal/virtaal.glade.h:5
+#: ../share/virtaal/virtaal.glade.h:6
 msgid "<b>Translator Information</b>"
 msgstr "<b>Çevirmen bilgileri</b>"
 
-#: ../share/virtaal/virtaal.glade.h:6
+#: ../share/virtaal/virtaal.glade.h:7
 msgid "Add Missing Language"
 msgstr "Eksik dil ekle"
 
-#: ../share/virtaal/virtaal.glade.h:7
+#: ../share/virtaal/virtaal.glade.h:8
 msgid "Add Term"
 msgstr "Terim ekle"
 
-#. l10n: This label refers to comments about a new term that is added
 #: ../share/virtaal/virtaal.glade.h:9
+msgid "Add URL"
+msgstr "URL Ekle"
+
+#. l10n: This label refers to comments about a new term that is added
+#: ../share/virtaal/virtaal.glade.h:11
 msgid "C_omments"
 msgstr "Y_orumlar"
 
-#: ../share/virtaal/virtaal.glade.h:10
+#: ../share/virtaal/virtaal.glade.h:12
 msgid ""
 "Depending on the translation task, the plural information might be optional."
 msgstr "Çoğul hal bilgileri çeviri tipine bağlı olarak seçimli olabilir."
 
-#: ../share/virtaal/virtaal.glade.h:11
+#: ../share/virtaal/virtaal.glade.h:13
 msgid "E-mail address:"
 msgstr "E-posta adresi:"
 
 #. l10n: This tab label refers to the general preferences
-#: ../share/virtaal/virtaal.glade.h:13
+#: ../share/virtaal/virtaal.glade.h:15
 msgid "General"
 msgstr "Genel"
 
-#: ../share/virtaal/virtaal.glade.h:14
+#: ../share/virtaal/virtaal.glade.h:16
 msgid "ISO code:"
 msgstr "ISO kodu:"
 
-#: ../share/virtaal/virtaal.glade.h:15
+#: ../share/virtaal/virtaal.glade.h:17
 msgid "Language name:"
 msgstr "Dil:"
 
 #. l10n: This label is for the name of the translator
-#: ../share/virtaal/virtaal.glade.h:17
+#: ../share/virtaal/virtaal.glade.h:19
 msgid "Name:"
 msgstr "Dil adı:"
 
-#: ../share/virtaal/virtaal.glade.h:18
+#: ../share/virtaal/virtaal.glade.h:20
 msgid "New Language Pair"
 msgstr "Yeni dil ikilisi"
 
-#: ../share/virtaal/virtaal.glade.h:19
+#: ../share/virtaal/virtaal.glade.h:21
 msgid "Number of plurals:"
 msgstr "Çoğul hal sayısı:"
 
-#: ../share/virtaal/virtaal.glade.h:20
+#: ../share/virtaal/virtaal.glade.h:22
 msgid "P_age Up"
 msgstr "S_ayfa yukarı"
 
 #. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
-#: ../share/virtaal/virtaal.glade.h:22
+#: ../share/virtaal/virtaal.glade.h:24
 msgid "P_revious Placeable"
 msgstr "Önceki ye_rleştirilebilen"
 
-#: ../share/virtaal/virtaal.glade.h:23
+#: ../share/virtaal/virtaal.glade.h:25
 msgid "Placeables"
 msgstr "Yerleştirilebilenler"
 
-#: ../share/virtaal/virtaal.glade.h:24
+#: ../share/virtaal/virtaal.glade.h:26
 msgid ""
 "Placeables are special parts of the text that can be automatically "
 "highlighted and easily inserted into the translation."
@@ -122,39 +130,43 @@ msgstr ""
 "Yerleştirilebilenler, metnin özel parçaları olup otomatik olarak "
 "vurgulanabilir ve çeviriye eklenebilir."
 
-#: ../share/virtaal/virtaal.glade.h:25
+#: ../share/virtaal/virtaal.glade.h:27
 msgid "Plug-ins"
 msgstr "Eklentiler"
 
-#: ../share/virtaal/virtaal.glade.h:26
+#: ../share/virtaal/virtaal.glade.h:28
 msgid "Plural expression:"
 msgstr "Çoğul ifade:"
 
-#: ../share/virtaal/virtaal.glade.h:27
+#: ../share/virtaal/virtaal.glade.h:29
+msgid "Put queries in quotes"
+msgstr "Sorgularda tırnak işareti kullan"
+
+#: ../share/virtaal/virtaal.glade.h:30
 msgid "Report a _Bug"
 msgstr "Hatayı _bildir"
 
-#: ../share/virtaal/virtaal.glade.h:28
+#: ../share/virtaal/virtaal.glade.h:31
 msgid "Source text:"
 msgstr "Kaynak metin:"
 
-#: ../share/virtaal/virtaal.glade.h:29
+#: ../share/virtaal/virtaal.glade.h:32
 msgid "Target text:"
 msgstr "Hedef metin:"
 
-#: ../share/virtaal/virtaal.glade.h:30
+#: ../share/virtaal/virtaal.glade.h:33
 msgid "Team:"
 msgstr "Takım:"
 
-#: ../share/virtaal/virtaal.glade.h:31
+#: ../share/virtaal/virtaal.glade.h:34
 msgid "Terminology Files"
 msgstr "Terminoloji dosyaları"
 
-#: ../share/virtaal/virtaal.glade.h:32
+#: ../share/virtaal/virtaal.glade.h:35
 msgid "Terminology _file:"
 msgstr "Terminoloji _dosyası:"
 
-#: ../share/virtaal/virtaal.glade.h:33
+#: ../share/virtaal/virtaal.glade.h:36
 msgid ""
 "The <b>Original</b> is the language from which you are translating, also "
 "called the source language.\n"
@@ -168,7 +180,7 @@ msgstr ""
 "Örneğin Türkçeden Uygurcaya çeviri yapıyorsanız, Türkçe sizin özgün diliniz "
 "olacaktır."
 
-#: ../share/virtaal/virtaal.glade.h:36
+#: ../share/virtaal/virtaal.glade.h:39
 msgid ""
 "The <b>Translation</b> is the language into which you are translating, also "
 "called the target language.\n"
@@ -181,15 +193,15 @@ msgstr ""
 "Örneğin Türkçeden Uygurcaya çeviri yapıyorsanız, Uygurca dili hedef dili "
 "olacaktır."
 
-#: ../share/virtaal/virtaal.glade.h:39
+#: ../share/virtaal/virtaal.glade.h:42
 msgid "The e-mail address stored in the file header"
 msgstr "Dosya başlığında kaydedilen e-posta adresi"
 
-#: ../share/virtaal/virtaal.glade.h:40
+#: ../share/virtaal/virtaal.glade.h:43
 msgid "The name stored in the file header"
 msgstr "Dosya başlığında kaydedilen isim"
 
-#: ../share/virtaal/virtaal.glade.h:41
+#: ../share/virtaal/virtaal.glade.h:44
 msgid ""
 "The team information stored in the file header. This can be an e-mail "
 "address or a URL, for example."
@@ -197,71 +209,79 @@ msgstr ""
 "Dosya başlığında kaydedilen takım bilgisi. E-posta adresi veya URL olabilir."
 
 #. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
-#: ../share/virtaal/virtaal.glade.h:43
+#: ../share/virtaal/virtaal.glade.h:46
 msgid "Transfer From Source"
 msgstr "Kaynaktan aktar"
 
-#: ../share/virtaal/virtaal.glade.h:44
+#: ../share/virtaal/virtaal.glade.h:47
+msgid "URL:"
+msgstr "URL:"
+
+#: ../share/virtaal/virtaal.glade.h:48
 msgid "Use _Default Fonts"
 msgstr "Öntanımlı _yazı tipini kullan"
 
-#: ../share/virtaal/virtaal.glade.h:46
+#: ../share/virtaal/virtaal.glade.h:50
 msgid "Virtaal Preferences"
 msgstr "Virtaal tercihleri"
 
-#: ../share/virtaal/virtaal.glade.h:47
+#: ../share/virtaal/virtaal.glade.h:51
+msgid "Web Look-ups"
+msgstr "Web sorguları"
+
+#: ../share/virtaal/virtaal.glade.h:52
 msgid "_Add Missing Language..."
 msgstr "_Eksik dil ekle..."
 
-#: ../share/virtaal/virtaal.glade.h:48
+#: ../share/virtaal/virtaal.glade.h:53
 msgid "_Edit"
 msgstr "Dü_zenle"
 
-#: ../share/virtaal/virtaal.glade.h:49
+#: ../share/virtaal/virtaal.glade.h:54
 msgid "_File"
 msgstr "_Dosya"
 
-#: ../share/virtaal/virtaal.glade.h:50
+#: ../share/virtaal/virtaal.glade.h:55
 msgid "_Full Screen"
 msgstr "_Tam ekran"
 
-#: ../share/virtaal/virtaal.glade.h:51
+#: ../share/virtaal/virtaal.glade.h:56
 msgid "_Help"
 msgstr "_Yardım"
 
-#: ../share/virtaal/virtaal.glade.h:52
+#: ../share/virtaal/virtaal.glade.h:57
 msgid "_Localization Guide"
 msgstr "Y_erelleştirme rehberi"
 
-#: ../share/virtaal/virtaal.glade.h:53
+#: ../share/virtaal/virtaal.glade.h:58
 msgid "_Navigation"
 msgstr "_Gezinme"
 
-#: ../share/virtaal/virtaal.glade.h:54
+#: ../share/virtaal/virtaal.glade.h:59
 msgid "_Next Placeable"
 msgstr "_Sonraki yerleştirilebilen"
 
-#: ../share/virtaal/virtaal.glade.h:55
+#: ../share/virtaal/virtaal.glade.h:60
 msgid "_Online Help"
 msgstr "Çe_vrimiçi yardım"
 
-#: ../share/virtaal/virtaal.glade.h:56
+#: ../share/virtaal/virtaal.glade.h:61
 msgid "_Page Down"
 msgstr "Sayfa _aşağı"
 
-#: ../share/virtaal/virtaal.glade.h:57
+#: ../share/virtaal/virtaal.glade.h:62
 msgid "_Recent Files"
 msgstr "So_n dosyalar"
 
-#: ../share/virtaal/virtaal.glade.h:58
+#: ../share/virtaal/virtaal.glade.h:63
 msgid "_Tutorial"
 msgstr "_Kılavuz"
 
-#: ../share/virtaal/virtaal.glade.h:59
+#: ../share/virtaal/virtaal.glade.h:64
 msgid "_Update to Template"
 msgstr "Şa_blondan güncelle"
 
-#: ../share/virtaal/virtaal.glade.h:60
+#: ../share/virtaal/virtaal.glade.h:65
 msgid "_View"
 msgstr "_Görünüm"
 
@@ -373,81 +393,81 @@ msgstr ""
 "Dosyayı son kaydedilen dosyadan yüklenip tüm değişiklikler gözardı edilsin "
 "mi?"
 
-#: ../virtaal/controllers/placeablescontroller.py:81
-msgid "\"alt\" Attributes"
-msgstr "\"alt\" öznitelikler"
-
-#: ../virtaal/controllers/placeablescontroller.py:82
-msgid "Placeable for \"alt\" attributes (as found in HTML)"
-msgstr "\"alt\" öznitelikleri için yerleştirilebilen (HTML'de olduğu gibi)"
-
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase
-#: ../virtaal/controllers/placeablescontroller.py:86
+#: ../virtaal/controllers/placeablescontroller.py:82
 msgid "CamelCase"
 msgstr "CamelCase"
 
-#: ../virtaal/controllers/placeablescontroller.py:87
+#: ../virtaal/controllers/placeablescontroller.py:83
 msgid ""
 "Words with internal capitalisation, such as some brand names and WikiWords"
 msgstr ""
 "Bazı marka isimleri ve WikiWords gibi içinde büyük harf kullanan kelimeler"
 
-#: ../virtaal/controllers/placeablescontroller.py:90
+#: ../virtaal/controllers/placeablescontroller.py:86
 msgid "Capitals"
 msgstr "Büyük harfler"
 
 #. l10n: this refers to "UPPERCASE" / "CAPITAL" letters
-#: ../virtaal/controllers/placeablescontroller.py:92
+#: ../virtaal/controllers/placeablescontroller.py:88
 msgid "Words containing uppercase letters only"
 msgstr "Sadece büyük harf içeren kelimeler"
 
-#: ../virtaal/controllers/placeablescontroller.py:95
+#: ../virtaal/controllers/placeablescontroller.py:91
 msgid "Command Line Options"
 msgstr "Komut satırı seçenekleri"
 
-#: ../virtaal/controllers/placeablescontroller.py:96
+#: ../virtaal/controllers/placeablescontroller.py:92
 msgid "Application command line options, such as --help, -h and -I"
 msgstr "Uygulama komut satırı seçenekleri, örneğin --help, -h ve -I gibi"
 
-#: ../virtaal/controllers/placeablescontroller.py:99
+#: ../virtaal/controllers/placeablescontroller.py:95
 msgid "E-mail"
 msgstr "E-posta"
 
-#: ../virtaal/controllers/placeablescontroller.py:100
+#: ../virtaal/controllers/placeablescontroller.py:96
 msgid "E-mail addresses"
 msgstr "E-posta adresleri"
 
-#: ../virtaal/controllers/placeablescontroller.py:103
+#: ../virtaal/controllers/placeablescontroller.py:99
 msgid "File Names"
 msgstr "Dosya isimleri"
 
-#: ../virtaal/controllers/placeablescontroller.py:104
+#: ../virtaal/controllers/placeablescontroller.py:100
 msgid "Paths referring to file locations"
 msgstr "Dosya konumu ile ilgili yollar"
 
-#: ../virtaal/controllers/placeablescontroller.py:107
+#: ../virtaal/controllers/placeablescontroller.py:103
 msgid "Placeholders (printf)"
 msgstr "Yer tutucular (printf)"
 
-#: ../virtaal/controllers/placeablescontroller.py:108
+#: ../virtaal/controllers/placeablescontroller.py:104
 msgid "Placeholders used in \"printf\" strings"
 msgstr "\"printf\" iletilerinde kullanılan yer tutucuları"
 
-#: ../virtaal/controllers/placeablescontroller.py:111
+#: ../virtaal/controllers/placeablescontroller.py:107
 msgid "Placeholders (Python)"
 msgstr "Yer tutucuları (Python)"
 
-#: ../virtaal/controllers/placeablescontroller.py:112
+#: ../virtaal/controllers/placeablescontroller.py:108
 msgid "Placeholders in Python strings"
 msgstr "Python iletilerinde kullanılan yer tutucuları"
 
-#: ../virtaal/controllers/placeablescontroller.py:115
+#: ../virtaal/controllers/placeablescontroller.py:111
 msgid "Placeholders (Java)"
 msgstr "Yer tutucuları (Java)"
 
-#: ../virtaal/controllers/placeablescontroller.py:116
+#: ../virtaal/controllers/placeablescontroller.py:112
 msgid "Placeholders in Java strings"
 msgstr "Java iletilerinde kullanılan yer tutucuları"
+
+#: ../virtaal/controllers/placeablescontroller.py:115
+msgid "Placeholders (Qt)"
+msgstr "Yer tutucuları (Qt)"
+
+#: ../virtaal/controllers/placeablescontroller.py:116
+msgid "Placeholders in Qt strings"
+msgstr "Qt iletilerinde kullanılan yer tutucuları"
 
 #: ../virtaal/controllers/placeablescontroller.py:119
 msgid "Numbers"
@@ -491,17 +511,60 @@ msgstr "XML Etiketleri"
 msgid "XML tags, such as <b> and </i>"
 msgstr "<b> ve </i> gibi XML etiketleri"
 
-#: ../virtaal/controllers/placeablescontroller.py:148
+#: ../virtaal/controllers/placeablescontroller.py:152
 msgid "Spaces"
 msgstr "Boşluklar"
 
-#: ../virtaal/controllers/placeablescontroller.py:149
+#: ../virtaal/controllers/placeablescontroller.py:153
 msgid "Double spaces and spaces in unexpected positions"
 msgstr "Beklenmedik yerlerde çift boşluk ve boşluk"
+
+#: ../virtaal/controllers/placeablescontroller.py:154
+msgid "\"alt\" Attributes"
+msgstr "\"alt\" öznitelikler"
+
+#: ../virtaal/controllers/placeablescontroller.py:155
+msgid "Placeable for \"alt\" attributes (as found in HTML)"
+msgstr "\"alt\" öznitelikleri için yerleştirilebilen (HTML'de olduğu gibi)"
 
 #: ../virtaal/controllers/storecontroller.py:114
 msgid "The file contains nothing to translate."
 msgstr "Dosya çevrilecek bir şey içermiyor."
+
+#. l10n: The heading of statistics before updating to the new template
+#: ../virtaal/controllers/storecontroller.py:162
+msgid "Before:"
+msgstr "Önce:"
+
+#. l10n: The heading of statistics after updating to the new template
+#: ../virtaal/controllers/storecontroller.py:164
+msgid "After:"
+msgstr "Sonra:"
+
+#: ../virtaal/controllers/storecontroller.py:165
+#, python-format
+msgid "Translated: %d"
+msgstr "Çevrilmiş: %d"
+
+#: ../virtaal/controllers/storecontroller.py:166
+#, python-format
+msgid "Fuzzy: %d"
+msgstr "Bulanık: %d"
+
+#: ../virtaal/controllers/storecontroller.py:167
+#, python-format
+msgid "Untranslated: %d"
+msgstr "Çevrilmemiş: %d"
+
+#: ../virtaal/controllers/storecontroller.py:168
+#, python-format
+msgid "Total: %d"
+msgstr "Toplam: %d"
+
+#. l10n: this refers to updating a file to a new template (POT file)
+#: ../virtaal/controllers/storecontroller.py:186
+msgid "File Updated"
+msgstr "Dosya güncellendi"
 
 #: ../virtaal/modes/defaultmode.py:28
 msgid "All"
@@ -543,21 +606,83 @@ msgstr "Değiştir"
 msgid "Replace _All"
 msgstr "_Tümünü değiştir"
 
-#: ../virtaal/plugins/autocompletor.py:218
+#: ../virtaal/plugins/autocompletor.py:216
 msgid "Automatically complete long words while you type"
 msgstr "Uzun kelimeleri otomatik olarak tamamla"
 
-#: ../virtaal/plugins/autocompletor.py:219
+#: ../virtaal/plugins/autocompletor.py:217
 msgid "AutoCompletor"
 msgstr "Otomatik tamamlayıcı"
 
-#: ../virtaal/plugins/autocorrector.py:258
+#: ../virtaal/plugins/autocorrector.py:262
 msgid "Automatically correct text while you type"
 msgstr "Metni otomatik olarak düzelt"
 
-#: ../virtaal/plugins/autocorrector.py:259
+#: ../virtaal/plugins/autocorrector.py:263
 msgid "AutoCorrector"
 msgstr "Otomatik düzeltici"
+
+#: ../virtaal/plugins/lookup/__init__.py:29
+msgid "Perform look-ups on selected text"
+msgstr "Seçilmiş metin için sorgulama yap"
+
+#: ../virtaal/plugins/lookup/__init__.py:30
+msgid "External Look-up"
+msgstr "Dış sorgulama"
+
+#. l10n: The 'services' here refer to different look-up plugins,
+#. such as web look-up, etc.
+#: ../virtaal/plugins/lookup/lookupview.py:58
+msgid "Select Look-up Services"
+msgstr "Sorgulama sağlayıcılarını seçin"
+
+#: ../virtaal/plugins/lookup/lookupview.py:59
+msgid "Select the services that should be used to perform look-ups"
+msgstr "Sorgulamalarda kullanılacak sağlayıcıları seçin"
+
+#: ../virtaal/plugins/lookup/lookupview.py:119
+#, python-format
+msgid "Look-up \"%(selection)s\""
+msgstr "\"%(selection)s\" sorgula"
+
+#. l10n: plugin name
+#: ../virtaal/plugins/lookup/models/weblookup.py:40
+msgid "Web Look-up"
+msgstr "Web sorgulaması"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:41
+msgid "Look-up the selected text on a web site"
+msgstr "Seçilmiş metni sitede ara"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate.
+#: ../virtaal/plugins/lookup/models/weblookup.py:45
+#: ../virtaal/plugins/tm/models/google_translate.py:72
+msgid "Google"
+msgstr "Google"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:50
+msgid "Wikipedia"
+msgstr "Vikipedi"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:55
+#: ../virtaal/plugins/terminology/models/opentran.py:46
+#: ../virtaal/plugins/tm/models/opentran.py:32
+msgid "Open-Tran.eu"
+msgstr "Open-Tran.eu"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:171
+#: ../virtaal/views/widgets/selectview.py:77
+msgid "Name"
+msgstr "İsim"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:180
+msgid "URL"
+msgstr "URL"
+
+#. l10n: Whether the selected text should be surrounded by "quotes"
+#: ../virtaal/plugins/lookup/models/weblookup.py:191
+msgid "Quote Query"
+msgstr "Sorguyu tırnak işareti içinde gönder"
 
 #: ../virtaal/plugins/migration.py:56
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
@@ -626,47 +751,55 @@ msgstr "Terminoloji yardımı"
 msgid "Terminology suggestions"
 msgstr "Terminoloji önerileri"
 
-#: ../virtaal/plugins/terminology/models/localfile/__init__.py:41
-msgid "Local file"
-msgstr "Yerel dosya"
+#: ../virtaal/plugins/terminology/models/autoterm.py:82
+msgid "Localization Terminology"
+msgstr "Yerelleştirme terminolojisi"
+
+#: ../virtaal/plugins/terminology/models/autoterm.py:83
+msgid "Selected localization terminology"
+msgstr "Seçilmiş yerelleştirme terminolojisi"
 
 #: ../virtaal/plugins/terminology/models/localfile/__init__.py:42
-msgid "Local translation files"
-msgstr "Yerel çeviri dosyaları"
+msgid "Local Files"
+msgstr "Yerel dosyalar"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:52
+#: ../virtaal/plugins/terminology/models/localfile/__init__.py:43
+msgid "Local terminology files"
+msgstr "Yerel terminoloji dosyaları"
+
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:54
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:56
 msgid "Terminology _Files..."
 msgstr "Terminoloji _dosyaları..."
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:60
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:62
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:64
 msgid "Add _Term..."
 msgstr "_Terim ekle..."
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:130
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:133
 msgid "File"
 msgstr "Dosya"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:139
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:143
 msgid "Extendable"
 msgstr "Genişletilebilir"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:163
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:168
 msgid "Add Files"
 msgstr "Dosyaları ekle"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:170
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:175
 #: ../virtaal/views/mainview.py:223
 msgid "All Supported Files"
 msgstr "Tüm desteklenen dosyalar"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:196
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:201
 #: ../virtaal/views/mainview.py:249
 msgid "All Files"
 msgstr "Tüm dosyalar"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:240
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:244
 #, python-format
 msgid ""
 "Unable to load %(filename)s:\n"
@@ -677,34 +810,44 @@ msgstr ""
 "\n"
 "%(errormsg)s"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:241
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:245
 msgid "Error opening file"
 msgstr "Dosya açarken hata"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:368
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:384
 #, python-format
 msgid "_Source term — %(langname)s"
 msgstr "_Kaynak terim — %(langname)s"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:369
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:385
 #, python-format
 msgid "_Target term — %(langname)s"
 msgstr "_Hedef terim — %(langname)s"
 
-#: ../virtaal/plugins/terminology/models/opentran.py:46
-#: ../virtaal/plugins/tm/models/opentran.py:32
-msgid "Open-Tran.eu"
-msgstr "Open-Tran.eu"
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:429
+msgid "Identical entry already exists."
+msgstr "Aynı girdi zaten var."
+
+#. l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:439
+#, python-format
+msgid "<b>%s</b>"
+msgstr "<b>%s</b>"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:440
+#, python-format
+msgid "Existing translations: %(translations)s"
+msgstr "Bulunan çeviriler: %(translations)s"
 
 #: ../virtaal/plugins/terminology/models/opentran.py:47
 msgid "Terms from Open-Tran.eu"
 msgstr "Open-Tran.eu terimleri"
 
-#: ../virtaal/plugins/terminology/termview.py:144
+#: ../virtaal/plugins/terminology/termview.py:146
 msgid "Select Terminology Sources"
 msgstr "Terminoloji kaynaklarını seç"
 
-#: ../virtaal/plugins/terminology/termview.py:145
+#: ../virtaal/plugins/terminology/termview.py:147
 msgid "Select the sources of terminology suggestions"
 msgstr "Terminoloji önerilerin kaynağını seç"
 
@@ -717,30 +860,41 @@ msgid "Translation memory suggestions"
 msgstr "Çeviri belleği önerileri"
 
 #: ../virtaal/plugins/tm/models/currentfile.py:32
-msgid "Currently open file"
-msgstr "Şu anda açık dosya"
+msgid "Current File"
+msgstr "Geçerli dosya"
 
 #: ../virtaal/plugins/tm/models/currentfile.py:33
-msgid "Translated units from the current file"
-msgstr "Geçerli dosyada çevirilmiş iletiler"
+msgid "Translated units from the currently open file"
+msgstr "Açık olan dosyada çevrilmiş iletiler"
 
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/currentfile.py:82
 msgid "This file"
 msgstr "Bu dosya"
 
-#: ../virtaal/plugins/tm/models/libtranslate.py:44
-msgid "Machine Translation with libtranslate"
-msgstr "Libtranslate ile makine çevirisi"
+#. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
+#: ../virtaal/plugins/tm/models/google_translate.py:36
+msgid "Google Translate"
+msgstr "Google Translate"
 
-#: ../virtaal/plugins/tm/models/libtranslate.py:45
-msgid "Unreviewed machine translations"
-msgstr "Gözden geçirilmemiş makine çevirileri"
+#: ../virtaal/plugins/tm/models/google_translate.py:37
+msgid "Unreviewed machine translations from Google's translation service"
+msgstr ""
+"Google sağlayıcısı tarafından otomatik çevrilmiş gözden geçirilmemiş "
+"çeviriler"
 
+#. l10n: This is the name of a software library. You almost definitely don't want to translate this. The lower case 'l' is intentional.
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
-#: ../virtaal/plugins/tm/models/libtranslate.py:97
+#: ../virtaal/plugins/tm/models/libtranslate.py:45
+#: ../virtaal/plugins/tm/models/libtranslate.py:98
 msgid "libtranslate"
 msgstr "libtranslate"
+
+#: ../virtaal/plugins/tm/models/libtranslate.py:46
+msgid "Unreviewed machine translations from various services"
+msgstr ""
+"Çeşitli sağlayıcılar tarafından otomatik çevrilmiş gözden geçirilmemiş "
+"çeviriler"
 
 #: ../virtaal/plugins/tm/models/localtm.py:37
 msgid "Local Translation Memory"
@@ -755,6 +909,18 @@ msgstr "Önceki çevirileriniz"
 msgid "Local TM"
 msgstr "Yerel ÇB"
 
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+#: ../virtaal/plugins/tm/models/moses.py:33
+#: ../virtaal/plugins/tm/models/moses.py:71
+msgid "Moses"
+msgstr "Moses"
+
+#: ../virtaal/plugins/tm/models/moses.py:34
+msgid "Unreviewed machine translations from a Moses server"
+msgstr ""
+"Moses sağlayıcısı tarafından otomatik çevrilmiş gözden geçirilmemiş "
+"çeviriler"
+
 #: ../virtaal/plugins/tm/models/opentran.py:33
 msgid "Previous translations for Free and Open Source Software"
 msgstr "Özgür ve Açık Kaynak Yazılımları için yapılmış çeviriler"
@@ -766,7 +932,7 @@ msgid "OpenTran"
 msgstr "OpenTran"
 
 #: ../virtaal/plugins/tm/models/remotetm.py:30
-msgid "Remote server"
+msgid "Remote Server"
 msgstr "Uzak sunucu"
 
 #: ../virtaal/plugins/tm/models/remotetm.py:31
@@ -788,13 +954,15 @@ msgstr "TinyTM çeviri belleği sunucusu"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
 #: ../virtaal/plugins/tm/models/apertium.py:35
-#: ../virtaal/plugins/tm/models/apertium.py:94
+#: ../virtaal/plugins/tm/models/apertium.py:99
 msgid "Apertium"
 msgstr "Apertium"
 
 #: ../virtaal/plugins/tm/models/apertium.py:36
-msgid "Apertium Machine Translation"
-msgstr "Apertium makine çevirisi"
+msgid "Unreviewed machine translations from Apertium"
+msgstr ""
+"Apertium sağlayıcısı tarafından otomatik çevrilmiş gözden geçirilmemiş "
+"çeviriler"
 
 #: ../virtaal/plugins/tm/tmview.py:99
 msgid "Translation _Suggestions"
@@ -805,11 +973,13 @@ msgstr "Çeviri Ö_nerileri"
 msgid "Ctrl+%(number_key)d"
 msgstr "Ctrl+%(number_key)d"
 
-#: ../virtaal/plugins/tm/tmview.py:177
+#. l10n: The 'sources' here refer to different translation memory plugins,
+#. such as local tm, open-tran.eu, the current file, etc.
+#: ../virtaal/plugins/tm/tmview.py:179
 msgid "Select sources of Translation Memory"
 msgstr "Çeviri belleği kaynağını seç"
 
-#: ../virtaal/plugins/tm/tmview.py:178
+#: ../virtaal/plugins/tm/tmview.py:180
 msgid "Select the sources that should be queried for translation memory"
 msgstr "Çeviri belleği için sorgulanacak kaynakları seçin"
 
@@ -827,7 +997,7 @@ msgid "TM Source"
 msgstr "ÇB kaynağı"
 
 #. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
-#: ../virtaal/plugins/tm/tmwidgets.py:124
+#: ../virtaal/plugins/tm/tmwidgets.py:126
 #, python-format
 msgid "%(match_quality)s%%"
 msgstr "%%%(match_quality)s"
@@ -883,7 +1053,7 @@ msgstr "Lütfen çoğul denklemi girin"
 msgid "N_avigation:"
 msgstr "İ_letiler:"
 
-#: ../virtaal/views/unitview.py:588
+#: ../virtaal/views/unitview.py:603
 msgid "F_uzzy"
 msgstr "B_ulanık"
 
@@ -916,7 +1086,7 @@ msgid "We thank our donors:"
 msgstr "Bağışta bulunanlara teşekkürler:"
 
 #: ../virtaal/views/widgets/aboutdialog.py:63
-msgid "International Development and Research Centre"
+msgid "The International Development Research Centre"
 msgstr "Uluslararası Kalkınma ve Araştırma Merkezi"
 
 #: ../virtaal/views/widgets/aboutdialog.py:65
@@ -947,15 +1117,11 @@ msgstr "Dil"
 msgid "Code"
 msgstr "Kod"
 
-#: ../virtaal/views/widgets/selectview.py:67
+#: ../virtaal/views/widgets/selectview.py:69
 msgid "Enabled"
 msgstr "Etkin"
 
-#: ../virtaal/views/widgets/selectview.py:75
-msgid "Name"
-msgstr "İsim"
-
-#: ../virtaal/views/widgets/selectview.py:113
+#: ../virtaal/views/widgets/selectview.py:118
 msgid "Configure..."
 msgstr "Yapılandır..."
 
@@ -1069,6 +1235,18 @@ msgstr "XLIFF çeviri dosyası"
 msgid "XML Localization Interchange File Format"
 msgstr "XML Localization Interchange File Format"
 
+#: ../devsupport/tmp_strings.py:23
+msgid "Gettext PO file"
+msgstr "Gettext PO dosyası"
+
+#: ../devsupport/tmp_strings.py:24
+msgid "Gettext MO file"
+msgstr "Gettext MO dosyası"
+
+#: ../devsupport/tmp_strings.py:25
+msgid "Qt .qm file"
+msgstr "Qt .qm dosyası"
+
 #: ../bin/virtaal:70
 #, c-format
 msgid "%prog [options] [translation_file]"
@@ -1153,11 +1331,13 @@ msgstr "kayan nokta"
 msgid "complex"
 msgstr "karmaşık"
 
-#: ../devsupport/optparse.py:423, python-format
+#: ../devsupport/optparse.py:423
+#, python-format
 msgid "option %s: invalid %s value: %r"
 msgstr "%s seçeneği: geçersiz %s değeri: %r"
 
-#: ../devsupport/optparse.py:431, python-format
+#: ../devsupport/optparse.py:431
+#, python-format
 msgid "option %s: invalid choice: %r (choose from %s)"
 msgstr "%s seçeneği: geçersiz seçim: %r (seçimler %s)"
 
@@ -1191,3 +1371,18 @@ msgstr "%s seçeneği bir değeri almaz"
 #: ../devsupport/optparse.py:1612
 msgid "Options"
 msgstr "Seçenekler"
+
+#~ msgid "Local translation files"
+#~ msgstr "Yerel çeviri dosyaları"
+
+#~ msgid "Currently open file"
+#~ msgstr "Şu anda açık dosya"
+
+#~ msgid "Machine Translation with libtranslate"
+#~ msgstr "Libtranslate ile makine çevirisi"
+
+#~ msgid "Unreviewed machine translations"
+#~ msgstr "Gözden geçirilmemiş makine çevirileri"
+
+#~ msgid "Apertium Machine Translation"
+#~ msgstr "Apertium makine çevirisi"

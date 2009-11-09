@@ -161,7 +161,7 @@ class WebLookupConfigDialog(object):
             setattr(self, name, self.gui.get_widget(name))
 
         self.dialog = self.gui.get_widget('WebLookupManager')
-        self.add_dialog = WebLookupAddDialog(self)
+        self.add_dialog = WebLookupAddDialog(self.dialog)
 
     def _init_treeview(self):
         self.lst_urls = gtk.ListStore(str, str, bool, object)
@@ -243,6 +243,10 @@ class WebLookupAddDialog(object):
             domain='virtaal'
         )
         self._get_widgets()
+
+        if isinstance(parent, gtk.Window):
+            self.dialog.set_transient_for(parent)
+            self.dialog.set_icon(parent.get_toplevel().get_icon())
 
     def _get_widgets(self):
         widget_names = ('btn_url_cancel', 'btn_url_ok', 'cbtn_url_quote', 'ent_url_name', 'ent_url')

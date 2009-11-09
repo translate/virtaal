@@ -889,7 +889,7 @@ msgstr "Ce fichier"
 #. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
 #: ../virtaal/plugins/tm/models/google_translate.py:36
 msgid "Google Translate"
-msgstr "Google Translate"
+msgstr "Google Traduction"
 
 #: ../virtaal/plugins/tm/models/google_translate.py:37
 msgid "Unreviewed machine translations from Google's translation service"
@@ -1059,7 +1059,7 @@ msgstr "Veuillez indiquer l'équation de forme plurielle à utiliser"
 #. between units.
 #: ../virtaal/views/modeview.py:62
 msgid "N_avigation:"
-msgstr "N_avigation :"
+msgstr "_Navigation :"
 
 #: ../virtaal/views/unitview.py:603
 msgid "F_uzzy"

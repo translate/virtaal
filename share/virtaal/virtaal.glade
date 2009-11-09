@@ -1828,6 +1828,7 @@ If you are translating from English to French then French would be your translat
     </child>
   </widget>
   <widget class="GtkDialog" id="WebLookupAdd">
+    <property name="width_request">300</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Add URL</property>
     <property name="type_hint">normal</property>
@@ -1849,17 +1850,25 @@ If you are translating from English to French then French would be your translat
                 <child>
                   <widget class="GtkLabel" id="lbl1">
                     <property name="visible">True</property>
+                    <property name="xalign">1</property>
                     <property name="label" translatable="yes">Name:</property>
                   </widget>
+                  <packing>
+                    <property name="x_options">GTK_FILL</property>
+                    <property name="x_padding">2</property>
+                  </packing>
                 </child>
                 <child>
                   <widget class="GtkLabel" id="label1">
                     <property name="visible">True</property>
+                    <property name="xalign">1</property>
                     <property name="label" translatable="yes">URL:</property>
                   </widget>
                   <packing>
                     <property name="top_attach">1</property>
                     <property name="bottom_attach">2</property>
+                    <property name="x_options">GTK_FILL</property>
+                    <property name="x_padding">2</property>
                   </packing>
                 </child>
                 <child>

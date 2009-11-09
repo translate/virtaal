@@ -40,11 +40,19 @@ class SelectDialog(GObjectWrapper):
     }
 
     # INITIALIZERS #
-    def __init__(self, items=None, title=None, message=None, parent=None):
+    def __init__(self, items=None, title=None, message=None, parent=None, size=None):
         super(SelectDialog, self).__init__()
         self.sview = SelectView(items)
         self._create_gui(title, message, parent)
         self._connect_signals()
+
+        if size and len(size) == 2:
+            w, h = -1, -1
+            if size[0] > 0:
+                w = size[0]
+            if size[1] > 0:
+                h = size[1]
+            self.dialog.set_size_request(w, h)
 
     def _connect_signals(self):
         self.sview.connect('item-enabled',  self._on_item_enabled)

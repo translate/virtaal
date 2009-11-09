@@ -56,7 +56,8 @@ class LookupView(BaseView):
             #l10n: The 'services' here refer to different look-up plugins,
             #such as web look-up, etc.
             title=_('Select Look-up Services'),
-            message=_('Select the services that should be used to perform look-ups')
+            message=_('Select the services that should be used to perform look-ups'),
+            size=(self.controller.config['backends_dialog_min_width'], -1)
         )
         selectdlg.set_icon(self.controller.main_controller.view.main_window.get_icon())
 

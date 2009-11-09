@@ -30,6 +30,10 @@ class Plugin(BasePlugin):
     display_name = _('External Look-up')
     version = '0.1'
 
+    default_config = {
+        'backends_dialog_width': 450,
+    }
+
     # INITIALIZERS #
     def __init__(self, internal_name, main_controller):
         self.configure_func = self.configure
@@ -37,6 +41,7 @@ class Plugin(BasePlugin):
         self.main_controller = main_controller
 
         self.load_config()
+        self.config['backends_dialog_width'] = int(self.config['backends_dialog_width'])
         self._init_plugin()
 
     def _init_plugin(self):

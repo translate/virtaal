@@ -448,7 +448,7 @@ msgstr "Dateinamen"
 
 #: ../virtaal/controllers/placeablescontroller.py:100
 msgid "Paths referring to file locations"
-msgstr "Pfade, die die Orte Beschreiben, wo Dateien gespeichert sind"
+msgstr "Pfade, die die Orte beschreiben, in denen Dateien gespeichert sind"
 
 #: ../virtaal/controllers/placeablescontroller.py:103
 msgid "Placeholders (printf)"
@@ -623,7 +623,7 @@ msgstr "Ersetzen"
 #. l10n: Check box
 #: ../virtaal/modes/searchmode.py:84
 msgid "Replace _All"
-msgstr "_Alles ersetzen"
+msgstr "Alle_s ersetzen"
 
 #: ../virtaal/plugins/autocompletor.py:216
 msgid "Automatically complete long words while you type"
@@ -909,7 +909,7 @@ msgstr "Diese Datei"
 #: ../virtaal/plugins/tm/models/google_translate.py:36
 #| msgid "libtranslate"
 msgid "Google Translate"
-msgstr "Google Translate"
+msgstr "Google Übersetzer"
 
 #: ../virtaal/plugins/tm/models/google_translate.py:37
 #| msgid "Unreviewed machine translations"

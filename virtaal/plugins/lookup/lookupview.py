@@ -57,7 +57,7 @@ class LookupView(BaseView):
             #such as web look-up, etc.
             title=_('Select Look-up Services'),
             message=_('Select the services that should be used to perform look-ups'),
-            size=(self.controller.config['backends_dialog_min_width'], -1)
+            size=(self.controller.config['backends_dialog_width'], -1)
         )
         selectdlg.set_icon(self.controller.main_controller.view.main_window.get_icon())
 

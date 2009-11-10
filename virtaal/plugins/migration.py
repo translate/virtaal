@@ -24,20 +24,17 @@ Currently there is some support for importing settings from Poedit and
 Lokalize. Translation Memory can be imported from Poedit and Lokalize.
 """
 
+import bsddb
+import ConfigParser
 import logging
 import os
-from os import path
-import bsddb
-import struct
 import StringIO
+import struct
+from os import path
 try:
     from sqlite3 import dbapi2
 except ImportError:
     from pysqlite2 import dbapi2
-try:
-    import iniparse as ConfigParser
-except ImportError, e:
-    import ConfigParser
 
 from virtaal.common import pan_app
 from virtaal.controllers import BasePlugin

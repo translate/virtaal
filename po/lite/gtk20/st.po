@@ -10,15 +10,13 @@ msgstr ""
 "PO-Revision-Date: 2009-11-09 14:52+0200\n"
 "Last-Translator: Abe Mathibela <abe@mosekolatranslation.co.za>\n"
 "Language-Team: info@mosekolatranslation.co.za\n"
-"Language: en_ZA\n"
+"Language: st\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.4.0\n"
 
-# (pofilter) isfuzzy: Check if the unit has been marked fuzzy.
-# (review) you chose correcly, please just make it unfuzzy
 #. Translate to default:RTL if you want your widgets
 #. * to be RTL, otherwise translate to default:LTR.
 #. * Do *not* translate it to "predefinito:LTR", if it
@@ -62,8 +60,6 @@ msgctxt "keyboard label"
 msgid "Alt"
 msgstr "Alt"
 
-# (pofilter) unchanged: please translate
-# (review) some of these you might want to leafve untraslated since they will appear in English on a keyboard.  Be aware that this is how they will appear in the menu e.g. Ctrl+Up.  However, since up is never written as Up but uses an arrow you should translate this.
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
@@ -76,7 +72,6 @@ msgstr "Alt"
 msgid "keyboard label|Up"
 msgstr "keyboard label|Hodimo"
 
-# (pofilter) unchanged: please translate
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
@@ -88,9 +83,8 @@ msgstr "keyboard label|Hodimo"
 #. Configuration: Up key label
 msgctxt "keyboard label"
 msgid "Up"
-msgstr "Up"
+msgstr "Hodimo"
 
-# (pofilter) unchanged: please translate
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
@@ -101,9 +95,8 @@ msgstr "Up"
 #. GTK <=2.14
 #. Configuration: Down key label
 msgid "keyboard label|Down"
-msgstr "keyboard label|Down"
+msgstr "keyboard label|Tlase"
 
-# (pofilter) unchanged: please translate
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
@@ -115,10 +108,8 @@ msgstr "keyboard label|Down"
 #. Configuration: Down key label
 msgctxt "keyboard label"
 msgid "Down"
-msgstr "Down"
+msgstr "Tlase"
 
-# (pofilter) unchanged: please translate
-# (review) Unlike up and down Page Up and Page Down are often written like that on a keybaord.  On my keyboard its PGDN and PGUP so you could argue that they are all different so just translate them. Note the _ here means space.
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
@@ -129,9 +120,8 @@ msgstr "Down"
 #. GTK <=2.14
 #. Configuration: Page_Up key label
 msgid "keyboard label|Page_Up"
-msgstr "keyboard label|Leqephe_Hodimo"
+msgstr "keyboard label|Page_Up"
 
-# (pofilter) unchanged: please translate
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
@@ -145,7 +135,6 @@ msgctxt "keyboard label"
 msgid "Page_Up"
 msgstr "Page_Up"
 
-# (pofilter) unchanged: please translate
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
@@ -158,7 +147,6 @@ msgstr "Page_Up"
 msgid "keyboard label|Page_Down"
 msgstr "keyboard label|Page_Down"
 
-# (pofilter) unchanged: please translate
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
@@ -182,12 +170,12 @@ msgstr "Letona"
 
 #. File->Open
 msgid "_Open"
-msgstr "_Bula"
+msgstr "B_ula"
 
 #. File->Open
 msgctxt "Stock label"
 msgid "_Open"
-msgstr "_Bula"
+msgstr "B_ula"
 
 #. File->Save
 msgid "_Save"
@@ -198,12 +186,10 @@ msgctxt "Stock label"
 msgid "_Save"
 msgstr "_Boloka"
 
-# (review) capitals look odd
 #. File->Save As
 msgid "Save _As"
 msgstr "Boloka _e le"
 
-# (review) capitals look odd
 #. File->Save As
 msgctxt "Stock label"
 msgid "Save _As"
@@ -270,10 +256,9 @@ msgctxt "recent menu label"
 msgid "%d. %s"
 msgstr "%d. %s"
 
-# (pofilter) unchanged: please translate
 #. File->Quit
 msgid "_Quit"
-msgstr "_Quit"
+msgstr "_Tlohela"
 
 #. File->Quit
 msgctxt "Stock label"
@@ -298,7 +283,6 @@ msgctxt "Stock label"
 msgid "_Preferences"
 msgstr "_Tse lakatsehang"
 
-# (review) don't translate Navigation
 #. Navigation->Up
 msgid "Navigation|_Up"
 msgstr "Navigation|_Hodimo"
@@ -309,7 +293,6 @@ msgctxt "Stock label, navigation"
 msgid "_Up"
 msgstr "_Hodimo"
 
-# (review) don't translate Navigation
 #. Navigation->Down
 msgid "Navigation|_Down"
 msgstr "Navigation|_Tlase"
@@ -354,10 +337,9 @@ msgstr "_Kwala"
 msgid "Credits"
 msgstr "Dithoriso"
 
-# (pofilter) simplecaps: checks the capitalisation of two strings isn't wildly different
 #. About Dialog - Credits dialog - Tab - Written by
 msgid "Written by"
-msgstr "E Ngotswe ke"
+msgstr "E ngotswe ke"
 
 #. About Dialog - Credits dialog - Tab - Translated by
 msgid "Translated by"
@@ -389,10 +371,9 @@ msgctxt "Stock label"
 msgid "_Add"
 msgstr "_Eketsa"
 
-# (pofilter) unchanged: please translate
 #. File dialog - Add button - tooltip
 msgid "Add the folder '%s' to the bookmarks"
-msgstr "Add the folder '%s' to the bookmarks"
+msgstr ""
 
 #. File dialog - Add button - tooltip
 msgid "Add the current folder to the bookmarks"
@@ -438,7 +419,7 @@ msgstr "Fuputsa"
 
 #. File dialog - Places - Entry - Recently used
 msgid "Recently Used"
-msgstr "E sebedisitswe Hamamorao"
+msgstr "E sebedisitswe hamamorao"
 
 #. File dialog - Places - Entry - Desktop
 msgid "Desktop"
@@ -446,7 +427,7 @@ msgstr "Deseke"
 
 #. File dialog - Places - Entry - File System
 msgid "File System"
-msgstr "Tsamaiso ya Faele"
+msgstr "Tsamaiso ya faele"
 
 #. File dialog - Places - Right-Click - Remove
 msgid "Remove"
@@ -482,15 +463,15 @@ msgstr "Maobane ka %H:%M"
 
 #. File dialog - Files - Right click - Show Hidden Files
 msgid "Show _Hidden Files"
-msgstr "Bontsha _Difaele tse Patilweng"
+msgstr "Bontsha _difaele tse patilweng"
 
 #. File dialog - Files - Right click - Show Size Column
 msgid "Show _Size Column"
-msgstr "Bontsha _Kholomo ya Boholo"
+msgstr "Bontsha _kholomo ya boholo"
 
 #. File dialog - Files - Right click - Add to Bookmarks
 msgid "_Add to Bookmarks"
-msgstr "_Eketsa ho Matshwao a buka"
+msgstr "_Eketsa ho matshwao a buka"
 
 #. File dialog - File type list - tooltip
 msgid "Select which types of files are shown"
@@ -510,7 +491,7 @@ msgstr "_Batlisisa diputhelwana tse ding"
 
 #. File save dialog - Create folder button
 msgid "Create Fo_lder"
-msgstr "Qapa Se_phuthelwana"
+msgstr "Qapa se_phuthelwana"
 
 #. File save dialg - Create folder button (after pressing) - Type name of new folder
 msgid "Type name of new folder"
@@ -554,12 +535,12 @@ msgstr "_Hlakola"
 
 #. Right Click (on empty) -> Select All
 msgid "Select _All"
-msgstr "Tshwaya _Tsohle"
+msgstr "Tshwaya _tsohle"
 
 #. Right Click (on empty) -> Select All
 msgctxt "Stock label"
 msgid "Select _All"
-msgstr "Tshwaya _Tsohle"
+msgstr "Tshwaya _tsohle"
 
 #. Revert Confirmation Dialog -> Yes
 msgid "_Yes"
@@ -588,7 +569,6 @@ msgctxt "Stock label"
 msgid "_OK"
 msgstr "_Lokile"
 
-# (review) capitals
 #. Font dialog: title
 msgid "Pick a Font"
 msgstr "Qolla mongolo"

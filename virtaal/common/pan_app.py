@@ -18,12 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import ConfigParser
 import logging
-
-try:
-    import iniparse as ConfigParser
-except ImportError, e:
-    import ConfigParser
 import os
 import sys
 import locale, gettext

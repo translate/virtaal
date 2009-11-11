@@ -1,16 +1,16 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the PACKAGE package.
+# Sotho translation of Virtaal.
+# Copyright (C) 2009 Zuza Software Foundation (Translate.org.za)
+# This file is distributed under the same license as the Virtaal package.
 # Abe Mathibela <abe@mosekolatranslation.co.za>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: Virtaal 0.4.0\n"
+"Project-Id-Version: Virtaal 0.5\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-11-06 16:54+0200\n"
 "PO-Revision-Date: 2009-11-10 17:02+0200\n"
 "Last-Translator: Abe Mathibela <abe@mosekolatranslation.co.za>\n"
-"Language-Team: info@mosekolatranslation.co.za\n"
-"Language: en_ZA\n"
+"Language-Team: translate-discuss-st@lists.sourceforge.net\n"
+"Language: st\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -325,7 +325,6 @@ msgstr ""
 "Sebedisa Ctrl+PgUp kapa Ctrl+PgDown hore o tsamaye ka mehato e meholo "
 "pakeng tsa diphetolelo."
 
-# (pofilter) simplecaps: checks the capitalisation of two strings isn't wildly different
 #: ../virtaal/controllers/maincontroller.py:69
 #: ../virtaal/controllers/maincontroller.py:78
 #: ../virtaal/controllers/maincontroller.py:87
@@ -1087,7 +1086,6 @@ msgstr "Ditokelo tsa khatiso © Motheo wa Zuza wa Sofotowere wa 2007-2009"
 msgid "Virtaal is a program for doing translation."
 msgstr "Virtaal ke lenaneo la ho fetolela."
 
-# (pofilter) acronyms: acronyms should not be translated: CAT
 #: ../virtaal/views/widgets/aboutdialog.py:39
 msgid ""
 "The initial focus is on software translation (localization or l10n), but we "
@@ -1096,7 +1094,7 @@ msgid ""
 msgstr ""
 "Maikemisetso a pele a tsamaisana le taba ya ho fetolela sofotowere (haefatso "
 "kapa l10n), empa ka ho hlaka re ikemiseditse hore e be thulusi ya bohlokwa "
-"ya merero e akaretsang bakeng sa Phetolelo e Thuswang ke Khomphyutha (PTK)."
+"ya merero e akaretsang bakeng sa Phetolelo e Thuswang ke Khomphyutha (CAT)."
 
 #: ../virtaal/views/widgets/aboutdialog.py:53
 msgid "Virtaal website"
@@ -1266,7 +1264,7 @@ msgstr "Faele ya Gettext MO"
 
 #: ../devsupport/tmp_strings.py:25
 msgid "Qt .qm file"
-msgstr "Faele ya Qt .qm "
+msgstr "Faele ya Qt .qm"
 
 #: ../bin/virtaal:70
 #, c-format
@@ -1405,7 +1403,3 @@ msgstr "Dikgetho"
 
 #~ msgid "Unreviewed machine translations"
 #~ msgstr "Diphetolelo tsa motjhini tse e-so hlahlobjwe"
-
-# (review) brandname
-#~ msgid "Apertium Machine Translation"
-#~ msgstr "Phetolelo ya Motjhini ya Aphetiamo"

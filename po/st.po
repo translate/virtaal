@@ -661,11 +661,10 @@ msgstr "Kgetha ditshebeletso tse lokelang ho sebediswa ho phetla"
 msgid "Look-up \"%(selection)s\""
 msgstr "Phetla \"%(selection)s\""
 
-# (review) Isn't this something like "Ho phetla wepesaeteng"?
 #. l10n: plugin name
 #: ../virtaal/plugins/lookup/models/weblookup.py:40
 msgid "Web Look-up"
-msgstr "Phetla wepesaete"
+msgstr "Ho phetla wepesaeteng"
 
 #: ../virtaal/plugins/lookup/models/weblookup.py:41
 msgid "Look-up the selected text on a web site"
@@ -692,7 +691,6 @@ msgstr "Open-Tran.eu"
 msgid "Name"
 msgstr "Lebitso"
 
-# (review) you might want to make this a Sotho plural di-URL or whichever.
 #: ../virtaal/plugins/lookup/models/weblookup.py:180
 msgid "URL"
 msgstr "DiURL"
@@ -943,12 +941,11 @@ msgstr "Moses"
 msgid "Unreviewed machine translations from a Moses server"
 msgstr "Diphetolelo tse sa lekolwang tsa motjhini tse tswang seabing sa Moses"
 
-# (review) "Free" here refers to "freedom". Doesn't 'Mahala' refer to no cost?
 #: ../virtaal/plugins/tm/models/opentran.py:33
 msgid "Previous translations for Free and Open Source Software"
 msgstr ""
-"Diphetolelo tsa nako e fetileng bakeng sa Sofotowere ya Mahala le ya Mehlodi "
-"e Bulehileng"
+"Diphetolelo tsa nako e fetileng bakeng sa Sofotowere ya Tokoloho le ya "
+"Mehlodi e Bulehileng"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
 #: ../virtaal/plugins/tm/models/opentran.py:69
@@ -1207,10 +1204,9 @@ msgstr "Buka ya dipolelwana ya Qt"
 msgid "RC"
 msgstr "RC"
 
-# (review) should we translate 'source' and 'resource' the same way?
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:13
 msgid "Resource Compiler"
-msgstr "Sebokelli sa mohlodi"
+msgstr "Resource Compiler"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:14
 msgid "TBX"
@@ -1240,10 +1236,9 @@ msgstr "TermBase eXchange"
 msgid "Trados Tag Editor"
 msgstr "Sehlophisi sa theke sa Trados"
 
-# (review) The use of the English capitalisation is weird. Perhaps it should either be translated, or left entirely like the English. It is just an explanation of what "TMX" stands for.
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:21
 msgid "Translation Memory eXchange"
-msgstr "eXchange ya polokelo ya phetolelo"
+msgstr "Translation Memory eXchange"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:22
 msgid "Wordfast Translation Memory"
@@ -1263,13 +1258,12 @@ msgstr "Mofuta wa faele wa karolelano ya haefatso wa XML"
 
 #: ../devsupport/tmp_strings.py:23
 msgid "Gettext PO file"
-msgstr "Faele ya Gettext ya PO"
+msgstr "Faele ya Gettext PO"
 
 #: ../devsupport/tmp_strings.py:24
 msgid "Gettext MO file"
-msgstr "Faele ya Gettext ya MO"
+msgstr "Faele ya Gettext MO"
 
-# (review) This is inconsistent with the ones for PO and MO
 #: ../devsupport/tmp_strings.py:25
 msgid "Qt .qm file"
 msgstr "Faele ya Qt .qm "

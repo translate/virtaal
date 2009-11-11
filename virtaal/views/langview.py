@@ -55,6 +55,7 @@ class LanguageView(BaseView):
         self.menu = gtk.Menu()
         self.popupbutton = PopupButton()
         self.popupbutton.set_menu(self.menu)
+        self.popupbutton.connect('toggled', self._on_button_toggled)
 
         self.recent_items = []
         for i in range(self.controller.NUM_RECENT):
@@ -110,7 +111,12 @@ class LanguageView(BaseView):
         for pair in self.controller.recent_pairs:
             if i not in range(self.controller.NUM_RECENT):
                 break
-            self.recent_items[i].get_child().set_text_with_mnemonic("_%(accesskey)d. %(language_pair)s" % {"accesskey": i + 1, "language_pair": self._get_display_string(*pair)})
+            self.recent_items[i].get_child().set_text_with_mnemonic(
+                "_%(accesskey)d. %(language_pair)s" % {
+                    "accesskey": i + 1,
+                    "language_pair": self._get_display_string(*pair)
+                }
+            )
             i += 1
 
         # Re-add menu items that have something to show
@@ -150,6 +156,16 @@ class LanguageView(BaseView):
         langs.sort(key=lambda x: x.name)
         self.select_dialog.update_languages(langs)
 
+    def _on_button_toggled(self, popupbutton):
+        if not popupbutton.get_active():
+            return
+        detected = self.controller.get_detected_langs()
+        if detected and len(detected) == 2 and detected[0] and detected[1]:
+            if detected not in self.controller.recent_pairs:
+                logging.debug("Detected language pair: %s" % (str(detected)))
+                self.controller.recent_pairs[-1] = detected
+        self.update_recent_pairs()
+
     def _on_other_activated(self, menuitem):
         if not getattr(self, 'select_dialog', None):
             self._create_dialogs()
@@ -165,4 +181,3 @@ class LanguageView(BaseView):
         pair = self.controller.recent_pairs[item_n]
         self.controller.set_language_pair(*pair)
         self.controller.main_controller.unit_controller.view.targets[0].grab_focus()
-

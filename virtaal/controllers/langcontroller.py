@@ -20,6 +20,7 @@
 
 import os
 from gobject import SIGNAL_RUN_FIRST
+from translate.lang.identify import LanguageIdentifier
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.models import LanguageModel
@@ -39,6 +40,8 @@ class LanguageController(BaseController):
         'target-lang-changed': (SIGNAL_RUN_FIRST, None, (str,)),
     }
 
+    MODEL_DIR = LanguageIdentifier.MODEL_DIR
+    CONF_FILE = LanguageIdentifier.CONF_FILE
     NUM_RECENT = 5
     """The number of recent language pairs to save/display."""
 
@@ -48,6 +51,7 @@ class LanguageController(BaseController):
 
         self.main_controller = main_controller
         self.main_controller.lang_controller = self
+        self.lang_identifier = LanguageIdentifier(self.MODEL_DIR, self.CONF_FILE)
         self.new_langs = []
         self._init_langs()
         self.recent_pairs = self._load_recent()
@@ -126,6 +130,21 @@ class LanguageController(BaseController):
 
 
     # METHODS #
+    def get_detected_langs(self):
+        store = self.main_controller.store_controller.store
+        if not store:
+            return None
+
+        srccode = self.lang_identifier.identify_source_lang(store.get_units())
+        tgtcode = self.lang_identifier.identify_target_lang(store.get_units())
+        srclang = tgtlang = None
+        if srccode:
+            srclang = LanguageModel(srccode)
+        if tgtcode:
+            tgtlang = LanguageModel(tgtcode)
+
+        return srclang, tgtlang
+
     def _load_recent(self):
         code_pairs = pan_app.settings.language['recentlangs'].split('|')
         codes = [pair.split(',') for pair in code_pairs]

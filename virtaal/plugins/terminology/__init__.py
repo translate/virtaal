@@ -28,6 +28,7 @@ class Plugin(BasePlugin):
     description = _('Terminology suggestions')
     version = 0.1
     default_config = {
+        'backends_dialog_width': 400,
         'disabled_models': '',
         'max_matches': '5',
         'min_quality': '70'
@@ -42,6 +43,7 @@ class Plugin(BasePlugin):
 
     def _init_plugin(self):
         self.load_config()
+        self.config['backends_dialog_width'] = int(self.config['backends_dialog_width'])
         self.config['disabled_models'] = self.config['disabled_models'].split(',')
         self.config['max_matches'] = int(self.config['max_matches'])
         self.config['min_quality'] = int(self.config['min_quality'])

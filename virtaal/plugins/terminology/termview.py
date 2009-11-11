@@ -144,7 +144,8 @@ class TerminologyView(BaseView):
     def select_backends(self, menuitem):
         selectdlg = SelectDialog(
             title=_('Select Terminology Sources'),
-            message=_('Select the sources of terminology suggestions')
+            message=_('Select the sources of terminology suggestions'),
+            size=(self.controller.config['backends_dialog_width'], -1),
         )
         selectdlg.set_icon(self.controller.main_controller.view.main_window.get_icon())
 

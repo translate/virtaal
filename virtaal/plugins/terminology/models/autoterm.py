@@ -84,8 +84,9 @@ class TerminologyModel(BaseTerminologyModel):
 
     default_config = {
         'last_update': 0,
-        'url': 'http://terminology.locamotion.org/%(srclang)s/%(tgtlang)s',
     }
+
+    _l10n_URL = 'http://terminology.locamotion.org/l10n/%(srclang)s/%(tgtlang)s'
 
     TERMDIR = os.path.join(pan_app.get_config_dir(), 'autoterm')
 
@@ -183,6 +184,7 @@ class TerminologyModel(BaseTerminologyModel):
         if os.path.isfile(localfile) and localfile in self.config:
             etag = self.config[os.path.abspath(localfile)]
         url = self.config['url'] % {'srclang': srclang, 'tgtlang': tgtlang}
+        url = self._l10n_URL % {'srclang': srclang, 'tgtlang': tgtlang}
         callback = lambda *args: self._process_header(localfile=localfile, *args)
         if logging.root.level != logging.DEBUG:
             self.client.get(url, callback, etag)

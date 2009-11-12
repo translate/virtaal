@@ -49,6 +49,28 @@ def get_config_dir():
 
     return confdir
 
+def osx_lang():
+    """Do some non-posix things to get the language on OSX."""
+    import CoreFoundation
+    return CoreFoundation.CFLocaleCopyPreferredLanguages()[0]
+
+def get_locale_lang():
+    #if we wanted to determine the UI language ourselves, this should work:
+    #lang = locale.getdefaultlocale(('LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG'))[0]
+    #if not lang and sys.platform == "darwin":
+    #   lang = osx_lang()
+
+    # guess default target lang based on locale, simplify to commonly used form
+    try:
+        lang = locale.getdefaultlocale(('LANGUAGE', 'LC_ALL', 'LANG'))[0]
+        if not lang and sys.platform == "darwin":
+           lang = osx_lang()
+        if lang and _(''):
+            return data.simplify_to_common(lang)
+    except Exception:
+        logging.exception("Could not get locale")
+    return 'en'
+
 def name():
     # pwd is only available on UNIX
     try:
@@ -57,11 +79,6 @@ def name():
     except ImportError, _e:
         return u""
     return pwd.getpwnam(getpass.getuser())[4].split(",")[0]
-
-def osx_lang():
-    """Do some non-posix things to get the language on OSX."""
-    import CoreFoundation
-    return CoreFoundation.CFLocaleCopyPreferredLanguages()[0]
 
 def get_default_font():
     default_font = 'monospace'
@@ -138,19 +155,7 @@ class Settings:
             if not os.path.isfile(self.filename):
                 raise Exception
 
-        try:
-            #if we wanted to determine the UI language ourselves, this should work:
-            #lang = locale.getdefaultlocale(('LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG'))[0]
-            #if not lang and sys.platform == "darwin":
-            #   lang = osx_lang()
-
-            # guess default target lang based on locale, simplify to commonly used form
-            lang = locale.getdefaultlocale(('LANGUAGE', 'LC_ALL', 'LANG'))[0]
-            if not lang and sys.platform == "darwin":
-               lang = osx_lang()
-            self.language["targetlang"] = data.simplify_to_common(lang)
-        except:
-            logging.exception("Could not get locale")
+        self.language["targetlang"] = data.simplify_to_common(get_locale_lang())
         self.config = ConfigParser.RawConfigParser()
         self.read()
 

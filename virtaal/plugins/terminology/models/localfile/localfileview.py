@@ -26,6 +26,7 @@ from locale import strcoll
 from translate.lang import factory as lang_factory
 from translate.storage import factory as store_factory
 
+from virtaal.common import pan_app
 from virtaal.views import BaseView, rendering
 
 
@@ -433,7 +434,7 @@ class TermAddDialog:
 
         same_src_units = self.term_model.get_units_with_source(src_text)
         if src_text and same_src_units:
-            lang = lang_factory.getlanguage(self.lang_controller.target_lang.code)
+            lang = lang_factory.getlanguage(pan_app.get_locale_lang())
             separator = lang.listseperator
             #l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
             translations = separator.join([_('<b>%s</b>') % (u.target) for u in same_src_units])

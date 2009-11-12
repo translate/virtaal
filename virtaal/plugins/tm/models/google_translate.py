@@ -44,11 +44,11 @@ class TMModel(BaseTMModel):
 
     def _init_plugin(self):
         try:
-            from xgoogle.translate import Translator, TranslationError, _languages
+            from virtaal.support.xgoogle.translate import Translator, TranslationError, _languages
             self.TranslationError = TranslationError
             self.supported_langs = _languages
         except ImportError, ie:
-            raise Exception('Could not import xgoogle.translate.Translator: %s' % (ie))
+            raise Exception('Could not import virtaal.support.xgoogle.translate.Translator: %s' % (ie))
 
         self.translate = Translator().translate
 

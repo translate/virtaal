@@ -161,8 +161,8 @@ class LanguageView(BaseView):
             return
         detected = self.controller.get_detected_langs()
         if detected and len(detected) == 2 and detected[0] and detected[1]:
+            logging.debug("Detected language pair: %s -> %s" % (detected[0].code, detected[1].code))
             if detected not in self.controller.recent_pairs:
-                logging.debug("Detected language pair: %s" % (str(detected)))
                 self.controller.recent_pairs[-1] = detected
         self.update_recent_pairs()
 

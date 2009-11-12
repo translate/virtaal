@@ -10,7 +10,12 @@
 
 from browser import Browser, BrowserError
 from urllib import quote_plus
-import simplejson as json
+
+# These two json modules are API compatible
+try:
+    import simplejson as json #should be a bit faster; needed for Python < 2.6
+except ImportError:
+    import json #available since Python 2.6
 
 
 class TranslationError(Exception):

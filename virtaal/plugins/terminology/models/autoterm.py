@@ -169,11 +169,16 @@ class TerminologyModel(BaseTerminologyModel):
         if srclang is None or tgtlang is None:
             raise ValueError('Both srclang and tgtlang must be specified')
 
+        if not self.is_update_needed(srclang, tgtlang):
+            logging.debug('Skipping update for (%s, %s) language pair' % (srclang, tgtlang))
+            return
+
         self._update_term_file(srclang, tgtlang)
         self.config['last_update'] = time.mktime(datetime.now().timetuple())
 
     def is_update_needed(self, srclang, tgtlang):
         localfile = self._get_curr_term_filename(srclang, tgtlang)
+        localfile = os.path.join(self.TERMDIR, localfile)
         if not os.path.isfile(localfile):
             return True
         stats = os.stat(localfile)

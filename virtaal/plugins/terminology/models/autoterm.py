@@ -82,10 +82,6 @@ class TerminologyModel(BaseTerminologyModel):
     display_name = _('Localization Terminology')
     description = _('Selected localization terminology')
 
-    default_config = {
-        'last_update': 0,
-    }
-
     _l10n_URL = 'http://terminology.locamotion.org/l10n/%(srclang)s/%(tgtlang)s'
 
     TERMDIR = os.path.join(pan_app.get_config_dir(), 'autoterm')
@@ -97,7 +93,6 @@ class TerminologyModel(BaseTerminologyModel):
         self.client = AutoTermClient()
 
         self.load_config()
-        self.config['last_update'] = float(self.config['last_update'])
 
         if not os.path.isdir(self.TERMDIR):
             os.mkdir(self.TERMDIR)
@@ -174,7 +169,6 @@ class TerminologyModel(BaseTerminologyModel):
             return
 
         self._update_term_file(srclang, tgtlang)
-        self.config['last_update'] = time.mktime(datetime.now().timetuple())
 
     def is_update_needed(self, srclang, tgtlang):
         localfile = self._get_curr_term_filename(srclang, tgtlang)

@@ -138,17 +138,19 @@ class TerminologyModel(BaseTerminologyModel):
 
 
     # ACCESSORS #
-    def _get_curr_term_filename(self, srclang=None, tgtlang=None):
+    def _get_curr_term_filename(self, srclang=None, tgtlang=None, ext=None):
         if srclang is None:
             srclang = self.source_lang
         if tgtlang is None:
             tgtlang = self.target_lang
+        if not ext:
+            ext = 'po'
 
         base = '%s__%s' % (srclang, tgtlang)
         for filename in os.listdir(self.TERMDIR):
             if filename.startswith(base):
                 return filename
-        return base + '.po'
+        return base + os.extsep + ext
     curr_term_filname = property(_get_curr_term_filename)
 
 
@@ -183,9 +185,14 @@ class TerminologyModel(BaseTerminologyModel):
         etag = None
         if os.path.isfile(localfile) and localfile in self.config:
             etag = self.config[os.path.abspath(localfile)]
+
         url = self.config['url'] % {'srclang': srclang, 'tgtlang': tgtlang}
         url = self._l10n_URL % {'srclang': srclang, 'tgtlang': tgtlang}
+
+        if not os.path.isfile(localfile):
+            localfile = None
         callback = lambda *args: self._process_header(localfile=localfile, *args)
+
         if logging.root.level != logging.DEBUG:
             self.client.get(url, callback, etag)
         else:
@@ -193,14 +200,40 @@ class TerminologyModel(BaseTerminologyModel):
                 logging.debug('Could not get %s: status %d' % (url, request.status))
             self.client.get(url, callback, etag, error_callback=error_log)
 
+    def _get_ext_from_url(self, url):
+        from urlparse import urlparse
+        parsed = urlparse(url)
+        dir, filename = os.path.split(parsed.path)
+        if not filename or '.' not in filename:
+            return None
+        ext = filename.split('.')[-1]
+        if not ext:
+            ext = None
+        return ext
+
+    def _get_ext_from_store_guess(self, content):
+        from StringIO import StringIO
+        from translate.storage.factory import _guessextention
+        s = StringIO(content)
+        try:
+            return _guessextention(s)
+        except ValueError:
+            pass
+        return None
+
     def _process_header(self, request, result, localfile=None):
         if request.status == 304:
             logging.debug('ETag matches for file %s :)' % (localfile))
         elif request.status == 200:
-            logging.debug('File received')
             if not localfile:
-                localfile = self.curr_term_filname
-                logging.debug('Not sure where to save new terminology file.')
+                ext = self._get_ext_from_url(request.get_effective_url())
+                if ext is None:
+                    ext = self._get_ext_from_store_guess(result)
+                if ext is None:
+                    logging.debug('Unable to determine extension for store. Defaulting to "po".')
+                    ext = 'po'
+                localfile = self._get_curr_term_filename(ext=ext)
+                localfile = os.path.join(self.TERMDIR, localfile)
             logging.debug('Saving to %s' % (localfile))
             open(localfile, 'w').write(result)
 

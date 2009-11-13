@@ -96,6 +96,9 @@ class HTTPRequest(GObjectWrapper):
         # Curl handles
         self.curl.request = self
 
+    def get_effective_url(self):
+        return self.curl.getinfo(pycurl.EFFECTIVE_URL)
+
     def perform(self):
         """run the request (blocks)"""
         self.curl.perform()

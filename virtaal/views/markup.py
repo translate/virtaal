@@ -19,7 +19,6 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 from difflib import SequenceMatcher
-import Levenshtein
 import re
 
 # We want to draw unexpected spaces specially so that users can spot them
@@ -117,7 +116,6 @@ def pango_diff(a, b):
 
     textdiff = ""
     for tag, i1, i2, j1, j2 in SequenceMatcher(None, a, b).get_opcodes():
-    #for tag, i1, i2, j1, j2 in Levenshtein.opcodes(a, b):
         if tag == 'equal':
             textdiff += a[i1:i2]
         if tag == "insert":

@@ -18,6 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+from difflib import SequenceMatcher
+import Levenshtein
 import re
 
 # We want to draw unexpected spaces specially so that users can spot them
@@ -50,16 +52,24 @@ def _subtle_escape(escape):
 
 # Public methods
 
-def markuptext(text, fancyspaces=True, markupescapes=True):
+def markuptext(text, fancyspaces=True, markupescapes=True, diff_text=""):
     """Markup the given text to be pretty Pango markup.
 
     Special characters (&, <) are converted, XML markup highligthed with
     escapes and unusual spaces optionally being indicated."""
     if not text:
         return ""
-    text = text.replace(u"&", u"&amp;") # Must be done first!
-    text = text.replace(u"<", u"&lt;")
-    text = _xml_re.sub(_fancy_xml, text)
+
+    def escape_amp_lt_fancy_xml(s):
+        s = s.replace(u"&", u"&amp;") # Must be done first!
+        s = s.replace(u"<", u"&lt;")
+        s = _xml_re.sub(_fancy_xml, s)
+        return s
+
+    text = escape_amp_lt_fancy_xml(text)
+
+    if diff_text != "":
+       text = pango_diff(escape_amp_lt_fancy_xml(diff_text), text)
 
     if fancyspaces:
         text = _fancy_spaces_re.sub(_fancyspaces, text)
@@ -93,3 +103,28 @@ def unescape(text):
     text = text.replace("\\r", "\r")
     text = text.replace("\\\\", "\\")
     return text
+
+def pango_diff(a, b):
+    """Highlights the differences between a and b for Pango rendering
+
+    The differences are highlighted such that they show what would be required
+    to transform a into b."""
+
+    insert_attr = "underline='single' underline_color='#777777' weight='bold' background='#ffff70'"
+    delete_attr = "strikethrough='true' strikethrough_color='#777777' background='#ffa070'"
+    replace_attr_remove = delete_attr
+    replace_attr_add = insert_attr
+
+    textdiff = ""
+    for tag, i1, i2, j1, j2 in SequenceMatcher(None, a, b).get_opcodes():
+    #for tag, i1, i2, j1, j2 in Levenshtein.opcodes(a, b):
+        if tag == 'equal':
+            textdiff += a[i1:i2]
+        if tag == "insert":
+            textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': insert_attr, 'text': b[j1:j2]}
+        if tag == "delete":
+            textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': delete_attr, 'text': a[i1:i2]}
+        if tag == "replace":
+            textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': replace_attr_remove, 'text': a[i1:i2]}
+            textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': replace_attr_add, 'text': b[j1:j2]}
+    return textdiff

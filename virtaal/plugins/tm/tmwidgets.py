@@ -272,7 +272,8 @@ class TMMatchRenderer(gtk.GenericCellRenderer):
 
         self.source_layout = self._get_pango_layout(
             widget, self.matchdata['source'], width - (2*self.BOX_MARGIN),
-            rendering.get_source_font_description()
+            rendering.get_source_font_description(),
+            self.matchdata['query_str']
         )
         self.source_layout.get_context().set_language(rendering.get_language(srclang))
 
@@ -285,7 +286,7 @@ class TMMatchRenderer(gtk.GenericCellRenderer):
         height = self.source_layout.get_pixel_size()[1] + self.target_layout.get_pixel_size()[1]
         return height + self.LINE_SEPARATION + self.ROW_PADDING
 
-    def _get_pango_layout(self, widget, text, width, font_description):
+    def _get_pango_layout(self, widget, text, width, font_description, diff_text=""):
         '''Gets the Pango layout used in the cell in a TreeView widget.'''
         # We can't use widget.get_pango_context() because we'll end up
         # overwriting the language and font settings if we don't have a
@@ -295,7 +296,7 @@ class TMMatchRenderer(gtk.GenericCellRenderer):
         layout.set_wrap(pango.WRAP_WORD_CHAR)
         layout.set_width(width * pango.SCALE)
         #XXX - plurals?
-        layout.set_markup(markup.markuptext(text))
+        layout.set_markup(markup.markuptext(text, diff_text=diff_text))
         # This makes no sense, but has the desired effect to align things correctly for
         # both LTR and RTL languages:
         if widget.get_direction() == gtk.TEXT_DIR_RTL:

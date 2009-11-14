@@ -103,6 +103,7 @@ class TMController(BaseController):
                     match['quality'] = int(match['quality'])
                 if 'tmsource' not in match or match['tmsource'] is None:
                     match['tmsource'] = tmmodel.display_name
+                match['query_str'] = query_str
             # Only call display_matches if necessary:
             if matches:
                 self.view.display_matches(matches)

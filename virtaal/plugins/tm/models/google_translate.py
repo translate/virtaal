@@ -19,8 +19,15 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import logging
+import urllib
+# These two json modules are API compatible
+try:
+    import simplejson as json #should be a bit faster; needed for Python < 2.6
+except ImportError:
+    import json #available since Python 2.6
 
 from basetmmodel import BaseTMModel, unescape_html_entities
+from virtaal.support.httpclient import HTTPClient, RESTRequest
 
 
 class TMModel(BaseTMModel):
@@ -36,11 +43,14 @@ class TMModel(BaseTMModel):
     display_name = _('Google Translate')
     description = _("Unreviewed machine translations from Google's translation service")
 
+    translate_url = "http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&q=%(message)s&langpair=%(from)s%%7C%(to)s"
+
     # INITIALIZERS #
     def __init__(self, internal_name, controller):
         self.internal_name = internal_name
         self._init_plugin()
         super(TMModel, self).__init__(controller)
+        self.client = HTTPClient()
 
     def _init_plugin(self):
         try:
@@ -50,27 +60,43 @@ class TMModel(BaseTMModel):
         except ImportError, ie:
             raise Exception('Could not import virtaal.support.xgoogle.translate.Translator: %s' % (ie))
 
-        self.translate = Translator().translate
-
 
     # METHODS #
     def query(self, tmcontroller, query_str):
         if self.source_lang not in self.supported_langs or self.target_lang not in self.supported_langs:
+            logging.debug('language pair not supported')
             return
 
-        try:
-            target_unescaped = unescape_html_entities(self.translate(
-                query_str,
-                lang_from=self.source_lang,
-                lang_to=self.target_lang
-            ))
-            tm_match = []
-            tm_match.append({
-                'source': query_str,
-                'target': target_unescaped,
-                #l10n: Try to keep this as short as possible. Feel free to transliterate.
-                'tmsource': _('Google')
-            })
-            self.emit('match-found', query_str, tm_match)
-        except self.TranslationError, te:
-            logging.exception("Google Translation error!")
+        if self.cache.has_key(query_str):
+            self.emit('match-found', query_str, self.cache[query_str])
+        else:
+            real_url = self.translate_url % {
+                    'message': urllib.quote_plus(query_str),
+                    'from':    self.source_lang,
+                    'to':      self.target_lang,
+            }
+
+            req = RESTRequest(real_url, '', method='GET', data=urllib.urlencode(''), headers=None)
+            self.client.add(req)
+            req.connect(
+                'http-success',
+                lambda req, response: self.got_translation(response, query_str)
+            )
+
+    def got_translation(self, val, query_str):
+        """Handle the response from the web service now that it came in."""
+        data = json.loads(val)
+
+        if data['responseStatus'] != 200:
+            logging.debug("Failed to translate '%s':\n%s", (query_str, data['responseDetails']))
+            return
+
+        target_unescaped = unescape_html_entities(data['responseData']['translatedText'])
+        match = {
+            'source': query_str,
+            'target': target_unescaped,
+            #l10n: Try to keep this as short as possible. Feel free to transliterate.
+            'tmsource': _('Google')
+        }
+        self.cache[query_str] = [match]
+        self.emit('match-found', query_str, [match])

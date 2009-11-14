@@ -29,6 +29,101 @@ except ImportError:
 from basetmmodel import BaseTMModel, unescape_html_entities
 from virtaal.support.httpclient import HTTPClient, RESTRequest
 
+# We should ideally be obtaining a list from them, or use their API to see if
+# something is supported.
+_languages = {
+  'af': 'Afrikaans',
+  'sq': 'Albanian',
+  'am': 'Amharic',
+  'ar': 'Arabic',
+  'hy': 'Armenian',
+  'az': 'Azerbaijani',
+  'eu': 'Basque',
+  'be': 'Belarusian',
+  'bn': 'Bengali',
+  'bh': 'Bihari',
+  'bg': 'Bulgarian',
+  'my': 'Burmese',
+  'ca': 'Catalan',
+  'chr': 'Cherokee',
+  'zh': 'Chinese',
+  'zh-CN': 'Chinese_simplified',
+  'zh-TW': 'Chinese_traditional',
+  'hr': 'Croatian',
+  'cs': 'Czech',
+  'da': 'Danish',
+  'dv': 'Dhivehi',
+  'nl': 'Dutch',
+  'en': 'English',
+  'eo': 'Esperanto',
+  'et': 'Estonian',
+  'tl': 'Filipino',
+  'fi': 'Finnish',
+  'fr': 'French',
+  'gl': 'Galician',
+  'ka': 'Georgian',
+  'de': 'German',
+  'el': 'Greek',
+  'gn': 'Guarani',
+  'gu': 'Gujarati',
+  'iw': 'Hebrew',
+  'hi': 'Hindi',
+  'hu': 'Hungarian',
+  'is': 'Icelandic',
+  'id': 'Indonesian',
+  'iu': 'Inuktitut',
+  'ga': 'Irish',
+  'it': 'Italian',
+  'ja': 'Japanese',
+  'kn': 'Kannada',
+  'kk': 'Kazakh',
+  'km': 'Khmer',
+  'ko': 'Korean',
+  'ku': 'Kurdish',
+  'ky': 'Kyrgyz',
+  'lo': 'Laothian',
+  'lv': 'Latvian',
+  'lt': 'Lithuanian',
+  'mk': 'Macedonian',
+  'ms': 'Malay',
+  'ml': 'Malayalam',
+  'mt': 'Maltese',
+  'mr': 'Marathi',
+  'mn': 'Mongolian',
+  'ne': 'Nepali',
+  'no': 'Norwegian',
+  'or': 'Oriya',
+  'ps': 'Pashto',
+  'fa': 'Persian',
+  'pl': 'Polish',
+  'pt-PT': 'Portuguese',
+  'pa': 'Punjabi',
+  'ro': 'Romanian',
+  'ru': 'Russian',
+  'sa': 'Sanskrit',
+  'sr': 'Serbian',
+  'sd': 'Sindhi',
+  'si': 'Sinhalese',
+  'sk': 'Slovak',
+  'sl': 'Slovenian',
+  'es': 'Spanish',
+  'sw': 'Swahili',
+  'sv': 'Swedish',
+  'tg': 'Tajik',
+  'ta': 'Tamil',
+  'tl': 'Tagalog',
+  'te': 'Telugu',
+  'th': 'Thai',
+  'bo': 'Tibetan',
+  'tr': 'Turkish',
+  'uk': 'Ukrainian',
+  'ur': 'Urdu',
+  'uz': 'Uzbek',
+  'ug': 'Uighur',
+  'vi': 'Vietnamese',
+  'cy': 'Welsh',
+  'yi': 'Yiddish'
+};
 
 class TMModel(BaseTMModel):
     """This is a Google Translate translation memory model.
@@ -48,22 +143,12 @@ class TMModel(BaseTMModel):
     # INITIALIZERS #
     def __init__(self, internal_name, controller):
         self.internal_name = internal_name
-        self._init_plugin()
         super(TMModel, self).__init__(controller)
         self.client = HTTPClient()
 
-    def _init_plugin(self):
-        try:
-            from virtaal.support.xgoogle.translate import Translator, TranslationError, _languages
-            self.TranslationError = TranslationError
-            self.supported_langs = _languages
-        except ImportError, ie:
-            raise Exception('Could not import virtaal.support.xgoogle.translate.Translator: %s' % (ie))
-
-
     # METHODS #
     def query(self, tmcontroller, query_str):
-        if self.source_lang not in self.supported_langs or self.target_lang not in self.supported_langs:
+        if self.source_lang not in _languages or self.target_lang not in _languages:
             logging.debug('language pair not supported')
             return
 

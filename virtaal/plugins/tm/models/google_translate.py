@@ -34,96 +34,63 @@ from virtaal.support.httpclient import HTTPClient, RESTRequest
 _languages = {
   'af': 'Afrikaans',
   'sq': 'Albanian',
-  'am': 'Amharic',
   'ar': 'Arabic',
-  'hy': 'Armenian',
-  'az': 'Azerbaijani',
-  'eu': 'Basque',
   'be': 'Belarusian',
-  'bn': 'Bengali',
-  'bh': 'Bihari',
   'bg': 'Bulgarian',
-  'my': 'Burmese',
   'ca': 'Catalan',
-  'chr': 'Cherokee',
   'zh': 'Chinese',
   'zh-CN': 'Chinese_simplified',
   'zh-TW': 'Chinese_traditional',
   'hr': 'Croatian',
   'cs': 'Czech',
   'da': 'Danish',
-  'dv': 'Dhivehi',
   'nl': 'Dutch',
   'en': 'English',
-  'eo': 'Esperanto',
   'et': 'Estonian',
-  'tl': 'Filipino',
   'fi': 'Finnish',
   'fr': 'French',
   'gl': 'Galician',
-  'ka': 'Georgian',
   'de': 'German',
   'el': 'Greek',
-  'gn': 'Guarani',
-  'gu': 'Gujarati',
   'iw': 'Hebrew',
   'hi': 'Hindi',
   'hu': 'Hungarian',
   'is': 'Icelandic',
   'id': 'Indonesian',
-  'iu': 'Inuktitut',
   'ga': 'Irish',
   'it': 'Italian',
   'ja': 'Japanese',
-  'kn': 'Kannada',
-  'kk': 'Kazakh',
-  'km': 'Khmer',
   'ko': 'Korean',
-  'ku': 'Kurdish',
-  'ky': 'Kyrgyz',
-  'lo': 'Laothian',
   'lv': 'Latvian',
   'lt': 'Lithuanian',
   'mk': 'Macedonian',
   'ms': 'Malay',
-  'ml': 'Malayalam',
   'mt': 'Maltese',
-  'mr': 'Marathi',
-  'mn': 'Mongolian',
-  'ne': 'Nepali',
   'no': 'Norwegian',
-  'or': 'Oriya',
-  'ps': 'Pashto',
   'fa': 'Persian',
   'pl': 'Polish',
-  'pt-PT': 'Portuguese',
-  'pa': 'Punjabi',
+  'pt': 'Portuguese',
   'ro': 'Romanian',
   'ru': 'Russian',
-  'sa': 'Sanskrit',
   'sr': 'Serbian',
-  'sd': 'Sindhi',
-  'si': 'Sinhalese',
   'sk': 'Slovak',
   'sl': 'Slovenian',
   'es': 'Spanish',
   'sw': 'Swahili',
   'sv': 'Swedish',
-  'tg': 'Tajik',
-  'ta': 'Tamil',
-  'tl': 'Tagalog',
-  'te': 'Telugu',
   'th': 'Thai',
-  'bo': 'Tibetan',
   'tr': 'Turkish',
   'uk': 'Ukrainian',
-  'ur': 'Urdu',
-  'uz': 'Uzbek',
-  'ug': 'Uighur',
   'vi': 'Vietnamese',
   'cy': 'Welsh',
   'yi': 'Yiddish'
 };
+
+# Some codes are weird or can be reused for others
+code_translation = {
+        'fl': 'tl', # Filipino -> Tagalog
+        'he': 'iw', # Weird code Google uses for Hebrew
+}
 
 class TMModel(BaseTMModel):
     """This is a Google Translate translation memory model.
@@ -148,7 +115,9 @@ class TMModel(BaseTMModel):
 
     # METHODS #
     def query(self, tmcontroller, query_str):
-        if self.source_lang not in _languages or self.target_lang not in _languages:
+        source_lang = code_translation.get(self.source_lang, self.source_lang)
+        target_lang = code_translation.get(self.target_lang, self.target_lang)
+        if source_lang not in _languages or target_lang not in _languages:
             logging.debug('language pair not supported')
             return
 

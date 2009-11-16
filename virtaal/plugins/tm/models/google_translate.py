@@ -20,6 +20,7 @@
 
 import logging
 import urllib
+import pycurl
 # These two json modules are API compatible
 try:
     import simplejson as json #should be a bit faster; needed for Python < 2.6
@@ -92,6 +93,8 @@ code_translation = {
         'he': 'iw', # Weird code Google uses for Hebrew
 }
 
+virtaal_referrer = "http://virtaal.org/"
+
 class TMModel(BaseTMModel):
     """This is a Google Translate translation memory model.
 
@@ -115,6 +118,8 @@ class TMModel(BaseTMModel):
 
     # METHODS #
     def query(self, tmcontroller, query_str):
+        # Google's Terms of Service says no more than 5000 characters
+        query_str = query_str[:5000]
         source_lang = code_translation.get(self.source_lang, self.source_lang)
         target_lang = code_translation.get(self.target_lang, self.target_lang)
         if source_lang not in _languages or target_lang not in _languages:
@@ -132,6 +137,8 @@ class TMModel(BaseTMModel):
 
             req = RESTRequest(real_url, '', method='GET', data=urllib.urlencode(''), headers=None)
             self.client.add(req)
+            # Google's Terms of Service says we need a proper HTTP referrer
+            req.curl.setopt(pycurl.REFERER, virtaal_referrer)
             req.connect(
                 'http-success',
                 lambda req, response: self.got_translation(response, query_str)

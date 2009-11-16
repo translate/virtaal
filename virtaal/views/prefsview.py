@@ -60,6 +60,7 @@ class PreferencesView(BaseView, GObjectWrapper):
 
         self._widgets['dialog'] = self.gui.get_widget('PreferencesDlg')
         self._widgets['dialog'].set_transient_for(self.controller.main_controller.view.main_window)
+        self._widgets['dialog'].set_icon(self.controller.main_controller.view.main_window.get_icon())
 
     def _init_gui(self):
         self._get_widgets()

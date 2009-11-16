@@ -82,6 +82,10 @@ class SelectDialog(GObjectWrapper):
     def set_message(self, msg):
         self.message.set_text(msg)
 
+    def set_transient_for(self, parent):
+        """Simple proxy method to C{self.dialog.set_transient_for(parent)}."""
+        self.dialog.set_transient_for(parent)
+
     def run(self, items=None, parent=None):
         if items is not None:
             self.sview.set_model(items)

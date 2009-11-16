@@ -114,7 +114,7 @@ class SelectView(gtk.TreeView, GObjectWrapper):
         btnconf = gtk.Button(_('Configure...'))
         if 'config' in item and callable(item['config']):
             def clicked(button):
-                item['config'](self.parent)
+                item['config'](self.get_toplevel())
             btnconf.connect('clicked', clicked)
             btnconf.config_func = item['config']
             vbox.btn_conf = btnconf

@@ -51,7 +51,7 @@ class LookupView(BaseView):
         for textbox, id in self._textbox_ids:
             textbox.disconnect(id)
 
-    def select_backends(self, menuitem):
+    def select_backends(self, parent):
         selectdlg = SelectDialog(
             #l10n: The 'services' here refer to different look-up plugins,
             #such as web look-up, etc.
@@ -59,7 +59,9 @@ class LookupView(BaseView):
             message=_('Select the services that should be used to perform look-ups'),
             size=(self.controller.config['backends_dialog_width'], -1)
         )
-        selectdlg.set_icon(self.controller.main_controller.view.main_window.get_icon())
+        if isinstance(parent, gtk.Window):
+            selectdlg.set_transient_for(parent)
+            selectdlg.set_icon(parent.get_icon())
 
         items = []
         plugin_controller = self.controller.plugin_controller

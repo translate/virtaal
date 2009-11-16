@@ -126,7 +126,12 @@ class TMWindow(gtk.Window):
             cell_renderer.set_property('text', _("%(match_quality)s%%") % \
                     {"match_quality": quality})
             return
-        cell_renderer.set_property('value', 0)
+        elif gtk.gtk_version < (2,16,0):
+            # Rendering bug with some older versions of GTK if a progress is at
+            # 0%. GNOME bug 567253.
+            cell_renderer.set_property('value', 3)
+        else:
+            cell_renderer.set_property('value', 0)
         cell_renderer.set_property('text', "")
 
 

@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-11-04 18:02+0200\n"
-"PO-Revision-Date: 2009-11-11 13:03+0200\n"
+"PO-Revision-Date: 2009-11-12 20:45+0200\n"
 "Last-Translator: Mohomodou Houssouba <mh@bollag-areal.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: son\n"
@@ -126,8 +126,8 @@ msgid ""
 "Placeables are special parts of the text that can be automatically "
 "highlighted and easily inserted into the translation."
 msgstr ""
-"Damhayey ti kalimaɲaa kur jere cereceranteyaŋ kaŋ hin ka gaayandi ngi boŋ se "
-"nda hurandi berandoo ra."
+"Damhayey ti kalimaɲaa kur jere cereceranteyaŋ kaŋ ga hin ka gaayandi ngi "
+"boŋše nda ka hurandi berandiyanoo ra."
 
 #: ../share/virtaal/virtaal.glade.h:27
 msgid "Plug-ins"
@@ -163,7 +163,7 @@ msgstr "Maana tukey"
 
 #: ../share/virtaal/virtaal.glade.h:35
 msgid "Terminology _file:"
-msgstr "Maana_tuku:"
+msgstr "Maana _tuku:"
 
 #: ../share/virtaal/virtaal.glade.h:36
 msgid ""
@@ -310,7 +310,7 @@ msgstr "<Ctrl+Beene> wala <Ctrl+Ganda> naagu ka berandiyaney ganandi."
 #: ../virtaal/tips.py:33
 msgid ""
 "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
-msgstr "Ctrl+PgUp wala Ctrl+PgDown ka bisa berandi wargayaŋ game. "
+msgstr "Ctrl+PgUp wala Ctrl+PgDown ka bisa berandi wargayaŋ game."
 
 #: ../virtaal/controllers/maincontroller.py:69
 #: ../virtaal/controllers/maincontroller.py:78
@@ -444,11 +444,11 @@ msgstr "Doodiikey \"printf\" tenjirey ra"
 
 #: ../virtaal/controllers/placeablescontroller.py:107
 msgid "Placeholders (Python)"
-msgstr "Doodiikey (Namay)"
+msgstr "Doodiikey (Python)"
 
 #: ../virtaal/controllers/placeablescontroller.py:108
 msgid "Placeholders in Python strings"
-msgstr "Doodiikey Namay tenjirey ra"
+msgstr "Doodiikey Python tenjirey ra"
 
 #: ../virtaal/controllers/placeablescontroller.py:111
 msgid "Placeholders (Java)"
@@ -498,7 +498,7 @@ msgstr "XML timmarey"
 
 #: ../virtaal/controllers/placeablescontroller.py:134
 msgid "Entity references, such as &amp; and &#169;"
-msgstr "Timmarey fellawey, sanda &amp; and &#169;"
+msgstr "Timmari fellawey, sanda &amp; and &#169;"
 
 #: ../virtaal/controllers/placeablescontroller.py:137
 msgid "XML Tags"
@@ -518,7 +518,7 @@ msgstr "Batana farrey nda farru nungu furantey ra"
 
 #: ../virtaal/controllers/placeablescontroller.py:154
 msgid "\"alt\" Attributes"
-msgstr "\"alt\" Alhaaley"
+msgstr "\"alt\" alhaaley"
 
 #: ../virtaal/controllers/placeablescontroller.py:155
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
@@ -577,7 +577,7 @@ msgstr "Ceeci"
 
 #: ../virtaal/modes/searchmode.py:66
 msgid "_Case sensitive"
-msgstr "_Harfu  beeriyan maate"
+msgstr "_Harfu beeriyan maate"
 
 #. l10n: To read about what regular expressions are, see
 #. http://en.wikipedia.org/wiki/Regular_expression
@@ -640,7 +640,7 @@ msgstr "Goyey suuba kaŋ ga hima ka goyandi gunarey ra"
 #: ../virtaal/plugins/lookup/lookupview.py:119
 #, python-format
 msgid "Look-up \"%(selection)s\""
-msgstr "\"%(selection)s\" ceeciyan"
+msgstr "\"%(selection)s\" ceeci"
 
 #. l10n: plugin name
 #: ../virtaal/plugins/lookup/models/weblookup.py:40
@@ -770,7 +770,7 @@ msgstr "Nungu maana tukey"
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:54
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:56
 msgid "Terminology _Files..."
-msgstr "Maana_tukey..."
+msgstr "Maana _tukey..."
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:62
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:64
@@ -807,7 +807,7 @@ msgid ""
 "%(errormsg)s"
 msgstr ""
 "Mana hin ka zumandi %(filename)s:\n"
-" \n"
+"\n"
 "%(errormsg)s"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:245
@@ -817,12 +817,12 @@ msgstr "Tuku feeriyan firka"
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:384
 #, python-format
 msgid "_Source term — %(langname)s"
-msgstr "Kalima_aššil %(langname)s"
+msgstr "Kalima _aššil %(langname)s"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:385
 #, python-format
 msgid "_Target term — %(langname)s"
-msgstr "Kalima_berandi — %(langname)s"
+msgstr "Kalima _berandi — %(langname)s"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:429
 msgid "Identical entry already exists."
@@ -837,7 +837,7 @@ msgstr "<b>%s</b>"
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:440
 #, python-format
 msgid "Existing translations: %(translations)s"
-msgstr "Berandiyan barantey; %(translations)s"
+msgstr "Berandiyan barantey: %(translations)s"
 
 #: ../virtaal/plugins/terminology/models/opentran.py:47
 msgid "Terms from Open-Tran.eu"
@@ -865,7 +865,7 @@ msgstr "Sohõda tuku"
 
 #: ../virtaal/plugins/tm/models/currentfile.py:33
 msgid "Translated units from the currently open file"
-msgstr "Izefoo berantey ka hun sohõda tuku feerantaa ra"
+msgstr "Hayiize berantey ka hun sohõda tuku feerantaa ra"
 
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/currentfile.py:82
@@ -910,12 +910,12 @@ msgstr "Nungu BL"
 #: ../virtaal/plugins/tm/models/moses.py:33
 #: ../virtaal/plugins/tm/models/moses.py:71
 msgid "Moses"
-msgstr "Muusa"
+msgstr "Moses"
 
 #: ../virtaal/plugins/tm/models/moses.py:34
 msgid "Unreviewed machine translations from a Moses server"
 msgstr ""
-"Maršin berandiyaney kaŋyaŋ mana gunandi boryo ka hun ka hun Muusa feršikaw "
+"Maršin berandiyaney kaŋyaŋ mana gunandi boryo ka hun ka hun Moses feršikaw "
 "ra"
 
 #: ../virtaal/plugins/tm/models/opentran.py:33
@@ -961,7 +961,7 @@ msgstr "Maršin berandiyaney kaŋyaŋ mana gunandi boryo ka hun Apertium ra"
 
 #: ../virtaal/plugins/tm/tmview.py:99
 msgid "Translation _Suggestions"
-msgstr "Berandiyan_Honnandiyaney"
+msgstr "Berandiyan _honnandiyaney"
 
 #: ../virtaal/plugins/tm/tmview.py:156
 #, python-format
@@ -993,13 +993,13 @@ msgstr "BL aššil"
 
 #. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
 #: ../virtaal/plugins/tm/tmwidgets.py:126
-#, python-format
+#, python-format, fuzzy
 msgid "%(match_quality)s%%"
 msgstr "%(sawandi_hennari)s%%"
 
 #: ../virtaal/views/langview.py:65
 msgid "_New Language Pair..."
-msgstr "Šenni_taaga hinka..."
+msgstr "Šenni _taaga hinka..."
 
 #: ../virtaal/views/mainview.py:200
 msgid "Error"
@@ -1046,7 +1046,7 @@ msgstr "Taare boobaray sawayan goyandi"
 #. between units.
 #: ../virtaal/views/modeview.py:62
 msgid "N_avigation:"
-msgstr "N_aaru:"
+msgstr "N_aaruyan:"
 
 #: ../virtaal/views/unitview.py:603
 msgid "F_uzzy"
@@ -1060,7 +1060,7 @@ msgstr "Copyright © 2007-2009 Zuza Software Foundation"
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
 #: ../virtaal/views/widgets/aboutdialog.py:38
 msgid "Virtaal is a program for doing translation."
-msgstr "Virtaal ti porogaram kaŋ tee berandiyan goy se"
+msgstr "Virtaal ti porogaram kaŋ tee berandiyan goy se."
 
 #: ../virtaal/views/widgets/aboutdialog.py:39
 msgid ""
@@ -1068,8 +1068,8 @@ msgid ""
 "definitely intend it to be useful as a general purpose tool for Computer "
 "Aided Translation (CAT)."
 msgstr ""
-"Naata jinaa ti goyjinay berandiyan (šenni nungu kayandiyan wala l10n), amma "
-"ir ga boonay k'a tee goyjinay maršin-faabante berandiyan dumi kul se."
+"Anniyaa jinaa ti goyjinay berandiyan (šenni nungu kayandiyan wala l10n), "
+"amma ir ga boonay k'a tee goyjinay maršin-faabante berandiyan dumi kul se."
 
 #: ../virtaal/views/widgets/aboutdialog.py:53
 msgid "Virtaal website"
@@ -1276,11 +1276,11 @@ msgstr "Hasaraw gunayan suubarey tunandi"
 
 #: ../bin/virtaal:109
 msgid "Could not open log file '%(filename)s'"
-msgstr "Mana hin ka '%(filename)s zaarihantum tukoo feeri"
+msgstr "Mana hin ka '%(filename)s' zaarihantum tukoo feeri"
 
 #: ../bin/virtaal:117
 msgid "Could not read configuration file '%(filename)s'"
-msgstr "Mana hin ka '%(filename)s hanseyan tukoo caw"
+msgstr "Mana hin ka '%(filename)s' hanseyan tukoo caw"
 
 #: ../bin/virtaal:121
 msgid "invalid number of arguments"
@@ -1288,7 +1288,7 @@ msgstr "adadu hansari hinna laala"
 
 #: ../bin/virtaal:150
 msgid "Could not open profile file '%(filename)s'"
-msgstr "Mana hin ka '%(filename)s alhaali tukoo feeri"
+msgstr "Mana hin ka '%(filename)s' alhaali tukoo feeri"
 
 #: ../devsupport/optparse.py:134
 #, python-format
@@ -1323,7 +1323,7 @@ msgstr "tonbi-doyante"
 
 #: ../devsupport/optparse.py:415
 msgid "complex"
-msgstr " boŋhaway                                                       "
+msgstr "boŋhaw"
 
 #: ../devsupport/optparse.py:423
 #, python-format
@@ -1337,11 +1337,11 @@ msgstr "suubari %s: suuba laalo: %r (suuba %s) ra"
 
 #: ../devsupport/optparse.py:1246
 msgid "show this help message and exit"
-msgstr "faabaa woo cebe nda fatta"
+msgstr "faabaa woo cebe de ma fatta"
 
 #: ../devsupport/optparse.py:1251
 msgid "show program's version number and exit"
-msgstr "porogaram dumoo hinnaa cebe nda fatta"
+msgstr "porogaram dumoo hinnaa cebe de ma fatta"
 
 #: ../devsupport/optparse.py:1274
 msgid "%prog [options]"
@@ -1355,7 +1355,7 @@ msgstr "%s suubaroo ga baa adadu hansari"
 #: ../devsupport/optparse.py:1486 ../devsupport/optparse.py:1525
 #, python-format
 msgid "%s option requires %d arguments"
-msgstr "%s suubaroo ga baa adadu hansari %d"
+msgstr "%s suubaroo ga baa adadu hansarey %d"
 
 #: ../devsupport/optparse.py:1495
 #, python-format

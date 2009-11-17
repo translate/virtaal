@@ -39,8 +39,8 @@ except ImportError:
     py2app = None
 
 PRETTY_NAME = "Virtaal"
-SOURCE_DATA_DIR = path.join('share')
-TARGET_DATA_DIR = path.join("share")
+SOURCE_DATA_DIR = path.abspath('share')
+TARGET_DATA_DIR = path.abspath('share')
 
 virtaal_description="A tool to create program translations."
 

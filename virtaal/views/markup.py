@@ -110,7 +110,7 @@ def pango_diff(a, b):
     to transform a into b."""
 
     insert_attr = "underline='single' underline_color='#777777' weight='bold' color='#000' background='#a0ffa0'"
-    delete_attr = "strikethrough='true' strikethrough_color='#777' color='#000' color='#000' background='#ccc'"
+    delete_attr = "strikethrough='true' strikethrough_color='#777' color='#000' background='#ccc'"
     replace_attr_remove = delete_attr
     replace_attr_add = "underline='single' underline_color='#777777' weight='bold' color='#000' background='#ffff70'"
 

@@ -520,8 +520,7 @@ def add_platform_specific_options(options):
         return add_win32_options(options)
     if sys.platform == 'darwin':
         return add_mac_options(options)
-    else:
-        return add_freedesktop_options(options)
+    return add_freedesktop_options(options)
 
 def create_manifest(data_files, extra_files, extra_dirs):
     f = open('MANIFEST.in', 'w+')

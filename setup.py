@@ -400,6 +400,14 @@ def find_enchant_files():
     data_files.append(('lib/enchant', [en.provider.file]))
     return data_files
 
+def find_langmodel_files():
+    from translate.misc.file_discovery import get_abs_data_filename
+    lmdir = path.abspath(get_abs_data_filename('langmodels'))
+    if not path.isdir(lmdir):
+        return []
+
+    return [(path.join(TARGET_DATA_DIR, 'langmodels'), glob(path.join(lmdir, '*.*')))]
+
 def add_win32_options(options):
     """This function is responsible for finding data files and setting options necessary
     to build executables and installers under Windows.
@@ -410,6 +418,7 @@ def add_win32_options(options):
     if py2exe != None and ('py2exe' in sys.argv or 'innosetup' in sys.argv):
         options['data_files'].extend(find_gtk_files())
         options['data_files'].extend(find_enchant_files())
+        options['data_files'].extend(find_langmodel_files())
         #This depends on setup.py being run from a checkout with the translate
         #toolkit in place.
         options['scripts'].append("../translate/services/tmserver")

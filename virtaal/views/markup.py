@@ -109,10 +109,10 @@ def pango_diff(a, b):
     The differences are highlighted such that they show what would be required
     to transform a into b."""
 
-    insert_attr = "underline='single' underline_color='#777777' weight='bold' background='#ffff70'"
-    delete_attr = "strikethrough='true' strikethrough_color='#777777' background='#ffa070'"
+    insert_attr = "underline='single' underline_color='#777777' weight='bold' background='#a0ffa0'"
+    delete_attr = "strikethrough='true' strikethrough_color='#777' color='#000' background='#ccc'"
     replace_attr_remove = delete_attr
-    replace_attr_add = insert_attr
+    replace_attr_add = "underline='single' underline_color='#777777' weight='bold' background='#ffff70'"
 
     textdiff = ""
     for tag, i1, i2, j1, j2 in SequenceMatcher(None, a, b).get_opcodes():
@@ -123,6 +123,7 @@ def pango_diff(a, b):
         if tag == "delete":
             textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': delete_attr, 'text': a[i1:i2]}
         if tag == "replace":
-            textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': replace_attr_remove, 'text': a[i1:i2]}
+            # We don't show text that was removed as part of a change:
+            #textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': replace_attr_remove, 'text': a[i1:i2]}
             textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': replace_attr_add, 'text': b[j1:j2]}
     return textdiff

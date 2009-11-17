@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-11-06 16:54+0200\n"
-"PO-Revision-Date: 2009-11-10 17:02+0200\n"
+"PO-Revision-Date: 2009-11-11 14:32+0200\n"
 "Last-Translator: Abe Mathibela <abe@mosekolatranslation.co.za>\n"
 "Language-Team: translate-discuss-st@lists.sourceforge.net\n"
 "Language: st\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.4.0\n"
+"X-Generator: Pootle 1.2.1\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 msgid ""
@@ -84,7 +84,7 @@ msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:13
 msgid "E-mail address:"
-msgstr "Aterese ya emeili:"
+msgstr "Aterese ya emeile:"
 
 #. l10n: This tab label refers to the general preferences
 #: ../share/virtaal/virtaal.glade.h:15
@@ -191,7 +191,7 @@ msgid ""
 "If you are translating from English to French then French would be your "
 "translation or target language."
 msgstr ""
-"<b>Phetolelo</b> ke leleme leo o le fetolelang, hape e bitswa leleme la "
+"<b>Phetolelo</b> ke leleme leo o fetolelang ho lona, hape e bitswa leleme la "
 "pakane.\n"
 "\n"
 "Haeba o fetolela ho tswa Senyesemaneng ho ya ho Sefora jwale Sefora e tla ba "
@@ -210,8 +210,8 @@ msgid ""
 "The team information stored in the file header. This can be an e-mail "
 "address or a URL, for example."
 msgstr ""
-"Lesedi la sehlopha le bolokilweng ka hara sehlohwana sa faele. Sena e ka a "
-"aterese ya emeile kapa URL, ka mohlala."
+"Lesedi la sehlopha le bolokilweng ka hara sehlohwana sa faele. Kamohla, sena "
+"e ka ba aterese ya emeile kapa URL."
 
 #. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
 #: ../share/virtaal/virtaal.glade.h:46
@@ -220,7 +220,7 @@ msgstr "Fetisetsa ho tswa mohloding"
 
 #: ../share/virtaal/virtaal.glade.h:47
 msgid "URL:"
-msgstr "DiURL:"
+msgstr "URL:"
 
 #: ../share/virtaal/virtaal.glade.h:48
 msgid "Use _Default Fonts"
@@ -311,7 +311,7 @@ msgstr ""
 msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
 msgstr ""
 "Ho bontsha phetolelo ya honajwale e le e sa hlakang, habonolofela tobetsa "
-"<Alt+O>."
+"<Alt+H>."
 
 #: ../virtaal/tips.py:32
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
@@ -333,7 +333,7 @@ msgstr "Lesedi la sehlohwana"
 
 #: ../virtaal/controllers/maincontroller.py:70
 msgid "Please enter your name"
-msgstr "Ka kopa kenya lebitso la hao"
+msgstr "Ka kopo kenya lebitso la hao"
 
 #: ../virtaal/controllers/maincontroller.py:79
 msgid "Please enter your e-mail address"
@@ -514,7 +514,7 @@ msgstr "Dikemo tsa XML"
 
 #: ../virtaal/controllers/placeablescontroller.py:134
 msgid "Entity references, such as &amp; and &#169;"
-msgstr "Tse lakatsehang tsa dikemo, tse kang &amp; le &#169;"
+msgstr "Direferense tsa dikemo, tse kang &amp; le &#169;"
 
 #: ../virtaal/controllers/placeablescontroller.py:137
 msgid "XML Tags"
@@ -721,7 +721,7 @@ msgstr "Hula boitsebiso ho tswa ho disebediswa tse ding?"
 
 #: ../virtaal/plugins/migration.py:97
 msgid "Migration was successfully completed"
-msgstr "Ho falla ho phethilwe ka ka katleho"
+msgstr "Ho falla ho phethilwe ka katleho"
 
 #: ../virtaal/plugins/migration.py:98
 msgid "The following items were migrated:"
@@ -782,7 +782,7 @@ msgstr "Mareo a haefatso a kgethilweng"
 
 #: ../virtaal/plugins/terminology/models/localfile/__init__.py:42
 msgid "Local Files"
-msgstr "Faele ya lehae"
+msgstr "Difaele tsa lehae"
 
 #: ../virtaal/plugins/terminology/models/localfile/__init__.py:43
 msgid "Local terminology files"
@@ -866,7 +866,7 @@ msgstr "Mareo ho tswa ho Open-Tran.eu"
 
 #: ../virtaal/plugins/terminology/termview.py:146
 msgid "Select Terminology Sources"
-msgstr "Mehlodi e tswailweng ya mareo"
+msgstr "Tshwaya mehlodi ya mareo"
 
 #: ../virtaal/plugins/terminology/termview.py:147
 msgid "Select the sources of terminology suggestions"
@@ -886,7 +886,7 @@ msgstr "Faele ya honajwale"
 
 #: ../virtaal/plugins/tm/models/currentfile.py:33
 msgid "Translated units from the currently open file"
-msgstr "Dikarolwana tse fetoletsweng ho tswa faeleng ya honajwale"
+msgstr "Dikarolwana tse fetoletsweng ho tswa faeleng ya honajwale e bulehileng"
 
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/currentfile.py:82
@@ -896,7 +896,7 @@ msgstr "Faele ena"
 #. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
 #: ../virtaal/plugins/tm/models/google_translate.py:36
 msgid "Google Translate"
-msgstr "Phetolelo ya Google"
+msgstr "Google Translate"
 
 #: ../virtaal/plugins/tm/models/google_translate.py:37
 msgid "Unreviewed machine translations from Google's translation service"
@@ -1043,7 +1043,7 @@ msgid ""
 "Do you want to save your changes?"
 msgstr ""
 "Faele ya honajwale e fetotswe.\n"
-"Na o batla ho boloka dipetoho tsa hao?"
+"Na o batla ho boloka diphetoho tsa hao?"
 
 #: ../virtaal/views/mainview.py:271
 msgid "_Discard"
@@ -1060,7 +1060,7 @@ msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 
 #: ../virtaal/views/mainview.py:326
 msgid "Please enter the number of noun forms (plurals) to use"
-msgstr "Ka kopo kenya nomoro ya mefuta ya mabitso (bongata) ho e sebedisa"
+msgstr "Ka kopo kenya mefuta e leng ka bong (bongata) ho e sebedisa"
 
 #: ../virtaal/views/mainview.py:332
 msgid "Please enter the plural equation to use"
@@ -1324,7 +1324,7 @@ msgstr "ha hona kgetho e jwalo: %s"
 #: ../devsupport/optparse.py:145
 #, python-format
 msgid "ambiguous option: %s (%s?)"
-msgstr "faele e habedi: %s (%s?)"
+msgstr "kgetho tse habedi: %s (%s?)"
 
 #: ../devsupport/optparse.py:368
 #, python-format

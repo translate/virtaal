@@ -20,7 +20,7 @@
 
 from distutils.core import setup, Distribution, Command
 from virtaal.__version__ import ver as virtaal_version
-import glob
+from glob import glob
 import os
 import os.path as path
 import sys
@@ -64,7 +64,7 @@ classifiers = [
 from translate.tools.pocompile import convertmo
 mo_files = []
 
-for po_filename in glob.glob(path.join('po', '*.po')):
+for po_filename in glob(path.join('po', '*.po')):
     lang = path.split(po_filename[:-3])[1] # Chop off '.po'
     mo_filename = path.join('mo', lang, 'virtaal.mo')
 
@@ -81,9 +81,9 @@ for po_filename in glob.glob(path.join('po', '*.po')):
 # setup.py, like the .xml and .desktop files
 options = {
     'data_files': [
-        (path.join(TARGET_DATA_DIR, "virtaal"), glob.glob(path.join(SOURCE_DATA_DIR, "virtaal", "*.*"))),
-        (path.join(TARGET_DATA_DIR, "virtaal", "autocorr"), glob.glob(path.join(SOURCE_DATA_DIR, "virtaal", "autocorr", "*"))),
-        (path.join(TARGET_DATA_DIR, "icons"), glob.glob(path.join(SOURCE_DATA_DIR, "icons", "*.*"))),
+        (path.join(TARGET_DATA_DIR, "virtaal"), glob(path.join(SOURCE_DATA_DIR, "virtaal", "*.*"))),
+        (path.join(TARGET_DATA_DIR, "virtaal", "autocorr"), glob(path.join(SOURCE_DATA_DIR, "virtaal", "autocorr", "*"))),
+        (path.join(TARGET_DATA_DIR, "icons"), glob(path.join(SOURCE_DATA_DIR, "icons", "*.*"))),
     ] + mo_files,
     'scripts': [
         "bin/virtaal",
@@ -119,12 +119,12 @@ if os.name == 'nt' or sys.platform == 'darwin':
     plugin_src = path.join('virtaal', 'plugins')
     plugin_dest = 'virtaal_plugins'
     options['data_files'] += [
-        (plugin_dest, glob.glob(path.join(plugin_src, '*.py'))),
-        (path.join(plugin_dest, 'terminology'), glob.glob(path.join(plugin_src, 'terminology', '*.py'))),
-        (path.join(plugin_dest, 'terminology', 'models'), glob.glob(path.join(plugin_src, 'terminology', 'models', '*.py'))),
-        (path.join(plugin_dest, 'terminology', 'models', 'localfile'), glob.glob(path.join(plugin_src, 'terminology', 'models', 'localfile', '*.py'))),
-        (path.join(plugin_dest, 'tm'), glob.glob(path.join(plugin_src, 'tm', '*.py'))),
-        (path.join(plugin_dest, 'tm', 'models'), glob.glob(path.join(plugin_src, 'tm', 'models', '*.py'))),
+        (plugin_dest, glob(path.join(plugin_src, '*.py'))),
+        (path.join(plugin_dest, 'terminology'), glob(path.join(plugin_src, 'terminology', '*.py'))),
+        (path.join(plugin_dest, 'terminology', 'models'), glob(path.join(plugin_src, 'terminology', 'models', '*.py'))),
+        (path.join(plugin_dest, 'terminology', 'models', 'localfile'), glob(path.join(plugin_src, 'terminology', 'models', 'localfile', '*.py'))),
+        (path.join(plugin_dest, 'tm'), glob(path.join(plugin_src, 'tm', '*.py'))),
+        (path.join(plugin_dest, 'tm', 'models'), glob(path.join(plugin_src, 'tm', 'models', '*.py'))),
     ]
 
 no_install_files = [
@@ -455,7 +455,7 @@ def add_mac_options(options):
     # http://developer.apple.com/documentation/MacOSX/Conceptual/BPRuntimeConfig/Articles/PListKeys.html
     if py2app is None:
         return options
-    options['data_files'].extend([('share/OSX_Leopard_theme', glob.glob(path.join('devsupport', 'OSX_Leopard_theme', '*')))])
+    options['data_files'].extend([('share/OSX_Leopard_theme', glob(path.join('devsupport', 'OSX_Leopard_theme', '*')))])
     options['data_files'].extend([('', ['devsupport/virtaal.icns'])])
 
     # For some reason py2app can't handle bin/virtaal since it doesn't end in .py
@@ -493,13 +493,13 @@ def add_mac_options(options):
 
 def add_freedesktop_options(options):
     options['data_files'].extend([
-        (path.join(TARGET_DATA_DIR, "mime", "packages"), glob.glob(path.join(SOURCE_DATA_DIR, "mime", "packages", "*.xml"))),
-        (path.join(TARGET_DATA_DIR, "applications"), glob.glob(path.join(SOURCE_DATA_DIR, "applications", "*.desktop"))),
+        (path.join(TARGET_DATA_DIR, "mime", "packages"), glob(path.join(SOURCE_DATA_DIR, "mime", "packages", "*.xml"))),
+        (path.join(TARGET_DATA_DIR, "applications"), glob(path.join(SOURCE_DATA_DIR, "applications", "*.desktop"))),
     ])
     for dir in ("16x16", "32x32", "48x48", "64x64", "128x128", "scalable"):
         options['data_files'].extend([
             (path.join(TARGET_DATA_DIR, "icons", "hicolor", dir, "mimetypes"),
-            glob.glob(path.join(SOURCE_DATA_DIR, "icons", "hicolor", dir, "mimetypes", "*.*"))),
+            glob(path.join(SOURCE_DATA_DIR, "icons", "hicolor", dir, "mimetypes", "*.*"))),
         ])
     return options
 

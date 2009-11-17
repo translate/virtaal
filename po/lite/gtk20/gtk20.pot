@@ -203,6 +203,22 @@ msgctxt "Stock label"
 msgid "_Revert"
 msgstr ""
 
+#. File->Save As->Replace confirmation
+#, c-format
+msgid "A file named \"%s\" already exists.  Do you want to replace it?"
+msgstr ""
+
+#. File->Save As->Replace confirmation
+#, c-format
+msgid ""
+"The file already exists in \"%s\".  Replacing it will overwrite its contents."
+msgstr ""
+
+#. File->Save As->Replace confirmation
+#: ../gtk/gtkfilechooserdefault.c:8349 ../gtk/gtkprintunixdialog.c:457
+msgid "_Replace"
+msgstr ""
+
 #. File ->Recent Files->No items found
 msgid "No items found"
 msgstr ""

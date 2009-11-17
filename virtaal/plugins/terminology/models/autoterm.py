@@ -185,7 +185,6 @@ class TerminologyModel(BaseTerminologyModel):
         if os.path.isfile(localfile) and localfile in self.config:
             etag = self.config[os.path.abspath(localfile)]
 
-        url = self.config['url'] % {'srclang': srclang, 'tgtlang': tgtlang}
         url = self._l10n_URL % {'srclang': srclang, 'tgtlang': tgtlang}
 
         if not os.path.isfile(localfile):

@@ -26,7 +26,7 @@ error_messages = {
     'gtk':        'PyGtk >= 2.12.0 is required for Virtaal to function.',
     'gtk.glade':  'Python bindings for Glade is required for Virtaal to function.',
     'lxml.etree': 'LXML is required for XML-based format support as well as AutoCorrection.',
-    'simplejson': 'SimpleJSON is required for certain TM back-ends.',
+    'json':       'SimpleJSON or Python >= 2.6 is required for certain TM back-ends.',
     'pycurl':     'PyCurl is required for certain TM and terminology back-ends.',
     'sqlite3':    'SQLite3 is required for Virtaal to function.',
     'wsgiref':    'WSGIRef is required for Virtaal to function.',

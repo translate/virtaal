@@ -24,7 +24,7 @@ msgstr ""
 #.
 #. Configuration: Direction
 msgid "default:LTR"
-msgstr "tilasu:LTR"
+msgstr "default:LTR"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the control key. If the text on this key isn't typically

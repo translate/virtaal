@@ -115,6 +115,7 @@ class StoreController(BaseController):
 
         self._modified = False
 
+        self.main_controller.set_force_saveas(False)
         # if file is a template force saveas
         pot_regexp = re.compile("\.pot(\.gz|\.bz2){0,1}$")
         if pot_regexp.search(filename):

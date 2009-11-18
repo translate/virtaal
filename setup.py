@@ -120,6 +120,8 @@ if os.name == 'nt' or sys.platform == 'darwin':
     plugin_dest = 'virtaal_plugins'
     options['data_files'] += [
         (plugin_dest, glob(path.join(plugin_src, '*.py'))),
+        (path.join(plugin_dest, 'lookup'), glob(path.join(plugin_src, 'lookup', '*.py'))),
+        (path.join(plugin_dest, 'lookup', 'models'), glob(path.join(plugin_src, 'lookup', 'models', '*.py'))),
         (path.join(plugin_dest, 'terminology'), glob(path.join(plugin_src, 'terminology', '*.py'))),
         (path.join(plugin_dest, 'terminology', 'models'), glob(path.join(plugin_src, 'terminology', 'models', '*.py'))),
         (path.join(plugin_dest, 'terminology', 'models', 'localfile'), glob(path.join(plugin_src, 'terminology', 'models', 'localfile', '*.py'))),

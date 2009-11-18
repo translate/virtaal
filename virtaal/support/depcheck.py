@@ -60,7 +60,7 @@ def test_json():
         pass
     return False
 
-MIN_TRANSLATE_VERSION = (1, 4, 0)
+MIN_TRANSLATE_VERSION = (1, 5, 0)
 def test_translate_toolkit_version():
     try:
         from translate.__version__ import ver

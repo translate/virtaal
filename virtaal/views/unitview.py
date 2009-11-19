@@ -428,6 +428,12 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                 idle_add(self.copy_original, textbox)
                 return True
 
+            # Shift-Tab
+            elif eventname == 'shift-tab':
+                if self.focused_target_n > 0:
+                    self.focused_target_n -= 1
+                return True
+
             return False
 
         for i in range(len(self.targets), self.MAX_TARGETS):

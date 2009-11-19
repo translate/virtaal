@@ -50,15 +50,25 @@ class PopupButton(gtk.ToggleButton):
 
     # METHODS #
     def _calculate_popup_pos(self, menu):
-        alloc = self.get_allocation()
-        return (alloc.x, alloc.y, True)
+        _w, menu_h = 0, 0
+        menu_alloc = menu.get_allocation()
+        if menu_alloc.height > 1:
+            menu_h = menu_alloc.height
+        else:
+            _w, menu_h = menu.size_request()
+
+        window_xy = self.window.get_origin()
+        widget_alloc = self.get_allocation()
+
+        x = window_xy[0] + widget_alloc.x
+        y = window_xy[1] + widget_alloc.y - menu_h
+        return (x, y, True)
 
     def popdown(self):
         self.menu.popdown()
         return True
 
     def popup(self):
-        self.menu.show_all()
         self.menu.popup(None, None, self._calculate_popup_pos, 0, 0)
 
 

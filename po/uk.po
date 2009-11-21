@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-11-04 18:02+0200\n"
-"PO-Revision-Date: 2009-11-20 21:56+0200\n"
+"PO-Revision-Date: 2009-11-21 09:17+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <translation@linux.org.ua>\n"
 "Language: uk\n"
@@ -33,7 +33,7 @@ msgstr "Засіб для перекладу"
 #: ../share/applications/virtaal.desktop.in.h:3
 #: ../share/virtaal/virtaal.glade.h:49
 msgid "Virtaal"
-msgstr "Virtaal"
+msgstr "Фіртаал"
 
 #: ../share/virtaal/virtaal.glade.h:1
 msgid "<b>Fonts</b>"
@@ -168,7 +168,7 @@ msgstr "Файли термінології"
 
 #: ../share/virtaal/virtaal.glade.h:35
 msgid "Terminology _file:"
-msgstr "_Файл термінології:"
+msgstr "Фа_йл термінології:"
 
 #: ../share/virtaal/virtaal.glade.h:36
 msgid ""
@@ -230,7 +230,7 @@ msgstr "Використовувати _типові шрифти"
 
 #: ../share/virtaal/virtaal.glade.h:50
 msgid "Virtaal Preferences"
-msgstr "Налаштування Virtaal"
+msgstr "Налаштування Фіртаал"
 
 #: ../share/virtaal/virtaal.glade.h:51
 msgid "Web Look-ups"
@@ -262,7 +262,7 @@ msgstr "_Настанови з локалізації"
 
 #: ../share/virtaal/virtaal.glade.h:58
 msgid "_Navigation"
-msgstr "Н_авігація"
+msgstr "На_вігація"
 
 #: ../share/virtaal/virtaal.glade.h:59
 msgid "_Next Placeable"
@@ -598,7 +598,7 @@ msgstr "_З врахуванням регістру"
 #. http://en.wikipedia.org/wiki/Regular_expression
 #: ../virtaal/modes/searchmode.py:70
 msgid "_Regular expression"
-msgstr "_Формальний вираз"
+msgstr "Ф_ормальний вираз"
 
 #. l10n: This text label shows in front of the text box where the replacement
 #. text is typed. Keep in mind that the text box will appear after this text.
@@ -699,7 +699,7 @@ msgstr "Додавати лапки"
 #: ../virtaal/plugins/migration.py:56
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
 msgstr ""
-"Перенесення параметрів з from KBabel, Lokalize і/або Poedit до Virtaal."
+"Перенесення параметрів з from KBabel, Lokalize і/або Poedit до Фіртаал."
 
 #: ../virtaal/plugins/migration.py:57
 msgid "Migration Assistant"
@@ -708,7 +708,7 @@ msgstr "Помічник перенесення"
 #: ../virtaal/plugins/migration.py:71
 msgid "Should Virtaal try to import settings and data from other applications?"
 msgstr ""
-"Чи слід Virtaal спробувати імпортувати параметри та дані з інших програм?"
+"Чи слід Фіртаал спробувати імпортувати параметри та дані з інших програм?"
 
 #: ../virtaal/plugins/migration.py:72
 msgid "Import data from other applications?"
@@ -728,7 +728,7 @@ msgstr "Перенесення завершено"
 
 #: ../virtaal/plugins/migration.py:105
 msgid "Virtaal was not able to migrate any settings or data"
-msgstr "Virtaal не вдалося перенести хоч якісь параметри або дані"
+msgstr "Фіртаал не вдалося перенести хоч якісь параметри або дані"
 
 #: ../virtaal/plugins/migration.py:106
 msgid "Nothing migrated"
@@ -784,7 +784,7 @@ msgstr "Локальні файли термінології"
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:54
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:56
 msgid "Terminology _Files..."
-msgstr "_Файли термінології..."
+msgstr "Фа_йли термінології..."
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:62
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:64
@@ -1044,7 +1044,7 @@ msgstr "В_ідкинути"
 #: ../virtaal/views/mainview.py:301
 #, python-format
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
-msgstr "%(modified_marker)s%(current_file)s - Virtaal"
+msgstr "%(modified_marker)s%(current_file)s — Фіртаал"
 
 #: ../virtaal/views/mainview.py:326
 msgid "Please enter the number of noun forms (plurals) to use"
@@ -1072,7 +1072,7 @@ msgstr "Авторські права належать © 2007-2009 Zuza Softwar
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
 #: ../virtaal/views/widgets/aboutdialog.py:38
 msgid "Virtaal is a program for doing translation."
-msgstr "Virtaal — програма для виконання перекладу."
+msgstr "Фіртаал — програма для виконання перекладу."
 
 #: ../virtaal/views/widgets/aboutdialog.py:39
 msgid ""
@@ -1086,7 +1086,7 @@ msgstr ""
 
 #: ../virtaal/views/widgets/aboutdialog.py:53
 msgid "Virtaal website"
-msgstr "Веб-сайт Virtaal"
+msgstr "Веб-сайт Фіртаал"
 
 #: ../virtaal/views/widgets/aboutdialog.py:62
 msgid "We thank our donors:"

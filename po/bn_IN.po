@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: virtaal-04\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-11-04 18:02+0200\n"
-"PO-Revision-Date: 2009-11-25 16:01+0530\n"
+"PO-Revision-Date: 2009-11-25 21:35+0530\n"
 "Last-Translator: sankarshan mukhopadhyay <sankarshan@fedoraproject.org>\n"
 "Language-Team: anubad@lists.ankur.org.in\n"
 "Language: bn_IN\n"
@@ -162,7 +162,7 @@ msgstr "দল:"
 
 #: ../share/virtaal/virtaal.glade.h:34
 msgid "Terminology Files"
-msgstr "পরিভাষার ফাইল যোগ করুন"
+msgstr "পরিভাষার ফাইল"
 
 #: ../share/virtaal/virtaal.glade.h:35
 msgid "Terminology _file:"
@@ -215,7 +215,7 @@ msgstr "উৎস থেকে অনুকরণ"
 
 #: ../share/virtaal/virtaal.glade.h:47
 msgid "URL:"
-msgstr "URL"
+msgstr "URL:"
 
 #: ../share/virtaal/virtaal.glade.h:48
 msgid "Use _Default Fonts"
@@ -487,7 +487,7 @@ msgstr "সংকেতচিহ্ন ও স্বল্প ব্যবহৃ
 
 #: ../virtaal/controllers/placeablescontroller.py:128
 msgid "URLs"
-msgstr "URL"
+msgstr "URLs"
 
 #: ../virtaal/controllers/placeablescontroller.py:129
 msgid "URLs, hostnames and IP addresses"
@@ -548,7 +548,7 @@ msgstr "অনুবাদ করা হয়েছে : %d"
 #: ../virtaal/controllers/storecontroller.py:166
 #, python-format
 msgid "Fuzzy: %d"
-msgstr "ফাজি: (%d)"
+msgstr "ফাজি বা অস্পষ্ট: (%d)"
 
 #: ../virtaal/controllers/storecontroller.py:167
 #, python-format
@@ -611,7 +611,7 @@ msgstr "লম্বা শব্দ টাইপ করার সময় স্�
 
 #: ../virtaal/plugins/autocompletor.py:217
 msgid "AutoCompletor"
-msgstr "AutoCompletor"
+msgstr "স্বয়ংক্রীয়সম্পূর্ণকারী"
 
 #: ../virtaal/plugins/autocorrector.py:262
 msgid "Automatically correct text while you type"
@@ -619,7 +619,7 @@ msgstr "টাইপ করার সময় স্বয়ংক্রিয়ভা
 
 #: ../virtaal/plugins/autocorrector.py:263
 msgid "AutoCorrector"
-msgstr "AutoCorrector"
+msgstr "স্বয়ংক্রীয়সংশোধন"
 
 #: ../virtaal/plugins/lookup/__init__.py:29
 msgid "Perform look-ups on selected text"
@@ -681,7 +681,7 @@ msgstr "URL"
 #. l10n: Whether the selected text should be surrounded by "quotes"
 #: ../virtaal/plugins/lookup/models/weblookup.py:191
 msgid "Quote Query"
-msgstr "Quote Query"
+msgstr "নির্বাচিত পংক্তিটি কোট যতিচিহ্ন দ্বারা সীমাবদ্ধ"
 
 #: ../virtaal/plugins/migration.py:56
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
@@ -926,7 +926,7 @@ msgstr "মুক্ত ও ওপেন সোর্স সফ্টওয়্�
 #: ../virtaal/plugins/tm/models/opentran.py:69
 #: ../virtaal/plugins/tm/models/opentran.py:71
 msgid "OpenTran"
-msgstr "OpenTran"
+msgstr "ওপেনট্র্যান"
 
 #: ../virtaal/plugins/tm/models/remotetm.py:30
 msgid "Remote Server"
@@ -1091,7 +1091,9 @@ msgstr "Mozilla Corporation"
 #. l10n: Rather than translating, fill in the names of the translators
 #: ../virtaal/views/widgets/aboutdialog.py:69
 msgid "translator-credits"
-msgstr "রুণা ভট্টাচার্য্য (runab@fedoraproject.org)"
+msgstr ""
+"রুণা ভট্টাচার্য্য (runab@fedoraproject.org)\n"
+"সঙ্কর্ষণ মুখোপাধ্যায় (sankarshan@fedoraproject.org)"
 
 #: ../virtaal/views/widgets/langadddialog.py:103
 msgid "Language code must be an ASCII string."
@@ -1275,76 +1277,76 @@ msgstr "use the configuration file given by the supplied filename."
 
 #: ../bin/virtaal:84
 msgid "enable debugging features"
-msgstr "ডিবাগ ব্যবস্থা সক্রিয় করা হবে"
+msgstr "enable debugging features"
 
 #: ../bin/virtaal:109
 msgid "Could not open log file '%(filename)s'"
-msgstr "লগ ফাইল '%(filename)s' খোলা সম্ভব হয়নি"
+msgstr "Could not open log file '%(filename)s'"
 
 #: ../bin/virtaal:117
 msgid "Could not read configuration file '%(filename)s'"
-msgstr "কনফিগারেশন ফাইল '%(filename)s' পড়া যায়নি"
+msgstr "Could not read configuration file '%(filename)s'"
 
 #: ../bin/virtaal:121
 msgid "invalid number of arguments"
-msgstr "উল্লিখিত আর্গুমেন্ট সংখ্যা সঠিক নয়"
+msgstr "invalid number of arguments"
 
 #: ../bin/virtaal:150
 msgid "Could not open profile file '%(filename)s'"
-msgstr "প্রোফাইল ফাইল '%(filename)s' খোলা সম্ভব হয়নি"
+msgstr "Could not open profile file '%(filename)s'"
 
 #: ../devsupport/optparse.py:134
 #, python-format
 msgid "no such option: %s"
-msgstr "উল্লিখিত বিকল্পটি উপস্থিত নেই: %s"
+msgstr "no such option: %s"
 
 #: ../devsupport/optparse.py:145
 #, python-format
 msgid "ambiguous option: %s (%s?)"
-msgstr "অস্পষ্ট বিকল্প: %s (%s?)"
+msgstr "ambiguous option: %s (%s?)"
 
 #: ../devsupport/optparse.py:368
 #, python-format
 msgid "Usage: %s\n"
-msgstr "ব্যবহার পদ্ধতি: %s\n"
+msgstr "Usage: %s\n"
 
 #: ../devsupport/optparse.py:387
 msgid "Usage"
-msgstr "ব্যবহার পদ্ধতি"
+msgstr "Usage"
 
 #: ../devsupport/optparse.py:412
 msgid "integer"
-msgstr "পূর্ণসংখ্যা"
+msgstr "integer"
 
 #: ../devsupport/optparse.py:413
 msgid "long integer"
-msgstr "লং ইন্টিজার"
+msgstr "long integer"
 
 #: ../devsupport/optparse.py:414
 msgid "floating-point"
-msgstr "ফ্লোটিং-পয়েন্ট"
+msgstr "floating-point"
 
 #: ../devsupport/optparse.py:415
 msgid "complex"
-msgstr "জটিল"
+msgstr "complex"
 
 #: ../devsupport/optparse.py:423
 #, python-format
 msgid "option %s: invalid %s value: %r"
-msgstr "বিকল্প %s: %s মান অবৈধ: %r"
+msgstr "option %s: invalid %s value: %r"
 
 #: ../devsupport/optparse.py:431
 #, python-format
 msgid "option %s: invalid choice: %r (choose from %s)"
-msgstr "বিকল্প %s: নির্বাচিত মান অবৈধ : %r (%s থেকে নির্বাচন করুন)"
+msgstr "option %s: invalid choice: %r (choose from %s)"
 
 #: ../devsupport/optparse.py:1246
 msgid "show this help message and exit"
-msgstr "বর্তমান বার্তা প্রদর্শন করে প্রস্থান করা হবে"
+msgstr "show this help message and exit"
 
 #: ../devsupport/optparse.py:1251
 msgid "show program's version number and exit"
-msgstr "প্রোগ্রামের সংস্করণ সংখ্যা প্রদর্শন করে প্রস্থান করা হবে"
+msgstr "show program's version number and exit"
 
 #: ../devsupport/optparse.py:1274
 msgid "%prog [options]"
@@ -1353,21 +1355,21 @@ msgstr "%prog [options]"
 #: ../devsupport/optparse.py:1484 ../devsupport/optparse.py:1523
 #, python-format
 msgid "%s option requires an argument"
-msgstr "%s বিকল্পের জন্য একটি আর্গুমেন্ট উল্লেখ করা আবশ্যক"
+msgstr "%s option requires an argument"
 
 #: ../devsupport/optparse.py:1486 ../devsupport/optparse.py:1525
 #, python-format
 msgid "%s option requires %d arguments"
-msgstr "%s বিকল্পের জন্য %d-টি আর্গুমেন্ট উল্লেখ করা আবশ্যক"
+msgstr "%s option requires %d arguments"
 
 #: ../devsupport/optparse.py:1495
 #, python-format
 msgid "%s option does not take a value"
-msgstr "%s বিকল্প দ্বারা কোনো মান গ্রহণ করা হয় না"
+msgstr "%s option does not take a value"
 
 #: ../devsupport/optparse.py:1612
 msgid "Options"
-msgstr "বিকল্প"
+msgstr "Options"
 
 #~ msgid "Local translation files"
 #~ msgstr "অনুবাদের স্থানীয় ফাইল"

@@ -177,8 +177,7 @@ msgstr "이름은 파일 헤더에 저장됩니다."
 #: ../share/virtaal/virtaal.glade.h:41
 msgid "The team information stored in the file header. This can be an e-mail address or a URL, for example."
 msgstr ""
-"팀 정보는 파일 헤더에 저장됩니다.\n"
-"이메일이나 URL 등을 추가할 수도 있습니다.\n"
+"팀 정보는 파일 헤더에 저장됩니다. 이메일이나 URL 등을 추가할 수도 있습니다."
 
 #. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
 #: ../share/virtaal/virtaal.glade.h:43

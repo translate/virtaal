@@ -50,6 +50,7 @@ class PlaceablesController(BaseController):
         self._init_parser_descriptions()
         self._init_notarget_list()
 
+        self.main_controller.view.main_window.connect('style-set', self._on_style_set)
         self.main_controller.connect('quit', self._on_quit)
 
     def _init_notarget_list(self):
@@ -229,6 +230,17 @@ class PlaceablesController(BaseController):
 
 
     # EVENT HANDLERS #
+    def _on_style_set(self, widget, prev_style):
+        import gtk
+        placeablesguiinfo.StringElemGUI.bg = widget.style.base[gtk.STATE_NORMAL].to_string()
+        placeablesguiinfo.StringElemGUI.fg = widget.style.fg[gtk.STATE_NORMAL].to_string()
+
+        # Refresh text boxes' colours
+        unitview = self.main_controller.unit_controller.view
+        for textbox in unitview.sources + unitview.targets:
+            if textbox.props.visible:
+                textbox.refresh()
+
     def _on_quit(self, main_ctrlr):
         for parser in general.parsers:
             classname = parser.im_self.__name__

@@ -34,10 +34,12 @@ class StringElemGUI(object):
     """
 
     # MEMBERS #
-    fg = '#000000'
-    """The current foreground colour."""
-    bg = '#ffffff'
-    """The current background colour."""
+    fg = '#000' # See PlaceablesController._on_style_set
+    """The current foreground colour.
+        @see PlaceablesController._on_style_set"""
+    bg = '#fff'
+    """The current background colour.
+        @see PlaceablesController._on_style_set"""
 
     cursor_allowed = True
     """Whether the cursor is allowed to enter this element."""

@@ -723,13 +723,16 @@ class TextBox(gtk.TextView):
         #logging.debug('Key pressed: %s (%s)' % (keyname, statenames))
         #logging.debug('state (raw): %x' % (event.state,))
 
-        # Ignore numlock and weird state sometimes present with Arabic
-        # keyboard layout. See bug 926.
-        trimmed_state = event.state & ~ (gtk.gdk.MOD2_MASK | gtk.gdk.LEAVE_NOTIFY_MASK)
+        # Filter out unimportant flags that is present with other keyboard
+        # layouts and input methods. The following has been encountered:
+        # * MOD2_MASK - Num Lock (bug 926)
+        # * LEAVE_NOTIFY_MASK - Arabic keyboard layout (?) (bug 926)
+        # * 0x2000000 - IBus input method (bug 1281)
+        filtered_state = event.state & (gtk.gdk.CONTROL_MASK | gtk.gdk.MOD1_MASK | gtk.gdk.MOD4_MASK | gtk.gdk.SHIFT_MASK)
 
         for name, keyslist in self.SPECIAL_KEYS.items():
             for keyval, state in keyslist:
-                if event.keyval == keyval and (trimmed_state == state):
+                if event.keyval == keyval and filtered_state == state:
                     evname = name
 
         if evname == 'alt-left':

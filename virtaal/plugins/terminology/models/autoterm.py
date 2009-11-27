@@ -168,6 +168,9 @@ class TerminologyModel(BaseTerminologyModel):
 
         if not self.is_update_needed(srclang, tgtlang):
             logging.debug('Skipping update for (%s, %s) language pair' % (srclang, tgtlang))
+            localfile = self._get_curr_term_filename(srclang, tgtlang)
+            localfile = os.path.join(self.TERMDIR, localfile)
+            self.init_matcher(localfile)
             return
 
         self._update_term_file(srclang, tgtlang)

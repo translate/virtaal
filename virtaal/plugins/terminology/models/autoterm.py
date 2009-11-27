@@ -124,8 +124,10 @@ class TerminologyModel(BaseTerminologyModel):
             TerminologyPlaceable.matchers.remove(self.matcher)
 
         if os.path.isfile(filename):
+            logging.debug('Loading terminology from %s' % (filename))
             self.store = factory.getobject(filename)
         else:
+            logging.debug('Creating empty terminology store')
             self.store = TranslationStore()
         self.store.makeindex()
         self.matcher = terminologymatcher(self.store)

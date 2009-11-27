@@ -206,7 +206,9 @@ class TerminologyModel(BaseTerminologyModel):
     def _get_ext_from_url(self, url):
         from urlparse import urlparse
         parsed = urlparse(url)
-        dir, filename = os.path.split(parsed.path)
+        #dir, filename = os.path.split(parsed.path)
+        #rewritten for compatibility with Python 2.4:
+        dir, filename = os.path.split(parsed[2])
         if not filename or '.' not in filename:
             return None
         ext = filename.split('.')[-1]

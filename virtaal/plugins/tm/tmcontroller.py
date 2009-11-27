@@ -115,6 +115,12 @@ class TMController(BaseController):
                 # way an existing 100% will be above a new 100%.
                 self.matches.append(match)
                 anything_new = True
+            else:
+                prevmatch = [m for m in self.matches if m['target'] == match['target']][0]
+                if 'quality' not in prevmatch or not prevmatch['quality']:
+                    self.matches.remove(prevmatch)
+                    self.matches.append(match)
+                    anything_new = True
         if not anything_new:
             return
         self.matches.sort(key=lambda x: 'quality' in x and x['quality'] or 0, reverse=True)

@@ -234,6 +234,7 @@ class PlaceablesController(BaseController):
         import gtk
         placeablesguiinfo.StringElemGUI.bg = widget.style.base[gtk.STATE_NORMAL].to_string()
         placeablesguiinfo.StringElemGUI.fg = widget.style.fg[gtk.STATE_NORMAL].to_string()
+        placeablesguiinfo.UrlGUI.bg = widget.style.base[gtk.STATE_NORMAL].to_string()
 
         # Refresh text boxes' colours
         unitview = self.main_controller.unit_controller.view

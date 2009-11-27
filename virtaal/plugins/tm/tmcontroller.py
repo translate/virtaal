@@ -96,17 +96,33 @@ class TMController(BaseController):
     def accept_response(self, tmmodel, query_str, matches):
         """Accept a query-response from the model.
             (This method is used as Model-Controller communications)"""
-        if query_str == self.current_query:
-            # Perform some sanity checks on matches first
-            for match in matches:
-                if not isinstance(match.get('quality', 0), int):
-                    match['quality'] = int(match['quality'])
-                if 'tmsource' not in match or match['tmsource'] is None:
-                    match['tmsource'] = tmmodel.display_name
-                match['query_str'] = query_str
-            # Only call display_matches if necessary:
-            if matches:
-                self.view.display_matches(matches)
+        if query_str != self.current_query or not matches:
+            return
+        # Perform some sanity checks on matches first
+        for match in matches:
+            if not isinstance(match.get('quality', 0), int):
+                match['quality'] = int(match['quality'])
+            if 'tmsource' not in match or match['tmsource'] is None:
+                match['tmsource'] = tmmodel.display_name
+            match['query_str'] = query_str
+
+        curr_targets = [m['target'] for m in self.matches]
+        anything_new = False
+        for match in matches:
+            if match['target'] not in curr_targets:
+                # Let's insert at the end to prioritise existing matches over
+                # new ones. We rely on the guarantee of sort stability. This
+                # way an existing 100% will be above a new 100%.
+                self.matches.append(match)
+                anything_new = True
+        if not anything_new:
+            return
+        self.matches.sort(key=lambda x: 'quality' in x and x['quality'] or 0, reverse=True)
+        self.matches = self.matches[:self.max_matches]
+
+        # Only call display_matches if necessary:
+        if self.matches:
+            self.view.display_matches(self.matches)
 
     def destroy(self):
         # Destroy TMView
@@ -141,6 +157,7 @@ class TMController(BaseController):
             self.unit = unit
 
         self.current_query = self.unit.source
+        self.matches = []
         self.view.clear()
         self.emit('start-query', self.current_query)
 

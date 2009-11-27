@@ -133,24 +133,8 @@ class TMView(BaseView, GObjectWrapper):
     def display_matches(self, matches):
         """Add the list of TM matches to those available and show the TM window."""
         liststore = self.tmwindow.liststore
-
-        rows = [tuple(row)[0] for row in liststore]
-        curr_targets = [row['target'] for row in rows]
-        anything_new = False
-        for match in matches:
-            if match['target'] not in curr_targets:
-                # Let's insert at the end to prioritise existing matches over
-                # new ones. We rely on the guarantee of sort stability. This
-                # way an existing 100% will be above a new 100%.
-                rows.append(match)
-                anything_new = True
-        if not anything_new:
-            return
-        rows.sort(key=lambda x: 'quality' in x and x['quality'] or 0, reverse=True)
-        rows = rows[:self.max_matches]
-
         liststore.clear()
-        for match in rows:
+        for match in matches:
             tooltip = ''
             if len(liststore) <= 9:
                 tooltip = _('Ctrl+%(number_key)d') % {"number_key": len(liststore)+1}

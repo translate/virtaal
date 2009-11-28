@@ -98,9 +98,10 @@ virtaal_referrer = "http://virtaal.org/"
 class TMModel(BaseTMModel):
     """This is a Google Translate translation memory model.
 
-    The plugin uses the xgoogle library (by Peteris Krumins) to query Google
-    for a translation. The library can be downloaded from
-    http://www.catonmat.net/blog/python-library-for-google-search/.
+    The plugin uses the U{Google AJAX Languages API<http://code.google.com/apis/ajaxlanguage/>}
+    to query Google's machine translation services.  The implementation makes use of the 
+    U{RESTful<http://code.google.com/apis/ajaxlanguage/documentation/#fonje>} interface for 
+    Non-JavaScript environments.
     """
 
     __gtype_name__ = 'GoogleTranslateTMModel'

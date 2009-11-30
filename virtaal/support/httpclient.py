@@ -41,7 +41,7 @@ class HTTPRequest(GObjectWrapper):
         "http-server-error": (gobject.SIGNAL_RUN_LAST, None, (object,)),
     }
 
-    def __init__(self, url, id, method='GET', data=None, headers=None,
+    def __init__(self, url, method='GET', data=None, headers=None,
             headers_only=False, user_agent=None, follow_location=False,
             force_quiet=True):
         GObjectWrapper.__init__(self)
@@ -53,7 +53,6 @@ class HTTPRequest(GObjectWrapper):
             self.url = url.encode("utf-8")
         else:
             self.url = url
-        self.id = id.encode("utf-8")
         self.method = method
         self.data = data
         self.headers = headers
@@ -129,7 +128,7 @@ class RESTRequest(HTTPRequest):
     """Single HTTP REST request, blocking if used standalone."""
 
     def __init__(self, url, id, method='GET', data=None, headers=None):
-        super(RESTRequest, self).__init__(url, id, method, data, headers)
+        super(RESTRequest, self).__init__(url, method, data, headers)
 
         url = self.url
         if id:

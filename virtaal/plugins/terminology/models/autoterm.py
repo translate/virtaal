@@ -39,7 +39,7 @@ THREE_DAYS = 60 * 60 * 24 * 3
 
 class AutoTermClient(HTTPClient):
     """
-    REST client to handle the communication between Virtaal and the terminology-
+    HTTP client to handle the communication between Virtaal and the terminology-
     providing web server.
     """
 
@@ -64,7 +64,7 @@ class AutoTermClient(HTTPClient):
         if etag:
             # See http://en.wikipedia.org/wiki/HTTP_ETag for more details about ETags
             headers = ['If-None-Match: "%s"' % (etag)]
-        request = HTTPRequest(url, '', headers=headers, user_agent=self.user_agent, follow_location=True)
+        request = HTTPRequest(url, headers=headers, user_agent=self.user_agent, follow_location=True)
         self.add(request)
 
         if callback:

@@ -251,7 +251,7 @@ class TerminologyModel(BaseTerminologyModel):
             self.config[os.path.abspath(localfile)] = etag
         else:
             logging.debug('Unhandled status code: %d' % (request.status))
-            return
+            localfile = ''
 
         if os.path.isfile(localfile):
             # Update mtime

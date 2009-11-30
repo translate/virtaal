@@ -49,7 +49,10 @@ class HTTPRequest(GObjectWrapper):
         self.result_headers = StringIO.StringIO()
 
         # do we really need to keep these around?
-        self.url = url.encode("utf-8")
+        if isinstance(url, unicode):
+            self.url = url.encode("utf-8")
+        else:
+            self.url = url
         self.id = id.encode("utf-8")
         self.method = method
         self.data = data
@@ -63,7 +66,7 @@ class HTTPRequest(GObjectWrapper):
 
         self.curl.setopt(pycurl.WRITEFUNCTION, self.result.write)
         self.curl.setopt(pycurl.HEADERFUNCTION, self.result_headers.write)
-        self.curl.setopt(pycurl.URL, url)
+        self.curl.setopt(pycurl.URL, self.url)
 
         # let's set the HTTP request method
         if method == 'GET':

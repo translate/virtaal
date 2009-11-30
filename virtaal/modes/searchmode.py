@@ -307,8 +307,8 @@ class SearchMode(BaseMode):
 
             select_iters = []
             for match in [m for m in self.matches if m.unit is unitview.unit]:
-                if  (textbox in unitview.sources and not match.part == 'source') or \
-                    (textbox in unitview.targets and not match.part == 'target'):
+                if  (textbox in unitview.sources and match.part != 'source') or \
+                    (textbox in unitview.targets and match.part != 'target'):
                     continue
                 start, end = self._escaped_indexes(unescaped, match.start, match.end)
                 if hasattr(textbox.elem, 'gui_info'):

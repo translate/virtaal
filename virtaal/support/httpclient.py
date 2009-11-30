@@ -65,6 +65,8 @@ class HTTPRequest(GObjectWrapper):
 
         self.curl.setopt(pycurl.WRITEFUNCTION, self.result.write)
         self.curl.setopt(pycurl.HEADERFUNCTION, self.result_headers.write)
+        # We want to use gzip and deflate if possible:
+        self.curl.setopt(pycurl.ENCODING, "") # use all available encodings
         self.curl.setopt(pycurl.URL, self.url)
 
         # let's set the HTTP request method

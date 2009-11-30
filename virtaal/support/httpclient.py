@@ -48,7 +48,6 @@ class HTTPRequest(GObjectWrapper):
         self.result = StringIO.StringIO()
         self.result_headers = StringIO.StringIO()
 
-        # do we really need to keep these around?
         if isinstance(url, unicode):
             self.url = url.encode("utf-8")
         else:
@@ -134,6 +133,7 @@ class RESTRequest(HTTPRequest):
 
         url = self.url
         if id:
+            self.id = id.encode('utf-8')
             url += '/' + urllib.quote(id, safe='')
 
         self.curl.setopt(pycurl.URL, url)

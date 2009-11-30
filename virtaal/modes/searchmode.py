@@ -286,13 +286,10 @@ class SearchMode(BaseMode):
         return (start, end)
 
     def _highlight_matches(self):
-        self._unhighlight_previous_matches()
-
         if not hasattr(self, 'filter') or not hasattr(self.filter, 're_search') or self.filter.re_search is None:
             return
 
         unitview = self.controller.main_controller.unit_controller.view
-        self._prev_unitview = unitview
         for textbox in unitview.sources + unitview.targets:
             buff = textbox.buffer
             buffstr = textbox.get_text()
@@ -359,15 +356,6 @@ class SearchMode(BaseMode):
 
         self.controller.main_controller.undo_controller.record_stop()
         self.update_search()
-
-    def _unhighlight_previous_matches(self):
-        if not getattr(self, '_prev_unitview', ''):
-            return
-
-        for textbox in self._prev_unitview.sources + self._prev_unitview.targets:
-            buff = textbox.buffer
-            if buff.get_tag_table().lookup('search_highlight') is not None:
-                buff.remove_tag_by_name('search_highlight', buff.get_start_iter(), buff.get_end_iter())
 
 
     # EVENT HANDLERS #

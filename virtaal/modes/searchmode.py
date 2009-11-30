@@ -295,13 +295,14 @@ class SearchMode(BaseMode):
             buffstr = textbox.get_text()
             unescaped = markup.unescape(buffstr)
 
-            # First make sure that the current buffer contains a highlighting tag.
-            # Because a gtk.TextTag can only be associated with one gtk.TagTable,
-            # we make copies (created by _make_highlight_tag()) to add to all
-            # TagTables. If the tag is already added to a given table, a
-            # ValueError is raised which we can safely ignore.
+            # Make sure the 'search_highlight' tag in the textbox's tag table
+            # is "fresh".
             try:
-                buff.get_tag_table().add(self._make_highlight_tag())
+                tagtable = buff.get_tag_table()
+                tag = tagtable.lookup('search_highlight')
+                if tag:
+                    tagtable.remove(tag)
+                tagtable.add(self._make_highlight_tag())
             except ValueError:
                 pass
 

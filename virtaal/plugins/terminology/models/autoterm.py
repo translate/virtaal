@@ -260,6 +260,7 @@ class TerminologyModel(BaseTerminologyModel):
 
     def _update_term_file(self, srclang, tgtlang):
         """Update the terminology file for the given languages."""
+        self.init_matcher() # Make sure that the matcher is empty until we have an update
         filename = self._get_curr_term_filename(srclang, tgtlang)
         localfile = os.path.join(self.TERMDIR, filename)
 

@@ -303,39 +303,52 @@ class SearchMode(BaseMode):
             return
 
         for textbox in self.unitview.sources + self.unitview.targets:
-            buff = textbox.buffer
-            buffstr = textbox.get_text()
-            unescaped = markup.unescape(buffstr)
+            self._highlight_textbox_matches(textbox)
 
-            # Make sure the 'search_highlight' tag in the textbox's tag table
-            # is "fresh".
-            try:
-                tagtable = buff.get_tag_table()
-                tag = tagtable.lookup('search_highlight')
-                if tag:
-                    tagtable.remove(tag)
-                tagtable.add(self._make_highlight_tag())
-            except ValueError:
-                pass
+    def _get_matches_for_textbox(self, textbox):
+        if textbox.role == 'source':
+            textbox_n = self.unitview.sources.index(textbox)
+        elif textbox.role == 'target':
+            textbox_n = self.unitview.targets.index(textbox)
+        else:
+            raise ValueError('Could not find text box in sources or targets: %s' % (textbox))
+        return [
+            m for m in self.matches
+            if m.unit is self.unitview.unit and \
+                m.part == textbox.role and \
+                m.part_n == textbox_n
+        ]
 
-            select_iters = []
-            for match in [m for m in self.matches if m.unit is self.unitview.unit]:
-                if  (textbox in self.unitview.sources and match.part != 'source') or \
-                    (textbox in self.unitview.targets and match.part != 'target'):
-                    continue
-                start, end = self._escaped_indexes(unescaped, match.start, match.end)
-                if hasattr(textbox.elem, 'gui_info'):
-                    start = textbox.elem.gui_info.tree_to_gui_index(start)
-                    end   = textbox.elem.gui_info.tree_to_gui_index(end)
-                start_iter, end_iter = buff.get_iter_at_offset(start), buff.get_iter_at_offset(end)
-                buff.apply_tag_by_name('search_highlight', start_iter, end_iter)
+    def _highlight_textbox_matches(self, textbox):
+        buff = textbox.buffer
+        buffstr = textbox.get_text()
+        unescaped = markup.unescape(buffstr)
 
-                if textbox in self.unitview.targets and not select_iters and self.select_first_match:
-                    select_iters = [start_iter, end_iter]
+        # Make sure the 'search_highlight' tag in the textbox's tag table
+        # is "fresh".
+        try:
+            tagtable = buff.get_tag_table()
+            tag = tagtable.lookup('search_highlight')
+            if tag:
+                tagtable.remove(tag)
+            tagtable.add(self._make_highlight_tag())
+        except ValueError:
+            pass
 
-            if select_iters:
-                buff.select_range(select_iters[1], select_iters[0])
-                return
+        select_iters = []
+        for match in self._get_matches_for_textbox(textbox):
+            start, end = self._escaped_indexes(unescaped, match.start, match.end)
+            if hasattr(textbox.elem, 'gui_info'):
+                start = textbox.elem.gui_info.tree_to_gui_index(start)
+                end   = textbox.elem.gui_info.tree_to_gui_index(end)
+            start_iter, end_iter = buff.get_iter_at_offset(start), buff.get_iter_at_offset(end)
+            buff.apply_tag_by_name('search_highlight', start_iter, end_iter)
+
+            if textbox.role == 'target' and not select_iters and self.select_first_match:
+                select_iters = [start_iter, end_iter]
+
+        if select_iters:
+            buff.select_range(select_iters[1], select_iters[0])
 
     def _make_highlight_tag(self):
         tag = gtk.TextTag(name='search_highlight')
@@ -436,11 +449,7 @@ class SearchMode(BaseMode):
         if not textbox.props.visible or not unicode(elem):
             return
 
-        # TODO: I'm sure the call to _highlight_matches() is overkill and can
-        # be greatly simplified. Refactor the common code out of
-        # _highlight_matches() and use here in stead of the heavy beast it is
-        # at the moment.
-        self._highlight_matches()
+        self._highlight_textbox_matches(textbox)
 
     def _on_unit_modified(self, unit_controller, current_unit):
         unit_matches = self._get_matches_for_unit(current_unit)

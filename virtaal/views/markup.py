@@ -48,6 +48,13 @@ def _subtle_escape(escape):
     """Marks up the given escape to appear dark grey without a newline appended."""
     return u'<span foreground="darkgrey">%s</span>' % escape
 
+def _escape_entities(s):
+    """Escapes '&' and '<' in literal text so that they are not seen as markup."""
+    s = s.replace(u"&", u"&amp;") # Must be done first!
+    s = s.replace(u"<", u"&lt;")
+    s = _xml_re.sub(_fancy_xml, s)
+    return s
+
 
 # Public methods
 
@@ -59,16 +66,11 @@ def markuptext(text, fancyspaces=True, markupescapes=True, diff_text=""):
     if not text:
         return ""
 
-    def escape_amp_lt_fancy_xml(s):
-        s = s.replace(u"&", u"&amp;") # Must be done first!
-        s = s.replace(u"<", u"&lt;")
-        s = _xml_re.sub(_fancy_xml, s)
-        return s
-
-    text = escape_amp_lt_fancy_xml(text)
 
     if diff_text != "":
-       text = pango_diff(escape_amp_lt_fancy_xml(diff_text), text)
+       text = pango_diff(diff_text, text)
+    else:
+        text = _escape_entities(text)
 
     if fancyspaces:
         text = _fancy_spaces_re.sub(_fancyspaces, text)
@@ -119,11 +121,11 @@ def pango_diff(a, b):
         if tag == 'equal':
             textdiff += a[i1:i2]
         if tag == "insert":
-            textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': insert_attr, 'text': b[j1:j2]}
+            textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': insert_attr, 'text': _escape_entities(b[j1:j2])}
         if tag == "delete":
-            textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': delete_attr, 'text': a[i1:i2]}
+            textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': delete_attr, 'text': _escape_entities(a[i1:i2])}
         if tag == "replace":
             # We don't show text that was removed as part of a change:
-            #textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': replace_attr_remove, 'text': a[i1:i2]}
-            textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': replace_attr_add, 'text': b[j1:j2]}
+            #textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': replace_attr_remove, 'text': _escape_entitiesa(a[i1:i2])}
+            textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': replace_attr_add, 'text': _escape_entities(b[j1:j2])}
     return textdiff

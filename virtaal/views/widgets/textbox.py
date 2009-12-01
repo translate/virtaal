@@ -41,6 +41,7 @@ class TextBox(gtk.TextView):
         'before-apply-gui-info': (SIGNAL_RUN_FIRST, None, (object,)),
         'element-selected':      (SIGNAL_RUN_FIRST, None, (object,)),
         'key-pressed':           (SIGNAL_RUN_LAST,  bool, (object, str)),
+        'stringelem-rendered':   (SIGNAL_RUN_FIRST, None, (object,)),
         'text-deleted':          (SIGNAL_RUN_LAST,  bool, (object, object, int, int, object)),
         'text-inserted':         (SIGNAL_RUN_LAST,  bool, (object, int, object)),
     }
@@ -448,6 +449,7 @@ class TextBox(gtk.TextView):
         self.buffer.handler_block_by_func(self._on_delete_range)
         self.buffer.handler_block_by_func(self._on_insert_text)
         self.elem.gui_info.render()
+        self.emit('stringelem-rendered', self.elem)
         self.show_suggestion()
         self.buffer.handler_unblock_by_func(self._on_delete_range)
         self.buffer.handler_unblock_by_func(self._on_insert_text)

@@ -20,7 +20,7 @@
 
 import gobject
 import gtk
-from gobject import SIGNAL_RUN_FIRST, SIGNAL_RUN_LAST, TYPE_PYOBJECT
+from gobject import SIGNAL_RUN_FIRST, SIGNAL_RUN_LAST
 
 from translate.misc.typecheck import accepts, Self, IsOneOf
 from translate.storage.placeables import StringElem, parse as elem_parse
@@ -37,12 +37,12 @@ class TextBox(gtk.TextView):
 
     __gtype_name__ = 'TextBox'
     __gsignals__ = {
-        'after-apply-gui-info':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'before-apply-gui-info': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'element-selected':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'key-pressed':       (SIGNAL_RUN_LAST,  bool, (TYPE_PYOBJECT, str)),
-        'text-deleted':      (SIGNAL_RUN_LAST,  bool, (TYPE_PYOBJECT, TYPE_PYOBJECT, int, int, TYPE_PYOBJECT)),
-        'text-inserted':     (SIGNAL_RUN_LAST,  bool, (TYPE_PYOBJECT, int, TYPE_PYOBJECT)),
+        'after-apply-gui-info':  (SIGNAL_RUN_FIRST, None, (object,)),
+        'before-apply-gui-info': (SIGNAL_RUN_FIRST, None, (object,)),
+        'element-selected':      (SIGNAL_RUN_FIRST, None, (object,)),
+        'key-pressed':           (SIGNAL_RUN_LAST,  bool, (object, str)),
+        'text-deleted':          (SIGNAL_RUN_LAST,  bool, (object, object, int, int, object)),
+        'text-inserted':         (SIGNAL_RUN_LAST,  bool, (object, int, object)),
     }
 
     SPECIAL_KEYS = {

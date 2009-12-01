@@ -117,6 +117,7 @@ class SearchMode(BaseMode):
 
         self._add_widgets()
         self._connect_highlighting()
+        self._connect_textboxes()
         if not self.ent_search.get_text():
             self.storecursor.indices = self.storecursor.model.stats['total']
         else:
@@ -235,8 +236,12 @@ class SearchMode(BaseMode):
 
     def unselected(self):
         # TODO: Unhightlight the previously selected unit
-        if getattr(self, '_signalid_cursor_changed', ''):
+        if hasattr(self, '_signalid_cursor_changed'):
             self.storecursor.disconnect(self._signalid_cursor_changed)
+
+        if hasattr(self, '_textbox_signals'):
+            for textbox, signal_id in self._textbox_signals.items():
+                textbox.disconnect(signal_id)
 
         if self._unit_modified_id:
             self.controller.main_controller.unit_controller.disconnect(self._unit_modified_id)
@@ -262,6 +267,13 @@ class SearchMode(BaseMode):
 
     def _connect_highlighting(self):
         self._signalid_cursor_changed = self.storecursor.connect('cursor-changed', self._on_cursor_changed)
+
+    def _connect_textboxes(self):
+        self._textbox_signals = {}
+        for textbox in self.unitview.sources + self.unitview.targets:
+            self._textbox_signals[textbox] = textbox.connect(
+                'stringelem-rendered', self._on_textbox_stringelem_rendered
+            )
 
     def _get_matches_for_unit(self, unit):
         return [match for match in self.matches if match.unit is unit]
@@ -418,6 +430,17 @@ class SearchMode(BaseMode):
     def _on_start_search(self, _accel_group, _acceleratable, _keyval, _modifier):
         """This is called via the accelerator."""
         self.controller.select_mode(self)
+
+    def _on_textbox_stringelem_rendered(self, textbox, elem):
+        """Redoes highlighting after a C{StringElem} render destoyed it."""
+        if not textbox.props.visible or not unicode(elem):
+            return
+
+        # TODO: I'm sure the call to _highlight_matches() is overkill and can
+        # be greatly simplified. Refactor the common code out of
+        # _highlight_matches() and use here in stead of the heavy beast it is
+        # at the moment.
+        self._highlight_matches()
 
     def _on_unit_modified(self, unit_controller, current_unit):
         unit_matches = self._get_matches_for_unit(current_unit)

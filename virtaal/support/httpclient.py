@@ -132,8 +132,8 @@ class RESTRequest(HTTPRequest):
         super(RESTRequest, self).__init__(url, method, data, headers)
 
         url = self.url
+        self.id = id.encode('utf-8')
         if id:
-            self.id = id.encode('utf-8')
             url += '/' + urllib.quote(id, safe='')
 
         self.curl.setopt(pycurl.URL, url)

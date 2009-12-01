@@ -47,6 +47,7 @@ class SearchMode(BaseMode):
             @type  controller: virtaal.controllers.ModeController
             @param controller: The ModeController that managing program modes."""
         self.controller = controller
+        self.unitview = controller.main_controller.unit_controller.view
 
         self._create_widgets()
         self._setup_key_bindings()
@@ -289,8 +290,7 @@ class SearchMode(BaseMode):
         if not hasattr(self, 'filter') or not hasattr(self.filter, 're_search') or self.filter.re_search is None:
             return
 
-        unitview = self.controller.main_controller.unit_controller.view
-        for textbox in unitview.sources + unitview.targets:
+        for textbox in self.unitview.sources + self.unitview.targets:
             buff = textbox.buffer
             buffstr = textbox.get_text()
             unescaped = markup.unescape(buffstr)
@@ -307,9 +307,9 @@ class SearchMode(BaseMode):
                 pass
 
             select_iters = []
-            for match in [m for m in self.matches if m.unit is unitview.unit]:
-                if  (textbox in unitview.sources and match.part != 'source') or \
-                    (textbox in unitview.targets and match.part != 'target'):
+            for match in [m for m in self.matches if m.unit is self.unitview.unit]:
+                if  (textbox in self.unitview.sources and match.part != 'source') or \
+                    (textbox in self.unitview.targets and match.part != 'target'):
                     continue
                 start, end = self._escaped_indexes(unescaped, match.start, match.end)
                 if hasattr(textbox.elem, 'gui_info'):
@@ -318,7 +318,7 @@ class SearchMode(BaseMode):
                 start_iter, end_iter = buff.get_iter_at_offset(start), buff.get_iter_at_offset(end)
                 buff.apply_tag_by_name('search_highlight', start_iter, end_iter)
 
-                if textbox in unitview.targets and not select_iters and self.select_first_match:
+                if textbox in self.unitview.targets and not select_iters and self.select_first_match:
                     select_iters = [start_iter, end_iter]
 
             if select_iters:

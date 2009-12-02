@@ -18,6 +18,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+
+import sys
+from os import name as os_name
+if os_name == 'nt':
+    sys.stdout = open('stdout_virtaal.log', 'w')
+    sys.stderr = open('stderr_virtaal.log', 'w')
+
 # Let's check for dependencies before we do anything else
 from virtaal.support import depcheck
 optional_modules = ['enchant', 'gtkspell', 'psycopg2']

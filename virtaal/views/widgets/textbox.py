@@ -629,9 +629,16 @@ class TextBox(gtk.TextView):
                     length = deleted.gui_info.length()
                 else:
                     length = len(deleted)
+
+                # Take the parent placeable's starting widget into account
+                if hasattr(parent, 'gui_info') and parent.gui_info.has_start_widget():
+                    parent_offset += 1
+
                 start_offset = parent_offset + index
                 end_offset = parent_offset + index + length
-            self.refresh_cursor_pos = self.elem.gui_info.tree_to_gui_index(start_offset)
+                self.refresh_cursor_pos = start_offset
+            else:
+                self.refresh_cursor_pos = self.elem.gui_info.tree_to_gui_index(start_offset)
 
         if index is None:
             index = start_offset

@@ -631,7 +631,7 @@ class TextBox(gtk.TextView):
                     length = len(deleted)
                 start_offset = parent_offset + index
                 end_offset = parent_offset + index + length
-            self.refresh_cursor_pos = start_offset
+            self.refresh_cursor_pos = self.elem.gui_info.tree_to_gui_index(start_offset)
 
         if index is None:
             index = start_offset

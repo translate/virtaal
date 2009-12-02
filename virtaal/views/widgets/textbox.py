@@ -523,7 +523,7 @@ class TextBox(gtk.TextView):
 
         deleted, parent, index = None, None, None
 
-        if start_offset+1 == end_offset:
+        if abs(start_offset - end_offset) == 1:
             position = None
             #################################
             #  Placeable:  |<<|content|>>|  #

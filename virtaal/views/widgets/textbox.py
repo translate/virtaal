@@ -557,17 +557,17 @@ class TextBox(gtk.TextView):
 
             # First we check if we fall in any of the situations represented by
             # the table above.
-            has_open_widget = has_close_widget = False
+            has_start_widget = has_end_widget = False
             if hasattr(start_elem, 'gui_info'):
                 widgets = start_elem.gui_info.widgets
-                has_open_widget  = len(widgets) >= 1 and widgets[0]
-                has_close_widget = len(widgets) >= 2 and widgets[1]
+                has_start_widget = len(widgets) >= 1 and widgets[0]
+                has_end_widget   = len(widgets) >= 2 and widgets[1]
 
             if cursor_pos == start_elem_offset:
                 position = 'a'
-            elif has_open_widget and cursor_pos == start_elem_offset+1:
+            elif has_start_widget and cursor_pos == start_elem_offset+1:
                 position = 'b'
-            elif has_close_widget and cursor_pos == start_elem_offset + start_elem_len - 1:
+            elif has_end_widget and cursor_pos == start_elem_offset + start_elem_len - 1:
                 position = 'c'
             elif cursor_pos == start_elem_offset + start_elem_len:
                 position = 'd'
@@ -580,8 +580,8 @@ class TextBox(gtk.TextView):
                     pass
                 elif (position == 'a' and key_is_delete) or (position == 'd' and not key_is_delete):
                     # "Placeable" fields
-                    if (position == 'a' and (has_open_widget or not start_elem.iseditable)) or \
-                            (position == 'd' and (has_close_widget or not start_elem.iseditable)):
+                    if (position == 'a' and (has_start_widget or not start_elem.iseditable)) or \
+                            (position == 'd' and (has_end_widget or not start_elem.iseditable)):
                         deleted = start_elem.copy()
                         parent = self.elem.get_parent_elem(start_elem)
                         index = parent.elem_offset(start_elem)

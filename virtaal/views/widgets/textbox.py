@@ -560,8 +560,8 @@ class TextBox(gtk.TextView):
             has_start_widget = has_end_widget = False
             if hasattr(start_elem, 'gui_info'):
                 widgets = start_elem.gui_info.widgets
-                has_start_widget = len(widgets) >= 1 and widgets[0]
-                has_end_widget   = len(widgets) >= 2 and widgets[1]
+                has_start_widget = start_elem.gui_info.has_start_widget()
+                has_end_widget   = start_elem.gui_info.has_end_widget()
 
             if cursor_pos == start_elem_offset:
                 position = 'a'

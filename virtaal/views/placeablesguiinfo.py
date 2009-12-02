@@ -160,6 +160,12 @@ class StringElemGUI(object):
             itr.forward_char()
         return i
 
+    def has_start_widget(self):
+        return len(self.widgets) > 0 and self.widgets[0]
+
+    def has_end_widget(self):
+        return len(self.widgets) > 1 and self.widgets[1]
+
     def index(self, elem):
         """Replacement for C{StringElem.elem_offset()} to be aware of included
             widgets."""

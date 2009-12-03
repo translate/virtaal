@@ -357,6 +357,9 @@ class SearchMode(BaseMode):
         return tag
 
     def _move_match(self, offset):
+        if self.controller.current_mode is not self:
+            return
+
         if getattr(self, 'matchcursor', None) is None:
             self.update_search()
             self._move_match(offset)

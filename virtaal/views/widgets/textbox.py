@@ -345,8 +345,7 @@ class TextBox(gtk.TextView):
                 self.buffer.get_iter_at_offset(selection[0]),
                 self.buffer.get_iter_at_offset(selection[1]),
             )
-
-        if self.refresh_cursor_pos >= 0:
+        elif self.refresh_cursor_pos >= 0:
             self.place_cursor(self.refresh_cursor_pos)
         self.refresh_cursor_pos = -1
 

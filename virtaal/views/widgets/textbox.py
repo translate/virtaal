@@ -327,6 +327,8 @@ class TextBox(gtk.TextView):
 
     def refresh(self, preserve_selection=True):
         """Refresh the text box by setting its text to the current text."""
+        if not self.props.visible:
+            return # Don't refresh if this text box is not going to be seen anyway
         #logging.debug('self.refresh_cursor_pos = %d' % (self.refresh_cursor_pos))
         if self.refresh_cursor_pos < 0:
             self.refresh_cursor_pos = self.buffer.props.cursor_position

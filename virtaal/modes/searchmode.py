@@ -272,7 +272,7 @@ class SearchMode(BaseMode):
         self._textbox_signals = {}
         for textbox in self.unitview.sources + self.unitview.targets:
             self._textbox_signals[textbox] = textbox.connect(
-                'stringelem-rendered', self._on_textbox_stringelem_rendered
+                'refreshed', self._on_textbox_refreshed
             )
 
     def _get_matches_for_unit(self, unit):
@@ -444,7 +444,7 @@ class SearchMode(BaseMode):
         """This is called via the accelerator."""
         self.controller.select_mode(self)
 
-    def _on_textbox_stringelem_rendered(self, textbox, elem):
+    def _on_textbox_refreshed(self, textbox, elem):
         """Redoes highlighting after a C{StringElem} render destoyed it."""
         if not textbox.props.visible or not unicode(elem):
             return

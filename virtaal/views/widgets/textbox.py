@@ -755,3 +755,8 @@ class TextBox(gtk.TextView):
 
     def _on_event_remove_suggestion(self, *args):
         self.suggestion = None
+
+
+    # SPECIAL METHODS #
+    def __repr__(self):
+        return '<TextBox %x %s "%s">' % (id(self), self.role, unicode(self.elem))

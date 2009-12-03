@@ -226,6 +226,10 @@ class StringElemGUI(object):
         return offset
 
     def tree_to_gui_index(self, index):
+        if index == 0:
+            return 0
+        if index == len(self.elem):
+            return self.textbox.buffer.get_end_iter().get_offset()
         char_counter = 0
         converted = 0
         itr = self.textbox.buffer.get_start_iter()

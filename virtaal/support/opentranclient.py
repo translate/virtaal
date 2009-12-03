@@ -76,7 +76,9 @@ class OpenTranClient(gobject.GObject, HTTPClient):
             request.connect("http-success", call_callback)
 
     def lang_negotiate(self, language, callback):
-        request_body = xmlrpclib.dumps((language,), "supported")
+        #Open-Tran uses codes such as pt_br, and zh_cn
+        opentran_lang = language.lower().replace('-', '_').replace('@', '_')
+        request_body = xmlrpclib.dumps((opentran_lang,), "supported")
         request = RESTRequest(
             self.url, language, "POST", request_body)
         request.curl.setopt(pycurl.URL, self.url)

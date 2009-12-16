@@ -20,10 +20,12 @@
 
 
 import sys
-from os import name as os_name
+from os import name as os_name, path
+from virtaal.common import pan_app
 if os_name == 'nt':
-    sys.stdout = open('stdout_virtaal.log', 'w')
-    sys.stderr = open('stderr_virtaal.log', 'w')
+    filename_template = path.join(pan_app.get_config_dir(), '%s_virtaal.log')
+    sys.stdout = open(filename_template % ('stdout'), 'w')
+    sys.stderr = open(filename_template % ('stderr'), 'w')
 
 # Let's check for dependencies before we do anything else
 from virtaal.support import depcheck
@@ -65,12 +67,10 @@ import logging
 import optparse
 import sys
 from optparse import OptionParser, make_option
-from os import path
 
 import translate.i18n
 
 from virtaal import __version__
-from virtaal.common import pan_app
 
 
 optparse._ = _

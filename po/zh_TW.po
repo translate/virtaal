@@ -7,15 +7,15 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-11-04 18:02+0200\n"
-"PO-Revision-Date: 2009-12-10 10:22+0800\n"
-"Last-Translator: Liu, Shuyuan <victorangus@gmail.com>\n"
+"PO-Revision-Date: 2009-12-13 14:13+0200\n"
+"Last-Translator: 書源 <victorangus@gmail.com>\n"
 "Language-Team: Chinese\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Virtaal 0.5.0\n"
+"X-Generator: Pootle 2.0.0\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 msgid ""
@@ -27,6 +27,8 @@ msgstr "一個幫助人類翻譯人員翻譯檔案的工具"
 msgid "Translation Tool"
 msgstr "翻譯工具"
 
+# Chinese translators:
+# Virtaal作者群認為軟體名稱不一定要維持原文，如果翻成中文效果更好，那也不介意將名子翻成中文。我對此沒什麼主意，其他中文譯者看到這段留言就自己評估吧。By 劉書源 2009-12-13
 #: ../share/applications/virtaal.desktop.in.h:3
 #: ../share/virtaal/virtaal.glade.h:49
 msgid "Virtaal"
@@ -71,7 +73,7 @@ msgstr "新增URL"
 #. l10n: This label refers to comments about a new term that is added
 #: ../share/virtaal/virtaal.glade.h:11
 msgid "C_omments"
-msgstr "評論(C_)"
+msgstr "評論(_o)"
 
 #: ../share/virtaal/virtaal.glade.h:12
 msgid ""
@@ -80,7 +82,7 @@ msgstr "根據不同的翻譯任務，複數的訊息可能是可選的。"
 
 #: ../share/virtaal/virtaal.glade.h:13
 msgid "E-mail address:"
-msgstr "電子郵件地址:"
+msgstr "電子郵件地址："
 
 #. l10n: This tab label refers to the general preferences
 #: ../share/virtaal/virtaal.glade.h:15
@@ -98,20 +100,19 @@ msgstr "語言名稱："
 #. l10n: This label is for the name of the translator
 #: ../share/virtaal/virtaal.glade.h:19
 msgid "Name:"
-msgstr "姓名:"
+msgstr "姓名："
 
 #: ../share/virtaal/virtaal.glade.h:20
-#, fuzzy
 msgid "New Language Pair"
 msgstr "新的語言對"
 
 #: ../share/virtaal/virtaal.glade.h:21
 msgid "Number of plurals:"
-msgstr "複數數:"
+msgstr "複數數："
 
 #: ../share/virtaal/virtaal.glade.h:22
 msgid "P_age Up"
-msgstr "上一頁(P_)"
+msgstr "上一頁(_a)"
 
 #. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
 #: ../share/virtaal/virtaal.glade.h:24
@@ -133,30 +134,28 @@ msgid "Plug-ins"
 msgstr "外掛"
 
 #: ../share/virtaal/virtaal.glade.h:28
-#, fuzzy
 msgid "Plural expression:"
-msgstr "複數的表示法:"
+msgstr "複數的表示法："
 
 #: ../share/virtaal/virtaal.glade.h:29
-#, fuzzy
 msgid "Put queries in quotes"
 msgstr "將查詢加上引號"
 
 #: ../share/virtaal/virtaal.glade.h:30
 msgid "Report a _Bug"
-msgstr "錯誤回報(B_)"
+msgstr "錯誤回報(_B)"
 
 #: ../share/virtaal/virtaal.glade.h:31
 msgid "Source text:"
-msgstr "來源文字:"
+msgstr "來源文字："
 
 #: ../share/virtaal/virtaal.glade.h:32
 msgid "Target text:"
-msgstr "目標文字:"
+msgstr "目標文字："
 
 #: ../share/virtaal/virtaal.glade.h:33
 msgid "Team:"
-msgstr "團隊:"
+msgstr "團隊："
 
 #: ../share/virtaal/virtaal.glade.h:34
 msgid "Terminology Files"
@@ -164,7 +163,7 @@ msgstr "術語文件"
 
 #: ../share/virtaal/virtaal.glade.h:35
 msgid "Terminology _file:"
-msgstr "術語文件(_f):"
+msgstr "術語文件(_f)："
 
 #: ../share/virtaal/virtaal.glade.h:36
 msgid ""
@@ -211,7 +210,7 @@ msgstr "複製來源文字到翻譯欄"
 
 #: ../share/virtaal/virtaal.glade.h:47
 msgid "URL:"
-msgstr "網址:"
+msgstr "網址："
 
 #: ../share/virtaal/virtaal.glade.h:48
 msgid "Use _Default Fonts"
@@ -500,12 +499,10 @@ msgid "XML tags, such as <b> and </i>"
 msgstr "XML標籤，如 <b> 和 </i>"
 
 #: ../virtaal/controllers/placeablescontroller.py:152
-#, fuzzy
 msgid "Spaces"
 msgstr "空格"
 
 #: ../virtaal/controllers/placeablescontroller.py:153
-#, fuzzy
 msgid "Double spaces and spaces in unexpected positions"
 msgstr "雙倍空格和空格出現在非預期的位置。"
 
@@ -826,9 +823,8 @@ msgstr "<b>%s</b>"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:440
 #, python-format
-#, fuzzy
 msgid "Existing translations: %(translations)s"
-msgstr "現有的翻譯: %(translations)s"
+msgstr "完成的翻譯: %(translations)s"
 
 #: ../virtaal/plugins/terminology/models/opentran.py:47
 msgid "Terms from Open-Tran.eu"
@@ -1023,9 +1019,8 @@ msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 
 #: ../virtaal/views/mainview.py:326
-#, fuzzy
 msgid "Please enter the number of noun forms (plurals) to use"
-msgstr "請輸入要使用的複數的名詞形式"
+msgstr "請輸入要使用的複數名詞的形式"
 
 #: ../virtaal/views/mainview.py:332
 #, fuzzy
@@ -1078,7 +1073,7 @@ msgstr "Mozilla Corporation"
 #. l10n: Rather than translating, fill in the names of the translators
 #: ../virtaal/views/widgets/aboutdialog.py:69
 msgid "translator-credits"
-msgstr "Liu, Shuyuan <victorangus@gmail.com>, 2009"
+msgstr "劉書源 <victorangus@gmail.com>, 2009"
 
 #: ../virtaal/views/widgets/langadddialog.py:103
 msgid "Language code must be an ASCII string."
@@ -1256,7 +1251,6 @@ msgid "CONFIG"
 msgstr "設定"
 
 #: ../bin/virtaal:81
-#, fuzzy
 msgid "use the configuration file given by the supplied filename."
 msgstr "使用提供的設定檔。"
 

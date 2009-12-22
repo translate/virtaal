@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008 Zuza Software Foundation
+# Copyright 2008-2009 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -196,7 +196,7 @@ AppPublisherURL=http://www.translate.org.za/
 AppVersion=%(version)s
 AppSupportURL=http://translate.sourceforge.net/
 ;AppComments=
-;AppCopyright=Copyright (C) 2007-2008 Zuza Software Foundation
+;AppCopyright=Copyright (C) 2007-2009 Zuza Software Foundation
 DefaultDirName={pf}\%(name)s
 DefaultGroupName=%(name)s
 LanguageDetectionMethod=locale

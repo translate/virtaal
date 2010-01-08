@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-11-04 18:02+0200\n"
-"PO-Revision-Date: 2009-12-29 15:06+0300\n"
+"PO-Revision-Date: 2010-01-08 13:35+0300\n"
 "Last-Translator: Ihar <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -146,7 +146,7 @@ msgstr "Абстаўляць запыты двукоссямі"
 
 #: ../share/virtaal/virtaal.glade.h:30
 msgid "Report a _Bug"
-msgstr "_Паведаміць пра хібу"
+msgstr "Паведаміць пра _хібу"
 
 #: ../share/virtaal/virtaal.glade.h:31
 msgid "Source text:"
@@ -166,7 +166,7 @@ msgstr "Файлы тэрміналогіі"
 
 #: ../share/virtaal/virtaal.glade.h:35
 msgid "Terminology _file:"
-msgstr "Файл _тэрміналогіі:"
+msgstr "_Файл тэрміналогіі:"
 
 #: ../share/virtaal/virtaal.glade.h:36
 msgid ""
@@ -253,7 +253,7 @@ msgstr "_Дапамога"
 
 #: ../share/virtaal/virtaal.glade.h:57
 msgid "_Localization Guide"
-msgstr "_Дапаможнік у перакладзе"
+msgstr "Д_апаможнік у перакладзе"
 
 #: ../share/virtaal/virtaal.glade.h:58
 msgid "_Navigation"
@@ -588,7 +588,7 @@ msgstr "_Зважаць на памер літар"
 #. http://en.wikipedia.org/wiki/Regular_expression
 #: ../virtaal/modes/searchmode.py:70
 msgid "_Regular expression"
-msgstr "_Рэгулярны выраз"
+msgstr "Р_эгулярны выраз"
 
 #. l10n: This text label shows in front of the text box where the replacement
 #. text is typed. Keep in mind that the text box will appear after this text.
@@ -743,7 +743,7 @@ msgstr "Настройкі Lokalize"
 #: ../virtaal/plugins/migration.py:255
 #, python-format
 msgid "Lokalize's Translation Memory: %(database_name)s"
-msgstr "Памяць перакладу Lokalize: %(database_name)s"
+msgstr "Памяць мінулых перакладаў Lokalize: %(database_name)s"
 
 #: ../virtaal/plugins/terminology/__init__.py:27
 msgid "Terminology Help"
@@ -777,7 +777,7 @@ msgstr "Файлы _тэрміналогіі..."
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:62
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:64
 msgid "Add _Term..."
-msgstr "Дадаць _тэрмін..."
+msgstr "Дадаць т_эрмін..."
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:133
 msgid "File"
@@ -896,7 +896,7 @@ msgstr "Няспраўджаны машынны пераклад ад розны
 
 #: ../virtaal/plugins/tm/models/localtm.py:37
 msgid "Local Translation Memory"
-msgstr "Лакальная памяць перакладу"
+msgstr "Лакальная памяць мінулых перакладаў"
 
 #: ../virtaal/plugins/tm/models/localtm.py:38
 msgid "Previous translations you have made"
@@ -905,7 +905,7 @@ msgstr "Твае папярэднія пераклады"
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/localtm.py:40
 msgid "Local TM"
-msgstr "Лакальная памяць"
+msgstr "Лакальн. TM"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
 #: ../virtaal/plugins/tm/models/moses.py:33
@@ -1046,7 +1046,7 @@ msgstr "Упішыце фарматны радок множнага ліку"
 #. between units.
 #: ../virtaal/views/modeview.py:62
 msgid "N_avigation:"
-msgstr "_Навігацыя:"
+msgstr "Н_авігацыя:"
 
 #: ../virtaal/views/unitview.py:603
 msgid "F_uzzy"
@@ -1196,7 +1196,7 @@ msgstr "TMX"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:17
 msgid "TMX Translation Memory"
-msgstr "Памяць перакладу TMX"
+msgstr "Памяць мінулых перакладаў TMX"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:18
 msgid "Tcl Translation File"
@@ -1228,7 +1228,7 @@ msgstr "Файл перакладу XLIFF"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:25
 msgid "XML Localization Interchange File Format"
-msgstr "Фармат абмену перакладамі XLIFF"
+msgstr "XML-фармат абмену перакладамі"
 
 #: ../devsupport/tmp_strings.py:23
 msgid "Gettext PO file"
@@ -1366,7 +1366,3 @@ msgstr "Опцыя %s не прымае ніякіх значэнняў"
 #: ../devsupport/optparse.py:1612
 msgid "Options"
 msgstr "Опцыі"
-
-#, fuzzy
-#~ msgid "OmegaT Glossary"
-#~ msgstr "Гласарый TBX"

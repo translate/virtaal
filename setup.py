@@ -95,6 +95,8 @@ options = {
         "virtaal.models",
         "virtaal.modes",
         "virtaal.plugins",
+        "virtaal.plugins.lookup",
+        "virtaal.plugins.lookup.models",
         "virtaal.plugins.terminology",
         "virtaal.plugins.terminology.models",
         "virtaal.plugins.terminology.models.localfile",

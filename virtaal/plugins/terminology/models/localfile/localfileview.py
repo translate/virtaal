@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import os.path
 import gtk
 import logging
 import pango
@@ -238,6 +239,8 @@ class FileSelectDialog:
                 continue
             # Try and open filename as a translation store
             try:
+                if not os.path.isfile(filename):
+                    raise IOError(_('"%s" is not a usable file.') % filename)
                 store = store_factory.getobject(filename)
                 currfiles.append(filename)
                 self.lst_files.append([filename, False])

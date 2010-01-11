@@ -118,7 +118,7 @@ def pango_diff(a, b):
     textdiff = ""
     for tag, i1, i2, j1, j2 in SequenceMatcher(None, a, b).get_opcodes():
         if tag == 'equal':
-            textdiff += a[i1:i2]
+            textdiff += _escape_entities(a[i1:i2])
         if tag == "insert":
             textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': insert_attr, 'text': _escape_entities(b[j1:j2])}
         if tag == "delete":

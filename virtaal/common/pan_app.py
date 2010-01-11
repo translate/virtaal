@@ -72,13 +72,15 @@ def get_locale_lang():
     return 'en'
 
 def name():
+    import getpass
+    name = getpass.getuser() #username only
     # pwd is only available on UNIX
     try:
         import pwd
-        import getpass
+        name = pwd.getpwnam(name)[4].split(",")[0]
     except ImportError, _e:
-        return u""
-    return pwd.getpwnam(getpass.getuser())[4].split(",")[0]
+        pass
+    return name or u""
 
 def get_default_font():
     default_font = 'monospace'

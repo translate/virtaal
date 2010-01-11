@@ -66,9 +66,8 @@ def markuptext(text, fancyspaces=True, markupescapes=True, diff_text=""):
     if not text:
         return ""
 
-
-    if diff_text != "":
-       text = pango_diff(diff_text, text)
+    if diff_text and diff_text != text:
+        text = pango_diff(diff_text, text)
     else:
         text = _escape_entities(text)
 

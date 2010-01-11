@@ -21,7 +21,11 @@
 
 import sys
 from os import name as os_name, path
+
+# For some strange reason this is necessary for translation to work... FIXME
+import translate.i18n
 from virtaal.common import pan_app
+
 if os_name == 'nt':
     filename_template = path.join(pan_app.get_config_dir(), '%s_virtaal.log')
     sys.stdout = open(filename_template % ('stdout'), 'w')
@@ -68,10 +72,7 @@ import optparse
 import sys
 from optparse import OptionParser, make_option
 
-import translate.i18n
-
 from virtaal import __version__
-
 
 optparse._ = _
 usage = _("%prog [options] [translation_file]")

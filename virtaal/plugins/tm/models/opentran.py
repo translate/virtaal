@@ -24,6 +24,10 @@ from virtaal.common import pan_app
 
 from basetmmodel import BaseTMModel
 
+# Some names are a bit too long, so let's "translate" them to something shorter
+new_names = {
+        'OpenOffice.org': 'OpenOffice',
+}
 
 class TMModel(BaseTMModel):
     """This is the translation memory model."""
@@ -65,6 +69,9 @@ class TMModel(BaseTMModel):
         """Handle the matches when returned from self.tmclient."""
         for match in matches:
             if 'tmsource' in match:
+                # Try to replace some long names like "OpenOffice.org" which
+                # doesn't display nicely:
+                match['tmsource'] = new_names.get(match['tmsource']) or match['tmsource']
                 #l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
                 match['tmsource'] = _('OpenTran') + '\n' + match['tmsource']
             else:

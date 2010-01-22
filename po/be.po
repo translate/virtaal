@@ -7,15 +7,15 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-11-04 18:02+0200\n"
-"PO-Revision-Date: 2010-01-08 13:35+0300\n"
-"Last-Translator: Ihar <ihar.hrachyshka@gmail.com>\n"
+"PO-Revision-Date: 2010-01-09 16:35+0200\n"
+"Last-Translator:  <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: be\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: be\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Pootle 2.0.0\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
@@ -305,7 +305,7 @@ msgstr ""
 #. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
 #: ../virtaal/tips.py:31
 msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
-msgstr "Каб пазначыць дзейны пераклад няпэўным, проста націсніце <Alt+U>."
+msgstr "Каб пазначыць дзейны пераклад няпэўным, проста націсніце <Alt+Я>."
 
 #: ../virtaal/tips.py:32
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
@@ -684,7 +684,7 @@ msgstr "URL"
 #. l10n: Whether the selected text should be surrounded by "quotes"
 #: ../virtaal/plugins/lookup/models/weblookup.py:191
 msgid "Quote Query"
-msgstr "Абнесці запыт двукоссямі"
+msgstr "Запыт у двукоссі"
 
 #: ../virtaal/plugins/migration.py:56
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
@@ -1050,7 +1050,7 @@ msgstr "Н_авігацыя:"
 
 #: ../virtaal/views/unitview.py:603
 msgid "F_uzzy"
-msgstr "_Няпэўна"
+msgstr "Н_япэўна"
 
 #: ../virtaal/views/widgets/aboutdialog.py:35
 msgid "Copyright © 2007-2009 Zuza Software Foundation"

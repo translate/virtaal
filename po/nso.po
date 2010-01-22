@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-11-04 18:02+0200\n"
-"PO-Revision-Date: 2009-11-11 12:55+0200\n"
+"PO-Revision-Date: 2009-11-11 17:11+0200\n"
 "Last-Translator: Pheledi <pheledi@mosekolatranslation.co.za>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: nso\n"
@@ -310,7 +310,7 @@ msgstr ""
 #: ../virtaal/tips.py:31
 msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
 msgstr ""
-"Go swaya phetolelo ya gona bjale e le e sa hlakago, kgotla feela <Alt+H>."
+"Go swaya phetolelo ya gona bjale e le e sa hlakago, kgotla feela <Alt+S>."
 
 #: ../virtaal/tips.py:32
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
@@ -598,7 +598,7 @@ msgstr "_Lemoga bogolo bja ditlhaka"
 #. http://en.wikipedia.org/wiki/Regular_expression
 #: ../virtaal/modes/searchmode.py:70
 msgid "_Regular expression"
-msgstr "_Tlhaloso e tlwaelegilego"
+msgstr "Tlhal_oso e tlwaelegilego"
 
 #. l10n: This text label shows in front of the text box where the replacement
 #. text is typed. Keep in mind that the text box will appear after this text.
@@ -833,12 +833,12 @@ msgstr "Phošo ya go bula faele"
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:384
 #, python-format
 msgid "_Source term — %(langname)s"
-msgstr "Lereo la m_othopo — %(langname)s"
+msgstr "Lereo la _mothopo — %(langname)s"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:385
 #, python-format
 msgid "_Target term — %(langname)s"
-msgstr "Lereo le leban_tšwego — %(langname)s"
+msgstr "Lereo le _lebantšwego — %(langname)s"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:429
 msgid "Identical entry already exists."
@@ -1073,7 +1073,7 @@ msgstr "Tshepel_atshepelo:"
 
 #: ../virtaal/views/unitview.py:603
 msgid "F_uzzy"
-msgstr "Sa _hlakago"
+msgstr "_Sa hlakago"
 
 #: ../virtaal/views/widgets/aboutdialog.py:35
 msgid "Copyright © 2007-2009 Zuza Software Foundation"

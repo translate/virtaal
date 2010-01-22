@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-11-04 18:02+0200\n"
-"PO-Revision-Date: 2010-01-19 20:15+0200\n"
+"PO-Revision-Date: 2010-01-21 19:16+0200\n"
 "Last-Translator: Łukasz <deejay1@srem.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: pl\n"
@@ -32,7 +32,7 @@ msgstr "Narzędzie do tłumaczeń"
 #: ../share/applications/virtaal.desktop.in.h:3
 #: ../share/virtaal/virtaal.glade.h:49
 msgid "Virtaal"
-msgstr "Program Virtaal"
+msgstr "Virtaal"
 
 #: ../share/virtaal/virtaal.glade.h:1
 msgid "<b>Fonts</b>"
@@ -597,7 +597,7 @@ msgstr "_Rozróżnianie małych i wielkich liter"
 #. http://en.wikipedia.org/wiki/Regular_expression
 #: ../virtaal/modes/searchmode.py:70
 msgid "_Regular expression"
-msgstr "Wy_rażenie regularne"
+msgstr "Wyrażenie reg_ularne"
 
 #. l10n: This text label shows in front of the text box where the replacement
 #. text is typed. Keep in mind that the text box will appear after this text.
@@ -918,7 +918,7 @@ msgstr "Poprzednie wykonane tłumaczenia"
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/localtm.py:40
 msgid "Local TM"
-msgstr "Lokalna pamięć"
+msgstr "Lokalna PT"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
 #: ../virtaal/plugins/tm/models/moses.py:33
@@ -951,7 +951,7 @@ msgstr "Serwer pamięci tłumaczeń"
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/remotetm.py:33
 msgid "Remote TM"
-msgstr "Zdalny serwer TM"
+msgstr "Serwer PT"
 
 #: ../virtaal/plugins/tm/models/tinytm.py:34
 msgid "TinyTM"

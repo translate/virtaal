@@ -107,9 +107,13 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                 focused.get_buffer().paste_clipboard(clipboard, None, True)
 
         maingui = self.controller.main_controller.view.gui
-        maingui.get_widget('mnu_cut').connect('activate', on_cut)
-        maingui.get_widget('mnu_copy').connect('activate', on_copy)
-        maingui.get_widget('mnu_paste').connect('activate', on_paste)
+        self.mnu_cut = maingui.get_widget('mnu_cut')
+        self.mnu_copy = maingui.get_widget('mnu_copy')
+        self.mnu_paste = maingui.get_widget('mnu_paste')
+
+        self.mnu_cut.connect('activate', on_cut)
+        self.mnu_copy.connect('activate', on_copy)
+        self.mnu_paste.connect('activate', on_paste)
 
         # And now for the "Transfer from source" and placeable selection menu items
         mnu_next = maingui.get_widget('mnu_placnext')
@@ -460,6 +464,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         textbox.set_left_margin(2)
         textbox.set_right_margin(2)
         textbox.set_text(text or u'')
+        textbox.connect('focus-in-event', self._on_textbox_focused)
+        textbox.connect('focus-out-event', self._on_textbox_unfocused)
 
         scrollwnd = gtk.ScrolledWindow()
         scrollwnd.set_policy(gtk.POLICY_NEVER, scroll_policy)
@@ -682,3 +688,11 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
         #logging.debug('emit("paste-start", old_text="%s", offsets=%d, target_num=%d)' % (old_text, offsets, target_num))
         self.emit('paste-start', old_text, offsets, target_num)
+
+    def _on_textbox_focused(self, textbox, event):
+        for mnu in (self.mnu_cut, self.mnu_copy, self.mnu_paste):
+            mnu.set_sensitive(True)
+
+    def _on_textbox_unfocused(self, textbox, event):
+        for mnu in (self.mnu_cut, self.mnu_copy, self.mnu_paste):
+            mnu.set_sensitive(False)

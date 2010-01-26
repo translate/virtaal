@@ -189,6 +189,7 @@ class MainView(BaseView):
         self.controller.connect('controller-registered', self._on_controller_registered)
         self._create_dialogs()
         self._setup_key_bindings()
+        self._track_window_state()
 
     def _create_dialogs(self):
         self.input_dialog = EntryDialog(self.main_window)
@@ -275,6 +276,13 @@ class MainView(BaseView):
     def _setup_key_bindings(self):
         self.accel_group = gtk.AccelGroup()
         self.main_window.add_accel_group(self.accel_group)
+
+    def _track_window_state(self):
+        self._window_is_maximized = False
+
+        def on_state_event(widget, event):
+            self._window_is_maximized = bool(event.new_window_state & gtk.gdk.WINDOW_STATE_MAXIMIZED)
+        self.main_window.connect('window-state-event', on_state_event)
 
 
     # ACCESSORS #
@@ -408,13 +416,19 @@ class MainView(BaseView):
         return None, None
 
     def quit(self):
-        width, height = self.main_window.get_size()
-        pan_app.settings.general['windowwidth'] = width
-        pan_app.settings.general['windowheight'] = height
+        if self._window_is_maximized:
+            pan_app.settings.general['maximized'] = 1
+        else:
+            width, height = self.main_window.get_size()
+            pan_app.settings.general['windowwidth'] = width
+            pan_app.settings.general['windowheight'] = height
+            pan_app.settings.general['maximized'] = ''
         pan_app.settings.write()
         gtk.main_quit()
 
     def show(self):
+        if pan_app.settings.general['maximized']:
+            self.main_window.maximize()
         self.main_window.show()
         gtk.main()
 

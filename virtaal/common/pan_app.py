@@ -125,6 +125,7 @@ class Settings:
     }
     general =       {
         "lastdir": "",
+        "maximized": '',
         "windowwidth": 796,
         "windowheight": 544,
     }

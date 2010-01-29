@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Translate Toolkit 1.3.0\n"
 
-#. Welcome to the Virtaal tutorial. You can do the first translation by typing just the translation for "Welcome".
+#. Welcome to the Virtaal tutorial. You can do the first translation by typing just the translation for "Welcome". Then press Enter.
 msgid "Welcome"
 msgstr ""
 
@@ -41,7 +41,7 @@ msgstr ""
 msgid "Download the File Now"
 msgstr ""
 
-#. If you provided the previous message with a translation you should see a window with that translation and a percentage indicating how similar the source strings are. It is Virtaal's translation memory at work. Press Control+1 to copy the suggested translation to the current translation.
+#. If you translated the previous message you should see a window with that translation and a percentage indicating how similar the source strings (English) are. It is Virtaal's translation memory at work. Press Control+1 to copy the suggested translation to the current translation. Remember to always review suggestions before you use them.
 msgid "Download the files now"
 msgstr ""
 
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Name:"
 msgstr ""
 
-#. If the source will remain mostly or completely unchanged it is convenient to copy the entire source string with Alt+Down.
+#. If the source will remain mostly or completely unchanged it is convenient to copy the entire source string with Alt+Down. Here is almost nothing to translate, so just press Alt+Down and corrections if necessary.
 msgid "<b><a href=\"http://virtaal.org/\">Virtaal</a></b>"
 msgstr ""
 
@@ -69,8 +69,8 @@ msgstr ""
 msgid "© Virtaal Team"
 msgstr ""
 
-#. Recognised placeables include special symbols, numbers, variable place holders, acronyms and many more.
-msgid "© 2009 Virtaal %s TEAM, ..."
+#. Recognised placeables include special symbols, numbers, variable place holders, acronyms and many more. Move to each one with Alt+Right and transfer it down with Alt+Down.
+msgid "© 2009 contributors"
 msgstr ""
 
 #. This message ends with ... to indicate that clicking on this text will cause a dialogue to appear instead of just performing an action. Be sure to end your message with ... as well.
@@ -89,7 +89,11 @@ msgstr ""
 msgid "Restart the program <b>now</b>"
 msgstr ""
 
-#. In this message "%d" is a placeholder (variable) that represents a number. Make sure your translation contains "%d" somewhere. In this case it refers a number of files. When this message is used the "%d" will be replaced with a number e.g. 'Number of files copied: 5'.
+#. This message is very similar to the previous message. Use the suggestion of the previous translation with Ctrl+1. Note how the only difference is that this one ends with a full stop after the last tag.
+msgid "Restart the program <b>now</b>."
+msgstr ""
+
+#. In this message "%d" is a placeholder (variable) that represents a number. Make sure your translation contains "%d" somewhere. In this case it refers a number of files. When this message is used the "%d" will be replaced with a number e.g. 'Number of files copied: 5'.  Note that "%d" does not refer to a percentage.
 msgid "Number of files copied: %d"
 msgstr ""
 
@@ -103,11 +107,11 @@ msgid_plural "%d files will be downloaded"
 msgstr[0] ""
 msgstr[1] ""
 
-#. In this message, "%s" is a placeholder (variable) that represents a file name. Make sure your translation contains %s somewhere. When this message is used, the %s will be replaced with a file name e.g. 'The file will be saved as example.odt'.
+#. In this message, "%s" is a placeholder (variable) that represents a file name. Make sure your translation contains %s somewhere. When this message is used, the %s will be replaced with a file name e.g. 'The file will be saved as example.odt'.  Note that "%s" does not refer to a percentage.
 msgid "The file will be saved as %s"
 msgstr ""
 
-#. In this message the variable is surrounded by double quotes. Make sure your translation contains the variable %s and surround it similarly with quotes in the way required by your language. If your language uses the same quotes as English, type it exactly as shown for the English (it might be preceded by a slash). If your language uses different characters you can just type them around the variable.
+#. In this message the variable is surrounded by double quotes. Make sure your translation contains the variable %s and surround it similarly with quotes in the way required by your language. If your language uses the same quotes as English, type it exactly as shown for the English. If your language uses different characters you can just type them around the variable.
 msgid "The file \"%s\" was not saved"
 msgstr ""
 
@@ -123,11 +127,11 @@ msgstr ""
 msgid "This software runs on Linux"
 msgstr ""
 
-#. This message contains the URL of the project website. It must be transferred as a placeable or typed over exactly.
+#. This message contains the URL (web address) of the project website. It must be transferred as a placeable or typed over exactly.
 msgid "Visit the project website at http://virtaal.org/"
 msgstr ""
 
-#. This message refers to a website with more information. Sometimes you might be allowed or encouraged to change the URL to a website in your language. In this case, replace the "en" at the start of the address to your language code so that the address points to the corresponding article in your language about XML.
+#. This message refers to a website with more information. Sometimes you might be allowed or encouraged to change the URL (web address) to a website in your language. In this case, replace the "en" at the start of the address to your language code so that the address points to the corresponding article in your language about XML.
 msgid "For more information about XML, visit http://en.wikipedia.org/wiki/XML"
 msgstr ""
 
@@ -136,7 +140,7 @@ msgctxt "verb"
 msgid "View"
 msgstr ""
 
-#. This translation contains an ambiguous word - it has two possible meanings. Make sure you can see the context information showing that this is a noun (a thing as in "click to change the view to full screen"). If the software gives your previous translation as a suggestion, take care to only use it if it is definitely appropriate in this case as well.
+#. This translation contains an ambiguous word - it has two possible meanings. Make sure you can see the context information showing that this is a noun (a thing as in "click to change the view to full screen"). If Virtaal gives your previous translation as a suggestion, take care to only use it if it is definitely appropriate in this case as well.
 msgctxt "noun"
 msgid "View"
 msgstr ""

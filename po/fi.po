@@ -6,16 +6,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.4.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-07-15 18:41+0200\n"
-"PO-Revision-Date: 2009-10-13 02:42+0300\n"
-"Last-Translator: Jussi Aalto <jta_lnx@dnainternet.net>\n"
+"POT-Creation-Date: 2009-11-04 18:02+0200\n"
+"PO-Revision-Date: 2009-12-19 01:24+0200\n"
+"Last-Translator: Jussi <jta_lnx@dnainternet.net>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.4.0\n"
+"X-Generator: Pootle 2.0.0\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 msgid ""
@@ -28,7 +28,7 @@ msgid "Translation Tool"
 msgstr "Käännöstyökalu"
 
 #: ../share/applications/virtaal.desktop.in.h:3
-#: ../share/virtaal/virtaal.glade.h:45
+#: ../share/virtaal/virtaal.glade.h:49
 msgid "Virtaal"
 msgstr "Virtaal"
 
@@ -41,79 +41,87 @@ msgid "<b>Language Information</b>"
 msgstr "<b>Kielen tiedot</b>"
 
 #: ../share/virtaal/virtaal.glade.h:3
+msgid "<b>Options</b>"
+msgstr "<b>Valinnat</b>"
+
+#: ../share/virtaal/virtaal.glade.h:4
 msgid "<b>Original</b>"
 msgstr "<b>Alkuperäinen</b>"
 
-#: ../share/virtaal/virtaal.glade.h:4
+#: ../share/virtaal/virtaal.glade.h:5
 msgid "<b>Translation</b>"
 msgstr "<b>Käännös</b>"
 
-#: ../share/virtaal/virtaal.glade.h:5
+#: ../share/virtaal/virtaal.glade.h:6
 msgid "<b>Translator Information</b>"
 msgstr "<b>Kääntäjän tiedot</b>"
 
-#: ../share/virtaal/virtaal.glade.h:6
+#: ../share/virtaal/virtaal.glade.h:7
 msgid "Add Missing Language"
 msgstr "Lisää puuttuva kieli"
 
-#: ../share/virtaal/virtaal.glade.h:7
+#: ../share/virtaal/virtaal.glade.h:8
 msgid "Add Term"
 msgstr "Lisää termi"
 
-#. l10n: This label refers to comments about a new term that is added
 #: ../share/virtaal/virtaal.glade.h:9
+msgid "Add URL"
+msgstr "Lisää URL"
+
+#. l10n: This label refers to comments about a new term that is added
+#: ../share/virtaal/virtaal.glade.h:11
 msgid "C_omments"
 msgstr "K_ommentit"
 
-#: ../share/virtaal/virtaal.glade.h:10
+#: ../share/virtaal/virtaal.glade.h:12
 msgid ""
 "Depending on the translation task, the plural information might be optional."
 msgstr "Käännöstehtävästä riippuen, monikkotiedot saattavat olla valinnaisia."
 
-#: ../share/virtaal/virtaal.glade.h:11
+#: ../share/virtaal/virtaal.glade.h:13
 msgid "E-mail address:"
 msgstr "Sähköpostiosoite:"
 
 #. l10n: This tab label refers to the general preferences
-#: ../share/virtaal/virtaal.glade.h:13
+#: ../share/virtaal/virtaal.glade.h:15
 msgid "General"
 msgstr "Yleiset"
 
-#: ../share/virtaal/virtaal.glade.h:14
+#: ../share/virtaal/virtaal.glade.h:16
 msgid "ISO code:"
 msgstr "ISO-koodi:"
 
-#: ../share/virtaal/virtaal.glade.h:15
+#: ../share/virtaal/virtaal.glade.h:17
 msgid "Language name:"
 msgstr "Kielen nimi:"
 
 #. l10n: This label is for the name of the translator
-#: ../share/virtaal/virtaal.glade.h:17
+#: ../share/virtaal/virtaal.glade.h:19
 msgid "Name:"
 msgstr "Nimi:"
 
-#: ../share/virtaal/virtaal.glade.h:18
+#: ../share/virtaal/virtaal.glade.h:20
 msgid "New Language Pair"
 msgstr "Uusi kielipari"
 
-#: ../share/virtaal/virtaal.glade.h:19
+#: ../share/virtaal/virtaal.glade.h:21
 msgid "Number of plurals:"
 msgstr "Monikoiden määrä:"
 
-#: ../share/virtaal/virtaal.glade.h:20
+#: ../share/virtaal/virtaal.glade.h:22
 msgid "P_age Up"
 msgstr "S_ivu ylöspäin"
 
 #. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
-#: ../share/virtaal/virtaal.glade.h:22
+#: ../share/virtaal/virtaal.glade.h:24
 msgid "P_revious Placeable"
 msgstr "_Edellinen sijoite"
 
-#: ../share/virtaal/virtaal.glade.h:23
+#: ../share/virtaal/virtaal.glade.h:25
 msgid "Placeables"
 msgstr "Sijoitteet"
 
-#: ../share/virtaal/virtaal.glade.h:24
+#: ../share/virtaal/virtaal.glade.h:26
 msgid ""
 "Placeables are special parts of the text that can be automatically "
 "highlighted and easily inserted into the translation."
@@ -121,39 +129,43 @@ msgstr ""
 "Sijoitteet ovat tekstin erityisosia jotka voidaan korostaa automaattisesti "
 "ja lisätä helposti käännökseen."
 
-#: ../share/virtaal/virtaal.glade.h:25
+#: ../share/virtaal/virtaal.glade.h:27
 msgid "Plug-ins"
 msgstr "Liitännäiset"
 
-#: ../share/virtaal/virtaal.glade.h:26
+#: ../share/virtaal/virtaal.glade.h:28
 msgid "Plural expression:"
 msgstr "Monikon lauseke:"
 
-#: ../share/virtaal/virtaal.glade.h:27
+#: ../share/virtaal/virtaal.glade.h:29
+msgid "Put queries in quotes"
+msgstr "Laita kyselyt lainausmerkkien sisään"
+
+#: ../share/virtaal/virtaal.glade.h:30
 msgid "Report a _Bug"
 msgstr "Tee _vikailmoitus"
 
-#: ../share/virtaal/virtaal.glade.h:28
+#: ../share/virtaal/virtaal.glade.h:31
 msgid "Source text:"
 msgstr "Lähdeteksti:"
 
-#: ../share/virtaal/virtaal.glade.h:29
+#: ../share/virtaal/virtaal.glade.h:32
 msgid "Target text:"
 msgstr "Kohdeteksti:"
 
-#: ../share/virtaal/virtaal.glade.h:30
+#: ../share/virtaal/virtaal.glade.h:33
 msgid "Team:"
 msgstr "Ryhmä:"
 
-#: ../share/virtaal/virtaal.glade.h:31
+#: ../share/virtaal/virtaal.glade.h:34
 msgid "Terminology Files"
 msgstr "Terminologiatiedostot"
 
-#: ../share/virtaal/virtaal.glade.h:32
+#: ../share/virtaal/virtaal.glade.h:35
 msgid "Terminology _file:"
 msgstr "_Terminologiatiedosto:"
 
-#: ../share/virtaal/virtaal.glade.h:33
+#: ../share/virtaal/virtaal.glade.h:36
 msgid ""
 "The <b>Original</b> is the language from which you are translating, also "
 "called the source language.\n"
@@ -166,7 +178,7 @@ msgstr ""
 "Jos käännät englannista suomeksi on englanti siis alkuperäinen tai "
 "lähdekieli."
 
-#: ../share/virtaal/virtaal.glade.h:36
+#: ../share/virtaal/virtaal.glade.h:39
 msgid ""
 "The <b>Translation</b> is the language into which you are translating, also "
 "called the target language.\n"
@@ -178,15 +190,15 @@ msgstr ""
 "\n"
 "Jos käännät englannista suomeksi on suomi siis käännös- tai kohdekieli."
 
-#: ../share/virtaal/virtaal.glade.h:39
+#: ../share/virtaal/virtaal.glade.h:42
 msgid "The e-mail address stored in the file header"
 msgstr "Tiedoston otsakkeeseen tallennettava sähköpostiosoite"
 
-#: ../share/virtaal/virtaal.glade.h:40
+#: ../share/virtaal/virtaal.glade.h:43
 msgid "The name stored in the file header"
 msgstr "Tiedoston otsakkeeseen tallennettava nimi"
 
-#: ../share/virtaal/virtaal.glade.h:41
+#: ../share/virtaal/virtaal.glade.h:44
 msgid ""
 "The team information stored in the file header. This can be an e-mail "
 "address or a URL, for example."
@@ -195,71 +207,79 @@ msgstr ""
 "sähköpostiosoite tai URL."
 
 #. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
-#: ../share/virtaal/virtaal.glade.h:43
+#: ../share/virtaal/virtaal.glade.h:46
 msgid "Transfer From Source"
 msgstr "Siirrä lähteestä"
 
-#: ../share/virtaal/virtaal.glade.h:44
+#: ../share/virtaal/virtaal.glade.h:47
+msgid "URL:"
+msgstr "URL:"
+
+#: ../share/virtaal/virtaal.glade.h:48
 msgid "Use _Default Fonts"
 msgstr "Käytä _oletuskirjasimia"
 
-#: ../share/virtaal/virtaal.glade.h:46
+#: ../share/virtaal/virtaal.glade.h:50
 msgid "Virtaal Preferences"
 msgstr "Virtaal - asetukset"
 
-#: ../share/virtaal/virtaal.glade.h:47
+#: ../share/virtaal/virtaal.glade.h:51
+msgid "Web Look-ups"
+msgstr "Verkkohaut"
+
+#: ../share/virtaal/virtaal.glade.h:52
 msgid "_Add Missing Language..."
 msgstr "_Lisää puuttuva kieli..."
 
-#: ../share/virtaal/virtaal.glade.h:48
+#: ../share/virtaal/virtaal.glade.h:53
 msgid "_Edit"
 msgstr "_Muokkaa"
 
-#: ../share/virtaal/virtaal.glade.h:49
+#: ../share/virtaal/virtaal.glade.h:54
 msgid "_File"
 msgstr "_Tiedosto"
 
-#: ../share/virtaal/virtaal.glade.h:50
+#: ../share/virtaal/virtaal.glade.h:55
 msgid "_Full Screen"
 msgstr "_Kokoruututila"
 
-#: ../share/virtaal/virtaal.glade.h:51
+#: ../share/virtaal/virtaal.glade.h:56
 msgid "_Help"
 msgstr "_Ohje"
 
-#: ../share/virtaal/virtaal.glade.h:52
+#: ../share/virtaal/virtaal.glade.h:57
 msgid "_Localization Guide"
 msgstr "_Kotoistusohje"
 
-#: ../share/virtaal/virtaal.glade.h:53
+#: ../share/virtaal/virtaal.glade.h:58
 msgid "_Navigation"
 msgstr "_Selailu"
 
-#: ../share/virtaal/virtaal.glade.h:54
+#: ../share/virtaal/virtaal.glade.h:59
 msgid "_Next Placeable"
 msgstr "_Seuraava sijoite"
 
-#: ../share/virtaal/virtaal.glade.h:55
+#: ../share/virtaal/virtaal.glade.h:60
 msgid "_Online Help"
 msgstr "_Ohjeita verkosta"
 
-#: ../share/virtaal/virtaal.glade.h:56
+#: ../share/virtaal/virtaal.glade.h:61
 msgid "_Page Down"
 msgstr "_Sivu alaspäin"
 
-#: ../share/virtaal/virtaal.glade.h:57
+#: ../share/virtaal/virtaal.glade.h:62
 msgid "_Recent Files"
 msgstr "_Viimeisimmät tiedostot"
 
-#: ../share/virtaal/virtaal.glade.h:58
+#: ../share/virtaal/virtaal.glade.h:63
 msgid "_Tutorial"
 msgstr "_Harjoitustehtävä"
 
-#: ../share/virtaal/virtaal.glade.h:59
+#: ../share/virtaal/virtaal.glade.h:64
 msgid "_Update to Template"
 msgstr "P_äivitä mallineeseen"
 
-#: ../share/virtaal/virtaal.glade.h:60
+#: ../share/virtaal/virtaal.glade.h:65
 msgid "_View"
 msgstr "_Näytä"
 
@@ -373,82 +393,82 @@ msgstr ""
 "Haluatko ladata tiedoston viimeisimmän tallennetun kopion uudelleen ja "
 "menettää kaikki muutokset?"
 
-#: ../virtaal/controllers/placeablescontroller.py:81
-msgid "\"alt\" Attributes"
-msgstr "\"alt\"-attribuutit"
-
-#: ../virtaal/controllers/placeablescontroller.py:82
-msgid "Placeable for \"alt\" attributes (as found in HTML)"
-msgstr "Sijoite \"alt\"-attribuuteille (joita esim. HTML sisältää)"
-
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase
-#: ../virtaal/controllers/placeablescontroller.py:86
+#: ../virtaal/controllers/placeablescontroller.py:82
 msgid "CamelCase"
 msgstr "CamelCase"
 
-#: ../virtaal/controllers/placeablescontroller.py:87
+#: ../virtaal/controllers/placeablescontroller.py:83
 msgid ""
 "Words with internal capitalisation, such as some brand names and WikiWords"
 msgstr ""
 "Sanayhdistelmät joissa käytetään versaalia jokaisen osan alussa, esim. eräät "
 "tuotenimet ja WikiSanat"
 
-#: ../virtaal/controllers/placeablescontroller.py:90
+#: ../virtaal/controllers/placeablescontroller.py:86
 msgid "Capitals"
 msgstr "Suuraakkoset"
 
 #. l10n: this refers to "UPPERCASE" / "CAPITAL" letters
-#: ../virtaal/controllers/placeablescontroller.py:92
+#: ../virtaal/controllers/placeablescontroller.py:88
 msgid "Words containing uppercase letters only"
 msgstr "Pelkästään isoista kirjaimista koostuvat sanat"
 
-#: ../virtaal/controllers/placeablescontroller.py:95
+#: ../virtaal/controllers/placeablescontroller.py:91
 msgid "Command Line Options"
 msgstr "Komentorivin valitsimet"
 
-#: ../virtaal/controllers/placeablescontroller.py:96
+#: ../virtaal/controllers/placeablescontroller.py:92
 msgid "Application command line options, such as --help, -h and -I"
 msgstr "Sovelluksen komentorivivalitsimet, kuten --help, -h ja -I"
 
-#: ../virtaal/controllers/placeablescontroller.py:99
+#: ../virtaal/controllers/placeablescontroller.py:95
 msgid "E-mail"
 msgstr "Sähköposti"
 
-#: ../virtaal/controllers/placeablescontroller.py:100
+#: ../virtaal/controllers/placeablescontroller.py:96
 msgid "E-mail addresses"
 msgstr "Sähköpostiosoitteet"
 
-#: ../virtaal/controllers/placeablescontroller.py:103
+#: ../virtaal/controllers/placeablescontroller.py:99
 msgid "File Names"
 msgstr "Tiedostonimet"
 
-#: ../virtaal/controllers/placeablescontroller.py:104
+#: ../virtaal/controllers/placeablescontroller.py:100
 msgid "Paths referring to file locations"
 msgstr "Tiedostojen sijaintiin viittaavat polut"
 
-#: ../virtaal/controllers/placeablescontroller.py:107
+#: ../virtaal/controllers/placeablescontroller.py:103
 msgid "Placeholders (printf)"
 msgstr "Paikkamerkit (printf)"
 
-#: ../virtaal/controllers/placeablescontroller.py:108
+#: ../virtaal/controllers/placeablescontroller.py:104
 msgid "Placeholders used in \"printf\" strings"
 msgstr "\"printf\"-merkkijonoissa käytettävät paikkamerkit"
 
-#: ../virtaal/controllers/placeablescontroller.py:111
+#: ../virtaal/controllers/placeablescontroller.py:107
 msgid "Placeholders (Python)"
 msgstr "Paikkamerkit (Python)"
 
-#: ../virtaal/controllers/placeablescontroller.py:112
+#: ../virtaal/controllers/placeablescontroller.py:108
 msgid "Placeholders in Python strings"
 msgstr "Python-merkkijonojen paikkamerkit"
 
-#: ../virtaal/controllers/placeablescontroller.py:115
+#: ../virtaal/controllers/placeablescontroller.py:111
 msgid "Placeholders (Java)"
 msgstr "Paikkamerkit (Java)"
 
-#: ../virtaal/controllers/placeablescontroller.py:116
+#: ../virtaal/controllers/placeablescontroller.py:112
 msgid "Placeholders in Java strings"
 msgstr "Java-merkkijonojen paikkamerkit"
+
+#: ../virtaal/controllers/placeablescontroller.py:115
+msgid "Placeholders (Qt)"
+msgstr "Paikkamerkit (Qt)"
+
+#: ../virtaal/controllers/placeablescontroller.py:116
+msgid "Placeholders in Qt strings"
+msgstr "Qt-merkkijonojen paikkamerkit"
 
 #: ../virtaal/controllers/placeablescontroller.py:119
 msgid "Numbers"
@@ -492,18 +512,61 @@ msgstr "XML-tagit"
 msgid "XML tags, such as <b> and </i>"
 msgstr "XML-tagit, kuten <b> ja </i>"
 
-#: ../virtaal/controllers/placeablescontroller.py:148
+#: ../virtaal/controllers/placeablescontroller.py:152
 msgid "Spaces"
 msgstr "Välilyönnit"
 
-#: ../virtaal/controllers/placeablescontroller.py:149
+#: ../virtaal/controllers/placeablescontroller.py:153
 msgid "Double spaces and spaces in unexpected positions"
 msgstr ""
 "Kaksoisvälilyönnit ja odottamattomissa paikoissa sijaitsevat välilyönnit"
 
+#: ../virtaal/controllers/placeablescontroller.py:154
+msgid "\"alt\" Attributes"
+msgstr "\"alt\"-attribuutit"
+
+#: ../virtaal/controllers/placeablescontroller.py:155
+msgid "Placeable for \"alt\" attributes (as found in HTML)"
+msgstr "Sijoite \"alt\"-attribuuteille (joita esim. HTML sisältää)"
+
 #: ../virtaal/controllers/storecontroller.py:114
 msgid "The file contains nothing to translate."
 msgstr "Tiedosto ei sisällä mitään käännettävää."
+
+#. l10n: The heading of statistics before updating to the new template
+#: ../virtaal/controllers/storecontroller.py:162
+msgid "Before:"
+msgstr "Ennen:"
+
+#. l10n: The heading of statistics after updating to the new template
+#: ../virtaal/controllers/storecontroller.py:164
+msgid "After:"
+msgstr "Jälkeen:"
+
+#: ../virtaal/controllers/storecontroller.py:165
+#, python-format
+msgid "Translated: %d"
+msgstr "Käännettyjä: %d"
+
+#: ../virtaal/controllers/storecontroller.py:166
+#, python-format
+msgid "Fuzzy: %d"
+msgstr "Sumeita: %d"
+
+#: ../virtaal/controllers/storecontroller.py:167
+#, python-format
+msgid "Untranslated: %d"
+msgstr "Kääntämättömiä: %d"
+
+#: ../virtaal/controllers/storecontroller.py:168
+#, python-format
+msgid "Total: %d"
+msgstr "Yhteensä: %d"
+
+#. l10n: this refers to updating a file to a new template (POT file)
+#: ../virtaal/controllers/storecontroller.py:186
+msgid "File Updated"
+msgstr "Tiedosto päivitetty"
 
 #: ../virtaal/modes/defaultmode.py:28
 msgid "All"
@@ -525,7 +588,7 @@ msgstr "_Huomioi kirjainkoko"
 #. http://en.wikipedia.org/wiki/Regular_expression
 #: ../virtaal/modes/searchmode.py:70
 msgid "_Regular expression"
-msgstr "_Säännöllinen lauseke"
+msgstr "Sää_nnöllinen lauseke"
 
 #. l10n: This text label shows in front of the text box where the replacement
 #. text is typed. Keep in mind that the text box will appear after this text.
@@ -545,21 +608,83 @@ msgstr "Korvaa"
 msgid "Replace _All"
 msgstr "Korvaa _kaikki"
 
-#: ../virtaal/plugins/autocompletor.py:218
+#: ../virtaal/plugins/autocompletor.py:216
 msgid "Automatically complete long words while you type"
 msgstr "Täydentää automaattisesti pitkät sanat kirjoitettaessa"
 
-#: ../virtaal/plugins/autocompletor.py:219
+#: ../virtaal/plugins/autocompletor.py:217
 msgid "AutoCompletor"
 msgstr "Automaattitäydennin"
 
-#: ../virtaal/plugins/autocorrector.py:258
+#: ../virtaal/plugins/autocorrector.py:262
 msgid "Automatically correct text while you type"
 msgstr "Korjaa automaattisesti virheitä tekstiä kirjoitettaessa"
 
-#: ../virtaal/plugins/autocorrector.py:259
+#: ../virtaal/plugins/autocorrector.py:263
 msgid "AutoCorrector"
 msgstr "Automaattikorjain"
+
+#: ../virtaal/plugins/lookup/__init__.py:29
+msgid "Perform look-ups on selected text"
+msgstr "Suorita valitun tekstin haku"
+
+#: ../virtaal/plugins/lookup/__init__.py:30
+msgid "External Look-up"
+msgstr "Ulkoinen haku"
+
+#. l10n: The 'services' here refer to different look-up plugins,
+#. such as web look-up, etc.
+#: ../virtaal/plugins/lookup/lookupview.py:58
+msgid "Select Look-up Services"
+msgstr "Valitse hakupalvelut"
+
+#: ../virtaal/plugins/lookup/lookupview.py:59
+msgid "Select the services that should be used to perform look-ups"
+msgstr "Valitse palvelut joista hakuja suoritetaan"
+
+#: ../virtaal/plugins/lookup/lookupview.py:119
+#, python-format
+msgid "Look-up \"%(selection)s\""
+msgstr "Hae \"%(selection)s\""
+
+#. l10n: plugin name
+#: ../virtaal/plugins/lookup/models/weblookup.py:40
+msgid "Web Look-up"
+msgstr "Verkkohaku"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:41
+msgid "Look-up the selected text on a web site"
+msgstr "Hae valittua tekstiä verkkosivustolta"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate.
+#: ../virtaal/plugins/lookup/models/weblookup.py:45
+#: ../virtaal/plugins/tm/models/google_translate.py:72
+msgid "Google"
+msgstr "Google"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:50
+msgid "Wikipedia"
+msgstr "Wikipedia"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:55
+#: ../virtaal/plugins/terminology/models/opentran.py:46
+#: ../virtaal/plugins/tm/models/opentran.py:32
+msgid "Open-Tran.eu"
+msgstr "Open-Tran.eu"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:171
+#: ../virtaal/views/widgets/selectview.py:77
+msgid "Name"
+msgstr "Nimi"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:180
+msgid "URL"
+msgstr "URL"
+
+#. l10n: Whether the selected text should be surrounded by "quotes"
+#: ../virtaal/plugins/lookup/models/weblookup.py:191
+msgid "Quote Query"
+msgstr "Laita haku lainausmerkkeihin"
 
 #: ../virtaal/plugins/migration.py:56
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
@@ -630,47 +755,55 @@ msgstr "Terminologia-avustin"
 msgid "Terminology suggestions"
 msgstr "Tekee terminologiaehdotuksia"
 
-#: ../virtaal/plugins/terminology/models/localfile/__init__.py:41
-msgid "Local file"
-msgstr "Paikallinen tiedosto"
+#: ../virtaal/plugins/terminology/models/autoterm.py:82
+msgid "Localization Terminology"
+msgstr "Kotoistusterminologia"
+
+#: ../virtaal/plugins/terminology/models/autoterm.py:83
+msgid "Selected localization terminology"
+msgstr "Valittu kotoistusterminologia"
 
 #: ../virtaal/plugins/terminology/models/localfile/__init__.py:42
-msgid "Local translation files"
-msgstr "Paikalliset käännöstiedostot"
+msgid "Local Files"
+msgstr "Paikalliset tiedostot"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:52
+#: ../virtaal/plugins/terminology/models/localfile/__init__.py:43
+msgid "Local terminology files"
+msgstr "Paikalliset terminologiatiedostot"
+
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:54
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:56
 msgid "Terminology _Files..."
 msgstr "Ter_minologiatiedostot..."
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:60
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:62
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:64
 msgid "Add _Term..."
 msgstr "Lisää _termi..."
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:130
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:133
 msgid "File"
 msgstr "Tiedosto"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:139
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:143
 msgid "Extendable"
 msgstr "Laajennettavissa"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:163
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:168
 msgid "Add Files"
 msgstr "Lisää tiedostoja"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:170
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:175
 #: ../virtaal/views/mainview.py:223
 msgid "All Supported Files"
 msgstr "Kaikki tuetut tiedostot"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:196
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:201
 #: ../virtaal/views/mainview.py:249
 msgid "All Files"
 msgstr "Kaikki tiedostot"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:240
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:244
 #, python-format
 msgid ""
 "Unable to load %(filename)s:\n"
@@ -681,34 +814,44 @@ msgstr ""
 "\n"
 "%(errormsg)s"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:241
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:245
 msgid "Error opening file"
 msgstr "Virhe avattaessa tiedostoa"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:368
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:384
 #, python-format
 msgid "_Source term — %(langname)s"
 msgstr "_Lähdetermi — %(langname)s"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:369
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:385
 #, python-format
 msgid "_Target term — %(langname)s"
 msgstr "_Kohdetermi — %(langname)s"
 
-#: ../virtaal/plugins/terminology/models/opentran.py:46
-#: ../virtaal/plugins/tm/models/opentran.py:32
-msgid "Open-Tran.eu"
-msgstr "Open-Tran.eu"
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:429
+msgid "Identical entry already exists."
+msgstr "Samanlainen termipari on jo olemassa."
+
+#. l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:439
+#, python-format
+msgid "<b>%s</b>"
+msgstr "<b>%s</b>"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:440
+#, python-format
+msgid "Existing translations: %(translations)s"
+msgstr "Aiempia käännöksiä: %(translations)s"
 
 #: ../virtaal/plugins/terminology/models/opentran.py:47
 msgid "Terms from Open-Tran.eu"
 msgstr "Termejä Open-Tran.eu:sta"
 
-#: ../virtaal/plugins/terminology/termview.py:144
+#: ../virtaal/plugins/terminology/termview.py:146
 msgid "Select Terminology Sources"
 msgstr "Valitse terminologialähteet"
 
-#: ../virtaal/plugins/terminology/termview.py:145
+#: ../virtaal/plugins/terminology/termview.py:147
 msgid "Select the sources of terminology suggestions"
 msgstr "Valitse terminologiaehdotusten lähteet"
 
@@ -721,11 +864,11 @@ msgid "Translation memory suggestions"
 msgstr "Käännösmuistin ehdotukset"
 
 #: ../virtaal/plugins/tm/models/currentfile.py:32
-msgid "Currently open file"
-msgstr "Avoinna oleva tiedosto"
+msgid "Current File"
+msgstr "Tämä tiedosto"
 
 #: ../virtaal/plugins/tm/models/currentfile.py:33
-msgid "Translated units from the current file"
+msgid "Translated units from the currently open file"
 msgstr "Käännettyjä kohtia tästä tiedostosta"
 
 #. l10n: Try to keep this as short as possible.
@@ -733,18 +876,25 @@ msgstr "Käännettyjä kohtia tästä tiedostosta"
 msgid "This file"
 msgstr "Tämä tied."
 
-#: ../virtaal/plugins/tm/models/libtranslate.py:44
-msgid "Machine Translation with libtranslate"
-msgstr "libtranslaten konekäännöksiä"
+#. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
+#: ../virtaal/plugins/tm/models/google_translate.py:36
+msgid "Google Translate"
+msgstr "Google kääntäjä"
 
-#: ../virtaal/plugins/tm/models/libtranslate.py:45
-msgid "Unreviewed machine translations"
-msgstr "Tarkistamattomia konekäännöksiä"
+#: ../virtaal/plugins/tm/models/google_translate.py:37
+msgid "Unreviewed machine translations from Google's translation service"
+msgstr "Tarkistamattomia konekäännöksiä Googlen käännöspalvelusta"
 
+#. l10n: This is the name of a software library. You almost definitely don't want to translate this. The lower case 'l' is intentional.
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
-#: ../virtaal/plugins/tm/models/libtranslate.py:97
+#: ../virtaal/plugins/tm/models/libtranslate.py:45
+#: ../virtaal/plugins/tm/models/libtranslate.py:98
 msgid "libtranslate"
 msgstr "libtranslate"
+
+#: ../virtaal/plugins/tm/models/libtranslate.py:46
+msgid "Unreviewed machine translations from various services"
+msgstr "Tarkistamattomia konekäännöksiä eri palveluista"
 
 #: ../virtaal/plugins/tm/models/localtm.py:37
 msgid "Local Translation Memory"
@@ -759,6 +909,16 @@ msgstr "Aiemmin tekemäsi käännökset"
 msgid "Local TM"
 msgstr "Paikall. TM"
 
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+#: ../virtaal/plugins/tm/models/moses.py:33
+#: ../virtaal/plugins/tm/models/moses.py:71
+msgid "Moses"
+msgstr "Moses"
+
+#: ../virtaal/plugins/tm/models/moses.py:34
+msgid "Unreviewed machine translations from a Moses server"
+msgstr "Tarkistamattomia konekäännöksiä Moses-palvelimelta"
+
 #: ../virtaal/plugins/tm/models/opentran.py:33
 msgid "Previous translations for Free and Open Source Software"
 msgstr ""
@@ -771,7 +931,7 @@ msgid "OpenTran"
 msgstr "OpenTran"
 
 #: ../virtaal/plugins/tm/models/remotetm.py:30
-msgid "Remote server"
+msgid "Remote Server"
 msgstr "Etäpalvelin"
 
 #: ../virtaal/plugins/tm/models/remotetm.py:31
@@ -793,13 +953,13 @@ msgstr "TinyTM-käännösmuistipalvelin"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
 #: ../virtaal/plugins/tm/models/apertium.py:35
-#: ../virtaal/plugins/tm/models/apertium.py:94
+#: ../virtaal/plugins/tm/models/apertium.py:99
 msgid "Apertium"
 msgstr "Apertium"
 
 #: ../virtaal/plugins/tm/models/apertium.py:36
-msgid "Apertium Machine Translation"
-msgstr "Apertium-konekäännös"
+msgid "Unreviewed machine translations from Apertium"
+msgstr "Tarkistamattomia konekäännöksiä Apertium-käännöspalvelimelta"
 
 #: ../virtaal/plugins/tm/tmview.py:99
 msgid "Translation _Suggestions"
@@ -810,11 +970,13 @@ msgstr "Käännös_ehdotukset"
 msgid "Ctrl+%(number_key)d"
 msgstr "Ctrl+%(number_key)d"
 
-#: ../virtaal/plugins/tm/tmview.py:177
+#. l10n: The 'sources' here refer to different translation memory plugins,
+#. such as local tm, open-tran.eu, the current file, etc.
+#: ../virtaal/plugins/tm/tmview.py:179
 msgid "Select sources of Translation Memory"
 msgstr "Valitse käännösmuistin lähteet"
 
-#: ../virtaal/plugins/tm/tmview.py:178
+#: ../virtaal/plugins/tm/tmview.py:180
 msgid "Select the sources that should be queried for translation memory"
 msgstr "Valitse lähteet joiden käännösmuisteista kyselyt suoritetaan"
 
@@ -832,7 +994,7 @@ msgid "TM Source"
 msgstr "Käännösmuistilähde"
 
 #. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
-#: ../virtaal/plugins/tm/tmwidgets.py:124
+#: ../virtaal/plugins/tm/tmwidgets.py:126
 #, python-format
 msgid "%(match_quality)s%%"
 msgstr "%(match_quality)s%%"
@@ -888,7 +1050,7 @@ msgstr "Anna käytettävä monikon lauseke"
 msgid "N_avigation:"
 msgstr "S_elailu:"
 
-#: ../virtaal/views/unitview.py:588
+#: ../virtaal/views/unitview.py:603
 msgid "F_uzzy"
 msgstr "S_umea"
 
@@ -921,8 +1083,8 @@ msgid "We thank our donors:"
 msgstr "Kiitämme tukijoitamme:"
 
 #: ../virtaal/views/widgets/aboutdialog.py:63
-msgid "International Development and Research Centre"
-msgstr "International Development and Research Centre"
+msgid "The International Development Research Centre"
+msgstr "The International Development Research Centre"
 
 #: ../virtaal/views/widgets/aboutdialog.py:65
 msgid "Mozilla Corporation"
@@ -952,15 +1114,11 @@ msgstr "Kieli"
 msgid "Code"
 msgstr "Koodi"
 
-#: ../virtaal/views/widgets/selectview.py:67
+#: ../virtaal/views/widgets/selectview.py:69
 msgid "Enabled"
 msgstr "Käytössä"
 
-#: ../virtaal/views/widgets/selectview.py:75
-msgid "Name"
-msgstr "Nimi"
-
-#: ../virtaal/views/widgets/selectview.py:113
+#: ../virtaal/views/widgets/selectview.py:118
 msgid "Configure..."
 msgstr "Asetukset..."
 
@@ -1073,6 +1231,18 @@ msgstr "XLIFF-käännöstiedosto"
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:25
 msgid "XML Localization Interchange File Format"
 msgstr "XML Localization Interchange File Format"
+
+#: ../devsupport/tmp_strings.py:23
+msgid "Gettext PO file"
+msgstr "Gettext PO-tiedosto"
+
+#: ../devsupport/tmp_strings.py:24
+msgid "Gettext MO file"
+msgstr "Gettext MO-tiedosto"
+
+#: ../devsupport/tmp_strings.py:25
+msgid "Qt .qm file"
+msgstr "Qt .qm -tiedosto"
 
 #: ../bin/virtaal:70
 #, c-format
@@ -1200,3 +1370,18 @@ msgstr "valitsimessa %s ei käytetä arvoa"
 #: ../devsupport/optparse.py:1612
 msgid "Options"
 msgstr "Valitsimet"
+
+#~ msgid "Local translation files"
+#~ msgstr "Paikalliset käännöstiedostot"
+
+#~ msgid "Currently open file"
+#~ msgstr "Avoinna oleva tiedosto"
+
+#~ msgid "Machine Translation with libtranslate"
+#~ msgstr "libtranslaten konekäännöksiä"
+
+#~ msgid "Unreviewed machine translations"
+#~ msgstr "Tarkistamattomia konekäännöksiä"
+
+#~ msgid "Apertium Machine Translation"
+#~ msgstr "Apertium-konekäännös"

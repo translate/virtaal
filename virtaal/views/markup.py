@@ -58,13 +58,13 @@ def _escape_entities(s):
 
 # Public methods
 
-def markuptext(text, fancyspaces=True, markupescapes=True, diff_text=""):
+def markuptext(text, fancyspaces=True, markupescapes=True, diff_text=u""):
     """Markup the given text to be pretty Pango markup.
 
     Special characters (&, <) are converted, XML markup highligthed with
     escapes and unusual spaces optionally being indicated."""
     if not text:
-        return ""
+        return u""
 
     if diff_text and diff_text != text:
         text = pango_diff(diff_text, text)

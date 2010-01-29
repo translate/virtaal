@@ -55,7 +55,7 @@ def make_pango_layout(widget, text, width):
     pango_layout = pango.Layout(widget.get_pango_context())
     pango_layout.set_width(width * pango.SCALE)
     pango_layout.set_wrap(pango.WRAP_WORD_CHAR)
-    pango_layout.set_text(text or "")
+    pango_layout.set_text(text or u"")
     return pango_layout
 
 @compute_optimal_height.when_type(gtk.TextView)
@@ -70,7 +70,7 @@ def gtk_textview_compute_optimal_height(widget, width):
 
     buftext = buf.get_text(buf.get_start_iter(), buf.get_end_iter())
     if not buftext:
-        text = getattr(widget, '_source_text', "")
+        text = getattr(widget, '_source_text', u"")
         if text:
             lang = factory.getlanguage(pan_app.settings.language["targetlang"])
             buftext = lang.alter_length(text)
@@ -515,7 +515,7 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
         layout.set_wrap(pango.WRAP_WORD_CHAR)
         layout.set_width(width * pango.SCALE)
         #XXX - plurals?
-        text = text or ""
+        text = text or u""
         layout.set_markup(markup.markuptext(text))
         return layout
 

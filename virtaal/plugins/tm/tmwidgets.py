@@ -132,7 +132,7 @@ class TMWindow(gtk.Window):
             cell_renderer.set_property('value', 3)
         else:
             cell_renderer.set_property('value', 0)
-        cell_renderer.set_property('text', "")
+        cell_renderer.set_property('text', u"")
 
 
 class TMSourceColRenderer(gtk.GenericCellRenderer):
@@ -291,7 +291,7 @@ class TMMatchRenderer(gtk.GenericCellRenderer):
         height = self.source_layout.get_pixel_size()[1] + self.target_layout.get_pixel_size()[1]
         return height + self.LINE_SEPARATION + self.ROW_PADDING
 
-    def _get_pango_layout(self, widget, text, width, font_description, diff_text=""):
+    def _get_pango_layout(self, widget, text, width, font_description, diff_text=u""):
         '''Gets the Pango layout used in the cell in a TreeView widget.'''
         # We can't use widget.get_pango_context() because we'll end up
         # overwriting the language and font settings if we don't have a

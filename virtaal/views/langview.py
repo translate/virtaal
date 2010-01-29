@@ -21,6 +21,7 @@
 import os
 import gobject
 import gtk
+import gtk.gdk
 import logging
 
 from virtaal.common import GObjectWrapper, pan_app
@@ -86,6 +87,18 @@ class LanguageView(BaseView):
         if os.name == 'nt':
             pairlabel = u'%s » %s' % (srclang.name, tgtlang.name)
         return pairlabel
+
+    def notify_same_langs(self):
+        def notify():
+            for s in [gtk.STATE_ACTIVE, gtk.STATE_NORMAL, gtk.STATE_PRELIGHT, gtk.STATE_SELECTED]:
+                self.popupbutton.child.modify_fg(s, gtk.gdk.color_parse('#f66'))
+        gobject.idle_add(notify)
+
+    def notify_diff_langs(self):
+        def notify():
+            for s in [gtk.STATE_ACTIVE, gtk.STATE_NORMAL, gtk.STATE_PRELIGHT, gtk.STATE_SELECTED]:
+                self.popupbutton.child.modify_fg(s, gtk.gdk.color_parse('#000'))
+        gobject.idle_add(notify)
 
     def show(self):
         """Add the managed C{PopupButton} to the C{MainView}'s status bar."""

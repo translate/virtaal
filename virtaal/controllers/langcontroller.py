@@ -58,8 +58,8 @@ class LanguageController(BaseController):
 
         self.main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
         self.main_controller.connect('quit', self._on_quit)
-        self.connect('source-lang-changed', lambda *args: self.save_recent())
-        self.connect('target-lang-changed', lambda *args: self.save_recent())
+        self.connect('source-lang-changed', self._on_lang_changed)
+        self.connect('target-lang-changed', self._on_lang_changed)
 
         self.view = LanguageView(self)
         self.view.show()
@@ -166,6 +166,13 @@ class LanguageController(BaseController):
 
 
     # EVENT HANDLERS #
+    def _on_lang_changed(self, sender, code):
+        self.save_recent()
+        if self.source_lang == self.target_lang:
+            self.view.notify_same_langs()
+        else:
+            self.view.notify_diff_langs()
+
     def _on_quit(self, main_controller):
         pan_app.settings.language['sourcelang'] = self.source_lang.code
         pan_app.settings.language['targetlang'] = self.target_lang.code

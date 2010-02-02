@@ -364,7 +364,10 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                 spell = None
                 try:
                     spell = gtkspell.get_from_text_view(text_view)
-                except SystemError:
+                except SystemError, e:
+                    # At least on Mandriva .get_from_text_view() sometimes returns
+                    # a SystemError without a description. Things seem to work fine
+                    # anyway, so let's ignore it and hope for the best.
                     pass
                 if not spell is None:
                     spell.detach()
@@ -379,15 +382,19 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             spell = None
             try:
                 spell = gtkspell.get_from_text_view(text_view)
-            except SystemError:
+            except SystemError, e:
+                # At least on Mandriva .get_from_text_view() sometimes returns
+                # a SystemError without a description. Things seem to work fine
+                # anyway, so let's ignore it and hope for the best.
                 pass
             if spell is None:
-                spell = gtkspell.Spell(text_view)
-            spell.set_language(language)
-            spell.recheck_all()
+                spell = gtkspell.Spell(text_view, language)
+            else:
+                spell.set_language(language)
+                spell.recheck_all()
             text_view.spell_lang = language
-        except Exception:
-            logging.exception("Could not initialize spell checking")
+        except Exception, e:
+            logging.exception("Could not initialize spell checking", e)
             gtkspell = None
 
     if not pan_app.DEBUG:

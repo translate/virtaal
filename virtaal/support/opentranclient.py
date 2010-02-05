@@ -126,7 +126,11 @@ class OpenTranClient(gobject.GObject, HTTPClient):
 
     def format_suggestions(self, id, response):
         """clean up open tran suggestion and use the same format as tmserver"""
-        (suggestions,), fish = xmlrpclib.loads(response)
+        try:
+            (suggestions,), fish = xmlrpclib.loads(response)
+        except Exception, exc:
+            logging.debug('XML-RPC exception: %s' % (exc))
+            return []
         self.last_suggestions = suggestions
         results = []
         for suggestion in suggestions:

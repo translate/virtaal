@@ -53,6 +53,7 @@ _languages = {
     'gl': 'Galician',
     'de': 'German',
     'el': 'Greek',
+    'ht': 'Haitian Creole'
     'iw': 'Hebrew',
     'hi': 'Hindi',
     'hu': 'Hungarian',

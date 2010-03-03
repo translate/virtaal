@@ -23,3 +23,4 @@
 _("Gettext PO file")
 _("Gettext MO file")
 _("Qt .qm file")
+_("OmegaT Glossary")

@@ -125,6 +125,7 @@ class MainView(BaseView):
             # might want to disable the GTK one:
             #self.gui.get_widget('status_bar').set_property("has-resize-grip", False)
             try:
+                # FIXME: Rename the separators that were automatically named by Glade
                 import igemacintegration
                 # Move the menu bar to the mac menu
                 menubar = self.gui.get_widget('menubar')
@@ -150,24 +151,23 @@ class MainView(BaseView):
 
                 logging.debug("igemacintegration module not found. Expect zero integration with the mac desktop.")
 
-        # Create our events dictionary and connect it
-        dic = {
-            "on_mainwindow_destroy" : self._on_quit,
-            "on_mainwindow_delete" : self._on_quit,
-            "on_open_activate" : self._on_file_open,
-            "on_save_activate" : self._on_file_save,
-            "on_saveas_activate" : self._on_file_saveas,
-            "on_update_activate" : self._on_file_update,
-            "on_revert_activate" : self._on_file_revert,
-            "on_quit" : self._on_quit,
-            "on_menuitem_fullscreen_toggled" : self._on_fullscreen,
-            "on_about_activate" : self._on_help_about,
-            "on_tutorial_activate" : self._on_tutorial,
-            "on_localization_guide_activate" : self._on_localization_guide,
-            "on_menuitem_documentation_activate" : self._on_documentation,
-            "on_menuitem_report_bug_activate" : self._on_report_bug,
-        }
-        self.gui.signal_autoconnect(dic)
+        self.main_window.connect('destroy', self._on_quit)
+        self.main_window.connect('delete-event', self._on_quit)
+        # File menu signals
+        self.gui.get_widget('mnu_open').connect('activate', self._on_file_open)
+        self.gui.get_widget('mnu_save').connect('activate', self._on_file_save)
+        self.gui.get_widget('mnu_saveas').connect('activate', self._on_file_saveas)
+        self.gui.get_widget('mnu_update').connect('activate', self._on_file_update)
+        self.gui.get_widget('mnu_revert').connect('activate', self._on_file_revert)
+        self.gui.get_widget('mnu_quit').connect('activate', self._on_quit)
+        # View menu signals
+        self.gui.get_widget('mnu_fullscreen').connect('activate', self._on_fullscreen)
+        # Help menu signals
+        self.gui.get_widget('mnu_documentation').connect('activate', self._on_documentation)
+        self.gui.get_widget('mnu_tutorial').connect('activate', self._on_tutorial)
+        self.gui.get_widget('mnu_localization_guide').connect('activate', self._on_localization_guide)
+        self.gui.get_widget('mnu_report_bug').connect('activate', self._on_report_bug)
+        self.gui.get_widget('mnu_about').connect('activate', self._on_help_about)
 
         self.menubar = self.gui.get_widget('menubar')
         self.status_bar = self.gui.get_widget("status_bar")
@@ -182,7 +182,7 @@ class MainView(BaseView):
 
         self.main_window.connect('window-state-event', self._on_window_state_event)
 
-        recent_files = self.gui.get_widget("recent_files")
+        recent_files = self.gui.get_widget("mnu_recent_files")
         recent.rc.connect("item-activated", self._on_recent_file_activated)
         recent_files.set_submenu(recent.rc)
 
@@ -292,9 +292,9 @@ class MainView(BaseView):
         self.main_window.add_accel_group(accel_group)
 
     def set_saveable(self, value):
-        menuitem = self.gui.get_widget("save_menuitem")
+        menuitem = self.gui.get_widget("mnu_save")
         menuitem.set_sensitive(value)
-        menuitem = self.gui.get_widget("revert_menuitem")
+        menuitem = self.gui.get_widget("mnu_revert")
         menuitem.set_sensitive(value)
         filename = self.controller.get_store_filename()
         if filename:
@@ -625,8 +625,8 @@ class MainView(BaseView):
         openmailto.open("http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal&version=%s" % __version__.ver)
 
     def _on_store_loaded(self, store_controller):
-        self.gui.get_widget('saveas_menuitem').set_sensitive(True)
-        self.gui.get_widget('update_menuitem').set_sensitive(True)
+        self.gui.get_widget('mnu_saveas').set_sensitive(True)
+        self.gui.get_widget('mnu_update').set_sensitive(True)
         self.status_bar.set_sensitive(True)
         if getattr(self, '_uri', None):
             recent.rm.add_item(self._uri)
@@ -634,5 +634,5 @@ class MainView(BaseView):
             recent.rm.add_item('file://' + os.path.abspath(store_controller.store.filename))
 
     def _on_window_state_event(self, widget, event):
-        mnu_fullscreen = self.gui.get_widget('menuitem_fullscreen')
+        mnu_fullscreen = self.gui.get_widget('mnu_fullscreen')
         mnu_fullscreen.set_active(event.new_window_state & gdk.WINDOW_STATE_FULLSCREEN)

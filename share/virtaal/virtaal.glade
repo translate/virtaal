@@ -6,8 +6,6 @@
     <property name="width_request">620</property>
     <property name="height_request">400</property>
     <property name="title" translatable="yes">Virtaal</property>
-    <signal name="destroy" handler="on_mainwindow_destroy"/>
-    <signal name="delete_event" handler="on_mainwindow_delete"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
@@ -15,7 +13,7 @@
           <widget class="GtkMenuBar" id="menubar">
             <property name="visible">True</property>
             <child>
-              <widget class="GtkMenuItem" id="menuitem1">
+              <widget class="GtkMenuItem" id="menuitem_file">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">_File</property>
                 <property name="use_underline">True</property>
@@ -23,52 +21,47 @@
                   <widget class="GtkMenu" id="menu_file">
                     <property name="visible">True</property>
                     <child>
-                      <widget class="GtkImageMenuItem" id="imagemenuitem2">
+                      <widget class="GtkImageMenuItem" id="mnu_open">
                         <property name="label">gtk-open</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_open_activate"/>
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="save_menuitem">
+                      <widget class="GtkImageMenuItem" id="mnu_save">
                         <property name="label">gtk-save</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_save_activate"/>
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="saveas_menuitem">
+                      <widget class="GtkImageMenuItem" id="mnu_saveas">
                         <property name="label">gtk-save-as</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_saveas_activate"/>
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="revert_menuitem">
+                      <widget class="GtkImageMenuItem" id="mnu_revert">
                         <property name="label">gtk-revert-to-saved</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_revert_activate"/>
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="update_menuitem">
+                      <widget class="GtkImageMenuItem" id="mnu_update">
                         <property name="label" translatable="yes">_Update to Template</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_update_activate"/>
                       </widget>
                     </child>
                     <child>
@@ -77,7 +70,7 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkMenuItem" id="recent_files">
+                      <widget class="GtkMenuItem" id="mnu_recent_files">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">_Recent Files</property>
                         <property name="use_underline">True</property>
@@ -94,7 +87,6 @@
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_quit"/>
                       </widget>
                     </child>
                   </widget>
@@ -221,11 +213,10 @@
                   <widget class="GtkMenu" id="menu_view">
                     <property name="visible">True</property>
                     <child>
-                      <widget class="GtkCheckMenuItem" id="menuitem_fullscreen">
+                      <widget class="GtkCheckMenuItem" id="mnu_fullscreen">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">_Full Screen</property>
                         <property name="use_underline">True</property>
-                        <signal name="toggled" handler="on_menuitem_fullscreen_toggled"/>
                         <accelerator key="F11" signal="activate"/>
                       </widget>
                     </child>
@@ -234,7 +225,7 @@
               </widget>
             </child>
             <child>
-              <widget class="GtkMenuItem" id="menuitem2">
+              <widget class="GtkMenuItem" id="menuitem_nav">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">_Navigation</property>
                 <property name="use_underline">True</property>
@@ -288,12 +279,11 @@
                   <widget class="GtkMenu" id="menu_help">
                     <property name="visible">True</property>
                     <child>
-                      <widget class="GtkImageMenuItem" id="menuitem_documentation">
+                      <widget class="GtkImageMenuItem" id="mnu_documentation">
                         <property name="label" translatable="yes">_Online Help</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_menuitem_documentation_activate"/>
                         <child internal-child="image">
                           <widget class="GtkImage" id="image2">
                             <property name="visible">True</property>
@@ -304,20 +294,18 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkMenuItem" id="menuitem_tutorial">
+                      <widget class="GtkMenuItem" id="mnu_tutorial">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">_Tutorial</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_tutorial_activate"/>
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="menuitem_localization_guide">
+                      <widget class="GtkImageMenuItem" id="mnu_localization_guide">
                         <property name="label" translatable="yes">_Localization Guide</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_localization_guide_activate"/>
                         <child internal-child="image">
                           <widget class="GtkImage" id="image3">
                             <property name="visible">True</property>
@@ -328,12 +316,11 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="menuitem_report_bug">
+                      <widget class="GtkImageMenuItem" id="mnu_report_bug">
                         <property name="label" translatable="yes">Report a _Bug</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_menuitem_report_bug_activate"/>
                         <child internal-child="image">
                           <widget class="GtkImage" id="image4">
                             <property name="visible">True</property>
@@ -354,7 +341,6 @@
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_about_activate"/>
                       </widget>
                     </child>
                   </widget>

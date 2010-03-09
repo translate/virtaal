@@ -61,6 +61,7 @@ class TMController(BaseController):
 
     def _connect_plugin(self):
         self._store_loaded_id = self.main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
+        self._store_closed_id = self.main_controller.store_controller.connect('store-closed', self._on_store_closed)
         if self.main_controller.store_controller.get_store() is not None:
             self._on_store_loaded(self.main_controller.store_controller)
             self.view._should_show_tmwindow = True
@@ -194,6 +195,9 @@ class TMController(BaseController):
         self.storecursor = cursor
         self.unit = cursor.deref()
 
+        if self.unit is None:
+            return
+
         if self.view.active and self.unit.istranslated():
             self.view.mnu_suggestions.set_active(False)
         elif not self.view.active and not self.unit.istranslated():
@@ -204,9 +208,15 @@ class TMController(BaseController):
     def _on_mode_selected(self, modecontroller, mode):
         self.view.update_geometry()
 
+    def _on_store_closed(self, storecontroller):
+        if hasattr(self, '_cursor_changed_id') and self.storecursor:
+            self.storecursor.disconnect(self._cursor_changed_id)
+        self.storecursor = None
+        self._cursor_changed_id = 0
+
     def _on_store_loaded(self, storecontroller):
         """Disconnect from the previous store's cursor and connect to the new one."""
-        if getattr(self, '_cursor_changed_id', None):
+        if getattr(self, '_cursor_changed_id', None) and self.storecursor:
             self.storecursor.disconnect(self._cursor_changed_id)
         self.storecursor = storecontroller.cursor
         self._cursor_changed_id = self.storecursor.connect('cursor-changed', self._on_cursor_changed)

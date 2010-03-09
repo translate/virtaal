@@ -47,6 +47,15 @@
                       </widget>
                     </child>
                     <child>
+                      <widget class="GtkImageMenuItem" id="mnu_close">
+                        <property name="label">gtk-close</property>
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                      </widget>
+                    </child>
+                    <child>
                       <widget class="GtkImageMenuItem" id="mnu_revert">
                         <property name="label">gtk-revert-to-saved</property>
                         <property name="visible">True</property>

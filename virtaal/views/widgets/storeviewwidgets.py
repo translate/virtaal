@@ -264,7 +264,10 @@ class StoreTreeView(gtk.TreeView):
             self._activate_editing_path(newpath)
 
     def set_model(self, storemodel):
-        model = StoreTreeModel(storemodel)
+        if storemodel:
+            model = StoreTreeModel(storemodel)
+        else:
+            model = gtk.ListStore(object)
         super(StoreTreeView, self).set_model(model)
 
     def _activate_editing_path(self, new_path):

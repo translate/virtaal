@@ -37,6 +37,7 @@ class StoreController(BaseController):
     __gsignals__ = {
         'store-loaded': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
         'store-saved':  (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
+        'store-closed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
     }
 
     # INITIALIZERS #
@@ -136,6 +137,14 @@ class StoreController(BaseController):
         self._modified = False
         self.main_controller.set_saveable(False)
         self.emit('store-saved')
+
+    def close_file(self):
+        self.store = None
+        self._modified = False
+        self.main_controller.set_saveable(False)
+        self.view.load_store(None) # This MUST be called BEFORE `self.cursor = None`
+        self.emit('store-closed') # This should be emitted BEFORE `self.cursor = None` to allow any other modules to disconnect from the cursor
+        self.cursor = None
 
     def revert_file(self):
         self.open_file(self.store.filename)

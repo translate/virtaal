@@ -37,6 +37,9 @@ class StoreView(BaseView):
         # XXX: While I can't think of a better way to do this, the following line would have to do :/
         self.parent_widget = self.controller.main_controller.view.gui.get_widget('scrolledwindow1')
 
+        self.cursor = None
+        self._cursor_changed_id = 0
+
         self._init_treeview()
         self._add_accelerator_bindings()
         self.load_store(self.controller.store)
@@ -74,10 +77,6 @@ class StoreView(BaseView):
 
 
     # ACCESSORS #
-    def _get_cursor(self):
-        return self.controller.cursor
-    cursor = property(_get_cursor)
-
     def get_store(self):
         return self.store
 
@@ -91,7 +90,14 @@ class StoreView(BaseView):
         if store:
             self._treeview.set_model(store)
             self._set_menu_items_sensitive(True)
-            self.cursor.connect('cursor-changed', self._on_cursor_change)
+            self.cursor = self.controller.cursor
+            self._cursor_changed_id = self.cursor.connect('cursor-changed', self._on_cursor_change)
+        else:
+            if self._cursor_changed_id and self.cursor:
+                self.cursor.disconnect(self._cursor_changed_id)
+                self.cursor = None
+            self._set_menu_items_sensitive(False)
+            self._treeview.set_model(None)
 
     def show(self):
         child = self.parent_widget.get_child()

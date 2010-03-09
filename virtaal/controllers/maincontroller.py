@@ -191,6 +191,16 @@ class MainController(BaseController):
                 _("Could not save file.\n\n%(error_message)s" % {'error_message': str(exc)})
             )
 
+    def close_file(self):
+        if self.store_controller.is_modified():
+            response = self.view.show_save_confirm_dialog()
+            if response == 'save':
+                self.store_controller.save_file()
+            elif response == 'cancel':
+                return False
+            # Unnecessary to test for 'discard'
+        self.store_controller.close_file()
+
     def revert_file(self, filename=None):
         confirm = self.show_prompt(_("Reload File"), _("Reload file from last saved copy and lose all changes?"))
         if not confirm:

@@ -157,6 +157,7 @@ class MainView(BaseView):
         self.gui.get_widget('mnu_open').connect('activate', self._on_file_open)
         self.gui.get_widget('mnu_save').connect('activate', self._on_file_save)
         self.gui.get_widget('mnu_saveas').connect('activate', self._on_file_saveas)
+        self.gui.get_widget('mnu_close').connect('activate', self._on_file_close)
         self.gui.get_widget('mnu_update').connect('activate', self._on_file_update)
         self.gui.get_widget('mnu_revert').connect('activate', self._on_file_revert)
         self.gui.get_widget('mnu_quit').connect('activate', self._on_quit)
@@ -547,6 +548,7 @@ class MainView(BaseView):
         if getattr(self, '_store_loaded_handler_id ', None):
             main_controller.store_controller.disconnect(self._store_loaded_handler_id)
 
+        self._store_closed_handler_id = new_controller.connect('store-closed', self._on_store_closed)
         self._store_loaded_handler_id = new_controller.connect('store-loaded', self._on_store_loaded)
 
     def _on_documentation(self, _widget=None):
@@ -579,6 +581,9 @@ class MainView(BaseView):
             self.controller.save_file(filename=self.save_chooser.get_filename())
             return True
         return False
+
+    def _on_file_close(self, widget=None):
+        self.controller.close_file()
 
     def _on_file_update(self, _widget, destroyCallback=None):
         filename_and_uri = self.show_open_dialog()
@@ -624,8 +629,15 @@ class MainView(BaseView):
     def _on_report_bug(self, _widget=None):
         openmailto.open("http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal&version=%s" % __version__.ver)
 
+    def _on_store_closed(self, store_controller):
+        self.gui.get_widget('mnu_saveas').set_sensitive(False)
+        self.gui.get_widget('mnu_close').set_sensitive(False)
+        self.gui.get_widget('mnu_update').set_sensitive(False)
+        self.status_bar.set_sensitive(False)
+
     def _on_store_loaded(self, store_controller):
         self.gui.get_widget('mnu_saveas').set_sensitive(True)
+        self.gui.get_widget('mnu_close').set_sensitive(True)
         self.gui.get_widget('mnu_update').set_sensitive(True)
         self.status_bar.set_sensitive(True)
         if getattr(self, '_uri', None):

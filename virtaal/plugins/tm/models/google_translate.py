@@ -32,6 +32,8 @@ from virtaal.support.httpclient import HTTPClient, RESTRequest
 
 # We should ideally be obtaining a list from them, or use their API to see if
 # something is supported.
+# See http://code.google.com/apis/ajaxlanguage/documentation/#SupportedPairs
+# for the current list of supported languages
 _languages = {
     'af': 'Afrikaans',
     'sq': 'Albanian',
@@ -48,6 +50,7 @@ _languages = {
     'nl': 'Dutch',
     'en': 'English',
     'et': 'Estonian',
+    'tl': 'Filipino',
     'fi': 'Finnish',
     'fr': 'French',
     'gl': 'Galician',

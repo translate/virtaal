@@ -453,7 +453,7 @@ class MainView(BaseView):
         if title:
             self.open_chooser.set_title(title)
 
-        if os.path.exists(pan_app.settings.general["lastdir"]):
+        if os.path.exists(pan_app.settings.general["lastdir"] or ""):
             self.open_chooser.set_current_folder(pan_app.settings.general["lastdir"])
 
         self.open_chooser.set_transient_for(self._top_window)

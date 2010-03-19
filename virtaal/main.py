@@ -28,35 +28,37 @@ class Virtaal(object):
     """The main Virtaal program entry point."""
 
     def __init__(self, startupfile):
-        self.main_controller = MainController()
+        main_controller = MainController()
         logging.debug('MainController created')
-        self.plugin_controller = PluginController(self.main_controller)
-        self.main_controller.plugin_controller = self.plugin_controller
+        plugin_controller = PluginController(main_controller)
+        main_controller.plugin_controller = plugin_controller
         logging.debug('PluginController created')
-        self.store_controller = StoreController(self.main_controller)
+        store_controller = StoreController(main_controller)
         logging.debug('StoreController created')
-        self.unit_controller = UnitController(self.store_controller)
+        unit_controller = UnitController(store_controller)
         logging.debug('UnitController created')
 
         # Load additional built-in modules
-        self.undo_controller = UndoController(self.main_controller)
+        undo_controller = UndoController(main_controller)
         logging.debug('UndoController created')
-        self.mode_controller = ModeController(self.main_controller)
+        mode_controller = ModeController(main_controller)
         logging.debug('ModeController created')
-        self.lang_controller = LanguageController(self.main_controller)
+        lang_controller = LanguageController(main_controller)
         logging.debug('LanguageController created')
-        self.placeables_controller = PlaceablesController(self.main_controller)
+        placeables_controller = PlaceablesController(main_controller)
         logging.debug('PlaceablesController created')
-        self.prefs_controller = PreferencesController(self.main_controller)
+        prefs_controller = PreferencesController(main_controller)
         logging.debug('PreferencesController created')
 
         # Load plug-ins
-        self.plugin_controller.load_plugins()
+        plugin_controller.load_plugins()
         logging.debug('Plugins loaded')
 
         # Load the file given on the command-line, if any
         if startupfile:
-            self.main_controller.open_file(startupfile)
+            main_controller.open_file(startupfile)
+
+        self.main_controller = main_controller
 
 
     # METHODS #

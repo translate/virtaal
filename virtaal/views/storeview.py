@@ -85,6 +85,10 @@ class StoreView(BaseView):
 
 
     # METHODS #
+    def hide(self):
+        self.parent_widget.props.visible = False
+        self.load_store(None)
+
     def load_store(self, store):
         self.store = store
         if store:

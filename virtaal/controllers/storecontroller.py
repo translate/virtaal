@@ -142,7 +142,7 @@ class StoreController(BaseController):
         self.store = None
         self._modified = False
         self.main_controller.set_saveable(False)
-        self.view.load_store(None) # This MUST be called BEFORE `self.cursor = None`
+        self.view.hide() # This MUST be called BEFORE `self.cursor = None`
         self.emit('store-closed') # This should be emitted BEFORE `self.cursor = None` to allow any other modules to disconnect from the cursor
         self.cursor = None
 

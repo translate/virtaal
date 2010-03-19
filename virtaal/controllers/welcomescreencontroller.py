@@ -21,6 +21,7 @@
 
 import logging
 from virtaal.support import openmailto
+from virtaal.views import recent
 from virtaal.views.welcomescreenview import WelcomeScreenView
 
 from basecontroller import BaseController
@@ -30,6 +31,9 @@ class WelcomeScreenController(BaseController):
     """
     Contains logic for the welcome screen.
     """
+
+    MAX_RECENT = 5
+    """The maximum number of recent items to display."""
 
     LINKS = {
         'manual':   'http://translate.sourceforge.net/wiki/virtaal/using_virtaal',
@@ -56,6 +60,7 @@ class WelcomeScreenController(BaseController):
     def activate(self):
         """Show the welcome screen and trigger activation logic (ie. find
             recent files)."""
+        self.update_recent()
         self.view.show()
 
     def open_cheatsheat(self):
@@ -66,8 +71,9 @@ class WelcomeScreenController(BaseController):
         self.main_controller.open_file()
 
     def open_recent(self, n):
-        if 0 <= n <= len(self._recent_files):
-            self.main_controller.open_file(self._recent_files[n])
+        n -= 1 # Shift from nominal value [1; 5] to index value [0; 4]
+        if 0 <= n <= len(self._recent_files)-1:
+            self.main_controller.open_file(self._recent_files[n]['uri'])
         else:
             logging.debug('Invalid recent file index (%d) given. Recent files: %s)' % (n, self._recent_files))
 
@@ -80,10 +86,18 @@ class WelcomeScreenController(BaseController):
         openmailto.open(self.LINKS[name])
         return True
 
+    def update_recent(self):
+        self._recent_files = [{
+                'name': i.get_display_name(),
+                'uri':  i.get_uri_display()
+            } for i in recent.rc.get_items()[:self.MAX_RECENT]
+        ]
+        self.view.update_recent_buttons(self._recent_files)
+
 
     # EVENT HANDLERS #
     def _on_store_closed(self, store_controller):
-        self.view.show()
+        self.activate()
 
     def _on_store_loaded(self, store_controller):
         self.view.hide()

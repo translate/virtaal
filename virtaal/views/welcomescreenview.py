@@ -25,6 +25,8 @@ from baseview import BaseView
 
 
 class WelcomeScreenView(BaseView):
+    """Manages the welcome screen widget."""
+
     PARENT_VBOX_POSITION = 2
     """Index of the welcome screen in the main VBox."""
 
@@ -50,7 +52,20 @@ class WelcomeScreenView(BaseView):
             self.widget.reparent(self.parent_widget)
         self.parent_widget.child_set_property(self.widget, 'position', self.PARENT_VBOX_POSITION)
         self.parent_widget.child_set_property(self.widget, 'expand', True)
+
         self.widget.show()
+
+    def update_recent_buttons(self, items):
+        buttons = [
+            self.widget.widgets['buttons']['recent' + str(i)] for i in range(1, self.controller.MAX_RECENT+1)
+        ]
+        markup = '<span foreground="blue" underline="single">%(name)s</span>'
+
+        for i in range(len(items)):
+            buttons[i].child.set_markup(markup % {'name': items[i]['name']})
+            buttons[i].props.visible = True
+        for i in range(len(items), 5):
+            buttons[i].props.visible = False
 
 
     # EVENT HANDLERS #

@@ -554,7 +554,7 @@ class MainView(BaseView):
     def _on_documentation(self, _widget=None):
         openmailto.open("http://translate.sourceforge.net/wiki/virtaal/index")
 
-    def _on_file_open(self, _widget, destroyCallback=None):
+    def _on_file_open(self, _widget):
         filename_and_uri = self.show_open_dialog()
         if filename_and_uri:
             filename, uri = filename_and_uri
@@ -585,7 +585,7 @@ class MainView(BaseView):
     def _on_file_close(self, widget=None):
         self.controller.close_file()
 
-    def _on_file_update(self, _widget, destroyCallback=None):
+    def _on_file_update(self, _widget):
         filename_and_uri = self.show_open_dialog()
         if filename_and_uri:
             filename, uri = filename_and_uri

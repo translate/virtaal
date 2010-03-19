@@ -40,7 +40,6 @@ class MainController(BaseController):
     # INITIALIZERS #
     def __init__(self):
         GObjectWrapper.__init__(self)
-        self.store_controller = None # This is set by StoreController itself when it is created
         self._force_saveas = False
 
         self._lang_controller = None

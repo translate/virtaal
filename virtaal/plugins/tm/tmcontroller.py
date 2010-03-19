@@ -213,6 +213,7 @@ class TMController(BaseController):
             self.storecursor.disconnect(self._cursor_changed_id)
         self.storecursor = None
         self._cursor_changed_id = 0
+        self.view.hide()
 
     def _on_store_loaded(self, storecontroller):
         """Disconnect from the previous store's cursor and connect to the new one."""

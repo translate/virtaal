@@ -257,6 +257,8 @@ class TMView(BaseView, GObjectWrapper):
         self._may_show_tmwindow = True
         if not self._should_show_tmwindow or self.isvisible:
             return
+        if not self.controller.storecursor:
+            return # No store loaded
         self.show()
 
         selected = self._get_selected_unit_view()

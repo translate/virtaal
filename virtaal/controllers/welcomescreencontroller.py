@@ -20,6 +20,8 @@
 
 
 import logging
+
+from virtaal import __version__
 from virtaal.support import openmailto
 from virtaal.views import recent
 from virtaal.views.welcomescreenview import WelcomeScreenView
@@ -39,7 +41,7 @@ class WelcomeScreenController(BaseController):
         'manual':   'http://translate.sourceforge.net/wiki/virtaal/using_virtaal',
         'locguide': 'http://translate.sourceforge.net/wiki/guide/start',
         # FIXME: The URL below should be replaced with a proper feedback URL
-        'feedback': 'http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal',
+        'feedback': "http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal&version=%s" % __version__.ver,
     }
 
     # INITIALIZERS #

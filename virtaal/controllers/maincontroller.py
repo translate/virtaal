@@ -177,6 +177,10 @@ class MainController(BaseController):
             )
             return False
 
+    def open_tutorial(self):
+        filename = pan_app.get_abs_data_filename(["virtaal", "tutorial.pot"])
+        self.open_file(filename)
+
     def save_file(self, filename=None):
         try:
             self.store_controller.save_file(filename)

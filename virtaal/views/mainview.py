@@ -606,8 +606,7 @@ class MainView(BaseView):
             self.main_window.unfullscreen()
 
     def _on_tutorial(self, widget=None):
-        filename = pan_app.get_abs_data_filename(["virtaal", "tutorial.pot"])
-        self.controller.open_file(filename)
+        self.controller.open_tutorial()
 
     def _on_localization_guide(self, _widget=None):
         # Should be more redundent

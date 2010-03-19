@@ -147,9 +147,11 @@ class MainController(BaseController):
     unit_controller = property(_get_unit_controller, _set_unit_controller)
 
     # METHODS #
-    def open_file(self, filename, uri=''):
+    def open_file(self, filename=None, uri=''):
         """Open the file given by C{filename}.
             @returns: The filename opened, or C{None} if an error has occurred."""
+        if filename is None:
+            return self.view.open_file()
         if self.store_controller.is_modified():
             response = self.view.show_save_confirm_dialog()
             if response == 'save':

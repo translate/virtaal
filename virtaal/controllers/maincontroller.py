@@ -49,6 +49,7 @@ class MainController(BaseController):
         self._store_controller = None
         self._undo_controller = None
         self._unit_controller = None
+        self._welcomescreen_controller = None
         self.view = MainView(self)
 
     # ACCESSORS #
@@ -145,6 +146,14 @@ class MainController(BaseController):
         self._unit_controller = value
         self.emit('controller-registered', self._unit_controller)
     unit_controller = property(_get_unit_controller, _set_unit_controller)
+
+    def _get_welcomescreen_controller(self):
+        return self._welcomescreen_controller
+    def _set_welcomescreen_controller(self, value):
+        self._welcomescreen_controller = value
+        self.emit('controller-registered', self._welcomescreen_controller)
+    welcomescreen_controller = property(_get_welcomescreen_controller, _set_welcomescreen_controller)
+
 
     # METHODS #
     def open_file(self, filename=None, uri=''):

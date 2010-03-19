@@ -49,6 +49,8 @@ class Virtaal(object):
         logging.debug('PlaceablesController created')
         prefs_controller = PreferencesController(main_controller)
         logging.debug('PreferencesController created')
+        welcomescreen_controller = WelcomeScreenController(main_controller)
+        logging.debug('WelcomeScreenController created')
 
         # Load plug-ins
         plugin_controller.load_plugins()

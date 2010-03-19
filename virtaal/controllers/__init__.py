@@ -18,18 +18,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from basecontroller       import BaseController
-from baseplugin           import BasePlugin
-from cursor               import Cursor
-from langcontroller       import LanguageController
-from maincontroller       import MainController
-from modecontroller       import ModeController
-from storecontroller      import StoreController
-from placeablescontroller import PlaceablesController
-from plugincontroller     import PluginController
-from prefscontroller      import PreferencesController
-from undocontroller       import UndoController
-from unitcontroller       import UnitController
+from basecontroller          import BaseController
+from baseplugin              import BasePlugin
+from cursor                  import Cursor
+from langcontroller          import LanguageController
+from maincontroller          import MainController
+from modecontroller          import ModeController
+from storecontroller         import StoreController
+from placeablescontroller    import PlaceablesController
+from plugincontroller        import PluginController
+from prefscontroller         import PreferencesController
+from undocontroller          import UndoController
+from unitcontroller          import UnitController
+from welcomescreencontroller import WelcomeScreenController
 
 __all__ = [
     'BaseController',
@@ -43,5 +44,6 @@ __all__ = [
     'PreferencesController',
     'StoreController',
     'UndoController',
-    'UnitController'
+    'UnitController',
+    'WelcomeScreenController',
 ]

@@ -58,6 +58,8 @@ class ModeController(BaseController):
         self.current_mode = None
         self.view.select_mode(self.modenames[self.default_mode_name])
 
+        self.main_controller.store_controller.connect('store-closed', self._on_store_closed)
+
     def _init_modes(self):
         self.modes = {}
         self.modenames = {}
@@ -109,3 +111,6 @@ class ModeController(BaseController):
     def _on_mode_selected(self, _modeview, modename):
         if not getattr(self, '_ignore_mode_change', True):
             self.select_mode(self.get_mode_by_display_name(modename))
+
+    def _on_store_closed(self, store_controller):
+        self.view.hide()

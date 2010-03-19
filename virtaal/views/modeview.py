@@ -77,6 +77,9 @@ class ModeView(GObjectWrapper, BaseView):
 
 
     # METHODS #
+    def hide(self):
+        self.mode_box.hide()
+
     def remove_mode_widgets(self, widgets):
         if not widgets:
             return

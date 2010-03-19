@@ -106,8 +106,7 @@ class StoreView(BaseView):
             child.destroy()
         if not self._treeview.parent:
             self.parent_widget.add(self._treeview)
-            self.parent_widget.show_all()
-        self._treeview.show()
+        self.parent_widget.show_all()
         self._treeview.select_index(0)
 
         if self._treeview.get_model():

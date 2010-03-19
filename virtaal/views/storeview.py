@@ -35,7 +35,7 @@ class StoreView(BaseView):
     def __init__(self, controller):
         self.controller = controller
         # XXX: While I can't think of a better way to do this, the following line would have to do :/
-        self.parent_widget = self.controller.main_controller.view.gui.get_widget('scrolledwindow1')
+        self.parent_widget = self.controller.main_controller.view.gui.get_widget('scrwnd_storeview')
 
         self.cursor = None
         self._cursor_changed_id = 0

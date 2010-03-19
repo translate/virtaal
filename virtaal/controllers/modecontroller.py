@@ -113,4 +113,5 @@ class ModeController(BaseController):
             self.select_mode(self.get_mode_by_display_name(modename))
 
     def _on_store_closed(self, store_controller):
+        self.select_default_mode()
         self.view.hide()

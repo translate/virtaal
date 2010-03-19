@@ -416,6 +416,14 @@ class MainView(BaseView):
 
         return None, None
 
+    def open_file(self):
+        filename_and_uri = self.show_open_dialog()
+        if filename_and_uri:
+            filename, uri = filename_and_uri
+            self._uri = uri
+            return self.controller.open_file(filename, uri=uri)
+        return False
+
     def quit(self):
         if self._window_is_maximized:
             pan_app.settings.general['maximized'] = 1
@@ -555,11 +563,7 @@ class MainView(BaseView):
         openmailto.open("http://translate.sourceforge.net/wiki/virtaal/index")
 
     def _on_file_open(self, _widget):
-        filename_and_uri = self.show_open_dialog()
-        if filename_and_uri:
-            filename, uri = filename_and_uri
-            self._uri = uri
-            self.controller.open_file(filename, uri=uri)
+        self.open_file()
 
     def _on_file_save(self, widget=None):
         # we force save us on potentially destructive file level

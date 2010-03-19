@@ -36,7 +36,7 @@ class WelcomeScreen(gtk.ScrolledWindow):
 
     def _get_widgets(self):
         self.widgets = {}
-        widget_names = ('txt_features',)
+        widget_names = ('img_banner', 'txt_features')
         for wname in widget_names:
             self.widgets[wname] = self.gui.get_widget(wname)
 
@@ -48,6 +48,11 @@ class WelcomeScreen(gtk.ScrolledWindow):
         for bname in button_names:
             self.widgets['buttons'][bname] = self.gui.get_widget('btn_' + bname)
             self.widgets['buttons'][bname].connect('clicked', self._on_button_clicked, bname)
+
+
+    # METHODS #
+    def set_banner_image(self, filename):
+        self.widgets['img_banner'].set_from_file(filename)
 
 
     # SIGNAL HANDLERS #

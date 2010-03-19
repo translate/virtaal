@@ -418,10 +418,7 @@
             <property name="hscrollbar_policy">never</property>
             <property name="vscrollbar_policy">automatic</property>
             <child>
-              <widget class="GtkTreeView" id="unitTree">
-                <property name="visible">True</property>
-                <property name="rules_hint">True</property>
-              </widget>
+              <placeholder/>
             </child>
           </widget>
           <packing>

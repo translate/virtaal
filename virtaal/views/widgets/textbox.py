@@ -243,6 +243,9 @@ class TextBox(gtk.TextView):
 
         self.emit('after-apply-gui-info', elem)
 
+    def get_cursor_position(self):
+        return self.buffer.props.cursor_position
+
     def hide_suggestion(self):
         if not self.suggestion_is_visible():
             return

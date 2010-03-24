@@ -100,7 +100,7 @@ class UndoController(BaseController):
         current_text = textbox.elem.copy()
         unitview = self.unit_controller.view
 
-        curpos = textbox.buffer.props.cursor_position
+        curpos = textbox.get_cursor_position()
         targetn = 0
         for tgt in unitview.targets:
             if tgt is textbox:

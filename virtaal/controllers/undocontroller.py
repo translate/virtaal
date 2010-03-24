@@ -57,7 +57,8 @@ class UndoController(BaseController):
         self.unit_controller.connect('unit-delete-text', self._on_unit_delete_text)
         self.unit_controller.connect('unit-insert-text', self._on_unit_insert_text)
         self.unit_controller.connect('unit-paste-start', self._on_unit_paste_start)
-        self.main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
+        self.main_controller.store_controller.connect('store-closed', self._on_store_loaded_closed)
+        self.main_controller.store_controller.connect('store-loaded', self._on_store_loaded_closed)
 
         mainview = self.main_controller.view
         mainview.gui.get_widget('menu_edit').set_accel_group(self.accel_group)
@@ -175,7 +176,7 @@ class UndoController(BaseController):
 
 
     # EVENT HANDLERS #
-    def _on_store_loaded(self, storecontroller):
+    def _on_store_loaded_closed(self, storecontroller):
         self.model.clear()
 
     @if_enabled

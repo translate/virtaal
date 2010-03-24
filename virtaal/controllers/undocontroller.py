@@ -101,18 +101,14 @@ class UndoController(BaseController):
         unitview = self.unit_controller.view
 
         curpos = textbox.get_cursor_position()
-        targetn = 0
-        for tgt in unitview.targets:
-            if tgt is textbox:
-                break
-            targetn += 1
+        targetn = unitview.targets.index(textbox)
         def undo_set_text(unit):
             textbox.elem.sub = current_text.sub
 
         self.model.push({
             'action': undo_set_text,
             'cursorpos': curpos,
-            'desc': 'Set target %d text to %s' % (targetn, repr(textbox.elem)),
+            'desc': 'Set target %d text to %s' % (targetn, repr(current_text)),
             'targetn': targetn,
             'unit': unitview.unit
         })

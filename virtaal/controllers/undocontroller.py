@@ -160,7 +160,7 @@ class UndoController(BaseController):
         undo_info['action'](undo_info['unit'])
         self._enable_unit_signals()
 
-        textbox = self.unit_controller.view.targets[self.unit_controller.view.focused_target_n]
+        textbox = self.unit_controller.view.targets[undo_info['targetn']]
         def refresh():
             textbox.refresh_cursor_pos = undo_info['cursorpos']
             textbox.refresh()

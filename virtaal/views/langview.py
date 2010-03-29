@@ -96,8 +96,9 @@ class LanguageView(BaseView):
 
     def notify_diff_langs(self):
         def notify():
+            fgcol = gtk.widget_get_default_style().fg
             for s in [gtk.STATE_ACTIVE, gtk.STATE_NORMAL, gtk.STATE_PRELIGHT, gtk.STATE_SELECTED]:
-                self.popupbutton.child.modify_fg(s, gtk.gdk.color_parse('#000'))
+                self.popupbutton.child.modify_fg(s, fgcol[s])
         gobject.idle_add(notify)
 
     def show(self):

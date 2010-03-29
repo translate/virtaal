@@ -125,10 +125,10 @@ class TMModel(BaseTMModel):
     def query(self, tmcontroller, query_str):
         # Google's Terms of Service says no more than 5000 characters
         query_str = query_str[:5000]
-        source_lang = code_translation.get(self.source_lang, self.source_lang)
-        target_lang = code_translation.get(self.target_lang, self.target_lang)
+        source_lang = code_translation.get(self.source_lang, self.source_lang).replace('_', '-')
+        target_lang = code_translation.get(self.target_lang, self.target_lang).replace('_', '-')
         if source_lang not in _languages or target_lang not in _languages:
-            logging.debug('language pair not supported')
+            logging.debug('language pair not supported: %s => %s' % (source_lang, target_lang))
             return
 
         if self.cache.has_key(query_str):
@@ -136,8 +136,8 @@ class TMModel(BaseTMModel):
         else:
             real_url = self.translate_url % {
                 'message': urllib.quote_plus(query_str),
-                'from':    self.source_lang,
-                'to':      self.target_lang,
+                'from':    source_lang,
+                'to':      target_lang,
             }
 
             req = RESTRequest(real_url, '', method='GET', data=urllib.urlencode(''), headers=None)

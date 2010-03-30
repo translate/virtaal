@@ -24,6 +24,7 @@ virtaal/plugins/terminology/termview.py
 virtaal/plugins/tm/__init__.py
 virtaal/plugins/tm/models/currentfile.py
 virtaal/plugins/tm/models/google_translate.py
+virtaal/plugins/tm/models/microsoft_translator.py
 virtaal/plugins/tm/models/libtranslate.py
 virtaal/plugins/tm/models/localtm.py
 virtaal/plugins/tm/models/moses.py
@@ -41,6 +42,7 @@ virtaal/views/widgets/aboutdialog.py
 virtaal/views/widgets/langadddialog.py
 virtaal/views/widgets/langselectdialog.py
 virtaal/views/widgets/selectview.py
+virtaal/views/widgets/welcomescreen.py
 virtaal/models/storemodel.py
 share/mime/packages/virtaal-mimetype.xml.in
 devsupport/tmp_strings.py

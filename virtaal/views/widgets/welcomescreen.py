@@ -33,11 +33,11 @@ class WelcomeScreen(gtk.ScrolledWindow):
         self.add_with_viewport(child)
 
         self._get_widgets()
-        self._init_feature_views()
+        self._init_feature_view()
 
     def _get_widgets(self):
         self.widgets = {}
-        widget_names = ('img_banner', 'txt_features', 'txt_newfeatures')
+        widget_names = ('img_banner', 'txt_features')
         for wname in widget_names:
             self.widgets[wname] = self.gui.get_widget(wname)
 
@@ -50,11 +50,7 @@ class WelcomeScreen(gtk.ScrolledWindow):
             self.widgets['buttons'][bname] = self.gui.get_widget('btn_' + bname)
             self.widgets['buttons'][bname].connect('clicked', self._on_button_clicked, bname)
 
-    def _init_feature_views(self):
-        for name in ('txt_features', 'txt_newfeatures'):
-            widget = self.widgets[name]
-            widget.modify_base(gtk.STATE_NORMAL, widget.style.bg[gtk.STATE_NORMAL])
-
+    def _init_feature_view(self):
         features = u"\n".join([
             u" • " + _("Extensive format support"),
             u" • " + _("Translation memory"),
@@ -64,11 +60,6 @@ class WelcomeScreen(gtk.ScrolledWindow):
             u" • " + _("Many plugins and options for customisation"),
         ])
         self.widgets['txt_features'].get_buffer().set_text(features)
-
-        nfeatures = u"\n".join([
-            u" • " + _("New features"),
-        ])
-        self.widgets['txt_newfeatures'].get_buffer().set_text(nfeatures)
 
 
     # METHODS #

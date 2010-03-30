@@ -2391,60 +2391,6 @@ If you are translating from English to French then French would be your translat
                                 <property name="position">2</property>
                               </packing>
                             </child>
-                            <child>
-                              <widget class="GtkExpander" id="expander2">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <child>
-                                  <widget class="GtkVBox" id="vbox8">
-                                    <property name="visible">True</property>
-                                    <property name="orientation">vertical</property>
-                                    <child>
-                                      <widget class="GtkTextView" id="txt_newfeatures">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="editable">False</property>
-                                        <property name="cursor_visible">False</property>
-                                        <property name="accepts_tab">False</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">0</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="GtkLinkButton" id="linkbutton2">
-                                        <property name="label" translatable="yes">More...</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="receives_default">True</property>
-                                        <property name="relief">none</property>
-                                        <property name="xalign">0</property>
-                                        <property name="uri">http://translate.sourceforge.net/wiki/virtaal/index</property>
-                                      </widget>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="position">1</property>
-                                      </packing>
-                                    </child>
-                                  </widget>
-                                </child>
-                                <child>
-                                  <widget class="GtkLabel" id="label7">
-                                    <property name="visible">True</property>
-                                    <property name="label" translatable="yes">&lt;span foreground="blue" underline="single"&gt;Latest Features&lt;/span&gt;</property>
-                                    <property name="use_markup">True</property>
-                                  </widget>
-                                  <packing>
-                                    <property name="type">label_item</property>
-                                  </packing>
-                                </child>
-                              </widget>
-                              <packing>
-                                <property name="position">3</property>
-                              </packing>
-                            </child>
                           </widget>
                         </child>
                       </widget>

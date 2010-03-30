@@ -102,9 +102,9 @@ class StoreModel(BaseModel):
     def load_file(self, filename):
         # Adapted from Document.__init__()
         if not os.path.exists(filename):
-            raise IOError(_('The file "%s" does not exist.') % filename)
+            raise IOError(_('The file does not exist.'))
         if not os.path.isfile(filename):
-            raise IOError(_('"%s" is not a usable file.') % filename)
+            raise IOError(_('Not a valid file.'))
         logging.info('Loading file %s' % (filename))
         self._trans_store = factory.getobject(filename)
         self.filename = filename

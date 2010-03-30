@@ -44,7 +44,7 @@ class WelcomeScreenView(BaseView):
     def set_widget_bg(self):
         import gtk
         from gobject import idle_add
-        idle_add(lambda: self.widget.child.modify_bg(gtk.STATE_NORMAL, self.widget.style.bg[gtk.STATE_NORMAL]))
+        idle_add(lambda: self.widget.child.modify_bg(gtk.STATE_NORMAL, self.widget.style.base[gtk.STATE_NORMAL]))
 
 
     # METHODS #

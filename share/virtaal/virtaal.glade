@@ -1995,15 +1995,6 @@ If you are translating from English to French then French would be your translat
           </packing>
         </child>
         <child>
-          <widget class="GtkHSeparator" id="hseparator1">
-            <property name="visible">True</property>
-          </widget>
-          <packing>
-            <property name="expand">False</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
           <widget class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
             <child>
@@ -2572,7 +2563,7 @@ If you are translating from English to French then French would be your translat
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="position">2</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </widget>

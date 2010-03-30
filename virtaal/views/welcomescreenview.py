@@ -37,8 +37,8 @@ class WelcomeScreenView(BaseView):
         self.widget = WelcomeScreen(gui)
         self.parent_widget = self.controller.main_controller.view.gui.get_widget('vbox_main')
 
-        self.widget.set_banner_image(get_abs_data_filename(['virtaal', 'virtaal_banner.png']))
         self.set_widget_bg()
+        self.widget.set_banner_image(get_abs_data_filename(['virtaal', 'welcome_screen_banner.png']))
         self.widget.connect('button-clicked', self._on_button_clicked)
 
     def set_widget_bg(self):

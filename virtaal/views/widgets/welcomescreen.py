@@ -57,7 +57,7 @@ class WelcomeScreen(gtk.ScrolledWindow):
             u" • " + _("Terminology assistance"),
             u" • " + _("Machine translation"),
             u" • " + _("Highlighting and insertion of placeables"),
-            u" • " + _("Many plugins and options for customisation"),
+            u" • " + _("Many plugins and options for customization"),
         ])
         self.widgets['txt_features'].get_buffer().set_text(features)
 

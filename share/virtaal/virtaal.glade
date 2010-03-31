@@ -2456,7 +2456,7 @@ If you are translating from English to French then French would be your translat
                                   <widget class="GtkLabel" id="label15">
                                     <property name="visible">True</property>
                                     <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">&lt;span foreground="blue" underline="single"&gt;Localisation Guide&lt;/span&gt;</property>
+                                    <property name="label" translatable="yes">&lt;span foreground="blue" underline="single"&gt;Localization Guide&lt;/span&gt;</property>
                                     <property name="use_markup">True</property>
                                   </widget>
                                 </child>

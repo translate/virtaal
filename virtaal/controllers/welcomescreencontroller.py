@@ -42,6 +42,7 @@ class WelcomeScreenController(BaseController):
         'locguide': 'http://translate.sourceforge.net/wiki/guide/start',
         # FIXME: The URL below should be replaced with a proper feedback URL
         'feedback': "http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal&version=%s" % __version__.ver,
+        'features_more': 'http://translate.sourceforge.net/wiki/virtaal/features'
     }
 
     # INITIALIZERS #

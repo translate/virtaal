@@ -44,7 +44,8 @@ class WelcomeScreen(gtk.ScrolledWindow):
         self.widgets['buttons'] = {}
         button_names = (
             'open', 'recent1', 'recent2', 'recent3', 'recent4', 'recent5',
-            'tutorial', 'cheatsheet', 'manual', 'locguide', 'feedback'
+            'tutorial', 'cheatsheet', 'features_more', 'manual', 'locguide',
+            'feedback'
         )
         for bname in button_names:
             self.widgets['buttons'][bname] = self.gui.get_widget('btn_' + bname)

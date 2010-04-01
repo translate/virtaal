@@ -2351,7 +2351,7 @@ If you are translating from English to French then French would be your translat
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
-                                        <property name="tooltip" translatable="yes">http://translate.sourceforge.net/wiki/virtaal/features</property>
+                                        <property name="tooltip" translatable="yes" comments="l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language">http://translate.sourceforge.net/wiki/virtaal/features</property>
                                         <property name="relief">none</property>
                                         <child>
                                           <widget class="GtkLabel" id="label7">
@@ -2422,7 +2422,7 @@ If you are translating from English to French then French would be your translat
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="tooltip" translatable="yes">http://translate.sourceforge.net/wiki/virtaal/using_virtaal</property>
+                                <property name="tooltip" translatable="yes" comments="l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language">http://translate.sourceforge.net/wiki/virtaal/using_virtaal</property>
                                 <property name="relief">none</property>
                                 <property name="xalign">0</property>
                                 <child>
@@ -2443,7 +2443,7 @@ If you are translating from English to French then French would be your translat
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="tooltip" translatable="yes">http://translate.sourceforge.net/wiki/guide/start</property>
+                                <property name="tooltip">http://translate.sourceforge.net/wiki/guide/start</property>
                                 <property name="relief">none</property>
                                 <property name="xalign">0</property>
                                 <child>

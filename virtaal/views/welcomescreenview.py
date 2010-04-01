@@ -66,7 +66,18 @@ class WelcomeScreenView(BaseView):
         def calculate_width():
             txt = self.widget.widgets['txt_features']
             expander = txt.parent.parent
-            width = self.widget.get_allocation().width - expander.get_allocation().x - 30
+
+            # The maximum width is 1.8 * width_of_column_1
+            maxwidth = 1.8 * expander.get_allocation().x
+            screenwidth = self.widget.get_allocation().width
+            # Preliminary width is the whole_screen - width_of_column1 - 30
+            # The "30" above is just to make sure we don't go under the
+            # vertical scroll bar (if it is showing).
+            width = screenwidth - expander.get_allocation().x - 30
+
+            if width > maxwidth:
+                width = int(maxwidth)
+
             txt.set_size_request(width, -1)
         idle_add(calculate_width)
 

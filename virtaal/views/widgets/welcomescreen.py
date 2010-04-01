@@ -37,9 +37,11 @@ class WelcomeScreen(gtk.ScrolledWindow):
 
     def _get_widgets(self):
         self.widgets = {}
-        widget_names = ('img_banner', 'txt_features')
+        widget_names = ('img_banner', 'exp_features', 'txt_features')
         for wname in widget_names:
             self.widgets[wname] = self.gui.get_widget(wname)
+
+        self.widgets['exp_features'].set_label('<span foreground="blue">%s</span>' % (self.widgets['exp_features'].get_label()))
 
         self.widgets['buttons'] = {}
         button_names = (
@@ -48,8 +50,22 @@ class WelcomeScreen(gtk.ScrolledWindow):
             'feedback'
         )
         for bname in button_names:
-            self.widgets['buttons'][bname] = self.gui.get_widget('btn_' + bname)
-            self.widgets['buttons'][bname].connect('clicked', self._on_button_clicked, bname)
+            btn = self.gui.get_widget('btn_' + bname)
+            self.widgets['buttons'][bname] = btn
+
+            btn.connect('clicked', self._on_button_clicked, bname)
+
+            # Find a gtk.Label as a child of the button...
+            label = None
+            if isinstance(btn.child, gtk.Label):
+                label = btn.child
+            else:
+                for widget in btn.child.get_children():
+                    if isinstance(widget, gtk.Label):
+                        label = widget
+                        break
+            if label:
+                label.set_markup('<span foreground="blue">%s</span>' % (label.get_label()))
 
     def _init_feature_view(self):
         features = u"\n".join([

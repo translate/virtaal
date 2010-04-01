@@ -2465,7 +2465,7 @@ If you are translating from English to French then French would be your translat
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="tooltip" translatable="yes">http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal&amp;version=1.5.2</property>
+                                <property name="tooltip">http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal</property>
                                 <property name="relief">none</property>
                                 <property name="xalign">0</property>
                                 <child>

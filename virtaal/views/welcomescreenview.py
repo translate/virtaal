@@ -68,7 +68,7 @@ class WelcomeScreenView(BaseView):
         markup = '<span foreground="blue" underline="single">%(name)s</span>'
 
         for i in range(len(items)):
-            buttons[i].child.get_children()[0].set_from_file(get_abs_data_filename(['icons', 'x-translation_32.png']))
+            buttons[i].child.get_children()[0].set_from_file(get_abs_data_filename(['icons', 'x-translation_24.png']))
             buttons[i].child.get_children()[1].set_markup(markup % {'name': items[i]['name']})
             buttons[i].props.visible = True
         for i in range(len(items), 5):

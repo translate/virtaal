@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gtk
+from gobject import idle_add
 
 from virtaal.common.pan_app import get_abs_data_filename
 from virtaal.views.widgets.welcomescreen import WelcomeScreen
@@ -63,6 +64,13 @@ class WelcomeScreenView(BaseView):
         self.parent_widget.child_set_property(self.widget, 'expand', True)
 
         self.widget.show()
+
+        def calculate_width():
+            txt = self.widget.widgets['txt_features']
+            expander = txt.parent.parent
+            width = self.widget.get_allocation().width - expander.get_allocation().x - 30
+            txt.set_size_request(width, -1)
+        idle_add(calculate_width)
 
     def update_recent_buttons(self, items):
         buttons = [

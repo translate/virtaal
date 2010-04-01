@@ -2333,7 +2333,6 @@ If you are translating from English to French then French would be your translat
                                     <property name="orientation">vertical</property>
                                     <child>
                                       <widget class="GtkTextView" id="txt_features">
-                                        <property name="width_request">300</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="editable">False</property>

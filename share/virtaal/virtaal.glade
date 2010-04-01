@@ -2347,18 +2347,22 @@ If you are translating from English to French then French would be your translat
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkLinkButton" id="linkbutton1">
-                                        <property name="label" translatable="yes">More...</property>
+                                      <widget class="GtkButton" id="btn_features_more">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
+                                        <property name="tooltip" translatable="yes">http://translate.sourceforge.net/wiki/virtaal/features</property>
                                         <property name="relief">none</property>
-                                        <property name="xalign">0</property>
-                                        <property name="uri">http://translate.sourceforge.net/wiki/virtaal/features</property>
+                                        <child>
+                                          <widget class="GtkLabel" id="label7">
+                                            <property name="visible">True</property>
+                                            <property name="xalign">0</property>
+                                            <property name="label" translatable="yes">&lt;span foreground="blue" underline="single"&gt;More...&lt;/span&gt;</property>
+                                            <property name="use_markup">True</property>
+                                          </widget>
+                                        </child>
                                       </widget>
                                       <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
                                         <property name="position">1</property>
                                       </packing>
                                     </child>
@@ -2418,6 +2422,7 @@ If you are translating from English to French then French would be your translat
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip" translatable="yes">http://translate.sourceforge.net/wiki/virtaal/using_virtaal</property>
                                 <property name="relief">none</property>
                                 <property name="xalign">0</property>
                                 <child>
@@ -2438,6 +2443,7 @@ If you are translating from English to French then French would be your translat
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip" translatable="yes">http://translate.sourceforge.net/wiki/guide/start</property>
                                 <property name="relief">none</property>
                                 <property name="xalign">0</property>
                                 <child>
@@ -2459,6 +2465,7 @@ If you are translating from English to French then French would be your translat
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip" translatable="yes">http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal&amp;version=1.5.2</property>
                                 <property name="relief">none</property>
                                 <property name="xalign">0</property>
                                 <child>

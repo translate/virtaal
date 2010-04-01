@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Virtaal 0.5.2\n"
+"Project-Id-Version: Virtaal 0.5.3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2010-02-22 16:19+0200\n"
+"POT-Creation-Date: 2010-04-01 17:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
-#: ../share/virtaal/virtaal.glade.h:1
+#: ../share/virtaal/virtaal.glade.h:1 ../virtaal/views/mainview.py:640
 msgid "Virtaal"
 msgstr ""
 
@@ -271,6 +271,61 @@ msgstr ""
 msgid "<b>Options</b>"
 msgstr ""
 
+#. l10n: Remove the tags if underlining is unsuitable for your language. Most languages won't need to change this. Translate 'Open' normally.
+#: ../share/virtaal/virtaal.glade.h:67
+msgid "<u>Open</u>"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:68
+msgid "<b><big>Recent Files</big></b>"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:69
+msgid "<u>Tutorial</u>"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:70
+msgid "<u>Cheat Sheet</u>"
+msgstr ""
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.glade.h:72
+msgid "http://translate.sourceforge.net/wiki/virtaal/features"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:73
+msgid "<u>More...</u>"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:74
+msgid "<u>Features</u>"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:75
+msgid "<b><big>Getting Started</big></b>"
+msgstr ""
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.glade.h:77
+msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:78
+msgid "<u>Manual</u>"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:79
+msgid "<u>Localization Guide</u>"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:80
+msgid "<u>Feedback</u>"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:81
+msgid "<b><big>Support</big></b>"
+msgstr ""
+
 #: ../virtaal/tips.py:27
 msgid ""
 "At the end of a translation, simply press <Enter> to continue with the next "
@@ -314,16 +369,16 @@ msgstr ""
 msgid "Please enter your team's information"
 msgstr ""
 
-#: ../virtaal/controllers/maincontroller.py:166
-#: ../virtaal/controllers/maincontroller.py:220
+#: ../virtaal/controllers/maincontroller.py:176
+#: ../virtaal/controllers/maincontroller.py:244
 msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
 msgstr ""
 
-#: ../virtaal/controllers/maincontroller.py:177
-#: ../virtaal/controllers/maincontroller.py:205
-#: ../virtaal/controllers/maincontroller.py:231
+#: ../virtaal/controllers/maincontroller.py:187
+#: ../virtaal/controllers/maincontroller.py:229
+#: ../virtaal/controllers/maincontroller.py:255
 #, python-format
 msgid ""
 "Could not open file.\n"
@@ -333,7 +388,7 @@ msgid ""
 "Try opening a different file."
 msgstr ""
 
-#: ../virtaal/controllers/maincontroller.py:186
+#: ../virtaal/controllers/maincontroller.py:200
 #, python-format
 msgid ""
 "Could not save file.\n"
@@ -343,7 +398,7 @@ msgid ""
 "Try saving to a different location."
 msgstr ""
 
-#: ../virtaal/controllers/maincontroller.py:191
+#: ../virtaal/controllers/maincontroller.py:205
 #, python-format
 msgid ""
 "Could not save file.\n"
@@ -351,11 +406,11 @@ msgid ""
 "%(error_message)s"
 msgstr ""
 
-#: ../virtaal/controllers/maincontroller.py:195
+#: ../virtaal/controllers/maincontroller.py:219
 msgid "Reload File"
 msgstr ""
 
-#: ../virtaal/controllers/maincontroller.py:195
+#: ../virtaal/controllers/maincontroller.py:219
 msgid "Reload file from last saved copy and lose all changes?"
 msgstr ""
 
@@ -492,42 +547,42 @@ msgstr ""
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr ""
 
-#: ../virtaal/controllers/storecontroller.py:114
+#: ../virtaal/controllers/storecontroller.py:115
 msgid "The file contains nothing to translate."
 msgstr ""
 
 #. l10n: The heading of statistics before updating to the new template
-#: ../virtaal/controllers/storecontroller.py:163
+#: ../virtaal/controllers/storecontroller.py:172
 msgid "Before:"
 msgstr ""
 
 #. l10n: The heading of statistics after updating to the new template
-#: ../virtaal/controllers/storecontroller.py:165
+#: ../virtaal/controllers/storecontroller.py:174
 msgid "After:"
 msgstr ""
 
-#: ../virtaal/controllers/storecontroller.py:166
+#: ../virtaal/controllers/storecontroller.py:175
 #, python-format
 msgid "Translated: %d"
 msgstr ""
 
-#: ../virtaal/controllers/storecontroller.py:167
+#: ../virtaal/controllers/storecontroller.py:176
 #, python-format
 msgid "Fuzzy: %d"
 msgstr ""
 
-#: ../virtaal/controllers/storecontroller.py:168
+#: ../virtaal/controllers/storecontroller.py:177
 #, python-format
 msgid "Untranslated: %d"
 msgstr ""
 
-#: ../virtaal/controllers/storecontroller.py:169
+#: ../virtaal/controllers/storecontroller.py:178
 #, python-format
 msgid "Total: %d"
 msgstr ""
 
 #. l10n: this refers to updating a file to a new template (POT file)
-#: ../virtaal/controllers/storecontroller.py:187
+#: ../virtaal/controllers/storecontroller.py:196
 msgid "File Updated"
 msgstr ""
 
@@ -621,7 +676,7 @@ msgstr ""
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate.
 #: ../virtaal/plugins/lookup/models/weblookup.py:45
-#: ../virtaal/plugins/tm/models/google_translate.py:162
+#: ../virtaal/plugins/tm/models/google_translate.py:165
 msgid "Google"
 msgstr ""
 
@@ -755,17 +810,16 @@ msgid "Add Files"
 msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:177
-#: ../virtaal/views/mainview.py:224
+#: ../virtaal/views/mainview.py:225
 msgid "All Supported Files"
 msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:203
-#: ../virtaal/views/mainview.py:250
+#: ../virtaal/views/mainview.py:251
 msgid "All Files"
 msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:243
-#: ../virtaal/models/storemodel.py:107
 #, python-format
 msgid "\"%s\" is not a usable file."
 msgstr ""
@@ -841,12 +895,25 @@ msgid "This file"
 msgstr ""
 
 #. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
-#: ../virtaal/plugins/tm/models/google_translate.py:110
+#: ../virtaal/plugins/tm/models/google_translate.py:113
 msgid "Google Translate"
 msgstr ""
 
-#: ../virtaal/plugins/tm/models/google_translate.py:111
+#: ../virtaal/plugins/tm/models/google_translate.py:114
 msgid "Unreviewed machine translations from Google's translation service"
+msgstr ""
+
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:35
+msgid "Microsoft Translator"
+msgstr ""
+
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:36
+msgid "Unreviewed machine translations from Microsoft Translator"
+msgstr ""
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:98
+msgid "Microsoft"
 msgstr ""
 
 #. l10n: This is the name of a software library. You almost definitely don't want to translate this. The lower case 'l' is intentional.
@@ -966,25 +1033,25 @@ msgstr ""
 msgid "_New Language Pair..."
 msgstr ""
 
-#: ../virtaal/views/mainview.py:201
+#: ../virtaal/views/mainview.py:202
 msgid "Error"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:217
+#: ../virtaal/views/mainview.py:218
 msgid "Choose a Translation File"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:255
+#: ../virtaal/views/mainview.py:256
 msgid "Save"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:269
+#: ../virtaal/views/mainview.py:270
 msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:272
+#: ../virtaal/views/mainview.py:273
 msgid "_Discard"
 msgstr ""
 
@@ -992,16 +1059,16 @@ msgstr ""
 #. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
 #. %(current_file)s is the file name of the current file
 #. most languages will not need to change this
-#: ../virtaal/views/mainview.py:309
+#: ../virtaal/views/mainview.py:310
 #, python-format
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:334
+#: ../virtaal/views/mainview.py:335
 msgid "Please enter the number of noun forms (plurals) to use"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:340
+#: ../virtaal/views/mainview.py:341
 msgid "Please enter the plural equation to use"
 msgstr ""
 
@@ -1080,9 +1147,36 @@ msgstr ""
 msgid "Configure..."
 msgstr ""
 
+#: ../virtaal/views/widgets/welcomescreen.py:72
+msgid "Extensive format support"
+msgstr ""
+
+#: ../virtaal/views/widgets/welcomescreen.py:73
+msgid "Translation memory"
+msgstr ""
+
+#: ../virtaal/views/widgets/welcomescreen.py:74
+msgid "Terminology assistance"
+msgstr ""
+
+#: ../virtaal/views/widgets/welcomescreen.py:75
+msgid "Machine translation"
+msgstr ""
+
+#: ../virtaal/views/widgets/welcomescreen.py:76
+msgid "Highlighting and insertion of placeables"
+msgstr ""
+
+#: ../virtaal/views/widgets/welcomescreen.py:77
+msgid "Many plugins and options for customization"
+msgstr ""
+
 #: ../virtaal/models/storemodel.py:105
-#, python-format
-msgid "The file \"%s\" does not exist."
+msgid "The file does not exist."
+msgstr ""
+
+#: ../virtaal/models/storemodel.py:107
+msgid "Not a valid file."
 msgstr ""
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
@@ -1195,6 +1289,10 @@ msgstr ""
 
 #: ../devsupport/tmp_strings.py:25
 msgid "Qt .qm file"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py:26
+msgid "OmegaT Glossary"
 msgstr ""
 
 #: ../bin/virtaal:78

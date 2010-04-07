@@ -76,15 +76,55 @@ class TMModel(BaseTMModel):
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])
         else:
-            matches = []
-            for candidate in self.matcher.matches(unicode(query_str, 'utf-8')):
-                m = match.unit2dict(candidate)
-                #l10n: Try to keep this as short as possible.
-                m['tmsource'] = _('This file')
-                matches.append(m)
-            self.cache[query_str] = [m for m in matches if m['quality'] != u'100']
+            self.cache[query_str] = \
+                    self._check_other_units(unit) + \
+                    self._check_xliff_alttrans(unit)
             self.emit('match-found', query_str, self.cache[query_str])
 
+    def _check_other_units(self, unit):
+        matches = []
+
+        query_str = unit.source
+        if not isinstance(query_str, unicode):
+            query_str = unicode(query_str, 'utf-8')
+
+        for candidate in self.matcher.matches(query_str):
+            m = match.unit2dict(candidate)
+            #l10n: Try to keep this as short as possible.
+            m['tmsource'] = _('This file')
+            matches.append(m)
+        return [m for m in matches if m['quality'] != u'100']
+
+    def _check_xliff_alttrans(self, unit):
+        if not hasattr(unit, 'getalttrans'):
+            return []
+        alttrans = unit.getalttrans()
+        if not alttrans:
+            return []
+
+        from translate.search.lshtein import LevenshteinComparer
+        lcomparer = LevenshteinComparer(max_len=1000)
+
+        results = []
+        for alt in alttrans:
+            tmsource = _('This file')
+
+            origin = alt.xmlelement.get('from', '')
+            if not origin:
+                origin = alt.xmlelement.get('origin', '')
+            if origin:
+                tmsource += "\n" + origin
+
+            results.append({
+                'source': alt.source,
+                'target': alt.target,
+                'quality': lcomparer.similarity(unit.source, alt.source, 0),
+                'tmsource': tmsource,
+            })
+        return results
+
+
+    # EVENT HANDLERS #
     def _on_unit_modified(self, widget, new_unit, modified):
         """Add the new translation unit to the TM."""
         if modified and new_unit.istranslated():

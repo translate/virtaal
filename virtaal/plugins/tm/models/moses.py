@@ -59,8 +59,9 @@ class TMModel(BaseTMModel):
 
 
     # METHODS #
-    def query(self, tmcontroller, query_str):
+    def query(self, tmcontroller, unit):
         if self.source_lang in self.proxy and self.target_lang in self.proxy[self.source_lang]:
+            query_str = unit.source
             try:
                 translate = self.proxy[self.source_lang][self.target_lang].translate
                 tm_match = []

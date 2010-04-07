@@ -35,7 +35,8 @@ class TMModel(BaseTMModel):
 
 
     # METHODS #
-    def query(self, tmcontroller, query_str):
+    def query(self, tmcontroller, unit):
+        query_str = unit.source
         tm_matches = []
         tm_matches.append({
             'source': 'This match has no "quality" field',

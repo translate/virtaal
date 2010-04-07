@@ -90,12 +90,11 @@ class BaseTMModel(BaseModel):
         #disconnect all signals
         [widget.disconnect(cid) for (cid, widget) in self._connect_ids]
 
-    def query(self, tmcontroller, query_str):
+    def query(self, tmcontroller, unit):
         """Attempt to give suggestions applicable to query_str.
 
-        All tm backends must implement this method, check for
-        suggested translations to query_str, emit match-found on success.
-        Note that query_str is from gobject, therefore not unicode."""
+        All TM backends must implement this method, check for
+        suggested translations for unit, emit "match-found" on success."""
         pass
 
     def load_config(self):

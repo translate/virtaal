@@ -79,7 +79,8 @@ class TMModel(BaseTMModel):
 
 
     # METHODS #
-    def query(self, tmcontroller, query_str):
+    def query(self, tmcontroller, unit):
+        query_str = unit.source
         translation = []
         err = c_int()
         result = self.lt.translate_session_translate_text(

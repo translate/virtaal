@@ -59,9 +59,10 @@ class TMModel(BaseTMModel):
 
 
     # METHODS #
-    def query(self, tmcontroller, query_str):
+    def query(self, tmcontroller, unit):
         """Send the query to the web service. The response is handled by means
         of a call-back because it happens asynchronously."""
+        query_str = unit.source
         pair = '%s-%s' % (self.source_lang, self.target_lang)
         if pair not in self.language_pairs:
             return

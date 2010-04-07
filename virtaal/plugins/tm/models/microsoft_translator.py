@@ -61,12 +61,13 @@ class TMModel(BaseTMModel):
 
 
     # METHODS #
-    def query(self, tmcontroller, query_str):
+    def query(self, tmcontroller, unit):
         """Send the query to the web service. The response is handled by means
         of a call-back because it happens asynchronously."""
         if self.source_lang not in self.languages or self.target_lang not in self.languages:
             return
 
+        query_str = unit.source
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])
         else:

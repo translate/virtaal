@@ -71,7 +71,8 @@ class TMModel(BaseTMModel):
                     self.matcher.extendtm(unit)
         self.cache = {}
 
-    def query(self, tmcontroller, query_str):
+    def query(self, tmcontroller, unit):
+        query_str = unit.source
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])
         else:

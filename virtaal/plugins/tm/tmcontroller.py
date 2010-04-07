@@ -36,7 +36,7 @@ class TMController(BaseController):
 
     __gtype_name__ = 'TMController'
     __gsignals__ = {
-        'start-query': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,))
+        'start-query': (gobject.SIGNAL_RUN_FIRST, None, (object,))
     }
 
     QUERY_DELAY = 300
@@ -166,7 +166,7 @@ class TMController(BaseController):
         self.current_query = self.unit.source
         self.matches = []
         self.view.clear()
-        self.emit('start-query', self.current_query)
+        self.emit('start-query', self.unit)
 
     def start_query(self):
         """Start a TM query after C{self.QUERY_DELAY} milliseconds."""

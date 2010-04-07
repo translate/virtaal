@@ -48,8 +48,9 @@ class TMModel(BaseTMModel):
 
 
     # METHODS #
-    def query(self, tmcontroller, query_str):
-        # Figure out languages
+    def query(self, tmcontroller, unit):
+        # TODO: Figure out languages
+        query_str = unit.source
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])
         else:

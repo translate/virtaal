@@ -122,7 +122,8 @@ class TMModel(BaseTMModel):
         self.client = HTTPClient()
 
     # METHODS #
-    def query(self, tmcontroller, query_str):
+    def query(self, tmcontroller, unit):
+        query_str = unit.source
         # Google's Terms of Service says no more than 5000 characters
         query_str = query_str[:5000]
         source_lang = code_translation.get(self.source_lang, self.source_lang).replace('_', '-')

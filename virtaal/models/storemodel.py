@@ -175,14 +175,14 @@ class StoreModel(BaseModel):
 
     def _get_valid_units(self):
         self._valid_units = self.stats['total']
+        self._valid_unit_indexes = dict([(uindex, index) for (index, uindex) in enumerate(self.stats['total'])])
 
         if not self.stats['total']:
             return
 
         # Adjust stats
-        index_start = self.stats['total'][0]
         for key in self.stats:
-            self.stats[key] = [(i - index_start) for i in self.stats[key]]
+            self.stats[key] = [self._valid_unit_indexes[i] for i in self.stats[key]]
 
     def _update_header(self):
         """Make sure that headers are complete and update with current time (if applicable)."""

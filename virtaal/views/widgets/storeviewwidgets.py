@@ -296,7 +296,7 @@ class StoreTreeView(gtk.TreeView):
         try:
             #self._owner.set_statusbar_message(self.document.mode_cursor.move(offset))
             self.view.cursor.move(offset)
-            path = self.get_model().store_index_to_path(self.view.cursor.pos)
+            path = self.get_model().store_index_to_path(self.view.cursor.index)
             self._activate_editing_path(path)
         except IndexError:
             pass
@@ -334,10 +334,10 @@ class StoreTreeView(gtk.TreeView):
         old_path, _old_column = self.get_cursor()
         path, _column, _x, _y = answer
         if old_path != path:
-            pos = self.get_model().path_to_store_index(path)
-            if pos not in self.view.cursor.indices:
+            index = self.get_model().path_to_store_index(path)
+            if index not in self.view.cursor.indices:
                 self.view.controller.main_controller.mode_controller.select_default_mode()
-            self.view.cursor.pos = pos
+            self.view.cursor.index = index
 
         return True
 
@@ -358,9 +358,9 @@ class StoreTreeView(gtk.TreeView):
     def _on_cursor_changed(self, _treeview):
         path, _column = self.get_cursor()
 
-        pos = _treeview.get_model().path_to_store_index(path)
-        if pos != self.view.cursor.pos:
-            self.view.cursor.pos = pos
+        index = _treeview.get_model().path_to_store_index(path)
+        if index != self.view.cursor.index:
+            self.view.cursor.index = index
 
         # We defer the scrolling until GTK has finished all its current drawing
         # tasks, hence the gobject.idle_add. If we don't wait, then the TreeView

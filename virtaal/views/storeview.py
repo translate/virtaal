@@ -124,4 +124,4 @@ class StoreView(BaseView):
 
     # EVENT HANDLERS #
     def _on_cursor_change(self, cursor):
-        self._treeview.select_index(cursor.pos)
+        self._treeview.select_index(cursor.index)

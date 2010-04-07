@@ -33,11 +33,9 @@ __all__ = ['open', 'mailto']
 
 import os
 import sys
-import webbrowser
-import subprocess
 import logging
-
-from email.Utils import encode_rfc2231
+# Some imports are only necessary on some platforms, and are postponed to try
+# to speed up startup
 
 
 _controllers = {}
@@ -62,6 +60,7 @@ class Controller(BaseController):
         self.args = list(args)
 
     def _invoke(self, cmdline):
+        import subprocess
         if sys.platform[:3] == 'win':
             closefds = False
             startupinfo = subprocess.STARTUPINFO()
@@ -138,9 +137,8 @@ elif sys.platform == 'darwin':
 else:
 
     import commands
-
-    # @WARNING: use the private API of the webbrowser module
-    from webbrowser import _iscommand
+    # @WARNING: use the private API of the webbrowser module (._iscommand)
+    import webbrowser
 
     class KfmClient(Controller):
         '''Controller for the KDE kfmclient program.'''
@@ -195,11 +193,11 @@ else:
 
 
     def register_X_controllers():
-        if _iscommand('kfmclient'):
+        if webbrowser._iscommand('kfmclient'):
             _controllers['kde-open'] = KfmClient()
 
         for command in ('gnome-open', 'exo-open', 'xdg-open'):
-            if _iscommand(command):
+            if webbrowser._iscommand(command):
                 _controllers[command] = Controller(command)
 
     def get():
@@ -262,6 +260,7 @@ def _fix_addersses(**kwargs):
 def mailto_format(**kwargs):
     # @TODO: implement utf8 option
 
+    from email.Utils import encode_rfc2231
     kwargs = _fix_addersses(**kwargs)
     parts = []
     for headername in ('to', 'cc', 'bcc', 'subject', 'body', 'attach'):
@@ -305,7 +304,6 @@ def mailto(address, to=None, cc=None, bcc=None, subject=None, body=None,
               e-mail text may contain linebreaks
     @param attach: an attachment for the e-mail. file must point to
               an existing file
-
     '''
 
     mailto_string = mailto_format(**locals())

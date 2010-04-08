@@ -24,6 +24,7 @@ import logging
 
 import gobject
 import pycurl
+import urllib
 
 from virtaal.common.gobjectwrapper import GObjectWrapper
 
@@ -95,6 +96,26 @@ class HTTPRequest(GObjectWrapper):
         if follow_location:
             self.curl.setopt(pycurl.FOLLOWLOCATION, 1)
 
+        # Proxy: let's be careful to isolate the protocol to ensure that we
+        # support the case where http and https might use different proxies
+        split_url = self.url.split('://', 1)
+        if len(split_url) > 1:
+            #We were able to get a protocol
+            protocol = split_url[0]
+            proxies = urllib.getproxies()
+            if protocol in proxies:
+                self.curl.setopt(pycurl.PROXY, proxies[protocol])
+
+            # On Windows urllib.getproxies() doesn't contain https if "Use the
+            # same proxy for all protocols" is selected. So we might want to
+            # guess that the http proxy is useful, but we have no way to know
+            # if the https proxy is intentionally not specified. Environment
+            # variables and separately specified (even if identical) settings
+            # work as expected.
+            # Possible code to reuse the http proxy for https:
+#            elif protocol is 'https' and 'http' in proxies:
+#                    self.curl.setopt(pycurl.PROXY, proxies['http'])
+
         # self reference required, because CurlMulti will only return
         # Curl handles
         self.curl.request = self
@@ -147,7 +168,7 @@ class HTTPClient(object):
         self.running = False
 
         # Since pycurl doesn't keep references to requests, requests
-        # get garbage collected before they are done. We need  to keep requests in
+        # get garbage collected before they are done. We need to keep requests in
         # a set and detroy them manually.
         self.requests = set()
         self.curl = pycurl.CurlMulti()

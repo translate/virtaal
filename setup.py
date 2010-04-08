@@ -509,7 +509,7 @@ def add_freedesktop_options(options):
         (path.join(TARGET_DATA_DIR, "mime", "packages"), glob(path.join(SOURCE_DATA_DIR, "mime", "packages", "*.xml"))),
         (path.join(TARGET_DATA_DIR, "applications"), glob(path.join(SOURCE_DATA_DIR, "applications", "*.desktop"))),
     ])
-    for dir in ("16x16", "32x32", "48x48", "64x64", "128x128", "scalable"):
+    for dir in ("16x16", "24x24", "32x32", "48x48", "64x64", "128x128", "scalable"):
         options['data_files'].extend([
             (path.join(TARGET_DATA_DIR, "icons", "hicolor", dir, "mimetypes"),
             glob(path.join(SOURCE_DATA_DIR, "icons", "hicolor", dir, "mimetypes", "*.*"))),

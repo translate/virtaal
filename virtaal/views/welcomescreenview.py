@@ -41,9 +41,15 @@ class WelcomeScreenView(BaseView):
         self.parent_widget = self.controller.main_controller.view.gui.get_widget('vbox_main')
 
         self.set_widget_bg()
-        self.widget.set_banner_image(get_abs_data_filename(['virtaal', 'welcome_screen_banner.png']))
+        self.set_banner()
         self.widget.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         self.widget.connect('button-clicked', self._on_button_clicked)
+
+    def set_banner(self):
+        if self.widget.get_direction() == gtk.TEXT_DIR_RTL:
+            self.widget.set_banner_image(get_abs_data_filename(['virtaal', 'welcome_screen_banner_rtl.png']))
+        else:
+            self.widget.set_banner_image(get_abs_data_filename(['virtaal', 'welcome_screen_banner.png']))
 
     def set_widget_bg(self):
         idle_add(lambda: self.widget.child.modify_bg(gtk.STATE_NORMAL, self.widget.style.base[gtk.STATE_NORMAL]))

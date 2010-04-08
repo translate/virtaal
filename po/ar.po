@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.3beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2010-04-08 08:32+0200\n"
-"PO-Revision-Date: 2010-04-08 08:31+0300\n"
+"POT-Creation-Date: 2010-04-08 08:47+0200\n"
+"PO-Revision-Date: 2010-04-08 08:47+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -72,7 +72,7 @@ msgstr "<b>معلومات المترجم</b>"
 
 #: ../share/virtaal/virtaal.glade.h:10
 msgid "<u>Cheat Sheet</u>"
-msgstr "<u>مرجع سريع</u>"
+msgstr "<u>ملخص</u>"
 
 #: ../share/virtaal/virtaal.glade.h:11
 msgid "<u>Features</u>"

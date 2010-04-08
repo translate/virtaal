@@ -22,7 +22,13 @@
 import sys
 from os import name as os_name, path
 
-# For some strange reason this is necessary for translation to work... FIXME
+#First of all fix the locale
+from virtaal.support.libi18n.locale import fix_locale
+fix_locale()
+# translate.i18n does gettext.install() which will overwrite whatever we do
+# in Virtaal unless we do it first,  to ensure that Python doesn't reimport
+# translate.i18n later when the toolkit imports it. The toolkit now checks,
+# but we keep the correct order to work with older versions of the toolkit.
 import translate.i18n
 from virtaal.common import pan_app
 
@@ -62,10 +68,6 @@ if failed:
         import sys
         sys.exit(1)
 # OK, dependencies seem to be acceptable
-
-#First of all fix the locale
-from virtaal.support.libi18n.locale import fix_locale
-fix_locale()
 
 import logging
 import optparse

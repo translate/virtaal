@@ -62,8 +62,9 @@ class UndoController(BaseController):
 
         mainview = self.main_controller.view
         mainview.gui.get_widget('menu_edit').set_accel_group(self.accel_group)
-        mainview.gui.get_widget('mnu_undo').set_accel_path('<Virtaal>/Edit/Undo')
-        mainview.gui.get_widget('mnu_undo').connect('activate', self._on_undo_activated)
+        self.mnu_undo = mainview.gui.get_widget('mnu_undo')
+        self.mnu_undo.set_accel_path('<Virtaal>/Edit/Undo')
+        self.mnu_undo.connect('activate', self._on_undo_activated)
 
     def _setup_key_bindings(self):
         """Setup Gtk+ key bindings (accelerators).
@@ -177,6 +178,10 @@ class UndoController(BaseController):
 
     # EVENT HANDLERS #
     def _on_store_loaded_closed(self, storecontroller):
+        if storecontroller.store is not None:
+            self.mnu_undo.set_sensitive(True)
+        else:
+            self.mnu_undo.set_sensitive(False)
         self.model.clear()
 
     @if_enabled

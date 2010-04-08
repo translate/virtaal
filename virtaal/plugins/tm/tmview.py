@@ -68,6 +68,14 @@ class TMView(BaseView, GObjectWrapper):
             main_window,
             main_window.connect('focus-out-event', self._on_focus_out_mainwindow)
         ))
+        self._signal_ids.append((
+            controller.main_controller.store_controller,
+            controller.main_controller.store_controller.connect('store-closed', self._on_store_closed)
+        ))
+        self._signal_ids.append((
+            controller.main_controller.store_controller,
+            controller.main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
+        ))
 
         self._setup_key_bindings()
         self._setup_menu_items()
@@ -285,6 +293,13 @@ class TMView(BaseView, GObjectWrapper):
 
     def _on_select_match(self, accel_group, acceleratable, keyval, modifier):
         self.select_match_index(int(keyval - gtk.keysyms._0))
+
+    def _on_store_closed(self, storecontroller):
+        self.hide()
+        self.mnu_suggestions.set_sensitive(False)
+
+    def _on_store_loaded(self, storecontroller):
+        self.mnu_suggestions.set_sensitive(True)
 
     def _on_store_view_scroll(self, *args):
         if self.isvisible:

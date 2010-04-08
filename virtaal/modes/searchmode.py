@@ -431,9 +431,15 @@ class SearchMode(BaseMode):
         self._move_match(1)
 
     def _on_search_next(self, *args):
+        # FIXME: Remove the following check when these actions are connected to menu items.
+        if self.controller.main_controller.store_controller.store is None:
+            return
         self._move_match(1)
 
     def _on_search_prev(self, *args):
+        # FIXME: Remove the following check when these actions are connected to menu items.
+        if self.controller.main_controller.store_controller.store is None:
+            return
         self._move_match(-1)
 
     def _on_search_text_changed(self, entry):
@@ -445,6 +451,9 @@ class SearchMode(BaseMode):
 
     def _on_start_search(self, _accel_group, _acceleratable, _keyval, _modifier):
         """This is called via the accelerator."""
+        # FIXME: Remove the following check when these actions are connected to menu items.
+        if self.controller.main_controller.store_controller.store is None:
+            return
         self.controller.select_mode(self)
 
     def _on_textbox_refreshed(self, textbox, elem):

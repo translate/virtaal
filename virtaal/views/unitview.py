@@ -156,6 +156,23 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         # store is loaded. See _set_menu_items_sensitive() for more activation.
         self._set_menu_items_sensitive(False)
 
+        def on_store_closed(*args):
+            mnu_next.set_sensitive(False)
+            mnu_prev.set_sensitive(False)
+            mnu_transfer.set_sensitive(False)
+            self.mnu_cut.set_sensitive(False)
+            self.mnu_copy.set_sensitive(False)
+            self.mnu_paste.set_sensitive(False)
+        def on_store_loaded(*args):
+            mnu_next.set_sensitive(True)
+            mnu_prev.set_sensitive(True)
+            mnu_transfer.set_sensitive(True)
+            self.mnu_cut.set_sensitive(True)
+            self.mnu_copy.set_sensitive(True)
+            self.mnu_paste.set_sensitive(True)
+        self.controller.main_controller.store_controller.connect('store-closed', on_store_closed)
+        self.controller.main_controller.store_controller.connect('store-loaded', on_store_loaded)
+
 
     # ACCESSORS #
     def is_modified(self):

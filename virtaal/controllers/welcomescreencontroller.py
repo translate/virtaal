@@ -56,8 +56,6 @@ class WelcomeScreenController(BaseController):
         main_controller.store_controller.connect('store-closed', self._on_store_closed)
         main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
 
-        self.activate()
-
 
     # METHODS #
     def activate(self):

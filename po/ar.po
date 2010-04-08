@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.3beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2010-03-29 19:27+0200\n"
-"PO-Revision-Date: 2010-03-24 16:03+0300\n"
+"POT-Creation-Date: 2010-04-08 08:32+0200\n"
+"PO-Revision-Date: 2010-04-08 08:31+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -30,37 +30,37 @@ msgid "Translation Tool"
 msgstr "أداة ترجمة"
 
 #: ../share/applications/virtaal.desktop.in.h:3
-#: ../share/virtaal/virtaal.glade.h:61
+#: ../share/virtaal/virtaal.glade.h:61 ../virtaal/views/mainview.py:640
 msgid "Virtaal"
 msgstr "فِرتال"
 
 #: ../share/virtaal/virtaal.glade.h:1
+msgid "<b><big>Getting Started</big></b>"
+msgstr "<b><big>تعرّف على فِرتال</big></b>"
+
+#: ../share/virtaal/virtaal.glade.h:2
+msgid "<b><big>Recent Files</big></b>"
+msgstr "<b><big>الملفات الأخيرة</big></b>"
+
+#: ../share/virtaal/virtaal.glade.h:3
+msgid "<b><big>Support</big></b>"
+msgstr "<b><big>الدعم</big></b>"
+
+#: ../share/virtaal/virtaal.glade.h:4
 msgid "<b>Fonts</b>"
 msgstr "<b>الخطوط</b>"
 
-#: ../share/virtaal/virtaal.glade.h:2
-msgid "<b>Getting Started</b>"
-msgstr "<b>تعرّف على فِرتال</b>"
-
-#: ../share/virtaal/virtaal.glade.h:3
+#: ../share/virtaal/virtaal.glade.h:5
 msgid "<b>Language Information</b>"
 msgstr "<b>معلومات اللغة</b>"
 
-#: ../share/virtaal/virtaal.glade.h:4
+#: ../share/virtaal/virtaal.glade.h:6
 msgid "<b>Options</b>"
 msgstr "<b>الخيارات</b>"
 
-#: ../share/virtaal/virtaal.glade.h:5
+#: ../share/virtaal/virtaal.glade.h:7
 msgid "<b>Original</b>"
 msgstr "<b>الأصل</b>"
-
-#: ../share/virtaal/virtaal.glade.h:6
-msgid "<b>Recent Files</b>"
-msgstr "<b>الملفات الأخيرة</b>"
-
-#: ../share/virtaal/virtaal.glade.h:7
-msgid "<b>Support</b>"
-msgstr "<b>الدعم</b>"
 
 #: ../share/virtaal/virtaal.glade.h:8
 msgid "<b>Translation</b>"
@@ -71,80 +71,76 @@ msgid "<b>Translator Information</b>"
 msgstr "<b>معلومات المترجم</b>"
 
 #: ../share/virtaal/virtaal.glade.h:10
-msgid "<span foreground=\"blue\" underline=\"single\">Cheat Sheet</span>"
-msgstr "<span foreground=\"blue\" underline=\"single\">مرجع سريع</span>"
+msgid "<u>Cheat Sheet</u>"
+msgstr "<u>مرجع سريع</u>"
 
 #: ../share/virtaal/virtaal.glade.h:11
-msgid "<span foreground=\"blue\" underline=\"single\">Features</span>"
-msgstr "<span foreground=\"blue\" underline=\"single\">الخصائص</span>"
+msgid "<u>Features</u>"
+msgstr "<u>الخصائص</u>"
 
 #: ../share/virtaal/virtaal.glade.h:12
-msgid "<span foreground=\"blue\" underline=\"single\">Feedback</span>"
-msgstr "<span foreground=\"blue\" underline=\"single\">التعليقات</span>"
+msgid "<u>Feedback</u>"
+msgstr "<u>الانطباعات</u>"
 
 #: ../share/virtaal/virtaal.glade.h:13
-msgid "<span foreground=\"blue\" underline=\"single\">Latest Features</span>"
-msgstr "<span foreground=\"blue\" underline=\"single\">آخر الخصائص</span>"
+msgid "<u>Localization Guide</u>"
+msgstr "<u>دليل الترجمة</u>"
 
 #: ../share/virtaal/virtaal.glade.h:14
-msgid ""
-"<span foreground=\"blue\" underline=\"single\">Localisation Guide</span>"
-msgstr "<span foreground=\"blue\" underline=\"single\">دليل التوطين</span>"
+msgid "<u>Manual</u>"
+msgstr "<u>الكتيّب</u>"
 
 #: ../share/virtaal/virtaal.glade.h:15
-msgid "<span foreground=\"blue\" underline=\"single\">Manual</span>"
-msgstr "<span foreground=\"blue\" underline=\"single\">الكتيب</span>"
+msgid "<u>More...</u>"
+msgstr "<u>المزيد...</u>"
 
-#: ../share/virtaal/virtaal.glade.h:16
-msgid "<span foreground=\"blue\" underline=\"single\">Open</span>"
-msgstr "<span foreground=\"blue\" underline=\"single\">افتح</span>"
-
+#. l10n: Remove the tags if underlining is unsuitable for your language. Most languages won't need to change this. Translate 'Open' normally.
 #: ../share/virtaal/virtaal.glade.h:17
-msgid "<span foreground=\"blue\" underline=\"single\">Tutorial</span>"
-msgstr "<span foreground=\"blue\" underline=\"single\">درس تعليمي</span>"
+msgid "<u>Open</u>"
+msgstr "<u>افتح</u>"
 
 #: ../share/virtaal/virtaal.glade.h:18
+msgid "<u>Tutorial</u>"
+msgstr "<u>درس تعليمي</u>"
+
+#: ../share/virtaal/virtaal.glade.h:19
 msgid "Add Missing Language"
 msgstr "أضف لغة ناقصة"
 
-#: ../share/virtaal/virtaal.glade.h:19
+#: ../share/virtaal/virtaal.glade.h:20
 msgid "Add Term"
 msgstr "أضف مصطلحا"
 
-#: ../share/virtaal/virtaal.glade.h:20
+#: ../share/virtaal/virtaal.glade.h:21
 msgid "Add URL"
 msgstr "أضف مسارا"
 
 #. l10n: This label refers to comments about a new term that is added
-#: ../share/virtaal/virtaal.glade.h:22
+#: ../share/virtaal/virtaal.glade.h:23
 msgid "C_omments"
 msgstr "_تعليقات"
 
-#: ../share/virtaal/virtaal.glade.h:23
+#: ../share/virtaal/virtaal.glade.h:24
 msgid ""
 "Depending on the translation task, the plural information might be optional."
 msgstr "خصائص المعدود قد تكون اختيارية، حسب نوع الترجمة."
 
-#: ../share/virtaal/virtaal.glade.h:24
+#: ../share/virtaal/virtaal.glade.h:25
 msgid "E-mail address:"
 msgstr "عنوان البريد:"
 
 #. l10n: This tab label refers to the general preferences
-#: ../share/virtaal/virtaal.glade.h:26
+#: ../share/virtaal/virtaal.glade.h:27
 msgid "General"
 msgstr "عام"
 
-#: ../share/virtaal/virtaal.glade.h:27
+#: ../share/virtaal/virtaal.glade.h:28
 msgid "ISO code:"
 msgstr "رمز أيزو:"
 
-#: ../share/virtaal/virtaal.glade.h:28
+#: ../share/virtaal/virtaal.glade.h:29
 msgid "Language name:"
 msgstr "اسم اللغة:"
-
-#: ../share/virtaal/virtaal.glade.h:29
-msgid "More..."
-msgstr "المزيد..."
 
 #. l10n: This label is for the name of the translator
 #: ../share/virtaal/virtaal.glade.h:31
@@ -331,6 +327,16 @@ msgstr "_حدث من القالب"
 #: ../share/virtaal/virtaal.glade.h:77
 msgid "_View"
 msgstr "_عرض"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.glade.h:79
+msgid "http://translate.sourceforge.net/wiki/virtaal/features"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.glade.h:81
+msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 
 #: ../virtaal/tips.py:27
 msgid ""
@@ -567,42 +573,42 @@ msgstr "خصائص \"alt\""
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "مُدْرج لخصائص \"alt\" (في ملفات HTML)"
 
-#: ../virtaal/controllers/storecontroller.py:115
+#: ../virtaal/controllers/storecontroller.py:112
 msgid "The file contains nothing to translate."
 msgstr "لا يحتوي الملف على شيء ليترجم."
 
 #. l10n: The heading of statistics before updating to the new template
-#: ../virtaal/controllers/storecontroller.py:172
+#: ../virtaal/controllers/storecontroller.py:169
 msgid "Before:"
 msgstr "قبل:"
 
 #. l10n: The heading of statistics after updating to the new template
-#: ../virtaal/controllers/storecontroller.py:174
+#: ../virtaal/controllers/storecontroller.py:171
 msgid "After:"
 msgstr "بعد:"
 
-#: ../virtaal/controllers/storecontroller.py:175
+#: ../virtaal/controllers/storecontroller.py:172
 #, python-format
 msgid "Translated: %d"
 msgstr "مترجم: %d"
 
-#: ../virtaal/controllers/storecontroller.py:176
+#: ../virtaal/controllers/storecontroller.py:173
 #, python-format
 msgid "Fuzzy: %d"
 msgstr "مبهم: %d"
 
-#: ../virtaal/controllers/storecontroller.py:177
+#: ../virtaal/controllers/storecontroller.py:174
 #, python-format
 msgid "Untranslated: %d"
 msgstr "غير مترجم: %d"
 
-#: ../virtaal/controllers/storecontroller.py:178
+#: ../virtaal/controllers/storecontroller.py:175
 #, python-format
 msgid "Total: %d"
 msgstr "المجموع: %d"
 
 #. l10n: this refers to updating a file to a new template (POT file)
-#: ../virtaal/controllers/storecontroller.py:196
+#: ../virtaal/controllers/storecontroller.py:193
 msgid "File Updated"
 msgstr "حُدّث الملف"
 
@@ -696,7 +702,7 @@ msgstr "ابحث عن النص المحدد في موقع وب"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate.
 #: ../virtaal/plugins/lookup/models/weblookup.py:45
-#: ../virtaal/plugins/tm/models/google_translate.py:165
+#: ../virtaal/plugins/tm/models/google_translate.py:166
 msgid "Google"
 msgstr "جوجل"
 
@@ -840,7 +846,6 @@ msgid "All Files"
 msgstr "كل الملفات"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:243
-#: ../virtaal/models/storemodel.py:107
 #, python-format
 msgid "\"%s\" is not a usable file."
 msgstr "\"%s\" ليس ملفا مناسبا."
@@ -914,7 +919,8 @@ msgid "Translated units from the currently open file"
 msgstr "الترجمات من الملف المفتوح حاليا"
 
 #. l10n: Try to keep this as short as possible.
-#: ../virtaal/plugins/tm/models/currentfile.py:82
+#: ../virtaal/plugins/tm/models/currentfile.py:94
+#: ../virtaal/plugins/tm/models/currentfile.py:110
 msgid "This file"
 msgstr "هذا الملف"
 
@@ -927,10 +933,23 @@ msgstr "ترجمة جوجل"
 msgid "Unreviewed machine translations from Google's translation service"
 msgstr "ترجمة آلية لم تُراجع من خدمة ترجمة جوجل"
 
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:35
+msgid "Microsoft Translator"
+msgstr "مترجم ميكروسوفت"
+
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:36
+msgid "Unreviewed machine translations from Microsoft Translator"
+msgstr "ترجمة آلية لم تُراجع من مترجم ميكروسوفت"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:99
+msgid "Microsoft"
+msgstr "ميكروسوفت"
+
 #. l10n: This is the name of a software library. You almost definitely don't want to translate this. The lower case 'l' is intentional.
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
 #: ../virtaal/plugins/tm/models/libtranslate.py:45
-#: ../virtaal/plugins/tm/models/libtranslate.py:98
+#: ../virtaal/plugins/tm/models/libtranslate.py:99
 msgid "libtranslate"
 msgstr "libtranslate"
 
@@ -953,7 +972,7 @@ msgstr "محلية"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
 #: ../virtaal/plugins/tm/models/moses.py:33
-#: ../virtaal/plugins/tm/models/moses.py:71
+#: ../virtaal/plugins/tm/models/moses.py:72
 msgid "Moses"
 msgstr "موسى"
 
@@ -966,8 +985,8 @@ msgid "Previous translations for Free and Open Source Software"
 msgstr "الترجمات السابقة للبرمجيات الحرة و المفتوحة المصدر"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
-#: ../virtaal/plugins/tm/models/opentran.py:76
-#: ../virtaal/plugins/tm/models/opentran.py:78
+#: ../virtaal/plugins/tm/models/opentran.py:77
+#: ../virtaal/plugins/tm/models/opentran.py:79
 msgid "OpenTran"
 msgstr "OpenTran"
 
@@ -994,7 +1013,7 @@ msgstr "خادوم ذاكرة ترجمة TinyTM"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
 #: ../virtaal/plugins/tm/models/apertium.py:35
-#: ../virtaal/plugins/tm/models/apertium.py:99
+#: ../virtaal/plugins/tm/models/apertium.py:100
 msgid "Apertium"
 msgstr "Apertium"
 
@@ -1164,10 +1183,37 @@ msgstr "مفعّل"
 msgid "Configure..."
 msgstr "اضبط..."
 
+#: ../virtaal/views/widgets/welcomescreen.py:72
+msgid "Extensive format support"
+msgstr "دعم واسع للأنساق المختلفة"
+
+#: ../virtaal/views/widgets/welcomescreen.py:73
+msgid "Translation memory"
+msgstr "ذاكرة الترجمة"
+
+#: ../virtaal/views/widgets/welcomescreen.py:74
+msgid "Terminology assistance"
+msgstr "مساعدة المصطلحات"
+
+#: ../virtaal/views/widgets/welcomescreen.py:75
+msgid "Machine translation"
+msgstr "الترجمة الآلية"
+
+#: ../virtaal/views/widgets/welcomescreen.py:76
+msgid "Highlighting and insertion of placeables"
+msgstr "إظهار وإدراج المُدرجات"
+
+#: ../virtaal/views/widgets/welcomescreen.py:77
+msgid "Many plugins and options for customization"
+msgstr "العديد من الملحقات وخيارات التطويع"
+
 #: ../virtaal/models/storemodel.py:105
-#, python-format
-msgid "The file \"%s\" does not exist."
-msgstr "الملف \"%s\" لا وجود له."
+msgid "The file does not exist."
+msgstr "لا وجود للملف."
+
+#: ../virtaal/models/storemodel.py:107
+msgid "Not a valid file."
+msgstr "ليس ملفا مناسبا."
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
 msgid "C++ RC File"
@@ -1410,6 +1456,32 @@ msgstr "لا يأخد الخيار %s قيمة"
 msgid "Options"
 msgstr "الخيارات"
 
+#~ msgid "<span foreground=\"blue\" underline=\"single\">Cheat Sheet</span>"
+#~ msgstr "<span foreground=\"blue\" underline=\"single\">مرجع سريع</span>"
+
+#~ msgid "<span foreground=\"blue\" underline=\"single\">Features</span>"
+#~ msgstr "<span foreground=\"blue\" underline=\"single\">الخصائص</span>"
+
+#~ msgid "<span foreground=\"blue\" underline=\"single\">Feedback</span>"
+#~ msgstr "<span foreground=\"blue\" underline=\"single\">التعليقات</span>"
+
+#~ msgid ""
+#~ "<span foreground=\"blue\" underline=\"single\">Latest Features</span>"
+#~ msgstr "<span foreground=\"blue\" underline=\"single\">آخر الخصائص</span>"
+
+#~ msgid ""
+#~ "<span foreground=\"blue\" underline=\"single\">Localisation Guide</span>"
+#~ msgstr "<span foreground=\"blue\" underline=\"single\">دليل التوطين</span>"
+
+#~ msgid "<span foreground=\"blue\" underline=\"single\">Manual</span>"
+#~ msgstr "<span foreground=\"blue\" underline=\"single\">الكتيب</span>"
+
+#~ msgid "<span foreground=\"blue\" underline=\"single\">Open</span>"
+#~ msgstr "<span foreground=\"blue\" underline=\"single\">افتح</span>"
+
+#~ msgid "<span foreground=\"blue\" underline=\"single\">Tutorial</span>"
+#~ msgstr "<span foreground=\"blue\" underline=\"single\">درس تعليمي</span>"
+
 #~ msgid "Placeholders (Drupal)"
 #~ msgstr "حافظات المكان (دروبال)"
 
@@ -1421,9 +1493,6 @@ msgstr "الخيارات"
 
 #~ msgid "Machine Translation with libtranslate"
 #~ msgstr "ترجمة آلية باستخدام libtranslate"
-
-#~ msgid "Apertium Machine Translation"
-#~ msgstr "ترجمة Apertium الآلية"
 
 #~ msgid "Languages"
 #~ msgstr "اللّغات"

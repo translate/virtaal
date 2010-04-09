@@ -79,17 +79,17 @@ from virtaal import __version__
 optparse._ = _
 usage = _("%prog [options] [translation_file]")
 option_list = [
-    make_option("--profile",
+    make_option("-P", "--profile",
                 action="store", type="string", dest="profile", metavar=_("PROFILE"),
                 # l10n: 'profiling' refers to performance testing
                 help=_("perform profiling, storing the result to the supplied filename.")),
-    make_option("--log",
+    make_option("-l", "--log",
                 action="store", type="string", dest="log", metavar=_("LOG"),
                 help=_("turn on logging, storing the result to the supplied filename.")),
-    make_option("--config",
+    make_option("-c", "--config",
                 action="store", type="string", dest="config", metavar=_("CONFIG"),
                 help=_("use the configuration file given by the supplied filename.")),
-    make_option("--debug",
+    make_option("-D", "--debug",
                 action="store_true", dest="debug", default=False,
                 help=_("enable debugging features")),
 ]

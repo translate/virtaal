@@ -437,8 +437,16 @@ class TermAddDialog:
 
         same_src_units = self.term_model.get_units_with_source(src_text)
         if src_text and same_src_units:
-            lang = lang_factory.getlanguage(pan_app.get_locale_lang())
-            separator = lang.listseperator
+            # We want to separate multiple terms with the correct list
+            # separator for the UI language:
+            if _(''):
+                # If this is true, we have a translated interface, and we can
+                # use the current locale to obtain a list separator.
+                lang = lang_factory.getlanguage(pan_app.get_locale_lang())
+                separator = lang.listseperator
+            else:
+                separator = u", "
+
             #l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
             translations = separator.join([_('<b>%s</b>') % (u.target) for u in same_src_units])
             errormsg = _('Existing translations: %(translations)s') % {

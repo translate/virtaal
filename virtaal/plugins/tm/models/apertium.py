@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009 Zuza Software Foundation
+# Copyright 2009-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -19,9 +19,17 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 """A TM provider that can query the web service for the Apertium software for
-Machine Translation."""
+Machine Translation.
+
+http://wiki.apertium.org/wiki/Apertium_web_service
+"""
 
 import urllib
+# These two json modules are API compatible
+try:
+    import simplejson as json #should be a bit faster; needed for Python < 2.6
+except ImportError:
+    import json #available since Python 2.6
 
 from basetmmodel import BaseTMModel, unescape_html_entities
 
@@ -35,20 +43,22 @@ class TMModel(BaseTMModel):
     display_name = _('Apertium')
     description = _('Unreviewed machine translations from Apertium')
 
+    url = "http://api.apertium.org/json"
     default_config = {
-        "host" : "xixona.dlsi.ua.es",
-        "port" : "80",
+        "appid" : "",
     }
 
     # INITIALISERS #
     def __init__(self, internal_name, controller):
         self.internal_name = internal_name
-        self.language_pairs = {}
+        self.language_pairs = []
         self.load_config()
 
         self.client = HTTPClient()
-        self.url = "http://%s:%s/webservice/ws.php" % (self.config["host"], self.config["port"])
-        langreq = RESTRequest(self.url, '', method='GET', data=urllib.urlencode(''), headers=None)
+        self.url_getpairs = "%(url)s/listPairs?appId=%(appid)s" % {"url": self.url, "appid": self.config["appid"]}
+        self.url_translate = "%(url)s/translate" % {"url": self.url}
+        self.appid = self.config['appid']
+        langreq = RESTRequest(self.url_getpairs, '', method='GET', data=urllib.urlencode(''), headers=None)
         self.client.add(langreq)
         langreq.connect(
             'http-success',
@@ -62,22 +72,23 @@ class TMModel(BaseTMModel):
     def query(self, tmcontroller, unit):
         """Send the query to the web service. The response is handled by means
         of a call-back because it happens asynchronously."""
-        query_str = unit.source
-        pair = '%s-%s' % (self.source_lang, self.target_lang)
+        pair = (self.source_lang, self.target_lang)
         if pair not in self.language_pairs:
             return
 
+        query_str = unit.source
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])
         else:
             values = {
-                'mode': pair,
-                'text': query_str,
-                'mark': 0,
-                'format': 'html'
+                'appId': self.appid,
+                'q': query_str,
+                'langpair': "%s|%s" % (self.source_lang, self.target_lang),
+                'markUnknown': "no",
+                'format': 'html',
             }
-            req = RESTRequest(self.url, '', method='POST', \
-                    data=urllib.urlencode(values), headers=None)
+            req = RESTRequest(self.url_translate + "?" + urllib.urlencode(values), '', method='GET', \
+                    data=urllib.urlencode(''), headers=None)
             self.client.add(req)
             req.connect(
                 'http-success',
@@ -86,16 +97,28 @@ class TMModel(BaseTMModel):
 
     def got_language_pairs(self, val):
         """Handle the response from the web service to set up language pairs."""
-        #Pairs are given on lines ending in <br/>
-        self.language_pairs = dict([(pair.strip(), None) for pair in val.split('<br/>\n')])
+        data = json.loads(val)
+        if data['responseStatus'] != 200:
+            logging.debug("Failed to get languages:\n%s", (query_str, data['responseDetails']))
+            return
+
+        self.language_pairs = [(pair['sourceLanguage'], pair['targetLanguage']) for pair in data['responseData']]
 
     def got_translation(self, val, query_str):
         """Handle the response from the web service now that it came in."""
-        val = val[:-1] # Chop off \n
-        val = unescape_html_entities(val)
+        data = json.loads(val)
+
+        if data['responseStatus'] != 200:
+            logging.debug("Failed to translate '%s':\n%s", (query_str, data['responseDetails']))
+            return
+
+        target = data['responseData']['translatedText']
+        target = unescape_html_entities(target)
+        if target.endswith("\n") and not query_str.endswith("\n"):
+            target = target[:-1]# chop of \n
         match = {
             'source': query_str,
-            'target': val,
+            'target': target,
             #l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
             'tmsource': _('Apertium'),
         }

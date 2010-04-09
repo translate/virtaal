@@ -21,7 +21,6 @@
 
 import logging
 
-from virtaal import __version__
 from virtaal.support import openmailto
 from virtaal.views import recent
 from virtaal.views.welcomescreenview import WelcomeScreenView
@@ -41,7 +40,7 @@ class WelcomeScreenController(BaseController):
         'manual':   _('http://translate.sourceforge.net/wiki/virtaal/using_virtaal'),
         'locguide': 'http://translate.sourceforge.net/wiki/guide/start',
         # FIXME: The URL below should be replaced with a proper feedback URL
-        'feedback': "http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal&version=%s" % __version__.ver,
+        'feedback': "http://translate.sourceforge.net/wiki/virtaal/index#contact",
         'features_more': _('http://translate.sourceforge.net/wiki/virtaal/features')
     }
 
@@ -66,7 +65,7 @@ class WelcomeScreenController(BaseController):
 
     def open_cheatsheat(self):
         # FIXME: The URL below is just a temporary solution
-        openmailto.open('http://translate.sourceforge.net/wiki/virtaal/tips')
+        openmailto.open('http://translate.sourceforge.net/wiki/virtaal/cheatsheet')
 
     def open_file(self):
         self.main_controller.open_file()

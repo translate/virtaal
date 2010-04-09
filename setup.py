@@ -423,6 +423,10 @@ def add_win32_options(options):
         options['data_files'].extend(find_gtk_files())
         options['data_files'].extend(find_enchant_files())
         options['data_files'].extend(find_langmodel_files())
+        options['data_files'].extend([(
+            path.join(TARGET_DATA_DIR, "icons", "hicolor", "24x24", "mimetypes"),
+            [path.join(SOURCE_DATA_DIR, "icons", "hicolor", "24x24", "mimetypes", "x-translation.png")]
+        )])
         #This depends on setup.py being run from a checkout with the translate
         #toolkit in place.
         options['scripts'].append("../translate/services/tmserver")

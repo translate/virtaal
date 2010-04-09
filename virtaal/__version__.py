@@ -19,4 +19,4 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 """This file contains the version."""
-ver = "0.5.2"
+ver = "0.5.3-rc1"

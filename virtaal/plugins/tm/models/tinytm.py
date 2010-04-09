@@ -70,7 +70,7 @@ class TMModel(BaseTMModel):
         cursor = self._db_con.cursor()
         cursor.execute(
             """SELECT * FROM tinytm_get_fuzzy_matches(%s, %s, %s, '', '')""",
-            (self.source_lang, self.target_lang, query_str)
+            (self.source_lang, self.target_lang, query_str.encode('utf-8'))
         )
         for result in cursor.fetchall():
             #print result

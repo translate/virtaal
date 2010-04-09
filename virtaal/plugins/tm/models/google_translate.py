@@ -136,7 +136,7 @@ class TMModel(BaseTMModel):
             self.emit('match-found', query_str, self.cache[query_str])
         else:
             real_url = self.translate_url % {
-                'message': urllib.quote_plus(query_str),
+                'message': urllib.quote_plus(query_str.encode('utf-8')),
                 'from':    source_lang,
                 'to':      target_lang,
             }

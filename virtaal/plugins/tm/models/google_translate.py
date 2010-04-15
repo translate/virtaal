@@ -159,6 +159,8 @@ class TMModel(BaseTMModel):
             return
 
         target_unescaped = unescape_html_entities(data['responseData']['translatedText'])
+        if not isinstance(target_unescaped, unicode):
+            target_unescaped = unicode(target_unescaped, 'utf-8')
         match = {
             'source': query_str,
             'target': target_unescaped,

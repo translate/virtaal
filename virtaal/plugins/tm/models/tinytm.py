@@ -73,11 +73,13 @@ class TMModel(BaseTMModel):
             (self.source_lang, self.target_lang, query_str.encode('utf-8'))
         )
         for result in cursor.fetchall():
-            #print result
+            quality, source, target = result[:3]
+            if not isinstance(target, unicode):
+                target = unicode(target, 'utf-8')
             matches.append({
-                'source': result[1],
-                'target': result[2],
-                'quality': result[0],
+                'source': source,
+                'target': target,
+                'quality': quality,
                 'tmsource': self.display_name,
             })
 

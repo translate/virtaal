@@ -116,6 +116,8 @@ class TMModel(BaseTMModel):
         target = unescape_html_entities(target)
         if target.endswith("\n") and not query_str.endswith("\n"):
             target = target[:-1]# chop of \n
+        if not isinstance(target, unicode):
+            target = unicode(target, 'utf-8')
         match = {
             'source': query_str,
             'target': target,

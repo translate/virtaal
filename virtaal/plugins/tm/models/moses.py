@@ -64,13 +64,15 @@ class TMModel(BaseTMModel):
             query_str = unit.source
             try:
                 translate = self.proxy[self.source_lang][self.target_lang].translate
-                tm_match = []
-                tm_match.append({
+                target = translate({'text': query_str})['text']
+                if not isinstance(target, unicode):
+                    target = unicode(target, 'utf-8')
+                tm_match = [{
                     'source': query_str,
-                    'target': translate({'text': query_str})['text'],
+                    'target': target,
                     #l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
                     'tmsource': _('Moses'),
-                })
+                }]
                 self.emit('match-found', query_str, tm_match)
             except Exception, exc:
                 logging.debug('Moses TM query failed: %s' % (str(exc)))

@@ -61,6 +61,8 @@ class TMModel(BaseTMModel):
         self.cache[query_str] = matches
         for match in matches:
             match['tmsource'] = self.shortname
+            if not isinstance(match['target'], unicode):
+                match['target'] = unicode(match['target'], 'utf-8')
         self.emit('match-found', query_str, matches)
 
     def push_store(self, store_controller):

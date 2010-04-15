@@ -92,6 +92,8 @@ class TMModel(BaseTMModel):
 
     def got_translation(self, val, query_str):
         """Handle the response from the web service now that it came in."""
+        if not isinstance(val, unicode):
+            val = unicode(val, 'utf-8')
         match = {
             'source': query_str,
             'target': val,

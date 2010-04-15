@@ -76,10 +76,10 @@ class TMModel(BaseTMModel):
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])
         else:
-            self.cache[query_str] = \
-                    self._check_other_units(unit) + \
-                    self._check_xliff_alttrans(unit)
-            self.emit('match-found', query_str, self.cache[query_str])
+            matches = self._check_other_units(unit) + self._check_xliff_alttrans(unit)
+            if matches:
+                self.cache[query_str] = matches
+                self.emit('match-found', query_str, self.cache[query_str])
 
     def _check_other_units(self, unit):
         matches = []

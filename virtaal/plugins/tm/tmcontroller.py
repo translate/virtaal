@@ -21,7 +21,7 @@
 import gobject
 import logging
 import os.path
-from translate.lang.data import forceunicode
+from translate.lang.data import forceunicode, normalize
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.controllers import BaseController, PluginController
@@ -107,18 +107,21 @@ class TMController(BaseController):
                 match['tmsource'] = tmmodel.display_name
             match['query_str'] = query_str
 
-        curr_targets = [m['target'] for m in self.matches]
         anything_new = False
         for match in matches:
-            if match['target'] not in curr_targets:
+            curr_targets = [normalize(m['target']) for m in self.matches]
+            if normalize(match['target']) not in curr_targets:
                 # Let's insert at the end to prioritise existing matches over
                 # new ones. We rely on the guarantee of sort stability. This
                 # way an existing 100% will be above a new 100%.
                 self.matches.append(match)
                 anything_new = True
             else:
-                prevmatch = [m for m in self.matches if m['target'] == match['target']][0]
+                norm_match_target = normalize(match['target'])
+                prevmatch = [m for m in self.matches if normalize(m['target']) == norm_match_target][0]
                 if 'quality' not in prevmatch or not prevmatch['quality']:
+                    # Matches without quality are assumed to be less appropriate
+                    # (ie. MT matches) than matches with an associated quality.
                     self.matches.remove(prevmatch)
                     self.matches.append(match)
                     anything_new = True

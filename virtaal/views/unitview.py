@@ -710,7 +710,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             'selection_offset': selb_iter.get_offset()
         }
 
-        #logging.debug('emit("paste-start", old_text="%s", offsets=%d, target_num=%d)' % (old_text, offsets, target_num))
+        #logging.debug('emit("paste-start", old_text="%s", offsets=%s, target_num=%d)' % (old_text, offsets, target_num))
         self.emit('paste-start', old_text, offsets, target_num)
 
     def _on_textbox_focused(self, textbox, event):

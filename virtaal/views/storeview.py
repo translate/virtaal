@@ -45,6 +45,7 @@ class StoreView(BaseView):
         self.load_store(self.controller.store)
 
         self.controller.main_controller.view.main_window.connect('configure-event', self._treeview.on_configure_event)
+        self.controller.main_controller.view.main_window.connect('style-set', self._on_style_set)
 
     def _init_treeview(self):
         self._treeview = StoreTreeView(self)
@@ -125,3 +126,9 @@ class StoreView(BaseView):
     # EVENT HANDLERS #
     def _on_cursor_change(self, cursor):
         self._treeview.select_index(cursor.index)
+
+    def _on_style_set(self, widget, prev_style):
+        # The following color change is to reduce the flickering seen when
+        # changing units. It's not the perfect cure, but helps a lot.
+        # http://bugs.locamotion.org/show_bug.cgi?id=1412
+        self._treeview.modify_base(gtk.STATE_ACTIVE, widget.style.bg[gtk.STATE_NORMAL])

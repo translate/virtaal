@@ -269,7 +269,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         self.disable_signals(['modified', 'insert-text', 'delete-text'])
         self._update_editor_gui()
         self.enable_signals(['modified', 'insert-text', 'delete-text'])
-        self._widgets['tbl_editor'].reparent(self)
+        self._widgets['vbox_editor'].reparent(self)
 
         if unit is not None:
             for i in range(len(self.targets)):
@@ -318,7 +318,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         if not getattr(self, '_widgets', None):
             self._widgets = {}
 
-        widget_names = ('tbl_editor', 'vbox_middle', 'vbox_sources', 'vbox_targets', 'vbox_options', 'vbox_right')
+        widget_names = ('vbox_editor', 'vbox_middle', 'vbox_sources', 'vbox_targets', 'vbox_options', 'vbox_right')
 
         for name in widget_names:
             self._widgets[name] = self.gui.get_widget(name)

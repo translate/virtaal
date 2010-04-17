@@ -668,7 +668,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         nplurals = self.controller.main_controller.lang_controller.target_lang.nplurals
         if tgt.elem is not None:
             rich_target = self.unit.rich_target
-            if len(rich_target) < nplurals:
+            if self.unit.hasplural() and len(rich_target) < nplurals:
                 # pad the target with empty strings
                 rich_target += (nplurals - len(rich_target)) * [u""]
             rich_target[index] = tgt.elem

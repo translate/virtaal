@@ -135,16 +135,16 @@ class OpenTranClient(gobject.GObject, HTTPClient):
         self.last_suggestions = suggestions
         results = []
         for suggestion in suggestions:
-            result = {}
-            result['target'] = data.forceunicode(suggestion['text'])
-            result['tmsource'] = suggestion['projects'][0]['name']
-            result['source'] = data.forceunicode(suggestion['projects'][0]['orig_phrase'])
             #check for fuzzyness at the 'flag' member:
             for project in suggestion['projects']:
                 if project['flags'] == 0:
                     break
             else:
                 continue
+            result = {}
+            result['target'] = data.forceunicode(suggestion['text'])
+            result['tmsource'] = suggestion['projects'][0]['name']
+            result['source'] = data.forceunicode(suggestion['projects'][0]['orig_phrase'])
             #open-tran often gives too many results with many which can't really be
             #considered to be suitable for translation memory
             result['quality'] = self.comparer.similarity(id, result['source'], self.min_similarity)

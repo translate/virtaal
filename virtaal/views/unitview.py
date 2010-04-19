@@ -21,7 +21,7 @@
 import gtk
 import logging
 import re
-from gobject import idle_add, GObject, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from gobject import idle_add, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 from translate.lang import factory
 try:
     import gtkspell
@@ -30,10 +30,8 @@ except ImportError, e:
 
 from virtaal.common import GObjectWrapper, pan_app
 
-import markup
 import rendering
 from baseview import BaseView
-from widgets.label_expander import LabelExpander
 from widgets.textbox import TextBox
 
 

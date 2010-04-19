@@ -81,7 +81,7 @@ class PlaceablesController(BaseController):
         self.parser_info[general.CamelCasePlaceable.parse] = (
             #l10n: See http://en.wikipedia.org/wiki/CamelCase
             _('CamelCase'),
-            _('Words with internal capitalisation, such as some brand names and WikiWords')
+            _('Words with internal capitalization, such as some brand names and WikiWords')
         )
         self.parser_info[general.CapsPlaceable.parse] = (
             _('Capitals'),

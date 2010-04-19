@@ -1126,8 +1126,8 @@ msgid "F_uzzy"
 msgstr "Was_ig"
 
 #: ../virtaal/views/widgets/aboutdialog.py:35
-msgid "Copyright © 2007-2009 Zuza Software Foundation"
-msgstr "Kopiereg © 2007-2009 Zuza Sagtewarestigting"
+msgid "Copyright © 2007-2010 Zuza Software Foundation"
+msgstr "Kopiereg © 2007-2010 Zuza Sagtewarestigting"
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.

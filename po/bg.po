@@ -1124,7 +1124,7 @@ msgstr "Н_еясно"
 
 #: ../virtaal/views/widgets/aboutdialog.py:35
 #, fuzzy
-msgid "Copyright © 2007-2009 Zuza Software Foundation"
+msgid "Copyright © 2007-2010 Zuza Software Foundation"
 msgstr "Авторски права © 2007-2010 Фондация Зуза Софтуер"
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to

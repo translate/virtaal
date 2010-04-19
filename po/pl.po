@@ -1,9 +1,5 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# Polish translation of Virtaal.
-# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
+# Polish (pl) localisation of Virtaal.
+# Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # Łukasz <deejay1@srem.org>, 2010.
 msgid ""

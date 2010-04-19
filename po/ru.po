@@ -1,9 +1,5 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# Russian (ru) translation of Virtaal.
-# Copyright (C) 2009 Zuza Software Foundation (Translate.org.za)
+# Russian (ru) localisation of Virtaal.
+# Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # Koptev Oleg <koptev.oleg@gmail.com>, 2009.
 # Rail Aliev <rail@openoffice.org>, 2009.

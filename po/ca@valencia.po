@@ -1,5 +1,5 @@
-# translate of virtaal to Catalan.
-# Copyright (C) 2009 Zuza Software Foundation (Translate.org.za)
+# Catalan (Valencia) (ca@valencia) localisation of Virtaal.
+# Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # Toni Hermoso Pulido <toniher@softcatala.cat>, 2009, 2010.
 msgid ""

@@ -1,10 +1,6 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# Portuguese translations for Virtaal.
-# Copyright (C) 2008-2009 Zuza Software Foundation.
-# This file is distributed under the same license as the virtaal package.
+# Portuguese (Brazil) (pt_BR) localisation of Virtaal.
+# Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
+# This file is distributed under the same license as the Virtaal package.
 # Leonardo Ferreira Fontenelle <leonardof@gnome.org>, 2008, 2009.
 # Alexander Dupuy <alex.dupuy@mac.com>, 2009.
 msgid ""

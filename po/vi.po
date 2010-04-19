@@ -1,7 +1,7 @@
-# Vietnamese translation for Virtaal.
-# Copyright © 2009 Free Software Foundation, Inc.
+# Vietnamese (vi) localisation of Virtaal.
+# Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
+# This file is distributed under the same license as the Virtaal package.
 # Clytie Siddall <clytie@riverland.net.au>, 2009.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.5.2\n"

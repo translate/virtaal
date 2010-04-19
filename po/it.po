@@ -1,9 +1,5 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# Italian (it) translation of Virtaal.
-# Copyright (C) 2009 Zuza Software Foundation (Translate.org.za)
+# Italian (it) localisation of Virtaal.
+# Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # Diego Donati <diegodonati@yahoo.it>, 2009
 msgid ""

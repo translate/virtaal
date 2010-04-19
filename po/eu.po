@@ -1,12 +1,8 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# translation of virtaal to Basque
+# Basque (eu) localisation of Virtaal.
+# Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
+# This file is distributed under the same license as the Virtaal package.
 # Piarres Beobide <pi@beobide.net>, 2008.
 # Julen Ruiz Aizpuru <julenx@gmail.com>, 2008-2009.
-# Copyright (C) 2008-2009 Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the Virtaal package.
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.3\n"

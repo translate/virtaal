@@ -1,9 +1,6 @@
-# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the PACKAGE package.
-# translation of virtaal-fr.po to French
-# translation of virtaal messages to French
-# Copyright (C) 2008 Christian Perrier <bubulle@debian.org>
-# This file is distributed under the same license as the virtaal software.
+# French (fr) localisation of Virtaal.
+# Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
+# This file is distributed under the same license as the Virtaal package.
 # Christian Perrier <bubulle@debian.org>, 2008, 2009, 2010.
 msgid ""
 msgstr ""

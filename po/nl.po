@@ -1,9 +1,5 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# Dutch translation of Virtaal 0.4.
-# Copyright (C) 2008-2009 Zuza Software Foundation (Translate.org.za)
+# Dutch (nl) localisation of Virtaal.
+# Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # Tom Verlinden <verlinden.tom@gmail.com>, 2008, 2009.
 msgid ""

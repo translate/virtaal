@@ -1,10 +1,6 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# translation of virtaal-04.po to Bengali INDIA
-# Copyright (C) 2009 Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the virtaal package.
+# Bengali (India) (bn_IN) localisation of Virtaal.
+# Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
+# This file is distributed under the same license as the Virtaal package.
 # Runa Bhattacharjee <runab@fedoraproject.org>, 2009.
 # sankarshan mukhopadhyay <sankarshan@fedoraproject.org>, 2009.
 msgid ""

@@ -289,7 +289,7 @@ msgstr "<b>Tuỳ chọn</b>"
 #. l10n: Remove the tags if underlining is unsuitable for your language. Most languages won't need to change this. Translate 'Open' normally.
 #: ../share/virtaal/virtaal.glade.h:67
 msgid "<u>Open</u>"
-msgstr "<u>Mở</u>"
+msgstr "Mở"
 
 #: ../share/virtaal/virtaal.glade.h:68
 msgid "<b><big>Recent Files</big></b>"
@@ -297,11 +297,11 @@ msgstr "<b><big>Tập tin vừa mở</big></b>"
 
 #: ../share/virtaal/virtaal.glade.h:69
 msgid "<u>Tutorial</u>"
-msgstr "<u>Trợ lý</u>"
+msgstr "Trợ lý"
 
 #: ../share/virtaal/virtaal.glade.h:70
 msgid "<u>Cheat Sheet</u>"
-msgstr "<u>Bảng trợ giúp</u>"
+msgstr "Bảng trợ giúp"
 
 # Địa chỉ URL: nên dịch trang gốc trước khi điều chỉnh địa chỉ này
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
@@ -311,11 +311,11 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
 
 #: ../share/virtaal/virtaal.glade.h:73
 msgid "<u>More...</u>"
-msgstr "<u>Xem thêm...</u>"
+msgstr "Xem thêm..."
 
 #: ../share/virtaal/virtaal.glade.h:74
 msgid "<u>Features</u>"
-msgstr "<u>Tính năng</u>"
+msgstr "Tính năng"
 
 #: ../share/virtaal/virtaal.glade.h:75
 msgid "<b><big>Getting Started</big></b>"
@@ -328,15 +328,15 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 
 #: ../share/virtaal/virtaal.glade.h:78
 msgid "<u>Manual</u>"
-msgstr "<u>Sổ tay</u>"
+msgstr "Sổ tay"
 
 #: ../share/virtaal/virtaal.glade.h:79
 msgid "<u>Localization Guide</u>"
-msgstr "<u>Sổ tay địa phương hoá</u>"
+msgstr "Sổ tay địa phương hoá"
 
 #: ../share/virtaal/virtaal.glade.h:80
 msgid "<u>Feedback</u>"
-msgstr "<u>Phản hồi</u>"
+msgstr "Phản hồi"
 
 #: ../share/virtaal/virtaal.glade.h:81
 msgid "<b><big>Support</big></b>"

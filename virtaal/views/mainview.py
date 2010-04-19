@@ -18,7 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
 import gtk
 import locale
 import os
@@ -29,14 +28,11 @@ from translate.storage import factory
 
 from virtaal import __version__
 from virtaal.views import recent
-from virtaal.common import pan_app, GObjectWrapper
+from virtaal.common import pan_app
 from virtaal.support import openmailto
 
 from widgets.aboutdialog import AboutDialog
 from baseview import BaseView
-
-import pygtk
-pygtk.require("2.0")
 
 def fill_dialog(dialog, title='', message='', markup=''):
     if title:

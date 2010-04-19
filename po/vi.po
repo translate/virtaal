@@ -6,18 +6,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.5.2\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2010-02-22 16:19+0200\n"
-"PO-Revision-Date: 2010-03-07 20:17+0930\n"
+"POT-Creation-Date: 2010-04-01 17:45+0200\n"
+"PO-Revision-Date: 2010-04-02 09:18+0200\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: \n"
 "Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.0.3\n"
 
 # Tên: đừng dịch
 #: ../share/applications/virtaal.desktop.in.h:1
-#: ../share/virtaal/virtaal.glade.h:1
+#: ../share/virtaal/virtaal.glade.h:1 ../virtaal/views/mainview.py:640
 msgid "Virtaal"
 msgstr "Virtaal"
 
@@ -26,7 +28,9 @@ msgid "Translation Tool"
 msgstr "Công cụ Dịch"
 
 #: ../share/applications/virtaal.desktop.in.h:3
-msgid "A translation tool to help a human translator translate files into other languages"
+msgid ""
+"A translation tool to help a human translator translate files into other "
+"languages"
 msgstr "Một công cụ thông dịch để giúp con người dịch sang các ngôn ngữ khác"
 
 #: ../share/virtaal/virtaal.glade.h:2
@@ -105,9 +109,11 @@ msgstr "Cặp ngôn ngữ mới"
 
 #: ../share/virtaal/virtaal.glade.h:22
 msgid ""
-"The <b>Original</b> is the language from which you are translating, also called the source language.\n"
+"The <b>Original</b> is the language from which you are translating, also "
+"called the source language.\n"
 "\n"
-"If you are translating from English to French then English would be your original or source language."
+"If you are translating from English to French then English would be your "
+"original or source language."
 msgstr ""
 "<b>Gốc</b> là ngôn ngữ từ đó bạn dịch, cũng được gọi như là ngôn ngữ nguồn.\n"
 "\n"
@@ -119,11 +125,14 @@ msgstr "<b>Gốc</b>"
 
 #: ../share/virtaal/virtaal.glade.h:26
 msgid ""
-"The <b>Translation</b> is the language into which you are translating, also called the target language.\n"
+"The <b>Translation</b> is the language into which you are translating, also "
+"called the target language.\n"
 "\n"
-"If you are translating from English to French then French would be your translation or target language."
+"If you are translating from English to French then French would be your "
+"translation or target language."
 msgstr ""
-"<b>Dịch</b> là ngôn ngữ sang đó bạn dịch, cũng được gọi như là ngôn ngữ đích.\n"
+"<b>Dịch</b> là ngôn ngữ sang đó bạn dịch, cũng được gọi như là ngôn ngữ "
+"đích.\n"
 "\n"
 "Dịch từ tiếng Anh sang tiếng Việt thì tiếng Việt là ngôn ngữ đích hay dịch."
 
@@ -156,8 +165,11 @@ msgid "Number of plurals:"
 msgstr "Số cách ở số nhiều :"
 
 #: ../share/virtaal/virtaal.glade.h:36
-msgid "Depending on the translation task, the plural information might be optional."
-msgstr "Phụ thuộc vào công việc thông dịch, thông tin về cách ở số nhiều có thể vẫn còn tuỳ chọn."
+msgid ""
+"Depending on the translation task, the plural information might be optional."
+msgstr ""
+"Phụ thuộc vào công việc thông dịch, thông tin về cách ở số nhiều có thể vẫn "
+"còn tuỳ chọn."
 
 #: ../share/virtaal/virtaal.glade.h:37
 msgid "<b>Language Information</b>"
@@ -185,8 +197,12 @@ msgid "E-mail address:"
 msgstr "Địa chỉ thư :"
 
 #: ../share/virtaal/virtaal.glade.h:44
-msgid "The team information stored in the file header. This can be an e-mail address or a URL, for example."
-msgstr "Thông tin về nhóm dịch (v.d. địa chỉ thư điện tử hay địa chỉ URL) cũng được cất giữ trong phần đầu tập tin. "
+msgid ""
+"The team information stored in the file header. This can be an e-mail "
+"address or a URL, for example."
+msgstr ""
+"Thông tin về nhóm dịch (v.d. địa chỉ thư điện tử hay địa chỉ URL) cũng được "
+"cất giữ trong phần đầu tập tin. "
 
 #: ../share/virtaal/virtaal.glade.h:45
 msgid "Team:"
@@ -218,8 +234,12 @@ msgid "General"
 msgstr "Chung"
 
 #: ../share/virtaal/virtaal.glade.h:53
-msgid "Placeables are special parts of the text that can be automatically highlighted and easily inserted into the translation."
-msgstr "Đoạn chèn là phần văn bản đặc biệt có thể được tự động tô sáng và dễ chèn vào bản dịch."
+msgid ""
+"Placeables are special parts of the text that can be automatically "
+"highlighted and easily inserted into the translation."
+msgstr ""
+"Đoạn chèn là phần văn bản đặc biệt có thể được tự động tô sáng và dễ chèn "
+"vào bản dịch."
 
 #: ../share/virtaal/virtaal.glade.h:54
 msgid "Placeables"
@@ -266,26 +286,95 @@ msgstr "Bao truy vấn bằng dấu nháy kép"
 msgid "<b>Options</b>"
 msgstr "<b>Tuỳ chọn</b>"
 
+#. l10n: Remove the tags if underlining is unsuitable for your language. Most languages won't need to change this. Translate 'Open' normally.
+#: ../share/virtaal/virtaal.glade.h:67
+msgid "<u>Open</u>"
+msgstr "<u>Mở</u>"
+
+#: ../share/virtaal/virtaal.glade.h:68
+msgid "<b><big>Recent Files</big></b>"
+msgstr "<b><big>Tập tin vừa mở</big></b>"
+
+#: ../share/virtaal/virtaal.glade.h:69
+msgid "<u>Tutorial</u>"
+msgstr "<u>Trợ lý</u>"
+
+#: ../share/virtaal/virtaal.glade.h:70
+msgid "<u>Cheat Sheet</u>"
+msgstr "<u>Bảng trợ giúp</u>"
+
+# Địa chỉ URL: nên dịch trang gốc trước khi điều chỉnh địa chỉ này
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.glade.h:72
+msgid "http://translate.sourceforge.net/wiki/virtaal/features"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
+
+#: ../share/virtaal/virtaal.glade.h:73
+msgid "<u>More...</u>"
+msgstr "<u>Xem thêm...</u>"
+
+#: ../share/virtaal/virtaal.glade.h:74
+msgid "<u>Features</u>"
+msgstr "<u>Tính năng</u>"
+
+#: ../share/virtaal/virtaal.glade.h:75
+msgid "<b><big>Getting Started</big></b>"
+msgstr "<b><big>Bắt đầu dùng</big></b>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.glade.h:77
+msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+
+#: ../share/virtaal/virtaal.glade.h:78
+msgid "<u>Manual</u>"
+msgstr "<u>Sổ tay</u>"
+
+#: ../share/virtaal/virtaal.glade.h:79
+msgid "<u>Localization Guide</u>"
+msgstr "<u>Sổ tay địa phương hoá</u>"
+
+#: ../share/virtaal/virtaal.glade.h:80
+msgid "<u>Feedback</u>"
+msgstr "<u>Phản hồi</u>"
+
+#: ../share/virtaal/virtaal.glade.h:81
+msgid "<b><big>Support</big></b>"
+msgstr "<b><big>Hỗ trợ</big></b>"
+
 #: ../virtaal/tips.py:27
-msgid "At the end of a translation, simply press <Enter> to continue with the next one."
-msgstr "Tới cuối chuỗi dịch thì đơn giản hãy bấm phím <Enter> để chuyển đổi sang chuỗi kế tiếp."
+msgid ""
+"At the end of a translation, simply press <Enter> to continue with the next "
+"one."
+msgstr ""
+"Tới cuối chuỗi dịch thì đơn giản hãy bấm phím <Enter> để chuyển đổi sang "
+"chuỗi kế tiếp."
 
 #: ../virtaal/tips.py:28
-msgid "To copy the original string into the target field, simply press <Alt+Down>."
-msgstr "Để sao chép chuỗi gốc vào trường đích, đơn giản hãy bấm tổ hợp phím <Alt+Down>."
+msgid ""
+"To copy the original string into the target field, simply press <Alt+Down>."
+msgstr ""
+"Để sao chép chuỗi gốc vào trường đích, đơn giản hãy bấm tổ hợp phím "
+"<Alt+Down>."
 
 #. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
 #: ../virtaal/tips.py:31
 msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
-msgstr "Để đánh dấu chuỗi dịch hiện thời như là « còn mờ » (fuzzy), đơn giản hãy bấm tổ hợp phím <Alt+M>."
+msgstr ""
+"Để đánh dấu chuỗi dịch hiện thời như là « còn mờ » (fuzzy), đơn giản hãy bấm "
+"tổ hợp phím <Alt+M>."
 
 #: ../virtaal/tips.py:32
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
-msgstr "Dùng tổ hợp phím Ctrl+Lên hay Ctrl+Xuống để di chuyển giữa các chuỗi dịch."
+msgstr ""
+"Dùng tổ hợp phím Ctrl+Lên hay Ctrl+Xuống để di chuyển giữa các chuỗi dịch."
 
 #: ../virtaal/tips.py:33
-msgid "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
-msgstr "Dùng tổ hợp phím Ctrl+PgUp hay Ctrl+PgDn để di chuyển giữa các chuỗi dịch theo bước lớn hơn."
+msgid ""
+"Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
+msgstr ""
+"Dùng tổ hợp phím Ctrl+PgUp hay Ctrl+PgDn để di chuyển giữa các chuỗi dịch "
+"theo bước lớn hơn."
 
 #: ../virtaal/controllers/maincontroller.py:69
 #: ../virtaal/controllers/maincontroller.py:78
@@ -305,14 +394,16 @@ msgstr "Hãy gõ địa chỉ thư điện từ của bạn"
 msgid "Please enter your team's information"
 msgstr "Hãy gõ thông tin về nhóm dịch của bạn"
 
-#: ../virtaal/controllers/maincontroller.py:166
-#: ../virtaal/controllers/maincontroller.py:220
-msgid "You selected the currently open file for opening. Do you want to reload the file?"
+#: ../virtaal/controllers/maincontroller.py:176
+#: ../virtaal/controllers/maincontroller.py:244
+msgid ""
+"You selected the currently open file for opening. Do you want to reload the "
+"file?"
 msgstr "Bạn đã chọn mở lại tập tin còn mở hiện thời. Muốn nạp lại nó không?"
 
-#: ../virtaal/controllers/maincontroller.py:177
-#: ../virtaal/controllers/maincontroller.py:205
-#: ../virtaal/controllers/maincontroller.py:231
+#: ../virtaal/controllers/maincontroller.py:187
+#: ../virtaal/controllers/maincontroller.py:229
+#: ../virtaal/controllers/maincontroller.py:255
 #, python-format
 msgid ""
 "Could not open file.\n"
@@ -327,7 +418,7 @@ msgstr ""
 "\n"
 "Hãy thử mở một tập tin khác."
 
-#: ../virtaal/controllers/maincontroller.py:186
+#: ../virtaal/controllers/maincontroller.py:200
 #, python-format
 msgid ""
 "Could not save file.\n"
@@ -342,7 +433,7 @@ msgstr ""
 "\n"
 "Hãy thử lưu vào một vị trí khác."
 
-#: ../virtaal/controllers/maincontroller.py:191
+#: ../virtaal/controllers/maincontroller.py:205
 #, python-format
 msgid ""
 "Could not save file.\n"
@@ -353,13 +444,15 @@ msgstr ""
 "\n"
 "%(error_message)s"
 
-#: ../virtaal/controllers/maincontroller.py:195
+#: ../virtaal/controllers/maincontroller.py:219
 msgid "Reload File"
 msgstr "Nạp lại tập tin"
 
-#: ../virtaal/controllers/maincontroller.py:195
+#: ../virtaal/controllers/maincontroller.py:219
 msgid "Reload file from last saved copy and lose all changes?"
-msgstr "Nạp lại tập tin từ bản sao đã lưu cuối mà mất tất cả các thay đổi mới làm không?"
+msgstr ""
+"Nạp lại tập tin từ bản sao đã lưu cuối mà mất tất cả các thay đổi mới làm "
+"không?"
 
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase
 #: ../virtaal/controllers/placeablescontroller.py:83
@@ -367,7 +460,8 @@ msgid "CamelCase"
 msgstr "ChữHoaNộiBộ"
 
 #: ../virtaal/controllers/placeablescontroller.py:84
-msgid "Words with internal capitalisation, such as some brand names and WikiWords"
+msgid ""
+"Words with internal capitalisation, such as some brand names and WikiWords"
 msgstr "Các từ viết chữ hoa nội bộ, chẳng hạn một số nhãn hiệu và TừWiki"
 
 #: ../virtaal/controllers/placeablescontroller.py:87
@@ -385,7 +479,9 @@ msgstr "Tùy chọn Dòng lệnh"
 
 #: ../virtaal/controllers/placeablescontroller.py:93
 msgid "Application command line options, such as --help, -h and -I"
-msgstr "Các tuỳ chọn dòng lệnh của ứng dụng, v.d. « --help » (trợ giúp), « -h » và « -l »"
+msgstr ""
+"Các tuỳ chọn dòng lệnh của ứng dụng, v.d. « --help » (trợ giúp), « -h » và « "
+"-l »"
 
 #: ../virtaal/controllers/placeablescontroller.py:96
 msgid "E-mail"
@@ -409,7 +505,7 @@ msgstr "Bộ giữ chỗ (printf)"
 
 #: ../virtaal/controllers/placeablescontroller.py:105
 msgid "Placeholders used in \"printf\" strings"
-msgstr "Các bộ giữ chỗ được sử dụng trong chuỗi dạng « printf » (v.d. %s, %d)"
+msgstr "Các bộ giữ chỗ được sử dụng trong chuỗi dạng « printf »"
 
 #: ../virtaal/controllers/placeablescontroller.py:108
 msgid "Placeholders (Python)"
@@ -493,42 +589,42 @@ msgstr "Thuộc tính « alt »"
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Đoạn chèn thuộc tính « alt » (dưới dạng mã HTML)"
 
-#: ../virtaal/controllers/storecontroller.py:114
+#: ../virtaal/controllers/storecontroller.py:115
 msgid "The file contains nothing to translate."
 msgstr "Tập tin không chứa gì cần dịch."
 
 #. l10n: The heading of statistics before updating to the new template
-#: ../virtaal/controllers/storecontroller.py:163
+#: ../virtaal/controllers/storecontroller.py:172
 msgid "Before:"
 msgstr "Trước:"
 
 #. l10n: The heading of statistics after updating to the new template
-#: ../virtaal/controllers/storecontroller.py:165
+#: ../virtaal/controllers/storecontroller.py:174
 msgid "After:"
 msgstr "Sau:"
 
-#: ../virtaal/controllers/storecontroller.py:166
+#: ../virtaal/controllers/storecontroller.py:175
 #, python-format
 msgid "Translated: %d"
 msgstr "Đã dịch: %d"
 
-#: ../virtaal/controllers/storecontroller.py:167
+#: ../virtaal/controllers/storecontroller.py:176
 #, python-format
 msgid "Fuzzy: %d"
 msgstr "Dịch mờ: %d"
 
-#: ../virtaal/controllers/storecontroller.py:168
+#: ../virtaal/controllers/storecontroller.py:177
 #, python-format
 msgid "Untranslated: %d"
 msgstr "Chưa dịch: %d"
 
-#: ../virtaal/controllers/storecontroller.py:169
+#: ../virtaal/controllers/storecontroller.py:178
 #, python-format
 msgid "Total: %d"
 msgstr "Tổng: %d"
 
 #. l10n: this refers to updating a file to a new template (POT file)
-#: ../virtaal/controllers/storecontroller.py:187
+#: ../virtaal/controllers/storecontroller.py:196
 msgid "File Updated"
 msgstr "Tập tin đã cập nhật"
 
@@ -540,8 +636,7 @@ msgstr "Tất cả"
 msgid "Incomplete"
 msgstr "Chưa hoàn thành"
 
-#: ../virtaal/modes/searchmode.py:37
-#: ../virtaal/modes/searchmode.py:65
+#: ../virtaal/modes/searchmode.py:37 ../virtaal/modes/searchmode.py:65
 msgid "Search"
 msgstr "Tìm kiếm"
 
@@ -624,7 +719,7 @@ msgstr "Tra tìm chuỗi được chọn ở một địa chỉ Web"
 # Tên
 #. l10n: Try to keep this as short as possible. Feel free to transliterate.
 #: ../virtaal/plugins/lookup/models/weblookup.py:45
-#: ../virtaal/plugins/tm/models/google_translate.py:162
+#: ../virtaal/plugins/tm/models/google_translate.py:165
 msgid "Google"
 msgstr "Google"
 
@@ -760,17 +855,16 @@ msgid "Add Files"
 msgstr "Thêm tập tin"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:177
-#: ../virtaal/views/mainview.py:224
+#: ../virtaal/views/mainview.py:225
 msgid "All Supported Files"
 msgstr "Mọi tập tin đã hỗ trợ"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:203
-#: ../virtaal/views/mainview.py:250
+#: ../virtaal/views/mainview.py:251
 msgid "All Files"
 msgstr "Mọi tập tin"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:243
-#: ../virtaal/models/storemodel.py:107
 #, python-format
 msgid "\"%s\" is not a usable file."
 msgstr "« %s » không phải là một tập tin có thể sử dụng."
@@ -850,13 +944,26 @@ msgstr "Tập tin này"
 
 # Google là một tên
 #. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
-#: ../virtaal/plugins/tm/models/google_translate.py:110
+#: ../virtaal/plugins/tm/models/google_translate.py:113
 msgid "Google Translate"
 msgstr "Google dịch"
 
-#: ../virtaal/plugins/tm/models/google_translate.py:111
+#: ../virtaal/plugins/tm/models/google_translate.py:114
 msgid "Unreviewed machine translations from Google's translation service"
 msgstr "Các chuỗi dịch do máy chưa xem lại từ dịch vụ thông dịch của Google"
+
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:35
+msgid "Microsoft Translator"
+msgstr "Microsoft Translator"
+
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:36
+msgid "Unreviewed machine translations from Microsoft Translator"
+msgstr "Các chuỗi do máy dịch chưa xem lại từ Microsoft Translator"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:98
+msgid "Microsoft"
+msgstr "Microsoft"
 
 # Tên: đừng dịch
 #. l10n: This is the name of a software library. You almost definitely don't want to translate this. The lower case 'l' is intentional.
@@ -983,19 +1090,19 @@ msgstr "%(match_quality)s%%"
 msgid "_New Language Pair..."
 msgstr "Cặp _ngôn ngữ mới..."
 
-#: ../virtaal/views/mainview.py:201
+#: ../virtaal/views/mainview.py:202
 msgid "Error"
 msgstr "Lỗi"
 
-#: ../virtaal/views/mainview.py:217
+#: ../virtaal/views/mainview.py:218
 msgid "Choose a Translation File"
 msgstr "Chọn một tập tin thông dịch"
 
-#: ../virtaal/views/mainview.py:255
+#: ../virtaal/views/mainview.py:256
 msgid "Save"
 msgstr "Lưu"
 
-#: ../virtaal/views/mainview.py:269
+#: ../virtaal/views/mainview.py:270
 msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
@@ -1003,7 +1110,7 @@ msgstr ""
 "Tập tin hiện thời bị sửa đổi.\n"
 "Bạn có muốn lưu các thay đổi không?"
 
-#: ../virtaal/views/mainview.py:272
+#: ../virtaal/views/mainview.py:273
 msgid "_Discard"
 msgstr "_Hủy"
 
@@ -1012,16 +1119,16 @@ msgstr "_Hủy"
 #. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
 #. %(current_file)s is the file name of the current file
 #. most languages will not need to change this
-#: ../virtaal/views/mainview.py:309
+#: ../virtaal/views/mainview.py:310
 #, python-format
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 
-#: ../virtaal/views/mainview.py:334
+#: ../virtaal/views/mainview.py:335
 msgid "Please enter the number of noun forms (plurals) to use"
 msgstr "Hãy gõ số các dạng danh từ (cách ở số nhiều) cần dùng"
 
-#: ../virtaal/views/mainview.py:340
+#: ../virtaal/views/mainview.py:341
 msgid "Please enter the plural equation to use"
 msgstr "Hãy gõ biểu thức cách ở số nhiều cần dùng"
 
@@ -1046,8 +1153,14 @@ msgid "Virtaal is a program for doing translation."
 msgstr "Virtaal là một chương trình thông dịch."
 
 #: ../virtaal/views/widgets/aboutdialog.py:39
-msgid "The initial focus is on software translation (localization or l10n), but we definitely intend it to be useful as a general purpose tool for Computer Aided Translation (CAT)."
-msgstr "Mục đích đầu tiên là công việc dịch phần mềm (địa phương hoá hay l10n), nhưng chúng tôi cũng dự định chương trình này có ích như là một công cụ thường dụng cho Thông dịch được Máy Hỗ trợ (CAT)."
+msgid ""
+"The initial focus is on software translation (localization or l10n), but we "
+"definitely intend it to be useful as a general purpose tool for Computer "
+"Aided Translation (CAT)."
+msgstr ""
+"Mục đích đầu tiên là công việc dịch phần mềm (địa phương hoá hay l10n), "
+"nhưng chúng tôi cũng dự định chương trình này có ích như là một công cụ "
+"thường dụng cho Thông dịch được Máy Hỗ trợ (CAT)."
 
 #: ../virtaal/views/widgets/aboutdialog.py:53
 msgid "Virtaal website"
@@ -1068,7 +1181,9 @@ msgstr "Công ty Mozilla"
 #. l10n: Rather than translating, fill in the names of the translators
 #: ../virtaal/views/widgets/aboutdialog.py:69
 msgid "translator-credits"
-msgstr "Nhóm Việt hoá Phần mềm Tự do <http://vnoss.net/dokuwiki/doku.php?id=projects:l10n>"
+msgstr ""
+"Nhóm Việt hoá Phần mềm Tự do "
+"<http://vnoss.net/dokuwiki/doku.php?id=projects:l10n>"
 
 #: ../virtaal/views/widgets/langadddialog.py:103
 msgid "Language code must be an ASCII string."
@@ -1076,7 +1191,8 @@ msgstr "Mã ngôn ngữ phải là một chuỗi dạng ASCII."
 
 #: ../virtaal/views/widgets/langadddialog.py:106
 msgid "Language code must be at least 2 characters long."
-msgstr "Mã ngôn ngữ phải có chiều dài ít nhất 2 ký tự (v.d. « vi » hay « zh_HK »)."
+msgstr ""
+"Mã ngôn ngữ phải có chiều dài ít nhất 2 ký tự (v.d. « vi » hay « zh_HK »)."
 
 #: ../virtaal/views/widgets/langselectdialog.py:79
 #: ../virtaal/views/widgets/langselectdialog.py:86
@@ -1097,10 +1213,37 @@ msgstr "Đã bật"
 msgid "Configure..."
 msgstr "Cấu hình..."
 
+#: ../virtaal/views/widgets/welcomescreen.py:72
+msgid "Extensive format support"
+msgstr "Hỗ trợ định dạng rộng rãi"
+
+#: ../virtaal/views/widgets/welcomescreen.py:73
+msgid "Translation memory"
+msgstr "Bản nhớ chuỗi dịch"
+
+#: ../virtaal/views/widgets/welcomescreen.py:74
+msgid "Terminology assistance"
+msgstr "Trợ giúp thuật ngữ"
+
+#: ../virtaal/views/widgets/welcomescreen.py:75
+msgid "Machine translation"
+msgstr "Dịch do máy"
+
+#: ../virtaal/views/widgets/welcomescreen.py:76
+msgid "Highlighting and insertion of placeables"
+msgstr "Tô sáng và chèn bộ giữ chỗ"
+
+#: ../virtaal/views/widgets/welcomescreen.py:77
+msgid "Many plugins and options for customization"
+msgstr "Có nhiều phần bổ sung và sự chọn để tùy chỉnh"
+
 #: ../virtaal/models/storemodel.py:105
-#, python-format
-msgid "The file \"%s\" does not exist."
-msgstr "Tập tin « %s » không tồn tại."
+msgid "The file does not exist."
+msgstr "Tập tin này không tồn tại."
+
+#: ../virtaal/models/storemodel.py:107
+msgid "Not a valid file."
+msgstr "Không phải một tập tin hợp lệ."
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
 msgid "TMX Translation Memory"
@@ -1216,6 +1359,10 @@ msgstr "Tập tin MO gettext"
 msgid "Qt .qm file"
 msgstr "Tập tin .qm Qt"
 
+#: ../devsupport/tmp_strings.py:26
+msgid "OmegaT Glossary"
+msgstr "Từ điển thuật ngữ OmegaT"
+
 #: ../bin/virtaal:78
 #, c-format
 msgid "%prog [options] [translation_file]"
@@ -1322,14 +1469,12 @@ msgstr "hiển thị số thứ tự phiên bản của chương trình, sau đ�
 msgid "%prog [options]"
 msgstr "%prog [tuỳ chọn ...]"
 
-#: ../devsupport/optparse.py:1484
-#: ../devsupport/optparse.py:1523
+#: ../devsupport/optparse.py:1484 ../devsupport/optparse.py:1523
 #, python-format
 msgid "%s option requires an argument"
 msgstr "%s: tùy chọn cần thiết một đối số"
 
-#: ../devsupport/optparse.py:1486
-#: ../devsupport/optparse.py:1525
+#: ../devsupport/optparse.py:1486 ../devsupport/optparse.py:1525
 #, python-format
 msgid "%s option requires %d arguments"
 msgstr "%s: tùy chọn cần thiết %d đối số"

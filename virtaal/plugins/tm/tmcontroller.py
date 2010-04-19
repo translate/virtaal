@@ -23,7 +23,7 @@ import logging
 import os.path
 from translate.lang.data import forceunicode, normalize
 
-from virtaal.common import GObjectWrapper, pan_app
+from virtaal.common import GObjectWrapper
 from virtaal.controllers import BaseController, PluginController
 
 import models
@@ -97,6 +97,7 @@ class TMController(BaseController):
     def accept_response(self, tmmodel, query_str, matches):
         """Accept a query-response from the model.
             (This method is used as Model-Controller communications)"""
+        query_str = forceunicode(query_str)
         if query_str != self.current_query or not matches:
             return
         # Perform some sanity checks on matches first

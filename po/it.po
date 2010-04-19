@@ -462,7 +462,7 @@ msgstr "CarattereCammello"
 
 #: ../virtaal/controllers/placeablescontroller.py:84
 msgid ""
-"Words with internal capitalisation, such as some brand names and WikiWords"
+"Words with internal capitalization, such as some brand names and WikiWords"
 msgstr ""
 "Parole con lettere maiuscole all'interno, come alcuni termini nuovi e le "
 "WikiWords (parole Wiki)"

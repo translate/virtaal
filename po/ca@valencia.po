@@ -464,8 +464,9 @@ msgid "CamelCase"
 msgstr "CamelCase"
 
 #: ../virtaal/controllers/placeablescontroller.py:84
+#, fuzzy
 msgid ""
-"Words with internal capitalisation, such as some brand names and WikiWords"
+"Words with internal capitalization, such as some brand names and WikiWords"
 msgstr ""
 "Paraules amb majúscules dins, com ara alguns noms de marques i WikiWords"
 

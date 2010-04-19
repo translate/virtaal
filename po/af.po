@@ -458,7 +458,7 @@ msgstr "Kameelkas"
 
 #: ../virtaal/controllers/placeablescontroller.py:84
 msgid ""
-"Words with internal capitalisation, such as some brand names and WikiWords"
+"Words with internal capitalization, such as some brand names and WikiWords"
 msgstr "Woorde met interne hoofletters, soos sommige handelsmerke en WikiWoorde"
 
 #: ../virtaal/controllers/placeablescontroller.py:87

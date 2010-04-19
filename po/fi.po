@@ -455,7 +455,7 @@ msgstr "CamelCase"
 
 #: ../virtaal/controllers/placeablescontroller.py:84
 msgid ""
-"Words with internal capitalisation, such as some brand names and WikiWords"
+"Words with internal capitalization, such as some brand names and WikiWords"
 msgstr ""
 "Sanayhdistelmät joissa käytetään versaalia jokaisen osan alussa, esim. eräät "
 "tuotenimet ja WikiSanat"

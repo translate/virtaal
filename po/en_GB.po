@@ -422,8 +422,9 @@ msgstr ""
 
 #: ../virtaal/controllers/placeablescontroller.py:84
 msgid ""
-"Words with internal capitalisation, such as some brand names and WikiWords"
+"Words with internal capitalization, such as some brand names and WikiWords"
 msgstr ""
+"Words with internal capitalisation, such as some brand names and WikiWords"
 
 #: ../virtaal/controllers/placeablescontroller.py:87
 msgid "Capitals"
@@ -1084,7 +1085,7 @@ msgid "F_uzzy"
 msgstr ""
 
 #: ../virtaal/views/widgets/aboutdialog.py:35
-msgid "Copyright © 2007-2009 Zuza Software Foundation"
+msgid "Copyright © 2007-2010 Zuza Software Foundation"
 msgstr ""
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to

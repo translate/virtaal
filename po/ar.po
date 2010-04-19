@@ -446,7 +446,7 @@ msgstr "CamelCase"
 
 #: ../virtaal/controllers/placeablescontroller.py:84
 msgid ""
-"Words with internal capitalisation, such as some brand names and WikiWords"
+"Words with internal capitalization, such as some brand names and WikiWords"
 msgstr ""
 "كلمات ذات حروف كبيرة في وسطها، مثل أسماء المنتجات وكلمات الويكي (WikiWords)"
 
@@ -1115,8 +1115,8 @@ msgid "F_uzzy"
 msgstr "مب_هم"
 
 #: ../virtaal/views/widgets/aboutdialog.py:35
-msgid "Copyright © 2007-2009 Zuza Software Foundation"
-msgstr "حقوق النشر © 2007-2009 مؤسسة زوزا للبرمجيات"
+msgid "Copyright © 2007-2010 Zuza Software Foundation"
+msgstr "حقوق النشر © 2007-2010 مؤسسة زوزا للبرمجيات"
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.

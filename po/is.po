@@ -457,7 +457,7 @@ msgstr "Samfelluorð"
 
 #: ../virtaal/controllers/placeablescontroller.py:84
 msgid ""
-"Words with internal capitalisation, such as some brand names and WikiWords"
+"Words with internal capitalization, such as some brand names and WikiWords"
 msgstr "Orð með innri hástafi, eins og til dæmis vörumerki eða WikiOrð"
 
 #: ../virtaal/controllers/placeablescontroller.py:87

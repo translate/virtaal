@@ -459,7 +459,7 @@ msgstr "CamelCase"
 
 #: ../virtaal/controllers/placeablescontroller.py:84
 msgid ""
-"Words with internal capitalisation, such as some brand names and WikiWords"
+"Words with internal capitalization, such as some brand names and WikiWords"
 msgstr "Ebigambo ebirina ennukuta ennene, gamba ng'amannya"
 
 #: ../virtaal/controllers/placeablescontroller.py:87

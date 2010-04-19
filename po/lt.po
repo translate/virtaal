@@ -460,7 +460,7 @@ msgstr "VikiŽodžiai"
 
 #: ../virtaal/controllers/placeablescontroller.py:84
 msgid ""
-"Words with internal capitalisation, such as some brand names and WikiWords"
+"Words with internal capitalization, such as some brand names and WikiWords"
 msgstr ""
 "Žodžiai, su didžiosiomis raidėmis viduje – dažnai tai būna prekių ženklai ar "
 "VikiŽodžiai"

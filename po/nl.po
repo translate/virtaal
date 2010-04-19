@@ -468,7 +468,7 @@ msgstr "CamelCase (ElkWoordMetHoofdletter)"
 
 #: ../virtaal/controllers/placeablescontroller.py:84
 msgid ""
-"Words with internal capitalisation, such as some brand names and WikiWords"
+"Words with internal capitalization, such as some brand names and WikiWords"
 msgstr ""
 "Woorden die hoofdletters bevatten, zoals sommige merknamen en WikiWoorden"
 

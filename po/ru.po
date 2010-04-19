@@ -458,7 +458,7 @@ msgstr "ЗаглавныеПервыеБуквы"
 
 #: ../virtaal/controllers/placeablescontroller.py:84
 msgid ""
-"Words with internal capitalisation, such as some brand names and WikiWords"
+"Words with internal capitalization, such as some brand names and WikiWords"
 msgstr ""
 "Слова с заглавными первыми буквами, например некоторые бренды и WikiWords"
 

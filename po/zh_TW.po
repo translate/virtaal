@@ -388,7 +388,7 @@ msgstr "駝峰式大小寫"
 
 #: ../virtaal/controllers/placeablescontroller.py:83
 msgid ""
-"Words with internal capitalisation, such as some brand names and WikiWords"
+"Words with internal capitalization, such as some brand names and WikiWords"
 msgstr "一個詞內含多個大寫字母，例如一些品牌名稱和WikiWords。"
 
 #: ../virtaal/controllers/placeablescontroller.py:86
@@ -1038,8 +1038,8 @@ msgid "F_uzzy"
 msgstr "模糊(_u)"
 
 #: ../virtaal/views/widgets/aboutdialog.py:35
-msgid "Copyright © 2007-2009 Zuza Software Foundation"
-msgstr "版權所有 © 2007-2009 Zuza軟體基金會"
+msgid "Copyright © 2007-2010 Zuza Software Foundation"
+msgstr "版權所有 © 2007-2010 Zuza軟體基金會"
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.

@@ -454,7 +454,7 @@ msgstr "CamelCase (ক্যামেল-কেস)"
 
 #: ../virtaal/controllers/placeablescontroller.py:84
 msgid ""
-"Words with internal capitalisation, such as some brand names and WikiWords"
+"Words with internal capitalization, such as some brand names and WikiWords"
 msgstr ""
 "মধ্যে বড় ছাঁদের অক্ষরবিশিষ্ট শব্দ, যেমন কোনো ব্র্যান্ডের নাম অথবা WikiWords"
 

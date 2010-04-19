@@ -454,7 +454,7 @@ msgstr "CamelCase (maiúsculas intermedias)"
 
 #: ../virtaal/controllers/placeablescontroller.py:84
 msgid ""
-"Words with internal capitalisation, such as some brand names and WikiWords"
+"Words with internal capitalization, such as some brand names and WikiWords"
 msgstr ""
 "Palabras con maiúscula interna, tales como algúns nomes de marcas e "
 "wikipalabras"

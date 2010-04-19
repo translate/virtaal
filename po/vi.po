@@ -461,7 +461,7 @@ msgstr "ChữHoaNộiBộ"
 
 #: ../virtaal/controllers/placeablescontroller.py:84
 msgid ""
-"Words with internal capitalisation, such as some brand names and WikiWords"
+"Words with internal capitalization, such as some brand names and WikiWords"
 msgstr "Các từ viết chữ hoa nội bộ, chẳng hạn một số nhãn hiệu và TừWiki"
 
 #: ../virtaal/controllers/placeablescontroller.py:87

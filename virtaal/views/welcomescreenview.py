@@ -97,6 +97,7 @@ class WelcomeScreenView(BaseView):
             iconfile = get_abs_data_filename(['icons', 'hicolor', '24x24', 'mimetypes', 'x-translation.png'])
             buttons[i].child.get_children()[0].set_from_file(iconfile)
             buttons[i].child.get_children()[1].set_markup(markup % {'name': items[i]['name']})
+            buttons[i].set_tooltip_text(items[i]['uri'])
             buttons[i].props.visible = True
         for i in range(len(items), 5):
             buttons[i].props.visible = False

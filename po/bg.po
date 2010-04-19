@@ -1123,7 +1123,6 @@ msgid "F_uzzy"
 msgstr "Н_еясно"
 
 #: ../virtaal/views/widgets/aboutdialog.py:35
-#, fuzzy
 msgid "Copyright © 2007-2010 Zuza Software Foundation"
 msgstr "Авторски права © 2007-2010 Фондация Зуза Софтуер"
 

@@ -350,7 +350,6 @@ def find_gtk_files():
             'iso_4217.mo',
             'iso_639_3.mo',
             'gtk20-properties.mo',
-            'glib20.mo',
             'gettext-tools.mo',
             'gettext-runtime.mo',
     ]

@@ -131,27 +131,23 @@ class OpenTranClient(gobject.GObject, HTTPClient):
         except Exception, exc:
             logging.debug('XML-RPC exception: %s' % (exc))
             return []
+        id = data.forceunicode(id)
         self.last_suggestions = suggestions
         results = []
         for suggestion in suggestions:
             result = {}
-            result['target'] = suggestion['text']
-            if isinstance(result['target'], unicode):
-                result['target'] = result['target'].encode("utf-8")
+            result['target'] = data.forceunicode(suggestion['text'])
             result['tmsource'] = suggestion['projects'][0]['name']
-            result['source'] = suggestion['projects'][0]['orig_phrase']
+            result['source'] = data.forceunicode(suggestion['projects'][0]['orig_phrase'])
             #check for fuzzyness at the 'flag' member:
             for project in suggestion['projects']:
                 if project['flags'] == 0:
                     break
             else:
                 continue
-            if isinstance(result['source'], unicode):
-                result['source'] = result['source'].encode("utf-8")
             #open-tran often gives too many results with many which can't really be
             #considered to be suitable for translation memory
-            #FIXME: we should not have to decode here: it should be unicode
-            result['quality'] = self.comparer.similarity(id.decode('utf-8'), result['source'].decode('utf-8'), self.min_similarity)
+            result['quality'] = self.comparer.similarity(id, result['source'], self.min_similarity)
             if result['quality'] >= self.min_similarity:
                 results.append(result)
         results.sort(key=lambda match: match['quality'], reverse=True)

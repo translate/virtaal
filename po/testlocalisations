@@ -14,6 +14,7 @@ if [ $lang == "de_DE" ]; then
 	./intltool-update --pot --gettext-package=$package
 	podebug --rewrite=xxx -f "" --progress=none $potfile $lang.po
 	podebug --rewrite=xxx -f "" --ignore=gtk --progress=none $litedir/gtk20/gtk20.pot $litedir/gtk20/$lang.po
+	podebug --rewrite=xxx -f "" --progress=none $litedir/glib20/glib20.pot $litedir/glib20/$lang.po
 	podebug --rewrite=xxx -f "" --progress=none $litedir/gtkspell/gtkspell.pot $litedir/gtkspell/$lang.po
 	# Prepare 639 by copying French (which is always 100%), turning it into English
 	# and then making it xxx
@@ -34,6 +35,9 @@ fi
 	gtklite=$litedir/gtk20/$language.po
 	gtkreal=/usr/share/locale/$language/LC_MESSAGES/gtk20.mo
 
+	gliblite=$litedir/glib20/$language.po
+	glibreal=/usr/share/locale/$language/LC_MESSAGES/glib20.mo
+
 	gtkspell=$litedir/gtkspell/$language.po
 	gtkspellreal=/usr/share/locale/$language/LC_MESSAGES/gtkspell.mo
 
@@ -48,6 +52,11 @@ fi
 		msgfmt -o $modir/gtk20.mo $gtklite
 	elif [ -f $gtkreal ]; then
 		cp $gtkreal $modir
+	fi
+        if [ -f $gliblite ]; then
+		msgfmt -o $modir/glib20.mo $gliblite
+	elif [ -f $glibreal ]; then
+		cp $glibreal $modir
 	fi
         if [ -f $gtkspell ]; then
 		msgfmt -o $modir/gtkspell.mo $gtkspell

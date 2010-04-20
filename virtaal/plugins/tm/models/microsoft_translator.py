@@ -91,7 +91,7 @@ class TMModel(BaseTMModel):
 
     def got_languages(self, val):
         """Handle the response from the web service to set up language pairs."""
-        val = strip_bom(val.decode('utf-8')).strip().
+        val = strip_bom(val.decode('utf-8')).strip()
         self.languages = [lang for lang in val.split('\r\n')]
 
     def got_translation(self, val, query_str):

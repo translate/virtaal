@@ -27,6 +27,10 @@ from basetmmodel import BaseTMModel
 
 from virtaal.support.httpclient import HTTPClient, RESTRequest
 
+def strip_bom(string):
+    if string[0] == u'\ufeff':
+        return string[1:]
+    return string
 
 class TMModel(BaseTMModel):
     """This is the translation memory model."""
@@ -87,13 +91,14 @@ class TMModel(BaseTMModel):
 
     def got_languages(self, val):
         """Handle the response from the web service to set up language pairs."""
-        # Strip BOM via [1:] and split on DOS line endings
-        self.languages = [lang for lang in val.decode('utf-8')[1:].strip().split('\r\n')]
+        val = strip_bom(val.decode('utf-8')).strip().
+        self.languages = [lang for lang in val.split('\r\n')]
 
     def got_translation(self, val, query_str):
         """Handle the response from the web service now that it came in."""
         if not isinstance(val, unicode):
             val = unicode(val, 'utf-8')
+        val = strip_bom(val)
         match = {
             'source': query_str,
             'target': val,

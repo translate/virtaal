@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -51,6 +51,9 @@ class SearchMode(BaseMode):
 
         self._create_widgets()
         self._setup_key_bindings()
+        # We alter the colours of ent_search, so let's listen for changes on
+        # ent_replace to ensure we are always compliant to the style.
+        self.ent_replace.connect('style-set', self._on_style_set)
 
         self.matches = []
         self.select_first_match = True
@@ -88,9 +91,6 @@ class SearchMode(BaseMode):
             self.ent_search, self.btn_search, self.chk_casesensitive, self.chk_regex,
             self.lbl_replace, self.ent_replace, self.btn_replace, self.chk_replace_all
         ]
-
-        self.default_base = gtk.widget_get_default_style().base[gtk.STATE_NORMAL]
-        self.default_text = gtk.widget_get_default_style().text[gtk.STATE_NORMAL]
 
     def _setup_key_bindings(self):
         gtk.accel_map_add_entry("<Virtaal>/Edit/Search", gtk.keysyms.F3, 0)
@@ -455,6 +455,12 @@ class SearchMode(BaseMode):
         if self.controller.main_controller.store_controller.store is None:
             return
         self.controller.select_mode(self)
+
+    def _on_style_set(self, widget, prev_style):
+        self.default_base = widget.style.base[gtk.STATE_NORMAL]
+        self.default_text = widget.style.text[gtk.STATE_NORMAL]
+        self.ent_search.modify_base(gtk.STATE_NORMAL, self.default_base)
+        self.ent_search.modify_text(gtk.STATE_NORMAL, self.default_text)
 
     def _on_textbox_refreshed(self, textbox, elem):
         """Redoes highlighting after a C{StringElem} render destoyed it."""

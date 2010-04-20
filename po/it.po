@@ -311,7 +311,7 @@ msgstr "<u>Scheda risposte</u>"
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:72
 msgid "http://translate.sourceforge.net/wiki/virtaal/features"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
+msgstr "http://translate.sourceforge.net/wiki/it/virtaal/features"
 
 #: ../share/virtaal/virtaal.glade.h:73
 msgid "<u>More...</u>"
@@ -328,7 +328,7 @@ msgstr "<b><big>Per iniziare</big></b>"
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:77
 msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+msgstr "http://translate.sourceforge.net/wiki/it/virtaal/using_virtaal"
 
 #: ../share/virtaal/virtaal.glade.h:78
 msgid "<u>Manual</u>"

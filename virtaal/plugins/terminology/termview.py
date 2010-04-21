@@ -62,7 +62,7 @@ class TerminologyGUIInfo(StringElemGUI):
             self.bg = _inverse_bg
         else:
             self.fg = _default_fg
-            self.bg = _inverse_bg
+            self.bg = _default_bg
 
 
 class TerminologyCombo(gtk.ComboBox):

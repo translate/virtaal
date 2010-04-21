@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009 Zuza Software Foundation
+# Copyright 2009-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -27,6 +27,7 @@ from translate.storage.placeables import StringElem, parse as elem_parse
 from translate.lang import data
 
 from virtaal.views import placeablesguiinfo
+from virtaal.views.theme import current_theme
 
 
 class TextBox(gtk.TextView):
@@ -398,10 +399,10 @@ class TextBox(gtk.TextView):
         self.selected_elem = elem
         #logging.debug('Selected element: %s (%s)' % (repr(self.selected_elem), unicode(self.selected_elem)))
         if not hasattr(elem, 'gui_info') or not elem.gui_info:
-            elem.gui_info = placeablesguiinfo.StringElemGUI(elem, self, fg='#000000', bg='#90ee90')
+            elem.gui_info = placeablesguiinfo.StringElemGUI(elem, self, fg=current_theme['selected_placeable_fg'], bg=current_theme['selected_placeable_bg'])
         else:
-            elem.gui_info.fg = '#000000'
-            elem.gui_info.bg = '#90ee90'
+            elem.gui_info.fg = current_theme['selected_placeable_fg']
+            elem.gui_info.bg = current_theme['selected_placeable_bg']
         self.apply_gui_info(self.elem, include_subtree=False)
         self.apply_gui_info(self.elem)
         self.apply_gui_info(elem, include_subtree=False)

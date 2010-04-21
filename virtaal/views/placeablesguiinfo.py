@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009 Zuza Software Foundation
+# Copyright 2009-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -23,9 +23,9 @@ import gtk.gdk
 import pango
 from translate.storage.placeables import base, StringElem, general, xliff
 
+from virtaal.views import rendering
+from virtaal.views import theme
 from virtaal.views.widgets.storeviewwidgets import make_pango_layout
-
-import rendering
 
 
 class StringElemGUI(object):
@@ -34,12 +34,12 @@ class StringElemGUI(object):
     """
 
     # MEMBERS #
-    fg = '#000' # See PlaceablesController._on_style_set
+    fg = '#000' # See update_style
     """The current foreground colour.
-        @see PlaceablesController._on_style_set"""
+        @see update_style"""
     bg = '#fff'
     """The current background colour.
-        @see PlaceablesController._on_style_set"""
+        @see update_style"""
 
     cursor_allowed = True
     """Whether the cursor is allowed to enter this element."""
@@ -244,8 +244,8 @@ class StringElemGUI(object):
 
 
 class PhGUI(StringElemGUI):
-    fg = 'darkred'
-    bg = '#f7f7f7'
+    fg = theme.current_theme['markup_warning_fg']
+    bg = theme.current_theme['ph_placeable_bg']
 
 
 class BxGUI(StringElemGUI):
@@ -278,10 +278,11 @@ class ExGUI(StringElemGUI):
 
 class NewlineGUI(StringElemGUI):
     SCALE_FACTOR = 1.2 # Experimentally determined
+    fg = theme.current_theme['subtle_fg']
 
     def create_repr_widgets(self):
         lbl = gtk.Label(u'¶')
-        lbl.modify_fg(gtk.STATE_NORMAL, gtk.gdk.color_parse('grey')) # foreground is light grey
+        lbl.modify_fg(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.fg)) # foreground is light grey
         font_desc = self.textbox.style.font_desc
         lbl.modify_font(font_desc)
         self.textbox.get_pango_context().set_font_description(font_desc)
@@ -289,10 +290,8 @@ class NewlineGUI(StringElemGUI):
         lbl.set_size_request(-1, int(h/1.2))
         self.widgets.append(lbl)
 
-
 class UrlGUI(StringElemGUI):
-    fg = '#0000ff'
-    bg = '#ffffff'
+    fg = theme.current_theme['url_fg']
 
     def create_tags(self):
         tag = gtk.TextTag()
@@ -363,6 +362,18 @@ class UnknownXMLGUI(StringElemGUI):
             lbl.modify_font(rendering.get_role_font_description(self.textbox.role))
             w, h = make_pango_layout(self.textbox, u'{foo}', 100).get_pixel_size()
             lbl.set_size_request(-1, int(h/1.2))
+
+def update_style(widget):
+    import gtk
+    fg = widget.style.fg[gtk.STATE_NORMAL]
+    bg = widget.style.base[gtk.STATE_NORMAL]
+    StringElemGUI.fg = fg.to_string()
+    StringElemGUI.bg = bg.to_string()
+    PhGUI.fg = theme.current_theme['markup_warning_fg']
+    PhGUI.bg = theme.current_theme['ph_placeable_bg']
+    UrlGUI.fg = theme.current_theme['url_fg']
+    NewlineGUI.fg = theme.current_theme['subtle_fg']
+
 
 element_gui_map = [
     (general.NewlinePlaceable, NewlineGUI),

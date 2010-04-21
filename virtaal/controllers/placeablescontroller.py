@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009 Zuza Software Foundation
+# Copyright 2009-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -231,10 +231,7 @@ class PlaceablesController(BaseController):
 
     # EVENT HANDLERS #
     def _on_style_set(self, widget, prev_style):
-        import gtk
-        placeablesguiinfo.StringElemGUI.bg = widget.style.base[gtk.STATE_NORMAL].to_string()
-        placeablesguiinfo.StringElemGUI.fg = widget.style.fg[gtk.STATE_NORMAL].to_string()
-        placeablesguiinfo.UrlGUI.bg = widget.style.base[gtk.STATE_NORMAL].to_string()
+        placeablesguiinfo.update_style(widget)
 
         # Refresh text boxes' colours
         unitview = self.main_controller.unit_controller.view

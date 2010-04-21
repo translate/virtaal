@@ -1,5 +1,6 @@
 # Bulgarian translation of Virtaal.
-# Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
+# Copyright (C) 2010 Christo Petkov <vaeood@yahoo.com>.
+# Copyright (C) 2010 Alexander Shopov <ash@kambanaria.org>.
 # This file is distributed under the same license as the Virtaal package.
 # Christo Petkov <vaeood@yahoo.com>, 2010.
 # Alexander Shopov <ash@kambanaria.org>, 2010.
@@ -7,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.6\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2010-04-01 17:45+0200\n"
-"PO-Revision-Date: 2010-04-18 22:44+0300\n"
+"POT-Creation-Date: 2010-04-19 16:05+0200\n"
+"PO-Revision-Date: 2010-04-21 07:15+0300\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -19,7 +20,7 @@ msgstr ""
 "X-Generator: Virtaal 0.5.1\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
-#: ../share/virtaal/virtaal.glade.h:1 ../virtaal/views/mainview.py:640
+#: ../share/virtaal/virtaal.glade.h:1 ../virtaal/views/mainview.py:636
 msgid "Virtaal"
 msgstr "Virtaal"
 
@@ -582,42 +583,42 @@ msgstr "Атрибути „alt“"
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Служебна дума за атрибутите „alt“ (в HTML)"
 
-#: ../virtaal/controllers/storecontroller.py:115
+#: ../virtaal/controllers/storecontroller.py:112
 msgid "The file contains nothing to translate."
 msgstr "Във файла няма нищо за превод."
 
 #. l10n: The heading of statistics before updating to the new template
-#: ../virtaal/controllers/storecontroller.py:172
+#: ../virtaal/controllers/storecontroller.py:169
 msgid "Before:"
 msgstr "Преди:"
 
 #. l10n: The heading of statistics after updating to the new template
-#: ../virtaal/controllers/storecontroller.py:174
+#: ../virtaal/controllers/storecontroller.py:171
 msgid "After:"
 msgstr "След:"
 
-#: ../virtaal/controllers/storecontroller.py:175
+#: ../virtaal/controllers/storecontroller.py:172
 #, python-format
 msgid "Translated: %d"
 msgstr "Преведени: %d"
 
-#: ../virtaal/controllers/storecontroller.py:176
+#: ../virtaal/controllers/storecontroller.py:173
 #, python-format
 msgid "Fuzzy: %d"
 msgstr "Неясни: %d"
 
-#: ../virtaal/controllers/storecontroller.py:177
+#: ../virtaal/controllers/storecontroller.py:174
 #, python-format
 msgid "Untranslated: %d"
 msgstr "Непреведени: %d"
 
-#: ../virtaal/controllers/storecontroller.py:178
+#: ../virtaal/controllers/storecontroller.py:175
 #, python-format
 msgid "Total: %d"
 msgstr "Общо: %d"
 
 #. l10n: this refers to updating a file to a new template (POT file)
-#: ../virtaal/controllers/storecontroller.py:196
+#: ../virtaal/controllers/storecontroller.py:193
 msgid "File Updated"
 msgstr "Файлът е обновен"
 
@@ -635,13 +636,13 @@ msgstr "Търсене"
 
 #: ../virtaal/modes/searchmode.py:67
 msgid "_Case sensitive"
-msgstr "Зачитане на главни/_малки"
+msgstr "Главни ≠ _малки"
 
 #. l10n: To read about what regular expressions are, see
 #. http://en.wikipedia.org/wiki/Regular_expression
 #: ../virtaal/modes/searchmode.py:71
 msgid "_Regular expression"
-msgstr "_Регулярен израз"
+msgstr "Ре_г. израз"
 
 #. l10n: This text label shows in front of the text box where the replacement
 #. text is typed. Keep in mind that the text box will appear after this text.
@@ -711,13 +712,13 @@ msgstr "Търсене на избрания текст в уеб сайт"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate.
 #: ../virtaal/plugins/lookup/models/weblookup.py:45
-#: ../virtaal/plugins/tm/models/google_translate.py:165
+#: ../virtaal/plugins/tm/models/google_translate.py:168
 msgid "Google"
 msgstr "Google"
 
 #: ../virtaal/plugins/lookup/models/weblookup.py:50
 msgid "Wikipedia"
-msgstr "Wikipedia"
+msgstr "Уикипедия"
 
 #: ../virtaal/plugins/lookup/models/weblookup.py:55
 #: ../virtaal/plugins/terminology/models/opentran.py:46
@@ -845,12 +846,12 @@ msgid "Add Files"
 msgstr "Добавяне на файлове"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:177
-#: ../virtaal/views/mainview.py:225
+#: ../virtaal/views/mainview.py:221
 msgid "All Supported Files"
 msgstr "Всички поддържани файлове"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:203
-#: ../virtaal/views/mainview.py:251
+#: ../virtaal/views/mainview.py:247
 msgid "All Files"
 msgstr "Всички файлове"
 
@@ -889,12 +890,12 @@ msgid "Identical entry already exists."
 msgstr "Съществува превод на термина."
 
 #. l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:443
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:451
 #, python-format
 msgid "<b>%s</b>"
 msgstr "<b>%s</b>"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:444
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:452
 #, python-format
 msgid "Existing translations: %(translations)s"
 msgstr "Съществуващи преводи: %(translations)s"
@@ -928,7 +929,8 @@ msgid "Translated units from the currently open file"
 msgstr "Преведени части от текущо отворения файл"
 
 #. l10n: Try to keep this as short as possible.
-#: ../virtaal/plugins/tm/models/currentfile.py:82
+#: ../virtaal/plugins/tm/models/currentfile.py:94
+#: ../virtaal/plugins/tm/models/currentfile.py:110
 msgid "This file"
 msgstr "Този файл"
 
@@ -950,14 +952,14 @@ msgid "Unreviewed machine translations from Microsoft Translator"
 msgstr "Непроверени автоматични преводи от Microsoft Translator"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
-#: ../virtaal/plugins/tm/models/microsoft_translator.py:98
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:101
 msgid "Microsoft"
 msgstr "Microsoft"
 
 #. l10n: This is the name of a software library. You almost definitely don't want to translate this. The lower case 'l' is intentional.
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
 #: ../virtaal/plugins/tm/models/libtranslate.py:45
-#: ../virtaal/plugins/tm/models/libtranslate.py:98
+#: ../virtaal/plugins/tm/models/libtranslate.py:101
 msgid "libtranslate"
 msgstr "libtranslate"
 
@@ -976,11 +978,11 @@ msgstr "Съществуващи лични преводи"
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/localtm.py:40
 msgid "Local TM"
-msgstr "Локална памет"
+msgstr "Лок. п-т"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
 #: ../virtaal/plugins/tm/models/moses.py:33
-#: ../virtaal/plugins/tm/models/moses.py:71
+#: ../virtaal/plugins/tm/models/moses.py:74
 msgid "Moses"
 msgstr "Moses"
 
@@ -993,8 +995,8 @@ msgid "Previous translations for Free and Open Source Software"
 msgstr "Съществуващи преводи на свободен софтуер и софтуер с отворен код"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
-#: ../virtaal/plugins/tm/models/opentran.py:76
-#: ../virtaal/plugins/tm/models/opentran.py:78
+#: ../virtaal/plugins/tm/models/opentran.py:79
+#: ../virtaal/plugins/tm/models/opentran.py:81
 msgid "OpenTran"
 msgstr "OpenTran"
 
@@ -1009,7 +1011,7 @@ msgstr "Сървър с памет за преводи"
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/remotetm.py:33
 msgid "Remote TM"
-msgstr "Дистанционна памет"
+msgstr "Отд. п-т"
 
 #: ../virtaal/plugins/tm/models/tinytm.py:34
 msgid "TinyTM"
@@ -1020,31 +1022,31 @@ msgid "A TinyTM translation memory server"
 msgstr "Сървър с памет за преводи с TinyTM"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
-#: ../virtaal/plugins/tm/models/apertium.py:35
-#: ../virtaal/plugins/tm/models/apertium.py:99
+#: ../virtaal/plugins/tm/models/apertium.py:43
+#: ../virtaal/plugins/tm/models/apertium.py:125
 msgid "Apertium"
 msgstr "Apertium"
 
-#: ../virtaal/plugins/tm/models/apertium.py:36
+#: ../virtaal/plugins/tm/models/apertium.py:44
 msgid "Unreviewed machine translations from Apertium"
 msgstr "Непроверени автоматични преводи от Apertium"
 
-#: ../virtaal/plugins/tm/tmview.py:99
+#: ../virtaal/plugins/tm/tmview.py:107
 msgid "Translation _Suggestions"
 msgstr "_Предложения за превод"
 
-#: ../virtaal/plugins/tm/tmview.py:140
+#: ../virtaal/plugins/tm/tmview.py:148
 #, python-format
 msgid "Ctrl+%(number_key)d"
 msgstr "Ctrl+%(number_key)d"
 
 #. l10n: The 'sources' here refer to different translation memory plugins,
 #. such as local tm, open-tran.eu, the current file, etc.
-#: ../virtaal/plugins/tm/tmview.py:163
+#: ../virtaal/plugins/tm/tmview.py:171
 msgid "Select sources of Translation Memory"
 msgstr "Избор на източници на памет за преводи"
 
-#: ../virtaal/plugins/tm/tmview.py:164
+#: ../virtaal/plugins/tm/tmview.py:172
 msgid "Select the sources that should be queried for translation memory"
 msgstr "Избор на източници на памет за преводи"
 
@@ -1071,19 +1073,19 @@ msgstr "%(match_quality)s%%"
 msgid "_New Language Pair..."
 msgstr "_Нова езикова двойка…"
 
-#: ../virtaal/views/mainview.py:202
+#: ../virtaal/views/mainview.py:198
 msgid "Error"
 msgstr "Грешка"
 
-#: ../virtaal/views/mainview.py:218
+#: ../virtaal/views/mainview.py:214
 msgid "Choose a Translation File"
 msgstr "Избор на файл за превод"
 
-#: ../virtaal/views/mainview.py:256
+#: ../virtaal/views/mainview.py:252
 msgid "Save"
 msgstr "Запазване"
 
-#: ../virtaal/views/mainview.py:270
+#: ../virtaal/views/mainview.py:266
 msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
@@ -1091,7 +1093,7 @@ msgstr ""
 "Текущият файл е променен.\n"
 "Да се запазят ли промените?"
 
-#: ../virtaal/views/mainview.py:273
+#: ../virtaal/views/mainview.py:269
 msgid "_Discard"
 msgstr "_Без запазване"
 
@@ -1099,16 +1101,16 @@ msgstr "_Без запазване"
 #. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
 #. %(current_file)s is the file name of the current file
 #. most languages will not need to change this
-#: ../virtaal/views/mainview.py:310
+#: ../virtaal/views/mainview.py:306
 #, python-format
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgstr "%(modified_marker)s%(current_file)s — Virtaal"
 
-#: ../virtaal/views/mainview.py:335
+#: ../virtaal/views/mainview.py:331
 msgid "Please enter the number of noun forms (plurals) to use"
 msgstr "Въведете броя форми на множествените числа"
 
-#: ../virtaal/views/mainview.py:341
+#: ../virtaal/views/mainview.py:337
 msgid "Please enter the plural equation to use"
 msgstr "Въведете израза за множествено число"
 
@@ -1118,7 +1120,7 @@ msgstr "Въведете израза за множествено число"
 msgid "N_avigation:"
 msgstr "Н_авигация:"
 
-#: ../virtaal/views/unitview.py:622
+#: ../virtaal/views/unitview.py:640
 msgid "F_uzzy"
 msgstr "Н_еясно"
 
@@ -1344,52 +1346,52 @@ msgstr "Превод — Qt, компилиран .qm"
 msgid "OmegaT Glossary"
 msgstr "Речник на OmegaT"
 
-#: ../bin/virtaal:78
+#: ../bin/virtaal:80
 #, c-format
 msgid "%prog [options] [translation_file]"
 msgstr "%prog [опции] [файл_с_превод]"
 
-#: ../bin/virtaal:81
+#: ../bin/virtaal:83
 msgid "PROFILE"
 msgstr "ОТЧЕТ"
 
-#: ../bin/virtaal:83
+#: ../bin/virtaal:85
 msgid "perform profiling, storing the result to the supplied filename."
 msgstr "отчет за времената за изпълнение. Те се записват в посочения файл."
 
-#: ../bin/virtaal:85
+#: ../bin/virtaal:87
 msgid "LOG"
 msgstr "ЖУРНАЛ"
 
-#: ../bin/virtaal:86
+#: ../bin/virtaal:88
 msgid "turn on logging, storing the result to the supplied filename."
 msgstr "включване на журналните записи. Те се записват в посочения файл."
 
-#: ../bin/virtaal:88
+#: ../bin/virtaal:90
 msgid "CONFIG"
 msgstr "НАСТРОЙКИ"
 
-#: ../bin/virtaal:89
+#: ../bin/virtaal:91
 msgid "use the configuration file given by the supplied filename."
 msgstr "ползване на посочения файл с настройки."
 
-#: ../bin/virtaal:92
+#: ../bin/virtaal:94
 msgid "enable debugging features"
 msgstr "включване на функциите за отстраняване на грешки"
 
-#: ../bin/virtaal:117
+#: ../bin/virtaal:119
 msgid "Could not open log file '%(filename)s'"
 msgstr "Журналният файл — '%(filename)s' не може да бъде отворен"
 
-#: ../bin/virtaal:125
+#: ../bin/virtaal:127
 msgid "Could not read configuration file '%(filename)s'"
 msgstr "Файлът с настройките — '%(filename)s' не може да бъде прочетен"
 
-#: ../bin/virtaal:129
+#: ../bin/virtaal:131
 msgid "invalid number of arguments"
 msgstr "неправилен брой аргументи"
 
-#: ../bin/virtaal:158
+#: ../bin/virtaal:160
 msgid "Could not open profile file '%(filename)s'"
 msgstr "Файлът с профила — '%(filename)s' не може да бъде отворен"
 

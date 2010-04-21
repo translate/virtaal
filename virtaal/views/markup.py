@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2007-2009 Zuza Software Foundation
+# Copyright 2007-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -20,6 +20,8 @@
 
 from difflib import SequenceMatcher
 import re
+
+from virtaal.views.theme import current_theme
 
 # We want to draw unexpected spaces specially so that users can spot them
 # easily without having to resort to showing all spaces weirdly
@@ -41,12 +43,12 @@ def _fancyspaces(string):
 
 _xml_re = re.compile("&lt;[^>]+>")
 def _fancy_xml(escape):
-    """Marks up the XML to appear dark red."""
-    return u'<span foreground="darkred">%s</span>' % escape.group()
+    """Marks up the XML to appear in the warning red colour."""
+    return u'<span foreground="%s">%s</span>' % (current_theme['markup_warning_fg'], escape.group())
 
 def _subtle_escape(escape):
-    """Marks up the given escape to appear dark grey without a newline appended."""
-    return u'<span foreground="darkgrey">%s</span>' % escape
+    """Marks up the given escape to appear in a subtle grey colour."""
+    return u'<span foreground="%s">%s</span>' % (current_theme['subtle_fg'], escape)
 
 def _escape_entities(s):
     """Escapes '&' and '<' in literal text so that they are not seen as markup."""

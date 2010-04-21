@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -27,7 +27,7 @@ from gtk import gdk
 from translate.storage import factory
 
 from virtaal import __version__
-from virtaal.views import recent
+from virtaal.views import recent, theme
 from virtaal.common import pan_app
 from virtaal.support import openmailto
 
@@ -187,6 +187,7 @@ class MainView(BaseView):
         self._create_dialogs()
         self._setup_key_bindings()
         self._track_window_state()
+        self.main_window.connect('style-set', self._on_style_set)
 
     def _create_dialogs(self):
         self.input_dialog = EntryDialog(self.main_window)
@@ -280,6 +281,9 @@ class MainView(BaseView):
         def on_state_event(widget, event):
             self._window_is_maximized = bool(event.new_window_state & gtk.gdk.WINDOW_STATE_MAXIMIZED)
         self.main_window.connect('window-state-event', on_state_event)
+
+    def _on_style_set(self, widget, prev_style):
+        theme.update_style(widget)
 
 
     # ACCESSORS #

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009 Zuza Software Foundation
+# Copyright 2009-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -29,6 +29,7 @@ from translate.storage import factory as store_factory
 
 from virtaal.common import pan_app
 from virtaal.views import BaseView, rendering
+from virtaal.views.theme import current_theme
 
 
 class LocalFileView:
@@ -338,8 +339,6 @@ class TermAddDialog:
         self.ent_source.connect('changed', self._on_entry_changed)
         self.ent_target.connect('changed', self._on_entry_changed)
 
-        self.eb_add_term_errors.modify_bg(gtk.STATE_NORMAL, gdk.color_parse('#f88'))
-
 
     # METHODS #
     def add_term_unit(self, source, target):
@@ -431,6 +430,7 @@ class TermAddDialog:
         dup = self.term_model.get_duplicates(src_text, tgt_text)
         if dup:
             self.lbl_add_term_errors.set_text(_('Identical entry already exists.'))
+            self.eb_add_term_errors.modify_bg(gtk.STATE_NORMAL, gdk.color_parse(current_theme['warning_bg']))
             self.eb_add_term_errors.show_all()
             self.btn_add_term.props.sensitive = False
             return
@@ -453,5 +453,6 @@ class TermAddDialog:
                 'translations': translations
             }
             self.lbl_add_term_errors.set_markup(errormsg)
+            self.eb_add_term_errors.modify_bg(gtk.STATE_NORMAL, gdk.color_parse(current_theme['warning_bg']))
             self.eb_add_term_errors.show_all()
             return

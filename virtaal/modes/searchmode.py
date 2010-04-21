@@ -29,6 +29,7 @@ from virtaal.controllers import Cursor
 
 from basemode import BaseMode
 from virtaal.views import markup
+from virtaal.views.theme import current_theme
 
 
 class SearchMode(BaseMode):
@@ -216,7 +217,7 @@ class SearchMode(BaseMode):
             self.matchcursor.index = match_index
         else:
             if self.ent_search.get_text():
-                self.ent_search.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse('#f66'))
+                self.ent_search.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse(current_theme['warning_bg']))
                 self.ent_search.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse('#fff'))
             else:
                 self.ent_search.modify_base(gtk.STATE_NORMAL, self.default_base)

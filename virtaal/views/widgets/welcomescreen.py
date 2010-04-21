@@ -4,6 +4,7 @@
 import gtk
 from gobject import SIGNAL_RUN_FIRST
 
+from virtaal.views.theme import current_theme
 
 class WelcomeScreen(gtk.ScrolledWindow):
     """
@@ -41,8 +42,6 @@ class WelcomeScreen(gtk.ScrolledWindow):
         for wname in widget_names:
             self.widgets[wname] = self.gui.get_widget(wname)
 
-        self.widgets['exp_features'].set_label('<span foreground="blue">%s</span>' % (self.widgets['exp_features'].get_label()))
-
         self.widgets['buttons'] = {}
         button_names = (
             'open', 'recent1', 'recent2', 'recent3', 'recent4', 'recent5',
@@ -52,10 +51,17 @@ class WelcomeScreen(gtk.ScrolledWindow):
         for bname in button_names:
             btn = self.gui.get_widget('btn_' + bname)
             self.widgets['buttons'][bname] = btn
-
             btn.connect('clicked', self._on_button_clicked, bname)
 
-            # Find a gtk.Label as a child of the button...
+
+    def _style_widgets(self):
+        url_fg_color = gtk.gdk.color_parse(current_theme['url_fg'])
+
+        for s in [gtk.STATE_ACTIVE, gtk.STATE_NORMAL, gtk.STATE_SELECTED]:
+            self.widgets['exp_features'].get_children()[1].modify_fg(s, url_fg_color)
+
+        # Find a gtk.Label as a child of the button...
+        for btn in self.widgets['buttons'].values():
             label = None
             if isinstance(btn.child, gtk.Label):
                 label = btn.child
@@ -65,7 +71,8 @@ class WelcomeScreen(gtk.ScrolledWindow):
                         label = widget
                         break
             if label:
-                label.set_markup('<span foreground="blue">%s</span>' % (label.get_label()))
+                for s in [gtk.STATE_ACTIVE, gtk.STATE_NORMAL, gtk.STATE_SELECTED]:
+                    label.modify_fg(s, url_fg_color)
 
     def _init_feature_view(self):
         features = u"\n".join([
@@ -87,6 +94,10 @@ class WelcomeScreen(gtk.ScrolledWindow):
     # SIGNAL HANDLERS #
     def _on_button_clicked(self, button, name):
         self.emit('button-clicked', name)
+
+    def do_style_set(self, previous_style):
+        self.child.modify_bg(gtk.STATE_NORMAL, self.style.base[gtk.STATE_NORMAL])
+        self._style_widgets()
 
 
 if __name__ == '__main__':

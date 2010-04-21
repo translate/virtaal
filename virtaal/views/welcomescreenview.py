@@ -40,7 +40,6 @@ class WelcomeScreenView(BaseView):
         self.widget = WelcomeScreen(gui)
         self.parent_widget = self.controller.main_controller.view.gui.get_widget('vbox_main')
 
-        self.set_widget_bg()
         self.set_banner()
         self.widget.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         self.widget.connect('button-clicked', self._on_button_clicked)
@@ -50,9 +49,6 @@ class WelcomeScreenView(BaseView):
             self.widget.set_banner_image(get_abs_data_filename(['virtaal', 'welcome_screen_banner_rtl.png']))
         else:
             self.widget.set_banner_image(get_abs_data_filename(['virtaal', 'welcome_screen_banner.png']))
-
-    def set_widget_bg(self):
-        idle_add(lambda: self.widget.child.modify_bg(gtk.STATE_NORMAL, self.widget.style.base[gtk.STATE_NORMAL]))
 
 
     # METHODS #
@@ -91,7 +87,7 @@ class WelcomeScreenView(BaseView):
         buttons = [
             self.widget.widgets['buttons']['recent' + str(i)] for i in range(1, self.controller.MAX_RECENT+1)
         ]
-        markup = '<span foreground="blue" underline="single">%(name)s</span>'
+        markup = '<span underline="single">%(name)s</span>'
 
         for i in range(len(items)):
             iconfile = get_abs_data_filename(['icons', 'hicolor', '24x24', 'mimetypes', 'x-translation.png'])

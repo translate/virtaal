@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009 Zuza Software Foundation
+# Copyright 2009-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -51,6 +51,7 @@ class TerminologyController(BaseController):
         self.placeables_controller.add_parsers(*terminology.parsers)
         self.placeables_controller.non_target_placeables.append(terminology.TerminologyPlaceable)
         self.placeables_controller.connect('parsers-changed', self._on_placeables_changed)
+        main_controller.view.main_window.connect('style-set', self._on_style_set)
 
         if not (terminology.TerminologyPlaceable, TerminologyGUIInfo) in placeablesguiinfo.element_gui_map:
             placeablesguiinfo.element_gui_map.insert(0, (terminology.TerminologyPlaceable, TerminologyGUIInfo))
@@ -96,3 +97,6 @@ class TerminologyController(BaseController):
         for term_parser in terminology.parsers:
             if term_parser not in placeables_controller.parsers:
                 placeables_controller.add_parsers(term_parser)
+
+    def _on_style_set(self, widget, prev_style):
+        TerminologyGUIInfo.update_style(widget)

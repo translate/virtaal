@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009 Zuza Software Foundation
+# Copyright 2009-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -22,9 +22,15 @@ import gtk
 import logging
 
 from virtaal.views import BaseView, rendering
+from virtaal.views.theme import is_inverse
 from virtaal.views.placeablesguiinfo import StringElemGUI
 from virtaal.views.widgets.selectdialog import SelectDialog
 
+
+_default_fg = '#006600'
+_default_bg = '#eeffee'
+_inverse_fg = '#cfffff'
+_inverse_bg = '#003000'
 
 class TerminologyGUIInfo(StringElemGUI):
     """
@@ -32,8 +38,8 @@ class TerminologyGUIInfo(StringElemGUI):
     choose the selected match from.
     """
     # MEMBERS #
-    bg = '#eeffee'
-    fg = '#006600'
+    fg = _default_fg
+    bg = _default_bg
 
     def __init__(self, elem, textbox, **kwargs):
         assert elem.__class__.__name__ == 'TerminologyPlaceable'
@@ -45,6 +51,18 @@ class TerminologyGUIInfo(StringElemGUI):
         if len(self.elem.translations) > 1:
             return TerminologyCombo(self.elem)
         return None
+
+    @classmethod
+    def update_style(self, widget):
+        import gtk
+        fg = widget.style.fg[gtk.STATE_NORMAL]
+        bg = widget.style.base[gtk.STATE_NORMAL]
+        if is_inverse(fg, bg):
+            self.fg = _inverse_fg
+            self.bg = _inverse_bg
+        else:
+            self.fg = _default_fg
+            self.bg = _inverse_bg
 
 
 class TerminologyCombo(gtk.ComboBox):

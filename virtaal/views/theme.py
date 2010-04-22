@@ -54,7 +54,7 @@ _inverse_theme = {
     'markup_warning_fg': '#ff3030',
     'ph_placeable_bg': '#101010',
     'warning_bg': '#900',
-    'fuzzy_row_bg': '#555555',
+    'fuzzy_row_bg': '#474747',
 }
 
 current_theme = _default_theme.copy()

@@ -51,10 +51,10 @@ class StoreView(BaseView):
         self._treeview = StoreTreeView(self)
 
     def _add_accelerator_bindings(self):
-        gtk.accel_map_add_entry("<Virtaal>/Navigation/Up", gtk.accelerator_parse("Up")[0], gdk.CONTROL_MASK)
-        gtk.accel_map_add_entry("<Virtaal>/Navigation/Down", gtk.accelerator_parse("Down")[0], gdk.CONTROL_MASK)
-        gtk.accel_map_add_entry("<Virtaal>/Navigation/PgUp", gtk.accelerator_parse("Page_Up")[0], gdk.CONTROL_MASK)
-        gtk.accel_map_add_entry("<Virtaal>/Navigation/PgDown", gtk.accelerator_parse("Page_Down")[0], gdk.CONTROL_MASK)
+        gtk.accel_map_add_entry("<Virtaal>/Navigation/Up", gtk.accelerator_parse("Up")[0], gtk.gdk.CONTROL_MASK)
+        gtk.accel_map_add_entry("<Virtaal>/Navigation/Down", gtk.accelerator_parse("Down")[0], gtk.gdk.CONTROL_MASK)
+        gtk.accel_map_add_entry("<Virtaal>/Navigation/PgUp", gtk.accelerator_parse("Page_Up")[0], gtk.gdk.CONTROL_MASK)
+        gtk.accel_map_add_entry("<Virtaal>/Navigation/PgDown", gtk.accelerator_parse("Page_Down")[0], gtk.gdk.CONTROL_MASK)
 
         self.accel_group = gtk.AccelGroup()
         self.accel_group.connect_by_path("<Virtaal>/Navigation/Up", self._treeview._move_up)

@@ -29,8 +29,8 @@ from virtaal.views.widgets.selectdialog import SelectDialog
 
 _default_fg = '#006600'
 _default_bg = '#eeffee'
-_inverse_fg = '#cfffff'
-_inverse_bg = '#003000'
+_inverse_fg = '#c7ffff'
+_inverse_bg = '#003700'
 
 class TerminologyGUIInfo(StringElemGUI):
     """

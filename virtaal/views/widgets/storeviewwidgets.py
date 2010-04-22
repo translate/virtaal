@@ -22,11 +22,11 @@ import gobject
 import gtk
 import logging
 import pango
-from gtk import gdk
 from translate.lang import factory
 
 from virtaal.support.simplegeneric import generic
 from virtaal.views import markup, rendering
+from virtaal.views.theme import current_theme
 from virtaal.common import pan_app
 
 
@@ -438,7 +438,7 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
 
     def _set_unit(self, value):
         if value.isfuzzy():
-            self.props.cell_background = "gray"
+            self.props.cell_background = current_theme['fuzzy_row_bg']
             self.props.cell_background_set = True
         else:
             self.props.cell_background_set = False

@@ -40,6 +40,8 @@ _default_theme = {
     'ph_placeable_bg': '#f7f7f7',
     # warning background for things like no search result
     'warning_bg': '#f66',
+    # row colour for fuzzy strings
+    'fuzzy_row_bg': 'grey',
 }
 # TODO:
 # diffing markup - check virtaal/views/markup.py
@@ -52,6 +54,7 @@ _inverse_theme = {
     'markup_warning_fg': '#ff3030',
     'ph_placeable_bg': '#101010',
     'warning_bg': '#700',
+    'fuzzy_row_bg': '#555555',
 }
 
 current_theme = _default_theme.copy()

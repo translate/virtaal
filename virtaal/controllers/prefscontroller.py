@@ -76,6 +76,7 @@ class PreferencesController(BaseController):
         # PluginController instance is enabled/disabled via the main virtaal.ini's
         # "[plugin_state]" section.
         pan_app.settings.plugin_state[plugin_name] = disabled and 'disabled' or 'enabled'
+        self.update_prefs_gui_data()
 
     def update_prefs_gui_data(self):
         self._update_font_gui_data()

@@ -50,7 +50,7 @@ _inverse_theme = {
     'selected_placeable_fg': '#ffffff',
     'selected_placeable_bg': '#007010',
     'markup_warning_fg': '#ff3030',
-    'ph_placeable_bg': '#070707',
+    'ph_placeable_bg': '#101010',
     'warning_bg': '#700',
 }
 

@@ -364,7 +364,6 @@ class UnknownXMLGUI(StringElemGUI):
             lbl.set_size_request(-1, int(h/1.2))
 
 def update_style(widget):
-    import gtk
     fg = widget.style.fg[gtk.STATE_NORMAL]
     bg = widget.style.base[gtk.STATE_NORMAL]
     StringElemGUI.fg = fg.to_string()

@@ -19,7 +19,6 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gtk
-import os
 
 from virtaal import __version__
 from virtaal.common import pan_app

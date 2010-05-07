@@ -61,7 +61,7 @@ msgstr ""
 msgid "Name:"
 msgstr ""
 
-#. If the source will remain mostly or completely unchanged it is convenient to copy the entire source string with Alt+Down. Here is almost nothing to translate, so just press Alt+Down and corrections if necessary.
+#. If the source will remain mostly or completely unchanged it is convenient to copy the entire source string with Alt+Down. Here is almost nothing to translate, so just press Alt+Down and make corrections if necessary.
 msgid "<b><a href=\"http://virtaal.org/\">Virtaal</a></b>"
 msgstr ""
 

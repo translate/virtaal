@@ -707,7 +707,7 @@ msgstr "Seleziona i servizi da usare per effettuare ricerche"
 #: ../virtaal/plugins/lookup/lookupview.py:123
 #, python-format
 msgid "Look-up \"%(selection)s\""
-msgstr "Ricercare \"%(selezione)i\""
+msgstr "Ricercare \"%(selection)s\""
 
 #. l10n: plugin name
 #: ../virtaal/plugins/lookup/models/weblookup.py:40
@@ -906,7 +906,7 @@ msgstr "<b>%s</b>"
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:444
 #, python-format
 msgid "Existing translations: %(translations)s"
-msgstr "Traduzioni esistenti: %(traduzioni)s"
+msgstr "Traduzioni esistenti: %(translations)s"
 
 #: ../virtaal/plugins/terminology/models/opentran.py:47
 msgid "Terms from Open-Tran.eu"

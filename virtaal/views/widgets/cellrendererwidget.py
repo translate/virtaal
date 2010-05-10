@@ -50,7 +50,6 @@ class CellRendererWidget(gtk.GenericCellRenderer):
 
         self.default_width = default_width
         self._editing = False
-        self.editablemap = {}
         self.strfunc = strfunc
         self.widget = None
 
@@ -103,10 +102,9 @@ class CellRendererWidget(gtk.GenericCellRenderer):
 
     def on_start_editing(self, event, tree_view, path, bg_area, cell_area, flags):
         #print '%s>> on_start_editing(flags=%s, event=%s)' % (self.strfunc(self.widget), flagstr(flags), event)
-        if self.widget not in self.editablemap:
-            editable = CellWidget(self.widget)
-            self.editablemap[self.widget] = editable
-        editable = self.editablemap[self.widget]
+        editable = self.widget
+        if not isinstance(editable, gtk.CellEditable):
+            editable = CellWidget(editable)
         editable.show_all()
         editable.grab_focus()
         return editable

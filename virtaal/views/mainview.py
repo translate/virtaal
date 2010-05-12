@@ -544,9 +544,7 @@ class MainView(BaseView):
             return 'save'
         elif response == gtk.RESPONSE_NO:
             return 'discard'
-        elif response == gtk.RESPONSE_CANCEL:
-            return 'cancel'
-        return ''
+        return 'cancel'
 
 
     # SIGNAL HANDLERS #

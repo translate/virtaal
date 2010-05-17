@@ -18,8 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
 import logging
+from gobject import SIGNAL_RUN_FIRST
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.views import MainView
@@ -33,8 +33,8 @@ class MainController(BaseController):
 
     __gtype_name__ = 'MainController'
     __gsignals__ = {
-        'controller-registered': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
-        'quit': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, tuple()),
+        'controller-registered': (SIGNAL_RUN_FIRST, None, (object,)),
+        'quit':                  (SIGNAL_RUN_FIRST, None, tuple()),
     }
 
     # INITIALIZERS #

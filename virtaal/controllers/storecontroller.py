@@ -113,8 +113,9 @@ class StoreController(BaseController):
         extension = filename.split(os.extsep)[-1]
         if extension in convert_factory.converters:
             self.projman = ProjectManager()
-            srcfile, srcfilename, transfile = self.projman.add_source_convert(filename)
-            logging.info('Converted document %s to translatable file %s' % (srcfilename, transfile.name))
+            srcfile, srcfilename, transfile, transfilename = self.projman.add_source_convert(filename)
+            self.real_filename = transfile.name
+            logging.info('Converted document %s to translatable file %s' % (srcfilename, self.real_filename))
             self.store = StoreModel(transfile, self)
         else:
             self.store = StoreModel(filename, self)
@@ -144,8 +145,9 @@ class StoreController(BaseController):
         self.store.save_file(filename) # store.save_file() will raise an appropriate exception if necessary
         if self.projman is not None:
             if filename is None:
-                filename = self.store.filename
-            self.projman.trans2target(filename)
+                filename = self.real_filename
+            proj_fname = self.projman.get_proj_filename(filename)
+            self.projman.convert_forward(proj_fname)
         self._modified = False
         self.main_controller.set_saveable(False)
         self.emit('store-saved')

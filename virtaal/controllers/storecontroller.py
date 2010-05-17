@@ -167,6 +167,9 @@ class StoreController(BaseController):
             if filename is None:
                 filename = self.real_filename
             proj_fname = self.project.get_proj_filename(filename)
+            if not proj_fname:
+                raise Exception("Unable to determine file's project name: %s" % (filename))
+            self.project.update_file(proj_fname, open(filename))
             self.project.convert_forward(proj_fname)
         self._modified = False
         self.main_controller.set_saveable(False)

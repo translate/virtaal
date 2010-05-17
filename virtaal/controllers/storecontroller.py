@@ -20,7 +20,10 @@
 
 import gobject
 import logging
+import os
 import re
+from translate.convert import factory as convert_factory
+from translate.storage.projman import ProjectManager
 
 from virtaal.common import GObjectWrapper
 from virtaal.models import StoreModel
@@ -106,7 +109,14 @@ class StoreController(BaseController):
             self.cursor.index = i
 
     def open_file(self, filename, uri=''):
-        self.store = StoreModel(filename, self)
+        extension = filename.split(os.extsep)[-1]
+        if extension in convert_factory.converters:
+            self.projman = ProjectManager()
+            srcfile, srcfilename, transfile = self.projman.add_source_convert(filename)
+            logging.info('Converted document %s to translatable file %s' % (srcfilename, transfile.name))
+            self.store = StoreModel(transfile, self)
+        else:
+            self.store = StoreModel(filename, self)
 
         if len(self.store.get_units()) < 1:
             raise Exception(_('The file contains nothing to translate.'))

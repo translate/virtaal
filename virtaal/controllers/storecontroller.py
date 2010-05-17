@@ -54,6 +54,7 @@ class StoreController(BaseController):
         self.cursor = None
         self.handler_ids = {}
         self._modified = False
+        self.projman = None
         self.store = None
         self.view = StoreView(self)
 
@@ -150,6 +151,7 @@ class StoreController(BaseController):
         self.emit('store-saved')
 
     def close_file(self):
+        self.projman = None
         self.store = None
         self._modified = False
         self.main_controller.set_saveable(False)

@@ -171,6 +171,7 @@ class StoreController(BaseController):
                 raise ValueError("Unable to determine file's project name: %s" % (filename))
             self.project.update_file(proj_fname, open(filename))
             self.project.convert_forward(proj_fname)
+            self.project.save()
         self._modified = False
         self.main_controller.set_saveable(False)
         self.emit('store-saved')

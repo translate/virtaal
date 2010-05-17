@@ -44,10 +44,10 @@ class StoreModel(BaseModel):
     __gtype_name__ = "StoreModel"
 
     # INITIALIZERS #
-    def __init__(self, filename, controller):
+    def __init__(self, fileobj, controller):
         super(StoreModel, self).__init__()
         self.controller = controller
-        self.load_file(filename)
+        self.load_file(fileobj)
 
 
     # SPECIAL METHODS #
@@ -99,14 +99,23 @@ class StoreModel(BaseModel):
         return [self._trans_store.units[i] for i in self._valid_units]
 
     # METHODS #
-    def load_file(self, filename):
+    def load_file(self, fileobj):
         # Adapted from Document.__init__()
-        if not os.path.exists(filename):
-            raise IOError(_('The file does not exist.'))
-        if not os.path.isfile(filename):
-            raise IOError(_('Not a valid file.'))
+        filename = fileobj
+        if isinstance(filename, basestring):
+            if not os.path.exists(filename):
+                raise IOError(_('The file does not exist.'))
+            if not os.path.isfile(filename):
+                raise IOError(_('Not a valid file.'))
+        else:
+            # Try and determine the file name of the file object
+            filename = getattr(fileobj, 'name', None)
+            if filename is None:
+                filename = getattr(fileobj, 'filename', None)
+            if filename is None:
+                filename = '<projectfile>'
         logging.info('Loading file %s' % (filename))
-        self._trans_store = factory.getobject(filename)
+        self._trans_store = factory.getobject(fileobj)
         self.filename = filename
         self.stats = statsdb.StatsCache().filestats(filename, checks.UnitChecker(), self._trans_store)
         self._correct_header(self._trans_store)

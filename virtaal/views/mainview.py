@@ -241,7 +241,7 @@ class MainView(BaseView):
                 for extension in extensions:
                     new_filter.add_pattern("*." + extension)
                     all_supported_filter.add_pattern("*." + extension)
-                    for compress_extension in factory.decompressclass.keys():
+                    for compress_extension in storage_factory.decompressclass.keys():
                         new_filter.add_pattern("*.%s.%s" % (extension, compress_extension))
                         all_supported_filter.add_pattern("*.%s.%s" % (extension, compress_extension))
             if mimetypes:
@@ -249,6 +249,15 @@ class MainView(BaseView):
                     new_filter.add_mime_type(mimetype)
                     all_supported_filter.add_mime_type(mimetype)
             self.open_chooser.add_filter(new_filter)
+
+        doc_filter = gtk.FileFilter()
+        doc_filter.set_name(_('Translatable documents'))
+        from translate.convert import factory as convert_factory
+        for extension in convert_factory.converters.keys():
+            doc_filter.add_pattern('*.' + extension)
+            all_supported_filter.add_pattern('*.' + extension)
+        self.open_chooser.add_filter(doc_filter)
+
         all_filter = gtk.FileFilter()
         all_filter.set_name(_("All Files"))
         all_filter.add_pattern("*")

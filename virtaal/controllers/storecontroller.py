@@ -23,7 +23,7 @@ import logging
 import os
 import re
 from translate.convert import factory as convert_factory
-from translate.storage.project import Project
+from translate.storage import proj
 
 from virtaal.common import GObjectWrapper
 from virtaal.models import StoreModel
@@ -111,8 +111,28 @@ class StoreController(BaseController):
 
     def open_file(self, filename, uri=''):
         extension = filename.split(os.extsep)[-1]
-        if extension in convert_factory.converters:
-            self.project = Project()
+        if extension == 'zip':
+            try:
+                self.project = proj.Project(proj.BundleProjectStore(filename))
+            except proj.InvalidBundleError, err:
+                logging.exception('Unable to load project bundle')
+
+            if not len(self.project.store.transfiles):
+                # FIXME: Ask the user to select a source file to convert?
+                if not len(self.project.store.sourcefiles):
+                    raise proj.InvalidBundleError('No source or translatable files in bundle')
+                self.project.convert_forward(self.project.store.sourcefiles[0])
+
+            # FIXME: Ask the user which translatable file to open?
+            transfile = self.project.get_file(self.project.store.transfiles[0])
+            self.real_filename = transfile.name
+            logging.info(
+                'Editing translation file %s in bundle %s' %
+                (os.path.split(self.real_filename)[-1], filename)
+            )
+            self.store = StoreModel(transfile, self)
+        elif extension in convert_factory.converters:
+            self.project = proj.Project()
             srcfile, srcfilename, transfile, transfilename = self.project.add_source_convert(filename)
             self.real_filename = transfile.name
             logging.info('Converted document %s to translatable file %s' % (srcfilename, self.real_filename))

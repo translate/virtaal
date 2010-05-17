@@ -260,6 +260,12 @@ class MainView(BaseView):
             all_supported_filter.add_pattern('*.' + extension)
         self.open_chooser.add_filter(doc_filter)
 
+        proj_filter = gtk.FileFilter()
+        proj_filter.set_name(_('Translate project bundles'))
+        proj_filter.add_pattern('*.zip')
+        all_supported_filter.add_pattern('*.zip')
+        self.open_chooser.add_filter(proj_filter)
+
         all_filter = gtk.FileFilter()
         all_filter.set_name(_("All Files"))
         all_filter.add_pattern("*")

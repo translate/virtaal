@@ -52,6 +52,10 @@ class MainController(BaseController):
         self._welcomescreen_controller = None
         self.view = MainView(self)
 
+    def destroy(self):
+        self.store_controller.destroy()
+
+
     # ACCESSORS #
     def get_store(self):
         """Returns the store model of the current open translation store or C{None}."""

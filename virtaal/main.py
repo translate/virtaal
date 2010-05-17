@@ -68,6 +68,8 @@ class Virtaal(object):
     # METHODS #
     def run(self):
         self.main_controller.run()
+        self.main_controller.destroy()
+        del self.main_controller
 
 
 def checkversions():

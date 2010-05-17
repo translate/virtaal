@@ -60,6 +60,10 @@ class StoreController(BaseController):
 
         self._controller_register_id = self.main_controller.connect('controller-registered', self._on_controller_registered)
 
+    def destroy(self):
+        if self.project:
+            del self.project
+
 
     # ACCESSORS #
     def get_nplurals(self, store=None):

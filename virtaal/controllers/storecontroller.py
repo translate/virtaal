@@ -141,6 +141,10 @@ class StoreController(BaseController):
 
     def save_file(self, filename=None):
         self.store.save_file(filename) # store.save_file() will raise an appropriate exception if necessary
+        if self.projman is not None:
+            if filename is None:
+                filename = self.store.filename
+            self.projman.trans2target(filename)
         self._modified = False
         self.main_controller.set_saveable(False)
         self.emit('store-saved')

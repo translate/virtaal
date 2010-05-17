@@ -181,6 +181,7 @@ class StoreController(BaseController):
         self.emit('store-saved')
 
     def close_file(self):
+        del self.project
         self.project = None
         self.store = None
         self._modified = False

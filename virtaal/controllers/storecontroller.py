@@ -131,8 +131,8 @@ class StoreController(BaseController):
             transfile = self.project.get_file(self.project.store.transfiles[0])
             self.real_filename = transfile.name
             logging.info(
-                'Editing translation file %s in bundle %s' %
-                (os.path.split(self.real_filename)[-1], filename)
+                'Editing translation file %s:%s' %
+                (filename, self.project.store.transfiles[0])
             )
             self.store = StoreModel(transfile, self)
         elif extension in convert_factory.converters:

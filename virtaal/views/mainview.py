@@ -254,6 +254,8 @@ class MainView(BaseView):
         doc_filter.set_name(_('Translatable documents'))
         from translate.convert import factory as convert_factory
         for extension in convert_factory.converters.keys():
+            if isinstance(extension, tuple):
+                continue # Skip extensions that need templates
             doc_filter.add_pattern('*.' + extension)
             all_supported_filter.add_pattern('*.' + extension)
         self.open_chooser.add_filter(doc_filter)

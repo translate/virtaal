@@ -23,7 +23,7 @@ import logging
 import os
 import re
 from translate.convert import factory as convert_factory
-from translate.storage.projman import ProjectManager
+from translate.storage.project import Project
 
 from virtaal.common import GObjectWrapper
 from virtaal.models import StoreModel
@@ -54,7 +54,7 @@ class StoreController(BaseController):
         self.cursor = None
         self.handler_ids = {}
         self._modified = False
-        self.projman = None
+        self.project = None
         self.store = None
         self.view = StoreView(self)
 
@@ -112,8 +112,8 @@ class StoreController(BaseController):
     def open_file(self, filename, uri=''):
         extension = filename.split(os.extsep)[-1]
         if extension in convert_factory.converters:
-            self.projman = ProjectManager()
-            srcfile, srcfilename, transfile, transfilename = self.projman.add_source_convert(filename)
+            self.project = Project()
+            srcfile, srcfilename, transfile, transfilename = self.project.add_source_convert(filename)
             self.real_filename = transfile.name
             logging.info('Converted document %s to translatable file %s' % (srcfilename, self.real_filename))
             self.store = StoreModel(transfile, self)
@@ -143,17 +143,17 @@ class StoreController(BaseController):
 
     def save_file(self, filename=None):
         self.store.save_file(filename) # store.save_file() will raise an appropriate exception if necessary
-        if self.projman is not None:
+        if self.project is not None:
             if filename is None:
                 filename = self.real_filename
-            proj_fname = self.projman.get_proj_filename(filename)
-            self.projman.convert_forward(proj_fname)
+            proj_fname = self.project.get_proj_filename(filename)
+            self.project.convert_forward(proj_fname)
         self._modified = False
         self.main_controller.set_saveable(False)
         self.emit('store-saved')
 
     def close_file(self):
-        self.projman = None
+        self.project = None
         self.store = None
         self._modified = False
         self.main_controller.set_saveable(False)

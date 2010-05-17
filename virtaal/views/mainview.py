@@ -189,14 +189,17 @@ class MainView(BaseView):
         self.main_window.connect('style-set', self._on_style_set)
 
     def _create_dialogs(self):
+        # Generic input dialog
         self.input_dialog = EntryDialog(self.main_window)
 
+        # Error dialog
         self.error_dialog = gtk.MessageDialog(self.main_window,
             gtk.DIALOG_MODAL,
             gtk.MESSAGE_ERROR,
             gtk.BUTTONS_OK)
         self.error_dialog.set_title(_("Error"))
 
+        # Yes/No prompt dialog
         self.prompt_dialog = gtk.MessageDialog(self.main_window,
             gtk.DIALOG_MODAL,
             gtk.MESSAGE_QUESTION,
@@ -204,12 +207,14 @@ class MainView(BaseView):
         )
         self.prompt_dialog.set_default_response(gtk.RESPONSE_NO)
 
+        # Informational dialog
         self.info_dialog = gtk.MessageDialog(self.main_window,
             gtk.DIALOG_MODAL,
             gtk.MESSAGE_INFO,
             gtk.BUTTONS_OK,
         )
 
+        # Open (file chooser) dialog
         self.open_chooser = gtk.FileChooserDialog(
             _('Choose a Translation File'),
             self.main_window,
@@ -249,6 +254,7 @@ class MainView(BaseView):
         all_filter.add_pattern("*")
         self.open_chooser.add_filter(all_filter)
 
+        # Save (file chooser) dialog
         self.save_chooser = gtk.FileChooserDialog(
             _("Save"),
             self.main_window,
@@ -258,6 +264,7 @@ class MainView(BaseView):
         self.save_chooser.set_do_overwrite_confirmation(True)
         self.save_chooser.set_default_response(gtk.RESPONSE_OK)
 
+        # Save confirmation dialog (Save/Discard/Cancel buttons)
         (RESPONSE_SAVE, RESPONSE_DISCARD) = (gtk.RESPONSE_YES, gtk.RESPONSE_NO)
         self.confirm_dialog = gtk.MessageDialog(
             self.main_window,

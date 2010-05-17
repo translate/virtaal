@@ -24,7 +24,6 @@ import os
 import sys
 import logging
 from gtk import gdk
-from translate.storage import factory
 
 from virtaal import __version__
 from virtaal.views import recent, theme
@@ -221,7 +220,8 @@ class MainView(BaseView):
         all_supported_filter = gtk.FileFilter()
         all_supported_filter.set_name(_("All Supported Files"))
         self.open_chooser.add_filter(all_supported_filter)
-        supported_files_dict = dict([ (_(name), (extension, mimetype)) for name, extension, mimetype in factory.supported_files() ])
+        from translate.storage import factory as storage_factory
+        supported_files_dict = dict([ (_(name), (extension, mimetype)) for name, extension, mimetype in storage_factory.supported_files() ])
         supported_file_names = supported_files_dict.keys()
         supported_file_names.sort(cmp=locale.strcoll)
         for name in supported_file_names:

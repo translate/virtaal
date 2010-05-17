@@ -174,7 +174,10 @@ class StoreController(BaseController):
             if not proj_fname:
                 raise ValueError("Unable to determine file's project name: %s" % (filename))
             self.project.update_file(proj_fname, open(filename))
-            self.project.convert_forward(proj_fname)
+            src_lang = self.main_controller.lang_controller.source_lang.code
+            tgt_lang = self.main_controller.lang_controller.target_lang.code
+            output_suffix = '_%s_%s' % (src_lang, tgt_lang)
+            self.project.convert_forward(proj_fname, output_suffix=output_suffix)
             self.project.save()
         self._modified = False
         self.main_controller.set_saveable(False)

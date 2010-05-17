@@ -124,7 +124,7 @@ class StoreController(BaseController):
             if not len(self.project.store.transfiles):
                 # FIXME: Ask the user to select a source file to convert?
                 if not len(self.project.store.sourcefiles):
-                    raise proj.InvalidBundleError('No source or translatable files in bundle')
+                    raise proj.InvalidBundleError(_('No source or translatable files in bundle'))
                 self.project.convert_forward(self.project.store.sourcefiles[0])
 
             # FIXME: Ask the user which translatable file to open?

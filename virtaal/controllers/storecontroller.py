@@ -141,7 +141,7 @@ class StoreController(BaseController):
             self.store = StoreModel(filename, self)
 
         if len(self.store.get_units()) < 1:
-            raise Exception(_('The file contains nothing to translate.'))
+            raise ValueError(_('The file contains nothing to translate.'))
 
         self._modified = False
 
@@ -168,7 +168,7 @@ class StoreController(BaseController):
                 filename = self.real_filename
             proj_fname = self.project.get_proj_filename(filename)
             if not proj_fname:
-                raise Exception("Unable to determine file's project name: %s" % (filename))
+                raise ValueError("Unable to determine file's project name: %s" % (filename))
             self.project.update_file(proj_fname, open(filename))
             self.project.convert_forward(proj_fname)
         self._modified = False

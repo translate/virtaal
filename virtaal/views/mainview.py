@@ -602,13 +602,14 @@ class MainView(BaseView):
             self.controller.save_file()
 
     def _on_file_saveas(self, widget=None):
-        store_filename = self.controller.get_store_filename()
-        if store_filename:
-            directory, filename = os.path.split(self.controller.get_store_filename())
-        else:
-            filename = ''
-        self.save_chooser.set_current_name(filename)
-        if self.show_save_dialog():
+        filename = self.controller.store_controller.get_bundle_filename()
+        if filename is None:
+            store_filename = self.controller.get_store_filename()
+            if store_filename:
+                directory, filename = os.path.split(store_filename)
+            else:
+                filename = ''
+        if self.show_save_dialog(current_filename=filename):
             self.controller.save_file(filename=self.save_chooser.get_filename())
             return True
         return False

@@ -149,6 +149,9 @@ class CellWidget(gtk.HBox, gtk.CellEditable):
     __gsignals__ = {
         'modified': (SIGNAL_RUN_FIRST, None, ())
     }
+    __gproperties__ = {
+        'editing-canceled': (bool, 'Editing cancelled', 'Editing was cancelled', False, PARAM_READWRITE),
+    }
 
     # INITIALIZERS #
     def __init__(self, *widgets):

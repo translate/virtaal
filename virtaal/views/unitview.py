@@ -21,7 +21,7 @@
 import gtk
 import logging
 import re
-from gobject import idle_add, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from gobject import idle_add, PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 from translate.lang import factory
 try:
     import gtkspell
@@ -46,6 +46,9 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         'modified':       (SIGNAL_RUN_FIRST, None, ()),
         'unit-done':      (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'target-focused': (SIGNAL_RUN_FIRST, None, (int,)),
+    }
+    __gproperties__ = {
+        'editing-canceled': (bool, 'Editing cancelled', 'Editing was cancelled', False, PARAM_READWRITE),
     }
 
     first_word_re = re.compile("(?m)(?u)^(<[^>]+>|\\\\[nt]|[\W$^\n])*(\\b|\\Z)")

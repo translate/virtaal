@@ -51,6 +51,7 @@ class StoreController(BaseController):
         self.main_controller.store_controller = self
         self._unit_controller = None # This is set by UnitController itself when it is created
 
+        self._archivetemp = None
         self.cursor = None
         self.handler_ids = {}
         self._modified = False
@@ -63,6 +64,8 @@ class StoreController(BaseController):
     def destroy(self):
         if self.project:
             del self.project
+        if self._archivetemp and os.path.isfile(self._archivetemp):
+            os.unlink(self._archivetemp)
 
 
     # ACCESSORS #
@@ -162,7 +165,11 @@ class StoreController(BaseController):
             )
             self.store = StoreModel(transfile, self)
         elif extension in convert_factory.converters:
-            self.project = proj.Project()
+            # Use temporary file name for bundle archive
+            tempfname = self._get_new_bundle_filename(filename)
+            self._archivetemp = tempfname
+
+            self.project = proj.Project(projstore=proj.BundleProjectStore(tempfname))
             srcfile, srcfilename, transfile, transfilename = self.project.add_source_convert(filename)
             self.real_filename = transfile.name
 
@@ -194,19 +201,41 @@ class StoreController(BaseController):
         self.emit('store-loaded')
 
     def save_file(self, filename=None):
-        self.store.save_file(filename) # store.save_file() will raise an appropriate exception if necessary
-        if self.project is not None:
-            if filename is None:
-                filename = self.real_filename
-            proj_fname = self.project.get_proj_filename(filename)
+        if self.project is None:
+            self.store.save_file(filename) # store.save_file() will raise an appropriate exception if necessary
+        else:
+            # XXX: filename is the name that the bundle archive should be saved
+            #      as, seeing as self.store is opened from a temporary file
+            #      (see translate.storage.bundleprojstore.BundleProjectStore.get_file())
+            self.store.save_file()
+
+            proj_fname = self.project.get_proj_filename(self.real_filename)
             if not proj_fname:
-                raise ValueError("Unable to determine file's project name: %s" % (filename))
-            self.project.update_file(proj_fname, open(filename))
-            src_lang = self.main_controller.lang_controller.source_lang.code
-            tgt_lang = self.main_controller.lang_controller.target_lang.code
-            output_suffix = '_%s_%s' % (src_lang, tgt_lang)
-            self.project.convert_forward(proj_fname, output_suffix=output_suffix)
+                # This really shouldn't happen
+                raise ValueError("Unable to determine file's project name: %s" % (self.real_filename))
+
+            self.project.update_file(proj_fname, open(self.real_filename))
+            self.project.convert_forward(proj_fname)
             self.project.save()
+
+            if self._archivetemp:
+                if self._archivetemp == filename:
+                    self._archivetemp = None
+                else:
+                    assert self.project.store.zip.filename == self._archivetemp
+                    self.project.close()
+                    self.project = None
+                    os.rename(self._archivetemp, filename)
+                    self._archivetemp = None
+
+                    cursor_pos = self.cursor.pos
+                    def post_save(sender):
+                        if not hasattr(self, '_proj_file_saved_id'):
+                            return
+                        self.disconnect(self._proj_file_saved_id)
+                        self.main_controller.open_file(filename)
+                        self.cursor.pos = cursor_pos
+                    self._proj_file_saved_id = self.connect('store-saved', post_save)
         self._modified = False
         self.main_controller.set_saveable(False)
         self.emit('store-saved')

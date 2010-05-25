@@ -254,6 +254,8 @@ class StoreTreeView(gtk.TreeView):
     def select_index(self, index):
         """Select the row with the given index."""
         model = self.get_model()
+        if not model or not isinstance(model, StoreTreeModel):
+            return
         newpath = model.store_index_to_path(index)
         selected = self.get_selection().get_selected()
         selected_path = isinstance(selected[1], gtk.TreeIter) and model.get_path(selected[1]) or None

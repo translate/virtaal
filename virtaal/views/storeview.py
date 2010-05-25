@@ -112,6 +112,8 @@ class StoreView(BaseView):
         if not self._treeview.parent:
             self.parent_widget.add(self._treeview)
         self.parent_widget.show_all()
+        if not self.controller.get_store():
+            return
         self._treeview.select_index(0)
 
         if self._treeview.get_model():

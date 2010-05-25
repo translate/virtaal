@@ -38,6 +38,7 @@ virtaal/plugins/tm/tmwidgets.py
 virtaal/views/langview.py
 virtaal/views/mainview.py
 virtaal/views/modeview.py
+virtaal/views/storeview.py
 virtaal/views/unitview.py
 virtaal/views/widgets/aboutdialog.py
 virtaal/views/widgets/langadddialog.py

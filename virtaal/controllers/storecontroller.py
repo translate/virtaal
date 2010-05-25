@@ -267,6 +267,69 @@ class StoreController(BaseController):
         #l10n: this refers to updating a file to a new template (POT file)
         self.main_controller.show_info(_("File Updated"), output)
 
+    def _get_new_bundle_filename(self, infilename):
+        """Creates a file name that can be used for a bundle, based on the given
+            file name.
+
+            First tries to create a bundle in the same directory as the given
+            file by the transformation in the following example:
+            C{foo.odt -> foo_en__af.zip}
+            where "en" and "af" are the currently selected source and target
+            languages.
+
+            If a with that name already exists, an attempt will be made to
+            create a file name in the format C{foo_en__af_XXXXX.zip} in the
+            document's directory. If that fails (the directory might not be
+            writable), a temporary file name of the same format is created.
+
+            @returns: The suggested file name for the bundle."""
+        from translate.storage.project import split_extensions
+        fname, extensions = split_extensions(infilename)
+
+        prefix = fname + u'_%s__%s' % (
+            self.main_controller.lang_controller.source_lang.code,
+            self.main_controller.lang_controller.target_lang.code
+        )
+        if extensions:
+            extensions_parts = extensions.split(os.extsep)
+            extensions_parts[-1] = u'zip'
+            suffix = os.extsep.join([''] + extensions_parts)
+        else:
+            suffix = os.extsep + u'zip'
+
+        # Try foo_en__af.zip
+        outfname = prefix + suffix
+        if not os.path.isfile(outfname):
+            try:
+                open(outfname, 'w')
+                os.unlink(outfname)
+                return outfname
+            except Exception:
+                pass
+
+        prefix += u'_'
+
+        # Try foo_en__af_XXXXX.zip
+        from tempfile import mkstemp
+        try:
+            directory = os.path.split(os.path.abspath(infilename))[0]
+            if not directory:
+                directory = None
+            fd, outfname = mkstemp(suffix=suffix, prefix=prefix, dir=directory)
+            os.close(fd)
+            if os.path.isfile(outfname):
+                os.unlink(outfname)
+            return outfname
+        except Exception:
+            pass
+
+        # Try /tmp/foo_en__af_XXXXX.zip as a last resort
+        fd, outfname = mkstemp(suffix=suffix, prefix=prefix)
+        os.close(fd)
+        if os.path.isfile(outfname):
+            os.unlink(outfname)
+        return outfname
+
 
     # EVENT HANDLERS #
     def _on_controller_registered(self, main_controller, controller):

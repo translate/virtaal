@@ -42,6 +42,7 @@ class StoreView(BaseView):
 
         self._init_treeview()
         self._add_accelerator_bindings()
+        self._connect_menu_items()
         self.load_store(self.controller.store)
 
         self.controller.main_controller.view.main_window.connect('configure-event', self._treeview.on_configure_event)
@@ -76,6 +77,19 @@ class StoreView(BaseView):
 
         self._set_menu_items_sensitive(False)
 
+    def _connect_menu_items(self):
+        gui = self.controller.main_controller.view.gui
+        menuitems = {
+            'mnu_export':     self._on_export,
+            'mnu_exportopen': self._on_export_open,
+            'mnu_preview':    self._on_preview,
+        }
+
+        for mnu_name, handler in menuitems.items():
+            mnu_item = gui.get_widget(mnu_name)
+            mnu_item.connect('activate', handler)
+            setattr(self, mnu_name, mnu_item)
+
 
     # ACCESSORS #
     def get_store(self):
@@ -104,6 +118,10 @@ class StoreView(BaseView):
             self._set_menu_items_sensitive(False)
             self._treeview.set_model(None)
 
+    def set_export_menuitems_enabled(self, enabled):
+        for btn in (self.mnu_export, self.mnu_exportopen, self.mnu_preview):
+            btn.set_sensitive(enabled)
+
     def show(self):
         child = self.parent_widget.get_child()
         if child and child is not self._treeview:
@@ -128,6 +146,33 @@ class StoreView(BaseView):
     # EVENT HANDLERS #
     def _on_cursor_change(self, cursor):
         self._treeview.select_index(cursor.index)
+
+    def _on_export(self, menu_item):
+        # TODO: Get file name from user.
+        try:
+            self.controller.export_project_file(filename=None)
+        except Exception, exc:
+            self.controller.main_controller.view.show_error_dialog(
+                title=_("Export failed"), message=str(exc)
+            )
+
+    def _on_export_open(self, menu_item):
+        # TODO: Get file name from user.
+        try:
+            self.controller.export_project_file(filename=None, openafter=True)
+        except Exception, exc:
+            self.controller.main_controller.view.show_error_dialog(
+                title=_("Export failed"), message=str(exc)
+            )
+
+    def _on_preview(self, menu_item):
+        # TODO: Get file name from user.
+        try:
+            self.controller.export_project_file(filename=None, openafter=True, readonly=True)
+        except Exception, exc:
+            self.controller.main_controller.view.show_error_dialog(
+                title=_("Preview failed"), message=str(exc)
+            )
 
     def _on_style_set(self, widget, prev_style):
         # The following color change is to reduce the flickering seen when

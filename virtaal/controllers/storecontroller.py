@@ -139,6 +139,7 @@ class StoreController(BaseController):
             self.cursor.index = i
 
     def open_file(self, filename, uri=''):
+        force_saveas = False
         extension = filename.split(os.extsep)[-1]
         if extension == 'zip':
             try:
@@ -164,8 +165,10 @@ class StoreController(BaseController):
             self.project = proj.Project()
             srcfile, srcfilename, transfile, transfilename = self.project.add_source_convert(filename)
             self.real_filename = transfile.name
+
             logging.info('Converted document %s to translatable file %s' % (srcfilename, self.real_filename))
             self.store = StoreModel(transfile, self)
+            force_saveas = True
         else:
             self.store = StoreModel(filename, self)
 
@@ -174,13 +177,13 @@ class StoreController(BaseController):
 
         self._modified = False
 
-        self.main_controller.set_force_saveas(False)
         # if file is a template force saveas
         pot_regexp = re.compile("\.pot(\.gz|\.bz2)?$")
         if pot_regexp.search(filename):
-            self.main_controller.set_force_saveas(True)
+            force_saveas = True
             self.store._trans_store.filename = pot_regexp.sub('.po', filename)
 
+        self.main_controller.set_force_saveas(force_saveas)
         self.main_controller.set_saveable(self._modified)
 
         self.cursor = Cursor(self.store, self.store.stats['total'])

@@ -656,10 +656,14 @@ class MainView(BaseView):
         self.gui.get_widget('mnu_close').set_sensitive(True)
         self.gui.get_widget('mnu_update').set_sensitive(True)
         self.status_bar.set_sensitive(True)
-        if getattr(self, '_uri', None):
-            recent.rm.add_item(self._uri)
+        if store_controller.project:
+            if not store_controller._archivetemp:
+                recent.rm.add_item('file://' + store_controller.get_bundle_filename())
         else:
-            recent.rm.add_item('file://' + os.path.abspath(store_controller.store.filename))
+            if getattr(self, '_uri', None):
+                recent.rm.add_item(self._uri)
+            else:
+                recent.rm.add_item('file://' + os.path.abspath(store_controller.store.filename))
 
     def _on_window_state_event(self, widget, event):
         mnu_fullscreen = self.gui.get_widget('mnu_fullscreen')

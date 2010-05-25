@@ -80,6 +80,25 @@ class StoreController(BaseController):
     def get_store(self):
         return self.store
 
+    def get_store_filename(self):
+        """Returns a display-friendly string representing the current open
+            store's file name. If a bundle is currently open, this method will
+            return a file name in the format "bundle.zip:some_file.xlf"."""
+        store = self.get_store()
+        if not store:
+            return ''
+        filename = ''
+        if self.project:
+            if isinstance(self.project.store, proj.BundleProjectStore):
+                # This should always be the case
+                filename = self.project.store.zip.filename + ':'
+                projfname = self.project.get_proj_filename(store.get_filename())
+                _dir, projfname = os.path.split(projfname)
+                filename += projfname
+        else:
+            filename += store.get_filename()
+        return filename
+
     def get_unit_celleditor(self, unit):
         """Load the given unit in via the C{UnitController} and return
             the C{gtk.CellEditable} it creates."""

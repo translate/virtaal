@@ -62,9 +62,8 @@ class MainController(BaseController):
         return self.store_controller.get_store()
 
     def get_store_filename(self):
-        """Shortcut for C{get_store().get_filename()}, but checks if the store exists."""
-        store = self.store_controller.get_store()
-        return store and store.get_filename() or None
+        """C{self.store_controller.get_store_filename()}"""
+        return self.store_controller.get_store_filename()
 
     def get_translator_name(self):
         name = pan_app.settings.translator["name"]

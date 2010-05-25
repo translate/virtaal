@@ -186,6 +186,7 @@ class MainController(BaseController):
             self.show_error(
                 filename + ":\n" + _("Could not open file.\n\n%(error_message)s\n\nTry opening a different file.") % {'error_message': str(exc)}
             )
+            self.close_file()
             return False
 
     def open_tutorial(self):

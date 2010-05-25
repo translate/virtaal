@@ -71,6 +71,12 @@ class StoreController(BaseController):
             store = self.store
         return store and store.nplurals or 0
 
+    def get_bundle_filename(self):
+        """Returns the file name of the bundle archive, if we are working with one."""
+        if self.project and isinstance(self.project.store, proj.BundleProjectStore):
+            return self.project.store.zip.filename
+        return None
+
     def get_store(self):
         return self.store
 

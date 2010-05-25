@@ -22,6 +22,7 @@ import gobject
 import logging
 import os
 import re
+from tempfile import mkstemp
 from translate.convert import factory as convert_factory
 from translate.storage import proj
 
@@ -57,6 +58,7 @@ class StoreController(BaseController):
         self._modified = False
         self.project = None
         self.store = None
+        self._tempfiles = []
         self.view = StoreView(self)
 
         self._controller_register_id = self.main_controller.connect('controller-registered', self._on_controller_registered)
@@ -66,6 +68,11 @@ class StoreController(BaseController):
             del self.project
         if self._archivetemp and os.path.isfile(self._archivetemp):
             os.unlink(self._archivetemp)
+        for tempfile in self._tempfiles:
+            try:
+                os.unlink(tempfile)
+            except Exception:
+                pass
 
 
     # ACCESSORS #
@@ -250,6 +257,50 @@ class StoreController(BaseController):
         self.emit('store-closed') # This should be emitted BEFORE `self.cursor = None` to allow any other modules to disconnect from the cursor
         self.cursor = None
 
+    def export_project_file(self, filename=None, openafter=False, readonly=False):
+        if not self.project:
+            return
+        if self.is_modified():
+            self.main_controller.save_file()
+        self.project.save()
+
+        # Make sure we have an output file to export
+        export_projfname = None
+        if self.project.store.targetfiles:
+            export_projfname = self.project.store.targetfiles[0]
+        elif self.project.store.transfiles:
+            transfile = self.project.store.transfiles[0]
+            _export_file, export_projfname = self.project.convert_forward(transfile)
+
+        if not export_projfname:
+            raise RuntimeError("Unable to find an exportable file in project")
+
+        if not filename:
+            if readonly:
+                # Read-only files to in the temp directory with a different
+                # layout of its filename.
+                fname, ext = proj.split_extensions(export_projfname.split('/')[-1])
+                fname = 'virtaal_preview_' + fname + '_'
+                ext = os.extsep + ext
+                fd, filename = mkstemp(suffix=ext, prefix=fname)
+                os.close(fd)
+                self._tempfiles.append(filename)
+            else:
+                filename = self._guess_export_filename(export_projfname)
+
+        logging.debug('Exporting project file %s to %s' % (export_projfname, filename))
+        self.project.export_file(export_projfname, filename)
+
+        if readonly:
+            logging.debug('Setting %s read-only' % (filename))
+            from stat import S_IREAD
+            os.chmod(filename, S_IREAD)
+
+        if openafter:
+            logging.debug('Opening: %s' % (filename))
+            from virtaal.support import openmailto
+            openmailto.open(filename)
+
     def revert_file(self):
         self.open_file(self.store.filename)
 
@@ -341,7 +392,6 @@ class StoreController(BaseController):
         prefix += u'_'
 
         # Try foo_en__af_XXXXX.zip
-        from tempfile import mkstemp
         try:
             directory = os.path.split(os.path.abspath(infilename))[0]
             if not directory:
@@ -360,6 +410,23 @@ class StoreController(BaseController):
         if os.path.isfile(outfname):
             os.unlink(outfname)
         return outfname
+
+    def _guess_export_filename(self, projfname):
+        guess = projfname.split('/')[-1]
+        bundle_fname = self.get_bundle_filename()
+        if bundle_fname:
+            directory = os.path.split(os.path.abspath(bundle_fname))[0]
+            guess = os.path.join(directory, guess)
+        if os.path.isfile(guess):
+            directory, fname = os.path.split(guess)
+            basefname, extensions = proj.split_extensions(fname)
+            guess = basefname + u'_%s__%s' % (
+                self.main_controller.lang_controller.source_lang.code,
+                self.main_controller.lang_controller.target_lang.code
+            )
+            guess += os.extsep + extensions
+            guess = os.path.join(directory, guess)
+        return guess
 
 
     # EVENT HANDLERS #

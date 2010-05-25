@@ -53,7 +53,9 @@ class WelcomeScreenView(BaseView):
 
     # METHODS #
     def hide(self):
-        self.parent_widget.remove(self.widget)
+        self.widget.hide()
+        if self.widget.parent is self.parent_widget:
+            self.parent_widget.remove(self.widget)
 
     def show(self):
         if not self.widget.parent:

@@ -215,7 +215,7 @@ class StoreController(BaseController):
                 raise ValueError("Unable to determine file's project name: %s" % (self.real_filename))
 
             self.project.update_file(proj_fname, open(self.real_filename))
-            self.project.convert_forward(proj_fname)
+            self.project.convert_forward(proj_fname, overwrite_output=True)
             self.project.save()
 
             if self._archivetemp:

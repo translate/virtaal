@@ -45,6 +45,7 @@ class StoreView(BaseView):
         self._connect_menu_items()
         self.load_store(self.controller.store)
 
+        self.controller.connect('store-loaded', self._on_store_loaded)
         self.controller.main_controller.view.main_window.connect('configure-event', self._treeview.on_configure_event)
         self.controller.main_controller.view.main_window.connect('style-set', self._on_style_set)
 
@@ -173,6 +174,9 @@ class StoreView(BaseView):
             self.controller.main_controller.view.show_error_dialog(
                 title=_("Preview failed"), message=str(exc)
             )
+
+    def _on_store_loaded(self, store_controller):
+        self.set_export_menuitems_enabled(bool(store_controller.project))
 
     def _on_style_set(self, widget, prev_style):
         # The following color change is to reduce the flickering seen when

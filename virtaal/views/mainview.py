@@ -534,15 +534,20 @@ class MainView(BaseView):
         self.info_dialog.hide()
         self._top_window = old_top
 
-    def show_save_dialog(self, title=''):
+    def show_save_dialog(self, title='', current_filename=None):
         """@returns: C{True} if the OK button was pressed, C{False} for any
             other response."""
         if title:
             self.save_chooser.set_title(title)
 
-        directory, filename = os.path.split(self.controller.get_store().get_filename())
+        if current_filename:
+            directory, filename = os.path.split(current_filename)
+        else:
+            directory, filename = os.path.split(self.controller.get_store().get_filename())
+
         if os.access(directory, os.F_OK | os.R_OK | os.X_OK | os.W_OK):
             self.save_chooser.set_current_folder(directory)
+        self.save_chooser.set_current_name(filename)
 
         self.save_chooser.set_transient_for(self._top_window)
         old_top = self._top_window

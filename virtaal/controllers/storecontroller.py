@@ -315,8 +315,7 @@ class StoreController(BaseController):
             writable), a temporary file name of the same format is created.
 
             @returns: The suggested file name for the bundle."""
-        from translate.storage.project import split_extensions
-        fname, extensions = split_extensions(infilename)
+        fname, extensions = proj.split_extensions(infilename)
 
         prefix = fname + u'_%s__%s' % (
             self.main_controller.lang_controller.source_lang.code,

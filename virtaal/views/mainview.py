@@ -593,26 +593,10 @@ class MainView(BaseView):
         self.open_file()
 
     def _on_file_save(self, widget=None):
-        # we force save us on potentially destructive file level
-        # operations like updating to a template
-        if self.controller.get_force_saveas():
-            res = self._on_file_saveas(widget)
-            self.controller.set_force_saveas(not res)
-        else:
-            self.controller.save_file()
+        self.controller.save_file()
 
     def _on_file_saveas(self, widget=None):
-        filename = self.controller.store_controller.get_bundle_filename()
-        if filename is None:
-            store_filename = self.controller.get_store_filename()
-            if store_filename:
-                directory, filename = os.path.split(store_filename)
-            else:
-                filename = ''
-        if self.show_save_dialog(current_filename=filename):
-            self.controller.save_file(filename=self.save_chooser.get_filename())
-            return True
-        return False
+        self.controller.save_file(force_saveas=True)
 
     def _on_file_close(self, widget=None):
         self.controller.close_file()

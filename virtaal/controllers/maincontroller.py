@@ -196,7 +196,21 @@ class MainController(BaseController):
         filename = pan_app.get_abs_data_filename(["virtaal", "tutorial.pot"])
         self.open_file(filename)
 
-    def save_file(self, filename=None):
+    def save_file(self, filename=None, force_saveas=False):
+        if not filename and (self.get_force_saveas() or force_saveas):
+            filename = self.store_controller.get_bundle_filename()
+            if filename is None:
+                store_filename = self.get_store_filename()
+                if store_filename:
+                    directory, filename = os.path.split(store_filename)
+                else:
+                    filename = ''
+            if not self.view.show_save_dialog(current_filename=filename):
+                return
+
+        if self.get_force_saveas():
+            self.set_force_saveas(False)
+
         try:
             self.store_controller.save_file(filename)
         except IOError, exc:

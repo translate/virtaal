@@ -469,6 +469,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             target = self._create_textbox(u'', editable=True, role='target', scroll_policy=gtk.POLICY_AUTOMATIC)
             textbox = target.get_child()
             textbox.modify_font(rendering.get_target_font_description())
+            textbox.selector_textboxes = self.sources
             textbox.selector_textbox = self.sources[0]
             textbox.connect('paste-clipboard', self._on_textbox_paste_clipboard, i)
             textbox.connect('text-inserted', self._on_target_insert_text, i)
@@ -617,6 +618,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             num_unit_targets = len(self.unit.target.strings)
             nplurals = self.controller.main_controller.lang_controller.target_lang.nplurals
 
+        visible_sources = [src for src in self.sources if src.props.visible]
+
         rich_target = self.unit.rich_target
         rich_target_len = len(rich_target)
         for i in range(self.MAX_TARGETS):
@@ -628,6 +631,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                 self.targets[i].modify_font(rendering.get_target_font_description())
                 self.targets[i].set_text(targetstr)
                 self.targets[i].parent.show_all()
+                self.targets[i].selector_textboxes = visible_sources
+                self.targets[i].selector_textbox = visible_sources[0]
                 #logging.debug('Showing target #%d: %s' % (i, self.targets[i]))
             else:
                 # outside plural range

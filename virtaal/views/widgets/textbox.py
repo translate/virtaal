@@ -79,6 +79,7 @@ class TextBox(gtk.TextView):
         self.refresh_cursor_pos = -1
         self.role = role
         self.selector_textbox = selector_textbox or self
+        self.selector_textboxes = [selector_textbox or self]
         self.selected_elem = None
         self.selected_elem_index = None
         self._suggestion = None

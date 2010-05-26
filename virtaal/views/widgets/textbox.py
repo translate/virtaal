@@ -368,12 +368,14 @@ class TextBox(gtk.TextView):
 
         if elem is None and offset is None:
             # Clear current selection
+            #logging.debug('Clearing selected placeable from %s' % (repr(self)))
             if self.selected_elem is not None:
                 #logging.debug('Selected item *was* %s' % (repr(self.selected_elem)))
                 self.selected_elem.gui_info = None
                 self.add_default_gui_info(self.selected_elem)
                 self.selected_elem = None
             self.selected_elem_index = None
+            self.emit('element-selected', self.selected_elem)
             return
 
         filtered_elems = [e for e in self.elem.depth_first() if e.__class__ not in self.unselectables]

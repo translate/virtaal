@@ -331,6 +331,21 @@ class TextBox(gtk.TextView):
 
         if self.selector_textbox.selected_elem_index is None and direction >= 0:
             self.selector_textbox = self.selector_textboxes[(st_index + direction) % st_len]
+        self.__color_selector_textboxes()
+
+    def __color_selector_textboxes(self, *args):
+        """Put a highlighting border around the current selector text box."""
+        if not hasattr(self, 'selector_color'):
+            self.selector_color = gtk.gdk.Color(current_theme['selector_textbox'])
+        if not hasattr(self, 'nonselector_color'):
+            self.nonselector_color = self.parent.style.bg[gtk.STATE_NORMAL]
+
+        for selector in self.selector_textboxes:
+            if selector is self.selector_textbox:
+                selector.parent.modify_bg(gtk.STATE_NORMAL, self.selector_color)
+            else:
+                selector.parent.modify_bg(gtk.STATE_NORMAL, self.nonselector_color)
+
     def place_cursor(self, cursor_pos):
         cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)
 

@@ -383,9 +383,14 @@ class TextBox(gtk.TextView):
             return
 
         if elem is None and offset is not None:
+            if self.selected_elem_index is not None and not (0 <= offset < len(filtered_elems)):
+                # Clear selection when we go past the first or last placeable
+                self.select_elem(None)
+                self.apply_gui_info(self.elem)
+                return
             return self.select_elem(elem=filtered_elems[offset % len(filtered_elems)])
 
-        if not elem in filtered_elems:
+        if elem not in filtered_elems:
             return
 
         # Reset the default tag for the previously selected element

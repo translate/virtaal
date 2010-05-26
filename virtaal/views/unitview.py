@@ -203,13 +203,14 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         if textbox.selector_textbox is not textbox and \
             textbox.selector_textbox.selected_elem is not None:
             textbox.insert_translation(textbox.selector_textbox.selected_elem)
-            textbox.selector_textbox.move_elem_selection(1)
+            textbox.move_elem_selection(1)
             return
 
         undocontroller = self.controller.main_controller.undo_controller
         lang = factory.getlanguage(self.controller.main_controller.lang_controller.target_lang.code)
 
-        tgt = self.unit.rich_source[0].copy()
+        selector_textbox_index = textbox.selector_textboxes.index(textbox.selector_textbox)
+        tgt = self.unit.rich_source[selector_textbox_index].copy()
         placeables_controller = self.controller.main_controller.placeables_controller
         parsers = placeables_controller.get_parsers_for_textbox(textbox)
         placeables_controller.apply_parsers(tgt, parsers)

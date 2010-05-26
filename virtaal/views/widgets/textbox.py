@@ -315,14 +315,22 @@ class TextBox(gtk.TextView):
 
     @accepts(Self(), int)
     def move_elem_selection(self, offset):
+        direction = offset/abs(offset) # Reduce offset to one of -1, 0 or 1
+        st_index = self.selector_textboxes.index(self.selector_textbox)
+        st_len = len(self.selector_textboxes)
+
         if self.selector_textbox.selected_elem_index is None:
             if offset <= 0:
+                if offset < 0 and st_len > 1:
+                    self.selector_textbox = self.selector_textboxes[(st_index + direction) % st_len]
                 self.selector_textbox.select_elem(offset=offset)
             else:
                 self.selector_textbox.select_elem(offset=offset-1)
         else:
             self.selector_textbox.select_elem(offset=self.selector_textbox.selected_elem_index + offset)
 
+        if self.selector_textbox.selected_elem_index is None and direction >= 0:
+            self.selector_textbox = self.selector_textboxes[(st_index + direction) % st_len]
     def place_cursor(self, cursor_pos):
         cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)
 

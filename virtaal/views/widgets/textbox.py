@@ -753,11 +753,6 @@ class TextBox(gtk.TextView):
                 if event.keyval == keyval and filtered_state == state:
                     evname = name
 
-        if evname == 'alt-left':
-            self.move_elem_selection(-1)
-        elif evname == 'alt-right':
-            self.move_elem_selection(1)
-
         return self.emit('key-pressed', event, evname)
 
     def _on_event_remove_suggestion(self, *args):

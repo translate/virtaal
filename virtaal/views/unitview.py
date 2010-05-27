@@ -668,6 +668,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             # Clear selected elements
             self.editing_done()
             return True
+        self.must_advance = False
         return False
 
     def _on_target_changed(self, buffer, index):

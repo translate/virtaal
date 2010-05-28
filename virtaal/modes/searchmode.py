@@ -320,7 +320,7 @@ class SearchMode(BaseMode):
                 m.part_n == textbox_n
         ]
 
-    def _highlight_textbox_matches(self, textbox):
+    def _highlight_textbox_matches(self, textbox, select_match=True):
         buff = textbox.buffer
         buffstr = textbox.get_text()
         unescaped = markup.unescape(buffstr)
@@ -345,7 +345,7 @@ class SearchMode(BaseMode):
             start_iter, end_iter = buff.get_iter_at_offset(start), buff.get_iter_at_offset(end)
             buff.apply_tag_by_name('search_highlight', start_iter, end_iter)
 
-            if textbox.role == 'target' and not select_iters and self.select_first_match:
+            if select_match and textbox.role == 'target' and not select_iters and self.select_first_match:
                 select_iters = [start_iter, end_iter]
 
         if select_iters:
@@ -468,7 +468,7 @@ class SearchMode(BaseMode):
         if not textbox.props.visible or not unicode(elem):
             return
 
-        self._highlight_textbox_matches(textbox)
+        self._highlight_textbox_matches(textbox, select_match=False)
 
     def _on_unit_modified(self, unit_controller, current_unit):
         unit_matches = self._get_matches_for_unit(current_unit)

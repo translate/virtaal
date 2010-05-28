@@ -79,6 +79,7 @@ class TextBox(gtk.TextView):
         self.refresh_cursor_pos = -1
         self.role = role
         self.selector_textbox = selector_textbox or self
+        self.selector_textboxes = [selector_textbox or self]
         self.selected_elem = None
         self.selected_elem_index = None
         self._suggestion = None
@@ -314,13 +315,36 @@ class TextBox(gtk.TextView):
 
     @accepts(Self(), int)
     def move_elem_selection(self, offset):
+        direction = offset/abs(offset) # Reduce offset to one of -1, 0 or 1
+        st_index = self.selector_textboxes.index(self.selector_textbox)
+        st_len = len(self.selector_textboxes)
+
         if self.selector_textbox.selected_elem_index is None:
             if offset <= 0:
+                if offset < 0 and st_len > 1:
+                    self.selector_textbox = self.selector_textboxes[(st_index + direction) % st_len]
                 self.selector_textbox.select_elem(offset=offset)
             else:
                 self.selector_textbox.select_elem(offset=offset-1)
         else:
             self.selector_textbox.select_elem(offset=self.selector_textbox.selected_elem_index + offset)
+
+        if self.selector_textbox.selected_elem_index is None and direction >= 0:
+            self.selector_textbox = self.selector_textboxes[(st_index + direction) % st_len]
+        self.__color_selector_textboxes()
+
+    def __color_selector_textboxes(self, *args):
+        """Put a highlighting border around the current selector text box."""
+        if not hasattr(self, 'selector_color'):
+            self.selector_color = gtk.gdk.Color(current_theme['selector_textbox'])
+        if not hasattr(self, 'nonselector_color'):
+            self.nonselector_color = self.parent.style.bg[gtk.STATE_NORMAL]
+
+        for selector in self.selector_textboxes:
+            if selector is self.selector_textbox:
+                selector.parent.modify_bg(gtk.STATE_NORMAL, self.selector_color)
+            else:
+                selector.parent.modify_bg(gtk.STATE_NORMAL, self.nonselector_color)
 
     def place_cursor(self, cursor_pos):
         cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)
@@ -368,12 +392,14 @@ class TextBox(gtk.TextView):
 
         if elem is None and offset is None:
             # Clear current selection
+            #logging.debug('Clearing selected placeable from %s' % (repr(self)))
             if self.selected_elem is not None:
                 #logging.debug('Selected item *was* %s' % (repr(self.selected_elem)))
                 self.selected_elem.gui_info = None
                 self.add_default_gui_info(self.selected_elem)
                 self.selected_elem = None
             self.selected_elem_index = None
+            self.emit('element-selected', self.selected_elem)
             return
 
         filtered_elems = [e for e in self.elem.depth_first() if e.__class__ not in self.unselectables]
@@ -381,9 +407,14 @@ class TextBox(gtk.TextView):
             return
 
         if elem is None and offset is not None:
+            if self.selected_elem_index is not None and not (0 <= offset < len(filtered_elems)):
+                # Clear selection when we go past the first or last placeable
+                self.select_elem(None)
+                self.apply_gui_info(self.elem)
+                return
             return self.select_elem(elem=filtered_elems[offset % len(filtered_elems)])
 
-        if not elem in filtered_elems:
+        if elem not in filtered_elems:
             return
 
         # Reset the default tag for the previously selected element
@@ -750,11 +781,6 @@ class TextBox(gtk.TextView):
             for keyval, state in keyslist:
                 if event.keyval == keyval and filtered_state == state:
                     evname = name
-
-        if evname == 'alt-left':
-            self.move_elem_selection(-1)
-        elif evname == 'alt-right':
-            self.move_elem_selection(1)
 
         return self.emit('key-pressed', event, evname)
 

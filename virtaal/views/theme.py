@@ -42,6 +42,8 @@ _default_theme = {
     'warning_bg': '#f66',
     # row colour for fuzzy strings
     'fuzzy_row_bg': 'grey',
+    # selector text box border
+    'selector_textbox': '#5096f3',
 }
 # TODO:
 # diffing markup - check virtaal/views/markup.py
@@ -55,6 +57,7 @@ _inverse_theme = {
     'ph_placeable_bg': '#101010',
     'warning_bg': '#900',
     'fuzzy_row_bg': '#474747',
+    'selector_textbox': '#cbdffb',
 }
 
 current_theme = _default_theme.copy()

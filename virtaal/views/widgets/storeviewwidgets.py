@@ -260,7 +260,6 @@ class StoreTreeView(gtk.TreeView):
 
         if selected[1] is None or (selected_path and selected_path != newpath):
             #logging.debug('select_index()->self.set_cursor(path="%s")' % (newpath))
-            self.set_cursor(newpath, self.get_columns()[0], start_editing=True)
             self._activate_editing_path(newpath)
 
     def set_model(self, storemodel):
@@ -296,8 +295,6 @@ class StoreTreeView(gtk.TreeView):
         try:
             #self._owner.set_statusbar_message(self.document.mode_cursor.move(offset))
             self.view.cursor.move(offset)
-            path = self.get_model().store_index_to_path(self.view.cursor.index)
-            self._activate_editing_path(path)
         except IndexError:
             pass
 

@@ -270,7 +270,6 @@ class StoreTreeView(gtk.TreeView):
             #      to be the correct GTK black magic incantation to make it
             #      "work".
             self.set_cursor(newpath, self.get_columns()[0], start_editing=True)
-            self._activate_editing_path(newpath)
             self.get_model().set_editable(newpath)
             def change_cursor():
                 self.set_cursor(newpath, self.get_columns()[0], start_editing=True)

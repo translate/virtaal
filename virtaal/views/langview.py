@@ -69,6 +69,10 @@ class LanguageView(BaseView):
         [self.menu.append(item) for item in (seperator, self.other_item)]
         self.update_recent_pairs()
 
+        self.controller.main_controller.view.main_window.connect(
+            'style-set', self._on_style_set
+        )
+
 
     # METHODS #
     def _get_display_string(self, srclang, tgtlang):
@@ -96,14 +100,16 @@ class LanguageView(BaseView):
 
     def notify_diff_langs(self):
         def notify():
-            fgcol = gtk.widget_get_default_style().fg
+            if hasattr(self, 'popup_default_fg'):
+                fgcol = self.popup_default_fg
+            else:
+                fgcol = gtk.widget_get_default_style().fg
             for s in [gtk.STATE_ACTIVE, gtk.STATE_NORMAL, gtk.STATE_PRELIGHT, gtk.STATE_SELECTED]:
                 self.popupbutton.child.modify_fg(s, fgcol[s])
         gobject.idle_add(notify)
 
     def show(self):
         """Add the managed C{PopupButton} to the C{MainView}'s status bar."""
-
         statusbar = self.controller.main_controller.view.status_bar
 
         for child in statusbar.get_children():
@@ -198,3 +204,7 @@ class LanguageView(BaseView):
         pair = self.controller.recent_pairs[item_n]
         self.controller.set_language_pair(*pair)
         self.controller.main_controller.unit_controller.view.targets[0].grab_focus()
+
+    def _on_style_set(self, widget, prev_style):
+        if not hasattr(self, 'popup_default_fg'):
+            self.popup_default_fg = widget.style.fg

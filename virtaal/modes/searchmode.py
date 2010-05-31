@@ -333,8 +333,8 @@ class SearchMode(BaseMode):
             if tag:
                 tagtable.remove(tag)
             tagtable.add(self._make_highlight_tag())
-        except ValueError:
-            pass
+        except ValueError, ve:
+            logging.exception("(Re-)adding search highlighting tag exception:")
 
         select_iters = []
         for match in self._get_matches_for_textbox(textbox):

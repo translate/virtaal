@@ -93,9 +93,18 @@ class OpenTranClient(gobject.GObject, HTTPClient):
         self.target_lang = None
         self.lang_negotiate(language, self._handle_target_lang)
 
+    def _loads_safe(response):
+        """Does the loading of the XML-RPC response, but handles exceptions."""
+        try:
+            (data,), _fish = xmlrpclib.loads(response)
+        except Exception, exc:
+            logging.debug('XML-RPC exception: %s' % (exc))
+            return None
+        return data
+
     def _handle_target_lang(self, request, response):
         language = request.id
-        (result,), fish = xmlrpclib.loads(response)
+        result = self._loads_safe(response)
         if result:
             self.target_lang = language
             #logging.debug("target language %s supported" % language)
@@ -111,7 +120,7 @@ class OpenTranClient(gobject.GObject, HTTPClient):
 
     def _handle_source_lang(self, request, response):
         language = request.id
-        (result,), fish = xmlrpclib.loads(response)
+        result = self._loads_safe(response)
         if result:
             self.source_lang = language
             #logging.debug("source language %s supported" % language)
@@ -126,10 +135,8 @@ class OpenTranClient(gobject.GObject, HTTPClient):
 
     def format_suggestions(self, id, response):
         """clean up open tran suggestion and use the same format as tmserver"""
-        try:
-            (suggestions,), fish = xmlrpclib.loads(response)
-        except Exception, exc:
-            logging.debug('XML-RPC exception: %s' % (exc))
+        suggestions = self._loads_safe(response)
+        if not suggestions:
             return []
         id = data.forceunicode(id)
         self.last_suggestions = suggestions

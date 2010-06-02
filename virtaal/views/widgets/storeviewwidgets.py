@@ -260,7 +260,20 @@ class StoreTreeView(gtk.TreeView):
 
         if selected[1] is None or (selected_path and selected_path != newpath):
             #logging.debug('select_index()->self.set_cursor(path="%s")' % (newpath))
-            self._activate_editing_path(newpath)
+            # XXX: Both of the "self.set_cursor()" calls below are necessary in
+            #      order to have both bug 869 fixed and keep search highlighting
+            #      in working order. After exhaustive inspection of the
+            #      interaction between emitted signals involved, Friedel and I
+            #      still have no idea why exactly it is needed. This just seems
+            #      to be the correct GTK black magic incantation to make it
+            #      "work".
+            self.set_cursor(newpath, self.get_columns()[0], start_editing=True)
+            self.get_model().set_editable(newpath)
+            def change_cursor():
+                self.set_cursor(newpath, self.get_columns()[0], start_editing=True)
+                self._waiting_for_row_change -= 1
+            self._waiting_for_row_change += 1
+            gobject.idle_add(change_cursor, priority=gobject.PRIORITY_DEFAULT_IDLE)
 
     def set_model(self, storemodel):
         if storemodel:
@@ -268,17 +281,6 @@ class StoreTreeView(gtk.TreeView):
         else:
             model = gtk.ListStore(object)
         super(StoreTreeView, self).set_model(model)
-
-    def _activate_editing_path(self, new_path):
-        """Activates the given path for editing."""
-        # get the index of the translation unit in the translation store
-        #self.get_model().set(self.get_model().get_iter(new_path), COLUMN_EDITABLE, True)
-        self.get_model().set_editable(new_path)
-        def change_cursor():
-            self.set_cursor(new_path, self.get_columns()[0], start_editing=True)
-            self._waiting_for_row_change -= 1
-        self._waiting_for_row_change += 1
-        gobject.idle_add(change_cursor, priority=gobject.PRIORITY_DEFAULT_IDLE)
 
     def _keyboard_move(self, offset):
         if not self.view.controller.get_store():

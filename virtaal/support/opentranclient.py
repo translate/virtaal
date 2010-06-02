@@ -93,7 +93,7 @@ class OpenTranClient(gobject.GObject, HTTPClient):
         self.target_lang = None
         self.lang_negotiate(language, self._handle_target_lang)
 
-    def _loads_safe(response):
+    def _loads_safe(self, response):
         """Does the loading of the XML-RPC response, but handles exceptions."""
         try:
             (data,), _fish = xmlrpclib.loads(response)

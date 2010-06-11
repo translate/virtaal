@@ -66,7 +66,6 @@ class StoreTreeView(gtk.TreeView):
         self.connect('key-press-event', self._on_key_press)
         self.connect("cursor-changed", self._on_cursor_changed)
         self.connect("button-press-event", self._on_button_press)
-        self.connect('focus-in-event', self.on_configure_event)
 
         # The following connections are necessary, because Gtk+ apparently *only* uses accelerators
         # to add pretty key-bindings next to menu items and does not really care if an accelerator
@@ -191,7 +190,10 @@ class StoreTreeView(gtk.TreeView):
 
         self.columns_autosize()
         if path != None:
-            self.set_cursor(path, column, start_editing=True)
+            cell_area = self.get_cell_area(path, column)
+            def do_setcursor():
+                self.set_cursor(path, column, start_editing=True)
+            gobject.idle_add(do_setcursor)
 
         return False
 

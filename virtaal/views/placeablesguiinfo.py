@@ -25,7 +25,7 @@ from translate.storage.placeables import base, StringElem, general, xliff
 
 from virtaal.views import rendering
 from virtaal.views import theme
-from virtaal.views.widgets.storeviewwidgets import make_pango_layout
+from virtaal.views.widgets.storecellrenderer import make_pango_layout
 
 
 class StringElemGUI(object):

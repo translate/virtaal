@@ -21,7 +21,7 @@
 import gtk
 
 from baseview import BaseView
-from widgets.storeviewwidgets import *
+from widgets.storetreeview import StoreTreeView
 
 
 # XXX: ASSUMPTION: The model to display is self.controller.store

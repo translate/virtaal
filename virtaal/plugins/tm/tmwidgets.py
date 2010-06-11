@@ -203,7 +203,7 @@ class TMMatchRenderer(gtk.GenericCellRenderer):
     """
     Renders translation memory matches.
 
-    This class was adapted from C{virtaal.views.widgets.storeviewwidgets.StoreCellRenderer}.
+    This class was adapted from C{virtaal.views.widgets.storecellrenderer.StoreCellRenderer}.
     """
 
     __gtype_name__ = 'TMMatchRenderer'

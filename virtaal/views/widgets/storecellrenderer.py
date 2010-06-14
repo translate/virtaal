@@ -69,6 +69,10 @@ def gtk_textview_compute_optimal_height(widget, width):
         border += 2 * widget.style_get_property("focus-line-width")
 
     buftext = buf.get_text(buf.get_start_iter(), buf.get_end_iter())
+    # A good way to test height estimation is to use it for all units and
+    # compare the reserved space to the actual space needed to display a unit.
+    # To use height estimation for all units (not just empty units), use:
+    #if True:
     if not buftext:
         text = getattr(widget, '_source_text', u"")
         if text:

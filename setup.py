@@ -401,6 +401,11 @@ def find_enchant_files():
     # This should give us something like
     # C:\Python25\Lib\site-packages\enchant\lib\enchant\libenchant_myspell.dll
     data_files.append(('lib/enchant', [en.provider.file]))
+    # Our version of gtkspell expects libenchant.dll, but enchant itselfs needs
+    # libenchant-1.dll
+    libenchant = enchant.utils.get_resource_filename("libenchant.dll")
+    libenchant1 = enchant.utils.get_resource_filename("libenchant-1.dll")
+    data_files.append(('',[libenchant, libenchant1]))
     return data_files
 
 def find_langmodel_files():
@@ -433,7 +438,10 @@ def add_win32_options(options):
         py2exe_options = {
             "packages":   ["encodings", "translate.lang", "virtaal"],
             "compressed": True,
-            "excludes":   ["PyLucene", "Tkconstants", "Tkinter", "tcl", "translate.misc._csv"],
+            "excludes":   ["PyLucene", "Tkconstants", "Tkinter", "tcl",
+                # strange things unnecessarily included with some versions of pyenchant:
+                "win32ui", "_win32sysloader", "win32pipe", "py2exe", "win32com", "pywin", "isapi", "_tkinter", "win32api",
+            ],
             "dist_dir":   "virtaal-win32",
             "includes":   [
                     "lxml", "lxml._elementpath", "psyco", "cairo", "pango",

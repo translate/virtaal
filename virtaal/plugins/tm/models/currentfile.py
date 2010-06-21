@@ -109,11 +109,11 @@ class TMModel(BaseTMModel):
         for alt in alttrans:
             tmsource = _('This file')
 
-            origin = alt.xmlelement.get('from', '')
-            if not origin:
+            xmlelement = getattr(alt, 'xmlelement', None)
+            if xmlelement:
                 origin = alt.xmlelement.get('origin', '')
-            if origin:
-                tmsource += "\n" + origin
+                if origin:
+                    tmsource += "\n" + origin
 
             results.append({
                 'source': alt.source,

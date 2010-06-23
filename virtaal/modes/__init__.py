@@ -21,8 +21,9 @@
 from defaultmode import DefaultMode
 from quicktransmode import QuickTranslateMode
 from searchmode import SearchMode
+from workflowmode import WorkflowMode
 
 
-modeclasses = [DefaultMode, QuickTranslateMode, SearchMode]
+modeclasses = [DefaultMode, QuickTranslateMode, SearchMode, WorkflowMode]
 
 __all__ = ['modeclasses']

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -33,6 +33,7 @@ from virtaal.common import GObjectWrapper, pan_app
 import rendering
 from baseview import BaseView
 from widgets.textbox import TextBox
+from widgets.listnav import ListNavigator
 
 
 class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
@@ -76,7 +77,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
         self._widgets = {
             'context_info': None,
-            'fuzzy': None,
+            'state': None,
             'notes': {},
             'sources': [],
             'targets': []
@@ -335,7 +336,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         """Build the default editor with the following components:
             - A C{gtk.TextView} for each source
             - A C{gtk.TextView} for each target
-            - A C{gtk.ToggleButton} for the fuzzy option
+            - A C{ListNavigator} for the unit states
             - A C{gtk.Label} for programmer notes
             - A C{gtk.Label} for translator notes
             - A C{gtk.Label} for context info"""
@@ -344,7 +345,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         self._layout_update_context_info()
         self._layout_update_targets()
         self._layout_update_notes('translator')
-        self._layout_update_fuzzy()
+        self._layout_update_states()
         if self.unit:
             self._set_menu_items_sensitive(True)
 
@@ -501,6 +502,15 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
         return scrollwnd
 
+    def _create_workflow_liststore(self):
+        workflow = self.controller.workflow
+        lst = gtk.ListStore(str, object)
+        if not workflow:
+            return lst
+        for state in workflow.states:
+            lst.append([state.name, state])
+        return lst
+
     def _layout_update_notes(self, origin):
         if origin not in self._widgets['notes']:
             label = gtk.Label()
@@ -640,26 +650,29 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                 #logging.debug('Hiding target #%d: %s' % (i, self.targets[i]))
                 self.targets[i].parent.hide_all()
 
-    def _layout_update_fuzzy(self):
-        if not self._widgets['fuzzy']:
-            fuzzy = gtk.CheckButton(label=_('F_uzzy'))
-            fuzzy.set_property("xalign", 0.0)
-            # FIXME: not allowing focus will probably raise various issues related to keyboard accesss.
-            fuzzy.set_property("can-focus", False)
-            fuzzy.connect('toggled', self._on_fuzzy_toggled)
-            self._widgets['vbox_right'].pack_end(fuzzy, expand=False, fill=False)
-            self._widgets['fuzzy'] = fuzzy
+    def _layout_update_states(self):
+        if not self._widgets['state']:
+            statenav = ListNavigator()
+            statenav.connect('selection-changed', self._on_state_changed)
+            self._widgets['vbox_right'].pack_end(statenav, expand=False, fill=False)
+            self._widgets['state'] = statenav
 
         if self.unit is not None:
-            self._widgets['fuzzy'].show()
-            self._widgets['fuzzy'].set_active(self.unit.isfuzzy())
+            state_name = self.controller.get_unit_state_names()[self.unit.get_state_id()]
+            self._widgets['state'].set_model(
+                self._create_workflow_liststore(),
+                select_name=state_name,
+            )
+            self._widgets['state'].show_all()
 
 
     # EVENT HANLDERS #
-    def _on_fuzzy_toggled(self, toggle_button, *args):
+    def _on_state_changed(self, listnav, newstate):
+        listnav.btn_popup.set_label(newstate.name)
         if self.unit is None:
             return
-        self.unit.markfuzzy(toggle_button.get_active())
+        if self.controller.workflow:
+            self.controller.workflow.set_current_state(newstate)
         self.modified()
 
     def _on_key_press_event(self, _widget, event, *_args):

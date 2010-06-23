@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 from gobject import GObject, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from translate.storage import workflow
 
 from virtaal.common import GObjectWrapper
 from virtaal.views import UnitView
@@ -48,6 +49,7 @@ class UnitController(BaseController):
         self.store_controller = store_controller
         self.store_controller.unit_controller = self
         self.placeables_controller = None
+        self.workflow = None
 
         self.view = UnitView(self)
         self.view.connect('delete-text', self._unit_delete_text)
@@ -61,6 +63,8 @@ class UnitController(BaseController):
         self.main_controller.connect('controller-registered', self._on_controller_registered)
 
         self._current_unit_modified = False
+        self._recreate_workflow = False
+        self._unit_state_names = {}
 
 
     # ACCESSORS #
@@ -72,6 +76,25 @@ class UnitController(BaseController):
 
 
     # METHODS #
+    def get_unit_state_names(self, unit=None):
+        if unit is None:
+            unit = self.current_unit
+        if not self._unit_state_names:
+            from translate.storage import pocommon
+
+            if isinstance(unit, pocommon.pounit):
+                self._unit_state_names = {
+                    # We don't want 'Obsolete' below, because such units are not shown anyway
+                    #unit.S_OBSOLETE:     _('Obsolete'),
+                    unit.S_UNTRANSLATED: _('Untranslated'),
+                    unit.S_FUZZY:        _('Fuzzy'),
+                    unit.S_TRANSLATED:   _('Translated'),
+                }
+            else:
+                raise ValueError('No state names for unit: %s' % (repr(unit)))
+
+        return self._unit_state_names
+
     def load_unit(self, unit):
         if self.current_unit and self.current_unit is unit:
             return self.view
@@ -79,8 +102,22 @@ class UnitController(BaseController):
         self.nplurals = self.main_controller.lang_controller.target_lang.nplurals
 
         if self.placeables_controller:
-            self.current_unit.rich_source = self.placeables_controller.apply_parsers(self.current_unit.rich_source)
+            unit.rich_source = self.placeables_controller.apply_parsers(unit.rich_source)
 
+        state_n, state_id = unit.get_state_n(), unit.get_state_id()
+        state_names = self.get_unit_state_names()
+        if self._recreate_workflow:
+            # This will only happen when a document is loaded.
+            self._unit_state_names = {}
+            # FIXME: The call below is run for the second time, but is necessary
+            #        because the names could have changed in the new document :/
+            state_names = self.get_unit_state_names()
+            self.workflow = workflow.create_unit_workflow(unit, state_names)
+            self._recreate_workflow = False
+
+        self.workflow.reset(unit, init_state=state_names[state_id])
+        # Make sure that we use the same state_n as the unit had before it got "lost"
+        unit.set_state_n(state_n)
         self.view.load_unit(unit)
         return self.view
 
@@ -122,7 +159,7 @@ class UnitController(BaseController):
             self.current_unit.rich_source = placeables_controller.apply_parsers(self.current_unit.rich_source)
 
     def _on_store_loaded(self, store_controller):
-        """Call C{_on_language_changed()}.
+        """Call C{_on_language_changed()} and set flag to recreate workflow.
 
             If the target language loaded at start-up (from config) is the same
             as that of the first opened file, C{self.view.update_languages()} is
@@ -138,3 +175,4 @@ class UnitController(BaseController):
             self.main_controller.lang_controller,
             self.main_controller.lang_controller.target_lang.code
         )
+        self._recreate_workflow = True

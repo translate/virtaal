@@ -148,7 +148,7 @@ class TerminologyModel(BaseTerminologyModel):
             if filename.startswith(base):
                 return filename
         return base + os.extsep + ext
-    curr_term_filname = property(_get_curr_term_filename)
+    curr_term_filename = property(_get_curr_term_filename)
 
 
     # METHODS #

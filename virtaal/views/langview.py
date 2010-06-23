@@ -30,7 +30,7 @@ from virtaal.models import LanguageModel
 from baseview import BaseView
 from widgets.langadddialog import LanguageAddDialog
 from widgets.langselectdialog import LanguageSelectDialog
-from widgets.popupbutton import PopupButton
+from widgets.popupmenubutton import PopupMenuButton
 
 
 class LanguageView(BaseView):
@@ -54,7 +54,7 @@ class LanguageView(BaseView):
 
     def _init_gui(self):
         self.menu = gtk.Menu()
-        self.popupbutton = PopupButton()
+        self.popupbutton = PopupMenuButton()
         self.popupbutton.set_menu(self.menu)
         self.popupbutton.connect('toggled', self._on_button_toggled)
 
@@ -109,7 +109,7 @@ class LanguageView(BaseView):
         gobject.idle_add(notify)
 
     def show(self):
-        """Add the managed C{PopupButton} to the C{MainView}'s status bar."""
+        """Add the managed C{PopupMenuButton} to the C{MainView}'s status bar."""
         statusbar = self.controller.main_controller.view.status_bar
 
         for child in statusbar.get_children():

@@ -20,16 +20,29 @@
 
 import gtk
 
+# Positioning constants below:
+# POS_CENTER_BELOW: Centers the pop-up window below the button (default).
+# POS_CENTER_ABOVE: Centers the pop-up window above the button.
+# POS_NW_SW: Positions the pop-up window so that its North West (top right)
+#            corner is on the South West corner of the button.
+# POS_NW_NE: Positions the pop-up window so that its North West (top right)
+#            corner is on the North East corner of the button.
+# POS_SW_NW: Positions the pop-up window so that its South West (top right)
+#            corner is on the North West corner of the button.
+POS_CENTER_BELOW, POS_CENTER_ABOVE, POS_NW_SW, POS_NW_NE, POS_SW_NW = range(5)
+# XXX: Add position symbols above as needed and implementation in
+#      _update_popup_geometry()
 
-class PopupButton(gtk.ToggleButton):
+class PopupMenuButton(gtk.ToggleButton):
     """A toggle button that displays a pop-up menu when clicked."""
 
     # INITIALIZERS #
-    def __init__(self):
-        gtk.ToggleButton.__init__(self)
+    def __init__(self, label=None, menu_pos=POS_SW_NW):
+        gtk.ToggleButton.__init__(self, label=label)
         self.set_relief(gtk.RELIEF_NONE)
-
         self.set_menu(gtk.Menu())
+
+        self.menu_pos = menu_pos
 
         self.connect('toggled', self._on_toggled)
 
@@ -57,11 +70,23 @@ class PopupButton(gtk.ToggleButton):
         else:
             _w, menu_h = menu.size_request()
 
-        window_xy = self.window.get_origin()
-        widget_alloc = self.get_allocation()
+        btn_window_xy = self.window.get_origin()
+        btn_alloc = self.get_allocation()
+        menu_alloc = self.menu.get_allocation()
 
-        x = window_xy[0] + widget_alloc.x
-        y = window_xy[1] + widget_alloc.y - menu_h
+        # Default values are POS_SW_NW
+        x = btn_window_xy[0] + btn_alloc.x
+        y = btn_window_xy[1] + btn_alloc.y - menu_h
+        if self.menu_pos == POS_NW_SW:
+            y = btn_window_xy[1] + btn_alloc.y + btn_alloc.height
+        elif self.menu_pos == POS_NW_NE:
+            x += btn_alloc.width
+            y = btn_window_xy[1] + btn_alloc.y
+        elif self.menu_pos == POS_CENTER_BELOW:
+            x -= (menu_alloc.width - btn_alloc.width) / 2
+        elif self.menu_pos == POS_CENTER_ABOVE:
+            x -= (menu_alloc.width - btn_alloc.width) / 2
+            y = btn_window_xy[1] - menu_alloc.height
         return (x, y, True)
 
     def popdown(self):

@@ -169,6 +169,10 @@ class MainView(BaseView):
         self.status_bar = self.gui.get_widget("status_bar")
         self.status_bar.set_sensitive(False)
         self.statusbar_context_id = self.status_bar.get_context_id("statusbar")
+        #Only used in full screen, initialised as needed
+        self.btn_app = None
+        self.app_menu = None
+
         self.main_window.set_icon_from_file(pan_app.get_abs_data_filename(["icons", "virtaal.ico"]))
         self.main_window.resize(
             int(pan_app.settings.general['windowwidth']),
@@ -575,6 +579,22 @@ class MainView(BaseView):
             return 'discard'
         return 'cancel'
 
+    def show_app_icon(self):
+        if not self.btn_app:
+            self.btn_app = self.gui.get_widget('btn_app')
+            image = self.gui.get_widget('img_app')
+            image.set_from_file(pan_app.get_abs_data_filename(['icons', 'hicolor', '24x24', 'mimetypes', 'x-translation.png']))
+            self.app_menu = gtk.Menu()
+            self.btn_app.connect('pressed', self._on_app_pressed)
+            self.btn_app.show()
+        for child in self.menubar:
+            child.reparent(self.app_menu)
+        self.btn_app.show()
+
+    def hide_app_icon(self):
+        self.btn_app.hide()
+        for child in self.app_menu:
+            child.reparent(self.menubar)
 
     # SIGNAL HANDLERS #
     def _on_controller_registered(self, main_controller, new_controller):
@@ -614,8 +634,14 @@ class MainView(BaseView):
     def _on_fullscreen(self, widget=None):
         if widget.get_active():
             self.main_window.fullscreen()
+            self.status_bar.hide()
+            self.show_app_icon()
+            self.menubar.hide()
         else:
             self.main_window.unfullscreen()
+            self.status_bar.show()
+            self.hide_app_icon()
+            self.menubar.show()
 
     def _on_tutorial(self, widget=None):
         self.controller.open_tutorial()
@@ -668,3 +694,6 @@ class MainView(BaseView):
     def _on_window_state_event(self, widget, event):
         mnu_fullscreen = self.gui.get_widget('mnu_fullscreen')
         mnu_fullscreen.set_active(event.new_window_state & gdk.WINDOW_STATE_FULLSCREEN)
+
+    def _on_app_pressed(self, btn):
+        self.app_menu.popup(None, None, None, 0, 0)

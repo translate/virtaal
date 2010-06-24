@@ -23,10 +23,6 @@ import logging
 import re
 from gobject import idle_add, PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 from translate.lang import factory
-try:
-    import gtkspell
-except ImportError, e:
-    gtkspell = None
 
 from virtaal.common import GObjectWrapper, pan_app
 
@@ -47,6 +43,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         'modified':       (SIGNAL_RUN_FIRST, None, ()),
         'unit-done':      (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'target-focused': (SIGNAL_RUN_FIRST, None, (int,)),
+        'textview-language-changed': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT)),
     }
     __gproperties__ = {
         'editing-canceled': (bool, 'Editing cancelled', 'Editing was cancelled', False, PARAM_READWRITE),
@@ -353,76 +350,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         language = str(language)
         #logging.debug('Updating text view for language %s' % (language))
         text_view.get_pango_context().set_language(rendering.get_language(language))
+        self.emit('textview-language-changed', text_view, language)
 
-        global gtkspell
-        if gtkspell is None:
-            #logging.debug('No gtkspell!')
-            return
-
-        try:
-            import enchant
-        except ImportError:
-            #logging.debug('No enchant!')
-            return
-
-        if not enchant.dict_exists(language):
-            # Sometimes enchants *wants* a country code, other times it does not.
-            # For the cases where it requires one, we look for the first language
-            # code that enchant supports and use that one.
-            if len(language) > 4:
-                #logging.debug('len("%s") > 4' % (language))
-                return
-
-            for code in enchant.list_languages():
-                if code.startswith(language):
-                    language = code
-                    break
-            else:
-                #logging.debug('No code in enchant.list_languages() that starts with "%s"' % (language))
-                # We couldn't find a dictionary for "language", so we should make sure that we don't
-                # have a spell checker for a different language on the text view. See bug 717.
-                spell = None
-                try:
-                    spell = gtkspell.get_from_text_view(text_view)
-                except SystemError, e:
-                    # At least on Mandriva .get_from_text_view() sometimes returns
-                    # a SystemError without a description. Things seem to work fine
-                    # anyway, so let's ignore it and hope for the best.
-                    pass
-                if not spell is None:
-                    spell.detach()
-                text_view.spell_lang = None
-                return
-
-        if getattr(text_view, 'spell_lang', None) == language:
-            #logging.debug('text_view.spell_lang == "%s"' % (language))
-            return
-
-        try:
-            spell = None
-            try:
-                spell = gtkspell.get_from_text_view(text_view)
-            except SystemError, e:
-                # At least on Mandriva .get_from_text_view() sometimes returns
-                # a SystemError without a description. Things seem to work fine
-                # anyway, so let's ignore it and hope for the best.
-                pass
-            if spell is None:
-                spell = gtkspell.Spell(text_view, language)
-            else:
-                spell.set_language(language)
-                spell.recheck_all()
-            text_view.spell_lang = language
-        except Exception, e:
-            logging.exception("Could not initialize spell checking", e)
-            gtkspell = None
-
-    if not pan_app.DEBUG:
-        try:
-            import psyco
-            psyco.cannotcompile(_update_textview_language)
-        except ImportError, e:
-            pass
 
     # GUI BUILDING CODE #
     def _create_sources(self):

@@ -5,10 +5,12 @@ virtaal/tips.py
 virtaal/controllers/maincontroller.py
 virtaal/controllers/placeablescontroller.py
 virtaal/controllers/storecontroller.py
+virtaal/controllers/unitcontroller.py
 virtaal/controllers/welcomescreencontroller.py
 virtaal/modes/defaultmode.py
 virtaal/modes/quicktransmode.py
 virtaal/modes/searchmode.py
+virtaal/modes/workflowmode.py
 virtaal/views/prefsview.py
 virtaal/plugins/autocompletor.py
 virtaal/plugins/autocorrector.py

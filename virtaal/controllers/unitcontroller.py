@@ -106,7 +106,7 @@ class UnitController(BaseController):
 
         state_n, state_id = unit.get_state_n(), unit.get_state_id()
         state_names = self.get_unit_state_names()
-        if self._recreate_workflow:
+        if self._recreate_workflow or self.workflow is None:
             # This will only happen when a document is loaded.
             self._unit_state_names = {}
             # FIXME: The call below is run for the second time, but is necessary

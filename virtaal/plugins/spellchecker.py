@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 20010 Zuza Software Foundation
+# Copyright 2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #

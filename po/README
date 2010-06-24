@@ -22,7 +22,7 @@ by Virtaal, nothing more.  Translating these will ensure that
 the user has an end to end localised experience.
 
 Do not translate these if upstream exists.  We'll package upstream
-package translation rather then your lite versions if they exist. Ideally
+package translation rather than your lite versions if they exist. Ideally
 you should get these light versions upstreamed.
 
 Currently we translate lite versions for:

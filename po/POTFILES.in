@@ -14,6 +14,7 @@ virtaal/modes/workflowmode.py
 virtaal/views/prefsview.py
 virtaal/plugins/autocompletor.py
 virtaal/plugins/autocorrector.py
+virtaal/plugins/spellchecker.py
 virtaal/plugins/lookup/__init__.py
 virtaal/plugins/lookup/lookupview.py
 virtaal/plugins/lookup/models/weblookup.py

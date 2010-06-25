@@ -88,12 +88,12 @@ class TMModel(BaseTMModel):
             self.source_lang, self.target_lang,
             None, None, err
         )
-        if not isinstance(result, unicode):
-            result = unicode(result, 'utf-8') # XXX: The encoding is just a guess
         if result is None:
             # TODO handle errors and cleanup errors
             logging.warning("An error occured while getting a translation: %s" % err)
             return
+        if not isinstance(result, unicode):
+            result = unicode(result, 'utf-8') # XXX: The encoding is just a guess
         translation.append({
             'source': query_str,
             'target': quote.rstripeol(result),

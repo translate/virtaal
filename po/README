@@ -28,3 +28,4 @@ you should get these light versions upstreamed.
 Currently we translate lite versions for:
 * GTK - http://l10n.gnome.org/module/gtk+ (scroll down to UI translations)
 * gtkspell - http://translationproject.org/domain/gtkspell.html
+* Glib - http://l10n.gnome.org/module/glib/

@@ -33,7 +33,7 @@ class ChecksController(BaseController):
 
     __gtype_name__ = 'ChecksController'
     __gsignals__ = {
-        'unit-checked': (SIGNAL_RUN_FIRST, None, (object, object, object, object))
+        'unit-checked': (SIGNAL_RUN_FIRST, None, (object, object, object))
     }
 
     # INITIALIZERS #
@@ -47,16 +47,14 @@ class ChecksController(BaseController):
         main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
 
         # XXX: Add other checkers below with a localisable string as key (used
-        #      on the GUI) and a 2-tuple as the value. The value 2-tuple has the
-        #      checker class as first element and an appropriate checker
-        #      config object as the second.
+        #      on the GUI) and a checker class as the value.
         self.checker_info = {
-            _('Default'):    (checks.StandardChecker,   checks.CheckerConfig()),
-            _('OpenOffice'): (checks.OpenOfficeChecker, checks.openofficeconfig),
-            _('Mozilla'):    (checks.MozillaChecker,    checks.mozillaconfig),
-            _('Drupal'):     (checks.DrupalChecker,     checks.drupalconfig),
-            _('Gnome'):      (checks.GnomeChecker,      checks.gnomeconfig),
-            _('KDE'):        (checks.KdeChecker,        checks.kdeconfig),
+            _('Default'):    checks.StandardChecker,
+            _('OpenOffice'): checks.OpenOfficeChecker,
+            _('Mozilla'):    checks.MozillaChecker,
+            _('Drupal'):     checks.DrupalChecker,
+            _('GNOME'):      checks.GnomeChecker,
+            _('KDE'):        checks.KdeChecker,
         }
         self._checker_menu_items = {}
         self._current_checker = None
@@ -74,21 +72,20 @@ class ChecksController(BaseController):
         self.set_project_type_by_name(_('Default'))
 
     def set_project_type_by_name(self, name):
-        checker_class, checker_config = self.checker_info[name]
-        checker = checker_class(checker_config)
+        checker = self.checker_info[name]()
         self._current_checker = checker
 
 
     # METHODS #
     def check_unit(self, unit):
-        checker_class, checker_config = self.get_current_project_info()
-        checker = checker_class(checker_config)
-        if not (checker and checker_config):
+        checker = self.get_current_checker()
+        if not checker:
+            logging.debug('No checker instantiated :(')
             return
         self.last_failures = checker.run_filters(unit)
         if self.last_failures:
             logging.debug('Failures: %s' % (self.last_failures))
-        self.emit('unit-checked', unit, checker, checker_config, self.last_failures)
+        self.emit('unit-checked', unit, checker, self.last_failures)
 
 
     # EVENT HANDLERS #

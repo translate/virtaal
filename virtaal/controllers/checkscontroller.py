@@ -19,7 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from gobject import SIGNAL_RUN_FIRST
+from gobject import SIGNAL_RUN_FIRST, timeout_add
 from translate.filters import checks
 
 from virtaal.common import GObjectWrapper
@@ -36,6 +36,9 @@ class ChecksController(BaseController):
         'unit-checked': (SIGNAL_RUN_FIRST, None, (object, object, object))
     }
 
+    CHECK_TIMEOUT = 500
+    """Time to wait before performing checks on the current unit."""
+
     # INITIALIZERS #
     def __init__(self, main_controller):
         GObjectWrapper.__init__(self)
@@ -45,10 +48,12 @@ class ChecksController(BaseController):
         self.checks = checks
 
         main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
+        main_controller.unit_controller.connect('unit-modified', self._on_unit_modified)
 
-        # XXX: Add other checkers below with a localisable string as key (used
-        #      on the GUI) and a checker class as the value.
+        self._check_timer_active = False
         self.checker_info = {
+            # XXX: Add other checkers below with a localisable string as key
+            #      (used on the GUI) and a checker class as the value.
             _('Default'):    checks.StandardChecker,
             _('OpenOffice'): checks.OpenOfficeChecker,
             _('Mozilla'):    checks.MozillaChecker,
@@ -90,11 +95,22 @@ class ChecksController(BaseController):
             logging.debug('Failures: %s' % (self.last_failures))
         self.emit('unit-checked', unit, checker, self.last_failures)
 
+    def _check_timer_expired(self, unit):
+        self._check_timer_active = False
+        if unit is not self.last_unit:
+            return
+        self.check_unit(unit)
+
+    def _start_check_timer(self):
+        if self._check_timer_active:
+            return
+        self._check_timer_active = True
+        timeout_add(self.CHECK_TIMEOUT, self._check_timer_expired, self.last_unit)
+
 
     # EVENT HANDLERS #
     def _on_cursor_changed(self, cursor):
         self.last_unit = cursor.deref()
-        self.check_unit(self.last_unit)
 
     def _on_store_loaded(self, store_controller):
         self.set_default_project_type()
@@ -106,3 +122,6 @@ class ChecksController(BaseController):
             store_controller.cursor.connect('cursor-changed', self._on_cursor_changed)
         )
         self._on_cursor_changed(store_controller.cursor)
+
+    def _on_unit_modified(self, unit_controller, unit):
+        self._start_check_timer()

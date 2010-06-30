@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gtk
+from translate.lang import factory as lang_factory
 
 from virtaal.views.widgets.popupwidgetbutton import PopupWidgetButton, POS_SE_NE
 
@@ -33,10 +34,18 @@ class ChecksUnitView(BaseView):
     # INITIALIZERS #
     def __init__(self, controller):
         self.controller = controller
+        main_controller = controller.main_controller
+        if main_controller.lang_controller:
+            main_controller.lang_controller.connect('target-lang-changed', self._on_target_lang_changed)
+        else:
+            main_controller.connect('controller-registered', self._on_controller_registered)
 
         self.vbox_popup = self._create_popup_vbox()
         self._create_checks_button(self.vbox_popup)
         self._create_menu_item()
+
+        self._listsep = None
+        self._prev_failures = None
 
     def _create_checks_button(self, widget):
         import pango
@@ -83,10 +92,46 @@ class ChecksUnitView(BaseView):
         parent.pack_start(self.btn_checks, expand=False, fill=True)
         self.btn_checks.show()
 
+    def update(self, failures):
+        self._prev_failures = failures
+        if not failures:
+            self.lbl_btnchecks.set_text(_('No issues'))
+            self._show_empty_label()
+            return
+
+        self.lst_checks.clear()
+        names = []
+        for testname, desc in failures.iteritems():
+            self.lst_checks.append([testname, desc])
+            names.append(testname)
+
+        if not self._listsep:
+            tgt_lang = self.controller.main_controller.lang_controller.target_lang.code
+            self._listsep = lang_factory.getlanguage(tgt_lang).listseperator
+
+        self.lbl_btnchecks.set_text(self._listsep.join(names))
+        self._show_treeview()
+
+    def _show_empty_label(self):
+        self.scw_checks.hide()
+        self.lbl_empty.show()
+
+    def _show_treeview(self):
+        self.lbl_empty.hide()
+        self.scw_checks.show_all()
+
 
     # EVENT HANDLERS #
     def _on_activated(self, menu_iitem):
         self.btn_checks.clicked()
 
+    def _on_controller_registered(self, main_controller, controller):
+        if controller is main_controller.lang_controller:
+            controller.connect('target-lang-changed', self._on_target_lang_changed)
+
     def _on_popup_shown(self, button):
         pass
+
+    def _on_target_lang_changed(self, lang_controller, langcode):
+        self._listsep = None
+        self.update(self._prev_failures)

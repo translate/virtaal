@@ -49,6 +49,10 @@ class ChecksController(BaseController):
 
         main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
         main_controller.unit_controller.connect('unit-modified', self._on_unit_modified)
+        if main_controller.lang_controller:
+            main_controller.lang_controller.connect('target-lang-changed', self._on_target_lang_changed)
+        else:
+            main_controller.connect('controller-registered', self._on_controller_registered)
 
         self._check_timer_active = False
         self.checker_info = {
@@ -77,7 +81,11 @@ class ChecksController(BaseController):
         self.set_checker_by_name(_('Default'))
 
     def set_checker_by_name(self, name):
+        target_lang = self.main_controller.lang_controller.target_lang.code
+        if not target_lang:
+            target_lang = None
         checker = self.checker_info[name]()
+        checker.config.updatetargetlanguage(target_lang)
         self._current_checker = checker
         self.projview.set_checker_name(name)
         if self.main_controller.unit_controller.current_unit:
@@ -109,8 +117,15 @@ class ChecksController(BaseController):
 
 
     # EVENT HANDLERS #
+    def _on_controller_registered(self, main_controller, controller):
+        if controller is main_controller.lang_controller:
+            controller.connect('target-lang-changed', self._on_target_lang_changed)
     def _on_cursor_changed(self, cursor):
         self.last_unit = cursor.deref()
+
+    def _on_target_lang_changed(self, lang_controller, langcode):
+        if self._current_checker:
+            self._current_checker.config.updatetargetlanguage(langcode)
 
     def _on_store_loaded(self, store_controller):
         self.set_default_checker()

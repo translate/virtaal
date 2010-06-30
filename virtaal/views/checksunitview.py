@@ -65,6 +65,7 @@ class ChecksUnitView(BaseView):
         self.tvw_checks.set_model(self.lst_checks)
 
         self.scw_checks = gtk.ScrolledWindow()
+        self.scw_checks.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         self.scw_checks.add(self.tvw_checks)
         vb.pack_start(self.scw_checks)
 

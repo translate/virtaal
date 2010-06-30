@@ -35,21 +35,21 @@ class Virtaal(object):
         logging.debug('PluginController created')
         store_controller = StoreController(main_controller)
         logging.debug('StoreController created')
-        unit_controller = UnitController(store_controller)
+        UnitController(store_controller)
         logging.debug('UnitController created')
 
         # Load additional built-in modules
-        undo_controller = UndoController(main_controller)
+        UndoController(main_controller)
         logging.debug('UndoController created')
-        mode_controller = ModeController(main_controller)
+        ModeController(main_controller)
         logging.debug('ModeController created')
-        lang_controller = LanguageController(main_controller)
+        LanguageController(main_controller)
         logging.debug('LanguageController created')
-        placeables_controller = PlaceablesController(main_controller)
+        PlaceablesController(main_controller)
         logging.debug('PlaceablesController created')
-        prefs_controller = PreferencesController(main_controller)
+        PreferencesController(main_controller)
         logging.debug('PreferencesController created')
-        welcomescreen_controller = WelcomeScreenController(main_controller)
+        WelcomeScreenController(main_controller)
         logging.debug('WelcomeScreenController created')
 
         # Load plug-ins

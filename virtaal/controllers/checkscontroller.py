@@ -73,10 +73,10 @@ class ChecksController(BaseController):
     def get_current_checker(self):
         return self._current_checker
 
-    def set_default_project_type(self):
-        self.set_project_type_by_name(_('Default'))
+    def set_default_checker(self):
+        self.set_checker_by_name(_('Default'))
 
-    def set_project_type_by_name(self, name):
+    def set_checker_by_name(self, name):
         checker = self.checker_info[name]()
         self._current_checker = checker
         self.projview.set_checker_name(name)
@@ -113,7 +113,7 @@ class ChecksController(BaseController):
         self.last_unit = cursor.deref()
 
     def _on_store_loaded(self, store_controller):
-        self.set_default_project_type()
+        self.set_default_checker()
         if self._cursor_connection:
             widget, connect_id = self._cursor_connection
             widget.disconnect(connect_id)

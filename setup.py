@@ -447,6 +447,7 @@ def add_win32_options(options):
                     "lxml", "lxml._elementpath", "psyco", "cairo", "pango",
                     "pangocairo", "atk", "gobject", "gtk.keysyms",
                     "gtkspell",
+                    "tarfile",
                     "translate.services",
                     "translate.storage.placeables.terminology",
                 ],

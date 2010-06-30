@@ -74,6 +74,9 @@ class ChecksController(BaseController):
     def set_project_type_by_name(self, name):
         checker = self.checker_info[name]()
         self._current_checker = checker
+        self.view.set_checker_name(name)
+        if self.main_controller.unit_controller.current_unit:
+            self.check_unit(self.main_controller.unit_controller.current_unit)
 
 
     # METHODS #

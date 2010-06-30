@@ -37,7 +37,9 @@ from gobject import SIGNAL_RUN_FIRST, timeout_add
 #            corner is on the South West corner of the button.
 # POS_NW_NE: Positions the pop-up window so that its North West (top right)
 #            corner is on the North East corner of the button.
-POS_CENTER_BELOW, POS_CENTER_ABOVE, POS_NW_SW, POS_NW_NE = range(4)
+# POS_SE_NE: Positions the pop-up window so that its South East (top right)
+#            corner is on the North East corner of the button.
+POS_CENTER_BELOW, POS_CENTER_ABOVE, POS_NW_SW, POS_NW_NE, POS_SE_NE = range(5)
 # XXX: Add position symbols above as needed and implementation in
 #      _update_popup_geometry()
 
@@ -109,12 +111,17 @@ class PopupWidgetButton(gtk.ToggleButton):
         if self.popup_pos == POS_NW_NE:
             x += btn_alloc.width
             y = btn_window_xy[1] + btn_alloc.y
+        elif self.popup_pos == POS_SE_NE:
+            x -= (popup_alloc.width - btn_alloc.width)
+            y = btn_window_xy[1] - popup_alloc.height
         elif self.popup_pos == POS_CENTER_BELOW:
             x -= (popup_alloc.width - btn_alloc.width) / 2
         elif self.popup_pos == POS_CENTER_ABOVE:
             x -= (popup_alloc.width - btn_alloc.width) / 2
             y = btn_window_xy[1] - popup_alloc.height
         self.popup.move(x, y)
+        req = self.popup.get_child_requisition()
+        self.popup.resize(*req)
 
 
     # EVENT HANDLERS #

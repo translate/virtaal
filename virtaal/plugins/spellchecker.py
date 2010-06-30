@@ -25,6 +25,8 @@ import os.path
 from cStringIO import StringIO
 import tarfile
 
+from translate.lang.data import simplercode
+
 from virtaal.__version__ import ver as version
 from virtaal.common import pan_app
 from virtaal.controllers import BasePlugin
@@ -221,10 +223,6 @@ class Plugin(BasePlugin):
             # Sometimes enchants *wants* a country code, other times it does not.
             # For the cases where it requires one, we look for the first language
             # code that enchant supports and use that one.
-            if len(language) > 4:
-                #logging.debug('len("%s") > 4' % (language))
-                return
-
             for code in self.enchant.list_languages():
                 if code.startswith(language):
                     language = code

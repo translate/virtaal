@@ -23,7 +23,7 @@ from gobject import SIGNAL_RUN_FIRST
 from translate.filters import checks
 
 from virtaal.common import GObjectWrapper
-from virtaal.views.checksview import ChecksView
+from virtaal.views.checksprojview import ChecksProjectView
 
 from basecontroller import BaseController
 
@@ -60,8 +60,8 @@ class ChecksController(BaseController):
         self._current_checker = None
         self._cursor_connection = ()
 
-        self.view = ChecksView(self)
-        self.view.show()
+        self.projview = ChecksProjectView(self)
+        self.projview.show()
 
 
     # ACCESSORS #
@@ -74,7 +74,7 @@ class ChecksController(BaseController):
     def set_project_type_by_name(self, name):
         checker = self.checker_info[name]()
         self._current_checker = checker
-        self.view.set_checker_name(name)
+        self.projview.set_checker_name(name)
         if self.main_controller.unit_controller.current_unit:
             self.check_unit(self.main_controller.unit_controller.current_unit)
 

@@ -25,7 +25,7 @@ from virtaal.views.widgets.popupmenubutton import PopupMenuButton
 from baseview import BaseView
 
 
-class ChecksView(BaseView):
+class ChecksProjectView(BaseView):
     """Manages project type selection and other quality checks UI elements."""
 
     # INITIALIZERS #

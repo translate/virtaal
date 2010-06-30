@@ -20,6 +20,7 @@
 
 from basecontroller          import BaseController
 from baseplugin              import BasePlugin
+from checkscontroller        import ChecksController
 from cursor                  import Cursor
 from langcontroller          import LanguageController
 from maincontroller          import MainController
@@ -35,6 +36,7 @@ from welcomescreencontroller import WelcomeScreenController
 __all__ = [
     'BaseController',
     'BasePlugin',
+    'ChecksController',
     'Cursor',
     'LanguageController',
     'MainController',

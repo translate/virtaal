@@ -48,6 +48,7 @@ class UnitController(BaseController):
         self.main_controller.unit_controller = self
         self.store_controller = store_controller
         self.store_controller.unit_controller = self
+        self.checks_controller = None
         self.placeables_controller = None
         self.workflow = None
 
@@ -144,8 +145,10 @@ class UnitController(BaseController):
         if controller is main_controller.lang_controller:
             self.main_controller.lang_controller.connect('source-lang-changed', self._on_language_changed)
             self.main_controller.lang_controller.connect('target-lang-changed', self._on_language_changed)
+        elif controller is main_controller.checks_controller:
+            self.checks_controller = controller
         elif controller is main_controller.placeables_controller:
-            self.placeables_controller = main_controller.placeables_controller
+            self.placeables_controller = controller
             self.placeables_controller.connect('parsers-changed', self._on_parsers_changed)
             self._on_parsers_changed(self.placeables_controller)
 

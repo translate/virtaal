@@ -39,6 +39,8 @@ class Virtaal(object):
         logging.debug('UnitController created')
 
         # Load additional built-in modules
+        ChecksController(main_controller)
+        logging.debug('ChecksController created')
         UndoController(main_controller)
         logging.debug('UndoController created')
         ModeController(main_controller)

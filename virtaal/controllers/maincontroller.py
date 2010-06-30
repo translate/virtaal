@@ -43,6 +43,7 @@ class MainController(BaseController):
         GObjectWrapper.__init__(self)
         self._force_saveas = False
 
+        self._checks_controller = None
         self._lang_controller = None
         self._mode_controller = None
         self._placeables_controller = None
@@ -101,6 +102,13 @@ class MainController(BaseController):
 
     def get_force_saveas(self):
         return self._force_saveas
+
+    def _get_checks_controller(self):
+        return self._checks_controller
+    def _set_checks_controller(self, value):
+        self._checks_controller = value
+        self.emit('controller-registered', self._checks_controller)
+    checks_controller = property(_get_checks_controller, _set_checks_controller)
 
     def _get_lang_controller(self):
         return self._lang_controller

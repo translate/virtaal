@@ -72,7 +72,6 @@ class PopupMenuButton(gtk.ToggleButton):
 
         btn_window_xy = self.window.get_origin()
         btn_alloc = self.get_allocation()
-        menu_alloc = self.menu.get_allocation()
 
         # Default values are POS_SW_NW
         x = btn_window_xy[0] + btn_alloc.x

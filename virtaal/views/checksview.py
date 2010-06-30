@@ -57,6 +57,9 @@ class ChecksView(BaseView):
         statusbar.pack_start(self.btn_proj, expand=False)
         statusbar.show_all()
 
+    def set_checker_name(self, cname):
+        self.btn_proj.set_label('Checks: %(checker_name)s' % {'checker_name': cname})
+
 
     # EVENT HANDLER #
     def _on_menu_item_activate(self, menuitem):

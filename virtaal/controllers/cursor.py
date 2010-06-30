@@ -18,8 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
 import logging
+from gobject import SIGNAL_RUN_FIRST
 from bisect import bisect_left
 
 from virtaal.common import GObjectWrapper
@@ -36,8 +36,8 @@ class Cursor(GObjectWrapper):
     __gtype_name__ = "Cursor"
 
     __gsignals__ = {
-        "cursor-changed": (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
-        "cursor-empty": (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
+        "cursor-changed": (SIGNAL_RUN_FIRST, None, ()),
+        "cursor-empty":   (SIGNAL_RUN_FIRST, None, ()),
     }
 
 

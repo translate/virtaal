@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gobject import GObject, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from gobject import SIGNAL_RUN_FIRST
 from translate.storage import workflow
 
 from virtaal.common import GObjectWrapper
@@ -32,11 +32,11 @@ class UnitController(BaseController):
 
     __gtype_name__ = "UnitController"
     __gsignals__ = {
-        'unit-done':           (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, int)),
-        'unit-modified':       (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'unit-delete-text':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT, TYPE_PYOBJECT, int, int, TYPE_PYOBJECT, int)),
-        'unit-insert-text':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT, int, TYPE_PYOBJECT, int)),
-        'unit-paste-start':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT, TYPE_PYOBJECT, int)),
+        'unit-done':           (SIGNAL_RUN_FIRST, None, (object, int)),
+        'unit-modified':       (SIGNAL_RUN_FIRST, None, (object,)),
+        'unit-delete-text':    (SIGNAL_RUN_FIRST, None, (object, object, object, int, int, object, int)),
+        'unit-insert-text':    (SIGNAL_RUN_FIRST, None, (object, object, int, object, int)),
+        'unit-paste-start':    (SIGNAL_RUN_FIRST, None, (object, object, object, int)),
     }
 
     # INITIALIZERS #

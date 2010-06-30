@@ -20,7 +20,7 @@
 
 import gtk
 
-from virtaal.views.widgets.popupwidgetbutton import PopupWidgetButton
+from virtaal.views.widgets.popupwidgetbutton import PopupWidgetButton, POS_SE_NE
 
 from baseview import BaseView
 
@@ -39,8 +39,13 @@ class ChecksUnitView(BaseView):
         self._create_menu_item()
 
     def _create_checks_button(self, widget):
-        self.btn_checks = PopupWidgetButton(widget, label=_('No issues'))
+        import pango
+        self.lbl_btnchecks = gtk.Label(_('No issues'))
+        self.lbl_btnchecks.show()
+        self.lbl_btnchecks.set_ellipsize(pango.ELLIPSIZE_END)
+        self.btn_checks = PopupWidgetButton(widget, label=None, popup_pos=POS_SE_NE)
         self.btn_checks.connect('shown', self._on_popup_shown)
+        self.btn_checks.add(self.lbl_btnchecks)
 
     def _create_menu_item(self):
         mainview = self.controller.main_controller.view

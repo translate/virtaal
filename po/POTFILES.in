@@ -2,12 +2,14 @@
 share/applications/virtaal.desktop.in
 share/virtaal/virtaal.glade
 virtaal/tips.py
+virtaal/controllers/checkscontroller.py
 virtaal/controllers/maincontroller.py
 virtaal/controllers/placeablescontroller.py
 virtaal/controllers/storecontroller.py
 virtaal/controllers/unitcontroller.py
 virtaal/controllers/welcomescreencontroller.py
 virtaal/modes/defaultmode.py
+virtaal/modes/qualitycheckmode.py
 virtaal/modes/quicktransmode.py
 virtaal/modes/searchmode.py
 virtaal/modes/workflowmode.py
@@ -38,6 +40,7 @@ virtaal/plugins/tm/models/tinytm.py
 virtaal/plugins/tm/models/apertium.py
 virtaal/plugins/tm/tmview.py
 virtaal/plugins/tm/tmwidgets.py
+virtaal/views/checksunitview.py
 virtaal/views/langview.py
 virtaal/views/mainview.py
 virtaal/views/modeview.py

@@ -36,10 +36,15 @@ class ChecksUnitView(BaseView):
 
         self.vbox_popup = self._create_popup_vbox()
         self._create_checks_button(self.vbox_popup)
+        self._create_menu_item()
 
     def _create_checks_button(self, widget):
         self.btn_checks = PopupWidgetButton(widget, label=_('No issues'))
         self.btn_checks.connect('shown', self._on_popup_shown)
+
+    def _create_menu_item(self):
+        mainview = self.controller.main_controller.view
+        mainview.gui.get_widget('mnu_checks').connect('activate', self._on_activated)
 
     def _create_popup_vbox(self):
         vb = gtk.VBox()
@@ -74,5 +79,8 @@ class ChecksUnitView(BaseView):
 
 
     # EVENT HANDLERS #
+    def _on_activated(self, menu_iitem):
+        self.btn_checks.clicked()
+
     def _on_popup_shown(self, button):
         pass

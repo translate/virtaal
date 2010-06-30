@@ -256,6 +256,14 @@
                         <accelerator key="F11" signal="activate"/>
                       </widget>
                     </child>
+                    <child>
+                      <widget class="GtkMenuItem" id="mnu_checks">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Quality Checks</property>
+                        <property name="use_underline">True</property>
+                        <accelerator key="F8" signal="activate"/>
+                      </widget>
+                    </child>
                   </widget>
                 </child>
               </widget>

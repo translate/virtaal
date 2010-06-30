@@ -125,8 +125,10 @@ class ChecksController(BaseController):
     def _on_controller_registered(self, main_controller, controller):
         if controller is main_controller.lang_controller:
             controller.connect('target-lang-changed', self._on_target_lang_changed)
+
     def _on_cursor_changed(self, cursor):
         self.last_unit = cursor.deref()
+        self.check_unit(self.last_unit)
 
     def _on_target_lang_changed(self, lang_controller, langcode):
         if self._current_checker:

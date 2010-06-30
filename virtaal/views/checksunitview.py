@@ -120,6 +120,11 @@ class ChecksUnitView(BaseView):
         self.lbl_empty.hide()
         self.scw_checks.show_all()
 
+    def _update_popup_geometry(self):
+        textbox = self.controller.main_controller.unit_controller.view.sources[0]
+        alloc = textbox.get_allocation()
+        self.btn_checks.popup.set_size_request(alloc.width, -1)
+
 
     # EVENT HANDLERS #
     def _on_activated(self, menu_iitem):
@@ -130,7 +135,7 @@ class ChecksUnitView(BaseView):
             controller.connect('target-lang-changed', self._on_target_lang_changed)
 
     def _on_popup_shown(self, button):
-        pass
+        self._update_popup_geometry()
 
     def _on_target_lang_changed(self, lang_controller, langcode):
         self._listsep = None

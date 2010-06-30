@@ -24,6 +24,7 @@ from translate.filters import checks
 
 from virtaal.common import GObjectWrapper
 from virtaal.views.checksprojview import ChecksProjectView
+from virtaal.views.checksunitview import ChecksUnitView
 
 from basecontroller import BaseController
 
@@ -70,7 +71,9 @@ class ChecksController(BaseController):
         self._cursor_connection = ()
 
         self.projview = ChecksProjectView(self)
+        self.unitview = ChecksUnitView(self)
         self.projview.show()
+        self.unitview.show()
 
 
     # ACCESSORS #
@@ -101,7 +104,9 @@ class ChecksController(BaseController):
         self.last_failures = checker.run_filters(unit)
         if self.last_failures:
             logging.debug('Failures: %s' % (self.last_failures))
+        self.unitview.update(self.last_failures)
         self.emit('unit-checked', unit, checker, self.last_failures)
+        return self.last_failures
 
     def _check_timer_expired(self, unit):
         self._check_timer_active = False

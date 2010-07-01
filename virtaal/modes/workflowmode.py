@@ -56,6 +56,8 @@ class WorkflowMode(BaseMode):
 
         self._add_widgets()
         self._update_button_label()
+        if not self.state_names:
+            self._disable()
         self.update_indices()
 
     def unselected(self):
@@ -115,6 +117,9 @@ class WorkflowMode(BaseMode):
                 btn_label += u'...'
         self.btn_popup.set_label(btn_label)
 
+    def _disable(self):
+        """Disable the widgets (workflow not possible now)."""
+        self.btn_popup.set_sensitive(False)
 
     # EVENT HANDLERS #
     def _on_state_menuitem_toggled(self, checkmenuitem):

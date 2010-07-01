@@ -103,7 +103,7 @@ class WorkflowMode(BaseMode):
         return menu
 
     def _update_button_label(self):
-        state_labels = [mi.get_label() for mi in self.btn_popup.menu if mi.get_active()]
+        state_labels = [mi.props.label for mi in self.btn_popup.menu if mi.get_active()]
         btn_label = u''
         if not state_labels:
             btn_label = _(u'No States')

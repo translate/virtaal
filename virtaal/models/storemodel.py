@@ -65,6 +65,9 @@ class StoreModel(BaseModel):
     def get_filename(self):
         return self._trans_store and self._trans_store.filename or None
 
+    def get_checker(self):
+        return self._checker
+
     def get_source_language(self):
         """Return the current store's source language."""
         candidate = self._trans_store.units[0].getsourcelanguage()
@@ -98,6 +101,7 @@ class StoreModel(BaseModel):
         """Return the current store's (filtered) units."""
         return [self._trans_store.units[i] for i in self._valid_units]
 
+
     # METHODS #
     def load_file(self, fileobj):
         # Adapted from Document.__init__()
@@ -117,7 +121,7 @@ class StoreModel(BaseModel):
         logging.info('Loading file %s' % (filename))
         self._trans_store = factory.getobject(fileobj)
         self.filename = filename
-        self.stats = statsdb.StatsCache().filestats(filename, checks.UnitChecker(), self._trans_store)
+        self.update_stats(filename=filename)
         self._correct_header(self._trans_store)
         self._get_valid_units()
         self.nplurals = self._compute_nplurals(self._trans_store)
@@ -130,8 +134,19 @@ class StoreModel(BaseModel):
             self._trans_store.save()
         else:
             self._trans_store.savefile(filename)
-        self.stats = statsdb.StatsCache().filestats(filename, checks.UnitChecker(), self._trans_store)
+        self.update_stats(filename=filename)
         self._get_valid_units()
+
+    def update_stats(self, checker=checks.StandardChecker(), filename=None):
+        if self._trans_store is None:
+            self.stats = None
+            return
+        if filename is None:
+            filename = self._trans_store.filename
+        self.stats = statsdb.StatsCache().filestats(filename, checker, self._trans_store)
+        self._checker = checker
+        self._get_valid_units()
+        return self.stats
 
     def update_file(self, filename):
         # Adapted from Document.__init__()
@@ -148,7 +163,7 @@ class StoreModel(BaseModel):
         import os
         tempfd, tempfilename = tempfile.mkstemp()
         os.write(tempfd, str(self._trans_store))
-        self.stats = statsdb.StatsCache().filestats(tempfilename, checks.UnitChecker(), self._trans_store)
+        self.update_stats(filename=tempfilename)
         os.close(tempfd)
         os.remove(tempfilename)
 

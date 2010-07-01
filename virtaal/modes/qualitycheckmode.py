@@ -111,7 +111,7 @@ class QualityCheckMode(BaseMode):
         return menu
 
     def _update_button_label(self):
-        check_labels = [mi.props.label for mi in self.btn_popup.menu if mi.get_active()]
+        check_labels = [mi.child.get_label() for mi in self.btn_popup.menu if mi.get_active()]
         btn_label = u''
         if not check_labels:
             btn_label = _(u'No Checks')
@@ -121,7 +121,7 @@ class QualityCheckMode(BaseMode):
             btn_label = u', '.join(check_labels[:3])
             if len(check_labels) > 3:
                 btn_label += u'...'
-        self.btn_popup.props.label = btn_label
+        self.btn_popup.set_label(btn_label)
 
 
     # EVENT HANDLERS #

@@ -63,4 +63,4 @@ class ChecksProjectView(BaseView):
 
     # EVENT HANDLER #
     def _on_menu_item_activate(self, menuitem):
-        self.controller.set_checker_by_name(menuitem.props.label)
+        self.controller.set_checker_by_name(menuitem.child.get_label())

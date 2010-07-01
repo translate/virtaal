@@ -109,6 +109,18 @@ class StoreController(BaseController):
             filename += store.get_filename()
         return filename
 
+    def get_store_checker(self):
+        store = self.get_store()
+        if not store:
+            raise ValueError('No store to get checker from')
+        return store.get_checker()
+
+    def get_store_stats(self):
+        store = self.get_store()
+        if not store:
+            raise ValueError('No store to get checker from')
+        return store.stats
+
     def get_unit_celleditor(self, unit):
         """Load the given unit in via the C{UnitController} and return
             the C{gtk.CellEditable} it creates."""
@@ -350,6 +362,13 @@ class StoreController(BaseController):
         self.view.show()
 
         self.emit('store-loaded')
+
+    def update_store_stats(self, **kwargs):
+        """Shortcut to C{StoreModel.update_stats()}"""
+        store = self.get_store()
+        if not store:
+            raise ValueError('No store to get checker from')
+        return store.update_stats(**kwargs)
 
     def compare_stats(self, oldstats, newstats):
         #l10n: The heading of statistics before updating to the new template

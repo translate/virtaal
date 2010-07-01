@@ -18,12 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import logging
-import gtk, gobject
-from translate.storage import factory, statsdb
+import gtk
 
-from virtaal.support.set_enumerator import UnionSetEnumerator
-from virtaal.support.sorted_set import SortedSet
+from virtaal.controllers.checkscontroller import check_names
 from virtaal.views.widgets.popupmenubutton import PopupMenuButton, POS_NW_SW
 
 from basemode import BaseMode
@@ -49,21 +46,23 @@ class QualityCheckMode(BaseMode):
 
 
     # METHODS #
-    def get_checks_names(self):
-        """Map the names of checks in C{self.stats} to (localisable) names."""
-        checks_names = {}
-        if 'fuzzy' in self.stats:
-            checks_names['fuzzy'] = _(u'Fuzzy')
-        if 'translated' in self.stats:
-            checks_names['translated'] = _(u'Translated')
-        if 'untranslated' in self.stats:
-            checks_names['untranslated'] = _(u'Untranslated')
-        return checks_names
+    def get_check_name(self, check):
+        """Return the human readable form of the given check name."""
+        name = check_names.get(check, None)
+        if not name and check.startswith('check-'):
+            check = check[len('check-'):]
+            name = check_names.get(check, None)
+        if not name:
+            name = check
+        return name
 
     def selected(self):
-        self.stats = self.store_controller.get_store().stats
+        self.stats = self.store_controller.get_store_stats()
         self.storecursor = self.store_controller.cursor
-        self.checks_names = self.get_checks_names()
+        self.checks_names = {}
+        for check, indices in self.stats.iteritems():
+            if indices and check not in ('total', 'translated'):
+                self.checks_names[check] = self.get_check_name(check)
 
         self._add_widgets()
         self._update_button_label()

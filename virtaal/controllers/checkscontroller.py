@@ -171,6 +171,16 @@ class ChecksController(BaseController):
         self._check_timer_active = True
         timeout_add(self.CHECK_TIMEOUT, self._check_timer_expired, self.last_unit)
 
+    def get_check_name(self, check):
+        """Return the human readable form of the given check name."""
+        name = check_names.get(check, None)
+        if not name and check.startswith('check-'):
+            check = check[len('check-'):]
+            name = check_names.get(check, None)
+        if not name:
+            name = check
+        return name
+
 
     # EVENT HANDLERS #
     def _on_controller_registered(self, main_controller, controller):

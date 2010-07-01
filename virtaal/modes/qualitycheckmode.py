@@ -20,7 +20,6 @@
 
 import gtk
 
-from virtaal.controllers.checkscontroller import check_names
 from virtaal.views.widgets.popupmenubutton import PopupMenuButton, POS_NW_SW
 
 from basemode import BaseMode
@@ -40,29 +39,20 @@ class QualityCheckMode(BaseMode):
             @param controller: The ModeController that managing program modes."""
         self.controller = controller
         self.store_controller = controller.main_controller.store_controller
+        self.checks_controller = controller.main_controller.checks_controller
         self.filter_checks = []
         self._menuitem_checks = {}
         self.store_filename = None
 
 
     # METHODS #
-    def get_check_name(self, check):
-        """Return the human readable form of the given check name."""
-        name = check_names.get(check, None)
-        if not name and check.startswith('check-'):
-            check = check[len('check-'):]
-            name = check_names.get(check, None)
-        if not name:
-            name = check
-        return name
-
     def selected(self):
         self.stats = self.store_controller.get_store_stats()
         self.storecursor = self.store_controller.cursor
         self.checks_names = {}
         for check, indices in self.stats.iteritems():
             if indices and check not in ('total', 'translated'):
-                self.checks_names[check] = self.get_check_name(check)
+                self.checks_names[check] = self.checks_controller.get_check_name(check)
 
         self._add_widgets()
         self._update_button_label()

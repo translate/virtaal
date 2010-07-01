@@ -46,6 +46,7 @@ class ChecksController(BaseController):
 
         self.main_controller = main_controller
         self.main_controller.checks_controller = self
+        self.store_controller = main_controller.store_controller
 
         main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
         main_controller.unit_controller.connect('unit-modified', self._on_unit_modified)
@@ -66,7 +67,6 @@ class ChecksController(BaseController):
             _('KDE'):        checks.KdeChecker,
         }
         self._checker_menu_items = {}
-        self._current_checker = None
         self._cursor_connection = ()
 
         self.projview = ChecksProjectView(self)
@@ -76,8 +76,8 @@ class ChecksController(BaseController):
 
 
     # ACCESSORS #
-    def get_current_checker(self):
-        return self._current_checker
+    def get_checker(self):
+        return self.store_controller.get_store_checker()
 
     def set_default_checker(self):
         self.set_checker_by_name(_('Default'))
@@ -88,7 +88,8 @@ class ChecksController(BaseController):
             target_lang = None
         checker = self.checker_info[name]()
         checker.config.updatetargetlanguage(target_lang)
-        self._current_checker = checker
+
+        self.store_controller.update_store_stats(checker=checker)
         self.projview.set_checker_name(name)
         if self.main_controller.unit_controller.current_unit:
             self.check_unit(self.main_controller.unit_controller.current_unit)
@@ -96,7 +97,7 @@ class ChecksController(BaseController):
 
     # METHODS #
     def check_unit(self, unit):
-        checker = self.get_current_checker()
+        checker = self.get_checker()
         if not checker:
             logging.debug('No checker instantiated :(')
             return
@@ -130,8 +131,9 @@ class ChecksController(BaseController):
         self.check_unit(self.last_unit)
 
     def _on_target_lang_changed(self, lang_controller, langcode):
-        if self._current_checker:
-            self._current_checker.config.updatetargetlanguage(langcode)
+        current_checker = self.get_checker()
+        if current_checker:
+           current_checker.config.updatetargetlanguage(langcode)
 
     def _on_store_loaded(self, store_controller):
         self.set_default_checker()

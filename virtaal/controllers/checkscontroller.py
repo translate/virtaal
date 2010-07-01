@@ -46,7 +46,6 @@ class ChecksController(BaseController):
 
         self.main_controller = main_controller
         self.main_controller.checks_controller = self
-        self.checks = checks
 
         main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
         main_controller.unit_controller.connect('unit-modified', self._on_unit_modified)

@@ -92,7 +92,7 @@ class UnitController(BaseController):
                     unit.S_TRANSLATED:   _('Translated'),
                 }
             else:
-                raise ValueError('No state names for unit: %s' % (repr(unit)))
+                return {}
 
         return self._unit_state_names
 
@@ -113,10 +113,12 @@ class UnitController(BaseController):
             # FIXME: The call below is run for the second time, but is necessary
             #        because the names could have changed in the new document :/
             state_names = self.get_unit_state_names()
-            self.workflow = workflow.create_unit_workflow(unit, state_names)
+            if state_names:
+                self.workflow = workflow.create_unit_workflow(unit, state_names)
             self._recreate_workflow = False
 
-        self.workflow.reset(unit, init_state=state_names[state_id])
+        if state_names:
+            self.workflow.reset(unit, init_state=state_names[state_id])
         # Make sure that we use the same state_n as the unit had before it got "lost"
         unit.set_state_n(state_n)
         self.view.load_unit(unit)

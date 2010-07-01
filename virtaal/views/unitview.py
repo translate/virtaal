@@ -587,7 +587,11 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             self._widgets['state'] = statenav
 
         if self.unit is not None:
-            state_name = self.controller.get_unit_state_names()[self.unit.get_state_id()]
+            state_names = self.controller.get_unit_state_names()
+            if not state_names:
+                self._widgets['state'].hide()
+                return
+            state_name = state_names[self.unit.get_state_id()]
             self._widgets['state'].set_model(
                 self._create_workflow_liststore(),
                 select_name=state_name,

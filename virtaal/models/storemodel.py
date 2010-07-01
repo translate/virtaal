@@ -232,7 +232,10 @@ class StoreModel(BaseModel):
                 self._trans_store.updatecontributor(name, email)
             if team:
                 header_updates["Language-Team"] = team
-            header_updates["Language"] = self.controller.main_controller.lang_controller.target_lang.code
-            if self.controller.main_controller.lang_controller.target_lang.plural:
-                self._trans_store.updateheaderplural(self.controller.main_controller.lang_controller.target_lang.nplurals, self.controller.main_controller.lang_controller.target_lang.plural)
+            target_lang = self.controller.main_controller.lang_controller.target_lang
+            header_updates["Language"] = target_lang.code
+            plural = target_lang.plural
+            nplurals = target_lang.nplurals
+            if plural:
+                self._trans_store.updateheaderplural(nplurals, plural)
             self._trans_store.updateheader(add=True, **header_updates)

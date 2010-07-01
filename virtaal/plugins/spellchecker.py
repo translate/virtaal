@@ -25,12 +25,10 @@ import os.path
 from cStringIO import StringIO
 import tarfile
 
-from translate.lang.data import simplercode
-
 from virtaal.__version__ import ver as version
 from virtaal.common import pan_app
 from virtaal.controllers import BasePlugin
-from virtaal.support.httpclient import HTTPClient, HTTPRequest
+from virtaal.support.httpclient import HTTPClient
 
 if not pan_app.DEBUG:
     try:
@@ -39,43 +37,6 @@ if not pan_app.DEBUG:
         psyco = None
 else:
     psyco = None
-
-class SpellcheckClient(HTTPClient):
-    """
-    HTTP client to handle the communication between Virtaal and the server.
-    """
-
-    def __init__(self):
-        super(SpellcheckClient, self).__init__()
-        platform = sys.platform
-        if platform.startswith('linux'):
-            if os.path.isfile('/etc/lsb-release'):
-                try:
-                    lines = open('/etc/lsb-release').read().splitlines()
-                    for line in lines:
-                        if line.startswith('DISTRIB_DESCRIPTION'):
-                            distro = line.split('=')[-1]
-                            distro = distro.replace('"', '')
-                            platform = '%s; %s' % (platform, distro)
-                except Exception, e:
-                    pass
-        self.user_agent = 'Virtaal/%s (%s)' % (version, platform)
-
-    def get(self, url, callback, etag=None, error_callback=None):
-        headers = None
-        if etag:
-            # See http://en.wikipedia.org/wiki/HTTP_ETag for more details about ETags
-            headers = ['If-None-Match: "%s"' % (etag)]
-        request = HTTPRequest(url, headers=headers, user_agent=self.user_agent, follow_location=True)
-        self.add(request)
-
-        if callback:
-            request.connect('http-success', callback)
-            request.connect('http-redirect', callback)
-        if error_callback:
-            request.connect('http-client-error', error_callback)
-            request.connect('http-server-error', error_callback)
-
 
 class Plugin(BasePlugin):
     """A plugin to control spell checking.
@@ -126,8 +87,10 @@ class Plugin(BasePlugin):
                 # We don't yet have a list of available languages
                 url = self._base_URL + self._lang_list #index page listing all the dictionaries
                 callback = lambda *args: self._process_index(language=language, *args)
-                self.clients[self._lang_list] = SpellcheckClient()
-                self.clients[self._lang_list].get(url, callback)
+                client = HTTPClient()
+                client.set_virtaal_useragent()
+                client.get(url, callback)
+                self.clients[self._lang_list] = client
                 # self._process_index will call this again, so we can exit
             return
 
@@ -147,7 +110,8 @@ class Plugin(BasePlugin):
 
        # Now download the actual files after we have determined that it is
        # available
-        self.clients[language] = SpellcheckClient()
+        self.clients[language] = HTTPClient()
+        self.clients[language].set_virtaal_useragent()
         callback = lambda *args: self._process_tarball(language=language, *args)
         url = self._dict_URL % language
 

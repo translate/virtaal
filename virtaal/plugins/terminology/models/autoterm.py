@@ -30,49 +30,11 @@ from translate.storage.placeables.terminology import TerminologyPlaceable
 
 from virtaal.__version__ import ver as version
 from virtaal.common import pan_app
-from virtaal.support.httpclient import HTTPClient, HTTPRequest
+from virtaal.support.httpclient import HTTPClient
 
 from basetermmodel import BaseTerminologyModel
 
 THREE_DAYS = 60 * 60 * 24 * 3
-
-
-class AutoTermClient(HTTPClient):
-    """
-    HTTP client to handle the communication between Virtaal and the terminology-
-    providing web server.
-    """
-
-    def __init__(self):
-        super(AutoTermClient, self).__init__()
-        platform = sys.platform
-        if platform.startswith('linux'):
-            if os.path.isfile('/etc/lsb-release'):
-                try:
-                    lines = open('/etc/lsb-release').read().splitlines()
-                    for line in lines:
-                        if line.startswith('DISTRIB_DESCRIPTION'):
-                            distro = line.split('=')[-1]
-                            distro = distro.replace('"', '')
-                            platform = '%s; %s' % (platform, distro)
-                except Exception:
-                    pass
-        self.user_agent = 'Virtaal/%s (%s)' % (version, platform)
-
-    def get(self, url, callback, etag=None, error_callback=None):
-        headers = None
-        if etag:
-            # See http://en.wikipedia.org/wiki/HTTP_ETag for more details about ETags
-            headers = ['If-None-Match: "%s"' % (etag)]
-        request = HTTPRequest(url, headers=headers, user_agent=self.user_agent, follow_location=True)
-        self.add(request)
-
-        if callback:
-            request.connect('http-success', callback)
-            request.connect('http-redirect', callback)
-        if error_callback:
-            request.connect('http-client-error', error_callback)
-            request.connect('http-server-error', error_callback)
 
 
 class TerminologyModel(BaseTerminologyModel):
@@ -90,7 +52,8 @@ class TerminologyModel(BaseTerminologyModel):
     def __init__(self, internal_name, controller):
         super(TerminologyModel, self).__init__(controller)
         self.internal_name = internal_name
-        self.client = AutoTermClient()
+        self.client = HTTPClient()
+        self.client.set_virtaal_useragent()
 
         self.load_config()
 

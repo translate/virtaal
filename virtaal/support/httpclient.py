@@ -203,3 +203,37 @@ class HTTPClient(object):
             #we are done with this batch what do we do?
             return False
         return True
+
+    def get(self, url, callback, etag=None, error_callback=None):
+        headers = None
+        if etag:
+            # See http://en.wikipedia.org/wiki/HTTP_ETag for more details about ETags
+            headers = ['If-None-Match: "%s"' % (etag)]
+        request = HTTPRequest(url, headers=headers, user_agent=self.user_agent, follow_location=True)
+        self.add(request)
+
+        if callback:
+            request.connect('http-success', callback)
+            request.connect('http-redirect', callback)
+        if error_callback:
+            request.connect('http-client-error', error_callback)
+            request.connect('http-server-error', error_callback)
+
+    def set_virtaal_useragent(self):
+        """Set a nice user agent indicating Virtaal and its version."""
+        if self.user_agent.startswith('Virtaal'):
+            return
+        import sys
+        platform = sys.platform
+        if platform.startswith('linux'):
+            if os.path.isfile('/etc/lsb-release'):
+                try:
+                    lines = open('/etc/lsb-release').read().splitlines()
+                    for line in lines:
+                        if line.startswith('DISTRIB_DESCRIPTION'):
+                            distro = line.split('=')[-1]
+                            distro = distro.replace('"', '')
+                            platform = '%s; %s' % (platform, distro)
+                except Exception, e:
+                    pass
+        self.user_agent = 'Virtaal/%s (%s)' % (version, platform)

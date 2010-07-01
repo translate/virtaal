@@ -37,7 +37,7 @@ class ChecksProjectView(BaseView):
         self._create_project_button()
 
     def _create_project_button(self):
-        self.btn_proj = PopupMenuButton(label='Project Type')
+        self.btn_proj = PopupMenuButton(label=_('Project Type'))
         menu = gtk.Menu()
         for checkername in self.controller.checker_info:
             mitem = gtk.MenuItem(checkername)
@@ -58,7 +58,7 @@ class ChecksProjectView(BaseView):
         statusbar.show_all()
 
     def set_checker_name(self, cname):
-        self.btn_proj.set_label('Checks: %(checker_name)s' % {'checker_name': cname})
+        self.btn_proj.set_label(_('Checks: %(checker_name)s') % {'checker_name': cname})
 
 
     # EVENT HANDLER #

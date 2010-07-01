@@ -102,6 +102,7 @@ class ChecksUnitView(BaseView):
         self.lst_checks.clear()
         names = []
         for testname, desc in failures.iteritems():
+            testname = self.controller.get_check_name(testname)
             self.lst_checks.append([testname, desc])
             names.append(testname)
 

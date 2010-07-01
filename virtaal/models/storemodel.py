@@ -142,7 +142,7 @@ class StoreModel(BaseModel):
             self.stats = None
             return
         if filename is None:
-            filename = self._trans_store.filename
+            filename = self.filename
         self.stats = statsdb.StatsCache().filestats(filename, checker, self._trans_store)
         self._checker = checker
         self._get_valid_units()

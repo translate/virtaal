@@ -172,6 +172,7 @@ class HTTPClient(object):
         # a set and detroy them manually.
         self.requests = set()
         self.curl = pycurl.CurlMulti()
+        self.user_agent = None
 
     def add(self,request):
         """add a request to the queue"""
@@ -221,9 +222,11 @@ class HTTPClient(object):
 
     def set_virtaal_useragent(self):
         """Set a nice user agent indicating Virtaal and its version."""
-        if self.user_agent.startswith('Virtaal'):
+        if self.user_agent and self.user_agent.startswith('Virtaal'):
             return
         import sys
+        import os
+        from virtaal.__version__ import ver as version
         platform = sys.platform
         if platform.startswith('linux'):
             if os.path.isfile('/etc/lsb-release'):

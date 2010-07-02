@@ -54,7 +54,7 @@ class ChecksUnitView(BaseView):
         self.lbl_btnchecks.show()
         self.lbl_btnchecks.set_ellipsize(pango.ELLIPSIZE_END)
         self.btn_checks = PopupWidgetButton(widget, label=None, popup_pos=POS_SE_NE)
-        self.btn_checks.connect('shown', self._on_popup_shown)
+        self.btn_checks.set_update_popup_geometry_func(self.update_geometry)
         self.btn_checks.add(self.lbl_btnchecks)
 
     def _create_menu_item(self):
@@ -131,9 +131,6 @@ class ChecksUnitView(BaseView):
     def _on_controller_registered(self, main_controller, controller):
         if controller is main_controller.lang_controller:
             controller.connect('target-lang-changed', self._on_target_lang_changed)
-
-    def _on_popup_shown(self, button):
-        self._update_popup_geometry()
 
     def _on_target_lang_changed(self, lang_controller, langcode):
         self.update(self._prev_failures)

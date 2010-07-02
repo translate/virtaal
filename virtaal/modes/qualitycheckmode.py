@@ -51,7 +51,7 @@ class QualityCheckMode(BaseMode):
         self.storecursor = self.store_controller.cursor
         self.checks_names = {}
         for check, indices in self.stats.iteritems():
-            if indices and check not in ('total', 'translated'):
+            if indices and check not in ('total', 'translated', 'untranslated'):
                 self.checks_names[check] = self.checks_controller.get_check_name(check)
 
         self._add_widgets()

@@ -24,7 +24,7 @@ pop-up window.
 """
 
 import gtk
-from gobject import SIGNAL_RUN_FIRST, timeout_add
+from gobject import SIGNAL_RUN_FIRST
 
 # XXX: Kudo's to Toms Bauģis <toms.baugis at gmail.com> who wrote the
 #      ActivityEntry widget for the hamster-applet project. A lot of this
@@ -74,6 +74,26 @@ class PopupWidgetButton(gtk.ToggleButton):
     is_popup_visible = property(_get_is_popup_visible)
 
     # METHODS #
+    def calculate_popup_xy(self, popup_alloc, btn_alloc, btn_window_xy):
+        # Default values are POS_NW_SW
+        x = btn_window_xy[0] + btn_alloc.x
+        y = btn_window_xy[1] + btn_alloc.y + btn_alloc.height
+        width, height = self.popup.get_child_requisition()
+
+        if self.popup_pos == POS_NW_NE:
+            x += btn_alloc.width
+            y = btn_window_xy[1] + btn_alloc.y
+        elif self.popup_pos == POS_SE_NE:
+            x -= (popup_alloc.width - btn_alloc.width)
+            y = btn_window_xy[1] - popup_alloc.height
+        elif self.popup_pos == POS_CENTER_BELOW:
+            x -= (popup_alloc.width - btn_alloc.width) / 2
+        elif self.popup_pos == POS_CENTER_ABOVE:
+            x -= (popup_alloc.width - btn_alloc.width) / 2
+            y = btn_window_xy[1] - popup_alloc.height
+
+        return x, y
+
     def hide_popup(self):
         self.set_active(False)
 
@@ -90,38 +110,27 @@ class PopupWidgetButton(gtk.ToggleButton):
     def _do_show_popup(self):
         if not self._parent_button_press_id and self.get_toplevel():
             self._parent_button_press_id = self.get_toplevel().connect('button-press-event', self._on_focus_out_event)
-        self._update_popup_geometry()
         self.popup.present()
+        self._update_popup_geometry()
         self.emit('shown')
 
     def _update_popup_geometry(self):
-        _w, height = 0, 0
-        popup_alloc = self.popup.get_allocation()
-        if popup_alloc.height > 1:
-            height = popup_alloc.height
-        else:
-            _w, height = self.popup.size_request()
+        self.popup.set_size_request(-1, -1)
+        width, height = self.popup.get_child_requisition()
+        self.popup.set_size_request(width, height)
 
+        x, y = -1, -1
+        width, height = self.popup.get_child_requisition()
+        popup_alloc = self.popup.get_allocation()
         btn_window_xy = self.window.get_origin()
         btn_alloc = self.get_allocation()
 
-        # Default values are POS_NW_SW
-        x = btn_window_xy[0] + btn_alloc.x
-        y = btn_window_xy[1] + btn_alloc.y + btn_alloc.height
-        if self.popup_pos == POS_NW_NE:
-            x += btn_alloc.width
-            y = btn_window_xy[1] + btn_alloc.y
-        elif self.popup_pos == POS_SE_NE:
-            x -= (popup_alloc.width - btn_alloc.width)
-            y = btn_window_xy[1] - popup_alloc.height
-        elif self.popup_pos == POS_CENTER_BELOW:
-            x -= (popup_alloc.width - btn_alloc.width) / 2
-        elif self.popup_pos == POS_CENTER_ABOVE:
-            x -= (popup_alloc.width - btn_alloc.width) / 2
-            y = btn_window_xy[1] - popup_alloc.height
+
+        popup_alloc.width, popup_alloc.height = width, height
+        x, y = self.calculate_popup_xy(popup_alloc, btn_alloc, btn_window_xy)
+
+        self.popup.reshow_with_initial_size()
         self.popup.move(x, y)
-        req = self.popup.get_child_requisition()
-        self.popup.resize(*req)
 
 
     # EVENT HANDLERS #

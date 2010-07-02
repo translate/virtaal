@@ -41,8 +41,8 @@ class ChecksUnitView(BaseView):
         else:
             main_controller.connect('controller-registered', self._on_controller_registered)
 
-        self.vbox_popup = self._create_popup_vbox()
-        self._create_checks_button(self.vbox_popup)
+        self.popup_content = self._create_popup_content()
+        self._create_checks_button(self.popup_content)
         self._create_menu_item()
 
         self._listsep = lang_factory.getlanguage(get_ui_lang()).listseperator
@@ -61,8 +61,11 @@ class ChecksUnitView(BaseView):
         mainview = self.controller.main_controller.view
         mainview.gui.get_widget('mnu_checks').connect('activate', self._on_activated)
 
-    def _create_popup_vbox(self):
+    def _create_popup_content(self):
         vb = gtk.VBox()
+        frame = gtk.Frame()
+        frame.set_shadow_type(gtk.SHADOW_ETCHED_IN)
+        frame.add(vb)
 
         self.lbl_empty = gtk.Label('<i>' + _('No issues') + '</i>')
         self.lbl_empty.set_use_markup(True)
@@ -84,7 +87,7 @@ class ChecksUnitView(BaseView):
         self.scw_checks.add(self.tvw_checks)
         vb.pack_start(self.scw_checks)
 
-        return vb
+        return frame
 
 
     # METHODS #

@@ -119,6 +119,7 @@ class ChecksController(BaseController):
         }
         self._checker_menu_items = {}
         self._cursor_connection = ()
+        self.last_unit = None
 
         self.projview = ChecksProjectView(self)
         self.unitview = ChecksUnitView(self)
@@ -195,6 +196,8 @@ class ChecksController(BaseController):
         current_checker = self.get_checker()
         if current_checker:
            current_checker.config.updatetargetlanguage(langcode)
+           if self.last_unit:
+               self.check_unit(self.last_unit)
 
     def _on_store_loaded(self, store_controller):
         self.set_default_checker()

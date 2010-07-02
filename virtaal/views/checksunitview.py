@@ -21,6 +21,7 @@
 import gtk
 from translate.lang import factory as lang_factory
 
+from virtaal.common.pan_app import get_ui_lang
 from virtaal.views.widgets.popupwidgetbutton import PopupWidgetButton, POS_SE_NE
 
 from baseview import BaseView
@@ -44,7 +45,7 @@ class ChecksUnitView(BaseView):
         self._create_checks_button(self.vbox_popup)
         self._create_menu_item()
 
-        self._listsep = None
+        self._listsep = lang_factory.getlanguage(get_ui_lang()).listseperator
         self._prev_failures = None
 
     def _create_checks_button(self, widget):
@@ -106,10 +107,6 @@ class ChecksUnitView(BaseView):
             self.lst_checks.append([testname, desc])
             names.append(testname)
 
-        if not self._listsep:
-            tgt_lang = self.controller.main_controller.lang_controller.target_lang.code
-            self._listsep = lang_factory.getlanguage(tgt_lang).listseperator
-
         self.lbl_btnchecks.set_text(self._listsep.join(names))
         self._show_treeview()
 
@@ -139,5 +136,4 @@ class ChecksUnitView(BaseView):
         self._update_popup_geometry()
 
     def _on_target_lang_changed(self, lang_controller, langcode):
-        self._listsep = None
         self.update(self._prev_failures)

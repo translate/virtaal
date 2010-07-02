@@ -27,7 +27,7 @@ from locale import strcoll
 from translate.lang import factory as lang_factory
 from translate.storage import factory as store_factory
 
-from virtaal.common import pan_app
+from virtaal.common.pan_app import get_ui_lang
 from virtaal.views import BaseView, rendering
 from virtaal.views.theme import current_theme
 
@@ -439,13 +439,7 @@ class TermAddDialog:
         if src_text and same_src_units:
             # We want to separate multiple terms with the correct list
             # separator for the UI language:
-            if _(''):
-                # If this is true, we have a translated interface, and we can
-                # use the current locale to obtain a list separator.
-                lang = lang_factory.getlanguage(pan_app.get_locale_lang())
-                separator = lang.listseperator
-            else:
-                separator = u", "
+            separator = lang_factory.getlanguage(get_ui_lang())
 
             #l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
             translations = separator.join([_('<b>%s</b>') % (u.target) for u in same_src_units])

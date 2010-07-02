@@ -118,10 +118,15 @@ class ChecksUnitView(BaseView):
         self.lbl_empty.hide()
         self.tvw_checks.show_all()
 
-    def _update_popup_geometry(self):
+    def update_geometry(self, popup, popup_alloc, btn_alloc, btn_window_xy, geom):
+        x, y, width, height = geom
+
         textbox = self.controller.main_controller.unit_controller.view.sources[0]
         alloc = textbox.get_allocation()
-        self.btn_checks.popup.set_size_request(alloc.width, -1)
+
+        if width > alloc.width:
+            return x, y, alloc.width, height
+        return geom
 
 
     # EVENT HANDLERS #

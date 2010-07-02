@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2007-2009 Zuza Software Foundation
+# Copyright 2007-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -70,6 +70,16 @@ def get_locale_lang():
     except Exception:
         logging.exception("Could not get locale")
     return 'en'
+
+def get_ui_lang():
+    """Return the actual language of the current user interface.
+
+    Not necessarily the same as get_locale_lang()."""
+    if _(''):
+        # If this is true, we have a translated interface
+        return get_locale_lang()
+    else:
+        return 'en'
 
 def name():
     import getpass

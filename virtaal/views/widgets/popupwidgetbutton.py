@@ -60,6 +60,7 @@ class PopupWidgetButton(gtk.ToggleButton):
 
         self.popup_pos = popup_pos
         self._parent_button_press_id = None
+        self._update_popup_geometry_func = None
 
         # Create pop-up window
         self.popup = gtk.Window(type=gtk.WINDOW_POPUP)
@@ -72,6 +73,9 @@ class PopupWidgetButton(gtk.ToggleButton):
     def _get_is_popup_visible(self):
         return self.popup.props.visible
     is_popup_visible = property(_get_is_popup_visible)
+
+    def set_update_popup_geometry_func(self, func):
+        self._update_popup_geometry_func = func
 
     # METHODS #
     def calculate_popup_xy(self, popup_alloc, btn_alloc, btn_window_xy):
@@ -125,6 +129,14 @@ class PopupWidgetButton(gtk.ToggleButton):
         btn_window_xy = self.window.get_origin()
         btn_alloc = self.get_allocation()
 
+        if callable(self._update_popup_geometry_func):
+            x, y, new_width, new_height = self._update_popup_geometry_func(
+                self.popup, popup_alloc, btn_alloc, btn_window_xy,
+                (x, y, width, height)
+            )
+            if new_width != width or new_height != height:
+                width, height = new_width, new_height
+                self.popup.set_size_request(width, height)
 
         popup_alloc.width, popup_alloc.height = width, height
         x, y = self.calculate_popup_xy(popup_alloc, btn_alloc, btn_window_xy)

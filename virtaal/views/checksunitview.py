@@ -82,10 +82,7 @@ class ChecksUnitView(BaseView):
         )
         self.tvw_checks.set_model(self.lst_checks)
 
-        self.scw_checks = gtk.ScrolledWindow()
-        self.scw_checks.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        self.scw_checks.add(self.tvw_checks)
-        vb.pack_start(self.scw_checks)
+        vb.pack_start(self.tvw_checks)
 
         return frame
 
@@ -114,12 +111,12 @@ class ChecksUnitView(BaseView):
         self._show_treeview()
 
     def _show_empty_label(self):
-        self.scw_checks.hide()
+        self.tvw_checks.hide()
         self.lbl_empty.show()
 
     def _show_treeview(self):
         self.lbl_empty.hide()
-        self.scw_checks.show_all()
+        self.tvw_checks.show_all()
 
     def _update_popup_geometry(self):
         textbox = self.controller.main_controller.unit_controller.view.sources[0]

@@ -53,13 +53,9 @@ class ListNavigator(gtk.HBox):
         lst = gtk.ListStore(str, object)
         tvw.set_model(lst)
         tvw.set_headers_visible(False)
-
         tvw.get_selection().connect('changed', self._on_selection_changed)
 
-        scrollwnd = gtk.ScrolledWindow()
-        scrollwnd.add(tvw)
-        scrollwnd.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        return scrollwnd, lst
+        return tvw, lst
 
     def _init_widgets(self):
         # Create widgets
@@ -68,10 +64,9 @@ class ListNavigator(gtk.HBox):
         self.btn_back.add(gtk.Arrow(gtk.ARROW_LEFT, gtk.SHADOW_NONE))
         self.btn_forward.add(gtk.Arrow(gtk.ARROW_RIGHT, gtk.SHADOW_NONE))
 
-        self.scw_items, self.lst_items = self._init_treeview()
-        self.tvw_items = self.scw_items.get_children()[0]
+        self.tvw_items, self.lst_items = self._init_treeview()
 
-        self.btn_popup = PopupWidgetButton(self.scw_items, label='current')
+        self.btn_popup = PopupWidgetButton(self.tvw_items, label='current')
 
         # Connect to signals
         self.btn_back.connect('clicked', self._on_back_clicked)

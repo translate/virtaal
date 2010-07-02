@@ -19,10 +19,8 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import logging
-import gtk, gobject
+import gtk
 
-from virtaal.support.set_enumerator import UnionSetEnumerator
-from virtaal.support.sorted_set import SortedSet
 from virtaal.views.widgets.popupmenubutton import PopupMenuButton, POS_NW_SW
 
 from basemode import BaseMode

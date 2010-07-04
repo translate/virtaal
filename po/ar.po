@@ -3,13 +3,12 @@
 # This file is distributed under the same license as the Virtaal package.
 # Alaa Abd El Fattah <alaa@translate.org.za>, 2009
 # Khaled Hosny <khaledhosny@eglug.org>, 2009, 2010.
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:442
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.3beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2010-06-29 16:40+0300\n"
-"PO-Revision-Date: 2010-06-29 16:40+0300\n"
+"POT-Creation-Date: 2010-07-04 20:42+0300\n"
+"PO-Revision-Date: 2010-07-04 20:42+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +17,7 @@ msgstr ""
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Virtaal 0.7.0-pre\n"
+"X-Generator: Virtaal 0.6.1\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 msgid ""
@@ -326,29 +325,33 @@ msgid "_Preview"
 msgstr "_معاينة"
 
 #: ../share/virtaal/virtaal.glade.h:77
+msgid "_Quality Checks"
+msgstr "_مراجعة الجودة"
+
+#: ../share/virtaal/virtaal.glade.h:78
 msgid "_Recent Files"
 msgstr "الملفات الأ_خيرة"
 
-#: ../share/virtaal/virtaal.glade.h:78
+#: ../share/virtaal/virtaal.glade.h:79
 msgid "_Tutorial"
 msgstr "درس _تعليمي"
 
-#: ../share/virtaal/virtaal.glade.h:79
+#: ../share/virtaal/virtaal.glade.h:80
 msgid "_Update to Template"
 msgstr "_حدث من القالب"
 
-#: ../share/virtaal/virtaal.glade.h:80
+#: ../share/virtaal/virtaal.glade.h:81
 msgid "_View"
 msgstr "_عرض"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.glade.h:82
+#: ../share/virtaal/virtaal.glade.h:83
 #: ../virtaal/controllers/welcomescreencontroller.py:44
 msgid "http://translate.sourceforge.net/wiki/virtaal/features"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.glade.h:84
+#: ../share/virtaal/virtaal.glade.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:40
 msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
@@ -378,34 +381,245 @@ msgid ""
 "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
 msgstr "للانتقال بخطوات كبيرة بين النصوص اضغط Ctrl+PgUp أو Ctrl+PgDown."
 
-#: ../virtaal/controllers/maincontroller.py:73
-#: ../virtaal/controllers/maincontroller.py:82
-#: ../virtaal/controllers/maincontroller.py:91
+#: ../virtaal/controllers/checkscontroller.py:32
+#: ../virtaal/controllers/unitcontroller.py:91
+msgid "Fuzzy"
+msgstr "مبهم"
+
+#: ../virtaal/controllers/checkscontroller.py:33
+#: ../virtaal/controllers/unitcontroller.py:90
+msgid "Untranslated"
+msgstr "غير مترجم"
+
+#: ../virtaal/controllers/checkscontroller.py:34
+msgid "Accelerators"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:35
+msgid "Acronyms"
+msgstr "الاختصارات"
+
+#: ../virtaal/controllers/checkscontroller.py:36
+msgid "Blank"
+msgstr "الترجمة الخالية"
+
+#: ../virtaal/controllers/checkscontroller.py:37
+msgid "Brackets"
+msgstr "الأقواس"
+
+#: ../virtaal/controllers/checkscontroller.py:38
+msgid "Compendium conflict"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:39
+msgid "Translator credits"
+msgstr "إشادات المترجمين"
+
+#: ../virtaal/controllers/checkscontroller.py:40
+msgid "Double quotes"
+msgstr "علامات التنصيص المزدوجة"
+
+#: ../virtaal/controllers/checkscontroller.py:41
+msgid "Double spaces"
+msgstr "تتالي المسافات"
+
+#: ../virtaal/controllers/checkscontroller.py:42
+msgid "Repeated word"
+msgstr "تكرار الكلمات"
+
+#: ../virtaal/controllers/checkscontroller.py:43
+#: ../virtaal/controllers/placeablescontroller.py:96
+msgid "E-mail"
+msgstr "البريد الإلكتروني"
+
+#: ../virtaal/controllers/checkscontroller.py:44
+msgid "Ending punctuation"
+msgstr "علامات الترقيم النهائية"
+
+#: ../virtaal/controllers/checkscontroller.py:45
+msgid "Ending whitespace"
+msgstr "المسافات النهائية"
+
+#: ../virtaal/controllers/checkscontroller.py:46
+msgid "Escapes"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:47
+msgid "File paths"
+msgstr "مسارات الملفات"
+
+#: ../virtaal/controllers/checkscontroller.py:48
+msgid "Functions"
+msgstr "الدوال"
+
+#: ../virtaal/controllers/checkscontroller.py:49
+msgid "GConf values"
+msgstr "قيم GConf"
+
+#: ../virtaal/controllers/checkscontroller.py:50
+msgid "Old KDE comment"
+msgstr "تعليقات كدي القديمة"
+
+#: ../virtaal/controllers/checkscontroller.py:51
+msgid "Long"
+msgstr "طويلة"
+
+#: ../virtaal/controllers/checkscontroller.py:52
+msgid "Must translate words"
+msgstr "كلمات يجب أن تترجم"
+
+#: ../virtaal/controllers/checkscontroller.py:53
+msgid "Newlines"
+msgstr "الأسطر الجديدة"
+
+#: ../virtaal/controllers/checkscontroller.py:54
+msgid "Number of plurals"
+msgstr "عدد الجموع"
+
+#: ../virtaal/controllers/checkscontroller.py:55
+msgid "Don't translate words"
+msgstr "كلمات يجب ألا تترجم"
+
+#: ../virtaal/controllers/checkscontroller.py:56
+#: ../virtaal/controllers/placeablescontroller.py:120
+msgid "Numbers"
+msgstr "الأرقام"
+
+#: ../virtaal/controllers/checkscontroller.py:57
+#: ../devsupport/optparse.py:1612
+msgid "Options"
+msgstr "الخيارات"
+
+#: ../virtaal/controllers/checkscontroller.py:58
+msgid "printf()"
+msgstr "‪printf()‬"
+
+#: ../virtaal/controllers/checkscontroller.py:59
+msgid "Punctuation spacing"
+msgstr "المسافات حول علامات الترقيم"
+
+#: ../virtaal/controllers/checkscontroller.py:60
+msgid "Pure punctuation"
+msgstr "علامات الترقيم الخالصة"
+
+#: ../virtaal/controllers/checkscontroller.py:61
+msgid "Number of sentences"
+msgstr "عدد الجمل"
+
+#: ../virtaal/controllers/checkscontroller.py:62
+msgid "Short"
+msgstr "قصيرة"
+
+#: ../virtaal/controllers/checkscontroller.py:63
+#, fuzzy
+#| msgid "Initialization"
+msgid "Simple capitalization"
+msgstr "تجهيز"
+
+#: ../virtaal/controllers/checkscontroller.py:64
+msgid "Simple plural(s)"
+msgstr "الجموع البدائية"
+
+#: ../virtaal/controllers/checkscontroller.py:65
+msgid "Single quotes"
+msgstr "علامات التنصيص المفردة"
+
+#: ../virtaal/controllers/checkscontroller.py:66
+msgid "Spelling"
+msgstr "الإملاء"
+
+#: ../virtaal/controllers/checkscontroller.py:67
+#, fuzzy
+#| msgid "Initialization"
+msgid "Starting capitalization"
+msgstr "تجهيز"
+
+#: ../virtaal/controllers/checkscontroller.py:68
+msgid "Starting punctuation"
+msgstr "علامات الترقيم البادئة"
+
+#: ../virtaal/controllers/checkscontroller.py:69
+msgid "Starting whitespace"
+msgstr "المسافات البادئة"
+
+#: ../virtaal/controllers/checkscontroller.py:70
+msgid "Tabs"
+msgstr "التبويبات"
+
+#: ../virtaal/controllers/checkscontroller.py:71
+msgid "Unchanged"
+msgstr "لم تتغيير"
+
+#: ../virtaal/controllers/checkscontroller.py:72
+#: ../virtaal/controllers/placeablescontroller.py:129
+msgid "URLs"
+msgstr "المسارات"
+
+#: ../virtaal/controllers/checkscontroller.py:73
+msgid "Valid characters"
+msgstr "الحروف المقبولة"
+
+#: ../virtaal/controllers/checkscontroller.py:74
+msgid "Placeholders"
+msgstr "حافظات المكان"
+
+#: ../virtaal/controllers/checkscontroller.py:75
+msgid "XML tags"
+msgstr "وسوم XML"
+
+#: ../virtaal/controllers/checkscontroller.py:113
+#: ../virtaal/controllers/checkscontroller.py:135
+msgid "Default"
+msgstr "المبدئي"
+
+#: ../virtaal/controllers/checkscontroller.py:114
+msgid "OpenOffice"
+msgstr "المكتب المفتوح"
+
+#: ../virtaal/controllers/checkscontroller.py:115
+msgid "Mozilla"
+msgstr "موزيلا"
+
+#: ../virtaal/controllers/checkscontroller.py:116
+msgid "Drupal"
+msgstr "دروبال"
+
+#: ../virtaal/controllers/checkscontroller.py:117
+msgid "GNOME"
+msgstr "جنوم"
+
+#: ../virtaal/controllers/checkscontroller.py:118
+msgid "KDE"
+msgstr "كدي"
+
+#: ../virtaal/controllers/maincontroller.py:74
+#: ../virtaal/controllers/maincontroller.py:83
+#: ../virtaal/controllers/maincontroller.py:92
 msgid "Header information"
 msgstr "بيانات الترويسة"
 
-#: ../virtaal/controllers/maincontroller.py:74
+#: ../virtaal/controllers/maincontroller.py:75
 msgid "Please enter your name"
 msgstr "رجاء أدخل اسمك"
 
-#: ../virtaal/controllers/maincontroller.py:83
+#: ../virtaal/controllers/maincontroller.py:84
 msgid "Please enter your e-mail address"
 msgstr "رجاء أدخل عنوان بريدك الإلكتروني"
 
-#: ../virtaal/controllers/maincontroller.py:92
+#: ../virtaal/controllers/maincontroller.py:93
 msgid "Please enter your team's information"
 msgstr "رجاء أدخل بيانات فريق العمل"
 
-#: ../virtaal/controllers/maincontroller.py:180
-#: ../virtaal/controllers/maincontroller.py:263
+#: ../virtaal/controllers/maincontroller.py:188
+#: ../virtaal/controllers/maincontroller.py:271
 msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
 msgstr "لقد اخترت الملف المفتوح حاليا لفتحه. أتريد إعادة تحميل الملف؟"
 
-#: ../virtaal/controllers/maincontroller.py:191
-#: ../virtaal/controllers/maincontroller.py:248
-#: ../virtaal/controllers/maincontroller.py:274
+#: ../virtaal/controllers/maincontroller.py:199
+#: ../virtaal/controllers/maincontroller.py:256
+#: ../virtaal/controllers/maincontroller.py:282
 #, python-format
 msgid ""
 "Could not open file.\n"
@@ -420,7 +634,7 @@ msgstr ""
 "\n"
 "اختر ملفا مختلفا."
 
-#: ../virtaal/controllers/maincontroller.py:219
+#: ../virtaal/controllers/maincontroller.py:227
 #, python-format
 msgid ""
 "Could not save file.\n"
@@ -435,7 +649,7 @@ msgstr ""
 "\n"
 "اختر موضعا مختلفا."
 
-#: ../virtaal/controllers/maincontroller.py:224
+#: ../virtaal/controllers/maincontroller.py:232
 #, python-format
 msgid ""
 "Could not save file.\n"
@@ -446,11 +660,11 @@ msgstr ""
 "\n"
 "%(error_message)s"
 
-#: ../virtaal/controllers/maincontroller.py:238
+#: ../virtaal/controllers/maincontroller.py:246
 msgid "Reload File"
 msgstr "أعد تحميل الملف"
 
-#: ../virtaal/controllers/maincontroller.py:238
+#: ../virtaal/controllers/maincontroller.py:246
 msgid "Reload file from last saved copy and lose all changes?"
 msgstr "أأعيد تحميل الملف من آخر نسخة محفوظة فاقدا لكل التغييرات؟"
 
@@ -481,10 +695,6 @@ msgstr "خيارات سطر الأوامر"
 #: ../virtaal/controllers/placeablescontroller.py:93
 msgid "Application command line options, such as --help, -h and -I"
 msgstr "خيارات البرامج في سطر الأوامر مثل ‪--help‬ و ‪-h‬ و ‪-I‬"
-
-#: ../virtaal/controllers/placeablescontroller.py:96
-msgid "E-mail"
-msgstr "البريد الإلكتروني"
 
 #: ../virtaal/controllers/placeablescontroller.py:97
 msgid "E-mail addresses"
@@ -530,10 +740,6 @@ msgstr "حافظات المكان (Qt)"
 msgid "Placeholders in Qt strings"
 msgstr "حافظات المكان في جمل Qt"
 
-#: ../virtaal/controllers/placeablescontroller.py:120
-msgid "Numbers"
-msgstr "الأرقام"
-
 #. l10n: 'decimal fractions' refer to numbers like 0.2 or 499,99
 #: ../virtaal/controllers/placeablescontroller.py:122
 msgid "Integer numbers and decimal fractions"
@@ -546,10 +752,6 @@ msgstr "علامات الترقيم"
 #: ../virtaal/controllers/placeablescontroller.py:126
 msgid "Symbols and less frequently used punctuation marks"
 msgstr "الرموز وعلامات الترقيم غير الشائعة"
-
-#: ../virtaal/controllers/placeablescontroller.py:129
-msgid "URLs"
-msgstr "المسارات"
 
 #: ../virtaal/controllers/placeablescontroller.py:130
 msgid "URLs, hostnames and IP addresses"
@@ -588,64 +790,68 @@ msgstr "خصائص \"alt\""
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "مُدْرج لخصائص \"alt\" (في ملفات HTML)"
 
-#: ../virtaal/controllers/storecontroller.py:163
+#: ../virtaal/controllers/storecontroller.py:175
 msgid "No source or translatable files in bundle"
 msgstr "لا مصدر أو ملفات تترجم في الحزمة"
 
-#: ../virtaal/controllers/storecontroller.py:190
+#: ../virtaal/controllers/storecontroller.py:202
 msgid "The file contains nothing to translate."
 msgstr "لا يحتوي الملف على شيء ليترجم."
 
 #. l10n: The heading of statistics before updating to the new template
-#: ../virtaal/controllers/storecontroller.py:356
+#: ../virtaal/controllers/storecontroller.py:375
 msgid "Before:"
 msgstr "قبل:"
 
 #. l10n: The heading of statistics after updating to the new template
-#: ../virtaal/controllers/storecontroller.py:358
+#: ../virtaal/controllers/storecontroller.py:377
 msgid "After:"
 msgstr "بعد:"
 
-#: ../virtaal/controllers/storecontroller.py:359
+#: ../virtaal/controllers/storecontroller.py:378
 #, python-format
 msgid "Translated: %d"
 msgstr "مترجم: %d"
 
-#: ../virtaal/controllers/storecontroller.py:360
+#: ../virtaal/controllers/storecontroller.py:379
 #, python-format
 msgid "Fuzzy: %d"
 msgstr "مبهم: %d"
 
-#: ../virtaal/controllers/storecontroller.py:361
+#: ../virtaal/controllers/storecontroller.py:380
 #, python-format
 msgid "Untranslated: %d"
 msgstr "غير مترجم: %d"
 
-#: ../virtaal/controllers/storecontroller.py:362
+#: ../virtaal/controllers/storecontroller.py:381
 #, python-format
 msgid "Total: %d"
 msgstr "المجموع: %d"
 
 #. l10n: this refers to updating a file to a new template (POT file)
-#: ../virtaal/controllers/storecontroller.py:380
+#: ../virtaal/controllers/storecontroller.py:399
 msgid "File Updated"
 msgstr "حُدّث الملف"
 
-#: ../virtaal/controllers/unitcontroller.py:89
-msgid "Untranslated"
-msgstr "غير مترجم"
-
-#: ../virtaal/controllers/unitcontroller.py:90
-msgid "Fuzzy"
-msgstr "مبهم"
-
-#: ../virtaal/controllers/unitcontroller.py:91
+#: ../virtaal/controllers/unitcontroller.py:92
 msgid "Translated"
 msgstr "مترجم"
 
 #: ../virtaal/modes/defaultmode.py:28
 msgid "All"
 msgstr "الكل"
+
+#: ../virtaal/modes/qualitycheckmode.py:32
+msgid "Quality Checks"
+msgstr "مراجعة الجودة"
+
+#: ../virtaal/modes/qualitycheckmode.py:106
+msgid "No Checks"
+msgstr "لا فحوص"
+
+#: ../virtaal/modes/qualitycheckmode.py:108
+msgid "All Checks"
+msgstr "كل الفحوص"
 
 #: ../virtaal/modes/quicktransmode.py:31
 msgid "Incomplete"
@@ -683,7 +889,7 @@ msgstr "استبدِل"
 msgid "Replace _All"
 msgstr "استبدِل ال_كل"
 
-#: ../virtaal/modes/workflowmode.py:36
+#: ../virtaal/modes/workflowmode.py:34
 msgid "Workflow"
 msgstr "سير العمل"
 
@@ -711,11 +917,11 @@ msgstr "صحح النص تلقائيا بينما أكتب"
 msgid "AutoCorrector"
 msgstr "التصحيح الآلي"
 
-#: ../virtaal/plugins/spellchecker.py:30
+#: ../virtaal/plugins/spellchecker.py:46
 msgid "Spell Checker"
 msgstr "المدقق الإملائي"
 
-#: ../virtaal/plugins/spellchecker.py:31
+#: ../virtaal/plugins/spellchecker.py:47
 msgid "Check spelling and provide suggestions"
 msgstr "دقق الإملاء واقترح تصحيحات"
 
@@ -848,11 +1054,11 @@ msgstr "مساعدة المصطلحات"
 msgid "Terminology suggestions"
 msgstr "اقتراحات المصطلحات"
 
-#: ../virtaal/plugins/terminology/models/autoterm.py:82
+#: ../virtaal/plugins/terminology/models/autoterm.py:44
 msgid "Localization Terminology"
 msgstr "قاموس مصطلحات الترجمة"
 
-#: ../virtaal/plugins/terminology/models/autoterm.py:83
+#: ../virtaal/plugins/terminology/models/autoterm.py:45
 msgid "Selected localization terminology"
 msgstr "اختر قاموس مصطلحات الترجمة"
 
@@ -931,12 +1137,12 @@ msgid "Identical entry already exists."
 msgstr "توجد بالفعل مدخلة متطابقة."
 
 #. l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:451
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:445
 #, python-format
 msgid "<b>%s</b>"
 msgstr "<b>%s</b>"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:452
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:446
 #, python-format
 msgid "Existing translations: %(translations)s"
 msgstr "الترجمات الموجودة: %(translations)s"
@@ -1110,6 +1316,28 @@ msgstr "مصدر ذاكرة الترجمة"
 msgid "%(match_quality)s%%"
 msgstr "%(match_quality)s‏٪"
 
+#: ../virtaal/views/checksunitview.py:53 ../virtaal/views/checksunitview.py:70
+#: ../virtaal/views/checksunitview.py:99
+msgid "No issues"
+msgstr "لا مشاكل"
+
+#: ../virtaal/views/checksunitview.py:78
+msgid "Quality Check"
+msgstr "فحص الجودة"
+
+#: ../virtaal/views/checksunitview.py:81
+msgid "Description"
+msgstr "الوصف"
+
+#: ../virtaal/views/checksprojview.py:40
+msgid "Project Type"
+msgstr "نوع المشروع"
+
+#: ../virtaal/views/checksprojview.py:61
+#, python-format
+msgid "Checks: %(checker_name)s"
+msgstr "الفحوص: %(checker_name)s"
+
 #: ../virtaal/views/langview.py:67
 msgid "_New Language Pair..."
 msgstr "زوج _لغات جديد..."
@@ -1270,11 +1498,11 @@ msgstr "إظهار وإدراج المُدرجات"
 msgid "Many plugins and options for customization"
 msgstr "العديد من الملحقات وخيارات التطويع"
 
-#: ../virtaal/models/storemodel.py:107
+#: ../virtaal/models/storemodel.py:111
 msgid "The file does not exist."
 msgstr "لا وجود للملف."
 
-#: ../virtaal/models/storemodel.py:109
+#: ../virtaal/models/storemodel.py:113
 msgid "Not a valid file."
 msgstr "ليس ملفا مناسبا."
 
@@ -1514,10 +1742,6 @@ msgstr "يتطلب الخيار %s عدد %d معاملات"
 #, python-format
 msgid "%s option does not take a value"
 msgstr "لا يأخد الخيار %s قيمة"
-
-#: ../devsupport/optparse.py:1612
-msgid "Options"
-msgstr "الخيارات"
 
 #~ msgid "<span foreground=\"blue\" underline=\"single\">Cheat Sheet</span>"
 #~ msgstr "<span foreground=\"blue\" underline=\"single\">مرجع سريع</span>"

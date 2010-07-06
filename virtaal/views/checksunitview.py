@@ -40,6 +40,7 @@ class ChecksUnitView(BaseView):
         self.popup_content = self._create_popup_content()
         self._create_checks_button(self.popup_content)
         self._create_menu_item()
+        main_controller.store_controller.connect('store-closed', self._on_store_closed)
 
         self._listsep = lang_factory.getlanguage(get_ui_lang()).listseperator
         self._prev_failures = None
@@ -89,6 +90,10 @@ class ChecksUnitView(BaseView):
         parent.pack_start(self.btn_checks, expand=False, fill=True)
         self.btn_checks.show()
 
+    def hide(self):
+        if self.btn_checks.get_active():
+            self.btn_checks.clicked()
+
     def update(self, failures):
         self._prev_failures = failures
         if not failures:
@@ -128,3 +133,6 @@ class ChecksUnitView(BaseView):
     # EVENT HANDLERS #
     def _on_activated(self, menu_iitem):
         self.btn_checks.clicked()
+
+    def _on_store_closed(self, store_controller):
+        self.hide()

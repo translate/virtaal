@@ -36,10 +36,6 @@ class ChecksUnitView(BaseView):
     def __init__(self, controller):
         self.controller = controller
         main_controller = controller.main_controller
-        if main_controller.lang_controller:
-            main_controller.lang_controller.connect('target-lang-changed', self._on_target_lang_changed)
-        else:
-            main_controller.connect('controller-registered', self._on_controller_registered)
 
         self.popup_content = self._create_popup_content()
         self._create_checks_button(self.popup_content)
@@ -132,10 +128,3 @@ class ChecksUnitView(BaseView):
     # EVENT HANDLERS #
     def _on_activated(self, menu_iitem):
         self.btn_checks.clicked()
-
-    def _on_controller_registered(self, main_controller, controller):
-        if controller is main_controller.lang_controller:
-            controller.connect('target-lang-changed', self._on_target_lang_changed)
-
-    def _on_target_lang_changed(self, lang_controller, langcode):
-        self.update(self._prev_failures)

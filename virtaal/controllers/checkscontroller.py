@@ -85,6 +85,7 @@ class ChecksController(BaseController):
 
     __gtype_name__ = 'ChecksController'
     __gsignals__ = {
+        'checker-set':  (SIGNAL_RUN_FIRST, None, (object,)),
         'unit-checked': (SIGNAL_RUN_FIRST, None, (object, object, object))
     }
 
@@ -142,6 +143,7 @@ class ChecksController(BaseController):
         checker.config.updatetargetlanguage(target_lang)
 
         self.store_controller.update_store_stats(checker=checker)
+        self.emit('checker-set', self.get_checker())
         self.projview.set_checker_name(name)
         if self.main_controller.unit_controller.current_unit:
             self.check_unit(self.main_controller.unit_controller.current_unit)

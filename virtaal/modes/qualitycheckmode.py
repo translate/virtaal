@@ -40,6 +40,7 @@ class QualityCheckMode(BaseMode):
         self.controller = controller
         self.store_controller = controller.main_controller.store_controller
         self.checks_controller = controller.main_controller.checks_controller
+        self._checker_set_id = None
         self.filter_checks = []
         self._menuitem_checks = {}
         self.store_filename = None
@@ -54,12 +55,18 @@ class QualityCheckMode(BaseMode):
             if indices and check not in ('total', 'translated', 'untranslated'):
                 self.checks_names[check] = self.checks_controller.get_check_name(check)
 
+        self._checker_set_id = self.checks_controller.connect(
+            'checker-set', self._on_checker_set
+        )
+
         self._add_widgets()
         self._update_button_label()
         self.update_indices()
 
     def unselected(self):
-        pass
+        if self._checker_set_id:
+            self.checks_controller.disconnect(self._checker_set_id)
+            self._checker_set_id = None
 
     def update_indices(self):
         if not self.storecursor or not self.storecursor.model:
@@ -114,6 +121,10 @@ class QualityCheckMode(BaseMode):
 
 
     # EVENT HANDLERS #
+    def _on_checker_set(self, checkscontroller, checker):
+        self.unselected()
+        self.selected()
+
     def _on_check_menuitem_toggled(self, checkmenuitem):
         self.filter_checks = []
         for menuitem in self.btn_popup.menu:

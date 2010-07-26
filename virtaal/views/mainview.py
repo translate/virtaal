@@ -501,7 +501,7 @@ class MainView(BaseView):
 
         if response:
             pan_app.settings.general["lastdir"] = os.path.dirname(self.open_chooser.get_filename())
-            return (self.open_chooser.get_filename(), self.open_chooser.get_uri())
+            return (self.open_chooser.get_filename().decode('utf-8'), self.open_chooser.get_uri())
         else:
             return ()
 

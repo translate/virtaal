@@ -155,7 +155,7 @@ class TMModel(BaseTMModel):
         data = json.loads(val)
 
         if data['responseStatus'] != 200:
-            logging.debug("Failed to translate '%s':\n%s", (query_str, data['responseDetails']))
+            logging.debug("Failed to translate '%s':\n%s" % (query_str, data['responseDetails']))
             return
 
         target_unescaped = unescape_html_entities(data['responseData']['translatedText'])

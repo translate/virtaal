@@ -157,4 +157,10 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
     </magic>
   </mime-type>
 
+  <mime-type type="application/x-strings">
+    <sub-class-of type="text/plain"/>
+    <_comment>OS X Strings File</_comment>
+    <glob pattern="*.strings"/>
+  </mime-type>
+
 </mime-info>

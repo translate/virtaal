@@ -99,7 +99,7 @@ class TMModel(BaseTMModel):
         """Handle the response from the web service to set up language pairs."""
         data = json.loads(val)
         if data['responseStatus'] != 200:
-            logging.debug("Failed to get languages:\n%s", (query_str, data['responseDetails']))
+            logging.debug("Failed to get languages:\n%s", (data['responseDetails']))
             return
 
         self.language_pairs = [(pair['sourceLanguage'], pair['targetLanguage']) for pair in data['responseData']]

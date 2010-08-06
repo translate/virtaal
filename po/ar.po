@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.3beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2010-07-04 20:42+0300\n"
-"PO-Revision-Date: 2010-07-04 20:42+0300\n"
+"POT-Creation-Date: 2010-08-06 15:46+0300\n"
+"PO-Revision-Date: 2010-08-06 15:46+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -393,7 +393,7 @@ msgstr "غير مترجم"
 
 #: ../virtaal/controllers/checkscontroller.py:34
 msgid "Accelerators"
-msgstr ""
+msgstr "المسرّعات"
 
 #: ../virtaal/controllers/checkscontroller.py:35
 msgid "Acronyms"
@@ -409,7 +409,7 @@ msgstr "الأقواس"
 
 #: ../virtaal/controllers/checkscontroller.py:38
 msgid "Compendium conflict"
-msgstr ""
+msgstr "تعارض مع ذاكرة المصطلحات"
 
 #: ../virtaal/controllers/checkscontroller.py:39
 msgid "Translator credits"
@@ -442,7 +442,7 @@ msgstr "المسافات النهائية"
 
 #: ../virtaal/controllers/checkscontroller.py:46
 msgid "Escapes"
-msgstr ""
+msgstr "المحيدات"
 
 #: ../virtaal/controllers/checkscontroller.py:47
 msgid "File paths"
@@ -511,10 +511,8 @@ msgid "Short"
 msgstr "قصيرة"
 
 #: ../virtaal/controllers/checkscontroller.py:63
-#, fuzzy
-#| msgid "Initialization"
 msgid "Simple capitalization"
-msgstr "تجهيز"
+msgstr "استخدام بسيط للحروف اللاتينية الكبيرة"
 
 #: ../virtaal/controllers/checkscontroller.py:64
 msgid "Simple plural(s)"
@@ -529,10 +527,8 @@ msgid "Spelling"
 msgstr "الإملاء"
 
 #: ../virtaal/controllers/checkscontroller.py:67
-#, fuzzy
-#| msgid "Initialization"
 msgid "Starting capitalization"
-msgstr "تجهيز"
+msgstr "حروف لاتينية كبيرة بادئة"
 
 #: ../virtaal/controllers/checkscontroller.py:68
 msgid "Starting punctuation"
@@ -567,28 +563,28 @@ msgstr "حافظات المكان"
 msgid "XML tags"
 msgstr "وسوم XML"
 
-#: ../virtaal/controllers/checkscontroller.py:113
-#: ../virtaal/controllers/checkscontroller.py:135
+#: ../virtaal/controllers/checkscontroller.py:114
+#: ../virtaal/controllers/checkscontroller.py:136
 msgid "Default"
 msgstr "المبدئي"
 
-#: ../virtaal/controllers/checkscontroller.py:114
+#: ../virtaal/controllers/checkscontroller.py:115
 msgid "OpenOffice"
 msgstr "المكتب المفتوح"
 
-#: ../virtaal/controllers/checkscontroller.py:115
+#: ../virtaal/controllers/checkscontroller.py:116
 msgid "Mozilla"
 msgstr "موزيلا"
 
-#: ../virtaal/controllers/checkscontroller.py:116
+#: ../virtaal/controllers/checkscontroller.py:117
 msgid "Drupal"
 msgstr "دروبال"
 
-#: ../virtaal/controllers/checkscontroller.py:117
+#: ../virtaal/controllers/checkscontroller.py:118
 msgid "GNOME"
 msgstr "جنوم"
 
-#: ../virtaal/controllers/checkscontroller.py:118
+#: ../virtaal/controllers/checkscontroller.py:119
 msgid "KDE"
 msgstr "كدي"
 
@@ -845,11 +841,11 @@ msgstr "الكل"
 msgid "Quality Checks"
 msgstr "مراجعة الجودة"
 
-#: ../virtaal/modes/qualitycheckmode.py:106
+#: ../virtaal/modes/qualitycheckmode.py:113
 msgid "No Checks"
 msgstr "لا فحوص"
 
-#: ../virtaal/modes/qualitycheckmode.py:108
+#: ../virtaal/modes/qualitycheckmode.py:115
 msgid "All Checks"
 msgstr "كل الفحوص"
 
@@ -1316,16 +1312,16 @@ msgstr "مصدر ذاكرة الترجمة"
 msgid "%(match_quality)s%%"
 msgstr "%(match_quality)s‏٪"
 
-#: ../virtaal/views/checksunitview.py:53 ../virtaal/views/checksunitview.py:70
-#: ../virtaal/views/checksunitview.py:99
+#: ../virtaal/views/checksunitview.py:50 ../virtaal/views/checksunitview.py:67
+#: ../virtaal/views/checksunitview.py:100
 msgid "No issues"
 msgstr "لا مشاكل"
 
-#: ../virtaal/views/checksunitview.py:78
+#: ../virtaal/views/checksunitview.py:75
 msgid "Quality Check"
 msgstr "فحص الجودة"
 
-#: ../virtaal/views/checksunitview.py:81
+#: ../virtaal/views/checksunitview.py:78
 msgid "Description"
 msgstr "الوصف"
 
@@ -1535,74 +1531,78 @@ msgid "JavaScript error message file"
 msgstr "ملف رسائل خطأ جافا سكربت"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:8
+msgid "OS X Strings File"
+msgstr "ملفات عبارات أو إس عشرة"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:9
 msgid "OpenOffice.org Translation File"
 msgstr "ملف ترجمة أوبن أوفيس.أورج"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:9
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:10
 msgid "Qt Linguist Translation File"
 msgstr "ملف ترجمة Qt Linguist"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:10
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:11
 msgid "Qt Message File"
 msgstr "ملف رسائل Qt"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:11
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:12
 msgid "Qt Phrase Book"
 msgstr "كتاب عبارات Qt"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:12
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:13
 msgid "RC"
 msgstr "RC"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:13
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:14
 msgid "Resource Compiler"
 msgstr "مصنّف موارد"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:14
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:15
 msgid "TBX"
 msgstr "TBX"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:15
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:16
 msgid "TBX Glossary"
 msgstr "مسرد TBX"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:16
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:17
 msgid "TMX"
 msgstr "TMX"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:17
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:18
 msgid "TMX Translation Memory"
 msgstr "ذاكرة ترجمة TMX"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:18
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:19
 msgid "Tcl Translation File"
 msgstr "ملف ترجمة Tcl"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:19
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:20
 msgid "TermBase eXchange"
 msgstr "TermBase eXchange"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:20
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:21
 msgid "Trados Tag Editor"
 msgstr "محرر وسوم Trados"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:21
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:22
 msgid "Translation Memory eXchange"
 msgstr "تبادل ذاكرة الترجمة"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:22
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:23
 msgid "Wordfast Translation Memory"
 msgstr "ذاكرة ترجمة Wordfast"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:23
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:24
 msgid "XLIFF"
 msgstr "XLIFF"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:24
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:25
 msgid "XLIFF Translation File"
 msgstr "ملف ترجمة XLIFF"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:25
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:26
 msgid "XML Localization Interchange File Format"
 msgstr "نسق ملف تبادل توطين XML"
 

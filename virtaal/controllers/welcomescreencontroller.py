@@ -73,7 +73,7 @@ class WelcomeScreenController(BaseController):
     def open_recent(self, n):
         n -= 1 # Shift from nominal value [1; 5] to index value [0; 4]
         if 0 <= n <= len(self._recent_files)-1:
-            self.main_controller.open_file(self._recent_files[n]['uri'])
+            self.main_controller.open_file(self._recent_files[n]['uri'].decode('utf-8'))
         else:
             logging.debug('Invalid recent file index (%d) given. Recent files: %s)' % (n, self._recent_files))
 

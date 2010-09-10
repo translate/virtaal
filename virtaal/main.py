@@ -60,6 +60,9 @@ class Virtaal(object):
 
         # Load the file given on the command-line, if any
         if startupfile:
+            if isinstance(startupfile, str):
+                import sys
+                startupfile = unicode(startupfile, sys.getfilesystemencoding())
             main_controller.open_file(startupfile)
         else:
             store_controller.close_file() # Just to emit the "store-closed" event

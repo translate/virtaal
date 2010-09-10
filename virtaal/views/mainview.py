@@ -501,7 +501,7 @@ class MainView(BaseView):
 
         if response:
             pan_app.settings.general["lastdir"] = os.path.dirname(self.open_chooser.get_filename())
-            return (self.open_chooser.get_filename().decode('utf-8'), self.open_chooser.get_uri())
+            return (self.open_chooser.get_filename().decode('utf-8'), self.open_chooser.get_uri().decode('utf-8'))
         else:
             return ()
 
@@ -665,7 +665,7 @@ class MainView(BaseView):
             # For now we only handle local files, and limited the recent
             # manager to only give us those anyway, so we can get the filename
             self._uri = item.get_uri()
-            self.controller.open_file(item.get_uri_display(), uri=item.get_uri())
+            self.controller.open_file(item.get_uri_display().decode('utf-8'), uri=item.get_uri().decode('utf-8'))
 
     def _on_report_bug(self, _widget=None):
         openmailto.open("http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal&version=%s" % __version__.ver)

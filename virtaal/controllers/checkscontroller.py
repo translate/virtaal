@@ -108,6 +108,13 @@ class ChecksController(BaseController):
             main_controller.connect('controller-registered', self._on_controller_registered)
 
         self._check_timer_active = False
+        self._checker_code_to_name = {
+              "openoffice":  _('OpenOffice'),
+              "mozilla": _('Mozilla'),
+              "kde": _('KDE'),
+              "gnome": _('GNOME'),
+              "drupal": _('Drupal'),
+        }
         self.checker_info = {
             # XXX: Add other checkers below with a localisable string as key
             #      (used on the GUI) and a checker class as the value.
@@ -147,6 +154,12 @@ class ChecksController(BaseController):
         self.projview.set_checker_name(name)
         if self.main_controller.unit_controller.current_unit:
             self.check_unit(self.main_controller.unit_controller.current_unit)
+
+    def set_checker_by_code(self, code):
+        if code is None:
+            self.set_default_checker()
+        else:
+            self.set_checker_by_name(self._checker_code_to_name[code])
 
 
     # METHODS #
@@ -202,7 +215,7 @@ class ChecksController(BaseController):
                self.check_unit(self.last_unit)
 
     def _on_store_loaded(self, store_controller):
-        self.set_default_checker()
+        self.set_checker_by_code(store_controller.store._trans_store.getprojectstyle())
         if self._cursor_connection:
             widget, connect_id = self._cursor_connection
             widget.disconnect(connect_id)

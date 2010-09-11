@@ -99,7 +99,8 @@ class QualityCheckMode(BaseMode):
         menu = gtk.Menu()
 
         for check_name, display_name in self.checks_names.iteritems():
-            menuitem = gtk.CheckMenuItem(label=display_name)
+            #l10n: %s is the name of the check and must be first. %d is the number of failures
+            menuitem = gtk.CheckMenuItem(label="%s (%d)" % (display_name, len(self.stats[check_name])))
             menuitem.show()
             self._menuitem_checks[menuitem] = check_name
             menuitem.connect('toggled', self._on_check_menuitem_toggled)

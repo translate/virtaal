@@ -91,14 +91,13 @@ class ListNavigator(gtk.HBox):
             return
 
         i = cursor[0][0] + offset
-
         # keep it in the sane borders
         i = min(max(i, 0), len(self.tvw_items.get_model()) - 1)
 
-        self.tvw_items.set_cursor(i)
         self.tvw_items.scroll_to_cell(i, use_align=True, row_align=0.4)
+        self.tvw_items.set_cursor(i)
 
-    def set_model(self, model, select_first=True, select_name=None):
+    def set_model(self, model, unselectable=None, select_first=True, select_name=None):
         """Set the model for the C{gtk.TreeView} in the pop-up window.
             @type  select_first: bool
             @param select_first: Whether or not the first row should be selected
@@ -111,6 +110,7 @@ class ListNavigator(gtk.HBox):
             raise ValueError('Column %d does not contain "object" values' % (self.COL_VALUE))
 
         self.tvw_items.set_model(model)
+        self.unselectable = unselectable
 
         select_path = None
         if select_first:
@@ -174,7 +174,12 @@ class ListNavigator(gtk.HBox):
         model, itr = selection.get_selected()
         if not model or not itr:
             return
+        selected_name  = model.get_value(itr, self.COL_DISPLAY)
         selected_value = model.get_value(itr, self.COL_VALUE)
+
+        if selected_name in self.unselectable:
+            selection.select_iter(model.iter_next(itr))
+            return
         # Disable back/forward buttons if the first/last item was selected
         isfirst = selected_value == model.get_value(model[0].iter, self.COL_VALUE)
         islast  = selected_value == model.get_value(model[len(model)-1].iter, self.COL_VALUE)

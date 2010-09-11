@@ -592,8 +592,14 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                 self._widgets['state'].hide()
                 return
             state_name = state_names[self.unit.get_state_id()]
+
+            unselectable = state_names.get(0, None)
+            if unselectable:
+                unselectable = [unselectable]
+
             self._widgets['state'].set_model(
                 self._create_workflow_liststore(),
+                unselectable=unselectable,
                 select_name=state_name,
             )
             self._widgets['state'].show_all()

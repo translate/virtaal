@@ -138,8 +138,9 @@ class StoreModel(BaseModel):
         self._get_valid_units()
 
     def update_stats(self, checker=checks.StandardChecker(), filename=None):
+        self.stats = None
         if self._trans_store is None:
-            self.stats = None
+            self._stats = None
             return
         if filename is None:
             filename = self.filename
@@ -198,15 +199,16 @@ class StoreModel(BaseModel):
             self.stats = new_stats
 
     def _get_valid_units(self):
-        self._valid_units = self.stats['total']
-        self._valid_unit_indexes = dict([(uindex, index) for (index, uindex) in enumerate(self.stats['total'])])
-
-        if not self.stats['total']:
+        self.stats = {}
+        if not self._stats['total']:
             return
 
+        self._valid_units = self._stats['total']
+        self._valid_unit_indexes = dict([(uindex, index) for (index, uindex) in enumerate(self._stats['total'])])
+
         # Adjust stats
-        for key in self.stats:
-            self.stats[key] = [self._valid_unit_indexes[i] for i in self.stats[key]]
+        for key in self._stats:
+            self.stats[key] = [self._valid_unit_indexes[i] for i in self._stats[key]]
 
     def _update_header(self):
         """Make sure that headers are complete and update with current time (if applicable)."""

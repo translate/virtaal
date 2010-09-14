@@ -49,7 +49,11 @@ class WorkflowMode(BaseMode):
         self.storecursor = self.controller.main_controller.store_controller.cursor
 
         self.state_names = self.controller.main_controller.unit_controller.get_unit_state_names()
-        self.state_names = self.state_names.items()
+        if self.storecursor and self.storecursor.model and 'extended' in self.storecursor.model.stats:
+            self.state_names = [i for i in self.state_names.items() if i[0] in self.storecursor.model.stats['extended']]
+        else:
+            self.state_names = self.state_names.items()
+
         self.state_names.sort(key=lambda x: x[0])
 
         self._add_widgets()
@@ -120,11 +124,10 @@ class WorkflowMode(BaseMode):
     # EVENT HANDLERS #
     def _on_state_menuitem_toggled(self, checkmenuitem):
         self.filter_states = []
-        unit_states = self.controller.main_controller.unit_controller.current_unit.STATE
         for menuitem in self.btn_popup.menu:
             if not isinstance(menuitem, gtk.CheckMenuItem) or not menuitem.get_active():
                 continue
             if menuitem in self._menuitem_states:
-                self.filter_states.append(unit_states[self._menuitem_states[menuitem]])
+                self.filter_states.append(self._menuitem_states[menuitem])
         self.update_indices()
         self._update_button_label()

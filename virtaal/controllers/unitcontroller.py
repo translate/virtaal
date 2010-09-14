@@ -78,22 +78,15 @@ class UnitController(BaseController):
 
     # METHODS #
     def get_unit_state_names(self, unit=None):
-        if unit is None:
-            unit = self.current_unit
-        if not self._unit_state_names:
-            from translate.storage import pocommon
-
-            if isinstance(unit, pocommon.pounit):
-                self._unit_state_names = {
-                    # We don't want 'Obsolete' below, because such units are not shown anyway
-                    #unit.S_OBSOLETE:     _('Obsolete'),
-                    unit.S_UNTRANSLATED: _('Untranslated'),
-                    unit.S_FUZZY:        _('Fuzzy'),
-                    unit.S_TRANSLATED:   _('Translated'),
-                }
-            else:
-                return {}
-
+        self._unit_state_names = {
+            #FIXME: choose friendly names
+            workflow.StateEnum.EMPTY: _('Untranslated'),
+            workflow.StateEnum.NEEDS_WORK: _('Needs work'),
+            workflow.StateEnum.REJECTED: _('Rejected'),
+            workflow.StateEnum.NEEDS_REVIEW: _('Needs Review'),
+            workflow.StateEnum.UNREVIEWED: _('Translated'),
+            workflow.StateEnum.FINAL: _('Reviewed'),
+            }
         return self._unit_state_names
 
     def load_unit(self, unit):

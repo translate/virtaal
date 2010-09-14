@@ -131,6 +131,7 @@ class StoreController(BaseController):
 
     def _get_unitcontroller(self):
         return self._unit_controller
+
     def _set_unitcontroller(self, unitcont):
         """@type unitcont: UnitController"""
         if self.unit_controller and 'unitview.unit-modified' in self.handler_ids:

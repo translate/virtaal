@@ -42,19 +42,24 @@ class QualityCheckMode(BaseMode):
         self.checks_controller = controller.main_controller.checks_controller
         self._checker_set_id = None
         self.filter_checks = []
+        # a way to map menuitems to their check names, and signal ids:
         self._menuitem_checks = {}
         self.store_filename = None
 
 
     # METHODS #
-    def selected(self):
+    def _prepare_stats(self):
         self.stats = self.store_controller.get_store_stats()
+        # A currently selected check might disappear if the style changes:
+        self.filter_checks = [check for check in self.filter_checks if check in self.stats]
         self.storecursor = self.store_controller.cursor
         self.checks_names = {}
         for check, indices in self.stats.iteritems():
             if indices and check not in ('total', 'translated', 'untranslated'):
                 self.checks_names[check] = self.checks_controller.get_check_name(check)
 
+    def selected(self):
+        self._prepare_stats()
         self._checker_set_id = self.checks_controller.connect(
             'checker-set', self._on_checker_set
         )
@@ -97,15 +102,21 @@ class QualityCheckMode(BaseMode):
 
     def _create_checks_menu(self):
         menu = gtk.Menu()
+        self._create_menu_entries(menu)
+        return menu
 
+    def _create_menu_entries(self, menu):
+        for mi, (name, signal_id) in self._menuitem_checks.iteritems():
+            mi.disconnect
+            menu.remove(mi)
+        assert not menu.get_children()
         for check_name, display_name in self.checks_names.iteritems():
             #l10n: %s is the name of the check and must be first. %d is the number of failures
             menuitem = gtk.CheckMenuItem(label="%s (%d)" % (display_name, len(self.stats[check_name])))
+            menuitem.set_active(check_name in self.filter_checks)
             menuitem.show()
-            self._menuitem_checks[menuitem] = check_name
-            menuitem.connect('toggled', self._on_check_menuitem_toggled)
+            self._menuitem_checks[menuitem] = (check_name, menuitem.connect('toggled', self._on_check_menuitem_toggled))
             menu.append(menuitem)
-        return menu
 
     def _update_button_label(self):
         check_labels = [mi.child.get_label() for mi in self.btn_popup.menu if mi.get_active()]
@@ -123,8 +134,10 @@ class QualityCheckMode(BaseMode):
 
     # EVENT HANDLERS #
     def _on_checker_set(self, checkscontroller, checker):
-        self.unselected()
-        self.selected()
+        self._prepare_stats()
+        self._create_menu_entries(self.btn_popup.menu)
+        self._update_button_label()
+        self.update_indices()
 
     def _on_check_menuitem_toggled(self, checkmenuitem):
         self.filter_checks = []
@@ -132,6 +145,6 @@ class QualityCheckMode(BaseMode):
             if not isinstance(menuitem, gtk.CheckMenuItem) or not menuitem.get_active():
                 continue
             if menuitem in self._menuitem_checks:
-                self.filter_checks.append(self._menuitem_checks[menuitem])
+                self.filter_checks.append(self._menuitem_checks[menuitem][0])
         self.update_indices()
         self._update_button_label()

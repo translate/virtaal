@@ -236,7 +236,10 @@ ui_language = settings.language["uilang"]
 if ui_language:
     locale_lang = get_locale_lang()
     fix_locale(ui_language)
-    locale.setlocale(locale.LC_ALL, ui_language)
+    try:
+        locale.setlocale(locale.LC_ALL, ui_language)
+    except locale.Error:
+        pass
     languages = [ui_language, locale_lang]
     gettext.translation('virtaal', languages=languages, fallback=True).install(unicode=1)
 else:

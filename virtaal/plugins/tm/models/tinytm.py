@@ -18,6 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import logging
+
 from virtaal.common import pan_app
 
 from basetmmodel import BaseTMModel
@@ -68,10 +70,13 @@ class TMModel(BaseTMModel):
         cursor = self._db_con.cursor()
         # Uncomment this if you don't trust the results
         #cursor.execute("""SELECT * FROM tinytm_get_fuzzy_matches('en', 'de', 'THE EUROPEAN ECONOMIC COMMUNITY', '', '')""")
-        cursor.execute(
-            """SELECT * FROM tinytm_get_fuzzy_matches(%s, %s, %s, '', '')""",
-            (self.source_lang, self.target_lang, query_str.encode('utf-8'))
-        )
+        try:
+            cursor.execute(
+                """SELECT * FROM tinytm_get_fuzzy_matches(%s, %s, %s, '', '')""",
+                (self.source_lang, self.target_lang, query_str.encode('utf-8'))
+            )
+        except psycopg.Error, e:
+            logging.error("[%s] %s" % (e.pgcode, e.pgerror))
         for result in cursor.fetchall():
             quality, source, target = result[:3]
             if not isinstance(target, unicode):

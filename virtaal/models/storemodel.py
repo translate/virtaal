@@ -144,7 +144,7 @@ class StoreModel(BaseModel):
             return
         if filename is None:
             filename = self.filename
-        self.stats = statsdb.StatsCache().filestats(filename, checker, self._trans_store)
+        self._stats = statsdb.StatsCache().filestats(filename, checker, self._trans_store, extended=True)
         self._checker = checker
         self._get_valid_units()
         return self.stats
@@ -208,7 +208,13 @@ class StoreModel(BaseModel):
 
         # Adjust stats
         for key in self._stats:
+            if key == "extended":
+                continue
             self.stats[key] = [self._valid_unit_indexes[i] for i in self._stats[key]]
+
+        self.stats['extended'] = {}
+        for estate in self._stats["extended"]:
+            self.stats['extended'][estate] = [self._valid_unit_indexes[i] for i in self._stats["extended"][estate]]
 
     def _update_header(self):
         """Make sure that headers are complete and update with current time (if applicable)."""

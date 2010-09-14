@@ -76,7 +76,7 @@ class TMModel(BaseTMModel):
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])
         else:
-            matches = self._check_other_units(unit) + self._check_xliff_alttrans(unit)
+            matches = self._check_other_units(unit) + self._check_alttrans(unit)
             if matches:
                 self.cache[query_str] = matches
                 self.emit('match-found', query_str, self.cache[query_str])
@@ -95,7 +95,7 @@ class TMModel(BaseTMModel):
             matches.append(m)
         return [m for m in matches if m['quality'] != u'100']
 
-    def _check_xliff_alttrans(self, unit):
+    def _check_alttrans(self, unit):
         if not hasattr(unit, 'getalttrans'):
             return []
         alttrans = unit.getalttrans()
@@ -107,6 +107,10 @@ class TMModel(BaseTMModel):
 
         results = []
         for alt in alttrans:
+            quality = lcomparer.similarity(unit.source, alt.source, self.controller.min_quality - 15)
+            # let's check if it is useful, but be more lenient
+            if quality < self.controller.min_quality - 10:
+                continue
             tmsource = _('This file')
 
             xmlelement = getattr(alt, 'xmlelement', None)
@@ -118,7 +122,7 @@ class TMModel(BaseTMModel):
             results.append({
                 'source': alt.source,
                 'target': alt.target,
-                'quality': lcomparer.similarity(unit.source, alt.source, 0),
+                'quality': quality,
                 'tmsource': tmsource,
             })
         return results

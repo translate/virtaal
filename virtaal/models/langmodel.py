@@ -44,7 +44,7 @@ class LanguageModel(BaseModel):
             Looks up the language information based on the given language code
             (C{langcode})."""
         super(LanguageModel, self).__init__()
-        self.gettext_lang = tr_lang()
+        self.gettext_lang = tr_lang(pan_app.get_ui_lang())
         if not self.languages:
             self.languages.update(toolkit_langs)
         self.languages.update(more_langs)

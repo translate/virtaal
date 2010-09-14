@@ -23,8 +23,6 @@ import logging
 import os
 import sys
 import locale, gettext
-locale.setlocale(locale.LC_ALL)
-gettext.install("virtaal", unicode=1)
 from translate.misc import file_discovery
 from translate.lang import data
 
@@ -77,7 +75,7 @@ def get_ui_lang():
     Not necessarily the same as get_locale_lang()."""
     if _(''):
         # If this is true, we have a translated interface
-        return get_locale_lang()
+        return ui_language or get_locale_lang()
     else:
         return 'en'
 
@@ -147,6 +145,7 @@ class Settings:
         "sourcelang": "en",
         "targetfont": defaultfont,
         "targetlang": None,
+        "uilang": "",
     }
     placeable_state = {
         "altattrplaceable": "disabled",
@@ -231,6 +230,18 @@ class Settings:
         self.language['targetfont'] = fonts[1]
 
 settings = Settings()
+
+languages = [get_locale_lang()]
+ui_language = settings.language["uilang"]
+if ui_language:
+    locale.setlocale(locale.LC_ALL, ui_language)
+    # glade won't respond to setlocale(), so we also edit the environment variable
+    os.environ['LANGUAGE'] = ui_language
+    languages.insert(0, ui_language)
+    gettext.translation('virtaal', languages=languages, fallback=True).install(unicode=1)
+else:
+    locale.setlocale(locale.LC_ALL)
+    gettext.install("virtaal", unicode=1)
 
 # Determine the directory the main executable is running from
 main_dir = u''

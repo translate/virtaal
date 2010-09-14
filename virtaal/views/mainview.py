@@ -492,8 +492,9 @@ class MainView(BaseView):
         if title:
             self.open_chooser.set_title(title)
 
-        if os.path.exists(pan_app.settings.general["lastdir"] or ""):
-            self.open_chooser.set_current_folder(pan_app.settings.general["lastdir"])
+        last_path = (pan_app.settings.general["lastdir"] or "").decode(sys.getdefaultencoding())
+        if os.path.exists(last_path):
+            self.open_chooser.set_current_folder(last_path)
 
         self.open_chooser.set_transient_for(self._top_window)
         old_top = self._top_window
@@ -503,8 +504,9 @@ class MainView(BaseView):
         self._top_window = old_top
 
         if response:
-            pan_app.settings.general["lastdir"] = os.path.dirname(self.open_chooser.get_filename())
-            return (self.open_chooser.get_filename().decode('utf-8'), self.open_chooser.get_uri().decode('utf-8'))
+            filename = self.open_chooser.get_filename().decode('utf-8')
+            pan_app.settings.general["lastdir"] = os.path.dirname(filename)
+            return (filename, self.open_chooser.get_uri().decode('utf-8'))
         else:
             return ()
 

@@ -65,9 +65,9 @@ class TMModel(BaseTMModel):
     def query(self, tmcontroller, unit):
         query_str = unit.source
         matches = []
-        # Uncomment this if you don't trust the results
-        #results = self._db.execute("""SELECT * FROM tinytm_get_fuzzy_matches('en', 'de', 'THE EUROPEAN ECONOMIC COMMUNITY', '', '')""")
         cursor = self._db_con.cursor()
+        # Uncomment this if you don't trust the results
+        #cursor.execute("""SELECT * FROM tinytm_get_fuzzy_matches('en', 'de', 'THE EUROPEAN ECONOMIC COMMUNITY', '', '')""")
         cursor.execute(
             """SELECT * FROM tinytm_get_fuzzy_matches(%s, %s, %s, '', '')""",
             (self.source_lang, self.target_lang, query_str.encode('utf-8'))

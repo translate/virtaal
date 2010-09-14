@@ -67,14 +67,12 @@ class WorkflowMode(BaseMode):
 
         indices = []
         for state in self.filter_states:
-            for index, unit in enumerate(self.storecursor.model):
-                if state[0] <= unit.get_state_n() < state[1]:
-                    logging.debug('state: %s, unit.state_n: %d' % (state, unit.get_state_n()))
-                    indices.append(index)
+            indices.extend(self.storecursor.model.stats['extended'][state])
 
         if not indices:
-            indices = range(len(self.storecursor.model))
-        indices.sort()
+            indices.extend(self.storecursor.model.stats['total'])
+        else:
+            indices.sort()
 
         self.storecursor.indices = indices
 

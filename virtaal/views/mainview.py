@@ -165,7 +165,10 @@ class MainView(BaseView):
         self.gui.get_widget('mnu_report_bug').connect('activate', self._on_report_bug)
         self.gui.get_widget('mnu_about').connect('activate', self._on_help_about)
 
+        # The classic menu bar:
         self.menubar = self.gui.get_widget('menubar')
+        # The menu structure, regardless of where it is shown (initially the menubar):
+        self.menu_structure = self.menubar
         self.status_bar = self.gui.get_widget("status_bar")
         self.status_bar.set_sensitive(False)
         self.statusbar_context_id = self.status_bar.get_context_id("statusbar")
@@ -382,8 +385,8 @@ class MainView(BaseView):
         menu = gtk.Menu()
         menuitem = gtk.MenuItem(name)
         menuitem.set_submenu(menu)
-        self.menubar.append(menuitem)
-        self.menubar.show_all()
+        self.menu_structure.append(menuitem)
+        self.menu_structure.show_all()
         return menuitem
 
     def append_menu_item(self, name, menu, after=None):
@@ -407,12 +410,12 @@ class MainView(BaseView):
         else:
             after_index = parent_menu.get_children().index(after) + 1
             parent_menu.insert(menuitem, after_index)
-        self.menubar.show_all()
+        self.menu_structure.show_all()
         return menuitem
 
     def find_menu(self, label):
         """Find the menu with the given label on the menu bar."""
-        for menuitem in self.menubar.get_children():
+        for menuitem in self.menu_structure.get_children():
             if menuitem.get_child() and menuitem.get_child().get_text() == label:
                 return menuitem
 
@@ -432,7 +435,7 @@ class MainView(BaseView):
         if menu is not None:
             menus = [menu]
         else:
-            menus = [mi for mi in self.menubar.get_children()]
+            menus = [mi for mi in self.menu_structure.get_children()]
 
         for menuitem in menus:
             for item in menuitem.get_submenu().get_children():
@@ -587,14 +590,16 @@ class MainView(BaseView):
             self.app_menu = gtk.Menu()
             self.btn_app.connect('pressed', self._on_app_pressed)
             self.btn_app.show()
-        for child in self.menubar:
+        for child in self.menu_structure:
             child.reparent(self.app_menu)
+        self.menu_structure = self.app_menu
         self.btn_app.show()
 
     def hide_app_icon(self):
         self.btn_app.hide()
         for child in self.app_menu:
             child.reparent(self.menubar)
+        self.menu_structure = self.menubar
 
     # SIGNAL HANDLERS #
     def _on_controller_registered(self, main_controller, new_controller):

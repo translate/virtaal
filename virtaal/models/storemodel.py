@@ -122,7 +122,7 @@ class StoreModel(BaseModel):
         self._trans_store = factory.getobject(fileobj)
         self.filename = filename
         self.update_stats(filename=filename)
-        self._correct_header(self._trans_store)
+        #self._correct_header(self._trans_store)
         #self._get_valid_units()
         self.nplurals = self._compute_nplurals(self._trans_store)
 

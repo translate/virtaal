@@ -123,7 +123,7 @@ class StoreModel(BaseModel):
         self.filename = filename
         self.update_stats(filename=filename)
         self._correct_header(self._trans_store)
-        self._get_valid_units()
+        #self._get_valid_units()
         self.nplurals = self._compute_nplurals(self._trans_store)
 
     def save_file(self, filename=None):
@@ -135,7 +135,7 @@ class StoreModel(BaseModel):
         else:
             self._trans_store.savefile(filename)
         self.update_stats(filename=filename)
-        self._get_valid_units()
+        #self._get_valid_units()
 
     def update_stats(self, checker=checks.StandardChecker(), filename=None):
         self.stats = None
@@ -172,7 +172,7 @@ class StoreModel(BaseModel):
 
         # store filename or else save is confused
         self._trans_store.filename = oldfilename
-        self._get_valid_units()
+        #self._get_valid_units()
         self._correct_header(self._trans_store)
         self.nplurals = self._compute_nplurals(self._trans_store)
 

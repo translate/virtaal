@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2007-2008 Dieter Verfaillie <dieterv@optionexplicit.be>
-# Copyright 2009 Zuza Software Foundation
+# Copyright 2009-2010 Zuza Software Foundation
 #
 # (NOTE: LGPL)
 # This library is free software; you can redistribute it and/or
@@ -300,12 +300,20 @@ def _putenv(name, value):
     result = msvcrt._putenv('%s=%s' % (name, value))
     del msvcrt
 
-def fix_locale():
+def fix_locale(lang=None):
+    """This fixes some strange issues to ensure locale and gettext works
+    correctly, also within glade, even with a non-default locale passed as
+    parameter."""
     if sys.platform == 'win32':
-        lang = _getlang()
+        lang = lang or _getlang()
+
+        _putenv('LANGUAGE', lang)
 
         os.environ['LANG'] = lang
         _putenv('LANG', lang)
 
         os.environ['LC_ALL'] = lang
         _putenv('LC_ALL', lang)
+    if lang:
+        # This is to support a non-locale UI language:
+        os.environ['LANGUAGE'] = lang

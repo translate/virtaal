@@ -23,6 +23,7 @@ import logging
 import os
 import sys
 import locale, gettext
+from virtaal.support.libi18n.locale import fix_locale
 from translate.misc import file_discovery
 from translate.lang import data
 
@@ -231,15 +232,15 @@ class Settings:
 
 settings = Settings()
 
-languages = [get_locale_lang()]
 ui_language = settings.language["uilang"]
 if ui_language:
+    locale_lang = get_locale_lang()
+    fix_locale(ui_language)
     locale.setlocale(locale.LC_ALL, ui_language)
-    # glade won't respond to setlocale(), so we also edit the environment variable
-    os.environ['LANGUAGE'] = ui_language
-    languages.insert(0, ui_language)
+    languages = [ui_language, locale_lang]
     gettext.translation('virtaal', languages=languages, fallback=True).install(unicode=1)
 else:
+    fix_locale()
     locale.setlocale(locale.LC_ALL)
     gettext.install("virtaal", unicode=1)
 

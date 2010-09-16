@@ -49,7 +49,7 @@ class QualityCheckMode(BaseMode):
 
     # METHODS #
     def _prepare_stats(self):
-        self.stats = self.store_controller.get_store_stats()
+        self.stats = self.store_controller.get_store_checks()
         # A currently selected check might disappear if the style changes:
         self.filter_checks = [check for check in self.filter_checks if check in self.stats]
         self.storecursor = self.store_controller.cursor

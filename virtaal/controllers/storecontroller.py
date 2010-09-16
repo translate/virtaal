@@ -121,6 +121,12 @@ class StoreController(BaseController):
             raise ValueError('No store to get checker from')
         return store.stats
 
+    def get_store_checks(self):
+        store = self.get_store()
+        if not store:
+            raise ValueError('No store to get checker from')
+        return store.checks
+
     def get_unit_celleditor(self, unit):
         """Load the given unit in via the C{UnitController} and return
             the C{gtk.CellEditable} it creates."""
@@ -364,12 +370,12 @@ class StoreController(BaseController):
 
         self.emit('store-loaded')
 
-    def update_store_stats(self, **kwargs):
+    def update_store_checks(self, **kwargs):
         """Shortcut to C{StoreModel.update_stats()}"""
         store = self.get_store()
         if not store:
             raise ValueError('No store to get checker from')
-        return store.update_stats(**kwargs)
+        return store.update_checks(**kwargs)
 
     def compare_stats(self, oldstats, newstats):
         #l10n: The heading of statistics before updating to the new template

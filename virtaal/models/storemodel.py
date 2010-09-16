@@ -34,6 +34,25 @@ from virtaal.common import pan_app
 from basemodel import BaseModel
 
 
+def fix_indexes(stats, valid_units=None):
+    """convert statsdb array to use model index instead of storage class index"""
+    if valid_units is None:
+        valid_units = stats['total']
+
+    new_stats = {}
+    if valid_units:
+        valid_unit_indexes = dict([(uindex, index) for (index, uindex) in enumerate(valid_units)])
+        # Adjust stats
+        for key in stats:
+            if key == 'extended':
+                new_stats['extended'] = {}
+                for estate in stats['extended']:
+                    new_stats['extended'][estate] = [valid_unit_indexes[i] for i in stats['extended'][estate]]
+                continue
+            new_stats[key] = [valid_unit_indexes[i] for i in stats[key]]
+    return new_stats
+
+
 class StoreModel(BaseModel):
     """
     This model represents a translation store/file. It is basically a wrapper
@@ -137,17 +156,35 @@ class StoreModel(BaseModel):
         self.update_stats(filename=filename)
         #self._get_valid_units()
 
-    def update_stats(self, checker=checks.StandardChecker(), filename=None):
+    def update_stats(self, filename=None):
         self.stats = None
         if self._trans_store is None:
-            self._stats = None
             return
+
         if filename is None:
             filename = self.filename
-        self._stats = statsdb.StatsCache().filestats(filename, checker, self._trans_store, extended=True)
-        self._checker = checker
-        self._get_valid_units()
+
+        stats = statsdb.StatsCache().filestatestats(filename,  self._trans_store, extended=True)
+        self._valid_units = stats['total']
+        self.stats = fix_indexes(stats)
         return self.stats
+
+    def update_checks(self, checker=None, filename=None):
+        self.checks = None
+        if self._trans_store is None:
+            return
+
+        if filename is None:
+            filename = self.filename
+
+        if checker is None:
+            checker = self._checker
+        else:
+            self._checker = checker
+
+        errors = statsdb.StatsCache().filechecks(filename, checker, self._trans_store)
+        self.checks = fix_indexes(errors, self._valid_units)
+        return self.checks
 
     def update_file(self, filename):
         # Adapted from Document.__init__()

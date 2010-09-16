@@ -142,7 +142,6 @@ class StoreModel(BaseModel):
         self.filename = filename
         self.update_stats(filename=filename)
         #self._correct_header(self._trans_store)
-        #self._get_valid_units()
         self.nplurals = self._compute_nplurals(self._trans_store)
 
     def save_file(self, filename=None):
@@ -154,7 +153,6 @@ class StoreModel(BaseModel):
         else:
             self._trans_store.savefile(filename)
         self.update_stats(filename=filename)
-        #self._get_valid_units()
 
     def update_stats(self, filename=None):
         self.stats = None
@@ -209,7 +207,6 @@ class StoreModel(BaseModel):
 
         # store filename or else save is confused
         self._trans_store.filename = oldfilename
-        #self._get_valid_units()
         self._correct_header(self._trans_store)
         self.nplurals = self._compute_nplurals(self._trans_store)
 
@@ -234,24 +231,6 @@ class StoreModel(BaseModel):
             for key, values in self.stats.iteritems():
                 new_stats[key] = [value+1 for value in values]
             self.stats = new_stats
-
-    def _get_valid_units(self):
-        self.stats = {}
-        if not self._stats['total']:
-            return
-
-        self._valid_units = self._stats['total']
-        self._valid_unit_indexes = dict([(uindex, index) for (index, uindex) in enumerate(self._stats['total'])])
-
-        # Adjust stats
-        for key in self._stats:
-            if key == "extended":
-                continue
-            self.stats[key] = [self._valid_unit_indexes[i] for i in self._stats[key]]
-
-        self.stats['extended'] = {}
-        for estate in self._stats["extended"]:
-            self.stats['extended'][estate] = [self._valid_unit_indexes[i] for i in self._stats["extended"][estate]]
 
     def _update_header(self):
         """Make sure that headers are complete and update with current time (if applicable)."""

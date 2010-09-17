@@ -212,6 +212,7 @@ class ChecksController(BaseController):
         current_checker = self.get_checker()
         if current_checker:
            current_checker.config.updatetargetlanguage(langcode)
+           self.emit('checker-set', current_checker)
            if self.last_unit:
                self.check_unit(self.last_unit)
 

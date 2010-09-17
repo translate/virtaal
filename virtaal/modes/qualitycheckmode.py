@@ -136,7 +136,7 @@ class QualityCheckMode(BaseMode):
 
 
     # EVENT HANDLERS #
-    def _on_checker_set(self, checkscontroller, checker):
+    def _on_checker_set(self, checkscontroller, checker=None):
         self._prepare_stats()
         self._create_menu_entries(self.btn_popup.menu)
         self._update_button_label()

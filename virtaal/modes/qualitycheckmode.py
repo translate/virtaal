@@ -61,9 +61,9 @@ class QualityCheckMode(BaseMode):
 
     def selected(self):
         self._prepare_stats()
-        self._checker_set_id = self.checks_controller.connect(
-            'checker-set', self._on_checker_set
-        )
+        self._checker_set_id = self.checks_controller.connect('checker-set', self._on_checker_set)
+        # redo stats on save to refresh navigation controls
+        self._store_saved_id = self.store_controller.connect('store-saved', self._on_checker_set)
 
         self._add_widgets()
         self._update_button_label()
@@ -73,6 +73,8 @@ class QualityCheckMode(BaseMode):
         if self._checker_set_id:
             self.checks_controller.disconnect(self._checker_set_id)
             self._checker_set_id = None
+            self.store_controller.disconnect(self._store_saved_id)
+            self.store_saved_id = None
 
     def update_indices(self):
         if not self.storecursor or not self.storecursor.model:

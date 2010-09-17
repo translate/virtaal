@@ -150,7 +150,6 @@ class ChecksController(BaseController):
         self._checker = self.checker_info[name]()
         self._checker.config.updatetargetlanguage(target_lang)
 
-        self.store_controller.update_store_checks(checker=checker)
         self.emit('checker-set', self.get_checker())
         self.projview.set_checker_name(name)
         if self.main_controller.unit_controller.current_unit:

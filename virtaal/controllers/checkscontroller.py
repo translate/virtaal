@@ -107,6 +107,7 @@ class ChecksController(BaseController):
         else:
             main_controller.connect('controller-registered', self._on_controller_registered)
 
+        self._checker = None
         self._check_timer_active = False
         self._checker_code_to_name = {
               "openoffice":  _('OpenOffice'),
@@ -137,7 +138,7 @@ class ChecksController(BaseController):
 
     # ACCESSORS #
     def get_checker(self):
-        return self.store_controller.get_store_checker()
+        return self._checker
 
     def set_default_checker(self):
         self.set_checker_by_name(_('Default'))
@@ -146,8 +147,8 @@ class ChecksController(BaseController):
         target_lang = self.main_controller.lang_controller.target_lang.code
         if not target_lang:
             target_lang = None
-        checker = self.checker_info[name]()
-        checker.config.updatetargetlanguage(target_lang)
+        self._checker = self.checker_info[name]()
+        self._checker.config.updatetargetlanguage(target_lang)
 
         self.store_controller.update_store_checks(checker=checker)
         self.emit('checker-set', self.get_checker())

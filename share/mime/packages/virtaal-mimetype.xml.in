@@ -163,4 +163,16 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
     <glob pattern="*.strings"/>
   </mime-type>
 
+  <mime-type type="text/x-utx">
+    <sub-class-of type="text/tab-separated-values"/>
+    <icon name="x-translation"/>
+    <_comment>UTX Dictionary</_comment>
+    <_acronym>UTX</_acronym>
+    <_expanded-acronym>Universal Terminology eXchange</_expanded-acronym>
+    <glob pattern="*.utx"/>
+    <magic priority="80">
+      <match value="#UTX" type="string" offset="0:5"/>
+    </magic>
+  </mime-type>
+
 </mime-info>

@@ -214,7 +214,8 @@ class MainController(BaseController):
                     directory, filename = os.path.split(store_filename)
                 else:
                     filename = ''
-            if not self.view.show_save_dialog(current_filename=filename):
+            filename = self.view.show_save_dialog(current_filename=filename)
+            if not filename:
                 return
 
         if self.get_force_saveas():

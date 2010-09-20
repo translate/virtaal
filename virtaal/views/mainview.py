@@ -565,7 +565,10 @@ class MainView(BaseView):
         self.save_chooser.hide()
         self._top_window = old_top
 
-        return response == gtk.RESPONSE_OK
+        if response:
+            filename = self.save_chooser.get_filename().decode('utf-8')
+            #FIXME: do we need uri here?
+            return filename
 
     def show_save_confirm_dialog(self):
         """@returns: One of C{'save'}, C{'discard'}, C{'cancel'} or C{''},

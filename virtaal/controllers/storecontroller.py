@@ -192,7 +192,7 @@ class StoreController(BaseController):
             self.store = StoreModel(transfile, self)
         elif extension in convert_factory.converters:
             # Use temporary file name for bundle archive
-            tempfname = self._get_new_bundle_filename(filename)
+            tempfname = self._get_new_bundle_filename(filename, force_temp=True)
             self._archivetemp = tempfname
 
             self.project = proj.Project(projstore=proj.BundleProjectStore(tempfname))
@@ -405,7 +405,7 @@ class StoreController(BaseController):
         #l10n: this refers to updating a file to a new template (POT file)
         self.main_controller.show_info(_("File Updated"), output)
 
-    def _get_new_bundle_filename(self, infilename):
+    def _get_new_bundle_filename(self, infilename, force_temp=False):
         """Creates a file name that can be used for a bundle, based on the given
             file name.
 
@@ -434,32 +434,34 @@ class StoreController(BaseController):
         else:
             suffix = os.extsep + u'zip'
 
-        # Try foo_en__af.zip
-        outfname = prefix + suffix
-        if not os.path.isfile(outfname):
+        if not force_temp:
+            # Try foo_en__af.zip
+            outfname = prefix + suffix
+            if not os.path.isfile(outfname):
+                try:
+                    open(outfname, 'w')
+                    os.unlink(outfname)
+                    return outfname
+                except Exception:
+                    pass
+
+            prefix += u'_'
+
+            # Try foo_en__af_XXXXX.zip
             try:
-                open(outfname, 'w')
-                os.unlink(outfname)
+                directory = os.path.split(os.path.abspath(infilename))[0]
+                if not directory:
+                    directory = None
+                fd, outfname = mkstemp(suffix=suffix, prefix=prefix, dir=directory)
+                os.close(fd)
+                if os.path.isfile(outfname):
+                    os.unlink(outfname)
                 return outfname
             except Exception:
                 pass
 
-        prefix += u'_'
-
-        # Try foo_en__af_XXXXX.zip
-        try:
-            directory = os.path.split(os.path.abspath(infilename))[0]
-            if not directory:
-                directory = None
-            fd, outfname = mkstemp(suffix=suffix, prefix=prefix, dir=directory)
-            os.close(fd)
-            if os.path.isfile(outfname):
-                os.unlink(outfname)
-            return outfname
-        except Exception:
-            pass
-
         # Try /tmp/foo_en__af_XXXXX.zip as a last resort
+        prefix = os.path.basename(prefix)
         fd, outfname = mkstemp(suffix=suffix, prefix=prefix)
         os.close(fd)
         if os.path.isfile(outfname):

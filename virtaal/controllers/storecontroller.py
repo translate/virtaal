@@ -23,6 +23,8 @@ import logging
 import os
 import re
 from tempfile import mkstemp
+import shutil
+
 from translate.convert import factory as convert_factory
 from translate.storage import proj
 
@@ -197,7 +199,6 @@ class StoreController(BaseController):
             self._targetfname = self._get_new_bundle_filename(filename)
             tempfname = self._get_new_bundle_filename(filename, force_temp=True)
             self._archivetemp = tempfname
-
             self.project = proj.Project(projstore=proj.BundleProjectStore(tempfname))
             srcfile, srcfilename, transfile, transfilename = self.project.add_source_convert(filename)
             self.real_filename = transfile.name
@@ -254,7 +255,7 @@ class StoreController(BaseController):
                     assert self.project.store.zip.filename == self._archivetemp
                     self.project.close()
                     self.project = None
-                    os.rename(self._archivetemp, filename)
+                    shutil.move(self._archivetemp, filename)
                     self._archivetemp = None
 
                     cursor_pos = self.cursor.pos

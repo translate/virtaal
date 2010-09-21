@@ -83,6 +83,8 @@ class StoreController(BaseController):
 
     def get_bundle_filename(self):
         """Returns the file name of the bundle archive, if we are working with one."""
+        if self._archivetemp:
+            return self._targetfname
         if self.project and isinstance(self.project.store, proj.BundleProjectStore):
             return self.project.store.zip.filename
         return None
@@ -192,6 +194,7 @@ class StoreController(BaseController):
             self.store = StoreModel(transfile, self)
         elif extension in convert_factory.converters:
             # Use temporary file name for bundle archive
+            self._targetfname = self._get_new_bundle_filename(filename)
             tempfname = self._get_new_bundle_filename(filename, force_temp=True)
             self._archivetemp = tempfname
 

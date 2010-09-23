@@ -39,7 +39,8 @@ class ChecksProjectView(BaseView):
     def _create_project_button(self):
         self.btn_proj = PopupMenuButton(label=_('Project Type'))
         menu = gtk.Menu()
-        for checkername in self.controller.checker_info:
+        for checkercode in self.controller.checker_info:
+            checkername = self.controller._checker_code_to_name[checkercode]
             mitem = gtk.MenuItem(checkername)
             mitem.show()
             mitem.connect('activate', self._on_menu_item_activate)

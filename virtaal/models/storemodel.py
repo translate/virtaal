@@ -258,6 +258,9 @@ class StoreModel(BaseModel):
                 header_updates["Language-Team"] = team
             target_lang = self.controller.main_controller.lang_controller.target_lang
             header_updates["Language"] = target_lang.code
+            project_code = self.controller.main_controller.checks_controller.code
+            if project_code:
+                header_updates["X-Project-Style"] = project_code
             plural = target_lang.plural
             nplurals = target_lang.nplurals
             if plural:

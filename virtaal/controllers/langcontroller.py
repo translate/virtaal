@@ -51,7 +51,7 @@ class LanguageController(BaseController):
 
         self.main_controller = main_controller
         self.main_controller.lang_controller = self
-        self.lang_identifier = LanguageIdentifier(self.MODEL_DIR, self.CONF_FILE)
+        self.lang_identifier = None
         self.new_langs = []
         self._init_langs()
         self.recent_pairs = self._load_recent()
@@ -135,6 +135,8 @@ class LanguageController(BaseController):
         if not store:
             return None
 
+        if not self.lang_identifier:
+            self.lang_identifier = LanguageIdentifier(self.MODEL_DIR, self.CONF_FILE)
         srccode = self.lang_identifier.identify_source_lang(store.get_units())
         tgtcode = self.lang_identifier.identify_target_lang(store.get_units())
         srclang = tgtlang = None

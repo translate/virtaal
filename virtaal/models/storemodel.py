@@ -19,12 +19,8 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import os
-import gobject
 import logging
-import time
 from translate.storage import factory, statsdb
-from translate.filters import checks
-from translate.convert import pot2po
 
 from translate.storage import ts2 as ts
 from translate.storage.poheader import poheader, tzstring
@@ -190,8 +186,10 @@ class StoreModel(BaseModel):
         oldfilename = self._trans_store.filename
 
         #get a copy of old stats before we convert
+        from translate.filters import checks
         oldstats = statsdb.StatsCache().filestats(oldfilename, checks.UnitChecker(), self._trans_store)
 
+        import pot2po
         self._trans_store = pot2po.convert_stores(newstore, self._trans_store, fuzzymatching=False)
 
         #FIXME: ugly tempfile hack, can we please have a pure store implementation of statsdb
@@ -249,6 +247,7 @@ class StoreModel(BaseModel):
             pan_app.settings.write()
 
             header_updates = {}
+            import time
             header_updates["PO_Revision_Date"] = time.strftime("%Y-%m-%d %H:%M") + tzstring()
             header_updates["X_Generator"] = pan_app.x_generator
             if name or email:

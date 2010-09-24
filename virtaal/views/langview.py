@@ -53,10 +53,19 @@ class LanguageView(BaseView):
         self.add_dialog = LanguageAddDialog(parent=self.select_dialog.dialog)
 
     def _init_gui(self):
-        self.menu = gtk.Menu()
+        self.menu = None
         self.popupbutton = PopupMenuButton()
-        self.popupbutton.set_menu(self.menu)
         self.popupbutton.connect('toggled', self._on_button_toggled)
+
+        self.controller.main_controller.view.main_window.connect(
+            'style-set', self._on_style_set
+        )
+        if self.controller.recent_pairs:
+            self.popupbutton.text = self._get_display_string(*self.controller.recent_pairs[0])
+
+    def _init_menu(self):
+        self.menu = gtk.Menu()
+        self.popupbutton.set_menu(self.menu)
 
         self.recent_items = []
         for i in range(self.controller.NUM_RECENT):
@@ -76,7 +85,7 @@ class LanguageView(BaseView):
 
     # METHODS #
     def _get_display_string(self, srclang, tgtlang):
-        if self.menu.get_direction() == gtk.TEXT_DIR_RTL:
+        if self.popupbutton.get_direction() == gtk.TEXT_DIR_RTL:
             # We need to make sure we get the direction correct if the
             # language names are untranslated. The right-to-left embedding
             # (LRE) characters ensure that untranslated language names will
@@ -119,6 +128,8 @@ class LanguageView(BaseView):
         statusbar.show_all()
 
     def update_recent_pairs(self):
+        if not self.menu:
+            self._init_menu()
         # Clear all menu items
         for i in range(self.controller.NUM_RECENT):
             item = self.recent_items[i]

@@ -23,7 +23,7 @@ import logging
 from translate.lang.data import languages as toolkit_langs, tr_lang
 from translate.lang import data
 
-from virtaal.common import pan_app
+from virtaal.common.pan_app import ui_language
 
 from basemodel import BaseModel
 
@@ -44,7 +44,7 @@ class LanguageModel(BaseModel):
             Looks up the language information based on the given language code
             (C{langcode})."""
         super(LanguageModel, self).__init__()
-        self.gettext_lang = tr_lang(pan_app.get_ui_lang())
+        self.gettext_lang = tr_lang(ui_language)
         if not self.languages:
             self.languages.update(toolkit_langs)
         self.languages.update(more_langs)

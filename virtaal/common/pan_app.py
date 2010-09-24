@@ -70,16 +70,6 @@ def get_locale_lang():
         logging.exception("Could not get locale")
     return 'en'
 
-def get_ui_lang():
-    """Return the actual language of the current user interface.
-
-    Not necessarily the same as get_locale_lang()."""
-    if _(''):
-        # If this is true, we have a translated interface
-        return ui_language or get_locale_lang()
-    else:
-        return 'en'
-
 def name():
     import getpass
     name = getpass.getuser() #username only
@@ -246,6 +236,13 @@ else:
     fix_locale()
     locale.setlocale(locale.LC_ALL)
     gettext.install("virtaal", unicode=1)
+
+if _(''):
+    # If this is true, we have a translated interface
+    ui_language = ui_language or get_locale_lang()
+else:
+    ui_language = 'en'
+
 
 # Determine the directory the main executable is running from
 main_dir = u''

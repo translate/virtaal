@@ -21,7 +21,7 @@
 import gtk
 from translate.lang import factory as lang_factory
 
-from virtaal.common.pan_app import get_ui_lang
+from virtaal.common.pan_app import ui_language
 from virtaal.views.widgets.popupwidgetbutton import PopupWidgetButton, POS_SE_NE
 
 from baseview import BaseView
@@ -42,7 +42,7 @@ class ChecksUnitView(BaseView):
         self._create_menu_item()
         main_controller.store_controller.connect('store-closed', self._on_store_closed)
 
-        self._listsep = lang_factory.getlanguage(get_ui_lang()).listseperator
+        self._listsep = lang_factory.getlanguage(ui_language).listseperator
         self._prev_failures = None
 
     def _create_checks_button(self, widget):

@@ -50,19 +50,25 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, see <http://www.gnu.org/licenses/>.""")
         self.set_website("http://translate.sourceforge.net/wiki/virtaal/index")
         self.set_website_label(_("Virtaal website"))
-        self.set_authors([
+        authors = [
                 "Friedel Wolff",
                 "Wynand Winterbach",
                 "Dwayne Bailey",
                 "Walter Leibbrandt",
-                "Alaa Abd El Fattah",
-                "",
+        ]
+        if pan_app.ui_language == "ar":
+            authors.append(u"علاء عبد الفتاح")
+        else:
+            authors.append(u"Alaa Abd El Fattah")
+        authors.extend([
+                "",  # just for spacing
                 _("We thank our donors:"),
                 _("The International Development Research Centre"),
                 "\thttp://idrc.ca/",
                 _("Mozilla Corporation"),
                 "\thttp://mozilla.com/",
                 ])
+        self.set_authors(authors)
         # l10n: Rather than translating, fill in the names of the translators
         self.set_translator_credits(_("translator-credits"))
         self.set_icon(parent.get_icon())

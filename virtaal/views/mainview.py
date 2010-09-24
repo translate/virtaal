@@ -196,111 +196,148 @@ class MainView(BaseView):
         self.main_window.connect('style-set', self._on_style_set)
 
     def _create_dialogs(self):
+        self._input_dialog = None
+        self._error_dialog = None
+        self._prompt_dialog = None
+        self._info_dialog = None
+        self._save_chooser = None
+        self._open_chooser = None
+        self._confirm_dialog = None
+
+    @property
+    def input_dialog(self):
         # Generic input dialog
-        self.input_dialog = EntryDialog(self.main_window)
+        if not self._input_dialog:
+            self._input_dialog = EntryDialog(self.main_window)
+        return self._input_dialog
 
+    @property
+    def error_dialog(self):
+        if not self._error_dialog:
         # Error dialog
-        self.error_dialog = gtk.MessageDialog(self.main_window,
-            gtk.DIALOG_MODAL,
-            gtk.MESSAGE_ERROR,
-            gtk.BUTTONS_OK)
-        self.error_dialog.set_title(_("Error"))
+            self._error_dialog = gtk.MessageDialog(self.main_window,
+                gtk.DIALOG_MODAL,
+                gtk.MESSAGE_ERROR,
+                gtk.BUTTONS_OK)
+            self._error_dialog.set_title(_("Error"))
+        return self._error_dialog
 
+    @property
+    def prompt_dialog(self):
         # Yes/No prompt dialog
-        self.prompt_dialog = gtk.MessageDialog(self.main_window,
-            gtk.DIALOG_MODAL,
-            gtk.MESSAGE_QUESTION,
-            gtk.BUTTONS_YES_NO,
-        )
-        self.prompt_dialog.set_default_response(gtk.RESPONSE_NO)
+        if not self._prompt_dialog:
+            self._prompt_dialog = gtk.MessageDialog(self.main_window,
+                gtk.DIALOG_MODAL,
+                gtk.MESSAGE_QUESTION,
+                gtk.BUTTONS_YES_NO,
+            )
+            self._prompt_dialog.set_default_response(gtk.RESPONSE_NO)
+        return self._prompt_dialog
 
+    @property
+    def prompt_dialog(self):
         # Informational dialog
-        self.info_dialog = gtk.MessageDialog(self.main_window,
-            gtk.DIALOG_MODAL,
-            gtk.MESSAGE_INFO,
-            gtk.BUTTONS_OK,
-        )
+        if not self._input_dialog:
+            self._info_dialog = gtk.MessageDialog(self.main_window,
+                gtk.DIALOG_MODAL,
+                gtk.MESSAGE_INFO,
+                gtk.BUTTONS_OK,
+            )
+        return self._input_dialog
 
+    @property
+    def open_chooser(self):
         # Open (file chooser) dialog
-        self.open_chooser = gtk.FileChooserDialog(
-            _('Choose a Translation File'),
-            self.main_window,
-            gtk.FILE_CHOOSER_ACTION_OPEN,
-            (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK)
-        )
-        self.open_chooser.set_default_response(gtk.RESPONSE_OK)
-        all_supported_filter = gtk.FileFilter()
-        all_supported_filter.set_name(_("All Supported Files"))
-        self.open_chooser.add_filter(all_supported_filter)
-        from translate.storage import factory as storage_factory
-        supported_files_dict = dict([ (_(name), (extension, mimetype)) for name, extension, mimetype in storage_factory.supported_files() ])
-        supported_file_names = supported_files_dict.keys()
-        supported_file_names.sort(cmp=locale.strcoll)
-        for name in supported_file_names:
-            extensions, mimetypes = supported_files_dict[name]
-            #XXX: we can't open generic .csv formats, so listing it is probably
-            # more harmful than good.
-            if "csv" in extensions:
-                continue
-            new_filter = gtk.FileFilter()
-            new_filter.set_name(name)
-            if extensions:
-                for extension in extensions:
-                    new_filter.add_pattern("*." + extension)
-                    all_supported_filter.add_pattern("*." + extension)
-                    for compress_extension in storage_factory.decompressclass.keys():
-                        new_filter.add_pattern("*.%s.%s" % (extension, compress_extension))
-                        all_supported_filter.add_pattern("*.%s.%s" % (extension, compress_extension))
-            if mimetypes:
-                for mimetype in mimetypes:
-                    new_filter.add_mime_type(mimetype)
-                    all_supported_filter.add_mime_type(mimetype)
-            self.open_chooser.add_filter(new_filter)
+        if not self._open_chooser:
+            self._open_chooser = gtk.FileChooserDialog(
+                _('Choose a Translation File'),
+                self.main_window,
+                gtk.FILE_CHOOSER_ACTION_OPEN,
+                (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK)
+            )
+            self._open_chooser.set_default_response(gtk.RESPONSE_OK)
+            all_supported_filter = gtk.FileFilter()
+            all_supported_filter.set_name(_("All Supported Files"))
+            self._open_chooser.add_filter(all_supported_filter)
+            from translate.storage import factory as storage_factory
+            supported_files_dict = dict([ (_(name), (extension, mimetype)) for name, extension, mimetype in storage_factory.supported_files() ])
+            supported_file_names = supported_files_dict.keys()
+            supported_file_names.sort(cmp=locale.strcoll)
+            for name in supported_file_names:
+                extensions, mimetypes = supported_files_dict[name]
+                #XXX: we can't open generic .csv formats, so listing it is probably
+                # more harmful than good.
+                if "csv" in extensions:
+                    continue
+                new_filter = gtk.FileFilter()
+                new_filter.set_name(name)
+                if extensions:
+                    for extension in extensions:
+                        new_filter.add_pattern("*." + extension)
+                        all_supported_filter.add_pattern("*." + extension)
+                        for compress_extension in storage_factory.decompressclass.keys():
+                            new_filter.add_pattern("*.%s.%s" % (extension, compress_extension))
+                            all_supported_filter.add_pattern("*.%s.%s" % (extension, compress_extension))
+                if mimetypes:
+                    for mimetype in mimetypes:
+                        new_filter.add_mime_type(mimetype)
+                        all_supported_filter.add_mime_type(mimetype)
+                self._open_chooser.add_filter(new_filter)
 
-        doc_filter = gtk.FileFilter()
-        doc_filter.set_name(_('Translatable documents'))
-        from translate.convert import factory as convert_factory
-        for extension in convert_factory.converters.keys():
-            if isinstance(extension, tuple):
-                continue # Skip extensions that need templates
-            doc_filter.add_pattern('*.' + extension)
-            all_supported_filter.add_pattern('*.' + extension)
-        self.open_chooser.add_filter(doc_filter)
+            doc_filter = gtk.FileFilter()
+            doc_filter.set_name(_('Translatable documents'))
+            from translate.convert import factory as convert_factory
+            for extension in convert_factory.converters.keys():
+                if isinstance(extension, tuple):
+                    continue # Skip extensions that need templates
+                doc_filter.add_pattern('*.' + extension)
+                all_supported_filter.add_pattern('*.' + extension)
+            self._open_chooser.add_filter(doc_filter)
 
-        proj_filter = gtk.FileFilter()
-        proj_filter.set_name(_('Translate project bundles'))
-        proj_filter.add_pattern('*.zip')
-        all_supported_filter.add_pattern('*.zip')
-        self.open_chooser.add_filter(proj_filter)
+            proj_filter = gtk.FileFilter()
+            proj_filter.set_name(_('Translate project bundles'))
+            proj_filter.add_pattern('*.zip')
+            all_supported_filter.add_pattern('*.zip')
+            self._open_chooser.add_filter(proj_filter)
 
-        all_filter = gtk.FileFilter()
-        all_filter.set_name(_("All Files"))
-        all_filter.add_pattern("*")
-        self.open_chooser.add_filter(all_filter)
+            all_filter = gtk.FileFilter()
+            all_filter.set_name(_("All Files"))
+            all_filter.add_pattern("*")
+            self._open_chooser.add_filter(all_filter)
 
+        return self._open_chooser
+
+    @property
+    def save_chooser(self):
         # Save (file chooser) dialog
-        self.save_chooser = gtk.FileChooserDialog(
-            _("Save"),
-            self.main_window,
-            gtk.FILE_CHOOSER_ACTION_SAVE,
-            (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_SAVE, gtk.RESPONSE_OK)
-        )
-        self.save_chooser.set_do_overwrite_confirmation(True)
-        self.save_chooser.set_default_response(gtk.RESPONSE_OK)
+        if not self._save_chooser:
+            self._save_chooser = gtk.FileChooserDialog(
+                _("Save"),
+                self.main_window,
+                gtk.FILE_CHOOSER_ACTION_SAVE,
+                (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_SAVE, gtk.RESPONSE_OK)
+            )
+            self._save_chooser.set_do_overwrite_confirmation(True)
+            self._save_chooser.set_default_response(gtk.RESPONSE_OK)
+        return self._save_chooser
 
+    @property
+    def confirm_dialog(self):
         # Save confirmation dialog (Save/Discard/Cancel buttons)
-        (RESPONSE_SAVE, RESPONSE_DISCARD) = (gtk.RESPONSE_YES, gtk.RESPONSE_NO)
-        self.confirm_dialog = gtk.MessageDialog(
-            self.main_window,
-            gtk.DIALOG_MODAL,
-            gtk.MESSAGE_QUESTION,
-            gtk.BUTTONS_NONE,
-            _("The current file has been modified.\nDo you want to save your changes?")
-        )
-        self.confirm_dialog.__save_button = self.confirm_dialog.add_button(gtk.STOCK_SAVE, RESPONSE_SAVE)
-        self.confirm_dialog.add_button(_("_Discard"), RESPONSE_DISCARD)
-        self.confirm_dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
-        self.confirm_dialog.set_default_response(RESPONSE_SAVE)
+        if not self._confirm_dialog:
+            (RESPONSE_SAVE, RESPONSE_DISCARD) = (gtk.RESPONSE_YES, gtk.RESPONSE_NO)
+            self._confirm_dialog = gtk.MessageDialog(
+                self.main_window,
+                gtk.DIALOG_MODAL,
+                gtk.MESSAGE_QUESTION,
+                gtk.BUTTONS_NONE,
+                _("The current file has been modified.\nDo you want to save your changes?")
+            )
+            self._confirm_dialog.__save_button = self._confirm_dialog.add_button(gtk.STOCK_SAVE, RESPONSE_SAVE)
+            self._confirm_dialog.add_button(_("_Discard"), RESPONSE_DISCARD)
+            self._confirm_dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
+            self._confirm_dialog.set_default_response(RESPONSE_SAVE)
+        return self._confirm_dialog
 
     def _setup_key_bindings(self):
         self.accel_group = gtk.AccelGroup()

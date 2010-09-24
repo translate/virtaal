@@ -41,7 +41,9 @@ class PreferencesView(BaseView, GObjectWrapper):
     def __init__(self, controller):
         GObjectWrapper.__init__(self)
         self.controller = controller
-        self._init_gui()
+        self._widgets = {}
+        self._setup_key_bindings()
+        self._setup_menu_item()
 
     def _get_widgets(self):
         self.gladefile, self.gui = self.load_glade_file(
@@ -50,7 +52,6 @@ class PreferencesView(BaseView, GObjectWrapper):
             domain="virtaal"
         )
 
-        self._widgets = {}
         widget_names = (
             'btn_default_fonts', 'ent_email', 'ent_team', 'ent_translator',
             'fbtn_source', 'fbtn_target', 'scrwnd_placeables', 'scrwnd_plugins',
@@ -64,8 +65,6 @@ class PreferencesView(BaseView, GObjectWrapper):
 
     def _init_gui(self):
         self._get_widgets()
-        self._setup_menu_item()
-        self._setup_key_bindings()
         self._init_font_gui()
         self._init_placeables_page()
         self._init_plugins_page()
@@ -158,6 +157,8 @@ class PreferencesView(BaseView, GObjectWrapper):
 
     # METHODS #
     def show(self):
+        if not self._widgets:
+            self._init_gui()
         self.placeables_select.select_item(None)
         self.plugins_select.select_item(None)
         self.controller.update_prefs_gui_data()

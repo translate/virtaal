@@ -21,7 +21,7 @@
 import gtk
 from gobject import idle_add
 
-from virtaal.common.pan_app import get_abs_data_filename, get_ui_lang
+from virtaal.common.pan_app import get_abs_data_filename, ui_language
 from virtaal.views.widgets.welcomescreen import WelcomeScreen
 
 from baseview import BaseView
@@ -45,7 +45,7 @@ class WelcomeScreenView(BaseView):
         self.widget.connect('button-clicked', self._on_button_clicked)
 
     def set_banner(self):
-        if get_ui_lang() == "ar":
+        if ui_language == "ar":
             self.widget.set_banner_image(get_abs_data_filename(['virtaal', 'welcome_screen_banner_ar.png']))
             return
         if self.widget.get_direction() == gtk.TEXT_DIR_RTL:

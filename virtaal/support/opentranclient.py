@@ -20,8 +20,13 @@
 
 import gobject
 import logging
+import urllib
 import pycurl
-import xmlrpclib
+# These two json modules are API compatible
+try:
+    import simplejson as json #should be a bit faster; needed for Python < 2.6
+except ImportError:
+    import json #available since Python 2.6
 
 from translate.lang import data
 from translate.search.lshtein import LevenshteinComparer
@@ -37,101 +42,105 @@ class OpenTranClient(gobject.GObject, HTTPClient):
         'target-lang-changed': (gobject.SIGNAL_RUN_LAST, None, (str,)),
     }
 
-    def __init__(self, url, max_candidates=3, min_similarity=75, max_length=1000):
+    def __init__(self, max_candidates=3, min_similarity=75, max_length=1000):
         gobject.GObject.__init__(self)
         HTTPClient.__init__(self)
 
         self.max_candidates = max_candidates
         self.min_similarity = min_similarity
         self.comparer = LevenshteinComparer(max_length)
-        self.last_suggestions = None
+        self.last_suggestions = None  # used by the open-tran terminology backend
 
-        self.url = url
+        self._languages = set()
 
         self.source_lang = None
         self.target_lang = None
         #detect supported language
 
+        self.url_getlanguages = 'http://open-tran.eu/json/supported'
+        self.url_translate = 'http://%s.%s.open-tran.eu/json/suggest'
+        langreq = RESTRequest(self.url_getlanguages, id='', method='GET', data=urllib.urlencode(''))
+        self.add(langreq)
+        langreq.connect(
+            'http-success',
+            lambda langreq, response: self.got_languages(response)
+        )
+
+    def got_languages(self, val):
+        """Handle the response from the web service to set up language pairs."""
+        data = self._loads_safe(val)
+        self._languages = set(data)
+        self.set_source_lang(self.source_lang)
+        self.set_target_lang(self.target_lang)
 
     def translate_unit(self, unit_source, callback=None):
         if self.source_lang is None or self.target_lang is None:
             return
-        if isinstance(unit_source, unicode):
-            unit_source = unit_source.encode("utf-8")
 
-        request_body = xmlrpclib.dumps(
-            (unit_source, self.source_lang, self.target_lang), "suggest2"
-        )
-        request = RESTRequest(
-            self.url, unit_source, "POST", request_body
-        )
-        request.curl.setopt(pycurl.URL, self.url)
+        if not self._languages:
+            # for some reason we don't (yet) have supported languages
+            return
+
+        query_str = unit_source
+        request = RESTRequest(self.url_translate % (self.source_lang, self.target_lang), id=query_str, method='GET', \
+                data=urllib.urlencode(''))
         self.add(request)
-        def call_callback(widget, response):
+        def call_callback(request, response):
             return callback(
-                widget, widget.id, self.format_suggestions(widget.id, response)
+                request, request.id, self.format_suggestions(request.id, response)
             )
 
         if callback:
             request.connect("http-success", call_callback)
 
-    def lang_negotiate(self, language, callback):
-        #Open-Tran uses codes such as pt_br, and zh_cn
-        opentran_lang = language.lower().replace('-', '_').replace('@', '_')
-        request_body = xmlrpclib.dumps((opentran_lang,), "supported")
-        request = RESTRequest(
-            self.url, language, "POST", request_body)
-        request.curl.setopt(pycurl.URL, self.url)
-        self.add(request)
-        request.connect("http-success", callback)
-
     def set_source_lang(self, language):
-        self.source_lang = None
-        self.lang_negotiate(language, self._handle_source_lang)
-
-    def set_target_lang(self, language):
-        self.target_lang = None
-        self.lang_negotiate(language, self._handle_target_lang)
-
-    def _loads_safe(self, response):
-        """Does the loading of the XML-RPC response, but handles exceptions."""
-        try:
-            (data,), _fish = xmlrpclib.loads(response)
-        except Exception, exc:
-            logging.debug('XML-RPC exception: %s' % (exc))
-            return None
-        return data
-
-    def _handle_target_lang(self, request, response):
-        language = request.id
-        result = self._loads_safe(response)
-        if result:
-            self.target_lang = language
-            #logging.debug("target language %s supported" % language)
-            self.emit('target-lang-changed', self.target_lang)
-        else:
-            lang = data.simplercode(language)
-            if lang:
-                self.lang_negotiate(lang, self._handle_target_lang)
-            else:
-                # language not supported
-                self.source_lang = None
-                logging.debug("target language %s not supported" % language)
-
-    def _handle_source_lang(self, request, response):
-        language = request.id
-        result = self._loads_safe(response)
-        if result:
+        language = language.lower().replace('-', '_').replace('@', '_')
+        if not self._languages:
+            # for some reason we don't (yet) have supported languages
             self.source_lang = language
-            #logging.debug("source language %s supported" % language)
+            # we'll redo this once we have languages
+            return
+
+        if language in self._languages:
+            self.source_lang = language
+            logging.debug("source language %s supported" % language)
             self.emit('source-lang-changed', self.source_lang)
         else:
             lang = data.simplercode(language)
             if lang:
-                self.lang_negotiate(lang, self._handle_source_lang)
+                self.set_source_lang(lang)
             else:
                 self.source_lang = None
                 logging.debug("source language %s not supported" % language)
+
+    def set_target_lang(self, language):
+        language = language.lower().replace('-', '_').replace('@', '_')
+        if not self._languages:
+            # for some reason we don't (yet) have supported languages
+            self.target_lang = language
+            # we'll redo this once we have languages
+            return
+
+        if language in self._languages:
+            self.target_lang = language
+            logging.debug("target language %s supported" % language)
+            self.emit('target-lang-changed', self.target_lang)
+        else:
+            lang = data.simplercode(language)
+            if lang:
+                self.set_target_lang(lang)
+            else:
+                self.target_lang = None
+                logging.debug("target language %s not supported" % language)
+
+    def _loads_safe(self, response):
+        """Does the loading of the JSON response, but handles exceptions."""
+        try:
+            data = json.loads(response)
+        except Exception, exc:
+            logging.debug('JSON exception: %s' % (exc))
+            return None
+        return data
 
     def format_suggestions(self, id, response):
         """clean up open tran suggestion and use the same format as tmserver"""
@@ -139,7 +148,7 @@ class OpenTranClient(gobject.GObject, HTTPClient):
         if not suggestions:
             return []
         id = data.forceunicode(id)
-        self.last_suggestions = suggestions
+        self.last_suggestions = suggestions  # we keep it for the terminology back-end
         results = []
         for suggestion in suggestions:
             #check for fuzzyness at the 'flag' member:

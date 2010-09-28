@@ -36,15 +36,12 @@ class TMModel(BaseTMModel):
     display_name = _('Open-Tran.eu')
     description = _('Previous translations for Free and Open Source Software')
 
-    default_config = { "url" : "http://open-tran.eu/RPC2" }
-
     # INITIALIZERS #
     def __init__(self, internal_name, controller):
         self.internal_name = internal_name
         self.load_config()
 
         self.tmclient = opentranclient.OpenTranClient(
-            self.config["url"],
             max_candidates=controller.max_matches,
             min_similarity=controller.min_quality
         )

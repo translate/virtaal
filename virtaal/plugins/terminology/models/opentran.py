@@ -46,8 +46,6 @@ class TerminologyModel(BaseTerminologyModel):
     display_name = _('Open-Tran.eu')
     description = _('Terms from Open-Tran.eu')
 
-    default_config = { "url" : "http://open-tran.eu/RPC2" }
-
     # INITIALIZERS #
     def __init__(self, internal_name, controller):
         super(TerminologyModel, self).__init__(controller)
@@ -111,7 +109,6 @@ class TerminologyModel(BaseTerminologyModel):
             min_similarity = plugin_ctrlr.plugins['tm'].config['min_quality']
 
         self.opentranclient = opentranclient.OpenTranClient(
-            self.config['url'],
             max_candidates=max_candidates,
             min_similarity=min_similarity
         )

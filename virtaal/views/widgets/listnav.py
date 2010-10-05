@@ -109,8 +109,14 @@ class ListNavigator(gtk.HBox):
         if model.get_column_type(self.COL_VALUE) != gobject.TYPE_PYOBJECT:
             raise ValueError('Column %d does not contain "object" values' % (self.COL_VALUE))
 
+        # we're just initialising, so we don't want listeners to think something really changed
+        self._should_emit_changed = False
         self.tvw_items.set_model(model)
-        self.unselectable = unselectable
+        self._should_emit_changed = True
+        if unselectable:
+            self.unselectable = unselectable
+        else:
+            self.unselectable = []
 
         select_path = None
         if select_first:
@@ -186,7 +192,8 @@ class ListNavigator(gtk.HBox):
         self.btn_back.set_sensitive(not isfirst)
         self.btn_forward.set_sensitive(not islast)
 
-        self.emit('selection-changed', selected_value)
+        if self._should_emit_changed:
+            self.emit('selection-changed', selected_value)
 
 
 if __name__ == '__main__':

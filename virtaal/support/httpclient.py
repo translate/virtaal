@@ -225,10 +225,10 @@ class HTTPClient(object):
         if self.user_agent and self.user_agent.startswith('Virtaal'):
             return
         import sys
-        import os
         from virtaal.__version__ import ver as version
         platform = sys.platform
         if platform.startswith('linux'):
+            import os
             if os.path.isfile('/etc/lsb-release'):
                 try:
                     lines = open('/etc/lsb-release').read().splitlines()

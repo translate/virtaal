@@ -374,10 +374,14 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             """Handle special keypresses in the textarea."""
 
         def target_key_press_event(textbox, event, eventname, next_textbox):
-            if eventname == 'enter':
+            if eventname in  ('enter', 'ctrl-enter'):
                 if next_textbox is not None and next_textbox.props.visible:
                     self.focus_text_view(next_textbox)
                 else:
+                    if eventname == 'ctrl-enter':
+                        #Ctrl+Enter means additionally advance the unit in the workflow
+                        listnav = self._widgets['state']
+                        listnav.move_state(1)
                     # textbox is the last text view in this unit, so we need to move on
                     # to the next one.
                     textbox.parent.parent.emit('key-press-event', event)
@@ -506,6 +510,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             if i < num_unit_sources:
                 sourcestr = self.unit.rich_source[i]
                 self.sources[i].modify_font(rendering.get_source_font_description())
+                # FIXME: This modfies the unit's copy - we should not do this
                 self.sources[i].set_text(sourcestr)
                 self.sources[i].parent.show_all()
                 #logging.debug('Showing source #%d: %s' % (i, self.sources[i]))

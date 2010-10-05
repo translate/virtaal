@@ -18,10 +18,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from difflib import SequenceMatcher
 import re
 
 from virtaal.views.theme import current_theme
+
 
 # We want to draw unexpected spaces specially so that users can spot them
 # easily without having to resort to showing all spaces weirdly
@@ -41,6 +41,7 @@ def _fancyspaces(string):
 
 # Highligting for XML
 
+# incorrect XML might be marked up incorrectly:  "<a> text </a more text bla"
 _xml_re = re.compile("&lt;[^>]+>")
 def _fancy_xml(escape):
     """Marks up the XML to appear in the warning red colour."""
@@ -65,6 +66,7 @@ def markuptext(text, fancyspaces=True, markupescapes=True, diff_text=u""):
 
     Special characters (&, <) are converted, XML markup highligthed with
     escapes and unusual spaces optionally being indicated."""
+    # locations are coming through here for some reason - tooltips, maybe
     if not text:
         return u""
 
@@ -106,7 +108,40 @@ def unescape(text):
     text = text.replace("\\\\", "\\")
     return text
 
-def pango_diff(a, b):
+
+def _google_pango_diff(a, b):
+    """Highlights the differences between a and b for Pango rendering."""
+
+    insert_attr = "underline='single' underline_color='#777777' weight='bold' color='#000' background='#a0ffa0'"
+    delete_attr = "strikethrough='true' strikethrough_color='#777' color='#000' background='#ccc'"
+    replace_attr_remove = delete_attr
+    replace_attr_add = "underline='single' underline_color='#777777' weight='bold' color='#000' background='#ffff70'"
+
+    textdiff = u"" # to store the final result
+    removed = u"" # the removed text that we might still want to add
+    diff = differencer.diff_main(a, b)
+    differencer.diff_cleanupSemantic(diff)
+    for op, text in diff:
+        if op == 0: # equality
+            if removed:
+                textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': delete_attr, 'text': _escape_entities(removed)}
+                removed = u""
+            textdiff += _escape_entities(text)
+        elif op == 1: # insertion
+            if removed:
+                # this is part of a substitution, not a plain insertion. We
+                # will format this differently.
+                textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': replace_attr_add, 'text': _escape_entities(text)}
+                removed = u""
+            else:
+                textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': insert_attr, 'text': _escape_entities(text)}
+        elif op == -1: # deletion
+            removed = text
+    if removed:
+        textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': delete_attr, 'text': _escape_entities(removed)}
+    return textdiff
+
+def _difflib_pango_diff(a, b):
     """Highlights the differences between a and b for Pango rendering
 
     The differences are highlighted such that they show what would be required
@@ -121,12 +156,21 @@ def pango_diff(a, b):
     for tag, i1, i2, j1, j2 in SequenceMatcher(None, a, b).get_opcodes():
         if tag == 'equal':
             textdiff += _escape_entities(a[i1:i2])
-        if tag == "insert":
+        elif tag == "insert":
             textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': insert_attr, 'text': _escape_entities(b[j1:j2])}
-        if tag == "delete":
+        elif tag == "delete":
             textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': delete_attr, 'text': _escape_entities(a[i1:i2])}
-        if tag == "replace":
+        elif tag == "replace":
             # We don't show text that was removed as part of a change:
             #textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': replace_attr_remove, 'text': _escape_entitiesa(a[i1:i2])}
             textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': replace_attr_add, 'text': _escape_entities(b[j1:j2])}
     return textdiff
+
+try:
+    from translate.misc.diff_match_patch import diff_match_patch
+    differencer = diff_match_patch()
+    pango_diff = _google_pango_diff
+except ImportError, e:
+    from difflib import SequenceMatcher
+    pango_diff = _difflib_pango_diff
+

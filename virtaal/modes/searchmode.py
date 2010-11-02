@@ -424,7 +424,9 @@ class SearchMode(BaseMode):
                 # being updated as expected after an undo.
                 if 0 <= i < len(self.matches):
                     del self.matches[i]
-            else:
+            elif self.filter.re_search:
+                # If there is no current search, we don't want to advance and
+                # give the impression that we replaced something (bug 1636)
                 self.storecursor.move(1)
 
         self.update_search()

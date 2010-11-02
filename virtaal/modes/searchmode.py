@@ -22,7 +22,6 @@ import gobject
 import gtk
 import gtk.gdk
 import logging
-import re
 from translate.tools.pogrep import GrepFilter
 
 from virtaal.controllers import Cursor
@@ -33,7 +32,7 @@ from virtaal.views.theme import current_theme
 
 
 class SearchMode(BaseMode):
-    """Search mode - Includes only units matching the given search term."""
+    """Search mode - Includes only units matching the given search string."""
 
     display_name = _("Search")
     name = 'Search'
@@ -46,7 +45,7 @@ class SearchMode(BaseMode):
     def __init__(self, controller):
         """Constructor.
             @type  controller: virtaal.controllers.ModeController
-            @param controller: The ModeController that managing program modes."""
+            @param controller: The ModeController managing navigation modes."""
         self.controller = controller
         self.unitview = controller.main_controller.unit_controller.view
 
@@ -56,6 +55,7 @@ class SearchMode(BaseMode):
         # ent_replace to ensure we are always compliant to the style.
         self.ent_replace.connect('style-set', self._on_style_set)
 
+        self.filter = None
         self.matches = []
         self.select_first_match = True
         self._search_timeout = 0
@@ -300,7 +300,7 @@ class SearchMode(BaseMode):
         return (start, end)
 
     def _highlight_matches(self):
-        if not hasattr(self, 'filter') or not hasattr(self.filter, 're_search') or self.filter.re_search is None:
+        if getattr(self.filter, 're_search', None) is None:
             return
 
         for textbox in self.unitview.sources + self.unitview.targets:
@@ -418,8 +418,9 @@ class SearchMode(BaseMode):
                 self.controller.main_controller.undo_controller.record_start()
                 self.replace_match(unit_matches[0], self.ent_replace.get_text())
                 self.controller.main_controller.undo_controller.record_stop()
-                # FIXME: The following if is necessary to avoid an IndexError in del in certain circumstances.
-                # I'm not sure why it happens, but I suspect it has something to do with self.matches not
+                # FIXME: The following is necessary to avoid an IndexError in
+                # del in certain circumstances. I'm not sure why it happens,
+                # but I suspect it has something to do with self.matches not
                 # being updated as expected after an undo.
                 if 0 <= i < len(self.matches):
                     del self.matches[i]

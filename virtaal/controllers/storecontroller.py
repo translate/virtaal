@@ -34,6 +34,7 @@ from virtaal.views import StoreView
 from basecontroller import BaseController
 from cursor import Cursor
 
+_pot_re = re.compile("\.pot(\.gz|\.bz2)?$")
 
 # TODO: Create an event that is emitted when a cursor is created
 class StoreController(BaseController):
@@ -215,10 +216,9 @@ class StoreController(BaseController):
         self._modified = False
 
         # if file is a template force saveas
-        pot_regexp = re.compile("\.pot(\.gz|\.bz2)?$")
-        if pot_regexp.search(filename):
+        if _pot_re.search(filename):
             force_saveas = True
-            self.store._trans_store.filename = pot_regexp.sub('.po', filename)
+            self.store._trans_store.filename = _pot_re.sub('.po', filename)
 
         self.main_controller.set_force_saveas(force_saveas)
         self.main_controller.set_saveable(self._modified)

@@ -235,15 +235,15 @@ class MainView(BaseView):
         return self._prompt_dialog
 
     @property
-    def prompt_dialog(self):
+    def info_dialog(self):
         # Informational dialog
-        if not self._input_dialog:
+        if not self._info_dialog:
             self._info_dialog = gtk.MessageDialog(self.main_window,
                 gtk.DIALOG_MODAL,
                 gtk.MESSAGE_INFO,
                 gtk.BUTTONS_OK,
             )
-        return self._input_dialog
+        return self._info_dialog
 
     @property
     def open_chooser(self):

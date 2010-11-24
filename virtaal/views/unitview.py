@@ -33,7 +33,8 @@ from widgets.listnav import ListNavigator
 
 
 class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
-    """View for translation units and its actions."""
+    """View for translation units and its actions. It should not be used at
+    all when no current unit is being edited. """
 
     __gtype_name__ = "UnitView"
     __gsignals__ = {
@@ -59,7 +60,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
     """The number of text boxes to manage as targets."""
 
     # INITIALIZERS #
-    def __init__(self, controller, unit=None):
+    def __init__(self, controller):
         gtk.EventBox.__init__(self)
         GObjectWrapper.__init__(self)
 
@@ -82,7 +83,6 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         self._get_widgets()
         self._setup_menus()
         self.unit = None
-        self.load_unit(unit)
 
     def _setup_menus(self):
         def get_focused(widgets):
@@ -256,14 +256,16 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     def load_unit(self, unit):
         """Load a GUI (C{gtk.CellEditable}) for the given unit."""
-        if unit is self.unit and unit is not None:
+        if unit is None:
+            logging.error("UnitView can't load a None unit")
+
+        if unit is self.unit:
             return
 
-        if self.unit is not None:
-            #logging.debug('emit("unit-done", self.unit=%s)' % (self.unit))
-            self.emit('unit-done', self.unit)
-            for src in self.sources:
-                src.select_elem(elem=None)
+        #logging.debug('emit("unit-done", self.unit=%s)' % (self.unit))
+        self.emit('unit-done', self.unit)
+        for src in self.sources:
+            src.select_elem(elem=None)
 
         self.unit = unit
         self.disable_signals(['modified', 'insert-text', 'delete-text'])
@@ -271,9 +273,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         self.enable_signals(['modified', 'insert-text', 'delete-text'])
         self._widgets['vbox_editor'].reparent(self)
 
-        if unit is not None:
-            for i in range(len(self.targets)):
-                self.targets[i]._source_text = unit.source # FIXME: Find a better way to do this!
+        for i in range(len(self.targets)):
+            self.targets[i]._source_text = unit.source # FIXME: Find a better way to do this!
 
         self._modified = False
 
@@ -459,10 +460,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
             self._widgets['notes'][origin] = label
 
-        if self.unit is None:
-            note_text = u""
-        else:
-            note_text = self.unit.getnotes(origin) or u""
+        note_text = self.unit.getnotes(origin) or u""
 
         if origin == "programmer" and len(note_text) < 15 and self.unit is not None and self.unit.getlocations():
             note_text += u"  " + u" ".join(self.unit.getlocations()[:3])
@@ -519,11 +517,6 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                 self.sources[i].parent.hide_all()
 
     def _layout_update_context_info(self):
-        if self.unit is None:
-            if self._widgets['context_info']:
-                self._widgets['context_info'].hide()
-            return
-
         if not self._widgets['context_info']:
             label = gtk.Label()
             label.set_line_wrap(True)
@@ -591,23 +584,22 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             self._widgets['vbox_right'].pack_end(statenav, expand=False, fill=False)
             self._widgets['state'] = statenav
 
-        if self.unit is not None:
-            state_names = self.controller.get_unit_state_names()
-            if not state_names:
-                self._widgets['state'].hide()
-                return
-            state_name = state_names[self.unit.get_state_id()]
+        state_names = self.controller.get_unit_state_names()
+        if not state_names:
+            self._widgets['state'].hide()
+            return
+        state_name = state_names[self.unit.get_state_id()]
 
-            unselectable = state_names.get(0, None)
-            if unselectable:
-                unselectable = [unselectable]
+        unselectable = state_names.get(0, None)
+        if unselectable:
+            unselectable = [unselectable]
 
-            self._widgets['state'].set_model(
-                self._create_workflow_liststore(),
-                unselectable=unselectable,
-                select_name=state_name,
-            )
-            self._widgets['state'].show_all()
+        self._widgets['state'].set_model(
+            self._create_workflow_liststore(),
+            unselectable=unselectable,
+            select_name=state_name,
+        )
+        self._widgets['state'].show_all()
 
 
     # EVENT HANLDERS #

@@ -338,14 +338,14 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             - A C{gtk.Label} for programmer notes
             - A C{gtk.Label} for translator notes
             - A C{gtk.Label} for context info"""
+        # We assume a unit exists, otherwise none of this makes sense:
         self._layout_update_notes('programmer')
         self._layout_update_sources()
         self._layout_update_context_info()
         self._layout_update_targets()
         self._layout_update_notes('translator')
         self._layout_update_states()
-        if self.unit:
-            self._set_menu_items_sensitive(True)
+        self._set_menu_items_sensitive(True)
 
     def _update_textview_language(self, text_view, language):
         language = str(language)

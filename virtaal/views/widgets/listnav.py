@@ -123,7 +123,8 @@ class ListNavigator(gtk.HBox):
         if select_name is not None:
             for row in model:
                 if row[self.COL_DISPLAY] == select_name:
-                    select_path = row.path
+                    select_path = row.path[0]
+                    self.btn_popup.set_label(select_name)
                     break
 
         if select_path is not None:
@@ -182,6 +183,8 @@ class ListNavigator(gtk.HBox):
             return
         selected_name  = model.get_value(itr, self.COL_DISPLAY)
         selected_value = model.get_value(itr, self.COL_VALUE)
+
+        self.btn_popup.set_label(selected_name)
 
         if selected_name in self.unselectable:
             selection.select_iter(model.iter_next(itr))

@@ -604,9 +604,6 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     # EVENT HANLDERS #
     def _on_state_changed(self, listnav, newstate):
-        listnav.btn_popup.set_label(newstate.name)
-        if self.unit is None:
-            return
         if self.controller.workflow:
             self.controller.workflow.set_current_state(newstate)
         self.modified()

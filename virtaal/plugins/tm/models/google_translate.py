@@ -50,6 +50,7 @@ _languages = {
     'nl': 'Dutch',
     'en': 'English',
     'et': 'Estonian',
+    'eu': 'Basque',
     'tl': 'Filipino',
     'fi': 'Finnish',
     'fr': 'French',

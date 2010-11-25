@@ -112,7 +112,6 @@ class ListNavigator(gtk.HBox):
         # we're just initialising, so we don't want listeners to think something really changed
         self._should_emit_changed = False
         self.tvw_items.set_model(model)
-        self._should_emit_changed = True
         if unselectable:
             self.unselectable = unselectable
         else:
@@ -130,6 +129,7 @@ class ListNavigator(gtk.HBox):
         if select_path is not None:
             self.tvw_items.set_cursor(select_path)
             self.tvw_items.scroll_to_cell(select_path, use_align=True, row_align=0.4)
+        self._should_emit_changed = True
 
     def set_parent_window(self, wnd_parent):
         self.btn_popup.popup.set_transient_for(wnd_parent)

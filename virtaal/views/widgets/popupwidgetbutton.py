@@ -172,6 +172,11 @@ if __name__ == '__main__':
     vb = gtk.VBox()
     vb.pack_start(hb, expand=False, fill=False)
 
-    from testwindow import Window
-    wnd = Window(size=(400, 300), title='Pop-up Window Button Test', widget=vb)
-    wnd.show()
+    from gtk import Window
+    wnd = Window()
+    wnd.set_size_request(400, 300)
+    wnd.set_title('Pop-up Window Button Test')
+    wnd.add(vb)
+    wnd.connect('destroy', lambda *args: gtk.main_quit())
+    wnd.show_all()
+    gtk.main()

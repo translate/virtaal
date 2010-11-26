@@ -43,7 +43,6 @@ class ChecksUnitView(BaseView):
         main_controller.store_controller.connect('store-closed', self._on_store_closed)
 
         self._listsep = lang_factory.getlanguage(ui_language).listseperator
-        self._prev_failures = None
 
     def _create_checks_button(self, widget):
         import pango
@@ -96,7 +95,6 @@ class ChecksUnitView(BaseView):
             self.btn_checks.clicked()
 
     def update(self, failures):
-        self._prev_failures = failures
         if not failures:
             self.lbl_btnchecks.set_text(u"")
             self._show_empty_label()

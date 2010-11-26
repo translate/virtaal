@@ -115,7 +115,7 @@ class TMModel(BaseTMModel):
             tmsource = _('This file')
 
             xmlelement = getattr(alt, 'xmlelement', None)
-            if xmlelement:
+            if xmlelement is not None:
                 origin = alt.xmlelement.get('origin', '')
                 if origin:
                     tmsource += "\n" + origin

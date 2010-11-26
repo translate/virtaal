@@ -73,6 +73,7 @@ class TMModel(BaseTMModel):
 
     def query(self, tmcontroller, unit):
         query_str = unit.source
+        # The cache is cleared when translated units change, so this is safe
         if self.cache.has_key(query_str):
             self.emit('match-found', query_str, self.cache[query_str])
         else:

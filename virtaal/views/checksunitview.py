@@ -95,8 +95,12 @@ class ChecksUnitView(BaseView):
             self.btn_checks.clicked()
 
     def update(self, failures):
+        # We don't want to show "untranslated"
+        failures.pop('untranslated', None)
         if not failures:
-            self.lbl_btnchecks.set_text(u"")
+            # We want an empty button, but this causes a bug where subsequent
+            # updates don't show, so we set it to a non-breaking space
+            self.lbl_btnchecks.set_text(u"\u202a")
             self._show_empty_label()
             return
 

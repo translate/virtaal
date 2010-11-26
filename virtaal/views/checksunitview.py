@@ -47,10 +47,11 @@ class ChecksUnitView(BaseView):
 
     def _create_checks_button(self, widget):
         import pango
-        self.lbl_btnchecks = gtk.Label(_('No issues'))
+        self.lbl_btnchecks = gtk.Label()
         self.lbl_btnchecks.show()
         self.lbl_btnchecks.set_ellipsize(pango.ELLIPSIZE_END)
         self.btn_checks = PopupWidgetButton(widget, label=None, popup_pos=POS_SE_NE)
+        self.btn_checks.set_property('relief', gtk.RELIEF_NONE)
         self.btn_checks.set_update_popup_geometry_func(self.update_geometry)
         self.btn_checks.add(self.lbl_btnchecks)
 
@@ -97,7 +98,7 @@ class ChecksUnitView(BaseView):
     def update(self, failures):
         self._prev_failures = failures
         if not failures:
-            self.lbl_btnchecks.set_text(_('No issues'))
+            self.lbl_btnchecks.set_text(u"")
             self._show_empty_label()
             return
 

@@ -103,6 +103,7 @@ class ChecksUnitView(BaseView):
             # updates don't show, so we set it to a non-breaking space
             self.lbl_btnchecks.set_text(u"\u202a")
             self._show_empty_label()
+            self.btn_checks.set_tooltip_text(u"")
             return
 
         self.lst_checks.clear()
@@ -112,7 +113,9 @@ class ChecksUnitView(BaseView):
             self.lst_checks.append([testname, desc])
             names.append(testname)
 
-        self.lbl_btnchecks.set_text(self._listsep.join(names))
+        name_str = self._listsep.join(names)
+        self.btn_checks.set_tooltip_text(name_str)
+        self.lbl_btnchecks.set_text(name_str)
         self._show_treeview()
 
     def _show_empty_label(self):

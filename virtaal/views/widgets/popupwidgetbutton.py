@@ -130,10 +130,8 @@ class PopupWidgetButton(gtk.ToggleButton):
     def _update_popup_geometry(self):
         self.popup.set_size_request(-1, -1)
         width, height = self.popup.get_child_requisition()
-        self.popup.set_size_request(width, height)
 
         x, y = -1, -1
-        width, height = self.popup.get_child_requisition()
         popup_alloc = self.popup.get_allocation()
         btn_window_xy = self.window.get_origin()
         btn_alloc = self.get_allocation()
@@ -150,7 +148,7 @@ class PopupWidgetButton(gtk.ToggleButton):
         popup_alloc.width, popup_alloc.height = width, height
         x, y = self.calculate_popup_xy(popup_alloc, btn_alloc, btn_window_xy)
 
-        self.popup.reshow_with_initial_size()
+        self.popup.resize(width, height)
         self.popup.move(x, y)
 
 

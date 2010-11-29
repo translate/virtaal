@@ -125,10 +125,12 @@ class ChecksUnitView(BaseView):
     def _show_empty_label(self):
         self.tvw_checks.hide()
         self.lbl_empty.show()
+        self.btn_checks.update_geometry_if_required()
 
     def _show_treeview(self):
         self.lbl_empty.hide()
         self.tvw_checks.show_all()
+        self.btn_checks.update_geometry_if_required()
 
     def update_geometry(self, popup, popup_alloc, btn_alloc, btn_window_xy, geom):
         x, y, width, height = geom

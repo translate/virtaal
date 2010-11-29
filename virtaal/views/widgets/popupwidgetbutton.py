@@ -24,7 +24,7 @@ pop-up window.
 """
 
 import gtk
-from gobject import SIGNAL_RUN_FIRST
+from gobject import SIGNAL_RUN_FIRST, idle_add
 
 # XXX: Kudo's to Toms Bauģis <toms.baugis at gmail.com> who wrote the
 #      ActivityEntry widget for the hamster-applet project. A lot of this
@@ -120,6 +120,12 @@ class PopupWidgetButton(gtk.ToggleButton):
         self.popup.present()
         self._update_popup_geometry()
         self.emit('shown')
+
+    def update_geometry_if_required(self):
+        """This recalculates the geometry if the popup is currently visible. It
+        does this in a gobject idle function to ensure correct functioning."""
+        if self.is_popup_visible:
+            idle_add(self._update_popup_geometry)
 
     def _update_popup_geometry(self):
         self.popup.set_size_request(-1, -1)

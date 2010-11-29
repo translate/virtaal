@@ -43,6 +43,7 @@ class ChecksUnitView(BaseView):
         self._create_menu_item()
         main_controller.store_controller.connect('store-closed', self._on_store_closed)
 
+        self._prev_failures = None
         self._listsep = lang_factory.getlanguage(ui_language).listseperator
 
     def _create_checks_button(self, widget, main_window):
@@ -98,6 +99,9 @@ class ChecksUnitView(BaseView):
     def update(self, failures):
         # We don't want to show "untranslated"
         failures.pop('untranslated', None)
+        if failures == self._prev_failures:
+            return
+        self._prev_failures = failures
         if not failures:
             # We want an empty button, but this causes a bug where subsequent
             # updates don't show, so we set it to a non-breaking space

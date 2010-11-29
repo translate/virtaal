@@ -52,9 +52,11 @@ class PopupWidgetButton(gtk.ToggleButton):
     }
 
     # INITIALIZERS #
-    def __init__(self, widget, label='Pop-up', popup_pos=POS_NW_SW):
+    def __init__(self, widget, label='Pop-up', popup_pos=POS_NW_SW, main_window=None):
         super(PopupWidgetButton, self).__init__(label=label)
         self.connect('focus-out-event', self._on_focus_out_event)
+        if main_window:
+            main_window.connect('focus-out-event', self._on_focus_out_event)
         self.connect('key-press-event', self._on_key_press_event)
         self.connect('toggled', self._on_toggled)
 

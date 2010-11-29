@@ -36,20 +36,21 @@ class ChecksUnitView(BaseView):
     def __init__(self, controller):
         self.controller = controller
         main_controller = controller.main_controller
+        main_window = main_controller.view.main_window
 
         self.popup_content = self._create_popup_content()
-        self._create_checks_button(self.popup_content)
+        self._create_checks_button(self.popup_content, main_window)
         self._create_menu_item()
         main_controller.store_controller.connect('store-closed', self._on_store_closed)
 
         self._listsep = lang_factory.getlanguage(ui_language).listseperator
 
-    def _create_checks_button(self, widget):
+    def _create_checks_button(self, widget, main_window):
         import pango
         self.lbl_btnchecks = gtk.Label()
         self.lbl_btnchecks.show()
         self.lbl_btnchecks.set_ellipsize(pango.ELLIPSIZE_END)
-        self.btn_checks = PopupWidgetButton(widget, label=None, popup_pos=POS_SE_NE)
+        self.btn_checks = PopupWidgetButton(widget, label=None, popup_pos=POS_SE_NE, main_window=main_window)
         self.btn_checks.set_property('relief', gtk.RELIEF_NONE)
         self.btn_checks.set_update_popup_geometry_func(self.update_geometry)
         self.btn_checks.add(self.lbl_btnchecks)

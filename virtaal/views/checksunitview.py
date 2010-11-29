@@ -132,8 +132,8 @@ class ChecksUnitView(BaseView):
         textbox = self.controller.main_controller.unit_controller.view.sources[0]
         alloc = textbox.get_allocation()
 
-        if width > alloc.width:
-            return x, y, alloc.width, height
+        if width > alloc.width * 1.3:
+            return x, y, int(alloc.width * 1.3), height
         return geom
 
 

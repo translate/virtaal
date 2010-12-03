@@ -256,6 +256,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     def load_unit(self, unit):
         """Load a GUI (C{gtk.CellEditable}) for the given unit."""
+        assert unit
         if unit is None:
             logging.error("UnitView can't load a None unit")
 
@@ -263,7 +264,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             return
 
         #logging.debug('emit("unit-done", self.unit=%s)' % (self.unit))
-        self.emit('unit-done', self.unit)
+        if self.unit:
+            self.emit('unit-done', self.unit)
         for src in self.sources:
             src.select_elem(elem=None)
 

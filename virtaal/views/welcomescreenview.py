@@ -89,6 +89,12 @@ class WelcomeScreenView(BaseView):
         idle_add(calculate_width)
 
     def update_recent_buttons(self, items):
+        # if there are no items (maybe failure in xbel), hide the whole widget
+        if not items:
+            self.widget.gui.get_widget("frame_recent").hide()
+        else:
+            self.widget.gui.get_widget("frame_recent").show_all()
+
         buttons = [
             self.widget.widgets['buttons']['recent' + str(i)] for i in range(1, self.controller.MAX_RECENT+1)
         ]

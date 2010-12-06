@@ -183,6 +183,10 @@ class UnitController(BaseController):
         self._state_timer_active = True
         timeout_add(self.STATE_TIMEOUT, self._state_timer_expired, self.current_unit)
 
+    def prepare_for_save(self):
+        """Finalise outstanding changes to the toolkit store for saving."""
+        if self.current_unit._modified:
+            self.current_unit._workflow.set_current_state(self._unit_state_names[unit._current_state])
 
     # EVENT HANDLERS #
     def _on_controller_registered(self, main_controller, controller):

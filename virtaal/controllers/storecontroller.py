@@ -231,6 +231,7 @@ class StoreController(BaseController):
         self.emit('store-loaded')
 
     def save_file(self, filename=None):
+        self.unit_controller.prepare_for_save()
         if self.project is None:
             self.store.save_file(filename) # store.save_file() will raise an appropriate exception if necessary
         else:

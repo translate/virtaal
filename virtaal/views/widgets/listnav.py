@@ -66,7 +66,7 @@ class ListNavigator(gtk.HBox):
 
         self.tvw_items, self.lst_items = self._init_treeview()
 
-        self.btn_popup = PopupWidgetButton(self.tvw_items, label='current')
+        self.btn_popup = PopupWidgetButton(self.tvw_items, label='(uninitialised)')
 
         # Connect to signals
         self.btn_back.connect('clicked', self._on_back_clicked)

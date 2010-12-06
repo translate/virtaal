@@ -4,6 +4,7 @@ package=xx$(egrep "^DOMAIN" Makevars | sed "s/DOMAIN = //g")xx
 potfile=${package}.pot
 
 lang=$(echo $1 |sed "s/\.po$//")
+shift
 lang=${lang:-de_DE}
 export LANGUAGE=../../../../../../../../$(pwd)/mo/$lang:$lang
 echo "LANGUAGE=$LANGUAGE"
@@ -79,6 +80,6 @@ fi
 echo
 virtaal --help
 echo
-virtaal
+virtaal $@
 rm -f $potfile
 rm -rf mo de_DE.po $litedir/*/de_DE.po

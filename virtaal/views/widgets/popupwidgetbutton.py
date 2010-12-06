@@ -148,8 +148,7 @@ class PopupWidgetButton(gtk.ToggleButton):
         popup_alloc.width, popup_alloc.height = width, height
         x, y = self.calculate_popup_xy(popup_alloc, btn_alloc, btn_window_xy)
 
-        self.popup.resize(width, height)
-        self.popup.move(x, y)
+        self.popup.window.get_toplevel().move_resize(x, y, width, height)
 
 
     # EVENT HANDLERS #

@@ -126,8 +126,9 @@ class UnitController(BaseController):
 
         if state_names:
             unit._workflow.reset(unit, init_state=state_names[state_id])
-        # Make sure that we use the same state_n as the unit had before it got "lost"
-        unit.set_state_n(state_n)
+            #XXX: we should make 100% sure that .reset() doesn't actually call
+            # a set method in the unit, since it might cause a diff or loss of
+            # meta-data.
         self.view.load_unit(unit)
         return self.view
 

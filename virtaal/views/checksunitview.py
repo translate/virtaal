@@ -80,6 +80,7 @@ class ChecksUnitView(BaseView):
             gtk.TreeViewColumn(_('Description'), gtk.CellRendererText(), text=self.COL_DESC)
         )
         self.tvw_checks.set_model(self.lst_checks)
+        self.tvw_checks.get_selection().set_mode(gtk.SELECTION_NONE)
 
         vb.pack_start(self.tvw_checks)
 

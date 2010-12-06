@@ -580,15 +580,17 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                 self.targets[i].parent.hide_all()
 
     def _layout_update_states(self):
-        if not self._widgets['state']:
+        if not self._widgets['state'] and self.unit.STATE:
             statenav = ListNavigator()
             statenav.connect('selection-changed', self._on_state_changed)
             self._widgets['vbox_right'].pack_end(statenav, expand=False, fill=False)
             self._widgets['state'] = statenav
 
         state_names = self.controller.get_unit_state_names()
-        if not state_names:
-            self._widgets['state'].hide()
+        if not state_names or not self.unit.STATE:
+            widget = self._widgets['state']
+            if widget:
+                widget.hide()
             return
         state_name = state_names[self.unit.get_state_id()]
 

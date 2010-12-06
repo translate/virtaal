@@ -109,9 +109,15 @@ class UnitController(BaseController):
         if self.placeables_controller:
             unit.rich_source = self.placeables_controller.apply_parsers(unit.rich_source)
 
+        unit._modified = False
+        if not unit.STATE:
+            # If the unit doesn't support states, just skip the state code
+            self.view.load_unit(unit)
+            return self.view
+
+        # This unit does support states
         state_n, state_id = unit.get_state_n(), unit.get_state_id()
         state_names = self.get_unit_state_names()
-        unit._modified = False
         unit._state_sticky = False
         unit._current_state = state_n
         if self._recreate_workflow or True:
@@ -144,11 +150,11 @@ class UnitController(BaseController):
     def _unit_modified(self, *args):
         self.emit('unit-modified', self.current_unit)
         self.current_unit._modified = True
-        if not self.current_unit._state_sticky:
+        if self.current_unit.STATE and not self.current_unit._state_sticky:
             self._start_state_timer()
 
     def _unit_done(self, widget, unit):
-        if unit._modified:
+        if unit._modified and unit.STATE:
             if len(unit.target) != 0 and unit._current_state == workflow.StateEnum.EMPTY and not unit._state_sticky:
                 # Oops! The user entered a translation, but the timer didn't
                 # expire yet, so let's mark it fuzzy to be safe. We don't know
@@ -163,9 +169,10 @@ class UnitController(BaseController):
 
         self.emit('unit-done', unit, unit._modified)
         # let's just clean up a bit:
-        del unit._state_sticky
-        del unit._current_state
         del unit._modified
+        if unit.STATE:
+            del unit._state_sticky
+            del unit._current_state
 
     def _state_timer_expired(self, unit):
         self._state_timer_active = False

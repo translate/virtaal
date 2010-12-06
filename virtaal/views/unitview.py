@@ -81,6 +81,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             'targets': []
         }
         self._get_widgets()
+        self._widgets['vbox_editor'].reparent(self)
         self._setup_menus()
         self.unit = None
 
@@ -273,7 +274,6 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         self.disable_signals(['modified', 'insert-text', 'delete-text'])
         self._update_editor_gui()
         self.enable_signals(['modified', 'insert-text', 'delete-text'])
-        self._widgets['vbox_editor'].reparent(self)
 
         for i in range(len(self.targets)):
             self.targets[i]._source_text = unit.source # FIXME: Find a better way to do this!

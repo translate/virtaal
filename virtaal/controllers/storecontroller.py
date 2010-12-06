@@ -443,7 +443,6 @@ class StoreController(BaseController):
             outfname = prefix + suffix
             if not os.path.isfile(outfname):
                 try:
-                    open(outfname, 'w')
                     os.unlink(outfname)
                     return outfname
                 except Exception:

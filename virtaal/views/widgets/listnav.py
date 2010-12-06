@@ -136,10 +136,12 @@ class ListNavigator(gtk.HBox):
         self.btn_popup.popup.set_transient_for(wnd_parent)
 
     def select_by_name(self, name):
+        self._should_emit_changed = False
         for row in self.tvw_items.get_model():
             if row[self.COL_DISPLAY] == name:
                 logging.debug('name: %s' % (name))
                 self.tvw_items.get_selection().select_iter(row.iter)
+                self._should_emit_changed = True
                 return
 
     def select_by_object(self, obj):

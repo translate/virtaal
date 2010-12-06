@@ -147,6 +147,19 @@ class UnitController(BaseController):
             self._start_state_timer()
 
     def _unit_done(self, widget, unit):
+        if unit._modified:
+            if len(unit.target) != 0 and unit._current_state == workflow.StateEnum.EMPTY and not unit._state_sticky:
+                # Oops! The user entered a translation, but the timer didn't
+                # expire yet, so let's mark it fuzzy to be safe. We don't know
+                # exactly what kind of fuzzy the format supports, so let's use
+                # .set_state_n() directly. Also, if the workflow does more, we
+                # probably don't want it, since we really only want to set the
+                # state.
+                unit.set_state_n(workflow.StateEnum.NEEDS_REVIEW)
+            else:
+                # Now really advance the workflow that we ended at
+                unit._workflow.set_current_state(self._unit_state_names[unit._current_state])
+
         self.emit('unit-done', unit, unit._modified)
         # let's just clean up a bit:
         del unit._state_sticky

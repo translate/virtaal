@@ -419,7 +419,7 @@ class StoreController(BaseController):
             where "en" and "af" are the currently selected source and target
             languages.
 
-            If a with that name already exists, an attempt will be made to
+            If a file with that name already exists, an attempt will be made to
             create a file name in the format C{foo_en__af_XXXXX.zip} in the
             document's directory. If that fails (the directory might not be
             writable), a temporary file name of the same format is created.

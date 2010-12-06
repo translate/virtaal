@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gobject import SIGNAL_RUN_FIRST
+from gobject import SIGNAL_RUN_FIRST, timeout_add
 from translate.storage import workflow
 
 from virtaal.common import GObjectWrapper
@@ -38,6 +38,8 @@ class UnitController(BaseController):
         'unit-insert-text':    (SIGNAL_RUN_FIRST, None, (object, object, int, object, int)),
         'unit-paste-start':    (SIGNAL_RUN_FIRST, None, (object, object, object, int)),
     }
+
+    STATE_TIMEOUT = 200
 
     # INITIALIZERS #
     def __init__(self, store_controller):
@@ -64,6 +66,7 @@ class UnitController(BaseController):
 
         self._recreate_workflow = False
         self._unit_state_names = {}
+        self._state_timer_active = False
 
 
     # ACCESSORS #
@@ -140,6 +143,8 @@ class UnitController(BaseController):
     def _unit_modified(self, *args):
         self.emit('unit-modified', self.current_unit)
         self.current_unit._modified = True
+        if not self.current_unit._state_sticky:
+            self._start_state_timer()
 
     def _unit_done(self, widget, unit):
         self.emit('unit-done', unit, unit._modified)
@@ -147,6 +152,23 @@ class UnitController(BaseController):
         del unit._state_sticky
         del unit._current_state
         del unit._modified
+
+    def _state_timer_expired(self, unit):
+        self._state_timer_active = False
+        if unit is not self.current_unit:
+            return
+        target_len = len(unit.target)
+        empty_state = unit._current_state == workflow.StateEnum.EMPTY
+        if target_len and empty_state:
+            self.set_current_state(workflow.StateEnum.UNREVIEWED)
+        elif not target_len and not empty_state:
+            self.set_current_state(workflow.StateEnum.EMPTY)
+
+    def _start_state_timer(self):
+        if self._state_timer_active:
+            return
+        self._state_timer_active = True
+        timeout_add(self.STATE_TIMEOUT, self._state_timer_expired, self.current_unit)
 
 
     # EVENT HANDLERS #

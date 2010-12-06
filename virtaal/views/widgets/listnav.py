@@ -186,10 +186,14 @@ class ListNavigator(gtk.HBox):
 
         self.btn_popup.set_label(selected_name)
 
-        if selected_name in self.unselectable:
+        # If setting to "untranslated" internally (when we don't wan't to emit
+        # the changed event), we can allow the unselectable ones, since we are
+        # in control:
+        if self._should_emit_changed and selected_name in self.unselectable:
             selection.select_iter(model.iter_next(itr))
             return
         # Disable back/forward buttons if the first/last item was selected
+        # TODO: disable btn_back if the previous can't be selected (like untranslated)
         isfirst = selected_value == model.get_value(model[0].iter, self.COL_VALUE)
         islast  = selected_value == model.get_value(model[len(model)-1].iter, self.COL_VALUE)
         self.btn_back.set_sensitive(not isfirst)

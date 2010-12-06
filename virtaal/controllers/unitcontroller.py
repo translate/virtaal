@@ -50,7 +50,6 @@ class UnitController(BaseController):
         self.store_controller.unit_controller = self
         self.checks_controller = None
         self.placeables_controller = None
-        self.workflow = None
 
         self.view = UnitView(self)
         self.view.connect('delete-text', self._unit_delete_text)
@@ -63,7 +62,6 @@ class UnitController(BaseController):
         self.store_controller.connect('store-loaded', self._on_store_loaded)
         self.main_controller.connect('controller-registered', self._on_controller_registered)
 
-        self._current_unit_modified = False
         self._recreate_workflow = False
         self._unit_state_names = {}
 
@@ -89,6 +87,16 @@ class UnitController(BaseController):
             }
         return self._unit_state_names
 
+    def set_current_state(self, newstate, from_user=False):
+        if isinstance(newstate, workflow.UnitState):
+            newstate = newstate.state_value
+        self.current_unit._current_state = newstate
+        if from_user:
+            # No need to update the GUI, and we should make the choice sticky
+            self.current_unit._state_sticky = True
+        else:
+            self.view.update_state(self._unit_state_names[newstate])
+
     def load_unit(self, unit):
         if self.current_unit and self.current_unit is unit:
             return self.view
@@ -100,18 +108,21 @@ class UnitController(BaseController):
 
         state_n, state_id = unit.get_state_n(), unit.get_state_id()
         state_names = self.get_unit_state_names()
-        if self._recreate_workflow or self.workflow is None:
+        unit._modified = False
+        unit._state_sticky = False
+        unit._current_state = state_n
+        if self._recreate_workflow or True:
             # This will only happen when a document is loaded.
             self._unit_state_names = {}
             # FIXME: The call below is run for the second time, but is necessary
             #        because the names could have changed in the new document :/
             state_names = self.get_unit_state_names()
             if state_names:
-                self.workflow = workflow.create_unit_workflow(unit, state_names)
+                unit._workflow = workflow.create_unit_workflow(unit, state_names)
             self._recreate_workflow = False
 
         if state_names:
-            self.workflow.reset(unit, init_state=state_names[state_id])
+            unit._workflow.reset(unit, init_state=state_names[state_id])
         # Make sure that we use the same state_n as the unit had before it got "lost"
         unit.set_state_n(state_n)
         self.view.load_unit(unit)
@@ -128,11 +139,14 @@ class UnitController(BaseController):
 
     def _unit_modified(self, *args):
         self.emit('unit-modified', self.current_unit)
-        self._current_unit_modified = True
+        self.current_unit._modified = True
 
     def _unit_done(self, widget, unit):
-        self.emit('unit-done', unit, self._current_unit_modified)
-        self._current_unit_modified = False
+        self.emit('unit-done', unit, unit._modified)
+        # let's just clean up a bit:
+        del unit._state_sticky
+        del unit._current_state
+        del unit._modified
 
 
     # EVENT HANDLERS #

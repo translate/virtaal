@@ -439,7 +439,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         return scrollwnd
 
     def _create_workflow_liststore(self):
-        workflow = self.controller.workflow
+        workflow = self.controller.current_unit._workflow
         lst = gtk.ListStore(str, object)
         if not workflow:
             return lst
@@ -603,11 +603,14 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         )
         self._widgets['state'].show_all()
 
+    def update_state(self, newstate):
+        """Update it without emitting any signals or recreating anything."""
+        self._widgets['state'].select_by_name(newstate)
 
     # EVENT HANLDERS #
     def _on_state_changed(self, listnav, newstate):
-        if self.controller.workflow:
-            self.controller.workflow.set_current_state(newstate)
+        if self.controller.current_unit._workflow:
+            self.controller.set_current_state(newstate, from_user=True)
         self.modified()
 
     def _on_key_press_event(self, _widget, event, *_args):

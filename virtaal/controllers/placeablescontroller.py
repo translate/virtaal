@@ -188,13 +188,12 @@ class PlaceablesController(BaseController):
             parsers = self.parsers
 
         for elem in elems:
-            leaves = elem.flatten()
-            for leaf in leaves:
-                parsed = parse_placeables(leaf, parsers)
-                if isinstance(leaf, (str, unicode)) and parsed != StringElem(leaf):
-                    parent = elem.get_parent_elem(leaf)
-                    if parent is not None:
-                        parent.sub[parent.sub.index(leaf)] = StringElem(parsed)
+            elem = elem
+            parsed = parse_placeables(elem, parsers)
+            if isinstance(elem, (str, unicode)) and parsed != StringElem(elem):
+                parent = elem.get_parent_elem(elem)
+                if parent is not None:
+                    parent.sub[parent.sub.index(elem)] = StringElem(parsed)
         return elems
 
     def get_parsers_for_textbox(self, textbox):

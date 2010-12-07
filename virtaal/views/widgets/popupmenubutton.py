@@ -23,11 +23,11 @@ import gtk
 # Positioning constants below:
 # POS_CENTER_BELOW: Centers the pop-up window below the button (default).
 # POS_CENTER_ABOVE: Centers the pop-up window above the button.
-# POS_NW_SW: Positions the pop-up window so that its North West (top right)
+# POS_NW_SW: Positions the pop-up window so that its North West (top left)
 #            corner is on the South West corner of the button.
-# POS_NW_NE: Positions the pop-up window so that its North West (top right)
+# POS_NW_NE: Positions the pop-up window so that its North West (top left)
 #            corner is on the North East corner of the button.
-# POS_SW_NW: Positions the pop-up window so that its South West (top right)
+# POS_SW_NW: Positions the pop-up window so that its South West (bottom left)
 #            corner is on the North West corner of the button.
 POS_CENTER_BELOW, POS_CENTER_ABOVE, POS_NW_SW, POS_NW_NE, POS_SW_NW = range(5)
 # XXX: Add position symbols above as needed and implementation in

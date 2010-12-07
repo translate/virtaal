@@ -51,7 +51,6 @@ class UnitController(BaseController):
         self.store_controller = store_controller
         self.store_controller.unit_controller = self
         self.checks_controller = None
-        self.placeables_controller = None
 
         self.view = UnitView(self)
         self.view.connect('delete-text', self._unit_delete_text)
@@ -105,9 +104,6 @@ class UnitController(BaseController):
             return self.view
         self.current_unit = unit
         self.nplurals = self.main_controller.lang_controller.target_lang.nplurals
-
-        if self.placeables_controller:
-            unit.rich_source = self.placeables_controller.apply_parsers(unit.rich_source)
 
         unit._modified = False
         if not unit.STATE:
@@ -204,9 +200,8 @@ class UnitController(BaseController):
         elif controller is main_controller.checks_controller:
             self.checks_controller = controller
         elif controller is main_controller.placeables_controller:
-            self.placeables_controller = controller
-            self.placeables_controller.connect('parsers-changed', self._on_parsers_changed)
-            self._on_parsers_changed(self.placeables_controller)
+            controller.connect('parsers-changed', self._on_parsers_changed)
+            self._on_parsers_changed(controller)
 
     def _on_language_changed(self, lang_controller, langcode):
         self.nplurals = lang_controller.target_lang.nplurals

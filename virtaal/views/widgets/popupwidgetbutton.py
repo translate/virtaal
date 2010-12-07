@@ -35,13 +35,25 @@ from gobject import SIGNAL_RUN_FIRST
 # POS_CENTER_ABOVE: Centers the pop-up window above the button.
 # POS_NW_SW: Positions the pop-up window so that its North West (top left)
 #            corner is on the South West corner of the button.
+# POS_NE_SE: Positions the pop-up window so that its North East (top right)
+#            corner is on the South East corner of the button. RTL of POS_NW_SW
 # POS_NW_NE: Positions the pop-up window so that its North West (top left)
 #            corner is on the North East corner of the button.
 # POS_SE_NE: Positions the pop-up window so that its South East (bottom right)
 #            corner is on the North East corner of the button.
-POS_CENTER_BELOW, POS_CENTER_ABOVE, POS_NW_SW, POS_NW_NE, POS_SE_NE = range(5)
+# POS_SW_NW: Positions the pop-up window so that its South West (bottom left)
+#            corner is on the North West corner of the button. RTL of POS_SE_NE
+
+POS_CENTER_BELOW, POS_CENTER_ABOVE, POS_NW_SW, POS_NE_SE, POS_NW_NE, POS_SW_NW, POS_SE_NE = range(7)
 # XXX: Add position symbols above as needed and implementation in
 #      _update_popup_geometry()
+
+_rtl_pos_map = {
+        POS_CENTER_BELOW: POS_CENTER_BELOW,
+        POS_CENTER_ABOVE: POS_CENTER_ABOVE,
+        POS_SE_NE: POS_SW_NW,
+        POS_NW_SW: POS_NE_SE,
+}
 
 class PopupWidgetButton(gtk.ToggleButton):
     """Extends a C{gtk.ToggleButton} to show a given widget in a pop-up window."""
@@ -60,7 +72,10 @@ class PopupWidgetButton(gtk.ToggleButton):
         self.connect('key-press-event', self._on_key_press_event)
         self.connect('toggled', self._on_toggled)
 
-        self.popup_pos = popup_pos
+        if self.get_direction() == gtk.TEXT_DIR_LTR:
+            self.popup_pos = popup_pos
+        else:
+            self.popup_pos = _rtl_pos_map.get(popup_pos, POS_NE_SE)
         self._parent_button_press_id = None
         self._update_popup_geometry_func = None
 
@@ -89,11 +104,15 @@ class PopupWidgetButton(gtk.ToggleButton):
         y = btn_window_xy[1] + btn_alloc.y + btn_alloc.height
         width, height = self.popup.get_child_requisition()
 
-        if self.popup_pos == POS_NW_NE:
+        if self.popup_pos == POS_NE_SE:
+            x -= (popup_alloc.width - btn_alloc.width)
+        elif self.popup_pos == POS_NW_NE:
             x += btn_alloc.width
             y = btn_window_xy[1] + btn_alloc.y
         elif self.popup_pos == POS_SE_NE:
             x -= (popup_alloc.width - btn_alloc.width)
+            y = btn_window_xy[1] - popup_alloc.height
+        elif self.popup_pos == POS_SW_NW:
             y = btn_window_xy[1] - popup_alloc.height
         elif self.popup_pos == POS_CENTER_BELOW:
             x -= (popup_alloc.width - btn_alloc.width) / 2

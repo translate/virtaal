@@ -444,12 +444,15 @@ def add_win32_options(options):
             ],
             "dist_dir":   "virtaal-win32",
             "includes":   [
+                    # some of these are needed by plugins and are therefore not detected
                     "lxml", "lxml._elementpath", "psyco", "cairo", "pango",
                     "pangocairo", "atk", "gobject", "gtk.keysyms",
                     "gtkspell",
                     "tarfile",
-                    "translate.services",
-                    "translate.storage.placeables.terminology",
+                    "translate.services", # local TM
+                    "translate.storage.placeables.terminology", # terminology
+                    "translate.search.match", #TM
+                    "xmlrpclib", # Moses
                 ],
             "optimize":   2,
         }

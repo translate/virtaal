@@ -449,9 +449,7 @@ def add_win32_options(options):
                     "pangocairo", "atk", "gobject", "gtk.keysyms",
                     "gtkspell",
                     "tarfile",
-                    "translate.services", # local TM
                     "translate.storage.placeables.terminology", # terminology
-                    "translate.search.match", #TM
                     "xmlrpclib", # Moses
                 ],
             "optimize":   2,

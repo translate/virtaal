@@ -32,6 +32,7 @@ class Plugin(BasePlugin):
 
     default_config = {
         'backends_dialog_width': 450,
+        'disabled_models': '',
     }
 
     # INITIALIZERS #
@@ -41,6 +42,7 @@ class Plugin(BasePlugin):
         self.main_controller = main_controller
 
         self.load_config()
+        self.config['disabled_models'] = self.config['disabled_models'].split(',')
         self.config['backends_dialog_width'] = int(self.config['backends_dialog_width'])
         self._init_plugin()
 

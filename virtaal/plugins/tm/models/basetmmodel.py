@@ -56,6 +56,8 @@ class BaseTMModel(BaseModel):
     display_name = None
     """The backend's name, suitable for display."""
 
+    configure_func = None
+    """A function that starts the configuration, if available."""
     default_config = {}
     """Default configuration shared by all TM model plug-ins."""
 

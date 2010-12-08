@@ -189,7 +189,7 @@ class StoreModel(BaseModel):
         from translate.filters import checks
         oldstats = statsdb.StatsCache().filestats(oldfilename, checks.UnitChecker(), self._trans_store)
 
-        import pot2po
+        from translate.convert import pot2po
         self._trans_store = pot2po.convert_stores(newstore, self._trans_store, fuzzymatching=False)
 
         #FIXME: ugly tempfile hack, can we please have a pure store implementation of statsdb

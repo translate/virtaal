@@ -183,7 +183,8 @@ class PopupWidgetButton(gtk.ToggleButton):
             self._do_hide_popup()
 
     def _on_expose(self, widget, event):
-        self._update_popup_geometry()
+        if self.is_popup_visible:
+            self._update_popup_geometry()
 
 
 if __name__ == '__main__':

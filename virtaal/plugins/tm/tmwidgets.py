@@ -103,7 +103,7 @@ class TMWindow(gtk.Window):
         if widget.get_direction() == gtk.TEXT_DIR_LTR:
             x -= self.tvc_perc.get_width()
         else:
-            x -= self.tvc_tm_source.get_width()
+            x -= self.tvc_tm_source.get_width() + scrollbar_width
         y += widget_alloc.height + 2
 
         width = widget_alloc.width + self.tvc_perc.get_width() + self.tvc_tm_source.get_width() + scrollbar_width

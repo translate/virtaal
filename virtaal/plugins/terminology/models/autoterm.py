@@ -20,7 +20,6 @@
 
 import logging
 import os
-import sys
 import time
 from datetime import datetime
 from translate.search.match import terminologymatcher
@@ -28,7 +27,6 @@ from translate.storage import factory
 from translate.storage.base import TranslationStore
 from translate.storage.placeables.terminology import TerminologyPlaceable
 
-from virtaal.__version__ import ver as version
 from virtaal.common import pan_app
 from virtaal.support.httpclient import HTTPClient
 

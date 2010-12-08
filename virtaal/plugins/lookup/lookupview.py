@@ -86,10 +86,7 @@ class LookupView(BaseView):
                 logging.debug('Problem getting information for plugin %s' % plugin_name)
                 continue
             enabled = plugin_name in plugin_controller.plugins
-            item = {'name': plugin_name}
-            config = None
-            if hasattr(plugin_controller.plugins[plugin_name], 'configure_func'):
-                config = plugin_controller.plugins[plugin_name].configure_func
+            config = enabled and plugin_controller.plugins[plugin_name].configure_func or None
 
             items.append({
                 'name': info['display_name'],

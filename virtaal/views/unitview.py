@@ -43,6 +43,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         'paste-start':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT, int)),
         'modified':       (SIGNAL_RUN_FIRST, None, ()),
         'unit-done':      (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'targets-created':(SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'sources-created':(SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'target-focused': (SIGNAL_RUN_FIRST, None, (int,)),
         'textview-language-changed': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT)),
     }
@@ -372,6 +374,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                     return True
             textbox.connect('key-pressed', ignore_tab)
 
+        self.emit('sources-created', self.sources)
+
     def _create_targets(self):
         def on_textbox_n_press_event(textbox, event, eventname):
             """Handle special keypresses in the textarea."""
@@ -419,6 +423,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
         for target, next_target in zip(self.targets, self.targets[1:] + [None]):
             target.connect('key-pressed', target_key_press_event, next_target)
+
+        self.emit('targets-created', self.targets)
 
     def _create_textbox(self, text=u'', editable=True, role=None, scroll_policy=gtk.POLICY_AUTOMATIC):
         textbox = TextBox(self.controller.main_controller, role=role)

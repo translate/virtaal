@@ -117,7 +117,7 @@ class TMWindow(gtk.Window):
     # EVENT HANLDERS #
     def _percent_data_func(self, column, cell_renderer, tree_model, iter):
         match_data = tree_model.get_value(iter, 0)
-        if 'quality' in match_data and match_data['quality'] is not None:
+        if match_data.get('quality', None) is not None:
             quality = int(match_data['quality'])
             cell_renderer.set_property('value', quality)
             #l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.

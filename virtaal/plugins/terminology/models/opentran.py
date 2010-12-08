@@ -181,8 +181,10 @@ class TerminologyModel(BaseTerminologyModel):
         ))
 
     def __start_query(self):
-        unitview = self.main_controller.unit_controller.view
-        query_str = unitview.sources[0].get_text()
+        unit = self.main_controller.unit_controller.current_unit
+        if not unit:
+            return
+        query_str = unit.source
         if not self.cache.has_key(query_str):
             self.cache[query_str] = None
             logging.debug('Query string: %s (target lang: %s)' % (query_str, self.opentranclient.target_lang))

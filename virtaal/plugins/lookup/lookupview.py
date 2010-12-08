@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009 Zuza Software Foundation
+# Copyright 2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -36,11 +36,20 @@ class LookupView(BaseView):
         self.controller = controller
         self.lang_controller = controller.main_controller.lang_controller
 
-        self._connect_to_unitview(controller.main_controller.unit_controller.view)
-
-    def _connect_to_unitview(self, unitview):
         self._textbox_ids = []
-        for textbox in unitview.sources + unitview.targets:
+        self._unitview_ids = []
+        unitview = controller.main_controller.unit_controller.view
+        if unitview.sources:
+            self._connect_to_textboxes(unitview, unitview.sources)
+        else:
+            self._unitview_ids.append(unitview.connect('sources-created', self._connect_to_textboxes))
+        if unitview.targets:
+            self._connect_to_textboxes(unitview, unitview.targets)
+        else:
+            self._unitview_ids.append(unitview.connect('targets-created', self._connect_to_textboxes))
+
+    def _connect_to_textboxes(self, unitview, textboxes):
+        for textbox in textboxes:
             self._textbox_ids.append((
                 textbox,
                 textbox.connect('populate-popup', self._on_populate_popup)
@@ -49,6 +58,8 @@ class LookupView(BaseView):
 
     # METHODS #
     def destroy(self):
+        for id in self._unitview_ids:
+            self.controller.main_controller.unit_controller.view.disconnect(id)
         for textbox, id in self._textbox_ids:
             textbox.disconnect(id)
 

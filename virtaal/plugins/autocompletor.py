@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -230,13 +230,20 @@ class Plugin(BasePlugin):
 
         self._store_loaded_id = self.main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
 
-        for target in self.main_controller.unit_controller.view.targets:
-            self.autocomp.add_widget(target)
-
         if self.main_controller.store_controller.get_store():
             # Connect to already loaded store. This happens when the plug-in is enabled after loading a store.
             self._on_store_loaded(self.main_controller.store_controller)
 
+        self._unitview_id = None
+        unitview = self.main_controller.unit_controller.view
+        if unitview.targets:
+            self._connect_to_textboxes(unitview, unitview.targets)
+        else:
+            self._unitview_id = unitview.connect('targets-created', self._connect_to_textboxes)
+
+    def _connect_to_textboxes(self, unitview, textboxes):
+        for target in textboxes:
+                self.autocomp.add_widget(target)
 
     # METHDOS #
     def destroy(self):
@@ -246,6 +253,8 @@ class Plugin(BasePlugin):
         self.main_controller.store_controller.disconnect(self._store_loaded_id)
         if getattr(self, '_cursor_changed_id', None):
             self.store_cursor.disconnect(self._cursor_changed_id)
+        if self._unitview_id:
+            self.main_controller.unit_controller.view.disconnect(self._unitview_id)
 
 
     # EVENT HANDLERS #

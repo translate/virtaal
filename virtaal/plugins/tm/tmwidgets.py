@@ -130,7 +130,8 @@ class TMWindow(gtk.Window):
             cell_renderer.set_property('value', 3)
         else:
             cell_renderer.set_property('value', 0)
-        cell_renderer.set_property('text', u"")
+        #l10n: This indicates a suggestion from machine translation. It is displayed instead of the match percentage.
+        cell_renderer.set_property('text', _(u"?"))
 
 
 class TMSourceColRenderer(gtk.GenericCellRenderer):

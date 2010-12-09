@@ -64,7 +64,9 @@ class TMWindow(gtk.Window):
         self.tvc_perc = gtk.TreeViewColumn(_('%'), self.perc_renderer)
         self.tvc_perc.set_cell_data_func(self.perc_renderer, self._percent_data_func)
         self.tvc_match = gtk.TreeViewColumn(_('Matches'), self.match_renderer, matchdata=0)
+        self.tvc_match.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         self.tvc_tm_source = gtk.TreeViewColumn(_('TM Source'), self.tm_source_renderer, matchdata=0)
+        self.tvc_tm_source.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
 
         treeview.append_column(self.tvc_perc)
         treeview.append_column(self.tvc_match)

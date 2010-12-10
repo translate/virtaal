@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -149,8 +149,8 @@ class HTTPRequest(GObjectWrapper):
 class RESTRequest(HTTPRequest):
     """Single HTTP REST request, blocking if used standalone."""
 
-    def __init__(self, url, id, method='GET', data=None, headers=None):
-        super(RESTRequest, self).__init__(url, method, data, headers)
+    def __init__(self, url, id, method='GET', data=None, headers=None, user_agent=None):
+        super(RESTRequest, self).__init__(url, method, data, headers, user_agent=user_agent)
 
         url = self.url
         self.id = id

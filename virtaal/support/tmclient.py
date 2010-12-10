@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -38,7 +38,8 @@ class TMClient(HTTPClient):
         """suggest translations from TM"""
         request = RESTRequest(
                 self.base_url + "/%s/%s/unit" % (source_lang, target_lang),
-                unit_source, "GET")
+                unit_source, "GET",
+                user_agent=self.user_agent)
         self.add(request)
         if callback:
             request.connect(
@@ -49,7 +50,8 @@ class TMClient(HTTPClient):
     def add_unit(self, unit, source_lang, target_lang, callback=None):
         request = RESTRequest(
                 self.base_url + "/%s/%s/unit" % (source_lang, target_lang),
-                unit['source'], "PUT", json.dumps(unit))
+                unit['source'], "PUT", json.dumps(unit),
+                user_agent=self.user_agent)
         self.add(request)
         if callback:
             request.connect(
@@ -60,7 +62,8 @@ class TMClient(HTTPClient):
     def update_unit(self, unit, source_lang, target_lang, callback=None):
         request = RESTRequest(
                 self.base_url + "/%s/%s/unit" % (source_lang, target_lang),
-                unit['source'], "POST", json.dumps(unit))
+                unit['source'], "POST", json.dumps(unit),
+                user_agent=self.user_agent)
         self.add(request)
         if callback:
             request.connect(
@@ -70,8 +73,9 @@ class TMClient(HTTPClient):
 
     def forget_unit(self, unit_source, source_lang, target_lang, callback=None):
         request = RESTRequest(
-                self.base_url + "/%s/%s/unit" % (source_lang, target_lang),
-                unit_source, "DELETE")
+                self.base_url + "/%s/%s/unit" % (source_lang, target_lang, self.user_agent),
+                unit_source, "DELETE",
+                user_agent=self.user_agent)
         self.add(request)
         if callback:
             request.connect(
@@ -82,7 +86,8 @@ class TMClient(HTTPClient):
     def get_store_stats(self, store, callback=None):
         request = RESTRequest(
                 self.base_url + "/store",
-                store.filename, "GET")
+                store.filename, "GET",
+                user_agent=self.user_agent)
         self.add(request)
         if callback:
             request.connect(
@@ -94,7 +99,8 @@ class TMClient(HTTPClient):
         data = str(store)
         request = RESTRequest(
                 self.base_url + "/%s/%s/store" % (source_lang, target_lang),
-                store.filename, "PUT", data)
+                store.filename, "PUT", data,
+                user_agent=self.user_agent)
         self.add(request)
         if callback:
             request.connect(

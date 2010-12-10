@@ -45,6 +45,7 @@ class TMModel(BaseTMModel):
         url = "http://%s:%s/tmserver" % (self.config["host"], self.config["port"])
 
         self.tmclient = tmclient.TMClient(url)
+        self.tmclient.set_virtaal_useragent()
 
 
     # METHODS #

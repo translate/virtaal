@@ -55,7 +55,7 @@ style "my_color"
 		{
 			function = BOX
 			state = NORMAL
-			file = "Panel/panel-bg-trans.png"
+			file = "Panel/panel-bg2-trans.png"
 			border	= { 2, 2, 2, 2 }
 			stretch	= TRUE
     	}

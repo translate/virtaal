@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -176,7 +176,8 @@ class MainController(BaseController):
         if self.store_controller.is_modified():
             response = self.view.show_save_confirm_dialog()
             if response == 'save':
-                self.store_controller.save_file()
+                if not self.save_file():
+                    return False
             elif response == 'cancel':
                 return False
             # Unnecessary to test for 'discard'
@@ -206,6 +207,7 @@ class MainController(BaseController):
         self.open_file(filename)
 
     def save_file(self, filename=None, force_saveas=False):
+        # we return True on success
         if not filename and (self.get_force_saveas() or force_saveas):
             filename = self.store_controller.get_bundle_filename()
             if filename is None:
@@ -216,28 +218,38 @@ class MainController(BaseController):
                     filename = ''
             filename = self.view.show_save_dialog(current_filename=filename)
             if not filename:
-                return
+                return False
 
         if self.get_force_saveas():
             self.set_force_saveas(False)
 
+        return self._do_save_file(filename)
+
+    def _do_save_file(self, filename=None):
+        """Delegate saving to the store_controller, but do error handling.
+
+        Return True on success, False otherwise."""
         try:
             self.store_controller.save_file(filename)
+            return True
         except IOError, exc:
             self.show_error(
                 _("Could not save file.\n\n%(error_message)s\n\nTry saving to a different location.") % {'error_message': str(exc)}
             )
+            self.set_force_saveas(True)
         except Exception, exc:
             logging.exception('MainController.save_file(filename="%s")' % (filename))
             self.show_error(
                 _("Could not save file.\n\n%(error_message)s" % {'error_message': str(exc)})
             )
+        return False
 
     def close_file(self):
         if self.store_controller.is_modified():
             response = self.view.show_save_confirm_dialog()
             if response == 'save':
-                self.store_controller.save_file()
+                if not self.save_file():
+                    return False
             elif response == 'cancel':
                 return False
             # Unnecessary to test for 'discard'
@@ -263,7 +275,8 @@ class MainController(BaseController):
         if self.store_controller.is_modified():
             response = self.view.show_save_confirm_dialog()
             if response == 'save':
-                self.store_controller.save_file()
+                if not self.save_file():
+                    return False
             elif response == 'cancel':
                 return False
             # Unnecessary to test for 'discard'
@@ -308,7 +321,8 @@ class MainController(BaseController):
         if self.store_controller.is_modified() and not force:
             response = self.view.show_save_confirm_dialog()
             if response == 'save':
-                self.store_controller.save_file()
+                if not self.save_file():
+                    return False
             elif response != 'discard':
                 return True
 

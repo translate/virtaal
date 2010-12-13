@@ -220,10 +220,13 @@ class MainController(BaseController):
             if not filename:
                 return False
 
-        if self.get_force_saveas():
-            self.set_force_saveas(False)
+        if self._do_save_file(filename):
+            if self.get_force_saveas():
+                self.set_force_saveas(False)
+            return True
+        else:
+            return False
 
-        return self._do_save_file(filename)
 
     def _do_save_file(self, filename=None):
         """Delegate saving to the store_controller, but do error handling.
@@ -236,7 +239,6 @@ class MainController(BaseController):
             self.show_error(
                 _("Could not save file.\n\n%(error_message)s\n\nTry saving to a different location.") % {'error_message': str(exc)}
             )
-            self.set_force_saveas(True)
         except Exception, exc:
             logging.exception('MainController.save_file(filename="%s")' % (filename))
             self.show_error(

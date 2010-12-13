@@ -602,7 +602,7 @@ class MainView(BaseView):
         self.save_chooser.hide()
         self._top_window = old_top
 
-        if response:
+        if response == gtk.RESPONSE_OK:
             filename = self.save_chooser.get_filename().decode('utf-8')
             #FIXME: do we need uri here?
             return filename

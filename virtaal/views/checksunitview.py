@@ -42,6 +42,7 @@ class ChecksUnitView(BaseView):
         self._create_checks_button(self.popup_content, main_window)
         self._create_menu_item()
         main_controller.store_controller.connect('store-closed', self._on_store_closed)
+        main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
 
         self._prev_failures = None
         self._listsep = lang_factory.getlanguage(ui_language).listseperator
@@ -58,7 +59,8 @@ class ChecksUnitView(BaseView):
 
     def _create_menu_item(self):
         mainview = self.controller.main_controller.view
-        mainview.gui.get_widget('mnu_checks').connect('activate', self._on_activated)
+        self.mnu_checks = mainview.gui.get_widget('mnu_checks')
+        self.mnu_checks.connect('activate', self._on_activated)
 
     def _create_popup_content(self):
         vb = gtk.VBox()
@@ -147,4 +149,8 @@ class ChecksUnitView(BaseView):
         self.btn_checks.clicked()
 
     def _on_store_closed(self, store_controller):
+        self.mnu_checks.set_sensitive(False)
         self.hide()
+
+    def _on_store_loaded(self, store_controller):
+        self.mnu_checks.set_sensitive(True)

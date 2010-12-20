@@ -24,13 +24,7 @@ import os
 import re
 import shutil
 
-try:
-    # let's try to work a bit with older toolkit in case it is necessary
-    from translate.convert import factory as convert_factory
-    converters = convert_factory.converters
-except Exception, e:
-    converters = {}
-
+from translate.convert import factory as convert_factory
 from translate.storage import proj
 
 from virtaal.common import GObjectWrapper
@@ -207,7 +201,7 @@ class StoreController(BaseController):
                 (filename, self.project.store.transfiles[0])
             )
             self.store = StoreModel(transfile, self)
-        elif extension in converters:
+        elif extension in convert_factory.converters:
             # Use temporary file name for bundle archive
             self._targetfname = self._get_new_bundle_filename(filename)
             tempfname = self._get_new_bundle_filename(filename, force_temp=True)
@@ -349,7 +343,7 @@ class StoreController(BaseController):
 
         post_update_action = None
         extension = filename.split(os.extsep)[-1]
-        if extension in converters:
+        if extension in convert_factory.converters:
             from translate.storage import factory
             try:
                 outfile = convert_factory.convert(open(filename))[0]

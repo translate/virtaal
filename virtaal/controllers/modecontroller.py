@@ -23,7 +23,7 @@ import logging
 
 from virtaal.common import GObjectWrapper
 from virtaal.modes  import modeclasses
-from virtaal.views  import ModeView
+from virtaal.views.modeview  import ModeView
 
 from basecontroller import BaseController
 

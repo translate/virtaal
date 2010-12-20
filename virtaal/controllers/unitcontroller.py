@@ -22,7 +22,7 @@ from gobject import SIGNAL_RUN_FIRST, timeout_add
 from translate.storage import workflow
 
 from virtaal.common import GObjectWrapper
-from virtaal.views import UnitView
+from virtaal.views.unitview import UnitView
 
 from basecontroller import BaseController
 

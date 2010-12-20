@@ -21,7 +21,8 @@
 import gtk
 import logging
 
-from virtaal.views import BaseView, rendering
+from virtaal.views.baseview import BaseView
+from virtaal.views import rendering
 from virtaal.views.theme import is_inverse
 from virtaal.views.placeablesguiinfo import StringElemGUI
 from virtaal.views.widgets.selectdialog import SelectDialog

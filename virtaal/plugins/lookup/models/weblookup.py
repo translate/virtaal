@@ -24,7 +24,7 @@ import urllib
 from os import path
 
 from virtaal.common import pan_app
-from virtaal.views import BaseView
+from virtaal.views.baseview import BaseView
 
 try:
     from virtaal.plugins.lookup.models.baselookupmodel import BaseLookupModel

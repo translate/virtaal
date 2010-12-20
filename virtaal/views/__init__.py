@@ -17,27 +17,3 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
-
-import markup
-import recent
-import rendering
-from baseview  import BaseView
-from langview  import LanguageView
-from mainview  import MainView
-from modeview  import ModeView
-from prefsview import PreferencesView
-from storeview import StoreView
-from unitview  import UnitView
-
-__all__ = [
-    'markup',
-    'recent',
-    'rendering',
-    'BaseView',
-    'LanguageView',
-    'MainView',
-    'ModeView',
-    'PreferencesView',
-    'StoreView',
-    'UnitView'
-]

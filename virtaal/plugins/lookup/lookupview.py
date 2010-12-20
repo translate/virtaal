@@ -21,7 +21,7 @@
 import logging
 import gtk
 
-from virtaal.views import BaseView
+from virtaal.views.baseview import BaseView
 from virtaal.views.widgets.selectdialog import SelectDialog
 
 

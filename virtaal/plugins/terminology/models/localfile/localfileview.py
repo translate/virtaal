@@ -28,7 +28,8 @@ from translate.lang import factory as lang_factory
 from translate.storage import factory as store_factory
 
 from virtaal.common.pan_app import ui_language
-from virtaal.views import BaseView, rendering
+from virtaal.views.baseview import BaseView
+from virtaal.views import rendering
 from virtaal.views.theme import current_theme
 
 

@@ -22,7 +22,7 @@ import gobject
 import gtk
 
 from virtaal.common import pan_app
-from virtaal.views import BaseView
+from virtaal.views.baseview import BaseView
 
 
 class LanguageAddDialog(object):

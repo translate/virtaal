@@ -21,7 +21,7 @@
 import logging
 
 from virtaal.common import GObjectWrapper, pan_app
-from virtaal.views import PreferencesView
+from virtaal.views.prefsview import PreferencesView
 
 from basecontroller import BaseController
 

@@ -23,7 +23,7 @@ import os.path
 from gobject import SIGNAL_RUN_FIRST
 
 from virtaal.common import GObjectWrapper, pan_app
-from virtaal.views import MainView
+from virtaal.views.mainview import MainView
 
 from basecontroller import BaseController
 

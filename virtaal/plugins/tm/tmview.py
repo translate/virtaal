@@ -24,7 +24,7 @@ import logging
 from gtk import gdk
 
 from virtaal.common import GObjectWrapper
-from virtaal.views import BaseView
+from virtaal.views.baseview import BaseView
 from virtaal.views.widgets.selectdialog import SelectDialog
 
 from tmwidgets import *

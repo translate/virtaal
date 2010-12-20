@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009 Zuza Software Foundation
+# Copyright 2009-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -22,7 +22,6 @@ import gtk
 import logging
 import locale
 from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
-from xml.sax.saxutils import escape
 
 from virtaal.common import GObjectWrapper
 from virtaal.views.widgets.cellrendererwidget import CellRendererWidget
@@ -128,7 +127,9 @@ class SelectView(gtk.TreeView, GObjectWrapper):
         if widget.lbl_name:
             s = widget.lbl_name.get_label()
         if widget.lbl_desc:
-            s += '\n' + escape(widget.lbl_desc.get_text())
+            # avoid the import of xml.sax.saxutils.escape
+            escaped = widget.lbl_desc.get_text().replace(u"&", u"&amp;").replace(u"<", u"&lt;") # & must be first
+            s += '\n' + escaped
         return s
 
     def get_all_items(self):

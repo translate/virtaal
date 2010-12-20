@@ -22,12 +22,10 @@ import gobject
 import gtk
 import gtk.gdk
 import logging
-from translate.tools.pogrep import GrepFilter
 
 from virtaal.controllers import Cursor
 
 from basemode import BaseMode
-from virtaal.views import markup
 from virtaal.views.theme import current_theme
 
 
@@ -60,6 +58,7 @@ class SearchMode(BaseMode):
         self.select_first_match = True
         self._search_timeout = 0
         self._unit_modified_id = 0
+        self.unescape = None
 
     def _create_widgets(self):
         # Widgets for search functionality (in first row)
@@ -119,6 +118,8 @@ class SearchMode(BaseMode):
         self._add_widgets()
         self._connect_highlighting()
         self._connect_textboxes()
+        from virtaal.views.markup import unescape
+        self.unescape = unescape
         if not self.ent_search.get_text():
             self.storecursor.indices = self.storecursor.model.stats['total']
         else:
@@ -152,7 +153,7 @@ class SearchMode(BaseMode):
             textbox.grab_focus()
             buff = textbox.buffer
             buffstr = textbox.get_text()
-            unescaped = markup.unescape(buffstr)
+            unescaped = self.unescape(buffstr)
 
             start, end = self._escaped_indexes(unescaped, match.start, match.end)
             if hasattr(textbox.elem, 'gui_info'):
@@ -189,6 +190,7 @@ class SearchMode(BaseMode):
             unit_controller.set_unit_target(match.part_n, rstring[:match.start] + replace_str + rstring[match.end:])
 
     def update_search(self):
+        from translate.tools.pogrep import GrepFilter
         self.filter = GrepFilter(
             searchstring=unicode(self.ent_search.get_text()),
             searchparts=('source', 'target'),
@@ -323,7 +325,7 @@ class SearchMode(BaseMode):
     def _highlight_textbox_matches(self, textbox, select_match=True):
         buff = textbox.buffer
         buffstr = textbox.get_text()
-        unescaped = markup.unescape(buffstr)
+        unescaped = self.unescape(buffstr)
 
         # Make sure the 'search_highlight' tag in the textbox's tag table
         # is "fresh".

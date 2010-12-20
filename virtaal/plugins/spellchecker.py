@@ -19,16 +19,11 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import logging
-import sys
 import os
 import os.path
-from cStringIO import StringIO
-import tarfile
 
-from virtaal.__version__ import ver as version
 from virtaal.common import pan_app
 from virtaal.controllers import BasePlugin
-from virtaal.support.httpclient import HTTPClient
 
 if not pan_app.DEBUG:
     try:
@@ -74,6 +69,19 @@ class Plugin(BasePlugin):
             self._disable_checking(text_view)
 
     # METHODS #
+
+    def _build_client(url, clients_id, callback, error_callback=None):
+        from virtaal.support.httpclient import HTTPClient
+        client = HTTPClient()
+        client.set_virtaal_useragent()
+        self.clients[self._lang_list] = client
+        if logging.root.level != logging.DEBUG:
+            self.clients[language].get(url, callback)
+        else:
+            def error_log(request, result):
+                logging.debug('Could not get %s: status %d' % (url, request.status))
+            client.get(url, callback, error_callback=error_log)
+
     def _download_checker(self, language):
         """A Windows-only way to obtain new dictionaries."""
         if 'APPDATA' not in os.environ:
@@ -87,10 +95,7 @@ class Plugin(BasePlugin):
                 # We don't yet have a list of available languages
                 url = self._base_URL + self._lang_list #index page listing all the dictionaries
                 callback = lambda *args: self._process_index(language=language, *args)
-                client = HTTPClient()
-                client.set_virtaal_useragent()
-                client.get(url, callback)
-                self.clients[self._lang_list] = client
+                self._build_client(url, self._lang_list, callback)
                 # self._process_index will call this again, so we can exit
             return
 
@@ -110,17 +115,10 @@ class Plugin(BasePlugin):
 
        # Now download the actual files after we have determined that it is
        # available
-        self.clients[language] = HTTPClient()
-        self.clients[language].set_virtaal_useragent()
         callback = lambda *args: self._process_tarball(language=language, *args)
         url = self._dict_URL % language
+        self._build_client(url, language, callback)
 
-        if logging.root.level != logging.DEBUG:
-            self.clients[language].get(url, callback)
-        else:
-            def error_log(request, result):
-                logging.debug('Could not get %s: status %d' % (url, request.status))
-            self.clients[language].get(url, callback, error_callback=error_log)
 
     def _tar_ok(self, tar):
         # TODO: Verify that the tarball is ok:
@@ -150,6 +148,8 @@ class Plugin(BasePlugin):
 
         if request.status == 200:
             logging.debug('Got a dictionary')
+            from cStringIO import StringIO
+            import tarfile
             file_obj = StringIO(result)
             tar = tarfile.open(fileobj=file_obj)
             if not self._tar_ok(tar):

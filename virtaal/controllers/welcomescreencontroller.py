@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -21,7 +21,6 @@
 
 import logging
 
-from virtaal.support import openmailto
 from virtaal.views import recent
 from virtaal.views.welcomescreenview import WelcomeScreenView
 
@@ -64,6 +63,7 @@ class WelcomeScreenController(BaseController):
         self.view.show()
 
     def open_cheatsheat(self):
+        from virtaal.support import openmailto
         # FIXME: The URL below is just a temporary solution
         openmailto.open('http://translate.sourceforge.net/wiki/virtaal/cheatsheet')
 
@@ -83,6 +83,7 @@ class WelcomeScreenController(BaseController):
     def try_open_link(self, name):
         if name not in self.LINKS:
             return False
+        from virtaal.support import openmailto
         openmailto.open(self.LINKS[name])
         return True
 

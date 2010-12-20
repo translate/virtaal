@@ -28,9 +28,7 @@ from gtk import gdk
 from virtaal import __version__
 from virtaal.views import recent, theme
 from virtaal.common import pan_app
-from virtaal.support import openmailto
 
-from widgets.aboutdialog import AboutDialog
 from baseview import BaseView
 
 def fill_dialog(dialog, title='', message='', markup=''):
@@ -654,6 +652,7 @@ class MainView(BaseView):
         self._store_loaded_handler_id = new_controller.connect('store-loaded', self._on_store_loaded)
 
     def _on_documentation(self, _widget=None):
+        from virtaal.support import openmailto
         openmailto.open("http://translate.sourceforge.net/wiki/virtaal/index")
 
     def _on_file_open(self, _widget):
@@ -697,9 +696,11 @@ class MainView(BaseView):
         # Should be more redundent
         # If the guide is installed and no internet then open local
         # If Internet then go live, if no Internet or guide then disable
+        from virtaal.support import openmailto
         openmailto.open("http://translate.sourceforge.net/wiki/guide/start")
 
     def _on_help_about(self, _widget=None):
+        from widgets.aboutdialog import AboutDialog
         AboutDialog(self.main_window)
 
     def _on_quit(self, *args):
@@ -715,6 +716,7 @@ class MainView(BaseView):
             self.controller.open_file(item.get_uri_display().decode('utf-8'), uri=item.get_uri().decode('utf-8'))
 
     def _on_report_bug(self, _widget=None):
+        from virtaal.support import openmailto
         openmailto.open("http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal&version=%s" % __version__.ver)
 
     def _on_store_closed(self, store_controller):

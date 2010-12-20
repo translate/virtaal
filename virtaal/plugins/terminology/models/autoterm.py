@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009 Zuza Software Foundation
+# Copyright 2009-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -21,7 +21,6 @@
 import logging
 import os
 import time
-from datetime import datetime
 from translate.search.match import terminologymatcher
 from translate.storage import factory
 from translate.storage.base import TranslationStore
@@ -142,6 +141,7 @@ class TerminologyModel(BaseTerminologyModel):
         if not os.path.isfile(localfile):
             return True
         stats = os.stat(localfile)
+        from datetime import datetime
         return (time.mktime(datetime.now().timetuple()) - stats.st_mtime) > THREE_DAYS
 
     def _check_for_update(self, srclang, tgtlang):

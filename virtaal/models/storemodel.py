@@ -22,7 +22,6 @@ import os
 import logging
 from translate.storage import factory, statsdb
 
-from translate.storage import ts2 as ts
 from translate.storage.poheader import poheader, tzstring
 
 from virtaal.common import pan_app
@@ -216,8 +215,10 @@ class StoreModel(BaseModel):
             if nplurals is None:
                 return
             return int(nplurals)
-        elif isinstance(store, ts.tsfile):
-            return store.nplural()
+        else:
+            from translate.storage import ts2 as ts
+            if isinstance(store, ts.tsfile):
+                return store.nplural()
 
     def _correct_header(self, store):
         """This ensures that the file has a header if it is a poheader type of

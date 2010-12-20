@@ -122,7 +122,7 @@ class LookupView(BaseView):
         if not buf.get_has_selection():
             return
 
-        selection = buf.get_text(*buf.get_selection_bounds())
+        selection = buf.get_text(*buf.get_selection_bounds()).strip()
         role      = textbox.role
         srclang   = self.lang_controller.source_lang.code
         tgtlang   = self.lang_controller.target_lang.code

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009 Zuza Software Foundation
+# Copyright 2009-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -20,11 +20,9 @@
 
 import os
 from gobject import SIGNAL_RUN_FIRST
-from translate.lang.identify import LanguageIdentifier
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.models import LanguageModel
-from virtaal.views import LanguageView
 
 from basecontroller import BaseController
 
@@ -40,8 +38,6 @@ class LanguageController(BaseController):
         'target-lang-changed': (SIGNAL_RUN_FIRST, None, (str,)),
     }
 
-    MODEL_DIR = LanguageIdentifier.MODEL_DIR
-    CONF_FILE = LanguageIdentifier.CONF_FILE
     NUM_RECENT = 5
     """The number of recent language pairs to save/display."""
 
@@ -61,8 +57,7 @@ class LanguageController(BaseController):
         self.connect('source-lang-changed', self._on_lang_changed)
         self.connect('target-lang-changed', self._on_lang_changed)
 
-        self.view = LanguageView(self)
-        self.view.show()
+        self.view = None
 
     def _init_langs(self):
         try:
@@ -136,7 +131,8 @@ class LanguageController(BaseController):
             return None
 
         if not self.lang_identifier:
-            self.lang_identifier = LanguageIdentifier(self.MODEL_DIR, self.CONF_FILE)
+            from translate.lang.identify import LanguageIdentifier
+            self.lang_identifier = LanguageIdentifier()
         srccode = self.lang_identifier.identify_source_lang(store.get_units())
         tgtcode = self.lang_identifier.identify_target_lang(store.get_units())
         srclang = tgtlang = None
@@ -198,6 +194,10 @@ class LanguageController(BaseController):
         pan_app.save_config(filename, langs)
 
     def _on_store_loaded(self, store_controller):
+        if not self.view:
+            from virtaal.views.langview import LanguageView
+            self.view = LanguageView(self)
+            self.view.show()
         srclang = store_controller.store.get_source_language() or self.source_lang.code
         tgtlang = store_controller.store.get_target_language() or self.target_lang.code
         self.set_language_pair(srclang, tgtlang)

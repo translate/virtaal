@@ -20,11 +20,8 @@
 
 import logging
 from gobject import SIGNAL_RUN_FIRST, timeout_add
-from translate.filters import checks
 
 from virtaal.common import GObjectWrapper
-from virtaal.views.checksprojview import ChecksProjectView
-from virtaal.views.checksunitview import ChecksUnitView
 
 from basecontroller import BaseController
 
@@ -119,27 +116,48 @@ class ChecksController(BaseController):
               "drupal": _('Drupal'),
         }
         self._checker_name_to_code = dict([(value, key) for (key, value) in self._checker_code_to_name.items()])
-        self.checker_info = {
-            # XXX: Add other checkers below with a localisable string as key
-            #      (used on the GUI) and a checker class as the value.
-            'default':    checks.StandardChecker,
-            'openoffice': checks.OpenOfficeChecker,
-            'mozilla':    checks.MozillaChecker,
-            'drupal':     checks.DrupalChecker,
-            'gnome':      checks.GnomeChecker,
-            'kde':        checks.KdeChecker,
-        }
+        self._checker_info = None
         self._checker_menu_items = {}
         self._cursor_connection = ()
         self.last_unit = None
 
-        self.projview = ChecksProjectView(self)
-        self.unitview = ChecksUnitView(self)
-        self.projview.show()
-        self.unitview.show()
+        self._projview = None
+        self._unitview = None
 
 
     # ACCESSORS #
+    def _get_checker_info(self):
+        if not self._checker_info:
+            from translate.filters import checks
+            self._checker_info = {
+                # XXX: Add other checkers below with a localisable string as key
+                #      (used on the GUI) and a checker class as the value.
+                'default':    checks.StandardChecker,
+                'openoffice': checks.OpenOfficeChecker,
+                'mozilla':    checks.MozillaChecker,
+                'drupal':     checks.DrupalChecker,
+                'gnome':      checks.GnomeChecker,
+                'kde':        checks.KdeChecker,
+            }
+        return self._checker_info
+    checker_info = property(_get_checker_info)
+
+    def _get_projview(self):
+        from virtaal.views.checksprojview import ChecksProjectView
+        if self._projview is None:
+            self._projview = ChecksProjectView(self)
+            self._projview.show()
+        return self._projview
+    projview = property(_get_projview)
+
+    def _get_unitview(self):
+        from virtaal.views.checksunitview import ChecksUnitView
+        if self._unitview is None:
+            self._unitview = ChecksUnitView(self)
+            self._unitview.show()
+        return self._unitview
+    unitview = property(_get_unitview)
+
     def get_checker(self):
         return self._checker
 

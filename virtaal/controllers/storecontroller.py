@@ -22,7 +22,6 @@ import gobject
 import logging
 import os
 import re
-from tempfile import mkstemp
 import shutil
 
 try:
@@ -36,7 +35,6 @@ from translate.storage import proj
 
 from virtaal.common import GObjectWrapper
 from virtaal.models import StoreModel
-from virtaal.views import StoreView
 from basecontroller import BaseController
 from cursor import Cursor
 
@@ -68,7 +66,7 @@ class StoreController(BaseController):
         self.project = None
         self.store = None
         self._tempfiles = []
-        self.view = StoreView(self)
+        self._view = None
 
         self._controller_register_id = self.main_controller.connect('controller-registered', self._on_controller_registered)
 
@@ -85,6 +83,14 @@ class StoreController(BaseController):
 
 
     # ACCESSORS #
+
+    def _getview(self):
+        if not self._view:
+            from virtaal.views.storeview import StoreView
+            self._view = StoreView(self)
+        return self._view
+    view = property(_getview)
+
     def get_nplurals(self, store=None):
         if not store:
             store = self.store
@@ -312,6 +318,7 @@ class StoreController(BaseController):
                 fname, ext = proj.split_extensions(export_projfname.split('/')[-1])
                 fname = 'virtaal_preview_' + fname + '_'
                 ext = os.extsep + ext
+                from tempfile import mkstemp
                 fd, filename = mkstemp(suffix=ext, prefix=fname)
                 os.close(fd)
                 self._tempfiles.append(filename)
@@ -432,6 +439,7 @@ class StoreController(BaseController):
             writable), a temporary file name of the same format is created.
 
             @returns: The suggested file name for the bundle."""
+        from tempfile import mkstemp
         fname, extensions = proj.split_extensions(infilename)
 
         prefix = fname + u'_%s__%s' % (

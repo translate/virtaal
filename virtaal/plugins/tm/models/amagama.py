@@ -34,3 +34,9 @@ class TMModel(remotetm.TMModel):
         "host" : "amagama.locamotion.org",
         "port" : "80",
     }
+
+    def push_store(self, store_controller):
+        pass
+
+    def upload_store(self, store_controller):
+        pass

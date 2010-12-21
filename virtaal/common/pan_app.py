@@ -234,7 +234,7 @@ if ui_language:
     gettext.translation('virtaal', languages=languages, fallback=True).install(unicode=1)
 else:
     fix_locale()
-    locale.setlocale(locale.LC_ALL)
+    locale.setlocale(locale.LC_ALL, '')
     gettext.install("virtaal", unicode=1)
 
 if _(''):

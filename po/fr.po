@@ -338,6 +338,7 @@ msgid "<u>Localization Guide</u>"
 msgstr "<u>Guide de traduction</u>"
 
 #: ../share/virtaal/virtaal.glade.h:80
+#, fuzzy
 msgid "<u>Feedback</u>"
 msgstr " "
 

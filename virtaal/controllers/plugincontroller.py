@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -21,7 +21,7 @@
 import logging
 import os
 import sys
-from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT, idle_add
 
 from translate.misc import file_discovery
 
@@ -128,8 +128,9 @@ class PluginController(BaseController):
         for name in self._find_plugin_names():
             if name in disabled_plugins:
                 continue
-            self.enable_plugin(name)
-        logging.info('Done loading plug-ins.')
+            # We use idle_add(), so that the UI will respond sooner
+            idle_add(self.enable_plugin, name)
+        logging.info('Queued all plugins for loading')
 
     def shutdown(self):
         """Disable all plug-ins."""

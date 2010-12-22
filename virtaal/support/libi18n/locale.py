@@ -262,7 +262,7 @@ def _isofromlangid(langid):
 
 def get_win32_system_lang():
     from ctypes import windll
-    windll.kernel32.GetUserDefaultUILanguage()
+    langid = windll.kernel32.GetUserDefaultUILanguage()
     if not langid == 0:
         lang = _isofromlangid(langid) or 'C'
     else:

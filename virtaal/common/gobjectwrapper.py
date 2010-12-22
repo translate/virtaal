@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -18,11 +18,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
-import logging
+from gobject import GObject, signal_list_names
+#import logging
 
 
-class GObjectWrapper(gobject.GObject):
+class GObjectWrapper(GObject):
     """
     A wrapper for GObject sub-classes that provides some more powerful signal-
     handling.
@@ -30,8 +30,8 @@ class GObjectWrapper(gobject.GObject):
 
     # INITIALIZERS #
     def __init__(self):
-        gobject.GObject.__init__(self)
-        self._all_signals = gobject.signal_list_names(self.__gtype_name__)
+        GObject.__init__(self)
+        self._all_signals = signal_list_names(self.__gtype_name__)
         self._enabled_signals = list(self._all_signals)
 
 
@@ -57,4 +57,4 @@ class GObjectWrapper(gobject.GObject):
     def emit(self, signame, *args):
         if signame in self._enabled_signals:
             #logging.debug('emit("%s", %s)' % (signame, ','.join([repr(arg) for arg in args])))
-            gobject.GObject.emit(self, signame, *args)
+            GObject.emit(self, signame, *args)

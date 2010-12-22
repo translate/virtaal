@@ -125,6 +125,7 @@ def kdialog_save_dialog(window, title, current_filename):
 #### Windows/win32 ####
 
 def win32_open_dialog(title, directory):
+    # http://msdn.microsoft.com/en-us/library/aa155724%28v=office.10%29.aspx
     import win32gui
     import win32con
     import pywintypes
@@ -137,7 +138,7 @@ def win32_open_dialog(title, directory):
     try:
         filename, customfilter, flags = win32gui.GetOpenFileNameW(
             InitialDir=directory,
-            Flags=win32con.OFN_EXPLORER,
+            Flags=win32con.OFN_EXPLORER|win32con.OFN_FILEMUSTEXIST|win32con.OFN_HIDEREADONLY,
             File='', DefExt='',
             Title=title,
             Filter=type_filter,
@@ -168,7 +169,7 @@ def win32_save_dialog(current_filename):
     try:
         filename, customfilter, flags = win32gui.GetSaveFileNameW(
             InitialDir=directory,
-            Flags=win32con.OFN_EXPLORER,
+            Flags=win32con.OFN_EXPLORER|win32con.OFN_OVERWRITEPROMPT,
             File=name, DefExt=extension,
             Title=title,
             Filter=type_filter,

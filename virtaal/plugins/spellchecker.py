@@ -70,7 +70,7 @@ class Plugin(BasePlugin):
 
     # METHODS #
 
-    def _build_client(url, clients_id, callback, error_callback=None):
+    def _build_client(self, url, clients_id, callback, error_callback=None):
         from virtaal.support.httpclient import HTTPClient
         client = HTTPClient()
         client.set_virtaal_useragent()

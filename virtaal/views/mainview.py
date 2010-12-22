@@ -524,6 +524,15 @@ class MainView(BaseView):
     def show_open_dialog(self, title=''):
         """@returns: The selected file name and URI if the OK button was clicked.
             C{None} otherwise."""
+        last_path = (pan_app.settings.general["lastdir"] or "").decode(sys.getdefaultencoding())
+
+        from virtaal.support import native_widgets
+        if native_widgets.dialog_to_use == 'kdialog':
+            return native_widgets.kdialog_open_dialog(self.main_window, title, last_path)
+        elif native_widgets.dialog_to_use == 'win32':
+            return native_widgets.win32_open_dialog(title, last_path)
+
+        # otherwise we always fall back to the default code
         if title:
             self.open_chooser.set_title(title)
 
@@ -581,13 +590,20 @@ class MainView(BaseView):
     def show_save_dialog(self, title='', current_filename=None):
         """@returns: C{True} if the OK button was pressed, C{False} for any
             other response."""
+        if not current_filename:
+            current_filename = self.controller.get_store().get_filename()
+
+        from virtaal.support import native_widgets
+        if native_widgets.dialog_to_use == 'kdialog':
+            return native_widgets.kdialog_save_dialog(self.main_window, title, current_filename)
+        elif native_widgets.dialog_to_use == 'win32':
+            return native_widgets.win32_save_dialog(title, current_filename)
+
+        # otherwise we always fall back to the default code
         if title:
             self.save_chooser.set_title(title)
 
-        if current_filename:
-            directory, filename = os.path.split(current_filename)
-        else:
-            directory, filename = os.path.split(self.controller.get_store().get_filename())
+        directory, filename = os.path.split(current_filename)
 
         if os.access(directory, os.F_OK | os.R_OK | os.X_OK | os.W_OK):
             self.save_chooser.set_current_folder(directory)

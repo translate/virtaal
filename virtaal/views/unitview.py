@@ -24,7 +24,7 @@ import re
 from gobject import idle_add, PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 from translate.lang import factory
 
-from virtaal.common import GObjectWrapper, pan_app
+from virtaal.common import GObjectWrapper
 
 import rendering
 from baseview import BaseView

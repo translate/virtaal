@@ -135,7 +135,7 @@ def win32_open_dialog(title, directory):
     custom_filter = _("All Files") + '\0*.*\0'
     title = title or _('Choose a Translation File')
     try:
-        fname, customfilter, flags = win32gui.GetopenFileNameW(
+        filename, customfilter, flags = win32gui.GetOpenFileNameW(
             InitialDir=directory,
             Flags=win32con.OFN_EXPLORER,
             File='', DefExt='',
@@ -148,10 +148,10 @@ def win32_open_dialog(title, directory):
         if isinstance(e.args, tuple) and len(e.args) == 3:
             if e.args[0] == 0:
                 # cancel
-                return u''
+                return ()
         raise Exception("Something went wrong with win32gui", e)
     # success
-    return fname
+    return (filename, u"file:///%s" % filename)
 
 def win32_save_dialog(current_filename):
     import win32gui
@@ -179,7 +179,7 @@ def win32_save_dialog(current_filename):
         if isinstance(e.args, tuple) and len(e.args) == 3:
             if e.args[0] == 0:
                 # cancel
-                return ()
+                return u''
         raise Exception("Something went wrong with win32gui", e)
     # success
-    return (filename, u"file:///%s" % filename)
+    return filename

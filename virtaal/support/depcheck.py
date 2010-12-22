@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009 Zuza Software Foundation
+# Copyright 2009-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -60,7 +60,7 @@ def test_json():
         pass
     return False
 
-MIN_TRANSLATE_VERSION = (1, 5, 0)
+MIN_TRANSLATE_VERSION = (1, 8, 0) #XXX
 def test_translate_toolkit_version():
     try:
         from translate.__version__ import ver

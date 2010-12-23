@@ -443,7 +443,7 @@ def add_win32_options(options):
             "compressed": True,
             "excludes":   ["PyLucene", "Tkconstants", "Tkinter", "tcl",
                 # strange things unnecessarily included with some versions of pyenchant:
-                "win32ui", "_win32sysloader", "win32pipe", "py2exe", "win32com", "pywin", "isapi", "_tkinter", "win32api",
+                "win32ui", "_win32sysloader", "win32pipe", "py2exe", "pywin", "isapi", "_tkinter", "win32api",
             ],
             "dist_dir":   "virtaal-win32",
             "includes":   [

@@ -27,6 +27,7 @@ from virtaal.common.pan_app import ui_language
 
 from basemodel import BaseModel
 
+gettext_lang = tr_lang(ui_language)
 
 class LanguageModel(BaseModel):
     """
@@ -44,7 +45,6 @@ class LanguageModel(BaseModel):
             Looks up the language information based on the given language code
             (C{langcode})."""
         super(LanguageModel, self).__init__()
-        self.gettext_lang = tr_lang(ui_language)
         if not self.languages:
             self.languages.update(toolkit_langs)
         self.languages.update(more_langs)
@@ -83,7 +83,7 @@ class LanguageModel(BaseModel):
                         self.plural = ""
                         return
 
-        self.name = self.gettext_lang(self.languages[langcode][0])
+        self.name = gettext_lang(self.languages[langcode][0])
         self.code = langcode
         self.nplurals = self.languages[langcode][1]
         self.plural = self.languages[langcode][2]

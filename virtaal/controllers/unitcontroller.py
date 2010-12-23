@@ -174,7 +174,10 @@ class UnitController(BaseController):
         self._state_timer_active = False
         if unit is not self.current_unit:
             return
-        target_len = len(unit.target)
+        if unit.hasplural():
+            target_len = min([len(s) for s in unit.target.strings])
+        else:
+            target_len = len(unit.target)
         empty_state = unit._current_state == workflow.StateEnum.EMPTY
         if target_len and empty_state:
             self.set_current_state(workflow.StateEnum.UNREVIEWED)

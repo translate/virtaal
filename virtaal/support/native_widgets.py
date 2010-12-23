@@ -58,6 +58,27 @@ def _dialog_to_use():
 #dialog_to_use = 'win32'
 dialog_to_use = None
 
+_file_types = []
+
+def _get_file_types():
+    global _file_types
+    if _file_types:
+        return _file_types
+    from translate.storage import factory
+    from locale import strcoll
+    all_supported_ext = []
+    supported_files = []
+    _sorted = sorted(factory.supported_files(), cmp=strcoll, key=lambda x: x[0])
+    for name, extensions, mimetypes in _sorted:
+        name = _(name)
+        extension_filter = ' '.join(["*.%s" % ext for ext in extensions])
+        all_supported_ext.append(extension_filter)
+        supported_files.append((name, extension_filter))
+
+    supported_files.insert(0, (_("All Supported Files"), ' '.join(all_supported_ext)))
+    _file_types = supported_files
+    return supported_files
+
 
 ### KDE/kdialog ###
 
@@ -87,13 +108,7 @@ def _show_kdialog(window, title, args):
 
 
 def kdialog_open_dialog(window, title, directory):
-    from translate.storage import factory
-    supported_files = []
-    for name, extensions, mimetypes in factory.supported_files():
-        name = _(name)
-        extension_filter = ' '.join(["*.%s" % ext for ext in extensions])
-        supported_files.append((name, extension_filter))
-
+    supported_files = _get_file_types()
     args = [
         '--getopenfilename', directory or '.',
         #'''*.po *.xlf|All Translatable Files\n*.ts|Qt .ts file''',   # example with wildcards
@@ -108,12 +123,7 @@ def kdialog_open_dialog(window, title, directory):
         return ()
 
 def kdialog_save_dialog(window, title, current_filename):
-    from translate.storage import factory
-    supported_files = []
-    for name, extensions, mimetypes in factory.supported_files():
-        name = _(name)
-        extension_filter = ' '.join(["*.%s" % ext for ext in extensions])
-        supported_files.append((name, extension_filter))
+    supported_files = _get_file_types()
     args = [
         '--getsavefilename', current_filename or '.',
         '\n'.join('|'.join([extensions, name]) for name, extensions in supported_files)
@@ -129,8 +139,7 @@ def win32_open_dialog(title, directory):
     import win32gui
     import win32con
     import pywintypes
-    from translate.storage import factory
-    supported_files = [ (_(name), ';'.join(extensions)) for name, extensions, mimetypes in factory.supported_files() ]
+    supported_files = [ (_(name), ';'.join(extensions)) for name, extensions, mimetypes in _get_file_types() ]
 
     type_filter = '\0'.join(('%s\0%s') % (name, extensions) for name, extensions in supported_files) + '\0'
     custom_filter = _("All Files") + '\0*.*\0'
@@ -158,8 +167,7 @@ def win32_save_dialog(current_filename):
     import win32gui
     import win32con
     import pywintypes
-    from translate.storage import factory
-    supported_files = [ (_(name), ';'.join(extensions)) for name, extensions, mimetypes in factory.supported_files() ]
+    supported_files = [ (_(name), ';'.join(extensions)) for name, extensions, mimetypes in _get_file_types() ]
 
     type_filter = '\0'.join(('%s\0%s') % (name, extensions) for name, extensions in supported_files) + '\0'
     custom_filter = _("All Files") + '\0*.*\0'

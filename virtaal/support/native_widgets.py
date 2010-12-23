@@ -172,7 +172,7 @@ def win32_open_dialog(title, directory):
     # success
     return (filename, u"file:///%s" % filename)
 
-def win32_save_dialog(current_filename):
+def win32_save_dialog(title, current_filename):
     import win32gui
     import win32con
     import pywintypes

@@ -29,7 +29,8 @@ from virtaal.common import pan_app
 
 #TODO:
 # - refactor repeated parts
-# - sort correctly
+# - Confirm overwrite works correctly everywhere
+# - Confirm error handling works correctly
 
 
 def _dialog_to_use():
@@ -79,6 +80,14 @@ def _get_file_types():
     _file_types = supported_files
     return supported_files
 
+def _get_used_filetypes(current_filename):
+    directory, filename = os.path.split(current_filename)
+    name, extension = os.path.splitext(filename)
+    supported_files = []
+    for type_name, extensions in _get_file_types():
+        if "*%s" % extension in extensions:
+            supported_files = [(type_name, ';'.join(extensions))]
+    return supported_files
 
 ### KDE/kdialog ###
 
@@ -123,7 +132,7 @@ def kdialog_open_dialog(window, title, directory):
         return ()
 
 def kdialog_save_dialog(window, title, current_filename):
-    supported_files = _get_file_types()
+    supported_files = _get_used_filetypes(current_filename)
     args = [
         '--getsavefilename', current_filename or '.',
         '\n'.join('|'.join([extensions, name]) for name, extensions in supported_files)
@@ -167,11 +176,11 @@ def win32_save_dialog(current_filename):
     import win32gui
     import win32con
     import pywintypes
-    supported_files = [ (_(name), ';'.join(extensions)) for name, extensions, mimetypes in _get_file_types() ]
+    supported_files = _get_used_filetypes(current_filename)
 
     type_filter = '\0'.join(('%s\0%s') % (name, extensions) for name, extensions in supported_files) + '\0'
     custom_filter = _("All Files") + '\0*.*\0'
-    filename, directory = os.path.split(current_filename)
+    directory, filename = os.path.split(current_filename)
     name, extension = os.path.splitext(filename)
     title = title or _('Save')
     try:

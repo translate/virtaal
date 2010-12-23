@@ -53,6 +53,7 @@ class TextBox(gtk.TextView):
         'alt-right': [(gtk.keysyms.Right, gtk.gdk.MOD1_MASK)],
         'enter':     [(gtk.keysyms.Return, 0), (gtk.keysyms.KP_Enter, 0)],
         'ctrl-enter':[(gtk.keysyms.Return, gtk.gdk.CONTROL_MASK), (gtk.keysyms.KP_Enter, gtk.gdk.CONTROL_MASK)],
+        'ctrl-shift-enter':[(gtk.keysyms.Return, gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK), (gtk.keysyms.KP_Enter, gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK)],
         'shift-tab': [(gtk.keysyms.ISO_Left_Tab, gtk.gdk.SHIFT_MASK), (gtk.keysyms.Tab, gtk.gdk.SHIFT_MASK)],
     }
     """A table of name-keybinding mappings. The name (key) is passed as the

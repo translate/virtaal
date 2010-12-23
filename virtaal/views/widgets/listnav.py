@@ -79,6 +79,11 @@ class ListNavigator(gtk.HBox):
         self.pack_start(self.btn_popup,   expand=True,  fill=True)
         self.pack_start(self.btn_forward, expand=False, fill=False)
 
+    def set_tooltips_text(self, backward, default, forward):
+        """Set tooltips for the widgets."""
+        self.btn_back.set_tooltip_text(backward)
+        self.set_tooltip_text(default)
+        self.btn_forward.set_tooltip_text(forward)
 
     # METHODS #
     def move_state(self, offset):

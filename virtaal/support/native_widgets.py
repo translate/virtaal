@@ -191,7 +191,7 @@ def win32_save_dialog(title, current_filename):
             Title=title,
             Filter=type_filter,
             CustomFilter=custom_filter,
-            FilterIndex=0,              # Select the *.* filter
+            FilterIndex=1,              # Select the relevant filter
         )
     except pywintypes.error, e:
         if isinstance(e.args, tuple) and len(e.args) == 3:

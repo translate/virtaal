@@ -20,9 +20,6 @@
 
 import os
 import logging
-from translate.storage import factory, statsdb
-
-from translate.storage.poheader import poheader, tzstring
 
 from virtaal.common import pan_app
 
@@ -133,6 +130,7 @@ class StoreModel(BaseModel):
             if filename is None:
                 filename = '<projectfile>'
         logging.info('Loading file %s' % (filename))
+        from translate.storage import factory
         self._trans_store = factory.getobject(fileobj)
         self.filename = filename
         self.update_stats(filename=filename)
@@ -157,6 +155,7 @@ class StoreModel(BaseModel):
         if filename is None:
             filename = self.filename
 
+        from translate.storage import statsdb
         stats = statsdb.StatsCache().filestatestats(filename,  self._trans_store, extended=True)
         self._valid_units = stats['total']
         self.stats = fix_indexes(stats)
@@ -175,12 +174,14 @@ class StoreModel(BaseModel):
         else:
             self._checker = checker
 
+        from translate.storage import statsdb
         errors = statsdb.StatsCache().filechecks(filename, checker, self._trans_store)
         self.checks = fix_indexes(errors, self._valid_units)
         return self.checks
 
     def update_file(self, filename):
         # Adapted from Document.__init__()
+        from translate.storage import factory, statsdb
         newstore = factory.getobject(filename)
         oldfilename = self._trans_store.filename
 
@@ -210,6 +211,7 @@ class StoreModel(BaseModel):
     def _compute_nplurals(self, store):
         # Copied as-is from Document._compute_nplurals()
         # FIXME this needs to be pushed back into the stores, we don't want to import each format
+        from translate.storage.poheader import poheader
         if isinstance(store, poheader):
             nplurals, _pluralequation = store.getheaderplural()
             if nplurals is None:
@@ -224,6 +226,7 @@ class StoreModel(BaseModel):
         """This ensures that the file has a header if it is a poheader type of
         file, and fixes the statistics if we had to add a header."""
         # Copied as-is from Document._correct_header()
+        from translate.storage.poheader import poheader
         if isinstance(store, poheader) and not store.header():
             store.updateheader(add=True)
             new_stats = {}
@@ -235,6 +238,7 @@ class StoreModel(BaseModel):
         """Make sure that headers are complete and update with current time (if applicable)."""
         # This method comes from Virtaal 0.2's main_window.py:Virtaal._on_file_save().
         # It makes sure that, if we are working with a PO file, that all header info is present.
+        from translate.storage.poheader import poheader, tzstring
         if isinstance(self._trans_store, poheader):
             name = self.controller.main_controller.get_translator_name()
             email = self.controller.main_controller.get_translator_email()

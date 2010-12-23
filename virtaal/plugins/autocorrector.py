@@ -25,7 +25,6 @@ import logging
 import os
 import re
 import zipfile
-from lxml import etree
 
 from virtaal.common import pan_app
 from virtaal.controllers import BasePlugin
@@ -168,6 +167,7 @@ class AutoCorrector(object):
                 return
 
         xmlstr = acor.read('DocumentList.xml')
+        from lxml import etree
         xml = etree.fromstring(xmlstr)
         # Sample element from DocumentList.xml (it has no root element!):
         #   <block-list:block block-list:abbreviated-name="teh" block-list:name="the"/>

@@ -94,7 +94,9 @@ class StoreController(BaseController):
         """Returns the file name of the bundle archive, if we are working with one."""
         if self._archivetemp:
             return self._targetfname
-        if self.project and isinstance(self.project.store, proj.BundleProjectStore):
+
+        from translate.storage.proj import BundleProjectStore
+        if self.project and isinstance(self.project.store, BundleProjectStore):
             return self.project.store.zip.filename
         return None
 
@@ -110,7 +112,8 @@ class StoreController(BaseController):
             return ''
         filename = ''
         if self.project:
-            if isinstance(self.project.store, proj.BundleProjectStore):
+            from translate.storage.bundleprojstore import BundleProjectStore
+            if isinstance(self.project.store, BundleProjectStore):
                 # This should always be the case
                 filename = self.project.store.zip.filename + ':'
                 projfname = self.project.get_proj_filename(store.get_filename())
@@ -183,7 +186,9 @@ class StoreController(BaseController):
         extension = filename.split(os.extsep)[-1]
         if extension == 'zip':
             try:
-                self.project = proj.Project(proj.BundleProjectStore(filename))
+                from translate.storage.bundleprojstore import BundleProjectStore
+                from translate.storage.project import Project
+                self.project = Project(BundleProjectStore(filename))
             except proj.InvalidBundleError, err:
                 logging.exception('Unable to load project bundle')
 
@@ -206,7 +211,9 @@ class StoreController(BaseController):
             self._targetfname = self._get_new_bundle_filename(filename)
             tempfname = self._get_new_bundle_filename(filename, force_temp=True)
             self._archivetemp = tempfname
-            self.project = proj.Project(projstore=proj.BundleProjectStore(tempfname))
+            from translate.storage.proj import BundleProjectStore
+            from translate.storage.project import Project
+            self.project = Project(projstore=BundleProjectStore(tempfname))
             srcfile, srcfilename, transfile, transfilename = self.project.add_source_convert(filename)
             self.real_filename = transfile.name
 
@@ -309,7 +316,8 @@ class StoreController(BaseController):
             if readonly:
                 # Read-only files to in the temp directory with a different
                 # layout of its filename.
-                fname, ext = proj.split_extensions(export_projfname.split('/')[-1])
+                from translate.storage.project import split_extensions
+                fname, ext = split_extensions(export_projfname.split('/')[-1])
                 fname = 'virtaal_preview_' + fname + '_'
                 ext = os.extsep + ext
                 from tempfile import mkstemp
@@ -434,7 +442,8 @@ class StoreController(BaseController):
 
             @returns: The suggested file name for the bundle."""
         from tempfile import mkstemp
-        fname, extensions = proj.split_extensions(infilename)
+        from translate.storage.project import split_extensions
+        fname, extensions = split_extensions(infilename)
 
         prefix = fname + u'_%s__%s' % (
             self.main_controller.lang_controller.source_lang.code,
@@ -488,7 +497,8 @@ class StoreController(BaseController):
             guess = os.path.join(directory, guess)
         if os.path.isfile(guess):
             directory, fname = os.path.split(guess)
-            basefname, extensions = proj.split_extensions(fname)
+            from translate.storage.project import split_extensions
+            basefname, extensions = split_extensions(fname)
             guess = basefname + u'_%s__%s' % (
                 self.main_controller.lang_controller.source_lang.code,
                 self.main_controller.lang_controller.target_lang.code

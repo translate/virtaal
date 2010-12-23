@@ -25,7 +25,6 @@ import re
 import shutil
 
 from translate.convert import factory as convert_factory
-from translate.storage import proj
 
 from virtaal.common import GObjectWrapper
 from virtaal.models import StoreModel
@@ -95,7 +94,7 @@ class StoreController(BaseController):
         if self._archivetemp:
             return self._targetfname
 
-        from translate.storage.proj import BundleProjectStore
+        from translate.storage.bundleprojstore import BundleProjectStore
         if self.project and isinstance(self.project.store, BundleProjectStore):
             return self.project.store.zip.filename
         return None
@@ -185,17 +184,17 @@ class StoreController(BaseController):
         force_saveas = False
         extension = filename.split(os.extsep)[-1]
         if extension == 'zip':
+            from translate.storage import bundleprojstore
             try:
-                from translate.storage.bundleprojstore import BundleProjectStore
                 from translate.storage.project import Project
-                self.project = Project(BundleProjectStore(filename))
-            except proj.InvalidBundleError, err:
+                self.project = Project(bundleprojstore.BundleProjectStore(filename))
+            except bundleprojstore.InvalidBundleError, err:
                 logging.exception('Unable to load project bundle')
 
             if not len(self.project.store.transfiles):
                 # FIXME: Ask the user to select a source file to convert?
                 if not len(self.project.store.sourcefiles):
-                    raise proj.InvalidBundleError(_('No source or translatable files in bundle'))
+                    raise bundleprojstore.InvalidBundleError(_('No source or translatable files in bundle'))
                 self.project.convert_forward(self.project.store.sourcefiles[0])
 
             # FIXME: Ask the user which translatable file to open?
@@ -211,9 +210,9 @@ class StoreController(BaseController):
             self._targetfname = self._get_new_bundle_filename(filename)
             tempfname = self._get_new_bundle_filename(filename, force_temp=True)
             self._archivetemp = tempfname
-            from translate.storage.proj import BundleProjectStore
+            from translate.storage import bundleprojstore
             from translate.storage.project import Project
-            self.project = Project(projstore=BundleProjectStore(tempfname))
+            self.project = Project(projstore=bundleprojstore.BundleProjectStore(tempfname))
             srcfile, srcfilename, transfile, transfilename = self.project.add_source_convert(filename)
             self.real_filename = transfile.name
 

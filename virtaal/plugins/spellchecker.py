@@ -74,9 +74,9 @@ class Plugin(BasePlugin):
         from virtaal.support.httpclient import HTTPClient
         client = HTTPClient()
         client.set_virtaal_useragent()
-        self.clients[self._lang_list] = client
+        self.clients[clients_id] = client
         if logging.root.level != logging.DEBUG:
-            self.clients[language].get(url, callback)
+            client.get(url, callback)
         else:
             def error_log(request, result):
                 logging.debug('Could not get %s: status %d' % (url, request.status))

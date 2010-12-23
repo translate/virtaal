@@ -439,7 +439,7 @@ def add_win32_options(options):
             # translate.lang and translate.storage contain classes that are
             # imported dynamically, therefore we need to add them here,
             # otherwise py2exe doesn't find them.
-            "packages":   ["encodings", "translate.lang", "translate.storage", "virtaal"],
+            "packages":   ["encodings", "translate.lang", "translate.storage._factory_classes", "virtaal"],
             "compressed": True,
             "excludes":   ["PyLucene", "Tkconstants", "Tkinter", "tcl",
                 # strange things unnecessarily included with some versions of pyenchant:

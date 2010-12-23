@@ -34,35 +34,38 @@ if os_name == 'nt':
     sys.stderr = open(filename_template % ('stderr'), 'w')
 
 # Let's check for dependencies before we do anything else
-from virtaal.support import depcheck
-optional_modules = ['enchant', 'gtkspell', 'psycopg2']
-error_messages = {
-    'translate':  'Translate Toolkit >= %s is required for Virtaal to function.' % str(depcheck.MIN_TRANSLATE_VERSION),
-    'gtk':        'Gtk >= 2.12.0 and PyGTK is required for Virtaal to function.',
-    'gtk.glade':  'Python bindings for Glade is required for Virtaal to function.',
-    'lxml.etree': 'LXML is required for XML-based format support as well as AutoCorrection.',
-    'json':       'SimpleJSON or Python >= 2.6 is required for certain TM back-ends.',
-    'pycurl':     'PyCurl is required for certain TM and terminology back-ends.',
-    'sqlite3':    'SQLite3 is required for Virtaal to function.',
-    'wsgiref':    'WSGIRef is required for Virtaal to function.',
-    'enchant':    'Enchant not installed: Spell checking will not work.',
-    'gtkspell':   'GtkSpell not installed: Spell checking will not work.',
-    'psycopg2':   'PsycoPG not installed: The TinyTM plug-in will not work.'
-}
+if not getattr(sys, 'frozen', False):
+    # We can't meaningfully report on these, and we build our own windows
+    # version, so let's leave this out for the benefit of startup time.
+    from virtaal.support import depcheck
+    optional_modules = ['enchant', 'gtkspell', 'psycopg2']
+    error_messages = {
+        'translate':  'Translate Toolkit >= %s is required for Virtaal to function.' % str(depcheck.MIN_TRANSLATE_VERSION),
+        'gtk':        'Gtk >= 2.12.0 and PyGTK is required for Virtaal to function.',
+        'gtk.glade':  'Python bindings for Glade is required for Virtaal to function.',
+        'lxml.etree': 'LXML is required for XML-based format support as well as AutoCorrection.',
+        'json':       'SimpleJSON or Python >= 2.6 is required for certain TM back-ends.',
+        'pycurl':     'PyCurl is required for certain TM and terminology back-ends.',
+        'sqlite3':    'SQLite3 is required for Virtaal to function.',
+        'wsgiref':    'WSGIRef is required for Virtaal to function.',
+        'enchant':    'Enchant not installed: Spell checking will not work.',
+        'gtkspell':   'GtkSpell not installed: Spell checking will not work.',
+        'psycopg2':   'PsycoPG not installed: The TinyTM plug-in will not work.'
+    }
 
-failed = depcheck.check_dependencies(depcheck.import_checks + optional_modules)
-if failed:
-    errors = '\n'.join([error_messages[name] for name in failed if name in depcheck.import_checks])
-    warnings = '\n'.join([error_messages[name] for name in failed if name in optional_modules])
+    failed = depcheck.check_dependencies(depcheck.import_checks + optional_modules)
+    if failed:
+        errors = '\n'.join([error_messages[name] for name in failed if name in depcheck.import_checks])
+        warnings = '\n'.join([error_messages[name] for name in failed if name in optional_modules])
 
-    if warnings:
-        print 'DEPENDENCY WARNINGS:'
-        print warnings
-    if errors:
-        print 'DEPENDENCY ERRORS:'
-        print errors
-        import sys
-        sys.exit(1)
+        if warnings:
+            print 'DEPENDENCY WARNINGS:'
+            print warnings
+        if errors:
+            print 'DEPENDENCY ERRORS:'
+            print errors
+            import sys
+            sys.exit(1)
 # OK, dependencies seem to be acceptable
 
 import logging

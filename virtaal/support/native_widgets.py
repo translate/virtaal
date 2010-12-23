@@ -54,10 +54,10 @@ def _dialog_to_use():
     return None # default
 
 # Hardcode for testing:
-#dialog_to_use = _dialog_to_use()
+dialog_to_use = _dialog_to_use()
 #dialog_to_use = 'kdialog'
 #dialog_to_use = 'win32'
-dialog_to_use = None
+#dialog_to_use = None
 
 _file_types = []
 

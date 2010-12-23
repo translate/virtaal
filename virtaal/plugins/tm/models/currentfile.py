@@ -118,6 +118,19 @@ class TMModel(BaseTMModel):
             if xmlelement is not None:
                 origin = alt.xmlelement.get('origin', '')
                 if origin:
+                    if origin == "lmc":
+                        # Experimental code to test lmc research. Everything
+                        # in a try block, just in case.
+                        try:
+                            from lxml import etree
+                            import os.path
+                            extras = xmlelement.xpath('processing-instruction()')
+                            meta = dict((pi.target, pi.text) for pi in extras)
+                            tmsource = [meta.get("contact-name", ""), meta.get("category", ""), os.path.splitext(meta.get("original", ""))[0]]
+                            tmsource = u"\n".join(filter(None, tmsource))
+                        except Exception, e:
+                            logging.info(e)
+
                     tmsource += "\n" + origin
 
             results.append({

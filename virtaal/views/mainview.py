@@ -282,21 +282,21 @@ class MainView(BaseView):
                         all_supported_filter.add_mime_type(mimetype)
                 self._open_chooser.add_filter(new_filter)
 
-            doc_filter = gtk.FileFilter()
-            doc_filter.set_name(_('Translatable documents'))
-            from translate.convert import factory as convert_factory
-            for extension in convert_factory.converters.keys():
-                if isinstance(extension, tuple):
-                    continue # Skip extensions that need templates
-                doc_filter.add_pattern('*.' + extension)
-                all_supported_filter.add_pattern('*.' + extension)
-            self._open_chooser.add_filter(doc_filter)
+            #doc_filter = gtk.FileFilter()
+            #doc_filter.set_name(_('Translatable documents'))
+            #from translate.convert import factory as convert_factory
+            #for extension in convert_factory.converters.keys():
+            #    if isinstance(extension, tuple):
+            #        continue # Skip extensions that need templates
+            #    doc_filter.add_pattern('*.' + extension)
+            #    all_supported_filter.add_pattern('*.' + extension)
+            #self._open_chooser.add_filter(doc_filter)
 
-            proj_filter = gtk.FileFilter()
-            proj_filter.set_name(_('Translate project bundles'))
-            proj_filter.add_pattern('*.zip')
-            all_supported_filter.add_pattern('*.zip')
-            self._open_chooser.add_filter(proj_filter)
+            #proj_filter = gtk.FileFilter()
+            #proj_filter.set_name(_('Translate project bundles'))
+            #proj_filter.add_pattern('*.zip')
+            #all_supported_filter.add_pattern('*.zip')
+            #self._open_chooser.add_filter(proj_filter)
 
             all_filter = gtk.FileFilter()
             all_filter.set_name(_("All Files"))

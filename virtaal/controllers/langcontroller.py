@@ -122,6 +122,8 @@ class LanguageController(BaseController):
         self.source_lang = srclang
         self.target_lang = tgtlang
         self.view.update_recent_pairs()
+        if self.source_lang == self.target_lang:
+            self.view.notify_same_langs()
 
 
     # METHODS #

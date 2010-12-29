@@ -51,13 +51,6 @@ def gtk_table_compute_optimal_height(widget, width):
         # width / 2 because we use half of the available width
         compute_optimal_height(child, width / 2)
 
-def make_pango_layout(widget, text, width):
-    pango_layout = pango.Layout(widget.get_pango_context())
-    pango_layout.set_width(width * pango.SCALE)
-    pango_layout.set_wrap(pango.WRAP_WORD_CHAR)
-    pango_layout.set_text(text or u"")
-    return pango_layout
-
 @compute_optimal_height.when_type(gtk.TextView)
 def gtk_textview_compute_optimal_height(widget, width):
     if not widget.props.visible:
@@ -80,7 +73,7 @@ def gtk_textview_compute_optimal_height(widget, width):
             buftext = lang.alter_length(text)
             buftext = markup.escape(buftext)
 
-    _w, h = make_pango_layout(widget, buftext, width - border).get_pixel_size()
+    _w, h = rendering.make_pango_layout(widget, buftext, width - border).get_pixel_size()
     if h == 0:
         # No idea why this bug happens, but it often happens for the first unit
         # directly after the file is opened. For now we try to guess a more
@@ -96,7 +89,7 @@ def gtk_label_compute_optimal_height(widget, width):
     if widget.get_text().strip() == "":
         widget.set_size_request(width, 0)
     else:
-        _w, h = make_pango_layout(widget, widget.get_label(), width).get_pixel_size()
+        _w, h = rendering.make_pango_layout(widget, widget.get_label(), width).get_pixel_size()
         widget.set_size_request(width, h)
 
 

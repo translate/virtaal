@@ -43,6 +43,14 @@ def get_role_font_description(role):
     elif role == 'target':
         return get_target_font_description()
 
+def make_pango_layout(widget, text, width):
+    pango_layout = pango.Layout(widget.get_pango_context())
+    pango_layout.set_width(width * pango.SCALE)
+    pango_layout.set_wrap(pango.WRAP_WORD_CHAR)
+    pango_layout.set_text(text or u"")
+    return pango_layout
+
+
 _languages = {}
 
 def get_language(code):

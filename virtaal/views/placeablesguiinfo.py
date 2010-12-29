@@ -23,9 +23,8 @@ import gtk.gdk
 import pango
 from translate.storage.placeables import base, StringElem, general, xliff
 
-from virtaal.views import rendering
+from virtaal.views.rendering import get_role_font_description, make_pango_layout
 from virtaal.views import theme
-from virtaal.views.widgets.storecellrenderer import make_pango_layout
 
 
 class StringElemGUI(object):
@@ -359,7 +358,7 @@ class UnknownXMLGUI(StringElemGUI):
             self.widgets[0].set_text('{%s' % (info))
 
         for lbl in self.widgets:
-            lbl.modify_font(rendering.get_role_font_description(self.textbox.role))
+            lbl.modify_font(get_role_font_description(self.textbox.role))
             w, h = make_pango_layout(self.textbox, u'{foo}', 100).get_pixel_size()
             lbl.set_size_request(-1, int(h/1.2))
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2010 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -259,6 +259,16 @@ class TMMatchRenderer(gtk.GenericCellRenderer):
         height = self._compute_cell_height(widget, width)
 
         x = cell_area.x + x_offset
+        if not self.source_layout:
+            # We do less for MT results
+            print cell_area.y
+            print y_offset
+            target_y = cell_area.y + y_offset
+            target_dx = self.BOX_MARGIN
+            widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False,
+                    cell_area, widget, '', x + target_dx, target_y, self.target_layout)
+            return
+
         source_height = self.source_layout.get_pixel_size()[1]
         source_y = cell_area.y + y_offset
         target_y = cell_area.y + y_offset + source_height + self.LINE_SEPARATION
@@ -277,21 +287,29 @@ class TMMatchRenderer(gtk.GenericCellRenderer):
         srclang = self.view.controller.main_controller.lang_controller.source_lang.code
         tgtlang = self.view.controller.main_controller.lang_controller.target_lang.code
 
-        self.source_layout = self._get_pango_layout(
-            widget, self.matchdata['source'], width - (2*self.BOX_MARGIN),
-            rendering.get_source_font_description(),
-            self.matchdata['query_str']
-        )
-        self.source_layout.get_context().set_language(rendering.get_language(srclang))
-
         self.target_layout = self._get_pango_layout(
             widget, self.matchdata['target'], width - (2*self.BOX_MARGIN),
             rendering.get_target_font_description()
         )
         self.target_layout.get_context().set_language(rendering.get_language(tgtlang))
 
-        height = self.source_layout.get_pixel_size()[1] + self.target_layout.get_pixel_size()[1]
-        return height + self.LINE_SEPARATION + self.ROW_PADDING
+        if self.matchdata.get('quality', 0) == 0 and \
+                self.matchdata['source'] == self.matchdata['query_str']:
+            # We do less for MT results
+            self.source_layout = None
+            height = self.target_layout.get_pixel_size()[1]
+            return height + self.ROW_PADDING
+
+        else:
+            self.source_layout = self._get_pango_layout(
+                widget, self.matchdata['source'], width - (2*self.BOX_MARGIN),
+                rendering.get_source_font_description(),
+                self.matchdata['query_str']
+            )
+            self.source_layout.get_context().set_language(rendering.get_language(srclang))
+
+            height = self.source_layout.get_pixel_size()[1] + self.target_layout.get_pixel_size()[1]
+            return height + self.LINE_SEPARATION + self.ROW_PADDING
 
     def _get_pango_layout(self, widget, text, width, font_description, diff_text=u""):
         '''Gets the Pango layout used in the cell in a TreeView widget.'''

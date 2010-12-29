@@ -53,7 +53,7 @@ class TMWindow(gtk.Window):
     def _create_treeview(self):
         self.liststore = gtk.ListStore(gobject.TYPE_PYOBJECT, gobject.TYPE_STRING)
         treeview = gtk.TreeView(model=self.liststore)
-        treeview.set_rules_hint(True)
+        treeview.set_rules_hint(False)
         treeview.set_headers_visible(False)
 
         self.perc_renderer = gtk.CellRendererProgress()

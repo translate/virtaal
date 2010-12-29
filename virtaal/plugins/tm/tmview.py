@@ -45,8 +45,8 @@ class TMView(BaseView, GObjectWrapper):
         self.controller = controller
         self.isvisible = False
         self.max_matches = max_matches
-        self._may_show_tmwindow = False
-        self._should_show_tmwindow = False
+        self._may_show_tmwindow = True # is it allowed to display now (application is in focus)
+        self._should_show_tmwindow = False # should it be displayed now (even if it doesn't, due to application focus?
         self._signal_ids = []
 
         self.tmwindow = TMWindow(self)

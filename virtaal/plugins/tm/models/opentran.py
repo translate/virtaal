@@ -27,6 +27,7 @@ from basetmmodel import BaseTMModel
 # Some names are a bit too long, so let's "translate" them to something shorter
 new_names = {
         'OpenOffice.org': 'OpenOffice',
+        'Debian Installer': 'Debian Inst.',
 }
 
 class TMModel(BaseTMModel):

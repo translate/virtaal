@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gtk
+import pango
 from translate.lang import factory as lang_factory
 
 from virtaal.common.pan_app import ui_language
@@ -48,7 +49,6 @@ class ChecksUnitView(BaseView):
         self._listsep = lang_factory.getlanguage(ui_language).listseperator
 
     def _create_checks_button(self, widget, main_window):
-        import pango
         self.lbl_btnchecks = gtk.Label()
         self.lbl_btnchecks.show()
         self.lbl_btnchecks.set_ellipsize(pango.ELLIPSIZE_END)
@@ -75,12 +75,15 @@ class ChecksUnitView(BaseView):
 
         self.lst_checks = gtk.ListStore(str, str)
         self.tvw_checks = gtk.TreeView()
-        self.tvw_checks.append_column(
-            gtk.TreeViewColumn(_('Quality Check'), gtk.CellRendererText(), text=self.COL_CHECKNAME)
-        )
-        self.tvw_checks.append_column(
-            gtk.TreeViewColumn(_('Description'), gtk.CellRendererText(), text=self.COL_DESC)
-        )
+        name_column = gtk.TreeViewColumn(_('Quality Check'), gtk.CellRendererText(), text=self.COL_CHECKNAME)
+        name_column.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+        self.tvw_checks.append_column(name_column)
+
+        description_renderer = gtk.CellRendererText()
+        #description_renderer.set_property('wrap-mode', pango.WRAP_WORD_CHAR)
+        description_column = gtk.TreeViewColumn(_('Description'), description_renderer, text=self.COL_DESC)
+        description_column.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+        self.tvw_checks.append_column(description_column)
         self.tvw_checks.set_model(self.lst_checks)
         self.tvw_checks.get_selection().set_mode(gtk.SELECTION_NONE)
 

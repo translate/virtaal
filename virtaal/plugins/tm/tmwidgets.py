@@ -261,8 +261,6 @@ class TMMatchRenderer(gtk.GenericCellRenderer):
         x = cell_area.x + x_offset
         if not self.source_layout:
             # We do less for MT results
-            print cell_area.y
-            print y_offset
             target_y = cell_area.y + y_offset
             target_dx = self.BOX_MARGIN
             widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False,

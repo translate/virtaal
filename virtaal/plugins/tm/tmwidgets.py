@@ -274,7 +274,7 @@ class TMMatchRenderer(gtk.GenericCellRenderer):
         source_dx = target_dx = self.BOX_MARGIN
 
         widget.get_style().paint_box(window, gtk.STATE_NORMAL, gtk.SHADOW_IN,
-                cell_area, widget, '', x, source_y-(self.ROW_PADDING/4), width-self.BOX_MARGIN, source_height+(self.LINE_SEPARATION/2))
+                cell_area, widget, '', x, source_y-self.BOX_MARGIN, width-self.BOX_MARGIN, source_height+(self.LINE_SEPARATION/2))
         widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False,
                 cell_area, widget, '', x + source_dx, source_y, self.source_layout)
         widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False,

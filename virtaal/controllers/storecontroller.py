@@ -223,6 +223,8 @@ class StoreController(BaseController):
             self.store = StoreModel(filename, self)
 
         if len(self.store.get_units()) < 1:
+            # clean up, otherwise self.store still contains the store
+            self.close_file()
             raise ValueError(_('The file contains nothing to translate.'))
 
         self._modified = False

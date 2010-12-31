@@ -168,7 +168,7 @@ class MainController(BaseController):
 
 
     # METHODS #
-    def open_file(self, filename=None, uri=''):
+    def open_file(self, filename=None, uri='', forget_dir=False):
         """Open the file given by C{filename}.
             @returns: The filename opened, or C{None} if an error has occurred."""
         if filename is None:
@@ -191,7 +191,7 @@ class MainController(BaseController):
                 return False
 
         try:
-            self.store_controller.open_file(filename, uri)
+            self.store_controller.open_file(filename, uri, forget_dir=forget_dir)
             self.mode_controller.refresh_mode()
             return True
         except Exception, exc:
@@ -204,7 +204,8 @@ class MainController(BaseController):
 
     def open_tutorial(self):
         filename = pan_app.get_abs_data_filename(["virtaal", "tutorial.pot"])
-        self.open_file(filename)
+        self.open_file(filename, forget_dir=True)
+
 
     def save_file(self, filename=None, force_saveas=False):
         # we return True on success

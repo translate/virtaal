@@ -180,7 +180,7 @@ class StoreController(BaseController):
         else:
             self.cursor.index = i
 
-    def open_file(self, filename, uri=''):
+    def open_file(self, filename, uri='', forget_dir=False):
         force_saveas = False
         extension = filename.split(os.extsep)[-1]
         if extension == 'zip':
@@ -229,10 +229,15 @@ class StoreController(BaseController):
 
         self._modified = False
 
-        # if file is a template force saveas
+        # if file is a template, force saveas
         if _pot_re.search(filename):
             force_saveas = True
             self.store._trans_store.filename = _pot_re.sub('.po', filename)
+
+        # forgetting the directory only makes sense if we force save as
+        if force_saveas and forget_dir:
+            filename = os.path.split(filename)[1]
+            self.store._trans_store.filename = filename
 
         self.main_controller.set_force_saveas(force_saveas)
         self.main_controller.set_saveable(self._modified)

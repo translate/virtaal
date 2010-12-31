@@ -89,15 +89,16 @@ class ListNavigator(gtk.HBox):
     def move_state(self, offset):
         # XXX: Adapted from ActivityEntry._on_key_press_event
         #      (from the hamster-applet project)
-        cursor = self.tvw_items.get_cursor()
-
-        if not cursor or not cursor[0]:
-            self.tvw_items.set_cursor(0)
-            return
-
-        i = cursor[0][0] + offset
+        model, itr = self.tvw_items.get_selection().get_selected()
+        path = model.get_path(itr)
+        i = path[0] + offset
         # keep it in the sane borders
         i = min(max(i, 0), len(self.tvw_items.get_model()) - 1)
+
+        _itr = model.get_iter(i)
+        selected_name  = model.get_value(itr, self.COL_DISPLAY)
+        if selected_name in self.unselectable:
+            return
 
         self.tvw_items.scroll_to_cell(i, use_align=True, row_align=0.4)
         self.tvw_items.set_cursor(i)

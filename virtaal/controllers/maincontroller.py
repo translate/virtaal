@@ -212,11 +212,7 @@ class MainController(BaseController):
         if not filename and (self.get_force_saveas() or force_saveas):
             filename = self.store_controller.get_bundle_filename()
             if filename is None:
-                store_filename = self.get_store_filename()
-                if store_filename:
-                    directory, filename = os.path.split(store_filename)
-                else:
-                    filename = ''
+                store_filename = self.get_store_filename() or ''
             filename = self.view.show_save_dialog(current_filename=filename)
             if not filename:
                 return False

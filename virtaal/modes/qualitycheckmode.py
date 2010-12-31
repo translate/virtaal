@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import locale
 import gtk
 
 from virtaal.views.widgets.popupmenubutton import PopupMenuButton, POS_NW_SW
@@ -113,7 +114,7 @@ class QualityCheckMode(BaseMode):
             mi.disconnect
             menu.remove(mi)
         assert not menu.get_children()
-        for check_name, display_name in self.checks_names.iteritems():
+        for check_name, display_name in sorted(self.checks_names.iteritems(), key=lambda x: x[1], cmp=locale.strcoll):
             #l10n: %s is the name of the check and must be first. %d is the number of failures
             menuitem = gtk.CheckMenuItem(label="%s (%d)" % (display_name, len(self.stats[check_name])))
             menuitem.set_active(check_name in self.filter_checks)

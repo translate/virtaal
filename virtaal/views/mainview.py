@@ -622,7 +622,7 @@ class MainView(BaseView):
             return filename
 
     def show_save_confirm_dialog(self):
-        """@returns: One of C{'save'}, C{'discard'}, C{'cancel'} or C{''},
+        """@returns: One of C{'save'}, C{'discard'}, or C{'cancel'},
             depending on the button pressed."""
         self.confirm_dialog.set_transient_for(self._top_window)
         old_top = self._top_window

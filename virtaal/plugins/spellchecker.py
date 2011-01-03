@@ -294,7 +294,7 @@ class Plugin(BasePlugin):
 
             m = _dict_add_re.match(label)
             if m:
-                word = m.group()
+                word = m.group(1)
                 #l10n: This refers to the spell checking dictionary
                 item.set_property('label', _('Add "%s" to Dictionary') % word)
 

@@ -594,7 +594,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             statenav.set_tooltips_text(
                 _("Move one step back in the workflow (Ctrl+Shift+Enter)"), \
                 _("Click to move to a specific state in the workflow"), \
-                _("Move one step foward in the workflow (Ctrl+Enter)")
+                _("Move one step forward in the workflow (Ctrl+Enter)")
             )
             statenav.connect('selection-changed', self._on_state_changed)
             self._widgets['vbox_right'].pack_end(statenav, expand=False, fill=False)

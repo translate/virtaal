@@ -21,6 +21,9 @@
 import logging
 import os
 import os.path
+import re
+from gettext import dgettext
+import gobject
 
 from virtaal.common import pan_app
 from virtaal.controllers import BasePlugin
@@ -32,6 +35,9 @@ if not pan_app.DEBUG:
         psyco = None
 else:
     psyco = None
+
+_dict_add_re = re.compile('Add "(.*)" to Dictionary')
+
 
 class Plugin(BasePlugin):
     """A plugin to control spell checking.
@@ -56,17 +62,44 @@ class Plugin(BasePlugin):
         self.gtkspell = gtkspell
         self.enchant = enchant
 
-        self.unit_view = main_controller.unit_controller.view
+        unit_view = main_controller.unit_controller.view
+        self.unit_view = unit_view
         self._connect_id = self.unit_view.connect('textview-language-changed', self._on_unit_lang_changed)
+
+        self._textbox_ids = []
+        self._unitview_ids = []
+        # For some reason the i18n of gtkspell doesn't work on Windows, so we
+        # intervene. We also don't want the Languages submenu, so we remove it.
+        if unit_view.sources:
+            self._connect_to_textboxes(unit_view, unit_view.sources)
+        else:
+            self._unitview_ids.append(unit_view.connect('sources-created', self._connect_to_textboxes))
+        if unit_view.targets:
+            self._connect_to_textboxes(unit_view, unit_view.targets)
+        else:
+            self._unitview_ids.append(unit_view.connect('targets-created', self._connect_to_textboxes))
+
         self.clients = {}
         self.languages = set()
 
     def destroy(self):
         """Remove signal connections and disable spell checking."""
+        for id in self._unitview_ids:
+            self.unit_view.disconnect(id)
+        for textbox, id in self._textbox_ids:
+            textbox.disconnect(id)
         if getattr(self, '_connect_id', None):
             self.unit_view.disconnect(self._connect_id)
         for text_view in self.unit_view.sources + self.unit_view.targets:
             self._disable_checking(text_view)
+
+    def _connect_to_textboxes(self, unitview, textboxes):
+        for textbox in textboxes:
+            self._textbox_ids.append((
+                textbox,
+                textbox.connect('populate-popup', self._on_populate_popup)
+            ))
+
 
     # METHODS #
 
@@ -228,3 +261,48 @@ class Plugin(BasePlugin):
 
     if psyco:
         psyco.cannotcompile(_on_unit_lang_changed)
+
+    def _on_populate_popup(self, textbox, menu):
+        # We can't work with the menu immediately, since gtkspell only adds its
+        # entries in the event handler.
+        gobject.idle_add(self._fix_menu, menu)
+
+    def _fix_menu(self, menu):
+        _entries_above_separator = False
+        _now_remove_separator = False
+        for item in menu:
+            if item.get_name() == 'GtkSeparatorMenuItem':
+                if not _entries_above_separator:
+                    menu.remove(item)
+                break
+
+            label = item.get_property('label')
+
+            # For some reason the i18n of gtkspell doesn't work on Windows, so
+            # we intervene.
+            if label == "<i>(no suggestions)</i>":
+                #l10n: This refers to spell checking
+                item.set_property('label', _("<i>(no suggestions)</i>"))
+
+            if label == "Ignore All":
+                #l10n: This refers to spell checking
+                item.set_property('label', _("Ignore All"))
+
+            if label == "More...":
+                #l10n: This refers to spelling suggestions
+                item.set_property('label', _("More..."))
+
+            m = _dict_add_re.match(label)
+            if m:
+                word = m.group()
+                #l10n: This refers to the spell checking dictionary
+                item.set_property('label', _('Add "%s" to Dictionary') % word)
+
+            # We don't want a language selector - we have our own
+            if label in dgettext('gtkspell', 'Languages'):
+                menu.remove(item)
+                if not _entries_above_separator:
+                    _now_remove_separator = True
+                    continue
+
+            _entries_above_separator = True

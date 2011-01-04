@@ -18,6 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import locale
+
 import gtk
 import pango
 from translate.lang import factory as lang_factory
@@ -117,9 +119,11 @@ class ChecksUnitView(BaseView):
             return
 
         self.lst_checks.clear()
+        nice_name = self.controller.get_check_name
+        sorted_failures = sorted(failures.iteritems(), key=lambda x: nice_name(x[0]), cmp=locale.strcoll)
         names = []
-        for testname, desc in failures.iteritems():
-            testname = self.controller.get_check_name(testname)
+        for testname, desc in sorted_failures:
+            testname = nice_name(testname)
             self.lst_checks.append([testname, desc])
             names.append(testname)
 

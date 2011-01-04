@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2010 Zuza Software Foundation
+# Copyright 2010-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -72,10 +72,16 @@ class Plugin(BasePlugin):
         # intervene. We also don't want the Languages submenu, so we remove it.
         if unit_view.sources:
             self._connect_to_textboxes(unit_view, unit_view.sources)
+            srclang = main_controller.lang_controller.source_lang.code
+            for textview in unit_view.sources:
+                self._on_unit_lang_changed(unit_view, textview, srclang)
         else:
             self._unitview_ids.append(unit_view.connect('sources-created', self._connect_to_textboxes))
         if unit_view.targets:
             self._connect_to_textboxes(unit_view, unit_view.targets)
+            tgtlang = main_controller.lang_controller.target_lang.code
+            for textview in unit_view.targets:
+                self._on_unit_lang_changed(unit_view, textview, tgtlang)
         else:
             self._unitview_ids.append(unit_view.connect('targets-created', self._connect_to_textboxes))
 

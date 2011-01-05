@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009 Zuza Software Foundation
+# Copyright 2009-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -66,8 +66,12 @@ class SelectDialog(GObjectWrapper):
             self.dialog.set_parent(parent)
         self.dialog.set_title(title is not None and title or 'Select items')
         self.message = gtk.Label(message is not None and message or '')
-        self.dialog.child.add(self.message)
-        self.dialog.child.add(self.sview)
+        self.dialog.child.pack_start(self.message, expand=False, fill=False, padding=10)
+
+        scrolled_window = gtk.ScrolledWindow()
+        scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        scrolled_window.add_with_viewport(self.sview)
+        self.dialog.child.pack_end(scrolled_window, expand=True, fill=True)
         self.dialog.add_buttons(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
 
 

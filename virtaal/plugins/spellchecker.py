@@ -205,6 +205,8 @@ class Plugin(BasePlugin):
 
     def _disable_checking(self, text_view):
         """Disable checking on the given text_view."""
+        if getattr(text_view, 'spell_lang', 'xxxx') is None:
+            return
         spell = None
         try:
             spell = self.gtkspell.get_from_text_view(text_view)
@@ -256,6 +258,8 @@ class Plugin(BasePlugin):
             return
 
         try:
+            if getattr(text_view, 'spell_lang', None) == language:
+                return
             spell = None
             try:
                 spell = self.gtkspell.get_from_text_view(text_view)

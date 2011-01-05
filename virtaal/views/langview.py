@@ -124,7 +124,7 @@ class LanguageView(BaseView):
         for child in statusbar.get_children():
             if child is self.popupbutton:
                 return
-        statusbar.pack_start(self.popupbutton, expand=False)
+        statusbar.pack_end(self.popupbutton, expand=False)
         statusbar.show_all()
 
     def update_recent_pairs(self):

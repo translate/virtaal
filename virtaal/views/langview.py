@@ -24,12 +24,10 @@ import gtk
 import gtk.gdk
 import logging
 
-from virtaal.common import GObjectWrapper, pan_app
+from virtaal.common import GObjectWrapper
 from virtaal.models import LanguageModel
 
 from baseview import BaseView
-from widgets.langadddialog import LanguageAddDialog
-from widgets.langselectdialog import LanguageSelectDialog
 from widgets.popupmenubutton import PopupMenuButton
 
 
@@ -45,6 +43,8 @@ class LanguageView(BaseView):
         self._init_gui()
 
     def _create_dialogs(self):
+        from widgets.langselectdialog import LanguageSelectDialog
+        from widgets.langadddialog import LanguageAddDialog
         langs = [LanguageModel(lc) for lc in LanguageModel.languages]
         langs.sort(key=lambda x: x.name)
         self.select_dialog = LanguageSelectDialog(langs, parent=self.controller.main_controller.view.main_window)

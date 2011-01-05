@@ -63,7 +63,7 @@ class SelectDialog(GObjectWrapper):
         self.dialog = gtk.Dialog()
         self.dialog.set_modal(True)
         if isinstance(parent, gtk.Widget):
-            self.dialog.set_parent(parent)
+            self.set_transient_for(parent)
         self.dialog.set_title(title is not None and title or 'Select items')
         self.message = gtk.Label(message is not None and message or '')
         self.dialog.child.pack_start(self.message, expand=False, fill=False, padding=10)

@@ -164,12 +164,13 @@ class TMView(BaseView, GObjectWrapper):
         self.tmwindow.hide()
         self.isvisible = False
 
-    def select_backends(self, menuitem):
+    def select_backends(self, parent):
         selectdlg = SelectDialog(
             #l10n: The 'sources' here refer to different translation memory plugins,
             #such as local tm, open-tran.eu, the current file, etc.
             title=_('Select sources of Translation Memory'),
             message=_('Select the sources that should be queried for translation memory'),
+            parent=parent,
             size=(400, 580),
         )
         selectdlg.set_icon(self.controller.main_controller.view.main_window.get_icon())

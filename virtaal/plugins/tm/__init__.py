@@ -51,7 +51,7 @@ class Plugin(BasePlugin):
 
     # METHODS #
     def configure(self, parent):
-        self.tmcontroller.view.select_backends(None)
+        self.tmcontroller.view.select_backends(parent)
 
     def destroy(self):
         self.config = self.tmcontroller.config

@@ -160,10 +160,11 @@ class TerminologyView(BaseView):
         for gobj, signal_id in self._signal_ids:
             gobj.disconnect(signal_id)
 
-    def select_backends(self, menuitem):
+    def select_backends(self, parent):
         selectdlg = SelectDialog(
             title=_('Select Terminology Sources'),
             message=_('Select the sources of terminology suggestions'),
+            parent=parent,
             size=(self.controller.config['backends_dialog_width'], 300),
         )
         selectdlg.set_icon(self.controller.main_controller.view.main_window.get_icon())

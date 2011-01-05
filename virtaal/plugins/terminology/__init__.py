@@ -51,7 +51,7 @@ class Plugin(BasePlugin):
         self.termcontroller = TerminologyController(self.main_controller, self.config)
 
     def configure(self, parent):
-        self.termcontroller.view.select_backends(None)
+        self.termcontroller.view.select_backends(parent)
 
     def destroy(self):
         self.config = self.termcontroller.config

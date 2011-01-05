@@ -251,6 +251,9 @@ class Plugin(BasePlugin):
                 return
 
         language = self._seen_languages.get(language, language)
+        if language is None:
+            self._disable_checking(text_view)
+            return
 
         try:
             spell = None

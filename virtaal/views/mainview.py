@@ -739,7 +739,7 @@ class MainView(BaseView):
         for widget_name in ('mnu_saveas', 'mnu_close', 'mnu_update', 'mnu_export', 'mnu_exportopen', 'mnu_preview'):
             self.gui.get_widget(widget_name).set_sensitive(False)
         self.status_bar.set_sensitive(False)
-        self.main_window.set_title(_('Virtaal'));
+        self.main_window.set_title(_('Virtaal'))
 
     def _on_store_loaded(self, store_controller):
         self.gui.get_widget('mnu_saveas').set_sensitive(True)

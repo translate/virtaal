@@ -198,6 +198,7 @@ class Plugin(BasePlugin):
             DICTDIR = os.path.join(os.environ['APPDATA'], 'enchant', 'myspell')
             self._ensure_dir(DICTDIR)
             tar.extractall(DICTDIR)
+            self._seen_languages.pop(language, None)
             self.unit_view.update_languages()
         else:
             logging.debug("Couldn't get a dictionary. Status code: %d" % (request.status))

@@ -61,10 +61,14 @@ class Plugin(BasePlugin):
         import enchant
         self.gtkspell = gtkspell
         self.enchant = enchant
+        # languages that we've handled before:
         self._seen_languages = {}
+        # languages supported by enchant:
         self._enchant_languages = self.enchant.list_languages()
 
+        # HTTP clients (Windows only)
         self.clients = {}
+        # downloadable languages (Windows only)
         self.languages = set()
 
         unit_view = main_controller.unit_controller.view
@@ -206,6 +210,7 @@ class Plugin(BasePlugin):
     def _disable_checking(self, text_view):
         """Disable checking on the given text_view."""
         if getattr(text_view, 'spell_lang', 'xxxx') is None:
+            # No change necessary - already disabled
             return
         spell = None
         try:
@@ -259,6 +264,7 @@ class Plugin(BasePlugin):
 
         try:
             if getattr(text_view, 'spell_lang', None) == language:
+                # No change necessary - already enabled
                 return
             spell = None
             try:

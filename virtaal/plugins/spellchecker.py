@@ -262,10 +262,15 @@ class Plugin(BasePlugin):
             self._disable_checking(text_view)
             return
 
+        if getattr(text_view, 'spell_lang', None) == language:
+            # No change necessary - already enabled
+            return
+        gobject.idle_add(self._activate_checker, text_view, language, priority=gobject.PRIORITY_LOW)
+
+    def _activate_checker(self, text_view, language):
+        # All the expensive stuff in here called on idle. We mush also isolate
+        # this away from psyco
         try:
-            if getattr(text_view, 'spell_lang', None) == language:
-                # No change necessary - already enabled
-                return
             spell = None
             try:
                 spell = self.gtkspell.get_from_text_view(text_view)
@@ -275,9 +280,7 @@ class Plugin(BasePlugin):
                 # anyway, so let's ignore it and hope for the best.
                 pass
             if spell is None:
-                def _enable(text_view, language):
-                    spell = self.gtkspell.Spell(text_view, language)
-                gobject.idle_add(_enable, text_view, language, priority=gobject.PRIORITY_LOW)
+                spell = self.gtkspell.Spell(text_view, language)
             else:
                 spell.set_language(language)
                 spell.recheck_all()
@@ -286,9 +289,10 @@ class Plugin(BasePlugin):
             logging.exception("Could not initialize spell checking", e)
             self.gtkspell = None
             #TODO: unload plugin
-
     if psyco:
-        psyco.cannotcompile(_on_unit_lang_changed)
+        # Some of the gtkspell stuff can't work with psyco and will dump core
+        # if we don't avoid psyco compilation
+        psyco.cannotcompile(_activate_checker)
 
     def _on_populate_popup(self, textbox, menu):
         # We can't work with the menu immediately, since gtkspell only adds its

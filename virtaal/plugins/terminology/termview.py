@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009-2010 Zuza Software Foundation
+# Copyright 2009-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -164,7 +164,7 @@ class TerminologyView(BaseView):
         selectdlg = SelectDialog(
             title=_('Select Terminology Sources'),
             message=_('Select the sources of terminology suggestions'),
-            size=(self.controller.config['backends_dialog_width'], -1),
+            size=(self.controller.config['backends_dialog_width'], 300),
         )
         selectdlg.set_icon(self.controller.main_controller.view.main_window.get_icon())
 

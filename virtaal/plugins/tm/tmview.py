@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -169,7 +169,8 @@ class TMView(BaseView, GObjectWrapper):
             #l10n: The 'sources' here refer to different translation memory plugins,
             #such as local tm, open-tran.eu, the current file, etc.
             title=_('Select sources of Translation Memory'),
-            message=_('Select the sources that should be queried for translation memory')
+            message=_('Select the sources that should be queried for translation memory'),
+            size=(400, 580),
         )
         selectdlg.set_icon(self.controller.main_controller.view.main_window.get_icon())
 

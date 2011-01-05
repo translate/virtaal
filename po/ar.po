@@ -2,15 +2,15 @@
 # Copyright (C) 2009 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # Alaa Abd El Fattah <alaa@translate.org.za>, 2009
-# Khaled Hosny <khaledhosny@eglug.org>, 2009, 2010.
+# Khaled Hosny <khaledhosny@eglug.org>, 2009, 2010, 2011.
 #: ../virtaal/support/native_widgets.py:50
 #: ../virtaal/support/native_widgets.py:51
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.3beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2010-12-31 04:06+0200\n"
-"PO-Revision-Date: 2010-12-31 04:05+0300\n"
+"POT-Creation-Date: 2011-01-05 03:12+0200\n"
+"PO-Revision-Date: 2011-01-05 03:12+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Virtaal 0.7.0-beta2\n"
+"X-Generator: Virtaal 0.6.1\n"
 "X-Project-Style: gnome\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
@@ -609,15 +609,15 @@ msgid "Please enter your team's information"
 msgstr "رجاء أدخل بيانات فريق العمل"
 
 #: ../virtaal/controllers/maincontroller.py:189
-#: ../virtaal/controllers/maincontroller.py:287
+#: ../virtaal/controllers/maincontroller.py:284
 msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
 msgstr "لقد اخترت الملف المفتوح حاليا لفتحه. أتريد إعادة تحميل الملف؟"
 
 #: ../virtaal/controllers/maincontroller.py:200
-#: ../virtaal/controllers/maincontroller.py:271
-#: ../virtaal/controllers/maincontroller.py:298
+#: ../virtaal/controllers/maincontroller.py:268
+#: ../virtaal/controllers/maincontroller.py:295
 #, python-format
 msgid ""
 "Could not open file.\n"
@@ -632,7 +632,7 @@ msgstr ""
 "\n"
 "اختر ملفا مختلفا."
 
-#: ../virtaal/controllers/maincontroller.py:240
+#: ../virtaal/controllers/maincontroller.py:237
 #, python-format
 msgid ""
 "Could not save file.\n"
@@ -647,7 +647,7 @@ msgstr ""
 "\n"
 "اختر موضعا مختلفا."
 
-#: ../virtaal/controllers/maincontroller.py:245
+#: ../virtaal/controllers/maincontroller.py:242
 #, python-format
 msgid ""
 "Could not save file.\n"
@@ -658,11 +658,11 @@ msgstr ""
 "\n"
 "%(error_message)s"
 
-#: ../virtaal/controllers/maincontroller.py:261
+#: ../virtaal/controllers/maincontroller.py:258
 msgid "Reload File"
 msgstr "أعد تحميل الملف"
 
-#: ../virtaal/controllers/maincontroller.py:261
+#: ../virtaal/controllers/maincontroller.py:258
 msgid "Reload file from last saved copy and lose all changes?"
 msgstr "أأعيد تحميل الملف من آخر نسخة محفوظة فاقدا لكل التغييرات؟"
 
@@ -797,37 +797,37 @@ msgid "The file contains nothing to translate."
 msgstr "لا يحتوي الملف على شيء ليترجم."
 
 #. l10n: The heading of statistics before updating to the new template
-#: ../virtaal/controllers/storecontroller.py:403
+#: ../virtaal/controllers/storecontroller.py:408
 msgid "Before:"
 msgstr "قبل:"
 
 #. l10n: The heading of statistics after updating to the new template
-#: ../virtaal/controllers/storecontroller.py:405
+#: ../virtaal/controllers/storecontroller.py:410
 msgid "After:"
 msgstr "بعد:"
 
-#: ../virtaal/controllers/storecontroller.py:406
+#: ../virtaal/controllers/storecontroller.py:411
 #, python-format
 msgid "Translated: %d"
 msgstr "مترجم: %d"
 
-#: ../virtaal/controllers/storecontroller.py:407
+#: ../virtaal/controllers/storecontroller.py:412
 #, python-format
 msgid "Fuzzy: %d"
 msgstr "مبهم: %d"
 
-#: ../virtaal/controllers/storecontroller.py:408
+#: ../virtaal/controllers/storecontroller.py:413
 #, python-format
 msgid "Untranslated: %d"
 msgstr "غير مترجم: %d"
 
-#: ../virtaal/controllers/storecontroller.py:409
+#: ../virtaal/controllers/storecontroller.py:414
 #, python-format
 msgid "Total: %d"
 msgstr "المجموع: %d"
 
 #. l10n: this refers to updating a file to a new template (POT file)
-#: ../virtaal/controllers/storecontroller.py:427
+#: ../virtaal/controllers/storecontroller.py:432
 msgid "File Updated"
 msgstr "حُدّث الملف"
 
@@ -855,15 +855,15 @@ msgstr "مُراجعة"
 msgid "All"
 msgstr "الكل"
 
-#: ../virtaal/modes/qualitycheckmode.py:32
+#: ../virtaal/modes/qualitycheckmode.py:33
 msgid "Quality Checks"
 msgstr "مراجعة الجودة"
 
-#: ../virtaal/modes/qualitycheckmode.py:128
+#: ../virtaal/modes/qualitycheckmode.py:129
 msgid "No Checks"
 msgstr "لا فحوص"
 
-#: ../virtaal/modes/qualitycheckmode.py:130
+#: ../virtaal/modes/qualitycheckmode.py:131
 msgid "All Checks"
 msgstr "كل الفحوص"
 
@@ -931,13 +931,38 @@ msgstr "صحح النص تلقائيا بينما أكتب"
 msgid "AutoCorrector"
 msgstr "التصحيح الآلي"
 
-#: ../virtaal/plugins/spellchecker.py:41
+#: ../virtaal/plugins/spellchecker.py:47
 msgid "Spell Checker"
 msgstr "المدقق الإملائي"
 
-#: ../virtaal/plugins/spellchecker.py:42
+#: ../virtaal/plugins/spellchecker.py:48
 msgid "Check spelling and provide suggestions"
 msgstr "دقق الإملاء واقترح تصحيحات"
+
+#. l10n: This refers to spell checking
+#: ../virtaal/plugins/spellchecker.py:291
+msgid "<i>(no suggestions)</i>"
+msgstr "<i>(لا اقتراحات)</i>"
+
+#. l10n: This refers to spell checking
+#: ../virtaal/plugins/spellchecker.py:295
+msgid "Ignore All"
+msgstr "تجاهل الكل"
+
+#. l10n: This refers to spelling suggestions
+#: ../virtaal/plugins/spellchecker.py:299
+msgid "More..."
+msgstr "المزيد..."
+
+#. l10n: This refers to the spell checking dictionary
+#: ../virtaal/plugins/spellchecker.py:305
+#, python-format
+msgid "Add \"%s\" to Dictionary"
+msgstr "أضِف \"%s\" إلى القاموس"
+
+#: ../virtaal/plugins/spellchecker.py:308
+msgid "Languages"
+msgstr "اللّغات"
 
 #: ../virtaal/plugins/lookup/__init__.py:29
 msgid "Perform look-ups on selected text"
@@ -1353,15 +1378,15 @@ msgstr "اختر ملف ترجمة"
 msgid "Save"
 msgstr "احفظ"
 
-#: ../virtaal/views/checksunitview.py:71
+#: ../virtaal/views/checksunitview.py:73
 msgid "No issues"
 msgstr "لا مشاكل"
 
-#: ../virtaal/views/checksunitview.py:78
+#: ../virtaal/views/checksunitview.py:80
 msgid "Quality Check"
 msgstr "فحص الجودة"
 
-#: ../virtaal/views/checksunitview.py:84
+#: ../virtaal/views/checksunitview.py:86
 msgid "Description"
 msgstr "الوصف"
 
@@ -1434,7 +1459,7 @@ msgid "Click to move to a specific state in the workflow"
 msgstr "انقر للانتقال إلى حالة محددة في سير العمل"
 
 #: ../virtaal/views/unitview.py:597
-msgid "Move one step foward in the workflow (Ctrl+Enter)"
+msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr "تحرك خطوة للأمام في سير العمل (Ctrl+Enter)"
 
 #: ../virtaal/views/widgets/aboutdialog.py:34
@@ -1834,9 +1859,6 @@ msgstr "لا يأخد الخيار %s قيمة"
 
 #~ msgid "Machine Translation with libtranslate"
 #~ msgstr "ترجمة آلية باستخدام libtranslate"
-
-#~ msgid "Languages"
-#~ msgstr "اللّغات"
 
 #~ msgid "Personal Information"
 #~ msgstr "بيانات شخصية"

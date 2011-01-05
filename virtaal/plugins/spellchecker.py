@@ -261,9 +261,9 @@ class Plugin(BasePlugin):
                 # anyway, so let's ignore it and hope for the best.
                 pass
             if spell is None:
-                def _enable():
+                def _enable(text_view, language):
                     spell = self.gtkspell.Spell(text_view, language)
-                gobject.idle_add(_enable, priority=gobject.PRIORITY_LOW)
+                gobject.idle_add(_enable, text_view, language, priority=gobject.PRIORITY_LOW)
             else:
                 spell.set_language(language)
                 spell.recheck_all()

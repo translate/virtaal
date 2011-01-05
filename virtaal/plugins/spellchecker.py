@@ -61,6 +61,11 @@ class Plugin(BasePlugin):
         import enchant
         self.gtkspell = gtkspell
         self.enchant = enchant
+        self._seen_languages = {}
+        self._enchant_languages = self.enchant.list_languages()
+
+        self.clients = {}
+        self.languages = set()
 
         unit_view = main_controller.unit_controller.view
         self.unit_view = unit_view
@@ -84,9 +89,6 @@ class Plugin(BasePlugin):
                 self._on_unit_lang_changed(unit_view, textview, tgtlang)
         else:
             self._unitview_ids.append(unit_view.connect('targets-created', self._connect_to_textboxes))
-
-        self.clients = {}
-        self.languages = set()
 
     def destroy(self):
         """Remove signal connections and disable spell checking."""
@@ -222,12 +224,13 @@ class Plugin(BasePlugin):
         if not self.gtkspell:
             return
 
-        if not self.enchant.dict_exists(language):
+        if not language in self._seen_languages and not self.enchant.dict_exists(language):
             # Sometimes enchants *wants* a country code, other times it does not.
             # For the cases where it requires one, we look for the first language
             # code that enchant supports and use that one.
-            for code in self.enchant.list_languages():
+            for code in self._enchant_languages:
                 if code.startswith(language):
+                    self._seen_languages[language] = code
                     language = code
                     break
             else:
@@ -243,7 +246,10 @@ class Plugin(BasePlugin):
                 # We couldn't find a dictionary for "language", so we should make sure that we don't
                 # have a spell checker for a different language on the text view. See bug 717.
                 self._disable_checking(text_view)
+                self._seen_languages[language] = None
                 return
+
+        language = self._seen_languages.get(language, language)
 
         try:
             spell = None

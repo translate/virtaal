@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -52,19 +52,23 @@ class TMModel(BaseTMModel):
     def query(self, tmcontroller, unit):
         # TODO: Figure out languages
         query_str = unit.source
-        if self.cache.has_key(query_str):
-            self.emit('match-found', query_str, self.cache[query_str])
+        if query_str in self.cache:
+            _cached = self.cache[query_str]
+            if _cached:
+                # Only emit if we actually have something to offer
+                self.emit('match-found', query_str, _cached)
         else:
             self.tmclient.translate_unit(query_str, self.source_lang, self.target_lang, self._handle_matches)
 
     def _handle_matches(self, widget, query_str, matches):
         """Handle the matches when returned from self.tmclient."""
-        self.cache[query_str] = matches
-        for match in matches:
-            match['tmsource'] = self.shortname
-            if not isinstance(match['target'], unicode):
-                match['target'] = unicode(match['target'], 'utf-8')
-        self.emit('match-found', query_str, matches)
+        self.cache[query_str] = matches or None # None instead of empty list
+        if matches:
+            for match in matches:
+                match['tmsource'] = self.shortname
+                if not isinstance(match['target'], unicode):
+                    match['target'] = unicode(match['target'], 'utf-8')
+            self.emit('match-found', query_str, matches)
 
     def push_store(self, store_controller):
         """Add units in store to TM database on save."""

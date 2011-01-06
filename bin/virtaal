@@ -70,7 +70,6 @@ if not getattr(sys, 'frozen', False):
 
 import logging
 import optparse
-import sys
 from optparse import OptionParser, make_option
 
 from virtaal import __version__

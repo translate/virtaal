@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -46,8 +46,13 @@ class StoreView(BaseView):
         self.load_store(self.controller.store)
 
         self.controller.connect('store-loaded', self._on_store_loaded)
-        self.controller.main_controller.view.main_window.connect('configure-event', self._treeview.on_configure_event)
-        self.controller.main_controller.view.main_window.connect('style-set', self._on_style_set)
+        main_window = self.controller.main_controller.view.main_window
+        main_window.connect('configure-event', self._treeview.on_configure_event)
+        if main_window.get_property('visible'):
+            # Because StoreView might be loaded lazily, the window might already
+            # have its style set
+            self._on_style_set(main_window, None)
+        main_window.connect('style-set', self._on_style_set)
 
     def _init_treeview(self):
         self._treeview = StoreTreeView(self)

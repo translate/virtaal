@@ -43,7 +43,6 @@ class StoreView(BaseView):
         self._init_treeview()
         self._add_accelerator_bindings()
         self._connect_menu_items()
-        self.load_store(self.controller.store)
 
         self.controller.connect('store-loaded', self._on_store_loaded)
         main_window = self.controller.main_controller.view.main_window

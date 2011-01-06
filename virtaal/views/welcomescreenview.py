@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -100,8 +100,8 @@ class WelcomeScreenView(BaseView):
         ]
         markup = '<span underline="single">%(name)s</span>'
 
+        iconfile = get_abs_data_filename(['icons', 'hicolor', '24x24', 'mimetypes', 'x-translation.png'])
         for i in range(len(items)):
-            iconfile = get_abs_data_filename(['icons', 'hicolor', '24x24', 'mimetypes', 'x-translation.png'])
             buttons[i].child.get_children()[0].set_from_file(iconfile)
             buttons[i].child.get_children()[1].set_markup(markup % {'name': items[i]['name']})
             buttons[i].set_tooltip_text(items[i]['uri'])

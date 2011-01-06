@@ -40,7 +40,7 @@ class QualityCheckMode(BaseMode):
             @param controller: The ModeController that managing program modes."""
         self.controller = controller
         self.store_controller = controller.main_controller.store_controller
-        self.checks_controller = controller.main_controller.checks_controller
+        self.main_controller = controller.main_controller
         self._checker_set_id = None
         self.filter_checks = []
         # a way to map menuitems to their check names, and signal ids:
@@ -50,7 +50,7 @@ class QualityCheckMode(BaseMode):
 
     # METHODS #
     def _prepare_stats(self):
-        self.store_controller.update_store_checks(checker=self.checks_controller.get_checker())
+        self.store_controller.update_store_checks(checker=self.main_controller.checks_controller.get_checker())
         self.stats = self.store_controller.get_store_checks()
         # A currently selected check might disappear if the style changes:
         self.filter_checks = [check for check in self.filter_checks if check in self.stats]
@@ -58,11 +58,11 @@ class QualityCheckMode(BaseMode):
         self.checks_names = {}
         for check, indices in self.stats.iteritems():
             if indices and check not in ('total', 'translated', 'untranslated', 'extended'):
-                self.checks_names[check] = self.checks_controller.get_check_name(check)
+                self.checks_names[check] = self.main_controller.checks_controller.get_check_name(check)
 
     def selected(self):
         self._prepare_stats()
-        self._checker_set_id = self.checks_controller.connect('checker-set', self._on_checker_set)
+        self._checker_set_id = self.main_controller.checks_controller.connect('checker-set', self._on_checker_set)
         # redo stats on save to refresh navigation controls
         self._store_saved_id = self.store_controller.connect('store-saved', self._on_checker_set)
 
@@ -72,7 +72,7 @@ class QualityCheckMode(BaseMode):
 
     def unselected(self):
         if self._checker_set_id:
-            self.checks_controller.disconnect(self._checker_set_id)
+            self.main_controller.checks_controller.disconnect(self._checker_set_id)
             self._checker_set_id = None
             self.store_controller.disconnect(self._store_saved_id)
             self.store_saved_id = None

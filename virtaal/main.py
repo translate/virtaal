@@ -139,6 +139,5 @@ class Virtaal(object):
 
 
 if __name__ == '__main__':
-    check_toolkit_version()
     virtaal = Virtaal()
     virtaal.run()

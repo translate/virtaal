@@ -21,7 +21,6 @@
 import gobject
 import logging
 import os
-import re
 import shutil
 
 from translate.convert import factory as convert_factory
@@ -29,9 +28,7 @@ from translate.convert import factory as convert_factory
 from virtaal.common import GObjectWrapper
 from virtaal.models.storemodel import StoreModel
 from basecontroller import BaseController
-from cursor import Cursor
 
-_pot_re = re.compile("\.pot(\.gz|\.bz2)?$")
 
 # TODO: Create an event that is emitted when a cursor is created
 class StoreController(BaseController):
@@ -230,6 +227,8 @@ class StoreController(BaseController):
         self._modified = False
 
         # if file is a template, force saveas
+        import re
+        _pot_re = re.compile("\.pot(\.gz|\.bz2)?$")
         if _pot_re.search(filename):
             force_saveas = True
             self.store._trans_store.filename = _pot_re.sub('.po', filename)
@@ -242,6 +241,7 @@ class StoreController(BaseController):
         self.main_controller.set_force_saveas(force_saveas)
         self.main_controller.set_saveable(self._modified)
 
+        from cursor import Cursor
         self.cursor = Cursor(self.store, self.store.stats['total'])
 
         self.view.load_store(self.store)
@@ -389,6 +389,7 @@ class StoreController(BaseController):
         self.main_controller.set_saveable(self._modified)
         self.main_controller.set_force_saveas(self._modified)
 
+        from cursor import Cursor
         self.cursor = Cursor(self.store, self.store.stats['total'])
 
         self.view.load_store(self.store)

@@ -124,6 +124,9 @@ class ChecksController(BaseController):
         self._projview = None
         self._unitview = None
 
+        if self.store_controller.get_store():
+            # We are too late for the initial 'store-loaded'
+            self._on_store_loaded(self.store_controller)
 
     # ACCESSORS #
     def _get_checker_info(self):

@@ -20,12 +20,6 @@
 
 import sys
 from os import name as os_name, path
-
-# translate.i18n does gettext.install() which will overwrite whatever we do
-# in Virtaal unless we do it first,  to ensure that Python doesn't reimport
-# translate.i18n later when the toolkit imports it. The toolkit now checks,
-# but we keep the correct order to work with older versions of the toolkit.
-import translate.i18n
 from virtaal.common import pan_app
 
 if os_name == 'nt':

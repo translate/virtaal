@@ -23,7 +23,7 @@ import gtk
 import gtk.gdk
 import logging
 
-from virtaal.controllers import Cursor
+from virtaal.controllers.cursor import Cursor
 
 from basemode import BaseMode
 from virtaal.views.theme import current_theme

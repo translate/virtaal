@@ -24,7 +24,8 @@ import os.path
 from translate.lang.data import forceunicode, normalize
 
 from virtaal.common import GObjectWrapper
-from virtaal.controllers import BaseController, PluginController
+from virtaal.controllers.basecontroller import BaseController
+from virtaal.controllers.plugincontroller import PluginController
 
 import models
 from models.basetmmodel import BaseTMModel

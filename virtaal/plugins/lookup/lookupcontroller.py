@@ -22,7 +22,8 @@ import gobject
 import os
 
 from virtaal.common import GObjectWrapper
-from virtaal.controllers import BaseController, PluginController
+from virtaal.controllers.basecontroller import BaseController
+from virtaal.controllers.plugincontroller import PluginController
 
 from lookupview import LookupView
 from models.baselookupmodel import BaseLookupModel

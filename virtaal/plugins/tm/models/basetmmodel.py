@@ -23,7 +23,7 @@ import gobject
 import htmlentitydefs
 import re
 
-from virtaal.models import BaseModel
+from virtaal.models.basemodel import BaseModel
 from virtaal.common import pan_app
 
 

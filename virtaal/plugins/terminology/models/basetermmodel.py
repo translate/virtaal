@@ -21,7 +21,7 @@
 import os
 import gobject
 
-from virtaal.models import BaseModel
+from virtaal.models.basemodel import BaseModel
 from virtaal.common import pan_app
 
 class BaseTerminologyModel(BaseModel):

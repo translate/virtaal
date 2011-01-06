@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009-2010 Zuza Software Foundation
+# Copyright 2009-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -22,7 +22,7 @@ import os
 from gobject import SIGNAL_RUN_FIRST
 
 from virtaal.common import GObjectWrapper, pan_app
-from virtaal.models import LanguageModel
+from virtaal.models.langmodel import LanguageModel
 
 from basecontroller import BaseController
 
@@ -204,4 +204,3 @@ class LanguageController(BaseController):
         tgtlang = store_controller.store.get_target_language() or self.target_lang.code
         self.set_language_pair(srclang, tgtlang)
         self.target_lang.nplurals = self.target_lang.nplurals or store_controller.get_nplurals()
-

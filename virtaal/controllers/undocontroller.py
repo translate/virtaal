@@ -24,7 +24,7 @@ from gtk import gdk
 from translate.storage.placeables import StringElem
 
 from virtaal.common import GObjectWrapper
-from virtaal.models import UndoModel
+from virtaal.models.undomodel import UndoModel
 
 from basecontroller import BaseController
 

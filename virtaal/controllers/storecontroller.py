@@ -27,7 +27,7 @@ import shutil
 from translate.convert import factory as convert_factory
 
 from virtaal.common import GObjectWrapper
-from virtaal.models import StoreModel
+from virtaal.models.storemodel import StoreModel
 from basecontroller import BaseController
 from cursor import Cursor
 

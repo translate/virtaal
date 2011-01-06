@@ -25,7 +25,7 @@ import gtk.gdk
 import logging
 
 from virtaal.common import GObjectWrapper
-from virtaal.models import LanguageModel
+from virtaal.models.langmodel import LanguageModel
 
 from baseview import BaseView
 from widgets.popupmenubutton import PopupMenuButton

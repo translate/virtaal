@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from virtaal.models import BaseModel
+from virtaal.models.basemodel import BaseModel
 
 
 class BaseLookupModel(object):

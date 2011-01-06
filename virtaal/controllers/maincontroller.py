@@ -54,6 +54,11 @@ class MainController(BaseController):
         self._welcomescreen_controller = None
         self.view = MainView(self)
 
+    def load_plugins(self):
+        # Helper method to be called from virtaal.main
+        if self.plugin_controller:
+            self.plugin_controller.load_plugins()
+
     def destroy(self):
         self.store_controller.destroy()
 
@@ -325,7 +330,8 @@ class MainController(BaseController):
             elif response != 'discard':
                 return True
 
-        self.plugin_controller.shutdown()
+        if self.plugin_controller:
+            self.plugin_controller.shutdown()
         self.emit('quit')
         self.view.quit()
         return False

@@ -70,10 +70,15 @@ class PluginController(BaseController):
     """The attribute of a plug-in that contains its name."""
 
     # INITIALIZERS #
-    def __init__(self, controller):
+    def __init__(self, controller, classname=None):
         GObjectWrapper.__init__(self)
 
         self.controller = controller
+        if classname:
+            self.PLUGIN_CLASSNAME = classname
+        else:
+            # controller is maincontroller
+            controller.plugin_controller = self
         self.plugins       = {}
         self.pluginmodules = {}
 
@@ -106,7 +111,7 @@ class PluginController(BaseController):
             self.emit('plugin-enabled', self.plugins[name])
             logging.info('    - ' + getattr(self.plugins[name], self.PLUGIN_NAME_ATTRIB, name))
             return self.plugins[name]
-        except Exception:
+        except Exception, e:
             logging.exception('Failed to load plugin "%s"' % (name))
 
         return None

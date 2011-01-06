@@ -70,8 +70,7 @@ class TMController(BaseController):
             self._mode_selected_id = self.main_controller.mode_controller.connect('mode-selected', self._on_mode_selected)
 
     def _load_models(self):
-        self.plugin_controller = PluginController(self)
-        self.plugin_controller.PLUGIN_CLASSNAME = 'TMModel'
+        self.plugin_controller = PluginController(self, 'TMModel')
         self.plugin_controller.PLUGIN_CLASS_INFO_ATTRIBS = ['display_name', 'description']
         new_dirs = []
         for dir in self.plugin_controller.PLUGIN_DIRS:

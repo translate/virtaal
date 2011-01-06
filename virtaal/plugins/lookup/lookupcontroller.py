@@ -50,8 +50,7 @@ class LookupController(BaseController):
         self._load_models()
 
     def _load_models(self):
-        self.plugin_controller = PluginController(self)
-        self.plugin_controller.PLUGIN_CLASSNAME = 'LookupModel'
+        self.plugin_controller = PluginController(self, 'LookupModel')
         self.plugin_controller.PLUGIN_CLASS_INFO_ATTRIBS = ['display_name', 'description']
         new_dirs = []
         for dir in self.plugin_controller.PLUGIN_DIRS:

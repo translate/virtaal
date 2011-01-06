@@ -71,8 +71,7 @@ class TerminologyController(BaseController):
         lang_controller.connect('target-lang-changed', lang_changed)
 
     def _load_models(self):
-        self.plugin_controller = PluginController(self)
-        self.plugin_controller.PLUGIN_CLASSNAME = 'TerminologyModel'
+        self.plugin_controller = PluginController(self, 'TerminologyModel')
         self.plugin_controller.PLUGIN_CLASS_INFO_ATTRIBS = ['description', 'display_name']
         new_dirs = []
         for dir in self.plugin_controller.PLUGIN_DIRS:

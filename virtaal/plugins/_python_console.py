@@ -8,7 +8,7 @@ import sys
 import traceback
 from gtk import gdk
 
-from virtaal.controllers import BasePlugin
+from virtaal.controllers.baseplugin import BasePlugin
 
 
 class PythonConsole(gtk.ScrolledWindow):

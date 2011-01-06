@@ -22,7 +22,7 @@
 
 import logging
 
-from virtaal.controllers import BasePlugin
+from virtaal.controllers.baseplugin import BasePlugin
 
 
 class Plugin(BasePlugin):

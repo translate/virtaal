@@ -26,7 +26,7 @@ from gettext import dgettext
 import gobject
 
 from virtaal.common import pan_app
-from virtaal.controllers import BasePlugin
+from virtaal.controllers.baseplugin import BasePlugin
 
 if not pan_app.DEBUG:
     try:

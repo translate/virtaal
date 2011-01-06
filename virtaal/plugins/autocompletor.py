@@ -37,7 +37,7 @@ except ImportError:
             else:
                 return self.__factory()
 
-from virtaal.controllers import BasePlugin
+from virtaal.controllers.baseplugin import BasePlugin
 from virtaal.views.widgets.textbox import TextBox
 
 

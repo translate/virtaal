@@ -37,7 +37,7 @@ except ImportError:
     from pysqlite2 import dbapi2
 
 from virtaal.common import pan_app
-from virtaal.controllers import BasePlugin
+from virtaal.controllers.baseplugin import BasePlugin
 
 from translate.storage.pypo import extractpoline
 from translate.storage import tmdb

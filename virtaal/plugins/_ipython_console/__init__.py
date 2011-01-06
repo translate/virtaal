@@ -5,7 +5,7 @@ import gtk
 import pango
 from gtk import gdk
 
-from virtaal.controllers import BasePlugin
+from virtaal.controllers.baseplugin import BasePlugin
 
 from ipython_view import *
 

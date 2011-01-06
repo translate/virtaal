@@ -27,7 +27,7 @@ import re
 import zipfile
 
 from virtaal.common import pan_app
-from virtaal.controllers import BasePlugin
+from virtaal.controllers.baseplugin import BasePlugin
 from virtaal.views.widgets.textbox import TextBox
 
 

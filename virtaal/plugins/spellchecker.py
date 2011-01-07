@@ -203,6 +203,7 @@ class Plugin(BasePlugin):
             self._ensure_dir(DICTDIR)
             tar.extractall(DICTDIR)
             self._seen_languages.pop(language, None)
+            self._enchant_languages = self.enchant.list_languages()
             self.unit_view.update_languages()
         else:
             logging.debug("Couldn't get a dictionary. Status code: %d" % (request.status))

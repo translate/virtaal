@@ -77,7 +77,7 @@ def set_inverse():
 def is_inverse(fg, bg):
     """Takes a guess at whether the given foreground and background colours
     represents and inverse theme (light text on a dark background)."""
-    # Let's some the three colour components to work out a rough idea of how
+    # Let's sum the three colour components to work out a rough idea of how
     # "light" the colour is:
     bg_sum = sum((bg.red, bg.green, bg.blue))
     fg_sum = sum((fg.red, fg.green, fg.blue))

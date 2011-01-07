@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2010 Zuza Software Foundation
+# Copyright 2008-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -20,6 +20,8 @@
 
 
 import logging
+
+import gobject
 
 from virtaal.views import recent
 from virtaal.views.welcomescreenview import WelcomeScreenView
@@ -67,18 +69,30 @@ class WelcomeScreenController(BaseController):
         # FIXME: The URL below is just a temporary solution
         openmailto.open('http://translate.sourceforge.net/wiki/virtaal/cheatsheet')
 
-    def open_file(self):
-        self.main_controller.open_file()
+    def open_file(self, filename):
+        # We might be a bit early for some of the other controllers, so let's
+        # make it our problem and ensure the last ones are in the main
+        # controller.
+        if not self.main_controller.placeables_controller:
+            gobject.idle_add(self.open_file, filename)
+        else:
+            self.main_controller.open_file(filename)
 
     def open_recent(self, n):
         n -= 1 # Shift from nominal value [1; 5] to index value [0; 4]
         if 0 <= n <= len(self._recent_files)-1:
-            self.main_controller.open_file(self._recent_files[n]['uri'].decode('utf-8'))
+            self.open_file(self._recent_files[n]['uri'].decode('utf-8'))
         else:
             logging.debug('Invalid recent file index (%d) given. Recent files: %s)' % (n, self._recent_files))
 
     def open_tutorial(self):
-        self.main_controller.open_tutorial()
+        # We might be a bit early for some of the other controllers, so let's
+        # make it our problem and ensure the last ones are in the main
+        # controller.
+        if not self.main_controller.placeables_controller:
+            gobject.idle_add(open_tutorial)
+        else:
+            self.main_controller.open_tutorial()
 
     def try_open_link(self, name):
         if name not in self.LINKS:

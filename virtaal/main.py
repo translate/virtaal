@@ -70,8 +70,13 @@ class Virtaal(object):
         if startupfile:
             # Just call the open plainly - we want it done before we start the
             # event loop.
-            self._open_with_file(startupfile)
-            self.defer(WelcomeScreenController, main_controller)
+            if self._open_with_file(startupfile):
+                self.defer(WelcomeScreenController, main_controller)
+            else:
+                # Something went wrong, and we have to show the welcome screen
+                wc = WelcomeScreenController(main_controller)
+                wc.activate()
+
         else:
             wc = WelcomeScreenController(main_controller)
             wc.activate()
@@ -99,7 +104,7 @@ class Virtaal(object):
         LanguageController(main_controller)
         PlaceablesController(main_controller)
 
-        main_controller.open_file(startupfile)
+        return main_controller.open_file(startupfile)
 
     def _open_with_welcome(self):
         from virtaal.controllers.unitcontroller import UnitController

@@ -337,7 +337,7 @@ class TextBox(gtk.TextView):
     def __color_selector_textboxes(self, *args):
         """Put a highlighting border around the current selector text box."""
         if not hasattr(self, 'selector_color'):
-            self.selector_color = gtk.gdk.Color(current_theme['selector_textbox'])
+            self.selector_color = gtk.gdk.color_parse(current_theme['selector_textbox'])
         if not hasattr(self, 'nonselector_color'):
             self.nonselector_color = self.parent.style.bg[gtk.STATE_NORMAL]
 

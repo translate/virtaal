@@ -69,7 +69,7 @@ class WelcomeScreenController(BaseController):
         # FIXME: The URL below is just a temporary solution
         openmailto.open('http://translate.sourceforge.net/wiki/virtaal/cheatsheet')
 
-    def open_file(self, filename):
+    def open_file(self, filename=None):
         # We might be a bit early for some of the other controllers, so let's
         # make it our problem and ensure the last ones are in the main
         # controller.

@@ -55,6 +55,8 @@ class TextBox(gtk.TextView):
         'ctrl-enter':[(gtk.keysyms.Return, gtk.gdk.CONTROL_MASK), (gtk.keysyms.KP_Enter, gtk.gdk.CONTROL_MASK)],
         'ctrl-shift-enter':[(gtk.keysyms.Return, gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK), (gtk.keysyms.KP_Enter, gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK)],
         'shift-tab': [(gtk.keysyms.ISO_Left_Tab, gtk.gdk.SHIFT_MASK), (gtk.keysyms.Tab, gtk.gdk.SHIFT_MASK)],
+        'ctrl-tab': [(gtk.keysyms.ISO_Left_Tab, gtk.gdk.CONTROL_MASK), (gtk.keysyms.Tab, gtk.gdk.CONTROL_MASK)],
+        'ctrl-shift-tab': [(gtk.keysyms.ISO_Left_Tab, gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK), (gtk.keysyms.Tab, gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK)],
     }
     """A table of name-keybinding mappings. The name (key) is passed as the
     second parameter to the 'key-pressed' event."""

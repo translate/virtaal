@@ -381,6 +381,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             """Handle special keypresses in the textarea."""
 
         def target_key_press_event(textbox, event, eventname, next_textbox):
+            if not eventname:
+                return False
             if eventname in  ('enter', 'ctrl-enter', 'ctrl-shift-enter'):
                 if next_textbox is not None and next_textbox.props.visible:
                     self.focus_text_view(next_textbox)
@@ -406,6 +408,14 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             elif eventname == 'shift-tab':
                 if self.focused_target_n > 0:
                     self.focused_target_n -= 1
+                return True
+            # Ctrl-Tab
+            elif eventname == 'ctrl-tab':
+                self.controller.main_controller.lang_controller.view.focus()
+                return True
+            # Ctrl-Shift-Tab
+            elif eventname == 'ctrl-shift-tab':
+                self.controller.main_controller.mode_controller.view.focus()
                 return True
 
             return False

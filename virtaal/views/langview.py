@@ -127,6 +127,9 @@ class LanguageView(BaseView):
         statusbar.pack_end(self.popupbutton, expand=False)
         statusbar.show_all()
 
+    def focus(self):
+        self.popupbutton.grab_focus()
+
     def update_recent_pairs(self):
         if not self.menu:
             self._init_menu()

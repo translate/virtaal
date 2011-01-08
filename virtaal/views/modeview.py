@@ -99,6 +99,9 @@ class ModeView(GObjectWrapper, BaseView):
     def show(self):
         self.mode_box.show_all()
 
+    def focus(self):
+        self.cmb_modes.grab_focus()
+
     # EVENT HANDLERS #
     def _on_cmbmode_change(self, combo):
         self.emit('mode-selected', combo.get_active_text())

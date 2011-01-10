@@ -516,10 +516,15 @@ class TextBox(gtk.TextView):
             main_controller.disconnect(self.__controller_connect_id)
 
     def _on_begin_user_action(self, buffer):
+        if not self.undo_controller:
+            # Maybe not ready yet, so we'll loose a bit of undo data
+            return
         if not self.undo_controller.model.recording:
             self.undo_controller.record_start()
 
     def _on_end_user_action(self, buffer):
+        if not self.undo_controller:
+            return
         if self.undo_controller.model.recording:
             self.undo_controller.record_stop()
         self.refresh()

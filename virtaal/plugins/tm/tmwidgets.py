@@ -114,6 +114,8 @@ class TMWindow(gtk.Window):
 
         #logging.debug('TMWindow.update_geometry(%dx%d +%d+%d)' % (width, height, x, y))
         self.resize(width, height)
+        self.scrolled_window.set_size_request(width, height)
+        self.window.move_resize(0,0, width,height)
         self.window.get_toplevel().move_resize(x,y, width,height)
 
 

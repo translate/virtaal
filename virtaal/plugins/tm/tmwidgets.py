@@ -256,7 +256,7 @@ class TMMatchRenderer(gtk.GenericCellRenderer):
 
     def on_render(self, window, widget, _background_area, cell_area, _expose_area, _flags):
         x_offset = 0
-        y_offset = self.ROW_PADDING / 2
+        y_offset = self.BOX_MARGIN
         width = cell_area.width
         height = self._compute_cell_height(widget, width)
 

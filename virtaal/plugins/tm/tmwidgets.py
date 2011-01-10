@@ -84,6 +84,8 @@ class TMWindow(gtk.Window):
             path = self.liststore.get_path(itr)
             height += self.treeview.get_cell_area(path, self.tvc_match).height + vert_sep
             itr = self.liststore.iter_next(itr)
+        if height:
+            height -= vert_sep
 
         return height
 

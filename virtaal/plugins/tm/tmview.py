@@ -69,6 +69,10 @@ class TMView(BaseView, GObjectWrapper):
             main_window.connect('focus-out-event', self._on_focus_out_mainwindow)
         ))
         self._signal_ids.append((
+            main_window,
+            main_window.connect('configure_event', self._on_configure_mainwindow)
+        ))
+        self._signal_ids.append((
             controller.main_controller.store_controller,
             controller.main_controller.store_controller.connect('store-closed', self._on_store_closed)
         ))
@@ -281,6 +285,15 @@ class TMView(BaseView, GObjectWrapper):
             return
         self.hide()
         self._should_show_tmwindow = True
+
+    def _on_configure_mainwindow(self, widget, event):
+        if self._should_show_tmwindow:
+            # For some reason tvc_tm_source needs this help to recalculate its
+            # size, otherwise it goes through the roof (rhs of the screen), and
+            # the size calculation of the renderer isn't even called. See bug
+            # 1809.
+            self.tmwindow.tvc_tm_source.queue_resize()
+            self.update_geometry()
 
     def _on_hide_tm(self, accel_group, acceleratable, keyval, modifier):
         self.hide()

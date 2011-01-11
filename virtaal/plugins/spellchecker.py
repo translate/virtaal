@@ -144,12 +144,13 @@ class Plugin(BasePlugin):
                 # self._process_index will call this again, so we can exit
             return
 
+        language_to_download = None
         # Let's see if a dictionary is available for this language:
         for l in self.languages:
             if l == language or l.startswith(language+'_'):
                 self.clients[language] = None
                 logging.debug("Will use %s to spell check %s", l, language)
-                language = l
+                language_to_download = l
                 break
         else:
             # No dictionary available
@@ -161,7 +162,7 @@ class Plugin(BasePlugin):
        # Now download the actual files after we have determined that it is
        # available
         callback = lambda *args: self._process_tarball(language=language, *args)
-        url = self._dict_URL % language
+        url = self._dict_URL % language_to_download
         self._build_client(url, language, callback)
 
 

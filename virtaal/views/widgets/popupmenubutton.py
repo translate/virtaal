@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -25,13 +25,24 @@ import gtk
 # POS_CENTER_ABOVE: Centers the pop-up window above the button.
 # POS_NW_SW: Positions the pop-up window so that its North West (top left)
 #            corner is on the South West corner of the button.
+# POS_NE_SE: Positions the pop-up window so that its North East (top right)
+#            corner is on the South East corner of the button. RTL of POS_NW_SW
 # POS_NW_NE: Positions the pop-up window so that its North West (top left)
 #            corner is on the North East corner of the button.
 # POS_SW_NW: Positions the pop-up window so that its South West (bottom left)
 #            corner is on the North West corner of the button.
-POS_CENTER_BELOW, POS_CENTER_ABOVE, POS_NW_SW, POS_NW_NE, POS_SW_NW = range(5)
+# POS_SE_NE: Positions the pop-up window so that its South East (bottom right)
+#            corner is on the North East corner of the button. RTL of POS_SW_NW
+POS_CENTER_BELOW, POS_CENTER_ABOVE, POS_NW_SW, POS_NE_SE, POS_NW_NE, POS_SW_NW, POS_SE_NE = range(7)
 # XXX: Add position symbols above as needed and implementation in
 #      _update_popup_geometry()
+
+_rtl_pos_map = {
+        POS_CENTER_BELOW: POS_CENTER_BELOW,
+        POS_CENTER_ABOVE: POS_CENTER_ABOVE,
+        POS_SW_NW: POS_SE_NE,
+        POS_NW_SW: POS_NE_SE,
+}
 
 class PopupMenuButton(gtk.ToggleButton):
     """A toggle button that displays a pop-up menu when clicked."""
@@ -42,7 +53,10 @@ class PopupMenuButton(gtk.ToggleButton):
         self.set_relief(gtk.RELIEF_NONE)
         self.set_menu(gtk.Menu())
 
-        self.menu_pos = menu_pos
+        if self.get_direction() == gtk.TEXT_DIR_LTR:
+            self.menu_pos = menu_pos
+        else:
+            self.menu_pos = _rtl_pos_map.get(menu_pos, POS_SE_NE)
 
         self.connect('toggled', self._on_toggled)
 
@@ -63,29 +77,37 @@ class PopupMenuButton(gtk.ToggleButton):
 
     # METHODS #
     def _calculate_popup_pos(self, menu):
-        _w, menu_h = 0, 0
+        menu_width, menu_height = 0, 0
         menu_alloc = menu.get_allocation()
+        print menu_alloc
         if menu_alloc.height > 1:
-            menu_h = menu_alloc.height
+            menu_height = menu_alloc.height
+            menu_width = menu_alloc.width
         else:
-            _w, menu_h = menu.size_request()
+            menu_width, menu_height = menu.size_request()
 
         btn_window_xy = self.window.get_origin()
         btn_alloc = self.get_allocation()
 
         # Default values are POS_SW_NW
         x = btn_window_xy[0] + btn_alloc.x
-        y = btn_window_xy[1] + btn_alloc.y - menu_h
+        y = btn_window_xy[1] + btn_alloc.y - menu_height
         if self.menu_pos == POS_NW_SW:
             y = btn_window_xy[1] + btn_alloc.y + btn_alloc.height
+        elif self.menu_pos == POS_NE_SE:
+            print "amen"
+            x -= (menu_width - btn_alloc.width)
+            y = btn_window_xy[1] + btn_alloc.y + btn_alloc.height
+        elif self.menu_pos == POS_SE_NE:
+            x -= (menu_width - btn_alloc.width)
         elif self.menu_pos == POS_NW_NE:
             x += btn_alloc.width
             y = btn_window_xy[1] + btn_alloc.y
         elif self.menu_pos == POS_CENTER_BELOW:
-            x -= (menu_alloc.width - btn_alloc.width) / 2
+            x -= (menu_width - btn_alloc.width) / 2
         elif self.menu_pos == POS_CENTER_ABOVE:
-            x -= (menu_alloc.width - btn_alloc.width) / 2
-            y = btn_window_xy[1] - menu_alloc.height
+            x -= (menu_width - btn_alloc.width) / 2
+            y = btn_window_xy[1] - menu_height
         return (x, y, True)
 
     def popdown(self):

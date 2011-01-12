@@ -244,30 +244,26 @@ class Plugin(BasePlugin):
             # Sometimes enchants *wants* a country code, other times it does not.
             # For the cases where it requires one, we look for the first language
             # code that enchant supports and use that one.
-            if language == 'en':
-                self._seen_languages[language] = 'en_US'
-                language = 'en_US'
+            for code in self._enchant_languages:
+                if code.startswith(language+'_'):
+                    self._seen_languages[language] = code
+                    language = code
+                    break
             else:
-                for code in self._enchant_languages:
-                    if code.startswith(language+'_'):
-                        self._seen_languages[language] = code
-                        language = code
-                        break
-                else:
-                    #logging.debug('No code in enchant.list_languages() that starts with "%s"' % (language))
+                #logging.debug('No code in enchant.list_languages() that starts with "%s"' % (language))
 
-                    # If we are on Windows, let's try to download a spell checker:
-                    if os.name == 'nt':
-                        self._download_checker(language)
-                        # If we get it, it will only be activated asynchronously
-                        # later
-                    #TODO: packagekit on Linux?
+                # If we are on Windows, let's try to download a spell checker:
+                if os.name == 'nt':
+                    self._download_checker(language)
+                    # If we get it, it will only be activated asynchronously
+                    # later
+                #TODO: packagekit on Linux?
 
-                    # We couldn't find a dictionary for "language", so we should make sure that we don't
-                    # have a spell checker for a different language on the text view. See bug 717.
-                    self._disable_checking(text_view)
-                    self._seen_languages[language] = None
-                    return
+                # We couldn't find a dictionary for "language", so we should make sure that we don't
+                # have a spell checker for a different language on the text view. See bug 717.
+                self._disable_checking(text_view)
+                self._seen_languages[language] = None
+                return
 
         language = self._seen_languages.get(language, language)
         if language is None:

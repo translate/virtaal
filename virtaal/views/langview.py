@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009 Zuza Software Foundation
+# Copyright 2009-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -88,7 +88,7 @@ class LanguageView(BaseView):
         if self.popupbutton.get_direction() == gtk.TEXT_DIR_RTL:
             # We need to make sure we get the direction correct if the
             # language names are untranslated. The right-to-left embedding
-            # (LRE) characters ensure that untranslated language names will
+            # (RLE) characters ensure that untranslated language names will
             # still diplay with the correct direction as they are present
             # in the interface.
             pairlabel = u'\u202b%s ← \u202b%s' % (srclang.name, tgtlang.name)

@@ -239,7 +239,7 @@ class Plugin(BasePlugin):
             # For the cases where it requires one, we look for the first language
             # code that enchant supports and use that one.
             for code in self._enchant_languages:
-                if code.startswith(language):
+                if code.startswith(language+'_'):
                     self._seen_languages[language] = code
                     language = code
                     break

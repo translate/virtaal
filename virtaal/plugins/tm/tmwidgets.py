@@ -110,7 +110,12 @@ class TMWindow(gtk.Window):
             x -= self.tvc_tm_source.get_width() + scrollbar_width
         y += widget_alloc.height + 2
 
-        width = widget_alloc.width + self.tvc_perc.get_width() + self.tvc_tm_source.get_width() + scrollbar_width
+        tm_source_width = self.tvc_tm_source.get_width()
+        if tm_source_width > 100:
+            # Sometimes this column is still way too wide after a reconfigure.
+            # See bug 1809 for more detail.
+            tm_source_width = self.tvc_perc.get_width()
+        width = widget_alloc.width + self.tvc_perc.get_width() + tm_source_width + scrollbar_width
         height = min(self.rows_height(), self.MAX_HEIGHT) + 4
         # TODO: Replace the hard-coded value above with a query to the theme. It represents the width of the shadow of self.scrolled_window
 

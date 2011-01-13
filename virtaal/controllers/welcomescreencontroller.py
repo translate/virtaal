@@ -39,9 +39,9 @@ class WelcomeScreenController(BaseController):
 
     LINKS = {
         'manual':   _('http://translate.sourceforge.net/wiki/virtaal/using_virtaal'),
-        'locguide': 'http://translate.sourceforge.net/wiki/guide/start',
+        'locguide': _('http://translate.sourceforge.net/wiki/guide/start'),
         # FIXME: The URL below should be replaced with a proper feedback URL
-        'feedback': "http://translate.sourceforge.net/wiki/virtaal/index#contact",
+        'feedback': _("http://translate.sourceforge.net/wiki/virtaal/index#contact"),
         'features_more': _('http://translate.sourceforge.net/wiki/virtaal/features')
     }
 
@@ -67,7 +67,7 @@ class WelcomeScreenController(BaseController):
     def open_cheatsheat(self):
         from virtaal.support import openmailto
         # FIXME: The URL below is just a temporary solution
-        openmailto.open('http://translate.sourceforge.net/wiki/virtaal/cheatsheet')
+        openmailto.open(_('http://translate.sourceforge.net/wiki/virtaal/cheatsheet'))
 
     def open_file(self, filename=None):
         # We might be a bit early for some of the other controllers, so let's

@@ -135,7 +135,6 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
         self.view = view
         self.__unit = None
         self.editable = False
-        self._editor = None
         self.source_layout = None
         self.target_layout = None
 

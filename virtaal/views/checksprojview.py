@@ -59,6 +59,7 @@ class ChecksProjectView(BaseView):
         statusbar.show_all()
 
     def set_checker_name(self, cname):
+        # l10n: The label indicating the checker style (GNOME/KDE/whatever)
         self.btn_proj.set_label(_('Checks: %(checker_name)s') % {'checker_name': cname})
 
 

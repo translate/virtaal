@@ -265,10 +265,9 @@ class TMMatchRenderer(gtk.GenericCellRenderer):
         x = cell_area.x + x_offset
         if not self.source_layout:
             # We do less for MT results
-            target_y = cell_area.y + y_offset
-            target_dx = self.BOX_MARGIN
+            target_y = cell_area.y
             widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False,
-                    cell_area, widget, '', x + target_dx, target_y, self.target_layout)
+                    cell_area, widget, '', x, target_y, self.target_layout)
             return
 
         source_height = self.source_layout.get_pixel_size()[1]

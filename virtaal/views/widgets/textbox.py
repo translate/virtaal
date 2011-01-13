@@ -88,6 +88,7 @@ class TextBox(gtk.TextView):
         self._suggestion = None
         self.undo_controller = main_controller.undo_controller
 
+        self._block_on_render = []
         self.__connect_default_handlers()
 
         if self.placeables_controller is None or self.undo_controller is None:
@@ -490,8 +491,12 @@ class TextBox(gtk.TextView):
 
         self.buffer.handler_block_by_func(self._on_delete_range)
         self.buffer.handler_block_by_func(self._on_insert_text)
+        for handle in self._block_on_render:
+            self.buffer.handler_block(handle)
         self.elem.gui_info.render()
         self.show_suggestion()
+        for handle in self._block_on_render:
+            self.buffer.handler_unblock(handle)
         self.buffer.handler_unblock_by_func(self._on_delete_range)
         self.buffer.handler_unblock_by_func(self._on_insert_text)
 

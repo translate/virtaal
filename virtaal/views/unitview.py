@@ -429,7 +429,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             textbox.connect('paste-clipboard', self._on_textbox_paste_clipboard, i)
             textbox.connect('text-inserted', self._on_target_insert_text, i)
             textbox.connect('text-deleted', self._on_target_delete_range, i)
-            textbox.buffer.connect('changed', self._on_target_changed, i)
+            textbox._block_on_render.append(textbox.buffer.connect('changed', self._on_target_changed, i))
 
             self._widgets['vbox_targets'].pack_start(target)
             self.targets.append(textbox)

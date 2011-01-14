@@ -166,10 +166,9 @@ class TextBox(gtk.TextView):
             self.selected_elem_index = None
 
             if self.placeables_controller:
-                self.elem.sub = [elem_parse(text, self.placeables_controller.get_parsers_for_textbox(self))]
+                self.elem = elem_parse(text, self.placeables_controller.get_parsers_for_textbox(self))
             else:
-                self.elem.sub = [text]
-            self.elem.prune()
+                self.elem = text
 
         self.update_tree()
 

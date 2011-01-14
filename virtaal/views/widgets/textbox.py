@@ -500,7 +500,7 @@ class TextBox(gtk.TextView):
         # FIXME: The following line caused the program to segfault, so it's removed (for now).
         #tagtable.foreach(remtag)
         # At this point we have a tree of string elements with GUI info.
-        self.apply_gui_info(text)
+        self.apply_gui_info(self.elem)
 
 
     # EVENT HANDLERS #

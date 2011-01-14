@@ -171,7 +171,7 @@ class TextBox(gtk.TextView):
                 self.elem.sub = [text]
             self.elem.prune()
 
-        self.update_tree(self.elem)
+        self.update_tree()
 
 
     # METHODS #
@@ -475,17 +475,12 @@ class TextBox(gtk.TextView):
                 self.suggestion['offset'] >= 0 and \
                 self.suggestion['offset'] == start_offset
 
-    @accepts(Self(), IsOneOf(StringElem, basestring, type(None)))
-    def update_tree(self, text=None):
+    @accepts(Self())
+    def update_tree(self):
         if not self.placeables_controller:
-            return
-        if not isinstance(text, StringElem):
             return
         if self.elem is None:
             self.elem = StringElem(u'')
-        if text is not self.elem:
-            self.elem.sub = [text]
-            self.elem.prune()
 
         self.add_default_gui_info(self.elem)
 

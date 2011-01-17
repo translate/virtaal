@@ -68,8 +68,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
         self.controller = controller
         self._focused_target_n = None
-#        self.gladefilename, self.gui = self.load_glade_file(["virtaal", "virtaal.glade"], root='UnitEditor', domain="virtaal")
-        self.gladefilename, self.gui = self.load_glade_file(["virtaal", "a.glade.gz"], root='UnitEditor', domain="virtaal")
+        self.gladefilename, self.gui = self.load_glade_file(["virtaal", "virtaal.glade"], root='UnitEditor', domain="virtaal")
 
         self.must_advance = False
         self._modified = False
@@ -356,7 +355,6 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         language = str(language)
         #logging.debug('Updating text view for language %s' % (language))
         text_view.get_pango_context().set_language(rendering.get_language(language))
-#        idle_add(self.emit, 'textview-language-changed', text_view, language, priority=gobject.PRIORITY_LOW)
         self.emit('textview-language-changed', text_view, language)
 
 
@@ -431,7 +429,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             textbox.connect('paste-clipboard', self._on_textbox_paste_clipboard, i)
             textbox.connect('text-inserted', self._on_target_insert_text, i)
             textbox.connect('text-deleted', self._on_target_delete_range, i)
-            textbox.connect('changed', self._on_target_changed, i)
+            textbox._block_on_render.append(textbox.buffer.connect('changed', self._on_target_changed, i))
 
             self._widgets['vbox_targets'].pack_start(target)
             self.targets.append(textbox)
@@ -609,12 +607,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                 _("Move one step forward in the workflow (Ctrl+Enter)")
             )
             statenav.connect('selection-changed', self._on_state_changed)
-#            self._widgets['vbox_right'].pack_end(statenav, expand=False, fill=False)
-            left_align = gtk.Alignment(0, 1, 0, 0)
-            left_align.add(statenav)
-            left_align.show()
-            self._widgets['vbox_right'].pack_end(left_align, expand=False, fill=False)
-
+            self._widgets['vbox_right'].pack_end(statenav, expand=False, fill=False)
             self._widgets['state'] = statenav
 
         state_names = self.controller.get_unit_state_names()

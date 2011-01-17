@@ -165,10 +165,11 @@ class TextBox(gtk.TextView):
             self.selected_elem = None
             self.selected_elem_index = None
 
+            # We have to edit the existing .elem for the sake of the undo controller
             if self.placeables_controller:
-                self.elem = elem_parse(text, self.placeables_controller.get_parsers_for_textbox(self))
+                self.elem.sub = [elem_parse(text, self.placeables_controller.get_parsers_for_textbox(self))]
             else:
-                self.elem = text
+                self.elem.sub = [text]
 
         self.update_tree()
 

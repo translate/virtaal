@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2010 Zuza Software Foundation
+# Copyright 2010-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -126,8 +126,10 @@ class QualityCheckMode(BaseMode):
         check_labels = [mi.child.get_label() for mi in self.btn_popup.menu if mi.get_active()]
         btn_label = u''
         if not check_labels:
-            btn_label = _(u'No Checks')
+            #l10n: This is the button where the user can select units by failing quality checks
+            btn_label = _(u'Select Checks')
         elif len(check_labels) == len(self.checks_names):
+            #l10n: This refers to quality checks
             btn_label = _(u'All Checks')
         else:
             btn_label = u', '.join(check_labels[:3])

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2010 Zuza Software Foundation
+# Copyright 2010-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -108,8 +108,10 @@ class WorkflowMode(BaseMode):
         state_labels = [mi.child.get_label() for mi in self.btn_popup.menu if mi.get_active()]
         btn_label = u''
         if not state_labels:
-            btn_label = _(u'No States')
+            #l10n: This is the button where the user can select units by workflow state
+            btn_label = _(u'Select States')
         elif len(state_labels) == len(self.state_names):
+            #l10n: This refers to workflow states
             btn_label = _(u'All States')
         else:
             btn_label = u', '.join(state_labels[:3])

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -91,5 +91,6 @@ class TMModel(BaseTMModel):
         self.emit('match-found', query_str, matches)
 
     def destroy(self):
+        super(TMModel, self).destroy()
         self.save_config()
         self._db_con.close()

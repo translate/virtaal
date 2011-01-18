@@ -79,7 +79,6 @@ class PopupMenuButton(gtk.ToggleButton):
     def _calculate_popup_pos(self, menu):
         menu_width, menu_height = 0, 0
         menu_alloc = menu.get_allocation()
-        print menu_alloc
         if menu_alloc.height > 1:
             menu_height = menu_alloc.height
             menu_width = menu_alloc.width
@@ -95,7 +94,6 @@ class PopupMenuButton(gtk.ToggleButton):
         if self.menu_pos == POS_NW_SW:
             y = btn_window_xy[1] + btn_alloc.y + btn_alloc.height
         elif self.menu_pos == POS_NE_SE:
-            print "amen"
             x -= (menu_width - btn_alloc.width)
             y = btn_window_xy[1] + btn_alloc.y + btn_alloc.height
         elif self.menu_pos == POS_SE_NE:

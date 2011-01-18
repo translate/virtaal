@@ -92,5 +92,4 @@ class TMModel(BaseTMModel):
 
     def destroy(self):
         super(TMModel, self).destroy()
-        self.save_config()
         self._db_con.close()

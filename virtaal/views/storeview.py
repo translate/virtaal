@@ -42,7 +42,6 @@ class StoreView(BaseView):
 
         self._init_treeview()
         self._add_accelerator_bindings()
-        self._connect_menu_items()
 
         self.controller.connect('store-loaded', self._on_store_loaded)
         main_window = self.controller.main_controller.view.main_window
@@ -81,19 +80,6 @@ class StoreView(BaseView):
         self.mnu_pagedown.set_accel_path('<Virtaal>/Navigation/PgDown')
 
         self._set_menu_items_sensitive(False)
-
-    def _connect_menu_items(self):
-        gui = self.controller.main_controller.view.gui
-        menuitems = {
-            'mnu_export':     self._on_export,
-            'mnu_exportopen': self._on_export_open,
-            'mnu_preview':    self._on_preview,
-        }
-
-        for mnu_name, handler in menuitems.items():
-            mnu_item = gui.get_widget(mnu_name)
-            mnu_item.connect('activate', handler)
-            setattr(self, mnu_name, mnu_item)
 
 
     # ACCESSORS #
@@ -138,10 +124,6 @@ class StoreView(BaseView):
         if not self.controller.get_store():
             return
         self._treeview.select_index(0)
-
-        if self._treeview.get_model():
-            selection = self._treeview.get_selection()
-            selection.select_iter(self._treeview.get_model().get_iter_first())
 
     def _set_menu_items_sensitive(self, sensitive=True):
         for widget in (self.mnu_up, self.mnu_down, self.mnu_pageup, self.mnu_pagedown):

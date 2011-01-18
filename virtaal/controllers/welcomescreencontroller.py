@@ -21,8 +21,6 @@
 
 import logging
 
-import gobject
-
 from virtaal.views import recent
 from virtaal.views.welcomescreenview import WelcomeScreenView
 
@@ -70,13 +68,7 @@ class WelcomeScreenController(BaseController):
         openmailto.open(_('http://translate.sourceforge.net/wiki/virtaal/cheatsheet'))
 
     def open_file(self, filename=None):
-        # We might be a bit early for some of the other controllers, so let's
-        # make it our problem and ensure the last ones are in the main
-        # controller.
-        if not self.main_controller.placeables_controller:
-            gobject.idle_add(self.open_file, filename)
-        else:
-            self.main_controller.open_file(filename)
+        self.main_controller.open_file(filename)
 
     def open_recent(self, n):
         n -= 1 # Shift from nominal value [1; 5] to index value [0; 4]
@@ -86,13 +78,7 @@ class WelcomeScreenController(BaseController):
             logging.debug('Invalid recent file index (%d) given. Recent files: %s)' % (n, self._recent_files))
 
     def open_tutorial(self):
-        # We might be a bit early for some of the other controllers, so let's
-        # make it our problem and ensure the last ones are in the main
-        # controller.
-        if not self.main_controller.placeables_controller:
-            gobject.idle_add(open_tutorial)
-        else:
-            self.main_controller.open_tutorial()
+        self.main_controller.open_tutorial()
 
     def try_open_link(self, name):
         if name not in self.LINKS:

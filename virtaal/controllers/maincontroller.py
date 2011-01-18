@@ -20,6 +20,7 @@
 
 import logging
 import os.path
+import gtk
 from gobject import SIGNAL_RUN_FIRST
 
 from virtaal.common import GObjectWrapper, pan_app
@@ -176,6 +177,11 @@ class MainController(BaseController):
     def open_file(self, filename=None, uri='', forget_dir=False):
         """Open the file given by C{filename}.
             @returns: The filename opened, or C{None} if an error has occurred."""
+        # We might be a bit early for some of the other controllers, so let's
+        # make it our problem and ensure the last ones are in the main
+        # controller.
+        while not self.placeables_controller:
+            gtk.main_iteration(False)
         if filename is None:
             return self.view.open_file()
         if self.store_controller.is_modified():

@@ -54,7 +54,7 @@ class ChecksUnitView(BaseView):
         self.lbl_btnchecks = gtk.Label()
         self.lbl_btnchecks.show()
         self.lbl_btnchecks.set_ellipsize(pango.ELLIPSIZE_END)
-        self.btn_checks = PopupWidgetButton(widget, label=None, popup_pos=POS_SE_NE, main_window=main_window)
+        self.btn_checks = PopupWidgetButton(widget, label=None, popup_pos=POS_SE_NE, main_window=main_window, sticky=True)
         self.btn_checks.set_property('relief', gtk.RELIEF_NONE)
         self.btn_checks.set_update_popup_geometry_func(self.update_geometry)
         self.btn_checks.add(self.lbl_btnchecks)

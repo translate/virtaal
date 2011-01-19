@@ -193,7 +193,7 @@ class UnitController(BaseController):
     def prepare_for_save(self):
         """Finalise outstanding changes to the toolkit store for saving."""
         unit = self.current_unit
-        if unit._modified:
+        if unit._modified and unit.STATE:
             unit._workflow.set_current_state(self._unit_state_names[unit._current_state])
 
     # EVENT HANDLERS #

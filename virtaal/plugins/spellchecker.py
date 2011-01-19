@@ -240,6 +240,9 @@ class Plugin(BasePlugin):
         if not self.gtkspell:
             return
 
+        if language == 'en':
+            language = 'en_US'
+
         if not language in self._seen_languages and not self.enchant.dict_exists(language):
             # Sometimes enchants *wants* a country code, other times it does not.
             # For the cases where it requires one, we look for the first language

@@ -387,11 +387,11 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                 if next_textbox is not None and next_textbox.props.visible:
                     self.focus_text_view(next_textbox)
                 else:
-                    if eventname == 'ctrl-enter':
+                    if eventname == 'ctrl-enter' and self.unit.STATE:
                         #Ctrl+Enter means additionally advance the unit in the workflow
                         listnav = self._widgets['state']
                         listnav.move_state(1)
-                    elif eventname == 'ctrl-shift-enter':
+                    elif eventname == 'ctrl-shift-enter' and self.unit.STATE:
                         listnav = self._widgets['state']
                         listnav.move_state(-1)
                     # textbox is the last text view in this unit, so we need to move on

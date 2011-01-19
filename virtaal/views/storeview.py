@@ -43,7 +43,6 @@ class StoreView(BaseView):
         self._init_treeview()
         self._add_accelerator_bindings()
 
-        self.controller.connect('store-loaded', self._on_store_loaded)
         main_window = self.controller.main_controller.view.main_window
         main_window.connect('configure-event', self._treeview.on_configure_event)
         if main_window.get_property('visible'):
@@ -109,10 +108,6 @@ class StoreView(BaseView):
             self._set_menu_items_sensitive(False)
             self._treeview.set_model(None)
 
-    def set_export_menuitems_enabled(self, enabled):
-        for btn in (self.mnu_export, self.mnu_exportopen, self.mnu_preview):
-            btn.set_sensitive(enabled)
-
     def show(self):
         child = self.parent_widget.get_child()
         if child and child is not self._treeview:
@@ -160,9 +155,6 @@ class StoreView(BaseView):
             self.controller.main_controller.view.show_error_dialog(
                 title=_("Preview failed"), message=str(exc)
             )
-
-    def _on_store_loaded(self, store_controller):
-        self.set_export_menuitems_enabled(bool(store_controller.project))
 
     def _on_style_set(self, widget, prev_style):
         # The following color change is to reduce the flickering seen when

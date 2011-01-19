@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2010 Zuza Software Foundation
+# Copyright 2010-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -65,8 +65,11 @@ class ListNavigator(gtk.HBox):
         self.btn_forward.add(gtk.Arrow(gtk.ARROW_RIGHT, gtk.SHADOW_NONE))
 
         self.tvw_items, self.lst_items = self._init_treeview()
+        frame = gtk.Frame()
+        #frame.set_shadow_type(gtk.SHADOW_ETCHED_IN)
+        frame.add(self.tvw_items)
 
-        self.btn_popup = PopupWidgetButton(self.tvw_items, label='(uninitialised)')
+        self.btn_popup = PopupWidgetButton(frame, label='(uninitialised)')
 
         # Connect to signals
         self.btn_back.connect('clicked', self._on_back_clicked)

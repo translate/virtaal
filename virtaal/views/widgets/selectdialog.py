@@ -70,7 +70,7 @@ class SelectDialog(GObjectWrapper):
 
         scrolled_window = gtk.ScrolledWindow()
         scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        scrolled_window.add_with_viewport(self.sview)
+        scrolled_window.add(self.sview)
         self.dialog.child.pack_end(scrolled_window, expand=True, fill=True)
         self.dialog.add_buttons(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
 

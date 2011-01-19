@@ -343,5 +343,4 @@ class MainController(BaseController):
         return False
 
     def run(self):
-        pan_app.settings.write() # Make sure that we have a settings file.
         self.view.show()

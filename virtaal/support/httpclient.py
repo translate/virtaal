@@ -249,4 +249,17 @@ class HTTPClient(object):
                         platform = '%s; %s %s' % (platform, distro, distro_version)
                 except Exception, e:
                     pass
+        elif platform.startswith('win'):
+            major, minor = sys.getwindowsversion()
+            # from http://msdn.microsoft.com/en-us/library/ms724833%28v=vs.85%29.aspx
+            name_dict = {
+                    (5, 0): "Windows 2000",
+                    (5, 1): "Windows XP",
+                    (6, 0): "Windows Vista", # Also Windows Server 2008
+                    (6, 1): "Windows 7",     # Also Windows server 2008 R2
+            }
+            # (5, 2) includes XP Professional x64 Edition, Server 2003, Home Server, Server 2003 R2
+            name = name_dict.get((major, minor), None)
+            if name:
+                platform = '%s; %s' % (platform, name)
         self.user_agent = 'Virtaal/%s (%s)' % (version, platform)

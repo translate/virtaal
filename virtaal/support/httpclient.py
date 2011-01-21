@@ -250,7 +250,7 @@ class HTTPClient(object):
                 except Exception, e:
                     pass
         elif platform.startswith('win'):
-            major, minor = sys.getwindowsversion()
+            major, minor = sys.getwindowsversion()[:2]
             # from http://msdn.microsoft.com/en-us/library/ms724833%28v=vs.85%29.aspx
             name_dict = {
                     (5, 0): "Windows 2000",

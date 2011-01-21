@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2010 Zuza Software Foundation
+# Copyright 2008-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -229,6 +229,7 @@ class HTTPClient(object):
         platform = sys.platform
         if platform.startswith('linux'):
             import os
+            # Debian, Ubuntu, Mandriva:
             if os.path.isfile('/etc/lsb-release'):
                 try:
                     lines = open('/etc/lsb-release').read().splitlines()
@@ -239,7 +240,8 @@ class HTTPClient(object):
                             platform = '%s; %s' % (platform, distro)
                 except Exception, e:
                     pass
-            if os.path.isfile('/etc/system-release'):
+            # Fedora, RHEL:
+            elif os.path.isfile('/etc/system-release'):
                 try:
                     lines = open('/etc/system-release').read().splitlines()
                     for line in lines:

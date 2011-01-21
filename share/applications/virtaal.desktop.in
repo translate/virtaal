@@ -7,7 +7,7 @@ _Comment=A translation tool to help a human translator translate files into othe
 TryExec=virtaal
 Exec=virtaal %f
 Icon=virtaal
-MimeType=text/x-gettext-translation;text/x-gettext-translation-template;application/x-gettext;application/x-gettext-translation;application/x-xliff+xml;application/x-xliff;text/x-wordfast;application/x-tmx;application/x-tbx;application/x-linguist;application/x-qph;application/x-qm;
+MimeType=text/x-gettext-translation;text/x-gettext-translation-template;application/x-gettext;application/x-gettext-translation;application/x-po;application/x-gettext;text/x-po;application/x-xliff+xml;application/x-xliff;text/x-wordfast;application/x-tmx;application/x-tbx;application/x-linguist;application/x-qph;application/x-qm;
 # Not yet supported
 # application/x-sdf;
 # Monolingual

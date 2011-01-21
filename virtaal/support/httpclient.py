@@ -239,4 +239,12 @@ class HTTPClient(object):
                             platform = '%s; %s' % (platform, distro)
                 except Exception, e:
                     pass
+            if os.path.isfile('/etc/system-release'):
+                try:
+                    lines = open('/etc/system-release').read().splitlines()
+                    for line in lines:
+                        distro, dummy, distro_version, codename = line.split()
+                        platform = '%s; %s %s' % (platform, distro, distro_version)
+                except Exception, e:
+                    pass
         self.user_agent = 'Virtaal/%s (%s)' % (version, platform)

@@ -114,7 +114,12 @@ class Plugin(BasePlugin):
                 return
 
             def get_thing(section, item):
-                key = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r"Software\Vaclav Slavik\Poedit\%s" % section)
+                key = None
+                try:
+                    key = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r"Software\Vaclav Slavik\Poedit\%s" % section)
+                except WindowsError:
+                    return
+
                 data = None
                 try:
                     # This is very inefficient, but who cares?

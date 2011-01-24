@@ -93,8 +93,6 @@ class Plugin(BasePlugin):
             if self.migrated:
                 message = _('Migration was successfully completed') + '\n\n'
                 message += _('The following items were migrated:') + '\n\n'
-                #l10n: This message indicates the formatting of a bullet point. Most
-                #languages wouldn't need to change it.
                 message += u"\n".join([u" • %s" % item for item in self.migrated])
                 #   (we can mark this ^^^ for translation if somebody asks)
                 self.main_controller.show_info(_('Migration completed'), message)

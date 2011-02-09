@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2010 Zuza Software Foundation
+# Copyright 2010-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -204,6 +204,9 @@ class ChecksController(BaseController):
 
     def _start_check_timer(self):
         if self._check_timer_active:
+            return
+        if not self.last_unit:
+            # haven't changed units yet, probably strange timing issue
             return
         self._check_timer_active = True
         timeout_add(self.CHECK_TIMEOUT, self._check_timer_expired, self.last_unit)

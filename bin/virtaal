@@ -86,10 +86,6 @@ def main(argv):
         optparse._ = _
         usage = _("%prog [options] [translation_file]")
         option_list = [
-            make_option("-P", "--profile",
-                        action="store", type="string", dest="profile", metavar=_("PROFILE"),
-                        # l10n: 'profiling' refers to performance testing
-                        help=_("perform profiling, storing the result to the supplied filename.")),
             make_option("-l", "--log",
                         action="store", type="string", dest="log", metavar=_("LOG"),
                         help=_("turn on logging, storing the result to the supplied filename.")),
@@ -100,6 +96,14 @@ def main(argv):
                         action="store_true", dest="debug", default=False,
                         help=_("enable debugging features")),
         ]
+        # Profiling does not make sense in packaged versions.  Set to True to disable profiling.
+        packaged = False
+        if not packaged:
+            option_list.insert(0, make_option("-P", "--profile", action="store",
+                                              type="string", dest="profile",
+                                              metavar=_("PROFILE"),
+					      # l10n: 'profiling' refers to performance testing
+                                              help=_("perform profiling, storing the result to the supplied filename.")))
         parser = OptionParser(option_list=option_list, usage=usage, version=__version__.ver)
 
 

@@ -110,7 +110,9 @@ def _show_kdialog(window, title, args):
     error = output [:-1] # we don't want the last newline
     ret = process.returncode
     if ret == 0: # success
-        return output.decode('utf-8') # get system locale
+        filename = output.decode('utf-8') # get system locale
+        pan_app.settings.general["lastdir"] = os.path.dirname(filename)
+        return filename
     if ret == 1: # cancel
         return u''
     raise Exception("Something went wrong with kdialog", error)
@@ -170,6 +172,7 @@ def win32_open_dialog(title, directory):
                 return ()
         raise Exception("Something went wrong with win32gui", e)
     # success
+    pan_app.settings.general["lastdir"] = os.path.dirname(filename)
     return (filename, u"file:///%s" % filename)
 
 def win32_save_dialog(title, current_filename):

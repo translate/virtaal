@@ -155,8 +155,13 @@ def main(argv):
         def profile_runner(startup_file):
             def profile(profile_file, startup_file):
                 import cProfile
-                import devsupport.profiling as profiling
                 import logging
+                try:
+                    import devsupport.profiling as profiling
+                except ImportError:
+                    #l10n: This refers to performance profiling for developers
+                    print >> sys.stderr, _("Profiling support is not available")
+                    sys.exit(1)
                 logging.info('Starting profiling run')
                 profiler = cProfile.Profile()
                 profiler.runcall(run_virtaal, startup_file)

@@ -240,6 +240,9 @@ class Plugin(BasePlugin):
         if not self.gtkspell:
             return
 
+        # enchant doesn't like anything except plain strings (bug 1852)
+        language = str(language)
+
         if language == 'en':
             language = 'en_US'
         elif language == 'pt':

@@ -129,7 +129,7 @@ def kdialog_open_dialog(window, title, directory):
     title = title or _("Choose a Translation File")
     filename = _show_kdialog(window, title, args)
     if filename:
-        return (filename, u"file:///%s" % filename)
+        return (filename, u"file://%s" % filename)
     else:
         return ()
 

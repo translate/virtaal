@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2010 Zuza Software Foundation
+# Copyright 2008-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -63,7 +63,12 @@ class StoreTreeModel(gtk.GenericTreeModel):
                 if not note_text:
                     locations = unit.getlocations()
                     if locations:
-                        note_text = unit.getlocations()[0]
+                        location = locations[0]
+                        # XLIFF files downloaded from PO projects in Pootle
+                        # might have location equal to .source, so let's avoid
+                        # that:
+                        if location != unit.source:
+                            note_text = location
                 return markup.markuptext(note_text, fancyspaces=False, markupescapes=False) or None
             else:
                 return unit

@@ -63,12 +63,7 @@ class StoreTreeModel(gtk.GenericTreeModel):
                 if not note_text:
                     locations = unit.getlocations()
                     if locations:
-                        location = locations[0]
-                        # XLIFF files downloaded from PO projects in Pootle
-                        # might have location equal to .source, so let's avoid
-                        # that:
-                        if location != unit.source:
-                            note_text = location
+                        note_text = locations[0]
                 return markup.markuptext(note_text, fancyspaces=False, markupescapes=False) or None
             else:
                 return unit

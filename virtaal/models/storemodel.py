@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2010 Zuza Software Foundation
+# Copyright 2008-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -267,8 +267,9 @@ class StoreModel(BaseModel):
             project_code = self.controller.main_controller.checks_controller.code
             if project_code:
                 header_updates["X-Project-Style"] = project_code
+            self._trans_store.updateheader(add=True, **header_updates)
+
             plural = target_lang.plural
             nplurals = target_lang.nplurals
             if plural:
                 self._trans_store.updateheaderplural(nplurals, plural)
-            self._trans_store.updateheader(add=True, **header_updates)

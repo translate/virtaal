@@ -184,6 +184,7 @@ class StoreModel(BaseModel):
         from translate.storage import factory, statsdb
         newstore = factory.getobject(filename)
         oldfilename = self._trans_store.filename
+        oldfileobj = self._trans_store.fileobj
 
         #get a copy of old stats before we convert
         from translate.filters import checks
@@ -191,6 +192,7 @@ class StoreModel(BaseModel):
 
         from translate.convert import pot2po
         self._trans_store = pot2po.convert_stores(newstore, self._trans_store, fuzzymatching=False)
+        self._trans_store.fileobj = oldfileobj #Let's attempt to keep the old file and name if possible
 
         #FIXME: ugly tempfile hack, can we please have a pure store implementation of statsdb
         import tempfile

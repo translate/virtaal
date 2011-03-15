@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2010 Zuza Software Foundation
+# Copyright 2008-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -549,6 +549,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             label = gtk.Label()
             label.set_line_wrap(True)
             label.set_justify(gtk.JUSTIFY_FILL)
+            label.set_property('selectable', True)
             self._widgets['vbox_middle'].pack_start(label)
             self._widgets['vbox_middle'].reorder_child(label, 2)
             self._widgets['context_info'] = label

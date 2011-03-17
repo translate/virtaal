@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2010 Zuza Software Foundation
+# Copyright 2010-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -72,11 +72,11 @@ def _get_file_types():
     _sorted = sorted(factory.supported_files(), cmp=strcoll, key=lambda x: x[0])
     for name, extensions, mimetypes in _sorted:
         name = _(name)
-        extension_filter = ' '.join(["*.%s" % ext for ext in extensions])
-        all_supported_ext.append(extension_filter)
+        extension_filter = ["*.%s" % ext for ext in extensions]
+        all_supported_ext.extend(extension_filter)
         supported_files.append((name, extension_filter))
 
-    supported_files.insert(0, (_("All Supported Files"), ' '.join(all_supported_ext)))
+    supported_files.insert(0, (_("All Supported Files"), all_supported_ext))
     _file_types = supported_files
     return supported_files
 
@@ -86,7 +86,7 @@ def _get_used_filetypes(current_filename):
     supported_files = []
     for type_name, extensions in _get_file_types():
         if "*%s" % extension in extensions:
-            supported_files = [(type_name, ';'.join(extensions))]
+            supported_files = [(type_name, extensions)]
     return supported_files
 
 ### KDE/kdialog ###
@@ -124,7 +124,7 @@ def kdialog_open_dialog(window, title, directory):
         '--getopenfilename', directory or '.',
         #'''*.po *.xlf|All Translatable Files\n*.ts|Qt .ts file''',   # example with wildcards
         #'text/x-gettext-translation application/x-xliff application/x-linguist,   #example with mime-types
-        '\n'.join('|'.join([extensions, name]) for name, extensions in supported_files)
+        '\n'.join('|'.join([' '.join(extensions), name]) for name, extensions in supported_files)
     ]
     title = title or _("Choose a Translation File")
     filename = _show_kdialog(window, title, args)
@@ -137,7 +137,7 @@ def kdialog_save_dialog(window, title, current_filename):
     supported_files = _get_used_filetypes(current_filename)
     args = [
         '--getsavefilename', current_filename or '.',
-        '\n'.join('|'.join([extensions, name]) for name, extensions in supported_files)
+        '\n'.join('|'.join([' '.join(extensions), name]) for name, extensions in supported_files)
     ]
     title = title or _("Save")
     return _show_kdialog(window, title, args)
@@ -181,7 +181,7 @@ def win32_save_dialog(title, current_filename):
     import pywintypes
     supported_files = _get_used_filetypes(current_filename)
 
-    type_filter = '\0'.join(('%s\0%s') % (name, extensions) for name, extensions in supported_files) + '\0'
+    type_filter = '\0'.join(('%s\0%s') % (name, ';'.join(extensions)) for name, extensions in supported_files) + '\0'
     custom_filter = _("All Files") + '\0*.*\0'
     directory, filename = os.path.split(current_filename)
     name, extension = os.path.splitext(filename)

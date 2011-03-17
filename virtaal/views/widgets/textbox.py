@@ -759,6 +759,7 @@ class TextBox(gtk.TextView):
                     self.suggestion['text']
                 )
                 self.suggestion = None
+                self.emit("changed")
                 return True
             self.suggestion = None
 

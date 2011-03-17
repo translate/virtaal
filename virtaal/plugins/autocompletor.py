@@ -21,8 +21,6 @@
 """Contains the AutoCompletor class."""
 
 import gobject
-import gtk
-import logging
 import re
 try:
     from collections import defaultdict

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -202,7 +202,7 @@ class UndoController(BaseController):
                 elem.sub = deleted.sub
                 return
             if isinstance(deleted, StringElem):
-                parent.insert(offset, deleted)
+                elem.insert(offset, deleted)
                 elem.prune()
 
         if hasattr(deleted, 'gui_info'):

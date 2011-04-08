@@ -66,8 +66,8 @@ def get_locale_lang():
            lang = osx_lang()
         if lang:
             return data.simplify_to_common(lang)
-    except Exception:
-        logging.exception("Could not get locale")
+    except Exception, e:
+        logging.warning("%s", e)
     return 'en'
 
 def name():

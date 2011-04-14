@@ -99,9 +99,9 @@ class PreferencesView(BaseView, GObjectWrapper):
 
         accel_group = menu_edit.get_accel_group()
         if accel_group is None:
-            accel_group = self.accel_group
-            menu_edit.set_accel_path(accel_group)
-        menu_edit.set_accel_group(accel_group)
+            accel_group = gtk.AccelGroup()
+            menu_edit.set_accel_group(accel_group)
+            mainview.add_accel_group(accel_group)
 
         mnu_prefs.set_accel_path("<Virtaal>/Edit/Preferences")
         mnu_prefs.connect('activate', self._show_preferences)

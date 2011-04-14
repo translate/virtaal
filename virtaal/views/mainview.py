@@ -536,7 +536,6 @@ class MainView(BaseView):
         if title:
             self.open_chooser.set_title(title)
 
-        last_path = (pan_app.settings.general["lastdir"] or "").decode(sys.getdefaultencoding())
         if os.path.exists(last_path):
             self.open_chooser.set_current_folder(last_path)
 

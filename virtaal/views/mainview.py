@@ -735,7 +735,7 @@ class MainView(BaseView):
         openmailto.open("http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal&version=%s" % __version__.ver)
 
     def _on_store_closed(self, store_controller):
-        for widget_name in ('mnu_saveas', 'mnu_close', 'mnu_update'):
+        for widget_name in ('mnu_saveas', 'mnu_close', 'mnu_update', 'mnu_properties'):
             self.gui.get_widget(widget_name).set_sensitive(False)
         self.status_bar.set_sensitive(False)
         self.main_window.set_title(_('Virtaal'))
@@ -744,6 +744,7 @@ class MainView(BaseView):
         self.gui.get_widget('mnu_saveas').set_sensitive(True)
         self.gui.get_widget('mnu_close').set_sensitive(True)
         self.gui.get_widget('mnu_update').set_sensitive(True)
+        self.gui.get_widget('mnu_properties').set_sensitive(True)
         self.status_bar.set_sensitive(True)
         if store_controller.project:
             if not store_controller._archivetemp:

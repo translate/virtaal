@@ -103,6 +103,9 @@ class StoreModel(BaseModel):
     def set_target_language(self, langcode):
         self._trans_store.settargetlanguage(langcode)
 
+    def get_store_type(self):
+        return self._trans_store.Name
+
     def get_unit(self, index):
         """Get a specific unit by index."""
         return self._trans_store.units[self._valid_units[index]]
@@ -111,6 +114,14 @@ class StoreModel(BaseModel):
         # TODO: Add caching
         """Return the current store's (filtered) units."""
         return [self._trans_store.units[i] for i in self._valid_units]
+
+    def get_stats_totals(self):
+        """Return totals for word and string counts."""
+        if not self.filename:
+            return {}
+        from translate.storage import statsdb
+        totals = statsdb.StatsCache().file_extended_totals(self.filename,  self._trans_store)
+        return totals
 
 
     # METHODS #

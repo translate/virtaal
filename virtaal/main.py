@@ -125,6 +125,7 @@ class Virtaal(object):
         from virtaal.controllers.prefscontroller import PreferencesController
         from virtaal.controllers.checkscontroller import ChecksController
         from virtaal.controllers.undocontroller import UndoController
+        from virtaal.controllers.propertiescontroller import PropertiesController
 
         defer = self.defer
         main_controller = self.main_controller
@@ -133,6 +134,7 @@ class Virtaal(object):
         defer(UndoController, main_controller)
         defer(PluginController, main_controller)
         defer(PreferencesController, main_controller)
+        defer(PropertiesController, main_controller)
         defer(main_controller.load_plugins)
 
 

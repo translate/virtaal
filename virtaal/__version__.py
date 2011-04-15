@@ -19,4 +19,4 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 """This file contains the version."""
-ver = "0.7.0-beta4"
+ver = "0.7.0-beta5"

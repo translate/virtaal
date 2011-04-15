@@ -197,7 +197,7 @@ class UndoController(BaseController):
     @if_enabled
     def _on_unit_delete_text(self, unit_controller, unit, deleted, parent, offset, cursor_pos, elem, target_num):
         def undo_action(unit):
-            #logging.debug('(undo) %s.insert(%d, "%s")' % (repr(elem), start_offset, deleted))
+            #logging.debug('(undo) %s.insert(%d, "%s")' % (repr(elem), offset, deleted))
             if parent is None:
                 elem.sub = deleted.sub
                 return
@@ -221,7 +221,7 @@ class UndoController(BaseController):
 
     @if_enabled
     def _on_unit_insert_text(self, unit_controller, unit, ins_text, offset, elem, target_num):
-        #logging.debug('_on_unit_insert_text(ins_text="%s", offset=%d, elem=%s, target_n=%d)' % (ins_text, offset, repr(elem), target_num))
+        #logging.debug('_on_unit_insert_text(ins_text="%r", offset=%d, elem=%s, target_n=%d)' % (ins_text, offset, repr(elem), target_num))
 
         def undo_action(unit):
             if isinstance(ins_text, StringElem) and hasattr(ins_text, 'gui_info') and ins_text.gui_info.widgets:

@@ -137,6 +137,7 @@ class TerminologyCombo(gtk.ComboBox):
             parent.refresh_cursor_pos = buffer.props.cursor_position
             if self.selected_string:
                 buffer.insert(iterins, self.selected_string)
+                parent.emit("changed")
 
 
     # EVENT HANDLERS #

@@ -680,6 +680,7 @@ class TextBox(gtk.TextView):
                 start_offset = parent_offset + index
                 end_offset = parent_offset + index + length
                 self.refresh_cursor_pos = start_offset
+                index = start_offset
             else:
                 self.refresh_cursor_pos = self.elem.gui_info.tree_to_gui_index(start_offset)
 

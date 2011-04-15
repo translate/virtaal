@@ -25,7 +25,6 @@ import sys
 import logging
 from gtk import gdk
 
-from virtaal import __version__
 from virtaal.views import recent, theme
 from virtaal.common import pan_app
 
@@ -732,6 +731,7 @@ class MainView(BaseView):
 
     def _on_report_bug(self, _widget=None):
         from virtaal.support import openmailto
+        from virtaal import __version__
         openmailto.open("http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal&version=%s" % __version__.ver)
 
     def _on_store_closed(self, store_controller):

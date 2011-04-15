@@ -24,7 +24,6 @@ from gtk import gdk
 from translate.storage.placeables import StringElem
 
 from virtaal.common import GObjectWrapper
-from virtaal.models.undomodel import UndoModel
 
 from basecontroller import BaseController
 
@@ -46,6 +45,7 @@ class UndoController(BaseController):
         self.unit_controller = self.main_controller.store_controller.unit_controller
 
         self.enabled = True
+        from virtaal.models.undomodel import UndoModel
         self.model = UndoModel(self)
 
         self._setup_key_bindings()

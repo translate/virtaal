@@ -19,11 +19,6 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-import logging
-
-from virtaal.views import recent
-from virtaal.views.welcomescreenview import WelcomeScreenView
-
 from basecontroller import BaseController
 
 
@@ -49,6 +44,7 @@ class WelcomeScreenController(BaseController):
         main_controller.welcomescreen_controller = self
 
         self._recent_files = []
+        from virtaal.views.welcomescreenview import WelcomeScreenView
         self.view = WelcomeScreenView(self)
 
         main_controller.store_controller.connect('store-closed', self._on_store_closed)
@@ -75,6 +71,7 @@ class WelcomeScreenController(BaseController):
         if 0 <= n <= len(self._recent_files)-1:
             self.open_file(self._recent_files[n]['uri'].decode('utf-8'))
         else:
+            import logging
             logging.debug('Invalid recent file index (%d) given. Recent files: %s)' % (n, self._recent_files))
 
     def open_tutorial(self):
@@ -88,6 +85,7 @@ class WelcomeScreenController(BaseController):
         return True
 
     def update_recent(self):
+        from virtaal.views import recent
         self._recent_files = [{
                 'name': i.get_display_name(),
                 'uri':  i.get_uri_display()

@@ -22,7 +22,6 @@ from gobject import SIGNAL_RUN_FIRST, timeout_add
 from translate.storage import workflow
 
 from virtaal.common import GObjectWrapper
-from virtaal.views.unitview import UnitView
 
 from basecontroller import BaseController
 
@@ -52,6 +51,7 @@ class UnitController(BaseController):
         self.store_controller.unit_controller = self
         self.checks_controller = None
 
+        from virtaal.views.unitview import UnitView
         self.view = UnitView(self)
         self.view.connect('delete-text', self._unit_delete_text)
         self.view.connect('insert-text', self._unit_insert_text)

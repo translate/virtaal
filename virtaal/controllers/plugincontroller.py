@@ -23,8 +23,6 @@ import os
 import sys
 from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT, idle_add
 
-from translate.misc import file_discovery
-
 from virtaal.common import pan_app, GObjectWrapper
 
 from basecontroller import BaseController

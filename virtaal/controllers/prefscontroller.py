@@ -18,10 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import logging
-
 from virtaal.common import GObjectWrapper, pan_app
-from virtaal.views.prefsview import PreferencesView
 
 from basecontroller import BaseController
 
@@ -38,6 +35,7 @@ class PreferencesController(BaseController):
         self.main_controller = main_controller
         self.placeables_controller = main_controller.placeables_controller
         self.plugin_controller = main_controller.plugin_controller
+        from virtaal.views.prefsview import PreferencesView
         self.view = PreferencesView(self)
         self.view.connect('prefs-done', self._on_prefs_done)
 
@@ -119,6 +117,7 @@ class PreferencesController(BaseController):
                 try:
                     info = self.plugin_controller.get_plugin_info(found_plugin)
                 except Exception, e:
+                    import logging
                     logging.debug('Problem getting information for plugin %s' % found_plugin)
                     continue
 

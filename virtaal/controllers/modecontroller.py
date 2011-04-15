@@ -23,7 +23,6 @@ import logging
 
 from virtaal.common import GObjectWrapper
 from virtaal.modes  import modeclasses
-from virtaal.views.modeview  import ModeView
 
 from basecontroller import BaseController
 
@@ -52,6 +51,7 @@ class ModeController(BaseController):
         self.main_controller.mode_controller = self
 
         self._init_modes()
+        from virtaal.views.modeview  import ModeView
         self.view = ModeView(self)
         self.view.connect('mode-selected', self._on_mode_selected)
 

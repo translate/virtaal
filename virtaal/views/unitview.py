@@ -692,7 +692,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         self.emit('insert-text', ins_text, offset, elem, target_num)
 
     def _on_target_delete_range(self, textbox, deleted, parent, offset, cursor_pos, elem, target_num):
-        #logging.debug('emit("delete-text", start_offset=%d, end_offset=%d, cursor_pos=%d, elem=%s, target_num=%d)' % (old_text, start_offset, end_offset, cursor_pos, repr(elem), target_num))
+        #logging.debug('emit("delete-text", deleted=%s, offset=%d, cursor_pos=%d, elem=%s, target_num=%d)' % (deleted, offset, cursor_pos, repr(elem), target_num))
         self.emit('delete-text', deleted, parent, offset, cursor_pos, elem, target_num)
 
     def _on_textbox_paste_clipboard(self, textbox, target_num):

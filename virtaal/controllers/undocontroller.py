@@ -222,6 +222,7 @@ class UndoController(BaseController):
     @if_enabled
     def _on_unit_insert_text(self, unit_controller, unit, ins_text, offset, elem, target_num):
         #logging.debug('_on_unit_insert_text(ins_text="%r", offset=%d, elem=%s, target_n=%d)' % (ins_text, offset, repr(elem), target_num))
+        len_ins_text = len(ins_text) # remember, since ins_text might change
 
         def undo_action(unit):
             if isinstance(ins_text, StringElem) and hasattr(ins_text, 'gui_info') and ins_text.gui_info.widgets:
@@ -229,8 +230,8 @@ class UndoController(BaseController):
                 elem.delete_elem(ins_text)
             else:
                 tree_offset = elem.gui_info.gui_to_tree_index(offset)
-                #logging.debug('(undo) %s.delete_range(%d, %d)' % (repr(elem), tree_offset, tree_offset+len(ins_text)))
-                elem.delete_range(tree_offset, tree_offset+len(ins_text))
+                #logging.debug('(undo) %s.delete_range(%d, %d)' % (repr(elem), tree_offset, tree_offset+len_ins_text))
+                elem.delete_range(tree_offset, tree_offset+len_ins_text)
             elem.prune()
 
         desc = 'ins_text="%s", offset=%d, elem=%s' % (ins_text, offset, repr(elem))

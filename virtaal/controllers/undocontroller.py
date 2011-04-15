@@ -205,11 +205,6 @@ class UndoController(BaseController):
                 elem.insert(offset, deleted)
                 elem.prune()
 
-        if hasattr(deleted, 'gui_info'):
-            del_length = deleted.gui_info.length()
-        else:
-            del_length = len(deleted)
-
         desc = 'offset=%d, deleted="%s", parent=%s, cursor_pos=%d, elem=%s' % (offset, repr(deleted), repr(parent), cursor_pos, repr(elem))
         self.model.push({
             'action': undo_action,

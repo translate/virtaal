@@ -60,6 +60,17 @@ msgid "Alt"
 msgstr ""
 
 #. This is the text that should appear next to menu accelerators
+#. * that use the Return key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#. GTK >=2.16
+#. Configuration: Return key label
+msgctxt "keyboard label"
+msgid "Return"
+msgstr ""
+
+#. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
 #. * this.
@@ -269,6 +280,10 @@ msgstr ""
 #, c-format
 msgctxt "recent menu label"
 msgid "%d. %s"
+msgstr ""
+
+msgctxt "Stock label"
+msgid "_Properties"
 msgstr ""
 
 #. File->Quit

@@ -47,6 +47,7 @@ virtaal/views/checksprojview.py
 virtaal/views/langview.py
 virtaal/views/mainview.py
 virtaal/views/modeview.py
+virtaal/views/propertiesview.py
 virtaal/views/storeview.py
 virtaal/views/unitview.py
 virtaal/views/widgets/aboutdialog.py

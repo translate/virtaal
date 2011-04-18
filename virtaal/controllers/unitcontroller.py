@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2010 Zuza Software Foundation
+# Copyright 2008-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -83,7 +83,7 @@ class UnitController(BaseController):
             workflow.StateEnum.EMPTY: _('Untranslated'),
             workflow.StateEnum.NEEDS_WORK: _('Needs work'),
             workflow.StateEnum.REJECTED: _('Rejected'),
-            workflow.StateEnum.NEEDS_REVIEW: _('Needs Review'),
+            workflow.StateEnum.NEEDS_REVIEW: _('Needs review'),
             workflow.StateEnum.UNREVIEWED: _('Translated'),
             workflow.StateEnum.FINAL: _('Reviewed'),
             }

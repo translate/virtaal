@@ -61,7 +61,7 @@ def _nice_percentage(numerator, denominator):
         return _("(100%)")
     percentage = numerator * 100.0 / denominator
     #l10n: This is the formatting for percentages in the file properties. If unsure, just copy the original.
-    return _("(%04.1f%%)" % percentage)
+    return _("(%04.1f%%)") % percentage
 
 
 class PropertiesView(BaseView, GObjectWrapper):

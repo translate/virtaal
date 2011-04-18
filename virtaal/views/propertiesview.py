@@ -187,8 +187,9 @@ class PropertiesView(BaseView, GObjectWrapper):
             vbox_string_perc.pack_start(lbl_perc)
 
 
-        self._widgets['lbl_word_total'].set_markup("<b>%d</b>" % total_words)
-        self._widgets['lbl_string_total'].set_markup("<b>%d</b>" % total_strings)
+        #l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
+        self._widgets['lbl_word_total'].set_markup(_("<b>%d</b>") % total_words)
+        self._widgets['lbl_string_total'].set_markup(_("<b>%d</b>") % total_strings)
 
         self._widgets['lbl_type'].set_text(self.data['file_type'])
         filename = self.data.get('file_location', '')

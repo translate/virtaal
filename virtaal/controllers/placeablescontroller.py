@@ -154,6 +154,8 @@ class PlaceablesController(BaseController):
         _('Double spaces and spaces in unexpected positions')
         _('"alt" Attributes'),
         _('Placeable for "alt" attributes (as found in HTML)')
+        _('Placeholders (Drupal)'),
+        _('Placeholders in Drupal strings')
 
 
     # METHODS #

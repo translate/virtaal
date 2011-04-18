@@ -76,9 +76,9 @@ class WelcomeScreen(gtk.ScrolledWindow):
 
     def _init_feature_view(self):
         features = u"\n".join([
-            u" • " + _("Extensive format support"),
             u" • " + _("Translation memory"),
             u" • " + _("Terminology assistance"),
+            u" • " + _("Quality checks"),
             u" • " + _("Machine translation"),
             u" • " + _("Highlighting and insertion of placeables"),
             u" • " + _("Many plugins and options for customization"),

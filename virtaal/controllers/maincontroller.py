@@ -223,8 +223,8 @@ class MainController(BaseController):
         if not filename and (self.get_force_saveas() or force_saveas):
             filename = self.store_controller.get_bundle_filename()
             if filename is None:
-                store_filename = self.get_store_filename() or ''
-            filename = self.view.show_save_dialog(current_filename=filename)
+                filename = self.get_store_filename() or ''
+            filename = self.view.show_save_dialog(current_filename=filename, title=_("Save"))
             if not filename:
                 return False
 
@@ -234,7 +234,6 @@ class MainController(BaseController):
             return True
         else:
             return False
-
 
     def _do_save_file(self, filename=None):
         """Delegate saving to the store_controller, but do error handling.
@@ -251,6 +250,39 @@ class MainController(BaseController):
             logging.exception('MainController.save_file(filename="%s")' % (filename))
             self.show_error(
                 _("Could not save file.\n\n%(error_message)s" % {'error_message': str(exc)})
+            )
+        return False
+
+    def binary_export(self):
+        #let's try to suggest a filename:
+        filename = self.store_controller.get_bundle_filename()
+        if filename is None:
+            filename = self.get_store_filename() or ''
+        if not (filename.endswith('.po') or filename.endswith('.po.bz2') or filename.endswith('.po.gz')):
+            self.show_error(
+                _("Can only export Gettext PO files")
+            )
+            return False
+
+        if filename.endswith('.po'):
+            #TODO: do something better, especially for files like fr.po and gnome-shell.po.master.fr.po
+            filename = filename[:-3] + '.mo'
+        else:
+            filename = 'messages.mo'
+        filename = self.view.show_save_dialog(current_filename=filename, title=_("Export"))
+        if not filename:
+            return False
+        try:
+            self.store_controller.binary_export(filename)
+            return True
+        except IOError, exc:
+            self.show_error(
+                _("Could not export file.\n\n%(error_message)s\n\nTry saving to a different location.") % {'error_message': str(exc)}
+            )
+        except Exception, exc:
+            logging.exception('MainController.binary_export(filename="%s")' % (filename))
+            self.show_error(
+                _("Could not export file.\n\n%(error_message)s" % {'error_message': str(exc)})
             )
         return False
 

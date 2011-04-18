@@ -290,6 +290,15 @@ class StoreController(BaseController):
         self.main_controller.set_saveable(False)
         self.emit('store-saved')
 
+    def binary_export(self, filename):
+        #TODO: confirm file extension is correct
+        #TODO: confirm that there is something translated in the store
+        from translate.tools.pocompile import POCompile
+        compiler = POCompile()
+        binary_output = open(filename, 'wb')
+        binary_output.write(compiler.convertstore(self.store._trans_store))
+        binary_output.close()
+
     def close_file(self):
         del self.project
         self.project = None

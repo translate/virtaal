@@ -151,6 +151,7 @@ class MainView(BaseView):
         self.gui.get_widget('mnu_saveas').connect('activate', self._on_file_saveas)
         self.gui.get_widget('mnu_close').connect('activate', self._on_file_close)
         self.gui.get_widget('mnu_update').connect('activate', self._on_file_update)
+        self.gui.get_widget('mnu_binary_export').connect('activate', self._on_file_binary_export)
         self.gui.get_widget('mnu_revert').connect('activate', self._on_file_revert)
         self.gui.get_widget('mnu_quit').connect('activate', self._on_quit)
         # View menu signals
@@ -585,7 +586,7 @@ class MainView(BaseView):
         self.info_dialog.hide()
         self._top_window = old_top
 
-    def show_save_dialog(self, title='', current_filename=None):
+    def show_save_dialog(self, title, current_filename=None):
         """@returns: C{True} if the OK button was pressed, C{False} for any
             other response."""
         if not current_filename:
@@ -678,6 +679,9 @@ class MainView(BaseView):
     def _on_file_saveas(self, widget=None):
         self.controller.save_file(force_saveas=True)
 
+    def _on_file_binary_export(self, widget=None):
+        self.controller.binary_export()
+
     def _on_file_close(self, widget=None):
         self.controller.close_file()
 
@@ -735,7 +739,7 @@ class MainView(BaseView):
         openmailto.open("http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal&version=%s" % __version__.ver)
 
     def _on_store_closed(self, store_controller):
-        for widget_name in ('mnu_saveas', 'mnu_close', 'mnu_update', 'mnu_properties'):
+        for widget_name in ('mnu_saveas', 'mnu_close', 'mnu_update', 'mnu_properties', 'mnu_binary_export'):
             self.gui.get_widget(widget_name).set_sensitive(False)
         self.status_bar.set_sensitive(False)
         self.main_window.set_title(_('Virtaal'))
@@ -745,6 +749,11 @@ class MainView(BaseView):
         self.gui.get_widget('mnu_close').set_sensitive(True)
         self.gui.get_widget('mnu_update').set_sensitive(True)
         self.gui.get_widget('mnu_properties').set_sensitive(True)
+        filename = store_controller.get_store_filename()
+        #TODO: move logic to storecontroller
+        if filename.endswith('.po') or filename.endswith('.po.bz2') or filename.endswith('.po.gz'):
+            self.gui.get_widget('mnu_binary_export').set_sensitive(True)
+
         self.status_bar.set_sensitive(True)
         if store_controller.project:
             if not store_controller._archivetemp:

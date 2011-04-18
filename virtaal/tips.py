@@ -29,6 +29,8 @@ tips = [
     #_("When editing a fuzzy translation, the fuzzy marker will automatically be removed."),
     # l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
     _("To mark the current translation as fuzzy, simply press <Alt+U>."),
+    _("To mark the current translation as incomplete, simply press <Ctrl+Shift+Enter>."),
+    _("To mark the current translation as complete, simply press <Ctrl+Enter>."),
     _("Use Ctrl+Up or Ctrl+Down to move between translations."),
     _("Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."),
 ]

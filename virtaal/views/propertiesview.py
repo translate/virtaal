@@ -86,6 +86,7 @@ class PropertiesView(BaseView, GObjectWrapper):
         )
 
         widget_names = (
+            'tbl_properties',
             'lbl_type', 'lbl_location', 'lbl_filesize',
             'lbl_word_total', 'lbl_string_total',
             'vbox_word_labels', 'vbox_word_stats', 'vbox_word_perc',
@@ -128,6 +129,11 @@ class PropertiesView(BaseView, GObjectWrapper):
             self._init_gui()
         self.controller.update_gui_data()
         statistics = _statistics(self.stats)
+        tbl_properties = self._widgets['tbl_properties']
+        if self.controller.main_controller.store_controller.is_modified():
+            tbl_properties.set_tooltip_text(_("Save the file for up-to-date information"))
+        else:
+            tbl_properties.set_tooltip_text("")
         vbox_word_labels = self._widgets['vbox_word_labels']
         vbox_word_stats = self._widgets['vbox_word_stats']
         vbox_word_perc = self._widgets['vbox_word_perc']

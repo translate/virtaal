@@ -232,6 +232,7 @@ class StoreController(BaseController):
         if _pot_re.search(filename):
             force_saveas = True
             self.store._trans_store.filename = _pot_re.sub('.po', filename)
+            filename = _pot_re.sub('.po', filename)
 
         # forgetting the directory only makes sense if we force save as
         if force_saveas and forget_dir:

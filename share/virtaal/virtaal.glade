@@ -253,7 +253,7 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkMenuItem" id="mnu_checks">
+                      <widget class="GtkCheckMenuItem" id="mnu_checks">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">_Quality Checks</property>
                         <property name="use_underline">True</property>

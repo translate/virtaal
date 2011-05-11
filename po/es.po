@@ -2284,7 +2284,7 @@ msgstr "Archivo Gettext MO"
 
 #: ../devsupport/tmp_strings.py:25
 msgid "Qt .qm file"
-msgstr "Archivo .qm de Qt"
+msgstr "Archivo «.qm» de Qt"
 
 #: ../devsupport/tmp_strings.py:26
 msgid "OmegaT Glossary"

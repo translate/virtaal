@@ -51,6 +51,7 @@ class PlaceablesController(BaseController):
         self._init_notarget_list()
 
         self.main_controller.view.main_window.connect('style-set', self._on_style_set)
+        self._on_style_set(self.main_controller.view.main_window, None)
         self.main_controller.connect('quit', self._on_quit)
 
     def _init_notarget_list(self):

@@ -53,6 +53,7 @@ class TerminologyController(BaseController):
         self.placeables_controller.non_target_placeables.append(terminology.TerminologyPlaceable)
         self.placeables_controller.connect('parsers-changed', self._on_placeables_changed)
         main_controller.view.main_window.connect('style-set', self._on_style_set)
+        self._on_style_set(main_controller.view.main_window, None)
 
         if not (terminology.TerminologyPlaceable, TerminologyGUIInfo) in placeablesguiinfo.element_gui_map:
             placeablesguiinfo.element_gui_map.insert(0, (terminology.TerminologyPlaceable, TerminologyGUIInfo))

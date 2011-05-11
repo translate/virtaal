@@ -7,14 +7,14 @@ msgstr ""
 "Project-Id-Version: GTK+ lite 2.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2008-07-25 18:31+0200\n"
-"PO-Revision-Date: 2010-04-05 08:11+0200\n"
+"PO-Revision-Date: 2010-06-28 11:55+0200\n"
 "Last-Translator: OLWENY San James <sjolweny85@yahoo.co.uk>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: lg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Pootle 2.0.3\n"
+"X-Generator: Pootle 2.0.4\n"
 
 #. Translate to default:RTL if you want your widgets
 #. * to be RTL, otherwise translate to default:LTR.
@@ -69,7 +69,7 @@ msgstr "Alt"
 #. GTK <=2.14
 #. Configuration: Up key label
 msgid "keyboard label|Up"
-msgstr " lama ya mapeesa|Up"
+msgstr "lama ya mapeesa|Up"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -82,7 +82,7 @@ msgstr " lama ya mapeesa|Up"
 #. Configuration: Up key label
 msgctxt "keyboard label"
 msgid "Up"
-msgstr "Up"
+msgstr "Wangulu"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -107,7 +107,7 @@ msgstr "lama ya mapeesa|Down"
 #. Configuration: Down key label
 msgctxt "keyboard label"
 msgid "Down"
-msgstr "Down"
+msgstr "Wansi"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -161,11 +161,11 @@ msgstr "Page_Down"
 
 msgctxt "keyboard label"
 msgid "Left"
-msgstr "kkono"
+msgstr "Kkono"
 
 msgctxt "keyboard label"
 msgid "Right"
-msgstr "ddyo"
+msgstr "Kitufu"
 
 #. File->Open
 msgid "_Open"
@@ -218,7 +218,7 @@ msgstr ""
 #. File->Save As->Replace confirmation
 #: ../gtk/gtkfilechooserdefault.c:8349 ../gtk/gtkprintunixdialog.c:457
 msgid "_Replace"
-msgstr "_sikiza"
+msgstr "_Kizeemu"
 
 #. File ->Recent Files->No items found
 msgid "No items found"
@@ -274,21 +274,21 @@ msgstr "%d. %s"
 
 #. File->Quit
 msgid "_Quit"
-msgstr "_Genda"
+msgstr "_Vvawo"
 
 #. File->Quit
 msgctxt "Stock label"
 msgid "_Quit"
-msgstr "_Genda"
+msgstr "_Vvawo"
 
 #. Edit->Undo
 msgid "_Undo"
-msgstr "_Ssazaamu kyokoze"
+msgstr "_Zzayo"
 
 #. Edit->Undo
 msgctxt "Stock label"
 msgid "_Undo"
-msgstr "_Ssazaamu kyokoze"
+msgstr "_Zzayo"
 
 #. Edit->Preferences
 msgid "_Preferences"
@@ -301,7 +301,7 @@ msgstr "_Eby'okweroboza"
 
 #. Navigation->Up
 msgid "Navigation|_Up"
-msgstr "Okulagirira|_waggulu"
+msgstr "Okulagirira|_Waggulu"
 
 #. Navigation->Up
 #. GTK HEAD (allows future proofing)
@@ -311,7 +311,7 @@ msgstr "_Waggulu"
 
 #. Navigation->Down
 msgid "Navigation|_Down"
-msgstr "Okulagirira|_wansi"
+msgstr "Okulagirira|_Wansi"
 
 #. Navigation->Down
 #. GTK HEAD (allows future proofing)
@@ -363,7 +363,7 @@ msgstr "Kivvunuddwa"
 
 #. About Dialog - Credits dialog - Tab - Artwork by
 msgid "Artwork by"
-msgstr "Ebifaananyi bya"
+msgstr "Ebifananyi bya"
 
 #. About Dialog - License dialog - Title
 msgid "License"
@@ -371,12 +371,12 @@ msgstr "Lukusa"
 
 #. File dialog - Cancel button
 msgid "_Cancel"
-msgstr "_Ssazaamu"
+msgstr "_Sazaamu"
 
 #. File dialog - Cancel button
 msgctxt "Stock label"
 msgid "_Cancel"
-msgstr "_Ssazaamu"
+msgstr "_Sazaamu"
 
 #. File dialog - Add button
 msgid "_Add"
@@ -402,15 +402,15 @@ msgstr "_Gyawo"
 #. Remove button (remove terminology file)
 msgctxt "Stock label"
 msgid "_Remove"
-msgstr "_Gyawo"
+msgstr "_Jjamu"
 
 #. File dialog - Remove button - tooltip
 msgid "Remove the bookmark '%s'"
-msgstr "Gyawo obulambe '%s'"
+msgstr "Jjamu obulambe '%s'"
 
 #. File dialog - Remove button - tooltip
 msgid "Remove the selected bookmark"
-msgstr "Gyawo obulambe obulondeddwa"
+msgstr "Jjamu obulambe obulondeddwa"
 
 #. File dialog - Location - Label
 msgid "_Location:"
@@ -435,19 +435,19 @@ msgstr "Noonya"
 
 #. File dialog - Places - Entry - Recently used
 msgid "Recently Used"
-msgstr "Kikozeseddwa gyebuvuddeko"
+msgstr "Kikozeseddwa Emabangako"
 
 #. File dialog - Places - Entry - Desktop
 msgid "Desktop"
-msgstr "Awatuukirwa"
+msgstr "Sikulini"
 
 #. File dialog - Places - Entry - File System
 msgid "File System"
-msgstr "Olukangaga lwa fayiro"
+msgstr "Sisitimu ya Fayiro"
 
 #. File dialog - Places - Right-Click - Remove
 msgid "Remove"
-msgstr "Gyawo"
+msgstr "Jjamu"
 
 #. File dialog - Places - Right-Click - Rename...
 msgid "Rename..."
@@ -479,23 +479,23 @@ msgstr "Eggulo ku %H:%M"
 
 #. File dialog - Files - Right click - Show Hidden Files
 msgid "Show _Hidden Files"
-msgstr "Laga _fayiro ezikwekeddwa"
+msgstr "Laga _Fayiro Ezikwekeddwa"
 
 #. File dialog - Files - Right click - Show Size Column
 msgid "Show _Size Column"
-msgstr "Laga _Ekipimo ky'ennyiriri mu buwanvu"
+msgstr "Laga _Ekipimo ky'ennyiriri mu Buwanvu"
 
 #. File dialog - Files - Right click - Add to Bookmarks
 msgid "_Add to Bookmarks"
-msgstr "_Gatta ku bulambe"
+msgstr "_Gatta ku Bulambe"
 
 #. File dialog - File type list - tooltip
 msgid "Select which types of files are shown"
-msgstr "Londa ekika kya fayiro eziragiddwa"
+msgstr "Londa ekyikka kya fayiro eziragiddwa"
 
 #. File save dialog - Name:
 msgid "_Name:"
-msgstr "_Linnya:"
+msgstr "_Erinnya:"
 
 #. File save dialog - Save in folder:
 msgid "Save in _folder:"
@@ -507,11 +507,11 @@ msgstr "_Noonya amaterekero ga fayiro amalala"
 
 #. File save dialog - Create folder button
 msgid "Create Fo_lder"
-msgstr "Teekawo ete_rekero"
+msgstr "Tonda Ete_rekero lya fayiro"
 
 #. File save dialg - Create folder button (after pressing) - Type name of new folder
 msgid "Type name of new folder"
-msgstr "Wandiika elinnya ly'eterekero lya fayiro eppya"
+msgstr "Wandiika erinnya ly'eterekero lya fayiro epya"
 
 #. Right Click (on empty) -> Cut
 msgid "Cu_t"
@@ -587,7 +587,7 @@ msgstr "_Kale"
 
 #. Font dialog: title
 msgid "Pick a Font"
-msgstr "Toola endabika y'ebigambo"
+msgstr "Londa Endabika y'ebigambo"
 
 #. Font dialog: Family
 msgid "_Family:"
@@ -599,7 +599,7 @@ msgstr "_Endabika:"
 
 #. Font dialog: Size
 msgid "Si_ze:"
-msgstr "Ki_pimo:"
+msgstr "Ek_ipimo:"
 
 #. Font dialog: Preview
 msgid "_Preview:"

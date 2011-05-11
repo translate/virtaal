@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2010-04-01 17:45+0200\n"
-"PO-Revision-Date: 2010-04-06 00:42+0200\n"
+"PO-Revision-Date: 2010-12-31 20:02+0200\n"
 "Last-Translator: Antón <meixome@certima.net>\n"
 "Language-Team: Galician Proxecto Trasno <proxecto@trasno.net>\n"
 "Language: gl\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.0.3\n"
+"X-Generator: Pootle 2.1.5\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/views/mainview.py:640
@@ -349,7 +349,7 @@ msgstr "<b><big>Asistencia</big></b>"
 msgid ""
 "At the end of a translation, simply press <Enter> to continue with the next "
 "one."
-msgstr "Ao final dunha tradución, prema <Intro> para continuar coa seguinte."
+msgstr "Ao final dunha tradución, prema <Enter> para continuar coa seguinte."
 
 #: ../virtaal/tips.py:28
 msgid ""
@@ -426,7 +426,7 @@ msgstr ""
 "\n"
 "%(error_message)s\n"
 "\n"
-"Ténteo gardándoo nun sitio diferente."
+"Tente gardalo nun sitio diferente."
 
 #: ../virtaal/controllers/maincontroller.py:205
 #, python-format
@@ -450,7 +450,7 @@ msgstr "Recargar o ficheiro da última copia gardada e perder todos os cambios?"
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase
 #: ../virtaal/controllers/placeablescontroller.py:83
 msgid "CamelCase"
-msgstr "CamelCase (maiúsculas intermedias)"
+msgstr "Capitalización -maiúsculas intermedias-"
 
 #: ../virtaal/controllers/placeablescontroller.py:84
 msgid ""
@@ -641,7 +641,7 @@ msgstr "_Distinguir as maiúsculas"
 #. http://en.wikipedia.org/wiki/Regular_expression
 #: ../virtaal/modes/searchmode.py:71
 msgid "_Regular expression"
-msgstr "_Expresión regular"
+msgstr "E_xpresión regular"
 
 #. l10n: This text label shows in front of the text box where the replacement
 #. text is typed. Keep in mind that the text box will appear after this text.
@@ -659,7 +659,7 @@ msgstr "Substituír"
 #. l10n: Check box
 #: ../virtaal/modes/searchmode.py:85
 msgid "Replace _All"
-msgstr "Substituílos _a todos"
+msgstr "Su_bstituílos a todos"
 
 #: ../virtaal/plugins/autocompletor.py:216
 msgid "Automatically complete long words while you type"
@@ -737,7 +737,7 @@ msgstr "URL"
 #. l10n: Whether the selected text should be surrounded by "quotes"
 #: ../virtaal/plugins/lookup/models/weblookup.py:191
 msgid "Quote Query"
-msgstr "Entrecomiñar a consulta"
+msgstr "Entrecomiñar"
 
 #: ../virtaal/plugins/migration.py:53
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
@@ -779,7 +779,7 @@ msgstr "Nada foi migrado"
 
 #: ../virtaal/plugins/migration.py:156
 msgid "Poedit settings"
-msgstr "Preferencias do Poedit"
+msgstr "Configuración do Poedit"
 
 #: ../virtaal/plugins/migration.py:185
 #, python-format
@@ -793,7 +793,7 @@ msgstr "Memoria de tradución de KBabel: %(database_language_code)s"
 
 #: ../virtaal/plugins/migration.py:228
 msgid "Lokalize settings"
-msgstr "Preferencias de Lokalize"
+msgstr "Configuración do Lokalize"
 
 #: ../virtaal/plugins/migration.py:252
 #, python-format
@@ -832,7 +832,7 @@ msgstr "_Ficheiros de terminoloxía..."
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:64
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:66
 msgid "Add _Term..."
-msgstr "Engadir un _termo..."
+msgstr "Engadir un ter_mo..."
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:135
 msgid "File"
@@ -1134,7 +1134,7 @@ msgstr "Dereitos de autor © 2007-2010 Zuza Software Foundation"
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
 #: ../virtaal/views/widgets/aboutdialog.py:38
 msgid "Virtaal is a program for doing translation."
-msgstr "Virtaal (\"Para o idioma\") é un programa para facer traducións."
+msgstr "Virtaal é un programa para facer traducións."
 
 #: ../virtaal/views/widgets/aboutdialog.py:39
 msgid ""
@@ -1148,7 +1148,7 @@ msgstr ""
 
 #: ../virtaal/views/widgets/aboutdialog.py:53
 msgid "Virtaal website"
-msgstr "Sitio web de Virtaal"
+msgstr "Sitio web do Virtaal"
 
 #: ../virtaal/views/widgets/aboutdialog.py:62
 msgid "We thank our donors:"
@@ -1225,7 +1225,7 @@ msgstr "O ficheiro non existe."
 
 #: ../virtaal/models/storemodel.py:107
 msgid "Not a valid file."
-msgstr "Non é un ficheiro correcto"
+msgstr "Non é un ficheiro correcto."
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
 msgid "TMX Translation Memory"
@@ -1237,7 +1237,7 @@ msgstr "TMX"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:3
 msgid "Translation Memory eXchange"
-msgstr "Translation Memory eXchange (intercambio de memoria de tradución)"
+msgstr "Translation Memory eXchange -intercambio de memoria de tradución-"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:4
 msgid "TBX Glossary"
@@ -1249,7 +1249,7 @@ msgstr "TBX"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:6
 msgid "TermBase eXchange"
-msgstr "TermBase eXchange (intercambio de base de datos de termos)"
+msgstr "TermBase eXchange -intercambio de base de datos de termos-"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:7
 msgid "Wordfast Translation Memory"
@@ -1298,8 +1298,8 @@ msgstr "XLIFF"
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:18
 msgid "XML Localization Interchange File Format"
 msgstr ""
-"XML Localization Interchange File Format (formato de ficheiros de "
-"intercambio de localización XML)"
+"XML Localization Interchange File Format -formato de ficheiros de "
+"intercambio de localización XML-"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:19
 msgid "C++ RC File"
@@ -1348,7 +1348,7 @@ msgstr "Glosario OmegaT"
 #: ../bin/virtaal:78
 #, c-format
 msgid "%prog [options] [translation_file]"
-msgstr "%prog [opcións] [ficheiro_de_traducion]"
+msgstr "%prog [opcións] [ficheiro-de_traducion]"
 
 #: ../bin/virtaal:81
 msgid "PROFILE"

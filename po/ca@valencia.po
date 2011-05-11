@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.3beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2010-04-01 17:45+0200\n"
-"PO-Revision-Date: 2010-04-02 18:09+0200\n"
+"PO-Revision-Date: 2010-04-02 16:13+0200\n"
 "Last-Translator: Toni <toniher@softcatala.org>\n"
 "Language-Team: Softcatalà\n"
 "Language: ca@valencia\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.0.3\n"
+"X-Generator: Pootle 2.1.0\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/views/mainview.py:640
@@ -464,7 +464,6 @@ msgid "CamelCase"
 msgstr "CamelCase"
 
 #: ../virtaal/controllers/placeablescontroller.py:84
-#, fuzzy
 msgid ""
 "Words with internal capitalization, such as some brand names and WikiWords"
 msgstr ""

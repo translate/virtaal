@@ -2,13 +2,12 @@
 # Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: GTK+ lite 2.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2008-07-25 18:31+0200\n"
-"PO-Revision-Date: 2009-11-11 11:05+0200\n"
+"PO-Revision-Date: 2010-08-06 11:24+0200\n"
 "Last-Translator: Pheledi <pheledi@mosekolatranslation.co.za>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: nso\n"
@@ -16,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Pootle 1.2.1\n"
+"X-Generator: Pootle 2.1.2\n"
 
 #. Translate to default:RTL if you want your widgets
 #. * to be RTL, otherwise translate to default:LTR.
@@ -204,6 +203,25 @@ msgstr "Bušetš_a"
 msgctxt "Stock label"
 msgid "_Revert"
 msgstr "Bušetš_a"
+
+#. File->Save As->Replace confirmation
+#, c-format
+msgid "A file named \"%s\" already exists.  Do you want to replace it?"
+msgstr ""
+"Faele ya leina la \"%s\" e šetše e le gona. Na o nyaka go e tšeela legato?"
+
+#. File->Save As->Replace confirmation
+#, c-format
+msgid ""
+"The file already exists in \"%s\".  Replacing it will overwrite its contents."
+msgstr ""
+"Faele e šetše e le gona go \"%s\". Go e tšeela legato go tla ngwala godimo ga "
+"dikagare tša yona."
+
+#. File->Save As->Replace confirmation
+#: ../gtk/gtkfilechooserdefault.c:8349 ../gtk/gtkprintunixdialog.c:457
+msgid "_Replace"
+msgstr "_Tšeela legato"
 
 #. File ->Recent Files->No items found
 msgid "No items found"

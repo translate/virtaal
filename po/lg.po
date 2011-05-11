@@ -1,28 +1,29 @@
 # Luganda (lg) localisation of Virtaal.
 # Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
+# OLWENY San James <sjolweny85@yahoo.co.uk>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.5.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2010-04-01 17:45+0200\n"
-"PO-Revision-Date: 2010-04-05 10:26+0200\n"
+"PO-Revision-Date: 2010-06-28 14:15+0200\n"
 "Last-Translator: OLWENY San James <sjolweny85@yahoo.co.uk>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: lg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Pootle 2.0.3\n"
+"X-Generator: Pootle 2.0.4\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/views/mainview.py:640
 msgid "Virtaal"
-msgstr "Vataalo"
+msgstr "Virtaal"
 
 #: ../share/applications/virtaal.desktop.in.h:2
 msgid "Translation Tool"
-msgstr "Ebikozesebwa okutafuta"
+msgstr "Ebikozesebwa Ebivunilwa"
 
 #: ../share/applications/virtaal.desktop.in.h:3
 msgid ""
@@ -37,11 +38,11 @@ msgstr "_Fayiro"
 
 #: ../share/virtaal/virtaal.glade.h:3
 msgid "_Update to Template"
-msgstr "_ZZA buggya okusinziira ku ndagiriro"
+msgstr "_Za obuggya kulo Luggo"
 
 #: ../share/virtaal/virtaal.glade.h:4
 msgid "_Recent Files"
-msgstr "_Fayiro ezikoleddwa gyebuvuddeko"
+msgstr "_Fayiro Ezikoledwako"
 
 #: ../share/virtaal/virtaal.glade.h:5
 msgid "_Edit"
@@ -59,7 +60,7 @@ msgstr "P_ulesibo evuddeko"
 
 #: ../share/virtaal/virtaal.glade.h:10
 msgid "_Next Placeable"
-msgstr "_Pulesibo eddako"
+msgstr "_Pulesibo Eddako"
 
 #: ../share/virtaal/virtaal.glade.h:11
 msgid "_View"
@@ -67,7 +68,7 @@ msgstr "_Laba"
 
 #: ../share/virtaal/virtaal.glade.h:12
 msgid "_Full Screen"
-msgstr "_Ndabirwamu yonna"
+msgstr "_Sikulini mu Buguvu"
 
 #: ../share/virtaal/virtaal.glade.h:13
 msgid "_Navigation"
@@ -75,19 +76,19 @@ msgstr "_Kunoonya"
 
 #: ../share/virtaal/virtaal.glade.h:14
 msgid "P_age Up"
-msgstr "W_aggulu w'omuko"
+msgstr "Om_uko Wagulu"
 
 #: ../share/virtaal/virtaal.glade.h:15
 msgid "_Page Down"
-msgstr "_Wansi W'omuko"
+msgstr "_Omuko gwo Wansi"
 
 #: ../share/virtaal/virtaal.glade.h:16
 msgid "_Help"
-msgstr "_Buyambi"
+msgstr "_Obuyambi"
 
 #: ../share/virtaal/virtaal.glade.h:17
 msgid "_Online Help"
-msgstr "_Obuyambi ku mutimbagano"
+msgstr "_Obuyambi ku Mutimbagano"
 
 #: ../share/virtaal/virtaal.glade.h:18
 msgid "_Tutorial"
@@ -95,15 +96,15 @@ msgstr "_Eby'okuyiga/kusoma"
 
 #: ../share/virtaal/virtaal.glade.h:19
 msgid "_Localization Guide"
-msgstr "_Endagiriro"
+msgstr "_Endagiriro Ewabula"
 
 #: ../share/virtaal/virtaal.glade.h:20
 msgid "Report a _Bug"
-msgstr "Waabira _Ensobi"
+msgstr "Repoti ye _Ensobi"
 
 #: ../share/virtaal/virtaal.glade.h:21
 msgid "New Language Pair"
-msgstr "Ennimi bbiri empya"
+msgstr "Ennimi Bibiri Empya"
 
 #: ../share/virtaal/virtaal.glade.h:22
 msgid ""
@@ -113,14 +114,14 @@ msgid ""
 "If you are translating from English to French then English would be your "
 "original or source language."
 msgstr ""
-" <b>Kasangwawo</b> lwe lulimi lwotafuta, oluusi luyitibwa nsibuko ya lulimi.\n"
+"<b>Kasangwawo</b> lwe lulimi lwotafuta, oluusi luyitibwa nsibuko ya lulimi.\n"
 "\n"
 "Ssinga otafuta ng'ojja mu luzungu ng'ozza mu lufalansa, awo oluzungu lwe "
 "luyibwa Kasangwawo oba nsibuko y'olulimi."
 
 #: ../share/virtaal/virtaal.glade.h:25
 msgid "<b>Original</b>"
-msgstr "<b>Kasangwawo</b>"
+msgstr "<b>Ekyekalirira</b>"
 
 #: ../share/virtaal/virtaal.glade.h:26
 msgid ""
@@ -130,7 +131,7 @@ msgid ""
 "If you are translating from English to French then French would be your "
 "translation or target language."
 msgstr ""
-"O <b>lutafute</b> lwe lulimi lw'okyuusa ng'ozzaamu, oluusi luyitibwa lulimi "
+"O <b>Okuvunula</b> kwe lulimi lwovunula ng'ozzaamu, oluusi luyitibwa lulimi "
 "olugendererwa.\n"
 "\n"
 "Ssinga okyuusa ng'ojja mu luzungu ng'ozza mu lufalansa, awo olufalansa lwe "
@@ -138,19 +139,19 @@ msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:29
 msgid "<b>Translation</b>"
-msgstr "<b>Olutafute</b>"
+msgstr "<b>Okuvunula</b>"
 
 #: ../share/virtaal/virtaal.glade.h:30
 msgid "_Add Missing Language..."
-msgstr "_Gattawo olulimi olubulawo..."
+msgstr "_Gatta Olulimi Olubulawo..."
 
 #: ../share/virtaal/virtaal.glade.h:31
 msgid "Add Missing Language"
-msgstr "Gattawo olulimi olubulawo"
+msgstr "Gatta Olulimi Olubulawo"
 
 #: ../share/virtaal/virtaal.glade.h:32
 msgid "Language name:"
-msgstr "Elinnya ly'olulimi:"
+msgstr "Erinnya ly'olulimi:"
 
 #: ../share/virtaal/virtaal.glade.h:33
 msgid "ISO code:"
@@ -162,22 +163,22 @@ msgstr "Ebyogerebwa mu bungi:"
 
 #: ../share/virtaal/virtaal.glade.h:35
 msgid "Number of plurals:"
-msgstr "Omuwendo mu bungi:"
+msgstr "Enamba mu bungi:"
 
 #: ../share/virtaal/virtaal.glade.h:36
 msgid ""
 "Depending on the translation task, the plural information might be optional."
 msgstr ""
-"Okusinziira ku mulimu gw'okutafuta, okuteeka ebintu mu bungi kisoboka "
-"obutaba kya buwaze."
+"Okusinziira ku mulimu gw'ovunula, okuteeka ebintu mu bungi kisoboka obutaba "
+"kya buwaze."
 
 #: ../share/virtaal/virtaal.glade.h:37
 msgid "<b>Language Information</b>"
-msgstr "<b>Ebikwata ku Lulimi</b>"
+msgstr "<b>Obubaka bwo Lulimi</b>"
 
 #: ../share/virtaal/virtaal.glade.h:38
 msgid "Virtaal Preferences"
-msgstr " Okweroboza kwa Vataalo"
+msgstr "Okweroboza kwa Virtaal"
 
 #: ../share/virtaal/virtaal.glade.h:39
 msgid "The name stored in the file header"
@@ -186,7 +187,7 @@ msgstr "Erinnya literekeddwa mu mutwe gwa fayiro"
 #. l10n: This label is for the name of the translator
 #: ../share/virtaal/virtaal.glade.h:41
 msgid "Name:"
-msgstr "Linnya:"
+msgstr "Erinnya:"
 
 #: ../share/virtaal/virtaal.glade.h:42
 msgid "The e-mail address stored in the file header"
@@ -213,7 +214,7 @@ msgstr "Tiimu:"
 
 #: ../share/virtaal/virtaal.glade.h:46
 msgid "<b>Translator Information</b>"
-msgstr "<b>Omutafuta bye yeetaaga</b>"
+msgstr "<b>Obubaka bwa Bavunuzi</b>"
 
 #: ../share/virtaal/virtaal.glade.h:47
 msgid "Source text:"
@@ -234,7 +235,7 @@ msgstr "<b>Endabika</b>"
 #. l10n: This tab label refers to the general preferences
 #: ../share/virtaal/virtaal.glade.h:52
 msgid "General"
-msgstr " Byonna wamu"
+msgstr "Byonna wamu"
 
 #: ../share/virtaal/virtaal.glade.h:53
 msgid ""
@@ -258,7 +259,7 @@ msgstr "Fayiro Z'ebigambo"
 
 #: ../share/virtaal/virtaal.glade.h:57
 msgid "Add Term"
-msgstr "Gattawo ekigambo"
+msgstr "Gatta Ekigambo"
 
 #. l10n: This label refers to comments about a new term that is added
 #: ../share/virtaal/virtaal.glade.h:59
@@ -271,11 +272,11 @@ msgstr "_Fayiro y'ebigambo:"
 
 #: ../share/virtaal/virtaal.glade.h:61
 msgid "Web Look-ups"
-msgstr "Ekibanja bye kinoonya"
+msgstr "Ekitekereza mu Mutimabangano"
 
 #: ../share/virtaal/virtaal.glade.h:62
 msgid "Add URL"
-msgstr "Gattawo URL"
+msgstr "Gatta URL"
 
 #: ../share/virtaal/virtaal.glade.h:63
 msgid "URL:"
@@ -296,7 +297,7 @@ msgstr "<u>Ggulawo</u>"
 
 #: ../share/virtaal/virtaal.glade.h:68
 msgid "<b><big>Recent Files</big></b>"
-msgstr "<b><big>Fayiro ezikoleddwako gyebuvuddeko</big></b>"
+msgstr "<b><big>Fayiro Ezikoleddwako</big></b>"
 
 #: ../share/virtaal/virtaal.glade.h:69
 msgid "<u>Tutorial</u>"
@@ -317,7 +318,7 @@ msgstr "<u>Ebirala...</u>"
 
 #: ../share/virtaal/virtaal.glade.h:74
 msgid "<u>Features</u>"
-msgstr "<u>Ndabika...</u>"
+msgstr "<u>Ebisanyizo</u>"
 
 #: ../share/virtaal/virtaal.glade.h:75
 msgid "<b><big>Getting Started</big></b>"
@@ -334,7 +335,7 @@ msgstr "<u>Ya mikono</u>"
 
 #: ../share/virtaal/virtaal.glade.h:79
 msgid "<u>Localization Guide</u>"
-msgstr "<u>Ndagiriro</u>"
+msgstr "<u>Enyamba mu Kukyuusa</u>"
 
 #: ../share/virtaal/virtaal.glade.h:80
 msgid "<u>Feedback</u>"
@@ -378,7 +379,7 @@ msgstr "Kozesa Ctrl+PgUp oba Ctrl+PgDown okutambula ekinene wakati mu ntafuta."
 #: ../virtaal/controllers/maincontroller.py:78
 #: ../virtaal/controllers/maincontroller.py:87
 msgid "Header information"
-msgstr "Ebiri mu mutwe"
+msgstr "Obubaka bwo mutwe"
 
 #: ../virtaal/controllers/maincontroller.py:70
 msgid "Please enter your name"
@@ -391,7 +392,7 @@ msgstr ""
 
 #: ../virtaal/controllers/maincontroller.py:88
 msgid "Please enter your team's information"
-msgstr "Bambi yingiza ebifa ku ttiimu yo"
+msgstr "Bambi yingiza amawulire ku ttiimu yo"
 
 #: ../virtaal/controllers/maincontroller.py:176
 #: ../virtaal/controllers/maincontroller.py:244
@@ -450,7 +451,7 @@ msgstr "Ddamu oggulewo fayiro"
 #: ../virtaal/controllers/maincontroller.py:219
 msgid "Reload file from last saved copy and lose all changes?"
 msgstr ""
-"Ddamu oggulewo fayiro ya kkopi gye watereka era ofiirwe enkyuukakyuka zonna?"
+"Ddamu oggulewo fayiro ya kukoppa gye watereka era osule enkyuukakyuka zonna?"
 
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase
 #: ../virtaal/controllers/placeablescontroller.py:83
@@ -459,7 +460,7 @@ msgstr "CamelCase"
 
 #: ../virtaal/controllers/placeablescontroller.py:84
 msgid ""
-"Words with internal capitalization, such as some brand names and WikiWords"
+"Words with internal capitalisation, such as some brand names and WikiWords"
 msgstr "Ebigambo ebirina ennukuta ennene, gamba ng'amannya"
 
 #: ../virtaal/controllers/placeablescontroller.py:87
@@ -473,7 +474,7 @@ msgstr "Ebigambo ebirimu ennukuta ennene zokka"
 
 #: ../virtaal/controllers/placeablescontroller.py:92
 msgid "Command Line Options"
-msgstr "Ebyokweroboza ebiragira ekyokukola"
+msgstr "Ebyokweroboza mu mateka goku Layini"
 
 #: ../virtaal/controllers/placeablescontroller.py:93
 msgid "Application command line options, such as --help, -h and -I"
@@ -489,7 +490,7 @@ msgstr "Endagiriro okufunirwa n'okuwerereza obubaka ku mutimbagano"
 
 #: ../virtaal/controllers/placeablescontroller.py:100
 msgid "File Names"
-msgstr "Amannya ga fayiro"
+msgstr "Fayiro ya Mannya"
 
 #: ../virtaal/controllers/placeablescontroller.py:101
 msgid "Paths referring to file locations"
@@ -501,15 +502,15 @@ msgstr "Mmukuuma kifo (kuwandiika)"
 
 #: ../virtaal/controllers/placeablescontroller.py:105
 msgid "Placeholders used in \"printf\" strings"
-msgstr "Mmukuuma kifo ekozesebwa mu \"kuwandiika\" mitendera"
+msgstr "Mmukuuma kifo ekozesebwa mu \"printf\" mitendera"
 
 #: ../virtaal/controllers/placeablescontroller.py:108
 msgid "Placeholders (Python)"
-msgstr "Mmukuuma kifo (Ttimba)"
+msgstr "Mmukuuma kifo (Python)"
 
 #: ../virtaal/controllers/placeablescontroller.py:109
 msgid "Placeholders in Python strings"
-msgstr "Mmukuuma kifo mu mutendera gwa Ttimba"
+msgstr "Mmukuuma kifo mu bigambo bwa Python"
 
 #: ../virtaal/controllers/placeablescontroller.py:112
 msgid "Placeholders (Java)"
@@ -517,7 +518,7 @@ msgstr "Mmukuuma kifo (Java)"
 
 #: ../virtaal/controllers/placeablescontroller.py:113
 msgid "Placeholders in Java strings"
-msgstr "Mmukuuma kifo mu mutendera gwa Java"
+msgstr "Mmukuuma kifo mu bigambo bwa Java"
 
 #: ../virtaal/controllers/placeablescontroller.py:116
 msgid "Placeholders (Qt)"
@@ -525,11 +526,11 @@ msgstr "Mmukuuma kifo (Qt)"
 
 #: ../virtaal/controllers/placeablescontroller.py:117
 msgid "Placeholders in Qt strings"
-msgstr "Mmukuuma kifo mu mutendera gwa Qt"
+msgstr "Mmukuuma kifo mu bigambo bwa Qt"
 
 #: ../virtaal/controllers/placeablescontroller.py:120
 msgid "Numbers"
-msgstr "Miwendo"
+msgstr "Enamba"
 
 #. l10n: 'decimal fractions' refer to numbers like 0.2 or 499,99
 #: ../virtaal/controllers/placeablescontroller.py:122
@@ -555,7 +556,7 @@ msgstr "URLs, amannya agakyaza n'endagiriro za IP"
 #. l10n: see http://en.wikipedia.org/wiki/Character_entity_reference
 #: ../virtaal/controllers/placeablescontroller.py:134
 msgid "XML Entities"
-msgstr "Bya XML"
+msgstr "Ebikwata ku XML"
 
 #: ../virtaal/controllers/placeablescontroller.py:135
 msgid "Entity references, such as &amp; and &#169;"
@@ -563,11 +564,11 @@ msgstr "Bikwata ku by'okweroboza, gamba nga &amp; oba &#169;"
 
 #: ../virtaal/controllers/placeablescontroller.py:138
 msgid "XML Tags"
-msgstr "Bulambe bwa XML"
+msgstr "Taaga za XML"
 
 #: ../virtaal/controllers/placeablescontroller.py:139
 msgid "XML tags, such as <b> and </i>"
-msgstr "Bulambe bwa XML, gamba nga <b> oba </i>"
+msgstr "Taaga za XML, gamba nga <b> oba </i>"
 
 #: ../virtaal/controllers/placeablescontroller.py:153
 msgid "Spaces"
@@ -580,7 +581,7 @@ msgstr ""
 
 #: ../virtaal/controllers/placeablescontroller.py:155
 msgid "\"alt\" Attributes"
-msgstr "Ebikwata ku \"alt\" "
+msgstr "Ebikwata ku \"alt\""
 
 #: ../virtaal/controllers/placeablescontroller.py:156
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
@@ -588,32 +589,32 @@ msgstr "Pulesibo ekwata ku \"alt\" (nga bwesangwa ku HTML)"
 
 #: ../virtaal/controllers/storecontroller.py:115
 msgid "The file contains nothing to translate."
-msgstr "Fayiro telinaamu bya kutafuta."
+msgstr "Fayiro telinaamu ebyo kuvunula."
 
 #. l10n: The heading of statistics before updating to the new template
 #: ../virtaal/controllers/storecontroller.py:172
 msgid "Before:"
-msgstr "Mu maaso:"
+msgstr "Emabega:"
 
 #. l10n: The heading of statistics after updating to the new template
 #: ../virtaal/controllers/storecontroller.py:174
 msgid "After:"
-msgstr "Mabega:"
+msgstr "Ngo vvude ku:"
 
 #: ../virtaal/controllers/storecontroller.py:175
 #, python-format
 msgid "Translated: %d"
-msgstr "Kikyusiddwa: %d"
+msgstr "Bivunilwa: %d"
 
 #: ../virtaal/controllers/storecontroller.py:176
 #, python-format
 msgid "Fuzzy: %d"
-msgstr "Makulu mangi: %d"
+msgstr "Tekitegerekanyi: %d"
 
 #: ../virtaal/controllers/storecontroller.py:177
 #, python-format
 msgid "Untranslated: %d"
-msgstr "Tekikyusiddwa: %d"
+msgstr "Tekivunule: %d"
 
 #: ../virtaal/controllers/storecontroller.py:178
 #, python-format
@@ -653,7 +654,7 @@ msgstr "_Enjogera ya bulijjo"
 #. "Replacement"
 #: ../virtaal/modes/searchmode.py:79
 msgid "Replace with"
-msgstr "Sikiza kino"
+msgstr "Sikiza ne"
 
 #. l10n: Button text
 #: ../virtaal/modes/searchmode.py:82
@@ -663,7 +664,7 @@ msgstr "Sikiza"
 #. l10n: Check box
 #: ../virtaal/modes/searchmode.py:85
 msgid "Replace _All"
-msgstr "_Sikiza byonna"
+msgstr "Sikiza _Byonna"
 
 #: ../virtaal/plugins/autocompletor.py:216
 msgid "Automatically complete long words while you type"
@@ -679,7 +680,7 @@ msgstr "Nga toyambiddwa wabula ensobi mu bigambo nga bwo wandiika"
 
 #: ../virtaal/plugins/autocorrector.py:263
 msgid "AutoCorrector"
-msgstr "EkyeLogonsa"
+msgstr "EkyeLogoonsa"
 
 #: ../virtaal/plugins/lookup/__init__.py:29
 msgid "Perform look-ups on selected text"
@@ -687,13 +688,13 @@ msgstr "Kola ekikulagiddwa ku bigambo ebirondeddwa"
 
 #: ../virtaal/plugins/lookup/__init__.py:30
 msgid "External Look-up"
-msgstr "Okunoonya ebweeru"
+msgstr "Okunoonya Ebweeru"
 
 #. l10n: The 'services' here refer to different look-up plugins,
 #. such as web look-up, etc.
 #: ../virtaal/plugins/lookup/lookupview.py:59
 msgid "Select Look-up Services"
-msgstr "Londa empeereza y'okunoonya"
+msgstr "Londa Empeereza y'Okunoonya"
 
 #: ../virtaal/plugins/lookup/lookupview.py:60
 msgid "Select the services that should be used to perform look-ups"
@@ -707,11 +708,11 @@ msgstr "Noonya \"%(selection)s\""
 #. l10n: plugin name
 #: ../virtaal/plugins/lookup/models/weblookup.py:40
 msgid "Web Look-up"
-msgstr "Okunoonya ku mutimbagano"
+msgstr "Okunoonya ku Mutimbagano"
 
 #: ../virtaal/plugins/lookup/models/weblookup.py:41
 msgid "Look-up the selected text on a web site"
-msgstr "Noonya ebigambo ebirondeddwa ku kibanja"
+msgstr "Noonya ebigambo ebirondeddwa ku lutimbe"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate.
 #: ../virtaal/plugins/lookup/models/weblookup.py:45
@@ -741,21 +742,21 @@ msgstr "URL"
 #. l10n: Whether the selected text should be surrounded by "quotes"
 #: ../virtaal/plugins/lookup/models/weblookup.py:191
 msgid "Quote Query"
-msgstr "Laga ekibuuzo"
+msgstr "Laga Ekibuuzo"
 
 #: ../virtaal/plugins/migration.py:53
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
 msgstr ""
-"Sengula enteekateeka okuva KBabel, Lokalize ne/oba Poedit okudda ku Vataalo."
+"Sengula enteekateeka okuva KBabel, Lokalize ne/oba Poedit okudda ku Virtaal."
 
 #: ../virtaal/plugins/migration.py:54
 msgid "Migration Assistant"
-msgstr "Omuyambi w'ensenguka"
+msgstr "Omuyambi mu Kusengula"
 
 #: ../virtaal/plugins/migration.py:68
 msgid "Should Virtaal try to import settings and data from other applications?"
 msgstr ""
-"Vataalo egezeeko okufuna enteekateeka n'amawulire okuva mu nkola endala?"
+"Virtaal egezeeko okufuna enteekateeka n'amawulire okuva mu nkola endala?"
 
 #: ../virtaal/plugins/migration.py:69
 msgid "Import data from other applications?"
@@ -767,7 +768,7 @@ msgstr "Ensenguka zaamaliriziddwa bulungi"
 
 #: ../virtaal/plugins/migration.py:95
 msgid "The following items were migrated:"
-msgstr "Ebiragiddwa wansi byasenguddwa:"
+msgstr "Ebintu ebiddako byasenguddwa:"
 
 #: ../virtaal/plugins/migration.py:100
 msgid "Migration completed"
@@ -775,7 +776,7 @@ msgstr "Okusenguka kuwedde"
 
 #: ../virtaal/plugins/migration.py:102
 msgid "Virtaal was not able to migrate any settings or data"
-msgstr "Vatalo teyasobodde kusengula nteekateeka oba mawulire"
+msgstr "Virtaal teyasobodde kusengula nteekateeka oba mawulire"
 
 #: ../virtaal/plugins/migration.py:103
 msgid "Nothing migrated"
@@ -788,25 +789,25 @@ msgstr "Enteekateeka za poediti"
 #: ../virtaal/plugins/migration.py:185
 #, python-format
 msgid "Poedit's Translation Memory: %(database_language_code)s"
-msgstr "Ebiyamba entafuta ya Poedit`s: %(database_language_code)s"
+msgstr "Egwanika ya Poedit's mu kuvunula: %(database_language_code)s"
 
 #: ../virtaal/plugins/migration.py:210
 #, python-format
 msgid "KBabel's Translation Memory: %(database_language_code)s"
-msgstr "Ebiyamba entafuta KBabel : %(database_language_code)s"
+msgstr "Egwanika ya KBabel's mu Kuvunula: %(database_language_code)s"
 
 #: ../virtaal/plugins/migration.py:228
 msgid "Lokalize settings"
-msgstr "Enteekateeka zifuule za bulijjo"
+msgstr "Kyuusa enteekateeka"
 
 #: ../virtaal/plugins/migration.py:252
 #, python-format
 msgid "Lokalize's Translation Memory: %(database_name)s"
-msgstr "Fuula bya bulijjo ebiyamba okutafuta: %(database_name)s"
+msgstr "Kyuusa Egwanika: %(database_name)s"
 
 #: ../virtaal/plugins/terminology/__init__.py:27
 msgid "Terminology Help"
-msgstr "Obuyambi ku bigambo"
+msgstr "Ebigambo Ebiyamba"
 
 #: ../virtaal/plugins/terminology/__init__.py:28
 msgid "Terminology suggestions"
@@ -814,11 +815,11 @@ msgstr "Endowooza ku bigambo"
 
 #: ../virtaal/plugins/terminology/models/autoterm.py:82
 msgid "Localization Terminology"
-msgstr "Ebigambo ebiyingiziddwa"
+msgstr "Ebigambo mu Kukyuusa"
 
 #: ../virtaal/plugins/terminology/models/autoterm.py:83
 msgid "Selected localization terminology"
-msgstr "Ebigambo ebiyingiziddwa ebirondeddwa"
+msgstr "Ebigambo ebikyuusa ebirondeddwa"
 
 #: ../virtaal/plugins/terminology/models/localfile/__init__.py:42
 msgid "Local Files"
@@ -1016,7 +1017,7 @@ msgstr "Enfo egabirira ebiyamba entafuta"
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/remotetm.py:33
 msgid "Remote TM"
-msgstr " TM ya mu kyaalo"
+msgstr "TM ya mu kyaalo"
 
 #: ../virtaal/plugins/tm/models/tinytm.py:34
 msgid "TinyTM"
@@ -1130,8 +1131,8 @@ msgid "F_uzzy"
 msgstr "K_y'amakulu mangi"
 
 #: ../virtaal/views/widgets/aboutdialog.py:35
-msgid "Copyright © 2007-2010 Zuza Software Foundation"
-msgstr "Obwannannyini © 2007-2010 Zuza Software Foundation"
+msgid "Copyright © 2007-2009 Zuza Software Foundation"
+msgstr "Obwannannyini © 2007-2009 Zuza Software Foundation"
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
@@ -1199,15 +1200,15 @@ msgstr "Zimba..."
 
 #: ../virtaal/views/widgets/welcomescreen.py:72
 msgid "Extensive format support"
-msgstr "obuwagizi bwe nkola obwagaagavu"
+msgstr "Obuwagizi bwe nkola obwagaagavu"
 
 #: ../virtaal/views/widgets/welcomescreen.py:73
 msgid "Translation memory"
-msgstr "kujjukira ntafuta"
+msgstr "Kujjukira ntafuta"
 
 #: ../virtaal/views/widgets/welcomescreen.py:74
 msgid "Terminology assistance"
-msgstr "obuyambi ku bigambo"
+msgstr "Obuyambi ku bigambo"
 
 #: ../virtaal/views/widgets/welcomescreen.py:75
 msgid "Machine translation"
@@ -1215,7 +1216,7 @@ msgstr "Entafuta y'ekyuuma"
 
 #: ../virtaal/views/widgets/welcomescreen.py:76
 msgid "Highlighting and insertion of placeables"
-msgstr "okulaga n'okuteekamu pulesibo"
+msgstr "Okulaga n'okuteekamu pulesibo"
 
 #: ../virtaal/views/widgets/welcomescreen.py:77
 msgid "Many plugins and options for customization"
@@ -1223,11 +1224,11 @@ msgstr "Eby'okusonseka n'okweroboza eby'okukyuusa"
 
 #: ../virtaal/models/storemodel.py:105
 msgid "The file does not exist."
-msgstr "Fayiro teriiyo"
+msgstr "Fayiro teriiyo."
 
 #: ../virtaal/models/storemodel.py:107
 msgid "Not a valid file."
-msgstr "Ssi fayiro ntuufu"
+msgstr "Ssi fayiro ntuufu."
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
 msgid "TMX Translation Memory"

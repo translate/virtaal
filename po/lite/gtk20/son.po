@@ -2,16 +2,12 @@
 # Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the Virtaal package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
 "Project-Id-Version: GTK+ lite 2.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2008-07-25 18:31+0200\n"
-"PO-Revision-Date: 2010-04-16 10:31+0200\n"
+"PO-Revision-Date: 2011-04-18 13:20+0200\n"
 "Last-Translator: Mohomodou  <mh@bollag-areal.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: son\n"
@@ -19,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.0.3\n"
+"X-Generator: Pootle 2.1.5\n"
 
 #. Translate to default:RTL if you want your widgets
 #. * to be RTL, otherwise translate to default:LTR.
@@ -573,12 +569,12 @@ msgstr "_Ayyo"
 
 #. Revert Confirmation Dialog -> No
 msgid "_No"
-msgstr "_Kala"
+msgstr "_Kalaa"
 
 #. Revert Confirmation Dialog -> No
 msgctxt "Stock label"
 msgid "_No"
-msgstr "_Kala"
+msgstr "_Kalaa"
 
 #. Error Dialog -> OK
 msgid "_OK"

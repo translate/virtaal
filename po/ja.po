@@ -1,12 +1,13 @@
 # Japanese (ja) localisation of Virtaal.
 # Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
+# Masahiko <chimantaea_mirabilis@yahoo.co.jp>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2010-04-01 17:45+0200\n"
-"PO-Revision-Date: 2010-04-02 16:26+0200\n"
+"PO-Revision-Date: 2010-04-30 05:14+0200\n"
 "Last-Translator: Masahiko <chimantaea_mirabilis@yahoo.co.jp>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ja\n"
@@ -1145,10 +1146,11 @@ msgstr "The International Development Research Centre"
 msgid "Mozilla Corporation"
 msgstr "Mozilla Corporation"
 
+# 日本語版ローカライズに参加した人の名前。
 #. l10n: Rather than translating, fill in the names of the translators
 #: ../virtaal/views/widgets/aboutdialog.py:69
 msgid "translator-credits"
-msgstr "翻訳者-クレジット"
+msgstr "Masahiko Imanaka"
 
 #: ../virtaal/views/widgets/langadddialog.py:103
 msgid "Language code must be an ASCII string."

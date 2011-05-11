@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: virtaal-04\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2010-04-01 17:45+0200\n"
-"PO-Revision-Date: 2010-04-02 14:30+0200\n"
+"PO-Revision-Date: 2010-05-14 07:03+0200\n"
 "Last-Translator: sankarshan <sankarshan.mukhopadhyay@gmail.com>\n"
 "Language-Team: anubad@lists.ankur.org.in\n"
 "Language: bn_IN\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.0.3\n"
+"X-Generator: Pootle 2.1.5\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/views/mainview.py:640
@@ -1214,7 +1214,6 @@ msgid "Machine translation"
 msgstr "সয়ংক্রিয় অনুবাদক"
 
 #: ../virtaal/views/widgets/welcomescreen.py:76
-#, fuzzy
 msgid "Highlighting and insertion of placeables"
 msgstr ""
 
@@ -1343,7 +1342,6 @@ msgid "Qt .qm file"
 msgstr "Qt .qm ফাইল"
 
 #: ../devsupport/tmp_strings.py:26
-#, fuzzy
 msgid "OmegaT Glossary"
 msgstr "OmegaT গ্লসারি"
 
@@ -1384,7 +1382,7 @@ msgstr "enable debugging features"
 
 #: ../bin/virtaal:117
 msgid "Could not open log file '%(filename)s'"
-msgstr "Could not open log file '%(filename)s'"
+msgstr "লগ ফাইল  '%(filename)s' খোলা সম্ভব হয়নি"
 
 #: ../bin/virtaal:125
 msgid "Could not read configuration file '%(filename)s'"

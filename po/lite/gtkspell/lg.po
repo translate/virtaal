@@ -7,14 +7,14 @@ msgstr ""
 "Project-Id-Version: gtkspell 2.0.12\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-05-13 22:39+0200\n"
-"PO-Revision-Date: 2010-03-14 07:07+0200\n"
+"PO-Revision-Date: 2010-06-28 11:59+0200\n"
 "Last-Translator: OLWENY San James <sjolweny85@yahoo.co.uk>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: lg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Pootle 2.0.3\n"
+"X-Generator: Pootle 2.0.4\n"
 
 #: ../gtkspell/gtkspell.c:384
 msgid "<i>(no suggestions)</i>"
@@ -37,7 +37,7 @@ msgstr "Ziimura Byonna"
 
 #: ../gtkspell/gtkspell.c:468
 msgid "Spelling Suggestions"
-msgstr "Amagezi ku mpandiika"
+msgstr "Endowooza ku Mpandiika"
 
 # New menu entry added in v2.0.15 (no available current POT file)
 msgid "Languages"

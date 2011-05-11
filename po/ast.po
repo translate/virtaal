@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2010-04-01 17:45+0200\n"
-"PO-Revision-Date: 2010-04-02 10:10+0200\n"
+"PO-Revision-Date: 2011-04-25 08:51+0200\n"
 "Last-Translator: Xandru <xandru@softastur.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ast\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.0.3\n"
+"X-Generator: Pootle 2.1.5\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/views/mainview.py:640
@@ -85,11 +85,11 @@ msgstr "Avanzar _páxina"
 
 #: ../share/virtaal/virtaal.glade.h:16
 msgid "_Help"
-msgstr "_Aida"
+msgstr "_Ayuda"
 
 #: ../share/virtaal/virtaal.glade.h:17
 msgid "_Online Help"
-msgstr "Aida e_n llinia"
+msgstr "Ayuda e_n llinia"
 
 #: ../share/virtaal/virtaal.glade.h:18
 msgid "_Tutorial"
@@ -800,7 +800,7 @@ msgstr "Memoria de Traducción de Lokalize: %(database_name)s"
 
 #: ../virtaal/plugins/terminology/__init__.py:27
 msgid "Terminology Help"
-msgstr "Aida de terminoloxía"
+msgstr "Ayuda de terminoloxía"
 
 #: ../virtaal/plugins/terminology/__init__.py:28
 msgid "Terminology suggestions"

@@ -7,15 +7,15 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.4\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2010-04-01 17:45+0200\n"
-"PO-Revision-Date: 2010-04-02 00:48+0200\n"
-"Last-Translator: GeekCheese <aschri@hotmail.com>\n"
+"PO-Revision-Date: 2010-08-02 16:33+0200\n"
+"Last-Translator: admin <>\n"
 "Language-Team: Vox Humanitatis - Deutsch\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.0.3\n"
+"X-Generator: Pootle 2.0.5\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/views/mainview.py:640
@@ -40,7 +40,7 @@ msgstr "_Datei"
 
 #: ../share/virtaal/virtaal.glade.h:3
 msgid "_Update to Template"
-msgstr "_Übersetzung in neue Vorlage übernehmen"
+msgstr "Update zur Vorlage"
 
 #: ../share/virtaal/virtaal.glade.h:4
 msgid "_Recent Files"
@@ -48,7 +48,7 @@ msgstr "_Zuletzt geöffnete Dateien"
 
 #: ../share/virtaal/virtaal.glade.h:5
 msgid "_Edit"
-msgstr "B_earbeiten"
+msgstr "_Bearbeiten"
 
 #. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
 #: ../share/virtaal/virtaal.glade.h:7
@@ -58,7 +58,7 @@ msgstr "Ausgangstext übernehmen"
 #. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
 #: ../share/virtaal/virtaal.glade.h:9
 msgid "P_revious Placeable"
-msgstr "Vo_rheriges platzierbares Element"
+msgstr "_Vorheriges platzierbares Element"
 
 #: ../share/virtaal/virtaal.glade.h:10
 msgid "_Next Placeable"
@@ -78,7 +78,7 @@ msgstr "_Navigation"
 
 #: ../share/virtaal/virtaal.glade.h:14
 msgid "P_age Up"
-msgstr "B_ild auf"
+msgstr "_Bild auf"
 
 #: ../share/virtaal/virtaal.glade.h:15
 msgid "_Page Down"
@@ -266,7 +266,7 @@ msgstr "K_ommentare"
 
 #: ../share/virtaal/virtaal.glade.h:60
 msgid "Terminology _file:"
-msgstr "_Terminologiedatei:"
+msgstr "Terminologie_datei:"
 
 #: ../share/virtaal/virtaal.glade.h:61
 msgid "Web Look-ups"
@@ -1425,9 +1425,7 @@ msgstr "unklare Option: %s (%s?)"
 #: ../devsupport/optparse.py:368
 #, python-format
 msgid "Usage: %s\n"
-msgstr ""
-"Nutzung: %s\n"
-"\n"
+msgstr "Nutzung: %s\n"
 
 #: ../devsupport/optparse.py:387
 msgid "Usage"

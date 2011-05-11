@@ -7,14 +7,15 @@ msgstr ""
 "Project-Id-Version: GTK+ lite 2.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2008-07-25 18:31+0200\n"
-"PO-Revision-Date: 2009-06-05 00:12+0200\n"
-"Last-Translator: F Wolff <friedel@translate.org.za>\n"
+"PO-Revision-Date: 2011-02-18 14:27+0200\n"
+"Last-Translator: abel <sedric@translate.org.za>\n"
 "Language-Team: translate-discuss-af@lists.sourceforge.net\n"
 "Language: zu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Virtaal 0.3.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.1.5\n"
 
 #. Translate to default:RTL if you want your widgets
 #. * to be RTL, otherwise translate to default:LTR.
@@ -47,6 +48,17 @@ msgstr "Ctrl"
 msgctxt "keyboard label"
 msgid "Ctrl"
 msgstr "Ctrl"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the alt key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#. GTK >=2.16
+#. Configuration: Alt modifier label
+msgctxt "keyboard label"
+msgid "Alt"
+msgstr "Alt"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -108,7 +120,7 @@ msgstr "Phansi"
 #. GTK <=2.14
 #. Configuration: Page_Up key label
 msgid "keyboard label|Page_Up"
-msgstr "Phenya phezulu"
+msgstr "Phenya uye _phezulu"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -121,7 +133,7 @@ msgstr "Phenya phezulu"
 #. Configuration: Page_Up key label
 msgctxt "keyboard label"
 msgid "Page_Up"
-msgstr "Phenya phezulu"
+msgstr "Phenya uye _phezulu"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -133,7 +145,7 @@ msgstr "Phenya phezulu"
 #. GTK <=2.14
 #. Configuration: Page_Down key label
 msgid "keyboard label|Page_Down"
-msgstr "Phenya phansi"
+msgstr "Phenya uye p_hansi"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -146,7 +158,15 @@ msgstr "Phenya phansi"
 #. Configuration: Page_Down key label
 msgctxt "keyboard label"
 msgid "Page_Down"
-msgstr "Phenya phansi"
+msgstr "Phenya uye_phansi"
+
+msgctxt "keyboard label"
+msgid "Left"
+msgstr "Kwesobunxele"
+
+msgctxt "keyboard label"
+msgid "Right"
+msgstr "Kwesokudla"
 
 #. File->Open
 msgid "_Open"
@@ -183,6 +203,24 @@ msgstr "_Buyisela emuva"
 msgctxt "Stock label"
 msgid "_Revert"
 msgstr "_Buyisela emuva"
+
+#. File->Save As->Replace confirmation
+#, c-format
+msgid "A file named \"%s\" already exists.  Do you want to replace it?"
+msgstr "Ifayela elinegama i-\"%s\" selivele likhona. Ufuna ukulishintshanisa?"
+
+#. File->Save As->Replace confirmation
+#, c-format
+msgid ""
+"The file already exists in \"%s\".  Replacing it will overwrite its contents."
+msgstr ""
+"Ifayela selikhona ku-\"%s\". Ukulishintshanisa kuzobhala ngaphezulu "
+"okuqukethwe kulo."
+
+#. File->Save As->Replace confirmation
+#: ../gtk/gtkfilechooserdefault.c:8349 ../gtk/gtkprintunixdialog.c:457
+msgid "_Replace"
+msgstr "_Shintshanisa"
 
 #. File ->Recent Files->No items found
 msgid "No items found"
@@ -190,7 +228,7 @@ msgstr "Akukho okutholakele"
 
 #. File->Recent Files->tooltip
 msgid "Open '%s'"
-msgstr "Vula '%s'"
+msgstr "Vula i-'%s'"
 
 #. This is the label format that is used for the first 10 items
 #. * in a recent files menu. The %d is the number of the item,
@@ -247,21 +285,21 @@ msgstr "_Phuma"
 
 #. Edit->Undo
 msgid "_Undo"
-msgstr "G_uqula"
+msgstr "_Yekisa"
 
 #. Edit->Undo
 msgctxt "Stock label"
 msgid "_Undo"
-msgstr "G_uqula"
+msgstr "_Yekisa"
 
 #. Edit->Preferences
 msgid "_Preferences"
-msgstr "_Okuthandekayo"
+msgstr "_Okuthandwayo"
 
 #. Edit->Preferences
 msgctxt "Stock label"
 msgid "_Preferences"
-msgstr "_Okuthandekayo"
+msgstr "_Okuthandwayo"
 
 #. Navigation->Up
 msgid "Navigation|_Up"
@@ -298,7 +336,7 @@ msgstr "Mayelane ne-%s"
 
 #. About Dialog - Credits button
 msgid "C_redits"
-msgstr ""
+msgstr "U_kutuswa komhumushi"
 
 #. About Dialog - License button
 msgid "_License"
@@ -315,7 +353,7 @@ msgstr "_Vala"
 
 #. About Dialog - Credits dialog - Title
 msgid "Credits"
-msgstr ""
+msgstr "Ukutuswa"
 
 #. About Dialog - Credits dialog - Tab - Written by
 msgid "Written by"
@@ -335,40 +373,55 @@ msgstr "Ilayisensi"
 
 #. File dialog - Cancel button
 msgid "_Cancel"
-msgstr "_Nqamula"
+msgstr "_Khansela"
 
 #. File dialog - Cancel button
 msgctxt "Stock label"
 msgid "_Cancel"
-msgstr "_Nqamula"
+msgstr "_Khansela"
 
 #. File dialog - Add button
 msgid "_Add"
 msgstr "_Yongeza"
 
+#. Add button (various, add term, add terminology file)
+msgctxt "Stock label"
+msgid "_Add"
+msgstr "_Yongeza"
+
 #. File dialog - Add button - tooltip
 msgid "Add the folder '%s' to the bookmarks"
-msgstr ""
+msgstr "Ngenza ifolda '%s' kuzimpawu zokubekisa"
 
 #. File dialog - Add button - tooltip
 msgid "Add the current folder to the bookmarks"
-msgstr ""
+msgstr "Ngeza ifolda yamanje kuzimpawu zokubekisa"
 
 #. File dialog - Remove button
 msgid "_Remove"
 msgstr "_Susa"
 
+#. Remove button (remove terminology file)
+msgctxt "Stock label"
+msgid "_Remove"
+msgstr "_Susa"
+
 #. File dialog - Remove button - tooltip
 msgid "Remove the bookmark '%s'"
-msgstr ""
+msgstr "Susa uphawu lokubekisa i-'%s'"
 
 #. File dialog - Remove button - tooltip
 msgid "Remove the selected bookmark"
-msgstr ""
+msgstr "Susa uphawu lokubekisa olukhethiwe"
 
 #. File dialog - Location - Label
 msgid "_Location:"
-msgstr "Indawo:"
+msgstr "_Indawo:"
+
+#. File dialog - Search - Label
+#. Appears when you select Search from Places
+msgid "_Search:"
+msgstr "_Sesha:"
 
 #. File dialog - Location - Open/Close button - Tooltip
 msgid "Type a file name"
@@ -378,17 +431,21 @@ msgstr "Thayipha igama lefayela"
 msgid "_Places"
 msgstr "_Izindawo"
 
+#. File dialog - Places - Entry - Search
+msgid "Search"
+msgstr "Sesha"
+
 #. File dialog - Places - Entry - Recently used
 msgid "Recently Used"
-msgstr "Esanda kusetshenziswa"
+msgstr "Okusanda kusetshenziswa"
 
 #. File dialog - Places - Entry - Desktop
 msgid "Desktop"
-msgstr ""
+msgstr "i-Desktop"
 
 #. File dialog - Places - Entry - File System
 msgid "File System"
-msgstr ""
+msgstr "Uhlelo lwefayela"
 
 #. File dialog - Places - Right-Click - Remove
 msgid "Remove"
@@ -402,33 +459,41 @@ msgstr "Qamba kabusha..."
 msgid "Name"
 msgstr "Igama"
 
+#. File dialog - Files - Grid label - Size
+msgid "Size"
+msgstr "Usayizi"
+
 #. File dialog - Files - Grid label - Modified
 msgid "Modified"
-msgstr ""
+msgstr "Kushintshiwe"
 
 #. File dialog - Files - Table - Date formats - HH:MM
 msgid "%H:%M"
-msgstr ""
+msgstr "%H:%M"
 
 #. File dialog - Files - Table - Date formats - Today at
 msgid "Today at %H:%M"
-msgstr ""
+msgstr "Namuhla ngo-%H:%M"
 
 #. File dialog - Files - Table - Date formats - Yesterday at
 msgid "Yesterday at %H:%M"
-msgstr ""
+msgstr "Izolo ngo-%H:%M"
 
 #. File dialog - Files - Right click - Show Hidden Files
 msgid "Show _Hidden Files"
-msgstr ""
+msgstr "Khombisa _amafayela afihlekile"
+
+#. File dialog - Files - Right click - Show Size Column
+msgid "Show _Size Column"
+msgstr "Khombisa _isayizi yekholamu"
 
 #. File dialog - Files - Right click - Add to Bookmarks
 msgid "_Add to Bookmarks"
-msgstr ""
+msgstr "_Yengeza kuzimpawu zokubekisa"
 
 #. File dialog - File type list - tooltip
 msgid "Select which types of files are shown"
-msgstr ""
+msgstr "Khetha ukuthi kukhonjiswa ziphi izinhlobo zamafayela"
 
 #. File save dialog - Name:
 msgid "_Name:"
@@ -436,28 +501,28 @@ msgstr "_Igama:"
 
 #. File save dialog - Save in folder:
 msgid "Save in _folder:"
-msgstr ""
+msgstr "Gcina ku _folda:"
 
 #. File save dialog - Browse for other folders
 msgid "_Browse for other folders"
-msgstr ""
+msgstr "_Funa amanye amafolda"
 
 #. File save dialog - Create folder button
 msgid "Create Fo_lder"
-msgstr ""
+msgstr "Dala ifo_lda"
 
 #. File save dialg - Create folder button (after pressing) - Type name of new folder
 msgid "Type name of new folder"
-msgstr ""
+msgstr "Thayipha igama lefolda entsha"
 
 #. Right Click (on empty) -> Cut
 msgid "Cu_t"
-msgstr "_Sika"
+msgstr "Sik_a"
 
 #. Right Click (on empty) -> Cut
 msgctxt "Stock label"
 msgid "Cu_t"
-msgstr "_Sika"
+msgstr "Sik_a"
 
 #. Right Click (on empty) -> Copy
 msgid "_Copy"
@@ -479,12 +544,12 @@ msgstr "_Namathisela"
 
 #. Right Click (on empty) -> Delete
 msgid "_Delete"
-msgstr "_Yesula"
+msgstr "_Sula"
 
 #. Right Click (on empty) -> Delete
 msgctxt "Stock label"
 msgid "_Delete"
-msgstr "_Yesula"
+msgstr "_Sula"
 
 #. Right Click (on empty) -> Select All
 msgid "Select _All"
@@ -521,3 +586,29 @@ msgstr "_Kulungile"
 msgctxt "Stock label"
 msgid "_OK"
 msgstr "_Kulungile"
+
+#. Font dialog: title
+msgid "Pick a Font"
+msgstr "Khetha umbhalo"
+
+#. Font dialog: Family
+msgid "_Family:"
+msgstr "_Umndeni:"
+
+#. Font dialog: Style
+msgid "_Style:"
+msgstr "_Isitayela:"
+
+#. Font dialog: Size
+msgid "Si_ze:"
+msgstr "Usa_yizi:"
+
+#. Font dialog: Preview
+msgid "_Preview:"
+msgstr "_Bonakalisa:"
+
+#. Font dailog: Preview default text
+#. This is the default text shown in the preview entry, though the user
+#. can set it. Remember that some fonts only have capital letters.
+msgid "abcdefghijk ABCDEFGHIJK"
+msgstr "abcdefghijk ABCDEFGHIJK"

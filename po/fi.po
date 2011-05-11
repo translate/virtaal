@@ -1,21 +1,21 @@
 # Finnish (fi) localisation of Virtaal.
 # Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
-# Jussi Aalto <jta_lnx@dnainternet.net>, 2009.
+# Jussi Aalto <jta_lnx@dnainternet.net>, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.4.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2010-04-01 17:45+0200\n"
-"PO-Revision-Date: 2010-04-02 22:38+0200\n"
-"Last-Translator: Jussi <jta_l10n@dnainternet.net>\n"
+"PO-Revision-Date: 2010-08-11 05:20+0200\n"
+"Last-Translator: Jussi <jta_l10n@saunalahti.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.0.3\n"
+"X-Generator: Pootle 2.1.5\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/views/mainview.py:640
@@ -294,11 +294,11 @@ msgstr "<b><big>Viimeisimmät tiedostot</big></b>"
 
 #: ../share/virtaal/virtaal.glade.h:69
 msgid "<u>Tutorial</u>"
-msgstr ""
+msgstr "<u>Harjoitustehtävä</u>"
 
 #: ../share/virtaal/virtaal.glade.h:70
 msgid "<u>Cheat Sheet</u>"
-msgstr ""
+msgstr "<u>Pikaohje</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:72
@@ -315,7 +315,7 @@ msgstr "<u>Ominaisuudet</u>"
 
 #: ../share/virtaal/virtaal.glade.h:75
 msgid "<b><big>Getting Started</big></b>"
-msgstr ""
+msgstr "<b><big>Käytön aloitus</big></b>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:77
@@ -1200,34 +1200,32 @@ msgid "Extensive format support"
 msgstr "Laaja tuki eri tiedostomuodoille"
 
 #: ../virtaal/views/widgets/welcomescreen.py:73
-#, fuzzy
 msgid "Translation memory"
 msgstr "Käännösmuisti"
 
 #: ../virtaal/views/widgets/welcomescreen.py:74
 msgid "Terminology assistance"
-msgstr ""
+msgstr "Terminologia-avustin"
 
 #: ../virtaal/views/widgets/welcomescreen.py:75
 msgid "Machine translation"
-msgstr ""
+msgstr "Tuki konekäännöksille"
 
 #: ../virtaal/views/widgets/welcomescreen.py:76
 msgid "Highlighting and insertion of placeables"
-msgstr ""
+msgstr "Sijoitteiden korostus ja lisäys"
 
 #: ../virtaal/views/widgets/welcomescreen.py:77
 msgid "Many plugins and options for customization"
-msgstr ""
+msgstr "Useita liitännäisiä ja mukautusvaihtoehtoja"
 
 #: ../virtaal/models/storemodel.py:105
-#, fuzzy
 msgid "The file does not exist."
-msgstr "Tiedostoa \"%s\" ei ole."
+msgstr "Tiedostoa ei ole olemassa."
 
 #: ../virtaal/models/storemodel.py:107
 msgid "Not a valid file."
-msgstr ""
+msgstr "Tiedosto ei ole kelvollinen."
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
 msgid "TMX Translation Memory"
@@ -1343,7 +1341,7 @@ msgstr "Qt .qm -tiedosto"
 
 #: ../devsupport/tmp_strings.py:26
 msgid "OmegaT Glossary"
-msgstr ""
+msgstr "OmegaT-sanasto"
 
 #: ../bin/virtaal:78
 #, c-format

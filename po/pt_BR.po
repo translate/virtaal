@@ -3,20 +3,22 @@
 # This file is distributed under the same license as the Virtaal package.
 # Leonardo Ferreira Fontenelle <leonardof@gnome.org>, 2008, 2009.
 # Alexander Dupuy <alex.dupuy@mac.com>, 2009.
+# elchevive <elchevive@opensuse.org>, 2010.
+# Voz_da_Verdade <vozdaverdade2006@gmail.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2010-04-01 17:45+0200\n"
-"PO-Revision-Date: 2010-04-06 15:15+0200\n"
-"Last-Translator: elchevive <elchevive@opensuse.org>\n"
+"PO-Revision-Date: 2010-10-24 06:35+0200\n"
+"Last-Translator: Voz_da_Verdade <vozdaverdade2006@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <ldp-br@bazar2.conectiva.com.br>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Pootle 2.0.3\n"
+"X-Generator: Pootle 2.1.3\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/views/mainview.py:640
@@ -306,7 +308,7 @@ msgstr "<u>Tutorial</u>"
 
 #: ../share/virtaal/virtaal.glade.h:70
 msgid "<u>Cheat Sheet</u>"
-msgstr ""
+msgstr "<u>Dicas</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:72
@@ -322,8 +324,9 @@ msgid "<u>Features</u>"
 msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:75
+#, fuzzy
 msgid "<b><big>Getting Started</big></b>"
-msgstr ""
+msgstr "Começando"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:77
@@ -943,11 +946,11 @@ msgstr "Este arquivo"
 #. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
 #: ../virtaal/plugins/tm/models/google_translate.py:113
 msgid "Google Translate"
-msgstr ""
+msgstr "Google Tradutor"
 
 #: ../virtaal/plugins/tm/models/google_translate.py:114
 msgid "Unreviewed machine translations from Google's translation service"
-msgstr ""
+msgstr "Traduções por máquina não revisadas do serviço de tradução do Google"
 
 #: ../virtaal/plugins/tm/models/microsoft_translator.py:35
 msgid "Microsoft Translator"
@@ -971,7 +974,7 @@ msgstr "libtranslate"
 
 #: ../virtaal/plugins/tm/models/libtranslate.py:46
 msgid "Unreviewed machine translations from various services"
-msgstr ""
+msgstr "Traduções por máquina não revisadas de vários serviços"
 
 #: ../virtaal/plugins/tm/models/localtm.py:37
 msgid "Local Translation Memory"
@@ -1146,7 +1149,7 @@ msgid ""
 "definitely intend it to be useful as a general purpose tool for Computer "
 "Aided Translation (CAT)."
 msgstr ""
-"O foco inicial é na tradução de software (\"localização\", l10n), mas "
+"O foco inicial é na tradução de software (localização ou l10n), mas "
 "certamente pretendemos que ele seja útil como uma ferramenta de CAT "
 "(tradução auxiliada por computador) em geral."
 
@@ -1384,11 +1387,11 @@ msgstr "habilita recursos de depuração"
 
 #: ../bin/virtaal:117
 msgid "Could not open log file '%(filename)s'"
-msgstr "Não foi possível abrir o arquivo de log \"%(filename)s\""
+msgstr "Não foi possível abrir o arquivo de log '%(filename)s'"
 
 #: ../bin/virtaal:125
 msgid "Could not read configuration file '%(filename)s'"
-msgstr "Não foi possível ler o arquivo de configuração \"%(filename)s\""
+msgstr "Não foi possível ler o arquivo de configuração '%(filename)s'"
 
 #: ../bin/virtaal:129
 msgid "invalid number of arguments"
@@ -1396,7 +1399,7 @@ msgstr "número inválido de argumentos"
 
 #: ../bin/virtaal:158
 msgid "Could not open profile file '%(filename)s'"
-msgstr "Não foi possível abrir o arquivo de perfil \"%(filename)s\""
+msgstr "Não foi possível abrir o arquivo de perfil '%(filename)s'"
 
 #: ../devsupport/optparse.py:134
 #, python-format

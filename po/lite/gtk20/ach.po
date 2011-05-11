@@ -1,0 +1,613 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
+# This file is distributed under the same license as the Virtaal package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2008-07-25 18:31+0200\n"
+"PO-Revision-Date: 2011-01-06 09:20+0200\n"
+"Last-Translator: George Patrick <chanchumgpa@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ach\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Pootle 2.1.5\n"
+
+#. Translate to default:RTL if you want your widgets
+#. * to be RTL, otherwise translate to default:LTR.
+#. * Do *not* translate it to "predefinito:LTR", if it
+#. * it isn't default:LTR or default:RTL it will not work
+#.
+#. Configuration: Direction
+msgid "default:LTR"
+msgstr "Kit macon: LTR"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the control key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#. *
+#. * Don't include the prefix "keyboard label|" in the translation.
+#.
+#. GTK <=2.14
+#. Configuration: Ctrl modifier label
+msgid "keyboard label|Ctrl"
+msgstr "Kit coc pa keyboard|Ctrl"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the control key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#. GTK HEAD (allows future proofing)
+#. Configuration: Ctrl modifier label
+msgctxt "keyboard label"
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the alt key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#. GTK >=2.16
+#. Configuration: Alt modifier label
+msgctxt "keyboard label"
+msgid "Alt"
+msgstr "Alt"
+
+#. This is the text that should appear next to menu accelerators
+#. * If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#. *
+#. * Don't include the prefix "keyboard label|" in the translation.
+#.
+#. GTK <=2.14
+#. Configuration: Up key label
+msgid "keyboard label|Up"
+msgstr "Kit coc pa keyboard|Malu"
+
+#. This is the text that should appear next to menu accelerators
+#. * If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#. *
+#. * Don't include the prefix "keyboard label|" in the translation.
+#.
+#. GTK HEAD (allows future proofing)
+#. Configuration: Up key label
+msgctxt "keyboard label"
+msgid "Up"
+msgstr "Malu"
+
+#. This is the text that should appear next to menu accelerators
+#. * If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#. *
+#. * Don't include the prefix "keyboard label|" in the translation.
+#.
+#. GTK <=2.14
+#. Configuration: Down key label
+msgid "keyboard label|Down"
+msgstr "Kit coc pa keyboard|Piny"
+
+#. This is the text that should appear next to menu accelerators
+#. * If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#. *
+#. * Don't include the prefix "keyboard label|" in the translation.
+#.
+#. GTK HEAD (allows future proofing)
+#. Configuration: Down key label
+msgctxt "keyboard label"
+msgid "Down"
+msgstr "Piny"
+
+#. This is the text that should appear next to menu accelerators
+#. * If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#. *
+#. * Don't include the prefix "keyboard label|" in the translation.
+#.
+#. GTK <=2.14
+#. Configuration: Page_Up key label
+msgid "keyboard label|Page_Up"
+msgstr "Kit coc pa keybpoard|Pot karatac_Malu"
+
+#. This is the text that should appear next to menu accelerators
+#. * If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#. *
+#. * Don't include the prefix "keyboard label|" in the translation.
+#.
+#. GTK HEAD (allows future proofing)
+#. Configuration: Page_Up key label
+msgctxt "keyboard label"
+msgid "Page_Up"
+msgstr "Pot karatac_Malu"
+
+#. This is the text that should appear next to menu accelerators
+#. * If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#. *
+#. * Don't include the prefix "keyboard label|" in the translation.
+#.
+#. GTK <=2.14
+#. Configuration: Page_Down key label
+msgid "keyboard label|Page_Down"
+msgstr "Kit coc pa keyboard|Pot karatc_Piny"
+
+#. This is the text that should appear next to menu accelerators
+#. * If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#. *
+#. * Don't include the prefix "keyboard label|" in the translation.
+#.
+#. GTK HEAD (allows future proofing)
+#. Configuration: Page_Down key label
+msgctxt "keyboard label"
+msgid "Page_Down"
+msgstr "Pot karatac_Piny"
+
+msgctxt "keyboard label"
+msgid "Left"
+msgstr "Tung acam"
+
+msgctxt "keyboard label"
+msgid "Right"
+msgstr "Tung acem"
+
+#. File->Open
+msgid "_Open"
+msgstr "_Yab"
+
+#. File->Open
+msgctxt "Stock label"
+msgid "_Open"
+msgstr "_Yab"
+
+#. File->Save
+msgid "_Save"
+msgstr "_Gwok"
+
+#. File->Save
+msgctxt "Stock label"
+msgid "_Save"
+msgstr "_Gwok"
+
+#. File->Save As
+msgid "Save _As"
+msgstr "Gwok tyen me acel"
+
+#. File->Save As
+msgctxt "Stock label"
+msgid "Save _As"
+msgstr "Gwok tyen me acel"
+
+#. File->Revert
+msgid "_Revert"
+msgstr "_Dwok cen"
+
+#. File->Revert
+msgctxt "Stock label"
+msgid "_Revert"
+msgstr "_Dwok cen"
+
+#. File->Save As->Replace confirmation
+#, c-format
+msgid "A file named \"%s\" already exists.  Do you want to replace it?"
+msgstr "Fail manyinge \"%s\" dong tye woko. Imito leyo?"
+
+#. File->Save As->Replace confirmation
+#, c-format
+msgid ""
+"The file already exists in \"%s\".  Replacing it will overwrite its contents."
+msgstr "Fail man dong tye woko iyi \"%s\". Leyo obino yweo ngo matye iyie woko."
+
+#. File->Save As->Replace confirmation
+#: ../gtk/gtkfilechooserdefault.c:8349 ../gtk/gtkprintunixdialog.c:457
+msgid "_Replace"
+msgstr "_Lee"
+
+#. File ->Recent Files->No items found
+msgid "No items found"
+msgstr "Jami moo keken pe ononge"
+
+#. File->Recent Files->tooltip
+msgid "Open '%s'"
+msgstr "yab '%s'"
+
+#. This is the label format that is used for the first 10 items
+#. * in a recent files menu. The %d is the number of the item,
+#. * the %s is the name of the item. Please keep the _ in front
+#. * of the number to give these menu items a mnemonic.
+#. *
+#. * Don't include the prefix "recent menu label|" in the translation.
+#.
+#. GTK <=2.14
+#. File->Recent Files->Selection label
+msgid "recent menu label|_%d. %s"
+msgstr "nying jami|_%d. %s"
+
+#. This is the label format that is used for the first 10 items
+#. * in a recent files menu. The %d is the number of the item,
+#. * the %s is the name of the item. Please keep the _ in front
+#. * of the number to give these menu items a mnemonic.
+#.
+#. GTK HEAD (allows future proofing)
+#. File->Recent Files->Selection label
+msgctxt "recent menu label"
+msgid "_%d. %s"
+msgstr "_%d. %s"
+
+#. This is the format that is used for items in a recent files menu.
+#. * The %d is the number of the item, the %s is the name of the item.
+#. *
+#. * Don't include the prefix "recent menu label|" in the translation.
+#.
+#. GTK <=2.14
+#: ../gtk/gtkrecentchoosermenu.c:788
+#, c-format
+msgid "recent menu label|%d. %s"
+msgstr "nying jami macegi|%d. %s"
+
+#. This is the format that is used for items in a recent files menu.
+#. * The %d is the number of the item, the %s is the name of the item.
+#.
+#. GTK HEAD (allows future proofing)
+#: ../gtk/gtkrecentchoosermenu.c:779
+#, c-format
+msgctxt "recent menu label"
+msgid "%d. %s"
+msgstr "%d. %s"
+
+#. File->Quit
+msgid "_Quit"
+msgstr "_Wek woko"
+
+#. File->Quit
+msgctxt "Stock label"
+msgid "_Quit"
+msgstr "_Wek woko"
+
+#. Edit->Undo
+msgid "_Undo"
+msgstr "_Dwok"
+
+#. Edit->Undo
+msgctxt "Stock label"
+msgid "_Undo"
+msgstr "_Dwok"
+
+#. Edit->Preferences
+msgid "_Preferences"
+msgstr "_Kite mere"
+
+#. Edit->Preferences
+msgctxt "Stock label"
+msgid "_Preferences"
+msgstr "_Kite mere"
+
+#. Navigation->Up
+msgid "Navigation|_Up"
+msgstr "Beo iwie|_Malo"
+
+#. Navigation->Up
+#. GTK HEAD (allows future proofing)
+msgctxt "Stock label, navigation"
+msgid "_Up"
+msgstr "_Malo"
+
+#. Navigation->Down
+msgid "Navigation|_Down"
+msgstr "Beo iwie|_Piny"
+
+#. Navigation->Down
+#. GTK HEAD (allows future proofing)
+msgctxt "Stock label, navigation"
+msgid "_Down"
+msgstr "_Piny"
+
+#. Help->About
+msgid "_About"
+msgstr "_Ikome"
+
+#. Help->About
+msgctxt "Stock label"
+msgid "_About"
+msgstr "_Ikome"
+
+#. About Dialog - Title
+msgid "About %s"
+msgstr "Macok %s"
+
+#. About Dialog - Credits button
+msgid "C_redits"
+msgstr "B_anya"
+
+#. About Dialog - License button
+msgid "_License"
+msgstr "_Lancec"
+
+#. About Dialog - Close button
+msgid "_Close"
+msgstr "_Ceg"
+
+#. About Dialog - Close button
+msgctxt "Stock label"
+msgid "_Close"
+msgstr "_Ceg"
+
+#. About Dialog - Credits dialog - Title
+msgid "Credits"
+msgstr "Banya"
+
+#. About Dialog - Credits dialog - Tab - Written by
+msgid "Written by"
+msgstr "Lacoyo ne"
+
+#. About Dialog - Credits dialog - Tab - Translated by
+msgid "Translated by"
+msgstr "Lagonyo ne en aye"
+
+#. About Dialog - Credits dialog - Tab - Artwork by
+msgid "Artwork by"
+msgstr "Layiko ne en aye"
+
+#. About Dialog - License dialog - Title
+msgid "License"
+msgstr "Lancec"
+
+#. File dialog - Cancel button
+msgid "_Cancel"
+msgstr "_Ngol woko"
+
+#. File dialog - Cancel button
+msgctxt "Stock label"
+msgid "_Cancel"
+msgstr "_Ngol woko"
+
+#. File dialog - Add button
+msgid "_Add"
+msgstr "_Med"
+
+#. Add button (various, add term, add terminology file)
+msgctxt "Stock label"
+msgid "_Add"
+msgstr "_Med"
+
+#. File dialog - Add button - tooltip
+msgid "Add the folder '%s' to the bookmarks"
+msgstr "Med gogwoko '%s' iyi kagwoko"
+
+#. File dialog - Add button - tooltip
+msgid "Add the current folder to the bookmarks"
+msgstr "Med gogwoko man iyi kagwoko"
+
+#. File dialog - Remove button
+msgid "_Remove"
+msgstr "_Kwany woko"
+
+#. Remove button (remove terminology file)
+msgctxt "Stock label"
+msgid "_Remove"
+msgstr "_Kwany woko"
+
+#. File dialog - Remove button - tooltip
+msgid "Remove the bookmark '%s'"
+msgstr "Kwany woko ki ika gwoko '%s'"
+
+#. File dialog - Remove button - tooltip
+msgid "Remove the selected bookmark"
+msgstr "Med kagwoko magiyero ni"
+
+#. File dialog - Location - Label
+msgid "_Location:"
+msgstr "_Kabedo"
+
+#. File dialog - Search - Label
+#. Appears when you select Search from Places
+msgid "_Search:"
+msgstr "_Yeny"
+
+#. File dialog - Location - Open/Close button - Tooltip
+msgid "Type a file name"
+msgstr "Ket nying fail"
+
+#. File dialog - Places - Grid label - Places
+msgid "_Places"
+msgstr "_Kabedo mapol"
+
+#. File dialog - Places - Entry - Search
+msgid "Search"
+msgstr "Yeny"
+
+#. File dialog - Places - Entry - Recently used
+msgid "Recently Used"
+msgstr "Magitiyo kede macok"
+
+#. File dialog - Places - Entry - Desktop
+msgid "Desktop"
+msgstr "Cal ma inyim kompiuta (Desktop)"
+
+#. File dialog - Places - Entry - File System
+msgid "File System"
+msgstr "Kite pa Fail"
+
+#. File dialog - Places - Right-Click - Remove
+msgid "Remove"
+msgstr "Kwany woko"
+
+#. File dialog - Places - Right-Click - Rename...
+msgid "Rename..."
+msgstr "Mi nying mukene..."
+
+#. File dialog - Files - Grid label - Name
+msgid "Name"
+msgstr "Nying"
+
+#. File dialog - Files - Grid label - Size
+msgid "Size"
+msgstr "Kite"
+
+#. File dialog - Files - Grid label - Modified
+msgid "Modified"
+msgstr "Giyubo"
+
+#. File dialog - Files - Table - Date formats - HH:MM
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. File dialog - Files - Table - Date formats - Today at
+msgid "Today at %H:%M"
+msgstr "Tin cawa %H:%M"
+
+#. File dialog - Files - Table - Date formats - Yesterday at
+msgid "Yesterday at %H:%M"
+msgstr "Lawo cawa %H:%M"
+
+#. File dialog - Files - Right click - Show Hidden Files
+msgid "Show _Hidden Files"
+msgstr "Nyut fail mukane"
+
+#. File dialog - Files - Right click - Show Size Column
+msgid "Show _Size Column"
+msgstr "Nyut _Kit Rek atir"
+
+#. File dialog - Files - Right click - Add to Bookmarks
+msgid "_Add to Bookmarks"
+msgstr "_Med iyi Alama buk"
+
+#. File dialog - File type list - tooltip
+msgid "Select which types of files are shown"
+msgstr "Yer kit fail maginyuto"
+
+#. File save dialog - Name:
+msgid "_Name:"
+msgstr "_Nying"
+
+#. File save dialog - Save in folder:
+msgid "Save in _folder:"
+msgstr "Gwok iyi _Kagwoko"
+
+#. File save dialog - Browse for other folders
+msgid "_Browse for other folders"
+msgstr "_Yeny gogwoko"
+
+#. File save dialog - Create folder button
+msgid "Create Fo_lder"
+msgstr "Yab Gi_gwoko"
+
+#. File save dialg - Create folder button (after pressing) - Type name of new folder
+msgid "Type name of new folder"
+msgstr "Ket nying gigwoko manyen"
+
+#. Right Click (on empty) -> Cut
+msgid "Cu_t"
+msgstr "Cu_t"
+
+#. Right Click (on empty) -> Cut
+msgctxt "Stock label"
+msgid "Cu_t"
+msgstr "Cu_t"
+
+#. Right Click (on empty) -> Copy
+msgid "_Copy"
+msgstr "_Kob"
+
+#. Right Click (on empty) -> Copy
+msgctxt "Stock label"
+msgid "_Copy"
+msgstr "_Kob"
+
+#. Right Click (on empty) -> Paste
+msgid "_Paste"
+msgstr "_Ket"
+
+#. Right Click (on empty) -> Paste
+msgctxt "Stock label"
+msgid "_Paste"
+msgstr "_Ket"
+
+#. Right Click (on empty) -> Delete
+msgid "_Delete"
+msgstr "_Ywee woko"
+
+#. Right Click (on empty) -> Delete
+msgctxt "Stock label"
+msgid "_Delete"
+msgstr "_Ywee woko"
+
+#. Right Click (on empty) -> Select All
+msgid "Select _All"
+msgstr "Yer_Weng"
+
+#. Right Click (on empty) -> Select All
+msgctxt "Stock label"
+msgid "Select _All"
+msgstr "Yer_Weng"
+
+#. Revert Confirmation Dialog -> Yes
+msgid "_Yes"
+msgstr "_Eyo"
+
+#. Revert Confirmation Dialog -> Yes
+msgctxt "Stock label"
+msgid "_Yes"
+msgstr "_Eyo"
+
+#. Revert Confirmation Dialog -> No
+msgid "_No"
+msgstr "_Pe"
+
+#. Revert Confirmation Dialog -> No
+msgctxt "Stock label"
+msgid "_No"
+msgstr "_Pe"
+
+#. Error Dialog -> OK
+msgid "_OK"
+msgstr "_Kakare"
+
+#. Error Dialog -> OK
+msgctxt "Stock label"
+msgid "_OK"
+msgstr "_Kakare"
+
+#. Font dialog: title
+msgid "Pick a Font"
+msgstr "Kwany Kite acel"
+
+#. Font dialog: Family
+msgid "_Family:"
+msgstr "_Gang"
+
+#. Font dialog: Style
+msgid "_Style:"
+msgstr "_Kite"
+
+#. Font dialog: Size
+msgid "Si_ze:"
+msgstr "Si_ze:"
+
+#. Font dialog: Preview
+msgid "_Preview:"
+msgstr "_Nen:"
+
+#. Font dailog: Preview default text
+#. This is the default text shown in the preview entry, though the user
+#. can set it. Remember that some fonts only have capital letters.
+msgid "abcdefghijk ABCDEFGHIJK"
+msgstr "abcdefghijk ABCDEFGHIJK"

@@ -27,6 +27,13 @@ from basetmmodel import BaseTMModel
 
 from virtaal.support.httpclient import HTTPClient, RESTRequest
 
+# Code corrections
+code_translation = {
+    'zh_CN': 'zh-CHS', # Simplified
+    'zh_TW': 'zh-CHT', # Traditional
+    'nb': 'no', # Norwegian (Nyorks) uses no not nb
+}
+
 def strip_bom(string):
     if string[0] == u'\ufeff':
         return string[1:]
@@ -68,7 +75,9 @@ class TMModel(BaseTMModel):
     def query(self, tmcontroller, unit):
         """Send the query to the web service. The response is handled by means
         of a call-back because it happens asynchronously."""
-        if self.source_lang not in self.languages or self.target_lang not in self.languages:
+        source_lang = code_translation.get(self.source_lang, self.source_lang)
+        target_lang = code_translation.get(self.target_lang, self.target_lang)
+        if source_lang not in self.languages or target_lang not in self.languages:
             return
 
         query_str = unit.source
@@ -78,8 +87,8 @@ class TMModel(BaseTMModel):
             values = {
                 'appId': self.appid,
                 'text': query_str,
-                'from': self.source_lang,
-                'to': self.target_lang
+                'from': source_lang,
+                'to': target_lang
             }
             req = RESTRequest(self.url_translate + "?" + urllib.urlencode(values), '', method='GET', \
                     data=urllib.urlencode(''), headers=None)

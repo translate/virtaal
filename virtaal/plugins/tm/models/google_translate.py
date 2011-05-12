@@ -94,6 +94,7 @@ _languages = {
 code_translation = {
     'fl': 'tl', # Filipino -> Tagalog
     'he': 'iw', # Weird code Google uses for Hebrew
+    'nb': 'no', # Google maps no (Norwegian) to its Norwegian (Bokmål) (nb) translator
 }
 
 virtaal_referrer = "http://virtaal.org/"

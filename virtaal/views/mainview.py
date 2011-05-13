@@ -350,6 +350,20 @@ class MainView(BaseView):
 
     def _on_style_set(self, widget, prev_style):
         theme.update_style(widget)
+        # on windows the tooltip colour is wrong in inverse themes (bug 1923)
+        if os.name == 'nt':
+            if theme.INVERSE:
+                tooltip_text = "white"
+            else:
+                tooltip_text = "black"
+            rc_string = """
+                style "better-tooltips"
+                {
+                    fg[NORMAL] = "%s"
+                }
+                class "gtk-tooltip*" style "better-tooltips"
+                """ % tooltip_text
+            gtk.rc_parse_string(rc_string)
 
 
     # ACCESSORS #

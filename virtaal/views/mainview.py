@@ -361,7 +361,7 @@ class MainView(BaseView):
                 {
                     fg[NORMAL] = "%s"
                 }
-                class "gtk-tooltip*" style "better-tooltips"
+                widget "gtk-tooltip*" style "better-tooltips"
                 """ % tooltip_text
             gtk.rc_parse_string(rc_string)
 

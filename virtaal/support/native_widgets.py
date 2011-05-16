@@ -29,7 +29,6 @@ from virtaal.common import pan_app
 
 #TODO:
 # - refactor repeated parts
-# - Confirm overwrite works correctly everywhere
 # - Confirm error handling works correctly
 
 
@@ -142,8 +141,18 @@ def kdialog_save_dialog(window, title, current_filename):
     ]
     title = title or _("Save")
     (returncode, filename) = _show_kdialog(window, title, args)
-    if returncode:
+    if returncode and os.path.exists(filename):
+        # confirm overwrite, since kdialog can't:
+        args = [
+            '--yesno',
+            #gettext.dgettext('gtk20.mo', 'A file named \"%s\" already exists.  Do you want to replace it?') % filename,
+            gettext.dgettext('kdelibs4', 'A file named "%1" already exists. Are you sure you want to overwrite it?').replace('%1', '%s') % filename,
+        ]
+        (should_overwrite, _nothing) = _show_kdialog(window, "Overwrite", args)
+        if not should_overwrite:
+            return None
         return filename
+    return None
 
 
 #### Windows/win32 ####

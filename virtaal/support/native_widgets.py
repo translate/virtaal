@@ -109,12 +109,13 @@ def _show_kdialog(window, title, args):
     output = output [:-1] # we don't want the last newline
     error = output [:-1] # we don't want the last newline
     ret = process.returncode
+    # bash truth values: 0/1 = True/False
     if ret == 0: # success
         filename = output.decode('utf-8') # get system locale
         pan_app.settings.general["lastdir"] = os.path.dirname(filename)
-        return filename
+        return (True, filename)
     if ret == 1: # cancel
-        return u''
+        return (False, u'')
     raise Exception("Something went wrong with kdialog", error)
 
 
@@ -127,8 +128,8 @@ def kdialog_open_dialog(window, title, directory):
         '\n'.join('|'.join([' '.join(extensions), name]) for name, extensions in supported_files)
     ]
     title = title or _("Choose a Translation File")
-    filename = _show_kdialog(window, title, args)
-    if filename:
+    (returncode, filename) = _show_kdialog(window, title, args)
+    if returncode:
         return (filename, u"file://%s" % filename)
     else:
         return ()
@@ -140,7 +141,9 @@ def kdialog_save_dialog(window, title, current_filename):
         '\n'.join('|'.join([' '.join(extensions), name]) for name, extensions in supported_files)
     ]
     title = title or _("Save")
-    return _show_kdialog(window, title, args)
+    (returncode, filename) = _show_kdialog(window, title, args)
+    if returncode:
+        return filename
 
 
 #### Windows/win32 ####

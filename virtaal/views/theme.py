@@ -36,7 +36,7 @@ _default_theme = {
     'selected_placeable_fg': '#000000',
     'selected_placeable_bg': '#90ee90',
     # Red warning foreground colour for things like XML markup
-    'markup_warning_fg': 'darkred',
+    'markup_warning_fg': '#8b0000', #darkred/#8b0000
     'ph_placeable_bg': '#f7f7f7',
     # warning background for things like no search result
     'warning_bg': '#f66',
@@ -53,7 +53,7 @@ _inverse_theme = {
     'subtle_fg': 'grey',
     'selected_placeable_fg': '#ffffff',
     'selected_placeable_bg': '#007010',
-    'markup_warning_fg': '#ff3030',
+    'markup_warning_fg': '#ffa0a0',
     'ph_placeable_bg': '#101010',
     'warning_bg': '#900',
     'fuzzy_row_bg': '#474747',

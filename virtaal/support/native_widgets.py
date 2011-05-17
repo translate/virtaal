@@ -159,7 +159,7 @@ def kdialog_save_dialog(window, title, current_filename):
 
 def win32_open_dialog(title, directory):
     # http://msdn.microsoft.com/en-us/library/aa155724%28v=office.10%29.aspx
-    import win32gui
+    import winxpgui
     import win32con
     import pywintypes
     supported_files = [ (_(name), ';'.join(extensions)) for name, extensions in _get_file_types() ]
@@ -168,7 +168,7 @@ def win32_open_dialog(title, directory):
     custom_filter = _("All Files") + '\0*.*\0'
     title = title or _('Choose a Translation File')
     try:
-        filename, customfilter, flags = win32gui.GetOpenFileNameW(
+        filename, customfilter, flags = winxpgui.GetOpenFileNameW(
             InitialDir=directory,
             Flags=win32con.OFN_EXPLORER|win32con.OFN_FILEMUSTEXIST|win32con.OFN_HIDEREADONLY,
             File='', DefExt='',
@@ -182,13 +182,13 @@ def win32_open_dialog(title, directory):
             if e.args[0] == 0:
                 # cancel
                 return ()
-        raise Exception("Something went wrong with win32gui", e)
+        raise Exception("Something went wrong with winxpgui", e)
     # success
     pan_app.settings.general["lastdir"] = os.path.dirname(filename)
     return (filename, u"file:///%s" % filename)
 
 def win32_save_dialog(title, current_filename):
-    import win32gui
+    import winxpgui
     import win32con
     import pywintypes
     supported_files = _get_used_filetypes(current_filename)
@@ -199,7 +199,7 @@ def win32_save_dialog(title, current_filename):
     name, extension = os.path.splitext(filename)
     title = title or _('Save')
     try:
-        filename, customfilter, flags = win32gui.GetSaveFileNameW(
+        filename, customfilter, flags = winxpgui.GetSaveFileNameW(
             InitialDir=directory,
             Flags=win32con.OFN_EXPLORER|win32con.OFN_OVERWRITEPROMPT,
             File=name, DefExt=extension,
@@ -213,6 +213,6 @@ def win32_save_dialog(title, current_filename):
             if e.args[0] == 0:
                 # cancel
                 return u''
-        raise Exception("Something went wrong with win32gui", e)
+        raise Exception("Something went wrong with winxpgui", e)
     # success
     return filename

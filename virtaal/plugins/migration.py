@@ -24,12 +24,16 @@ Currently there is some support for importing settings from Poedit and
 Lokalize. Translation Memory can be imported from Poedit and Lokalize.
 """
 
-import bsddb
+try:
+    import bsddb
+except ImportError:
+    bsddb = None
 import ConfigParser
 import logging
 import os
 import StringIO
 import struct
+import sys
 from os import path
 try:
     from sqlite3 import dbapi2
@@ -75,7 +79,10 @@ class Plugin(BasePlugin):
             # We actually need source, target, context, targetlanguage
             self.migrated = []
 
-            self.poedit_dir = path.expanduser('~/.poedit')
+            if sys.platform == "darwin":
+                self.poedit_dir = path.expanduser('~/Library/Preferences')
+            else:
+                self.poedit_dir = path.expanduser('~/.poedit')
 
             #TODO: check if we can do better than hardcoding the kbabel location
             #this path is specified in ~/.kde/config/kbabel.defaultproject and kbabeldictrc
@@ -105,7 +112,10 @@ class Plugin(BasePlugin):
 
     def poedit_settings_import(self):
         """Attempt to import the settings from Poedit."""
-        config_filename = path.join(self.poedit_dir, 'config')
+        if sys.platform == 'darwin':
+            config_filename = path.join(self.poedit_dir, 'net.poedit.Poedit.cfg')
+        else:
+            config_filename = path.join(self.poedit_dir, 'config')
         get_thing = None
         if not path.exists(config_filename):
             try:
@@ -160,7 +170,7 @@ class Plugin(BasePlugin):
 
     def poedit_tm_import(self):
         """Attempt to import the Translation Memory used in KBabel."""
-        if not hasattr(self, "poedit_database_path"):
+        if bsddb is None or not hasattr(self, "poedit_database_path"):
             return
 
         # import each language separately
@@ -190,7 +200,7 @@ class Plugin(BasePlugin):
 
     def kbabel_tm_import(self):
         """Attempt to import the Translation Memory used in KBabel."""
-        if not path.exists(self.kbabel_dir):
+        if bsddb is None or not path.exists(self.kbabel_dir):
             return
         for tm_filename in os.listdir(self.kbabel_dir):
             if not tm_filename.startswith("translations.") or not tm_filename.endswith(".db"):

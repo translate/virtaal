@@ -1,26 +1,36 @@
 # Ukrainian (uk) localisation of Virtaal.
 # Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
+# Yuri Chornoivan <yurchor@ukr.net>, 2009, 2010, 2011.
 #: ../virtaal/support/native_widgets.py:50
 #: ../virtaal/support/native_widgets.py:51
-# Yuri Chornoivan <yurchor@ukr.net>, 2009, 2010, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.5.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2011-01-01 11:09+0200\n"
-"PO-Revision-Date: 2011-01-01 11:42+0200\n"
-"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
+"POT-Creation-Date: 2011-04-18 15:51+0200\n"
+"PO-Revision-Date: 2011-05-14 10:12+0200\n"
+"Last-Translator: yurchor <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <translation@linux.org.ua>\n"
+"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: uk\n"
-"X-Generator: Lokalize 1.2\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
-"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Pootle 2.1.5\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
+#: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
+#: ../virtaal/views/mainview.py:746
+msgid "Virtaal"
+msgstr "Фіртаал"
+
+#: ../share/applications/virtaal.desktop.in.h:2
+msgid "Translation Tool"
+msgstr "Засіб для перекладу"
+
+#: ../share/applications/virtaal.desktop.in.h:3
 msgid ""
 "A translation tool to help a human translator translate files into other "
 "languages"
@@ -28,201 +38,89 @@ msgstr ""
 "Інструмент перекладу, який допоможе перекладачеві-людині перекласти файли "
 "іншими мовами"
 
-#: ../share/applications/virtaal.desktop.in.h:2
-msgid "Translation Tool"
-msgstr "Засіб для перекладу"
-
-#: ../share/applications/virtaal.desktop.in.h:3
-#: ../share/virtaal/virtaal.glade.h:62
-#: ../virtaal/support/native_widgets.py:101 ../virtaal/views/mainview.py:742
-msgid "Virtaal"
-msgstr "Фіртаал"
-
-#: ../share/virtaal/virtaal.glade.h:1
-msgid "<b><big>Getting Started</big></b>"
-msgstr "<b><big>Початок роботи</big></b>"
-
 #: ../share/virtaal/virtaal.glade.h:2
-msgid "<b><big>Recent Files</big></b>"
-msgstr "<b><big>Нещодавні файли</big></b>"
+msgid "_File"
+msgstr "_Файл"
 
 #: ../share/virtaal/virtaal.glade.h:3
-msgid "<b><big>Support</big></b>"
-msgstr "<b><big>Підтримка</big></b>"
+msgid "_Update to Template"
+msgstr "_Оновити за шаблоном"
 
 #: ../share/virtaal/virtaal.glade.h:4
-msgid "<b>Fonts</b>"
-msgstr "<b>Шрифти</b>"
+msgid "_Export"
+msgstr "_Експортувати"
 
 #: ../share/virtaal/virtaal.glade.h:5
-msgid "<b>Language Information</b>"
-msgstr "<b>Інформація про мову</b>"
+msgid "_Recent Files"
+msgstr "_Нещодавні файли"
 
 #: ../share/virtaal/virtaal.glade.h:6
-msgid "<b>Options</b>"
-msgstr "<b>Параметри</b>"
+msgid "_Edit"
+msgstr "З_міни"
 
-#: ../share/virtaal/virtaal.glade.h:7
-msgid "<b>Original</b>"
-msgstr "<b>Оригінал</b>"
-
+#. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
 #: ../share/virtaal/virtaal.glade.h:8
-msgid "<b>Translation</b>"
-msgstr "<b>Переклад</b>"
-
-#: ../share/virtaal/virtaal.glade.h:9
-msgid "<b>Translator Information</b>"
-msgstr "<b>Відомості про перекладача</b>"
-
-#: ../share/virtaal/virtaal.glade.h:10
-msgid "<u>Cheat Sheet</u>"
-msgstr "<u>Список підказок</u>"
-
-#: ../share/virtaal/virtaal.glade.h:11
-msgid "<u>Features</u>"
-msgstr "<u>Можливості</u>"
-
-#: ../share/virtaal/virtaal.glade.h:12
-msgid "<u>Feedback</u>"
-msgstr "<u>Зворотній зв’язок</u>"
-
-#: ../share/virtaal/virtaal.glade.h:13
-msgid "<u>Localization Guide</u>"
-msgstr "<u>Настанови з локалізації</u>"
-
-#: ../share/virtaal/virtaal.glade.h:14
-msgid "<u>Manual</u>"
-msgstr "<u>Підручник</u>"
-
-#: ../share/virtaal/virtaal.glade.h:15
-msgid "<u>More...</u>"
-msgstr "<u>Більше…</u>"
-
-#. l10n: Remove the tags if underlining is unsuitable for your language. Most languages won't need to change this. Translate 'Open' normally.
-#: ../share/virtaal/virtaal.glade.h:17
-msgid "<u>Open</u>"
-msgstr "<u>Відкрити</u>"
-
-#: ../share/virtaal/virtaal.glade.h:18
-msgid "<u>Tutorial</u>"
-msgstr "<u>Інструкція</u>"
-
-#: ../share/virtaal/virtaal.glade.h:19
-msgid "Add Missing Language"
-msgstr "Додати відсутню мову"
-
-#: ../share/virtaal/virtaal.glade.h:20
-msgid "Add Term"
-msgstr "Додати термін"
-
-#: ../share/virtaal/virtaal.glade.h:21
-msgid "Add URL"
-msgstr "Додати адресу"
-
-#. l10n: This label refers to comments about a new term that is added
-#: ../share/virtaal/virtaal.glade.h:23
-msgid "C_omments"
-msgstr "К_оментарі"
-
-#: ../share/virtaal/virtaal.glade.h:24
-msgid ""
-"Depending on the translation task, the plural information might be optional."
-msgstr ""
-"Якщо це потрібно для виконання завдань з перекладу, можна вказати відомості "
-"про форми множини."
-
-#: ../share/virtaal/virtaal.glade.h:25
-msgid "E-mail address:"
-msgstr "Адреса ел. пошти:"
-
-#: ../share/virtaal/virtaal.glade.h:26
-msgid "E_xport and Open"
-msgstr "Е_кспортувати і відкрити"
-
-#. l10n: This tab label refers to the general preferences
-#: ../share/virtaal/virtaal.glade.h:28
-msgid "General"
-msgstr "Загальне"
-
-#: ../share/virtaal/virtaal.glade.h:29
-msgid "ISO code:"
-msgstr "Код ISO:"
-
-#: ../share/virtaal/virtaal.glade.h:30
-msgid "Language name:"
-msgstr "Назва мови:"
-
-#. l10n: This label is for the name of the translator
-#: ../share/virtaal/virtaal.glade.h:32
-msgid "Name:"
-msgstr "Ім’я:"
-
-#: ../share/virtaal/virtaal.glade.h:33
-msgid "New Language Pair"
-msgstr "Створити мовну пару"
-
-#: ../share/virtaal/virtaal.glade.h:34
-msgid "Number of plurals:"
-msgstr "Кількість форм множини:"
-
-#: ../share/virtaal/virtaal.glade.h:35
-msgid "P_age Up"
-msgstr "На _сторінку вгору"
+msgid "Transfer From Source"
+msgstr "Перенести з оригіналу"
 
 #. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
-#: ../share/virtaal/virtaal.glade.h:37
+#: ../share/virtaal/virtaal.glade.h:10
 msgid "P_revious Placeable"
 msgstr "П_опередній елемент форматування"
 
-#: ../share/virtaal/virtaal.glade.h:38
-msgid "Placeables"
-msgstr "Елементи форматування"
+#: ../share/virtaal/virtaal.glade.h:11
+msgid "_Next Placeable"
+msgstr "_Наступний елемент форматування"
 
-#: ../share/virtaal/virtaal.glade.h:39
-msgid ""
-"Placeables are special parts of the text that can be automatically "
-"highlighted and easily inserted into the translation."
-msgstr ""
-"Елементи форматування — це особливі частини тексту, які програма здатна "
-"визначати автоматично і просто додавати до перекладу."
+#: ../share/virtaal/virtaal.glade.h:12
+msgid "_View"
+msgstr "П_ерегляд"
 
-#: ../share/virtaal/virtaal.glade.h:40
-msgid "Plug-ins"
-msgstr "Додатки"
+#: ../share/virtaal/virtaal.glade.h:13
+msgid "_Full Screen"
+msgstr "П_овноекранний режим"
 
-#: ../share/virtaal/virtaal.glade.h:41
-msgid "Plural expression:"
-msgstr "Вираз форм множини:"
+#: ../share/virtaal/virtaal.glade.h:14
+msgid "_Quality Checks"
+msgstr "Перевірка _якості"
 
-#: ../share/virtaal/virtaal.glade.h:42
-msgid "Put queries in quotes"
-msgstr "Додавати до ключа запиту лапки"
+#: ../share/virtaal/virtaal.glade.h:15
+msgid "_Navigation"
+msgstr "На_вігація"
 
-#: ../share/virtaal/virtaal.glade.h:43
+#: ../share/virtaal/virtaal.glade.h:16
+msgid "P_age Up"
+msgstr "На _сторінку вгору"
+
+#: ../share/virtaal/virtaal.glade.h:17
+msgid "_Page Down"
+msgstr "На с_торінку вниз"
+
+#: ../share/virtaal/virtaal.glade.h:18
+msgid "_Help"
+msgstr "_Довідка"
+
+#: ../share/virtaal/virtaal.glade.h:19
+msgid "_Online Help"
+msgstr "_Довідка у мережі"
+
+#: ../share/virtaal/virtaal.glade.h:20
+msgid "_Tutorial"
+msgstr "Під_ручник"
+
+#: ../share/virtaal/virtaal.glade.h:21
+msgid "_Localization Guide"
+msgstr "_Настанови з локалізації"
+
+#: ../share/virtaal/virtaal.glade.h:22
 msgid "Report a _Bug"
 msgstr "Повідомити про _ваду"
 
-#: ../share/virtaal/virtaal.glade.h:44
-msgid "Source text:"
-msgstr "Вихідний текст:"
+#: ../share/virtaal/virtaal.glade.h:23
+msgid "New Language Pair"
+msgstr "Створити мовну пару"
 
-#: ../share/virtaal/virtaal.glade.h:45
-msgid "Target text:"
-msgstr "Текст перекладу:"
-
-#: ../share/virtaal/virtaal.glade.h:46
-msgid "Team:"
-msgstr "Команда:"
-
-#: ../share/virtaal/virtaal.glade.h:47
-msgid "Terminology Files"
-msgstr "Файли термінології"
-
-#: ../share/virtaal/virtaal.glade.h:48
-msgid "Terminology _file:"
-msgstr "Фа_йл термінології:"
-
-#: ../share/virtaal/virtaal.glade.h:49
+#: ../share/virtaal/virtaal.glade.h:24
 msgid ""
 "The <b>Original</b> is the language from which you are translating, also "
 "called the source language.\n"
@@ -236,7 +134,11 @@ msgstr ""
 "Якщо ви перекладаєте з англійської українською, мовою оригіналу або вихідною "
 "мовою буде англійська."
 
-#: ../share/virtaal/virtaal.glade.h:52
+#: ../share/virtaal/virtaal.glade.h:27
+msgid "<b>Original</b>"
+msgstr "<b>Оригінал</b>"
+
+#: ../share/virtaal/virtaal.glade.h:28
 msgid ""
 "The <b>Translation</b> is the language into which you are translating, also "
 "called the target language.\n"
@@ -250,124 +152,251 @@ msgstr ""
 "Якщо ви перекладаєте з англійської українською, мовою призначення буде "
 "українська."
 
-#: ../share/virtaal/virtaal.glade.h:55
-msgid "The e-mail address stored in the file header"
-msgstr "Адреса електронної пошти, яку буде збережено у заголовку файла"
+#: ../share/virtaal/virtaal.glade.h:31
+msgid "<b>Translation</b>"
+msgstr "<b>Переклад</b>"
 
-#: ../share/virtaal/virtaal.glade.h:56
+#: ../share/virtaal/virtaal.glade.h:32
+msgid "_Add Missing Language..."
+msgstr "_Додати відсутню мову..."
+
+#: ../share/virtaal/virtaal.glade.h:33
+msgid "Add Missing Language"
+msgstr "Додати відсутню мову"
+
+#: ../share/virtaal/virtaal.glade.h:34
+msgid "Language name:"
+msgstr "Назва мови:"
+
+#: ../share/virtaal/virtaal.glade.h:35
+msgid "ISO code:"
+msgstr "Код ISO:"
+
+#: ../share/virtaal/virtaal.glade.h:36
+msgid "Plural expression:"
+msgstr "Вираз форм множини:"
+
+#: ../share/virtaal/virtaal.glade.h:37
+msgid "Number of plurals:"
+msgstr "Кількість форм множини:"
+
+#: ../share/virtaal/virtaal.glade.h:38
+msgid ""
+"Depending on the translation task, the plural information might be optional."
+msgstr ""
+"Якщо це потрібно для виконання завдань з перекладу, можна вказати відомості "
+"про форми множини."
+
+#: ../share/virtaal/virtaal.glade.h:39
+msgid "<b>Language Information</b>"
+msgstr "<b>Інформація про мову</b>"
+
+#: ../share/virtaal/virtaal.glade.h:40
+msgid "Virtaal Preferences"
+msgstr "Налаштування Фіртаал"
+
+#: ../share/virtaal/virtaal.glade.h:41
 msgid "The name stored in the file header"
 msgstr "Ім’я, яке буде збережено у заголовку файла"
 
-#: ../share/virtaal/virtaal.glade.h:57
+#. l10n: This label is for the name of the translator
+#: ../share/virtaal/virtaal.glade.h:43
+msgid "Name:"
+msgstr "Ім’я:"
+
+#: ../share/virtaal/virtaal.glade.h:44
+msgid "The e-mail address stored in the file header"
+msgstr "Адреса електронної пошти, яку буде збережено у заголовку файла"
+
+#: ../share/virtaal/virtaal.glade.h:45
+msgid "E-mail address:"
+msgstr "Адреса ел. пошти:"
+
+#: ../share/virtaal/virtaal.glade.h:46
 msgid ""
 "The team information stored in the file header. This can be an e-mail "
 "address or a URL, for example."
 msgstr ""
 "Відомості про команду, які буде збережено у заголовку файла. Серед цих "
-"відомостей може бути, наприклад, адреса електронної пошти або адреса веб-"
-"сторінки."
+"відомостей може бути, наприклад, адреса електронної пошти або адреса "
+"веб-сторінки."
 
-#. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
-#: ../share/virtaal/virtaal.glade.h:59
-msgid "Transfer From Source"
-msgstr "Перенести з оригіналу"
+#: ../share/virtaal/virtaal.glade.h:47
+msgid "Team:"
+msgstr "Команда:"
 
-#: ../share/virtaal/virtaal.glade.h:60
-msgid "URL:"
-msgstr "Адреса:"
+#: ../share/virtaal/virtaal.glade.h:48
+msgid "<b>Translator Information</b>"
+msgstr "<b>Відомості про перекладача</b>"
 
-#: ../share/virtaal/virtaal.glade.h:61
+#: ../share/virtaal/virtaal.glade.h:49
+msgid "Source text:"
+msgstr "Вихідний текст:"
+
+#: ../share/virtaal/virtaal.glade.h:50
+msgid "Target text:"
+msgstr "Текст перекладу:"
+
+#: ../share/virtaal/virtaal.glade.h:51
 msgid "Use _Default Fonts"
 msgstr "Використовувати _типові шрифти"
 
-#: ../share/virtaal/virtaal.glade.h:63
-msgid "Virtaal Preferences"
-msgstr "Налаштування Фіртаал"
+#: ../share/virtaal/virtaal.glade.h:52
+msgid "<b>Fonts</b>"
+msgstr "<b>Шрифти</b>"
 
-#: ../share/virtaal/virtaal.glade.h:64
+#. l10n: This tab label refers to the general preferences
+#: ../share/virtaal/virtaal.glade.h:54
+msgid "General"
+msgstr "Загальне"
+
+#: ../share/virtaal/virtaal.glade.h:55
+msgid ""
+"Placeables are special parts of the text that can be automatically "
+"highlighted and easily inserted into the translation."
+msgstr ""
+"Елементи форматування — це особливі частини тексту, які програма здатна "
+"визначати автоматично і просто додавати до перекладу."
+
+#: ../share/virtaal/virtaal.glade.h:56
+msgid "Placeables"
+msgstr "Елементи форматування"
+
+#: ../share/virtaal/virtaal.glade.h:57
+msgid "Plug-ins"
+msgstr "Додатки"
+
+#: ../share/virtaal/virtaal.glade.h:58
+msgid "Terminology Files"
+msgstr "Файли термінології"
+
+#: ../share/virtaal/virtaal.glade.h:59
+msgid "Add Term"
+msgstr "Додати термін"
+
+#. l10n: This label refers to comments about a new term that is added
+#: ../share/virtaal/virtaal.glade.h:61
+msgid "C_omments"
+msgstr "К_оментарі"
+
+#: ../share/virtaal/virtaal.glade.h:62
+msgid "Terminology _file:"
+msgstr "Фа_йл термінології:"
+
+#: ../share/virtaal/virtaal.glade.h:63
 msgid "Web Look-ups"
 msgstr "Пошук у мережі"
 
+#: ../share/virtaal/virtaal.glade.h:64
+msgid "Add URL"
+msgstr "Додати адресу"
+
 #: ../share/virtaal/virtaal.glade.h:65
-msgid "_Add Missing Language..."
-msgstr "_Додати відсутню мову..."
+msgid "URL:"
+msgstr "Адреса:"
 
 #: ../share/virtaal/virtaal.glade.h:66
-msgid "_Edit"
-msgstr "_Правка"
+msgid "Put queries in quotes"
+msgstr "Додавати до ключа запиту лапки"
 
 #: ../share/virtaal/virtaal.glade.h:67
-msgid "_Export"
-msgstr "_Експортувати"
+msgid "<b>Options</b>"
+msgstr "<b>Параметри</b>"
 
-#: ../share/virtaal/virtaal.glade.h:68
-msgid "_File"
-msgstr "_Файл"
-
+#. l10n: Remove the tags if underlining is unsuitable for your language. Most languages won't need to change this. Translate 'Open' normally.
 #: ../share/virtaal/virtaal.glade.h:69
-msgid "_Full Screen"
-msgstr "П_овноекранний режим"
+msgid "<u>Open</u>"
+msgstr "<u>Відкрити</u>"
 
 #: ../share/virtaal/virtaal.glade.h:70
-msgid "_Help"
-msgstr "_Довідка"
+msgid "<b><big>Recent Files</big></b>"
+msgstr "<b><big>Нещодавні файли</big></b>"
 
 #: ../share/virtaal/virtaal.glade.h:71
-msgid "_Localization Guide"
-msgstr "_Настанови з локалізації"
+msgid "<u>Tutorial</u>"
+msgstr "<u>Інструкція</u>"
 
 #: ../share/virtaal/virtaal.glade.h:72
-msgid "_Navigation"
-msgstr "На_вігація"
-
-#: ../share/virtaal/virtaal.glade.h:73
-msgid "_Next Placeable"
-msgstr "_Наступний елемент форматування"
-
-#: ../share/virtaal/virtaal.glade.h:74
-msgid "_Online Help"
-msgstr "_Довідка у мережі"
-
-#: ../share/virtaal/virtaal.glade.h:75
-msgid "_Page Down"
-msgstr "На с_торінку вниз"
-
-#: ../share/virtaal/virtaal.glade.h:76
-#| msgid "_View"
-msgid "_Preview"
-msgstr "_Попередній перегляд"
-
-#: ../share/virtaal/virtaal.glade.h:77
-msgid "_Quality Checks"
-msgstr "Перевірка _якості"
-
-#: ../share/virtaal/virtaal.glade.h:78
-msgid "_Recent Files"
-msgstr "_Нещодавні файли"
-
-#: ../share/virtaal/virtaal.glade.h:79
-msgid "_Tutorial"
-msgstr "Під_ручник"
-
-#: ../share/virtaal/virtaal.glade.h:80
-msgid "_Update to Template"
-msgstr "_Оновити за шаблоном"
-
-#: ../share/virtaal/virtaal.glade.h:81
-msgid "_View"
-msgstr "П_ерегляд"
+msgid "<u>Cheat Sheet</u>"
+msgstr "<u>Список підказок</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.glade.h:83
-#: ../virtaal/controllers/welcomescreencontroller.py:43
+#: ../share/virtaal/virtaal.glade.h:74
+#: ../virtaal/controllers/welcomescreencontroller.py:38
 msgid "http://translate.sourceforge.net/wiki/virtaal/features"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
 
+#: ../share/virtaal/virtaal.glade.h:75
+msgid "<u>More...</u>"
+msgstr "<u>Більше…</u>"
+
+#: ../share/virtaal/virtaal.glade.h:76
+msgid "<u>Features</u>"
+msgstr "<u>Можливості</u>"
+
+#: ../share/virtaal/virtaal.glade.h:77
+msgid "<b><big>Getting Started</big></b>"
+msgstr "<b><big>Початок роботи</big></b>"
+
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.glade.h:85
-#: ../virtaal/controllers/welcomescreencontroller.py:39
+#: ../share/virtaal/virtaal.glade.h:79
+#: ../virtaal/controllers/welcomescreencontroller.py:34
 msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+
+#: ../share/virtaal/virtaal.glade.h:80
+msgid "<u>Manual</u>"
+msgstr "<u>Підручник</u>"
+
+# 75%
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.glade.h:82
+#: ../virtaal/controllers/welcomescreencontroller.py:35
+msgid "http://translate.sourceforge.net/wiki/guide/start"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
+
+#: ../share/virtaal/virtaal.glade.h:83
+msgid "<u>Localization Guide</u>"
+msgstr "<u>Настанови з локалізації</u>"
+
+# 81%
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.glade.h:85
+#: ../virtaal/controllers/welcomescreencontroller.py:37
+msgid "http://translate.sourceforge.net/wiki/virtaal/index#contact"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/index#contact"
+
+#: ../share/virtaal/virtaal.glade.h:86
+msgid "<u>Feedback</u>"
+msgstr "<u>Зворотній зв’язок</u>"
+
+#: ../share/virtaal/virtaal.glade.h:87
+msgid "<b><big>Support</big></b>"
+msgstr "<b><big>Підтримка</big></b>"
+
+#: ../share/virtaal/virtaal.glade.h:88
+msgid "Properties"
+msgstr "Властивості"
+
+#: ../share/virtaal/virtaal.glade.h:89
+msgid "<b>Words</b> (total):"
+msgstr "<b>Слів</b> (загалом):"
+
+#: ../share/virtaal/virtaal.glade.h:90
+msgid "<b>Strings</b> (total):"
+msgstr "<b>Рядків</b> (загалом):"
+
+#: ../share/virtaal/virtaal.glade.h:91
+msgid "File type:"
+msgstr "Тип файла:"
+
+#: ../share/virtaal/virtaal.glade.h:92
+msgid "File size:"
+msgstr "Розмір файла:"
+
+#: ../share/virtaal/virtaal.glade.h:93
+msgid "Location:"
+msgstr "Розташування:"
 
 #: ../virtaal/tips.py:27
 msgid ""
@@ -390,12 +419,27 @@ msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
 msgstr "Щоб позначити переклад як неточний, достатньо натиснути <Alt+U>."
 
 #: ../virtaal/tips.py:32
+msgid ""
+"To mark the current translation as incomplete, simply press <Ctrl+Shift"
+"+Enter>."
+msgstr ""
+"Щоб позначити переклад як незавершений, достатньо натиснути "
+"<Ctrl+Shift+Enter>."
+
+# 75%
+#: ../virtaal/tips.py:33
+msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
+msgstr ""
+"Щоб позначити поточний переклад як завершений, достатньо натиснути "
+"<Ctrl+Enter>."
+
+#: ../virtaal/tips.py:34
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
 msgstr ""
 "Натискайте Ctrl+Стрілка вгору або Ctrl+Стрілка вниз для пересування між "
 "сусідніми повідомленнями."
 
-#: ../virtaal/tips.py:33
+#: ../virtaal/tips.py:35
 msgid ""
 "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
 msgstr ""
@@ -403,13 +447,11 @@ msgstr ""
 "пересування між віддаленими повідомленнями."
 
 #: ../virtaal/controllers/checkscontroller.py:29
-#| msgid "F_uzzy"
 msgid "Fuzzy"
 msgstr "Неточно"
 
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
-#| msgid "Untranslated: %d"
 msgid "Untranslated"
 msgstr "Не перекладено"
 
@@ -434,7 +476,6 @@ msgid "Compendium conflict"
 msgstr "Конфлікт з термінологією"
 
 #: ../virtaal/controllers/checkscontroller.py:36
-#| msgid "translator-credits"
 msgid "Translator credits"
 msgstr "Подяки за переклад"
 
@@ -456,7 +497,6 @@ msgid "E-mail"
 msgstr "Ел. пошта"
 
 #: ../virtaal/controllers/checkscontroller.py:41
-#| msgid "Punctuation"
 msgid "Ending punctuation"
 msgstr "Кінцева пунктуація"
 
@@ -469,12 +509,10 @@ msgid "Escapes"
 msgstr "Екрановані символи"
 
 #: ../virtaal/controllers/checkscontroller.py:44
-#| msgid "File Updated"
 msgid "File paths"
 msgstr "Шляхи до файлів"
 
 #: ../virtaal/controllers/checkscontroller.py:45
-#| msgid "Punctuation"
 msgid "Functions"
 msgstr "Функції"
 
@@ -491,7 +529,6 @@ msgid "Long"
 msgstr "Довгі"
 
 #: ../virtaal/controllers/checkscontroller.py:49
-#| msgid "Microsoft Translator"
 msgid "Must translate words"
 msgstr "Слова, які слід перекладати"
 
@@ -500,12 +537,10 @@ msgid "Newlines"
 msgstr "Розбиття на рядки"
 
 #: ../virtaal/controllers/checkscontroller.py:51
-#| msgid "Number of plurals:"
 msgid "Number of plurals"
 msgstr "Кількість форм множини"
 
 #: ../virtaal/controllers/checkscontroller.py:52
-#| msgid "Untranslated: %d"
 msgid "Don't translate words"
 msgstr "Слова, які не слід перекладати"
 
@@ -524,12 +559,10 @@ msgid "printf()"
 msgstr "printf()"
 
 #: ../virtaal/controllers/checkscontroller.py:56
-#| msgid "Punctuation"
 msgid "Punctuation spacing"
 msgstr "Пробіли при пунктуації"
 
 #: ../virtaal/controllers/checkscontroller.py:57
-#| msgid "Punctuation"
 msgid "Pure punctuation"
 msgstr "Лише пунктуація"
 
@@ -542,7 +575,6 @@ msgid "Short"
 msgstr "Короткі"
 
 #: ../virtaal/controllers/checkscontroller.py:60
-#| msgid "Initialization"
 msgid "Simple capitalization"
 msgstr "Проста перевірка великих літер"
 
@@ -559,12 +591,10 @@ msgid "Spelling"
 msgstr "Перевірка правопису"
 
 #: ../virtaal/controllers/checkscontroller.py:64
-#| msgid "Initialization"
 msgid "Starting capitalization"
 msgstr "Великі літери на початку речень"
 
 #: ../virtaal/controllers/checkscontroller.py:65
-#| msgid "Punctuation"
 msgid "Starting punctuation"
 msgstr "Початкова пунктуація"
 
@@ -590,12 +620,10 @@ msgid "Valid characters"
 msgstr "Коректність символів"
 
 #: ../virtaal/controllers/checkscontroller.py:71
-#| msgid "Placeholders (Qt)"
 msgid "Placeholders"
 msgstr "Заповнювачі"
 
 #: ../virtaal/controllers/checkscontroller.py:72
-#| msgid "XML Tags"
 msgid "XML tags"
 msgstr "Теґи XML"
 
@@ -604,7 +632,6 @@ msgid "Default"
 msgstr "Типовий"
 
 #: ../virtaal/controllers/checkscontroller.py:112
-#| msgid "OpenOffice.org Translation File"
 msgid "OpenOffice.org"
 msgstr "OpenOffice.org"
 
@@ -624,26 +651,26 @@ msgstr "GNOME"
 msgid "Drupal"
 msgstr "Drupal"
 
-#: ../virtaal/controllers/maincontroller.py:74
-#: ../virtaal/controllers/maincontroller.py:83
-#: ../virtaal/controllers/maincontroller.py:92
+#: ../virtaal/controllers/maincontroller.py:80
+#: ../virtaal/controllers/maincontroller.py:89
+#: ../virtaal/controllers/maincontroller.py:98
 msgid "Header information"
 msgstr "Відомості заголовка"
 
-#: ../virtaal/controllers/maincontroller.py:75
+#: ../virtaal/controllers/maincontroller.py:81
 msgid "Please enter your name"
 msgstr "Будь ласка, введіть ваше ім’я"
 
-#: ../virtaal/controllers/maincontroller.py:84
+#: ../virtaal/controllers/maincontroller.py:90
 msgid "Please enter your e-mail address"
 msgstr "Будь ласка, введіть вашу адресу електронної пошти"
 
-#: ../virtaal/controllers/maincontroller.py:93
+#: ../virtaal/controllers/maincontroller.py:99
 msgid "Please enter your team's information"
 msgstr "Будь ласка, введіть дані щодо вашої команди"
 
-#: ../virtaal/controllers/maincontroller.py:189
-#: ../virtaal/controllers/maincontroller.py:284
+#: ../virtaal/controllers/maincontroller.py:200
+#: ../virtaal/controllers/maincontroller.py:327
 msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
@@ -651,9 +678,9 @@ msgstr ""
 "Ви наказали програмі відкрити вже відкритий файл. Бажаєте перезавантажити "
 "цей файл?"
 
-#: ../virtaal/controllers/maincontroller.py:200
-#: ../virtaal/controllers/maincontroller.py:268
-#: ../virtaal/controllers/maincontroller.py:295
+#: ../virtaal/controllers/maincontroller.py:211
+#: ../virtaal/controllers/maincontroller.py:311
+#: ../virtaal/controllers/maincontroller.py:338
 #, python-format
 msgid ""
 "Could not open file.\n"
@@ -668,7 +695,13 @@ msgstr ""
 "\n"
 "Спробуйте відкрити інший файл."
 
-#: ../virtaal/controllers/maincontroller.py:237
+#: ../virtaal/controllers/maincontroller.py:227
+#: ../virtaal/support/native_widgets.py:142
+#: ../virtaal/support/native_widgets.py:188 ../virtaal/views/mainview.py:314
+msgid "Save"
+msgstr "Зберегти"
+
+#: ../virtaal/controllers/maincontroller.py:247
 #, python-format
 msgid ""
 "Could not save file.\n"
@@ -683,7 +716,7 @@ msgstr ""
 "\n"
 "Спробуйте зберегти його за іншою адресою."
 
-#: ../virtaal/controllers/maincontroller.py:242
+#: ../virtaal/controllers/maincontroller.py:252
 #, python-format
 msgid ""
 "Could not save file.\n"
@@ -694,11 +727,48 @@ msgstr ""
 "\n"
 "%(error_message)s"
 
-#: ../virtaal/controllers/maincontroller.py:258
+#: ../virtaal/controllers/maincontroller.py:263
+msgid "Can only export Gettext PO files"
+msgstr "Можна експортувати файли лише у форматі PO Gettext"
+
+# 85%
+#: ../virtaal/controllers/maincontroller.py:272
+msgid "Export"
+msgstr "Експортувати"
+
+# 77%
+#: ../virtaal/controllers/maincontroller.py:280
+#, python-format
+msgid ""
+"Could not export file.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Try saving to a different location."
+msgstr ""
+"Не вдалося експортувати файл.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Спробуйте зберегти дані до іншого файла."
+
+# 85%
+#: ../virtaal/controllers/maincontroller.py:285
+#, python-format
+msgid ""
+"Could not export file.\n"
+"\n"
+"%(error_message)s"
+msgstr ""
+"Не вдалося експортувати файл.\n"
+"\n"
+"%(error_message)s"
+
+#: ../virtaal/controllers/maincontroller.py:301
 msgid "Reload File"
 msgstr "Перезавантажити файл"
 
-#: ../virtaal/controllers/maincontroller.py:258
+#: ../virtaal/controllers/maincontroller.py:301
 msgid "Reload file from last saved copy and lose all changes?"
 msgstr ""
 "Перезавантажити файл з останньої збереженої копії з втратою всіх внесених "
@@ -826,46 +896,56 @@ msgstr "Атрибути \"alt\""
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Елементи для атрибутів \"alt\" (використовуються у HTML)"
 
-#: ../virtaal/controllers/storecontroller.py:197
+# 76%
+#: ../virtaal/controllers/placeablescontroller.py:157
+msgid "Placeholders (Drupal)"
+msgstr "Заповнювачі (Drupal)"
+
+# 83%
+#: ../virtaal/controllers/placeablescontroller.py:158
+msgid "Placeholders in Drupal strings"
+msgstr "Заповнювачі у рядках Drupal"
+
+#: ../virtaal/controllers/storecontroller.py:194
 msgid "No source or translatable files in bundle"
 msgstr "У комплекті немає вихідних або придатних для перекладу файлів"
 
-#: ../virtaal/controllers/storecontroller.py:228
+#: ../virtaal/controllers/storecontroller.py:225
 msgid "The file contains nothing to translate."
 msgstr "У файлі не міститься рядків для перекладу."
 
 #. l10n: The heading of statistics before updating to the new template
-#: ../virtaal/controllers/storecontroller.py:408
+#: ../virtaal/controllers/storecontroller.py:423
 msgid "Before:"
 msgstr "До:"
 
 #. l10n: The heading of statistics after updating to the new template
-#: ../virtaal/controllers/storecontroller.py:410
+#: ../virtaal/controllers/storecontroller.py:425
 msgid "After:"
 msgstr "Після:"
 
-#: ../virtaal/controllers/storecontroller.py:411
+#: ../virtaal/controllers/storecontroller.py:426
 #, python-format
 msgid "Translated: %d"
 msgstr "Перекладено: %d"
 
-#: ../virtaal/controllers/storecontroller.py:412
+#: ../virtaal/controllers/storecontroller.py:427
 #, python-format
 msgid "Fuzzy: %d"
 msgstr "Неточних: %d"
 
-#: ../virtaal/controllers/storecontroller.py:413
+#: ../virtaal/controllers/storecontroller.py:428
 #, python-format
 msgid "Untranslated: %d"
 msgstr "Не перекладено: %d"
 
-#: ../virtaal/controllers/storecontroller.py:414
+#: ../virtaal/controllers/storecontroller.py:429
 #, python-format
 msgid "Total: %d"
 msgstr "Загалом: %d"
 
 #. l10n: this refers to updating a file to a new template (POT file)
-#: ../virtaal/controllers/storecontroller.py:432
+#: ../virtaal/controllers/storecontroller.py:447
 msgid "File Updated"
 msgstr "Файл оновлено"
 
@@ -877,18 +957,23 @@ msgstr "Потребує доопрацювання"
 msgid "Rejected"
 msgstr "Відкинуто"
 
+# 91%
 #: ../virtaal/controllers/unitcontroller.py:86
-msgid "Needs Review"
+msgid "Needs review"
 msgstr "Потребує рецензування"
 
 #: ../virtaal/controllers/unitcontroller.py:87
-#| msgid "Translated: %d"
 msgid "Translated"
 msgstr "Перекладено"
 
 #: ../virtaal/controllers/unitcontroller.py:88
 msgid "Reviewed"
 msgstr "Рецензовано"
+
+# 89%
+#: ../virtaal/controllers/welcomescreencontroller.py:64
+msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 
 #: ../virtaal/modes/defaultmode.py:28
 msgid "All"
@@ -898,12 +983,13 @@ msgstr "Всі"
 msgid "Quality Checks"
 msgstr "Перевірки якості"
 
-#: ../virtaal/modes/qualitycheckmode.py:129
-msgid "No Checks"
-msgstr "Без перевірок"
+#. l10n: This is the button where the user can select units by failing quality checks
+#: ../virtaal/modes/qualitycheckmode.py:130
+msgid "Select Checks"
+msgstr "Вибрати за способом перевірки"
 
-#: ../virtaal/modes/qualitycheckmode.py:131
-#| msgid "All Files"
+#. l10n: This refers to quality checks
+#: ../virtaal/modes/qualitycheckmode.py:133
 msgid "All Checks"
 msgstr "Всі перевірки"
 
@@ -947,38 +1033,65 @@ msgstr "Замінити _всі"
 msgid "Workflow"
 msgstr "Процес"
 
-#: ../virtaal/modes/workflowmode.py:111
-msgid "No States"
-msgstr "Без стану"
+#. l10n: This is the button where the user can select units by workflow state
+#: ../virtaal/modes/workflowmode.py:112
+msgid "Select States"
+msgstr "Вибрати за станом"
 
-#: ../virtaal/modes/workflowmode.py:113
-#| msgid "All Files"
+#. l10n: This refers to workflow states
+#: ../virtaal/modes/workflowmode.py:115
 msgid "All States"
 msgstr "Всі стани"
 
-#: ../virtaal/plugins/autocompletor.py:216
+#: ../virtaal/plugins/autocompletor.py:214
 msgid "Automatically complete long words while you type"
 msgstr "Автоматично доповнювати довгі слова під час введення"
 
-#: ../virtaal/plugins/autocompletor.py:217
+#: ../virtaal/plugins/autocompletor.py:215
 msgid "AutoCompletor"
 msgstr "Автодоповнення"
 
-#: ../virtaal/plugins/autocorrector.py:262
+#: ../virtaal/plugins/autocorrector.py:303
 msgid "Automatically correct text while you type"
 msgstr "Автоматично виправляти текст під час введення"
 
-#: ../virtaal/plugins/autocorrector.py:263
+#: ../virtaal/plugins/autocorrector.py:304
 msgid "AutoCorrector"
 msgstr "Автовиправлення"
 
-#: ../virtaal/plugins/spellchecker.py:41
+#: ../virtaal/plugins/spellchecker.py:47
 msgid "Spell Checker"
 msgstr "Перевірка правопису"
 
-#: ../virtaal/plugins/spellchecker.py:42
+#: ../virtaal/plugins/spellchecker.py:48
 msgid "Check spelling and provide suggestions"
 msgstr "Перевірити правопис і надати пропозиції з виправлення помилок"
+
+#. l10n: This refers to spell checking
+#: ../virtaal/plugins/spellchecker.py:334
+msgid "<i>(no suggestions)</i>"
+msgstr "<i>(немає пропозицій)</i>"
+
+#. l10n: This refers to spell checking
+#: ../virtaal/plugins/spellchecker.py:338
+msgid "Ignore All"
+msgstr "Ігнорувати всі"
+
+#. l10n: This refers to spelling suggestions
+#: ../virtaal/plugins/spellchecker.py:342
+msgid "More..."
+msgstr "Більше…"
+
+#. l10n: This refers to the spell checking dictionary
+#: ../virtaal/plugins/spellchecker.py:348
+#, python-format
+msgid "Add \"%s\" to Dictionary"
+msgstr "Додати «%s» до словника"
+
+# 88%
+#: ../virtaal/plugins/spellchecker.py:351
+msgid "Languages"
+msgstr "Мови"
 
 #: ../virtaal/plugins/lookup/__init__.py:29
 msgid "Perform look-ups on selected text"
@@ -1013,32 +1126,32 @@ msgid "Look-up the selected text on a web site"
 msgstr "Шукати вказаний текст на веб-сайті"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate.
-#: ../virtaal/plugins/lookup/models/weblookup.py:45
-#: ../virtaal/plugins/tm/models/google_translate.py:167
+#: ../virtaal/plugins/lookup/models/weblookup.py:46
+#: ../virtaal/plugins/tm/models/google_translate.py:172
 msgid "Google"
 msgstr "Google"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:50
+#: ../virtaal/plugins/lookup/models/weblookup.py:52
 msgid "Wikipedia"
 msgstr "Вікіпедія"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:55
+#: ../virtaal/plugins/lookup/models/weblookup.py:58
 #: ../virtaal/plugins/terminology/models/opentran.py:46
 #: ../virtaal/plugins/tm/models/opentran.py:37
 msgid "Open-Tran.eu"
 msgstr "Open-Tran.eu"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:171
+#: ../virtaal/plugins/lookup/models/weblookup.py:177
 #: ../virtaal/views/widgets/selectview.py:75
 msgid "Name"
 msgstr "Назва"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:180
+#: ../virtaal/plugins/lookup/models/weblookup.py:186
 msgid "URL"
 msgstr "Адреса"
 
 #. l10n: Whether the selected text should be surrounded by "quotes"
-#: ../virtaal/plugins/lookup/models/weblookup.py:191
+#: ../virtaal/plugins/lookup/models/weblookup.py:197
 msgid "Quote Query"
 msgstr "Додавати лапки"
 
@@ -1067,37 +1180,37 @@ msgstr "Перенесення успішно завершено"
 msgid "The following items were migrated:"
 msgstr "Було перенесено такі дані:"
 
-#: ../virtaal/plugins/migration.py:100
+#: ../virtaal/plugins/migration.py:98
 msgid "Migration completed"
 msgstr "Перенесення завершено"
 
-#: ../virtaal/plugins/migration.py:102
+#: ../virtaal/plugins/migration.py:100
 msgid "Virtaal was not able to migrate any settings or data"
 msgstr "Фіртаал не вдалося перенести хоч якісь параметри або дані"
 
-#: ../virtaal/plugins/migration.py:103
+#: ../virtaal/plugins/migration.py:101
 msgid "Nothing migrated"
 msgstr "Нічого не перенесено"
 
-#: ../virtaal/plugins/migration.py:156
+#: ../virtaal/plugins/migration.py:159
 msgid "Poedit settings"
 msgstr "Параметри Poedit"
 
-#: ../virtaal/plugins/migration.py:185
+#: ../virtaal/plugins/migration.py:188
 #, python-format
 msgid "Poedit's Translation Memory: %(database_language_code)s"
 msgstr "Пам’ять перекладів Poedit: %(database_language_code)s"
 
-#: ../virtaal/plugins/migration.py:210
+#: ../virtaal/plugins/migration.py:213
 #, python-format
 msgid "KBabel's Translation Memory: %(database_language_code)s"
 msgstr "Пам’ять перекладів KBabel: %(database_language_code)s"
 
-#: ../virtaal/plugins/migration.py:228
+#: ../virtaal/plugins/migration.py:231
 msgid "Lokalize settings"
 msgstr "Параметри Lokalize"
 
-#: ../virtaal/plugins/migration.py:252
+#: ../virtaal/plugins/migration.py:255
 #, python-format
 msgid "Lokalize's Translation Memory: %(database_name)s"
 msgstr "Пам’ять перекладів Lokalize: %(database_name)s"
@@ -1149,13 +1262,13 @@ msgid "Add Files"
 msgstr "Додати файли"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:179
-#: ../virtaal/support/native_widgets.py:79 ../virtaal/views/mainview.py:258
+#: ../virtaal/support/native_widgets.py:79 ../virtaal/views/mainview.py:259
 msgid "All Supported Files"
 msgstr "Всі файли, що підтримуються"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:205
-#: ../virtaal/support/native_widgets.py:154
-#: ../virtaal/support/native_widgets.py:182 ../virtaal/views/mainview.py:302
+#: ../virtaal/support/native_widgets.py:156
+#: ../virtaal/support/native_widgets.py:185 ../virtaal/views/mainview.py:303
 msgid "All Files"
 msgstr "Всі файли"
 
@@ -1208,11 +1321,11 @@ msgstr "Існуючі переклади: %(translations)s"
 msgid "Terms from Open-Tran.eu"
 msgstr "Терміни з Open-Tran.eu"
 
-#: ../virtaal/plugins/terminology/termview.py:165
+#: ../virtaal/plugins/terminology/termview.py:166
 msgid "Select Terminology Sources"
 msgstr "Виберіть джерела термінології"
 
-#: ../virtaal/plugins/terminology/termview.py:166
+#: ../virtaal/plugins/terminology/termview.py:167
 msgid "Select the sources of terminology suggestions"
 msgstr "Виберіть джерела термінологічних пропозицій"
 
@@ -1250,14 +1363,13 @@ msgid "This file"
 msgstr "Цей файл"
 
 #. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
-#: ../virtaal/plugins/tm/models/google_translate.py:112
+#: ../virtaal/plugins/tm/models/google_translate.py:117
 msgid "Google Translate"
 msgstr "Перекладач Google"
 
-#: ../virtaal/plugins/tm/models/google_translate.py:113
+#: ../virtaal/plugins/tm/models/google_translate.py:118
 msgid "Unreviewed machine translations from Google's translation service"
-msgstr ""
-"Необроблений комп’ютерний переклад за допомогою служби перекладу Google"
+msgstr "Необроблений комп’ютерний переклад за допомогою служби перекладу Google"
 
 #: ../virtaal/plugins/tm/models/microsoft_translator.py:39
 msgid "Microsoft Translator"
@@ -1343,22 +1455,22 @@ msgstr "Apertium"
 msgid "Unreviewed machine translations from Apertium"
 msgstr "Необроблений комп’ютерний переклад за допомогою Apertium"
 
-#: ../virtaal/plugins/tm/tmview.py:107
+#: ../virtaal/plugins/tm/tmview.py:111
 msgid "Translation _Suggestions"
 msgstr "П_ропозиції перекладу"
 
-#: ../virtaal/plugins/tm/tmview.py:148
+#: ../virtaal/plugins/tm/tmview.py:153
 #, python-format
 msgid "Ctrl+%(number_key)d"
 msgstr "Ctrl+%(number_key)d"
 
 #. l10n: The 'sources' here refer to different translation memory plugins,
 #. such as local tm, open-tran.eu, the current file, etc.
-#: ../virtaal/plugins/tm/tmview.py:171
+#: ../virtaal/plugins/tm/tmview.py:176
 msgid "Select sources of Translation Memory"
 msgstr "Виберіть джерела заповнення пам’яті перекладів"
 
-#: ../virtaal/plugins/tm/tmview.py:172
+#: ../virtaal/plugins/tm/tmview.py:177
 msgid "Select the sources that should be queried for translation memory"
 msgstr "Виберіть джерела даних для заповнення пам’яті перекладів"
 
@@ -1376,35 +1488,30 @@ msgid "TM Source"
 msgstr "Джерело ПП"
 
 #. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
-#: ../virtaal/plugins/tm/tmwidgets.py:127
+#: ../virtaal/plugins/tm/tmwidgets.py:138
 #, python-format
 msgid "%(match_quality)s%%"
 msgstr "%(match_quality)s%%"
 
 #. l10n: This indicates a suggestion from machine translation. It is displayed instead of the match percentage.
-#: ../virtaal/plugins/tm/tmwidgets.py:137
+#: ../virtaal/plugins/tm/tmwidgets.py:148
 msgid "?"
 msgstr "?"
 
-#: ../virtaal/support/native_widgets.py:127
-#: ../virtaal/support/native_widgets.py:155 ../virtaal/views/mainview.py:251
+#: ../virtaal/support/native_widgets.py:129
+#: ../virtaal/support/native_widgets.py:157 ../virtaal/views/mainview.py:252
 msgid "Choose a Translation File"
 msgstr "Виберіть файл перекладу"
 
-#: ../virtaal/support/native_widgets.py:140
-#: ../virtaal/support/native_widgets.py:185 ../virtaal/views/mainview.py:313
-msgid "Save"
-msgstr "Зберегти"
-
-#: ../virtaal/views/checksunitview.py:71
+#: ../virtaal/views/checksunitview.py:73
 msgid "No issues"
 msgstr "Вад не виявлено"
 
-#: ../virtaal/views/checksunitview.py:78
+#: ../virtaal/views/checksunitview.py:80
 msgid "Quality Check"
 msgstr "Перевірка якості"
 
-#: ../virtaal/views/checksunitview.py:84
+#: ../virtaal/views/checksunitview.py:86
 msgid "Description"
 msgstr "Опис"
 
@@ -1412,7 +1519,8 @@ msgstr "Опис"
 msgid "Project Type"
 msgstr "Тип проекту"
 
-#: ../virtaal/views/checksprojview.py:62
+#. l10n: The label indicating the checker style (GNOME/KDE/whatever)
+#: ../virtaal/views/checksprojview.py:63
 #, python-format
 msgid "Checks: %(checker_name)s"
 msgstr "Перевірки: %(checker_name)s"
@@ -1421,11 +1529,11 @@ msgstr "Перевірки: %(checker_name)s"
 msgid "_New Language Pair..."
 msgstr "С_творити мовну пару..."
 
-#: ../virtaal/views/mainview.py:220
+#: ../virtaal/views/mainview.py:221
 msgid "Error"
 msgstr "Помилка"
 
-#: ../virtaal/views/mainview.py:332
+#: ../virtaal/views/mainview.py:333
 msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
@@ -1433,7 +1541,7 @@ msgstr ""
 "До поточного файла було внесено зміни.\n"
 "Бажаєте зберегти ці зміни?"
 
-#: ../virtaal/views/mainview.py:335
+#: ../virtaal/views/mainview.py:336
 msgid "_Discard"
 msgstr "В_ідкинути"
 
@@ -1441,16 +1549,16 @@ msgstr "В_ідкинути"
 #. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
 #. %(current_file)s is the file name of the current file
 #. most languages will not need to change this
-#: ../virtaal/views/mainview.py:376
+#: ../virtaal/views/mainview.py:377
 #, python-format
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgstr "%(modified_marker)s%(current_file)s — Фіртаал"
 
-#: ../virtaal/views/mainview.py:401
+#: ../virtaal/views/mainview.py:402
 msgid "Please enter the number of noun forms (plurals) to use"
 msgstr "Будь ласка, вкажіть кількість форм множини мови"
 
-#: ../virtaal/views/mainview.py:407
+#: ../virtaal/views/mainview.py:408
 msgid "Please enter the plural equation to use"
 msgstr "Будь ласка, вкажіть формальний вираз визначення форм множини"
 
@@ -1460,24 +1568,86 @@ msgstr "Будь ласка, вкажіть формальний вираз ви
 msgid "N_avigation:"
 msgstr "Н_авігація:"
 
-#: ../virtaal/views/storeview.py:157 ../virtaal/views/storeview.py:166
+#: ../virtaal/views/modeview.py:108 ../virtaal/views/propertiesview.py:134
+msgid "Save the file for up-to-date information"
+msgstr "Збережіть файл, щоб дані було оновлено"
+
+# 92%
+#: ../virtaal/views/propertiesview.py:32
+msgid "Untranslated:"
+msgstr "Неперекладених:"
+
+# 90%
+#: ../virtaal/views/propertiesview.py:33
+msgid "Needs work:"
+msgstr "Потребує доопрацювання:"
+
+# 88%
+#: ../virtaal/views/propertiesview.py:34
+msgid "Rejected:"
+msgstr "Відкинутих:"
+
+# 84%
+#: ../virtaal/views/propertiesview.py:35
+msgid "Needs review:"
+msgstr "Потребує рецензування:"
+
+# 90%
+#: ../virtaal/views/propertiesview.py:36
+msgid "Translated:"
+msgstr "Перекладених:"
+
+# 88%
+#: ../virtaal/views/propertiesview.py:37
+msgid "Reviewed:"
+msgstr "Рецензованих:"
+
+#: ../virtaal/views/propertiesview.py:59
+msgid "(0%)"
+msgstr "(0%)"
+
+#: ../virtaal/views/propertiesview.py:61
+msgid "(100%)"
+msgstr "(100%)"
+
+#. l10n: This is the formatting for percentages in the file properties. If unsure, just copy the original.
+#: ../virtaal/views/propertiesview.py:64
+#, python-format
+msgid "(%04.1f%%)"
+msgstr "(%04.1f%%)"
+
+# 88%
+#. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
+#: ../virtaal/views/propertiesview.py:191
+#: ../virtaal/views/propertiesview.py:192
+#, python-format
+msgid "<b>%d</b>"
+msgstr "<b>%d</b>"
+
+#: ../virtaal/views/propertiesview.py:203
+#, python-format
+msgid "%.1f KB"
+msgstr "%.1f кБ"
+
+#: ../virtaal/views/storeview.py:163 ../virtaal/views/storeview.py:172
 msgid "Export failed"
 msgstr "Спроба експортування зазнала невдачі"
 
-#: ../virtaal/views/storeview.py:175
+#: ../virtaal/views/storeview.py:181
 msgid "Preview failed"
 msgstr "Помилка створення попереднього перегляду"
 
-#: ../virtaal/views/unitview.py:595
+#: ../virtaal/views/unitview.py:614
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Перейти на один крок назад у процесі (Ctrl+Shift+Enter)"
 
-#: ../virtaal/views/unitview.py:596
+#: ../virtaal/views/unitview.py:615
 msgid "Click to move to a specific state in the workflow"
 msgstr "Натисніть, щоб перейти до певного стану у процесі"
 
-#: ../virtaal/views/unitview.py:597
-msgid "Move one step foward in the workflow (Ctrl+Enter)"
+# 98%
+#: ../virtaal/views/unitview.py:616
+msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr "Перейти на один крок вперед у процесі (Ctrl+Enter)"
 
 #: ../virtaal/views/widgets/aboutdialog.py:34
@@ -1544,21 +1714,22 @@ msgstr "Код"
 msgid "Enabled"
 msgstr "Увімкнено"
 
-#: ../virtaal/views/widgets/selectview.py:114
+#: ../virtaal/views/widgets/selectview.py:117
 msgid "Configure..."
 msgstr "Налаштувати..."
 
 #: ../virtaal/views/widgets/welcomescreen.py:79
-msgid "Extensive format support"
-msgstr "Розширена підтримка форматування"
-
-#: ../virtaal/views/widgets/welcomescreen.py:80
 msgid "Translation memory"
 msgstr "Пам’ять перекладів"
 
-#: ../virtaal/views/widgets/welcomescreen.py:81
+#: ../virtaal/views/widgets/welcomescreen.py:80
 msgid "Terminology assistance"
 msgstr "Помічник з термінології"
+
+# 92%
+#: ../virtaal/views/widgets/welcomescreen.py:81
+msgid "Quality checks"
+msgstr "Перевірки якості"
 
 #: ../virtaal/views/widgets/welcomescreen.py:82
 msgid "Machine translation"
@@ -1572,131 +1743,129 @@ msgstr "Підсвічування та додавання елементів ф
 msgid "Many plugins and options for customization"
 msgstr "Багато додатків та параметрів для налаштування"
 
-#: ../virtaal/models/storemodel.py:122
+#: ../virtaal/models/storemodel.py:142
 msgid "The file does not exist."
 msgstr "Файла не існує."
 
-#: ../virtaal/models/storemodel.py:124
+#: ../virtaal/models/storemodel.py:144
 msgid "Not a valid file."
 msgstr "Не є коректним файлом."
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
-msgid "C++ RC File"
-msgstr "Файл RC C++"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:2
-msgid "Gettext Translation Template"
-msgstr "Шаблон перекладу Gettext"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:3
-msgid "INI"
-msgstr "INI"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:4
-msgid "INI File"
-msgstr "Файл INI"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:5
-msgid "Initialization"
-msgstr "Ініціалізація"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:6
-msgid "Java Properties File"
-msgstr "Файл властивостей Java"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:7
-msgid "JavaScript error message file"
-msgstr "Файл повідомлень про помилки JavaScript"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:8
-msgid "OS X Strings File"
-msgstr "Файл рядків OS X"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:9
-msgid "OpenOffice.org Translation File"
-msgstr "Файл перекладу OpenOffice.org"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:10
-msgid "Qt Linguist Translation File"
-msgstr "Файл перекладу Qt Linguist"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:11
-msgid "Qt Message File"
-msgstr "Файл повідомлень Qt"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:12
-msgid "Qt Phrase Book"
-msgstr "Файл пам’яті перекладів Qt"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:13
-msgid "RC"
-msgstr "RC"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:14
-msgid "Resource Compiler"
-msgstr "Resource Compiler"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:15
-msgid "TBX"
-msgstr "TBX"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:16
-msgid "TBX Glossary"
-msgstr "Глосарій TBX"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:17
-msgid "TMX"
-msgstr "TMX"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:18
 msgid "TMX Translation Memory"
 msgstr "Пам’ять перекладів TMX"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:19
-msgid "Tcl Translation File"
-msgstr "Файл перекладу Tcl"
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:2
+msgid "TMX"
+msgstr "TMX"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:20
-msgid "TermBase eXchange"
-msgstr "TermBase eXchange"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:21
-msgid "Trados Tag Editor"
-msgstr "Редактор теґів Trados"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:22
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:3
 msgid "Translation Memory eXchange"
 msgstr "Translation Memory eXchange"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:23
-#| msgid "TMX"
-msgid "UTX"
-msgstr "UTX"
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:4
+msgid "TBX Glossary"
+msgstr "Глосарій TBX"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:24
-msgid "UTX Dictionary"
-msgstr "Словник UTX"
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:5
+msgid "TBX"
+msgstr "TBX"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:25
-#| msgid "Select Terminology Sources"
-msgid "Universal Terminology eXchange"
-msgstr "Universal Terminology eXchange"
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:6
+msgid "TermBase eXchange"
+msgstr "TermBase eXchange"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:26
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:7
 msgid "Wordfast Translation Memory"
 msgstr "Пам’ять перекладів Wordfast"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:27
-msgid "XLIFF"
-msgstr "XLIFF"
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:8
+msgid "Qt Linguist Translation File"
+msgstr "Файл перекладу Qt Linguist"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:28
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:9
+msgid "Qt Message File"
+msgstr "Файл повідомлень Qt"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:10
+msgid "Qt Phrase Book"
+msgstr "Файл пам’яті перекладів Qt"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:11
+msgid "INI File"
+msgstr "Файл INI"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:12
+msgid "INI"
+msgstr "INI"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:13
+msgid "Initialization"
+msgstr "Ініціалізація"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:14
+msgid "Java Properties File"
+msgstr "Файл властивостей Java"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:15
+msgid "OpenOffice.org Translation File"
+msgstr "Файл перекладу OpenOffice.org"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:16
 msgid "XLIFF Translation File"
 msgstr "Файл перекладу XLIFF"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:29
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:17
+msgid "XLIFF"
+msgstr "XLIFF"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:18
 msgid "XML Localization Interchange File Format"
 msgstr "XML Localization Interchange File Format"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:19
+msgid "C++ RC File"
+msgstr "Файл RC C++"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:20
+msgid "RC"
+msgstr "RC"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:21
+msgid "Resource Compiler"
+msgstr "Resource Compiler"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:22
+msgid "Tcl Translation File"
+msgstr "Файл перекладу Tcl"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:23
+msgid "JavaScript error message file"
+msgstr "Файл повідомлень про помилки JavaScript"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:24
+msgid "Gettext Translation Template"
+msgstr "Шаблон перекладу Gettext"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:25
+msgid "Trados Tag Editor"
+msgstr "Редактор теґів Trados"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:26
+msgid "OS X Strings File"
+msgstr "Файл рядків OS X"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:27
+msgid "UTX Dictionary"
+msgstr "Словник UTX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:28
+msgid "UTX"
+msgstr "UTX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:29
+msgid "Universal Terminology eXchange"
+msgstr "Universal Terminology eXchange"
 
 #: ../devsupport/tmp_strings.py:23
 msgid "Gettext PO file"
@@ -1714,52 +1883,56 @@ msgstr "Файл .qm Qt"
 msgid "OmegaT Glossary"
 msgstr "Глосарій OmegaT"
 
-#: ../bin/virtaal:79
+#: ../bin/virtaal:87
 #, c-format
 msgid "%prog [options] [translation_file]"
 msgstr "%prog [параметри] [файл перекладу]"
 
-#: ../bin/virtaal:82
-msgid "PROFILE"
-msgstr "PROFILE"
-
-#: ../bin/virtaal:84
-msgid "perform profiling, storing the result to the supplied filename."
-msgstr "виконати профілювання і зберегти результат до файла з вказаною назвою."
-
-#: ../bin/virtaal:86
+#: ../bin/virtaal:90
 msgid "LOG"
 msgstr "LOG"
 
-#: ../bin/virtaal:87
+#: ../bin/virtaal:91
 msgid "turn on logging, storing the result to the supplied filename."
 msgstr "увімкнути запис журналу, зберегти результат у файлі з вказаною назвою."
 
-#: ../bin/virtaal:89
+#: ../bin/virtaal:93
 msgid "CONFIG"
 msgstr "CONFIG"
 
-#: ../bin/virtaal:90
+#: ../bin/virtaal:94
 msgid "use the configuration file given by the supplied filename."
 msgstr "використовувати файл налаштувань з вказаною назвою."
 
-#: ../bin/virtaal:93
+#: ../bin/virtaal:97
 msgid "enable debugging features"
 msgstr "увімкнути можливості з діагностування помилок"
 
-#: ../bin/virtaal:118
+#: ../bin/virtaal:104
+msgid "PROFILE"
+msgstr "PROFILE"
+
+#: ../bin/virtaal:106
+msgid "perform profiling, storing the result to the supplied filename."
+msgstr "виконати профілювання і зберегти результат до файла з вказаною назвою."
+
+#: ../bin/virtaal:129
 msgid "Could not open log file '%(filename)s'"
 msgstr "Не вдалося відкрити файл журналу «%(filename)s»"
 
-#: ../bin/virtaal:126
+#: ../bin/virtaal:137
 msgid "Could not read configuration file '%(filename)s'"
 msgstr "Не вдалося прочитати файл налаштувань «%(filename)s»"
 
-#: ../bin/virtaal:130
+#: ../bin/virtaal:141
 msgid "invalid number of arguments"
 msgstr "некоректна кількість параметрів"
 
-#: ../bin/virtaal:159
+#: ../bin/virtaal:167
+msgid "Profiling support is not available"
+msgstr "Підтримка профілювання недоступна"
+
+#: ../bin/virtaal:179
 msgid "Could not open profile file '%(filename)s'"
 msgstr "Не вдалося відкрити файл профілювання «%(filename)s»"
 
@@ -1835,4 +2008,24 @@ msgstr "Для використання параметра %s слід вказ�
 msgid "%s option does not take a value"
 msgstr "Для використання параметра %s не потрібно вказувати ніяких значень"
 
+#~ msgid "E_xport and Open"
+#~ msgstr "Е_кспортувати і відкрити"
 
+#~| msgid "_View"
+#~ msgid "_Preview"
+#~ msgstr "_Попередній перегляд"
+
+#~ msgid "Needs Review"
+#~ msgstr "Потребує рецензування"
+
+#~ msgid "No Checks"
+#~ msgstr "Без перевірок"
+
+#~ msgid "No States"
+#~ msgstr "Без стану"
+
+#~ msgid "Move one step foward in the workflow (Ctrl+Enter)"
+#~ msgstr "Перейти на один крок вперед у процесі (Ctrl+Enter)"
+
+#~ msgid "Extensive format support"
+#~ msgstr "Розширена підтримка форматування"

@@ -540,11 +540,15 @@ class MainView(BaseView):
             C{None} otherwise."""
         last_path = (pan_app.settings.general["lastdir"] or "").decode(sys.getdefaultencoding())
 
+        # Do native dialogs in a thread so that GTK can continue drawing.
         from virtaal.support import native_widgets
-        if native_widgets.dialog_to_use == 'kdialog':
-            return native_widgets.kdialog_open_dialog(self.main_window, title, last_path)
-        elif native_widgets.dialog_to_use == 'win32':
-            return native_widgets.win32_open_dialog(title, last_path)
+        dialog_to_use = native_widgets.dialog_to_use
+        if dialog_to_use:
+            from virtaal.support.thread import run_in_thread
+            if dialog_to_use == 'kdialog':
+                return run_in_thread(self.main_window, native_widgets.kdialog_open_dialog, (self.main_window, title, last_path))
+            elif native_widgets.dialog_to_use == 'win32':
+                return run_in_thread(self.main_window, native_widgets.win32_open_dialog, (title, last_path))
 
         # otherwise we always fall back to the default code
         if title:
@@ -606,11 +610,15 @@ class MainView(BaseView):
         if not current_filename:
             current_filename = self.controller.get_store().get_filename()
 
+        # Do native dialogs in a thread so that GTK can continue drawing.
         from virtaal.support import native_widgets
-        if native_widgets.dialog_to_use == 'kdialog':
-            return native_widgets.kdialog_save_dialog(self.main_window, title, current_filename)
-        elif native_widgets.dialog_to_use == 'win32':
-            return native_widgets.win32_save_dialog(title, current_filename)
+        dialog_to_use = native_widgets.dialog_to_use
+        if dialog_to_use:
+            from virtaal.support.thread import run_in_thread
+            if dialog_to_use == 'kdialog':
+                return run_in_thread(self.main_window, native_widgets.kdialog_save_dialog, (self.main_window, title, current_filename))
+            elif native_widgets.dialog_to_use == 'win32':
+                return run_in_thread(self.main_window, native_widgets.win32_save_dialog, (title, current_filename))
 
         # otherwise we always fall back to the default code
         if title:

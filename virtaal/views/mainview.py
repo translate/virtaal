@@ -519,7 +519,10 @@ class MainView(BaseView):
         if pan_app.settings.general['maximized']:
             self.main_window.maximize()
         self.main_window.show()
+        gdk.threads_init()
+        gdk.threads_enter()
         gtk.main()
+        gdk.threads_leave()
 
     def show_input_dialog(self, title='', message=''):
         """Shows a simple dialog containing a text entry.

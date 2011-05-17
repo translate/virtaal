@@ -40,6 +40,8 @@ default_config_name = "virtaal.ini"
 def get_config_dir():
     if os.name == 'nt':
         confdir = os.path.join(os.environ['APPDATA'], 'Virtaal')
+    elif sys.platform == 'darwin':
+        confdir = os.path.expanduser('~/Library/Preferences/Virtaal')
     else:
         confdir = os.path.expanduser('~/.virtaal')
 

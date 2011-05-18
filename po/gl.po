@@ -1603,13 +1603,12 @@ msgstr "(100%)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f%%)"
 
-# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192
 #, python-format
 msgid "<b>%d</b>"
-msgstr "<b>%s</b>"
+msgstr "<b>%d</b>"
 
 #: ../virtaal/views/propertiesview.py:203
 #, python-format

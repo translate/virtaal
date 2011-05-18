@@ -451,6 +451,7 @@ msgstr "Okungaqediwe"
 # 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
+#, fuzzy
 msgid "Untranslated"
 msgstr "Okuhunyushiwe"
 
@@ -937,7 +938,7 @@ msgid "Fuzzy: %d"
 msgstr "Akuqediwe: %d"
 
 #: ../virtaal/controllers/storecontroller.py:428
-#, python-format
+#, fuzzy,python-format
 msgid "Untranslated: %d"
 msgstr "Okuhunyushiwe: %d"
 
@@ -971,10 +972,9 @@ msgstr "Okuhunyushiwe"
 msgid "Reviewed"
 msgstr "Okubuyekeziwe"
 
-# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 
 #: ../virtaal/modes/defaultmode.py:28
 msgid "All"
@@ -1527,7 +1527,7 @@ msgstr "Uhlobo lweprojekthi"
 
 #. l10n: The label indicating the checker style (GNOME/KDE/whatever)
 #: ../virtaal/views/checksprojview.py:63
-#, python-format
+#, fuzzy,python-format
 msgid "Checks: %(checker_name)s"
 msgstr "Ukuhlolwa: %(amagama_wenhloli)"
 

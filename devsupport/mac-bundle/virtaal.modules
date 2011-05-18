@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+<!DOCTYPE moduleset SYSTEM "moduleset.dtd">
+<?xml-stylesheet type="text/xsl" href="moduleset.xsl"?>
+<moduleset>
+    <include href="http://github.com/jralls/gtk-osx-build/raw/master/modulesets-stable/gtk-osx.modules"/>
+    <!-- <include href="http://github.com/jralls/gtk-osx-build/raw/master/modulesets-stable/gtk-osx-bootstrap.modules"/> -->
+
+<repository type="svn" name="translate.svn.sf.net" default="yes"
+    href="https://translate.svn.sourceforge.net/svnroot/translate/src/"/>
+
+<distutils id="translate-toolkit">
+   <branch repo="translate.svn.sf.net"
+           module="trunk"
+           checkoutdir="translate-trunk"/>
+   <dependencies>
+     <dep package="python-vobject"/>
+   </dependencies>
+ </distutils>
+
+<distutils id="virtaal">
+   <branch repo="translate.svn.sf.net"
+           module="trunk/virtaal"
+           checkoutdir="virtaal-trunk"/>
+   <patch file="file://~/gtk/source/virtaal-trunk-setup_fixes.patch" strip="1"/>
+   <patch file="file://~/gtk/source/virtaal-trunk-bunchOfixes.patch" strip="1"/>
+   <dependencies>
+     <dep package="meta-gtk-osx-themes"/>
+     <dep package="meta-gtk-osx-python"/>
+     <dep package="gtk-quartz-engine"/>
+     <dep package="pygtk-extras"/>
+     <dep package="translate-toolkit"/>
+     <dep package="lxml"/>
+     <dep package="hicolor-icon-theme"/>
+     <!-- <dep package="pyobjc"/>-->
+     <dep package="pycurl"/>
+     <dep package="python-levenschtein"/>
+     <dep package="pyenchant"/>
+   </dependencies>
+ </distutils>
+
+  <repository type="tarball" name="skyhouseconsulting.com"
+      href="http://vobject.skyhouseconsulting.com/"/>
+  <distutils id="python-vobject">
+    <branch repo="skyhouseconsulting.com" module="vobject-0.8.1c.tar.gz"
+      version="0.8.1c" size="59925" md5sum="55ab1fc3797b90eb556a6b0d2054cfd4" />
+    <dependencies>
+      <dep package="setuptools"/>
+    </dependencies>
+  </distutils>
+
+  <repository type="tarball" name="pypi"
+      href="http://pypi.python.org/packages/source/"/>
+  <distutils id="lxml">
+    <branch repo="pypi" module="l/lxml/lxml-2.3.tar.gz"
+      version="2.3" />
+    <dependencies>
+      <dep package="libxml2"/>
+    </dependencies>
+  </distutils>
+
+  <repository type="cvs" name="cvs-pycurl"
+              cvsroot=":pserver:anonymous@pycurl.cvs.sourceforge.net:/cvsroot/pycurl"
+              password="" />
+  <distutils id="pycurl">
+    <branch repo="cvs-pycurl" module="pycurl" />
+    <dependencies>
+      <dep package="libcurl"/>
+    </dependencies>
+  </distutils>
+
+  <repository type="svn" name="abisource/enchant" 
+              href="http://svn.abisource.com/" />
+   <autotools id="enchant" >
+     <!-- No version. Doesn't seem to have been touched in a while. -->
+    <branch repo="abisource/enchant" module="enchant"
+	    tag="enchant-1-5-0"/>
+    <dependencies>
+      <dep package="glib"/>
+    </dependencies>
+  </autotools>
+
+  <distutils id="pyenchant">
+    <branch repo="pypi" module="p/pyenchant/pyenchant-1.6.5.tar.gz"
+      version="1.6.5" />
+    <dependencies>
+      <dep package="enchant"/>
+      <dep package="distribute"/>
+    </dependencies>
+  </distutils>
+
+  <distutils id="distribute">
+    <branch repo="pypi" module="d/distribute/distribute-0.6.10.tar.gz"
+      version="0.6.10" />
+  </distutils>
+
+  <distutils id="setuptools">
+    <branch repo="pypi" module="s/setuptools/setuptools-0.6c11.tar.gz"
+      version="0.6c11" />
+  </distutils>
+
+  <repository type="tarball" name="sourceforge"
+              href="http://downloads.sourceforge.net/sourceforge/"/>
+  <autotools id="gtkspell">
+    <branch module="gtkspell/gtkspell-2.0.16.tar.gz" repo="sourceforge"
+            version="2.0.16"/>
+    <dependencies>
+      <dep package="enchant"/>
+    </dependencies>
+  </autotools>
+
+  <repository type="tarball" name="sourceforge-new"
+              href="http://sourceforge.net/projects/"/>
+  <distutils id="python-levenschtein">
+    <branch module="translate/files/python-Levenshtein/0.10.1/python-Levenshtein-0.10.1.tar.bz2" repo="sourceforge-new"
+            version="0.10.1"/>
+  </distutils>
+
+  <repository type="tarball" name="gnome"
+              href="http://ftp.gnome.org/pub/GNOME/sources/"/>
+  <autotools id="pygtk-extras">
+    <branch module="gnome-python-extras/2.25/gnome-python-extras-2.25.3.tar.bz2" repo="gnome"
+            version="2.25.3"/>
+    <dependencies>
+      <dep package="pygtk"/>
+      <dep package="gtkspell"/>
+    </dependencies>
+  </autotools>
+
+  <repository type="tarball" name="ftp.gnu.org"
+              href="http://ftp.gnu.org/gnu/"/>
+  <autotools id='libiconv' autogen-sh='configure'>
+    <branch module="libiconv/libiconv-1.13.1.tar.gz" version="1.1.3.1"
+            repo="ftp.gnu.org"/>
+  </autotools>
+
+  <repository type="tarball" name="xmlsoft.org"
+	      href="ftp://xmlsoft.org/libxml2/"/>
+   <autotools id="libxml2" autogen-sh="configure">
+    <branch version="2.7.8" module="libxml2-2.7.8.tar.gz"
+	    repo="xmlsoft.org"/>
+  </autotools>
+
+  <repository type="svn" name="pyobjc-svn"
+    href="http://svn.red-bean.com/pyobjc/"/>
+  <distutils id="pyobjc-svn">
+   <branch repo="pyobjc-svn"
+           module="branches/pyobj-22/pyobjc-core/"
+           checkoutdir="pyobjc-22"/>
+  </distutils>
+  <distutils id="pyobjc">
+    <branch repo="pypi" module="p/pyobjc/pyobjc-2.3.tar.gz"
+      version="2.3" />
+    <dependencies>
+      <dep package="pyobjc-core"/>
+    </dependencies>
+  </distutils>
+  <distutils id="pyobjc-core">
+    <branch repo="pypi" module="p/pyobjc-core/pyobjc-core-2.3.tar.gz"
+      version="2.3" />
+  </distutils>
+
+  <repository type="tarball" name="oracle"
+              href="http://download.oracle.com/"/>
+  <autotools id="berkeleydb" autogen-sh="dist/configure"
+             autogen-template="cd build_unix; ../%(autogen-sh)s --prefix %(prefix)s --libdir %(libdir)s %(autogenargs)s" makeargs="-C build_unix"
+             makeinstallargs="-C build_unix install">
+    <branch module="berkeley-db/db-4.7.25.NC.tar.gz" version="4.7.25"
+            repo="oracle" />
+  </autotools>
+
+
+</moduleset>

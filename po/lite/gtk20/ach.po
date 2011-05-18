@@ -2,13 +2,12 @@
 # Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2008-07-25 18:31+0200\n"
-"PO-Revision-Date: 2011-01-06 09:20+0200\n"
+"PO-Revision-Date: 2011-05-18 09:12+0200\n"
 "Last-Translator: George Patrick <chanchumgpa@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ach\n"
@@ -60,6 +59,17 @@ msgstr "Ctrl"
 msgctxt "keyboard label"
 msgid "Alt"
 msgstr "Alt"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the Return key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#. GTK >=2.16
+#. Configuration: Return key label
+msgctxt "keyboard label"
+msgid "Return"
+msgstr "Dok cen"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -214,12 +224,12 @@ msgstr "Fail manyinge \"%s\" dong tye woko. Imito leyo?"
 #, c-format
 msgid ""
 "The file already exists in \"%s\".  Replacing it will overwrite its contents."
-msgstr "Fail man dong tye woko iyi \"%s\". Leyo obino yweo ngo matye iyie woko."
+msgstr "Fail man dong tye woko iyi \"%s\".  Leyo obino yweo ngo matye iyie woko."
 
 #. File->Save As->Replace confirmation
 #: ../gtk/gtkfilechooserdefault.c:8349 ../gtk/gtkprintunixdialog.c:457
 msgid "_Replace"
-msgstr "_Lee"
+msgstr "_Le wange"
 
 #. File ->Recent Files->No items found
 msgid "No items found"
@@ -272,6 +282,10 @@ msgstr "nying jami macegi|%d. %s"
 msgctxt "recent menu label"
 msgid "%d. %s"
 msgstr "%d. %s"
+
+msgctxt "Stock label"
+msgid "_Properties"
+msgstr "_Jami"
 
 #. File->Quit
 msgid "_Quit"

@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2008-07-25 18:31+0200\n"
-"PO-Revision-Date: 2011-05-11 22:14+0200\n"
+"PO-Revision-Date: 2011-05-18 00:23+0200\n"
 "Last-Translator: Ibrahima SARR <ibrahima.sarr@pulaagu.com>\n"
 "Language-Team: FULA LOCALIZATION\n"
 "Language: ff\n"
@@ -36,7 +36,7 @@ msgstr "default:LTR"
 #. GTK <=2.14
 #. Configuration: Ctrl modifier label
 msgid "keyboard label|Ctrl"
-msgstr "ɗakkol tappirde|Ctrl"
+msgstr "|Ctrl"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the control key. If the text on this key isn't typically
@@ -81,7 +81,7 @@ msgstr "Ruttin"
 #. GTK <=2.14
 #. Configuration: Up key label
 msgid "keyboard label|Up"
-msgstr "ɗakkol tappirde|Haut"
+msgstr "|Dow"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -94,7 +94,7 @@ msgstr "ɗakkol tappirde|Haut"
 #. Configuration: Up key label
 msgctxt "keyboard label"
 msgid "Up"
-msgstr "Haut"
+msgstr "Dow"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -106,7 +106,7 @@ msgstr "Haut"
 #. GTK <=2.14
 #. Configuration: Down key label
 msgid "keyboard label|Down"
-msgstr "ɗakkol tappirde|Bas"
+msgstr "|Les"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -119,7 +119,7 @@ msgstr "ɗakkol tappirde|Bas"
 #. Configuration: Down key label
 msgctxt "keyboard label"
 msgid "Down"
-msgstr "Bas"
+msgstr "Les"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -131,7 +131,7 @@ msgstr "Bas"
 #. GTK <=2.14
 #. Configuration: Page_Up key label
 msgid "keyboard label|Page_Up"
-msgstr "ɗakkol tappirde|Page_Préc"
+msgstr "|Page_Préc"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -156,7 +156,7 @@ msgstr "Page_Préc"
 #. GTK <=2.14
 #. Configuration: Page_Down key label
 msgid "keyboard label|Page_Down"
-msgstr "ɗakkol tappirde|Page_Suiv"
+msgstr "|Page_Suiv"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -173,11 +173,11 @@ msgstr "Page_Suiv"
 
 msgctxt "keyboard label"
 msgid "Left"
-msgstr "Gauche"
+msgstr "Nano"
 
 msgctxt "keyboard label"
 msgid "Right"
-msgstr "Droite"
+msgstr "Ñaamo"
 
 #. File->Open
 msgid "_Open"
@@ -249,7 +249,7 @@ msgstr "Uddit '%s'"
 #. GTK <=2.14
 #. File->Recent Files->Selection label
 msgid "recent menu label|_%d. %s"
-msgstr "ɗakkol dosol cakkitiingol|_%d. %s"
+msgstr "|_%d. %s"
 
 #. This is the label format that is used for the first 10 items
 #. * in a recent files menu. The %d is the number of the item,
@@ -271,7 +271,7 @@ msgstr "_%d. %s"
 #: ../gtk/gtkrecentchoosermenu.c:788
 #, c-format
 msgid "recent menu label|%d. %s"
-msgstr "ɗakkol dosol cakkitiingol|%d. %s"
+msgstr "|%d. %s"
 
 #. This is the format that is used for items in a recent files menu.
 #. * The %d is the number of the item, the %s is the name of the item.
@@ -316,23 +316,23 @@ msgstr "_Cuɓoraaɗe"
 
 #. Navigation->Up
 msgid "Navigation|_Up"
-msgstr "Peeragol|_Haut"
+msgstr "|_Dow"
 
 #. Navigation->Up
 #. GTK HEAD (allows future proofing)
 msgctxt "Stock label, navigation"
 msgid "_Up"
-msgstr "_Haut"
+msgstr "_Dow"
 
 #. Navigation->Down
 msgid "Navigation|_Down"
-msgstr "Peeragol|_Bas"
+msgstr "|_Les"
 
 #. Navigation->Down
 #. GTK HEAD (allows future proofing)
 msgctxt "Stock label, navigation"
 msgid "_Down"
-msgstr "_Bas"
+msgstr "_Les"
 
 #. Help->About
 msgid "_About"

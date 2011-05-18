@@ -1,0 +1,99 @@
+Building
+--------
+jhbuild bootstrap --ignore-system
+jhbuild --moduleset=dev/virtaal.modules build berkeleydb
+jhbuild --moduleset=bootstrap.modules buildone --force python # This rebuilds python - oh well
+jhbuild build meta-gtk-osx-bootstrap meta-gtk-osx-core meta-gtk-osx-python
+jhbuild --moduleset=dev/virtaal.modules build virtaal
+
+jhbuild shell
+virtaal
+
+jhbuild shell
+chmod +w $PREFIX/lib/libpython2.7.dylib
+ige-mac-bundler ~/dev/virtaal-mac/virtaal.bundle
+
+Make dmg based on gramps guidelines
+
+Done!
+
+# These mostly follow http://gramps-project.org/wiki/index.php?title=Using_GRAMPS_on_Apple_Mac
+# But there is more info in the actual gramps.modules file https://gramps.svn.sourceforge.net/svnroot/gramps/trunk/mac/gramps.modules
+# spefic to --ignore-system etc when bundling.
+
+You can use --force if you want everything to rebuild or buildone to just do that module, no dependencies
+
+
+Resources
+---------
+Best guide so far and best source of scripts
+http://gramps-project.org/wiki/index.php?title=Using_GRAMPS_on_Apple_Mac
+
+Todo
+----
+* Clean jhbuild - done, reran a second time and fixed up a few errors
+* Running app - done
+* Packaged .app - done using ige-mac-builder
+* Move menu to title bar use gtkos_application - done
+* .dmg - done, simple not fancy
+* Migration - bsddb is being deprecated and isn't built on Mac - done, made bsddb optional, compiled for jhbuild
+* Migration - can import personal info for Poedit on Mac
+* Why don't we install icons/hicolor/24x24/mimetypes/x-translation.png? - setup.py changed for Mac
+* Why do we get: Exception: Could not find "themes/OSX_Leopard_theme/gtkrc" - setup.py changed for Mac
+* Check pango configuration so that we can do Arabic - done, fixed .bundle to include all modules not just basic - doesn't seem to work though!
+* Package glib2, gtk2 and gtkspell translations - done
+* Sort out langmaodels for lang detection - done, just needed packaging
+* Makefile of python on Mac included in bundle also include/python2.7 - done, solved the startup on 10.5
+* New laucnher.sh script - done, take from pygtk example
+
+* Cleanup Plist, runvirtaal etc so that we are rid of gramps stuff that we don't need
+* Fix the .accel so that commands keys are more Macish http://sourceforge.net/apps/trac/gtk-osx/wiki/Integrate
+* Spell checker and other stuff bundling into .app
+* Prettier installer
+* Hello World and Python console plugins are showing in the build
+* Package tmserver so that we can run localtm
+* Might want to use a newer pycairo - can't find what changed though
+* PyObjC breaks when building pyobjc-core - we need this for native dialogs
+* import CoreFoundations - part of ObjC needed to get the Mac locale setting
+* Investigate using python 2.6 so that we can use CoreFoundation that is on the Mac already, maybe we need to compile our own gcc?
+* Enable or disable spell checker on Poedit settings import
+* Investigate dmg script in ige-mac-bundler so that we can build th DMG from script
+* Investigate/Find patch that allows environment variable to set the PANGO module directory
+* Do we need to understand this for our builds? http://sourceforge.net/apps/trac/gtk-osx/wiki/SnowLeopard
+* Localise GtkOSXApplication.strings http://sourceforge.net/apps/trac/gtk-osx/wiki/Integrate
+* Trim to save space: themes, translations (Mac + Ones we support, drop others), icons we don't use (sizes?)
+* Review our theme engine and the issue of Quartz being crap
+* Build completely from scratch, no downloaded or checked out files (don't lose the patches!)
+* Make localisation work
+* Bundle our translations i.e. lite
+* Cleanup menu dividers, we seem to have extras
+* Drop libtranslate from Mac
+* Why when we're running tmserver are we getting hangs?
+
+* Why do we build our own python? Even if its to bsddb maybe its too much pain
+
+Installer
+---------
+Some guides:
+http://www.ploem.be/blog/?page_id=26
+http://digital-sushi.org/entry/how-to-create-a-disk-image-installer-for-apple-mac-os-x/
+http://chromasoft.blogspot.com/2010/02/building-dmg-installer-for-mac-simple.html
+http://el-tramo.be/guides/fancy-dmg
+
+
+Issues
+------
+ige-mac-integration seems to have a problem installing (might be some folder with no Makefile)
+        See https://trac.macports.org/ticket/28443
+        Added __init__.py in bindings/python/gtk_osxapplixation with 'from _gtk_osxapplication import *'
+        Tried - removeing __init__.pyc - assumed with no .py this was not wanted
+        Lastly, copied __init__.py from 0.9.6 to 0.9.7
+        Don't forget we want ige-mac-integration-python NOT ige-mac-integration
+
+CoreFoundation is available on Mac python but not on our pythin builds.
+Seems to be part of pyobjc but can't work out what needs to be built for 
+that software to install CoreFoundation correctly.
+
+Careful
+-------
+Make sure only one arch is set using setup_blah as some compiles can't happen with two archs

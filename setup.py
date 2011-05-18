@@ -353,6 +353,7 @@ def find_gtk_files():
             'gtkspell.mo', # This isn't picked up, so our code does the i18n
             'gettext-tools.mo',
             'gettext-runtime.mo',
+            'gtkspell.mo',
     ]
     #extensions of files we don't want
     no_package_extensions = [

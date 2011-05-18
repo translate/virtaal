@@ -31,6 +31,9 @@ PYTHONPATH="$bundle_lib/pygtk/2.0:$PYTHONPATH"
 export PYTHONPATH
 export PYTHONHOME="$bundle_res"
 
+# Set PATH so that Virtaal can launch tmserver
+export PATH="$bundle_contents"/MacOS
+
 # We need a UTF-8 locale.
 lang=`defaults read .GlobalPreferences AppleLocale 2>/dev/null`
 if test "$?" != "0"; then

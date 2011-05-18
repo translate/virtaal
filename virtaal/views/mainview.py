@@ -110,7 +110,7 @@ class MainView(BaseView):
 
         if sys.platform == 'darwin':
             try:
-                gtk.rc_parse(pan_app.get_abs_data_filename(["OSX_Leopard_theme", "gtkrc"]))
+                gtk.rc_parse(pan_app.get_abs_data_filename(["themes", "OSX_Leopard_theme", "gtkrc"]))
             except:
                 logging.exception("Couldn't find OSX_Leopard_theme")
             # Sometimes we have two resize grips: one from GTK, one from Aqua. We

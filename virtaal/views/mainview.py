@@ -118,30 +118,31 @@ class MainView(BaseView):
             #self.gui.get_widget('status_bar').set_property("has-resize-grip", False)
             try:
                 # FIXME: Rename the separators that were automatically named by Glade
-                import igemacintegration
+                import gtk_osxapplication
+                osxapp = gtk_osxapplication.OSXApplication()
                 # Move the menu bar to the mac menu
                 menubar = self.gui.get_widget('menubar')
-                igemacintegration.ige_mac_menu_set_menu_bar(menubar)
                 menubar.hide()
-                igemacintegration.ige_mac_menu_connect_window_key_handler(self.main_window)
+                osxapp.set_menu_bar(menubar)
+                # Ensure Ctrl-O change to Cmd-O, etc
+                osxapp.set_use_quartz_accelerators(True)
                 # Move the quit menu item
                 mnu_quit = self.gui.get_widget("mnu_quit")
-                igemacintegration.ige_mac_menu_set_quit_menu_item(mnu_quit)
                 mnu_quit.hide()
                 self.gui.get_widget("separatormenuitem2").hide()
                 # Move the about menu item
                 mnu_about = self.gui.get_widget("mnu_about")
-                group = igemacintegration.ige_mac_menu_add_app_menu_group()
-                igemacintegration.ige_mac_menu_add_app_menu_item(group, mnu_about, None)
+                osxapp.insert_app_menu_item(mnu_about, 0)
                 self.gui.get_widget("separator1").hide()
                 # Move the preferences menu item
+                osxapp.insert_app_menu_item(gtk.SeparatorMenuItem(), 1)
                 mnu_about = self.gui.get_widget("mnu_prefs")
-                group = igemacintegration.ige_mac_menu_add_app_menu_group()
-                igemacintegration.ige_mac_menu_add_app_menu_item(group, mnu_about, None)
+                osxapp.insert_app_menu_item(mnu_about, 2)
                 self.gui.get_widget("menuitem5").hide()
+                osxapp.ready()
             except ImportError, e:
 
-                logging.debug("igemacintegration module not found. Expect zero integration with the mac desktop.")
+                logging.debug("gtk_osxapplication module not found. Expect zero integration with the Mac desktop.")
 
         self.main_window.connect('destroy', self._on_quit)
         self.main_window.connect('delete-event', self._on_quit)

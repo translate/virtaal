@@ -32,7 +32,7 @@ export PYTHONPATH
 export PYTHONHOME="$bundle_res"
 
 # Set PATH so that Virtaal can launch tmserver
-export PATH="$bundle_contents"/MacOS
+export PATH=$PATH:"$bundle_contents"/MacOS
 
 # We need a UTF-8 locale.
 lang=`defaults read .GlobalPreferences AppleLocale 2>/dev/null`

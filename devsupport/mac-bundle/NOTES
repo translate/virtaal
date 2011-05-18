@@ -45,13 +45,13 @@ Todo
 * Sort out langmaodels for lang detection - done, just needed packaging
 * Makefile of python on Mac included in bundle also include/python2.7 - done, solved the startup on 10.5
 * New laucnher.sh script - done, take from pygtk example
+* Package tmserver so that we can run localtm - done, seems we just needed to define PATH
 
 * Cleanup Plist, runvirtaal etc so that we are rid of gramps stuff that we don't need
 * Fix the .accel so that commands keys are more Macish http://sourceforge.net/apps/trac/gtk-osx/wiki/Integrate
 * Spell checker and other stuff bundling into .app
 * Prettier installer
 * Hello World and Python console plugins are showing in the build
-* Package tmserver so that we can run localtm
 * Might want to use a newer pycairo - can't find what changed though
 * PyObjC breaks when building pyobjc-core - we need this for native dialogs
 * import CoreFoundations - part of ObjC needed to get the Mac locale setting
@@ -68,7 +68,9 @@ Todo
 * Bundle our translations i.e. lite
 * Cleanup menu dividers, we seem to have extras
 * Drop libtranslate from Mac
-* Why when we're running tmserver are we getting hangs?
+* Review gramps pacths found in gramps.modules like https://github.com/jralls/gtk-osx-build/raw/master/patches/gramps-macui.patch
+* Compile Sqlite with fts3 support, since we're compiling Python anyway we might as well do this
+        See http://developer.gnome.org/jhbuild/stable/moduleset-syntax.html.en#moduleset-syntax-defs-autotools
 
 * Why do we build our own python? Even if its to bsddb maybe its too much pain
 

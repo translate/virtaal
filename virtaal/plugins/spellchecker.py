@@ -22,6 +22,7 @@ import logging
 import os
 import os.path
 import re
+import sys
 from gettext import dgettext
 import gobject
 
@@ -42,7 +43,7 @@ _dict_add_re = re.compile('Add "(.*)" to Dictionary')
 class Plugin(BasePlugin):
     """A plugin to control spell checking.
 
-    It can also download spell checkers on Windows."""
+    It can also download spell checkers on Windows and Mac."""
 
     display_name = _('Spell Checker')
     description = _('Check spelling and provide suggestions')
@@ -66,9 +67,9 @@ class Plugin(BasePlugin):
         # languages supported by enchant:
         self._enchant_languages = self.enchant.list_languages()
 
-        # HTTP clients (Windows only)
+        # HTTP clients (Windows and Mac only)
         self.clients = {}
-        # downloadable languages (Windows only)
+        # downloadable languages (Windows and Mac only)
         self.languages = set()
 
         unit_view = main_controller.unit_controller.view
@@ -128,8 +129,8 @@ class Plugin(BasePlugin):
             client.get(url, callback, error_callback=error_log)
 
     def _download_checker(self, language):
-        """A Windows-only way to obtain new dictionaries."""
-        if 'APPDATA' not in os.environ:
+        """A Windows-and Mac only way to obtain new dictionaries."""
+        if os.name == 'nt' and 'APPDATA' not in os.environ:
             # We won't have an idea of where to save it, so let's give up now
             return
         if language in self.clients:
@@ -206,7 +207,11 @@ class Plugin(BasePlugin):
             tar = tarfile.open(fileobj=file_obj)
             if not self._tar_ok(tar):
                 return
-            DICTDIR = os.path.join(os.environ['APPDATA'], 'enchant', 'myspell')
+            if os.name == 'nt':
+                DICTDIR = os.path.join(os.environ['APPDATA'], 'enchant', 'myspell')
+            elif sys.platform == 'darwin':
+                DICTDIR = os.path.expanduser("~/.enchant/myspell")
+            print DICTDIR
             self._ensure_dir(DICTDIR)
             tar.extractall(DICTDIR)
             self._seen_languages.pop(language, None)
@@ -260,8 +265,8 @@ class Plugin(BasePlugin):
             else:
                 #logging.debug('No code in enchant.list_languages() that starts with "%s"' % (language))
 
-                # If we are on Windows, let's try to download a spell checker:
-                if os.name == 'nt':
+                # If we are on Windows or Mac, let's try to download a spell checker:
+                if os.name == 'nt' or sys.platform == 'darwin':
                     self._download_checker(language)
                     # If we get it, it will only be activated asynchronously
                     # later

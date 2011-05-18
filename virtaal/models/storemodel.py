@@ -156,6 +156,7 @@ class StoreModel(BaseModel):
             self._trans_store.save()
         else:
             self._trans_store.savefile(filename)
+        self.filename = filename
         self.update_stats(filename=filename)
 
     def update_stats(self, filename=None):

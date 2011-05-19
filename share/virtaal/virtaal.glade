@@ -74,7 +74,7 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkSeparatorMenuItem" id="separatormenuitem1">
+                      <widget class="GtkSeparatorMenuItem" id="separator_mnu_file_1">
                         <property name="visible">True</property>
                       </widget>
                     </child>
@@ -86,7 +86,7 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkSeparatorMenuItem" id="separatormenuitem2">
+                      <widget class="GtkSeparatorMenuItem" id="separator_mnu_file_2">
                         <property name="visible">True</property>
                       </widget>
                     </child>
@@ -219,7 +219,7 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkSeparatorMenuItem" id="separatormenuitem3">
+                      <widget class="GtkSeparatorMenuItem" id="separator_mnu_edit_3">
                         <property name="visible">True</property>
                       </widget>
                     </child>
@@ -371,7 +371,7 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkSeparatorMenuItem" id="separator1">
+                      <widget class="GtkSeparatorMenuItem" id="separator_mnu_help_1">
                         <property name="visible">True</property>
                       </widget>
                     </child>

@@ -122,23 +122,24 @@ class MainView(BaseView):
                 osxapp = gtk_osxapplication.OSXApplication()
                 # Move the menu bar to the mac menu
                 menubar = self.gui.get_widget('menubar')
-                menubar.hide()
                 osxapp.set_menu_bar(menubar)
+                menubar.hide()
                 # Ensure Ctrl-O change to Cmd-O, etc
                 osxapp.set_use_quartz_accelerators(True)
                 # Move the quit menu item
                 mnu_quit = self.gui.get_widget("mnu_quit")
                 mnu_quit.hide()
-                self.gui.get_widget("separatormenuitem2").hide()
+                self.gui.get_widget("separator_mnu_file_2").hide()
                 # Move the about menu item
                 mnu_about = self.gui.get_widget("mnu_about")
                 osxapp.insert_app_menu_item(mnu_about, 0)
-                self.gui.get_widget("separator1").hide()
+                self.gui.get_widget("separator_mnu_help_1").hide()
                 # Move the preferences menu item
                 osxapp.insert_app_menu_item(gtk.SeparatorMenuItem(), 1)
-                mnu_about = self.gui.get_widget("mnu_prefs")
-                osxapp.insert_app_menu_item(mnu_about, 2)
-                self.gui.get_widget("menuitem5").hide()
+                mnu_prefs = self.gui.get_widget("mnu_prefs")
+                osxapp.insert_app_menu_item(mnu_prefs, 2)
+                self.gui.get_widget("separator_mnu_edit_3").hide()
+                #self.gui.get_widget("menuitem5").hide()
                 osxapp.ready()
             except ImportError, e:
 

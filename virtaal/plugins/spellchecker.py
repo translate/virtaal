@@ -211,7 +211,6 @@ class Plugin(BasePlugin):
                 DICTDIR = os.path.join(os.environ['APPDATA'], 'enchant', 'myspell')
             elif sys.platform == 'darwin':
                 DICTDIR = os.path.expanduser("~/.enchant/myspell")
-            print DICTDIR
             self._ensure_dir(DICTDIR)
             tar.extractall(DICTDIR)
             self._seen_languages.pop(language, None)

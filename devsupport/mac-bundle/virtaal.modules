@@ -169,5 +169,12 @@
             repo="oracle" />
   </autotools>
 
+  <!-- We don't use this since building requires Postgress headers -->
+  <repository type="tarball" name="initd"
+              href="http://initd.org/psycopg/tarballs/"/>
+  <distutils id="psycopg2">
+    <branch repo="initd" module="PSYCOPG-2-4/psycopg2-2.4.1.tar.gz"
+      version="2.4.1" />
+  </distutils>
 
 </moduleset>

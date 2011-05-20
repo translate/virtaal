@@ -49,11 +49,15 @@ Todo
 
 * Cleanup Plist, runvirtaal etc so that we are rid of gramps stuff that we don't need
 * Fix the .accel so that commands keys are more Macish http://sourceforge.net/apps/trac/gtk-osx/wiki/Integrate
+        http://sourceforge.net/mailarchive/message.php?msg_id=27058398
 * Spell checker and other stuff bundling into .app
 * Prettier installer
 * Hello World and Python console plugins are showing in the build
 * Might want to use a newer pycairo - can't find what changed though
 * PyObjC breaks when building pyobjc-core - we need this for native dialogs
+          Below regers to some notes on using PyObjC for native file dialogs
+          http://sourceforge.net/mailarchive/forum.php?thread_name=AANLkTikUhZpPrg6VdXu64QBw8V1iGTXd5oZ6NCT%2BYrkv%40mail.gmail.com&forum_name=gtk-osx-users
+          http://sourceforge.net/mailarchive/message.php?msg_id=26149496
 * import CoreFoundations - part of ObjC needed to get the Mac locale setting
 * Investigate using python 2.6 so that we can use CoreFoundation that is on the Mac already, maybe we need to compile our own gcc?
 * Enable or disable spell checker on Poedit settings import
@@ -76,6 +80,9 @@ Todo
         * Don't use $LANG to set UI language see http://lists.apple.com/archives/applescript-users/2011/May/msg00077.html
         * Clarify import information, doesn't say that we're importing from translation programs and what we'll import
         * Migration dialog title is too short
+* Start Virtaal when clicking supported files in the finder
+        http://sourceforge.net/mailarchive/forum.php?thread_name=AANLkTikUhZpPrg6VdXu64QBw8V1iGTXd5oZ6NCT%2BYrkv%40mail.gmail.com&forum_name=gtk-osx-users
+        http://sourceforge.net/mailarchive/message.php?msg_id=26065350
 
 * Why do we build our own python? Even if its to bsddb maybe its too much pain
 

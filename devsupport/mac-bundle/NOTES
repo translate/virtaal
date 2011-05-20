@@ -68,6 +68,7 @@ Todo
 * Bundle our translations i.e. lite
 * Cleanup menu dividers, we seem to have extras
 * Drop libtranslate from Mac
+* Bundle psycopg for tinytm
 * Review gramps pacths found in gramps.modules like https://github.com/jralls/gtk-osx-build/raw/master/patches/gramps-macui.patch
 * Compile Sqlite with fts3 support, since we're compiling Python anyway we might as well do this
         See http://developer.gnome.org/jhbuild/stable/moduleset-syntax.html.en#moduleset-syntax-defs-autotools

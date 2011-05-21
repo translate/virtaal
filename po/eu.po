@@ -2,13 +2,15 @@
 # Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # Piarres Beobide <pi@beobide.net>, 2008.
-# Julen Ruiz Aizpuru <julenx@gmail.com>, 2008-2009.
+# Julen Ruiz Aizpuru <julenx@gmail.com>, 2008-2009, 2011.
+#: ../virtaal/support/native_widgets.py:50
+#: ../virtaal/support/native_widgets.py:51
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2010-04-01 17:45+0200\n"
-"PO-Revision-Date: 2010-04-01 23:27+0200\n"
+"POT-Creation-Date: 2011-04-18 15:51+0200\n"
+"PO-Revision-Date: 2011-05-21 13:37+0200\n"
 "Last-Translator: Julen Ruiz Aizpuru <julenx@gmail.com>\n"
 "Language-Team: librezale@librezale.org\n"
 "Language: eu\n"
@@ -16,10 +18,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.0.3\n"
+"X-Generator: Virtaal 0.7.0-rc1\n"
+"X-Project-Style: default\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
-#: ../share/virtaal/virtaal.glade.h:1 ../virtaal/views/mainview.py:640
+#: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
+#: ../virtaal/views/mainview.py:746
 msgid "Virtaal"
 msgstr "Virtaal"
 
@@ -42,72 +46,80 @@ msgid "_Update to Template"
 msgstr "Eg_uneratu txantiloira"
 
 #: ../share/virtaal/virtaal.glade.h:4
+msgid "_Export"
+msgstr "_Esportatu"
+
+#: ../share/virtaal/virtaal.glade.h:5
 msgid "_Recent Files"
 msgstr "_Azken fitxategiak"
 
-#: ../share/virtaal/virtaal.glade.h:5
+#: ../share/virtaal/virtaal.glade.h:6
 msgid "_Edit"
 msgstr "_Editatu"
 
 #. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
-#: ../share/virtaal/virtaal.glade.h:7
+#: ../share/virtaal/virtaal.glade.h:8
 msgid "Transfer From Source"
 msgstr "Transferitu iturburutik"
 
 #. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
-#: ../share/virtaal/virtaal.glade.h:9
+#: ../share/virtaal/virtaal.glade.h:10
 msgid "P_revious Placeable"
 msgstr "Au_rreko elementu berezia"
 
-#: ../share/virtaal/virtaal.glade.h:10
+#: ../share/virtaal/virtaal.glade.h:11
 msgid "_Next Placeable"
 msgstr "_Hurrengo elementu berezia"
 
-#: ../share/virtaal/virtaal.glade.h:11
+#: ../share/virtaal/virtaal.glade.h:12
 msgid "_View"
 msgstr "_Ikusi"
 
-#: ../share/virtaal/virtaal.glade.h:12
+#: ../share/virtaal/virtaal.glade.h:13
 msgid "_Full Screen"
 msgstr "_Pantaila osoan"
 
-#: ../share/virtaal/virtaal.glade.h:13
+#: ../share/virtaal/virtaal.glade.h:14
+msgid "_Quality Checks"
+msgstr "_Kalitate-egiaztapenak"
+
+#: ../share/virtaal/virtaal.glade.h:15
 msgid "_Navigation"
 msgstr "_Nabigazioa"
 
-#: ../share/virtaal/virtaal.glade.h:14
+#: ../share/virtaal/virtaal.glade.h:16
 msgid "P_age Up"
 msgstr "Orri_a gora"
 
-#: ../share/virtaal/virtaal.glade.h:15
+#: ../share/virtaal/virtaal.glade.h:17
 msgid "_Page Down"
 msgstr "O_rria behera"
 
-#: ../share/virtaal/virtaal.glade.h:16
+#: ../share/virtaal/virtaal.glade.h:18
 msgid "_Help"
 msgstr "_Laguntza"
 
-#: ../share/virtaal/virtaal.glade.h:17
+#: ../share/virtaal/virtaal.glade.h:19
 msgid "_Online Help"
 msgstr "_Sare bidezko laguntza"
 
-#: ../share/virtaal/virtaal.glade.h:18
+#: ../share/virtaal/virtaal.glade.h:20
 msgid "_Tutorial"
 msgstr "_Tutoriala"
 
-#: ../share/virtaal/virtaal.glade.h:19
+#: ../share/virtaal/virtaal.glade.h:21
 msgid "_Localization Guide"
 msgstr "_Lokalizazio gida"
 
-#: ../share/virtaal/virtaal.glade.h:20
+#: ../share/virtaal/virtaal.glade.h:22
 msgid "Report a _Bug"
 msgstr "Eman programa-errore _baten berri"
 
-#: ../share/virtaal/virtaal.glade.h:21
+#: ../share/virtaal/virtaal.glade.h:23
 msgid "New Language Pair"
 msgstr "Hizkuntza-pare berria"
 
-#: ../share/virtaal/virtaal.glade.h:22
+#: ../share/virtaal/virtaal.glade.h:24
 msgid ""
 "The <b>Original</b> is the language from which you are translating, also "
 "called the source language.\n"
@@ -121,11 +133,11 @@ msgstr ""
 "Ingelesetik euskarara itzultzen bazabiltza, orduan ingelesa izango litzateke "
 "jatorrizkoa edo iturburu-hizkuntza."
 
-#: ../share/virtaal/virtaal.glade.h:25
+#: ../share/virtaal/virtaal.glade.h:27
 msgid "<b>Original</b>"
 msgstr "<b>Jatorrizkoa</b>"
 
-#: ../share/virtaal/virtaal.glade.h:26
+#: ../share/virtaal/virtaal.glade.h:28
 msgid ""
 "The <b>Translation</b> is the language into which you are translating, also "
 "called the target language.\n"
@@ -139,66 +151,66 @@ msgstr ""
 "Ingelesetik euskarara itzultzen bazabiltza, orduan euskara izango litzateke "
 "itzulpena edo helburu-hizkuntza."
 
-#: ../share/virtaal/virtaal.glade.h:29
+#: ../share/virtaal/virtaal.glade.h:31
 msgid "<b>Translation</b>"
 msgstr "<b>Itzulpena</b>"
 
-#: ../share/virtaal/virtaal.glade.h:30
+#: ../share/virtaal/virtaal.glade.h:32
 msgid "_Add Missing Language..."
 msgstr "_Gehitu hizkuntza..."
 
-#: ../share/virtaal/virtaal.glade.h:31
+#: ../share/virtaal/virtaal.glade.h:33
 msgid "Add Missing Language"
 msgstr "Gehitu hizkuntza"
 
-#: ../share/virtaal/virtaal.glade.h:32
+#: ../share/virtaal/virtaal.glade.h:34
 msgid "Language name:"
 msgstr "Hizkuntzaren izena:"
 
-#: ../share/virtaal/virtaal.glade.h:33
+#: ../share/virtaal/virtaal.glade.h:35
 msgid "ISO code:"
 msgstr "ISO kodea:"
 
-#: ../share/virtaal/virtaal.glade.h:34
+#: ../share/virtaal/virtaal.glade.h:36
 msgid "Plural expression:"
 msgstr "Plural ekuazioa:"
 
-#: ../share/virtaal/virtaal.glade.h:35
+#: ../share/virtaal/virtaal.glade.h:37
 msgid "Number of plurals:"
 msgstr "Plural kopurua:"
 
-#: ../share/virtaal/virtaal.glade.h:36
+#: ../share/virtaal/virtaal.glade.h:38
 msgid ""
 "Depending on the translation task, the plural information might be optional."
 msgstr ""
 "Itzulpen-atazaren arabera, pluralen informazioa aukerazkoa izan daiteke."
 
-#: ../share/virtaal/virtaal.glade.h:37
+#: ../share/virtaal/virtaal.glade.h:39
 msgid "<b>Language Information</b>"
 msgstr "<b>Hizkuntzaren informazioa</b>"
 
-#: ../share/virtaal/virtaal.glade.h:38
+#: ../share/virtaal/virtaal.glade.h:40
 msgid "Virtaal Preferences"
 msgstr "Virtaal hobespenak"
 
-#: ../share/virtaal/virtaal.glade.h:39
+#: ../share/virtaal/virtaal.glade.h:41
 msgid "The name stored in the file header"
 msgstr "Fitxategiaren goiburuan gordetzen den izena"
 
 #. l10n: This label is for the name of the translator
-#: ../share/virtaal/virtaal.glade.h:41
+#: ../share/virtaal/virtaal.glade.h:43
 msgid "Name:"
 msgstr "Izena:"
 
-#: ../share/virtaal/virtaal.glade.h:42
+#: ../share/virtaal/virtaal.glade.h:44
 msgid "The e-mail address stored in the file header"
 msgstr "Fitxategiaren goiburuan gordetzen den helbide elektronikoa"
 
-#: ../share/virtaal/virtaal.glade.h:43
+#: ../share/virtaal/virtaal.glade.h:45
 msgid "E-mail address:"
 msgstr "Helbide elektronikoa:"
 
-#: ../share/virtaal/virtaal.glade.h:44
+#: ../share/virtaal/virtaal.glade.h:46
 msgid ""
 "The team information stored in the file header. This can be an e-mail "
 "address or a URL, for example."
@@ -206,36 +218,36 @@ msgstr ""
 "Fitxategiaren goiburuan gordetzen den talde-informazioa. Helbide "
 "elektronikoa nahiz URLa izan daiteke, adibidez."
 
-#: ../share/virtaal/virtaal.glade.h:45
+#: ../share/virtaal/virtaal.glade.h:47
 msgid "Team:"
 msgstr "Taldea:"
 
-#: ../share/virtaal/virtaal.glade.h:46
+#: ../share/virtaal/virtaal.glade.h:48
 msgid "<b>Translator Information</b>"
 msgstr "<b>Itzultzailearen informazioa</b>"
 
-#: ../share/virtaal/virtaal.glade.h:47
+#: ../share/virtaal/virtaal.glade.h:49
 msgid "Source text:"
 msgstr "Iturburu-testua:"
 
-#: ../share/virtaal/virtaal.glade.h:48
+#: ../share/virtaal/virtaal.glade.h:50
 msgid "Target text:"
 msgstr "Helburu-testua:"
 
-#: ../share/virtaal/virtaal.glade.h:49
+#: ../share/virtaal/virtaal.glade.h:51
 msgid "Use _Default Fonts"
 msgstr "Erabili letra-tipo le_henetsiak"
 
-#: ../share/virtaal/virtaal.glade.h:50
+#: ../share/virtaal/virtaal.glade.h:52
 msgid "<b>Fonts</b>"
 msgstr "<b>Letra-tipoak</b>"
 
 #. l10n: This tab label refers to the general preferences
-#: ../share/virtaal/virtaal.glade.h:52
+#: ../share/virtaal/virtaal.glade.h:54
 msgid "General"
 msgstr "Orokorra"
 
-#: ../share/virtaal/virtaal.glade.h:53
+#: ../share/virtaal/virtaal.glade.h:55
 msgid ""
 "Placeables are special parts of the text that can be automatically "
 "highlighted and easily inserted into the translation."
@@ -243,105 +255,143 @@ msgstr ""
 "Elementu bereziak testuaren zati ezohikoak dira eta automatikoki nabarmen "
 "daitezke, itzulpenean modu errazean txertatzeko."
 
-#: ../share/virtaal/virtaal.glade.h:54
+#: ../share/virtaal/virtaal.glade.h:56
 msgid "Placeables"
 msgstr "Elementu bereziak"
 
-#: ../share/virtaal/virtaal.glade.h:55
+#: ../share/virtaal/virtaal.glade.h:57
 msgid "Plug-ins"
 msgstr "Plugin-ak"
 
-#: ../share/virtaal/virtaal.glade.h:56
+#: ../share/virtaal/virtaal.glade.h:58
 msgid "Terminology Files"
 msgstr "Terminologia-fitxategiak"
 
-#: ../share/virtaal/virtaal.glade.h:57
+#: ../share/virtaal/virtaal.glade.h:59
 msgid "Add Term"
 msgstr "Gehitu terminoa"
 
 #. l10n: This label refers to comments about a new term that is added
-#: ../share/virtaal/virtaal.glade.h:59
+#: ../share/virtaal/virtaal.glade.h:61
 msgid "C_omments"
 msgstr "Ir_uzkinak"
 
-#: ../share/virtaal/virtaal.glade.h:60
+#: ../share/virtaal/virtaal.glade.h:62
 msgid "Terminology _file:"
 msgstr "Terminologia-_fitxategia:"
 
-#: ../share/virtaal/virtaal.glade.h:61
+#: ../share/virtaal/virtaal.glade.h:63
 msgid "Web Look-ups"
 msgstr "Web bilaketak"
 
-#: ../share/virtaal/virtaal.glade.h:62
+#: ../share/virtaal/virtaal.glade.h:64
 msgid "Add URL"
 msgstr "Gehitu URLa"
 
-#: ../share/virtaal/virtaal.glade.h:63
+#: ../share/virtaal/virtaal.glade.h:65
 msgid "URL:"
 msgstr "URLa:"
 
-#: ../share/virtaal/virtaal.glade.h:64
+#: ../share/virtaal/virtaal.glade.h:66
 msgid "Put queries in quotes"
 msgstr "Jarri bilaketak kakotxen artean"
 
-#: ../share/virtaal/virtaal.glade.h:65
+#: ../share/virtaal/virtaal.glade.h:67
 msgid "<b>Options</b>"
 msgstr "<b>Aukerak</b>"
 
 #. l10n: Remove the tags if underlining is unsuitable for your language. Most languages won't need to change this. Translate 'Open' normally.
-#: ../share/virtaal/virtaal.glade.h:67
+#: ../share/virtaal/virtaal.glade.h:69
 msgid "<u>Open</u>"
 msgstr "<u>Ireki</u>"
 
-#: ../share/virtaal/virtaal.glade.h:68
+#: ../share/virtaal/virtaal.glade.h:70
 msgid "<b><big>Recent Files</big></b>"
 msgstr "<b><big>Azken fitxategiak</big></b>"
 
-#: ../share/virtaal/virtaal.glade.h:69
+#: ../share/virtaal/virtaal.glade.h:71
 msgid "<u>Tutorial</u>"
 msgstr "<u>Tutoriala</u>"
 
-#: ../share/virtaal/virtaal.glade.h:70
+#: ../share/virtaal/virtaal.glade.h:72
 msgid "<u>Cheat Sheet</u>"
 msgstr "<u>Txuleta</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.glade.h:72
+#: ../share/virtaal/virtaal.glade.h:74
+#: ../virtaal/controllers/welcomescreencontroller.py:38
 msgid "http://translate.sourceforge.net/wiki/virtaal/features"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
 
-#: ../share/virtaal/virtaal.glade.h:73
+#: ../share/virtaal/virtaal.glade.h:75
 msgid "<u>More...</u>"
 msgstr "<u>Gehiago...</u>"
 
-#: ../share/virtaal/virtaal.glade.h:74
+#: ../share/virtaal/virtaal.glade.h:76
 msgid "<u>Features</u>"
 msgstr "<u>Ezaugarriak</u>"
 
-#: ../share/virtaal/virtaal.glade.h:75
+#: ../share/virtaal/virtaal.glade.h:77
 msgid "<b><big>Getting Started</big></b>"
 msgstr "<b><big>Hasiberrientzat</big></b>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.glade.h:77
+#: ../share/virtaal/virtaal.glade.h:79
+#: ../virtaal/controllers/welcomescreencontroller.py:34
 msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 
-#: ../share/virtaal/virtaal.glade.h:78
+#: ../share/virtaal/virtaal.glade.h:80
 msgid "<u>Manual</u>"
 msgstr "<u>Eskuliburua</u>"
 
-#: ../share/virtaal/virtaal.glade.h:79
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.glade.h:82
+#: ../virtaal/controllers/welcomescreencontroller.py:35
+msgid "http://translate.sourceforge.net/wiki/guide/start"
+msgstr "http://translate.sourceforge.net/wiki/guide/start"
+
+#: ../share/virtaal/virtaal.glade.h:83
 msgid "<u>Localization Guide</u>"
 msgstr "<u>Lokalizazio-gida</u>"
 
-#: ../share/virtaal/virtaal.glade.h:80
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.glade.h:85
+#: ../virtaal/controllers/welcomescreencontroller.py:37
+msgid "http://translate.sourceforge.net/wiki/virtaal/index#contact"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/index#contact"
+
+#: ../share/virtaal/virtaal.glade.h:86
 msgid "<u>Feedback</u>"
 msgstr "<u>Feedback-a</u>"
 
-#: ../share/virtaal/virtaal.glade.h:81
+#: ../share/virtaal/virtaal.glade.h:87
 msgid "<b><big>Support</big></b>"
 msgstr "<b><big>Laguntza</big></b>"
+
+#: ../share/virtaal/virtaal.glade.h:88
+msgid "Properties"
+msgstr "Propietateak"
+
+#: ../share/virtaal/virtaal.glade.h:89
+msgid "<b>Words</b> (total):"
+msgstr "<b>HItzak</b> (guztira):"
+
+#: ../share/virtaal/virtaal.glade.h:90
+msgid "<b>Strings</b> (total):"
+msgstr "<b>Kateak</b> (guztira):"
+
+#: ../share/virtaal/virtaal.glade.h:91
+msgid "File type:"
+msgstr "Fitxategi mota:"
+
+#: ../share/virtaal/virtaal.glade.h:92
+msgid "File size:"
+msgstr "Fitxategiaren tamaina:"
+
+#: ../share/virtaal/virtaal.glade.h:93
+msgid "Location:"
+msgstr "Kokalekua:"
 
 #: ../virtaal/tips.py:27
 msgid ""
@@ -360,36 +410,251 @@ msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
 msgstr "Uneko itzulpena zalantzazko bezala markatzeko, sakatu <Alt+U>."
 
 #: ../virtaal/tips.py:32
+msgid ""
+"To mark the current translation as incomplete, simply press <Ctrl+Shift"
+"+Enter>."
+msgstr "Uneko itzulpena osatugabe gisa markatzeko, sakatu <Ktrl+Shift+Enter>."
+
+#: ../virtaal/tips.py:33
+msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
+msgstr "Uneko itzulpena osatuta dagoela markatzeko, sakatu <Ktrl+Enter>."
+
+#: ../virtaal/tips.py:34
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
 msgstr "Erabili Ktrl+Gora edo Ktrl+Behera itzulpenen artean mugitzeko."
 
-#: ../virtaal/tips.py:33
+#: ../virtaal/tips.py:35
 msgid ""
 "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
 msgstr ""
 "Erabili Ktrl+OrGora edo Ktrl+OrBehera itzulpenen artean pausu handiagotan "
 "mugitzeko."
 
-#: ../virtaal/controllers/maincontroller.py:69
-#: ../virtaal/controllers/maincontroller.py:78
-#: ../virtaal/controllers/maincontroller.py:87
+#: ../virtaal/controllers/checkscontroller.py:29
+msgid "Fuzzy"
+msgstr "Zalantzazkoa"
+
+#: ../virtaal/controllers/checkscontroller.py:30
+#: ../virtaal/controllers/unitcontroller.py:83
+msgid "Untranslated"
+msgstr "Itzuli gabea"
+
+#: ../virtaal/controllers/checkscontroller.py:31
+msgid "Accelerators"
+msgstr "Bizkortzaileak"
+
+#: ../virtaal/controllers/checkscontroller.py:32
+msgid "Acronyms"
+msgstr "Akronimoak"
+
+#: ../virtaal/controllers/checkscontroller.py:33
+msgid "Blank"
+msgstr "Hutsik"
+
+#: ../virtaal/controllers/checkscontroller.py:34
+msgid "Brackets"
+msgstr "Parentesiak"
+
+#: ../virtaal/controllers/checkscontroller.py:35
+msgid "Compendium conflict"
+msgstr "Compendium gatazka"
+
+#: ../virtaal/controllers/checkscontroller.py:36
+msgid "Translator credits"
+msgstr "Itzultzaile-kredituak"
+
+#: ../virtaal/controllers/checkscontroller.py:37
+msgid "Double quotes"
+msgstr "Kakotx bikoitzak"
+
+#: ../virtaal/controllers/checkscontroller.py:38
+msgid "Double spaces"
+msgstr "Zuriune bikoitzak"
+
+#: ../virtaal/controllers/checkscontroller.py:39
+msgid "Repeated word"
+msgstr "Errepikatutako hitzak"
+
+#: ../virtaal/controllers/checkscontroller.py:40
+#: ../virtaal/controllers/placeablescontroller.py:96
+msgid "E-mail"
+msgstr "E-posta"
+
+#: ../virtaal/controllers/checkscontroller.py:41
+msgid "Ending punctuation"
+msgstr "Amaierako puntuazioa"
+
+#: ../virtaal/controllers/checkscontroller.py:42
+msgid "Ending whitespace"
+msgstr "Amaierako zuriunea"
+
+#: ../virtaal/controllers/checkscontroller.py:43
+msgid "Escapes"
+msgstr "Ihes-karaktereak"
+
+#: ../virtaal/controllers/checkscontroller.py:44
+msgid "File paths"
+msgstr "Fitxategi-bideak"
+
+#: ../virtaal/controllers/checkscontroller.py:45
+msgid "Functions"
+msgstr "Funtzioak"
+
+#: ../virtaal/controllers/checkscontroller.py:46
+msgid "GConf values"
+msgstr "GConf balioak"
+
+#: ../virtaal/controllers/checkscontroller.py:47
+msgid "Old KDE comment"
+msgstr "KDE iruzkin zaharrak"
+
+#: ../virtaal/controllers/checkscontroller.py:48
+msgid "Long"
+msgstr "Luzea"
+
+#: ../virtaal/controllers/checkscontroller.py:49
+msgid "Must translate words"
+msgstr "Hitzak itzuli behar dira"
+
+#: ../virtaal/controllers/checkscontroller.py:50
+msgid "Newlines"
+msgstr "Lerro berriak"
+
+#: ../virtaal/controllers/checkscontroller.py:51
+msgid "Number of plurals"
+msgstr "Plural kopurua"
+
+#: ../virtaal/controllers/checkscontroller.py:52
+msgid "Don't translate words"
+msgstr "Ez itzuli hitzak"
+
+#: ../virtaal/controllers/checkscontroller.py:53
+#: ../virtaal/controllers/placeablescontroller.py:120
+msgid "Numbers"
+msgstr "Zenbakiak"
+
+#: ../virtaal/controllers/checkscontroller.py:54
+#: ../devsupport/optparse.py:1612
+msgid "Options"
+msgstr "Aukerak"
+
+#: ../virtaal/controllers/checkscontroller.py:55
+msgid "printf()"
+msgstr "printf()"
+
+#: ../virtaal/controllers/checkscontroller.py:56
+msgid "Punctuation spacing"
+msgstr "Puntuazioaren zuriunea"
+
+#: ../virtaal/controllers/checkscontroller.py:57
+msgid "Pure punctuation"
+msgstr "Puntuazio purua"
+
+#: ../virtaal/controllers/checkscontroller.py:58
+msgid "Number of sentences"
+msgstr "Esaldi kopurua"
+
+#: ../virtaal/controllers/checkscontroller.py:59
+msgid "Short"
+msgstr "Motza"
+
+#: ../virtaal/controllers/checkscontroller.py:60
+msgid "Simple capitalization"
+msgstr "Kapitalizazio soila"
+
+#: ../virtaal/controllers/checkscontroller.py:61
+msgid "Simple plural(s)"
+msgstr "Plural soila(k)"
+
+#: ../virtaal/controllers/checkscontroller.py:62
+msgid "Single quotes"
+msgstr "Kakotx bakunak"
+
+#: ../virtaal/controllers/checkscontroller.py:63
+msgid "Spelling"
+msgstr "Ortografia"
+
+#: ../virtaal/controllers/checkscontroller.py:64
+msgid "Starting capitalization"
+msgstr "Hasierako kapitalizazioa"
+
+#: ../virtaal/controllers/checkscontroller.py:65
+msgid "Starting punctuation"
+msgstr "Hasierako puntuazioa"
+
+#: ../virtaal/controllers/checkscontroller.py:66
+msgid "Starting whitespace"
+msgstr "Hasierako zuriunea"
+
+#: ../virtaal/controllers/checkscontroller.py:67
+msgid "Tabs"
+msgstr "Tabulazioa"
+
+#: ../virtaal/controllers/checkscontroller.py:68
+msgid "Unchanged"
+msgstr "Aldatu gabea"
+
+#: ../virtaal/controllers/checkscontroller.py:69
+#: ../virtaal/controllers/placeablescontroller.py:129
+msgid "URLs"
+msgstr "URLak"
+
+#: ../virtaal/controllers/checkscontroller.py:70
+msgid "Valid characters"
+msgstr "Baliozko karaktereak"
+
+#: ../virtaal/controllers/checkscontroller.py:71
+msgid "Placeholders"
+msgstr "Leku-markak"
+
+#: ../virtaal/controllers/checkscontroller.py:72
+msgid "XML tags"
+msgstr "XML etiketak"
+
+#: ../virtaal/controllers/checkscontroller.py:111
+msgid "Default"
+msgstr "Lehenetsia"
+
+#: ../virtaal/controllers/checkscontroller.py:112
+msgid "OpenOffice.org"
+msgstr "OpenOffice.org"
+
+#: ../virtaal/controllers/checkscontroller.py:113
+msgid "Mozilla"
+msgstr "Mozilla"
+
+#: ../virtaal/controllers/checkscontroller.py:114
+msgid "KDE"
+msgstr "KDE"
+
+#: ../virtaal/controllers/checkscontroller.py:115
+msgid "GNOME"
+msgstr "GNOME"
+
+#: ../virtaal/controllers/checkscontroller.py:116
+msgid "Drupal"
+msgstr "Drupal"
+
+#: ../virtaal/controllers/maincontroller.py:80
+#: ../virtaal/controllers/maincontroller.py:89
+#: ../virtaal/controllers/maincontroller.py:98
 msgid "Header information"
 msgstr "Goiburuko informazioa"
 
-#: ../virtaal/controllers/maincontroller.py:70
+#: ../virtaal/controllers/maincontroller.py:81
 msgid "Please enter your name"
 msgstr "Idatzi zure izena"
 
-#: ../virtaal/controllers/maincontroller.py:79
+#: ../virtaal/controllers/maincontroller.py:90
 msgid "Please enter your e-mail address"
 msgstr "Idatzi zure e-posta helbidea"
 
-#: ../virtaal/controllers/maincontroller.py:88
+#: ../virtaal/controllers/maincontroller.py:99
 msgid "Please enter your team's information"
 msgstr "Idatzi zure taldearen argibideak"
 
-#: ../virtaal/controllers/maincontroller.py:176
-#: ../virtaal/controllers/maincontroller.py:244
+#: ../virtaal/controllers/maincontroller.py:200
+#: ../virtaal/controllers/maincontroller.py:327
 msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
@@ -397,9 +662,9 @@ msgstr ""
 "Irekita duzun fitxategia hautatu duzu irekitzeko. Fitxategia berriz ireki "
 "nahi duzu?"
 
-#: ../virtaal/controllers/maincontroller.py:187
-#: ../virtaal/controllers/maincontroller.py:229
-#: ../virtaal/controllers/maincontroller.py:255
+#: ../virtaal/controllers/maincontroller.py:211
+#: ../virtaal/controllers/maincontroller.py:311
+#: ../virtaal/controllers/maincontroller.py:338
 #, python-format
 msgid ""
 "Could not open file.\n"
@@ -414,7 +679,13 @@ msgstr ""
 "\n"
 "Saiatu beste fitxategi bat irekitzen."
 
-#: ../virtaal/controllers/maincontroller.py:200
+#: ../virtaal/controllers/maincontroller.py:227
+#: ../virtaal/support/native_widgets.py:142
+#: ../virtaal/support/native_widgets.py:188 ../virtaal/views/mainview.py:314
+msgid "Save"
+msgstr "Gorde"
+
+#: ../virtaal/controllers/maincontroller.py:247
 #, python-format
 msgid ""
 "Could not save file.\n"
@@ -429,7 +700,7 @@ msgstr ""
 "\n"
 "Saiatu beste kokaleku batean gordetzen."
 
-#: ../virtaal/controllers/maincontroller.py:205
+#: ../virtaal/controllers/maincontroller.py:252
 #, python-format
 msgid ""
 "Could not save file.\n"
@@ -440,11 +711,45 @@ msgstr ""
 "\n"
 "%(error_message)s"
 
-#: ../virtaal/controllers/maincontroller.py:219
+#: ../virtaal/controllers/maincontroller.py:263
+msgid "Can only export Gettext PO files"
+msgstr "Gettext PO fitxategiak esporta ditzake soilik"
+
+#: ../virtaal/controllers/maincontroller.py:272
+msgid "Export"
+msgstr "Esportatu"
+
+#: ../virtaal/controllers/maincontroller.py:280
+#, python-format
+msgid ""
+"Could not export file.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Try saving to a different location."
+msgstr ""
+"Ezin da fitxategia esportatu.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Saiatu beste kokaleku batean gordetzen."
+
+#: ../virtaal/controllers/maincontroller.py:285
+#, python-format
+msgid ""
+"Could not export file.\n"
+"\n"
+"%(error_message)s"
+msgstr ""
+"Ezin da fitxategia esportatu.\n"
+"\n"
+"%(error_message)s"
+
+#: ../virtaal/controllers/maincontroller.py:301
 msgid "Reload File"
 msgstr "Birkargatu fitxategia"
 
-#: ../virtaal/controllers/maincontroller.py:219
+#: ../virtaal/controllers/maincontroller.py:301
 msgid "Reload file from last saved copy and lose all changes?"
 msgstr ""
 "Fitxategia birkargatu gordetako azken kopiatik eta aldaketa guztiak galdu?"
@@ -475,10 +780,6 @@ msgstr "Komando-lerroaren aukerak"
 #: ../virtaal/controllers/placeablescontroller.py:93
 msgid "Application command line options, such as --help, -h and -I"
 msgstr "Aplikazioaren komando-lerroaren aukerak, hala nola --help, -h eta -I"
-
-#: ../virtaal/controllers/placeablescontroller.py:96
-msgid "E-mail"
-msgstr "E-posta"
 
 #: ../virtaal/controllers/placeablescontroller.py:97
 msgid "E-mail addresses"
@@ -524,10 +825,6 @@ msgstr "Leku-markak (Qt)"
 msgid "Placeholders in Qt strings"
 msgstr "Qt kateetako leku-markak"
 
-#: ../virtaal/controllers/placeablescontroller.py:120
-msgid "Numbers"
-msgstr "Zenbakiak"
-
 #. l10n: 'decimal fractions' refer to numbers like 0.2 or 499,99
 #: ../virtaal/controllers/placeablescontroller.py:122
 msgid "Integer numbers and decimal fractions"
@@ -540,10 +837,6 @@ msgstr "Puntuazioa"
 #: ../virtaal/controllers/placeablescontroller.py:126
 msgid "Symbols and less frequently used punctuation marks"
 msgstr "Sinboloak eta oso ohikoak ez diren puntuazio-ikurrak"
-
-#: ../virtaal/controllers/placeablescontroller.py:129
-msgid "URLs"
-msgstr "URLak"
 
 #: ../virtaal/controllers/placeablescontroller.py:130
 msgid "URLs, hostnames and IP addresses"
@@ -582,64 +875,114 @@ msgstr "\"alt\" atributuak"
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Elementu berezia \"alt\" atributuentzat (HTMLn bezala)"
 
-#: ../virtaal/controllers/storecontroller.py:115
+#: ../virtaal/controllers/placeablescontroller.py:157
+msgid "Placeholders (Drupal)"
+msgstr "Leku-markak (Drupal)"
+
+#: ../virtaal/controllers/placeablescontroller.py:158
+msgid "Placeholders in Drupal strings"
+msgstr "Drupal kateetako leku-markak"
+
+#: ../virtaal/controllers/storecontroller.py:194
+msgid "No source or translatable files in bundle"
+msgstr "Iturburu-fitxategi edo itzul daitekeenik ez bilduran"
+
+#: ../virtaal/controllers/storecontroller.py:225
 msgid "The file contains nothing to translate."
 msgstr "Fitxategiak ez du ezer itzultzeko."
 
 #. l10n: The heading of statistics before updating to the new template
-#: ../virtaal/controllers/storecontroller.py:172
+#: ../virtaal/controllers/storecontroller.py:423
 msgid "Before:"
 msgstr "Aurretik:"
 
 #. l10n: The heading of statistics after updating to the new template
-#: ../virtaal/controllers/storecontroller.py:174
+#: ../virtaal/controllers/storecontroller.py:425
 msgid "After:"
 msgstr "Ondoren:"
 
-#: ../virtaal/controllers/storecontroller.py:175
+#: ../virtaal/controllers/storecontroller.py:426
 #, python-format
 msgid "Translated: %d"
 msgstr "Itzulita: %d"
 
-#: ../virtaal/controllers/storecontroller.py:176
+#: ../virtaal/controllers/storecontroller.py:427
 #, python-format
 msgid "Fuzzy: %d"
 msgstr "Zalantzan: %d"
 
-#: ../virtaal/controllers/storecontroller.py:177
+#: ../virtaal/controllers/storecontroller.py:428
 #, python-format
 msgid "Untranslated: %d"
 msgstr "Itzuli gabe: %d"
 
-#: ../virtaal/controllers/storecontroller.py:178
+#: ../virtaal/controllers/storecontroller.py:429
 #, python-format
 msgid "Total: %d"
 msgstr "Guztira: %d"
 
 #. l10n: this refers to updating a file to a new template (POT file)
-#: ../virtaal/controllers/storecontroller.py:196
+#: ../virtaal/controllers/storecontroller.py:447
 msgid "File Updated"
 msgstr "Fitxategia eguneratuta"
+
+#: ../virtaal/controllers/unitcontroller.py:84
+msgid "Needs work"
+msgstr "Lana behar du"
+
+#: ../virtaal/controllers/unitcontroller.py:85
+msgid "Rejected"
+msgstr "Baztertua"
+
+#: ../virtaal/controllers/unitcontroller.py:86
+msgid "Needs review"
+msgstr "Berrikuspena behar du"
+
+#: ../virtaal/controllers/unitcontroller.py:87
+msgid "Translated"
+msgstr "Itzulita"
+
+#: ../virtaal/controllers/unitcontroller.py:88
+msgid "Reviewed"
+msgstr "Berrikusita"
+
+#: ../virtaal/controllers/welcomescreencontroller.py:64
+msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 
 #: ../virtaal/modes/defaultmode.py:28
 msgid "All"
 msgstr "Denak"
 
+#: ../virtaal/modes/qualitycheckmode.py:33
+msgid "Quality Checks"
+msgstr "Kalitate-egiaztapenak"
+
+#. l10n: This is the button where the user can select units by failing quality checks
+#: ../virtaal/modes/qualitycheckmode.py:130
+msgid "Select Checks"
+msgstr "Hautatu egiaztapenak"
+
+#. l10n: This refers to quality checks
+#: ../virtaal/modes/qualitycheckmode.py:133
+msgid "All Checks"
+msgstr "Egiaztapen guztiak"
+
 #: ../virtaal/modes/quicktransmode.py:31
 msgid "Incomplete"
 msgstr "Osatugabea"
 
-#: ../virtaal/modes/searchmode.py:37 ../virtaal/modes/searchmode.py:65
+#: ../virtaal/modes/searchmode.py:35 ../virtaal/modes/searchmode.py:68
 msgid "Search"
 msgstr "Bilaketa"
 
-#: ../virtaal/modes/searchmode.py:67
+#: ../virtaal/modes/searchmode.py:70
 msgid "_Case sensitive"
 msgstr "Maius_kulak/minuskulak"
 
 #. l10n: To read about what regular expressions are, see
 #. http://en.wikipedia.org/wiki/Regular_expression
-#: ../virtaal/modes/searchmode.py:71
+#: ../virtaal/modes/searchmode.py:74
 msgid "_Regular expression"
 msgstr "Adierazpen e_rregularra"
 
@@ -647,35 +990,82 @@ msgstr "Adierazpen e_rregularra"
 #. text is typed. Keep in mind that the text box will appear after this text.
 #. If this sentence construction is hard to use, consdider translating this as
 #. "Replacement"
-#: ../virtaal/modes/searchmode.py:79
+#: ../virtaal/modes/searchmode.py:82
 msgid "Replace with"
 msgstr "Ordezkatu honekin"
 
 #. l10n: Button text
-#: ../virtaal/modes/searchmode.py:82
+#: ../virtaal/modes/searchmode.py:85
 msgid "Replace"
 msgstr "Ordezkatu"
 
 #. l10n: Check box
-#: ../virtaal/modes/searchmode.py:85
+#: ../virtaal/modes/searchmode.py:88
 msgid "Replace _All"
 msgstr "Ordezkatu g_uztiak"
 
-#: ../virtaal/plugins/autocompletor.py:216
+#: ../virtaal/modes/workflowmode.py:34
+msgid "Workflow"
+msgstr "Lan-fluxua"
+
+#. l10n: This is the button where the user can select units by workflow state
+#: ../virtaal/modes/workflowmode.py:112
+msgid "Select States"
+msgstr "Hautatu egoerak"
+
+#. l10n: This refers to workflow states
+#: ../virtaal/modes/workflowmode.py:115
+msgid "All States"
+msgstr "Egoera guztiak"
+
+#: ../virtaal/plugins/autocompletor.py:214
 msgid "Automatically complete long words while you type"
 msgstr "Osatu hitzak automatikoki idatzi ahala"
 
-#: ../virtaal/plugins/autocompletor.py:217
+#: ../virtaal/plugins/autocompletor.py:215
 msgid "AutoCompletor"
 msgstr "Osatzaile automatikoa"
 
-#: ../virtaal/plugins/autocorrector.py:262
+#: ../virtaal/plugins/autocorrector.py:303
 msgid "Automatically correct text while you type"
 msgstr "Zuzendu testua automatikoki idatzi ahala"
 
-#: ../virtaal/plugins/autocorrector.py:263
+#: ../virtaal/plugins/autocorrector.py:304
 msgid "AutoCorrector"
 msgstr "Zuzentzaile automatikoa"
+
+#: ../virtaal/plugins/spellchecker.py:47
+msgid "Spell Checker"
+msgstr "Ortografia-egiaztatzailea"
+
+#: ../virtaal/plugins/spellchecker.py:48
+msgid "Check spelling and provide suggestions"
+msgstr "Egiaztatu ortografia eta egin gomendioak"
+
+#. l10n: This refers to spell checking
+#: ../virtaal/plugins/spellchecker.py:334
+msgid "<i>(no suggestions)</i>"
+msgstr "<i>(gomendiorik ez)</i>"
+
+#. l10n: This refers to spell checking
+#: ../virtaal/plugins/spellchecker.py:338
+msgid "Ignore All"
+msgstr "Ezikusi guztiak"
+
+#. l10n: This refers to spelling suggestions
+#: ../virtaal/plugins/spellchecker.py:342
+msgid "More..."
+msgstr "Gehiago..."
+
+#. l10n: This refers to the spell checking dictionary
+#: ../virtaal/plugins/spellchecker.py:348
+#, python-format
+msgid "Add \"%s\" to Dictionary"
+msgstr "Gehitu \"%s\" hiztegira"
+
+#: ../virtaal/plugins/spellchecker.py:351
+msgid "Languages"
+msgstr "Hizkuntzak"
 
 #: ../virtaal/plugins/lookup/__init__.py:29
 msgid "Perform look-ups on selected text"
@@ -687,15 +1077,15 @@ msgstr "Kanpoko bilaketa"
 
 #. l10n: The 'services' here refer to different look-up plugins,
 #. such as web look-up, etc.
-#: ../virtaal/plugins/lookup/lookupview.py:59
+#: ../virtaal/plugins/lookup/lookupview.py:70
 msgid "Select Look-up Services"
 msgstr "Hautatu bilaketa-zerbitzuak"
 
-#: ../virtaal/plugins/lookup/lookupview.py:60
+#: ../virtaal/plugins/lookup/lookupview.py:71
 msgid "Select the services that should be used to perform look-ups"
 msgstr "Hautatu bilaketak egiteko erabili behar diren zerbitzuak"
 
-#: ../virtaal/plugins/lookup/lookupview.py:123
+#: ../virtaal/plugins/lookup/lookupview.py:131
 #, python-format
 msgid "Look-up \"%(selection)s\""
 msgstr "Bilatu \"%(selection)s\""
@@ -710,32 +1100,32 @@ msgid "Look-up the selected text on a web site"
 msgstr "Bilatu hautatutako testua webgune batean"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate.
-#: ../virtaal/plugins/lookup/models/weblookup.py:45
-#: ../virtaal/plugins/tm/models/google_translate.py:165
+#: ../virtaal/plugins/lookup/models/weblookup.py:46
+#: ../virtaal/plugins/tm/models/google_translate.py:172
 msgid "Google"
 msgstr "Google"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:50
+#: ../virtaal/plugins/lookup/models/weblookup.py:52
 msgid "Wikipedia"
 msgstr "Wikipedia"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:55
+#: ../virtaal/plugins/lookup/models/weblookup.py:58
 #: ../virtaal/plugins/terminology/models/opentran.py:46
-#: ../virtaal/plugins/tm/models/opentran.py:36
+#: ../virtaal/plugins/tm/models/opentran.py:37
 msgid "Open-Tran.eu"
 msgstr "Open-Tran.eu"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:171
-#: ../virtaal/views/widgets/selectview.py:77
+#: ../virtaal/plugins/lookup/models/weblookup.py:177
+#: ../virtaal/views/widgets/selectview.py:75
 msgid "Name"
 msgstr "Izena"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:180
+#: ../virtaal/plugins/lookup/models/weblookup.py:186
 msgid "URL"
 msgstr "URLa"
 
 #. l10n: Whether the selected text should be surrounded by "quotes"
-#: ../virtaal/plugins/lookup/models/weblookup.py:191
+#: ../virtaal/plugins/lookup/models/weblookup.py:197
 msgid "Quote Query"
 msgstr "Bildu bilaketa kakotxen artean"
 
@@ -765,37 +1155,37 @@ msgstr "Migrazioa ondo burutu da"
 msgid "The following items were migrated:"
 msgstr "Ondorengo elementuak migratu dira:"
 
-#: ../virtaal/plugins/migration.py:100
+#: ../virtaal/plugins/migration.py:98
 msgid "Migration completed"
 msgstr "Migrazioa burututa"
 
-#: ../virtaal/plugins/migration.py:102
+#: ../virtaal/plugins/migration.py:100
 msgid "Virtaal was not able to migrate any settings or data"
 msgstr "Virtaal ez da gai izan ezarpen eta datuak migratzeko"
 
-#: ../virtaal/plugins/migration.py:103
+#: ../virtaal/plugins/migration.py:101
 msgid "Nothing migrated"
 msgstr "Ez da ezer migratu"
 
-#: ../virtaal/plugins/migration.py:156
+#: ../virtaal/plugins/migration.py:159
 msgid "Poedit settings"
 msgstr "Poedit-eko ezarpenak"
 
-#: ../virtaal/plugins/migration.py:185
+#: ../virtaal/plugins/migration.py:188
 #, python-format
 msgid "Poedit's Translation Memory: %(database_language_code)s"
 msgstr "Poedit-eko itzulpen-memoria: %(database_language_code)s"
 
-#: ../virtaal/plugins/migration.py:210
+#: ../virtaal/plugins/migration.py:213
 #, python-format
 msgid "KBabel's Translation Memory: %(database_language_code)s"
 msgstr "KBabel-eko itzulpen-memoria: %(database_language_code)s"
 
-#: ../virtaal/plugins/migration.py:228
+#: ../virtaal/plugins/migration.py:231
 msgid "Lokalize settings"
 msgstr "Lokalize-ko ezarpenak"
 
-#: ../virtaal/plugins/migration.py:252
+#: ../virtaal/plugins/migration.py:255
 #, python-format
 msgid "Lokalize's Translation Memory: %(database_name)s"
 msgstr "Lokalize-ko itzulpen-memoria: %(database_name)s"
@@ -808,11 +1198,11 @@ msgstr "Terminologia-laguntza"
 msgid "Terminology suggestions"
 msgstr "Terminologia-gomendioak"
 
-#: ../virtaal/plugins/terminology/models/autoterm.py:82
+#: ../virtaal/plugins/terminology/models/autoterm.py:41
 msgid "Localization Terminology"
 msgstr "Lokalizazio-terminologia"
 
-#: ../virtaal/plugins/terminology/models/autoterm.py:83
+#: ../virtaal/plugins/terminology/models/autoterm.py:42
 msgid "Selected localization terminology"
 msgstr "Hautatu lokalizazio-terminologia"
 
@@ -824,44 +1214,45 @@ msgstr "Fitxategi lokalak"
 msgid "Local terminology files"
 msgstr "Terminologia-fitxategi lokalak"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:56
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:58
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:60
 msgid "Terminology _Files..."
 msgstr "Terminologia-_fitxategiak..."
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:64
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:66
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:68
 msgid "Add _Term..."
 msgstr "Gehitu _terminoa..."
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:135
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:137
 msgid "File"
 msgstr "Fitxategia"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:145
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:147
 msgid "Extendable"
 msgstr "Hedagarria"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:170
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:172
 msgid "Add Files"
 msgstr "Gehitu fitxategiak"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:177
-#: ../virtaal/views/mainview.py:225
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:179
+#: ../virtaal/support/native_widgets.py:79 ../virtaal/views/mainview.py:259
 msgid "All Supported Files"
 msgstr "Onarturiko fitxategi guztiak"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:203
-#: ../virtaal/views/mainview.py:251
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:205
+#: ../virtaal/support/native_widgets.py:156
+#: ../virtaal/support/native_widgets.py:185 ../virtaal/views/mainview.py:303
 msgid "All Files"
 msgstr "Fitxategi guztiak"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:243
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:245
 #, python-format
 msgid "\"%s\" is not a usable file."
 msgstr "\"%s\" ez da fitxategi erabilgarria."
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:248
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:250
 #, python-format
 msgid ""
 "Unable to load %(filename)s:\n"
@@ -872,7 +1263,7 @@ msgstr ""
 "\n"
 "%(errormsg)s"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:249
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:251
 msgid "Error opening file"
 msgstr "Errorea fitxategia irekitzean"
 
@@ -891,12 +1282,12 @@ msgid "Identical entry already exists."
 msgstr "Sarrera bera lehendik badago."
 
 #. l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:443
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:446
 #, python-format
 msgid "<b>%s</b>"
 msgstr "<b>%s</b>"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:444
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:447
 #, python-format
 msgid "Existing translations: %(translations)s"
 msgstr "Dauden itzulpenak: %(translations)s"
@@ -905,11 +1296,11 @@ msgstr "Dauden itzulpenak: %(translations)s"
 msgid "Terms from Open-Tran.eu"
 msgstr "Open-Tran.eu guneko terminoak"
 
-#: ../virtaal/plugins/terminology/termview.py:146
+#: ../virtaal/plugins/terminology/termview.py:166
 msgid "Select Terminology Sources"
 msgstr "Hautatu terminologia-iturburuak"
 
-#: ../virtaal/plugins/terminology/termview.py:147
+#: ../virtaal/plugins/terminology/termview.py:167
 msgid "Select the sources of terminology suggestions"
 msgstr "Hautatu terminologia-gomendioen iturburuak"
 
@@ -921,6 +1312,17 @@ msgstr "Itzulpen-memoria"
 msgid "Translation memory suggestions"
 msgstr "Itzulpen-memoriako gomendioak"
 
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/amagama.py:28
+#: ../virtaal/plugins/tm/models/amagama.py:31
+msgid "Amagama"
+msgstr "Amagama"
+
+#: ../virtaal/plugins/tm/models/amagama.py:29
+#: ../virtaal/plugins/tm/models/opentran.py:38
+msgid "Previous translations for Free and Open Source Software"
+msgstr "Software librean aurrez egindako itzulpenak"
+
 #: ../virtaal/plugins/tm/models/currentfile.py:32
 msgid "Current File"
 msgstr "Uneko fitxategia"
@@ -930,36 +1332,37 @@ msgid "Translated units from the currently open file"
 msgstr "Unean irekitako fitxategian itzulita dauden unitateak"
 
 #. l10n: Try to keep this as short as possible.
-#: ../virtaal/plugins/tm/models/currentfile.py:82
+#: ../virtaal/plugins/tm/models/currentfile.py:95
+#: ../virtaal/plugins/tm/models/currentfile.py:115
 msgid "This file"
 msgstr "Fitxategi hau"
 
 #. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
-#: ../virtaal/plugins/tm/models/google_translate.py:113
+#: ../virtaal/plugins/tm/models/google_translate.py:117
 msgid "Google Translate"
 msgstr "Google Translate"
 
-#: ../virtaal/plugins/tm/models/google_translate.py:114
+#: ../virtaal/plugins/tm/models/google_translate.py:118
 msgid "Unreviewed machine translations from Google's translation service"
 msgstr "Googleren itzulpen zerbitzuetako berrikusi gabeko itzulpen automatikoak"
 
-#: ../virtaal/plugins/tm/models/microsoft_translator.py:35
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:39
 msgid "Microsoft Translator"
 msgstr "Microsoft Translator"
 
-#: ../virtaal/plugins/tm/models/microsoft_translator.py:36
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:40
 msgid "Unreviewed machine translations from Microsoft Translator"
 msgstr "Microsoft Translator-eko berrikusi gabeko itzulpen automatikoak"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
-#: ../virtaal/plugins/tm/models/microsoft_translator.py:98
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:106
 msgid "Microsoft"
 msgstr "Microsoft"
 
 #. l10n: This is the name of a software library. You almost definitely don't want to translate this. The lower case 'l' is intentional.
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
 #: ../virtaal/plugins/tm/models/libtranslate.py:45
-#: ../virtaal/plugins/tm/models/libtranslate.py:98
+#: ../virtaal/plugins/tm/models/libtranslate.py:101
 msgid "libtranslate"
 msgstr "libtranslate"
 
@@ -982,7 +1385,7 @@ msgstr "IM lokala"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
 #: ../virtaal/plugins/tm/models/moses.py:33
-#: ../virtaal/plugins/tm/models/moses.py:71
+#: ../virtaal/plugins/tm/models/moses.py:74
 msgid "Moses"
 msgstr "Moses"
 
@@ -990,13 +1393,9 @@ msgstr "Moses"
 msgid "Unreviewed machine translations from a Moses server"
 msgstr "Moses zerbitzari bateko berrikusi gabeko itzulpen automatikoak"
 
-#: ../virtaal/plugins/tm/models/opentran.py:37
-msgid "Previous translations for Free and Open Source Software"
-msgstr "Software librean aurrez egindako itzulpenak"
-
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
-#: ../virtaal/plugins/tm/models/opentran.py:76
-#: ../virtaal/plugins/tm/models/opentran.py:78
+#: ../virtaal/plugins/tm/models/opentran.py:77
+#: ../virtaal/plugins/tm/models/opentran.py:79
 msgid "OpenTran"
 msgstr "OpenTran"
 
@@ -1013,40 +1412,40 @@ msgstr "Itzulpen-memoria zerbitzaria"
 msgid "Remote TM"
 msgstr "Urruneko IM"
 
-#: ../virtaal/plugins/tm/models/tinytm.py:34
+#: ../virtaal/plugins/tm/models/tinytm.py:36
 msgid "TinyTM"
 msgstr "TinyTM"
 
-#: ../virtaal/plugins/tm/models/tinytm.py:35
+#: ../virtaal/plugins/tm/models/tinytm.py:37
 msgid "A TinyTM translation memory server"
 msgstr "TinyTM itzulpen-memoria zerbitzaria"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
-#: ../virtaal/plugins/tm/models/apertium.py:35
-#: ../virtaal/plugins/tm/models/apertium.py:99
+#: ../virtaal/plugins/tm/models/apertium.py:43
+#: ../virtaal/plugins/tm/models/apertium.py:125
 msgid "Apertium"
 msgstr "Apertium"
 
-#: ../virtaal/plugins/tm/models/apertium.py:36
+#: ../virtaal/plugins/tm/models/apertium.py:44
 msgid "Unreviewed machine translations from Apertium"
 msgstr "Apertiumeko berrikusi gabeko itzulpen automatikoak"
 
-#: ../virtaal/plugins/tm/tmview.py:99
+#: ../virtaal/plugins/tm/tmview.py:111
 msgid "Translation _Suggestions"
 msgstr "Itzulpen-g_omendioak"
 
-#: ../virtaal/plugins/tm/tmview.py:140
+#: ../virtaal/plugins/tm/tmview.py:153
 #, python-format
 msgid "Ctrl+%(number_key)d"
 msgstr "Ctrl+%(number_key)d"
 
 #. l10n: The 'sources' here refer to different translation memory plugins,
 #. such as local tm, open-tran.eu, the current file, etc.
-#: ../virtaal/plugins/tm/tmview.py:163
+#: ../virtaal/plugins/tm/tmview.py:176
 msgid "Select sources of Translation Memory"
 msgstr "Hautatu itzulpen-memoriaren iturburuak"
 
-#: ../virtaal/plugins/tm/tmview.py:164
+#: ../virtaal/plugins/tm/tmview.py:177
 msgid "Select the sources that should be queried for translation memory"
 msgstr "Hautatu itzulpen-memoriak galdegingo dituen iturburuak"
 
@@ -1059,33 +1458,57 @@ msgstr "%"
 msgid "Matches"
 msgstr "Bat datozenak"
 
-#: ../virtaal/plugins/tm/tmwidgets.py:67
+#: ../virtaal/plugins/tm/tmwidgets.py:68
 msgid "TM Source"
 msgstr "IMren iturburua"
 
 #. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
-#: ../virtaal/plugins/tm/tmwidgets.py:126
+#: ../virtaal/plugins/tm/tmwidgets.py:138
 #, python-format
 msgid "%(match_quality)s%%"
 msgstr "%%%(match_quality)s"
 
-#: ../virtaal/views/langview.py:67
-msgid "_New Language Pair..."
-msgstr "Hizku_ntza pare berria..."
+#. l10n: This indicates a suggestion from machine translation. It is displayed instead of the match percentage.
+#: ../virtaal/plugins/tm/tmwidgets.py:148
+msgid "?"
+msgstr "?"
 
-#: ../virtaal/views/mainview.py:202
-msgid "Error"
-msgstr "Errorea"
-
-#: ../virtaal/views/mainview.py:218
+#: ../virtaal/support/native_widgets.py:129
+#: ../virtaal/support/native_widgets.py:157 ../virtaal/views/mainview.py:252
 msgid "Choose a Translation File"
 msgstr "Aukeratu itzulpen-fitxategia"
 
-#: ../virtaal/views/mainview.py:256
-msgid "Save"
-msgstr "Gorde"
+#: ../virtaal/views/checksunitview.py:73
+msgid "No issues"
+msgstr "Arazorik ez"
 
-#: ../virtaal/views/mainview.py:270
+#: ../virtaal/views/checksunitview.py:80
+msgid "Quality Check"
+msgstr "Kalitate-egiaztapena"
+
+#: ../virtaal/views/checksunitview.py:86
+msgid "Description"
+msgstr "Azalpena"
+
+#: ../virtaal/views/checksprojview.py:40
+msgid "Project Type"
+msgstr "Proiektu mota"
+
+#. l10n: The label indicating the checker style (GNOME/KDE/whatever)
+#: ../virtaal/views/checksprojview.py:63
+#, python-format
+msgid "Checks: %(checker_name)s"
+msgstr "Egiaztapenak: %(checker_name)s"
+
+#: ../virtaal/views/langview.py:76
+msgid "_New Language Pair..."
+msgstr "Hizku_ntza pare berria..."
+
+#: ../virtaal/views/mainview.py:221
+msgid "Error"
+msgstr "Errorea"
+
+#: ../virtaal/views/mainview.py:333
 msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
@@ -1093,7 +1516,7 @@ msgstr ""
 "Erabiltzen ari zaren fitxategia aldatu egin da.\n"
 "Aldaketak gorde nahi dituzu?"
 
-#: ../virtaal/views/mainview.py:273
+#: ../virtaal/views/mainview.py:336
 msgid "_Discard"
 msgstr "_Baztertu"
 
@@ -1101,16 +1524,16 @@ msgstr "_Baztertu"
 #. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
 #. %(current_file)s is the file name of the current file
 #. most languages will not need to change this
-#: ../virtaal/views/mainview.py:310
+#: ../virtaal/views/mainview.py:377
 #, python-format
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 
-#: ../virtaal/views/mainview.py:335
+#: ../virtaal/views/mainview.py:402
 msgid "Please enter the number of noun forms (plurals) to use"
 msgstr "Mesedez idatzi erabili behar diren plural kopurua"
 
-#: ../virtaal/views/mainview.py:341
+#: ../virtaal/views/mainview.py:408
 msgid "Please enter the plural equation to use"
 msgstr "Mesedez idatzi erabili behar den plural ekuazioa"
 
@@ -1120,21 +1543,91 @@ msgstr "Mesedez idatzi erabili behar den plural ekuazioa"
 msgid "N_avigation:"
 msgstr "N_abigazioa:"
 
-#: ../virtaal/views/unitview.py:622
-msgid "F_uzzy"
-msgstr "_Zalantzazkoa"
+#: ../virtaal/views/modeview.py:108 ../virtaal/views/propertiesview.py:134
+msgid "Save the file for up-to-date information"
+msgstr "Gorde fitxategia eguneratutako informazioa izateko"
 
-#: ../virtaal/views/widgets/aboutdialog.py:35
+#: ../virtaal/views/propertiesview.py:32
+msgid "Untranslated:"
+msgstr "Itzuli gabe:"
+
+#: ../virtaal/views/propertiesview.py:33
+msgid "Needs work:"
+msgstr "Lana behar du:"
+
+#: ../virtaal/views/propertiesview.py:34
+msgid "Rejected:"
+msgstr "Baztertuta:"
+
+#: ../virtaal/views/propertiesview.py:35
+msgid "Needs review:"
+msgstr "Berrikuspena behar du:"
+
+#: ../virtaal/views/propertiesview.py:36
+msgid "Translated:"
+msgstr "Itzulita:"
+
+#: ../virtaal/views/propertiesview.py:37
+msgid "Reviewed:"
+msgstr "Berrikusita:"
+
+#: ../virtaal/views/propertiesview.py:59
+msgid "(0%)"
+msgstr "(%0)"
+
+#: ../virtaal/views/propertiesview.py:61
+msgid "(100%)"
+msgstr "(%100)"
+
+#. l10n: This is the formatting for percentages in the file properties. If unsure, just copy the original.
+#: ../virtaal/views/propertiesview.py:64
+#, python-format
+msgid "(%04.1f%%)"
+msgstr "(%%%04.1f)"
+
+#. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
+#: ../virtaal/views/propertiesview.py:191
+#: ../virtaal/views/propertiesview.py:192
+#, python-format
+msgid "<b>%d</b>"
+msgstr "<b>%d</b>"
+
+#: ../virtaal/views/propertiesview.py:203
+#, python-format
+msgid "%.1f KB"
+msgstr "%.1f KB"
+
+#: ../virtaal/views/storeview.py:163 ../virtaal/views/storeview.py:172
+msgid "Export failed"
+msgstr "Esportatzeak huts egin du"
+
+#: ../virtaal/views/storeview.py:181
+msgid "Preview failed"
+msgstr "Aurrebistak huts egin du"
+
+#: ../virtaal/views/unitview.py:614
+msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
+msgstr "Mugitu urrats bat atzera laneko fluxuan (Ktrl+Shift+Enter)"
+
+#: ../virtaal/views/unitview.py:615
+msgid "Click to move to a specific state in the workflow"
+msgstr "Egin klik laneko fluxuan egoera zehatz batera mugitzeko"
+
+#: ../virtaal/views/unitview.py:616
+msgid "Move one step forward in the workflow (Ctrl+Enter)"
+msgstr "Mugitu urrats bat aurrera laneko fluxuan (Ktrl+Shift+Enter)"
+
+#: ../virtaal/views/widgets/aboutdialog.py:34
 msgid "Copyright © 2007-2010 Zuza Software Foundation"
 msgstr "Copyright © 2007-2010 Zuza Software Foundation"
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
-#: ../virtaal/views/widgets/aboutdialog.py:38
+#: ../virtaal/views/widgets/aboutdialog.py:37
 msgid "Virtaal is a program for doing translation."
 msgstr "Virtaal itzulpenak egiteko programa bat da."
 
-#: ../virtaal/views/widgets/aboutdialog.py:39
+#: ../virtaal/views/widgets/aboutdialog.py:38
 msgid ""
 "The initial focus is on software translation (localization or l10n), but we "
 "definitely intend it to be useful as a general purpose tool for Computer "
@@ -1143,24 +1636,24 @@ msgstr ""
 "Hasiera batean software itzulpengintzara bideraturik (lokalizazio edo l10n) "
 "dago, baina erabilera orokorrerako tresna bat egiten saiatzen ari gara."
 
-#: ../virtaal/views/widgets/aboutdialog.py:53
+#: ../virtaal/views/widgets/aboutdialog.py:52
 msgid "Virtaal website"
 msgstr "Virtaal webgunea"
 
-#: ../virtaal/views/widgets/aboutdialog.py:62
+#: ../virtaal/views/widgets/aboutdialog.py:65
 msgid "We thank our donors:"
 msgstr "Gure eskerrik beroenak babesleei:"
 
-#: ../virtaal/views/widgets/aboutdialog.py:63
+#: ../virtaal/views/widgets/aboutdialog.py:66
 msgid "The International Development Research Centre"
 msgstr "The International Development Research Centre"
 
-#: ../virtaal/views/widgets/aboutdialog.py:65
+#: ../virtaal/views/widgets/aboutdialog.py:68
 msgid "Mozilla Corporation"
 msgstr "Mozilla Corporation"
 
 #. l10n: Rather than translating, fill in the names of the translators
-#: ../virtaal/views/widgets/aboutdialog.py:69
+#: ../virtaal/views/widgets/aboutdialog.py:73
 msgid "translator-credits"
 msgstr ""
 "Piarres Beobide <pi@beobide.net>\n"
@@ -1185,43 +1678,43 @@ msgstr "Hizkuntza"
 msgid "Code"
 msgstr "Kodea"
 
-#: ../virtaal/views/widgets/selectview.py:69
+#: ../virtaal/views/widgets/selectview.py:67
 msgid "Enabled"
 msgstr "Gaituta"
 
-#: ../virtaal/views/widgets/selectview.py:118
+#: ../virtaal/views/widgets/selectview.py:117
 msgid "Configure..."
 msgstr "Konfiguratu..."
 
-#: ../virtaal/views/widgets/welcomescreen.py:72
-msgid "Extensive format support"
-msgstr "Formatuen euskarri zabala"
-
-#: ../virtaal/views/widgets/welcomescreen.py:73
+#: ../virtaal/views/widgets/welcomescreen.py:79
 msgid "Translation memory"
 msgstr "Itzulpen-memoria"
 
-#: ../virtaal/views/widgets/welcomescreen.py:74
+#: ../virtaal/views/widgets/welcomescreen.py:80
 msgid "Terminology assistance"
 msgstr "Laguntza terminologian"
 
-#: ../virtaal/views/widgets/welcomescreen.py:75
+#: ../virtaal/views/widgets/welcomescreen.py:81
+msgid "Quality checks"
+msgstr "Kalitate-egiaztapenak"
+
+#: ../virtaal/views/widgets/welcomescreen.py:82
 msgid "Machine translation"
 msgstr "Itzulpen automatikoa"
 
-#: ../virtaal/views/widgets/welcomescreen.py:76
+#: ../virtaal/views/widgets/welcomescreen.py:83
 msgid "Highlighting and insertion of placeables"
 msgstr "Elementu bereziak nabarmendu eta txertatzea"
 
-#: ../virtaal/views/widgets/welcomescreen.py:77
+#: ../virtaal/views/widgets/welcomescreen.py:84
 msgid "Many plugins and options for customization"
 msgstr "Hainbat plugin eta pertsonalizatzeko aukerak"
 
-#: ../virtaal/models/storemodel.py:105
+#: ../virtaal/models/storemodel.py:142
 msgid "The file does not exist."
 msgstr "Fitxategia ez dago."
 
-#: ../virtaal/models/storemodel.py:107
+#: ../virtaal/models/storemodel.py:144
 msgid "Not a valid file."
 msgstr "Ez da baliozko fitxategia."
 
@@ -1325,6 +1818,22 @@ msgstr "Gettext itzulpen txantiloia"
 msgid "Trados Tag Editor"
 msgstr "Trados etiketen editorea"
 
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:26
+msgid "OS X Strings File"
+msgstr "OS X Strings fitxategia"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:27
+msgid "UTX Dictionary"
+msgstr "UTX hiztegia"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:28
+msgid "UTX"
+msgstr "UTX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:29
+msgid "Universal Terminology eXchange"
+msgstr "Universal Terminology eXchange"
+
 #: ../devsupport/tmp_strings.py:23
 msgid "Gettext PO file"
 msgstr "Gettext PO fitxategia"
@@ -1341,52 +1850,56 @@ msgstr "Qt .qm fitxategia"
 msgid "OmegaT Glossary"
 msgstr "OmegaT glosarioa"
 
-#: ../bin/virtaal:78
+#: ../bin/virtaal:87
 #, c-format
 msgid "%prog [options] [translation_file]"
 msgstr "%prog [aukerak] [itzulpen_fitxategia]"
 
-#: ../bin/virtaal:81
-msgid "PROFILE"
-msgstr "PROFILA"
-
-#: ../bin/virtaal:83
-msgid "perform profiling, storing the result to the supplied filename."
-msgstr "egin errendimenduaren azterketa eta gorde emaitza emandako fitxategian."
-
-#: ../bin/virtaal:85
+#: ../bin/virtaal:90
 msgid "LOG"
 msgstr "ERREGISTROA"
 
-#: ../bin/virtaal:86
+#: ../bin/virtaal:91
 msgid "turn on logging, storing the result to the supplied filename."
 msgstr "gaitu erregistroa eta gorde emaitzak emandako fitxategian."
 
-#: ../bin/virtaal:88
+#: ../bin/virtaal:93
 msgid "CONFIG"
 msgstr "KONFIG"
 
-#: ../bin/virtaal:89
+#: ../bin/virtaal:94
 msgid "use the configuration file given by the supplied filename."
 msgstr "erabili emandako fitxategiko konfigurazioa."
 
-#: ../bin/virtaal:92
+#: ../bin/virtaal:97
 msgid "enable debugging features"
 msgstr "gaitu arazteko funtzionaltasunak"
 
-#: ../bin/virtaal:117
+#: ../bin/virtaal:104
+msgid "PROFILE"
+msgstr "PROFILA"
+
+#: ../bin/virtaal:106
+msgid "perform profiling, storing the result to the supplied filename."
+msgstr "egin errendimenduaren azterketa eta gorde emaitza emandako fitxategian."
+
+#: ../bin/virtaal:129
 msgid "Could not open log file '%(filename)s'"
 msgstr "Ezin da '%(filename)s' erregistro-fitxategia ireki"
 
-#: ../bin/virtaal:125
+#: ../bin/virtaal:137
 msgid "Could not read configuration file '%(filename)s'"
 msgstr "Ezin da '%(filename)s' fitxategitik konfigurazioa irakurri"
 
-#: ../bin/virtaal:129
+#: ../bin/virtaal:141
 msgid "invalid number of arguments"
 msgstr "argumentu kopuru baliogabea"
 
-#: ../bin/virtaal:158
+#: ../bin/virtaal:167
+msgid "Profiling support is not available"
+msgstr "Profila egiteko euskarria ez dago eskuragarri"
+
+#: ../bin/virtaal:179
 msgid "Could not open profile file '%(filename)s'"
 msgstr "Ezin da '%(filename)s' profil fitxategia ireki"
 
@@ -1462,9 +1975,11 @@ msgstr "%s aukerak %d argumentu behar ditu"
 msgid "%s option does not take a value"
 msgstr "%s aukerak ez du baliorik hartzen"
 
-#: ../devsupport/optparse.py:1612
-msgid "Options"
-msgstr "Aukerak"
+#~ msgid "F_uzzy"
+#~ msgstr "_Zalantzazkoa"
+
+#~ msgid "Extensive format support"
+#~ msgstr "Formatuen euskarri zabala"
 
 #~ msgid "Quoted Queries"
 #~ msgstr "Kakotxen arteko bilaketak"
@@ -1584,9 +2099,6 @@ msgstr "Aukerak"
 
 #~ msgid "N_avigation: "
 #~ msgstr "N_abigazioa: "
-
-#~ msgid "Languages"
-#~ msgstr "Hizkuntzak"
 
 #~ msgid "Missing Language"
 #~ msgstr "Gehitu hizkuntza"

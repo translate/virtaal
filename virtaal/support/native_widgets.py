@@ -50,6 +50,9 @@ def _dialog_to_use():
                 not gettext.dgettext('gtk20', '')):
             return 'kdialog'
 
+    if sys.platform == 'darwin':
+        return 'darwin'
+
     return None # default
 
 # Hardcode for testing:
@@ -216,3 +219,37 @@ def win32_save_dialog(title, current_filename):
         raise Exception("Something went wrong with winxpgui", e)
     # success
     return filename
+
+
+#### Mac/darwin ####
+
+def darwin_open_dialog(title, directory):
+    # http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/AppFileMgmt/Concepts/SaveOpenPanels.html#//apple_ref/doc/uid/20000771-BBCFDGFC
+    # http://scottr.org/blog/2008/jul/04/building-cocoa-guis-python-pyobjc-part-four/
+    from objc import NO
+    from AppKit import NSOpenPanel
+    file_types = [extension.replace("*.", "") for name, extension in _file_types]
+    print file_types
+    panel = NSOpenPanel.openPanel()
+    panel.setCanChooseDirectories_(NO)
+    panel.setTitle_(title or _("Open"))
+    panel.setAllowsMultipleSelection_(NO)
+    panel.setAllowedFileTypes_(file_types)
+    panel.setDirectoryURL_(u"file:///%s" % directory)
+    ret_value = panel.runModalForTypes_(file_types)
+    if ret_value:
+        return ("", panel.URLs()[0])
+    else:
+        return ()
+
+def darwin_save_dialog(title, current_filename):
+    from objc import NO
+    from AppKit import NSSavePanel
+    panel = NSSavePanel.savePanel()
+    panel.setTitle_(title or _("Save"))
+    panel.setNameFieldStringValue_(current_filename)
+    ret_value = panel.runModal()
+    if ret_value:
+        return panel.filename()
+    else:
+        return u''

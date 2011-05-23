@@ -108,7 +108,7 @@ class ChecksController(BaseController):
         self._checker = None
         self._check_timer_active = False
         self._checker_code_to_name = {
-              "default": _('Default'),
+              None: _('Default'),
               "openoffice":  _('OpenOffice.org'),
               "mozilla": _('Mozilla'),
               "kde": _('KDE'),
@@ -135,7 +135,7 @@ class ChecksController(BaseController):
             self._checker_info = {
                 # XXX: Add other checkers below with a localisable string as key
                 #      (used on the GUI) and a checker class as the value.
-                'default':    checks.StandardChecker,
+                None:    checks.StandardChecker,
                 'openoffice': checks.OpenOfficeChecker,
                 'mozilla':    checks.MozillaChecker,
                 'drupal':     checks.DrupalChecker,
@@ -168,16 +168,14 @@ class ChecksController(BaseController):
         self.set_checker_by_code(self._checker_name_to_code.get(name, None))
 
     def set_checker_by_code(self, code):
-        if code is None:
-            code = "default"
         target_lang = self.main_controller.lang_controller.target_lang.code
         if not target_lang:
             target_lang = None
-        self._checker = self.checker_info.get(code, self.checker_info["default"])()
+        self._checker = self.checker_info.get(code, self.checker_info[None])()
         self._checker.config.updatetargetlanguage(target_lang)
 
         self.emit('checker-set', self.get_checker())
-        self.projview.set_checker_name(self._checker_code_to_name[code])
+        self.projview.set_checker_name(self._checker_code_to_name.get(code, self._checker_code_to_name[None]))
         self.code = code
         if self.main_controller.unit_controller.current_unit:
             self.check_unit(self.main_controller.unit_controller.current_unit)

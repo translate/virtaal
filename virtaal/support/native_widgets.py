@@ -242,7 +242,6 @@ def darwin_open_dialog(title, directory):
         return ()
 
 def darwin_save_dialog(title, current_filename):
-    from objc import NO
     from AppKit import NSSavePanel
     panel = NSSavePanel.savePanel()
     panel.setTitle_(title or _("Save"))

@@ -108,6 +108,17 @@ class MainView(BaseView):
         self.gladefile, self.gui = self.load_glade_file(["virtaal", "virtaal.glade"], root='MainWindow', domain="virtaal")
         self.main_window = self.gui.get_widget("MainWindow")
 
+        # The classic menu bar:
+        self.menubar = self.gui.get_widget('menubar')
+        # The menu structure, regardless of where it is shown (initially the menubar):
+        self.menu_structure = self.menubar
+        self.status_bar = self.gui.get_widget("status_bar")
+        self.status_bar.set_sensitive(False)
+        self.statusbar_context_id = self.status_bar.get_context_id("statusbar")
+        #Only used in full screen, initialised as needed
+        self.btn_app = None
+        self.app_menu = None
+
         if sys.platform == 'darwin':
             try:
                 gtk.rc_parse(pan_app.get_abs_data_filename(["themes", "OSX_Leopard_theme", "gtkrc"]))
@@ -121,9 +132,8 @@ class MainView(BaseView):
                 import gtk_osxapplication
                 osxapp = gtk_osxapplication.OSXApplication()
                 # Move the menu bar to the mac menu
-                menubar = self.gui.get_widget('menubar')
-                osxapp.set_menu_bar(menubar)
-                menubar.hide()
+                self.menubar.hide()
+                osxapp.set_menu_bar(self.menubar)
                 # Ensure Ctrl-O change to Cmd-O, etc
                 osxapp.set_use_quartz_accelerators(True)
                 # Move the quit menu item
@@ -164,17 +174,6 @@ class MainView(BaseView):
         self.gui.get_widget('mnu_localization_guide').connect('activate', self._on_localization_guide)
         self.gui.get_widget('mnu_report_bug').connect('activate', self._on_report_bug)
         self.gui.get_widget('mnu_about').connect('activate', self._on_help_about)
-
-        # The classic menu bar:
-        self.menubar = self.gui.get_widget('menubar')
-        # The menu structure, regardless of where it is shown (initially the menubar):
-        self.menu_structure = self.menubar
-        self.status_bar = self.gui.get_widget("status_bar")
-        self.status_bar.set_sensitive(False)
-        self.statusbar_context_id = self.status_bar.get_context_id("statusbar")
-        #Only used in full screen, initialised as needed
-        self.btn_app = None
-        self.app_menu = None
 
         self.main_window.set_icon_from_file(pan_app.get_abs_data_filename(["icons", "virtaal.ico"]))
         self.main_window.resize(
@@ -437,7 +436,8 @@ class MainView(BaseView):
         menuitem = gtk.MenuItem(name)
         menuitem.set_submenu(menu)
         self.menu_structure.append(menuitem)
-        self.menu_structure.show_all()
+        if self.menu_structure.get_property('visible'):
+            self.menu_structure.show_all()
         return menuitem
 
     def append_menu_item(self, name, menu, after=None):
@@ -461,7 +461,8 @@ class MainView(BaseView):
         else:
             after_index = parent_menu.get_children().index(after) + 1
             parent_menu.insert(menuitem, after_index)
-        self.menu_structure.show_all()
+        if self.menu_structure.get_property('visible'):
+            self.menu_structure.show_all()
         return menuitem
 
     def find_menu(self, label):

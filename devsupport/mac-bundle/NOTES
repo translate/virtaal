@@ -31,26 +31,14 @@ http://gramps-project.org/wiki/index.php?title=Using_GRAMPS_on_Apple_Mac
 
 Todo
 ----
-* Clean jhbuild - done, reran a second time and fixed up a few errors
-* Running app - done
-* Packaged .app - done using ige-mac-builder
-* Move menu to title bar use gtkos_application - done
-* .dmg - done, simple not fancy
-* Migration - bsddb is being deprecated and isn't built on Mac - done, made bsddb optional, compiled for jhbuild
-* Migration - can import personal info for Poedit on Mac
-* Why don't we install icons/hicolor/24x24/mimetypes/x-translation.png? - setup.py changed for Mac
-* Why do we get: Exception: Could not find "themes/OSX_Leopard_theme/gtkrc" - setup.py changed for Mac
-* Check pango configuration so that we can do Arabic - done, fixed .bundle to include all modules not just basic - doesn't seem to work though!
-* Package glib2, gtk2 and gtkspell translations - done
-* Sort out langmaodels for lang detection - done, just needed packaging
-* Makefile of python on Mac included in bundle also include/python2.7 - done, solved the startup on 10.5
-* New laucnher.sh script - done, take from pygtk example
-* Package tmserver so that we can run localtm - done, seems we just needed to define PATH
-
+* Commit various in tree changes to the repo
+        * Why don't we install icons/hicolor/24x24/mimetypes/x-translation.png? - setup.py changed for Mac
+        * Why do we get: Exception: Could not find "themes/OSX_Leopard_theme/gtkrc" - setup.py changed for Mac
+* Get pango working for Arabic
+* Investigate/Find patch that allows environment variable to set the PANGO module directory
 * Cleanup Plist, runvirtaal etc so that we are rid of gramps stuff that we don't need
 * Fix the .accel so that commands keys are more Macish http://sourceforge.net/apps/trac/gtk-osx/wiki/Integrate
         http://sourceforge.net/mailarchive/message.php?msg_id=27058398
-* Spell checker and other stuff bundling into .app
 * Prettier installer
 * Hello World and Python console plugins are showing in the build
 * Might want to use a newer pycairo - can't find what changed though
@@ -62,7 +50,6 @@ Todo
 * Investigate using python 2.6 so that we can use CoreFoundation that is on the Mac already, maybe we need to compile our own gcc?
 * Enable or disable spell checker on Poedit settings import
 * Investigate dmg script in ige-mac-bundler so that we can build th DMG from script
-* Investigate/Find patch that allows environment variable to set the PANGO module directory
 * Do we need to understand this for our builds? http://sourceforge.net/apps/trac/gtk-osx/wiki/SnowLeopard
 * Localise GtkOSXApplication.strings http://sourceforge.net/apps/trac/gtk-osx/wiki/Integrate
 * Trim to save space: themes, translations (Mac + Ones we support, drop others), icons we don't use (sizes?)
@@ -70,7 +57,6 @@ Todo
 * Build completely from scratch, no downloaded or checked out files (don't lose the patches!)
 * Make localisation work
 * Bundle our translations i.e. lite
-* Cleanup menu dividers, we seem to have extras
 * Drop libtranslate from Mac
 * Bundle psycopg for tinytm
 * Review gramps pacths found in gramps.modules like https://github.com/jralls/gtk-osx-build/raw/master/patches/gramps-macui.patch
@@ -84,7 +70,6 @@ Todo
         http://sourceforge.net/mailarchive/forum.php?thread_name=AANLkTikUhZpPrg6VdXu64QBw8V1iGTXd5oZ6NCT%2BYrkv%40mail.gmail.com&forum_name=gtk-osx-users
         http://sourceforge.net/mailarchive/message.php?msg_id=26065350
 
-* Why do we build our own python? Even if its to bsddb maybe its too much pain
 
 Installer
 ---------

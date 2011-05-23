@@ -229,7 +229,6 @@ def darwin_open_dialog(title, directory):
     from objc import NO
     from AppKit import NSOpenPanel
     file_types = [extension.replace("*.", "") for name, extension in _file_types]
-    print file_types
     panel = NSOpenPanel.openPanel()
     panel.setCanChooseDirectories_(NO)
     panel.setTitle_(title or _("Open"))

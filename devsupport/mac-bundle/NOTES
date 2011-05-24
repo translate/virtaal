@@ -70,8 +70,6 @@ Todo
 * Drop libtranslate from Mac
 * Bundle psycopg for tinytm
 * Review gramps pacths found in gramps.modules like https://github.com/jralls/gtk-osx-build/raw/master/patches/gramps-macui.patch
-* Compile Sqlite with fts3 support, since we're compiling Python anyway we might as well do this
-        See http://developer.gnome.org/jhbuild/stable/moduleset-syntax.html.en#moduleset-syntax-defs-autotools
 * Some bugs reported by JC on the mailing list
         * Don't use $LANG to set UI language see http://lists.apple.com/archives/applescript-users/2011/May/msg00077.html
         * Clarify import information, doesn't say that we're importing from translation programs and what we'll import

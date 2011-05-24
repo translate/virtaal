@@ -1,18 +1,28 @@
 Building
 --------
+# Setup jhbuild your .jhbuild-custom should contain the following
+setup_sdk(target="10.5", sdk_version="10.5", architectures=["i386"])
+build_policy = "updated-deps"
+moduleset="http://github.com/jralls/gtk-osx-build/raw/master/modulesets-stable/gtk-osx.modules"
+_gtk_osx_use_jhbuild_python = True # Needed because we're going to bundle Virtaal
+
+# Actual build
 jhbuild bootstrap --ignore-system
 jhbuild --moduleset=dev/virtaal.modules build berkeleydb
 jhbuild --moduleset=bootstrap.modules buildone --force python # This rebuilds python - oh well
 jhbuild build meta-gtk-osx-bootstrap meta-gtk-osx-core meta-gtk-osx-python
 jhbuild --moduleset=dev/virtaal.modules build virtaal
 
+# Test the build
 jhbuild shell
 virtaal
 
+# Buncle the build
 jhbuild shell
 chmod +w $PREFIX/lib/libpython2.7.dylib
 ige-mac-bundler ~/dev/virtaal-mac/virtaal.bundle
 
+# Make a .dmg file
 Make dmg based on gramps guidelines
 
 Done!
@@ -69,6 +79,7 @@ Todo
 * Start Virtaal when clicking supported files in the finder
         http://sourceforge.net/mailarchive/forum.php?thread_name=AANLkTikUhZpPrg6VdXu64QBw8V1iGTXd5oZ6NCT%2BYrkv%40mail.gmail.com&forum_name=gtk-osx-users
         http://sourceforge.net/mailarchive/message.php?msg_id=26065350
+* No network seems to cause a massive delay in Virtaal startup
 
 
 Installer

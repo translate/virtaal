@@ -177,4 +177,20 @@
       version="2.4.1" />
   </distutils>
 
+   <!-- We want to build our own libcurl with Async name lookup support -->
+  <repository type="tarball" name="curl.haxx.se"
+              href="http://curl.haxx.se/download/"/>
+  <autotools id="libcurl" autogen-sh="configure" autogenargs="--enable-ares">
+    <branch repo="curl.haxx.se" module="curl-7.21.6.tar.bz2" version="7.21.6" />
+    <dependencies>
+      <dep package="c-ares"/>
+    </dependencies>
+  </autotools>
+
+  <repository type="tarball" name="c-ares.haxx.se"
+              href="http://c-ares.haxx.se/"/>
+  <autotools id="c-ares" autogen-sh="configure">
+    <branch repo="c-ares.haxx.se" module="c-ares-1.7.4.tar.gz" version="1.7.4" />
+  </autotools>
+
 </moduleset>

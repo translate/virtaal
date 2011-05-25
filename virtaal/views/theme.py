@@ -44,9 +44,14 @@ _default_theme = {
     'fuzzy_row_bg': 'grey',
     # selector text box border
     'selector_textbox': '#5096f3',
+    # diffing markup:
+    # background for insertion
+    'diff_insert_bg': '#a0ffa0',
+    # background for deletion
+    'diff_delete_bg': '#ccc',
+    # background for replacement (deletion+insertion)
+    'diff_replace_bg': '#ffff70',
 }
-# TODO:
-# diffing markup - check virtaal/views/markup.py
 
 _inverse_theme = {
     'url_fg': '#aaaaff',
@@ -58,6 +63,9 @@ _inverse_theme = {
     'warning_bg': '#900',
     'fuzzy_row_bg': '#474747',
     'selector_textbox': '#cbdffb',
+    'diff_insert_bg': '#a0ffa0',
+    'diff_delete_bg': '#ccc',
+    'diff_replace_bg': '#ffff70',
 }
 
 current_theme = _default_theme.copy()

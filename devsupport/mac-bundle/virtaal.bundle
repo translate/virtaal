@@ -138,6 +138,10 @@
   </data>
 
   <data>
+    ${prefix}/share/strings/
+  </data>
+
+  <data>
     ${prefix}/lib/python2.7/site-packages/translate/share/langmodels/
   </data>
 

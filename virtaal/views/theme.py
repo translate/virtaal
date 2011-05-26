@@ -87,6 +87,7 @@ def is_inverse(fg, bg):
     represents and inverse theme (light text on a dark background)."""
     # Let's sum the three colour components to work out a rough idea of how
     # "light" the colour is:
+    # TODO: consider using luminance calculation instead (probably overkill)
     bg_sum = sum((bg.red, bg.green, bg.blue))
     fg_sum = sum((fg.red, fg.green, fg.blue))
     if bg_sum < fg_sum:
@@ -101,3 +102,33 @@ def update_style(widget):
         set_inverse()
     else:
         set_default()
+
+
+# these are based on an (old?) Web Content Accessibility Guidelines of the w3c
+# See  http://juicystudio.com/article/luminositycontrastratioalgorithm.php
+# TODO: Might be a bit newer/better, so we shuld consider updating the code:
+#      http://www.w3.org/TR/WCAG20/Overview.html
+
+def _luminance(c):
+    r = pow(c.red/65535.0, 2.2)
+    g = pow(c.green/65535.0, 2.2)
+    b = pow(c.blue/65535.0, 2.2)
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+def _luminance_contrast_ratio(c1, c2):
+    l1 = _luminance(c1)
+    l2 = _luminance(c2)
+    l1, l2 = max(l1, l2), min(l1, l2)
+    return (l1 + 0.05) / (l2 + 0.05)
+
+def has_good_contrast(c1, c2):
+    """Takes a guess at whether the two given colours are in good contrast to
+    each other (for example, to be able to be used together as foreground and
+    background colour)."""
+    return _luminance_contrast_ratio(c1, c2) >= 4.5
+
+def has_reasonable_contrast(c1, c2):
+    """Similarly to has_good_contrast() this says whether the two given
+    colours have at least a reasonable amount of contrast, so that they would
+    be distinguishable."""
+    return _luminance_contrast_ratio(c1, c2) >= 1.5 # thumb such TODO: validate

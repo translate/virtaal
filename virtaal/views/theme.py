@@ -63,9 +63,9 @@ _inverse_theme = {
     'warning_bg': '#900',
     'fuzzy_row_bg': '#474747',
     'selector_textbox': '#cbdffb',
-    'diff_insert_bg': '#a0ffa0',
-    'diff_delete_bg': '#ccc',
-    'diff_replace_bg': '#ffff70',
+    'diff_insert_bg': '#005500',
+    'diff_delete_bg': '#333',
+    'diff_replace_bg': '#4a4a00',
 }
 
 current_theme = _default_theme.copy()

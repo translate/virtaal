@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: GTK+ lite 2.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2008-07-25 18:31+0200\n"
-"PO-Revision-Date: 2011-04-18 13:20+0200\n"
+"PO-Revision-Date: 2011-05-17 23:21+0200\n"
 "Last-Translator: Mohomodou  <mh@bollag-areal.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: son\n"
@@ -61,6 +61,17 @@ msgid "Alt"
 msgstr "Alt"
 
 #. This is the text that should appear next to menu accelerators
+#. * that use the Return key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#. GTK >=2.16
+#. Configuration: Return key label
+msgctxt "keyboard label"
+msgid "Return"
+msgstr "Willi"
+
+#. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
 #. * this.
@@ -70,7 +81,7 @@ msgstr "Alt"
 #. GTK <=2.14
 #. Configuration: Up key label
 msgid "keyboard label|Up"
-msgstr "Beene"
+msgstr "keyboard label|Up"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -271,6 +282,10 @@ msgstr "%d. %s"
 msgctxt "recent menu label"
 msgid "%d. %s"
 msgstr "%d. %s"
+
+msgctxt "Stock label"
+msgid "_Properties"
+msgstr ""
 
 #. File->Quit
 msgid "_Quit"

@@ -96,12 +96,25 @@ def is_inverse(fg, bg):
         return False
 
 def update_style(widget):
-    fg = widget.style.fg[gtk.STATE_NORMAL]
-    bg = widget.style.base[gtk.STATE_NORMAL]
+    _style = widget.style
+    fg = _style.fg[gtk.STATE_NORMAL]
+    bg = _style.base[gtk.STATE_NORMAL]
     if is_inverse(fg, bg):
         set_inverse()
     else:
         set_default()
+
+    # On some themes (notably Windows XP with classic style), diff_delete_bg is
+    # almost identical to the background colour used. So we use something from
+    # the gtk theme that is supposed to be different, but not much.
+    if not has_reasonable_contrast(_style.bg[gtk.STATE_NORMAL], gtk.gdk.Color(current_theme['diff_delete_bg'])):
+        if INVERSE:
+            new_diff_delete_bg =  _style.dark[gtk.STATE_NORMAL]
+        else:
+            new_diff_delete_bg =  _style.light[gtk.STATE_NORMAL]
+    # we only want to change if it will actually result in something readable:
+    if has_good_contrast(_style.text[gtk.STATE_NORMAL], new_diff_delete_bg):
+        current_theme['diff_replace_bg'] = new_diff_delete_bg.to_string()
 
 
 # these are based on an (old?) Web Content Accessibility Guidelines of the w3c

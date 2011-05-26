@@ -41,30 +41,41 @@ http://gramps-project.org/wiki/index.php?title=Using_GRAMPS_on_Apple_Mac
 
 Todo
 ----
+# Urgent (we can't release and rebuild without it)
+* Gtk-Doc can't find the needed stylesheet from a raw build
 * Commit various in tree changes to the repo
         * Why don't we install icons/hicolor/24x24/mimetypes/x-translation.png? - setup.py changed for Mac
         * Why do we get: Exception: Could not find "themes/OSX_Leopard_theme/gtkrc" - setup.py changed for Mac
-* Get pango working for Arabic
-* Investigate/Find patch that allows environment variable to set the PANGO module directory
-* Cleanup Plist, runvirtaal etc so that we are rid of gramps stuff that we don't need
+* Making DMG
+        * Investigate dmg script in ige-mac-bundler so that we can build th DMG from script
+        * Document process more clearly
+* Build completely from scratch, no downloaded or checked out files (don't lose the patches!)
+
+# Important (some of our users are affected)
+* Pango things
+        * Get pango working for Arabic
+        * Investigate/Find patch that allows environment variable to set the PANGO module directory
+
+# Nice to have (it would look cooler)
 * Fix the .accel so that commands keys are more Macish http://sourceforge.net/apps/trac/gtk-osx/wiki/Integrate
         http://sourceforge.net/mailarchive/message.php?msg_id=27058398
-* Prettier installer
-* Hello World and Python console plugins are showing in the build
-* Might want to use a newer pycairo - can't find what changed though
 * PyObjC breaks when building pyobjc-core - we need this for native dialogs
           Below regers to some notes on using PyObjC for native file dialogs
           http://sourceforge.net/mailarchive/forum.php?thread_name=AANLkTikUhZpPrg6VdXu64QBw8V1iGTXd5oZ6NCT%2BYrkv%40mail.gmail.com&forum_name=gtk-osx-users
           http://sourceforge.net/mailarchive/message.php?msg_id=26149496
+* Localise GtkOSXApplication.strings http://sourceforge.net/apps/trac/gtk-osx/wiki/Integrate
+
+# Not urgent (we can live without these for now)
+* Cleanup Plist, runvirtaal etc so that we are rid of gramps stuff that we don't need
+* Prettier installer
+* Hello World and Python console plugins are showing in the build
+* Might want to use a newer pycairo - can't find what changed though
 * import CoreFoundations - part of ObjC needed to get the Mac locale setting
 * Investigate using python 2.6 so that we can use CoreFoundation that is on the Mac already, maybe we need to compile our own gcc?
 * Enable or disable spell checker on Poedit settings import
-* Investigate dmg script in ige-mac-bundler so that we can build th DMG from script
 * Do we need to understand this for our builds? http://sourceforge.net/apps/trac/gtk-osx/wiki/SnowLeopard
-* Localise GtkOSXApplication.strings http://sourceforge.net/apps/trac/gtk-osx/wiki/Integrate
 * Trim to save space: themes, translations (Mac + Ones we support, drop others), icons we don't use (sizes?)
 * Review our theme engine and the issue of Quartz being crap
-* Build completely from scratch, no downloaded or checked out files (don't lose the patches!)
 * Make localisation work
 * Bundle our translations i.e. lite
 * Drop libtranslate from Mac

@@ -112,9 +112,9 @@ def update_style(widget):
             new_diff_delete_bg =  _style.dark[gtk.STATE_NORMAL]
         else:
             new_diff_delete_bg =  _style.light[gtk.STATE_NORMAL]
-    # we only want to change if it will actually result in something readable:
-    if has_good_contrast(_style.text[gtk.STATE_NORMAL], new_diff_delete_bg):
-        current_theme['diff_replace_bg'] = new_diff_delete_bg.to_string()
+        # we only want to change if it will actually result in something readable:
+        if has_good_contrast(_style.text[gtk.STATE_NORMAL], new_diff_delete_bg) or True:
+            current_theme['diff_delete_bg'] = new_diff_delete_bg.to_string()
 
 
 # these are based on an (old?) Web Content Accessibility Guidelines of the w3c

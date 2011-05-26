@@ -144,4 +144,6 @@ def has_reasonable_contrast(c1, c2):
     """Similarly to has_good_contrast() this says whether the two given
     colours have at least a reasonable amount of contrast, so that they would
     be distinguishable."""
-    return _luminance_contrast_ratio(c1, c2) >= 1.1 # thumb such TODO: validate
+    return _luminance_contrast_ratio(c1, c2) >= 1.2
+    # constant determined by testing in many themes, Windows XP with "classic"
+    # being the edge case

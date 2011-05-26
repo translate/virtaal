@@ -107,13 +107,13 @@ def update_style(widget):
     # On some themes (notably Windows XP with classic style), diff_delete_bg is
     # almost identical to the background colour used. So we use something from
     # the gtk theme that is supposed to be different, but not much.
-    if not has_reasonable_contrast(_style.bg[gtk.STATE_NORMAL], gtk.gdk.Color(current_theme['diff_delete_bg'])):
+    if not has_reasonable_contrast(_style.bg[gtk.STATE_NORMAL], gtk.gdk.color_parse(current_theme['diff_delete_bg'])):
         if INVERSE:
             new_diff_delete_bg =  _style.dark[gtk.STATE_NORMAL]
         else:
             new_diff_delete_bg =  _style.light[gtk.STATE_NORMAL]
         # we only want to change if it will actually result in something readable:
-        if has_good_contrast(_style.text[gtk.STATE_NORMAL], new_diff_delete_bg) or True:
+        if has_good_contrast(_style.text[gtk.STATE_NORMAL], new_diff_delete_bg):
             current_theme['diff_delete_bg'] = new_diff_delete_bg.to_string()
 
 

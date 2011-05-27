@@ -7,15 +7,17 @@
 #_gtk_osx_use_jhbuild_python = True # Needed because we're going to bundle Virtaal
 
 jhbuild=~/.local/bin/jhbuild
+# For interactive builds set this to empty
+jhbuild_options="--no-interact"
 virtaal_mac=/Users/dev/gtk/source/virtaal-trunk/devsupport/mac-bundle/
 virtaal_modules=${virtaal_mac}/virtaal.modules
 
 # Actual build
-$jhbuild bootstrap --ignore-system &&
-$jhbuild --moduleset=$virtaal_modules build berkeleydb &&
-$jhbuild --moduleset=bootstrap.modules buildone --force python && # This rebuilds python - oh well
-$jhbuild build intltool meta-gtk-osx-bootstrap meta-gtk-osx-core meta-gtk-osx-python &&
-$jhbuild --moduleset=$virtaal_modules build virtaal
+$jhbuild $jhbuild_options bootstrap --ignore-system &&
+$jhbuild $jhbuild_options --moduleset=$virtaal_modules build berkeleydb &&
+$jhbuild $jhbuild_options --moduleset=bootstrap.modules buildone --force python && # This rebuilds python - oh well
+$jhbuild $jhbuild_options build intltool meta-gtk-osx-bootstrap meta-gtk-osx-core meta-gtk-osx-python &&
+$jhbuild $jhbuild_options --moduleset=$virtaal_modules build virtaal
 
 # Test the build
 #jhbuild shell

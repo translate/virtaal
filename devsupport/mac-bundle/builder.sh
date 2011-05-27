@@ -25,12 +25,9 @@ $jhbuild $jhbuild_options --moduleset=$virtaal_modules build virtaal
 
 # Buncle the build
 # TODO build and get ige-mac-bundler
-(
-$jhbuild shell
-chmod +w $PREFIX/lib/libpython2.7.dylib
-ige-mac-bundler $virtaal_mac/virtaal.bundle
-exit
-)
+ige_mac_bundler=~/.local/bin/ige-mac-bundler
+$jhbuild run $SHELL -c 'chmod -w $PREFIX/lib/libpython2.7.dylib'
+$jhbuild run $SHELL -c '$ige_mac_bundler $virtaal_mac/virtaal.bundle'
 
 # Make a .dmg file
 echo "Make dmg based on gramps guidelines"

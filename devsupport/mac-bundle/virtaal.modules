@@ -44,7 +44,7 @@
       href="http://vobject.skyhouseconsulting.com/"/>
   <distutils id="python-vobject">
     <branch repo="skyhouseconsulting.com" module="vobject-0.8.1c.tar.gz"
-      version="0.8.1c" size="59925" md5sum="55ab1fc3797b90eb556a6b0d2054cfd4" />
+      version="0.8.1c" size="59925" md5sum="c9686dd74d39fdae140890d9c694c076" />
     <dependencies>
       <dep package="setuptools"/>
     </dependencies>

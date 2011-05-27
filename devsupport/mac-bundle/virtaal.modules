@@ -178,7 +178,7 @@
       version="2.4.1" />
   </distutils>
 
-   <!-- We want to build our own libcurl with Async name lookup support -->
+   <!-- We want to build our own libcurl with Async name lookup support -enable-area -->
   <repository type="tarball" name="curl.haxx.se"
               href="http://curl.haxx.se/download/"/>
   <autotools id="libcurl" autogen-sh="configure" autogenargs="--enable-ares">

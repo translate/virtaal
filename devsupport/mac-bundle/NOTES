@@ -42,7 +42,6 @@ http://gramps-project.org/wiki/index.php?title=Using_GRAMPS_on_Apple_Mac
 Todo
 ----
 # Urgent (we can't release and rebuild without it)
-* Gtk-Doc can't find the needed stylesheet from a raw build
 * Commit various in tree changes to the repo
         * Why don't we install icons/hicolor/24x24/mimetypes/x-translation.png? - setup.py changed for Mac
         * Why do we get: Exception: Could not find "themes/OSX_Leopard_theme/gtkrc" - setup.py changed for Mac
@@ -63,6 +62,7 @@ Todo
           Below regers to some notes on using PyObjC for native file dialogs
           http://sourceforge.net/mailarchive/forum.php?thread_name=AANLkTikUhZpPrg6VdXu64QBw8V1iGTXd5oZ6NCT%2BYrkv%40mail.gmail.com&forum_name=gtk-osx-users
           http://sourceforge.net/mailarchive/message.php?msg_id=26149496
+          * Maybe use CocoaDialog instead?
 * Localise GtkOSXApplication.strings http://sourceforge.net/apps/trac/gtk-osx/wiki/Integrate
 
 # Not urgent (we can live without these for now)

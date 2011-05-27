@@ -11,10 +11,10 @@ virtaal_mac=/Users/dev/gtk/source/virtaal-trunk/devsupport/mac-bundle/
 virtaal_modules=${virtaal_mac}/virtaal.modules
 
 # Actual build
-$jhbuild bootstrap --ignore-system
-$jhbuild --moduleset=$virtaal_modules build berkeleydb
-$jhbuild --moduleset=bootstrap.modules buildone --force python # This rebuilds python - oh well
-$jhbuild build meta-gtk-osx-bootstrap meta-gtk-osx-core meta-gtk-osx-python
+$jhbuild bootstrap --ignore-system &&
+$jhbuild --moduleset=$virtaal_modules build berkeleydb &&
+$jhbuild --moduleset=bootstrap.modules buildone --force python && # This rebuilds python - oh well
+$jhbuild build intltool meta-gtk-osx-bootstrap meta-gtk-osx-core meta-gtk-osx-python &&
 $jhbuild --moduleset=$virtaal_modules build virtaal
 
 # Test the build

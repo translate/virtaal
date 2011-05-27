@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-12 01:25+0200\n"
+"PO-Revision-Date: 2011-05-19 18:45+0200\n"
 "Last-Translator: Antón <meixome@certima.net>\n"
 "Language-Team: Galician Proxecto Trasno <proxecto@trasno.net>\n"
 "Language: gl\n"
@@ -295,7 +295,7 @@ msgstr "URL:"
 
 #: ../share/virtaal/virtaal.glade.h:66
 msgid "Put queries in quotes"
-msgstr "Poñer as consultas entre comiñas duplas"
+msgstr "Consultas entre comiñas duplas"
 
 #: ../share/virtaal/virtaal.glade.h:67
 msgid "<b>Options</b>"
@@ -572,7 +572,7 @@ msgstr "Primeira letra en maiús"
 
 #: ../virtaal/controllers/checkscontroller.py:61
 msgid "Simple plural(s)"
-msgstr "Plural simple"
+msgstr "Plural simple(s)"
 
 #: ../virtaal/controllers/checkscontroller.py:62
 msgid "Single quotes"
@@ -1557,7 +1557,7 @@ msgstr "Introduza a ecuación de plurais que usará"
 #. between units.
 #: ../virtaal/views/modeview.py:62
 msgid "N_avigation:"
-msgstr "N_avegación:"
+msgstr "Na_vegación:"
 
 #: ../virtaal/views/modeview.py:108 ../virtaal/views/propertiesview.py:134
 msgid "Save the file for up-to-date information"
@@ -1657,7 +1657,7 @@ msgstr ""
 
 #: ../virtaal/views/widgets/aboutdialog.py:52
 msgid "Virtaal website"
-msgstr "Sitio web do Virtaal"
+msgstr "Web do Virtaal"
 
 #: ../virtaal/views/widgets/aboutdialog.py:65
 msgid "We thank our donors:"

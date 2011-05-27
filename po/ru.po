@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-12 11:46+0200\n"
+"PO-Revision-Date: 2011-05-15 21:33+0200\n"
 "Last-Translator: Oleg <koptev.oleg@gmail.com>\n"
 "Language-Team: Translate.org.za\n"
 "Language: ru\n"
@@ -43,7 +43,7 @@ msgstr "_Файл"
 
 #: ../share/virtaal/virtaal.glade.h:3
 msgid "_Update to Template"
-msgstr "Обновить _шаблон"
+msgstr "Обновить из _шаблона"
 
 #: ../share/virtaal/virtaal.glade.h:4
 msgid "_Export"

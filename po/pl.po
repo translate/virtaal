@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-13 19:01+0200\n"
+"PO-Revision-Date: 2011-05-13 19:17+0200\n"
 "Last-Translator: Łukasz <deejay1@srem.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: pl\n"
@@ -480,7 +480,6 @@ msgid "Translator credits"
 msgstr "Łukasz Jernaś <deejay1@srem.org>, 2010, 2011"
 
 #: ../virtaal/controllers/checkscontroller.py:37
-#, fuzzy
 msgid "Double quotes"
 msgstr "Podwójny cudzysłów"
 
@@ -498,9 +497,8 @@ msgid "E-mail"
 msgstr "E-mail"
 
 #: ../virtaal/controllers/checkscontroller.py:41
-#, fuzzy
 msgid "Ending punctuation"
-msgstr "Kończący znak przestankowy"
+msgstr "Końcowy znak przestankowy"
 
 #: ../virtaal/controllers/checkscontroller.py:42
 msgid "Ending whitespace"
@@ -508,7 +506,7 @@ msgstr "Kończący biały znak"
 
 #: ../virtaal/controllers/checkscontroller.py:43
 msgid "Escapes"
-msgstr ""
+msgstr "Znaki sterujące"
 
 #: ../virtaal/controllers/checkscontroller.py:44
 msgid "File paths"
@@ -557,7 +555,6 @@ msgid "Options"
 msgstr "Opcje"
 
 #: ../virtaal/controllers/checkscontroller.py:55
-#, fuzzy
 msgid "printf()"
 msgstr "printf()"
 
@@ -579,11 +576,11 @@ msgstr "Krótkie"
 
 #: ../virtaal/controllers/checkscontroller.py:60
 msgid "Simple capitalization"
-msgstr ""
+msgstr "Proste kapitaliki"
 
 #: ../virtaal/controllers/checkscontroller.py:61
 msgid "Simple plural(s)"
-msgstr ""
+msgstr "Proste formy liczby mnogiej"
 
 #: ../virtaal/controllers/checkscontroller.py:62
 msgid "Single quotes"
@@ -595,7 +592,7 @@ msgstr "Literowanie"
 
 #: ../virtaal/controllers/checkscontroller.py:64
 msgid "Starting capitalization"
-msgstr ""
+msgstr "Początkowe kapitaliki"
 
 #: ../virtaal/controllers/checkscontroller.py:65
 msgid "Starting punctuation"
@@ -635,12 +632,10 @@ msgid "Default"
 msgstr "Domyślne"
 
 #: ../virtaal/controllers/checkscontroller.py:112
-#, fuzzy
 msgid "OpenOffice.org"
 msgstr "OpenOffice.org"
 
 #: ../virtaal/controllers/checkscontroller.py:113
-#, fuzzy
 msgid "Mozilla"
 msgstr "Mozilla"
 
@@ -1520,13 +1515,13 @@ msgstr "Opis"
 
 #: ../virtaal/views/checksprojview.py:40
 msgid "Project Type"
-msgstr ""
+msgstr "Typ projektu"
 
 #. l10n: The label indicating the checker style (GNOME/KDE/whatever)
 #: ../virtaal/views/checksprojview.py:63
 #, python-format
 msgid "Checks: %(checker_name)s"
-msgstr ""
+msgstr "Testy: %(checker_name)s"
 
 #: ../virtaal/views/langview.py:76
 msgid "_New Language Pair..."
@@ -1573,82 +1568,80 @@ msgstr "N_awigacja:"
 
 #: ../virtaal/views/modeview.py:108 ../virtaal/views/propertiesview.py:134
 msgid "Save the file for up-to-date information"
-msgstr ""
+msgstr "Należy zapisać plik, by uzyskać najnowsze informacje"
 
 # 81%
 #: ../virtaal/views/propertiesview.py:32
-#, fuzzy
 msgid "Untranslated:"
-msgstr "Nieprzetłumaczone: %d"
+msgstr "Nieprzetłumaczone:"
 
 #: ../virtaal/views/propertiesview.py:33
 msgid "Needs work:"
-msgstr ""
+msgstr "Wymaga pracy:"
 
 #: ../virtaal/views/propertiesview.py:34
 msgid "Rejected:"
-msgstr ""
+msgstr "Odrzucone:"
 
 #: ../virtaal/views/propertiesview.py:35
 msgid "Needs review:"
-msgstr ""
+msgstr "Wymaga przejrzenia:"
 
 # 78%
 #: ../virtaal/views/propertiesview.py:36
-#, fuzzy
 msgid "Translated:"
-msgstr "Przetłumaczone: %d"
+msgstr "Przetłumaczone:"
 
 #: ../virtaal/views/propertiesview.py:37
 msgid "Reviewed:"
-msgstr ""
+msgstr "Przejrzane:"
 
 #: ../virtaal/views/propertiesview.py:59
 msgid "(0%)"
-msgstr ""
+msgstr "(0%)"
 
 #: ../virtaal/views/propertiesview.py:61
 msgid "(100%)"
-msgstr ""
+msgstr "(100%)"
 
 #. l10n: This is the formatting for percentages in the file properties. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:64
 #, python-format
 msgid "(%04.1f%%)"
-msgstr ""
+msgstr "(%04.1f%%)"
 
 # 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192
-#, fuzzy, python-format
+#, python-format
 msgid "<b>%d</b>"
-msgstr "<b>%s</b>"
+msgstr "<b>%d</b>"
 
 #: ../virtaal/views/propertiesview.py:203
 #, python-format
 msgid "%.1f KB"
-msgstr ""
+msgstr "%.1f KB"
 
 #: ../virtaal/views/storeview.py:163 ../virtaal/views/storeview.py:172
 msgid "Export failed"
-msgstr ""
+msgstr "Eksportowanie zakończone niepowodzeniem"
 
 #: ../virtaal/views/storeview.py:181
 msgid "Preview failed"
-msgstr ""
+msgstr "Podgląd zakończony niepowodzeniem"
 
 #: ../virtaal/views/unitview.py:614
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
-msgstr ""
+msgstr "Należy cofnąć się o krok w przepływie pracy (Ctrl+Shift+Enter)"
 
 #: ../virtaal/views/unitview.py:615
 msgid "Click to move to a specific state in the workflow"
-msgstr ""
+msgstr "Należy kliknąć, aby przenieść się do konkretnego stanu przepływu pracy"
 
 #: ../virtaal/views/unitview.py:616
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
-msgstr ""
+msgstr "Przesuń o jeden krok naprzód w przepływie pracy (Ctrl+Enter)"
 
 #: ../virtaal/views/widgets/aboutdialog.py:34
 msgid "Copyright © 2007-2010 Zuza Software Foundation"
@@ -1728,7 +1721,7 @@ msgstr "Wsparcie dla słowników"
 
 #: ../virtaal/views/widgets/welcomescreen.py:81
 msgid "Quality checks"
-msgstr ""
+msgstr "Sprawdzenie jakości"
 
 #: ../virtaal/views/widgets/welcomescreen.py:82
 msgid "Machine translation"
@@ -1852,19 +1845,19 @@ msgstr "Trados Tag Editor"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:26
 msgid "OS X Strings File"
-msgstr ""
+msgstr "Plik ciągów systemu OS X"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:27
 msgid "UTX Dictionary"
-msgstr ""
+msgstr "Słownik UTX"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:28
 msgid "UTX"
-msgstr ""
+msgstr "UTX"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:29
 msgid "Universal Terminology eXchange"
-msgstr ""
+msgstr "Universal Terminology eXchange"
 
 #: ../devsupport/tmp_strings.py:23
 msgid "Gettext PO file"
@@ -1929,7 +1922,7 @@ msgstr "niepoprawna liczba argumentów"
 
 #: ../bin/virtaal:167
 msgid "Profiling support is not available"
-msgstr ""
+msgstr "Profilowanie nie jest obsługiwane"
 
 #: ../bin/virtaal:179
 msgid "Could not open profile file '%(filename)s'"

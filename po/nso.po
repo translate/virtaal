@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-16 15:58+0200\n"
+"PO-Revision-Date: 2011-05-19 10:07+0200\n"
 "Last-Translator: Pheledi <pheledi@mosekolatranslation.co.za>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: nso\n"
@@ -47,7 +47,7 @@ msgstr "_Mpshafatšo ya thempoleiti"
 
 #: ../share/virtaal/virtaal.glade.h:4
 msgid "_Export"
-msgstr ""
+msgstr "Romela ntl_e"
 
 #: ../share/virtaal/virtaal.glade.h:5
 msgid "_Recent Files"
@@ -81,7 +81,7 @@ msgstr "_Sekirini se feletšego"
 
 #: ../share/virtaal/virtaal.glade.h:14
 msgid "_Quality Checks"
-msgstr ""
+msgstr "Ditekolo tša _boleng"
 
 #: ../share/virtaal/virtaal.glade.h:15
 msgid "_Navigation"
@@ -350,9 +350,8 @@ msgstr "<u>Maitirelo</u>"
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
-#, fuzzy
 msgid "http://translate.sourceforge.net/wiki/guide/start"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
+msgstr "http://translate.sourceforge.net/wiki/guide/start"
 
 #: ../share/virtaal/virtaal.glade.h:83
 msgid "<u>Localization Guide</u>"
@@ -362,9 +361,8 @@ msgstr "<u>Tlhahlo ya go gaefatša</u>"
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:37
-#, fuzzy
 msgid "http://translate.sourceforge.net/wiki/virtaal/index#contact"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/index#contact"
 
 #: ../share/virtaal/virtaal.glade.h:86
 msgid "<u>Feedback</u>"
@@ -376,27 +374,27 @@ msgstr "<b><big>Thekgo</big></b>"
 
 #: ../share/virtaal/virtaal.glade.h:88
 msgid "Properties"
-msgstr ""
+msgstr "Dibopego"
 
 #: ../share/virtaal/virtaal.glade.h:89
 msgid "<b>Words</b> (total):"
-msgstr ""
+msgstr "<b>Mantšu</b> (palomoka):"
 
 #: ../share/virtaal/virtaal.glade.h:90
 msgid "<b>Strings</b> (total):"
-msgstr ""
+msgstr "<b>Methaladi</b> (palomoka):"
 
 #: ../share/virtaal/virtaal.glade.h:91
 msgid "File type:"
-msgstr ""
+msgstr "Mohuta wa faele:"
 
 #: ../share/virtaal/virtaal.glade.h:92
 msgid "File size:"
-msgstr ""
+msgstr "Bogolo bja faele:"
 
 #: ../share/virtaal/virtaal.glade.h:93
 msgid "Location:"
-msgstr ""
+msgstr "Lefelo:"
 
 #: ../virtaal/tips.py:27
 msgid ""
@@ -424,13 +422,15 @@ msgid ""
 "To mark the current translation as incomplete, simply press <Ctrl+Shift"
 "+Enter>."
 msgstr ""
+"Go swaya phetolelo ya gona bjale e le e sa phethwago, kgotla feela "
+"<Ctrl+Shift+Enter>."
 
 # 75%
 #: ../virtaal/tips.py:33
-#, fuzzy
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr ""
-"Go swaya phetolelo ya gona bjale e le e sa hlakago, kgotla feela <Alt+S>."
+"Go swaya phetolelo ya gona bjale e le e sa hlakago, kgotla feela "
+"<Ctrl+Enter>."
 
 #: ../virtaal/tips.py:34
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
@@ -446,54 +446,51 @@ msgstr ""
 
 # 83%
 #: ../virtaal/controllers/checkscontroller.py:29
-#, fuzzy
 msgid "Fuzzy"
-msgstr "_Sa hlakago"
+msgstr "Sa hlakago"
 
 # 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
-#, fuzzy
 msgid "Untranslated"
-msgstr "Sa fetolelwago: %d"
+msgstr "Sa fetolelwago"
 
 #: ../virtaal/controllers/checkscontroller.py:31
 msgid "Accelerators"
-msgstr ""
+msgstr "Diakgofiši"
 
 #: ../virtaal/controllers/checkscontroller.py:32
 msgid "Acronyms"
-msgstr ""
+msgstr "Dikopafatšo"
 
 #: ../virtaal/controllers/checkscontroller.py:33
 msgid "Blank"
-msgstr ""
+msgstr "Se nago selo"
 
 #: ../virtaal/controllers/checkscontroller.py:34
 msgid "Brackets"
-msgstr ""
+msgstr "Mašakana"
 
 #: ../virtaal/controllers/checkscontroller.py:35
 msgid "Compendium conflict"
-msgstr ""
+msgstr "Thulano e kopafaditšwego"
 
 # 88%
 #: ../virtaal/controllers/checkscontroller.py:36
-#, fuzzy
 msgid "Translator credits"
 msgstr "Pheledi Mathibela"
 
 #: ../virtaal/controllers/checkscontroller.py:37
 msgid "Double quotes"
-msgstr ""
+msgstr "Maswaotsopolo a gabedi"
 
 #: ../virtaal/controllers/checkscontroller.py:38
 msgid "Double spaces"
-msgstr ""
+msgstr "Dikgoba tše pedi"
 
 #: ../virtaal/controllers/checkscontroller.py:39
 msgid "Repeated word"
-msgstr ""
+msgstr "Lentšu le boeleditšwego"
 
 #: ../virtaal/controllers/checkscontroller.py:40
 #: ../virtaal/controllers/placeablescontroller.py:96
@@ -502,53 +499,52 @@ msgstr "Imeile"
 
 #: ../virtaal/controllers/checkscontroller.py:41
 msgid "Ending punctuation"
-msgstr ""
+msgstr "Leswaodikga la mafelelong"
 
 #: ../virtaal/controllers/checkscontroller.py:42
 msgid "Ending whitespace"
-msgstr ""
+msgstr "Sekgoba sa mafelelong"
 
 #: ../virtaal/controllers/checkscontroller.py:43
 msgid "Escapes"
-msgstr ""
+msgstr "Tše phonyokgilego"
 
 #: ../virtaal/controllers/checkscontroller.py:44
 msgid "File paths"
-msgstr ""
+msgstr "Ditsejana tša faele"
 
 #: ../virtaal/controllers/checkscontroller.py:45
 msgid "Functions"
-msgstr ""
+msgstr "Mediro"
 
 #: ../virtaal/controllers/checkscontroller.py:46
 msgid "GConf values"
-msgstr ""
+msgstr "Dika tša GConf"
 
 #: ../virtaal/controllers/checkscontroller.py:47
 msgid "Old KDE comment"
-msgstr ""
+msgstr "Tshwaotshwayo ya kgale ya KDE"
 
 #: ../virtaal/controllers/checkscontroller.py:48
 msgid "Long"
-msgstr ""
+msgstr "Telele"
 
 #: ../virtaal/controllers/checkscontroller.py:49
 msgid "Must translate words"
-msgstr ""
+msgstr "Mantšu a swanetšego go fetolelwa"
 
 #: ../virtaal/controllers/checkscontroller.py:50
 msgid "Newlines"
-msgstr ""
+msgstr "Methalo e meswa"
 
 # 94%
 #: ../virtaal/controllers/checkscontroller.py:51
-#, fuzzy
 msgid "Number of plurals"
-msgstr "Palo ya tše dintši:"
+msgstr "Palo ya tše dintši"
 
 #: ../virtaal/controllers/checkscontroller.py:52
 msgid "Don't translate words"
-msgstr ""
+msgstr "O se ke wa fetolela mantšu"
 
 #: ../virtaal/controllers/checkscontroller.py:53
 #: ../virtaal/controllers/placeablescontroller.py:120
@@ -562,59 +558,59 @@ msgstr "Dikgetho"
 
 #: ../virtaal/controllers/checkscontroller.py:55
 msgid "printf()"
-msgstr ""
+msgstr "printf()"
 
 #: ../virtaal/controllers/checkscontroller.py:56
 msgid "Punctuation spacing"
-msgstr ""
+msgstr "Sekgoba sa maswaodikga"
 
 #: ../virtaal/controllers/checkscontroller.py:57
 msgid "Pure punctuation"
-msgstr ""
+msgstr "Leswaodikga le sa tswakwago"
 
 #: ../virtaal/controllers/checkscontroller.py:58
 msgid "Number of sentences"
-msgstr ""
+msgstr "Palo ya mafoko"
 
 #: ../virtaal/controllers/checkscontroller.py:59
 msgid "Short"
-msgstr ""
+msgstr "Kopana"
 
 #: ../virtaal/controllers/checkscontroller.py:60
 msgid "Simple capitalization"
-msgstr ""
+msgstr "Tlhakakgolo e bonolo"
 
 #: ../virtaal/controllers/checkscontroller.py:61
 msgid "Simple plural(s)"
-msgstr ""
+msgstr "(Bo)ntši bjo bonolo"
 
 #: ../virtaal/controllers/checkscontroller.py:62
 msgid "Single quotes"
-msgstr ""
+msgstr "Leswaotsopolo le tee"
 
 #: ../virtaal/controllers/checkscontroller.py:63
 msgid "Spelling"
-msgstr ""
+msgstr "Mopeleto"
 
 #: ../virtaal/controllers/checkscontroller.py:64
 msgid "Starting capitalization"
-msgstr ""
+msgstr "Tlhakakgolo ya mathomong"
 
 #: ../virtaal/controllers/checkscontroller.py:65
 msgid "Starting punctuation"
-msgstr ""
+msgstr "Leswaodikga la mathomong"
 
 #: ../virtaal/controllers/checkscontroller.py:66
 msgid "Starting whitespace"
-msgstr ""
+msgstr "Sekgoba sa mathomong"
 
 #: ../virtaal/controllers/checkscontroller.py:67
 msgid "Tabs"
-msgstr ""
+msgstr "Dithepo"
 
 #: ../virtaal/controllers/checkscontroller.py:68
 msgid "Unchanged"
-msgstr ""
+msgstr "Sa fetošwago"
 
 #: ../virtaal/controllers/checkscontroller.py:69
 #: ../virtaal/controllers/placeablescontroller.py:129
@@ -623,41 +619,40 @@ msgstr "Di-URL"
 
 #: ../virtaal/controllers/checkscontroller.py:70
 msgid "Valid characters"
-msgstr ""
+msgstr "Ditlhaka tše šomago"
 
 #: ../virtaal/controllers/checkscontroller.py:71
 msgid "Placeholders"
-msgstr ""
+msgstr "Maemedi"
 
 # 87%
 #: ../virtaal/controllers/checkscontroller.py:72
-#, fuzzy
 msgid "XML tags"
 msgstr "Ditshwayo tša XML"
 
 #: ../virtaal/controllers/checkscontroller.py:111
 msgid "Default"
-msgstr ""
+msgstr "Tirelwa"
 
 #: ../virtaal/controllers/checkscontroller.py:112
 msgid "OpenOffice.org"
-msgstr ""
+msgstr "OpenOffice.org"
 
 #: ../virtaal/controllers/checkscontroller.py:113
 msgid "Mozilla"
-msgstr ""
+msgstr "Mozilla"
 
 #: ../virtaal/controllers/checkscontroller.py:114
 msgid "KDE"
-msgstr ""
+msgstr "KDE"
 
 #: ../virtaal/controllers/checkscontroller.py:115
 msgid "GNOME"
-msgstr ""
+msgstr "GNOME"
 
 #: ../virtaal/controllers/checkscontroller.py:116
 msgid "Drupal"
-msgstr ""
+msgstr "Drupal"
 
 #: ../virtaal/controllers/maincontroller.py:80
 #: ../virtaal/controllers/maincontroller.py:89
@@ -737,15 +732,15 @@ msgstr ""
 
 #: ../virtaal/controllers/maincontroller.py:263
 msgid "Can only export Gettext PO files"
-msgstr ""
+msgstr "E ka romela ka ntle difaele tša PO tša Gettext feela"
 
 #: ../virtaal/controllers/maincontroller.py:272
 msgid "Export"
-msgstr ""
+msgstr "Romela ntle"
 
 # 77%
 #: ../virtaal/controllers/maincontroller.py:280
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Could not export file.\n"
 "\n"
@@ -753,21 +748,21 @@ msgid ""
 "\n"
 "Try saving to a different location."
 msgstr ""
-"Ga e kgone go bula faele.\n"
+"Ga e kgone go romela faele ka ntle.\n"
 "\n"
 "%(error_message)s\n"
 "\n"
-"Leka go bula faele e fapanego."
+"Leka go boloka lefelong le fapanego."
 
 # 85%
 #: ../virtaal/controllers/maincontroller.py:285
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Could not export file.\n"
 "\n"
 "%(error_message)s"
 msgstr ""
-"Ga e kgone go boloka faele.\n"
+"Ga e kgone go romela faele ka ntle.\n"
 "\n"
 "%(error_message)s"
 
@@ -790,6 +785,8 @@ msgstr "Kheisikamela"
 msgid ""
 "Words with internal capitalization, such as some brand names and WikiWords"
 msgstr ""
+"Mantšu ao a nago le ditlhakakgolo ka gare, tše bjalo ka maina a dilo le di-"
+"WikiWords"
 
 #: ../virtaal/controllers/placeablescontroller.py:87
 msgid "Capitals"
@@ -904,19 +901,17 @@ msgstr "Leemedi la dika tša \"alt\" (bjalo ka ge di hwetšwa go HTML)"
 
 # 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
-#, fuzzy
 msgid "Placeholders (Drupal)"
-msgstr "Maemedi (Java)"
+msgstr "Maemedi (Drupal)"
 
 # 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
-#, fuzzy
 msgid "Placeholders in Drupal strings"
-msgstr "Maemedi methalading ya Java"
+msgstr "Maemedi methalading ya Drupal"
 
 #: ../virtaal/controllers/storecontroller.py:194
 msgid "No source or translatable files in bundle"
-msgstr ""
+msgstr "Ga go na difaele tša mothopo goba tšeo di fetolegago sehlotswaneng"
 
 #: ../virtaal/controllers/storecontroller.py:225
 msgid "The file contains nothing to translate."
@@ -959,29 +954,28 @@ msgstr "Faele e mpshafaditšwe"
 
 #: ../virtaal/controllers/unitcontroller.py:84
 msgid "Needs work"
-msgstr ""
+msgstr "Nyaka go šongwa"
 
 #: ../virtaal/controllers/unitcontroller.py:85
 msgid "Rejected"
-msgstr ""
+msgstr "Gannwe"
 
 #: ../virtaal/controllers/unitcontroller.py:86
 msgid "Needs review"
-msgstr ""
+msgstr "Nyaka poeletšo"
 
 #: ../virtaal/controllers/unitcontroller.py:87
 msgid "Translated"
-msgstr ""
+msgstr "Fetoletšwego"
 
 #: ../virtaal/controllers/unitcontroller.py:88
 msgid "Reviewed"
-msgstr ""
+msgstr "Boeleditšwego"
 
 # 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
-#, fuzzy
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 
 #: ../virtaal/modes/defaultmode.py:28
 msgid "All"
@@ -989,17 +983,17 @@ msgstr "Tšohle"
 
 #: ../virtaal/modes/qualitycheckmode.py:33
 msgid "Quality Checks"
-msgstr ""
+msgstr "Ditekolo tša boleng"
 
 #. l10n: This is the button where the user can select units by failing quality checks
 #: ../virtaal/modes/qualitycheckmode.py:130
 msgid "Select Checks"
-msgstr ""
+msgstr "Kgetha ditekolo"
 
 #. l10n: This refers to quality checks
 #: ../virtaal/modes/qualitycheckmode.py:133
 msgid "All Checks"
-msgstr ""
+msgstr "Ditekolo tšohle"
 
 #: ../virtaal/modes/quicktransmode.py:31
 msgid "Incomplete"
@@ -1039,17 +1033,17 @@ msgstr "Tšeel_a tšohle legato"
 
 #: ../virtaal/modes/workflowmode.py:34
 msgid "Workflow"
-msgstr ""
+msgstr "Tšwelopele ya mošomo"
 
 #. l10n: This is the button where the user can select units by workflow state
 #: ../virtaal/modes/workflowmode.py:112
 msgid "Select States"
-msgstr ""
+msgstr "Kgetha maemo"
 
 #. l10n: This refers to workflow states
 #: ../virtaal/modes/workflowmode.py:115
 msgid "All States"
-msgstr ""
+msgstr "Maemo ka moka"
 
 #: ../virtaal/plugins/autocompletor.py:214
 msgid "Automatically complete long words while you type"
@@ -1069,38 +1063,37 @@ msgstr "Sephošolli sa maitirišo"
 
 #: ../virtaal/plugins/spellchecker.py:47
 msgid "Spell Checker"
-msgstr ""
+msgstr "Selokola-mopeleto"
 
 #: ../virtaal/plugins/spellchecker.py:48
 msgid "Check spelling and provide suggestions"
-msgstr ""
+msgstr "Lekola mopeleto gomme o nee ditšhišinyo"
 
 #. l10n: This refers to spell checking
 #: ../virtaal/plugins/spellchecker.py:334
 msgid "<i>(no suggestions)</i>"
-msgstr ""
+msgstr "<i>(ga go na ditšhišinyo)</i>"
 
 #. l10n: This refers to spell checking
 #: ../virtaal/plugins/spellchecker.py:338
 msgid "Ignore All"
-msgstr ""
+msgstr "Hlokomologa tšohle"
 
 #. l10n: This refers to spelling suggestions
 #: ../virtaal/plugins/spellchecker.py:342
 msgid "More..."
-msgstr ""
+msgstr "Oketšegilego..."
 
 #. l10n: This refers to the spell checking dictionary
 #: ../virtaal/plugins/spellchecker.py:348
 #, python-format
 msgid "Add \"%s\" to Dictionary"
-msgstr ""
+msgstr "Tsenya \"%s\" pukuntšung"
 
 # 88%
 #: ../virtaal/plugins/spellchecker.py:351
-#, fuzzy
 msgid "Languages"
-msgstr "Leleme"
+msgstr "Maleme"
 
 #: ../virtaal/plugins/lookup/__init__.py:29
 msgid "Perform look-ups on selected text"
@@ -1519,7 +1512,7 @@ msgstr "%(match_quality)s%%"
 #. l10n: This indicates a suggestion from machine translation. It is displayed instead of the match percentage.
 #: ../virtaal/plugins/tm/tmwidgets.py:148
 msgid "?"
-msgstr ""
+msgstr "?"
 
 #: ../virtaal/support/native_widgets.py:129
 #: ../virtaal/support/native_widgets.py:157 ../virtaal/views/mainview.py:252
@@ -1528,25 +1521,25 @@ msgstr "Kgetha faele ya phetolelo"
 
 #: ../virtaal/views/checksunitview.py:73
 msgid "No issues"
-msgstr ""
+msgstr "Ga go na mathata"
 
 #: ../virtaal/views/checksunitview.py:80
 msgid "Quality Check"
-msgstr ""
+msgstr "Tekolo ya boleng"
 
 #: ../virtaal/views/checksunitview.py:86
 msgid "Description"
-msgstr ""
+msgstr "Tlhaloso"
 
 #: ../virtaal/views/checksprojview.py:40
 msgid "Project Type"
-msgstr ""
+msgstr "Mohuta wa projeke"
 
 #. l10n: The label indicating the checker style (GNOME/KDE/whatever)
 #: ../virtaal/views/checksprojview.py:63
 #, python-format
 msgid "Checks: %(checker_name)s"
-msgstr ""
+msgstr "Ditekolo: %(checker_name)"
 
 #: ../virtaal/views/langview.py:76
 msgid "_New Language Pair..."
@@ -1594,88 +1587,85 @@ msgstr "Tshepel_atshepelo:"
 
 #: ../virtaal/views/modeview.py:108 ../virtaal/views/propertiesview.py:134
 msgid "Save the file for up-to-date information"
-msgstr ""
+msgstr "Boloka faele bakeng sa tshedimošo yeo e lego nakong"
 
 # 81%
 #: ../virtaal/views/propertiesview.py:32
-#, fuzzy
 msgid "Untranslated:"
-msgstr "Sa fetolelwago: %d"
+msgstr "Sa fetolelwago:"
 
 #: ../virtaal/views/propertiesview.py:33
 msgid "Needs work:"
-msgstr ""
+msgstr "Nyakago go šongwa:"
 
 #: ../virtaal/views/propertiesview.py:34
 msgid "Rejected:"
-msgstr ""
+msgstr "Gannwego:"
 
 #: ../virtaal/views/propertiesview.py:35
 msgid "Needs review:"
-msgstr ""
+msgstr "Nyakago poeletšo:"
 
 # 78%
 #: ../virtaal/views/propertiesview.py:36
-#, fuzzy
 msgid "Translated:"
-msgstr "Fetoletšwego: %d"
+msgstr "Fetoletšwego:"
 
 #: ../virtaal/views/propertiesview.py:37
 msgid "Reviewed:"
-msgstr ""
+msgstr "Boeleditšwego:"
 
 #: ../virtaal/views/propertiesview.py:59
 msgid "(0%)"
-msgstr ""
+msgstr "(0%)"
 
 #: ../virtaal/views/propertiesview.py:61
 msgid "(100%)"
-msgstr ""
+msgstr "(100%)"
 
 #. l10n: This is the formatting for percentages in the file properties. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:64
 #, python-format
 msgid "(%04.1f%%)"
-msgstr ""
+msgstr "(%04.1f%%)"
 
 # 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192
-#, fuzzy, python-format
+#, python-format
 msgid "<b>%d</b>"
-msgstr "<b>%s</b>"
+msgstr "<b>%d</b>"
 
 #: ../virtaal/views/propertiesview.py:203
 #, python-format
 msgid "%.1f KB"
-msgstr ""
+msgstr "%.1f KB"
 
 #: ../virtaal/views/storeview.py:163 ../virtaal/views/storeview.py:172
 msgid "Export failed"
-msgstr ""
+msgstr "Go romela ka ntle go padile"
 
 #: ../virtaal/views/storeview.py:181
 msgid "Preview failed"
-msgstr ""
+msgstr "Poeletšo e padile"
 
 #: ../virtaal/views/unitview.py:614
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
-msgstr ""
+msgstr "Boela morago ka kgato e tee go tšwelopele ya mošomo (Ctrl+Shift+Enter)"
 
 #: ../virtaal/views/unitview.py:615
 msgid "Click to move to a specific state in the workflow"
-msgstr ""
+msgstr "Kgotla gore o ye maemong a itšego go tšwelopele ya mošomo"
 
 #: ../virtaal/views/unitview.py:616
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
-msgstr ""
+msgstr "Eya pele ka kgato e tee go tšwelopele ya mošomo (Ctrl+Enter)"
 
 # 95%
 #: ../virtaal/views/widgets/aboutdialog.py:34
-#, fuzzy
 msgid "Copyright © 2007-2010 Zuza Software Foundation"
-msgstr "Tokelo ya ngwalollo © 2007-2009 Zuza Software Foundation"
+msgstr "Tokelo ya ngwalollo © 2007-2010 Zuza Software Foundation"
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
@@ -1753,7 +1743,7 @@ msgstr "Thušo ya mareo"
 
 #: ../virtaal/views/widgets/welcomescreen.py:81
 msgid "Quality checks"
-msgstr ""
+msgstr "Ditekolo tša boleng"
 
 #: ../virtaal/views/widgets/welcomescreen.py:82
 msgid "Machine translation"
@@ -1877,19 +1867,19 @@ msgstr "Serulaganyi sa tshwayo sa Trados"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:26
 msgid "OS X Strings File"
-msgstr ""
+msgstr "Faele ya methaladi ya OS X"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:27
 msgid "UTX Dictionary"
-msgstr ""
+msgstr "Pukuntšu ya UTX"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:28
 msgid "UTX"
-msgstr ""
+msgstr "UTX"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:29
 msgid "Universal Terminology eXchange"
-msgstr ""
+msgstr "Universal Terminology eXchange"
 
 #: ../devsupport/tmp_strings.py:23
 msgid "Gettext PO file"
@@ -1957,7 +1947,7 @@ msgstr "palo yeo e sa šomego ya dingangišano"
 
 #: ../bin/virtaal:167
 msgid "Profiling support is not available"
-msgstr ""
+msgstr "Thekgo ya profaele ga e gona"
 
 #: ../bin/virtaal:179
 msgid "Could not open profile file '%(filename)s'"

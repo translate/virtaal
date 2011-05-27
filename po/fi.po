@@ -461,7 +461,7 @@ msgstr "Sulkeet"
 
 #: ../virtaal/controllers/checkscontroller.py:35
 msgid "Compendium conflict"
-msgstr ""
+msgstr "PO Compendium -ristiriita"
 
 # 88%
 #: ../virtaal/controllers/checkscontroller.py:36
@@ -470,7 +470,7 @@ msgstr "Kääntäjien kunniataulu"
 
 #: ../virtaal/controllers/checkscontroller.py:37
 msgid "Double quotes"
-msgstr ""
+msgstr "Lainausmerkkien määrä"
 
 #: ../virtaal/controllers/checkscontroller.py:38
 msgid "Double spaces"
@@ -519,7 +519,7 @@ msgstr "Pitkähkö"
 
 #: ../virtaal/controllers/checkscontroller.py:49
 msgid "Must translate words"
-msgstr ""
+msgstr "Sana joka on käännettävä"
 
 #: ../virtaal/controllers/checkscontroller.py:50
 msgid "Newlines"
@@ -532,7 +532,7 @@ msgstr "Monikoiden määrä"
 
 #: ../virtaal/controllers/checkscontroller.py:52
 msgid "Don't translate words"
-msgstr ""
+msgstr "Sana jota ei tule kääntää"
 
 #: ../virtaal/controllers/checkscontroller.py:53
 #: ../virtaal/controllers/placeablescontroller.py:120
@@ -550,7 +550,7 @@ msgstr "printf()"
 
 #: ../virtaal/controllers/checkscontroller.py:56
 msgid "Punctuation spacing"
-msgstr ""
+msgstr "Välimerkin jälkeinen välilyönti"
 
 #: ../virtaal/controllers/checkscontroller.py:57
 msgid "Pure punctuation"
@@ -574,7 +574,7 @@ msgstr ""
 
 #: ../virtaal/controllers/checkscontroller.py:62
 msgid "Single quotes"
-msgstr ""
+msgstr "Puolilainausmerkkien määrä"
 
 #: ../virtaal/controllers/checkscontroller.py:63
 msgid "Spelling"
@@ -582,7 +582,7 @@ msgstr "Oikeinkirjoitus"
 
 #: ../virtaal/controllers/checkscontroller.py:64
 msgid "Starting capitalization"
-msgstr ""
+msgstr "Aloittava versaali"
 
 #: ../virtaal/controllers/checkscontroller.py:65
 msgid "Starting punctuation"
@@ -607,7 +607,7 @@ msgstr "URLit"
 
 #: ../virtaal/controllers/checkscontroller.py:70
 msgid "Valid characters"
-msgstr ""
+msgstr "Merkistövirhe"
 
 #: ../virtaal/controllers/checkscontroller.py:71
 msgid "Placeholders"
@@ -947,11 +947,11 @@ msgstr "Keskeneräinen"
 
 #: ../virtaal/controllers/unitcontroller.py:85
 msgid "Rejected"
-msgstr ""
+msgstr "Hylätty"
 
 #: ../virtaal/controllers/unitcontroller.py:86
 msgid "Needs review"
-msgstr ""
+msgstr "Tarkastettava"
 
 #: ../virtaal/controllers/unitcontroller.py:87
 msgid "Translated"
@@ -959,7 +959,7 @@ msgstr "Käännetty"
 
 #: ../virtaal/controllers/unitcontroller.py:88
 msgid "Reviewed"
-msgstr ""
+msgstr "Tarkastettu"
 
 # 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64

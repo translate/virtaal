@@ -196,7 +196,7 @@ class StringElemGUI(object):
         return length
 
     def render(self, offset=-1):
-        """Render the string element string and its associatd widgets."""
+        """Render the string element string and its associated widgets."""
         buffer = self.textbox.buffer
         if offset < 0:
             offset = 0

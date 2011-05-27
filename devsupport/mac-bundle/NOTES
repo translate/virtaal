@@ -49,6 +49,7 @@ Todo
         * Investigate dmg script in ige-mac-bundler so that we can build th DMG from script
         * Document process more clearly
 * Build completely from scratch, no downloaded or checked out files (don't lose the patches!)
+        * pycurl - trying to build against static libs should remove --static-libs from the pycurl setup.py. Need to use a tarball instead of CVS
 
 # Important (some of our users are affected)
 * Pango things
@@ -88,6 +89,7 @@ Todo
 * Start Virtaal when clicking supported files in the finder
         http://sourceforge.net/mailarchive/forum.php?thread_name=AANLkTikUhZpPrg6VdXu64QBw8V1iGTXd5oZ6NCT%2BYrkv%40mail.gmail.com&forum_name=gtk-osx-users
         http://sourceforge.net/mailarchive/message.php?msg_id=26065350
+* Build libcurl with IDN support - only needed if we ever have a way to retreive other people's URLs from the app
 
 
 Installer

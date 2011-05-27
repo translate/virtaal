@@ -25,7 +25,6 @@ from gtk import gdk
 
 from virtaal.common import GObjectWrapper
 from virtaal.views.baseview import BaseView
-from virtaal.views.widgets.selectdialog import SelectDialog
 
 from tmwidgets import *
 
@@ -169,6 +168,7 @@ class TMView(BaseView, GObjectWrapper):
         self.isvisible = False
 
     def select_backends(self, parent):
+        from virtaal.views.widgets.selectdialog import SelectDialog
         selectdlg = SelectDialog(
             #l10n: The 'sources' here refer to different translation memory plugins,
             #such as local tm, open-tran.eu, the current file, etc.

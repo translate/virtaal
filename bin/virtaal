@@ -31,7 +31,7 @@ if os_name == 'nt':
 packaged = getattr(sys, 'frozen', False)
 # Distributions can just set this value to True, if dependencies are taken care
 # of elsewhere:
-packaged = True
+#packaged = True
 
 # Let's check for dependencies before we do anything else
 if not packaged:

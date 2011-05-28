@@ -18,18 +18,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import os.path
 import gtk
-import logging
 import pango
 from gtk import gdk
-from locale import strcoll
-from translate.lang import factory as lang_factory
 from translate.storage import factory as store_factory
 
-from virtaal.common.pan_app import ui_language
 from virtaal.views.baseview import BaseView
-from virtaal.views import rendering
 from virtaal.views.theme import current_theme
 
 
@@ -195,6 +189,7 @@ class FileSelectDialog:
         dlg.add_filter(all_supported_filter)
         supported_files_dict = dict([ (_(name), (extension, mimetype)) for name, extension, mimetype in store_factory.supported_files() ])
         supported_file_names = supported_files_dict.keys()
+        from locale import strcoll
         supported_file_names.sort(cmp=strcoll)
         for name in supported_file_names:
             extensions, mimetypes = supported_files_dict[name]
@@ -256,6 +251,7 @@ class FileSelectDialog:
                 continue
             # Try and open filename as a translation store
             try:
+                import os.path
                 if not os.path.isfile(filename):
                     raise IOError(_('"%s" is not a usable file.') % filename)
                 store = store_factory.getobject(filename)
@@ -361,6 +357,7 @@ class TermAddDialog:
         filename = self.cmb_termfile.get_active_text()
         store = self.term_model.get_store_for_filename(filename)
         if store is None:
+            import logging
             logging.debug('No terminology store to extend :(')
             return
         unit = store.addsourceunit(source)
@@ -384,6 +381,8 @@ class TermAddDialog:
             if selection:
                 source_text = src.get_text(*selection)
                 break
+
+        from virtaal.views import rendering
         self.ent_source.modify_font(rendering.get_source_font_description())
         self.ent_source.set_text(source_text.strip())
 
@@ -455,6 +454,8 @@ class TermAddDialog:
         if src_text and same_src_units:
             # We want to separate multiple terms with the correct list
             # separator for the UI language:
+            from translate.lang import factory as lang_factory
+            from virtaal.common.pan_app import ui_language
             separator = lang_factory.getlanguage(ui_language).listseperator
 
             #l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.

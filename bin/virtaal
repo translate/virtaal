@@ -27,8 +27,14 @@ if os_name == 'nt':
     sys.stdout = open(filename_template % ('stdout'), 'w')
     sys.stderr = open(filename_template % ('stderr'), 'w')
 
+# Some behaviour should vary, depending on whether Virtaal is packaged or not
+packaged = getattr(sys, 'frozen', False)
+# Distributions can just set this value to True, if dependencies are taken care
+# of elsewhere:
+packaged = True
+
 # Let's check for dependencies before we do anything else
-if not getattr(sys, 'frozen', False):
+if not packaged:
     # We can't meaningfully report on these, and we build our own windows
     # version, so let's leave this out for the benefit of startup time.
     from virtaal.support import depcheck
@@ -97,7 +103,6 @@ def main(argv):
                         help=_("enable debugging features")),
         ]
         # Profiling does not make sense in packaged versions.  Set to True to disable profiling.
-        packaged = False
         if not packaged:
             option_list.insert(0, make_option("-P", "--profile", action="store",
                                               type="string", dest="profile",

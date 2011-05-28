@@ -65,6 +65,9 @@ Todo
           http://sourceforge.net/mailarchive/message.php?msg_id=26149496
           * Maybe use CocoaDialog instead?
 * Localise GtkOSXApplication.strings http://sourceforge.net/apps/trac/gtk-osx/wiki/Integrate
+* Link the NSXXXXX closing signal to anything we need
+        * Close tmserver that we've launched
+* Use Sparkle to notify users of updates
 
 # Not urgent (we can live without these for now)
 * Cleanup Plist, runvirtaal etc so that we are rid of gramps stuff that we don't need

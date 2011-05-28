@@ -107,7 +107,7 @@ def main(argv):
             option_list.insert(0, make_option("-P", "--profile", action="store",
                                               type="string", dest="profile",
                                               metavar=_("PROFILE"),
-					      # l10n: 'profiling' refers to performance testing
+                                              #l10n: 'profiling' refers to performance testing
                                               help=_("perform profiling, storing the result to the supplied filename.")))
         parser = OptionParser(option_list=option_list, usage=usage, version=__version__.ver)
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009-2010 Zuza Software Foundation
+# Copyright 2009-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -45,8 +45,8 @@ class LocalFileView:
         self.mainview = model.controller.main_controller.view
         self._signal_ids = []
         self._setup_menus()
-        self.addterm = TermAddDialog(model=model)
-        self.fileselect = FileSelectDialog(model=model)
+        self._addterm = None
+        self._fileselect = None
 
 
     # METHODS #
@@ -85,6 +85,20 @@ class LocalFileView:
 
         self.menu.remove(self.mnu_select_files)
         self.menu.remove(self.mnu_add_term)
+
+
+    # PROPERTIES #
+    def _get_addterm(self):
+        if not self._addterm:
+            self._addterm = TermAddDialog(model=self.term_model)
+        return self._addterm
+    addterm = property(_get_addterm)
+
+    def _get_fileselect(self):
+        if not self._fileselect:
+            self._fileselect = FileSelectDialog(model=self.term_model)
+        return self._fileselect
+    fileselect = property(_get_fileselect)
 
 
     # EVENT HANDLERS #
@@ -168,6 +182,7 @@ class FileSelectDialog:
 
     def _init_add_chooser(self):
         # The following code was mostly copied from virtaal.views.MainView._create_dialogs()
+        #TODO: use native dialogues
         dlg = gtk.FileChooserDialog(
             _('Add Files'),
             self.controller.main_controller.view.main_window,

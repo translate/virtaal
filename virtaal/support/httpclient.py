@@ -262,4 +262,8 @@ class HTTPClient(object):
             name = name_dict.get((major, minor), None)
             if name:
                 platform = '%s; %s' % (platform, name)
+        elif platform.startswith('darwin'):
+            import platform as plat
+            release, versioninfo, machine = plat.mac_ver()
+            platform = "%s; %s %s" % (platform, release, machine)
         self.user_agent = 'Virtaal/%s (%s)' % (version, platform)

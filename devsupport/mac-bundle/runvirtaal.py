@@ -20,6 +20,7 @@ sys.path = [_virtaal_path,
             _pylib_path]
 
 sys.prefix = _res_path
+os.environ["PYTHONHOME"]=_res_path
 os.environ["XDG_DATA_DIRS"]=_share_path
 os.environ["DYLD_LIBRARY_PATH"]=_lib_path
 os.environ["LD_LIBRARY_PATH"]=_lib_path
@@ -45,6 +46,8 @@ try:
         [defaults,  "read", "-app", "Virtaal", "AppleLanguages"],
         stderr=open("/dev/null"),
         stdout=subprocess.PIPE).communicate()[0].strip("()\n").split(",\n")
+    if _languages == ['']:
+        _languages = ""
 except:
     pass
 if not _languages:
@@ -59,11 +62,11 @@ if not _languages:
 for _lang in _languages:
     _lang=_lang.strip().strip('"').replace("-", "_", 1)
     if _lang == "cn_Hant": #Traditional; Gettext uses cn_TW
-        _lang = "cn_TW"
+        _lang = "zh_TW"
     if _lang == "cn_Hans": #Simplified; Gettext uses cn_CN
-        _lang = "cn_CN"
+        _lang = "zh_CN"
     _language = _lang
-    if _lang.startswith("en"): #Gramps doesn't have explicit English translation, use C
+    if _lang.startswith("en"): #Virtaal doesn't have explicit English translation, use C
         break
     if os.path.exists(os.path.join(_virtaal_locale, _lang, "LC_MESSAGES",
                                    "virtaal.mo")):
@@ -134,7 +137,7 @@ os.environ["LANGUAGE"] = LC_ALL
 os.environ["LC_ALL"] = LC_ALL + ".UTF-8" #Spell-checker dictionary support
 
 #LaunchServices sticks this argument on the front of argument
-#lists. It must make sense to somebody, but Gramps isn't that
+#lists. It must make sense to somebody, but Virtaal isn't that
 #somebody.
 for _arg in sys.argv:
     if _arg.startswith("-psn"):

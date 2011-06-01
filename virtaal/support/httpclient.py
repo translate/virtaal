@@ -175,6 +175,9 @@ class HTTPClient(object):
 
     def add(self,request):
         """add a request to the queue"""
+        # First ensure that we're not piling up on unanswered requests:
+        if len(self.requests) > 15:
+            return
         self.curl.add_handle(request.curl)
         self.requests.add(request)
         self.run()

@@ -160,9 +160,17 @@ class TMModel(BaseTMModel):
 
     def got_translation(self, val, query_str):
         """Handle the response from the web service now that it came in."""
+        # Since we expect Google to shut down the service in December 2011, we
+        # try to be extra careful with error handling, and actually expect
+        # problems. If we encounter a problem, we make the list of languages
+        # empty so that no other requests would be attempted.
         global _languages
         try:
             data = json.loads(val)
+            # We try to access the members to validate that the dictionary is
+            # formed in the way we expect.
+            data['responseStatus']
+            data['responseData']['translatedText']
         except Exception:
             _languages = {}
             return

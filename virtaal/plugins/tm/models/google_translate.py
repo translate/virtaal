@@ -149,13 +149,27 @@ class TMModel(BaseTMModel):
                 'http-success',
                 lambda req, response: self.got_translation(response, query_str)
             )
+            req.connect(
+                'http-client-error',
+                lambda req, response: self.got_error(response, query_str)
+            )
+            req.connect(
+                'http-server-error',
+                lambda req, response: self.got_error(response, query_str)
+            )
 
     def got_translation(self, val, query_str):
         """Handle the response from the web service now that it came in."""
-        data = json.loads(val)
+        global _languages
+        try:
+            data = json.loads(val)
+        except Exception:
+            _languages = {}
+            return
 
         if data['responseStatus'] != 200:
             logging.debug("Failed to translate '%s':\n%s" % (query_str, data['responseDetails']))
+            _languages = {}
             return
 
         target_unescaped = unescape_html_entities(data['responseData']['translatedText'])
@@ -169,3 +183,7 @@ class TMModel(BaseTMModel):
         }
         self.cache[query_str] = [match]
         self.emit('match-found', query_str, [match])
+
+    def got_error(self, val, query_str):
+        global _languages
+        _languages = {}

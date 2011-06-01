@@ -24,7 +24,6 @@ import logging
 
 import gobject
 import pycurl
-import urllib
 
 from virtaal.common.gobjectwrapper import GObjectWrapper
 

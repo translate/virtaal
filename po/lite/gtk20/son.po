@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: GTK+ lite 2.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2008-07-25 18:31+0200\n"
-"PO-Revision-Date: 2011-05-17 23:21+0200\n"
+"PO-Revision-Date: 2011-05-30 16:08+0200\n"
 "Last-Translator: Mohomodou  <mh@bollag-areal.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: son\n"
@@ -285,7 +285,7 @@ msgstr "%d. %s"
 
 msgctxt "Stock label"
 msgid "_Properties"
-msgstr ""
+msgstr "_Mayrawey"
 
 #. File->Quit
 msgid "_Quit"

@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-18 09:42+0200\n"
-"Last-Translator: George Patrick <chanchumgpa@gmail.com>\n"
+"PO-Revision-Date: 2011-05-20 14:40+0200\n"
+"Last-Translator: broyfvill2010 <broyfvill2010@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ach\n"
 "MIME-Version: 1.0\n"
@@ -220,7 +220,7 @@ msgstr "Lutic:"
 
 #: ../share/virtaal/virtaal.glade.h:48
 msgid "<b>Translator Information</b>"
-msgstr "<b>Ngec ikom dano ma lagony</b>"
+msgstr "<b>Ngec ikom lagony</b>"
 
 #: ../share/virtaal/virtaal.glade.h:49
 msgid "Source text:"
@@ -381,7 +381,7 @@ msgstr "<b>Tol</b> (lung):"
 
 #: ../share/virtaal/virtaal.glade.h:91
 msgid "File type:"
-msgstr "Kwon fail:"
+msgstr "Kwone fail:"
 
 #: ../share/virtaal/virtaal.glade.h:92
 msgid "File size:"
@@ -449,33 +449,32 @@ msgstr "Wiewie"
 
 #: ../virtaal/controllers/checkscontroller.py:33
 msgid "Blank"
-msgstr "Benki"
+msgstr "Matwolo"
 
 #: ../virtaal/controllers/checkscontroller.py:34
 msgid "Brackets"
-msgstr ""
+msgstr "Akote"
 
 #: ../virtaal/controllers/checkscontroller.py:35
 msgid "Compendium conflict"
-msgstr ""
+msgstr "Rucurucu ika gwoko jami"
 
 # 88%
 #: ../virtaal/controllers/checkscontroller.py:36
-#, fuzzy
 msgid "Translator credits"
-msgstr "bany me-gony"
+msgstr "Banya pa lagony"
 
 #: ../virtaal/controllers/checkscontroller.py:37
 msgid "Double quotes"
-msgstr ""
+msgstr "Nyig lok wang aryo"
 
 #: ../virtaal/controllers/checkscontroller.py:38
 msgid "Double spaces"
-msgstr ""
+msgstr "Ka ma nono wang aryo"
 
 #: ../virtaal/controllers/checkscontroller.py:39
 msgid "Repeated word"
-msgstr ""
+msgstr "Nyig lok ma ki nwo"
 
 #: ../virtaal/controllers/checkscontroller.py:40
 #: ../virtaal/controllers/placeablescontroller.py:96
@@ -484,53 +483,52 @@ msgstr "E-mail"
 
 #: ../virtaal/controllers/checkscontroller.py:41
 msgid "Ending punctuation"
-msgstr ""
+msgstr "Lanyut ma ki tiyo kwede i coc ma giko"
 
 #: ../virtaal/controllers/checkscontroller.py:42
 msgid "Ending whitespace"
-msgstr ""
+msgstr "ka ma nono ma ogiko ma tar"
 
 #: ../virtaal/controllers/checkscontroller.py:43
 msgid "Escapes"
-msgstr ""
+msgstr "Lwi"
 
 #: ../virtaal/controllers/checkscontroller.py:44
 msgid "File paths"
-msgstr ""
+msgstr "Kabeo pa fail"
 
 #: ../virtaal/controllers/checkscontroller.py:45
 msgid "Functions"
-msgstr ""
+msgstr "Yuba"
 
 #: ../virtaal/controllers/checkscontroller.py:46
 msgid "GConf values"
-msgstr ""
+msgstr "GConf teko"
 
 #: ../virtaal/controllers/checkscontroller.py:47
 msgid "Old KDE comment"
-msgstr ""
+msgstr "Tam amia macon me KDE"
 
 #: ../virtaal/controllers/checkscontroller.py:48
 msgid "Long"
-msgstr ""
+msgstr "Bor"
 
 #: ../virtaal/controllers/checkscontroller.py:49
 msgid "Must translate words"
-msgstr ""
+msgstr "Myero lok nyig lok"
 
 #: ../virtaal/controllers/checkscontroller.py:50
 msgid "Newlines"
-msgstr ""
+msgstr "Rek manyen"
 
 # 94%
 #: ../virtaal/controllers/checkscontroller.py:51
-#, fuzzy
 msgid "Number of plurals"
 msgstr "Namba ne mapol:"
 
 #: ../virtaal/controllers/checkscontroller.py:52
 msgid "Don't translate words"
-msgstr ""
+msgstr "Pe igony nyig lok"
 
 #: ../virtaal/controllers/checkscontroller.py:53
 #: ../virtaal/controllers/placeablescontroller.py:120
@@ -540,63 +538,64 @@ msgstr "Namba"
 #: ../virtaal/controllers/checkscontroller.py:54
 #: ../devsupport/optparse.py:1612
 msgid "Options"
-msgstr "Kite mapol"
+msgstr "Me ayera"
 
 #: ../virtaal/controllers/checkscontroller.py:55
+#, fuzzy
 msgid "printf()"
-msgstr ""
+msgstr "Gof()"
 
 #: ../virtaal/controllers/checkscontroller.py:56
 msgid "Punctuation spacing"
-msgstr ""
+msgstr "Lanyut me ka ma nono"
 
 #: ../virtaal/controllers/checkscontroller.py:57
 msgid "Pure punctuation"
-msgstr ""
+msgstr "Lanyut kikome"
 
 #: ../virtaal/controllers/checkscontroller.py:58
 msgid "Number of sentences"
-msgstr ""
+msgstr "Namba me coc"
 
 #: ../virtaal/controllers/checkscontroller.py:59
 msgid "Short"
-msgstr ""
+msgstr "Cek"
 
 #: ../virtaal/controllers/checkscontroller.py:60
 msgid "Simple capitalization"
-msgstr ""
+msgstr "Nyukta madongo mayot"
 
 #: ../virtaal/controllers/checkscontroller.py:61
 msgid "Simple plural(s)"
-msgstr ""
+msgstr "Mapol mayot"
 
 #: ../virtaal/controllers/checkscontroller.py:62
 msgid "Single quotes"
-msgstr ""
+msgstr "Coc acel"
 
 #: ../virtaal/controllers/checkscontroller.py:63
 msgid "Spelling"
-msgstr ""
+msgstr "Nyukta"
 
 #: ../virtaal/controllers/checkscontroller.py:64
 msgid "Starting capitalization"
-msgstr ""
+msgstr "Acaki nyukuta madongo "
 
 #: ../virtaal/controllers/checkscontroller.py:65
 msgid "Starting punctuation"
-msgstr ""
+msgstr "Acaki lanyut"
 
 #: ../virtaal/controllers/checkscontroller.py:66
 msgid "Starting whitespace"
-msgstr ""
+msgstr "Acaki lagoro ma tar"
 
 #: ../virtaal/controllers/checkscontroller.py:67
 msgid "Tabs"
-msgstr ""
+msgstr "Tab"
 
 #: ../virtaal/controllers/checkscontroller.py:68
 msgid "Unchanged"
-msgstr ""
+msgstr "Pe ki loko"
 
 #: ../virtaal/controllers/checkscontroller.py:69
 #: ../virtaal/controllers/placeablescontroller.py:129
@@ -605,11 +604,11 @@ msgstr "URLs"
 
 #: ../virtaal/controllers/checkscontroller.py:70
 msgid "Valid characters"
-msgstr ""
+msgstr "Kit ma tiyo"
 
 #: ../virtaal/controllers/checkscontroller.py:71
 msgid "Placeholders"
-msgstr ""
+msgstr "Labongo nying"
 
 # 87%
 #: ../virtaal/controllers/checkscontroller.py:72
@@ -619,33 +618,33 @@ msgstr "XML Tags"
 
 #: ../virtaal/controllers/checkscontroller.py:111
 msgid "Default"
-msgstr ""
+msgstr "Ka ma oaa iye"
 
 #: ../virtaal/controllers/checkscontroller.py:112
 msgid "OpenOffice.org"
-msgstr ""
+msgstr "OpenOffice.org"
 
 #: ../virtaal/controllers/checkscontroller.py:113
 msgid "Mozilla"
-msgstr ""
+msgstr "Mozilla"
 
 #: ../virtaal/controllers/checkscontroller.py:114
 msgid "KDE"
-msgstr ""
+msgstr "KDE"
 
 #: ../virtaal/controllers/checkscontroller.py:115
 msgid "GNOME"
-msgstr ""
+msgstr "GNOME"
 
 #: ../virtaal/controllers/checkscontroller.py:116
 msgid "Drupal"
-msgstr ""
+msgstr "Drupal"
 
 #: ../virtaal/controllers/maincontroller.py:80
 #: ../virtaal/controllers/maincontroller.py:89
 #: ../virtaal/controllers/maincontroller.py:98
 msgid "Header information"
-msgstr "ngec me Lawic"
+msgstr "Ngec me Lawic"
 
 #: ../virtaal/controllers/maincontroller.py:81
 msgid "Please enter your name"
@@ -717,11 +716,11 @@ msgstr ""
 
 #: ../virtaal/controllers/maincontroller.py:263
 msgid "Can only export Gettext PO files"
-msgstr ""
+msgstr "Twero cwalo woko Gettext PO fail"
 
 #: ../virtaal/controllers/maincontroller.py:272
 msgid "Export"
-msgstr ""
+msgstr "Cwalo woko"
 
 # 77%
 #: ../virtaal/controllers/maincontroller.py:280
@@ -768,6 +767,7 @@ msgstr "Kit inaga"
 msgid ""
 "Words with internal capitalization, such as some brand names and WikiWords"
 msgstr ""
+"Nyig lok ki nyukta madongo i yie, macalo bala en makiketo nying ki Wikiwords"
 
 #: ../virtaal/controllers/placeablescontroller.py:87
 msgid "Capitals"
@@ -776,7 +776,7 @@ msgstr "Boma madit"
 #. l10n: this refers to "UPPERCASE" / "CAPITAL" letters
 #: ../virtaal/controllers/placeablescontroller.py:89
 msgid "Words containing uppercase letters only"
-msgstr "Nyig lok matye ki nukuta maditu keken"
+msgstr "Nyig lok matye ki nyukta madito keken"
 
 #: ../virtaal/controllers/placeablescontroller.py:92
 msgid "Command Line Options"
@@ -854,7 +854,7 @@ msgstr "XML Makwo onyo pe"
 
 #: ../virtaal/controllers/placeablescontroller.py:135
 msgid "Entity references, such as &amp; and &#169;"
-msgstr "Ngec makwo onyo pe,  macalo &amp; ki &#169;"
+msgstr "Ngec makwo onyo pe, macalo &amp; ki &#169;"
 
 #: ../virtaal/controllers/placeablescontroller.py:138
 msgid "XML Tags"
@@ -894,7 +894,7 @@ msgstr "Kit lanyut iyi Tol me Java"
 
 #: ../virtaal/controllers/storecontroller.py:194
 msgid "No source or translatable files in bundle"
-msgstr ""
+msgstr "Ka ma aa iye pe onyo boc me fail ma romo aloka"
 
 #: ../virtaal/controllers/storecontroller.py:225
 msgid "The file contains nothing to translate."
@@ -937,23 +937,23 @@ msgstr "Kityeko mino ngec me Fail"
 
 #: ../virtaal/controllers/unitcontroller.py:84
 msgid "Needs work"
-msgstr ""
+msgstr "Mito tic"
 
 #: ../virtaal/controllers/unitcontroller.py:85
 msgid "Rejected"
-msgstr ""
+msgstr "Gikwero"
 
 #: ../virtaal/controllers/unitcontroller.py:86
 msgid "Needs review"
-msgstr ""
+msgstr "Mito anena odoco"
 
 #: ../virtaal/controllers/unitcontroller.py:87
 msgid "Translated"
-msgstr ""
+msgstr "Kiloko woko"
 
 #: ../virtaal/controllers/unitcontroller.py:88
 msgid "Reviewed"
-msgstr ""
+msgstr "Gineno odoco"
 
 # 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
@@ -967,17 +967,17 @@ msgstr "Weng"
 
 #: ../virtaal/modes/qualitycheckmode.py:33
 msgid "Quality Checks"
-msgstr ""
+msgstr "Rota mamwonya"
 
 #. l10n: This is the button where the user can select units by failing quality checks
 #: ../virtaal/modes/qualitycheckmode.py:130
 msgid "Select Checks"
-msgstr ""
+msgstr "Yer Rota"
 
 #. l10n: This refers to quality checks
 #: ../virtaal/modes/qualitycheckmode.py:133
 msgid "All Checks"
-msgstr ""
+msgstr "Rota Weng"
 
 #: ../virtaal/modes/quicktransmode.py:31
 msgid "Incomplete"
@@ -1017,17 +1017,17 @@ msgstr "Le _Weng"
 
 #: ../virtaal/modes/workflowmode.py:34
 msgid "Workflow"
-msgstr ""
+msgstr "Mol pa tic"
 
 #. l10n: This is the button where the user can select units by workflow state
 #: ../virtaal/modes/workflowmode.py:112
 msgid "Select States"
-msgstr ""
+msgstr "Yer Kit"
 
 #. l10n: This refers to workflow states
 #: ../virtaal/modes/workflowmode.py:115
 msgid "All States"
-msgstr ""
+msgstr "Kit Weng"
 
 #: ../virtaal/plugins/autocompletor.py:214
 msgid "Automatically complete long words while you type"
@@ -1047,34 +1047,33 @@ msgstr "Layub ne pire kene"
 
 #: ../virtaal/plugins/spellchecker.py:47
 msgid "Spell Checker"
-msgstr ""
+msgstr "Larot Nyukta"
 
 #: ../virtaal/plugins/spellchecker.py:48
 msgid "Check spelling and provide suggestions"
-msgstr ""
+msgstr "Rot nyukta eka ite kelo mino tam"
 
 #. l10n: This refers to spell checking
 #: ../virtaal/plugins/spellchecker.py:334
 msgid "<i>(no suggestions)</i>"
-msgstr ""
+msgstr "<i>(Tam amia peke)</i>"
 
 #. l10n: This refers to spell checking
 #: ../virtaal/plugins/spellchecker.py:338
 msgid "Ignore All"
-msgstr ""
+msgstr "Caa Weng"
 
 #. l10n: This refers to spelling suggestions
 #: ../virtaal/plugins/spellchecker.py:342
 msgid "More..."
-msgstr ""
+msgstr "Mukene..."
 
 #. l10n: This refers to the spell checking dictionary
 #: ../virtaal/plugins/spellchecker.py:348
 #, python-format
 msgid "Add \"%s\" to Dictionary"
-msgstr ""
+msgstr "Med \"%s\" i buk me gonyo leb"
 
-# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 #, fuzzy
 msgid "Languages"
@@ -1140,7 +1139,7 @@ msgstr "URL"
 #. l10n: Whether the selected text should be surrounded by "quotes"
 #: ../virtaal/plugins/lookup/models/weblookup.py:197
 msgid "Quote Query"
-msgstr "Wac Peny"
+msgstr "Wac Lapeny"
 
 #: ../virtaal/plugins/migration.py:53
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
@@ -1180,7 +1179,7 @@ msgstr "Pe gikobo gin moo"
 
 #: ../virtaal/plugins/migration.py:159
 msgid "Poedit settings"
-msgstr "Kite me yubu Poedit"
+msgstr "Kite me tero Poedit"
 
 #: ../virtaal/plugins/migration.py:188
 #, python-format
@@ -1276,7 +1275,7 @@ msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:251
 msgid "Error opening file"
-msgstr "Fail mayabo bal matye"
+msgstr "Bal iyabo fail"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:388
 #, python-format
@@ -1327,7 +1326,7 @@ msgstr "Kagwoko gonyo tam amia"
 #: ../virtaal/plugins/tm/models/amagama.py:28
 #: ../virtaal/plugins/tm/models/amagama.py:31
 msgid "Amagama"
-msgstr ""
+msgstr "Amagama"
 
 #: ../virtaal/plugins/tm/models/amagama.py:29
 #: ../virtaal/plugins/tm/models/opentran.py:38
@@ -1443,7 +1442,7 @@ msgstr "Gony me cuma mu aa ki Apertium ma pe gineno"
 
 #: ../virtaal/plugins/tm/tmview.py:111
 msgid "Translation _Suggestions"
-msgstr "Tam amia_Tam"
+msgstr "Tam amia_Gonyo"
 
 #: ../virtaal/plugins/tm/tmview.py:153
 #, python-format
@@ -1482,34 +1481,34 @@ msgstr "%(match_quality)s%%"
 #. l10n: This indicates a suggestion from machine translation. It is displayed instead of the match percentage.
 #: ../virtaal/plugins/tm/tmwidgets.py:148
 msgid "?"
-msgstr ""
+msgstr "?"
 
 #: ../virtaal/support/native_widgets.py:129
 #: ../virtaal/support/native_widgets.py:157 ../virtaal/views/mainview.py:252
 msgid "Choose a Translation File"
-msgstr "yer Fail me Agonya"
+msgstr "Yer Fail me Agonya"
 
 #: ../virtaal/views/checksunitview.py:73
 msgid "No issues"
-msgstr ""
+msgstr "Lok mo peke"
 
 #: ../virtaal/views/checksunitview.py:80
 msgid "Quality Check"
-msgstr ""
+msgstr "Rota Mamwonya"
 
 #: ../virtaal/views/checksunitview.py:86
 msgid "Description"
-msgstr ""
+msgstr "Lok iye"
 
 #: ../virtaal/views/checksprojview.py:40
 msgid "Project Type"
-msgstr ""
+msgstr "Kwon Purujek"
 
 #. l10n: The label indicating the checker style (GNOME/KDE/whatever)
 #: ../virtaal/views/checksprojview.py:63
 #, python-format
 msgid "Checks: %(checker_name)s"
-msgstr ""
+msgstr "Roto: %(checker_name)s"
 
 #: ../virtaal/views/langview.py:76
 msgid "_New Language Pair..."
@@ -1556,43 +1555,41 @@ msgstr "B_eyo iye:"
 
 #: ../virtaal/views/modeview.py:108 ../virtaal/views/propertiesview.py:134
 msgid "Save the file for up-to-date information"
-msgstr ""
+msgstr "Gwok fail pi ngec-ni-oo koni"
 
 # 81%
 #: ../virtaal/views/propertiesview.py:32
-#, fuzzy
 msgid "Untranslated:"
-msgstr "Pe kigonyo: %d"
+msgstr "Pe kigonyo:"
 
 #: ../virtaal/views/propertiesview.py:33
 msgid "Needs work:"
-msgstr ""
+msgstr "Mito tic:"
 
 #: ../virtaal/views/propertiesview.py:34
 msgid "Rejected:"
-msgstr ""
+msgstr "Kikwero woko:"
 
 #: ../virtaal/views/propertiesview.py:35
 msgid "Needs review:"
-msgstr ""
+msgstr "Mito anena odoco:"
 
 # 78%
 #: ../virtaal/views/propertiesview.py:36
-#, fuzzy
 msgid "Translated:"
-msgstr "Kigonyo: %d"
+msgstr "Kigonyo: "
 
 #: ../virtaal/views/propertiesview.py:37
 msgid "Reviewed:"
-msgstr ""
+msgstr "Kineno odoco:"
 
 #: ../virtaal/views/propertiesview.py:59
 msgid "(0%)"
-msgstr ""
+msgstr "(0%)"
 
 #: ../virtaal/views/propertiesview.py:61
 msgid "(100%)"
-msgstr ""
+msgstr "(100%)"
 
 #. l10n: This is the formatting for percentages in the file properties. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:64
@@ -1615,23 +1612,23 @@ msgstr ""
 
 #: ../virtaal/views/storeview.py:163 ../virtaal/views/storeview.py:172
 msgid "Export failed"
-msgstr ""
+msgstr "Cwalo woko okwero"
 
 #: ../virtaal/views/storeview.py:181
 msgid "Preview failed"
-msgstr ""
+msgstr "Ngiyo okwero"
 
 #: ../virtaal/views/unitview.py:614
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
-msgstr ""
+msgstr "Dir cen yadi acel cen i mol pa tic (Ctrl+Shift+Enter)"
 
 #: ../virtaal/views/unitview.py:615
 msgid "Click to move to a specific state in the workflow"
-msgstr ""
+msgstr "Dii ki idir i kit ka ma iyero i mol pa tic"
 
 #: ../virtaal/views/unitview.py:616
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
-msgstr ""
+msgstr "Dir yadi acel anyim i ka mol pa tic (Ctrl+Enter)"
 
 # 95%
 #: ../virtaal/views/widgets/aboutdialog.py:34
@@ -1712,11 +1709,11 @@ msgstr "Kony ikom leb matek"
 
 #: ../virtaal/views/widgets/welcomescreen.py:81
 msgid "Quality checks"
-msgstr ""
+msgstr "Rot mamwonya"
 
 #: ../virtaal/views/widgets/welcomescreen.py:82
 msgid "Machine translation"
-msgstr "Gony ki cuma"
+msgstr "Gonyo ki cuma"
 
 #: ../virtaal/views/widgets/welcomescreen.py:83
 msgid "Highlighting and insertion of placeables"
@@ -1836,19 +1833,19 @@ msgstr "Ka coyo coc me Trados"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:26
 msgid "OS X Strings File"
-msgstr ""
+msgstr "OS X Fail Tol"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:27
 msgid "UTX Dictionary"
-msgstr ""
+msgstr "Buk me gonyo UTX "
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:28
 msgid "UTX"
-msgstr ""
+msgstr "UTX"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:29
 msgid "Universal Terminology eXchange"
-msgstr ""
+msgstr "Leyo Lok madongo me Wilobo"
 
 #: ../devsupport/tmp_strings.py:23
 msgid "Gettext PO file"
@@ -1913,7 +1910,7 @@ msgstr "namba me jami tic ma pe tiyo"
 
 #: ../bin/virtaal:167
 msgid "Profiling support is not available"
-msgstr ""
+msgstr "Cwako lok ikome peke"
 
 #: ../bin/virtaal:179
 msgid "Could not open profile file '%(filename)s'"

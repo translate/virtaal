@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.4.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-18 08:06+0200\n"
+"PO-Revision-Date: 2011-05-19 15:48+0200\n"
 "Last-Translator: Jussi <jta_l10n@saunalahti.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "Language: fi\n"
@@ -566,7 +566,7 @@ msgstr "Lyhyehkö"
 
 #: ../virtaal/controllers/checkscontroller.py:60
 msgid "Simple capitalization"
-msgstr ""
+msgstr "Poikkeava kirjainkoko"
 
 #: ../virtaal/controllers/checkscontroller.py:61
 msgid "Simple plural(s)"
@@ -900,7 +900,7 @@ msgstr "Drupal-merkkijonojen paikkamerkit"
 
 #: ../virtaal/controllers/storecontroller.py:194
 msgid "No source or translatable files in bundle"
-msgstr ""
+msgstr "Arkisto ei sisällä lähdekoodia tai käännöstiedostoja"
 
 #: ../virtaal/controllers/storecontroller.py:225
 msgid "The file contains nothing to translate."

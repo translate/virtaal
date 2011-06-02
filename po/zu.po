@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.2\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-14 15:30+0200\n"
+"PO-Revision-Date: 2011-05-30 20:34+0200\n"
 "Last-Translator: abel <sedric@translate.org.za>\n"
 "Language-Team: translate-discuss-af@lists.sourceforge.net\n"
 "Language: zu\n"
@@ -347,12 +347,11 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid "<u>Manual</u>"
 msgstr "<u>Okwenziwa ngesandla</u>"
 
-# 75%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
 msgid "http://translate.sourceforge.net/wiki/guide/start"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
+msgstr "http://translate.sourceforge.net/wiki/guide/start"
 
 #: ../share/virtaal/virtaal.glade.h:83
 msgid "<u>Localization Guide</u>"
@@ -443,17 +442,14 @@ msgstr ""
 "Sebenzisa i-Ctrl+PgUp noma i-Ctrl+PgDown ukuthatha izinyathelo ezinkulu "
 "phakathi kokuhunyushwa."
 
-# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
 msgstr "Okungaqediwe"
 
-# 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
-#, fuzzy
 msgid "Untranslated"
-msgstr "Okuhunyushiwe"
+msgstr "Okungahunyushiwe"
 
 #: ../virtaal/controllers/checkscontroller.py:31
 msgid "Accelerators"
@@ -938,9 +934,9 @@ msgid "Fuzzy: %d"
 msgstr "Akuqediwe: %d"
 
 #: ../virtaal/controllers/storecontroller.py:428
-#, fuzzy,python-format
+#, python-format
 msgid "Untranslated: %d"
-msgstr "Okuhunyushiwe: %d"
+msgstr "Okungahunyushiwe: %d"
 
 #: ../virtaal/controllers/storecontroller.py:429
 #, python-format
@@ -1527,9 +1523,9 @@ msgstr "Uhlobo lweprojekthi"
 
 #. l10n: The label indicating the checker style (GNOME/KDE/whatever)
 #: ../virtaal/views/checksprojview.py:63
-#, fuzzy,python-format
+#, python-format
 msgid "Checks: %(checker_name)s"
-msgstr "Ukuhlolwa: %(amagama_wenhloli)"
+msgstr "Checks: %(checker_name)s"
 
 #: ../virtaal/views/langview.py:76
 msgid "_New Language Pair..."
@@ -1578,10 +1574,9 @@ msgstr "Uku_zula:"
 msgid "Save the file for up-to-date information"
 msgstr "Gcinela ifayela imininingwane yakamuva nje"
 
-# 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
-msgstr "Okungahunyushwanga:"
+msgstr "Okungahunyushiwe:"
 
 #: ../virtaal/views/propertiesview.py:33
 msgid "Needs work:"

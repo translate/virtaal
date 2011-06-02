@@ -164,20 +164,19 @@ class TMModel(BaseTMModel):
         # try to be extra careful with error handling, and actually expect
         # problems. If we encounter a problem, we make the list of languages
         # empty so that no other requests would be attempted.
-        global _languages
         try:
             data = json.loads(val)
             # We try to access the members to validate that the dictionary is
             # formed in the way we expect.
             data['responseStatus']
             data['responseData']['translatedText']
-        except Exception:
-            _languages = {}
+        except Exception, e:
+            self._disable_all("Error with json response: %s" % e)
             return
 
         if data['responseStatus'] != 200:
             logging.debug("Failed to translate '%s':\n%s" % (query_str, data['responseDetails']))
-            _languages = {}
+            self._disable_all("responseStatus not 200")
             return
 
         target_unescaped = unescape_html_entities(data['responseData']['translatedText'])
@@ -193,5 +192,9 @@ class TMModel(BaseTMModel):
         self.emit('match-found', query_str, [match])
 
     def got_error(self, val, query_str):
+        self._disable_all("Got an error response: %s" % val)
+
+    def _disable_all(self, reason):
         global _languages
         _languages = {}
+        logging.debug("Stopping all queries for Google Translate. %s" % reason)

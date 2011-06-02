@@ -1539,7 +1539,7 @@ msgstr "Mohuta wa projeke"
 #: ../virtaal/views/checksprojview.py:63
 #, python-format
 msgid "Checks: %(checker_name)s"
-msgstr "Ditekolo: %(checker_name)"
+msgstr "Ditekolo: %(checker_name)s"
 
 #: ../virtaal/views/langview.py:76
 msgid "_New Language Pair..."

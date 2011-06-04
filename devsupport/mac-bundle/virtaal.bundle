@@ -113,6 +113,10 @@
     ${prefix}/lib/python2.7/*.py
   </data>
 
+  <data recurse="True">
+    ${prefix}/lib/python2.7/PyObjC.bridgesupport*
+  </data>
+
   <data>
     ${prefix}/lib/python2.7/config/*
   </data>

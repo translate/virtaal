@@ -141,7 +141,7 @@
     ${prefix}/share/mime/
   </data>
 
-  <data>
+  <data dest="${bundle}/Contents/Resources">
     ${prefix}/share/strings/
   </data>
 

@@ -124,6 +124,7 @@ class MainView(BaseView):
                 gtk.rc_parse(pan_app.get_abs_data_filename(["themes", "OSX_Leopard_theme", "gtkrc"]))
             except:
                 logging.exception("Couldn't find OSX_Leopard_theme")
+
             # Sometimes we have two resize grips: one from GTK, one from Aqua. We
             # might want to disable the GTK one:
             #self.gui.get_widget('status_bar').set_property("has-resize-grip", False)
@@ -151,8 +152,8 @@ class MainView(BaseView):
                 self.gui.get_widget("separator_mnu_edit_3").hide()
                 #self.gui.get_widget("menuitem5").hide()
                 osxapp.ready()
+                osxapp.connect("NSApplicationOpenFile", self._on_osx_openfile_event)
             except ImportError, e:
-
                 logging.debug("gtk_osxapplication module not found. Expect zero integration with the Mac desktop.")
 
         self.main_window.connect('destroy', self._on_quit)
@@ -801,3 +802,16 @@ class MainView(BaseView):
 
     def _on_app_pressed(self, btn):
         self.app_menu.popup(None, None, None, 0, 0)
+
+    def _on_osx_openfile_event(self, macapp, filename):
+        # Note! A limitation of the current GTK-OSX code
+        # (2.18) is that we cannot perform any operations
+        # involving the GTK run-loop within this handler,
+        # therefore we schedule the load to occur afterwards.
+        # See gdk/quartz/gdkeventloop-quartz.c in the GTK+ source. 
+        from gobject import idle_add
+        def callback():
+            self.controller.open_file(filename)
+        idle_add(callback) 
+        # We must indicate we handled this or crash
+        return True 

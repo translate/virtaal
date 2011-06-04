@@ -228,7 +228,12 @@ def darwin_open_dialog(title, directory):
     # http://scottr.org/blog/2008/jul/04/building-cocoa-guis-python-pyobjc-part-four/
     from objc import NO
     from AppKit import NSOpenPanel
-    file_types = [extension.replace("*.", "") for name, extension in _file_types]
+    from translate.storage import factory
+    from locale import strcoll
+    file_types = []
+    _sorted = sorted(factory.supported_files(), cmp=strcoll, key=lambda x: x[0])
+    for name, extension, mimetype in _sorted:
+        file_types.extend(extension)
     panel = NSOpenPanel.openPanel()
     panel.setCanChooseDirectories_(NO)
     panel.setTitle_(title or _("Open"))
@@ -237,7 +242,7 @@ def darwin_open_dialog(title, directory):
     panel.setDirectoryURL_(u"file:///%s" % directory)
     ret_value = panel.runModalForTypes_(file_types)
     if ret_value:
-        return ("", panel.URLs()[0])
+        return (panel.filenames()[0], panel.URLs()[0].absoluteString())
     else:
         return ()
 

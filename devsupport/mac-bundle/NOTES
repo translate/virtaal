@@ -55,6 +55,8 @@ Todo
 * Pango things
         * Get pango working for Arabic
         * Investigate/Find patch that allows environment variable to set the PANGO module directory
+* Sync'ing menus from plugins see gtk_osxapplication_sync_menubar ()
+* Recent files works from welcome screen but menu keeps opening the last opened file
 
 # Nice to have (it would look cooler)
 * Fix the .accel so that commands keys are more Macish http://sourceforge.net/apps/trac/gtk-osx/wiki/Integrate
@@ -68,6 +70,9 @@ Todo
 * Link the NSXXXXX closing signal to anything we need
         * Close tmserver that we've launched
 * Use Sparkle to notify users of updates
+
+# Icons and graphics
+* Icon for file associations
 
 # Not urgent (we can live without these for now)
 * Cleanup Plist, runvirtaal etc so that we are rid of gramps stuff that we don't need
@@ -89,10 +94,11 @@ Todo
         * Don't use $LANG to set UI language see http://lists.apple.com/archives/applescript-users/2011/May/msg00077.html
         * Clarify import information, doesn't say that we're importing from translation programs and what we'll import
         * Migration dialog title is too short
-* Start Virtaal when clicking supported files in the finder
+* Start Virtaal when clicking supported files in the finder i.e. NSApplicationOpenFile
         http://sourceforge.net/mailarchive/forum.php?thread_name=AANLkTikUhZpPrg6VdXu64QBw8V1iGTXd5oZ6NCT%2BYrkv%40mail.gmail.com&forum_name=gtk-osx-users
         http://sourceforge.net/mailarchive/message.php?msg_id=26065350
 * Build libcurl with IDN support - only needed if we ever have a way to retreive other people's URLs from the app
+* Should we store our configuration in ~/Library/Preferences where we can access them with the /usr/bin/defaults command?
 
 
 Installer

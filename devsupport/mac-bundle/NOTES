@@ -84,7 +84,6 @@ Todo
 * Bundle psycopg for tinytm
 * Review gramps pacths found in gramps.modules like https://github.com/jralls/gtk-osx-build/raw/master/patches/gramps-macui.patch
 * Some bugs reported by JC on the mailing list
-        * Don't use $LANG to set UI language see http://lists.apple.com/archives/applescript-users/2011/May/msg00077.html
         * Clarify import information, doesn't say that we're importing from translation programs and what we'll import
         * Migration dialog title is too short
 * Start Virtaal when clicking supported files in the finder i.e. NSApplicationOpenFile

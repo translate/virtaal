@@ -2,9 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <!-- Reference for these keys is availabe from:
+    http://developer.apple.com/library/mac/#documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html#//apple_ref/doc/uid/TP40009249-SW1 -->
     <key>CFBundleDevelopmentRegion</key>
     <string>English</string>
     <key>CFBundleExecutable</key>
+    <string>Virtaal</string>
+    <key>CFBundleDisplayName</key>
     <string>Virtaal</string>
     <key>CFBundleIconFile</key>
     <string>virtaal.icns</string>
@@ -21,8 +25,245 @@
     <key>CFBundleVersion</key>
     <string>0.7.0.rc1.0.1</string>
     <key>NSHumanReadableCopyright</key>
-    <string>Copyright 2007-2011 Zuza Software Foundation, GNU General Public License.</string>
+    <string>Copyright 2007-2011 Zuza Software Foundation.\nGNU General Public License.</string>
     <key>LSMinimumSystemVersion</key>
     <string>10.5</string>
+    <!-- TODO these should be automatically generated from Translate Toolkit and the mimetypes files -->
+    <key>CFBundleDocumentTypes</key>
+    <array>
+        <dict> 
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>tmx</string>
+            </array>
+            <key>CFBundleTypeIconFile</key>
+            <string>document.icns</string>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>application/x-tmx</string>
+            </array>
+            <key>CFBundleTypeName</key>
+            <string>TMX Translation Memory</string>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+        </dict>
+        <dict> 
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>tbx</string>
+            </array>
+            <key>CFBundleTypeIconFile</key>
+            <string>document.icns</string>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>application/x-tbx</string>
+            </array>
+            <key>CFBundleTypeName</key>
+            <string>TBX Glossary</string>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+        </dict>
+        <dict> 
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>txt</string>
+            </array>
+            <key>CFBundleTypeIconFile</key>
+            <string>document.icns</string>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>text/x-wordfast</string>
+            </array>
+            <key>CFBundleTypeName</key>
+            <string>Wordfast Translation Memory</string>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
+        </dict>
+        <dict> 
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>ts</string>
+            </array>
+            <key>CFBundleTypeIconFile</key>
+            <string>document.icns</string>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>application/x-linguist</string>
+            </array>
+            <key>CFBundleTypeName</key>
+            <string>Qt Linguist Translation File</string>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+        </dict>
+        <dict> 
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>qm</string>
+            </array>
+            <key>CFBundleTypeIconFile</key>
+            <string>document.icns</string>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>application/x-qm</string>
+            </array>
+            <key>CFBundleTypeName</key>
+            <string>Qt Message File</string>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+        </dict>
+        <dict> 
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>qph</string>
+            </array>
+            <key>CFBundleTypeIconFile</key>
+            <string>document.icns</string>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>application/x-qph</string>
+            </array>
+            <key>CFBundleTypeName</key>
+            <string>Qt Phrase Book</string>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+        </dict>
+        <dict> 
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>sdf</string>
+            </array>
+            <key>CFBundleTypeIconFile</key>
+            <string>document.icns</string>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>text/x-sdf</string>
+            </array>
+            <key>CFBundleTypeName</key>
+            <string>OpenOffice.org Translation File</string>
+            <key>CFBundleTypeRole</key>
+            <string>None</string>
+        </dict>
+        <dict> 
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>xlf</string>
+                <string>xliff</string>
+            </array>
+            <key>CFBundleTypeIconFile</key>
+            <string>document.icns</string>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>application/x-xliff+xml</string>
+            </array>
+            <key>CFBundleTypeName</key>
+            <string>XLIFF Translation File</string>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+        </dict>
+        <dict> 
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>pot</string>
+            </array>
+            <key>CFBundleTypeIconFile</key>
+            <string>document.icns</string>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>text/x-gettext-translation-template</string>
+                <string>text/x-pot</string>
+            </array>
+            <key>CFBundleTypeName</key>
+            <string>Gettext Translation Template</string>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+        </dict>
+        <dict> 
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>po</string>
+            </array>
+            <key>CFBundleTypeIconFile</key>
+            <string>document.icns</string>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>text/x-gettext-translation</string>
+                <string>text/x-gettext-catalog</string>
+                <string>text/x-po</string>
+            </array>
+            <key>CFBundleTypeName</key>
+            <string>Gettext PO file</string>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+        </dict>
+        <dict> 
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>mo</string>
+                <string>gmo</string>
+            </array>
+            <key>CFBundleTypeIconFile</key>
+            <string>document.icns</string>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>application/x-gettext-catalog</string>
+                <string>application/x-mo</string>
+            </array>
+            <key>CFBundleTypeName</key>
+            <string>Gettext MO file</string>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+        </dict>
+        <dict> 
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>ttx</string>
+            </array>
+            <key>CFBundleTypeIconFile</key>
+            <string>document.icns</string>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>application/x-ttx</string>
+            </array>
+            <key>CFBundleTypeName</key>
+            <string>Trados Tag Editor</string>
+            <key>CFBundleTypeRole</key>
+            <string>None</string>
+        </dict>
+        <dict> 
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>utx</string>
+            </array>
+            <key>CFBundleTypeIconFile</key>
+            <string>document.icns</string>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>text/x-utx</string>
+            </array>
+            <key>CFBundleTypeName</key>
+            <string>UTX Dictionary</string>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+        </dict>
+        <dict> 
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>tab</string>
+                <string>utf8</string>
+            </array>
+            <key>CFBundleTypeIconFile</key>
+            <string>document.icns</string>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>application/x-omegat-glossary</string>
+            </array>
+            <key>CFBundleTypeName</key>
+            <string>OmegaT Glossary</string>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+        </dict>
+    </array> 
 </dict>
 </plist>

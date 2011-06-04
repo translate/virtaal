@@ -248,9 +248,11 @@ def darwin_open_dialog(title, directory):
 
 def darwin_save_dialog(title, current_filename):
     from AppKit import NSSavePanel
+    directory, filename = os.path.split(current_filename)
     panel = NSSavePanel.savePanel()
     panel.setTitle_(title or _("Save"))
-    panel.setNameFieldStringValue_(current_filename)
+    panel.setDirectoryURL_(u"file:///%s" % directory)
+    panel.setNameFieldStringValue_(filename)
     ret_value = panel.runModal()
     if ret_value:
         return panel.filename()

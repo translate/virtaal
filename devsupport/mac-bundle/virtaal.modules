@@ -32,7 +32,7 @@
      <dep package="translate-toolkit"/>
      <dep package="lxml"/>
      <dep package="hicolor-icon-theme"/>
-     <!-- <dep package="pyobjc"/>-->
+     <dep package="pyobjc"/>
      <dep package="pycurl"/>
      <dep package="python-levenschtein"/>
      <dep package="pyenchant"/>
@@ -142,23 +142,22 @@
 	    repo="xmlsoft.org"/>
   </autotools>
 
-  <repository type="svn" name="pyobjc-svn"
-    href="http://svn.red-bean.com/pyobjc/"/>
-  <distutils id="pyobjc-svn">
-   <branch repo="pyobjc-svn"
-           module="branches/pyobj-22/pyobjc-core/"
-           checkoutdir="pyobjc-22"/>
+  <metamodule id="pyobjc">
+    <dependencies>
+      <dep package="pyobjc-core"/>
+      <dep package="pyobjc-framework-Cocoa"/>
+    </dependencies>
+  </metamodule>
+  <distutils id="pyobjc-core">
+    <branch repo="pypi" module="p/pyobjc-core/pyobjc-core-2.3.tar.gz"
+      version="2.3" />
   </distutils>
-  <distutils id="pyobjc">
-    <branch repo="pypi" module="p/pyobjc/pyobjc-2.3.tar.gz"
+  <distutils id="pyobjc-framework-Cocoa">
+    <branch repo="pypi" module="p/pyobjc-framework-Cocoa/pyobjc-framework-Cocoa-2.3.tar.gz"
       version="2.3" />
     <dependencies>
       <dep package="pyobjc-core"/>
     </dependencies>
-  </distutils>
-  <distutils id="pyobjc-core">
-    <branch repo="pypi" module="p/pyobjc-core/pyobjc-core-2.3.tar.gz"
-      version="2.3" />
   </distutils>
 
   <repository type="tarball" name="oracle"

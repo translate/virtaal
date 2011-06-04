@@ -554,6 +554,8 @@ class MainView(BaseView):
                 return run_in_thread(self.main_window, native_widgets.kdialog_open_dialog, (self.main_window, title, last_path))
             elif native_widgets.dialog_to_use == 'win32':
                 return run_in_thread(self.main_window, native_widgets.win32_open_dialog, (title, last_path))
+            elif native_widgets.dialog_to_use == 'darwin':
+                return run_in_thread(self.main_window, native_widgets.darwin_open_dialog, (title, last_path))
 
         # otherwise we always fall back to the default code
         if title:
@@ -624,6 +626,8 @@ class MainView(BaseView):
                 return run_in_thread(self.main_window, native_widgets.kdialog_save_dialog, (self.main_window, title, current_filename))
             elif native_widgets.dialog_to_use == 'win32':
                 return run_in_thread(self.main_window, native_widgets.win32_save_dialog, (title, current_filename))
+            elif native_widgets.dialog_to_use == 'darwin':
+                return run_in_thread(self.main_window, native_widgets.darwin_save_dialog, (title, current_filename))
 
         # otherwise we always fall back to the default code
         if title:

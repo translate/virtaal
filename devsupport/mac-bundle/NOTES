@@ -61,12 +61,6 @@ Todo
 # Nice to have (it would look cooler)
 * Fix the .accel so that commands keys are more Macish http://sourceforge.net/apps/trac/gtk-osx/wiki/Integrate
         http://sourceforge.net/mailarchive/message.php?msg_id=27058398
-* PyObjC breaks when building pyobjc-core - we need this for native dialogs
-          Below regers to some notes on using PyObjC for native file dialogs
-          http://sourceforge.net/mailarchive/forum.php?thread_name=AANLkTikUhZpPrg6VdXu64QBw8V1iGTXd5oZ6NCT%2BYrkv%40mail.gmail.com&forum_name=gtk-osx-users
-          http://sourceforge.net/mailarchive/message.php?msg_id=26149496
-          * Maybe use CocoaDialog instead?
-* Localise GtkOSXApplication.strings http://sourceforge.net/apps/trac/gtk-osx/wiki/Integrate
 * Link the NSXXXXX closing signal to anything we need
         * Close tmserver that we've launched
 * Use Sparkle to notify users of updates

@@ -86,9 +86,6 @@ Todo
 * Some bugs reported by JC on the mailing list
         * Clarify import information, doesn't say that we're importing from translation programs and what we'll import
         * Migration dialog title is too short
-* Start Virtaal when clicking supported files in the finder i.e. NSApplicationOpenFile
-        http://sourceforge.net/mailarchive/forum.php?thread_name=AANLkTikUhZpPrg6VdXu64QBw8V1iGTXd5oZ6NCT%2BYrkv%40mail.gmail.com&forum_name=gtk-osx-users
-        http://sourceforge.net/mailarchive/message.php?msg_id=26065350
 * Build libcurl with IDN support - only needed if we ever have a way to retreive other people's URLs from the app
 * Should we store our configuration in ~/Library/Preferences where we can access them with the /usr/bin/defaults command?
 

@@ -163,6 +163,10 @@
     ${project}/virtaal.icns
   </data>
 
+  <data dest="${bundle}/Contents/Resources">
+    ${project}/VirtaalDocument.icns
+  </data>
+
   <!-- This is where theme commands go. You can copy them in from your
        theme of choice if they provide and example, or you can just
        change the source path. -->

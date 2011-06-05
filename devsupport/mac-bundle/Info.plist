@@ -37,7 +37,7 @@
                 <string>tmx</string>
             </array>
             <key>CFBundleTypeIconFile</key>
-            <string>document.icns</string>
+            <string>VirtaalDocument.icns</string>
             <key>CFBundleTypeMIMETypes</key>
             <array>
                 <string>application/x-tmx</string>
@@ -53,7 +53,7 @@
                 <string>tbx</string>
             </array>
             <key>CFBundleTypeIconFile</key>
-            <string>document.icns</string>
+            <string>VirtaalDocument.icns</string>
             <key>CFBundleTypeMIMETypes</key>
             <array>
                 <string>application/x-tbx</string>
@@ -69,7 +69,7 @@
                 <string>txt</string>
             </array>
             <key>CFBundleTypeIconFile</key>
-            <string>document.icns</string>
+            <string>VirtaalDocument.icns</string>
             <key>CFBundleTypeMIMETypes</key>
             <array>
                 <string>text/x-wordfast</string>
@@ -87,7 +87,7 @@
                 <string>ts</string>
             </array>
             <key>CFBundleTypeIconFile</key>
-            <string>document.icns</string>
+            <string>VirtaalDocument.icns</string>
             <key>CFBundleTypeMIMETypes</key>
             <array>
                 <string>application/x-linguist</string>
@@ -103,7 +103,7 @@
                 <string>qm</string>
             </array>
             <key>CFBundleTypeIconFile</key>
-            <string>document.icns</string>
+            <string>VirtaalDocument.icns</string>
             <key>CFBundleTypeMIMETypes</key>
             <array>
                 <string>application/x-qm</string>
@@ -119,7 +119,7 @@
                 <string>qph</string>
             </array>
             <key>CFBundleTypeIconFile</key>
-            <string>document.icns</string>
+            <string>VirtaalDocument.icns</string>
             <key>CFBundleTypeMIMETypes</key>
             <array>
                 <string>application/x-qph</string>
@@ -135,7 +135,7 @@
                 <string>sdf</string>
             </array>
             <key>CFBundleTypeIconFile</key>
-            <string>document.icns</string>
+            <string>VirtaalDocument.icns</string>
             <key>CFBundleTypeMIMETypes</key>
             <array>
                 <string>text/x-sdf</string>
@@ -152,7 +152,7 @@
                 <string>xliff</string>
             </array>
             <key>CFBundleTypeIconFile</key>
-            <string>document.icns</string>
+            <string>VirtaalDocument.icns</string>
             <key>CFBundleTypeMIMETypes</key>
             <array>
                 <string>application/x-xliff+xml</string>
@@ -168,7 +168,7 @@
                 <string>pot</string>
             </array>
             <key>CFBundleTypeIconFile</key>
-            <string>document.icns</string>
+            <string>VirtaalDocument.icns</string>
             <key>CFBundleTypeMIMETypes</key>
             <array>
                 <string>text/x-gettext-translation-template</string>
@@ -185,7 +185,7 @@
                 <string>po</string>
             </array>
             <key>CFBundleTypeIconFile</key>
-            <string>document.icns</string>
+            <string>VirtaalDocument.icns</string>
             <key>CFBundleTypeMIMETypes</key>
             <array>
                 <string>text/x-gettext-translation</string>
@@ -204,7 +204,7 @@
                 <string>gmo</string>
             </array>
             <key>CFBundleTypeIconFile</key>
-            <string>document.icns</string>
+            <string>VirtaalDocument.icns</string>
             <key>CFBundleTypeMIMETypes</key>
             <array>
                 <string>application/x-gettext-catalog</string>
@@ -221,7 +221,7 @@
                 <string>ttx</string>
             </array>
             <key>CFBundleTypeIconFile</key>
-            <string>document.icns</string>
+            <string>VirtaalDocument.icns</string>
             <key>CFBundleTypeMIMETypes</key>
             <array>
                 <string>application/x-ttx</string>
@@ -237,7 +237,7 @@
                 <string>utx</string>
             </array>
             <key>CFBundleTypeIconFile</key>
-            <string>document.icns</string>
+            <string>VirtaalDocument.icns</string>
             <key>CFBundleTypeMIMETypes</key>
             <array>
                 <string>text/x-utx</string>
@@ -254,7 +254,7 @@
                 <string>utf8</string>
             </array>
             <key>CFBundleTypeIconFile</key>
-            <string>document.icns</string>
+            <string>VirtaalDocument.icns</string>
             <key>CFBundleTypeMIMETypes</key>
             <array>
                 <string>application/x-omegat-glossary</string>

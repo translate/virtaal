@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg4214"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   width="512"
+   height="512"
+   sodipodi:docname="VirtaalDocumentIcon_512x512x32.svg"
+   inkscape:export-filename="/home/heather/Desktop/icons/VirtaalDocumentIcon_128x128x32.png"
+   inkscape:export-xdpi="22.5"
+   inkscape:export-ydpi="22.5">
+  <metadata
+     id="metadata4220">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs4218">
+    <radialGradient
+       r="5.4194064"
+       fy="-17.817642"
+       fx="2.634306"
+       cy="-17.817642"
+       cx="2.634306"
+       gradientTransform="matrix(-0.6032793,1.415598,-1.8979886,-0.5656554,-35.012877,-31.801494)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient2546"
+       xlink:href="#linearGradient3429"
+       inkscape:collect="always" />
+    <linearGradient
+       y2="-22.468086"
+       x2="18.341673"
+       y1="-9.0592461"
+       x1="24.231392"
+       gradientTransform="matrix(3.5128055,0,0,3.6669078,-35.433107,163.80172)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient2541"
+       xlink:href="#linearGradient3534"
+       inkscape:collect="always" />
+    <linearGradient
+       y2="-3.6595101"
+       x2="6.0136309"
+       y1="-12.878088"
+       x1="-2.1586611"
+       gradientTransform="matrix(1.2565874,0,0,1.2700421,1.9518103,0.3230849)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient2426"
+       xlink:href="#linearGradient3389"
+       inkscape:collect="always" />
+    <radialGradient
+       r="3.4080803"
+       fy="2.3103173"
+       fx="-7.710083"
+       cy="2.3103173"
+       cx="-7.710083"
+       gradientTransform="matrix(1,0,0,0.795082,0,0.4734257)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient3460"
+       xlink:href="#linearGradient3429"
+       inkscape:collect="always" />
+    <radialGradient
+       r="3.6580803"
+       fy="2.3103173"
+       fx="-7.710083"
+       cy="2.3103173"
+       cx="-7.710083"
+       gradientTransform="matrix(1,0,0,0.8090864,0,0.4410709)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient3458"
+       xlink:href="#linearGradient3437"
+       inkscape:collect="always" />
+    <radialGradient
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,0.257732,0,-8.3158385)"
+       r="5.7481484"
+       fy="-11.895806"
+       fx="-1.8268143"
+       cy="-11.895806"
+       cx="-1.8268143"
+       id="radialGradient3620"
+       xlink:href="#linearGradient3614"
+       inkscape:collect="always" />
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective3499" />
+    <inkscape:perspective
+       id="perspective3501"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective2458" />
+    <inkscape:perspective
+       id="perspective2693"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <linearGradient
+       id="linearGradient3614"
+       inkscape:collect="always">
+      <stop
+         id="stop3616"
+         offset="0"
+         style="stop-color:#d5f6ff;stop-opacity:1;" />
+      <stop
+         id="stop3618"
+         offset="1"
+         style="stop-color:#d5f6ff;stop-opacity:0;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3389"
+       inkscape:collect="always">
+      <stop
+         id="stop3391"
+         offset="0"
+         style="stop-color:#55ddff;stop-opacity:1;" />
+      <stop
+         id="stop3393"
+         offset="1"
+         style="stop-color:#55ddff;stop-opacity:0;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3429"
+       inkscape:collect="always">
+      <stop
+         id="stop3431"
+         offset="0"
+         style="stop-color:#ffffff;stop-opacity:1;" />
+      <stop
+         id="stop3433"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:0;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3437"
+       inkscape:collect="always">
+      <stop
+         id="stop3439"
+         offset="0"
+         style="stop-color:#ffffff;stop-opacity:1;" />
+      <stop
+         id="stop3441"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:0;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3534"
+       inkscape:collect="always">
+      <stop
+         id="stop3536"
+         offset="0"
+         style="stop-color:#008cff;stop-opacity:1;" />
+      <stop
+         id="stop3538"
+         offset="1"
+         style="stop-color:#008cff;stop-opacity:0;" />
+    </linearGradient>
+    <inkscape:perspective
+       id="perspective3409"
+       inkscape:persp3d-origin="16 : 10.666667 : 1"
+       inkscape:vp_z="32 : 16 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 16 : 1"
+       sodipodi:type="inkscape:persp3d" />
+  </defs>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1280"
+     inkscape:window-height="1000"
+     id="namedview4216"
+     showgrid="false"
+     inkscape:zoom="0.6015625"
+     inkscape:cx="477.54738"
+     inkscape:cy="256"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4214" />
+  <rect
+     style="opacity:0.91228069;fill:none;stroke:none"
+     id="rect3673"
+     width="311.62469"
+     height="288.86914"
+     x="100.18765"
+     y="111.56543"
+     rx="2.4303162e-16"
+     ry="6.4539008"
+     inkscape:export-filename="/home/heather/Desktop/Brand/Virtaal favicon/virtaalmac.png"
+     inkscape:export-xdpi="90"
+     inkscape:export-ydpi="90" />
+  <g
+     id="g5678"
+     transform="matrix(0.94568691,0,0,0.94568691,546.07414,92.078615)">
+    <path
+       inkscape:connector-curvature="0"
+       id="path5674"
+       d="m -492.91562,168.06234 0,-250.181819 109.6489,0 109.6489,0 47.02643,45.21514 c 25.86453,24.86833 60.30434,58.12277 76.53291,73.89875 l 29.5065,28.68362 0,176.283059 0,176.2831 -186.18182,0 -186.18182,0 0,-250.18185 z"
+       style="fill:#ffffff;fill-opacity:1;stroke:#999999;stroke-width:19.94805145;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path5676"
+       d="m -277.61039,-76.467532 c 4.98701,16.623376 3.32468,152.935064 3.32468,152.935064 l 149.61039,-1.662337"
+       style="fill:none;stroke:#999999;stroke-width:20;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+  </g>
+  <g
+     inkscape:label="Layer 1"
+     id="layer1"
+     transform="matrix(9.3785769,0,0,9.3785769,106.29955,155.63886)">
+    <g
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/heather/Desktop/Projects/Brand/Virtaal/Virtaal_32.png"
+       transform="matrix(2.0212077,0,0,2.0212077,-0.6320537,-0.8045211)"
+       id="g3385">
+      <path
+         style="fill:none;stroke:none"
+         id="path6295-4"
+         d="m 8.2099484,2.3864165 c -4.0868446,0 -7.40368794,2.0336104 -7.40368794,4.5386943 0,2.5050835 3.31684334,4.5386842 7.40368794,4.5386842 0.4144465,0 0.8191273,-0.01938 1.2150773,-0.05957 -0.1182449,0.639357 -0.3035592,1.083244 -0.5658419,1.471212 -0.3175982,0.469772 -0.8113394,0.830307 -1.5069443,1.167437 1.7304405,0.114617 2.6321928,-0.277234 3.5023115,-0.845802 1.327574,-0.867495 1.538179,-2.115743 1.554595,-2.537374 1.948311,-0.8177644 3.204481,-2.1789187 3.204491,-3.7345892 0,-2.5050839 -3.316844,-4.5386943 -7.4036886,-4.5386943 z"
+         inkscape:export-filename="/home/heather/Desktop/Projects/Brand/Virtaal/Virtaal_16.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#006680;stroke-width:1.02474177;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         id="path3351-8"
+         d="m 8.2099484,2.3864165 c -4.0868446,0 -7.40368794,2.0336104 -7.40368794,4.5386943 0,2.5050835 3.31684334,4.5386842 7.40368794,4.5386842 0.4144465,0 0.8191273,-0.01938 1.2150773,-0.05957 -0.1182449,0.639357 -0.3035592,1.083234 -0.5658419,1.471212 -0.3175982,0.469772 -0.8113394,0.830307 -1.5069443,1.167437 1.7304405,0.114617 2.6321928,-0.277234 3.5023115,-0.845802 1.327574,-0.867495 1.538179,-2.115743 1.554595,-2.537374 1.948311,-0.8177644 3.204481,-2.1789187 3.204491,-3.7345892 0,-2.5050839 -3.316844,-4.5386943 -7.4036886,-4.5386943 z"
+         inkscape:export-filename="/home/heather/Desktop/Projects/Brand/Virtaal/Virtaal_16.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90"
+         inkscape:connector-curvature="0" />
+      <path
+         sodipodi:type="arc"
+         style="fill:#00ccff;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="path3381"
+         sodipodi:cx="7.5177355"
+         sodipodi:cy="7.3673463"
+         sodipodi:rx="4.1411252"
+         sodipodi:ry="3.0899167"
+         d="m 11.658861,7.3673463 c 0,1.7065139 -1.8540452,3.0899167 -4.1411255,3.0899167 -2.2870803,0 -4.1411252,-1.3834028 -4.1411252,-3.0899167 0,-1.7065139 1.8540449,-3.0899167 4.1411252,-3.0899167 2.2870803,0 4.1411255,1.3834028 4.1411255,3.0899167 z"
+         transform="matrix(1.4267559,0,0,1.0247418,-2.5398628,-0.6339405)"
+         inkscape:export-filename="/home/heather/Desktop/Projects/Brand/Virtaal/Virtaal_16.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <path
+         sodipodi:type="arc"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="path3383"
+         sodipodi:cx="7.5177355"
+         sodipodi:cy="7.3673463"
+         sodipodi:rx="4.1411252"
+         sodipodi:ry="3.0899167"
+         d="m 11.658861,7.3673463 c 0,1.7065139 -1.8540452,3.0899167 -4.1411255,3.0899167 -2.2870803,0 -4.1411252,-1.3834028 -4.1411252,-3.0899167 0,-1.7065139 1.8540449,-3.0899167 4.1411252,-3.0899167 2.2870803,0 4.1411255,1.3834028 4.1411255,3.0899167 z"
+         transform="matrix(0.7255964,-0.1501404,0.1198752,0.5793312,-0.3716143,2.5358369)"
+         inkscape:export-filename="/home/heather/Desktop/Projects/Brand/Virtaal/Virtaal_16.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+    </g>
+  </g>
+</svg>

@@ -1,10 +1,11 @@
 Building
 --------
-# Setup jhbuild your .jhbuild-custom should contain the following
-setup_sdk(target="10.5", sdk_version="10.5", architectures=["i386"])
+# Setup jhbuild 
+# Your .jhbuild-custom should contain the following
+setup_sdk(target="10.5", sdk_version="10.5", architectures=["i386"]) # Make sure there is only one of these.  Some compiles with two archs can't happen
 build_policy = "updated-deps"
 moduleset="http://github.com/jralls/gtk-osx-build/raw/master/modulesets-stable/gtk-osx.modules"
-_gtk_osx_use_jhbuild_python = True # Needed because we're going to bundle Virtaal
+_gtk_osx_use_jhbuild_python = True # Needed because we're going to bundle python with Virtaal
 
 # Actual build
 jhbuild bootstrap --ignore-system
@@ -17,7 +18,7 @@ jhbuild --moduleset=dev/virtaal.modules build virtaal
 jhbuild shell
 virtaal
 
-# Buncle the build
+# Bundle the build
 jhbuild shell
 chmod +w $PREFIX/lib/libpython2.7.dylib
 ige-mac-bundler ~/dev/virtaal-mac/virtaal.bundle
@@ -53,8 +54,9 @@ Todo
 
 # Important (some of our users are affected)
 * Pango things
-        * Get pango working for Arabic
-        * Investigate/Find patch that allows environment variable to set the PANGO module directory
+        * CoreText seems to be our way forward for correct font fallback
+        * See https://bugzilla.gnome.org/show_bug.cgi?id=611943 - CoreText backend implemented
+        * See https://bugzilla.gnome.org/show_bug.cgi?id=647969 - Font fallback still needed for CoreText
 * Sync'ing menus from plugins see gtk_osxapplication_sync_menubar ()
 * Recent files works from welcome screen but File->Recent Files keeps opening the last opened file
 * Fix the .accel so that commands keys are more Macish http://sourceforge.net/apps/trac/gtk-osx/wiki/Integrate
@@ -67,11 +69,12 @@ Todo
 * Use Sparkle to notify users of updates
 
 # Icons and graphics
-* Icon for file associations
 
 # Not urgent (we can live without these for now)
 * Cleanup Plist, runvirtaal etc so that we are rid of gramps stuff that we don't need
 * Prettier installer
+        * Localised file names: http://developer.apple.com/library/mac/#documentation/MacOSX/Conceptual/BPFileSystem/Articles/DisplayNames.html
+          We can make the terms REAME and LICENSE localisable
 * Hello World and Python console plugins are showing in the build
 * Might want to use a newer pycairo - can't find what changed though
 * Investigate using python 2.6 so that we can use CoreFoundation that is on the Mac already, maybe we need to compile our own gcc?
@@ -99,8 +102,3 @@ http://www.ploem.be/blog/?page_id=26
 http://digital-sushi.org/entry/how-to-create-a-disk-image-installer-for-apple-mac-os-x/
 http://chromasoft.blogspot.com/2010/02/building-dmg-installer-for-mac-simple.html
 http://el-tramo.be/guides/fancy-dmg
-
-
-Careful
--------
-Make sure only one arch is set using setup_blah as some compiles can't happen with two archs

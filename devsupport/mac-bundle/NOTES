@@ -56,11 +56,12 @@ Todo
         * Get pango working for Arabic
         * Investigate/Find patch that allows environment variable to set the PANGO module directory
 * Sync'ing menus from plugins see gtk_osxapplication_sync_menubar ()
-* Recent files works from welcome screen but menu keeps opening the last opened file
-
-# Nice to have (it would look cooler)
+* Recent files works from welcome screen but File->Recent Files keeps opening the last opened file
 * Fix the .accel so that commands keys are more Macish http://sourceforge.net/apps/trac/gtk-osx/wiki/Integrate
         http://sourceforge.net/mailarchive/message.php?msg_id=27058398
+        * Left and right key don't work in a unit but move between placeables
+
+# Nice to have (it would look cooler)
 * Link the NSXXXXX closing signal to anything we need
         * Close tmserver that we've launched
 * Use Sparkle to notify users of updates
@@ -88,6 +89,7 @@ Todo
         * Migration dialog title is too short
 * Build libcurl with IDN support - only needed if we ever have a way to retreive other people's URLs from the app
 * Should we store our configuration in ~/Library/Preferences where we can access them with the /usr/bin/defaults command?
+* Get name and email address from mac preferences
 
 
 Installer
@@ -98,19 +100,6 @@ http://digital-sushi.org/entry/how-to-create-a-disk-image-installer-for-apple-ma
 http://chromasoft.blogspot.com/2010/02/building-dmg-installer-for-mac-simple.html
 http://el-tramo.be/guides/fancy-dmg
 
-
-Issues
-------
-ige-mac-integration seems to have a problem installing (might be some folder with no Makefile)
-        See https://trac.macports.org/ticket/28443
-        Added __init__.py in bindings/python/gtk_osxapplixation with 'from _gtk_osxapplication import *'
-        Tried - removeing __init__.pyc - assumed with no .py this was not wanted
-        Lastly, copied __init__.py from 0.9.6 to 0.9.7
-        Don't forget we want ige-mac-integration-python NOT ige-mac-integration
-
-CoreFoundation is available on Mac python but not on our pythin builds.
-Seems to be part of pyobjc but can't work out what needs to be built for 
-that software to install CoreFoundation correctly.
 
 Careful
 -------

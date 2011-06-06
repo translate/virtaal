@@ -97,6 +97,7 @@
                       <widget class="GtkImageMenuItem" id="mnu_properties">
                         <property name="label">gtk-properties</property>
                         <property name="visible">True</property>
+                        <property name="accel_path">&lt;Virtaal&gt;/File/Properties</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
@@ -111,6 +112,7 @@
                       <widget class="GtkImageMenuItem" id="mnu_close">
                         <property name="label">gtk-close</property>
                         <property name="visible">True</property>
+                        <property name="accel_path">&lt;Virtaal&gt;/File/Close</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
@@ -200,6 +202,7 @@
                       <widget class="GtkImageMenuItem" id="mnu_placprev">
                         <property name="label" translatable="yes" comments="l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables">P_revious Placeable</property>
                         <property name="visible">True</property>
+                        <property name="accel_path">&lt;Virtaal&gt;/Edit/Previous Placeable</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
                         <child internal-child="image">
@@ -214,6 +217,7 @@
                       <widget class="GtkImageMenuItem" id="mnu_placnext">
                         <property name="label" translatable="yes">_Next Placeable</property>
                         <property name="visible">True</property>
+                        <property name="accel_path">&lt;Virtaal&gt;/Edit/Next Placeable</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
                         <child internal-child="image">

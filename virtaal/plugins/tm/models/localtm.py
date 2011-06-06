@@ -97,9 +97,11 @@ class TMModel(remotetm.TMModel):
         if os.name == "nt":
             import ctypes
             ctypes.windll.kernel32.TerminateProcess(int(self.tmserver._handle), -1)
+            logging.debug("killing tmserver with hanfle %d" % int(self.tmserver._handle))
         else:
             import signal
             os.kill(self.tmserver.pid, signal.SIGTERM)
+            logging.debug("killing tmserver with pid %d" % self.tmserver.pid)
 
 
 def test_port(host, port):

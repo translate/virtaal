@@ -153,6 +153,7 @@ class MainView(BaseView):
                 gtk.accel_map_load(pan_app.get_abs_data_filename(["virtaal", "virtaal.accel"]))
                 osxapp.ready()
                 osxapp.connect("NSApplicationOpenFile", self._on_osx_openfile_event)
+                osxapp.connect("NSApplicationBlockTermination", self._on_quit)
             except ImportError, e:
                 logging.debug("gtk_osxapplication module not found. Expect zero integration with the Mac desktop.")
 

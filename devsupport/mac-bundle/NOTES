@@ -67,6 +67,9 @@ Todo
 * Link the NSXXXXX closing signal to anything we need
         * Close tmserver that we've launched
 * Use Sparkle to notify users of updates
+        * See http://thoughts.seul.in/2009/11/loading-sparkle-and-other-frameworks-in-pyobjc/
+        * http://www.google.com/codesearch/p?hl=en#43CtZj1WSp0/tv/platform/osx/plat/frontends/widgets/sparkleupdater.py&q=loadBundle%20Sparkle&sa=N&cd=3&ct=rc
+        * http://code.google.com/p/quotefixformac/source/browse/quotefix/updater.py?repo=quotefix&name=9effe886c2&r=9effe886c2170907ada6c61c55616f927fca5a0
 
 # Icons and graphics
 

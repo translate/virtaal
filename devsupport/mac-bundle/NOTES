@@ -64,8 +64,6 @@ Todo
         * Left and right key don't work in a unit but move between placeables
 
 # Nice to have (it would look cooler)
-* Link the NSXXXXX closing signal to anything we need
-        * Close tmserver that we've launched
 * Use Sparkle to notify users of updates
         * See http://thoughts.seul.in/2009/11/loading-sparkle-and-other-frameworks-in-pyobjc/
         * http://www.google.com/codesearch/p?hl=en#43CtZj1WSp0/tv/platform/osx/plat/frontends/widgets/sparkleupdater.py&q=loadBundle%20Sparkle&sa=N&cd=3&ct=rc

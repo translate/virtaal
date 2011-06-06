@@ -78,7 +78,6 @@ Todo
           We can make the terms REAME and LICENSE localisable
 * Hello World and Python console plugins are showing in the build
 * Might want to use a newer pycairo - can't find what changed though
-* Investigate using python 2.6 so that we can use CoreFoundation that is on the Mac already, maybe we need to compile our own gcc?
 * Enable or disable spell checker on Poedit settings import
 * Do we need to understand this for our builds? http://sourceforge.net/apps/trac/gtk-osx/wiki/SnowLeopard
 * Trim to save space: themes, translations (Mac + Ones we support, drop others), icons we don't use (sizes?)

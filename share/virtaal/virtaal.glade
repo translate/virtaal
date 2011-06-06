@@ -24,6 +24,7 @@
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_open">
                         <property name="label">gtk-open</property>
+                        <property name="accel_path">&lt;Virtaal&gt;/File/Open</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
@@ -32,6 +33,7 @@
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_save">
                         <property name="label">gtk-save</property>
+                        <property name="accel_path">&lt;Virtaal&gt;/File/Save</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
@@ -41,6 +43,7 @@
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_saveas">
                         <property name="label">gtk-save-as</property>
+                        <property name="accel_path">&lt;Virtaal&gt;/File/Save As</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
@@ -150,6 +153,7 @@
                       <widget class="GtkImageMenuItem" id="mnu_cut">
                         <property name="label">gtk-cut</property>
                         <property name="visible">True</property>
+                        <property name="accel_path">&lt;Virtaal&gt;/Edit/Cut</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                       </widget>
@@ -158,6 +162,7 @@
                       <widget class="GtkImageMenuItem" id="mnu_copy">
                         <property name="label">gtk-copy</property>
                         <property name="visible">True</property>
+                        <property name="accel_path">&lt;Virtaal&gt;/Edit/Copy</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                       </widget>
@@ -166,6 +171,7 @@
                       <widget class="GtkImageMenuItem" id="mnu_paste">
                         <property name="label">gtk-paste</property>
                         <property name="visible">True</property>
+                        <property name="accel_path">&lt;Virtaal&gt;/Edit/Paste</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                       </widget>

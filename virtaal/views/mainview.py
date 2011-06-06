@@ -150,7 +150,7 @@ class MainView(BaseView):
                 mnu_prefs = self.gui.get_widget("mnu_prefs")
                 osxapp.insert_app_menu_item(mnu_prefs, 2)
                 self.gui.get_widget("separator_mnu_edit_3").hide()
-                #self.gui.get_widget("menuitem5").hide()
+                gtk.accel_map_load(pan_app.get_abs_data_filename(["virtaal", "virtaal.accel"]))
                 osxapp.ready()
                 osxapp.connect("NSApplicationOpenFile", self._on_osx_openfile_event)
             except ImportError, e:

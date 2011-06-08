@@ -12,14 +12,15 @@ share=share/$targetapp
 desktop=share/applications/$targetapp.desktop
 mimetype=share/mime/packages/$targetapp-mimetype.xml
 
-cache="--cache po/.intltool-merge-cache"
+cache="po/.intltool-merge-cache"
+rm $cache
 
 if [ -d po ]; then
 	if [ -f  ${mimetype}.in ]; then
-		intltool-merge --xml-style $cache po ${mimetype}.in $mimetype
+		intltool-merge --xml-style --cache $cache po ${mimetype}.in $mimetype
 	fi
 	if [ -f  ${desktop}.in ]; then
-		intltool-merge --desktop-style $cache po ${desktop}.in $desktop
+		intltool-merge --desktop-style --cache $cache po ${desktop}.in $desktop
 	fi
 else
 	echo "$0: No translation directory"

@@ -64,8 +64,9 @@ classifiers = [
 from translate.tools.pocompile import convertmo
 mo_files = []
 
-for po_filename in glob(path.join('po', '*.po')):
-    lang = path.split(po_filename[:-3])[1] # Chop off '.po'
+for lang in open(path.join('po', 'LINGUAS')):
+    lang = lang.rstrip()
+    po_filename = path.join('po', lang+'.po')
     mo_filename = path.join('mo', lang, 'virtaal.mo')
 
     if not path.exists(path.join('mo', lang)):

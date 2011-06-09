@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2007-2009 Zuza Software Foundation
+# Copyright 2007-2009,2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -65,12 +65,6 @@ class UnionSetEnumerator(gobject.GObject):
         if element in self.set:
             self.set.remove(element)
             self.emit('remove', self, bisect_left(self.set.data, element), element)
-
-    def cursor_from_element(self, element=None):
-        if element != None:
-            return Cursor(self, bisect_left(self.set.data, element))
-        else:
-            return Cursor(self)
 
     def remove(self, element):
         for set_ in self.sets:

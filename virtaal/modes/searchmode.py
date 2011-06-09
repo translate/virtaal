@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2010 Zuza Software Foundation
+# Copyright 2008-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -58,7 +58,6 @@ class SearchMode(BaseMode):
         self.select_first_match = True
         self._search_timeout = 0
         self._unit_modified_id = 0
-        self.unescape = None
 
     def _create_widgets(self):
         # Widgets for search functionality (in first row)
@@ -118,8 +117,6 @@ class SearchMode(BaseMode):
         self._add_widgets()
         self._connect_highlighting()
         self._connect_textboxes()
-        from virtaal.views.markup import unescape
-        self.unescape = unescape
         if not self.ent_search.get_text():
             self.storecursor.indices = self.storecursor.model.stats['total']
         else:
@@ -153,9 +150,8 @@ class SearchMode(BaseMode):
             textbox.grab_focus()
             buff = textbox.buffer
             buffstr = textbox.get_text()
-            unescaped = self.unescape(buffstr)
 
-            start, end = self._escaped_indexes(unescaped, match.start, match.end)
+            start, end = match.start, match.end
             if hasattr(textbox.elem, 'gui_info'):
                 start = textbox.elem.gui_info.tree_to_gui_index(start)
                 end = textbox.elem.gui_info.tree_to_gui_index(end)
@@ -289,18 +285,6 @@ class SearchMode(BaseMode):
             d[match.unit].append(match)
         return d
 
-    def _escaped_indexes(self, unescaped, start, end):
-        """Returns the indexes of start and end in the escaped version of the
-        given unescaped string."""
-        # Escaping might mean that the indexes should be offset, so we
-        # test to see if escaping comes into play. The unescaped version
-        # will help us calculate how much we need to adjust.
-        leading_segment = unescaped[:end]
-        lines = leading_segment.count(u'\n') + leading_segment.count(u'\t')
-        start = start + lines * 2
-        end = end + lines * 2
-        return (start, end)
-
     def _highlight_matches(self):
         if getattr(self.filter, 're_search', None) is None:
             return
@@ -325,7 +309,6 @@ class SearchMode(BaseMode):
     def _highlight_textbox_matches(self, textbox, select_match=True):
         buff = textbox.buffer
         buffstr = textbox.get_text()
-        unescaped = self.unescape(buffstr)
 
         # Make sure the 'search_highlight' tag in the textbox's tag table
         # is "fresh".
@@ -340,7 +323,7 @@ class SearchMode(BaseMode):
 
         select_iters = []
         for match in self._get_matches_for_textbox(textbox):
-            start, end = self._escaped_indexes(unescaped, match.start, match.end)
+            start, end = match.start, match.end
             if hasattr(textbox.elem, 'gui_info'):
                 start = textbox.elem.gui_info.tree_to_gui_index(start)
                 end   = textbox.elem.gui_info.tree_to_gui_index(end)

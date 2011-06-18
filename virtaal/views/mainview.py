@@ -194,6 +194,7 @@ class MainView(BaseView):
         self._create_dialogs()
         self._setup_key_bindings()
         self._track_window_state()
+        self._setup_dnd()
         self.main_window.connect('style-set', self._on_style_set)
 
     def _create_dialogs(self):
@@ -350,6 +351,27 @@ class MainView(BaseView):
         def on_state_event(widget, event):
             self._window_is_maximized = bool(event.new_window_state & gtk.gdk.WINDOW_STATE_MAXIMIZED)
         self.main_window.connect('window-state-event', on_state_event)
+
+    def _setup_dnd(self):
+        """configures drag and drop"""
+        targets = gtk.target_list_add_uri_targets()
+        # Konqueror needs gtk.gdk.ACTION_MOVE
+        self.main_window.drag_dest_set(gtk.DEST_DEFAULT_ALL, targets, gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE)
+        self.main_window.connect("drag_data_received", self._on_drag_data_received)
+
+    def _on_drag_data_received(self, w, context, x, y, data, info, time):
+        if gtk.targets_include_uri(context.targets):
+            # the data comes as a string with each URI on a line; lines
+            # terminated with '\r\n. For now we just take the first one:
+            filename = data.data.split("\r\n")[0]
+            if filename.startswith("file://"):
+                # This is a URI, so we handle encoded characters like spaces:
+                import urllib
+                filename = urllib.unquote(filename)
+                #TODO: only bother if the extension is supported?
+                self.controller.open_file(filename)
+
+        return True
 
     def _on_style_set(self, widget, prev_style):
         theme.update_style(widget)

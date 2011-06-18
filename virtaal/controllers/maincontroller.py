@@ -194,7 +194,10 @@ class MainController(BaseController):
             # Unnecessary to test for 'discard'
 
         if filename.startswith('file://'):
-            filename = filename[len('file://'):]
+            if os.name == "nt":
+                filename = filename[len('file:///'):]
+            else:
+                filename = filename[len('file://'):]
 
         if self.store_controller.store and self.store_controller.store.get_filename() == filename:
             promptmsg = _('You selected the currently open file for opening. Do you want to reload the file?')

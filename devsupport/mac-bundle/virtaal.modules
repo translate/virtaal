@@ -25,6 +25,7 @@
    <patch file="file://~/gtk/source/virtaal-trunk-bunchOfixes.patch" strip="1"/>
    <patch file="file://~/gtk/source/virtaal-better_osx_menu.patch" strip="0"/>
    <dependencies>
+     <dep package="meta-gtk-osx-bootstrap"/>
      <dep package="meta-gtk-osx-themes"/>
      <dep package="meta-gtk-osx-python"/>
      <dep package="gtk-quartz-engine"/>

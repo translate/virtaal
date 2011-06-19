@@ -38,6 +38,7 @@
      <dep package="python-levenschtein"/>
      <dep package="pyenchant"/>
      <dep package="sqlite"/>
+     <dep package="libglade"/>
    </dependencies>
  </distutils>
 

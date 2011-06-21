@@ -19,11 +19,9 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import logging
-import os
 import re
-from translate.search.match import terminologymatcher
 from translate.storage.placeables.terminology import TerminologyPlaceable
-from translate.storage.base import TranslationStore, TranslationUnit
+from translate.storage.base import TranslationUnit
 from translate.lang import data
 
 from virtaal.support import opentranclient
@@ -87,8 +85,10 @@ class TerminologyModel(BaseTerminologyModel):
         if self.matcher in TerminologyPlaceable.matchers:
             TerminologyPlaceable.matchers.remove(self.matcher)
 
+        from translate.storage.base import TranslationStore
         self.store = TranslationStore()
         self.store.makeindex()
+        from translate.search.match import terminologymatcher
         self.matcher = terminologymatcher(self.store)
         TerminologyPlaceable.matchers.append(self.matcher)
 

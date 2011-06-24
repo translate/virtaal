@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -19,17 +19,10 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gobject
-import logging
 import os.path
 from translate.lang.data import forceunicode, normalize
 
-from virtaal.common import GObjectWrapper
 from virtaal.controllers.basecontroller import BaseController
-from virtaal.controllers.plugincontroller import PluginController
-
-import models
-from models.basetmmodel import BaseTMModel
-from tmview import TMView
 
 
 class TMController(BaseController):
@@ -46,6 +39,7 @@ class TMController(BaseController):
 
     # INITIALIZERS #
     def __init__(self, main_controller, config={}):
+        from virtaal.common import GObjectWrapper
         GObjectWrapper.__init__(self)
 
         self.config = config
@@ -55,6 +49,7 @@ class TMController(BaseController):
         self.min_quality = self.config.get('min_quality', 75)
 
         self._signal_ids = {}
+        from tmview import TMView
         self.view = TMView(self, self.max_matches)
         self._load_models()
 
@@ -71,6 +66,7 @@ class TMController(BaseController):
             self._mode_selected_id = self.main_controller.mode_controller.connect('mode-selected', self._on_mode_selected)
 
     def _load_models(self):
+        from virtaal.controllers.plugincontroller import PluginController
         self.plugin_controller = PluginController(self, 'TMModel')
         self.plugin_controller.PLUGIN_CLASS_INFO_ATTRIBS = ['display_name', 'description']
         new_dirs = []
@@ -78,6 +74,7 @@ class TMController(BaseController):
            new_dirs.append(os.path.join(dir, 'tm', 'models'))
         self.plugin_controller.PLUGIN_DIRS = new_dirs
 
+        from models.basetmmodel import BaseTMModel
         self.plugin_controller.PLUGIN_INTERFACE = BaseTMModel
         self.plugin_controller.PLUGIN_MODULES = ['virtaal_plugins.tm.models', 'virtaal.plugins.tm.models']
         self.plugin_controller.get_disabled_plugins = lambda *args: self.disabled_model_names
@@ -136,7 +133,7 @@ class TMController(BaseController):
             self.view.display_matches(self.matches)
 
     def destroy(self):
-        # Destroy TMView
+        # Destroy the view
         self.view.hide()
         self.view.destroy()
 
@@ -232,5 +229,6 @@ class TMController(BaseController):
         gobject.idle_add(handle_first_unit)
 
     def _on_target_focused(self, unitcontroller, target_n):
+        #import logging
         #logging.debug('target_n: %d' % (target_n))
         self.view.update_geometry()

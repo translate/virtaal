@@ -251,6 +251,8 @@ class Plugin(BasePlugin):
             language = 'en_US'
         elif language == 'pt':
             language == 'pt_PT'
+        elif language == 'de':
+            language == 'de_DE'
 
         if not language in self._seen_languages and not self.enchant.dict_exists(language):
             # Sometimes enchants *wants* a country code, other times it does not.

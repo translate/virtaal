@@ -20,7 +20,6 @@
 
 import gobject
 import logging
-import urllib
 # These two json modules are API compatible
 try:
     import simplejson as json #should be a bit faster; needed for Python < 2.6
@@ -58,7 +57,7 @@ class OpenTranClient(gobject.GObject, HTTPClient):
 
         self.url_getlanguages = 'http://open-tran.eu/json/supported'
         self.url_translate = 'http://%s.%s.open-tran.eu/json/suggest'
-        langreq = RESTRequest(self.url_getlanguages, id='', method='GET', data=urllib.urlencode(''))
+        langreq = RESTRequest(self.url_getlanguages, id='')
         self.add(langreq)
         langreq.connect(
             'http-success',
@@ -81,8 +80,7 @@ class OpenTranClient(gobject.GObject, HTTPClient):
             return
 
         query_str = unit_source
-        request = RESTRequest(self.url_translate % (self.source_lang, self.target_lang), id=query_str, method='GET', \
-                data=urllib.urlencode(''))
+        request = RESTRequest(self.url_translate % (self.source_lang, self.target_lang), id=query_str)
         self.add(request)
         def call_callback(request, response):
             return callback(

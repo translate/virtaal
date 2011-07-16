@@ -61,7 +61,7 @@ class TMModel(BaseTMModel):
         self.url_getlanguages = "%(url)s/GetLanguages?appId=%(appid)s" % {"url": self.config['url'], "appid": self.config["appid"]}
         self.url_translate = "%(url)s/Translate" % {"url": self.config['url']}
         self.appid = self.config['appid']
-        langreq = RESTRequest(self.url_getlanguages, '', method='GET', data=urllib.urlencode(''), headers=None)
+        langreq = RESTRequest(self.url_getlanguages, '')
         self.client.add(langreq)
         langreq.connect(
             'http-success',
@@ -90,8 +90,7 @@ class TMModel(BaseTMModel):
                 'from': source_lang,
                 'to': target_lang
             }
-            req = RESTRequest(self.url_translate + "?" + urllib.urlencode(values), '', method='GET', \
-                    data=urllib.urlencode(''), headers=None)
+            req = RESTRequest(self.url_translate + "?" + urllib.urlencode(values), '')
             self.client.add(req)
             req.connect(
                 'http-success',

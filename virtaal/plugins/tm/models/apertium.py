@@ -58,7 +58,7 @@ class TMModel(BaseTMModel):
         self.url_getpairs = "%(url)s/listPairs?appId=%(appid)s" % {"url": self.url, "appid": self.config["appid"]}
         self.url_translate = "%(url)s/translate" % {"url": self.url}
         self.appid = self.config['appid']
-        langreq = RESTRequest(self.url_getpairs, '', method='GET', data=urllib.urlencode(''), headers=None)
+        langreq = RESTRequest(self.url_getpairs, '')
         self.client.add(langreq)
         langreq.connect(
             'http-success',
@@ -87,8 +87,7 @@ class TMModel(BaseTMModel):
                 'markUnknown': "no",
                 'format': 'html',
             }
-            req = RESTRequest(self.url_translate + "?" + urllib.urlencode(values), '', method='GET', \
-                    data=urllib.urlencode(''), headers=None)
+            req = RESTRequest(self.url_translate + "?" + urllib.urlencode(values), '')
             self.client.add(req)
             req.connect(
                 'http-success',

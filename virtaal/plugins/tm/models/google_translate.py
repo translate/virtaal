@@ -141,7 +141,7 @@ class TMModel(BaseTMModel):
                 'to':      target_lang,
             }
 
-            req = RESTRequest(real_url, '', method='GET', data=urllib.urlencode(''), headers=None)
+            req = RESTRequest(real_url, '')
             self.client.add(req)
             # Google's Terms of Service says we need a proper HTTP referrer
             req.curl.setopt(pycurl.REFERER, virtaal_referrer)

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -21,7 +21,6 @@
 import gobject
 import logging
 import urllib
-import pycurl
 # These two json modules are API compatible
 try:
     import simplejson as json #should be a bit faster; needed for Python < 2.6
@@ -49,7 +48,7 @@ class OpenTranClient(gobject.GObject, HTTPClient):
         self.max_candidates = max_candidates
         self.min_similarity = min_similarity
         self.comparer = LevenshteinComparer(max_length)
-        self.last_suggestions = None  # used by the open-tran terminology backend
+        self.last_suggestions = []  # used by the open-tran terminology backend
 
         self._languages = set()
 
@@ -148,7 +147,7 @@ class OpenTranClient(gobject.GObject, HTTPClient):
         if not suggestions:
             return []
         id = data.forceunicode(id)
-        self.last_suggestions = suggestions  # we keep it for the terminology back-end
+        self.last_suggestions.extend(suggestions)  # we keep it for the terminology back-end
         results = []
         for suggestion in suggestions:
             #check for fuzzyness at the 'flag' member:

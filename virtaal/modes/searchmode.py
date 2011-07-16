@@ -153,10 +153,11 @@ class SearchMode(BaseMode):
 
             start, end = match.start, match.end
             if hasattr(textbox.elem, 'gui_info'):
-                start = textbox.elem.gui_info.tree_to_gui_index(start)
-                end = textbox.elem.gui_info.tree_to_gui_index(end)
-            start_iter = buff.get_iter_at_offset(start)
-            end_iter = buff.get_iter_at_offset(end)
+                start_iter = textbox.elem.gui_info.treeindex_to_iter(start)
+                end_iter = textbox.elem.gui_info.treeindex_to_iter(end, start_at=(start, start_iter))
+            else:
+                start_iter = buff.get_iter_at_offset(start)
+                end_iter = buff.get_iter_at_offset(end)
 
             buff.select_range(end_iter, start_iter)
             return False
@@ -322,12 +323,24 @@ class SearchMode(BaseMode):
             logging.exception("(Re-)adding search highlighting tag exception:")
 
         select_iters = []
+
+        # We keep the iterator and index pointing to the end of the previous
+        # match so that we continue searching from there for the next match.
+        end_iter = None
+        old_end = -1
+
         for match in self._get_matches_for_textbox(textbox):
             start, end = match.start, match.end
             if hasattr(textbox.elem, 'gui_info'):
-                start = textbox.elem.gui_info.tree_to_gui_index(start)
-                end   = textbox.elem.gui_info.tree_to_gui_index(end)
-            start_iter, end_iter = buff.get_iter_at_offset(start), buff.get_iter_at_offset(end)
+                if end_iter:
+                    start_iter = textbox.elem.gui_info.treeindex_to_iter(start, start_at=(old_end, end_iter))
+                else:
+                    start_iter = textbox.elem.gui_info.treeindex_to_iter(start)
+                end_iter   = textbox.elem.gui_info.treeindex_to_iter(end, start_at=(start, start_iter))
+                old_end = end
+            else:
+                start_iter, end_iter = buff.get_iter_at_offset(start), buff.get_iter_at_offset(end)
+                old_end = end
             buff.apply_tag_by_name('search_highlight', start_iter, end_iter)
 
             if select_match and textbox.role == 'target' and not select_iters and self.select_first_match:

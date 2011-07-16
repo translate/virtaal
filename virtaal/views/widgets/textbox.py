@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009-2010 Zuza Software Foundation
+# Copyright 2009-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -357,7 +357,7 @@ class TextBox(gtk.TextView):
         if not cursor_iter:
             raise ValueError('Could not get TextIter for position %d (%d)' % (cursor_pos, len(self.get_text())))
         #logging.debug('setting cursor to position %d' % (cursor_pos))
-        self.buffer.place_cursor(self.buffer.get_iter_at_offset(cursor_pos))
+        self.buffer.place_cursor(cursor_iter)
 
     def refresh(self, preserve_selection=True):
         """Refresh the text box by setting its text to the current text."""

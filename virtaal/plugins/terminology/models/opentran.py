@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009 Zuza Software Foundation
+# Copyright 2009-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -194,8 +194,8 @@ class TerminologyModel(BaseTerminologyModel):
     # METHODS #
     def add_last_suggestions(self, opentranclient):
         """Grab the last suggestions from the TM client."""
-        if opentranclient.last_suggestions is not None:
-            added = False
+        added = False
+        if opentranclient.last_suggestions:
             for sugg in opentranclient.last_suggestions:
                 units = self.create_suggestions(sugg)
                 if units:
@@ -203,15 +203,16 @@ class TerminologyModel(BaseTerminologyModel):
                         self.store.addunit(u)
                         self.store.add_unit_to_index(u)
                     added = True
-            if added:
-                self.matcher.inittm(self.store)
-        unitview = self.main_controller.unit_controller.view
-        self.main_controller.placeables_controller.apply_parsers(
-            elems=[src.elem for src in unitview.sources],
-            parsers=[TerminologyPlaceable.parse]
-        )
-        for src in unitview.sources:
-            src.refresh()
+            opentranclient.last_suggestions = []
+        if added:
+            self.matcher.inittm(self.store)
+            unitview = self.main_controller.unit_controller.view
+            self.main_controller.placeables_controller.apply_parsers(
+                elems=[src.elem for src in unitview.sources],
+                parsers=[TerminologyPlaceable.parse]
+            )
+            for src in unitview.sources:
+                src.refresh()
 
     def create_suggestions(self, suggestion):
         # Skip any suggestions where the suggested translation contains parenthesis

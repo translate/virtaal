@@ -21,7 +21,6 @@
 import gtk
 from gobject import SIGNAL_RUN_FIRST, SIGNAL_RUN_LAST
 
-from translate.misc.typecheck import accepts, Self, IsOneOf
 from translate.storage.placeables import StringElem, parse as elem_parse
 from translate.storage.placeables.terminology import TerminologyPlaceable
 from translate.lang import data
@@ -38,8 +37,6 @@ class TextBox(gtk.TextView):
 
     __gtype_name__ = 'TextBox'
     __gsignals__ = {
-        'after-apply-gui-info':  (SIGNAL_RUN_FIRST, None, (object,)),
-        'before-apply-gui-info': (SIGNAL_RUN_FIRST, None, (object,)),
         'element-selected':      (SIGNAL_RUN_FIRST, None, (object,)),
         'key-pressed':           (SIGNAL_RUN_LAST,  bool, (object, str)),
         'refreshed':             (SIGNAL_RUN_FIRST, None, (object,)),
@@ -148,7 +145,6 @@ class TextBox(gtk.TextView):
             end_iter = self.buffer.get_end_iter()
         return data.forceunicode(self.buffer.get_text(start_iter, end_iter))
 
-    @accepts(Self(), IsOneOf(StringElem, str, unicode))
     def set_text(self, text):
         """Set the text rendered in this text box.
             Uses C{gtk.TextBuffer.set_text()}.
@@ -176,7 +172,6 @@ class TextBox(gtk.TextView):
 
 
     # METHODS #
-    @accepts(Self(), IsOneOf(StringElem, unicode))
     def add_default_gui_info(self, elem):
         """Add default GUI info to string elements in the tree that does not
             have any GUI info.
@@ -199,13 +194,11 @@ class TextBox(gtk.TextView):
         for sub in elem.sub:
             self.add_default_gui_info(sub)
 
-    @accepts(Self(), StringElem, bool)
     def apply_gui_info(self, elem, include_subtree=True):
         offset = self.elem.gui_info.index(elem)
         #logging.debug('offset for %s: %d' % (repr(elem), offset))
         if offset >= 0:
             #logging.debug('[%s] at offset %d' % (unicode(elem).encode('utf-8'), offset))
-            self.emit('before-apply-gui-info', elem)
 
             if getattr(elem, 'gui_info', None):
                 start_index = offset
@@ -249,8 +242,6 @@ class TextBox(gtk.TextView):
                 if isinstance(sub, StringElem):
                     self.apply_gui_info(sub)
 
-        self.emit('after-apply-gui-info', elem)
-
     def get_cursor_position(self):
         return self.buffer.props.cursor_position
 
@@ -265,7 +256,6 @@ class TextBox(gtk.TextView):
         self.buffer.delete(*selection)
         self.buffer.handler_unblock_by_func(self._on_delete_range)
 
-    @accepts(Self(), IsOneOf(StringElem, TerminologyPlaceable))
     def insert_translation(self, elem):
         selection = self.buffer.get_selection_bounds()
         if selection:
@@ -318,7 +308,6 @@ class TextBox(gtk.TextView):
         self.refresh_cursor_pos = cursor_pos
         self.refresh()
 
-    @accepts(Self(), int)
     def move_elem_selection(self, offset):
         direction = offset/abs(offset) # Reduce offset to one of -1, 0 or 1
         st_index = self.selector_textboxes.index(self.selector_textbox)
@@ -390,7 +379,6 @@ class TextBox(gtk.TextView):
 
         self.emit('refreshed', self.elem)
 
-    @accepts(Self(), IsOneOf(StringElem, type(None)), IsOneOf(int, type(None)))
     def select_elem(self, elem=None, offset=None):
         if elem is not None and offset is not None:
             raise ValueError('Only one of "elem" or "offset" may be specified.')
@@ -476,7 +464,6 @@ class TextBox(gtk.TextView):
                 self.suggestion['offset'] >= 0 and \
                 self.suggestion['offset'] == start_offset
 
-    @accepts(Self())
     def update_tree(self):
         if not self.placeables_controller:
             return

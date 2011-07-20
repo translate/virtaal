@@ -117,6 +117,10 @@ class SearchMode(BaseMode):
         self._add_widgets()
         self._connect_highlighting()
         self._connect_textboxes()
+        unitcont = self.controller.main_controller.unit_controller
+        if self._unit_modified_id:
+            unitcont.disconnect(self._unit_modified_id)
+        self._unit_modified_id = unitcont.connect('unit-modified', self._on_unit_modified)
         if not self.ent_search.get_text():
             self.storecursor.indices = self.storecursor.model.stats['total']
         else:
@@ -394,10 +398,6 @@ class SearchMode(BaseMode):
     def _on_cursor_changed(self, cursor):
         assert cursor is self.storecursor
 
-        unitcont = self.controller.main_controller.unit_controller
-        if self._unit_modified_id:
-            unitcont.disconnect(self._unit_modified_id)
-        self._unit_modified_id = unitcont.connect('unit-modified', self._on_unit_modified)
         self._highlight_matches()
 
     def _on_replace_clicked(self, btn):

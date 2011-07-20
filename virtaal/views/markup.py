@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2007-2010 Zuza Software Foundation
+# Copyright 2007-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -109,13 +109,33 @@ def unescape(text):
     return text
 
 
+# Templates for pango markup
+# Variable substitution is done later, so that it can react to theme changes.
+_diff_pango_templates = {
+        'insert_attr':
+                "underline='single'"\
+                "underline_color='#777777'"\
+                "weight='bold'"\
+                "background='%(diff_insert_bg)s'",
+        'delete_attr':
+                "strikethrough='true'"\
+                "strikethrough_color='#777'"\
+                "background='%(diff_delete_bg)s'",
+        #replace_attr_remove = delete_attr
+        'replace_attr_add':
+                "underline='single'"\
+                "underline_color='#777777'"\
+                "weight='bold'"
+                "background='%(diff_replace_bg)s'",
+}
+
 def _google_pango_diff(a, b):
     """Highlights the differences between a and b for Pango rendering."""
 
-    insert_attr = "underline='single' underline_color='#777777' weight='bold' background='%s'" % current_theme['diff_insert_bg']
-    delete_attr = "strikethrough='true' strikethrough_color='#777' background='%s'" % current_theme['diff_delete_bg']
+    insert_attr = _diff_pango_templates['insert_attr'] % current_theme
+    delete_attr = _diff_pango_templates['delete_attr'] % current_theme
     replace_attr_remove = delete_attr
-    replace_attr_add = "underline='single' underline_color='#777777' weight='bold' background='%s'" % current_theme['diff_replace_bg']
+    replace_attr_add = _diff_pango_templates['replace_attr_add'] % current_theme
 
     textdiff = u"" # to store the final result
     removed = u"" # the removed text that we might still want to add
@@ -147,10 +167,10 @@ def _difflib_pango_diff(a, b):
     The differences are highlighted such that they show what would be required
     to transform a into b."""
 
-    insert_attr = "underline='single' underline_color='#777777' weight='bold' background='%(diff_insert_bg)s'" % current_theme
-    delete_attr = "strikethrough='true' strikethrough_color='#777' background='%(diff_delete_bg)s'" % current_theme
+    insert_attr = _diff_pango_templates['insert_attr'] % current_theme
+    delete_attr = _diff_pango_templates['delete_attr'] % current_theme
     replace_attr_remove = delete_attr
-    replace_attr_add = "underline='single' underline_color='#777777' weight='bold' background='%(diff_replace_bg)s'" % current_theme
+    replace_attr_add = _diff_pango_templates['replace_attr_add'] % current_theme
 
     textdiff = ""
     for tag, i1, i2, j1, j2 in SequenceMatcher(None, a, b).get_opcodes():

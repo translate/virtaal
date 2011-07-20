@@ -2,15 +2,14 @@
 # Copyright (C) 2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # Veeven <veeven@gmail.com>, 2010.
-#: ../virtaal/support/native_widgets.py:50
-#: ../virtaal/support/native_widgets.py:51
+# Praveen <mail2ipn@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.5.3-rc1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-16 18:32+0200\n"
-"Last-Translator: Veeven <veeven@gmail.com>\n"
+"PO-Revision-Date: 2011-07-14 06:50+0200\n"
+"Last-Translator: Praveen <mail2ipn@gmail.com>\n"
 "Language-Team: e-Telugu Localization Team\n"
 "Language: te\n"
 "MIME-Version: 1.0\n"
@@ -39,7 +38,7 @@ msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:2
 msgid "_File"
-msgstr "దస్త్రం (_F)"
+msgstr "ఫైల్ (_F)"
 
 #: ../share/virtaal/virtaal.glade.h:3
 msgid "_Update to Template"
@@ -47,15 +46,15 @@ msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:4
 msgid "_Export"
-msgstr ""
+msgstr "ఎగుమతించు (_E)"
 
 #: ../share/virtaal/virtaal.glade.h:5
 msgid "_Recent Files"
-msgstr "ఇటీవలి దస్త్రాలు (_F)"
+msgstr "ఇటీవలి ఫైళ్ళు (_F)"
 
 #: ../share/virtaal/virtaal.glade.h:6
 msgid "_Edit"
-msgstr "మార్చు (_E)"
+msgstr "సవరణ (_E)"
 
 #. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
 #: ../share/virtaal/virtaal.glade.h:8
@@ -462,9 +461,10 @@ msgstr ""
 
 # 88%
 #: ../virtaal/controllers/checkscontroller.py:36
-#, fuzzy
 msgid "Translator credits"
-msgstr "Veeven"
+msgstr ""
+"Veeven\n"
+"Praveen Illa <mail2ipn@gmail.com>, 2011."
 
 #: ../virtaal/controllers/checkscontroller.py:37
 msgid "Double quotes"

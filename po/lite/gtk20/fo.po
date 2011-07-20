@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2008-07-25 18:31+0200\n"
-"PO-Revision-Date: 2011-04-30 20:11+0200\n"
+"PO-Revision-Date: 2011-07-09 20:54+0200\n"
 "Last-Translator: Gunleif <fo.umseting@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: fo\n"
@@ -59,6 +59,17 @@ msgstr "Ctrl"
 msgctxt "keyboard label"
 msgid "Alt"
 msgstr "Alt"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the Return key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#. GTK >=2.16
+#. Configuration: Return key label
+msgctxt "keyboard label"
+msgid "Return"
+msgstr "Return"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -119,8 +130,9 @@ msgstr "Niður"
 #.
 #. GTK <=2.14
 #. Configuration: Page_Up key label
+#, fuzzy
 msgid "keyboard label|Page_Up"
-msgstr ""
+msgstr "knappaborðsspjaldur|Upp"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -144,8 +156,9 @@ msgstr ""
 #.
 #. GTK <=2.14
 #. Configuration: Page_Down key label
+#, fuzzy
 msgid "keyboard label|Page_Down"
-msgstr ""
+msgstr "knappaborðsspjaldur|Upp"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -162,11 +175,11 @@ msgstr ""
 
 msgctxt "keyboard label"
 msgid "Left"
-msgstr ""
+msgstr "Vinstru"
 
 msgctxt "keyboard label"
 msgid "Right"
-msgstr ""
+msgstr "Høgru"
 
 #. File->Open
 msgid "_Open"
@@ -273,6 +286,10 @@ msgctxt "recent menu label"
 msgid "%d. %s"
 msgstr ""
 
+msgctxt "Stock label"
+msgid "_Properties"
+msgstr ""
+
 #. File->Quit
 msgid "_Quit"
 msgstr "_Gevst"
@@ -316,9 +333,10 @@ msgstr ""
 
 #. Navigation->Down
 #. GTK HEAD (allows future proofing)
+#, fuzzy
 msgctxt "Stock label, navigation"
 msgid "_Down"
-msgstr ""
+msgstr "Niður"
 
 #. Help->About
 msgid "_About"
@@ -521,7 +539,7 @@ msgstr "Sk_erð"
 #. Right Click (on empty) -> Cut
 msgctxt "Stock label"
 msgid "Cu_t"
-msgstr ""
+msgstr "Sk_erð"
 
 #. Right Click (on empty) -> Copy
 msgid "_Copy"

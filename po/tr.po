@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.4.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-14 17:21+0200\n"
+"PO-Revision-Date: 2011-06-14 07:16+0200\n"
 "Last-Translator: BouRock <hitowerdigit@hotmail.com>\n"
 "Language-Team: Mozilla Türkiye\n"
 "Language: tr\n"
@@ -195,12 +195,12 @@ msgstr "Virtaal Tercihleri"
 
 #: ../share/virtaal/virtaal.glade.h:41
 msgid "The name stored in the file header"
-msgstr "Dosya başlığında tutulan isim"
+msgstr "Dosya başlığında tutulan ad"
 
 #. l10n: This label is for the name of the translator
 #: ../share/virtaal/virtaal.glade.h:43
 msgid "Name:"
-msgstr "İsim:"
+msgstr "Adı:"
 
 #: ../share/virtaal/virtaal.glade.h:44
 msgid "The e-mail address stored in the file header"
@@ -819,7 +819,7 @@ msgstr "Yer tutucuları (Python)"
 
 #: ../virtaal/controllers/placeablescontroller.py:109
 msgid "Placeholders in Python strings"
-msgstr "Python satırlarıdaki yer tutucuları"
+msgstr "Python satırlarındaki yer tutucuları"
 
 #: ../virtaal/controllers/placeablescontroller.py:112
 msgid "Placeholders (Java)"
@@ -1132,7 +1132,7 @@ msgstr "Open-Tran.eu"
 #: ../virtaal/plugins/lookup/models/weblookup.py:177
 #: ../virtaal/views/widgets/selectview.py:75
 msgid "Name"
-msgstr "İsim"
+msgstr "Adı"
 
 #: ../virtaal/plugins/lookup/models/weblookup.py:186
 msgid "URL"

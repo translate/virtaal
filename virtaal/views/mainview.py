@@ -360,7 +360,11 @@ class MainView(BaseView):
         self.main_window.connect("drag_data_received", self._on_drag_data_received)
 
     def _on_drag_data_received(self, w, context, x, y, data, info, time):
-        if gtk.targets_include_uri(context.targets):
+        if sys.platform == 'darwin' or gtk.targets_include_uri(context.targets):
+            # We don't check for valid targets on Mac (darwin) since there is
+            # a bug in target_incude_uri on that platform, no adverse situations
+            # seem to arise but we leave other platforms to do the right thing.
+
             # the data comes as a string with each URI on a line; lines
             # terminated with '\r\n. For now we just take the first one:
             filename = data.data.split("\r\n")[0]

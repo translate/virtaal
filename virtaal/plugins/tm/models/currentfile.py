@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -18,8 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import re
-import logging
 from translate.search import match
 
 from basetmmodel import BaseTMModel
@@ -127,6 +125,7 @@ class TMModel(BaseTMModel):
                             tmsource = [meta.get("contact-name", ""), meta.get("category", ""), os.path.splitext(meta.get("original", ""))[0]]
                             tmsource = u"\n".join(filter(None, tmsource))
                         except Exception, e:
+                            import logging
                             logging.info(e)
 
                     tmsource += "\n" + origin

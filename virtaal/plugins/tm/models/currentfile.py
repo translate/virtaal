@@ -66,9 +66,7 @@ class TMModel(BaseTMModel):
             }
             self.matcher = match.matcher(store, **options)
         else:
-            for unit in store.units:
-                if unit.istranslatable() and unit.istranslated():
-                    self.matcher.extendtm(unit)
+            self.matcher.extendtm(store.units)
         self.cache = {}
 
     def query(self, tmcontroller, unit):

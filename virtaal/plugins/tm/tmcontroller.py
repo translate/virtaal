@@ -100,7 +100,7 @@ class TMController(BaseController):
         # Perform some sanity checks on matches first
         for match in matches:
             if not isinstance(match.get('quality', 0), int):
-                match['quality'] = int(match['quality'])
+                match['quality'] = int(match['quality'] or 0)
             if 'tmsource' not in match or match['tmsource'] is None:
                 match['tmsource'] = tmmodel.display_name
             match['query_str'] = query_str

@@ -111,9 +111,10 @@ class QualityCheckMode(BaseMode):
 
     def _create_menu_entries(self, menu):
         for mi, (name, signal_id) in self._menuitem_checks.iteritems():
-            mi.disconnect
+            mi.disconnect(signal_id)
             menu.remove(mi)
         assert not menu.get_children()
+        self._menuitem_checks = {}
         for check_name, display_name in sorted(self.checks_names.iteritems(), key=lambda x: x[1], cmp=locale.strcoll):
             #l10n: %s is the name of the check and must be first. %d is the number of failures
             menuitem = gtk.CheckMenuItem(label="%s (%d)" % (display_name, len(self.stats[check_name])))

@@ -1,0 +1,1940 @@
+# Greek translation of Virtaal.
+# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
+# This file is distributed under the same license as the Virtaal package.
+# Dimitris Spingos <dmtrs32@gmail.com>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: Virtaal 0.7.0-beta5\n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2011-04-18 15:51+0200\n"
+"PO-Revision-Date: 2011-08-07 10:46+0200\n"
+"Last-Translator: Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs 32@gmail.com>\n"
+"Language-Team: Team@gnome.gr\n"
+"Language: el\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.6.1\n"
+
+#: ../share/applications/virtaal.desktop.in.h:1
+#: ../share/virtaal/virtaal.glade.h:1
+#: ../virtaal/support/native_widgets.py:101
+#: ../virtaal/views/mainview.py:746
+msgid "Virtaal"
+msgstr "Virtaal"
+
+#: ../share/applications/virtaal.desktop.in.h:2
+msgid "Translation Tool"
+msgstr "Εργαλείο μετάφρασης"
+
+#: ../share/applications/virtaal.desktop.in.h:3
+msgid "A translation tool to help a human translator translate files into other languages"
+msgstr "Ένα εργαλείο μετάφρασης για να βοηθήσει έναν ανθρώπινο μεταφραστή να μεταφράσει αρχεία σε άλλες γλώσσες"
+
+#: ../share/virtaal/virtaal.glade.h:2
+msgid "_File"
+msgstr "_Αρχείο"
+
+#: ../share/virtaal/virtaal.glade.h:3
+msgid "_Update to Template"
+msgstr "Ε_νημέρωση στο πρότυπο"
+
+#: ../share/virtaal/virtaal.glade.h:4
+msgid "_Export"
+msgstr "Εξα_γωγή"
+
+#: ../share/virtaal/virtaal.glade.h:5
+msgid "_Recent Files"
+msgstr "Π_ρόσφατα αρχεία"
+
+#: ../share/virtaal/virtaal.glade.h:6
+msgid "_Edit"
+msgstr "_Επεξεργασία"
+
+#. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
+#: ../share/virtaal/virtaal.glade.h:8
+msgid "Transfer From Source"
+msgstr "Μεταφορά από πηγή"
+
+#. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
+#: ../share/virtaal/virtaal.glade.h:10
+msgid "P_revious Placeable"
+msgstr "Π_ροηγούμενη καταχώρηση"
+
+#: ../share/virtaal/virtaal.glade.h:11
+msgid "_Next Placeable"
+msgstr "Επόμε_νη καταχώρηση"
+
+#: ../share/virtaal/virtaal.glade.h:12
+msgid "_View"
+msgstr "_Προβολή"
+
+#: ../share/virtaal/virtaal.glade.h:13
+msgid "_Full Screen"
+msgstr "Π_λήρης οθόνη"
+
+#: ../share/virtaal/virtaal.glade.h:14
+msgid "_Quality Checks"
+msgstr "Έλεγ_χοι ποιότητας"
+
+#: ../share/virtaal/virtaal.glade.h:15
+msgid "_Navigation"
+msgstr "Περιήγη_ση"
+
+#: ../share/virtaal/virtaal.glade.h:16
+msgid "P_age Up"
+msgstr "Προηγούμενη σελίδ_α"
+
+#: ../share/virtaal/virtaal.glade.h:17
+msgid "_Page Down"
+msgstr "Ε_πόμενη σελίδα"
+
+#: ../share/virtaal/virtaal.glade.h:18
+msgid "_Help"
+msgstr "_Βοήθεια"
+
+#: ../share/virtaal/virtaal.glade.h:19
+msgid "_Online Help"
+msgstr "_Ζωντανή βοήθεια"
+
+#: ../share/virtaal/virtaal.glade.h:20
+msgid "_Tutorial"
+msgstr "_Μάθημα"
+
+#: ../share/virtaal/virtaal.glade.h:21
+msgid "_Localization Guide"
+msgstr "_Οδηγός τοπικοποίησης"
+
+#: ../share/virtaal/virtaal.glade.h:22
+msgid "Report a _Bug"
+msgstr "Αναφορά _σφάλματος"
+
+#: ../share/virtaal/virtaal.glade.h:23
+msgid "New Language Pair"
+msgstr "Νέο ζευγάρι γλώσσας"
+
+#: ../share/virtaal/virtaal.glade.h:24
+msgid ""
+"The <b>Original</b> is the language from which you are translating, also called the source language.\n"
+"\n"
+"If you are translating from English to French then English would be your original or source language."
+msgstr ""
+"<b>Αρχική</b> είναι η γλώσσα από την οποία μεταφράζεται, αποκαλούμενη επίσης γλώσσα πηγής.\n"
+"\n"
+"Εάν μεταφράζεται από τα αγγλικά στα γαλλικά, τότε τα αγγλικά θα είναι η αρχική ή γλώσσα πηγής. "
+
+#: ../share/virtaal/virtaal.glade.h:27
+msgid "<b>Original</b>"
+msgstr "<b>Αρχική</b>"
+
+#: ../share/virtaal/virtaal.glade.h:28
+msgid ""
+"The <b>Translation</b> is the language into which you are translating, also called the target language.\n"
+"\n"
+"If you are translating from English to French then French would be your translation or target language."
+msgstr ""
+"<b>Τελική</b> είναι η γλώσσα στην οποία μεταφράζεται, αποκαλούμενη επίσης γλώσσα στόχος.\n"
+"\n"
+"Εάν μεταφράζεται από τα αγγλικά στα γαλλικά, τότε τα γαλλικά θα είναι η τελική ή γλώσσα στόχος. "
+
+#: ../share/virtaal/virtaal.glade.h:31
+msgid "<b>Translation</b>"
+msgstr "<b>Τελική</b>"
+
+#: ../share/virtaal/virtaal.glade.h:32
+msgid "_Add Missing Language..."
+msgstr "Προσθήκ_η ελλείπουσας γλώσσας..."
+
+#: ../share/virtaal/virtaal.glade.h:33
+msgid "Add Missing Language"
+msgstr "Προσθήκη ελλείπουσας γλώσσας"
+
+#: ../share/virtaal/virtaal.glade.h:34
+msgid "Language name:"
+msgstr "Όνομα γλώσσας"
+
+#: ../share/virtaal/virtaal.glade.h:35
+msgid "ISO code:"
+msgstr "Κωδικός ISO:"
+
+#: ../share/virtaal/virtaal.glade.h:36
+msgid "Plural expression:"
+msgstr "Έκφραση πληθυντικού"
+
+#: ../share/virtaal/virtaal.glade.h:37
+msgid "Number of plurals:"
+msgstr "Αριθμός πληθυντικών:"
+
+#: ../share/virtaal/virtaal.glade.h:38
+msgid "Depending on the translation task, the plural information might be optional."
+msgstr "Ανάλογα με την εργασία μετάφρασης, οι πληροφορίες πληθυντικού μπορεί να είναι προαιρετικές."
+
+#: ../share/virtaal/virtaal.glade.h:39
+msgid "<b>Language Information</b>"
+msgstr "<b>Πληροφορίες γλώσσας</b>"
+
+#: ../share/virtaal/virtaal.glade.h:40
+msgid "Virtaal Preferences"
+msgstr "Προτιμήσεις Virtaal"
+
+#: ../share/virtaal/virtaal.glade.h:41
+msgid "The name stored in the file header"
+msgstr "Το αποθηκευμένο όνομα στην κεφαλίδα αρχείου"
+
+#. l10n: This label is for the name of the translator
+#: ../share/virtaal/virtaal.glade.h:43
+msgid "Name:"
+msgstr "Όνομα:"
+
+#: ../share/virtaal/virtaal.glade.h:44
+msgid "The e-mail address stored in the file header"
+msgstr "Η αποθηκευμένη διεύθυνση ηλεκτρονικού ταχυδρομείου στην κεφαλίδα αρχείου όνομα στην κεφαλίδα αρχείου"
+
+#: ../share/virtaal/virtaal.glade.h:45
+msgid "E-mail address:"
+msgstr "Διεύθυνση ηλεκτρονικού ταχυδρομείου"
+
+#: ../share/virtaal/virtaal.glade.h:46
+msgid "The team information stored in the file header. This can be an e-mail address or a URL, for example."
+msgstr "Οι πληροφορίες ομάδας αποθηκεύονται στην κεφαλίδα αρχείου. Αυτό μπορεί να είναι μια διεύθυνση ηλεκτρονικού ταχυδρομείου ή ένα URL, για παράδειγμα."
+
+#: ../share/virtaal/virtaal.glade.h:47
+msgid "Team:"
+msgstr "Ομάδα:"
+
+#: ../share/virtaal/virtaal.glade.h:48
+msgid "<b>Translator Information</b>"
+msgstr "<b>Πληροφορίες μεταφραστή</b>"
+
+#: ../share/virtaal/virtaal.glade.h:49
+msgid "Source text:"
+msgstr "Κείμενο πηγής:"
+
+#: ../share/virtaal/virtaal.glade.h:50
+msgid "Target text:"
+msgstr "Κείμενο στόχος:"
+
+#: ../share/virtaal/virtaal.glade.h:51
+msgid "Use _Default Fonts"
+msgstr "Χρήση προεπι_λεγμένων γραμματοσειρών"
+
+#: ../share/virtaal/virtaal.glade.h:52
+msgid "<b>Fonts</b>"
+msgstr "<b>Γραμματοσειρές</b>"
+
+#. l10n: This tab label refers to the general preferences
+#: ../share/virtaal/virtaal.glade.h:54
+msgid "General"
+msgstr "Γενικά"
+
+#: ../share/virtaal/virtaal.glade.h:55
+msgid "Placeables are special parts of the text that can be automatically highlighted and easily inserted into the translation."
+msgstr "Καταχωρίσεις είναι ειδικά τμήματα κειμένου που μπορούν αυτόματα να τονιστούν και να μπουν εύκολα στη μετάφραση"
+
+#: ../share/virtaal/virtaal.glade.h:56
+msgid "Placeables"
+msgstr "Καταχωρίσεις"
+
+#: ../share/virtaal/virtaal.glade.h:57
+msgid "Plug-ins"
+msgstr "Πρόσθετα"
+
+#: ../share/virtaal/virtaal.glade.h:58
+msgid "Terminology Files"
+msgstr "Αρχεία ορολογίας"
+
+#: ../share/virtaal/virtaal.glade.h:59
+msgid "Add Term"
+msgstr "Προσθήκη όρου"
+
+#. l10n: This label refers to comments about a new term that is added
+#: ../share/virtaal/virtaal.glade.h:61
+msgid "C_omments"
+msgstr "Σ_χόλια"
+
+#: ../share/virtaal/virtaal.glade.h:62
+msgid "Terminology _file:"
+msgstr "Αρ_χείο ορολογίας"
+
+#: ../share/virtaal/virtaal.glade.h:63
+msgid "Web Look-ups"
+msgstr "Αναζητήσεις ιστού"
+
+#: ../share/virtaal/virtaal.glade.h:64
+msgid "Add URL"
+msgstr "Προσθήκη"
+
+#: ../share/virtaal/virtaal.glade.h:65
+msgid "URL:"
+msgstr "URL:"
+
+#: ../share/virtaal/virtaal.glade.h:66
+msgid "Put queries in quotes"
+msgstr "Τοποθέτηση ερωτημάτων σε εισαγωγικά"
+
+#: ../share/virtaal/virtaal.glade.h:67
+msgid "<b>Options</b>"
+msgstr "<b>Επιλογές</b>"
+
+#. l10n: Remove the tags if underlining is unsuitable for your language. Most languages won't need to change this. Translate 'Open' normally.
+#: ../share/virtaal/virtaal.glade.h:69
+msgid "<u>Open</u>"
+msgstr "<u>Άνοιγμα</u>"
+
+#: ../share/virtaal/virtaal.glade.h:70
+msgid "<b><big>Recent Files</big></b>"
+msgstr "<b><big>Πρόσφατα αρχεία</big></b>"
+
+#: ../share/virtaal/virtaal.glade.h:71
+msgid "<u>Tutorial</u>"
+msgstr "<u>Μάθημα</u>"
+
+#: ../share/virtaal/virtaal.glade.h:72
+msgid "<u>Cheat Sheet</u>"
+msgstr "<u>Λίστα συντομεύσεων</u>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.glade.h:74
+#: ../virtaal/controllers/welcomescreencontroller.py:38
+msgid "http://translate.sourceforge.net/wiki/virtaal/features"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
+
+#: ../share/virtaal/virtaal.glade.h:75
+msgid "<u>More...</u>"
+msgstr "<u>Περισσότερα...</u>"
+
+#: ../share/virtaal/virtaal.glade.h:76
+msgid "<u>Features</u>"
+msgstr "<u>Χαρακτηριστικά</u>"
+
+#: ../share/virtaal/virtaal.glade.h:77
+msgid "<b><big>Getting Started</big></b>"
+msgstr "<b><big>Ξεκίνημα</big></b>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.glade.h:79
+#: ../virtaal/controllers/welcomescreencontroller.py:34
+msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+
+#: ../share/virtaal/virtaal.glade.h:80
+msgid "<u>Manual</u>"
+msgstr "<u>Εγχειρίδιο</u>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.glade.h:82
+#: ../virtaal/controllers/welcomescreencontroller.py:35
+msgid "http://translate.sourceforge.net/wiki/guide/start"
+msgstr "http://translate.sourceforge.net/wiki/guide/start"
+
+#: ../share/virtaal/virtaal.glade.h:83
+msgid "<u>Localization Guide</u>"
+msgstr "<u>Οδηγός τοπικοποίησης</u>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.glade.h:85
+#: ../virtaal/controllers/welcomescreencontroller.py:37
+msgid "http://translate.sourceforge.net/wiki/virtaal/index#contact"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/index#contact"
+
+#: ../share/virtaal/virtaal.glade.h:86
+msgid "<u>Feedback</u>"
+msgstr "<u>Ανατροφοδότηση</u>"
+
+#: ../share/virtaal/virtaal.glade.h:87
+msgid "<b><big>Support</big></b>"
+msgstr "<b><big>Υποστήριξη</big></b>"
+
+#: ../share/virtaal/virtaal.glade.h:88
+msgid "Properties"
+msgstr "Ιδιότητες"
+
+#: ../share/virtaal/virtaal.glade.h:89
+msgid "<b>Words</b> (total):"
+msgstr "<b>Λέξεις</b> (σύνολο):"
+
+#: ../share/virtaal/virtaal.glade.h:90
+msgid "<b>Strings</b> (total):"
+msgstr "<b>Αλφαριθμητικά</b> (σύνολο):"
+
+#: ../share/virtaal/virtaal.glade.h:91
+msgid "File type:"
+msgstr "Τύπος αρχείου:"
+
+#: ../share/virtaal/virtaal.glade.h:92
+msgid "File size:"
+msgstr "Μέγεθος αρχείου"
+
+#: ../share/virtaal/virtaal.glade.h:93
+msgid "Location:"
+msgstr "Τοποθεσία:"
+
+#: ../virtaal/tips.py:27
+msgid "At the end of a translation, simply press <Enter> to continue with the next one."
+msgstr "Στο τέλος μιας μετάφρασης, απλά πατήστε <Enter> για να συνεχίσετε με την επόμενη."
+
+#: ../virtaal/tips.py:28
+msgid "To copy the original string into the target field, simply press <Alt+Down>."
+msgstr "Για να αντιγράψετε το αρχικό αλφαριθμητικό στο πεδίο στόχος, απλά πατήστε <Alt+Down>."
+
+#. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
+#: ../virtaal/tips.py:31
+msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
+msgstr "Για να σημειώσετε την τρέχουσα μετάφραση ως ασαφή, απλά πατήστε <Alt+U>."
+
+#: ../virtaal/tips.py:32
+msgid "To mark the current translation as incomplete, simply press <Ctrl+Shift+Enter>."
+msgstr "Για να σημειώσετε την τρέχουσα μετάφραση ως ατελή, απλά πατήστε <Ctrl+Shift+Enter>."
+
+#: ../virtaal/tips.py:33
+msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
+msgstr "Για να σημειώσετε την τρέχουσα μετάφραση ως πλήρη, απλά πατήστε <Ctrl+Enter>."
+
+#: ../virtaal/tips.py:34
+msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
+msgstr "Χρήση Ctrl+Up ή Ctrl+Down για μετακίνηση μεταξύ των μεταφράσεων."
+
+#: ../virtaal/tips.py:35
+msgid "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
+msgstr "Χρήση Ctrl+PgUp ή Ctrl+PgDown για μετακίνηση μεταξύ των μεταφράσεων με μεγάλα βήματα."
+
+#: ../virtaal/controllers/checkscontroller.py:29
+msgid "Fuzzy"
+msgstr "Ασαφής"
+
+#: ../virtaal/controllers/checkscontroller.py:30
+#: ../virtaal/controllers/unitcontroller.py:83
+msgid "Untranslated"
+msgstr "Αμετάφραστο"
+
+#: ../virtaal/controllers/checkscontroller.py:31
+msgid "Accelerators"
+msgstr "Επιταχυντές"
+
+#: ../virtaal/controllers/checkscontroller.py:32
+msgid "Acronyms"
+msgstr "Ακρώνυμα"
+
+#: ../virtaal/controllers/checkscontroller.py:33
+msgid "Blank"
+msgstr "Κενό"
+
+#: ../virtaal/controllers/checkscontroller.py:34
+msgid "Brackets"
+msgstr "Αγκύλες"
+
+#: ../virtaal/controllers/checkscontroller.py:35
+msgid "Compendium conflict"
+msgstr "σύγκρουση σύνοψης"
+
+#: ../virtaal/controllers/checkscontroller.py:36
+msgid "Translator credits"
+msgstr "Μνείες μεταφραστών"
+
+#: ../virtaal/controllers/checkscontroller.py:37
+msgid "Double quotes"
+msgstr "Διπλά εισαγωγικά"
+
+#: ../virtaal/controllers/checkscontroller.py:38
+msgid "Double spaces"
+msgstr "Διπλά διαστήματα"
+
+#: ../virtaal/controllers/checkscontroller.py:39
+msgid "Repeated word"
+msgstr "Επαναλαμβανόμενη λέξη"
+
+#: ../virtaal/controllers/checkscontroller.py:40
+#: ../virtaal/controllers/placeablescontroller.py:96
+msgid "E-mail"
+msgstr "Ηλεκτρονικό ταχυδρομείο"
+
+#: ../virtaal/controllers/checkscontroller.py:41
+msgid "Ending punctuation"
+msgstr "Τέλος σημείου στίξης"
+
+#: ../virtaal/controllers/checkscontroller.py:42
+msgid "Ending whitespace"
+msgstr "Τέλος κενού"
+
+#: ../virtaal/controllers/checkscontroller.py:43
+msgid "Escapes"
+msgstr "Διαφυγές"
+
+#: ../virtaal/controllers/checkscontroller.py:44
+msgid "File paths"
+msgstr "Διαδρομές αρχείου"
+
+#: ../virtaal/controllers/checkscontroller.py:45
+msgid "Functions"
+msgstr "Συναρτήσεις"
+
+#: ../virtaal/controllers/checkscontroller.py:46
+msgid "GConf values"
+msgstr "Τιμές GConf"
+
+#: ../virtaal/controllers/checkscontroller.py:47
+msgid "Old KDE comment"
+msgstr "Παλιά σχόλια KDE"
+
+#: ../virtaal/controllers/checkscontroller.py:48
+msgid "Long"
+msgstr "Μακρύς"
+
+#: ../virtaal/controllers/checkscontroller.py:49
+msgid "Must translate words"
+msgstr "Πρέπει να μεταφρασθούν λέξεις"
+
+#: ../virtaal/controllers/checkscontroller.py:50
+msgid "Newlines"
+msgstr "Νέες γραμμές"
+
+#: ../virtaal/controllers/checkscontroller.py:51
+msgid "Number of plurals"
+msgstr "Αριθμός πληθυντικών"
+
+#: ../virtaal/controllers/checkscontroller.py:52
+msgid "Don't translate words"
+msgstr "Να μη μεταφρασθούν λέξεις"
+
+#: ../virtaal/controllers/checkscontroller.py:53
+#: ../virtaal/controllers/placeablescontroller.py:120
+msgid "Numbers"
+msgstr "Αριθμοί"
+
+#: ../virtaal/controllers/checkscontroller.py:54
+#: ../devsupport/optparse.py:1612
+msgid "Options"
+msgstr "Επιλογές"
+
+#: ../virtaal/controllers/checkscontroller.py:55
+msgid "printf()"
+msgstr "printf()"
+
+#: ../virtaal/controllers/checkscontroller.py:56
+msgid "Punctuation spacing"
+msgstr "Κενό σημείου στίξης"
+
+#: ../virtaal/controllers/checkscontroller.py:57
+msgid "Pure punctuation"
+msgstr "Καθαρό σημείο στίξης"
+
+#: ../virtaal/controllers/checkscontroller.py:58
+msgid "Number of sentences"
+msgstr "Αριθμός προτάσεων"
+
+#: ../virtaal/controllers/checkscontroller.py:59
+msgid "Short"
+msgstr "Μικρός"
+
+#: ../virtaal/controllers/checkscontroller.py:60
+msgid "Simple capitalization"
+msgstr "Απλά κεφαλαία"
+
+#: ../virtaal/controllers/checkscontroller.py:61
+msgid "Simple plural(s)"
+msgstr "Απλοί πληθυντικοί"
+
+#: ../virtaal/controllers/checkscontroller.py:62
+msgid "Single quotes"
+msgstr "Απλές παρενθέσεις"
+
+#: ../virtaal/controllers/checkscontroller.py:63
+msgid "Spelling"
+msgstr "Ορθογραφία"
+
+#: ../virtaal/controllers/checkscontroller.py:64
+msgid "Starting capitalization"
+msgstr "Έναρξη κεφαλαίων"
+
+#: ../virtaal/controllers/checkscontroller.py:65
+msgid "Starting punctuation"
+msgstr "Έναρξη σημείου στίξης"
+
+#: ../virtaal/controllers/checkscontroller.py:66
+msgid "Starting whitespace"
+msgstr "Έναρξη κενού"
+
+#: ../virtaal/controllers/checkscontroller.py:67
+msgid "Tabs"
+msgstr "Στηλοθέτες"
+
+#: ../virtaal/controllers/checkscontroller.py:68
+msgid "Unchanged"
+msgstr "Αμετάβλητο"
+
+#: ../virtaal/controllers/checkscontroller.py:69
+#: ../virtaal/controllers/placeablescontroller.py:129
+msgid "URLs"
+msgstr "URLs"
+
+#: ../virtaal/controllers/checkscontroller.py:70
+msgid "Valid characters"
+msgstr "Έγκυροι χαρακτήρες"
+
+#: ../virtaal/controllers/checkscontroller.py:71
+msgid "Placeholders"
+msgstr "Δεσμευτικά χώρου"
+
+#: ../virtaal/controllers/checkscontroller.py:72
+msgid "XML tags"
+msgstr "Ετικέτες XML"
+
+#: ../virtaal/controllers/checkscontroller.py:111
+msgid "Default"
+msgstr "Προεπιλογή"
+
+#: ../virtaal/controllers/checkscontroller.py:112
+msgid "OpenOffice.org"
+msgstr "OpenOffice.org"
+
+#: ../virtaal/controllers/checkscontroller.py:113
+msgid "Mozilla"
+msgstr "Mozilla"
+
+#: ../virtaal/controllers/checkscontroller.py:114
+msgid "KDE"
+msgstr "KDE"
+
+#: ../virtaal/controllers/checkscontroller.py:115
+msgid "GNOME"
+msgstr "GNOME"
+
+#: ../virtaal/controllers/checkscontroller.py:116
+msgid "Drupal"
+msgstr "Drupal"
+
+#: ../virtaal/controllers/maincontroller.py:80
+#: ../virtaal/controllers/maincontroller.py:89
+#: ../virtaal/controllers/maincontroller.py:98
+msgid "Header information"
+msgstr "Πληροφορίες κεφαλίδας"
+
+#: ../virtaal/controllers/maincontroller.py:81
+msgid "Please enter your name"
+msgstr "Παρακαλώ εισάγετε το όνομα σας"
+
+#: ../virtaal/controllers/maincontroller.py:90
+msgid "Please enter your e-mail address"
+msgstr "Παρακαλώ εισάγετε τη διεύθυνση ηλεκτρονικού ταχυδρομείου"
+
+#: ../virtaal/controllers/maincontroller.py:99
+msgid "Please enter your team's information"
+msgstr "Παρακαλώ εισάγετε τις πληροφορίες της ομάδας σας"
+
+#: ../virtaal/controllers/maincontroller.py:200
+#: ../virtaal/controllers/maincontroller.py:327
+msgid "You selected the currently open file for opening. Do you want to reload the file?"
+msgstr "Επιλέξατε το τρέχον ανοιχτό αρχείο για άνοιγμα. Θέλετε να επαναφορτωθεί το αρχείο;"
+
+#: ../virtaal/controllers/maincontroller.py:211
+#: ../virtaal/controllers/maincontroller.py:311
+#: ../virtaal/controllers/maincontroller.py:338
+#, python-format
+msgid ""
+"Could not open file.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Try opening a different file."
+msgstr ""
+"Αδυναμία ανοίγματος αρχείου\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Δοκιμάστε το άνοιγμα διαφορετικού αρχείου."
+
+#: ../virtaal/controllers/maincontroller.py:227
+#: ../virtaal/support/native_widgets.py:142
+#: ../virtaal/support/native_widgets.py:188
+#: ../virtaal/views/mainview.py:314
+msgid "Save"
+msgstr "Αποθήκευση"
+
+#: ../virtaal/controllers/maincontroller.py:247
+#, python-format
+msgid ""
+"Could not save file.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Try saving to a different location."
+msgstr ""
+"Αδυναμία αποθήκευσης αρχείου\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Δοκιμάστε την αποθήκευση σε διαφορετική τοποθεσία."
+
+#: ../virtaal/controllers/maincontroller.py:252
+#, python-format
+msgid ""
+"Could not save file.\n"
+"\n"
+"%(error_message)s"
+msgstr ""
+"Αδυναμία αποθήκευσης αρχείου.\n"
+"\n"
+"%(error_message)s"
+
+#: ../virtaal/controllers/maincontroller.py:263
+msgid "Can only export Gettext PO files"
+msgstr "Δυνατότητα εξαγωγής μόνο αρχείων Gettext PO"
+
+#: ../virtaal/controllers/maincontroller.py:272
+msgid "Export"
+msgstr "Εξαγωγή"
+
+#: ../virtaal/controllers/maincontroller.py:280
+#, python-format
+msgid ""
+"Could not export file.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Try saving to a different location."
+msgstr ""
+"Αδυναμία εξαγωγής αρχείου.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Δοκιμάστε την αποθήκευση σε διαφορετική τοποθεσία."
+
+#: ../virtaal/controllers/maincontroller.py:285
+#, python-format
+msgid ""
+"Could not export file.\n"
+"\n"
+"%(error_message)s"
+msgstr ""
+"Αδυναμία εξαγωγής αρχείου.\n"
+"\n"
+"%(error_message)s"
+
+#: ../virtaal/controllers/maincontroller.py:301
+msgid "Reload File"
+msgstr "Επαναφόρτωση αρχείου"
+
+#: ../virtaal/controllers/maincontroller.py:301
+msgid "Reload file from last saved copy and lose all changes?"
+msgstr "Επαναφόρτωση αρχείου από το τελευταίο αποθηκευμένο αντίγραφο και απώλεια όλων των αλλαγών;"
+
+#. l10n: See http://en.wikipedia.org/wiki/CamelCase
+#: ../virtaal/controllers/placeablescontroller.py:83
+msgid "CamelCase"
+msgstr "CamelCase"
+
+#: ../virtaal/controllers/placeablescontroller.py:84
+msgid "Words with internal capitalization, such as some brand names and WikiWords"
+msgstr "Λέξεις με εσωτερικά κεφαλαία, όπως μερικά εμπορικά ονόματα και WikiWords"
+
+#: ../virtaal/controllers/placeablescontroller.py:87
+msgid "Capitals"
+msgstr "Κεφαλαία"
+
+#. l10n: this refers to "UPPERCASE" / "CAPITAL" letters
+#: ../virtaal/controllers/placeablescontroller.py:89
+msgid "Words containing uppercase letters only"
+msgstr "Λέξεις που περιέχουν μόνο κεφαλαία γράμματα"
+
+#: ../virtaal/controllers/placeablescontroller.py:92
+msgid "Command Line Options"
+msgstr "Επιλογές γραμμής εντολών"
+
+#: ../virtaal/controllers/placeablescontroller.py:93
+msgid "Application command line options, such as --help, -h and -I"
+msgstr "Εφαρμογές επιλογών γραμμής εντολών, όπως --help, -h και -I"
+
+#: ../virtaal/controllers/placeablescontroller.py:97
+msgid "E-mail addresses"
+msgstr "Διευθύνσεις ηλεκτρονικού ταχυδρομείου"
+
+#: ../virtaal/controllers/placeablescontroller.py:100
+msgid "File Names"
+msgstr "Ονόματα αρχείων"
+
+#: ../virtaal/controllers/placeablescontroller.py:101
+msgid "Paths referring to file locations"
+msgstr "Διαδρομές που αναφέρονται σε τοποθεσίες αρχείων"
+
+#: ../virtaal/controllers/placeablescontroller.py:104
+msgid "Placeholders (printf)"
+msgstr "Δεσμευτικά θέσης (printf)"
+
+#: ../virtaal/controllers/placeablescontroller.py:105
+msgid "Placeholders used in \"printf\" strings"
+msgstr "Δεσμευτικά θέσεων που χρησιμοποιούνται στα αλφαριθμητικά \"printf\""
+
+#: ../virtaal/controllers/placeablescontroller.py:108
+msgid "Placeholders (Python)"
+msgstr "Δεσμευτικά θέσεων (Python)"
+
+#: ../virtaal/controllers/placeablescontroller.py:109
+msgid "Placeholders in Python strings"
+msgstr "Δεσμευτικά θέσεων σε αλφαριθμητικά Python"
+
+#: ../virtaal/controllers/placeablescontroller.py:112
+msgid "Placeholders (Java)"
+msgstr "Δεσμευτικά θέσεων (Java)"
+
+#: ../virtaal/controllers/placeablescontroller.py:113
+msgid "Placeholders in Java strings"
+msgstr "Δεσμευτικά θέσεων σε αλφαριθμητικά Java"
+
+#: ../virtaal/controllers/placeablescontroller.py:116
+msgid "Placeholders (Qt)"
+msgstr "Δεσμευτικά θέσεων (Qt)"
+
+#: ../virtaal/controllers/placeablescontroller.py:117
+msgid "Placeholders in Qt strings"
+msgstr "Δεσμευτικά θέσεων σε αλφαριθμητικά Qt"
+
+#. l10n: 'decimal fractions' refer to numbers like 0.2 or 499,99
+#: ../virtaal/controllers/placeablescontroller.py:122
+msgid "Integer numbers and decimal fractions"
+msgstr "Ακέραιοι αριθμοί και δεκαδικά κλάσματα"
+
+#: ../virtaal/controllers/placeablescontroller.py:125
+msgid "Punctuation"
+msgstr "Στίξη"
+
+#: ../virtaal/controllers/placeablescontroller.py:126
+msgid "Symbols and less frequently used punctuation marks"
+msgstr "Σύμβολα και λιγότερο συχνά χρησιμοποιούμενα σημεία στίξης"
+
+#: ../virtaal/controllers/placeablescontroller.py:130
+msgid "URLs, hostnames and IP addresses"
+msgstr "URLs, ονόματα υπολογιστών και διευθύνσεις IP"
+
+#. l10n: see http://en.wikipedia.org/wiki/Character_entity_reference
+#: ../virtaal/controllers/placeablescontroller.py:134
+msgid "XML Entities"
+msgstr "Οντότητες XML"
+
+#: ../virtaal/controllers/placeablescontroller.py:135
+msgid "Entity references, such as &amp; and &#169;"
+msgstr "Αναφορές οντοτήτων, όπως &amp; και &#169;"
+
+#: ../virtaal/controllers/placeablescontroller.py:138
+msgid "XML Tags"
+msgstr "Ετικέτες XML"
+
+#: ../virtaal/controllers/placeablescontroller.py:139
+msgid "XML tags, such as <b> and </i>"
+msgstr "Ετικέτες XML, όπως <b> και </i>"
+
+#: ../virtaal/controllers/placeablescontroller.py:153
+msgid "Spaces"
+msgstr "Κενά"
+
+#: ../virtaal/controllers/placeablescontroller.py:154
+msgid "Double spaces and spaces in unexpected positions"
+msgstr "Διπλά κενά και κενά σε αναπάντεχες θέσεις"
+
+#: ../virtaal/controllers/placeablescontroller.py:155
+msgid "\"alt\" Attributes"
+msgstr "Γνωρίσματα \"alt\""
+
+#: ../virtaal/controllers/placeablescontroller.py:156
+msgid "Placeable for \"alt\" attributes (as found in HTML)"
+msgstr "Καταχωρήσεις για γνωρίσματα \"alt\" (όπως βρίσκονται στο HTML)"
+
+#: ../virtaal/controllers/placeablescontroller.py:157
+msgid "Placeholders (Drupal)"
+msgstr "Δεσμευτικά θέσεων (Drupal)"
+
+#: ../virtaal/controllers/placeablescontroller.py:158
+msgid "Placeholders in Drupal strings"
+msgstr "Δεσμευτικά θέσεων σε αλφαριθμητικά Drupal"
+
+#: ../virtaal/controllers/storecontroller.py:194
+msgid "No source or translatable files in bundle"
+msgstr "Χωρίς πηγή ή μεταφράσιμα αρχεία στη δέσμη"
+
+#: ../virtaal/controllers/storecontroller.py:225
+msgid "The file contains nothing to translate."
+msgstr "Αυτό το αρχείο δεν περιέχει τίποτα για μετάφραση."
+
+#. l10n: The heading of statistics before updating to the new template
+#: ../virtaal/controllers/storecontroller.py:423
+msgid "Before:"
+msgstr "Πριν:"
+
+#. l10n: The heading of statistics after updating to the new template
+#: ../virtaal/controllers/storecontroller.py:425
+msgid "After:"
+msgstr "Μετά:"
+
+#: ../virtaal/controllers/storecontroller.py:426
+#, python-format
+msgid "Translated: %d"
+msgstr "Μεταφρασμένο: %d"
+
+#: ../virtaal/controllers/storecontroller.py:427
+#, python-format
+msgid "Fuzzy: %d"
+msgstr "Ασαφές: %d"
+
+#: ../virtaal/controllers/storecontroller.py:428
+#, python-format
+msgid "Untranslated: %d"
+msgstr "Αμετάφραστο: %d"
+
+#: ../virtaal/controllers/storecontroller.py:429
+#, python-format
+msgid "Total: %d"
+msgstr "Συνολικό: %d"
+
+#. l10n: this refers to updating a file to a new template (POT file)
+#: ../virtaal/controllers/storecontroller.py:447
+msgid "File Updated"
+msgstr "Ενημέρωση αρχείου"
+
+#: ../virtaal/controllers/unitcontroller.py:84
+msgid "Needs work"
+msgstr "Χρειάζεται δουλειά"
+
+#: ../virtaal/controllers/unitcontroller.py:85
+msgid "Rejected"
+msgstr "Απόρριψη"
+
+#: ../virtaal/controllers/unitcontroller.py:86
+msgid "Needs review"
+msgstr "Χρειάζεται αναθεώρηση"
+
+#: ../virtaal/controllers/unitcontroller.py:87
+msgid "Translated"
+msgstr "Μεταφρασμένο"
+
+#: ../virtaal/controllers/unitcontroller.py:88
+msgid "Reviewed"
+msgstr "Αναθεωρημένο"
+
+#: ../virtaal/controllers/welcomescreencontroller.py:64
+msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
+
+#: ../virtaal/modes/defaultmode.py:28
+msgid "All"
+msgstr "Όλα"
+
+#: ../virtaal/modes/qualitycheckmode.py:33
+msgid "Quality Checks"
+msgstr "Έλεγχοι ποιότητας"
+
+#. l10n: This is the button where the user can select units by failing quality checks
+#: ../virtaal/modes/qualitycheckmode.py:130
+msgid "Select Checks"
+msgstr "Επιλογή ελέγχων"
+
+#. l10n: This refers to quality checks
+#: ../virtaal/modes/qualitycheckmode.py:133
+msgid "All Checks"
+msgstr "Όλοι οι έλεγχοι"
+
+#: ../virtaal/modes/quicktransmode.py:31
+msgid "Incomplete"
+msgstr "Ατελής"
+
+#: ../virtaal/modes/searchmode.py:35
+#: ../virtaal/modes/searchmode.py:68
+msgid "Search"
+msgstr "Αναζήτηση"
+
+#: ../virtaal/modes/searchmode.py:70
+msgid "_Case sensitive"
+msgstr "_Διάκριση γραμμάτων"
+
+#. l10n: To read about what regular expressions are, see
+#. http://en.wikipedia.org/wiki/Regular_expression
+#: ../virtaal/modes/searchmode.py:74
+msgid "_Regular expression"
+msgstr "Κανονική έκφ_ραση"
+
+#. l10n: This text label shows in front of the text box where the replacement
+#. text is typed. Keep in mind that the text box will appear after this text.
+#. If this sentence construction is hard to use, consdider translating this as
+#. "Replacement"
+#: ../virtaal/modes/searchmode.py:82
+msgid "Replace with"
+msgstr "Αντικατάσταση με"
+
+#. l10n: Button text
+#: ../virtaal/modes/searchmode.py:85
+msgid "Replace"
+msgstr "Αντικατάσταση"
+
+#. l10n: Check box
+#: ../virtaal/modes/searchmode.py:88
+msgid "Replace _All"
+msgstr "Αντικ_ατάσταση όλων"
+
+#: ../virtaal/modes/workflowmode.py:34
+msgid "Workflow"
+msgstr "Ροή εργασιών"
+
+#. l10n: This is the button where the user can select units by workflow state
+#: ../virtaal/modes/workflowmode.py:112
+msgid "Select States"
+msgstr "Επιλογή καταστάσεων"
+
+#. l10n: This refers to workflow states
+#: ../virtaal/modes/workflowmode.py:115
+msgid "All States"
+msgstr "Όλες οι καταστάσεις"
+
+#: ../virtaal/plugins/autocompletor.py:214
+msgid "Automatically complete long words while you type"
+msgstr "Αυτόματη συμπλήρωση μεγάλων λέξεων ενώ πληκτρολογείτε"
+
+#: ../virtaal/plugins/autocompletor.py:215
+msgid "AutoCompletor"
+msgstr "Αυτόματος συμπληρωτής"
+
+#: ../virtaal/plugins/autocorrector.py:303
+msgid "Automatically correct text while you type"
+msgstr "Αυτόματη διόρθωση κειμένου ενώ πληκτρολογείτε"
+
+#: ../virtaal/plugins/autocorrector.py:304
+msgid "AutoCorrector"
+msgstr "Αυτόματος διορθωτής"
+
+#: ../virtaal/plugins/spellchecker.py:47
+msgid "Spell Checker"
+msgstr "Ορθογράφος"
+
+#: ../virtaal/plugins/spellchecker.py:48
+msgid "Check spelling and provide suggestions"
+msgstr "Ορθογραφία και παρεχόμενες προτάσεις"
+
+#. l10n: This refers to spell checking
+#: ../virtaal/plugins/spellchecker.py:334
+msgid "<i>(no suggestions)</i>"
+msgstr "<i>(χωρίς προτάσεις)</i>"
+
+#. l10n: This refers to spell checking
+#: ../virtaal/plugins/spellchecker.py:338
+msgid "Ignore All"
+msgstr "Αγνόηση όλων"
+
+#. l10n: This refers to spelling suggestions
+#: ../virtaal/plugins/spellchecker.py:342
+msgid "More..."
+msgstr "Περισσότερα..."
+
+#. l10n: This refers to the spell checking dictionary
+#: ../virtaal/plugins/spellchecker.py:348
+#, python-format
+msgid "Add \"%s\" to Dictionary"
+msgstr "Προσθήκη \"%s\" στο λεξικό"
+
+#: ../virtaal/plugins/spellchecker.py:351
+msgid "Languages"
+msgstr "Γλώσσες"
+
+#: ../virtaal/plugins/lookup/__init__.py:29
+msgid "Perform look-ups on selected text"
+msgstr "Εκτέλεση αναζητήσεων στο επιλεγμένο κείμενο"
+
+#: ../virtaal/plugins/lookup/__init__.py:30
+msgid "External Look-up"
+msgstr "Εξωτερική αναζήτηση"
+
+#. l10n: The 'services' here refer to different look-up plugins,
+#. such as web look-up, etc.
+#: ../virtaal/plugins/lookup/lookupview.py:70
+msgid "Select Look-up Services"
+msgstr "Επιλογή υπηρεσιών αναζήτησης"
+
+#: ../virtaal/plugins/lookup/lookupview.py:71
+msgid "Select the services that should be used to perform look-ups"
+msgstr "Επιλογή υπηρεσιών που πρέπει να χρησιμοποιηθούν για εκτέλεση αναζητήσεων"
+
+#: ../virtaal/plugins/lookup/lookupview.py:131
+#, python-format
+msgid "Look-up \"%(selection)s\""
+msgstr "Αναζήτηση \"%(selection)s\""
+
+#. l10n: plugin name
+#: ../virtaal/plugins/lookup/models/weblookup.py:40
+msgid "Web Look-up"
+msgstr "Αναζήτηση ιστού"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:41
+msgid "Look-up the selected text on a web site"
+msgstr "Αναζήτηση του επιλεγμένου κειμένου σε ιστότοπο"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate.
+#: ../virtaal/plugins/lookup/models/weblookup.py:46
+#: ../virtaal/plugins/tm/models/google_translate.py:172
+msgid "Google"
+msgstr "Google"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:52
+msgid "Wikipedia"
+msgstr "Wikipedia"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:58
+#: ../virtaal/plugins/terminology/models/opentran.py:46
+#: ../virtaal/plugins/tm/models/opentran.py:37
+msgid "Open-Tran.eu"
+msgstr "Open-Tran.eu"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:177
+#: ../virtaal/views/widgets/selectview.py:75
+msgid "Name"
+msgstr "Όνομα"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:186
+msgid "URL"
+msgstr "URL"
+
+#. l10n: Whether the selected text should be surrounded by "quotes"
+#: ../virtaal/plugins/lookup/models/weblookup.py:197
+msgid "Quote Query"
+msgstr "Εισαγωγικό ερωτήματος"
+
+#: ../virtaal/plugins/migration.py:53
+msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
+msgstr "Μεταφορά ρυθμίσεων από KBabel, Lokalize και/ή Poedit στο Virtaal."
+
+#: ../virtaal/plugins/migration.py:54
+msgid "Migration Assistant"
+msgstr "Βοηθός μεταφοράς"
+
+#: ../virtaal/plugins/migration.py:68
+msgid "Should Virtaal try to import settings and data from other applications?"
+msgstr "Θα πρέπει το Virtaal να προσπαθήσει να εισάγει ρυθμίσεις και δεδομένα από άλλες εφαρμογές;"
+
+#: ../virtaal/plugins/migration.py:69
+msgid "Import data from other applications?"
+msgstr "Εισαγωγή δεδομένων από άλλες εφαρμογές;"
+
+#: ../virtaal/plugins/migration.py:94
+msgid "Migration was successfully completed"
+msgstr "Η μεταφορά ολοκληρώθηκε με επιτυχία"
+
+#: ../virtaal/plugins/migration.py:95
+msgid "The following items were migrated:"
+msgstr "Τα παρακάτω στοιχεία μεταφέρθηκαν:"
+
+#: ../virtaal/plugins/migration.py:98
+msgid "Migration completed"
+msgstr "Η μεταφορά ολοκληρώθηκε"
+
+#: ../virtaal/plugins/migration.py:100
+msgid "Virtaal was not able to migrate any settings or data"
+msgstr "Το Virtaal δεν μπόρεσε να μεταφέρει καμία ρύθμιση ή σεδομένο"
+
+#: ../virtaal/plugins/migration.py:101
+msgid "Nothing migrated"
+msgstr "Τίποτα δεν μεταφέρθηκε"
+
+#: ../virtaal/plugins/migration.py:159
+msgid "Poedit settings"
+msgstr "Ρυθμίσεις Poedit"
+
+#: ../virtaal/plugins/migration.py:188
+#, python-format
+msgid "Poedit's Translation Memory: %(database_language_code)s"
+msgstr "Μεταφραστική μνήμη Poedit: %(database_language_code)s"
+
+#: ../virtaal/plugins/migration.py:213
+#, python-format
+msgid "KBabel's Translation Memory: %(database_language_code)s"
+msgstr "Μεταφραστική μνήμη KBabel: %(database_language_code)s"
+
+#: ../virtaal/plugins/migration.py:231
+msgid "Lokalize settings"
+msgstr "Τοπικοποίηση ρυθμίσεων"
+
+#: ../virtaal/plugins/migration.py:255
+#, python-format
+msgid "Lokalize's Translation Memory: %(database_name)s"
+msgstr "Μεταφραστική μνήμη Lokalize: %(database_name)s"
+
+#: ../virtaal/plugins/terminology/__init__.py:27
+msgid "Terminology Help"
+msgstr "Βοήθεια ορολογίας"
+
+#: ../virtaal/plugins/terminology/__init__.py:28
+msgid "Terminology suggestions"
+msgstr "Προτάσεις ορολογίας"
+
+#: ../virtaal/plugins/terminology/models/autoterm.py:41
+msgid "Localization Terminology"
+msgstr "Τοπικοποίηση ορολογίας"
+
+#: ../virtaal/plugins/terminology/models/autoterm.py:42
+msgid "Selected localization terminology"
+msgstr "Επιλεγμένη ορολογία τοπικοποίησης"
+
+#: ../virtaal/plugins/terminology/models/localfile/__init__.py:42
+msgid "Local Files"
+msgstr "Τοπικά αρχεία"
+
+#: ../virtaal/plugins/terminology/models/localfile/__init__.py:43
+msgid "Local terminology files"
+msgstr "Τοπικά αρχεία ορολογίας"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:58
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:60
+msgid "Terminology _Files..."
+msgstr "Αρ_χεία ορολογίας..."
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:66
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:68
+msgid "Add _Term..."
+msgstr "Προσθήκη όρ_ου..."
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:137
+msgid "File"
+msgstr "Αρχείο"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:147
+msgid "Extendable"
+msgstr "Επεκτάσιμο"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:172
+msgid "Add Files"
+msgstr "Προσθήκη αρχείων"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:179
+#: ../virtaal/support/native_widgets.py:79
+#: ../virtaal/views/mainview.py:259
+msgid "All Supported Files"
+msgstr "Όλα τα υποστηριζόμενα αρχεία"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:205
+#: ../virtaal/support/native_widgets.py:156
+#: ../virtaal/support/native_widgets.py:185
+#: ../virtaal/views/mainview.py:303
+msgid "All Files"
+msgstr "Όλα τα αρχεία"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:245
+#, python-format
+msgid "\"%s\" is not a usable file."
+msgstr "\"%s\" δεν είναι χρησιμοποιήσιμο αρχείο."
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:250
+#, python-format
+msgid ""
+"Unable to load %(filename)s:\n"
+"\n"
+"%(errormsg)s"
+msgstr ""
+"Αδυναμία φόρτωσης %(filename)s:\n"
+"\n"
+"%(errormsg)s"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:251
+msgid "Error opening file"
+msgstr "Σφάλμα ανοίγματος αρχείου"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:388
+#, python-format
+msgid "_Source term — %(langname)s"
+msgstr "Όρος πηγής — %(langname)s"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:389
+#, python-format
+msgid "_Target term — %(langname)s"
+msgstr "Όρος στόχου — %(langname)s"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:433
+msgid "Identical entry already exists."
+msgstr "Ταυτόσημη είσοδος ήδη υπάρχει."
+
+#. l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:446
+#, python-format
+msgid "<b>%s</b>"
+msgstr "<b>%s</b>"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:447
+#, python-format
+msgid "Existing translations: %(translations)s"
+msgstr "Υπάρχουσες μεταφράσεις: %(translations)s"
+
+#: ../virtaal/plugins/terminology/models/opentran.py:47
+msgid "Terms from Open-Tran.eu"
+msgstr "Όροι από Open-Tran.eu"
+
+#: ../virtaal/plugins/terminology/termview.py:166
+msgid "Select Terminology Sources"
+msgstr "Επιλογή πηγών ορολογίας"
+
+#: ../virtaal/plugins/terminology/termview.py:167
+msgid "Select the sources of terminology suggestions"
+msgstr "Επιλογή των πηγών προτάσεων ορολογίας"
+
+#: ../virtaal/plugins/tm/__init__.py:27
+msgid "Translation Memory"
+msgstr "Μεταφραστική μνήμη"
+
+#: ../virtaal/plugins/tm/__init__.py:28
+msgid "Translation memory suggestions"
+msgstr "Προτάσεις μεταφραστικής μνήμης"
+
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/amagama.py:28
+#: ../virtaal/plugins/tm/models/amagama.py:31
+msgid "Amagama"
+msgstr "Amagama"
+
+#: ../virtaal/plugins/tm/models/amagama.py:29
+#: ../virtaal/plugins/tm/models/opentran.py:38
+msgid "Previous translations for Free and Open Source Software"
+msgstr "Προηγούμενες μεταφράσεις για λογισμικό ελεύθερου και ανοιχτού κώδικα"
+
+#: ../virtaal/plugins/tm/models/currentfile.py:32
+msgid "Current File"
+msgstr "Τρέχον αρχείο"
+
+#: ../virtaal/plugins/tm/models/currentfile.py:33
+msgid "Translated units from the currently open file"
+msgstr "Μεταφρασμένες μονάδες από το τρέχον ανοιχτό αρχείο"
+
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/currentfile.py:95
+#: ../virtaal/plugins/tm/models/currentfile.py:115
+msgid "This file"
+msgstr "Αυτό το αρχείο"
+
+#. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
+#: ../virtaal/plugins/tm/models/google_translate.py:117
+msgid "Google Translate"
+msgstr "Μετάφραση Google"
+
+#: ../virtaal/plugins/tm/models/google_translate.py:118
+msgid "Unreviewed machine translations from Google's translation service"
+msgstr "Μηχανή μεταφράσεων χωρίς αναθεώρηση από την υπηρεσία μετάφρασης του Google"
+
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:39
+msgid "Microsoft Translator"
+msgstr "Μεταφραστής Microsoft"
+
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:40
+msgid "Unreviewed machine translations from Microsoft Translator"
+msgstr "Μηχανή μεταφράσεων χωρίς αναθεώρηση από το μεταφραστή Microsoft"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:106
+msgid "Microsoft"
+msgstr "Microsoft"
+
+#. l10n: This is the name of a software library. You almost definitely don't want to translate this. The lower case 'l' is intentional.
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+#: ../virtaal/plugins/tm/models/libtranslate.py:45
+#: ../virtaal/plugins/tm/models/libtranslate.py:101
+msgid "libtranslate"
+msgstr "ελεύθερη μετάφραση"
+
+#: ../virtaal/plugins/tm/models/libtranslate.py:46
+msgid "Unreviewed machine translations from various services"
+msgstr "Μηχανή μεταφράσεων χωρίς αναθεώρηση από διάφορες υπηρεσίες"
+
+#: ../virtaal/plugins/tm/models/localtm.py:37
+msgid "Local Translation Memory"
+msgstr "Τοπική μεταφραστική μνήμη"
+
+#: ../virtaal/plugins/tm/models/localtm.py:38
+msgid "Previous translations you have made"
+msgstr "Προηγούμενες μεταφράσεις που κάνατε"
+
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/localtm.py:40
+msgid "Local TM"
+msgstr "Τοπικό TM"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+#: ../virtaal/plugins/tm/models/moses.py:33
+#: ../virtaal/plugins/tm/models/moses.py:74
+msgid "Moses"
+msgstr "Moses"
+
+#: ../virtaal/plugins/tm/models/moses.py:34
+msgid "Unreviewed machine translations from a Moses server"
+msgstr "Μηχανή μεταφράσεων χωρίς αναθεώρηση από εξυπηρετητή Moses"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+#: ../virtaal/plugins/tm/models/opentran.py:77
+#: ../virtaal/plugins/tm/models/opentran.py:79
+msgid "OpenTran"
+msgstr "OpenTran"
+
+#: ../virtaal/plugins/tm/models/remotetm.py:30
+msgid "Remote Server"
+msgstr "Απομακρυσμένος εξυπηρετητής"
+
+#: ../virtaal/plugins/tm/models/remotetm.py:31
+msgid "A translation memory server"
+msgstr "Εξυπηρετητής μεταφραστικής μνήμης"
+
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/remotetm.py:33
+msgid "Remote TM"
+msgstr "Απομακρυσμένο TM"
+
+#: ../virtaal/plugins/tm/models/tinytm.py:36
+msgid "TinyTM"
+msgstr "TinyTM"
+
+#: ../virtaal/plugins/tm/models/tinytm.py:37
+msgid "A TinyTM translation memory server"
+msgstr "Εξυπηρετητής μεταφραστικής μνήμης TinyTM"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
+#: ../virtaal/plugins/tm/models/apertium.py:43
+#: ../virtaal/plugins/tm/models/apertium.py:125
+msgid "Apertium"
+msgstr "Apertium"
+
+#: ../virtaal/plugins/tm/models/apertium.py:44
+msgid "Unreviewed machine translations from Apertium"
+msgstr "Μηχανή μεταφράσεων χωρίς αναθεώρηση από Apertium"
+
+#: ../virtaal/plugins/tm/tmview.py:111
+msgid "Translation _Suggestions"
+msgstr "Προτά_σεις μετάφρασης"
+
+#: ../virtaal/plugins/tm/tmview.py:153
+#, python-format
+msgid "Ctrl+%(number_key)d"
+msgstr "Ctrl+%(number_key)d"
+
+#. l10n: The 'sources' here refer to different translation memory plugins,
+#. such as local tm, open-tran.eu, the current file, etc.
+#: ../virtaal/plugins/tm/tmview.py:176
+msgid "Select sources of Translation Memory"
+msgstr "Επιλογή πηγών μεταφραστικής μνήμης"
+
+#: ../virtaal/plugins/tm/tmview.py:177
+msgid "Select the sources that should be queried for translation memory"
+msgstr "Επιλογή πηγών που πρέπει να ερωτηθούν για μεταφραστική μνήμη"
+
+#. l10n: match quality column label
+#: ../virtaal/plugins/tm/tmwidgets.py:64
+msgid "%"
+msgstr "%"
+
+#: ../virtaal/plugins/tm/tmwidgets.py:66
+msgid "Matches"
+msgstr "Ταιριάζει "
+
+#: ../virtaal/plugins/tm/tmwidgets.py:68
+msgid "TM Source"
+msgstr "Πηγή TM"
+
+#. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
+#: ../virtaal/plugins/tm/tmwidgets.py:138
+#, python-format
+msgid "%(match_quality)s%%"
+msgstr "%(match_quality)s%%"
+
+#. l10n: This indicates a suggestion from machine translation. It is displayed instead of the match percentage.
+#: ../virtaal/plugins/tm/tmwidgets.py:148
+msgid "?"
+msgstr ";"
+
+#: ../virtaal/support/native_widgets.py:129
+#: ../virtaal/support/native_widgets.py:157
+#: ../virtaal/views/mainview.py:252
+msgid "Choose a Translation File"
+msgstr "Επιλογή αρχείου μετάφρασης"
+
+#: ../virtaal/views/checksunitview.py:73
+msgid "No issues"
+msgstr "Χωρίς προβλήματα"
+
+#: ../virtaal/views/checksunitview.py:80
+msgid "Quality Check"
+msgstr "Έλεγχος ποιότητας"
+
+#: ../virtaal/views/checksunitview.py:86
+msgid "Description"
+msgstr "Περιγραφή"
+
+#: ../virtaal/views/checksprojview.py:40
+msgid "Project Type"
+msgstr "Τύπος σχεδίου"
+
+#. l10n: The label indicating the checker style (GNOME/KDE/whatever)
+#: ../virtaal/views/checksprojview.py:63
+#, python-format
+msgid "Checks: %(checker_name)s"
+msgstr "Έλεγχοι: %(checker_name)s"
+
+#: ../virtaal/views/langview.py:76
+msgid "_New Language Pair..."
+msgstr "_Νέο ζευγάρι γλώσσας..."
+
+#: ../virtaal/views/mainview.py:221
+msgid "Error"
+msgstr "Σφάλμα"
+
+#: ../virtaal/views/mainview.py:333
+msgid ""
+"The current file has been modified.\n"
+"Do you want to save your changes?"
+msgstr ""
+"Το τρέχον αρχείο τροποποιήθηκε.\n"
+"Θέλετε να αποθηκεύσετε τις αλλαγές σας;"
+
+#: ../virtaal/views/mainview.py:336
+msgid "_Discard"
+msgstr "Απόρρι_ψη"
+
+#. l10n: This is the title of the main window of Virtaal
+#. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
+#. %(current_file)s is the file name of the current file
+#. most languages will not need to change this
+#: ../virtaal/views/mainview.py:377
+#, python-format
+msgid "%(modified_marker)s%(current_file)s - Virtaal"
+msgstr "%(modified_marker)s%(current_file)s - Virtaal"
+
+#: ../virtaal/views/mainview.py:402
+msgid "Please enter the number of noun forms (plurals) to use"
+msgstr "Παρακαλώ εισάγετε τον αριθμό των μορφών ονόματος (πληθυντικών) για χρήση"
+
+#: ../virtaal/views/mainview.py:408
+msgid "Please enter the plural equation to use"
+msgstr "Παρακαλώ εισάγετε την εξίσωση πληθυντικού για χρήση"
+
+#. l10n: This refers to the 'mode' that determines how Virtaal moves
+#. between units.
+#: ../virtaal/views/modeview.py:62
+msgid "N_avigation:"
+msgstr "Περιήγη_ση:"
+
+#: ../virtaal/views/modeview.py:108
+#: ../virtaal/views/propertiesview.py:134
+msgid "Save the file for up-to-date information"
+msgstr "Αποθήκευση του αρχείου για ενημερωμένη πληροφόρηση"
+
+#: ../virtaal/views/propertiesview.py:32
+msgid "Untranslated:"
+msgstr "Αμετάφραστο:"
+
+#: ../virtaal/views/propertiesview.py:33
+msgid "Needs work:"
+msgstr "Χρειάζεται δουλειά:"
+
+#: ../virtaal/views/propertiesview.py:34
+msgid "Rejected:"
+msgstr "Απόρριψη:"
+
+#: ../virtaal/views/propertiesview.py:35
+msgid "Needs review:"
+msgstr "Χρειάζεται αναθεώρηση:"
+
+#: ../virtaal/views/propertiesview.py:36
+msgid "Translated:"
+msgstr "Μεταφρασμένο:"
+
+#: ../virtaal/views/propertiesview.py:37
+msgid "Reviewed:"
+msgstr "Αναθεωρημένο:"
+
+#: ../virtaal/views/propertiesview.py:59
+msgid "(0%)"
+msgstr "(0%)"
+
+#: ../virtaal/views/propertiesview.py:61
+msgid "(100%)"
+msgstr "(100%)"
+
+#. l10n: This is the formatting for percentages in the file properties. If unsure, just copy the original.
+#: ../virtaal/views/propertiesview.py:64
+#, python-format
+msgid "(%04.1f%%)"
+msgstr "(%04.1f%%)"
+
+#. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
+#: ../virtaal/views/propertiesview.py:191
+#: ../virtaal/views/propertiesview.py:192
+#, python-format
+msgid "<b>%d</b>"
+msgstr "<b>%d</b>"
+
+#: ../virtaal/views/propertiesview.py:203
+#, python-format
+msgid "%.1f KB"
+msgstr "%.1f KB"
+
+#: ../virtaal/views/storeview.py:163
+#: ../virtaal/views/storeview.py:172
+msgid "Export failed"
+msgstr "Αποτυχία εξαγωγής"
+
+#: ../virtaal/views/storeview.py:181
+msgid "Preview failed"
+msgstr "Αποτυχία προεπισκόπησης"
+
+#: ../virtaal/views/unitview.py:614
+msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
+msgstr "Μετακίνηση ενός βήματος πίσω στη ροή εργασίας (Ctrl+Shift+Enter)"
+
+#: ../virtaal/views/unitview.py:615
+msgid "Click to move to a specific state in the workflow"
+msgstr "Κλικ για μετακίνηση στη συγκεκριμένη κατάσταση στη ροή εργασίας"
+
+#: ../virtaal/views/unitview.py:616
+msgid "Move one step forward in the workflow (Ctrl+Enter)"
+msgstr "Μετακίνηση ενός βήματος μπροστά στη ροή εργασίας (Ctrl+Enter)"
+
+#: ../virtaal/views/widgets/aboutdialog.py:34
+msgid "Copyright © 2007-2010 Zuza Software Foundation"
+msgstr "Copyright © 2007-2010 Zuza Software Foundation"
+
+#. l10n: Please retain the literal name "Virtaal", but feel free to
+#. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
+#: ../virtaal/views/widgets/aboutdialog.py:37
+msgid "Virtaal is a program for doing translation."
+msgstr "Virtaal είναι ένα πρόγραμμα για μεταφράσεις."
+
+#: ../virtaal/views/widgets/aboutdialog.py:38
+msgid "The initial focus is on software translation (localization or l10n), but we definitely intend it to be useful as a general purpose tool for Computer Aided Translation (CAT)."
+msgstr "Η αρχική εστίαση είναι σε μεταφραστικό λογισμικό (τοπικοποίηση ή l10n), αλλά ασφαλώς σκοπεύουμε να είναι χρήσιμο ως εργαλείο γενικού σκοπού για υποβοηθούμενες μεταφράσεις υπολογιστή (CAT). "
+
+#: ../virtaal/views/widgets/aboutdialog.py:52
+msgid "Virtaal website"
+msgstr "Ιστοσελίδα Virtaal"
+
+#: ../virtaal/views/widgets/aboutdialog.py:65
+msgid "We thank our donors:"
+msgstr "Ευχαριστούμε τους δωρητές μας:"
+
+#: ../virtaal/views/widgets/aboutdialog.py:66
+msgid "The International Development Research Centre"
+msgstr "Το διεθνές κέντρο ανάπτυξης και έρευνας"
+
+#: ../virtaal/views/widgets/aboutdialog.py:68
+msgid "Mozilla Corporation"
+msgstr "εταιρεία Mozilla"
+
+#. l10n: Rather than translating, fill in the names of the translators
+#: ../virtaal/views/widgets/aboutdialog.py:73
+msgid "translator-credits"
+msgstr "Dimitris Spingos (Δημήτρης Σπίγγος), <dmtrs32@gmail.com>, 2011"
+
+#: ../virtaal/views/widgets/langadddialog.py:103
+msgid "Language code must be an ASCII string."
+msgstr "Ο κωδικός γλώσσας πρέπει να είναι σε αλφαριθμητικό ASCII"
+
+#: ../virtaal/views/widgets/langadddialog.py:106
+msgid "Language code must be at least 2 characters long."
+msgstr "Ο κωδικός γλώσσας πρέπει να έχει τουλάχιστον 2 χαρακτήρες μήκος."
+
+#: ../virtaal/views/widgets/langselectdialog.py:79
+#: ../virtaal/views/widgets/langselectdialog.py:86
+msgid "Language"
+msgstr "Γλώσσα"
+
+#. l10n: This is the column heading for the language code
+#: ../virtaal/views/widgets/langselectdialog.py:94
+#: ../virtaal/views/widgets/langselectdialog.py:101
+msgid "Code"
+msgstr "Κώδικας"
+
+#: ../virtaal/views/widgets/selectview.py:67
+msgid "Enabled"
+msgstr "Ενεργοποιημένο"
+
+#: ../virtaal/views/widgets/selectview.py:117
+msgid "Configure..."
+msgstr "Διαμόρφωση..."
+
+#: ../virtaal/views/widgets/welcomescreen.py:79
+msgid "Translation memory"
+msgstr "Μεταφραστική μνήμη"
+
+#: ../virtaal/views/widgets/welcomescreen.py:80
+msgid "Terminology assistance"
+msgstr "Βοήθεια ορολογίας"
+
+#: ../virtaal/views/widgets/welcomescreen.py:81
+msgid "Quality checks"
+msgstr "Έλεγχοι ποιότητας"
+
+#: ../virtaal/views/widgets/welcomescreen.py:82
+msgid "Machine translation"
+msgstr "Μηχανική μετάφραση"
+
+#: ../virtaal/views/widgets/welcomescreen.py:83
+msgid "Highlighting and insertion of placeables"
+msgstr "Τονισμός και εισαγωγή καταχωρήσεων"
+
+#: ../virtaal/views/widgets/welcomescreen.py:84
+msgid "Many plugins and options for customization"
+msgstr "Πολλά πρόσθετα και επιλογές για προσαρμογή"
+
+#: ../virtaal/models/storemodel.py:142
+msgid "The file does not exist."
+msgstr "Το αρχείο δεν υπάρχει."
+
+#: ../virtaal/models/storemodel.py:144
+msgid "Not a valid file."
+msgstr "Άκυρο αρχείο."
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
+msgid "TMX Translation Memory"
+msgstr "Μεταφραστική μνήμη TMX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:2
+msgid "TMX"
+msgstr "TMX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:3
+msgid "Translation Memory eXchange"
+msgstr "Μεταφραστική μνήμη eXchange"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:4
+msgid "TBX Glossary"
+msgstr "Γλωσσάρι TBX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:5
+msgid "TBX"
+msgstr "TBX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:6
+msgid "TermBase eXchange"
+msgstr "TermBase eXchange"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:7
+msgid "Wordfast Translation Memory"
+msgstr "Μεταφραστική μνήμη Wordfast"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:8
+msgid "Qt Linguist Translation File"
+msgstr "Γλωσσικό μεταφραστικό αρχείο Qt"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:9
+msgid "Qt Message File"
+msgstr "Αρχείο μηνύματος Qt"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:10
+msgid "Qt Phrase Book"
+msgstr "Βιβλίο φράσεων Qt"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:11
+msgid "INI File"
+msgstr "Αρχείο INI"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:12
+msgid "INI"
+msgstr "INI"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:13
+msgid "Initialization"
+msgstr "Αρχικοποίηση"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:14
+msgid "Java Properties File"
+msgstr "Αρχείο ιδιοτήτων Java"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:15
+msgid "OpenOffice.org Translation File"
+msgstr "Αρχείο μετάφρασης OpenOffice.org"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:16
+msgid "XLIFF Translation File"
+msgstr "Αρχείο μετάφρασης XLIFF"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:17
+msgid "XLIFF"
+msgstr "XLIFF"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:18
+msgid "XML Localization Interchange File Format"
+msgstr "Μορφή αρχείου ανταλλαγής τοπικοποίησης XML"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:19
+msgid "C++ RC File"
+msgstr "Αρχείο C++ RC"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:20
+msgid "RC"
+msgstr "RC"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:21
+msgid "Resource Compiler"
+msgstr "Μεταγλωττιστής πόρου"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:22
+msgid "Tcl Translation File"
+msgstr "Αρχείο μετάφρασης Tcl"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:23
+msgid "JavaScript error message file"
+msgstr "Αρχείο μηνύματος σφάλματος JavaScript"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:24
+msgid "Gettext Translation Template"
+msgstr "Πρότυπο μετάφρασης Gettext"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:25
+msgid "Trados Tag Editor"
+msgstr "Επεξεργαστής ετικέτας Trados"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:26
+msgid "OS X Strings File"
+msgstr "Αρχείο αλφαριθμητικού OS X"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:27
+msgid "UTX Dictionary"
+msgstr "Λεξικό UTX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:28
+msgid "UTX"
+msgstr "UTX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:29
+msgid "Universal Terminology eXchange"
+msgstr "Παγκόσμια ορολογία eXchange"
+
+#: ../devsupport/tmp_strings.py:23
+msgid "Gettext PO file"
+msgstr "Αρχείο Gettext PO"
+
+#: ../devsupport/tmp_strings.py:24
+msgid "Gettext MO file"
+msgstr "Αρχείο Gettext ΜO"
+
+#: ../devsupport/tmp_strings.py:25
+msgid "Qt .qm file"
+msgstr "Αρχείο Qt .qm"
+
+#: ../devsupport/tmp_strings.py:26
+msgid "OmegaT Glossary"
+msgstr "Γλωσσάρι OmegaT"
+
+#: ../bin/virtaal:87
+#, c-format
+msgid "%prog [options] [translation_file]"
+msgstr "%prog [options] [translation_file]"
+
+#: ../bin/virtaal:90
+msgid "LOG"
+msgstr "Ημερολόγιο"
+
+#: ../bin/virtaal:91
+msgid "turn on logging, storing the result to the supplied filename."
+msgstr "εκκίνηση ημερολογίου, αποθήκευση του αποτελέσματος στο παρεχόμενο όνομα αρχείου"
+
+#: ../bin/virtaal:93
+msgid "CONFIG"
+msgstr "Διαμόρφωση"
+
+#: ../bin/virtaal:94
+msgid "use the configuration file given by the supplied filename."
+msgstr "χρήση του δοσμένου αρχείου διαμόρφωσης από το παρεχόμενο όνομα αρχείου"
+
+#: ../bin/virtaal:97
+msgid "enable debugging features"
+msgstr "ενεργοποίηση χαρακτηριστικών αποσφαλμάτωσης"
+
+#: ../bin/virtaal:104
+msgid "PROFILE"
+msgstr "Κατατομή"
+
+#: ../bin/virtaal:106
+msgid "perform profiling, storing the result to the supplied filename."
+msgstr "εκτέλεση κατατομής, αποθήκευση του αποτελέσματος στο παρεχόμενο όνομα αρχείου"
+
+#: ../bin/virtaal:129
+msgid "Could not open log file '%(filename)s'"
+msgstr "Αδυναμία ανοίγματος αρχείου ημερολογίου '%(filename)s'"
+
+#: ../bin/virtaal:137
+msgid "Could not read configuration file '%(filename)s'"
+msgstr "Αδυναμία ανάγνωσης αρχείου διαμόρφωσης '%(filename)s'"
+
+#: ../bin/virtaal:141
+msgid "invalid number of arguments"
+msgstr "άκυρος αριθμός ορισμάτων"
+
+#: ../bin/virtaal:167
+msgid "Profiling support is not available"
+msgstr "Η υποστήριξη κατατομής δεν είναι διαθέσιμη"
+
+#: ../bin/virtaal:179
+msgid "Could not open profile file '%(filename)s'"
+msgstr "Αδυναμία ανοίγματος αρχείου κατατομής '%(filename)s'"
+
+#: ../devsupport/optparse.py:134
+#, python-format
+msgid "no such option: %s"
+msgstr "χωρίς τέτοια επιλογή: %s"
+
+#: ../devsupport/optparse.py:145
+#, python-format
+msgid "ambiguous option: %s (%s?)"
+msgstr "διφορούμενη επιλογή: %s (%s?)"
+
+#: ../devsupport/optparse.py:368
+#, python-format
+msgid "Usage: %s\n"
+msgstr "Χρήση: %s\n"
+
+#: ../devsupport/optparse.py:387
+msgid "Usage"
+msgstr "Χρήση"
+
+#: ../devsupport/optparse.py:412
+msgid "integer"
+msgstr "ακέραιος"
+
+#: ../devsupport/optparse.py:413
+msgid "long integer"
+msgstr "μεγάλος ακέραιος"
+
+#: ../devsupport/optparse.py:414
+msgid "floating-point"
+msgstr "κινητή υποδιατολή"
+
+#: ../devsupport/optparse.py:415
+msgid "complex"
+msgstr "σύμπλεγμα"
+
+#: ../devsupport/optparse.py:423
+#, python-format
+msgid "option %s: invalid %s value: %r"
+msgstr "επιλογή %s: άκυρη %s τιμή: %r "
+
+#: ../devsupport/optparse.py:431
+#, python-format
+msgid "option %s: invalid choice: %r (choose from %s)"
+msgstr "επιλογή %s: άκυρη επιλογή: %r (επιλογή από %s)"
+
+#: ../devsupport/optparse.py:1246
+msgid "show this help message and exit"
+msgstr "εμφάνιση αυτού του μηνύματος βοήθειας και έξοδος"
+
+#: ../devsupport/optparse.py:1251
+msgid "show program's version number and exit"
+msgstr "εμφάνιση του αριθμού έκδοσης του προγράμματος και έξοδος "
+
+#: ../devsupport/optparse.py:1274
+msgid "%prog [options]"
+msgstr "%prog [επιλογές]"
+
+#: ../devsupport/optparse.py:1484
+#: ../devsupport/optparse.py:1523
+#, python-format
+msgid "%s option requires an argument"
+msgstr "η επιλογή %s απαιτεί ένα όρισμα"
+
+#: ../devsupport/optparse.py:1486
+#: ../devsupport/optparse.py:1525
+#, python-format
+msgid "%s option requires %d arguments"
+msgstr "η επιλογή %s απαιτεί %d ορίσματα"
+
+#: ../devsupport/optparse.py:1495
+#, python-format
+msgid "%s option does not take a value"
+msgstr "η επιλογή %s δεν παίρνει τιμή"
+

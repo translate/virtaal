@@ -1,21 +1,22 @@
 # Greek translation of Virtaal.
 # Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
-# Dimitris Spingos <dmtrs32@gmail.com>, 2011.
+# Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.7.0-beta5\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-08-07 10:46+0200\n"
-"Last-Translator: Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs 32@gmail.com>\n"
-"Language-Team: Team@gnome.gr\n"
+"PO-Revision-Date: 2011-09-07 11:44+0300\n"
+"Last-Translator: Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>\n"
+"Language-Team: team@gnome.gr\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.6.1\n"
+"X-Generator: Virtaal 0.7.0\n"
+"X-Project-Style: gnome\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1
@@ -30,7 +31,9 @@ msgstr "Εργαλείο μετάφρασης"
 
 #: ../share/applications/virtaal.desktop.in.h:3
 msgid "A translation tool to help a human translator translate files into other languages"
-msgstr "Ένα εργαλείο μετάφρασης για να βοηθήσει έναν ανθρώπινο μεταφραστή να μεταφράσει αρχεία σε άλλες γλώσσες"
+msgstr ""
+"Ένα εργαλείο μετάφρασης για να βοηθήσει έναν ανθρώπινο μεταφραστή να "
+"μεταφράσει αρχεία σε άλλες γλώσσες"
 
 #: ../share/virtaal/virtaal.glade.h:2
 msgid "_File"
@@ -120,9 +123,11 @@ msgid ""
 "\n"
 "If you are translating from English to French then English would be your original or source language."
 msgstr ""
-"<b>Αρχική</b> είναι η γλώσσα από την οποία μεταφράζεται, αποκαλούμενη επίσης γλώσσα πηγής.\n"
+"<b>Αρχική</b> είναι η γλώσσα από την οποία μεταφράζεται, αποκαλούμενη επίσης "
+"γλώσσα πηγής.\n"
 "\n"
-"Εάν μεταφράζεται από τα αγγλικά στα γαλλικά, τότε τα αγγλικά θα είναι η αρχική ή γλώσσα πηγής. "
+"Εάν μεταφράζεται από τα αγγλικά στα γαλλικά, τότε τα αγγλικά θα είναι η "
+"αρχική ή γλώσσα πηγής."
 
 #: ../share/virtaal/virtaal.glade.h:27
 msgid "<b>Original</b>"
@@ -134,9 +139,11 @@ msgid ""
 "\n"
 "If you are translating from English to French then French would be your translation or target language."
 msgstr ""
-"<b>Τελική</b> είναι η γλώσσα στην οποία μεταφράζεται, αποκαλούμενη επίσης γλώσσα στόχος.\n"
+"<b>Τελική</b> είναι η γλώσσα στην οποία μεταφράζεται, αποκαλούμενη επίσης "
+"γλώσσα στόχος.\n"
 "\n"
-"Εάν μεταφράζεται από τα αγγλικά στα γαλλικά, τότε τα γαλλικά θα είναι η τελική ή γλώσσα στόχος. "
+"Εάν μεταφράζεται από τα αγγλικά στα γαλλικά, τότε τα γαλλικά θα είναι η "
+"τελική ή γλώσσα στόχος."
 
 #: ../share/virtaal/virtaal.glade.h:31
 msgid "<b>Translation</b>"
@@ -152,7 +159,7 @@ msgstr "Προσθήκη ελλείπουσας γλώσσας"
 
 #: ../share/virtaal/virtaal.glade.h:34
 msgid "Language name:"
-msgstr "Όνομα γλώσσας"
+msgstr "Όνομα γλώσσας:"
 
 #: ../share/virtaal/virtaal.glade.h:35
 msgid "ISO code:"
@@ -160,7 +167,7 @@ msgstr "Κωδικός ISO:"
 
 #: ../share/virtaal/virtaal.glade.h:36
 msgid "Plural expression:"
-msgstr "Έκφραση πληθυντικού"
+msgstr "Έκφραση πληθυντικού:"
 
 #: ../share/virtaal/virtaal.glade.h:37
 msgid "Number of plurals:"
@@ -168,7 +175,9 @@ msgstr "Αριθμός πληθυντικών:"
 
 #: ../share/virtaal/virtaal.glade.h:38
 msgid "Depending on the translation task, the plural information might be optional."
-msgstr "Ανάλογα με την εργασία μετάφρασης, οι πληροφορίες πληθυντικού μπορεί να είναι προαιρετικές."
+msgstr ""
+"Ανάλογα με την εργασία μετάφρασης, οι πληροφορίες πληθυντικού μπορεί να "
+"είναι προαιρετικές."
 
 #: ../share/virtaal/virtaal.glade.h:39
 msgid "<b>Language Information</b>"
@@ -189,15 +198,18 @@ msgstr "Όνομα:"
 
 #: ../share/virtaal/virtaal.glade.h:44
 msgid "The e-mail address stored in the file header"
-msgstr "Η αποθηκευμένη διεύθυνση ηλεκτρονικού ταχυδρομείου στην κεφαλίδα αρχείου όνομα στην κεφαλίδα αρχείου"
+msgstr ""
+"Η αποθηκευμένη διεύθυνση ηλεκτρονικού ταχυδρομείου στην κεφαλίδα αρχείου"
 
 #: ../share/virtaal/virtaal.glade.h:45
 msgid "E-mail address:"
-msgstr "Διεύθυνση ηλεκτρονικού ταχυδρομείου"
+msgstr "Διεύθυνση ηλεκτρονικού ταχυδρομείου:"
 
 #: ../share/virtaal/virtaal.glade.h:46
 msgid "The team information stored in the file header. This can be an e-mail address or a URL, for example."
-msgstr "Οι πληροφορίες ομάδας αποθηκεύονται στην κεφαλίδα αρχείου. Αυτό μπορεί να είναι μια διεύθυνση ηλεκτρονικού ταχυδρομείου ή ένα URL, για παράδειγμα."
+msgstr ""
+"Οι πληροφορίες ομάδας αποθηκεύονται στην κεφαλίδα αρχείου. Αυτό μπορεί να "
+"είναι μια διεύθυνση ηλεκτρονικού ταχυδρομείου ή ένα URL, για παράδειγμα."
 
 #: ../share/virtaal/virtaal.glade.h:47
 msgid "Team:"
@@ -230,7 +242,9 @@ msgstr "Γενικά"
 
 #: ../share/virtaal/virtaal.glade.h:55
 msgid "Placeables are special parts of the text that can be automatically highlighted and easily inserted into the translation."
-msgstr "Καταχωρίσεις είναι ειδικά τμήματα κειμένου που μπορούν αυτόματα να τονιστούν και να μπουν εύκολα στη μετάφραση"
+msgstr ""
+"Καταχωρίσεις είναι ειδικά τμήματα κειμένου που μπορούν αυτόματα να τονιστούν "
+"και να μπουν εύκολα στη μετάφραση."
 
 #: ../share/virtaal/virtaal.glade.h:56
 msgid "Placeables"
@@ -255,7 +269,7 @@ msgstr "Σ_χόλια"
 
 #: ../share/virtaal/virtaal.glade.h:62
 msgid "Terminology _file:"
-msgstr "Αρ_χείο ορολογίας"
+msgstr "Αρ_χείο ορολογίας:"
 
 #: ../share/virtaal/virtaal.glade.h:63
 msgid "Web Look-ups"
@@ -263,7 +277,7 @@ msgstr "Αναζητήσεις ιστού"
 
 #: ../share/virtaal/virtaal.glade.h:64
 msgid "Add URL"
-msgstr "Προσθήκη"
+msgstr "Προσθήκη URL"
 
 #: ../share/virtaal/virtaal.glade.h:65
 msgid "URL:"
@@ -364,7 +378,7 @@ msgstr "Τύπος αρχείου:"
 
 #: ../share/virtaal/virtaal.glade.h:92
 msgid "File size:"
-msgstr "Μέγεθος αρχείου"
+msgstr "Μέγεθος αρχείου:"
 
 #: ../share/virtaal/virtaal.glade.h:93
 msgid "Location:"
@@ -372,24 +386,33 @@ msgstr "Τοποθεσία:"
 
 #: ../virtaal/tips.py:27
 msgid "At the end of a translation, simply press <Enter> to continue with the next one."
-msgstr "Στο τέλος μιας μετάφρασης, απλά πατήστε <Enter> για να συνεχίσετε με την επόμενη."
+msgstr ""
+"Στο τέλος μιας μετάφρασης, απλά πατήστε <Enter> για να συνεχίσετε με την "
+"επόμενη."
 
 #: ../virtaal/tips.py:28
 msgid "To copy the original string into the target field, simply press <Alt+Down>."
-msgstr "Για να αντιγράψετε το αρχικό αλφαριθμητικό στο πεδίο στόχος, απλά πατήστε <Alt+Down>."
+msgstr ""
+"Για να αντιγράψετε το αρχικό αλφαριθμητικό στο πεδίο στόχος, απλά πατήστε "
+"<Alt+Down>."
 
 #. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
 #: ../virtaal/tips.py:31
 msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
-msgstr "Για να σημειώσετε την τρέχουσα μετάφραση ως ασαφή, απλά πατήστε <Alt+U>."
+msgstr ""
+"Για να σημειώσετε την τρέχουσα μετάφραση ως ασαφή, απλά πατήστε <Alt+U>."
 
 #: ../virtaal/tips.py:32
 msgid "To mark the current translation as incomplete, simply press <Ctrl+Shift+Enter>."
-msgstr "Για να σημειώσετε την τρέχουσα μετάφραση ως ατελή, απλά πατήστε <Ctrl+Shift+Enter>."
+msgstr ""
+"Για να σημειώσετε την τρέχουσα μετάφραση ως ατελή, απλά πατήστε "
+"<Ctrl+Shift+Enter>."
 
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
-msgstr "Για να σημειώσετε την τρέχουσα μετάφραση ως πλήρη, απλά πατήστε <Ctrl+Enter>."
+msgstr ""
+"Για να σημειώσετε την τρέχουσα μετάφραση ως πλήρη, απλά πατήστε "
+"<Ctrl+Enter>."
 
 #: ../virtaal/tips.py:34
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
@@ -397,7 +420,9 @@ msgstr "Χρήση Ctrl+Up ή Ctrl+Down για μετακίνηση μεταξύ
 
 #: ../virtaal/tips.py:35
 msgid "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
-msgstr "Χρήση Ctrl+PgUp ή Ctrl+PgDown για μετακίνηση μεταξύ των μεταφράσεων με μεγάλα βήματα."
+msgstr ""
+"Χρήση Ctrl+PgUp ή Ctrl+PgDown για μετακίνηση μεταξύ των μεταφράσεων με "
+"μεγάλα βήματα."
 
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
@@ -426,7 +451,7 @@ msgstr "Αγκύλες"
 
 #: ../virtaal/controllers/checkscontroller.py:35
 msgid "Compendium conflict"
-msgstr "σύγκρουση σύνοψης"
+msgstr "Σύγκρουση σύνοψης"
 
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
@@ -625,7 +650,9 @@ msgstr "Παρακαλώ εισάγετε τις πληροφορίες της �
 #: ../virtaal/controllers/maincontroller.py:200
 #: ../virtaal/controllers/maincontroller.py:327
 msgid "You selected the currently open file for opening. Do you want to reload the file?"
-msgstr "Επιλέξατε το τρέχον ανοιχτό αρχείο για άνοιγμα. Θέλετε να επαναφορτωθεί το αρχείο;"
+msgstr ""
+"Επιλέξατε το τρέχον ανοιχτό αρχείο για άνοιγμα. Θέλετε να επαναφορτωθεί το "
+"αρχείο;"
 
 #: ../virtaal/controllers/maincontroller.py:211
 #: ../virtaal/controllers/maincontroller.py:311
@@ -638,7 +665,7 @@ msgid ""
 "\n"
 "Try opening a different file."
 msgstr ""
-"Αδυναμία ανοίγματος αρχείου\n"
+"Αδυναμία ανοίγματος αρχείου.\n"
 "\n"
 "%(error_message)s\n"
 "\n"
@@ -660,7 +687,7 @@ msgid ""
 "\n"
 "Try saving to a different location."
 msgstr ""
-"Αδυναμία αποθήκευσης αρχείου\n"
+"Αδυναμία αποθήκευσης αρχείου.\n"
 "\n"
 "%(error_message)s\n"
 "\n"
@@ -717,7 +744,9 @@ msgstr "Επαναφόρτωση αρχείου"
 
 #: ../virtaal/controllers/maincontroller.py:301
 msgid "Reload file from last saved copy and lose all changes?"
-msgstr "Επαναφόρτωση αρχείου από το τελευταίο αποθηκευμένο αντίγραφο και απώλεια όλων των αλλαγών;"
+msgstr ""
+"Επαναφόρτωση αρχείου από το τελευταίο αποθηκευμένο αντίγραφο και απώλεια "
+"όλων των αλλαγών;"
 
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase
 #: ../virtaal/controllers/placeablescontroller.py:83
@@ -726,7 +755,8 @@ msgstr "CamelCase"
 
 #: ../virtaal/controllers/placeablescontroller.py:84
 msgid "Words with internal capitalization, such as some brand names and WikiWords"
-msgstr "Λέξεις με εσωτερικά κεφαλαία, όπως μερικά εμπορικά ονόματα και WikiWords"
+msgstr ""
+"Λέξεις με εσωτερικά κεφαλαία, όπως μερικά εμπορικά ονόματα και WikiWords"
 
 #: ../virtaal/controllers/placeablescontroller.py:87
 msgid "Capitals"
@@ -743,7 +773,7 @@ msgstr "Επιλογές γραμμής εντολών"
 
 #: ../virtaal/controllers/placeablescontroller.py:93
 msgid "Application command line options, such as --help, -h and -I"
-msgstr "Εφαρμογές επιλογών γραμμής εντολών, όπως --help, -h και -I"
+msgstr "Εφαρμογή επιλογών γραμμής εντολών, όπως --help, -h και -I"
 
 #: ../virtaal/controllers/placeablescontroller.py:97
 msgid "E-mail addresses"
@@ -967,7 +997,7 @@ msgstr "Αντικατάσταση"
 #. l10n: Check box
 #: ../virtaal/modes/searchmode.py:88
 msgid "Replace _All"
-msgstr "Αντικ_ατάσταση όλων"
+msgstr "Αντικατάσταση ό_λων"
 
 #: ../virtaal/modes/workflowmode.py:34
 msgid "Workflow"
@@ -1048,7 +1078,8 @@ msgstr "Επιλογή υπηρεσιών αναζήτησης"
 
 #: ../virtaal/plugins/lookup/lookupview.py:71
 msgid "Select the services that should be used to perform look-ups"
-msgstr "Επιλογή υπηρεσιών που πρέπει να χρησιμοποιηθούν για εκτέλεση αναζητήσεων"
+msgstr ""
+"Επιλογή υπηρεσιών που πρέπει να χρησιμοποιηθούν για εκτέλεση αναζητήσεων"
 
 #: ../virtaal/plugins/lookup/lookupview.py:131
 #, python-format
@@ -1104,7 +1135,9 @@ msgstr "Βοηθός μεταφοράς"
 
 #: ../virtaal/plugins/migration.py:68
 msgid "Should Virtaal try to import settings and data from other applications?"
-msgstr "Θα πρέπει το Virtaal να προσπαθήσει να εισάγει ρυθμίσεις και δεδομένα από άλλες εφαρμογές;"
+msgstr ""
+"Θα πρέπει το Virtaal να προσπαθήσει να εισάγει ρυθμίσεις και δεδομένα από "
+"άλλες εφαρμογές;"
 
 #: ../virtaal/plugins/migration.py:69
 msgid "Import data from other applications?"
@@ -1124,7 +1157,7 @@ msgstr "Η μεταφορά ολοκληρώθηκε"
 
 #: ../virtaal/plugins/migration.py:100
 msgid "Virtaal was not able to migrate any settings or data"
-msgstr "Το Virtaal δεν μπόρεσε να μεταφέρει καμία ρύθμιση ή σεδομένο"
+msgstr "Το Virtaal δεν μπόρεσε να μεταφέρει καμία ρύθμιση ή δεδομένο"
 
 #: ../virtaal/plugins/migration.py:101
 msgid "Nothing migrated"
@@ -1235,12 +1268,12 @@ msgstr "Σφάλμα ανοίγματος αρχείου"
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:388
 #, python-format
 msgid "_Source term — %(langname)s"
-msgstr "Όρος πηγής — %(langname)s"
+msgstr "Όρος πη_γής — %(langname)s"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:389
 #, python-format
 msgid "_Target term — %(langname)s"
-msgstr "Όρος στόχου — %(langname)s"
+msgstr "Όρος σ_τόχου — %(langname)s"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:433
 msgid "Identical entry already exists."
@@ -1309,7 +1342,8 @@ msgstr "Μετάφραση Google"
 
 #: ../virtaal/plugins/tm/models/google_translate.py:118
 msgid "Unreviewed machine translations from Google's translation service"
-msgstr "Μηχανή μεταφράσεων χωρίς αναθεώρηση από την υπηρεσία μετάφρασης του Google"
+msgstr ""
+"Μηχανή μεταφράσεων χωρίς αναθεώρηση από την υπηρεσία μετάφρασης του Google"
 
 #: ../virtaal/plugins/tm/models/microsoft_translator.py:39
 msgid "Microsoft Translator"
@@ -1329,7 +1363,7 @@ msgstr "Microsoft"
 #: ../virtaal/plugins/tm/models/libtranslate.py:45
 #: ../virtaal/plugins/tm/models/libtranslate.py:101
 msgid "libtranslate"
-msgstr "ελεύθερη μετάφραση"
+msgstr "libtranslate"
 
 #: ../virtaal/plugins/tm/models/libtranslate.py:46
 msgid "Unreviewed machine translations from various services"
@@ -1421,7 +1455,7 @@ msgstr "%"
 
 #: ../virtaal/plugins/tm/tmwidgets.py:66
 msgid "Matches"
-msgstr "Ταιριάζει "
+msgstr "Ταιριάζει"
 
 #: ../virtaal/plugins/tm/tmwidgets.py:68
 msgid "TM Source"
@@ -1497,7 +1531,8 @@ msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 
 #: ../virtaal/views/mainview.py:402
 msgid "Please enter the number of noun forms (plurals) to use"
-msgstr "Παρακαλώ εισάγετε τον αριθμό των μορφών ονόματος (πληθυντικών) για χρήση"
+msgstr ""
+"Παρακαλώ εισάγετε τον αριθμό των μορφών ονόματος (πληθυντικών) για χρήση"
 
 #: ../virtaal/views/mainview.py:408
 msgid "Please enter the plural equation to use"
@@ -1507,7 +1542,7 @@ msgstr "Παρακαλώ εισάγετε την εξίσωση πληθυντι
 #. between units.
 #: ../virtaal/views/modeview.py:62
 msgid "N_avigation:"
-msgstr "Περιήγη_ση:"
+msgstr "Περιή_γηση:"
 
 #: ../virtaal/views/modeview.py:108
 #: ../virtaal/views/propertiesview.py:134
@@ -1597,7 +1632,10 @@ msgstr "Virtaal είναι ένα πρόγραμμα για μεταφράσει
 
 #: ../virtaal/views/widgets/aboutdialog.py:38
 msgid "The initial focus is on software translation (localization or l10n), but we definitely intend it to be useful as a general purpose tool for Computer Aided Translation (CAT)."
-msgstr "Η αρχική εστίαση είναι σε μεταφραστικό λογισμικό (τοπικοποίηση ή l10n), αλλά ασφαλώς σκοπεύουμε να είναι χρήσιμο ως εργαλείο γενικού σκοπού για υποβοηθούμενες μεταφράσεις υπολογιστή (CAT). "
+msgstr ""
+"Η αρχική εστίαση είναι σε μεταφραστικό λογισμικό (τοπικοποίηση ή l10n), αλλά "
+"ασφαλώς σκοπεύουμε να είναι χρήσιμο ως εργαλείο γενικού σκοπού για "
+"υποβοηθούμενες μεταφράσεις υπολογιστή (CAT)."
 
 #: ../virtaal/views/widgets/aboutdialog.py:52
 msgid "Virtaal website"
@@ -1613,7 +1651,7 @@ msgstr "Το διεθνές κέντρο ανάπτυξης και έρευνα�
 
 #: ../virtaal/views/widgets/aboutdialog.py:68
 msgid "Mozilla Corporation"
-msgstr "εταιρεία Mozilla"
+msgstr "Εταιρεία Mozilla"
 
 #. l10n: Rather than translating, fill in the names of the translators
 #: ../virtaal/views/widgets/aboutdialog.py:73
@@ -1622,7 +1660,7 @@ msgstr "Dimitris Spingos (Δημήτρης Σπίγγος), <dmtrs32@gmail.com>,
 
 #: ../virtaal/views/widgets/langadddialog.py:103
 msgid "Language code must be an ASCII string."
-msgstr "Ο κωδικός γλώσσας πρέπει να είναι σε αλφαριθμητικό ASCII"
+msgstr "Ο κωδικός γλώσσας πρέπει να είναι σε αλφαριθμητικό ASCII."
 
 #: ../virtaal/views/widgets/langadddialog.py:106
 msgid "Language code must be at least 2 characters long."
@@ -1801,7 +1839,7 @@ msgstr "Αρχείο Gettext PO"
 
 #: ../devsupport/tmp_strings.py:24
 msgid "Gettext MO file"
-msgstr "Αρχείο Gettext ΜO"
+msgstr "Αρχείο Gettext MO"
 
 #: ../devsupport/tmp_strings.py:25
 msgid "Qt .qm file"
@@ -1814,23 +1852,25 @@ msgstr "Γλωσσάρι OmegaT"
 #: ../bin/virtaal:87
 #, c-format
 msgid "%prog [options] [translation_file]"
-msgstr "%prog [options] [translation_file]"
+msgstr "%prog [επιλογές] [αρχείο_μετάφρασης]"
 
 #: ../bin/virtaal:90
 msgid "LOG"
-msgstr "Ημερολόγιο"
+msgstr "ΗΜΕΡΟΛΟΓΙΟ"
 
 #: ../bin/virtaal:91
 msgid "turn on logging, storing the result to the supplied filename."
-msgstr "εκκίνηση ημερολογίου, αποθήκευση του αποτελέσματος στο παρεχόμενο όνομα αρχείου"
+msgstr ""
+"εκκίνηση ημερολογίου, αποθήκευση του αποτελέσματος στο παρεχόμενο όνομα "
+"αρχείου."
 
 #: ../bin/virtaal:93
 msgid "CONFIG"
-msgstr "Διαμόρφωση"
+msgstr "ΔΙΑΜΟΡΦΩΣΗ"
 
 #: ../bin/virtaal:94
 msgid "use the configuration file given by the supplied filename."
-msgstr "χρήση του δοσμένου αρχείου διαμόρφωσης από το παρεχόμενο όνομα αρχείου"
+msgstr "χρήση του δοσμένου αρχείου διαμόρφωσης από το παρεχόμενο όνομα αρχείου."
 
 #: ../bin/virtaal:97
 msgid "enable debugging features"
@@ -1838,11 +1878,13 @@ msgstr "ενεργοποίηση χαρακτηριστικών αποσφαλμ
 
 #: ../bin/virtaal:104
 msgid "PROFILE"
-msgstr "Κατατομή"
+msgstr "ΚΑΤΑΤΟΜΗ"
 
 #: ../bin/virtaal:106
 msgid "perform profiling, storing the result to the supplied filename."
-msgstr "εκτέλεση κατατομής, αποθήκευση του αποτελέσματος στο παρεχόμενο όνομα αρχείου"
+msgstr ""
+"εκτέλεση κατατομής, αποθήκευση του αποτελέσματος στο παρεχόμενο όνομα "
+"αρχείου."
 
 #: ../bin/virtaal:129
 msgid "Could not open log file '%(filename)s'"
@@ -1893,7 +1935,7 @@ msgstr "μεγάλος ακέραιος"
 
 #: ../devsupport/optparse.py:414
 msgid "floating-point"
-msgstr "κινητή υποδιατολή"
+msgstr "κινητή υποδιαστολή"
 
 #: ../devsupport/optparse.py:415
 msgid "complex"
@@ -1902,7 +1944,7 @@ msgstr "σύμπλεγμα"
 #: ../devsupport/optparse.py:423
 #, python-format
 msgid "option %s: invalid %s value: %r"
-msgstr "επιλογή %s: άκυρη %s τιμή: %r "
+msgstr "επιλογή %s: άκυρη %s τιμή: %r"
 
 #: ../devsupport/optparse.py:431
 #, python-format
@@ -1915,7 +1957,7 @@ msgstr "εμφάνιση αυτού του μηνύματος βοήθειας �
 
 #: ../devsupport/optparse.py:1251
 msgid "show program's version number and exit"
-msgstr "εμφάνιση του αριθμού έκδοσης του προγράμματος και έξοδος "
+msgstr "εμφάνιση του αριθμού έκδοσης του προγράμματος και έξοδος"
 
 #: ../devsupport/optparse.py:1274
 msgid "%prog [options]"
@@ -1937,4 +1979,3 @@ msgstr "η επιλογή %s απαιτεί %d ορίσματα"
 #, python-format
 msgid "%s option does not take a value"
 msgstr "η επιλογή %s δεν παίρνει τιμή"
-

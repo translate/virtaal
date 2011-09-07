@@ -75,7 +75,7 @@ def get_locale_lang():
 
 def name():
     import getpass
-    name = getpass.getuser() #username only
+    name = getpass.getuser().decode(sys.getfilesystemencoding()) #username only
     # pwd is only available on UNIX
     try:
         import pwd

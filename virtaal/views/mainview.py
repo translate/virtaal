@@ -821,7 +821,11 @@ class MainView(BaseView):
             if getattr(self, '_uri', None):
                 recent.rm.add_item(self._uri)
             else:
-                recent.rm.add_item('file://' + os.path.abspath(store_controller.store.filename))
+                if os.name == 'nt':
+                    url = 'file:///' + os.path.abspath(store_controller.store.filename)
+                else:
+                    url = 'file://' + os.path.abspath(store_controller.store.filename)
+                recent.rm.add_item(url)
 
     def _on_window_state_event(self, widget, event):
         mnu_fullscreen = self.gui.get_widget('mnu_fullscreen')

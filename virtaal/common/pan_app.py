@@ -35,7 +35,7 @@ DEBUG = True # Enable debugging by default, while bin/virtaal still disables it 
 
 
 x_generator = 'Virtaal ' + ver
-default_config_name = "virtaal.ini"
+default_config_name = u"virtaal.ini"
 
 def get_config_dir():
     if os.name == 'nt':
@@ -45,6 +45,7 @@ def get_config_dir():
     else:
         confdir = os.path.expanduser('~/.virtaal')
 
+    confdir = confdir.decode(sys.getfilesystemencoding())
     if not os.path.exists(confdir):
         os.makedirs(confdir)
 

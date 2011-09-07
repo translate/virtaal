@@ -156,17 +156,26 @@ class Plugin(BasePlugin):
         if get_thing is None:
             return
 
-        pan_app.settings.general['lastdir'] = get_thing('', 'last_file_path')
-        pan_app.settings.translator['name'] = get_thing('', 'translator_name')
-        pan_app.settings.translator['email'] = get_thing('', 'translator_email')
-        pan_app.settings.write()
+        lastdir = get_thing('', 'last_file_path')
+        name = get_thing('', 'translator_name')
+        translator_email = get_thing('', 'translator_email')
+
+        if lastdir:
+            pan_app.settings.general['lastdir'] = lastdir
+        if name:
+            pan_app.settings.translator['name'] = name
+        if translator_email:
+            pan_app.settings.translator['email'] = translator_email
+
         self.poedit_database_path = get_thing('TM', 'database_path')
         self.poedit_languages = []
         languages = get_thing('TM', 'languages')
         if languages:
             self.poedit_languages = languages.split(':')
 
-        self.migrated.append(_("Poedit settings"))
+        if lastdir or name or translator_email:
+            pan_app.settings.write()
+            self.migrated.append(_("Poedit settings"))
 
     def poedit_tm_import(self):
         """Attempt to import the Translation Memory used in KBabel."""

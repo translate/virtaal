@@ -20,6 +20,7 @@
 
 import logging
 import os
+import sys
 import subprocess
 import socket
 import random
@@ -42,7 +43,7 @@ class TMModel(remotetm.TMModel):
     default_config = {
         "tmserver_bind" : "localhost",
         "tmserver_port" : "55555",
-        "tmdb" : os.path.join(pan_app.get_config_dir(), "tm.db")
+        "tmdb" : os.path.join(pan_app.get_config_dir(), u"tm.db")
     }
 
     # INITIALIZERS #
@@ -57,15 +58,15 @@ class TMModel(remotetm.TMModel):
         else:
             port = find_free_port(self.config["tmserver_bind"], 49152, 65535)
         if os.name == "nt":
-            executable = os.path.abspath(os.path.join(pan_app.main_dir, "tmserver.exe"))
+            executable = os.path.abspath(os.path.join(pan_app.main_dir, u"tmserver.exe"))
         else:
-            executable = "tmserver"
+            executable = u"tmserver"
 
         command = [
-            executable,
+            executable.encode(sys.getfilesystemencoding()),
             "-b", self.config["tmserver_bind"],
             "-p", str(port),
-            "-d", self.config["tmdb"],
+            "-d", self.config["tmdb"].encode(sys.getfilesystemencoding()),
             "--min-similarity=%d" % controller.min_quality,
             "--max-candidates=%d" % controller.max_matches,
         ]

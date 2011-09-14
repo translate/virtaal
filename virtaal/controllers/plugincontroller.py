@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2010 Zuza Software Foundation
+# Copyright 2008-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -30,13 +30,13 @@ from baseplugin import BasePlugin
 
 
 if os.name == 'nt':
-    sys.path.insert(0, pan_app.main_dir)
+    sys.path.insert(0, pan_app.main_dir.encode(sys.getfilesystemencoding()))
 if 'RESOURCEPATH' in os.environ:
     sys.path.insert(0, os.path.join(os.environ['RESOURCEPATH']))
 
 # The following line allows us to import user plug-ins from ~/.virtaal/virtaal_plugins
 # (see PluginController.PLUGIN_MODULES)
-sys.path.insert(0, pan_app.get_config_dir())
+sys.path.insert(0, pan_app.get_config_dir().encode(sys.getfilesystemencoding()))
 
 class PluginController(BaseController):
     """This controller is responsible for all plug-in management."""
@@ -54,8 +54,8 @@ class PluginController(BaseController):
     PLUGIN_CLASS_INFO_ATTRIBS = ['description', 'display_name', 'version']
     """Attributes of the plug-in class that contain info about it. Should contain PLUGIN_NAME_ATTRIB."""
     PLUGIN_DIRS = [
-        os.path.join(pan_app.get_config_dir(), 'virtaal_plugins'),
-        os.path.join(os.path.dirname(__file__), '..', 'plugins')
+        os.path.join(pan_app.get_config_dir(), u'virtaal_plugins'),
+        os.path.join(os.path.dirname(__file__).decode(sys.getfilesystemencoding()), u'..', u'plugins')
     ]
     """The directories to search for plug-in names."""
     PLUGIN_INTERFACE = BasePlugin
@@ -81,9 +81,9 @@ class PluginController(BaseController):
         self.pluginmodules = {}
 
         if os.name == 'nt':
-            self.PLUGIN_DIRS.insert(0, os.path.join(pan_app.main_dir, 'virtaal_plugins'))
+            self.PLUGIN_DIRS.insert(0, os.path.join(pan_app.main_dir, u'virtaal_plugins'))
         if 'RESOURCEPATH' in os.environ:
-            self.PLUGIN_DIRS.insert(0, os.path.join(os.environ['RESOURCEPATH'], 'virtaal_plugins'))
+            self.PLUGIN_DIRS.insert(0, os.path.join(os.environ['RESOURCEPATH'].decode(sys.getfilesystemencoding()), u'virtaal_plugins'))
 
 
     # METHODS #
@@ -110,7 +110,9 @@ class PluginController(BaseController):
             logging.info('    - ' + getattr(self.plugins[name], self.PLUGIN_NAME_ATTRIB, name))
             return self.plugins[name]
         except Exception, e:
-            logging.exception('Failed to load plugin "%s"' % (name))
+            # the name is unicode which can trigger encoding issues in the
+            # logging module, so let's encode it now already
+            logging.exception('Failed to load plugin "%s"\n%s' % (name.encode('utf-8'), e))
 
         return None
 
@@ -198,18 +200,18 @@ class PluginController(BaseController):
             if not os.path.isdir(dir):
                 continue
             for name in os.listdir(dir):
-                if name.startswith('.') or name.startswith('test_'):
+                if name.startswith(u'.') or name.startswith(u'test_'):
                     continue
                 fullpath = os.path.join(dir, name)
                 if os.path.isdir(fullpath):
                     # XXX: The plug-in system assumes that a plug-in in a directory makes the Plugin class accessible via it's __init__.py
-                    if pan_app.DEBUG or name[0] != '_':
+                    if pan_app.DEBUG or name[0] != u'_':
                         plugin_names.append(name)
-                elif os.path.isfile(fullpath) and not name.startswith('__init__.py'):
-                    if '.py' not in name:
+                elif os.path.isfile(fullpath) and not name.startswith(u'__init__.py'):
+                    if u'.py' not in name:
                         continue
-                    plugname = '.'.join(name.split(os.extsep)[:-1]) # Effectively removes extension, preserving other .'s in the name
-                    if pan_app.DEBUG or plugname[0] != '_':
+                    plugname = u'.'.join(name.split(os.extsep)[:-1]) # Effectively removes extension, preserving other .'s in the name
+                    if pan_app.DEBUG or plugname[0] != u'_':
                         plugin_names.append(plugname)
 
         plugin_names = list(set(plugin_names))

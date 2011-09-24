@@ -309,6 +309,8 @@ class StoreController(BaseController):
         self.view.hide() # This MUST be called BEFORE `self.cursor = None`
         self.emit('store-closed') # This should be emitted BEFORE `self.cursor = None` to allow any other modules to disconnect from the cursor
         self.cursor = None
+        import gc
+        gc.collect()
 
     def export_project_file(self, filename=None, openafter=False, readonly=False):
         if not self.project:

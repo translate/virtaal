@@ -23,7 +23,7 @@ import gtk
 from gtk import gdk
 from translate.storage.placeables import StringElem
 
-from virtaal.common import GObjectWrapper
+from virtaal.common import GObjectWrapper, pan_app
 
 from basecontroller import BaseController
 
@@ -105,13 +105,15 @@ class UndoController(BaseController):
         def undo_set_text(unit):
             textbox.elem.sub = current_text.sub
 
-        self.model.push({
+        data = {
             'action': undo_set_text,
             'cursorpos': curpos,
-            'desc': 'Set target %d text to %s' % (targetn, repr(current_text)),
             'targetn': targetn,
             'unit': unitview.unit
-        })
+        }
+        if pan_app.DEBUG:
+            data['desc'] = 'Set target %d text to %s' % (targetn, repr(current_text)),
+        self.model.push(data)
 
     def remove_blank_undo(self):
         """Removes items from the top of the undo stack with no C{value} or
@@ -205,14 +207,15 @@ class UndoController(BaseController):
                 elem.insert(offset, deleted)
                 elem.prune()
 
-        desc = 'offset=%d, deleted="%s", parent=%s, cursor_pos=%d, elem=%s' % (offset, repr(deleted), repr(parent), cursor_pos, repr(elem))
-        self.model.push({
+        data = {
             'action': undo_action,
             'cursorpos': cursor_pos,
-            'desc': desc,
             'targetn': target_num,
             'unit': unit,
-        })
+        }
+        if pan_app.DEBUG:
+            data['desc'] = 'offset=%d, deleted="%s", parent=%s, cursor_pos=%d, elem=%s' % (offset, repr(deleted), repr(parent), cursor_pos, repr(elem))
+        self.model.push(data)
 
     @if_enabled
     def _on_unit_insert_text(self, unit_controller, unit, ins_text, offset, elem, target_num):
@@ -229,11 +232,12 @@ class UndoController(BaseController):
                 elem.delete_range(tree_offset, tree_offset+len_ins_text)
             elem.prune()
 
-        desc = 'ins_text="%s", offset=%d, elem=%s' % (ins_text, offset, repr(elem))
-        self.model.push({
+        data = {
             'action': undo_action,
-            'desc': desc,
             'unit': unit,
             'targetn': target_num,
             'cursorpos': offset
-        })
+        }
+        if pan_app.DEBUG:
+            data['desc'] = 'ins_text="%s", offset=%d, elem=%s' % (ins_text, offset, repr(elem))
+        self.model.push(data)

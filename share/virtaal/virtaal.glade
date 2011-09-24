@@ -635,7 +635,7 @@
               <placeholder/>
             </child>
             <child>
-              <widget class="GtkHBox" id="hbox1">
+              <widget class="GtkHBox" id="hbox2">
                 <property name="visible">True</property>
                 <property name="spacing">10</property>
                 <child>
@@ -728,7 +728,7 @@ If you are translating from English to French then French would be your translat
               </packing>
             </child>
             <child>
-              <widget class="GtkHBox" id="hbox2">
+              <widget class="GtkHBox" id="hbox3">
                 <property name="visible">True</property>
                 <child>
                   <widget class="GtkHButtonBox" id="hbuttonbox2">
@@ -742,7 +742,7 @@ If you are translating from English to French then French would be your translat
                         <property name="has_tooltip">True</property>
                         <property name="use_underline">True</property>
                         <child>
-                          <widget class="GtkHBox" id="hbox3">
+                          <widget class="GtkHBox" id="hbox4">
                             <property name="visible">True</property>
                             <child>
                               <widget class="GtkImage" id="image1">
@@ -1305,7 +1305,7 @@ If you are translating from English to French then French would be your translat
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
                                     <child>
-                                      <widget class="GtkHBox" id="hbox1">
+                                      <widget class="GtkHBox" id="hbox5">
                                         <property name="visible">True</property>
                                         <child>
                                           <widget class="GtkImage" id="image1">
@@ -1497,7 +1497,7 @@ If you are translating from English to French then French would be your translat
             <property name="n_rows">2</property>
             <property name="n_columns">2</property>
             <child>
-              <widget class="GtkHBox" id="hbox1">
+              <widget class="GtkHBox" id="hbox6">
                 <property name="visible">True</property>
                 <child>
                   <widget class="GtkHButtonBox" id="hbuttonbox2">
@@ -1741,7 +1741,7 @@ If you are translating from English to French then French would be your translat
               </packing>
             </child>
             <child>
-              <widget class="GtkHBox" id="hbox3">
+              <widget class="GtkHBox" id="hbox7">
                 <property name="visible">True</property>
                 <child>
                   <widget class="GtkLabel" id="label3">
@@ -1831,7 +1831,7 @@ If you are translating from English to French then French would be your translat
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
-          <widget class="GtkHBox" id="hbox1">
+          <widget class="GtkHBox" id="hbox8">
             <property name="visible">True</property>
             <child>
               <widget class="GtkScrolledWindow" id="scrolledwindow5">
@@ -2098,7 +2098,7 @@ If you are translating from English to French then French would be your translat
           </packing>
         </child>
         <child>
-          <widget class="GtkHBox" id="hbox1">
+          <widget class="GtkHBox" id="hbox9">
             <property name="visible">True</property>
             <child>
               <widget class="GtkVBox" id="vbox9">
@@ -2112,7 +2112,7 @@ If you are translating from English to French then French would be your translat
                     <property name="receives_default">True</property>
                     <property name="relief">none</property>
                     <child>
-                      <widget class="GtkHBox" id="hbox3">
+                      <widget class="GtkHBox" id="hbox10">
                         <property name="visible">True</property>
                         <child>
                           <widget class="GtkImage" id="image2">
@@ -2164,7 +2164,7 @@ If you are translating from English to French then French would be your translat
                                 <property name="receives_default">True</property>
                                 <property name="relief">none</property>
                                 <child>
-                                  <widget class="GtkHBox" id="hbox2">
+                                  <widget class="GtkHBox" id="hbox11">
                                     <property name="visible">True</property>
                                     <child>
                                       <widget class="GtkImage" id="image1">
@@ -2200,7 +2200,7 @@ If you are translating from English to French then French would be your translat
                                 <property name="receives_default">True</property>
                                 <property name="relief">none</property>
                                 <child>
-                                  <widget class="GtkHBox" id="hbox4">
+                                  <widget class="GtkHBox" id="hbox12">
                                     <property name="visible">True</property>
                                     <child>
                                       <widget class="GtkImage" id="image3">
@@ -2236,7 +2236,7 @@ If you are translating from English to French then French would be your translat
                                 <property name="receives_default">True</property>
                                 <property name="relief">none</property>
                                 <child>
-                                  <widget class="GtkHBox" id="hbox5">
+                                  <widget class="GtkHBox" id="hbox13">
                                     <property name="visible">True</property>
                                     <child>
                                       <widget class="GtkImage" id="image4">
@@ -2272,7 +2272,7 @@ If you are translating from English to French then French would be your translat
                                 <property name="receives_default">True</property>
                                 <property name="relief">none</property>
                                 <child>
-                                  <widget class="GtkHBox" id="hbox6">
+                                  <widget class="GtkHBox" id="hbox14">
                                     <property name="visible">True</property>
                                     <child>
                                       <widget class="GtkImage" id="image5">
@@ -2308,7 +2308,7 @@ If you are translating from English to French then French would be your translat
                                 <property name="receives_default">True</property>
                                 <property name="relief">none</property>
                                 <child>
-                                  <widget class="GtkHBox" id="hbox7">
+                                  <widget class="GtkHBox" id="hbox15">
                                     <property name="visible">True</property>
                                     <child>
                                       <widget class="GtkImage" id="image6">
@@ -2731,7 +2731,7 @@ If you are translating from English to French then French would be your translat
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkHBox" id="hbox1">
+                  <widget class="GtkHBox" id="hbox16">
                     <property name="visible">True</property>
                     <property name="spacing">6</property>
                     <child>
@@ -2782,7 +2782,7 @@ If you are translating from English to French then French would be your translat
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkHBox" id="hbox2">
+                  <widget class="GtkHBox" id="hbox17">
                     <property name="visible">True</property>
                     <property name="spacing">6</property>
                     <child>

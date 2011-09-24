@@ -922,7 +922,7 @@ If you are translating from English to French then French would be your translat
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkHSeparator" id="hseparator1">
+                          <widget class="GtkHSeparator" id="hseparator3">
                             <property name="visible">True</property>
                           </widget>
                           <packing>
@@ -1701,7 +1701,7 @@ If you are translating from English to French then French would be your translat
               </packing>
             </child>
             <child>
-              <widget class="GtkHSeparator" id="hseparator1">
+              <widget class="GtkHSeparator" id="hseparator4">
                 <property name="visible">True</property>
               </widget>
               <packing>
@@ -2723,7 +2723,7 @@ If you are translating from English to French then French would be your translat
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkHSeparator" id="hseparator3"/>
+                  <widget class="GtkHSeparator" id="hseparator5"/>
                   <packing>
                     <property name="right_attach">2</property>
                     <property name="top_attach">2</property>
@@ -2833,7 +2833,7 @@ If you are translating from English to French then French would be your translat
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkHSeparator" id="hseparator2"/>
+                  <widget class="GtkHSeparator" id="hseparator6"/>
                   <packing>
                     <property name="right_attach">2</property>
                     <property name="top_attach">5</property>

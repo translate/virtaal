@@ -25,7 +25,7 @@ import sys
 import logging
 from gtk import gdk
 
-from virtaal.views import recent, theme
+from virtaal.views import theme
 from virtaal.common import pan_app
 
 from baseview import BaseView
@@ -186,15 +186,13 @@ class MainView(BaseView):
 
         self.main_window.connect('window-state-event', self._on_window_state_event)
 
-        recent_files = self.gui.get_widget("mnu_recent_files")
-        recent.rc.connect("item-activated", self._on_recent_file_activated)
-        recent_files.set_submenu(recent.rc)
-
         self.controller.connect('controller-registered', self._on_controller_registered)
         self._create_dialogs()
         self._setup_key_bindings()
         self._track_window_state()
         self._setup_dnd()
+        from gobject import idle_add
+        idle_add(self._setup_recent_files)
         self.main_window.connect('style-set', self._on_style_set)
 
     def _create_dialogs(self):
@@ -205,6 +203,12 @@ class MainView(BaseView):
         self._save_chooser = None
         self._open_chooser = None
         self._confirm_dialog = None
+
+    def _setup_recent_files(self):
+        from virtaal.views import recent
+        recent_files = self.gui.get_widget("mnu_recent_files")
+        recent.rc.connect("item-activated", self._on_recent_file_activated)
+        recent_files.set_submenu(recent.rc)
 
     @property
     def input_dialog(self):
@@ -824,6 +828,7 @@ class MainView(BaseView):
             self.gui.get_widget('mnu_binary_export').set_sensitive(True)
 
         self.status_bar.set_sensitive(True)
+        from virtaal.views import recent
         if store_controller.project:
             if not store_controller._archivetemp:
                 recent.rm.add_item('file://' + store_controller.get_bundle_filename())

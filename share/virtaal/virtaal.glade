@@ -2131,6 +2131,7 @@ If you are translating from English to French then French would be your translat
                             <property name="xpad">5</property>
                             <property name="label" translatable="yes" comments="l10n: Remove the tags if underlining is unsuitable for your language. Most languages won't need to change this. Translate 'Open' normally.">&lt;u&gt;Open&lt;/u&gt;</property>
                             <property name="use_markup">True</property>
+                            <property name="width_chars">40</property>
                           </widget>
                           <packing>
                             <property name="position">1</property>

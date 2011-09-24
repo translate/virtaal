@@ -22,6 +22,9 @@ import os
 
 from virtaal.common import pan_app
 
+class PluginUnsupported(Exception):
+    pass
+
 class BasePlugin(object):
     """The base interface to be implemented by all plug-ins."""
 

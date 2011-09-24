@@ -26,7 +26,7 @@ from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT, idle_add
 from virtaal.common import pan_app, GObjectWrapper
 
 from basecontroller import BaseController
-from baseplugin import BasePlugin
+from baseplugin import PluginUnsupported, BasePlugin
 
 
 if os.name == 'nt':
@@ -105,7 +105,11 @@ class PluginController(BaseController):
 
         try:
             plugin_class = self._get_plugin_class(name)
-            self.plugins[name] = plugin_class(name, self.controller)
+            try:
+                self.plugins[name] = plugin_class(name, self.controller)
+            except PluginUnsupported, pu:
+                logging.info(pu.message)
+                return None
             self.emit('plugin-enabled', self.plugins[name])
             logging.info('    - ' + getattr(self.plugins[name], self.PLUGIN_NAME_ATTRIB, name))
             return self.plugins[name]

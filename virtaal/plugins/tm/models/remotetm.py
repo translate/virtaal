@@ -18,8 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from virtaal.support import tmclient
-
 from basetmmodel import BaseTMModel
 
 
@@ -44,6 +42,7 @@ class TMModel(BaseTMModel):
         self.load_config()
         url = "http://%s:%s/tmserver" % (self.config["host"], self.config["port"])
 
+        from virtaal.support import tmclient
         self.tmclient = tmclient.TMClient(url)
         self.tmclient.set_virtaal_useragent()
 

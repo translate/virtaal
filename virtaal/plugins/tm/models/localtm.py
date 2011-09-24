@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2008-2009,2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -21,10 +21,7 @@
 import logging
 import os
 import sys
-import subprocess
 import socket
-import random
-from virtaal.support import tmclient
 
 from virtaal.common import pan_app
 from basetmmodel import BaseTMModel
@@ -76,6 +73,8 @@ class TMModel(remotetm.TMModel):
 
         logging.debug("launching tmserver with command %s" % " ".join(command))
         try:
+            import subprocess
+            from virtaal.support import tmclient
             self.tmserver = subprocess.Popen(command)
             url = "http://%s:%d/tmserver" % (self.config["tmserver_bind"], port)
 
@@ -92,7 +91,6 @@ class TMModel(remotetm.TMModel):
             self.controller.main_controller.store_controller.connect("store-saved", self.push_store),
             self.controller.main_controller.store_controller
         ))
-
 
     def destroy(self):
         if os.name == "nt":
@@ -113,7 +111,9 @@ def test_port(host, port):
     except socket.error:
         return False
 
+
 def find_free_port(host, min_port, max_port):
+    import random
     port_range = range(min_port, max_port)
     random.shuffle(port_range)
     for port in port_range:

@@ -24,8 +24,6 @@ from translate.storage.placeables.terminology import TerminologyPlaceable
 from translate.storage.base import TranslationUnit
 from translate.lang import data
 
-from virtaal.support import opentranclient
-
 from basetermmodel import BaseTerminologyModel
 
 MIN_TERM_LENGTH = 4
@@ -108,6 +106,7 @@ class TerminologyModel(BaseTerminologyModel):
             max_candidates = plugin_ctrlr.plugins['tm'].config['max_matches']
             min_similarity = plugin_ctrlr.plugins['tm'].config['min_quality']
 
+        from virtaal.support import opentranclient
         self.opentranclient = opentranclient.OpenTranClient(
             max_candidates=max_candidates,
             min_similarity=min_similarity

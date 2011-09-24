@@ -650,7 +650,7 @@ If you are translating from English to French then English would be your origina
                       <widget class="GtkAlignment" id="alignment3">
                         <property name="visible">True</property>
                         <child>
-                          <widget class="GtkScrolledWindow" id="scrolledwindow2">
+                          <widget class="GtkScrolledWindow" id="scrolledwindow1">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="hscrollbar_policy">automatic</property>
@@ -692,7 +692,7 @@ If you are translating from English to French then French would be your translat
                       <widget class="GtkAlignment" id="alignment4">
                         <property name="visible">True</property>
                         <child>
-                          <widget class="GtkScrolledWindow" id="scrolledwindow3">
+                          <widget class="GtkScrolledWindow" id="scrolledwindow2">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="hscrollbar_policy">automatic</property>
@@ -1567,7 +1567,7 @@ If you are translating from English to French then French would be your translat
               </packing>
             </child>
             <child>
-              <widget class="GtkScrolledWindow" id="scrolledwindow1">
+              <widget class="GtkScrolledWindow" id="scrolledwindow3">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="hscrollbar_policy">automatic</property>
@@ -1722,7 +1722,7 @@ If you are translating from English to French then French would be your translat
               </packing>
             </child>
             <child>
-              <widget class="GtkScrolledWindow" id="scrolledwindow1">
+              <widget class="GtkScrolledWindow" id="scrolledwindow4">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="hscrollbar_policy">automatic</property>
@@ -1834,7 +1834,7 @@ If you are translating from English to French then French would be your translat
           <widget class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
             <child>
-              <widget class="GtkScrolledWindow" id="scrolledwindow1">
+              <widget class="GtkScrolledWindow" id="scrolledwindow5">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="hscrollbar_policy">automatic</property>

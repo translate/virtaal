@@ -552,6 +552,16 @@ class MainView(BaseView):
         self.main_window.show()
         from gobject import threads_init
         threads_init()
+
+        # Uncomment this line to measure startup time until the window shows.
+        # It causes the program to quit immediately when the window is shown:
+        #self.main_window.connect('expose-event', lambda widget, event: gtk.main_quit())
+
+        # Uncomment these lines to measure true startup time. It causes the
+        # program to quit immediately when the last thing added to the gobject
+        # idle queue during startup, is done.
+        #from gobject import idle_add
+        #idle_add(gtk.main_quit)
         gtk.main()
 
     def show_input_dialog(self, title='', message=''):

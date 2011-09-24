@@ -27,7 +27,7 @@ from gettext import dgettext
 import gobject
 
 from virtaal.common import pan_app
-from virtaal.controllers.baseplugin import BasePlugin
+from virtaal.controllers.baseplugin import PluginUnsupported, BasePlugin
 
 if not pan_app.DEBUG:
     try:
@@ -56,6 +56,14 @@ class Plugin(BasePlugin):
     # INITIALIZERS #
     def __init__(self, internal_name, main_controller):
         self.internal_name = internal_name
+
+        if os.name == 'nt':
+            DICTDIR = os.path.join(os.environ['APPDATA'], 'enchant', 'myspell')
+            # if we can't decode it as ascii, enchant won't work on Windows
+            try:
+                DICTDIR = DICTDIR.decode('ascii')
+            except UnicodeDecodeError:
+                raise PluginUnsupported("Spell checking is not supported with non-ascii username")
 
         # If these imports fail, the plugin is automatically disabled
         import gtkspell

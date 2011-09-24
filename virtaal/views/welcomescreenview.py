@@ -74,9 +74,14 @@ class WelcomeScreenView(BaseView):
             txt = self.widget.widgets['txt_features']
             expander = txt.parent.parent
 
-            width_col1 = self.widget.widgets['buttons']['open'].parent.get_allocation().width
-            maxwidth = 1.8 * width_col1
             screenwidth = self.widget.get_allocation().width
+            col1 = self.widget.widgets['buttons']['open'].parent
+            width_col1 = col1.get_allocation().width
+            if width_col1 > 0.7 * screenwidth:
+                width_col1 = int(0.7 * screenwidth)
+                col1.set_size_request(width_col1, -1)
+                
+            maxwidth = 1.8 * width_col1
             # Preliminary width is the whole_screen - width_col1 - 30
             # The "50" above is just to make sure we don't go under the
             # vertical scroll bar (if it is showing).

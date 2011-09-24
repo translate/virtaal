@@ -731,7 +731,7 @@ If you are translating from English to French then French would be your translat
               <widget class="GtkHBox" id="hbox3">
                 <property name="visible">True</property>
                 <child>
-                  <widget class="GtkHButtonBox" id="hbuttonbox2">
+                  <widget class="GtkHButtonBox" id="hbuttonbox1">
                     <property name="visible">True</property>
                     <property name="layout_style">start</property>
                     <child>
@@ -782,7 +782,7 @@ If you are translating from English to French then French would be your translat
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkHButtonBox" id="hbuttonbox1">
+                  <widget class="GtkHButtonBox" id="hbuttonbox2">
                     <property name="visible">True</property>
                     <property name="layout_style">end</property>
                     <child>
@@ -1296,7 +1296,7 @@ If you are translating from English to French then French would be your translat
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkHButtonBox" id="hbuttonbox1">
+                              <widget class="GtkHButtonBox" id="hbuttonbox3">
                                 <property name="visible">True</property>
                                 <property name="layout_style">end</property>
                                 <child>
@@ -1500,7 +1500,7 @@ If you are translating from English to French then French would be your translat
               <widget class="GtkHBox" id="hbox6">
                 <property name="visible">True</property>
                 <child>
-                  <widget class="GtkHButtonBox" id="hbuttonbox2">
+                  <widget class="GtkHButtonBox" id="hbuttonbox4">
                     <property name="visible">True</property>
                     <property name="layout_style">start</property>
                     <child>
@@ -1523,7 +1523,7 @@ If you are translating from English to French then French would be your translat
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkHButtonBox" id="hbuttonbox1">
+                  <widget class="GtkHButtonBox" id="hbuttonbox5">
                     <property name="visible">True</property>
                     <property name="layout_style">end</property>
                     <child>

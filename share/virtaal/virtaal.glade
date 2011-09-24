@@ -206,7 +206,7 @@
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
                         <child internal-child="image">
-                          <widget class="GtkImage" id="image5">
+                          <widget class="GtkImage" id="image2">
                             <property name="visible">True</property>
                             <property name="stock">gtk-go-back</property>
                           </widget>
@@ -221,7 +221,7 @@
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
                         <child internal-child="image">
-                          <widget class="GtkImage" id="image6">
+                          <widget class="GtkImage" id="image3">
                             <property name="visible">True</property>
                             <property name="stock">gtk-go-forward</property>
                           </widget>
@@ -335,7 +335,7 @@
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
                         <child internal-child="image">
-                          <widget class="GtkImage" id="image2">
+                          <widget class="GtkImage" id="image4">
                             <property name="visible">True</property>
                             <property name="stock">gtk-help</property>
                             <property name="icon-size">1</property>
@@ -357,7 +357,7 @@
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
                         <child internal-child="image">
-                          <widget class="GtkImage" id="image3">
+                          <widget class="GtkImage" id="image5">
                             <property name="visible">True</property>
                             <property name="stock">gtk-dialog-info</property>
                             <property name="icon-size">1</property>
@@ -372,7 +372,7 @@
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
                         <child internal-child="image">
-                          <widget class="GtkImage" id="image4">
+                          <widget class="GtkImage" id="image6">
                             <property name="visible">True</property>
                             <property name="stock">gtk-dialog-error</property>
                             <property name="icon-size">1</property>
@@ -745,7 +745,7 @@ If you are translating from English to French then French would be your translat
                           <widget class="GtkHBox" id="hbox4">
                             <property name="visible">True</property>
                             <child>
-                              <widget class="GtkImage" id="image1">
+                              <widget class="GtkImage" id="image7">
                                 <property name="visible">True</property>
                                 <property name="stock">gtk-add</property>
                               </widget>
@@ -1308,7 +1308,7 @@ If you are translating from English to French then French would be your translat
                                       <widget class="GtkHBox" id="hbox5">
                                         <property name="visible">True</property>
                                         <child>
-                                          <widget class="GtkImage" id="image1">
+                                          <widget class="GtkImage" id="image8">
                                             <property name="visible">True</property>
                                             <property name="stock">gtk-refresh</property>
                                           </widget>
@@ -2115,7 +2115,7 @@ If you are translating from English to French then French would be your translat
                       <widget class="GtkHBox" id="hbox10">
                         <property name="visible">True</property>
                         <child>
-                          <widget class="GtkImage" id="image2">
+                          <widget class="GtkImage" id="image9">
                             <property name="visible">True</property>
                             <property name="stock">gtk-open</property>
                           </widget>
@@ -2167,7 +2167,7 @@ If you are translating from English to French then French would be your translat
                                   <widget class="GtkHBox" id="hbox11">
                                     <property name="visible">True</property>
                                     <child>
-                                      <widget class="GtkImage" id="image1">
+                                      <widget class="GtkImage" id="image10">
                                         <property name="visible">True</property>
                                       </widget>
                                       <packing>
@@ -2203,7 +2203,7 @@ If you are translating from English to French then French would be your translat
                                   <widget class="GtkHBox" id="hbox12">
                                     <property name="visible">True</property>
                                     <child>
-                                      <widget class="GtkImage" id="image3">
+                                      <widget class="GtkImage" id="image11">
                                         <property name="visible">True</property>
                                       </widget>
                                       <packing>
@@ -2239,7 +2239,7 @@ If you are translating from English to French then French would be your translat
                                   <widget class="GtkHBox" id="hbox13">
                                     <property name="visible">True</property>
                                     <child>
-                                      <widget class="GtkImage" id="image4">
+                                      <widget class="GtkImage" id="image12">
                                         <property name="visible">True</property>
                                       </widget>
                                       <packing>
@@ -2275,7 +2275,7 @@ If you are translating from English to French then French would be your translat
                                   <widget class="GtkHBox" id="hbox14">
                                     <property name="visible">True</property>
                                     <child>
-                                      <widget class="GtkImage" id="image5">
+                                      <widget class="GtkImage" id="image13">
                                         <property name="visible">True</property>
                                       </widget>
                                       <packing>
@@ -2311,7 +2311,7 @@ If you are translating from English to French then French would be your translat
                                   <widget class="GtkHBox" id="hbox15">
                                     <property name="visible">True</property>
                                     <child>
-                                      <widget class="GtkImage" id="image6">
+                                      <widget class="GtkImage" id="image14">
                                         <property name="visible">True</property>
                                       </widget>
                                       <packing>

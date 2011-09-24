@@ -666,7 +666,7 @@ If you are translating from English to French then English would be your origina
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label5">
+                      <widget class="GtkLabel" id="label1">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">&lt;b&gt;Original&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
@@ -708,7 +708,7 @@ If you are translating from English to French then French would be your translat
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label6">
+                      <widget class="GtkLabel" id="label2">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">&lt;b&gt;Translation&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
@@ -756,7 +756,7 @@ If you are translating from English to French then French would be your translat
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label1">
+                              <widget class="GtkLabel" id="label3">
                                 <property name="visible">True</property>
                                 <property name="xpad">3</property>
                                 <property name="label" translatable="yes">_Add Missing Language...</property>
@@ -871,7 +871,7 @@ If you are translating from English to French then French would be your translat
                         <property name="n_columns">2</property>
                         <property name="row_spacing">10</property>
                         <child>
-                          <widget class="GtkLabel" id="label13">
+                          <widget class="GtkLabel" id="label4">
                             <property name="visible">True</property>
                             <property name="xalign">1</property>
                             <property name="xpad">10</property>
@@ -883,7 +883,7 @@ If you are translating from English to French then French would be your translat
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="label10">
+                          <widget class="GtkLabel" id="label5">
                             <property name="visible">True</property>
                             <property name="xalign">1</property>
                             <property name="xpad">10</property>
@@ -932,7 +932,7 @@ If you are translating from English to French then French would be your translat
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="label12">
+                          <widget class="GtkLabel" id="label6">
                             <property name="visible">True</property>
                             <property name="xalign">1</property>
                             <property name="xpad">10</property>
@@ -959,7 +959,7 @@ If you are translating from English to French then French would be your translat
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="label11">
+                          <widget class="GtkLabel" id="label7">
                             <property name="visible">True</property>
                             <property name="xalign">1</property>
                             <property name="xpad">10</property>
@@ -988,7 +988,7 @@ If you are translating from English to French then French would be your translat
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="label16">
+                          <widget class="GtkLabel" id="label8">
                             <property name="visible">True</property>
                             <property name="xalign">0.10000000149011612</property>
                             <property name="yalign">0.10000000149011612</property>
@@ -1108,7 +1108,7 @@ If you are translating from English to French then French would be your translat
                             <property name="n_rows">3</property>
                             <property name="n_columns">2</property>
                             <child>
-                              <widget class="GtkLabel" id="label6">
+                              <widget class="GtkLabel" id="label10">
                                 <property name="visible">True</property>
                                 <property name="tooltip" translatable="yes">The name stored in the file header</property>
                                 <property name="xalign">1</property>
@@ -1134,7 +1134,7 @@ If you are translating from English to French then French would be your translat
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label10">
+                              <widget class="GtkLabel" id="label11">
                                 <property name="visible">True</property>
                                 <property name="tooltip" translatable="yes">The e-mail address stored in the file header</property>
                                 <property name="xalign">1</property>
@@ -1164,7 +1164,7 @@ If you are translating from English to French then French would be your translat
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label5">
+                              <widget class="GtkLabel" id="label12">
                                 <property name="visible">True</property>
                                 <property name="tooltip" translatable="yes">The team information stored in the file header. This can be an e-mail address or a URL, for example.</property>
                                 <property name="xalign">1</property>
@@ -1198,7 +1198,7 @@ If you are translating from English to French then French would be your translat
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label4">
+                      <widget class="GtkLabel" id="label13">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">&lt;b&gt;Translator Information&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
@@ -1235,7 +1235,7 @@ If you are translating from English to French then French would be your translat
                                 <property name="n_rows">2</property>
                                 <property name="n_columns">2</property>
                                 <child>
-                                  <widget class="GtkLabel" id="label8">
+                                  <widget class="GtkLabel" id="label14">
                                     <property name="visible">True</property>
                                     <property name="xalign">1</property>
                                     <property name="label" translatable="yes">Source text:</property>
@@ -1247,7 +1247,7 @@ If you are translating from English to French then French would be your translat
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkLabel" id="label9">
+                                  <widget class="GtkLabel" id="label15">
                                     <property name="visible">True</property>
                                     <property name="xalign">1</property>
                                     <property name="label" translatable="yes">Target text:</property>
@@ -1317,7 +1317,7 @@ If you are translating from English to French then French would be your translat
                                           </packing>
                                         </child>
                                         <child>
-                                          <widget class="GtkLabel" id="label11">
+                                          <widget class="GtkLabel" id="label16">
                                             <property name="visible">True</property>
                                             <property name="label" translatable="yes">Use _Default Fonts</property>
                                             <property name="use_underline">True</property>
@@ -1345,7 +1345,7 @@ If you are translating from English to French then French would be your translat
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label7">
+                      <widget class="GtkLabel" id="label17">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">&lt;b&gt;Fonts&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
@@ -1367,7 +1367,7 @@ If you are translating from English to French then French would be your translat
               </widget>
             </child>
             <child>
-              <widget class="GtkLabel" id="label1">
+              <widget class="GtkLabel" id="label18">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes" comments="l10n: This tab label refers to the general preferences">General</property>
               </widget>
@@ -1381,7 +1381,7 @@ If you are translating from English to French then French would be your translat
                 <property name="visible">True</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <widget class="GtkLabel" id="label3">
+                  <widget class="GtkLabel" id="label19">
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">Placeables are special parts of the text that can be automatically highlighted and easily inserted into the translation.</property>
                     <property name="wrap">True</property>
@@ -1412,7 +1412,7 @@ If you are translating from English to French then French would be your translat
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="label14">
+              <widget class="GtkLabel" id="label20">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Placeables</property>
               </widget>
@@ -1437,7 +1437,7 @@ If you are translating from English to French then French would be your translat
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="label15">
+              <widget class="GtkLabel" id="label21">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Plug-ins</property>
               </widget>
@@ -1710,7 +1710,7 @@ If you are translating from English to French then French would be your translat
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="label4">
+              <widget class="GtkLabel" id="label22">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes" comments="l10n: This label refers to comments about a new term that is added">C_omments</property>
@@ -1744,7 +1744,7 @@ If you are translating from English to French then French would be your translat
               <widget class="GtkHBox" id="hbox7">
                 <property name="visible">True</property>
                 <child>
-                  <widget class="GtkLabel" id="label3">
+                  <widget class="GtkLabel" id="label23">
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">Terminology _file:</property>
                     <property name="use_underline">True</property>
@@ -1953,7 +1953,7 @@ If you are translating from English to French then French would be your translat
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label1">
+                  <widget class="GtkLabel" id="label24">
                     <property name="visible">True</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">URL:</property>
@@ -2016,7 +2016,7 @@ If you are translating from English to French then French would be your translat
                   </widget>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label2">
+                  <widget class="GtkLabel" id="label25">
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">&lt;b&gt;Options&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
@@ -2125,7 +2125,7 @@ If you are translating from English to French then French would be your translat
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="label9">
+                          <widget class="GtkLabel" id="label26">
                             <property name="visible">True</property>
                             <property name="xalign">0</property>
                             <property name="xpad">5</property>
@@ -2176,7 +2176,7 @@ If you are translating from English to French then French would be your translat
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkLabel" id="label10">
+                                      <widget class="GtkLabel" id="label27">
                                         <property name="visible">True</property>
                                         <property name="xalign">0</property>
                                         <property name="use_markup">True</property>
@@ -2212,7 +2212,7 @@ If you are translating from English to French then French would be your translat
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkLabel" id="label1">
+                                      <widget class="GtkLabel" id="label28">
                                         <property name="visible">True</property>
                                         <property name="xalign">0</property>
                                         <property name="use_markup">True</property>
@@ -2248,7 +2248,7 @@ If you are translating from English to French then French would be your translat
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkLabel" id="label2">
+                                      <widget class="GtkLabel" id="label29">
                                         <property name="visible">True</property>
                                         <property name="xalign">0</property>
                                         <property name="use_markup">True</property>
@@ -2284,7 +2284,7 @@ If you are translating from English to French then French would be your translat
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkLabel" id="label3">
+                                      <widget class="GtkLabel" id="label30">
                                         <property name="visible">True</property>
                                         <property name="xalign">0</property>
                                         <property name="use_markup">True</property>
@@ -2320,7 +2320,7 @@ If you are translating from English to French then French would be your translat
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkLabel" id="label4">
+                                      <widget class="GtkLabel" id="label31">
                                         <property name="visible">True</property>
                                         <property name="xalign">0</property>
                                         <property name="use_markup">True</property>
@@ -2392,7 +2392,7 @@ If you are translating from English to French then French would be your translat
                                 <property name="relief">none</property>
                                 <property name="xalign">0</property>
                                 <child>
-                                  <widget class="GtkLabel" id="label5">
+                                  <widget class="GtkLabel" id="label32">
                                     <property name="visible">True</property>
                                     <property name="xalign">0</property>
                                     <property name="label" translatable="yes">&lt;u&gt;Tutorial&lt;/u&gt;</property>
@@ -2412,7 +2412,7 @@ If you are translating from English to French then French would be your translat
                                 <property name="relief">none</property>
                                 <property name="xalign">0</property>
                                 <child>
-                                  <widget class="GtkLabel" id="label6">
+                                  <widget class="GtkLabel" id="label33">
                                     <property name="visible">True</property>
                                     <property name="xalign">0</property>
                                     <property name="label" translatable="yes">&lt;u&gt;Cheat Sheet&lt;/u&gt;</property>
@@ -2455,7 +2455,7 @@ If you are translating from English to French then French would be your translat
                                         <property name="tooltip" translatable="yes" comments="l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language">http://translate.sourceforge.net/wiki/virtaal/features</property>
                                         <property name="relief">none</property>
                                         <child>
-                                          <widget class="GtkLabel" id="label7">
+                                          <widget class="GtkLabel" id="label34">
                                             <property name="visible">True</property>
                                             <property name="xalign">0</property>
                                             <property name="label" translatable="yes">&lt;u&gt;More...&lt;/u&gt;</property>
@@ -2470,7 +2470,7 @@ If you are translating from English to French then French would be your translat
                                   </widget>
                                 </child>
                                 <child>
-                                  <widget class="GtkLabel" id="label8">
+                                  <widget class="GtkLabel" id="label35">
                                     <property name="visible">True</property>
                                     <property name="label" translatable="yes">&lt;u&gt;Features&lt;/u&gt;</property>
                                     <property name="use_markup">True</property>
@@ -2489,7 +2489,7 @@ If you are translating from English to French then French would be your translat
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label11">
+                      <widget class="GtkLabel" id="label36">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">&lt;b&gt;&lt;big&gt;Getting Started&lt;/big&gt;&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
@@ -2527,7 +2527,7 @@ If you are translating from English to French then French would be your translat
                                 <property name="relief">none</property>
                                 <property name="xalign">0</property>
                                 <child>
-                                  <widget class="GtkLabel" id="label12">
+                                  <widget class="GtkLabel" id="label37">
                                     <property name="visible">True</property>
                                     <property name="xalign">0</property>
                                     <property name="label" translatable="yes">&lt;u&gt;Manual&lt;/u&gt;</property>
@@ -2548,7 +2548,7 @@ If you are translating from English to French then French would be your translat
                                 <property name="relief">none</property>
                                 <property name="xalign">0</property>
                                 <child>
-                                  <widget class="GtkLabel" id="label15">
+                                  <widget class="GtkLabel" id="label38">
                                     <property name="visible">True</property>
                                     <property name="xalign">0</property>
                                     <property name="label" translatable="yes">&lt;u&gt;Localization Guide&lt;/u&gt;</property>
@@ -2570,7 +2570,7 @@ If you are translating from English to French then French would be your translat
                                 <property name="relief">none</property>
                                 <property name="xalign">0</property>
                                 <child>
-                                  <widget class="GtkLabel" id="label16">
+                                  <widget class="GtkLabel" id="label39">
                                     <property name="visible">True</property>
                                     <property name="xalign">0</property>
                                     <property name="label" translatable="yes">&lt;u&gt;Feedback&lt;/u&gt;</property>
@@ -2587,7 +2587,7 @@ If you are translating from English to French then French would be your translat
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label13">
+                      <widget class="GtkLabel" id="label40">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">&lt;b&gt;&lt;big&gt;Support&lt;/big&gt;&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
@@ -2643,7 +2643,7 @@ If you are translating from English to French then French would be your translat
                 <property name="column_spacing">12</property>
                 <property name="row_spacing">6</property>
                 <child>
-                  <widget class="GtkLabel" id="label5">
+                  <widget class="GtkLabel" id="label41">
                     <property name="visible">True</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">&lt;b&gt;Words&lt;/b&gt; (total):</property>
@@ -2699,7 +2699,7 @@ If you are translating from English to French then French would be your translat
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label6">
+                  <widget class="GtkLabel" id="label42">
                     <property name="visible">True</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">&lt;b&gt;Strings&lt;/b&gt; (total):</property>
@@ -2841,7 +2841,7 @@ If you are translating from English to French then French would be your translat
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label4">
+                  <widget class="GtkLabel" id="label43">
                     <property name="visible">True</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">File type:</property>
@@ -2864,7 +2864,7 @@ If you are translating from English to French then French would be your translat
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label7">
+                  <widget class="GtkLabel" id="label44">
                     <property name="visible">True</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">File size:</property>
@@ -2887,7 +2887,7 @@ If you are translating from English to French then French would be your translat
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label8">
+                  <widget class="GtkLabel" id="label45">
                     <property name="visible">True</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">Location:</property>
@@ -2915,7 +2915,7 @@ If you are translating from English to French then French would be your translat
               </widget>
             </child>
             <child>
-              <widget class="GtkLabel" id="label1">
+              <widget class="GtkLabel" id="label46">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">General</property>
               </widget>

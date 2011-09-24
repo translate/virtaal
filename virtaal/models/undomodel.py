@@ -117,12 +117,13 @@ class UndoModel(BaseModel):
         if not self.recording:
             raise Exception("Undo can't stop recording if it was not recording in the first place.")
 
+        # In some cases we can get rid of an unnecessary list containing
+        # nothing or a single dictionary. That saves 32 bytes on 32 bit python
+        # per entry.
         last_entry_len = len(self.undo_stack[-1])
         if last_entry_len == 0:
             # this can happen with something like Ctrl+C
             del self.undo_stack[-1]
         elif last_entry_len == 1:
-            # get rid of the unnecessary list containing a single dictionary
-            # (we save 32 bytes on 32 bit python per entry)
             self.undo_stack[-1] = self.undo_stack[-1][0]
         self.recording = False

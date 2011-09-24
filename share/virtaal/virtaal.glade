@@ -1103,7 +1103,7 @@ If you are translating from English to French then French would be your translat
                         <property name="left_padding">12</property>
                         <property name="right_padding">10</property>
                         <child>
-                          <widget class="GtkTable" id="table1">
+                          <widget class="GtkTable" id="table2">
                             <property name="visible">True</property>
                             <property name="n_rows">3</property>
                             <property name="n_columns">2</property>
@@ -1230,7 +1230,7 @@ If you are translating from English to French then French would be your translat
                             <property name="visible">True</property>
                             <property name="orientation">vertical</property>
                             <child>
-                              <widget class="GtkTable" id="table2">
+                              <widget class="GtkTable" id="table3">
                                 <property name="visible">True</property>
                                 <property name="n_rows">2</property>
                                 <property name="n_columns">2</property>
@@ -1492,7 +1492,7 @@ If you are translating from English to French then French would be your translat
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
-          <widget class="GtkTable" id="table1">
+          <widget class="GtkTable" id="table4">
             <property name="visible">True</property>
             <property name="n_rows">2</property>
             <property name="n_columns">2</property>
@@ -1937,7 +1937,7 @@ If you are translating from English to French then French would be your translat
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
             <child>
-              <widget class="GtkTable" id="table1">
+              <widget class="GtkTable" id="table5">
                 <property name="visible">True</property>
                 <property name="n_rows">2</property>
                 <property name="n_columns">2</property>

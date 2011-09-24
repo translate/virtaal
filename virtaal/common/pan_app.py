@@ -237,8 +237,12 @@ if ui_language:
     gettext.translation('virtaal', languages=languages, fallback=True).install(unicode=1)
 else:
     fix_locale()
-    locale.setlocale(locale.LC_ALL, '')
-    gettext.install("virtaal", unicode=1)
+    try:
+        #if the locale is not installed it can cause a traceback
+        locale.setlocale(locale.LC_ALL, '')
+        gettext.install("virtaal", unicode=1)
+    except locale.Error, e:
+        logging.warning("Couldn't set the locale: %s", e)
 
 if _(''):
     # If this is true, we have a translated interface

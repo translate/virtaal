@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<interface>
+<interface domain="virtaal">
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkDialog" id="LanguageAdder">
@@ -204,6 +204,7 @@
                             <property name="secondary_icon_activatable">False</property>
                             <property name="primary_icon_sensitive">True</property>
                             <property name="secondary_icon_sensitive">True</property>
+                            <property name="adjustment"></property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>
@@ -307,7 +308,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="has_tooltip">True</property>
-                    <property name="tooltip_markup">The &lt;b&gt;Original&lt;/b&gt; is the language from which you are translating, also called the source language.
+                    <property name="tooltip_markup" translatable="yes">The &lt;b&gt;Original&lt;/b&gt; is the language from which you are translating, also called the source language.
 
 If you are translating from English to French then English would be your original or source language.</property>
                     <property name="label_xalign">0</property>
@@ -351,7 +352,7 @@ If you are translating from English to French then English would be your origina
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="has_tooltip">True</property>
-                    <property name="tooltip_markup">The &lt;b&gt;Translation&lt;/b&gt; is the language into which you are translating, also called the target language.
+                    <property name="tooltip_markup"  translatable="yes">The &lt;b&gt;Translation&lt;/b&gt; is the language into which you are translating, also called the target language.
 
 If you are translating from English to French then French would be your translation or target language.</property>
                     <property name="label_xalign">0</property>
@@ -2796,6 +2797,7 @@ If you are translating from English to French then French would be your translat
                             <property name="xpad">5</property>
                             <property name="label" translatable="yes" comments="l10n: Remove the tags if underlining is unsuitable for your language. Most languages won't need to change this. Translate 'Open' normally.">&lt;u&gt;Open&lt;/u&gt;</property>
                             <property name="use_markup">True</property>
+                            <property name="width_chars">40</property>
                           </object>
                           <packing>
                             <property name="expand">True</property>

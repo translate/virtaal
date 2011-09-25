@@ -35,8 +35,8 @@ class LanguageSelectDialog(object):
     def __init__(self, languages, parent=None):
         super(LanguageSelectDialog, self).__init__()
 
-        self.gladefilename, self.gui = BaseView.load_glade_file(
-            ["virtaal", "virtaal.glade"],
+        self.builderfilename, self.gui = BaseView.load_builder_file(
+            ["virtaal", "virtaal.ui"],
             root='LanguageSelector',
             domain='virtaal'
         )
@@ -50,13 +50,13 @@ class LanguageSelectDialog(object):
             self.dialog.set_icon(parent.get_toplevel().get_icon())
 
     def _get_widgets(self):
-        """Load the Glade file and get the widgets we would like to use."""
+        """Load the GtkBuilder file and get the widgets we would like to use."""
         widget_names = ('btn_add', 'btn_cancel', 'btn_ok', 'tvw_sourcelang', 'tvw_targetlang')
 
         for name in widget_names:
-            setattr(self, name, self.gui.get_widget(name))
+            setattr(self, name, self.gui.get_object(name))
 
-        self.dialog = self.gui.get_widget('LanguageSelector')
+        self.dialog = self.gui.get_object('LanguageSelector')
 
         self.btn_ok.connect('clicked', lambda *args: self.dialog.response(gtk.RESPONSE_OK))
         self.btn_cancel.connect('clicked', lambda *args: self.dialog.response(gtk.RESPONSE_CANCEL))

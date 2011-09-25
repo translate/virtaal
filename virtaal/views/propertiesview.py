@@ -79,8 +79,8 @@ class PropertiesView(BaseView, GObjectWrapper):
         self._setup_menu_item()
 
     def _get_widgets(self):
-        self.gladefile, self.gui = self.load_glade_file(
-            ["virtaal", "virtaal.glade"],
+        self.builderfile, self.gui = self.load_builder_file(
+            ["virtaal", "virtaal.ui"],
             root='PropertiesDlg',
             domain="virtaal"
         )
@@ -93,9 +93,9 @@ class PropertiesView(BaseView, GObjectWrapper):
             'vbox_string_labels', 'vbox_string_stats', 'vbox_string_perc',
         )
         for name in widget_names:
-            self._widgets[name] = self.gui.get_widget(name)
+            self._widgets[name] = self.gui.get_object(name)
 
-        self._widgets['dialog'] = self.gui.get_widget('PropertiesDlg')
+        self._widgets['dialog'] = self.gui.get_object('PropertiesDlg')
         self._widgets['dialog'].set_transient_for(self.controller.main_controller.view.main_window)
         self._widgets['dialog'].set_icon(self.controller.main_controller.view.main_window.get_icon())
 
@@ -108,8 +108,8 @@ class PropertiesView(BaseView, GObjectWrapper):
 
     def _setup_menu_item(self):
         mainview = self.controller.main_controller.view
-        menu_file = mainview.gui.get_widget('menu_file')
-        mnu_properties = mainview.gui.get_widget('mnu_properties')
+        menu_file = mainview.gui.get_object('menu_file')
+        mnu_properties = mainview.gui.get_object('mnu_properties')
 
         accel_group = menu_file.get_accel_group()
         if not accel_group:

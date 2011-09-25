@@ -68,7 +68,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
         self.controller = controller
         self._focused_target_n = None
-        self.gladefilename, self.gui = self.load_glade_file(["virtaal", "virtaal.glade"], root='UnitEditor', domain="virtaal")
+        self.builderfilename, self.gui = self.load_builder_file(["virtaal", "virtaal.ui"], root='UnitEditor', domain="virtaal")
 
         self.must_advance = False
         self._modified = False
@@ -116,22 +116,22 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                 focused.get_buffer().paste_clipboard(clipboard, None, True)
 
         maingui = self.controller.main_controller.view.gui
-        self.mnu_cut = maingui.get_widget('mnu_cut')
-        self.mnu_copy = maingui.get_widget('mnu_copy')
-        self.mnu_paste = maingui.get_widget('mnu_paste')
+        self.mnu_cut = maingui.get_object('mnu_cut')
+        self.mnu_copy = maingui.get_object('mnu_copy')
+        self.mnu_paste = maingui.get_object('mnu_paste')
 
         self.mnu_cut.connect('activate', on_cut)
         self.mnu_copy.connect('activate', on_copy)
         self.mnu_paste.connect('activate', on_paste)
 
         # And now for the "Transfer from source" and placeable selection menu items
-        mnu_next = maingui.get_widget('mnu_placnext')
-        mnu_prev = maingui.get_widget('mnu_placprev')
-        mnu_transfer = maingui.get_widget('mnu_transfer')
+        mnu_next = maingui.get_object('mnu_placnext')
+        mnu_prev = maingui.get_object('mnu_placprev')
+        mnu_transfer = maingui.get_object('mnu_transfer')
         self.mnu_next = mnu_next
         self.mnu_prev = mnu_prev
         self.mnu_transfer = mnu_transfer
-        menu_edit = maingui.get_widget('menu_edit')
+        menu_edit = maingui.get_object('menu_edit')
 
         def on_next(*args):
             self.targets[self.focused_target_n].move_elem_selection(1)
@@ -326,14 +326,14 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         return translation_start
 
     def _get_widgets(self):
-        """Get the widgets we would like to use from the loaded Glade XML object."""
+        """Get the widgets we would like to use from the loaded GtkBuilder XML object."""
         if not getattr(self, '_widgets', None):
             self._widgets = {}
 
         widget_names = ('vbox_editor', 'vbox_middle', 'vbox_sources', 'vbox_targets', 'vbox_options', 'vbox_right')
 
         for name in widget_names:
-            self._widgets[name] = self.gui.get_widget(name)
+            self._widgets[name] = self.gui.get_object(name)
 
         self._widgets['vbox_targets'].connect('key-press-event', self._on_key_press_event)
 

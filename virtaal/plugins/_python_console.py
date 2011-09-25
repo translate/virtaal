@@ -320,7 +320,7 @@ class Plugin(BasePlugin):
         self.main_controller.view.add_accel_group(self.accel_group)
 
     def _setup_menu_item(self):
-        self.menu = self.main_controller.view.gui.get_widget('menu_view')
+        self.menu = self.main_controller.view.gui.get_object('menu_view')
         self.menuitem = gtk.MenuItem(label=_('P_ython Console'))
         self.menuitem.show()
         self.menu.append(self.menuitem)

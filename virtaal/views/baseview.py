@@ -21,7 +21,7 @@
 import logging
 import os
 import sys
-from gtk import glade
+from gtk import Builder
 
 from virtaal.common import pan_app
 
@@ -33,16 +33,19 @@ class BaseView(object):
         raise NotImplementedError('This interface cannot be instantiated.')
 
     @classmethod
-    def load_glade_file(cls, path_parts, root=None, domain=''):
-        gladename = pan_app.get_abs_data_filename(path_parts)
+    def load_builder_file(cls, path_parts, root=None, domain=''):
+        buildername = pan_app.get_abs_data_filename(path_parts)
         if os.name == 'nt' and getattr(sys, 'frozen', False):
             try:
                 basedirs = [os.getcwd()]
-                glade.bindtextdomain(domain, pan_app.get_abs_data_filename('locale', basedirs=basedirs))
+                # FIXME
+                #glade.bindtextdomain(domain, pan_app.get_abs_data_filename('locale', basedirs=basedirs))
             except Exception:
                 logging.exception('bindtextdomain()')
-        gui = glade.XML(gladename, root=root, domain=domain)
-        return gladename, gui
+        builder = Builder()
+        builder.add_from_file(buildername)
+        builder.set_translation_domain(domain)
+        return buildername, builder
 
     def show(self):
         raise NotImplementedError('This method needs to be implemented by all sub-classes.')

@@ -140,8 +140,8 @@ class WebLookupConfigDialog(object):
 
     # INITIALIZERS #
     def __init__(self, parent):
-        self.gladefilename, self.gui = BaseView.load_glade_file(
-            ["virtaal", "virtaal.glade"],
+        self.builderfilename, self.gui = BaseView.load_builder_file(
+            ["virtaal", "virtaal.ui"],
             root='WebLookupManager',
             domain='virtaal'
         )
@@ -158,9 +158,9 @@ class WebLookupConfigDialog(object):
         widget_names = ('btn_url_add', 'btn_url_remove', 'tvw_urls')
 
         for name in widget_names:
-            setattr(self, name, self.gui.get_widget(name))
+            setattr(self, name, self.gui.get_object(name))
 
-        self.dialog = self.gui.get_widget('WebLookupManager')
+        self.dialog = self.gui.get_object('WebLookupManager')
         self.add_dialog = WebLookupAddDialog(self.dialog)
 
     def _init_treeview(self):
@@ -237,8 +237,8 @@ class WebLookupAddDialog(object):
 
     # INITIALIZERS #
     def __init__(self, parent):
-        self.gladefilename, self.gui = BaseView.load_glade_file(
-            ["virtaal", "virtaal.glade"],
+        self.builderfilename, self.gui = BaseView.load_builder_file(
+            ["virtaal", "virtaal.ui"],
             root='WebLookupAdd',
             domain='virtaal'
         )
@@ -252,9 +252,9 @@ class WebLookupAddDialog(object):
         widget_names = ('btn_url_cancel', 'btn_url_ok', 'cbtn_url_quote', 'ent_url_name', 'ent_url')
 
         for name in widget_names:
-            setattr(self, name, self.gui.get_widget(name))
+            setattr(self, name, self.gui.get_object(name))
 
-        self.dialog = self.gui.get_widget('WebLookupAdd')
+        self.dialog = self.gui.get_object('WebLookupAdd')
 
 
     # METHODS #

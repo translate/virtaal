@@ -1,4 +1,5 @@
 devsupport/profiling.py
+share/virtaal/virtaal.glade
 virtaal/common/pan_app.py
 virtaal/plugins/tm/models/_dummytm.py
 virtaal/plugins/_helloworld.py

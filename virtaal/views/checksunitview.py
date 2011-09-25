@@ -61,7 +61,7 @@ class ChecksUnitView(BaseView):
 
     def _create_menu_item(self):
         mainview = self.controller.main_controller.view
-        self.mnu_checks = mainview.gui.get_widget('mnu_checks')
+        self.mnu_checks = mainview.gui.get_object('mnu_checks')
         self.mnu_checks.connect('activate', self._on_activated)
 
     def _create_popup_content(self):

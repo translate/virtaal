@@ -35,7 +35,7 @@ class StoreView(BaseView):
     def __init__(self, controller):
         self.controller = controller
         # XXX: While I can't think of a better way to do this, the following line would have to do :/
-        self.parent_widget = self.controller.main_controller.view.gui.get_widget('scrwnd_storeview')
+        self.parent_widget = self.controller.main_controller.view.gui.get_object('scrwnd_storeview')
 
         self.cursor = None
         self._cursor_changed_id = 0
@@ -68,11 +68,11 @@ class StoreView(BaseView):
 
         mainview = self.controller.main_controller.view
         mainview.add_accel_group(self.accel_group)
-        mainview.gui.get_widget('menu_navigation').set_accel_group(self.accel_group)
-        self.mnu_up = mainview.gui.get_widget('mnu_up')
-        self.mnu_down = mainview.gui.get_widget('mnu_down')
-        self.mnu_pageup = mainview.gui.get_widget('mnu_pageup')
-        self.mnu_pagedown = mainview.gui.get_widget('mnu_pagedown')
+        mainview.gui.get_object('menu_navigation').set_accel_group(self.accel_group)
+        self.mnu_up = mainview.gui.get_object('mnu_up')
+        self.mnu_down = mainview.gui.get_object('mnu_down')
+        self.mnu_pageup = mainview.gui.get_object('mnu_pageup')
+        self.mnu_pagedown = mainview.gui.get_object('mnu_pagedown')
         self.mnu_up.set_accel_path('<Virtaal>/Navigation/Up')
         self.mnu_down.set_accel_path('<Virtaal>/Navigation/Down')
         self.mnu_pageup.set_accel_path('<Virtaal>/Navigation/PgUp')

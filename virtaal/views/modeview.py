@@ -47,11 +47,11 @@ class ModeView(GObjectWrapper, BaseView):
 
     def _build_gui(self):
         # Get the mode container from the main controller
-        # We need the *same* glade.XML instance as used by the MainView, because we need
-        # the gtk.Table as already added to the main window. Loading the Glade file again
+        # We need the *same* GtkBuilder instance as used by the MainView, because we need
+        # the gtk.Table as already added to the main window. Loading the GtkBuilder file again
         # would create a new main window with a different gtk.Table.
-        gladegui = self.controller.main_controller.view.gui # FIXME: Is this acceptable?
-        self.mode_box = gladegui.get_widget('mode_box')
+        gui = self.controller.main_controller.view.gui # FIXME: Is this acceptable?
+        self.mode_box = gui.get_object('mode_box')
 
         self.cmb_modes = gtk.combo_box_new_text()
         self.cmb_modes.connect('changed', self._on_cmbmode_change)

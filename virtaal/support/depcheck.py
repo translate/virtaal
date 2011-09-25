@@ -22,7 +22,7 @@ __all__ = ['check_dependencies', 'extra_tests', 'import_checks']
 
 
 # Modules to try and import:
-import_checks = ['translate', 'gtk', 'gtk.glade', 'lxml.etree', 'json', 'pycurl', 'sqlite3', 'wsgiref']
+import_checks = ['translate', 'gtk', 'lxml.etree', 'json', 'pycurl', 'sqlite3', 'wsgiref']
 
 
 #########################

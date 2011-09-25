@@ -46,8 +46,8 @@ class PreferencesView(BaseView, GObjectWrapper):
         self._setup_menu_item()
 
     def _get_widgets(self):
-        self.gladefile, self.gui = self.load_glade_file(
-            ["virtaal", "virtaal.glade"],
+        self.builderfile, self.gui = self.load_builder_file(
+            ["virtaal", "virtaal.ui"],
             root='PreferencesDlg',
             domain="virtaal"
         )
@@ -57,9 +57,9 @@ class PreferencesView(BaseView, GObjectWrapper):
             'fbtn_source', 'fbtn_target', 'scrwnd_placeables', 'scrwnd_plugins',
         )
         for name in widget_names:
-            self._widgets[name] = self.gui.get_widget(name)
+            self._widgets[name] = self.gui.get_object(name)
 
-        self._widgets['dialog'] = self.gui.get_widget('PreferencesDlg')
+        self._widgets['dialog'] = self.gui.get_object('PreferencesDlg')
         self._widgets['dialog'].set_transient_for(self.controller.main_controller.view.main_window)
         self._widgets['dialog'].set_icon(self.controller.main_controller.view.main_window.get_icon())
 
@@ -94,8 +94,8 @@ class PreferencesView(BaseView, GObjectWrapper):
 
     def _setup_menu_item(self):
         mainview = self.controller.main_controller.view
-        menu_edit = mainview.gui.get_widget('menu_edit')
-        mnu_prefs = mainview.gui.get_widget('mnu_prefs')
+        menu_edit = mainview.gui.get_object('menu_edit')
+        mnu_prefs = mainview.gui.get_object('mnu_prefs')
 
         accel_group = menu_edit.get_accel_group()
         if accel_group is None:

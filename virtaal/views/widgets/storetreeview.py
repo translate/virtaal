@@ -72,10 +72,10 @@ class StoreTreeView(gtk.TreeView):
         # to add pretty key-bindings next to menu items and does not really care if an accelerator
         # path has a connected handler.
         mainview = self.view.controller.main_controller.view
-        mainview.gui.get_widget('mnu_up').connect('activate', lambda *args: self._move_up(None, None, None, None))
-        mainview.gui.get_widget('mnu_down').connect('activate', lambda *args: self._move_down(None, None, None, None))
-        mainview.gui.get_widget('mnu_pageup').connect('activate', lambda *args: self._move_pgup(None, None, None, None))
-        mainview.gui.get_widget('mnu_pagedown').connect('activate', lambda *args: self._move_pgdown(None, None, None, None))
+        mainview.gui.get_object('mnu_up').connect('activate', lambda *args: self._move_up(None, None, None, None))
+        mainview.gui.get_object('mnu_down').connect('activate', lambda *args: self._move_down(None, None, None, None))
+        mainview.gui.get_object('mnu_pageup').connect('activate', lambda *args: self._move_pgup(None, None, None, None))
+        mainview.gui.get_object('mnu_pagedown').connect('activate', lambda *args: self._move_pgdown(None, None, None, None))
 
     def _make_renderer(self):
         renderer = StoreCellRenderer(self.view)

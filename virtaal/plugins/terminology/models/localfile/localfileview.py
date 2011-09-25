@@ -45,8 +45,8 @@ class LocalFileView:
 
     # METHODS #
     def _setup_menus(self):
-        mnu_transfer = self.mainview.gui.get_widget('mnu_placnext')
-        self.mnui_edit = self.mainview.gui.get_widget('menuitem_edit')
+        mnu_transfer = self.mainview.gui.get_object('mnu_placnext')
+        self.mnui_edit = self.mainview.gui.get_object('menuitem_edit')
         self.menu = self.mnui_edit.get_submenu()
 
         self.mnu_select_files, _menu = self.mainview.find_menu_item(_('Terminology _Files...'), self.mnui_edit)
@@ -105,7 +105,7 @@ class LocalFileView:
 
 class FileSelectDialog:
     """
-    Wrapper for the selection dialog, created in Glade, to manage the list of
+    Wrapper for the selection dialog, created in GtkBuilder, to manage the list of
     files used by this plug-in.
     """
 
@@ -115,8 +115,8 @@ class FileSelectDialog:
     def __init__(self, model):
         self.controller = model.controller
         self.term_model = model
-        self.gladefilename, self.gui = BaseView.load_glade_file(
-            ["virtaal", "virtaal.glade"],
+        self.builderfilename, self.gui = BaseView.load_builder_file(
+            ["virtaal", "virtaal.ui"],
             root='TermFilesDlg',
             domain='virtaal'
         )
@@ -128,9 +128,9 @@ class FileSelectDialog:
         widget_names = ('btn_add_file', 'btn_remove_file', 'btn_open_termfile', 'tvw_termfiles')
 
         for name in widget_names:
-            setattr(self, name, self.gui.get_widget(name))
+            setattr(self, name, self.gui.get_object(name))
 
-        self.dialog = self.gui.get_widget('TermFilesDlg')
+        self.dialog = self.gui.get_object('TermFilesDlg')
         self.btn_add_file.connect('clicked', self._on_add_file_clicked)
         self.btn_remove_file.connect('clicked', self._on_remove_file_clicked)
         self.btn_open_termfile.connect('clicked', self._on_open_termfile_clicked)
@@ -322,8 +322,8 @@ class TermAddDialog:
         self.lang_controller = model.controller.main_controller.lang_controller
         self.unit_controller = model.controller.main_controller.unit_controller
 
-        self.gladefilename, self.gui = BaseView.load_glade_file(
-            ["virtaal", "virtaal.glade"],
+        self.builderfilename, self.gui = BaseView.load_builder_file(
+            ["virtaal", "virtaal.ui"],
             root='TermAddDlg',
             domain='virtaal'
         )
@@ -337,9 +337,9 @@ class TermAddDialog:
         )
 
         for name in widget_names:
-            setattr(self, name, self.gui.get_widget(name))
+            setattr(self, name, self.gui.get_object(name))
 
-        self.dialog = self.gui.get_widget('TermAddDlg')
+        self.dialog = self.gui.get_object('TermAddDlg')
 
         cellr = gtk.CellRendererText()
         cellr.props.ellipsize = pango.ELLIPSIZE_MIDDLE

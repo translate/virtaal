@@ -104,15 +104,15 @@ class MainView(BaseView):
                 """
             gtk.rc_parse_string(rc_string)
 
-        # Set the Glade file
-        self.gladefile, self.gui = self.load_glade_file(["virtaal", "virtaal.glade"], root='MainWindow', domain="virtaal")
-        self.main_window = self.gui.get_widget("MainWindow")
+        # Set the GtkBuilder file
+        self.builderfile, self.gui = self.load_builder_file(["virtaal", "virtaal.ui"], root='MainWindow', domain="virtaal")
+        self.main_window = self.gui.get_object("MainWindow")
 
         # The classic menu bar:
-        self.menubar = self.gui.get_widget('menubar')
+        self.menubar = self.gui.get_object('menubar')
         # The menu structure, regardless of where it is shown (initially the menubar):
         self.menu_structure = self.menubar
-        self.status_bar = self.gui.get_widget("status_bar")
+        self.status_bar = self.gui.get_object("status_bar")
         self.status_bar.set_sensitive(False)
         self.statusbar_context_id = self.status_bar.get_context_id("statusbar")
         #Only used in full screen, initialised as needed
@@ -127,9 +127,8 @@ class MainView(BaseView):
 
             # Sometimes we have two resize grips: one from GTK, one from Aqua. We
             # might want to disable the GTK one:
-            #self.gui.get_widget('status_bar').set_property("has-resize-grip", False)
+            #self.gui.get_object('status_bar').set_property("has-resize-grip", False)
             try:
-                # FIXME: Rename the separators that were automatically named by Glade
                 import gtk_osxapplication
                 osxapp = gtk_osxapplication.OSXApplication()
                 # Move the menu bar to the mac menu
@@ -138,18 +137,18 @@ class MainView(BaseView):
                 # Ensure Ctrl-O change to Cmd-O, etc
                 osxapp.set_use_quartz_accelerators(True)
                 # Move the quit menu item
-                mnu_quit = self.gui.get_widget("mnu_quit")
+                mnu_quit = self.gui.get_object("mnu_quit")
                 mnu_quit.hide()
-                self.gui.get_widget("separator_mnu_file_2").hide()
+                self.gui.get_object("separator_mnu_file_2").hide()
                 # Move the about menu item
-                mnu_about = self.gui.get_widget("mnu_about")
+                mnu_about = self.gui.get_object("mnu_about")
                 osxapp.insert_app_menu_item(mnu_about, 0)
-                self.gui.get_widget("separator_mnu_help_1").hide()
+                self.gui.get_object("separator_mnu_help_1").hide()
                 # Move the preferences menu item
                 osxapp.insert_app_menu_item(gtk.SeparatorMenuItem(), 1)
-                mnu_prefs = self.gui.get_widget("mnu_prefs")
+                mnu_prefs = self.gui.get_object("mnu_prefs")
                 osxapp.insert_app_menu_item(mnu_prefs, 2)
-                self.gui.get_widget("separator_mnu_edit_3").hide()
+                self.gui.get_object("separator_mnu_edit_3").hide()
                 gtk.accel_map_load(pan_app.get_abs_data_filename(["virtaal", "virtaal.accel"]))
                 osxapp.ready()
                 osxapp.connect("NSApplicationOpenFile", self._on_osx_openfile_event)
@@ -160,22 +159,22 @@ class MainView(BaseView):
         self.main_window.connect('destroy', self._on_quit)
         self.main_window.connect('delete-event', self._on_quit)
         # File menu signals
-        self.gui.get_widget('mnu_open').connect('activate', self._on_file_open)
-        self.gui.get_widget('mnu_save').connect('activate', self._on_file_save)
-        self.gui.get_widget('mnu_saveas').connect('activate', self._on_file_saveas)
-        self.gui.get_widget('mnu_close').connect('activate', self._on_file_close)
-        self.gui.get_widget('mnu_update').connect('activate', self._on_file_update)
-        self.gui.get_widget('mnu_binary_export').connect('activate', self._on_file_binary_export)
-        self.gui.get_widget('mnu_revert').connect('activate', self._on_file_revert)
-        self.gui.get_widget('mnu_quit').connect('activate', self._on_quit)
+        self.gui.get_object('mnu_open').connect('activate', self._on_file_open)
+        self.gui.get_object('mnu_save').connect('activate', self._on_file_save)
+        self.gui.get_object('mnu_saveas').connect('activate', self._on_file_saveas)
+        self.gui.get_object('mnu_close').connect('activate', self._on_file_close)
+        self.gui.get_object('mnu_update').connect('activate', self._on_file_update)
+        self.gui.get_object('mnu_binary_export').connect('activate', self._on_file_binary_export)
+        self.gui.get_object('mnu_revert').connect('activate', self._on_file_revert)
+        self.gui.get_object('mnu_quit').connect('activate', self._on_quit)
         # View menu signals
-        self.gui.get_widget('mnu_fullscreen').connect('activate', self._on_fullscreen)
+        self.gui.get_object('mnu_fullscreen').connect('activate', self._on_fullscreen)
         # Help menu signals
-        self.gui.get_widget('mnu_documentation').connect('activate', self._on_documentation)
-        self.gui.get_widget('mnu_tutorial').connect('activate', self._on_tutorial)
-        self.gui.get_widget('mnu_localization_guide').connect('activate', self._on_localization_guide)
-        self.gui.get_widget('mnu_report_bug').connect('activate', self._on_report_bug)
-        self.gui.get_widget('mnu_about').connect('activate', self._on_help_about)
+        self.gui.get_object('mnu_documentation').connect('activate', self._on_documentation)
+        self.gui.get_object('mnu_tutorial').connect('activate', self._on_tutorial)
+        self.gui.get_object('mnu_localization_guide').connect('activate', self._on_localization_guide)
+        self.gui.get_object('mnu_report_bug').connect('activate', self._on_report_bug)
+        self.gui.get_object('mnu_about').connect('activate', self._on_help_about)
 
         self.main_window.set_icon_from_file(pan_app.get_abs_data_filename(["icons", "virtaal.ico"]))
         self.main_window.resize(
@@ -206,7 +205,7 @@ class MainView(BaseView):
 
     def _setup_recent_files(self):
         from virtaal.views import recent
-        recent_files = self.gui.get_widget("mnu_recent_files")
+        recent_files = self.gui.get_object("mnu_recent_files")
         recent.rc.connect("item-activated", self._on_recent_file_activated)
         recent_files.set_submenu(recent.rc)
 
@@ -406,9 +405,9 @@ class MainView(BaseView):
         self.main_window.add_accel_group(accel_group)
 
     def set_saveable(self, value):
-        menuitem = self.gui.get_widget("mnu_save")
+        menuitem = self.gui.get_object("mnu_save")
         menuitem.set_sensitive(value)
-        menuitem = self.gui.get_widget("mnu_revert")
+        menuitem = self.gui.get_object("mnu_revert")
         menuitem.set_sensitive(value)
         filename = self.controller.get_store_filename()
         if filename:
@@ -712,8 +711,8 @@ class MainView(BaseView):
 
     def show_app_icon(self):
         if not self.btn_app:
-            self.btn_app = self.gui.get_widget('btn_app')
-            image = self.gui.get_widget('img_app')
+            self.btn_app = self.gui.get_object('btn_app')
+            image = self.gui.get_object('img_app')
             image.set_from_file(pan_app.get_abs_data_filename(['icons', 'hicolor', '24x24', 'mimetypes', 'x-translation.png']))
             self.app_menu = gtk.Menu()
             self.btn_app.connect('pressed', self._on_app_pressed)
@@ -813,19 +812,19 @@ class MainView(BaseView):
 
     def _on_store_closed(self, store_controller):
         for widget_name in ('mnu_saveas', 'mnu_close', 'mnu_update', 'mnu_properties', 'mnu_binary_export'):
-            self.gui.get_widget(widget_name).set_sensitive(False)
+            self.gui.get_object(widget_name).set_sensitive(False)
         self.status_bar.set_sensitive(False)
         self.main_window.set_title(_('Virtaal'))
 
     def _on_store_loaded(self, store_controller):
-        self.gui.get_widget('mnu_saveas').set_sensitive(True)
-        self.gui.get_widget('mnu_close').set_sensitive(True)
-        self.gui.get_widget('mnu_update').set_sensitive(True)
-        self.gui.get_widget('mnu_properties').set_sensitive(True)
+        self.gui.get_object('mnu_saveas').set_sensitive(True)
+        self.gui.get_object('mnu_close').set_sensitive(True)
+        self.gui.get_object('mnu_update').set_sensitive(True)
+        self.gui.get_object('mnu_properties').set_sensitive(True)
         filename = store_controller.get_store_filename()
         #TODO: move logic to storecontroller
         if filename.endswith('.po') or filename.endswith('.po.bz2') or filename.endswith('.po.gz'):
-            self.gui.get_widget('mnu_binary_export').set_sensitive(True)
+            self.gui.get_object('mnu_binary_export').set_sensitive(True)
 
         self.status_bar.set_sensitive(True)
         from virtaal.views import recent
@@ -843,7 +842,7 @@ class MainView(BaseView):
                 recent.rm.add_item(url)
 
     def _on_window_state_event(self, widget, event):
-        mnu_fullscreen = self.gui.get_widget('mnu_fullscreen')
+        mnu_fullscreen = self.gui.get_object('mnu_fullscreen')
         mnu_fullscreen.set_active(event.new_window_state & gdk.WINDOW_STATE_FULLSCREEN)
 
     def _on_app_pressed(self, btn):

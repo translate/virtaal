@@ -59,8 +59,8 @@ class UndoController(BaseController):
         self.main_controller.store_controller.connect('store-loaded', self._on_store_loaded_closed)
 
         mainview = self.main_controller.view
-        mainview.gui.get_widget('menu_edit').set_accel_group(self.accel_group)
-        self.mnu_undo = mainview.gui.get_widget('mnu_undo')
+        mainview.gui.get_object('menu_edit').set_accel_group(self.accel_group)
+        self.mnu_undo = mainview.gui.get_object('mnu_undo')
         self.mnu_undo.set_accel_path('<Virtaal>/Edit/Undo')
         self.mnu_undo.connect('activate', self._on_undo_activated)
 

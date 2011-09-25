@@ -18,17 +18,17 @@ class WelcomeScreen(gtk.ScrolledWindow):
     # INITIALISERS #
     def __init__(self, gui):
         """Constructor.
-            @type  gui: C{gtk.glade.XML}
-            @param gui: The Glade XML object to retrieve the welcome screen from."""
+            @type  gui: C{gtk.Builder}
+            @param gui: The GtkBuilder XML object to retrieve the welcome screen from."""
         super(WelcomeScreen, self).__init__()
 
         self.gui = gui
 
         self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 
-        win = gui.get_widget('WelcomeScreen')
+        win = gui.get_object('WelcomeScreen')
         if not win:
-            raise ValueError('Welcome screen not found in Glade object.')
+            raise ValueError('Welcome screen not found in GtkBuikder object.')
         child = win.child
         win.remove(child)
         self.add_with_viewport(child)
@@ -40,7 +40,7 @@ class WelcomeScreen(gtk.ScrolledWindow):
         self.widgets = {}
         widget_names = ('img_banner', 'exp_features', 'txt_features')
         for wname in widget_names:
-            self.widgets[wname] = self.gui.get_widget(wname)
+            self.widgets[wname] = self.gui.get_object(wname)
 
         self.widgets['buttons'] = {}
         button_names = (
@@ -49,7 +49,7 @@ class WelcomeScreen(gtk.ScrolledWindow):
             'feedback'
         )
         for bname in button_names:
-            btn = self.gui.get_widget('btn_' + bname)
+            btn = self.gui.get_object('btn_' + bname)
             self.widgets['buttons'][bname] = btn
             btn.connect('clicked', self._on_button_clicked, bname)
 
@@ -98,22 +98,3 @@ class WelcomeScreen(gtk.ScrolledWindow):
     def do_style_set(self, previous_style):
         self.child.modify_bg(gtk.STATE_NORMAL, self.style.base[gtk.STATE_NORMAL])
         self._style_widgets()
-
-
-if __name__ == '__main__':
-    import sys
-
-    if len(sys.argv) < 2:
-        print 'Usage: %s <glade file>' % (sys.argv[0])
-        exit(1)
-
-    from gtk import glade
-    gui = glade.XML(sys.argv[1])
-    ws = WelcomeScreen(gui)
-    window = gtk.Window()
-    window.set_title('WelcomeScreen Test')
-    window.connect('destroy', lambda *args: gtk.main_quit())
-    window.set_size_request(400, 300)
-    window.add(ws)
-    window.show_all()
-    gtk.main()

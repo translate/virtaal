@@ -36,9 +36,9 @@ class WelcomeScreenView(BaseView):
     # INITIALIZERS #
     def __init__(self, controller):
         self.controller = controller
-        gladefile, gui = self.load_glade_file(["virtaal", "virtaal.glade"], root='WelcomeScreen', domain="virtaal")
+        builderfile, gui = self.load_builder_file(["virtaal", "virtaal.ui"], root='WelcomeScreen', domain="virtaal")
         self.widget = WelcomeScreen(gui)
-        self.parent_widget = self.controller.main_controller.view.gui.get_widget('vbox_main')
+        self.parent_widget = self.controller.main_controller.view.gui.get_object('vbox_main')
 
         self.set_banner()
         self.widget.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
@@ -96,9 +96,9 @@ class WelcomeScreenView(BaseView):
     def update_recent_buttons(self, items):
         # if there are no items (maybe failure in xbel), hide the whole widget
         if not items:
-            self.widget.gui.get_widget("frame_recent").hide()
+            self.widget.gui.get_object("frame_recent").hide()
         else:
-            self.widget.gui.get_widget("frame_recent").show_all()
+            self.widget.gui.get_object("frame_recent").show_all()
 
         buttons = [
             self.widget.widgets['buttons']['recent' + str(i)] for i in range(1, self.controller.MAX_RECENT+1)

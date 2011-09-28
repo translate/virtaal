@@ -204,7 +204,6 @@
                             <property name="secondary_icon_activatable">False</property>
                             <property name="primary_icon_sensitive">True</property>
                             <property name="secondary_icon_sensitive">True</property>
-                            <property name="adjustment"></property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>

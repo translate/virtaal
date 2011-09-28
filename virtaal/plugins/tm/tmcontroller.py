@@ -50,6 +50,7 @@ class TMController(BaseController):
 
         self._signal_ids = {}
         from tmview import TMView
+        self.storecursor = None
         self.view = TMView(self, self.max_matches)
         self._load_models()
 
@@ -94,6 +95,9 @@ class TMController(BaseController):
     def accept_response(self, tmmodel, query_str, matches):
         """Accept a query-response from the model.
             (This method is used as Model-Controller communications)"""
+        if not self.storecursor:
+            # File closed since the query was started
+            return
         query_str = forceunicode(query_str)
         if query_str != self.current_query or not matches:
             return
@@ -171,8 +175,8 @@ class TMController(BaseController):
 
     def start_query(self):
         """Start a TM query after C{self.QUERY_DELAY} milliseconds."""
-        if not hasattr(self, 'storecursor'):
-            return False
+        if not self.storecursor:
+            return
 
         if not hasattr(self, 'unit'):
             self.unit = self.storecursor.deref()

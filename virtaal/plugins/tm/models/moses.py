@@ -61,7 +61,7 @@ class TMModel(BaseTMModel):
     # METHODS #
     def query(self, tmcontroller, unit):
         if self.source_lang in self.proxy and self.target_lang in self.proxy[self.source_lang]:
-            query_str = unit.source
+            query_str = unicode(unit.source) # cast in case of multistrings
             try:
                 translate = self.proxy[self.source_lang][self.target_lang].translate
                 target = translate({'text': query_str})['text']

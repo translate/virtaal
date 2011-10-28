@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2009 Zuza Software Foundation
+# Copyright 2009-2011 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -62,6 +62,10 @@ class TMModel(BaseTMModel):
     def query(self, tmcontroller, unit):
         if self.source_lang in self.proxy and self.target_lang in self.proxy[self.source_lang]:
             query_str = unicode(unit.source) # cast in case of multistrings
+            if query_str in self.cache:
+                self.emit('match-found', query_str, self.cache[query_str])
+                return
+
             try:
                 translate = self.proxy[self.source_lang][self.target_lang].translate
                 target = translate({'text': query_str})['text']
@@ -73,6 +77,7 @@ class TMModel(BaseTMModel):
                     #l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
                     'tmsource': _('Moses'),
                 }]
+                self.cache[query_str] = tm_match
                 self.emit('match-found', query_str, tm_match)
             except Exception, exc:
                 logging.debug('Moses TM query failed: %s' % (str(exc)))

@@ -18,7 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import logging
 
 from basetmmodel import BaseTMModel
 
@@ -41,43 +40,38 @@ class TMModel(BaseTMModel):
         super(TMModel, self).__init__(controller)
 
         self.load_config()
-        self.proxy = {}
-
+        self.clients = {}
         self._init_plugin()
 
     def _init_plugin(self):
-        try:
-            import xmlrpclib
-        except ImportError, ie:
-            raise Exception('Could not import xmlrpclib: %s' % (ie))
-
+        from virtaal.support.mosesclient import MosesClient
         for lang_pair, server in self.config.iteritems():
             pair = lang_pair.split("->")
-            if self.proxy.get(pair[0]) is None:
-                self.proxy[pair[0]] = {}
-            self.proxy[pair[0]].update({pair[1]: xmlrpclib.ServerProxy(server)})
+            if self.clients.get(pair[0]) is None:
+                self.clients[pair[0]] = {}
+            self.clients[pair[0]].update({pair[1]: MosesClient(server)})
 
 
     # METHODS #
     def query(self, tmcontroller, unit):
-        if self.source_lang in self.proxy and self.target_lang in self.proxy[self.source_lang]:
+        if self.source_lang in self.clients and self.target_lang in self.clients[self.source_lang]:
             query_str = unicode(unit.source) # cast in case of multistrings
             if query_str in self.cache:
                 self.emit('match-found', query_str, self.cache[query_str])
                 return
 
-            try:
-                translate = self.proxy[self.source_lang][self.target_lang].translate
-                target = translate({'text': query_str})['text']
-                if not isinstance(target, unicode):
-                    target = unicode(target, 'utf-8')
-                tm_match = [{
-                    'source': query_str,
-                    'target': target,
-                    #l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
-                    'tmsource': _('Moses'),
-                }]
-                self.cache[query_str] = tm_match
-                self.emit('match-found', query_str, tm_match)
-            except Exception, exc:
-                logging.debug('Moses TM query failed: %s' % (str(exc)))
+            client = self.clients[self.source_lang][self.target_lang]
+            client.translate_unit(query_str, self._handle_response)
+            return
+
+    def _handle_response(self, id, response):
+        if not response:
+            return
+        result = {
+            'source': id,
+            'target': response,
+            #l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+            'tmsource': _('Moses'),
+        }
+        self.cache[id] = [result]
+        self.emit('match-found', id, [result])

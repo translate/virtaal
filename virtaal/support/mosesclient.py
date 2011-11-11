@@ -26,6 +26,35 @@ from translate.lang import data
 
 from virtaal.support.httpclient import HTTPClient, HTTPRequest
 
+# Moses handles these characters as spaced out
+punc_symbols = ur'''.,?!:;'"“”‘’—)'''
+punc_tuples = [(c, u" %s" % c) for c in punc_symbols]
+
+
+def prepare(query_str):
+    query_str = query_str.lower()
+    for c, repl in punc_tuples:
+        query_str = query_str.replace(c, repl)
+    query_str = query_str.replace(u"(", u"( ")
+    # Newlines need special handling since Moses doesn't support it:
+    query_str = query_str.replace(u"\n", u" __::__ ")
+    return query_str
+
+def fixup(source, response):
+    source = data.forceunicode(source)
+    response = data.forceunicode(response)
+    from translate.filters.autocorrect import correct
+    tmp = correct(source, response)
+    if tmp:
+        response = tmp
+    response = response.replace(u" __::__ ", "\n")
+    # and again for the sake of \n\n:
+    response = response.replace(u"__::__ ", "\n")
+    response = response.replace(u"( ", u"(")
+    for c, repl in punc_tuples:
+        response = response.replace(repl, c)
+    return response
+
 
 class MosesClient(gobject.GObject, HTTPClient):
     """A client to communicate with a moses XML RPC servers"""
@@ -55,7 +84,7 @@ class MosesClient(gobject.GObject, HTTPClient):
             unit_source = unit_source.encode("utf-8")
 
         parameters = {
-                'text': unit_source,
+                'text': prepare(unit_source),
         }
         if self.multilang:
             parameters['system'] = target_language
@@ -96,4 +125,4 @@ class MosesClient(gobject.GObject, HTTPClient):
         suggestion = self._loads_safe(response)
         if not suggestion:
             return None
-        return data.forceunicode(suggestion['text'])
+        return fixup(id, data.forceunicode(suggestion['text']))

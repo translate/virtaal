@@ -80,9 +80,6 @@ class MosesClient(gobject.GObject, HTTPClient):
         self.multilang = state
 
     def translate_unit(self, unit_source, callback=None, target_language=None):
-        if isinstance(unit_source, unicode):
-            unit_source = unit_source.encode("utf-8")
-
         parameters = {
                 'text': prepare(unit_source),
         }

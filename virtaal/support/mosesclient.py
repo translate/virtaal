@@ -41,13 +41,27 @@ class MosesClient(gobject.GObject, HTTPClient):
         HTTPClient.__init__(self)
 
         self.url = url + '/RPC2'
+        self.multilang = False
 
-    def translate_unit(self, unit_source, callback=None):
+    def set_multilang(self, state=True):
+        """Enable multilingual support.
+
+        If this is set, the plugin will specify the 'system' parameter when
+        communicating with the Moses XML RPC server."""
+        self.multilang = state
+
+    def translate_unit(self, unit_source, callback=None, target_language=None):
         if isinstance(unit_source, unicode):
             unit_source = unit_source.encode("utf-8")
 
+        parameters = {
+                'text': unit_source,
+        }
+        if self.multilang:
+            parameters['system'] = target_language
+
         request_body = xmlrpclib.dumps(
-            ({'text': unit_source},), "translate"
+                (parameters,), "translate"
         )
         request = HTTPRequest(
             self.url, "POST", request_body,
@@ -67,6 +81,11 @@ class MosesClient(gobject.GObject, HTTPClient):
         """Does the loading of the XML-RPC response, but handles exceptions."""
         try:
             (data,), _fish = xmlrpclib.loads(response)
+        except xmlrpclib.Fault, exc:
+            if "Unknown translation system id" in exc.faultString:
+                self.set_multilang(False)
+                #TODO: consider redoing the request now that multilang is False
+                return None
         except Exception, exc:
             logging.debug('XML-RPC exception: %s' % (exc))
             return None

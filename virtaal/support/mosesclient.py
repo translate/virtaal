@@ -28,7 +28,7 @@ from virtaal.support.httpclient import HTTPClient, HTTPRequest
 
 
 class MosesClient(gobject.GObject, HTTPClient):
-    """CRUD operations for TM units and stores"""
+    """A client to communicate with a moses XML RPC servers"""
 
     __gtype_name__ = 'MosesClient'
     __gsignals__ = {

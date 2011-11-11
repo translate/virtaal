@@ -57,7 +57,7 @@ class TMModel(BaseTMModel):
         if self.source_lang in self.clients and self.target_lang in self.clients[self.source_lang]:
             query_str = unicode(unit.source) # cast in case of multistrings
             if query_str in self.cache:
-                self.emit('match-found', query_str, self.cache[query_str])
+                self.emit('match-found', query_str, [self.cache[query_str]])
                 return
 
             client = self.clients[self.source_lang][self.target_lang]
@@ -73,5 +73,6 @@ class TMModel(BaseTMModel):
             #l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
             'tmsource': _('Moses'),
         }
-        self.cache[id] = [result]
+
+        self.cache[id] = result
         self.emit('match-found', id, [result])

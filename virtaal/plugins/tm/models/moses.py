@@ -45,23 +45,31 @@ class TMModel(BaseTMModel):
 
     def _init_plugin(self):
         from virtaal.support.mosesclient import MosesClient
+        # let's map servers to clients to detect duplicates
+        client_map = {}
         for lang_pair, server in self.config.iteritems():
             pair = lang_pair.split("->")
             if self.clients.get(pair[0]) is None:
                 self.clients[pair[0]] = {}
-            self.clients[pair[0]].update({pair[1]: MosesClient(server)})
+            if server in client_map:
+                client = client_map[server]
+                client.set_multilang()
+            else:
+                client = MosesClient(server)
+                client_map[server] = client
+            self.clients[pair[0]].update({pair[1]: client})
 
 
     # METHODS #
     def query(self, tmcontroller, unit):
         if self.source_lang in self.clients and self.target_lang in self.clients[self.source_lang]:
-            query_str = unit.source
+            query_str = unicode(unit.source) # cast in case of multistrings
             if query_str in self.cache:
-                self.emit('match-found', query_str, self.cache[query_str])
+                self.emit('match-found', query_str, [self.cache[query_str]])
                 return
 
             client = self.clients[self.source_lang][self.target_lang]
-            client.translate_unit(query_str, self._handle_response)
+            client.translate_unit(query_str, self._handle_response, self.target_lang)
             return
 
     def _handle_response(self, id, response):
@@ -73,5 +81,6 @@ class TMModel(BaseTMModel):
             #l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
             'tmsource': _('Moses'),
         }
-        self.cache[id] = [result]
+
+        self.cache[id] = result
         self.emit('match-found', id, [result])

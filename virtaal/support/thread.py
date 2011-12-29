@@ -36,9 +36,12 @@ def run_in_thread(widget, target, args):
     # we make the given widget insensitive to avoid interaction that we can't
     # handle concurrently
     widget.set_sensitive(False)
+    import time
     while thread.isAlive():
         # let gtk process events while target is still running
         gtk.main_iteration(block=False)
+        # we sleep a bit to avoid excessive CPU use
+        time.sleep(0.03)
 
     widget.set_sensitive(True)
     if q.qsize():

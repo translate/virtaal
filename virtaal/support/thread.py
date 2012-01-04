@@ -40,7 +40,10 @@ def run_in_thread(widget, target, args):
     while thread.isAlive():
         # let gtk process events while target is still running
         gtk.main_iteration(block=False)
-        # we sleep a bit to avoid excessive CPU use
+        # Since we are not blocking, we're spinning, which isn't nice. We could
+        # set block=True, but then the window might stay insensitive when the
+        # thread finished, and only exit this loop when it gets another event
+        # (like a mouse move). So we sleep a bit to avoid excessive CPU use.
         time.sleep(0.03)
 
     widget.set_sensitive(True)

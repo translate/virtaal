@@ -18,7 +18,6 @@ import sys
 import os
 import pango
 from StringIO import StringIO
-import thread
 
 import IPython
 

@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import gobject
 import gtk
 import pango
 from gtk import gdk

@@ -19,10 +19,8 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gobject
-import logging
 
 from virtaal.common import GObjectWrapper
-from virtaal.modes  import modeclasses
 
 from basecontroller import BaseController
 
@@ -64,6 +62,7 @@ class ModeController(BaseController):
         self.modes = {}
         self.modenames = {}
 
+        from virtaal.modes  import modeclasses
         for modeclass in modeclasses:
             newmode = modeclass(self)
             self.modes[newmode.name] = newmode
@@ -104,6 +103,7 @@ class ModeController(BaseController):
         self._ignore_mode_change = False
         self.view.show()
         self.current_mode.selected()
+        import logging
         logging.info('Mode selected: %s' % (self.current_mode.name))
         self.emit('mode-selected', self.current_mode)
 

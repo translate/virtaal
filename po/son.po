@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-30 22:41+0200\n"
+"PO-Revision-Date: 2011-09-26 23:06+0200\n"
 "Last-Translator: Mohomodou  <mh@bollag-areal.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: son\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: son\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.1.5\n"
+"X-Generator: Pootle 2.1.6\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -802,7 +802,7 @@ msgstr "Tuku maaɲey"
 
 #: ../virtaal/controllers/placeablescontroller.py:101
 msgid "Paths referring to file locations"
-msgstr "Fondawey tuku gorodogey se"
+msgstr "Fondawey tuku gorodogey še"
 
 #: ../virtaal/controllers/placeablescontroller.py:104
 msgid "Placeholders (printf)"
@@ -886,10 +886,12 @@ msgstr "\"alt\" alhaaley"
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Doodiikey \"alt\" alhaaley se (sanda HTML ra)"
 
+# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeholders (Drupal)"
 msgstr "Doo-diikey (Drupal)"
 
+# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders in Drupal strings"
 msgstr "Doo-diikey Drupal tenjirey ra"
@@ -957,6 +959,7 @@ msgstr "Berante"
 msgid "Reviewed"
 msgstr "Gunante"
 
+# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1074,6 +1077,7 @@ msgstr "Tontoni..."
 msgid "Add \"%s\" to Dictionary"
 msgstr "\"%s\" tonton kamasu ga"
 
+# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 msgid "Languages"
 msgstr "Šenney"
@@ -1314,7 +1318,7 @@ msgstr "Maana aššiley suuba"
 
 #: ../virtaal/plugins/terminology/termview.py:167
 msgid "Select the sources of terminology suggestions"
-msgstr "Ašsiley suuba ngi maana honnandiyaney se"
+msgstr "Ašsiley suuba ngi maana honnandiyaney še"
 
 #: ../virtaal/plugins/tm/__init__.py:27
 msgid "Translation Memory"
@@ -1405,8 +1409,7 @@ msgstr "Moses"
 #: ../virtaal/plugins/tm/models/moses.py:34
 msgid "Unreviewed machine translations from a Moses server"
 msgstr ""
-"Maršin berandiyaney kaŋyaŋ mana gunandi boryo ka hun ka hun Moses feršikaw "
-"ra"
+"Maršin berandiyaney kaŋyaŋ mana gunandi boryo ka hun ka hun Moses feršikaw ra"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
 #: ../virtaal/plugins/tm/models/opentran.py:77
@@ -1458,11 +1461,11 @@ msgstr "Ctrl+%(number_key)d"
 #. such as local tm, open-tran.eu, the current file, etc.
 #: ../virtaal/plugins/tm/tmview.py:176
 msgid "Select sources of Translation Memory"
-msgstr "Aššilyaŋ suuba berandiyan lakkal se"
+msgstr "Aššilyaŋ suuba berandiyan lakkal še"
 
 #: ../virtaal/plugins/tm/tmview.py:177
 msgid "Select the sources that should be queried for translation memory"
-msgstr "Aššiley suuba kaŋ ga hima ka hãandi berandiyan lakkaloo se"
+msgstr "Aššiley suuba kaŋ ga hima ka hãandi berandiyan lakkaloo še"
 
 #. l10n: match quality column label
 #: ../virtaal/plugins/tm/tmwidgets.py:64
@@ -1480,7 +1483,6 @@ msgstr "BL aššil"
 #. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
 #: ../virtaal/plugins/tm/tmwidgets.py:138
 #, python-format
-#, python-format,
 msgid "%(match_quality)s%%"
 msgstr "%(match_quality)s%%"
 
@@ -1561,7 +1563,7 @@ msgstr "N_aaruyan:"
 
 #: ../virtaal/views/modeview.py:108 ../virtaal/views/propertiesview.py:134
 msgid "Save the file for up-to-date information"
-msgstr "Tukoo gaabu alhabar taagante se"
+msgstr "Tukoo gaabu alhabar taagante še"
 
 # 81%
 #: ../virtaal/views/propertiesview.py:32
@@ -1644,7 +1646,7 @@ msgstr "Copyright © 2007-2010 Zuza Software Foundation"
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
 #: ../virtaal/views/widgets/aboutdialog.py:37
 msgid "Virtaal is a program for doing translation."
-msgstr "Virtaal ti porogaram kaŋ tee berandiyan goy se."
+msgstr "Virtaal ti porogaram kaŋ tee berandiyan goy še."
 
 #: ../virtaal/views/widgets/aboutdialog.py:38
 msgid ""
@@ -1653,7 +1655,7 @@ msgid ""
 "Aided Translation (CAT)."
 msgstr ""
 "Anniyaa jinaa ti goyjinay berandiyan (šenni nungu kayandiyan wala l10n), "
-"amma ir ga boonay k'a tee goyjinay maršin-faabante berandiyan dumi kul se."
+"amma ir ga boonay k'a tee goyjinay maršin-faabante berandiyan dumi kul še."
 
 #: ../virtaal/views/widgets/aboutdialog.py:52
 msgid "Virtaal website"
@@ -1665,7 +1667,7 @@ msgstr "Ir g'ir nookey foo nda goy:"
 
 #: ../virtaal/views/widgets/aboutdialog.py:66
 msgid "The International Development Research Centre"
-msgstr "Laamagame cinari ceeci gam (IDRC)"
+msgstr "Laamagame cinari ceeciyan gam (IDRC)"
 
 #: ../virtaal/views/widgets/aboutdialog.py:68
 msgid "Mozilla Corporation"
@@ -1878,7 +1880,7 @@ msgstr "ZAARIHANTUM"
 
 #: ../bin/virtaal:91
 msgid "turn on logging, storing the result to the supplied filename."
-msgstr "Zaarihantum tunandi, ka hantumoo jišĩ tukumaa cebantaa ra."
+msgstr "Zaarihantum tunandi, ka hantumoo jiši tukumaa cebantaa ra."
 
 #: ../bin/virtaal:93
 msgid "CONFIG"
@@ -1898,7 +1900,7 @@ msgstr "ALHAALI"
 
 #: ../bin/virtaal:106
 msgid "perform profiling, storing the result to the supplied filename."
-msgstr "Alhaali tee, k'a jišĩ tukumaa cebantaa ra."
+msgstr "Alhaali tee, k'a jiši tukumaa cebantaa ra."
 
 #: ../bin/virtaal:129
 msgid "Could not open log file '%(filename)s'"

@@ -344,7 +344,6 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid "<u>Manual</u>"
 msgstr "<u>Handbuch</u>"
 
-# 75%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
@@ -355,7 +354,6 @@ msgstr "http://translate.sourceforge.net/wiki/guide/start"
 msgid "<u>Localization Guide</u>"
 msgstr "<u>Lokalisierungshilfe</u>"
 
-# 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:37
@@ -423,7 +421,6 @@ msgstr ""
 "Um die aktuelle Übersetzung als unvollständig zu kennzeichnen <Ctrl+Shift"
 "+Eingabe> drücken."
 
-# 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr "Um die aktuelle Übersetzung als fuzzy zu kennzeichnen <Alt+U> drücken."
@@ -441,12 +438,10 @@ msgstr ""
 "Mit Strg+BildAuf oder Strg+BildAb bewegt man sich innerhalb der Übersetzung "
 "abschnittsweise nach oben oder unten."
 
-# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
 msgstr "Fuzzy"
 
-# 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
 msgid "Untranslated"
@@ -472,7 +467,6 @@ msgstr "Klammern"
 msgid "Compendium conflict"
 msgstr "Kompendiumkonflikt"
 
-# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
 msgstr "Angaben zum Übersetzer"
@@ -534,7 +528,6 @@ msgstr "Wörter müssen übersetzt werden"
 msgid "Newlines"
 msgstr "Zeilenschaltungen"
 
-# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
 msgstr "Pluralanzahl"
@@ -622,7 +615,6 @@ msgstr "Gültige Zeichen"
 msgid "Placeholders"
 msgstr "Platzhalter"
 
-# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
 #, fuzzy
 msgid "XML tags"
@@ -736,7 +728,6 @@ msgstr "Es können nur Gettext PO-Dateien exportiert werden"
 msgid "Export"
 msgstr "Exportieren"
 
-# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, python-format
 msgid ""
@@ -752,7 +743,6 @@ msgstr ""
 "\n"
 "Versuchen Sie, die Datei an einem anderen Speicherplatz zu speichern."
 
-# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, fuzzy, python-format
 msgid ""
@@ -899,13 +889,11 @@ msgstr "\"alt\" - Attribute"
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Platzierbares Element für \"alt\" - Attribute (wie in HTML vorhanden)"
 
-# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 #, fuzzy
 msgid "Placeholders (Drupal)"
 msgstr "Platzhalter (Java)"
 
-# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 #, fuzzy
 msgid "Placeholders in Drupal strings"
@@ -974,7 +962,6 @@ msgstr "Übersetzt"
 msgid "Reviewed"
 msgstr "Geprüft"
 
-# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1583,7 +1570,6 @@ msgstr "N_avigation:"
 msgid "Save the file for up-to-date information"
 msgstr "Speichern Sie die Datei um aktuelle Informationen zu erhalten"
 
-# 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "Nicht übersetzt:"
@@ -1600,7 +1586,6 @@ msgstr "Abgelehnt:"
 msgid "Needs review:"
 msgstr "Prüfung notwendig:"
 
-# 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "Übersetzt:"
@@ -1623,7 +1608,6 @@ msgstr "(100%)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f%%)"
 
-# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192

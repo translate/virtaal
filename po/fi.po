@@ -339,7 +339,6 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid "<u>Manual</u>"
 msgstr "<u>Käyttöohje</u>"
 
-# 75%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
@@ -350,7 +349,6 @@ msgstr "http://translate.sourceforge.net/wiki/guide/start"
 msgid "<u>Localization Guide</u>"
 msgstr "<u>Kotoistusohje</u>"
 
-# 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:37
@@ -414,7 +412,6 @@ msgstr ""
 "Nykyisen käännöksen voi merkitä keskeneräiseksi painamalla "
 "<Ctlr+Shift+Enter>."
 
-# 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr "Nykyisen käännöksen voi merkitä valmiiksi painamalla <Ctrl+Enter>."
@@ -432,12 +429,10 @@ msgstr ""
 "Näppäinyhdistelmillä Ctrl+PgUp tai Ctrl+PgDown voit liikkua isommilla "
 "askelilla käännösten välillä."
 
-# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
 msgstr "Sumea"
 
-# 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
 msgid "Untranslated"
@@ -463,7 +458,6 @@ msgstr "Sulkeet"
 msgid "Compendium conflict"
 msgstr "PO Compendium -ristiriita"
 
-# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
 msgstr "Kääntäjien kunniataulu"
@@ -525,7 +519,6 @@ msgstr "Sana joka on käännettävä"
 msgid "Newlines"
 msgstr "Rivinvaihto"
 
-# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
 msgstr "Monikoiden määrä"
@@ -613,7 +606,6 @@ msgstr "Merkistövirhe"
 msgid "Placeholders"
 msgstr "Paikkamerkit"
 
-# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
 msgid "XML tags"
 msgstr "XML-tagit"
@@ -726,7 +718,6 @@ msgstr "Vain Gettext PO-tiedostojen vienti on mahdollista"
 msgid "Export"
 msgstr "Tiedoston vienti"
 
-# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, python-format
 msgid ""
@@ -742,7 +733,6 @@ msgstr ""
 "\n"
 "Yritä tallentaa johonkin toiseen paikkaan."
 
-# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, python-format
 msgid ""
@@ -888,12 +878,10 @@ msgstr "\"alt\"-attribuutit"
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Sijoite \"alt\"-attribuuteille (joita esim. HTML sisältää)"
 
-# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeholders (Drupal)"
 msgstr "Paikkamerkit (Drupal)"
 
-# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders in Drupal strings"
 msgstr "Drupal-merkkijonojen paikkamerkit"
@@ -961,7 +949,6 @@ msgstr "Käännetty"
 msgid "Reviewed"
 msgstr "Tarkastettu"
 
-# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1079,7 +1066,6 @@ msgstr "Lisää..."
 msgid "Add \"%s\" to Dictionary"
 msgstr "Lisää \"%s\" sanakirjaan"
 
-# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 msgid "Languages"
 msgstr "Kielet"
@@ -1565,7 +1551,6 @@ msgstr "S_elailu:"
 msgid "Save the file for up-to-date information"
 msgstr "Tallenna tiedosto nähdäksesi ajantasaiset tiedot"
 
-# 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "Kääntämättömiä:"
@@ -1582,7 +1567,6 @@ msgstr "Hylättyjä:"
 msgid "Needs review:"
 msgstr "Tarkastettavia:"
 
-# 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "Käännettyjä:"
@@ -1605,7 +1589,6 @@ msgstr "(100 %)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f%%)"
 
-# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192

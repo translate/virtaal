@@ -336,7 +336,6 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid "<u>Manual</u>"
 msgstr "<u>מדריך מקיף</u>"
 
-# 75%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
@@ -347,7 +346,6 @@ msgstr "http://translate.sourceforge.net/wiki/guide/start"
 msgid "<u>Localization Guide</u>"
 msgstr "<u>מדריך לתרגומים</u>"
 
-# 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:37
@@ -408,7 +406,6 @@ msgid ""
 "+Enter>."
 msgstr "כדי לסמן את התרגום הנוכחי כחלקי, פשוט יש ללחוץ על <Ctrl+Shift+Enter>."
 
-# 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr "כדי לסמן את התרגום הנוכחי כמושלם, פשוט יש ללחוץ <Ctrl+Enter>."
@@ -423,12 +420,10 @@ msgid ""
 msgstr ""
 "ניתן להשתמש ב־Ctrl+PgUp או Ctrl+PgDown כדי לפסוע בצעדים גדולים בין התרגומים."
 
-# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
 msgstr "מעורפל"
 
-# 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
 msgid "Untranslated"
@@ -454,7 +449,6 @@ msgstr "סוגריים מרובעים"
 msgid "Compendium conflict"
 msgstr "התנגשות תקציר"
 
-# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
 msgstr "ירון שהרבני <sh.yaron@gmail.com>"
@@ -516,7 +510,6 @@ msgstr "מילים שחובה לתרגם"
 msgid "Newlines"
 msgstr "שורות חדשות"
 
-# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
 msgstr "מספר צורות הרבים"
@@ -604,7 +597,6 @@ msgstr "תווים תקינים"
 msgid "Placeholders"
 msgstr "ממלאי מקום"
 
-# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
 msgid "XML tags"
 msgstr "תגיות XML"
@@ -715,7 +707,6 @@ msgstr "ניתן לייצא קובצי PO של Gettext בלבד"
 msgid "Export"
 msgstr "יצוא"
 
-# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, python-format
 msgid ""
@@ -731,7 +722,6 @@ msgstr ""
 "\n"
 "נא לנסות לשמור למיקום אחר."
 
-# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, python-format
 msgid ""
@@ -872,12 +862,10 @@ msgstr "מאפיינים ב־\"alt\""
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "קבועים במאפייני \"alt\" (כמו שיש ב־HTML)"
 
-# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeholders (Drupal)"
 msgstr "ממלאי מקום (דרופל)"
 
-# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders in Drupal strings"
 msgstr "ממלאי מקום במחרוזות דרופל"
@@ -945,7 +933,6 @@ msgstr "מתורגמת"
 msgid "Reviewed"
 msgstr "נסקרה"
 
-# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1063,7 +1050,6 @@ msgstr "עוד..."
 msgid "Add \"%s\" to Dictionary"
 msgstr "הוספת \"%s\" למילון"
 
-# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 msgid "Languages"
 msgstr "שפות"
@@ -1546,7 +1532,6 @@ msgstr "_ניווט:"
 msgid "Save the file for up-to-date information"
 msgstr "יש לשמור את הקובץ כדי לקבל נתונים עדכניים"
 
-# 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "בלתי מתורגמות:"
@@ -1563,7 +1548,6 @@ msgstr "נדחו:"
 msgid "Needs review:"
 msgstr "זקוקות לסקירה:"
 
-# 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "מתורגמות:"
@@ -1586,7 +1570,6 @@ msgstr "(100%)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f%%)"
 
-# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192

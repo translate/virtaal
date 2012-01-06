@@ -346,7 +346,6 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid "<u>Manual</u>"
 msgstr "<u>Handbók</u>"
 
-# 75%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
@@ -357,7 +356,6 @@ msgstr "http://translate.sourceforge.net/wiki/guide/start"
 msgid "<u>Localization Guide</u>"
 msgstr "<u>Staðfærsluleiðbeiningar</u>"
 
-# 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:37
@@ -423,7 +421,6 @@ msgstr ""
 "Til að merkja núverandi þýðingu sem ekki lokið, ýttu þá á "
 "<Ctrl+Shift+Enter>."
 
-# 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr "Til að merkja núverandi þýðingu sem lokið, ýttu þá á <Ctrl+Enter>."
@@ -437,12 +434,10 @@ msgid ""
 "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
 msgstr "Notaður Ctrl+PgUp eða Ctrl+PgDown til að hoppa langt á milli þýðingar."
 
-# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
 msgstr "Óskýr"
 
-# 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
 msgid "Untranslated"
@@ -468,7 +463,6 @@ msgstr "Hornklofar"
 msgid "Compendium conflict"
 msgstr "Yfirlit yfir árekstra"
 
-# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
 msgstr "Kristján Bjarni Guðmundsson"
@@ -530,7 +524,6 @@ msgstr "Nauðsyn að þýða orð"
 msgid "Newlines"
 msgstr "Nýjar línur"
 
-# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
 msgstr "Fjöldi fleirtala"
@@ -618,7 +611,6 @@ msgstr "Gildir stafir"
 msgid "Placeholders"
 msgstr "Staðgenglar"
 
-# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
 msgid "XML tags"
 msgstr "XML merki"
@@ -731,7 +723,6 @@ msgstr "Aðeins er hægt að flytja út Gettext PO skrár"
 msgid "Export"
 msgstr "Flytja út"
 
-# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, python-format
 msgid ""
@@ -747,7 +738,6 @@ msgstr ""
 "\n"
 "Reyndu að vista á aðra staðsetningu."
 
-# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, python-format
 msgid ""
@@ -888,12 +878,10 @@ msgstr "\"alt\" Eiginleikar"
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Breyta fyrir \"alt\" eiginleikar (eins og er í HTML)"
 
-# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeholders (Drupal)"
 msgstr "Breytur (Drupal)"
 
-# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders in Drupal strings"
 msgstr "Breytur í Drupal strengjum"
@@ -961,7 +949,6 @@ msgstr "Þýtt"
 msgid "Reviewed"
 msgstr "Yfirfarið"
 
-# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1079,7 +1066,6 @@ msgstr "Fleiri..."
 msgid "Add \"%s\" to Dictionary"
 msgstr "Bæta \"%s\" við í orðabók"
 
-# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 msgid "Languages"
 msgstr "Tungumál"
@@ -1564,7 +1550,6 @@ msgstr "_Yfirlit:"
 msgid "Save the file for up-to-date information"
 msgstr "Vistaðu skránna til að nálgast uppfærðar upplýsingar"
 
-# 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "Óþýtt:"
@@ -1581,7 +1566,6 @@ msgstr "Hafnað:"
 msgid "Needs review:"
 msgstr "Þarfnast yfirferðar:"
 
-# 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "Búið að þýða:"
@@ -1604,7 +1588,6 @@ msgstr "(100%)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f%%)"
 
-# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192

@@ -424,7 +424,6 @@ msgstr ""
 "Ukuze uphawule ukuhunyushwa kwamanje njengokungaqediwe, vele uchofize "
 "i-<Ctrl+Shift+Enter>"
 
-# 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr ""
@@ -471,7 +470,6 @@ msgstr "Abakaki"
 msgid "Compendium conflict"
 msgstr "Ingxabano ye-compendium"
 
-# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
 msgstr "Friedel Wolff, Sedric Motha"
@@ -533,7 +531,6 @@ msgstr "Kumele kuhunyushe amagama"
 msgid "Newlines"
 msgstr "Amalayini amasha"
 
-# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
 msgstr "Inombolo yobuningi"
@@ -621,7 +618,6 @@ msgstr "Izinhlamvu ezivumelekile"
 msgid "Placeholders"
 msgstr "Izibambi ndawo"
 
-# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
 msgid "XML tags"
 msgstr "Amamaki we-XML"
@@ -734,7 +730,6 @@ msgstr "Ingahambisa kuphela amafayela we-Gettext PO"
 msgid "Export"
 msgstr "Hambisa"
 
-# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, python-format
 msgid ""
@@ -750,7 +745,6 @@ msgstr ""
 "\n"
 "Zama ukugcina ifayela endaweni ehlukile."
 
-# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, python-format
 msgid ""
@@ -895,12 +889,10 @@ msgstr "Izimo ze-\"alt\""
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Okubekekayo kwe-\"alt\" (njengoba kutholwe ku-HTML)"
 
-# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeholders (Drupal)"
 msgstr "Izibambi ndawo (i-Dupral)"
 
-# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders in Drupal strings"
 msgstr "Izibambi ndawo kuchungechunge lwe-Dupral"
@@ -1590,7 +1582,6 @@ msgstr "Okunqatshiwe:"
 msgid "Needs review:"
 msgstr "Kudinga ukubuyekezwa:"
 
-# 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "Okuhunyushiwe:"
@@ -1613,7 +1604,6 @@ msgstr "(100%)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f%%)"
 
-# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192
@@ -1646,7 +1636,6 @@ msgstr "Chofoze ukuze uye kwisifunda esithize kumsebenzi"
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr "Iya phambili emsebenzini (Ctrl+Enter)"
 
-# 95%
 #: ../virtaal/views/widgets/aboutdialog.py:34
 msgid "Copyright © 2007-2010 Zuza Software Foundation"
 msgstr "Ilungelo lomqambi © 2007-2010 Zuza Software Foundation"

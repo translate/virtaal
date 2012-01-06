@@ -285,7 +285,6 @@ msgstr "웹에서 검색"
 msgid "Add URL"
 msgstr "URL 추가"
 
-# 75%
 #: ../share/virtaal/virtaal.glade.h:65
 msgid "URL:"
 msgstr "URL:"
@@ -414,7 +413,6 @@ msgid ""
 "+Enter>."
 msgstr ""
 
-# 75%
 #: ../virtaal/tips.py:33
 #, fuzzy
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
@@ -430,7 +428,6 @@ msgid ""
 msgstr ""
 "Ctrl+PgUp 과 Ctrl+PgDown 을 이용하면 한번에 많은 페이지를 이동할 수 있습니다."
 
-# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 #, fuzzy
 msgid "Fuzzy"
@@ -461,7 +458,6 @@ msgstr ""
 msgid "Compendium conflict"
 msgstr ""
 
-# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 #, fuzzy
 msgid "Translator credits"
@@ -524,7 +520,6 @@ msgstr ""
 msgid "Newlines"
 msgstr ""
 
-# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 #, fuzzy
 msgid "Number of plurals"
@@ -613,7 +608,6 @@ msgstr ""
 msgid "Placeholders"
 msgstr ""
 
-# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
 #, fuzzy
 msgid "XML tags"
@@ -727,7 +721,6 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, fuzzy, python-format
 msgid ""
@@ -743,7 +736,6 @@ msgstr ""
 "\n"
 "다른 파일로 다시 시도하십시오."
 
-# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, fuzzy, python-format
 msgid ""
@@ -826,13 +818,11 @@ msgstr "자리표시자 (Java)"
 msgid "Placeholders in Java strings"
 msgstr "Java 문자열의 자리표시자"
 
-# 78%
 #: ../virtaal/controllers/placeablescontroller.py:116
 #, fuzzy
 msgid "Placeholders (Qt)"
 msgstr "자리표시자 (Java)"
 
-# 85%
 #: ../virtaal/controllers/placeablescontroller.py:117
 #, fuzzy
 msgid "Placeholders in Qt strings"
@@ -888,13 +878,11 @@ msgstr "\"alt\" 속성"
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "HTML의 속성인 \"alt\" 을 위한 고정 요소"
 
-# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 #, fuzzy
 msgid "Placeholders (Drupal)"
 msgstr "자리표시자 (Java)"
 
-# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 #, fuzzy
 msgid "Placeholders in Drupal strings"
@@ -1080,7 +1068,6 @@ msgstr ""
 msgid "Add \"%s\" to Dictionary"
 msgstr ""
 
-# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 #, fuzzy
 msgid "Languages"
@@ -1139,7 +1126,6 @@ msgstr "Open-Tran.eu"
 msgid "Name"
 msgstr "이름"
 
-# 75%
 #: ../virtaal/plugins/lookup/models/weblookup.py:186
 #, fuzzy
 msgid "URL"
@@ -1225,7 +1211,6 @@ msgstr ""
 msgid "Selected localization terminology"
 msgstr ""
 
-# 81%
 #: ../virtaal/plugins/terminology/models/localfile/__init__.py:42
 #, fuzzy
 msgid "Local Files"
@@ -1348,7 +1333,6 @@ msgstr "자유/오픈 소스 소프트웨어의 이전 번역"
 msgid "Current File"
 msgstr ""
 
-# 84%
 #: ../virtaal/plugins/tm/models/currentfile.py:33
 #, fuzzy
 msgid "Translated units from the currently open file"
@@ -1422,7 +1406,6 @@ msgstr ""
 msgid "OpenTran"
 msgstr "OpenTran"
 
-# 92%
 #: ../virtaal/plugins/tm/models/remotetm.py:30
 #, fuzzy
 msgid "Remote Server"
@@ -1669,7 +1652,6 @@ msgstr "Virtaal 웹사이트"
 msgid "We thank our donors:"
 msgstr "후원해주셔서 감사합니다."
 
-# 82%
 #: ../virtaal/views/widgets/aboutdialog.py:66
 #, fuzzy
 msgid "The International Development Research Centre"
@@ -1711,7 +1693,6 @@ msgstr "가능"
 msgid "Configure..."
 msgstr "설정..."
 
-# 94%
 #: ../virtaal/views/widgets/welcomescreen.py:79
 #, fuzzy
 msgid "Translation memory"
@@ -1737,7 +1718,6 @@ msgstr ""
 msgid "Many plugins and options for customization"
 msgstr ""
 
-# 82%
 #: ../virtaal/models/storemodel.py:142
 #, fuzzy
 msgid "The file does not exist."

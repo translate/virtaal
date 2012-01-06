@@ -342,7 +342,6 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid "<u>Manual</u>"
 msgstr "<u>Дакументацыя</u>"
 
-# 75%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
@@ -353,7 +352,6 @@ msgstr "http://translate.sourceforge.net/wiki/guide/start"
 msgid "<u>Localization Guide</u>"
 msgstr "<u>Інструкцыі лакалізацыі</u>"
 
-# 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:37
@@ -418,7 +416,6 @@ msgid ""
 msgstr ""
 "Каб пазначыць, што дзейны пераклад няпоўны, націсніце <Ctrl+Shift+Enter>."
 
-# 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr "Каб пазначыць, што дзейны пераклад поўны, націсніце <Alt+Я>."
@@ -434,12 +431,10 @@ msgstr ""
 "Каб рабіць вялікія пераходы паміж радкамі, націскайце Ctrl+PgUp або "
 "Ctrl+PgDown."
 
-# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
 msgstr "Няпэўна"
 
-# 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
 msgid "Untranslated"
@@ -465,7 +460,6 @@ msgstr "Дужкі"
 msgid "Compendium conflict"
 msgstr "Адрозненне ад кампендыюма"
 
-# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
 msgstr "Пералік перакладчыкаў"
@@ -527,7 +521,6 @@ msgstr ""
 msgid "Newlines"
 msgstr "Знакі новага радка"
 
-# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
 msgstr "Колькасць формаў множнага ліку"
@@ -615,7 +608,6 @@ msgstr "Магчымыя знакі"
 msgid "Placeholders"
 msgstr "Маркеры"
 
-# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
 msgid "XML tags"
 msgstr "XML-тэгі"
@@ -726,7 +718,6 @@ msgstr "Можна экспартаваць толькі файлы ў фарм�
 msgid "Export"
 msgstr "Экспартаваць"
 
-# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, python-format
 msgid ""
@@ -742,7 +733,6 @@ msgstr ""
 "\n"
 "Паспрабуйце захаваць у іншым месцы."
 
-# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, python-format
 msgid ""
@@ -885,12 +875,10 @@ msgstr "\"alt\"-атрыбуты"
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Падстанова для \"alt\"-атрыбутаў (як у HTML-кодзе)"
 
-# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeholders (Drupal)"
 msgstr "Маркеры (Drupal)"
 
-# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders in Drupal strings"
 msgstr "Маркеры ў ланцужках Drupal"
@@ -958,7 +946,6 @@ msgstr "Перакладзена"
 msgid "Reviewed"
 msgstr "Праверана"
 
-# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1076,7 +1063,6 @@ msgstr "Больш..."
 msgid "Add \"%s\" to Dictionary"
 msgstr "Дадаць \"%s\" у слоўнік"
 
-# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 msgid "Languages"
 msgstr "Мовы"
@@ -1560,7 +1546,6 @@ msgstr "Н_авігацыя:"
 msgid "Save the file for up-to-date information"
 msgstr ""
 
-# 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "Без перакладу:"
@@ -1577,7 +1562,6 @@ msgstr "Адкінута:"
 msgid "Needs review:"
 msgstr "Вымагае праверкі:"
 
-# 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "Перакладзена:"
@@ -1600,7 +1584,6 @@ msgstr "(100%)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f%%)"
 
-# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192

@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5.3-rc1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-13 07:14+0200\n"
-"Last-Translator: Yaron <sh.yaron@gmail.com>\n"
+"PO-Revision-Date: 2011-11-27 14:40+0200\n"
+"Last-Translator: amire80 <amir.aharoni@mail.huji.ac.il>\n"
 "Language-Team: Gezer (Hebrew)\n"
-"Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: he\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.1.5\n"
+"X-Generator: Pootle 2.1.6\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -125,7 +125,7 @@ msgid ""
 "If you are translating from English to French then English would be your "
 "original or source language."
 msgstr ""
-"ה<b>מקור</b> היא השפה ממנה מתבצע התרגום, נקראת גם שפת המקור.\n"
+"ה<b>מקור</b> היא השפה שממנה מתבצע התרגום, נקראת גם שפת המקור.\n"
 "\n"
 "אם התרגום נעשה מאנגלית לצרפתית אז האנגלית היא שפת המקור."
 
@@ -141,7 +141,7 @@ msgid ""
 "If you are translating from English to French then French would be your "
 "translation or target language."
 msgstr ""
-"ה<b>תרגום</b> היא השפה אליה מתבצע התרגום, נקראת גם שפת היעד.\n"
+"ה<b>תרגום</b> היא השפה שאליה מתבצע התרגום, נקראת גם שפת היעד.\n"
 "\n"
 "אם התרגום נעשה מאנגלית לצרפתית אז הצרפתית היא שפת התרגום או היעד שלך."
 
@@ -244,7 +244,7 @@ msgstr "כללי"
 msgid ""
 "Placeables are special parts of the text that can be automatically "
 "highlighted and easily inserted into the translation."
-msgstr "קבועים הנם חלקים מיוחדים בטקסט שניתן לסמן ולהוסיף לתרגום בקלות."
+msgstr "קבועים הם חלקים מיוחדים בטקסט שניתן לסמן ולהוסיף לתרגום בקלות."
 
 #: ../share/virtaal/virtaal.glade.h:56
 msgid "Placeables"
@@ -411,7 +411,7 @@ msgstr "כדי לסמן את התרגום הנוכחי כחלקי, פשוט יש
 # 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
-msgstr "כדי לסמן את התרגום הנוכחי כמעורפל, פשוט יש ללחוץ <Ctrl+Enter>."
+msgstr "כדי לסמן את התרגום הנוכחי כמושלם, פשוט יש ללחוץ <Ctrl+Enter>."
 
 #: ../virtaal/tips.py:34
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
@@ -486,7 +486,7 @@ msgstr "רווח סגירה"
 
 #: ../virtaal/controllers/checkscontroller.py:43
 msgid "Escapes"
-msgstr "סימני חריגה"
+msgstr "סימני חילוף"
 
 #: ../virtaal/controllers/checkscontroller.py:44
 msgid "File paths"
@@ -537,7 +537,7 @@ msgstr "Options"
 
 #: ../virtaal/controllers/checkscontroller.py:55
 msgid "printf()"
-msgstr "printf()"
+msgstr "printf()‎"
 
 #: ../virtaal/controllers/checkscontroller.py:56
 msgid "Punctuation spacing"
@@ -598,7 +598,7 @@ msgstr "כתובות"
 
 #: ../virtaal/controllers/checkscontroller.py:70
 msgid "Valid characters"
-msgstr "תווים תקניים"
+msgstr "תווים תקינים"
 
 #: ../virtaal/controllers/checkscontroller.py:71
 msgid "Placeholders"
@@ -850,11 +850,11 @@ msgstr "הפניות לישויות כגון: ‎&amp;‎ ו־‎&#169;‎"
 
 #: ../virtaal/controllers/placeablescontroller.py:138
 msgid "XML Tags"
-msgstr "תגיות XML"
+msgstr "תגי XML"
 
 #: ../virtaal/controllers/placeablescontroller.py:139
 msgid "XML tags, such as <b> and </i>"
-msgstr "תגיות XML כגון: <b> and </i>"
+msgstr "תגי XML כגון: <b> and </i>"
 
 #: ../virtaal/controllers/placeablescontroller.py:153
 msgid "Spaces"
@@ -1320,7 +1320,7 @@ msgstr "Amagama"
 #: ../virtaal/plugins/tm/models/amagama.py:29
 #: ../virtaal/plugins/tm/models/opentran.py:38
 msgid "Previous translations for Free and Open Source Software"
-msgstr "תרגומים קודמים למיזמי תכנה חופשית וקוד פתוח תוכנה"
+msgstr "תרגומים קודמים למיזמי תכנה חופשית ותכנת קוד פתוח"
 
 #: ../virtaal/plugins/tm/models/currentfile.py:32
 msgid "Current File"
@@ -1339,7 +1339,7 @@ msgstr "קובץ זה"
 #. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
 #: ../virtaal/plugins/tm/models/google_translate.py:117
 msgid "Google Translate"
-msgstr "Google Translate"
+msgstr "תרגום Google"
 
 #: ../virtaal/plugins/tm/models/google_translate.py:118
 msgid "Unreviewed machine translations from Google's translation service"
@@ -1621,7 +1621,7 @@ msgstr "העברת שלב אחד קדימה ברצף העבודה (Ctrl+Shift+En
 
 #: ../virtaal/views/widgets/aboutdialog.py:34
 msgid "Copyright © 2007-2010 Zuza Software Foundation"
-msgstr "כל הזכויות שמורות © 2010-2007 Zuza Software Foundation"
+msgstr "כל הזכויות שמורות © 2007–2010 Zuza Software Foundation"
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
@@ -1648,7 +1648,7 @@ msgstr "אנו מודים לתורמים שלנו:"
 
 #: ../virtaal/views/widgets/aboutdialog.py:66
 msgid "The International Development Research Centre"
-msgstr "מרכז מחקר הפיתוח הבינלאומי"
+msgstr "מרכז מחקר הפיתוח הבין־לאומי"
 
 #: ../virtaal/views/widgets/aboutdialog.py:68
 msgid "Mozilla Corporation"
@@ -1860,6 +1860,7 @@ msgid "LOG"
 msgstr "LOG"
 
 #: ../bin/virtaal:91
+#, fuzzy
 msgid "turn on logging, storing the result to the supplied filename."
 msgstr "turn on logging, storing the result to the supplied filename."
 
@@ -1868,10 +1869,12 @@ msgid "CONFIG"
 msgstr "CONFIG"
 
 #: ../bin/virtaal:94
+#, fuzzy
 msgid "use the configuration file given by the supplied filename."
 msgstr "use the configuration file given by the supplied filename."
 
 #: ../bin/virtaal:97
+#, fuzzy
 msgid "enable debugging features"
 msgstr "enable debugging features"
 

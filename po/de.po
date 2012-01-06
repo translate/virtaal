@@ -2,7 +2,6 @@
 # Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # Sabine Emmy Eller <s.eller@voxhumanitatis.org>, 2009
- # JoTo <toellner@arzt-und-praxis.de>, 2010
 #: ../virtaal/support/native_widgets.py:50
 #: ../virtaal/support/native_widgets.py:51
 msgid ""
@@ -10,15 +9,15 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.4\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-27 15:58+0200\n"
-"Last-Translator: JoTo <toellner@arzt-und-praxis.de>\n"
+"PO-Revision-Date: 2011-11-30 21:15+0200\n"
+"Last-Translator: creator79 <creator79@googlemail.com>\n"
 "Language-Team: Vox Humanitatis - Deutsch\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.1.5\n"
+"X-Generator: Pootle 2.1.6\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -421,8 +420,8 @@ msgid ""
 "To mark the current translation as incomplete, simply press <Ctrl+Shift"
 "+Enter>."
 msgstr ""
-"Um die aktuelle Übersetzung als unvollständig zu kennzeichnen "
-"<Ctrl+Shift+Eingabe> drücken."
+"Um die aktuelle Übersetzung als unvollständig zu kennzeichnen <Ctrl+Shift"
+"+Eingabe> drücken."
 
 # 75%
 #: ../virtaal/tips.py:33
@@ -739,7 +738,7 @@ msgstr "Exportieren"
 
 # 77%
 #: ../virtaal/controllers/maincontroller.py:280
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Could not export file.\n"
 "\n"
@@ -747,11 +746,11 @@ msgid ""
 "\n"
 "Try saving to a different location."
 msgstr ""
-"Die Datei konnte nicht geöffnet werden.\n"
+"Die Datei konnte nicht exportiert werden.\n"
 "\n"
 "%(error_message)s\n"
 "\n"
-"Versuchen Sie, eine andere Datei zu öffnen."
+"Versuchen Sie, die Datei an einem anderen Speicherplatz zu speichern."
 
 # 85%
 #: ../virtaal/controllers/maincontroller.py:285

@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-12 06:01+0200\n"
-"Last-Translator: Masahiko <chimantaea_mirabilis@yahoo.co.jp>\n"
+"PO-Revision-Date: 2011-12-03 14:24+0200\n"
+"Last-Translator: Yuki <shirayuking@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.1.5\n"
+"X-Generator: Pootle 2.1.6\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -33,7 +33,7 @@ msgstr "翻訳ツール"
 msgid ""
 "A translation tool to help a human translator translate files into other "
 "languages"
-msgstr "翻訳者がファイルを他の言語へ翻訳することを助ける翻訳ツールです"
+msgstr "翻訳者がファイルを他の言語へ翻訳することを助ける翻訳ツール"
 
 #: ../share/virtaal/virtaal.glade.h:2
 msgid "_File"
@@ -143,7 +143,8 @@ msgid ""
 msgstr ""
 "<b>訳文</b> は翻訳先の言語です。ターゲット言語ともいいます。\n"
 "\n"
-"英語からフランス語に翻訳する場合は、フランス語が翻訳先のターゲット言語になります。"
+"英語からフランス語に翻訳する場合は、フランス語が翻訳先のターゲット言語になり"
+"ます。"
 
 #: ../share/virtaal/virtaal.glade.h:31
 msgid "<b>Translation</b>"
@@ -209,7 +210,9 @@ msgstr "メールアドレス:"
 msgid ""
 "The team information stored in the file header. This can be an e-mail "
 "address or a URL, for example."
-msgstr "チーム情報はファイルのヘッダに格納されます。ここには、メールアドレスや URL を記入することもできます。"
+msgstr ""
+"チーム情報はファイルのヘッダに格納されます。ここには、メールアドレスや URL を"
+"記入することもできます。"
 
 #: ../share/virtaal/virtaal.glade.h:47
 msgid "Team:"
@@ -244,7 +247,9 @@ msgstr "全般"
 msgid ""
 "Placeables are special parts of the text that can be automatically "
 "highlighted and easily inserted into the translation."
-msgstr "‎固定要素はテキストの特別な部分です。自動的に強調され簡単に訳文に挿入できます。"
+msgstr ""
+"‎固定要素はテキストの特別な部分です。自動的に強調され簡単に訳文に挿入できま"
+"す。"
 
 #: ../share/virtaal/virtaal.glade.h:56
 msgid "Placeables"
@@ -393,7 +398,8 @@ msgstr "翻訳後、<Enter> キーを押すと次の文節に移動します。"
 #: ../virtaal/tips.py:28
 msgid ""
 "To copy the original string into the target field, simply press <Alt+Down>."
-msgstr "原文の文字列をターゲットフィールドに転写するには <Alt+↓> キーを押します。"
+msgstr ""
+"原文の文字列をターゲットフィールドに転写するには <Alt+↓> キーを押します。"
 
 #. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
 #: ../virtaal/tips.py:31
@@ -404,7 +410,8 @@ msgstr "現在の翻訳にファジーマークを付けるには <Alt+U> キー
 msgid ""
 "To mark the current translation as incomplete, simply press <Ctrl+Shift"
 "+Enter>."
-msgstr "現在の翻訳に未完了マークを付けるには <Ctrl+Shift+Enter> キーを押します。"
+msgstr ""
+"現在の翻訳に未完了マークを付けるには <Ctrl+Shift+Enter> キーを押します。"
 
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
@@ -647,7 +654,9 @@ msgstr "チームの情報を入力してください"
 msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
-msgstr "現在開いているファイルが選択されました。現在開いているファイルを再度読み込みますか？"
+msgstr ""
+"現在開いているファイルが選択されました。現在開いているファイルを再度読み込み"
+"ますか？"
 
 #: ../virtaal/controllers/maincontroller.py:211
 #: ../virtaal/controllers/maincontroller.py:311
@@ -738,7 +747,9 @@ msgstr "ファイルの再読み込み"
 
 #: ../virtaal/controllers/maincontroller.py:301
 msgid "Reload file from last saved copy and lose all changes?"
-msgstr "最後に保存した状態のファイルを再度読み込みます。現在の変更はすべて破棄されますがよろしいですか？"
+msgstr ""
+"最後に保存した状態のファイルを再度読み込みます。現在の変更はすべて破棄されま"
+"すがよろしいですか？"
 
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase
 #: ../virtaal/controllers/placeablescontroller.py:83
@@ -1619,8 +1630,9 @@ msgid ""
 "definitely intend it to be useful as a general purpose tool for Computer "
 "Aided Translation (CAT)."
 msgstr ""
-"ソフトウェアの翻訳 (ローカライズまたは L10n) に使用されることを想定していますが、私たちは、これがコンピュータ支援翻訳 (CAT) "
-"のための一般的なツールとして使用されるようになることを目指しています。"
+"ソフトウェアの翻訳 (ローカライズまたは L10n) に使用されることを想定しています"
+"が、私たちは、これがコンピュータ支援翻訳 (CAT) のための一般的なツールとして使"
+"用されるようになることを目指しています。"
 
 #: ../virtaal/views/widgets/aboutdialog.py:52
 msgid "Virtaal website"
@@ -1866,7 +1878,8 @@ msgstr "PROFILE"
 
 #: ../bin/virtaal:106
 msgid "perform profiling, storing the result to the supplied filename."
-msgstr "プロファイリングを実行し、指定されたファイルにその実行結果を格納します。"
+msgstr ""
+"プロファイリングを実行し、指定されたファイルにその実行結果を格納します。"
 
 #: ../bin/virtaal:129
 msgid "Could not open log file '%(filename)s'"

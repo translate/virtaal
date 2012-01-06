@@ -524,7 +524,6 @@ msgstr "Must translate words"
 msgid "Newlines"
 msgstr "Newlines"
 
-# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
 msgstr "Number of plurals"
@@ -1068,7 +1067,6 @@ msgstr "More..."
 msgid "Add \"%s\" to Dictionary"
 msgstr "Add \"%s\" to Dictionary"
 
-# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 msgid "Languages"
 msgstr "Languages"

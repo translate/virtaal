@@ -342,7 +342,6 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid "<u>Manual</u>"
 msgstr "<u>Goyyan tiira</u>"
 
-# 75%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
@@ -353,7 +352,6 @@ msgstr "http://translate.sourceforge.net/wiki/guide/start"
 msgid "<u>Localization Guide</u>"
 msgstr "<u>Berandiyan fahamitiira</u>"
 
-# 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:37
@@ -418,7 +416,6 @@ msgstr ""
 "Ka sohõda berandiyanoo šilbay kaŋ a manti timmante, <Ctrl+Shift+Enter> naagu "
 "de."
 
-# 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr ""
@@ -433,12 +430,10 @@ msgid ""
 "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
 msgstr "Ctrl+PgUp wala Ctrl+PgDown ka bisa berandi wargayaŋ game."
 
-# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
 msgstr "Manti alhakiikante (fuzzy)"
 
-# 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
 msgid "Untranslated"
@@ -464,7 +459,6 @@ msgstr "Holgey"
 msgid "Compendium conflict"
 msgstr "Šilbay-margari cerehõoyan"
 
-# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
 msgstr "Berandikey maaɲey"
@@ -526,7 +520,6 @@ msgstr "Ga hima ka kalimawey berandi"
 msgid "Newlines"
 msgstr "Žeeri-sarey"
 
-# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
 msgstr "Booboyaŋ hinna"
@@ -614,7 +607,6 @@ msgstr "Harfu boryey"
 msgid "Placeholders"
 msgstr "Doo-diikey"
 
-# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
 msgid "XML tags"
 msgstr "XML kanjey"
@@ -726,7 +718,6 @@ msgstr "Ga hin ka Gettext PO tukey fattandi hinne"
 msgid "Export"
 msgstr "Fattandi"
 
-# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, python-format
 msgid ""
@@ -742,7 +733,6 @@ msgstr ""
 "\n"
 "Wa ceeci k'a gaabu doo tana foo ra."
 
-# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, python-format
 msgid ""
@@ -886,12 +876,10 @@ msgstr "\"alt\" alhaaley"
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Doodiikey \"alt\" alhaaley se (sanda HTML ra)"
 
-# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeholders (Drupal)"
 msgstr "Doo-diikey (Drupal)"
 
-# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders in Drupal strings"
 msgstr "Doo-diikey Drupal tenjirey ra"
@@ -959,7 +947,6 @@ msgstr "Berante"
 msgid "Reviewed"
 msgstr "Gunante"
 
-# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1077,7 +1064,6 @@ msgstr "Tontoni..."
 msgid "Add \"%s\" to Dictionary"
 msgstr "\"%s\" tonton kamasu ga"
 
-# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 msgid "Languages"
 msgstr "Šenney"
@@ -1565,7 +1551,6 @@ msgstr "N_aaruyan:"
 msgid "Save the file for up-to-date information"
 msgstr "Tukoo gaabu alhabar taagante še"
 
-# 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "Mana berandi:"
@@ -1582,7 +1567,6 @@ msgstr "Wanjante:"
 msgid "Needs review:"
 msgstr "Ga baa gunari:"
 
-# 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "Berante:"
@@ -1605,7 +1589,6 @@ msgstr "(100%)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f%%)"
 
-# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192

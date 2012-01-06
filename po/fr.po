@@ -471,7 +471,6 @@ msgstr "Parenthèses"
 msgid "Compendium conflict"
 msgstr "Conflit de glossaire"
 
-# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
 msgstr "Liste des traducteurs"
@@ -1603,7 +1602,6 @@ msgstr "(100 %)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f %%)"
 
-# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192

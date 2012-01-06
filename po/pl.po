@@ -357,7 +357,6 @@ msgstr "http://translate.sourceforge.net/wiki/guide/start"
 msgid "<u>Localization Guide</u>"
 msgstr "<u>Przewodnik lokalizacji</u>"
 
-# 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:37
@@ -445,7 +444,6 @@ msgstr ""
 "Aby przemieszczać się pomiędzy tłumaczeniami w większych odstępach, należy "
 "skorzystać ze skrótu klawiszowego CTRL+PgUp lub CTRL+PgDown."
 
-# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
 msgstr "Niepewne"
@@ -733,7 +731,6 @@ msgstr "Można eksportować wyłącznie pliki w formacie Gettext"
 msgid "Export"
 msgstr "Eksportowanie"
 
-# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, python-format
 msgid ""
@@ -749,7 +746,6 @@ msgstr ""
 "\n"
 "Proszę spróbować zapisu do innej lokalizacji."
 
-# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, python-format
 msgid ""
@@ -965,7 +961,6 @@ msgstr "Przetłumaczony"
 msgid "Reviewed"
 msgstr "Przejrzany"
 
-# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1570,7 +1565,6 @@ msgstr "N_awigacja:"
 msgid "Save the file for up-to-date information"
 msgstr "Należy zapisać plik, by uzyskać najnowsze informacje"
 
-# 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "Nieprzetłumaczone:"
@@ -1587,7 +1581,6 @@ msgstr "Odrzucone:"
 msgid "Needs review:"
 msgstr "Wymaga przejrzenia:"
 
-# 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "Przetłumaczone:"
@@ -1610,7 +1603,6 @@ msgstr "(100%)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f%%)"
 
-# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192

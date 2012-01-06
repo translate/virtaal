@@ -345,7 +345,6 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid "<u>Manual</u>"
 msgstr "<u>Handbok</u>"
 
-# 75%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
@@ -356,7 +355,6 @@ msgstr "http://translate.sourceforge.net/wiki/guide/start"
 msgid "<u>Localization Guide</u>"
 msgstr "<u>Lokalanpassningsguide</u>"
 
-# 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:37
@@ -424,7 +422,6 @@ msgstr ""
 "Tryck helt enkelt <Ctrl+Shift+Enter> för att markera den aktuella "
 "översättningen som ofullständig."
 
-# 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr ""
@@ -442,12 +439,10 @@ msgstr ""
 "Använd Ctrl+PgUp eller Ctrl+PgDown för att hoppa i större steg mellan "
 "översättningar."
 
-# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
 msgstr "Luddig"
 
-# 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
 msgid "Untranslated"
@@ -473,7 +468,6 @@ msgstr "Parentes"
 msgid "Compendium conflict"
 msgstr ""
 
-# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
 msgstr ""
@@ -539,7 +533,6 @@ msgstr "Ord som måste översättas"
 msgid "Newlines"
 msgstr "Ny rad"
 
-# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
 msgstr "Antal pluralformer"
@@ -627,7 +620,6 @@ msgstr "Godkända tecken"
 msgid "Placeholders"
 msgstr "Platshållare"
 
-# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
 msgid "XML tags"
 msgstr "XML-taggar"
@@ -739,7 +731,6 @@ msgstr "Kan endast exportera Gettext PO-filer"
 msgid "Export"
 msgstr "Exportera"
 
-# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, python-format
 msgid ""
@@ -755,7 +746,6 @@ msgstr ""
 "\n"
 "Prova att spara på annan plats."
 
-# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, python-format
 msgid ""
@@ -896,12 +886,10 @@ msgstr "\"alt\"-attribut"
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Placerbar för \"alt\"-attribut (som finns i HTML)"
 
-# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeholders (Drupal)"
 msgstr "Platshållare (Drupal)"
 
-# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders in Drupal strings"
 msgstr "Platshållare i Drupal-strängar"
@@ -969,7 +957,6 @@ msgstr "Översatt"
 msgid "Reviewed"
 msgstr "Granskad"
 
-# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1571,7 +1558,6 @@ msgstr "Navi_gering:"
 msgid "Save the file for up-to-date information"
 msgstr "Spara filen med uppdaterad information"
 
-# 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "Oöversatta"
@@ -1588,7 +1574,6 @@ msgstr ""
 msgid "Needs review:"
 msgstr "Behöver granskning:"
 
-# 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "Översatta"
@@ -1611,7 +1596,6 @@ msgstr "(100%)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f%%)"
 
-# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192
@@ -1644,7 +1628,6 @@ msgstr "Klicka för att ändra till särskild status i arbetsflödet"
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr "Flytta ett steg fram i arbetsflödet (Ctrl+Enter)"
 
-# 95%
 #: ../virtaal/views/widgets/aboutdialog.py:34
 msgid "Copyright © 2007-2010 Zuza Software Foundation"
 msgstr "Copyright © 2007-2010 Zuza Software Foundation"

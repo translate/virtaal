@@ -528,7 +528,6 @@ msgstr "Çevrilmesi zorunlu kelime"
 msgid "Newlines"
 msgstr "Yeni satır"
 
-# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
 msgstr "Çoğul sayısı"
@@ -891,7 +890,6 @@ msgstr "\"alt\" öznitelikleri için yerleştirilebilir (HTML'de olduğu gibi)"
 msgid "Placeholders (Drupal)"
 msgstr "Yer tutucuları (Drupal)"
 
-# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders in Drupal strings"
 msgstr "Drupal satırlarındaki yer tutucuları"
@@ -1076,7 +1074,6 @@ msgstr "Daha Fazla..."
 msgid "Add \"%s\" to Dictionary"
 msgstr "\"%s\" Sözlüğe Ekle"
 
-# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 msgid "Languages"
 msgstr "Diller"
@@ -1559,7 +1556,6 @@ msgstr "Kı_lavuz:"
 msgid "Save the file for up-to-date information"
 msgstr "Güncel bilgi için dosyayı kaydet"
 
-# 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "Çevrilmemiş:"
@@ -1576,7 +1572,6 @@ msgstr "Reddedildi:"
 msgid "Needs review:"
 msgstr "İnceleme gerekli:"
 
-# 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "Çevrilmiş:"
@@ -1599,7 +1594,6 @@ msgstr "(%100)"
 msgid "(%04.1f%%)"
 msgstr "(%%%04.1f)"
 
-# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192

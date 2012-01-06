@@ -336,7 +336,6 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid "<u>Manual</u>"
 msgstr "<u>కరదీపిక</u>"
 
-# 75%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
@@ -347,7 +346,6 @@ msgstr "http://translate.sourceforge.net/wiki/guide/start"
 msgid "<u>Localization Guide</u>"
 msgstr "<u>స్థానికీకరణ గైడు</u>"
 
-# 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:37
@@ -408,7 +406,6 @@ msgid ""
 "+Enter>."
 msgstr ""
 
-# 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr "ప్రస్తుత అనువాదాన్ని పూర్తయినట్టు గుర్తించడానికి, <Ctrl+Enter>ని నొక్కండి."
@@ -426,7 +423,6 @@ msgstr ""
 msgid "Fuzzy"
 msgstr "సందేహాత్మకం"
 
-# 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
 msgid "Untranslated"
@@ -452,7 +448,6 @@ msgstr ""
 msgid "Compendium conflict"
 msgstr ""
 
-# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
 msgstr ""
@@ -516,7 +511,6 @@ msgstr ""
 msgid "Newlines"
 msgstr "కొత్తవరుసలు"
 
-# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
 msgstr "బహువచనాల సంఖ్య"
@@ -919,7 +913,6 @@ msgstr "అనుదించినవి"
 msgid "Reviewed"
 msgstr "సమీక్షించినవి"
 
-# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1037,7 +1030,6 @@ msgstr "మరిన్ని..."
 msgid "Add \"%s\" to Dictionary"
 msgstr ""
 
-# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 msgid "Languages"
 msgstr "భాషలు"
@@ -1274,7 +1266,6 @@ msgstr "పదకోశ వనరులని ఎంచుకోండి"
 msgid "Select the sources of terminology suggestions"
 msgstr ""
 
-# 94%
 #: ../virtaal/plugins/tm/__init__.py:27
 msgid "Translation Memory"
 msgstr "అనువాద కోశం"
@@ -1516,7 +1507,6 @@ msgstr "మార్గదర్శకం (_N):"
 msgid "Save the file for up-to-date information"
 msgstr ""
 
-# 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "అనువాదంకానివి:"
@@ -1533,7 +1523,6 @@ msgstr "తిరస్కరించబడినవి:"
 msgid "Needs review:"
 msgstr "సమీక్షించాల్సినవి:"
 
-# 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "అనువాదితం:"
@@ -1556,7 +1545,6 @@ msgstr "(100%)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f%%)"
 
-# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192
@@ -1686,7 +1674,6 @@ msgstr "ఈ దస్త్రం లేనే లేదు."
 msgid "Not a valid file."
 msgstr "సరైన దస్త్రం కాదు."
 
-# 79%
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
 msgid "TMX Translation Memory"
 msgstr "TMX అనువాద కోశం"
@@ -1711,7 +1698,6 @@ msgstr "TBX"
 msgid "TermBase eXchange"
 msgstr ""
 
-# 77%
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:7
 #, fuzzy
 msgid "Wordfast Translation Memory"

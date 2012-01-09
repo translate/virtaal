@@ -236,7 +236,7 @@ def darwin_open_dialog(title, directory):
         file_types.extend(extension)
     panel = NSOpenPanel.openPanel()
     panel.setCanChooseDirectories_(NO)
-    panel.setTitle_(title or _("Open"))
+    panel.setTitle_(title or _("Choose a Translation File"))
     panel.setAllowsMultipleSelection_(NO)
     panel.setAllowedFileTypes_(file_types)
     panel.setDirectoryURL_(u"file:///%s" % directory)

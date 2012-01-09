@@ -88,6 +88,7 @@ class MainView(BaseView):
             @type  controller: virtaal.controllers.MainController
             @param controller: The controller that this view is "connected" to."""
         self.controller = controller
+        self.modified = False
 
         if os.name == 'nt':
             # Before we do anything else, make sure that stdout and stderr are properly handled.
@@ -405,6 +406,11 @@ class MainView(BaseView):
         self.main_window.add_accel_group(accel_group)
 
     def set_saveable(self, value):
+        # Repeatedly doing all of this is unnecessary, and can make the window
+        # title flash slightly. So if the file is already modified, don't
+        # bother redoing all of this.
+        if value and self.modified:
+            return
         menuitem = self.gui.get_object("mnu_save")
         menuitem.set_sensitive(value)
         menuitem = self.gui.get_object("mnu_revert")

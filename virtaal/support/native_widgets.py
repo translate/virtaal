@@ -51,7 +51,9 @@ def _dialog_to_use():
             return 'kdialog'
 
     if sys.platform == 'darwin':
-        return 'darwin'
+        # Some issues on Lion so disable native dialogs for now
+        #return 'darwin'
+        return None
 
     return None # default
 

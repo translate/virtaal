@@ -1,0 +1,24 @@
+# /
+/build
+/dist
+/MANIFEST
+/MANIFEST.in
+/mo
+
+# /po/
+/po/missing
+/po/.intltool-merge-cache
+/po/notexist
+
+# /share/applications/
+/share/applications/*.desktop
+
+# /share/mime/packages/
+/share/mime/packages/*-mimetype.xml
+
+# /share/virtaal/
+/share/virtaal/virtaal-mimetype.xml
+/share/virtaal/virtaal.desktop
+
+# General
+*.pyc

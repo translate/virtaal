@@ -13,7 +13,7 @@ desktop=share/applications/$targetapp.desktop
 mimetype=share/mime/packages/$targetapp-mimetype.xml
 
 cache="po/.intltool-merge-cache"
-rm $cache
+rm -f $cache
 
 if [ -d po ]; then
 	if [ -f  ${mimetype}.in ]; then

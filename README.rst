@@ -1,8 +1,8 @@
 Introduction
 ------------
-Virtaal is a graphical program for doing translation. It is meant to be easy 
+Virtaal is a graphical program for doing translation. It is meant to be easy
 to use and powerful at the same time. Although the initial focus is on software
-translation (localisation or l10n), we definitely intend it to be useful for 
+translation (localisation or l10n), we definitely intend it to be useful for
 several purposes.
 
 References

@@ -232,10 +232,10 @@ class ChecksController(BaseController):
     def _on_target_lang_changed(self, lang_controller, langcode):
         current_checker = self.get_checker()
         if current_checker:
-           current_checker.config.updatetargetlanguage(langcode)
-           self.emit('checker-set', current_checker)
-           if self.last_unit:
-               self.check_unit(self.last_unit)
+            current_checker.config.updatetargetlanguage(langcode)
+            self.emit('checker-set', current_checker)
+            if self.last_unit:
+                self.check_unit(self.last_unit)
 
     def _on_store_loaded(self, store_controller):
         self.set_checker_by_code(store_controller.store._trans_store.getprojectstyle())

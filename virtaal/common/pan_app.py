@@ -67,7 +67,7 @@ def get_locale_lang():
     try:
         lang = locale.getdefaultlocale(('LANGUAGE', 'LC_ALL', 'LANG'))[0]
         if not lang and sys.platform == "darwin":
-           lang = osx_lang()
+            lang = osx_lang()
         if lang:
             return data.simplify_to_common(lang)
     except Exception, e:

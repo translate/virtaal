@@ -55,7 +55,7 @@ class LookupController(BaseController):
         self.plugin_controller.PLUGIN_CLASS_INFO_ATTRIBS = ['display_name', 'description']
         new_dirs = []
         for dir in self.plugin_controller.PLUGIN_DIRS:
-           new_dirs.append(os.path.join(dir, 'lookup', 'models'))
+            new_dirs.append(os.path.join(dir, 'lookup', 'models'))
         self.plugin_controller.PLUGIN_DIRS = new_dirs
 
         self.plugin_controller.PLUGIN_INTERFACE = BaseLookupModel

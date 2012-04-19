@@ -77,7 +77,7 @@ class TerminologyController(BaseController):
         self.plugin_controller.PLUGIN_CLASS_INFO_ATTRIBS = ['description', 'display_name']
         new_dirs = []
         for dir in self.plugin_controller.PLUGIN_DIRS:
-           new_dirs.append(os.path.join(dir, 'terminology', 'models'))
+            new_dirs.append(os.path.join(dir, 'terminology', 'models'))
         self.plugin_controller.PLUGIN_DIRS = new_dirs
 
         self.plugin_controller.PLUGIN_INTERFACE = BaseTerminologyModel

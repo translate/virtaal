@@ -265,12 +265,13 @@ class Plugin(BasePlugin):
         cursor = connection.cursor()
         cursor.execute("""SELECT english, target from tm_main;""")
         for (source, target) in cursor:
-            unit = { "source" : source,
-                     "target" : target,
-                     "context" : ""
-                     }
+            unit = {
+                "source": source,
+                "target": target,
+                "context": ""
+            }
             self.tmdb.add_dict(unit, "en", lang, commit=False)
         self.tmdb.connection.commit()
         connection.close()
-        self.migrated.append(_("Lokalize's Translation Memory: %(database_name)s") % \
-                {"database_name": path.basename(filename)})
+        self.migrated.append(_("Lokalize's Translation Memory: %(database_name)s") %
+                             {"database_name": path.basename(filename)})

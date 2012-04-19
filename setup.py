@@ -75,7 +75,7 @@ for lang in open(path.join('po', 'LINGUAS')):
     convertmo(open(po_filename), open(mo_filename, 'w'), None)
 
     mo_files.append(
-        ( path.join(TARGET_DATA_DIR, 'locale', lang, 'LC_MESSAGES'), [mo_filename])
+        (path.join(TARGET_DATA_DIR, 'locale', lang, 'LC_MESSAGES'), [mo_filename])
     )
 
 # Build lite files as needed on Win32 and OS X
@@ -91,7 +91,7 @@ if os.name == 'nt' or sys.platform == 'darwin':
         convertmo(open(po_filename), open(mo_filename, 'w'), None)
     
         mo_files.append(
-            ( path.join(TARGET_DATA_DIR, 'locale', lang, 'LC_MESSAGES'), [mo_filename])
+            (path.join(TARGET_DATA_DIR, 'locale', lang, 'LC_MESSAGES'), [mo_filename])
         )
 
 # Some of these depend on some files to be built externally before running
@@ -484,7 +484,7 @@ def add_win32_options(options):
                     'script': 'bin/virtaal',
                     'icon_resources': [(1, path.join(SOURCE_DATA_DIR, "icons", "virtaal.ico"))],
                 },
-                { 'script': "../translate/services/tmserver"}
+                {'script': "../translate/services/tmserver"}
             ],
             'zipfile':  "virtaal.zip",
             "options": {
@@ -569,7 +569,7 @@ def create_manifest(data_files, extra_files, extra_dirs):
     for data_file_list in [d[1] for d in data_files] + extra_files:
         if not data_file_list:
             continue
-        f.write("include %s\n" % (" ".join( data_file_list )))
+        f.write("include %s\n" % (" ".join(data_file_list)))
     for dir in extra_dirs:
         f.write("graft %s\n" % (dir))
     f.close()

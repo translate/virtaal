@@ -165,7 +165,7 @@ def win32_open_dialog(title, directory):
     import winxpgui
     import win32con
     import pywintypes
-    supported_files = [ (_(name), ';'.join(extensions)) for name, extensions in _get_file_types() ]
+    supported_files = [(_(name), ';'.join(extensions)) for name, extensions in _get_file_types()]
 
     type_filter = '\0'.join(('%s\0%s') % (name, extensions) for name, extensions in supported_files) + '\0'
     custom_filter = _("All Files") + '\0*.*\0'

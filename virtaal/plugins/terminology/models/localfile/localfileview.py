@@ -187,7 +187,7 @@ class FileSelectDialog:
         all_supported_filter = gtk.FileFilter()
         all_supported_filter.set_name(_("All Supported Files"))
         dlg.add_filter(all_supported_filter)
-        supported_files_dict = dict([ (_(name), (extension, mimetype)) for name, extension, mimetype in store_factory.supported_files() ])
+        supported_files_dict = dict([(_(name), (extension, mimetype)) for name, extension, mimetype in store_factory.supported_files()])
         supported_file_names = supported_files_dict.keys()
         from locale import strcoll
         supported_file_names.sort(cmp=strcoll)

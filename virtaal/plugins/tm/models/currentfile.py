@@ -30,7 +30,7 @@ class TMModel(BaseTMModel):
     display_name = _('Current File')
     description = _('Translated units from the currently open file')
 
-    default_config = { 'max_length': 1000 }
+    default_config = {'max_length': 1000}
 
     # INITIALIZERS #
     def __init__(self, internal_name, controller):

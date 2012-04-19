@@ -266,7 +266,7 @@ class MainView(BaseView):
             all_supported_filter.set_name(_("All Supported Files"))
             self._open_chooser.add_filter(all_supported_filter)
             from translate.storage import factory as storage_factory
-            supported_files_dict = dict([ (_(name), (extensions, mimetypes)) for name, extensions, mimetypes in storage_factory.supported_files() ])
+            supported_files_dict = dict([(_(name), (extensions, mimetypes)) for name, extensions, mimetypes in storage_factory.supported_files()])
             supported_file_names = supported_files_dict.keys()
             supported_file_names.sort(cmp=locale.strcoll)
             for name in supported_file_names:

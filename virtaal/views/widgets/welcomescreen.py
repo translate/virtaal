@@ -12,7 +12,7 @@ class WelcomeScreen(gtk.ScrolledWindow):
     """
 
     __gtype_name__ = 'WelcomeScreen'
-    __gsignals__ = { 'button-clicked': (SIGNAL_RUN_FIRST, None, (str,)) }
+    __gsignals__ = {'button-clicked': (SIGNAL_RUN_FIRST, None, (str,))}
 
 
     # INITIALISERS #

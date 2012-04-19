@@ -123,7 +123,7 @@ class LookupModel(BaseLookupModel):
         return items
 
     def destroy(self):
-        config = dict([ (u['display_name'], u) for u in self.URLDATA ])
+        config = dict([(u['display_name'], u) for u in self.URLDATA])
         pan_app.save_config(self.urldata_file, config)
 
 

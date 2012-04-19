@@ -32,7 +32,7 @@ class TMModel(BaseTMModel):
     display_name = _('Moses')
     description = _('Unreviewed machine translations from a Moses server')
 
-    default_config = { "fr->en": "http://localhost:8080", }
+    default_config = {"fr->en": "http://localhost:8080",}
 
     # INITIALIZERS #
     def __init__(self, internal_name, controller):

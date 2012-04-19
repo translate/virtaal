@@ -184,7 +184,8 @@ class HTTPClient(object):
 
     def run(self):
         """client should not be running when request queue is empty"""
-        if self.running: return
+        if self.running:
+            return
         gobject.timeout_add(100, self.perform)
         self.running = True
 

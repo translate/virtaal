@@ -102,6 +102,7 @@ class UndoController(BaseController):
 
         curpos = textbox.get_cursor_position()
         targetn = unitview.targets.index(textbox)
+
         def undo_set_text(unit):
             textbox.elem.sub = current_text.sub
 
@@ -163,6 +164,7 @@ class UndoController(BaseController):
         self._enable_unit_signals()
 
         textbox = self.unit_controller.view.targets[undo_info['targetn']]
+
         def refresh():
             textbox.refresh_cursor_pos = undo_info['cursorpos']
             textbox.refresh()

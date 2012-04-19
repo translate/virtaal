@@ -70,6 +70,7 @@ class PopupMenuButton(gtk.ToggleButton):
 
     def _get_text(self):
         return unicode(self.get_label())
+
     def _set_text(self, value):
         self.set_label(value)
     text = property(_get_text, _set_text)

@@ -82,6 +82,7 @@ class OpenTranClient(gobject.GObject, HTTPClient):
         query_str = unit_source
         request = RESTRequest(self.url_translate % (self.source_lang, self.target_lang), id=query_str)
         self.add(request)
+
         def call_callback(request, response):
             return callback(
                 request, request.id, self.format_suggestions(request.id, response)

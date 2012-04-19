@@ -102,14 +102,17 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             return None
 
         clipboard = gtk.Clipboard(selection=gtk.gdk.SELECTION_CLIPBOARD)
+
         def on_cut(menuitem):
             focused = get_focused(self.targets)
             if focused is not None:
                 focused.get_buffer().cut_clipboard(clipboard, True)
+
         def on_copy(menuitem):
             focused = get_focused(self.targets + self.sources)
             if focused is not None:
                 focused.get_buffer().copy_clipboard(clipboard)
+
         def on_paste(menuitem):
             focused = get_focused(self.targets)
             if focused is not None:
@@ -135,8 +138,10 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
         def on_next(*args):
             self.targets[self.focused_target_n].move_elem_selection(1)
+
         def on_prev(*args):
             self.targets[self.focused_target_n].move_elem_selection(-1)
+
         def on_transfer(*args):
             ev = gtk.gdk.Event(gtk.gdk.KEY_PRESS)
             ev.state = gtk.gdk.MOD1_MASK
@@ -172,6 +177,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             self.mnu_cut.set_sensitive(False)
             self.mnu_copy.set_sensitive(False)
             self.mnu_paste.set_sensitive(False)
+
         def on_store_loaded(*args):
             mnu_next.set_sensitive(True)
             mnu_prev.set_sensitive(True)
@@ -179,6 +185,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             self.mnu_cut.set_sensitive(True)
             self.mnu_copy.set_sensitive(True)
             self.mnu_paste.set_sensitive(True)
+
         self.controller.main_controller.store_controller.connect('store-closed', on_store_closed)
         self.controller.main_controller.store_controller.connect('store-loaded', on_store_loaded)
 
@@ -189,6 +196,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     def _get_focused_target_n(self):
         return self._focused_target_n
+
     def _set_focused_target_n(self, target_n):
         self.focus_text_view(self.targets[target_n])
     focused_target_n = property(_get_focused_target_n, _set_focused_target_n)

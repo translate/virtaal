@@ -280,6 +280,7 @@ class StoreController(BaseController):
                     self._archivetemp = None
 
                     cursor_pos = self.cursor.pos
+
                     def post_save(sender):
                         if not hasattr(self, '_proj_file_saved_id'):
                             return
@@ -287,6 +288,7 @@ class StoreController(BaseController):
                         self.main_controller.open_file(filename)
                         self.cursor.pos = cursor_pos
                     self._proj_file_saved_id = self.connect('store-saved', post_save)
+
         self._modified = False
         self.main_controller.set_saveable(False)
         self.emit('store-saved')
@@ -375,11 +377,13 @@ class StoreController(BaseController):
                 outfile = convert_factory.convert(open(filename))[0]
                 factory.getobject(outfile.name)
                 filename = outfile.name
+
                 def unlink_outfile():
                     try:
                         os.unlink(filename)
                     except Exception:
                         logging.exception("Unable to delete file %s:" % (filename))
+
             except Exception:
                 # Anticipated exceptions/errors:
                 # * Conversion error: anything that went wrong in

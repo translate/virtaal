@@ -139,6 +139,7 @@ class CellRendererWidget(gtk.GenericCellRenderer):
             return
         treeview.set_cursor_on_cell(path, col[0], self, True)
         # XXX: Hack to make sure that the lock (_start_editing) is not released before the next on_render() is called.
+
         def update_lock():
             self._editing = False
         idle_add(update_lock)

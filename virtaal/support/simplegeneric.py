@@ -49,12 +49,14 @@ def generic(func):
             raise TypeError(
                 "%r is not a type or class" % (t,)
             )
+
         def decorate(f):
             if _by_type.setdefault(t,f) is not f:
                 raise TypeError(
                     "%r already has method for type %r" % (func, t)
                 )
             return f
+
         return decorate
 
     _by_object = {}

@@ -119,10 +119,12 @@ class TerminologyModel(BaseTerminologyModel):
 
     def __setup_cursor_watcher(self):
         unitview = self.main_controller.unit_controller.view
+
         def cursor_changed(cursor):
             self.__start_query()
 
         store_ctrlr = self.main_controller.store_controller
+
         def store_loaded(store_ctrlr):
             if hasattr(self, '_cursor_connect_id'):
                 self.cursor.disconnect(self._cursor_connect_id)

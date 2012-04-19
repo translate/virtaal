@@ -86,6 +86,7 @@ class LanguageController(BaseController):
     # ACCESSORS #
     def _get_source_lang(self):
         return self._source_lang
+
     def _set_source_lang(self, lang):
         if isinstance(lang, basestring):
             lang = LanguageModel(lang)
@@ -97,6 +98,7 @@ class LanguageController(BaseController):
 
     def _get_target_lang(self):
         return self._target_lang
+
     def _set_target_lang(self, lang):
         if isinstance(lang, basestring):
             lang = LanguageModel(lang)

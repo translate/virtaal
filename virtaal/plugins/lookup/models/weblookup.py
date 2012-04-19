@@ -201,6 +201,7 @@ class WebLookupConfigDialog(object):
     # ACCESSORS #
     def _get_urldata(self):
         return [row[self.COL_DATA] for row in self.lst_urls]
+
     def _set_urldata(self, value):
         self.lst_urls.clear()
         for url in value:

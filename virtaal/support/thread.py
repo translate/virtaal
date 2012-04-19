@@ -27,6 +27,7 @@ import Queue
 def run_in_thread(widget, target, args):
     # Idea from tortoisehg's gtklib.py
     q = Queue.Queue()
+
     def func(*kwargs):
         q.put(target(*kwargs))
 

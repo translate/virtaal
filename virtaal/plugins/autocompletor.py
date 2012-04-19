@@ -178,6 +178,7 @@ class AutoCompletor(object):
                 # and its side effects are taken care of. We abuse
                 # gobject.idle_add for that.
                 insert_offset = offset + len(text)
+
                 def suggest_completion():
                     textbox.handler_block(self._textbox_insert_ids[textbox])
                     #logging.debug("textbox.suggestion = {'text': u'%s', 'offset': %d}" % (word_postfix, insert_offset))

@@ -861,8 +861,10 @@ class MainView(BaseView):
         # therefore we schedule the load to occur afterwards.
         # See gdk/quartz/gdkeventloop-quartz.c in the GTK+ source. 
         from gobject import idle_add
+
         def callback():
             self.controller.open_file(filename)
         idle_add(callback) 
+
         # We must indicate we handled this or crash
         return True 

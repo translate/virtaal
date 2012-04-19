@@ -58,24 +58,28 @@ class LanguageAddDialog(object):
     # ACCESSORS #
     def _get_langname(self):
         return self.ent_langname.get_text()
+
     def _set_langname(self, value):
         self.ent_langname.set_text(value)
     langname = property(_get_langname, _set_langname)
 
     def _get_langcode(self):
         return self.ent_langcode.get_text()
+
     def _set_langcode(self, value):
         self.ent_langcode.set_text(value)
     langcode = property(_get_langcode, _set_langcode)
 
     def _get_nplurals(self):
         return int(self.sbtn_nplurals.get_value())
+
     def _set_nplurals(self):
         self.sbtn_nplurals.set_value(int(value))
     nplurals = property(_get_nplurals, _set_nplurals)
 
     def _get_plural(self):
         return self.ent_plural.get_text()
+
     def _set_plural(self, value):
         self.ent_plural.set_text(value)
     plural = property(_get_plural, _set_plural)

@@ -112,6 +112,7 @@ class PreferencesView(BaseView, GObjectWrapper):
             'source': self._widgets['fbtn_source'].get_font_name(),
             'target': self._widgets['fbtn_target'].get_font_name(),
         }
+
     def _set_font_data(self, value):
         if not isinstance(value, dict) or not 'source' in value or not 'target' in value:
             raise ValueError('Value must be a dictionary')
@@ -123,6 +124,7 @@ class PreferencesView(BaseView, GObjectWrapper):
 
     def _get_placeables_data(self):
         return self.placeables_select.get_all_items()
+
     def _set_placeables_data(self, value):
         selected = self.placeables_select.get_selected_item()
         self.placeables_select.set_model(value)
@@ -131,6 +133,7 @@ class PreferencesView(BaseView, GObjectWrapper):
 
     def _get_plugin_data(self):
         return self.plugins_select.get_all_items()
+
     def _set_plugin_data(self, value):
         selected = self.plugins_select.get_selected_item()
         self.plugins_select.set_model(value)
@@ -143,6 +146,7 @@ class PreferencesView(BaseView, GObjectWrapper):
             'email': self._widgets['ent_email'].get_text(),
             'team':  self._widgets['ent_team'].get_text()
         }
+
     def _set_user_data(self, value):
         if not isinstance(value, dict):
             raise ValueError('Value must be a dictionary')

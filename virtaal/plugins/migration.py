@@ -149,6 +149,7 @@ class Plugin(BasePlugin):
             contents = StringIO.StringIO('[poedit_headerless_file]\n' + poedit_config_file.read())
             poedit_config_file.close()
             self.poedit_config.readfp(contents)
+
             def get_thing(section, item):
                 dictionary = dict(self.poedit_config.items(section or 'poedit_headerless_file'))
                 return dictionary.get(item, None)

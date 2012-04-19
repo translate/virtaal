@@ -127,6 +127,7 @@ class SearchMode(BaseMode):
             self.update_search()
 
         curpos = self.ent_search.props.cursor_position
+
         def grab_focus():
             self.ent_search.grab_focus()
             self.ent_search.set_position(curpos)
@@ -232,6 +233,7 @@ class SearchMode(BaseMode):
         self._highlight_matches()
 
         curpos = self.ent_search.props.cursor_position
+
         def grabfocus():
             self.ent_search.grab_focus()
             self.ent_search.set_position(curpos)

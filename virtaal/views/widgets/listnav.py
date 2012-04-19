@@ -240,6 +240,7 @@ if __name__ == '__main__':
         class Item(object):
             def __init__(self, i):
                 self.i = i
+
             def __str__(self):
                 return '<Item i=%s>' % (self.i)
 

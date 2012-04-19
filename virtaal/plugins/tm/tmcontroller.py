@@ -81,8 +81,10 @@ class TMController(BaseController):
         self.plugin_controller.get_disabled_plugins = lambda *args: self.disabled_model_names
 
         self._model_signal_ids = {}
+
         def on_plugin_enabled(plugin_ctrlr, plugin):
             self._model_signal_ids[plugin] = plugin.connect('match-found', self.accept_response)
+
         def on_plugin_disabled(plugin_ctrlr, plugin):
             plugin.disconnect(self._model_signal_ids[plugin])
         self._signal_ids['plugin-enabled']  = self.plugin_controller.connect('plugin-enabled',  on_plugin_enabled)

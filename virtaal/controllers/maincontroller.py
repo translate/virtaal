@@ -111,6 +111,7 @@ class MainController(BaseController):
 
     def _get_checks_controller(self):
         return self._checks_controller
+
     def _set_checks_controller(self, value):
         self._checks_controller = value
         self.emit('controller-registered', self._checks_controller)
@@ -118,6 +119,7 @@ class MainController(BaseController):
 
     def _get_lang_controller(self):
         return self._lang_controller
+
     def _set_lang_controller(self, value):
         self._lang_controller = value
         self.emit('controller-registered', self._lang_controller)
@@ -125,6 +127,7 @@ class MainController(BaseController):
 
     def _get_mode_controller(self):
         return self._mode_controller
+
     def _set_mode_controller(self, value):
         self._mode_controller = value
         self.emit('controller-registered', self._mode_controller)
@@ -132,6 +135,7 @@ class MainController(BaseController):
 
     def _get_placeables_controller(self):
         return self._placeables_controller
+
     def _set_placeables_controller(self, value):
         self._placeables_controller = value
         self.emit('controller-registered', self._placeables_controller)
@@ -139,6 +143,7 @@ class MainController(BaseController):
 
     def _get_plugin_controller(self):
         return self._plugin_controller
+
     def _set_plugin_controller(self, value):
         self._plugin_controller = value
         self.emit('controller-registered', self._plugin_controller)
@@ -146,6 +151,7 @@ class MainController(BaseController):
 
     def _get_store_controller(self):
         return self._store_controller
+
     def _set_store_controller(self, value):
         self._store_controller = value
         self.emit('controller-registered', self._store_controller)
@@ -153,6 +159,7 @@ class MainController(BaseController):
 
     def _get_undo_controller(self):
         return self._undo_controller
+
     def _set_undo_controller(self, value):
         self._undo_controller = value
         self.emit('controller-registered', self._undo_controller)
@@ -160,6 +167,7 @@ class MainController(BaseController):
 
     def _get_unit_controller(self):
         return self._unit_controller
+
     def _set_unit_controller(self, value):
         self._unit_controller = value
         self.emit('controller-registered', self._unit_controller)
@@ -167,6 +175,7 @@ class MainController(BaseController):
 
     def _get_welcomescreen_controller(self):
         return self._welcomescreen_controller
+
     def _set_welcomescreen_controller(self, value):
         self._welcomescreen_controller = value
         self.emit('controller-registered', self._welcomescreen_controller)

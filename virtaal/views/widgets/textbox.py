@@ -109,6 +109,7 @@ class TextBox(gtk.TextView):
 
     def _get_suggestion(self):
         return self._suggestion
+
     def _set_suggestion(self, value):
         if value is None:
             self.hide_suggestion()
@@ -480,6 +481,7 @@ class TextBox(gtk.TextView):
         self.buffer.handler_unblock_by_func(self._on_insert_text)
 
         tagtable = self.buffer.get_tag_table()
+
         def remtag(tag, data):
             tagtable.remove(tag)
         # FIXME: The following line caused the program to segfault, so it's removed (for now).

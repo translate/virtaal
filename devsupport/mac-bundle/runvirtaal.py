@@ -11,7 +11,7 @@ _pylib_path = os.path.join(_lib_path, "python2.7")
 _site_lib_path = os.path.join(_pylib_path, "site-packages")
 _virtaal_path = os.path.join(_share_path, "virtaal")
 _virtaal_locale = os.path.join(_share_path, "locale")
-_conf_path = os.path.join(_res_path, "etc");
+_conf_path = os.path.join(_res_path, "etc")
 _gtk2_conf = os.path.join(_conf_path, "gtk-2.0")
 sys.path = [_virtaal_path,
             os.path.join(_pylib_path, "lib-dynload"),

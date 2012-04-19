@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-import sys, os, subprocess
+import os
+import subprocess
+import sys
 
 _home = os.environ["HOME"]
 _res_path = os.path.normpath(os.path.join(sys.path[0], "..", "Resources"))

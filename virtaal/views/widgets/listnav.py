@@ -25,7 +25,8 @@ options.
 """
 
 import logging
-import gobject, gtk
+import gobject
+import gtk
 
 from popupwidgetbutton import PopupWidgetButton
 

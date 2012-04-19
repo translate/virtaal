@@ -19,10 +19,11 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import ConfigParser
+import gettext
+import locale
 import logging
 import os
 import sys
-import locale, gettext
 from virtaal.support.libi18n.locale import fix_locale
 from translate.misc import file_discovery
 from translate.lang import data

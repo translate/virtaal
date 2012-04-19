@@ -108,8 +108,8 @@ def _show_kdialog(window, title, args):
     command.extend(args)
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     output, error = process.communicate()
-    output = output [:-1] # we don't want the last newline
-    error = output [:-1] # we don't want the last newline
+    output = output[:-1] # we don't want the last newline
+    error = output[:-1] # we don't want the last newline
     ret = process.returncode
     # bash truth values: 0/1 = True/False
     if ret == 0: # success

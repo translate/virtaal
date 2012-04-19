@@ -78,7 +78,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.""")
                 ])
         # FIXME entries that we may want to add
         #self.set_documenters()
-        self.connect ("response", lambda d, r: d.destroy())
+        self.connect("response", lambda d, r: d.destroy())
         self.show()
 
     def on_url(self, dialog, uri, data):

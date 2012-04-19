@@ -37,4 +37,3 @@ def forall_widgets(f, widget):
     f(widget)
     for child in get_children(widget):
         forall_widgets(f, child)
-

@@ -193,4 +193,3 @@ try:
 except ImportError, e:
     from difflib import SequenceMatcher
     pango_diff = _difflib_pango_diff
-

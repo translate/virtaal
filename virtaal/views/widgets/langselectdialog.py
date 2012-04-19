@@ -174,4 +174,3 @@ class LanguageSelectDialog(object):
         path = model.get_path(i)
         treeview.get_selection().select_iter(i)
         treeview.scroll_to_cell(path)
-

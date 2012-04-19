@@ -103,8 +103,8 @@ class TMModel(BaseTMModel):
     """This is a Google Translate translation memory model.
 
     The plugin uses the U{Google AJAX Languages API<http://code.google.com/apis/ajaxlanguage/>}
-    to query Google's machine translation services.  The implementation makes use of the 
-    U{RESTful<http://code.google.com/apis/ajaxlanguage/documentation/#fonje>} interface for 
+    to query Google's machine translation services.  The implementation makes use of the
+    U{RESTful<http://code.google.com/apis/ajaxlanguage/documentation/#fonje>} interface for
     Non-JavaScript environments.
     """
 

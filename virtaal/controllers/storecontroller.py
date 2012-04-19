@@ -401,7 +401,7 @@ class StoreController(BaseController):
                 logging.exception("Error converting file to translatable file:")
 
         # Let's entirely clear things in the view to ensure that no signals
-        # are still attached to old models before we start chaning things. See 
+        # are still attached to old models before we start chaning things. See
         # bug 1854.
         self.view.load_store(None)
         self.store.update_file(filename)

@@ -859,12 +859,12 @@ class MainView(BaseView):
         # (2.18) is that we cannot perform any operations
         # involving the GTK run-loop within this handler,
         # therefore we schedule the load to occur afterwards.
-        # See gdk/quartz/gdkeventloop-quartz.c in the GTK+ source. 
+        # See gdk/quartz/gdkeventloop-quartz.c in the GTK+ source.
         from gobject import idle_add
 
         def callback():
             self.controller.open_file(filename)
-        idle_add(callback) 
+        idle_add(callback)
 
         # We must indicate we handled this or crash
-        return True 
+        return True

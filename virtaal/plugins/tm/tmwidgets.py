@@ -124,8 +124,8 @@ class TMWindow(gtk.Window):
         #logging.debug('TMWindow.update_geometry(%dx%d +%d+%d)' % (width, height, x, y))
         self.resize(width, height)
         self.scrolled_window.set_size_request(width, height)
-        self.window.move_resize(0,0, width,height)
-        self.window.get_toplevel().move_resize(x,y, width,height)
+        self.window.move_resize(0, 0, width, height)
+        self.window.get_toplevel().move_resize(x, y, width, height)
 
 
     # EVENT HANLDERS #
@@ -138,7 +138,7 @@ class TMWindow(gtk.Window):
             cell_renderer.set_property('text', _("%(match_quality)s%%") % \
                     {"match_quality": quality})
             return
-        elif gtk.gtk_version < (2,16,0):
+        elif gtk.gtk_version < (2, 16, 0):
             # Rendering bug with some older versions of GTK if a progress is at
             # 0%. GNOME bug 567253.
             cell_renderer.set_property('value', 3)

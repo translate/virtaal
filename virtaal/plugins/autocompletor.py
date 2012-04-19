@@ -207,7 +207,7 @@ class AutoCompletor(object):
     def _update_word_list(self):
         """Update and sort found words according to frequency."""
         wordlist = self._word_freq.items()
-        wordlist.sort(key=lambda x:x[1], reverse=True)
+        wordlist.sort(key=lambda x: x[1], reverse=True)
         self._word_list = [items[0] for items in wordlist]
 
 

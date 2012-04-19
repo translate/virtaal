@@ -43,8 +43,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         'paste-start':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT, int)),
         'modified':       (SIGNAL_RUN_FIRST, None, ()),
         'unit-done':      (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'targets-created':(SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'sources-created':(SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'targets-created': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'sources-created': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'target-focused': (SIGNAL_RUN_FIRST, None, (int,)),
         'textview-language-changed': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT)),
     }
@@ -77,7 +77,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         # We automatically inherrit the tooltip from the Treeview, so we have
         # to show our own custom one to not have a tooltip obscuring things
         invisible_tooltip = gtk.Window(gtk.WINDOW_POPUP)
-        invisible_tooltip.resize(1,1)
+        invisible_tooltip.resize(1, 1)
         invisible_tooltip.set_opacity(0)
         self.set_tooltip_window(invisible_tooltip)
         self.connect('query-tooltip', self._on_query_tooltip)

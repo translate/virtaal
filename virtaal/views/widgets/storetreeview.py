@@ -33,7 +33,7 @@ class StoreTreeView(gtk.TreeView):
     """
 
     __gsignals__ = {
-        'modified':(gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
+        'modified': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
     }
 
     # INITIALIZERS #

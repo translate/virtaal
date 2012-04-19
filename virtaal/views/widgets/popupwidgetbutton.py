@@ -82,7 +82,7 @@ class PopupWidgetButton(gtk.ToggleButton):
 
         # Create pop-up window
         self.popup = gtk.Window(type=gtk.WINDOW_POPUP)
-        self.popup.set_size_request(0,0)
+        self.popup.set_size_request(0, 0)
         self.popup.add(widget)
         self.popup.show_all()
         self.popup.hide()

@@ -424,7 +424,7 @@ def find_enchant_files():
     # libenchant-1.dll
     libenchant = enchant.utils.get_resource_filename("libenchant.dll")
     libenchant1 = enchant.utils.get_resource_filename("libenchant-1.dll")
-    data_files.append(('',[libenchant, libenchant1]))
+    data_files.append(('', [libenchant, libenchant1]))
     return data_files
 
 def find_langmodel_files():

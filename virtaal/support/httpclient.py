@@ -173,7 +173,7 @@ class HTTPClient(object):
         self.curl = pycurl.CurlMulti()
         self.user_agent = None
 
-    def add(self,request):
+    def add(self, request):
         """add a request to the queue"""
         # First ensure that we're not piling up on unanswered requests:
         if len(self.requests) > 15:

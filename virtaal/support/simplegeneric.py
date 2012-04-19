@@ -33,7 +33,7 @@ def generic(func):
 
     def _by_class(*args, **kw):
         cls = args[0].__class__
-        for t in type(cls.__name__, (cls,object), {}).__mro__:
+        for t in type(cls.__name__, (cls, object), {}).__mro__:
             f = _gbt(t, _sentinel)
             if f is not _sentinel:
                 return f(*args, **kw)
@@ -51,7 +51,7 @@ def generic(func):
             )
 
         def decorate(f):
-            if _by_type.setdefault(t,f) is not f:
+            if _by_type.setdefault(t, f) is not f:
                 raise TypeError(
                     "%r already has method for type %r" % (func, t)
                 )
@@ -65,7 +65,7 @@ def generic(func):
     def when_object(o):
         """Decorator to add a method that will be called for object `o`"""
         def decorate(f):
-            if _by_object.setdefault(id(o), (o,f))[1] is not f:
+            if _by_object.setdefault(id(o), (o, f))[1] is not f:
                 raise TypeError(
                     "%r already has method for object %r" % (func, o)
                 )

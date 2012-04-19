@@ -31,8 +31,8 @@ class TMModel(BaseTMModel):
     shortname = _('Remote TM')
 
     default_config = {
-        "host" : "localhost",
-        "port" : "55555",
+        "host": "localhost",
+        "port": "55555",
     }
 
     # INITIALIZERS #

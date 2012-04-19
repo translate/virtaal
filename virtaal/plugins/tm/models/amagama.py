@@ -31,8 +31,8 @@ class TMModel(remotetm.TMModel):
     shortname = _('Amagama')
 
     default_config = {
-        "host" : "amagama.locamotion.org",
-        "port" : "80",
+        "host": "amagama.locamotion.org",
+        "port": "80",
     }
 
     def push_store(self, store_controller):

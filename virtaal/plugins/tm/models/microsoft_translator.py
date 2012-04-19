@@ -47,8 +47,8 @@ class TMModel(BaseTMModel):
     description = _('Unreviewed machine translations from Microsoft Translator')
 
     default_config = {
-        "url" : "http://api.microsofttranslator.com/V1/Http.svc",
-        "appid" : "7286B45B8C4816BDF75DC007C1952DDC11C646C1",
+        "url": "http://api.microsofttranslator.com/V1/Http.svc",
+        "appid": "7286B45B8C4816BDF75DC007C1952DDC11C646C1",
     }
 
     # INITIALISERS #

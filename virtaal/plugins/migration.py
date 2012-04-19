@@ -191,7 +191,7 @@ class Plugin(BasePlugin):
             sources = bsddb.hashopen(strings_db_file, 'r')
             targets = bsddb.rnopen(translations_db_file, 'r')
             for source, str_index in sources.iteritems():
-                unit = {"context" : ""}
+                unit = {"context": ""}
                 # the index is a four byte integer encoded as a string
                 # was little endian on my machine, not sure if it is universal
                 index = struct.unpack('i', str_index)
@@ -219,7 +219,7 @@ class Plugin(BasePlugin):
             translations = bsddb.btopen(tm_file, 'r')
 
             for source, target in translations.iteritems():
-                unit = {"context" : ""}
+                unit = {"context": ""}
                 source = source[:-1] # null-terminated
                 target = target[16:-1] # 16 bytes of padding, null-terminated
                 unit["source"] = _prepare_db_string(source)

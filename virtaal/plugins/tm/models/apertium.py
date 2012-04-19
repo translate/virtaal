@@ -45,7 +45,7 @@ class TMModel(BaseTMModel):
 
     url = "http://api.apertium.org/json"
     default_config = {
-        "appid" : "",
+        "appid": "",
     }
 
     # INITIALISERS #

@@ -38,9 +38,9 @@ class TMModel(remotetm.TMModel):
     shortname = _('Local TM')
 
     default_config = {
-        "tmserver_bind" : "localhost",
-        "tmserver_port" : "55555",
-        "tmdb" : os.path.join(pan_app.get_config_dir(), u"tm.db")
+        "tmserver_bind": "localhost",
+        "tmserver_port": "55555",
+        "tmdb": os.path.join(pan_app.get_config_dir(), u"tm.db")
     }
 
     # INITIALIZERS #

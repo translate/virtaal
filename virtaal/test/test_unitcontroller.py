@@ -28,8 +28,15 @@ class TestUnitController(TestScaffolding):
     def test_get_target(self):
         # The unit indexes below differ by 1, because the StoreModel class (and thus the rest of Virtaal)
         # ignores PO headers (and other untranslatable units), whereas the Toolkit's stores do not.
-        assert self.unit_controller.get_unit_target(0) == self.trans_store.getunits()[1].target
+
+        test_unit = self.trans_store.getunits()[1]
+        view = self.unit_controller.load_unit(test_unit)
+
+        assert unicode(self.unit_controller.view.targets[0].elem) == self.trans_store.getunits()[1].target
 
     def test_set_target(self):
-        self.unit_controller.set_unit_target(0, 'Test')
-        assert self.unit_controller.get_unit_target(0) == 'Test'
+        test_unit = self.trans_store.getunits()[1]
+        view = self.unit_controller.load_unit(test_unit)
+
+        self.unit_controller.set_unit_target(0, [u'Test',])
+        assert unicode(self.unit_controller.view.targets[0].elem) == u'Test'

@@ -36,10 +36,12 @@ class TestScaffolding(object):
         self.main_controller = MainController()
         self.store_controller = StoreController(self.main_controller)
         self.unit_controller = UnitController(self.store_controller)
+        self.checks_controller = ChecksController(self.main_controller)
 
         # Load additional built-in modules
         self.undo_controller = UndoController(self.main_controller)
         self.mode_controller = ModeController(self.main_controller)
+        self.lang_controller = LanguageController(self.main_controller)
 
         po_contents = """# Afrikaans (af) localisation of Virtaal.
 # Copyright (C) 2008 Zuza Software Foundation (Translate.org.za)
@@ -48,17 +50,17 @@ class TestScaffolding(object):
 # F Wolff <friedel@translate.org.za>, 2008
 msgid ""
 msgstr ""
-"Project-Id-Version: Virtaal 0.1\n"
-"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2008-10-14 15:33+0200\n"
-"PO-Revision-Date: 2008-10-14 15:46+0200\n"
-"Last-Translator: F Wolff <friedel@translate.org.za>\n"
-"Language-Team: translate-discuss-af@lists.sourceforge.net\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.2\n"
+"Project-Id-Version: Virtaal 0.1\\n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\\n"
+"POT-Creation-Date: 2008-10-14 15:33+0200\\n"
+"PO-Revision-Date: 2008-10-14 15:46+0200\\n"
+"Last-Translator: F Wolff <friedel@translate.org.za>\\n"
+"Language-Team: translate-discuss-af@lists.sourceforge.net\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=UTF-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\\n"
+"X-Generator: Virtaal 0.2\\n"
 
 #: ../bin/virtaal:41
 msgid "You must specify a directory or a translation file for --terminology"
@@ -69,6 +71,7 @@ msgstr "U moet 'n gids of vertaallêer spesifiseer vir --terminology"
 msgid "%prog [options] [translation_file]"
 msgstr "%prog [opsies] [vertaallêer]"
 
+#, fuzzy
 #: ../bin/virtaal:49
 msgid "PROFILE"
 msgstr "PROFIEL"

@@ -28,11 +28,13 @@ class TestModeController(TestScaffolding):
         assert default_mode == self.mode_controller.modes[self.mode_controller.default_mode_name]
 
     def test_select_mode(self):
+        self.store_controller.open_file(self.testfile[1])
         for name, mode in self.mode_controller.modes.items():
             self.mode_controller.select_mode(mode)
             assert self.mode_controller.current_mode is mode
 
-    def test_select_mode(self):
+    def test_select_mode_by_name(self):
+        self.store_controller.open_file(self.testfile[1])
         for name, mode in self.mode_controller.modes.items():
             self.mode_controller.select_mode_by_name(name)
             assert self.mode_controller.current_mode is mode

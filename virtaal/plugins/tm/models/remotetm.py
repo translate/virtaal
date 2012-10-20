@@ -49,7 +49,7 @@ class TMModel(BaseTMModel):
 
     # METHODS #
     def query(self, tmcontroller, unit):
-        # We don't want to do lookups in case of misconfiguratinos like en->en
+        # We don't want to do lookups in case of misconfigurations like en->en
         if self.source_lang == self.target_lang:
             return
 

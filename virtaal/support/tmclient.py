@@ -34,12 +34,14 @@ class TMClient(HTTPClient):
         HTTPClient.__init__(self)
         self.base_url = base_url
 
-    def translate_unit(self, unit_source, source_lang, target_lang, callback=None):
+    def translate_unit(self, unit_source, source_lang, target_lang, callback=None, params=None):
         """suggest translations from TM"""
         request = RESTRequest(
                 self.base_url + "/%s/%s/unit" % (source_lang, target_lang),
                 unit_source, "GET",
-                user_agent=self.user_agent)
+                user_agent=self.user_agent,
+                params=params,
+        )
         self.add(request)
         if callback:
             request.connect(

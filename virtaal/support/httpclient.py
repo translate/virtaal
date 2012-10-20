@@ -148,13 +148,16 @@ class HTTPRequest(GObjectWrapper):
 class RESTRequest(HTTPRequest):
     """Single HTTP REST request, blocking if used standalone."""
 
-    def __init__(self, url, id, method='GET', data=None, headers=None, user_agent=None):
+    def __init__(self, url, id, method='GET', data=None, headers=None, user_agent=None, params=None):
         super(RESTRequest, self).__init__(url, method, data, headers, user_agent=user_agent)
 
         url = self.url
         self.id = id
         if id:
             url += '/' + urllib.quote(id.encode('utf-8'), safe='')
+
+        if params:
+            url += '?' + urllib.urlencode(params)
 
         self.curl.setopt(pycurl.URL, url)
 

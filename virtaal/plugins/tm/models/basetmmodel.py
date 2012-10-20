@@ -79,11 +79,15 @@ class BaseTMModel(BaseModel):
 
         self.source_lang = None
         self.target_lang = None
+        self.checker = None
         lang_controller = self.controller.main_controller.lang_controller
+        checks_controller = self.controller.main_controller.checks_controller
         self._set_source_lang(None, lang_controller.source_lang.code)
         self._set_target_lang(None, lang_controller.target_lang.code)
+        self._set_checker(None, checks_controller.code)
         self._connect_ids.append((lang_controller.connect('source-lang-changed', self._set_source_lang), lang_controller))
         self._connect_ids.append((lang_controller.connect('target-lang-changed', self._set_target_lang), lang_controller))
+        self._connect_ids.append((checks_controller.connect('checker-set', self._set_checker), checks_controller))
 
 
     # METHODS #
@@ -121,6 +125,11 @@ class BaseTMModel(BaseModel):
         target-lang-changed event handlers"""
         pass
 
+    def set_checker(self, checker):
+        """models override this to implement their own
+        checker-set event handlers"""
+        pass
+
     def _set_source_lang(self, controller, language):
         """private method for baseline handling of source language
         change events"""
@@ -135,3 +144,11 @@ class BaseTMModel(BaseModel):
             self.target_lang = language
             self.cache = {}
             self.set_target_lang(language)
+
+    def _set_checker(self, controller, checker):
+        """private method for handling of project style change events"""
+        if (checker != self.checker):
+            self.checker = checker
+            #TODO: consider:
+            #self.cache = {}
+            self.set_checker(checker)

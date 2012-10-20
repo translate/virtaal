@@ -61,7 +61,10 @@ class TMModel(BaseTMModel):
                 # Only emit if we actually have something to offer
                 self.emit('match-found', query_str, _cached)
         else:
-            self.tmclient.translate_unit(query_str, self.source_lang, self.target_lang, self._handle_matches)
+            params = {}
+            if self.checker:
+                params['style'] = self.checker
+            self.tmclient.translate_unit(query_str, self.source_lang, self.target_lang, self._handle_matches, params)
 
     def _handle_matches(self, widget, query_str, matches):
         """Handle the matches when returned from self.tmclient."""

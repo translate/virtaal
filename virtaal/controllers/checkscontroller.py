@@ -174,7 +174,7 @@ class ChecksController(BaseController):
         self._checker = self.checker_info.get(code, self.checker_info[None])()
         self._checker.config.updatetargetlanguage(target_lang)
 
-        self.emit('checker-set', self.get_checker())
+        self.emit('checker-set', code)
         self.projview.set_checker_name(self._checker_code_to_name.get(code, self._checker_code_to_name[None]))
         self.code = code
         if self.main_controller.unit_controller.current_unit:
@@ -233,7 +233,7 @@ class ChecksController(BaseController):
         current_checker = self.get_checker()
         if current_checker:
            current_checker.config.updatetargetlanguage(langcode)
-           self.emit('checker-set', current_checker)
+           self.emit('checker-set', self.code)
            if self.last_unit:
                self.check_unit(self.last_unit)
 

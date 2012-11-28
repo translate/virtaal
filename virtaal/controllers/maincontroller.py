@@ -218,9 +218,6 @@ class MainController(BaseController):
             return False
 
     def open_tutorial(self):
-        # Tutorial filename, now pointing at a temporary file
-        filename = "/tmp/tutorial.pot"
-        
         # Entries in the tutorial, now with translated comments
         entries = (
         (_(u"""Welcome to the Virtaal tutorial. You can do the first translation by 
@@ -275,7 +272,13 @@ class MainController(BaseController):
         (_(u"This message contains a similar link that is contained within <span> and </span>. Make sure you maintain all the tags (<...>) correctly, and that the link is contained completely inside the <span> and </span> tags in your translation. Make sure that the text inside the \"a\" tags correspond to \"help page\" and that your translation corresponding to the second sentence is contained in the <span> tags. Note how the full stop is still inside the </span> tag."), u"The software has many features. <span class=\"info\">Feel free to visit our <a href=\"http://translate.sourceforge.net/\">help page</a>.</span>", u""),
         )
         
-        # In order to avoid creating the pot file header with comments, we may just create a new file from scratch or just opening an existing file having only the header.
+        # Tutorial filename, now pointing at a temporary file
+        filename = "/tmp/virtaal_tutorial.pot"
+        
+        # It seems not to be truncating the temporary file before writing, so remove it if it exists
+        if os.path.exists(filename):
+            os.remove(filename)
+        
         tutorial_file = factory.getobject(filename)
         for comment, source, context in entries:
             unit = tutorial_file.addsourceunit(source)# This creates an unit with the provided source (even if plural) and returns it. In case of plural, source should be a list of strings instead of a string.
@@ -285,6 +288,7 @@ class MainController(BaseController):
             unit.setcontext(context)
         tutorial_file.save()
         
+        # Open the file just created on the fly
         self.open_file(filename, forget_dir=True)
 
 

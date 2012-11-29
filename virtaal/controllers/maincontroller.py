@@ -497,14 +497,19 @@ to visit our <a href=\"http://translate.sourceforge.net/\">help page</a>.\
         from tempfile import mkdtemp
         filename = os.path.join(mkdtemp(), "virtaal_tutorial.pot")
         
-        # It seems not to be truncating the temporary file before writing, so remove it if it exists
+        # Remove the temp file since it isn't truncating it before writing
         if os.path.exists(filename):
             os.remove(filename)
         
         tutorial_file = factory.getobject(filename)
         for comment, source, context in entries:
-            unit = tutorial_file.addsourceunit(source)# This creates an unit with the provided source (even if plural) and returns it. In case of plural, source should be a list of strings instead of a string.
-            if isinstance(source, list):# Maybe unnecessary since when Virtaal opens the file and doesn't crash, even if it has only a msgstr for plural entries, and it shows the appropiate number of translation fields (for the target language)
+            unit = tutorial_file.addsourceunit(source)# This creates an unit
+            # with the provided source (even if plural) and returns it. In case
+            # of plural, source should be a list of strings instead of a string
+            if isinstance(source, list):# Maybe unnecessary since when Virtaal
+                # opens the file and doesn't crash, even if it has only a
+                # msgstr for plural entries, and it shows the appropiate number
+                # of translation fields (for the target language)
                 unit.settarget([u"", u""])
             unit.addnote(comment, "developer")
             unit.setcontext(context)

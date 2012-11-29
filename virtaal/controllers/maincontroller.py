@@ -24,7 +24,6 @@ import gtk
 from gobject import SIGNAL_RUN_FIRST
 
 from translate.storage import factory
-from xdg.BaseDirectory import xdg_cache_home
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.views.mainview import MainView
@@ -494,12 +493,9 @@ to visit our <a href=\"http://translate.sourceforge.net/\">help page</a>.\
 </span>", u""),
         )
         
-        # Tutorial filename, now pointing at a temporary file in $XDG_CACHE_HOME
-        filename = os.path.join(xdg_cache_home, "virtaal/virtaal_tutorial.pot")
-        
-        # If Virtaal directory in $XDG_CACHE_HOME doesn't exist, then create it
-        if not os.path.exists(os.path.dirname(filename)):
-            os.mkdir(os.path.dirname(filename))
+        # Tutorial filename at a temporary file in a random temporary directory
+        from tempfile import mkdtemp
+        filename = os.path.join(mkdtemp(), "virtaal_tutorial.pot")
         
         # It seems not to be truncating the temporary file before writing, so remove it if it exists
         if os.path.exists(filename):

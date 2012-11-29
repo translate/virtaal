@@ -497,10 +497,6 @@ to visit our <a href=\"http://translate.sourceforge.net/\">help page</a>.\
         from tempfile import mkdtemp
         filename = os.path.join(mkdtemp(), "virtaal_tutorial.pot")
         
-        # Remove the temp file since it isn't truncating it before writing
-        if os.path.exists(filename):
-            os.remove(filename)
-        
         tutorial_file = factory.getobject(filename)
         for comment, source, context in entries:
             unit = tutorial_file.addsourceunit(source)# This creates an unit

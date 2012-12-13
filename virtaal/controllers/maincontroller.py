@@ -20,6 +20,7 @@
 
 import logging
 import os.path
+from tempfile import mkdtemp
 import gtk
 from gobject import SIGNAL_RUN_FIRST
 
@@ -494,7 +495,6 @@ to visit our <a href=\"http://translate.sourceforge.net/\">help page</a>.\
         )
         
         # Tutorial filename at a temporary file in a random temporary directory
-        from tempfile import mkdtemp
         filename = os.path.join(mkdtemp(), "virtaal_tutorial.pot")
         
         tutorial_file = factory.getobject(filename)

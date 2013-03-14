@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from gi.repository import Gtk
 import logging
 
 from virtaal.views.baseview import BaseView
@@ -55,18 +55,21 @@ class TerminologyGUIInfo(StringElemGUI):
 
     @classmethod
     def update_style(self, widget):
-        import gtk
-        fg = widget.style.fg[gtk.STATE_NORMAL]
-        bg = widget.style.base[gtk.STATE_NORMAL]
+        from gi.repository import Gtk
+        # FIXME get_style() is deprecated
+        fg = widget.get_style().fg[Gtk.StateType.NORMAL]
+        bg = widget.get_style().base[Gtk.StateType.NORMAL]
         if is_inverse(fg, bg):
             self.fg = _inverse_fg
             self.bg = _inverse_bg
         else:
             self.fg = _default_fg
             self.bg = _default_bg
+        self.fg = _default_fg
+        self.bg = _default_bg
 
 
-class TerminologyCombo(gtk.ComboBox):
+class TerminologyCombo(Gtk.ComboBox):
     """
     A combo box containing translation matches.
     """
@@ -90,13 +93,13 @@ class TerminologyCombo(gtk.ComboBox):
         self.menu.connect('selection-done', self._on_selection_done)
 
     def __init_combo(self):
-        self._model = gtk.ListStore(str)
+        self._model = Gtk.ListStore(str)
         for trans in self.elem.translations:
             self._model.append([trans])
 
         self.set_model(self._model)
-        self._renderer = gtk.CellRendererText()
-        self.pack_start(self._renderer)
+        self._renderer = Gtk.CellRendererText()
+        self.pack_start(self._renderer, True, True, 0)
         self.add_attribute(self._renderer, 'text', 0)
 
         # Force the "appears-as-list" style property to 0
@@ -107,7 +110,7 @@ class TerminologyCombo(gtk.ComboBox):
             }
             class "GtkComboBox" style "not-a-list"
             """
-        gtk.rc_parse_string(rc_string)
+        Gtk.rc_parse_string(rc_string)
 
 
     # METHODS #
@@ -121,10 +124,10 @@ class TerminologyCombo(gtk.ComboBox):
         if iter:
             self.selected_string = self._model.get_value(iter, 0)
 
-        if self.parent:
-            self.parent.grab_focus()
+        if self.get_parent():
+            self.get_parent().grab_focus()
 
-        parent = self.parent
+        parent = self.get_parent()
         buffer = parent.get_buffer()
         parent.remove(self)
         if self.insert_offset >= 0:

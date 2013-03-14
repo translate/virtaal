@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
+from gi.repository import GObject
 import os
 
 from virtaal.common import GObjectWrapper
@@ -34,7 +34,7 @@ class LookupController(BaseController):
 
     __gtype_name__ = 'LookupController'
     __gsignals__ = {
-        'lookup-query': (gobject.SIGNAL_RUN_FIRST, None, (object,))
+        'lookup-query': (GObject.SignalFlags.RUN_FIRST, None, (object,))
     }
 
     # INITIALIZERS #

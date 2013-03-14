@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
+from gi.repository import GObject
 import os.path
 from translate.storage.placeables import terminology
 
@@ -37,7 +37,7 @@ class TerminologyController(BaseController):
 
     __gtype_name__ = 'TerminologyController'
     __gsignals__ = {
-        'start-query': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,))
+        'start-query': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_STRING,))
     }
 
     # INITIALIZERS #

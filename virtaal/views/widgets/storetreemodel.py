@@ -18,44 +18,53 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import gobject
+from gi.repository import Gtk
+from gi.repository import GObject
 
 from virtaal.views import markup
 
 
 COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE = 0, 1, 2
 
-class StoreTreeModel(gtk.GenericTreeModel):
-    """Custom C{gtk.TreeModel} adapted from the old C{UnitModel} class."""
+# FIXME should we rather use treemodel?
+class StoreTreeModel(Gtk.ListStore):
+    """Custom C{Gtk.TreeModel} adapted from the old C{UnitModel} class."""
+
+    __gtype_name__ = 'StoreTreeModel'
 
     def __init__(self, storemodel):
-        gtk.GenericTreeModel.__init__(self)
+        #GObject.GObject.__init__(self)
+        super(StoreTreeModel, self).__init__()
         self._store = storemodel
-        self._store_len = len(storemodel)
+        self._store_len = len(self._store)
         self._current_editable = 0
 
-    def on_get_flags(self):
-        return gtk.TREE_MODEL_ITERS_PERSIST | gtk.TREE_MODEL_LIST_ONLY
+    def do_get_flags(self):
+        return Gtk.TreeModelFlags.ITERS_PERSIST | Gtk.TreeModelFlags.LIST_ONLY
 
-    def on_get_n_columns(self):
+    def do_get_n_columns(self):
         return 3
 
-    def on_get_column_type(self, index):
+    def do_get_column_type(self, index):
         if index == 0:
-            return gobject.TYPE_STRING
+            return GObject.TYPE_STRING
         elif index == 1:
-            return gobject.TYPE_PYOBJECT
+            return GObject.TYPE_PYOBJECT
         elif index == 2:
-            return gobject.TYPE_BOOLEAN
+            return GObject.TYPE_BOOLEAN
 
-    def on_get_iter(self, path):
-        return path[0]
+    #def do_get_iter(self, path):
+    #    print path
+    #    iter = Gtk.TreeIter()
+    #    iter.stamp = path.get_indices()[0]
+    #    return iter
 
-    def on_get_path(self, rowref):
-        return (rowref,)
+    #def do_get_path(self, rowref):
+    #    return (rowref,)
+    #    #path = Gtk.TreePath.new_from_string(str(iter.stamp))
+    #    #return path
 
-    def on_get_value(self, rowref, column):
+    def do_get_value(self, rowref, column):
         if column <= 1:
             unit = self._store[rowref]
             if column == 0:
@@ -70,46 +79,48 @@ class StoreTreeModel(gtk.GenericTreeModel):
         else:
             return self._current_editable == rowref
 
-    def on_iter_next(self, rowref):
-        if rowref < self._store_len - 1:
-            return rowref + 1
-        else:
-            return None
+    #def do_iter_next(self, rowref):
+    #    if rowref < self._store_len - 1:
+    #        return rowref + 1
+    #    else:
+    #        return None
 
-    def on_iter_children(self, parent):
-        if parent == None and self._store_len > 0:
-            return 0
-        else:
-            return None
+    #def do_iter_children(self, parent):
+    #    if parent == None and self._store_len > 0:
+    #        return 0
+    #    else:
+    #        return None
 
-    def on_iter_has_child(self, rowref):
-        return False
+    #def do_iter_has_child(self, rowref):
+    #    return False
 
-    def on_iter_n_children(self, rowref):
-        if rowref == None:
-            return self._store_len
-        else:
-            return 0
+    #def do_iter_n_children(self, rowref):
+    #    if rowref == None:
+    #        return self._store_len
+    #    else:
+    #        return 0
 
-    def on_iter_nth_child(self, parent, n):
-        if parent == None:
-            return n
-        else:
-            return None
+    #def do_iter_nth_child(self, parent, n):
+    #    if parent == None:
+    #        return n
+    #    else:
+    #        return None
 
-    def on_iter_parent(self, child):
-        return None
+    #def do_iter_parent(self, child):
+    #    return None
 
     # Non-model-interface methods
 
     def set_editable(self, new_path):
-        old_path = (self._current_editable,)
-        self._current_editable = new_path[0]
+        old_path = self.store_index_to_path(self._current_editable)
+        self._current_editable = new_path.get_indices()[0]
         self.row_changed(old_path, self.get_iter(old_path))
         self.row_changed(new_path, self.get_iter(new_path))
 
     def store_index_to_path(self, store_index):
-        return self.on_get_path(store_index)
+        return Gtk.TreePath.new_from_string(str(store_index))
 
     def path_to_store_index(self, path):
-        return path[0]
+        if path is None:
+            return 0
+        return path.get_indices()[0]

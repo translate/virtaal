@@ -18,12 +18,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from gi.repository import Gtk
 import locale
 import os
 import sys
 import logging
-from gtk import gdk
+from gi.repository import Gdk
 
 from virtaal.views import theme
 from virtaal.common import pan_app
@@ -39,23 +39,23 @@ def fill_dialog(dialog, title='', message='', markup=''):
         dialog.set_markup(message.replace('<', '&lt;'))
 
 
-class EntryDialog(gtk.Dialog):
+class EntryDialog(Gtk.Dialog):
     """A simple dialog containing a dialog for user input."""
 
     def __init__(self, parent):
         super(EntryDialog, self).__init__(title='Input Dialog', parent=parent)
         self.set_size_request(450, 100)
 
-        self.lbl_message = gtk.Label()
-        self.vbox.pack_start(self.lbl_message)
+        self.lbl_message = Gtk.Label()
+        self.vbox.pack_start(self.lbl_message, True, True, 0)
 
-        self.ent_input = gtk.Entry()
+        self.ent_input = Gtk.Entry()
         self.ent_input.set_activates_default(True)
-        self.vbox.pack_start(self.ent_input)
+        self.vbox.pack_start(self.ent_input, True, True, 0)
 
-        self.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
-        self.add_button(gtk.STOCK_OK, gtk.RESPONSE_OK)
-        self.set_default_response(gtk.RESPONSE_OK)
+        self.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
+        self.add_button(Gtk.STOCK_OK, Gtk.ResponseType.OK)
+        self.set_default_response(Gtk.ResponseType.OK)
 
     def run(self, title=None, message=None, keepInput=False):
         if message:
@@ -103,7 +103,7 @@ class MainView(BaseView):
                 }
                 class "GtkTreeView" style "show-rules"
                 """
-            gtk.rc_parse_string(rc_string)
+            Gtk.rc_parse_string(rc_string)
 
         # Set the GtkBuilder file
         self.builderfile, self.gui = self.load_builder_file(["virtaal", "virtaal.ui"], root='MainWindow', domain="virtaal")
@@ -115,14 +115,14 @@ class MainView(BaseView):
         self.menu_structure = self.menubar
         self.status_bar = self.gui.get_object("status_bar")
         self.status_bar.set_sensitive(False)
-        self.statusbar_context_id = self.status_bar.get_context_id("statusbar")
+        self.statusbar_context_id = self.status_bar.get_context_id("status_bar")
         #Only used in full screen, initialised as needed
         self.btn_app = None
         self.app_menu = None
 
         if sys.platform == 'darwin':
             try:
-                gtk.rc_parse(pan_app.get_abs_data_filename(["themes", "OSX_Leopard_theme", "gtkrc"]))
+                Gtk.rc_parse(pan_app.get_abs_data_filename(["themes", "OSX_Leopard_theme", "gtkrc"]))
             except:
                 logging.exception("Couldn't find OSX_Leopard_theme")
 
@@ -146,11 +146,11 @@ class MainView(BaseView):
                 osxapp.insert_app_menu_item(mnu_about, 0)
                 self.gui.get_object("separator_mnu_help_1").hide()
                 # Move the preferences menu item
-                osxapp.insert_app_menu_item(gtk.SeparatorMenuItem(), 1)
+                osxapp.insert_app_menu_item(Gtk.SeparatorMenuItem(), 1)
                 mnu_prefs = self.gui.get_object("mnu_prefs")
                 osxapp.insert_app_menu_item(mnu_prefs, 2)
                 self.gui.get_object("separator_mnu_edit_3").hide()
-                gtk.accel_map_load(pan_app.get_abs_data_filename(["virtaal", "virtaal.accel"]))
+                Gtk.AccelMap.load(pan_app.get_abs_data_filename(["virtaal", "virtaal.accel"]))
                 osxapp.ready()
                 osxapp.connect("NSApplicationOpenFile", self._on_osx_openfile_event)
                 osxapp.connect("NSApplicationBlockTermination", self._on_quit)
@@ -191,8 +191,8 @@ class MainView(BaseView):
         self._setup_key_bindings()
         self._track_window_state()
         self._setup_dnd()
-        from gobject import idle_add
-        idle_add(self._setup_recent_files)
+        from gi.repository import GLib
+        GLib.idle_add(self._setup_recent_files)
         self.main_window.connect('style-set', self._on_style_set)
 
     def _create_dialogs(self):
@@ -221,10 +221,10 @@ class MainView(BaseView):
     def error_dialog(self):
         if not self._error_dialog:
         # Error dialog
-            self._error_dialog = gtk.MessageDialog(self.main_window,
-                gtk.DIALOG_MODAL,
-                gtk.MESSAGE_ERROR,
-                gtk.BUTTONS_OK)
+            self._error_dialog = Gtk.MessageDialog(self.main_window,
+                Gtk.DialogFlags.MODAL,
+                Gtk.MessageType.ERROR,
+                Gtk.ButtonsType.OK)
             self._error_dialog.set_title(_("Error"))
         return self._error_dialog
 
@@ -232,22 +232,22 @@ class MainView(BaseView):
     def prompt_dialog(self):
         # Yes/No prompt dialog
         if not self._prompt_dialog:
-            self._prompt_dialog = gtk.MessageDialog(self.main_window,
-                gtk.DIALOG_MODAL,
-                gtk.MESSAGE_QUESTION,
-                gtk.BUTTONS_YES_NO,
+            self._prompt_dialog = Gtk.MessageDialog(self.main_window,
+                Gtk.DialogFlags.MODAL,
+                Gtk.MessageType.QUESTION,
+                Gtk.ButtonsType.YES_NO,
             )
-            self._prompt_dialog.set_default_response(gtk.RESPONSE_NO)
+            self._prompt_dialog.set_default_response(Gtk.ResponseType.NO)
         return self._prompt_dialog
 
     @property
     def info_dialog(self):
         # Informational dialog
         if not self._info_dialog:
-            self._info_dialog = gtk.MessageDialog(self.main_window,
-                gtk.DIALOG_MODAL,
-                gtk.MESSAGE_INFO,
-                gtk.BUTTONS_OK,
+            self._info_dialog = Gtk.MessageDialog(self.main_window,
+                Gtk.DialogFlags.MODAL,
+                Gtk.MessageType.INFO,
+                Gtk.ButtonsType.OK,
             )
         return self._info_dialog
 
@@ -255,14 +255,14 @@ class MainView(BaseView):
     def open_chooser(self):
         # Open (file chooser) dialog
         if not self._open_chooser:
-            self._open_chooser = gtk.FileChooserDialog(
+            self._open_chooser = Gtk.FileChooserDialog(
                 _('Choose a Translation File'),
                 self.main_window,
-                gtk.FILE_CHOOSER_ACTION_OPEN,
-                (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK)
+                Gtk.FileChooserAction.OPEN,
+                (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
             )
-            self._open_chooser.set_default_response(gtk.RESPONSE_OK)
-            all_supported_filter = gtk.FileFilter()
+            self._open_chooser.set_default_response(Gtk.ResponseType.OK)
+            all_supported_filter = Gtk.FileFilter()
             all_supported_filter.set_name(_("All Supported Files"))
             self._open_chooser.add_filter(all_supported_filter)
             from translate.storage import factory as storage_factory
@@ -275,7 +275,7 @@ class MainView(BaseView):
                 # more harmful than good.
                 if "csv" in extensions:
                     continue
-                new_filter = gtk.FileFilter()
+                new_filter = Gtk.FileFilter()
                 new_filter.set_name(name)
                 if extensions:
                     for extension in extensions:
@@ -290,7 +290,7 @@ class MainView(BaseView):
                         all_supported_filter.add_mime_type(mimetype)
                 self._open_chooser.add_filter(new_filter)
 
-            #doc_filter = gtk.FileFilter()
+            #doc_filter = Gtk.FileFilter()
             #doc_filter.set_name(_('Translatable documents'))
             #from translate.convert import factory as convert_factory
             #for extension in convert_factory.converters.keys():
@@ -300,13 +300,13 @@ class MainView(BaseView):
             #    all_supported_filter.add_pattern('*.' + extension)
             #self._open_chooser.add_filter(doc_filter)
 
-            #proj_filter = gtk.FileFilter()
+            #proj_filter = Gtk.FileFilter()
             #proj_filter.set_name(_('Translate project bundles'))
             #proj_filter.add_pattern('*.zip')
             #all_supported_filter.add_pattern('*.zip')
             #self._open_chooser.add_filter(proj_filter)
 
-            all_filter = gtk.FileFilter()
+            all_filter = Gtk.FileFilter()
             all_filter.set_name(_("All Files"))
             all_filter.add_pattern("*")
             self._open_chooser.add_filter(all_filter)
@@ -317,54 +317,55 @@ class MainView(BaseView):
     def save_chooser(self):
         # Save (file chooser) dialog
         if not self._save_chooser:
-            self._save_chooser = gtk.FileChooserDialog(
+            self._save_chooser = Gtk.FileChooserDialog(
                 _("Save"),
                 self.main_window,
-                gtk.FILE_CHOOSER_ACTION_SAVE,
-                (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_SAVE, gtk.RESPONSE_OK)
+                Gtk.FileChooserAction.SAVE,
+                (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_SAVE, Gtk.ResponseType.OK)
             )
             self._save_chooser.set_do_overwrite_confirmation(True)
-            self._save_chooser.set_default_response(gtk.RESPONSE_OK)
+            self._save_chooser.set_default_response(Gtk.ResponseType.OK)
         return self._save_chooser
 
     @property
     def confirm_dialog(self):
         # Save confirmation dialog (Save/Discard/Cancel buttons)
         if not self._confirm_dialog:
-            (RESPONSE_SAVE, RESPONSE_DISCARD) = (gtk.RESPONSE_YES, gtk.RESPONSE_NO)
-            self._confirm_dialog = gtk.MessageDialog(
+            (RESPONSE_SAVE, RESPONSE_DISCARD) = (Gtk.ResponseType.YES, Gtk.ResponseType.NO)
+            self._confirm_dialog = Gtk.MessageDialog(
                 self.main_window,
-                gtk.DIALOG_MODAL,
-                gtk.MESSAGE_QUESTION,
-                gtk.BUTTONS_NONE,
+                Gtk.DialogFlags.MODAL,
+                Gtk.MessageType.QUESTION,
+                Gtk.ButtonsType.NONE,
                 _("The current file has been modified.\nDo you want to save your changes?")
             )
-            self._confirm_dialog.__save_button = self._confirm_dialog.add_button(gtk.STOCK_SAVE, RESPONSE_SAVE)
+            self._confirm_dialog.__save_button = self._confirm_dialog.add_button(Gtk.STOCK_SAVE, RESPONSE_SAVE)
             self._confirm_dialog.add_button(_("_Discard"), RESPONSE_DISCARD)
-            self._confirm_dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
+            self._confirm_dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
             self._confirm_dialog.set_default_response(RESPONSE_SAVE)
         return self._confirm_dialog
 
     def _setup_key_bindings(self):
-        self.accel_group = gtk.AccelGroup()
+        self.accel_group = Gtk.AccelGroup()
         self.main_window.add_accel_group(self.accel_group)
 
     def _track_window_state(self):
         self._window_is_maximized = False
 
         def on_state_event(widget, event):
-            self._window_is_maximized = bool(event.new_window_state & gtk.gdk.WINDOW_STATE_MAXIMIZED)
+            self._window_is_maximized = bool(event.new_window_state & Gdk.WindowState.MAXIMIZED)
         self.main_window.connect('window-state-event', on_state_event)
 
     def _setup_dnd(self):
         """configures drag and drop"""
-        targets = gtk.target_list_add_uri_targets()
-        # Konqueror needs gtk.gdk.ACTION_MOVE
-        self.main_window.drag_dest_set(gtk.DEST_DEFAULT_ALL, targets, gtk.gdk.ACTION_COPY | gtk.gdk.ACTION_MOVE)
+        #targets = Gtk.TargetList.add_uri_targets()
+        # Konqueror needs Gdk.DragAction.MOVE
+        # FIXME
+        #Gtk.drag_dest_set(self.main_window, Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY | Gdk.DragAction.MOVE)
         self.main_window.connect("drag_data_received", self._on_drag_data_received)
 
     def _on_drag_data_received(self, w, context, x, y, data, info, time):
-        if sys.platform == 'darwin' or gtk.targets_include_uri(context.targets):
+        if sys.platform == 'darwin' or Gtk.targets_include_uri(context.targets):
             # We don't check for valid targets on Mac (darwin) since there is
             # a bug in target_incude_uri on that platform, no adverse situations
             # seem to arise but we leave other platforms to do the right thing.
@@ -396,13 +397,13 @@ class MainView(BaseView):
                 }
                 widget "gtk-tooltip*" style "better-tooltips"
                 """ % tooltip_text
-            gtk.rc_parse_string(rc_string)
+            Gtk.rc_parse_string(rc_string)
 
 
     # ACCESSORS #
     def add_accel_group(self, accel_group):
         """Add the given accelerator group to the main window.
-            @type accel_group: gtk.AccelGroup"""
+            @type accel_group: Gtk.AccelGroup"""
         self.main_window.add_accel_group(accel_group)
 
     def set_saveable(self, value):
@@ -469,8 +470,8 @@ class MainView(BaseView):
 
     def append_menu(self, name):
         """Add a menu with the given name to the menu bar."""
-        menu = gtk.Menu()
-        menuitem = gtk.MenuItem(name)
+        menu = Gtk.Menu()
+        menuitem = Gtk.MenuItem.new_with_mnemonic(name)
         menuitem.set_submenu(menu)
         self.menu_structure.append(menuitem)
         if self.menu_structure.get_property('visible'):
@@ -484,7 +485,7 @@ class MainView(BaseView):
             after = self.find_menu(after)
 
         parent_item = None
-        if isinstance(menu, gtk.MenuItem):
+        if isinstance(menu, Gtk.MenuItem):
             parent_item = menu
         else:
             parent_item = self.find_menu(menu)
@@ -492,7 +493,7 @@ class MainView(BaseView):
             return None
 
         parent_menu = parent_item.get_submenu()
-        menuitem = gtk.MenuItem(name)
+        menuitem = Gtk.MenuItem.new_with_mnemonic(name)
         if after is None:
             parent_menu.add(menuitem)
         else:
@@ -519,7 +520,7 @@ class MainView(BaseView):
 
             @param label: The label of the menu item to find.
             @param menu: The (optional) (name of the) menu to search in."""
-        if not isinstance(menu, gtk.MenuItem):
+        if not isinstance(menu, Gtk.MenuItem):
             menu = self.find_menu(label)
         if menu is not None:
             menus = [menu]
@@ -553,25 +554,25 @@ class MainView(BaseView):
             pan_app.settings.general['windowheight'] = height
             pan_app.settings.general['maximized'] = ''
         pan_app.settings.write()
-        gtk.main_quit()
+        Gtk.main_quit()
 
     def show(self):
         if pan_app.settings.general['maximized']:
             self.main_window.maximize()
         self.main_window.show()
-        from gobject import threads_init
-        threads_init()
+        from gi.repository import GObject
+        GObject.threads_init()
 
         # Uncomment this line to measure startup time until the window shows.
         # It causes the program to quit immediately when the window is shown:
-        #self.main_window.connect('expose-event', lambda widget, event: gtk.main_quit())
+        #self.main_window.connect('expose-event', lambda widget, event: Gtk.main_quit())
 
         # Uncomment these lines to measure true startup time. It causes the
         # program to quit immediately when the last thing added to the gobject
         # idle queue during startup, is done.
-        #from gobject import idle_add
-        #idle_add(gtk.main_quit)
-        gtk.main()
+        #from gi.repository import GObject
+        #GLib.idle_add(Gtk.main_quit)
+        Gtk.main()
 
     def show_input_dialog(self, title='', message=''):
         """Shows a simple dialog containing a text entry.
@@ -583,7 +584,7 @@ class MainView(BaseView):
         self.input_dialog.hide()
         self._top_window = old_top
 
-        if response == gtk.RESPONSE_OK:
+        if response == Gtk.ResponseType.OK:
             return text
         return None
 
@@ -614,7 +615,7 @@ class MainView(BaseView):
         self.open_chooser.set_transient_for(self._top_window)
         old_top = self._top_window
         self._top_window = self.open_chooser
-        response = self.open_chooser.run() == gtk.RESPONSE_OK
+        response = self.open_chooser.run() == Gtk.ResponseType.OK
         self.open_chooser.hide()
         self._top_window = old_top
 
@@ -645,7 +646,7 @@ class MainView(BaseView):
         self.prompt_dialog.hide()
         self._top_window = old_top
 
-        return response == gtk.RESPONSE_YES
+        return response == Gtk.ResponseType.YES
 
     def show_info_dialog(self, title='', message='', markup=''):
         """shows a simple info dialog containing a message and an OK button"""
@@ -693,7 +694,7 @@ class MainView(BaseView):
         self.save_chooser.hide()
         self._top_window = old_top
 
-        if response == gtk.RESPONSE_OK:
+        if response == Gtk.ResponseType.OK:
             filename = self.save_chooser.get_filename().decode('utf-8')
             #FIXME: do we need uri here?
             return filename
@@ -709,9 +710,9 @@ class MainView(BaseView):
         self.confirm_dialog.hide()
         self._top_window = old_top
 
-        if response == gtk.RESPONSE_YES:
+        if response == Gtk.ResponseType.YES:
             return 'save'
-        elif response == gtk.RESPONSE_NO:
+        elif response == Gtk.ResponseType.NO:
             return 'discard'
         return 'cancel'
 
@@ -720,7 +721,7 @@ class MainView(BaseView):
             self.btn_app = self.gui.get_object('btn_app')
             image = self.gui.get_object('img_app')
             image.set_from_file(pan_app.get_abs_data_filename(['icons', 'hicolor', '24x24', 'mimetypes', 'x-translation.png']))
-            self.app_menu = gtk.Menu()
+            self.app_menu = Gtk.Menu()
             self.btn_app.connect('pressed', self._on_app_pressed)
             self.btn_app.show()
         for child in self.menu_structure:
@@ -849,10 +850,11 @@ class MainView(BaseView):
 
     def _on_window_state_event(self, widget, event):
         mnu_fullscreen = self.gui.get_object('mnu_fullscreen')
-        mnu_fullscreen.set_active(event.new_window_state & gdk.WINDOW_STATE_FULLSCREEN)
+        mnu_fullscreen.set_active(event.new_window_state & Gdk.WindowState.FULLSCREEN)
 
     def _on_app_pressed(self, btn):
-        self.app_menu.popup(None, None, None, 0, 0)
+        # FIXME
+        self.app_menu.popup(None, None, None, None, 0, 0)
 
     def _on_osx_openfile_event(self, macapp, filename):
         # Note! A limitation of the current GTK-OSX code
@@ -860,9 +862,9 @@ class MainView(BaseView):
         # involving the GTK run-loop within this handler,
         # therefore we schedule the load to occur afterwards.
         # See gdk/quartz/gdkeventloop-quartz.c in the GTK+ source. 
-        from gobject import idle_add
+        from gi.repository import GObject
         def callback():
             self.controller.open_file(filename)
-        idle_add(callback) 
+	GLib.idle_add(callback) 
         # We must indicate we handled this or crash
         return True 

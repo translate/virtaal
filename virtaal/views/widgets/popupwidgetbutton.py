@@ -19,12 +19,12 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 """
-PopupWidgetButton: Extends a C{gtk.ToggleButton} to show a given widget in a
+PopupWidgetButton: Extends a C{Gtk.ToggleButton} to show a given widget in a
 pop-up window.
 """
 
-import gtk
-from gobject import SIGNAL_RUN_FIRST
+from gi.repository import Gtk
+from gi.repository import GObject
 
 # XXX: Kudo's to Toms Bauģis <toms.baugis at gmail.com> who wrote the
 #      ActivityEntry widget for the hamster-applet project. A lot of this
@@ -55,12 +55,12 @@ _rtl_pos_map = {
         POS_NW_SW: POS_NE_SE,
 }
 
-class PopupWidgetButton(gtk.ToggleButton):
-    """Extends a C{gtk.ToggleButton} to show a given widget in a pop-up window."""
+class PopupWidgetButton(Gtk.ToggleButton):
+    """Extends a C{Gtk.ToggleButton} to show a given widget in a pop-up window."""
     __gtype_name__ = 'PopupWidgetButton'
     __gsignals__ = {
-        'shown':  (SIGNAL_RUN_FIRST, None, ()),
-        'hidden': (SIGNAL_RUN_FIRST, None, ()),
+        'shown':  (GObject.SignalFlags.RUN_FIRST, None, ()),
+        'hidden': (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
     # INITIALIZERS #
@@ -73,7 +73,7 @@ class PopupWidgetButton(gtk.ToggleButton):
         self.connect('key-press-event', self._on_key_press_event)
         self.connect('toggled', self._on_toggled)
 
-        if self.get_direction() == gtk.TEXT_DIR_LTR:
+        if self.get_direction() == Gtk.TextDirection.LTR:
             self.popup_pos = popup_pos
         else:
             self.popup_pos = _rtl_pos_map.get(popup_pos, POS_NE_SE)
@@ -81,13 +81,14 @@ class PopupWidgetButton(gtk.ToggleButton):
         self._update_popup_geometry_func = None
 
         # Create pop-up window
-        self.popup = gtk.Window(type=gtk.WINDOW_POPUP)
+        self.popup = Gtk.Window.new(Gtk.WindowType.POPUP)
         self.popup.set_size_request(0,0)
         self.popup.add(widget)
         self.popup.show_all()
         self.popup.hide()
 
-        self.connect('expose-event', self._on_expose)
+        # FIXME expose-event seem to have been replace by 'draw' in Gtk3
+        self.connect('draw', self._on_expose)
 
 
     # ACCESSORS #
@@ -103,7 +104,7 @@ class PopupWidgetButton(gtk.ToggleButton):
         # Default values are POS_NW_SW
         x = btn_window_xy[0] + btn_alloc.x
         y = btn_window_xy[1] + btn_alloc.y + btn_alloc.height
-        width, height = self.popup.get_child_requisition()
+        # FIXME seems we don't use these width, height = self.popup.get_child_requisition()
 
         if self.popup_pos == POS_NE_SE:
             x -= (popup_alloc.width - btn_alloc.width)
@@ -145,11 +146,13 @@ class PopupWidgetButton(gtk.ToggleButton):
 
     def _update_popup_geometry(self):
         self.popup.set_size_request(-1, -1)
-        width, height = self.popup.get_child_requisition()
+        requisition = self.popup.get_child_requisition()
+        width = requisition.width
+        height = requisition.height
 
         x, y = -1, -1
         popup_alloc = self.popup.get_allocation()
-        btn_window_xy = self.window.get_origin()
+        btn_window_xy = self.get_window().get_origin()
         btn_alloc = self.get_allocation()
 
         if callable(self._update_popup_geometry_func):
@@ -164,7 +167,7 @@ class PopupWidgetButton(gtk.ToggleButton):
         popup_alloc.width, popup_alloc.height = width, height
         x, y = self.calculate_popup_xy(popup_alloc, btn_alloc, btn_window_xy)
 
-        self.popup.window.get_toplevel().move_resize(x, y, width, height)
+        self.popup.get_window().get_toplevel().move_resize(x, y, width, height)
 
 
     # EVENT HANDLERS #
@@ -172,7 +175,7 @@ class PopupWidgetButton(gtk.ToggleButton):
         self.hide_popup()
 
     def _on_key_press_event(self, window, event):
-        if event.keyval == gtk.keysyms.Escape and self.popup.props.visible:
+        if event.keyval == Gdk.KEY_Escape and self.popup.props.visible:
             self.hide_popup()
             return True
         return False
@@ -183,25 +186,24 @@ class PopupWidgetButton(gtk.ToggleButton):
         else:
             self._do_hide_popup()
 
-    def _on_expose(self, widget, event):
+    def _on_expose(self, widget, cr, user_data):
         self._update_popup_geometry()
 
 
 if __name__ == '__main__':
-    btn = PopupWidgetButton(label='TestMe', widget=gtk.Button('Click me'))
+    btn = PopupWidgetButton(label='TestMe', widget=Gtk.Button('Click me'))
 
-    hb = gtk.HBox()
-    hb.pack_start(gtk.Button('Left'),  expand=False, fill=False)
+    hb = Gtk.HBox()
+    hb.pack_start(Gtk.Button('Left', True, True, 0),  expand=False, fill=False)
     hb.pack_start(btn,                 expand=False, fill=False)
-    hb.pack_start(gtk.Button('Right'), expand=False, fill=False)
-    vb = gtk.VBox()
+    hb.pack_start(Gtk.Button('Right', True, True, 0), expand=False, fill=False)
+    vb = Gtk.VBox()
     vb.pack_start(hb, expand=False, fill=False)
 
-    from gtk import Window
-    wnd = Window()
+    wnd = Gtk.Window()
     wnd.set_size_request(400, 300)
     wnd.set_title('Pop-up Window Button Test')
     wnd.add(vb)
-    wnd.connect('destroy', lambda *args: gtk.main_quit())
+    wnd.connect('destroy', lambda *args: Gtk.main_quit())
     wnd.show_all()
-    gtk.main()
+    Gtk.main()

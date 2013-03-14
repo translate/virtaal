@@ -1,35 +1,36 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import gtk
-from gobject import SIGNAL_RUN_FIRST
+from gi.repository import Gdk
+from gi.repository import Gtk
+from gi.repository import GObject
 
 from virtaal.views.theme import current_theme
 
-class WelcomeScreen(gtk.ScrolledWindow):
+class WelcomeScreen(Gtk.ScrolledWindow):
     """
     The scrolled window that contains the welcome screen container widget.
     """
 
     __gtype_name__ = 'WelcomeScreen'
-    __gsignals__ = { 'button-clicked': (SIGNAL_RUN_FIRST, None, (str,)) }
+    __gsignals__ = { 'button-clicked': (GObject.SignalFlags.RUN_FIRST, None, (str,)) }
 
 
     # INITIALISERS #
     def __init__(self, gui):
         """Constructor.
-            @type  gui: C{gtk.Builder}
+            @type  gui: C{Gtk.Builder}
             @param gui: The GtkBuilder XML object to retrieve the welcome screen from."""
         super(WelcomeScreen, self).__init__()
 
         self.gui = gui
 
-        self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
 
         win = gui.get_object('WelcomeScreen')
         if not win:
             raise ValueError('Welcome screen not found in GtkBuikder object.')
-        child = win.child
+        child = win.get_child()
         win.remove(child)
         self.add_with_viewport(child)
 
@@ -55,23 +56,23 @@ class WelcomeScreen(gtk.ScrolledWindow):
 
 
     def _style_widgets(self):
-        url_fg_color = gtk.gdk.color_parse(current_theme['url_fg'])
+        url_fg_color = Gdk.color_parse(current_theme['url_fg'])
 
-        for s in [gtk.STATE_ACTIVE, gtk.STATE_NORMAL, gtk.STATE_SELECTED]:
+        for s in [Gtk.StateType.ACTIVE, Gtk.StateType.NORMAL, Gtk.StateType.SELECTED]:
             self.widgets['exp_features'].get_children()[1].modify_fg(s, url_fg_color)
 
-        # Find a gtk.Label as a child of the button...
+        # Find a Gtk.Label as a child of the button...
         for btn in self.widgets['buttons'].values():
             label = None
-            if isinstance(btn.child, gtk.Label):
-                label = btn.child
+            if isinstance(btn.get_child(), Gtk.Label):
+                label = btn.get_child()
             else:
-                for widget in btn.child.get_children():
-                    if isinstance(widget, gtk.Label):
+                for widget in btn.get_child().get_children():
+                    if isinstance(widget, Gtk.Label):
                         label = widget
                         break
             if label:
-                for s in [gtk.STATE_ACTIVE, gtk.STATE_NORMAL, gtk.STATE_SELECTED]:
+                for s in [Gtk.StateType.ACTIVE, Gtk.StateType.NORMAL, Gtk.StateType.SELECTED]:
                     label.modify_fg(s, url_fg_color)
 
     def _init_feature_view(self):
@@ -96,5 +97,5 @@ class WelcomeScreen(gtk.ScrolledWindow):
         self.emit('button-clicked', name)
 
     def do_style_set(self, previous_style):
-        self.child.modify_bg(gtk.STATE_NORMAL, self.style.base[gtk.STATE_NORMAL])
+        self.get_child().modify_bg(Gtk.StateType.NORMAL, self.get_style().base[Gtk.StateType.NORMAL])
         self._style_widgets()

@@ -19,7 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import os
-from gobject import SIGNAL_RUN_FIRST
+from gi.repository import GObject
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.models.langmodel import LanguageModel
@@ -34,8 +34,8 @@ class LanguageController(BaseController):
 
     __gtype_name__ = 'LanguageController'
     __gsignals__ = {
-        'source-lang-changed': (SIGNAL_RUN_FIRST, None, (str,)),
-        'target-lang-changed': (SIGNAL_RUN_FIRST, None, (str,)),
+        'source-lang-changed': (GObject.SignalFlags.RUN_FIRST, None, (str,)),
+        'target-lang-changed': (GObject.SignalFlags.RUN_FIRST, None, (str,)),
     }
 
     NUM_RECENT = 5

@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
+from gi.repository import GObject
 from translate.storage.placeables import general, StringElem, parse as parse_placeables
 
 from virtaal.common import pan_app, GObjectWrapper
@@ -32,7 +32,7 @@ class PlaceablesController(BaseController):
 
     __gtype_name__ = 'PlaceablesController'
     __gsignals__ = {
-        'parsers-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, tuple()),
+        'parsers-changed': (GObject.SignalFlags.RUN_FIRST, None, tuple()),
     }
 
     parsers = []

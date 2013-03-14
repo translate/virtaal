@@ -22,7 +22,7 @@ import StringIO
 import urllib
 import logging
 
-import gobject
+from gi.repository import GObject
 import pycurl
 
 from virtaal.common.gobjectwrapper import GObjectWrapper
@@ -35,10 +35,10 @@ class HTTPRequest(GObjectWrapper):
 
     __gtype_name__ = 'HttpClientRequest'
     __gsignals__ = {
-        "http-success":      (gobject.SIGNAL_RUN_LAST, None, (object,)),
-        "http-redirect":     (gobject.SIGNAL_RUN_LAST, None, (object,)),
-        "http-client-error": (gobject.SIGNAL_RUN_LAST, None, (object,)),
-        "http-server-error": (gobject.SIGNAL_RUN_LAST, None, (object,)),
+        "http-success":      (GObject.SignalFlags.RUN_LAST, None, (object,)),
+        "http-redirect":     (GObject.SignalFlags.RUN_LAST, None, (object,)),
+        "http-client-error": (GObject.SignalFlags.RUN_LAST, None, (object,)),
+        "http-server-error": (GObject.SignalFlags.RUN_LAST, None, (object,)),
     }
 
     def __init__(self, url, method='GET', data=None, headers=None,
@@ -188,7 +188,7 @@ class HTTPClient(object):
     def run(self):
         """client should not be running when request queue is empty"""
         if self.running: return
-        gobject.timeout_add(100, self.perform)
+        GObject.timeout_add(100, self.perform)
         self.running = True
 
     def close_request(self, handle):

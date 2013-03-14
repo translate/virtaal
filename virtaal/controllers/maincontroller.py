@@ -20,8 +20,8 @@
 
 import logging
 import os.path
-import gtk
-from gobject import SIGNAL_RUN_FIRST
+from gi.repository import Gtk
+from gi.repository import GObject
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.views.mainview import MainView
@@ -35,8 +35,8 @@ class MainController(BaseController):
 
     __gtype_name__ = 'MainController'
     __gsignals__ = {
-        'controller-registered': (SIGNAL_RUN_FIRST, None, (object,)),
-        'quit':                  (SIGNAL_RUN_FIRST, None, tuple()),
+        'controller-registered': (GObject.SignalFlags.RUN_FIRST, None, (object,)),
+        'quit':                  (GObject.SignalFlags.RUN_FIRST, None, tuple()),
     }
 
     # INITIALIZERS #
@@ -181,7 +181,7 @@ class MainController(BaseController):
         # make it our problem and ensure the last ones are in the main
         # controller.
         while not self.placeables_controller:
-            gtk.main_iteration(False)
+            Gtk.main_iteration_do(False)
         if filename is None:
             return self.view.open_file()
         if self.store_controller.is_modified():

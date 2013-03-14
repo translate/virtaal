@@ -20,7 +20,8 @@
 
 """Contains the AutoCompletor class."""
 
-import gobject
+from gi.repository import GLib
+from gi.repository import GObject
 import re
 try:
     from collections import defaultdict
@@ -176,7 +177,7 @@ class AutoCompletor(object):
             if completed_word:
                 # Updating of the buffer is deferred until after this signal
                 # and its side effects are taken care of. We abuse
-                # gobject.idle_add for that.
+                # GLib.idle_add for that.
                 insert_offset = offset + len(text)
                 def suggest_completion():
                     textbox.handler_block(self._textbox_insert_ids[textbox])
@@ -190,7 +191,7 @@ class AutoCompletor(object):
 
                     return False
 
-                gobject.idle_add(suggest_completion, priority=gobject.PRIORITY_HIGH)
+                GLib.idle_add(suggest_completion, priority=GLib.PRIORITY_HIGH)
 
     def _remove_textbox(self, textbox):
         """Remove the given L{TextBox} from the list of widgets to do
@@ -269,7 +270,7 @@ class Plugin(BasePlugin):
                         #logging.debug('Adding words: %s' % (self.autocomp.wordsep_re.split(unicode(self.lastunit.target))))
                         self.autocomp.add_words(self.autocomp.wordsep_re.split(unicode(self.lastunit.target)))
             self.lastunit = cursor.deref()
-        gobject.idle_add(add_widgets)
+        GLib.idle_add(add_widgets)
 
     def _on_store_loaded(self, storecontroller):
         self.autocomp.add_words_from_units(storecontroller.get_store().get_units())

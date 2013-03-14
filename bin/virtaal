@@ -38,10 +38,11 @@ if not packaged:
     # We can't meaningfully report on these, and we build our own windows
     # version, so let's leave this out for the benefit of startup time.
     from virtaal.support import depcheck
-    optional_modules = ['enchant', 'gtkspell', 'psycopg2']
+    # FIXME need to investigate gtkspell for gtk3 support
+    optional_modules = ['enchant', 'psycopg2']
     error_messages = {
         'translate':  'Translate Toolkit >= %s is required for Virtaal to function.' % str(depcheck.MIN_TRANSLATE_VERSION),
-        'gtk':        'Gtk >= 2.12.0 and PyGTK is required for Virtaal to function.',
+        'gtk':        'Gtk >= 2.12.0 is required for Virtaal to function.',
         'lxml.etree': 'LXML is required for XML-based format support as well as AutoCorrection.',
         'json':       'SimpleJSON or Python >= 2.6 is required for certain TM back-ends.',
         'pycurl':     'PyCurl is required for certain TM and terminology back-ends.',

@@ -21,7 +21,8 @@
 import logging
 import os
 import sys
-from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT, idle_add
+from gi.repository import GObject
+from gi.repository import GLib
 
 from virtaal.common import pan_app, GObjectWrapper
 
@@ -43,8 +44,8 @@ class PluginController(BaseController):
 
     __gtype_name__ = 'PluginController'
     __gsignals__ = {
-        'plugin-enabled':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'plugin-disabled': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'plugin-enabled':  (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT,)),
+        'plugin-disabled': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT,)),
     }
 
     # The following class variables are set for the main plug-in controller.
@@ -138,7 +139,7 @@ class PluginController(BaseController):
             if name in disabled_plugins:
                 continue
             # We use idle_add(), so that the UI will respond sooner
-            idle_add(self.enable_plugin, name)
+            GLib.idle_add(self.enable_plugin, name)
         logging.info('Queued all plugins for loading')
 
     def shutdown(self):

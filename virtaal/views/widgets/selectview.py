@@ -18,9 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from gi.repository import Gtk
 import locale
-from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from gi.repository import GObject
 
 from virtaal.common import GObjectWrapper
 from virtaal.views.widgets.cellrendererwidget import CellRendererWidget
@@ -30,30 +30,31 @@ __all__ = ['COL_ENABLED', 'COL_NAME', 'COL_DESC', 'COL_DATA', 'COL_WIDGET', 'Sel
 COL_ENABLED, COL_NAME, COL_DESC, COL_DATA, COL_WIDGET = range(5)
 
 
-class SelectView(gtk.TreeView, GObjectWrapper):
+class SelectView(Gtk.TreeView, GObjectWrapper):
     """
     A tree view that enables the user to select items from a list.
     """
 
     __gtype_name__ = 'SelectView'
     __gsignals__ = {
-        'item-enabled':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'item-disabled': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'item-selected': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'item-enabled':  (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT,)),
+        'item-disabled': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT,)),
+        'item-selected': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT,)),
     }
 
     CONTENT_VBOX = 'vb_content'
-    """The name of the C{gtk.VBox} containing the selection items."""
+    """The name of the C{Gtk.VBox} containing the selection items."""
 
     # INITIALIZERS #
     def __init__(self, items=None, bold_name=True):
-        gtk.TreeView.__init__(self)
+        super(SelectView, self).__init__()
+        #GObject.GObject.__init__(self)
         GObjectWrapper.__init__(self)
 
         self.bold_name = bold_name
         self.selected_item = None
         if not items:
-            items = gtk.ListStore(bool, str, str, TYPE_PYOBJECT, TYPE_PYOBJECT)
+            items = Gtk.ListStore(bool, str, str, GObject.TYPE_PYOBJECT, GObject.TYPE_PYOBJECT)
         self.set_model(items)
 
         self._add_columns()
@@ -61,9 +62,9 @@ class SelectView(gtk.TreeView, GObjectWrapper):
         self._connect_events()
 
     def _add_columns(self):
-        cell = gtk.CellRendererToggle()
+        cell = Gtk.CellRendererToggle()
         cell.connect('toggled', self._on_item_toggled)
-        self.select_col = gtk.TreeViewColumn(_('Enabled'), cell, active=COL_ENABLED)
+        self.select_col = Gtk.TreeViewColumn(_('Enabled'), cell, active=COL_ENABLED)
         self.append_column(self.select_col)
 
         width = self.get_allocation().width
@@ -71,7 +72,7 @@ class SelectView(gtk.TreeView, GObjectWrapper):
             width = 200 # FIXME: Arbitrary default value
 
         cell = CellRendererWidget(strfunc=self._get_widget_string, default_width=width)
-        self.namedesc_col = gtk.TreeViewColumn(_('Name'), cell, widget=4)
+        self.namedesc_col = Gtk.TreeViewColumn(_('Name'), cell, widget=4)
         self.append_column(self.namedesc_col)
 
     def _connect_events(self):
@@ -83,40 +84,40 @@ class SelectView(gtk.TreeView, GObjectWrapper):
 
     # METHODS #
     def _create_widget_for_item(self, item):
-        hbox = gtk.HBox()
-        vbox = gtk.VBox()
+        hbox = Gtk.HBox()
+        vbox = Gtk.VBox()
         vbox.min_height = 60
 
         vbox.lbl_name = None
         if 'name' in item and item['name']:
             name = (self.bold_name and '<b>%s</b>' or '%s') % (item['name'])
-            lbl = gtk.Label()
+            lbl = Gtk.Label()
             lbl.set_alignment(0, 0)
             lbl.set_text(name)
             lbl.set_use_markup(self.bold_name)
-            vbox.pack_start(lbl)
+            vbox.pack_start(lbl, True, True, 0)
             vbox.lbl_name = lbl
 
         vbox.lbl_desc = None
         if 'desc' in item and item['desc']:
-            lbl = gtk.Label()
+            lbl = Gtk.Label()
             lbl.set_alignment(0, 0)
             lbl.set_line_wrap(True)
             lbl.set_text(item['desc'])
             lbl.set_use_markup(False)
-            vbox.pack_start(lbl)
+            vbox.pack_start(lbl, True, True, 0)
             vbox.lbl_desc = lbl
-        hbox.pack_start(vbox)
+        hbox.pack_start(vbox, True, True, 0)
 
         #TODO: ideally we need an accesskey, but it is not currently working
         if 'config' in item and callable(item['config']):
-            btnconf = gtk.Button(_('Configure...'))
+            btnconf = Gtk.Button(_('Configure...'))
             def clicked(button, event):
                 item['config'](self.get_toplevel())
             btnconf.connect('button-release-event', clicked)
             btnconf.config_func = item['config']
             vbox.btn_conf = btnconf
-            hbox.pack_start(btnconf, expand=False)
+            hbox.pack_start(btnconf, False, True, 0)
 
         return hbox
 
@@ -190,10 +191,10 @@ class SelectView(gtk.TreeView, GObjectWrapper):
             self.selected_item = None
 
     def set_model(self, items):
-        if isinstance(items, gtk.ListStore):
+        if isinstance(items, Gtk.ListStore):
             self._model = items
         else:
-            self._model = gtk.ListStore(bool, str, str, TYPE_PYOBJECT, TYPE_PYOBJECT)
+            self._model = Gtk.ListStore(bool, str, str, GObject.TYPE_PYOBJECT, GObject.TYPE_PYOBJECT)
             items.sort(cmp=locale.strcoll, key=lambda x: x.get('name', ''))
             for row in items:
                 self._model.append([
@@ -204,7 +205,7 @@ class SelectView(gtk.TreeView, GObjectWrapper):
                     self._create_widget_for_item(row)
                 ])
 
-        gtk.TreeView.set_model(self, self._model)
+        Gtk.TreeView.set_model(self, self._model)
 
 
     # EVENT HANDLERS #
@@ -223,6 +224,6 @@ class SelectView(gtk.TreeView, GObjectWrapper):
 
     def _on_selection_change(self, selection):
         model, iter = selection.get_selected()
-        if isinstance(model, gtk.TreeIter) and model is self._model and self._model.iter_is_valid(iter):
+        if isinstance(model, Gtk.TreeIter) and model is self._model and self._model.iter_is_valid(iter):
             self.selected_item = self.get_item(iter)
             self.emit('item-selected', self.selected_item)

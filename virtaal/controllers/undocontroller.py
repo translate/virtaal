@@ -18,9 +18,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
-import gtk
-from gtk import gdk
+from gi.repository import GLib
+from gi.repository import GObject
+from gi.repository import Gtk
+from gi.repository import Gdk
 from translate.storage.placeables import StringElem
 
 from virtaal.common import GObjectWrapper, pan_app
@@ -69,9 +70,9 @@ class UndoController(BaseController):
             This method *may* need to be moved into a view object, but if it is,
             it will be the only functionality in such a class. Therefore, it
             is done here. At least for now."""
-        gtk.accel_map_add_entry("<Virtaal>/Edit/Undo", gtk.keysyms.z, gdk.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Undo", Gdk.KEY_z, Gdk.ModifierType.CONTROL_MASK)
 
-        self.accel_group = gtk.AccelGroup()
+        self.accel_group = Gtk.AccelGroup()
         # The following line was commented out, because it caused a double undo when pressing
         # Ctrl+Z, but only one if done through the menu item. This way it all works as expected.
         #self.accel_group.connect_by_path("<Virtaal>/Edit/Undo", self._on_undo_activated)
@@ -166,7 +167,7 @@ class UndoController(BaseController):
         def refresh():
             textbox.refresh_cursor_pos = undo_info['cursorpos']
             textbox.refresh()
-        gobject.idle_add(refresh)
+        GLib.idle_add(refresh)
 
     def _select_unit(self, unit):
         """Select the given unit in the store view.

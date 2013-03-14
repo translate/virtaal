@@ -63,21 +63,21 @@ ToDo:
 
 from bisect import bisect_left
 
-import gobject
+from gi.repository import GObject
 
 
-class SortedSet(gobject.GObject):
+class SortedSet(GObject.GObject):
     __gtype_name__ = "SortedSet"
 
     __gsignals__ = {
-        "removed":       (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_INT, gobject.TYPE_PYOBJECT)),
-        "added":         (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_INT, gobject.TYPE_PYOBJECT)),
-        "before-remove": (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_INT, gobject.TYPE_PYOBJECT)),
-        "before-add":    (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_INT, gobject.TYPE_PYOBJECT))
+        "removed":       (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_INT, GObject.TYPE_PYOBJECT)),
+        "added":         (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_INT, GObject.TYPE_PYOBJECT)),
+        "before-remove": (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_INT, GObject.TYPE_PYOBJECT)),
+        "before-add":    (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_INT, GObject.TYPE_PYOBJECT))
     }
 
     def __init__(self, iterable):
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
 
         data = list(iterable)
         data.sort()

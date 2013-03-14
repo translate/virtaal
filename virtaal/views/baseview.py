@@ -21,7 +21,7 @@
 import logging
 import os
 import sys
-from gtk import Builder
+from gi.repository import Gtk
 
 from virtaal.common import pan_app
 
@@ -42,7 +42,7 @@ class BaseView(object):
                 #glade.bindtextdomain(domain, pan_app.get_abs_data_filename('locale', basedirs=basedirs))
             except Exception:
                 logging.exception('bindtextdomain()')
-        builder = Builder()
+        builder = Gtk.Builder()
         builder.add_from_file(buildername)
         builder.set_translation_domain(domain)
         return buildername, builder

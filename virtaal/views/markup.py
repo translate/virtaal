@@ -87,7 +87,7 @@ def markuptext(text, fancyspaces=True, markupescapes=True, diff_text=u""):
     return text
 
 def escape(text):
-    """This is to escape text for use with gtk.TextView"""
+    """This is to escape text for use with Gtk.TextView"""
     if not text:
         return ""
     text = text.replace("\n", u'¶\n')
@@ -96,7 +96,7 @@ def escape(text):
     return text
 
 def unescape(text):
-    """This is to unescape text for use with gtk.TextView"""
+    """This is to unescape text for use with Gtk.TextView"""
     if not text:
         return ""
     text = text.replace("\t", "")

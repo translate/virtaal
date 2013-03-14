@@ -18,9 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import pango
-from gtk import gdk
+from gi.repository import Gtk
+from gi.repository import Pango
+from gi.repository import Gdk
 from translate.storage import factory as store_factory
 
 from virtaal.views.baseview import BaseView
@@ -65,10 +65,10 @@ class LocalFileView:
             self.mnu_add_term.connect('activate', self._on_add_term)
         ))
 
-        gtk.accel_map_add_entry("<Virtaal>/Terminology/Add Term", gtk.keysyms.t, gdk.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Terminology/Add Term", Gdk.KEY_t, Gdk.ModifierType.CONTROL_MASK)
         accel_group = self.menu.get_accel_group()
         if accel_group is None:
-            accel_group = gtk.AccelGroup()
+            accel_group = Gtk.AccelGroup()
             self.menu.set_accel_group(accel_group)
         self.mnu_add_term.set_accel_path("<Virtaal>/Terminology/Add Term")
         self.menu.set_accel_group(accel_group)
@@ -137,23 +137,23 @@ class FileSelectDialog:
         self.tvw_termfiles.get_selection().connect('changed', self._on_selection_changed)
 
     def _init_treeview(self):
-        self.lst_files = gtk.ListStore(str, bool)
+        self.lst_files = Gtk.ListStore(str, bool)
         self.tvw_termfiles.set_model(self.lst_files)
 
-        cell = gtk.CellRendererText()
-        cell.props.ellipsize = pango.ELLIPSIZE_MIDDLE
-        col = gtk.TreeViewColumn(_('File'))
-        col.pack_start(cell)
+        cell = Gtk.CellRendererText()
+        cell.props.ellipsize = Pango.EllipsizeMode.MIDDLE
+        col = Gtk.TreeViewColumn(_('File'))
+        col.pack_start(cell, True)
         col.add_attribute(cell, 'text', self.COL_FILE)
         col.set_expand(True)
         col.set_sort_column_id(0)
         self.tvw_termfiles.append_column(col)
 
-        cell = gtk.CellRendererToggle()
+        cell = Gtk.CellRendererToggle()
         cell.set_radio(True)
         cell.connect('toggled', self._on_toggle)
-        col = gtk.TreeViewColumn(_('Extendable'))
-        col.pack_start(cell)
+        col = Gtk.TreeViewColumn(_('Extendable'))
+        col.pack_start(cell, True)
         col.add_attribute(cell, 'active', self.COL_EXTEND)
         col.set_expand(False)
         self.tvw_termfiles.append_column(col)
@@ -177,14 +177,14 @@ class FileSelectDialog:
     def _init_add_chooser(self):
         # The following code was mostly copied from virtaal.views.MainView._create_dialogs()
         #TODO: use native dialogues
-        dlg = gtk.FileChooserDialog(
+        dlg = Gtk.FileChooserDialog(
             _('Add Files'),
             self.controller.main_controller.view.main_window,
-            gtk.FILE_CHOOSER_ACTION_OPEN,
-            (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK)
+            Gtk.FileChooserAction.OPEN,
+            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
         )
-        dlg.set_default_response(gtk.RESPONSE_OK)
-        all_supported_filter = gtk.FileFilter()
+        dlg.set_default_response(Gtk.ResponseType.OK)
+        all_supported_filter = Gtk.FileFilter()
         all_supported_filter.set_name(_("All Supported Files"))
         dlg.add_filter(all_supported_filter)
         supported_files_dict = dict([ (_(name), (extension, mimetype)) for name, extension, mimetype in store_factory.supported_files() ])
@@ -197,7 +197,7 @@ class FileSelectDialog:
             # more harmful than good.
             if "csv" in extensions:
                 continue
-            new_filter = gtk.FileFilter()
+            new_filter = Gtk.FileFilter()
             new_filter.set_name(name)
             if extensions:
                 for extension in extensions:
@@ -211,7 +211,7 @@ class FileSelectDialog:
                     new_filter.add_mime_type(mimetype)
                     all_supported_filter.add_mime_type(mimetype)
             dlg.add_filter(new_filter)
-        all_filter = gtk.FileFilter()
+        all_filter = Gtk.FileFilter()
         all_filter.set_name(_("All Files"))
         all_filter.add_pattern("*")
         dlg.add_filter(all_filter)
@@ -225,7 +225,7 @@ class FileSelectDialog:
         self.tvw_termfiles.get_selection().unselect_all()
 
     def run(self, parent=None):
-        if isinstance(parent, gtk.Widget):
+        if isinstance(parent, Gtk.Widget):
             self.dialog.set_transient_for(parent)
 
         self.clear_selection()
@@ -241,7 +241,7 @@ class FileSelectDialog:
         response = self.add_chooser.run()
         self.add_chooser.hide()
 
-        if response != gtk.RESPONSE_OK:
+        if response != Gtk.ResponseType.OK:
             return
 
         mainview = self.term_model.controller.main_controller.view
@@ -341,11 +341,11 @@ class TermAddDialog:
 
         self.dialog = self.gui.get_object('TermAddDlg')
 
-        cellr = gtk.CellRendererText()
-        cellr.props.ellipsize = pango.ELLIPSIZE_MIDDLE
-        self.lst_termfiles = gtk.ListStore(str)
+        cellr = Gtk.CellRendererText()
+        cellr.props.ellipsize = Pango.EllipsizeMode.MIDDLE
+        self.lst_termfiles = Gtk.ListStore(str)
         self.cmb_termfile.set_model(self.lst_termfiles)
-        self.cmb_termfile.pack_start(cellr)
+        self.cmb_termfile.pack_start(cellr, True)
         self.cmb_termfile.add_attribute(cellr, 'text', 0)
 
         self.ent_source.connect('changed', self._on_entry_changed)
@@ -355,6 +355,7 @@ class TermAddDialog:
     # METHODS #
     def add_term_unit(self, source, target):
         filename = self.cmb_termfile.get_active_text()
+        print filename
         store = self.term_model.get_store_for_filename(filename)
         if store is None:
             import logging
@@ -419,7 +420,7 @@ class TermAddDialog:
     def run(self, parent=None):
         self.reset()
 
-        if isinstance(parent, gtk.Widget):
+        if isinstance(parent, Gtk.Widget):
             self.dialog.set_transient_for(parent)
 
         self.dialog.show()
@@ -428,7 +429,7 @@ class TermAddDialog:
         response = self.dialog.run()
         self.dialog.hide()
 
-        if response != gtk.RESPONSE_OK:
+        if response != Gtk.ResponseType.OK:
             return
 
         self.add_term_unit(self.ent_source.get_text(), self.ent_target.get_text())
@@ -445,7 +446,7 @@ class TermAddDialog:
         dup = self.term_model.get_duplicates(src_text, tgt_text)
         if dup:
             self.lbl_add_term_errors.set_text(_('Identical entry already exists.'))
-            self.eb_add_term_errors.modify_bg(gtk.STATE_NORMAL, gdk.color_parse(current_theme['warning_bg']))
+            self.eb_add_term_errors.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse(current_theme['warning_bg']))
             self.eb_add_term_errors.show_all()
             self.btn_add_term.props.sensitive = False
             return
@@ -464,6 +465,6 @@ class TermAddDialog:
                 'translations': translations
             }
             self.lbl_add_term_errors.set_markup(errormsg)
-            self.eb_add_term_errors.modify_bg(gtk.STATE_NORMAL, gdk.color_parse(current_theme['warning_bg']))
+            self.eb_add_term_errors.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse(current_theme['warning_bg']))
             self.eb_add_term_errors.show_all()
             return

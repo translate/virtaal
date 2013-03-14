@@ -30,8 +30,11 @@ import_checks = ['translate', 'gtk', 'lxml.etree', 'json', 'pycurl', 'sqlite3', 
 #########################
 def test_gtk_version():
     try:
-        import gtk
-        return gtk.ver >= (2, 12, 0)
+        from gi.repository import Gtk
+        # FIXME
+        return True
+        print Gtk.check_version(2, 12, 0)
+        return Gtk.check_version(2, 12, 0) is None
     except Exception:
         pass
     return False

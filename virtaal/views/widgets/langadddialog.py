@@ -18,8 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
-import gtk
+from gi.repository import Gtk
 
 from virtaal.common import pan_app
 from virtaal.views.baseview import BaseView
@@ -41,7 +40,7 @@ class LanguageAddDialog(object):
         )
 
         self._get_widgets()
-        if isinstance(parent, gtk.Widget):
+        if isinstance(parent, Gtk.Widget):
             self.dialog.set_transient_for(parent)
             self.dialog.set_icon(parent.get_toplevel().get_icon())
 
@@ -90,7 +89,7 @@ class LanguageAddDialog(object):
     def run(self, clear=True):
         if clear:
             self.clear()
-        response = self.dialog.run() == gtk.RESPONSE_OK
+        response = self.dialog.run() == Gtk.ResponseType.OK
         self.dialog.hide()
         return response
 

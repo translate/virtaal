@@ -19,7 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from gobject import SIGNAL_RUN_FIRST, timeout_add
+from gi.repository import GObject
 
 from virtaal.common import GObjectWrapper
 
@@ -82,8 +82,8 @@ class ChecksController(BaseController):
 
     __gtype_name__ = 'ChecksController'
     __gsignals__ = {
-        'checker-set':  (SIGNAL_RUN_FIRST, None, (object,)),
-        'unit-checked': (SIGNAL_RUN_FIRST, None, (object, object, object))
+        'checker-set':  (GObject.SignalFlags.RUN_FIRST, None, (object,)),
+        'unit-checked': (GObject.SignalFlags.RUN_FIRST, None, (object, object, object))
     }
 
     CHECK_TIMEOUT = 500
@@ -207,7 +207,7 @@ class ChecksController(BaseController):
             # haven't changed units yet, probably strange timing issue
             return
         self._check_timer_active = True
-        timeout_add(self.CHECK_TIMEOUT, self._check_timer_expired, self.last_unit)
+        GObject.timeout_add(self.CHECK_TIMEOUT, self._check_timer_expired, self.last_unit)
 
     def get_check_name(self, check):
         """Return the human readable form of the given check name."""

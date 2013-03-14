@@ -18,16 +18,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from gi.repository import Gtk
+from gi.repository import GObject
+from gi.repository import GdkPixbuf
 
 from virtaal import __version__
 from virtaal.common import pan_app
 from virtaal.support import openmailto
 
 
-class AboutDialog(gtk.AboutDialog):
+class AboutDialog(Gtk.AboutDialog):
     def __init__(self, parent):
-        gtk.AboutDialog.__init__(self)
+        #GObject.GObject.__init__(self)
+        super(AboutDialog, self).__init__()
         self._register_uri_handlers()
         self.set_name("Virtaal")
         self.set_version(__version__.ver)
@@ -72,7 +75,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.""")
         # l10n: Rather than translating, fill in the names of the translators
         self.set_translator_credits(_("translator-credits"))
         self.set_icon(parent.get_icon())
-        self.set_logo(gtk.gdk.pixbuf_new_from_file(pan_app.get_abs_data_filename(["virtaal", "virtaal_logo.png"])))
+        self.set_logo(GdkPixbuf.Pixbuf.new_from_file(pan_app.get_abs_data_filename(["virtaal", "virtaal_logo.png"])))
         self.set_artists([
                 "Heather Bailey",
                 ])
@@ -92,5 +95,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.""")
 
         Use open and mailto from virtaal.support.openmailto
         """
-        gtk.about_dialog_set_url_hook(self.on_url, "url")
-        gtk.about_dialog_set_email_hook(self.on_url, "mail")
+        pass
+        # FIXME we should use "active-link" signal
+        #Gtk.about_dialog_set_url_hook(self.on_url, "url")
+        #Gtk.about_dialog_set_email_hook(self.on_url, "mail")

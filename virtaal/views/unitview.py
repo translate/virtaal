@@ -18,10 +18,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GLib
 import logging
 import re
-from gobject import idle_add, PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from gi.repository import GObject
 from translate.lang import factory
 
 from virtaal.common import GObjectWrapper
@@ -32,24 +34,24 @@ from widgets.textbox import TextBox
 from widgets.listnav import ListNavigator
 
 
-class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
+class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
     """View for translation units and its actions. It should not be used at
     all when no current unit is being edited. """
 
     __gtype_name__ = "UnitView"
     __gsignals__ = {
-        'delete-text':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT, int, int, TYPE_PYOBJECT, int)),
-        'insert-text':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, int, TYPE_PYOBJECT, int)),
-        'paste-start':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT, int)),
-        'modified':       (SIGNAL_RUN_FIRST, None, ()),
-        'unit-done':      (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'targets-created':(SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'sources-created':(SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'target-focused': (SIGNAL_RUN_FIRST, None, (int,)),
-        'textview-language-changed': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT)),
+        'delete-text':    (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT, GObject.TYPE_PYOBJECT, int, int, GObject.TYPE_PYOBJECT, int)),
+        'insert-text':    (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT, int, GObject.TYPE_PYOBJECT, int)),
+        'paste-start':    (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT, GObject.TYPE_PYOBJECT, int)),
+        'modified':       (GObject.SignalFlags.RUN_FIRST, None, ()),
+        'unit-done':      (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT,)),
+        'targets-created':(GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT,)),
+        'sources-created':(GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT,)),
+        'target-focused': (GObject.SignalFlags.RUN_FIRST, None, (int,)),
+        'textview-language-changed': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT, GObject.TYPE_PYOBJECT)),
     }
     __gproperties__ = {
-        'editing-canceled': (bool, 'Editing cancelled', 'Editing was cancelled', False, PARAM_READWRITE),
+        'editing-canceled': (bool, 'Editing cancelled', 'Editing was cancelled', False, GObject.PARAM_READWRITE),
     }
 
     first_word_re = re.compile("(?m)(?u)^(<[^>]+>|\\\\[nt]|[\W$^\n])*(\\b|\\Z)")
@@ -63,7 +65,8 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     # INITIALIZERS #
     def __init__(self, controller):
-        gtk.EventBox.__init__(self)
+        Gtk.EventBox.__init__(self)
+        #GObject.GObject.__init__(self)
         GObjectWrapper.__init__(self)
 
         self.controller = controller
@@ -76,7 +79,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         self.connect('key-press-event', self._on_key_press_event)
         # We automatically inherrit the tooltip from the Treeview, so we have
         # to show our own custom one to not have a tooltip obscuring things
-        invisible_tooltip = gtk.Window(gtk.WINDOW_POPUP)
+        invisible_tooltip = Gtk.Window.new(Gtk.WindowType.POPUP)
         invisible_tooltip.resize(1,1)
         invisible_tooltip.set_opacity(0)
         self.set_tooltip_window(invisible_tooltip)
@@ -101,7 +104,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                     return textview
             return None
 
-        clipboard = gtk.Clipboard(selection=gtk.gdk.SELECTION_CLIPBOARD)
+        clipboard = Gtk.Clipboard.get(Gdk.atom_intern('CLIPBOARD', True))
         def on_cut(menuitem):
             focused = get_focused(self.targets)
             if focused is not None:
@@ -138,22 +141,22 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         def on_prev(*args):
             self.targets[self.focused_target_n].move_elem_selection(-1)
         def on_transfer(*args):
-            ev = gtk.gdk.Event(gtk.gdk.KEY_PRESS)
-            ev.state = gtk.gdk.MOD1_MASK
-            ev.keyval = gtk.keysyms.Down
-            ev.window = self.targets[self.focused_target_n].get_window(gtk.TEXT_WINDOW_WIDGET)
+            ev = Gdk.Event(Gdk.EventType.KEY_PRESS)
+            ev.state = Gdk.ModifierType.MOD1_MASK
+            ev.keyval = Gdk.KEY_Down
+            ev.window = self.targets[self.focused_target_n].get_window(Gtk.TextWindowType.WIDGET)
             ev.put()
         mnu_next.connect('activate', on_next)
         mnu_prev.connect('activate', on_prev)
         mnu_transfer.connect('activate', on_transfer)
 
-        gtk.accel_map_add_entry("<Virtaal>/Edit/Next Placeable", gtk.keysyms.Right, gtk.gdk.MOD1_MASK)
-        gtk.accel_map_add_entry("<Virtaal>/Edit/Prev Placeable", gtk.keysyms.Left, gtk.gdk.MOD1_MASK)
-        gtk.accel_map_add_entry("<Virtaal>/Edit/Transfer", gtk.keysyms.Down, gtk.gdk.MOD1_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Next Placeable", Gdk.KEY_Right, Gdk.ModifierType.MOD1_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Prev Placeable", Gdk.KEY_Left, Gdk.ModifierType.MOD1_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Transfer", Gdk.KEY_Down, Gdk.ModifierType.MOD1_MASK)
 
         accel_group = menu_edit.get_accel_group()
         if not accel_group:
-            accel_group = gtk.AccelGroup()
+            accel_group = Gtk.AccelGroup()
 
         self.controller.main_controller.view.add_accel_group(accel_group)
         menu_edit.set_accel_group(accel_group)
@@ -246,11 +249,11 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
         return False
 
-    def do_start_editing(self, *_args):
-        """C{gtk.CellEditable.start_editing()}"""
+    def start_editing(self, *_args):
+        """C{Gtk.CellEditable.start_editing()}"""
         self.focus_text_view(self.targets[0])
 
-    def do_editing_done(self, *_args):
+    def editing_done(self, *_args):
         pass
 
     def focus_text_view(self, textbox):
@@ -261,11 +264,11 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         textbox.buffer.place_cursor(textbox.buffer.get_iter_at_offset(translation_start))
 
         self._focused_target_n = self.targets.index(textbox)
-        #logging.debug('emit("target-focused", focused_target_n=%d)' % (self._focused_target_n))
+        logging.debug('emit("target-focused", focused_target_n=%d)' % (self._focused_target_n))
         self.emit('target-focused', self._focused_target_n)
 
     def load_unit(self, unit):
-        """Load a GUI (C{gtk.CellEditable}) for the given unit."""
+        """Load a GUI (C{Gtk.CellEditable}) for the given unit."""
         assert unit
         if unit is None:
             logging.error("UnitView can't load a None unit")
@@ -273,7 +276,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         if unit is self.unit:
             return
 
-        #logging.debug('emit("unit-done", self.unit=%s)' % (self.unit))
+        logging.debug('emit("unit-done", self.unit=%s)' % (self.unit))
         if self.unit:
             self.emit('unit-done', self.unit)
         for src in self.sources:
@@ -291,7 +294,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     def modified(self):
         self._modified = True
-        #logging.debug('emit("modified")')
+        logging.debug('emit("modified")')
         self.emit('modified')
 
     def show(self):
@@ -343,12 +346,12 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     def _update_editor_gui(self):
         """Build the default editor with the following components:
-            - A C{gtk.TextView} for each source
-            - A C{gtk.TextView} for each target
+            - A C{Gtk.TextView} for each source
+            - A C{Gtk.TextView} for each target
             - A C{ListNavigator} for the unit states
-            - A C{gtk.Label} for programmer notes
-            - A C{gtk.Label} for translator notes
-            - A C{gtk.Label} for context info"""
+            - A C{Gtk.Label} for programmer notes
+            - A C{Gtk.Label} for translator notes
+            - A C{Gtk.Label} for context info"""
         # We assume a unit exists, otherwise none of this makes sense:
         self._layout_update_notes('programmer')
         self._layout_update_sources()
@@ -360,7 +363,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     def _update_textview_language(self, text_view, language):
         language = str(language)
-        #logging.debug('Updating text view for language %s' % (language))
+        logging.debug('Updating text view for language %s' % (language))
         text_view.get_pango_context().set_language(rendering.get_language(language))
         self.emit('textview-language-changed', text_view, language)
 
@@ -371,12 +374,12 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             source = self._create_textbox(u'', editable=False, role='source')
             textbox = source.get_child()
             textbox.modify_font(rendering.get_source_font_description())
-            self._widgets['vbox_sources'].pack_start(source)
+            self._widgets['vbox_sources'].pack_start(source, True, True, 0)
             self.sources.append(textbox)
 
             # The following fixes a very weird crash (bug #810)
             def ignore_tab(txtbx, event, eventname):
-                if event.keyval in (gtk.keysyms.Tab, gtk.keysyms.ISO_Left_Tab):
+                if event.keyval in (Gdk.KEY_Tab, Gdk.KEY_ISO_Left_Tab):
                     self.focused_target_n = 0
                     return True
             textbox.connect('key-pressed', ignore_tab)
@@ -403,12 +406,12 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                         listnav.move_state(-1)
                     # textbox is the last text view in this unit, so we need to move on
                     # to the next one.
-                    textbox.parent.parent.emit('key-press-event', event)
+                    textbox.get_parent().get_parent().emit('key-press-event', event)
                 return True
 
             # Alt-Down
             elif eventname == 'alt-down':
-                idle_add(self.copy_original, textbox)
+                GLib.idle_add(self.copy_original, textbox)
                 return True
 
             # Shift-Tab
@@ -428,7 +431,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             return False
 
         for i in range(len(self.targets), self.MAX_TARGETS):
-            target = self._create_textbox(u'', editable=True, role='target', scroll_policy=gtk.POLICY_AUTOMATIC)
+            target = self._create_textbox(u'', editable=True, role='target', scroll_policy=Gtk.PolicyType.AUTOMATIC)
             textbox = target.get_child()
             textbox.modify_font(rendering.get_target_font_description())
             textbox.selector_textboxes = self.sources
@@ -438,35 +441,36 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             textbox.connect('text-deleted', self._on_target_delete_range, i)
             textbox.connect('changed', self._on_target_changed, i)
 
-            self._widgets['vbox_targets'].pack_start(target)
+            self._widgets['vbox_targets'].pack_start(target, True, True, 0)
             self.targets.append(textbox)
+            logging.debug('_create_target #%d: %s' % (i))
 
         for target, next_target in zip(self.targets, self.targets[1:] + [None]):
             target.connect('key-pressed', target_key_press_event, next_target)
 
         self.emit('targets-created', self.targets)
 
-    def _create_textbox(self, text=u'', editable=True, role=None, scroll_policy=gtk.POLICY_AUTOMATIC):
+    def _create_textbox(self, text=u'', editable=True, role=None, scroll_policy=Gtk.PolicyType.AUTOMATIC):
         textbox = TextBox(self.controller.main_controller, role=role)
         textbox.set_editable(editable)
-        textbox.set_wrap_mode(gtk.WRAP_WORD_CHAR)
-        textbox.set_border_window_size(gtk.TEXT_WINDOW_TOP, 1)
+        textbox.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
+        textbox.set_border_window_size(Gtk.TextWindowType.TOP, 1)
         textbox.set_left_margin(2)
         textbox.set_right_margin(2)
         textbox.set_text(text or u'')
         textbox.connect('focus-in-event', self._on_textbox_focused)
         textbox.connect('focus-out-event', self._on_textbox_unfocused)
 
-        scrollwnd = gtk.ScrolledWindow()
-        scrollwnd.set_policy(gtk.POLICY_NEVER, scroll_policy)
-        scrollwnd.set_shadow_type(gtk.SHADOW_IN)
+        scrollwnd = Gtk.ScrolledWindow()
+        scrollwnd.set_policy(Gtk.PolicyType.NEVER, scroll_policy)
+        scrollwnd.set_shadow_type(Gtk.ShadowType.IN)
         scrollwnd.add(textbox)
 
         return scrollwnd
 
     def _create_workflow_liststore(self):
         workflow = self.controller.current_unit._workflow
-        lst = gtk.ListStore(str, object)
+        lst = Gtk.ListStore(str, object)
         if not workflow:
             return lst
         for state in workflow.states:
@@ -475,12 +479,12 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
     def _layout_update_notes(self, origin):
         if origin not in self._widgets['notes']:
-            label = gtk.Label()
+            label = Gtk.Label()
             label.set_line_wrap(True)
-            label.set_justify(gtk.JUSTIFY_FILL)
+            label.set_justify(Gtk.Justification.FILL)
             label.set_property('selectable', True)
 
-            self._widgets['vbox_middle'].pack_start(label)
+            self._widgets['vbox_middle'].pack_start(label, True, True, 0)
             if origin == 'programmer':
                 self._widgets['vbox_middle'].reorder_child(label, 0)
             elif origin == 'translator':
@@ -523,9 +527,9 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                 # The above condition should *never* be False
                 textbox = self.sources[0]
                 textbox.set_text(u'')
-                textbox.parent.show()
+                textbox.get_parent().show()
             for i in range(1, num_source_widgets):
-                self.sources[i].parent.hide_all()
+                self.sources[i].get_parent().hide_all()
             return
 
         num_unit_sources = 1
@@ -538,19 +542,19 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                 self.sources[i].modify_font(rendering.get_source_font_description())
                 # FIXME: This modfies the unit's copy - we should not do this
                 self.sources[i].set_text(sourcestr)
-                self.sources[i].parent.show_all()
-                #logging.debug('Showing source #%d: %s' % (i, self.sources[i]))
+                self.sources[i].get_parent().show_all()
+                logging.debug('Showing source #%d: %s' % (i, self.sources[i]))
             else:
-                #logging.debug('Hiding source #%d: %s' % (i, self.sources[i]))
-                self.sources[i].parent.hide_all()
+                logging.debug('Hiding source #%d: %s' % (i, self.sources[i]))
+                self.sources[i].get_parent().hide_all()
 
     def _layout_update_context_info(self):
         if not self._widgets['context_info']:
-            label = gtk.Label()
+            label = Gtk.Label()
             label.set_line_wrap(True)
-            label.set_justify(gtk.JUSTIFY_FILL)
+            label.set_justify(Gtk.Justification.FILL)
             label.set_property('selectable', True)
-            self._widgets['vbox_middle'].pack_start(label)
+            self._widgets['vbox_middle'].pack_start(label, True, True, 0)
             self._widgets['vbox_middle'].reorder_child(label, 2)
             self._widgets['context_info'] = label
 
@@ -574,9 +578,9 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                 # The above condition should *never* be False
                 textbox = self.targets[0]
                 textbox.set_text(u'')
-                textbox.parent.show_all()
+                textbox.get_parent().show_all()
             for i in range(1, num_target_widgets):
-                self.targets[i].parent.hide_all()
+                self.targets[i].get_parent().hide_all()
             return
 
         num_unit_targets = 1
@@ -597,14 +601,14 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
                     targetstr = rich_target[i]
                 self.targets[i].modify_font(rendering.get_target_font_description())
                 self.targets[i].set_text(targetstr)
-                self.targets[i].parent.show_all()
+                self.targets[i].get_parent().show_all()
                 self.targets[i].selector_textboxes = visible_sources
                 self.targets[i].selector_textbox = visible_sources[0]
-                #logging.debug('Showing target #%d: %s' % (i, self.targets[i]))
+                logging.debug('Showing target #%d: %s' % (i, self.targets[i]))
             else:
                 # outside plural range
-                #logging.debug('Hiding target #%d: %s' % (i, self.targets[i]))
-                self.targets[i].parent.hide_all()
+                logging.debug('Hiding target #%d: %s' % (i, self.targets[i]))
+                self.targets[i].get_parent().hide_all()
 
     def _layout_update_states(self):
         if not self._widgets['state'] and self.unit.STATE:
@@ -648,7 +652,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         self.modified()
 
     def _on_key_press_event(self, _widget, event, *_args):
-        if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.KP_Enter:
+        if event.keyval == Gdk.KEY_Return or event.keyval == Gdk.KEY_KP_Enter:
             self.must_advance = True
             # Clear selected elements
             self.editing_done()
@@ -688,11 +692,11 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
         self.modified()
 
     def _on_target_insert_text(self, textbox, ins_text, offset, elem, target_num):
-        #logging.debug('emit("insert-text", ins_text="%s", offset=%d, elem=%s, target_num=%d)' % (ins_text, offset, repr(elem), target_num))
+        logging.debug('emit("insert-text", ins_text="%s", offset=%d, elem=%s, target_num=%d)' % (ins_text, offset, repr(elem), target_num))
         self.emit('insert-text', ins_text, offset, elem, target_num)
 
     def _on_target_delete_range(self, textbox, deleted, parent, offset, cursor_pos, elem, target_num):
-        #logging.debug('emit("delete-text", deleted=%s, offset=%d, cursor_pos=%d, elem=%s, target_num=%d)' % (deleted, offset, cursor_pos, repr(elem), target_num))
+        logging.debug('emit("delete-text", deleted=%s, offset=%d, cursor_pos=%d, elem=%s, target_num=%d)' % (deleted, offset, cursor_pos, repr(elem), target_num))
         self.emit('delete-text', deleted, parent, offset, cursor_pos, elem, target_num)
 
     def _on_textbox_paste_clipboard(self, textbox, target_num):
@@ -706,7 +710,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
             'selection_offset': selb_iter.get_offset()
         }
 
-        #logging.debug('emit("paste-start", old_text="%s", offsets=%s, target_num=%d)' % (old_text, offsets, target_num))
+        logging.debug('emit("paste-start", old_text="%s", offsets=%s, target_num=%d)' % (old_text, offsets, target_num))
         self.emit('paste-start', old_text, offsets, target_num)
 
     def _on_textbox_focused(self, textbox, event):

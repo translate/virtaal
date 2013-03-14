@@ -19,7 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from gobject import SIGNAL_RUN_FIRST
+from gi.repository import GObject
 from bisect import bisect_left
 
 from virtaal.common import GObjectWrapper
@@ -36,8 +36,8 @@ class Cursor(GObjectWrapper):
     __gtype_name__ = "Cursor"
 
     __gsignals__ = {
-        "cursor-changed": (SIGNAL_RUN_FIRST, None, ()),
-        "cursor-empty":   (SIGNAL_RUN_FIRST, None, ()),
+        "cursor-changed": (GObject.SignalFlags.RUN_FIRST, None, ()),
+        "cursor-empty":   (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
 

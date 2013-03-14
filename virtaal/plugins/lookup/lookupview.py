@@ -19,7 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import logging
-import gtk
+from gi.repository import Gtk
 
 from virtaal.views.baseview import BaseView
 from virtaal.views.widgets.selectdialog import SelectDialog
@@ -71,7 +71,7 @@ class LookupView(BaseView):
             message=_('Select the services that should be used to perform look-ups'),
             size=(self.controller.config['backends_dialog_width'], 200)
         )
-        if isinstance(parent, gtk.Window):
+        if isinstance(parent, Gtk.Window):
             selectdlg.set_transient_for(parent)
             selectdlg.set_icon(parent.get_icon())
 
@@ -127,8 +127,8 @@ class LookupView(BaseView):
         srclang   = self.lang_controller.source_lang.code
         tgtlang   = self.lang_controller.target_lang.code
 
-        lookup_menu = gtk.Menu()
-        menu_item = gtk.MenuItem(_('Look-up "%(selection)s"') % {'selection': selection})
+        lookup_menu = Gtk.Menu()
+        menu_item = Gtk.MenuItem(_('Look-up "%(selection)s"') % {'selection': selection})
 
         plugins = self.controller.plugin_controller.plugins
         menu_items = []
@@ -144,7 +144,7 @@ class LookupView(BaseView):
         for i in menu_items:
             lookup_menu.append(i)
 
-        sep = gtk.SeparatorMenuItem()
+        sep = Gtk.SeparatorMenuItem()
         sep.show()
         menu.append(sep)
         menu_item.set_submenu(lookup_menu)

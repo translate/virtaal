@@ -37,7 +37,7 @@ class BaseLookupModel(object):
 
     # METHODS #
     def create_menu_items(self, query, role, srclang, tgtlang):
-        """Create the a list C{gtk.MenuItem}s for the given parameters.
+        """Create the a list C{Gtk.MenuItem}s for the given parameters.
 
         @type  query: basestring
         @param query: The string to use in the look-up.

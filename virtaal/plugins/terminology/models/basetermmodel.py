@@ -19,7 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import os
-import gobject
+from gi.repository import GObject
 
 from virtaal.models.basemodel import BaseModel
 from virtaal.common import pan_app
@@ -29,7 +29,7 @@ class BaseTerminologyModel(BaseModel):
 
     __gtype_name__ = None
     __gsignals__ = {
-        'match-found': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING, gobject.TYPE_PYOBJECT,))
+        'match-found': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_STRING, GObject.TYPE_PYOBJECT,))
     }
 
     configure_func = None

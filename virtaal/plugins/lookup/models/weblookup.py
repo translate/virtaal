@@ -18,8 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import pango
+from gi.repository import Gtk
+from gi.repository import Pango
 import urllib
 from os import path
 
@@ -110,7 +110,7 @@ class LookupModel(BaseLookupModel):
             if 'quoted' in urlinfo and urlinfo['quoted']:
                 uquery = '"' + uquery + '"'
 
-            i = gtk.MenuItem(urlinfo['display_name'])
+            i = Gtk.MenuItem.new_with_label(urlinfo['display_name'])
             lookup_str = urlinfo['url'] % {
                 'query':        uquery,
                 'querylang':    querylang,
@@ -147,7 +147,7 @@ class WebLookupConfigDialog(object):
         )
 
         self._get_widgets()
-        if isinstance(parent, gtk.Widget):
+        if isinstance(parent, Gtk.Widget):
             self.dialog.set_transient_for(parent)
             self.dialog.set_icon(parent.get_toplevel().get_icon())
 
@@ -164,32 +164,32 @@ class WebLookupConfigDialog(object):
         self.add_dialog = WebLookupAddDialog(self.dialog)
 
     def _init_treeview(self):
-        self.lst_urls = gtk.ListStore(str, str, bool, object)
+        self.lst_urls = Gtk.ListStore(str, str, bool, object)
         self.tvw_urls.set_model(self.lst_urls)
 
-        cell = gtk.CellRendererText()
-        col = gtk.TreeViewColumn(_('Name'))
-        col.pack_start(cell)
+        cell = Gtk.CellRendererText()
+        col = Gtk.TreeViewColumn(_('Name'))
+        col.pack_start(cell, True, True, 0)
         col.add_attribute(cell, 'text', self.COL_NAME)
         col.props.resizable = True
         col.set_sort_column_id(0)
         self.tvw_urls.append_column(col)
 
-        cell = gtk.CellRendererText()
-        cell.props.ellipsize = pango.ELLIPSIZE_MIDDLE
-        col = gtk.TreeViewColumn(_('URL'))
-        col.pack_start(cell)
+        cell = Gtk.CellRendererText()
+        cell.props.ellipsize = Pango.EllipsizeMode.MIDDLE
+        col = Gtk.TreeViewColumn(_('URL'))
+        col.pack_start(cell, True, True, 0)
         col.add_attribute(cell, 'text', self.COL_URL)
         col.props.resizable = True
         col.set_expand(True)
         col.set_sort_column_id(1)
         self.tvw_urls.append_column(col)
 
-        cell = gtk.CellRendererToggle()
+        cell = Gtk.CellRendererToggle()
         cell.set_radio(False)
         #l10n: Whether the selected text should be surrounded by "quotes"
-        col = gtk.TreeViewColumn(_('Quote Query'))
-        col.pack_start(cell)
+        col = Gtk.TreeViewColumn(_('Quote Query'))
+        col.pack_start(cell, True, True, 0)
         col.add_attribute(cell, 'active', self.COL_QUOTE)
         self.tvw_urls.append_column(col)
 
@@ -210,7 +210,7 @@ class WebLookupConfigDialog(object):
 
     # METHODS #
     def run(self, parent=None):
-        if isinstance(parent, gtk.Widget):
+        if isinstance(parent, Gtk.Widget):
             self.dialog.set_transient_for(parent)
 
         self.dialog.show()
@@ -244,7 +244,7 @@ class WebLookupAddDialog(object):
         )
         self._get_widgets()
 
-        if isinstance(parent, gtk.Window):
+        if isinstance(parent, Gtk.Window):
             self.dialog.set_transient_for(parent)
             self.dialog.set_icon(parent.get_toplevel().get_icon())
 
@@ -267,7 +267,7 @@ class WebLookupAddDialog(object):
         response = self.dialog.run()
         self.dialog.hide()
 
-        if response != gtk.RESPONSE_OK:
+        if response != Gtk.ResponseType.OK:
             return None
 
         self.url = {

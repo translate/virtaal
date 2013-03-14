@@ -20,10 +20,10 @@
 
 from translate.storage import factory
 
-import gtk
+from gi.repository import Gtk
 
 
-rf = gtk.RecentFilter()
+rf = Gtk.RecentFilter()
 for name, extensions, mimetypes in factory.supported_files():
     if extensions:
         for extension in extensions:
@@ -38,14 +38,14 @@ for name, extensions, mimetypes in factory.supported_files():
 for app in ("virtaal", "poedit", "kbabel", "lokalize", "gtranslator"):
     rf.add_application(app)
 
-rm = gtk.recent_manager_get_default()
+rm = Gtk.RecentManager.get_default()
 
-rc = gtk.RecentChooserMenu()
+rc = Gtk.RecentChooserMenu()
 # For now we don't handle non-local files yet
 rc.set_local_only(True)
 rc.set_show_not_found(False)
 rc.set_show_numbers(True)
 rc.set_show_tips(True)
-rc.set_sort_type(gtk.RECENT_SORT_MRU)
+rc.set_sort_type(Gtk.RecentSortType.MRU)
 rc.add_filter(rf)
 rc.set_limit(15)

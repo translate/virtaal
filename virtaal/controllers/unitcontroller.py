@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gobject import SIGNAL_RUN_FIRST, timeout_add
+from gi.repository import GObject
 from translate.storage import workflow
 
 from virtaal.common import GObjectWrapper
@@ -31,11 +31,11 @@ class UnitController(BaseController):
 
     __gtype_name__ = "UnitController"
     __gsignals__ = {
-        'unit-done':           (SIGNAL_RUN_FIRST, None, (object, int)),
-        'unit-modified':       (SIGNAL_RUN_FIRST, None, (object,)),
-        'unit-delete-text':    (SIGNAL_RUN_FIRST, None, (object, object, object, int, int, object, int)),
-        'unit-insert-text':    (SIGNAL_RUN_FIRST, None, (object, object, int, object, int)),
-        'unit-paste-start':    (SIGNAL_RUN_FIRST, None, (object, object, object, int)),
+        'unit-done':           (GObject.SignalFlags.RUN_FIRST, None, (object, int)),
+        'unit-modified':       (GObject.SignalFlags.RUN_FIRST, None, (object,)),
+        'unit-delete-text':    (GObject.SignalFlags.RUN_FIRST, None, (object, object, object, int, int, object, int)),
+        'unit-insert-text':    (GObject.SignalFlags.RUN_FIRST, None, (object, object, int, object, int)),
+        'unit-paste-start':    (GObject.SignalFlags.RUN_FIRST, None, (object, object, object, int)),
     }
 
     STATE_TIMEOUT = 200
@@ -188,7 +188,7 @@ class UnitController(BaseController):
         if self._state_timer_active:
             return
         self._state_timer_active = True
-        timeout_add(self.STATE_TIMEOUT, self._state_timer_expired, self.current_unit)
+        GObject.timeout_add(self.STATE_TIMEOUT, self._state_timer_expired, self.current_unit)
 
     def prepare_for_save(self):
         """Finalise outstanding changes to the toolkit store for saving."""

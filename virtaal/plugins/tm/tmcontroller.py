@@ -18,7 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
+from gi.repository import GObject
+from gi.repository import GLib
 import os.path
 from translate.lang.data import forceunicode, normalize
 
@@ -30,7 +31,7 @@ class TMController(BaseController):
 
     __gtype_name__ = 'TMController'
     __gsignals__ = {
-        'start-query': (gobject.SIGNAL_RUN_FIRST, None, (object,))
+        'start-query': (GObject.SignalFlags.RUN_FIRST, None, (object,))
     }
 
     QUERY_DELAY = 300
@@ -191,8 +192,8 @@ class TMController(BaseController):
             self.send_tm_query()
             return False
         if getattr(self, '_delay_id', 0):
-            gobject.source_remove(self._delay_id)
-        self._delay_id = gobject.timeout_add(self.QUERY_DELAY, start_query)
+            GObject.source_remove(self._delay_id)
+        self._delay_id = GObject.timeout_add(self.QUERY_DELAY, start_query)
 
 
     # EVENT HANDLERS #
@@ -230,7 +231,7 @@ class TMController(BaseController):
         def handle_first_unit():
             self._on_cursor_changed(self.storecursor)
             return False
-        gobject.idle_add(handle_first_unit)
+        GLib.idle_add(handle_first_unit)
 
     def _on_target_focused(self, unitcontroller, target_n):
         #import logging

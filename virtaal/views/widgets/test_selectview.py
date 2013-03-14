@@ -18,15 +18,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from gi.repository import Gtk
 
 from selectview import SelectView
 
 
-class SelectViewTestWindow(gtk.Window):
+class SelectViewTestWindow(Gtk.Window):
     def __init__(self):
         super(SelectViewTestWindow, self).__init__()
-        self.connect('destroy', lambda *args: gtk.main_quit())
+        self.connect('destroy', lambda *args: Gtk.main_quit())
         self.add(self.create_selectview())
 
     def create_selectview(self):
@@ -52,4 +52,4 @@ class SelectViewTestWindow(gtk.Window):
 if __name__ == '__main__':
     win = SelectViewTestWindow()
     win.show_all()
-    gtk.main()
+    Gtk.main()

@@ -5,6 +5,9 @@
 /MANIFEST.in
 /mo
 
+# /docs/
+/docs/_build/
+
 # /po/
 /po/missing
 /po/.intltool-merge-cache

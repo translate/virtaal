@@ -34,7 +34,7 @@ tests must be executed from within ``gui_tests``.
 Writing GUI tests
 =================
 
-`Accerciser <http://live.gnome.org/Accerciser>`_ allows you to inspect the GUI
+`Accerciser <https://live.gnome.org/Accerciser>`_ allows you to inspect the GUI
 of a running application that was started using the Gnome at-spi framework.
 Dogtail does this when it launches an application; the easiest way to do this
 is to launch a Python shell. The following Python session shows the necessary

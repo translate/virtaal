@@ -18,10 +18,6 @@ You can add a repository in YaST by specifying a URL.
   http://download.opensuse.org/repositories/home:/elchevive/openSUSE_Factory/
 - **for openSUSE 12.1**:
   http://download.opensuse.org/repositories/home:/elchevive/openSUSE_12.1/
-- **for openSUSE 11.4** :
-  http://download.opensuse.org/repositories/home:/elchevive/openSUSE_11.4/
-- **for openSUSE 11.3** :
-  http://download.opensuse.org/repositories/home:/elchevive/openSUSE_11.3/
 
 If you want to add it on the command line, perform the correct command based on
 your version openSUSE::
@@ -31,14 +27,6 @@ your version openSUSE::
 or ::
 
   zypper ar -f http://r.opensu.se/home:elchevive/openSUSE_12.1/  translate
-
-or ::
-
-  zypper ar -f http://r.opensu.se/home:elchevive/openSUSE_11.4/  translate
-
-or ::
-
-  zypper ar -f http://r.opensu.se/home:elchevive/openSUSE_11.3/  translate
 
 Here "ar" means "add repository", "-'f" to make it refresh and "translate" is
 the name that you give to the repository.

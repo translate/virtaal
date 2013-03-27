@@ -5,22 +5,21 @@ Building
 ********
 
 To build Virtaal yourself, you will need a packaged archive of the Virtaal
-source code, or obtain it directly from Subversion.
+source code, or obtain it directly from Git.
 
-To get the source code direction from `Subversion <http://svn.tigris.org>`_,
-use this command::
+To get the source code direction from Git use this command::
 
-  svn co http://translate.svn.sourceforge.net/svnroot/translate/src/trunk/virtaal/
+  git clone git@github.com:translate/virtaal.git
 
 .. _building#required_packages:
 
 Required packages
 =================
 
-- `GTK+ <http://www.gtk.org/download.html>`_ runtime (for Windows download the
-  latest bundle from `here <http://www.gtk.org/download-windows.html>`_)
+- `GTK+ <http://www.gtk.org/download/index.php>`_ runtime (for Windows download
+  the `latest bundle <http://www.gtk.org/download/win32.php>`_)
 - `PyGTK <http://pygtk.org/downloads.html>`_
-- `lxml <http://pypi.python.org/pypi/lxml/>`_
+- `lxml <https://pypi.python.org/pypi/lxml/>`_
 - libglade and its python bindings (might be called something like
   pygtk2.0-libglade on your Linux distribution)
 - Translate-toolkit (if a current enough version is packaged, it might be
@@ -44,9 +43,9 @@ These are not build dependencies but usually improve the user experience.
   gnome-python-extras or something similar) - provides all
   :doc:`spell_checking` functionality.  For Windows:
 
-  - See `here
+  - See `Gramps
     <http://gramps-project.org/wiki/index.php?title=Windows_installer>`_ and
-    `here <http://pyenchant.sourceforge.net/>`_ for Windows installers
+    `PyEnchant <http://pythonhosted.org/pyenchant/>`_ for Windows installers
   - While gtkspell expects libenchant.dll, copy libenchant-1.dll to the
     alternate name (setup.py expects both while this is the case)
   - Remove the .dll files of dependencies shipped with pyenchant (iconv, glib,

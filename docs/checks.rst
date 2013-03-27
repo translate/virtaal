@@ -5,8 +5,8 @@ Quality Checks
 **************
 
 Virtaal provides a powerful way of reviewing translations for quality. It
-exposes most of the :doc:`toolkit/pofilter tests` that can test for several
-issues that can affect the quality of your translations.
+exposes most of the :ref:`pofilter checks <toolkit:pofilter_tests>` that can
+test for several issues that can affect the quality of your translations.
 
 If Virtaal indicates a possible problem with a translation, it doesn’t mean
 that the translation is necessarily wrong, just that you might want to review
@@ -28,8 +28,8 @@ them for more detail. The same details can also be shown by pressing F8. This
 might explain what the test mean, or could even mention detailed information
 about the possible error.
 
-You can also read the detailed descriptions of the :doc:`toolkit/pofilter
-tests`.
+You can also read the detailed descriptions of the
+:ref:`pofilter checks <toolkit:pofilter_tests>`.
 
 .. _checks#quality_checks_navigation_mode:
 

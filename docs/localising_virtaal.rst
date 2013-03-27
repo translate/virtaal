@@ -84,18 +84,19 @@ something more advanced as needed for your language.
 
 Search
 ------
-Searching is done using the code from :doc:`toolkit/pogrep`. It supports case
-(in)sensitive searches, regular expressions, and Unicode normalisation. Some
-languages might benefit from language specific normalisation.
+Searching is done using the code from :ref:`pogrep <toolkit:pogrep>`. It
+supports case (in)sensitive searches, regular expressions, and Unicode
+normalisation. Some languages might benefit from language specific
+normalisation.
 
 .. _localising_virtaal#quality_checks:
 
 Quality checks
 ==============
 Since version 0.7, Virtaal provides access to the quality checks of
-:doc:`toolkit/pofilter`. Several customisations are possible for your language,
-like disabling some tests, customising the behaviour, or language specific
-checks.
+:ref:`pofilter <toolkit:pofilter>`. Several customisations are possible for
+your language, like disabling some tests, customising the behaviour, or
+language specific checks.
 
 .. _localising_virtaal#more:
 

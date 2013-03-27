@@ -47,7 +47,7 @@ Virtaal will make you more productive
 - Automatic sensing of the initial cursor position
 - Copying original string to target string taking your language's punctuation
   rules into account
-- Highlighting and copying :doc:`placeables` from the source text
+- Highlighting and copying :doc:`placeables <placeables>` from the source text
 - Easily find your work by moving between the units that are untranslated or
   fuzzy
 - Automatically update the PO header when saving

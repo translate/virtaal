@@ -6,7 +6,7 @@ Google Translate
 
 `Google Translate <http://translate.google.com/>`_ is a free service for
 machine translation (MT). Familiarise yourself with Google's `terms of service
-<http://code.google.com/intl/af-ZA/apis/ajaxlanguage/terms.html>`_. 
+<https://developers.google.com/translate/v2/terms>`_.
 
 Virtaal has a plugin since version 0.5 to provide the output of Google
 Translate as suggestions.

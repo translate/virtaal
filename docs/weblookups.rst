@@ -72,19 +72,6 @@ Dictionaries
 Various dictionaries for a single language, multiple languages or specialist
 domain dictionaries.  Not limited to English dictionaries.
 
-.. _weblookups#encarta:
-
-Encarta
--------
-
-- `Encarta <http://encarta.msn.com/encnet/features/dictionary/DictionaryHome.aspx>`_
-- language: English
-- quote: yes
-
-::
-
-    http://encarta.msn.com/encnet/features/dictionary/DictionaryResults.aspx?search=%(query)s&lextype=3
-
 .. _weblookups#wiktionary:
 
 Wiktionary

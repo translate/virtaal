@@ -13,14 +13,14 @@ powerful at the same time. Although the initial focus is on software
 translation (localisation or l10n), we definitely intend it to be useful for
 several purposes.
 
-Virtaal is built on the powerful API of the :doc:`Translate Toolkit
-<toolkit/index>`. "Virtaal" is an Afrikaans play on words meaning "For
-Language", but also refers to translation.
+Virtaal is built on the powerful API of the `Translate Toolkit
+<http://toolkit.translatehouse.org>`_. "Virtaal" is an Afrikaans play on words
+meaning "For Language", but also refers to translation.
 
 Read more about the :doc:`features` in Virtaal, or view the :doc:`screenshots`.
 You can also download a `screencast
-<http://l10n.mozilla.org/pootle/screencasts/virtaal-0.3.ogv>`_ (33MB in Ogg
-Theora format) to see some of these features in action.
+<http://l10n.mozilla-community.org/pootle/screencasts/virtaal-0.3.ogv>`_ (33MB
+in Ogg Theora format) to see some of these features in action.
 
 Learn more about :doc:`using_virtaal`, available :doc:`shortcuts <cheatsheet>`
 and some extra :doc:`tips` for people who want to customise their installation.

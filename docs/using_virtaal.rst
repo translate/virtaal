@@ -102,12 +102,13 @@ did, you can simply undo the step with Ctrl+Z.
 Copy a placeable to the target
 ------------------------------
 
-:doc:`placeables` are special parts of the text that can be automatically
-highlighted and easily inserted into the translation. You will see that certain
-parts of the source text will be highlighted. To select which placeable to
-insert, press <Alt+Right> to move the highlighting to the correct placeable.
-You can insert the currently highlighted placeable by pressing <Alt+Down>.
-After you have inserted a placeable, the next placeable will be highlighted.
+:doc:`Placeables <placeables>` are special parts of the text that can be
+automatically highlighted and easily inserted into the translation. You will
+see that certain parts of the source text will be highlighted. To select which
+placeable to insert, press <Alt+Right> to move the highlighting to the correct
+placeable.  You can insert the currently highlighted placeable by pressing
+<Alt+Down>.  After you have inserted a placeable, the next placeable will be
+highlighted.
 
 .. _using_virtaal#copy_a_term_to_the_target:
 

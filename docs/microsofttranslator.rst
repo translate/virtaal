@@ -7,7 +7,7 @@ Microsoft Translator
 `Microsoft Translator <http://www.microsofttranslator.com/>`_ (also known as
 Bing Translator) is a free service for machine translation (MT). Familiarise
 yourself with the `Microsoft Service Agreement
-<http://help.live.com/help.aspx?project=tou>`_. 
+<http://www.microsoft.com/en-us/translator/licensing.aspx>`_.
 
 Virtaal has a plugin since version 0.6 to provide the output of Microsoft
 Translator as suggestions.

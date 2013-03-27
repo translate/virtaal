@@ -17,14 +17,7 @@ View a list of `open requests and bugs
 
 Features that are likely to be developed in the foreseeable future:
 
-- <del>Terminology help</del> - supported since version 0.4
-- Better handling of XLIFF inline elements and placeables - already supported
-  since version 0.4
-- <del>:doc:`Quality checks <toolkit/pofilter_tests>` like in Pootle and
-  :doc:`toolkit/pofilter`</del> - Implemented in Virtaal 0.7
 - Improved searching (to take accelerators into account, for example)
-- <del>Better :doc:`spell_checking`</del> - Windows+OSX spell checking working
-  since Virtaal 0.7 with some improved context menu
 - Better support for XLIFF features
 - Support for more formats - ongoing
 

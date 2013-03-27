@@ -55,10 +55,14 @@ Word level features
 Spell checking
 --------------
 On Linux, Virtaal uses the system spell checkers as provided by Enchant for
-doing :doc:`spell_checking`. For Windows, Virtaal will download a spell checker
-for active languages (since version 0.7). If this is not working for your
-language, let us know about available spell checkers and their quality and
-license for the developers to consider providing to Virtaal users. 
+doing :doc:`spell_checking`.
+
+.. versionchanged:: 0.7
+
+For Windows, Virtaal will download a spell checker for active languages. If
+this is not working for your language, let us know about available spell
+checkers and their quality and license for the developers to consider providing
+to Virtaal users. 
 
 .. _localising_virtaal#autocorrect:
 
@@ -93,10 +97,13 @@ normalisation.
 
 Quality checks
 ==============
-Since version 0.7, Virtaal provides access to the quality checks of
-:ref:`pofilter <toolkit:pofilter>`. Several customisations are possible for
-your language, like disabling some tests, customising the behaviour, or
-language specific checks.
+
+.. versionadded:: 0.7
+
+Virtaal provides access to the quality checks of :ref:`pofilter
+<toolkit:pofilter>`. Several customisations are possible for your language,
+like disabling some tests, customising the behaviour, or language specific
+checks.
 
 .. _localising_virtaal#more:
 

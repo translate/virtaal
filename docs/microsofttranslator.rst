@@ -4,13 +4,14 @@
 Microsoft Translator
 ********************
 
+.. versionadded:: 0.6
+
 `Microsoft Translator <http://www.microsofttranslator.com/>`_ (also known as
 Bing Translator) is a free service for machine translation (MT). Familiarise
 yourself with the `Microsoft Service Agreement
 <http://www.microsoft.com/en-us/translator/licensing.aspx>`_.
 
-Virtaal has a plugin since version 0.6 to provide the output of Microsoft
-Translator as suggestions.
+The Virtaal plugin provides the output of Microsoft Translator as suggestions.
 
 The plugin queries a web service over the Internet, and suggestions might
 therefore take a moment before they are displayed. Also keep in mind that your

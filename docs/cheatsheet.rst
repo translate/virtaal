@@ -53,14 +53,12 @@ Shortcuts
 |                    | the source or selected :doc:`placeable <placeables>` to    |
 |                    | the target                                                 |
 +--------------------+------------------------------------------------------------+
-| Alt+U *            | Mark/Unmark unit as fuzzy ((* until version 0.6.1))        |
-+--------------------+------------------------------------------------------------+
 | Shift+Enter        | Enter a new line                                           |
 +--------------------+------------------------------------------------------------+
-| Ctrl+Enter *       | Mark unit with marker "Needs work" as "Translated" and go  |
-|                    | to the next unit ((* starting from version 0.7))           |
+| Ctrl+Enter         | Mark unit with marker "Needs work" as "Translated" and go  |
+|                    | to the next unit                                           |
 +--------------------+------------------------------------------------------------+
-| Ctrl+Shift+Enter * | Mark unit as "Needs work" and go to the next unit          |
+| Ctrl+Shift+Enter   | Mark unit as "Needs work" and go to the next unit          |
 +--------------------+------------------------------------------------------------+
 | Ctrl+Z             | Undo the last change                                       |
 +--------------------+------------------------------------------------------------+
@@ -70,7 +68,7 @@ Shortcuts
 +==========================+====================================================================+
 | Ctrl+1                   | Use the first translation suggestion (use Ctrl+2, etc. for others) | 
 +--------------------------+--------------------------------------------------------------------+
-| F8 *                     | Show/Hide [[virtaal:checks                                         | 
+| F8                       | Show/Hide [[virtaal:checks                                         |
 +--------------------------+--------------------------------------------------------------------+
 | F9                       | Show/Hide translation suggestions                                  | 
 +--------------------------+--------------------------------------------------------------------+

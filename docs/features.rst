@@ -20,7 +20,7 @@ Virtaal is perfect for the new member on your team:
 
 - Simple and intuitive layout
 - Colour highlighting
-- :doc:`Quality checks <checks>` (since version 0.7)
+- :doc:`Quality checks <checks>`
 - Displays comments from programmers and previous translators
 - Displays context (like msgctxt in PO)
 - Easy way to :doc:`look-up <weblookups>` selected text on the web
@@ -65,7 +65,7 @@ Virtaal will make you more productive
   - `Open-Tran.eu <http://open-tran.eu>`_
   - A team / office TM server
   - A tinyTM server
-  - :doc:`Amagama <amagama>` (since version 0.7)
+  - :doc:`Amagama <amagama>`
 
 - Machine translation
 
@@ -121,4 +121,4 @@ More
 - Debug compiled application translations by opening .mo and .qm files directly
 - Platform independence means you can run Virtaal on Windows, Linux, Mac OSX
   and probably other systems as well.
-- Native window dialogs on Gnome, KDE, Windows and OSX (since version 0.7).
+- Native window dialogs on Gnome, KDE, Windows and OSX

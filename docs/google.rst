@@ -4,12 +4,13 @@
 Google Translate
 ****************
 
+.. versionadded:: 0.5
+
 `Google Translate <http://translate.google.com/>`_ is a free service for
 machine translation (MT). Familiarise yourself with Google's `terms of service
 <https://developers.google.com/translate/v2/terms>`_.
 
-Virtaal has a plugin since version 0.5 to provide the output of Google
-Translate as suggestions.
+The Virtaal plugin provides the output of Google Translate as suggestions.
 
 The plugin queries a web service over the Internet, and suggestions might
 therefore take a moment before they are displayed. Also keep in mind that your

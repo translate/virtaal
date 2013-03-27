@@ -13,10 +13,11 @@ ability to add it to the personal word list.
 
 Windows
 =======
-Since Virtaal 0.7 the official Windows version has spell checking functionality
-built-in.  Currently only Hunspell and Myspell spell checkers are supported.
-You need to install spell checkers for the languages that you are interested
-in.
+
+.. versionadded:: 0.7
+
+Currently only Hunspell and Myspell spell checkers are supported.  You need to
+install spell checkers for the languages that you are interested in.
 
 Copy the .aff and .dic files into  Application Data\enchant\myspell\  for your
 account.  If you are the Administrator user, that could be in C:\Documents and

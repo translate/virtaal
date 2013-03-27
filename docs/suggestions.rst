@@ -19,12 +19,6 @@ Functionality
   give the error graphically and probably leave the application open.  Might be
   as simple as adding a --gui option.
 - Allow the translator to add comments
-- <del>Incorporate the quality checks that are available in Pootle.</del> -
-  Implemented in Virtaal 0.7
-- <del>Provide the ability to not only copy the source string to the target
-  field as a whole, but to copy certain items -- such as numbers and
-  constructive substrings -- separately as well.</del> - Implemented in Virtaal
-  0.4
 - <del>Provide the ability to save files in a different format, eg. save MO
   files to PO, and vice versa.</del> - Exporting .po to .mo implemented in
   Virtaal 0.7

@@ -3,6 +3,9 @@
 
 Automatic Terminology Assistance
 ********************************
+
+.. versionadded:: 0.5
+
 Virtaal can provide terminology help in many ways. One of the most powerful
 ways is where Virtaal downloads a recommended file of localisation terms for
 your language.
@@ -26,5 +29,4 @@ terms are also recommended in Pootle. We need the experts in software
 localisation in each language to recommend which URL should be used for their
 language. Contact us if this is not yet configured for your language.
 
-All file formats supported by Virtaal can be used. This feature was introduced
-in Virtaal 0.5.
+All file formats supported by Virtaal can be used.

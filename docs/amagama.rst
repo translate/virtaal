@@ -2,8 +2,11 @@
 .. _amagama:
 
 Amagama
-=======
-Virtaal has a plugin since version 0.7 to provide TM suggestions from Amagama.
+*******
+
+.. versionadded:: 0.7
+
+Virtaal provides TM suggestions from the Amagama Translation Memory server.
 Amagama contains translations of FOSS projects.
 
 The plugin queries a web service over the Internet, and suggestions might

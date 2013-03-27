@@ -4,6 +4,8 @@
 Placeables
 **********
 
+.. versionadded:: 0.4
+
 Placeables are special parts of the text that can be automatically highlighted
 and easily inserted into the translation. By using placeables, a translator can
 avoid certain errors, such as retyping numbers or acronyms incorrectly, or

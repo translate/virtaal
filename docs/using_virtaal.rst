@@ -173,7 +173,8 @@ go back to another mode.
 
 Quality checks mode
 -------------------
-(Available since version 0.7)
+
+.. versionadded:: 0.7
 
 In the “Quality checks” navigation mode, you can select certain quality checks
 from the list of possible issues seen by Virtaal. For more information, visit

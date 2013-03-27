@@ -282,4 +282,5 @@ extlinks = {
     'bug': ('http://bugs.locamotion.org/show_bug.cgi?id=%s',
             'bug '),
     'man': ('http://linux.die.net/man/1/%s', ''),
+    'wp': ('http://en.wikipedia.org/wiki/%s', ''),
 }

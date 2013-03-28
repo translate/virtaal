@@ -16,6 +16,7 @@ system:
 - Unix / Linux:  ``~/.virtaal/``
 - Mac OS X: ``~/Library/Application Support/Virtaal/`` or ``~/.virtaal/``
 - Windows:  ``%APPDATA%\Virtaal`` for example:
+
   - ``C:\Documents and Settings\%USERNAME%\Application Data\Virtaal``
   - ``C:\Users\%USERNAME%\AppData\Roaming\Virtaal``
 

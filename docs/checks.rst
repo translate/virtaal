@@ -1,4 +1,5 @@
 
+.. _checks:
 .. _checks#quality_checks:
 
 Quality Checks

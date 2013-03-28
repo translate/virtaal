@@ -285,3 +285,10 @@ extlinks = {
     'wp': ('http://en.wikipedia.org/wiki/%s', ''),
     'wiki': ('http://translate.sourceforge.net/wiki/%s', ''),
 }
+
+# -- Options for Linkcheck -------------------------------------------------
+
+# Add regex's here for links that should be ignored.
+linkcheck_ignore = [
+    'http://open-tran.eu',  # Doesn't seem to respond at all but is live
+]

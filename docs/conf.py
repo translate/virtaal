@@ -283,4 +283,5 @@ extlinks = {
             'bug '),
     'man': ('http://linux.die.net/man/1/%s', ''),
     'wp': ('http://en.wikipedia.org/wiki/%s', ''),
+    'wiki': ('http://translate.sourceforge.net/wiki/%s', ''),
 }

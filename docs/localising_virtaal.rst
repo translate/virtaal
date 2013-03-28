@@ -43,7 +43,8 @@ Plural Information
 ------------------
 It is important (although not strictly required) to know the plural information
 for your language so that it is easily selectable as a source or target
-language. For more information, see :doc:`l10n/pluralforms`.
+language. For more information, see the :wiki:`plurals page
+<l10n/pluralforms>`.
 
 .. _localising_virtaal#word_level_features:
 
@@ -55,7 +56,7 @@ Word Level Features
 Spell Checking
 --------------
 On Linux, Virtaal uses the system spell checkers as provided by Enchant for
-doing :doc:`spell_checking`.
+doing :doc:`spell checking <spell_checking>`.
 
 .. versionchanged:: 0.7
 
@@ -114,8 +115,9 @@ Virtaal for use with your language, let us look at how to integrate it. Adding
 extra terminology sources, translation memory services, machine translation
 services is usually very simple.
 
-Check if your language is already supported with :doc:`autoterm` and talk to
-the Virtaal developers about adding support for your language.
+Check if your language is already supported with :doc:`automatic terminology
+assistance <autoterm>` and talk to the Virtaal developers about adding support
+for your language.
 
 .. _localising_virtaal#user_interface_localisation:
 
@@ -130,8 +132,8 @@ Some instructions:
   <http://pootle.locamotion.org/projects/virtaal/>`_
 - If not, get the `Latest POT file
   <http://translate.svn.sourceforge.net/viewvc/translate/src/trunk/virtaal/po/virtaal.pot>`_
-- Be very familiar with all the :doc:`features` of Virtaal, especially
-  :doc:`placeables`.
+- Be very familiar with all the :doc:`features <features>` of Virtaal,
+  especially :doc:`placeables <placeables>`.
 - Generate the .mo file with "msgfmt -cv", and put it in your system location
   for .mo files.  You could also use the "testlocalisations" script in the po/
   directory if Virtaal if you prefer. Then run Virtaal in in your language for

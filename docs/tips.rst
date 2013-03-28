@@ -109,8 +109,7 @@ Make Open-Tran.eu faster
 Do you wish the suggestions from Open-Tran.eu could come faster? The speed of
 this translation memory plugin depends a lot on your network connection.  One
 way that could help to make it faster, is to avoid DNS lookups. You can do that
-by adding open-tran.eu into your `hosts file
-<http://en.wikipedia.org/wiki/Hosts_file>`_.  ::
+by adding open-tran.eu into your :wp:`hosts file <Hosts_file>`.  ::
 
     85.214.16.47            open-tran.eu
 

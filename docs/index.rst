@@ -17,13 +17,14 @@ Virtaal is built on the powerful API of the `Translate Toolkit
 <http://toolkit.translatehouse.org>`_. "Virtaal" is an Afrikaans play on words
 meaning "For Language", but also refers to translation.
 
-Read more about the :doc:`features` in Virtaal, or view the :doc:`screenshots`.
-You can also download a `screencast
-<http://l10n.mozilla-community.org/pootle/screencasts/virtaal-0.3.ogv>`_ (33MB
-in Ogg Theora format) to see some of these features in action.
+Read more about the :doc:`features <features>` in Virtaal, or view the
+:doc:`screenshots <screenshots>`.  You can also download a `screencast
+<http://l10n.mozilla-community.org/pootle/screencasts/virtaal-0.3.ogv>`_ (33MB,
+Ogg Theora format) to see some of these features in action.
 
-Learn more about :doc:`using_virtaal`, available :doc:`shortcuts <cheatsheet>`
-and some extra :doc:`tips` for people who want to customise their installation.
+Learn more about :doc:`using Virtaal <using_virtaal>`, available
+:doc:`shortcuts <cheatsheet>` and some extra :doc:`tips and tricks <tips>` for
+people who want to customise their installation.
 
 .. toctree::
    :maxdepth: 1
@@ -60,13 +61,13 @@ Installation
 +-----------------+--------------------------------------------------------------+---------------------------------------------+
 | Fedora          | yum install virtaal                                          | Or use the graphical package manager.       |
 |                 |                                                              | For older Fedora releases use the           |
-|                 |                                                              | :doc:`fedora_custom_repo`                   |
+|                 |                                                              | :doc:`custom repo <fedora_custom_repo>`     |
 +-----------------+--------------------------------------------------------------+---------------------------------------------+
 | Mandriva        | urpmi virtaal                                                | Or simply use the graphical package manager |
 +-----------------+--------------------------------------------------------------+---------------------------------------------+
 | Debian Squeeze  | apt-get install virtaal                                      | Or simply use the graphical package manager |
 +-----------------+--------------------------------------------------------------+---------------------------------------------+
-| openSUSE        | Read :doc:`openSUSE installation <opensuse_installation>` instructions                                     |
+| openSUSE        | Read :doc:`openSUSE <opensuse_installation>` installation instructions                                     |
 +-----------------+--------------------------------------------------------------+---------------------------------------------+
 | Other           | `Download source .zip or .tar.bz2                            | Make sure you have all the dependencies     |
 |                 | <http://sourceforge.net/projects/translate/files/Virtaal>`_  | including the latest Translate Toolkit      |

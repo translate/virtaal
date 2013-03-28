@@ -35,8 +35,8 @@ current file, previous translations, Open-Tran.eu and several others.
 Easy Manipulation of Placeables
 ===============================
 
-Virtaal can highlight :doc:`placeables` and makes it easy to insert them. This
-avoids typing errors, and increases productivity.
+Virtaal can highlight :doc:`placeables <placeables>` and makes it easy to
+insert them. This avoids typing errors, and increases productivity.
 
 .. image:: /_static/xml-placeable.png
 

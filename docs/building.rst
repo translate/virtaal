@@ -40,8 +40,8 @@ These are not build dependencies but usually improve the user experience.
 
 - psyco -- provides a nice speedup
 - Enchant, pyenchant, gtkspell and pygtkspell (might be packaged as
-  gnome-python-extras or something similar) -- provides all
-  :doc:`spell_checking` functionality.  For Windows:
+  gnome-python-extras or something similar) -- provides all :doc:`spell
+  checking <spell_checking>` functionality.  For Windows:
 
   - See `Gramps
     <http://gramps-project.org/wiki/index.php?title=Windows_installer>`_ and

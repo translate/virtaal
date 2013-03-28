@@ -24,7 +24,7 @@ Virtaal is perfect for the new member on your team:
 - Displays comments from programmers and previous translators
 - Displays context (like msgctxt in PO)
 - Easy way to :doc:`look-up <weblookups>` selected text on the web
-- Tutorial and :doc:`guide <guide/start>` for localisation available from the
+- Tutorial and :wiki:`guide <guide/start>` for localisation available from the
   Help menu
 
 .. _features#productive_environment:
@@ -71,8 +71,8 @@ Virtaal will make you more productive
 
   - :doc:`Google Translate <google>`
   - :doc:`Microsoft Translator <microsofttranslator>`
-  - :doc:`apertium`
-  - :doc:`moses`
+  - :doc:`Apertium <apertium>`
+  - :doc:`Moses <moses>`
 
 .. toctree::
    :maxdepth: 1
@@ -110,11 +110,11 @@ More
    spell_checking
 
 - Search and replace with regular expressions and Unicode normalisation
-- :doc:`spell_checking` for translation and original text
+- :doc:`Spell checking <spell_checking>` for translation and original text
 - Word and string based translation statistics in file properties
-- Uses language codes from :wp:`ISO 639-1` if available, or otherwise from
-  :wp:`ISO 639-3`. Arbitrary IETF language tags as described in :wp:`BCP 47`
-  can be used.
+- Uses language codes from :wp:`ISO 639-1 <ISO_639-1>` if available, or
+  otherwise from :wp:`ISO 639-3 <ISO_639-3>`. Arbitrary IETF language tags as
+  described in :wp:`BCP 47 <BCP_47>` can be used.
 - Export .po files to .mo
 - Support for inverse colour schemes for accessibility.
 - Designed to also work well on small screens.

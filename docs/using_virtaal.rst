@@ -41,7 +41,7 @@ cursor in the field below the source text. You can simply type your translation
 and press <Enter> when finished -- just like in your word processor.
 
 Note that <Enter> moves you to the next position where you want to type. In the
-case of units with :doc:`plurals <guide/translation/plurals>`, enter will take
+case of units with :wiki:`plurals <guide/translation/plurals>`, enter will take
 you to the next line in the same unit.
 
 If you have the correct :doc:`spell checkers <spell_checking>` installed, spell

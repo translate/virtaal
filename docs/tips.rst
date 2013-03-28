@@ -1,7 +1,7 @@
 
 .. _tips#tips_and_tricks:
 
-Tips and tricks
+Tips and Tricks
 ***************
 This page mentions some tips and tricks to get the most out of Virtaal. Some
 hidden features mentioned here might just make you a little more productive, or
@@ -23,7 +23,7 @@ Most features are available via easy :doc:`shortcuts <cheatsheet>`.
 
 .. _tips#migrating_to_another_account/computer:
 
-Migrating to another account/computer
+Migrating to Another Account/Computer
 =====================================
 Close Virtaal. Then find the directory with all your settings and the file
 tm.db (your translation memory database). Copy the contents of the whole
@@ -31,7 +31,7 @@ directory to the corresponding directory on the other account/computer.
 
 .. _tips#disabling_some_functionality:
 
-Disabling some functionality
+Disabling some Functionality
 ============================
 To disable some functionality like autocorrect, go to the Preferences and
 deselect it from the list of plugins.
@@ -45,18 +45,18 @@ add a line:
 
 .. _tips#updating_the_information_stored_in_the_po_header:
 
-Updating the information stored in the PO header
+Updating the Information Stored in the PO Header
 ================================================
 You can modify the information put into the PO headers using Virtaal's
 Preferences window.
 
 For older versions, edit virtaal.ini and look for the settings "name", "email"
 and "team". The field for the team can contain a description of your team and a
-URL or a mailing list address - anything really.
+URL or a mailing list address -- anything really.
 
 .. _tips#specify_a_language_for_virtaals_interface:
 
-Specify a language for Virtaal's interface
+Specify a Language for Virtaal's Interface
 ==========================================
 The best way to change the language of the Virtaal interface, is to change the
 locale of your system. For Windows, this is done in the Control Center under
@@ -70,7 +70,7 @@ only work when this is not set, or set to the system's language.
 
 .. _tips#using_your_own_font_settings:
 
-Using your own font settings
+Using Your Own Font Settings
 ============================
 You can specify your own font settings to use in the translation area. Since
 Virtaal 0.4, these can be edited inside Virtaal at the Preferences.
@@ -88,7 +88,7 @@ something like this:
 
 .. _tips#receive_more_suggestions:
 
-Receive more suggestions
+Receive More Suggestions
 ========================
 If you want to receive suggestions more often, even if they are not very
 similar to what you are translating, edit plugins.ini and lower the setting for

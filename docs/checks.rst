@@ -22,7 +22,7 @@ or "incomplete" mode.
 
 .. _checks#interactive_checking:
 
-Interactive checking
+Interactive Checking
 ====================
 Virtaal will perform the quality checks on the current translation while you
 type. Only the names of the possible issues are listed, but you can click on
@@ -35,7 +35,7 @@ You can also read the detailed descriptions of the
 
 .. _checks#quality_checks_navigation_mode:
 
-Quality checks navigation mode
+Quality Checks Navigation Mode
 ==============================
 In the "Quality checks" navigation mode, you can select certain quality checks
 from the list of possible issues seen by Virtaal. The navigation mode allows

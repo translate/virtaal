@@ -29,7 +29,7 @@ Some examples of placeables that Virtaal can help you with:
 
 .. _placeables#selecting_and_inserting:
 
-Selecting and inserting
+Selecting and Inserting
 =======================
 To select which placeable to insert, press <Alt+Right> to move the highlighting
 to the correct placeable. You can insert the currently highlighted placeable by

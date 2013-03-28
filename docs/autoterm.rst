@@ -21,11 +21,11 @@ This powerful feature has many benefits:
 - Since Virtaal will check every few days for new versions of the file,
   translators can use up to date terminology, without having to even know that
   maintenance was done on the list.
-- The file can be maintained at any URL - no intervention by the Virtaal
+- The file can be maintained at any URL -- no intervention by the Virtaal
   community is required.
 
-For example, a PO file from our Pootle server can work well - this way the same
-terms are also recommended in Pootle. We need the experts in software
+For example, a PO file from our Pootle server can work well -- this way the
+same terms are also recommended in Pootle. We need the experts in software
 localisation in each language to recommend which URL should be used for their
 language. Contact us if this is not yet configured for your language.
 

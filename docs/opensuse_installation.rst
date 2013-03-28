@@ -10,7 +10,7 @@ Virtaal through your package manager and receive updates.
 
 .. _opensuse_installation#add_the_correct_repository:
 
-Add the correct repository
+Add the Correct Repository
 ==========================
 You can add a repository in YaST by specifying a URL.
 

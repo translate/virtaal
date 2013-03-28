@@ -1,7 +1,7 @@
 
 .. _spell_checking#spell_checking:
 
-Spell checking
+Spell Checking
 **************
 Virtaal provides spell checking for translators to see possible typing and
 spelling mistakes.  Where the relevant spell checkers are available, it will be

@@ -15,7 +15,7 @@ experience, better productivity and higher quality translations.
 
 .. _localising_virtaal#enabling_your_language:
 
-Enabling your language
+Enabling your Language
 ======================
 
 .. _localising_virtaal#display:
@@ -39,7 +39,7 @@ US (International) keyboard layout on Windows.
 
 .. _localising_virtaal#plural_information:
 
-Plural information
+Plural Information
 ------------------
 It is important (although not strictly required) to know the plural information
 for your language so that it is easily selectable as a source or target
@@ -47,12 +47,12 @@ language. For more information, see :doc:`l10n/pluralforms`.
 
 .. _localising_virtaal#word_level_features:
 
-Word level features
+Word Level Features
 ===================
 
 .. _localising_virtaal#spell_checking:
 
-Spell checking
+Spell Checking
 --------------
 On Linux, Virtaal uses the system spell checkers as provided by Enchant for
 doing :doc:`spell_checking`.
@@ -95,7 +95,7 @@ normalisation.
 
 .. _localising_virtaal#quality_checks:
 
-Quality checks
+Quality Checks
 ==============
 
 .. versionadded:: 0.7
@@ -119,7 +119,7 @@ the Virtaal developers about adding support for your language.
 
 .. _localising_virtaal#user_interface_localisation:
 
-User interface localisation
+User Interface Localisation
 ===========================
 
 Here we give some pointers to help localisers of the Virtaal interface.

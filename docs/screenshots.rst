@@ -32,7 +32,7 @@ current file, previous translations, Open-Tran.eu and several others.
 
 .. _screenshots#easy_manipulation_of_placeables:
 
-Easy manipulation of placeables
+Easy Manipulation of Placeables
 ===============================
 
 Virtaal can highlight :doc:`placeables` and makes it easy to insert them. This
@@ -42,7 +42,7 @@ avoids typing errors, and increases productivity.
 
 .. _screenshots#terminology_assistance:
 
-Terminology assistance
+Terminology Assistance
 ======================
 
 Virtaal can highlight recognised terms and makes it easy to insert them. This
@@ -52,7 +52,7 @@ avoids typing errors, and increases productivity.
 
 .. _screenshots#quality_checks:
 
-Quality checks
+Quality Checks
 ==============
 
 Virtaal can help you improve your translations with :doc:`quality checks

@@ -1,13 +1,13 @@
 
 .. _features#virtaal_features:
 
-Virtaal features
+Virtaal Features
 ****************
 Virtaal has many features for beginners and advanced users.
 
 .. _features#ideal_for_beginners:
 
-Ideal for beginners
+Ideal for Beginners
 ===================
 .. toctree::
    :maxdepth: 1
@@ -29,7 +29,7 @@ Virtaal is perfect for the new member on your team:
 
 .. _features#productive_environment:
 
-Productive environment
+Productive Environment
 ======================
 Virtaal will make you more productive
 
@@ -86,7 +86,7 @@ Virtaal will make you more productive
 
 .. _features#wide_format_support:
 
-Wide format support
+Wide Format Support
 ===================
 Virtaal supports many file formats:
 

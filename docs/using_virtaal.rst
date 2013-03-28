@@ -16,7 +16,7 @@ helpful links to your recent files and various common tasks in the program.
 
 .. _using_virtaal#opening_a_file:
 
-Opening a file
+Opening a File
 ==============
 Mostly you should be able to simply open a translation file by clicking on the
 file in your file manager (Windows Explorer, Nautilus, Konqueror, etc.). The
@@ -34,11 +34,11 @@ A list of supported translation formats can be found on the :doc:`features
 
 .. _using_virtaal#normal_translation:
 
-Normal translation
+Normal Translation
 ==================
 After opening a file, the first translation unit will be shown, with your
 cursor in the field below the source text. You can simply type your translation
-and press <Enter> when finished - just like in your word processor.
+and press <Enter> when finished -- just like in your word processor.
 
 Note that <Enter> moves you to the next position where you want to type. In the
 case of units with :doc:`plurals <guide/translation/plurals>`, enter will take
@@ -51,7 +51,7 @@ You can undo normally using Ctrl+Z.
 
 .. _using_virtaal#time_savers:
 
-Time savers
+Time Savers
 ===========
 
 .. _using_virtaal#auto-completion:
@@ -80,7 +80,7 @@ simply undo the step with Ctrl+Z.
 
 .. _using_virtaal#copy_original_to_target:
 
-Copy original to target
+Copy Original to Target
 -----------------------
 Sometimes it is easier to have the original string as a start to only replace a
 few translatable elements. Translations containing XML markup or many variables
@@ -99,7 +99,7 @@ did, you can simply undo the step with Ctrl+Z.
 
 .. _using_virtaal#copy_a_placeable_to_the_target:
 
-Copy a placeable to the target
+Copy a Placeable to the Target
 ------------------------------
 
 :doc:`Placeables <placeables>` are special parts of the text that can be
@@ -112,7 +112,7 @@ highlighted.
 
 .. _using_virtaal#copy_a_term_to_the_target:
 
-Copy a term to the target
+Copy a Term to the Target
 -------------------------
 
 Highlighted text will show which terms Virtaal recognised, and allow you to
@@ -123,7 +123,7 @@ press <Escape> to continue typing.
 
 .. _using_virtaal#use_a_suggestion_from_tm_or_mt:
 
-Use a suggestion from TM or MT
+Use a Suggestion from TM or MT
 ------------------------------
 If Virtaal has a suggestion obtained from translation memory or machine
 translation, it is displayed underneath the editing area. You can put the first
@@ -140,7 +140,7 @@ and <Ctrl+Up>. To move in large steps, use <Ctrl+PgDown> and <Ctrl+PgUp>.
 
 .. _using_virtaal#incomplete_mode:
 
-Incomplete mode
+Incomplete Mode
 ---------------
 Virtaal will move you between certain rows. Normally it will move between all
 rows, but if you activate the "Incomplete" mode, it will move between
@@ -150,7 +150,7 @@ file so that you can see the context that you are translating in.
 
 .. _using_virtaal#workflow_mode:
 
-Workflow mode
+Workflow Mode
 -------------
 This mode allows you to move between specific units sharing the same state(s),
 which can be specified in detail. For example, with a PO file you could move
@@ -159,7 +159,7 @@ move only across units that need more work, review process, or both.
 
 .. _using_virtaal#searching_mode:
 
-Searching mode
+Searching Mode
 --------------
 Activate searching mode in the mode selector at the top, or simply press <F3>.
 Virtaal will then move between all the rows that correspond to your search
@@ -171,7 +171,7 @@ go back to another mode.
 
 .. _using_virtaal#quality_checks_mode:
 
-Quality checks mode
+Quality Checks Mode
 -------------------
 
 .. versionadded:: 0.7
@@ -182,14 +182,14 @@ the :doc:`quality checks <checks>` page.
 
 .. _using_virtaal#privacy_issues:
 
-Privacy issues
+Privacy Issues
 ==============
 
 Commercial users of Virtaal should be aware of certain privacy issues:
 
 .. _using_virtaal#virtaals_log_file:
 
-Virtaal's log file
+Virtaal's Log File
 ------------------
 
 A record of some of the source text and matches served are kept on the local
@@ -200,7 +200,7 @@ deleted manually.
 
 .. _using_virtaal#virtaals_local_tm:
 
-Virtaal's local TM
+Virtaal's Local TM
 ------------------
 
 All translated segments of any file opened, edited and saved in Virtaal are
@@ -217,7 +217,7 @@ It is safe to delete and/or rename the file.
 
 .. _using_virtaal#network_based_translation_memory:
 
-Network based Translation Memory
+Network Based Translation Memory
 --------------------------------
 
 If you have the appropriate plugins enabled, Virtaal will deliver results from
@@ -227,7 +227,7 @@ the source text is confidential, this is probably not a good idea.
 
 .. _using_virtaal#contributions_to_remote_tms:
 
-Contributions to remote TMs
+Contributions to Remote TMs
 ---------------------------
 
 Although Virtaal may query remote translation memories such as the online TM
@@ -238,7 +238,7 @@ example via e-mail.
 
 .. _using_virtaal#user_information_in_po_files:
 
-User information in PO files
+User Information in PO Files
 ----------------------------
 
 The first time you use Virtaal, you'll be prompted for your name, mail address
@@ -251,7 +251,7 @@ harvesters and search engines, in clear text.
 
 .. _using_virtaal#network_based_machine_translation:
 
-Network based Machine Translation
+Network Based Machine Translation
 ---------------------------------
 
 If you have the appropriate plugins enabled, Virtaal will deliver results from

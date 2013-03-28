@@ -12,7 +12,7 @@ easier tracking of things.
 Functionality
 =============
 - <del>Add a Welcome Page that is shown when Virtaal is run without immediately
-  opening a file.</del> - Implemented in Virtaal 0.6
+  opening a file.</del> -- Implemented in Virtaal 0.6
 - Fail well depending on how the program was launched.  From the command line
   fail by placing a message on the command line and don't go graphical.  If
   someone clicks on a file and we launch because of mime type association then
@@ -20,7 +20,7 @@ Functionality
   as simple as adding a --gui option.
 - Allow the translator to add comments
 - <del>Provide the ability to save files in a different format, eg. save MO
-  files to PO, and vice versa.</del> - Exporting .po to .mo implemented in
+  files to PO, and vice versa.</del> -- Exporting .po to .mo implemented in
   Virtaal 0.7
 
 .. _suggestions#gui:
@@ -28,7 +28,7 @@ Functionality
 GUI
 ===
 - When selecting a unit, select the translated text so that it can be
-  overwritten. - is this a good idea, I would rather see fuzzy units
+  overwritten. -- is this a good idea, I would rather see fuzzy units
   highlighted, translated left unhighlighted and Ctrl-A able to select all text
   DB.
 - <del>Check that row hints work in Windows.</del>
@@ -40,10 +40,10 @@ GUI
   - Change background color of unit editor to make it stand out.
   - Improve syntax highlighting so that translatable text is more
     distinguishable.
-  - Change display of suggestions (pop-up?) - yuch no popups please, I think my
+  - Change display of suggestions (pop-up?) -- yuch no popups please, I think my
     idea is harder though, I'd like to see it like call tip that you can
     highlight and select when you go to that unit DB.
-  - Smooth scrolling - I'd include the jitter you see as you go Ctrl-Down DB.
+  - Smooth scrolling -- I'd include the jitter you see as you go Ctrl-Down DB.
   - Add margins at the sides of the main window.
 
 - Show number of translated, untranslated and fuzzy units in the status bar
@@ -55,4 +55,4 @@ GUI
 - Change keys used to select/copy placeables. The hand movement required to
   move to the arrows are very disruptive. But to what should it be changed?
 - <del>Rename "Fuzzy"? A tester suggested that the term might be very confusing
-  to new users.</del> - "fuzzy" almost entirely gone since Virtaal 0.7
+  to new users.</del> -- "fuzzy" almost entirely gone since Virtaal 0.7

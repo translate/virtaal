@@ -13,7 +13,7 @@ To get the source code direction from Git use this command::
 
 .. _building#required_packages:
 
-Required packages
+Required Packages
 =================
 
 - `GTK+ <http://www.gtk.org/download/index.php>`_ runtime (for Windows download
@@ -33,14 +33,14 @@ Required packages
 
 .. _building#optional_packages:
 
-Optional packages
+Optional Packages
 =================
 
 These are not build dependencies but usually improve the user experience.
 
-- psyco - provides a nice speedup
+- psyco -- provides a nice speedup
 - Enchant, pyenchant, gtkspell and pygtkspell (might be packaged as
-  gnome-python-extras or something similar) - provides all
+  gnome-python-extras or something similar) -- provides all
   :doc:`spell_checking` functionality.  For Windows:
 
   - See `Gramps
@@ -49,16 +49,16 @@ These are not build dependencies but usually improve the user experience.
   - While gtkspell expects libenchant.dll, copy libenchant-1.dll to the
     alternate name (setup.py expects both while this is the case)
   - Remove the .dll files of dependencies shipped with pyenchant (iconv, glib,
-    gmodule, intl) - they conflict with the ones coming from GTK but are picked
-    up by setup.py for some reason
+    gmodule, intl) -- they conflict with the ones coming from GTK but are
+    picked up by setup.py for some reason
 
-- iso-codes - if you want translated language names
+- iso-codes -- if you want translated language names
 - The optional fts3 module for sqlite3 will be used if it is available -
   provides speedups with TM retrieval  (it is safe to just overwrite a better
   sqlite library over the one available in Python for Windows)
-- libtranslate - used by Machine Translation plugin
-- psycopg2 - for TinyTM plugin
-- python-Levenshtein - speeds up Levenshtein distance measures, if not present
+- libtranslate -- used by Machine Translation plugin
+- psycopg2 -- for TinyTM plugin
+- python-Levenshtein -- speeds up Levenshtein distance measures, if not present
   we'll use a pure Python version.
 
 .. _building#unix:
@@ -77,7 +77,7 @@ and then you can install it with ::
 
 .. _building#distribution_packagers:
 
-Distribution packagers
+Distribution Packagers
 ----------------------
 For users running from a tarball, we do some dependency checking when starting
 Virtaal to be able to give accurate error messages in case of missing
@@ -97,8 +97,8 @@ loss of functionality.
 Windows
 =======
 
-.. note:: For the translate-toolkit, be sure to get the Python library - the
-   one marked ``win32.exe`` - and not the stand-alone Windows installer, which
+.. note:: For the translate-toolkit, be sure to get the Python library -- the
+   one marked ``win32.exe`` -- and not the stand-alone Windows installer, which
    is labelled ``setup.exe``.  You might need to create this yourself with ::
 
        python setup.py bdist_wininst
@@ -115,7 +115,7 @@ to get:
 
 OSX
 ===
-This is just some notes - it is incomplete and might be entirely off the mark.
+This is just some notes -- it is incomplete and might be entirely off the mark.
 Virtaal and all dependencies run on OSX, but we still need help to document the
 simplest process, and to build installable packages.
 

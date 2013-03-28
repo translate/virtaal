@@ -10,7 +10,7 @@ GUI Tests
 
 .. _testing#required_packages:
 
-Required packages
+Required Packages
 =================
 
 * Dogtail
@@ -18,7 +18,7 @@ Required packages
 
 .. _testing#running_the_tests:
 
-Running the tests
+Running the Tests
 =================
 
 .. note:: For KDE users: You must run ``gnome-session`` before you can run any
@@ -31,7 +31,7 @@ tests must be executed from within ``gui_tests``.
 
 .. _testing#writing_gui_tests:
 
-Writing GUI tests
+Writing GUI Tests
 =================
 
 `Accerciser <https://live.gnome.org/Accerciser>`_ allows you to inspect the GUI
@@ -54,7 +54,7 @@ Dogtail tests for Virtaal.
 
 .. _testing#external_links:
 
-External links
+External Links
 ==============
 - Some discussions on Dogtail:
   http://lists.freedesktop.org/archives/ldtp-dev/2006-October/000484.html

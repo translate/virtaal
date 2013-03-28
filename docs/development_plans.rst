@@ -19,7 +19,7 @@ Features that are likely to be developed in the foreseeable future:
 
 - Improved searching (to take accelerators into account, for example)
 - Better support for XLIFF features
-- Support for more formats - ongoing
+- Support for more formats -- ongoing
 
 Join the mailing list and/or IRC channel to discuss ideas and help us
 prioritise features for the next release.

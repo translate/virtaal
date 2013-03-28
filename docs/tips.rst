@@ -63,8 +63,10 @@ The best way to change the language of the Virtaal interface, is to change the
 locale of your system. For Windows, this is done in the Control Center under
 the Regional Settings, for example.
 
-Since Virtaal 0.7, you can specify a language for the interface different to
-the language of the system. To do this, first ensure that Virtaal is closed
+.. versionchanged:: 0.7
+
+You can specify a language for the interface that is different from the
+language of the system. To do this, first ensure that Virtaal is closed
 entirely. Then open the file virtaal.ini and edit the setting "uilang" close to
 the top of the file under [language] heading. Note that native window dialogs
 only work when this is not set, or set to the system's language.
@@ -73,8 +75,8 @@ only work when this is not set, or set to the system's language.
 
 Using Your Own Font Settings
 ============================
-You can specify your own font settings to use in the translation area. Since
-Virtaal 0.4, these can be edited inside Virtaal at the Preferences.
+You can specify your own font settings to use in the translation area. These
+can be edited inside Virtaal in the Preferences.
 
 For older versions, edit virtaal.ini, and look for the settings "sourcefont"
 and "targetfont". You can therefore set the font and font size separately for

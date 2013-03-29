@@ -13,12 +13,18 @@ inside Virtaal in the Preferences dialog. You can use any text editor to make
 these changes. These files are stored in the following directory on your
 system:
 
-- Unix / Linux:  ``~/.virtaal/``
-- Mac OS X: ``~/Library/Application Support/Virtaal/`` or ``~/.virtaal/``
-- Windows:  ``%APPDATA%\Virtaal`` for example:
-
-  - ``C:\Documents and Settings\%USERNAME%\Application Data\Virtaal``
-  - ``C:\Users\%USERNAME%\AppData\Roaming\Virtaal``
++---------------+-------------------------------------------------------------------+
+| Platform      | Location                                                          |
++===============+===================================================================+
+| Unix / Linux  | ``~/.virtaal/``                                                   |
++---------------+-------------------------------------------------------------------+
+| Mac OS X      | ``~/Library/Application Support/Virtaal/`` or                     |
+|               | ``~/.virtaal/``                                                   |
++---------------+-------------------------------------------------------------------+
+| Windows       | ``%APPDATA%\Virtaal`` for example:                                |
+|               | ``C:\Documents and Settings\%USERNAME%\Application Data\Virtaal`` |
+|               | ``C:\Users\%USERNAME%\AppData\Roaming\Virtaal``                   |
++---------------+-------------------------------------------------------------------+
 
 Most features are available via easy :doc:`shortcuts <cheatsheet>`.
 
@@ -37,11 +43,11 @@ Disabling some Functionality
 To disable some functionality like autocorrect, go to the Preferences and
 deselect it from the list of plugins.
 
-Alternatively, you can edit virtaal.ini. Under the heading "[plugin_state]",
-add a line:
+Alternatively, you can edit ``virtaal.ini``:
 
-.. code-block:: python
+.. code-block:: ini
 
+  [plugin_state]
   autocorrect = disabled
 
 .. _tips#updating_the_information_stored_in_the_po_header:
@@ -83,7 +89,7 @@ and "targetfont". You can therefore set the font and font size separately for
 the source and target language if you wish to do so. Valid settings could look
 something like this:
 
-.. code-block:: python
+.. code-block:: ini
 
    targetfont = monospace 11
    targetfont = georgia 12

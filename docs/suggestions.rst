@@ -29,8 +29,8 @@ GUI
 ===
 - When selecting a unit, select the translated text so that it can be
   overwritten. -- is this a good idea, I would rather see fuzzy units
-  highlighted, translated left unhighlighted and Ctrl-A able to select all text
-  DB.
+  highlighted, translated left unhighlighted and :kbd:`Ctrl+A` able to select
+  all text DB.
 - <del>Check that row hints work in Windows.</del>
 - <del>Add syntax highlighting for the active unit's source text.</del>
 - Make more attractive:
@@ -43,7 +43,8 @@ GUI
   - Change display of suggestions (pop-up?) -- yuch no popups please, I think my
     idea is harder though, I'd like to see it like call tip that you can
     highlight and select when you go to that unit DB.
-  - Smooth scrolling -- I'd include the jitter you see as you go Ctrl-Down DB.
+  - Smooth scrolling -- I'd include the jitter you see as you go
+    :kbd:`Ctrl+Down` DB.
   - Add margins at the sides of the main window.
 
 - Show number of translated, untranslated and fuzzy units in the status bar
@@ -51,7 +52,7 @@ GUI
   #.
 - The TAB key for autocompletion might be counter-intuitive to some people (it
   definitely is to me). Maybe it should be changed to something else, like
-  <Ctrl+Space>, or maybe even modifiable by the user.
+  :kbd:`Ctrl+Space`, or maybe even modifiable by the user.
 - Change keys used to select/copy placeables. The hand movement required to
   move to the arrows are very disruptive. But to what should it be changed?
 - <del>Rename "Fuzzy"? A tester suggested that the term might be very confusing

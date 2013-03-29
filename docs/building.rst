@@ -103,7 +103,7 @@ Windows
 
        python setup.py bdist_wininst
 
-   or just ensure that the Translate Toolkit is in your PYTHONPATH.
+   or just ensure that the Translate Toolkit is in your :envvar:`PYTHONPATH`.
 
 If you would like to build a stand-alone Windows installer, you will also need
 to get: 
@@ -126,13 +126,14 @@ http://www.immunityinc.com/downloads/CANVAS_OSX_SUPPORT.dmg
 
 This GTK+ port does not need X11.
 
-add the following to the PYTHONPATH: inst/lib/python2.5/site-packages
+add ``inst/lib/python2.5/site-packages`` to :envvar:`PYTHONPATH`
 
 run python bin/virtaal
 
 If you want, get the OS X Leopard theme: http://kims-area.com/?q=node/4 Install
-it into inst/share/themes/ and add an environment variable: export
-GTK2_RC_FILES=inst/share/themes/OS\ X\ Leopard/gtk-2.0/gtkrc
+it into inst/share/themes/ and add an environment variable::
+
+   export GTK2_RC_FILES=inst/share/themes/OS\ X\ Leopard/gtk-2.0/gtkrc
 
 .. image:: /_static/virtaal-osx.png
 

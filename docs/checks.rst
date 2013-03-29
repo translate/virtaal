@@ -27,9 +27,9 @@ Interactive Checking
 ====================
 Virtaal will perform the quality checks on the current translation while you
 type. Only the names of the possible issues are listed, but you can click on
-them for more detail. The same details can also be shown by pressing F8. This
-might explain what the test mean, or could even mention detailed information
-about the possible error.
+them for more detail. The same details can also be shown by pressing :kbd:`F8`.
+This might explain what the test mean, or could even mention detailed
+information about the possible error.
 
 You can also read the detailed descriptions of the
 :ref:`pofilter checks <toolkit:pofilter_tests>`.

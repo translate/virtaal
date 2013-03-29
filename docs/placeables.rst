@@ -31,7 +31,7 @@ Some examples of placeables that Virtaal can help you with:
 
 Selecting and Inserting
 =======================
-To select which placeable to insert, press <Alt+Right> to move the highlighting
-to the correct placeable. You can insert the currently highlighted placeable by
-pressing <Alt+Down>. After you have inserted a placeable, the next placeable
-will be highlighted.
+To select which placeable to insert, press :kbd:`Alt+Right` to move the
+highlighting to the correct placeable. You can insert the currently highlighted
+placeable by pressing :kbd:`Alt+Down`. After you have inserted a placeable, the
+next placeable will be highlighted.

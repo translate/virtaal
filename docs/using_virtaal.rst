@@ -23,7 +23,8 @@ file in your file manager (Windows Explorer, Nautilus, Konqueror, etc.). The
 file might be associated with another program in which case you can look for
 Virtaal in the context menu by right-clicking on the file.
 
-You can also run Virtaal and open a file with File->Open or Ctrl+O.
+You can also run Virtaal and open a file with :menuselection:`File --> Open` or
+:kbd:`Ctrl+O`.
 
 You can invoke Virtaal from the command line with ::
 
@@ -38,16 +39,16 @@ Normal Translation
 ==================
 After opening a file, the first translation unit will be shown, with your
 cursor in the field below the source text. You can simply type your translation
-and press <Enter> when finished -- just like in your word processor.
+and press :kbd:`Enter` when finished -- just like in your word processor.
 
-Note that <Enter> moves you to the next position where you want to type. In the
-case of units with :wiki:`plurals <guide/translation/plurals>`, enter will take
-you to the next line in the same unit.
+Note that :kbd:`Enter` moves you to the next position where you want to type.
+In the case of units with :wiki:`plurals <guide/translation/plurals>`, enter
+will take you to the next line in the same unit.
 
 If you have the correct :doc:`spell checkers <spell_checking>` installed, spell
 checking should be active for both the source and the target text.
 
-You can undo normally using Ctrl+Z.
+You can undo normally using :kbd:`Ctrl+Z`.
 
 .. _using_virtaal#time_savers:
 
@@ -61,9 +62,9 @@ Auto-completion
 Virtaal will save you some time by trying to complete some long words for you.
 Users of OpenOffice.org will already love this feature. You will see the
 auto-completion suggesting a possible word, and the suggestion can be accepted
-by pressing <Tab>. If the suggestion is not what you want, you can simply
+by pressing :kbd:`Tab`. If the suggestion is not what you want, you can simply
 continue typing the word you had in mind. If you accepted a suggestion that you
-don't want, you can simply undo normally with Ctrl+Z.
+don't want, you can simply undo normally with :kbd:`Ctrl+Z`.
 
 .. _using_virtaal#auto-correction:
 
@@ -76,7 +77,7 @@ be information for your language yet. Feel free to get involved in the project
 to improve this feature for your language.
 
 If Virtaal automatically corrected something which you didn't want, you can
-simply undo the step with Ctrl+Z.
+simply undo the step with :kbd:`Ctrl+Z`.
 
 .. _using_virtaal#copy_original_to_target:
 
@@ -86,7 +87,7 @@ Sometimes it is easier to have the original string as a start to only replace a
 few translatable elements. Translations containing XML markup or many variables
 might be more work to type again than to just start with the source text. You
 can easily copy the original text into your translation area by pressing
-<Alt+Down>.
+:kbd:`Alt+Down`.
 
 For some languages, you will see how Virtaal automatically changes the
 punctuation marks to fit the conventions of your language. This could involve
@@ -95,7 +96,7 @@ For example, a "quotation" automatically becomes a « quotation » in French,
 without the translator having to change the quote characters or the spacing.
 
 If you don't want the changes to the source text that Virtaal automatically
-did, you can simply undo the step with Ctrl+Z.
+did, you can simply undo the step with :kbd:`Ctrl+Z`.
 
 .. _using_virtaal#copy_a_placeable_to_the_target:
 
@@ -105,10 +106,10 @@ Copy a Placeable to the Target
 :doc:`Placeables <placeables>` are special parts of the text that can be
 automatically highlighted and easily inserted into the translation. You will
 see that certain parts of the source text will be highlighted. To select which
-placeable to insert, press <Alt+Right> to move the highlighting to the correct
-placeable.  You can insert the currently highlighted placeable by pressing
-<Alt+Down>.  After you have inserted a placeable, the next placeable will be
-highlighted.
+placeable to insert, press :kbd:`Alt+Right` to move the highlighting to the
+correct placeable.  You can insert the currently highlighted placeable by
+pressing :kbd:`Alt+Down`.  After you have inserted a placeable, the next
+placeable will be highlighted.
 
 .. _using_virtaal#copy_a_term_to_the_target:
 
@@ -116,10 +117,10 @@ Copy a Term to the Target
 -------------------------
 
 Highlighted text will show which terms Virtaal recognised, and allow you to
-handle them as placeables. You can use <Alt+Right> and <Alt+Down> the same way
-as with other placeables. If there is more than one suggestion for a term,
-Virtaal will display the choices in a menu. Select the translation you want, or
-press <Escape> to continue typing.
+handle them as placeables. You can use :kbd:`Alt+Right` and :kbd:`Alt+Down` the
+same way as with other placeables. If there is more than one suggestion for a
+term, Virtaal will display the choices in a menu. Select the translation you
+want, or press :kbd:`Esc` to continue typing.
 
 .. _using_virtaal#use_a_suggestion_from_tm_or_mt:
 
@@ -127,16 +128,18 @@ Use a Suggestion from TM or MT
 ------------------------------
 If Virtaal has a suggestion obtained from translation memory or machine
 translation, it is displayed underneath the editing area. You can put the first
-suggestion into the target text with Ctrl+1, or use Ctrl+2, etc. to select the
-others. You can also double click the suggestion to obtain the same effect.
+suggestion into the target text with :kbd:`Ctrl+1`, or use :kbd:`Ctrl+2`, etc.
+to select the others. You can also double click the suggestion to obtain the
+same effect.
 
 .. _using_virtaal#navigation:
 
 Navigation
 ==========
 Above we saw how we can easily advance to the next point of translation by
-pressing <Enter>. You can also move around easily between rows with <Ctrl+Down>
-and <Ctrl+Up>. To move in large steps, use <Ctrl+PgDown> and <Ctrl+PgUp>.
+pressing :kbd:`Enter`. You can also move around easily between rows with
+:kbd:`Ctrl+Down` and :kbd:`Ctrl+Up`. To move in large steps, use
+:kbd:`Ctrl+PgDown` and :kbd:`Ctrl+PgUp`.
 
 .. _using_virtaal#incomplete_mode:
 
@@ -161,13 +164,13 @@ move only across units that need more work, review process, or both.
 
 Searching Mode
 --------------
-Activate searching mode in the mode selector at the top, or simply press <F3>.
-Virtaal will then move between all the rows that correspond to your search
-query. Translations will still appear between the same rows in the file so that
-you can see the context that you are translating in.
+Activate searching mode in the mode selector at the top, or simply press
+:kbd:`F3`.  Virtaal will then move between all the rows that correspond to your
+search query. Translations will still appear between the same rows in the file
+so that you can see the context that you are translating in.
 
-To move back from the search box to your translation, simply press <Enter>, or
-go back to another mode.
+To move back from the search box to your translation, simply press
+:kbd:`Enter`, or go back to another mode.
 
 .. _using_virtaal#quality_checks_mode:
 

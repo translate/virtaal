@@ -33,7 +33,7 @@ Most features are available via easy :doc:`shortcuts <cheatsheet>`.
 Migrating to Another Account/Computer
 =====================================
 Close Virtaal. Then find the directory with all your settings and the file
-tm.db (your translation memory database). Copy the contents of the whole
+``tm.db`` (your translation memory database). Copy the contents of the whole
 directory to the corresponding directory on the other account/computer.
 
 .. _tips#disabling_some_functionality:
@@ -57,9 +57,9 @@ Updating the Information Stored in the PO Header
 You can modify the information put into the PO headers using Virtaal's
 Preferences window.
 
-For older versions, edit virtaal.ini and look for the settings "name", "email"
-and "team". The field for the team can contain a description of your team and a
-URL or a mailing list address -- anything really.
+For older versions, edit ``virtaal.ini`` and look for the settings ``name``,
+``email`` and ``team``. The field for the team can contain a description of
+your team and a URL or a mailing list address -- anything really.
 
 .. _tips#specify_a_language_for_virtaals_interface:
 
@@ -73,9 +73,14 @@ the Regional Settings, for example.
 
 You can specify a language for the interface that is different from the
 language of the system. To do this, first ensure that Virtaal is closed
-entirely. Then open the file virtaal.ini and edit the setting "uilang" close to
-the top of the file under [language] heading. Note that native window dialogs
+entirely. Then open the file ``virtaal.ini`` and edit the setting ``uilang``
+under the ``[language]`` heading. Note that native window dialogs
 only work when this is not set, or set to the system's language.
+
+.. code-block:: ini
+
+   [language]
+   uilang = fr
 
 .. _tips#using_your_own_font_settings:
 
@@ -84,10 +89,10 @@ Using Your Own Font Settings
 You can specify your own font settings to use in the translation area. These
 can be edited inside Virtaal in the Preferences.
 
-For older versions, edit virtaal.ini, and look for the settings "sourcefont"
-and "targetfont". You can therefore set the font and font size separately for
-the source and target language if you wish to do so. Valid settings could look
-something like this:
+For older versions, edit ``virtaal.ini``, and look for the settings
+``sourcefont`` and ``targetfont``. You can therefore set the font and font size
+separately for the source and target language if you wish to do so. Valid
+settings could look something like this:
 
 .. code-block:: ini
 
@@ -100,24 +105,25 @@ something like this:
 Receive More Suggestions
 ========================
 If you want to receive suggestions more often, even if they are not very
-similar to what you are translating, edit plugins.ini and lower the setting for
-"min_quality".
+similar to what you are translating, edit ``plugins.ini`` and lower the setting
+for ``min_quality``.
 
-If you want to receive more suggestions at a time, edit plugins.ini and
-increase the setting for "max_matches".
+If you want to receive more suggestions at a time, edit ``plugins.ini`` and
+increase the setting for ``max_matches``.
 
 Note that you can specify these same parameters for most of the individual
-sources of TM suggestions. Try adding or editing these settings in tm.ini under
-a heading corresponding to the name of the plugin.
+sources of TM suggestions. Try adding or editing these settings in ``tm.ini``
+under a heading corresponding to the name of the plugin.
 
 .. _tips#make_open-tran.eu_faster:
 
 Make Open-Tran.eu faster
 ========================
-Do you wish the suggestions from Open-Tran.eu could come faster? The speed of
-this translation memory plugin depends a lot on your network connection.  One
-way that could help to make it faster, is to avoid DNS lookups. You can do that
-by adding open-tran.eu into your :wp:`hosts file <Hosts_file>`.  ::
+Do you wish the suggestions from `Open-Tran.eu <http://open-tran.eu>`_ could
+come faster? The speed of this translation memory plugin depends a lot on your
+network connection.  One way that could help to make it faster, is to avoid DNS
+lookups. You can do that by adding open-tran.eu into your :wp:`hosts file
+<Hosts_file>`.  ::
 
     85.214.16.47            open-tran.eu
 

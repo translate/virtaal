@@ -19,9 +19,11 @@ Windows
 Currently only Hunspell and Myspell spell checkers are supported.  You need to
 install spell checkers for the languages that you are interested in.
 
-Copy the .aff and .dic files into  Application Data\enchant\myspell\  for your
-account.  If you are the Administrator user, that could be in C:\Documents and
-Settings\Administrator\Application Data\enchant\myspell\
+Copy the ``.aff`` and ``.dic`` files into  ``Application
+Data\enchant\myspell\``  for your account.  If you are the Administrator user,
+that could be in::
+
+  C:\Documents and Settings\Administrator\Application Data\enchant\myspell\
 
 .. _spell_checking#linux:
 

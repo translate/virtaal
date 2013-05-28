@@ -1,5 +1,6 @@
 # Stuff from the master branch
 *.pyc
+docs
 
 # LESS
 assets/less/bootstrap

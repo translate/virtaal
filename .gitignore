@@ -22,3 +22,7 @@
 
 # General
 *.pyc
+
+# gh-pages branch
+_site
+_layouts

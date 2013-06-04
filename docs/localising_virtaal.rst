@@ -131,7 +131,7 @@ Some instructions:
 - Check if someone is already working on your language on `Pootle
   <http://pootle.locamotion.org/projects/virtaal/>`_
 - If not, get the `Latest POT file
-  <http://translate.svn.sourceforge.net/viewvc/translate/src/trunk/virtaal/po/virtaal.pot>`_
+  <https://github.com/translate/virtaal/raw/master/po/virtaal.pot>`_
 - Be very familiar with all the :doc:`features <features>` of Virtaal,
   especially :doc:`placeables <placeables>`.
 - Generate the .mo file with "msgfmt -cv", and put it in your system location

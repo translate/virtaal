@@ -97,11 +97,11 @@ msgstr ""
 msgid "Number of files copied: %d"
 msgstr ""
 
-#. In this message, "%d" refers again to the number of files, but note how the "(s)" is used to show that we don't know how many it will be. This is often hard to translate well. If you encounter this in software translation, you might want to hear from developers if this can be avoided. Read more about this and decide how to do it in your language: http://translate.sourceforge.net/wiki/guide/translation/plurals
+#. In this message, "%d" refers again to the number of files, but note how the "(s)" is used to show that we don't know how many it will be. This is often hard to translate well. If you encounter this in software translation, you might want to hear from developers if this can be avoided. Read more about this and decide how to do it in your language: http://docs.translatehouse.org/projects/localization-guide/en/latest/guide/translation/plurals.html?id=guide/translation/plurals
 msgid "%d file(s) will be downloaded"
 msgstr ""
 
-#. In this message the proper way of translating plurals are seen. You need to enter between 1 and 6 different versions of the translation to ensure the correct grammar in your language. Read more about this here: http://translate.sourceforge.net/wiki/guide/translation/plurals
+#. In this message the proper way of translating plurals are seen. You need to enter between 1 and 6 different versions of the translation to ensure the correct grammar in your language. Read more about this here: http://docs.translatehouse.org/projects/localization-guide/en/latest/guide/translation/plurals.html?id=guide/translation/plurals
 msgid "%d file will be downloaded"
 msgid_plural "%d files will be downloaded"
 msgstr[0] ""
@@ -164,7 +164,7 @@ msgid "The road is 10 miles long"
 msgstr ""
 
 #. This message contains a link that the user will be able to click on to visit the help page. Make sure you maintain the information between the angle brackets (<...>) correctly. The double quotes (") should never be changed in tags, even if your language uses a different type of quotation marks.
-msgid "Feel free to visit our <a href=\"http://translate.sourceforge.net/\">help page</a>"
+msgid "Feel free to visit our <a href=\"http://docs.translatehouse.org/projects/virtaal/en/latest/\">help page</a>"
 msgstr ""
 
 #. This message contains a similar link, but the programmers decided to rather insert the tags with variables so that translators can't change them. Make sure you position the two variables (%s) so that they correspond to the opening and closing tag of the previous translation.
@@ -176,5 +176,5 @@ msgid "<p>Restart the program <b>now</b></p>"
 msgstr ""
 
 #. This message contains a similar link that is contained within <span> and </span>. Make sure you maintain all the tags (<...>) correctly, and that the link is contained completely inside the <span> and </span> tags in your translation. Make sure that the text inside the "a" tags correspond to "help page" and that your translation corresponding to the second sentence is contained in the <span> tags. Note how the full stop is still inside the </span> tag.
-msgid "The software has many features. <span class=\"info\">Feel free to visit our <a href=\"http://translate.sourceforge.net/\">help page</a>.</span>"
+msgid "The software has many features. <span class=\"info\">Feel free to visit our <a href=\"http://docs.translatehouse.org/projects/virtaal/en/latest/\">help page</a>.</span>"
 msgstr ""

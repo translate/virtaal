@@ -172,6 +172,7 @@ def win32_open_dialog(window, title, directory):
     title = title or _('Choose a Translation File')
     try:
         filename, customfilter, flags = winxpgui.GetOpenFileNameW(
+            hwndOwner=window.window.handle,
             InitialDir=directory,
             Flags=win32con.OFN_EXPLORER|win32con.OFN_FILEMUSTEXIST|win32con.OFN_HIDEREADONLY,
             File='', DefExt='',
@@ -203,6 +204,7 @@ def win32_save_dialog(window, title, current_filename):
     title = title or _('Save')
     try:
         filename, customfilter, flags = winxpgui.GetSaveFileNameW(
+            hwndOwner=window.window.handle,
             InitialDir=directory,
             Flags=win32con.OFN_EXPLORER|win32con.OFN_OVERWRITEPROMPT,
             File=name, DefExt=extension,

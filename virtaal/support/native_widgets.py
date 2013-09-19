@@ -160,7 +160,7 @@ def kdialog_save_dialog(window, title, current_filename):
 
 #### Windows/win32 ####
 
-def win32_open_dialog(title, directory):
+def win32_open_dialog(window, title, directory):
     # http://msdn.microsoft.com/en-us/library/aa155724%28v=office.10%29.aspx
     import winxpgui
     import win32con
@@ -190,7 +190,7 @@ def win32_open_dialog(title, directory):
     pan_app.settings.general["lastdir"] = os.path.dirname(filename)
     return (filename, u"file:///%s" % filename)
 
-def win32_save_dialog(title, current_filename):
+def win32_save_dialog(window, title, current_filename):
     import winxpgui
     import win32con
     import pywintypes
@@ -223,7 +223,7 @@ def win32_save_dialog(title, current_filename):
 
 #### Mac/darwin ####
 
-def darwin_open_dialog(title, directory):
+def darwin_open_dialog(window, title, directory):
     # http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/AppFileMgmt/Concepts/SaveOpenPanels.html#//apple_ref/doc/uid/20000771-BBCFDGFC
     # http://scottr.org/blog/2008/jul/04/building-cocoa-guis-python-pyobjc-part-four/
     from objc import NO
@@ -246,7 +246,7 @@ def darwin_open_dialog(title, directory):
     else:
         return ()
 
-def darwin_save_dialog(title, current_filename):
+def darwin_save_dialog(window, title, current_filename):
     from AppKit import NSSavePanel
     directory, filename = os.path.split(current_filename)
     panel = NSSavePanel.savePanel()

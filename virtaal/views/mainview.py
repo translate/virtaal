@@ -597,12 +597,15 @@ class MainView(BaseView):
         dialog_to_use = native_widgets.dialog_to_use
         if dialog_to_use:
             from virtaal.support.thread import run_in_thread
+            open_dialog_func = None
             if dialog_to_use == 'kdialog':
-                return run_in_thread(self.main_window, native_widgets.kdialog_open_dialog, (self.main_window, title, last_path))
+                open_dialog_func = native_widgets.kdialog_open_dialog
             elif native_widgets.dialog_to_use == 'win32':
-                return run_in_thread(self.main_window, native_widgets.win32_open_dialog, (title, last_path))
+                open_dialog_func = native_widgets.win32_open_dialog
             elif native_widgets.dialog_to_use == 'darwin':
-                return run_in_thread(self.main_window, native_widgets.darwin_open_dialog, (title, last_path))
+                open_dialog_func = native_widgets.darwin_open_dialog
+            if open_dialog_func:
+                return run_in_thread(self.main_window, open_dialog_func, (self.main_window, title, last_path))
 
         # otherwise we always fall back to the default code
         if title:

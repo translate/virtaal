@@ -146,5 +146,5 @@ class Virtaal(object):
 
 
 if __name__ == '__main__':
-    virtaal = Virtaal()
+    virtaal = Virtaal('')
     virtaal.run()

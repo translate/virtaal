@@ -261,7 +261,9 @@ class HTTPClient(object):
                     (5, 0): "Windows 2000",
                     (5, 1): "Windows XP",
                     (6, 0): "Windows Vista", # Also Windows Server 2008
-                    (6, 1): "Windows 7",     # Also Windows server 2008 R2
+                    (6, 1): "Windows 7",     # Also Windows Server 2008 R2
+                    (6, 2): "Windows 8",     # Also Windows Server 2012
+                    (6, 3): "Windows 8.1",   # Also Windows Server 2012 R2
             }
             # (5, 2) includes XP Professional x64 Edition, Server 2003, Home Server, Server 2003 R2
             name = name_dict.get((major, minor), None)

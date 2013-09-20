@@ -234,8 +234,25 @@ class HTTPClient(object):
         platform = sys.platform
         if platform.startswith('linux'):
             import os
+            # All systems supporting systemd:
+            if os.path.isfile('/etc/os-release'):
+                try:
+                    lines = open('/etc/os-release').read().splitlines()
+                    distro = None
+                    distro_version = None
+                    for line in lines:
+                        if line.startswith('NAME'):
+                            distro = line.split('=')[-1]
+                            distro = distro.replace('"', '')
+                        if line.startswith('VERSION'):
+                            distro_version = line.split('=')[-1]
+                            distro_version = distro_version.replace('"', '')
+                    platform = '%s; %s %s' % (platform, distro, distro_version)
+                except Exception, e:
+                    pass
+
             # Debian, Ubuntu, Mandriva:
-            if os.path.isfile('/etc/lsb-release'):
+            elif os.path.isfile('/etc/lsb-release'):
                 try:
                     lines = open('/etc/lsb-release').read().splitlines()
                     for line in lines:

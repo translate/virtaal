@@ -69,14 +69,20 @@ class TMModel(BaseTMModel):
 
     def query(self, tmcontroller, unit):
         query_str = unit.source
+        matches = []
         # The cache is cleared when translated units change, so this is safe
-        if self.cache.has_key(query_str):
-            self.emit('match-found', query_str, self.cache[query_str])
+        if query_str in self.cache:
+            matches = self.cache[query_str]
         else:
-            matches = self._check_other_units(unit) + self._check_alttrans(unit)
-            if matches:
-                self.cache[query_str] = matches
-                self.emit('match-found', query_str, self.cache[query_str])
+            matches = self._check_other_units(unit)
+            # Cache even empty results, so we don't need to query again
+            self.cache[query_str] = matches
+            # We don't want to cache alt trans, since this is different for
+            # units with the same source text.
+
+        matches += self._check_alttrans(unit)
+        if matches:
+            self.emit('match-found', query_str, matches)
 
     def _check_other_units(self, unit):
         matches = []

@@ -258,6 +258,7 @@ def _isofromlangid(langid):
 
     return lcid.get(langid, None)
 
+
 def get_win32_system_lang():
     from ctypes import windll
     langid = windll.kernel32.GetUserDefaultUILanguage()
@@ -291,10 +292,11 @@ def _getlang():
 
     return lang
 
+
 def _putenv(name, value):
     # From python 2.4 on, os.environ changes only
     # work within python and no longer apply to low level
-    # c stuff on win32. Lets force LANG so it works with
+    # C stuff on win32. Let's force LANG so it works with
     # gtk+ etc
     from ctypes import windll
     kernel32 = windll.kernel32
@@ -307,6 +309,7 @@ def _putenv(name, value):
     msvcrt = cdll.msvcrt
     result = msvcrt._putenv('%s=%s' % (name, value))
     del msvcrt
+
 
 def fix_locale(lang=None):
     """This fixes some strange issues to ensure locale and gettext works

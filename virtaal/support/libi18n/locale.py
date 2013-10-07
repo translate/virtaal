@@ -260,7 +260,14 @@ def _isofromlangid(langid):
 
 
 def get_win32_system_lang():
+    # Try to detect language with GetUserDefaultUILanguage().
+    # This supports windows MUI language packs and will return
+    # the windows installation language if not available or
+    # if the language has not been changed by the user.
+    # Works on win2k and up.
     from ctypes import windll
+    #windll.kernel32.GetUserDefaultUILanguage() - Windows UI language
+    #windll.kernel32.GetUserDefaultLangID() - User's locale
     langid = windll.kernel32.GetUserDefaultUILanguage()
     if not langid == 0:
         lang = _isofromlangid(langid) or 'C'
@@ -269,27 +276,10 @@ def get_win32_system_lang():
 
     return lang
 
+
 def _getlang():
-    # Start with nothing
-    lang = None
-
-    # Try to detect language with GetUserDefaultUILanguage().
-    # This supports windows MUI language packs and will return
-    # the windows installation language if not available or
-    # if the language has not been changed by the user.
-    # Works on win2k and up.
     # Environment always overrides this for debugging purposes.
-    lang = os.getenv('LANG')
-    if lang is None:
-        from ctypes import windll
-        #windll.kernel32.GetUserDefaultUILanguage() - Windows UI language
-        #windll.kernel32.GetUserDefaultLangID() - User's locale
-        langid = windll.kernel32.GetUserDefaultLangID()
-        if not langid == 0:
-            lang = _isofromlangid(langid) or 'C'
-        else:
-            lang = 'C'
-
+    lang = os.getenv('LANG') or get_win32_system_lang()
     return lang
 
 

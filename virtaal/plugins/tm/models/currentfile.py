@@ -150,4 +150,14 @@ class TMModel(BaseTMModel):
         """Add the new translation unit to the TM."""
         if modified and new_unit.istranslated():
             self.matcher.extendtm(new_unit)
-            self.cache = {}
+            # This new target text might be relevant for other units that are
+            # already cached, so let's remove ones with source text of similar
+            # length
+            min_quality = self.controller.min_quality
+            start = self.matcher.getstartlength(min_quality, new_unit.source)
+            stop = self.matcher.getstoplength(min_quality, new_unit.source)
+            def unaffected(key):
+                l = len(key)
+                return l < start or l > stop
+
+            self.cache = dict((k,v) for (k,v) in self.cache.iteritems() if unaffected(k))

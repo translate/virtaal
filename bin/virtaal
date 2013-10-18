@@ -63,7 +63,6 @@ if not packaged:
         if errors:
             print 'DEPENDENCY ERRORS:'
             print errors
-            import sys
             sys.exit(1)
 # OK, dependencies seem to be acceptable
 

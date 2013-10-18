@@ -25,7 +25,7 @@ from basecontroller import BaseController
 
 
 class PropertiesController(BaseController):
-    """Controller for driving the preferences GUI."""
+    """Controller for driving the properties GUI."""
 
     __gtype_name__ = 'PropertiesController'
 

@@ -135,7 +135,7 @@ def _isofromlangid(langid):
             1037:    'he',    # Hebrew
             1081:    'hi',    # Hindi
             1038:    'hu',    # Hungarian
-            1129:    'ibb',    # Ibibio - Nigeria
+            1129:    'ibb',   # Ibibio - Nigeria
             1039:    'is',    # Icelandic
             1136:    'ig',    # Igbo - Nigeria
             1057:    'id',    # Indonesian

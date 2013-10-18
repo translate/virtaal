@@ -115,7 +115,7 @@ class Virtaal(object):
         defer = self.defer
         main_controller = self.main_controller
 
-        defer(UnitController, self.main_controller.store_controller)
+        defer(UnitController, main_controller.store_controller)
         defer(ModeController, main_controller)
         defer(LanguageController, main_controller)
         defer(PlaceablesController, main_controller)

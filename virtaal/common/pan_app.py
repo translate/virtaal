@@ -243,6 +243,8 @@ else:
         gettext.install("virtaal", unicode=1)
     except locale.Error, e:
         logging.warning("Couldn't set the locale: %s", e)
+        # See bug 3109
+        __builtin__.__dict__['_'] = lambda s: s
 
 if _(''):
     # If this is true, we have a translated interface

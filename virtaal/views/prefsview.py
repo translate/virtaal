@@ -46,7 +46,7 @@ class PreferencesView(BaseView, GObjectWrapper):
         self._setup_menu_item()
 
     def _get_widgets(self):
-        self.builderfile, self.gui = self.load_builder_file(
+        self.gui = self.load_builder_file(
             ["virtaal", "virtaal.ui"],
             root='PreferencesDlg',
             domain="virtaal"

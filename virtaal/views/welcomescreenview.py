@@ -36,7 +36,7 @@ class WelcomeScreenView(BaseView):
     # INITIALIZERS #
     def __init__(self, controller):
         self.controller = controller
-        builderfile, gui = self.load_builder_file(["virtaal", "virtaal.ui"], root='WelcomeScreen', domain="virtaal")
+        gui = self.load_builder_file(["virtaal", "virtaal.ui"], root='WelcomeScreen', domain="virtaal")
         self.widget = WelcomeScreen(gui)
         self.parent_widget = self.controller.main_controller.view.gui.get_object('vbox_main')
 

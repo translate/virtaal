@@ -45,7 +45,7 @@ class BaseView(object):
         builder = Builder()
         builder.add_from_file(buildername)
         builder.set_translation_domain(domain)
-        return buildername, builder
+        return builder
 
     def show(self):
         raise NotImplementedError('This method needs to be implemented by all sub-classes.')

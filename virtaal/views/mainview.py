@@ -106,7 +106,7 @@ class MainView(BaseView):
             gtk.rc_parse_string(rc_string)
 
         # Set the GtkBuilder file
-        self.builderfile, self.gui = self.load_builder_file(["virtaal", "virtaal.ui"], root='MainWindow', domain="virtaal")
+        self.gui = self.load_builder_file(["virtaal", "virtaal.ui"], root='MainWindow', domain="virtaal")
         self.main_window = self.gui.get_object("MainWindow")
 
         # The classic menu bar:

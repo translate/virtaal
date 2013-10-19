@@ -68,7 +68,7 @@ class UnitView(gtk.EventBox, GObjectWrapper, gtk.CellEditable, BaseView):
 
         self.controller = controller
         self._focused_target_n = None
-        self.builderfilename, self.gui = self.load_builder_file(["virtaal", "virtaal.ui"], root='UnitEditor', domain="virtaal")
+        self.gui = self.load_builder_file(["virtaal", "virtaal.ui"], root='UnitEditor', domain="virtaal")
 
         self.must_advance = False
         self._modified = False

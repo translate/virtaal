@@ -140,7 +140,7 @@ class WebLookupConfigDialog(object):
 
     # INITIALIZERS #
     def __init__(self, parent):
-        self.builderfilename, self.gui = BaseView.load_builder_file(
+        self.gui = BaseView.load_builder_file(
             ["virtaal", "virtaal.ui"],
             root='WebLookupManager',
             domain='virtaal'
@@ -237,7 +237,7 @@ class WebLookupAddDialog(object):
 
     # INITIALIZERS #
     def __init__(self, parent):
-        self.builderfilename, self.gui = BaseView.load_builder_file(
+        self.gui = BaseView.load_builder_file(
             ["virtaal", "virtaal.ui"],
             root='WebLookupAdd',
             domain='virtaal'

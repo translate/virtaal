@@ -115,7 +115,7 @@ class FileSelectDialog:
     def __init__(self, model):
         self.controller = model.controller
         self.term_model = model
-        self.builderfilename, self.gui = BaseView.load_builder_file(
+        self.gui = BaseView.load_builder_file(
             ["virtaal", "virtaal.ui"],
             root='TermFilesDlg',
             domain='virtaal'
@@ -322,7 +322,7 @@ class TermAddDialog:
         self.lang_controller = model.controller.main_controller.lang_controller
         self.unit_controller = model.controller.main_controller.unit_controller
 
-        self.builderfilename, self.gui = BaseView.load_builder_file(
+        self.gui = BaseView.load_builder_file(
             ["virtaal", "virtaal.ui"],
             root='TermAddDlg',
             domain='virtaal'

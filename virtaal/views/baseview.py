@@ -26,6 +26,10 @@ from gtk import Builder
 from virtaal.common import pan_app
 
 
+#cache builders so that we don't parse files repeatedly
+_builders = {}
+
+
 class BaseView(object):
     """Interface for views."""
 
@@ -34,7 +38,11 @@ class BaseView(object):
 
     @classmethod
     def load_builder_file(cls, path_parts, root=None, domain=''):
+        _id = "/".join(path_parts)
+        if _id in _builders:
+            return _builders[_id]
         buildername = pan_app.get_abs_data_filename(path_parts)
+
         if os.name == 'nt' and getattr(sys, 'frozen', False):
             try:
                 basedirs = [os.getcwd()]
@@ -45,6 +53,7 @@ class BaseView(object):
         builder = Builder()
         builder.add_from_file(buildername)
         builder.set_translation_domain(domain)
+        _builders[_id] = builder
         return builder
 
     def show(self):

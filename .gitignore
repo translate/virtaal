@@ -30,3 +30,7 @@
 _site
 _layouts
 assets/
+
+#vim
+.*.swp
+*~

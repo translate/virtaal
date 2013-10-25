@@ -100,9 +100,10 @@ class HTTPRequest(GObjectWrapper):
         split_url = self.url.split('://', 1)
         if len(split_url) > 1:
             #We were able to get a protocol
-            protocol = split_url[0]
+            protocol, address = split_url
+            host, _path = urllib.splithost('//' + address)
             proxies = urllib.getproxies()
-            if protocol in proxies:
+            if protocol in proxies and not urllib.proxy_bypass(host):
                 self.curl.setopt(pycurl.PROXY, proxies[protocol])
 
             # On Windows urllib.getproxies() doesn't contain https if "Use the

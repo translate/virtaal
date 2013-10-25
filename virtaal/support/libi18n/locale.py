@@ -3,6 +3,7 @@
 #
 # Copyright (C) 2007-2008 Dieter Verfaillie <dieterv@optionexplicit.be>
 # Copyright 2009-2010 Zuza Software Foundation
+# Copyright 2013 Friedel Wolff
 #
 # (NOTE: LGPL)
 # This library is free software; you can redistribute it and/or
@@ -33,6 +34,7 @@ def _isofromlangid(langid):
 
     lcid = {1078:    'af',    # Afrikaans - South Africa
             1052:    'sq',    # Albanian - Albania
+           #1156:    'gsw',   # Alsatian
             1118:    'am',    # Amharic - Ethiopia
             1025:    'ar',    # Arabic - Saudi Arabia
             5121:    'ar',    # Arabic - Algeria
@@ -54,28 +56,32 @@ def _isofromlangid(langid):
             1101:    'as',    # Assamese
             2092:    'az',    # Azeri (Cyrillic)
             1068:    'az',    # Azeri (Latin)
+            1133:    'ba',    # Bashkir
             1069:    'eu',    # Basque
             1059:    'be',    # Belarusian
             1093:    'bn_IN', # Bengali (India)
             2117:    'bn',    # Bengali (Bangladesh)
             5146:    'bs',    # Bosnian (Bosnia/Herzegovina)
+            1150:    'br',    # Breton
             1026:    'bg',    # Bulgarian
             1109:    'my',    # Burmese
             1027:    'ca',    # Catalan
-            1116:    None,    # Cherokee - United States
+            1116:    'chr',   # Cherokee - United States
             2052:    'zh_CN', # Chinese - People's Republic of China
             4100:    'zh',    # Chinese - Singapore
             1028:    'zh_TW', # Chinese - Taiwan
             3076:    'zh_HK', # Chinese - Hong Kong SAR
             5124:    'zh',    # Chinese - Macao SAR
+            1155:    'co',    # Corsican
             1050:    'hr',    # Croatian
             4122:    'hr',    # Croatian (Bosnia/Herzegovina)
             1029:    'cs',    # Czech
             1030:    'da',    # Danish
+           #1164:    'fa_AF'  # Dari
             1125:    'dv',    # Divehi
             1043:    'nl',    # Dutch - Netherlands
             2067:    'nl',    # Dutch - Belgium
-            1126:    None,    # Edo
+            1126:    'bin',   # Edo
             1033:    'en',    # English - United States
             2057:    'en_UK', # English - United Kingdom
             3081:    'en',    # English - Australia
@@ -116,7 +122,7 @@ def _isofromlangid(langid):
             4108:    'fr',    # French - Switzerland
             7180:    'fr',    # French - West Indies
             1122:    'fy',    # Frisian - Netherlands
-            1127:    'fub',   # Fulfulde - Nigeria
+            1127:    'ff',    # Fulfulde - Nigeria
             1071:    'mk',    # FYRO Macedonian
             2108:    'ga',    # Gaelic (Ireland)
             1084:    'gd',    # Gaelic (Scotland)
@@ -128,10 +134,11 @@ def _isofromlangid(langid):
             4103:    'de',    # German - Luxembourg
             2055:    'de',    # German - Switzerland
             1032:    'el',    # Greek
+            1135:    'kl',    # Greenlandic
             1140:    'gn',    # Guarani - Paraguay
             1095:    'gu',    # Gujarati
             1128:    'ha',    # Hausa - Nigeria
-            1141:    None,    # Hawaiian - United States
+            1141:    'haw',   # Hawaiian - United States
             1037:    'he',    # Hebrew
             1081:    'hi',    # Hindi
             1038:    'hu',    # Hungarian
@@ -143,12 +150,14 @@ def _isofromlangid(langid):
             1040:    'it',    # Italian - Italy
             2064:    'it',    # Italian - Switzerland
             1041:    'ja',    # Japanese
+            1158:    'quc',   # K'iche
             1099:    'kn',    # Kannada
             1137:    'kr',    # Kanuri - Nigeria
             2144:    'ks',    # Kashmiri
             1120:    'ks',    # Kashmiri (Arabic)
             1087:    'kk',    # Kazakh
             1107:    'km',    # Khmer
+            1159:    'rw',    # Kinyarwanda
             1111:    'knn',   # Konkani
             1042:    'ko',    # Korean
             1088:    'ky',    # Kyrgyz (Cyrillic)
@@ -156,19 +165,23 @@ def _isofromlangid(langid):
             1142:    'la',    # Latin
             1062:    'lv',    # Latvian
             1063:    'lt',    # Lithuanian
+            1134:    'lb',    # Luxembourgish
             1086:    'ms',    # Malay - Malaysia
             2110:    'ms',    # Malay - Brunei Darussalam
             1100:    'ml',    # Malayalam
             1082:    'mt',    # Maltese
             1112:    'mni',   # Manipuri
             1153:    'mi',    # Maori - New Zealand
+            1146:    'arn',   # Mapudungun
             1102:    'mr',    # Marathi
+            1148:    'moh',   # Mohawk
             1104:    'mn',    # Mongolian (Cyrillic)
             2128:    'mn',    # Mongolian (Mongolian)
             1121:    'ne',    # Nepali
             2145:    'ne',    # Nepali - India
             1044:    'no',    # Norwegian (Bokmￃﾥl)
             2068:    'no',    # Norwegian (Nynorsk)
+            1154:    'oc',    # Occitan
             1096:    'or',    # Oriya
             1138:    'om',    # Oromo
             1145:    'pap',   # Papiamentu
@@ -249,8 +262,10 @@ def _isofromlangid(langid):
             1075:    've',    # Venda
             1066:    'vi',    # Vietnamese
             1106:    'cy',    # Welsh
+            1160:    'wo',    # Wolof
             1076:    'xh',    # Xhosa
-            1144:    None,    # Yi
+            1157:    'sah',   # Yakut
+            1144:    'ii',    # Yi
             1085:    'yi',    # Yiddish
             1130:    'yo',    # Yoruba
             1077:    'zu',    # Zulu

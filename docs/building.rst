@@ -53,6 +53,9 @@ These are not build dependencies but usually improve the user experience.
     picked up by setup.py for some reason
 
 - iso-codes -- if you want translated language names
+- libproxy and its Python binding, which might be called something like
+  python-libproxy on your system -- improved support for proxies on Linux
+  (since Virtaal 1.0)
 - The optional fts3 module for sqlite3 will be used if it is available -
   provides speedups with TM retrieval  (it is safe to just overwrite a better
   sqlite library over the one available in Python for Windows)

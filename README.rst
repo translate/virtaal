@@ -14,7 +14,7 @@ Installation
 ------------
 The easiest way for most users to install Virtaal is through the provided
 packages, or through the packaging system of their distribution. On the
-Virtaal website there should be packages for Windows and seveal other systems.
+Virtaal website there should be packages for Windows and several other systems.
 If you want to install from source code, you will need to ensure you have all
 the dependencies. For more information on building Virtaal to install it
 yourself, please consult the website here:

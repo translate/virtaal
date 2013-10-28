@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
+# 2013 Friedel Wolff
 #
 # This file is part of Virtaal.
 #
@@ -24,6 +25,11 @@ import logging
 
 import gobject
 import pycurl
+try:
+    import libproxy
+    proxy_factory = libproxy.ProxyFactory()
+except ImportError:
+    libproxy = None
 
 from virtaal.common.gobjectwrapper import GObjectWrapper
 
@@ -95,26 +101,22 @@ class HTTPRequest(GObjectWrapper):
         if follow_location:
             self.curl.setopt(pycurl.FOLLOWLOCATION, 1)
 
-        # Proxy: let's be careful to isolate the protocol to ensure that we
-        # support the case where http and https might use different proxies
-        split_url = self.url.split('://', 1)
-        if len(split_url) > 1:
-            #We were able to get a protocol
-            protocol, address = split_url
-            host, _path = urllib.splithost('//' + address)
-            proxies = urllib.getproxies()
-            if protocol in proxies and not urllib.proxy_bypass(host):
-                self.curl.setopt(pycurl.PROXY, proxies[protocol])
-
-            # On Windows urllib.getproxies() doesn't contain https if "Use the
-            # same proxy for all protocols" is selected. So we might want to
-            # guess that the http proxy is useful, but we have no way to know
-            # if the https proxy is intentionally not specified. Environment
-            # variables and separately specified (even if identical) settings
-            # work as expected.
-            # Possible code to reuse the http proxy for https:
-#            elif protocol is 'https' and 'http' in proxies:
-#                    self.curl.setopt(pycurl.PROXY, proxies['http'])
+        if libproxy:
+            for proxy in proxy_factory.getProxies(self.url):
+                #only use the first one
+                self.curl.setopt(pycurl.PROXY, proxy)
+                break
+        else:
+            # Proxy: let's be careful to isolate the protocol to ensure that we
+            # support the case where http and https might use different proxies
+            split_url = self.url.split('://', 1)
+            if len(split_url) > 1:
+                #We were able to get a protocol
+                protocol, address = split_url
+                host, _path = urllib.splithost('//' + address)
+                proxies = urllib.getproxies()
+                if protocol in proxies and not urllib.proxy_bypass(host):
+                    self.curl.setopt(pycurl.PROXY, proxies[protocol])
 
         # self reference required, because CurlMulti will only return
         # Curl handles

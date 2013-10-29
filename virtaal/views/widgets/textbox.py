@@ -195,9 +195,10 @@ class TextBox(gtk.TextView):
         for sub in elem.sub:
             self.add_default_gui_info(sub)
 
-    def apply_gui_info(self, elem, include_subtree=True):
+    def apply_gui_info(self, elem, include_subtree=True, offset=None):
         if getattr(elem, 'gui_info', None):
-            offset = self.elem.gui_info.index(elem)
+            if offset is None:
+                offset = self.elem.gui_info.index(elem)
             #logging.debug('offset for %s: %d' % (repr(elem), offset))
             if offset >= 0:
                 #logging.debug('[%s] at offset %d' % (unicode(elem).encode('utf-8'), offset))
@@ -238,9 +239,9 @@ class TextBox(gtk.TextView):
                         self.buffer.apply_tag(tag, iters[0], iters[1])
 
         if include_subtree:
-            for sub in elem.sub:
+            for sub, index in elem.gui_info.iter_sub_with_index():
                 if isinstance(sub, StringElem):
-                    self.apply_gui_info(sub)
+                    self.apply_gui_info(sub, offset=index+offset)
 
     def get_cursor_position(self):
         return self.buffer.props.cursor_position

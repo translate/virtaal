@@ -522,8 +522,6 @@ class TextBox(gtk.TextView):
         if cursor_pos < 0:
             cursor_pos = self.buffer.props.cursor_position
 
-        text = buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter())
-        text = data.forceunicode(text)
         start_offset = start_iter.get_offset()
         end_offset = end_iter.get_offset()
 
@@ -590,7 +588,6 @@ class TextBox(gtk.TextView):
             # the table above.
             has_start_widget = has_end_widget = False
             if hasattr(start_elem, 'gui_info'):
-                widgets = start_elem.gui_info.widgets
                 has_start_widget = start_elem.gui_info.has_start_widget()
                 has_end_widget   = start_elem.gui_info.has_end_widget()
 

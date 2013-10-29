@@ -96,7 +96,7 @@ class StringElemGUI(object):
         if offset < 0 or offset >= self.length():
             return None
 
-        pre_len = (self.widgets and self.widgets[0]) and 1 or 0
+        pre_len = self.has_start_widget() and 1 or 0
 
         # First check if offset doesn't point to a widget that does not belong to self.elem
         if offset in (0, self.length()-1):
@@ -172,7 +172,7 @@ class StringElemGUI(object):
             return 0
 
         i = 0
-        if len(self.widgets) > 0 and isinstance(self.widgets[0], gtk.Widget):
+        if self.has_start_widget():
             i = 1
         for child in self.elem.sub:
             if isinstance(child, StringElem):
@@ -202,7 +202,7 @@ class StringElemGUI(object):
             offset = 0
             buffer.set_text('')
 
-        if len(self.widgets) >= 1 and self.widgets[0]:
+        if self.has_start_widget():
             anchor = buffer.create_child_anchor(buffer.get_iter_at_offset(offset))
             self.textbox.add_child_at_anchor(self.widgets[0], anchor)
             self.widgets[0].show()
@@ -216,7 +216,7 @@ class StringElemGUI(object):
                 buffer.insert(buffer.get_iter_at_offset(offset), child)
                 offset += len(child)
 
-        if len(self.widgets) >= 2:
+        if self.has_end_widget():
             anchor = buffer.create_child_anchor(buffer.get_iter_at_offset(offset))
             self.textbox.add_child_at_anchor(self.widgets[1], anchor)
             self.widgets[1].show()

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2009-2011 Zuza Software Foundation
+# Copyright 2013 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -195,12 +196,11 @@ class TextBox(gtk.TextView):
             self.add_default_gui_info(sub)
 
     def apply_gui_info(self, elem, include_subtree=True):
-        offset = self.elem.gui_info.index(elem)
-        #logging.debug('offset for %s: %d' % (repr(elem), offset))
-        if offset >= 0:
-            #logging.debug('[%s] at offset %d' % (unicode(elem).encode('utf-8'), offset))
-
-            if getattr(elem, 'gui_info', None):
+        if getattr(elem, 'gui_info', None):
+            offset = self.elem.gui_info.index(elem)
+            #logging.debug('offset for %s: %d' % (repr(elem), offset))
+            if offset >= 0:
+                #logging.debug('[%s] at offset %d' % (unicode(elem).encode('utf-8'), offset))
                 start_index = offset
                 end_index = offset + elem.gui_info.length()
                 interval = end_index - start_index

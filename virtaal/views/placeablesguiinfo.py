@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2009-2010 Zuza Software Foundation
+# Copyright 2013 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -179,10 +180,15 @@ class StringElemGUI(object):
                 index = child.gui_info.index(elem)
                 if index >= 0:
                     return index + i
-                i += child.gui_info.length()
+                i -= index # XXX: Add length. See comment below.
             else:
                 i += len(child)
-        return -1
+        # We basically calculated the length thus far, so pass it back as a
+        # negative number to avoid having to call .length() as well. Big
+        # performance win in very complex trees.
+        if self.has_end_widget():
+            i += 1
+        return -i
 
     def length(self):
         """Calculate the length of the current element, taking into account

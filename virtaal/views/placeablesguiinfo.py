@@ -190,6 +190,17 @@ class StringElemGUI(object):
             i += 1
         return -i
 
+    def iter_sub_with_index(self):
+        i = 0
+        if self.has_start_widget():
+            i = 1
+        for child in self.elem.sub:
+            yield (child, i)
+            if hasattr(child, 'gui_info'):
+                i += child.gui_info.length()
+            else:
+                i += len(child)
+
     def length(self):
         """Calculate the length of the current element, taking into account
             possibly included widgets."""

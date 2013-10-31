@@ -152,13 +152,20 @@ class StringElemGUI(object):
         # The difference between a GUI offset and a tree offset is the iter-
         # consuming widgets in the text box. So we just iterate from the start
         # of the text buffer and count the positions without widgets.
-        i = 0
-        itr = self.textbox.buffer.get_start_iter()
-        while itr.get_offset() < index and not itr.is_end():
-            if itr.get_child_anchor() is None:
-                i += 1
-            itr.forward_char()
-        return i
+
+        if index == 0:
+            return 0
+
+        if self.elem.isleaf() and len(self.widgets) == 0:
+            return index
+
+        # buffer might contain anchors
+        buf = self.textbox.buffer
+        anchor_text = buf.get_slice(buf.get_start_iter(), buf.get_iter_at_offset(index))
+        #XXX: This is a utf-8 bytestring, not unicode! Converting to Unicode
+        # just to look for 0xFFFC is a waste.
+        anchors = anchor_text.count('\xef\xbf\xbc')
+        return index - anchors
 
     def has_start_widget(self):
         return len(self.widgets) > 0 and self.widgets[0]

@@ -249,21 +249,7 @@ class StringElemGUI(object):
         return offset
 
     def tree_to_gui_index(self, index):
-        if index == 0:
-            return 0
-        if index == len(self.elem):
-            return self.textbox.buffer.get_end_iter().get_offset()
-        char_counter = 0
-        converted = 0
-        itr = self.textbox.buffer.get_start_iter()
-
-        while char_counter <= index and not itr.is_end():
-            anchor = itr.get_child_anchor()
-            if anchor is None or not anchor.get_widgets():
-                char_counter += 1
-            converted += 1
-            itr.forward_char()
-        return converted-1
+        return self.treeindex_to_iter(index).get_offset()
 
     def treeindex_to_iter(self, index, start_at=None):
         """Convert the tree index to a gtk iterator. The optional start_at

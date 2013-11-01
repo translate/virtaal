@@ -255,18 +255,24 @@ class StringElemGUI(object):
         """Convert the tree index to a gtk iterator. The optional start_at
         indicates a reference point (index, iter) from where to start looking,
         for example a previous index that is known to have occurred earlier."""
+        buffer = self.textbox.buffer
         if index == 0:
-            return self.textbox.buffer.get_start_iter()
-        if index == len(self.elem):
-            return self.textbox.buffer.get_end_iter()
+            return buffer.get_start_iter()
+
+        if self.elem.isleaf() and len(self.widgets) == 0:
+            return buffer.get_iter_at_offset(index)
+
         if start_at:
             (char_counter, itr) = start_at
             itr = itr.copy()
             assert char_counter <= index
         else:
-            char_counter = 0
-            itr = self.textbox.buffer.get_start_iter()
-
+            itr = buffer.get_iter_at_offset(index)
+            anchor_text = buffer.get_slice(buffer.get_start_iter(), itr)
+            #XXX: This is a utf-8 bytestring, not unicode! Converting to Unicode
+            # just to look for 0xFFFC is a waste.
+            anchors = anchor_text.count('\xef\xbf\xbc')
+            char_counter = index - anchors
         while char_counter <= index and not itr.is_end():
             anchor = itr.get_child_anchor()
             if anchor is None or not anchor.get_widgets():

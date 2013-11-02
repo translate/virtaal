@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2013 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -39,27 +40,6 @@ class UndoModel(BaseModel):
         """Clear the undo stack and reset the index pointer."""
         self.undo_stack = []
         self.index = -1
-
-    def head(self):
-        """Get the undo info currently pointed to by C{self.index}."""
-        return self.undo_stack[self.index]
-
-    def move(self, offset=1):
-        """Move the cursor (C{self.index}) by C{offset}."""
-        newindex = self.index + offset
-        if not (0 < newindex < len(self.undo_stack)):
-            raise IndexError
-
-        self.index = newindex
-        return self.undo_stack[self.index]
-
-    def peek(self, index=None, offset=None):
-        """Peek at the item at C{index} or C{offset} positions away without
-            moving the cursor (C{self.index}) there."""
-        if index is not None:
-            return self.undo_stack[index]
-        if offset is not None:
-            return self.undo_stack[self.index + offset]
 
     def pop(self, permanent=False):
         if not self.undo_stack or not (0 <= self.index < len(self.undo_stack)):

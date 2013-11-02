@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
+# Copyright 2013 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -114,25 +115,6 @@ class UndoController(BaseController):
         if pan_app.DEBUG:
             data['desc'] = 'Set target %d text to %s' % (targetn, repr(current_text)),
         self.model.push(data)
-
-    def remove_blank_undo(self):
-        """Removes items from the top of the undo stack with no C{value} or
-            C{action} values. The "top of the stack" is one of the top 2 items.
-
-            This is a convenience method that can be used by any code that
-            directly sets unit values."""
-        if not self.model.undo_stack:
-            return
-
-        head = self.model.head()
-        if 'action' in head and not head['action'] or True:
-            self.model.pop(permanent=True)
-            return
-
-        item = self.model.peek(offset=-1)
-        if 'action' in item and not item['action'] or True:
-            self.model.index -= 1
-            self.model.undo_stack.remove(item)
 
     def record_stop(self):
         self.model.record_stop()

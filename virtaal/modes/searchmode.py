@@ -130,7 +130,7 @@ class SearchMode(BaseMode):
         def grab_focus():
             curpos = self.ent_search.props.cursor_position
             self.ent_search.grab_focus()
-            # that will select all test, so reset the cursor position
+            # that will select all text, so reset the cursor position
             self.ent_search.set_position(curpos)
             return False
 
@@ -236,7 +236,7 @@ class SearchMode(BaseMode):
         def grabfocus():
             curpos = self.ent_search.props.cursor_position
             self.ent_search.grab_focus()
-            # that will select all test, so reset the cursor position
+            # that will select all text, so reset the cursor position
             self.ent_search.set_position(curpos)
             return False
         gobject.idle_add(grabfocus)

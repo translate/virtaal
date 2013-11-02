@@ -154,7 +154,7 @@ class AutoCompletor(object):
             return
         # We are only interested in single character insertions, otherwise we
         # react similarly for paste and similar events
-        if len(text.decode('utf-8')) > 1:
+        if len(text) > 1:
             return
 
         prefix = unicode(textbox.get_text(0, offset) + text)

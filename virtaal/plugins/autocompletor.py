@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2010 Zuza Software Foundation
+# Copyright 2013 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -58,8 +59,7 @@ class AutoCompletor(object):
         self.main_controller = main_controller
         assert isinstance(word_list, list)
         self.comp_len = comp_len
-        self._word_list = []
-        self._word_freq = defaultdict(lambda: 0)
+        self.clear_words()
         self.add_words(word_list)
         self.widgets = set()
 
@@ -112,8 +112,8 @@ class AutoCompletor(object):
 
     def clear_words(self):
         """Remove all registered words; effectively turns off auto-completion."""
-        self._word_freq = []
-        self._word_list = defaultdict(lambda: 0)
+        self._word_list = []
+        self._word_freq = defaultdict(lambda: 0)
 
     def isusable(self, word):
         """Returns a value indicating if the given word should be kept as a

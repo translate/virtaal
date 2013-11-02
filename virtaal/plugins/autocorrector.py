@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2013 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -178,7 +179,7 @@ class AutoCorrector(object):
 
         # Add auto-correction regex for each loaded word.
         for key, value in self.correctiondict.items():
-            self.correctiondict[key] = (value, re.compile(r'\b%s$' % (re.escape(key)), re.UNICODE))
+            self.correctiondict[key] = (unicode(value), re.compile(r'\b%s$' % (re.escape(key)), re.UNICODE))
 
         self.lang = lang
         return
@@ -231,7 +232,7 @@ class AutoCorrector(object):
 
                     self.main_controller.undo_controller.record_start()
                     buffer.delete(start_iter, end_iter)
-                    buffer.insert(end_iter, unicode(replacement))
+                    buffer.insert(end_iter, replacement)
                     self.main_controller.undo_controller.record_stop()
 
                     newcursorpos = elem.gui_info.tree_to_gui_index(reprange[0]) + len(replacement) + len(text)

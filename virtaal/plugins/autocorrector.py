@@ -98,7 +98,6 @@ class AutoCorrector(object):
             return None, u''
 
         candidate = src[:endindex]
-        postfix = inserted + src[endindex:]
 
         for key in self.correctiondict:
             mobj = self.correctiondict[key][self.REGEX].search(candidate)

@@ -298,7 +298,8 @@ class SearchMode(BaseMode):
             return
 
         for textbox in self.unitview.sources + self.unitview.targets:
-            self._highlight_textbox_matches(textbox)
+            if textbox.props.visible:
+                self._highlight_textbox_matches(textbox)
 
     def _get_matches_for_textbox(self, textbox):
         if textbox.role == 'source':

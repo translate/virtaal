@@ -37,7 +37,7 @@ class SearchMode(BaseMode):
     name = 'Search'
     widgets = []
 
-    MAX_RESULTS = 100000
+    MAX_RESULTS = 200000
     SEARCH_DELAY = 500
 
     # INITIALIZERS #

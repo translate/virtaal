@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
+# Copyright 2013 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -76,6 +77,7 @@ class Virtaal(object):
                 # Something went wrong, and we have to show the welcome screen
                 wc = WelcomeScreenController(main_controller)
                 wc.activate()
+            self.defer(self._load_extras)
 
         else:
             wc = WelcomeScreenController(main_controller)
@@ -83,7 +85,6 @@ class Virtaal(object):
             # Now we try to get the event loop started as quickly as possible,
             # so we defer as much as possible.
             self.defer(self._open_with_welcome)
-        self.defer(self._load_extras)
 
 
     def _open_with_file(self, startupfile):
@@ -119,6 +120,7 @@ class Virtaal(object):
         defer(ModeController, main_controller)
         defer(LanguageController, main_controller)
         defer(PlaceablesController, main_controller)
+        self.defer(self._load_extras)
 
     def _load_extras(self):
         from virtaal.controllers.plugincontroller import PluginController

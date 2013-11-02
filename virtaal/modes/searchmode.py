@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
+# Copyright 2013 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -126,9 +127,10 @@ class SearchMode(BaseMode):
         else:
             self.update_search()
 
-        curpos = self.ent_search.props.cursor_position
         def grab_focus():
+            curpos = self.ent_search.props.cursor_position
             self.ent_search.grab_focus()
+            # that will select all test, so reset the cursor position
             self.ent_search.set_position(curpos)
             return False
 
@@ -231,9 +233,10 @@ class SearchMode(BaseMode):
             self.storecursor.indices = self.storecursor.model.stats['total']
         self._highlight_matches()
 
-        curpos = self.ent_search.props.cursor_position
         def grabfocus():
+            curpos = self.ent_search.props.cursor_position
             self.ent_search.grab_focus()
+            # that will select all test, so reset the cursor position
             self.ent_search.set_position(curpos)
             return False
         gobject.idle_add(grabfocus)

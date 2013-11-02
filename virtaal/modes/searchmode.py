@@ -302,16 +302,18 @@ class SearchMode(BaseMode):
                 self._highlight_textbox_matches(textbox)
 
     def _get_matches_for_textbox(self, textbox):
-        if textbox.role == 'source':
+        role = textbox.role
+        unit = self.unitview.unit
+        if role == 'source':
             textbox_n = self.unitview.sources.index(textbox)
-        elif textbox.role == 'target':
+        elif role == 'target':
             textbox_n = self.unitview.targets.index(textbox)
         else:
             raise ValueError('Could not find text box in sources or targets: %s' % (textbox))
         return [
             m for m in self.matches
-            if m.unit is self.unitview.unit and \
-                m.part == textbox.role and \
+            if m.unit is unit and \
+                m.part == role and \
                 m.part_n == textbox_n
         ]
 

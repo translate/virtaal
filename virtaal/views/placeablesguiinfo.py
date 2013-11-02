@@ -28,7 +28,7 @@ from virtaal.views.rendering import get_role_font_description, make_pango_layout
 from virtaal.views import theme
 
 
-def __count_anchors(buffer, itr):
+def _count_anchors(buffer, itr):
     anchor_text = buffer.get_slice(buffer.get_start_iter(), itr)
     #XXX: This is a utf-8 bytestring, not unicode! Converting to Unicode
     # just to look for 0xFFFC is a waste.
@@ -168,7 +168,7 @@ class StringElemGUI(object):
 
         # buffer might contain anchors
         buffer = self.textbox.buffer
-        anchors = __count_anchors(buffer, buffer.get_iter_at_offset(index))
+        anchors = _count_anchors(buffer, buffer.get_iter_at_offset(index))
         return index - anchors
 
     def has_start_widget(self):
@@ -272,7 +272,7 @@ class StringElemGUI(object):
             assert char_counter <= index
         else:
             itr = buffer.get_iter_at_offset(index)
-            anchors = __count_anchors(buffer, itr)
+            anchors = _count_anchors(buffer, itr)
             char_counter = index - anchors
         while char_counter <= index and not itr.is_end():
             anchor = itr.get_child_anchor()

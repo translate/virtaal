@@ -18,7 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import logging
 import gtk
 from gobject import SIGNAL_RUN_FIRST
 
@@ -208,6 +207,7 @@ class MainController(BaseController):
             self.mode_controller.refresh_mode()
             return True
         except Exception, exc:
+            import logging
             logging.exception('MainController.open_file(filename="%s", uri="%s")' % (filename, uri))
             self.show_error(
                 filename + ":\n" + _("Could not open file.\n\n%(error_message)s\n\nTry opening a different file.") % {'error_message': str(exc)}
@@ -248,6 +248,7 @@ class MainController(BaseController):
                 _("Could not save file.\n\n%(error_message)s\n\nTry saving to a different location.") % {'error_message': str(exc)}
             )
         except Exception, exc:
+            import logging
             logging.exception('MainController.save_file(filename="%s")' % (filename))
             self.show_error(
                 _("Could not save file.\n\n%(error_message)s" % {'error_message': str(exc)})
@@ -281,6 +282,7 @@ class MainController(BaseController):
                 _("Could not export file.\n\n%(error_message)s\n\nTry saving to a different location.") % {'error_message': str(exc)}
             )
         except Exception, exc:
+            import logging
             logging.exception('MainController.binary_export(filename="%s")' % (filename))
             self.show_error(
                 _("Could not export file.\n\n%(error_message)s" % {'error_message': str(exc)})
@@ -307,6 +309,7 @@ class MainController(BaseController):
             self.store_controller.revert_file()
             self.mode_controller.refresh_mode()
         except Exception, exc:
+            import logging
             logging.exception('MainController.revert_file(filename="%s")' % (filename))
             self.show_error(
                 _("Could not open file.\n\n%(error_message)s\n\nTry opening a different file.") % {'error_message': str(exc)}
@@ -334,6 +337,7 @@ class MainController(BaseController):
             self.mode_controller.refresh_mode()
             return True
         except Exception, exc:
+            import logging
             logging.exception('MainController.update_file(filename="%s", uri="%s")' % (filename, uri))
             self.show_error(
                 _("Could not open file.\n\n%(error_message)s\n\nTry opening a different file.") % {'error_message': str(exc)}

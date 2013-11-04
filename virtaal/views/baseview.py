@@ -18,7 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import logging
 import os
 import sys
 from gtk import Builder
@@ -49,6 +48,7 @@ class BaseView(object):
                 # FIXME
                 #glade.bindtextdomain(domain, pan_app.get_abs_data_filename('locale', basedirs=basedirs))
             except Exception:
+                import logging
                 logging.exception('bindtextdomain()')
         builder = Builder()
         builder.add_from_file(buildername)

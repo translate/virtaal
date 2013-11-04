@@ -19,7 +19,6 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import ConfigParser
-import logging
 import os
 import sys
 import locale, gettext
@@ -70,6 +69,7 @@ def get_locale_lang():
         if lang:
             return data.simplify_to_common(lang)
     except Exception, e:
+        import logging
         logging.warning("%s", e)
     return 'en'
 
@@ -96,6 +96,7 @@ def get_default_font():
         font_name = client.get_string('/desktop/gnome/interface/monospace_font_name')
         font_size = font_name.split(' ')[-1]
     except ImportError, ie:
+        import logging
         logging.debug('Unable to import gconf module: %s', ie)
     except Exception:
         # Ignore any other errors and try the next method
@@ -242,6 +243,7 @@ else:
         locale.setlocale(locale.LC_ALL, '')
         gettext.install("virtaal", unicode=1)
     except locale.Error, e:
+        import logging
         logging.warning("Couldn't set the locale: %s", e)
         # See bug 3109
         __builtin__.__dict__['_'] = lambda s: s

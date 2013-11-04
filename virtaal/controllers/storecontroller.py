@@ -19,7 +19,6 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gobject
-import logging
 import os
 
 from translate.convert import factory as convert_factory
@@ -168,6 +167,7 @@ class StoreController(BaseController):
         try:
             i = self.store.get_units().index(unit)
         except Exception, exc:
+            import logging
             logging.debug('Unit not found:\n%s' % (exc))
 
         if force:
@@ -180,6 +180,7 @@ class StoreController(BaseController):
         force_saveas = False
         extension = filename.split(os.extsep)[-1]
         if extension == 'zip':
+            import logging
             from translate.storage import bundleprojstore
             try:
                 from translate.storage.project import Project
@@ -212,6 +213,7 @@ class StoreController(BaseController):
             srcfile, srcfilename, transfile, transfilename = self.project.add_source_convert(filename)
             self.real_filename = transfile.name
 
+            import logging
             logging.info('Converted document %s to translatable file %s' % (srcfilename, self.real_filename))
             self.store = StoreModel(transfile, self)
             force_saveas = True
@@ -315,6 +317,7 @@ class StoreController(BaseController):
     def export_project_file(self, filename=None, openafter=False, readonly=False):
         if not self.project:
             return
+        import logging
         if self.is_modified():
             self.main_controller.save_file()
         self.project.save()
@@ -370,6 +373,7 @@ class StoreController(BaseController):
         post_update_action = None
         extension = filename.split(os.extsep)[-1]
         if extension in convert_factory.converters:
+            import logging
             from translate.storage import factory
             try:
                 outfile = convert_factory.convert(open(filename))[0]

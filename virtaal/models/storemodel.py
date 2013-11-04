@@ -19,7 +19,6 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import os
-import logging
 
 from virtaal.common import pan_app
 
@@ -140,6 +139,7 @@ class StoreModel(BaseModel):
                 filename = getattr(fileobj, 'filename', None)
             if filename is None:
                 filename = '<projectfile>'
+        import logging
         logging.info('Loading file %s' % (filename))
         from translate.storage import factory
         self._trans_store = factory.getobject(fileobj)

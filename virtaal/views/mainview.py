@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2010 Zuza Software Foundation
+# Copyright 2013 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -22,7 +23,7 @@ import gtk
 import locale
 import os
 import sys
-import logging
+import logging # before main window
 from gtk import gdk
 
 from virtaal.views import theme
@@ -565,7 +566,10 @@ class MainView(BaseView):
         # Uncomment this line to measure startup time until the window shows.
         # It causes the program to quit immediately when the window is shown:
         #self.main_window.connect('expose-event', lambda widget, event: gtk.main_quit())
-
+#        import sys
+#        print 'logging' in sys.modules
+#        import pprint
+#        pprint.pprint(sys.modules)
         # Uncomment these lines to measure true startup time. It causes the
         # program to quit immediately when the last thing added to the gobject
         # idle queue during startup, is done.
@@ -670,14 +674,17 @@ class MainView(BaseView):
         # Do native dialogs in a thread so that GTK can continue drawing.
         from virtaal.support import native_widgets
         dialog_to_use = native_widgets.dialog_to_use
+        save_dialog_func = None
         if dialog_to_use:
             from virtaal.support.thread import run_in_thread
             if dialog_to_use == 'kdialog':
-                return run_in_thread(self.main_window, native_widgets.kdialog_save_dialog, (self.main_window, title, current_filename))
+                save_dialog_func = native_widgets.kdialog_save_dialog
             elif native_widgets.dialog_to_use == 'win32':
-                return run_in_thread(self.main_window, native_widgets.win32_save_dialog, (title, current_filename))
+                save_dialog_func = native_widgets.win32_save_dialog
             elif native_widgets.dialog_to_use == 'darwin':
-                return run_in_thread(self.main_window, native_widgets.darwin_save_dialog, (title, current_filename))
+                dialog_to_use = native_widgets.darwin_save_dialog
+            if save_dialog_func:
+                return run_in_thread(self.main_window, save_dialog_func, (self.main_window, title, current_filename))
 
         # otherwise we always fall back to the default code
         if title:

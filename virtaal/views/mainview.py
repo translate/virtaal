@@ -23,7 +23,7 @@ import gtk
 import locale
 import os
 import sys
-import logging # before main window
+import logging
 from gtk import gdk
 
 from virtaal.views import theme
@@ -566,15 +566,18 @@ class MainView(BaseView):
         # Uncomment this line to measure startup time until the window shows.
         # It causes the program to quit immediately when the window is shown:
         #self.main_window.connect('expose-event', lambda widget, event: gtk.main_quit())
-#        import sys
-#        print 'logging' in sys.modules
-#        import pprint
-#        pprint.pprint(sys.modules)
+
         # Uncomment these lines to measure true startup time. It causes the
         # program to quit immediately when the last thing added to the gobject
         # idle queue during startup, is done.
         #from gobject import idle_add
         #idle_add(gtk.main_quit)
+
+        # Uncomment these lines to see which modules have already been imported
+        # at this stage. Keep in mind that pprint affects the list.
+        #import sys
+        #import pprint
+        #pprint.pprint(sys.modules)
         gtk.main()
 
     def show_input_dialog(self, title='', message=''):

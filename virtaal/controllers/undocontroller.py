@@ -186,7 +186,14 @@ class UndoController(BaseController):
                 elem.sub = deleted.sub
                 return
             if isinstance(deleted, StringElem):
-                elem.insert(offset, deleted)
+                try:
+                    elem.insert(offset, deleted, preferred_parent=parent)
+                except TypeError:
+                    # the preferred_parent parameter is not in Toolkit 1.9 or
+                    # 1.10 with which we otherwise work perfectly. So work with
+                    # this just to make it easier for people from checkout.
+                    # TODO: remove this when we depend on newer toolkit version
+                    elem.insert(offset, deleted)
                 elem.prune()
 
         data = {

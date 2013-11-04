@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2013 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -543,6 +544,7 @@ def add_freedesktop_options(options):
     options['data_files'].extend([
         (path.join(TARGET_DATA_DIR, "mime", "packages"), glob(path.join(SOURCE_DATA_DIR, "mime", "packages", "*.xml"))),
         (path.join(TARGET_DATA_DIR, "applications"), glob(path.join(SOURCE_DATA_DIR, "applications", "*.desktop"))),
+        (path.join(TARGET_DATA_DIR, "appdata"), glob(path.join(SOURCE_DATA_DIR, "appdata", "*.appdata.xml"))),
     ])
     for dir in ("16x16", "24x24", "32x32", "48x48", "64x64", "128x128", "scalable"):
         options['data_files'].extend([

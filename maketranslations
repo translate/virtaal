@@ -10,6 +10,7 @@ fi
 
 share=share/$targetapp
 desktop=share/applications/$targetapp.desktop
+appdata=share/appdata/$targetapp.appdata.xml
 mimetype=share/mime/packages/$targetapp-mimetype.xml
 
 cache="po/.intltool-merge-cache"
@@ -18,6 +19,9 @@ rm -f $cache
 if [ -d po ]; then
 	if [ -f  ${mimetype}.in ]; then
 		intltool-merge --xml-style --cache $cache po ${mimetype}.in $mimetype
+	fi
+	if [ -f  ${appdata}.in ]; then
+		intltool-merge --xml-style --cache $cache po ${appdata}.in $appdata
 	fi
 	if [ -f  ${desktop}.in ]; then
 		intltool-merge --desktop-style --cache $cache po ${desktop}.in $desktop

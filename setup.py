@@ -471,6 +471,7 @@ def add_win32_options(options):
                     "lxml", "lxml._elementpath", "psyco", "cairo", "pango",
                     "pangocairo", "atk", "gobject", "gtk.keysyms",
                     "gtkspell",
+                    "gio", # needed for gtk.Builder
                     "tarfile",
                     "translate.storage.placeables.terminology", # terminology
                     "xmlrpclib", # Moses

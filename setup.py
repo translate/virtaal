@@ -474,10 +474,11 @@ def add_win32_options(options):
                     "tarfile",
                     "translate.storage.placeables.terminology", # terminology
                     "xmlrpclib", # Moses
+                    "bsddb", #migration
+                    "zipfile", #autocorrect
                 ],
             "optimize":   2,
         }
-        py2exe_options['includes'] += ["bsddb", "zipfile"] # Dependencies for the migration and auto-correction plug-ins, respectively.
         innosetup_options = py2exe_options.copy()
         options.update({
             "windows": [

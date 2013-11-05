@@ -261,6 +261,55 @@ def create_localized_tutorial():
      u"View",
      u"noun"),
 
+    (_(u"An accelerator key is a key on your keyboard that you can press to "
+       u"to quickly access a menu or function. It is also called a hot key, "
+       u"access key or mnemonic. In program interfaces they are shown as an "
+       u"underlined letter in the text label. In the translatable text they "
+       u"are marked using some character like the underscore here, but other "
+       u"characters are used for this as well. In this case the the "
+       u"accelerator key is \"f\" since the underscore is before this letter "
+       u"and it means that this accelerator could be triggered by pressing "
+       u"Alt+F."),
+     u"_File",
+     u""),
+
+    (_(u"In this entry you can see other kind of accelerator."),
+     u"&File",
+     u""),
+
+    (_(u"And another kind of accelerator."),
+     u"~File",
+     u""),
+
+    # Entry with context message.
+    (_(u"Virtaal is able to provide suggestions from several terminology "
+       u"glossaries and provides easy shortcuts to allow paste them in the "
+       u"translation field. Right now Virtaal has only one empty terminology "
+       u"glossary, but you can start filling it. In order to do that select "
+       u"the original text, press Ctrl+T, provide a translation for your "
+       u"language, and save."),
+     u"Filter",
+     u"verb"),
+
+    # Entry with context message.
+    (_(u"In the previous entry you have created one terminology entry for the "
+       u"the \"filter\" verb. Now do the same for \"filter\" noun."),
+     u"Filter",
+     u"noun"),
+
+    (_(u"If you have created any terminology in the previous entries you may "
+       u"may now see some of the words with a green background (or other "
+       u"color depending on your theme). This means that Virtaal has "
+       u"terminology suggestions for that word. Use Alt+Right to select the "
+       u"highlighted word, and then press Alt+Down. If only one suggestions "
+       u"is provided Alt+Down just copies the suggestion to the translation "
+       u"field. But if several suggestions are available Alt+Down shows a "
+       u"suggestion list which you can navigate using Down and Up keys. Once "
+       u"you have selected the desired suggestion press Enter to copy it to "
+       u"the translation field."),
+     u"Filter the list by date using the \"filter by date\" filter.",
+     u""),
+
     (_(u"This message has two lines. Make sure that your translation also "
        u"contains two lines. You can separate lines with Shift+Enter or "
        u"copying new-line placeables (displayed as ¶)."),

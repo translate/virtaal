@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2007-2010 Zuza Software Foundation
+# Copyright 2013 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -18,9 +19,40 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import ConfigParser
+
+#XXX: main imports lower down
+
+
+# Before we even try to get anything done, set up stdout and stderr on our
+# packaged windows build. This has to happen as early as possible, otherwise
+# error messages will not be available for inspection.
 import os
 import sys
+
+def get_config_dir():
+    if os.name == 'nt':
+        confdir = os.path.join(os.environ['APPDATA'], 'Virtaal')
+    elif sys.platform == 'darwin':
+        confdir = os.path.expanduser('~/Library/Application Support/Virtaal')
+    else:
+        #TODO: skuif na ~/.config/virtaal en migreer
+        confdir = os.path.expanduser('~/.virtaal')
+
+    confdir = confdir.decode(sys.getfilesystemencoding())
+    if not os.path.exists(confdir):
+        os.makedirs(confdir)
+
+    return confdir
+
+if os_name == 'nt':
+    filename_template = path.join(pan_app.get_config_dir(), '%s_virtaal.log')
+    sys.stdout = open(filename_template % ('stdout'), 'w')
+    sys.stderr = open(filename_template % ('stderr'), 'w')
+
+
+# Ok, now we can continue with what we actually wanted to do
+
+import ConfigParser
 import locale, gettext
 from virtaal.support.libi18n.locale import fix_locale
 from translate.misc import file_discovery
@@ -36,19 +68,6 @@ DEBUG = True # Enable debugging by default, while bin/virtaal still disables it 
 x_generator = 'Virtaal ' + ver
 default_config_name = u"virtaal.ini"
 
-def get_config_dir():
-    if os.name == 'nt':
-        confdir = os.path.join(os.environ['APPDATA'], 'Virtaal')
-    elif sys.platform == 'darwin':
-        confdir = os.path.expanduser('~/Library/Application Support/Virtaal')
-    else:
-        confdir = os.path.expanduser('~/.virtaal')
-
-    confdir = confdir.decode(sys.getfilesystemencoding())
-    if not os.path.exists(confdir):
-        os.makedirs(confdir)
-
-    return confdir
 
 def osx_lang():
     """Do some non-posix things to get the language on OSX."""

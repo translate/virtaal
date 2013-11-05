@@ -19,13 +19,9 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import sys
-from os import name as os_name, path
+from os import path
 from virtaal.common import pan_app
 
-if os_name == 'nt':
-    filename_template = path.join(pan_app.get_config_dir(), '%s_virtaal.log')
-    sys.stdout = open(filename_template % ('stdout'), 'w')
-    sys.stderr = open(filename_template % ('stderr'), 'w')
 
 # Some behaviour should vary, depending on whether Virtaal is packaged or not
 packaged = getattr(sys, 'frozen', False)

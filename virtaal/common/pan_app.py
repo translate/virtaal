@@ -44,7 +44,7 @@ def get_config_dir():
 
     return confdir
 
-if os_name == 'nt':
+if os.name == 'nt':
     filename_template = path.join(pan_app.get_config_dir(), '%s_virtaal.log')
     sys.stdout = open(filename_template % ('stdout'), 'w')
     sys.stderr = open(filename_template % ('stderr'), 'w')

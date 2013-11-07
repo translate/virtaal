@@ -546,6 +546,12 @@ class MainView(BaseView):
             return self.controller.open_file(filename, uri=uri)
         return False
 
+    def hide(self):
+        """Hide and don't return until it is really hidden."""
+        self.main_window.hide()
+        while gtk.events_pending():
+            gtk.main_iteration()
+
     def quit(self):
         if self._window_is_maximized:
             pan_app.settings.general['maximized'] = 1

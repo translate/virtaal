@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2010 Zuza Software Foundation
+# Copyright 2013 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -373,6 +374,7 @@ class MainController(BaseController):
             elif response != 'discard':
                 return True
 
+        self.view.hide()
         if self.plugin_controller:
             self.plugin_controller.shutdown()
         self.emit('quit')

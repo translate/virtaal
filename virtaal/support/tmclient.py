@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2010 Zuza Software Foundation
+# Copyright 2013 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -24,6 +25,8 @@ try:
 except ImportError:
     import json #available since Python 2.6
 
+import pycurl
+
 from virtaal.support.httpclient import HTTPClient, RESTRequest
 
 
@@ -42,6 +45,9 @@ class TMClient(HTTPClient):
                 user_agent=self.user_agent,
                 params=params,
         )
+        # TM requests have to finish quickly to be useful. This also helps to
+        # avoid buildup in case of network failure
+        request.curl.setopt(pycurl.TIMEOUT, 30)
         self.add(request)
         if callback:
             request.connect(

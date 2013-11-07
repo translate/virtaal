@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2013 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -18,8 +19,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import os
-import sys
 from gtk import Builder
 
 from virtaal.common import pan_app
@@ -41,15 +40,6 @@ class BaseView(object):
         if _id in _builders:
             return _builders[_id]
         buildername = pan_app.get_abs_data_filename(path_parts)
-
-        if os.name == 'nt' and getattr(sys, 'frozen', False):
-            try:
-                basedirs = [os.getcwd()]
-                # FIXME
-                #glade.bindtextdomain(domain, pan_app.get_abs_data_filename('locale', basedirs=basedirs))
-            except Exception:
-                import logging
-                logging.exception('bindtextdomain()')
         builder = Builder()
         builder.add_from_file(buildername)
         builder.set_translation_domain(domain)

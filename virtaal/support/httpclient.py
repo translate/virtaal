@@ -122,6 +122,9 @@ class HTTPRequest(GObjectWrapper):
         # Curl handles
         self.curl.request = self
 
+    def __repr__(self):
+        return '<%s:%s>' % (self.method, self.get_effective_url())
+
     def get_effective_url(self):
         return self.curl.getinfo(pycurl.EFFECTIVE_URL)
 

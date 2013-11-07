@@ -203,6 +203,13 @@ class HTTPClient(object):
         handle.request.handle_result()
         self.requests.remove(handle.request)
 
+    def close_failed_request(self, fail_tuple):
+        # fail_tuple is (handle, error_code, error_message)
+        # see E_* constants in pycurl for error_code
+        self.curl.remove_handle(fail_tuple[0])
+        self.requests.remove(fail_tuple[0].request)
+        logging.debug(fail_tuple[2])
+
     def perform(self):
         """main event loop function, non blocking execution of all queued requests"""
         ret, num_handles = self.curl.perform()
@@ -210,7 +217,7 @@ class HTTPClient(object):
             self.running = False
         num, completed, failed = self.curl.info_read()
         [self.close_request(com) for com in completed]
-        #TODO: handle failed requests
+        [self.close_failed_request(fail) for fail in failed]
         if not self.running:
             #we are done with this batch what do we do?
             return False

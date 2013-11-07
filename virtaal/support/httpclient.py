@@ -103,8 +103,18 @@ class HTTPRequest(GObjectWrapper):
 
         if libproxy:
             for proxy in proxy_factory.getProxies(self.url):
-                #only use the first one
+                # if we connect to localhost (localtm) with proxy specifically
+                # set to direct://, libcurl connects fine, but then asks
+                #   GET http://localhost:55555/unit/en/af/whatever
+                # instead of
+                #   GET /unit/en/af/whatever
+                # and it doesn't work. We have to set it specifically to ""
+                # though, otherwise it seems to fall back to environment
+                # variables.
+                if proxy == "direct://":
+                    proxy = ""
                 self.curl.setopt(pycurl.PROXY, proxy)
+                #only use the first one
                 break
         else:
             # Proxy: let's be careful to isolate the protocol to ensure that we

@@ -54,7 +54,7 @@ if os.name == 'nt':
 
 import ConfigParser
 import locale, gettext
-from virtaal.support.libi18n.locale import fix_locale
+from virtaal.support.libi18n.locale import fix_locale, fix_libintl
 from translate.misc import file_discovery
 from translate.lang import data
 
@@ -266,6 +266,9 @@ else:
         logging.warning("Couldn't set the locale: %s", e)
         # See bug 3109
         __builtin__.__dict__['_'] = lambda s: s
+
+if os.name =='nt' and getattr(sys, 'frozen', False) :
+    fix_libintl()
 
 if _(''):
     # If this is true, we have a translated interface

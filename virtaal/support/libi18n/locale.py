@@ -333,3 +333,14 @@ def fix_locale(lang=None):
     if lang:
         # This is to support a non-locale UI language:
         os.environ['LANGUAGE'] = lang
+
+
+def fix_libintl():
+    """Bind gettext in the libintl since the gettext package doesn't."""
+    # See https://bugzilla.gnome.org/show_bug.cgi?id=574520
+    from ctypes import cdll
+    libintl = cdll.intl
+    locale_dir = os.path.join(os.getcwd(), "share", "locale")
+    libintl.bindtextdomain("virtaal", locale_dir)
+    libintl.bind_textdomain_codeset("virtaal", 'UTF-8')
+    del libintl

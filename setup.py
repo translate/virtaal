@@ -404,11 +404,33 @@ def find_gtk_files():
     for extension in no_package_extensions:
         no_package_extensions_dict[extension] = None
 
+    # We don't want anything from these directories from the full GTK install.
+    no_dirnames = [
+        r'share\doc',
+        r'share\dtds',
+        r'share\glib-2.0',
+        r'share\gtk-2.0',
+        r'share\gtk-doc',
+        r'share\icon-naming-utils',
+        r'share\icons\Tango',
+        r'share\xml',
+        r'etc\bash_completion.d',
+        r'etc\fonts',
+    ]
 
     data_files = []
     gtk_path = parent(find_gtk_bin_directory())
     for dir_path in [path.join(gtk_path, p) for p in ('etc', 'share', 'lib')]:
-        for dir_name, _, files in os.walk(dir_path):
+        for dir_name, dirs, files in os.walk(dir_path):
+            skip = False
+            for dname in no_dirnames:
+                for d in dirs:
+                    if d.find(dname) >= 0:
+                        dirs.remove(d)
+                if dir_name.find(dname) >= 0:
+                    skip = True
+            if skip == True:
+                continue
             files = [path.abspath(path.join(dir_name, f)) for f in files if wanted(f)]
             if len(files) > 0:
                 data_files.append((strip_leading_path(gtk_path, dir_name), files))

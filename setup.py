@@ -474,8 +474,8 @@ def add_win32_options(options):
             [path.join(SOURCE_DATA_DIR, "icons", "hicolor", "24x24", "mimetypes", "x-translation.png")]
         )])
         #This depends on setup.py being run from a checkout with the translate
-        #toolkit in place.
-        options['scripts'].append("../translate/services/tmserver")
+        #toolkit in place. Also mentioned below.
+        options['scripts'].append("../translate/translate/services/tmserver")
 
         py2exe_options = {
             # translate.lang and translate.storage contain classes that are
@@ -509,7 +509,7 @@ def add_win32_options(options):
                     'script': 'bin/virtaal',
                     'icon_resources': [(1, path.join(SOURCE_DATA_DIR, "icons", "virtaal.ico"))],
                 },
-                { 'script': "../translate/services/tmserver"}
+                { 'script': "../translate/translate/services/tmserver"}
             ],
             'zipfile':  "virtaal.zip",
             "options": {

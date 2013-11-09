@@ -216,7 +216,12 @@ class MainController(BaseController):
             return False
 
     def open_tutorial(self):
-        filename = pan_app.get_abs_data_filename(["virtaal", "tutorial.pot"])
+        # Save on the disk a localized version of the tutorial using the
+        # current locale.
+        from virtaal.support.tutorial import create_localized_tutorial
+        filename = create_localized_tutorial()
+
+        # Open the file just created on the fly.
         self.open_file(filename, forget_dir=True)
 
 

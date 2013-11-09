@@ -352,15 +352,15 @@ def find_gtk_files():
         """We don't want all the GTK files for the installer. Let's strip out a
         few ones that are taking too much space."""
         name = os.path.basename(data_file)
-        if name in no_package_names_dict:
+        if name in no_package_names:
             return False
         _base, ext = os.path.splitext(name)
-        if ext in no_package_extensions_dict:
+        if ext in no_package_extensions:
             return False
         return True
 
     #file names that we don't want
-    no_package_names = [
+    no_package_names = set([
             #We want some .mo files, but we won't use these ones
             'libiconv.mo',
             'iso_15924.mo',
@@ -372,9 +372,9 @@ def find_gtk_files():
             'gettext-tools.mo',
             'gettext-runtime.mo',
             'gtkspell.mo',
-    ]
+    ])
     #extensions of files we don't want
-    no_package_extensions = [
+    no_package_extensions = set([
             '.log',
             '.m4',
             #package config
@@ -394,15 +394,7 @@ def find_gtk_files():
             #emacs files
             '.el',
             '.elc',
-    ]
-
-    #Let's make some dictionaries so that we are not too slow
-    no_package_names_dict = {}
-    no_package_extensions_dict = {}
-    for name in no_package_names:
-        no_package_names_dict[name] = None
-    for extension in no_package_extensions:
-        no_package_extensions_dict[extension] = None
+    ])
 
     # We don't want anything from these directories from the full GTK install.
     no_dirnames = [

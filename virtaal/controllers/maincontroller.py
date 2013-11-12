@@ -223,6 +223,9 @@ class MainController(BaseController):
 
         # Open the file just created on the fly.
         self.open_file(filename, forget_dir=True)
+        import shutil
+        import os.path
+        shutil.rmtree(os.path.dirname(filename))
 
 
     def save_file(self, filename=None, force_saveas=False):

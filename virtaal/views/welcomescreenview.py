@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
+# Copyright 2013 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -108,7 +109,10 @@ class WelcomeScreenView(BaseView):
         iconfile = get_abs_data_filename(['icons', 'hicolor', '24x24', 'mimetypes', 'x-translation.png'])
         for i in range(len(items)):
             buttons[i].child.get_children()[0].set_from_file(iconfile)
-            buttons[i].child.get_children()[1].set_markup(markup % {'name': items[i]['name']})
+            name = items[i]['name']
+            name = name.replace('&', '&amp;')
+            name = name.replace('<', '&lt;')
+            buttons[i].child.get_children()[1].set_markup(markup % {'name': name})
             buttons[i].set_tooltip_text(items[i]['uri'])
             buttons[i].props.visible = True
         for i in range(len(items), 5):

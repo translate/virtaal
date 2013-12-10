@@ -21,6 +21,7 @@
 
 import gtk
 from gobject import SIGNAL_RUN_FIRST
+import os
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.views.mainview import MainView

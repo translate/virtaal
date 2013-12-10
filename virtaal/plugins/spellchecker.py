@@ -316,7 +316,7 @@ class Plugin(BasePlugin):
                 spell.recheck_all()
             text_view.spell_lang = language
         except Exception, e:
-            logging.exception("Could not initialize spell checking", e)
+            logging.exception("Could not initialize spell checking: %s", e)
             self.gtkspell = None
             #TODO: unload plugin
     if psyco:

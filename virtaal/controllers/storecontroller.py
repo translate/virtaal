@@ -21,8 +21,6 @@
 import gobject
 import os
 
-from translate.convert import factory as convert_factory
-
 from virtaal.common import GObjectWrapper
 from basecontroller import BaseController
 
@@ -177,6 +175,7 @@ class StoreController(BaseController):
 
     def open_file(self, filename, uri='', forget_dir=False):
         from virtaal.models.storemodel import StoreModel
+        from translate.convert import factory as convert_factory
         force_saveas = False
         extension = filename.split(os.extsep)[-1]
         if extension == 'zip':
@@ -372,6 +371,7 @@ class StoreController(BaseController):
 
         post_update_action = None
         extension = filename.split(os.extsep)[-1]
+        from translate.convert import factory as convert_factory
         if extension in convert_factory.converters:
             import logging
             from translate.storage import factory

@@ -380,7 +380,7 @@ def create_localized_tutorial():
     )
 
     # Tutorial filename at a temporary file in a random temporary directory.
-    filename = os.path.join(mkdtemp(), "virtaal_tutorial.pot")
+    filename = os.path.join(mkdtemp("", "tmp_virtaal_"), "virtaal_tutorial.pot")
 
     tutorial_file = factory.getobject(filename)
 

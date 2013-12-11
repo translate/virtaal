@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2009-2010 Zuza Software Foundation
+# Copyright 2013 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -28,10 +29,16 @@ import_checks = ['translate', 'gtk', 'lxml.etree', 'json', 'pycurl', 'sqlite3', 
 #########################
 # Specific Module Tests #
 #########################
+MIN_GTK_VERSION = (2, 18, 0)
 def test_gtk_version():
     try:
         import gtk
-        return gtk.ver >= (2, 12, 0)
+        return gtk.ver >= MIN_GTK_VERSION
+        # GtkBuilder was in GTK+ earlier already, but at least this bug is
+        # quite nasty:
+        # https://bugzilla.gnome.org/show_bug.cgi?id=582025
+        # That seems to be fixed in time for 2.18 which was released in
+        # September 2009
     except Exception:
         pass
     return False

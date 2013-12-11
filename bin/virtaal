@@ -38,7 +38,7 @@ if not packaged:
     optional_modules = ['enchant', 'gtkspell', 'psycopg2', 'libproxy']
     error_messages = {
         'translate':  'Translate Toolkit >= %s is required for Virtaal to function.' % str(depcheck.MIN_TRANSLATE_VERSION),
-        'gtk':        'Gtk >= 2.12.0 and PyGTK is required for Virtaal to function.',
+        'gtk':        'Gtk >= %s and PyGTK is required for Virtaal to function.' % str(depcheck.MIN_GTK_VERSION),
         'lxml.etree': 'LXML is required for XML-based format support as well as AutoCorrection.',
         'json':       'SimpleJSON or Python >= 2.6 is required for certain TM back-ends.',
         'pycurl':     'PyCurl is required for certain TM and terminology back-ends.',

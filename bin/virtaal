@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2007-2011 Zuza Software Foundation
+# Copyright 2013 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -78,7 +79,6 @@ def main(argv):
     startup_file = None
 
     if len(argv) > 1:
-        import logging
         import optparse
         from optparse import OptionParser, make_option
 
@@ -111,6 +111,7 @@ def main(argv):
             if options.log is None and not options.debug:
                 return
 
+            import logging
             level = options.debug and logging.DEBUG or logging.INFO
             if options.debug:
                 format = '%(levelname)7s %(module)s.%(funcName)s:%(lineno)d: %(message)s'

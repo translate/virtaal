@@ -61,6 +61,11 @@ if not packaged:
         if errors:
             print 'DEPENDENCY ERRORS:'
             print errors
+        print
+        print "You can disable dependency checking to speed up startup by setting"
+        print "  packaged = True"
+        print "in the file '%s'" % __file__
+        if errors:
             sys.exit(1)
 # OK, dependencies seem to be acceptable
 

@@ -581,10 +581,9 @@ class MainView(BaseView):
         #idle_add(gtk.main_quit)
 
         # Uncomment these lines to see which modules have already been imported
-        # at this stage. Keep in mind that pprint affects the list.
-        #import sys
-        #import pprint
-        #pprint.pprint(sys.modules)
+        # at this stage. Keep in mind that something like pprint could affect
+        # the list.
+        #print "\n".join(sorted(sys.modules.keys()))
         gtk.main()
 
     def show_input_dialog(self, title='', message=''):

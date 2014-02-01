@@ -6,9 +6,10 @@ Google Translate
 
 .. versionadded:: 0.5
 
-`Google Translate <http://translate.google.com/>`_ is a free service for
+`Google Translate <http://translate.google.com/>`_ is an online service for
 machine translation (MT). Familiarise yourself with Google's `terms of service
-<https://developers.google.com/translate/v2/terms>`_.
+<https://developers.google.com/translate/v2/terms>`_. Note that since Virtaal
+version 1.0 you need to have an API key in your configuration (``tm.init``).
 
 The Virtaal plugin provides the output of Google Translate as suggestions.
 

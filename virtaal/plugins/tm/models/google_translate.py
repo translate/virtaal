@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2009 Zuza Software Foundation
+# Copyright 2014 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -112,20 +113,26 @@ class TMModel(BaseTMModel):
     #l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
     display_name = _('Google Translate')
     description = _("Unreviewed machine translations from Google's translation service")
+    default_config = {'api_key': ''}
 
-    translate_url = "http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&q=%(message)s&langpair=%(from)s%%7C%(to)s"
+    translate_url = "https://www.googleapis.com/language/translate/v2?key=%(key)s&q=%(message)s&source=%(from)s&target=%(to)s"
 
     # INITIALIZERS #
     def __init__(self, internal_name, controller):
         self.internal_name = internal_name
         super(TMModel, self).__init__(controller)
+        self.load_config()
+        if not self.config['api_key']:
+            self._disable_all("An API key is needed to use the Google Translate plugin")
+            return
         self.client = HTTPClient()
 
     # METHODS #
     def query(self, tmcontroller, unit):
         query_str = unit.source
-        # Google's Terms of Service says no more than 5000 characters
-        query_str = query_str[:5000]
+        # Google's Terms of Service says the whole URL must be less than "2K"
+        # characters.
+        query_str = query_str[:2000 - len(self.translate_url)]
         source_lang = code_translation.get(self.source_lang, self.source_lang).replace('_', '-')
         target_lang = code_translation.get(self.target_lang, self.target_lang).replace('_', '-')
         if source_lang not in _languages or target_lang not in _languages:
@@ -136,6 +143,7 @@ class TMModel(BaseTMModel):
             self.emit('match-found', query_str, self.cache[query_str])
         else:
             real_url = self.translate_url % {
+                'key':     self.config['api_key'],
                 'message': urllib.quote_plus(query_str.encode('utf-8')),
                 'from':    source_lang,
                 'to':      target_lang,
@@ -160,26 +168,24 @@ class TMModel(BaseTMModel):
 
     def got_translation(self, val, query_str):
         """Handle the response from the web service now that it came in."""
-        # Since we expect Google to shut down the service in December 2011, we
-        # try to be extra careful with error handling, and actually expect
-        # problems. If we encounter a problem, we make the list of languages
-        # empty so that no other requests would be attempted.
+        # In December 2011 version 1 of the API was deprecated, and we had to
+        # release code to handle the eminent disappearance of the API. Although
+        # version 2 is now supported, the code is a bit more careful (as most
+        # code probably should be) and in case of error we make the list of
+        # supported languages empty so that no unnecesary network activity is
+        # performed if we can't communicate with the available API any more.
         try:
             data = json.loads(val)
             # We try to access the members to validate that the dictionary is
             # formed in the way we expect.
-            data['responseStatus']
-            data['responseData']['translatedText']
+            data['data']
+            data['data']['translations']
+            text = data['data']['translations'][0]['translatedText']
         except Exception, e:
             self._disable_all("Error with json response: %s" % e)
             return
 
-        if data['responseStatus'] != 200:
-            logging.debug("Failed to translate '%s':\n%s" % (query_str, data['responseDetails']))
-            self._disable_all("responseStatus not 200")
-            return
-
-        target_unescaped = unescape_html_entities(data['responseData']['translatedText'])
+        target_unescaped = unescape_html_entities(text)
         if not isinstance(target_unescaped, unicode):
             target_unescaped = unicode(target_unescaped, 'utf-8')
         match = {

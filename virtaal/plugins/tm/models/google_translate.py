@@ -84,7 +84,7 @@ class TMModel(BaseTMModel):
         query_str = query_str[:2000 - len(self.translate_url)]
         source_lang = code_translation.get(self.source_lang, self.source_lang).replace('_', '-')
         target_lang = code_translation.get(self.target_lang, self.target_lang).replace('_', '-')
-        if source_lang not in _languages or target_lang not in _languages:
+        if source_lang not in self._languages or target_lang not in self._languages:
             logging.debug('language pair not supported: %s => %s' % (source_lang, target_lang))
             return
 

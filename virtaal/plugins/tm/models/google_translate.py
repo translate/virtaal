@@ -31,65 +31,6 @@ except ImportError:
 from basetmmodel import BaseTMModel, unescape_html_entities
 from virtaal.support.httpclient import HTTPClient, RESTRequest
 
-# We should ideally be obtaining a list from them, or use their API to see if
-# something is supported.
-# See http://code.google.com/apis/ajaxlanguage/documentation/#SupportedPairs
-# for the current list of supported languages
-_languages = {
-    'af': 'Afrikaans',
-    'sq': 'Albanian',
-    'ar': 'Arabic',
-    'be': 'Belarusian',
-    'bg': 'Bulgarian',
-    'ca': 'Catalan',
-    'zh-CN': 'Chinese_simplified',
-    'zh-TW': 'Chinese_traditional',
-    'hr': 'Croatian',
-    'cs': 'Czech',
-    'da': 'Danish',
-    'nl': 'Dutch',
-    'en': 'English',
-    'et': 'Estonian',
-    'tl': 'Filipino',
-    'fi': 'Finnish',
-    'fr': 'French',
-    'gl': 'Galician',
-    'de': 'German',
-    'el': 'Greek',
-    'ht': 'Haitian Creole',
-    'iw': 'Hebrew',
-    'hi': 'Hindi',
-    'hu': 'Hungarian',
-    'is': 'Icelandic',
-    'id': 'Indonesian',
-    'ga': 'Irish',
-    'it': 'Italian',
-    'ja': 'Japanese',
-    'ko': 'Korean',
-    'lv': 'Latvian',
-    'lt': 'Lithuanian',
-    'mk': 'Macedonian',
-    'ms': 'Malay',
-    'mt': 'Maltese',
-    'no': 'Norwegian',
-    'fa': 'Persian',
-    'pl': 'Polish',
-    'pt': 'Portuguese',
-    'ro': 'Romanian',
-    'ru': 'Russian',
-    'sr': 'Serbian',
-    'sk': 'Slovak',
-    'sl': 'Slovenian',
-    'es': 'Spanish',
-    'sw': 'Swahili',
-    'sv': 'Swedish',
-    'th': 'Thai',
-    'tr': 'Turkish',
-    'uk': 'Ukrainian',
-    'vi': 'Vietnamese',
-    'cy': 'Welsh',
-    'yi': 'Yiddish'
-}
 
 # Some codes are weird or can be reused for others
 code_translation = {
@@ -116,6 +57,7 @@ class TMModel(BaseTMModel):
     default_config = {'api_key': ''}
 
     translate_url = "https://www.googleapis.com/language/translate/v2?key=%(key)s&q=%(message)s&source=%(from)s&target=%(to)s"
+    languages_url = "https://www.googleapis.com/language/translate/v2/languages?key=%(key)s"
 
     # INITIALIZERS #
     def __init__(self, internal_name, controller):
@@ -126,6 +68,13 @@ class TMModel(BaseTMModel):
             self._disable_all("An API key is needed to use the Google Translate plugin")
             return
         self.client = HTTPClient()
+        self._languages = set()
+        langreq = RESTRequest(self.url_getlanguages % self.config, '')
+        self.client.add(langreq)
+        langreq.connect(
+            'http-success',
+            lambda langreq, response: self.got_languages(response)
+        )
 
     # METHODS #
     def query(self, tmcontroller, unit):
@@ -197,10 +146,20 @@ class TMModel(BaseTMModel):
         self.cache[query_str] = [match]
         self.emit('match-found', query_str, [match])
 
+    def got_languages(self, val):
+        """Handle the response from the web service to set up language pairs."""
+        try:
+            data = json.loads(val)
+            data['data']
+            languages = data['data']['languages']
+        except Exception, e:
+            self._disable_all("Error with json response: %s" % e)
+            return
+        self._languages = set([l['language'] for l in languages])
+
     def got_error(self, val, query_str):
         self._disable_all("Got an error response: %s" % val)
 
     def _disable_all(self, reason):
-        global _languages
-        _languages = {}
+        self._languages = set()
         logging.debug("Stopping all queries for Google Translate. %s" % reason)

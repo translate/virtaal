@@ -13,6 +13,9 @@
 /po/.intltool-merge-cache
 /po/notexist
 
+# /share/appdata/
+/share/appdata/virtaal.appdata.xml
+
 # /share/applications/
 /share/applications/*.desktop
 

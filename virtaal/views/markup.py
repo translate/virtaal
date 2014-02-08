@@ -167,14 +167,21 @@ def _google_pango_diff(a, b):
                 # this is part of a substitution, not a plain insertion. We
                 # will format this differently.
                 len_text = len(text)
+                len_removed = len(removed)
                 # if the new insertion is big enough (will draw attention) or
                 # the removed part is not much bigger than the insertion we
                 # can give a subtle highlighting for mostly case differences:
-                if (len_text > 5 or len(removed) < len_text + 2) and \
+                if (len_text > 5 or len_removed < len_text + 2) and \
                         removed.lower().endswith(text.lower()):
                     # a more subtle replace highligting, since only case differs
                     textdiff += _pango_spans(replace_attr_add_case, text)
                 else:
+                    # Replacement. We only show the deleted part of the
+                    # replacement if it is much longer than the new insertion
+                    # and not alphanumeric (to draw attention):
+                    if len_text < 3 and len_removed > 2 * len_text and \
+                            not removed.isalpha():
+                        textdiff += _pango_spans(delete_attr, removed)
                     textdiff += _pango_spans(replace_attr_add, text)
                 removed = u""
             else:

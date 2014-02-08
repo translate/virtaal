@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2007-2011 Zuza Software Foundation
+# Copyright 2014 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -109,6 +110,10 @@ def unescape(text):
     return text
 
 
+def _pango_spans(attr, text):
+    return "<span %s>%s</span>" % (attr, _escape_entities(text))
+
+
 # Templates for pango markup
 # Variable substitution is done later, so that it can react to theme changes.
 _diff_pango_templates = {
@@ -144,21 +149,21 @@ def _google_pango_diff(a, b):
     for op, text in diff:
         if op == 0: # equality
             if removed:
-                textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': delete_attr, 'text': _escape_entities(removed)}
+                textdiff += _pango_spans(delete_attr, removed)
                 removed = u""
             textdiff += _escape_entities(text)
         elif op == 1: # insertion
             if removed:
                 # this is part of a substitution, not a plain insertion. We
                 # will format this differently.
-                textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': replace_attr_add, 'text': _escape_entities(text)}
+                textdiff += _pango_spans(replace_attr_add, text)
                 removed = u""
             else:
-                textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': insert_attr, 'text': _escape_entities(text)}
+                textdiff += _pango_spans(insert_attr, text)
         elif op == -1: # deletion
             removed = text
     if removed:
-        textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': delete_attr, 'text': _escape_entities(removed)}
+        textdiff += _pango_spans(delete_attr, removed)
     return textdiff
 
 def _difflib_pango_diff(a, b):
@@ -177,13 +182,13 @@ def _difflib_pango_diff(a, b):
         if tag == 'equal':
             textdiff += _escape_entities(a[i1:i2])
         elif tag == "insert":
-            textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': insert_attr, 'text': _escape_entities(b[j1:j2])}
+            textdiff += _pango_spans(insert_attr, b[j1:j2])
         elif tag == "delete":
-            textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': delete_attr, 'text': _escape_entities(a[i1:i2])}
+            textdiff += _pango_spans(delete_attr, a[i1:i2])
         elif tag == "replace":
             # We don't show text that was removed as part of a change:
-            #textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': replace_attr_remove, 'text': _escape_entitiesa(a[i1:i2])}
-            textdiff += "<span %(attr)s>%(text)s</span>" % {'attr': replace_attr_add, 'text': _escape_entities(b[j1:j2])}
+            #textdiff += _pango_spans(replace_attr_remove, a[i1:i2])
+            textdiff += _pango_spans(replace_attr_add, b[j1:j2])
     return textdiff
 
 try:

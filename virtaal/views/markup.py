@@ -132,15 +132,25 @@ _diff_pango_templates = {
                 "underline_color='#777777'"\
                 "weight='bold'"
                 "background='%(diff_replace_bg)s'",
+        'replace_attr_add_case':
+                "underline='single'"\
+                "underline_color='#777777'"\
+                "background='%(diff_replace_bg)s'",
 }
 
 def _google_pango_diff(a, b):
-    """Highlights the differences between a and b for Pango rendering."""
+    """Highlights the differences between a and b for Pango rendering.
+
+    We try to simplify things by only showing the new part of a replacement,
+    unless it might be misleading (e.g. when a big chunk is replaced with a
+    much shorter string). Certain cases with mostly case differences are
+    highlighted more subtly."""
 
     insert_attr = _diff_pango_templates['insert_attr'] % current_theme
     delete_attr = _diff_pango_templates['delete_attr'] % current_theme
     replace_attr_remove = delete_attr
     replace_attr_add = _diff_pango_templates['replace_attr_add'] % current_theme
+    replace_attr_add_case = _diff_pango_templates['replace_attr_add_case'] % current_theme
 
     textdiff = u"" # to store the final result
     removed = u"" # the removed text that we might still want to add
@@ -156,9 +166,19 @@ def _google_pango_diff(a, b):
             if removed:
                 # this is part of a substitution, not a plain insertion. We
                 # will format this differently.
-                textdiff += _pango_spans(replace_attr_add, text)
+                len_text = len(text)
+                # if the new insertion is big enough (will draw attention) or
+                # the removed part is not much bigger than the insertion we
+                # can give a subtle highlighting for mostly case differences:
+                if (len_text > 5 or len(removed) < len_text + 2) and \
+                        removed.lower().endswith(text.lower()):
+                    # a more subtle replace highligting, since only case differs
+                    textdiff += _pango_spans(replace_attr_add_case, text)
+                else:
+                    textdiff += _pango_spans(replace_attr_add, text)
                 removed = u""
             else:
+                # plain insertion
                 textdiff += _pango_spans(insert_attr, text)
         elif op == -1: # deletion
             removed = text

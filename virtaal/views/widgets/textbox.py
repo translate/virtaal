@@ -348,6 +348,9 @@ class TextBox(gtk.TextView):
             raise ValueError('Could not get TextIter for position %d (%d)' % (cursor_pos, len(self.get_text())))
         #logging.debug('setting cursor to position %d' % (cursor_pos))
         self.buffer.place_cursor(cursor_iter)
+        # Make sure the cursor is visible to reduce jitters (with backspace at
+        # the end of a long unit with scrollbar, for example).
+        self.scroll_to_iter(cursor_iter, 0.0)
 
     def refresh(self, preserve_selection=True):
         """Refresh the text box by setting its text to the current text."""

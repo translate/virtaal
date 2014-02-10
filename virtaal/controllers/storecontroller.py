@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2010 Zuza Software Foundation
+# Copyright 2014 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -157,13 +158,17 @@ class StoreController(BaseController):
         """Select the specified unit and scroll to it.
             Note that, because we change units via the cursor, the unit to
             select must be valid according to the cursor."""
-        if self.cursor.deref() == unit and not force:
+        if self.cursor.deref() is unit:
             # Unit is already selected; no need to do more work
             return
 
         i = 0
         try:
+            # XXX: list.index() is O(n) - pretty bad in a long file if we're
+            # looking for something towards the end. Keep in mind that it
+            # calls unit.__eq__ which does a *lot* of things.
             i = self.store.get_units().index(unit)
+            #TODO: consider replacing with API that uses index instead of unit
         except Exception, exc:
             import logging
             logging.debug('Unit not found:\n%s' % (exc))

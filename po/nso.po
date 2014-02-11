@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-19 10:07+0200\n"
+"PO-Revision-Date: 2011-05-19 10:12+0000\n"
 "Last-Translator: Pheledi <pheledi@mosekolatranslation.co.za>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: nso\n"
@@ -17,7 +17,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.1.5\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"X-POOTLE-MTIME: 1305799959.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -346,6 +347,7 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid "<u>Manual</u>"
 msgstr "<u>Maitirelo</u>"
 
+# 75%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
@@ -356,6 +358,7 @@ msgstr "http://translate.sourceforge.net/wiki/guide/start"
 msgid "<u>Localization Guide</u>"
 msgstr "<u>Tlhahlo ya go gaefatša</u>"
 
+# 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:37
@@ -423,6 +426,7 @@ msgstr ""
 "Go swaya phetolelo ya gona bjale e le e sa phethwago, kgotla feela "
 "<Ctrl+Shift+Enter>."
 
+# 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr ""
@@ -441,10 +445,12 @@ msgstr ""
 "Diriša Ctrl+PgUp goba Ctrl+PgDown gore o sepele ka dikgato tše kgolo godimo "
 "ga diphetolelo."
 
+# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
 msgstr "Sa hlakago"
 
+# 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
 msgid "Untranslated"
@@ -470,6 +476,7 @@ msgstr "Mašakana"
 msgid "Compendium conflict"
 msgstr "Thulano e kopafaditšwego"
 
+# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
 msgstr "Pheledi Mathibela"
@@ -531,6 +538,7 @@ msgstr "Mantšu a swanetšego go fetolelwa"
 msgid "Newlines"
 msgstr "Methalo e meswa"
 
+# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
 msgstr "Palo ya tše dintši"
@@ -618,6 +626,7 @@ msgstr "Ditlhaka tše šomago"
 msgid "Placeholders"
 msgstr "Maemedi"
 
+# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
 msgid "XML tags"
 msgstr "Ditshwayo tša XML"
@@ -730,6 +739,7 @@ msgstr "E ka romela ka ntle difaele tša PO tša Gettext feela"
 msgid "Export"
 msgstr "Romela ntle"
 
+# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, python-format
 msgid ""
@@ -745,6 +755,7 @@ msgstr ""
 "\n"
 "Leka go boloka lefelong le fapanego."
 
+# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, python-format
 msgid ""
@@ -889,10 +900,12 @@ msgstr "Dika tša \"alt\""
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Leemedi la dika tša \"alt\" (bjalo ka ge di hwetšwa go HTML)"
 
+# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeholders (Drupal)"
 msgstr "Maemedi (Drupal)"
 
+# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders in Drupal strings"
 msgstr "Maemedi methalading ya Drupal"
@@ -960,6 +973,7 @@ msgstr "Fetoletšwego"
 msgid "Reviewed"
 msgstr "Boeleditšwego"
 
+# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1077,6 +1091,7 @@ msgstr "Oketšegilego..."
 msgid "Add \"%s\" to Dictionary"
 msgstr "Tsenya \"%s\" pukuntšung"
 
+# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 msgid "Languages"
 msgstr "Maleme"
@@ -1575,6 +1590,7 @@ msgstr "Tshepel_atshepelo:"
 msgid "Save the file for up-to-date information"
 msgstr "Boloka faele bakeng sa tshedimošo yeo e lego nakong"
 
+# 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "Sa fetolelwago:"
@@ -1591,6 +1607,7 @@ msgstr "Gannwego:"
 msgid "Needs review:"
 msgstr "Nyakago poeletšo:"
 
+# 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "Fetoletšwego:"
@@ -1613,6 +1630,7 @@ msgstr "(100%)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f%%)"
 
+# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192
@@ -1645,6 +1663,7 @@ msgstr "Kgotla gore o ye maemong a itšego go tšwelopele ya mošomo"
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr "Eya pele ka kgato e tee go tšwelopele ya mošomo (Ctrl+Enter)"
 
+# 95%
 #: ../virtaal/views/widgets/aboutdialog.py:34
 msgid "Copyright © 2007-2010 Zuza Software Foundation"
 msgstr "Tokelo ya ngwalollo © 2007-2010 Zuza Software Foundation"

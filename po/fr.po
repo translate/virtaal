@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: virtaal-fr\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-16 17:25+0200\n"
+"PO-Revision-Date: 2011-05-16 17:25+0000\n"
 "Last-Translator: Claude <claude@2xlibre.net>\n"
 "Language-Team: fr <debian-l10n-french@lists.debian.org>\n"
 "Language: fr\n"
@@ -17,7 +17,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Pootle 2.1.5\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"X-POOTLE-MTIME: 1305566703.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -471,6 +472,7 @@ msgstr "Parenthèses"
 msgid "Compendium conflict"
 msgstr "Conflit de glossaire"
 
+# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
 msgstr "Liste des traducteurs"
@@ -1602,6 +1604,7 @@ msgstr "(100 %)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f %%)"
 
+# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192

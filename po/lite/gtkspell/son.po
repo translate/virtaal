@@ -1,17 +1,9 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
-"Project-Id-Version: gtkspell 2.0.12\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-13 22:39+0200\n"
-"PO-Revision-Date: 2009-12-04 23:30+0200\n"
+"POT-Creation-Date: 2014-02-06 17:32+0000\n"
+"PO-Revision-Date: 2010-08-03 01:16+0000\n"
 "Last-Translator: Mohomodou  <mh@bollag-areal.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: son\n"
@@ -19,7 +11,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.0.0-rc2\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"X-POOTLE-MTIME: 1280798187.000000\n"
 
 #: ../gtkspell/gtkspell.c:384
 msgid "<i>(no suggestions)</i>"
@@ -31,7 +24,6 @@ msgstr "Bešere..."
 
 #. + Add to Dictionary
 #: ../gtkspell/gtkspell.c:424
-#, c-format
 msgid "Add \"%s\" to Dictionary"
 msgstr "\"%s\" tonton kamasu ga"
 

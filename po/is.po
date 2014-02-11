@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-13 01:00+0200\n"
+"PO-Revision-Date: 2013-01-10 10:25+0000\n"
 "Last-Translator: Kristján Bjarni <kristjanbjarni@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: is\n"
@@ -17,7 +17,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n%10!=1 || n%100==11);\n"
-"X-Generator: Pootle 2.1.5\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"X-POOTLE-MTIME: 1357813546.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -34,7 +35,7 @@ msgid ""
 "A translation tool to help a human translator translate files into other "
 "languages"
 msgstr ""
-"Þýðingartól til að hjálpa mannlegum þýðanda að þýða skrár yfir í önnur "
+"Þýðingartól til hjálpar mennskum þýðanda við að þýða skrár yfir í önnur "
 "tungumál"
 
 #: ../share/virtaal/virtaal.glade.h:2
@@ -109,7 +110,7 @@ msgstr "_Kennsla"
 
 #: ../share/virtaal/virtaal.glade.h:21
 msgid "_Localization Guide"
-msgstr "_Þýðingarleiðsögn"
+msgstr "_Þýðingaleiðbeiningar"
 
 #: ../share/virtaal/virtaal.glade.h:22
 msgid "Report a _Bug"
@@ -117,7 +118,7 @@ msgstr "Tilkynna _villu"
 
 #: ../share/virtaal/virtaal.glade.h:23
 msgid "New Language Pair"
-msgstr "Nýtt tungumála par"
+msgstr "Nýtt tungumálapar"
 
 #: ../share/virtaal/virtaal.glade.h:24
 msgid ""
@@ -148,8 +149,8 @@ msgstr ""
 "<b>Þýðing</b> er tungumálið sem þú ert að þýða yfir í, einnig "
 "þýðingartungumálið.\n"
 "\n"
-"Ef þú værir að þýða frá ensku yfir í frönsku þá væri franska þýðingin eða "
-"þýðingartungumálið."
+"Ef þú værir að þýða frá ensku yfir í frönsku þá væri franska kölluð þýðing "
+"eða þýðingartungumál."
 
 #: ../share/virtaal/virtaal.glade.h:31
 msgid "<b>Translation</b>"
@@ -192,7 +193,7 @@ msgstr "<b>Upplýsingar tungumáls</b>"
 
 #: ../share/virtaal/virtaal.glade.h:40
 msgid "Virtaal Preferences"
-msgstr "Virtaal valkostir"
+msgstr "Valkostir Virtaal"
 
 #: ../share/virtaal/virtaal.glade.h:41
 msgid "The name stored in the file header"
@@ -266,7 +267,7 @@ msgstr "Tengiforrit"
 
 #: ../share/virtaal/virtaal.glade.h:58
 msgid "Terminology Files"
-msgstr "Orðaskrár"
+msgstr "Hugtakaskrár"
 
 #: ../share/virtaal/virtaal.glade.h:59
 msgid "Add Term"
@@ -279,7 +280,7 @@ msgstr "_Athugasemdir"
 
 #: ../share/virtaal/virtaal.glade.h:62
 msgid "Terminology _file:"
-msgstr "_Orðaskrá:"
+msgstr "_Hugtakaskrá:"
 
 #: ../share/virtaal/virtaal.glade.h:63
 msgid "Web Look-ups"
@@ -346,6 +347,7 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid "<u>Manual</u>"
 msgstr "<u>Handbók</u>"
 
+# 75%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
@@ -356,6 +358,7 @@ msgstr "http://translate.sourceforge.net/wiki/guide/start"
 msgid "<u>Localization Guide</u>"
 msgstr "<u>Staðfærsluleiðbeiningar</u>"
 
+# 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:37
@@ -421,6 +424,7 @@ msgstr ""
 "Til að merkja núverandi þýðingu sem ekki lokið, ýttu þá á "
 "<Ctrl+Shift+Enter>."
 
+# 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr "Til að merkja núverandi þýðingu sem lokið, ýttu þá á <Ctrl+Enter>."
@@ -434,10 +438,12 @@ msgid ""
 "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
 msgstr "Notaður Ctrl+PgUp eða Ctrl+PgDown til að hoppa langt á milli þýðingar."
 
+# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
-msgstr "Óskýr"
+msgstr "Óskýrt"
 
+# 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
 msgid "Untranslated"
@@ -463,6 +469,7 @@ msgstr "Hornklofar"
 msgid "Compendium conflict"
 msgstr "Yfirlit yfir árekstra"
 
+# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
 msgstr "Kristján Bjarni Guðmundsson"
@@ -524,6 +531,7 @@ msgstr "Nauðsyn að þýða orð"
 msgid "Newlines"
 msgstr "Nýjar línur"
 
+# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
 msgstr "Fjöldi fleirtala"
@@ -611,6 +619,7 @@ msgstr "Gildir stafir"
 msgid "Placeholders"
 msgstr "Staðgenglar"
 
+# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
 msgid "XML tags"
 msgstr "XML merki"
@@ -723,6 +732,7 @@ msgstr "Aðeins er hægt að flytja út Gettext PO skrár"
 msgid "Export"
 msgstr "Flytja út"
 
+# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, python-format
 msgid ""
@@ -738,6 +748,7 @@ msgstr ""
 "\n"
 "Reyndu að vista á aðra staðsetningu."
 
+# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, python-format
 msgid ""
@@ -878,10 +889,12 @@ msgstr "\"alt\" Eiginleikar"
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Breyta fyrir \"alt\" eiginleikar (eins og er í HTML)"
 
+# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeholders (Drupal)"
 msgstr "Breytur (Drupal)"
 
+# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders in Drupal strings"
 msgstr "Breytur í Drupal strengjum"
@@ -912,7 +925,7 @@ msgstr "Búið að þýða: %d"
 #: ../virtaal/controllers/storecontroller.py:427
 #, python-format
 msgid "Fuzzy: %d"
-msgstr "Óskýr: %d"
+msgstr "Óskýrt: %d"
 
 #: ../virtaal/controllers/storecontroller.py:428
 #, python-format
@@ -931,7 +944,7 @@ msgstr "Skrá uppfærð"
 
 #: ../virtaal/controllers/unitcontroller.py:84
 msgid "Needs work"
-msgstr "Þarfnast vinnu"
+msgstr "Þarfnast lagfæringa"
 
 #: ../virtaal/controllers/unitcontroller.py:85
 msgid "Rejected"
@@ -949,6 +962,7 @@ msgstr "Þýtt"
 msgid "Reviewed"
 msgstr "Yfirfarið"
 
+# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1066,6 +1080,7 @@ msgstr "Fleiri..."
 msgid "Add \"%s\" to Dictionary"
 msgstr "Bæta \"%s\" við í orðabók"
 
+# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 msgid "Languages"
 msgstr "Tungumál"
@@ -1177,12 +1192,12 @@ msgstr "Poedit stillingar"
 #: ../virtaal/plugins/migration.py:188
 #, python-format
 msgid "Poedit's Translation Memory: %(database_language_code)s"
-msgstr "Poedit þýðingarminni: %(database_language_code)s"
+msgstr "Poedit þýðingaminni: %(database_language_code)s"
 
 #: ../virtaal/plugins/migration.py:213
 #, python-format
 msgid "KBabel's Translation Memory: %(database_language_code)s"
-msgstr "KBabel þýðingarminni: %(database_language_code)s"
+msgstr "KBabel þýðingaminni: %(database_language_code)s"
 
 #: ../virtaal/plugins/migration.py:231
 msgid "Lokalize settings"
@@ -1191,23 +1206,23 @@ msgstr "Lokalize stillingar"
 #: ../virtaal/plugins/migration.py:255
 #, python-format
 msgid "Lokalize's Translation Memory: %(database_name)s"
-msgstr "Lokalize's þýðingarminni: %(database_name)s"
+msgstr "Lokalize's þýðingaminni: %(database_name)s"
 
 #: ../virtaal/plugins/terminology/__init__.py:27
 msgid "Terminology Help"
-msgstr "Hjálp fyrir orðaskrá"
+msgstr "Hjálp fyrir hugtakaskrá"
 
 #: ../virtaal/plugins/terminology/__init__.py:28
 msgid "Terminology suggestions"
-msgstr "Tillögur frá orðaskrá"
+msgstr "Tillögur frá hugtakaskrá"
 
 #: ../virtaal/plugins/terminology/models/autoterm.py:41
 msgid "Localization Terminology"
-msgstr "Staðfærslu orðaskrá"
+msgstr "Staðfærslu hugtakaskrá"
 
 #: ../virtaal/plugins/terminology/models/autoterm.py:42
 msgid "Selected localization terminology"
-msgstr "Valin staðfærslu orðaskrá"
+msgstr "Valin hugtakaskrá staðfærslu"
 
 #: ../virtaal/plugins/terminology/models/localfile/__init__.py:42
 msgid "Local Files"
@@ -1215,12 +1230,12 @@ msgstr "Staðbundnar skrár"
 
 #: ../virtaal/plugins/terminology/models/localfile/__init__.py:43
 msgid "Local terminology files"
-msgstr "Staðbundnar orðaskrár"
+msgstr "Staðbundnar hugtakaskrár"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:58
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:60
 msgid "Terminology _Files..."
-msgstr "_Orðaskrár..."
+msgstr "_Hugtakaskrár..."
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:66
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:68
@@ -1301,11 +1316,11 @@ msgstr "Þýðingar frá Open-Tran.eu"
 
 #: ../virtaal/plugins/terminology/termview.py:166
 msgid "Select Terminology Sources"
-msgstr "Velja þjónustur fyrir orðaskrár"
+msgstr "Velja þjónustur fyrir hugtakaskrár"
 
 #: ../virtaal/plugins/terminology/termview.py:167
 msgid "Select the sources of terminology suggestions"
-msgstr "Veldu þjónustur fyrir tillögur frá orðaskrám"
+msgstr "Veldu þjónustur fyrir tillögur frá hugtakaskrám"
 
 #: ../virtaal/plugins/tm/__init__.py:27
 msgid "Translation Memory"
@@ -1313,7 +1328,7 @@ msgstr "Þýðingarminni"
 
 #: ../virtaal/plugins/tm/__init__.py:28
 msgid "Translation memory suggestions"
-msgstr "Tillögur þýðingarminnis"
+msgstr "Tillögur þýðingaminnis"
 
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/amagama.py:28
@@ -1375,16 +1390,16 @@ msgstr "Óyfirfarnar tölvuþýðingar frá ýmsum þjónustum"
 
 #: ../virtaal/plugins/tm/models/localtm.py:37
 msgid "Local Translation Memory"
-msgstr "Staðbundið þýðingarminni"
+msgstr "Staðbundið þýðingaminni"
 
 #: ../virtaal/plugins/tm/models/localtm.py:38
 msgid "Previous translations you have made"
-msgstr "Fyrri þýðingar sem þú hefur þýtt"
+msgstr "Fyrri þýðingar sem þú hefur gert"
 
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/localtm.py:40
 msgid "Local TM"
-msgstr "Staðbundinn TM"
+msgstr "Staðbundið ÞM"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
 #: ../virtaal/plugins/tm/models/moses.py:33
@@ -1408,12 +1423,12 @@ msgstr "Fjartengdur netþjónn"
 
 #: ../virtaal/plugins/tm/models/remotetm.py:31
 msgid "A translation memory server"
-msgstr "Netþjóns þýðingarminni"
+msgstr "Þýðingaminnismiðlari"
 
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/remotetm.py:33
 msgid "Remote TM"
-msgstr "Fjartengdur TM"
+msgstr "Fjartengt þýðingaminni"
 
 #: ../virtaal/plugins/tm/models/tinytm.py:36
 msgid "TinyTM"
@@ -1421,7 +1436,7 @@ msgstr "TinyTM"
 
 #: ../virtaal/plugins/tm/models/tinytm.py:37
 msgid "A TinyTM translation memory server"
-msgstr "TinyTM þýðingarminnisþjónn"
+msgstr "TinyTM þýðingaminnisþjónn"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
 #: ../virtaal/plugins/tm/models/apertium.py:43
@@ -1446,11 +1461,11 @@ msgstr "Ctrl+%(number_key)d"
 #. such as local tm, open-tran.eu, the current file, etc.
 #: ../virtaal/plugins/tm/tmview.py:176
 msgid "Select sources of Translation Memory"
-msgstr "Veldu þjónustur fyrir þýðíngarminni"
+msgstr "Veldu þjónustur fyrir þýðingaminni"
 
 #: ../virtaal/plugins/tm/tmview.py:177
 msgid "Select the sources that should be queried for translation memory"
-msgstr "Veldu þær þjónustur sem ætti að nota fyrir þýðingarminni"
+msgstr "Veldu þær þjónustur sem ætti að nota fyrir þýðingaminni"
 
 #. l10n: match quality column label
 #: ../virtaal/plugins/tm/tmwidgets.py:64
@@ -1463,7 +1478,7 @@ msgstr "Passar við"
 
 #: ../virtaal/plugins/tm/tmwidgets.py:68
 msgid "TM Source"
-msgstr "TM frumkóði"
+msgstr "ÞM frumkóði"
 
 #. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
 #: ../virtaal/plugins/tm/tmwidgets.py:138
@@ -1550,6 +1565,7 @@ msgstr "_Yfirlit:"
 msgid "Save the file for up-to-date information"
 msgstr "Vistaðu skránna til að nálgast uppfærðar upplýsingar"
 
+# 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "Óþýtt:"
@@ -1566,6 +1582,7 @@ msgstr "Hafnað:"
 msgid "Needs review:"
 msgstr "Þarfnast yfirferðar:"
 
+# 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "Búið að þýða:"
@@ -1588,6 +1605,7 @@ msgstr "(100%)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f%%)"
 
+# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192
@@ -1637,7 +1655,7 @@ msgid ""
 "Aided Translation (CAT)."
 msgstr ""
 "Upphafleg áhersla er á hugbúnaðarþýðingar (staðfærsla eða l10n), en við "
-"gerum fastlega ráð fyrir að það verði nothæft sem almennt verkfæri fyrir "
+"gerum fastlega ráð fyrir að þetta verði nothæft sem almennt verkfæri fyrir "
 "tölvustuddar þýðingar (CAT)."
 
 #: ../virtaal/views/widgets/aboutdialog.py:52
@@ -1690,11 +1708,11 @@ msgstr "Samstilla..."
 
 #: ../virtaal/views/widgets/welcomescreen.py:79
 msgid "Translation memory"
-msgstr "Þýðingarminni"
+msgstr "Þýðingaminni"
 
 #: ../virtaal/views/widgets/welcomescreen.py:80
 msgid "Terminology assistance"
-msgstr "Hjálp fyrir orðaskrár"
+msgstr "Hjálp fyrir hugtakaskrár"
 
 #: ../virtaal/views/widgets/welcomescreen.py:81
 msgid "Quality checks"
@@ -1722,7 +1740,7 @@ msgstr "Ekki gild skrá."
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
 msgid "TMX Translation Memory"
-msgstr "TMX þýðingarminni"
+msgstr "TMX þýðingaminni"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:2
 msgid "TMX"
@@ -1746,11 +1764,11 @@ msgstr "TermBase eXchange"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:7
 msgid "Wordfast Translation Memory"
-msgstr "Wordfast þýðingarminni"
+msgstr "Wordfast þýðingaminni"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:8
 msgid "Qt Linguist Translation File"
-msgstr "Qt Linguist þýðingarskrá"
+msgstr "Qt Linguist þýðingaskrá"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:9
 msgid "Qt Message File"
@@ -1778,11 +1796,11 @@ msgstr "Java properties skrá"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:15
 msgid "OpenOffice.org Translation File"
-msgstr "OpenOffice.org þýðingarskrá"
+msgstr "OpenOffice.org þýðingaskrá"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:16
 msgid "XLIFF Translation File"
-msgstr "XLIFF þýðingarskrá"
+msgstr "XLIFF þýðingaskrá"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:17
 msgid "XLIFF"
@@ -1822,7 +1840,7 @@ msgstr "Trados merkjaritill"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:26
 msgid "OS X Strings File"
-msgstr "OS X strengja skrá"
+msgstr "OS X strengjaskrá"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:27
 msgid "UTX Dictionary"

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-16 07:09+0200\n"
+"PO-Revision-Date: 2011-05-16 07:09+0000\n"
 "Last-Translator: Xandru <xandru@softastur.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ast\n"
@@ -16,7 +16,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.1.5\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"X-POOTLE-MTIME: 1305529783.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -344,6 +345,7 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid "<u>Manual</u>"
 msgstr "<u>Manual</u>"
 
+# 75%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
@@ -354,6 +356,7 @@ msgstr "http://translate.sourceforge.net/wiki/guide/start"
 msgid "<u>Localization Guide</u>"
 msgstr "<u>Guía de Llocalización</u>"
 
+# 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:37
@@ -416,6 +419,7 @@ msgstr ""
 "Pa marcar la traducción actual como incompleta namás calca "
 "<Ctrl+Mayús+Intro>."
 
+# 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr "Pa marcar la traducción actual como completa, namás calca <Ctrl+Intro>."
@@ -430,10 +434,12 @@ msgid ""
 msgstr ""
 "Calca Ctrl+AvPáx o Ctrl+RePáx pa movese pente la traducción a pasos grandes."
 
+# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
 msgstr "Duldosa"
 
+# 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
 msgid "Untranslated"
@@ -459,6 +465,7 @@ msgstr "Paréntesis"
 msgid "Compendium conflict"
 msgstr "Conflictu de compendiu"
 
+# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
 msgstr "Xandru Armesto - Softastur <xandru@softastur.org>"
@@ -520,6 +527,7 @@ msgstr "Pallabres que se tienen de traducir"
 msgid "Newlines"
 msgstr "Llínia nueva"
 
+# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
 msgstr "Númberu de plurales"
@@ -607,6 +615,7 @@ msgstr "Caráuteres válidos"
 msgid "Placeholders"
 msgstr "Marcadores"
 
+# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
 msgid "XML tags"
 msgstr "Etiquetes XML"
@@ -717,6 +726,7 @@ msgstr "Namás se puen esportar ficheros PO de Gettext"
 msgid "Export"
 msgstr "Esportar"
 
+# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, python-format
 msgid ""
@@ -732,6 +742,7 @@ msgstr ""
 "\n"
 "Tenta guardalu n'otru sitiu."
 
+# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, python-format
 msgid ""
@@ -875,10 +886,12 @@ msgstr "Atributos \"alt\""
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Oxetos colocables p'atributos \"alt\" (como en HTML)"
 
+# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeholders (Drupal)"
 msgstr "Marcadores (Java)"
 
+# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders in Drupal strings"
 msgstr "Marcadores en cadenes Drupal"
@@ -946,6 +959,7 @@ msgstr "Traducío"
 msgid "Reviewed"
 msgstr "Revisao"
 
+# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1063,6 +1077,7 @@ msgstr "Más..."
 msgid "Add \"%s\" to Dictionary"
 msgstr "Amestar \"%s\" al Diccionariu"
 
+# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 msgid "Languages"
 msgstr "Llingües"
@@ -1549,6 +1564,7 @@ msgstr "N_avegación:"
 msgid "Save the file for up-to-date information"
 msgstr "Guarda'l ficheru p'anovar la información"
 
+# 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "A traducir:"
@@ -1565,6 +1581,7 @@ msgstr "Refugao:"
 msgid "Needs review:"
 msgstr "Precisa revisión:"
 
+# 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "Traducío:"
@@ -1587,6 +1604,7 @@ msgstr "(100%)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f%%)"
 
+# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192

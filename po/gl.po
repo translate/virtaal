@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-06-04 18:35+0200\n"
+"PO-Revision-Date: 2014-02-05 08:37+0000\n"
 "Last-Translator: Antón <meixome@certima.net>\n"
 "Language-Team: Galician Proxecto Trasno <proxecto@trasno.net>\n"
 "Language: gl\n"
@@ -17,7 +17,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.1.5\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"X-POOTLE-MTIME: 1391589467.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -712,7 +713,7 @@ msgstr ""
 
 #: ../virtaal/controllers/maincontroller.py:263
 msgid "Can only export Gettext PO files"
-msgstr "Soamente pode exportar ficheiro PO de Gettex"
+msgstr "Soamente pode exportar ficheiro PO de Gettext"
 
 #: ../virtaal/controllers/maincontroller.py:272
 msgid "Export"
@@ -791,7 +792,7 @@ msgstr "Nomes de ficheiro"
 
 #: ../virtaal/controllers/placeablescontroller.py:101
 msgid "Paths referring to file locations"
-msgstr "Camiños relacionados con situación de ficheiros"
+msgstr "Rutas relacionadas con situación de ficheiros"
 
 #: ../virtaal/controllers/placeablescontroller.py:104
 msgid "Placeholders (printf)"
@@ -1839,11 +1840,11 @@ msgstr "Intercambio Universal de Terminoloxía"
 
 #: ../devsupport/tmp_strings.py:23
 msgid "Gettext PO file"
-msgstr "Ficheiro gettex PO"
+msgstr "Ficheiro gettext PO"
 
 #: ../devsupport/tmp_strings.py:24
 msgid "Gettext MO file"
-msgstr "Ficheiro gettex MO"
+msgstr "Ficheiro gettext MO"
 
 #: ../devsupport/tmp_strings.py:25
 msgid "Qt .qm file"

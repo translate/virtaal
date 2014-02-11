@@ -1,7 +1,7 @@
 # Hebrew translation of Virtaal.
-# Copyright (C) 2013 Zuza Software Foundation (Translate.org.za)
+# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
-# Yaron Shahrabani <sh.yaron@gmail.com>, 2010, 2013.
+# Yaron Shahrabani <gezer@lists.launchpad.net>, 2010.
 #: ../virtaal/support/native_widgets.py:50
 #: ../virtaal/support/native_widgets.py:51
 msgid ""
@@ -9,15 +9,16 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5.3-rc1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2013-10-10 00:55+0300\n"
-"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
-"Language-Team: Gezer\n"
+"PO-Revision-Date: 2013-02-21 17:04+0000\n"
+"Last-Translator: Yaron <sh.yaron@gmail.com>\n"
+"Language-Team: Gezer (Hebrew)\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"X-POOTLE-MTIME: 1361466245.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -336,6 +337,7 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid "<u>Manual</u>"
 msgstr "<u>מדריך מקיף</u>"
 
+# 75%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
@@ -346,6 +348,7 @@ msgstr "http://translate.sourceforge.net/wiki/guide/start"
 msgid "<u>Localization Guide</u>"
 msgstr "<u>מדריך לתרגומים</u>"
 
+# 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:37
@@ -406,6 +409,7 @@ msgid ""
 "+Enter>."
 msgstr "כדי לסמן את התרגום הנוכחי כחלקי, פשוט יש ללחוץ על <Ctrl+Shift+Enter>."
 
+# 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr "כדי לסמן את התרגום הנוכחי כמושלם, פשוט יש ללחוץ <Ctrl+Enter>."
@@ -420,10 +424,12 @@ msgid ""
 msgstr ""
 "ניתן להשתמש ב־Ctrl+PgUp או Ctrl+PgDown כדי לפסוע בצעדים גדולים בין התרגומים."
 
+# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
 msgstr "מעורפל"
 
+# 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
 msgid "Untranslated"
@@ -449,9 +455,10 @@ msgstr "סוגריים מרובעים"
 msgid "Compendium conflict"
 msgstr "התנגשות תקציר"
 
+# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
-msgstr "אזכורי מתרגמים"
+msgstr "ירון שהרבני <sh.yaron@gmail.com>"
 
 #: ../virtaal/controllers/checkscontroller.py:37
 msgid "Double quotes"
@@ -510,6 +517,7 @@ msgstr "מילים שחובה לתרגם"
 msgid "Newlines"
 msgstr "שורות חדשות"
 
+# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
 msgstr "מספר צורות הרבים"
@@ -554,7 +562,7 @@ msgstr "הגדלת אותיות פשוטה"
 
 #: ../virtaal/controllers/checkscontroller.py:61
 msgid "Simple plural(s)"
-msgstr "צורן/ני רבים פשוט/ים"
+msgstr "ריבוי פשוט"
 
 #: ../virtaal/controllers/checkscontroller.py:62
 msgid "Single quotes"
@@ -597,6 +605,7 @@ msgstr "תווים תקינים"
 msgid "Placeholders"
 msgstr "ממלאי מקום"
 
+# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
 msgid "XML tags"
 msgstr "תגיות XML"
@@ -707,6 +716,7 @@ msgstr "ניתן לייצא קובצי PO של Gettext בלבד"
 msgid "Export"
 msgstr "יצוא"
 
+# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, python-format
 msgid ""
@@ -722,6 +732,7 @@ msgstr ""
 "\n"
 "נא לנסות לשמור למיקום אחר."
 
+# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, python-format
 msgid ""
@@ -856,16 +867,18 @@ msgstr "רווחים כפולים ורווחים במיקומים בלתי צפ�
 
 #: ../virtaal/controllers/placeablescontroller.py:155
 msgid "\"alt\" Attributes"
-msgstr "מאפיינים ב־\"alt\""
+msgstr "מאפיינים ב־„alt“"
 
 #: ../virtaal/controllers/placeablescontroller.py:156
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "קבועים במאפייני \"alt\" (כמו שיש ב־HTML)"
 
+# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeholders (Drupal)"
 msgstr "ממלאי מקום (דרופל)"
 
+# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders in Drupal strings"
 msgstr "ממלאי מקום במחרוזות דרופל"
@@ -933,6 +946,7 @@ msgstr "מתורגמת"
 msgid "Reviewed"
 msgstr "נסקרה"
 
+# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1050,6 +1064,7 @@ msgstr "עוד..."
 msgid "Add \"%s\" to Dictionary"
 msgstr "הוספת \"%s\" למילון"
 
+# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 msgid "Languages"
 msgstr "שפות"
@@ -1118,7 +1133,7 @@ msgstr "שאילתה במירכאות"
 
 #: ../virtaal/plugins/migration.py:53
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
-msgstr "ייבוא הגדרות מ־KBabel,‏ Lokalize ו/או Poedit אל Virtaal."
+msgstr "יבוא הגדרות מ־KBabel,‏ Lokalize ו/או Poedit ל־Virtaal."
 
 #: ../virtaal/plugins/migration.py:54
 msgid "Migration Assistant"
@@ -1275,7 +1290,7 @@ msgstr "<b>%s</b>"
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:447
 #, python-format
 msgid "Existing translations: %(translations)s"
-msgstr "תרגומים קיימים: %(translations)s"
+msgstr "תרגום קיים: %(translations)s"
 
 #: ../virtaal/plugins/terminology/models/opentran.py:47
 msgid "Terms from Open-Tran.eu"
@@ -1532,6 +1547,7 @@ msgstr "_ניווט:"
 msgid "Save the file for up-to-date information"
 msgstr "יש לשמור את הקובץ כדי לקבל נתונים עדכניים"
 
+# 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "בלתי מתורגמות:"
@@ -1548,6 +1564,7 @@ msgstr "נדחו:"
 msgid "Needs review:"
 msgstr "זקוקות לסקירה:"
 
+# 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "מתורגמות:"
@@ -1570,6 +1587,7 @@ msgstr "(100%)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f%%)"
 
+# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192
@@ -1600,7 +1618,7 @@ msgstr "יש ללחוץ כדי להעביר למצב מסוים ברצף העב�
 
 #: ../virtaal/views/unitview.py:616
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
-msgstr "העברת שלב אחד קדימה ברצף העבודה (Ctrl+Shift+Enter)"
+msgstr "העברת שלב אחד קדימה ברצף העבודה (Ctrl+Enter)"
 
 #: ../virtaal/views/widgets/aboutdialog.py:34
 msgid "Copyright © 2007-2010 Zuza Software Foundation"
@@ -1844,7 +1862,7 @@ msgstr "LOG"
 
 #: ../bin/virtaal:91
 msgid "turn on logging, storing the result to the supplied filename."
-msgstr "turn on logging, storing the result to the supplied filename."
+msgstr "הפעל התחברות, אחסן את התוצאות בשם הקובץ שסופק."
 
 #: ../bin/virtaal:93
 msgid "CONFIG"
@@ -1852,11 +1870,11 @@ msgstr "CONFIG"
 
 #: ../bin/virtaal:94
 msgid "use the configuration file given by the supplied filename."
-msgstr "use the configuration file given by the supplied filename."
+msgstr "שימוש בקובץ התצורה שניתן ע״י על ידי שם הקובץ שסופק."
 
 #: ../bin/virtaal:97
 msgid "enable debugging features"
-msgstr "enable debugging features"
+msgstr "לאפשר ניפוי שגיאות (דיבוג)"
 
 #: ../bin/virtaal:104
 msgid "PROFILE"

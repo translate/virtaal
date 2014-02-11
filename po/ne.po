@@ -2,101 +2,126 @@
 # Ishwor Kafle <ishwor.com.np@hotmail.com>, 2009.
 # Copyright (C) 2009 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
+#: ../virtaal/support/native_widgets.py:50
+#: ../virtaal/support/native_widgets.py:51
 msgid ""
 msgstr ""
 "Project-Id-Version: virtaal_ne\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-01-30 15:39+0200\n"
-"PO-Revision-Date: 2009-02-18 00:58-0500\n"
-"Last-Translator: Ishwor Kafle <ishwor.com.np@hotmail.com>\n"
+"POT-Creation-Date: 2011-04-18 15:51+0200\n"
+"PO-Revision-Date: 2012-02-11 04:07+0000\n"
+"Last-Translator: Chris Leonard <cjlhomeaddress@gmail.com>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
 "Language: ne\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2;plural=(n!=1)\n"
-"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"X-POOTLE-MTIME: 1328933249.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
-msgid ""
-"A translation tool to help a human translator translate files into other "
-"languages"
-msgstr "अन्य भाषामा फाइलहरूको अनुवाद गर्न मद्दत गर्ने मानबिय अनुवादक उपकरण"
+#: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
+#: ../virtaal/views/mainview.py:746
+msgid "Virtaal"
+msgstr "वीरताल"
 
 #: ../share/applications/virtaal.desktop.in.h:2
 msgid "Translation Tool"
 msgstr "अनुवाद उपकरण"
 
 #: ../share/applications/virtaal.desktop.in.h:3
-#: ../share/virtaal/virtaal.glade.h:23
-msgid "Virtaal"
-msgstr "वीरताल"
-
-#: ../share/virtaal/virtaal.glade.h:1
-msgid "<b>Language information</b>"
-msgstr "<b>भाषा सूचना</b>"
+msgid ""
+"A translation tool to help a human translator translate files into other "
+"languages"
+msgstr "अन्य भाषामा फाइलहरूको अनुवाद गर्न मद्दत गर्ने मानबिय अनुवादक उपकरण"
 
 #: ../share/virtaal/virtaal.glade.h:2
-msgid "<b>Original</b>"
-msgstr "<b>मौलिक</b>"
+msgid "_File"
+msgstr "फाइल"
 
+# 94%
 #: ../share/virtaal/virtaal.glade.h:3
-msgid "<b>Translation</b>"
-msgstr "<b>अनुवादन</b>"
+#, fuzzy
+msgid "_Update to Template"
+msgstr "टेम्प्लेटमा अद्याअधिक गर्नुहोस्"
 
 #: ../share/virtaal/virtaal.glade.h:4
-msgid "Depending on the translation task, the plural information might be optional."
-msgstr "अनुवादन कार्यमा निर्भरता हुने कार्य, बहुसंख्यक सूचनाको विकल्पक हुनसक्छ ।"
+#, fuzzy
+msgid "_Export"
+msgstr "निर्यात गर"
 
 #: ../share/virtaal/virtaal.glade.h:5
-msgid "General"
-msgstr "सामान्य"
+msgid "_Recent Files"
+msgstr "भर्खरैका फाइल"
 
 #: ../share/virtaal/virtaal.glade.h:6
-msgid "ISO code:"
-msgstr "ISO कोड:"
+msgid "_Edit"
+msgstr "सम्पादन गर्नुहोस्"
 
-#: ../share/virtaal/virtaal.glade.h:7
-msgid "Language name:"
-msgstr "भाषा नाम:"
-
+#. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
 #: ../share/virtaal/virtaal.glade.h:8
-msgid "Languages"
-msgstr "भाषा"
+msgid "Transfer From Source"
+msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:9
-msgid "Missing Language"
-msgstr "हराइरहेको भाषा"
-
+#. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
 #: ../share/virtaal/virtaal.glade.h:10
-msgid "New Language Pair"
-msgstr "नयाँ भाषा जोडा"
+msgid "P_revious Placeable"
+msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:11
-msgid "Number of plurals:"
-msgstr "बहुसंख्यक नम्बर"
+msgid "_Next Placeable"
+msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:12
+msgid "_View"
+msgstr "दृष्यावलोकन"
+
+#: ../share/virtaal/virtaal.glade.h:13
+msgid "_Full Screen"
+msgstr "पूरा स्क्रिन"
+
+#: ../share/virtaal/virtaal.glade.h:14
+msgid "_Quality Checks"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:15
+msgid "_Navigation"
+msgstr "नेभिगेसन"
+
+#: ../share/virtaal/virtaal.glade.h:16
 msgid "P_age Up"
 msgstr "पृष्ठ माथि"
 
-#: ../share/virtaal/virtaal.glade.h:13
-msgid "Personal Information"
-msgstr "व्तक्तिगत जानकारी"
+#: ../share/virtaal/virtaal.glade.h:17
+msgid "_Page Down"
+msgstr "पृष्ठ तल"
 
-#: ../share/virtaal/virtaal.glade.h:14
-msgid "Plug-ins"
-msgstr "प्लगइन्स"
+#: ../share/virtaal/virtaal.glade.h:18
+msgid "_Help"
+msgstr "मद्दत"
 
-#: ../share/virtaal/virtaal.glade.h:15
-msgid "Plural expression:"
-msgstr "बहुसंख्यक अभिव्यक्ति:"
+#: ../share/virtaal/virtaal.glade.h:19
+msgid "_Online Help"
+msgstr "अनलाइन मद्दत"
 
-#: ../share/virtaal/virtaal.glade.h:16
+#: ../share/virtaal/virtaal.glade.h:20
+msgid "_Tutorial"
+msgstr "संरक्षक"
+
+#: ../share/virtaal/virtaal.glade.h:21
+msgid "_Localization Guide"
+msgstr "स्थानिकरण मार्गदर्शक"
+
+#: ../share/virtaal/virtaal.glade.h:22
 msgid "Report a _Bug"
 msgstr "बग प्रतिवेदन गर्नुहोस्"
 
-#: ../share/virtaal/virtaal.glade.h:17
+#: ../share/virtaal/virtaal.glade.h:23
+msgid "New Language Pair"
+msgstr "नयाँ भाषा जोडा"
+
+#: ../share/virtaal/virtaal.glade.h:24
 msgid ""
 "The <b>Original</b> is the language from which you are translating, also "
 "called the source language.\n"
@@ -106,9 +131,14 @@ msgid ""
 msgstr ""
 "<b>मौलिक</b> तपाइँले अनुवाद गरीरहनुभएको र कल गर्नु भएको स्रोत भाषा पनि हो ।\n"
 "\n"
-"यदि तपाइँ अंग्रजीबाट फ्रेन्चमा अनुवाद गर्दै हुनुहुन्छ भने त्यसपछि मौलिक अंग्रजी वा तपाइँको स्रोत भाषा हुनेछ ।"
+"यदि तपाइँ अंग्रजीबाट फ्रेन्चमा अनुवाद गर्दै हुनुहुन्छ भने त्यसपछि मौलिक "
+"अंग्रजी वा तपाइँको स्रोत भाषा हुनेछ ।"
 
-#: ../share/virtaal/virtaal.glade.h:20
+#: ../share/virtaal/virtaal.glade.h:27
+msgid "<b>Original</b>"
+msgstr "<b>मौलिक</b>"
+
+#: ../share/virtaal/virtaal.glade.h:28
 msgid ""
 "The <b>Translation</b> is the language into which you are translating, also "
 "called the target language.\n"
@@ -116,75 +146,281 @@ msgid ""
 "If you are translating from English to French then French would be your "
 "translation or target language."
 msgstr ""
-"<b>अनुवादन</b> तपाइँले अनुवाद गरीरहनुभएको र कल गरीएको लक्षित भाषा पनि एउटा भाषा नै हो ।\n"
+"<b>अनुवादन</b> तपाइँले अनुवाद गरीरहनुभएको र कल गरीएको लक्षित भाषा पनि एउटा "
+"भाषा नै हो ।\n"
 "\n"
-"यदि तपाइँ अंग्रेजीबाट फ्रेन्चमा अनुवाद गरीरहनुभएको छ भने तपाइँको फ्रेन्च भाषाको अनुवाद वा लक्ष भाषा हुन्छ ।"
+"यदि तपाइँ अंग्रेजीबाट फ्रेन्चमा अनुवाद गरीरहनुभएको छ भने तपाइँको फ्रेन्च "
+"भाषाको अनुवाद वा लक्ष भाषा हुन्छ ।"
 
-#: ../share/virtaal/virtaal.glade.h:24
+#: ../share/virtaal/virtaal.glade.h:31
+msgid "<b>Translation</b>"
+msgstr "<b>अनुवादन</b>"
+
+# 83%
+# 100%
+#: ../share/virtaal/virtaal.glade.h:32
+#, fuzzy
+msgid "_Add Missing Language..."
+msgstr "हराइरहेको भाषा..."
+
+# 80%
+# 100%
+#: ../share/virtaal/virtaal.glade.h:33
+#, fuzzy
+msgid "Add Missing Language"
+msgstr "हराइरहेको भाषा"
+
+#: ../share/virtaal/virtaal.glade.h:34
+msgid "Language name:"
+msgstr "भाषा नाम:"
+
+#: ../share/virtaal/virtaal.glade.h:35
+msgid "ISO code:"
+msgstr "ISO कोड:"
+
+#: ../share/virtaal/virtaal.glade.h:36
+msgid "Plural expression:"
+msgstr "बहुसंख्यक अभिव्यक्ति:"
+
+#: ../share/virtaal/virtaal.glade.h:37
+msgid "Number of plurals:"
+msgstr "बहुसंख्यक नम्बर"
+
+#: ../share/virtaal/virtaal.glade.h:38
+msgid ""
+"Depending on the translation task, the plural information might be optional."
+msgstr ""
+"अनुवादन कार्यमा निर्भरता हुने कार्य, बहुसंख्यक सूचनाको विकल्पक हुनसक्छ ।"
+
+# 96%
+# 100%
+#: ../share/virtaal/virtaal.glade.h:39
+#, fuzzy
+msgid "<b>Language Information</b>"
+msgstr "<b>भाषा सूचना</b>"
+
+#: ../share/virtaal/virtaal.glade.h:40
 msgid "Virtaal Preferences"
 msgstr "वीरताल प्राथमिकता"
 
-#: ../share/virtaal/virtaal.glade.h:25
-msgid "_Edit"
-msgstr "सम्पादन गर्नुहोस्"
+#: ../share/virtaal/virtaal.glade.h:41
+msgid "The name stored in the file header"
+msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:26
-msgid "_File"
-msgstr "फाइल"
+# 80%
+# 100%
+#. l10n: This label is for the name of the translator
+#: ../share/virtaal/virtaal.glade.h:43
+#, fuzzy
+msgid "Name:"
+msgstr "नाम"
 
-#: ../share/virtaal/virtaal.glade.h:27
-msgid "_Full Screen"
-msgstr "पूरा स्क्रिन"
+#: ../share/virtaal/virtaal.glade.h:44
+msgid "The e-mail address stored in the file header"
+msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:28
-msgid "_Help"
-msgstr "मद्दत"
+#: ../share/virtaal/virtaal.glade.h:45
+msgid "E-mail address:"
+msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:29
-msgid "_Localization Guide"
-msgstr "स्थानिकरण मार्गदर्शक"
+#: ../share/virtaal/virtaal.glade.h:46
+msgid ""
+"The team information stored in the file header. This can be an e-mail "
+"address or a URL, for example."
+msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:31
-msgid "_Missing Language..."
-msgstr "हराइरहेको भाषा..."
+#: ../share/virtaal/virtaal.glade.h:47
+msgid "Team:"
+msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:32
-msgid "_Navigation"
-msgstr "नेभिगेसन"
+# 96%
+# 75%
+#: ../share/virtaal/virtaal.glade.h:48
+#, fuzzy
+msgid "<b>Translator Information</b>"
+msgstr "<b>भाषा सूचना</b>"
 
-#: ../share/virtaal/virtaal.glade.h:33
-msgid "_Online Help"
-msgstr "अनलाइन मद्दत"
+#: ../share/virtaal/virtaal.glade.h:49
+msgid "Source text:"
+msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:34
-msgid "_Page Down"
-msgstr "पृष्ठ तल"
+#: ../share/virtaal/virtaal.glade.h:50
+msgid "Target text:"
+msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:35
-msgid "_Recent Files"
-msgstr "भर्खरैका फाइल"
+#: ../share/virtaal/virtaal.glade.h:51
+msgid "Use _Default Fonts"
+msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:36
-msgid "_Tutorial"
-msgstr "संरक्षक"
+#: ../share/virtaal/virtaal.glade.h:52
+msgid "<b>Fonts</b>"
+msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:37
-msgid "_Update to template"
-msgstr "टेम्प्लेटमा अद्याअधिक गर्नुहोस्"
+#. l10n: This tab label refers to the general preferences
+#: ../share/virtaal/virtaal.glade.h:54
+msgid "General"
+msgstr "सामान्य"
 
-#: ../share/virtaal/virtaal.glade.h:38
-msgid "_View"
-msgstr "दृष्यावलोकन"
+#: ../share/virtaal/virtaal.glade.h:55
+msgid ""
+"Placeables are special parts of the text that can be automatically "
+"highlighted and easily inserted into the translation."
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:56
+msgid "Placeables"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:57
+msgid "Plug-ins"
+msgstr "प्लगइन्स"
+
+#: ../share/virtaal/virtaal.glade.h:58
+msgid "Terminology Files"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:59
+msgid "Add Term"
+msgstr ""
+
+#. l10n: This label refers to comments about a new term that is added
+#: ../share/virtaal/virtaal.glade.h:61
+msgid "C_omments"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:62
+msgid "Terminology _file:"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:63
+msgid "Web Look-ups"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:64
+msgid "Add URL"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:65
+msgid "URL:"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:66
+msgid "Put queries in quotes"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:67
+msgid "<b>Options</b>"
+msgstr ""
+
+#. l10n: Remove the tags if underlining is unsuitable for your language. Most languages won't need to change this. Translate 'Open' normally.
+#: ../share/virtaal/virtaal.glade.h:69
+msgid "<u>Open</u>"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:70
+msgid "<b><big>Recent Files</big></b>"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:71
+msgid "<u>Tutorial</u>"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:72
+msgid "<u>Cheat Sheet</u>"
+msgstr ""
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.glade.h:74
+#: ../virtaal/controllers/welcomescreencontroller.py:38
+msgid "http://translate.sourceforge.net/wiki/virtaal/features"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:75
+#, fuzzy
+msgid "<u>More...</u>"
+msgstr "<u>अरु...</u>"
+
+#: ../share/virtaal/virtaal.glade.h:76
+msgid "<u>Features</u>"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:77
+msgid "<b><big>Getting Started</big></b>"
+msgstr ""
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.glade.h:79
+#: ../virtaal/controllers/welcomescreencontroller.py:34
+msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:80
+msgid "<u>Manual</u>"
+msgstr ""
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.glade.h:82
+#: ../virtaal/controllers/welcomescreencontroller.py:35
+msgid "http://translate.sourceforge.net/wiki/guide/start"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:83
+msgid "<u>Localization Guide</u>"
+msgstr ""
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.glade.h:85
+#: ../virtaal/controllers/welcomescreencontroller.py:37
+msgid "http://translate.sourceforge.net/wiki/virtaal/index#contact"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:86
+msgid "<u>Feedback</u>"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:87
+msgid "<b><big>Support</big></b>"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:88
+#, fuzzy
+msgid "Properties"
+msgstr "गुणहरु"
+
+#: ../share/virtaal/virtaal.glade.h:89
+msgid "<b>Words</b> (total):"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:90
+msgid "<b>Strings</b> (total):"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:91
+msgid "File type:"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:92
+msgid "File size:"
+msgstr ""
+
+#: ../share/virtaal/virtaal.glade.h:93
+msgid "Location:"
+msgstr ""
 
 #: ../virtaal/tips.py:27
 msgid ""
 "At the end of a translation, simply press <Enter> to continue with the next "
 "one."
-msgstr "अनुवादनको अन्त्यमा, निरन्तर गर्नका लगि अघिल्लो एउटा सँगै साधारण प्रेस गर्नुहोस्<Enter>"
+msgstr ""
+"अनुवादनको अन्त्यमा, निरन्तर गर्नका लगि अघिल्लो एउटा सँगै साधारण प्रेस "
+"गर्नुहोस्<Enter>"
 
 #: ../virtaal/tips.py:28
-msgid "To copy the original string into the target field, simply press <Alt+Down>."
-msgstr "लक्ष्य फाँट भित्र मौलिक स्ट्रिङ् प्रतिलिपि गर्न, सामान्य प्रेस गर्नुहोस् <Alt+Down>"
+msgid ""
+"To copy the original string into the target field, simply press <Alt+Down>."
+msgstr ""
+"लक्ष्य फाँट भित्र मौलिक स्ट्रिङ् प्रतिलिपि गर्न, सामान्य प्रेस गर्नुहोस् "
+"<Alt+Down>"
 
 #. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
 #: ../virtaal/tips.py:31
@@ -192,43 +428,278 @@ msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
 msgstr "हालको अस्पष्ट अनुवादलाई चिनो लगाउन, सामान्य प्रेस गर्नुहोस् <Alt+U>"
 
 #: ../virtaal/tips.py:32
+msgid ""
+"To mark the current translation as incomplete, simply press <Ctrl+Shift"
+"+Enter>."
+msgstr ""
+
+# 75%
+#: ../virtaal/tips.py:33
+#, fuzzy
+msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
+msgstr "हालको अस्पष्ट अनुवादलाई चिनो लगाउन, सामान्य प्रेस गर्नुहोस् <Alt+U>"
+
+#: ../virtaal/tips.py:34
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
 msgstr "अनुवादहरूको विचमा लैजान Ctrl+Up वा Ctrl+Down लाई प्रयोग गर्नुहोस् ।"
 
-#: ../virtaal/tips.py:33
-msgid "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
-msgstr "अनुवादहरूको विच ठूल चरणहरूमा लैजान Ctrl+PgUp वा Ctrl+PgDown को प्रयोग गर्नुहोस् ।"
+#: ../virtaal/tips.py:35
+msgid ""
+"Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
+msgstr ""
+"अनुवादहरूको विच ठूल चरणहरूमा लैजान Ctrl+PgUp वा Ctrl+PgDown को प्रयोग "
+"गर्नुहोस् ।"
 
-#: ../virtaal/controllers/maincontroller.py:62
-#: ../virtaal/controllers/maincontroller.py:71
+# 83%
+# 100%
+#: ../virtaal/controllers/checkscontroller.py:29
+#, fuzzy
+msgid "Fuzzy"
+msgstr "खराब"
+
+#: ../virtaal/controllers/checkscontroller.py:30
+#: ../virtaal/controllers/unitcontroller.py:83
+msgid "Untranslated"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:31
+msgid "Accelerators"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:32
+msgid "Acronyms"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:33
+msgid "Blank"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:34
+msgid "Brackets"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:35
+msgid "Compendium conflict"
+msgstr ""
+
+# 88%
+# 100%
+#: ../virtaal/controllers/checkscontroller.py:36
+#, fuzzy
+msgid "Translator credits"
+msgstr "अनुवादक-श्रेय"
+
+#: ../virtaal/controllers/checkscontroller.py:37
+msgid "Double quotes"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:38
+msgid "Double spaces"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:39
+msgid "Repeated word"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:40
+#: ../virtaal/controllers/placeablescontroller.py:96
+msgid "E-mail"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:41
+msgid "Ending punctuation"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:42
+msgid "Ending whitespace"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:43
+msgid "Escapes"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:44
+msgid "File paths"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:45
+msgid "Functions"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:46
+msgid "GConf values"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:47
+msgid "Old KDE comment"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:48
+msgid "Long"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:49
+msgid "Must translate words"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:50
+msgid "Newlines"
+msgstr ""
+
+# 94%
+# 100%
+#: ../virtaal/controllers/checkscontroller.py:51
+#, fuzzy
+msgid "Number of plurals"
+msgstr "बहुसंख्यक नम्बर"
+
+#: ../virtaal/controllers/checkscontroller.py:52
+msgid "Don't translate words"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:53
+#: ../virtaal/controllers/placeablescontroller.py:120
+msgid "Numbers"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:54
+#: ../devsupport/optparse.py:1612
+msgid "Options"
+msgstr "विकल्प"
+
+#: ../virtaal/controllers/checkscontroller.py:55
+msgid "printf()"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:56
+msgid "Punctuation spacing"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:57
+msgid "Pure punctuation"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:58
+msgid "Number of sentences"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:59
+msgid "Short"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:60
+msgid "Simple capitalization"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:61
+msgid "Simple plural(s)"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:62
+msgid "Single quotes"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:63
+msgid "Spelling"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:64
+msgid "Starting capitalization"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:65
+msgid "Starting punctuation"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:66
+msgid "Starting whitespace"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:67
+msgid "Tabs"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:68
+msgid "Unchanged"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:69
+#: ../virtaal/controllers/placeablescontroller.py:129
+msgid "URLs"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:70
+msgid "Valid characters"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:71
+msgid "Placeholders"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:72
+msgid "XML tags"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:111
+msgid "Default"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:112
+msgid "OpenOffice.org"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:113
+msgid "Mozilla"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:114
+msgid "KDE"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:115
+msgid "GNOME"
+msgstr ""
+
+#: ../virtaal/controllers/checkscontroller.py:116
+msgid "Drupal"
+msgstr ""
+
 #: ../virtaal/controllers/maincontroller.py:80
+#: ../virtaal/controllers/maincontroller.py:89
+#: ../virtaal/controllers/maincontroller.py:98
 msgid "Header information"
 msgstr "हेडर सूचना"
 
-#: ../virtaal/controllers/maincontroller.py:63
+#: ../virtaal/controllers/maincontroller.py:81
 msgid "Please enter your name"
 msgstr "कृपया तपाइँको नाम प्रविष्ट गर्नुहोस्"
 
-#: ../virtaal/controllers/maincontroller.py:72
+#: ../virtaal/controllers/maincontroller.py:90
 msgid "Please enter your e-mail address"
 msgstr "कृपया तपाइँको इ-मेल ठेगाना प्रविष्ट गर्नुहोस्"
 
-#: ../virtaal/controllers/maincontroller.py:81
+#: ../virtaal/controllers/maincontroller.py:99
 msgid "Please enter your team's information"
 msgstr "कृपया तपाइँको समूहको जानकारी प्रविष्ट गर्नुहोस्"
 
-#: ../virtaal/controllers/maincontroller.py:149
-#: ../virtaal/controllers/maincontroller.py:194
+#: ../virtaal/controllers/maincontroller.py:200
+#: ../virtaal/controllers/maincontroller.py:327
 msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
-msgstr "तपाइँले हालै खुलेको फाइल खोल्नलाइ चयन गर्नुभयो । तपाइँ फाइल पुन:लोड गर्न चाहानुहुन्छ ?"
+msgstr ""
+"तपाइँले हालै खुलेको फाइल खोल्नलाइ चयन गर्नुभयो । तपाइँ फाइल पुन:लोड गर्न "
+"चाहानुहुन्छ ?"
 
-#: ../virtaal/controllers/maincontroller.py:160
-#: ../virtaal/controllers/maincontroller.py:205
-#, python-format
+# 98%
+# 100%
+#: ../virtaal/controllers/maincontroller.py:211
+#: ../virtaal/controllers/maincontroller.py:311
+#: ../virtaal/controllers/maincontroller.py:338
+#, fuzzy, python-format
 msgid ""
 "Could not open file.\n"
+"\n"
 "%(error_message)s\n"
 "\n"
 "Try opening a different file."
@@ -238,22 +709,29 @@ msgstr ""
 "\n"
 "भिन्न प्रकारको फाइल खोल्न प्रयास गर्दैछ ।"
 
-#: ../virtaal/controllers/maincontroller.py:169
-#, python-format
+#: ../virtaal/controllers/maincontroller.py:227
+#: ../virtaal/support/native_widgets.py:142
+#: ../virtaal/support/native_widgets.py:188 ../virtaal/views/mainview.py:314
+msgid "Save"
+msgstr "बचत गर्नुहोस्"
+
+# 98%
+# 78%
+#: ../virtaal/controllers/maincontroller.py:247
+#, fuzzy, python-format
 msgid ""
 "Could not save file.\n"
 "\n"
 "%(error_message)s\n"
 "\n"
-"Try saving at a different location."
+"Try saving to a different location."
 msgstr ""
-"फाइल बचत हुन सकेन ।\n"
-"\n"
+"फाइल खुल्न सकेन ।\n"
 "%(error_message)s\n"
 "\n"
-"भिन्न स्थानमा बचत हुन प्रयास गर्दैछ ।"
+"भिन्न प्रकारको फाइल खोल्न प्रयास गर्दैछ ।"
 
-#: ../virtaal/controllers/maincontroller.py:174
+#: ../virtaal/controllers/maincontroller.py:252
 #, python-format
 msgid ""
 "Could not save file.\n"
@@ -264,203 +742,821 @@ msgstr ""
 "\n"
 "%(error_message)s"
 
-#: ../virtaal/controllers/maincontroller.py:178
+#: ../virtaal/controllers/maincontroller.py:263
+msgid "Can only export Gettext PO files"
+msgstr ""
+
+#: ../virtaal/controllers/maincontroller.py:272
+msgid "Export"
+msgstr ""
+
+# 98%
+# 77%
+#: ../virtaal/controllers/maincontroller.py:280
+#, fuzzy, python-format
+msgid ""
+"Could not export file.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Try saving to a different location."
+msgstr ""
+"फाइल खुल्न सकेन ।\n"
+"%(error_message)s\n"
+"\n"
+"भिन्न प्रकारको फाइल खोल्न प्रयास गर्दैछ ।"
+
+# 85%
+# 100%
+#: ../virtaal/controllers/maincontroller.py:285
+#, fuzzy, python-format
+msgid ""
+"Could not export file.\n"
+"\n"
+"%(error_message)s"
+msgstr ""
+"फाइल बचत गर्न सकेन ।\n"
+"\n"
+"%(error_message)s"
+
+#: ../virtaal/controllers/maincontroller.py:301
 msgid "Reload File"
 msgstr "फाइल पुन:लोड गर्नुहोस्"
 
-#: ../virtaal/controllers/maincontroller.py:178
+#: ../virtaal/controllers/maincontroller.py:301
 msgid "Reload file from last saved copy and lose all changes?"
-msgstr "अन्तिममा बचत भएको प्रतिलिपिबाट फाइल पुन:लोड गरेर सम्पूर्ण परिवर्तनहरू गुमाउनु हुन्छ ?"
+msgstr ""
+"अन्तिममा बचत भएको प्रतिलिपिबाट फाइल पुन:लोड गरेर सम्पूर्ण परिवर्तनहरू "
+"गुमाउनु हुन्छ ?"
 
-#: ../virtaal/controllers/storecontroller.py:110
+#. l10n: See http://en.wikipedia.org/wiki/CamelCase
+#: ../virtaal/controllers/placeablescontroller.py:83
+msgid "CamelCase"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:84
+msgid ""
+"Words with internal capitalization, such as some brand names and WikiWords"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:87
+msgid "Capitals"
+msgstr ""
+
+#. l10n: this refers to "UPPERCASE" / "CAPITAL" letters
+#: ../virtaal/controllers/placeablescontroller.py:89
+msgid "Words containing uppercase letters only"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:92
+msgid "Command Line Options"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:93
+msgid "Application command line options, such as --help, -h and -I"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:97
+msgid "E-mail addresses"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:100
+msgid "File Names"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:101
+msgid "Paths referring to file locations"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:104
+msgid "Placeholders (printf)"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:105
+msgid "Placeholders used in \"printf\" strings"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:108
+msgid "Placeholders (Python)"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:109
+msgid "Placeholders in Python strings"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:112
+msgid "Placeholders (Java)"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:113
+msgid "Placeholders in Java strings"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:116
+msgid "Placeholders (Qt)"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:117
+msgid "Placeholders in Qt strings"
+msgstr ""
+
+#. l10n: 'decimal fractions' refer to numbers like 0.2 or 499,99
+#: ../virtaal/controllers/placeablescontroller.py:122
+msgid "Integer numbers and decimal fractions"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:125
+msgid "Punctuation"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:126
+msgid "Symbols and less frequently used punctuation marks"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:130
+msgid "URLs, hostnames and IP addresses"
+msgstr ""
+
+#. l10n: see http://en.wikipedia.org/wiki/Character_entity_reference
+#: ../virtaal/controllers/placeablescontroller.py:134
+msgid "XML Entities"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:135
+msgid "Entity references, such as &amp; and &#169;"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:138
+msgid "XML Tags"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:139
+msgid "XML tags, such as <b> and </i>"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:153
+msgid "Spaces"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:154
+msgid "Double spaces and spaces in unexpected positions"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:155
+msgid "\"alt\" Attributes"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:156
+msgid "Placeable for \"alt\" attributes (as found in HTML)"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:157
+msgid "Placeholders (Drupal)"
+msgstr ""
+
+#: ../virtaal/controllers/placeablescontroller.py:158
+msgid "Placeholders in Drupal strings"
+msgstr ""
+
+#: ../virtaal/controllers/storecontroller.py:194
+msgid "No source or translatable files in bundle"
+msgstr ""
+
+#: ../virtaal/controllers/storecontroller.py:225
 msgid "The file contains nothing to translate."
 msgstr "फाइलमा अनुवाद गर्ने केहि पनि समाबेस छैन ।"
+
+#. l10n: The heading of statistics before updating to the new template
+#: ../virtaal/controllers/storecontroller.py:423
+msgid "Before:"
+msgstr ""
+
+#. l10n: The heading of statistics after updating to the new template
+#: ../virtaal/controllers/storecontroller.py:425
+msgid "After:"
+msgstr ""
+
+#: ../virtaal/controllers/storecontroller.py:426
+#, python-format
+msgid "Translated: %d"
+msgstr ""
+
+#: ../virtaal/controllers/storecontroller.py:427
+#, python-format
+msgid "Fuzzy: %d"
+msgstr ""
+
+#: ../virtaal/controllers/storecontroller.py:428
+#, python-format
+msgid "Untranslated: %d"
+msgstr ""
+
+#: ../virtaal/controllers/storecontroller.py:429
+#, python-format
+msgid "Total: %d"
+msgstr ""
+
+#. l10n: this refers to updating a file to a new template (POT file)
+#: ../virtaal/controllers/storecontroller.py:447
+msgid "File Updated"
+msgstr ""
+
+#: ../virtaal/controllers/unitcontroller.py:84
+msgid "Needs work"
+msgstr ""
+
+#: ../virtaal/controllers/unitcontroller.py:85
+msgid "Rejected"
+msgstr ""
+
+#: ../virtaal/controllers/unitcontroller.py:86
+msgid "Needs review"
+msgstr ""
+
+#: ../virtaal/controllers/unitcontroller.py:87
+msgid "Translated"
+msgstr ""
+
+#: ../virtaal/controllers/unitcontroller.py:88
+msgid "Reviewed"
+msgstr ""
+
+#: ../virtaal/controllers/welcomescreencontroller.py:64
+msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
+msgstr ""
 
 #: ../virtaal/modes/defaultmode.py:28
 msgid "All"
 msgstr "सबै"
 
+#: ../virtaal/modes/qualitycheckmode.py:33
+msgid "Quality Checks"
+msgstr ""
+
+#. l10n: This is the button where the user can select units by failing quality checks
+#: ../virtaal/modes/qualitycheckmode.py:130
+msgid "Select Checks"
+msgstr ""
+
+#. l10n: This refers to quality checks
+#: ../virtaal/modes/qualitycheckmode.py:133
+msgid "All Checks"
+msgstr ""
+
 #: ../virtaal/modes/quicktransmode.py:31
 msgid "Incomplete"
 msgstr "अपूर्ण"
 
-#: ../virtaal/modes/searchmode.py:37 ../virtaal/modes/searchmode.py:64
+#: ../virtaal/modes/searchmode.py:35 ../virtaal/modes/searchmode.py:68
 msgid "Search"
 msgstr "खोज्नुहोस्"
 
-#: ../virtaal/modes/searchmode.py:66
+#: ../virtaal/modes/searchmode.py:70
 msgid "_Case sensitive"
 msgstr "केस संवदेनसिल"
 
-#: ../virtaal/modes/searchmode.py:68
+#. l10n: To read about what regular expressions are, see
+#. http://en.wikipedia.org/wiki/Regular_expression
+#: ../virtaal/modes/searchmode.py:74
 msgid "_Regular expression"
 msgstr "नियमित अभिव्यक्ति"
 
-#: ../virtaal/modes/searchmode.py:72
+#. l10n: This text label shows in front of the text box where the replacement
+#. text is typed. Keep in mind that the text box will appear after this text.
+#. If this sentence construction is hard to use, consdider translating this as
+#. "Replacement"
+#: ../virtaal/modes/searchmode.py:82
 msgid "Replace with"
 msgstr "यससँग प्रतिस्थापन गर्नुहोस्"
 
-#: ../virtaal/modes/searchmode.py:74
+#. l10n: Button text
+#: ../virtaal/modes/searchmode.py:85
 msgid "Replace"
 msgstr "प्रतिस्थापन गर्नुहोस्"
 
-#: ../virtaal/modes/searchmode.py:76
+#. l10n: Check box
+#: ../virtaal/modes/searchmode.py:88
 msgid "Replace _All"
 msgstr "सबै प्रतिस्थापन गर्नुहोस्"
 
-#: ../virtaal/views/prefsview.py:65
-msgid "Enabled"
-msgstr "सक्षम गरीयो"
+#: ../virtaal/modes/workflowmode.py:34
+msgid "Workflow"
+msgstr ""
 
-#: ../virtaal/views/prefsview.py:66
-msgid "Name"
-msgstr "नाम"
+#. l10n: This is the button where the user can select units by workflow state
+#: ../virtaal/modes/workflowmode.py:112
+msgid "Select States"
+msgstr ""
 
-#: ../virtaal/plugins/autocompletor.py:321
+#. l10n: This refers to workflow states
+#: ../virtaal/modes/workflowmode.py:115
+msgid "All States"
+msgstr ""
+
+#: ../virtaal/plugins/autocompletor.py:214
+msgid "Automatically complete long words while you type"
+msgstr ""
+
+#: ../virtaal/plugins/autocompletor.py:215
 msgid "AutoCompletor"
 msgstr "स्वत:पूरा गर्ने"
 
-#: ../virtaal/plugins/autocorrector.py:246
+#: ../virtaal/plugins/autocorrector.py:303
+msgid "Automatically correct text while you type"
+msgstr ""
+
+#: ../virtaal/plugins/autocorrector.py:304
 msgid "AutoCorrector"
 msgstr "स्वत:ठिक बनाउने"
 
-#: ../virtaal/plugins/migration.py:56
-msgid "Migration assistant"
+#: ../virtaal/plugins/spellchecker.py:47
+msgid "Spell Checker"
+msgstr ""
+
+#: ../virtaal/plugins/spellchecker.py:48
+msgid "Check spelling and provide suggestions"
+msgstr ""
+
+#. l10n: This refers to spell checking
+#: ../virtaal/plugins/spellchecker.py:334
+msgid "<i>(no suggestions)</i>"
+msgstr ""
+
+#. l10n: This refers to spell checking
+#: ../virtaal/plugins/spellchecker.py:338
+msgid "Ignore All"
+msgstr ""
+
+#. l10n: This refers to spelling suggestions
+#: ../virtaal/plugins/spellchecker.py:342
+#, fuzzy
+msgid "More..."
+msgstr "बढी..."
+
+#. l10n: This refers to the spell checking dictionary
+#: ../virtaal/plugins/spellchecker.py:348
+#, python-format
+msgid "Add \"%s\" to Dictionary"
+msgstr ""
+
+#: ../virtaal/plugins/spellchecker.py:351
+msgid "Languages"
+msgstr "भाषा"
+
+#: ../virtaal/plugins/lookup/__init__.py:29
+msgid "Perform look-ups on selected text"
+msgstr ""
+
+#: ../virtaal/plugins/lookup/__init__.py:30
+msgid "External Look-up"
+msgstr ""
+
+#. l10n: The 'services' here refer to different look-up plugins,
+#. such as web look-up, etc.
+#: ../virtaal/plugins/lookup/lookupview.py:70
+msgid "Select Look-up Services"
+msgstr ""
+
+#: ../virtaal/plugins/lookup/lookupview.py:71
+msgid "Select the services that should be used to perform look-ups"
+msgstr ""
+
+#: ../virtaal/plugins/lookup/lookupview.py:131
+#, python-format
+msgid "Look-up \"%(selection)s\""
+msgstr ""
+
+#. l10n: plugin name
+#: ../virtaal/plugins/lookup/models/weblookup.py:40
+msgid "Web Look-up"
+msgstr ""
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:41
+msgid "Look-up the selected text on a web site"
+msgstr ""
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate.
+#: ../virtaal/plugins/lookup/models/weblookup.py:46
+#: ../virtaal/plugins/tm/models/google_translate.py:172
+msgid "Google"
+msgstr ""
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:52
+msgid "Wikipedia"
+msgstr ""
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:58
+#: ../virtaal/plugins/terminology/models/opentran.py:46
+#: ../virtaal/plugins/tm/models/opentran.py:37
+msgid "Open-Tran.eu"
+msgstr "खोल्नुहोस्-Tran.eu"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:177
+#: ../virtaal/views/widgets/selectview.py:75
+msgid "Name"
+msgstr "नाम"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:186
+msgid "URL"
+msgstr ""
+
+#. l10n: Whether the selected text should be surrounded by "quotes"
+#: ../virtaal/plugins/lookup/models/weblookup.py:197
+msgid "Quote Query"
+msgstr ""
+
+#: ../virtaal/plugins/migration.py:53
+msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
+msgstr ""
+
+# 94%
+# 100%
+#: ../virtaal/plugins/migration.py:54
+#, fuzzy
+msgid "Migration Assistant"
 msgstr "माइग्रेसन सहायक"
 
-#: ../virtaal/plugins/migration.py:70
+#: ../virtaal/plugins/migration.py:68
 msgid "Should Virtaal try to import settings and data from other applications?"
-msgstr "वीरतालले सेटिङ गर्न र अन्य अनुप्रयोगबाट डाटा आयात गर्न प्रयास गर्नै पर्दछ ?"
+msgstr ""
+"वीरतालले सेटिङ गर्न र अन्य अनुप्रयोगबाट डाटा आयात गर्न प्रयास गर्नै पर्दछ ?"
 
-#: ../virtaal/plugins/migration.py:71
+#: ../virtaal/plugins/migration.py:69
 msgid "Import data from other applications?"
 msgstr "अन्य अनुप्रयोगबाट डाटा आयात गर्नुहुन्छ ?"
 
-#: ../virtaal/plugins/migration.py:96
+#: ../virtaal/plugins/migration.py:94
 msgid "Migration was successfully completed"
 msgstr "माईग्रेसन सफलता पूर्वक पूरा भयो"
 
-#: ../virtaal/plugins/migration.py:97
+#: ../virtaal/plugins/migration.py:95
 msgid "The following items were migrated:"
 msgstr "निम्न वस्तुहरू माईग्रेट भए:"
 
-#: ../virtaal/plugins/migration.py:102
+#: ../virtaal/plugins/migration.py:98
 msgid "Migration completed"
 msgstr "माईग्रेसन पूराभयो"
 
-#: ../virtaal/plugins/migration.py:104
+#: ../virtaal/plugins/migration.py:100
 msgid "Virtaal was not able to migrate any settings or data"
 msgstr "वीरताले कुनै सेटिङ् वा डाटा माईग्रेट गर्न सक्षम भएन"
 
-#: ../virtaal/plugins/migration.py:105
+#: ../virtaal/plugins/migration.py:101
 msgid "Nothing migrated"
 msgstr "केहि माईग्रेट भएन"
 
-#: ../virtaal/plugins/migration.py:158
+#: ../virtaal/plugins/migration.py:159
 msgid "Poedit settings"
 msgstr "पिओसम्पादन सेटिङ्स"
 
-#: ../virtaal/plugins/migration.py:187
+#: ../virtaal/plugins/migration.py:188
 #, python-format
 msgid "Poedit's Translation Memory: %(database_language_code)s"
-msgstr ""
-"पिओ सम्पादनको अनुवाद "
-"स्मृति: %(database_language_code)s"
+msgstr "पिओ सम्पादनको अनुवाद स्मृति: %(database_language_code)s"
 
-#: ../virtaal/plugins/migration.py:212
+#: ../virtaal/plugins/migration.py:213
 #, python-format
 msgid "KBabel's Translation Memory: %(database_language_code)s"
-msgstr ""
-"के ब्याबेलको अनुवाद "
-"स्मृति: %(database_language_code)s"
+msgstr "के ब्याबेलको अनुवाद स्मृति: %(database_language_code)s"
 
-#: ../virtaal/plugins/migration.py:230
+#: ../virtaal/plugins/migration.py:231
 msgid "Lokalize settings"
 msgstr "सेटिङ् स्थानीकरण गर्नुहोस्"
 
-#: ../virtaal/plugins/migration.py:254
+#: ../virtaal/plugins/migration.py:255
 #, python-format
 msgid "Lokalize's Translation Memory: %(database_name)s"
+msgstr "स्थानीकरणको अनुवादस्मृति: %(database_name)s"
+
+#: ../virtaal/plugins/terminology/__init__.py:27
+msgid "Terminology Help"
 msgstr ""
-"स्थानीकरणको अनुवाद"
-"स्मृति: %(database_name)s"
+
+#: ../virtaal/plugins/terminology/__init__.py:28
+msgid "Terminology suggestions"
+msgstr ""
+
+#: ../virtaal/plugins/terminology/models/autoterm.py:41
+msgid "Localization Terminology"
+msgstr ""
+
+#: ../virtaal/plugins/terminology/models/autoterm.py:42
+msgid "Selected localization terminology"
+msgstr ""
+
+#: ../virtaal/plugins/terminology/models/localfile/__init__.py:42
+msgid "Local Files"
+msgstr ""
+
+#: ../virtaal/plugins/terminology/models/localfile/__init__.py:43
+msgid "Local terminology files"
+msgstr ""
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:58
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:60
+msgid "Terminology _Files..."
+msgstr ""
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:66
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:68
+msgid "Add _Term..."
+msgstr ""
+
+# 80%
+# 100%
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:137
+#, fuzzy
+msgid "File"
+msgstr "फाइल"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:147
+msgid "Extendable"
+msgstr ""
+
+# 77%
+# 100%
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:172
+#, fuzzy
+msgid "Add Files"
+msgstr "सबै फाइल"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:179
+#: ../virtaal/support/native_widgets.py:79 ../virtaal/views/mainview.py:259
+msgid "All Supported Files"
+msgstr "सबै समर्थित फाइल"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:205
+#: ../virtaal/support/native_widgets.py:156
+#: ../virtaal/support/native_widgets.py:185 ../virtaal/views/mainview.py:303
+msgid "All Files"
+msgstr "सबै फाइल"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:245
+#, python-format
+msgid "\"%s\" is not a usable file."
+msgstr "\"%s\" प्रयोगयोग्य फाइल होइन ।"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:250
+#, python-format
+msgid ""
+"Unable to load %(filename)s:\n"
+"\n"
+"%(errormsg)s"
+msgstr ""
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:251
+msgid "Error opening file"
+msgstr ""
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:388
+#, python-format
+msgid "_Source term — %(langname)s"
+msgstr ""
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:389
+#, python-format
+msgid "_Target term — %(langname)s"
+msgstr ""
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:433
+msgid "Identical entry already exists."
+msgstr ""
+
+#. l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:446
+#, python-format
+msgid "<b>%s</b>"
+msgstr ""
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:447
+#, python-format
+msgid "Existing translations: %(translations)s"
+msgstr ""
+
+#: ../virtaal/plugins/terminology/models/opentran.py:47
+msgid "Terms from Open-Tran.eu"
+msgstr ""
+
+#: ../virtaal/plugins/terminology/termview.py:166
+msgid "Select Terminology Sources"
+msgstr ""
+
+#: ../virtaal/plugins/terminology/termview.py:167
+msgid "Select the sources of terminology suggestions"
+msgstr ""
 
 #: ../virtaal/plugins/tm/__init__.py:27
 msgid "Translation Memory"
 msgstr "अनुवाद समृति"
 
-#: ../virtaal/plugins/tm/models/currentfile.py:32
-msgid "Currently open file"
-msgstr "हाल खुलेको फाइल"
+#: ../virtaal/plugins/tm/__init__.py:28
+msgid "Translation memory suggestions"
+msgstr ""
 
-#: ../virtaal/plugins/tm/models/libtranslate.py:41
-msgid "Machine Translation with libtranslate"
-msgstr "लिबअनुवाद सहितको मेसिन अनुवाद"
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/amagama.py:28
+#: ../virtaal/plugins/tm/models/amagama.py:31
+msgid "Amagama"
+msgstr ""
+
+#: ../virtaal/plugins/tm/models/amagama.py:29
+#: ../virtaal/plugins/tm/models/opentran.py:38
+msgid "Previous translations for Free and Open Source Software"
+msgstr ""
+
+#: ../virtaal/plugins/tm/models/currentfile.py:32
+msgid "Current File"
+msgstr ""
+
+#: ../virtaal/plugins/tm/models/currentfile.py:33
+msgid "Translated units from the currently open file"
+msgstr ""
+
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/currentfile.py:95
+#: ../virtaal/plugins/tm/models/currentfile.py:115
+msgid "This file"
+msgstr ""
+
+#. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
+#: ../virtaal/plugins/tm/models/google_translate.py:117
+msgid "Google Translate"
+msgstr ""
+
+#: ../virtaal/plugins/tm/models/google_translate.py:118
+msgid "Unreviewed machine translations from Google's translation service"
+msgstr ""
+
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:39
+msgid "Microsoft Translator"
+msgstr ""
+
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:40
+msgid "Unreviewed machine translations from Microsoft Translator"
+msgstr ""
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:106
+msgid "Microsoft"
+msgstr ""
+
+#. l10n: This is the name of a software library. You almost definitely don't want to translate this. The lower case 'l' is intentional.
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+#: ../virtaal/plugins/tm/models/libtranslate.py:45
+#: ../virtaal/plugins/tm/models/libtranslate.py:101
+msgid "libtranslate"
+msgstr ""
+
+#: ../virtaal/plugins/tm/models/libtranslate.py:46
+msgid "Unreviewed machine translations from various services"
+msgstr ""
 
 #: ../virtaal/plugins/tm/models/localtm.py:37
 msgid "Local Translation Memory"
 msgstr "स्थानीय अनुवाद स्मृति"
 
-#: ../virtaal/plugins/tm/models/opentran.py:32
-msgid "Open-Tran.eu"
-msgstr "खोल्नुहोस्-Tran.eu"
+#: ../virtaal/plugins/tm/models/localtm.py:38
+msgid "Previous translations you have made"
+msgstr ""
 
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/localtm.py:40
+msgid "Local TM"
+msgstr ""
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+#: ../virtaal/plugins/tm/models/moses.py:33
+#: ../virtaal/plugins/tm/models/moses.py:74
+msgid "Moses"
+msgstr ""
+
+#: ../virtaal/plugins/tm/models/moses.py:34
+msgid "Unreviewed machine translations from a Moses server"
+msgstr ""
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+#: ../virtaal/plugins/tm/models/opentran.py:77
+#: ../virtaal/plugins/tm/models/opentran.py:79
+msgid "OpenTran"
+msgstr ""
+
+# 92%
+# 100%
 #: ../virtaal/plugins/tm/models/remotetm.py:30
-msgid "Remote server"
+#, fuzzy
+msgid "Remote Server"
 msgstr "टाढाको सर्भर"
 
-#: ../virtaal/plugins/tm/models/tinytm.py:34
+#: ../virtaal/plugins/tm/models/remotetm.py:31
+msgid "A translation memory server"
+msgstr ""
+
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/remotetm.py:33
+msgid "Remote TM"
+msgstr ""
+
+#: ../virtaal/plugins/tm/models/tinytm.py:36
 msgid "TinyTM"
 msgstr "सानोTM"
 
-#: ../virtaal/plugins/tm/tmview.py:94
-msgid "Available _Suggestions"
-msgstr "उपलव्ध सुझावहरू"
+#: ../virtaal/plugins/tm/models/tinytm.py:37
+msgid "A TinyTM translation memory server"
+msgstr ""
 
-#: ../virtaal/plugins/tm/tmview.py:150
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
+#: ../virtaal/plugins/tm/models/apertium.py:43
+#: ../virtaal/plugins/tm/models/apertium.py:125
+msgid "Apertium"
+msgstr ""
+
+#: ../virtaal/plugins/tm/models/apertium.py:44
+msgid "Unreviewed machine translations from Apertium"
+msgstr ""
+
+#: ../virtaal/plugins/tm/tmview.py:111
+msgid "Translation _Suggestions"
+msgstr ""
+
+#: ../virtaal/plugins/tm/tmview.py:153
 #, python-format
 msgid "Ctrl+%(number_key)d"
 msgstr "Ctrl+%(number_key)d"
 
+#. l10n: The 'sources' here refer to different translation memory plugins,
+#. such as local tm, open-tran.eu, the current file, etc.
+#: ../virtaal/plugins/tm/tmview.py:176
+msgid "Select sources of Translation Memory"
+msgstr ""
+
+#: ../virtaal/plugins/tm/tmview.py:177
+msgid "Select the sources that should be queried for translation memory"
+msgstr ""
+
 #. l10n: match quality column label
-#: ../virtaal/plugins/tm/tmwidgets.py:63
+#: ../virtaal/plugins/tm/tmwidgets.py:64
 msgid "%"
 msgstr "%"
 
-#: ../virtaal/plugins/tm/tmwidgets.py:65
+#: ../virtaal/plugins/tm/tmwidgets.py:66
 msgid "Matches"
 msgstr "जोडा"
 
-#: ../virtaal/plugins/tm/tmwidgets.py:120
+#: ../virtaal/plugins/tm/tmwidgets.py:68
+msgid "TM Source"
+msgstr ""
+
+#. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
+#: ../virtaal/plugins/tm/tmwidgets.py:138
 #, python-format
 msgid "%(match_quality)s%%"
 msgstr "%(match_quality)s%%"
 
-#: ../virtaal/views/langview.py:66
+#. l10n: This indicates a suggestion from machine translation. It is displayed instead of the match percentage.
+#: ../virtaal/plugins/tm/tmwidgets.py:148
+msgid "?"
+msgstr ""
+
+# 92%
+# 100%
+#: ../virtaal/support/native_widgets.py:129
+#: ../virtaal/support/native_widgets.py:157 ../virtaal/views/mainview.py:252
+#, fuzzy
+msgid "Choose a Translation File"
+msgstr "अनुवाद फाइल छनौट गर्नुहोस्"
+
+#: ../virtaal/views/checksunitview.py:73
+msgid "No issues"
+msgstr ""
+
+#: ../virtaal/views/checksunitview.py:80
+msgid "Quality Check"
+msgstr ""
+
+#: ../virtaal/views/checksunitview.py:86
+#, fuzzy
+msgid "Description"
+msgstr "वर्णन"
+
+#: ../virtaal/views/checksprojview.py:40
+msgid "Project Type"
+msgstr ""
+
+#. l10n: The label indicating the checker style (GNOME/KDE/whatever)
+#: ../virtaal/views/checksprojview.py:63
+#, python-format
+msgid "Checks: %(checker_name)s"
+msgstr ""
+
+#: ../virtaal/views/langview.py:76
 msgid "_New Language Pair..."
 msgstr "_नयाँ भाषा जोडा..."
 
-#: ../virtaal/views/mainview.py:198
+#: ../virtaal/views/mainview.py:221
 msgid "Error"
 msgstr "त्रुटि"
 
-#: ../virtaal/views/mainview.py:214
-msgid "Choose a translation file"
-msgstr "अनुवाद फाइल छनौट गर्नुहोस्"
-
-#: ../virtaal/views/mainview.py:221
-msgid "All Supported Files"
-msgstr "सबै समर्थित फाइल"
-
-#: ../virtaal/views/mainview.py:247
-msgid "All Files"
-msgstr "सबै फाइल"
-
-#: ../virtaal/views/mainview.py:252
-msgid "Save"
-msgstr "बचत गर्नुहोस्"
-
-#: ../virtaal/views/mainview.py:266
+#: ../virtaal/views/mainview.py:333
 msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
@@ -468,234 +1564,405 @@ msgstr ""
 "हालको फाइल परिमार्जित छ ।\n"
 "तपाइँको परिवर्तनहरू बचत गर्न चाहानुहुन्छ ?"
 
-#: ../virtaal/views/mainview.py:269
+#: ../virtaal/views/mainview.py:336
 msgid "_Discard"
 msgstr "अस्वीकार गर्नुहोस्"
 
-#: ../virtaal/views/mainview.py:295
+#. l10n: This is the title of the main window of Virtaal
+#. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
+#. %(current_file)s is the file name of the current file
+#. most languages will not need to change this
+#: ../virtaal/views/mainview.py:377
 #, python-format
-msgid "Virtaal - %(current_file)s %(modified_marker)s"
-msgstr "वीरताल - %(current_file)s %(modified_marker)s"
+msgid "%(modified_marker)s%(current_file)s - Virtaal"
+msgstr ""
 
-#: ../virtaal/views/mainview.py:320
+#: ../virtaal/views/mainview.py:402
 msgid "Please enter the number of noun forms (plurals) to use"
 msgstr "कृपया प्रयोग गर्न संज्ञा फर्म (बहुवचन) को नम्बर प्रविष्ट गर्नुहोस्"
 
-#: ../virtaal/views/mainview.py:326
+#: ../virtaal/views/mainview.py:408
 msgid "Please enter the plural equation to use"
 msgstr "कृपया प्रयोग गर्न बहुवचन समिकरण प्रविष्ट गर्नुहोस्"
 
+# 76%
+# 100%
 #. l10n: This refers to the 'mode' that determines how Virtaal moves
 #. between units.
 #: ../virtaal/views/modeview.py:62
-msgid "_Navigation: "
+#, fuzzy
+msgid "N_avigation:"
 msgstr "नेभिगेसन: "
 
-#: ../virtaal/views/unitview.py:498
-msgid "F_uzzy"
-msgstr "खराब"
+#: ../virtaal/views/modeview.py:108 ../virtaal/views/propertiesview.py:134
+msgid "Save the file for up-to-date information"
+msgstr ""
 
-#: ../virtaal/views/widgets/aboutdialog.py:35
-msgid "Copyright © 2007-2009 Zuza Software Foundation"
+#: ../virtaal/views/propertiesview.py:32
+msgid "Untranslated:"
+msgstr ""
+
+#: ../virtaal/views/propertiesview.py:33
+msgid "Needs work:"
+msgstr ""
+
+#: ../virtaal/views/propertiesview.py:34
+msgid "Rejected:"
+msgstr ""
+
+#: ../virtaal/views/propertiesview.py:35
+msgid "Needs review:"
+msgstr ""
+
+#: ../virtaal/views/propertiesview.py:36
+msgid "Translated:"
+msgstr ""
+
+#: ../virtaal/views/propertiesview.py:37
+msgid "Reviewed:"
+msgstr ""
+
+#: ../virtaal/views/propertiesview.py:59
+msgid "(0%)"
+msgstr ""
+
+#: ../virtaal/views/propertiesview.py:61
+msgid "(100%)"
+msgstr ""
+
+#. l10n: This is the formatting for percentages in the file properties. If unsure, just copy the original.
+#: ../virtaal/views/propertiesview.py:64
+#, python-format
+msgid "(%04.1f%%)"
+msgstr ""
+
+#. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
+#: ../virtaal/views/propertiesview.py:191
+#: ../virtaal/views/propertiesview.py:192
+#, python-format
+msgid "<b>%d</b>"
+msgstr ""
+
+#: ../virtaal/views/propertiesview.py:203
+#, python-format
+msgid "%.1f KB"
+msgstr ""
+
+#: ../virtaal/views/storeview.py:163 ../virtaal/views/storeview.py:172
+msgid "Export failed"
+msgstr ""
+
+#: ../virtaal/views/storeview.py:181
+msgid "Preview failed"
+msgstr ""
+
+#: ../virtaal/views/unitview.py:614
+msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
+msgstr ""
+
+#: ../virtaal/views/unitview.py:615
+msgid "Click to move to a specific state in the workflow"
+msgstr ""
+
+#: ../virtaal/views/unitview.py:616
+msgid "Move one step forward in the workflow (Ctrl+Enter)"
+msgstr ""
+
+# 95%
+# 100%
+#: ../virtaal/views/widgets/aboutdialog.py:34
+#, fuzzy
+msgid "Copyright © 2007-2010 Zuza Software Foundation"
 msgstr "प्रतिलिपि अधिकार © २००७-२००९ जूजा सफ्टवेयर फाउण्डेसन"
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
-#: ../virtaal/views/widgets/aboutdialog.py:38
+#: ../virtaal/views/widgets/aboutdialog.py:37
 msgid "Virtaal is a program for doing translation."
 msgstr "वीरताल अनुवाद गरीरहनको लागि एउटा कार्यक्रम हो ।"
 
-#: ../virtaal/views/widgets/aboutdialog.py:39
+#: ../virtaal/views/widgets/aboutdialog.py:38
 msgid ""
 "The initial focus is on software translation (localization or l10n), but we "
 "definitely intend it to be useful as a general purpose tool for Computer "
 "Aided Translation (CAT)."
-msgstr "सफ्टवेयर अनुवाद (स्थानीयकरण वा l10n) मा फोकस गरीएको थालनी हो तर हामि यसलाई कम्पूटरलाई सहयोग पुर्याउने किसिमको अनुवाद शैली (CAT) मा सामान्य कार्य गर्ने उपकरणको रूपमा प्रयोग गर्न सक्ने बनाउने बारे दृड छौं ।"
+msgstr ""
+"सफ्टवेयर अनुवाद (स्थानीयकरण वा l10n) मा फोकस गरीएको थालनी हो तर हामि यसलाई "
+"कम्पूटरलाई सहयोग पुर्याउने किसिमको अनुवाद शैली (CAT) मा सामान्य कार्य गर्ने "
+"उपकरणको रूपमा प्रयोग गर्न सक्ने बनाउने बारे दृड छौं ।"
 
-#: ../virtaal/views/widgets/aboutdialog.py:53
+#: ../virtaal/views/widgets/aboutdialog.py:52
 msgid "Virtaal website"
 msgstr "वीरताल वेबसाइट"
 
+#: ../virtaal/views/widgets/aboutdialog.py:65
+msgid "We thank our donors:"
+msgstr ""
+
+#: ../virtaal/views/widgets/aboutdialog.py:66
+msgid "The International Development Research Centre"
+msgstr ""
+
+#: ../virtaal/views/widgets/aboutdialog.py:68
+msgid "Mozilla Corporation"
+msgstr ""
+
 #. l10n: Rather than translating, fill in the names of the translators
-#: ../virtaal/views/widgets/aboutdialog.py:62
+#: ../virtaal/views/widgets/aboutdialog.py:73
 msgid "translator-credits"
 msgstr "अनुवादक-श्रेय"
 
-#: ../virtaal/views/widgets/langadddialog.py:102
+#: ../virtaal/views/widgets/langadddialog.py:103
 msgid "Language code must be an ASCII string."
 msgstr "भाषा संकेतन ASCII कोस्ट्रीङ हुनै पर्दछ ।"
 
-#: ../virtaal/views/widgets/langadddialog.py:105
+#: ../virtaal/views/widgets/langadddialog.py:106
 msgid "Language code must be at least 2 characters long."
 msgstr "भाषा संकेतन कम्तिमा २ क्यारेक्टर लामो हुनै पर्दछ ।"
 
-#: ../virtaal/views/widgets/langselectdialog.py:73
 #: ../virtaal/views/widgets/langselectdialog.py:79
+#: ../virtaal/views/widgets/langselectdialog.py:86
 msgid "Language"
 msgstr "भाषा"
 
 #. l10n: This is the column heading for the language code
-#: ../virtaal/views/widgets/langselectdialog.py:86
-#: ../virtaal/views/widgets/langselectdialog.py:92
+#: ../virtaal/views/widgets/langselectdialog.py:94
+#: ../virtaal/views/widgets/langselectdialog.py:101
 msgid "Code"
 msgstr "संकेतन"
 
-#: ../virtaal/models/storemodel.py:121
-#, python-format
-msgid "The file \"%s\" does not exist."
+#: ../virtaal/views/widgets/selectview.py:67
+msgid "Enabled"
+msgstr "सक्षम गरीयो"
+
+#: ../virtaal/views/widgets/selectview.py:117
+msgid "Configure..."
+msgstr ""
+
+# 94%
+# 100%
+#: ../virtaal/views/widgets/welcomescreen.py:79
+#, fuzzy
+msgid "Translation memory"
+msgstr "अनुवाद समृति"
+
+#: ../virtaal/views/widgets/welcomescreen.py:80
+msgid "Terminology assistance"
+msgstr ""
+
+#: ../virtaal/views/widgets/welcomescreen.py:81
+msgid "Quality checks"
+msgstr ""
+
+#: ../virtaal/views/widgets/welcomescreen.py:82
+msgid "Machine translation"
+msgstr ""
+
+#: ../virtaal/views/widgets/welcomescreen.py:83
+msgid "Highlighting and insertion of placeables"
+msgstr ""
+
+#: ../virtaal/views/widgets/welcomescreen.py:84
+msgid "Many plugins and options for customization"
+msgstr ""
+
+# 82%
+# 100%
+#: ../virtaal/models/storemodel.py:142
+#, fuzzy
+msgid "The file does not exist."
 msgstr "फाइल \"%s\" अवस्थित छैन ।"
 
-#: ../virtaal/models/storemodel.py:123
-#, python-format
-msgid "\"%s\" is not a usable file."
-msgstr "\"%s\" प्रयोगयोग्य फाइल होइन ।"
+#: ../virtaal/models/storemodel.py:144
+msgid "Not a valid file."
+msgstr ""
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
-msgid "C++ RC File"
-msgstr "C++ RC फाइल"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:2
-msgid "Gettext Translation Template"
-msgstr "गेट टेक्स्ट अनुवाद टेम्प्लेट"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:3
-msgid "INI"
-msgstr "INI"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:4
-msgid "INI File"
-msgstr "INI फाइल"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:5
-msgid "Initialization"
-msgstr "सुरुआत"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:6
-msgid "Java Properties File"
-msgstr "जाभा गुण फाइल"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:7
-msgid "JavaScript error message file"
-msgstr "जाभास्क्रिप्ट त्रुटि संन्देश फाइल"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:8
-msgid "OpenOffice.org Translation File"
-msgstr "ओपनअफिस.अर्ग अनुवाद फाइल"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:9
-msgid "Qt Linguist Translation File"
-msgstr "Qt भाषाविज्ञ अनुवाद फाइल"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:10
-msgid "Qt Message File"
-msgstr "Qt संन्देश फाइल"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:11
-msgid "Qt Phrase Book"
-msgstr "Qt वाक्यांश पुस्तिका"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:12
-msgid "RC"
-msgstr "RC"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:13
-msgid "Resource Compiler"
-msgstr "स्रोत कम्पाइलर"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:14
-msgid "TBX"
-msgstr "TBX"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:15
-msgid "TBX Glossary"
-msgstr "TBX शव्दभण्डार"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:16
-msgid "TMX"
-msgstr "TMX"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:17
 msgid "TMX Translation Memory"
 msgstr "TMX अनुवाद स्मृति"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:18
-msgid "Tcl Translation File"
-msgstr "Tcl अनुवाद फाइल"
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:2
+msgid "TMX"
+msgstr "TMX"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:19
-msgid "TermBase eXchange"
-msgstr "टर्मवेश एक्सचेन्ज"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:20
-msgid "Trados Tag Editor"
-msgstr "ट्राडोस ट्याग सम्पादक"
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:21
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:3
 msgid "Translation Memory eXchange"
 msgstr "अनुवाद स्मृति एक्सचेन्ज"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:22
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:4
+msgid "TBX Glossary"
+msgstr "TBX शव्दभण्डार"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:5
+msgid "TBX"
+msgstr "TBX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:6
+msgid "TermBase eXchange"
+msgstr "टर्मवेश एक्सचेन्ज"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:7
 msgid "Wordfast Translation Memory"
 msgstr "वर्डफास्ट अनुवाद स्मृति"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:23
-msgid "XLIFF"
-msgstr "XLIFF"
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:8
+msgid "Qt Linguist Translation File"
+msgstr "Qt भाषाविज्ञ अनुवाद फाइल"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:24
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:9
+msgid "Qt Message File"
+msgstr "Qt संन्देश फाइल"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:10
+msgid "Qt Phrase Book"
+msgstr "Qt वाक्यांश पुस्तिका"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:11
+msgid "INI File"
+msgstr "INI फाइल"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:12
+msgid "INI"
+msgstr "INI"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:13
+msgid "Initialization"
+msgstr "सुरुआत"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:14
+msgid "Java Properties File"
+msgstr "जाभा गुण फाइल"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:15
+msgid "OpenOffice.org Translation File"
+msgstr "ओपनअफिस.अर्ग अनुवाद फाइल"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:16
 msgid "XLIFF Translation File"
 msgstr "XLIFF अनुवाद फाइल"
 
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h:25
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:17
+msgid "XLIFF"
+msgstr "XLIFF"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:18
 msgid "XML Localization Interchange File Format"
 msgstr "XML स्थानीकरण इन्टर एक्सचेन्ज फाइल ढाँचा"
 
-#: ../bin/virtaal:36
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:19
+msgid "C++ RC File"
+msgstr "C++ RC फाइल"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:20
+msgid "RC"
+msgstr "RC"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:21
+msgid "Resource Compiler"
+msgstr "स्रोत कम्पाइलर"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:22
+msgid "Tcl Translation File"
+msgstr "Tcl अनुवाद फाइल"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:23
+msgid "JavaScript error message file"
+msgstr "जाभास्क्रिप्ट त्रुटि संन्देश फाइल"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:24
+msgid "Gettext Translation Template"
+msgstr "गेट टेक्स्ट अनुवाद टेम्प्लेट"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:25
+msgid "Trados Tag Editor"
+msgstr "ट्राडोस ट्याग सम्पादक"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:26
+msgid "OS X Strings File"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:27
+msgid "UTX Dictionary"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:28
+msgid "UTX"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:29
+msgid "Universal Terminology eXchange"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py:23
+msgid "Gettext PO file"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py:24
+msgid "Gettext MO file"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py:25
+msgid "Qt .qm file"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py:26
+msgid "OmegaT Glossary"
+msgstr ""
+
+#: ../bin/virtaal:87
 #, c-format
 msgid "%prog [options] [translation_file]"
 msgstr "%prog [विकल्प] [अनुवाद फाइल]"
 
-#: ../bin/virtaal:39
-msgid "PROFILE"
-msgstr "PROFILE"
-
-#: ../bin/virtaal:41
-msgid "perform profiling, storing the result to the supplied filename."
-msgstr "परिपूर्ति गरीएको फाइल नाममा परिणाम भण्डारण गर्दा प्रोफाइल प्रस्तुत गर्नुहोस् ।"
-
-#: ../bin/virtaal:43
+#: ../bin/virtaal:90
 msgid "LOG"
 msgstr "LOG"
 
-#: ../bin/virtaal:44
+#: ../bin/virtaal:91
 msgid "turn on logging, storing the result to the supplied filename."
-msgstr "परिपूर्ति गरीएको फाइल नाममा परिणाम भण्डारण गर्दा लगिङ टर्न वन गर्नुहोस् ।"
+msgstr ""
+"परिपूर्ति गरीएको फाइल नाममा परिणाम भण्डारण गर्दा लगिङ टर्न वन गर्नुहोस् ।"
 
-#: ../bin/virtaal:46
+#: ../bin/virtaal:93
 msgid "CONFIG"
 msgstr "CONFIG"
 
-#: ../bin/virtaal:47
+#: ../bin/virtaal:94
 msgid "use the configuration file given by the supplied filename."
-msgstr "परिपूर्ति गरीएको फाइल नामद्वारा दिएको कन्फिगरेसन फाइल प्रयोग गर्नुहोस् ।"
+msgstr ""
+"परिपूर्ति गरीएको फाइल नामद्वारा दिएको कन्फिगरेसन फाइल प्रयोग गर्नुहोस् ।"
 
-#: ../bin/virtaal:50
+#: ../bin/virtaal:97
 msgid "enable debugging features"
 msgstr "विशेषताहरूको त्रुटि सच्याउँदा सक्षम पार्नुहोस्"
 
-#: ../bin/virtaal:71
+#: ../bin/virtaal:104
+msgid "PROFILE"
+msgstr "PROFILE"
+
+#: ../bin/virtaal:106
+msgid "perform profiling, storing the result to the supplied filename."
+msgstr ""
+"परिपूर्ति गरीएको फाइल नाममा परिणाम भण्डारण गर्दा प्रोफाइल प्रस्तुत गर्नुहोस् "
+"।"
+
+#: ../bin/virtaal:129
 msgid "Could not open log file '%(filename)s'"
 msgstr "लग फाइल '%(filename)s'खुल्न सकेन"
 
-#: ../bin/virtaal:79
+#: ../bin/virtaal:137
 msgid "Could not read configuration file '%(filename)s'"
 msgstr "कन्फिगरेसन फाइल '%(filename)s'पढ्न सकेन"
 
-#: ../bin/virtaal:83
+#: ../bin/virtaal:141
 msgid "invalid number of arguments"
 msgstr "तर्कहरूको अवैध नम्बर"
 
-#: ../bin/virtaal:112
+#: ../bin/virtaal:167
+msgid "Profiling support is not available"
+msgstr ""
+
+#: ../bin/virtaal:179
 msgid "Could not open profile file '%(filename)s'"
 msgstr "प्रोफाइल फाइल '%(filename)s'खुल्न सकेन"
 
@@ -771,7 +2038,78 @@ msgstr "%s विकल्पलाई %d तर्कहरूको आवश�
 msgid "%s option does not take a value"
 msgstr "%s विकल्पले मान लिंदैन"
 
-#: ../devsupport/optparse.py:1612
-msgid "Options"
-msgstr "विकल्प"
+#~ msgid "<b>Language information</b>"
+#~ msgstr "<b>भाषा सूचना</b>"
 
+#~ msgid "Missing Language"
+#~ msgstr "हराइरहेको भाषा"
+
+#~ msgid "Personal Information"
+#~ msgstr "व्तक्तिगत जानकारी"
+
+#~ msgid "_Missing Language..."
+#~ msgstr "हराइरहेको भाषा..."
+
+#~ msgid "_Update to template"
+#~ msgstr "टेम्प्लेटमा अद्याअधिक गर्नुहोस्"
+
+#, python-format
+#~ msgid ""
+#~ "Could not open file.\n"
+#~ "%(error_message)s\n"
+#~ "\n"
+#~ "Try opening a different file."
+#~ msgstr ""
+#~ "फाइल खुल्न सकेन ।\n"
+#~ "%(error_message)s\n"
+#~ "\n"
+#~ "भिन्न प्रकारको फाइल खोल्न प्रयास गर्दैछ ।"
+
+#, python-format
+#~ msgid ""
+#~ "Could not save file.\n"
+#~ "\n"
+#~ "%(error_message)s\n"
+#~ "\n"
+#~ "Try saving at a different location."
+#~ msgstr ""
+#~ "फाइल बचत हुन सकेन ।\n"
+#~ "\n"
+#~ "%(error_message)s\n"
+#~ "\n"
+#~ "भिन्न स्थानमा बचत हुन प्रयास गर्दैछ ।"
+
+#~ msgid "Migration assistant"
+#~ msgstr "माइग्रेसन सहायक"
+
+#~ msgid "Currently open file"
+#~ msgstr "हाल खुलेको फाइल"
+
+#~ msgid "Machine Translation with libtranslate"
+#~ msgstr "लिबअनुवाद सहितको मेसिन अनुवाद"
+
+#~ msgid "Remote server"
+#~ msgstr "टाढाको सर्भर"
+
+#~ msgid "Available _Suggestions"
+#~ msgstr "उपलव्ध सुझावहरू"
+
+#~ msgid "Choose a translation file"
+#~ msgstr "अनुवाद फाइल छनौट गर्नुहोस्"
+
+#, python-format
+#~ msgid "Virtaal - %(current_file)s %(modified_marker)s"
+#~ msgstr "वीरताल - %(current_file)s %(modified_marker)s"
+
+#~ msgid "_Navigation: "
+#~ msgstr "नेभिगेसन: "
+
+#~ msgid "F_uzzy"
+#~ msgstr "खराब"
+
+#~ msgid "Copyright © 2007-2009 Zuza Software Foundation"
+#~ msgstr "प्रतिलिपि अधिकार © २००७-२००९ जूजा सफ्टवेयर फाउण्डेसन"
+
+#, python-format
+#~ msgid "The file \"%s\" does not exist."
+#~ msgstr "फाइल \"%s\" अवस्थित छैन ।"

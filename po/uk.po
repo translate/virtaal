@@ -9,16 +9,17 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-14 10:12+0200\n"
+"PO-Revision-Date: 2011-05-14 10:12+0000\n"
 "Last-Translator: yurchor <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <translation@linux.org.ua>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Pootle 2.1.5\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"X-POOTLE-MTIME: 1305367969.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -348,6 +349,7 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid "<u>Manual</u>"
 msgstr "<u>Підручник</u>"
 
+# 75%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
@@ -358,6 +360,7 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
 msgid "<u>Localization Guide</u>"
 msgstr "<u>Настанови з локалізації</u>"
 
+# 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:37
@@ -424,6 +427,7 @@ msgstr ""
 "Щоб позначити переклад як незавершений, достатньо натиснути "
 "<Ctrl+Shift+Enter>."
 
+# 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr ""
@@ -728,10 +732,12 @@ msgstr ""
 msgid "Can only export Gettext PO files"
 msgstr "Можна експортувати файли лише у форматі PO Gettext"
 
+# 85%
 #: ../virtaal/controllers/maincontroller.py:272
 msgid "Export"
 msgstr "Експортувати"
 
+# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, python-format
 msgid ""
@@ -747,6 +753,7 @@ msgstr ""
 "\n"
 "Спробуйте зберегти дані до іншого файла."
 
+# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, python-format
 msgid ""
@@ -890,10 +897,12 @@ msgstr "Атрибути \"alt\""
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Елементи для атрибутів \"alt\" (використовуються у HTML)"
 
+# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeholders (Drupal)"
 msgstr "Заповнювачі (Drupal)"
 
+# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders in Drupal strings"
 msgstr "Заповнювачі у рядках Drupal"
@@ -949,6 +958,7 @@ msgstr "Потребує доопрацювання"
 msgid "Rejected"
 msgstr "Відкинуто"
 
+# 91%
 #: ../virtaal/controllers/unitcontroller.py:86
 msgid "Needs review"
 msgstr "Потребує рецензування"
@@ -961,6 +971,7 @@ msgstr "Перекладено"
 msgid "Reviewed"
 msgstr "Рецензовано"
 
+# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1078,6 +1089,7 @@ msgstr "Більше…"
 msgid "Add \"%s\" to Dictionary"
 msgstr "Додати «%s» до словника"
 
+# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 msgid "Languages"
 msgstr "Мови"
@@ -1561,26 +1573,32 @@ msgstr "Н_авігація:"
 msgid "Save the file for up-to-date information"
 msgstr "Збережіть файл, щоб дані було оновлено"
 
+# 92%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "Неперекладених:"
 
+# 90%
 #: ../virtaal/views/propertiesview.py:33
 msgid "Needs work:"
 msgstr "Потребує доопрацювання:"
 
+# 88%
 #: ../virtaal/views/propertiesview.py:34
 msgid "Rejected:"
 msgstr "Відкинутих:"
 
+# 84%
 #: ../virtaal/views/propertiesview.py:35
 msgid "Needs review:"
 msgstr "Потребує рецензування:"
 
+# 90%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "Перекладених:"
 
+# 88%
 #: ../virtaal/views/propertiesview.py:37
 msgid "Reviewed:"
 msgstr "Рецензованих:"
@@ -1599,6 +1617,7 @@ msgstr "(100%)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f%%)"
 
+# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192
@@ -1627,6 +1646,7 @@ msgstr "Перейти на один крок назад у процесі (Ctrl
 msgid "Click to move to a specific state in the workflow"
 msgstr "Натисніть, щоб перейти до певного стану у процесі"
 
+# 98%
 #: ../virtaal/views/unitview.py:616
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr "Перейти на один крок вперед у процесі (Ctrl+Enter)"
@@ -1707,6 +1727,7 @@ msgstr "Пам’ять перекладів"
 msgid "Terminology assistance"
 msgstr "Помічник з термінології"
 
+# 92%
 #: ../virtaal/views/widgets/welcomescreen.py:81
 msgid "Quality checks"
 msgstr "Перевірки якості"

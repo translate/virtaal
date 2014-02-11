@@ -1,3 +1,6 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
+# This file is distributed under the same license as the PACKAGE package.
 # Translation of Virtaal to Spanish
 # Copyright (C) 2008-2009 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
@@ -11,16 +14,17 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.7\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-13 17:27+0200\n"
-"Last-Translator: Omar Campagne <ocampagne@gmail.com>\n"
+"PO-Revision-Date: 2013-10-20 19:28+0000\n"
+"Last-Translator: Adolfo <fitoschido@ubuntu.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.0-beta5\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
 "X-Project-Style: gnome\n"
+"X-POOTLE-MTIME: 1382297307.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -1869,7 +1873,7 @@ msgstr "Archivo Gettext MO"
 
 #: ../devsupport/tmp_strings.py:25
 msgid "Qt .qm file"
-msgstr "Archivo «.qm» de Qt"
+msgstr "Archivo .qm de Qt"
 
 #: ../devsupport/tmp_strings.py:26
 msgid "OmegaT Glossary"
@@ -1887,7 +1891,7 @@ msgstr "REGISTRO"
 #: ../bin/virtaal:91
 msgid "turn on logging, storing the result to the supplied filename."
 msgstr ""
-"Activa el registro de eventos, guardando el resultado en el archivo "
+"activar el registro de eventos, guardando el resultado en el archivo "
 "indicado."
 
 #: ../bin/virtaal:93
@@ -1896,11 +1900,11 @@ msgstr "CONFIGURACIÓN"
 
 #: ../bin/virtaal:94
 msgid "use the configuration file given by the supplied filename."
-msgstr "Usa el archivo de configuración indicado por el nombre de archivo."
+msgstr "usar el archivo de configuración indicado por el nombre de archivo."
 
 #: ../bin/virtaal:97
 msgid "enable debugging features"
-msgstr "Activa funciones de depuración."
+msgstr "activar funciones de depuración"
 
 #: ../bin/virtaal:104
 msgid "PROFILE"
@@ -1909,7 +1913,7 @@ msgstr "PERFIL"
 #: ../bin/virtaal:106
 msgid "perform profiling, storing the result to the supplied filename."
 msgstr ""
-"Realiza perfilado, guardando el resultado en el nombre de archivo indicado."
+"realizar perfilado, guardando el resultado en el nombre de archivo indicado."
 
 #: ../bin/virtaal:129
 msgid "Could not open log file '%(filename)s'"
@@ -1921,7 +1925,7 @@ msgstr "No se pudo leer el archivo de configuración '%(filename)s'"
 
 #: ../bin/virtaal:141
 msgid "invalid number of arguments"
-msgstr "El número de argumentos no es válido"
+msgstr "el número de argumentos no es válido"
 
 #: ../bin/virtaal:167
 msgid "Profiling support is not available"
@@ -1929,12 +1933,12 @@ msgstr "La función de perfilado no está disponible"
 
 #: ../bin/virtaal:179
 msgid "Could not open profile file '%(filename)s'"
-msgstr "No se pudo abrir el archivo de perfil '%(filename)s'"
+msgstr "No se pudo abrir el archivo de perfil «%(filename)s»"
 
 #: ../devsupport/optparse.py:134
 #, python-format
 msgid "no such option: %s"
-msgstr "La opción no existe: %s"
+msgstr "la opción no existe: %s"
 
 #: ../devsupport/optparse.py:145
 #, python-format
@@ -1969,20 +1973,20 @@ msgstr "complejo"
 #: ../devsupport/optparse.py:423
 #, python-format
 msgid "option %s: invalid %s value: %r"
-msgstr "Opción %s: el valor %s no es válido: %r"
+msgstr "opción %s: el valor %s no es válido: %r"
 
 #: ../devsupport/optparse.py:431
 #, python-format
 msgid "option %s: invalid choice: %r (choose from %s)"
-msgstr "Opción %s: La selección no es válida: %r (elegir entre %s)"
+msgstr "opción %s: la elección no es válida: %r (elija de %s)"
 
 #: ../devsupport/optparse.py:1246
 msgid "show this help message and exit"
-msgstr "Muestra este mensaje de ayuda y cierra."
+msgstr "mostrar este mensaje de ayuda y salir"
 
 #: ../devsupport/optparse.py:1251
 msgid "show program's version number and exit"
-msgstr "Muestra el número de versión y cierra."
+msgstr "mostrar el número de versión del programa y salir"
 
 #: ../devsupport/optparse.py:1274
 msgid "%prog [options]"
@@ -1991,17 +1995,17 @@ msgstr "%prog [opciones]"
 #: ../devsupport/optparse.py:1484 ../devsupport/optparse.py:1523
 #, python-format
 msgid "%s option requires an argument"
-msgstr "La opción %s requiere un argumento"
+msgstr "la opción %s requiere un argumento"
 
 #: ../devsupport/optparse.py:1486 ../devsupport/optparse.py:1525
 #, python-format
 msgid "%s option requires %d arguments"
-msgstr "La opción %s requiere %d argumentos"
+msgstr "la opción %s requiere %d argumentos"
 
 #: ../devsupport/optparse.py:1495
 #, python-format
 msgid "%s option does not take a value"
-msgstr "La opción %s no admite argumentos"
+msgstr "la opción %s no admite valores"
 
 #~ msgid ""
 #~ "Words with internal capitalisation, such as some brand names and WikiWords"

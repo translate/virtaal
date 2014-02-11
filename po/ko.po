@@ -9,15 +9,16 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.4.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-11-09 08:01+0200\n"
-"Last-Translator: Jihui <jihui.choi@gmail.com>\n"
+"PO-Revision-Date: 2014-01-21 12:36+0000\n"
+"Last-Translator: haoya <haoya@daum.net>\n"
 "Language-Team: Korean Team\n"
+"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.1.6\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"X-POOTLE-MTIME: 1390307799.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -33,9 +34,7 @@ msgstr "번역 도구"
 msgid ""
 "A translation tool to help a human translator translate files into other "
 "languages"
-msgstr ""
-"이 프로그램은 여러가지 파일 내의 언어를 다른 언어로 번역하는데 도움을 주기 위"
-"한 프로그램입니다."
+msgstr "이 프로그램은 여러가지 파일 내의 언어를 다른 언어로 번역하는데 도움을 주기 위한 프로그램입니다."
 
 #: ../share/virtaal/virtaal.glade.h:2
 msgid "_File"
@@ -127,11 +126,9 @@ msgid ""
 "If you are translating from English to French then English would be your "
 "original or source language."
 msgstr ""
-"<b>원어</b>은 번역을 하려는 텍스트가 쓰여진 언어이며, 원본 언어라고도 합니"
-"다.\n"
+"<b>원어</b>은 번역을 하려는 텍스트가 쓰여진 언어이며, 원본 언어라고도 합니다.\n"
 "\n"
-"예를 들어 영어로 된 텍스트를 한국어로 번역한다면, 영어가 바로 원문 또는 원본 "
-"언어입니다."
+"예를 들어 영어로 된 텍스트를 한국어로 번역한다면, 영어가 바로 원문 또는 원본 언어입니다."
 
 #: ../share/virtaal/virtaal.glade.h:27
 msgid "<b>Original</b>"
@@ -147,8 +144,7 @@ msgid ""
 msgstr ""
 "<b>번역어</b>는 최종적으로 번역을 하려는 언어이며, 대상 언어라고도 합니다.\n"
 "\n"
-"예를 들어 영어로 된 텍스트를 한국어로 번역한다면, 한국어가 바로 번역어 또는 "
-"대상 언어입니다."
+"예를 들어 영어로 된 텍스트를 한국어로 번역한다면, 한국어가 바로 번역어 또는 대상 언어입니다."
 
 #: ../share/virtaal/virtaal.glade.h:31
 msgid "<b>Translation</b>"
@@ -212,8 +208,7 @@ msgstr "이메일 주소:"
 msgid ""
 "The team information stored in the file header. This can be an e-mail "
 "address or a URL, for example."
-msgstr ""
-"팀 정보는 파일 헤더에 저장됩니다. 이메일이나 URL 등을 추가할 수도 있습니다."
+msgstr "팀 정보는 파일 헤더에 저장됩니다. 이메일이나 URL 등을 추가할 수도 있습니다."
 
 #: ../share/virtaal/virtaal.glade.h:47
 msgid "Team:"
@@ -248,9 +243,7 @@ msgstr "일반"
 msgid ""
 "Placeables are special parts of the text that can be automatically "
 "highlighted and easily inserted into the translation."
-msgstr ""
-"고정 요소는 텍스트의 특수한 부분으로, 자동으로 강조되며 쉽게 삽입이 가능합니"
-"다."
+msgstr "고정 요소는 텍스트의 특수한 부분으로, 자동으로 강조되며 쉽게 삽입이 가능합니다."
 
 #: ../share/virtaal/virtaal.glade.h:56
 msgid "Placeables"
@@ -285,6 +278,7 @@ msgstr "웹에서 검색"
 msgid "Add URL"
 msgstr "URL 추가"
 
+# 75%
 #: ../share/virtaal/virtaal.glade.h:65
 msgid "URL:"
 msgstr "URL:"
@@ -294,22 +288,21 @@ msgid "Put queries in quotes"
 msgstr "따옴표안에 질의 삽입"
 
 #: ../share/virtaal/virtaal.glade.h:67
-#, fuzzy
 msgid "<b>Options</b>"
-msgstr "<b>옵션</b>"
+msgstr "<b>선택사항</b>"
 
 #. l10n: Remove the tags if underlining is unsuitable for your language. Most languages won't need to change this. Translate 'Open' normally.
 #: ../share/virtaal/virtaal.glade.h:69
 msgid "<u>Open</u>"
-msgstr ""
+msgstr "<u>열기</u>"
 
 #: ../share/virtaal/virtaal.glade.h:70
 msgid "<b><big>Recent Files</big></b>"
-msgstr ""
+msgstr "<b><big>최근 파일</big></b>"
 
 #: ../share/virtaal/virtaal.glade.h:71
 msgid "<u>Tutorial</u>"
-msgstr ""
+msgstr "<u>강좌</u>"
 
 #: ../share/virtaal/virtaal.glade.h:72
 msgid "<u>Cheat Sheet</u>"
@@ -323,31 +316,33 @@ msgstr ""
 
 #: ../share/virtaal/virtaal.glade.h:75
 msgid "<u>More...</u>"
-msgstr ""
+msgstr "더 보기..."
 
 #: ../share/virtaal/virtaal.glade.h:76
 msgid "<u>Features</u>"
-msgstr ""
+msgstr "특징"
 
 #: ../share/virtaal/virtaal.glade.h:77
 msgid "<b><big>Getting Started</big></b>"
-msgstr ""
+msgstr "시작하기"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:79
 #: ../virtaal/controllers/welcomescreencontroller.py:34
+#, fuzzy
 msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
-msgstr ""
+msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 
 #: ../share/virtaal/virtaal.glade.h:80
 msgid "<u>Manual</u>"
-msgstr ""
+msgstr "매뉴얼"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
+#, fuzzy
 msgid "http://translate.sourceforge.net/wiki/guide/start"
-msgstr ""
+msgstr "http://translate.sourceforge.net/wiki/guide/start"
 
 #: ../share/virtaal/virtaal.glade.h:83
 msgid "<u>Localization Guide</u>"
@@ -413,6 +408,7 @@ msgid ""
 "+Enter>."
 msgstr ""
 
+# 75%
 #: ../virtaal/tips.py:33
 #, fuzzy
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
@@ -425,9 +421,9 @@ msgstr "Ctrl+Up 과 Ctrl+Down 을 이용하여 페이지를 이동합니다."
 #: ../virtaal/tips.py:35
 msgid ""
 "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
-msgstr ""
-"Ctrl+PgUp 과 Ctrl+PgDown 을 이용하면 한번에 많은 페이지를 이동할 수 있습니다."
+msgstr "Ctrl+PgUp 과 Ctrl+PgDown 을 이용하면 한번에 많은 페이지를 이동할 수 있습니다."
 
+# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 #, fuzzy
 msgid "Fuzzy"
@@ -458,6 +454,7 @@ msgstr ""
 msgid "Compendium conflict"
 msgstr ""
 
+# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 #, fuzzy
 msgid "Translator credits"
@@ -520,6 +517,7 @@ msgstr ""
 msgid "Newlines"
 msgstr ""
 
+# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 #, fuzzy
 msgid "Number of plurals"
@@ -608,6 +606,7 @@ msgstr ""
 msgid "Placeholders"
 msgstr ""
 
+# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
 #, fuzzy
 msgid "XML tags"
@@ -660,9 +659,7 @@ msgstr "팀 정보를 입력하십시오."
 msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
-msgstr ""
-"현재 열려 있는 파일을 다시 열려고 합니다. 파일에서 내용을 다시 불러오겠습니"
-"까?"
+msgstr "현재 열려 있는 파일을 다시 열려고 합니다. 파일에서 내용을 다시 불러오겠습니까?"
 
 #: ../virtaal/controllers/maincontroller.py:211
 #: ../virtaal/controllers/maincontroller.py:311
@@ -721,6 +718,7 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
+# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, fuzzy, python-format
 msgid ""
@@ -736,6 +734,7 @@ msgstr ""
 "\n"
 "다른 파일로 다시 시도하십시오."
 
+# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, fuzzy, python-format
 msgid ""
@@ -818,11 +817,13 @@ msgstr "자리표시자 (Java)"
 msgid "Placeholders in Java strings"
 msgstr "Java 문자열의 자리표시자"
 
+# 78%
 #: ../virtaal/controllers/placeablescontroller.py:116
 #, fuzzy
 msgid "Placeholders (Qt)"
 msgstr "자리표시자 (Java)"
 
+# 85%
 #: ../virtaal/controllers/placeablescontroller.py:117
 #, fuzzy
 msgid "Placeholders in Qt strings"
@@ -878,11 +879,13 @@ msgstr "\"alt\" 속성"
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "HTML의 속성인 \"alt\" 을 위한 고정 요소"
 
+# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 #, fuzzy
 msgid "Placeholders (Drupal)"
 msgstr "자리표시자 (Java)"
 
+# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 #, fuzzy
 msgid "Placeholders in Drupal strings"
@@ -1068,6 +1071,7 @@ msgstr ""
 msgid "Add \"%s\" to Dictionary"
 msgstr ""
 
+# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 #, fuzzy
 msgid "Languages"
@@ -1126,6 +1130,7 @@ msgstr "Open-Tran.eu"
 msgid "Name"
 msgstr "이름"
 
+# 75%
 #: ../virtaal/plugins/lookup/models/weblookup.py:186
 #, fuzzy
 msgid "URL"
@@ -1211,6 +1216,7 @@ msgstr ""
 msgid "Selected localization terminology"
 msgstr ""
 
+# 81%
 #: ../virtaal/plugins/terminology/models/localfile/__init__.py:42
 #, fuzzy
 msgid "Local Files"
@@ -1333,6 +1339,7 @@ msgstr "자유/오픈 소스 소프트웨어의 이전 번역"
 msgid "Current File"
 msgstr ""
 
+# 84%
 #: ../virtaal/plugins/tm/models/currentfile.py:33
 #, fuzzy
 msgid "Translated units from the currently open file"
@@ -1406,6 +1413,7 @@ msgstr ""
 msgid "OpenTran"
 msgstr "OpenTran"
 
+# 92%
 #: ../virtaal/plugins/tm/models/remotetm.py:30
 #, fuzzy
 msgid "Remote Server"
@@ -1641,8 +1649,8 @@ msgid ""
 "definitely intend it to be useful as a general purpose tool for Computer "
 "Aided Translation (CAT)."
 msgstr ""
-"이 프로그램의 기본 목적은 프로그램 번역(지역화 또는 L10n)에 있지만, 최종 목적"
-"은 컴퓨터 관련 번역(CAT)에 범용으로 사용되는 프로그램이 되는 것입니다."
+"이 프로그램의 기본 목적은 프로그램 번역(지역화 또는 L10n)에 있지만, 최종 목적은 컴퓨터 관련 번역(CAT)에 범용으로 사용되는 "
+"프로그램이 되는 것입니다."
 
 #: ../virtaal/views/widgets/aboutdialog.py:52
 msgid "Virtaal website"
@@ -1652,6 +1660,7 @@ msgstr "Virtaal 웹사이트"
 msgid "We thank our donors:"
 msgstr "후원해주셔서 감사합니다."
 
+# 82%
 #: ../virtaal/views/widgets/aboutdialog.py:66
 #, fuzzy
 msgid "The International Development Research Centre"
@@ -1693,6 +1702,7 @@ msgstr "가능"
 msgid "Configure..."
 msgstr "설정..."
 
+# 94%
 #: ../virtaal/views/widgets/welcomescreen.py:79
 #, fuzzy
 msgid "Translation memory"
@@ -1718,6 +1728,7 @@ msgstr ""
 msgid "Many plugins and options for customization"
 msgstr ""
 
+# 82%
 #: ../virtaal/models/storemodel.py:142
 #, fuzzy
 msgid "The file does not exist."
@@ -2014,5 +2025,6 @@ msgstr "%s 옵션은 값을 갖지 않습니다."
 #~ msgid "International Development and Research Centre"
 #~ msgstr "International Development Research Centre"
 
+#, python-format
 #~ msgid "The file \"%s\" does not exist."
 #~ msgstr "\"%s\" 파일이 존재하지 않습니다."

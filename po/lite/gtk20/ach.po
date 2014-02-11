@@ -1,13 +1,9 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the Virtaal package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2008-07-25 18:31+0200\n"
-"PO-Revision-Date: 2011-05-18 09:12+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-02-06 17:34+0000\n"
+"PO-Revision-Date: 2011-05-18 09:12+0000\n"
 "Last-Translator: George Patrick <chanchumgpa@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ach\n"
@@ -15,13 +11,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Pootle 2.1.5\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"X-POOTLE-MTIME: 1305709974.000000\n"
 
 #. Translate to default:RTL if you want your widgets
 #. * to be RTL, otherwise translate to default:LTR.
 #. * Do *not* translate it to "predefinito:LTR", if it
 #. * it isn't default:LTR or default:RTL it will not work
-#.
 #. Configuration: Direction
 msgid "default:LTR"
 msgstr "Kit macon: LTR"
@@ -32,7 +28,6 @@ msgstr "Kit macon: LTR"
 #. * this.
 #. *
 #. * Don't include the prefix "keyboard label|" in the translation.
-#.
 #. GTK <=2.14
 #. Configuration: Ctrl modifier label
 msgid "keyboard label|Ctrl"
@@ -42,7 +37,6 @@ msgstr "Kit coc pa keyboard|Ctrl"
 #. * that use the control key. If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
 #. * this.
-#.
 #. GTK HEAD (allows future proofing)
 #. Configuration: Ctrl modifier label
 msgctxt "keyboard label"
@@ -53,20 +47,12 @@ msgstr "Ctrl"
 #. * that use the alt key. If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
 #. * this.
-#.
 #. GTK >=2.16
 #. Configuration: Alt modifier label
 msgctxt "keyboard label"
 msgid "Alt"
 msgstr "Alt"
 
-#. This is the text that should appear next to menu accelerators
-#. * that use the Return key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#. GTK >=2.16
-#. Configuration: Return key label
 msgctxt "keyboard label"
 msgid "Return"
 msgstr "Dok cen"
@@ -77,7 +63,6 @@ msgstr "Dok cen"
 #. * this.
 #. *
 #. * Don't include the prefix "keyboard label|" in the translation.
-#.
 #. GTK <=2.14
 #. Configuration: Up key label
 msgid "keyboard label|Up"
@@ -89,7 +74,6 @@ msgstr "Kit coc pa keyboard|Malu"
 #. * this.
 #. *
 #. * Don't include the prefix "keyboard label|" in the translation.
-#.
 #. GTK HEAD (allows future proofing)
 #. Configuration: Up key label
 msgctxt "keyboard label"
@@ -102,7 +86,6 @@ msgstr "Malu"
 #. * this.
 #. *
 #. * Don't include the prefix "keyboard label|" in the translation.
-#.
 #. GTK <=2.14
 #. Configuration: Down key label
 msgid "keyboard label|Down"
@@ -114,7 +97,6 @@ msgstr "Kit coc pa keyboard|Piny"
 #. * this.
 #. *
 #. * Don't include the prefix "keyboard label|" in the translation.
-#.
 #. GTK HEAD (allows future proofing)
 #. Configuration: Down key label
 msgctxt "keyboard label"
@@ -127,7 +109,6 @@ msgstr "Piny"
 #. * this.
 #. *
 #. * Don't include the prefix "keyboard label|" in the translation.
-#.
 #. GTK <=2.14
 #. Configuration: Page_Up key label
 msgid "keyboard label|Page_Up"
@@ -139,7 +120,6 @@ msgstr "Kit coc pa keybpoard|Pot karatac_Malu"
 #. * this.
 #. *
 #. * Don't include the prefix "keyboard label|" in the translation.
-#.
 #. GTK HEAD (allows future proofing)
 #. Configuration: Page_Up key label
 msgctxt "keyboard label"
@@ -152,7 +132,6 @@ msgstr "Pot karatac_Malu"
 #. * this.
 #. *
 #. * Don't include the prefix "keyboard label|" in the translation.
-#.
 #. GTK <=2.14
 #. Configuration: Page_Down key label
 msgid "keyboard label|Page_Down"
@@ -164,7 +143,6 @@ msgstr "Kit coc pa keyboard|Pot karatc_Piny"
 #. * this.
 #. *
 #. * Don't include the prefix "keyboard label|" in the translation.
-#.
 #. GTK HEAD (allows future proofing)
 #. Configuration: Page_Down key label
 msgctxt "keyboard label"
@@ -216,18 +194,16 @@ msgid "_Revert"
 msgstr "_Dwok cen"
 
 #. File->Save As->Replace confirmation
-#, c-format
 msgid "A file named \"%s\" already exists.  Do you want to replace it?"
 msgstr "Fail manyinge \"%s\" dong tye woko. Imito leyo?"
 
-#. File->Save As->Replace confirmation
-#, c-format
 msgid ""
 "The file already exists in \"%s\".  Replacing it will overwrite its contents."
-msgstr "Fail man dong tye woko iyi \"%s\".  Leyo obino yweo ngo matye iyie woko."
+msgstr ""
+"Fail man dong tye woko iyi \"%s\".  Leyo obino yweo ngo matye iyie woko."
 
-#. File->Save As->Replace confirmation
-#: ../gtk/gtkfilechooserdefault.c:8349 ../gtk/gtkprintunixdialog.c:457
+#: ../gtk/gtkfilechooserdefault.c:8349
+#: ../gtk/gtkprintunixdialog.c:457
 msgid "_Replace"
 msgstr "_Le wange"
 
@@ -245,7 +221,6 @@ msgstr "yab '%s'"
 #. * of the number to give these menu items a mnemonic.
 #. *
 #. * Don't include the prefix "recent menu label|" in the translation.
-#.
 #. GTK <=2.14
 #. File->Recent Files->Selection label
 msgid "recent menu label|_%d. %s"
@@ -255,7 +230,6 @@ msgstr "nying jami|_%d. %s"
 #. * in a recent files menu. The %d is the number of the item,
 #. * the %s is the name of the item. Please keep the _ in front
 #. * of the number to give these menu items a mnemonic.
-#.
 #. GTK HEAD (allows future proofing)
 #. File->Recent Files->Selection label
 msgctxt "recent menu label"
@@ -266,19 +240,15 @@ msgstr "_%d. %s"
 #. * The %d is the number of the item, the %s is the name of the item.
 #. *
 #. * Don't include the prefix "recent menu label|" in the translation.
-#.
 #. GTK <=2.14
 #: ../gtk/gtkrecentchoosermenu.c:788
-#, c-format
 msgid "recent menu label|%d. %s"
 msgstr "nying jami macegi|%d. %s"
 
 #. This is the format that is used for items in a recent files menu.
 #. * The %d is the number of the item, the %s is the name of the item.
-#.
 #. GTK HEAD (allows future proofing)
 #: ../gtk/gtkrecentchoosermenu.c:779
-#, c-format
 msgctxt "recent menu label"
 msgid "%d. %s"
 msgstr "%d. %s"

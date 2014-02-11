@@ -9,15 +9,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-10-02 12:49+0200\n"
+"PO-Revision-Date: 2011-10-02 12:49+0000\n"
 "Last-Translator: A Kenneth <akogwal@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ach\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ach\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Pootle 2.1.6\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"X-POOTLE-MTIME: 1317559775.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -339,6 +340,7 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid "<u>Manual</u>"
 msgstr "<u>Karatac me pwonye</u>"
 
+# 75%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
@@ -349,6 +351,7 @@ msgstr "http://translate.sourceforge.net/wiki/guide/start"
 msgid "<u>Localization Guide</u>"
 msgstr "<u>Gi konyo Gi gonyo</u>"
 
+# 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:37
@@ -410,6 +413,7 @@ msgid ""
 "+Enter>."
 msgstr "Pi nyutu gonyo lok manyen calo pe otum, dii ka <Ctrl+Shift+Enter>."
 
+# 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr "Pi nyutu gonyo lok manyen calo otyeko, dii ka <Alt+U>."
@@ -423,10 +427,12 @@ msgid ""
 "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
 msgstr "Tii ki Ctrl+PgUp nyo Ctrl+PgDown me nyiko iyi akina gony."
 
+# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
 msgstr "Niango tek"
 
+# 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
 msgid "Untranslated"
@@ -452,6 +458,7 @@ msgstr "Akote"
 msgid "Compendium conflict"
 msgstr "Rucurucu ika gwoko jami"
 
+# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
 msgstr "Banya pa lagony"
@@ -513,6 +520,7 @@ msgstr "Myero lok nyig lok"
 msgid "Newlines"
 msgstr "Rek manyen"
 
+# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
 msgstr "Namba ne mapol:"
@@ -600,6 +608,7 @@ msgstr "Kit ma tiyo"
 msgid "Placeholders"
 msgstr "Labongo nying"
 
+# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
 msgid "XML tags"
 msgstr "XML tags"
@@ -656,7 +665,7 @@ msgstr "Ityeko yero fail matye ma oyabe me yabo. ce imito nwoyo keto fail?"
 #: ../virtaal/controllers/maincontroller.py:211
 #: ../virtaal/controllers/maincontroller.py:311
 #: ../virtaal/controllers/maincontroller.py:338
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Could not open file.\n"
 "\n"
@@ -677,7 +686,7 @@ msgid "Save"
 msgstr "Gwok"
 
 #: ../virtaal/controllers/maincontroller.py:247
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Could not save file.\n"
 "\n"
@@ -692,7 +701,7 @@ msgstr ""
 "tem me gwoko ne ikom kabedo mapat."
 
 #: ../virtaal/controllers/maincontroller.py:252
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Could not save file.\n"
 "\n"
@@ -710,6 +719,7 @@ msgstr "Twero cwalo woko Gettext PO fail"
 msgid "Export"
 msgstr "Cwalo woko"
 
+# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, python-format
 msgid ""
@@ -725,6 +735,7 @@ msgstr ""
 "\n"
 "Tem me keto i kabedo mapat."
 
+# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, python-format
 msgid ""
@@ -866,10 +877,12 @@ msgstr "''alt'' Kite"
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Ma kete pi ''alt'' kite (calo kinwongo iyi HTML)"
 
+# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeholders (Drupal)"
 msgstr "Kagwoko (Drupal)"
 
+# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders in Drupal strings"
 msgstr "Kagwoko iyi coc me Drupal"
@@ -937,6 +950,7 @@ msgstr "Kiloko woko"
 msgid "Reviewed"
 msgstr "Gineno odoco"
 
+# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1050,10 +1064,11 @@ msgstr "Mukene..."
 
 #. l10n: This refers to the spell checking dictionary
 #: ../virtaal/plugins/spellchecker.py:348
-#, fuzzy, python-format
+#, python-format
 msgid "Add \"%s\" to Dictionary"
 msgstr "Med \"%\" i buk me gonyo leb"
 
+# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 msgid "Languages"
 msgstr "Leb mapol"
@@ -1122,8 +1137,7 @@ msgstr "Wac Lapeny"
 
 #: ../virtaal/plugins/migration.py:53
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
-msgstr ""
-"Kob kite me yubu aa i KBabel, Lokalize kede/onyo Poedit naka i Virtaal."
+msgstr "Kob kite me yubu aa i KBabel, Lokalize kede/onyo Poedit naka i Virtaal."
 
 #: ../virtaal/plugins/migration.py:54
 msgid "Migration Assistant"
@@ -1486,7 +1500,7 @@ msgstr "Kwon Purujek"
 
 #. l10n: The label indicating the checker style (GNOME/KDE/whatever)
 #: ../virtaal/views/checksprojview.py:63
-#, fuzzy, python-format
+#, python-format
 msgid "Checks: %(checker_name)s"
 msgstr "Roto: %(roto_nying)s"
 
@@ -1517,7 +1531,7 @@ msgstr "_Ywee"
 #: ../virtaal/views/mainview.py:377
 #, python-format
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
-msgstr "%(modified_marker)s%(current_file)s - Virtaal"
+msgstr "%(modified_marker)s%(fcurrent_file)s - Virtaal"
 
 #: ../virtaal/views/mainview.py:402
 msgid "Please enter the number of noun forms (plurals) to use"
@@ -1537,6 +1551,7 @@ msgstr "B_eyo iye:"
 msgid "Save the file for up-to-date information"
 msgstr "Gwok fail pi ngec-ni-oo koni"
 
+# 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "Pe kigonyo:"
@@ -1553,6 +1568,7 @@ msgstr "Kikwero woko:"
 msgid "Needs review:"
 msgstr "Mito anena odoco:"
 
+# 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "Kigonyo: "
@@ -1571,10 +1587,11 @@ msgstr "(100%)"
 
 #. l10n: This is the formatting for percentages in the file properties. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:64
-#, fuzzy, python-format
+#, python-format
 msgid "(%04.1f%%)"
 msgstr "(%04.Ka%%)"
 
+# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192
@@ -1583,7 +1600,7 @@ msgid "<b>%d</b>"
 msgstr "<b>%d</b>"
 
 #: ../virtaal/views/propertiesview.py:203
-#, fuzzy, python-format
+#, python-format
 msgid "%.1f KB"
 msgstr "%.Ka KB"
 
@@ -1607,6 +1624,7 @@ msgstr "Dii ki idir i kit ka ma iyero i mol pa tic"
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr "Dir yadi acel anyim i ka mol pa tic (Ctrl+Enter)"
 
+# 95%
 #: ../virtaal/views/widgets/aboutdialog.py:34
 msgid "Copyright © 2007-2010 Zuza Software Foundation"
 msgstr "Cik mamako © 2007-2009 Zuza Software Foundation"

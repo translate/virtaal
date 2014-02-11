@@ -2,20 +2,23 @@
 # Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # Jindřich Šesták <khagaroth@gmail.com>, 2011, 2012.
+#: ../virtaal/support/native_widgets.py:50
+#: ../virtaal/support/native_widgets.py:51
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.7.0-beta5\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2012-04-01 13:53+0200\n"
-"Last-Translator: Jindřich Šesták <khagaroth@gmail.com>\n"
+"PO-Revision-Date: 2012-11-29 18:51+0000\n"
+"Last-Translator: Jindřich <khagaroth@gmail.com>\n"
 "Language-Team: NONE\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Virtaal 0.7.1\n"
+"X-Generator: Pootle 2.5.0-beta1\n"
+"X-POOTLE-MTIME: 1354215074.0\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -169,17 +172,16 @@ msgstr "Kód ISO:"
 
 #: ../share/virtaal/virtaal.glade.h:36
 msgid "Plural expression:"
-msgstr "Podmínky použití forem množného čísla:"
+msgstr "Podmínky použití forem plurálu:"
 
 #: ../share/virtaal/virtaal.glade.h:37
 msgid "Number of plurals:"
-msgstr "Počet forem množného čísla:"
+msgstr "Počet forem plurálu:"
 
 #: ../share/virtaal/virtaal.glade.h:38
 msgid ""
 "Depending on the translation task, the plural information might be optional."
-msgstr ""
-"U některých typů překladů není informace o formách množného čísla nezbytná."
+msgstr "U některých typů překladů není informace o formách plurálu nezbytná."
 
 #: ../share/virtaal/virtaal.glade.h:39
 msgid "<b>Language Information</b>"
@@ -465,7 +467,7 @@ msgstr "Slučovací konflikty"
 
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
-msgstr "Seznamy překladatelů"
+msgstr "Seznam překladatelů"
 
 #: ../virtaal/controllers/checkscontroller.py:37
 msgid "Double quotes"
@@ -477,7 +479,7 @@ msgstr "Opakované mezery"
 
 #: ../virtaal/controllers/checkscontroller.py:39
 msgid "Repeated word"
-msgstr "Opakovaná slova"
+msgstr "Opakované slovo"
 
 #: ../virtaal/controllers/checkscontroller.py:40
 #: ../virtaal/controllers/placeablescontroller.py:96
@@ -514,7 +516,7 @@ msgstr "Staré komentáře KDE"
 
 #: ../virtaal/controllers/checkscontroller.py:48
 msgid "Long"
-msgstr "Podezřele dlouhý"
+msgstr "Podezřele dlouhé"
 
 #: ../virtaal/controllers/checkscontroller.py:49
 msgid "Must translate words"
@@ -526,7 +528,7 @@ msgstr "Počet řádek"
 
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
-msgstr "Počet forem množného čísla"
+msgstr "Počet forem plurálu"
 
 #: ../virtaal/controllers/checkscontroller.py:52
 msgid "Don't translate words"
@@ -548,7 +550,7 @@ msgstr "printf()"
 
 #: ../virtaal/controllers/checkscontroller.py:56
 msgid "Punctuation spacing"
-msgstr "Mezery po interpunkci"
+msgstr "Mezery kolem interpunkce"
 
 #: ../virtaal/controllers/checkscontroller.py:57
 msgid "Pure punctuation"
@@ -560,7 +562,7 @@ msgstr "Počet vět"
 
 #: ../virtaal/controllers/checkscontroller.py:59
 msgid "Short"
-msgstr "Podezřele krátký"
+msgstr "Podezřele krátké"
 
 #: ../virtaal/controllers/checkscontroller.py:60
 msgid "Simple capitalization"
@@ -568,7 +570,7 @@ msgstr "Velikost písmen"
 
 #: ../virtaal/controllers/checkscontroller.py:61
 msgid "Simple plural(s)"
-msgstr "Množná čísla"
+msgstr "Plurály"
 
 #: ../virtaal/controllers/checkscontroller.py:62
 msgid "Single quotes"
@@ -613,7 +615,7 @@ msgstr "Zástupné znaky"
 
 #: ../virtaal/controllers/checkscontroller.py:72
 msgid "XML tags"
-msgstr "XML tagy"
+msgstr "XML značky"
 
 #: ../virtaal/controllers/checkscontroller.py:111
 msgid "Default"
@@ -1536,12 +1538,11 @@ msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 
 #: ../virtaal/views/mainview.py:402
 msgid "Please enter the number of noun forms (plurals) to use"
-msgstr "Zadejte počet forem množného čísla"
+msgstr "Zadejte počet forem plurálu"
 
 #: ../virtaal/views/mainview.py:408
 msgid "Please enter the plural equation to use"
-msgstr ""
-"Zadejte výraz určující pravidla použití jednotlivých forem množného čísla"
+msgstr "Zadejte výraz určující pravidla použití jednotlivých forem plurálu"
 
 #. l10n: This refers to the 'mode' that determines how Virtaal moves
 #. between units.
@@ -1858,7 +1859,7 @@ msgstr "Glosář OmegaT"
 #: ../bin/virtaal:87
 #, c-format
 msgid "%prog [options] [translation_file]"
-msgstr "%prog [možnosti] [překladový soubor]"
+msgstr "%prog [možnosti] [překladový_soubor]"
 
 #: ../bin/virtaal:90
 msgid "LOG"

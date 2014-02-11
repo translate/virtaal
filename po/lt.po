@@ -9,17 +9,18 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.5\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-06-02 17:47+0300\n"
-"Last-Translator: Rimas Kudelis <rq@akl.lt>\n"
+"PO-Revision-Date: 2013-06-28 15:53+0000\n"
+"Last-Translator: Rimas <rq@akl.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%"
-"100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Virtaal 0.7.0-rc2\n"
-"X-Project-Style: gnome\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"(n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"X-Project-Style: default\n"
+"X-POOTLE-MTIME: 1372434786.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -344,6 +345,8 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid "<u>Manual</u>"
 msgstr "<u>Instrukcija</u>"
 
+# 75%
+# 100%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
@@ -354,6 +357,8 @@ msgstr "http://translate.sourceforge.net/wiki/guide/start"
 msgid "<u>Localization Guide</u>"
 msgstr "<u>Lokalizavimo vadovas</u>"
 
+# 81%
+# 100%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:37
@@ -422,6 +427,7 @@ msgstr ""
 "Norėdami aktyvųjį vertimą pažymėti kaip neužbaigtą, tiesiog spustelėkite "
 "<Vald+Lyg2+Įvesti>."
 
+# 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr ""
@@ -441,10 +447,14 @@ msgstr ""
 "Peršokti į kitą frazių sąrašo puslapį galite klavišų <Vald+Psl.Aukštyn> bei "
 "<Vald+Psl.Žemyn> pagalba."
 
+# 83%
+# 100%
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
 msgstr "Tikslintina"
 
+# 75%
+# 100%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
 msgid "Untranslated"
@@ -467,10 +477,11 @@ msgid "Brackets"
 msgstr "Skliaustai"
 
 #: ../virtaal/controllers/checkscontroller.py:35
-#, fuzzy
 msgid "Compendium conflict"
-msgstr "Terminyno neatitikimas"
+msgstr "Rinkinio neatitikimas"
 
+# 88%
+# 100%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
 msgstr "Rimas Kudelis <rq@akl.lt>"
@@ -532,6 +543,8 @@ msgstr "Privalomi versti žodžiai"
 msgid "Newlines"
 msgstr "Eilučių skirtukai"
 
+# 94%
+# 100%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
 msgstr "Daugiskaitinių formų skaičius"
@@ -619,6 +632,8 @@ msgstr "Leistini simboliai"
 msgid "Placeholders"
 msgstr "Vietaženkliai"
 
+# 87%
+# 100%
 #: ../virtaal/controllers/checkscontroller.py:72
 msgid "XML tags"
 msgstr "XML gairės"
@@ -729,6 +744,7 @@ msgstr "Eksportuoti galima tik „Gettext“ PO failus"
 msgid "Export"
 msgstr "Eksportas"
 
+# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, python-format
 msgid ""
@@ -744,6 +760,8 @@ msgstr ""
 "\n"
 "Bandykite jį įrašyti kitu vardu ar į kitą aplanką."
 
+# 85%
+# 100%
 #: ../virtaal/controllers/maincontroller.py:285
 #, python-format
 msgid ""
@@ -886,10 +904,14 @@ msgstr "„alt“ artibutai"
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "„alt“ atributai (HTML kalboje)"
 
+# 76%
+# 100%
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeholders (Drupal)"
 msgstr "Vietaženkliai (Drupal)"
 
+# 83%
+# 100%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders in Drupal strings"
 msgstr "„Drupal“ eilutėse naudojami vietaženkliai"
@@ -949,6 +971,8 @@ msgstr "Atmesta"
 msgid "Needs review"
 msgstr "Reikia peržiūrėti"
 
+# 78%
+# 90%
 #: ../virtaal/controllers/unitcontroller.py:87
 msgid "Translated"
 msgstr "Išversta"
@@ -957,6 +981,8 @@ msgstr "Išversta"
 msgid "Reviewed"
 msgstr "Peržiūrėta"
 
+# 89%
+# 100%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1074,6 +1100,8 @@ msgstr "Daugiau…"
 msgid "Add \"%s\" to Dictionary"
 msgstr "Įtraukti žodį „%s“ į žodyną"
 
+# 88%
+# 100%
 #: ../virtaal/plugins/spellchecker.py:351
 msgid "Languages"
 msgstr "Kalbos"
@@ -1560,6 +1588,8 @@ msgstr "N_avigacija:"
 msgid "Save the file for up-to-date information"
 msgstr "Įrašykite failą, kad informacija būtų atnaujinta"
 
+# 81%
+# 100%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "Neišversta:"
@@ -1576,6 +1606,8 @@ msgstr "Atmesta:"
 msgid "Needs review:"
 msgstr "Reikia peržiūrėti:"
 
+# 78%
+# 100%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "Išversta:"
@@ -1598,6 +1630,8 @@ msgstr "(100%)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f%%)"
 
+# 88%
+# 100%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192

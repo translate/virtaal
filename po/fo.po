@@ -9,15 +9,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-09-25 10:17+0200\n"
+"PO-Revision-Date: 2012-02-01 06:09+0000\n"
 "Last-Translator: Gunleif <fo.umseting@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: fo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fo\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.1.6\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"X-POOTLE-MTIME: 1328076585.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -81,7 +82,7 @@ msgstr "_Fullskíggja"
 
 #: ../share/virtaal/virtaal.glade.h:14
 msgid "_Quality Checks"
-msgstr "_Góðskukanningar"
+msgstr "_Góðskueftirlit"
 
 #: ../share/virtaal/virtaal.glade.h:15
 msgid "_Navigation"
@@ -145,7 +146,8 @@ msgid ""
 msgstr ""
 "<b>Týðing</b> er málið ið tú týðir til, eisini nevnt týðingarmál.\n"
 "\n"
-"Um tú týðir úr enskum til franskt, so er franskt tín týðing ella týðingarmál."
+"Um tú týðir úr enskum til franskt, so er franskt tín týðing ella "
+"týðingarmál."
 
 #: ../share/virtaal/virtaal.glade.h:31
 msgid "<b>Translation</b>"
@@ -178,8 +180,7 @@ msgstr "Tal av fleirtalssniðum:"
 #: ../share/virtaal/virtaal.glade.h:38
 msgid ""
 "Depending on the translation task, the plural information might be optional."
-msgstr ""
-"Treytað av týðingararbeiðinum, kann fleirtalsupplýsingar vera valtøkir."
+msgstr "Treytað av týðingararbeiðinum, kann fleirtalsupplýsingar vera valtøkir."
 
 #: ../share/virtaal/virtaal.glade.h:39
 msgid "<b>Language Information</b>"
@@ -211,8 +212,8 @@ msgid ""
 "The team information stored in the file header. This can be an e-mail "
 "address or a URL, for example."
 msgstr ""
-"Liðupplýsingarnir ið goymdir verða í fíluhøvdinum. Tað kann t.d. vera t-"
-"postadressa ell eitt URL."
+"Liðupplýsingarnir ið goymdir verða í fíluhøvdinum. Tað kann t.d. vera "
+"t-postadressa ell eitt URL."
 
 #: ../share/virtaal/virtaal.glade.h:47
 msgid "Team:"
@@ -411,12 +412,12 @@ msgid ""
 "To mark the current translation as incomplete, simply press <Ctrl+Shift"
 "+Enter>."
 msgstr ""
-"Til at merkja núverandi týðing sum verandi ófullfíggjaða, trýst tá <Ctrl"
-"+Shift+Enter>."
+"Til at merkja núverandi týðing sum verandi ófullfíggjaða, trýst tá "
+"<Ctrl+Shift+Enter>."
 
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
-msgstr "Fyri at merkja núverandi týðing sum liðna, trýst tá <Alt+Enter>."
+msgstr "Fyri at merkja núverandi týðing sum liðna, trýst tá <Ctrl+Enter>."
 
 #: ../virtaal/tips.py:34
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
@@ -542,11 +543,11 @@ msgstr "printf()"
 
 #: ../virtaal/controllers/checkscontroller.py:56
 msgid "Punctuation spacing"
-msgstr ""
+msgstr "Greinamerkisglopp"
 
 #: ../virtaal/controllers/checkscontroller.py:57
 msgid "Pure punctuation"
-msgstr ""
+msgstr "Einfalt greinarmerki"
 
 #: ../virtaal/controllers/checkscontroller.py:58
 msgid "Number of sentences"
@@ -578,7 +579,7 @@ msgstr "Byrja við stórum stavi"
 
 #: ../virtaal/controllers/checkscontroller.py:65
 msgid "Starting punctuation"
-msgstr ""
+msgstr "Byrjandi greinarmerki"
 
 #: ../virtaal/controllers/checkscontroller.py:66
 msgid "Starting whitespace"
@@ -605,10 +606,10 @@ msgstr "Gildir stavir"
 msgid "Placeholders"
 msgstr ""
 
+# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
-#, fuzzy
 msgid "XML tags"
-msgstr "XML-frámerki"
+msgstr "XML frámerki"
 
 #: ../virtaal/controllers/checkscontroller.py:111
 msgid "Default"
@@ -856,7 +857,7 @@ msgstr "XML-frámerki"
 
 #: ../virtaal/controllers/placeablescontroller.py:139
 msgid "XML tags, such as <b> and </i>"
-msgstr "XML-frámerki, so sum <b> og <\\i>"
+msgstr "XML-frámerki, so sum <b> og </i>"
 
 #: ../virtaal/controllers/placeablescontroller.py:153
 msgid "Spaces"
@@ -1082,7 +1083,7 @@ msgstr "Vel upslagstænastur"
 
 #: ../virtaal/plugins/lookup/lookupview.py:71
 msgid "Select the services that should be used to perform look-ups"
-msgstr "vel tær tænastur sum skulla nýtast til at sláa upp við"
+msgstr "Vel tær tænastur sum skulla nýtast til at sláa upp við"
 
 #: ../virtaal/plugins/lookup/lookupview.py:131
 #, python-format
@@ -1259,7 +1260,6 @@ msgid ""
 msgstr ""
 "Ikki før fyri at løða %(filename)s:\n"
 "\n"
-"\n"
 "%(errormsg)s"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:251
@@ -1320,7 +1320,7 @@ msgstr "Amagama"
 #: ../virtaal/plugins/tm/models/amagama.py:29
 #: ../virtaal/plugins/tm/models/opentran.py:38
 msgid "Previous translations for Free and Open Source Software"
-msgstr "Fyrru týðingar fyri  frælsan og opnan ritbúnað"
+msgstr "Fyrru týðingar fyri frælsan og opnan ritbúnað"
 
 #: ../virtaal/plugins/tm/models/currentfile.py:32
 msgid "Current File"
@@ -1530,7 +1530,7 @@ msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 
 #: ../virtaal/views/mainview.py:402
 msgid "Please enter the number of noun forms (plurals) to use"
-msgstr "Vinarliga skriva inn tali á fleirtalssniðum at nýta"
+msgstr "Vinarliga skriva inn tali á navnaorðs-fleirtalssniðum at nýta"
 
 #: ../virtaal/views/mainview.py:408
 msgid "Please enter the plural equation to use"
@@ -1931,7 +1931,7 @@ msgstr "langt heiltal"
 
 #: ../devsupport/optparse.py:414
 msgid "floating-point"
-msgstr ""
+msgstr "lopkommatal"
 
 #: ../devsupport/optparse.py:415
 #, fuzzy

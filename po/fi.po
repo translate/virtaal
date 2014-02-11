@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.4.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-19 15:48+0200\n"
+"PO-Revision-Date: 2012-07-06 05:56+0000\n"
 "Last-Translator: Jussi <jta_l10n@saunalahti.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "Language: fi\n"
@@ -17,7 +17,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.1.5\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"X-POOTLE-MTIME: 1341554184.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -210,7 +211,7 @@ msgid ""
 "address or a URL, for example."
 msgstr ""
 "Tiedoston otsakkeeseen tallennettava ryhmätieto. Tämä voi olla esimerkiksi "
-"sähköpostiosoite tai URL."
+"sähköpostiosoite tai verkko-osoite."
 
 #: ../share/virtaal/virtaal.glade.h:47
 msgid "Team:"
@@ -280,11 +281,11 @@ msgstr "Verkkohaut"
 
 #: ../share/virtaal/virtaal.glade.h:64
 msgid "Add URL"
-msgstr "Lisää URL"
+msgstr "Lisää verkko-osoite"
 
 #: ../share/virtaal/virtaal.glade.h:65
 msgid "URL:"
-msgstr "URL:"
+msgstr "Verkko-osoite:"
 
 #: ../share/virtaal/virtaal.glade.h:66
 msgid "Put queries in quotes"
@@ -339,6 +340,7 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid "<u>Manual</u>"
 msgstr "<u>Käyttöohje</u>"
 
+# 75%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
@@ -349,6 +351,7 @@ msgstr "http://translate.sourceforge.net/wiki/guide/start"
 msgid "<u>Localization Guide</u>"
 msgstr "<u>Kotoistusohje</u>"
 
+# 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:37
@@ -412,6 +415,7 @@ msgstr ""
 "Nykyisen käännöksen voi merkitä keskeneräiseksi painamalla "
 "<Ctlr+Shift+Enter>."
 
+# 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr "Nykyisen käännöksen voi merkitä valmiiksi painamalla <Ctrl+Enter>."
@@ -429,10 +433,12 @@ msgstr ""
 "Näppäinyhdistelmillä Ctrl+PgUp tai Ctrl+PgDown voit liikkua isommilla "
 "askelilla käännösten välillä."
 
+# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
 msgstr "Sumea"
 
+# 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
 msgid "Untranslated"
@@ -458,6 +464,7 @@ msgstr "Sulkeet"
 msgid "Compendium conflict"
 msgstr "PO Compendium -ristiriita"
 
+# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
 msgstr "Kääntäjien kunniataulu"
@@ -519,6 +526,7 @@ msgstr "Sana joka on käännettävä"
 msgid "Newlines"
 msgstr "Rivinvaihto"
 
+# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
 msgstr "Monikoiden määrä"
@@ -547,7 +555,7 @@ msgstr "Välimerkin jälkeinen välilyönti"
 
 #: ../virtaal/controllers/checkscontroller.py:57
 msgid "Pure punctuation"
-msgstr ""
+msgstr "Pelkkä välimerkitys"
 
 #: ../virtaal/controllers/checkscontroller.py:58
 msgid "Number of sentences"
@@ -563,7 +571,7 @@ msgstr "Poikkeava kirjainkoko"
 
 #: ../virtaal/controllers/checkscontroller.py:61
 msgid "Simple plural(s)"
-msgstr ""
+msgstr "Poikkeava monikko"
 
 #: ../virtaal/controllers/checkscontroller.py:62
 msgid "Single quotes"
@@ -596,7 +604,7 @@ msgstr "Ei muutettu"
 #: ../virtaal/controllers/checkscontroller.py:69
 #: ../virtaal/controllers/placeablescontroller.py:129
 msgid "URLs"
-msgstr "URLit"
+msgstr "Verkko-osoitteet"
 
 #: ../virtaal/controllers/checkscontroller.py:70
 msgid "Valid characters"
@@ -606,6 +614,7 @@ msgstr "Merkistövirhe"
 msgid "Placeholders"
 msgstr "Paikkamerkit"
 
+# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
 msgid "XML tags"
 msgstr "XML-tagit"
@@ -718,6 +727,7 @@ msgstr "Vain Gettext PO-tiedostojen vienti on mahdollista"
 msgid "Export"
 msgstr "Tiedoston vienti"
 
+# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, python-format
 msgid ""
@@ -733,6 +743,7 @@ msgstr ""
 "\n"
 "Yritä tallentaa johonkin toiseen paikkaan."
 
+# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, python-format
 msgid ""
@@ -842,7 +853,7 @@ msgstr "Symbolit ja harvemmin käytetyt välimerkit"
 
 #: ../virtaal/controllers/placeablescontroller.py:130
 msgid "URLs, hostnames and IP addresses"
-msgstr "URLit, konenimet ja IP-osoitteet"
+msgstr "Verkko-osoitteet, konenimet ja IP-osoitteet"
 
 #. l10n: see http://en.wikipedia.org/wiki/Character_entity_reference
 #: ../virtaal/controllers/placeablescontroller.py:134
@@ -878,10 +889,12 @@ msgstr "\"alt\"-attribuutit"
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Sijoite \"alt\"-attribuuteille (joita esim. HTML sisältää)"
 
+# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeholders (Drupal)"
 msgstr "Paikkamerkit (Drupal)"
 
+# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders in Drupal strings"
 msgstr "Drupal-merkkijonojen paikkamerkit"
@@ -949,6 +962,7 @@ msgstr "Käännetty"
 msgid "Reviewed"
 msgstr "Tarkastettu"
 
+# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1066,6 +1080,7 @@ msgstr "Lisää..."
 msgid "Add \"%s\" to Dictionary"
 msgstr "Lisää \"%s\" sanakirjaan"
 
+# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 msgid "Languages"
 msgstr "Kielet"
@@ -1125,7 +1140,7 @@ msgstr "Nimi"
 
 #: ../virtaal/plugins/lookup/models/weblookup.py:186
 msgid "URL"
-msgstr "URL"
+msgstr "Verkko-osoite"
 
 #. l10n: Whether the selected text should be surrounded by "quotes"
 #: ../virtaal/plugins/lookup/models/weblookup.py:197
@@ -1551,6 +1566,7 @@ msgstr "S_elailu:"
 msgid "Save the file for up-to-date information"
 msgstr "Tallenna tiedosto nähdäksesi ajantasaiset tiedot"
 
+# 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "Kääntämättömiä:"
@@ -1567,6 +1583,7 @@ msgstr "Hylättyjä:"
 msgid "Needs review:"
 msgstr "Tarkastettavia:"
 
+# 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "Käännettyjä:"
@@ -1589,6 +1606,7 @@ msgstr "(100 %)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f%%)"
 
+# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192

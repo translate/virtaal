@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-17 16:36+0200\n"
+"PO-Revision-Date: 2011-05-17 16:36+0000\n"
 "Last-Translator: SolomonG <solohavi@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: am\n"
@@ -17,7 +17,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.1.5\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"X-POOTLE-MTIME: 1305650160.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -406,6 +407,7 @@ msgid ""
 "+Enter>."
 msgstr "አሁን ያለውን ትርጉም እንደ ያልተጠናቀቀ ምልክት ለማድረግ በቀላሉ<Ctrl+Shift+Enter>ተጫን"
 
+# 75%
 #: ../virtaal/tips.py:33
 #, fuzzy
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
@@ -420,11 +422,13 @@ msgid ""
 "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
 msgstr "በትርጉሞች መካከል በገጽ ደረጃ ለመንቀሳቀስ Ctrl+PgUp ወይም Ctrl+PgDown ተጠቀም "
 
+# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 #, fuzzy
 msgid "Fuzzy"
 msgstr "ግልጽ ያልሆነ"
 
+# 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
 #, fuzzy
@@ -451,6 +455,7 @@ msgstr "ማእዘነ ቅንፍ"
 msgid "Compendium conflict"
 msgstr ""
 
+# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 #, fuzzy
 msgid "Translator credits"
@@ -513,6 +518,7 @@ msgstr ""
 msgid "Newlines"
 msgstr ""
 
+# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 #, fuzzy
 msgid "Number of plurals"
@@ -601,6 +607,7 @@ msgstr ""
 msgid "Placeholders"
 msgstr ""
 
+# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
 #, fuzzy
 msgid "XML tags"
@@ -712,6 +719,7 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
+# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, fuzzy, python-format
 msgid ""
@@ -727,6 +735,7 @@ msgstr ""
 "\n"
 "የተለየ ፋይል ለመክፈት ሞክር."
 
+# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, fuzzy, python-format
 msgid ""
@@ -867,11 +876,13 @@ msgstr "\"alt\" አይነታዎች "
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "ለ  \"alt\" መተኪያ የሚሆን አይነታዎች ( HTML ውስጥ እንደሚገኘው)"
 
+# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 #, fuzzy
 msgid "Placeholders (Drupal)"
 msgstr "Placeholders (Java)"
 
+# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 #, fuzzy
 msgid "Placeholders in Drupal strings"
@@ -1057,6 +1068,7 @@ msgstr ""
 msgid "Add \"%s\" to Dictionary"
 msgstr ""
 
+# 88%
 #: ../virtaal/plugins/spellchecker.py:351
 #, fuzzy
 msgid "Languages"
@@ -1543,6 +1555,7 @@ msgstr "ዳሰሳ"
 msgid "Save the file for up-to-date information"
 msgstr ""
 
+# 81%
 #: ../virtaal/views/propertiesview.py:32
 #, fuzzy
 msgid "Untranslated:"
@@ -1560,6 +1573,7 @@ msgstr ""
 msgid "Needs review:"
 msgstr ""
 
+# 78%
 #: ../virtaal/views/propertiesview.py:36
 #, fuzzy
 msgid "Translated:"
@@ -1583,6 +1597,7 @@ msgstr ""
 msgid "(%04.1f%%)"
 msgstr ""
 
+# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192
@@ -1615,6 +1630,7 @@ msgstr ""
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr ""
 
+# 95%
 #: ../virtaal/views/widgets/aboutdialog.py:34
 #, fuzzy
 msgid "Copyright © 2007-2010 Zuza Software Foundation"

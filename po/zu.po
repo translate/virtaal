@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.2\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2011-04-18 15:51+0200\n"
-"PO-Revision-Date: 2011-05-30 20:34+0200\n"
+"PO-Revision-Date: 2011-05-30 20:34+0000\n"
 "Last-Translator: abel <sedric@translate.org.za>\n"
 "Language-Team: translate-discuss-af@lists.sourceforge.net\n"
 "Language: zu\n"
@@ -18,7 +18,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.1.5\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"X-POOTLE-MTIME: 1306787690.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
@@ -347,6 +348,7 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid "<u>Manual</u>"
 msgstr "<u>Okwenziwa ngesandla</u>"
 
+# 75%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.glade.h:82
 #: ../virtaal/controllers/welcomescreencontroller.py:35
@@ -424,6 +426,7 @@ msgstr ""
 "Ukuze uphawule ukuhunyushwa kwamanje njengokungaqediwe, vele uchofize "
 "i-<Ctrl+Shift+Enter>"
 
+# 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr ""
@@ -441,10 +444,12 @@ msgstr ""
 "Sebenzisa i-Ctrl+PgUp noma i-Ctrl+PgDown ukuthatha izinyathelo ezinkulu "
 "phakathi kokuhunyushwa."
 
+# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
 msgstr "Okungaqediwe"
 
+# 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
 msgid "Untranslated"
@@ -470,6 +475,7 @@ msgstr "Abakaki"
 msgid "Compendium conflict"
 msgstr "Ingxabano ye-compendium"
 
+# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
 msgstr "Friedel Wolff, Sedric Motha"
@@ -531,6 +537,7 @@ msgstr "Kumele kuhunyushe amagama"
 msgid "Newlines"
 msgstr "Amalayini amasha"
 
+# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
 msgstr "Inombolo yobuningi"
@@ -618,6 +625,7 @@ msgstr "Izinhlamvu ezivumelekile"
 msgid "Placeholders"
 msgstr "Izibambi ndawo"
 
+# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
 msgid "XML tags"
 msgstr "Amamaki we-XML"
@@ -730,6 +738,7 @@ msgstr "Ingahambisa kuphela amafayela we-Gettext PO"
 msgid "Export"
 msgstr "Hambisa"
 
+# 77%
 #: ../virtaal/controllers/maincontroller.py:280
 #, python-format
 msgid ""
@@ -745,6 +754,7 @@ msgstr ""
 "\n"
 "Zama ukugcina ifayela endaweni ehlukile."
 
+# 85%
 #: ../virtaal/controllers/maincontroller.py:285
 #, python-format
 msgid ""
@@ -889,10 +899,12 @@ msgstr "Izimo ze-\"alt\""
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Okubekekayo kwe-\"alt\" (njengoba kutholwe ku-HTML)"
 
+# 76%
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeholders (Drupal)"
 msgstr "Izibambi ndawo (i-Dupral)"
 
+# 83%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders in Drupal strings"
 msgstr "Izibambi ndawo kuchungechunge lwe-Dupral"
@@ -960,6 +972,7 @@ msgstr "Okuhunyushiwe"
 msgid "Reviewed"
 msgstr "Okubuyekeziwe"
 
+# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:64
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1566,6 +1579,7 @@ msgstr "Uku_zula:"
 msgid "Save the file for up-to-date information"
 msgstr "Gcinela ifayela imininingwane yakamuva nje"
 
+# 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "Okungahunyushiwe:"
@@ -1582,6 +1596,7 @@ msgstr "Okunqatshiwe:"
 msgid "Needs review:"
 msgstr "Kudinga ukubuyekezwa:"
 
+# 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "Okuhunyushiwe:"
@@ -1604,6 +1619,7 @@ msgstr "(100%)"
 msgid "(%04.1f%%)"
 msgstr "(%04.1f%%)"
 
+# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192
@@ -1636,6 +1652,7 @@ msgstr "Chofoze ukuze uye kwisifunda esithize kumsebenzi"
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr "Iya phambili emsebenzini (Ctrl+Enter)"
 
+# 95%
 #: ../virtaal/views/widgets/aboutdialog.py:34
 msgid "Copyright © 2007-2010 Zuza Software Foundation"
 msgstr "Ilungelo lomqambi © 2007-2010 Zuza Software Foundation"

@@ -1,14 +1,9 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
-# This file is distributed under the same license as the Virtaal package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2010-03-15 23:30-0400\n"
-"PO-Revision-Date: 2011-05-12 15:12+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-02-06 17:32+0000\n"
+"PO-Revision-Date: 2011-05-12 15:12+0000\n"
 "Last-Translator: abel <sedric@translate.org.za>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: zu\n"
@@ -16,7 +11,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.1.5\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"X-POOTLE-MTIME: 1305213129.000000\n"
 
 msgid "%.1f GB"
 msgstr "I-%.1f GB"

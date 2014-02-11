@@ -2,13 +2,13 @@
 # Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # George Patrick <chanchumgpa@gmail.com>, 2010.
+#: ../virtaal/support/native_widgets.py:49
 #: ../virtaal/support/native_widgets.py:50
-#: ../virtaal/support/native_widgets.py:51
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2011-04-18 15:51+0200\n"
+"POT-Creation-Date: 2014-02-11 21:11+0000\n"
 "PO-Revision-Date: 2011-10-02 12:49+0000\n"
 "Last-Translator: A Kenneth <akogwal@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,8 +21,8 @@ msgstr ""
 "X-POOTLE-MTIME: 1317559775.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
-#: ../share/virtaal/virtaal.glade.h:1 ../virtaal/support/native_widgets.py:101
-#: ../virtaal/views/mainview.py:746
+#: ../share/virtaal/virtaal.ui.h:18 ../virtaal/support/native_widgets.py:103
+#: ../virtaal/views/mainview.py:842
 msgid "Virtaal"
 msgstr "Virtaal"
 
@@ -36,89 +36,85 @@ msgid ""
 "languages"
 msgstr "Gi tic me gony pi konyo dano ma lagony me gonyo fail ki ileb mukene"
 
-#: ../share/virtaal/virtaal.glade.h:2
-msgid "_File"
-msgstr "_Fail"
+#: ../share/appdata/virtaal.appdata.xml.in.h:1
+msgid ""
+"Virtaal is a program for doing translation. It aims for a delightful "
+"combination of simplicity and power. It integrates with selected online "
+"resources to make translation fun, while helping to improve translation "
+"quality."
+msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:3
-msgid "_Update to Template"
-msgstr "_Mi ngec dwoko I pora"
+#: ../share/appdata/virtaal.appdata.xml.in.h:2
+#, fuzzy
+#| msgid ""
+#| "The initial focus is on software translation (localization or l10n), but "
+#| "we definitely intend it to be useful as a general purpose tool for "
+#| "Computer Aided Translation (CAT)."
+msgid ""
+"The initial focus is on software translation (localization or l10n), but is "
+"definitely meant to be useful as a general purpose tool for Computer Aided "
+"Translation (CAT)."
+msgstr ""
+"Neno me acaki tye ikom puruguram me gonyo (gonyo nyo l10n), ento wamito ni "
+"myero oti calo gitic pi yore lung pi Gony Ki kony pa Kompuita (CAD)."
 
-#: ../share/virtaal/virtaal.glade.h:4
-msgid "_Export"
-msgstr "_Cwal woko"
+#: ../share/appdata/virtaal.appdata.xml.in.h:3
+msgid "Some features:"
+msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:5
-msgid "_Recent Files"
-msgstr "_Fail macokcoki"
+#: ../share/appdata/virtaal.appdata.xml.in.h:4
+#, fuzzy
+#| msgid "Existing translations: %(translations)s"
+msgid "Translation reuse (translation memory)"
+msgstr "Gony matye: %(translations)s"
 
-#: ../share/virtaal/virtaal.glade.h:6
-msgid "_Edit"
-msgstr "_Yub"
+#: ../share/appdata/virtaal.appdata.xml.in.h:5
+#: ../virtaal/views/widgets/welcomescreen.py:80
+msgid "Terminology assistance"
+msgstr "Kony ikom leb matek"
 
-#. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
-#: ../share/virtaal/virtaal.glade.h:8
-msgid "Transfer From Source"
-msgstr "Kob ki ka ma oaa iye"
+#: ../share/appdata/virtaal.appdata.xml.in.h:6
+msgid "AutoCompletor and AutoCorrector"
+msgstr ""
 
-#. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
-#: ../share/virtaal/virtaal.glade.h:10
-msgid "P_revious Placeable"
-msgstr "M_akete mukato angec"
+#: ../share/appdata/virtaal.appdata.xml.in.h:7
+msgid "Quality checks with customization for many languages"
+msgstr ""
 
-#: ../share/virtaal/virtaal.glade.h:11
-msgid "_Next Placeable"
-msgstr "_En ma kete malubo kore"
+#: ../share/virtaal/virtaal.ui.h:1
+msgid "Add Missing Language"
+msgstr "Med Leb ma orem"
 
-#: ../share/virtaal/virtaal.glade.h:12
-msgid "_View"
-msgstr "_Nen"
+#: ../share/virtaal/virtaal.ui.h:2
+msgid "Language name:"
+msgstr "Nying Leb:"
 
-#: ../share/virtaal/virtaal.glade.h:13
-msgid "_Full Screen"
-msgstr "_Manen Lung"
+#: ../share/virtaal/virtaal.ui.h:3
+msgid "ISO code:"
+msgstr "Nyig coc ISO:"
 
-#: ../share/virtaal/virtaal.glade.h:14
-msgid "_Quality Checks"
-msgstr "_Neno mamwonya odoco"
+#: ../share/virtaal/virtaal.ui.h:4
+msgid "Plural expression:"
+msgstr "Nyuto kit mapol:"
 
-#: ../share/virtaal/virtaal.glade.h:15
-msgid "_Navigation"
-msgstr "_Beo iwie"
+#: ../share/virtaal/virtaal.ui.h:5
+msgid "Number of plurals:"
+msgstr "Namba ne mapol:"
 
-#: ../share/virtaal/virtaal.glade.h:16
-msgid "P_age Up"
-msgstr "Y_ab Malo"
+#: ../share/virtaal/virtaal.ui.h:6
+msgid ""
+"Depending on the translation task, the plural information might be optional."
+msgstr "Ma lube ki dul tic me gonyo, ngec mapol romo bedo ma kiyero ayera."
 
-#: ../share/virtaal/virtaal.glade.h:17
-msgid "_Page Down"
-msgstr "_Yab Piny"
+#: ../share/virtaal/virtaal.ui.h:7
+msgid "<b>Language Information</b>"
+msgstr "<b>Ngec ikom leb</b>"
 
-#: ../share/virtaal/virtaal.glade.h:18
-msgid "_Help"
-msgstr "_Kony"
-
-#: ../share/virtaal/virtaal.glade.h:19
-msgid "_Online Help"
-msgstr "_Kony me intanet"
-
-#: ../share/virtaal/virtaal.glade.h:20
-msgid "_Tutorial"
-msgstr "_Pwonyo"
-
-#: ../share/virtaal/virtaal.glade.h:21
-msgid "_Localization Guide"
-msgstr "_Latel me dwogo bot lutedero"
-
-#: ../share/virtaal/virtaal.glade.h:22
-msgid "Report a _Bug"
-msgstr "Mi ngec _Bal"
-
-#: ../share/virtaal/virtaal.glade.h:23
+#: ../share/virtaal/virtaal.ui.h:8
 msgid "New Language Pair"
 msgstr "Leb aryo mukene manyen"
 
-#: ../share/virtaal/virtaal.glade.h:24
+#: ../share/virtaal/virtaal.ui.h:9
 msgid ""
 "The <b>Original</b> is the language from which you are translating, also "
 "called the source language.\n"
@@ -132,11 +128,11 @@ msgstr ""
 "Ka itye ka gonyo ni aa ki i Leb munu naka i leb jo me France eka Leb munu "
 "myero be ka ma dwong ma leb oaa iye."
 
-#: ../share/virtaal/virtaal.glade.h:27
+#: ../share/virtaal/virtaal.ui.h:12
 msgid "<b>Original</b>"
 msgstr "<b>Kit ma onongo tye kwede</b>"
 
-#: ../share/virtaal/virtaal.glade.h:28
+#: ../share/virtaal/virtaal.ui.h:13
 msgid ""
 "The <b>Translation</b> is the language into which you are translating, also "
 "called the target language.\n"
@@ -149,65 +145,114 @@ msgstr ""
 "Ka itye ka gonyo ni aa ki Leb munu naka ileb jo me France eka Leb jo me "
 "France twero bedo gonya megi onyo leb me taget megi."
 
-#: ../share/virtaal/virtaal.glade.h:31
+#: ../share/virtaal/virtaal.ui.h:16
 msgid "<b>Translation</b>"
 msgstr "<b>Gony</b>"
 
-#: ../share/virtaal/virtaal.glade.h:32
+#: ../share/virtaal/virtaal.ui.h:17
 msgid "_Add Missing Language..."
 msgstr "_Med Leb ma orem..."
 
-#: ../share/virtaal/virtaal.glade.h:33
-msgid "Add Missing Language"
-msgstr "Med Leb ma orem"
+#: ../share/virtaal/virtaal.ui.h:19
+msgid "_File"
+msgstr "_Fail"
 
-#: ../share/virtaal/virtaal.glade.h:34
-msgid "Language name:"
-msgstr "Nying Leb:"
+#: ../share/virtaal/virtaal.ui.h:20
+msgid "_Update to Template"
+msgstr "_Mi ngec dwoko I pora"
 
-#: ../share/virtaal/virtaal.glade.h:35
-msgid "ISO code:"
-msgstr "Nyig coc ISO:"
+#: ../share/virtaal/virtaal.ui.h:21
+msgid "_Export"
+msgstr "_Cwal woko"
 
-#: ../share/virtaal/virtaal.glade.h:36
-msgid "Plural expression:"
-msgstr "Nyuto kit mapol:"
+#: ../share/virtaal/virtaal.ui.h:22
+msgid "_Recent Files"
+msgstr "_Fail macokcoki"
 
-#: ../share/virtaal/virtaal.glade.h:37
-msgid "Number of plurals:"
-msgstr "Namba ne mapol:"
+#: ../share/virtaal/virtaal.ui.h:23
+msgid "_Edit"
+msgstr "_Yub"
 
-#: ../share/virtaal/virtaal.glade.h:38
-msgid ""
-"Depending on the translation task, the plural information might be optional."
-msgstr "Ma lube ki dul tic me gonyo, ngec mapol romo bedo ma kiyero ayera."
+#. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
+#: ../share/virtaal/virtaal.ui.h:25
+msgid "Transfer From Source"
+msgstr "Kob ki ka ma oaa iye"
 
-#: ../share/virtaal/virtaal.glade.h:39
-msgid "<b>Language Information</b>"
-msgstr "<b>Ngec ikom leb</b>"
+#. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
+#: ../share/virtaal/virtaal.ui.h:27
+msgid "P_revious Placeable"
+msgstr "M_akete mukato angec"
 
-#: ../share/virtaal/virtaal.glade.h:40
+#: ../share/virtaal/virtaal.ui.h:28
+msgid "_Next Placeable"
+msgstr "_En ma kete malubo kore"
+
+#: ../share/virtaal/virtaal.ui.h:29
+msgid "_View"
+msgstr "_Nen"
+
+#: ../share/virtaal/virtaal.ui.h:30
+msgid "_Full Screen"
+msgstr "_Manen Lung"
+
+#: ../share/virtaal/virtaal.ui.h:31
+msgid "_Quality Checks"
+msgstr "_Neno mamwonya odoco"
+
+#: ../share/virtaal/virtaal.ui.h:32
+msgid "_Navigation"
+msgstr "_Beo iwie"
+
+#: ../share/virtaal/virtaal.ui.h:33
+msgid "P_age Up"
+msgstr "Y_ab Malo"
+
+#: ../share/virtaal/virtaal.ui.h:34
+msgid "_Page Down"
+msgstr "_Yab Piny"
+
+#: ../share/virtaal/virtaal.ui.h:35
+msgid "_Help"
+msgstr "_Kony"
+
+#: ../share/virtaal/virtaal.ui.h:36
+msgid "_Online Help"
+msgstr "_Kony me intanet"
+
+#: ../share/virtaal/virtaal.ui.h:37
+msgid "_Tutorial"
+msgstr "_Pwonyo"
+
+#: ../share/virtaal/virtaal.ui.h:38
+msgid "_Localization Guide"
+msgstr "_Latel me dwogo bot lutedero"
+
+#: ../share/virtaal/virtaal.ui.h:39
+msgid "Report a _Bug"
+msgstr "Mi ngec _Bal"
+
+#: ../share/virtaal/virtaal.ui.h:40
 msgid "Virtaal Preferences"
 msgstr "Kite me Virtaal"
 
-#: ../share/virtaal/virtaal.glade.h:41
+#: ../share/virtaal/virtaal.ui.h:41
 msgid "The name stored in the file header"
 msgstr "Nying ma kigwoko iyi lawic fail"
 
 #. l10n: This label is for the name of the translator
-#: ../share/virtaal/virtaal.glade.h:43
+#: ../share/virtaal/virtaal.ui.h:43
 msgid "Name:"
 msgstr "Nying:"
 
-#: ../share/virtaal/virtaal.glade.h:44
+#: ../share/virtaal/virtaal.ui.h:44
 msgid "The e-mail address stored in the file header"
 msgstr "e-mail address kigwoko i lawic fail"
 
-#: ../share/virtaal/virtaal.glade.h:45
+#: ../share/virtaal/virtaal.ui.h:45
 msgid "E-mail address:"
 msgstr "E-mail address:"
 
-#: ../share/virtaal/virtaal.glade.h:46
+#: ../share/virtaal/virtaal.ui.h:46
 msgid ""
 "The team information stored in the file header. This can be an e-mail "
 "address or a URL, for example."
@@ -215,180 +260,180 @@ msgstr ""
 "Ngec ikom lutic magigwoko i wi fail. Man twero bedo e-mail address onyo URL, "
 "me lapor."
 
-#: ../share/virtaal/virtaal.glade.h:47
+#: ../share/virtaal/virtaal.ui.h:47
 msgid "Team:"
 msgstr "Lutic:"
 
-#: ../share/virtaal/virtaal.glade.h:48
+#: ../share/virtaal/virtaal.ui.h:48
 msgid "<b>Translator Information</b>"
 msgstr "<b>Ngec ikom lagony</b>"
 
-#: ../share/virtaal/virtaal.glade.h:49
+#: ../share/virtaal/virtaal.ui.h:49
 msgid "Source text:"
 msgstr "Coc ma ika ma oaa iye:"
 
-#: ../share/virtaal/virtaal.glade.h:50
+#: ../share/virtaal/virtaal.ui.h:50
 msgid "Target text:"
 msgstr "Nyig coc me taget:"
 
-#: ../share/virtaal/virtaal.glade.h:51
+#: ../share/virtaal/virtaal.ui.h:51
 msgid "Use _Default Fonts"
 msgstr "Tii ki Kit coc _Macon"
 
-#: ../share/virtaal/virtaal.glade.h:52
+#: ../share/virtaal/virtaal.ui.h:52
 msgid "<b>Fonts</b>"
 msgstr "<b>Kit coc</b>"
 
 #. l10n: This tab label refers to the general preferences
-#: ../share/virtaal/virtaal.glade.h:54
+#: ../share/virtaal/virtaal.ui.h:54
 msgid "General"
 msgstr "Makwako lung"
 
-#: ../share/virtaal/virtaal.glade.h:55
+#: ../share/virtaal/virtaal.ui.h:55
 msgid ""
 "Placeables are special parts of the text that can be automatically "
 "highlighted and easily inserted into the translation."
 msgstr "Makete obedo pat me nyig coc ma linge kene dok ma kete mayot iyi gony."
 
-#: ../share/virtaal/virtaal.glade.h:56
+#: ../share/virtaal/virtaal.ui.h:56
 msgid "Placeables"
 msgstr "Makete"
 
-#: ../share/virtaal/virtaal.glade.h:57
+#: ../share/virtaal/virtaal.ui.h:57
 msgid "Plug-ins"
 msgstr "Rwak- iyie"
 
-#: ../share/virtaal/virtaal.glade.h:58
-msgid "Terminology Files"
-msgstr "Fail me Leb madongo"
+#: ../share/virtaal/virtaal.ui.h:58
+msgid "Properties"
+msgstr "Jami"
 
-#: ../share/virtaal/virtaal.glade.h:59
+#: ../share/virtaal/virtaal.ui.h:59
+msgid "<b>Words</b> (total):"
+msgstr "<b>Nyig lok</b>(lung):"
+
+#: ../share/virtaal/virtaal.ui.h:60
+msgid "<b>Strings</b> (total):"
+msgstr "<b>Tol</b> (lung):"
+
+#: ../share/virtaal/virtaal.ui.h:61
+msgid "File type:"
+msgstr "Kwone fail:"
+
+#: ../share/virtaal/virtaal.ui.h:62
+msgid "File size:"
+msgstr "Kit Fail:"
+
+#: ../share/virtaal/virtaal.ui.h:63
+msgid "Location:"
+msgstr "Kabedo:"
+
+#: ../share/virtaal/virtaal.ui.h:64
 msgid "Add Term"
 msgstr "Med Leb madit"
 
 #. l10n: This label refers to comments about a new term that is added
-#: ../share/virtaal/virtaal.glade.h:61
+#: ../share/virtaal/virtaal.ui.h:66
 msgid "C_omments"
 msgstr "K_op ikome"
 
-#: ../share/virtaal/virtaal.glade.h:62
+#: ../share/virtaal/virtaal.ui.h:67
 msgid "Terminology _file:"
 msgstr "_Fail me Leb madit"
 
-#: ../share/virtaal/virtaal.glade.h:63
-msgid "Web Look-ups"
-msgstr "Kayenyo ma-iyi Web"
+#: ../share/virtaal/virtaal.ui.h:68
+msgid "Terminology Files"
+msgstr "Fail me Leb madongo"
 
-#: ../share/virtaal/virtaal.glade.h:64
+#: ../share/virtaal/virtaal.ui.h:69
 msgid "Add URL"
 msgstr "Med URL"
 
-#: ../share/virtaal/virtaal.glade.h:65
+#: ../share/virtaal/virtaal.ui.h:70
 msgid "URL:"
 msgstr "URL:"
 
-#: ../share/virtaal/virtaal.glade.h:66
+#: ../share/virtaal/virtaal.ui.h:71
 msgid "Put queries in quotes"
 msgstr "Ket lapeny iyi gur"
 
-#: ../share/virtaal/virtaal.glade.h:67
+#: ../share/virtaal/virtaal.ui.h:72
 msgid "<b>Options</b>"
 msgstr "<b>Kite mapol</b>"
 
+#: ../share/virtaal/virtaal.ui.h:73
+msgid "Web Look-ups"
+msgstr "Kayenyo ma-iyi Web"
+
 #. l10n: Remove the tags if underlining is unsuitable for your language. Most languages won't need to change this. Translate 'Open' normally.
-#: ../share/virtaal/virtaal.glade.h:69
+#: ../share/virtaal/virtaal.ui.h:75
 msgid "<u>Open</u>"
 msgstr "<u>Yab</u>"
 
-#: ../share/virtaal/virtaal.glade.h:70
+#: ../share/virtaal/virtaal.ui.h:76
 msgid "<b><big>Recent Files</big></b>"
 msgstr "<b><big>Fail mukato macok</big></b>"
 
-#: ../share/virtaal/virtaal.glade.h:71
+#: ../share/virtaal/virtaal.ui.h:77
 msgid "<u>Tutorial</u>"
 msgstr "<u>Gi pwonye</u>"
 
-#: ../share/virtaal/virtaal.glade.h:72
+#: ../share/virtaal/virtaal.ui.h:78
 msgid "<u>Cheat Sheet</u>"
 msgstr "<u>Karatac me Kwoo</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.glade.h:74
+#: ../share/virtaal/virtaal.ui.h:80
 #: ../virtaal/controllers/welcomescreencontroller.py:38
 msgid "http://translate.sourceforge.net/wiki/virtaal/features"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
 
-#: ../share/virtaal/virtaal.glade.h:75
+#: ../share/virtaal/virtaal.ui.h:81
 msgid "<u>More...</u>"
 msgstr "<u>Mukene...</u>"
 
-#: ../share/virtaal/virtaal.glade.h:76
+#: ../share/virtaal/virtaal.ui.h:82
 msgid "<u>Features</u>"
 msgstr "<u>Kite mere</u>"
 
-#: ../share/virtaal/virtaal.glade.h:77
+#: ../share/virtaal/virtaal.ui.h:83
 msgid "<b><big>Getting Started</big></b>"
 msgstr "<b><big>Cako</big></b>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.glade.h:79
+#: ../share/virtaal/virtaal.ui.h:85
 #: ../virtaal/controllers/welcomescreencontroller.py:34
 msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 
-#: ../share/virtaal/virtaal.glade.h:80
+#: ../share/virtaal/virtaal.ui.h:86
 msgid "<u>Manual</u>"
 msgstr "<u>Karatac me pwonye</u>"
 
 # 75%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.glade.h:82
+#: ../share/virtaal/virtaal.ui.h:88
 #: ../virtaal/controllers/welcomescreencontroller.py:35
 msgid "http://translate.sourceforge.net/wiki/guide/start"
 msgstr "http://translate.sourceforge.net/wiki/guide/start"
 
-#: ../share/virtaal/virtaal.glade.h:83
+#: ../share/virtaal/virtaal.ui.h:89
 msgid "<u>Localization Guide</u>"
 msgstr "<u>Gi konyo Gi gonyo</u>"
 
 # 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.glade.h:85
+#: ../share/virtaal/virtaal.ui.h:91
 #: ../virtaal/controllers/welcomescreencontroller.py:37
 msgid "http://translate.sourceforge.net/wiki/virtaal/index#contact"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/index#contact"
 
-#: ../share/virtaal/virtaal.glade.h:86
+#: ../share/virtaal/virtaal.ui.h:92
 msgid "<u>Feedback</u>"
 msgstr "<u>Dwok lok</u>"
 
-#: ../share/virtaal/virtaal.glade.h:87
+#: ../share/virtaal/virtaal.ui.h:93
 msgid "<b><big>Support</big></b>"
 msgstr "<b><big>Kony</big></b>"
-
-#: ../share/virtaal/virtaal.glade.h:88
-msgid "Properties"
-msgstr "Jami"
-
-#: ../share/virtaal/virtaal.glade.h:89
-msgid "<b>Words</b> (total):"
-msgstr "<b>Nyig lok</b>(lung):"
-
-#: ../share/virtaal/virtaal.glade.h:90
-msgid "<b>Strings</b> (total):"
-msgstr "<b>Tol</b> (lung):"
-
-#: ../share/virtaal/virtaal.glade.h:91
-msgid "File type:"
-msgstr "Kwone fail:"
-
-#: ../share/virtaal/virtaal.glade.h:92
-msgid "File size:"
-msgstr "Kit Fail:"
-
-#: ../share/virtaal/virtaal.glade.h:93
-msgid "Location:"
-msgstr "Kabedo:"
 
 #: ../virtaal/tips.py:27
 msgid ""
@@ -476,7 +521,7 @@ msgid "Repeated word"
 msgstr "Nyig lok ma ki nwo"
 
 #: ../virtaal/controllers/checkscontroller.py:40
-#: ../virtaal/controllers/placeablescontroller.py:96
+#: ../virtaal/controllers/placeablescontroller.py:97
 msgid "E-mail"
 msgstr "E-mail"
 
@@ -530,7 +575,7 @@ msgid "Don't translate words"
 msgstr "Pe igony nyig lok"
 
 #: ../virtaal/controllers/checkscontroller.py:53
-#: ../virtaal/controllers/placeablescontroller.py:120
+#: ../virtaal/controllers/placeablescontroller.py:121
 msgid "Numbers"
 msgstr "Namba"
 
@@ -596,7 +641,7 @@ msgid "Unchanged"
 msgstr "Pe ki loko"
 
 #: ../virtaal/controllers/checkscontroller.py:69
-#: ../virtaal/controllers/placeablescontroller.py:129
+#: ../virtaal/controllers/placeablescontroller.py:130
 msgid "URLs"
 msgstr "URLs"
 
@@ -655,16 +700,16 @@ msgstr "Dong ba ket e-mail address megi"
 msgid "Please enter your team's information"
 msgstr "Dong ba ket ngec me tim megi"
 
-#: ../virtaal/controllers/maincontroller.py:200
-#: ../virtaal/controllers/maincontroller.py:327
+#: ../virtaal/controllers/maincontroller.py:203
+#: ../virtaal/controllers/maincontroller.py:341
 msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
 msgstr "Ityeko yero fail matye ma oyabe me yabo. ce imito nwoyo keto fail?"
 
-#: ../virtaal/controllers/maincontroller.py:211
-#: ../virtaal/controllers/maincontroller.py:311
-#: ../virtaal/controllers/maincontroller.py:338
+#: ../virtaal/controllers/maincontroller.py:215
+#: ../virtaal/controllers/maincontroller.py:325
+#: ../virtaal/controllers/maincontroller.py:353
 #, python-format
 msgid ""
 "Could not open file.\n"
@@ -679,13 +724,14 @@ msgstr ""
 "\n"
 "Tem me yabo fail mapat."
 
-#: ../virtaal/controllers/maincontroller.py:227
-#: ../virtaal/support/native_widgets.py:142
-#: ../virtaal/support/native_widgets.py:188 ../virtaal/views/mainview.py:314
+#: ../virtaal/controllers/maincontroller.py:238
+#: ../virtaal/support/native_widgets.py:145
+#: ../virtaal/support/native_widgets.py:204
+#: ../virtaal/support/native_widgets.py:255 ../virtaal/views/mainview.py:323
 msgid "Save"
 msgstr "Gwok"
 
-#: ../virtaal/controllers/maincontroller.py:247
+#: ../virtaal/controllers/maincontroller.py:258
 #, python-format
 msgid ""
 "Could not save file.\n"
@@ -700,7 +746,7 @@ msgstr ""
 "\n"
 "tem me gwoko ne ikom kabedo mapat."
 
-#: ../virtaal/controllers/maincontroller.py:252
+#: ../virtaal/controllers/maincontroller.py:264
 #, python-format
 msgid ""
 "Could not save file.\n"
@@ -711,16 +757,16 @@ msgstr ""
 "\n"
 "%(bal_kwena)"
 
-#: ../virtaal/controllers/maincontroller.py:263
+#: ../virtaal/controllers/maincontroller.py:275
 msgid "Can only export Gettext PO files"
 msgstr "Twero cwalo woko Gettext PO fail"
 
-#: ../virtaal/controllers/maincontroller.py:272
+#: ../virtaal/controllers/maincontroller.py:284
 msgid "Export"
 msgstr "Cwalo woko"
 
 # 77%
-#: ../virtaal/controllers/maincontroller.py:280
+#: ../virtaal/controllers/maincontroller.py:292
 #, python-format
 msgid ""
 "Could not export file.\n"
@@ -736,7 +782,7 @@ msgstr ""
 "Tem me keto i kabedo mapat."
 
 # 85%
-#: ../virtaal/controllers/maincontroller.py:285
+#: ../virtaal/controllers/maincontroller.py:298
 #, python-format
 msgid ""
 "Could not export file.\n"
@@ -747,186 +793,186 @@ msgstr ""
 "\n"
 "%(error_message)s"
 
-#: ../virtaal/controllers/maincontroller.py:301
+#: ../virtaal/controllers/maincontroller.py:314
 msgid "Reload File"
 msgstr "nwo keto Fail"
 
-#: ../virtaal/controllers/maincontroller.py:301
+#: ../virtaal/controllers/maincontroller.py:314
 msgid "Reload file from last saved copy and lose all changes?"
 msgstr "Nwo keto fail ki mukene makigwoko macon ki rweny alokaloka weng?"
 
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase
-#: ../virtaal/controllers/placeablescontroller.py:83
+#: ../virtaal/controllers/placeablescontroller.py:84
 msgid "CamelCase"
 msgstr "Kit inaga"
 
-#: ../virtaal/controllers/placeablescontroller.py:84
+#: ../virtaal/controllers/placeablescontroller.py:85
 msgid ""
 "Words with internal capitalization, such as some brand names and WikiWords"
 msgstr ""
 "Nyig lok ki nyukta madongo i yie, macalo bala en makiketo nying ki Wikiwords"
 
-#: ../virtaal/controllers/placeablescontroller.py:87
+#: ../virtaal/controllers/placeablescontroller.py:88
 msgid "Capitals"
 msgstr "Boma madit"
 
 #. l10n: this refers to "UPPERCASE" / "CAPITAL" letters
-#: ../virtaal/controllers/placeablescontroller.py:89
+#: ../virtaal/controllers/placeablescontroller.py:90
 msgid "Words containing uppercase letters only"
 msgstr "Nyig lok matye ki nyukta madito keken"
 
-#: ../virtaal/controllers/placeablescontroller.py:92
+#: ../virtaal/controllers/placeablescontroller.py:93
 msgid "Command Line Options"
 msgstr "Miti me Rek Cik"
 
-#: ../virtaal/controllers/placeablescontroller.py:93
+#: ../virtaal/controllers/placeablescontroller.py:94
 msgid "Application command line options, such as --help, -h and -I"
 msgstr "Miti me cwalo rek cik, macalo --kony, -h ki -I"
 
-#: ../virtaal/controllers/placeablescontroller.py:97
+#: ../virtaal/controllers/placeablescontroller.py:98
 msgid "E-mail addresses"
 msgstr "E-mail addresses"
 
-#: ../virtaal/controllers/placeablescontroller.py:100
+#: ../virtaal/controllers/placeablescontroller.py:101
 msgid "File Names"
 msgstr "Nying Fail"
 
-#: ../virtaal/controllers/placeablescontroller.py:101
+#: ../virtaal/controllers/placeablescontroller.py:102
 msgid "Paths referring to file locations"
 msgstr "Yo tyen kobo dwoko ikabedo me fail"
 
-#: ../virtaal/controllers/placeablescontroller.py:104
+#: ../virtaal/controllers/placeablescontroller.py:105
 msgid "Placeholders (printf)"
 msgstr "Kit lanyut (printf)"
 
-#: ../virtaal/controllers/placeablescontroller.py:105
+#: ../virtaal/controllers/placeablescontroller.py:106
 msgid "Placeholders used in \"printf\" strings"
 msgstr "Kit lanyut ma kitiyo kwede iyi ''printf'' tol"
 
-#: ../virtaal/controllers/placeablescontroller.py:108
+#: ../virtaal/controllers/placeablescontroller.py:109
 msgid "Placeholders (Python)"
 msgstr "Kit lanyut (Python)"
 
-#: ../virtaal/controllers/placeablescontroller.py:109
+#: ../virtaal/controllers/placeablescontroller.py:110
 msgid "Placeholders in Python strings"
 msgstr "Kit lanyut ma iyi tol Nyalo(Python strings)"
 
-#: ../virtaal/controllers/placeablescontroller.py:112
+#: ../virtaal/controllers/placeablescontroller.py:113
 msgid "Placeholders (Java)"
 msgstr "Kit lanyut (Java)"
 
-#: ../virtaal/controllers/placeablescontroller.py:113
+#: ../virtaal/controllers/placeablescontroller.py:114
 msgid "Placeholders in Java strings"
 msgstr "Kit lanyut iyi Tol me Java"
 
-#: ../virtaal/controllers/placeablescontroller.py:116
+#: ../virtaal/controllers/placeablescontroller.py:117
 msgid "Placeholders (Qt)"
 msgstr "Kit lanyut (Qt)"
 
-#: ../virtaal/controllers/placeablescontroller.py:117
+#: ../virtaal/controllers/placeablescontroller.py:118
 msgid "Placeholders in Qt strings"
 msgstr "Kit lanyut iyi tol me Qt"
 
 #. l10n: 'decimal fractions' refer to numbers like 0.2 or 499,99
-#: ../virtaal/controllers/placeablescontroller.py:122
+#: ../virtaal/controllers/placeablescontroller.py:123
 msgid "Integer numbers and decimal fractions"
 msgstr "Namba mape lamed ki en ma poke"
 
-#: ../virtaal/controllers/placeablescontroller.py:125
+#: ../virtaal/controllers/placeablescontroller.py:126
 msgid "Punctuation"
 msgstr "Lanyut ma poko kin nyig lok"
 
-#: ../virtaal/controllers/placeablescontroller.py:126
+#: ../virtaal/controllers/placeablescontroller.py:127
 msgid "Symbols and less frequently used punctuation marks"
 msgstr "Alama ki nok pa lanyut me poko kin nyig lok ma kitiyo kwede jwijwi"
 
-#: ../virtaal/controllers/placeablescontroller.py:130
+#: ../virtaal/controllers/placeablescontroller.py:131
 msgid "URLs, hostnames and IP addresses"
 msgstr "URLs,hostnames ki IP addresses"
 
 #. l10n: see http://en.wikipedia.org/wiki/Character_entity_reference
-#: ../virtaal/controllers/placeablescontroller.py:134
+#: ../virtaal/controllers/placeablescontroller.py:135
 msgid "XML Entities"
 msgstr "XML Makwo onyo pe"
 
-#: ../virtaal/controllers/placeablescontroller.py:135
+#: ../virtaal/controllers/placeablescontroller.py:136
 msgid "Entity references, such as &amp; and &#169;"
 msgstr "Ngec makwo onyo pe, macalo &amp; ki &#169;"
 
-#: ../virtaal/controllers/placeablescontroller.py:138
+#: ../virtaal/controllers/placeablescontroller.py:139
 msgid "XML Tags"
 msgstr "XML Tags"
 
-#: ../virtaal/controllers/placeablescontroller.py:139
+#: ../virtaal/controllers/placeablescontroller.py:140
 msgid "XML tags, such as <b> and </i>"
 msgstr "XML tags, macalo <b> ki </i>"
 
-#: ../virtaal/controllers/placeablescontroller.py:153
+#: ../virtaal/controllers/placeablescontroller.py:154
 msgid "Spaces"
 msgstr "Kabedo"
 
-#: ../virtaal/controllers/placeablescontroller.py:154
+#: ../virtaal/controllers/placeablescontroller.py:155
 msgid "Double spaces and spaces in unexpected positions"
 msgstr "Dod kabedo ki kabedo iyi ka ma otime atura"
 
-#: ../virtaal/controllers/placeablescontroller.py:155
+#: ../virtaal/controllers/placeablescontroller.py:156
 msgid "\"alt\" Attributes"
 msgstr "''alt'' Kite"
 
-#: ../virtaal/controllers/placeablescontroller.py:156
+#: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
 msgstr "Ma kete pi ''alt'' kite (calo kinwongo iyi HTML)"
 
 # 76%
-#: ../virtaal/controllers/placeablescontroller.py:157
+#: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders (Drupal)"
 msgstr "Kagwoko (Drupal)"
 
 # 83%
-#: ../virtaal/controllers/placeablescontroller.py:158
+#: ../virtaal/controllers/placeablescontroller.py:159
 msgid "Placeholders in Drupal strings"
 msgstr "Kagwoko iyi coc me Drupal"
 
-#: ../virtaal/controllers/storecontroller.py:194
+#: ../virtaal/controllers/storecontroller.py:198
 msgid "No source or translatable files in bundle"
 msgstr "Ka ma aa iye pe onyo boc me fail ma romo aloka"
 
-#: ../virtaal/controllers/storecontroller.py:225
+#: ../virtaal/controllers/storecontroller.py:230
 msgid "The file contains nothing to translate."
 msgstr "Fail tye ki piny nono me loko."
 
 #. l10n: The heading of statistics before updating to the new template
-#: ../virtaal/controllers/storecontroller.py:423
+#: ../virtaal/controllers/storecontroller.py:435
 msgid "Before:"
 msgstr "Mapwod pe:"
 
 #. l10n: The heading of statistics after updating to the new template
-#: ../virtaal/controllers/storecontroller.py:425
+#: ../virtaal/controllers/storecontroller.py:437
 msgid "After:"
 msgstr "Ki yonge:"
 
-#: ../virtaal/controllers/storecontroller.py:426
+#: ../virtaal/controllers/storecontroller.py:438
 #, python-format
 msgid "Translated: %d"
 msgstr "Kigonyo: %d"
 
-#: ../virtaal/controllers/storecontroller.py:427
+#: ../virtaal/controllers/storecontroller.py:439
 #, python-format
 msgid "Fuzzy: %d"
 msgstr "Fuzzy: %d"
 
-#: ../virtaal/controllers/storecontroller.py:428
+#: ../virtaal/controllers/storecontroller.py:440
 #, python-format
 msgid "Untranslated: %d"
 msgstr "Pe kigonyo: %d"
 
-#: ../virtaal/controllers/storecontroller.py:429
+#: ../virtaal/controllers/storecontroller.py:441
 #, python-format
 msgid "Total: %d"
 msgstr "Wele lung: %d"
 
 #. l10n: this refers to updating a file to a new template (POT file)
-#: ../virtaal/controllers/storecontroller.py:447
+#: ../virtaal/controllers/storecontroller.py:459
 msgid "File Updated"
 msgstr "Kityeko mino ngec me Fail"
 
@@ -951,7 +997,7 @@ msgid "Reviewed"
 msgstr "Gineno odoco"
 
 # 89%
-#: ../virtaal/controllers/welcomescreencontroller.py:64
+#: ../virtaal/controllers/welcomescreencontroller.py:65
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 
@@ -964,12 +1010,12 @@ msgid "Quality Checks"
 msgstr "Rota mamwonya"
 
 #. l10n: This is the button where the user can select units by failing quality checks
-#: ../virtaal/modes/qualitycheckmode.py:130
+#: ../virtaal/modes/qualitycheckmode.py:131
 msgid "Select Checks"
 msgstr "Yer Rota"
 
 #. l10n: This refers to quality checks
-#: ../virtaal/modes/qualitycheckmode.py:133
+#: ../virtaal/modes/qualitycheckmode.py:134
 msgid "All Checks"
 msgstr "Rota Weng"
 
@@ -977,7 +1023,7 @@ msgstr "Rota Weng"
 msgid "Incomplete"
 msgstr "Pe otum"
 
-#: ../virtaal/modes/searchmode.py:35 ../virtaal/modes/searchmode.py:68
+#: ../virtaal/modes/searchmode.py:36 ../virtaal/modes/searchmode.py:68
 msgid "Search"
 msgstr "Yeny"
 
@@ -1031,45 +1077,45 @@ msgstr "Tyek nyig lok mabor pire kene kun ico"
 msgid "AutoCompletor"
 msgstr "Latyek ne pire kene"
 
-#: ../virtaal/plugins/autocorrector.py:303
+#: ../virtaal/plugins/autocorrector.py:259
 msgid "Automatically correct text while you type"
 msgstr "Yub coc pire kene kun ico ne"
 
-#: ../virtaal/plugins/autocorrector.py:304
+#: ../virtaal/plugins/autocorrector.py:260
 msgid "AutoCorrector"
 msgstr "Layub ne pire kene"
 
-#: ../virtaal/plugins/spellchecker.py:47
+#: ../virtaal/plugins/spellchecker.py:48
 msgid "Spell Checker"
 msgstr "Larot Nyukta"
 
-#: ../virtaal/plugins/spellchecker.py:48
+#: ../virtaal/plugins/spellchecker.py:49
 msgid "Check spelling and provide suggestions"
 msgstr "Rot nyukta eka ite kelo mino tam"
 
 #. l10n: This refers to spell checking
-#: ../virtaal/plugins/spellchecker.py:334
+#: ../virtaal/plugins/spellchecker.py:347
 msgid "<i>(no suggestions)</i>"
 msgstr "<i>(Tam amia peke)</i>"
 
 #. l10n: This refers to spell checking
-#: ../virtaal/plugins/spellchecker.py:338
+#: ../virtaal/plugins/spellchecker.py:351
 msgid "Ignore All"
 msgstr "Caa Weng"
 
 #. l10n: This refers to spelling suggestions
-#: ../virtaal/plugins/spellchecker.py:342
+#: ../virtaal/plugins/spellchecker.py:355
 msgid "More..."
 msgstr "Mukene..."
 
 #. l10n: This refers to the spell checking dictionary
-#: ../virtaal/plugins/spellchecker.py:348
+#: ../virtaal/plugins/spellchecker.py:361
 #, python-format
 msgid "Add \"%s\" to Dictionary"
 msgstr "Med \"%\" i buk me gonyo leb"
 
 # 88%
-#: ../virtaal/plugins/spellchecker.py:351
+#: ../virtaal/plugins/spellchecker.py:364
 msgid "Languages"
 msgstr "Leb mapol"
 
@@ -1106,90 +1152,91 @@ msgid "Look-up the selected text on a web site"
 msgstr "Yeny coc ma giyero ki kakube me wilobo"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate.
-#: ../virtaal/plugins/lookup/models/weblookup.py:46
-#: ../virtaal/plugins/tm/models/google_translate.py:172
+#: ../virtaal/plugins/lookup/models/weblookup.py:45
+#: ../virtaal/plugins/tm/models/google_translate.py:144
 msgid "Google"
 msgstr "Google"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:52
+#: ../virtaal/plugins/lookup/models/weblookup.py:50
 msgid "Wikipedia"
 msgstr "Wikipedia"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:58
-#: ../virtaal/plugins/terminology/models/opentran.py:46
+#: ../virtaal/plugins/lookup/models/weblookup.py:55
+#: ../virtaal/plugins/terminology/models/opentran.py:42
 #: ../virtaal/plugins/tm/models/opentran.py:37
 msgid "Open-Tran.eu"
 msgstr "Open-Tran.eu"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:177
-#: ../virtaal/views/widgets/selectview.py:75
+#: ../virtaal/plugins/lookup/models/weblookup.py:171
+#: ../virtaal/views/widgets/selectview.py:74
 msgid "Name"
 msgstr "Nying"
 
-#: ../virtaal/plugins/lookup/models/weblookup.py:186
+#: ../virtaal/plugins/lookup/models/weblookup.py:180
 msgid "URL"
 msgstr "URL"
 
 #. l10n: Whether the selected text should be surrounded by "quotes"
-#: ../virtaal/plugins/lookup/models/weblookup.py:197
+#: ../virtaal/plugins/lookup/models/weblookup.py:191
 msgid "Quote Query"
 msgstr "Wac Lapeny"
 
-#: ../virtaal/plugins/migration.py:53
+#: ../virtaal/plugins/migration.py:57
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
-msgstr "Kob kite me yubu aa i KBabel, Lokalize kede/onyo Poedit naka i Virtaal."
+msgstr ""
+"Kob kite me yubu aa i KBabel, Lokalize kede/onyo Poedit naka i Virtaal."
 
-#: ../virtaal/plugins/migration.py:54
+#: ../virtaal/plugins/migration.py:58
 msgid "Migration Assistant"
 msgstr "Lakony Kobo"
 
-#: ../virtaal/plugins/migration.py:68
+#: ../virtaal/plugins/migration.py:72
 msgid "Should Virtaal try to import settings and data from other applications?"
 msgstr "Virtaal otem kelo kite me yubu ki coc aa iyi puruguram mukene?"
 
-#: ../virtaal/plugins/migration.py:69
+#: ../virtaal/plugins/migration.py:73
 msgid "Import data from other applications?"
 msgstr "Kel coc ki iyi puruguram mukene?"
 
-#: ../virtaal/plugins/migration.py:94
+#: ../virtaal/plugins/migration.py:101
 msgid "Migration was successfully completed"
 msgstr "Kobo oceto kakare"
 
-#: ../virtaal/plugins/migration.py:95
+#: ../virtaal/plugins/migration.py:102
 msgid "The following items were migrated:"
 msgstr "Jami magi gityeko kobo woko:"
 
-#: ../virtaal/plugins/migration.py:98
+#: ../virtaal/plugins/migration.py:105
 msgid "Migration completed"
 msgstr "Kobo otyeko tum"
 
-#: ../virtaal/plugins/migration.py:100
+#: ../virtaal/plugins/migration.py:107
 msgid "Virtaal was not able to migrate any settings or data"
 msgstr "Virtaal ononge pe twero kobo kite me yubo mo keken nyo coc"
 
-#: ../virtaal/plugins/migration.py:101
+#: ../virtaal/plugins/migration.py:108
 msgid "Nothing migrated"
 msgstr "Pe gikobo gin moo"
 
-#: ../virtaal/plugins/migration.py:159
+#: ../virtaal/plugins/migration.py:178
 msgid "Poedit settings"
 msgstr "Kite me tero Poedit"
 
-#: ../virtaal/plugins/migration.py:188
+#: ../virtaal/plugins/migration.py:207
 #, python-format
 msgid "Poedit's Translation Memory: %(database_language_code)s"
 msgstr "Ka gwoko gony pa Poedit: %(database_language_code)s"
 
-#: ../virtaal/plugins/migration.py:213
+#: ../virtaal/plugins/migration.py:232
 #, python-format
 msgid "KBabel's Translation Memory: %(database_language_code)s"
 msgstr "Ka gwoko gony pa KBabel: %(database_language_code)s"
 
-#: ../virtaal/plugins/migration.py:231
+#: ../virtaal/plugins/migration.py:250
 msgid "Lokalize settings"
 msgstr "Lok ter"
 
-#: ../virtaal/plugins/migration.py:255
+#: ../virtaal/plugins/migration.py:274
 #, python-format
 msgid "Lokalize's Translation Memory: %(database_name)s"
 msgstr "Ka gwoko gony pa Lokalize: %(database_name)s"
@@ -1218,45 +1265,45 @@ msgstr "Fail matye kany"
 msgid "Local terminology files"
 msgstr "Fail me lok madongo matye kany"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:58
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:60
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:52
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:54
 msgid "Terminology _Files..."
 msgstr "Fail_makonygi pe dwong..."
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:66
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:68
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:60
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:62
 msgid "Add _Term..."
 msgstr "Add _Term..."
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:137
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:145
 msgid "File"
 msgstr "Fail"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:147
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:155
 msgid "Extendable"
 msgstr "Mamede"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:172
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:181
 msgid "Add Files"
 msgstr "Med Fail "
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:179
-#: ../virtaal/support/native_widgets.py:79 ../virtaal/views/mainview.py:259
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:188
+#: ../virtaal/support/native_widgets.py:81 ../virtaal/views/mainview.py:268
 msgid "All Supported Files"
 msgstr "Fail weng ma gi cwako tere"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:205
-#: ../virtaal/support/native_widgets.py:156
-#: ../virtaal/support/native_widgets.py:185 ../virtaal/views/mainview.py:303
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:215
+#: ../virtaal/support/native_widgets.py:171
+#: ../virtaal/support/native_widgets.py:201 ../virtaal/views/mainview.py:312
 msgid "All Files"
 msgstr "Fail weng"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:245
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:256
 #, python-format
 msgid "\"%s\" is not a usable file."
 msgstr "\"%s\" obedo fail ma pe gitiyo kwede."
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:250
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:261
 #, python-format
 msgid ""
 "Unable to load %(filename)s:\n"
@@ -1267,36 +1314,36 @@ msgstr ""
 "\n"
 "%(errormsg)s"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:251
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:262
 msgid "Error opening file"
 msgstr "Bal iyabo fail"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:388
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:402
 #, python-format
 msgid "_Source term — %(langname)s"
 msgstr "_Source term — %(langname)s"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:389
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:403
 #, python-format
 msgid "_Target term — %(langname)s"
 msgstr "_Target term — %(langname)s"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:433
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:447
 msgid "Identical entry already exists."
 msgstr "Lanyut me donyo bene dong tye."
 
 #. l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:446
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:462
 #, python-format
 msgid "<b>%s</b>"
 msgstr "<b>%s</b>"
 
-#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:447
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:463
 #, python-format
 msgid "Existing translations: %(translations)s"
 msgstr "Gony matye: %(translations)s"
 
-#: ../virtaal/plugins/terminology/models/opentran.py:47
+#: ../virtaal/plugins/terminology/models/opentran.py:43
 msgid "Terms from Open-Tran.eu"
 msgstr "Yab ki iyi Open-Tran.eu"
 
@@ -1327,39 +1374,39 @@ msgstr "Amagama"
 msgid "Previous translations for Free and Open Source Software"
 msgstr "Gony macon me nono kede puruguram me nono"
 
-#: ../virtaal/plugins/tm/models/currentfile.py:32
+#: ../virtaal/plugins/tm/models/currentfile.py:30
 msgid "Current File"
 msgstr "Fail matye kombedi"
 
-#: ../virtaal/plugins/tm/models/currentfile.py:33
+#: ../virtaal/plugins/tm/models/currentfile.py:31
 msgid "Translated units from the currently open file"
 msgstr "Dul ma kiloko ki fail ma oyabe kombedi"
 
 #. l10n: Try to keep this as short as possible.
-#: ../virtaal/plugins/tm/models/currentfile.py:95
-#: ../virtaal/plugins/tm/models/currentfile.py:115
+#: ../virtaal/plugins/tm/models/currentfile.py:97
+#: ../virtaal/plugins/tm/models/currentfile.py:117
 msgid "This file"
 msgstr "Fail man"
 
 #. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
-#: ../virtaal/plugins/tm/models/google_translate.py:117
+#: ../virtaal/plugins/tm/models/google_translate.py:55
 msgid "Google Translate"
 msgstr "Gony me Google"
 
-#: ../virtaal/plugins/tm/models/google_translate.py:118
+#: ../virtaal/plugins/tm/models/google_translate.py:56
 msgid "Unreviewed machine translations from Google's translation service"
 msgstr "Cuma ma pe ki ngiyo me gony ki i tic me gonyo Google"
 
-#: ../virtaal/plugins/tm/models/microsoft_translator.py:39
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:46
 msgid "Microsoft Translator"
 msgstr "Gi gony me Microsoft"
 
-#: ../virtaal/plugins/tm/models/microsoft_translator.py:40
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:47
 msgid "Unreviewed machine translations from Microsoft Translator"
 msgstr "Cuma ma pe ki ngiyo me gony ki Lagony Microsoft"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
-#: ../virtaal/plugins/tm/models/microsoft_translator.py:106
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:114
 msgid "Microsoft"
 msgstr "Microsoft"
 
@@ -1374,26 +1421,26 @@ msgstr "libtranslate"
 msgid "Unreviewed machine translations from various services"
 msgstr "Gony me cuma mu aa ki gi gony me Microsoft ma pe gingiyo"
 
-#: ../virtaal/plugins/tm/models/localtm.py:37
+#: ../virtaal/plugins/tm/models/localtm.py:35
 msgid "Local Translation Memory"
 msgstr "Ka gwoko Gony matye kany"
 
-#: ../virtaal/plugins/tm/models/localtm.py:38
+#: ../virtaal/plugins/tm/models/localtm.py:36
 msgid "Previous translations you have made"
 msgstr "Gony ma okato lacen ma itimo"
 
 #. l10n: Try to keep this as short as possible.
-#: ../virtaal/plugins/tm/models/localtm.py:40
+#: ../virtaal/plugins/tm/models/localtm.py:38
 msgid "Local TM"
 msgstr "TM makany"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
-#: ../virtaal/plugins/tm/models/moses.py:33
-#: ../virtaal/plugins/tm/models/moses.py:74
+#: ../virtaal/plugins/tm/models/moses.py:32
+#: ../virtaal/plugins/tm/models/moses.py:82
 msgid "Moses"
 msgstr "Moses"
 
-#: ../virtaal/plugins/tm/models/moses.py:34
+#: ../virtaal/plugins/tm/models/moses.py:33
 msgid "Unreviewed machine translations from a Moses server"
 msgstr "Gony me cuma mu aa ki iyi toto me Moses ma pe gineno"
 
@@ -1403,16 +1450,16 @@ msgstr "Gony me cuma mu aa ki iyi toto me Moses ma pe gineno"
 msgid "OpenTran"
 msgstr "OpenTran"
 
-#: ../virtaal/plugins/tm/models/remotetm.py:30
+#: ../virtaal/plugins/tm/models/remotetm.py:28
 msgid "Remote Server"
 msgstr "Lagabtic ma tenge"
 
-#: ../virtaal/plugins/tm/models/remotetm.py:31
+#: ../virtaal/plugins/tm/models/remotetm.py:29
 msgid "A translation memory server"
 msgstr "Lagabtic ma gwoko gony"
 
 #. l10n: Try to keep this as short as possible.
-#: ../virtaal/plugins/tm/models/remotetm.py:33
+#: ../virtaal/plugins/tm/models/remotetm.py:31
 msgid "Remote TM"
 msgstr "TM matenge"
 
@@ -1426,7 +1473,7 @@ msgstr "Lagebtic TinyTM magwoko gony"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
 #: ../virtaal/plugins/tm/models/apertium.py:43
-#: ../virtaal/plugins/tm/models/apertium.py:125
+#: ../virtaal/plugins/tm/models/apertium.py:126
 msgid "Apertium"
 msgstr "Apertium"
 
@@ -1434,22 +1481,22 @@ msgstr "Apertium"
 msgid "Unreviewed machine translations from Apertium"
 msgstr "Gony me cuma mu aa ki Apertium ma pe gineno"
 
-#: ../virtaal/plugins/tm/tmview.py:111
+#: ../virtaal/plugins/tm/tmview.py:110
 msgid "Translation _Suggestions"
 msgstr "Tam amia_Gonyo"
 
-#: ../virtaal/plugins/tm/tmview.py:153
+#: ../virtaal/plugins/tm/tmview.py:151
 #, python-format
 msgid "Ctrl+%(number_key)d"
 msgstr "Ctrl+%(number_key)d"
 
 #. l10n: The 'sources' here refer to different translation memory plugins,
 #. such as local tm, open-tran.eu, the current file, etc.
-#: ../virtaal/plugins/tm/tmview.py:176
+#: ../virtaal/plugins/tm/tmview.py:175
 msgid "Select sources of Translation Memory"
 msgstr "Ter ka ma Kagwoko Gony aa iye"
 
-#: ../virtaal/plugins/tm/tmview.py:177
+#: ../virtaal/plugins/tm/tmview.py:176
 msgid "Select the sources that should be queried for translation memory"
 msgstr "Yer ka kagony ma myero peny myero oaa iye"
 
@@ -1477,10 +1524,374 @@ msgstr "%(match_quality)s%%"
 msgid "?"
 msgstr "?"
 
-#: ../virtaal/support/native_widgets.py:129
-#: ../virtaal/support/native_widgets.py:157 ../virtaal/views/mainview.py:252
+#: ../virtaal/support/native_widgets.py:132
+#: ../virtaal/support/native_widgets.py:172
+#: ../virtaal/support/native_widgets.py:241 ../virtaal/views/mainview.py:261
 msgid "Choose a Translation File"
 msgstr "Yer Fail me Agonya"
+
+#: ../virtaal/support/native_widgets.py:152
+msgid ""
+"A file named \"%1\" already exists. Are you sure you want to overwrite it?"
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:38
+msgid ""
+"Welcome to the Virtaal tutorial. You can do the first translation by typing "
+"just the translation for \"Welcome\". Then press Enter."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:43
+msgid ""
+"Translate this slightly longer message. If a spell checker is available, "
+"spelling mistakes are indicated similarly to word processors. Make sure the "
+"correct language is selected in the bottom right of the window."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:50
+msgid ""
+"This tutorial will show you some of the things you might want to pay "
+"attention to while translating software programs. It will help you to avoid "
+"some problems and produce translations of a higher quality."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:57
+msgid ""
+"Some of the advice will only be relevant to some languages. For example, if "
+"your language does not use the Latin alphabet, some of the advice might not "
+"be relevant to translation in your language. For many languages there are "
+"established translation rules."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:64
+msgid ""
+"The correct use of capital letters are important in many languages. "
+"Translate this message with careful attention to write \"Virtaal\" with a "
+"capital letter."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:70
+msgid ""
+"In this message the English uses a capital letter for almost every word. "
+"Almost no other language uses this style. Unless your language definitely "
+"needs to follow the English style (also called Title Case), translate this "
+"by following the normal capitalisation rules for your language. If your "
+"language does not use capital letters, simply translate it normally."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:79
+msgid ""
+"If you translated the previous message you should see a window with that "
+"translation and a percentage indicating how similar the source strings "
+"(English) are. It is Virtaal's translation memory at work. Press Control+1 "
+"to copy the suggested translation to the current translation. Remember to "
+"always review suggestions before you use them."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:88
+msgid ""
+"This is a simple message that starts with a capital letter in English. If "
+"your language uses capital letters, you almost definitely want to start your "
+"translation with a capital letter as well."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:95
+msgid ""
+"This is a simple message that starts with a lower case letter in English. If "
+"your language uses capital letters, you almost definitely want to start your "
+"translation with a lower case letter as well."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:102
+msgid ""
+"This message is a question. Make sure that you use the correct question mark "
+"in your translation as well."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:107
+msgid ""
+"This message is a label as part of a form. Note how it ends with a colon (:)."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:112
+msgid ""
+"If the source will remain mostly or completely unchanged it is convenient to "
+"copy the entire source string with Alt+Down. Here is almost nothing to "
+"translate, so just press Alt+Down and make corrections if necessary."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:119
+#, fuzzy
+#| msgid ""
+#| "Placeables are special parts of the text that can be automatically "
+#| "highlighted and easily inserted into the translation."
+msgid ""
+"Placeables are special parts of the text, like the © symbol, that can be "
+"automatically highlighted and easily inserted into the translation. Select "
+"the © with Alt+Right and transfer it to the target with Alt+Down."
+msgstr "Makete obedo pat me nyig coc ma linge kene dok ma kete mayot iyi gony."
+
+#: ../virtaal/support/tutorial.py:126
+msgid ""
+"Recognised placeables include special symbols, numbers, variable place "
+"holders, acronyms and many more. Move to each one with Alt+Right and "
+"transfer it down with Alt+Down."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:132
+msgid ""
+"This message ends with ... to indicate that clicking on this text will cause "
+"a dialogue to appear instead of just performing an action. Be sure to end "
+"your message with ... as well."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:138
+msgid ""
+"This message ends with a special character that looks like three dots. "
+"Select the special character with Alt+Right and copy it to your translation "
+"with Alt+Down. Don't just type three dot characters."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:145
+msgid ""
+"This message has two sentences. Translate them and make sure you start each "
+"with a capital letter if your language uses them, and end each sentence "
+"properly."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:151
+msgid ""
+"This message marks the word \"now\" as important with bold tags. These tags "
+"can be transferred from the source with Alt+Right and Alt+Down. Leave the "
+"<b> and </b> in the translation around the part that corresponds to \"now\". "
+"Read more about XML markup here: http://en.wikipedia.org/wiki/XML"
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:159
+msgid ""
+"This message is very similar to the previous message. Use the suggestion of "
+"the previous translation with Ctrl+1. Note how the only difference is that "
+"this one ends with a full stop after the last tag."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:166
+#, python-format
+msgid ""
+"In this message \"%d\" is a placeholder (variable) that represents a number. "
+"Make sure your translation contains \"%d\" somewhere. In this case it refers "
+"a number of files. When this message is used the \"%d\" will be replaced "
+"with a number e.g. 'Number of files copied: 5'.  Note that \"%d\" does not "
+"refer to a percentage."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:174
+#, python-format
+msgid ""
+"In this message, \"%d\" refers again to the number of files, but note how "
+"the \"(s)\" is used to show that we don't know how many it will be. This is "
+"often hard to translate well. If you encounter this in software translation, "
+"you might want to hear from developers if this can be avoided. Read more "
+"about this and decide how to do it in your language: http://docs."
+"translatehouse.org/projects/localization-guide/en/latest/guide/translation/"
+"plurals.html"
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:185
+msgid ""
+"In this message the proper way of translating plurals are seen. You need to "
+"enter between 1 and 6 different versions of the translation to ensure the "
+"correct grammar in your language. Read more about this here: http://docs."
+"translatehouse.org/projects/localization-guide/en/latest/guide/translation/"
+"plurals.html"
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:196
+#, python-format
+msgid ""
+"In this message, \"%s\" is a placeholder (variable) that represents a file "
+"name. Make sure your translation contains %s somewhere. When this message is "
+"used, the %s will be replaced with a file name e.g. 'The file will be saved "
+"as example.odt'.  Note that \"%s\" does not refer to a percentage."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:204
+#, python-format
+msgid ""
+"In this message the variable is surrounded by double quotes. Make sure your "
+"translation contains the variable %s and surround it similarly with quotes "
+"in the way required by your language. If your language uses the same quotes "
+"as English, type it exactly as shown for the English. If your language uses "
+"different characters you can just type them around the variable."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:213
+msgid ""
+"In this message, \"%(name)s\" is a placeholder (variable). Note that the 's' "
+"is part of the variable, and the whole variable from '%' to the 's' should "
+"appear unchanged somewhere in your translation. These type of variables give "
+"you an idea of what they will contain. In this case, it will contain a name."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:221
+msgid ""
+"In this message the user of the software is asked to do something. Make sure "
+"you translate it by being as polite or respectful as is necessary for your "
+"culture."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:227
+msgid ""
+"In this message there is reference to \"Linux\" (a product name). Many "
+"languages will not translate it, but your language might use a "
+"transliteration if you don't use the Latin script for your language."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:234
+msgid ""
+"This message contains the URL (web address) of the project website. It must "
+"be transferred as a placeable or typed over exactly."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:239
+msgid ""
+"This message refers to a website with more information. Sometimes you might "
+"be allowed or encouraged to change the URL (web address) to a website in "
+"your language. In this case, replace the \"en\" at the start of the address "
+"to your language code so that the address points to the corresponding "
+"article in your language about XML."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:248
+msgid ""
+"This translation contains an ambiguous word - it has two possible meanings. "
+"Make sure you can see the context information showing that this is a verb "
+"(an action as in \"click here to view it\")."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:255
+msgid ""
+"This translation contains an ambiguous word - it has two possible meanings. "
+"Make sure you can see the context information showing that this is a noun (a "
+"thing as in \"click to change the view to full screen\"). If Virtaal gives "
+"your previous translation as a suggestion, take care to only use it if it is "
+"definitely appropriate in this case as well."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:264
+msgid ""
+"An accelerator key is a key on your keyboard that you can press to to "
+"quickly access a menu or function. It is also called a hot key, access key "
+"or mnemonic. In program interfaces they are shown as an underlined letter in "
+"the text label. In the translatable text they are marked using some "
+"character like the underscore here, but other characters are used for this "
+"as well. In this case the the accelerator key is \"f\" since the underscore "
+"is before this letter and it means that this accelerator could be triggered "
+"by pressing Alt+F."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:276
+msgid "In this entry you can see other kind of accelerator."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:280
+msgid "And another kind of accelerator."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:285
+msgid ""
+"Virtaal is able to provide suggestions from several terminology glossaries "
+"and provides easy shortcuts to allow paste them in the translation field. "
+"Right now Virtaal has only one empty terminology glossary, but you can start "
+"filling it. In order to do that select the original text, press Ctrl+T, "
+"provide a translation for your language, and save."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:295
+msgid ""
+"In the previous entry you have created one terminology entry for the the "
+"\"filter\" verb. Now do the same for \"filter\" noun."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:300
+msgid ""
+"If you have created any terminology in the previous entries you may may now "
+"see some of the words with a green background (or other color depending on "
+"your theme). This means that Virtaal has terminology suggestions for that "
+"word. Use Alt+Right to select the highlighted word, and then press Alt+Down. "
+"If only one suggestions is provided Alt+Down just copies the suggestion to "
+"the translation field. But if several suggestions are available Alt+Down "
+"shows a suggestion list which you can navigate using Down and Up keys. Once "
+"you have selected the desired suggestion press Enter to copy it to the "
+"translation field."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:313
+msgid ""
+"This message has two lines. Make sure that your translation also contains "
+"two lines. You can separate lines with Shift+Enter or copying new-line "
+"placeables (displayed as ¶)."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:320
+msgid ""
+"This message contains tab characters to separate some headings. Make sure "
+"you separate your translations in the same way."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:325
+msgid ""
+"This message contains a large number that is formatted according to to "
+"American convention. Translate this but be sure to format the number "
+"according to the convention for your language. You might need to change the "
+"comma (,) and full stop (.) to other characters, and you might need to use a "
+"different number system. Make sure that you understand the American "
+"formatting: the number is bigger than one thousand."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:335
+msgid ""
+"This message refers to miles. If the programmers encourage it, you might "
+"want to change this to kilometres in your translation, if kilometres are "
+"more commonly used in your language. Note that 1 mile is about 1.6 "
+"kilometres. Note that automated tests for \"numbers\" will complain if the "
+"number is changed, but in this case it is safe to do."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:344
+msgid ""
+"This message contains a link that the user will be able to click on on to "
+"visit the help page. Make sure you maintain the information between the "
+"angle brackets (<...>) correctly. The double quotes (\") should never be "
+"changed in tags, even if your language uses a different type of quotation "
+"marks."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:354
+#, python-format
+msgid ""
+"This message contains a similar link, but the programmers decided to to "
+"rather insert the tags with variables so that translators can't change them. "
+"Make sure you position the two variables (%s) so that they correspond to the "
+"opening and closing tag of the previous translation."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:362
+msgid ""
+"This message contains the <b> and </b> tags to emphasize a word, while "
+"everything is inside <p> and </p> tags. Make sure your whole translation is "
+"inside <p> and </p> tags."
+msgstr ""
+
+#: ../virtaal/support/tutorial.py:368
+msgid ""
+"This message contains a similar link that is contained within <span> and </"
+"span>. Make sure you maintain all the tags (<...>) correctly, and that the "
+"link is contained completely inside the <span> and </span> tags in your "
+"translation. Make sure that the text inside the \"a\" tags correspond to "
+"\"help page\" and that your translation corresponding to the second sentence "
+"is contained in the <span> tags. Note how the full stop is still inside the "
+"</span> tag."
+msgstr ""
 
 #: ../virtaal/views/checksunitview.py:73
 msgid "No issues"
@@ -1508,11 +1919,11 @@ msgstr "Roto: %(roto_nying)s"
 msgid "_New Language Pair..."
 msgstr "_Leb Aryo Manyen..."
 
-#: ../virtaal/views/mainview.py:221
+#: ../virtaal/views/mainview.py:230
 msgid "Error"
 msgstr "Bal"
 
-#: ../virtaal/views/mainview.py:333
+#: ../virtaal/views/mainview.py:342
 msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
@@ -1520,7 +1931,7 @@ msgstr ""
 "Fail man gi yiko.\n"
 "Imito gwoko alokaloka meri?"
 
-#: ../virtaal/views/mainview.py:336
+#: ../virtaal/views/mainview.py:345
 msgid "_Discard"
 msgstr "_Ywee"
 
@@ -1528,16 +1939,16 @@ msgstr "_Ywee"
 #. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
 #. %(current_file)s is the file name of the current file
 #. most languages will not need to change this
-#: ../virtaal/views/mainview.py:377
+#: ../virtaal/views/mainview.py:430
 #, python-format
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgstr "%(modified_marker)s%(fcurrent_file)s - Virtaal"
 
-#: ../virtaal/views/mainview.py:402
+#: ../virtaal/views/mainview.py:455
 msgid "Please enter the number of noun forms (plurals) to use"
 msgstr "Ket namba me jami mamyero ti kede"
 
-#: ../virtaal/views/mainview.py:408
+#: ../virtaal/views/mainview.py:461
 msgid "Please enter the plural equation to use"
 msgstr "Ket ikwejon mapol me tic kede"
 
@@ -1546,10 +1957,6 @@ msgstr "Ket ikwejon mapol me tic kede"
 #: ../virtaal/views/modeview.py:62
 msgid "N_avigation:"
 msgstr "B_eyo iye:"
-
-#: ../virtaal/views/modeview.py:108 ../virtaal/views/propertiesview.py:134
-msgid "Save the file for up-to-date information"
-msgstr "Gwok fail pi ngec-ni-oo koni"
 
 # 81%
 #: ../virtaal/views/propertiesview.py:32
@@ -1591,6 +1998,10 @@ msgstr "(100%)"
 msgid "(%04.1f%%)"
 msgstr "(%04.Ka%%)"
 
+#: ../virtaal/views/propertiesview.py:134
+msgid "Save the file for up-to-date information"
+msgstr "Gwok fail pi ngec-ni-oo koni"
+
 # 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
@@ -1604,23 +2015,23 @@ msgstr "<b>%d</b>"
 msgid "%.1f KB"
 msgstr "%.Ka KB"
 
-#: ../virtaal/views/storeview.py:163 ../virtaal/views/storeview.py:172
+#: ../virtaal/views/storeview.py:138 ../virtaal/views/storeview.py:147
 msgid "Export failed"
 msgstr "Cwalo woko okwero"
 
-#: ../virtaal/views/storeview.py:181
+#: ../virtaal/views/storeview.py:156
 msgid "Preview failed"
 msgstr "Ngiyo okwero"
 
-#: ../virtaal/views/unitview.py:614
+#: ../virtaal/views/unitview.py:613
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr "Dir cen yadi acel cen i mol pa tic (Ctrl+Shift+Enter)"
 
-#: ../virtaal/views/unitview.py:615
+#: ../virtaal/views/unitview.py:614
 msgid "Click to move to a specific state in the workflow"
 msgstr "Dii ki idir i kit ka ma iyero i mol pa tic"
 
-#: ../virtaal/views/unitview.py:616
+#: ../virtaal/views/unitview.py:615
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr "Dir yadi acel anyim i ka mol pa tic (Ctrl+Enter)"
 
@@ -1684,21 +2095,17 @@ msgstr "Leb"
 msgid "Code"
 msgstr "Coc"
 
-#: ../virtaal/views/widgets/selectview.py:67
+#: ../virtaal/views/widgets/selectview.py:66
 msgid "Enabled"
 msgstr "Tiyo"
 
-#: ../virtaal/views/widgets/selectview.py:117
+#: ../virtaal/views/widgets/selectview.py:113
 msgid "Configure..."
 msgstr "Yik..."
 
 #: ../virtaal/views/widgets/welcomescreen.py:79
 msgid "Translation memory"
 msgstr "Kagwoko gony"
-
-#: ../virtaal/views/widgets/welcomescreen.py:80
-msgid "Terminology assistance"
-msgstr "Kony ikom leb matek"
 
 #: ../virtaal/views/widgets/welcomescreen.py:81
 msgid "Quality checks"
@@ -1716,11 +2123,11 @@ msgstr "Lingo ki keto jami ma kete"
 msgid "Many plugins and options for customization"
 msgstr "Lamed ki yore mapol me yiko"
 
-#: ../virtaal/models/storemodel.py:142
+#: ../virtaal/models/storemodel.py:132
 msgid "The file does not exist."
 msgstr "Fail man pe tye."
 
-#: ../virtaal/models/storemodel.py:144
+#: ../virtaal/models/storemodel.py:134
 msgid "Not a valid file."
 msgstr "Pe obedo fail matiyo."
 
@@ -1856,56 +2263,56 @@ msgstr "Fail me Qt .qm"
 msgid "OmegaT Glossary"
 msgstr "lagony me OmegaT"
 
-#: ../bin/virtaal:87
+#: ../bin/virtaal:93
 #, c-format
 msgid "%prog [options] [translation_file]"
 msgstr "%prog [kite] [fail me_gonyo]"
 
-#: ../bin/virtaal:90
+#: ../bin/virtaal:96
 msgid "LOG"
 msgstr "REKOD"
 
-#: ../bin/virtaal:91
+#: ../bin/virtaal:97
 msgid "turn on logging, storing the result to the supplied filename."
 msgstr "Mi nwongo rekod tii, ki kano lagom iyi fail magimiyo"
 
-#: ../bin/virtaal:93
+#: ../bin/virtaal:99
 msgid "CONFIG"
 msgstr "YIKO"
 
-#: ../bin/virtaal:94
+#: ../bin/virtaal:100
 msgid "use the configuration file given by the supplied filename."
 msgstr "Tii ki fail me yiko nying fail magimiyo omiyo"
 
-#: ../bin/virtaal:97
+#: ../bin/virtaal:103
 msgid "enable debugging features"
 msgstr "Mi jami me yiko tii"
 
-#: ../bin/virtaal:104
+#: ../bin/virtaal:109
 msgid "PROFILE"
 msgstr "LOK IKOME"
 
-#: ../bin/virtaal:106
+#: ../bin/virtaal:111
 msgid "perform profiling, storing the result to the supplied filename."
 msgstr "Tim lok ikom, ki kano lagam iyi nying fail magimiyo"
 
-#: ../bin/virtaal:129
+#: ../bin/virtaal:135
 msgid "Could not open log file '%(filename)s'"
 msgstr "Onongo pe twero yabo fail me rekod '%(nying fail)s'"
 
-#: ../bin/virtaal:137
+#: ../bin/virtaal:143
 msgid "Could not read configuration file '%(filename)s'"
 msgstr "Onongo pe twero neno fail me yiko '%(nying fail)s'"
 
-#: ../bin/virtaal:141
+#: ../bin/virtaal:147
 msgid "invalid number of arguments"
 msgstr "namba me jami tic ma pe tiyo"
 
-#: ../bin/virtaal:167
+#: ../bin/virtaal:173
 msgid "Profiling support is not available"
 msgstr "Cwako lok ikome peke"
 
-#: ../bin/virtaal:179
+#: ../bin/virtaal:185
 msgid "Could not open profile file '%(filename)s'"
 msgstr "Onongo pe twero yabo fail me lok ikom '%(nying fail)s'"
 

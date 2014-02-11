@@ -8,9 +8,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Virtaal 1.0.0-alpha1\n"
+"Project-Id-Version: Virtaal 1.0.0-beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2014-02-06 16:42+0000\n"
+"POT-Creation-Date: 2014-02-11 20:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -877,46 +877,46 @@ msgstr ""
 msgid "Placeholders in Drupal strings"
 msgstr ""
 
-#: ../virtaal/controllers/storecontroller.py:193
+#: ../virtaal/controllers/storecontroller.py:198
 msgid "No source or translatable files in bundle"
 msgstr ""
 
-#: ../virtaal/controllers/storecontroller.py:225
+#: ../virtaal/controllers/storecontroller.py:230
 msgid "The file contains nothing to translate."
 msgstr ""
 
 #. l10n: The heading of statistics before updating to the new template
-#: ../virtaal/controllers/storecontroller.py:430
+#: ../virtaal/controllers/storecontroller.py:435
 msgid "Before:"
 msgstr ""
 
 #. l10n: The heading of statistics after updating to the new template
-#: ../virtaal/controllers/storecontroller.py:432
+#: ../virtaal/controllers/storecontroller.py:437
 msgid "After:"
 msgstr ""
 
-#: ../virtaal/controllers/storecontroller.py:433
+#: ../virtaal/controllers/storecontroller.py:438
 #, python-format
 msgid "Translated: %d"
 msgstr ""
 
-#: ../virtaal/controllers/storecontroller.py:434
+#: ../virtaal/controllers/storecontroller.py:439
 #, python-format
 msgid "Fuzzy: %d"
 msgstr ""
 
-#: ../virtaal/controllers/storecontroller.py:435
+#: ../virtaal/controllers/storecontroller.py:440
 #, python-format
 msgid "Untranslated: %d"
 msgstr ""
 
-#: ../virtaal/controllers/storecontroller.py:436
+#: ../virtaal/controllers/storecontroller.py:441
 #, python-format
 msgid "Total: %d"
 msgstr ""
 
 #. l10n: this refers to updating a file to a new template (POT file)
-#: ../virtaal/controllers/storecontroller.py:454
+#: ../virtaal/controllers/storecontroller.py:459
 msgid "File Updated"
 msgstr ""
 

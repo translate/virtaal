@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2009 Zuza Software Foundation
+# Copyright 2014 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -50,11 +51,6 @@ class LookupModel(BaseLookupModel):
             'display_name': _('Wikipedia'),
             'url': 'http://%(querylang)s.wikipedia.org/wiki/%(query)s',
             'quoted': False,
-        },
-        {
-            'display_name': _('Open-Tran.eu'),
-            'url': 'http://%(querylang)s.%(nonquerylang)s.open-tran.eu/suggest/%(query)s',
-            'quoted': True,
         },
     ]
     """A list of dictionaries containing data about each URL:

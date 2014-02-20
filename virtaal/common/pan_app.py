@@ -45,7 +45,7 @@ def get_config_dir():
     return confdir
 
 if os.name == 'nt':
-    filename_template = path.join(get_config_dir(), '%s_virtaal.log')
+    filename_template = os.path.join(get_config_dir(), '%s_virtaal.log')
     sys.stdout = open(filename_template % ('stdout'), 'w')
     sys.stderr = open(filename_template % ('stderr'), 'w')
 

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2010-2011 Zuza Software Foundation
+# Copyright 2013-2014 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -39,8 +40,8 @@ def _dialog_to_use():
     ui_language = pan_app.ui_language
 
     if sys.platform == 'win32':
-        from virtaal.support.libi18n.locale import get_win32_system_lang
-        win32_lang = get_win32_system_lang()
+        from virtaal.support.libi18n.locale import get_win32_lang
+        win32_lang = get_win32_lang(system_ui=True)
         if win32_lang == ui_language or ui_language == 'en' and win32_lang == 'C':
             return 'win32'
 

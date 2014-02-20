@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2007-2008 Dieter Verfaillie <dieterv@optionexplicit.be>
 # Copyright 2009-2010 Zuza Software Foundation
-# Copyright 2013 Friedel Wolff
+# Copyright 2013-2014 F Wolff
 #
 # (NOTE: LGPL)
 # This library is free software; you can redistribute it and/or
@@ -274,16 +274,19 @@ def _isofromlangid(langid):
     return lcid.get(langid, None)
 
 
-def get_win32_system_lang():
-    # Try to detect language with GetUserDefaultUILanguage().
+def get_win32_lang(system_ui=False):
+    """Return the locale for the user (default) or the system UI."""
     # This supports windows MUI language packs and will return
     # the windows installation language if not available or
     # if the language has not been changed by the user.
     # Works on win2k and up.
     from ctypes import windll
-    #windll.kernel32.GetUserDefaultUILanguage() - Windows UI language
-    #windll.kernel32.GetUserDefaultLangID() - User's locale
-    langid = windll.kernel32.GetUserDefaultUILanguage()
+    if system_ui:
+        #Windows UI language
+        langid = windll.kernel32.GetUserDefaultUILanguage()
+    else:
+        #User's locale
+        langid = windll.kernel32.GetUserDefaultUILanguage()
     if not langid == 0:
         lang = _isofromlangid(langid) or 'C'
     else:
@@ -294,7 +297,7 @@ def get_win32_system_lang():
 
 def _getlang():
     # Environment always overrides this for debugging purposes.
-    lang = os.getenv('LANG') or get_win32_system_lang()
+    lang = os.getenv('LANG') or get_win32_lang()
     return lang
 
 

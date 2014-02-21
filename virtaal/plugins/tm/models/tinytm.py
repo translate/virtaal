@@ -42,6 +42,7 @@ class TMModel(BaseTMModel):
         "username": "postgres",
         "password": "",
         "database": "tinytm",
+        "port": "5432",
     }
 
     # INITIALIZERS #
@@ -58,7 +59,8 @@ class TMModel(BaseTMModel):
             database=self.config["database"],
             user=self.config["username"],
             password=self.config["password"],
-            host=self.config["server"]
+            host=self.config["server"],
+            port=self.config["port"],
         )
 
         super(TMModel, self).__init__(controller)

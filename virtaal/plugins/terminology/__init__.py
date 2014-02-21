@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2009 Zuza Software Foundation
+# Copyright 2014 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -29,7 +30,7 @@ class Plugin(BasePlugin):
     version = 0.1
     default_config = {
         'backends_dialog_width': 400,
-        'disabled_models': '',
+        'disabled_models': 'opentran',
         'max_matches': '5',
         'min_quality': '70'
     }

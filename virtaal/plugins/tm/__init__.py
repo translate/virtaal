@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2014 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -28,7 +29,7 @@ class Plugin(BasePlugin):
     description = _('Translation memory suggestions')
     version = 0.1
     default_config = {
-        'disabled_models': '_dummytm,libtranslate,remotetm,tinytm,apertium,google_translate,moses,microsoft_translator',
+        'disabled_models': '_dummytm,libtranslate,remotetm,tinytm,apertium,google_translate,moses,microsoft_translator,opentran',
         'max_matches': '5',
         'min_quality': '70'
     }

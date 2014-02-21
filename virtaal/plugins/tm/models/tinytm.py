@@ -52,11 +52,12 @@ class TMModel(BaseTMModel):
         self.load_config()
 
         try:
-            import psycopg2 as psycopg
+            import psycopg2
+            self.psycopg2 = psycopg2
         except ImportError:
             raise PluginUnsupported("The psycopg2 package is required for TinyTM")
 
-        self._db_con = psycopg.connect(
+        self._db_con = self.psycopg2.connect(
             database=self.config["database"],
             user=self.config["username"],
             password=self.config["password"],
@@ -79,7 +80,7 @@ class TMModel(BaseTMModel):
                 """SELECT * FROM tinytm_get_fuzzy_matches(%s, %s, %s, '', '')""",
                 (self.source_lang, self.target_lang, query_str.encode('utf-8'))
             )
-        except psycopg.Error, e:
+        except self.psycopg2.Error, e:
             logging.error("[%s] %s" % (e.pgcode, e.pgerror))
         for result in cursor.fetchall():
             quality, source, target = result[:3]

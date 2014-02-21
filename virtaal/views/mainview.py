@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2010 Zuza Software Foundation
-# Copyright 2013 F Wolff
+# Copyright 2013-2014 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -91,10 +91,6 @@ class MainView(BaseView):
         self.modified = False
 
         if os.name == 'nt':
-            # Before we do anything else, make sure that stdout and stderr are properly handled.
-            sys.stdout = open(os.path.join(pan_app.get_config_dir(), 'virtaal_log.txt'), 'ab')
-            sys.stderr = sys.stdout
-
             # Make sure that rule-hints are shown in Windows
             rc_string = """
                 style "show-rules"

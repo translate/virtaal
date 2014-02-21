@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
+# Copyright 2014 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -37,10 +38,10 @@ class TMModel(BaseTMModel):
     description = _('A TinyTM translation memory server')
 
     default_config = {
-        "server":   "www.tinytm.org",
-        "username": "bbigboss",
-        "password": "ben",
-        "database": "projop",
+        "server":   "localhost",
+        "username": "postgres",
+        "password": "",
+        "database": "tinytm",
     }
 
     # INITIALIZERS #

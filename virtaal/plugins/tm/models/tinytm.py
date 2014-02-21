@@ -27,6 +27,9 @@ from basetmmodel import BaseTMModel
 from virtaal.controllers.baseplugin import PluginUnsupported
 
 
+MAX_ERRORS = 5
+
+
 class TMModel(BaseTMModel):
     """This is a TinyTM translation memory model.
 
@@ -57,6 +60,11 @@ class TMModel(BaseTMModel):
         except ImportError:
             raise PluginUnsupported("The psycopg2 package is required for TinyTM")
 
+        # We count errors so that we can disable the plugin if it experiences
+        # multiple problems. If still negative, it means we were never able to
+        # connect, so we can disable the plugin completely.
+        self._errors = -1
+
         self._db_con = self.psycopg2.connect(
             database=self.config["database"],
             user=self.config["username"],
@@ -64,12 +72,16 @@ class TMModel(BaseTMModel):
             host=self.config["server"],
             port=self.config["port"],
         )
+        self._errors = 0
 
         super(TMModel, self).__init__(controller)
 
 
     # METHODS #
     def query(self, tmcontroller, unit):
+        if self._db_con.closed:
+            return
+
         query_str = unit.source
         matches = []
         cursor = self._db_con.cursor()
@@ -84,7 +96,7 @@ class TMModel(BaseTMModel):
             # Uncomment this if you don't trust the results
             #cursor.execute("""SELECT * FROM tinytm_get_fuzzy_matches('en', 'de', 'THE EUROPEAN ECONOMIC COMMUNITY', '', '')""")
         except self.psycopg2.Error, e:
-            logging.error("[%s] %s" % (e.pgcode, e.pgerror))
+            self.error(e)
         for result in cursor.fetchall():
             quality, source, target = result[:3]
             if not isinstance(target, unicode):
@@ -97,6 +109,17 @@ class TMModel(BaseTMModel):
             })
 
         self.emit('match-found', query_str, matches)
+
+    def error(self, e=None):
+        if self._errors < 0:
+            # We're still busy initialising
+            raise PluginUnsupported("Unable to connect to the TinyTM server.")
+
+        if e:
+            logging.error("[%s] %s" % (e.pgcode, e.pgerror))
+        self._errors += 1
+        if self._errors > MAX_ERRORS:
+            self._db_con.close()
 
     def destroy(self):
         super(TMModel, self).destroy()

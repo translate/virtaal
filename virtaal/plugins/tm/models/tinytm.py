@@ -24,6 +24,7 @@ import logging
 from virtaal.common import pan_app
 
 from basetmmodel import BaseTMModel
+from virtaal.controllers.baseplugin import PluginUnsupported
 
 
 class TMModel(BaseTMModel):
@@ -53,7 +54,7 @@ class TMModel(BaseTMModel):
         try:
             import psycopg2 as psycopg
         except ImportError:
-            import psycopg
+            raise PluginUnsupported("The psycopg2 package is required for TinyTM")
 
         self._db_con = psycopg.connect(
             database=self.config["database"],

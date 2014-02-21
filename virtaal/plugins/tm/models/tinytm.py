@@ -19,6 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import gtk
 import logging
 
 from virtaal.common import pan_app
@@ -70,8 +71,10 @@ class TMModel(BaseTMModel):
             user=self.config["username"],
             password=self.config["password"],
             host=self.config["server"],
+            async=1,
             port=self.config["port"],
         )
+        self.wait()
         self._errors = 0
 
         super(TMModel, self).__init__(controller)
@@ -79,7 +82,11 @@ class TMModel(BaseTMModel):
 
     # METHODS #
     def query(self, tmcontroller, unit):
-        if self._db_con.closed:
+        if self._db_con.closed or self._db_con.isexecuting():
+            # Two cursors can't execute concurrently on an asynchronous
+            # connection. We could try to cancel the old one, but if it hasn't
+            # finished yet, it might be busy. So let's rather not pile on
+            # another query to avoid overloading the server.
             return
 
         query_str = unit.source
@@ -97,6 +104,7 @@ class TMModel(BaseTMModel):
             #cursor.execute("""SELECT * FROM tinytm_get_fuzzy_matches('en', 'de', 'THE EUROPEAN ECONOMIC COMMUNITY', '', '')""")
         except self.psycopg2.Error, e:
             self.error(e)
+        self.wait()
         for result in cursor.fetchall():
             quality, source, target = result[:3]
             if not isinstance(target, unicode):
@@ -109,6 +117,26 @@ class TMModel(BaseTMModel):
             })
 
         self.emit('match-found', query_str, matches)
+
+    def wait(self):
+        import select
+        while 1:
+            while gtk.events_pending():
+                gtk.main_iteration()
+            try:
+                state = self._db_con.poll()
+            except self.psycopg2.Error, e:
+                self.error(e)
+
+            if state == self.psycopg2.extensions.POLL_OK:
+                break
+            elif state == self.psycopg2.extensions.POLL_WRITE:
+                select.select([], [self._db_con.fileno()], [], 0.05)
+            elif state == self.psycopg2.extensions.POLL_READ:
+                select.select([self._db_con.fileno()], [], [], 0.05)
+            else:
+                self.error()
+                raise self.psycopg2.OperationalError("poll() returned %s" % state)
 
     def error(self, e=None):
         if self._errors < 0:

@@ -286,7 +286,7 @@ def get_win32_lang(system_ui=False):
         langid = windll.kernel32.GetUserDefaultUILanguage()
     else:
         #User's locale
-        langid = windll.kernel32.GetUserDefaultUILanguage()
+        langid = windll.kernel32.GetUserDefaultLangID()
     if not langid == 0:
         lang = _isofromlangid(langid) or 'C'
     else:

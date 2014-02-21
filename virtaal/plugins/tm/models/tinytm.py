@@ -78,6 +78,9 @@ class TMModel(BaseTMModel):
                 """SELECT * FROM tinytm_get_fuzzy_matches(%s, %s, %s, '', '')""",
                 (self.source_lang, self.target_lang, query_str.encode('utf-8'))
             )
+            # You can connect to any postgres database and use this for basic
+            # testing:
+            #cursor.execute("""select pg_sleep(2); SELECT 99, 'source', 'target';""")
             # Uncomment this if you don't trust the results
             #cursor.execute("""SELECT * FROM tinytm_get_fuzzy_matches('en', 'de', 'THE EUROPEAN ECONOMIC COMMUNITY', '', '')""")
         except self.psycopg2.Error, e:

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2007-2010 Zuza Software Foundation
-# Copyright 2013 F Wolff
+# Copyright 2013-2014 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -267,15 +267,6 @@ else:
         # See bug 3109
         __builtin__.__dict__['_'] = lambda s: s
 
-if os.name =='nt' and getattr(sys, 'frozen', False) :
-    fix_libintl()
-
-if _(''):
-    # If this is true, we have a translated interface
-    ui_language = ui_language or get_locale_lang()
-else:
-    ui_language = 'en'
-
 
 # Determine the directory the main executable is running from
 main_dir = u''
@@ -283,6 +274,17 @@ if getattr(sys, 'frozen', False):
     main_dir = os.path.dirname(unicode(sys.executable, sys.getfilesystemencoding()))
 else:
     main_dir = os.path.dirname(unicode(sys.argv[0], sys.getfilesystemencoding()))
+
+
+if os.name =='nt' and getattr(sys, 'frozen', False) :
+    fix_libintl(main_dir)
+
+if _(''):
+    # If this is true, we have a translated interface
+    ui_language = ui_language or get_locale_lang()
+else:
+    ui_language = 'en'
+
 
 def get_abs_data_filename(path_parts, basedirs=None):
     """Get the absolute path to the given file- or directory name in Virtaal's

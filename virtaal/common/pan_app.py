@@ -276,7 +276,7 @@ else:
     main_dir = os.path.dirname(unicode(sys.argv[0], sys.getfilesystemencoding()))
 
 
-if os.name =='nt' and getattr(sys, 'frozen', False) :
+if os.name =='nt' and getattr(sys, 'frozen', False):
     fix_libintl(main_dir)
 
 if _(''):

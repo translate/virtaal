@@ -21,8 +21,9 @@
   </ul>
  </description>
  <screenshots>
-<!--  <screenshot type="default" width="800" height="600">http://www.hughsie.com/en_US/main.png</screenshot>-->
-<!--  <screenshot width="800" height="600">http://www.hughsie.com/en_US/preferences.png</screenshot>-->
+  <screenshot type="default" width="624" height="351">https://raw.github.com/translate/virtaal/master/docs/_static/appdata/welcome.png</screenshot>
+  <screenshot width="624" height="351">https://raw.github.com/translate/virtaal/master/docs/_static/appdata/placeable.png</screenshot>
+  <screenshot width="960" height="540">https://raw.github.com/translate/virtaal/master/docs/_static/appdata/window.png</screenshot>
  </screenshots>
  <url type="homepage">http://virtaal.org/</url>
  <updatecontact>dev _at_ translate.org.za</updatecontact>

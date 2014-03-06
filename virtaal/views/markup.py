@@ -21,6 +21,8 @@
 
 import re
 
+from diff_match_patch import diff_match_patch
+
 from virtaal.views.theme import current_theme
 
 
@@ -138,7 +140,8 @@ _diff_pango_templates = {
                 "background='%(diff_replace_bg)s'",
 }
 
-def _google_pango_diff(a, b):
+differencer = diff_match_patch()
+def pango_diff(a, b):
     """Highlights the differences between a and b for Pango rendering.
 
     We try to simplify things by only showing the new part of a replacement,
@@ -192,37 +195,3 @@ def _google_pango_diff(a, b):
     if removed:
         textdiff += _pango_spans(delete_attr, removed)
     return textdiff
-
-def _difflib_pango_diff(a, b):
-    """Highlights the differences between a and b for Pango rendering
-
-    The differences are highlighted such that they show what would be required
-    to transform a into b."""
-
-    insert_attr = _diff_pango_templates['insert_attr'] % current_theme
-    delete_attr = _diff_pango_templates['delete_attr'] % current_theme
-    replace_attr_remove = delete_attr
-    replace_attr_add = _diff_pango_templates['replace_attr_add'] % current_theme
-
-    textdiff = ""
-    for tag, i1, i2, j1, j2 in SequenceMatcher(None, a, b).get_opcodes():
-        if tag == 'equal':
-            textdiff += _escape_entities(a[i1:i2])
-        elif tag == "insert":
-            textdiff += _pango_spans(insert_attr, b[j1:j2])
-        elif tag == "delete":
-            textdiff += _pango_spans(delete_attr, a[i1:i2])
-        elif tag == "replace":
-            # We don't show text that was removed as part of a change:
-            #textdiff += _pango_spans(replace_attr_remove, a[i1:i2])
-            textdiff += _pango_spans(replace_attr_add, b[j1:j2])
-    return textdiff
-
-try:
-    from translate.misc.diff_match_patch import diff_match_patch
-    differencer = diff_match_patch()
-    pango_diff = _google_pango_diff
-except ImportError, e:
-    from difflib import SequenceMatcher
-    pango_diff = _difflib_pango_diff
-

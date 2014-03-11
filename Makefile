@@ -1,8 +1,14 @@
 SRC_DIR = .
+DOCS_DIR = docs
 
-.PHONY: all pot get-translations help update-translations
+.PHONY: all docs pot get-translations help update-translations
 
 all: help
+
+docs:
+	# The following creates the HTML docs.
+	# NOTE: cd and make must be in the same line.
+	cd ${DOCS_DIR}; make SPHINXOPTS="-W -q" html
 
 pot:
 	cd ${SRC_DIR}/po; ./intltool-update --pot
@@ -29,6 +35,7 @@ help:
 	@echo "Help"
 	@echo "----"
 	@echo
+	@echo "  docs - build Sphinx docs"
 	@echo "  pot - update the POT translations templates"
 	@echo "  get-translations - retrieve Pootle translations from server (requires ssh config for pootletranslations)"
 	@echo "  update-translations - update *.po against virtaal.pot"

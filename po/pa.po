@@ -43,17 +43,21 @@ msgid ""
 "resources to make translation fun, while helping to improve translation "
 "quality."
 msgstr ""
-
+"ਵੀਰਤਾਲ ਟਰਾਂਸਲੇਸ਼ਨ ਕਰਨ ਲਈ ਇੱਕ ਪ੍ਰੋਗਰਾਮ ਹੈ। ਸਾਦਗੀ ਅਤੇ ਸ਼ਕਤੀ ਦਾ ਮਜ਼ੇਦਾਰ ਸੁਮੇਲ ਇਸਦਾ ਉਦੇਸ਼ ਹੈ "
+"ਟਰਾਂਸਲੇਸ਼ਨ ਮਜ਼ੇਦਾਰ ਬਣਾਉਣ ਲਈ ਇਸਨੂੰ ਆੱਨਲਾਈਨ ਵਸੀਲਿਆਂ ਨਾਲ ਜੋੜਿਆ ਗਿਆ ਹੈ,ਜਦ ਟਰਾਂਸਲੇਸ਼ਨ ਦੀ "  
+"ਗੁਣਵੱਤਾ ਵਧਾਉਣ ਵਿੱਚ ਮੱਦਦ ਕਰ ਰਹੇ ਹੋਵੋ "
 #: ../share/appdata/virtaal.appdata.xml.in.h:2
 msgid ""
 "The initial focus is on software translation (localization or l10n), but is "
 "definitely meant to be useful as a general purpose tool for Computer Aided "
 "Translation (CAT)."
 msgstr ""
+"ਇਸ ਦਾ ਸ਼ੁਰੂਆਤੀ ਧਿਆਨ ਸਾਫ਼ਟਵੇਅਰ ਟਰਾਂਸਲੇਸ਼ਨ ਤੇ ਹੈ (localization or l10n), ਪਰ ਕੰਪਿਊਟਰ "
+"ਸਹਾਇਕ ਟਰਾਂਸਲੇਸ਼ਨ (CAT) ਲਈ ਇੱਕ ਆਮ ਕਾਰਜ ਟੂਲ ਦੇ ਤੌਰ ਤੇ ਯਕੀਨਨ ਲਾਭਦਾਇਕ ਹੇਣ ਦਾ ਮਤਲਬ ਹੈ। "
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:3
 msgid "Some features:"
-msgstr ""
+msgstr "ਕੁੱਝ ਵਿਸ਼ੇਸਤਾਵਾਂ:"
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:4
 #, fuzzy
@@ -64,7 +68,7 @@ msgstr "ਮੌਜੂਦਾ ਅਨੁਵਾਦ: %(translations)s"
 #: ../share/appdata/virtaal.appdata.xml.in.h:5
 #: ../virtaal/views/widgets/welcomescreen.py:80
 msgid "Terminology assistance"
-msgstr ""
+msgstr "ਸ਼ਬਦ-ਢਾਂਚਾ ਸਹਾਇਤਾ"
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:6
 msgid "AutoCompletor and AutoCorrector"

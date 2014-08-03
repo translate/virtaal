@@ -185,12 +185,6 @@ def main(argv):
                 parser.error(_("Could not open profile file '%(filename)s'") % {"filename":options.profile})
 
         def default_runner(startup_file):
-            if not pan_app.DEBUG:
-                try:
-                    import psyco
-                    psyco.full()
-                except Exception:
-                    pass
             run_virtaal(startup_file)
 
         if options and getattr(options, "profile", None) != None:

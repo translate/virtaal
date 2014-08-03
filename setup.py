@@ -482,7 +482,7 @@ def add_win32_options(options):
             "dist_dir":   "virtaal-win32",
             "includes":   [
                     # some of these are needed by plugins and are therefore not detected
-                    "lxml", "lxml._elementpath", "psyco", "cairo", "pango",
+                    "lxml", "lxml._elementpath", "cairo", "pango",
                     "pangocairo", "atk", "gobject", "gtk.keysyms",
                     "gtkspell",
                     "gio", # needed for gtk.Builder
@@ -533,7 +533,7 @@ def add_mac_options(options):
         "options": {
             "py2app": {
             "packages": ["CoreFoundation", "objc"],
-            "includes":   ["lxml", "lxml._elementpath", "lxml.etree", "glib", "gio", "psyco", "cairo", "pango", "pangocairo", "atk", "gobject", "gtk.keysyms", "pycurl", "translate.services", "translate.services.tmclient", "translate.services.opentranclient", "CoreFoundation"],
+            "includes":   ["lxml", "lxml._elementpath", "lxml.etree", "glib", "gio", "cairo", "pango", "pangocairo", "atk", "gobject", "gtk.keysyms", "pycurl", "translate.services", "translate.services.tmclient", "translate.services.opentranclient", "CoreFoundation"],
                 #"semi_standalone": True,
                 "compressed": True,
                 "argv_emulation": True,

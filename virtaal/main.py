@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
-# Copyright 2013 F Wolff
+# Copyright 2013-2014 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -49,7 +49,7 @@ class _Deferer:
 
         if not self._todo:
             # No existing jobs, so start one
-            gobject.idle_add(next_job)
+            gobject.idle_add(next_job, priority=gobject.PRIORITY_LOW)
         self._todo.append((func, args))
 
 

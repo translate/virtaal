@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
+# Copyright 2014 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -55,8 +56,8 @@ class WelcomeScreenController(BaseController):
     def activate(self):
         """Show the welcome screen and trigger activation logic (ie. find
             recent files)."""
-        from gobject import idle_add
-        idle_add(self.update_recent)
+        import gobject
+        gobject.idle_add(self.update_recent, priority=gobject.PRIORITY_LOW)
         self.view.show()
 
     def open_cheatsheat(self):

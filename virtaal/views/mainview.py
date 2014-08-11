@@ -189,8 +189,8 @@ class MainView(BaseView):
         self._setup_key_bindings()
         self._track_window_state()
         self._setup_dnd()
-        from gobject import idle_add
-        idle_add(self._setup_recent_files)
+        import gobject
+        gobject.idle_add(self._setup_recent_files, priority=gobject.PRIORITY_LOW)
         self.main_window.connect('style-set', self._on_style_set)
 
     def _create_dialogs(self):

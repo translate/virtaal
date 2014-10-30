@@ -78,7 +78,7 @@ Installation
 Contact
 =======
 - Chat in our IRC channel `#pootle <irc://freenode.net/#pootle>`_
-- `Report bugs <http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal>`_
+- `Report bugs <https://github.com/translate/virtaal/issues/new>`_
 - Join the `Translate-devel mailing list
   <https://lists.sourceforge.net/lists/listinfo/translate-devel>`_
 

@@ -159,5 +159,5 @@ class StoreView(BaseView):
     def _on_style_set(self, widget, prev_style):
         # The following color change is to reduce the flickering seen when
         # changing units. It's not the perfect cure, but helps a lot.
-        # http://bugs.locamotion.org/show_bug.cgi?id=1412
+        # https://github.com/translate/virtaal/issues/1412
         self._treeview.modify_base(gtk.STATE_ACTIVE, widget.style.bg[gtk.STATE_NORMAL])

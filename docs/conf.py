@@ -279,8 +279,8 @@ intersphinx_mapping = {
 
 extlinks = {
     # :role: (URL, prefix)
-    'bug': ('http://bugs.locamotion.org/show_bug.cgi?id=%s',
-            'bug '),
+    'issue': ('https://github.com/translate/translate/issues/%s',
+              'issue '),
     'man': ('http://linux.die.net/man/1/%s', ''),
     'wp': ('http://en.wikipedia.org/wiki/%s', ''),
     'wiki': ('http://translate.sourceforge.net/wiki/%s', ''),

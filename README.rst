@@ -8,7 +8,7 @@ several purposes.
 References
 ----------
 * Website: <http://translate.sourceforge.net/wiki/virtaal/index>
-* Bug tracker: <http://bugs.locamotion.org/>
+* Bug tracker: <https://github.com/translate/virtaal/issues>
 
 Installation
 ------------
@@ -27,7 +27,7 @@ Reporting bugs
 --------------
 Please report bugs by clicking on '*Help->Report bug...*' from within Virtaal
 (this requires a Bugzilla account).  Alternatively report directly using this
-URL: <http://bugs.locamotion.org/enter_bug.cgi?product=Virtaal>
+URL: <https://github.com/translate/virtaal/issues/new>
 
 Taking the time to create a bugzilla account will help ensure that you can track
 progress, provide feedback and allows others to see your bug report.

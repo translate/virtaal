@@ -13,7 +13,7 @@ Changes to Virtaal will be guided by these guidelines:
 - Maximum functionality without setup and configuration
 
 View a list of `open requests and bugs
-<http://bugs.locamotion.org/buglist.cgi?query_format=specific&order=relevance+desc&bug_status=__open__&product=Virtaal&content=>`_.
+<https://github.com/translate/virtaal/issues>`_.
 
 Features that are likely to be developed in the foreseeable future:
 

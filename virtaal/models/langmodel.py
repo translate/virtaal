@@ -71,7 +71,7 @@ class LanguageModel(BaseModel):
             try:
                 langcode = self._match_normalized_langcode(langcode)
             except ValueError:
-                langcode = data.simplify_to_common(langcode, self.languages)
+                langcode = data.simplify_to_common(langcode)
                 if langcode not in self.languages:
                     try:
                         langcode = self._match_normalized_langcode(langcode)

@@ -1,7 +1,7 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Copyright 2010-2011 Zuza Software Foundation
+# Copyright 2015 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -19,7 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from gobject import SIGNAL_RUN_FIRST, timeout_add
+from gobject import SIGNAL_RUN_FIRST, timeout_add, PRIORITY_LOW
 
 from virtaal.common import GObjectWrapper
 
@@ -207,7 +207,7 @@ class ChecksController(BaseController):
             # haven't changed units yet, probably strange timing issue
             return
         self._check_timer_active = True
-        timeout_add(self.CHECK_TIMEOUT, self._check_timer_expired, self.last_unit)
+        timeout_add(self.CHECK_TIMEOUT, self._check_timer_expired, self.last_unit, priority=PRIORITY_LOW)
 
     def get_check_name(self, check):
         """Return the human readable form of the given check name."""

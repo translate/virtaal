@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
-# Copyright 2013 F Wolff
+# Copyright 2013,2015 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -480,6 +480,9 @@ class SearchMode(BaseMode):
     def _on_unit_modified(self, unit_controller, current_unit):
         unit_matches = self._get_matches_for_unit(current_unit)
         for match in unit_matches:
+            # Modifications can only affect the target:
+            if not match.part == 'target':
+                continue
             if not self.filter.re_search.match(match.get_getter()()[match.start:match.end]):
                 logging.debug('Match to remove: %s' % (match))
                 self.matches.remove(match)

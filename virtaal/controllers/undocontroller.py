@@ -1,8 +1,7 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
-# Copyright 2013 F Wolff
+# Copyright 2013,2015 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -147,7 +146,8 @@ class UndoController(BaseController):
         textbox = self.unit_controller.view.targets[undo_info['targetn']]
         def refresh():
             textbox.refresh_cursor_pos = undo_info['cursorpos']
-            textbox.refresh()
+            # TODO: try to avoid full refresh
+            textbox.refresh(update=True)
         gobject.idle_add(refresh)
 
     def _select_unit(self, unit):

@@ -1,8 +1,7 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Copyright 2009-2011 Zuza Software Foundation
-# Copyright 2013 F Wolff
+# Copyright 2013-2015 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -146,7 +145,7 @@ class TextBox(gtk.TextView):
             end_iter = self.buffer.get_end_iter()
         return data.forceunicode(self.buffer.get_text(start_iter, end_iter))
 
-    def set_text(self, text):
+    def set_text(self, text, update=False):
         """Set the text rendered in this text box.
             Uses C{gtk.TextBuffer.set_text()}.
             @type  text: str|unicode|L{StringElem}
@@ -167,8 +166,9 @@ class TextBox(gtk.TextView):
                 self.elem.sub = [elem_parse(text, self.placeables_controller.get_parsers_for_textbox(self))]
             else:
                 self.elem.sub = [text]
-
-        self.update_tree()
+            self.update_tree()
+        elif update:
+            self.update_tree()
         self.emit("changed")
 
 
@@ -307,7 +307,7 @@ class TextBox(gtk.TextView):
                 self.buffer.insert_at_cursor(translation)
                 cursor_pos += len(translation)
         self.refresh_cursor_pos = cursor_pos
-        self.refresh()
+        self.refresh(update=True)
 
     def move_elem_selection(self, offset):
         direction = offset/abs(offset) # Reduce offset to one of -1, 0 or 1
@@ -352,7 +352,7 @@ class TextBox(gtk.TextView):
         # the end of a long unit with scrollbar, for example).
         self.scroll_to_iter(cursor_iter, 0.0)
 
-    def refresh(self, preserve_selection=True):
+    def refresh(self, preserve_selection=True, update=False):
         """Refresh the text box by setting its text to the current text."""
         if not self.props.visible:
             return # Don't refresh if this text box is not going to be seen anyway
@@ -363,7 +363,7 @@ class TextBox(gtk.TextView):
 
         if self.elem is not None:
             self.elem.prune()
-            self.set_text(self.elem)
+            self.set_text(self.elem, update=update)
         else:
             self.set_text(self.get_text())
 

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2009-2010 Zuza Software Foundation
-# Copyright 2013 F Wolff
+# Copyright 2013,2015 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -23,7 +23,7 @@ __all__ = ['check_dependencies', 'extra_tests', 'import_checks']
 
 
 # Modules to try and import:
-import_checks = ['translate', 'gtk', 'lxml.etree', 'json', 'pycurl', 'sqlite3', 'wsgiref']
+import_checks = ['translate', 'gtk', 'lxml.etree', 'json', 'pycurl', 'sqlite3', 'wsgiref', 'diff_match_patch']
 
 
 #########################

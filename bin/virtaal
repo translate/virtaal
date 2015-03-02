@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2007-2011 Zuza Software Foundation
-# Copyright 2013 F Wolff
+# Copyright 2013,2015 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -48,6 +48,7 @@ if not packaged:
         'gtkspell':   'GtkSpell not installed: Spell checking will not work.',
         'psycopg2':   'PsycoPG not installed: The TinyTM plug-in will not work.',
         'libproxy':   'libproxy is not installed: it improves support for network proxies on Linux.',
+        'diff_match_patch': 'diff_match_patch is not installed: it is required for TM functionality.',
     }
 
     failed = depcheck.check_dependencies(depcheck.import_checks + optional_modules)

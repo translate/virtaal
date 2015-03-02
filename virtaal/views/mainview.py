@@ -1,8 +1,7 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2010 Zuza Software Foundation
-# Copyright 2013-2014 F Wolff
+# Copyright 2013-2015 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -573,8 +572,8 @@ class MainView(BaseView):
         # Uncomment these lines to measure true startup time. It causes the
         # program to quit immediately when the last thing added to the gobject
         # idle queue during startup, is done.
-        #from gobject import idle_add
-        #idle_add(gtk.main_quit)
+        #from gobject import idle_add, PRIORITY_LOW
+        #idle_add(gtk.main_quit, priority=PRIORITY_LOW)
 
         # Uncomment these lines to see which modules have already been imported
         # at this stage. Keep in mind that something like pprint could affect

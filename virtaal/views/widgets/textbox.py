@@ -227,17 +227,14 @@ class TextBox(gtk.TextView):
                     if tag_end > end_index:
                         tag_end = end_index
 
-                    iters = (
-                        self.buffer.get_iter_at_offset(tag_start),
-                        self.buffer.get_iter_at_offset(tag_end)
-                    )
                     #logging.debug('  Apply tag at interval (%d, %d) [%s]' % (tag_start, tag_end, self.get_text(*iters)))
-
                     if not include_subtree or \
                             elem.gui_info.fg != placeablesguiinfo.StringElemGUI.fg or \
                             elem.gui_info.bg != placeablesguiinfo.StringElemGUI.bg:
                         self.buffer.get_tag_table().add(tag)
-                        self.buffer.apply_tag(tag, iters[0], iters[1])
+                        start_iter = self.buffer.get_iter_at_offset(tag_start)
+                        end_iter = self.buffer.get_iter_at_offset(tag_end)
+                        self.buffer.apply_tag(tag, start_iter, end_iter)
 
         if include_subtree:
             for sub, index in elem.gui_info.iter_sub_with_index():

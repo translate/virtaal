@@ -1,10 +1,28 @@
-#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
+# Copyright
+#   2010-2011 Zuza Software Foundation
+#   2015 F Wolff
+#
+# This file is part of Virtaal.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import gtk
-from gobject import SIGNAL_RUN_FIRST
+import gobject
 
 from virtaal.views.theme import current_theme
+
 
 class WelcomeScreen(gtk.ScrolledWindow):
     """
@@ -12,7 +30,7 @@ class WelcomeScreen(gtk.ScrolledWindow):
     """
 
     __gtype_name__ = 'WelcomeScreen'
-    __gsignals__ = { 'button-clicked': (SIGNAL_RUN_FIRST, None, (str,)) }
+    __gsignals__ = { 'button-clicked': (gobject.SIGNAL_RUN_FIRST, None, (str,)) }
 
 
     # INITIALISERS #
@@ -83,7 +101,11 @@ class WelcomeScreen(gtk.ScrolledWindow):
             u" • " + _("Highlighting and insertion of placeables"),
             u" • " + _("Many plugins and options for customization"),
         ])
-        self.widgets['txt_features'].get_buffer().set_text(features)
+
+        def _set_text(features):
+            # .get_buffer() is a bit expensive during startup
+            self.widgets['txt_features'].get_buffer().set_text(features)
+        gobject.idle_add(_set_text, features, priority=gobject.PRIORITY_LOW)
 
 
     # METHODS #

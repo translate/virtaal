@@ -619,6 +619,14 @@ class TextBox(gtk.TextView):
                         start_offset = start_elem_offset
                         end_offset = start_elem_offset + start_elem_len
                         done = True
+
+                        # A specific case needs extra attention: a newline with
+                        # a starting widget
+                        if start_iter.backward_visible_cursor_position():
+                            start_anchor = start_iter.get_child_anchor()
+                            if start_anchor:
+                                start_anchor.get_widgets()[0].hide()
+
                 elif not start_elem.iseditable and position in ('b', 'c'):
                     # "*Nothing" fields
                     if start_elem.isfragile:

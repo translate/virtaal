@@ -1,8 +1,7 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
-# 2013 Friedel Wolff
+# 2013,2015 Friedel Wolff
 #
 # This file is part of Virtaal.
 #
@@ -165,7 +164,7 @@ class RESTRequest(HTTPRequest):
     """Single HTTP REST request, blocking if used standalone."""
 
     def __init__(self, url, id, method='GET', data=None, headers=None, user_agent=None, params=None):
-        super(RESTRequest, self).__init__(url, method, data, headers, user_agent=user_agent)
+        super(RESTRequest, self).__init__(url, method, data, headers, user_agent=user_agent, follow_location=True)
 
         url = self.url
         self.id = id

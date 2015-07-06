@@ -503,7 +503,7 @@ msgstr "התנגשות תקציר"
 # 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
-msgstr "ירון שהרבני <sh.yaron@gmail.com>"
+msgstr "תודות למתרגמים"
 
 #: ../virtaal/controllers/checkscontroller.py:37
 msgid "Double quotes"

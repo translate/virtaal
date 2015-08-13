@@ -67,7 +67,7 @@ Installation
 +-----------------+--------------------------------------------------------------+---------------------------------------------+
 | Debian Squeeze  | apt-get install virtaal                                      | Or simply use the graphical package manager |
 +-----------------+--------------------------------------------------------------+---------------------------------------------+
-| openSUSE        | Read :doc:`openSUSE <opensuse_installation>` installation instructions                                     |
+| openSUSE        | zypper install virtaal                                       | Or simply use the graphical package manager |
 +-----------------+--------------------------------------------------------------+---------------------------------------------+
 | Other           | `Download source .zip or .tar.bz2                            | Make sure you have all the dependencies     |
 |                 | <http://sourceforge.net/projects/translate/files/Virtaal>`_  | including the latest Translate Toolkit      |

@@ -45,7 +45,6 @@ Installation
    :hidden:
 
    fedora_custom_repo
-   opensuse_installation
 
 +-----------------+--------------------------------------------------------------+---------------------------------------------+
 | Platform        | Instructions                                                 |  Notes                                      |

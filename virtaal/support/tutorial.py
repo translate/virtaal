@@ -261,12 +261,12 @@ def create_localized_tutorial():
      u"View",
      u"noun"),
 
-    (_(u"An accelerator key is a key on your keyboard that you can press to "
+    (_(u"An accelerator key is a key on your keyboard that you can press "
        u"to quickly access a menu or function. It is also called a hot key, "
        u"access key or mnemonic. In program interfaces they are shown as an "
        u"underlined letter in the text label. In the translatable text they "
        u"are marked using some character like the underscore here, but other "
-       u"characters are used for this as well. In this case the the "
+       u"characters are used for this as well. In this case the "
        u"accelerator key is \"f\" since the underscore is before this letter "
        u"and it means that this accelerator could be triggered by pressing "
        u"Alt+F."),
@@ -292,16 +292,16 @@ def create_localized_tutorial():
      u"verb"),
 
     # Entry with context message.
-    (_(u"In the previous entry you have created one terminology entry for the "
+    (_(u"In the previous entry you have created one terminology entry for "
        u"the \"filter\" verb. Now do the same for \"filter\" noun."),
      u"Filter",
      u"noun"),
 
-    (_(u"If you have created any terminology in the previous entries you may "
+    (_(u"If you have created any terminology in the previous entries you "
        u"may now see some of the words with a green background (or other "
        u"color depending on your theme). This means that Virtaal has "
        u"terminology suggestions for that word. Use Alt+Right to select the "
-       u"highlighted word, and then press Alt+Down. If only one suggestions "
+       u"highlighted word, and then press Alt+Down. If only one suggestion "
        u"is provided Alt+Down just copies the suggestion to the translation "
        u"field. But if several suggestions are available Alt+Down shows a "
        u"suggestion list which you can navigate using Down and Up keys. Once "
@@ -322,7 +322,7 @@ def create_localized_tutorial():
      u"Heading 1\tHeading 2\tHeading 3",
      u""),
 
-    (_(u"This message contains a large number that is formatted according to "
+    (_(u"This message contains a large number that is formatted according "
        u"to American convention. Translate this but be sure to format the "
        u"number according to the convention for your language. You might need "
        u"to change the comma (,) and full stop (.) to other characters, and "
@@ -341,7 +341,7 @@ def create_localized_tutorial():
      u"The road is 10 miles long",
      u""),
 
-    (_(u"This message contains a link that the user will be able to click on "
+    (_(u"This message contains a link that the user will be able to click "
        u"on to visit the help page. Make sure you maintain the information "
        u"between the angle brackets (<...>) correctly. The double quotes (\") "
        u"should never be changed in tags, even if your language uses a "
@@ -351,7 +351,7 @@ def create_localized_tutorial():
       u"help page</a>"),
      u""),
 
-    (_(u"This message contains a similar link, but the programmers decided to "
+    (_(u"This message contains a similar link, but the programmers decided "
        u"to rather insert the tags with variables so that translators can't "
        u"change them. Make sure you position the two variables (%s) so that "
        u"they correspond to the opening and closing tag of the previous "
@@ -372,7 +372,7 @@ def create_localized_tutorial():
        u"\"a\" tags correspond to \"help page\" and that your translation "
        u"corresponding to the second sentence is contained in the <span> "
        u"tags. Note how the full stop is still inside the </span> tag."),
-     (u"The software has many features. <span class=\"info\">Feel free to "
+     (u"The software has many features. <span class=\"info\">Feel free "
       u"to visit our <a "
       u"href=\"http://docs.translatehouse.org/projects/virtaal/en/latest/\">"
       u"help page</a>.</span>"),

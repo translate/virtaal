@@ -198,6 +198,10 @@ class TMController(BaseController):
     # EVENT HANDLERS #
     def _on_cursor_changed(self, cursor):
         self.storecursor = cursor
+        if cursor is None:
+            # this can happen if we close a big file before it finished loading
+            return
+
         self.unit = cursor.deref()
 
         if self.unit is None:

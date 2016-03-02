@@ -4,9 +4,12 @@
  <id type="desktop">virtaal.desktop</id>
  <metadata_license>CC-BY-SA-3.0</metadata_license>
  <project_license>GPL-2.0+</project_license>
+ <!-- l10n: The name should be less than 30 characters -->/
  <_name>Virtaal Translation Tool</_name>
+ <!-- l10n: The summary should be less than 100 characters -->/
  <_summary>A translation tool to help a human translator translate files into other languages</_summary>
  <description>
+  <!-- l10n: Paragraphs should be less than 600 characters -->/
   <_p>
     Virtaal is a program for doing translation. It aims for a delightful combination of simplicity and power. It integrates with selected online resources to make translation fun, while helping to improve translation quality.
   </_p>
@@ -15,6 +18,7 @@
   </_p>
   <_p>Some features:</_p>
   <ul>
+   <!-- l10n: These list items should be less than 100 characters -->/
    <_li>Translation reuse (translation memory)</_li>
    <_li>Terminology assistance</_li>
    <_li>AutoCompletor and AutoCorrector</_li>
@@ -24,6 +28,7 @@
  <screenshots>
   <screenshot type="default">
     <image>https://raw.github.com/translate/virtaal/master/docs/_static/appdata/welcome.png</image>
+    <!-- l10n: Captions should be shorter than 50 characters -->
     <_caption>Easy access to recent files and documentation</_caption>
   </screenshot>
   <screenshot>

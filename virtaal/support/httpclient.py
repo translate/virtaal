@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
-# 2013,2015 Friedel Wolff
+# 2013,2015,2016 Friedel Wolff
 #
 # This file is part of Virtaal.
 #
@@ -303,6 +303,7 @@ class HTTPClient(object):
                     (6, 1): "Windows 7",     # Also Windows Server 2008 R2
                     (6, 2): "Windows 8",     # Also Windows Server 2012
                     (6, 3): "Windows 8.1",   # Also Windows Server 2012 R2
+                   (10, 0): "Windows 10",
             }
             # (5, 2) includes XP Professional x64 Edition, Server 2003, Home Server, Server 2003 R2
             name = name_dict.get((major, minor), None)

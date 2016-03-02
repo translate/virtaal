@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
-# Copyright 2013,2015 F Wolff
+# Copyright 2013,2015,2016 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -193,6 +193,7 @@ class SearchMode(BaseMode):
             unit_controller.set_unit_target(match.part_n, rstring[:match.start] + replace_str + rstring[match.end:])
 
     def update_search(self):
+        self._search_timeout = 0
         from translate.tools.pogrep import GrepFilter
         self.filter = GrepFilter(
             searchstring=unicode(self.ent_search.get_text()),
@@ -453,7 +454,6 @@ class SearchMode(BaseMode):
     def _on_search_text_changed(self, entry):
         if self._search_timeout:
             gobject.source_remove(self._search_timeout)
-            self._search_timeout = 0
 
         self._search_timeout = gobject.timeout_add(self.SEARCH_DELAY, self.update_search)
 

@@ -192,7 +192,6 @@ class StoreTreeView(gtk.TreeView):
 
         self.columns_autosize()
         if path != None:
-            cell_area = self.get_cell_area(path, column)
             def do_setcursor():
                 self.set_cursor(path, column, start_editing=True)
             gobject.idle_add(do_setcursor)

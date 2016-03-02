@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2013 F Wolff <friedel _at_ translate.org.za> -->
+<!-- Copyright 2013,2016 F Wolff <friedel _at_ translate.org.za> -->
 <application>
  <id type="desktop">virtaal.desktop</id>
- <licence>CC-BY-SA</licence>
+ <metadata_license>CC-BY-SA-3.0</metadata_license>
+ <project_license>GPL-2.0+</project_license>
+ <_name>Virtaal Translation Tool</_name>
+ <_summary>A translation tool to help a human translator translate files into other languages</_summary>
  <description>
   <_p>
     Virtaal is a program for doing translation. It aims for a delightful combination of simplicity and power. It integrates with selected online resources to make translation fun, while helping to improve translation quality.
   </_p>
   <_p>
     The initial focus is on software translation (localization or l10n), but is definitely meant to be useful as a general purpose tool for Computer Aided Translation (CAT).
-  </_p>
-  <_p>
   </_p>
   <_p>Some features:</_p>
   <ul>
@@ -21,10 +22,20 @@
   </ul>
  </description>
  <screenshots>
-  <screenshot type="default" width="624" height="351">https://raw.github.com/translate/virtaal/master/docs/_static/appdata/welcome.png</screenshot>
-  <screenshot width="624" height="351">https://raw.github.com/translate/virtaal/master/docs/_static/appdata/placeable.png</screenshot>
-  <screenshot width="960" height="540">https://raw.github.com/translate/virtaal/master/docs/_static/appdata/window.png</screenshot>
+  <screenshot type="default">
+    <image>https://raw.github.com/translate/virtaal/master/docs/_static/appdata/welcome.png</image>
+    <_caption>Easy access to recent files and documentation</_caption>
+  </screenshot>
+  <screenshot>
+    <image>https://raw.github.com/translate/virtaal/master/docs/_static/appdata/placeable.png</image>
+    <_caption>Recognized elements don't need to be typed</_caption>
+  </screenshot>
+  <screenshot>
+    <image>https://raw.github.com/translate/virtaal/master/docs/_static/appdata/window.png</image>
+    <_caption>Quality checks while you type</_caption>
+  </screenshot>
  </screenshots>
  <url type="homepage">http://virtaal.org/</url>
  <updatecontact>dev _at_ translate.org.za</updatecontact>
+ <translation type="gettext">virtaal</translation>
 </application>

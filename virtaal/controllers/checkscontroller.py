@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2010-2011 Zuza Software Foundation
-# Copyright 2015 F Wolff
+# Copyright 2015-2016 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -109,7 +109,9 @@ class ChecksController(BaseController):
         self._check_timer_active = False
         self._checker_code_to_name = {
               None: _('Default'),
-              "openoffice":  _('OpenOffice.org'),
+              # we keep the "openoffice" key for compatibility with the toolkit
+              # and existing file headers
+              "openoffice":  _('LibreOffice'),
               "mozilla": _('Mozilla'),
               "kde": _('KDE'),
               "gnome": _('GNOME'),

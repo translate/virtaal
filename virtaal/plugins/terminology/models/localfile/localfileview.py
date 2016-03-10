@@ -1,7 +1,7 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Copyright 2009-2011 Zuza Software Foundation
+# Copyright 2016 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -24,6 +24,7 @@ from gtk import gdk
 from translate.storage import factory as store_factory
 
 from virtaal.views.baseview import BaseView
+from virtaal.views import rendering
 from virtaal.views.theme import current_theme
 
 
@@ -385,6 +386,8 @@ class TermAddDialog:
         from virtaal.views import rendering
         self.ent_source.modify_font(rendering.get_source_font_description())
         self.ent_source.set_text(source_text.strip())
+        srclang = self.lang_controller.source_lang.code
+        self.ent_source.get_pango_context().set_language(rendering.get_language(srclang))
 
         target_text = u''
         for tgt in unitview.targets:
@@ -394,6 +397,8 @@ class TermAddDialog:
                 break
         self.ent_target.modify_font(rendering.get_target_font_description())
         self.ent_target.set_text(target_text.strip())
+        tgtlang = self.lang_controller.target_lang.code
+        self.ent_target.get_pango_context().set_language(rendering.get_language(tgtlang))
 
         self.txt_comment.get_buffer().set_text('')
 

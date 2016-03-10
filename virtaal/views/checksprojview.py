@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Copyright 2010 Zuza Software Foundation
@@ -33,9 +32,7 @@ class ChecksProjectView(BaseView):
     # INITIALIZERS #
     def __init__(self, controller):
         self.controller = controller
-        self.current_project = None
         self._checker_menu_items = {}
-
         self._create_project_button()
 
     def _create_project_button(self):

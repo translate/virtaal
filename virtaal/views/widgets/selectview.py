@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Copyright 2009-2010 Zuza Software Foundation
@@ -127,7 +126,6 @@ class SelectView(gtk.TreeView, GObjectWrapper):
                 item['config'](self.get_toplevel())
             btnconf.connect('button-release-event', clicked)
             btnconf.config_func = item['config']
-            vbox.btn_conf = btnconf
             hbox.pack_start(btnconf, expand=False)
 
         return hbox
@@ -166,7 +164,6 @@ class SelectView(gtk.TreeView, GObjectWrapper):
         try:
             if widget:
                 widget = widget.get_children()[1]
-            if widget:
                 config = widget.config_func
         except IndexError:
             pass

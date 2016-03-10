@@ -1,7 +1,7 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Copyright 2010 Zuza Software Foundation
+# Copyright 2016 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -122,7 +122,7 @@ class LookupView(BaseView):
         if not buf.get_has_selection():
             return
 
-        selection = buf.get_text(*buf.get_selection_bounds()).strip()
+        selection = buf.get_text(*buf.get_selection_bounds()).decode('utf-8').strip()
         role      = textbox.role
         srclang   = self.lang_controller.source_lang.code
         tgtlang   = self.lang_controller.target_lang.code

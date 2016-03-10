@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2009 Zuza Software Foundation
+# Copyright 2016 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -40,7 +41,7 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         'widget': (TYPE_PYOBJECT, 'Widget', 'The column containing the widget to render', PARAM_READWRITE),
     }
 
-    XPAD = 2
+    XPAD = 0
     YPAD = 2
 
 

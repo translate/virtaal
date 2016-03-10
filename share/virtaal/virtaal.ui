@@ -1088,7 +1088,7 @@ If you are translating from English to French then French would be your translat
     </child>
   </object>
   <object class="GtkDialog" id="PreferencesDlg">
-    <property name="width_request">500</property>
+    <property name="width_request">560</property>
     <property name="height_request">400</property>
     <property name="can_focus">False</property>
     <property name="border_width">5</property>

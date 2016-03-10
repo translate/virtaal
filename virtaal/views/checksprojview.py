@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2010 Zuza Software Foundation
+# Copyright 2016 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -18,6 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import locale
 import gtk
 
 from virtaal.views.widgets.popupmenubutton import PopupMenuButton
@@ -39,8 +41,11 @@ class ChecksProjectView(BaseView):
     def _create_project_button(self):
         self.btn_proj = PopupMenuButton(label=_('Project Type'))
         menu = gtk.Menu()
+        names = []
         for checkercode in self.controller.checker_info:
             checkername = self.controller._checker_code_to_name[checkercode]
+            names.append(checkername)
+        for checkername in sorted(names, cmp=locale.strcoll):
             mitem = gtk.MenuItem(checkername)
             mitem.show()
             mitem.connect('activate', self._on_menu_item_activate)

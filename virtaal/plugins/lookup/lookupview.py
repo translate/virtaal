@@ -128,7 +128,12 @@ class LookupView(BaseView):
         tgtlang   = self.lang_controller.target_lang.code
 
         lookup_menu = gtk.Menu()
-        menu_item = gtk.MenuItem(_('Look-up "%(selection)s"') % {'selection': selection})
+        if len(selection) > 40:
+            #l10n: The menu entry when looking up a very long selection of text. Here start and end are snippets from the start and end of the long selection.
+            selection_entry = _('Look-up "%(start)s … %(end)s"') % {'start': selection[:15], 'end': selection[-15:]}
+        else:
+            selection_entry = _('Look-up "%(selection)s"') % {'selection': selection}
+        menu_item = gtk.MenuItem(selection_entry)
 
         plugins = self.controller.plugin_controller.plugins
         menu_items = []

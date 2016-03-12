@@ -124,7 +124,7 @@ def create_localized_tutorial():
      u""),
 
     (_(u"Recognised placeables include special symbols, numbers, variable "
-       u"place holders, acronyms and many more. Move to each one with "
+       u"placeholders, acronyms and many more. Move to each one with "
        u"Alt+Right and transfer it down with Alt+Down."),
      u"© 2009 contributors",
      u""),
@@ -205,8 +205,8 @@ def create_localized_tutorial():
        u"sure your translation contains the variable %s and surround it "
        u"similarly with quotes in the way required by your language. If your "
        u"language uses the same quotes as English, type it exactly as shown "
-       u"for the English. If your language uses different characters you can "
-       u"just type them around the variable."),
+       u"for the English. If your language uses different quoting characters "
+       u"you can just type them around the variable."),
      u"The file \"%s\" was not saved",
      u""),
 
@@ -262,7 +262,7 @@ def create_localized_tutorial():
      u"noun"),
 
     (_(u"An accelerator key is a key on your keyboard that you can press to "
-       u"to quickly access a menu or function. It is also called a hot key, "
+       u"quickly access a menu or function. It is also called a hot key, "
        u"access key or mnemonic. In program interfaces they are shown as an "
        u"underlined letter in the text label. In the translatable text they "
        u"are marked using some character like the underscore here, but other "
@@ -293,26 +293,26 @@ def create_localized_tutorial():
 
     # Entry with context message.
     (_(u"In the previous entry you have created one terminology entry for the "
-       u"the \"filter\" verb. Now do the same for \"filter\" noun."),
+       u"\"filter\" verb. Now do the same for \"filter\" noun."),
      u"Filter",
      u"noun"),
 
     (_(u"If you have created any terminology in the previous entries you may "
-       u"may now see some of the words with a green background (or other "
-       u"color depending on your theme). This means that Virtaal has "
-       u"terminology suggestions for that word. Use Alt+Right to select the "
-       u"highlighted word, and then press Alt+Down. If only one suggestions "
-       u"is provided Alt+Down just copies the suggestion to the translation "
-       u"field. But if several suggestions are available Alt+Down shows a "
-       u"suggestion list which you can navigate using Down and Up keys. Once "
-       u"you have selected the desired suggestion press Enter to copy it to "
-       u"the translation field."),
+       u"now see some of the words with a green background (or other color "
+       u"depending on your theme). This means that Virtaal has terminology "
+       u"suggestions for that word. Use Alt+Right to select the highlighted "
+       u"word, and then press Alt+Down. If only one suggestion is provided "
+       u"then Alt+Down just copies the suggestion to the translation field. "
+       u"But if several suggestions are available Alt+Down shows a suggestion "
+       u"list which you can navigate using Down and Up keys. Once you have "
+       u"selected the desired suggestion press Enter to copy it to the "
+       u"translation field."),
      u"Filter the list by date using the \"filter by date\" filter.",
      u""),
 
     (_(u"This message has two lines. Make sure that your translation also "
-       u"contains two lines. You can separate lines with Shift+Enter or "
-       u"copying new-line placeables (displayed as ¶)."),
+       u"contains two lines. You can separate lines with Shift+Enter or copy "
+       u"newline placeables (displayed as ¶)."),
      (u"A camera has been connected to your computer.\nNo photos were found "
       u"on the camera."),
      u""),
@@ -323,52 +323,52 @@ def create_localized_tutorial():
      u""),
 
     (_(u"This message contains a large number that is formatted according to "
-       u"to American convention. Translate this but be sure to format the "
-       u"number according to the convention for your language. You might need "
-       u"to change the comma (,) and full stop (.) to other characters, and "
-       u"you might need to use a different number system. Make sure that you "
-       u"understand the American formatting: the number is bigger than one "
+       u"the American convention. Translate this but make sure to format the "
+       u"number according to your language's convention. You might need to "
+       u"change the comma (,) and full stop (.) to other characters, and you "
+       u"also might need to use a different number system. Make sure that you "
+       u"understand the American formatting: this number is bigger than one "
        u"thousand."),
      u"It will take 1,234.56 hours to do",
      u""),
 
     (_(u"This message refers to miles. If the programmers encourage it, you "
        u"might want to change this to kilometres in your translation, if "
-       u"kilometres are more commonly used in your language. Note that 1 mile "
+       u"kilometers are more commonly used in your language. Note that 1 mile "
        u"is about 1.6 kilometres. Note that automated tests for \"numbers\" "
        u"will complain if the number is changed, but in this case it is safe "
-       u"to do."),
+       u"to do so."),
      u"The road is 10 miles long",
      u""),
 
     (_(u"This message contains a link that the user will be able to click on "
-       u"on to visit the help page. Make sure you maintain the information "
-       u"between the angle brackets (<...>) correctly. The double quotes (\") "
-       u"should never be changed in tags, even if your language uses a "
-       u"different type of quotation marks."),
+       u"to visit the help page. Make sure you correctly keep the information "
+       u"between the angle brackets (<...>). The double quotes (\") should "
+       u"never be changed in tags, even if your language uses a different "
+       u"type of quotation marks."),
      (u"Feel free to visit our <a "
       u"href=\"http://docs.translatehouse.org/projects/virtaal/en/latest/\">"
       u"help page</a>"),
      u""),
 
     (_(u"This message contains a similar link, but the programmers decided to "
-       u"to rather insert the tags with variables so that translators can't "
+       u"rather insert the tags by using variables so that translators can't "
        u"change them. Make sure you position the two variables (%s) so that "
-       u"they correspond to the opening and closing tag of the previous "
+       u"they correspond to the opening and closing tags of the previous "
        u"translation."),
      u"Feel free to visit our %shelp page%s",
      u""),
 
     (_(u"This message contains the <b> and </b> tags to emphasize a word, "
-       u"while everything is inside <p> and </p> tags. Make sure your whole "
-       u"translation is inside <p> and </p> tags."),
+       u"while everything is within the <p> and </p> tags. Make sure your "
+       u"whole translation is within the <p> and </p> tags."),
      u"<p>Restart the program <b>now</b></p>",
      u""),
 
     (_(u"This message contains a similar link that is contained within <span> "
-       u"and </span>. Make sure you maintain all the tags (<...>) correctly, "
-       u"and that the link is contained completely inside the <span> and "
-       u"</span> tags in your translation. Make sure that the text inside the "
+       u"and </span>. Make sure you correctly keep all the tags (<...>), and "
+       u"that the link is completely contained within the <span> and </span> "
+       u"tags in your translation. Make sure that the text inside the "
        u"\"a\" tags correspond to \"help page\" and that your translation "
        u"corresponding to the second sentence is contained in the <span> "
        u"tags. Note how the full stop is still inside the </span> tag."),

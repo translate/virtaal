@@ -79,7 +79,7 @@ def create_localized_tutorial():
     (_(u"If you translated the previous message you should see a window with "
        u"that translation and a percentage indicating how similar the source "
        u"strings (English) are. It is Virtaal's translation memory at work. "
-       u"Press Control+1 to copy the suggested translation to the current "
+       u"Press Ctrl+1 to copy the suggested translation to the current "
        u"translation. Remember to always review suggestions before you use "
        u"them."),
      u"Download the files now",

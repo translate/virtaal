@@ -282,12 +282,10 @@ def create_localized_tutorial():
      u""),
 
     # Entry with context message.
-    (_(u"Virtaal is able to provide suggestions from several terminology "
-       u"glossaries and provides easy shortcuts to allow paste them in the "
-       u"translation field. Right now Virtaal has only one empty terminology "
-       u"glossary, but you can start filling it. In order to do that select "
-       u"the original text, press Ctrl+T, provide a translation for your "
-       u"language, and save."),
+    (_(u"You can maintain a local terminology file to help you translate "
+       u"consistently. To add a term, select a word (or words), press Ctrl+T "
+       u"and fill in the details for the new term. Select the text below and "
+       u"add a term for it."),
      u"Filter",
      u"verb"),
 

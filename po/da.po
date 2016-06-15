@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2014-02-11 21:11+0000\n"
-"PO-Revision-Date: 2016-04-08 00:00+0200\n"
+"PO-Revision-Date: 2016-06-15 00:00+0200\n"
 "Last-Translator: scootergrisen\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -1196,7 +1196,7 @@ msgstr "Overføringsassistent"
 #: ../virtaal/plugins/migration.py:72
 msgid "Should Virtaal try to import settings and data from other applications?"
 msgstr ""
-"Skal Virtaal forsøge at importere indstillinger og data fra andre programmer?"
+"Skal Virtaal prøve at importere indstillinger og data fra andre programmer?"
 
 #: ../virtaal/plugins/migration.py:73
 msgid "Import data from other applications?"
@@ -1789,8 +1789,8 @@ msgid ""
 "used, the %s will be replaced with a file name e.g. 'The file will be saved "
 "as example.odt'.  Note that \"%s\" does not refer to a percentage."
 msgstr ""
-"I denne meddelelse repræsentere \"%s\" en pladsholder (variabel) for et filnavn. "
-"Forsøg for at din oversættelse indeholder %s. Når denne meddelelse bruges, "
+"I denne meddelelse repræsentere \"%s\" en pladsholder (variabel) et filnavn. "
+"Sørg for at din oversættelse indeholder %s. Når denne meddelelse bruges, "
 "erstattes %s med et filnavn. F.eks. \"Filen gemmes som eksempel.odt\". "
 "Bemærk at \"%s\" ikke referere til procent."
 
@@ -1862,7 +1862,6 @@ msgstr ""
 "adressen til din sprogkode så adressen peger på den tilsvarende artikel på "
 "dit sprog om XML."
 
-# scootergrisen: skal verb være verbum eller udsagnsord?
 #: ../virtaal/support/tutorial.py:248
 msgid ""
 "This translation contains an ambiguous word - it has two possible meanings. "
@@ -1871,9 +1870,8 @@ msgid ""
 msgstr ""
 "Denne oversættelse indeholder et tvetydigt ord - det kan have to "
 "betydninger. Sørg for at se informationen om sammenhæng som viser at dette "
-"er et verbum (en handling som i \"klik her for at vise det\")."
+"er et udsagnsord (en handling som i \"klik her for at vise det\")."
 
-# scootergrisen: skal noun være navneord eller substantiv?
 #: ../virtaal/support/tutorial.py:255
 msgid ""
 "This translation contains an ambiguous word - it has two possible meanings. "
@@ -1884,7 +1882,7 @@ msgid ""
 msgstr ""
 "Denne oversættelse indeholder et tvetydigt ord - det kan have to "
 "betydninger. Sørg for at du kan se informationen om sammenhæng som viser at dette "
-"er et udsagnsord (en ting som i \"klik for at ændre visningen til fuldskærm\"). "
+"er et navneord (en ting som i \"klik for at ændre visningen til fuldskærm\"). "
 "Hvis Virtaal giver dig forrige oversættelse som et forslag, så pas på kun at "
 "bruge det hvis det, også er, helt sikkert er passende."
 
@@ -1929,14 +1927,13 @@ msgstr ""
 "Vælg den originale tekst og tryk på Ctrl+T, vælg en oversættelse til dit "
 "sprog, og gem."
 
-# scootergrisen: skal verb være verbum eller udsagnsord?
 #: ../virtaal/support/tutorial.py:295
 msgid ""
 "In the previous entry you have created one terminology entry for the the "
 "\"filter\" verb. Now do the same for \"filter\" noun."
 msgstr ""
 "I den forrige indtastning oprettede du en terminologiindtastning til "
-"verbumet \"filter\". Gør nu det samme for udsagnet \"filter\"."
+"udsagnsordet \"filter\". Gør nu det samme for navneordet \"filter\"."
 
 #: ../virtaal/support/tutorial.py:300
 msgid ""
@@ -2111,10 +2108,9 @@ msgstr "_Forkast"
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 
-# scootergrisen: skal noun være navneord eller substantiv?
 #: ../virtaal/views/mainview.py:455
 msgid "Please enter the number of noun forms (plurals) to use"
-msgstr "Indtast venligst antallet af udsagnsformer (flertal) der skal anvendes"
+msgstr "Indtast venligst antallet af navneordsformer (flertal) der skal anvendes"
 
 #: ../virtaal/views/mainview.py:461
 msgid "Please enter the plural equation to use"

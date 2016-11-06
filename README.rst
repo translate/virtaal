@@ -1,3 +1,15 @@
+.. image:: https://img.shields.io/gitter/room/translate/virtaal.svg?style=flat-square
+   :alt: Join the chat at https://gitter.im/translate/virtaal
+   :target: https://gitter.im/translate/virtaal
+
+.. image:: https://img.shields.io/travis/translate/virtaal/master.svg?style=flat-square
+    :alt: Build Status
+    :target: https://travis-ci.org/translate/virtaal
+
+.. image:: https://img.shields.io/pypi/l/translate-toolkit.svg?style=flat-square
+    :target: https://pypi.python.org/pypi/translate-toolkit/
+    :alt: License
+
 Introduction
 ------------
 Virtaal is a graphical program for doing translation. It is meant to be easy

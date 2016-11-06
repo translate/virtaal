@@ -461,7 +461,7 @@ msgstr "Pi nyutu gonyo lok manyen calo pe otum, dii ka <Ctrl+Shift+Enter>."
 # 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
-msgstr "Pi nyutu gonyo lok manyen calo otyeko, dii ka <Alt+U>."
+msgstr "Pi nyutu gonyo lok manyen calo otyeko, dii ka <Ctrl+Enter>."
 
 #: ../virtaal/tips.py:34
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
@@ -568,7 +568,7 @@ msgstr "Rek manyen"
 # 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
-msgstr "Namba ne mapol:"
+msgstr "Namba ne mapol"
 
 #: ../virtaal/controllers/checkscontroller.py:52
 msgid "Don't translate words"
@@ -586,7 +586,7 @@ msgstr "Me ayera"
 
 #: ../virtaal/controllers/checkscontroller.py:55
 msgid "printf()"
-msgstr "Gof()"
+msgstr "printf()"
 
 #: ../virtaal/controllers/checkscontroller.py:56
 msgid "Punctuation spacing"
@@ -622,7 +622,7 @@ msgstr "Nyukta"
 
 #: ../virtaal/controllers/checkscontroller.py:64
 msgid "Starting capitalization"
-msgstr "Acaki nyukuta madongo "
+msgstr "Acaki nyukuta madongo"
 
 #: ../virtaal/controllers/checkscontroller.py:65
 msgid "Starting punctuation"
@@ -847,7 +847,7 @@ msgstr "Kit lanyut (printf)"
 
 #: ../virtaal/controllers/placeablescontroller.py:106
 msgid "Placeholders used in \"printf\" strings"
-msgstr "Kit lanyut ma kitiyo kwede iyi ''printf'' tol"
+msgstr "Kit lanyut ma kitiyo kwede iyi \"printf\" tol"
 
 #: ../virtaal/controllers/placeablescontroller.py:109
 msgid "Placeholders (Python)"
@@ -917,11 +917,11 @@ msgstr "Dod kabedo ki kabedo iyi ka ma otime atura"
 
 #: ../virtaal/controllers/placeablescontroller.py:156
 msgid "\"alt\" Attributes"
-msgstr "''alt'' Kite"
+msgstr "\"alt\" Kite"
 
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
-msgstr "Ma kete pi ''alt'' kite (calo kinwongo iyi HTML)"
+msgstr "Ma kete pi \"alt\" kite (calo kinwongo iyi HTML)"
 
 # 76%
 #: ../virtaal/controllers/placeablescontroller.py:158
@@ -1112,7 +1112,7 @@ msgstr "Mukene..."
 #: ../virtaal/plugins/spellchecker.py:361
 #, python-format
 msgid "Add \"%s\" to Dictionary"
-msgstr "Med \"%\" i buk me gonyo leb"
+msgstr "Med \"%s\" i buk me gonyo leb"
 
 # 88%
 #: ../virtaal/plugins/spellchecker.py:364
@@ -1285,7 +1285,7 @@ msgstr "Mamede"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:181
 msgid "Add Files"
-msgstr "Med Fail "
+msgstr "Med Fail"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:188
 #: ../virtaal/support/native_widgets.py:81 ../virtaal/views/mainview.py:268
@@ -1978,7 +1978,7 @@ msgstr "Mito anena odoco:"
 # 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
-msgstr "Kigonyo: "
+msgstr "Kigonyo:"
 
 #: ../virtaal/views/propertiesview.py:37
 msgid "Reviewed:"
@@ -1996,7 +1996,7 @@ msgstr "(100%)"
 #: ../virtaal/views/propertiesview.py:64
 #, python-format
 msgid "(%04.1f%%)"
-msgstr "(%04.Ka%%)"
+msgstr "(%04.1f%%)"
 
 #: ../virtaal/views/propertiesview.py:134
 msgid "Save the file for up-to-date information"
@@ -2013,7 +2013,7 @@ msgstr "<b>%d</b>"
 #: ../virtaal/views/propertiesview.py:203
 #, python-format
 msgid "%.1f KB"
-msgstr "%.Ka KB"
+msgstr "%.1f KB"
 
 #: ../virtaal/views/storeview.py:138 ../virtaal/views/storeview.py:147
 msgid "Export failed"
@@ -2038,13 +2038,13 @@ msgstr "Dir yadi acel anyim i ka mol pa tic (Ctrl+Enter)"
 # 95%
 #: ../virtaal/views/widgets/aboutdialog.py:34
 msgid "Copyright © 2007-2010 Zuza Software Foundation"
-msgstr "Cik mamako © 2007-2009 Zuza Software Foundation"
+msgstr "Cik mamako © 2007-2010 Zuza Software Foundation"
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
 #: ../virtaal/views/widgets/aboutdialog.py:37
 msgid "Virtaal is a program for doing translation."
-msgstr "Virtaal obedo puruguram me tim gony"
+msgstr "Virtaal obedo puruguram me tim gony."
 
 #: ../virtaal/views/widgets/aboutdialog.py:38
 msgid ""
@@ -2078,7 +2078,7 @@ msgstr "bany me-gony"
 
 #: ../virtaal/views/widgets/langadddialog.py:103
 msgid "Language code must be an ASCII string."
-msgstr "Nyig coc pi leb omyero bed coc me ASCII"
+msgstr "Nyig coc pi leb omyero bed coc me ASCII."
 
 #: ../virtaal/views/widgets/langadddialog.py:106
 msgid "Language code must be at least 2 characters long."
@@ -2237,7 +2237,7 @@ msgstr "OS X Fail Tol"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:27
 msgid "UTX Dictionary"
-msgstr "Buk me gonyo UTX "
+msgstr "Buk me gonyo UTX"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:28
 msgid "UTX"
@@ -2274,7 +2274,7 @@ msgstr "REKOD"
 
 #: ../bin/virtaal:97
 msgid "turn on logging, storing the result to the supplied filename."
-msgstr "Mi nwongo rekod tii, ki kano lagom iyi fail magimiyo"
+msgstr "Mi nwongo rekod tii, ki kano lagom iyi fail magimiyo."
 
 #: ../bin/virtaal:99
 msgid "CONFIG"
@@ -2282,7 +2282,7 @@ msgstr "YIKO"
 
 #: ../bin/virtaal:100
 msgid "use the configuration file given by the supplied filename."
-msgstr "Tii ki fail me yiko nying fail magimiyo omiyo"
+msgstr "Tii ki fail me yiko nying fail magimiyo omiyo."
 
 #: ../bin/virtaal:103
 msgid "enable debugging features"
@@ -2298,11 +2298,11 @@ msgstr "Tim lok ikom, ki kano lagam iyi nying fail magimiyo"
 
 #: ../bin/virtaal:135
 msgid "Could not open log file '%(filename)s'"
-msgstr "Onongo pe twero yabo fail me rekod '%(nying fail)s'"
+msgstr "Onongo pe twero yabo fail me rekod '%(filename)s'"
 
 #: ../bin/virtaal:143
 msgid "Could not read configuration file '%(filename)s'"
-msgstr "Onongo pe twero neno fail me yiko '%(nying fail)s'"
+msgstr "Onongo pe twero neno fail me yiko '%(filename)s'"
 
 #: ../bin/virtaal:147
 msgid "invalid number of arguments"
@@ -2314,7 +2314,7 @@ msgstr "Cwako lok ikome peke"
 
 #: ../bin/virtaal:185
 msgid "Could not open profile file '%(filename)s'"
-msgstr "Onongo pe twero yabo fail me lok ikom '%(nying fail)s'"
+msgstr "Onongo pe twero yabo fail me lok ikom '%(filename)s'"
 
 #: ../devsupport/optparse.py:134
 #, python-format

@@ -593,7 +593,7 @@ If you are translating from English to French then French would be your translat
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="mnu_update">
-                        <property name="label" translatable="yes">_Update to Template</property>
+                        <property name="label" translatable="yes">_Update from Template</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>

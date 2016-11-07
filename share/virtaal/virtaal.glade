@@ -61,7 +61,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="mnu_update">
-                        <property name="label" translatable="yes">_Update to Template</property>
+                        <property name="label" translatable="yes">_Update from Template</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>

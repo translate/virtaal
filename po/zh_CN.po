@@ -1,0 +1,2457 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Zuza Software Foundation (Translate.org.za)
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Virtaal 1.0.0-beta1\n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2016-12-20 22:00+0800\n"
+"PO-Revision-Date: 2016-12-23 00:41+0800\n"
+"Language-Team: giwhub\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.11\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: zh_CN\n"
+
+#: ../share/applications/virtaal.desktop.in.h:1
+#: ../share/virtaal/virtaal.ui.h:18 ../virtaal/support/native_widgets.py:103
+#: ../virtaal/views/mainview.py:842
+msgid "Virtaal"
+msgstr "Virtaal"
+
+#: ../share/applications/virtaal.desktop.in.h:2
+msgid "Translation Tool"
+msgstr "翻译工具"
+
+#: ../share/applications/virtaal.desktop.in.h:3
+msgid ""
+"A translation tool to help a human translator translate files into other "
+"languages"
+msgstr "一个帮助人类翻译人员将文件翻译为其他语言的翻译工具"
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:1
+msgid ""
+"Virtaal is a program for doing translation. It aims for a delightful "
+"combination of simplicity and power. It integrates with selected online "
+"resources to make translation fun, while helping to improve translation "
+"quality."
+msgstr ""
+"Virtaal是一个用于翻译的软件程序。它的目标是一个令人愉快的简单又强大的组合。它"
+"与选定的在线资源相结合使翻译变得有趣，同时有助于提高翻译质量。"
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:2
+msgid ""
+"The initial focus is on software translation (localization or l10n), but is "
+"definitely meant to be useful as a general purpose tool for Computer Aided "
+"Translation (CAT)."
+msgstr ""
+"最初的重点是在软件的翻译上（本地化或者l10n），但作为一个计算机辅助翻译的通用"
+"工具 (CAT)它无疑是实用的。"
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:3
+msgid "Some features:"
+msgstr "一些功能："
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:4
+msgid "Translation reuse (translation memory)"
+msgstr "翻译重用（翻译记忆库）"
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:5
+#: ../virtaal/views/widgets/welcomescreen.py:80
+msgid "Terminology assistance"
+msgstr "术语助手"
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:6
+msgid "AutoCompletor and AutoCorrector"
+msgstr "自动完成和自动更正"
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:7
+msgid "Quality checks with customization for many languages"
+msgstr "用于多语言可定制的质量检查"
+
+#: ../share/virtaal/virtaal.ui.h:1
+msgid "Add Missing Language"
+msgstr "添加缺失的语言"
+
+#: ../share/virtaal/virtaal.ui.h:2
+msgid "Language name:"
+msgstr "语言名称："
+
+#: ../share/virtaal/virtaal.ui.h:3
+msgid "ISO code:"
+msgstr "ISO代码："
+
+#: ../share/virtaal/virtaal.ui.h:4
+msgid "Plural expression:"
+msgstr "复数表达："
+
+#: ../share/virtaal/virtaal.ui.h:5
+msgid "Number of plurals:"
+msgstr "复数数："
+
+#: ../share/virtaal/virtaal.ui.h:6
+msgid ""
+"Depending on the translation task, the plural information might be optional."
+msgstr "根据翻译任务，复数的信息可能是可选的。"
+
+#: ../share/virtaal/virtaal.ui.h:7
+msgid "<b>Language Information</b>"
+msgstr "<b>语言信息</b>"
+
+#: ../share/virtaal/virtaal.ui.h:8
+msgid "New Language Pair"
+msgstr "新建语言配对"
+
+#: ../share/virtaal/virtaal.ui.h:9
+msgid ""
+"The <b>Original</b> is the language from which you are translating, also "
+"called the source language.\n"
+"\n"
+"If you are translating from English to French then English would be your "
+"original or source language."
+msgstr ""
+"<b>原始语言</b>是指您正在翻译的语言，也被称为来源语言。\n"
+"\n"
+"如果您正在将英语翻译为法语那么英语就是您的原始或者来源语言。"
+
+#: ../share/virtaal/virtaal.ui.h:12
+msgid "<b>Original</b>"
+msgstr "<b>原始语言</b>"
+
+#: ../share/virtaal/virtaal.ui.h:13
+msgid ""
+"The <b>Translation</b> is the language into which you are translating, also "
+"called the target language.\n"
+"\n"
+"If you are translating from English to French then French would be your "
+"translation or target language."
+msgstr ""
+"<b>翻译语言</b>是指您正在翻译成的语言，也被称作目标语言。\n"
+"\n"
+"如果您正在把英语翻译为法语那么法语就是您的翻译语言或者目标语言。"
+
+#: ../share/virtaal/virtaal.ui.h:16
+msgid "<b>Translation</b>"
+msgstr "<b>翻译语言</b>"
+
+#: ../share/virtaal/virtaal.ui.h:17
+msgid "_Add Missing Language..."
+msgstr "_添加缺少的语言..."
+
+#: ../share/virtaal/virtaal.ui.h:19
+msgid "_File"
+msgstr "_文件"
+
+#: ../share/virtaal/virtaal.ui.h:20
+msgid "_Update to Template"
+msgstr "_更新到模板"
+
+#: ../share/virtaal/virtaal.ui.h:21
+msgid "_Export"
+msgstr "_导出"
+
+#: ../share/virtaal/virtaal.ui.h:22
+msgid "_Recent Files"
+msgstr "_最近的文件"
+
+#: ../share/virtaal/virtaal.ui.h:23
+msgid "_Edit"
+msgstr "_编辑"
+
+#. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
+#: ../share/virtaal/virtaal.ui.h:25
+msgid "Transfer From Source"
+msgstr "从来源语言转入"
+
+#. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
+#: ../share/virtaal/virtaal.ui.h:27
+msgid "P_revious Placeable"
+msgstr "_上一个非译元素"
+
+#: ../share/virtaal/virtaal.ui.h:28
+msgid "_Next Placeable"
+msgstr "_下一个非译元素"
+
+#: ../share/virtaal/virtaal.ui.h:29
+msgid "_View"
+msgstr "_查看"
+
+#: ../share/virtaal/virtaal.ui.h:30
+msgid "_Full Screen"
+msgstr "_全屏"
+
+#: ../share/virtaal/virtaal.ui.h:31
+msgid "_Quality Checks"
+msgstr "_质量检查"
+
+#: ../share/virtaal/virtaal.ui.h:32
+msgid "_Navigation"
+msgstr "_导航"
+
+#: ../share/virtaal/virtaal.ui.h:33
+msgid "P_age Up"
+msgstr "_上一页"
+
+#: ../share/virtaal/virtaal.ui.h:34
+msgid "_Page Down"
+msgstr "_下一页"
+
+#: ../share/virtaal/virtaal.ui.h:35
+msgid "_Help"
+msgstr "_帮助"
+
+#: ../share/virtaal/virtaal.ui.h:36
+msgid "_Online Help"
+msgstr "_在线帮助"
+
+#: ../share/virtaal/virtaal.ui.h:37
+msgid "_Tutorial"
+msgstr "_教程"
+
+#: ../share/virtaal/virtaal.ui.h:38
+msgid "_Localization Guide"
+msgstr "_本地化指南"
+
+#: ../share/virtaal/virtaal.ui.h:39
+msgid "Report a _Bug"
+msgstr "报告_错误"
+
+#: ../share/virtaal/virtaal.ui.h:40
+msgid "Virtaal Preferences"
+msgstr "Virtaal 首选项"
+
+#: ../share/virtaal/virtaal.ui.h:41
+msgid "The name stored in the file header"
+msgstr "姓名储存在文件头"
+
+#. l10n: This label is for the name of the translator
+#: ../share/virtaal/virtaal.ui.h:43
+msgid "Name:"
+msgstr "姓名："
+
+#: ../share/virtaal/virtaal.ui.h:44
+msgid "The e-mail address stored in the file header"
+msgstr "电子邮件地址储存在文件头"
+
+#: ../share/virtaal/virtaal.ui.h:45
+msgid "E-mail address:"
+msgstr "电子邮件地址："
+
+#: ../share/virtaal/virtaal.ui.h:46
+msgid ""
+"The team information stored in the file header. This can be an e-mail "
+"address or a URL, for example."
+msgstr "团队信息储存在文件头。比如，这可以是一个电子邮件地址或者是URL。"
+
+#: ../share/virtaal/virtaal.ui.h:47
+msgid "Team:"
+msgstr "团队："
+
+#: ../share/virtaal/virtaal.ui.h:48
+msgid "<b>Translator Information</b>"
+msgstr "<b>翻译人员信息</b>"
+
+#: ../share/virtaal/virtaal.ui.h:49
+msgid "Source text:"
+msgstr "来源文本："
+
+#: ../share/virtaal/virtaal.ui.h:50
+msgid "Target text:"
+msgstr "目标文本："
+
+#: ../share/virtaal/virtaal.ui.h:51
+msgid "Use _Default Fonts"
+msgstr "使用 _默认字体"
+
+#: ../share/virtaal/virtaal.ui.h:52
+msgid "<b>Fonts</b>"
+msgstr "<b>字体</b>"
+
+#. l10n: This tab label refers to the general preferences
+#: ../share/virtaal/virtaal.ui.h:54
+msgid "General"
+msgstr "常规"
+
+#: ../share/virtaal/virtaal.ui.h:55
+msgid ""
+"Placeables are special parts of the text that can be automatically "
+"highlighted and easily inserted into the translation."
+msgstr "非译元素是文本的特殊部分，可以自动高亮，并轻易地插入到翻译中。"
+
+#: ../share/virtaal/virtaal.ui.h:56
+msgid "Placeables"
+msgstr "非译元素"
+
+#: ../share/virtaal/virtaal.ui.h:57
+msgid "Plug-ins"
+msgstr "插件"
+
+#: ../share/virtaal/virtaal.ui.h:58
+msgid "Properties"
+msgstr "术语文件"
+
+#: ../share/virtaal/virtaal.ui.h:59
+msgid "<b>Words</b> (total):"
+msgstr "<b>单词</b>（总计）："
+
+#: ../share/virtaal/virtaal.ui.h:60
+msgid "<b>Strings</b> (total):"
+msgstr "<b>字符串</b>（总计）："
+
+#: ../share/virtaal/virtaal.ui.h:61
+msgid "File type:"
+msgstr "文件类型："
+
+#: ../share/virtaal/virtaal.ui.h:62
+msgid "File size:"
+msgstr "文件大小："
+
+#: ../share/virtaal/virtaal.ui.h:63
+msgid "Location:"
+msgstr "位置："
+
+#: ../share/virtaal/virtaal.ui.h:64
+msgid "Add Term"
+msgstr "添加词语"
+
+#. l10n: This label refers to comments about a new term that is added
+#: ../share/virtaal/virtaal.ui.h:66
+msgid "C_omments"
+msgstr "_注释"
+
+#: ../share/virtaal/virtaal.ui.h:67
+msgid "Terminology _file:"
+msgstr "术语 _文件："
+
+#: ../share/virtaal/virtaal.ui.h:68
+msgid "Terminology Files"
+msgstr "术语文件"
+
+#: ../share/virtaal/virtaal.ui.h:69
+msgid "Add URL"
+msgstr "添加网址"
+
+#: ../share/virtaal/virtaal.ui.h:70
+msgid "URL:"
+msgstr "网址："
+
+#: ../share/virtaal/virtaal.ui.h:71
+msgid "Put queries in quotes"
+msgstr "把查询放在引号里"
+
+#: ../share/virtaal/virtaal.ui.h:72
+msgid "<b>Options</b>"
+msgstr "<b>选项</b>"
+
+#: ../share/virtaal/virtaal.ui.h:73
+msgid "Web Look-ups"
+msgstr "网络查找"
+
+#. l10n: Remove the tags if underlining is unsuitable for your language. Most languages won't need to change this. Translate 'Open' normally.
+#: ../share/virtaal/virtaal.ui.h:75
+msgid "<u>Open</u>"
+msgstr "<u>打开</u>"
+
+#: ../share/virtaal/virtaal.ui.h:76
+msgid "<b><big>Recent Files</big></b>"
+msgstr "<b><big>最近的文件</big></b>"
+
+#: ../share/virtaal/virtaal.ui.h:77
+msgid "<u>Tutorial</u>"
+msgstr "<u>教程</u>"
+
+#: ../share/virtaal/virtaal.ui.h:78
+msgid "<u>Cheat Sheet</u>"
+msgstr "<u>备忘单</u>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.ui.h:80
+#: ../virtaal/controllers/welcomescreencontroller.py:38
+msgid "http://translate.sourceforge.net/wiki/virtaal/features"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
+
+#: ../share/virtaal/virtaal.ui.h:81
+msgid "<u>More...</u>"
+msgstr "<u>更多...</u>"
+
+#: ../share/virtaal/virtaal.ui.h:82
+msgid "<u>Features</u>"
+msgstr "<u>功能</u>"
+
+#: ../share/virtaal/virtaal.ui.h:83
+msgid "<b><big>Getting Started</big></b>"
+msgstr "<b><big>入门</big></b>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.ui.h:85
+#: ../virtaal/controllers/welcomescreencontroller.py:34
+msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+
+#: ../share/virtaal/virtaal.ui.h:86
+msgid "<u>Manual</u>"
+msgstr "<u>使用手册</u>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.ui.h:88
+#: ../virtaal/controllers/welcomescreencontroller.py:35
+msgid "http://translate.sourceforge.net/wiki/guide/start"
+msgstr "http://translate.sourceforge.net/wiki/guide/start"
+
+#: ../share/virtaal/virtaal.ui.h:89
+msgid "<u>Localization Guide</u>"
+msgstr "<u>本地化指南</u>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.ui.h:91
+#: ../virtaal/controllers/welcomescreencontroller.py:37
+msgid "http://translate.sourceforge.net/wiki/virtaal/index#contact"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/index#contact"
+
+#: ../share/virtaal/virtaal.ui.h:92
+msgid "<u>Feedback</u>"
+msgstr "<u>反馈</u>"
+
+#: ../share/virtaal/virtaal.ui.h:93
+msgid "<b><big>Support</big></b>"
+msgstr "<b><big>支持</big></b>"
+
+#: ../virtaal/tips.py:27
+msgid ""
+"At the end of a translation, simply press <Enter> to continue with the next "
+"one."
+msgstr "完成一段翻译后，只需按下<Enter>键即可继续翻译下一段。"
+
+#: ../virtaal/tips.py:28
+msgid ""
+"To copy the original string into the target field, simply press <Alt+Down>."
+msgstr "只需按下<Alt+Down>键，即可复制原始字符串到目标字段。"
+
+#. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
+#: ../virtaal/tips.py:31
+msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
+msgstr "只需按下<Alt+U>键，即可标记当前的翻译为模糊。"
+
+#: ../virtaal/tips.py:32
+msgid ""
+"To mark the current translation as incomplete, simply press <Ctrl+Shift"
+"+Enter>."
+msgstr "只需按下<Ctrl+Shift+Enter>键，即可标记当前的翻译为未完成。"
+
+#: ../virtaal/tips.py:33
+msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
+msgstr "只需按下<Ctrl+Enter>键，即可标记当前的翻译为完成。"
+
+#: ../virtaal/tips.py:34
+msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
+msgstr "使用Ctrl+Up或Ctrl+Down键可以在翻译之间移动。"
+
+#: ../virtaal/tips.py:35
+msgid ""
+"Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
+msgstr "使用Ctrl+PgUp或Ctrl+PgDown键可以在翻译之间跳跃移动。"
+
+#: ../virtaal/controllers/checkscontroller.py:29
+msgid "Fuzzy"
+msgstr "译文过于模糊"
+
+#: ../virtaal/controllers/checkscontroller.py:30
+#: ../virtaal/controllers/unitcontroller.py:83
+msgid "Untranslated"
+msgstr "未翻译"
+
+#: ../virtaal/controllers/checkscontroller.py:31
+msgid "Accelerators"
+msgstr "加速键"
+
+#: ../virtaal/controllers/checkscontroller.py:32
+msgid "Acronyms"
+msgstr "首字母缩写"
+
+#: ../virtaal/controllers/checkscontroller.py:33
+msgid "Blank"
+msgstr "空格"
+
+#: ../virtaal/controllers/checkscontroller.py:34
+msgid "Brackets"
+msgstr "括号"
+
+#: ../virtaal/controllers/checkscontroller.py:35
+msgid "Compendium conflict"
+msgstr "汇编冲突"
+
+#: ../virtaal/controllers/checkscontroller.py:36
+msgid "Translator credits"
+msgstr "致谢翻译人员"
+
+#: ../virtaal/controllers/checkscontroller.py:37
+msgid "Double quotes"
+msgstr "双引号"
+
+#: ../virtaal/controllers/checkscontroller.py:38
+msgid "Double spaces"
+msgstr "双空格"
+
+#: ../virtaal/controllers/checkscontroller.py:39
+msgid "Repeated word"
+msgstr "重复的单词"
+
+#: ../virtaal/controllers/checkscontroller.py:40
+#: ../virtaal/controllers/placeablescontroller.py:97
+msgid "E-mail"
+msgstr "电子邮件"
+
+#: ../virtaal/controllers/checkscontroller.py:41
+msgid "Ending punctuation"
+msgstr "结尾有标点符号"
+
+#: ../virtaal/controllers/checkscontroller.py:42
+msgid "Ending whitespace"
+msgstr "结尾有空格"
+
+#: ../virtaal/controllers/checkscontroller.py:43
+msgid "Escapes"
+msgstr "转义符"
+
+#: ../virtaal/controllers/checkscontroller.py:44
+msgid "File paths"
+msgstr "文件路径"
+
+#: ../virtaal/controllers/checkscontroller.py:45
+msgid "Functions"
+msgstr "功能"
+
+#: ../virtaal/controllers/checkscontroller.py:46
+msgid "GConf values"
+msgstr "GConf值"
+
+#: ../virtaal/controllers/checkscontroller.py:47
+msgid "Old KDE comment"
+msgstr "旧有的KDE注释"
+
+#: ../virtaal/controllers/checkscontroller.py:48
+msgid "Long"
+msgstr "译文过长"
+
+#: ../virtaal/controllers/checkscontroller.py:49
+msgid "Must translate words"
+msgstr "必须翻译的单词"
+
+#: ../virtaal/controllers/checkscontroller.py:50
+msgid "Newlines"
+msgstr "换行符"
+
+#: ../virtaal/controllers/checkscontroller.py:51
+msgid "Number of plurals"
+msgstr "复数数"
+
+#: ../virtaal/controllers/checkscontroller.py:52
+msgid "Don't translate words"
+msgstr "不翻译单词"
+
+#: ../virtaal/controllers/checkscontroller.py:53
+#: ../virtaal/controllers/placeablescontroller.py:121
+msgid "Numbers"
+msgstr "数字"
+
+#: ../virtaal/controllers/checkscontroller.py:54 ../devsupport/optparse.py:1612
+msgid "Options"
+msgstr "选项"
+
+#: ../virtaal/controllers/checkscontroller.py:55
+msgid "printf()"
+msgstr "printf()"
+
+#: ../virtaal/controllers/checkscontroller.py:56
+msgid "Punctuation spacing"
+msgstr "标点符号后有空格"
+
+#: ../virtaal/controllers/checkscontroller.py:57
+msgid "Pure punctuation"
+msgstr "只有标点符号"
+
+#: ../virtaal/controllers/checkscontroller.py:58
+msgid "Number of sentences"
+msgstr "句子数量"
+
+#: ../virtaal/controllers/checkscontroller.py:59
+msgid "Short"
+msgstr "译文过短"
+
+#: ../virtaal/controllers/checkscontroller.py:60
+msgid "Simple capitalization"
+msgstr "单大写字母"
+
+#: ../virtaal/controllers/checkscontroller.py:61
+msgid "Simple plural(s)"
+msgstr "单复数(s)"
+
+#: ../virtaal/controllers/checkscontroller.py:62
+msgid "Single quotes"
+msgstr "单引号"
+
+#: ../virtaal/controllers/checkscontroller.py:63
+msgid "Spelling"
+msgstr "拼写"
+
+#: ../virtaal/controllers/checkscontroller.py:64
+msgid "Starting capitalization"
+msgstr "开头有大写字母"
+
+#: ../virtaal/controllers/checkscontroller.py:65
+msgid "Starting punctuation"
+msgstr "开头有标点符号"
+
+#: ../virtaal/controllers/checkscontroller.py:66
+msgid "Starting whitespace"
+msgstr "开头有空格"
+
+#: ../virtaal/controllers/checkscontroller.py:67
+msgid "Tabs"
+msgstr "标签"
+
+#: ../virtaal/controllers/checkscontroller.py:68
+msgid "Unchanged"
+msgstr "没有变化"
+
+#: ../virtaal/controllers/checkscontroller.py:69
+#: ../virtaal/controllers/placeablescontroller.py:130
+msgid "URLs"
+msgstr "网址"
+
+#: ../virtaal/controllers/checkscontroller.py:70
+msgid "Valid characters"
+msgstr "有效字符"
+
+#: ../virtaal/controllers/checkscontroller.py:71
+msgid "Placeholders"
+msgstr "占位符"
+
+#: ../virtaal/controllers/checkscontroller.py:72
+msgid "XML tags"
+msgstr "XML标签"
+
+#: ../virtaal/controllers/checkscontroller.py:111
+msgid "Default"
+msgstr "默认"
+
+#: ../virtaal/controllers/checkscontroller.py:112
+msgid "OpenOffice.org"
+msgstr "OpenOffice.org"
+
+#: ../virtaal/controllers/checkscontroller.py:113
+msgid "Mozilla"
+msgstr "Mozilla"
+
+#: ../virtaal/controllers/checkscontroller.py:114
+msgid "KDE"
+msgstr "KDE"
+
+#: ../virtaal/controllers/checkscontroller.py:115
+msgid "GNOME"
+msgstr "GNOME"
+
+#: ../virtaal/controllers/checkscontroller.py:116
+msgid "Drupal"
+msgstr "Drupal"
+
+#: ../virtaal/controllers/maincontroller.py:80
+#: ../virtaal/controllers/maincontroller.py:89
+#: ../virtaal/controllers/maincontroller.py:98
+msgid "Header information"
+msgstr "头信息"
+
+#: ../virtaal/controllers/maincontroller.py:81
+msgid "Please enter your name"
+msgstr "请输入您的姓名"
+
+#: ../virtaal/controllers/maincontroller.py:90
+msgid "Please enter your e-mail address"
+msgstr "请输入您的电子邮件地址"
+
+#: ../virtaal/controllers/maincontroller.py:99
+msgid "Please enter your team's information"
+msgstr "请输入您的团队信息"
+
+#: ../virtaal/controllers/maincontroller.py:203
+#: ../virtaal/controllers/maincontroller.py:341
+msgid ""
+"You selected the currently open file for opening. Do you want to reload the "
+"file?"
+msgstr "您选择要打开的文件当前已经打开。您想要重新载入该文件吗？"
+
+#: ../virtaal/controllers/maincontroller.py:215
+#: ../virtaal/controllers/maincontroller.py:325
+#: ../virtaal/controllers/maincontroller.py:353
+#, python-format
+msgid ""
+"Could not open file.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Try opening a different file."
+msgstr ""
+"无法打开文件。\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"请尝试打开其他文件。"
+
+#: ../virtaal/controllers/maincontroller.py:238
+#: ../virtaal/support/native_widgets.py:145
+#: ../virtaal/support/native_widgets.py:204
+#: ../virtaal/support/native_widgets.py:255 ../virtaal/views/mainview.py:323
+msgid "Save"
+msgstr "保存"
+
+#: ../virtaal/controllers/maincontroller.py:258
+#, python-format
+msgid ""
+"Could not save file.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Try saving to a different location."
+msgstr ""
+"无法保存文件。\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"请尝试保存到其他位置。"
+
+#: ../virtaal/controllers/maincontroller.py:264
+#, python-format
+msgid ""
+"Could not save file.\n"
+"\n"
+"%(error_message)s"
+msgstr ""
+"无法保存文件。\n"
+"\n"
+"%(error_message)s"
+
+#: ../virtaal/controllers/maincontroller.py:275
+msgid "Can only export Gettext PO files"
+msgstr "只能导出Gettext PO文件"
+
+#: ../virtaal/controllers/maincontroller.py:284
+msgid "Export"
+msgstr "导出"
+
+#: ../virtaal/controllers/maincontroller.py:292
+#, python-format
+msgid ""
+"Could not export file.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Try saving to a different location."
+msgstr ""
+"无法导出文件。\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"请尝试保存到其他位置。"
+
+#: ../virtaal/controllers/maincontroller.py:298
+#, python-format
+msgid ""
+"Could not export file.\n"
+"\n"
+"%(error_message)s"
+msgstr ""
+"无法导出文件。\n"
+"\n"
+"%(error_message)s"
+
+#: ../virtaal/controllers/maincontroller.py:314
+msgid "Reload File"
+msgstr "重新载入文件"
+
+#: ../virtaal/controllers/maincontroller.py:314
+msgid "Reload file from last saved copy and lose all changes?"
+msgstr "重新载入上次保存的拷贝并放弃所有更改？"
+
+#. l10n: See http://en.wikipedia.org/wiki/CamelCase
+#: ../virtaal/controllers/placeablescontroller.py:84
+msgid "CamelCase"
+msgstr "驼峰式大小写"
+
+#: ../virtaal/controllers/placeablescontroller.py:85
+msgid ""
+"Words with internal capitalization, such as some brand names and WikiWords"
+msgstr "内含大写字母的单词，诸如某些品牌名称和WikiWords"
+
+#: ../virtaal/controllers/placeablescontroller.py:88
+msgid "Capitals"
+msgstr "大写字母"
+
+#. l10n: this refers to "UPPERCASE" / "CAPITAL" letters
+#: ../virtaal/controllers/placeablescontroller.py:90
+msgid "Words containing uppercase letters only"
+msgstr "仅含大写字母的单词"
+
+#: ../virtaal/controllers/placeablescontroller.py:93
+msgid "Command Line Options"
+msgstr "命令行选项"
+
+#: ../virtaal/controllers/placeablescontroller.py:94
+msgid "Application command line options, such as --help, -h and -I"
+msgstr "应用程序命令行选项，比如 --help， -h 和 -I"
+
+#: ../virtaal/controllers/placeablescontroller.py:98
+msgid "E-mail addresses"
+msgstr "电子邮件地址"
+
+#: ../virtaal/controllers/placeablescontroller.py:101
+msgid "File Names"
+msgstr "文件名称"
+
+#: ../virtaal/controllers/placeablescontroller.py:102
+msgid "Paths referring to file locations"
+msgstr "路径指的是文件的位置"
+
+#: ../virtaal/controllers/placeablescontroller.py:105
+msgid "Placeholders (printf)"
+msgstr "占位符（printf）"
+
+#: ../virtaal/controllers/placeablescontroller.py:106
+msgid "Placeholders used in \"printf\" strings"
+msgstr "用于\"printf\"字符串的占位符"
+
+#: ../virtaal/controllers/placeablescontroller.py:109
+msgid "Placeholders (Python)"
+msgstr "占位符（Python）"
+
+#: ../virtaal/controllers/placeablescontroller.py:110
+msgid "Placeholders in Python strings"
+msgstr "Python字符串中的占位符"
+
+#: ../virtaal/controllers/placeablescontroller.py:113
+msgid "Placeholders (Java)"
+msgstr "占位符（Java）"
+
+#: ../virtaal/controllers/placeablescontroller.py:114
+msgid "Placeholders in Java strings"
+msgstr "Java字符串中的占位符"
+
+#: ../virtaal/controllers/placeablescontroller.py:117
+msgid "Placeholders (Qt)"
+msgstr "占位符（Qt）"
+
+#: ../virtaal/controllers/placeablescontroller.py:118
+msgid "Placeholders in Qt strings"
+msgstr "Qt字符串中的占位符"
+
+#. l10n: 'decimal fractions' refer to numbers like 0.2 or 499,99
+#: ../virtaal/controllers/placeablescontroller.py:123
+msgid "Integer numbers and decimal fractions"
+msgstr "整数和小数"
+
+#: ../virtaal/controllers/placeablescontroller.py:126
+msgid "Punctuation"
+msgstr "标点符号"
+
+#: ../virtaal/controllers/placeablescontroller.py:127
+msgid "Symbols and less frequently used punctuation marks"
+msgstr "符号和不常用的标点符号"
+
+#: ../virtaal/controllers/placeablescontroller.py:131
+msgid "URLs, hostnames and IP addresses"
+msgstr "网址，主机名称和IP地址"
+
+#. l10n: see http://en.wikipedia.org/wiki/Character_entity_reference
+#: ../virtaal/controllers/placeablescontroller.py:135
+msgid "XML Entities"
+msgstr "XML实体"
+
+#: ../virtaal/controllers/placeablescontroller.py:136
+msgid "Entity references, such as &amp; and &#169;"
+msgstr "实体引用，例如&amp;和&#169;"
+
+#: ../virtaal/controllers/placeablescontroller.py:139
+msgid "XML Tags"
+msgstr "XML标签"
+
+#: ../virtaal/controllers/placeablescontroller.py:140
+msgid "XML tags, such as <b> and </i>"
+msgstr "XML标签，例如<b>和</i>"
+
+#: ../virtaal/controllers/placeablescontroller.py:154
+msgid "Spaces"
+msgstr "空格"
+
+#: ../virtaal/controllers/placeablescontroller.py:155
+msgid "Double spaces and spaces in unexpected positions"
+msgstr "双空格和空格出现在意外的位置"
+
+#: ../virtaal/controllers/placeablescontroller.py:156
+msgid "\"alt\" Attributes"
+msgstr "\"alt\"属性"
+
+#: ../virtaal/controllers/placeablescontroller.py:157
+msgid "Placeable for \"alt\" attributes (as found in HTML)"
+msgstr "\"alt\"属性中的非译元素（如果在HTML中找到）"
+
+#: ../virtaal/controllers/placeablescontroller.py:158
+msgid "Placeholders (Drupal)"
+msgstr "占位符（Drupal）"
+
+#: ../virtaal/controllers/placeablescontroller.py:159
+msgid "Placeholders in Drupal strings"
+msgstr "Drupal字符串中的占位符"
+
+#: ../virtaal/controllers/storecontroller.py:198
+msgid "No source or translatable files in bundle"
+msgstr "包中没有来源或者可翻译的文件"
+
+#: ../virtaal/controllers/storecontroller.py:230
+msgid "The file contains nothing to translate."
+msgstr "此文件没有可以翻译的内容。"
+
+#. l10n: The heading of statistics before updating to the new template
+#: ../virtaal/controllers/storecontroller.py:435
+msgid "Before:"
+msgstr "之前："
+
+#. l10n: The heading of statistics after updating to the new template
+#: ../virtaal/controllers/storecontroller.py:437
+msgid "After:"
+msgstr "之后："
+
+#: ../virtaal/controllers/storecontroller.py:438
+#, python-format
+msgid "Translated: %d"
+msgstr "已翻译：%d"
+
+#: ../virtaal/controllers/storecontroller.py:439
+#, python-format
+msgid "Fuzzy: %d"
+msgstr "模糊：%d"
+
+#: ../virtaal/controllers/storecontroller.py:440
+#, python-format
+msgid "Untranslated: %d"
+msgstr "未翻译：%d"
+
+#: ../virtaal/controllers/storecontroller.py:441
+#, python-format
+msgid "Total: %d"
+msgstr "总计：%d"
+
+#. l10n: this refers to updating a file to a new template (POT file)
+#: ../virtaal/controllers/storecontroller.py:459
+msgid "File Updated"
+msgstr "文件已更新"
+
+#: ../virtaal/controllers/unitcontroller.py:84
+msgid "Needs work"
+msgstr "有待改进"
+
+#: ../virtaal/controllers/unitcontroller.py:85
+msgid "Rejected"
+msgstr "不合格"
+
+#: ../virtaal/controllers/unitcontroller.py:86
+msgid "Needs review"
+msgstr "有待审核"
+
+#: ../virtaal/controllers/unitcontroller.py:87
+msgid "Translated"
+msgstr "已翻译"
+
+#: ../virtaal/controllers/unitcontroller.py:88
+msgid "Reviewed"
+msgstr "已审核"
+
+#: ../virtaal/controllers/welcomescreencontroller.py:65
+msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
+
+#: ../virtaal/modes/defaultmode.py:28
+msgid "All"
+msgstr "全部"
+
+#: ../virtaal/modes/qualitycheckmode.py:33
+msgid "Quality Checks"
+msgstr "质量检查"
+
+#. l10n: This is the button where the user can select units by failing quality checks
+#: ../virtaal/modes/qualitycheckmode.py:131
+msgid "Select Checks"
+msgstr "选择检查"
+
+#. l10n: This refers to quality checks
+#: ../virtaal/modes/qualitycheckmode.py:134
+msgid "All Checks"
+msgstr "全部检查"
+
+#: ../virtaal/modes/quicktransmode.py:31
+msgid "Incomplete"
+msgstr "未完成"
+
+#: ../virtaal/modes/searchmode.py:36 ../virtaal/modes/searchmode.py:68
+msgid "Search"
+msgstr "搜索"
+
+#: ../virtaal/modes/searchmode.py:70
+msgid "_Case sensitive"
+msgstr "_区分大小写"
+
+#. l10n: To read about what regular expressions are, see
+#. http://en.wikipedia.org/wiki/Regular_expression
+#: ../virtaal/modes/searchmode.py:74
+msgid "_Regular expression"
+msgstr "_正则表达式"
+
+#. l10n: This text label shows in front of the text box where the replacement
+#. text is typed. Keep in mind that the text box will appear after this text.
+#. If this sentence construction is hard to use, consdider translating this as
+#. "Replacement"
+#: ../virtaal/modes/searchmode.py:82
+msgid "Replace with"
+msgstr "替换为"
+
+#. l10n: Button text
+#: ../virtaal/modes/searchmode.py:85
+msgid "Replace"
+msgstr "替换"
+
+#. l10n: Check box
+#: ../virtaal/modes/searchmode.py:88
+msgid "Replace _All"
+msgstr "替换 _全部"
+
+#: ../virtaal/modes/workflowmode.py:34
+msgid "Workflow"
+msgstr "全文"
+
+#. l10n: This is the button where the user can select units by workflow state
+#: ../virtaal/modes/workflowmode.py:112
+msgid "Select States"
+msgstr "选择状态"
+
+#. l10n: This refers to workflow states
+#: ../virtaal/modes/workflowmode.py:115
+msgid "All States"
+msgstr "所有状态"
+
+#: ../virtaal/plugins/autocompletor.py:214
+msgid "Automatically complete long words while you type"
+msgstr "输入长句时自动完成"
+
+#: ../virtaal/plugins/autocompletor.py:215
+msgid "AutoCompletor"
+msgstr "自动完成"
+
+#: ../virtaal/plugins/autocorrector.py:259
+msgid "Automatically correct text while you type"
+msgstr "输入文本时自动更正"
+
+#: ../virtaal/plugins/autocorrector.py:260
+msgid "AutoCorrector"
+msgstr "自动更正"
+
+#: ../virtaal/plugins/spellchecker.py:48
+msgid "Spell Checker"
+msgstr "拼写检查"
+
+#: ../virtaal/plugins/spellchecker.py:49
+msgid "Check spelling and provide suggestions"
+msgstr "检查拼写和提供建议"
+
+#. l10n: This refers to spell checking
+#: ../virtaal/plugins/spellchecker.py:347
+msgid "<i>(no suggestions)</i>"
+msgstr "<i>(没有建议)</i>"
+
+#. l10n: This refers to spell checking
+#: ../virtaal/plugins/spellchecker.py:351
+msgid "Ignore All"
+msgstr "忽略全部"
+
+#. l10n: This refers to spelling suggestions
+#: ../virtaal/plugins/spellchecker.py:355
+msgid "More..."
+msgstr "更多..."
+
+#. l10n: This refers to the spell checking dictionary
+#: ../virtaal/plugins/spellchecker.py:361
+#, python-format
+msgid "Add \"%s\" to Dictionary"
+msgstr "添加\"%s\"到字典"
+
+#: ../virtaal/plugins/spellchecker.py:364
+msgid "Languages"
+msgstr "语言"
+
+#: ../virtaal/plugins/lookup/__init__.py:29
+msgid "Perform look-ups on selected text"
+msgstr "在选中的文本上执行查找"
+
+#: ../virtaal/plugins/lookup/__init__.py:30
+msgid "External Look-up"
+msgstr "外部查找"
+
+#. l10n: The 'services' here refer to different look-up plugins,
+#. such as web look-up, etc.
+#: ../virtaal/plugins/lookup/lookupview.py:70
+msgid "Select Look-up Services"
+msgstr "选择查找服务"
+
+#: ../virtaal/plugins/lookup/lookupview.py:71
+msgid "Select the services that should be used to perform look-ups"
+msgstr "选择应当用来执行查找的服务"
+
+#: ../virtaal/plugins/lookup/lookupview.py:131
+#, python-format
+msgid "Look-up \"%(selection)s\""
+msgstr "查找\"%(selection)s\""
+
+#. l10n: plugin name
+#: ../virtaal/plugins/lookup/models/weblookup.py:40
+msgid "Web Look-up"
+msgstr "网络查找"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:41
+msgid "Look-up the selected text on a web site"
+msgstr "在网站上查找选中的文本"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate.
+#: ../virtaal/plugins/lookup/models/weblookup.py:45
+#: ../virtaal/plugins/tm/models/google_translate.py:144
+msgid "Google"
+msgstr "Google"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:50
+msgid "Wikipedia"
+msgstr "Wikipedia"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:55
+#: ../virtaal/plugins/terminology/models/opentran.py:42
+#: ../virtaal/plugins/tm/models/opentran.py:37
+msgid "Open-Tran.eu"
+msgstr "Open-Tran.eu"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:171
+#: ../virtaal/views/widgets/selectview.py:74
+msgid "Name"
+msgstr "名称"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:180
+msgid "URL"
+msgstr "网址"
+
+#. l10n: Whether the selected text should be surrounded by "quotes"
+#: ../virtaal/plugins/lookup/models/weblookup.py:191
+msgid "Quote Query"
+msgstr "引用查询"
+
+#: ../virtaal/plugins/migration.py:57
+msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
+msgstr "从KBabel，Lokalize和/或Poedit迁移设置到Virtaal。"
+
+#: ../virtaal/plugins/migration.py:58
+msgid "Migration Assistant"
+msgstr "迁移助手"
+
+#: ../virtaal/plugins/migration.py:72
+msgid "Should Virtaal try to import settings and data from other applications?"
+msgstr "Virtaal应该尝试从其他应用程序导入设置和数据吗？"
+
+#: ../virtaal/plugins/migration.py:73
+msgid "Import data from other applications?"
+msgstr "从其他应用程序导入数据吗？"
+
+#: ../virtaal/plugins/migration.py:101
+msgid "Migration was successfully completed"
+msgstr "迁移成功完成"
+
+#: ../virtaal/plugins/migration.py:102
+msgid "The following items were migrated:"
+msgstr "以下项目已被迁移："
+
+#: ../virtaal/plugins/migration.py:105
+msgid "Migration completed"
+msgstr "迁移完成"
+
+#: ../virtaal/plugins/migration.py:107
+msgid "Virtaal was not able to migrate any settings or data"
+msgstr "Virtaal无法迁移任何设置或数据"
+
+#: ../virtaal/plugins/migration.py:108
+msgid "Nothing migrated"
+msgstr "无迁移"
+
+#: ../virtaal/plugins/migration.py:178
+msgid "Poedit settings"
+msgstr "Poedit设置"
+
+#: ../virtaal/plugins/migration.py:207
+#, python-format
+msgid "Poedit's Translation Memory: %(database_language_code)s"
+msgstr "Poedit的翻译记忆库：%(database_language_code)s"
+
+#: ../virtaal/plugins/migration.py:232
+#, python-format
+msgid "KBabel's Translation Memory: %(database_language_code)s"
+msgstr "KBabel的翻译记忆库：%(database_language_code)s"
+
+#: ../virtaal/plugins/migration.py:250
+msgid "Lokalize settings"
+msgstr "Lokalize设置"
+
+#: ../virtaal/plugins/migration.py:274
+#, python-format
+msgid "Lokalize's Translation Memory: %(database_name)s"
+msgstr "Lokalize的翻译记忆库：%(database_name)s"
+
+#: ../virtaal/plugins/terminology/__init__.py:27
+msgid "Terminology Help"
+msgstr "术语帮助"
+
+#: ../virtaal/plugins/terminology/__init__.py:28
+msgid "Terminology suggestions"
+msgstr "术语建议"
+
+#: ../virtaal/plugins/terminology/models/autoterm.py:41
+msgid "Localization Terminology"
+msgstr "本地化术语"
+
+#: ../virtaal/plugins/terminology/models/autoterm.py:42
+msgid "Selected localization terminology"
+msgstr "选择的本地化术语"
+
+#: ../virtaal/plugins/terminology/models/localfile/__init__.py:42
+msgid "Local Files"
+msgstr "本地文件"
+
+#: ../virtaal/plugins/terminology/models/localfile/__init__.py:43
+msgid "Local terminology files"
+msgstr "本地术语文件"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:52
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:54
+msgid "Terminology _Files..."
+msgstr "术语 _文件..."
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:60
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:62
+msgid "Add _Term..."
+msgstr "添加 _词语..."
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:145
+msgid "File"
+msgstr "文件"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:155
+msgid "Extendable"
+msgstr "可扩展"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:181
+msgid "Add Files"
+msgstr "添加文件"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:188
+#: ../virtaal/support/native_widgets.py:81 ../virtaal/views/mainview.py:268
+msgid "All Supported Files"
+msgstr "所有支持的文件"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:215
+#: ../virtaal/support/native_widgets.py:171
+#: ../virtaal/support/native_widgets.py:201 ../virtaal/views/mainview.py:312
+msgid "All Files"
+msgstr "所有文件"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:256
+#, python-format
+msgid "\"%s\" is not a usable file."
+msgstr "\"%s\"不是一个可用的文件。"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:261
+#, python-format
+msgid ""
+"Unable to load %(filename)s:\n"
+"\n"
+"%(errormsg)s"
+msgstr ""
+"无法载入%(filename)s：\n"
+"\n"
+"%(errormsg)s"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:262
+msgid "Error opening file"
+msgstr "打开文件出错"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:402
+#, python-format
+msgid "_Source term — %(langname)s"
+msgstr "_来源词语 — %(langname)s"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:403
+#, python-format
+msgid "_Target term — %(langname)s"
+msgstr "_目标词语 — %(langname)s"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:447
+msgid "Identical entry already exists."
+msgstr "相同的条目已存在。"
+
+#. l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:462
+#, python-format
+msgid "<b>%s</b>"
+msgstr "<b>%s</b>"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:463
+#, python-format
+msgid "Existing translations: %(translations)s"
+msgstr "已有的翻译：%(translations)s"
+
+#: ../virtaal/plugins/terminology/models/opentran.py:43
+msgid "Terms from Open-Tran.eu"
+msgstr "来自Open-Tran.eu的词语"
+
+#: ../virtaal/plugins/terminology/termview.py:166
+msgid "Select Terminology Sources"
+msgstr "选择术语来源"
+
+#: ../virtaal/plugins/terminology/termview.py:167
+msgid "Select the sources of terminology suggestions"
+msgstr "选择术语建议的来源"
+
+#: ../virtaal/plugins/tm/__init__.py:27
+msgid "Translation Memory"
+msgstr "翻译记忆库"
+
+#: ../virtaal/plugins/tm/__init__.py:28
+msgid "Translation memory suggestions"
+msgstr "翻译记忆库建议"
+
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/amagama.py:28
+#: ../virtaal/plugins/tm/models/amagama.py:31
+msgid "Amagama"
+msgstr "Amagama"
+
+#: ../virtaal/plugins/tm/models/amagama.py:29
+#: ../virtaal/plugins/tm/models/opentran.py:38
+msgid "Previous translations for Free and Open Source Software"
+msgstr "自由和开源软件以前的翻译"
+
+#: ../virtaal/plugins/tm/models/currentfile.py:30
+msgid "Current File"
+msgstr "当前的文件"
+
+#: ../virtaal/plugins/tm/models/currentfile.py:31
+msgid "Translated units from the currently open file"
+msgstr "从当前打开的文件翻译单位"
+
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/currentfile.py:97
+#: ../virtaal/plugins/tm/models/currentfile.py:117
+msgid "This file"
+msgstr "此文件"
+
+#. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
+#: ../virtaal/plugins/tm/models/google_translate.py:55
+msgid "Google Translate"
+msgstr "Google Translate"
+
+#: ../virtaal/plugins/tm/models/google_translate.py:56
+msgid "Unreviewed machine translations from Google's translation service"
+msgstr "来自Google的翻译服务未经审核的机器翻译"
+
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:46
+msgid "Microsoft Translator"
+msgstr "Microsoft Translator"
+
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:47
+msgid "Unreviewed machine translations from Microsoft Translator"
+msgstr "来自Microsoft Translator未经审核的机器翻译"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:114
+msgid "Microsoft"
+msgstr "Microsoft"
+
+#. l10n: This is the name of a software library. You almost definitely don't want to translate this. The lower case 'l' is intentional.
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+#: ../virtaal/plugins/tm/models/libtranslate.py:45
+#: ../virtaal/plugins/tm/models/libtranslate.py:101
+msgid "libtranslate"
+msgstr "libtranslate"
+
+#: ../virtaal/plugins/tm/models/libtranslate.py:46
+msgid "Unreviewed machine translations from various services"
+msgstr "来自各种服务未经审核的机器翻译"
+
+#: ../virtaal/plugins/tm/models/localtm.py:35
+msgid "Local Translation Memory"
+msgstr "本地翻译记忆库"
+
+#: ../virtaal/plugins/tm/models/localtm.py:36
+msgid "Previous translations you have made"
+msgstr "您以前所做的翻译"
+
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/localtm.py:38
+msgid "Local TM"
+msgstr "本地TM"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+#: ../virtaal/plugins/tm/models/moses.py:32
+#: ../virtaal/plugins/tm/models/moses.py:82
+msgid "Moses"
+msgstr "Moses"
+
+#: ../virtaal/plugins/tm/models/moses.py:33
+msgid "Unreviewed machine translations from a Moses server"
+msgstr "来自Moses服务器未经审核的机器翻译"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+#: ../virtaal/plugins/tm/models/opentran.py:77
+#: ../virtaal/plugins/tm/models/opentran.py:79
+msgid "OpenTran"
+msgstr "OpenTran"
+
+#: ../virtaal/plugins/tm/models/remotetm.py:28
+msgid "Remote Server"
+msgstr "远程服务器"
+
+#: ../virtaal/plugins/tm/models/remotetm.py:29
+msgid "A translation memory server"
+msgstr "翻译记忆库服务器"
+
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/remotetm.py:31
+msgid "Remote TM"
+msgstr "远程TM"
+
+#: ../virtaal/plugins/tm/models/tinytm.py:36
+msgid "TinyTM"
+msgstr "TinyTM"
+
+#: ../virtaal/plugins/tm/models/tinytm.py:37
+msgid "A TinyTM translation memory server"
+msgstr "TinyTM翻译记忆库服务器"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
+#: ../virtaal/plugins/tm/models/apertium.py:43
+#: ../virtaal/plugins/tm/models/apertium.py:126
+msgid "Apertium"
+msgstr "Apertium"
+
+#: ../virtaal/plugins/tm/models/apertium.py:44
+msgid "Unreviewed machine translations from Apertium"
+msgstr "来自Apertium未经审核的机器翻译"
+
+#: ../virtaal/plugins/tm/tmview.py:110
+msgid "Translation _Suggestions"
+msgstr "翻译建议"
+
+#: ../virtaal/plugins/tm/tmview.py:151
+#, python-format
+msgid "Ctrl+%(number_key)d"
+msgstr "Ctrl+%(number_key)d"
+
+#. l10n: The 'sources' here refer to different translation memory plugins,
+#. such as local tm, open-tran.eu, the current file, etc.
+#: ../virtaal/plugins/tm/tmview.py:175
+msgid "Select sources of Translation Memory"
+msgstr "选择翻译记忆库的来源"
+
+#: ../virtaal/plugins/tm/tmview.py:176
+msgid "Select the sources that should be queried for translation memory"
+msgstr "选择可以为翻译记忆库提供查询的来源"
+
+#. l10n: match quality column label
+#: ../virtaal/plugins/tm/tmwidgets.py:64
+msgid "%"
+msgstr "%"
+
+#: ../virtaal/plugins/tm/tmwidgets.py:66
+msgid "Matches"
+msgstr "匹配"
+
+#: ../virtaal/plugins/tm/tmwidgets.py:68
+msgid "TM Source"
+msgstr "TM来源"
+
+#. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
+#: ../virtaal/plugins/tm/tmwidgets.py:138
+#, python-format
+msgid "%(match_quality)s%%"
+msgstr "%(match_quality)s%%"
+
+#. l10n: This indicates a suggestion from machine translation. It is displayed instead of the match percentage.
+#: ../virtaal/plugins/tm/tmwidgets.py:148
+msgid "?"
+msgstr "？"
+
+#: ../virtaal/support/native_widgets.py:132
+#: ../virtaal/support/native_widgets.py:172
+#: ../virtaal/support/native_widgets.py:241 ../virtaal/views/mainview.py:261
+msgid "Choose a Translation File"
+msgstr "选择翻译文件"
+
+#: ../virtaal/support/native_widgets.py:152
+msgid ""
+"A file named \"%1\" already exists. Are you sure you want to overwrite it?"
+msgstr "名为\"%1\"的文件已存在。您确定要覆盖它吗？"
+
+#: ../virtaal/support/tutorial.py:38
+msgid ""
+"Welcome to the Virtaal tutorial. You can do the first translation by typing "
+"just the translation for \"Welcome\". Then press Enter."
+msgstr ""
+"欢迎来到Virtaal教程。您只需通过输入\"Welcome\"的翻译作为您的第一次翻译。然后"
+"按Enter键。"
+
+#: ../virtaal/support/tutorial.py:43
+msgid ""
+"Translate this slightly longer message. If a spell checker is available, "
+"spelling mistakes are indicated similarly to word processors. Make sure the "
+"correct language is selected in the bottom right of the window."
+msgstr ""
+"翻译这条稍微长点的消息。如果拼写检查可用，拼写错误同样会被文字处理器标示出"
+"来。确保在窗口的右下角选择了正确的语言。"
+
+#: ../virtaal/support/tutorial.py:50
+msgid ""
+"This tutorial will show you some of the things you might want to pay "
+"attention to while translating software programs. It will help you to avoid "
+"some problems and produce translations of a higher quality."
+msgstr ""
+"本教程将向您介绍一些在翻译软件程序时您可能需要注意的事项。它将帮助您避免一些"
+"问题并做出更高质量的翻译。"
+
+#: ../virtaal/support/tutorial.py:57
+msgid ""
+"Some of the advice will only be relevant to some languages. For example, if "
+"your language does not use the Latin alphabet, some of the advice might not "
+"be relevant to translation in your language. For many languages there are "
+"established translation rules."
+msgstr ""
+"有些建议只和某些语言有关。例如，如果您的语言不使用拉丁字母，一些建议可能与您"
+"语言的翻译不相关。许多语言有既定的翻译规则。"
+
+#: ../virtaal/support/tutorial.py:64
+msgid ""
+"The correct use of capital letters are important in many languages. "
+"Translate this message with careful attention to write \"Virtaal\" with a "
+"capital letter."
+msgstr ""
+"正确使用大写字母在许多语言中都很重要。请仔细注意使用大写字母写“Virtaal”来翻译"
+"这条消息。"
+
+#: ../virtaal/support/tutorial.py:70
+msgid ""
+"In this message the English uses a capital letter for almost every word. "
+"Almost no other language uses this style. Unless your language definitely "
+"needs to follow the English style (also called Title Case), translate this "
+"by following the normal capitalisation rules for your language. If your "
+"language does not use capital letters, simply translate it normally."
+msgstr ""
+"在这条消息中英语几乎对每个词使用大写字母。几乎没有其他语言使用这种风格。除非"
+"您的语言明确要求遵循英语风格（也被称为标题大小写），请按照您语言的正常大写字"
+"母规则进行翻译。如果您的语言不使用大写字母，只需正常地翻译它。"
+
+#: ../virtaal/support/tutorial.py:79
+msgid ""
+"If you translated the previous message you should see a window with that "
+"translation and a percentage indicating how similar the source strings "
+"(English) are. It is Virtaal's translation memory at work. Press Control+1 "
+"to copy the suggested translation to the current translation. Remember to "
+"always review suggestions before you use them."
+msgstr ""
+"如果您翻译了上一条消息，您应该会看到一个带有翻译的窗口和一个表示源字符串（英"
+"语）类似程度的百分比。那是Virtaal的翻译记忆库在工作。按Control + 1键复制建议"
+"的翻译到当前翻译。请记得在使用之前对建议进行审核。"
+
+#: ../virtaal/support/tutorial.py:88
+msgid ""
+"This is a simple message that starts with a capital letter in English. If "
+"your language uses capital letters, you almost definitely want to start your "
+"translation with a capital letter as well."
+msgstr ""
+"这是一条以英文大写字母开头简单的消息。如果您的语言使用大写字母，您也几乎可以"
+"肯定要用大写字母开始翻译。"
+
+#: ../virtaal/support/tutorial.py:95
+msgid ""
+"This is a simple message that starts with a lower case letter in English. If "
+"your language uses capital letters, you almost definitely want to start your "
+"translation with a lower case letter as well."
+msgstr ""
+"这是一条以英文小写字母开头简单的消息。如果您的语言使用大写字母，您几乎可以肯"
+"定要用小写字母开始翻译。"
+
+#: ../virtaal/support/tutorial.py:102
+msgid ""
+"This message is a question. Make sure that you use the correct question mark "
+"in your translation as well."
+msgstr "这条消息是一个问句。确保您在翻译中也使用正确的问号。"
+
+#: ../virtaal/support/tutorial.py:107
+msgid ""
+"This message is a label as part of a form. Note how it ends with a colon (:)."
+msgstr "这条消息是作为表单一个部分的标签。注意它如何以冒号(:)结尾。"
+
+#: ../virtaal/support/tutorial.py:112
+msgid ""
+"If the source will remain mostly or completely unchanged it is convenient to "
+"copy the entire source string with Alt+Down. Here is almost nothing to "
+"translate, so just press Alt+Down and make corrections if necessary."
+msgstr ""
+"如果源文本要保留大部分或完全不变，您可以方便地使用Alt + Down键复制整个源字符"
+"串。这里几乎没有什么要翻译，如果必要的话只需按Alt + Down键和进行更正就可以"
+"了。"
+
+#: ../virtaal/support/tutorial.py:119
+msgid ""
+"Placeables are special parts of the text, like the © symbol, that can be "
+"automatically highlighted and easily inserted into the translation. Select "
+"the © with Alt+Right and transfer it to the target with Alt+Down."
+msgstr ""
+"非译元素是文本的特殊部分，像©符号，可以被自动高亮并轻易地插入到翻译中。使用"
+"Alt + Right键选择©然后使用 Alt + Down键将其转移到目标。"
+
+#: ../virtaal/support/tutorial.py:126
+msgid ""
+"Recognised placeables include special symbols, numbers, variable place "
+"holders, acronyms and many more. Move to each one with Alt+Right and "
+"transfer it down with Alt+Down."
+msgstr ""
+"可识别的非译元素包括特殊符号，数字，变量占位符，首字母缩略词等等。使用Alt"
+"+Right键移动到每一个非译元素并使用Alt+Down键向下移动它。"
+
+#: ../virtaal/support/tutorial.py:132
+msgid ""
+"This message ends with ... to indicate that clicking on this text will cause "
+"a dialogue to appear instead of just performing an action. Be sure to end "
+"your message with ... as well."
+msgstr ""
+"这条消息以...结尾表示单击这个文本将导致显示一个对话框而不是仅执行操作。您的消"
+"息也请务必以...结尾。"
+
+#: ../virtaal/support/tutorial.py:138
+msgid ""
+"This message ends with a special character that looks like three dots. "
+"Select the special character with Alt+Right and copy it to your translation "
+"with Alt+Down. Don't just type three dot characters."
+msgstr ""
+"这条消息以一个看起来像三个点的特殊字符结尾。使用Alt + Right键选择特殊字符然后"
+"使用Alt + Down键将其复制到您的翻译中。不要只键入三个点的字符。"
+
+#: ../virtaal/support/tutorial.py:145
+msgid ""
+"This message has two sentences. Translate them and make sure you start each "
+"with a capital letter if your language uses them, and end each sentence "
+"properly."
+msgstr ""
+"这条消息包含两个句子。如果你的语言使用大写字母，翻译时确保您将其作为每个句子"
+"的开头，并正确结束每个句子。"
+
+#: ../virtaal/support/tutorial.py:151
+msgid ""
+"This message marks the word \"now\" as important with bold tags. These tags "
+"can be transferred from the source with Alt+Right and Alt+Down. Leave the "
+"<b> and </b> in the translation around the part that corresponds to \"now\". "
+"Read more about XML markup here: http://en.wikipedia.org/wiki/XML"
+msgstr ""
+"这条消息使用粗体标记将\"now\"标记为重要。这些标签可以使用Alt + Right和Alt + "
+"Down键从源文本传输。将<b>和</ b>保留在对应\"now\"周围的翻译中。要阅读更多关于"
+"XML标签的信息请访问：http://en.wikipedia.org/wiki/XML"
+
+#: ../virtaal/support/tutorial.py:159
+msgid ""
+"This message is very similar to the previous message. Use the suggestion of "
+"the previous translation with Ctrl+1. Note how the only difference is that "
+"this one ends with a full stop after the last tag."
+msgstr ""
+"这条消息与上一封消息非常相似。使用Ctrl + 1键使用以前的翻译建议。注意唯一的区"
+"别是这条消息在最后一个标签后面以句号结尾。"
+
+#: ../virtaal/support/tutorial.py:166
+#, python-format
+msgid ""
+"In this message \"%d\" is a placeholder (variable) that represents a number. "
+"Make sure your translation contains \"%d\" somewhere. In this case it refers "
+"a number of files. When this message is used the \"%d\" will be replaced "
+"with a number e.g. 'Number of files copied: 5'.  Note that \"%d\" does not "
+"refer to a percentage."
+msgstr ""
+"在这条消息中\"%d\"是一个表示数字的占位符（变量）。确保您的翻译在某处包含\"%d"
+"\"。在这种情况下它指的是文件的数量。使用这条消息时\"%d\"将被替换为一个数字比"
+"如'已复制的文件数：5'。注意\"%d\"不是指百分比。"
+
+#: ../virtaal/support/tutorial.py:174
+#, python-format
+msgid ""
+"In this message, \"%d\" refers again to the number of files, but note how "
+"the \"(s)\" is used to show that we don't know how many it will be. This is "
+"often hard to translate well. If you encounter this in software translation, "
+"you might want to hear from developers if this can be avoided. Read more "
+"about this and decide how to do it in your language: http://docs."
+"translatehouse.org/projects/localization-guide/en/latest/guide/translation/"
+"plurals.html"
+msgstr ""
+"在这条消息中，\"%d\"还是指文件的数量，但请注意\"(s)\"如何用于表达因为我们不知"
+"道它将会是多少。这通常很难翻译好。如果您在软件翻译中遇到这种情况，如果这可以"
+"被避免您也许想要想听听开发人员的意见。要阅读更多相关信息和决定在您语言中的做"
+"法请访问：http://docs.translatehouse.org/projects/localization-guide/en/"
+"latest/guide/translation/plurals.html"
+
+#: ../virtaal/support/tutorial.py:185
+msgid ""
+"In this message the proper way of translating plurals are seen. You need to "
+"enter between 1 and 6 different versions of the translation to ensure the "
+"correct grammar in your language. Read more about this here: http://docs."
+"translatehouse.org/projects/localization-guide/en/latest/guide/translation/"
+"plurals.html"
+msgstr ""
+"在这条消息中您可以看到翻译复数的正确方式。您需要输入1到6个翻译的不同版本以确"
+"保在您语言中的正确语法。阅读更多相关信息请访问：http://docs.translatehouse."
+"org/projects/localization-guide/en/latest/guide/translation/plurals.html"
+
+#: ../virtaal/support/tutorial.py:196
+#, python-format
+msgid ""
+"In this message, \"%s\" is a placeholder (variable) that represents a file "
+"name. Make sure your translation contains %s somewhere. When this message is "
+"used, the %s will be replaced with a file name e.g. 'The file will be saved "
+"as example.odt'.  Note that \"%s\" does not refer to a percentage."
+msgstr ""
+"在这条消息中，\"%s\"是一个表示文件名称的占位符（变量）。确保您的翻译在某处包"
+"含%s。当使用这条消息时，%s将被替换为一个文件名称比如'文件将被保存为example."
+"odt'。注意\"%s\"不是指百分比。"
+
+#: ../virtaal/support/tutorial.py:204
+#, python-format
+msgid ""
+"In this message the variable is surrounded by double quotes. Make sure your "
+"translation contains the variable %s and surround it similarly with quotes "
+"in the way required by your language. If your language uses the same quotes "
+"as English, type it exactly as shown for the English. If your language uses "
+"different characters you can just type them around the variable."
+msgstr ""
+"在这条消息中变量由双引号引着。确保您的翻译包含变量%s并用您的语言所需的方式使"
+"用引号引住它。如果您的语言使用与英语相同的引号，请完全按照英语所示输入。如果"
+"您的语言使用不同的字符您只需在变量周围键入它们。"
+
+#: ../virtaal/support/tutorial.py:213
+msgid ""
+"In this message, \"%(name)s\" is a placeholder (variable). Note that the 's' "
+"is part of the variable, and the whole variable from '%' to the 's' should "
+"appear unchanged somewhere in your translation. These type of variables give "
+"you an idea of what they will contain. In this case, it will contain a name."
+msgstr ""
+"在这条消息中，\"%(name)s\"是一个占位符（变量）。注意's'是变量的一部分，从'%' "
+"到's'的整个变量应当在您的翻译的某处保留不变。这些类型的变量让您知道它们将会包"
+"含什么。在这种情况下，它将会包含一个名称。"
+
+#: ../virtaal/support/tutorial.py:221
+msgid ""
+"In this message the user of the software is asked to do something. Make sure "
+"you translate it by being as polite or respectful as is necessary for your "
+"culture."
+msgstr ""
+"在这个消息中软件的用户被要求做某事。确保您翻译它是礼貌的或尊重的是您的文化所"
+"必需的。"
+
+#: ../virtaal/support/tutorial.py:227
+msgid ""
+"In this message there is reference to \"Linux\" (a product name). Many "
+"languages will not translate it, but your language might use a "
+"transliteration if you don't use the Latin script for your language."
+msgstr ""
+"在这条消息中提及\"Linux\"（一个产品名称）。许多语言都不会翻译它，但如果您不使"
+"用拉丁文字作为您的语言，您的语言可能会使用一个音译。"
+
+#: ../virtaal/support/tutorial.py:234
+msgid ""
+"This message contains the URL (web address) of the project website. It must "
+"be transferred as a placeable or typed over exactly."
+msgstr ""
+"这条消息包含项目网站的URL（网络地址）。它必须被复制作为一个非译元素或被完全输"
+"入。"
+
+#: ../virtaal/support/tutorial.py:239
+msgid ""
+"This message refers to a website with more information. Sometimes you might "
+"be allowed or encouraged to change the URL (web address) to a website in "
+"your language. In this case, replace the \"en\" at the start of the address "
+"to your language code so that the address points to the corresponding "
+"article in your language about XML."
+msgstr ""
+"这条消息指向一个具有更多信息的网站。有时您可能被允许或鼓励将URL（网址）更改为"
+"您的语言的网站。在这种情况下，将地址开头的“en”替换为您的语言代码以便该地址指"
+"向您的语言中有关XML的相应文章。"
+
+#: ../virtaal/support/tutorial.py:248
+msgid ""
+"This translation contains an ambiguous word - it has two possible meanings. "
+"Make sure you can see the context information showing that this is a verb "
+"(an action as in \"click here to view it\")."
+msgstr ""
+"这个翻译包含一个模糊的词 - 它可能有两个意思。确保你可以看到上下文信息显示这是"
+"一个动词（一个动作如“点击这里查看它”）。"
+
+#: ../virtaal/support/tutorial.py:255
+msgid ""
+"This translation contains an ambiguous word - it has two possible meanings. "
+"Make sure you can see the context information showing that this is a noun (a "
+"thing as in \"click to change the view to full screen\"). If Virtaal gives "
+"your previous translation as a suggestion, take care to only use it if it is "
+"definitely appropriate in this case as well."
+msgstr ""
+"这个翻译包含一个模糊的词 - 它可能有两个意思。确保您可以看到上下文信息显示这是"
+"一个名词（如“点击将视图更改为全屏”之类）。如果Virtaal给您以前的翻译作为建议，"
+"注意只有如果它在这种情况下也很合适才使用它。"
+
+#: ../virtaal/support/tutorial.py:264
+msgid ""
+"An accelerator key is a key on your keyboard that you can press to to "
+"quickly access a menu or function. It is also called a hot key, access key "
+"or mnemonic. In program interfaces they are shown as an underlined letter in "
+"the text label. In the translatable text they are marked using some "
+"character like the underscore here, but other characters are used for this "
+"as well. In this case the the accelerator key is \"f\" since the underscore "
+"is before this letter and it means that this accelerator could be triggered "
+"by pressing Alt+F."
+msgstr ""
+"加速键是您键盘上的一个键，您可以按该键快速地访问菜单或功能。它也被称为热键，"
+"访问键或助记符。在程序界面中它们会在文本标签中显示为带下划线的字母。在可翻译"
+"文本中它们使用某些标记的字符如下划线，但是也使用其他字符。在这种情况下加速键"
+"是\"f\"，因为下划线在该字母之前，这意味着可以通过按Alt + F键触发该加速键。"
+
+#: ../virtaal/support/tutorial.py:276
+msgid "In this entry you can see other kind of accelerator."
+msgstr "在这个条目中你可以看到其他种类的加速键。"
+
+#: ../virtaal/support/tutorial.py:280
+msgid "And another kind of accelerator."
+msgstr "和另一种加速键。"
+
+#: ../virtaal/support/tutorial.py:285
+msgid ""
+"Virtaal is able to provide suggestions from several terminology glossaries "
+"and provides easy shortcuts to allow paste them in the translation field. "
+"Right now Virtaal has only one empty terminology glossary, but you can start "
+"filling it. In order to do that select the original text, press Ctrl+T, "
+"provide a translation for your language, and save."
+msgstr ""
+"Virtaal能够提供来自多个术语词汇表的建议并提供方便的快捷方式以允许在翻译字段中"
+"粘贴它们。现在Virtaal只有一个空的术语词汇表，但你可以开始填充它。为此，请选择"
+"原始文本，请按Ctrl + T键，提供一个您的语言的翻译，然后保存。"
+
+#: ../virtaal/support/tutorial.py:295
+msgid ""
+"In the previous entry you have created one terminology entry for the the "
+"\"filter\" verb. Now do the same for \"filter\" noun."
+msgstr ""
+"在上一个条目中您为“过滤器”动词创建了一个术语条目。现在也来为“过滤器”名词创建"
+"一个术语条目吧。"
+
+#: ../virtaal/support/tutorial.py:300
+msgid ""
+"If you have created any terminology in the previous entries you may may now "
+"see some of the words with a green background (or other color depending on "
+"your theme). This means that Virtaal has terminology suggestions for that "
+"word. Use Alt+Right to select the highlighted word, and then press Alt+Down. "
+"If only one suggestions is provided Alt+Down just copies the suggestion to "
+"the translation field. But if several suggestions are available Alt+Down "
+"shows a suggestion list which you can navigate using Down and Up keys. Once "
+"you have selected the desired suggestion press Enter to copy it to the "
+"translation field."
+msgstr ""
+"如果您在以前的条目中创建了任何术语，您现在可能会看到一些带有绿色背景（或其他"
+"颜色，取决于您的主题）的单词。这意味着Virtaal有这个词的术语建议。使用Alt + "
+"Righ 键选择高亮的单词，然后按Alt+Down键。如果只提供了一个建议Alt + Down键只会"
+"将建议复制到翻译字段。但是如果有几个建议可用Alt+Down键会显示一个您可以使用"
+"Down和Up键导航的建议列表。一旦您选中所需的建议，按Enter键可将其复制到翻译字"
+"段。"
+
+#: ../virtaal/support/tutorial.py:313
+msgid ""
+"This message has two lines. Make sure that your translation also contains "
+"two lines. You can separate lines with Shift+Enter or copying new-line "
+"placeables (displayed as ¶)."
+msgstr ""
+"这条消息有两行。确保您的翻译也有两行。您可以使用Shift + Enter键分隔线条或复制"
+"换行符号（显示为 ¶）。"
+
+#: ../virtaal/support/tutorial.py:320
+msgid ""
+"This message contains tab characters to separate some headings. Make sure "
+"you separate your translations in the same way."
+msgstr "这条消息包含用于分隔一些标题的制表符。确保您以同样的方式分隔翻译。"
+
+#: ../virtaal/support/tutorial.py:325
+msgid ""
+"This message contains a large number that is formatted according to to "
+"American convention. Translate this but be sure to format the number "
+"according to the convention for your language. You might need to change the "
+"comma (,) and full stop (.) to other characters, and you might need to use a "
+"different number system. Make sure that you understand the American "
+"formatting: the number is bigger than one thousand."
+msgstr ""
+"这条消息包含根据美国约定格式化的大数字。翻译此内容，但是务必根据您的语言的惯"
+"例格式化数字。您可能需要将逗号 (,) 和句号 (.) 更改为其他字符，您可能需要使用"
+"其他号码系统。确保您了解美国格式：数字大于一千。"
+
+#: ../virtaal/support/tutorial.py:335
+msgid ""
+"This message refers to miles. If the programmers encourage it, you might "
+"want to change this to kilometres in your translation, if kilometres are "
+"more commonly used in your language. Note that 1 mile is about 1.6 "
+"kilometres. Note that automated tests for \"numbers\" will complain if the "
+"number is changed, but in this case it is safe to do."
+msgstr ""
+"这条消息指的是英里。如果程序员支持它，您可能想要在您的翻译中将其更改为公里，"
+"如果公里在您的语言中更常见。 注意1英里大约是1.6公里。注意“数字”的自动测试将报"
+"告该数字是否改变，但在这种情况下是安全的。"
+
+#: ../virtaal/support/tutorial.py:344
+msgid ""
+"This message contains a link that the user will be able to click on on to "
+"visit the help page. Make sure you maintain the information between the "
+"angle brackets (<...>) correctly. The double quotes (\") should never be "
+"changed in tags, even if your language uses a different type of quotation "
+"marks."
+msgstr ""
+"这条消息包含一个链接，用户可以点击该链接访问帮助页面。确保您正确地保持尖括号"
+"(<...>)之间的信息。 即使您的语言使用不同类型的引号，双引号(\")也不应在标签中"
+"更改。"
+
+#: ../virtaal/support/tutorial.py:354
+#, python-format
+msgid ""
+"This message contains a similar link, but the programmers decided to to "
+"rather insert the tags with variables so that translators can't change them. "
+"Make sure you position the two variables (%s) so that they correspond to the "
+"opening and closing tag of the previous translation."
+msgstr ""
+"这条消息包含一个类似的链接，但程序员决定将变量插入标签以致翻译人员不能更改它"
+"们。确保您安置这两个变量(%s)以使它们对应前一个翻译的开始和结束标签。"
+
+#: ../virtaal/support/tutorial.py:362
+msgid ""
+"This message contains the <b> and </b> tags to emphasize a word, while "
+"everything is inside <p> and </p> tags. Make sure your whole translation is "
+"inside <p> and </p> tags."
+msgstr ""
+"这条消息包含用于强调字词的<b>和</b>标签，全部内容都在<p>和</p>标签内。请确保"
+"您的全部翻译都在<p>和</p>标签内。"
+
+#: ../virtaal/support/tutorial.py:368
+msgid ""
+"This message contains a similar link that is contained within <span> and </"
+"span>. Make sure you maintain all the tags (<...>) correctly, and that the "
+"link is contained completely inside the <span> and </span> tags in your "
+"translation. Make sure that the text inside the \"a\" tags correspond to "
+"\"help page\" and that your translation corresponding to the second sentence "
+"is contained in the <span> tags. Note how the full stop is still inside the "
+"</span> tag."
+msgstr ""
+"这条消息包含一个被包含在<span>和</span>中的类似链接。请确保您正确保留所有标签"
+"(<...>)，并且在您的翻译中链接完整地被包含在<span>和</span>标签内。确保\"a\"标"
+"签中的文本对应到“帮助页面”，并且您的翻译对应到包含在<span>标签中第二个句子。"
+"注意句号如何仍在</span>标签内。"
+
+#: ../virtaal/views/checksunitview.py:73
+msgid "No issues"
+msgstr "没有问题"
+
+#: ../virtaal/views/checksunitview.py:80
+msgid "Quality Check"
+msgstr "质量检查"
+
+#: ../virtaal/views/checksunitview.py:86
+msgid "Description"
+msgstr "描述"
+
+#: ../virtaal/views/checksprojview.py:40
+msgid "Project Type"
+msgstr "项目类型"
+
+#. l10n: The label indicating the checker style (GNOME/KDE/whatever)
+#: ../virtaal/views/checksprojview.py:63
+#, python-format
+msgid "Checks: %(checker_name)s"
+msgstr "检查：%(checker_name)s"
+
+#: ../virtaal/views/langview.py:76
+msgid "_New Language Pair..."
+msgstr "_新建语言配对..."
+
+#: ../virtaal/views/mainview.py:230
+msgid "Error"
+msgstr "出错"
+
+#: ../virtaal/views/mainview.py:342
+msgid ""
+"The current file has been modified.\n"
+"Do you want to save your changes?"
+msgstr ""
+"当前文件已被修改。\n"
+"您想要保存您的更改吗？"
+
+#: ../virtaal/views/mainview.py:345
+msgid "_Discard"
+msgstr "_丢弃"
+
+#. l10n: This is the title of the main window of Virtaal
+#. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
+#. %(current_file)s is the file name of the current file
+#. most languages will not need to change this
+#: ../virtaal/views/mainview.py:430
+#, python-format
+msgid "%(modified_marker)s%(current_file)s - Virtaal"
+msgstr "%(modified_marker)s%(current_file)s - Virtaal"
+
+#: ../virtaal/views/mainview.py:455
+msgid "Please enter the number of noun forms (plurals) to use"
+msgstr "请输入要使用的名词形式(复数词) 的数量"
+
+#: ../virtaal/views/mainview.py:461
+msgid "Please enter the plural equation to use"
+msgstr "请输入要使用的复数公式"
+
+#. l10n: This refers to the 'mode' that determines how Virtaal moves
+#. between units.
+#: ../virtaal/views/modeview.py:62
+msgid "N_avigation:"
+msgstr "导_航："
+
+#: ../virtaal/views/propertiesview.py:32
+msgid "Untranslated:"
+msgstr "未翻译："
+
+#: ../virtaal/views/propertiesview.py:33
+msgid "Needs work:"
+msgstr "有待改进："
+
+#: ../virtaal/views/propertiesview.py:34
+msgid "Rejected:"
+msgstr "不合格："
+
+#: ../virtaal/views/propertiesview.py:35
+msgid "Needs review:"
+msgstr "有待审核："
+
+#: ../virtaal/views/propertiesview.py:36
+msgid "Translated:"
+msgstr "已翻译："
+
+#: ../virtaal/views/propertiesview.py:37
+msgid "Reviewed:"
+msgstr "已审核："
+
+#: ../virtaal/views/propertiesview.py:59
+msgid "(0%)"
+msgstr "(0%)"
+
+#: ../virtaal/views/propertiesview.py:61
+msgid "(100%)"
+msgstr "(100%)"
+
+#. l10n: This is the formatting for percentages in the file properties. If unsure, just copy the original.
+#: ../virtaal/views/propertiesview.py:64
+#, python-format
+msgid "(%04.1f%%)"
+msgstr "(%04.1f%%)"
+
+#: ../virtaal/views/propertiesview.py:134
+msgid "Save the file for up-to-date information"
+msgstr "保存文件以获取最新信息"
+
+#. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
+#: ../virtaal/views/propertiesview.py:191
+#: ../virtaal/views/propertiesview.py:192
+#, python-format
+msgid "<b>%d</b>"
+msgstr "<b>%d</b>"
+
+#: ../virtaal/views/propertiesview.py:203
+#, python-format
+msgid "%.1f KB"
+msgstr "%.1f KB"
+
+#: ../virtaal/views/storeview.py:138 ../virtaal/views/storeview.py:147
+msgid "Export failed"
+msgstr "导出失败"
+
+#: ../virtaal/views/storeview.py:156
+msgid "Preview failed"
+msgstr "预览失败"
+
+#: ../virtaal/views/unitview.py:613
+msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
+msgstr "在本文内换行(Ctrl+Shift+Enter)"
+
+#: ../virtaal/views/unitview.py:614
+msgid "Click to move to a specific state in the workflow"
+msgstr "点击可切换到指定的状态"
+
+#: ../virtaal/views/unitview.py:615
+msgid "Move one step forward in the workflow (Ctrl+Enter)"
+msgstr "跳到下一个条目(Ctrl+Enter)"
+
+#: ../virtaal/views/widgets/aboutdialog.py:34
+msgid "Copyright © 2007-2010 Zuza Software Foundation"
+msgstr "版权所有 © 2007-2010 Zuza软件基金会"
+
+#. l10n: Please retain the literal name "Virtaal", but feel free to
+#. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
+#: ../virtaal/views/widgets/aboutdialog.py:37
+msgid "Virtaal is a program for doing translation."
+msgstr "Virtaal是一个用于翻译的软件程序。"
+
+#: ../virtaal/views/widgets/aboutdialog.py:38
+msgid ""
+"The initial focus is on software translation (localization or l10n), but we "
+"definitely intend it to be useful as a general purpose tool for Computer "
+"Aided Translation (CAT)."
+msgstr ""
+"最初的重点是在软件的翻译上（本地化或者l10n），但作为一个计算机辅助翻译的通用"
+"工具 (CAT)它无疑是实用的。"
+
+#: ../virtaal/views/widgets/aboutdialog.py:52
+msgid "Virtaal website"
+msgstr "Virtaal网站"
+
+#: ../virtaal/views/widgets/aboutdialog.py:65
+msgid "We thank our donors:"
+msgstr "鸣谢："
+
+#: ../virtaal/views/widgets/aboutdialog.py:66
+msgid "The International Development Research Centre"
+msgstr "国际发展研究中心"
+
+#: ../virtaal/views/widgets/aboutdialog.py:68
+msgid "Mozilla Corporation"
+msgstr "Mozilla公司"
+
+#. l10n: Rather than translating, fill in the names of the translators
+#: ../virtaal/views/widgets/aboutdialog.py:73
+msgid "translator-credits"
+msgstr "giwhub"
+
+#: ../virtaal/views/widgets/langadddialog.py:103
+msgid "Language code must be an ASCII string."
+msgstr "语言代码必须是一个ASCII字符串。"
+
+#: ../virtaal/views/widgets/langadddialog.py:106
+msgid "Language code must be at least 2 characters long."
+msgstr "语言代码必须至少包含2个字节"
+
+#: ../virtaal/views/widgets/langselectdialog.py:79
+#: ../virtaal/views/widgets/langselectdialog.py:86
+msgid "Language"
+msgstr "语言"
+
+#. l10n: This is the column heading for the language code
+#: ../virtaal/views/widgets/langselectdialog.py:94
+#: ../virtaal/views/widgets/langselectdialog.py:101
+msgid "Code"
+msgstr "代码"
+
+#: ../virtaal/views/widgets/selectview.py:66
+msgid "Enabled"
+msgstr "启用"
+
+#: ../virtaal/views/widgets/selectview.py:113
+msgid "Configure..."
+msgstr "配置..."
+
+#: ../virtaal/views/widgets/welcomescreen.py:79
+msgid "Translation memory"
+msgstr "翻译记忆库"
+
+#: ../virtaal/views/widgets/welcomescreen.py:81
+msgid "Quality checks"
+msgstr "质量检查"
+
+#: ../virtaal/views/widgets/welcomescreen.py:82
+msgid "Machine translation"
+msgstr "机器翻译"
+
+#: ../virtaal/views/widgets/welcomescreen.py:83
+msgid "Highlighting and insertion of placeables"
+msgstr "高亮和插入非译元素"
+
+#: ../virtaal/views/widgets/welcomescreen.py:84
+msgid "Many plugins and options for customization"
+msgstr "大量可用于自定义的插件和选项"
+
+#: ../virtaal/models/storemodel.py:132
+msgid "The file does not exist."
+msgstr "该文件不存在。"
+
+#: ../virtaal/models/storemodel.py:134
+msgid "Not a valid file."
+msgstr "文件不可用。"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
+msgid "TMX Translation Memory"
+msgstr "TMX翻译记忆库"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:2
+msgid "TMX"
+msgstr "TMX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:3
+msgid "Translation Memory eXchange"
+msgstr "Translation Memory eXchange"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:4
+msgid "TBX Glossary"
+msgstr "TBX术语表"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:5
+msgid "TBX"
+msgstr "TBX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:6
+msgid "TermBase eXchange"
+msgstr "TermBase eXchange"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:7
+msgid "Wordfast Translation Memory"
+msgstr "Wordfast翻译记忆库"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:8
+msgid "Qt Linguist Translation File"
+msgstr "Qt Linguist翻译文件"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:9
+msgid "Qt Message File"
+msgstr "Qt消息文件"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:10
+msgid "Qt Phrase Book"
+msgstr "Qt常用语手册"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:11
+msgid "INI File"
+msgstr "INI文件"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:12
+msgid "INI"
+msgstr "INI"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:13
+msgid "Initialization"
+msgstr "初始化"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:14
+msgid "Java Properties File"
+msgstr "Java属性文件"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:15
+msgid "OpenOffice.org Translation File"
+msgstr "OpenOffice.org翻译文件"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:16
+msgid "XLIFF Translation File"
+msgstr "XLIFF翻译文件"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:17
+msgid "XLIFF"
+msgstr "XLIFF"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:18
+msgid "XML Localization Interchange File Format"
+msgstr "XML本地化交换文件格式"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:19
+msgid "C++ RC File"
+msgstr "C++ RC文件"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:20
+msgid "RC"
+msgstr "RC"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:21
+msgid "Resource Compiler"
+msgstr "资源编辑器"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:22
+msgid "Tcl Translation File"
+msgstr "Tcl翻译文件"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:23
+msgid "JavaScript error message file"
+msgstr "JavaScript出错消息文件"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:24
+msgid "Gettext Translation Template"
+msgstr "Gettext翻译模板"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:25
+msgid "Trados Tag Editor"
+msgstr "Trados标记编辑器"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:26
+msgid "OS X Strings File"
+msgstr "OS X字符串文件"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:27
+msgid "UTX Dictionary"
+msgstr "UTX字典"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:28
+msgid "UTX"
+msgstr "UTX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:29
+msgid "Universal Terminology eXchange"
+msgstr "Universal Terminology eXchange"
+
+#: ../devsupport/tmp_strings.py:23
+msgid "Gettext PO file"
+msgstr "Gettext PO文件"
+
+#: ../devsupport/tmp_strings.py:24
+msgid "Gettext MO file"
+msgstr "Gettext MO文件"
+
+#: ../devsupport/tmp_strings.py:25
+msgid "Qt .qm file"
+msgstr "Qt .qm文件"
+
+#: ../devsupport/tmp_strings.py:26
+msgid "OmegaT Glossary"
+msgstr "OmegaT术语表"
+
+#: ../bin/virtaal:93
+#, c-format
+msgid "%prog [options] [translation_file]"
+msgstr "%prog [选项] [翻译_文件]"
+
+#: ../bin/virtaal:96
+msgid "LOG"
+msgstr "日志"
+
+#: ../bin/virtaal:97
+msgid "turn on logging, storing the result to the supplied filename."
+msgstr "启用日志，将结果储存到提供的文件名称。"
+
+#: ../bin/virtaal:99
+msgid "CONFIG"
+msgstr "配置"
+
+#: ../bin/virtaal:100
+msgid "use the configuration file given by the supplied filename."
+msgstr "使用已提供文件名称的配置文件。"
+
+#: ../bin/virtaal:103
+msgid "enable debugging features"
+msgstr "启用调试功能"
+
+#: ../bin/virtaal:109
+msgid "PROFILE"
+msgstr "分析"
+
+#: ../bin/virtaal:111
+msgid "perform profiling, storing the result to the supplied filename."
+msgstr "执行分析，将结果储存到已提供的文件名称。"
+
+#: ../bin/virtaal:135
+msgid "Could not open log file '%(filename)s'"
+msgstr "无法打开日志文件 '%(filename)s'"
+
+#: ../bin/virtaal:143
+msgid "Could not read configuration file '%(filename)s'"
+msgstr "无法读取配置文件 '%(filename)s'"
+
+#: ../bin/virtaal:147
+msgid "invalid number of arguments"
+msgstr "无效的参数数"
+
+#: ../bin/virtaal:173
+msgid "Profiling support is not available"
+msgstr "分析支持不可用"
+
+#: ../bin/virtaal:185
+msgid "Could not open profile file '%(filename)s'"
+msgstr "无法打开配置文件 '%(filename)s'"
+
+#: ../devsupport/optparse.py:134
+#, python-format
+msgid "no such option: %s"
+msgstr "没有该选项：%s"
+
+#: ../devsupport/optparse.py:145
+#, python-format
+msgid "ambiguous option: %s (%s?)"
+msgstr "模糊选项：%s (%s?)"
+
+#: ../devsupport/optparse.py:368
+#, python-format
+msgid "Usage: %s\n"
+msgstr "用法：%s\n"
+
+#: ../devsupport/optparse.py:387
+msgid "Usage"
+msgstr "用法"
+
+#: ../devsupport/optparse.py:412
+msgid "integer"
+msgstr "整数"
+
+#: ../devsupport/optparse.py:413
+msgid "long integer"
+msgstr "长整数"
+
+#: ../devsupport/optparse.py:414
+msgid "floating-point"
+msgstr "浮点数"
+
+#: ../devsupport/optparse.py:415
+msgid "complex"
+msgstr "复数"
+
+#: ../devsupport/optparse.py:423
+#, python-format
+msgid "option %s: invalid %s value: %r"
+msgstr "选项%s：无效 %s 值： %r"
+
+#: ../devsupport/optparse.py:431
+#, python-format
+msgid "option %s: invalid choice: %r (choose from %s)"
+msgstr "选项%s：无效的选择： %r (选自%s)"
+
+#: ../devsupport/optparse.py:1246
+msgid "show this help message and exit"
+msgstr "显示这条帮助消息并退出"
+
+#: ../devsupport/optparse.py:1251
+msgid "show program's version number and exit"
+msgstr "显示程序的版本并退出"
+
+#: ../devsupport/optparse.py:1274
+msgid "%prog [options]"
+msgstr "%prog [选项]"
+
+#: ../devsupport/optparse.py:1484 ../devsupport/optparse.py:1523
+#, python-format
+msgid "%s option requires an argument"
+msgstr "%s选项需要一个参数"
+
+#: ../devsupport/optparse.py:1486 ../devsupport/optparse.py:1525
+#, python-format
+msgid "%s option requires %d arguments"
+msgstr "%s选项需要%d参数"
+
+#: ../devsupport/optparse.py:1495
+#, python-format
+msgid "%s option does not take a value"
+msgstr "%s选项没有值"

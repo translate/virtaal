@@ -1,24 +1,24 @@
-# Danish transaltion of Virtaal.
+# Danish translation of Virtaal.
 # Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # Aputsiaq <aj@isit.gl>, 2010.
+# scootergrisen, 2015-2017.
 #: ../virtaal/support/native_widgets.py:49
 #: ../virtaal/support/native_widgets.py:50
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Virtaal 1.0.0-beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2014-02-11 21:11+0000\n"
-"PO-Revision-Date: 2011-05-12 01:49+0000\n"
-"Last-Translator: Aputsiaq <aj@isit.gl>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2017-01-04 00:00+0100\n"
+"Last-Translator: scootergrisen\n"
+"Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.5.1-rc1\n"
-"X-POOTLE-MTIME: 1305164986.000000\n"
+"X-Generator: Virtaal 0.7.1\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.ui.h:18 ../virtaal/support/native_widgets.py:103
@@ -28,14 +28,14 @@ msgstr "Virtaal"
 
 #: ../share/applications/virtaal.desktop.in.h:2
 msgid "Translation Tool"
-msgstr "Oversaettelsesvaerktoej"
+msgstr "Oversættelsesværktøj"
 
 #: ../share/applications/virtaal.desktop.in.h:3
 msgid ""
 "A translation tool to help a human translator translate files into other "
 "languages"
 msgstr ""
-"En oversaettelsevaerktoej som hjaelpe en menneskelig oversaetter oversaette "
+"Et oversættelsesværktøj som hjælper et menneske med at oversætte "
 "filer til andre sprog"
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:1
@@ -45,9 +45,12 @@ msgid ""
 "resources to make translation fun, while helping to improve translation "
 "quality."
 msgstr ""
+"Virtaal er et program der bruges til at oversætte med. Målet er en dejlig "
+"kombination af enkelthed og styrke. Det integrerer med udvalgte "
+"onlineressourcer, så det bliver sjovt at oversætte, mens det hjælper "
+"med at forbedre kvaliteten af oversættelsen."
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:2
-#, fuzzy
 #| msgid ""
 #| "The initial focus is on software translation (localization or l10n), but "
 #| "we definitely intend it to be useful as a general purpose tool for "
@@ -57,33 +60,32 @@ msgid ""
 "definitely meant to be useful as a general purpose tool for Computer Aided "
 "Translation (CAT)."
 msgstr ""
-"Det indledende fokus er på oversættelser af programmer (lokalisering eller "
-"l10n), men vi har bestemt til hensigt at gøre det til et generelt "
-"anvendeligt værktøj til computer-assisteret oversættelse (på engelsk "
-"Computer Aided Translation, CAT)."
+"Den primære fokus er på softwareoversættelse (lokalisering eller l10n), men "
+"har bestemt til hensigt at gøre det til et generelt anvendeligt værktøj til "
+"computer-assisteret oversættelse. På engelsk kaldet Computer Aided "
+"Translation (CAT)."
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:3
 msgid "Some features:"
-msgstr ""
+msgstr "Nogle faciliteter:"
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:4
-#, fuzzy
 #| msgid "Existing translations: %(translations)s"
 msgid "Translation reuse (translation memory)"
-msgstr "Eksisterende oversættelser: %(translations)s"
+msgstr "Genbrug af oversættelser (oversættelseshukommelse)"
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:5
 #: ../virtaal/views/widgets/welcomescreen.py:80
 msgid "Terminology assistance"
-msgstr "Terminologi-assistance"
+msgstr "Terminologiassistance"
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:6
 msgid "AutoCompletor and AutoCorrector"
-msgstr ""
+msgstr "Automatisk fuldførsel og automatisk korrigering"
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:7
 msgid "Quality checks with customization for many languages"
-msgstr ""
+msgstr "Kvalitetstjek med tilpasning til mange sprog"
 
 #: ../share/virtaal/virtaal.ui.h:1
 msgid "Add Missing Language"
@@ -95,11 +97,11 @@ msgstr "Sprognavn:"
 
 #: ../share/virtaal/virtaal.ui.h:3
 msgid "ISO code:"
-msgstr "ISO kode:"
+msgstr "ISO-kode:"
 
 #: ../share/virtaal/virtaal.ui.h:4
 msgid "Plural expression:"
-msgstr "Flertal form:"
+msgstr "Flertalsform:"
 
 #: ../share/virtaal/virtaal.ui.h:5
 msgid "Number of plurals:"
@@ -108,7 +110,7 @@ msgstr "Antal flertalsformer:"
 #: ../share/virtaal/virtaal.ui.h:6
 msgid ""
 "Depending on the translation task, the plural information might be optional."
-msgstr "For visse oversættelse, flertalsformer er optional."
+msgstr "Afhængig af oversættelsesopgaven, kan flertalsformen være valgfri."
 
 #: ../share/virtaal/virtaal.ui.h:7
 msgid "<b>Language Information</b>"
@@ -126,15 +128,14 @@ msgid ""
 "If you are translating from English to French then English would be your "
 "original or source language."
 msgstr ""
-"Den <b>Oprindelig</b> er sproget du oversætter fra, som også kaldes "
-"kildesproget.\n"
+"<b>Original</b> er sproget hvorfra du oversætter, også kaldet kildesproget.\n"
 "\n"
-"Hvis du oversætter fra Engelsk til Fransk, er Engelsk din kilde eller "
-"oprindelig sprog."
+"Hvis du oversætter fra engelsk til dansk, så er engelsk dit originale eller "
+"kildesprog."
 
 #: ../share/virtaal/virtaal.ui.h:12
 msgid "<b>Original</b>"
-msgstr "<b>Oprindelig</b>"
+msgstr "<b>Original</b>"
 
 #: ../share/virtaal/virtaal.ui.h:13
 msgid ""
@@ -144,11 +145,11 @@ msgid ""
 "If you are translating from English to French then French would be your "
 "translation or target language."
 msgstr ""
-"Din <b>oversættelse</b> er det sprog hvortil du oversætter, også kaldet "
-"målsproget.\n"
+"<b>Oversættelse</b> er sproget hvortil du oversætter, også kaldet målsproget."
 "\n"
-"Hvis du oversætter fra Engelsk til Fransk, er Fransk din oversættelse eller "
-"målsproget."
+"\n"
+"Hvis du oversætter fra engelsk til dansk, så er dansk din oversættelse eller "
+"målsprog."
 
 #: ../share/virtaal/virtaal.ui.h:16
 msgid "<b>Translation</b>"
@@ -156,16 +157,15 @@ msgstr "<b>Oversættelse</b>"
 
 #: ../share/virtaal/virtaal.ui.h:17
 msgid "_Add Missing Language..."
-msgstr "_Tilføj Manglende Sprog..."
+msgstr "_Tilføj manglende sprog..."
 
 #: ../share/virtaal/virtaal.ui.h:19
 msgid "_File"
 msgstr "_Fil"
 
-# Shortkey does not match danish version
 #: ../share/virtaal/virtaal.ui.h:20
 msgid "_Update to Template"
-msgstr "_Opdater til skabelon"
+msgstr "_Opdater fra skabelon"
 
 #: ../share/virtaal/virtaal.ui.h:21
 msgid "_Export"
@@ -174,25 +174,25 @@ msgstr "_Eksportér"
 # Recent = seneste, Current = aktuelle.
 #: ../share/virtaal/virtaal.ui.h:22
 msgid "_Recent Files"
-msgstr "Seneste File_r"
+msgstr "_Nylige filer"
 
 #: ../share/virtaal/virtaal.ui.h:23
 msgid "_Edit"
-msgstr "R_ediger"
+msgstr "_Rediger"
 
 #. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
 #: ../share/virtaal/virtaal.ui.h:25
 msgid "Transfer From Source"
-msgstr "Overfør Fra Kilde"
+msgstr "Overfør fra kilde"
 
 #. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
 #: ../share/virtaal/virtaal.ui.h:27
 msgid "P_revious Placeable"
-msgstr "T_idligere Placering"
+msgstr "Fo_rrige placerbar"
 
 #: ../share/virtaal/virtaal.ui.h:28
 msgid "_Next Placeable"
-msgstr "_Næste Placerbare"
+msgstr "_Næste placerbar"
 
 #: ../share/virtaal/virtaal.ui.h:29
 msgid "_View"
@@ -200,7 +200,7 @@ msgstr "_Vis"
 
 #: ../share/virtaal/virtaal.ui.h:30
 msgid "_Full Screen"
-msgstr "_Fuld Skærm"
+msgstr "_Fuldskærm"
 
 #: ../share/virtaal/virtaal.ui.h:31
 msgid "_Quality Checks"
@@ -212,11 +212,11 @@ msgstr "_Navigation"
 
 #: ../share/virtaal/virtaal.ui.h:33
 msgid "P_age Up"
-msgstr "S_ide Op"
+msgstr "S_ide op"
 
 #: ../share/virtaal/virtaal.ui.h:34
 msgid "_Page Down"
-msgstr "Side O_p"
+msgstr "_Side ned"
 
 #: ../share/virtaal/virtaal.ui.h:35
 msgid "_Help"
@@ -224,24 +224,23 @@ msgstr "_Hjælp"
 
 #: ../share/virtaal/virtaal.ui.h:36
 msgid "_Online Help"
-msgstr "_Online Hjælp"
+msgstr "Online_hjælp"
 
 #: ../share/virtaal/virtaal.ui.h:37
 msgid "_Tutorial"
-msgstr "_Tutorial"
+msgstr "_Vejledning"
 
 #: ../share/virtaal/virtaal.ui.h:38
 msgid "_Localization Guide"
 msgstr "_Lokaliseringsguide"
 
-# Rapport med to p'er
 #: ../share/virtaal/virtaal.ui.h:39
 msgid "Report a _Bug"
-msgstr "Rapportér _Fejl"
+msgstr "_Rapportér en fejl"
 
 #: ../share/virtaal/virtaal.ui.h:40
 msgid "Virtaal Preferences"
-msgstr "Virtaal Indstillinger"
+msgstr "Virtaal præferencer"
 
 #: ../share/virtaal/virtaal.ui.h:41
 msgid "The name stored in the file header"
@@ -254,27 +253,27 @@ msgstr "Navn:"
 
 #: ../share/virtaal/virtaal.ui.h:44
 msgid "The e-mail address stored in the file header"
-msgstr "Email-adresse som opbevares i filhovedet"
+msgstr "E-mail-adressen som opbevares i filhovedet"
 
 #: ../share/virtaal/virtaal.ui.h:45
 msgid "E-mail address:"
-msgstr "E-mail adresse:"
+msgstr "E-mail-adresse:"
 
 #: ../share/virtaal/virtaal.ui.h:46
 msgid ""
 "The team information stored in the file header. This can be an e-mail "
 "address or a URL, for example."
 msgstr ""
-"Holdinformation som opbevares i filhovedet. Dette kan være en email-adresse "
-"eller en URL, som eksempel."
+"Teaminformation som opbevares i filhovedet. Dette kan f.eks. være en e-mail-adresse "
+"eller en URL."
 
 #: ../share/virtaal/virtaal.ui.h:47
 msgid "Team:"
-msgstr "Hold:"
+msgstr "Team:"
 
 #: ../share/virtaal/virtaal.ui.h:48
 msgid "<b>Translator Information</b>"
-msgstr "<b>Oversætteroplysning</b>"
+msgstr "<b>Oplysninger om oversætteren</b>"
 
 #: ../share/virtaal/virtaal.ui.h:49
 msgid "Source text:"
@@ -286,7 +285,7 @@ msgstr "Måltekst:"
 
 #: ../share/virtaal/virtaal.ui.h:51
 msgid "Use _Default Fonts"
-msgstr "Brug Stan_dard Skrifttyper"
+msgstr "Anvend stan_dard skrifttyper"
 
 #: ../share/virtaal/virtaal.ui.h:52
 msgid "<b>Fonts</b>"
@@ -302,16 +301,16 @@ msgid ""
 "Placeables are special parts of the text that can be automatically "
 "highlighted and easily inserted into the translation."
 msgstr ""
-"Placerbare elementer er særlig tekster som kan highlightes automatisk og "
-"indføres let i oversættelsen."
+"Placerbare elementer er særlig dele af teksten som automatisk kan fremhæves og "
+"nemt indsættes i oversættelsen."
 
 #: ../share/virtaal/virtaal.ui.h:56
 msgid "Placeables"
-msgstr "Placerbar"
+msgstr "Placerbare"
 
 #: ../share/virtaal/virtaal.ui.h:57
 msgid "Plug-ins"
-msgstr "Plug-ins"
+msgstr "Plugins"
 
 #: ../share/virtaal/virtaal.ui.h:58
 msgid "Properties"
@@ -319,11 +318,11 @@ msgstr "Egenskaber"
 
 #: ../share/virtaal/virtaal.ui.h:59
 msgid "<b>Words</b> (total):"
-msgstr "<b>Ord</b> (total):"
+msgstr "<b>Ord</b> (i alt):"
 
 #: ../share/virtaal/virtaal.ui.h:60
 msgid "<b>Strings</b> (total):"
-msgstr "<b>Tekststrenge</b> (total):"
+msgstr "<b>Strenge</b> (i alt):"
 
 #: ../share/virtaal/virtaal.ui.h:61
 msgid "File type:"
@@ -364,32 +363,32 @@ msgstr "URL:"
 
 #: ../share/virtaal/virtaal.ui.h:71
 msgid "Put queries in quotes"
-msgstr "Angiv søgninger i anførselstegn"
+msgstr "Sæt forespørgsler i anførselstegn"
 
 #: ../share/virtaal/virtaal.ui.h:72
 msgid "<b>Options</b>"
-msgstr "<b>Indstillinger</b>"
+msgstr "<b>Valgmuligheder</b>"
 
 #: ../share/virtaal/virtaal.ui.h:73
 msgid "Web Look-ups"
-msgstr "Web Opslag"
+msgstr "Websøgninger"
 
 #. l10n: Remove the tags if underlining is unsuitable for your language. Most languages won't need to change this. Translate 'Open' normally.
 #: ../share/virtaal/virtaal.ui.h:75
 msgid "<u>Open</u>"
-msgstr "<u>Åben</u>"
+msgstr "<u>Åbn</u>"
 
 #: ../share/virtaal/virtaal.ui.h:76
 msgid "<b><big>Recent Files</big></b>"
-msgstr "<b><big>Seneste Filer</big></b>"
+msgstr "<b><big>Nylige filer</big></b>"
 
 #: ../share/virtaal/virtaal.ui.h:77
 msgid "<u>Tutorial</u>"
-msgstr "<u>Tutorial</u>"
+msgstr "<u>Vejledning</u>"
 
 #: ../share/virtaal/virtaal.ui.h:78
 msgid "<u>Cheat Sheet</u>"
-msgstr "<u>Tips & tricks</u>"
+msgstr "<u>Genvejstaster</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.ui.h:80
@@ -403,11 +402,11 @@ msgstr "<u>Mere ...</u>"
 
 #: ../share/virtaal/virtaal.ui.h:82
 msgid "<u>Features</u>"
-msgstr "<u>Funktioner</u>"
+msgstr "<u>Faciliteter</u>"
 
 #: ../share/virtaal/virtaal.ui.h:83
 msgid "<b><big>Getting Started</big></b>"
-msgstr "<b><big>Kom godt i gang </big></b>"
+msgstr "<b><big>Kom godt i gang</big></b>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.ui.h:85
@@ -419,7 +418,6 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgid "<u>Manual</u>"
 msgstr "<u>Manual</u>"
 
-# 75%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.ui.h:88
 #: ../virtaal/controllers/welcomescreencontroller.py:35
@@ -428,9 +426,8 @@ msgstr "http://translate.sourceforge.net/wiki/guide/start"
 
 #: ../share/virtaal/virtaal.ui.h:89
 msgid "<u>Localization Guide</u>"
-msgstr "<u>Lokaliserings Guide</u>"
+msgstr "<u>Lokaliseringsguide</u>"
 
-# 81%
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.ui.h:91
 #: ../virtaal/controllers/welcomescreencontroller.py:37
@@ -439,61 +436,61 @@ msgstr "http://translate.sourceforge.net/wiki/virtaal/index#contact"
 
 #: ../share/virtaal/virtaal.ui.h:92
 msgid "<u>Feedback</u>"
-msgstr "<u>Afturboðan</u>"
+msgstr "<u>Feedback</u>"
 
 #: ../share/virtaal/virtaal.ui.h:93
 msgid "<b><big>Support</big></b>"
-msgstr "<b><big>Understøttelse</big></b>"
+msgstr "<b><big>Support</big></b>"
 
 #: ../virtaal/tips.py:27
 msgid ""
 "At the end of a translation, simply press <Enter> to continue with the next "
 "one."
 msgstr ""
-"I slutningen af oversættelse, tryk blot <Enter> for at fortsætter til den "
-"næst."
+"Tryk blot på <Enter> ved slutningen af en oversættelse, for at fortsætte til den "
+"næste."
 
 #: ../virtaal/tips.py:28
 msgid ""
 "To copy the original string into the target field, simply press <Alt+Down>."
 msgstr ""
-"For at kopiere den originale streng til målfeltet, tryk blot <Alt+Ned>."
+"Tryk blot på <Alt+Ned>, for at kopiere den originale streng til målfeltet."
 
 #. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
 #: ../virtaal/tips.py:31
 msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
-msgstr "For at angive nuværende oversættelse som tvetydig, tryk blot <Alt+U>."
+msgstr ""
+"Tryk blot på <Alt+U>, for at markere den nuværende oversættelse som "
+"uafklaret."
 
 #: ../virtaal/tips.py:32
 msgid ""
 "To mark the current translation as incomplete, simply press <Ctrl+Shift"
 "+Enter>."
 msgstr ""
-"For at markere nuværende oversættelse som ukomplet, tryk blot <Ctrl+Skift"
-"+Retur>."
+"Tryk blot på <Ctrl+Skift+Enter>, for at markere den nuværende oversættelse "
+"som ikke færdig."
 
-# 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr ""
-"For at angive nuværende oversættelse som komplet, så tryk blot <Ctrl+Retur>."
+"Tryk blot på <Ctrl+Enter>, for at markere den nuværende oversættelse som "
+"færdig."
 
 #: ../virtaal/tips.py:34
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
-msgstr "Brug Ctrl+Op eller Ctrl-Ned for at flytte mellem oversætteser."
+msgstr "Brug Ctrl+Op eller Ctrl-Ned for at flytte mellem oversættelser."
 
 #: ../virtaal/tips.py:35
 msgid ""
 "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
 msgstr ""
-"Brug Ctrl+PgDown for at flytte med store skridt mellem oversættelserne."
+"Brug Ctrl+PgUp eller Ctrl+PgDown for, med store skridt, at flytte mellem oversættelser."
 
-# 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
-msgstr "Upræcis"
+msgstr "Uafklaret"
 
-# 75%
 #: ../virtaal/controllers/checkscontroller.py:30
 #: ../virtaal/controllers/unitcontroller.py:83
 msgid "Untranslated"
@@ -501,11 +498,11 @@ msgstr "Ikke oversat"
 
 #: ../virtaal/controllers/checkscontroller.py:31
 msgid "Accelerators"
-msgstr "Acceleratorer"
+msgstr "Genveje"
 
 #: ../virtaal/controllers/checkscontroller.py:32
 msgid "Acronyms"
-msgstr "Akronymer"
+msgstr "Forkortelser"
 
 #: ../virtaal/controllers/checkscontroller.py:33
 msgid "Blank"
@@ -513,20 +510,19 @@ msgstr "Tom"
 
 #: ../virtaal/controllers/checkscontroller.py:34
 msgid "Brackets"
-msgstr "Kantede parenteser"
+msgstr "Parenteser"
 
 #: ../virtaal/controllers/checkscontroller.py:35
 msgid "Compendium conflict"
 msgstr "Kompendium konflikt"
 
-# 88%
 #: ../virtaal/controllers/checkscontroller.py:36
 msgid "Translator credits"
-msgstr "Oversætter-bidrag"
+msgstr "Oversætterkreditering"
 
 #: ../virtaal/controllers/checkscontroller.py:37
 msgid "Double quotes"
-msgstr "Dobbelte anførselstegn"
+msgstr "Dobbelt anførselstegn"
 
 #: ../virtaal/controllers/checkscontroller.py:38
 msgid "Double spaces"
@@ -539,19 +535,19 @@ msgstr "Gentagne ord"
 #: ../virtaal/controllers/checkscontroller.py:40
 #: ../virtaal/controllers/placeablescontroller.py:97
 msgid "E-mail"
-msgstr "Email"
+msgstr "E-mail"
 
 #: ../virtaal/controllers/checkscontroller.py:41
 msgid "Ending punctuation"
-msgstr "Tegnsætning i endelser"
+msgstr "Tegnsætning i slutningen"
 
 #: ../virtaal/controllers/checkscontroller.py:42
 msgid "Ending whitespace"
-msgstr "Blanke tegn i endelser"
+msgstr "Blanktegn i slutningen"
 
 #: ../virtaal/controllers/checkscontroller.py:43
 msgid "Escapes"
-msgstr "Undvigelsestegn"
+msgstr "Undvigetegn"
 
 #: ../virtaal/controllers/checkscontroller.py:44
 msgid "File paths"
@@ -563,7 +559,7 @@ msgstr "Funktioner"
 
 #: ../virtaal/controllers/checkscontroller.py:46
 msgid "GConf values"
-msgstr "Gconf-værdier"
+msgstr "GConf-værdier"
 
 #: ../virtaal/controllers/checkscontroller.py:47
 msgid "Old KDE comment"
@@ -581,10 +577,9 @@ msgstr "Ord skal oversættes"
 msgid "Newlines"
 msgstr "Linjeskift"
 
-# 94%
 #: ../virtaal/controllers/checkscontroller.py:51
 msgid "Number of plurals"
-msgstr "Antal af flertalformer"
+msgstr "Antal flertalsformer"
 
 #: ../virtaal/controllers/checkscontroller.py:52
 msgid "Don't translate words"
@@ -614,7 +609,7 @@ msgstr "Ren tegnsætning"
 
 #: ../virtaal/controllers/checkscontroller.py:58
 msgid "Number of sentences"
-msgstr "Antal af sekvenser"
+msgstr "Antal sætninger"
 
 #: ../virtaal/controllers/checkscontroller.py:59
 msgid "Short"
@@ -626,7 +621,7 @@ msgstr "Simple store bogstaver"
 
 #: ../virtaal/controllers/checkscontroller.py:61
 msgid "Simple plural(s)"
-msgstr "Simpel flertalsform(er)"
+msgstr "Simple flertalsform(er)"
 
 #: ../virtaal/controllers/checkscontroller.py:62
 msgid "Single quotes"
@@ -634,19 +629,19 @@ msgstr "Enkelt anførselstegn"
 
 #: ../virtaal/controllers/checkscontroller.py:63
 msgid "Spelling"
-msgstr "Stavemåde"
+msgstr "Stavning"
 
 #: ../virtaal/controllers/checkscontroller.py:64
 msgid "Starting capitalization"
-msgstr "Start med store bogstaver"
+msgstr "Store bogstaver i begyndelsen"
 
 #: ../virtaal/controllers/checkscontroller.py:65
 msgid "Starting punctuation"
-msgstr "Tegnsætning i start"
+msgstr "Tegnsætning i begyndelsen"
 
 #: ../virtaal/controllers/checkscontroller.py:66
 msgid "Starting whitespace"
-msgstr "Mellemrum i start"
+msgstr "Blanktegn i begyndelsen"
 
 #: ../virtaal/controllers/checkscontroller.py:67
 msgid "Tabs"
@@ -669,10 +664,9 @@ msgstr "Gyldige tegn"
 msgid "Placeholders"
 msgstr "Pladsholdere"
 
-# 87%
 #: ../virtaal/controllers/checkscontroller.py:72
 msgid "XML tags"
-msgstr "XML-mærker"
+msgstr "XML-tags"
 
 #: ../virtaal/controllers/checkscontroller.py:111
 msgid "Default"
@@ -710,11 +704,11 @@ msgstr "Indtast venligst dit navn"
 
 #: ../virtaal/controllers/maincontroller.py:90
 msgid "Please enter your e-mail address"
-msgstr "Indtast venligst din email-adresse"
+msgstr "Indtast venligst din e-mail-adresse"
 
 #: ../virtaal/controllers/maincontroller.py:99
 msgid "Please enter your team's information"
-msgstr "Indtast venligst dit holds oplysninger"
+msgstr "Indtast venligst dit teams oplysninger"
 
 #: ../virtaal/controllers/maincontroller.py:203
 #: ../virtaal/controllers/maincontroller.py:341
@@ -722,7 +716,7 @@ msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
 msgstr ""
-"De valgte at åbne den nuværende åbne fil. Ønsker du at genindlæse filen?"
+"De valgte at åbne den nuværende åbne fil. Vil du genindlæse filen?"
 
 #: ../virtaal/controllers/maincontroller.py:215
 #: ../virtaal/controllers/maincontroller.py:325
@@ -739,7 +733,7 @@ msgstr ""
 "\n"
 "%(error_message)s\n"
 "\n"
-"Prøv at åbne en anden fil."
+"Prøv at åbn en anden fil."
 
 #: ../virtaal/controllers/maincontroller.py:238
 #: ../virtaal/support/native_widgets.py:145
@@ -761,7 +755,7 @@ msgstr ""
 "\n"
 "%(error_message)s\n"
 "\n"
-"Prøv at gemme et andet sted."
+"Prøv at gemme på en anden placering."
 
 #: ../virtaal/controllers/maincontroller.py:264
 #, python-format
@@ -782,7 +776,6 @@ msgstr "Kan kun eksportere Gettext PO-filer"
 msgid "Export"
 msgstr "Eksportér"
 
-# 77%
 #: ../virtaal/controllers/maincontroller.py:292
 #, python-format
 msgid ""
@@ -798,7 +791,6 @@ msgstr ""
 "\n"
 "Prøv at gemme på en anden placering."
 
-# 85%
 #: ../virtaal/controllers/maincontroller.py:298
 #, python-format
 msgid ""
@@ -806,7 +798,7 @@ msgid ""
 "\n"
 "%(error_message)s"
 msgstr ""
-"Kunne ikke eksportere fil.\n"
+"Kunne ikke eksportere filen.\n"
 "\n"
 "%(error_message)s"
 
@@ -818,7 +810,6 @@ msgstr "Genindlæs fil"
 msgid "Reload file from last saved copy and lose all changes?"
 msgstr "Genindlæs fil fra sidste gemte kopi og mist alle ændringer?"
 
-# Jf. den danske Wikipedia-artikel
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase
 #: ../virtaal/controllers/placeablescontroller.py:84
 msgid "CamelCase"
@@ -827,28 +818,28 @@ msgstr "CamelCase"
 #: ../virtaal/controllers/placeablescontroller.py:85
 msgid ""
 "Words with internal capitalization, such as some brand names and WikiWords"
-msgstr "Ord med store bogstaver internt, så som varemærker og WikiOrd"
+msgstr "Ord med store bogstaver internt, såsom varemærkenavne og WikiOrd"
 
 #: ../virtaal/controllers/placeablescontroller.py:88
 msgid "Capitals"
-msgstr "Versaler"
+msgstr "Store bogstaver"
 
 #. l10n: this refers to "UPPERCASE" / "CAPITAL" letters
 #: ../virtaal/controllers/placeablescontroller.py:90
 msgid "Words containing uppercase letters only"
-msgstr "Ord bestående af alene store bogstaver/versaler"
+msgstr "Ord som kun består af store bogstaver"
 
 #: ../virtaal/controllers/placeablescontroller.py:93
 msgid "Command Line Options"
-msgstr "Kommondolinje-tilvalg"
+msgstr "Kommandolinje-valgmuligheder"
 
 #: ../virtaal/controllers/placeablescontroller.py:94
 msgid "Application command line options, such as --help, -h and -I"
-msgstr "Tilvalg for program i kommandolinjen, så som --help, -h og -l"
+msgstr "Programmets kommandolinje-valgmuligheder, såsom --help, -h og -l"
 
 #: ../virtaal/controllers/placeablescontroller.py:98
 msgid "E-mail addresses"
-msgstr "Email-adresser"
+msgstr "E-mail-adresser"
 
 #: ../virtaal/controllers/placeablescontroller.py:101
 msgid "File Names"
@@ -856,7 +847,7 @@ msgstr "Filnavne"
 
 #: ../virtaal/controllers/placeablescontroller.py:102
 msgid "Paths referring to file locations"
-msgstr "Stier refererende til filplaceringer"
+msgstr "Stier som referere til filplaceringer"
 
 #: ../virtaal/controllers/placeablescontroller.py:105
 msgid "Placeholders (printf)"
@@ -864,7 +855,7 @@ msgstr "Pladsholdere (printf)"
 
 #: ../virtaal/controllers/placeablescontroller.py:106
 msgid "Placeholders used in \"printf\" strings"
-msgstr "Pladsholdere anvendt i \"printf\" strenge"
+msgstr "Pladsholdere anvendt i \"printf\"-strenge"
 
 #: ../virtaal/controllers/placeablescontroller.py:109
 msgid "Placeholders (Python)"
@@ -914,15 +905,15 @@ msgstr "XML-entiteter"
 
 #: ../virtaal/controllers/placeablescontroller.py:136
 msgid "Entity references, such as &amp; and &#169;"
-msgstr "Entitets-referencer, så som &amp; og &#169;"
+msgstr "Entitet-referencer, såsom &amp; og &#169;"
 
 #: ../virtaal/controllers/placeablescontroller.py:139
 msgid "XML Tags"
-msgstr "XML-mærkater"
+msgstr "XML-tags"
 
 #: ../virtaal/controllers/placeablescontroller.py:140
 msgid "XML tags, such as <b> and </i>"
-msgstr "XML-mærker, så som <b> og </i>"
+msgstr "XML-tags, såsom <b> og </i>"
 
 #: ../virtaal/controllers/placeablescontroller.py:154
 msgid "Spaces"
@@ -930,33 +921,31 @@ msgstr "Mellemrum"
 
 #: ../virtaal/controllers/placeablescontroller.py:155
 msgid "Double spaces and spaces in unexpected positions"
-msgstr "Dobbelte mellemrum og mellemrum på uventede steder"
+msgstr "Dobbelt mellemrum og mellemrum på uventede steder"
 
 #: ../virtaal/controllers/placeablescontroller.py:156
 msgid "\"alt\" Attributes"
-msgstr "\"alt\" Attributter"
+msgstr "\"alt\"-attributter"
 
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
-msgstr "Kan placeres for \"alt\" attributter (som set i HTML)"
+msgstr "Placerbar for \"alt\"-attributter (som i HTML)"
 
-# 76%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders (Drupal)"
 msgstr "Pladsholdere (Drupal)"
 
-# 83%
 #: ../virtaal/controllers/placeablescontroller.py:159
 msgid "Placeholders in Drupal strings"
 msgstr "Pladsholdere i Drupal-strenge"
 
 #: ../virtaal/controllers/storecontroller.py:198
 msgid "No source or translatable files in bundle"
-msgstr "Ingen kilde eller oversættelige filer i bundt"
+msgstr "Ingen kilde eller filer som kan oversættes i bundtet"
 
 #: ../virtaal/controllers/storecontroller.py:230
 msgid "The file contains nothing to translate."
-msgstr "Filen indeholder intet oversætteligt."
+msgstr "Filen indeholder intet som kan oversættes."
 
 #. l10n: The heading of statistics before updating to the new template
 #: ../virtaal/controllers/storecontroller.py:435
@@ -976,7 +965,7 @@ msgstr "Oversat: %d"
 #: ../virtaal/controllers/storecontroller.py:439
 #, python-format
 msgid "Fuzzy: %d"
-msgstr "Upræcist: %d"
+msgstr "Uafklaret: %d"
 
 #: ../virtaal/controllers/storecontroller.py:440
 #, python-format
@@ -986,7 +975,7 @@ msgstr "Ikke oversat: %d"
 #: ../virtaal/controllers/storecontroller.py:441
 #, python-format
 msgid "Total: %d"
-msgstr "Total: %d"
+msgstr "I alt: %d"
 
 #. l10n: this refers to updating a file to a new template (POT file)
 #: ../virtaal/controllers/storecontroller.py:459
@@ -995,7 +984,7 @@ msgstr "Fil opdateret"
 
 #: ../virtaal/controllers/unitcontroller.py:84
 msgid "Needs work"
-msgstr "Kræver arbejde"
+msgstr "Behøver arbejde"
 
 #: ../virtaal/controllers/unitcontroller.py:85
 msgid "Rejected"
@@ -1013,7 +1002,6 @@ msgstr "Oversat"
 msgid "Reviewed"
 msgstr "Gennemgået"
 
-# 89%
 #: ../virtaal/controllers/welcomescreencontroller.py:65
 msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
 msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
@@ -1038,7 +1026,7 @@ msgstr "Alle tjek"
 
 #: ../virtaal/modes/quicktransmode.py:31
 msgid "Incomplete"
-msgstr "Ukomplet"
+msgstr "Ikke færdig"
 
 #: ../virtaal/modes/searchmode.py:36 ../virtaal/modes/searchmode.py:68
 msgid "Search"
@@ -1046,7 +1034,7 @@ msgstr "Søg"
 
 #: ../virtaal/modes/searchmode.py:70
 msgid "_Case sensitive"
-msgstr "_Versalfølsom"
+msgstr "_Forskel på store og små bogstaver"
 
 #. l10n: To read about what regular expressions are, see
 #. http://en.wikipedia.org/wiki/Regular_expression
@@ -1070,11 +1058,11 @@ msgstr "Erstat"
 #. l10n: Check box
 #: ../virtaal/modes/searchmode.py:88
 msgid "Replace _All"
-msgstr "Erstat _Alle"
+msgstr "Erstat _alle"
 
 #: ../virtaal/modes/workflowmode.py:34
 msgid "Workflow"
-msgstr "Arbejdsgange"
+msgstr "Arbejdsgang"
 
 #. l10n: This is the button where the user can select units by workflow state
 #: ../virtaal/modes/workflowmode.py:112
@@ -1088,19 +1076,19 @@ msgstr "Alle tilstande"
 
 #: ../virtaal/plugins/autocompletor.py:214
 msgid "Automatically complete long words while you type"
-msgstr "Fuldfør automatisk lange ord under indtastning"
+msgstr "Fuldfør automatisk lange ord mens du indtaster"
 
 #: ../virtaal/plugins/autocompletor.py:215
 msgid "AutoCompletor"
-msgstr "AutoFuldfører"
+msgstr "Automatisk fuldførsel"
 
 #: ../virtaal/plugins/autocorrector.py:259
 msgid "Automatically correct text while you type"
-msgstr "Korrigér automatisk under indtastning"
+msgstr "Korrigér automatisk tekst mens du indtaster"
 
 #: ../virtaal/plugins/autocorrector.py:260
 msgid "AutoCorrector"
-msgstr "AutoKorrigerer"
+msgstr "Automatisk korrigering"
 
 #: ../virtaal/plugins/spellchecker.py:48
 msgid "Spell Checker"
@@ -1108,7 +1096,7 @@ msgstr "Stavekontrol"
 
 #: ../virtaal/plugins/spellchecker.py:49
 msgid "Check spelling and provide suggestions"
-msgstr "Tjek stavemåde og tilbyd forslag"
+msgstr "Tjek stavning og giv forslag"
 
 #. l10n: This refers to spell checking
 #: ../virtaal/plugins/spellchecker.py:347
@@ -1118,7 +1106,7 @@ msgstr "<i>(ingen forslag)</i>"
 #. l10n: This refers to spell checking
 #: ../virtaal/plugins/spellchecker.py:351
 msgid "Ignore All"
-msgstr "Ignorér alle"
+msgstr "Ignorer alle"
 
 #. l10n: This refers to spelling suggestions
 #: ../virtaal/plugins/spellchecker.py:355
@@ -1129,44 +1117,43 @@ msgstr "Mere..."
 #: ../virtaal/plugins/spellchecker.py:361
 #, python-format
 msgid "Add \"%s\" to Dictionary"
-msgstr "Tilføj \"%s\" til Ordbog"
+msgstr "Føj \"%s\" til ordbog"
 
-# 88%
 #: ../virtaal/plugins/spellchecker.py:364
 msgid "Languages"
 msgstr "Sprog"
 
 #: ../virtaal/plugins/lookup/__init__.py:29
 msgid "Perform look-ups on selected text"
-msgstr "Udfør opslag på valgte tekst"
+msgstr "Udfør søgning på markerede tekst"
 
 #: ../virtaal/plugins/lookup/__init__.py:30
 msgid "External Look-up"
-msgstr "Eksterne opslag"
+msgstr "Ekstern søgning"
 
 #. l10n: The 'services' here refer to different look-up plugins,
 #. such as web look-up, etc.
 #: ../virtaal/plugins/lookup/lookupview.py:70
 msgid "Select Look-up Services"
-msgstr "Vælg Opslagstjeneste"
+msgstr "Vælg søgetjenester"
 
 #: ../virtaal/plugins/lookup/lookupview.py:71
 msgid "Select the services that should be used to perform look-ups"
-msgstr "Vælg den service som skal anvendes til at udføre opslag"
+msgstr "Vælg den service som skal anvendes til at udføre søgninger"
 
 #: ../virtaal/plugins/lookup/lookupview.py:131
 #, python-format
 msgid "Look-up \"%(selection)s\""
-msgstr "Slå op \"%(selection)s\""
+msgstr "Søg efter \"%(selection)s\""
 
 #. l10n: plugin name
 #: ../virtaal/plugins/lookup/models/weblookup.py:40
 msgid "Web Look-up"
-msgstr "Web-opslag"
+msgstr "Websøgning"
 
 #: ../virtaal/plugins/lookup/models/weblookup.py:41
 msgid "Look-up the selected text on a web site"
-msgstr "Slå udvalgte tekst op på en hjemmeside"
+msgstr "Søger efter den markerede tekst på et websted"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate.
 #: ../virtaal/plugins/lookup/models/weblookup.py:45
@@ -1196,12 +1183,11 @@ msgstr "URL"
 #. l10n: Whether the selected text should be surrounded by "quotes"
 #: ../virtaal/plugins/lookup/models/weblookup.py:191
 msgid "Quote Query"
-msgstr "Sæt anførelsestegn på forespørgsel"
+msgstr "Forespørgsler i anførselstegn"
 
 #: ../virtaal/plugins/migration.py:57
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
-msgstr ""
-"Overfør indstillinger fra KBabel, Lokalize og/eller Poedit til Virtaal."
+msgstr "Migrér indstillinger fra KBabel, Lokalize og/eller Poedit til Virtaal."
 
 #: ../virtaal/plugins/migration.py:58
 msgid "Migration Assistant"
@@ -1210,7 +1196,7 @@ msgstr "Overføringsassistent"
 #: ../virtaal/plugins/migration.py:72
 msgid "Should Virtaal try to import settings and data from other applications?"
 msgstr ""
-"Skal Virtaal forsøge at importere indstillinger og data fra andre programmer?"
+"Skal Virtaal prøve at importere indstillinger og data fra andre programmer?"
 
 #: ../virtaal/plugins/migration.py:73
 msgid "Import data from other applications?"
@@ -1218,11 +1204,11 @@ msgstr "Importér data fra andre programmer?"
 
 #: ../virtaal/plugins/migration.py:101
 msgid "Migration was successfully completed"
-msgstr "Overførsel blev fuldført med succes"
+msgstr "Overførslen blev fuldført med succes"
 
 #: ../virtaal/plugins/migration.py:102
 msgid "The following items were migrated:"
-msgstr "De følgende elementer blev overført:"
+msgstr "Følgende elementer blev migreret:"
 
 #: ../virtaal/plugins/migration.py:105
 msgid "Migration completed"
@@ -1230,11 +1216,11 @@ msgstr "Overførsel fuldført"
 
 #: ../virtaal/plugins/migration.py:107
 msgid "Virtaal was not able to migrate any settings or data"
-msgstr "Virtaal kunne hverken overføre indstillinger eller data"
+msgstr "Virtaal kunne ikke migrere nogen indstillinger eller data"
 
 #: ../virtaal/plugins/migration.py:108
 msgid "Nothing migrated"
-msgstr "Intet overført"
+msgstr "Intet migreret"
 
 #: ../virtaal/plugins/migration.py:178
 msgid "Poedit settings"
@@ -1261,19 +1247,19 @@ msgstr "Lokalize's oversættelseshukommelse: %(database_name)s"
 
 #: ../virtaal/plugins/terminology/__init__.py:27
 msgid "Terminology Help"
-msgstr "Terminologi Hjælp"
+msgstr "Terminologihjælp"
 
 #: ../virtaal/plugins/terminology/__init__.py:28
 msgid "Terminology suggestions"
-msgstr "Terminologi forslag"
+msgstr "Terminologiforslag"
 
 #: ../virtaal/plugins/terminology/models/autoterm.py:41
 msgid "Localization Terminology"
-msgstr "Lokaliserings-terminologi"
+msgstr "Lokaliseringsterminologi"
 
 #: ../virtaal/plugins/terminology/models/autoterm.py:42
 msgid "Selected localization terminology"
-msgstr "Udvalgt lokaliserings-terminologi"
+msgstr "Udvalgt lokaliseringsterminologi"
 
 #: ../virtaal/plugins/terminology/models/localfile/__init__.py:42
 msgid "Local Files"
@@ -1281,17 +1267,17 @@ msgstr "Lokale filer"
 
 #: ../virtaal/plugins/terminology/models/localfile/__init__.py:43
 msgid "Local terminology files"
-msgstr "Lokale terminologi-filer"
+msgstr "Lokale terminologifiler"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:52
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:54
 msgid "Terminology _Files..."
-msgstr "Terminologi-_Filer..."
+msgstr "Terminologi_filer..."
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:60
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:62
 msgid "Add _Term..."
-msgstr "Tilføj _Term..."
+msgstr "Tilføj _term..."
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:145
 msgid "File"
@@ -1303,18 +1289,18 @@ msgstr "Udvidelig"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:181
 msgid "Add Files"
-msgstr "Tilføj Filer"
+msgstr "Tilføj filer"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:188
 #: ../virtaal/support/native_widgets.py:81 ../virtaal/views/mainview.py:268
 msgid "All Supported Files"
-msgstr "Alle Understøttede Filer"
+msgstr "Alle understøttede filer"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:215
 #: ../virtaal/support/native_widgets.py:171
 #: ../virtaal/support/native_widgets.py:201 ../virtaal/views/mainview.py:312
 msgid "All Files"
-msgstr "Alle Filer"
+msgstr "Alle filer"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:256
 #, python-format
@@ -1328,7 +1314,7 @@ msgid ""
 "\n"
 "%(errormsg)s"
 msgstr ""
-"Kan ikke indlæse %(filename)s:\n"
+"Kunne ikke indlæse %(filename)s:\n"
 "\n"
 "%(errormsg)s"
 
@@ -1348,7 +1334,7 @@ msgstr "_Målterm — %(langname)s"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:447
 msgid "Identical entry already exists."
-msgstr "Identisk indslag eksisterer allerede."
+msgstr "Identisk indtastning findes allerede."
 
 #. l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:462
@@ -1367,11 +1353,11 @@ msgstr "Termer fra Open-Tran.eu"
 
 #: ../virtaal/plugins/terminology/termview.py:166
 msgid "Select Terminology Sources"
-msgstr "Vælg Terminologi-kilder"
+msgstr "Vælg Terminologikilder"
 
 #: ../virtaal/plugins/terminology/termview.py:167
 msgid "Select the sources of terminology suggestions"
-msgstr "Vælg kilden for terminologi-forslag"
+msgstr "Vælg kilderne for terminologiforslag"
 
 #: ../virtaal/plugins/tm/__init__.py:27
 msgid "Translation Memory"
@@ -1390,7 +1376,7 @@ msgstr "Amagama"
 #: ../virtaal/plugins/tm/models/amagama.py:29
 #: ../virtaal/plugins/tm/models/opentran.py:38
 msgid "Previous translations for Free and Open Source Software"
-msgstr "Tidligere oversættelser for Fri og Open Source Software"
+msgstr "Forrige oversættelser for fri og open source software"
 
 #: ../virtaal/plugins/tm/models/currentfile.py:30
 msgid "Current File"
@@ -1398,7 +1384,7 @@ msgstr "Nuværende fil"
 
 #: ../virtaal/plugins/tm/models/currentfile.py:31
 msgid "Translated units from the currently open file"
-msgstr "Oversatte enheder fra nuværende åbne fil"
+msgstr "Oversatte enheder fra den nuværende åbne fil"
 
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/currentfile.py:97
@@ -1413,7 +1399,7 @@ msgstr "Google Translate"
 
 #: ../virtaal/plugins/tm/models/google_translate.py:56
 msgid "Unreviewed machine translations from Google's translation service"
-msgstr "Ikke gennemgåede maskinoversættelse fra Google's oversættelsestjeneste"
+msgstr "Ikke gennemgåede maskinoversættelser fra Google's oversættelsestjeneste"
 
 #: ../virtaal/plugins/tm/models/microsoft_translator.py:46
 msgid "Microsoft Translator"
@@ -1437,7 +1423,7 @@ msgstr "libtranslate"
 
 #: ../virtaal/plugins/tm/models/libtranslate.py:46
 msgid "Unreviewed machine translations from various services"
-msgstr "Ikke gennemgåede oversættelser fra forskellige tjenester"
+msgstr "Ikke gennemgåede oversættelser fra diverse tjenester"
 
 #: ../virtaal/plugins/tm/models/localtm.py:35
 msgid "Local Translation Memory"
@@ -1450,7 +1436,7 @@ msgstr "Oversættelser du tidligere har foretaget"
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/localtm.py:38
 msgid "Local TM"
-msgstr "Lokal TM"
+msgstr "Lokal OH"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
 #: ../virtaal/plugins/tm/models/moses.py:32
@@ -1460,7 +1446,7 @@ msgstr "Moses"
 
 #: ../virtaal/plugins/tm/models/moses.py:33
 msgid "Unreviewed machine translations from a Moses server"
-msgstr "Ikke gennemgået maskinoversættelse fra en Moses-server"
+msgstr "Ikke gennemgåede maskinoversættelser fra en Moses-server"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
 #: ../virtaal/plugins/tm/models/opentran.py:77
@@ -1470,16 +1456,16 @@ msgstr "OpenTran"
 
 #: ../virtaal/plugins/tm/models/remotetm.py:28
 msgid "Remote Server"
-msgstr "Ekstern Server"
+msgstr "Fjernserver"
 
 #: ../virtaal/plugins/tm/models/remotetm.py:29
 msgid "A translation memory server"
-msgstr "En oversættelseshukommelses-server"
+msgstr "En oversættelseshukommelse-server"
 
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/remotetm.py:31
 msgid "Remote TM"
-msgstr "Ekstern TM"
+msgstr "Fjern-OH"
 
 #: ../virtaal/plugins/tm/models/tinytm.py:36
 msgid "TinyTM"
@@ -1487,7 +1473,7 @@ msgstr "TinyTM"
 
 #: ../virtaal/plugins/tm/models/tinytm.py:37
 msgid "A TinyTM translation memory server"
-msgstr "En TinyTM oversættelseshukommelse-server"
+msgstr "En TinyTM-oversættelseshukommelse-server"
 
 #. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
 #: ../virtaal/plugins/tm/models/apertium.py:43
@@ -1497,11 +1483,11 @@ msgstr "Apertium"
 
 #: ../virtaal/plugins/tm/models/apertium.py:44
 msgid "Unreviewed machine translations from Apertium"
-msgstr "Ikke gennengåede maskinoversættelser fra Apertium"
+msgstr "Ikke gennemgåede maskinoversættelser fra Apertium"
 
 #: ../virtaal/plugins/tm/tmview.py:110
 msgid "Translation _Suggestions"
-msgstr "Oversatte _Forslag"
+msgstr "_Oversættelsesforslag"
 
 #: ../virtaal/plugins/tm/tmview.py:151
 #, python-format
@@ -1512,11 +1498,11 @@ msgstr "Ctrl+%(number_key)d"
 #. such as local tm, open-tran.eu, the current file, etc.
 #: ../virtaal/plugins/tm/tmview.py:175
 msgid "Select sources of Translation Memory"
-msgstr "Vælg kilde for oversættelseshukommelse"
+msgstr "Vælg kilder for oversættelseshukommelse"
 
 #: ../virtaal/plugins/tm/tmview.py:176
 msgid "Select the sources that should be queried for translation memory"
-msgstr "Vælg kilden som skal forespørges ved oversættelseshukommelse"
+msgstr "Vælg kilderne som skal forespørges ved oversættelseshukommelse"
 
 #. l10n: match quality column label
 #: ../virtaal/plugins/tm/tmwidgets.py:64
@@ -1529,7 +1515,7 @@ msgstr "Matcher"
 
 #: ../virtaal/plugins/tm/tmwidgets.py:68
 msgid "TM Source"
-msgstr "TM Kilde"
+msgstr "OH-kilde"
 
 #. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
 #: ../virtaal/plugins/tm/tmwidgets.py:138
@@ -1552,12 +1538,15 @@ msgstr "Vælg en oversættelsesfil"
 msgid ""
 "A file named \"%1\" already exists. Are you sure you want to overwrite it?"
 msgstr ""
+"En fil med navnet \"%1\" findes allerede. Er du sikker på, at du vil overskrive den?"
 
 #: ../virtaal/support/tutorial.py:38
 msgid ""
 "Welcome to the Virtaal tutorial. You can do the first translation by typing "
 "just the translation for \"Welcome\". Then press Enter."
 msgstr ""
+"Velkommen til Virtaal-vejledningen. Du kan foretage den første oversættelse ved "
+"at indtaste oversættelsen for \"Welcome\". Tryk så på Enter."
 
 #: ../virtaal/support/tutorial.py:43
 msgid ""
@@ -1565,6 +1554,9 @@ msgid ""
 "spelling mistakes are indicated similarly to word processors. Make sure the "
 "correct language is selected in the bottom right of the window."
 msgstr ""
+"Oversæt denne meddelelse som er lidt længere. Hvis stavekontrol er "
+"tilgængelig, fremhæves stavefejl ligesom i et tekstbehandlingsprogram. Sørg "
+"for at det korrekte sprog er valgt nederst til højre i vinduet."
 
 #: ../virtaal/support/tutorial.py:50
 msgid ""
@@ -1572,6 +1564,9 @@ msgid ""
 "attention to while translating software programs. It will help you to avoid "
 "some problems and produce translations of a higher quality."
 msgstr ""
+"Denne vejledning viser dig nogle af de ting du måske vil holde øje med mens "
+"du oversætter softwareprogrammer. Det vil hjælpe dig med at undgå nogle "
+"problemer og skabe oversættelser af højere kvalitet."
 
 #: ../virtaal/support/tutorial.py:57
 msgid ""
@@ -1580,6 +1575,9 @@ msgid ""
 "be relevant to translation in your language. For many languages there are "
 "established translation rules."
 msgstr ""
+"Nogle af rådene vil kun være relevante for nogle sprog. F.eks. hvis dit sprog ikke "
+"bruger det latinske alfabet, vil nogle råd måske ikke være relevante for at "
+"oversætte til dit sprog. Der er etableret oversættelsesregler til mange sprog."
 
 #: ../virtaal/support/tutorial.py:64
 msgid ""
@@ -1587,6 +1585,9 @@ msgid ""
 "Translate this message with careful attention to write \"Virtaal\" with a "
 "capital letter."
 msgstr ""
+"Korrekt anvendelse af store bogstaver er vigtigt på mange sprog. Oversæt "
+"denne meddelelse og vær særlig opmærksom på at skrive \"Virtaal\" med et "
+"stort bogstav."
 
 #: ../virtaal/support/tutorial.py:70
 msgid ""
@@ -1596,6 +1597,11 @@ msgid ""
 "by following the normal capitalisation rules for your language. If your "
 "language does not use capital letters, simply translate it normally."
 msgstr ""
+"I denne meddelelse bruger det engelske et stort bogstav for næsten hvert "
+"ord. Næsten ingen andre sprog bruger denne stil. Oversæt dette ved at følge "
+"de normal regler for store bogstaver for dit sprog, med mindre dit sprog "
+"skal følge den engelske stil (også kaldet Title Case). Hvis dit sprog ikke "
+"bruger store bogstaver, så oversæt blot normalt."
 
 #: ../virtaal/support/tutorial.py:79
 msgid ""
@@ -1605,6 +1611,11 @@ msgid ""
 "to copy the suggested translation to the current translation. Remember to "
 "always review suggestions before you use them."
 msgstr ""
+"Hvis du oversatte den forrige meddelelse bør du kunne se et vindue med "
+"oversættelsen og en procentvisning af hvor ens kildestrengene (engelsk) er. "
+"Det er Virtaal's oversættelseshukommelse. Tryk på Control+1 for at kopiere "
+"den foreslået oversættelse til den nuværende oversættelse. Husk altid at "
+"gennemgå forslagene før du bruger dem."
 
 #: ../virtaal/support/tutorial.py:88
 msgid ""
@@ -1612,6 +1623,9 @@ msgid ""
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a capital letter as well."
 msgstr ""
+"Dette er en simpel meddelelse som begynder med et stor bogstav på engelsk. "
+"Hvis dit sprog bruger store bogstaver, skal du højst sandsynligt også starte din oversættelse "
+"med et stor bogstaver."
 
 #: ../virtaal/support/tutorial.py:95
 msgid ""
@@ -1619,17 +1633,20 @@ msgid ""
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a lower case letter as well."
 msgstr ""
+"Dette er en simpel meddelelse som begynder med et lille bogstav på engelsk. "
+"Hvis dit sprog bruger store bogstaver, skal du højst sandsynligt også starte din oversættelse "
+"med et lille bogstaver."
 
 #: ../virtaal/support/tutorial.py:102
 msgid ""
 "This message is a question. Make sure that you use the correct question mark "
 "in your translation as well."
-msgstr ""
+msgstr "Denne meddelelse er et spørgsmål. Sørg for også at bruge det korrekte spørgsmålstegn i din oversættelse."
 
 #: ../virtaal/support/tutorial.py:107
 msgid ""
 "This message is a label as part of a form. Note how it ends with a colon (:)."
-msgstr ""
+msgstr "Denne meddelelse er en etiket som er en del af en formular. Bemærk hvordan den ender med et semikolon (:)."
 
 #: ../virtaal/support/tutorial.py:112
 msgid ""
@@ -1637,9 +1654,12 @@ msgid ""
 "copy the entire source string with Alt+Down. Here is almost nothing to "
 "translate, so just press Alt+Down and make corrections if necessary."
 msgstr ""
+"Hvis det meste af kilden beholdes eller ikke ændres er det bekvemt at "
+"kopiere hele kildestrengen med Alt+Ned. Her er der næsten ikke noget at "
+"oversætte, så tryk blot på Alt+Ned og foretag rettelser hvis det er "
+"nødvendigt."
 
 #: ../virtaal/support/tutorial.py:119
-#, fuzzy
 #| msgid ""
 #| "Placeables are special parts of the text that can be automatically "
 #| "highlighted and easily inserted into the translation."
@@ -1648,8 +1668,9 @@ msgid ""
 "automatically highlighted and easily inserted into the translation. Select "
 "the © with Alt+Right and transfer it to the target with Alt+Down."
 msgstr ""
-"Placerbare elementer er særlig tekster som kan highlightes automatisk og "
-"indføres let i oversættelsen."
+"Placerbare elementer er særlig dele af teksten, såsom ©-symbolet, som "
+"automatisk kan fremhæves og nemt indsættes i oversættelsen. Vælg © med Alt+"
+"Højre og overfør det til målet med Alt+Ned."
 
 #: ../virtaal/support/tutorial.py:126
 msgid ""
@@ -1657,6 +1678,9 @@ msgid ""
 "holders, acronyms and many more. Move to each one with Alt+Right and "
 "transfer it down with Alt+Down."
 msgstr ""
+"Genkendte placerbare inkludere specielle symboler, tal, variabel-"
+"pladsholdere, forkortelser og mange andre. Flyt til hver af dem med Alt+"
+"Højre og overfør den ned med Alt+Ned."
 
 #: ../virtaal/support/tutorial.py:132
 msgid ""
@@ -1664,6 +1688,9 @@ msgid ""
 "a dialogue to appear instead of just performing an action. Be sure to end "
 "your message with ... as well."
 msgstr ""
+"Denne meddelelse slutter med ... for at indikere at klik på denne tekst "
+"viser en dialog i stedet for blot at udføre en handling. Sørg for at din "
+"meddelelse slutter med ... også."
 
 #: ../virtaal/support/tutorial.py:138
 msgid ""
@@ -1671,6 +1698,9 @@ msgid ""
 "Select the special character with Alt+Right and copy it to your translation "
 "with Alt+Down. Don't just type three dot characters."
 msgstr ""
+"Denne meddelelse slutter med et specialtegn som ligner tre prikker. Vælg "
+"specialtegnet med Alt+Højre og kopiér det ind i din oversættelse med "
+"Alt+Ned. Indtast ikke bare tre punktummer."
 
 #: ../virtaal/support/tutorial.py:145
 msgid ""
@@ -1678,6 +1708,9 @@ msgid ""
 "with a capital letter if your language uses them, and end each sentence "
 "properly."
 msgstr ""
+"Denne meddelelse har to sætninger. Oversæt dem og sørg for at du starter "
+"hver med et stort bogstav hvis dig sprog bruger det, og afslut hver sætning "
+"korrekt."
 
 #: ../virtaal/support/tutorial.py:151
 msgid ""
@@ -1686,6 +1719,10 @@ msgid ""
 "<b> and </b> in the translation around the part that corresponds to \"now\". "
 "Read more about XML markup here: http://en.wikipedia.org/wiki/XML"
 msgstr ""
+"Denne meddelelse markerer ordet \"now\" som vigtig med tags i fed skrift. "
+"Disse tags kan overføres fra kilden med Alt+Højre og Alt+Ned. "
+"Lad <b> og </b> være i oversættelsen omkring den del som svare til \"now\". "
+"Læs mere om XML-opmærkning her: http://en.wikipedia.org/wiki/XML"
 
 #: ../virtaal/support/tutorial.py:159
 msgid ""
@@ -1693,6 +1730,9 @@ msgid ""
 "the previous translation with Ctrl+1. Note how the only difference is that "
 "this one ends with a full stop after the last tag."
 msgstr ""
+"Denne meddelelse ligner meget den forrige meddelelse. Brug forslagene fra "
+"forrige oversættelse med Ctrl+1. Bemærk at den eneste forskel er hvordan "
+"denne slutter med et punktum efter den sidste tag."
 
 #: ../virtaal/support/tutorial.py:166
 #, python-format
@@ -1703,6 +1743,11 @@ msgid ""
 "with a number e.g. 'Number of files copied: 5'.  Note that \"%d\" does not "
 "refer to a percentage."
 msgstr ""
+"I denne meddelelse er \"%d\" en pladsholder (variabel) som repræsentere et "
+"tal. Sørg for at din oversættelse indeholder \"%d\". Her referere den til et "
+"antal filer. Når denne meddelelse bruges vil \"%d\" bliver erstattet med et "
+"tal. F.eks. 'Antal kopierede filer: 5'. Bemærk at \"%d\" ikke referere til "
+"procent."
 
 #: ../virtaal/support/tutorial.py:174
 #, python-format
@@ -1715,6 +1760,12 @@ msgid ""
 "translatehouse.org/projects/localization-guide/en/latest/guide/translation/"
 "plurals.html"
 msgstr ""
+"I denne meddelelse referere \"%d\" igen til antallet af filer, men bemærk "
+"hvordan \"(s)\" bruges til at vise at vi ikke kender antallet. Dette er ofte "
+"svært at oversætte godt. Hvis du møder dette i oversættelse af software, kan "
+"det være du vil høre udviklerne om det kan undgås. Læs mere om dette og "
+"beslut hvordan det gøres i dit sprog: http://docs.translatehouse.org/projects"
+"/localization-guide/en/latest/guide/translation/plurals.html"
 
 #: ../virtaal/support/tutorial.py:185
 msgid ""
@@ -1724,6 +1775,11 @@ msgid ""
 "translatehouse.org/projects/localization-guide/en/latest/guide/translation/"
 "plurals.html"
 msgstr ""
+"I denne meddelelse ses de korrekte måder at oversætte flertal. Du skal "
+"indtaste mellem 1 og 6 forskellige versioner af oversættelsen for at sikre "
+"korrekt grammatik på dit sprog. Læs mere om dette på: "
+"http://docs.translatehouse.org/projects/localization-"
+"guide/en/latest/guide/translation/plurals.html"
 
 #: ../virtaal/support/tutorial.py:196
 #, python-format
@@ -1733,6 +1789,10 @@ msgid ""
 "used, the %s will be replaced with a file name e.g. 'The file will be saved "
 "as example.odt'.  Note that \"%s\" does not refer to a percentage."
 msgstr ""
+"I denne meddelelse repræsentere \"%s\" en pladsholder (variabel) et filnavn. "
+"Sørg for at din oversættelse indeholder %s. Når denne meddelelse bruges, "
+"erstattes %s med et filnavn. F.eks. \"Filen gemmes som eksempel.odt\". "
+"Bemærk at \"%s\" ikke referere til procent."
 
 #: ../virtaal/support/tutorial.py:204
 #, python-format
@@ -1743,6 +1803,11 @@ msgid ""
 "as English, type it exactly as shown for the English. If your language uses "
 "different characters you can just type them around the variable."
 msgstr ""
+"I denne meddelelse er variablen omsluttet af dobbelt anførselstegn. Sørg "
+"for at din oversættelse indeholder variablen %s og omslut den på tilsvarende "
+"måde med anførselstegn som krævet på dit sprog. Hvis dit sprog bruger de "
+"samme anførselstegn som engelsk, så skriv det præcist som på engelsk. Hvis "
+"dit sprog bruger forskellige tegn kan du blot skrive dem omkring variablen."
 
 #: ../virtaal/support/tutorial.py:213
 msgid ""
@@ -1751,6 +1816,10 @@ msgid ""
 "appear unchanged somewhere in your translation. These type of variables give "
 "you an idea of what they will contain. In this case, it will contain a name."
 msgstr ""
+"I denne meddelelse er \"%(name)s\" en pladsholder (variabel). Bemærk at \"s\" "
+"er en del af variablen, og at hele variablen fra \"%\" til \"s\" skal "
+"fremstå uændret i din oversættelse. Disse typer af variabler giver dig en "
+"ide om hvad de vil indeholde. Her indeholder det et navn."
 
 #: ../virtaal/support/tutorial.py:221
 msgid ""
@@ -1758,6 +1827,8 @@ msgid ""
 "you translate it by being as polite or respectful as is necessary for your "
 "culture."
 msgstr ""
+"I denne meddelelse spørges brugeren af softwaren om at gøre noget. Sørg for "
+"at oversætte det høfligt eller respektfuldt i forhold til din kultur."
 
 #: ../virtaal/support/tutorial.py:227
 msgid ""
@@ -1765,12 +1836,17 @@ msgid ""
 "languages will not translate it, but your language might use a "
 "transliteration if you don't use the Latin script for your language."
 msgstr ""
+"I denne meddelelse er der en reference til \"Linux\" (et produktnavn). Mange "
+"sprog oversætter det ikke, men dit sprog bruger måske en translitteration "
+"hvis du ikke bruger det latinske alfabet på dit sprog."
 
 #: ../virtaal/support/tutorial.py:234
 msgid ""
 "This message contains the URL (web address) of the project website. It must "
 "be transferred as a placeable or typed over exactly."
 msgstr ""
+"Denne meddelelse indeholder URL'en (webadressen) til projektets websted. Den "
+"skal overføres som en placerbar eller indtastes over præcist."
 
 #: ../virtaal/support/tutorial.py:239
 msgid ""
@@ -1780,6 +1856,11 @@ msgid ""
 "to your language code so that the address points to the corresponding "
 "article in your language about XML."
 msgstr ""
+"Denne meddelelse referere til et websted med mere information. Nogle gange "
+"tillades eller opfordres du måske til at ændre URL'en (webadressen) til et "
+"websted på dit sprog. Hvis det er tilfældet så erstat \"en\" i starten af "
+"adressen til din sprogkode så adressen peger på den tilsvarende artikel på "
+"dit sprog om XML."
 
 #: ../virtaal/support/tutorial.py:248
 msgid ""
@@ -1787,6 +1868,9 @@ msgid ""
 "Make sure you can see the context information showing that this is a verb "
 "(an action as in \"click here to view it\")."
 msgstr ""
+"Denne oversættelse indeholder et tvetydigt ord - det kan have to "
+"betydninger. Sørg for at se informationen om sammenhæng som viser at dette "
+"er et udsagnsord (en handling som i \"klik her for at vise det\")."
 
 #: ../virtaal/support/tutorial.py:255
 msgid ""
@@ -1796,6 +1880,11 @@ msgid ""
 "your previous translation as a suggestion, take care to only use it if it is "
 "definitely appropriate in this case as well."
 msgstr ""
+"Denne oversættelse indeholder et tvetydigt ord - det kan have to "
+"betydninger. Sørg for at du kan se informationen om sammenhæng som viser at dette "
+"er et navneord (en ting som i \"klik for at ændre visningen til fuldskærm\"). "
+"Hvis Virtaal giver dig forrige oversættelse som et forslag, så pas på kun at "
+"bruge det hvis det, også er, helt sikkert er passende."
 
 #: ../virtaal/support/tutorial.py:264
 msgid ""
@@ -1808,14 +1897,21 @@ msgid ""
 "is before this letter and it means that this accelerator could be triggered "
 "by pressing Alt+F."
 msgstr ""
+"En genvejstast er en tast på dit tastatur som du kan trykke på for hurtigt "
+"at tilgå en menu eller en funktion. Det kaldes også en \"hot key\", \"access "
+"key\" eller \"mnemonic\". I programbrugerflader vises de som et understreget "
+"bogstav i tekstetiketten. I teksten som kan oversættes er de markeret med en "
+"understregning som her, men andre tegn kan også bruges. Her er "
+"genvejstasten \"f\" da understregningen er før dette bogstav og det betyder "
+"at denne genvej kan udløses ved at trykke på Alt+F."
 
 #: ../virtaal/support/tutorial.py:276
 msgid "In this entry you can see other kind of accelerator."
-msgstr ""
+msgstr "I denne indtastning kan du se en anden slags genvej."
 
 #: ../virtaal/support/tutorial.py:280
 msgid "And another kind of accelerator."
-msgstr ""
+msgstr "Og anden slags genvej."
 
 #: ../virtaal/support/tutorial.py:285
 msgid ""
@@ -1825,12 +1921,19 @@ msgid ""
 "filling it. In order to do that select the original text, press Ctrl+T, "
 "provide a translation for your language, and save."
 msgstr ""
+"Virtaal er i stand til at give forslag fra flere terminologiordbøger og "
+"giver nemme genveje til at indsætte dem i oversættelsesfeltet. Lige nu har "
+"Virtaal kun en tom terminologiordbog, men du kan begynde at udfylde den. "
+"Vælg den originale tekst og tryk på Ctrl+T, vælg en oversættelse til dit "
+"sprog, og gem."
 
 #: ../virtaal/support/tutorial.py:295
 msgid ""
 "In the previous entry you have created one terminology entry for the the "
 "\"filter\" verb. Now do the same for \"filter\" noun."
 msgstr ""
+"I den forrige indtastning oprettede du en terminologiindtastning til "
+"udsagnsordet \"filter\". Gør nu det samme for navneordet \"filter\"."
 
 #: ../virtaal/support/tutorial.py:300
 msgid ""
@@ -1844,6 +1947,14 @@ msgid ""
 "you have selected the desired suggestion press Enter to copy it to the "
 "translation field."
 msgstr ""
+"Hvis du har oprettet terminologi i de forrige indtastninger kan du nu se "
+"nogle af ordene med grøn baggrund (eller andre farver, afhængig af dit tema)"
+". Dette betyder at Virtaal har terminologiforslag for det ord. Brug Alt+"
+"Højre for at vælge det fremhævede ord, og tryk så på Alt+Ned. Hvis der kun "
+"er ét forslag vil Alt+Ned kopiere forslaget til oversættelsesfeltet. Men "
+"hvis der er mere end et forslag så vil Alt+Ned vise en liste med forslag som "
+"du kan navigere i med Ned- og Op-tasterne. Når du har valgt det ønskede "
+"forslag så tryk på Enter for at kopiere det til oversættelsesfeltet."
 
 #: ../virtaal/support/tutorial.py:313
 msgid ""
@@ -1851,12 +1962,17 @@ msgid ""
 "two lines. You can separate lines with Shift+Enter or copying new-line "
 "placeables (displayed as ¶)."
 msgstr ""
+"Denne meddelelse har to linjer. Sørg for at din oversættelse også indeholder "
+"to linjer. Du kan adskille linjer med Skift+Enter eller ved at kopiere "
+"linjeskift-placerbare (vises som ¶)."
 
 #: ../virtaal/support/tutorial.py:320
 msgid ""
 "This message contains tab characters to separate some headings. Make sure "
 "you separate your translations in the same way."
 msgstr ""
+"Denne meddelelse indeholder tabulatortegn til at adskille nogle "
+"overskrifter. Sørg for at du adskiller dine oversættelser på samme måde."
 
 #: ../virtaal/support/tutorial.py:325
 msgid ""
@@ -1867,6 +1983,12 @@ msgid ""
 "different number system. Make sure that you understand the American "
 "formatting: the number is bigger than one thousand."
 msgstr ""
+"Denne meddelelse indeholder et stort tal som er formateret i henhold til "
+"amerikansk konvention. Oversæt dette men sørg for at formatere tallet i "
+"henhold til konventionen for dit sprog. Du skal måske ændre kommaet (,) og "
+"punktummet (.) til andre tegn, og du skal måske bruge et andet talsystem. "
+"Sørg for du forstår den amerikanske formatering: tallet er større end et "
+"tusind."
 
 #: ../virtaal/support/tutorial.py:335
 msgid ""
@@ -1876,6 +1998,11 @@ msgid ""
 "kilometres. Note that automated tests for \"numbers\" will complain if the "
 "number is changed, but in this case it is safe to do."
 msgstr ""
+"Denne meddelelse refererer til mil. Hvis programmøren opfordre til det, kan "
+"du ændre det til kilometer i din oversættelse, hvis kilometer er mere "
+"almindeligt brugt på dit sprog. Bemærk at 1 mil er omkring 1,6 kilometer. "
+"Bemærk at automatiserede test for \"tal\" vil brokke sig hvis tallet "
+"ændres, men i dette tilfælde er det sikkert at gøre."
 
 #: ../virtaal/support/tutorial.py:344
 msgid ""
@@ -1885,6 +2012,10 @@ msgid ""
 "changed in tags, even if your language uses a different type of quotation "
 "marks."
 msgstr ""
+"Denne meddelelse indeholder et link som brugeren kan klikke på for at besøge "
+"siden med hjælp. Sørg for at beholde informationen mellem vinkelparenteserne (<...>)"
+" korrekt. Dobbelt anførselstegn (\") skal aldrig ændres i tags, selv hvis "
+"dit sprog bruger en anden type anførselstegn."
 
 #: ../virtaal/support/tutorial.py:354
 #, python-format
@@ -1894,6 +2025,10 @@ msgid ""
 "Make sure you position the two variables (%s) so that they correspond to the "
 "opening and closing tag of the previous translation."
 msgstr ""
+"Denne meddelelse indeholder et tilsvarende link, men programmøerne besluttede i "
+"stedet at indsætte tags med variabler så oversætterne ikke kan ændre dem. "
+"Sørg for at du placere de to variabler (%s) så de svare til åbne- og lukke-tags "
+"af den forrige oversættelse."
 
 #: ../virtaal/support/tutorial.py:362
 msgid ""
@@ -1901,6 +2036,9 @@ msgid ""
 "everything is inside <p> and </p> tags. Make sure your whole translation is "
 "inside <p> and </p> tags."
 msgstr ""
+"Denne meddelelse indeholder taggene <b> og </b> for at fremhæve et "
+"ord, mens alt er inden i taggene <p> og </p>. Sørg for at hele oversættelsen "
+"er inden i taggene <p> og </p>."
 
 #: ../virtaal/support/tutorial.py:368
 msgid ""
@@ -1912,10 +2050,16 @@ msgid ""
 "is contained in the <span> tags. Note how the full stop is still inside the "
 "</span> tag."
 msgstr ""
+"Denne meddelelse indeholder et tilsvarende link mellem <span> og </span>. Sørg "
+"for a du beholder alle tags (<...>) korrekt, og at linket er omsluttet af taggene "
+"<span> og </span> i din oversættelse. Sørg for at teksten inden i \"a\""
+"-taggene passer til \"siden med hjælp\" og at din oversættelse modsvarende den anden "
+"sætning er i <span>-tagget. Bemærk hvordan punktummet stadig er inden i "
+"</span>-tagget."
 
 #: ../virtaal/views/checksunitview.py:73
 msgid "No issues"
-msgstr "Ingen sager"
+msgstr "Ingen problemer"
 
 #: ../virtaal/views/checksunitview.py:80
 msgid "Quality Check"
@@ -1949,7 +2093,7 @@ msgid ""
 "Do you want to save your changes?"
 msgstr ""
 "Den nuværende fil er blevet ændret.\n"
-"Ønsker du at gemme ændringerne?"
+"Vil du gemme dine ændringer?"
 
 #: ../virtaal/views/mainview.py:345
 msgid "_Discard"
@@ -1966,26 +2110,25 @@ msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 
 #: ../virtaal/views/mainview.py:455
 msgid "Please enter the number of noun forms (plurals) to use"
-msgstr "Indtast venligst antallet af udsagnsformer (flertal) der skal anvendes"
+msgstr "Indtast venligst antallet af navneordsformer (flertal) der skal anvendes"
 
 #: ../virtaal/views/mainview.py:461
 msgid "Please enter the plural equation to use"
-msgstr "Indtast venligst flertalsformen som skal anvendes"
+msgstr "Indtast venligst den flertalsform der skal anvendes"
 
 #. l10n: This refers to the 'mode' that determines how Virtaal moves
 #. between units.
 #: ../virtaal/views/modeview.py:62
 msgid "N_avigation:"
-msgstr "_Navigation:"
+msgstr "N_avigation:"
 
-# 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
 msgstr "Ikke oversat:"
 
 #: ../virtaal/views/propertiesview.py:33
 msgid "Needs work:"
-msgstr "Kræver arbejde:"
+msgstr "Behøver arbejde:"
 
 #: ../virtaal/views/propertiesview.py:34
 msgid "Rejected:"
@@ -1993,9 +2136,8 @@ msgstr "Afvist:"
 
 #: ../virtaal/views/propertiesview.py:35
 msgid "Needs review:"
-msgstr "Kræver gennemgang:"
+msgstr "Behøver gennemgang:"
 
-# 78%
 #: ../virtaal/views/propertiesview.py:36
 msgid "Translated:"
 msgstr "Oversat:"
@@ -2020,9 +2162,8 @@ msgstr "(%04.1f%%)"
 
 #: ../virtaal/views/propertiesview.py:134
 msgid "Save the file for up-to-date information"
-msgstr "Gem filen for opdaterede informationer"
+msgstr "Gem filen for opdaterede information"
 
-# 88%
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
 #: ../virtaal/views/propertiesview.py:191
 #: ../virtaal/views/propertiesview.py:192
@@ -2045,7 +2186,7 @@ msgstr "Forhåndsvisning mislykkedes"
 
 #: ../virtaal/views/unitview.py:613
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
-msgstr "Gå ét skridt tilbage i arbejdsgangen (Ctrl+Skift+Retur)"
+msgstr "Gå ét skridt tilbage i arbejdsgangen (Ctrl+Skift+Enter)"
 
 #: ../virtaal/views/unitview.py:614
 msgid "Click to move to a specific state in the workflow"
@@ -2053,18 +2194,17 @@ msgstr "Klik for at gå til en specifik tilstand i arbejdsgangen"
 
 #: ../virtaal/views/unitview.py:615
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
-msgstr "Gå ét skridt frem i arbejdsgangen (Ctrl+Retur)"
+msgstr "Gå ét skridt fremad i arbejdsgangen (Ctrl+Enter)"
 
-# 95%
 #: ../virtaal/views/widgets/aboutdialog.py:34
 msgid "Copyright © 2007-2010 Zuza Software Foundation"
-msgstr "Copyright © 2007-2010 Zuza Software Foundation"
+msgstr "Ophavsret © 2007-2010 Zuza Software Foundation"
 
 #. l10n: Please retain the literal name "Virtaal", but feel free to
 #. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
 #: ../virtaal/views/widgets/aboutdialog.py:37
 msgid "Virtaal is a program for doing translation."
-msgstr "Virtaal er et program til brug for oversættelser."
+msgstr "Virtaal er et program der bruges til at oversætte med."
 
 #: ../virtaal/views/widgets/aboutdialog.py:38
 msgid ""
@@ -2072,14 +2212,14 @@ msgid ""
 "definitely intend it to be useful as a general purpose tool for Computer "
 "Aided Translation (CAT)."
 msgstr ""
-"Det indledende fokus er på oversættelser af programmer (lokalisering eller "
-"l10n), men vi har bestemt til hensigt at gøre det til et generelt "
-"anvendeligt værktøj til computer-assisteret oversættelse (på engelsk "
-"Computer Aided Translation, CAT)."
+"Den primære fokus er på softwareoversættelse (lokalisering eller l10n), men "
+"vi har bestemt til hensigt at gøre det til et generelt anvendeligt værktøj "
+"til computer-assisteret oversættelse. På engelsk kaldet Computer Aided "
+"Translation (CAT)."
 
 #: ../virtaal/views/widgets/aboutdialog.py:52
 msgid "Virtaal website"
-msgstr "Virtaal hjemmeside"
+msgstr "Virtaal websted"
 
 #: ../virtaal/views/widgets/aboutdialog.py:65
 msgid "We thank our donors:"
@@ -2096,7 +2236,11 @@ msgstr "Mozilla Corporation"
 #. l10n: Rather than translating, fill in the names of the translators
 #: ../virtaal/views/widgets/aboutdialog.py:73
 msgid "translator-credits"
-msgstr "Aputsiaq Janussen, edgecrafter og andre"
+msgstr ""
+"Aputsiaq Janussen\n"
+"edgecrafter\n"
+"scootergrisen\n"
+"og andre"
 
 #: ../virtaal/views/widgets/langadddialog.py:103
 msgid "Language code must be an ASCII string."
@@ -2104,7 +2248,7 @@ msgstr "Sprogkode skal være en ASCII-streng."
 
 #: ../virtaal/views/widgets/langadddialog.py:106
 msgid "Language code must be at least 2 characters long."
-msgstr "Sprogkode skal være mindst 2 tegn langt."
+msgstr "Sprogkode skal være mindst 2 tegn lang."
 
 #: ../virtaal/views/widgets/langselectdialog.py:79
 #: ../virtaal/views/widgets/langselectdialog.py:86
@@ -2119,11 +2263,11 @@ msgstr "Kode"
 
 #: ../virtaal/views/widgets/selectview.py:66
 msgid "Enabled"
-msgstr "Slået til"
+msgstr "Aktiv"
 
 #: ../virtaal/views/widgets/selectview.py:113
 msgid "Configure..."
-msgstr "Konfigurér..."
+msgstr "Konfigurer..."
 
 #: ../virtaal/views/widgets/welcomescreen.py:79
 msgid "Translation memory"
@@ -2139,15 +2283,15 @@ msgstr "Maskinoversættelse"
 
 #: ../virtaal/views/widgets/welcomescreen.py:83
 msgid "Highlighting and insertion of placeables"
-msgstr "Fremhævning og indsættelse af pladsholdere"
+msgstr "Fremhævning og indsættelse af placerbare"
 
 #: ../virtaal/views/widgets/welcomescreen.py:84
 msgid "Many plugins and options for customization"
-msgstr "Mange udvidelser og indstillinger for tilpasning"
+msgstr "Mange plugins og valgmuligheder for tilpasning"
 
 #: ../virtaal/models/storemodel.py:132
 msgid "The file does not exist."
-msgstr "Filen eksisterer ikke."
+msgstr "Filen findes ikke."
 
 #: ../virtaal/models/storemodel.py:134
 msgid "Not a valid file."
@@ -2155,7 +2299,7 @@ msgstr "Ikke en gyldig fil."
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
 msgid "TMX Translation Memory"
-msgstr "TMX Oversættelseshukommelse"
+msgstr "TMX-oversættelseshukommelse"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:2
 msgid "TMX"
@@ -2167,7 +2311,7 @@ msgstr "Oversættelseshukommelse eXchange"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:4
 msgid "TBX Glossary"
-msgstr "TBX Ordliste"
+msgstr "TBX-ordliste"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:5
 msgid "TBX"
@@ -2179,19 +2323,19 @@ msgstr "TermBase eXchange"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:7
 msgid "Wordfast Translation Memory"
-msgstr "Wordfast Oversættelseshukommelse"
+msgstr "Wordfast-oversættelseshukommelse"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:8
 msgid "Qt Linguist Translation File"
-msgstr "Qt Linguist Oversættelsesfil"
+msgstr "Qt Linguist-oversættelsesfil"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:9
 msgid "Qt Message File"
-msgstr "Qt Beskedfil"
+msgstr "Qt-meddelelsesfil"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:10
 msgid "Qt Phrase Book"
-msgstr "Qt Frasebog"
+msgstr "Qt-frasebog"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:11
 msgid "INI File"
@@ -2207,15 +2351,15 @@ msgstr "Initialisering"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:14
 msgid "Java Properties File"
-msgstr "Java egenskabsfil"
+msgstr "Java-egenskabsfil"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:15
 msgid "OpenOffice.org Translation File"
-msgstr "OpenOffice.org oversættelsesfil"
+msgstr "OpenOffice.org-oversættelsesfil"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:16
 msgid "XLIFF Translation File"
-msgstr "XLIFF oversættelsesfil"
+msgstr "XLIFF-oversættelsesfil"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:17
 msgid "XLIFF"
@@ -2239,27 +2383,27 @@ msgstr "Ressource-kompiler"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:22
 msgid "Tcl Translation File"
-msgstr "Tcl oversættelsesfil"
+msgstr "Tcl-oversættelsesfil"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:23
 msgid "JavaScript error message file"
-msgstr "JavaScript fejlbesked-fil"
+msgstr "JavaScript-fejlmeddelelsesfil"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:24
 msgid "Gettext Translation Template"
-msgstr "Gettext oversætelsesskabelon"
+msgstr "Gettext-oversætelsesskabelon"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:25
 msgid "Trados Tag Editor"
-msgstr "Trados mærkat-redigeringsværktøj"
+msgstr "Trados tag-redigeringsværktøj"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:26
 msgid "OS X Strings File"
-msgstr "OS X tekststrenge-fil"
+msgstr "OS X-strengefil"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:27
 msgid "UTX Dictionary"
-msgstr "UTX Ordbog"
+msgstr "UTX-ordbog"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:28
 msgid "UTX"
@@ -2283,12 +2427,12 @@ msgstr "Qt .qm-fil"
 
 #: ../devsupport/tmp_strings.py:26
 msgid "OmegaT Glossary"
-msgstr "OmegaT ordliste"
+msgstr "OmegaT-ordliste"
 
 #: ../bin/virtaal:93
 #, c-format
 msgid "%prog [options] [translation_file]"
-msgstr "%prog [valgmuligheder] [oversættelses_fil]"
+msgstr "%prog [valgmuligheder] [oversættelsesfil]"
 
 #: ../bin/virtaal:96
 msgid "LOG"
@@ -2296,7 +2440,7 @@ msgstr "LOG"
 
 #: ../bin/virtaal:97
 msgid "turn on logging, storing the result to the supplied filename."
-msgstr "slå logning til, gemmer resultatet i det angivne filnavn."
+msgstr "aktivér logning, hvorved resultatet gemmes i det angivne filnavn."
 
 #: ../bin/virtaal:99
 msgid "CONFIG"
@@ -2304,11 +2448,11 @@ msgstr "KONFIG"
 
 #: ../bin/virtaal:100
 msgid "use the configuration file given by the supplied filename."
-msgstr "brug konfigurationsfilen som gives gennem angivne filnavn."
+msgstr "brug det angivne filnavn som konfigurationsfil."
 
 #: ../bin/virtaal:103
 msgid "enable debugging features"
-msgstr "slå fejlsøgningsfunktioner til"
+msgstr "aktivér fejlretningsfaciliteter"
 
 #: ../bin/virtaal:109
 msgid "PROFILE"
@@ -2316,15 +2460,15 @@ msgstr "PROFIL"
 
 #: ../bin/virtaal:111
 msgid "perform profiling, storing the result to the supplied filename."
-msgstr "udfør profilering, gemmer resultatet i det angivne filnavn."
+msgstr "udfør profilering, hvorved resultatet gemmes i det angivne filnavn."
 
 #: ../bin/virtaal:135
 msgid "Could not open log file '%(filename)s'"
-msgstr "Kunne ikke åbne logfil '%(filename)s'"
+msgstr "Kunne ikke åbne logfilen \"%(filename)s\""
 
 #: ../bin/virtaal:143
 msgid "Could not read configuration file '%(filename)s'"
-msgstr "Kunne ikke læse konfigurationsfil '%(filename)s'"
+msgstr "Kunne ikke læse konfigurationsfilen \"%(filename)s\""
 
 #: ../bin/virtaal:147
 msgid "invalid number of arguments"
@@ -2336,12 +2480,12 @@ msgstr "Understøttelse af profilering er ikke tilgængelig"
 
 #: ../bin/virtaal:185
 msgid "Could not open profile file '%(filename)s'"
-msgstr "Kunne ikke åbne til '%(filename)s'"
+msgstr "Kunne ikke åbne profilfilen \"%(filename)s\""
 
 #: ../devsupport/optparse.py:134
 #, python-format
 msgid "no such option: %s"
-msgstr "valgmulighed findes ikke: %s"
+msgstr "valgmuligheden findes ikke: %s"
 
 #: ../devsupport/optparse.py:145
 #, python-format
@@ -2385,7 +2529,7 @@ msgstr "valgmulighed %s: ugyldigt valg: %r (vælg fra %s)"
 
 #: ../devsupport/optparse.py:1246
 msgid "show this help message and exit"
-msgstr "vis denne hjælpebesked og afslut"
+msgstr "vis denne meddelelse med hjælp og afslut"
 
 #: ../devsupport/optparse.py:1251
 msgid "show program's version number and exit"
@@ -2398,27 +2542,14 @@ msgstr "%prog [valgmuligheder]"
 #: ../devsupport/optparse.py:1484 ../devsupport/optparse.py:1523
 #, python-format
 msgid "%s option requires an argument"
-msgstr "%s valgmuligheder kræver et argument"
+msgstr "valgmuligheden %s kræver et argument"
 
 #: ../devsupport/optparse.py:1486 ../devsupport/optparse.py:1525
 #, python-format
 msgid "%s option requires %d arguments"
-msgstr "%s valgmulighed kræver %d argumenter"
+msgstr "valgmuligheden %s kræver %d argumenter"
 
 #: ../devsupport/optparse.py:1495
 #, python-format
 msgid "%s option does not take a value"
-msgstr "%s valgmulighed tager ikke imod en værdi"
-
-#~ msgid ""
-#~ "Words with internal capitalisation, such as some brand names and WikiWords"
-#~ msgstr "Ord med interne versaler, så som varemærker og WikiWords"
-
-#~ msgid "F_uzzy"
-#~ msgstr "_Upræcis"
-
-#~ msgid "Copyright © 2007-2009 Zuza Software Foundation"
-#~ msgstr "Copyright © 2007-2009 Zuza Software Foundation"
-
-#~ msgid "Extensive format support"
-#~ msgstr "Udvidet formatunderstøttelse"
+msgstr "valgmuligheden %s tager ikke imod en værdi"

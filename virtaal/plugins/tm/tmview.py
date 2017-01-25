@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
+# Copyright 2016 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -175,7 +176,7 @@ class TMView(BaseView, GObjectWrapper):
             title=_('Select sources of Translation Memory'),
             message=_('Select the sources that should be queried for translation memory'),
             parent=parent,
-            size=(400, 580),
+            size=(550, 580),
         )
         selectdlg.set_icon(self.controller.main_controller.view.main_window.get_icon())
 

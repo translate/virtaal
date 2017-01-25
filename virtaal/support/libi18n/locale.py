@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2007-2008 Dieter Verfaillie <dieterv@optionexplicit.be>
 # Copyright 2009-2010 Zuza Software Foundation
-# Copyright 2013-2014 F Wolff
+# Copyright 2013-2014,2016 F Wolff
 #
 # (NOTE: LGPL)
 # This library is free software; you can redistribute it and/or
@@ -83,7 +83,7 @@ def _isofromlangid(langid):
             2067:    'nl',    # Dutch - Belgium
             1126:    'bin',   # Edo
             1033:    'en',    # English - United States
-            2057:    'en_UK', # English - United Kingdom
+            2057:    'en_GB', # English - United Kingdom
             3081:    'en',    # English - Australia
             10249:   'en',    # English - Belize
             4105:    'en_CA', # English - Canada

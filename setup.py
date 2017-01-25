@@ -482,7 +482,7 @@ def add_win32_options(options):
             "dist_dir":   "virtaal-win32",
             "includes":   [
                     # some of these are needed by plugins and are therefore not detected
-                    "lxml", "lxml._elementpath", "psyco", "cairo", "pango",
+                    "lxml", "lxml._elementpath", "cairo", "pango",
                     "pangocairo", "atk", "gobject", "gtk.keysyms",
                     "gtkspell",
                     "gio", # needed for gtk.Builder

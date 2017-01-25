@@ -2,7 +2,7 @@
 # Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # Aputsiaq <aj@isit.gl>, 2010.
-# scootergrisen, 2015-2016.
+# scootergrisen, 2015-2017.
 #: ../virtaal/support/native_widgets.py:49
 #: ../virtaal/support/native_widgets.py:50
 msgid ""
@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2014-02-11 21:11+0000\n"
-"PO-Revision-Date: 2016-11-28 00:00+0100\n"
+"PO-Revision-Date: 2017-01-07 00:00+0100\n"
 "Last-Translator: scootergrisen\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -547,7 +547,7 @@ msgstr "Blanktegn i slutningen"
 
 #: ../virtaal/controllers/checkscontroller.py:43
 msgid "Escapes"
-msgstr "Undvige-tegn"
+msgstr "Undvigetegn"
 
 #: ../virtaal/controllers/checkscontroller.py:44
 msgid "File paths"

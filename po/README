@@ -7,7 +7,9 @@ from po/
 
 Generating the .xml and .desktop files
 --------------------------------------
-from package /
+Ensure that you have intltool installed
+
+From package root, run:
 
 ./maketranslations
 

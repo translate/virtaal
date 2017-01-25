@@ -1,0 +1,205 @@
+# A PO file to make it easier to review checks in Virtaal.
+# This is not meant as an exhaustive test of the checks - the unit tests are
+# far more complete. This will mostly be useful to check UI strings. It has
+# a bias towards the GNOME configuration for maximal coverage of tests.
+# Copyright 2016 F Wolff
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2016-01-01 00:00+0000\n"
+"PO-Revision-Date: 2016-03-12 19:00+0200\n"
+"Last-Translator: F Wolff <friedel@translate.org.za>\n"
+"Language-Team: translate-dev@lists.sourceforge.net\n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal-0.7.1\n"
+"X-Project-Style: gnome\n"
+
+#. Should trigger 'untranslated', but Virtaal will not show it, since it is handled through workflow features
+msgid "word"
+msgstr ""
+
+#. Should trigger 'unchanged'
+msgid "word1 word2"
+msgstr "word1 word2"
+
+#. Should trigger 'blank'
+msgid "a word or two"
+msgstr " "
+
+#. Should trigger 'short'
+msgid "A non-trivial source sentence"
+msgstr "X"
+
+#. Should trigger 'long'
+msgid "Short"
+msgstr "A very long translation that has way too much text in it"
+
+#. Should trigger 'escapes'
+msgid ""
+"The backslash is fun on Windows\\filenames or in regular expressions for "
+"handling Windows\\\\filenames"
+msgstr "A translation without the necessary backslashes"
+
+#. Should trigger 'newlines'
+msgid ""
+"This has a newline\n"
+"in the middle"
+msgstr "This doesn't have a newline"
+
+#. Should trigger 'tabs' (Virtaal shows tabs simply as 8 spaces)
+msgid "This has a tab just before\tthis"
+msgstr "This doesn't have a tab"
+
+#. Should trigger 'singlequoting'
+msgid "Some words in 'single quotes'"
+msgstr "No words quoted"
+
+#. Should trigger 'doublequoting'
+msgid "Some words in \"double qoutes\""
+msgstr "No words quoted"
+
+#. Should trigger 'doublespacing'
+msgid "A string with single spaces only"
+msgstr "Double spaces used before the last  word"
+
+#. Should trigger 'puncspacing'
+msgid "Correct punctuation spacing (or we think so)"
+msgstr "Incorrect punctuation spacing ( hopefully)"
+
+#. Should trigger 'printf'
+msgid "A variable can be printed with printf: %s"
+msgstr "Without a printf variable, a variable won't be printed"
+
+#. Should trigger 'pythonbraceformat'
+msgid "Python variable number {}"
+msgstr "Python variable number {3}"
+
+#. Should trigger 'accelerators'
+msgid "Another string in this _file"
+msgstr "Another wrong translation"
+
+#. Should trigger 'variables'
+msgid "Some kind of $(variable)"
+msgstr "I also want a $(varyable)"
+
+#. Should trigger 'functions'
+msgid "Let's call check()"
+msgstr "I prefer control()"
+
+#. Should trigger 'emails'
+msgid "Send to test@example.com"
+msgstr "Send to tart@example.com"
+
+#. Should trigger 'urls'
+msgid "Go to https://example.com"
+msgstr "Go to http://example.com"
+
+#. Should trigger 'numbers'
+msgid "There are 300 ways to do this"
+msgstr "There are multiple ways to do this"
+
+#. Should trigger 'starwhitespace'
+msgid "No starting whitespace"
+msgstr " Some whitespace at the start"
+
+#. Should trigger 'endwhitespace'
+msgid "No ending whitespace"
+msgstr "Some whitespace at the end "
+
+#. Should trigger 'startpunc'
+msgid "(Some test for starting punctuation)"
+msgstr "Hopefully you see the error (here)"
+
+#. Should trigger 'endpunc'
+msgid "There are ways of doing this:"
+msgstr "There is no way to do this!"
+
+#. Should trigger 'purepunc'
+msgid "+++"
+msgstr "PLUS"
+
+#. Should trigger 'brackets'
+msgid "Some use of (brackets)"
+msgstr "Brackets totally forgotten"
+
+#. Should trigger 'sentencecount'
+msgid "Translate this. And this?"
+msgstr "Did I translate it all?"
+
+#. Should trigger 'options'
+msgid "Use the --qa option"
+msgstr "Review the text"
+
+#. Should trigger 'startcaps'
+msgid "Starting with capital"
+msgstr "no Starting capital"
+
+#. Should trigger 'simplecaps'
+msgid "Just normal sentence case"
+msgstr "A Title Case Happy Translator Was Here"
+
+#. Should trigger 'acronyms'
+msgid "The English writer likes to use a TLA"
+msgstr "I don't want to use three letter acronyms"
+
+#. Should trigger 'doublewords'
+msgid "Fluent sentence"
+msgstr "Unnecessary repetition of of a word"
+
+#. Should trigger 'notranslatewords', but there is no configuration for this in Virtaal yet
+msgid "Maybe something like Ethernet should not be translated"
+msgstr "Maybe I just like saying the Netether"
+
+#. Should trigger 'musttranslatewords', but there is no configuration for this in Virtaal yet
+msgid "Certain words like 'translate' simply must be translated"
+msgstr "I refuse to translate the word 'translate'"
+
+#. Should trigger 'validchars', but there is no configuration for this in Virtaal yet
+msgid "Only ASCII characters"
+msgstr "I dón't want tó bé restricted to ASCII"
+
+#. Should trigger 'filepaths'
+msgid "This contains a /path/to/a/file"
+msgstr "This contains a /path/tp/a/file"
+
+#. Should trigger 'xmtags'
+msgid "XML tags are <b>fun</b>"
+msgstr "XML tags can be <b>fun<b>"
+
+#. Should trigger 'kdecomments'
+msgid ""
+"_: An archaic KDE context comment\n"
+"The actual source text"
+msgstr ""
+"_: I'll be clever and translate in a text editor and duplicate the KDE comment"
+
+#. Should trigger 'compendiumconflicts'
+msgid "translation memories are a good idea"
+msgstr ""
+"#-#-#-#-#  file1.po  #-#-#-#-#\n"
+"but msgcat must be used carefully\n"
+"#-#-#-#-#  file2.po  #-#-#-#-#\n"
+"look mamma, no hands"
+
+
+#. Should trigger 'simpleplurals'
+msgid "Maybe I should use gettext plural(s)"
+msgstr "Yes, you should use those (proper) plurals"
+
+#. Should trigger 'spellcheck', but depends on libraries and some configuration
+msgid "I'll write carefully with regards to spelling"
+msgstr "I'm just going to pound my fist on the keyboard: hyjnn"
+
+#. Should trigger 'credits' if the project style is correct
+msgid "translator-credits"
+msgstr "Me, myself and I"
+
+#. Should trigger 'gconf'
+#: somewhere.gschema.xml.in
+msgid "The test's name is \"gconf\""
+msgstr "The test's name is \"goonf\""

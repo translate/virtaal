@@ -45,7 +45,6 @@ Installation
    :hidden:
 
    fedora_custom_repo
-   opensuse_installation
 
 +-----------------+--------------------------------------------------------------+---------------------------------------------+
 | Platform        | Instructions                                                 |  Notes                                      |
@@ -67,7 +66,7 @@ Installation
 +-----------------+--------------------------------------------------------------+---------------------------------------------+
 | Debian Squeeze  | apt-get install virtaal                                      | Or simply use the graphical package manager |
 +-----------------+--------------------------------------------------------------+---------------------------------------------+
-| openSUSE        | Read :doc:`openSUSE <opensuse_installation>` installation instructions                                     |
+| openSUSE        | zypper install virtaal                                       | Or simply use the graphical package manager |
 +-----------------+--------------------------------------------------------------+---------------------------------------------+
 | Other           | `Download source .zip or .tar.bz2                            | Make sure you have all the dependencies     |
 |                 | <http://sourceforge.net/projects/translate/files/Virtaal>`_  | including the latest Translate Toolkit      |
@@ -77,7 +76,7 @@ Installation
 
 Contact
 =======
-- Chat in our IRC channel `#pootle <irc://freenode.net/#pootle>`_
+- Chat in our `channel <https://gitter.im/translate/pootle>`_
 - `Report bugs <https://github.com/translate/virtaal/issues/new>`_
 - Join the `Translate-devel mailing list
   <https://lists.sourceforge.net/lists/listinfo/translate-devel>`_

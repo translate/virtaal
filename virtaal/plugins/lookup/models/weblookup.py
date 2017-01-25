@@ -99,7 +99,7 @@ class LookupModel(BaseLookupModel):
     def create_menu_items(self, query, role, srclang, tgtlang):
         querylang = role == 'source' and srclang or tgtlang
         nonquerylang = role != 'source' and srclang or tgtlang
-        query = urllib.quote(query)
+        query = urllib.quote(query.encode('utf-8'))
         items = []
         for urlinfo in self.URLDATA:
             uquery = query

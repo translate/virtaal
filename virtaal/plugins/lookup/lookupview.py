@@ -1,7 +1,7 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Copyright 2010 Zuza Software Foundation
+# Copyright 2016 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -122,13 +122,18 @@ class LookupView(BaseView):
         if not buf.get_has_selection():
             return
 
-        selection = buf.get_text(*buf.get_selection_bounds()).strip()
+        selection = buf.get_text(*buf.get_selection_bounds()).decode('utf-8').strip()
         role      = textbox.role
         srclang   = self.lang_controller.source_lang.code
         tgtlang   = self.lang_controller.target_lang.code
 
         lookup_menu = gtk.Menu()
-        menu_item = gtk.MenuItem(_('Look-up "%(selection)s"') % {'selection': selection})
+        if len(selection) > 40:
+            #l10n: The menu entry when looking up a very long selection of text. Here start and end are snippets from the start and end of the long selection.
+            selection_entry = _('Look-up "%(start)s … %(end)s"') % {'start': selection[:15], 'end': selection[-15:]}
+        else:
+            selection_entry = _('Look-up "%(selection)s"') % {'selection': selection}
+        menu_item = gtk.MenuItem(selection_entry)
 
         plugins = self.controller.plugin_controller.plugins
         menu_items = []

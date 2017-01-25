@@ -1,7 +1,7 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Copyright 2009-2010 Zuza Software Foundation
+# Copyright 2016 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -28,6 +28,11 @@ from virtaal.views.widgets.cellrendererwidget import CellRendererWidget
 __all__ = ['COL_ENABLED', 'COL_NAME', 'COL_DESC', 'COL_DATA', 'COL_WIDGET', 'SelectView']
 
 COL_ENABLED, COL_NAME, COL_DESC, COL_DATA, COL_WIDGET = range(5)
+
+
+# Coordinate and test this value with the size of PreferencesDlg in the glade
+# file as well as the size of SelectDialog all over (e.g. TMView)
+DEFAULT_WIDTH = 450
 
 
 class SelectView(gtk.TreeView, GObjectWrapper):
@@ -68,7 +73,7 @@ class SelectView(gtk.TreeView, GObjectWrapper):
 
         width = self.get_allocation().width
         if width <= 1:
-            width = 200 # FIXME: Arbitrary default value
+            width = DEFAULT_WIDTH
 
         cell = CellRendererWidget(strfunc=self._get_widget_string, default_width=width)
         self.namedesc_col = gtk.TreeViewColumn(_('Name'), cell, widget=4)
@@ -94,6 +99,7 @@ class SelectView(gtk.TreeView, GObjectWrapper):
             lbl.set_alignment(0, 0)
             lbl.set_text(name)
             lbl.set_use_markup(self.bold_name)
+            lbl.set_property('xpad', 1)
             vbox.pack_start(lbl)
             vbox.lbl_name = lbl
 
@@ -104,6 +110,11 @@ class SelectView(gtk.TreeView, GObjectWrapper):
             lbl.set_line_wrap(True)
             lbl.set_text(item['desc'])
             lbl.set_use_markup(False)
+            lbl.set_property('xpad', 1)
+            if self.get_direction() == gtk.TEXT_DIR_LTR:
+                # in RTL this code causes the label to be left aligned in the
+                # column for some reason
+                lbl.set_size_request(DEFAULT_WIDTH, -1)
             vbox.pack_start(lbl)
             vbox.lbl_desc = lbl
         hbox.pack_start(vbox)
@@ -115,7 +126,6 @@ class SelectView(gtk.TreeView, GObjectWrapper):
                 item['config'](self.get_toplevel())
             btnconf.connect('button-release-event', clicked)
             btnconf.config_func = item['config']
-            vbox.btn_conf = btnconf
             hbox.pack_start(btnconf, expand=False)
 
         return hbox
@@ -154,7 +164,6 @@ class SelectView(gtk.TreeView, GObjectWrapper):
         try:
             if widget:
                 widget = widget.get_children()[1]
-            if widget:
                 config = widget.config_func
         except IndexError:
             pass

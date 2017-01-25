@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2008-2010 Zuza Software Foundation
+# Copyright 2016 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -120,7 +121,7 @@ class StoreTreeView(gtk.TreeView):
         if storemodel:
             model = StoreTreeModel(storemodel)
         else:
-            model = gtk.ListStore(object)
+            model = None
         super(StoreTreeView, self).set_model(model)
 
     def _keyboard_move(self, offset):
@@ -191,7 +192,6 @@ class StoreTreeView(gtk.TreeView):
 
         self.columns_autosize()
         if path != None:
-            cell_area = self.get_cell_area(path, column)
             def do_setcursor():
                 self.set_cursor(path, column, start_editing=True)
             gobject.idle_add(do_setcursor)
@@ -201,7 +201,11 @@ class StoreTreeView(gtk.TreeView):
     def _on_cursor_changed(self, _treeview):
         path, _column = self.get_cursor()
 
-        index = _treeview.get_model().path_to_store_index(path)
+        model = _treeview.get_model()
+        if not model:
+            return True
+
+        index = model.path_to_store_index(path)
         if index != self.view.cursor.index:
             self.view.cursor.index = index
 
@@ -212,6 +216,10 @@ class StoreTreeView(gtk.TreeView):
         # issues a TreeView scroll; thus, the editor widget gets drawn at the wrong
         # position.
         def do_scroll():
+            if not self.get_cursor()[0]:
+                # cursor became invalid since this was added to the idle queue
+                # maybe because the file was closed since then.
+                return False
             self.scroll_to_cell(path, self.get_column(0), True, 0.5, 0.0)
             return False
 

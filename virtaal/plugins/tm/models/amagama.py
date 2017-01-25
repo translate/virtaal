@@ -1,7 +1,7 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Copyright 2010 Zuza Software Foundation
+# Copyright 2016 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -18,6 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+
+from basetmmodel import BaseTMModel
 import remotetm
 
 
@@ -31,9 +33,21 @@ class TMModel(remotetm.TMModel):
     shortname = _('Amagama')
 
     default_config = {
-        "host" : "amagama.locamotion.org",
-        "port" : "80",
+            "url": "https://amagama-live.translatehouse.org/api/v1/",
     }
+    # INITIALIZERS #
+    def __init__(self, internal_name, controller):
+        # Do not use super() here, as remotetm.TMModel does a bit more than we
+        # want in this case.
+        BaseTMModel.__init__(self, controller)
+        self.internal_name = internal_name
+        self.load_config()
+        url = self.config["url"]
+
+        from virtaal.support import tmclient
+        self.tmclient = tmclient.TMClient(url)
+        self.tmclient.set_virtaal_useragent()
+
 
     def push_store(self, store_controller):
         pass

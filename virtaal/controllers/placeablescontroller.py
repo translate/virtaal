@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Copyright 2009-2010 Zuza Software Foundation
+# Copyright 2016 F Wolff
 #
 # This file is part of Virtaal.
 #
@@ -193,7 +194,7 @@ class PlaceablesController(BaseController):
         for elem in elems:
             elem = elem
             parsed = parse_placeables(elem, parsers)
-            if isinstance(elem, (str, unicode)) and parsed != StringElem(elem):
+            if isinstance(elem, unicode) and parsed != StringElem(elem):
                 parent = elem.get_parent_elem(elem)
                 if parent is not None:
                     parent.sub[parent.sub.index(elem)] = StringElem(parsed)

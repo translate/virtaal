@@ -266,7 +266,7 @@ def create_localized_tutorial():
        u"access key or mnemonic. In program interfaces they are shown as an "
        u"underlined letter in the text label. In the translatable text they "
        u"are marked using some character like the underscore here, but other "
-       u"characters are used for this as well. In this case the the "
+       u"characters are used for this as well. In this case the "
        u"accelerator key is \"f\" since the underscore is before this letter "
        u"and it means that this accelerator could be triggered by pressing "
        u"Alt+F."),

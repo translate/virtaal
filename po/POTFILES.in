@@ -26,7 +26,6 @@ virtaal/plugins/terminology/__init__.py
 virtaal/plugins/terminology/models/autoterm.py
 virtaal/plugins/terminology/models/localfile/__init__.py
 virtaal/plugins/terminology/models/localfile/localfileview.py
-virtaal/plugins/terminology/models/opentran.py
 virtaal/plugins/terminology/termview.py
 virtaal/plugins/tm/__init__.py
 virtaal/plugins/tm/models/amagama.py
@@ -36,7 +35,6 @@ virtaal/plugins/tm/models/microsoft_translator.py
 virtaal/plugins/tm/models/libtranslate.py
 virtaal/plugins/tm/models/localtm.py
 virtaal/plugins/tm/models/moses.py
-virtaal/plugins/tm/models/opentran.py
 virtaal/plugins/tm/models/remotetm.py
 virtaal/plugins/tm/models/tinytm.py
 virtaal/plugins/tm/models/apertium.py

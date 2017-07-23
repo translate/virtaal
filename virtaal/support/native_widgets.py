@@ -22,6 +22,7 @@
 """This provides access to the native file dialogs for certain platforms, and
 some related helper code."""
 
+import distutils.spawn
 import os
 import sys
 import gettext
@@ -45,7 +46,8 @@ def _dialog_to_use():
         if win32_lang == ui_language or ui_language == 'en' and win32_lang == 'C':
             return 'win32'
 
-    elif os.environ.get('KDE_FULL_SESSION') == 'true' and ( \
+    elif os.environ.get('KDE_FULL_SESSION') == 'true' and \
+            distutils.spawn.find_executable("kdialog") is not None and ( \
                 pan_app.ui_language == 'en' or \
                 gettext.dgettext('kdelibs4', '') or \
                 not gettext.dgettext('gtk20', '')):

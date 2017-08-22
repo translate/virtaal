@@ -101,7 +101,6 @@ def _show_kdialog(window, title, args):
             'kdialog',
 #            '--name', _('Virtaal'),
 #            '--title', 'Virtaal',
-            '--caption', _('Virtaal'),
             '--icon', 'virtaal',
             '--title', title,
             '--attach', str(xid),

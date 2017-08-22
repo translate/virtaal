@@ -49,7 +49,9 @@ def _dialog_to_use():
                 pan_app.ui_language == 'en' or \
                 gettext.dgettext('kdelibs4', '') or \
                 not gettext.dgettext('gtk20', '')):
-            return 'kdialog'
+            import distutils.spawn
+            if distutils.spawn.find_executable("kdialog") is not None:
+                return 'kdialog'
 
     if sys.platform == 'darwin':
         return 'darwin'

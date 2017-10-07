@@ -43,14 +43,14 @@ except ImportError:
 from virtaal.common import pan_app
 from virtaal.controllers.baseplugin import BasePlugin
 
-from translate.storage.pypo import extractpoline
+from translate.storage.pypo import unescape
 from translate.storage import tmdb
 
 
 def _prepare_db_string(string):
     """Helper method needed by the Berkeley DB TM converters."""
     string = '"%s"' % string
-    string = unicode(extractpoline(string), 'utf-8')
+    string = unicode(unescape(string), 'utf-8')
     return string
 
 class Plugin(BasePlugin):

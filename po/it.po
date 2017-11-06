@@ -2,22 +2,21 @@
 # Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # Diego Donati <diegodonati@yahoo.it>, 2009
-#: ../virtaal/support/native_widgets.py:49
-#: ../virtaal/support/native_widgets.py:50
+# Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.4.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2014-02-11 21:11+0000\n"
-"PO-Revision-Date: 2012-09-16 14:14+0000\n"
-"Last-Translator: Mara <mara.cimasoni@gmail.com>\n"
+"PO-Revision-Date: 2017-11-06 16:39+0100\n"
+"Last-Translator: Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>\n"
 "Language-Team: Diego Donati\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.5.1-rc1\n"
+"X-Generator: Poedit 2.0.4\n"
 "X-POOTLE-MTIME: 1347804897.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
@@ -63,13 +62,11 @@ msgstr ""
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:3
 msgid "Some features:"
-msgstr ""
+msgstr "Caratteristiche:"
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:4
-#, fuzzy
-#| msgid "Existing translations: %(translations)s"
 msgid "Translation reuse (translation memory)"
-msgstr "Traduzioni esistenti: %(translations)s"
+msgstr "Riutilizzo traduzioni (memoria di traduzione)"
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:5
 #: ../virtaal/views/widgets/welcomescreen.py:80
@@ -585,7 +582,7 @@ msgstr "Parole che si devono tradurre"
 
 #: ../virtaal/controllers/checkscontroller.py:50
 msgid "Newlines"
-msgstr "Nuove linee "
+msgstr "Nuove linee"
 
 # 94%
 #: ../virtaal/controllers/checkscontroller.py:51
@@ -601,8 +598,7 @@ msgstr "Parole che non bisogna tradurre"
 msgid "Numbers"
 msgstr "Numeri"
 
-#: ../virtaal/controllers/checkscontroller.py:54
-#: ../devsupport/optparse.py:1612
+#: ../virtaal/controllers/checkscontroller.py:54 ../devsupport/optparse.py:1612
 msgid "Options"
 msgstr "Opzioni"
 
@@ -640,7 +636,7 @@ msgstr "Virgolette semplici"
 
 #: ../virtaal/controllers/checkscontroller.py:63
 msgid "Spelling"
-msgstr "Ortografia "
+msgstr "Ortografia"
 
 #: ../virtaal/controllers/checkscontroller.py:64
 msgid "Starting capitalization"
@@ -682,7 +678,7 @@ msgstr "Tag XML"
 
 #: ../virtaal/controllers/checkscontroller.py:111
 msgid "Default"
-msgstr "Per difetto "
+msgstr "Default"
 
 #: ../virtaal/controllers/checkscontroller.py:112
 msgid "OpenOffice.org"
@@ -1569,6 +1565,9 @@ msgid ""
 "Welcome to the Virtaal tutorial. You can do the first translation by typing "
 "just the translation for \"Welcome\". Then press Enter."
 msgstr ""
+"Benvenuto nel tutorial di Virtaal. È possibile effettuare la prima "
+"traduzione semplicemente digitando la traduzione di \"Welcome\". Premere "
+"Invio per confermare."
 
 #: ../virtaal/support/tutorial.py:43
 msgid ""
@@ -2105,7 +2104,9 @@ msgstr "Mozilla Corporation"
 #. l10n: Rather than translating, fill in the names of the translators
 #: ../virtaal/views/widgets/aboutdialog.py:73
 msgid "translator-credits"
-msgstr "Diego Donati, freelance translator, Italy"
+msgstr ""
+"Diego Donati, freelance translator, Italy; Sebastiano Pistore, FSFE memeber, "
+"Italy"
 
 #: ../virtaal/views/widgets/langadddialog.py:103
 msgid "Language code must be an ASCII string."
@@ -2285,7 +2286,7 @@ msgstr "File Gettext PO"
 
 #: ../devsupport/tmp_strings.py:24
 msgid "Gettext MO file"
-msgstr "File Gettext MO "
+msgstr "File Gettext MO"
 
 #: ../devsupport/tmp_strings.py:25
 msgid "Qt .qm file"

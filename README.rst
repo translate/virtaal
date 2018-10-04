@@ -35,7 +35,7 @@ progress, provide feedback and allows others to see your bug report.
 Design principles
 -----------------
 * Good looking
-* Optimise for the most frequent use cases
+* Optimize for the most frequent use cases
 * No necessity for mouse
 * The most important information must be visible by default
 * Only relevant (actionable) widgets should be shown

@@ -16,6 +16,9 @@
 # /share/appdata/
 /share/appdata/virtaal.appdata.xml
 
+# /share/metainfo/
+/share/metainfo/virtaal.metainfo.xml
+
 # /share/applications/
 /share/applications/*.desktop
 

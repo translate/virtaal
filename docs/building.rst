@@ -47,7 +47,7 @@ These are not build dependencies but usually improve the user experience.
     <http://gramps-project.org/wiki/index.php?title=Windows_installer>`_ and
     `PyEnchant <http://pythonhosted.org/pyenchant/>`_ for Windows installers
   - While gtkspell expects libenchant.dll, copy libenchant-1.dll to the
-    alternate name (setup.py expects both while this is the case)
+    alternate name (`setup.py` expects both while this is the case)
   - Remove the .dll files of dependencies shipped with pyenchant (iconv, glib,
     gmodule, intl) -- they conflict with the ones coming from GTK but are
     picked up by setup.py for some reason
@@ -86,7 +86,7 @@ For users running from a tarball, we do some dependency checking when starting
 Virtaal to be able to give accurate error messages in case of missing
 dependencies. However, if you have all of these sorted out in your package
 dependencies, there is no need for Virtaal to do this any more. In the file
-bin/virtaal, uncomment the line 
+`bin/virtaal`, uncomment the line 
 
 .. code-block:: python
 
@@ -134,7 +134,7 @@ add ``inst/lib/python2.5/site-packages`` to :envvar:`PYTHONPATH`
 run python bin/virtaal
 
 If you want, get the OS X Leopard theme: http://kims-area.com/?q=node/4 Install
-it into inst/share/themes/ and add an environment variable::
+it into `inst/share/themes/` and add an environment variable::
 
    export GTK2_RC_FILES=inst/share/themes/OS\ X\ Leopard/gtk-2.0/gtkrc
 
@@ -144,6 +144,6 @@ Older
 -----
 Older attempt, no success yet using this way:
 
-Install the Gtk+ Mac OSX framework: http://www.gtk-osx.org/ Install pygtk and
-pygobject from the GNOME FTP mirrors: ftp://ftp.gnome.org./pub/GNOME/sources/
+Install the Gtk+ Mac OSX framework: https://www.gtk.org/download/macos.php 
+Install pygtk and pygobject from the GNOME FTP mirrors: ftp://ftp.gnome.org./pub/GNOME/sources/
 (extract, still need to get pygobject installed)

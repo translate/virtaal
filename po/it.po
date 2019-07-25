@@ -2,22 +2,20 @@
 # Copyright (C) 2008-2010 Zuza Software Foundation (Translate.org.za)
 # This file is distributed under the same license as the Virtaal package.
 # Diego Donati <diegodonati@yahoo.it>, 2009
-#: ../virtaal/support/native_widgets.py:49
-#: ../virtaal/support/native_widgets.py:50
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 0.4.0\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2014-02-11 21:11+0000\n"
-"PO-Revision-Date: 2012-09-16 14:14+0000\n"
-"Last-Translator: Mara <mara.cimasoni@gmail.com>\n"
+"PO-Revision-Date: 2019-07-25 15:32+0200\n"
+"Last-Translator: bovirus <bovirus@gmail.com>\n"
 "Language-Team: Diego Donati\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.5.1-rc1\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-POOTLE-MTIME: 1347804897.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
@@ -28,7 +26,7 @@ msgstr "Virtaal"
 
 #: ../share/applications/virtaal.desktop.in.h:2
 msgid "Translation Tool"
-msgstr "Programma per la traduzione"
+msgstr "Programma traduzione"
 
 #: ../share/applications/virtaal.desktop.in.h:3
 msgid ""
@@ -45,13 +43,13 @@ msgid ""
 "resources to make translation fun, while helping to improve translation "
 "quality."
 msgstr ""
+"Virtaal è un programma per realizzare traduzioni. \n"
+"È una deliziosa combinazione di semplicità e potenza. \n"
+"Si integra con risorse online selezionate per rendere divertente la "
+"traduzione, contribuendo nel contempo a migliorare la qualità della "
+"traduzione."
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:2
-#, fuzzy
-#| msgid ""
-#| "The initial focus is on software translation (localization or l10n), but "
-#| "we definitely intend it to be useful as a general purpose tool for "
-#| "Computer Aided Translation (CAT)."
 msgid ""
 "The initial focus is on software translation (localization or l10n), but is "
 "definitely meant to be useful as a general purpose tool for Computer Aided "
@@ -63,13 +61,11 @@ msgstr ""
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:3
 msgid "Some features:"
-msgstr ""
+msgstr "Alcune funzionalità:"
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:4
-#, fuzzy
-#| msgid "Existing translations: %(translations)s"
 msgid "Translation reuse (translation memory)"
-msgstr "Traduzioni esistenti: %(translations)s"
+msgstr "Ri-uso traduzioni (memoria traduzioni)"
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:5
 #: ../virtaal/views/widgets/welcomescreen.py:80
@@ -78,11 +74,11 @@ msgstr "Assistenza terminologica"
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:6
 msgid "AutoCompletor and AutoCorrector"
-msgstr ""
+msgstr "Auto completameto e correzione automatica"
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:7
 msgid "Quality checks with customization for many languages"
-msgstr ""
+msgstr "Controlli traduzione con personalizzazioni per molte lingue"
 
 #: ../share/virtaal/virtaal.ui.h:1
 msgid "Add Missing Language"
@@ -90,7 +86,7 @@ msgstr "Aggiungi lingua mancante"
 
 #: ../share/virtaal/virtaal.ui.h:2
 msgid "Language name:"
-msgstr "Nome della lingua:"
+msgstr "Nome lingua:"
 
 #: ../share/virtaal/virtaal.ui.h:3
 msgid "ISO code:"
@@ -127,11 +123,11 @@ msgid ""
 "If you are translating from English to French then English would be your "
 "original or source language."
 msgstr ""
-"L'<b>Originale</b> è la lingua dalla quale si sta traducendo, anche definita "
-"la lingua di origine.\n"
+"Il <b>originale</b> è la lingua dalla quale si sta traducendo, anche "
+"definita la lingua sorgente.\n"
 "\n"
 "Se si sta traducendo dall'inglese al francese allora l'inglese è l'originale "
-"o lingua di origine."
+"o lingua sorgente."
 
 #: ../share/virtaal/virtaal.ui.h:12
 msgid "<b>Original</b>"
@@ -145,11 +141,11 @@ msgid ""
 "If you are translating from English to French then French would be your "
 "translation or target language."
 msgstr ""
-"La <b>Traduzione</b> è la lingua verso la quale si traduce, anche definita "
-"la lingua meta.\n"
+"La <b>traduzione</b> è la lingua verso la quale si traduce, anche definita "
+"la lingua destinazione.\n"
 "\n"
 "Se si sta traducendo dall'inglese al francese, allora il francese è la "
-"traduzione o lingua meta."
+"traduzione o lingua destinazione."
 
 #: ../share/virtaal/virtaal.ui.h:16
 msgid "<b>Translation</b>"
@@ -182,16 +178,16 @@ msgstr "_Modifica"
 #. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
 #: ../share/virtaal/virtaal.ui.h:25
 msgid "Transfer From Source"
-msgstr "Trasferisci dal testo fonte"
+msgstr "Trasferisci da sorgente"
 
 #. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
 #: ../share/virtaal/virtaal.ui.h:27
 msgid "P_revious Placeable"
-msgstr "Placeable _precedente"
+msgstr "Elemento posizionabile _precedente"
 
 #: ../share/virtaal/virtaal.ui.h:28
 msgid "_Next Placeable"
-msgstr "_Elemento placeable successivo"
+msgstr "_Elemento posizionabile successivo"
 
 #: ../share/virtaal/virtaal.ui.h:29
 msgid "_View"
@@ -203,7 +199,7 @@ msgstr "_Schermo intero"
 
 #: ../share/virtaal/virtaal.ui.h:31
 msgid "_Quality Checks"
-msgstr "Controlli di _qualità"
+msgstr "Controlli _qualità"
 
 #: ../share/virtaal/virtaal.ui.h:32
 msgid "_Navigation"
@@ -211,11 +207,11 @@ msgstr "_Navigazione"
 
 #: ../share/virtaal/virtaal.ui.h:33
 msgid "P_age Up"
-msgstr "P_agina Su"
+msgstr "P_agina su"
 
 #: ../share/virtaal/virtaal.ui.h:34
 msgid "_Page Down"
-msgstr "_Pagina Giù"
+msgstr "_Pagina giù"
 
 #: ../share/virtaal/virtaal.ui.h:35
 msgid "_Help"
@@ -243,7 +239,7 @@ msgstr "Preferenze di Virtaal"
 
 #: ../share/virtaal/virtaal.ui.h:41
 msgid "The name stored in the file header"
-msgstr "Il nome è conservato all'inizio del file"
+msgstr "Il nome è presente all'inizio del file"
 
 #. l10n: This label is for the name of the translator
 #: ../share/virtaal/virtaal.ui.h:43
@@ -252,24 +248,24 @@ msgstr "Nome:"
 
 #: ../share/virtaal/virtaal.ui.h:44
 msgid "The e-mail address stored in the file header"
-msgstr "L'indirizzo e-mail è salvato all'inizio del file"
+msgstr "L'indirizzo email è presente all'inizio del file"
 
 #: ../share/virtaal/virtaal.ui.h:45
 msgid "E-mail address:"
-msgstr "Indirizzo e-mail:"
+msgstr "Indirizzo email:"
 
 #: ../share/virtaal/virtaal.ui.h:46
 msgid ""
 "The team information stored in the file header. This can be an e-mail "
 "address or a URL, for example."
 msgstr ""
-"Le informazioni riguardanti il gruppo di traduzione sono conservate "
-"all'inizio del file. Questo può essere un indirizzo e-mail o una URL, per "
-"esempio."
+"Le informazioni riguardanti il gruppo di traduzione sono presenti all'inizio "
+"del file. \n"
+"Questo può essere per esempio un indirizzo email o una URL."
 
 #: ../share/virtaal/virtaal.ui.h:47
 msgid "Team:"
-msgstr "Gruppo di traduzione:"
+msgstr "Gruppo traduzione:"
 
 #: ../share/virtaal/virtaal.ui.h:48
 msgid "<b>Translator Information</b>"
@@ -301,12 +297,12 @@ msgid ""
 "Placeables are special parts of the text that can be automatically "
 "highlighted and easily inserted into the translation."
 msgstr ""
-"Gli elementi placeable sono parti speciali del testo che possono essere "
+"Gli elementi posizionabili sono parti speciali del testo che possono essere "
 "evidenziate automaticamente e facilmente inserite nella traduzione."
 
 #: ../share/virtaal/virtaal.ui.h:56
 msgid "Placeables"
-msgstr "Elementi placeable"
+msgstr "Elementi posizionabili"
 
 #: ../share/virtaal/virtaal.ui.h:57
 msgid "Plug-ins"
@@ -326,7 +322,7 @@ msgstr "<b>Stringhe</b> (totale):"
 
 #: ../share/virtaal/virtaal.ui.h:61
 msgid "File type:"
-msgstr "Tipi di file:"
+msgstr "Tipo file:"
 
 #: ../share/virtaal/virtaal.ui.h:62
 msgid "File size:"
@@ -334,7 +330,7 @@ msgstr "Dimensione file:"
 
 #: ../share/virtaal/virtaal.ui.h:63
 msgid "Location:"
-msgstr "Ubicazione:"
+msgstr "Percorso:"
 
 #: ../share/virtaal/virtaal.ui.h:64
 msgid "Add Term"
@@ -347,11 +343,11 @@ msgstr "C_ommenti"
 
 #: ../share/virtaal/virtaal.ui.h:67
 msgid "Terminology _file:"
-msgstr "_File di terminologia:"
+msgstr "_File terminologia:"
 
 #: ../share/virtaal/virtaal.ui.h:68
 msgid "Terminology Files"
-msgstr "File di terminologia"
+msgstr "File terminologia"
 
 #: ../share/virtaal/virtaal.ui.h:69
 msgid "Add URL"
@@ -363,7 +359,7 @@ msgstr "URL:"
 
 #: ../share/virtaal/virtaal.ui.h:71
 msgid "Put queries in quotes"
-msgstr "Mostra le query tra virgolette"
+msgstr "Visualizza richiesta tra virgolette"
 
 #: ../share/virtaal/virtaal.ui.h:72
 msgid "<b>Options</b>"
@@ -449,52 +445,50 @@ msgid ""
 "At the end of a translation, simply press <Enter> to continue with the next "
 "one."
 msgstr ""
-"Alla fine della traduzione, premere semplicemente <Invio> per continuare con "
-"la successiva."
+"Alla fine della traduzione, selezionare semplicemente <Invio> per continuare "
+"con la successiva."
 
 #: ../virtaal/tips.py:28
 msgid ""
 "To copy the original string into the target field, simply press <Alt+Down>."
 msgstr ""
-"Per copiare la stringa originale nell'area di traduzione, basta premere <Alt"
-"+Giù>."
+"Per copiare la stringa originale nell'area di traduzione, premi <Alt+giù>."
 
 #. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
 #: ../virtaal/tips.py:31
 msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
 msgstr ""
-"Per segnare la presente traduzione come \"fuzzy\", basta premere <Alt+U>."
+"Per segnare la presente traduzione come \"non verificata\", premi <Alt+U>."
 
 #: ../virtaal/tips.py:32
 msgid ""
 "To mark the current translation as incomplete, simply press <Ctrl+Shift"
 "+Enter>."
 msgstr ""
-"Per segnare la presente traduzione come \"incompleta\", basta premere <Ctrl"
-"+Shift+Enter>."
+"Per segnare la presente traduzione come \"incompleta\", premi <Ctrl+Maiusc"
+"+Invio>."
 
 # 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr ""
-"Per segnare la presente traduzione come \"completa\", basta premere <Ctrl"
-"+Enter>."
+"Per segnare la presente traduzione come \"completa\", premi <Ctrl+Invio>."
 
 #: ../virtaal/tips.py:34
 msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
-msgstr "Usare Ctrl+ Sù o Ctrl+ Giù per spostarsi tra le diverse traduzioni."
+msgstr "Per spostarti tra le diverse traduzioni usare Ctrl+ Sù o Ctrl+ Giù."
 
 #: ../virtaal/tips.py:35
 msgid ""
 "Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
 msgstr ""
-"Usare Ctrl+PgSù o Ctrl+PgGiù per spostarsi attraverso segmenti di traduzione "
-"più grandi."
+"Per spostarti attraverso segmenti di traduzione più grandi usa Ctrl+PgSù o "
+"Ctrl+PgGiù ."
 
 # 83%
 #: ../virtaal/controllers/checkscontroller.py:29
 msgid "Fuzzy"
-msgstr "Fuzzy"
+msgstr "Non verificato"
 
 # 75%
 #: ../virtaal/controllers/checkscontroller.py:30
@@ -528,7 +522,8 @@ msgid "Translator credits"
 msgstr ""
 "Diego Donati, freelance translator, Italy\n"
 "Radina Matic, translator, <radina.matic@gmail.com>\n"
-"Mara Cimasoni, translator, <mara.cimasoni@gmail.com>"
+"Mara Cimasoni, translator, <mara.cimasoni@gmail.com>\n"
+"bovirus, translator, <bovirus@gmail.com>"
 
 #: ../virtaal/controllers/checkscontroller.py:37
 msgid "Double quotes"
@@ -545,7 +540,7 @@ msgstr "Parola ripetuta"
 #: ../virtaal/controllers/checkscontroller.py:40
 #: ../virtaal/controllers/placeablescontroller.py:97
 msgid "E-mail"
-msgstr "E-mail"
+msgstr "Email"
 
 #: ../virtaal/controllers/checkscontroller.py:41
 msgid "Ending punctuation"
@@ -561,7 +556,7 @@ msgstr "Esc"
 
 #: ../virtaal/controllers/checkscontroller.py:44
 msgid "File paths"
-msgstr "Percorsi di file"
+msgstr "Percorsi file"
 
 #: ../virtaal/controllers/checkscontroller.py:45
 msgid "Functions"
@@ -585,7 +580,7 @@ msgstr "Parole che si devono tradurre"
 
 #: ../virtaal/controllers/checkscontroller.py:50
 msgid "Newlines"
-msgstr "Nuove linee "
+msgstr "Nuove linee"
 
 # 94%
 #: ../virtaal/controllers/checkscontroller.py:51
@@ -594,15 +589,14 @@ msgstr "Numero di plurali"
 
 #: ../virtaal/controllers/checkscontroller.py:52
 msgid "Don't translate words"
-msgstr "Parole che non bisogna tradurre"
+msgstr "Non tradurre queste parole"
 
 #: ../virtaal/controllers/checkscontroller.py:53
 #: ../virtaal/controllers/placeablescontroller.py:121
 msgid "Numbers"
 msgstr "Numeri"
 
-#: ../virtaal/controllers/checkscontroller.py:54
-#: ../devsupport/optparse.py:1612
+#: ../virtaal/controllers/checkscontroller.py:54 ../devsupport/optparse.py:1612
 msgid "Options"
 msgstr "Opzioni"
 
@@ -628,7 +622,7 @@ msgstr "Corto"
 
 #: ../virtaal/controllers/checkscontroller.py:60
 msgid "Simple capitalization"
-msgstr "Uso semplice di maiuscole "
+msgstr "Uso semplice di maiuscole"
 
 #: ../virtaal/controllers/checkscontroller.py:61
 msgid "Simple plural(s)"
@@ -640,7 +634,7 @@ msgstr "Virgolette semplici"
 
 #: ../virtaal/controllers/checkscontroller.py:63
 msgid "Spelling"
-msgstr "Ortografia "
+msgstr "Ortografia"
 
 #: ../virtaal/controllers/checkscontroller.py:64
 msgid "Starting capitalization"
@@ -656,7 +650,7 @@ msgstr "Spaziatura iniziale"
 
 #: ../virtaal/controllers/checkscontroller.py:67
 msgid "Tabs"
-msgstr "Tabulati "
+msgstr "Tabulazioni"
 
 #: ../virtaal/controllers/checkscontroller.py:68
 msgid "Unchanged"
@@ -673,7 +667,7 @@ msgstr "Caratteri validi"
 
 #: ../virtaal/controllers/checkscontroller.py:71
 msgid "Placeholders"
-msgstr "Segnaposti"
+msgstr "Variabili"
 
 # 87%
 #: ../virtaal/controllers/checkscontroller.py:72
@@ -682,7 +676,7 @@ msgstr "Tag XML"
 
 #: ../virtaal/controllers/checkscontroller.py:111
 msgid "Default"
-msgstr "Per difetto "
+msgstr "Predefinito"
 
 #: ../virtaal/controllers/checkscontroller.py:112
 msgid "OpenOffice.org"
@@ -708,15 +702,15 @@ msgstr "Drupal"
 #: ../virtaal/controllers/maincontroller.py:89
 #: ../virtaal/controllers/maincontroller.py:98
 msgid "Header information"
-msgstr "Informazioni di testata"
+msgstr "Informazioni intestazione"
 
 #: ../virtaal/controllers/maincontroller.py:81
 msgid "Please enter your name"
-msgstr "Inserire il proprio nome"
+msgstr "Inserisci il tuo nome"
 
 #: ../virtaal/controllers/maincontroller.py:90
 msgid "Please enter your e-mail address"
-msgstr "Inserire il proprio indirizzo e-mail"
+msgstr "Inserisci il tuo indirizzo e-mail"
 
 #: ../virtaal/controllers/maincontroller.py:99
 msgid "Please enter your team's information"
@@ -728,8 +722,8 @@ msgid ""
 "You selected the currently open file for opening. Do you want to reload the "
 "file?"
 msgstr ""
-"Si è deciso di aprire il file che è già attualmente aperto. Si vuole "
-"caricare nuovamente il file?"
+"Si è deciso di aprire il file che è già attualmente aperto. \n"
+"Vuoi caricare nuovamente il file?"
 
 #: ../virtaal/controllers/maincontroller.py:215
 #: ../virtaal/controllers/maincontroller.py:325
@@ -783,7 +777,7 @@ msgstr ""
 
 #: ../virtaal/controllers/maincontroller.py:275
 msgid "Can only export Gettext PO files"
-msgstr "Si può esportare solo file Gettext PO"
+msgstr "Si possono esportare solo file Gettext PO"
 
 #: ../virtaal/controllers/maincontroller.py:284
 msgid "Export"
@@ -823,7 +817,8 @@ msgstr "Ricarica file"
 
 #: ../virtaal/controllers/maincontroller.py:314
 msgid "Reload file from last saved copy and lose all changes?"
-msgstr "Ricaricare file dall'ultima copia salvata e perdere ogni modifica?"
+msgstr ""
+"Vuoi ricaricare file dall'ultima copia salvata e perdere ogni modifica?"
 
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase
 #: ../virtaal/controllers/placeablescontroller.py:84
@@ -857,15 +852,15 @@ msgstr ""
 
 #: ../virtaal/controllers/placeablescontroller.py:98
 msgid "E-mail addresses"
-msgstr "Indirizzi e-mail"
+msgstr "Indirizzi email"
 
 #: ../virtaal/controllers/placeablescontroller.py:101
 msgid "File Names"
-msgstr "Nomi dei file"
+msgstr "Nomi file"
 
 #: ../virtaal/controllers/placeablescontroller.py:102
 msgid "Paths referring to file locations"
-msgstr "Percorsi che si riferiscono alle ubicazioni dei file"
+msgstr "Percorsi che si riferiscono alle posizioni dei file"
 
 #: ../virtaal/controllers/placeablescontroller.py:105
 msgid "Placeholders (printf)"
@@ -889,7 +884,7 @@ msgstr "Variabili (Java)"
 
 #: ../virtaal/controllers/placeablescontroller.py:114
 msgid "Placeholders in Java strings"
-msgstr "Variabili in stringhe Java"
+msgstr "Variabilii in stringhe Java"
 
 #: ../virtaal/controllers/placeablescontroller.py:117
 msgid "Placeholders (Qt)"
@@ -914,7 +909,7 @@ msgstr "Simboli e segni di punteggiatura meno frequenti"
 
 #: ../virtaal/controllers/placeablescontroller.py:131
 msgid "URLs, hostnames and IP addresses"
-msgstr "URL, nome dell'host ed indirizzi IP"
+msgstr "URL, nome host ed indirizzi IP"
 
 #. l10n: see http://en.wikipedia.org/wiki/Character_entity_reference
 #: ../virtaal/controllers/placeablescontroller.py:135
@@ -947,21 +942,21 @@ msgstr "Attributi \"alt\""
 
 #: ../virtaal/controllers/placeablescontroller.py:157
 msgid "Placeable for \"alt\" attributes (as found in HTML)"
-msgstr "Placeable per attributi \"alt\" (come nel linguaggio HTML)"
+msgstr "Elemento posizonabile per attributi \"alt\" (come nel linguaggio HTML)"
 
 # 76%
 #: ../virtaal/controllers/placeablescontroller.py:158
 msgid "Placeholders (Drupal)"
-msgstr "Placeholder (Drupal)"
+msgstr "Variabili (Drupal)"
 
 # 83%
 #: ../virtaal/controllers/placeablescontroller.py:159
 msgid "Placeholders in Drupal strings"
-msgstr "Segnaposti in stringhe Drupal"
+msgstr "Variabili in stringhe Drupal"
 
 #: ../virtaal/controllers/storecontroller.py:198
 msgid "No source or translatable files in bundle"
-msgstr "Non ci sono i file d'origine o traducibili nel pacchetto  "
+msgstr "Nel pacchetto non ci sono i file sorgenti o traducibili"
 
 #: ../virtaal/controllers/storecontroller.py:230
 msgid "The file contains nothing to translate."
@@ -985,12 +980,12 @@ msgstr "Tradotto: %d"
 #: ../virtaal/controllers/storecontroller.py:439
 #, python-format
 msgid "Fuzzy: %d"
-msgstr "Fuzzy: %d"
+msgstr "Non verificati: %d"
 
 #: ../virtaal/controllers/storecontroller.py:440
 #, python-format
 msgid "Untranslated: %d"
-msgstr "Non tradotto: %d"
+msgstr "Non tradotte: %d"
 
 #: ../virtaal/controllers/storecontroller.py:441
 #, python-format
@@ -1004,7 +999,7 @@ msgstr "File aggiornato"
 
 #: ../virtaal/controllers/unitcontroller.py:84
 msgid "Needs work"
-msgstr "Ha bisogno di revisione"
+msgstr "Richiede attività"
 
 #: ../virtaal/controllers/unitcontroller.py:85
 msgid "Rejected"
@@ -1012,7 +1007,7 @@ msgstr "Rifiutato"
 
 #: ../virtaal/controllers/unitcontroller.py:86
 msgid "Needs review"
-msgstr "Bisogna revisionare"
+msgstr "Richede revisione"
 
 #: ../virtaal/controllers/unitcontroller.py:87
 msgid "Translated"
@@ -1033,12 +1028,12 @@ msgstr "Tutto"
 
 #: ../virtaal/modes/qualitycheckmode.py:33
 msgid "Quality Checks"
-msgstr "Controlli di _qualità"
+msgstr "Controlli _qualità"
 
 #. l10n: This is the button where the user can select units by failing quality checks
 #: ../virtaal/modes/qualitycheckmode.py:131
 msgid "Select Checks"
-msgstr "Seleziona Controlli"
+msgstr "Seleziona controlli"
 
 #. l10n: This refers to quality checks
 #: ../virtaal/modes/qualitycheckmode.py:134
@@ -1055,7 +1050,7 @@ msgstr "Cerca"
 
 #: ../virtaal/modes/searchmode.py:70
 msgid "_Case sensitive"
-msgstr "_Sensibile al carattere"
+msgstr "_Sensibile maiuscolo/minuscolo"
 
 #. l10n: To read about what regular expressions are, see
 #. http://en.wikipedia.org/wiki/Regular_expression
@@ -1151,7 +1146,7 @@ msgstr "Effettua la ricerca su testo selezionato"
 
 #: ../virtaal/plugins/lookup/__init__.py:30
 msgid "External Look-up"
-msgstr "Cercare all'esterno"
+msgstr "Ricerca esterna"
 
 #. l10n: The 'services' here refer to different look-up plugins,
 #. such as web look-up, etc.
@@ -1161,12 +1156,12 @@ msgstr "Seleziona servizi di ricerca"
 
 #: ../virtaal/plugins/lookup/lookupview.py:71
 msgid "Select the services that should be used to perform look-ups"
-msgstr "Seleziona i servizi da usare per effettuare ricerche"
+msgstr "Seleziona servizi da usare per effettuare ricerche"
 
 #: ../virtaal/plugins/lookup/lookupview.py:131
 #, python-format
 msgid "Look-up \"%(selection)s\""
-msgstr "Ricercare \"%(selection)s\""
+msgstr "Ricerca \"%(selection)s\""
 
 #. l10n: plugin name
 #: ../virtaal/plugins/lookup/models/weblookup.py:40
@@ -1205,7 +1200,7 @@ msgstr "URL"
 #. l10n: Whether the selected text should be surrounded by "quotes"
 #: ../virtaal/plugins/lookup/models/weblookup.py:191
 msgid "Quote Query"
-msgstr "Interrogazione virgolette"
+msgstr "Quota interrogazione"
 
 #: ../virtaal/plugins/migration.py:57
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
@@ -1213,23 +1208,23 @@ msgstr "Migrazione impostazioni da KBabel, Lokalize o Poedit a Virtaal."
 
 #: ../virtaal/plugins/migration.py:58
 msgid "Migration Assistant"
-msgstr "Assistente per la migrazione"
+msgstr "Assistente migrazione"
 
 #: ../virtaal/plugins/migration.py:72
 msgid "Should Virtaal try to import settings and data from other applications?"
-msgstr "Importare impostazioni e dati da altri applicativi?"
+msgstr "Vuoi importare impostazioni e dati da altri applicativi?"
 
 #: ../virtaal/plugins/migration.py:73
 msgid "Import data from other applications?"
-msgstr "Importare dati da altri applicativi?"
+msgstr "Vuoi importare dati da altri applicativi?"
 
 #: ../virtaal/plugins/migration.py:101
 msgid "Migration was successfully completed"
-msgstr "Migrazione completata con successo"
+msgstr "Migrazione completata"
 
 #: ../virtaal/plugins/migration.py:102
 msgid "The following items were migrated:"
-msgstr "I seguenti elementi sono stati trasferiti:"
+msgstr "Sono stati trasferiti i seguenti elementi:"
 
 #: ../virtaal/plugins/migration.py:105
 msgid "Migration completed"
@@ -1264,7 +1259,7 @@ msgstr "Impostazioni di Lokalize"
 #: ../virtaal/plugins/migration.py:274
 #, python-format
 msgid "Lokalize's Translation Memory: %(database_name)s"
-msgstr "Memoria di traduzione di Lokalize: %(database_name)s"
+msgstr "Memoria traduzione di Lokalize: %(database_name)s"
 
 #: ../virtaal/plugins/terminology/__init__.py:27
 msgid "Terminology Help"
@@ -1276,11 +1271,11 @@ msgstr "Suggerimenti terminologici"
 
 #: ../virtaal/plugins/terminology/models/autoterm.py:41
 msgid "Localization Terminology"
-msgstr "Terminologia di localizzazione"
+msgstr "Terminologia localizzazione"
 
 #: ../virtaal/plugins/terminology/models/autoterm.py:42
 msgid "Selected localization terminology"
-msgstr "Terminologia di localizzazione selezionata"
+msgstr "Terminologia localizzazione selezionata"
 
 #: ../virtaal/plugins/terminology/models/localfile/__init__.py:42
 msgid "Local Files"
@@ -1293,7 +1288,7 @@ msgstr "File terminologici locali"
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:52
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:54
 msgid "Terminology _Files..."
-msgstr "_File di terminologia..."
+msgstr "_File terminologia..."
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:60
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:62
@@ -1326,7 +1321,7 @@ msgstr "Tutti i file"
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:256
 #, python-format
 msgid "\"%s\" is not a usable file."
-msgstr "\"%s\" non è un file utilizzabile."
+msgstr "\"%s\" non è un file usabile."
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:261
 #, python-format
@@ -1346,7 +1341,7 @@ msgstr "Errore apertura file"
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:402
 #, python-format
 msgid "_Source term — %(langname)s"
-msgstr "Termine _lingua di origine - %(langname)s"
+msgstr "Termine _lingua sorgente - %(langname)s"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:403
 #, python-format
@@ -1378,15 +1373,15 @@ msgstr "Seleziona fonti terminologiche"
 
 #: ../virtaal/plugins/terminology/termview.py:167
 msgid "Select the sources of terminology suggestions"
-msgstr "Seleziona le fonti dei suggerimenti terminologici"
+msgstr "Seleziona fonti dei suggerimenti terminologici"
 
 #: ../virtaal/plugins/tm/__init__.py:27
 msgid "Translation Memory"
-msgstr "Memoria di traduzione"
+msgstr "Memoria traduzione"
 
 #: ../virtaal/plugins/tm/__init__.py:28
 msgid "Translation memory suggestions"
-msgstr "Suggerimenti da memoria di traduzione"
+msgstr "Suggerimenti da memoria traduzione"
 
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/amagama.py:28
@@ -1401,7 +1396,7 @@ msgstr "Traduzioni precedenti per software libero ed Open Source"
 
 #: ../virtaal/plugins/tm/models/currentfile.py:30
 msgid "Current File"
-msgstr "File corrente"
+msgstr "File attuale"
 
 #: ../virtaal/plugins/tm/models/currentfile.py:31
 msgid "Translated units from the currently open file"
@@ -1512,7 +1507,7 @@ msgstr "Traduzioni automatiche effettuate con Apertium"
 
 #: ../virtaal/plugins/tm/tmview.py:110
 msgid "Translation _Suggestions"
-msgstr "_Suggerimenti di traduzione"
+msgstr "_Suggerimenti traduzione"
 
 #: ../virtaal/plugins/tm/tmview.py:151
 #, python-format
@@ -1523,11 +1518,11 @@ msgstr "Ctrl+%(number_key)d"
 #. such as local tm, open-tran.eu, the current file, etc.
 #: ../virtaal/plugins/tm/tmview.py:175
 msgid "Select sources of Translation Memory"
-msgstr "Selezionare fonti della Memoria di Traduzione (TM)"
+msgstr "Seleziona fonti memoria traduzione (TM)"
 
 #: ../virtaal/plugins/tm/tmview.py:176
 msgid "Select the sources that should be queried for translation memory"
-msgstr "Selezionare fonti che saranno interrogate per la memoria di traduzione"
+msgstr "Seleziona fonti che saranno interrogate per la memoria di traduzione"
 
 #. l10n: match quality column label
 #: ../virtaal/plugins/tm/tmwidgets.py:64
@@ -1557,18 +1552,24 @@ msgstr "?"
 #: ../virtaal/support/native_widgets.py:172
 #: ../virtaal/support/native_widgets.py:241 ../virtaal/views/mainview.py:261
 msgid "Choose a Translation File"
-msgstr "Scegliere un file da tradurre"
+msgstr "Scegli un file da tradurre"
 
 #: ../virtaal/support/native_widgets.py:152
 msgid ""
 "A file named \"%1\" already exists. Are you sure you want to overwrite it?"
 msgstr ""
+"Un file denominato \"% 1\" esiste già. \n"
+"Sei sicuro di voler sovrascrivere?"
 
 #: ../virtaal/support/tutorial.py:38
 msgid ""
 "Welcome to the Virtaal tutorial. You can do the first translation by typing "
 "just the translation for \"Welcome\". Then press Enter."
 msgstr ""
+"Benvenuto nell'esercitazione di Virtaal. \n"
+"Puoi fare la prima traduzione digitando solo la traduzione per \"Benvenuto"
+"\". \n"
+"Quindi premi 'Invio'."
 
 #: ../virtaal/support/tutorial.py:43
 msgid ""
@@ -1576,6 +1577,11 @@ msgid ""
 "spelling mistakes are indicated similarly to word processors. Make sure the "
 "correct language is selected in the bottom right of the window."
 msgstr ""
+"Traduci questo messaggio leggermente più lungo. \n"
+"Se è disponibile un correttore ortografico, gli errori di ortografia sono "
+"indicati in modo simile agli elaboratori di testi. \n"
+"Assicuratii che sia selezionata la lingua corretta nella parte inferiore "
+"destra della finestra."
 
 #: ../virtaal/support/tutorial.py:50
 msgid ""
@@ -1583,6 +1589,10 @@ msgid ""
 "attention to while translating software programs. It will help you to avoid "
 "some problems and produce translations of a higher quality."
 msgstr ""
+"Questa esercitazione ti indicherà alcune delle cose a cui prestare "
+"attenzione durante la traduzione dei programmi software. \n"
+"Ti aiuterà a evitare alcuni problemi e a produrre traduzioni di qualità "
+"superiore."
 
 #: ../virtaal/support/tutorial.py:57
 msgid ""
@@ -1591,6 +1601,10 @@ msgid ""
 "be relevant to translation in your language. For many languages there are "
 "established translation rules."
 msgstr ""
+"Alcuni dei consigli potrebbero essere rilevanti solo per alcune lingue. \n"
+"Ad esempio, se la tua lingua non usa l'alfabeto latino, alcuni dei consigli "
+"potrebbero non essere pertinenti alla traduzione nella tua lingua. \n"
+"Per molte lingue ci sono regole di traduzione stabilite."
 
 #: ../virtaal/support/tutorial.py:64
 msgid ""
@@ -1598,6 +1612,9 @@ msgid ""
 "Translate this message with careful attention to write \"Virtaal\" with a "
 "capital letter."
 msgstr ""
+"L'uso corretto delle lettere maiuscole è importante in molte lingue. \n"
+"Traduci questo messaggio con molta attenzione per scrivere \"Virtaal\" con "
+"la lettera maiuscola."
 
 #: ../virtaal/support/tutorial.py:70
 msgid ""
@@ -1607,6 +1624,14 @@ msgid ""
 "by following the normal capitalisation rules for your language. If your "
 "language does not use capital letters, simply translate it normally."
 msgstr ""
+"In questo messaggio l'inglese usa una lettera maiuscola per quasi ogni "
+"parola. \n"
+"Quasi nessuna altra lingua usa questo stile. \n"
+"A meno che la tua lingua non abbia sicuramente bisogno di seguire lo stile "
+"inglese (anche chiamato Title Case), traduci seguendo le normali regole di "
+"capitalizzazione per la tua lingua. \n"
+"Se la tua lingua non usa lettere maiuscole, traducila semplicemente senza "
+"usare le lettere miauscole."
 
 #: ../virtaal/support/tutorial.py:79
 msgid ""
@@ -1616,6 +1641,13 @@ msgid ""
 "to copy the suggested translation to the current translation. Remember to "
 "always review suggestions before you use them."
 msgstr ""
+"Se hai tradotto il messaggio precedente, dovresti vedere una finestra con "
+"quella traduzione e una percentuale che indica è simile alla stringa "
+"sorgente (inglese). \n"
+"Quella è la memoria di traduzione di Virtaal al lavoro. \n"
+"Premi 'Control' + 1 per copiare la traduzione suggerita nella traduzione "
+"attuale. \n"
+"Ricorda di rivedere sempre i suggerimenti prima di usarli."
 
 #: ../virtaal/support/tutorial.py:88
 msgid ""
@@ -1623,6 +1655,10 @@ msgid ""
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a capital letter as well."
 msgstr ""
+"Questo è un semplice messaggio che inizia con una lettera maiuscola in "
+"inglese. \n"
+"Se la tua lingua usa lettere maiuscole, quasi sicuramente vuoi iniziare la "
+"traduzione anche con una lettera maiuscola."
 
 #: ../virtaal/support/tutorial.py:95
 msgid ""
@@ -1630,17 +1666,25 @@ msgid ""
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a lower case letter as well."
 msgstr ""
+"Questo è un semplice messaggio che inizia con una lettera minuscola in "
+"inglese. \n"
+"Se la tua lingua usa lettere maiuscole, quasi sicuramente vuoi iniziare la "
+"traduzione anche con una lettera minuscola."
 
 #: ../virtaal/support/tutorial.py:102
 msgid ""
 "This message is a question. Make sure that you use the correct question mark "
 "in your translation as well."
 msgstr ""
+"Questo messaggio è una domanda.\n"
+"Assicurati di usare anche il punto interrogativo corretto nella traduzione."
 
 #: ../virtaal/support/tutorial.py:107
 msgid ""
 "This message is a label as part of a form. Note how it ends with a colon (:)."
 msgstr ""
+"Questo messaggio è un'etichetta che è una parte di un modulo. \n"
+"Nota come termina con i due punti (:)."
 
 #: ../virtaal/support/tutorial.py:112
 msgid ""
@@ -1648,19 +1692,20 @@ msgid ""
 "copy the entire source string with Alt+Down. Here is almost nothing to "
 "translate, so just press Alt+Down and make corrections if necessary."
 msgstr ""
+"Se la sorgente rimarrà per lo più o completamente invariata, conviene "
+"copiare l'intera stringa sorgente con 'Alt'+Giù.\n"
+"Qui non c'è quasi nulla da tradurre, quindi basta premere 'Alt'+Giù e "
+"apportare le correzioni se necessario."
 
 #: ../virtaal/support/tutorial.py:119
-#, fuzzy
-#| msgid ""
-#| "Placeables are special parts of the text that can be automatically "
-#| "highlighted and easily inserted into the translation."
 msgid ""
 "Placeables are special parts of the text, like the © symbol, that can be "
 "automatically highlighted and easily inserted into the translation. Select "
 "the © with Alt+Right and transfer it to the target with Alt+Down."
 msgstr ""
-"Gli elementi placeable sono parti speciali del testo che possono essere "
-"evidenziate automaticamente e facilmente inserite nella traduzione."
+"Gli elementi posizionabili sono parti speciali del testo che possono essere "
+"evidenziate automaticamente e facilmente inserite nella traduzione.\n"
+"Seleziona la © con Alt+Destra e trasferiscila nella destinazione con Alt+Giù."
 
 #: ../virtaal/support/tutorial.py:126
 msgid ""
@@ -1668,6 +1713,10 @@ msgid ""
 "holders, acronyms and many more. Move to each one with Alt+Right and "
 "transfer it down with Alt+Down."
 msgstr ""
+"I segnaposto riconoscibili includono simboli speciali, numeri, segnaposti "
+"variabili, acronimi e molti altri. \n"
+"Spostati su ognuno con 'Alt'+Destra e trasferiscilo verso il basso con "
+"'Alt'+Giù."
 
 #: ../virtaal/support/tutorial.py:132
 msgid ""
@@ -1675,6 +1724,10 @@ msgid ""
 "a dialogue to appear instead of just performing an action. Be sure to end "
 "your message with ... as well."
 msgstr ""
+"Questo messaggio termina con ... per indicare che facendo clic su questo "
+"testo apparirà una finestra di dialogo anziché semplicemente eseguire "
+"un'azione. \n"
+"Assicurati di terminare anche il tuo messaggio con ..."
 
 #: ../virtaal/support/tutorial.py:138
 msgid ""
@@ -1682,6 +1735,11 @@ msgid ""
 "Select the special character with Alt+Right and copy it to your translation "
 "with Alt+Down. Don't just type three dot characters."
 msgstr ""
+"Questo messaggio termina con un carattere speciale che assomiglia a tre "
+"punti. \n"
+"Seleziona il carattere speciale con 'Alt'+Destra e copialo nella traduzione "
+"con 'Alt'+Giù. \n"
+"Non digitare solo tre punti."
 
 #: ../virtaal/support/tutorial.py:145
 msgid ""
@@ -1689,6 +1747,9 @@ msgid ""
 "with a capital letter if your language uses them, and end each sentence "
 "properly."
 msgstr ""
+"Questo messaggio ha due frasi. \n"
+"Traducile e assicurati di iniziare ciascuno con una lettera maiuscola se la "
+"tua lingua le usa e di terminare correttamente ogni frase."
 
 #: ../virtaal/support/tutorial.py:151
 msgid ""
@@ -1697,6 +1758,13 @@ msgid ""
 "<b> and </b> in the translation around the part that corresponds to \"now\". "
 "Read more about XML markup here: http://en.wikipedia.org/wiki/XML"
 msgstr ""
+"Questo messaggio contrassegna la parola \"adesso\" come importante con un "
+"tag in grassetto. \n"
+"Questi tag possono essere copiati dalla sorgente con 'Alt'+Destra e "
+"'Alt'+Giù. \n"
+"Lascia <b> e </b> nella traduzione prima e dopo la parte che corrisponde a "
+"\"adesso\". \n"
+"Maggiori informazioni sul markup XML: http://it.wikipedia.org/wiki/XML"
 
 #: ../virtaal/support/tutorial.py:159
 msgid ""
@@ -1704,6 +1772,10 @@ msgid ""
 "the previous translation with Ctrl+1. Note how the only difference is that "
 "this one ends with a full stop after the last tag."
 msgstr ""
+"Questo messaggio è molto simile al messaggio precedente. \n"
+"Usa il suggerimento della traduzione precedente con 'Ctrl'+1. \n"
+"Nota come l'unica differenza sia che questa termina con un punto dopo "
+"l'ultimo tag."
 
 #: ../virtaal/support/tutorial.py:166
 #, python-format
@@ -1714,6 +1786,13 @@ msgid ""
 "with a number e.g. 'Number of files copied: 5'.  Note that \"%d\" does not "
 "refer to a percentage."
 msgstr ""
+"In questo messaggio \"%d\" è un segnaposto (variabile) che rappresenta un "
+"numero. \n"
+"Assicurati che la traduzione contenga \"%d\" da qualche parte. \n"
+"In questo caso fa riferimento a un numero di file. \n"
+"Quando viene utilizzato questo messaggio, \"%d\" verrà sostituito con un "
+"numero ad es. 'Numero di file copiati: 5'. \n"
+"Nota che \"%d\" non si riferisce a una percentuale."
 
 #: ../virtaal/support/tutorial.py:174
 #, python-format
@@ -1726,6 +1805,15 @@ msgid ""
 "translatehouse.org/projects/localization-guide/en/latest/guide/translation/"
 "plurals.html"
 msgstr ""
+"In questo messaggio \"%d\" fa nuovamente riferimento al numero di file ma "
+"nota come \"(s)\" viene usato per indicare che non si sa quanti saranno. \n"
+"Questo è spesso difficile da tradurre bene. \n"
+"Se lo riscontri nella traduzione del software potresti voler sentire dagli "
+"sviluppatori se questo può essere evitato. \n"
+" \n"
+"Maggiori informazioni su http://docs.translatehouse.org/projects/"
+"localization-guide/en/latest/guide/translation/plurals.html.\n"
+"Decidi poi come farlo nella tua lingua:"
 
 #: ../virtaal/support/tutorial.py:185
 msgid ""
@@ -1735,6 +1823,11 @@ msgid ""
 "translatehouse.org/projects/localization-guide/en/latest/guide/translation/"
 "plurals.html"
 msgstr ""
+"In questo messaggio si vede il modo corretto di tradurre i plurali. \n"
+"Inserisci tra 1 e 6 diverse versioni della traduzione per garantire la "
+"grammatica corretta nella tua lingua. \n"
+"Maggiori informazioni: http://docs.translatehouse.org/projects/localization-"
+"guide/en/latest/guide/translation/plurals.html"
 
 #: ../virtaal/support/tutorial.py:196
 #, python-format
@@ -1744,6 +1837,12 @@ msgid ""
 "used, the %s will be replaced with a file name e.g. 'The file will be saved "
 "as example.odt'.  Note that \"%s\" does not refer to a percentage."
 msgstr ""
+"In questo messaggio \"% s\" è un segnaposto (variabile) che rappresenta un "
+"nome file. \n"
+"Assicurati che la traduzione contenga %s da qualche parte. \n"
+"Quando viene usato questo messaggio %s verrà sostituito con un nome file, ad "
+"es. 'Il file verrà salvato come esempio.odt'. \n"
+"Nota che \"% s\" non si riferisce a una percentuale."
 
 #: ../virtaal/support/tutorial.py:204
 #, python-format
@@ -1754,6 +1853,13 @@ msgid ""
 "as English, type it exactly as shown for the English. If your language uses "
 "different characters you can just type them around the variable."
 msgstr ""
+"In questo messaggio la variabile è racchiusa tra virgolette doppie. \n"
+"Assicurati che la traduzione contenga la variabile %s e sia compresa in modo "
+"simile tra virgolette nel modo richiesto dalla tua lingua. \n"
+"Se la tua lingua usa le stesse virgolette dell'inglese, digitale esattamente "
+"come per l'inglese. \n"
+"Se la tua lingua usa caratteri diversi puoi semplicemente digitarli prima e "
+"dopo la variabile."
 
 #: ../virtaal/support/tutorial.py:213
 msgid ""
@@ -1762,6 +1868,11 @@ msgid ""
 "appear unchanged somewhere in your translation. These type of variables give "
 "you an idea of what they will contain. In this case, it will contain a name."
 msgstr ""
+"In questo messaggio, \"%(nome)s\" è un segnaposto (variabile). \n"
+"Nota che la 's' è una parte della variabile e l'intera variabile da '%' a "
+"'s' dovrebbe apparire invariata da qualche parte nella traduzione. \n"
+"Questo tipo di variabili ti dà un'idea di cosa conterranno. \n"
+"In questo caso, conterrà un nome."
 
 #: ../virtaal/support/tutorial.py:221
 msgid ""
@@ -1769,6 +1880,10 @@ msgid ""
 "you translate it by being as polite or respectful as is necessary for your "
 "culture."
 msgstr ""
+"In questo messaggio viene chiesto all'utente del software di fare "
+"qualcosa. \n"
+"Assicurati di tradurlo essendo educato o rispettoso quanto è necessario per "
+"la tua cultura."
 
 #: ../virtaal/support/tutorial.py:227
 msgid ""
@@ -1776,12 +1891,17 @@ msgid ""
 "languages will not translate it, but your language might use a "
 "transliteration if you don't use the Latin script for your language."
 msgstr ""
+"In questo messaggio c'è un riferimento a \"Linux\" (nome di prodotto). \n"
+"Molte lingue non lo tradurranno, ma la tua lingua potrebbe usare una "
+"traduzione se non usi lo script latino per la tua lingua."
 
 #: ../virtaal/support/tutorial.py:234
 msgid ""
 "This message contains the URL (web address) of the project website. It must "
 "be transferred as a placeable or typed over exactly."
 msgstr ""
+"Questo messaggio contiene l'URL (indirizzo web) del sito web del progetto. \n"
+"Deve trascritto come posizionabile o digitato esattamente."
 
 #: ../virtaal/support/tutorial.py:239
 msgid ""
@@ -1791,6 +1911,12 @@ msgid ""
 "to your language code so that the address points to the corresponding "
 "article in your language about XML."
 msgstr ""
+"Questo messaggio si riferisce a un sito web con ulteriori informazioni. \n"
+"A volte potresti essere autorizzato o incoraggiato a cambiare l'URL "
+"(indirizzo web) in un sito web nella tua lingua. \n"
+"In questo caso, sostituisci \"en\" all'inizio dell'indirizzo con il codice "
+"della tua lingua in modo che l'indirizzo punti all'articolo corrispondente "
+"nella tua lingua."
 
 #: ../virtaal/support/tutorial.py:248
 msgid ""
@@ -1798,6 +1924,10 @@ msgid ""
 "Make sure you can see the context information showing that this is a verb "
 "(an action as in \"click here to view it\")."
 msgstr ""
+"Questa traduzione contiene una parola ambigua: ha due possibili "
+"significati. \n"
+"Assicurati di avere le informazioni sul contesto che indicano che si tratta "
+"di un verbo (un'azione come in \"fai clic qui per visualizzarlo\")."
 
 #: ../virtaal/support/tutorial.py:255
 msgid ""
@@ -1807,6 +1937,13 @@ msgid ""
 "your previous translation as a suggestion, take care to only use it if it is "
 "definitely appropriate in this case as well."
 msgstr ""
+"Questa traduzione contiene una parola ambigua: ha due possibili "
+"significati. \n"
+"Assicurati di poter avere le informazioni delo contesto che indicano che "
+"questo è un sostantivo (una cosa come a \"fai clic per cambiare la "
+"visualizzazione a schermo intero\"). \n"
+"Se Virtaal fornisce la tua traduzione precedente come suggerimento "
+"assicurati di usarla solo se è sicuramente appropriata anche in questo caso."
 
 #: ../virtaal/support/tutorial.py:264
 msgid ""
@@ -1819,14 +1956,25 @@ msgid ""
 "is before this letter and it means that this accelerator could be triggered "
 "by pressing Alt+F."
 msgstr ""
+"Un tasto acceleratore è un tasto sulla tastiera che è possibile premere per "
+"accedere rapidamente a un menu o una funzione. \n"
+"È anche chiamato tasto di scelta rapida, tasto di accesso o mnemonico. \n"
+"Nelle interfacce del programma sono mostrate come una lettera sottolineata "
+"nell'etichetta di testo. \n"
+"Nel testo traducibile sono contrassegnati usando alcuni caratteri come il "
+"carattere di sottolineatura qui, ma possono anche essere usati altri "
+"caratteri. \n"
+"In questo caso il tasto acceleratore è \"f\" poiché prima di questa lettera "
+"c'è il trattino basso e significa che questo acceleratore potrebbe essere "
+"attivato premendo 'Alt'+F."
 
 #: ../virtaal/support/tutorial.py:276
 msgid "In this entry you can see other kind of accelerator."
-msgstr ""
+msgstr "In questa stringa puoi vedere altri tipi di acceleratori."
 
 #: ../virtaal/support/tutorial.py:280
 msgid "And another kind of accelerator."
-msgstr ""
+msgstr "E un altro tipo di acceleratore."
 
 #: ../virtaal/support/tutorial.py:285
 msgid ""
@@ -1836,12 +1984,22 @@ msgid ""
 "filling it. In order to do that select the original text, press Ctrl+T, "
 "provide a translation for your language, and save."
 msgstr ""
+"Virtaal è in grado di fornire suggerimenti da diversi glossari di "
+"terminologia e fornisce semplici scorciatoie per consentire di incollarli "
+"nel campo della traduzione. \n"
+"In questo momento Virtaal ha un solo glossario terminologico vuoto, ma puoi "
+"iniziare a riempirlo. \n"
+"Per fare ciò, seleziona il testo originale, premi 'Ctrl'+T e fornisci una "
+"traduzione per la tua lingua e salva."
 
 #: ../virtaal/support/tutorial.py:295
 msgid ""
 "In the previous entry you have created one terminology entry for the the "
 "\"filter\" verb. Now do the same for \"filter\" noun."
 msgstr ""
+"Nella voce precedente è stata creata una voce terminologica per il verbo "
+"\"filtro\". \n"
+"Ora fai lo stesso per il nome \"filtro\"."
 
 #: ../virtaal/support/tutorial.py:300
 msgid ""
@@ -1855,6 +2013,18 @@ msgid ""
 "you have selected the desired suggestion press Enter to copy it to the "
 "translation field."
 msgstr ""
+"Se hai creato una terminologia nelle voci precedenti, potresti ora vedere "
+"alcune delle parole con uno sfondo verde (o altro colore a seconda del "
+"tema). \n"
+"Ciò significa che Virtaal ha suggerimenti terminologici per quella parola. \n"
+"Usa 'Alt'+Destra per selezionare la parola evidenziata, quindi premi "
+"'Alt'+Giù. \n"
+"Se viene fornito solo un suggerimento 'Alt'+Giù copia semplicemente il "
+"suggerimento nel campo della traduzione. \n"
+"Ma se sono disponibili diversi suggerimenti ''Alt'+Giù visualizza un elenco "
+"di suggerimenti che puoi navigare usando i tasti 'Su' e 'Giù'. \n"
+"Dopo aver selezionato il suggerimento desiderato premi 'Invio' per copiarlo "
+"nel campo della traduzione."
 
 #: ../virtaal/support/tutorial.py:313
 msgid ""
@@ -1862,12 +2032,19 @@ msgid ""
 "two lines. You can separate lines with Shift+Enter or copying new-line "
 "placeables (displayed as ¶)."
 msgstr ""
+"Questo messaggio ha due righe. \n"
+"Assicurati che anche la traduzione contenga due righe. \n"
+"Puoi separare le righe con 'Maiusc'+'Invio' o copia la nuova riga segnaposto "
+"(visualizzata come ¶)."
 
 #: ../virtaal/support/tutorial.py:320
 msgid ""
 "This message contains tab characters to separate some headings. Make sure "
 "you separate your translations in the same way."
 msgstr ""
+"Questo messaggio contiene caratteri di tabulazione per separare alcune "
+"intestazioni. \n"
+"Assicurati di separare la traduzione allo stesso modo."
 
 #: ../virtaal/support/tutorial.py:325
 msgid ""
@@ -1878,6 +2055,15 @@ msgid ""
 "different number system. Make sure that you understand the American "
 "formatting: the number is bigger than one thousand."
 msgstr ""
+"Questo messaggio contiene un numero grande che è formattato secondo la "
+"convenzione americana. \n"
+"Assicurati di formattare il numero in base alla convenzione per la tua "
+"lingua. \n"
+"Potrebbe essere necessario modificare la virgola (,) e il punto (.) con "
+"altri caratteri e potrebbe essere necessario usare un sistema di numerazione "
+"diverso. \n"
+"Assicurati di comprendere la formattazione americana: il numero è maggiore "
+"di mille."
 
 #: ../virtaal/support/tutorial.py:335
 msgid ""
@@ -1887,6 +2073,13 @@ msgid ""
 "kilometres. Note that automated tests for \"numbers\" will complain if the "
 "number is changed, but in this case it is safe to do."
 msgstr ""
+"Questo messaggio si riferisce alle miglia. \n"
+"Se i programmatori lo incoraggiano potresti volerlo cambiare in chilometri "
+"nella tua traduzione, se i chilometri sono più comunemente usati nella tua "
+"lingua. \n"
+"1 miglio è circa 1,6 chilometri. \n"
+"Nota che i test automatici per \"numeri\" riportano se il numero viene "
+"modificato, ma in questo caso è utile farlo."
 
 #: ../virtaal/support/tutorial.py:344
 msgid ""
@@ -1896,6 +2089,12 @@ msgid ""
 "changed in tags, even if your language uses a different type of quotation "
 "marks."
 msgstr ""
+"Questo messaggio contiene un collgemaneto su cui l'utente potrà fare clic "
+"per visitare la pagina di aiuto. \n"
+"Assicurarsi di conservare correttamente le informazioni tra le parentesi "
+"angolari (<...>). \n"
+"Le doppie virgolette (\") non devono mai essere modificate nei tag anche se "
+"la tua lingua usa un diverso tipo di virgolette."
 
 #: ../virtaal/support/tutorial.py:354
 #, python-format
@@ -1905,6 +2104,11 @@ msgid ""
 "Make sure you position the two variables (%s) so that they correspond to the "
 "opening and closing tag of the previous translation."
 msgstr ""
+"Questo messaggio contiene un collegamento simile, ma i programmatori hanno "
+"deciso di inserire piuttosto i tag con variabili in modo che i traduttori "
+"non possano cambiarli. \n"
+"Assicurati di posizionare le due variabili (%s) in modo che corrispondano al "
+"tag di apertura e chiusura della traduzione precedente."
 
 #: ../virtaal/support/tutorial.py:362
 msgid ""
@@ -1912,6 +2116,9 @@ msgid ""
 "everything is inside <p> and </p> tags. Make sure your whole translation is "
 "inside <p> and </p> tags."
 msgstr ""
+"Questo messaggio contiene i tag <b> e </b> per enfatizzare una parola, "
+"mentre tutto è all'interno dei tag <p> e </p>. \n"
+"Assicurati che l'intera traduzione sia all'interno dei tag <p> e </p>."
 
 #: ../virtaal/support/tutorial.py:368
 msgid ""
@@ -1923,6 +2130,15 @@ msgid ""
 "is contained in the <span> tags. Note how the full stop is still inside the "
 "</span> tag."
 msgstr ""
+"Questo messaggio contiene un collegamento simile tra i tag <span> e </"
+"span>. \n"
+"Assicurati di mantenere correttamente tutti i tag (<...>) e che nella "
+"traduzione il collegamento sia contenuto completamente all'interno dei tag "
+"<span> e </span>. \n"
+"Assicurati che il testo all'interno dei tag \"a\" corrisponda alla \"pagina "
+"di aiuto\" e che la traduzione corrispondente alla seconda frase sia "
+"contenuta nei tag <span>. \n"
+"Nota come il punto è ancora all'interno del tag </span>."
 
 #: ../virtaal/views/checksunitview.py:73
 msgid "No issues"
@@ -1959,8 +2175,8 @@ msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
 msgstr ""
-"Il file corrente è stato modificato.\n"
-"Salvare le modifiche?"
+"Il file attuale è stato modificato.\n"
+"Vuoi salvare le modifiche?"
 
 #: ../virtaal/views/mainview.py:345
 msgid "_Discard"
@@ -1973,15 +2189,15 @@ msgstr "_Scarta"
 #: ../virtaal/views/mainview.py:430
 #, python-format
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
-msgstr "%(modified_marker)s%(current_file)s - Virtaal"
+msgstr "Virtaal - %(modified_marker)s%(current_file)s"
 
 #: ../virtaal/views/mainview.py:455
 msgid "Please enter the number of noun forms (plurals) to use"
-msgstr "Inserire il numero di forme sostantivate (plurali) da utilizzare"
+msgstr "Inserisci il numero di forme sostantivate (plurali) da utilizzare"
 
 #: ../virtaal/views/mainview.py:461
 msgid "Please enter the plural equation to use"
-msgstr "Inserire l'equazione plurale da utilizzare"
+msgstr "Inserisci l'equazione plurale da utilizzare"
 
 #. l10n: This refers to the 'mode' that determines how Virtaal moves
 #. between units.
@@ -1992,11 +2208,11 @@ msgstr "N_avigazione:"
 # 81%
 #: ../virtaal/views/propertiesview.py:32
 msgid "Untranslated:"
-msgstr "Non tradotto:"
+msgstr "Non tradotte:"
 
 #: ../virtaal/views/propertiesview.py:33
 msgid "Needs work:"
-msgstr "Ha bisogno di lavoro "
+msgstr "Richideono attività:"
 
 #: ../virtaal/views/propertiesview.py:34
 msgid "Rejected:"
@@ -2004,7 +2220,7 @@ msgstr "Rifiutato:"
 
 #: ../virtaal/views/propertiesview.py:35
 msgid "Needs review:"
-msgstr "Bisogna revisionare:"
+msgstr "Richiedono revisione:"
 
 # 78%
 #: ../virtaal/views/propertiesview.py:36
@@ -2048,7 +2264,7 @@ msgstr "%.1f KB"
 
 #: ../virtaal/views/storeview.py:138 ../virtaal/views/storeview.py:147
 msgid "Export failed"
-msgstr "Esporto fallito"
+msgstr "Esportazione fallita"
 
 #: ../virtaal/views/storeview.py:156
 msgid "Preview failed"
@@ -2060,7 +2276,7 @@ msgstr "Torna indietro di un passaggio nel flusso di lavoro (Ctrl+Shift+Enter)"
 
 #: ../virtaal/views/unitview.py:614
 msgid "Click to move to a specific state in the workflow"
-msgstr "Clicca per andare a un momento specifico nel flusso di lavoro"
+msgstr "Fai clic per andare a un momento specifico nel flusso di lavoro"
 
 #: ../virtaal/views/unitview.py:615
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
@@ -2105,21 +2321,20 @@ msgstr "Mozilla Corporation"
 #. l10n: Rather than translating, fill in the names of the translators
 #: ../virtaal/views/widgets/aboutdialog.py:73
 msgid "translator-credits"
-msgstr "Diego Donati, freelance translator, Italy"
+msgstr "traduttori: Diego Donati, freelance translator, Italy & bovirus"
 
 #: ../virtaal/views/widgets/langadddialog.py:103
 msgid "Language code must be an ASCII string."
-msgstr "Il linguaggio del codice deve essere in forma di stringa ASCII."
+msgstr "Il codice lingua deve essere in forma di stringa ASCII."
 
 #: ../virtaal/views/widgets/langadddialog.py:106
 msgid "Language code must be at least 2 characters long."
-msgstr ""
-"Il linguaggio del codice deve avere una lunghezza di almeno 2 caratteri."
+msgstr "Il codice lingua deve avere una lunghezza di almeno 2 caratteri."
 
 #: ../virtaal/views/widgets/langselectdialog.py:79
 #: ../virtaal/views/widgets/langselectdialog.py:86
 msgid "Language"
-msgstr "Linguaggio"
+msgstr "Lingua"
 
 #. l10n: This is the column heading for the language code
 #: ../virtaal/views/widgets/langselectdialog.py:94
@@ -2137,11 +2352,11 @@ msgstr "Configura..."
 
 #: ../virtaal/views/widgets/welcomescreen.py:79
 msgid "Translation memory"
-msgstr "Memoria di traduzione"
+msgstr "Memoria traduzione"
 
 #: ../virtaal/views/widgets/welcomescreen.py:81
 msgid "Quality checks"
-msgstr "Controlli di qualità"
+msgstr "Controlli qualità"
 
 #: ../virtaal/views/widgets/welcomescreen.py:82
 msgid "Machine translation"
@@ -2149,7 +2364,7 @@ msgstr "Traduzione automatica"
 
 #: ../virtaal/views/widgets/welcomescreen.py:83
 msgid "Highlighting and insertion of placeables"
-msgstr "Evidenziazione ed inserimento di placeable"
+msgstr "Evidenziazione ed inserimento placeable"
 
 #: ../virtaal/views/widgets/welcomescreen.py:84
 msgid "Many plugins and options for customization"
@@ -2165,7 +2380,7 @@ msgstr "File non valido."
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
 msgid "TMX Translation Memory"
-msgstr "Memoria di traduzione TMX"
+msgstr "Memoria traduzione TMX"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:2
 msgid "TMX"
@@ -2189,19 +2404,19 @@ msgstr "TermBase eXchange"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:7
 msgid "Wordfast Translation Memory"
-msgstr "Memoria di traduzione Wordfast"
+msgstr "Memoria traduzione Wordfast"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:8
 msgid "Qt Linguist Translation File"
-msgstr "File di traduzione Qt Linguist"
+msgstr "File traduzione Qt Linguist"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:9
 msgid "Qt Message File"
-msgstr "File QT Message"
+msgstr "File messaggi QT"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:10
 msgid "Qt Phrase Book"
-msgstr "Qt Phrase Book"
+msgstr "Dizionario Qt"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:11
 msgid "INI File"
@@ -2217,7 +2432,7 @@ msgstr "Inizializzazione"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:14
 msgid "Java Properties File"
-msgstr "File Java Properties"
+msgstr "File proprietà Java"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:15
 msgid "OpenOffice.org Translation File"
@@ -2225,7 +2440,7 @@ msgstr "File di traduzione OpenOffice.org"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:16
 msgid "XLIFF Translation File"
-msgstr "File di traduzione XLIFF"
+msgstr "File traduzione XLIFF"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:17
 msgid "XLIFF"
@@ -2233,7 +2448,7 @@ msgstr "XLIFF"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:18
 msgid "XML Localization Interchange File Format"
-msgstr "XML Localization Interchange File Format"
+msgstr "Formato file interscambio localizzazione XML"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:19
 msgid "C++ RC File"
@@ -2245,19 +2460,19 @@ msgstr "RC"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:21
 msgid "Resource Compiler"
-msgstr "Compilatore di risorse"
+msgstr "Compilatore risorse"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:22
 msgid "Tcl Translation File"
-msgstr "File di traduzione Tcl"
+msgstr "File traduzione Tcl"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:23
 msgid "JavaScript error message file"
-msgstr "File del messaggio di errore JavaScript"
+msgstr "File messaggio di errore JavaScript"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:24
 msgid "Gettext Translation Template"
-msgstr "Modello di traduzione Gettext"
+msgstr "Modello traduzione Gettext"
 
 #: ../share/mime/packages/virtaal-mimetype.xml.in.h:25
 msgid "Trados Tag Editor"
@@ -2285,7 +2500,7 @@ msgstr "File Gettext PO"
 
 #: ../devsupport/tmp_strings.py:24
 msgid "Gettext MO file"
-msgstr "File Gettext MO "
+msgstr "File Gettext MO"
 
 #: ../devsupport/tmp_strings.py:25
 msgid "Qt .qm file"
@@ -2302,11 +2517,12 @@ msgstr "%prog [opzioni] [_file di traduzione]"
 
 #: ../bin/virtaal:96
 msgid "LOG"
-msgstr "LOG"
+msgstr "REGSITRO"
 
 #: ../bin/virtaal:97
 msgid "turn on logging, storing the result to the supplied filename."
-msgstr "attivare il logging, salvando il risultato nel nome del file fornito."
+msgstr ""
+"attiva la registrazione, salvando il risultato nel nome del file fornito."
 
 #: ../bin/virtaal:99
 msgid "CONFIG"
@@ -2314,11 +2530,11 @@ msgstr "CONFIG"
 
 #: ../bin/virtaal:100
 msgid "use the configuration file given by the supplied filename."
-msgstr "utilizzare il file di configurazione dato dal nome del file fornito."
+msgstr "usa il file di configurazione dato dal nome del file fornito."
 
 #: ../bin/virtaal:103
 msgid "enable debugging features"
-msgstr "abilitare funzionalità di collaudo di programmi"
+msgstr "abilita funzione debug funzionalità"
 
 #: ../bin/virtaal:109
 msgid "PROFILE"
@@ -2326,7 +2542,7 @@ msgstr "PROFILO"
 
 #: ../bin/virtaal:111
 msgid "perform profiling, storing the result to the supplied filename."
-msgstr "creare il profilo, salvando il risultato nel nome del file fornito."
+msgstr "crea il profilo, salvando il risultato nel nome del file fornito."
 
 #: ../bin/virtaal:135
 msgid "Could not open log file '%(filename)s'"
@@ -2338,11 +2554,11 @@ msgstr "Impossibile leggere file di configurazione '%(filename)s'"
 
 #: ../bin/virtaal:147
 msgid "invalid number of arguments"
-msgstr "numero invalido di argomenti"
+msgstr "numero argomenti non valido"
 
 #: ../bin/virtaal:173
 msgid "Profiling support is not available"
-msgstr "Supporto di profiling non disponibile"
+msgstr "Supporto di profilazione non disponibile"
 
 #: ../bin/virtaal:185
 msgid "Could not open profile file '%(filename)s'"
@@ -2365,7 +2581,7 @@ msgstr "Uso: %s\n"
 
 #: ../devsupport/optparse.py:387
 msgid "Usage"
-msgstr "Utilizzo"
+msgstr "Uso"
 
 #: ../devsupport/optparse.py:412
 msgid "integer"
@@ -2373,11 +2589,11 @@ msgstr "numero intero"
 
 #: ../devsupport/optparse.py:413
 msgid "long integer"
-msgstr "Numero intero lungo"
+msgstr "numero intero lungo"
 
 #: ../devsupport/optparse.py:414
 msgid "floating-point"
-msgstr "floating-point"
+msgstr "virgola mobile"
 
 #: ../devsupport/optparse.py:415
 msgid "complex"
@@ -2395,11 +2611,11 @@ msgstr "opzione %s: scelta non valida: %r (scegli da %s)"
 
 #: ../devsupport/optparse.py:1246
 msgid "show this help message and exit"
-msgstr "mostra questo messaggio di aiuto ed esci"
+msgstr "visualizza questo messaggio di aiuto ed esci"
 
 #: ../devsupport/optparse.py:1251
 msgid "show program's version number and exit"
-msgstr "mostra numero di versione del programma ed esci"
+msgstr "visualizza numero versione del programma ed esci"
 
 #: ../devsupport/optparse.py:1274
 msgid "%prog [options]"

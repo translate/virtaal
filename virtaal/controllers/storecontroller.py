@@ -19,11 +19,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
 import os
 
-from virtaal.common import GObjectWrapper
+from gi.repository import GObject
+
 from basecontroller import BaseController
+from virtaal.common import GObjectWrapper
 
 
 # TODO: Create an event that is emitted when a cursor is created
@@ -32,9 +33,9 @@ class StoreController(BaseController):
 
     __gtype_name__ = 'StoreController'
     __gsignals__ = {
-        'store-loaded': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
-        'store-saved':  (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
-        'store-closed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
+        'store-loaded': (GObject.SignalFlags.RUN_FIRST, None, ()),
+        'store-saved': (GObject.SignalFlags.RUN_FIRST, None, ()),
+        'store-closed': (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
     # INITIALIZERS #
@@ -135,7 +136,7 @@ class StoreController(BaseController):
 
     def get_unit_celleditor(self, unit):
         """Load the given unit in via the C{UnitController} and return
-            the C{gtk.CellEditable} it creates."""
+            the C{Gtk.CellEditable} it creates."""
         return self.unit_controller.load_unit(unit)
 
     def is_modified(self):

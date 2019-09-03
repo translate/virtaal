@@ -18,12 +18,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from gi.repository import Gtk
 from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 
-from virtaal.common import GObjectWrapper
-
 from selectview import SelectView
+from virtaal.common import GObjectWrapper
 
 
 class SelectDialog(GObjectWrapper):
@@ -60,19 +59,19 @@ class SelectDialog(GObjectWrapper):
         self.sview.connect('item-selected', self._on_item_selected)
 
     def _create_gui(self, title, message, parent):
-        self.dialog = gtk.Dialog()
+        self.dialog = Gtk.Dialog()
         self.dialog.set_modal(True)
-        if isinstance(parent, gtk.Widget):
+        if isinstance(parent, Gtk.Widget):
             self.set_transient_for(parent)
         self.dialog.set_title(title is not None and title or 'Select items')
-        self.message = gtk.Label(message is not None and message or '')
-        self.dialog.child.pack_start(self.message, expand=False, fill=False, padding=10)
+        self.message = Gtk.Label(label=message is not None and message or '')
+        self.dialog.get_child().pack_start(self.message, expand=False, fill=False, padding=10)
 
-        scrolled_window = gtk.ScrolledWindow()
-        scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        scrolled_window = Gtk.ScrolledWindow()
+        scrolled_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         scrolled_window.add(self.sview)
-        self.dialog.child.pack_end(scrolled_window, expand=True, fill=True)
-        self.dialog.add_buttons(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
+        self.dialog.get_child().pack_end(scrolled_window, expand=True, fill=True)
+        self.dialog.add_buttons(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE)
 
 
     # METHODS #
@@ -93,7 +92,7 @@ class SelectDialog(GObjectWrapper):
     def run(self, items=None, parent=None):
         if items is not None:
             self.sview.set_model(items)
-        if isinstance(parent, gtk.Widget):
+        if isinstance(parent, Gtk.Widget):
             self.dialog.reparent(parent)
         self.dialog.show_all()
         self.response = self.dialog.run()

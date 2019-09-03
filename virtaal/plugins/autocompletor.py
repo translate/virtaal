@@ -21,8 +21,10 @@
 
 """Contains the AutoCompletor class."""
 
-import gobject
 import re
+
+from gi.repository import GObject
+
 try:
     from collections import defaultdict
 except ImportError:
@@ -176,7 +178,7 @@ class AutoCompletor(object):
             if completed_word:
                 # Updating of the buffer is deferred until after this signal
                 # and its side effects are taken care of. We abuse
-                # gobject.idle_add for that.
+                # GObject.idle_add for that.
                 insert_offset = offset + 1 # len(text) == 1
                 def suggest_completion():
                     textbox.handler_block(self._textbox_insert_ids[textbox])
@@ -190,7 +192,7 @@ class AutoCompletor(object):
 
                     return False
 
-                gobject.idle_add(suggest_completion, priority=gobject.PRIORITY_HIGH)
+                GObject.idle_add(suggest_completion, priority=GObject.PRIORITY_HIGH)
 
     def _remove_textbox(self, textbox):
         """Remove the given L{TextBox} from the list of widgets to do
@@ -223,7 +225,6 @@ class Plugin(BasePlugin):
         self._init_plugin()
 
     def _init_plugin(self):
-        from virtaal.common import pan_app
         self.autocomp = AutoCompletor(self.main_controller)
 
         self._store_loaded_id = self.main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
@@ -269,7 +270,8 @@ class Plugin(BasePlugin):
                         #logging.debug('Adding words: %s' % (self.autocomp.wordsep_re.split(unicode(self.lastunit.target))))
                         self.autocomp.add_words(self.autocomp.wordsep_re.split(unicode(self.lastunit.target)))
             self.lastunit = cursor.deref()
-        gobject.idle_add(add_widgets)
+
+        GObject.idle_add(add_widgets)
 
     def _on_store_loaded(self, storecontroller):
         self.autocomp.add_words_from_units(storecontroller.get_store().get_units())

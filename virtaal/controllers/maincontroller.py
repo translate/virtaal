@@ -19,14 +19,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-from gobject import SIGNAL_RUN_FIRST
 import os
 
-from virtaal.common import GObjectWrapper, pan_app
-from virtaal.views.mainview import MainView
+from gi.repository import Gtk
+from gobject import SIGNAL_RUN_FIRST
 
 from basecontroller import BaseController
+from virtaal.common import GObjectWrapper, pan_app
+from virtaal.views.mainview import MainView
 
 
 class MainController(BaseController):
@@ -181,7 +181,7 @@ class MainController(BaseController):
         # make it our problem and ensure the last ones are in the main
         # controller.
         while not self.placeables_controller:
-            gtk.main_iteration(False)
+            Gtk.main_iteration(False)
         if filename is None:
             return self.view.open_file()
         if self.store_controller.is_modified():

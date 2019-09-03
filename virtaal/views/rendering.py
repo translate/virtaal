@@ -18,17 +18,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import pango
+from gi.repository import Pango
 
 from virtaal.common import pan_app
 
 _font_descriptions = {}
 
 def get_font_description(code):
-    """Provide a pango.FontDescription and keep it for reuse."""
+    """Provide a Pango.FontDescription and keep it for reuse."""
     global _font_descriptions
     if not code in _font_descriptions:
-        _font_descriptions[code] = pango.FontDescription(code)
+        _font_descriptions[code] = Pango.FontDescription(code)
     return _font_descriptions[code]
 
 def get_source_font_description():
@@ -44,9 +44,9 @@ def get_role_font_description(role):
         return get_target_font_description()
 
 def make_pango_layout(widget, text, width):
-    pango_layout = pango.Layout(widget.get_pango_context())
-    pango_layout.set_width(width * pango.SCALE)
-    pango_layout.set_wrap(pango.WRAP_WORD_CHAR)
+    pango_layout = Pango.Layout(widget.get_pango_context())
+    pango_layout.set_width(width * Pango.SCALE)
+    pango_layout.set_wrap(Pango.WrapMode.WORD_CHAR)
     pango_layout.set_text(text or u"")
     return pango_layout
 
@@ -54,8 +54,8 @@ def make_pango_layout(widget, text, width):
 _languages = {}
 
 def get_language(code):
-    """Provide a pango.Language and keep it for reuse."""
+    """Provide a Pango.Language and keep it for reuse."""
     global _languages
     if not code in _languages:
-        _languages[code] = pango.Language(code)
+        _languages[code] = Pango.Language(code)
     return _languages[code]

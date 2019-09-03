@@ -26,7 +26,7 @@
 # after the GUI is already showing.
 
 
-import gobject
+from gi.repository import GObject
 
 
 class _Deferer:
@@ -49,7 +49,7 @@ class _Deferer:
 
         if not self._todo:
             # No existing jobs, so start one
-            gobject.idle_add(next_job, priority=gobject.PRIORITY_LOW)
+            GObject.idle_add(next_job, priority=GObject.PRIORITY_LOW)
         self._todo.append((func, args))
 
 

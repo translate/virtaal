@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from gi.repository import Gtk
 
 from baseview import BaseView
 from widgets.storetreeview import StoreTreeView
@@ -55,12 +55,15 @@ class StoreView(BaseView):
         self._treeview = StoreTreeView(self)
 
     def _add_accelerator_bindings(self):
-        gtk.accel_map_add_entry("<Virtaal>/Navigation/Up", gtk.accelerator_parse("Up")[0], gtk.gdk.CONTROL_MASK)
-        gtk.accel_map_add_entry("<Virtaal>/Navigation/Down", gtk.accelerator_parse("Down")[0], gtk.gdk.CONTROL_MASK)
-        gtk.accel_map_add_entry("<Virtaal>/Navigation/PgUp", gtk.accelerator_parse("Page_Up")[0], gtk.gdk.CONTROL_MASK)
-        gtk.accel_map_add_entry("<Virtaal>/Navigation/PgDown", gtk.accelerator_parse("Page_Down")[0], gtk.gdk.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Navigation/Up", Gtk.accelerator_parse("Up")[0], Gdk.ModifierType.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Navigation/Down", Gtk.accelerator_parse("Down")[0],
+                               Gdk.ModifierType.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Navigation/PgUp", Gtk.accelerator_parse("Page_Up")[0],
+                               Gdk.ModifierType.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Navigation/PgDown", Gtk.accelerator_parse("Page_Down")[0],
+                               Gdk.ModifierType.CONTROL_MASK)
 
-        self.accel_group = gtk.AccelGroup()
+        self.accel_group = Gtk.AccelGroup()
         self.accel_group.connect_by_path("<Virtaal>/Navigation/Up", self._treeview._move_up)
         self.accel_group.connect_by_path("<Virtaal>/Navigation/Down", self._treeview._move_down)
         self.accel_group.connect_by_path("<Virtaal>/Navigation/PgUp", self._treeview._move_pgup)
@@ -160,4 +163,4 @@ class StoreView(BaseView):
         # The following color change is to reduce the flickering seen when
         # changing units. It's not the perfect cure, but helps a lot.
         # https://github.com/translate/virtaal/issues/1412
-        self._treeview.modify_base(gtk.STATE_ACTIVE, widget.style.bg[gtk.STATE_NORMAL])
+        self._treeview.modify_base(Gtk.StateType.ACTIVE, widget.style.bg[Gtk.StateType.NORMAL])

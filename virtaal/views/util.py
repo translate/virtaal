@@ -18,8 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
-import gtk
+from gi.repository import GObject
+from gi.repository import Gtk
 
 __all__ = ['pulse']
 
@@ -37,7 +37,7 @@ def pulse_step(widget, steptime, colordiff, stopcolor, component):
     if len(colordiff) < 3:
         raise ValueError('colordiff does not have all colour deltas')
 
-    col = getattr(widget.style, component)[gtk.STATE_NORMAL]
+    col = getattr(widget.style, component)[Gtk.StateType.NORMAL]
     modify_func = getattr(widget, 'modify_%s' % (component))
 
     # Check if col's values have not overshot stopcolor, taking into
@@ -48,12 +48,12 @@ def pulse_step(widget, steptime, colordiff, stopcolor, component):
             (colordiff[COL_GREEN] == 0 or (colordiff[COL_GREEN] > 0 and col.green+colordiff[COL_GREEN] >= stopcolor[COL_GREEN]) or (colordiff[COL_GREEN] < 0 and col.green+colordiff[COL_GREEN] <= stopcolor[COL_GREEN])) and \
             (colordiff[COL_BLUE] == 0 or (colordiff[COL_BLUE]  > 0 and col.blue+colordiff[COL_BLUE] >= stopcolor[COL_BLUE]) or (colordiff[COL_BLUE] < 0 and col.blue+colordiff[COL_BLUE] <= stopcolor[COL_BLUE])):
         # Pulse overshot, restore stopcolor and end the fade
-        col = gtk.gdk.Color(
+        col = Gdk.Color(
             red=stopcolor[COL_RED],
             green=stopcolor[COL_GREEN],
             blue=stopcolor[COL_BLUE]
         )
-        modify_func(gtk.STATE_NORMAL, col)
+        modify_func(Gtk.StateType.NORMAL, col)
         #logging.debug(
         #    'Pulse complete (%d, %d, %d) > (%d, %d, %d)' %
         #    (col.red, col.green, col.blue, stopcolor[COL_RED], stopcolor[COL_GREEN], stopcolor[COL_BLUE])
@@ -68,22 +68,22 @@ def pulse_step(widget, steptime, colordiff, stopcolor, component):
             col.green == stopcolor[COL_GREEN] and \
             col.blue  == stopcolor[COL_BLUE]:
         # Pulse complete
-        modify_func(gtk.STATE_NORMAL, col)
+        modify_func(Gtk.StateType.NORMAL, col)
         return
 
-    modify_func(gtk.STATE_NORMAL, col)
-    gobject.timeout_add(steptime, pulse_step, widget, steptime, colordiff, stopcolor, component)
+    modify_func(Gtk.StateType.NORMAL, col)
+    GObject.timeout_add(steptime, pulse_step, widget, steptime, colordiff, stopcolor, component)
 
 def pulse(widget, color, fadetime=5000, steptime=10, component='bg'):
     """Fade the background colour of the current widget from the given colour
         back to its original background colour.
-        @type  widget: gtk.Widget
+        @type  widget: Gtk.Widget
         @param widget: The widget to pulse.
         @param color: Tuple of RGB-values.
         @param fadetime: The total duration (in ms) of the fade.
         @param steptime: The number of steps that the fade should be divided
             into."""
-    if not isinstance(widget, gtk.Widget):
+    if not isinstance(widget, Gtk.Widget):
         raise ValueError('widget is not a GTK widget')
 
     if not component in ('base', 'bg', 'fg'):
@@ -91,7 +91,7 @@ def pulse(widget, color, fadetime=5000, steptime=10, component='bg'):
 
     modify_func = getattr(widget, 'modify_%s' % (component))
 
-    col = getattr(widget.style, component)[gtk.STATE_NORMAL]
+    col = getattr(widget.style, component)[Gtk.StateType.NORMAL]
     nsteps = fadetime/steptime
     colordiff = (
         (col.red   - color[COL_RED])   / nsteps,
@@ -103,10 +103,10 @@ def pulse(widget, color, fadetime=5000, steptime=10, component='bg'):
     #    'Before fade: [widget %s][steptime %d][colordiff %s][stopcolor %s]' %
     #    (widget, steptime, colordiff, stopcolor)
     #)
-    pulsecol = gtk.gdk.Color(
+    pulsecol = Gdk.Color(
         red=color[COL_RED],
         green=color[COL_GREEN],
         blue=color[COL_BLUE]
     )
-    modify_func(gtk.STATE_NORMAL, pulsecol)
-    gobject.timeout_add(steptime, pulse_step, widget, steptime, colordiff, stopcolor, component)
+    modify_func(Gtk.StateType.NORMAL, pulsecol)
+    GObject.timeout_add(steptime, pulse_step, widget, steptime, colordiff, stopcolor, component)

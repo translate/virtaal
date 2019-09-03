@@ -18,32 +18,32 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import gtk.gdk
-import gobject
-import pango
+import Gtk.gdk
+from gi.repository import GObject
+from gi.repository import Gtk
 
 from virtaal.views import markup
 
-class LabelExpander(gtk.EventBox):
+
+class LabelExpander(Gtk.EventBox):
     __gproperties__ = {
-        "expanded": (gobject.TYPE_BOOLEAN,
+        "expanded": (GObject.TYPE_BOOLEAN,
                      "expanded",
                      "A boolean indicating whether this widget has been expanded to show its contained widget",
                      False,
-                     gobject.PARAM_READWRITE),
+                     GObject.PARAM_READWRITE),
     }
 
     def __init__(self, widget, get_text, expanded=False):
         super(LabelExpander, self).__init__()
 
-        label_text = gtk.Label()
+        label_text = Gtk.Label()
         label_text.set_single_line_mode(False)
         label_text.set_line_wrap(True)
-        label_text.set_justify(gtk.JUSTIFY_FILL)
+        label_text.set_justify(Gtk.Justification.FILL)
         label_text.set_use_markup(True)
 
-        self.label = gtk.EventBox()
+        self.label = Gtk.EventBox()
         self.label.add(label_text)
 
         self.widget = widget
@@ -60,18 +60,19 @@ class LabelExpander(gtk.EventBox):
         setattr(self, prop.name, value)
 
     def _get_expanded(self):
-        return self.child == self.widget
+        return self.get_child() == self.widget
 
     def _set_expanded(self, value):
-        if self.child != None:
-            self.remove(self.child)
+        if self.get_child() != None:
+            self.remove(self.get_child())
 
         if value:
             self.add(self.widget)
         else:
             self.add(self.label)
-            self.label.child.set_markup(markup.markuptext(self.get_text(), fancyspaces=False, markupescapes=False))
+            self.label.get_child().set_markup(
+                markup.markuptext(self.get_text(), fancyspaces=False, markupescapes=False))
 
-        self.child.show()
+        self.get_child().show()
 
     expanded = property(_get_expanded, _set_expanded)

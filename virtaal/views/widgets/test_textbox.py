@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2008-2009 Zuza Software Foundation
+# Copyright 2009 Zuza Software Foundation
 #
 # This file is part of Virtaal.
 #
@@ -18,24 +18,34 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-__all__ = ['forall_widgets']
-
 from gi.repository import Gtk
 
-from virtaal.support.simplegeneric import generic
+from textbox import TextBox
 
 
-@generic
-def get_children(widget):
-    return []
+class TextWindow(Gtk.Window):
+    def __init__(self, textbox=None):
+        super(TextWindow, self).__init__()
+        if textbox is None:
+            textbox = TextBox()
+
+        self.vbox = Gtk.VBox()
+        self.add(self.vbox)
+
+        self.textbox = textbox
+        self.vbox.add(textbox)
+
+        self.connect('destroy', lambda *args: Gtk.main_quit())
+        self.set_size_request(600, 100)
 
 
-@get_children.when_type(Gtk.Container)
-def get_children_container(widget):
-    return widget.get_children()
+class TestTextBox(object):
+    def __init__(self):
+        self.window = TextWindow()
 
-def forall_widgets(f, widget):
-    f(widget)
-    for child in get_children(widget):
-        forall_widgets(f, child)
 
+if __name__ == '__main__':
+    window = TextWindow()
+    window.show_all()
+    window.textbox.set_text(u'Ģët <a href="http://www.example.com" alt="Ģët &brand;!">&brandLong;</a>')
+    Gtk.main()

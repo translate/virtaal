@@ -18,8 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from virtaal.models.basemodel import BaseModel
-
 
 class BaseLookupModel(object):
     """The base interface to be implemented by all look-up backend models."""
@@ -37,7 +35,7 @@ class BaseLookupModel(object):
 
     # METHODS #
     def create_menu_items(self, query, role, srclang, tgtlang):
-        """Create the a list C{gtk.MenuItem}s for the given parameters.
+        """Create the a list C{Gtk.MenuItem}s for the given parameters.
 
         @type  query: basestring
         @param query: The string to use in the look-up.

@@ -18,15 +18,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import gtk.gdk
-import pango
+import Gtk.gdk
+from gi.repository import Gtk
+from gi.repository import Pango
 from gobject import SIGNAL_RUN_FIRST
 
+from baseview import BaseView
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.views.widgets.selectview import SelectView
-
-from baseview import BaseView
 
 
 class PreferencesView(BaseView, GObjectWrapper):
@@ -90,7 +89,7 @@ class PreferencesView(BaseView, GObjectWrapper):
         self._widgets['scrwnd_plugins'].show_all()
 
     def _setup_key_bindings(self):
-        gtk.accel_map_add_entry("<Virtaal>/Edit/Preferences", gtk.keysyms.p, gtk.gdk.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Preferences", Gdk.KEY_p, Gdk.ModifierType.CONTROL_MASK)
 
     def _setup_menu_item(self):
         mainview = self.controller.main_controller.view
@@ -99,7 +98,7 @@ class PreferencesView(BaseView, GObjectWrapper):
 
         accel_group = menu_edit.get_accel_group()
         if accel_group is None:
-            accel_group = gtk.AccelGroup()
+            accel_group = Gtk.AccelGroup()
             menu_edit.set_accel_group(accel_group)
             mainview.add_accel_group(accel_group)
 
@@ -115,8 +114,8 @@ class PreferencesView(BaseView, GObjectWrapper):
     def _set_font_data(self, value):
         if not isinstance(value, dict) or not 'source' in value or not 'target' in value:
             raise ValueError('Value must be a dictionary')
-        sourcefont = pango.FontDescription(value['source'])
-        targetfont = pango.FontDescription(value['target'])
+        sourcefont = Pango.FontDescription(value['source'])
+        targetfont = Pango.FontDescription(value['target'])
         self._widgets['fbtn_source'].set_font_name(value['source'])
         self._widgets['fbtn_target'].set_font_name(value['target'])
     font_data = property(_get_font_data, _set_font_data)

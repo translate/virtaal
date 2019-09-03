@@ -19,9 +19,10 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-import gtk
-import threading
 import Queue
+import threading
+
+from gi.repository import Gtk
 
 
 def run_in_thread(widget, target, args):
@@ -39,7 +40,7 @@ def run_in_thread(widget, target, args):
     import time
     while thread.isAlive():
         # let gtk process events while target is still running
-        gtk.main_iteration(block=False)
+        Gtk.main_iteration(block=False)
         # Since we are not blocking, we're spinning, which isn't nice. We could
         # set block=True, but then the window might stay insensitive when the
         # thread finished, and only exit this loop when it gets another event

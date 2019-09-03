@@ -19,11 +19,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-
-from virtaal.common import GObjectWrapper
+from gi.repository import Gtk
 
 from baseview import BaseView
+from virtaal.common import GObjectWrapper
 
 
 def _statistics(stats):
@@ -104,8 +103,8 @@ class PropertiesView(BaseView, GObjectWrapper):
         self._get_widgets()
 
     def _setup_key_bindings(self):
-        import gtk.gdk
-        gtk.accel_map_add_entry("<Virtaal>/File/Properties", gtk.keysyms.Return, gtk.gdk.MOD1_MASK)
+        import Gtk.gdk
+        Gtk.AccelMap.add_entry("<Virtaal>/File/Properties", Gdk.KEY_Return, Gdk.ModifierType.MOD1_MASK)
 
     def _setup_menu_item(self):
         mainview = self.controller.main_controller.view
@@ -114,7 +113,7 @@ class PropertiesView(BaseView, GObjectWrapper):
 
         accel_group = menu_file.get_accel_group()
         if not accel_group:
-            accel_group = gtk.AccelGroup()
+            accel_group = Gtk.AccelGroup()
             menu_file.set_accel_group(accel_group)
             mainview.add_accel_group(accel_group)
 
@@ -150,42 +149,42 @@ class PropertiesView(BaseView, GObjectWrapper):
         total_strings = 0
         for (description, strings, words) in statistics:
             # Add two identical labels for the word/string descriptions
-            lbl_desc = gtk.Label(description)
+            lbl_desc = Gtk.Label(label=description)
             lbl_desc.set_alignment(1.0, 0.5) # Right aligned
             lbl_desc.show()
-            vbox_word_labels.pack_start(lbl_desc)
+            vbox_word_labels.pack_start(lbl_desc, True, True, 0)
 
-            lbl_desc = gtk.Label(description)
+            lbl_desc = Gtk.Label(label=description)
             lbl_desc.set_alignment(1.0, 0.5) # Right aligned
             lbl_desc.show()
-            vbox_string_labels.pack_start(lbl_desc)
+            vbox_string_labels.pack_start(lbl_desc, True, True, 0)
 
             # Now for the numbers
             total_words += words
-            lbl_stats = gtk.Label(str(words))
+            lbl_stats = Gtk.Label(label=str(words))
             lbl_stats.set_alignment(1.0, 0.5)
             lbl_stats.show()
-            vbox_word_stats.pack_start(lbl_stats)
+            vbox_word_stats.pack_start(lbl_stats, True, True, 0)
 
             total_strings += strings
-            lbl_stats = gtk.Label(str(strings))
+            lbl_stats = Gtk.Label(label=str(strings))
             lbl_stats.set_alignment(1.0, 0.5)
             lbl_stats.show()
-            vbox_string_stats.pack_start(lbl_stats)
+            vbox_string_stats.pack_start(lbl_stats, True, True, 0)
 
         # Now we do the percentages:
         for (description, strings, words) in statistics:
             percentage = _nice_percentage(words, total_words)
-            lbl_perc = gtk.Label(percentage)
+            lbl_perc = Gtk.Label(label=percentage)
             lbl_perc.set_alignment(0.0, 0.5)
             lbl_perc.show()
-            vbox_word_perc.pack_start(lbl_perc)
+            vbox_word_perc.pack_start(lbl_perc, True, True, 0)
 
             percentage = _nice_percentage(strings, total_strings)
-            lbl_perc = gtk.Label(percentage)
+            lbl_perc = Gtk.Label(label=percentage)
             lbl_perc.set_alignment(0.0, 0.5)
             lbl_perc.show()
-            vbox_string_perc.pack_start(lbl_perc)
+            vbox_string_perc.pack_start(lbl_perc, True, True, 0)
 
 
         #l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.

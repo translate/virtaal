@@ -18,13 +18,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import os
-import gobject
 import htmlentitydefs
+import os
 import re
 
-from virtaal.models.basemodel import BaseModel
+from gi.repository import GObject
+
 from virtaal.common import pan_app
+from virtaal.models.basemodel import BaseModel
 
 
 #http://effbot.org/zone/re-sub.htm#unescape-html
@@ -48,7 +49,7 @@ class BaseTMModel(BaseModel):
 
     __gtype_name__ = None
     __gsignals__ = {
-        'match-found': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING, gobject.TYPE_PYOBJECT,))
+        'match-found': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_STRING, GObject.TYPE_PYOBJECT,))
     }
 
     description = ""

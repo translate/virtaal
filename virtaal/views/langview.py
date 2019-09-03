@@ -18,16 +18,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import os
-import gobject
-import gtk
-import gtk.gdk
 import logging
+import os
 
-from virtaal.common import GObjectWrapper
-from virtaal.models.langmodel import LanguageModel
+import Gtk.gdk
+from gi.repository import GObject
+from gi.repository import Gtk
 
 from baseview import BaseView
+from virtaal.models.langmodel import LanguageModel
 from widgets.popupmenubutton import PopupMenuButton
 
 
@@ -64,16 +63,16 @@ class LanguageView(BaseView):
             self.popupbutton.text = self._get_display_string(*self.controller.recent_pairs[0])
 
     def _init_menu(self):
-        self.menu = gtk.Menu()
+        self.menu = Gtk.Menu()
         self.popupbutton.set_menu(self.menu)
 
         self.recent_items = []
         for i in range(self.controller.NUM_RECENT):
-            item = gtk.MenuItem('')
+            item = Gtk.MenuItem('')
             item.connect('activate', self._on_pairitem_activated, i)
             self.recent_items.append(item)
-        seperator = gtk.SeparatorMenuItem()
-        self.other_item = gtk.MenuItem(_('_New Language Pair...'))
+        seperator = Gtk.SeparatorMenuItem()
+        self.other_item = Gtk.MenuItem(_('_New Language Pair...'))
         self.other_item.connect('activate', self._on_other_activated)
         [self.menu.append(item) for item in (seperator, self.other_item)]
         self.update_recent_pairs()
@@ -85,7 +84,7 @@ class LanguageView(BaseView):
 
     # METHODS #
     def _get_display_string(self, srclang, tgtlang):
-        if self.popupbutton.get_direction() == gtk.TEXT_DIR_RTL:
+        if self.popupbutton.get_direction() == Gtk.TextDirection.RTL:
             # We need to make sure we get the direction correct if the
             # language names are untranslated. The right-to-left embedding
             # (RLE) characters ensure that untranslated language names will
@@ -103,19 +102,21 @@ class LanguageView(BaseView):
 
     def notify_same_langs(self):
         def notify():
-            for s in [gtk.STATE_ACTIVE, gtk.STATE_NORMAL, gtk.STATE_PRELIGHT, gtk.STATE_SELECTED]:
-                self.popupbutton.child.modify_fg(s, gtk.gdk.color_parse('#f66'))
-        gobject.idle_add(notify)
+            for s in [Gtk.StateType.ACTIVE, Gtk.StateType.NORMAL, Gtk.StateType.PRELIGHT, Gtk.StateType.SELECTED]:
+                self.popupbutton.get_child().modify_fg(s, Gdk.color_parse('#f66'))
+
+        GObject.idle_add(notify)
 
     def notify_diff_langs(self):
         def notify():
             if hasattr(self, 'popup_default_fg'):
                 fgcol = self.popup_default_fg
             else:
-                fgcol = gtk.widget_get_default_style().fg
-            for s in [gtk.STATE_ACTIVE, gtk.STATE_NORMAL, gtk.STATE_PRELIGHT, gtk.STATE_SELECTED]:
-                self.popupbutton.child.modify_fg(s, fgcol[s])
-        gobject.idle_add(notify)
+                fgcol = Gtk.widget_get_default_style().fg
+            for s in [Gtk.StateType.ACTIVE, Gtk.StateType.NORMAL, Gtk.StateType.PRELIGHT, Gtk.StateType.SELECTED]:
+                self.popupbutton.get_child().modify_fg(s, fgcol[s])
+
+        GObject.idle_add(notify)
 
     def show(self):
         """Add the managed C{PopupMenuButton} to the C{MainView}'s status bar."""
@@ -124,7 +125,7 @@ class LanguageView(BaseView):
         for child in statusbar.get_children():
             if child is self.popupbutton:
                 return
-        statusbar.pack_end(self.popupbutton, expand=False)
+        statusbar.pack_end(self.popupbutton, False, True, 0)
         statusbar.show_all()
 
     def focus(self):

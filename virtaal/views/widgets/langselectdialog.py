@@ -18,11 +18,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
-import gtk
 import locale
 
-from virtaal.common import pan_app
+from gi.repository import GObject
+from gi.repository import Gtk
+
 from virtaal.views.baseview import BaseView
 
 
@@ -45,7 +45,7 @@ class LanguageSelectDialog(object):
         self._init_treeviews()
         self.update_languages(languages)
 
-        if isinstance(parent, gtk.Widget):
+        if isinstance(parent, Gtk.Widget):
             self.dialog.set_transient_for(parent)
             self.dialog.set_icon(parent.get_toplevel().get_icon())
 
@@ -58,12 +58,12 @@ class LanguageSelectDialog(object):
 
         self.dialog = self.gui.get_object('LanguageSelector')
 
-        self.btn_ok.connect('clicked', lambda *args: self.dialog.response(gtk.RESPONSE_OK))
-        self.btn_cancel.connect('clicked', lambda *args: self.dialog.response(gtk.RESPONSE_CANCEL))
+        self.btn_ok.connect('clicked', lambda *args: self.dialog.response(Gtk.ResponseType.OK))
+        self.btn_cancel.connect('clicked', lambda *args: self.dialog.response(Gtk.ResponseType.CANCEL))
 
     def _init_treeviews(self):
-        self.lst_langs_src = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
-        self.lst_langs_tgt = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
+        self.lst_langs_src = Gtk.ListStore(GObject.TYPE_STRING, GObject.TYPE_STRING)
+        self.lst_langs_tgt = Gtk.ListStore(GObject.TYPE_STRING, GObject.TYPE_STRING)
         self.tvw_sourcelang.set_model(self.lst_langs_src)
         self.tvw_targetlang.set_model(self.lst_langs_tgt)
 
@@ -75,31 +75,31 @@ class LanguageSelectDialog(object):
         self.tvw_sourcelang.set_search_equal_func(searchfunc)
         self.tvw_targetlang.set_search_equal_func(searchfunc)
 
-        cell = gtk.CellRendererText()
-        col = gtk.TreeViewColumn(_('Language'))
-        col.pack_start(cell)
+        cell = Gtk.CellRendererText()
+        col = Gtk.TreeViewColumn(_('Language'))
+        col.pack_start(cell, True, True, 0)
         col.add_attribute(cell, 'text', 0)
         col.set_sort_column_id(0)
         self.tvw_sourcelang.append_column(col)
 
-        cell = gtk.CellRendererText()
-        col = gtk.TreeViewColumn(_('Language'))
-        col.pack_start(cell)
+        cell = Gtk.CellRendererText()
+        col = Gtk.TreeViewColumn(_('Language'))
+        col.pack_start(cell, True, True, 0)
         col.add_attribute(cell, 'text', 0)
         col.set_sort_column_id(0)
         self.tvw_targetlang.append_column(col)
 
-        cell = gtk.CellRendererText()
+        cell = Gtk.CellRendererText()
         #l10n: This is the column heading for the language code
-        col = gtk.TreeViewColumn(_('Code'))
-        col.pack_start(cell)
+        col = Gtk.TreeViewColumn(_('Code'))
+        col.pack_start(cell, True, True, 0)
         col.add_attribute(cell, 'text', 1)
         col.set_sort_column_id(1)
         self.tvw_sourcelang.append_column(col)
 
-        cell = gtk.CellRendererText()
-        col = gtk.TreeViewColumn(_('Code'))
-        col.pack_start(cell)
+        cell = Gtk.CellRendererText()
+        col = Gtk.TreeViewColumn(_('Code'))
+        col.pack_start(cell, True, True, 0)
         col.add_attribute(cell, 'text', 1)
         col.set_sort_column_id(1)
         self.tvw_targetlang.append_column(col)
@@ -139,7 +139,7 @@ class LanguageSelectDialog(object):
         self._select_lang(self.tvw_targetlang, tgtlang)
 
         self.tvw_targetlang.grab_focus()
-        response = self.dialog.run() == gtk.RESPONSE_OK
+        response = self.dialog.run() == Gtk.ResponseType.OK
         self.dialog.hide()
         return response
 

@@ -18,12 +18,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
-import gtk
-
-from virtaal.common import GObjectWrapper
+from gi.repository import GObject
+from gi.repository import Gtk
 
 from baseview import BaseView
+from virtaal.common import GObjectWrapper
 
 
 class ModeView(GObjectWrapper, BaseView):
@@ -34,7 +33,7 @@ class ModeView(GObjectWrapper, BaseView):
 
     __gtype_name__ = 'ModeView'
     __gsignals__ = {
-        "mode-selected":  (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
+        "mode-selected": (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_STRING,)),
     }
 
     # INITIALIZERS #
@@ -48,15 +47,15 @@ class ModeView(GObjectWrapper, BaseView):
     def _build_gui(self):
         # Get the mode container from the main controller
         # We need the *same* GtkBuilder instance as used by the MainView, because we need
-        # the gtk.Table as already added to the main window. Loading the GtkBuilder file again
-        # would create a new main window with a different gtk.Table.
+        # the Gtk.Table as already added to the main window. Loading the GtkBuilder file again
+        # would create a new main window with a different Gtk.Table.
         gui = self.controller.main_controller.view.gui # FIXME: Is this acceptable?
         self.mode_box = gui.get_object('mode_box')
 
-        self.cmb_modes = gtk.combo_box_new_text()
+        self.cmb_modes = Gtk.ComboBoxText()
         self.cmb_modes.connect('changed', self._on_cmbmode_change)
 
-        self.lbl_mode = gtk.Label()
+        self.lbl_mode = Gtk.Label()
         #l10n: This refers to the 'mode' that determines how Virtaal moves
         #between units.
         self.lbl_mode.set_markup_with_mnemonic(_('N_avigation:'))

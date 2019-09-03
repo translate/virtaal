@@ -19,13 +19,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from gi.repository import Gtk
 from gobject import idle_add
 
+from baseview import BaseView
 from virtaal.common.pan_app import get_abs_data_filename, ui_language
 from virtaal.views.widgets.welcomescreen import WelcomeScreen
-
-from baseview import BaseView
 
 
 class WelcomeScreenView(BaseView):
@@ -42,14 +41,14 @@ class WelcomeScreenView(BaseView):
         self.parent_widget = self.controller.main_controller.view.gui.get_object('vbox_main')
 
         self.set_banner()
-        self.widget.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        self.widget.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         self.widget.connect('button-clicked', self._on_button_clicked)
 
     def set_banner(self):
         if ui_language == "ar":
             self.widget.set_banner_image(get_abs_data_filename(['virtaal', 'welcome_screen_banner_ar.png']))
             return
-        if self.widget.get_direction() == gtk.TEXT_DIR_RTL:
+        if self.widget.get_direction() == Gtk.TextDirection.RTL:
             self.widget.set_banner_image(get_abs_data_filename(['virtaal', 'welcome_screen_banner_rtl.png']))
         else:
             self.widget.set_banner_image(get_abs_data_filename(['virtaal', 'welcome_screen_banner.png']))
@@ -108,11 +107,11 @@ class WelcomeScreenView(BaseView):
 
         iconfile = get_abs_data_filename(['icons', 'hicolor', '24x24', 'mimetypes', 'x-translation.png'])
         for i in range(len(items)):
-            buttons[i].child.get_children()[0].set_from_file(iconfile)
+            buttons[i].get_child().get_children()[0].set_from_file(iconfile)
             name = items[i]['name']
             name = name.replace('&', '&amp;')
             name = name.replace('<', '&lt;')
-            buttons[i].child.get_children()[1].set_markup(markup % {'name': name})
+            buttons[i].get_child().get_children()[1].set_markup(markup % {'name': name})
             buttons[i].set_tooltip_text(items[i]['uri'])
             buttons[i].props.visible = True
         for i in range(len(items), 5):

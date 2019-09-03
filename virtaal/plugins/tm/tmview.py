@@ -19,15 +19,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import gobject
-import logging
-from gtk import gdk
-
-from virtaal.common import GObjectWrapper
-from virtaal.views.baseview import BaseView
+from gi.repository import GObject
+from gi.repository import Gdk
+from gi.repository import Gtk
 
 from tmwidgets import *
+from virtaal.common import GObjectWrapper
+from virtaal.views.baseview import BaseView
 
 
 class TMView(BaseView, GObjectWrapper):
@@ -35,7 +33,7 @@ class TMView(BaseView, GObjectWrapper):
 
     __gtype_name__ = 'TMView'
     __gsignals__ = {
-        'tm-match-selected': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
+        'tm-match-selected': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT,)),
     }
 
     # INITIALIZERS #
@@ -87,16 +85,16 @@ class TMView(BaseView, GObjectWrapper):
     def _setup_key_bindings(self):
         """Setup Gtk+ key bindings (accelerators)."""
 
-        gtk.accel_map_add_entry("<Virtaal>/TM/Hide TM", gtk.keysyms.Escape, 0)
+        Gtk.AccelMap.add_entry("<Virtaal>/TM/Hide TM", Gdk.KEY_Escape, 0)
 
-        self.accel_group = gtk.AccelGroup()
+        self.accel_group = Gtk.AccelGroup()
         self.accel_group.connect_by_path("<Virtaal>/TM/Hide TM", self._on_hide_tm)
 
         # Connect Ctrl+n (1 <= n <= 9) to select match n.
         for i in range(1, 10):
             numstr = str(i)
-            numkey = gtk.keysyms._0 + i
-            gtk.accel_map_add_entry("<Virtaal>/TM/Select match " + numstr, numkey, gdk.CONTROL_MASK)
+            numkey = Gdk.KEY__0 + i
+            Gtk.AccelMap.add_entry("<Virtaal>/TM/Select match " + numstr, numkey, Gdk.ModifierType.CONTROL_MASK)
             self.accel_group.connect_by_path("<Virtaal>/TM/Select match " + numstr, self._on_select_match)
 
         mainview = self.controller.main_controller.view
@@ -108,11 +106,11 @@ class TMView(BaseView, GObjectWrapper):
         self.mnui_view = mainview.gui.get_object('menuitem_view')
         self.menu = self.mnui_view.get_submenu()
 
-        self.mnu_suggestions = gtk.CheckMenuItem(label=_('Translation _Suggestions'))
+        self.mnu_suggestions = Gtk.CheckMenuItem(label=_('Translation _Suggestions'))
         self.mnu_suggestions.show()
         self.menu.append(self.mnu_suggestions)
 
-        gtk.accel_map_add_entry("<Virtaal>/TM/Toggle Show TM", gtk.keysyms.F9, 0)
+        Gtk.AccelMap.add_entry("<Virtaal>/TM/Toggle Show TM", Gdk.KEY_F9, 0)
         accel_group = self.menu.get_accel_group()
         if accel_group is None:
             accel_group = self.accel_group
@@ -222,7 +220,7 @@ class TMView(BaseView, GObjectWrapper):
 
     def select_match_index(self, index):
         """Select the TM match with the given index (first match is 1).
-            This method causes a row in the TM window's C{gtk.TreeView} to be
+            This method causes a row in the TM window's C{Gtk.TreeView} to be
             selected and activated. This runs this class's C{_on_select_match()}
             method which runs C{select_match()}."""
         if index < 0 or not self.isvisible:
@@ -258,7 +256,8 @@ class TMView(BaseView, GObjectWrapper):
             selected = self._get_selected_unit_view()
             if selected:
                 self.tmwindow.update_geometry(selected)
-        gobject.idle_add(update)
+
+        GObject.idle_add(update)
 
     def _get_selected_unit_view(self):
         n = self.controller.main_controller.unit_controller.view.focused_target_n
@@ -309,7 +308,7 @@ class TMView(BaseView, GObjectWrapper):
         self.select_match(match_data)
 
     def _on_select_match(self, accel_group, acceleratable, keyval, modifier):
-        self.select_match_index(int(keyval - gtk.keysyms._0))
+        self.select_match_index(int(keyval - Gdk.KEY__0))
 
     def _on_store_closed(self, storecontroller):
         self.hide()

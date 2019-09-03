@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from gi.repository import Gtk
 
 INVERSE = False
 """Whether we are currently in an inverse type of theme (lite text on dark
@@ -97,8 +97,8 @@ def is_inverse(fg, bg):
 
 def update_style(widget):
     _style = widget.style
-    fg = _style.fg[gtk.STATE_NORMAL]
-    bg = _style.base[gtk.STATE_NORMAL]
+    fg = _style.fg[Gtk.StateType.NORMAL]
+    bg = _style.base[Gtk.StateType.NORMAL]
     if is_inverse(fg, bg):
         set_inverse()
     else:
@@ -107,13 +107,13 @@ def update_style(widget):
     # On some themes (notably Windows XP with classic style), diff_delete_bg is
     # almost identical to the background colour used. So we use something from
     # the gtk theme that is supposed to be different, but not much.
-    if not has_reasonable_contrast(_style.bg[gtk.STATE_NORMAL], gtk.gdk.color_parse(current_theme['diff_delete_bg'])):
+    if not has_reasonable_contrast(_style.bg[Gtk.StateType.NORMAL], Gdk.color_parse(current_theme['diff_delete_bg'])):
         if INVERSE:
-            new_diff_delete_bg =  _style.dark[gtk.STATE_NORMAL]
+            new_diff_delete_bg = _style.dark[Gtk.StateType.NORMAL]
         else:
-            new_diff_delete_bg =  _style.light[gtk.STATE_NORMAL]
+            new_diff_delete_bg = _style.light[Gtk.StateType.NORMAL]
         # we only want to change if it will actually result in something readable:
-        if has_good_contrast(_style.text[gtk.STATE_NORMAL], new_diff_delete_bg):
+        if has_good_contrast(_style.text[Gtk.StateType.NORMAL], new_diff_delete_bg):
             current_theme['diff_delete_bg'] = new_diff_delete_bg.to_string()
 
 

@@ -19,12 +19,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from distutils.core import setup, Distribution, Command
-from virtaal.__version__ import ver as virtaal_version
-from glob import glob
 import os
 import os.path as path
 import sys
+from distutils.core import setup, Command
+from glob import glob
+
+from virtaal.__version__ import ver as virtaal_version
 
 try:
     import py2exe
@@ -483,9 +484,9 @@ def add_win32_options(options):
             "includes":   [
                     # some of these are needed by plugins and are therefore not detected
                     "lxml", "lxml._elementpath", "cairo", "pango",
-                    "pangocairo", "atk", "gobject", "gtk.keysyms",
+                "pangocairo", "atk", "gobject", "Gtk.keysyms",
                     "gtkspell",
-                    "gio", # needed for gtk.Builder
+                "gio",  # needed for Gtk.Builder
                     "tarfile",
                     "translate.storage.placeables.terminology", # terminology
                     "xmlrpclib", # Moses
@@ -533,7 +534,9 @@ def add_mac_options(options):
         "options": {
             "py2app": {
             "packages": ["CoreFoundation", "objc"],
-            "includes":   ["lxml", "lxml._elementpath", "lxml.etree", "glib", "gio", "psyco", "cairo", "pango", "pangocairo", "atk", "gobject", "gtk.keysyms", "pycurl", "translate.services", "translate.services.tmclient", "translate.services.opentranclient", "CoreFoundation"],
+                "includes": ["lxml", "lxml._elementpath", "lxml.etree", "glib", "gio", "psyco", "cairo", "pango",
+                             "pangocairo", "atk", "gobject", "Gtk.keysyms", "pycurl", "translate.services",
+                             "translate.services.tmclient", "translate.services.opentranclient", "CoreFoundation"],
                 #"semi_standalone": True,
                 "compressed": True,
                 "argv_emulation": True,

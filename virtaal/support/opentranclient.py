@@ -18,8 +18,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
 import logging
+
+from gi.repository import GObject
+
 # These two json modules are API compatible
 try:
     import simplejson as json #should be a bit faster; needed for Python < 2.6
@@ -31,17 +33,18 @@ from translate.search.lshtein import LevenshteinComparer
 
 from virtaal.support.httpclient import HTTPClient, RESTRequest
 
-class OpenTranClient(gobject.GObject, HTTPClient):
+
+class OpenTranClient(GObject.GObject, HTTPClient):
     """CRUD operations for TM units and stores"""
 
     __gtype_name__ = 'OpenTranClient'
     __gsignals__ = {
-        'source-lang-changed': (gobject.SIGNAL_RUN_LAST, None, (str,)),
-        'target-lang-changed': (gobject.SIGNAL_RUN_LAST, None, (str,)),
+        'source-lang-changed': (GObject.SignalFlags.RUN_LAST, None, (str,)),
+        'target-lang-changed': (GObject.SignalFlags.RUN_LAST, None, (str,)),
     }
 
     def __init__(self, max_candidates=3, min_similarity=75, max_length=1000):
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
         HTTPClient.__init__(self)
 
         self.max_candidates = max_candidates

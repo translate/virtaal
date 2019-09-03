@@ -24,7 +24,8 @@ import os.path
 import re
 import sys
 from gettext import dgettext
-import gobject
+
+from gi.repository import GObject
 
 from virtaal.common import pan_app
 from virtaal.controllers.baseplugin import PluginUnsupported, BasePlugin
@@ -295,7 +296,7 @@ class Plugin(BasePlugin):
         if getattr(text_view, 'spell_lang', None) == language:
             # No change necessary - already enabled
             return
-        gobject.idle_add(self._activate_checker, text_view, language, priority=gobject.PRIORITY_LOW)
+        GObject.idle_add(self._activate_checker, text_view, language, priority=GObject.PRIORITY_LOW)
 
     def _activate_checker(self, text_view, language):
         # All the expensive stuff in here called on idle. We mush also isolate
@@ -327,7 +328,7 @@ class Plugin(BasePlugin):
     def _on_populate_popup(self, textbox, menu):
         # We can't work with the menu immediately, since gtkspell only adds its
         # entries in the event handler.
-        gobject.idle_add(self._fix_menu, menu)
+        GObject.idle_add(self._fix_menu, menu)
 
     def _fix_menu(self, menu):
         _entries_above_separator = False

@@ -109,9 +109,9 @@ def get_default_font():
 
     # First try and get the default font size from GConf
     try:
-        import gconf
-        client = gconf.client_get_default()
-        client.add_dir('/desktop/gnome/interface', gconf.CLIENT_PRELOAD_NONE)
+        from gi.repository import GConf
+        client = GConf.Client.get_default()
+        client.add_dir('/desktop/gnome/interface', GConf.ClientPreloadType.PRELOAD_NONE)
         font_name = client.get_string('/desktop/gnome/interface/monospace_font_name')
         font_size = font_name.split(' ')[-1]
     except ImportError, ie:
@@ -123,8 +123,10 @@ def get_default_font():
 
     # Get the default font size from Gtk
     if not font_size:
-        import gtk
-        font_name = str(gtk.Label().rc_get_style().font_desc)
+        import gi
+        gi.require_version('Gtk', '3.0')
+        from gi.repository import Gtk
+        font_name = str(Gtk.rc_get_style().font_desc)
         font_size = font_name.split(' ')[-1]
 
     if font_size:

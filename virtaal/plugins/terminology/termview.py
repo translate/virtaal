@@ -18,15 +18,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
 import logging
 
-from virtaal.views.baseview import BaseView
-from virtaal.views import rendering
-from virtaal.views.theme import is_inverse
-from virtaal.views.placeablesguiinfo import StringElemGUI
-from virtaal.views.widgets.selectdialog import SelectDialog
+from gi.repository import Gtk
 
+from virtaal.views import rendering
+from virtaal.views.baseview import BaseView
+from virtaal.views.placeablesguiinfo import StringElemGUI
+from virtaal.views.theme import is_inverse
+from virtaal.views.widgets.selectdialog import SelectDialog
 
 _default_fg = '#006600'
 _default_bg = '#eeffee'
@@ -55,9 +55,9 @@ class TerminologyGUIInfo(StringElemGUI):
 
     @classmethod
     def update_style(self, widget):
-        import gtk
-        fg = widget.style.fg[gtk.STATE_NORMAL]
-        bg = widget.style.base[gtk.STATE_NORMAL]
+        from gi.repository import Gtk
+        fg = widget.style.fg[Gtk.StateType.NORMAL]
+        bg = widget.style.base[Gtk.StateType.NORMAL]
         if is_inverse(fg, bg):
             self.fg = _inverse_fg
             self.bg = _inverse_bg
@@ -66,7 +66,7 @@ class TerminologyGUIInfo(StringElemGUI):
             self.bg = _default_bg
 
 
-class TerminologyCombo(gtk.ComboBox):
+class TerminologyCombo(Gtk.ComboBox):
     """
     A combo box containing translation matches.
     """
@@ -90,13 +90,13 @@ class TerminologyCombo(gtk.ComboBox):
         self.menu.connect('selection-done', self._on_selection_done)
 
     def __init_combo(self):
-        self._model = gtk.ListStore(str)
+        self._model = Gtk.ListStore(str)
         for trans in self.elem.translations:
             self._model.append([trans])
 
         self.set_model(self._model)
-        self._renderer = gtk.CellRendererText()
-        self.pack_start(self._renderer)
+        self._renderer = Gtk.CellRendererText()
+        self.pack_start(self._renderer, True, True, 0)
         self.add_attribute(self._renderer, 'text', 0)
 
         # Force the "appears-as-list" style property to 0
@@ -107,7 +107,7 @@ class TerminologyCombo(gtk.ComboBox):
             }
             class "GtkComboBox" style "not-a-list"
             """
-        gtk.rc_parse_string(rc_string)
+        Gtk.rc_parse_string(rc_string)
 
 
     # METHODS #

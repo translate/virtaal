@@ -19,14 +19,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
 import logging
 
-from virtaal.common import pan_app
+from gi.repository import Gtk
 
 from basetmmodel import BaseTMModel
 from virtaal.controllers.baseplugin import PluginUnsupported
-
 
 MAX_ERRORS = 5
 
@@ -121,8 +119,8 @@ class TMModel(BaseTMModel):
     def wait(self):
         import select
         while 1:
-            while gtk.events_pending():
-                gtk.main_iteration()
+            while Gtk.events_pending():
+                Gtk.main_iteration()
             try:
                 state = self._db_con.poll()
             except self.psycopg2.Error, e:

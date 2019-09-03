@@ -32,8 +32,8 @@ import_checks = ['translate', 'gtk', 'lxml.etree', 'json', 'pycurl', 'sqlite3', 
 MIN_GTK_VERSION = (2, 18, 0)
 def test_gtk_version():
     try:
-        import gtk
-        return gtk.ver >= MIN_GTK_VERSION
+        from gi.repository import Gtk
+        return Gtk.ver >= MIN_GTK_VERSION
         # GtkBuilder was in GTK+ earlier already, but at least this bug is
         # quite nasty:
         # https://bugzilla.gnome.org/show_bug.cgi?id=582025

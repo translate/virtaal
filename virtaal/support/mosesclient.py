@@ -18,10 +18,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
 import logging
 import xmlrpclib
 
+from gi.repository import GObject
 from translate.lang import data
 
 from virtaal.support.httpclient import HTTPClient, HTTPRequest
@@ -56,17 +56,17 @@ def fixup(source, response):
     return response
 
 
-class MosesClient(gobject.GObject, HTTPClient):
+class MosesClient(GObject.GObject, HTTPClient):
     """A client to communicate with a moses XML RPC servers"""
 
     __gtype_name__ = 'MosesClient'
     __gsignals__ = {
-        'source-lang-changed': (gobject.SIGNAL_RUN_LAST, None, (str,)),
-        'target-lang-changed': (gobject.SIGNAL_RUN_LAST, None, (str,)),
+        'source-lang-changed': (GObject.SignalFlags.RUN_LAST, None, (str,)),
+        'target-lang-changed': (GObject.SignalFlags.RUN_LAST, None, (str,)),
     }
 
     def __init__(self, url):
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
         HTTPClient.__init__(self)
 
         self.url = url + '/RPC2'

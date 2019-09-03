@@ -18,15 +18,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
 import os
 
-from virtaal.common import GObjectWrapper
-from virtaal.controllers.basecontroller import BaseController
-from virtaal.controllers.plugincontroller import PluginController
+from gi.repository import GObject
 
 from lookupview import LookupView
 from models.baselookupmodel import BaseLookupModel
+from virtaal.common import GObjectWrapper
+from virtaal.controllers.basecontroller import BaseController
+from virtaal.controllers.plugincontroller import PluginController
 
 
 class LookupController(BaseController):
@@ -34,7 +34,7 @@ class LookupController(BaseController):
 
     __gtype_name__ = 'LookupController'
     __gsignals__ = {
-        'lookup-query': (gobject.SIGNAL_RUN_FIRST, None, (object,))
+        'lookup-query': (GObject.SignalFlags.RUN_FIRST, None, (object,))
     }
 
     # INITIALIZERS #

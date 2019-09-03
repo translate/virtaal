@@ -18,12 +18,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import logging
-import gtk
-
-from virtaal.views.widgets.popupmenubutton import PopupMenuButton, POS_NW_SW
+from gi.repository import Gtk
 
 from basemode import BaseMode
+from virtaal.views.widgets.popupmenubutton import PopupMenuButton, POS_NW_SW
 
 
 class WorkflowMode(BaseMode):
@@ -83,21 +81,21 @@ class WorkflowMode(BaseMode):
     def _add_widgets(self):
         table = self.controller.view.mode_box
         self.btn_popup = PopupMenuButton(menu_pos=POS_NW_SW)
-        self.btn_popup.set_relief(gtk.RELIEF_NORMAL)
+        self.btn_popup.set_relief(Gtk.ReliefStyle.NORMAL)
         self.btn_popup.set_menu(self._create_state_menu())
 
         self.widgets = [self.btn_popup]
 
-        xoptions = gtk.FILL
+        xoptions = Gtk.AttachOptions.FILL
         table.attach(self.btn_popup, 2, 3, 0, 1, xoptions=xoptions)
 
         table.show_all()
 
     def _create_state_menu(self):
-        menu = gtk.Menu()
+        menu = Gtk.Menu()
 
         for iid, name in self.state_names:
-            menuitem = gtk.CheckMenuItem(label=name)
+            menuitem = Gtk.CheckMenuItem(label=name)
             menuitem.show()
             self._menuitem_states[menuitem] = iid
             menuitem.connect('toggled', self._on_state_menuitem_toggled)
@@ -105,7 +103,7 @@ class WorkflowMode(BaseMode):
         return menu
 
     def _update_button_label(self):
-        state_labels = [mi.child.get_label() for mi in self.btn_popup.menu if mi.get_active()]
+        state_labels = [mi.get_child().get_label() for mi in self.btn_popup.menu if mi.get_active()]
         btn_label = u''
         if not state_labels:
             #l10n: This is the button where the user can select units by workflow state
@@ -127,7 +125,7 @@ class WorkflowMode(BaseMode):
     def _on_state_menuitem_toggled(self, checkmenuitem):
         self.filter_states = []
         for menuitem in self.btn_popup.menu:
-            if not isinstance(menuitem, gtk.CheckMenuItem) or not menuitem.get_active():
+            if not isinstance(menuitem, Gtk.CheckMenuItem) or not menuitem.get_active():
                 continue
             if menuitem in self._menuitem_states:
                 self.filter_states.append(self._menuitem_states[menuitem])

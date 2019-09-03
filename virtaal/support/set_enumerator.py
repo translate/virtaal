@@ -18,24 +18,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
 from bisect import bisect_left
+
+from gi.repository import GObject
 
 from virtaal.support.sorted_set import SortedSet
 
 
 # FIXME: Add docstrings!
 
-class UnionSetEnumerator(gobject.GObject):
+class UnionSetEnumerator(GObject.GObject):
     __gtype_name__ = "UnionSetEnumerator"
 
     __gsignals__ = {
-        "remove": (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_INT, gobject.TYPE_PYOBJECT)),
-        "add":    (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_INT, gobject.TYPE_PYOBJECT))
+        "remove": (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_INT, GObject.TYPE_PYOBJECT)),
+        "add": (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_INT, GObject.TYPE_PYOBJECT))
     }
 
     def __init__(self, *sets):
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
 
         if len(sets) > 0:
             self.sets = sets

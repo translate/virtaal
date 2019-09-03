@@ -18,22 +18,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
+from gi.repository import GObject
 
 
-class BaseModel(gobject.GObject):
+class BaseModel(GObject.GObject):
     """Base class for all models."""
 
     __gtype_name__ = "BaseModel"
 
     __gsignals__ = {
-        "loaded": (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
-        "saved":  (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
+        "loaded": (GObject.SignalFlags.RUN_FIRST, None, ()),
+        "saved": (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
     # INITIALIZERS #
     def __init__(self):
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
 
 
     # ACCESSORS #

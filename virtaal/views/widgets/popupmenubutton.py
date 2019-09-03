@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from gi.repository import Gtk
 
 # Positioning constants below:
 # POS_CENTER_BELOW: Centers the pop-up window below the button (default).
@@ -44,16 +44,17 @@ _rtl_pos_map = {
         POS_NW_SW: POS_NE_SE,
 }
 
-class PopupMenuButton(gtk.ToggleButton):
+
+class PopupMenuButton(Gtk.ToggleButton):
     """A toggle button that displays a pop-up menu when clicked."""
 
     # INITIALIZERS #
     def __init__(self, label=None, menu_pos=POS_SW_NW):
-        gtk.ToggleButton.__init__(self, label=label)
-        self.set_relief(gtk.RELIEF_NONE)
-        self.set_menu(gtk.Menu())
+        GObject.GObject.__init__(self, label=label)
+        self.set_relief(Gtk.ReliefStyle.NONE)
+        self.set_menu(Gtk.Menu())
 
-        if self.get_direction() == gtk.TEXT_DIR_LTR:
+        if self.get_direction() == Gtk.TextDirection.LTR:
             self.menu_pos = menu_pos
         else:
             self.menu_pos = _rtl_pos_map.get(menu_pos, POS_SE_NE)

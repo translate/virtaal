@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk
 
 from baseview import BaseView
 from widgets.storetreeview import StoreTreeView
@@ -116,7 +116,7 @@ class StoreView(BaseView):
         if child and child is not self._treeview:
             self.parent_widget.remove(child)
             child.destroy()
-        if not self._treeview.parent:
+        if not self._treeview.get_parent():
             self.parent_widget.add(self._treeview)
         self.parent_widget.show_all()
         if not self.controller.get_store():
@@ -163,4 +163,5 @@ class StoreView(BaseView):
         # The following color change is to reduce the flickering seen when
         # changing units. It's not the perfect cure, but helps a lot.
         # https://github.com/translate/virtaal/issues/1412
-        self._treeview.modify_base(Gtk.StateType.ACTIVE, widget.style.bg[Gtk.StateType.NORMAL])
+        self._treeview.override_color(Gtk.StateFlags.ACTIVE,
+                                      widget.get_style_context().get_background_color(Gtk.StateType.NORMAL))

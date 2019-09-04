@@ -56,8 +56,9 @@ class TerminologyGUIInfo(StringElemGUI):
     @classmethod
     def update_style(self, widget):
         from gi.repository import Gtk
-        fg = widget.style.fg[Gtk.StateType.NORMAL]
-        bg = widget.style.base[Gtk.StateType.NORMAL]
+        _style = widget.get_style_context()
+        fg = _style.get_color(Gtk.StateType.NORMAL)
+        bg = _style.get_background_color(Gtk.StateType.NORMAL)
         if is_inverse(fg, bg):
             self.fg = _inverse_fg
             self.bg = _inverse_bg

@@ -21,13 +21,12 @@
 import logging
 import os
 import sys
-from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT, idle_add
 
-from virtaal.common import pan_app, GObjectWrapper
+from gi.repository.GObject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT, idle_add
 
 from basecontroller import BaseController
 from baseplugin import PluginUnsupported, BasePlugin
-
+from virtaal.common import pan_app, GObjectWrapper
 
 if os.name == 'nt':
     sys.path.insert(0, pan_app.main_dir.encode(sys.getfilesystemencoding()))

@@ -21,7 +21,6 @@
 import logging
 import os
 
-import Gtk.gdk
 from gi.repository import GObject
 from gi.repository import Gtk
 
@@ -137,7 +136,7 @@ class LanguageView(BaseView):
         # Clear all menu items
         for i in range(self.controller.NUM_RECENT):
             item = self.recent_items[i]
-            if item.parent is self.menu:
+            if item.get_parent() is self.menu:
                 item.get_child().set_text('')
                 self.menu.remove(item)
 

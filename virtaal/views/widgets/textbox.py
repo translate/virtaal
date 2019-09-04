@@ -18,8 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk
-from gobject import SIGNAL_RUN_FIRST, SIGNAL_RUN_LAST
+from gi.repository import Gtk, Gdk
+from gi.repository.GObject import SignalFlags
 from translate.lang import data
 from translate.storage.placeables import StringElem, parse as elem_parse
 
@@ -35,12 +35,12 @@ class TextBox(Gtk.TextView):
 
     __gtype_name__ = 'TextBox'
     __gsignals__ = {
-        'element-selected':      (SIGNAL_RUN_FIRST, None, (object,)),
-        'key-pressed':           (SIGNAL_RUN_LAST,  bool, (object, str)),
-        'refreshed':             (SIGNAL_RUN_FIRST, None, (object,)),
-        'text-deleted':          (SIGNAL_RUN_LAST,  bool, (object, object, int, int, object)),
-        'text-inserted':         (SIGNAL_RUN_LAST,  bool, (object, int, object)),
-        'changed':               (SIGNAL_RUN_LAST, None, ()),
+        'element-selected': (SignalFlags.RUN_FIRST, None, (object,)),
+        'key-pressed': (SignalFlags.RUN_LAST, bool, (object, str)),
+        'refreshed': (SignalFlags.RUN_FIRST, None, (object,)),
+        'text-deleted': (SignalFlags.RUN_LAST, bool, (object, object, int, int, object)),
+        'text-inserted': (SignalFlags.RUN_LAST, bool, (object, int, object)),
+        'changed': (SignalFlags.RUN_LAST, None, ()),
     }
 
     SPECIAL_KEYS = {
@@ -145,7 +145,7 @@ class TextBox(Gtk.TextView):
             start_iter = self.buffer.get_start_iter()
         if end_iter is None:
             end_iter = self.buffer.get_end_iter()
-        return data.forceunicode(self.buffer.get_text(start_iter, end_iter))
+        return data.forceunicode(self.buffer.get_text(start_iter, end_iter, include_hidden_chars=True))
 
     def set_text(self, text, update=False):
         """Set the text rendered in this text box.

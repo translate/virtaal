@@ -19,10 +19,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gtk import Builder
+from gi.repository.Gtk import Builder
 
 from virtaal.common import pan_app
-
 
 #cache builders so that we don't parse files repeatedly
 _builders = {}

@@ -19,9 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import GObject
 from gi.repository import Gdk
-from gi.repository import Gtk
 
 from tmwidgets import *
 from virtaal.common import GObjectWrapper
@@ -93,7 +91,7 @@ class TMView(BaseView, GObjectWrapper):
         # Connect Ctrl+n (1 <= n <= 9) to select match n.
         for i in range(1, 10):
             numstr = str(i)
-            numkey = Gdk.KEY__0 + i
+            numkey = Gdk.KEY_0 + i
             Gtk.AccelMap.add_entry("<Virtaal>/TM/Select match " + numstr, numkey, Gdk.ModifierType.CONTROL_MASK)
             self.accel_group.connect_by_path("<Virtaal>/TM/Select match " + numstr, self._on_select_match)
 

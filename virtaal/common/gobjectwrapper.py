@@ -18,11 +18,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gobject import GObject, signal_list_names
+from gi.repository import GObject
 #import logging
 
 
-class GObjectWrapper(GObject):
+class GObjectWrapper(GObject.GObject):
     """
     A wrapper for GObject sub-classes that provides some more powerful signal-
     handling.
@@ -30,8 +30,8 @@ class GObjectWrapper(GObject):
 
     # INITIALIZERS #
     def __init__(self):
-        GObject.__init__(self)
-        self._all_signals = signal_list_names(self.__gtype_name__)
+        GObject.GObject.__init__(self)
+        self._all_signals = GObject.signal_list_names(self)
         self._enabled_signals = list(self._all_signals)
 
 
@@ -57,4 +57,4 @@ class GObjectWrapper(GObject):
     def emit(self, signame, *args):
         if signame in self._enabled_signals:
             #logging.debug('emit("%s", %s)' % (signame, ','.join([repr(arg) for arg in args])))
-            GObject.emit(self, signame, *args)
+            super(GObjectWrapper, self).emit(signame, *args)

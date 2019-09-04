@@ -60,7 +60,7 @@ def gtk_textview_compute_optimal_height(widget, width):
         return
     buf = widget.get_buffer()
     # For border calculations, see gtktextview.c:gtk_text_view_size_request in the GTK source
-    border = 2 * widget.border_width - 2 * widget.parent.border_width
+    border = 2 * widget.get_border_width() - 2 * widget.get_parent().get_border_width()
     if widget.style_get_property("interior-focus"):
         border += 2 * widget.style_get_property("focus-line-width")
 
@@ -82,10 +82,10 @@ def gtk_textview_compute_optimal_height(widget, width):
         # directly after the file is opened. For now we try to guess a more
         # useful default than 0. This should look much better than 0, at least.
         h = 28
-    parent = widget.parent
+    parent = widget.get_parent()
     if isinstance(parent, Gtk.ScrolledWindow) and parent.get_shadow_type() != Gtk.ShadowType.NONE:
-        border += 2 * parent.rc_get_style().ythickness
-    widget.parent.set_size_request(-1, h + border)
+        border += 2 * parent.get_style().ythickness
+    widget.get_parent().set_size_request(-1, h + border)
 
 
 @compute_optimal_height.when_type(Gtk.Label)
@@ -97,7 +97,7 @@ def gtk_label_compute_optimal_height(widget, width):
         widget.set_size_request(width, h)
 
 
-class StoreCellRenderer(Gtk.GenericCellRenderer):
+class StoreCellRenderer(Gtk.CellRenderer):
     """
     Cell renderer for a unit based on the C{UnitRenderer} class from Virtaal's
     pre-MVC days.
@@ -180,7 +180,9 @@ class StoreCellRenderer(Gtk.GenericCellRenderer):
                 parent_height = widget.size_request()[1]
             if parent_height > 0:
                 self.check_editor_height(editor, width, parent_height)
-            _width, height = editor.size_request()
+            size_request = editor.size_request()
+            _width = size_request.width
+            height = size_request.height
             height += self.ROW_PADDING
         else:
             height = self.compute_cell_height(widget, width)
@@ -255,7 +257,8 @@ class StoreCellRenderer(Gtk.GenericCellRenderer):
         notesheight = 0
 
         for note in editor._widgets['notes'].values():
-            notesheight += note.size_request()[1]
+            size_request = note.size_request()
+            notesheight += size_request.height
 
         maxheight = parentheight - notesheight
 
@@ -270,7 +273,7 @@ class StoreCellRenderer(Gtk.GenericCellRenderer):
         max_tb_height = maxheight / len(visible_textboxes)
 
         for textbox in visible_textboxes:
-            if textbox.props.visible and textbox.parent.size_request()[1] > max_tb_height:
+            if textbox.props.visible and textbox.get_parent().size_request().height > max_tb_height:
                 textbox.parent.set_size_request(-1, max_tb_height)
                 #logging.debug('%s.set_size_request(-1, %d)' % (textbox.parent, max_tb_height))
 

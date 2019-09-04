@@ -218,11 +218,11 @@ class MainView(BaseView):
     @property
     def error_dialog(self):
         if not self._error_dialog:
-        # Error dialog
-        self._error_dialog = Gtk.MessageDialog(self.main_window,
-                                               Gtk.DialogFlags.MODAL,
-                                               Gtk.MessageType.ERROR,
-                                               Gtk.ButtonsType.OK)
+            # Error dialog
+            self._error_dialog = Gtk.MessageDialog(self.main_window,
+                                                   Gtk.DialogFlags.MODAL,
+                                                   Gtk.MessageType.ERROR,
+                                                   Gtk.ButtonsType.OK)
             self._error_dialog.set_title(_("Error"))
         return self._error_dialog
 
@@ -356,7 +356,7 @@ class MainView(BaseView):
 
     def _setup_dnd(self):
         """configures drag and drop"""
-        targets = Gtk.target_list_add_uri_targets()
+        targets = Gtk.TargetList().add_uri_targets(0)
         # Konqueror needs Gdk.DragAction.MOVE
         self.main_window.drag_dest_set(Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY | Gdk.DragAction.MOVE)
         self.main_window.connect("drag_data_received", self._on_drag_data_received)
@@ -526,7 +526,7 @@ class MainView(BaseView):
 
         for menuitem in menus:
             for item in menuitem.get_submenu().get_children():
-                if item.get_child() and item.get_child().get_text() == label:
+                if item.get_child() and str(item.get_child().get_text()) == str(label):
                     return item, menuitem
 
         if '_' in label:
@@ -563,7 +563,7 @@ class MainView(BaseView):
         if pan_app.settings.general['maximized']:
             self.main_window.maximize()
         self.main_window.show()
-        from gobject import threads_init
+        from gi.repository.GObject import threads_init
         threads_init()
 
         # Uncomment this line to measure startup time until the window shows.

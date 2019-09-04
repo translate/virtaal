@@ -21,8 +21,7 @@
 
 import os
 
-from gi.repository import Gtk
-from gobject import SIGNAL_RUN_FIRST
+from gi.repository import Gtk, GObject
 
 from basecontroller import BaseController
 from virtaal.common import GObjectWrapper, pan_app
@@ -35,8 +34,8 @@ class MainController(BaseController):
 
     __gtype_name__ = 'MainController'
     __gsignals__ = {
-        'controller-registered': (SIGNAL_RUN_FIRST, None, (object,)),
-        'quit':                  (SIGNAL_RUN_FIRST, None, tuple()),
+        'controller-registered': (GObject.SignalFlags.RUN_FIRST, None, (object,)),
+        'quit': (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
     # INITIALIZERS #
@@ -181,7 +180,7 @@ class MainController(BaseController):
         # make it our problem and ensure the last ones are in the main
         # controller.
         while not self.placeables_controller:
-            Gtk.main_iteration(False)
+            Gtk.main_iteration()
         if filename is None:
             return self.view.open_file()
         if self.store_controller.is_modified():

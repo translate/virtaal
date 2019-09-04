@@ -20,17 +20,18 @@
 
 from gi.repository import GObject
 from gi.repository import Gtk
+from pygtkcompat.generictreemodel import GenericTreeModel
 
 from virtaal.views import markup
 
 COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE = 0, 1, 2
 
 
-class StoreTreeModel(Gtk.GenericTreeModel):
+class StoreTreeModel(GenericTreeModel):
     """Custom C{Gtk.TreeModel} adapted from the old C{UnitModel} class."""
 
     def __init__(self, storemodel):
-        GObject.GObject.__init__(self)
+        super(StoreTreeModel, self).__init__()
         self._store = storemodel
         self._store_len = len(storemodel)
         self._current_editable = 0
@@ -112,4 +113,6 @@ class StoreTreeModel(Gtk.GenericTreeModel):
         return self.on_get_path(store_index)
 
     def path_to_store_index(self, path):
+        if path is None:
+            return 0
         return path[0]

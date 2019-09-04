@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk
+from gi.repository import Gtk, GObject
 
 # Positioning constants below:
 # POS_CENTER_BELOW: Centers the pop-up window below the button (default).

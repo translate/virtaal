@@ -21,8 +21,8 @@
 import logging
 import re
 
-from gi.repository import Gtk
-from gobject import idle_add, PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from gi.repository import Gtk, GObject, Gdk
+from gi.repository.GObject import idle_add, PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 from translate.lang import factory
 
 import rendering
@@ -101,7 +101,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
                     return textview
             return None
 
-        clipboard = Gtk.Clipboard(selection=Gdk.SELECTION_CLIPBOARD)
+        clipboard = Gtk.Clipboard.get(selection=Gdk.SELECTION_CLIPBOARD)
         def on_cut(menuitem):
             focused = get_focused(self.targets)
             if focused is not None:
@@ -533,16 +533,17 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             num_unit_sources = len(self.unit.source.strings)
 
         for i in range(self.MAX_SOURCES):
+            parent = self.sources[i].get_parent()
             if i < num_unit_sources:
                 sourcestr = self.unit.rich_source[i]
                 self.sources[i].modify_font(rendering.get_source_font_description())
                 # FIXME: This modfies the unit's copy - we should not do this
                 self.sources[i].set_text(sourcestr)
-                self.sources[i].parent.show_all()
+                parent.show_all()
                 #logging.debug('Showing source #%d: %s' % (i, self.sources[i]))
             else:
                 #logging.debug('Hiding source #%d: %s' % (i, self.sources[i]))
-                self.sources[i].parent.hide_all()
+                parent.hide()
 
     def _layout_update_context_info(self):
         if not self._widgets['context_info']:
@@ -597,14 +598,14 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
                     targetstr = rich_target[i]
                 self.targets[i].modify_font(rendering.get_target_font_description())
                 self.targets[i].set_text(targetstr)
-                self.targets[i].parent.show_all()
+                self.targets[i].get_parent().show_all()
                 self.targets[i].selector_textboxes = visible_sources
                 self.targets[i].selector_textbox = visible_sources[0]
                 #logging.debug('Showing target #%d: %s' % (i, self.targets[i]))
             else:
                 # outside plural range
                 #logging.debug('Hiding target #%d: %s' % (i, self.targets[i]))
-                self.targets[i].parent.hide_all()
+                self.targets[i].get_parent().hide()
 
     def _layout_update_states(self):
         if not self._widgets['state'] and self.unit.STATE:
@@ -615,7 +616,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
                 _("Move one step forward in the workflow (Ctrl+Enter)")
             )
             statenav.connect('selection-changed', self._on_state_changed)
-            self._widgets['vbox_right'].pack_end(statenav, expand=False, fill=False)
+            self._widgets['vbox_right'].pack_end(statenav, False, False, 0)
             self._widgets['state'] = statenav
 
         state_names = self.controller.get_unit_state_names()

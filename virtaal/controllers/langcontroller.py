@@ -19,12 +19,12 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import os
-from gobject import SIGNAL_RUN_FIRST
 
-from virtaal.common import GObjectWrapper, pan_app
-from virtaal.models.langmodel import LanguageModel
+from gi.repository.GObject import SIGNAL_RUN_FIRST
 
 from basecontroller import BaseController
+from virtaal.common import GObjectWrapper, pan_app
+from virtaal.models.langmodel import LanguageModel
 
 
 class LanguageController(BaseController):

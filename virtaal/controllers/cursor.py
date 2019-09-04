@@ -19,8 +19,9 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from gobject import SIGNAL_RUN_FIRST
 from bisect import bisect_left
+
+from gi.repository.GObject import SIGNAL_RUN_FIRST
 
 from virtaal.common import GObjectWrapper
 

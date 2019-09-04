@@ -18,8 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import GObject
-from gi.repository import Gtk
+from gi.repository import GObject, Gtk, Gdk
 
 from virtaal.views.theme import current_theme
 
@@ -119,5 +118,6 @@ class WelcomeScreen(Gtk.ScrolledWindow):
         self.emit('button-clicked', name)
 
     def do_style_set(self, previous_style):
-        self.get_child().modify_bg(Gtk.StateType.NORMAL, self.style.base[Gtk.StateType.NORMAL])
+        self.get_child().override_color(Gtk.StateFlags.NORMAL,
+                                        self.get_style_context().get_color(Gtk.StateFlags.NORMAL))
         self._style_widgets()

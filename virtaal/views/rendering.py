@@ -57,5 +57,5 @@ def get_language(code):
     """Provide a Pango.Language and keep it for reuse."""
     global _languages
     if not code in _languages:
-        _languages[code] = Pango.Language(code)
+        _languages[code] = Pango.Language.from_string(code)
     return _languages[code]

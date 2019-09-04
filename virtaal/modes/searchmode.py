@@ -21,9 +21,7 @@
 
 import logging
 
-import Gtk.gdk
-from gi.repository import GObject
-from gi.repository import Gtk
+from gi.repository import GObject, Gtk, Gdk
 
 from basemode import BaseMode
 from virtaal.controllers.cursor import Cursor

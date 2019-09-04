@@ -103,7 +103,7 @@ class PropertiesView(BaseView, GObjectWrapper):
         self._get_widgets()
 
     def _setup_key_bindings(self):
-        import Gtk.gdk
+        from gi.repository import Gdk
         Gtk.AccelMap.add_entry("<Virtaal>/File/Properties", Gdk.KEY_Return, Gdk.ModifierType.MOD1_MASK)
 
     def _setup_menu_item(self):

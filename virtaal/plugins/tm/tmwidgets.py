@@ -35,7 +35,8 @@ class TMWindow(Gtk.Window):
         super(TMWindow, self).__init__(Gtk.WindowType.POPUP)
         self.view = view
 
-        self.set_has_frame(True)
+        # set_has_frame is the method of Gtk.Enter, not found on Gtk.Window
+        # self.set_has_frame(True)
 
         self._build_gui()
 
@@ -147,7 +148,7 @@ class TMWindow(Gtk.Window):
         cell_renderer.set_property('text', _(u"?"))
 
 
-class TMSourceColRenderer(Gtk.GenericCellRenderer):
+class TMSourceColRenderer(Gtk.CellRenderer):
     """
     Renders the TM source for the row.
     """
@@ -211,7 +212,7 @@ class TMSourceColRenderer(Gtk.GenericCellRenderer):
                                         cell_area, widget, '', x, y, label.get_layout())
 
 
-class TMMatchRenderer(Gtk.GenericCellRenderer):
+class TMMatchRenderer(Gtk.CellRenderer):
     """
     Renders translation memory matches.
 

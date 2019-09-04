@@ -19,9 +19,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk
+from gi.repository import Gtk, GObject
 from gi.repository import Pango
-from gobject import idle_add, PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from gi.repository.GObject import idle_add, PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 
 
 def flagstr(flags):
@@ -35,7 +35,7 @@ def flagstr(flags):
     return '|'.join(fset)
 
 
-class CellRendererWidget(Gtk.GenericCellRenderer):
+class CellRendererWidget(Gtk.CellRenderer):
     __gtype_name__ = 'CellRendererWidget'
     __gproperties__ = {
         'widget': (TYPE_PYOBJECT, 'Widget', 'The column containing the widget to render', PARAM_READWRITE),

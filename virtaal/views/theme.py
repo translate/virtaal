@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk
 
 INVERSE = False
 """Whether we are currently in an inverse type of theme (lite text on dark
@@ -96,9 +96,10 @@ def is_inverse(fg, bg):
         return False
 
 def update_style(widget):
-    _style = widget.style
-    fg = _style.fg[Gtk.StateType.NORMAL]
-    bg = _style.base[Gtk.StateType.NORMAL]
+    _style = widget.get_style_context()
+    _state = _style.get_state()
+    fg = _style.get_color(_state)
+    bg = _style.get_background_color(_state)
     if is_inverse(fg, bg):
         set_inverse()
     else:
@@ -107,7 +108,8 @@ def update_style(widget):
     # On some themes (notably Windows XP with classic style), diff_delete_bg is
     # almost identical to the background colour used. So we use something from
     # the gtk theme that is supposed to be different, but not much.
-    if not has_reasonable_contrast(_style.bg[Gtk.StateType.NORMAL], Gdk.color_parse(current_theme['diff_delete_bg'])):
+    if not has_reasonable_contrast(_style.get_background_color(_state),
+                                   Gdk.color_parse(current_theme['diff_delete_bg'])):
         if INVERSE:
             new_diff_delete_bg = _style.dark[Gtk.StateType.NORMAL]
         else:

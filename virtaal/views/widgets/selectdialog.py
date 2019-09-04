@@ -19,7 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 from gi.repository import Gtk
-from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from gi.repository.GObject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 
 from selectview import SelectView
 from virtaal.common import GObjectWrapper

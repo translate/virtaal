@@ -26,6 +26,8 @@ options.
 
 import logging
 
+from gi.repository import Gtk, GObject
+
 from popupwidgetbutton import PopupWidgetButton
 
 
@@ -77,9 +79,9 @@ class ListNavigator(Gtk.HBox):
         self.btn_popup.connect('key-press-event', self._on_popup_key_press_event)
 
         # Add widgets to containers
-        self.pack_start(self.btn_back,    expand=False, fill=False)
-        self.pack_start(self.btn_popup,   expand=True,  fill=True)
-        self.pack_start(self.btn_forward, expand=False, fill=False)
+        self.pack_start(self.btn_back, False, False, 0)
+        self.pack_start(self.btn_popup, True, True, 0)
+        self.pack_start(self.btn_forward, False, False, 0)
 
     def set_tooltips_text(self, backward, default, forward):
         """Set tooltips for the widgets."""

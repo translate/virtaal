@@ -18,10 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import Gtk.gdk
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk
 from gi.repository import Pango
-from gobject import SIGNAL_RUN_FIRST
+from gi.repository.GObject import SIGNAL_RUN_FIRST
 
 from baseview import BaseView
 from virtaal.common import GObjectWrapper, pan_app

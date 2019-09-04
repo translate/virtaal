@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk
+from gi.repository import Gtk, GObject, GdkPixbuf
 
 from virtaal import __version__
 from virtaal.common import pan_app
@@ -92,5 +92,3 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.""")
 
         Use open and mailto from virtaal.support.openmailto
         """
-        Gtk.about_dialog_set_url_hook(self.on_url, "url")
-        Gtk.about_dialog_set_email_hook(self.on_url, "mail")

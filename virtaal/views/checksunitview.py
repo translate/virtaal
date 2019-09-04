@@ -96,7 +96,7 @@ class ChecksUnitView(BaseView):
     # METHODS #
     def show(self):
         parent = self.controller.main_controller.unit_controller.view._widgets['vbox_right']
-        parent.pack_start(self.btn_checks, expand=False, fill=True)
+        parent.pack_start(self.btn_checks, False, True, 0)
         self.btn_checks.show()
 
     def hide(self):

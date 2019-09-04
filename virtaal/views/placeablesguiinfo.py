@@ -19,7 +19,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import Gtk.gdk
 from gi.repository import Gtk
 from gi.repository import Pango
 from translate.storage.placeables import base, StringElem, general, xliff
@@ -404,8 +403,9 @@ class UnknownXMLGUI(StringElemGUI):
             lbl.set_size_request(-1, int(h/1.2))
 
 def update_style(widget):
-    fg = widget.style.fg[Gtk.StateType.NORMAL]
-    bg = widget.style.base[Gtk.StateType.NORMAL]
+    _style = widget.get_style_context()
+    fg = _style.get_color(Gtk.StateType.NORMAL)
+    bg = _style.get_background_color(Gtk.StateType.NORMAL)
     StringElemGUI.fg = fg.to_string()
     StringElemGUI.bg = bg.to_string()
     PhGUI.fg = theme.current_theme['markup_warning_fg']

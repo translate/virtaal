@@ -20,8 +20,8 @@
 
 import locale
 
-from gi.repository import Gtk
-from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from gi.repository import Gtk, GObject
+from gi.repository.GObject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 
 from virtaal.common import GObjectWrapper
 from virtaal.views.widgets.cellrendererwidget import CellRendererWidget

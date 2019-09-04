@@ -20,7 +20,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 from gi.repository import Gtk
-from gobject import idle_add
+from gi.repository.GObject import idle_add
 
 from baseview import BaseView
 from virtaal.common.pan_app import get_abs_data_filename, ui_language
@@ -57,11 +57,11 @@ class WelcomeScreenView(BaseView):
     # METHODS #
     def hide(self):
         self.widget.hide()
-        if self.widget.parent is self.parent_widget:
+        if self.widget.get_parent() is self.parent_widget:
             self.parent_widget.remove(self.widget)
 
     def show(self):
-        if not self.widget.parent:
+        if not self.widget.get_parent():
             self.parent_widget.add(self.widget)
         else:
             self.widget.reparent(self.parent_widget)
@@ -72,10 +72,10 @@ class WelcomeScreenView(BaseView):
 
         def calculate_width():
             txt = self.widget.widgets['txt_features']
-            expander = txt.parent.parent
+            expander = txt.get_parent().get_parent()
 
             screenwidth = self.widget.get_allocation().width
-            col1 = self.widget.widgets['buttons']['open'].parent
+            col1 = self.widget.widgets['buttons']['open'].get_parent()
             width_col1 = col1.get_allocation().width
             if width_col1 > 0.7 * screenwidth:
                 width_col1 = int(0.7 * screenwidth)

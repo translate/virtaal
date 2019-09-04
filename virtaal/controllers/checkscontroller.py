@@ -19,11 +19,11 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from gobject import SIGNAL_RUN_FIRST, timeout_add, PRIORITY_LOW
 
-from virtaal.common import GObjectWrapper
+from gi.repository.GObject import SIGNAL_RUN_FIRST, timeout_add, PRIORITY_LOW
 
 from basecontroller import BaseController
+from virtaal.common import GObjectWrapper
 
 check_names = {
     'fuzzy': _(u"Fuzzy"),

@@ -169,7 +169,7 @@ msgstr "_Opdater fra skabelon"
 
 #: ../share/virtaal/virtaal.ui.h:21
 msgid "_Export"
-msgstr "_Eksportér"
+msgstr "Eks_portér"
 
 # Recent = seneste, Current = aktuelle.
 #: ../share/virtaal/virtaal.ui.h:22

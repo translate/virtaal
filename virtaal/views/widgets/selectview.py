@@ -204,6 +204,7 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
             self._model = items
         else:
             self._model = Gtk.ListStore(bool, str, str, TYPE_PYOBJECT, TYPE_PYOBJECT)
+            items = list(items)
             items.sort(cmp=locale.strcoll, key=lambda x: x.get('name', ''))
             for row in items:
                 self._model.append([
@@ -214,7 +215,7 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
                     self._create_widget_for_item(row)
                 ])
 
-        Gtk.TreeView.set_model(self, self._model)
+        super(SelectView, self).set_model(self._model)
 
 
     # EVENT HANDLERS #

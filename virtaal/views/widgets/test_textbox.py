@@ -27,7 +27,9 @@ class TextWindow(Gtk.Window):
     def __init__(self, textbox=None):
         super(TextWindow, self).__init__()
         if textbox is None:
-            textbox = TextBox()
+            self.placeables_controller = None
+            self.undo_controller = None
+            textbox = TextBox(self)
 
         self.vbox = Gtk.VBox()
         self.add(self.vbox)

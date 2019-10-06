@@ -143,7 +143,7 @@ class FileSelectDialog:
         cell = Gtk.CellRendererText()
         cell.props.ellipsize = Pango.EllipsizeMode.MIDDLE
         col = Gtk.TreeViewColumn(_('File'))
-        col.pack_start(cell, True, True, 0)
+        col.pack_start(cell, True)
         col.add_attribute(cell, 'text', self.COL_FILE)
         col.set_expand(True)
         col.set_sort_column_id(0)
@@ -153,7 +153,7 @@ class FileSelectDialog:
         cell.set_radio(True)
         cell.connect('toggled', self._on_toggle)
         col = Gtk.TreeViewColumn(_('Extendable'))
-        col.pack_start(cell, True, True, 0)
+        col.pack_start(cell, True)
         col.add_attribute(cell, 'active', self.COL_EXTEND)
         col.set_expand(False)
         self.tvw_termfiles.append_column(col)
@@ -345,7 +345,7 @@ class TermAddDialog:
         cellr.props.ellipsize = Pango.EllipsizeMode.MIDDLE
         self.lst_termfiles = Gtk.ListStore(str)
         self.cmb_termfile.set_model(self.lst_termfiles)
-        self.cmb_termfile.pack_start(cellr, True, True, 0)
+        self.cmb_termfile.pack_start(cellr, True)
         self.cmb_termfile.add_attribute(cellr, 'text', 0)
 
         self.ent_source.connect('changed', self._on_entry_changed)

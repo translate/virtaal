@@ -62,7 +62,7 @@ class CellRendererWidget(Gtk.CellRenderer):
     def do_get_property(self, pspec):
         return getattr(self, pspec.name)
 
-    def on_get_size(self, widget, cell_area=None):
+    def do_get_size(self, widget, cell_area=None):
         #print '%s>> on_get_size()' % (self.strfunc(self.widget))
         # FIXME: This method works fine for unselected cells (rows) and gives the same (wrong) results for selected cells.
         height = width = 0
@@ -77,7 +77,9 @@ class CellRendererWidget(Gtk.CellRenderer):
         width, height = layout.get_pixel_size()
 
         if self.widget:
-            w, h = self.widget.size_request()
+            requisition = self.widget.size_request()
+            w = requisition.width
+            h = requisition.height
             width =  max(width,  w)
             height = max(height, h)
 
@@ -87,7 +89,7 @@ class CellRendererWidget(Gtk.CellRenderer):
 
         return self.XPAD, self.YPAD, width, height
 
-    def on_render(self, window, widget, bg_area, cell_area, expose_area, flags):
+    def do_render(self, window, widget, bg_area, cell_area, flags):
         #print '%s>> on_render(flags=%s)' % (self.strfunc(self.widget), flagstr(flags))
         if flags & Gtk.CellRendererState.SELECTED:
             self.props.mode = Gtk.CellRendererMode.EDITABLE
@@ -99,9 +101,18 @@ class CellRendererWidget(Gtk.CellRenderer):
         layout = self.create_pango_layout(self.strfunc(self.widget), widget, w)
         layout_w, layout_h = layout.get_pixel_size()
         y = cell_area.y + yo + (h-layout_h)/2
-        widget.get_style().paint_layout(window, Gtk.StateType.NORMAL, True, cell_area, widget, '', x, y, layout)
+        Gtk.paint_layout(
+            style=widget.get_style(),
+            cr=window,
+            state_type=Gtk.StateType.NORMAL,
+            use_text=True,
+            widget=widget,
+            detail='',
+            x=x,
+            y=y,
+            layout=layout)
 
-    def on_start_editing(self, event, tree_view, path, bg_area, cell_area, flags):
+    def do_start_editing(self, event, tree_view, path, bg_area, cell_area, flags):
         #print '%s>> on_start_editing(flags=%s, event=%s)' % (self.strfunc(self.widget), flagstr(flags), event)
         editable = self.widget
         if not isinstance(editable, Gtk.CellEditable):
@@ -134,7 +145,7 @@ class CellRendererWidget(Gtk.CellRenderer):
 
         model, iter = treeview.get_selection().get_selected()
         path = model.get_path(iter)
-        col = [c for c in treeview.get_columns() if self in c.get_cell_renderers()]
+        col = [c for c in treeview.get_columns() if self in c.get_cells()]
         if len(col) < 1:
             self._editing = False
             return
@@ -158,8 +169,8 @@ class CellWidget(Gtk.HBox, Gtk.CellEditable):
     def __init__(self, *widgets):
         super(CellWidget, self).__init__()
         for w in widgets:
-            if w.parent is not None:
-                w.parent.remove(w)
+            if w.get_parent() is not None:
+                w.get_parent().remove(w)
             self.pack_start(w, True, True, 0)
 
 
@@ -189,7 +200,7 @@ if __name__ == "__main__":
         def insert(self, name):
             iter = self.store.append()
             hb = Gtk.HBox()
-            hb.pack_start(Gtk.Button(name, True, True, 0))
+            hb.pack_start(Gtk.Button(name, True, True, 0), False, True, 0)
             lbl = Gtk.Label(label=(name + ' ') * 20)
             lbl.set_line_wrap(True)
             hb.pack_start(lbl, False, True, 0)

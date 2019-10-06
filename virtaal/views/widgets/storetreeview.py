@@ -208,7 +208,7 @@ class StoreTreeView(Gtk.TreeView):
             return True
 
         index = model.path_to_store_index(path)
-        if index != self.view.cursor.index:
+        if self.view.cursor and index != self.view.cursor.index:
             self.view.cursor.index = index
 
         # We defer the scrolling until GTK has finished all its current drawing
@@ -222,7 +222,8 @@ class StoreTreeView(Gtk.TreeView):
                 # cursor became invalid since this was added to the idle queue
                 # maybe because the file was closed since then.
                 return False
-            self.scroll_to_cell(path, self.get_column(0), True, 0.5, 0.0)
+            if path:
+                self.scroll_to_cell(path, self.get_column(0), True, 0.5, 0.0)
             return False
 
         GObject.idle_add(do_scroll)

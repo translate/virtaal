@@ -20,7 +20,7 @@
 
 import locale
 
-from gi.repository import Gtk, GObject
+from gi.repository import Gtk
 from gi.repository.GObject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 
 from virtaal.common import GObjectWrapper
@@ -53,7 +53,7 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
 
     # INITIALIZERS #
     def __init__(self, items=None, bold_name=True):
-        GObject.GObject.__init__(self)
+        Gtk.TreeView.__init__(self)
         GObjectWrapper.__init__(self)
 
         self.bold_name = bold_name

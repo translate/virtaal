@@ -21,7 +21,7 @@
 import logging
 import re
 
-from gi.repository import Gtk, GObject, Gdk
+from gi.repository import Gtk, Gdk
 from gi.repository.GObject import idle_add, PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 from translate.lang import factory
 
@@ -63,7 +63,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
     # INITIALIZERS #
     def __init__(self, controller):
-        GObject.GObject.__init__(self)
+        Gtk.EventBox.__init__(self)
         GObjectWrapper.__init__(self)
 
         self.controller = controller

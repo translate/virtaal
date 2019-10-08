@@ -33,7 +33,7 @@ class BaseModel(GObject.GObject):
 
     # INITIALIZERS #
     def __init__(self):
-        GObject.GObject.__init__(self)
+        super(BaseModel, self).__init__()
 
 
     # ACCESSORS #

@@ -134,7 +134,7 @@ class StoreCellRenderer(Gtk.CellRenderer):
 
     # INITIALIZERS #
     def __init__(self, view):
-        GObject.GObject.__init__(self)
+        super(StoreCellRenderer, self).__init__()
         self.set_property('mode', Gtk.CellRendererMode.EDITABLE)
         self.view = view
         self.__unit = None

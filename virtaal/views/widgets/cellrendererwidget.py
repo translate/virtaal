@@ -18,8 +18,11 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+import gi
 
-from gi.repository import Gtk, GObject
+gi.require_version('Gtk', '3.0')
+
+from gi.repository import Gtk
 from gi.repository import Pango
 from gi.repository.GObject import idle_add, PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 
@@ -27,10 +30,10 @@ from gi.repository.GObject import idle_add, PARAM_READWRITE, SIGNAL_RUN_FIRST, T
 def flagstr(flags):
     """Create a string-representation for the given flags structure."""
     fset = []
-    for f in dir(gtk):
+    for f in dir(Gtk):
         if not f.startswith('CELL_RENDERER_'):
             continue
-        if flags & getattr(gtk, f):
+        if flags & getattr(Gtk, f):
             fset.append(f)
     return '|'.join(fset)
 
@@ -47,7 +50,7 @@ class CellRendererWidget(Gtk.CellRenderer):
 
     # INITIALIZERS #
     def __init__(self, strfunc, default_width=-1):
-        GObject.GObject.__init__(self)
+        super(CellRendererWidget, self).__init__()
 
         self.default_width = default_width
         self._editing = False
@@ -93,7 +96,8 @@ class CellRendererWidget(Gtk.CellRenderer):
         #print '%s>> on_render(flags=%s)' % (self.strfunc(self.widget), flagstr(flags))
         if flags & Gtk.CellRendererState.SELECTED:
             self.props.mode = Gtk.CellRendererMode.EDITABLE
-            self._start_editing(widget) # FIXME: This is obviously a hack, but what more do you want?
+            # FIXME: this will crash program
+            # self._start_editing(widget) # FIXME: This is obviously a hack, but what more do you want?
             return True
         self.props.mode = Gtk.CellRendererMode.INERT
         xo, yo, w, h = self.get_size(widget, cell_area)
@@ -189,7 +193,7 @@ if __name__ == "__main__":
     class Tree(Gtk.TreeView):
         def __init__(self):
             self.store = Gtk.ListStore(str, TYPE_PYOBJECT, bool)
-            GObject.GObject.__init__(self)
+            super(Tree, self).__init__()
             self.set_model(self.store)
             self.set_headers_visible(True)
 

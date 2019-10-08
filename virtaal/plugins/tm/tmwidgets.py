@@ -167,7 +167,7 @@ class TMSourceColRenderer(Gtk.CellRenderer):
 
     # INITIALIZERS #
     def __init__(self, view):
-        GObject.GObject.__init__(self)
+        super(TMSourceColRenderer, self).__init__()
 
         self.view = view
         self.matchdata = None
@@ -239,7 +239,7 @@ class TMMatchRenderer(Gtk.CellRenderer):
 
     # INITIALIZERS #
     def __init__(self, view):
-        GObject.GObject.__init__(self)
+        super(TMMatchRenderer, self).__init__()
 
         self.view = view
         self.layout = None

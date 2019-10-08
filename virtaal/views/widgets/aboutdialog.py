@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk, GObject, GdkPixbuf
+from gi.repository import Gtk, GdkPixbuf
 
 from virtaal import __version__
 from virtaal.common import pan_app
@@ -27,7 +27,7 @@ from virtaal.support import openmailto
 
 class AboutDialog(Gtk.AboutDialog):
     def __init__(self, parent):
-        GObject.GObject.__init__(self)
+        super(AboutDialog, self).__init__()
         self._register_uri_handlers()
         self.set_name("Virtaal")
         self.set_version(__version__.ver)

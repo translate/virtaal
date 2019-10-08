@@ -12,13 +12,14 @@ available under the terms of the BSD which accompanies this distribution, and
 is available at U{http://www.opensource.org/licenses/bsd-license.php}
 '''
 
+import os
 import re
 import sys
-import os
-from gi.repository import Pango
 from StringIO import StringIO
 
 import IPython
+from gi.repository import Pango
+
 
 class IterableIPShell:
   '''
@@ -253,7 +254,7 @@ class ConsoleView(Gtk.TextView):
     '''
     Initialize console view.
     '''
-    GObject.GObject.__init__(self)
+    super(ConsoleView, self).__init__()
     self.modify_font(Pango.FontDescription('Mono'))
     self.set_cursor_visible(True)
     self.text_buffer = self.get_buffer()

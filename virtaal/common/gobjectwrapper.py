@@ -30,7 +30,7 @@ class GObjectWrapper(GObject.GObject):
 
     # INITIALIZERS #
     def __init__(self):
-        GObject.GObject.__init__(self)
+        super(GObjectWrapper, self).__init__()
         self._all_signals = GObject.signal_list_names(self)
         self._enabled_signals = list(self._all_signals)
 

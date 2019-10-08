@@ -66,7 +66,7 @@ class MosesClient(GObject.GObject, HTTPClient):
     }
 
     def __init__(self, url):
-        GObject.GObject.__init__(self)
+        super(MosesClient, self).__init__()
         HTTPClient.__init__(self)
 
         self.url = url + '/RPC2'

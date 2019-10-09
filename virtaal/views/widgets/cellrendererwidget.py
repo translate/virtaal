@@ -98,8 +98,9 @@ class CellRendererWidget(Gtk.CellRenderer):
             self.props.mode = Gtk.CellRendererMode.EDITABLE
             # FIXME: this will crash program
             # self._start_editing(widget) # FIXME: This is obviously a hack, but what more do you want?
-            return True
-        self.props.mode = Gtk.CellRendererMode.INERT
+            # return True
+        else:
+            self.props.mode = Gtk.CellRendererMode.INERT
         xo, yo, w, h = self.get_size(widget, cell_area)
         x = cell_area.x + xo
         layout = self.create_pango_layout(self.strfunc(self.widget), widget, w)

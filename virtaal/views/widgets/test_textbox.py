@@ -27,8 +27,6 @@ class TextWindow(Gtk.Window):
     def __init__(self, textbox=None):
         super(TextWindow, self).__init__()
         if textbox is None:
-            self.placeables_controller = None
-            self.undo_controller = None
             textbox = TextBox(self)
 
         self.vbox = Gtk.VBox()
@@ -39,7 +37,6 @@ class TextWindow(Gtk.Window):
 
         self.connect('destroy', lambda *args: Gtk.main_quit())
         self.set_size_request(600, 100)
-
 
 class TestTextBox(object):
     def __init__(self):

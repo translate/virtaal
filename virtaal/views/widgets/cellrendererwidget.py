@@ -93,7 +93,7 @@ class CellRendererWidget(Gtk.CellRenderer):
         return self.XPAD, self.YPAD, width, height
 
     def do_render(self, window, widget, bg_area, cell_area, flags):
-        #print '%s>> on_render(flags=%s)' % (self.strfunc(self.widget), flagstr(flags))
+        # print '%s>> on_render(flags=%s)' % (self.strfunc(self.widget), flagstr(flags))
         if flags & Gtk.CellRendererState.SELECTED:
             self.props.mode = Gtk.CellRendererMode.EDITABLE
             # FIXME: this will crash program
@@ -105,16 +105,13 @@ class CellRendererWidget(Gtk.CellRenderer):
         layout = self.create_pango_layout(self.strfunc(self.widget), widget, w)
         layout_w, layout_h = layout.get_pixel_size()
         y = cell_area.y + yo + (h-layout_h)/2
-        Gtk.paint_layout(
-            style=widget.get_style(),
+        Gtk.render_layout(
+            context=widget.get_style_context(),
             cr=window,
-            state_type=Gtk.StateType.NORMAL,
-            use_text=True,
-            widget=widget,
-            detail='',
             x=x,
             y=y,
-            layout=layout)
+            layout=layout
+        )
 
     def do_start_editing(self, event, tree_view, path, bg_area, cell_area, flags):
         #print '%s>> on_start_editing(flags=%s, event=%s)' % (self.strfunc(self.widget), flagstr(flags), event)
@@ -172,6 +169,7 @@ class CellWidget(Gtk.HBox, Gtk.CellEditable):
     # INITIALIZERS #
     def __init__(self, *widgets):
         super(CellWidget, self).__init__()
+        Gtk.CellEditable.__init__(self)
         for w in widgets:
             if w.get_parent() is not None:
                 w.get_parent().remove(w)

@@ -200,7 +200,7 @@ class StoreCellRenderer(Gtk.CellRenderer):
             self._editor_modified_id = editor.connect("modified", self._on_modified)
         return editor
 
-    def on_render(self, window, widget, _background_area, cell_area, _expose_area, _flags):
+    def do_render(self, window, widget, _background_area, cell_area, _flags):
         if self.editable:
             return True
         x_offset, y_offset, width, _height = self.do_get_size(widget, cell_area)
@@ -212,10 +212,28 @@ class StoreCellRenderer(Gtk.CellRenderer):
             target_x += width/2
         else:
             source_x += (width/2) + 10
-        widget.get_style().paint_layout(window, Gtk.StateType.NORMAL, False,
-                                        cell_area, widget, '', source_x, y, self.source_layout)
-        widget.get_style().paint_layout(window, Gtk.StateType.NORMAL, False,
-                                        cell_area, widget, '', target_x, y, self.target_layout)
+        Gtk.paint_layout(
+            style=widget.get_style(),
+            cr=window,
+            state_type=Gtk.StateType.NORMAL,
+            use_text=False,
+            widget=widget,
+            detail='',
+            x=source_x,
+            y=y,
+            layout=self.source_layout
+        )
+        Gtk.paint_layout(
+            style=widget.get_style(),
+            cr=window,
+            state_type=Gtk.StateType.NORMAL,
+            use_text=False,
+            widget=widget,
+            detail='',
+            x=target_x,
+            y=y,
+            layout=self.target_layout
+        )
 
 
     # METHODS #

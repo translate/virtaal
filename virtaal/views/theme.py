@@ -97,7 +97,7 @@ def is_inverse(fg, bg):
 
 def update_style(widget):
     _style = widget.get_style_context()
-    _state = _style.get_state()
+    _state = Gtk.StateType.NORMAL
     fg = _style.get_color(_state)
     bg = _style.get_background_color(_state)
     if is_inverse(fg, bg):

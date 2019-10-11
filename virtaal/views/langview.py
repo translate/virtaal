@@ -108,12 +108,16 @@ class LanguageView(BaseView):
 
     def notify_diff_langs(self):
         def notify():
+            states = [Gtk.StateFlags.ACTIVE, Gtk.StateFlags.NORMAL, Gtk.StateFlags.PRELIGHT, Gtk.StateFlags.SELECTED]
             if hasattr(self, 'popup_default_fg'):
                 fgcol = self.popup_default_fg
             else:
-                fgcol = Gtk.widget_get_default_style().fg
-            for s in [Gtk.StateType.ACTIVE, Gtk.StateType.NORMAL, Gtk.StateType.PRELIGHT, Gtk.StateType.SELECTED]:
-                self.popupbutton.get_child().modify_fg(s, fgcol[s])
+                default_style_context = Gtk.StyleContext()
+                fgcol = {}
+                for state in states:
+                    fgcol[state] = default_style_context.get_color(state)
+            for s in states:
+                self.popupbutton.get_child().override_color(s, fgcol[s])
 
         GObject.idle_add(notify)
 

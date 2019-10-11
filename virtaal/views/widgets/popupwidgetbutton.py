@@ -102,25 +102,25 @@ class PopupWidgetButton(Gtk.ToggleButton):
     # METHODS #
     def calculate_popup_xy(self, popup_alloc, btn_alloc, btn_window_xy):
         # Default values are POS_NW_SW
-        x = btn_window_xy[0] + btn_alloc.x
-        y = btn_window_xy[1] + btn_alloc.y + btn_alloc.height
-        width, height = self.popup.get_child_requisition()
+        x = btn_window_xy.x + btn_alloc.x
+        y = btn_window_xy.y + btn_alloc.y + btn_alloc.height
+        # width, height = self.popup.get_child_requisition()
 
         if self.popup_pos == POS_NE_SE:
             x -= (popup_alloc.width - btn_alloc.width)
         elif self.popup_pos == POS_NW_NE:
             x += btn_alloc.width
-            y = btn_window_xy[1] + btn_alloc.y
+            y = btn_window_xy.y + btn_alloc.y
         elif self.popup_pos == POS_SE_NE:
-            x -= (popup_alloc.width - btn_alloc.width)
-            y = btn_window_xy[1] - popup_alloc.height
+            x -= popup_alloc.width
+            y -= btn_alloc.height
         elif self.popup_pos == POS_SW_NW:
-            y = btn_window_xy[1] - popup_alloc.height
+            y = btn_window_xy.y - popup_alloc.height
         elif self.popup_pos == POS_CENTER_BELOW:
             x -= (popup_alloc.width - btn_alloc.width) / 2
         elif self.popup_pos == POS_CENTER_ABOVE:
             x -= (popup_alloc.width - btn_alloc.width) / 2
-            y = btn_window_xy[1] - popup_alloc.height
+            y = btn_window_xy.y - popup_alloc.height
 
         return x, y
 
@@ -146,11 +146,13 @@ class PopupWidgetButton(Gtk.ToggleButton):
 
     def _update_popup_geometry(self):
         self.popup.set_size_request(-1, -1)
-        width, height = self.popup.get_child_requisition()
+        requisition = self.popup.get_child_requisition()
+        width = requisition.width
+        height = requisition.height
 
         x, y = -1, -1
         popup_alloc = self.popup.get_allocation()
-        btn_window_xy = self.window.get_origin()
+        btn_window_xy = self.get_window().get_origin()
         btn_alloc = self.get_allocation()
 
         if callable(self._update_popup_geometry_func):
@@ -164,8 +166,7 @@ class PopupWidgetButton(Gtk.ToggleButton):
 
         popup_alloc.width, popup_alloc.height = width, height
         x, y = self.calculate_popup_xy(popup_alloc, btn_alloc, btn_window_xy)
-
-        self.popup.window.get_toplevel().move_resize(x, y, width, height)
+        self.popup.get_window().get_toplevel().move_resize(x, y, width, height)
 
 
     # EVENT HANDLERS #

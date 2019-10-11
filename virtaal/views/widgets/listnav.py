@@ -26,7 +26,7 @@ options.
 
 import logging
 
-from gi.repository import Gtk, GObject
+from gi.repository import Gtk, GObject, Gdk
 
 from popupwidgetbutton import PopupWidgetButton
 
@@ -222,9 +222,10 @@ if __name__ == '__main__':
     listnav = ListNavigator()
 
     hb = Gtk.HBox()
-    hb.pack_start(listnav, expand=False, fill=False)
+    hb.pack_start(listnav, False, False, 0)
+
     vb = Gtk.VBox()
-    vb.pack_start(hb, expand=False, fill=False)
+    vb.pack_start(hb, False, False, 0)
 
     wnd = Gtk.Window()
     wnd.set_title('List Navigator Test')
@@ -246,7 +247,7 @@ if __name__ == '__main__':
 
         lst = Gtk.ListStore(str, object)
         for i in range(10):
-            lst.append([i, Item(i)])
+            lst.append([str(i), Item(i)])
         return lst
     listnav.set_model(create_test_model())
 

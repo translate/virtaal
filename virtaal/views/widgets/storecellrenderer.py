@@ -174,7 +174,8 @@ class StoreCellRenderer(Gtk.CellRenderer):
             editor = self.view.get_unit_celleditor(self.unit)
             editor.set_size_request(width, -1)
             editor.show()
-            compute_optimal_height(editor, width)
+            # fixme: this will make vbox_editor width too large
+            # compute_optimal_height(editor, width)
             parent_height = widget.get_allocation().height
             if parent_height < -1:
                 parent_height = widget.size_request()[1]

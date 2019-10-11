@@ -33,6 +33,7 @@ class StoreTreeView(Gtk.TreeView):
     The extended C{Gtk.TreeView} we use display our units.
     This class was adapted from the old C{UnitGrid} class.
     """
+    __gtype_name__ = 'StoreTreeView'
 
     __gsignals__ = {
         'modified': (GObject.SignalFlags.RUN_FIRST, None, ())

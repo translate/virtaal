@@ -616,7 +616,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
                 _("Move one step forward in the workflow (Ctrl+Enter)")
             )
             statenav.connect('selection-changed', self._on_state_changed)
-            self._widgets['vbox_right'].pack_end(statenav, False, False, 0)
+            self._widgets['vbox_right'].pack_end(statenav, False, True, 0)
             self._widgets['state'] = statenav
 
         state_names = self.controller.get_unit_state_names()

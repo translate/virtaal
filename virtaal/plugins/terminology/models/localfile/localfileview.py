@@ -364,7 +364,7 @@ class TermAddDialog:
         unit.target = target
 
         buff = self.txt_comment.get_buffer()
-        comments = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
+        comments = buff.get_text(buff.get_start_iter(), buff.get_end_iter(), True)
         if comments:
             unit.addnote(comments)
 

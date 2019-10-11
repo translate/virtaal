@@ -2125,7 +2125,7 @@ If you are translating from English to French then French would be your translat
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBox" id="cmb_termfile">
+                    <object class="GtkComboBoxText" id="cmb_termfile">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                   </object>

@@ -138,7 +138,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         def on_prev(*args):
             self.targets[self.focused_target_n].move_elem_selection(-1)
         def on_transfer(*args):
-            ev = Gdk.Event(Gdk.KEY_PRESS)
+            ev = Gdk.Event(Gdk.EventType.KEY_PRESS)
             ev.state = Gdk.ModifierType.MOD1_MASK
             ev.keyval = Gdk.KEY_Down
             ev.window = self.targets[self.focused_target_n].get_window(Gtk.TextWindowType.WIDGET)

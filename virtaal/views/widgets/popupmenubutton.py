@@ -77,7 +77,7 @@ class PopupMenuButton(Gtk.ToggleButton):
 
 
     # METHODS #
-    def _calculate_popup_pos(self, menu):
+    def _calculate_popup_pos(self, menu, *args):
         menu_width, menu_height = 0, 0
         menu_alloc = menu.get_allocation()
         if menu_alloc.height > 1:
@@ -86,7 +86,7 @@ class PopupMenuButton(Gtk.ToggleButton):
         else:
             menu_width, menu_height = menu.size_request()
 
-        btn_window_xy = self.window.get_origin()
+        btn_window_xy = self.get_window().get_origin()
         btn_alloc = self.get_allocation()
 
         # Default values are POS_SW_NW
@@ -114,7 +114,7 @@ class PopupMenuButton(Gtk.ToggleButton):
         return True
 
     def popup(self):
-        self.menu.popup(None, None, self._calculate_popup_pos, 0, 0)
+        self.menu.popup(None, None, self._calculate_popup_pos, None, 0, 0)
 
 
     # EVENT HANDLERS #

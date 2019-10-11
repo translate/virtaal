@@ -333,13 +333,14 @@ class TextBox(Gtk.TextView):
         if not hasattr(self, 'selector_color'):
             self.selector_color = Gdk.color_parse(current_theme['selector_textbox'])
         if not hasattr(self, 'nonselector_color'):
-            self.nonselector_color = self.parent.style.bg[Gtk.StateType.NORMAL]
+            self.nonselector_color = self.get_parent().get_style_context().get_color(Gtk.StateType.NORMAL)
 
         for selector in self.selector_textboxes:
             if selector is self.selector_textbox:
-                selector.parent.modify_bg(Gtk.StateType.NORMAL, self.selector_color)
+                selector.get_parent().override_color(Gtk.StateType.NORMAL, Gdk.RGBA(*self.selector_color.to_floats()))
             else:
-                selector.parent.modify_bg(Gtk.StateType.NORMAL, self.nonselector_color)
+                selector.get_parent().override_color(Gtk.StateType.NORMAL,
+                                                     Gdk.RGBA(*self.nonselector_color.to_floats()))
 
     def place_cursor(self, cursor_pos):
         cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)

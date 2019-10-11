@@ -350,7 +350,7 @@ class TextBox(Gtk.TextView):
         self.buffer.place_cursor(cursor_iter)
         # Make sure the cursor is visible to reduce jitters (with backspace at
         # the end of a long unit with scrollbar, for example).
-        self.scroll_to_iter(cursor_iter, 0.0)
+        self.scroll_to_iter(cursor_iter, 0.0, 0, 0, 0)
 
     def refresh(self, preserve_selection=True, update=False):
         """Refresh the text box by setting its text to the current text."""

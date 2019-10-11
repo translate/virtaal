@@ -77,14 +77,14 @@ class LanguageSelectDialog(object):
 
         cell = Gtk.CellRendererText()
         col = Gtk.TreeViewColumn(_('Language'))
-        col.pack_start(cell, True, True, 0)
+        col.pack_start(cell, True)
         col.add_attribute(cell, 'text', 0)
         col.set_sort_column_id(0)
         self.tvw_sourcelang.append_column(col)
 
         cell = Gtk.CellRendererText()
         col = Gtk.TreeViewColumn(_('Language'))
-        col.pack_start(cell, True, True, 0)
+        col.pack_start(cell, True)
         col.add_attribute(cell, 'text', 0)
         col.set_sort_column_id(0)
         self.tvw_targetlang.append_column(col)
@@ -92,14 +92,14 @@ class LanguageSelectDialog(object):
         cell = Gtk.CellRendererText()
         #l10n: This is the column heading for the language code
         col = Gtk.TreeViewColumn(_('Code'))
-        col.pack_start(cell, True, True, 0)
+        col.pack_start(cell, True)
         col.add_attribute(cell, 'text', 1)
         col.set_sort_column_id(1)
         self.tvw_sourcelang.append_column(col)
 
         cell = Gtk.CellRendererText()
         col = Gtk.TreeViewColumn(_('Code'))
-        col.pack_start(cell, True, True, 0)
+        col.pack_start(cell, True)
         col.add_attribute(cell, 'text', 1)
         col.set_sort_column_id(1)
         self.tvw_targetlang.append_column(col)

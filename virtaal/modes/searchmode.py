@@ -465,10 +465,10 @@ class SearchMode(BaseMode):
         self.controller.select_mode(self)
 
     def _on_style_set(self, widget, prev_style):
-        self.default_base = widget.style.base[Gtk.StateType.NORMAL]
-        self.default_text = widget.style.text[Gtk.StateType.NORMAL]
-        self.ent_search.modify_base(Gtk.StateType.NORMAL, self.default_base)
-        self.ent_search.modify_text(Gtk.StateType.NORMAL, self.default_text)
+        self.default_base = widget.get_style_context().get_background_color(Gtk.StateType.NORMAL)
+        self.default_text = widget.get_style_context().get_color(Gtk.StateType.NORMAL)
+        self.ent_search.override_background_color(Gtk.StateType.NORMAL, self.default_base)
+        self.ent_search.override_color(Gtk.StateType.NORMAL, self.default_text)
 
     def _on_textbox_refreshed(self, textbox, elem):
         """Redoes highlighting after a C{StringElem} render destoyed it."""

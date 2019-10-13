@@ -17,25 +17,34 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 import os
 import sys
 
 from gi.repository.GObject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT, idle_add
+from six import PY3
 
-from basecontroller import BaseController
-from baseplugin import PluginUnsupported, BasePlugin
 from virtaal.common import pan_app, GObjectWrapper
+from virtaal.common.utils import get_unicode
+from .basecontroller import BaseController
+from .baseplugin import PluginUnsupported, BasePlugin
 
 if os.name == 'nt':
-    sys.path.insert(0, pan_app.main_dir.encode(sys.getfilesystemencoding()))
+    if PY3:
+        sys.path.insert(0, pan_app.main_dir)
+    else:
+        sys.path.insert(0, pan_app.main_dir.encode(sys.getfilesystemencoding()))
 if 'RESOURCEPATH' in os.environ:
     sys.path.insert(0, os.path.join(os.environ['RESOURCEPATH']))
 
 # The following line allows us to import user plug-ins from ~/.virtaal/virtaal_plugins
 # (see PluginController.PLUGIN_MODULES)
-sys.path.insert(0, pan_app.get_config_dir().encode(sys.getfilesystemencoding()))
+if PY3:
+    sys.path.insert(0, pan_app.get_config_dir())
+else:
+    sys.path.insert(0, pan_app.get_config_dir().encode(sys.getfilesystemencoding()))
 
 class PluginController(BaseController):
     """This controller is responsible for all plug-in management."""
@@ -54,7 +63,7 @@ class PluginController(BaseController):
     """Attributes of the plug-in class that contain info about it. Should contain PLUGIN_NAME_ATTRIB."""
     PLUGIN_DIRS = [
         os.path.join(pan_app.get_config_dir(), u'virtaal_plugins'),
-        os.path.join(os.path.dirname(__file__).decode(sys.getfilesystemencoding()), u'..', u'plugins')
+        os.path.join(get_unicode(os.path.dirname(__file__)), u'..', u'plugins')
     ]
     """The directories to search for plug-in names."""
     PLUGIN_INTERFACE = BasePlugin
@@ -106,16 +115,16 @@ class PluginController(BaseController):
             plugin_class = self._get_plugin_class(name)
             try:
                 self.plugins[name] = plugin_class(name, self.controller)
-            except PluginUnsupported, pu:
+            except PluginUnsupported as pu:
                 logging.info(pu.message)
                 return None
             self.emit('plugin-enabled', self.plugins[name])
             logging.info('    - ' + getattr(self.plugins[name], self.PLUGIN_NAME_ATTRIB, name))
             return self.plugins[name]
-        except Exception, e:
+        except Exception as e:
             # the name is unicode which can trigger encoding issues in the
             # logging module, so let's encode it now already
-            logging.exception('Failed to load plugin "%s"\n%s' % (name.encode('utf-8'), e))
+            logging.exception('Failed to load plugin "{}"\n{}'.format(name, e))
 
         return None
 
@@ -169,7 +178,7 @@ class PluginController(BaseController):
                     [self.PLUGIN_CLASSNAME] # fromlist
                 )
                 break
-            except ImportError, ie:
+            except ImportError as ie:
                 if not ie.args[0].startswith('No module named') and pan_app.DEBUG:
                     logging.exception('from %s import %s' % (modulename, self.PLUGIN_CLASSNAME))
 

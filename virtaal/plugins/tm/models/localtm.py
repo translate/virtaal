@@ -17,15 +17,15 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 import os
-import sys
 import socket
 
 from virtaal.common import pan_app
-from basetmmodel import BaseTMModel
-import remotetm
+from . import remotetm
+from .basetmmodel import BaseTMModel
 
 
 class TMModel(remotetm.TMModel):
@@ -60,10 +60,10 @@ class TMModel(remotetm.TMModel):
             executable = u"tmserver"
 
         command = [
-            executable.encode(sys.getfilesystemencoding()),
+            executable,
             "-b", self.config["tmserver_bind"],
             "-p", str(port),
-            "-d", self.config["tmdb"].encode(sys.getfilesystemencoding()),
+            "-d", self.config["tmdb"],
             "--min-similarity=%d" % controller.min_quality,
             "--max-candidates=%d" % controller.max_matches,
         ]
@@ -71,7 +71,7 @@ class TMModel(remotetm.TMModel):
         if pan_app.DEBUG:
             command.append("--debug")
 
-        logging.debug("launching tmserver with command %s" % " ".join(command))
+        logging.debug("launching tmserver with command {}".format(" ".join(command)))
         try:
             import subprocess
             from virtaal.support import tmclient
@@ -79,7 +79,7 @@ class TMModel(remotetm.TMModel):
             url = "http://%s:%d/tmserver" % (self.config["tmserver_bind"], port)
 
             self.tmclient = tmclient.TMClient(url)
-        except OSError, e:
+        except OSError as e:
             message = "Failed to start TM server: %s" % str(e)
             logging.exception('Failed to start TM server')
             raise

@@ -17,10 +17,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
-
-from basetmmodel import BaseTMModel
-import remotetm
+from . import remotetm
+from .basetmmodel import BaseTMModel
 
 
 class TMModel(remotetm.TMModel):

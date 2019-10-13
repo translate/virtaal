@@ -18,8 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import locale
-
 from gi.repository import Gtk
 from gi.repository.GObject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 
@@ -205,7 +203,7 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
         else:
             self._model = Gtk.ListStore(bool, str, str, TYPE_PYOBJECT, TYPE_PYOBJECT)
             items = list(items)
-            items.sort(cmp=locale.strcoll, key=lambda x: x.get('name', ''))
+            items.sort(key=lambda x: x.get('name', ''))
             for row in items:
                 self._model.append([
                     row.get('enabled', False),

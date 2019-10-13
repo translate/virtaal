@@ -19,8 +19,8 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import logging
-import xmlrpclib
 
+import xmlrpclib
 from gi.repository import GObject
 from translate.lang import data
 
@@ -107,12 +107,12 @@ class MosesClient(GObject.GObject, HTTPClient):
         """Does the loading of the XML-RPC response, but handles exceptions."""
         try:
             (data,), _fish = xmlrpclib.loads(response)
-        except xmlrpclib.Fault, exc:
+        except xmlrpclib.Fault as exc:
             if "Unknown translation system id" in exc.faultString:
                 self.set_multilang(False)
                 #TODO: consider redoing the request now that multilang is False
                 return None
-        except Exception, exc:
+        except Exception as exc:
             logging.debug('XML-RPC exception: %s' % (exc))
             return None
         return data

@@ -17,13 +17,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
 from gi.repository.GObject import SIGNAL_RUN_FIRST, timeout_add, PRIORITY_LOW
 
-from basecontroller import BaseController
 from virtaal.common import GObjectWrapper
+from .basecontroller import BaseController
 
 check_names = {
     'fuzzy': _(u"Fuzzy"),

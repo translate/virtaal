@@ -17,11 +17,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 from gi.repository import Gtk, Gdk
 
-from baseview import BaseView
-from widgets.storetreeview import StoreTreeView
+from .baseview import BaseView
+from .widgets.storetreeview import StoreTreeView
 
 
 # XXX: ASSUMPTION: The model to display is self.controller.store
@@ -136,7 +137,7 @@ class StoreView(BaseView):
         # TODO: Get file name from user.
         try:
             self.controller.export_project_file(filename=None)
-        except Exception, exc:
+        except Exception as exc:
             self.controller.main_controller.view.show_error_dialog(
                 title=_("Export failed"), message=str(exc)
             )
@@ -145,7 +146,7 @@ class StoreView(BaseView):
         # TODO: Get file name from user.
         try:
             self.controller.export_project_file(filename=None, openafter=True)
-        except Exception, exc:
+        except Exception as exc:
             self.controller.main_controller.view.show_error_dialog(
                 title=_("Export failed"), message=str(exc)
             )
@@ -154,7 +155,7 @@ class StoreView(BaseView):
         # TODO: Get file name from user.
         try:
             self.controller.export_project_file(filename=None, openafter=True, readonly=True)
-        except Exception, exc:
+        except Exception as exc:
             self.controller.main_controller.view.show_error_dialog(
                 title=_("Preview failed"), message=str(exc)
             )

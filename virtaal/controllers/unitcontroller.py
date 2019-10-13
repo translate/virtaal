@@ -17,13 +17,15 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 from gi.repository.GLib import timeout_add
 from gi.repository.GObject import SignalFlags
 from translate.storage import workflow
+from translate.storage.workflow import Workflow, UnitState
 
-from basecontroller import BaseController
 from virtaal.common import GObjectWrapper
+from .basecontroller import BaseController
 
 
 class UnitController(BaseController):
@@ -123,7 +125,7 @@ class UnitController(BaseController):
             #        because the names could have changed in the new document :/
             state_names = self.get_unit_state_names()
             if state_names:
-                unit._workflow = workflow.create_unit_workflow(unit, state_names)
+                unit._workflow = create_unit_workflow(unit, state_names)
             self._recreate_workflow = False
 
         if state_names:
@@ -234,3 +236,32 @@ class UnitController(BaseController):
             self.main_controller.lang_controller.target_lang.code
         )
         self._recreate_workflow = True
+
+
+def create_unit_workflow(unit, state_names):
+    wf = Workflow(unit)
+
+    state_info = list(unit.STATE.items())
+    state_info.sort(key=lambda x: x[0])
+
+    init_state, prev_state = None, None
+    for state_id, state_range in state_info:
+        if state_range[0] < 0:
+            continue
+        state_name = state_names[state_id]
+        # We use the low end value below, because the range is closed there
+        state = UnitState(state_name, state_range[0])
+        wf.add_state(state)
+
+        # Use the first non-negative state as the initial state...
+        if init_state is None and state_range[0] >= 0:
+            init_state = state
+
+        if prev_state:
+            wf.add_edge(prev_state, state_name)
+        prev_state = state_name
+
+    if init_state:
+        wf.set_initial_state(init_state)
+
+    return wf

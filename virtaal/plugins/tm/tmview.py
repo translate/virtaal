@@ -18,12 +18,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 from gi.repository import Gdk
 
-from tmwidgets import *
 from virtaal.common import GObjectWrapper
 from virtaal.views.baseview import BaseView
+from .tmwidgets import *
 
 
 class TMView(BaseView, GObjectWrapper):
@@ -183,7 +184,7 @@ class TMView(BaseView, GObjectWrapper):
                 continue
             try:
                 info = plugin_controller.get_plugin_info(plugin_name)
-            except Exception, e:
+            except Exception as e:
                 logging.debug('Problem getting information for plugin %s' % plugin_name)
                 continue
             enabled = plugin_name in plugin_controller.plugins

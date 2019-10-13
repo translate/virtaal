@@ -97,14 +97,15 @@ class TMWindow(Gtk.Window):
         if not self.props.visible:
             return
 
-        widget_alloc = widget.parent.get_allocation()
+        widget_alloc = widget.get_parent().get_allocation()
         gdkwin = widget.get_window(Gtk.TextWindowType.WIDGET)
         if gdkwin is None:
             return
         vscrollbar = self.scrolled_window.get_vscrollbar()
         scrollbar_width = vscrollbar.props.visible and vscrollbar.get_allocation().width + 1 or 0
 
-        x, y = gdkwin.get_origin()
+        origin = gdkwin.get_origin()
+        x, y = origin.x, origin.y
 
         if widget.get_direction() == Gtk.TextDirection.LTR:
             x -= self.tvc_perc.get_width()

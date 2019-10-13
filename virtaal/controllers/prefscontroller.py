@@ -17,10 +17,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 from virtaal.common import GObjectWrapper, pan_app
-
-from basecontroller import BaseController
+from .basecontroller import BaseController
 
 
 class PreferencesController(BaseController):
@@ -60,7 +60,7 @@ class PreferencesController(BaseController):
     def update_config_placeables_state(self, parser, disabled):
         """Make sure that the placeable with the given name is enabled/disabled
             in the main configuration file."""
-        classname = parser.im_self.__name__
+        classname = parser.__self__.__name__
         pan_app.settings.placeable_state[classname.lower()] = disabled and 'disabled' or 'enabled'
 
     def update_config_plugin_state(self, plugin_name, disabled):
@@ -90,7 +90,7 @@ class PreferencesController(BaseController):
 
     def _update_placeables_gui_data(self):
         items = []
-        allparsers = self.placeables_controller.parser_info.items()
+        allparsers = list(self.placeables_controller.parser_info.items())
         allparsers.sort(key=lambda x: x[1][0])
         for parser, (name, desc) in allparsers:
             items.append({
@@ -116,7 +116,7 @@ class PreferencesController(BaseController):
             else:
                 try:
                     info = self.plugin_controller.get_plugin_info(found_plugin)
-                except Exception, e:
+                except Exception as e:
                     import logging
                     logging.debug('Problem getting information for plugin %s' % found_plugin)
                     continue

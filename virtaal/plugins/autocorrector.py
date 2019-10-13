@@ -27,8 +27,10 @@ import re
 import zipfile
 
 from gi.repository import GObject
+from six import text_type as unicode, string_types as basestring
 
 from virtaal.common import pan_app
+from virtaal.common.utils import get_unicode
 from virtaal.controllers.baseplugin import BasePlugin
 from virtaal.views.widgets.textbox import TextBox
 
@@ -147,7 +149,7 @@ class AutoCorrector(object):
         lang = lang.replace('_', '-')
         try:
             acor = zipfile.ZipFile(os.path.join(self.acorpath, 'acor_%s.dat' % lang))
-        except IOError, _exc:
+        except IOError as _exc:
             # Try to find a file that starts with 'acor_%s' % (lang[0]) (where
             # lang[0] is the part of lang before the '-') and ends with '.dat'
             langparts = lang.split('-')
@@ -180,7 +182,7 @@ class AutoCorrector(object):
 
         # Add auto-correction regex for each loaded word.
         for key, value in self.correctiondict.items():
-            self.correctiondict[key] = (unicode(value), re.compile(r'\b%s$' % (re.escape(key)), re.UNICODE))
+            self.correctiondict[key] = (get_unicode(value), re.compile(r'\b%s$' % (re.escape(key)), re.UNICODE))
 
         self.lang = lang
         return

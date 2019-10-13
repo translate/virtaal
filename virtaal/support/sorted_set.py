@@ -121,8 +121,8 @@ class SortedSet(GObject.GObject):
         return other.data
     _getotherdata = staticmethod(_getotherdata)
 
-    def __cmp__(self, other, cmp=cmp):
-        return cmp(self.data, SortedSet._getotherdata(other))
+    def __gt__(self, other):
+        return self.data > SortedSet._getotherdata(other)
 
     def union(self, other, find=bisect_left):
         i = j = 0

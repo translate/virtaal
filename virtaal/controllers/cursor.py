@@ -110,7 +110,7 @@ class Cursor(GObjectWrapper):
             @returns: C{self.model[self.index]}, or C{None} if any error occurred."""
         try:
             return self.model[self.index]
-        except Exception, exc:
+        except Exception as exc:
             logging.debug('Unable to dereference cursor:\n%s' % (exc))
             return None
 

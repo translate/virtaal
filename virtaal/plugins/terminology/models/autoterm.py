@@ -17,10 +17,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 import os
 import time
+
 from translate.search.match import terminologymatcher
 from translate.storage import factory
 from translate.storage.base import TranslationStore
@@ -28,8 +30,7 @@ from translate.storage.placeables.terminology import TerminologyPlaceable
 
 from virtaal.common import pan_app
 from virtaal.support.httpclient import HTTPClient
-
-from basetermmodel import BaseTerminologyModel
+from .basetermmodel import BaseTerminologyModel
 
 THREE_DAYS = 60 * 60 * 24 * 3
 

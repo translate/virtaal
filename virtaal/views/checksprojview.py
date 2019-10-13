@@ -17,13 +17,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
-
-import locale
+from __future__ import absolute_import, print_function, unicode_literals
 
 from gi.repository import Gtk
 
-from baseview import BaseView
 from virtaal.views.widgets.popupmenubutton import PopupMenuButton
+from .baseview import BaseView
 
 
 class ChecksProjectView(BaseView):
@@ -42,7 +41,7 @@ class ChecksProjectView(BaseView):
         for checkercode in self.controller.checker_info:
             checkername = self.controller._checker_code_to_name[checkercode]
             names.append(checkername)
-        for checkername in sorted(names, cmp=locale.strcoll):
+        for checkername in sorted(names):
             mitem = Gtk.MenuItem(checkername)
             mitem.show()
             mitem.connect('activate', self._on_menu_item_activate)

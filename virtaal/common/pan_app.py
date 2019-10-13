@@ -29,6 +29,11 @@
 import os
 import sys
 
+from six import PY3
+
+from .utils import get_unicode
+
+
 def get_config_dir():
     if os.name == 'nt':
         confdir = os.path.join(os.environ['APPDATA'], 'Virtaal')
@@ -38,7 +43,7 @@ def get_config_dir():
         #TODO: skuif na ~/.config/virtaal en migreer
         confdir = os.path.expanduser('~/.virtaal')
 
-    confdir = confdir.decode(sys.getfilesystemencoding())
+    confdir = get_unicode(confdir)
     if not os.path.exists(confdir):
         os.makedirs(confdir)
 
@@ -52,7 +57,7 @@ if os.name == 'nt':
 
 # Ok, now we can continue with what we actually wanted to do
 
-import ConfigParser
+from six.moves import configparser as ConfigParser, builtins as  __builtin__
 import locale, gettext
 from virtaal.support.libi18n.locale import fix_locale, fix_libintl
 from translate.misc import file_discovery
@@ -87,19 +92,19 @@ def get_locale_lang():
            lang = osx_lang()
         if lang:
             return data.simplify_to_common(lang)
-    except Exception, e:
+    except Exception as e:
         import logging
         logging.warning("%s", e)
     return 'en'
 
 def name():
     import getpass
-    name = getpass.getuser().decode(sys.getfilesystemencoding()) #username only
+    name = get_unicode(getpass.getuser())  # username only
     # pwd is only available on UNIX
     try:
         import pwd
         name = pwd.getpwnam(name)[4].split(",")[0]
-    except ImportError, _e:
+    except ImportError as _e:
         pass
     return name or u""
 
@@ -114,7 +119,7 @@ def get_default_font():
         client.add_dir('/desktop/gnome/interface', GConf.ClientPreloadType.PRELOAD_NONE)
         font_name = client.get_string('/desktop/gnome/interface/monospace_font_name')
         font_size = font_name.split(' ')[-1]
-    except ImportError, ie:
+    except ImportError as ie:
         import logging
         logging.debug('Unable to import gconf module: %s', ie)
     except Exception:
@@ -263,8 +268,11 @@ else:
     try:
         #if the locale is not installed it can cause a traceback
         locale.setlocale(locale.LC_ALL, '')
-        gettext.install("virtaal", unicode=1)
-    except locale.Error, e:
+        if PY3:
+            gettext.install('virtaal')
+        else:
+            gettext.install("virtaal", unicode=1)
+    except locale.Error as e:
         import logging
         logging.warning("Couldn't set the locale: %s", e)
         # See bug 3109
@@ -274,9 +282,9 @@ else:
 # Determine the directory the main executable is running from
 main_dir = u''
 if getattr(sys, 'frozen', False):
-    main_dir = os.path.dirname(unicode(sys.executable, sys.getfilesystemencoding()))
+    main_dir = os.path.dirname(get_unicode(sys.executable))
 else:
-    main_dir = os.path.dirname(unicode(sys.argv[0], sys.getfilesystemencoding()))
+    main_dir = os.path.dirname(get_unicode(sys.argv[0]))
 
 
 if os.name =='nt' and getattr(sys, 'frozen', False):
@@ -299,7 +307,7 @@ def get_abs_data_filename(path_parts, basedirs=None):
     if basedirs is None:
         basedirs = []
     basedirs += [
-        os.path.join(os.path.dirname(unicode(__file__, sys.getfilesystemencoding())), os.path.pardir),
+        os.path.join(os.path.dirname(get_unicode(__file__)), os.path.pardir),
     ]
     return file_discovery.get_abs_data_filename(path_parts, basedirs=basedirs)
 
@@ -346,7 +354,7 @@ def save_config(filename, config, section=None):
         for key, value in section_conf.items():
             if isinstance(value, list):
                 value = ','.join(value)
-            parser.set(section, key, value)
+            parser.set(section, key, str(value))
 
     conffile = open(filename, 'w')
     parser.write(conffile)

@@ -17,13 +17,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 import locale
 
 from gi.repository import Gtk
 
-from basemode import BaseMode
 from virtaal.views.widgets.popupmenubutton import PopupMenuButton, POS_NW_SW
+from .basemode import BaseMode
 
 
 class QualityCheckMode(BaseMode):

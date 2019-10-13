@@ -17,6 +17,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 import os
@@ -24,9 +25,9 @@ import os
 from gi.repository import GObject
 from gi.repository import Gtk
 
-from baseview import BaseView
 from virtaal.models.langmodel import LanguageModel
-from widgets.popupmenubutton import PopupMenuButton
+from .baseview import BaseView
+from .widgets.popupmenubutton import PopupMenuButton
 
 
 class LanguageView(BaseView):
@@ -41,8 +42,8 @@ class LanguageView(BaseView):
         self._init_gui()
 
     def _create_dialogs(self):
-        from widgets.langselectdialog import LanguageSelectDialog
-        from widgets.langadddialog import LanguageAddDialog
+        from .widgets.langselectdialog import LanguageSelectDialog
+        from .widgets.langadddialog import LanguageAddDialog
         langs = [LanguageModel(lc) for lc in LanguageModel.languages]
         langs.sort(key=lambda x: x.name)
         self.select_dialog = LanguageSelectDialog(langs, parent=self.controller.main_controller.view.main_window)

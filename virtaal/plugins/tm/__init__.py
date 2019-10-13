@@ -18,10 +18,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 from virtaal.controllers.baseplugin import BasePlugin
-
-from tmcontroller import TMController
+from .tmcontroller import TMController
 
 
 class Plugin(BasePlugin):

@@ -137,7 +137,7 @@ class OpenTranClient(GObject.GObject, HTTPClient):
         """Does the loading of the JSON response, but handles exceptions."""
         try:
             data = json.loads(response)
-        except Exception, exc:
+        except Exception as exc:
             logging.debug('JSON exception: %s' % (exc))
             return None
         return data

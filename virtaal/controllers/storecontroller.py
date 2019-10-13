@@ -18,13 +18,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
 from gi.repository import GObject
 
-from basecontroller import BaseController
 from virtaal.common import GObjectWrapper
+from .basecontroller import BaseController
 
 
 # TODO: Create an event that is emitted when a cursor is created
@@ -170,7 +171,7 @@ class StoreController(BaseController):
             # calls unit.__eq__ which does a *lot* of things.
             i = self.store.get_units().index(unit)
             #TODO: consider replacing with API that uses index instead of unit
-        except Exception, exc:
+        except Exception as exc:
             import logging
             logging.debug('Unit not found:\n%s' % (exc))
 
@@ -190,7 +191,7 @@ class StoreController(BaseController):
             try:
                 from translate.storage.project import Project
                 self.project = Project(bundleprojstore.BundleProjectStore(filename))
-            except bundleprojstore.InvalidBundleError, err:
+            except bundleprojstore.InvalidBundleError as err:
                 logging.exception('Unable to load project bundle')
 
             if not len(self.project.store.transfiles):
@@ -248,7 +249,7 @@ class StoreController(BaseController):
         self.main_controller.set_force_saveas(force_saveas)
         self.main_controller.set_saveable(self._modified)
 
-        from cursor import Cursor
+        from .cursor import Cursor
         self.cursor = Cursor(self.store, self.store.stats['total'])
 
         self.view.load_store(self.store)

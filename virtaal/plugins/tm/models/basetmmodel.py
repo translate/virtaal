@@ -17,12 +17,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import print_function, unicode_literals, absolute_import
 
-import htmlentitydefs
 import os
 import re
 
 from gi.repository import GObject
+from six.moves import html_entities as htmlentitydefs
 
 from virtaal.common import pan_app
 from virtaal.models.basemodel import BaseModel

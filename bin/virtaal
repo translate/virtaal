@@ -21,8 +21,8 @@
 
 import sys
 from os import path
-from virtaal.common import pan_app
 
+from virtaal.common import pan_app
 
 # Some behaviour should vary, depending on whether Virtaal is packaged or not
 packaged = getattr(sys, 'frozen', False)
@@ -57,15 +57,15 @@ if not packaged:
         warnings = '\n'.join([error_messages[name] for name in failed if name in optional_modules])
 
         if warnings:
-            print 'DEPENDENCY WARNINGS:'
-            print warnings
+            print('DEPENDENCY WARNINGS:')
+            print(warnings)
         if errors:
-            print 'DEPENDENCY ERRORS:'
-            print errors
-        print
-        print "You can disable dependency checking to speed up startup by setting"
-        print "  packaged = True"
-        print "in the file '%s'" % __file__
+            print('DEPENDENCY ERRORS:')
+            print(errors)
+        print()
+        print("You can disable dependency checking to speed up startup by setting")
+        print("  packaged = True")
+        print("in the file '%s'" % __file__)
         if errors:
             sys.exit(1)
 # OK, dependencies seem to be acceptable

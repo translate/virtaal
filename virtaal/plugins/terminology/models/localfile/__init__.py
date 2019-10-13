@@ -17,20 +17,23 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, unicode_literals, print_function
 
 import logging
 import os
+
 from translate.search.match import terminologymatcher
-from translate.storage.placeables.terminology import TerminologyPlaceable
 from translate.storage import factory
+from translate.storage.placeables.terminology import TerminologyPlaceable
 
 from virtaal.common import pan_app
+
 try:
     from virtaal.plugins.terminology.models.basetermmodel import BaseTerminologyModel
 except ImportError:
     from virtaal_plugins.terminology.models.basetermmodel import BaseTerminologyModel
 
-from localfileview import LocalFileView
+from .localfileview import LocalFileView
 
 
 class TerminologyModel(BaseTerminologyModel):

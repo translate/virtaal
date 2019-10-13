@@ -17,12 +17,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
-from virtaal.common import pan_app
+from six import string_types
 
-from basemodel import BaseModel
+from virtaal.common import pan_app
+from .basemodel import BaseModel
 
 
 def fix_indexes(stats, valid_units=None):
@@ -127,7 +129,7 @@ class StoreModel(BaseModel):
     def load_file(self, fileobj):
         # Adapted from Document.__init__()
         filename = fileobj
-        if isinstance(filename, basestring):
+        if isinstance(filename, string_types):
             if not os.path.exists(filename):
                 raise IOError(_('The file does not exist.'))
             if not os.path.isfile(filename):

@@ -17,10 +17,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
+from six import text_type
 from translate.search import match
 
-from basetmmodel import BaseTMModel
+from .basetmmodel import BaseTMModel
 
 
 class TMModel(BaseTMModel):
@@ -88,8 +90,8 @@ class TMModel(BaseTMModel):
         matches = []
 
         query_str = unit.source
-        if not isinstance(query_str, unicode):
-            query_str = unicode(query_str, 'utf-8')
+        if not isinstance(query_str, text_type):
+            query_str = query_str.decode('utf-8')
 
         for candidate in self.matcher.matches(query_str):
             m = match.unit2dict(candidate)
@@ -130,7 +132,7 @@ class TMModel(BaseTMModel):
                             meta = dict((pi.target, pi.text) for pi in extras)
                             tmsource = [meta.get("contact-name", ""), meta.get("category", ""), os.path.splitext(meta.get("original", ""))[0]]
                             tmsource = u"\n".join(filter(None, tmsource))
-                        except Exception, e:
+                        except Exception as e:
                             import logging
                             logging.info(e)
 

@@ -17,18 +17,19 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 import os.path
 
 from gi.repository import GObject
 from translate.storage.placeables import terminology
 
-from models.basetermmodel import BaseTerminologyModel
-from termview import TerminologyGUIInfo, TerminologyView
 from virtaal.common import GObjectWrapper
 from virtaal.controllers.basecontroller import BaseController
 from virtaal.controllers.plugincontroller import PluginController
 from virtaal.views import placeablesguiinfo
+from .models.basetermmodel import BaseTerminologyModel
+from .termview import TerminologyGUIInfo, TerminologyView
 
 
 class TerminologyController(BaseController):

@@ -18,14 +18,15 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
 from gi.repository import GObject, Gtk, Gdk
 
-from basemode import BaseMode
 from virtaal.controllers.cursor import Cursor
 from virtaal.views.theme import current_theme
+from .basemode import BaseMode
 
 
 class SearchMode(BaseMode):
@@ -330,7 +331,7 @@ class SearchMode(BaseMode):
             if tag:
                 tagtable.remove(tag)
             tagtable.add(self._make_highlight_tag())
-        except ValueError, ve:
+        except ValueError as ve:
             logging.exception("(Re-)adding search highlighting tag exception:")
 
         select_iters = []

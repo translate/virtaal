@@ -18,10 +18,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 from virtaal.controllers.baseplugin import BasePlugin
-
-from termcontroller import TerminologyController
+from .termcontroller import TerminologyController
 
 
 class Plugin(BasePlugin):
@@ -30,7 +30,7 @@ class Plugin(BasePlugin):
     version = 0.1
     default_config = {
         'backends_dialog_width': 400,
-        'disabled_models': '',
+        'disabled_models': 'opentran',
         'max_matches': '5',
         'min_quality': '70'
     }

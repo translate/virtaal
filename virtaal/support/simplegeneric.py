@@ -19,10 +19,11 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
-
+from __future__ import absolute_import, print_function, unicode_literals
 __all__ = ["generic"]
 
-from types import ClassType, InstanceType
+from six import class_types as ClassType
+from types import FunctionType
 classtypes = type, ClassType
 
 
@@ -40,7 +41,7 @@ def generic(func):
         else:
             return func(*args, **kw)
 
-    _by_type = {object: func, InstanceType: _by_class}
+    _by_type = {object: func, FunctionType: _by_class}
     _gbt = _by_type.get
 
     def when_type(t):

@@ -18,6 +18,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 import os.path
 
@@ -54,7 +55,7 @@ class TMController(BaseController):
         self._signal_ids = {}
         # tm query delay:
         self._delay_id = None
-        from tmview import TMView
+        from .tmview import TMView
         self.storecursor = None
         self.view = TMView(self, self.max_matches)
         self._load_models()
@@ -80,7 +81,7 @@ class TMController(BaseController):
            new_dirs.append(os.path.join(dir, 'tm', 'models'))
         self.plugin_controller.PLUGIN_DIRS = new_dirs
 
-        from models.basetmmodel import BaseTMModel
+        from .models.basetmmodel import BaseTMModel
         self.plugin_controller.PLUGIN_INTERFACE = BaseTMModel
         self.plugin_controller.PLUGIN_MODULES = ['virtaal_plugins.tm.models', 'virtaal.plugins.tm.models']
         self.plugin_controller.get_disabled_plugins = lambda *args: self.disabled_model_names

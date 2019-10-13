@@ -116,6 +116,6 @@ def check_dependencies(module_names=import_checks):
 if __name__ == '__main__':
     failed = check_dependencies()
     if not failed:
-        print 'All dependencies met.'
+        print('All dependencies met.')
     else:
-        print 'Dependencies not met: %s' % (', '.join(failed))
+        print('Dependencies not met: %s' % (', '.join(failed)))

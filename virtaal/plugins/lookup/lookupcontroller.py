@@ -17,16 +17,17 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
 from gi.repository import GObject
 
-from lookupview import LookupView
-from models.baselookupmodel import BaseLookupModel
 from virtaal.common import GObjectWrapper
 from virtaal.controllers.basecontroller import BaseController
 from virtaal.controllers.plugincontroller import PluginController
+from .lookupview import LookupView
+from .models.baselookupmodel import BaseLookupModel
 
 
 class LookupController(BaseController):

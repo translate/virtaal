@@ -21,7 +21,9 @@
 
 import logging
 import urllib
+
 import pycurl
+
 # These two json modules are API compatible
 try:
     import simplejson as json #should be a bit faster; needed for Python < 2.6
@@ -130,7 +132,7 @@ class TMModel(BaseTMModel):
             data['data']
             data['data']['translations']
             text = data['data']['translations'][0]['translatedText']
-        except Exception, e:
+        except Exception as e:
             self._disable_all("Error with json response: %s" % e)
             return
 
@@ -152,7 +154,7 @@ class TMModel(BaseTMModel):
             data = json.loads(val)
             data['data']
             languages = data['data']['languages']
-        except Exception, e:
+        except Exception as e:
             self._disable_all("Error with json response: %s" % e)
             return
         self._languages = set([l['language'] for l in languages])

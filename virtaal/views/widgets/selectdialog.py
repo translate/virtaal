@@ -17,12 +17,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 from gi.repository import Gtk
 from gi.repository.GObject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 
-from selectview import SelectView
 from virtaal.common import GObjectWrapper
+from .selectview import SelectView
 
 
 class SelectDialog(GObjectWrapper):

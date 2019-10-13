@@ -17,14 +17,16 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
 from gi.repository.GObject import SIGNAL_RUN_FIRST
+from six import string_types as basestring
 
-from basecontroller import BaseController
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.models.langmodel import LanguageModel
+from .basecontroller import BaseController
 
 
 class LanguageController(BaseController):

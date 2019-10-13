@@ -17,13 +17,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import
 
-from defaultmode      import DefaultMode
-from quicktransmode   import QuickTranslateMode
-from searchmode       import SearchMode
-from qualitycheckmode import QualityCheckMode
-from workflowmode     import WorkflowMode
-
+from .defaultmode import DefaultMode
+from .qualitycheckmode import QualityCheckMode
+from .quicktransmode import QuickTranslateMode
+from .searchmode import SearchMode
+from .workflowmode import WorkflowMode
 
 modeclasses = [DefaultMode, QuickTranslateMode, SearchMode, QualityCheckMode, WorkflowMode]
 

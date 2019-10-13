@@ -83,7 +83,7 @@ class LookupView(BaseView):
                 continue
             try:
                 info = plugin_controller.get_plugin_info(plugin_name)
-            except Exception, e:
+            except Exception as e:
                 logging.debug('Problem getting information for plugin %s' % plugin_name)
                 continue
             enabled = plugin_name in plugin_controller.plugins

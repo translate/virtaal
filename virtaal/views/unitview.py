@@ -17,19 +17,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 import re
 
 from gi.repository import Gtk, Gdk
 from gi.repository.GObject import idle_add, PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from six import text_type as unicode
 from translate.lang import factory
 
-import rendering
-from baseview import BaseView
 from virtaal.common import GObjectWrapper
-from widgets.listnav import ListNavigator
-from widgets.textbox import TextBox
+from . import rendering
+from .baseview import BaseView
+from .widgets.listnav import ListNavigator
+from .widgets.textbox import TextBox
 
 
 class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):

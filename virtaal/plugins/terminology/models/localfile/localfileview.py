@@ -188,9 +188,8 @@ class FileSelectDialog:
         all_supported_filter.set_name(_("All Supported Files"))
         dlg.add_filter(all_supported_filter)
         supported_files_dict = dict([ (_(name), (extension, mimetype)) for name, extension, mimetype in store_factory.supported_files() ])
-        supported_file_names = supported_files_dict.keys()
-        from locale import strcoll
-        supported_file_names.sort(cmp=strcoll)
+        supported_file_names = list(supported_files_dict.keys())
+        supported_file_names.sort()
         for name in supported_file_names:
             extensions, mimetypes = supported_files_dict[name]
             #XXX: we can't open generic .csv formats, so listing it is probably
@@ -257,7 +256,7 @@ class FileSelectDialog:
                 store = store_factory.getobject(filename)
                 currfiles.append(filename)
                 self.lst_files.append([filename, False])
-            except Exception, exc:
+            except Exception as exc:
                 message = _('Unable to load %(filename)s:\n\n%(errormsg)s') % {'filename': filename, 'errormsg': str(exc)}
                 mainview.show_error_dialog(title=_('Error opening file'), message=message)
 

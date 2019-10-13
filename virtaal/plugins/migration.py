@@ -28,13 +28,15 @@ try:
     import bsddb
 except ImportError:
     bsddb = None
-import ConfigParser
 import logging
 import os
-import StringIO
 import struct
 import sys
 from os import path
+
+import ConfigParser
+import StringIO
+
 try:
     from sqlite3 import dbapi2
 except ImportError:
@@ -120,7 +122,7 @@ class Plugin(BasePlugin):
         if not path.exists(config_filename):
             try:
                 import _winreg
-            except Exception, e:
+            except Exception as e:
                 return
 
             def get_thing(section, item):
@@ -137,9 +139,9 @@ class Plugin(BasePlugin):
                         name, data, type = _winreg.EnumValue(key, i)
                         if name == item:
                             break
-                except EnvironmentError, e:
+                except EnvironmentError as e:
                     pass
-                except Exception, e:
+                except Exception as e:
                     logging.exception("Error obtaining from registry: %s, %s", section, item)
                 return data
 

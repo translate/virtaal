@@ -17,15 +17,15 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
-from translate.lang.data import languages as toolkit_langs, tr_lang
 from translate.lang import data
+from translate.lang.data import languages as toolkit_langs, tr_lang
 
 from virtaal.common.pan_app import ui_language
-
-from basemodel import BaseModel
+from .basemodel import BaseModel
 
 gettext_lang = tr_lang(ui_language)
 

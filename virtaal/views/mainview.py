@@ -17,6 +17,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 import locale
 import os
@@ -24,10 +25,11 @@ import sys
 
 from gi.repository import Gdk
 from gi.repository import Gtk
+from six import string_types
 
-from baseview import BaseView
 from virtaal.common import pan_app
 from virtaal.views import theme
+from .baseview import BaseView
 
 
 def fill_dialog(dialog, title='', message='', markup=''):
@@ -151,7 +153,7 @@ class MainView(BaseView):
                 osxapp.ready()
                 osxapp.connect("NSApplicationOpenFile", self._on_osx_openfile_event)
                 osxapp.connect("NSApplicationBlockTermination", self._on_quit)
-            except ImportError, e:
+            except ImportError as e:
                 import logging
                 logging.debug("gtk_osxapplication module not found. Expect zero integration with the Mac desktop.")
 
@@ -450,7 +452,7 @@ class MainView(BaseView):
                 try:
                     nplurals = self.show_input_dialog(message=_("Please enter the number of noun forms (plurals) to use"))
                     return int(nplurals)
-                except ValueError, _e:
+                except ValueError as _e:
                     pass
 
         def ask_for_plurals_equation():
@@ -478,7 +480,7 @@ class MainView(BaseView):
     def append_menu_item(self, name, menu, after=None):
         """Add a new menu item with the given name to the menu with the given
             name (C{menu})."""
-        if isinstance(after, (str, unicode)):
+        if isinstance(after, (str, string_types)):
             after = self.find_menu(after)
 
         parent_item = None
@@ -811,7 +813,7 @@ class MainView(BaseView):
         openmailto.open("http://translate.sourceforge.net/wiki/guide/start")
 
     def _on_help_about(self, _widget=None):
-        from widgets.aboutdialog import AboutDialog
+        from .widgets.aboutdialog import AboutDialog
         AboutDialog(self.main_window)
 
     def _on_quit(self, *args):

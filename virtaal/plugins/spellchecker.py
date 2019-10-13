@@ -236,7 +236,7 @@ class Plugin(BasePlugin):
         spell = None
         try:
             spell = self.gtkspell.get_from_text_view(text_view)
-        except SystemError, e:
+        except SystemError as e:
             # At least on Mandriva .get_from_text_view() sometimes returns
             # a SystemError without a description. Things seem to work fine
             # anyway, so let's ignore it and hope for the best.
@@ -305,7 +305,7 @@ class Plugin(BasePlugin):
             spell = None
             try:
                 spell = self.gtkspell.get_from_text_view(text_view)
-            except SystemError, e:
+            except SystemError as e:
                 # At least on Mandriva .get_from_text_view() sometimes returns
                 # a SystemError without a description. Things seem to work fine
                 # anyway, so let's ignore it and hope for the best.
@@ -316,7 +316,7 @@ class Plugin(BasePlugin):
                 spell.set_language(language)
                 spell.recheck_all()
             text_view.spell_lang = language
-        except Exception, e:
+        except Exception as e:
             logging.exception("Could not initialize spell checking: %s", e)
             self.gtkspell = None
             #TODO: unload plugin

@@ -26,7 +26,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GObject
 
-from basecontroller import BaseController
+from .basecontroller import BaseController
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.views.mainview import MainView
 
@@ -210,7 +210,7 @@ class MainController(BaseController):
             self.store_controller.open_file(filename, uri, forget_dir=forget_dir)
             self.mode_controller.refresh_mode()
             return True
-        except Exception, exc:
+        except Exception as exc:
             import logging
             logging.exception('MainController.open_file(filename="%s", uri="%s")' % (filename, uri))
             self.show_error(
@@ -255,11 +255,11 @@ class MainController(BaseController):
         try:
             self.store_controller.save_file(filename)
             return True
-        except IOError, exc:
+        except IOError as exc:
             self.show_error(
                 _("Could not save file.\n\n%(error_message)s\n\nTry saving to a different location.") % {'error_message': str(exc)}
             )
-        except Exception, exc:
+        except Exception as exc:
             import logging
             logging.exception('MainController.save_file(filename="%s")' % (filename))
             self.show_error(
@@ -289,11 +289,11 @@ class MainController(BaseController):
         try:
             self.store_controller.binary_export(filename)
             return True
-        except IOError, exc:
+        except IOError as exc:
             self.show_error(
                 _("Could not export file.\n\n%(error_message)s\n\nTry saving to a different location.") % {'error_message': str(exc)}
             )
-        except Exception, exc:
+        except Exception as exc:
             import logging
             logging.exception('MainController.binary_export(filename="%s")' % (filename))
             self.show_error(
@@ -320,7 +320,7 @@ class MainController(BaseController):
         try:
             self.store_controller.revert_file()
             self.mode_controller.refresh_mode()
-        except Exception, exc:
+        except Exception as exc:
             import logging
             logging.exception('MainController.revert_file(filename="%s")' % (filename))
             self.show_error(
@@ -348,7 +348,7 @@ class MainController(BaseController):
             self.store_controller.update_file(filename, uri)
             self.mode_controller.refresh_mode()
             return True
-        except Exception, exc:
+        except Exception as exc:
             import logging
             logging.exception('MainController.update_file(filename="%s", uri="%s")' % (filename, uri))
             self.show_error(

@@ -18,14 +18,15 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
 from gi.repository import GObject
 from gi.repository import Gtk
 
-from storecellrenderer import StoreCellRenderer
-from storetreemodel import COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE, StoreTreeModel
+from .storecellrenderer import StoreCellRenderer
+from .storetreemodel import COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE, StoreTreeModel
 
 
 class StoreTreeView(Gtk.TreeView):

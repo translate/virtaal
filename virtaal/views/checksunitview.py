@@ -17,16 +17,15 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
-
-import locale
+from __future__ import absolute_import, print_function, unicode_literals
 
 from gi.repository import Gtk
 from gi.repository import Pango
 from translate.lang import factory as lang_factory
 
-from baseview import BaseView
 from virtaal.common.pan_app import ui_language
 from virtaal.views.widgets.popupwidgetbutton import PopupWidgetButton, POS_SE_NE
+from .baseview import BaseView
 
 
 class ChecksUnitView(BaseView):
@@ -119,7 +118,7 @@ class ChecksUnitView(BaseView):
 
         self.lst_checks.clear()
         nice_name = self.controller.get_check_name
-        sorted_failures = sorted(failures.iteritems(), key=lambda x: nice_name(x[0]), cmp=locale.strcoll)
+        sorted_failures = sorted(failures.items(), key=lambda x: nice_name(x[0]))
         names = []
         for testname, desc in sorted_failures:
             testname = nice_name(testname)

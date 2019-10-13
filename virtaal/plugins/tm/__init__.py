@@ -18,10 +18,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 from virtaal.controllers.baseplugin import BasePlugin
-
-from tmcontroller import TMController
+from .tmcontroller import TMController
 
 
 class Plugin(BasePlugin):
@@ -29,7 +29,7 @@ class Plugin(BasePlugin):
     description = _('Translation memory suggestions')
     version = 0.1
     default_config = {
-        'disabled_models': '_dummytm,remotetm,tinytm,apertium,google_translate,moses',
+        'disabled_models': '_dummytm,libtranslate,remotetm,tinytm,apertium,google_translate,moses,microsoft_translator,opentran',
         'max_matches': '5',
         'min_quality': '70'
     }

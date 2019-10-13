@@ -18,8 +18,9 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
-from basemodel import BaseModel
+from .basemodel import BaseModel
 
 
 class UndoModel(BaseModel):

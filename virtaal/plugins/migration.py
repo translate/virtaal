@@ -34,8 +34,8 @@ import struct
 import sys
 from os import path
 
-import ConfigParser
-import StringIO
+from six.moves import cStringIO as StringIO
+from six.moves import configparser as ConfigParser
 
 try:
     from sqlite3 import dbapi2

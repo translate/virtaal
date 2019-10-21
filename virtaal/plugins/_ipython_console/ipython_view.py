@@ -15,10 +15,10 @@ is available at U{http://www.opensource.org/licenses/bsd-license.php}
 import os
 import re
 import sys
-from StringIO import StringIO
 
 import IPython
-from gi.repository import Pango
+from gi.repository import Pango, Gtk
+from six.moves import cStringIO as StringIO
 
 
 class IterableIPShell:
@@ -216,11 +216,11 @@ class IterableIPShell:
     @type header: string
     '''
     stat = 0
-    if verbose or debug: print header+cmd
+    if verbose or debug: print(header + cmd)
     # flush stdout so we don't mangle python's buffering
     if not debug:
       input, output = os.popen4(cmd)
-      print output.read()
+      print(output.read())
       output.close()
       input.close()
 
@@ -392,13 +392,13 @@ class ConsoleView(Gtk.TextView):
     start_iter = self.text_buffer.get_iter_at_mark(self.line_start)
     if event.keyval == Gdk.KEY_Home:
         if event.get_state() & Gdk.ModifierType.CONTROL_MASK or event.get_state() & Gdk.ModifierType.MOD1_MASK:
-        pass
+            pass
         elif event.get_state() & Gdk.ModifierType.SHIFT_MASK:
-        self.text_buffer.move_mark(insert_mark, start_iter)
-        return True
-      else:
-        self.text_buffer.place_cursor(start_iter)
-        return True
+            self.text_buffer.move_mark(insert_mark, start_iter)
+            return True
+        else:
+            self.text_buffer.place_cursor(start_iter)
+            return True
     elif event.keyval == Gdk.KEY_Left:
       insert_iter.backward_cursor_position()
       if not insert_iter.editable(True):

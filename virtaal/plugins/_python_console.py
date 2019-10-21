@@ -8,6 +8,7 @@ from gi.repository import GObject
 from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import Pango
+from six import exec_
 
 from virtaal.controllers.baseplugin import BasePlugin
 
@@ -254,9 +255,9 @@ class PythonConsole(Gtk.ScrolledWindow):
             try:
                 r = eval(command, self.namespace, self.namespace)
                 if r is not None:
-                    print `r`
+                    print(r)
             except SyntaxError:
-                exec command in self.namespace
+                exec_(command, globals=self.namespace)
         except:
             if hasattr(sys, 'last_type') and sys.last_type == SystemExit:
                 self.destroy()
@@ -287,8 +288,10 @@ class gtkoutfile:
     def readlines(self):     return []
     def write(self, s):      self.console.write(s, self.tag)
     def writelines(self, l): self.console.write(l, self.tag)
-    def seek(self, a):       raise IOError, (29, 'Illegal seek')
-    def tell(self):          raise IOError, (29, 'Illegal seek')
+
+    def seek(self, a):       raise IOError(29, 'Illegal seek')
+
+    def tell(self):          raise IOError(29, 'Illegal seek')
     truncate = tell
 
 

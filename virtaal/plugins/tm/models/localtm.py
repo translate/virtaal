@@ -114,7 +114,7 @@ def test_port(host, port):
 
 def find_free_port(host, min_port, max_port):
     import random
-    port_range = range(min_port, max_port)
+    port_range = list(range(min_port, max_port))
     random.shuffle(port_range)
     for port in port_range:
         if test_port(host, port):

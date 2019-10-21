@@ -212,7 +212,7 @@ class PluginController(BaseController):
             if not os.path.isdir(dir):
                 continue
             for name in os.listdir(dir):
-                if name.startswith(u'.') or name.startswith(u'test_'):
+                if self._is_wrong_plugin_name(name):
                     continue
                 fullpath = os.path.join(dir, name)
                 if os.path.isdir(fullpath):
@@ -229,3 +229,7 @@ class PluginController(BaseController):
         plugin_names = list(set(plugin_names))
         #logging.debug('Found plugins: %s' % (', '.join(plugin_names)))
         return plugin_names
+
+    @staticmethod
+    def _is_wrong_plugin_name(name):
+        return name.startswith(u'.') or name.startswith(u'test_') or name == '__pycache__'

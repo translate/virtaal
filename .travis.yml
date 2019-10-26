@@ -2,15 +2,15 @@
 sudo: required
 language: python
 python:
-  - 2.6
   - 2.7
 install:
+  - sudo apt-get install libgnutls-dev
+  - sudo apt-get install python-gtk2
   - pip install Sphinx
   - pip install translate-toolkit
   - pip install python-Levenshtein
   - pip install lxml
   - pip install pycurl
-  - sudo apt-get install python-gtk2
 script:
   - make docs
   - python setup.py install

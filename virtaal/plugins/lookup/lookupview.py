@@ -116,8 +116,6 @@ class LookupView(BaseView):
 
 
     # SIGNAL HANDLERS #
-    def _on_lookup_selected(self, menuitem, plugin, query, query_is_source):
-        plugin.lookup(query, query_is_source, srclang, tgtlang)
 
     def _on_populate_popup(self, textbox, menu):
         buf = textbox.buffer

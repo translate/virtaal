@@ -170,7 +170,6 @@ class CellWidget(Gtk.HBox, Gtk.CellEditable):
     # INITIALIZERS #
     def __init__(self, *widgets):
         super(CellWidget, self).__init__()
-        Gtk.CellEditable.__init__(self)
         for w in widgets:
             if w.get_parent() is not None:
                 w.get_parent().remove(w)

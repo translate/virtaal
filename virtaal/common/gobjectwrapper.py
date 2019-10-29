@@ -32,27 +32,25 @@ class GObjectWrapper(GObject.GObject):
     def __init__(self):
         super(GObjectWrapper, self).__init__()
         self._all_signals = GObject.signal_list_names(self)
-        self._enabled_signals = list(self._all_signals)
+        self._enabled_signals = set(self._all_signals)
 
 
     # METHODS #
-    def disable_signals(self, signals=[]):
+    def disable_signals(self, signals=None):
         """Disable all or specified signals."""
         if signals:
             for sig in signals:
-                if sig in self._enabled_signals:
-                    self._enabled_signals.remove(sig)
+                self._enabled_signals.discard(sig)
         else:
-            self._enabled_signals = []
+            self._enabled_signals.clear()
 
-    def enable_signals(self, signals=[]):
+    def enable_signals(self, signals=None):
         """Enable all or specified signals."""
         if signals:
             for sig in signals:
-                if sig not in self._enabled_signals:
-                    self._enabled_signals.append(sig)
+                self._enabled_signals.add(sig)
         else:
-            self._enabled_signals = list(self._all_signals) # Enable all signals
+            self._enabled_signals = set(self._all_signals)  # Enable all signals
 
     def emit(self, signame, *args):
         if signame in self._enabled_signals:

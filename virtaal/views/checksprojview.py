@@ -19,6 +19,8 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import, print_function, unicode_literals
 
+import locale
+
 from gi.repository import Gtk
 
 from virtaal.views.widgets.popupmenubutton import PopupMenuButton
@@ -41,7 +43,7 @@ class ChecksProjectView(BaseView):
         for checkercode in self.controller.checker_info:
             checkername = self.controller._checker_code_to_name[checkercode]
             names.append(checkername)
-        for checkername in sorted(names):
+        for checkername in sorted(names, key=locale.strxfrm):
             mitem = Gtk.MenuItem(checkername)
             mitem.show()
             mitem.connect('activate', self._on_menu_item_activate)

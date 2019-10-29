@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import, print_function, unicode_literals
 
+import locale
 import logging
 import os
 
@@ -45,7 +46,7 @@ class LanguageView(BaseView):
         from .widgets.langselectdialog import LanguageSelectDialog
         from .widgets.langadddialog import LanguageAddDialog
         langs = [LanguageModel(lc) for lc in LanguageModel.languages]
-        langs.sort(key=lambda x: x.name)
+        langs.sort(key=lambda x: locale.strxfrm(x.name))
         self.select_dialog = LanguageSelectDialog(langs, parent=self.controller.main_controller.view.main_window)
         self.select_dialog.btn_add.connect('clicked', self._on_addlang_clicked)
 
@@ -192,7 +193,7 @@ class LanguageView(BaseView):
         # Reload the language data in the selection dialog.
         self.select_dialog.clear_langs()
         langs = [LanguageModel(lc) for lc in LanguageModel.languages]
-        langs.sort(key=lambda x: x.name)
+        langs.sort(key=lambda x: locale.strxfrm(x.name))
         self.select_dialog.update_languages(langs)
 
     def _on_button_toggled(self, popupbutton):

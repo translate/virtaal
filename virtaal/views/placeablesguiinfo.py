@@ -73,10 +73,16 @@ class StringElemGUI(object):
     def create_tags(self):
         tag = Gtk.TextTag()
         if self.fg:
-            tag.props.foreground = self.fg
+            if isinstance(self.fg, str):
+                tag.props.foreground = self.fg
+            else:
+                tag.props.foreground_rgba = self.fg
 
         if self.bg:
-            tag.props.background = self.bg
+            if isinstance(self.bg, str):
+                tag.props.background = self.bg
+            else:
+                tag.props.background_rgba = self.bg
 
         return [(tag, None, None)]
 

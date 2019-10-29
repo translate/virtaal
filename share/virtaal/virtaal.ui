@@ -2740,13 +2740,21 @@ If you are translating from English to French then French would be your translat
       <object class="GtkVBox" id="vbox8">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="valign">start</property>
         <property name="spacing">15</property>
         <child>
-          <object class="GtkImage" id="img_banner">
+          <object class="GtkLayout">
+            <property name="height_request">80</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="xalign">0</property>
-            <property name="yalign">0</property>
+            <property name="width">400</property>
+            <property name="height">160</property>
+            <child>
+              <object class="GtkImage" id="img_banner">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>

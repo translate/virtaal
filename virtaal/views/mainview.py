@@ -360,10 +360,10 @@ class MainView(BaseView):
 
     def _setup_dnd(self):
         """configures drag and drop"""
-        targets = Gtk.TargetList().add_uri_targets(0)
         # Konqueror needs Gdk.DragAction.MOVE
-        self.main_window.drag_dest_set(Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY | Gdk.DragAction.MOVE)
-        self.main_window.connect("drag_data_received", self._on_drag_data_received)
+        self.main_window.drag_dest_set(Gtk.DestDefaults.ALL, None, Gdk.DragAction.COPY | Gdk.DragAction.MOVE)
+        self.main_window.drag_dest_add_uri_targets()
+        self.main_window.connect("drag-data-received", self._on_drag_data_received)
 
     def _on_drag_data_received(self, w, context, x, y, data, info, time):
         if sys.platform == 'darwin' or Gtk.targets_include_uri(context.list_targets()):

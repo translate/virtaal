@@ -139,7 +139,7 @@ class LookupView(BaseView):
 
         plugins = self.controller.plugin_controller.plugins
         menu_items = []
-        names = plugins.keys()
+        names = list(plugins.keys())
         names.sort()
         for name in names:
             menu_items.extend(

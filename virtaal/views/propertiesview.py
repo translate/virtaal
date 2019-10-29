@@ -41,12 +41,12 @@ def _statistics(stats):
     state_dict = statsdb.extended_state_strings
 
     # just to check that the code didn't get out of sync somewhere:
-    if not set(descriptions.iterkeys()) == set(state_dict.itervalues()):
+    if not set(descriptions.keys()) == set(state_dict.values()):
         logging.warning("statsdb.state_dict doesn't correspond to descriptions here")
 
     statistics = []
     # We want to build them up from untranslated -> reviewed
-    for state in sorted(state_dict.iterkeys()):
+    for state in sorted(state_dict.keys()):
         key = state_dict[state]
         if not key in stats:
             continue

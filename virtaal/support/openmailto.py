@@ -215,7 +215,7 @@ else:
             return _controllers[controller_name].open
 
         except KeyError:
-            if _controllers.has_key('xdg-open'):
+            if 'xdg-open' in _controllers:
                 return _controllers['xdg-open'].open
             else:
                 return webbrowser.open
@@ -265,7 +265,7 @@ def mailto_format(**kwargs):
     kwargs = _fix_addersses(**kwargs)
     parts = []
     for headername in ('to', 'cc', 'bcc', 'subject', 'body', 'attach'):
-        if kwargs.has_key(headername):
+        if headername in kwargs:
             headervalue = kwargs[headername]
             if not headervalue:
                 continue

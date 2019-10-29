@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+from six import text_type
 
 from basetmmodel import BaseTMModel
 
@@ -63,7 +64,7 @@ class TMModel(BaseTMModel):
     # METHODS #
     def query(self, tmcontroller, unit):
         if self.source_lang in self.clients and self.target_lang in self.clients[self.source_lang]:
-            query_str = unicode(unit.source) # cast in case of multistrings
+            query_str = text_type(unit.source) # cast in case of multistrings
             if query_str in self.cache:
                 self.emit('match-found', query_str, [self.cache[query_str]])
                 return

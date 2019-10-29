@@ -22,6 +22,7 @@ import logging
 
 from gi.repository import Gtk
 
+from virtaal.common.utils import get_unicode
 from virtaal.views.baseview import BaseView
 from virtaal.views.widgets.selectdialog import SelectDialog
 
@@ -123,7 +124,7 @@ class LookupView(BaseView):
         if not buf.get_has_selection():
             return
 
-        selection = buf.get_text(*buf.get_selection_bounds()).decode('utf-8').strip()
+        selection = get_unicode(buf.get_text(*buf.get_selection_bounds()), 'utf-8').strip()
         role      = textbox.role
         srclang   = self.lang_controller.source_lang.code
         tgtlang   = self.lang_controller.target_lang.code

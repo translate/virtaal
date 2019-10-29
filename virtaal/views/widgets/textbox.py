@@ -312,7 +312,7 @@ class TextBox(Gtk.TextView):
         self.refresh(update=True)
 
     def move_elem_selection(self, offset):
-        direction = offset/abs(offset) # Reduce offset to one of -1, 0 or 1
+        direction = int(offset/abs(offset)) # Reduce offset to one of -1, 0 or 1
         st_index = self.selector_textboxes.index(self.selector_textbox)
         st_len = len(self.selector_textboxes)
 

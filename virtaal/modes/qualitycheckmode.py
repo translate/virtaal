@@ -57,7 +57,7 @@ class QualityCheckMode(BaseMode):
         self.filter_checks = [check for check in self.filter_checks if check in self.stats]
         self.storecursor = self.store_controller.cursor
         self.checks_names = {}
-        for check, indices in self.stats.iteritems():
+        for check, indices in self.stats.items():
             if indices and check not in ('total', 'translated', 'untranslated', 'extended'):
                 self.checks_names[check] = self.main_controller.checks_controller.get_check_name(check)
 
@@ -111,7 +111,7 @@ class QualityCheckMode(BaseMode):
         return menu
 
     def _create_menu_entries(self, menu):
-        for mi, (name, signal_id) in self._menuitem_checks.iteritems():
+        for mi, (name, signal_id) in self._menuitem_checks.items():
             mi.disconnect(signal_id)
             menu.remove(mi)
         assert not menu.get_children()

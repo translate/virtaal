@@ -53,6 +53,7 @@ class PlaceablesController(BaseController):
         self._init_notarget_list()
 
         self.main_controller.view.main_window.connect('style-set', self._on_style_set)
+        self.main_controller.view.main_window.connect('style-updated', self._on_style_set)
         self._on_style_set(self.main_controller.view.main_window, None)
         self.main_controller.connect('quit', self._on_quit)
 
@@ -234,7 +235,7 @@ class PlaceablesController(BaseController):
 
 
     # EVENT HANDLERS #
-    def _on_style_set(self, widget, prev_style):
+    def _on_style_set(self, widget, prev_style=None):
         placeablesguiinfo.update_style(widget)
 
         # Refresh text boxes' colours

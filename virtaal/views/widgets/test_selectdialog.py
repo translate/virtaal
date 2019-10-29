@@ -45,7 +45,7 @@ class TestSelectDialog(object):
         self.dialog.run()
 
     def _on_dialog_action(self, dialog, item, action):
-        print '%s: %s' % (action, item)
+        print('%s: %s' % (action, item))
 
 
 if __name__ == '__main__':

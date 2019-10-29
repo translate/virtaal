@@ -19,13 +19,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import gtk.gdk
-import pango
+from gi.repository import Gtk, Gdk
+from gi.repository import Pango
 from translate.storage.placeables import base, StringElem, general, xliff
 
-from virtaal.views.rendering import get_role_font_description, make_pango_layout
 from virtaal.views import theme
+from virtaal.views.rendering import get_role_font_description, make_pango_layout
 
 
 def _count_anchors(buffer, itr):
@@ -68,7 +67,7 @@ class StringElemGUI(object):
 
     # METHODS #
     def create_tags(self):
-        tag = gtk.TextTag()
+        tag = Gtk.TextTag()
         if self.fg:
             tag.props.foreground = self.fg
 
@@ -292,7 +291,7 @@ class BxGUI(StringElemGUI):
     bg = '#E6E6FA'
 
     def create_repr_widgets(self):
-        self.widgets.append(gtk.Label('(('))
+        self.widgets.append(Gtk.Label(label='(('))
 
         for lbl in self.widgets:
             font_desc = get_role_font_description(self.textbox.role)
@@ -306,7 +305,7 @@ class ExGUI(StringElemGUI):
     bg = '#E6E6FA'
 
     def create_repr_widgets(self):
-        self.widgets.append(gtk.Label('))'))
+        self.widgets.append(Gtk.Label(label='))'))
 
         for lbl in self.widgets:
             font_desc = get_role_font_description(self.textbox.role)
@@ -321,8 +320,8 @@ class NewlineGUI(StringElemGUI):
     fg = theme.current_theme['subtle_fg']
 
     def create_repr_widgets(self):
-        lbl = gtk.Label(u'¶')
-        lbl.modify_fg(gtk.STATE_NORMAL, gtk.gdk.color_parse(self.fg)) # foreground is light grey
+        lbl = Gtk.Label(label=u'¶')
+        lbl.modify_fg(Gtk.StateType.NORMAL, Gdk.color_parse(self.fg))  # foreground is light grey
         font_desc = get_role_font_description(self.textbox.role)
         lbl.modify_font(font_desc)
         self.textbox.get_pango_context().set_font_description(font_desc)
@@ -334,10 +333,10 @@ class UrlGUI(StringElemGUI):
     fg = theme.current_theme['url_fg']
 
     def create_tags(self):
-        tag = gtk.TextTag()
+        tag = Gtk.TextTag()
         tag.props.foreground = self.fg
         tag.props.background = self.bg
-        tag.props.underline = pango.UNDERLINE_SINGLE
+        tag.props.underline = Pango.Underline.SINGLE
         return [(tag, None, None)]
 
 
@@ -345,8 +344,8 @@ class GPlaceableGUI(StringElemGUI):
     bg = '#ffd27f'
 
     def create_repr_widgets(self):
-        self.widgets.append(gtk.Label('<'))
-        self.widgets.append(gtk.Label('>'))
+        self.widgets.append(Gtk.Label(label='<'))
+        self.widgets.append(Gtk.Label(label='>'))
         if self.elem.id:
             self.widgets[0].set_text('<%s|' % (self.elem.id))
 
@@ -362,7 +361,7 @@ class XPlaceableGUI(StringElemGUI):
     bg = '#ff7fef'
 
     def create_repr_widgets(self):
-        lbl = gtk.Label('[]')
+        lbl = Gtk.Label(label='[]')
         self.widgets.append(lbl)
         if self.elem.id:
             lbl.set_text('[%s]' % (self.elem.id))
@@ -378,8 +377,8 @@ class UnknownXMLGUI(StringElemGUI):
     bg = '#add8e6'
 
     def create_repr_widgets(self):
-        self.widgets.append(gtk.Label('{'))
-        self.widgets.append(gtk.Label('}'))
+        self.widgets.append(Gtk.Label(label='{'))
+        self.widgets.append(Gtk.Label(label='}'))
 
         info = ''
         if self.elem.xml_node.tag:
@@ -404,8 +403,9 @@ class UnknownXMLGUI(StringElemGUI):
             lbl.set_size_request(-1, int(h/1.2))
 
 def update_style(widget):
-    fg = widget.style.fg[gtk.STATE_NORMAL]
-    bg = widget.style.base[gtk.STATE_NORMAL]
+    _style = widget.get_style_context()
+    fg = _style.get_color(Gtk.StateType.NORMAL)
+    bg = _style.get_background_color(Gtk.StateType.NORMAL)
     StringElemGUI.fg = fg.to_string()
     StringElemGUI.bg = bg.to_string()
     PhGUI.fg = theme.current_theme['markup_warning_fg']

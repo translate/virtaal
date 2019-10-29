@@ -17,18 +17,19 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
-import gobject
 import os.path
+
+from gi.repository import GObject
 from translate.storage.placeables import terminology
 
 from virtaal.common import GObjectWrapper
 from virtaal.controllers.basecontroller import BaseController
 from virtaal.controllers.plugincontroller import PluginController
 from virtaal.views import placeablesguiinfo
-
-from models.basetermmodel import BaseTerminologyModel
-from termview import TerminologyGUIInfo, TerminologyView
+from .models.basetermmodel import BaseTerminologyModel
+from .termview import TerminologyGUIInfo, TerminologyView
 
 
 class TerminologyController(BaseController):
@@ -36,7 +37,7 @@ class TerminologyController(BaseController):
 
     __gtype_name__ = 'TerminologyController'
     __gsignals__ = {
-        'start-query': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING,))
+        'start-query': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_STRING,))
     }
 
     # INITIALIZERS #

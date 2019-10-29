@@ -18,43 +18,45 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-from gobject import SIGNAL_RUN_FIRST, SIGNAL_RUN_LAST
-
-from translate.storage.placeables import StringElem, parse as elem_parse
-from translate.storage.placeables.terminology import TerminologyPlaceable
+from gi.repository import Gtk, Gdk
+from gi.repository.GObject import SignalFlags
 from translate.lang import data
+from translate.storage.placeables import StringElem, parse as elem_parse
 
 from virtaal.views import placeablesguiinfo
 from virtaal.views.theme import current_theme
 
 
-class TextBox(gtk.TextView):
+class TextBox(Gtk.TextView):
     """
-    A C{gtk.TextView} extended to work with our nifty L{StringElem} parsed
+    A C{Gtk.TextView} extended to work with our nifty L{StringElem} parsed
     strings.
     """
 
     __gtype_name__ = 'TextBox'
     __gsignals__ = {
-        'element-selected':      (SIGNAL_RUN_FIRST, None, (object,)),
-        'key-pressed':           (SIGNAL_RUN_LAST,  bool, (object, str)),
-        'refreshed':             (SIGNAL_RUN_FIRST, None, (object,)),
-        'text-deleted':          (SIGNAL_RUN_LAST,  bool, (object, object, int, int, object)),
-        'text-inserted':         (SIGNAL_RUN_LAST,  bool, (object, int, object)),
-        'changed':               (SIGNAL_RUN_LAST, None, ()),
+        'element-selected': (SignalFlags.RUN_FIRST, None, (object,)),
+        'key-pressed': (SignalFlags.RUN_LAST, bool, (object, str)),
+        'refreshed': (SignalFlags.RUN_FIRST, None, (object,)),
+        'text-deleted': (SignalFlags.RUN_LAST, bool, (object, object, int, int, object)),
+        'text-inserted': (SignalFlags.RUN_LAST, bool, (object, int, object)),
+        'changed': (SignalFlags.RUN_LAST, None, ()),
     }
 
     SPECIAL_KEYS = {
-        'alt-down':  [(gtk.keysyms.Down,  gtk.gdk.MOD1_MASK)],
-        'alt-left':  [(gtk.keysyms.Left,  gtk.gdk.MOD1_MASK)],
-        'alt-right': [(gtk.keysyms.Right, gtk.gdk.MOD1_MASK)],
-        'enter':     [(gtk.keysyms.Return, 0), (gtk.keysyms.KP_Enter, 0)],
-        'ctrl-enter':[(gtk.keysyms.Return, gtk.gdk.CONTROL_MASK), (gtk.keysyms.KP_Enter, gtk.gdk.CONTROL_MASK)],
-        'ctrl-shift-enter':[(gtk.keysyms.Return, gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK), (gtk.keysyms.KP_Enter, gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK)],
-        'shift-tab': [(gtk.keysyms.ISO_Left_Tab, gtk.gdk.SHIFT_MASK), (gtk.keysyms.Tab, gtk.gdk.SHIFT_MASK)],
-        'ctrl-tab': [(gtk.keysyms.ISO_Left_Tab, gtk.gdk.CONTROL_MASK), (gtk.keysyms.Tab, gtk.gdk.CONTROL_MASK)],
-        'ctrl-shift-tab': [(gtk.keysyms.ISO_Left_Tab, gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK), (gtk.keysyms.Tab, gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK)],
+        'alt-down': [(Gdk.KEY_Down, Gdk.ModifierType.MOD1_MASK)],
+        'alt-left': [(Gdk.KEY_Left, Gdk.ModifierType.MOD1_MASK)],
+        'alt-right': [(Gdk.KEY_Right, Gdk.ModifierType.MOD1_MASK)],
+        'enter': [(Gdk.KEY_Return, 0), (Gdk.KEY_KP_Enter, 0)],
+        'ctrl-enter': [(Gdk.KEY_Return, Gdk.ModifierType.CONTROL_MASK),
+                       (Gdk.KEY_KP_Enter, Gdk.ModifierType.CONTROL_MASK)],
+        'ctrl-shift-enter': [(Gdk.KEY_Return, Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK),
+                             (Gdk.KEY_KP_Enter, Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK)],
+        'shift-tab': [(Gdk.KEY_ISO_Left_Tab, Gdk.ModifierType.SHIFT_MASK), (Gdk.KEY_Tab, Gdk.ModifierType.SHIFT_MASK)],
+        'ctrl-tab': [(Gdk.KEY_ISO_Left_Tab, Gdk.ModifierType.CONTROL_MASK),
+                     (Gdk.KEY_Tab, Gdk.ModifierType.CONTROL_MASK)],
+        'ctrl-shift-tab': [(Gdk.KEY_ISO_Left_Tab, Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK),
+                           (Gdk.KEY_Tab, Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK)],
     }
     """A table of name-keybinding mappings. The name (key) is passed as the
     second parameter to the 'key-pressed' event."""
@@ -134,7 +136,7 @@ class TextBox(gtk.TextView):
 
     def get_text(self, start_iter=None, end_iter=None):
         """Return the text rendered in this text box.
-            Uses C{gtk.TextBuffer.get_text()}."""
+            Uses C{Gtk.TextBuffer.get_text()}."""
         if isinstance(start_iter, int):
             start_iter = self.buffer.get_iter_at_offset(start_iter)
         if isinstance(end_iter, int):
@@ -143,11 +145,11 @@ class TextBox(gtk.TextView):
             start_iter = self.buffer.get_start_iter()
         if end_iter is None:
             end_iter = self.buffer.get_end_iter()
-        return data.forceunicode(self.buffer.get_text(start_iter, end_iter))
+        return data.forceunicode(self.buffer.get_text(start_iter, end_iter, include_hidden_chars=True))
 
     def set_text(self, text, update=False):
         """Set the text rendered in this text box.
-            Uses C{gtk.TextBuffer.set_text()}.
+            Uses C{Gtk.TextBuffer.set_text()}.
             @type  text: str|unicode|L{StringElem}
             @param text: The text to render in this text box."""
         if not isinstance(text, StringElem):
@@ -260,8 +262,8 @@ class TextBox(gtk.TextView):
         if selection:
             self.buffer.delete(*selection)
 
-        while gtk.events_pending():
-            gtk.main_iteration()
+        while Gtk.events_pending():
+            Gtk.main_iteration()
 
         cursor_pos = self.buffer.props.cursor_position
         widget = elem.gui_info.get_insert_widget()
@@ -273,7 +275,7 @@ class TextBox(gtk.TextView):
                 # the Gtk guys thought it acceptable to have create_child_anchor() above CHANGE
                 # THE PARAMETER ITER'S VALUE! But only in some cases, while the moon is 73.8% full
                 # and it's after 16:33. Documenting this is obviously also too much to ask.
-                # Nevermind the fact that there isn't simply a gtk.TextBuffer.remove_anchor() method
+                # Nevermind the fact that there isn't simply a Gtk.TextBuffer.remove_anchor() method
                 # or something similar. Why would you want to remove anything from a TextView that
                 # you have added anyway!?
                 # It's crap like this that'll make me ditch Gtk.
@@ -329,15 +331,16 @@ class TextBox(gtk.TextView):
     def __color_selector_textboxes(self, *args):
         """Put a highlighting border around the current selector text box."""
         if not hasattr(self, 'selector_color'):
-            self.selector_color = gtk.gdk.color_parse(current_theme['selector_textbox'])
+            self.selector_color = Gdk.color_parse(current_theme['selector_textbox'])
         if not hasattr(self, 'nonselector_color'):
-            self.nonselector_color = self.parent.style.bg[gtk.STATE_NORMAL]
+            self.nonselector_color = self.get_parent().get_style_context().get_color(Gtk.StateType.NORMAL)
 
         for selector in self.selector_textboxes:
             if selector is self.selector_textbox:
-                selector.parent.modify_bg(gtk.STATE_NORMAL, self.selector_color)
+                selector.get_parent().override_color(Gtk.StateType.NORMAL, Gdk.RGBA(*self.selector_color.to_floats()))
             else:
-                selector.parent.modify_bg(gtk.STATE_NORMAL, self.nonselector_color)
+                selector.get_parent().override_color(Gtk.StateType.NORMAL,
+                                                     Gdk.RGBA(*self.nonselector_color.to_floats()))
 
     def place_cursor(self, cursor_pos):
         cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)
@@ -348,7 +351,7 @@ class TextBox(gtk.TextView):
         self.buffer.place_cursor(cursor_iter)
         # Make sure the cursor is visible to reduce jitters (with backspace at
         # the end of a long unit with scrollbar, for example).
-        self.scroll_to_iter(cursor_iter, 0.0)
+        self.scroll_to_iter(cursor_iter, 0.0, 0, 0, 0)
 
     def refresh(self, preserve_selection=True, update=False):
         """Refresh the text box by setting its text to the current text."""
@@ -734,7 +737,7 @@ class TextBox(gtk.TextView):
         evname = None
 
         if self.suggestion_is_visible():
-            if event.keyval == gtk.keysyms.Tab:
+            if event.keyval == Gdk.KEY_Tab:
                 self.hide_suggestion()
                 self.buffer.insert(
                     self.buffer.get_iter_at_offset(self.suggestion['offset']),
@@ -747,23 +750,24 @@ class TextBox(gtk.TextView):
 
         # Uncomment the following block to get nice textual logging of key presses in the textbox
         #keyname = '<unknown>'
-        #for attr in dir(gtk.keysyms):
-        #    if getattr(gtk.keysyms, attr) == event.keyval:
+        # for attr in dir(Gtk.keysyms):
+        #    if getattr(Gtk.keysyms, attr) == event.keyval:
         #        keyname = attr
         #statenames = []
         #for attr in [a for a in ('MOD1_MASK', 'MOD2_MASK', 'MOD3_MASK', 'MOD4_MASK', 'MOD5_MASK', 'CONTROL_MASK', 'SHIFT_MASK', 'RELEASE_MASK', 'LOCK_MASK', 'SUPER_MASK', 'HYPER_MASK', 'META_MASK')]:
-        #    if event.state & getattr(gtk.gdk, attr):
+        #    if event.get_state() & getattr(Gtk.gdk, attr):
         #        statenames.append(attr)
         #statenames = '|'.join(statenames)
         #logging.debug('Key pressed: %s (%s)' % (keyname, statenames))
-        #logging.debug('state (raw): %x' % (event.state,))
+        #logging.debug('state (raw): %x' % (event.get_state(),))
 
         # Filter out unimportant flags that is present with other keyboard
         # layouts and input methods. The following has been encountered:
         # * MOD2_MASK - Num Lock (bug 926)
         # * LEAVE_NOTIFY_MASK - Arabic keyboard layout (?) (bug 926)
         # * 0x2000000 - IBus input method (bug 1281)
-        filtered_state = event.state & (gtk.gdk.CONTROL_MASK | gtk.gdk.MOD1_MASK | gtk.gdk.MOD4_MASK | gtk.gdk.SHIFT_MASK)
+        filtered_state = event.get_state() & (
+                    Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.MOD1_MASK | Gdk.ModifierType.MOD4_MASK | Gdk.ModifierType.SHIFT_MASK)
 
         for name, keyslist in self.SPECIAL_KEYS.items():
             for keyval, state in keyslist:

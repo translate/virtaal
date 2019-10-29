@@ -20,7 +20,7 @@
 
 __all__ = ['forall_widgets']
 
-import gtk
+from gi.repository import Gtk
 
 from virtaal.support.simplegeneric import generic
 
@@ -29,7 +29,8 @@ from virtaal.support.simplegeneric import generic
 def get_children(widget):
     return []
 
-@get_children.when_type(gtk.Container)
+
+@get_children.when_type(Gtk.Container)
 def get_children_container(widget):
     return widget.get_children()
 

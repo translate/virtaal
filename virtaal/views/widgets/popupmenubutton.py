@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from gi.repository import Gtk, GObject
 
 # Positioning constants below:
 # POS_CENTER_BELOW: Centers the pop-up window below the button (default).
@@ -44,16 +44,17 @@ _rtl_pos_map = {
         POS_NW_SW: POS_NE_SE,
 }
 
-class PopupMenuButton(gtk.ToggleButton):
+
+class PopupMenuButton(Gtk.ToggleButton):
     """A toggle button that displays a pop-up menu when clicked."""
 
     # INITIALIZERS #
     def __init__(self, label=None, menu_pos=POS_SW_NW):
-        gtk.ToggleButton.__init__(self, label=label)
-        self.set_relief(gtk.RELIEF_NONE)
-        self.set_menu(gtk.Menu())
+        GObject.GObject.__init__(self, label=label)
+        self.set_relief(Gtk.ReliefStyle.NONE)
+        self.set_menu(Gtk.Menu())
 
-        if self.get_direction() == gtk.TEXT_DIR_LTR:
+        if self.get_direction() == Gtk.TextDirection.LTR:
             self.menu_pos = menu_pos
         else:
             self.menu_pos = _rtl_pos_map.get(menu_pos, POS_SE_NE)
@@ -76,7 +77,7 @@ class PopupMenuButton(gtk.ToggleButton):
 
 
     # METHODS #
-    def _calculate_popup_pos(self, menu):
+    def _calculate_popup_pos(self, menu, *args):
         menu_width, menu_height = 0, 0
         menu_alloc = menu.get_allocation()
         if menu_alloc.height > 1:
@@ -85,7 +86,7 @@ class PopupMenuButton(gtk.ToggleButton):
         else:
             menu_width, menu_height = menu.size_request()
 
-        btn_window_xy = self.window.get_origin()
+        btn_window_xy = self.get_window().get_origin()
         btn_alloc = self.get_allocation()
 
         # Default values are POS_SW_NW
@@ -113,7 +114,7 @@ class PopupMenuButton(gtk.ToggleButton):
         return True
 
     def popup(self):
-        self.menu.popup(None, None, self._calculate_popup_pos, 0, 0)
+        self.menu.popup(None, None, self._calculate_popup_pos, None, 0, 0)
 
 
     # EVENT HANDLERS #

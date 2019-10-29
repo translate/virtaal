@@ -17,12 +17,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
-import gobject
+from gi.repository import GObject
 
 from virtaal.common import GObjectWrapper
-
-from basecontroller import BaseController
+from .basecontroller import BaseController
 
 
 class ModeController(BaseController):
@@ -37,7 +37,7 @@ class ModeController(BaseController):
 
     __gtype_name__ = 'ModeController'
     __gsignals__ = {
-        'mode-selected': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,)),
+        'mode-selected': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT,)),
     }
     default_mode_name = 'Default'
 

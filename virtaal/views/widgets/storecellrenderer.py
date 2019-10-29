@@ -18,10 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import gobject
-import pango
-
+from gi.repository import GObject
+from gi.repository import Gtk
+from gi.repository import Pango
 from translate.lang import factory
 
 from virtaal.common import pan_app
@@ -34,30 +33,34 @@ from virtaal.views.theme import current_theme
 def compute_optimal_height(widget, width):
     raise NotImplementedError()
 
-@compute_optimal_height.when_type(gtk.Widget)
+
+@compute_optimal_height.when_type(Gtk.Widget)
 def gtk_widget_compute_optimal_height(widget, width):
     pass
 
-@compute_optimal_height.when_type(gtk.Container)
+
+@compute_optimal_height.when_type(Gtk.Container)
 def gtk_container_compute_optimal_height(widget, width):
     if not widget.props.visible:
         return
     for child in widget.get_children():
         compute_optimal_height(child, width)
 
-@compute_optimal_height.when_type(gtk.Table)
+
+@compute_optimal_height.when_type(Gtk.Table)
 def gtk_table_compute_optimal_height(widget, width):
     for child in widget.get_children():
         # width / 2 because we use half of the available width
         compute_optimal_height(child, width / 2)
 
-@compute_optimal_height.when_type(gtk.TextView)
+
+@compute_optimal_height.when_type(Gtk.TextView)
 def gtk_textview_compute_optimal_height(widget, width):
     if not widget.props.visible:
         return
     buf = widget.get_buffer()
     # For border calculations, see gtktextview.c:gtk_text_view_size_request in the GTK source
-    border = 2 * widget.border_width - 2 * widget.parent.border_width
+    border = 2 * widget.get_border_width() - 2 * widget.get_parent().get_border_width()
     if widget.style_get_property("interior-focus"):
         border += 2 * widget.style_get_property("focus-line-width")
 
@@ -79,12 +82,13 @@ def gtk_textview_compute_optimal_height(widget, width):
         # directly after the file is opened. For now we try to guess a more
         # useful default than 0. This should look much better than 0, at least.
         h = 28
-    parent = widget.parent
-    if isinstance(parent, gtk.ScrolledWindow) and parent.get_shadow_type() != gtk.SHADOW_NONE:
-        border += 2 * parent.rc_get_style().ythickness
-    widget.parent.set_size_request(-1, h + border)
+    parent = widget.get_parent()
+    if isinstance(parent, Gtk.ScrolledWindow) and parent.get_shadow_type() != Gtk.ShadowType.NONE:
+        border += 2 * parent.get_style().ythickness
+    widget.get_parent().set_size_request(-1, h + border)
 
-@compute_optimal_height.when_type(gtk.Label)
+
+@compute_optimal_height.when_type(Gtk.Label)
 def gtk_label_compute_optimal_height(widget, width):
     if widget.get_text().strip() == "":
         widget.set_size_request(width, 0)
@@ -93,7 +97,7 @@ def gtk_label_compute_optimal_height(widget, width):
         widget.set_size_request(width, h)
 
 
-class StoreCellRenderer(gtk.GenericCellRenderer):
+class StoreCellRenderer(Gtk.CellRenderer):
     """
     Cell renderer for a unit based on the C{UnitRenderer} class from Virtaal's
     pre-MVC days.
@@ -106,23 +110,23 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
             object,
             "The unit",
             "The unit that this renderer is currently handling",
-            gobject.PARAM_READWRITE
+            GObject.PARAM_READWRITE
         ),
         "editable": (
             bool,
             "editable",
             "A boolean indicating whether this unit is currently editable",
             False,
-            gobject.PARAM_READWRITE
+            GObject.PARAM_READWRITE
         ),
     }
 
     __gsignals__ = {
         "editing-done": (
-            gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
-            (gobject.TYPE_STRING, gobject.TYPE_BOOLEAN, gobject.TYPE_BOOLEAN)
+            GObject.SignalFlags.RUN_FIRST, None,
+            (GObject.TYPE_STRING, GObject.TYPE_BOOLEAN, GObject.TYPE_BOOLEAN)
         ),
-        "modified": (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
+        "modified": (GObject.SignalFlags.RUN_FIRST, None, ())
     }
 
     ROW_PADDING = 10
@@ -130,8 +134,8 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
 
     # INITIALIZERS #
     def __init__(self, view):
-        gtk.GenericCellRenderer.__init__(self)
-        self.set_property('mode', gtk.CELL_RENDERER_MODE_EDITABLE)
+        super(StoreCellRenderer, self).__init__()
+        self.set_property('mode', Gtk.CellRendererMode.EDITABLE)
         self.view = view
         self.__unit = None
         self.editable = False
@@ -170,13 +174,16 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
             editor = self.view.get_unit_celleditor(self.unit)
             editor.set_size_request(width, -1)
             editor.show()
-            compute_optimal_height(editor, width)
+            # fixme: this will make vbox_editor width too large
+            # compute_optimal_height(editor, width)
             parent_height = widget.get_allocation().height
             if parent_height < -1:
                 parent_height = widget.size_request()[1]
             if parent_height > 0:
                 self.check_editor_height(editor, width, parent_height)
-            _width, height = editor.size_request()
+            size_request = editor.size_request()
+            _width = size_request.width
+            height = size_request.height
             height += self.ROW_PADDING
         else:
             height = self.compute_cell_height(widget, width)
@@ -194,7 +201,7 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
             self._editor_modified_id = editor.connect("modified", self._on_modified)
         return editor
 
-    def on_render(self, window, widget, _background_area, cell_area, _expose_area, _flags):
+    def do_render(self, window, widget, _background_area, cell_area, _flags):
         if self.editable:
             return True
         x_offset, y_offset, width, _height = self.do_get_size(widget, cell_area)
@@ -202,14 +209,32 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
         y = cell_area.y + y_offset
         source_x = x
         target_x = x
-        if widget.get_direction() == gtk.TEXT_DIR_LTR:
+        if widget.get_direction() == Gtk.TextDirection.LTR:
             target_x += width/2
         else:
             source_x += (width/2) + 10
-        widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False,
-                cell_area, widget, '', source_x, y, self.source_layout)
-        widget.get_style().paint_layout(window, gtk.STATE_NORMAL, False,
-                cell_area, widget, '', target_x, y, self.target_layout)
+        Gtk.paint_layout(
+            style=widget.get_style(),
+            cr=window,
+            state_type=Gtk.StateType.NORMAL,
+            use_text=False,
+            widget=widget,
+            detail='',
+            x=source_x,
+            y=y,
+            layout=self.source_layout
+        )
+        Gtk.paint_layout(
+            style=widget.get_style(),
+            cr=window,
+            state_type=Gtk.StateType.NORMAL,
+            use_text=False,
+            widget=widget,
+            detail='',
+            x=target_x,
+            y=y,
+            layout=self.target_layout
+        )
 
 
     # METHODS #
@@ -218,10 +243,10 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
         # We can't use widget.get_pango_context() because we'll end up
         # overwriting the language and font settings if we don't have a
         # new one
-        layout = pango.Layout(widget.create_pango_context())
+        layout = Pango.Layout(widget.create_pango_context())
         layout.set_font_description(font_description)
-        layout.set_wrap(pango.WRAP_WORD_CHAR)
-        layout.set_width(width * pango.SCALE)
+        layout.set_wrap(Pango.WrapMode.WORD_CHAR)
+        layout.set_width(width * Pango.SCALE)
         #XXX - plurals?
         text = text or u""
         layout.set_markup(markup.markuptext(text))
@@ -239,9 +264,9 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
         self.target_layout.get_context().set_language(rendering.get_language(tgtlang))
         # This makes no sense, but has the desired effect to align things correctly for
         # both LTR and RTL languages:
-        if widget.get_direction() == gtk.TEXT_DIR_RTL:
-            self.source_layout.set_alignment(pango.ALIGN_RIGHT)
-            self.target_layout.set_alignment(pango.ALIGN_RIGHT)
+        if widget.get_direction() == Gtk.TextDirection.RTL:
+            self.source_layout.set_alignment(Pango.Alignment.RIGHT)
+            self.target_layout.set_alignment(Pango.Alignment.RIGHT)
             self.target_layout.set_auto_dir(False)
         _layout_width, source_height = self.source_layout.get_pixel_size()
         _layout_width, target_height = self.target_layout.get_pixel_size()
@@ -251,7 +276,8 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
         notesheight = 0
 
         for note in editor._widgets['notes'].values():
-            notesheight += note.size_request()[1]
+            size_request = note.size_request()
+            notesheight += size_request.height
 
         maxheight = parentheight - notesheight
 
@@ -266,8 +292,8 @@ class StoreCellRenderer(gtk.GenericCellRenderer):
         max_tb_height = maxheight / len(visible_textboxes)
 
         for textbox in visible_textboxes:
-            if textbox.props.visible and textbox.parent.size_request()[1] > max_tb_height:
-                textbox.parent.set_size_request(-1, max_tb_height)
+            if textbox.props.visible and textbox.get_parent().size_request().height > max_tb_height:
+                textbox.get_parent().set_size_request(-1, max_tb_height)
                 #logging.debug('%s.set_size_request(-1, %d)' % (textbox.parent, max_tb_height))
 
 

@@ -18,36 +18,37 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import gobject
+from gi.repository import GObject
+from gi.repository import Gtk
+from pygtkcompat.generictreemodel import GenericTreeModel
 
 from virtaal.views import markup
 
-
 COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE = 0, 1, 2
 
-class StoreTreeModel(gtk.GenericTreeModel):
-    """Custom C{gtk.TreeModel} adapted from the old C{UnitModel} class."""
+
+class StoreTreeModel(GenericTreeModel):
+    """Custom C{Gtk.TreeModel} adapted from the old C{UnitModel} class."""
 
     def __init__(self, storemodel):
-        gtk.GenericTreeModel.__init__(self)
+        super(StoreTreeModel, self).__init__()
         self._store = storemodel
         self._store_len = len(storemodel)
         self._current_editable = 0
 
     def on_get_flags(self):
-        return gtk.TREE_MODEL_ITERS_PERSIST | gtk.TREE_MODEL_LIST_ONLY
+        return Gtk.TreeModelFlags.ITERS_PERSIST | Gtk.TreeModelFlags.LIST_ONLY
 
     def on_get_n_columns(self):
         return 3
 
     def on_get_column_type(self, index):
         if index == 0:
-            return gobject.TYPE_STRING
+            return GObject.TYPE_STRING
         elif index == 1:
-            return gobject.TYPE_PYOBJECT
+            return GObject.TYPE_PYOBJECT
         elif index == 2:
-            return gobject.TYPE_BOOLEAN
+            return GObject.TYPE_BOOLEAN
 
     def on_get_iter(self, path):
         return path[0]
@@ -112,4 +113,6 @@ class StoreTreeModel(gtk.GenericTreeModel):
         return self.on_get_path(store_index)
 
     def path_to_store_index(self, path):
+        if path is None:
+            return 0
         return path[0]

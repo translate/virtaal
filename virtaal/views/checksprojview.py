@@ -17,13 +17,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
-import locale
-import gtk
+from gi.repository import Gtk
 
 from virtaal.views.widgets.popupmenubutton import PopupMenuButton
-
-from baseview import BaseView
+from .baseview import BaseView
 
 
 class ChecksProjectView(BaseView):
@@ -37,13 +36,13 @@ class ChecksProjectView(BaseView):
 
     def _create_project_button(self):
         self.btn_proj = PopupMenuButton(label=_('Project Type'))
-        menu = gtk.Menu()
+        menu = Gtk.Menu()
         names = []
         for checkercode in self.controller.checker_info:
             checkername = self.controller._checker_code_to_name[checkercode]
             names.append(checkername)
-        for checkername in sorted(names, cmp=locale.strcoll):
-            mitem = gtk.MenuItem(checkername)
+        for checkername in sorted(names):
+            mitem = Gtk.MenuItem(checkername)
             mitem.show()
             mitem.connect('activate', self._on_menu_item_activate)
             menu.append(mitem)
@@ -57,7 +56,7 @@ class ChecksProjectView(BaseView):
         for child in statusbar.get_children():
             if child is self.btn_proj:
                 return
-        statusbar.pack_start(self.btn_proj, expand=False)
+        statusbar.pack_start(self.btn_proj, False, True, 0)
         statusbar.show_all()
 
     def set_checker_name(self, cname):
@@ -67,4 +66,4 @@ class ChecksProjectView(BaseView):
 
     # EVENT HANDLER #
     def _on_menu_item_activate(self, menuitem):
-        self.controller.set_checker_by_name(menuitem.child.get_label())
+        self.controller.set_checker_by_name(menuitem.get_child().get_label())

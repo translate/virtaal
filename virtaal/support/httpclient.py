@@ -18,12 +18,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import StringIO
-import urllib
 import logging
 
-import gobject
 import pycurl
+from gi.repository import GObject
+from six import StringIO
+from six.moves.urllib import request, parse
+
 try:
     import libproxy
     proxy_factory = libproxy.ProxyFactory()
@@ -40,23 +41,20 @@ class HTTPRequest(GObjectWrapper):
 
     __gtype_name__ = 'HttpClientRequest'
     __gsignals__ = {
-        "http-success":      (gobject.SIGNAL_RUN_LAST, None, (object,)),
-        "http-redirect":     (gobject.SIGNAL_RUN_LAST, None, (object,)),
-        "http-client-error": (gobject.SIGNAL_RUN_LAST, None, (object,)),
-        "http-server-error": (gobject.SIGNAL_RUN_LAST, None, (object,)),
+        "http-success": (GObject.SignalFlags.RUN_LAST, None, (object,)),
+        "http-redirect": (GObject.SignalFlags.RUN_LAST, None, (object,)),
+        "http-client-error": (GObject.SignalFlags.RUN_LAST, None, (object,)),
+        "http-server-error": (GObject.SignalFlags.RUN_LAST, None, (object,)),
     }
 
     def __init__(self, url, method='GET', data=None, headers=None,
             headers_only=False, user_agent=None, follow_location=False,
             force_quiet=True):
         GObjectWrapper.__init__(self)
-        self.result = StringIO.StringIO()
-        self.result_headers = StringIO.StringIO()
+        self.result = StringIO()
+        self.result_headers = StringIO()
 
-        if isinstance(url, unicode):
-            self.url = url.encode("utf-8")
-        else:
-            self.url = url
+        self.url = url
         self.method = method
         self.data = data
         self.headers = headers
@@ -122,9 +120,10 @@ class HTTPRequest(GObjectWrapper):
             if len(split_url) > 1:
                 #We were able to get a protocol
                 protocol, address = split_url
-                host, _path = urllib.splithost('//' + address)
-                proxies = urllib.getproxies()
-                if protocol in proxies and not urllib.proxy_bypass(host):
+                split_result = parse.urlsplit('//' + address)
+                host = split_result.hostname
+                proxies = request.getproxies()
+                if protocol in proxies and not request.proxy_bypass(host):
                     self.curl.setopt(pycurl.PROXY, proxies[protocol])
 
         # self reference required, because CurlMulti will only return
@@ -169,10 +168,10 @@ class RESTRequest(HTTPRequest):
         url = self.url
         self.id = id
         if id:
-            url += '/' + urllib.quote(id.encode('utf-8'), safe='')
+            url += '/' + parse.quote(id.encode('utf-8'), safe='')
 
         if params:
-            url += '?' + urllib.urlencode(params)
+            url += '?' + parse.urlencode(params)
 
         self.curl.setopt(pycurl.URL, url)
 
@@ -203,7 +202,7 @@ class HTTPClient(object):
     def run(self):
         """client should not be running when request queue is empty"""
         if self.running: return
-        gobject.timeout_add(100, self.perform)
+        GObject.timeout_add(100, self.perform)
         self.running = True
 
     def close_request(self, handle):
@@ -270,7 +269,7 @@ class HTTPClient(object):
                             distro_version = line.split('=')[-1]
                             distro_version = distro_version.replace('"', '')
                     platform = '%s; %s %s' % (platform, distro, distro_version)
-                except Exception, e:
+                except Exception as e:
                     pass
 
             # Debian, Ubuntu, Mandriva:
@@ -282,7 +281,7 @@ class HTTPClient(object):
                             distro = line.split('=')[-1]
                             distro = distro.replace('"', '')
                             platform = '%s; %s' % (platform, distro)
-                except Exception, e:
+                except Exception as e:
                     pass
             # Fedora, RHEL:
             elif os.path.isfile('/etc/system-release'):
@@ -291,7 +290,7 @@ class HTTPClient(object):
                     for line in lines:
                         distro, dummy, distro_version, codename = line.split()
                         platform = '%s; %s %s' % (platform, distro, distro_version)
-                except Exception, e:
+                except Exception as e:
                     pass
         elif platform.startswith('win'):
             major, minor = sys.getwindowsversion()[:2]

@@ -18,23 +18,26 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
-import gtk
-import gobject
 import logging
 
-from storecellrenderer import StoreCellRenderer
-from storetreemodel import COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE, StoreTreeModel
+from gi.repository import GObject
+from gi.repository import Gtk
+
+from .storecellrenderer import StoreCellRenderer
+from .storetreemodel import COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE, StoreTreeModel
 
 
-class StoreTreeView(gtk.TreeView):
+class StoreTreeView(Gtk.TreeView):
     """
-    The extended C{gtk.TreeView} we use display our units.
+    The extended C{Gtk.TreeView} we use display our units.
     This class was adapted from the old C{UnitGrid} class.
     """
+    __gtype_name__ = 'StoreTreeView'
 
     __gsignals__ = {
-        'modified':(gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
+        'modified': (GObject.SignalFlags.RUN_FIRST, None, ())
     }
 
     # INITIALIZERS #
@@ -43,7 +46,7 @@ class StoreTreeView(gtk.TreeView):
         super(StoreTreeView, self).__init__()
 
         self.set_headers_visible(False)
-        #self.set_direction(gtk.TEXT_DIR_LTR)
+        # self.set_direction(Gtk.TextDirection.LTR)
 
         self.renderer = self._make_renderer()
         self.append_column(self._make_column(self.renderer))
@@ -85,7 +88,7 @@ class StoreTreeView(gtk.TreeView):
         return renderer
 
     def _make_column(self, renderer):
-        column = gtk.TreeViewColumn(None, renderer, unit=COLUMN_UNIT, editable=COLUMN_EDITABLE)
+        column = Gtk.TreeViewColumn(None, renderer, unit=COLUMN_UNIT, editable=COLUMN_EDITABLE)
         column.set_expand(True)
         return column
 
@@ -96,9 +99,9 @@ class StoreTreeView(gtk.TreeView):
         model = self.get_model()
         if not model or not isinstance(model, StoreTreeModel):
             return
-        newpath = model.store_index_to_path(index)
+        newpath = Gtk.TreePath(model.store_index_to_path(index))
         selected = self.get_selection().get_selected()
-        selected_path = isinstance(selected[1], gtk.TreeIter) and model.get_path(selected[1]) or None
+        selected_path = isinstance(selected[1], Gtk.TreeIter) and model.get_path(selected[1]) or None
 
         if selected[1] is None or (selected_path and selected_path != newpath):
             #logging.debug('select_index()->self.set_cursor(path="%s")' % (newpath))
@@ -115,7 +118,7 @@ class StoreTreeView(gtk.TreeView):
                 self.set_cursor(newpath, self.get_columns()[0], start_editing=True)
                 self._waiting_for_row_change -= 1
             self._waiting_for_row_change += 1
-            gobject.idle_add(change_cursor, priority=gobject.PRIORITY_DEFAULT_IDLE)
+            GObject.idle_add(change_cursor, priority=GObject.PRIORITY_DEFAULT_IDLE)
 
     def set_model(self, storemodel):
         if storemodel:
@@ -194,7 +197,8 @@ class StoreTreeView(gtk.TreeView):
         if path != None:
             def do_setcursor():
                 self.set_cursor(path, column, start_editing=True)
-            gobject.idle_add(do_setcursor)
+
+            GObject.idle_add(do_setcursor)
 
         return False
 
@@ -206,11 +210,11 @@ class StoreTreeView(gtk.TreeView):
             return True
 
         index = model.path_to_store_index(path)
-        if index != self.view.cursor.index:
+        if self.view.cursor and index != self.view.cursor.index:
             self.view.cursor.index = index
 
         # We defer the scrolling until GTK has finished all its current drawing
-        # tasks, hence the gobject.idle_add. If we don't wait, then the TreeView
+        # tasks, hence the GObject.idle_add. If we don't wait, then the TreeView
         # draws the editor widget in the wrong position. Presumably GTK issues
         # a redraw event for the editor widget at a given x-y position and then also
         # issues a TreeView scroll; thus, the editor widget gets drawn at the wrong
@@ -220,10 +224,11 @@ class StoreTreeView(gtk.TreeView):
                 # cursor became invalid since this was added to the idle queue
                 # maybe because the file was closed since then.
                 return False
-            self.scroll_to_cell(path, self.get_column(0), True, 0.5, 0.0)
+            if path:
+                self.scroll_to_cell(path, self.get_column(0), True, 0.5, 0.0)
             return False
 
-        gobject.idle_add(do_scroll)
+        GObject.idle_add(do_scroll)
         return True
 
     def _on_key_press(self, _widget, _event, _data=None):

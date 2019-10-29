@@ -21,13 +21,16 @@
 
 """Contains the AutoCorrector class."""
 
-import gobject
 import logging
 import os
 import re
 import zipfile
 
+from gi.repository import GObject
+from six import text_type as unicode, string_types as basestring
+
 from virtaal.common import pan_app
+from virtaal.common.utils import get_unicode
 from virtaal.controllers.baseplugin import BasePlugin
 from virtaal.views.widgets.textbox import TextBox
 
@@ -146,7 +149,7 @@ class AutoCorrector(object):
         lang = lang.replace('_', '-')
         try:
             acor = zipfile.ZipFile(os.path.join(self.acorpath, 'acor_%s.dat' % lang))
-        except IOError, _exc:
+        except IOError as _exc:
             # Try to find a file that starts with 'acor_%s' % (lang[0]) (where
             # lang[0] is the part of lang before the '-') and ends with '.dat'
             langparts = lang.split('-')
@@ -179,7 +182,7 @@ class AutoCorrector(object):
 
         # Add auto-correction regex for each loaded word.
         for key, value in self.correctiondict.items():
-            self.correctiondict[key] = (unicode(value), re.compile(r'\b%s$' % (re.escape(key)), re.UNICODE))
+            self.correctiondict[key] = (get_unicode(value), re.compile(r'\b%s$' % (re.escape(key)), re.UNICODE))
 
         self.lang = lang
         return
@@ -224,7 +227,7 @@ class AutoCorrector(object):
             if reprange is not None:
                 # Updating of the buffer is deferred until after this signal
                 # and its side effects are taken care of. We abuse
-                # gobject.idle_add for that.
+                # GObject.idle_add for that.
                 def correct_text():
                     buffer = textbox.buffer
                     start_iter = elem.gui_info.treeindex_to_iter(reprange[0])
@@ -239,10 +242,11 @@ class AutoCorrector(object):
                     def refresh():
                         textbox.refresh_cursor_pos = newcursorpos
                         textbox.refresh()
-                    gobject.idle_add(refresh)
+
+                    GObject.idle_add(refresh)
                     return False
 
-                gobject.idle_add(correct_text)
+                GObject.idle_add(correct_text)
 
     def _remove_textbox(self, textbox):
         """Remove the given C{TextBox} from the list of widgets to do
@@ -275,7 +279,8 @@ class Plugin(BasePlugin):
                 for target in self.main_controller.unit_controller.view.targets:
                     self.autocorr.add_widget(target)
                 return False
-            gobject.idle_add(add_widgets)
+
+            GObject.idle_add(add_widgets)
 
         def on_store_loaded(storecontroller):
             self.autocorr.load_dictionary(lang=self.main_controller.lang_controller.target_lang.code)

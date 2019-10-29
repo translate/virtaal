@@ -18,9 +18,11 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
-import gobject
 import os.path
+
+from gi.repository import GObject
 from translate.lang.data import forceunicode, normalize
 
 from virtaal.controllers.basecontroller import BaseController
@@ -31,7 +33,7 @@ class TMController(BaseController):
 
     __gtype_name__ = 'TMController'
     __gsignals__ = {
-        'start-query': (gobject.SIGNAL_RUN_FIRST, None, (object,))
+        'start-query': (GObject.SignalFlags.RUN_FIRST, None, (object,))
     }
 
     QUERY_DELAY = 300
@@ -53,7 +55,7 @@ class TMController(BaseController):
         self._signal_ids = {}
         # tm query delay:
         self._delay_id = None
-        from tmview import TMView
+        from .tmview import TMView
         self.storecursor = None
         self.view = TMView(self, self.max_matches)
         self._load_models()
@@ -79,7 +81,7 @@ class TMController(BaseController):
            new_dirs.append(os.path.join(dir, 'tm', 'models'))
         self.plugin_controller.PLUGIN_DIRS = new_dirs
 
-        from models.basetmmodel import BaseTMModel
+        from .models.basetmmodel import BaseTMModel
         self.plugin_controller.PLUGIN_INTERFACE = BaseTMModel
         self.plugin_controller.PLUGIN_MODULES = ['virtaal_plugins.tm.models', 'virtaal.plugins.tm.models']
         self.plugin_controller.get_disabled_plugins = lambda *args: self.disabled_model_names
@@ -197,8 +199,8 @@ class TMController(BaseController):
             return False
 
         if self._delay_id:
-            gobject.source_remove(self._delay_id)
-        self._delay_id = gobject.timeout_add(self.QUERY_DELAY, start_query)
+            GObject.source_remove(self._delay_id)
+        self._delay_id = GObject.timeout_add(self.QUERY_DELAY, start_query)
 
 
     # EVENT HANDLERS #
@@ -240,7 +242,8 @@ class TMController(BaseController):
         def handle_first_unit():
             self._on_cursor_changed(self.storecursor)
             return False
-        gobject.idle_add(handle_first_unit)
+
+        GObject.idle_add(handle_first_unit)
 
     def _on_target_focused(self, unitcontroller, target_n):
         #import logging

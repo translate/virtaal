@@ -18,9 +18,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
-
-from basecontroller import BaseController
+from virtaal.common.utils import get_unicode
+from .basecontroller import BaseController
 
 
 class WelcomeScreenController(BaseController):
@@ -56,8 +57,8 @@ class WelcomeScreenController(BaseController):
     def activate(self):
         """Show the welcome screen and trigger activation logic (ie. find
             recent files)."""
-        import gobject
-        gobject.idle_add(self.update_recent, priority=gobject.PRIORITY_LOW)
+        from gi.repository import GObject
+        GObject.idle_add(self.update_recent, priority=GObject.PRIORITY_LOW)
         self.view.show()
 
     def open_cheatsheat(self):
@@ -71,7 +72,7 @@ class WelcomeScreenController(BaseController):
     def open_recent(self, n):
         n -= 1 # Shift from nominal value [1; 5] to index value [0; 4]
         if 0 <= n <= len(self._recent_files)-1:
-            self.open_file(self._recent_files[n]['uri'].decode('utf-8'))
+            self.open_file(get_unicode(self._recent_files[n]['uri'], 'utf-8'))
         else:
             import logging
             logging.debug('Invalid recent file index (%d) given. Recent files: %s)' % (n, self._recent_files))

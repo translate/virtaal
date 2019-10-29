@@ -17,13 +17,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
 import locale
-import gtk
+
+from gi.repository import Gtk
 
 from virtaal.views.widgets.popupmenubutton import PopupMenuButton, POS_NW_SW
-
-from basemode import BaseMode
+from .basemode import BaseMode
 
 
 class QualityCheckMode(BaseMode):
@@ -94,18 +95,18 @@ class QualityCheckMode(BaseMode):
     def _add_widgets(self):
         table = self.controller.view.mode_box
         self.btn_popup = PopupMenuButton(menu_pos=POS_NW_SW)
-        self.btn_popup.set_relief(gtk.RELIEF_NORMAL)
+        self.btn_popup.set_relief(Gtk.ReliefStyle.NORMAL)
         self.btn_popup.set_menu(self._create_checks_menu())
 
         self.widgets = [self.btn_popup]
 
-        xoptions = gtk.FILL
+        xoptions = Gtk.AttachOptions.FILL
         table.attach(self.btn_popup, 2, 3, 0, 1, xoptions=xoptions)
 
         table.show_all()
 
     def _create_checks_menu(self):
-        menu = gtk.Menu()
+        menu = Gtk.Menu()
         self._create_menu_entries(menu)
         return menu
 
@@ -117,14 +118,14 @@ class QualityCheckMode(BaseMode):
         self._menuitem_checks = {}
         for check_name, display_name in sorted(self.checks_names.iteritems(), key=lambda x: x[1], cmp=locale.strcoll):
             #l10n: %s is the name of the check and must be first. %d is the number of failures
-            menuitem = gtk.CheckMenuItem(label="%s (%d)" % (display_name, len(self.stats[check_name])))
+            menuitem = Gtk.CheckMenuItem(label="%s (%d)" % (display_name, len(self.stats[check_name])))
             menuitem.set_active(check_name in self.filter_checks)
             menuitem.show()
             self._menuitem_checks[menuitem] = (check_name, menuitem.connect('toggled', self._on_check_menuitem_toggled))
             menu.append(menuitem)
 
     def _update_button_label(self):
-        check_labels = [mi.child.get_label() for mi in self.btn_popup.menu if mi.get_active()]
+        check_labels = [mi.get_child().get_label() for mi in self.btn_popup.menu if mi.get_active()]
         btn_label = u''
         if not check_labels:
             #l10n: This is the button where the user can select units by failing quality checks
@@ -149,7 +150,7 @@ class QualityCheckMode(BaseMode):
     def _on_check_menuitem_toggled(self, checkmenuitem):
         self.filter_checks = []
         for menuitem in self.btn_popup.menu:
-            if not isinstance(menuitem, gtk.CheckMenuItem) or not menuitem.get_active():
+            if not isinstance(menuitem, Gtk.CheckMenuItem) or not menuitem.get_active():
                 continue
             if menuitem in self._menuitem_checks:
                 self.filter_checks.append(self._menuitem_checks[menuitem][0])

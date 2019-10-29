@@ -19,12 +19,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from distutils.core import setup, Distribution, Command
-from virtaal.__version__ import ver as virtaal_version
-from glob import glob
+from __future__ import print_function
+from __future__ import print_function
+from __future__ import print_function
+from __future__ import print_function
+from __future__ import print_function
+from __future__ import print_function
+
 import os
 import os.path as path
 import sys
+from distutils.core import setup, Command
+from glob import glob
+
+from virtaal.__version__ import ver as virtaal_version
 
 try:
     import py2exe
@@ -302,8 +310,8 @@ def compile_inno_script(script_path):
     compile_command = shell_compile_command.replace('"%1"', script_path)
     result = os.system(compile_command)
     if result:
-        print "Error compiling iss file"
-        print "Opening iss file, use InnoSetup GUI to compile manually"
+        print("Error compiling iss file")
+        print("Opening iss file, use InnoSetup GUI to compile manually")
         os.startfile(script_path)
 
 class BuildWin32Installer(build_exe):
@@ -321,10 +329,10 @@ class BuildWin32Installer(build_exe):
         build_exe.run(self)
         # create the Installer, using the files py2exe has created.
         exe_files = self.windows_exe_files + self.console_exe_files
-        print "*** creating the inno setup script***"
+        print("*** creating the inno setup script***")
         script_path = create_inno_script(PRETTY_NAME, self.lib_dir, self.dist_dir, exe_files, self.lib_files,
                                          version=self.distribution.metadata.version)
-        print "*** compiling the inno setup script***"
+        print("*** compiling the inno setup script***")
         compile_inno_script(script_path)
         # Note: By default the final setup.exe will be in an Output subdirectory.
 
@@ -483,9 +491,9 @@ def add_win32_options(options):
             "includes":   [
                     # some of these are needed by plugins and are therefore not detected
                     "lxml", "lxml._elementpath", "cairo", "pango",
-                    "pangocairo", "atk", "gobject", "gtk.keysyms",
+                "pangocairo", "atk", "gobject", "Gtk.keysyms",
                     "gtkspell",
-                    "gio", # needed for gtk.Builder
+                "gio",  # needed for Gtk.Builder
                     "tarfile",
                     "translate.storage.placeables.terminology", # terminology
                     "xmlrpclib", # Moses
@@ -533,7 +541,9 @@ def add_mac_options(options):
         "options": {
             "py2app": {
             "packages": ["CoreFoundation", "objc"],
-            "includes":   ["lxml", "lxml._elementpath", "lxml.etree", "glib", "gio", "psyco", "cairo", "pango", "pangocairo", "atk", "gobject", "gtk.keysyms", "pycurl", "translate.services", "translate.services.tmclient", "translate.services.opentranclient", "CoreFoundation"],
+                "includes": ["lxml", "lxml._elementpath", "lxml.etree", "glib", "gio", "psyco", "cairo", "pango",
+                             "pangocairo", "atk", "gobject", "Gtk.keysyms", "pycurl", "translate.services",
+                             "translate.services.tmclient", "translate.services.opentranclient", "CoreFoundation"],
                 #"semi_standalone": True,
                 "compressed": True,
                 "argv_emulation": True,
@@ -607,8 +617,8 @@ class DepCheckInstall(distutils.command.install.install):
             from virtaal.support import depcheck
             failed = depcheck.check_dependencies()
             if failed:
-                print 'Failed dependencies: %s' % (', '.join(failed))
-                print 'Use the --nodepcheck option to ignore dependencies.'
+                print('Failed dependencies: %s' % (', '.join(failed)))
+                print('Use the --nodepcheck option to ignore dependencies.')
                 exit(0)
         distutils.command.install.install.run(self, *args, **kwargs)
 

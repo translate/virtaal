@@ -17,17 +17,15 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
-import locale
-
-import gtk
-import pango
+from gi.repository import Gtk
+from gi.repository import Pango
 from translate.lang import factory as lang_factory
 
 from virtaal.common.pan_app import ui_language
 from virtaal.views.widgets.popupwidgetbutton import PopupWidgetButton, POS_SE_NE
-
-from baseview import BaseView
+from .baseview import BaseView
 
 
 class ChecksUnitView(BaseView):
@@ -51,11 +49,11 @@ class ChecksUnitView(BaseView):
         self._listsep = lang_factory.getlanguage(ui_language).listseperator
 
     def _create_checks_button(self, widget, main_window):
-        self.lbl_btnchecks = gtk.Label()
+        self.lbl_btnchecks = Gtk.Label()
         self.lbl_btnchecks.show()
-        self.lbl_btnchecks.set_ellipsize(pango.ELLIPSIZE_END)
+        self.lbl_btnchecks.set_ellipsize(Pango.EllipsizeMode.END)
         self.btn_checks = PopupWidgetButton(widget, label=None, popup_pos=POS_SE_NE, main_window=main_window, sticky=True)
-        self.btn_checks.set_property('relief', gtk.RELIEF_NONE)
+        self.btn_checks.set_property('relief', Gtk.ReliefStyle.NONE)
         self.btn_checks.set_update_popup_geometry_func(self.update_geometry)
         self.btn_checks.add(self.lbl_btnchecks)
 
@@ -65,31 +63,31 @@ class ChecksUnitView(BaseView):
         self.mnu_checks.connect('activate', self._on_activated)
 
     def _create_popup_content(self):
-        vb = gtk.VBox()
-        frame = gtk.Frame()
-        frame.set_shadow_type(gtk.SHADOW_ETCHED_IN)
+        vb = Gtk.VBox()
+        frame = Gtk.Frame()
+        frame.set_shadow_type(Gtk.ShadowType.ETCHED_IN)
         frame.add(vb)
 
-        self.lbl_empty = gtk.Label('<i>' + _('No issues') + '</i>')
+        self.lbl_empty = Gtk.Label(label='<i>' + _('No issues') + '</i>')
         self.lbl_empty.set_use_markup(True)
         self.lbl_empty.hide()
-        vb.pack_start(self.lbl_empty)
+        vb.pack_start(self.lbl_empty, True, True, 0)
 
-        self.lst_checks = gtk.ListStore(str, str)
-        self.tvw_checks = gtk.TreeView()
-        name_column = gtk.TreeViewColumn(_('Quality Check'), gtk.CellRendererText(), text=self.COL_CHECKNAME)
-        name_column.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+        self.lst_checks = Gtk.ListStore(str, str)
+        self.tvw_checks = Gtk.TreeView()
+        name_column = Gtk.TreeViewColumn(_('Quality Check'), Gtk.CellRendererText(), text=self.COL_CHECKNAME)
+        name_column.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
         self.tvw_checks.append_column(name_column)
 
-        description_renderer = gtk.CellRendererText()
-        #description_renderer.set_property('wrap-mode', pango.WRAP_WORD_CHAR)
-        description_column = gtk.TreeViewColumn(_('Description'), description_renderer, text=self.COL_DESC)
-        description_column.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+        description_renderer = Gtk.CellRendererText()
+        # description_renderer.set_property('wrap-mode', Pango.WrapMode.WORD_CHAR)
+        description_column = Gtk.TreeViewColumn(_('Description'), description_renderer, text=self.COL_DESC)
+        description_column.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
         self.tvw_checks.append_column(description_column)
         self.tvw_checks.set_model(self.lst_checks)
-        self.tvw_checks.get_selection().set_mode(gtk.SELECTION_NONE)
+        self.tvw_checks.get_selection().set_mode(Gtk.SelectionMode.NONE)
 
-        vb.pack_start(self.tvw_checks)
+        vb.pack_start(self.tvw_checks, True, True, 0)
 
         return frame
 
@@ -97,7 +95,7 @@ class ChecksUnitView(BaseView):
     # METHODS #
     def show(self):
         parent = self.controller.main_controller.unit_controller.view._widgets['vbox_right']
-        parent.pack_start(self.btn_checks, expand=False, fill=True)
+        parent.pack_start(self.btn_checks, False, True, 0)
         self.btn_checks.show()
 
     def hide(self):
@@ -120,7 +118,7 @@ class ChecksUnitView(BaseView):
 
         self.lst_checks.clear()
         nice_name = self.controller.get_check_name
-        sorted_failures = sorted(failures.iteritems(), key=lambda x: nice_name(x[0]), cmp=locale.strcoll)
+        sorted_failures = sorted(failures.items(), key=lambda x: nice_name(x[0]))
         names = []
         for testname, desc in sorted_failures:
             testname = nice_name(testname)

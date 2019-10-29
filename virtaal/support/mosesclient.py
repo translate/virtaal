@@ -18,10 +18,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gobject
 import logging
-import xmlrpclib
 
+import xmlrpclib
+from gi.repository import GObject
 from translate.lang import data
 
 from virtaal.support.httpclient import HTTPClient, HTTPRequest
@@ -56,17 +56,17 @@ def fixup(source, response):
     return response
 
 
-class MosesClient(gobject.GObject, HTTPClient):
+class MosesClient(GObject.GObject, HTTPClient):
     """A client to communicate with a moses XML RPC servers"""
 
     __gtype_name__ = 'MosesClient'
     __gsignals__ = {
-        'source-lang-changed': (gobject.SIGNAL_RUN_LAST, None, (str,)),
-        'target-lang-changed': (gobject.SIGNAL_RUN_LAST, None, (str,)),
+        'source-lang-changed': (GObject.SignalFlags.RUN_LAST, None, (str,)),
+        'target-lang-changed': (GObject.SignalFlags.RUN_LAST, None, (str,)),
     }
 
     def __init__(self, url):
-        gobject.GObject.__init__(self)
+        super(MosesClient, self).__init__()
         HTTPClient.__init__(self)
 
         self.url = url + '/RPC2'
@@ -107,12 +107,12 @@ class MosesClient(gobject.GObject, HTTPClient):
         """Does the loading of the XML-RPC response, but handles exceptions."""
         try:
             (data,), _fish = xmlrpclib.loads(response)
-        except xmlrpclib.Fault, exc:
+        except xmlrpclib.Fault as exc:
             if "Unknown translation system id" in exc.faultString:
                 self.set_multilang(False)
                 #TODO: consider redoing the request now that multilang is False
                 return None
-        except Exception, exc:
+        except Exception as exc:
             logging.debug('XML-RPC exception: %s' % (exc))
             return None
         return data

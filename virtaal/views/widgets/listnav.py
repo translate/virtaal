@@ -23,19 +23,21 @@ ListNavigator: A composite widget for navigating in a list of "states" by using
 "previous" and "next" buttons as well as a pop-up list containing all available
 options.
 """
+from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
-import gobject, gtk
 
-from popupwidgetbutton import PopupWidgetButton
+from gi.repository import Gtk, GObject, Gdk
+
+from .popupwidgetbutton import PopupWidgetButton
 
 
-class ListNavigator(gtk.HBox):
+class ListNavigator(Gtk.HBox):
     __gtype_name__ = 'ListNavigator'
     __gsignals__ = {
-        'back-clicked':      (gobject.SIGNAL_RUN_FIRST, None, ()),
-        'forward-clicked':   (gobject.SIGNAL_RUN_FIRST, None, ()),
-        'selection-changed': (gobject.SIGNAL_RUN_FIRST, None, (object,))
+        'back-clicked': (GObject.SignalFlags.RUN_FIRST, None, ()),
+        'forward-clicked': (GObject.SignalFlags.RUN_FIRST, None, ()),
+        'selection-changed': (GObject.SignalFlags.RUN_FIRST, None, (object,))
     }
 
     COL_DISPLAY, COL_VALUE = range(2)
@@ -46,11 +48,11 @@ class ListNavigator(gtk.HBox):
         self._init_widgets()
 
     def _init_treeview(self):
-        tvw = gtk.TreeView()
-        tvw.append_column(gtk.TreeViewColumn(
-            "State", gtk.CellRendererText(), text=self.COL_DISPLAY
+        tvw = Gtk.TreeView()
+        tvw.append_column(Gtk.TreeViewColumn(
+            "State", Gtk.CellRendererText(), text=self.COL_DISPLAY
         ))
-        lst = gtk.ListStore(str, object)
+        lst = Gtk.ListStore(str, object)
         tvw.set_model(lst)
         tvw.set_headers_visible(False)
         tvw.get_selection().connect('changed', self._on_selection_changed)
@@ -59,14 +61,14 @@ class ListNavigator(gtk.HBox):
 
     def _init_widgets(self):
         # Create widgets
-        self.btn_back = gtk.Button()
-        self.btn_forward = gtk.Button()
-        self.btn_back.add(gtk.Arrow(gtk.ARROW_LEFT, gtk.SHADOW_NONE))
-        self.btn_forward.add(gtk.Arrow(gtk.ARROW_RIGHT, gtk.SHADOW_NONE))
+        self.btn_back = Gtk.Button()
+        self.btn_forward = Gtk.Button()
+        self.btn_back.add(Gtk.Arrow(Gtk.ArrowType.LEFT, Gtk.ShadowType.NONE))
+        self.btn_forward.add(Gtk.Arrow(Gtk.ArrowType.RIGHT, Gtk.ShadowType.NONE))
 
         self.tvw_items, self.lst_items = self._init_treeview()
-        frame = gtk.Frame()
-        #frame.set_shadow_type(gtk.SHADOW_ETCHED_IN)
+        frame = Gtk.Frame()
+        # frame.set_shadow_type(Gtk.ShadowType.ETCHED_IN)
         frame.add(self.tvw_items)
 
         self.btn_popup = PopupWidgetButton(frame, label='(uninitialised)')
@@ -78,9 +80,9 @@ class ListNavigator(gtk.HBox):
         self.btn_popup.connect('key-press-event', self._on_popup_key_press_event)
 
         # Add widgets to containers
-        self.pack_start(self.btn_back,    expand=False, fill=False)
-        self.pack_start(self.btn_popup,   expand=True,  fill=True)
-        self.pack_start(self.btn_forward, expand=False, fill=False)
+        self.pack_start(self.btn_back, False, False, 0)
+        self.pack_start(self.btn_popup, True, True, 0)
+        self.pack_start(self.btn_forward, False, False, 0)
 
     def set_tooltips_text(self, backward, default, forward):
         """Set tooltips for the widgets."""
@@ -107,15 +109,15 @@ class ListNavigator(gtk.HBox):
         self.tvw_items.set_cursor(i)
 
     def set_model(self, model, unselectable=None, select_first=True, select_name=None):
-        """Set the model for the C{gtk.TreeView} in the pop-up window.
+        """Set the model for the C{Gtk.TreeView} in the pop-up window.
             @type  select_first: bool
             @param select_first: Whether or not the first row should be selected
             @type  select_name: str
             @param select_name: The row with this display value is selected.
                 This overrides C{select_first}."""
-        if model.get_column_type(self.COL_DISPLAY) != gobject.TYPE_STRING:
+        if model.get_column_type(self.COL_DISPLAY) != GObject.TYPE_STRING:
             raise ValueError('Column %d does not contain "string" values' % (self.COL_DISPLAY))
-        if model.get_column_type(self.COL_VALUE) != gobject.TYPE_PYOBJECT:
+        if model.get_column_type(self.COL_VALUE) != GObject.TYPE_PYOBJECT:
             raise ValueError('Column %d does not contain "object" values' % (self.COL_VALUE))
 
         # we're just initialising, so we don't want listeners to think something really changed
@@ -174,15 +176,16 @@ class ListNavigator(gtk.HBox):
 
         # See virtaal.views.widgets.textbox.TextBox._on_key_pressed for an
         # explanation fo the filter below.
-        filtered_state = event.state & (gtk.gdk.CONTROL_MASK | gtk.gdk.MOD1_MASK | gtk.gdk.MOD4_MASK | gtk.gdk.SHIFT_MASK)
+        filtered_state = event.get_state() & (
+                    Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.MOD1_MASK | Gdk.ModifierType.MOD4_MASK | Gdk.ModifierType.SHIFT_MASK)
         keyval = event.keyval
 
         if filtered_state == 0:
             # No modifying keys (like Ctrl and Alt) are pressed
-            if keyval == gtk.keysyms.Up and self.btn_popup.is_popup_visible:
+            if keyval == Gdk.KEY_Up and self.btn_popup.is_popup_visible:
                 self.move_state(-1)
                 return True
-            elif keyval == gtk.keysyms.Down and self.btn_popup.is_popup_visible:
+            elif keyval == Gdk.KEY_Down and self.btn_popup.is_popup_visible:
                 self.move_state(1)
                 return True
 
@@ -216,19 +219,20 @@ class ListNavigator(gtk.HBox):
 
 if __name__ == '__main__':
     # XXX: Uncomment below to test RTL
-    #gtk.widget_set_default_direction(gtk.TEXT_DIR_RTL)
+    #Gtk.widget_set_default_direction(Gtk.TextDirection.RTL)
     listnav = ListNavigator()
 
-    hb = gtk.HBox()
-    hb.pack_start(listnav, expand=False, fill=False)
-    vb = gtk.VBox()
-    vb.pack_start(hb, expand=False, fill=False)
+    hb = Gtk.HBox()
+    hb.pack_start(listnav, False, False, 0)
 
-    wnd = gtk.Window()
+    vb = Gtk.VBox()
+    vb.pack_start(hb, False, False, 0)
+
+    wnd = Gtk.Window()
     wnd.set_title('List Navigator Test')
     wnd.set_size_request(400, 300)
     wnd.add(vb)
-    wnd.connect('destroy', lambda *args: gtk.main_quit())
+    wnd.connect('destroy', lambda *args: Gtk.main_quit())
     listnav.set_parent_window(wnd)
 
     def on_selection_changed(sender, selected):
@@ -242,11 +246,11 @@ if __name__ == '__main__':
             def __str__(self):
                 return '<Item i=%s>' % (self.i)
 
-        lst = gtk.ListStore(str, object)
+        lst = Gtk.ListStore(str, object)
         for i in range(10):
-            lst.append([i, Item(i)])
+            lst.append([str(i), Item(i)])
         return lst
     listnav.set_model(create_test_model())
 
     wnd.show_all()
-    gtk.main()
+    Gtk.main()

@@ -18,12 +18,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
-import gobject
 import os
 
+from gi.repository import GObject
+
 from virtaal.common import GObjectWrapper
-from basecontroller import BaseController
+from .basecontroller import BaseController
 
 
 # TODO: Create an event that is emitted when a cursor is created
@@ -32,9 +34,9 @@ class StoreController(BaseController):
 
     __gtype_name__ = 'StoreController'
     __gsignals__ = {
-        'store-loaded': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
-        'store-saved':  (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
-        'store-closed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ()),
+        'store-loaded': (GObject.SignalFlags.RUN_FIRST, None, ()),
+        'store-saved': (GObject.SignalFlags.RUN_FIRST, None, ()),
+        'store-closed': (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
     # INITIALIZERS #
@@ -135,7 +137,7 @@ class StoreController(BaseController):
 
     def get_unit_celleditor(self, unit):
         """Load the given unit in via the C{UnitController} and return
-            the C{gtk.CellEditable} it creates."""
+            the C{Gtk.CellEditable} it creates."""
         return self.unit_controller.load_unit(unit)
 
     def is_modified(self):
@@ -169,7 +171,7 @@ class StoreController(BaseController):
             # calls unit.__eq__ which does a *lot* of things.
             i = self.store.get_units().index(unit)
             #TODO: consider replacing with API that uses index instead of unit
-        except Exception, exc:
+        except Exception as exc:
             import logging
             logging.debug('Unit not found:\n%s' % (exc))
 
@@ -189,7 +191,7 @@ class StoreController(BaseController):
             try:
                 from translate.storage.project import Project
                 self.project = Project(bundleprojstore.BundleProjectStore(filename))
-            except bundleprojstore.InvalidBundleError, err:
+            except bundleprojstore.InvalidBundleError as err:
                 logging.exception('Unable to load project bundle')
 
             if not len(self.project.store.transfiles):
@@ -247,7 +249,7 @@ class StoreController(BaseController):
         self.main_controller.set_force_saveas(force_saveas)
         self.main_controller.set_saveable(self._modified)
 
-        from cursor import Cursor
+        from .cursor import Cursor
         self.cursor = Cursor(self.store, self.store.stats['total'])
 
         self.view.load_store(self.store)

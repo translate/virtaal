@@ -18,14 +18,15 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
-import gobject
+from gi.repository import GObject
+from six import text_type as unicode
 from translate.storage.placeables import general, StringElem, parse as parse_placeables
 
 from virtaal.common import pan_app, GObjectWrapper
 from virtaal.views import placeablesguiinfo
-
-from basecontroller import BaseController
+from .basecontroller import BaseController
 
 
 class PlaceablesController(BaseController):
@@ -33,7 +34,7 @@ class PlaceablesController(BaseController):
 
     __gtype_name__ = 'PlaceablesController'
     __gsignals__ = {
-        'parsers-changed': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, tuple()),
+        'parsers-changed': (GObject.SignalFlags.RUN_FIRST, None, tuple()),
     }
 
     parsers = []
@@ -71,7 +72,7 @@ class PlaceablesController(BaseController):
 
         self.parsers = []
         for parser in general.parsers:
-            classname = parser.im_self.__name__.lower()
+            classname = parser.__self__.__name__.lower()
             if classname in disabled:
                 continue
             self.add_parsers(parser)
@@ -207,7 +208,7 @@ class PlaceablesController(BaseController):
             text."""
         if textbox in self.main_controller.unit_controller.view.targets:
             tgt_parsers = []
-            return [p for p in self.parsers if p.im_self not in self.non_target_placeables]
+            return [p for p in self.parsers if p.__self__ not in self.non_target_placeables]
         return self.parsers
 
     def get_gui_info(self, placeable):
@@ -244,7 +245,7 @@ class PlaceablesController(BaseController):
 
     def _on_quit(self, main_ctrlr):
         for parser in general.parsers:
-            classname = parser.im_self.__name__
+            classname = parser.__self__.__name__
             enabled = parser in self.parsers
             if classname in pan_app.settings.placeable_state or not enabled:
                 pan_app.settings.placeable_state[classname.lower()] = enabled and 'enabled' or 'disabled'

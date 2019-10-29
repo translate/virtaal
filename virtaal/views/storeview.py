@@ -17,11 +17,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
-import gtk
+from gi.repository import Gtk, Gdk
 
-from baseview import BaseView
-from widgets.storetreeview import StoreTreeView
+from .baseview import BaseView
+from .widgets.storetreeview import StoreTreeView
 
 
 # XXX: ASSUMPTION: The model to display is self.controller.store
@@ -55,12 +56,15 @@ class StoreView(BaseView):
         self._treeview = StoreTreeView(self)
 
     def _add_accelerator_bindings(self):
-        gtk.accel_map_add_entry("<Virtaal>/Navigation/Up", gtk.accelerator_parse("Up")[0], gtk.gdk.CONTROL_MASK)
-        gtk.accel_map_add_entry("<Virtaal>/Navigation/Down", gtk.accelerator_parse("Down")[0], gtk.gdk.CONTROL_MASK)
-        gtk.accel_map_add_entry("<Virtaal>/Navigation/PgUp", gtk.accelerator_parse("Page_Up")[0], gtk.gdk.CONTROL_MASK)
-        gtk.accel_map_add_entry("<Virtaal>/Navigation/PgDown", gtk.accelerator_parse("Page_Down")[0], gtk.gdk.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Navigation/Up", Gtk.accelerator_parse("Up")[0], Gdk.ModifierType.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Navigation/Down", Gtk.accelerator_parse("Down")[0],
+                               Gdk.ModifierType.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Navigation/PgUp", Gtk.accelerator_parse("Page_Up")[0],
+                               Gdk.ModifierType.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Navigation/PgDown", Gtk.accelerator_parse("Page_Down")[0],
+                               Gdk.ModifierType.CONTROL_MASK)
 
-        self.accel_group = gtk.AccelGroup()
+        self.accel_group = Gtk.AccelGroup()
         self.accel_group.connect_by_path("<Virtaal>/Navigation/Up", self._treeview._move_up)
         self.accel_group.connect_by_path("<Virtaal>/Navigation/Down", self._treeview._move_down)
         self.accel_group.connect_by_path("<Virtaal>/Navigation/PgUp", self._treeview._move_pgup)
@@ -113,7 +117,7 @@ class StoreView(BaseView):
         if child and child is not self._treeview:
             self.parent_widget.remove(child)
             child.destroy()
-        if not self._treeview.parent:
+        if not self._treeview.get_parent():
             self.parent_widget.add(self._treeview)
         self.parent_widget.show_all()
         if not self.controller.get_store():
@@ -133,7 +137,7 @@ class StoreView(BaseView):
         # TODO: Get file name from user.
         try:
             self.controller.export_project_file(filename=None)
-        except Exception, exc:
+        except Exception as exc:
             self.controller.main_controller.view.show_error_dialog(
                 title=_("Export failed"), message=str(exc)
             )
@@ -142,7 +146,7 @@ class StoreView(BaseView):
         # TODO: Get file name from user.
         try:
             self.controller.export_project_file(filename=None, openafter=True)
-        except Exception, exc:
+        except Exception as exc:
             self.controller.main_controller.view.show_error_dialog(
                 title=_("Export failed"), message=str(exc)
             )
@@ -151,7 +155,7 @@ class StoreView(BaseView):
         # TODO: Get file name from user.
         try:
             self.controller.export_project_file(filename=None, openafter=True, readonly=True)
-        except Exception, exc:
+        except Exception as exc:
             self.controller.main_controller.view.show_error_dialog(
                 title=_("Preview failed"), message=str(exc)
             )
@@ -160,4 +164,5 @@ class StoreView(BaseView):
         # The following color change is to reduce the flickering seen when
         # changing units. It's not the perfect cure, but helps a lot.
         # https://github.com/translate/virtaal/issues/1412
-        self._treeview.modify_base(gtk.STATE_ACTIVE, widget.style.bg[gtk.STATE_NORMAL])
+        self._treeview.override_background_color(Gtk.StateFlags.NORMAL,
+                                                 widget.get_style_context().get_background_color(Gtk.StateType.NORMAL))

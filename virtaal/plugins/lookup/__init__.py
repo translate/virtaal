@@ -19,10 +19,10 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 """Performs external look-ups on selected text."""
+from __future__ import absolute_import, print_function, unicode_literals
 
 from virtaal.controllers.baseplugin import BasePlugin
-
-from lookupcontroller import LookupController
+from .lookupcontroller import LookupController
 
 
 class Plugin(BasePlugin):

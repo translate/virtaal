@@ -18,24 +18,27 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+import gi
 
-import gtk
-import pango
-from gobject import idle_add, PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+gi.require_version('Gtk', '3.0')
+
+from gi.repository import Gtk
+from gi.repository import Pango
+from gi.repository.GObject import idle_add, PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 
 
 def flagstr(flags):
     """Create a string-representation for the given flags structure."""
     fset = []
-    for f in dir(gtk):
+    for f in dir(Gtk):
         if not f.startswith('CELL_RENDERER_'):
             continue
-        if flags & getattr(gtk, f):
+        if flags & getattr(Gtk, f):
             fset.append(f)
     return '|'.join(fset)
 
 
-class CellRendererWidget(gtk.GenericCellRenderer):
+class CellRendererWidget(Gtk.CellRenderer):
     __gtype_name__ = 'CellRendererWidget'
     __gproperties__ = {
         'widget': (TYPE_PYOBJECT, 'Widget', 'The column containing the widget to render', PARAM_READWRITE),
@@ -47,7 +50,7 @@ class CellRendererWidget(gtk.GenericCellRenderer):
 
     # INITIALIZERS #
     def __init__(self, strfunc, default_width=-1):
-        gtk.GenericCellRenderer.__init__(self)
+        super(CellRendererWidget, self).__init__()
 
         self.default_width = default_width
         self._editing = False
@@ -62,7 +65,7 @@ class CellRendererWidget(gtk.GenericCellRenderer):
     def do_get_property(self, pspec):
         return getattr(self, pspec.name)
 
-    def on_get_size(self, widget, cell_area=None):
+    def do_get_size(self, widget, cell_area=None):
         #print '%s>> on_get_size()' % (self.strfunc(self.widget))
         # FIXME: This method works fine for unselected cells (rows) and gives the same (wrong) results for selected cells.
         height = width = 0
@@ -77,7 +80,9 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         width, height = layout.get_pixel_size()
 
         if self.widget:
-            w, h = self.widget.size_request()
+            requisition = self.widget.size_request()
+            w = requisition.width
+            h = requisition.height
             width =  max(width,  w)
             height = max(height, h)
 
@@ -87,24 +92,32 @@ class CellRendererWidget(gtk.GenericCellRenderer):
 
         return self.XPAD, self.YPAD, width, height
 
-    def on_render(self, window, widget, bg_area, cell_area, expose_area, flags):
-        #print '%s>> on_render(flags=%s)' % (self.strfunc(self.widget), flagstr(flags))
-        if flags & gtk.CELL_RENDERER_SELECTED:
-            self.props.mode = gtk.CELL_RENDERER_MODE_EDITABLE
-            self._start_editing(widget) # FIXME: This is obviously a hack, but what more do you want?
-            return True
-        self.props.mode = gtk.CELL_RENDERER_MODE_INERT
+    def do_render(self, window, widget, bg_area, cell_area, flags):
+        # print '%s>> on_render(flags=%s)' % (self.strfunc(self.widget), flagstr(flags))
+        if flags & Gtk.CellRendererState.SELECTED:
+            self.props.mode = Gtk.CellRendererMode.EDITABLE
+            # FIXME: this will crash program
+            # self._start_editing(widget) # FIXME: This is obviously a hack, but what more do you want?
+            # return True
+        else:
+            self.props.mode = Gtk.CellRendererMode.INERT
         xo, yo, w, h = self.get_size(widget, cell_area)
         x = cell_area.x + xo
         layout = self.create_pango_layout(self.strfunc(self.widget), widget, w)
         layout_w, layout_h = layout.get_pixel_size()
         y = cell_area.y + yo + (h-layout_h)/2
-        widget.get_style().paint_layout(window, gtk.STATE_NORMAL, True, cell_area, widget, '', x, y, layout)
+        Gtk.render_layout(
+            context=widget.get_style_context(),
+            cr=window,
+            x=x,
+            y=y,
+            layout=layout
+        )
 
-    def on_start_editing(self, event, tree_view, path, bg_area, cell_area, flags):
+    def do_start_editing(self, event, tree_view, path, bg_area, cell_area, flags):
         #print '%s>> on_start_editing(flags=%s, event=%s)' % (self.strfunc(self.widget), flagstr(flags), event)
         editable = self.widget
-        if not isinstance(editable, gtk.CellEditable):
+        if not isinstance(editable, Gtk.CellEditable):
             editable = CellWidget(editable)
         editable.show_all()
         editable.grab_focus()
@@ -113,28 +126,28 @@ class CellRendererWidget(gtk.GenericCellRenderer):
     # METHODS #
     def create_pango_layout(self, string, widget, width):
         font = widget.get_pango_context().get_font_description()
-        layout = pango.Layout(widget.get_pango_context())
+        layout = Pango.Layout(widget.get_pango_context())
         layout.set_font_description(font)
-        layout.set_wrap(pango.WRAP_WORD_CHAR)
-        layout.set_width(width * pango.SCALE)
+        layout.set_wrap(Pango.WrapMode.WORD_CHAR)
+        layout.set_width(width * Pango.SCALE)
         layout.set_markup(string)
         # This makes no sense, but mostly has the desired effect to align things correctly for
         # RTL languages which is otherwise incorrect. Untranslated entries is still wrong.
-        if widget.get_direction() == gtk.TEXT_DIR_RTL:
-            layout.set_alignment(pango.ALIGN_RIGHT)
+        if widget.get_direction() == Gtk.TextDirection.RTL:
+            layout.set_alignment(Pango.Alignment.RIGHT)
             layout.set_auto_dir(False)
         return layout
 
     def _start_editing(self, treeview):
         """Force the cell to enter editing mode by going through the parent
-            gtk.TextView."""
+            Gtk.TextView."""
         if self._editing:
             return
         self._editing = True
 
         model, iter = treeview.get_selection().get_selected()
         path = model.get_path(iter)
-        col = [c for c in treeview.get_columns() if self in c.get_cell_renderers()]
+        col = [c for c in treeview.get_columns() if self in c.get_cells()]
         if len(col) < 1:
             self._editing = False
             return
@@ -145,7 +158,7 @@ class CellRendererWidget(gtk.GenericCellRenderer):
         idle_add(update_lock)
 
 
-class CellWidget(gtk.HBox, gtk.CellEditable):
+class CellWidget(Gtk.HBox, Gtk.CellEditable):
     __gtype_name__ = 'CellWidget'
     __gsignals__ = {
         'modified': (SIGNAL_RUN_FIRST, None, ())
@@ -157,10 +170,11 @@ class CellWidget(gtk.HBox, gtk.CellEditable):
     # INITIALIZERS #
     def __init__(self, *widgets):
         super(CellWidget, self).__init__()
+        Gtk.CellEditable.__init__(self)
         for w in widgets:
-            if w.parent is not None:
-                w.parent.remove(w)
-            self.pack_start(w)
+            if w.get_parent() is not None:
+                w.get_parent().remove(w)
+            self.pack_start(w, True, True, 0)
 
 
     # INTERFACE METHODS #
@@ -175,28 +189,30 @@ class CellWidget(gtk.HBox, gtk.CellEditable):
 
 
 if __name__ == "__main__":
-    class Tree(gtk.TreeView):
+    class Tree(Gtk.TreeView):
         def __init__(self):
-            self.store = gtk.ListStore(str, TYPE_PYOBJECT, bool)
-            gtk.TreeView.__init__(self)
+            self.store = Gtk.ListStore(str, TYPE_PYOBJECT, bool)
+            super(Tree, self).__init__()
             self.set_model(self.store)
             self.set_headers_visible(True)
 
-            self.append_column(gtk.TreeViewColumn('First', gtk.CellRendererText(), text=0))
-            self.append_column(gtk.TreeViewColumn('Second', CellRendererWidget(lambda widget: '<b>' + widget.get_children()[0].get_label() + '</b>'), widget=1))
+            self.append_column(Gtk.TreeViewColumn('First', Gtk.CellRendererText(), text=0))
+            self.append_column(Gtk.TreeViewColumn('Second', CellRendererWidget(
+                lambda widget: '<b>' + widget.get_children()[0].get_label() + '</b>'), widget=1))
 
         def insert(self, name):
             iter = self.store.append()
-            hb = gtk.HBox()
-            hb.pack_start(gtk.Button(name))
-            lbl = gtk.Label((name + ' ') * 20)
+            hb = Gtk.HBox()
+            hb.pack_start(Gtk.Button(name, True, True, 0), False, True, 0)
+            lbl = Gtk.Label(label=(name + ' ') * 20)
             lbl.set_line_wrap(True)
-            hb.pack_start(lbl, expand=False)
+            hb.pack_start(lbl, False, True, 0)
             self.store.set(iter, 0, name, 1, hb, 2, True)
 
-    w = gtk.Window()
-    w.set_position(gtk.WIN_POS_CENTER)
-    w.connect('delete-event', gtk.main_quit)
+
+    w = Gtk.Window()
+    w.set_position(Gtk.WindowPosition.CENTER)
+    w.connect('delete-event', Gtk.main_quit)
     t = Tree()
     t.insert('foo')
     t.insert('bar')
@@ -204,4 +220,4 @@ if __name__ == "__main__":
     w.add(t)
 
     w.show_all()
-    gtk.main()
+    Gtk.main()

@@ -1,15 +1,15 @@
 #!/usr/bin/env python
+from __future__ import absolute_import, unicode_literals, print_function
 
-import gtk
-import pango
-from gtk import gdk
+from gi.repository import Gdk
+from gi.repository import Gtk
+from gi.repository import Pango
 
 from virtaal.controllers.baseplugin import BasePlugin
+from .ipython_view import *
 
-from ipython_view import *
 
-
-class IPythonWindow(gtk.Window):
+class IPythonWindow(Gtk.Window):
     """The window that will contain the console widget."""
 
     FONT = "Luxi Mono 10"
@@ -21,11 +21,11 @@ class IPythonWindow(gtk.Window):
         self.console.updateNamespace(namespace)
 
     def _setup_console(self):
-        self.scrolled_win = gtk.ScrolledWindow()
-        self.scrolled_win.set_policy(gtk.POLICY_AUTOMATIC,gtk.POLICY_AUTOMATIC)
+        self.scrolled_win = Gtk.ScrolledWindow()
+        self.scrolled_win.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         self.console = IPythonView()
-        self.console.modify_font(pango.FontDescription(self.FONT))
-        self.console.set_wrap_mode(gtk.WRAP_CHAR)
+        self.console.modify_font(Pango.FontDescription(self.FONT))
+        self.console.set_wrap_mode(Gtk.WrapMode.CHAR)
 
         self.scrolled_win.add(self.console)
         self.add(self.scrolled_win)
@@ -52,16 +52,16 @@ class Plugin(BasePlugin):
     def _setup_key_bindings(self):
         """Setup Gtk+ key bindings (accelerators)."""
 
-        gtk.accel_map_add_entry("<Virtaal>/View/IPython Console", gtk.keysyms.y, gdk.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/View/IPython Console", Gdk.KEY_y, Gdk.ModifierType.CONTROL_MASK)
 
-        self.accel_group = gtk.AccelGroup()
+        self.accel_group = Gtk.AccelGroup()
         self.accel_group.connect_by_path("<Virtaal>/View/IPython Console", self._on_menuitem_activated)
 
         self.main_controller.view.add_accel_group(self.accel_group)
 
     def _setup_menu_item(self):
         self.menu = self.main_controller.view.gui.get_object('menu_view')
-        self.menuitem = gtk.MenuItem(label=_('_IPython Console'))
+        self.menuitem = Gtk.MenuItem(label=_('_IPython Console'))
         self.menuitem.show()
         self.menu.append(self.menuitem)
 
@@ -93,7 +93,7 @@ class Plugin(BasePlugin):
             self.window = IPythonWindow(namespace=ns, destroy_cb=self._on_console_destroyed)
             self.window.set_size_request(600, 400)
             self.window.set_title('Virtaal IPython Console')
-            self.window.set_transient_for(self.main_controller.view.main_window)
+            self.set_transient_for(self.main_controller.view.main_window)
             self.window.connect('destroy', self._on_console_destroyed)
         self.window.show_all()
         self.window.grab_focus()

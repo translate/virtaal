@@ -18,14 +18,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
-import gtk
-from gobject import idle_add
+from gi.repository import Gtk
+from gi.repository.GObject import idle_add
 
 from virtaal.common.pan_app import get_abs_data_filename, ui_language
 from virtaal.views.widgets.welcomescreen import WelcomeScreen
-
-from baseview import BaseView
+from .baseview import BaseView
 
 
 class WelcomeScreenView(BaseView):
@@ -42,14 +42,14 @@ class WelcomeScreenView(BaseView):
         self.parent_widget = self.controller.main_controller.view.gui.get_object('vbox_main')
 
         self.set_banner()
-        self.widget.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        self.widget.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         self.widget.connect('button-clicked', self._on_button_clicked)
 
     def set_banner(self):
         if ui_language == "ar":
             self.widget.set_banner_image(get_abs_data_filename(['virtaal', 'welcome_screen_banner_ar.png']))
             return
-        if self.widget.get_direction() == gtk.TEXT_DIR_RTL:
+        if self.widget.get_direction() == Gtk.TextDirection.RTL:
             self.widget.set_banner_image(get_abs_data_filename(['virtaal', 'welcome_screen_banner_rtl.png']))
         else:
             self.widget.set_banner_image(get_abs_data_filename(['virtaal', 'welcome_screen_banner.png']))
@@ -58,11 +58,11 @@ class WelcomeScreenView(BaseView):
     # METHODS #
     def hide(self):
         self.widget.hide()
-        if self.widget.parent is self.parent_widget:
+        if self.widget.get_parent() is self.parent_widget:
             self.parent_widget.remove(self.widget)
 
     def show(self):
-        if not self.widget.parent:
+        if not self.widget.get_parent():
             self.parent_widget.add(self.widget)
         else:
             self.widget.reparent(self.parent_widget)
@@ -73,10 +73,10 @@ class WelcomeScreenView(BaseView):
 
         def calculate_width():
             txt = self.widget.widgets['txt_features']
-            expander = txt.parent.parent
+            expander = txt.get_parent().get_parent()
 
             screenwidth = self.widget.get_allocation().width
-            col1 = self.widget.widgets['buttons']['open'].parent
+            col1 = self.widget.widgets['buttons']['open'].get_parent()
             width_col1 = col1.get_allocation().width
             if width_col1 > 0.7 * screenwidth:
                 width_col1 = int(0.7 * screenwidth)
@@ -108,11 +108,11 @@ class WelcomeScreenView(BaseView):
 
         iconfile = get_abs_data_filename(['icons', 'hicolor', '24x24', 'mimetypes', 'x-translation.png'])
         for i in range(len(items)):
-            buttons[i].child.get_children()[0].set_from_file(iconfile)
+            buttons[i].get_child().get_children()[0].set_from_file(iconfile)
             name = items[i]['name']
             name = name.replace('&', '&amp;')
             name = name.replace('<', '&lt;')
-            buttons[i].child.get_children()[1].set_markup(markup % {'name': name})
+            buttons[i].get_child().get_children()[1].set_markup(markup % {'name': name})
             buttons[i].set_tooltip_text(items[i]['uri'])
             buttons[i].props.visible = True
         for i in range(len(items), 5):

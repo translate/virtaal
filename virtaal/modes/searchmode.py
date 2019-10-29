@@ -18,16 +18,15 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import, print_function, unicode_literals
 
-import gobject
-import gtk
-import gtk.gdk
 import logging
 
-from virtaal.controllers.cursor import Cursor
+from gi.repository import GObject, Gtk, Gdk
 
-from basemode import BaseMode
+from virtaal.controllers.cursor import Cursor
 from virtaal.views.theme import current_theme
+from .basemode import BaseMode
 
 
 class SearchMode(BaseMode):
@@ -62,16 +61,16 @@ class SearchMode(BaseMode):
 
     def _create_widgets(self):
         # Widgets for search functionality (in first row)
-        self.ent_search = gtk.Entry()
+        self.ent_search = Gtk.Entry()
         self.ent_search.connect('changed', self._on_search_text_changed)
         self.ent_search.connect('activate', self._on_entry_activate)
-        self.btn_search = gtk.Button(_('Search'))
+        self.btn_search = Gtk.Button(_('Search'))
         self.btn_search.connect('clicked', self._on_search_clicked)
-        self.chk_casesensitive = gtk.CheckButton(_('_Case sensitive'))
+        self.chk_casesensitive = Gtk.CheckButton(_('_Case sensitive'))
         self.chk_casesensitive.connect('toggled', self._refresh_proxy)
         # l10n: To read about what regular expressions are, see
         # http://en.wikipedia.org/wiki/Regular_expression
-        self.chk_regex = gtk.CheckButton(_("_Regular expression"))
+        self.chk_regex = Gtk.CheckButton(_("_Regular expression"))
         self.chk_regex.connect('toggled', self._refresh_proxy)
 
         # Widgets for replace (second row)
@@ -79,13 +78,13 @@ class SearchMode(BaseMode):
         # text is typed. Keep in mind that the text box will appear after this text.
         # If this sentence construction is hard to use, consdider translating this as
         # "Replacement"
-        self.lbl_replace = gtk.Label(_('Replace with'))
-        self.ent_replace = gtk.Entry()
+        self.lbl_replace = Gtk.Label(label=_('Replace with'))
+        self.ent_replace = Gtk.Entry()
         # l10n: Button text
-        self.btn_replace = gtk.Button(_('Replace'))
+        self.btn_replace = Gtk.Button(_('Replace'))
         self.btn_replace.connect('clicked', self._on_replace_clicked)
         # l10n: Check box
-        self.chk_replace_all = gtk.CheckButton(_('Replace _All'))
+        self.chk_replace_all = Gtk.CheckButton(_('Replace _All'))
 
         self.widgets = [
             self.ent_search, self.btn_search, self.chk_casesensitive, self.chk_regex,
@@ -93,12 +92,13 @@ class SearchMode(BaseMode):
         ]
 
     def _setup_key_bindings(self):
-        gtk.accel_map_add_entry("<Virtaal>/Edit/Search", gtk.keysyms.F3, 0)
-        gtk.accel_map_add_entry("<Virtaal>/Edit/Search Ctrl+F", gtk.keysyms.F, gtk.gdk.CONTROL_MASK)
-        gtk.accel_map_add_entry("<Virtaal>/Edit/Search: Next", gtk.keysyms.G, gtk.gdk.CONTROL_MASK)
-        gtk.accel_map_add_entry("<Virtaal>/Edit/Search: Previous", gtk.keysyms.G, gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Search", Gdk.KEY_F3, 0)
+        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Search Ctrl+F", Gdk.KEY_F, Gdk.ModifierType.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Search: Next", Gdk.KEY_G, Gdk.ModifierType.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Search: Previous", Gdk.KEY_G,
+                               Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK)
 
-        self.accel_group = gtk.AccelGroup()
+        self.accel_group = Gtk.AccelGroup()
         self.accel_group.connect_by_path("<Virtaal>/Edit/Search", self._on_start_search)
         self.accel_group.connect_by_path("<Virtaal>/Edit/Search Ctrl+F", self._on_start_search)
         self.accel_group.connect_by_path("<Virtaal>/Edit/Search: Next", self._on_search_next)
@@ -135,7 +135,7 @@ class SearchMode(BaseMode):
             return False
 
         # FIXME: The following line is a VERY UGLY HACK, but at least it works.
-        gobject.timeout_add(100, grab_focus)
+        GObject.timeout_add(100, grab_focus)
 
     def select_match(self, match):
         """Select the specified match in the GUI."""
@@ -169,7 +169,7 @@ class SearchMode(BaseMode):
             return False
 
         # TODO: Implement for 'notes' and 'locations' parts
-        gobject.idle_add(select_match_text)
+        GObject.idle_add(select_match_text)
 
     def replace_match(self, match, replace_str):
         main_controller = self.controller.main_controller
@@ -209,8 +209,8 @@ class SearchMode(BaseMode):
         logging.debug('Search text: %s (%d matches)' % (self.ent_search.get_text(), len(indexes)))
 
         if indexes:
-            self.ent_search.modify_base(gtk.STATE_NORMAL, self.default_base)
-            self.ent_search.modify_text(gtk.STATE_NORMAL, self.default_text)
+            self.ent_search.modify_base(Gtk.StateType.NORMAL, self.default_base)
+            self.ent_search.modify_text(Gtk.StateType.NORMAL, self.default_text)
 
             self.storecursor.indices = indexes
             # Select initial match for in the current unit.
@@ -223,11 +223,11 @@ class SearchMode(BaseMode):
             self.matchcursor.index = match_index
         else:
             if self.ent_search.get_text():
-                self.ent_search.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse(current_theme['warning_bg']))
-                self.ent_search.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse('#fff'))
+                self.ent_search.modify_base(Gtk.StateType.NORMAL, Gdk.color_parse(current_theme['warning_bg']))
+                self.ent_search.modify_text(Gtk.StateType.NORMAL, Gdk.color_parse('#fff'))
             else:
-                self.ent_search.modify_base(gtk.STATE_NORMAL, self.default_base)
-                self.ent_search.modify_text(gtk.STATE_NORMAL, self.default_text)
+                self.ent_search.modify_base(Gtk.StateType.NORMAL, self.default_base)
+                self.ent_search.modify_text(Gtk.StateType.NORMAL, self.default_text)
 
             self.filter.re_search = None
             # Act like the "Default" mode...
@@ -240,7 +240,8 @@ class SearchMode(BaseMode):
             # that will select all text, so reset the cursor position
             self.ent_search.set_position(curpos)
             return False
-        gobject.idle_add(grabfocus)
+
+        GObject.idle_add(grabfocus)
 
     def unselected(self):
         # TODO: Unhightlight the previously selected unit
@@ -260,7 +261,7 @@ class SearchMode(BaseMode):
     def _add_widgets(self):
         table = self.controller.view.mode_box
 
-        xoptions = gtk.FILL
+        xoptions = Gtk.AttachOptions.FILL
         table.attach(self.ent_search, 2, 3, 0, 1, xoptions=xoptions)
         table.attach(self.btn_search, 3, 4, 0, 1, xoptions=xoptions)
         table.attach(self.chk_casesensitive, 4, 5, 0, 1, xoptions=xoptions)
@@ -330,7 +331,7 @@ class SearchMode(BaseMode):
             if tag:
                 tagtable.remove(tag)
             tagtable.add(self._make_highlight_tag())
-        except ValueError, ve:
+        except ValueError as ve:
             logging.exception("(Re-)adding search highlighting tag exception:")
 
         select_iters = []
@@ -361,7 +362,7 @@ class SearchMode(BaseMode):
             buff.select_range(select_iters[1], select_iters[0])
 
     def _make_highlight_tag(self):
-        tag = gtk.TextTag(name='search_highlight')
+        tag = Gtk.TextTag(name='search_highlight')
         tag.set_property('background', 'yellow')
         tag.set_property('foreground', 'black')
         return tag
@@ -453,9 +454,9 @@ class SearchMode(BaseMode):
 
     def _on_search_text_changed(self, entry):
         if self._search_timeout:
-            gobject.source_remove(self._search_timeout)
+            GObject.source_remove(self._search_timeout)
 
-        self._search_timeout = gobject.timeout_add(self.SEARCH_DELAY, self.update_search)
+        self._search_timeout = GObject.timeout_add(self.SEARCH_DELAY, self.update_search)
 
     def _on_start_search(self, _accel_group, _acceleratable, _keyval, _modifier):
         """This is called via the accelerator."""
@@ -465,10 +466,10 @@ class SearchMode(BaseMode):
         self.controller.select_mode(self)
 
     def _on_style_set(self, widget, prev_style):
-        self.default_base = widget.style.base[gtk.STATE_NORMAL]
-        self.default_text = widget.style.text[gtk.STATE_NORMAL]
-        self.ent_search.modify_base(gtk.STATE_NORMAL, self.default_base)
-        self.ent_search.modify_text(gtk.STATE_NORMAL, self.default_text)
+        self.default_base = widget.get_style_context().get_background_color(Gtk.StateType.NORMAL)
+        self.default_text = widget.get_style_context().get_color(Gtk.StateType.NORMAL)
+        self.ent_search.override_background_color(Gtk.StateType.NORMAL, self.default_base)
+        self.ent_search.override_color(Gtk.StateType.NORMAL, self.default_text)
 
     def _on_textbox_refreshed(self, textbox, elem):
         """Redoes highlighting after a C{StringElem} render destoyed it."""

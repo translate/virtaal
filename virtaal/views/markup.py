@@ -25,7 +25,6 @@ from diff_match_patch import diff_match_patch
 
 from virtaal.views.theme import current_theme
 
-
 # We want to draw unexpected spaces specially so that users can spot them
 # easily without having to resort to showing all spaces weirdly
 _fancy_spaces_re = re.compile(r"""(?m)  #Multiline expression
@@ -90,7 +89,7 @@ def markuptext(text, fancyspaces=True, markupescapes=True, diff_text=u""):
     return text
 
 def escape(text):
-    """This is to escape text for use with gtk.TextView"""
+    """This is to escape text for use with Gtk.TextView"""
     if not text:
         return ""
     text = text.replace("\n", u'¶\n')
@@ -99,7 +98,7 @@ def escape(text):
     return text
 
 def unescape(text):
-    """This is to unescape text for use with gtk.TextView"""
+    """This is to unescape text for use with Gtk.TextView"""
     if not text:
         return ""
     text = text.replace("\t", "")

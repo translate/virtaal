@@ -18,26 +18,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import gtk
+from gi.repository import Gtk
 
 from textbox import TextBox
 
 
-class TextWindow(gtk.Window):
+class TextWindow(Gtk.Window):
     def __init__(self, textbox=None):
         super(TextWindow, self).__init__()
         if textbox is None:
-            textbox = TextBox()
+            textbox = TextBox(self)
 
-        self.vbox = gtk.VBox()
+        self.vbox = Gtk.VBox()
         self.add(self.vbox)
 
         self.textbox = textbox
         self.vbox.add(textbox)
 
-        self.connect('destroy', lambda *args: gtk.main_quit())
+        self.connect('destroy', lambda *args: Gtk.main_quit())
         self.set_size_request(600, 100)
-
 
 class TestTextBox(object):
     def __init__(self):
@@ -48,4 +47,4 @@ if __name__ == '__main__':
     window = TextWindow()
     window.show_all()
     window.textbox.set_text(u'Ģët <a href="http://www.example.com" alt="Ģët &brand;!">&brandLong;</a>')
-    gtk.main()
+    Gtk.main()

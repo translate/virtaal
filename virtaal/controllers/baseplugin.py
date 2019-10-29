@@ -22,6 +22,7 @@ import os
 
 from virtaal.common import pan_app
 
+
 class PluginUnsupported(Exception):
     pass
 
@@ -34,7 +35,7 @@ class BasePlugin(object):
     """A description about the plug-in's purpose."""
     display_name = ''
     """The plug-in's name, suitable for display."""
-    version = 0
+    version = '0'
     """The plug-in's version number."""
     default_config = {}
 
@@ -43,7 +44,7 @@ class BasePlugin(object):
         """Create a new plug-in instance and check that it is valid."""
         if not cls.display_name:
             raise Exception('No name specified')
-        if cls.version <= 0:
+        if str(cls.version) <= '0':
             raise Exception('Invalid version number specified')
         return super(BasePlugin, cls).__new__(cls)
 

@@ -1,17 +1,18 @@
-# https://travis-ci.org/#!/translate/virtaal
 sudo: required
 language: python
 python:
-  - 2.6
-  - 2.7
+  - 3.7
 install:
+  - sudo apt-get install gir1.2-gtk-3.0 gobject-introspection libgirepository1.0-dev libglib2.0-dev intltool libgnutls-dev
   - pip install Sphinx
   - pip install translate-toolkit
   - pip install python-Levenshtein
   - pip install lxml
   - pip install pycurl
-  - sudo apt-get install python-gtk2
+  - pip install diff_match_patch
+  - pip install pygobject
 script:
+  - ./maketranslations
   - make docs
   - python setup.py install
 notifications:

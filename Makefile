@@ -8,7 +8,7 @@ all: help
 docs:
 	# The following creates the HTML docs.
 	# NOTE: cd and make must be in the same line.
-	cd ${DOCS_DIR}; make SPHINXOPTS="-W -q" html
+	cd ${DOCS_DIR}; make SPHINXOPTS="-W" html
 
 pot:
 	cd ${SRC_DIR}/po; ./intltool-update --pot

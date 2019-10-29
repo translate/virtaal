@@ -14,6 +14,7 @@ install:
 script:
   - ./maketranslations
   - make docs
+  - find docs/_build/html
   - python setup.py install
 notifications:
   email:

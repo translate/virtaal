@@ -31,7 +31,7 @@ except ImportError:
     import json #available since Python 2.6
 
 from virtaal.common.utils import get_unicode
-from basetmmodel import BaseTMModel, unescape_html_entities
+from .basetmmodel import BaseTMModel, unescape_html_entities
 from virtaal.support.httpclient import HTTPClient, RESTRequest
 
 

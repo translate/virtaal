@@ -24,7 +24,7 @@ import logging
 from gi.repository import Gtk
 
 from virtaal.common.utils import get_unicode
-from basetmmodel import BaseTMModel
+from .basetmmodel import BaseTMModel
 from virtaal.controllers.baseplugin import PluginUnsupported
 
 

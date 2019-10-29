@@ -20,7 +20,7 @@
 
 from six import text_type
 
-from basetmmodel import BaseTMModel
+from .basetmmodel import BaseTMModel
 
 
 class TMModel(BaseTMModel):

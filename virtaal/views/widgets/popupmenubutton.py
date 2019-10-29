@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk, GObject
+from gi.repository import Gdk, Gtk, GObject
 
 from six import string_types as unicode
 
@@ -116,7 +116,29 @@ class PopupMenuButton(Gtk.ToggleButton):
         return True
 
     def popup(self):
-        self.menu.popup(None, None, self._calculate_popup_pos, None, 0, 0)
+        # default is POS_SW_NW
+        menu_anchor = Gdk.Gravity.SOUTH_WEST
+        widget_anchor = Gdk.Gravity.NORTH_WEST
+        if self.menu_pos == POS_NW_SW:
+            menu_anchor = Gdk.Gravity.NORTH_WEST
+            widget_anchor = Gdk.Gravity.SOUTH_WEST
+        elif self.menu_pos == POS_NE_SE:
+            menu_anchor = Gdk.Gravity.NORTH_EAST
+            widget_anchor = Gdk.Gravity.SOUTH_EAST
+        elif self.menu_pos == POS_SE_NE:
+            menu_anchor = Gdk.Gravity.SOUTH_EAST
+            widget_anchor = Gdk.Gravity.NORTH_EAST
+        elif self.menu_pos == POS_NW_NE:
+            menu_anchor = Gdk.Gravity.NORTH_WEST
+            widget_anchor = Gdk.Gravity.NORTH_EAST
+        elif self.menu_pos == POS_CENTER_BELOW:
+            menu_anchor = Gdk.Gravity.NORTH
+            widget_anchor = Gdk.Gravity.SOUTH
+        elif self.menu_pos == POS_CENTER_ABOVE:
+            menu_anchor = Gdk.Gravity.SOUTH
+            widget_anchor = Gdk.Gravity.NORTH
+
+        self.menu.popup_at_widget(self, widget_anchor, menu_anchor, None)
 
 
     # EVENT HANDLERS #

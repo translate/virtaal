@@ -51,6 +51,7 @@ class StoreView(BaseView):
             # have its style set
             self._on_style_set(main_window, None)
         main_window.connect('style-set', self._on_style_set)
+        main_window.connect('style-updated', self._on_style_set)
 
     def _init_treeview(self):
         self._treeview = StoreTreeView(self)
@@ -160,7 +161,7 @@ class StoreView(BaseView):
                 title=_("Preview failed"), message=str(exc)
             )
 
-    def _on_style_set(self, widget, prev_style):
+    def _on_style_set(self, widget, prev_style=None):
         # The following color change is to reduce the flickering seen when
         # changing units. It's not the perfect cure, but helps a lot.
         # https://github.com/translate/virtaal/issues/1412

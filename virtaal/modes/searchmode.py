@@ -53,6 +53,7 @@ class SearchMode(BaseMode):
         # We alter the colours of ent_search, so let's listen for changes on
         # ent_replace to ensure we are always compliant to the style.
         self.ent_replace.connect('style-set', self._on_style_set)
+        self.ent_replace.connect('style-updated', self._on_style_set)
 
         self.filter = None
         self.matches = []
@@ -466,7 +467,7 @@ class SearchMode(BaseMode):
             return
         self.controller.select_mode(self)
 
-    def _on_style_set(self, widget, prev_style):
+    def _on_style_set(self, widget, prev_style=None):
         self.default_base = widget.get_style_context().get_background_color(Gtk.StateType.NORMAL)
         self.default_text = widget.get_style_context().get_color(Gtk.StateType.NORMAL)
         self.ent_search.override_background_color(Gtk.StateType.NORMAL, self.default_base)

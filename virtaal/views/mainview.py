@@ -195,6 +195,7 @@ class MainView(BaseView):
         from gi.repository import GObject
         GObject.idle_add(self._setup_recent_files, priority=GObject.PRIORITY_LOW)
         self.main_window.connect('style-set', self._on_style_set)
+        self.main_window.connect('style-updated', self._on_style_set)
 
     def _create_dialogs(self):
         self._input_dialog = None
@@ -382,7 +383,7 @@ class MainView(BaseView):
 
         return True
 
-    def _on_style_set(self, widget, prev_style):
+    def _on_style_set(self, widget, prev_style=None):
         theme.update_style(widget)
         # on windows the tooltip colour is wrong in inverse themes (bug 1923)
         if os.name == 'nt':

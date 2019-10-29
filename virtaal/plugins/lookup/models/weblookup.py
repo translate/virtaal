@@ -19,7 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import urllib
+from six.moves.urllib import parse
 from os import path
 
 from gi.repository import Gtk
@@ -100,7 +100,7 @@ class LookupModel(BaseLookupModel):
     def create_menu_items(self, query, role, srclang, tgtlang):
         querylang = role == 'source' and srclang or tgtlang
         nonquerylang = role != 'source' and srclang or tgtlang
-        query = urllib.quote(query.encode('utf-8'))
+        query = parse.quote(query.encode('utf-8'))
         items = []
         for urlinfo in self.URLDATA:
             uquery = query

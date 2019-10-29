@@ -93,8 +93,6 @@ class Controller(BaseController):
         # exo-open, xdg-open and open for OSX) immediately exit after lauching
         # the specific application
         returncode = pipe.wait()
-        if hasattr(self, 'fixreturncode'):
-            returncode = self.fixreturncode(returncode)
         return not returncode
 
     def open(self, filename):
@@ -162,11 +160,6 @@ else:
 
             return kde_version
 
-        def fixreturncode(self, returncode):
-            if returncode is not None and self.kde_version > '3.5.4':
-                return returncode
-            else:
-                return os.EX_OK
 
     def detect_desktop_environment():
         '''Checks for known desktop environments

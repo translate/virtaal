@@ -18,6 +18,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+
+"""This module contains some theme dependent colors.
+
+The colors are kept as strings so that the can easily be interpolated into
+pango markup. A different solution is likely to be better in the long run."""
+
 from gi.repository import Gtk, Gdk
 
 INVERSE = False

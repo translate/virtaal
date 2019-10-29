@@ -100,6 +100,9 @@ class HTTPRequest(GObjectWrapper):
 
         if libproxy:
             for proxy in proxy_factory.getProxies(self.url):
+                # https://github.com/libproxy/libproxy/issues/65
+                if proxy.startswith("b'"):
+                    proxy = proxy[2:-1]
                 # if we connect to localhost (localtm) with proxy specifically
                 # set to direct://, libcurl connects fine, but then asks
                 #   GET http://localhost:55555/unit/en/af/whatever

@@ -428,7 +428,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             return False
 
         for i in range(len(self.targets), self.MAX_TARGETS):
-            target = self._create_textbox(u'', editable=True, role='target', scroll_policy=Gtk.PolicyType.AUTOMATIC)
+            target = self._create_textbox(u'', editable=True, role='target')
             textbox = target.get_child()
             textbox.modify_font(rendering.get_target_font_description())
             textbox.selector_textboxes = self.sources
@@ -446,7 +446,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
         self.emit('targets-created', self.targets)
 
-    def _create_textbox(self, text=u'', editable=True, role=None, scroll_policy=Gtk.PolicyType.AUTOMATIC):
+    def _create_textbox(self, text=u'', editable=True, role=None, scroll_policy=Gtk.PolicyType.EXTERNAL):
         textbox = TextBox(self.controller.main_controller, role=role)
         textbox.set_editable(editable)
         textbox.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)

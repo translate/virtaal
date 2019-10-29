@@ -619,7 +619,7 @@ class DepCheckInstall(distutils.command.install.install):
             if failed:
                 print('Failed dependencies: %s' % (', '.join(failed)))
                 print('Use the --nodepcheck option to ignore dependencies.')
-                exit(0)
+                exit(1)
         distutils.command.install.install.run(self, *args, **kwargs)
 
 def main(options):

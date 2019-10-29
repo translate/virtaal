@@ -29,6 +29,25 @@ from virtaal.views.theme import current_theme
 from six import text_type as unicode
 
 
+def colors_equal(a, b):
+    """Compare two colors that could be Gdk.RGBA, Gdk.Color, or str."""
+    if isinstance(a, Gdk.Color):
+        a = a.to_string()
+    if isinstance(a, str):
+        x = Gdk.RGBA()
+        x.parse(a)
+        a = x
+
+    if isinstance(b, Gdk.Color):
+        b = b.to_string()
+    if isinstance(b, str):
+        x = Gdk.RGBA()
+        x.parse(b)
+        b = x
+
+    return a.equal(b)
+
+
 class TextBox(Gtk.TextView):
     """
     A C{Gtk.TextView} extended to work with our nifty L{StringElem} parsed
@@ -233,8 +252,8 @@ class TextBox(Gtk.TextView):
 
                     #logging.debug('  Apply tag at interval (%d, %d) [%s]' % (tag_start, tag_end, self.get_text(*iters)))
                     if not include_subtree or \
-                            elem.gui_info.fg != placeablesguiinfo.StringElemGUI.fg or \
-                            elem.gui_info.bg != placeablesguiinfo.StringElemGUI.bg:
+                            not colors_equal(elem.gui_info.fg, placeablesguiinfo.StringElemGUI.fg) or \
+                            not colors_equal(elem.gui_info.bg, placeablesguiinfo.StringElemGUI.bg):
                         self.buffer.get_tag_table().add(tag)
                         start_iter = self.buffer.get_iter_at_offset(tag_start)
                         end_iter = self.buffer.get_iter_at_offset(tag_end)

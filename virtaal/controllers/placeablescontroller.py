@@ -236,13 +236,16 @@ class PlaceablesController(BaseController):
 
     # EVENT HANDLERS #
     def _on_style_set(self, widget, prev_style=None):
-        placeablesguiinfo.update_style(widget)
+        textbox = None
 
         # Refresh text boxes' colours
         unitview = self.main_controller.unit_controller.view
         for textbox in unitview.sources + unitview.targets:
             if textbox.props.visible:
                 textbox.refresh()
+
+        if textbox:
+            placeablesguiinfo.update_style(textbox)
 
     def _on_quit(self, main_ctrlr):
         for parser in general.parsers:

@@ -30,7 +30,6 @@ from gi.repository import GObject
 from six import text_type as unicode, string_types as basestring
 
 from virtaal.common import pan_app
-from virtaal.common.utils import get_unicode
 from virtaal.controllers.baseplugin import BasePlugin
 from virtaal.views.widgets.textbox import TextBox
 
@@ -182,7 +181,8 @@ class AutoCorrector(object):
 
         # Add auto-correction regex for each loaded word.
         for key, value in self.correctiondict.items():
-            self.correctiondict[key] = (get_unicode(value), re.compile(r'\b%s$' % (re.escape(key)), re.UNICODE))
+            # lxml gives bytestrings for ASCII only values
+            self.correctiondict[key] = (unicode(value), re.compile(r'\b%s$' % (re.escape(key)), re.UNICODE))
 
         self.lang = lang
         return

@@ -186,7 +186,6 @@ class StoreCellRenderer(Gtk.CellRenderer):
             if parent_height > 0:
                 self.check_editor_height(editor, width, parent_height)
             size_request = editor.size_request()
-            _width = size_request.width
             height = size_request.height
             height += self.ROW_PADDING
         else:

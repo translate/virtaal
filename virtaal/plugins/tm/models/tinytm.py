@@ -71,7 +71,7 @@ class TMModel(BaseTMModel):
             user=self.config["username"],
             password=self.config["password"],
             host=self.config["server"],
-            async=1,
+            async_=1,
             port=self.config["port"],
         )
         self.wait()

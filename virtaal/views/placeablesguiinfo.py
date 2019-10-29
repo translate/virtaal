@@ -416,8 +416,8 @@ def update_style(widget):
     _style = widget.get_style_context()
     fg = _style.get_color(Gtk.StateType.NORMAL)
     bg = _style.get_background_color(Gtk.StateType.NORMAL)
-    StringElemGUI.fg = fg.to_string()
-    StringElemGUI.bg = bg.to_string()
+    StringElemGUI.fg = fg
+    StringElemGUI.bg = bg
     PhGUI.fg = theme.current_theme['markup_warning_fg']
     PhGUI.bg = theme.current_theme['ph_placeable_bg']
     UrlGUI.fg = theme.current_theme['url_fg']

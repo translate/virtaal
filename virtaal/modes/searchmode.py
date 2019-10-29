@@ -66,11 +66,11 @@ class SearchMode(BaseMode):
         self.ent_search.connect('activate', self._on_entry_activate)
         self.btn_search = Gtk.Button(_('Search'))
         self.btn_search.connect('clicked', self._on_search_clicked)
-        self.chk_casesensitive = Gtk.CheckButton(_('_Case sensitive'))
+        self.chk_casesensitive = Gtk.CheckButton.new_with_mnemonic(_('_Case sensitive'))
         self.chk_casesensitive.connect('toggled', self._refresh_proxy)
         # l10n: To read about what regular expressions are, see
         # http://en.wikipedia.org/wiki/Regular_expression
-        self.chk_regex = Gtk.CheckButton(_("_Regular expression"))
+        self.chk_regex = Gtk.CheckButton.new_with_mnemonic(_("_Regular expression"))
         self.chk_regex.connect('toggled', self._refresh_proxy)
 
         # Widgets for replace (second row)
@@ -84,7 +84,7 @@ class SearchMode(BaseMode):
         self.btn_replace = Gtk.Button(_('Replace'))
         self.btn_replace.connect('clicked', self._on_replace_clicked)
         # l10n: Check box
-        self.chk_replace_all = Gtk.CheckButton(_('Replace _All'))
+        self.chk_replace_all = Gtk.CheckButton.new_with_mnemonic(_('Replace _All'))
 
         self.widgets = [
             self.ent_search, self.btn_search, self.chk_casesensitive, self.chk_regex,

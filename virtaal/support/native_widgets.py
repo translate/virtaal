@@ -71,10 +71,10 @@ def _get_file_types():
     if _file_types:
         return _file_types
     from translate.storage import factory
-    from locale import strcoll
+    from locale import strxfrm
     all_supported_ext = []
     supported_files = []
-    _sorted = sorted(factory.supported_files(), cmp=strcoll, key=lambda x: x[0])
+    _sorted = sorted(factory.supported_files(), key=lambda x: strxfrm(x[0]))
     for name, extensions, mimetypes in _sorted:
         name = _(name)
         extension_filter = ["*.%s" % ext for ext in extensions]
@@ -233,9 +233,9 @@ def darwin_open_dialog(window, title, directory):
     from objc import NO
     from AppKit import NSOpenPanel
     from translate.storage import factory
-    from locale import strcoll
+    from locale import strxfrm
     file_types = []
-    _sorted = sorted(factory.supported_files(), cmp=strcoll, key=lambda x: x[0])
+    _sorted = sorted(factory.supported_files(), key=lambda x: strxfrm(x[0]))
     for name, extension, mimetype in _sorted:
         file_types.extend(extension)
     panel = NSOpenPanel.openPanel()

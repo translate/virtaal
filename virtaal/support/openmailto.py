@@ -34,6 +34,7 @@ __all__ = ['open', 'mailto']
 import os
 import sys
 import logging
+
 from six import string_types
 # Some imports are only necessary on some platforms, and are postponed to try
 # to speed up startup
@@ -72,7 +73,7 @@ class Controller(BaseController):
 
         if (os.environ.get('DISPLAY') or sys.platform[:3] == 'win' or
                                                     sys.platform == 'darwin'):
-            inout = file(os.devnull, 'r+')
+            inout = subprocess.DEVNULL
         else:
             # for TTY programs, we need stdin/out
             inout = None

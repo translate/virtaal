@@ -36,6 +36,7 @@ import sys
 import logging
 
 from six import string_types
+
 # Some imports are only necessary on some platforms, and are postponed to try
 # to speed up startup
 
@@ -137,7 +138,7 @@ elif sys.platform == 'darwin':
 else:
 
     import subprocess
-    import webbrowser
+    import shutil
 
     class KfmClient(Controller):
         '''Controller for the KDE kfmclient program.'''
@@ -187,12 +188,11 @@ else:
 
 
     def register_X_controllers():
-        from distutils.spawn import find_executable
-        if find_executable('kfmclient'):
+        if shutil.which('kfmclient'):
             _controllers['kde-open'] = KfmClient()
 
         for command in ('gnome-open', 'exo-open', 'xdg-open'):
-            if find_executable(command):
+            if shutil.which(command):
                 _controllers[command] = Controller(command)
 
     def get():
@@ -212,6 +212,7 @@ else:
             if 'xdg-open' in _controllers:
                 return _controllers['xdg-open'].open
             else:
+                import webbrowser
                 return webbrowser.open
 
 

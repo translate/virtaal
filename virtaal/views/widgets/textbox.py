@@ -26,6 +26,8 @@ from translate.storage.placeables import StringElem, parse as elem_parse
 from virtaal.views import placeablesguiinfo
 from virtaal.views.theme import current_theme
 
+from six import text_type as unicode
+
 
 class TextBox(Gtk.TextView):
     """

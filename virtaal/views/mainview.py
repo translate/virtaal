@@ -28,6 +28,7 @@ from gi.repository import Gtk
 from six import string_types
 
 from virtaal.common import pan_app
+from virtaal.common.utils import get_unicode
 from virtaal.views import theme
 from .baseview import BaseView
 
@@ -72,7 +73,7 @@ class EntryDialog(Gtk.Dialog):
         self.ent_input.grab_focus()
         response = super(EntryDialog, self).run()
 
-        return response, self.ent_input.get_text().decode('utf-8')
+        return response, get_unicode(self.ent_input.get_text(), 'utf-8')
 
     def set_message(self, message):
         self.lbl_message.set_markup(message)
@@ -371,7 +372,7 @@ class MainView(BaseView):
 
             # the data comes as a string with each URI on a line; lines
             # terminated with '\r\n. For now we just take the first one:
-            filename = data.data.split("\r\n")[0]
+            filename = get_unicode(data.get_data().split(b"\r\n")[0], 'utf-8')
             if filename.startswith("file://"):
                 # This is a URI, so we handle encoded characters like spaces:
                 import urllib
@@ -601,7 +602,7 @@ class MainView(BaseView):
     def show_open_dialog(self, title=''):
         """@returns: The selected file name and URI if the OK button was clicked.
             C{None} otherwise."""
-        last_path = (pan_app.settings.general["lastdir"] or "").decode(sys.getdefaultencoding())
+        last_path = get_unicode(pan_app.settings.general["lastdir"]) or u""
 
         # Do native dialogs in a thread so that GTK can continue drawing.
         from virtaal.support import native_widgets
@@ -633,9 +634,9 @@ class MainView(BaseView):
         self._top_window = old_top
 
         if response:
-            filename = self.open_chooser.get_filename().decode('utf-8')
+            filename = get_unicode(self.open_chooser.get_filename())
             pan_app.settings.general["lastdir"] = os.path.dirname(filename)
-            return (filename, self.open_chooser.get_uri().decode('utf-8'))
+            return (filename, get_unicode(self.open_chooser.get_uri(), 'utf-8'))
         else:
             return ()
 
@@ -711,7 +712,7 @@ class MainView(BaseView):
         self._top_window = old_top
 
         if response == Gtk.ResponseType.OK:
-            filename = self.save_chooser.get_filename().decode('utf-8')
+            filename = get_unicode(self.save_chooser.get_filename())
             #FIXME: do we need uri here?
             return filename
 
@@ -826,7 +827,7 @@ class MainView(BaseView):
             # For now we only handle local files, and limited the recent
             # manager to only give us those anyway, so we can get the filename
             self._uri = item.get_uri()
-            self.controller.open_file(item.get_uri_display().decode('utf-8'), uri=item.get_uri().decode('utf-8'))
+            self.controller.open_file(item.get_uri_display(), uri=get_unicode(item.get_uri(), 'utf-8'))
 
     def _on_report_bug(self, _widget=None):
         from virtaal.support import openmailto

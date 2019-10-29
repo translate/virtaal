@@ -474,7 +474,7 @@ class SearchMode(BaseMode):
 
     def _on_textbox_refreshed(self, textbox, elem):
         """Redoes highlighting after a C{StringElem} render destoyed it."""
-        if not textbox.props.visible or not unicode(elem):
+        if not textbox.props.visible or not bool(elem):
             return
 
         self._highlight_textbox_matches(textbox, select_match=False)

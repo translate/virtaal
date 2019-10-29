@@ -22,7 +22,7 @@ from virtaal.support import opentranclient
 
 from virtaal.common import pan_app
 
-from basetmmodel import BaseTMModel
+from .basetmmodel import BaseTMModel
 
 # Some names are a bit too long, so let's "translate" them to something shorter
 new_names = {

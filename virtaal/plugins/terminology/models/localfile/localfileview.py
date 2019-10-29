@@ -18,6 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import locale
+
 from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import Pango
@@ -189,7 +191,7 @@ class FileSelectDialog:
         dlg.add_filter(all_supported_filter)
         supported_files_dict = dict([ (_(name), (extension, mimetype)) for name, extension, mimetype in store_factory.supported_files() ])
         supported_file_names = list(supported_files_dict.keys())
-        supported_file_names.sort()
+        supported_file_names.sort(key=locale.strxfrm)
         for name in supported_file_names:
             extensions, mimetypes = supported_files_dict[name]
             #XXX: we can't open generic .csv formats, so listing it is probably

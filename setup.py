@@ -541,7 +541,7 @@ def add_mac_options(options):
         "options": {
             "py2app": {
             "packages": ["CoreFoundation", "objc"],
-                "includes": ["lxml", "lxml._elementpath", "lxml.etree", "glib", "gio", "psyco", "cairo", "pango",
+                "includes": ["lxml", "lxml._elementpath", "lxml.etree", "glib", "gio", "cairo", "pango",
                              "pangocairo", "atk", "gobject", "Gtk.keysyms", "pycurl", "translate.services",
                              "translate.services.tmclient", "translate.services.opentranclient", "CoreFoundation"],
                 #"semi_standalone": True,

@@ -24,7 +24,7 @@ Machine Translation.
 http://wiki.apertium.org/wiki/Apertium_web_service
 """
 
-import urllib
+from six.moves.urllib.parse import urlencode
 # These two json modules are API compatible
 try:
     import simplejson as json #should be a bit faster; needed for Python < 2.6
@@ -88,7 +88,7 @@ class TMModel(BaseTMModel):
                 'markUnknown': "no",
                 'format': 'html',
             }
-            req = RESTRequest(self.url_translate + "?" + urllib.urlencode(values), '')
+            req = RESTRequest(self.url_translate + "?" + urlencode(values), '')
             self.client.add(req)
             req.connect(
                 'http-success',

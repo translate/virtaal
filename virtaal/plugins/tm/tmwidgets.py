@@ -251,7 +251,7 @@ class TMMatchRenderer(Gtk.CellRenderer):
 
 
     # INTERFACE METHODS #
-    def on_get_size(self, widget, cell_area):
+    def do_get_size(self, widget, cell_area):
         width = self.view.get_target_width() - self.BOX_MARGIN
         height = self._compute_cell_height(widget, width)
         height = min(height, 600)
@@ -267,18 +267,19 @@ class TMMatchRenderer(Gtk.CellRenderer):
     def do_set_property(self, pspec, value):
         setattr(self, pspec.name, value)
 
-    def on_render(self, window, widget, _background_area, cell_area, _expose_area, _flags):
+    def do_render(self, window, widget, _background_area, cell_area, _flags):
         x_offset = 0
         y_offset = self.BOX_MARGIN
         width = cell_area.width
         height = self._compute_cell_height(widget, width)
+        style_context = widget.get_style_context()
 
         x = cell_area.x + x_offset
         if not self.source_layout:
             # We do less for MT results
             target_y = cell_area.y
-            widget.get_style().paint_layout(window, Gtk.StateType.NORMAL, False,
-                                            cell_area, widget, '', x, target_y, self.target_layout)
+            # x + source_dx?
+            Gtk.render_layout(style_context, window, x, target_y, self.target_layout)
             return
 
         source_height = self.source_layout.get_pixel_size()[1]
@@ -287,12 +288,12 @@ class TMMatchRenderer(Gtk.CellRenderer):
 
         source_dx = target_dx = self.BOX_MARGIN
 
-        widget.get_style().paint_box(window, Gtk.StateType.NORMAL, Gtk.ShadowType.ETCHED_IN,
-                                     cell_area, widget, '', x, source_y - self.BOX_MARGIN, width - self.BOX_MARGIN, source_height + (self.LINE_SEPARATION/2))
-        widget.get_style().paint_layout(window, Gtk.StateType.NORMAL, False,
-                                        cell_area, widget, '', x + source_dx, source_y, self.source_layout)
-        widget.get_style().paint_layout(window, Gtk.StateType.NORMAL, False,
-                                        cell_area, widget, '', x + target_dx, target_y, self.target_layout)
+        style_context.save()
+        style_context.add_class(Gtk.STYLE_CLASS_TROUGH)
+        Gtk.render_background(style_context, window, x, source_y - self.BOX_MARGIN, width, source_height + (self.LINE_SEPARATION/2))
+        Gtk.render_layout(style_context, window, x + source_dx, source_y, self.source_layout)
+        Gtk.render_layout(style_context, window, x + target_dx, target_y, self.target_layout)
+        style_context.restore()
 
     # METHODS #
     def _compute_cell_height(self, widget, width):

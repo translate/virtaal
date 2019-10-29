@@ -375,7 +375,7 @@ def find_gtk_files():
             'iso_3166_2.mo',
             'iso_4217.mo',
             'iso_639_3.mo',
-            'gtk20-properties.mo',
+            'gtk30-properties.mo',
             'gtkspell.mo', # This isn't picked up, so our code does the i18n
             'gettext-tools.mo',
             'gettext-runtime.mo',

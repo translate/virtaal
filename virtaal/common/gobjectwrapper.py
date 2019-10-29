@@ -31,7 +31,10 @@ class GObjectWrapper(GObject.GObject):
     # INITIALIZERS #
     def __init__(self):
         super(GObjectWrapper, self).__init__()
-        self._all_signals = GObject.signal_list_names(self)
+        self._all_signals = []
+        for type_ in self.__class__.mro():
+            if issubclass(type_, GObject.GObject):
+                self._all_signals.extend(GObject.signal_list_names(type_))
         self._enabled_signals = set(self._all_signals)
 
 

@@ -27,7 +27,7 @@ from translate.lang import data
 from virtaal.support.httpclient import HTTPClient, HTTPRequest
 
 # Moses handles these characters as spaced out
-punc_symbols = ur'''.,?!:;'"“”‘’—)'''
+punc_symbols = '''.,?!:;'"“”‘’—)'''
 punc_tuples = [(c, u" %s" % c) for c in punc_symbols]
 
 

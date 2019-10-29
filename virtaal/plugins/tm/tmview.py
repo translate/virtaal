@@ -20,6 +20,8 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import, print_function, unicode_literals
 
+import logging
+
 from gi.repository import Gdk
 
 from virtaal.common import GObjectWrapper

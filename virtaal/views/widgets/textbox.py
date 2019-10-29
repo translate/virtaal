@@ -464,7 +464,7 @@ class TextBox(Gtk.TextView):
         if not selection or self.suggestion is None:
             return False
         start_offset = selection[0].get_offset()
-        text = self.buffer.get_text(*selection)
+        text = self.buffer.get_text(*selection, include_hidden_chars=False)
         return self.suggestion['text'] and \
                 self.suggestion['text'] == text and \
                 self.suggestion['offset'] >= 0 and \

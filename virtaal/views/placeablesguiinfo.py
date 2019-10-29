@@ -28,7 +28,7 @@ from virtaal.views.rendering import get_role_font_description, make_pango_layout
 
 
 def _count_anchors(buffer, itr):
-    anchor_text = buffer.get_slice(buffer.get_start_iter(), itr)
+    anchor_text = buffer.get_slice(buffer.get_start_iter(), itr, include_hidden_chars=True)
     #XXX: This is a utf-8 bytestring, not unicode! Converting to Unicode
     # just to look for 0xFFFC is a waste.
     return anchor_text.count('\xef\xbf\xbc')

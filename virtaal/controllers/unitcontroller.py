@@ -239,6 +239,9 @@ class UnitController(BaseController):
 
 
 def create_unit_workflow(unit, state_names):
+    """Copied from the toolkit for Py3 compatibility
+
+    See translate.storage.workflow::create_unit_workflow()."""
     wf = Workflow(unit)
 
     state_info = list(unit.STATE.items())

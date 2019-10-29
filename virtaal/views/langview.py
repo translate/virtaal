@@ -60,6 +60,9 @@ class LanguageView(BaseView):
         self.controller.main_controller.view.main_window.connect(
             'style-set', self._on_style_set
         )
+        self.controller.main_controller.view.main_window.connect(
+            'style-updated', self._on_style_set
+        )
         if self.controller.recent_pairs:
             self.popupbutton.text = self._get_display_string(*self.controller.recent_pairs[0])
 
@@ -77,11 +80,6 @@ class LanguageView(BaseView):
         self.other_item.connect('activate', self._on_other_activated)
         [self.menu.append(item) for item in (seperator, self.other_item)]
         self.update_recent_pairs()
-
-        self.controller.main_controller.view.main_window.connect(
-            'style-set', self._on_style_set
-        )
-
 
     # METHODS #
     def _get_display_string(self, srclang, tgtlang):
@@ -225,6 +223,6 @@ class LanguageView(BaseView):
         self.controller.set_language_pair(*pair)
         self.controller.main_controller.unit_controller.view.targets[0].grab_focus()
 
-    def _on_style_set(self, widget, prev_style):
+    def _on_style_set(self, widget, prev_style=None):
         if not hasattr(self, 'popup_default_fg'):
-            self.popup_default_fg = widget.style.fg
+            self.popup_default_fg = widget.get_style_context().get_color(Gtk.StateType.NORMAL)

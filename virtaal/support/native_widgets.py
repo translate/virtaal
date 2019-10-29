@@ -48,7 +48,7 @@ def _dialog_to_use():
     elif os.environ.get('KDE_FULL_SESSION') == 'true' and ( \
                 pan_app.ui_language == 'en' or \
                 gettext.dgettext('kdelibs4', '') or \
-                not gettext.dgettext('gtk20', '')):
+                not gettext.dgettext('gtk30', '')):
             import distutils.spawn
             if distutils.spawn.find_executable("kdialog") is not None:
                 return 'kdialog'
@@ -150,7 +150,7 @@ def kdialog_save_dialog(window, title, current_filename):
         # confirm overwrite, since kdialog can't:
         args = [
             '--yesno',
-            #gettext.dgettext('gtk20.mo', 'A file named \"%s\" already exists.  Do you want to replace it?') % filename,
+            #gettext.dgettext('gtk30', 'A file named “%s” already exists.  Do you want to replace it?') % filename,
             gettext.dgettext('kdelibs4', 'A file named "%1" already exists. Are you sure you want to overwrite it?').replace('%1', '%s') % filename,
         ]
         (should_overwrite, _nothing) = _show_kdialog(window, "Overwrite", args)

@@ -492,7 +492,7 @@ class MainView(BaseView):
             return None
 
         parent_menu = parent_item.get_submenu()
-        menuitem = Gtk.MenuItem(name)
+        menuitem = Gtk.MenuItem.new_with_mnemonic(name)
         if after is None:
             parent_menu.add(menuitem)
         else:

@@ -105,7 +105,7 @@ class TMView(BaseView, GObjectWrapper):
         self.mnui_view = mainview.gui.get_object('menuitem_view')
         self.menu = self.mnui_view.get_submenu()
 
-        self.mnu_suggestions = Gtk.CheckMenuItem(label=_('Translation _Suggestions'))
+        self.mnu_suggestions = Gtk.CheckMenuItem.new_with_mnemonic(label=_('Translation _Suggestions'))
         self.mnu_suggestions.show()
         self.menu.append(self.mnu_suggestions)
 

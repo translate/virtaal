@@ -139,7 +139,6 @@ elif sys.platform == 'darwin':
 else:
 
     import subprocess
-    # @WARNING: use the private API of the webbrowser module (._iscommand)
     import webbrowser
 
     class KfmClient(Controller):
@@ -195,11 +194,12 @@ else:
 
 
     def register_X_controllers():
-        if webbrowser._iscommand('kfmclient'):
+        from distutils.spawn import find_executable
+        if find_executable('kfmclient'):
             _controllers['kde-open'] = KfmClient()
 
         for command in ('gnome-open', 'exo-open', 'xdg-open'):
-            if webbrowser._iscommand(command):
+            if find_executable(command):
                 _controllers[command] = Controller(command)
 
     def get():

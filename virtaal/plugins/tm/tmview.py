@@ -307,7 +307,7 @@ class TMView(BaseView, GObjectWrapper):
         self.select_match(match_data)
 
     def _on_select_match(self, accel_group, acceleratable, keyval, modifier):
-        self.select_match_index(int(keyval - Gdk.KEY__0))
+        self.select_match_index(int(keyval - Gdk.KEY_0))
 
     def _on_store_closed(self, storecontroller):
         self.hide()

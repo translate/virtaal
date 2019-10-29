@@ -166,7 +166,7 @@ class WebLookupConfigDialog(object):
 
         cell = Gtk.CellRendererText()
         col = Gtk.TreeViewColumn(_('Name'))
-        col.pack_start(cell, True, True, 0)
+        col.pack_start(cell, True)
         col.add_attribute(cell, 'text', self.COL_NAME)
         col.props.resizable = True
         col.set_sort_column_id(0)
@@ -175,7 +175,7 @@ class WebLookupConfigDialog(object):
         cell = Gtk.CellRendererText()
         cell.props.ellipsize = Pango.EllipsizeMode.MIDDLE
         col = Gtk.TreeViewColumn(_('URL'))
-        col.pack_start(cell, True, True, 0)
+        col.pack_start(cell, True)
         col.add_attribute(cell, 'text', self.COL_URL)
         col.props.resizable = True
         col.set_expand(True)
@@ -186,7 +186,7 @@ class WebLookupConfigDialog(object):
         cell.set_radio(False)
         #l10n: Whether the selected text should be surrounded by "quotes"
         col = Gtk.TreeViewColumn(_('Quote Query'))
-        col.pack_start(cell, True, True, 0)
+        col.pack_start(cell, True)
         col.add_attribute(cell, 'active', self.COL_QUOTE)
         self.tvw_urls.append_column(col)
 

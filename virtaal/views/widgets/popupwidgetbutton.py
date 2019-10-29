@@ -23,6 +23,7 @@ PopupWidgetButton: Extends a C{Gtk.ToggleButton} to show a given widget in a
 pop-up window.
 """
 
+from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository.GObject import SIGNAL_RUN_FIRST
 

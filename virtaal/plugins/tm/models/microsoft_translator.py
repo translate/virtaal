@@ -23,7 +23,7 @@ Machine Translations."""
 
 import urllib
 
-from basetmmodel import BaseTMModel
+from .basetmmodel import BaseTMModel
 
 from virtaal.support.httpclient import HTTPClient, RESTRequest
 

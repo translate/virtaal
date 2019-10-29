@@ -347,7 +347,6 @@ class TermAddDialog:
         self.lst_termfiles = Gtk.ListStore(str)
         self.cmb_termfile.set_model(self.lst_termfiles)
         self.cmb_termfile.pack_start(cellr, True)
-        self.cmb_termfile.add_attribute(cellr, 'text', 0)
 
         self.ent_source.connect('changed', self._on_entry_changed)
         self.ent_target.connect('changed', self._on_entry_changed)

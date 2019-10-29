@@ -3,7 +3,7 @@ language: python
 python:
   - 3.7
 install:
-  - sudo apt-get install gir1.2-gtk-3.0 gobject-introspection libgirepository1.0-dev libglib2.0-dev intltool libgnutls-dev
+  - sudo apt-get install gir1.2-gtk-3.0 gobject-introspection libgirepository1.0-dev libglib2.0-dev intltool libgnutls-dev xvfb
   - pip install Sphinx
   - pip install translate-toolkit
   - pip install python-Levenshtein
@@ -16,6 +16,7 @@ script:
   - make docs
   - find docs/_build/html
   - python setup.py install
+  - xvfb-run -a --server-args="-screen 0 1024x768x24" virtaal --help
 notifications:
   email:
     on_failure: change

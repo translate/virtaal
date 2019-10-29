@@ -183,7 +183,7 @@ def win32_open_dialog(window, title, directory):
             CustomFilter=custom_filter,
             FilterIndex=1,              # Select the "All Supported Files"
         )
-    except pywintypes.error, e:
+    except pywintypes.error as e:
         if isinstance(e.args, tuple) and len(e.args) == 3:
             if e.args[0] == 0:
                 # cancel
@@ -215,7 +215,7 @@ def win32_save_dialog(window, title, current_filename):
             CustomFilter=custom_filter,
             FilterIndex=1,              # Select the relevant filter
         )
-    except pywintypes.error, e:
+    except pywintypes.error as e:
         if isinstance(e.args, tuple) and len(e.args) == 3:
             if e.args[0] == 0:
                 # cancel

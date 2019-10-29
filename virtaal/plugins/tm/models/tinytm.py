@@ -102,7 +102,7 @@ class TMModel(BaseTMModel):
             #cursor.execute("""select pg_sleep(2); SELECT 99, 'source', 'target';""")
             # Uncomment this if you don't trust the results
             #cursor.execute("""SELECT * FROM tinytm_get_fuzzy_matches('en', 'de', 'THE EUROPEAN ECONOMIC COMMUNITY', '', '')""")
-        except self.psycopg2.Error, e:
+        except self.psycopg2.Error as e:
             self.error(e)
         self.wait()
         for result in cursor.fetchall():
@@ -124,7 +124,7 @@ class TMModel(BaseTMModel):
                 Gtk.main_iteration()
             try:
                 state = self._db_con.poll()
-            except self.psycopg2.Error, e:
+            except self.psycopg2.Error as e:
                 self.error(e)
 
             if state == self.psycopg2.extensions.POLL_OK:

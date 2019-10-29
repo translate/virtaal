@@ -44,12 +44,16 @@ def gtk_container_compute_optimal_height(widget, width):
     if not widget.props.visible:
         return
     for child in widget.get_children():
+        if not child.props.visible:
+            continue
         compute_optimal_height(child, width)
 
 
-@compute_optimal_height.when_type(Gtk.Table)
+@compute_optimal_height.when_type(Gtk.Grid)
 def gtk_table_compute_optimal_height(widget, width):
     for child in widget.get_children():
+        if child.props.name != "vbox_middle":
+            continue
         # width / 2 because we use half of the available width
         compute_optimal_height(child, width / 2)
 
@@ -175,7 +179,7 @@ class StoreCellRenderer(Gtk.CellRenderer):
             editor.set_size_request(width, -1)
             editor.show()
             # fixme: this will make vbox_editor width too large
-            # compute_optimal_height(editor, width)
+            compute_optimal_height(editor, width)
             parent_height = widget.get_allocation().height
             if parent_height < -1:
                 parent_height = widget.size_request()[1]

@@ -36,8 +36,6 @@ from six import string_types as unicode
 # POS_SE_NE: Positions the pop-up window so that its South East (bottom right)
 #            corner is on the North East corner of the button. RTL of POS_SW_NW
 POS_CENTER_BELOW, POS_CENTER_ABOVE, POS_NW_SW, POS_NE_SE, POS_NW_NE, POS_SW_NW, POS_SE_NE = range(7)
-# XXX: Add position symbols above as needed and implementation in
-#      _update_popup_geometry()
 
 _rtl_pos_map = {
         POS_CENTER_BELOW: POS_CENTER_BELOW,
@@ -79,37 +77,6 @@ class PopupMenuButton(Gtk.ToggleButton):
 
 
     # METHODS #
-    def _calculate_popup_pos(self, menu, *args):
-        menu_width, menu_height = 0, 0
-        menu_alloc = menu.get_allocation()
-        if menu_alloc.height > 1:
-            menu_height = menu_alloc.height
-            menu_width = menu_alloc.width
-        else:
-            menu_width, menu_height = menu.size_request()
-
-        btn_window_xy = self.get_window().get_origin()
-        btn_alloc = self.get_allocation()
-
-        # Default values are POS_SW_NW
-        x = btn_window_xy[0] + btn_alloc.x
-        y = btn_window_xy[1] + btn_alloc.y - menu_height
-        if self.menu_pos == POS_NW_SW:
-            y = btn_window_xy[1] + btn_alloc.y + btn_alloc.height
-        elif self.menu_pos == POS_NE_SE:
-            x -= (menu_width - btn_alloc.width)
-            y = btn_window_xy[1] + btn_alloc.y + btn_alloc.height
-        elif self.menu_pos == POS_SE_NE:
-            x -= (menu_width - btn_alloc.width)
-        elif self.menu_pos == POS_NW_NE:
-            x += btn_alloc.width
-            y = btn_window_xy[1] + btn_alloc.y
-        elif self.menu_pos == POS_CENTER_BELOW:
-            x -= (menu_width - btn_alloc.width) / 2
-        elif self.menu_pos == POS_CENTER_ABOVE:
-            x -= (menu_width - btn_alloc.width) / 2
-            y = btn_window_xy[1] - menu_height
-        return (x, y, True)
 
     def popdown(self):
         self.menu.popdown()

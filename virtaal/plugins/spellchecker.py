@@ -59,7 +59,9 @@ class Plugin(BasePlugin):
                 raise PluginUnsupported("Spell checking is not supported with non-ascii username")
 
         # If these imports fail, the plugin is automatically disabled
-        import gtkspell
+        import gi
+        gi.require_version('GtkSpell', '3.0')
+        from gi.repository import GtkSpell as gtkspell
         import enchant
         self.gtkspell = gtkspell
         self.enchant = enchant
@@ -202,7 +204,7 @@ class Plugin(BasePlugin):
 
         if request.status == 200:
             logging.debug('Got a dictionary')
-            from cStringIO import StringIO
+            from six import BytesIO as StringIO
             import tarfile
             file_obj = StringIO(result)
             tar = tarfile.open(fileobj=file_obj)
@@ -227,11 +229,12 @@ class Plugin(BasePlugin):
             return
         spell = None
         try:
-            spell = self.gtkspell.get_from_text_view(text_view)
+            spell = self.gtkspell.Checker.get_from_text_view(text_view)
         except SystemError as e:
             # At least on Mandriva .get_from_text_view() sometimes returns
             # a SystemError without a description. Things seem to work fine
             # anyway, so let's ignore it and hope for the best.
+            raise e
             pass
         if not spell is None:
             spell.detach()
@@ -293,17 +296,17 @@ class Plugin(BasePlugin):
         try:
             spell = None
             try:
-                spell = self.gtkspell.get_from_text_view(text_view)
+                spell = self.gtkspell.Checker.get_from_text_view(text_view)
             except SystemError as e:
                 # At least on Mandriva .get_from_text_view() sometimes returns
                 # a SystemError without a description. Things seem to work fine
                 # anyway, so let's ignore it and hope for the best.
                 pass
             if spell is None:
-                spell = self.gtkspell.Spell(text_view, language)
-            else:
-                spell.set_language(language)
-                spell.recheck_all()
+                spell = self.gtkspell.Checker()
+                spell.attach(text_view)
+            spell.set_language(language)
+            spell.recheck_all()
             text_view.spell_lang = language
         except Exception as e:
             logging.exception("Could not initialize spell checking: %s", e)

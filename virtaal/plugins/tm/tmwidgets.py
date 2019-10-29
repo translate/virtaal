@@ -125,12 +125,13 @@ class TMWindow(Gtk.Window):
         #logging.debug('TMWindow.update_geometry(%dx%d +%d+%d)' % (width, height, x, y))
         self.resize(width, height)
         self.scrolled_window.set_size_request(width, height)
-        self.window.move_resize(0,0, width,height)
-        self.window.get_toplevel().move_resize(x,y, width,height)
+        window = self.get_window()
+        window.move_resize(0,0, width,height)
+        window.get_toplevel().move_resize(x,y, width,height)
 
 
     # EVENT HANLDERS #
-    def _percent_data_func(self, column, cell_renderer, tree_model, iter):
+    def _percent_data_func(self, column, cell_renderer, tree_model, iter, user_data):
         match_data = tree_model.get_value(iter, 0)
         if match_data.get('quality', None) is not None:
             quality = int(match_data['quality'])
@@ -181,7 +182,7 @@ class TMSourceColRenderer(Gtk.CellRenderer):
 
         label = Gtk.Label()
         label.set_markup(u'<small>%s</small>' % self.matchdata['tmsource'])
-        label.get_pango_context().set_base_gravity(Pango.GRAVITY_AUTO)
+        label.get_pango_context().set_base_gravity(Pango.Gravity.AUTO)
         label.set_angle(270)
         size = label.size_request()
         return 0, 0, size[0], size[1] + self.YPAD*2
@@ -203,7 +204,7 @@ class TMSourceColRenderer(Gtk.CellRenderer):
 
         label = Gtk.Label()
         label.set_markup(u'<small>%s</small>' % self.matchdata['tmsource'])
-        label.get_pango_context().set_base_dir(Pango.DIRECTION_TTB_LTR)
+        label.get_pango_context().set_base_dir(Pango.Direction.TTB_LTR)
         if widget.get_direction() == Gtk.TextDirection.RTL:
             label.set_angle(90)
         else:

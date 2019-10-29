@@ -525,9 +525,9 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
                 # The above condition should *never* be False
                 textbox = self.sources[0]
                 textbox.set_text(u'')
-                textbox.parent.show()
+                textbox.get_parent().show()
             for i in range(1, num_source_widgets):
-                self.sources[i].parent.hide_all()
+                self.sources[i].get_parent().hide_all()
             return
 
         num_unit_sources = 1
@@ -577,9 +577,9 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
                 # The above condition should *never* be False
                 textbox = self.targets[0]
                 textbox.set_text(u'')
-                textbox.parent.show_all()
+                textbox.get_parent().show_all()
             for i in range(1, num_target_widgets):
-                self.targets[i].parent.hide_all()
+                self.targets[i].get_parent().hide_all()
             return
 
         num_unit_targets = 1

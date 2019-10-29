@@ -365,7 +365,7 @@ class MainView(BaseView):
         self.main_window.connect("drag_data_received", self._on_drag_data_received)
 
     def _on_drag_data_received(self, w, context, x, y, data, info, time):
-        if sys.platform == 'darwin' or Gtk.targets_include_uri(context.targets):
+        if sys.platform == 'darwin' or Gtk.targets_include_uri(context.list_targets()):
             # We don't check for valid targets on Mac (darwin) since there is
             # a bug in target_incude_uri on that platform, no adverse situations
             # seem to arise but we leave other platforms to do the right thing.
@@ -869,7 +869,7 @@ class MainView(BaseView):
         mnu_fullscreen.set_active(event.new_window_state & Gdk.WindowState.FULLSCREEN)
 
     def _on_app_pressed(self, btn):
-        self.app_menu.popup(None, None, None, 0, 0)
+        self.app_menu.popup(None, None, None, 0, 0, Gtk.get_current_event_time())
 
     def _on_osx_openfile_event(self, macapp, filename):
         # Note! A limitation of the current GTK-OSX code

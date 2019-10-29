@@ -288,9 +288,7 @@ class gtkoutfile:
     def readlines(self):     return []
     def write(self, s):      self.console.write(s, self.tag)
     def writelines(self, l): self.console.write(l, self.tag)
-
     def seek(self, a):       raise IOError(29, 'Illegal seek')
-
     def tell(self):          raise IOError(29, 'Illegal seek')
     truncate = tell
 
@@ -357,7 +355,7 @@ class Plugin(BasePlugin):
 
             self.window = Gtk.Window()
             self.window.set_title('Virtaal Python Console')
-            self.set_transient_for(self.main_controller.view.main_window)
+            self.window.set_transient_for(self.main_controller.view.main_window)
             self.window.add(console)
             self.window.connect('destroy', self._on_console_destroyed)
         self.window.show_all()

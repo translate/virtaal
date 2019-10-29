@@ -23,8 +23,10 @@ import logging
 
 from gi.repository import Gtk
 
+from virtaal.common.utils import get_unicode
 from basetmmodel import BaseTMModel
 from virtaal.controllers.baseplugin import PluginUnsupported
+
 
 MAX_ERRORS = 5
 
@@ -105,8 +107,7 @@ class TMModel(BaseTMModel):
         self.wait()
         for result in cursor.fetchall():
             quality, source, target = result[:3]
-            if not isinstance(target, unicode):
-                target = unicode(target, 'utf-8')
+            target = get_unicode(target, 'utf-8')
             matches.append({
                 'source': source,
                 'target': target,

@@ -33,6 +33,7 @@ except ImportError:
 
 from basetmmodel import BaseTMModel, unescape_html_entities
 
+from virtaal.common.utils import get_unicode
 from virtaal.support.httpclient import HTTPClient, RESTRequest
 
 
@@ -117,8 +118,7 @@ class TMModel(BaseTMModel):
         target = unescape_html_entities(target)
         if target.endswith("\n") and not query_str.endswith("\n"):
             target = target[:-1]# chop of \n
-        if not isinstance(target, unicode):
-            target = unicode(target, 'utf-8')
+        target = get_unicode(target, 'utf-8')
         match = {
             'source': query_str,
             'target': target,

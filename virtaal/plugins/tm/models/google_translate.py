@@ -30,6 +30,7 @@ try:
 except ImportError:
     import json #available since Python 2.6
 
+from virtaal.common.utils import get_unicode
 from basetmmodel import BaseTMModel, unescape_html_entities
 from virtaal.support.httpclient import HTTPClient, RESTRequest
 
@@ -137,8 +138,7 @@ class TMModel(BaseTMModel):
             return
 
         target_unescaped = unescape_html_entities(text)
-        if not isinstance(target_unescaped, unicode):
-            target_unescaped = unicode(target_unescaped, 'utf-8')
+        target_unescaped = get_unicode(target_unescaped, 'utf-8')
         match = {
             'source': query_str,
             'target': target_unescaped,

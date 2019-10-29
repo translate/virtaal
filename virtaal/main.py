@@ -97,8 +97,8 @@ class Virtaal(object):
         main_controller = self.main_controller
 
         if isinstance(startupfile, str):
-            import sys
-            startupfile = unicode(startupfile, sys.getfilesystemencoding())
+            from virtaal.common.utils import get_unicode
+            startupfile = get_unicode(startupfile)
 
         UnitController(main_controller.store_controller)
         ModeController(main_controller)

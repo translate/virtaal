@@ -34,6 +34,7 @@ __all__ = ['open', 'mailto']
 import os
 import sys
 import logging
+from six import string_types
 # Some imports are only necessary on some platforms, and are postponed to try
 # to speed up startup
 
@@ -96,7 +97,7 @@ class Controller(BaseController):
         return not returncode
 
     def open(self, filename):
-        if isinstance(filename, basestring):
+        if isinstance(filename, string_types):
             cmdline = self.args + [filename]
         else:
             # assume it is a sequence
@@ -136,7 +137,7 @@ elif sys.platform == 'darwin':
 # Platform support for Unix
 else:
 
-    import commands
+    import subprocess
     # @WARNING: use the private API of the webbrowser module (._iscommand)
     import webbrowser
 
@@ -150,7 +151,7 @@ else:
         def detect_kde_version(self):
             kde_version = None
             try:
-                info = commands.getoutput('kde-config --version')
+                info = subprocess.check_output(['kde-config', '--version'], encoding='utf-8')
 
                 for line in info.splitlines():
                     if line.startswith('KDE'):
@@ -183,7 +184,7 @@ else:
             desktop_environment = 'gnome'
         else:
             try:
-                info = commands.getoutput('xprop -root _DT_SAVE_MODE')
+                info = subprocess.check_output(['xprop','-root', '_DT_SAVE_MODE'], encoding="utf-8")
                 if ' = "xfce4"' in info:
                     desktop_environment = 'xfce'
             except (OSError, RuntimeError):
@@ -238,7 +239,7 @@ def _fix_addersses(**kwargs):
             if not headervalue:
                 del kwargs[headername]
                 continue
-            elif not isinstance(headervalue, basestring):
+            elif not isinstance(headervalue, string_types):
                 # assume it is a sequence
                 headervalue = ','.join(headervalue)
 

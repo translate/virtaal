@@ -27,6 +27,8 @@ from basetmmodel import BaseTMModel
 
 from virtaal.support.httpclient import HTTPClient, RESTRequest
 
+from six import text_type as unicode
+
 # Code corrections
 code_translation = {
     'zh_CN': 'zh-CHS', # Simplified

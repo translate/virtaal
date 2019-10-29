@@ -27,16 +27,8 @@ from gettext import dgettext
 
 from gi.repository import GObject
 
-from virtaal.common import pan_app
 from virtaal.controllers.baseplugin import PluginUnsupported, BasePlugin
 
-if not pan_app.DEBUG:
-    try:
-        import psyco
-    except:
-        psyco = None
-else:
-    psyco = None
 
 _dict_add_re = re.compile('Add "(.*)" to Dictionary')
 
@@ -244,8 +236,6 @@ class Plugin(BasePlugin):
         if not spell is None:
             spell.detach()
         text_view.spell_lang = None
-    if psyco:
-        psyco.cannotcompile(_disable_checking)
 
 
     # SIGNAL HANDLERS #
@@ -299,8 +289,7 @@ class Plugin(BasePlugin):
         GObject.idle_add(self._activate_checker, text_view, language, priority=GObject.PRIORITY_LOW)
 
     def _activate_checker(self, text_view, language):
-        # All the expensive stuff in here called on idle. We mush also isolate
-        # this away from psyco
+        # All the expensive stuff in here called on idle.
         try:
             spell = None
             try:
@@ -320,10 +309,6 @@ class Plugin(BasePlugin):
             logging.exception("Could not initialize spell checking: %s", e)
             self.gtkspell = None
             #TODO: unload plugin
-    if psyco:
-        # Some of the gtkspell stuff can't work with psyco and will dump core
-        # if we don't avoid psyco compilation
-        psyco.cannotcompile(_activate_checker)
 
     def _on_populate_popup(self, textbox, menu):
         # We can't work with the menu immediately, since gtkspell only adds its

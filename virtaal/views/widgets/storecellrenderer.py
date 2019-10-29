@@ -303,7 +303,7 @@ class StoreCellRenderer(Gtk.CellRenderer):
 
     # EVENT HANDLERS #
     def _on_editor_done(self, editor):
-        self.emit("editing-done", editor.get_data("path"), editor.must_advance, editor.is_modified())
+        self.emit("editing-done", editor.get_path(), editor.must_advance, editor.is_modified())
         return True
 
     def _on_modified(self, widget):

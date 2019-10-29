@@ -22,7 +22,7 @@ import logging
 
 import pycurl
 from gi.repository import GObject
-from six import StringIO
+from six import BytesIO as StringIO
 from six.moves.urllib import request, parse
 
 try:

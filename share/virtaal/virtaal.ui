@@ -111,8 +111,6 @@
                             <property name="can_focus">True</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
-                            <property name="primary_icon_sensitive">True</property>
-                            <property name="secondary_icon_sensitive">True</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -127,8 +125,6 @@
                             <property name="max_length">100</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
-                            <property name="primary_icon_sensitive">True</property>
-                            <property name="secondary_icon_sensitive">True</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -170,8 +166,6 @@
                             <property name="can_focus">True</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
-                            <property name="primary_icon_sensitive">True</property>
-                            <property name="secondary_icon_sensitive">True</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -202,8 +196,6 @@
                             <property name="can_focus">True</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
-                            <property name="primary_icon_sensitive">True</property>
-                            <property name="secondary_icon_sensitive">True</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>
@@ -222,7 +214,6 @@
                             <property name="yalign">0.10000000149011612</property>
                             <property name="label" translatable="yes">Depending on the translation task, the plural information might be optional.</property>
                             <property name="wrap">True</property>
-                            <property name="wrap_mode">word-char</property>
                           </object>
                           <packing>
                             <property name="right_attach">2</property>

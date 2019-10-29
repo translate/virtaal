@@ -96,7 +96,7 @@ class Virtaal(object):
 
         main_controller = self.main_controller
 
-        if isinstance(startupfile, str):
+        if isinstance(startupfile, bytes):
             from virtaal.common.utils import get_unicode
             startupfile = get_unicode(startupfile)
 

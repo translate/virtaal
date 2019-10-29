@@ -162,4 +162,4 @@ class TMModel(BaseTMModel):
                 l = len(key)
                 return l < start or l > stop
 
-            self.cache = dict((k,v) for (k,v) in self.cache.iteritems() if unaffected(k))
+            self.cache = dict((k,v) for (k,v) in self.cache.items() if unaffected(k))

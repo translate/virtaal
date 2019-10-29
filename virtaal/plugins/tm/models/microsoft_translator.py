@@ -83,7 +83,7 @@ class TMModel(BaseTMModel):
             return
 
         query_str = unit.source
-        if self.cache.has_key(query_str):
+        if query_str in self.cache:
             self.emit('match-found', query_str, self.cache[query_str])
         else:
             values = {

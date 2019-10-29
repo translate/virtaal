@@ -140,11 +140,8 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         def on_prev(*args):
             self.targets[self.focused_target_n].move_elem_selection(-1)
         def on_transfer(*args):
-            ev = Gdk.Event(Gdk.EventType.KEY_PRESS)
-            ev.state = Gdk.ModifierType.MOD1_MASK
-            ev.keyval = Gdk.KEY_Down
-            ev.window = self.targets[self.focused_target_n].get_window(Gtk.TextWindowType.WIDGET)
-            ev.put()
+            focused = get_focused(self.targets)
+            self.copy_original(focused)
         mnu_next.connect('activate', on_next)
         mnu_prev.connect('activate', on_prev)
         mnu_transfer.connect('activate', on_transfer)
@@ -405,7 +402,8 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
                         listnav.move_state(-1)
                     # textbox is the last text view in this unit, so we need to move on
                     # to the next one.
-                    textbox.parent.parent.emit('key-press-event', event)
+                    self._on_key_press_event(None, event)
+
                 return True
 
             # Alt-Down

@@ -101,11 +101,14 @@ class CellRendererWidget(Gtk.CellRenderer):
             # return True
         else:
             self.props.mode = Gtk.CellRendererMode.INERT
-        xo, yo, w, h = self.get_size(widget, cell_area)
-        x = cell_area.x + xo
+
+        x = cell_area.x + self.XPAD
+        y = cell_area.y + self.YPAD
+        w = cell_area.width - 2 * self.XPAD
+        h = cell_area.height - 2 * self.YPAD
         layout = self.create_pango_layout(self.strfunc(self.widget), widget, w)
         layout_w, layout_h = layout.get_pixel_size()
-        y = cell_area.y + yo + (h-layout_h)/2
+        y = y + (h-layout_h)/2
         Gtk.render_layout(
             context=widget.get_style_context(),
             cr=window,

@@ -85,10 +85,10 @@ class QualityCheckMode(BaseMode):
         indices = []
         for check in self.filter_checks:
             indices.extend(self.stats[check])
+            indices.sort()
 
         if not indices:
-            indices = range(len(self.storecursor.model))
-        indices.sort()
+            indices = list(range(len(self.storecursor.model)))
 
         self.storecursor.indices = indices
 

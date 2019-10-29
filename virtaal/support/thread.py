@@ -19,7 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-import Queue
+from six.moves import queue
 import threading
 
 from gi.repository import Gtk
@@ -27,7 +27,7 @@ from gi.repository import Gtk
 
 def run_in_thread(widget, target, args):
     # Idea from tortoisehg's gtklib.py
-    q = Queue.Queue()
+    q = queue.Queue()
     def func(*kwargs):
         q.put(target(*kwargs))
 

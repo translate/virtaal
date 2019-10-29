@@ -40,7 +40,10 @@ class UnionSetEnumerator(GObject.GObject):
 
         if len(sets) > 0:
             self.sets = sets
-            self.set = reduce(lambda big_set, set: big_set.union(set), sets[1:], sets[0])
+            self.set = sets[0]
+            for set_ in sets[1:]:
+                # not nice, but hopefully correct for now
+                self.set = self.set.union(set_)
         else:
             self.sets = [SortedSet([])]
             self.set = SortedSet([])

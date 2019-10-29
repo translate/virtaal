@@ -145,21 +145,6 @@ else:
 
         def __init__(self, kfmclient='kfmclient'):
             super(KfmClient, self).__init__(kfmclient, 'exec')
-            self.kde_version = self.detect_kde_version()
-
-        def detect_kde_version(self):
-            kde_version = None
-            try:
-                info = subprocess.check_output(['kde-config', '--version'], encoding='utf-8')
-
-                for line in info.splitlines():
-                    if line.startswith('KDE'):
-                        kde_version = line.split(':')[-1].strip()
-                        break
-            except (OSError, RuntimeError):
-                pass
-
-            return kde_version
 
 
     def detect_desktop_environment():

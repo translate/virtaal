@@ -178,7 +178,7 @@ class TMSourceColRenderer(Gtk.CellRenderer):
 
 
     # INTERFACE METHODS #
-    def on_get_size(self, widget, cell_area):
+    def do_get_size(self, widget, cell_area):
         if 'tmsource' not in self.matchdata:
             return 0, 0, 0, 0
 
@@ -186,8 +186,8 @@ class TMSourceColRenderer(Gtk.CellRenderer):
         label.set_markup(u'<small>%s</small>' % self.matchdata['tmsource'])
         label.get_pango_context().set_base_gravity(Pango.Gravity.AUTO)
         label.set_angle(270)
-        size = label.size_request()
-        return 0, 0, size[0], size[1] + self.YPAD*2
+        size = label.get_layout().get_pixel_size()
+        return 0, 0, size.height, size.width + self.YPAD*2
 
     def do_get_property(self, pspec):
         return getattr(self, pspec.name)
@@ -195,7 +195,7 @@ class TMSourceColRenderer(Gtk.CellRenderer):
     def do_set_property(self, pspec, value):
         setattr(self, pspec.name, value)
 
-    def on_render(self, window, widget, _background_area, cell_area, _expose_area, _flags):
+    def do_render(self, window, widget, _background_area, cell_area, _flags):
         if 'tmsource' not in self.matchdata:
             return
         x_offset = 0
@@ -212,8 +212,9 @@ class TMSourceColRenderer(Gtk.CellRenderer):
         else:
             label.set_angle(270)
         label.set_alignment(0.5, 0.5)
-        widget.get_style().paint_layout(window, Gtk.StateType.NORMAL, False,
-                                        cell_area, widget, '', x, y, label.get_layout())
+        layout = label.get_layout()
+        size = layout.get_pixel_size()
+        Gtk.render_layout(widget.get_style_context(), window, x+size.height, y, layout)
 
 
 class TMMatchRenderer(Gtk.CellRenderer):

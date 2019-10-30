@@ -211,8 +211,7 @@ class SearchMode(BaseMode):
         logging.debug('Search text: %s (%d matches)' % (self.ent_search.get_text(), len(indexes)))
 
         if indexes:
-            self.ent_search.modify_base(Gtk.StateType.NORMAL, self.default_base)
-            self.ent_search.modify_text(Gtk.StateType.NORMAL, self.default_text)
+            self.ent_search.override_background_color(Gtk.StateType.NORMAL, self.default_base)
 
             self.storecursor.indices = indexes
             # Select initial match for in the current unit.
@@ -225,11 +224,11 @@ class SearchMode(BaseMode):
             self.matchcursor.index = match_index
         else:
             if self.ent_search.get_text():
-                self.ent_search.modify_base(Gtk.StateType.NORMAL, Gdk.color_parse(current_theme['warning_bg']))
-                self.ent_search.modify_text(Gtk.StateType.NORMAL, Gdk.color_parse('#fff'))
+                rgba = Gdk.RGBA()
+                rgba.parse(current_theme['warning_bg'])
+                self.ent_search.override_background_color(Gtk.StateType.NORMAL, rgba)
             else:
-                self.ent_search.modify_base(Gtk.StateType.NORMAL, self.default_base)
-                self.ent_search.modify_text(Gtk.StateType.NORMAL, self.default_text)
+                self.ent_search.override_background_color(Gtk.StateType.NORMAL, self.default_base)
 
             self.filter.re_search = None
             # Act like the "Default" mode...
@@ -469,9 +468,7 @@ class SearchMode(BaseMode):
 
     def _on_style_set(self, widget, prev_style=None):
         self.default_base = widget.get_style_context().get_background_color(Gtk.StateType.NORMAL)
-        self.default_text = widget.get_style_context().get_color(Gtk.StateType.NORMAL)
         self.ent_search.override_background_color(Gtk.StateType.NORMAL, self.default_base)
-        self.ent_search.override_color(Gtk.StateType.NORMAL, self.default_text)
 
     def _on_textbox_refreshed(self, textbox, elem):
         """Redoes highlighting after a C{StringElem} render destoyed it."""

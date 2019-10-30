@@ -1,6 +1,6 @@
 [encoding: UTF-8]
 share/applications/virtaal.desktop.in
-share/appdata/virtaal.appdata.xml.in
+share/metainfo/virtaal.metainfo.xml.in
 [type: gettext/glade]share/virtaal/virtaal.ui
 virtaal/tips.py
 virtaal/controllers/checkscontroller.py

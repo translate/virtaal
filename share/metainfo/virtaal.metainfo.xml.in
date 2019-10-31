@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2013,2016 F Wolff <friedel _at_ translate.org.za> -->
-<application>
- <id type="desktop">virtaal.desktop</id>
+<component>
+ <id type="desktop">org.virtaal.desktop</id>
  <metadata_license>CC-BY-SA-3.0</metadata_license>
  <project_license>GPL-2.0+</project_license>
  <!-- l10n: The name should be less than 30 characters -->
@@ -41,6 +41,6 @@
   </screenshot>
  </screenshots>
  <url type="homepage">http://virtaal.org/</url>
- <updatecontact>dev _at_ translate.org.za</updatecontact>
+ <update_contact>dev _at_ translate.org.za</update_contact>
  <translation type="gettext">virtaal</translation>
-</application>
+</component>

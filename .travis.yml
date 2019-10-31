@@ -18,6 +18,7 @@ script:
   - make docs
   - find docs/_build/html
   - python setup.py install
+  - find -name \*py -exec python -m py_compile {} +
   - xvfb-run -a --server-args="-screen 0 1024x768x24" virtaal --help
 notifications:
   email:

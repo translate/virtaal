@@ -46,7 +46,7 @@ def log_args(fn, classname=None):
         else:
             all_args = ', '.join([args_s, kwargs_s])
         retval = fn(*args, **kwargs)
-        print '%s%s(%s) => %s' % (classname, fn.__name__, all_args, retval)
+        print('%s%s(%s) => %s' % (classname, fn.__name__, all_args, retval))
         return retval
 
     return logger_fn

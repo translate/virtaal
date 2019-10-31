@@ -113,8 +113,8 @@ class PopupWidgetButton(Gtk.ToggleButton):
             x += btn_alloc.width
             y = btn_window_xy.y + btn_alloc.y
         elif self.popup_pos == POS_SE_NE:
-            x -= popup_alloc.width
-            y -= btn_alloc.height
+            x -= (popup_alloc.width - btn_alloc.width)
+            y = btn_window_xy.y - popup_alloc.height
         elif self.popup_pos == POS_SW_NW:
             y = btn_window_xy.y - popup_alloc.height
         elif self.popup_pos == POS_CENTER_BELOW:

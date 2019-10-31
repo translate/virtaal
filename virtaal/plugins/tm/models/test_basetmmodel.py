@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from basetmmodel import unescape_html_entities
+from .basetmmodel import unescape_html_entities
 
 def test_unescape_html_entities():
     """Test the unescaping of &amp; and &#39; type HTML escapes"""

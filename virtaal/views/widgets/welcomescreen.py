@@ -103,7 +103,11 @@ class WelcomeScreen(Gtk.ScrolledWindow):
 
         def _set_text(features):
             # .get_buffer() is a bit expensive during startup
-            self.widgets['txt_features'].get_buffer().set_text(features)
+            txt_features = self.widgets['txt_features']
+            txt_features.get_buffer().set_text(features)
+            context = txt_features.get_parent().get_style_context()
+            background = context.get_background_color(Gtk.StateType.NORMAL)
+            txt_features.override_background_color(Gtk.StateType.NORMAL, background)
 
         GObject.idle_add(_set_text, features, priority=GObject.PRIORITY_LOW)
 

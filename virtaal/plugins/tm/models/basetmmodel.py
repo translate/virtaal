@@ -37,11 +37,11 @@ def unescape_html_entities(text):
         if not entity:
             if text[:2] == "&#":
                 try:
-                    return unichr(int(text[2:-1]))
+                    return chr(int(text[2:-1]))
                 except ValueError:
                     pass
         else:
-            return unicode(entity, "iso-8859-1")
+            return entity
     return re.sub("&(#[0-9]+|\w+);", fixup, text)
 
 

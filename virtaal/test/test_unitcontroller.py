@@ -32,11 +32,11 @@ class TestUnitController(TestScaffolding):
         test_unit = self.trans_store.getunits()[1]
         view = self.unit_controller.load_unit(test_unit)
 
-        assert unicode(self.unit_controller.view.targets[0].elem) == self.trans_store.getunits()[1].target
+        assert str(self.unit_controller.view.targets[0].elem) == self.trans_store.getunits()[1].target
 
     def test_set_target(self):
         test_unit = self.trans_store.getunits()[1]
         view = self.unit_controller.load_unit(test_unit)
 
         self.unit_controller.set_unit_target(0, [u'Test',])
-        assert unicode(self.unit_controller.view.targets[0].elem) == u'Test'
+        assert str(self.unit_controller.view.targets[0].elem) == u'Test'

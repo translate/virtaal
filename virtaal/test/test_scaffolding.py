@@ -77,7 +77,7 @@ msgid "PROFILE"
 msgstr "PROFIEL"
 """
         self.testfile = tempfile.mkstemp(suffix='.po', prefix='test_storemodel')
-        os.write(self.testfile[0], po_contents)
+        os.write(self.testfile[0], po_contents.encode('UTF-8'))
         os.close(self.testfile[0])
         self.trans_store = factory.getobject(self.testfile[1])
 

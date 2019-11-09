@@ -22,7 +22,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
-from selectview import SelectView
+from .selectview import SelectView
 
 
 class SelectViewTestWindow(Gtk.Window):
@@ -48,7 +48,7 @@ class SelectViewTestWindow(Gtk.Window):
 
 
     def _on_item_action(self, sender, item_info, action):
-        print 'Item %s: %s' % (action, item_info)
+        print('Item %s: %s' % (action, item_info))
 
 
 if __name__ == '__main__':

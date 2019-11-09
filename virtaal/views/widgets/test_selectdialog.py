@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from selectdialog import SelectDialog
+from .selectdialog import SelectDialog
 
 
 class TestSelectDialog(object):
@@ -45,7 +45,7 @@ class TestSelectDialog(object):
         self.dialog.run()
 
     def _on_dialog_action(self, dialog, item, action):
-        print '%s: %s' % (action, item)
+        print('%s: %s' % (action, item))
 
 
 if __name__ == '__main__':

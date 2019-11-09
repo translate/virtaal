@@ -20,7 +20,7 @@
 
 from gi.repository import Gtk
 
-from textbox import TextBox
+from .textbox import TextBox
 
 
 class TextWindow(Gtk.Window):

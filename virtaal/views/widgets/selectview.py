@@ -74,7 +74,11 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
         if width <= 1:
             width = DEFAULT_WIDTH
 
-        cell = CellRendererWidget(strfunc=self._get_widget_string, default_width=width)
+        cell = CellRendererWidget(
+            strfunc=self._get_widget_string,
+            default_width=width,
+            widget_func=self._create_widget_for_item,
+        )
         self.namedesc_col = Gtk.TreeViewColumn(_('Name'), cell, widget=4)
         self.append_column(self.namedesc_col)
 

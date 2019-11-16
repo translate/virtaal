@@ -49,13 +49,15 @@ class CellRendererWidget(Gtk.CellRenderer):
 
 
     # INITIALIZERS #
-    def __init__(self, strfunc, default_width=-1):
+    def __init__(self, strfunc, default_width=-1, widget_func=None):
         super(CellRendererWidget, self).__init__()
 
         self.default_width = default_width
         self._editing = False
         self.strfunc = strfunc
         self.widget = None
+        self.widget_func = widget_func or (lambda item: None)
+        self.props.mode = Gtk.CellRendererMode.EDITABLE
 
 
     # INTERFACE METHODS #
@@ -67,8 +69,6 @@ class CellRendererWidget(Gtk.CellRenderer):
 
     def do_get_size(self, widget, cell_area=None):
         #print '%s>> on_get_size()' % (self.strfunc(self.widget))
-        # FIXME: This method works fine for unselected cells (rows) and gives the same (wrong) results for selected cells.
-        height = width = 0
 
         if cell_area is not None:
             return self.XPAD, self.YPAD, cell_area.width - 2*self.XPAD, cell_area.height - 2*self.YPAD
@@ -95,12 +95,9 @@ class CellRendererWidget(Gtk.CellRenderer):
     def do_render(self, window, widget, bg_area, cell_area, flags):
         # print '%s>> on_render(flags=%s)' % (self.strfunc(self.widget), flagstr(flags))
         if flags & Gtk.CellRendererState.SELECTED:
-            self.props.mode = Gtk.CellRendererMode.EDITABLE
-            # FIXME: this will crash program
-            # self._start_editing(widget) # FIXME: This is obviously a hack, but what more do you want?
-            # return True
-        else:
-            self.props.mode = Gtk.CellRendererMode.INERT
+            if self.props.editing == True:
+                # the widget will render itself
+                return
 
         x = cell_area.x + self.XPAD
         y = cell_area.y + self.YPAD
@@ -117,14 +114,17 @@ class CellRendererWidget(Gtk.CellRenderer):
             layout=layout
         )
 
-    def do_start_editing(self, event, tree_view, path, bg_area, cell_area, flags):
-        #print '%s>> on_start_editing(flags=%s, event=%s)' % (self.strfunc(self.widget), flagstr(flags), event)
-        editable = self.widget
-        if not isinstance(editable, Gtk.CellEditable):
-            editable = CellWidget(editable)
-        editable.show_all()
-        editable.grab_focus()
-        return editable
+    def do_start_editing(self, event, treeview, path, bg_area, cell_area, flags):
+        model = treeview.get_model()
+        itr = model.get_iter(path)
+        item = treeview.get_item(itr)
+        widget = self.widget_func(item)
+        if widget and "config" in item:
+            editable = CellWidget(widget)
+            editable.show_all()
+            editable.grab_focus()
+            #TODO: focus the button
+            return editable
 
     # METHODS #
     def create_pango_layout(self, string, widget, width):
@@ -140,25 +140,6 @@ class CellRendererWidget(Gtk.CellRenderer):
             layout.set_alignment(Pango.Alignment.RIGHT)
             layout.set_auto_dir(False)
         return layout
-
-    def _start_editing(self, treeview):
-        """Force the cell to enter editing mode by going through the parent
-            Gtk.TextView."""
-        if self._editing:
-            return
-        self._editing = True
-
-        model, iter = treeview.get_selection().get_selected()
-        path = model.get_path(iter)
-        col = [c for c in treeview.get_columns() if self in c.get_cells()]
-        if len(col) < 1:
-            self._editing = False
-            return
-        treeview.set_cursor_on_cell(path, col[0], self, True)
-        # XXX: Hack to make sure that the lock (_start_editing) is not released before the next on_render() is called.
-        def update_lock():
-            self._editing = False
-        idle_add(update_lock)
 
 
 class CellWidget(Gtk.HBox, Gtk.CellEditable):

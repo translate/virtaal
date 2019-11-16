@@ -24,7 +24,9 @@ gi.require_version('Gtk', '3.0')
 
 from gi.repository import Gtk
 from gi.repository import Pango
-from gi.repository.GObject import idle_add, PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from gi.repository.GObject import ParamFlags, SignalFlags, TYPE_PYOBJECT
+PARAM_READWRITE = ParamFlags.READWRITE
+SIGNAL_RUN_FIRST = SignalFlags.RUN_FIRST
 
 
 def flagstr(flags):
@@ -186,7 +188,7 @@ if __name__ == "__main__":
         def insert(self, name):
             iter = self.store.append()
             hb = Gtk.HBox()
-            hb.pack_start(Gtk.Button(name, True, True, 0), False, True, 0)
+            hb.pack_start(Gtk.Button.new_with_label(name), False, True, 0)
             lbl = Gtk.Label(label=(name + ' ') * 20)
             lbl.set_line_wrap(True)
             hb.pack_start(lbl, False, True, 0)

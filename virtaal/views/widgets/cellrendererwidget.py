@@ -44,7 +44,7 @@ class CellRendererWidget(Gtk.CellRenderer):
         'widget': (TYPE_PYOBJECT, 'Widget', 'The column containing the widget to render', PARAM_READWRITE),
     }
 
-    XPAD = 0
+    XPAD = 2
     YPAD = 2
 
 

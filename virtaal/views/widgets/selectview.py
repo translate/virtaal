@@ -98,7 +98,7 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
             lbl.set_alignment(0, 0)
             lbl.set_text(name)
             lbl.set_use_markup(self.bold_name)
-            lbl.set_property('xpad', 1)
+            lbl.set_property('xpad', 2)
             vbox.pack_start(lbl, True, True, 0)
             vbox.lbl_name = lbl
 
@@ -109,7 +109,7 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
             lbl.set_line_wrap(True)
             lbl.set_text(item['desc'])
             lbl.set_use_markup(False)
-            lbl.set_property('xpad', 1)
+            lbl.set_property('xpad', 2)
             if self.get_direction() == Gtk.TextDirection.LTR:
                 # in RTL this code causes the label to be left aligned in the
                 # column for some reason

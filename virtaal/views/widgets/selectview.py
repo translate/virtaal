@@ -87,6 +87,8 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
 
     def _set_defaults(self):
         self.set_rules_hint(True)
+        self.props.activate_on_single_click = True
+        self.props.enable_search = False
 
 
     # METHODS #
@@ -236,6 +238,11 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
 
     def _on_selection_change(self, selection):
         model, iter = selection.get_selected()
-        if isinstance(model, Gtk.TreeIter) and model is self._model and self._model.iter_is_valid(iter):
+        if iter and self._model.iter_is_valid(iter):
             self.selected_item = self.get_item(iter)
+            path = model.get_path(iter)
+            self.set_cursor(path, self.namedesc_col, start_editing=True)
             self.emit('item-selected', self.selected_item)
+
+    def do_row_activated(self, path, column):
+        self.set_cursor(path, self.namedesc_col, start_editing=True)

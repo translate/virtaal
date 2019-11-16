@@ -79,7 +79,7 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
             default_width=width,
             widget_func=self._create_widget_for_item,
         )
-        self.namedesc_col = Gtk.TreeViewColumn(_('Name'), cell, widget=4)
+        self.namedesc_col = Gtk.TreeViewColumn(_('Name'), cell, widget=COL_WIDGET)
         self.append_column(self.namedesc_col)
 
     def _connect_events(self):
@@ -173,6 +173,7 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
                 widget = widget.get_children()[1]
                 config = widget.config_func
         except IndexError:
+            # no button at .get_children()[1]
             pass
 
         item = {

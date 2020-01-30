@@ -35,6 +35,13 @@ theme or not, can inspect this to know.
 """
 
 
+def rgba_to_str(c: Gdk.RGBA):
+    s = ["#"]
+    for f in c.to_color().to_floats():
+        s.append("%x" % int(f*255))
+    return "".join(s)
+
+
 def str_to_rgba(s):
     rgba = Gdk.RGBA()
     rgba.parse(s)
@@ -117,6 +124,9 @@ def update_style(widget):
         set_inverse()
     else:
         set_default()
+
+    fg = rgba_to_str(fg)
+    bg = rgba_to_str(bg)
 
     # On some themes (notably Windows XP with classic style), diff_delete_bg is
     # almost identical to the background colour used. So we use something from

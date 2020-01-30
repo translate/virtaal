@@ -131,15 +131,14 @@ def update_style(widget):
     # On some themes (notably Windows XP with classic style), diff_delete_bg is
     # almost identical to the background colour used. So we use something from
     # the gtk theme that is supposed to be different, but not much.
-    if not has_reasonable_contrast(_style.get_background_color(_state),
-                                   Gdk.color_parse(current_theme['diff_delete_bg'])):
+    if not has_reasonable_contrast(bg, current_theme['diff_delete_bg']):
         if INVERSE:
-            new_diff_delete_bg = _style.dark[Gtk.StateType.NORMAL]
+            new_diff_delete_bg = "#000"
         else:
-            new_diff_delete_bg = _style.light[Gtk.StateType.NORMAL]
+            new_diff_delete_bg = "#fff"
         # we only want to change if it will actually result in something readable:
-        if has_good_contrast(_style.text[Gtk.StateType.NORMAL], new_diff_delete_bg):
-            current_theme['diff_delete_bg'] = new_diff_delete_bg.to_string()
+        if has_good_contrast(fg, new_diff_delete_bg):
+            current_theme['diff_delete_bg'] = new_diff_delete_bg
 
 
 # these are based on an (old?) Web Content Accessibility Guidelines of the w3c

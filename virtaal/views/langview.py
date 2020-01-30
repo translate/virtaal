@@ -24,6 +24,7 @@ import logging
 import os
 
 from gi.repository import GObject
+from gi.repository import Gdk
 from gi.repository import Gtk
 
 from virtaal.models.langmodel import LanguageModel
@@ -57,12 +58,6 @@ class LanguageView(BaseView):
         self.popupbutton = PopupMenuButton()
         self.popupbutton.connect('toggled', self._on_button_toggled)
 
-        self.controller.main_controller.view.main_window.connect(
-            'style-set', self._on_style_set
-        )
-        self.controller.main_controller.view.main_window.connect(
-            'style-updated', self._on_style_set
-        )
         if self.controller.recent_pairs:
             self.popupbutton.text = self._get_display_string(*self.controller.recent_pairs[0])
 
@@ -102,22 +97,15 @@ class LanguageView(BaseView):
     def notify_same_langs(self):
         def notify():
             for s in [Gtk.StateType.ACTIVE, Gtk.StateType.NORMAL, Gtk.StateType.PRELIGHT, Gtk.StateType.SELECTED]:
-                self.popupbutton.get_child().modify_fg(s, Gdk.color_parse('#f66'))
+                self.popupbutton.modify_fg(s, Gdk.color_parse('#f66'))
 
         GObject.idle_add(notify)
 
     def notify_diff_langs(self):
         def notify():
             states = [Gtk.StateFlags.ACTIVE, Gtk.StateFlags.NORMAL, Gtk.StateFlags.PRELIGHT, Gtk.StateFlags.SELECTED]
-            if hasattr(self, 'popup_default_fg'):
-                fgcol = self.popup_default_fg
-            else:
-                default_style_context = Gtk.StyleContext()
-                fgcol = {}
-                for state in states:
-                    fgcol[state] = default_style_context.get_color(state)
-            for s in states:
-                self.popupbutton.get_child().override_color(s, fgcol[s])
+            for state in states:
+                self.popupbutton.modify_fg(state, None)
 
         GObject.idle_add(notify)
 
@@ -222,7 +210,3 @@ class LanguageView(BaseView):
         pair = self.controller.recent_pairs[item_n]
         self.controller.set_language_pair(*pair)
         self.controller.main_controller.unit_controller.view.targets[0].grab_focus()
-
-    def _on_style_set(self, widget, prev_style=None):
-        if not hasattr(self, 'popup_default_fg'):
-            self.popup_default_fg = widget.get_style_context().get_color(Gtk.StateType.NORMAL)

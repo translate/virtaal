@@ -34,6 +34,13 @@ Other code wanting to alter their behaviour on whether we run in an inverse
 theme or not, can inspect this to know.
 """
 
+
+def str_to_rgba(s):
+    rgba = Gdk.RGBA()
+    rgba.parse(s)
+    return rgba
+
+
 _default_theme = {
     # Generic styling for a URL
     'url_fg': '#0000ff',
@@ -131,9 +138,10 @@ def update_style(widget):
 #      http://www.w3.org/TR/WCAG20/Overview.html
 
 def _luminance(c):
-    r = pow(c.red/65535.0, 2.2)
-    g = pow(c.green/65535.0, 2.2)
-    b = pow(c.blue/65535.0, 2.2)
+    c = str_to_rgba(c)
+    r = pow(c.red, 2.2)
+    g = pow(c.green, 2.2)
+    b = pow(c.blue, 2.2)
     return 0.2126 * r + 0.7152 * g + 0.0722 * b
 
 def _luminance_contrast_ratio(c1, c2):

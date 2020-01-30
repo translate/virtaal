@@ -50,7 +50,7 @@ def str_to_rgba(s):
 
 _default_theme = {
     # Generic styling for a URL
-    'url_fg': '#0000ff',
+    'url_fg': '#0000ff',   # Adwaita: #1b6acb
     'subtle_fg': 'darkgrey',
     # Colours for the selected placeable (not affected by its type)
     'selected_placeable_fg': '#000000',
@@ -74,7 +74,7 @@ _default_theme = {
 }
 
 _inverse_theme = {
-    'url_fg': '#aaaaff',
+    'url_fg': '#70aaff',  # Adwaita: #3584e4
     'subtle_fg': 'grey',
     'selected_placeable_fg': '#ffffff',
     'selected_placeable_bg': '#007010',
@@ -139,6 +139,10 @@ def update_style(widget):
         # we only want to change if it will actually result in something readable:
         if has_good_contrast(fg, new_diff_delete_bg):
             current_theme['diff_delete_bg'] = new_diff_delete_bg
+
+    url_fg = rgba_to_str(_style.get_color(Gtk.StateFlags.LINK))
+    if has_good_contrast(bg, url_fg):
+        current_theme["url_fg"] = url_fg
 
 
 # these are based on an (old?) Web Content Accessibility Guidelines of the w3c

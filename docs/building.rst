@@ -38,7 +38,6 @@ Optional Packages
 
 These are not build dependencies but usually improve the user experience.
 
-- psyco -- provides a nice speedup
 - Enchant, pyenchant, gtkspell and pygtkspell (might be packaged as
   gnome-python-extras or something similar) -- provides all :doc:`spell
   checking <spell_checking>` functionality.  For Windows:

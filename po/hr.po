@@ -1,0 +1,2537 @@
+# Croatian (hr) localisation of Virtaal.
+# Copyright (C) 2007-2010 Zuza Software Foundation (Translate.org.za)
+# This file is distributed under the same license as the Virtaal package.
+# Milo Ivir <mail@milotype.de>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Virtaal 1.0.0-beta1\n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2014-02-11 20:43+0000\n"
+"PO-Revision-Date: 2019-12-21 22:10+0100\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.4\n"
+"Last-Translator: Milo Ivir <mail@milotype.de>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"Language: hr\n"
+
+#: ../share/applications/virtaal.desktop.in.h:1
+#: ../share/virtaal/virtaal.ui.h:18 ../virtaal/support/native_widgets.py:103
+#: ../virtaal/views/mainview.py:842
+msgid "Virtaal"
+msgstr "Virtaal"
+
+#: ../share/applications/virtaal.desktop.in.h:2
+msgid "Translation Tool"
+msgstr "Translation Tool"
+
+#: ../share/applications/virtaal.desktop.in.h:3
+msgid ""
+"A translation tool to help a human translator translate files into other "
+"languages"
+msgstr ""
+"Alat za prijevod koji pomaže ljudskom prevoditelju prevoditi datoteke na "
+"druge jezike"
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:1
+msgid ""
+"Virtaal is a program for doing translation. It aims for a delightful "
+"combination of simplicity and power. It integrates with selected online "
+"resources to make translation fun, while helping to improve translation "
+"quality."
+msgstr ""
+"Virtaal je program za prevođenje. Cilj mu je ugodna kombinacija "
+"jednostavnosti i moći. Integrira se s odabranim mrežnim resursima kako bi "
+"prevođenje učinio zabavnim, a istovremeno poboljšao kvalitetu prijevoda."
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:2
+msgid ""
+"The initial focus is on software translation (localization or l10n), but is "
+"definitely meant to be useful as a general purpose tool for Computer Aided "
+"Translation (CAT)."
+msgstr ""
+"Početni fokus leži u prevođenju softvera (lokalizacija ili l10n), ali je "
+"definitivno zamišljen da bude koristan kao alat opće namjene za prevođenje "
+"pomoću računala (CAT)."
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:3
+msgid "Some features:"
+msgstr "Neke funkcije:"
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:4
+msgid "Translation reuse (translation memory)"
+msgstr "Koristi postojeće prijevode (spremište prijevoda)"
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:5
+#: ../virtaal/views/widgets/welcomescreen.py:80
+msgid "Terminology assistance"
+msgstr "Pomoć za terminologiju"
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:6
+msgid "AutoCompletor and AutoCorrector"
+msgstr "Automatsko dovršavanje i automatsko ispravljanje"
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:7
+msgid "Quality checks with customization for many languages"
+msgstr "Prilagodive provjere kvalitete za mnoge jezike"
+
+#: ../share/virtaal/virtaal.ui.h:1
+msgid "Add Missing Language"
+msgstr "Dodaj nedostajući jezik"
+
+#: ../share/virtaal/virtaal.ui.h:2
+msgid "Language name:"
+msgstr "Ime jezika:"
+
+#: ../share/virtaal/virtaal.ui.h:3
+msgid "ISO code:"
+msgstr "ISO kȏd:"
+
+#: ../share/virtaal/virtaal.ui.h:4
+msgid "Plural expression:"
+msgstr "Oblik množine:"
+
+#: ../share/virtaal/virtaal.ui.h:5
+msgid "Number of plurals:"
+msgstr "Broj množina:"
+
+#: ../share/virtaal/virtaal.ui.h:6
+msgid ""
+"Depending on the translation task, the plural information might be optional."
+msgstr ""
+"Ovisno o zadatku pri prevođenju, informacija za množinu može biti opcionalna."
+
+#: ../share/virtaal/virtaal.ui.h:7
+msgid "<b>Language Information</b>"
+msgstr "<b>Informacije o jeziku</b>"
+
+#: ../share/virtaal/virtaal.ui.h:8
+msgid "New Language Pair"
+msgstr "Novi jezični par"
+
+#: ../share/virtaal/virtaal.ui.h:9
+msgid ""
+"The <b>Original</b> is the language from which you are translating, also "
+"called the source language.\n"
+"\n"
+"If you are translating from English to French then English would be your "
+"original or source language."
+msgstr ""
+"<b>Original</b> je jezik s kojeg prevodiš, također se naziva izvorni jezik.\n"
+"\n"
+"Ako prevodiš s engleskog na hrvatski, onda bi engleski bio tvoj original ili "
+"izvorni jezik."
+
+#: ../share/virtaal/virtaal.ui.h:12
+msgid "<b>Original</b>"
+msgstr "<b>Original</b>"
+
+#: ../share/virtaal/virtaal.ui.h:13
+msgid ""
+"The <b>Translation</b> is the language into which you are translating, also "
+"called the target language.\n"
+"\n"
+"If you are translating from English to French then French would be your "
+"translation or target language."
+msgstr ""
+"<b>Prijevod</b> je jezik u koji prevodiš, također se naziva ciljani jezik.\n"
+"\n"
+"Ako prevodiš s engleskog na hrvatski, onda bi hrvatski bio tvoj prijevod ili "
+"ciljani jezik."
+
+#: ../share/virtaal/virtaal.ui.h:16
+msgid "<b>Translation</b>"
+msgstr "<b>Prijevod</b>"
+
+#: ../share/virtaal/virtaal.ui.h:17
+msgid "_Add Missing Language..."
+msgstr "Dodaj nedostajući _jezik …"
+
+#: ../share/virtaal/virtaal.ui.h:19
+msgid "_File"
+msgstr "_Datoteka"
+
+#: ../share/virtaal/virtaal.ui.h:20
+msgid "_Update to Template"
+msgstr "_Aktualiziraj u predložak"
+
+#: ../share/virtaal/virtaal.ui.h:21
+msgid "_Export"
+msgstr "_Izvezi"
+
+#: ../share/virtaal/virtaal.ui.h:22
+msgid "_Recent Files"
+msgstr "_Nedavno korištene datoteke"
+
+#: ../share/virtaal/virtaal.ui.h:23
+msgid "_Edit"
+msgstr "_Uredi"
+
+#. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
+#: ../share/virtaal/virtaal.ui.h:25
+msgid "Transfer From Source"
+msgstr "Prenesi iz izvora"
+
+#. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
+#: ../share/virtaal/virtaal.ui.h:27
+msgid "P_revious Placeable"
+msgstr "P_rethodni nepromijenjeni izraz"
+
+#: ../share/virtaal/virtaal.ui.h:28
+msgid "_Next Placeable"
+msgstr "_Sljedeći nepromijenjeni izraz"
+
+#: ../share/virtaal/virtaal.ui.h:29
+msgid "_View"
+msgstr "_Prikaz"
+
+#: ../share/virtaal/virtaal.ui.h:30
+msgid "_Full Screen"
+msgstr "Prikaz preko _cijelog ekrana"
+
+#: ../share/virtaal/virtaal.ui.h:31
+msgid "_Quality Checks"
+msgstr "Provjera _kvalitete"
+
+#: ../share/virtaal/virtaal.ui.h:32
+msgid "_Navigation"
+msgstr "_Navigacija"
+
+#: ../share/virtaal/virtaal.ui.h:33
+msgid "P_age Up"
+msgstr "Stranicu _gore"
+
+#: ../share/virtaal/virtaal.ui.h:34
+msgid "_Page Down"
+msgstr "Stranicu _dolje"
+
+#: ../share/virtaal/virtaal.ui.h:35
+msgid "_Help"
+msgstr "_Pomoć"
+
+#: ../share/virtaal/virtaal.ui.h:36
+msgid "_Online Help"
+msgstr "_Pomoć na internetu"
+
+#: ../share/virtaal/virtaal.ui.h:37
+msgid "_Tutorial"
+msgstr "_Vježba"
+
+#: ../share/virtaal/virtaal.ui.h:38
+msgid "_Localization Guide"
+msgstr "Priručnik za _lokalizaciju"
+
+#: ../share/virtaal/virtaal.ui.h:39
+msgid "Report a _Bug"
+msgstr "P_rijavi grešku"
+
+#: ../share/virtaal/virtaal.ui.h:40
+msgid "Virtaal Preferences"
+msgstr "Virtaal postavke"
+
+#: ../share/virtaal/virtaal.ui.h:41
+msgid "The name stored in the file header"
+msgstr "Ime spremljeno u zaglavlju datoteke"
+
+#. l10n: This label is for the name of the translator
+#: ../share/virtaal/virtaal.ui.h:43
+msgid "Name:"
+msgstr "Ime:"
+
+#: ../share/virtaal/virtaal.ui.h:44
+msgid "The e-mail address stored in the file header"
+msgstr "E-adresa spremljena u zaglavlju datoteke"
+
+#: ../share/virtaal/virtaal.ui.h:45
+msgid "E-mail address:"
+msgstr "E-adresa:"
+
+#: ../share/virtaal/virtaal.ui.h:46
+msgid ""
+"The team information stored in the file header. This can be an e-mail "
+"address or a URL, for example."
+msgstr ""
+"Podaci o timu spremljeni u zaglavlju datoteke. To može biti npr. e-adresa "
+"ili URL."
+
+#: ../share/virtaal/virtaal.ui.h:47
+msgid "Team:"
+msgstr "Tim:"
+
+#: ../share/virtaal/virtaal.ui.h:48
+msgid "<b>Translator Information</b>"
+msgstr "<b>Podaci o prevoditelju</b>"
+
+#: ../share/virtaal/virtaal.ui.h:49
+msgid "Source text:"
+msgstr "Izvorni tekst:"
+
+#: ../share/virtaal/virtaal.ui.h:50
+msgid "Target text:"
+msgstr "Ciljani tekst:"
+
+#: ../share/virtaal/virtaal.ui.h:51
+msgid "Use _Default Fonts"
+msgstr "Koristi stan_dardne fontove"
+
+#: ../share/virtaal/virtaal.ui.h:52
+msgid "<b>Fonts</b>"
+msgstr "<b>Fontovi</b>"
+
+#. l10n: This tab label refers to the general preferences
+#: ../share/virtaal/virtaal.ui.h:54
+msgid "General"
+msgstr "Opće"
+
+#: ../share/virtaal/virtaal.ui.h:55
+msgid ""
+"Placeables are special parts of the text that can be automatically "
+"highlighted and easily inserted into the translation."
+msgstr ""
+"Nepromijenjeni izrazi su posebni dijelovi teksta, koji su mogu automatski "
+"istaknuti i jednostavno umetnuti u prijevod."
+
+#: ../share/virtaal/virtaal.ui.h:56
+msgid "Placeables"
+msgstr "Nepromijenjeni izrazi"
+
+#: ../share/virtaal/virtaal.ui.h:57
+msgid "Plug-ins"
+msgstr "Dodatci"
+
+#: ../share/virtaal/virtaal.ui.h:58
+msgid "Properties"
+msgstr "Svojstva"
+
+#: ../share/virtaal/virtaal.ui.h:59
+msgid "<b>Words</b> (total):"
+msgstr "<b>Broj riječi</b> (ukupno):"
+
+#: ../share/virtaal/virtaal.ui.h:60
+msgid "<b>Strings</b> (total):"
+msgstr "<b>Broj znakovnih nizova</b> (ukupno):"
+
+#: ../share/virtaal/virtaal.ui.h:61
+msgid "File type:"
+msgstr "Vrsta datoteke:"
+
+#: ../share/virtaal/virtaal.ui.h:62
+msgid "File size:"
+msgstr "Veličina datoteke:"
+
+#: ../share/virtaal/virtaal.ui.h:63
+msgid "Location:"
+msgstr "Lokacija:"
+
+#: ../share/virtaal/virtaal.ui.h:64
+msgid "Add Term"
+msgstr "Dodaj pojam"
+
+#. l10n: This label refers to comments about a new term that is added
+#: ../share/virtaal/virtaal.ui.h:66
+msgid "C_omments"
+msgstr "K_omentari"
+
+#: ../share/virtaal/virtaal.ui.h:67
+msgid "Terminology _file:"
+msgstr "_Datoteka za terminologiju:"
+
+#: ../share/virtaal/virtaal.ui.h:68
+msgid "Terminology Files"
+msgstr "Datoteke za terminologiju"
+
+#: ../share/virtaal/virtaal.ui.h:69
+msgid "Add URL"
+msgstr "Dodaj URL"
+
+#: ../share/virtaal/virtaal.ui.h:70
+msgid "URL:"
+msgstr "URL:"
+
+#: ../share/virtaal/virtaal.ui.h:71
+msgid "Put queries in quotes"
+msgstr "Postavi upite pod navodnike"
+
+#: ../share/virtaal/virtaal.ui.h:72
+msgid "<b>Options</b>"
+msgstr "<b>Opcije</b>"
+
+#: ../share/virtaal/virtaal.ui.h:73
+msgid "Web Look-ups"
+msgstr "Pretraživanja na webu"
+
+#. l10n: Remove the tags if underlining is unsuitable for your language. Most languages won't need to change this. Translate 'Open' normally.
+#: ../share/virtaal/virtaal.ui.h:75
+msgid "<u>Open</u>"
+msgstr "<u>Otvori</u>"
+
+#: ../share/virtaal/virtaal.ui.h:76
+msgid "<b><big>Recent Files</big></b>"
+msgstr "<b><big>Nedavne datoteke</big></b>"
+
+#: ../share/virtaal/virtaal.ui.h:77
+msgid "<u>Tutorial</u>"
+msgstr "<u>Vježba</u>"
+
+#: ../share/virtaal/virtaal.ui.h:78
+msgid "<u>Cheat Sheet</u>"
+msgstr "<u>Šalabahter</u>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.ui.h:80
+#: ../virtaal/controllers/welcomescreencontroller.py:38
+msgid "http://translate.sourceforge.net/wiki/virtaal/features"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
+
+#: ../share/virtaal/virtaal.ui.h:81
+msgid "<u>More...</u>"
+msgstr "<u>Više …</u>"
+
+#: ../share/virtaal/virtaal.ui.h:82
+msgid "<u>Features</u>"
+msgstr "<u>Funkcije</u>"
+
+#: ../share/virtaal/virtaal.ui.h:83
+msgid "<b><big>Getting Started</big></b>"
+msgstr "<b><big>Kako započeti</big></b>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.ui.h:85
+#: ../virtaal/controllers/welcomescreencontroller.py:34
+msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
+
+#: ../share/virtaal/virtaal.ui.h:86
+msgid "<u>Manual</u>"
+msgstr "<u>Priručnik</u>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.ui.h:88
+#: ../virtaal/controllers/welcomescreencontroller.py:35
+msgid "http://translate.sourceforge.net/wiki/guide/start"
+msgstr "http://translate.sourceforge.net/wiki/guide/start"
+
+#: ../share/virtaal/virtaal.ui.h:89
+msgid "<u>Localization Guide</u>"
+msgstr "<u>Priručnik za lokalizaciju</u>"
+
+#. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
+#: ../share/virtaal/virtaal.ui.h:91
+#: ../virtaal/controllers/welcomescreencontroller.py:37
+msgid "http://translate.sourceforge.net/wiki/virtaal/index#contact"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/index#contact"
+
+#: ../share/virtaal/virtaal.ui.h:92
+msgid "<u>Feedback</u>"
+msgstr "<u>Povratna informacija</u>"
+
+#: ../share/virtaal/virtaal.ui.h:93
+msgid "<b><big>Support</big></b>"
+msgstr "<b><big>Podrška</big></b>"
+
+#: ../virtaal/tips.py:27
+msgid ""
+"At the end of a translation, simply press <Enter> to continue with the next "
+"one."
+msgstr ""
+"Kad prevedeš izraz, jednostavno pritisni <Enter> i nastavi prevoditi "
+"sljedeći izraz."
+
+#: ../virtaal/tips.py:28
+msgid ""
+"To copy the original string into the target field, simply press <Alt+Down>."
+msgstr ""
+"Za kopiranje izvornog niza u ciljno polje, jednostavno pritisni <Alt+Dolje>."
+
+#. l10n: Refer to the translation of "Fuzzy" to find the appropriate shortcut key to recommend
+#: ../virtaal/tips.py:31
+msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
+msgstr ""
+"Za označavanje trenutačnog prijevoda kao nejasnog, jednostavno pritisni <Alt"
+"+U>."
+
+#: ../virtaal/tips.py:32
+msgid ""
+"To mark the current translation as incomplete, simply press <Ctrl+Shift"
+"+Enter>."
+msgstr ""
+"Za označavanje trenutačnog prijevoda kao nepotpunog, jednostavno pritisni "
+"<Ctrl+Shift+Enter>."
+
+#: ../virtaal/tips.py:33
+msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
+msgstr ""
+"Za označavanje trenutačnog prijevoda kao potpunog, jednostavno pritisni <Ctrl"
+"+Enter>."
+
+#: ../virtaal/tips.py:34
+msgid "Use Ctrl+Up or Ctrl+Down to move between translations."
+msgstr "Koristi Ctrl+Gore ili Ctrl+Dolje za premještanje na prijevode."
+
+#: ../virtaal/tips.py:35
+msgid ""
+"Use Ctrl+PgUp or Ctrl+PgDown to move in large steps between translations."
+msgstr ""
+"Koristi Ctrl+StranicaGore ili Ctrl+StranicaDolje za premještanje na "
+"prijevode velikim koracima."
+
+#: ../virtaal/controllers/checkscontroller.py:29
+msgid "Fuzzy"
+msgstr "Nejasno"
+
+#: ../virtaal/controllers/checkscontroller.py:30
+#: ../virtaal/controllers/unitcontroller.py:83
+msgid "Untranslated"
+msgstr "Neprevedeno"
+
+#: ../virtaal/controllers/checkscontroller.py:31
+msgid "Accelerators"
+msgstr "Ubrzivači"
+
+#: ../virtaal/controllers/checkscontroller.py:32
+msgid "Acronyms"
+msgstr "Akronimi"
+
+#: ../virtaal/controllers/checkscontroller.py:33
+msgid "Blank"
+msgstr "Prazno"
+
+#: ../virtaal/controllers/checkscontroller.py:34
+msgid "Brackets"
+msgstr "Zagrade"
+
+#: ../virtaal/controllers/checkscontroller.py:35
+msgid "Compendium conflict"
+msgstr "Konflikt u priručniku"
+
+#: ../virtaal/controllers/checkscontroller.py:36
+msgid "Translator credits"
+msgstr "Podaci o prevodiocima"
+
+#: ../virtaal/controllers/checkscontroller.py:37
+msgid "Double quotes"
+msgstr "Navodnici"
+
+#: ../virtaal/controllers/checkscontroller.py:38
+msgid "Double spaces"
+msgstr "Dvostruki razmak"
+
+#: ../virtaal/controllers/checkscontroller.py:39
+msgid "Repeated word"
+msgstr "Ponavljajuće riječi"
+
+#: ../virtaal/controllers/checkscontroller.py:40
+#: ../virtaal/controllers/placeablescontroller.py:97
+msgid "E-mail"
+msgstr "E-pošta"
+
+#: ../virtaal/controllers/checkscontroller.py:41
+msgid "Ending punctuation"
+msgstr "Završna interpunkcija"
+
+#: ../virtaal/controllers/checkscontroller.py:42
+msgid "Ending whitespace"
+msgstr "Završna bjelina"
+
+#: ../virtaal/controllers/checkscontroller.py:43
+msgid "Escapes"
+msgstr "Kontrolni znakovi"
+
+#: ../virtaal/controllers/checkscontroller.py:44
+msgid "File paths"
+msgstr "Putanje datoteka"
+
+#: ../virtaal/controllers/checkscontroller.py:45
+msgid "Functions"
+msgstr "Funkcije"
+
+#: ../virtaal/controllers/checkscontroller.py:46
+msgid "GConf values"
+msgstr "GConf vrijednosti"
+
+#: ../virtaal/controllers/checkscontroller.py:47
+msgid "Old KDE comment"
+msgstr "Stari KDE komentar"
+
+#: ../virtaal/controllers/checkscontroller.py:48
+msgid "Long"
+msgstr "Dugo"
+
+#: ../virtaal/controllers/checkscontroller.py:49
+msgid "Must translate words"
+msgstr "Moraš prevesti riječi"
+
+#: ../virtaal/controllers/checkscontroller.py:50
+msgid "Newlines"
+msgstr "Novi redci"
+
+#: ../virtaal/controllers/checkscontroller.py:51
+msgid "Number of plurals"
+msgstr "Broj množina"
+
+#: ../virtaal/controllers/checkscontroller.py:52
+msgid "Don't translate words"
+msgstr "Ne prevodi riječi"
+
+#: ../virtaal/controllers/checkscontroller.py:53
+#: ../virtaal/controllers/placeablescontroller.py:121
+msgid "Numbers"
+msgstr "Brojevi"
+
+#: ../virtaal/controllers/checkscontroller.py:54 ../devsupport/optparse.py:1612
+msgid "Options"
+msgstr "Opcije"
+
+#: ../virtaal/controllers/checkscontroller.py:55
+msgid "printf()"
+msgstr "printf()"
+
+#: ../virtaal/controllers/checkscontroller.py:56
+msgid "Punctuation spacing"
+msgstr "Razmak interpunkcije"
+
+#: ../virtaal/controllers/checkscontroller.py:57
+msgid "Pure punctuation"
+msgstr "Obična interpunkcija"
+
+#: ../virtaal/controllers/checkscontroller.py:58
+msgid "Number of sentences"
+msgstr "Broj rečenica"
+
+#: ../virtaal/controllers/checkscontroller.py:59
+msgid "Short"
+msgstr "Kratko"
+
+#: ../virtaal/controllers/checkscontroller.py:60
+msgid "Simple capitalization"
+msgstr "Jednostavna upotreba velikih slova"
+
+#: ../virtaal/controllers/checkscontroller.py:61
+msgid "Simple plural(s)"
+msgstr "Jednostavni oblici množine"
+
+#: ../virtaal/controllers/checkscontroller.py:62
+msgid "Single quotes"
+msgstr "Polunavodnici"
+
+#: ../virtaal/controllers/checkscontroller.py:63
+msgid "Spelling"
+msgstr "Pravopis"
+
+#: ../virtaal/controllers/checkscontroller.py:64
+msgid "Starting capitalization"
+msgstr "Početna velika slova"
+
+#: ../virtaal/controllers/checkscontroller.py:65
+msgid "Starting punctuation"
+msgstr "Početna interpunkcija"
+
+#: ../virtaal/controllers/checkscontroller.py:66
+msgid "Starting whitespace"
+msgstr "Početna bjelina"
+
+#: ../virtaal/controllers/checkscontroller.py:67
+msgid "Tabs"
+msgstr "Kartice"
+
+#: ../virtaal/controllers/checkscontroller.py:68
+msgid "Unchanged"
+msgstr "Nepromijenjeno"
+
+#: ../virtaal/controllers/checkscontroller.py:69
+#: ../virtaal/controllers/placeablescontroller.py:130
+msgid "URLs"
+msgstr "URL-ovi"
+
+#: ../virtaal/controllers/checkscontroller.py:70
+msgid "Valid characters"
+msgstr "Valjani znakovi"
+
+#: ../virtaal/controllers/checkscontroller.py:71
+msgid "Placeholders"
+msgstr "Rezervirana mjesta"
+
+#: ../virtaal/controllers/checkscontroller.py:72
+msgid "XML tags"
+msgstr "XML oznake"
+
+#: ../virtaal/controllers/checkscontroller.py:111
+msgid "Default"
+msgstr "Standardno"
+
+#: ../virtaal/controllers/checkscontroller.py:112
+msgid "OpenOffice.org"
+msgstr "OpenOffice.org"
+
+#: ../virtaal/controllers/checkscontroller.py:113
+msgid "Mozilla"
+msgstr "Mozilla"
+
+#: ../virtaal/controllers/checkscontroller.py:114
+msgid "KDE"
+msgstr "KDE"
+
+#: ../virtaal/controllers/checkscontroller.py:115
+msgid "GNOME"
+msgstr "GNOME"
+
+#: ../virtaal/controllers/checkscontroller.py:116
+msgid "Drupal"
+msgstr "Drupal"
+
+#: ../virtaal/controllers/maincontroller.py:80
+#: ../virtaal/controllers/maincontroller.py:89
+#: ../virtaal/controllers/maincontroller.py:98
+msgid "Header information"
+msgstr "Podaci u zaglavlju"
+
+#: ../virtaal/controllers/maincontroller.py:81
+msgid "Please enter your name"
+msgstr "Upiši tvoje ime"
+
+#: ../virtaal/controllers/maincontroller.py:90
+msgid "Please enter your e-mail address"
+msgstr "Upiši tvoju e-adresu"
+
+#: ../virtaal/controllers/maincontroller.py:99
+msgid "Please enter your team's information"
+msgstr "Upiši podatke tvog tima"
+
+#: ../virtaal/controllers/maincontroller.py:203
+#: ../virtaal/controllers/maincontroller.py:341
+msgid ""
+"You selected the currently open file for opening. Do you want to reload the "
+"file?"
+msgstr ""
+"Pokušavaš otvoriti trenutačno otvorenu datoteku. Želiš li ponovo učitati "
+"datoteku?"
+
+#: ../virtaal/controllers/maincontroller.py:215
+#: ../virtaal/controllers/maincontroller.py:325
+#: ../virtaal/controllers/maincontroller.py:353
+#, python-format
+msgid ""
+"Could not open file.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Try opening a different file."
+msgstr ""
+"Nije bilo moguće otvoriti datoteku.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Pokušaj otvoriti neku drugu datoteku."
+
+#: ../virtaal/controllers/maincontroller.py:238
+#: ../virtaal/support/native_widgets.py:145
+#: ../virtaal/support/native_widgets.py:204
+#: ../virtaal/support/native_widgets.py:255 ../virtaal/views/mainview.py:323
+msgid "Save"
+msgstr "Spremi"
+
+#: ../virtaal/controllers/maincontroller.py:258
+#, python-format
+msgid ""
+"Could not save file.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Try saving to a different location."
+msgstr ""
+"Nije bilo moguće spremiti datoteku.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Pokušaj spremiti na nekom drugom mjestu."
+
+#: ../virtaal/controllers/maincontroller.py:264
+#, python-format
+msgid ""
+"Could not save file.\n"
+"\n"
+"%(error_message)s"
+msgstr ""
+"Nije bilo moguće spremiti datoteku.\n"
+"\n"
+"%(error_message)s"
+
+#: ../virtaal/controllers/maincontroller.py:275
+msgid "Can only export Gettext PO files"
+msgstr "Izvesti se mogu samo Gettext PO datoteke"
+
+#: ../virtaal/controllers/maincontroller.py:284
+msgid "Export"
+msgstr "Izvezi"
+
+#: ../virtaal/controllers/maincontroller.py:292
+#, python-format
+msgid ""
+"Could not export file.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Try saving to a different location."
+msgstr ""
+"Nije bilo moguće izvesti datoteku.\n"
+"\n"
+"%(error_message)s\n"
+"\n"
+"Pokušaj spremiti na nekom drugom mjestu."
+
+#: ../virtaal/controllers/maincontroller.py:298
+#, python-format
+msgid ""
+"Could not export file.\n"
+"\n"
+"%(error_message)s"
+msgstr ""
+"Nije bilo moguće izvesti datoteku.\n"
+"\n"
+"%(error_message)s"
+
+#: ../virtaal/controllers/maincontroller.py:314
+msgid "Reload File"
+msgstr "Ponovo učitaj datoteku"
+
+#: ../virtaal/controllers/maincontroller.py:314
+msgid "Reload file from last saved copy and lose all changes?"
+msgstr ""
+"Ponovo učitati datoteku iz zadnje spremljene kopije i izgubiti sve promjene?"
+
+#. l10n: See http://en.wikipedia.org/wiki/CamelCase
+#: ../virtaal/controllers/placeablescontroller.py:84
+msgid "CamelCase"
+msgstr "Velika slova u sastavljenoj riječi"
+
+#: ../virtaal/controllers/placeablescontroller.py:85
+msgid ""
+"Words with internal capitalization, such as some brand names and WikiWords"
+msgstr ""
+"Velika slova u sastavljenoj riječi, kao što su neka imena brendova i "
+"WikiWords"
+
+#: ../virtaal/controllers/placeablescontroller.py:88
+msgid "Capitals"
+msgstr "Verzali"
+
+#. l10n: this refers to "UPPERCASE" / "CAPITAL" letters
+#: ../virtaal/controllers/placeablescontroller.py:90
+msgid "Words containing uppercase letters only"
+msgstr "Riječi koje sadrže samo velika slova"
+
+#: ../virtaal/controllers/placeablescontroller.py:93
+msgid "Command Line Options"
+msgstr "Opcije za naredbeni redak"
+
+#: ../virtaal/controllers/placeablescontroller.py:94
+msgid "Application command line options, such as --help, -h and -I"
+msgstr "Opcije za naredbeni redak programa, npr. --help, -h i -I"
+
+#: ../virtaal/controllers/placeablescontroller.py:98
+msgid "E-mail addresses"
+msgstr "E-adrese"
+
+#: ../virtaal/controllers/placeablescontroller.py:101
+msgid "File Names"
+msgstr "Imena datoteka"
+
+#: ../virtaal/controllers/placeablescontroller.py:102
+msgid "Paths referring to file locations"
+msgstr "Staze koje se odnose na mjesta datoteka"
+
+#: ../virtaal/controllers/placeablescontroller.py:105
+msgid "Placeholders (printf)"
+msgstr "Rezervirana mjesta (printf)"
+
+#: ../virtaal/controllers/placeablescontroller.py:106
+msgid "Placeholders used in \"printf\" strings"
+msgstr "Rezervirana mjesta koja se koriste u „printf” znakovnim nizovima"
+
+#: ../virtaal/controllers/placeablescontroller.py:109
+msgid "Placeholders (Python)"
+msgstr "Rezervirana mjesta (Python)"
+
+#: ../virtaal/controllers/placeablescontroller.py:110
+msgid "Placeholders in Python strings"
+msgstr "Rezervirana mjesta u Python znakovnim nizovima"
+
+#: ../virtaal/controllers/placeablescontroller.py:113
+msgid "Placeholders (Java)"
+msgstr "Rezervirana mjesta (Java)"
+
+#: ../virtaal/controllers/placeablescontroller.py:114
+msgid "Placeholders in Java strings"
+msgstr "Rezervirana mjesta u Java znakovnim nizovima"
+
+#: ../virtaal/controllers/placeablescontroller.py:117
+msgid "Placeholders (Qt)"
+msgstr "Rezervirana mjesta (Qt)"
+
+#: ../virtaal/controllers/placeablescontroller.py:118
+msgid "Placeholders in Qt strings"
+msgstr "Rezervirana mjesta u Qt znakovnim nizovima"
+
+#. l10n: 'decimal fractions' refer to numbers like 0.2 or 499,99
+#: ../virtaal/controllers/placeablescontroller.py:123
+msgid "Integer numbers and decimal fractions"
+msgstr "Cijeli brojevi i decimalni razlomci"
+
+#: ../virtaal/controllers/placeablescontroller.py:126
+msgid "Punctuation"
+msgstr "Interpunkcija"
+
+#: ../virtaal/controllers/placeablescontroller.py:127
+msgid "Symbols and less frequently used punctuation marks"
+msgstr "Simboli i rjeđe korišteni znakovi interpunkcije"
+
+#: ../virtaal/controllers/placeablescontroller.py:131
+msgid "URLs, hostnames and IP addresses"
+msgstr "URL-ovi, imena glavnih računala i IP adrese"
+
+#. l10n: see http://en.wikipedia.org/wiki/Character_entity_reference
+#: ../virtaal/controllers/placeablescontroller.py:135
+msgid "XML Entities"
+msgstr "XML entiteti"
+
+#: ../virtaal/controllers/placeablescontroller.py:136
+msgid "Entity references, such as &amp; and &#169;"
+msgstr "Reference entiteta, npr. &amp; i &#169;"
+
+#: ../virtaal/controllers/placeablescontroller.py:139
+msgid "XML Tags"
+msgstr "XML oznake"
+
+#: ../virtaal/controllers/placeablescontroller.py:140
+msgid "XML tags, such as <b> and </i>"
+msgstr "XML oznake, npr. <b> and </i>"
+
+#: ../virtaal/controllers/placeablescontroller.py:154
+msgid "Spaces"
+msgstr "Razmaci"
+
+#: ../virtaal/controllers/placeablescontroller.py:155
+msgid "Double spaces and spaces in unexpected positions"
+msgstr "Dvostruki razmaci i razmaci na neočekivanim mjestima"
+
+#: ../virtaal/controllers/placeablescontroller.py:156
+msgid "\"alt\" Attributes"
+msgstr "„alt” svojstva"
+
+#: ../virtaal/controllers/placeablescontroller.py:157
+msgid "Placeable for \"alt\" attributes (as found in HTML)"
+msgstr "Nepromijenjen izraz za „alt” svojstva (npr. u HTML-u)"
+
+#: ../virtaal/controllers/placeablescontroller.py:158
+msgid "Placeholders (Drupal)"
+msgstr "Rezervirana mjesta (Drupal)"
+
+#: ../virtaal/controllers/placeablescontroller.py:159
+msgid "Placeholders in Drupal strings"
+msgstr "Rezervirana mjesta u Drupal znakovnim nizovima"
+
+#: ../virtaal/controllers/storecontroller.py:198
+msgid "No source or translatable files in bundle"
+msgstr "U paketu nema izvorne ni prevodilačke datoteke"
+
+#: ../virtaal/controllers/storecontroller.py:230
+msgid "The file contains nothing to translate."
+msgstr "Ova datoteka ne sadrži ništa što bi se moglo prevesti."
+
+#. l10n: The heading of statistics before updating to the new template
+#: ../virtaal/controllers/storecontroller.py:435
+msgid "Before:"
+msgstr "Prije:"
+
+#. l10n: The heading of statistics after updating to the new template
+#: ../virtaal/controllers/storecontroller.py:437
+msgid "After:"
+msgstr "Poslije:"
+
+#: ../virtaal/controllers/storecontroller.py:438
+#, python-format
+msgid "Translated: %d"
+msgstr "Prevedeno: %d"
+
+#: ../virtaal/controllers/storecontroller.py:439
+#, python-format
+msgid "Fuzzy: %d"
+msgstr "Nejasno: %d"
+
+#: ../virtaal/controllers/storecontroller.py:440
+#, python-format
+msgid "Untranslated: %d"
+msgstr "Neprevedeno: %d"
+
+#: ../virtaal/controllers/storecontroller.py:441
+#, python-format
+msgid "Total: %d"
+msgstr "Ukupno: %d"
+
+#. l10n: this refers to updating a file to a new template (POT file)
+#: ../virtaal/controllers/storecontroller.py:459
+msgid "File Updated"
+msgstr "Datoteka aktualizirana"
+
+#: ../virtaal/controllers/unitcontroller.py:84
+msgid "Needs work"
+msgstr "Treba doraditi"
+
+#: ../virtaal/controllers/unitcontroller.py:85
+msgid "Rejected"
+msgstr "Odbijeno"
+
+#: ../virtaal/controllers/unitcontroller.py:86
+msgid "Needs review"
+msgstr "Treba pregledati"
+
+#: ../virtaal/controllers/unitcontroller.py:87
+msgid "Translated"
+msgstr "Prevedeno"
+
+#: ../virtaal/controllers/unitcontroller.py:88
+msgid "Reviewed"
+msgstr "Pregledano"
+
+#: ../virtaal/controllers/welcomescreencontroller.py:65
+msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
+
+#: ../virtaal/modes/defaultmode.py:28
+msgid "All"
+msgstr "Sve"
+
+#: ../virtaal/modes/qualitycheckmode.py:33
+msgid "Quality Checks"
+msgstr "Provjera kvalitete"
+
+#. l10n: This is the button where the user can select units by failing quality checks
+#: ../virtaal/modes/qualitycheckmode.py:131
+msgid "Select Checks"
+msgstr "Odaberi provjere"
+
+#. l10n: This refers to quality checks
+#: ../virtaal/modes/qualitycheckmode.py:134
+msgid "All Checks"
+msgstr "Sve provjere"
+
+#: ../virtaal/modes/quicktransmode.py:31
+msgid "Incomplete"
+msgstr "Nepotpuno"
+
+#: ../virtaal/modes/searchmode.py:36 ../virtaal/modes/searchmode.py:68
+msgid "Search"
+msgstr "Traži"
+
+#: ../virtaal/modes/searchmode.py:70
+msgid "_Case sensitive"
+msgstr "_Razlikovanje velikih i malih slova"
+
+#. l10n: To read about what regular expressions are, see
+#. http://en.wikipedia.org/wiki/Regular_expression
+#: ../virtaal/modes/searchmode.py:74
+msgid "_Regular expression"
+msgstr "_Pravilni izraz"
+
+#. l10n: This text label shows in front of the text box where the replacement
+#. text is typed. Keep in mind that the text box will appear after this text.
+#. If this sentence construction is hard to use, consdider translating this as
+#. "Replacement"
+#: ../virtaal/modes/searchmode.py:82
+msgid "Replace with"
+msgstr "Zamijeni s"
+
+#. l10n: Button text
+#: ../virtaal/modes/searchmode.py:85
+msgid "Replace"
+msgstr "Zamijeni"
+
+#. l10n: Check box
+#: ../virtaal/modes/searchmode.py:88
+msgid "Replace _All"
+msgstr "Zamijeni _sve"
+
+#: ../virtaal/modes/workflowmode.py:34
+msgid "Workflow"
+msgstr "Radni proces"
+
+#. l10n: This is the button where the user can select units by workflow state
+#: ../virtaal/modes/workflowmode.py:112
+msgid "Select States"
+msgstr "Odaberi stanja"
+
+#. l10n: This refers to workflow states
+#: ../virtaal/modes/workflowmode.py:115
+msgid "All States"
+msgstr "Sva stanja"
+
+#: ../virtaal/plugins/autocompletor.py:214
+msgid "Automatically complete long words while you type"
+msgstr "Automatski dovrši duge riječi tijekom tipkanja"
+
+#: ../virtaal/plugins/autocompletor.py:215
+msgid "AutoCompletor"
+msgstr "Automatsko dovršavanje"
+
+#: ../virtaal/plugins/autocorrector.py:259
+msgid "Automatically correct text while you type"
+msgstr "Automatski ispravi tekst tijekom tipkanja"
+
+#: ../virtaal/plugins/autocorrector.py:260
+msgid "AutoCorrector"
+msgstr "Automatsko ispravljanje"
+
+#: ../virtaal/plugins/spellchecker.py:48
+msgid "Spell Checker"
+msgstr "Provjera pravopisa"
+
+#: ../virtaal/plugins/spellchecker.py:49
+msgid "Check spelling and provide suggestions"
+msgstr "Provjeri pravopis i navedi prijedloge"
+
+#. l10n: This refers to spell checking
+#: ../virtaal/plugins/spellchecker.py:347
+msgid "<i>(no suggestions)</i>"
+msgstr "<i>(bez prijedloga)</i>"
+
+#. l10n: This refers to spell checking
+#: ../virtaal/plugins/spellchecker.py:351
+msgid "Ignore All"
+msgstr "Zanemari sve"
+
+#. l10n: This refers to spelling suggestions
+#: ../virtaal/plugins/spellchecker.py:355
+msgid "More..."
+msgstr "Više …"
+
+#. l10n: This refers to the spell checking dictionary
+#: ../virtaal/plugins/spellchecker.py:361
+#, python-format
+msgid "Add \"%s\" to Dictionary"
+msgstr "Dodaj „%s” u rječnik"
+
+#: ../virtaal/plugins/spellchecker.py:364
+msgid "Languages"
+msgstr "Jezici"
+
+#: ../virtaal/plugins/lookup/__init__.py:29
+msgid "Perform look-ups on selected text"
+msgstr "Izvrši pretraživanja na odabranom tekstu"
+
+#: ../virtaal/plugins/lookup/__init__.py:30
+msgid "External Look-up"
+msgstr "Vanjsko pretraživanje"
+
+#. l10n: The 'services' here refer to different look-up plugins,
+#. such as web look-up, etc.
+#: ../virtaal/plugins/lookup/lookupview.py:70
+msgid "Select Look-up Services"
+msgstr "Odaberi uslugu za pretraživanje"
+
+#: ../virtaal/plugins/lookup/lookupview.py:71
+msgid "Select the services that should be used to perform look-ups"
+msgstr "Odaberi usluge koje treba korsititi za izvršavanje pretraživanja"
+
+#: ../virtaal/plugins/lookup/lookupview.py:131
+#, python-format
+msgid "Look-up \"%(selection)s\""
+msgstr "Pretraži „%(selection)s”"
+
+#. l10n: plugin name
+#: ../virtaal/plugins/lookup/models/weblookup.py:40
+msgid "Web Look-up"
+msgstr "Pretraživanje na webu"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:41
+msgid "Look-up the selected text on a web site"
+msgstr "Pretraži odabrani tekst na web stranici"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate.
+#: ../virtaal/plugins/lookup/models/weblookup.py:45
+#: ../virtaal/plugins/tm/models/google_translate.py:144
+msgid "Google"
+msgstr "Google"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:50
+msgid "Wikipedia"
+msgstr "Wikipedia"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:55
+#: ../virtaal/plugins/terminology/models/opentran.py:42
+#: ../virtaal/plugins/tm/models/opentran.py:37
+msgid "Open-Tran.eu"
+msgstr "Open-Tran.eu"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:171
+#: ../virtaal/views/widgets/selectview.py:74
+msgid "Name"
+msgstr "Ime"
+
+#: ../virtaal/plugins/lookup/models/weblookup.py:180
+msgid "URL"
+msgstr "URL"
+
+#. l10n: Whether the selected text should be surrounded by "quotes"
+#: ../virtaal/plugins/lookup/models/weblookup.py:191
+msgid "Quote Query"
+msgstr "Stavi upit pod navodnike"
+
+#: ../virtaal/plugins/migration.py:57
+msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
+msgstr "Migriraj postavke iz programa KBabel, Lokalize i/ili Poedit u Virtaal."
+
+#: ../virtaal/plugins/migration.py:58
+msgid "Migration Assistant"
+msgstr "Pomoć za migraciju"
+
+#: ../virtaal/plugins/migration.py:72
+msgid "Should Virtaal try to import settings and data from other applications?"
+msgstr ""
+"Treba li Virtaal pokušati uvesti postavke i podatke iz drugih programa?"
+
+#: ../virtaal/plugins/migration.py:73
+msgid "Import data from other applications?"
+msgstr "Podatke uvesti iz drugih programa?"
+
+#: ../virtaal/plugins/migration.py:101
+msgid "Migration was successfully completed"
+msgstr "Migracija je uspješno završena"
+
+#: ../virtaal/plugins/migration.py:102
+msgid "The following items were migrated:"
+msgstr "Sljedeće stavke su migrirane:"
+
+#: ../virtaal/plugins/migration.py:105
+msgid "Migration completed"
+msgstr "Migracija završena"
+
+#: ../virtaal/plugins/migration.py:107
+msgid "Virtaal was not able to migrate any settings or data"
+msgstr "Virtall nije bio u stanju migrirati nikoje postavke niti podatke"
+
+#: ../virtaal/plugins/migration.py:108
+msgid "Nothing migrated"
+msgstr "Ništa nije migrirano"
+
+#: ../virtaal/plugins/migration.py:178
+msgid "Poedit settings"
+msgstr "Poedit postavke"
+
+#: ../virtaal/plugins/migration.py:207
+#, python-format
+msgid "Poedit's Translation Memory: %(database_language_code)s"
+msgstr "Poedit spremište prijevoda: %(database_language_code)s"
+
+#: ../virtaal/plugins/migration.py:232
+#, python-format
+msgid "KBabel's Translation Memory: %(database_language_code)s"
+msgstr "KBabel spremište prijevoda: %(database_language_code)s"
+
+#: ../virtaal/plugins/migration.py:250
+msgid "Lokalize settings"
+msgstr "Lokalize postavke"
+
+#: ../virtaal/plugins/migration.py:274
+#, python-format
+msgid "Lokalize's Translation Memory: %(database_name)s"
+msgstr "Lokalize spremište prijevoda: %(database_name)s"
+
+#: ../virtaal/plugins/terminology/__init__.py:27
+msgid "Terminology Help"
+msgstr "Pomoć za terminologiju"
+
+#: ../virtaal/plugins/terminology/__init__.py:28
+msgid "Terminology suggestions"
+msgstr "Prijedlozi za terminologiju"
+
+#: ../virtaal/plugins/terminology/models/autoterm.py:41
+msgid "Localization Terminology"
+msgstr "Terminologija lokalizacije"
+
+#: ../virtaal/plugins/terminology/models/autoterm.py:42
+msgid "Selected localization terminology"
+msgstr "Odabrana terminologija lokalizacije"
+
+#: ../virtaal/plugins/terminology/models/localfile/__init__.py:42
+msgid "Local Files"
+msgstr "Lokalne datoteke"
+
+#: ../virtaal/plugins/terminology/models/localfile/__init__.py:43
+msgid "Local terminology files"
+msgstr "Lokalne datoteke za terminologiju"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:52
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:54
+msgid "Terminology _Files..."
+msgstr "_Datoteke za terminologiju …"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:60
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:62
+msgid "Add _Term..."
+msgstr "Dodaj _pojam …"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:145
+msgid "File"
+msgstr "Datoteka"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:155
+msgid "Extendable"
+msgstr "Proširivo"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:181
+msgid "Add Files"
+msgstr "Dodaj datoteke"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:188
+#: ../virtaal/support/native_widgets.py:81 ../virtaal/views/mainview.py:268
+msgid "All Supported Files"
+msgstr "Sve podržane datoteke"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:215
+#: ../virtaal/support/native_widgets.py:171
+#: ../virtaal/support/native_widgets.py:201 ../virtaal/views/mainview.py:312
+msgid "All Files"
+msgstr "Sve datoteke"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:256
+#, python-format
+msgid "\"%s\" is not a usable file."
+msgstr "„%s” nije upotrebljiva datoteka."
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:261
+#, python-format
+msgid ""
+"Unable to load %(filename)s:\n"
+"\n"
+"%(errormsg)s"
+msgstr ""
+"Nije moguće učitati %(filename)s:\n"
+"\n"
+"%(errormsg)s"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:262
+msgid "Error opening file"
+msgstr "Greška prilikom otvaranja datoteke"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:402
+#, python-format
+msgid "_Source term — %(langname)s"
+msgstr "_Izvorni pojam – %(langname)s"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:403
+#, python-format
+msgid "_Target term — %(langname)s"
+msgstr "_Ciljani pojam – %(langname)s"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:447
+msgid "Identical entry already exists."
+msgstr "Isti zapis već postoji."
+
+#. l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:462
+#, python-format
+msgid "<b>%s</b>"
+msgstr "<b>%s</b>"
+
+#: ../virtaal/plugins/terminology/models/localfile/localfileview.py:463
+#, python-format
+msgid "Existing translations: %(translations)s"
+msgstr "Postojeći prijevodi: %(translations)s"
+
+#: ../virtaal/plugins/terminology/models/opentran.py:43
+msgid "Terms from Open-Tran.eu"
+msgstr "Pojmovi iz Open-Tran.eu"
+
+#: ../virtaal/plugins/terminology/termview.py:166
+msgid "Select Terminology Sources"
+msgstr "Odaberi izvor za terminologiju"
+
+#: ../virtaal/plugins/terminology/termview.py:167
+msgid "Select the sources of terminology suggestions"
+msgstr "Odaberi izvore prijedloga za terminologiju"
+
+#: ../virtaal/plugins/tm/__init__.py:27
+msgid "Translation Memory"
+msgstr "Spremište prijevoda"
+
+#: ../virtaal/plugins/tm/__init__.py:28
+msgid "Translation memory suggestions"
+msgstr "Prijedlozi spremišta prijevoda"
+
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/amagama.py:28
+#: ../virtaal/plugins/tm/models/amagama.py:31
+msgid "Amagama"
+msgstr "Amagama"
+
+#: ../virtaal/plugins/tm/models/amagama.py:29
+#: ../virtaal/plugins/tm/models/opentran.py:38
+msgid "Previous translations for Free and Open Source Software"
+msgstr "Prethodni prijevodi za slobodan softver i za softver otvorenog koda"
+
+#: ../virtaal/plugins/tm/models/currentfile.py:30
+msgid "Current File"
+msgstr "Trenutačna datoteka"
+
+#: ../virtaal/plugins/tm/models/currentfile.py:31
+msgid "Translated units from the currently open file"
+msgstr "Prevedene jedinice trenutačno otvorene datoteke"
+
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/currentfile.py:97
+#: ../virtaal/plugins/tm/models/currentfile.py:117
+msgid "This file"
+msgstr "Ova datoteka"
+
+#. l10n: The name of Google Translate in your language (translated in most languages). See http://translate.google.com/
+#: ../virtaal/plugins/tm/models/google_translate.py:55
+msgid "Google Translate"
+msgstr "Google Translate"
+
+#: ../virtaal/plugins/tm/models/google_translate.py:56
+msgid "Unreviewed machine translations from Google's translation service"
+msgstr "Nepregledani strojni prijevodi od Googleove usluge prevođenja"
+
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:46
+msgid "Microsoft Translator"
+msgstr "Microsoft Translator"
+
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:47
+msgid "Unreviewed machine translations from Microsoft Translator"
+msgstr "Nepregledani strojni prijevodi od Microsoft Translator"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
+#: ../virtaal/plugins/tm/models/microsoft_translator.py:114
+msgid "Microsoft"
+msgstr "Microsoft"
+
+#. l10n: This is the name of a software library. You almost definitely don't want to translate this. The lower case 'l' is intentional.
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+#: ../virtaal/plugins/tm/models/libtranslate.py:45
+#: ../virtaal/plugins/tm/models/libtranslate.py:101
+msgid "libtranslate"
+msgstr "libtranslate"
+
+#: ../virtaal/plugins/tm/models/libtranslate.py:46
+msgid "Unreviewed machine translations from various services"
+msgstr "Nepregledani strojni prijevodi od raznih usluga"
+
+#: ../virtaal/plugins/tm/models/localtm.py:35
+msgid "Local Translation Memory"
+msgstr "Lokalno spremište prijevoda"
+
+#: ../virtaal/plugins/tm/models/localtm.py:36
+msgid "Previous translations you have made"
+msgstr "Tvoji prijašnji prijevodi"
+
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/localtm.py:38
+msgid "Local TM"
+msgstr "Lokalno spremište prijevoda"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+#: ../virtaal/plugins/tm/models/moses.py:32
+#: ../virtaal/plugins/tm/models/moses.py:82
+msgid "Moses"
+msgstr "Moses"
+
+#: ../virtaal/plugins/tm/models/moses.py:33
+msgid "Unreviewed machine translations from a Moses server"
+msgstr "Nepregledani strojni prijevodi od Moses poslužitelja"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for vertical display optimization.
+#: ../virtaal/plugins/tm/models/opentran.py:77
+#: ../virtaal/plugins/tm/models/opentran.py:79
+msgid "OpenTran"
+msgstr "OpenTran"
+
+#: ../virtaal/plugins/tm/models/remotetm.py:28
+msgid "Remote Server"
+msgstr "Udaljeni poslužitelj"
+
+#: ../virtaal/plugins/tm/models/remotetm.py:29
+msgid "A translation memory server"
+msgstr "Poslužitelj za spremište prijevoda"
+
+#. l10n: Try to keep this as short as possible.
+#: ../virtaal/plugins/tm/models/remotetm.py:31
+msgid "Remote TM"
+msgstr "Udaljeno spremište prijevoda"
+
+#: ../virtaal/plugins/tm/models/tinytm.py:36
+msgid "TinyTM"
+msgstr "TinyTM"
+
+#: ../virtaal/plugins/tm/models/tinytm.py:37
+msgid "A TinyTM translation memory server"
+msgstr "TinyTM poslužitelj za spremište prijevoda"
+
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
+#: ../virtaal/plugins/tm/models/apertium.py:43
+#: ../virtaal/plugins/tm/models/apertium.py:126
+msgid "Apertium"
+msgstr "Apertium"
+
+#: ../virtaal/plugins/tm/models/apertium.py:44
+msgid "Unreviewed machine translations from Apertium"
+msgstr "Nepregledani strojni prijevodi od Apertium"
+
+#: ../virtaal/plugins/tm/tmview.py:110
+msgid "Translation _Suggestions"
+msgstr "_Prijedlozi za prijevod"
+
+#: ../virtaal/plugins/tm/tmview.py:151
+#, python-format
+msgid "Ctrl+%(number_key)d"
+msgstr "Ctrl+%(number_key)d"
+
+#. l10n: The 'sources' here refer to different translation memory plugins,
+#. such as local tm, open-tran.eu, the current file, etc.
+#: ../virtaal/plugins/tm/tmview.py:175
+msgid "Select sources of Translation Memory"
+msgstr "Odaberi izvore spremišta prijevoda"
+
+#: ../virtaal/plugins/tm/tmview.py:176
+msgid "Select the sources that should be queried for translation memory"
+msgstr "Odaberi izvore koja treba upitati za spremišta prijevoda"
+
+#. l10n: match quality column label
+#: ../virtaal/plugins/tm/tmwidgets.py:64
+msgid "%"
+msgstr "%"
+
+#: ../virtaal/plugins/tm/tmwidgets.py:66
+msgid "Matches"
+msgstr "Poklapanja"
+
+#: ../virtaal/plugins/tm/tmwidgets.py:68
+msgid "TM Source"
+msgstr "Izvor spremišta prijevoda"
+
+#. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
+#: ../virtaal/plugins/tm/tmwidgets.py:138
+#, python-format
+msgid "%(match_quality)s%%"
+msgstr "%(match_quality)s%%"
+
+#. l10n: This indicates a suggestion from machine translation. It is displayed instead of the match percentage.
+#: ../virtaal/plugins/tm/tmwidgets.py:148
+msgid "?"
+msgstr "?"
+
+#: ../virtaal/support/native_widgets.py:132
+#: ../virtaal/support/native_widgets.py:172
+#: ../virtaal/support/native_widgets.py:241 ../virtaal/views/mainview.py:261
+msgid "Choose a Translation File"
+msgstr "Odaberi prevodilačku datoteku"
+
+#: ../virtaal/support/native_widgets.py:152
+msgid ""
+"A file named \"%1\" already exists. Are you sure you want to overwrite it?"
+msgstr "Datoteka „%s“ već postoji. Sigurno je želiš prepisati?"
+
+#: ../virtaal/support/tutorial.py:38
+msgid ""
+"Welcome to the Virtaal tutorial. You can do the first translation by typing "
+"just the translation for \"Welcome\". Then press Enter."
+msgstr ""
+"Dobrodošao i dobrodošla u Virtaal vježbu. Prvi prijevod možeš napraviti tako "
+"da upišeš samo prijevod za „Welcome”. Zatim pritisni Enter."
+
+#: ../virtaal/support/tutorial.py:43
+msgid ""
+"Translate this slightly longer message. If a spell checker is available, "
+"spelling mistakes are indicated similarly to word processors. Make sure the "
+"correct language is selected in the bottom right of the window."
+msgstr ""
+"Prevedi ovu malo dužu poruku. Ako je dostupna provjera pravopisa, pravopisne "
+"greške se označavaju slično kao u programima za obradu teksta. Pazi da je "
+"odabran ispravan jezik u donjem desnom kutu prozora."
+
+#: ../virtaal/support/tutorial.py:50
+msgid ""
+"This tutorial will show you some of the things you might want to pay "
+"attention to while translating software programs. It will help you to avoid "
+"some problems and produce translations of a higher quality."
+msgstr ""
+"Ova će ti vježba pokazati neke stvari na koje treba obratiti pažnju prilikom "
+"prevođenja softverskih programa. To će ti pomoći izbjeći neke probleme i "
+"proizvesti prijevode visoke kvalitete."
+
+#: ../virtaal/support/tutorial.py:57
+msgid ""
+"Some of the advice will only be relevant to some languages. For example, if "
+"your language does not use the Latin alphabet, some of the advice might not "
+"be relevant to translation in your language. For many languages there are "
+"established translation rules."
+msgstr ""
+"Poneki savjeti će se ticati samo nekih jezika. Na primjer, ako tvoj jezik ne "
+"upotrebljava latinicu, neki od savjeta možda neće biti važni za prijevod na "
+"tvoj jezik. Za mnoge jezike postoje pravila prevođenja."
+
+#: ../virtaal/support/tutorial.py:64
+msgid ""
+"The correct use of capital letters are important in many languages. "
+"Translate this message with careful attention to write \"Virtaal\" with a "
+"capital letter."
+msgstr ""
+"Ispravna upotreba velikih slova bitna je u mnogim jezicima. Prevedi ovu "
+"poruku i pazi pri tome da napišeš „Virtaal” velikim početnim slovom."
+
+#: ../virtaal/support/tutorial.py:70
+msgid ""
+"In this message the English uses a capital letter for almost every word. "
+"Almost no other language uses this style. Unless your language definitely "
+"needs to follow the English style (also called Title Case), translate this "
+"by following the normal capitalisation rules for your language. If your "
+"language does not use capital letters, simply translate it normally."
+msgstr ""
+"U ovoj poruci engleski upotrebljava veliko slovo za gotovo svaku riječ. "
+"Gotovo nijedan drugi jezik ne koristi ovaj stil. Ako tvoj jezik definitivno "
+"ne mora slijediti engleski stil (također se naziva Title Case), prevedi ga "
+"slijedeći uobičajena pravila za tvoj jezik. Ako tvoj jezik ne upotrebljava "
+"velika slova, jednostavno ga prevedi normalno."
+
+#: ../virtaal/support/tutorial.py:79
+msgid ""
+"If you translated the previous message you should see a window with that "
+"translation and a percentage indicating how similar the source strings "
+"(English) are. It is Virtaal's translation memory at work. Press Control+1 "
+"to copy the suggested translation to the current translation. Remember to "
+"always review suggestions before you use them."
+msgstr ""
+"Ako si preveo/la prethodnu poruku, trebao bi se vidjeti prozor s tim "
+"prijevodom i postotak, koji ukazuje na sličnost izvornih nizovova (na "
+"engleskom). To je rezultat Virtaalovog spremišta prijevoda. Pritisni Control"
+"+1 za kopiranje predloženog prijevoda u trenutačni prijevod. Sjeti se uvijek "
+"pregledati prijedloge prije nego što ih upotrebiš."
+
+#: ../virtaal/support/tutorial.py:88
+msgid ""
+"This is a simple message that starts with a capital letter in English. If "
+"your language uses capital letters, you almost definitely want to start your "
+"translation with a capital letter as well."
+msgstr ""
+"Ovo je jednostavna poruka koja započinje velikim slovom na engleskom. Ako se "
+"u tvom jeziku koriste velika slova, gotovo sigurno želiš i ti započeti svoj "
+"prijevod velikim slovom."
+
+#: ../virtaal/support/tutorial.py:95
+msgid ""
+"This is a simple message that starts with a lower case letter in English. If "
+"your language uses capital letters, you almost definitely want to start your "
+"translation with a lower case letter as well."
+msgstr ""
+"Ovo je jednostavna poruka koja započinje malim slovom na engleskom. Ako se u "
+"tvom jeziku koriste mala slova, gotovo sigurno želiš i ti započeti svoj "
+"prijevod malim slovom."
+
+#: ../virtaal/support/tutorial.py:102
+msgid ""
+"This message is a question. Make sure that you use the correct question mark "
+"in your translation as well."
+msgstr "Ova poruka je pitanje. Obavezno upotrijebi upitnik i u svom prijevodu."
+
+#: ../virtaal/support/tutorial.py:107
+msgid ""
+"This message is a label as part of a form. Note how it ends with a colon (:)."
+msgstr ""
+"Ova poruka je oznaka kao dio obrasca. Primjeti kako završava dvotočkom (:)."
+
+#: ../virtaal/support/tutorial.py:112
+msgid ""
+"If the source will remain mostly or completely unchanged it is convenient to "
+"copy the entire source string with Alt+Down. Here is almost nothing to "
+"translate, so just press Alt+Down and make corrections if necessary."
+msgstr ""
+"Ako će izvor većim dijelom ili u potpunosti ostati nepromijenjen, kopiraj "
+"čitav izvorni znakovni niz s Alt+Dolje. Ovdje se gotovo ništa ne treba "
+"prevesti, zato samo pritisni Alt+Dolje i po potrebi ispravi što treba."
+
+#: ../virtaal/support/tutorial.py:119
+msgid ""
+"Placeables are special parts of the text, like the © symbol, that can be "
+"automatically highlighted and easily inserted into the translation. Select "
+"the © with Alt+Right and transfer it to the target with Alt+Down."
+msgstr ""
+"Nepromijenjeni izrazi su posebni dijelovi teksta, poput simbola ©, koji se "
+"mogu automatski istaknuti i lako umetnuti u prijevod. Odaberi © s Alt+Desno "
+"i prenesi ga na cilj s Alt+Dolje."
+
+#: ../virtaal/support/tutorial.py:126
+msgid ""
+"Recognised placeables include special symbols, numbers, variable place "
+"holders, acronyms and many more. Move to each one with Alt+Right and "
+"transfer it down with Alt+Down."
+msgstr ""
+"Prepoznati nepromijenjeni izrazi uključuju posebne simbole, brojeve, "
+"rezervirana mjesta varijabla, kratica i dr. Premjesti se na svaki izraz s Alt"
+"+Desno i prenesi ga dolje s Alt+Dolje."
+
+#: ../virtaal/support/tutorial.py:132
+msgid ""
+"This message ends with ... to indicate that clicking on this text will cause "
+"a dialogue to appear instead of just performing an action. Be sure to end "
+"your message with ... as well."
+msgstr ""
+"Ova poruka završava s trotočkom (…) kako bi ukazala na to, da će klikom na "
+"ovaj tekst prikazati dijalog, umjesto da samo izvrši neku radnju. Obavezno "
+"završi svoju poruku s trotočkom."
+
+#: ../virtaal/support/tutorial.py:138
+msgid ""
+"This message ends with a special character that looks like three dots. "
+"Select the special character with Alt+Right and copy it to your translation "
+"with Alt+Down. Don't just type three dot characters."
+msgstr ""
+"Ova poruka završava s posebnim znakom koji izgleda kao tri točke. Odaberi "
+"posebni znak s Alt+Desno i kopiraj ga u svoj prijevod s Alt+Dolje. Nemoj "
+"utipkati tri točke."
+
+#: ../virtaal/support/tutorial.py:145
+msgid ""
+"This message has two sentences. Translate them and make sure you start each "
+"with a capital letter if your language uses them, and end each sentence "
+"properly."
+msgstr ""
+"Ova poruka ima dvije rečenice. Prevedi ih i obavezno ih započni s velikim "
+"slovom, ako ih tvoj jezik koristi, a svaku rečenicu završi na pravilan način."
+
+#: ../virtaal/support/tutorial.py:151
+msgid ""
+"This message marks the word \"now\" as important with bold tags. These tags "
+"can be transferred from the source with Alt+Right and Alt+Down. Leave the "
+"<b> and </b> in the translation around the part that corresponds to \"now\". "
+"Read more about XML markup here: http://en.wikipedia.org/wiki/XML"
+msgstr ""
+"Ova poruka označava riječ „now” kao važnu, s oznakama za podebljani tekst. "
+"Te se oznake mogu prenijeti iz izvora pomoću Alt+Desno i Alt+Dolje. Ostavi "
+"<b> i </b> u prijevodu oko dijela koji odgovara riječi „now”. Pročitaj više "
+"o XML označavanju ovdje: http://en.wikipedia.org/wiki/XML"
+
+#: ../virtaal/support/tutorial.py:159
+msgid ""
+"This message is very similar to the previous message. Use the suggestion of "
+"the previous translation with Ctrl+1. Note how the only difference is that "
+"this one ends with a full stop after the last tag."
+msgstr ""
+"Ova je poruka vrlo slična prethodnoj poruci. Koristi prijedlog prethodnog "
+"prijevoda s Ctrl+1. Pazi: jedina razlika je ta, da ova poruka završava "
+"točkom iza posljednje oznake."
+
+#: ../virtaal/support/tutorial.py:166
+#, python-format
+msgid ""
+"In this message \"%d\" is a placeholder (variable) that represents a number. "
+"Make sure your translation contains \"%d\" somewhere. In this case it refers "
+"a number of files. When this message is used the \"%d\" will be replaced "
+"with a number e.g. 'Number of files copied: 5'.  Note that \"%d\" does not "
+"refer to a percentage."
+msgstr ""
+"U ovoj poruci je „%d” rezervirano mjesto (varijabla), koja predstavlja broj. "
+"Pazi da tvoj prijevod negdje sadrži „% d”. U ovom se slučaju varijabla "
+"odnosi na broj datoteka. Kad se ova poruka upotrijebi, „%d” će se zamijeniti "
+"brojem, npr. „Broj kopiranih datoteka: 5”. Pazi: „%d” se ne odnosi na "
+"postotak."
+
+#: ../virtaal/support/tutorial.py:174
+#, python-format
+msgid ""
+"In this message, \"%d\" refers again to the number of files, but note how "
+"the \"(s)\" is used to show that we don't know how many it will be. This is "
+"often hard to translate well. If you encounter this in software translation, "
+"you might want to hear from developers if this can be avoided. Read more "
+"about this and decide how to do it in your language: http://docs."
+"translatehouse.org/projects/localization-guide/en/latest/guide/translation/"
+"plurals.html"
+msgstr ""
+"U ovoj se poruci \"%d\" ponovo odnosi na broj datoteka, ali se koristi "
+"\"(s)\" budući da ne znamo koliko će ih biti. To je često teško dobro "
+"prevesti. Ako na to naiđeš u prijevodu softvera, možda češ htjeti pitati "
+"programere je li se to može izbjeći. Pročitaj više o tome i odluči kako to "
+"riješiti na tvom jeziku: http://docs.translatehouse.org/projects/"
+"localization-guide/en/latest/guide/translation/plurals.html"
+
+#: ../virtaal/support/tutorial.py:185
+msgid ""
+"In this message the proper way of translating plurals are seen. You need to "
+"enter between 1 and 6 different versions of the translation to ensure the "
+"correct grammar in your language. Read more about this here: http://docs."
+"translatehouse.org/projects/localization-guide/en/latest/guide/translation/"
+"plurals.html"
+msgstr ""
+"U ovoj poruci se vidi pravilan način prevođenja množine. Za ispravnu "
+"upotrebu gramatike na tvom jeziku, moraš upisati između 1 i 6 različitih "
+"verzija prijevoda. Pročitaj više o ovome ovdje: http://docs.translatehouse."
+"org/projects/localization-guide/en/latest/guide/translation/plurals.html"
+
+#: ../virtaal/support/tutorial.py:196
+#, python-format
+msgid ""
+"In this message, \"%s\" is a placeholder (variable) that represents a file "
+"name. Make sure your translation contains %s somewhere. When this message is "
+"used, the %s will be replaced with a file name e.g. 'The file will be saved "
+"as example.odt'.  Note that \"%s\" does not refer to a percentage."
+msgstr ""
+"U ovoj poruci je „%s” rezervirano mjesto (varijabla) koje predstavlja ime "
+"datoteke. Pazi da tvoj prijevod negdje sadrži „%s”. Kad se ova poruka "
+"upotrijebi, „%s” će se zamijeniti s imenom datoteka, npr. „Datoteka će se "
+"spremiti kao primjer.odt”. Pazi: „%s” se ne odnosi na postotak."
+
+#: ../virtaal/support/tutorial.py:204
+#, python-format
+msgid ""
+"In this message the variable is surrounded by double quotes. Make sure your "
+"translation contains the variable %s and surround it similarly with quotes "
+"in the way required by your language. If your language uses the same quotes "
+"as English, type it exactly as shown for the English. If your language uses "
+"different characters you can just type them around the variable."
+msgstr ""
+"U ovoj se poruci varijabla nalazi pod navodnicima. Pazi da tvoj prijevod "
+"sadrži varijablu %s i stavi je pod navodnike, na način koji zahtijeva tvoj "
+"jezik. Ako tvoj jezik upotrebljava iste navodnike kao i engleski, utipkaj ih "
+"točno onako kako je prikazano na engleskom. Ako tvoj jezik koristi drugačije "
+"znakove, jednostavno ih utipkaj."
+
+#: ../virtaal/support/tutorial.py:213
+msgid ""
+"In this message, \"%(name)s\" is a placeholder (variable). Note that the 's' "
+"is part of the variable, and the whole variable from '%' to the 's' should "
+"appear unchanged somewhere in your translation. These type of variables give "
+"you an idea of what they will contain. In this case, it will contain a name."
+msgstr ""
+"U ovoj poruci je \"%(name)s\" rezervirano mjesto (varijabla). Imaj na umu da "
+"je „s” dio varijable, a čitava varijabla od „%” do „s” bi se trebala "
+"pojaviti nepromijenjena negdje u tvom prijevodu. Ova vrsta varijabli daje "
+"predodžbu o tome što će sadržavati. U ovom će slučaju sadržavati ime."
+
+#: ../virtaal/support/tutorial.py:221
+msgid ""
+"In this message the user of the software is asked to do something. Make sure "
+"you translate it by being as polite or respectful as is necessary for your "
+"culture."
+msgstr ""
+"U ovoj se poruci od korisnika softvera traži da nešto učini. Obavezno "
+"prevedi na uljudan način."
+
+#: ../virtaal/support/tutorial.py:227
+msgid ""
+"In this message there is reference to \"Linux\" (a product name). Many "
+"languages will not translate it, but your language might use a "
+"transliteration if you don't use the Latin script for your language."
+msgstr ""
+"U ovoj se poruci nalazi referenca na „Linux” (naziv proizvoda). U mnogim "
+"jezicima se ne prevodi, ali tvoj jezik možda koristiti transliteraciju, ako "
+"ne koristi latinično pismo."
+
+#: ../virtaal/support/tutorial.py:234
+msgid ""
+"This message contains the URL (web address) of the project website. It must "
+"be transferred as a placeable or typed over exactly."
+msgstr ""
+"Ova poruka sadrži URL (web adresu) web stranice projekta. Mora se prenijeti "
+"kao nepromijenjeni izraz ili se mora točno upisati."
+
+#: ../virtaal/support/tutorial.py:239
+msgid ""
+"This message refers to a website with more information. Sometimes you might "
+"be allowed or encouraged to change the URL (web address) to a website in "
+"your language. In this case, replace the \"en\" at the start of the address "
+"to your language code so that the address points to the corresponding "
+"article in your language about XML."
+msgstr ""
+"Ova se poruka odnosi na web mjesto s više informacija. Ponekad je moguće "
+"promijeniti URL (web adresu) na web mjesto na tvom jeziku. U tom slučaju "
+"zamijeni „en” na početku adrese sa svojim jezičnim kodom, tako da adresa "
+"upućuje na odgovarajući članak o XML-u na tvom jeziku."
+
+#: ../virtaal/support/tutorial.py:248
+msgid ""
+"This translation contains an ambiguous word - it has two possible meanings. "
+"Make sure you can see the context information showing that this is a verb "
+"(an action as in \"click here to view it\")."
+msgstr ""
+"Ovaj prijevod sadrži dvoznačnu riječ – ima dva moguća značenja. Obavezno "
+"pogledaj informacije o kontekstu koje ukazuju na to, da se radi o glagolu "
+"(radnja kao u „klikni ovdje kako bi se prikazalo”)."
+
+#: ../virtaal/support/tutorial.py:255
+msgid ""
+"This translation contains an ambiguous word - it has two possible meanings. "
+"Make sure you can see the context information showing that this is a noun (a "
+"thing as in \"click to change the view to full screen\"). If Virtaal gives "
+"your previous translation as a suggestion, take care to only use it if it is "
+"definitely appropriate in this case as well."
+msgstr ""
+"Ovaj prijevod sadrži dvoznačnu riječ – ima dva moguća značenja. Obavezno "
+"pogledaj informacije o kontekstu koje ukazuju na to, da se radi o imenici "
+"(nešto kao u „klikni za promjenu prikaza na cijeli ekran”). Ako ti Virtaal "
+"ponudi tvoj prijašnji prijevod kao prijedlog, pripazi da ga koristiš samo, "
+"ako je definitivno prikladan i u ovom slučaju."
+
+#: ../virtaal/support/tutorial.py:264
+msgid ""
+"An accelerator key is a key on your keyboard that you can press to to "
+"quickly access a menu or function. It is also called a hot key, access key "
+"or mnemonic. In program interfaces they are shown as an underlined letter in "
+"the text label. In the translatable text they are marked using some "
+"character like the underscore here, but other characters are used for this "
+"as well. In this case the the accelerator key is \"f\" since the underscore "
+"is before this letter and it means that this accelerator could be triggered "
+"by pressing Alt+F."
+msgstr ""
+"Tipka ubrzivača je tipka na tipkovnici koju možeš pritisnuti za brzi pristup "
+"izborniku ili funkciji. Naziva se i vruća tipka, pristupni ključ ili "
+"mnemonika. U programskim sučeljima prikazuju se kao podcrtana slova u "
+"tekstnoj oznaci. U tekstu koji se prevodi, označuju se podvlakom (kao ovdje) "
+"ili nekim drugim znakovima. U ovom slučaju tipka ubrzivača je „f”, jer se "
+"podvlaka nalazi ispred ovog slova, što znači da se taj ubrzivač može "
+"pokrenuti pritiskom tipki Alt+F."
+
+#: ../virtaal/support/tutorial.py:276
+msgid "In this entry you can see other kind of accelerator."
+msgstr "U ovom zapisu možeš vidjeti drugu vrstu ubrzivača."
+
+#: ../virtaal/support/tutorial.py:280
+msgid "And another kind of accelerator."
+msgstr "I jednu drugu vrstu brzivača."
+
+#: ../virtaal/support/tutorial.py:285
+msgid ""
+"Virtaal is able to provide suggestions from several terminology glossaries "
+"and provides easy shortcuts to allow paste them in the translation field. "
+"Right now Virtaal has only one empty terminology glossary, but you can start "
+"filling it. In order to do that select the original text, press Ctrl+T, "
+"provide a translation for your language, and save."
+msgstr ""
+"Virtaal može pružiti prijedloge iz nekolicine glosara terminologije i nudi "
+"jednostavne prečace za umetanje u polje za prijevod. Trenutačno Virtaal ima "
+"samo jedan prazni glosar terminologije, ali ga možeš početi ispunjavati – "
+"odaberi originalni tekst, pritisni Ctrl+T, zadaj prijevod za svoj jezik i "
+"spremi."
+
+#: ../virtaal/support/tutorial.py:295
+msgid ""
+"In the previous entry you have created one terminology entry for the the "
+"\"filter\" verb. Now do the same for \"filter\" noun."
+msgstr ""
+"U prethodnom unosu stvorili ste jedan terminološki unos za glagol „filter”. "
+"Sada isto napravite za imenicu „filter”."
+
+#: ../virtaal/support/tutorial.py:300
+msgid ""
+"If you have created any terminology in the previous entries you may may now "
+"see some of the words with a green background (or other color depending on "
+"your theme). This means that Virtaal has terminology suggestions for that "
+"word. Use Alt+Right to select the highlighted word, and then press Alt+Down. "
+"If only one suggestions is provided Alt+Down just copies the suggestion to "
+"the translation field. But if several suggestions are available Alt+Down "
+"shows a suggestion list which you can navigate using Down and Up keys. Once "
+"you have selected the desired suggestion press Enter to copy it to the "
+"translation field."
+msgstr ""
+"Ako si stvorio/la neku terminologiju u prethodnim unosima, možda ćeš neke "
+"riječi vidjeti sa zelenom pozadinom (ili drugom bojom, ovisno o tvojoj "
+"temi). To znači da Virtaal ima terminološke prijedloge za tu riječ. "
+"Upotrijebi Alt+Desno za odabir označene riječi, a zatim pritisni Alt+Dolje. "
+"Ako je naveden samo jedan prijedlog, Alt+Dolje samo kopira prijedlog u polje "
+"za prijevod. Ali ako je dostupno nekoliko prijedloga, Alt+Dolje prikazuje "
+"popis prijedloga po kojima se možeš kretati pomoću tipki Dolje i Gore. Nakon "
+"što odabereš željeni prijedlog, pritisni Enter da bi se kopirao u polje za "
+"prijevod."
+
+#: ../virtaal/support/tutorial.py:313
+msgid ""
+"This message has two lines. Make sure that your translation also contains "
+"two lines. You can separate lines with Shift+Enter or copying new-line "
+"placeables (displayed as ¶)."
+msgstr ""
+"Ova poruka ima dva retka. Pazi da i tvoj prijevod sadrži dva retka. Retke "
+"možeš razdvojiti sa Shift+Enter ili kopirati nepromijenjeni izraz za novi "
+"redak (prikazano kao ¶)."
+
+#: ../virtaal/support/tutorial.py:320
+msgid ""
+"This message contains tab characters to separate some headings. Make sure "
+"you separate your translations in the same way."
+msgstr ""
+"Ova poruka sadrži tabulatore za razdvajanje nekih naslova. Obavezno razdvoji "
+"prijevode na isti način."
+
+#: ../virtaal/support/tutorial.py:325
+msgid ""
+"This message contains a large number that is formatted according to to "
+"American convention. Translate this but be sure to format the number "
+"according to the convention for your language. You might need to change the "
+"comma (,) and full stop (.) to other characters, and you might need to use a "
+"different number system. Make sure that you understand the American "
+"formatting: the number is bigger than one thousand."
+msgstr ""
+"Ova poruka sadrži veliki broj koji je formatiran prema američkoj konvenciji. "
+"Prevedi ovo, ali obavezno formatiraj broj prema konvenciji za tvoj jezik. "
+"Možda ćeš morati promijeniti zarez (,) i točku (.) u druge znakove, a možda "
+"ćeš morati koristiti i neki drugi brojevni sustav. Obavezno razumij američko "
+"formatiranje: broj je veći od tisuću."
+
+#: ../virtaal/support/tutorial.py:335
+msgid ""
+"This message refers to miles. If the programmers encourage it, you might "
+"want to change this to kilometres in your translation, if kilometres are "
+"more commonly used in your language. Note that 1 mile is about 1.6 "
+"kilometres. Note that automated tests for \"numbers\" will complain if the "
+"number is changed, but in this case it is safe to do."
+msgstr ""
+"Ova se poruka odnosi na milje. Ako programeri to predlažu, promijeni u "
+"kilometre u svom prijevodu, ako se kilometri uobičajeno koriste na tvom "
+"jeziku. Imaj na umu da je 1 milja oko 1,6 kilometara. Imaj na umu da će "
+"automatski testovi za „brojeve” javiti grešku ako se broj promijeni, ali u "
+"ovom slučaju je to u redu."
+
+#: ../virtaal/support/tutorial.py:344
+msgid ""
+"This message contains a link that the user will be able to click on on to "
+"visit the help page. Make sure you maintain the information between the "
+"angle brackets (<...>) correctly. The double quotes (\") should never be "
+"changed in tags, even if your language uses a different type of quotation "
+"marks."
+msgstr ""
+"Ova poruka sadrži poveznicu na koju će korisnik moći kliknuti i posjetiti "
+"stranicu za pomoć. Obavezno pravilno preuzmi podatke između šiljatih zagrada "
+"(<…>). Obične navodnike (\") nikada nemoj mijenjati u oznakama, čak i ako "
+"tvoj jezik upotrebljava drugu vrstu navodnika."
+
+#: ../virtaal/support/tutorial.py:354
+#, python-format
+msgid ""
+"This message contains a similar link, but the programmers decided to to "
+"rather insert the tags with variables so that translators can't change them. "
+"Make sure you position the two variables (%s) so that they correspond to the "
+"opening and closing tag of the previous translation."
+msgstr ""
+"Ova poruka sadrži sličnu poveznicu, ali su programeri odlučili radije "
+"umetnuti oznake s varijablama, kako ih prevoditelji ne bi mogli promijeniti. "
+"Obavezno postavi te dvije varijable (%s) tako da odgovaraju početnoj i "
+"završnoj oznaci prethodnog prijevoda."
+
+#: ../virtaal/support/tutorial.py:362
+msgid ""
+"This message contains the <b> and </b> tags to emphasize a word, while "
+"everything is inside <p> and </p> tags. Make sure your whole translation is "
+"inside <p> and </p> tags."
+msgstr ""
+"Ova poruka sadrži oznake <b> i </b> za isticanje riječi, dok je sve unutar "
+"oznaka <p> i </p>. Pazi da se cijeli prijevod nalazi unutar <p> i </p> "
+"oznaka."
+
+#: ../virtaal/support/tutorial.py:368
+msgid ""
+"This message contains a similar link that is contained within <span> and </"
+"span>. Make sure you maintain all the tags (<...>) correctly, and that the "
+"link is contained completely inside the <span> and </span> tags in your "
+"translation. Make sure that the text inside the \"a\" tags correspond to "
+"\"help page\" and that your translation corresponding to the second sentence "
+"is contained in the <span> tags. Note how the full stop is still inside the "
+"</span> tag."
+msgstr ""
+"Ova poruka sadrži sličnu poveznicu koja se nalazi unutar <span> i </span>. "
+"Pazi da ispravno preuzmeš sve oznake (<…>) i da se poveznica u potpunosti "
+"nalazi unutar oznaka <span> i </span> u tvom prijevodu. Pazi da tekst unutar "
+"oznake \"a\" odgovara \"stranica pomoći\" i da se tvoj prijevod, koji "
+"odgovara drugoj rečenici, nalazi u oznaci <span>. Točka se također nalazi "
+"unutar oznake </span>."
+
+#: ../virtaal/views/checksunitview.py:73
+msgid "No issues"
+msgstr "Nema problema"
+
+#: ../virtaal/views/checksunitview.py:80
+msgid "Quality Check"
+msgstr "Provjera kvalitete"
+
+#: ../virtaal/views/checksunitview.py:86
+msgid "Description"
+msgstr "Opis"
+
+#: ../virtaal/views/checksprojview.py:40
+msgid "Project Type"
+msgstr "Vrsta projekta"
+
+#. l10n: The label indicating the checker style (GNOME/KDE/whatever)
+#: ../virtaal/views/checksprojview.py:63
+#, python-format
+msgid "Checks: %(checker_name)s"
+msgstr "Provjere: %(checker_name)s"
+
+#: ../virtaal/views/langview.py:76
+msgid "_New Language Pair..."
+msgstr "_Novi jezični par …"
+
+#: ../virtaal/views/mainview.py:230
+msgid "Error"
+msgstr "Greška"
+
+#: ../virtaal/views/mainview.py:342
+msgid ""
+"The current file has been modified.\n"
+"Do you want to save your changes?"
+msgstr ""
+"Trenutačna datoteka je promijenjena.\n"
+"Želiš li spremiti tvoje promjene?"
+
+#: ../virtaal/views/mainview.py:345
+msgid "_Discard"
+msgstr "O_dbaci"
+
+#. l10n: This is the title of the main window of Virtaal
+#. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
+#. %(current_file)s is the file name of the current file
+#. most languages will not need to change this
+#: ../virtaal/views/mainview.py:430
+#, python-format
+msgid "%(modified_marker)s%(current_file)s - Virtaal"
+msgstr "%(modified_marker)s%(current_file)s – Virtaal"
+
+#: ../virtaal/views/mainview.py:455
+msgid "Please enter the number of noun forms (plurals) to use"
+msgstr "Upiši broj imenskih oblika (množine) koje treba koristiti"
+
+#: ../virtaal/views/mainview.py:461
+msgid "Please enter the plural equation to use"
+msgstr "Upiši definiciju za množinu koju treba koristiti"
+
+#. l10n: This refers to the 'mode' that determines how Virtaal moves
+#. between units.
+#: ../virtaal/views/modeview.py:62
+msgid "N_avigation:"
+msgstr "N_avigacija:"
+
+#: ../virtaal/views/propertiesview.py:32
+msgid "Untranslated:"
+msgstr "Neprevedeno:"
+
+#: ../virtaal/views/propertiesview.py:33
+msgid "Needs work:"
+msgstr "Treba doraditi:"
+
+#: ../virtaal/views/propertiesview.py:34
+msgid "Rejected:"
+msgstr "Odbijeno:"
+
+#: ../virtaal/views/propertiesview.py:35
+msgid "Needs review:"
+msgstr "Treba pregledati:"
+
+#: ../virtaal/views/propertiesview.py:36
+msgid "Translated:"
+msgstr "Prevedeno:"
+
+#: ../virtaal/views/propertiesview.py:37
+msgid "Reviewed:"
+msgstr "Pregledano:"
+
+#: ../virtaal/views/propertiesview.py:59
+msgid "(0%)"
+msgstr "(0%)"
+
+#: ../virtaal/views/propertiesview.py:61
+msgid "(100%)"
+msgstr "(100%)"
+
+#. l10n: This is the formatting for percentages in the file properties. If unsure, just copy the original.
+#: ../virtaal/views/propertiesview.py:64
+#, python-format
+msgid "(%04.1f%%)"
+msgstr "(%04.1f%%)"
+
+#: ../virtaal/views/propertiesview.py:134
+msgid "Save the file for up-to-date information"
+msgstr "Spremi datoteku za aktualnu informaciju"
+
+#. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
+#: ../virtaal/views/propertiesview.py:191
+#: ../virtaal/views/propertiesview.py:192
+#, python-format
+msgid "<b>%d</b>"
+msgstr "<b>%d</b>"
+
+#: ../virtaal/views/propertiesview.py:203
+#, python-format
+msgid "%.1f KB"
+msgstr "%.1f KB"
+
+#: ../virtaal/views/storeview.py:138 ../virtaal/views/storeview.py:147
+msgid "Export failed"
+msgstr "Izvoz nije uspio"
+
+#: ../virtaal/views/storeview.py:156
+msgid "Preview failed"
+msgstr "Pretprikaz nije uspio"
+
+#: ../virtaal/views/unitview.py:613
+msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
+msgstr "Pomakni se korak natrag u radnom procesu (Ctrl+Shift+Enter)"
+
+#: ../virtaal/views/unitview.py:614
+msgid "Click to move to a specific state in the workflow"
+msgstr "Klikni za pomicanje na određeno stanje u radnom procesu"
+
+#: ../virtaal/views/unitview.py:615
+msgid "Move one step forward in the workflow (Ctrl+Enter)"
+msgstr "Pomakni se korak naprijed u radnom procesu (Ctrl+Enter)"
+
+#: ../virtaal/views/widgets/aboutdialog.py:34
+msgid "Copyright © 2007-2010 Zuza Software Foundation"
+msgstr "Autorsko pravo © 2007. – 2010. Zuza Software Foundation"
+
+#. l10n: Please retain the literal name "Virtaal", but feel free to
+#. additionally transliterate the name and to add a translation of "For Language", which is what the name means.
+#: ../virtaal/views/widgets/aboutdialog.py:37
+msgid "Virtaal is a program for doing translation."
+msgstr "Virtaal je program za prevođenje."
+
+#: ../virtaal/views/widgets/aboutdialog.py:38
+msgid ""
+"The initial focus is on software translation (localization or l10n), but we "
+"definitely intend it to be useful as a general purpose tool for Computer "
+"Aided Translation (CAT)."
+msgstr ""
+"Početni fokus leži u prevođenju softvera (lokalizacija ili l10n), ali mi "
+"definitivno želimo da bude koristan kao alat opće namjene za prevođenje "
+"pomoću računala (CAT)."
+
+#: ../virtaal/views/widgets/aboutdialog.py:52
+msgid "Virtaal website"
+msgstr "Virtaal web stranica"
+
+#: ../virtaal/views/widgets/aboutdialog.py:65
+msgid "We thank our donors:"
+msgstr "Zahvaljujemo našim donatorima:"
+
+#: ../virtaal/views/widgets/aboutdialog.py:66
+msgid "The International Development Research Centre"
+msgstr "The International Development Research Centre"
+
+#: ../virtaal/views/widgets/aboutdialog.py:68
+msgid "Mozilla Corporation"
+msgstr "Mozilla Corporation"
+
+#. l10n: Rather than translating, fill in the names of the translators
+#: ../virtaal/views/widgets/aboutdialog.py:73
+msgid "translator-credits"
+msgstr "podaci o prevodiocima"
+
+#: ../virtaal/views/widgets/langadddialog.py:103
+msgid "Language code must be an ASCII string."
+msgstr "Jezični kȏd mora biti znakovni niz u ASCII formatu."
+
+#: ../virtaal/views/widgets/langadddialog.py:106
+msgid "Language code must be at least 2 characters long."
+msgstr "Jezični kȏd mora biti sadržati barem dva znaka."
+
+#: ../virtaal/views/widgets/langselectdialog.py:79
+#: ../virtaal/views/widgets/langselectdialog.py:86
+msgid "Language"
+msgstr "Jezik"
+
+#. l10n: This is the column heading for the language code
+#: ../virtaal/views/widgets/langselectdialog.py:94
+#: ../virtaal/views/widgets/langselectdialog.py:101
+msgid "Code"
+msgstr "Kȏd"
+
+#: ../virtaal/views/widgets/selectview.py:66
+msgid "Enabled"
+msgstr "Aktivirano"
+
+#: ../virtaal/views/widgets/selectview.py:113
+msgid "Configure..."
+msgstr "Podesi ..."
+
+#: ../virtaal/views/widgets/welcomescreen.py:79
+msgid "Translation memory"
+msgstr "Spremište prijevoda"
+
+#: ../virtaal/views/widgets/welcomescreen.py:81
+msgid "Quality checks"
+msgstr "Provjere kvalitete"
+
+#: ../virtaal/views/widgets/welcomescreen.py:82
+msgid "Machine translation"
+msgstr "Strojni prijevod"
+
+#: ../virtaal/views/widgets/welcomescreen.py:83
+msgid "Highlighting and insertion of placeables"
+msgstr "Isticanje i umetanje nepromijenjenih izraza"
+
+#: ../virtaal/views/widgets/welcomescreen.py:84
+msgid "Many plugins and options for customization"
+msgstr "Mnogi dodaci i opcije za prilagođavanje"
+
+#: ../virtaal/models/storemodel.py:132
+msgid "The file does not exist."
+msgstr "Datoteka ne postoji."
+
+#: ../virtaal/models/storemodel.py:134
+msgid "Not a valid file."
+msgstr "Nije ispravna datoteka."
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:1
+msgid "TMX Translation Memory"
+msgstr "TMX spremište prijevoda"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:2
+msgid "TMX"
+msgstr "TMX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:3
+msgid "Translation Memory eXchange"
+msgstr "Spremište prijevoda eXchange"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:4
+msgid "TBX Glossary"
+msgstr "TBX glosar"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:5
+msgid "TBX"
+msgstr "TBX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:6
+msgid "TermBase eXchange"
+msgstr "TermBase eXchange"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:7
+msgid "Wordfast Translation Memory"
+msgstr "Wordfast spremište prijevoda"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:8
+msgid "Qt Linguist Translation File"
+msgstr "Qt Linguist prevodilačka datoteka"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:9
+msgid "Qt Message File"
+msgstr "Qt datoteka poruka"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:10
+msgid "Qt Phrase Book"
+msgstr "Qt knjiga izraza"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:11
+msgid "INI File"
+msgstr "INI datoteka"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:12
+msgid "INI"
+msgstr "INI"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:13
+msgid "Initialization"
+msgstr "Inicijaliziranje"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:14
+msgid "Java Properties File"
+msgstr "Java datoteka svojstava"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:15
+msgid "OpenOffice.org Translation File"
+msgstr "OpenOffice.org prevodilačka datoteka"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:16
+msgid "XLIFF Translation File"
+msgstr "XLIFF prevodilačka datoteka"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:17
+msgid "XLIFF"
+msgstr "XLIFF"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:18
+msgid "XML Localization Interchange File Format"
+msgstr "XML Localization Interchange File Format"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:19
+msgid "C++ RC File"
+msgstr "C++ RC datoteka"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:20
+msgid "RC"
+msgstr "RC"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:21
+msgid "Resource Compiler"
+msgstr "Resource Compiler"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:22
+msgid "Tcl Translation File"
+msgstr "Tcl prevodilačka datoteka"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:23
+msgid "JavaScript error message file"
+msgstr "JavaScript datoteka s porukama grešaka"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:24
+msgid "Gettext Translation Template"
+msgstr "Gettext prevodilački predložak"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:25
+msgid "Trados Tag Editor"
+msgstr "Trados uređivač oznaka"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:26
+msgid "OS X Strings File"
+msgstr "OS X datoteka znakovnih nizova"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:27
+msgid "UTX Dictionary"
+msgstr "UTX rječnik"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:28
+msgid "UTX"
+msgstr "UTX"
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h:29
+msgid "Universal Terminology eXchange"
+msgstr "Universal Terminology eXchange"
+
+#: ../devsupport/tmp_strings.py:23
+msgid "Gettext PO file"
+msgstr "Gettext PO datoteka"
+
+#: ../devsupport/tmp_strings.py:24
+msgid "Gettext MO file"
+msgstr "Gettext MO datoteka"
+
+#: ../devsupport/tmp_strings.py:25
+msgid "Qt .qm file"
+msgstr "Qt .qm datoteka"
+
+#: ../devsupport/tmp_strings.py:26
+msgid "OmegaT Glossary"
+msgstr "OmegaT glosar"
+
+#: ../bin/virtaal:93
+#, c-format
+msgid "%prog [options] [translation_file]"
+msgstr "%prog [opcije] [prevodilačka_datoteka]"
+
+#: ../bin/virtaal:96
+msgid "LOG"
+msgstr "LOG"
+
+#: ../bin/virtaal:97
+msgid "turn on logging, storing the result to the supplied filename."
+msgstr "uključi log zapis, rezultati se spremaju u zadanu datoteku."
+
+#: ../bin/virtaal:99
+msgid "CONFIG"
+msgstr "KONFIGURACIJA"
+
+#: ../bin/virtaal:100
+msgid "use the configuration file given by the supplied filename."
+msgstr "koristi datoteku konfiguracije koja je zadana datotekom."
+
+#: ../bin/virtaal:103
+msgid "enable debugging features"
+msgstr "aktiviraj funkcije za pronalaženje grešaka"
+
+#: ../bin/virtaal:109
+msgid "PROFILE"
+msgstr "PROFIL"
+
+#: ../bin/virtaal:111
+msgid "perform profiling, storing the result to the supplied filename."
+msgstr "izvrši profiliranje, rezultati se spremaju u zadanu datoteku."
+
+#: ../bin/virtaal:135
+msgid "Could not open log file '%(filename)s'"
+msgstr "Nije bilo moguće otvoriti log datoteku „%(filename)s”"
+
+#: ../bin/virtaal:143
+msgid "Could not read configuration file '%(filename)s'"
+msgstr "Nije bilo moguće čitati datoteku konfiguracije „%(filename)s”"
+
+#: ../bin/virtaal:147
+msgid "invalid number of arguments"
+msgstr "neispravni broj argumenata"
+
+#: ../bin/virtaal:173
+msgid "Profiling support is not available"
+msgstr "Podrška za profiliranje nije dostupna"
+
+#: ../bin/virtaal:185
+msgid "Could not open profile file '%(filename)s'"
+msgstr "Nije bilo moguće otvoriti datoteku profila „%(filename)s”"
+
+#: ../devsupport/optparse.py:134
+#, python-format
+msgid "no such option: %s"
+msgstr "nema takve opcije: %s"
+
+#: ../devsupport/optparse.py:145
+#, python-format
+msgid "ambiguous option: %s (%s?)"
+msgstr "višeznačna opcija: %s (%s?)"
+
+#: ../devsupport/optparse.py:368
+#, python-format
+msgid "Usage: %s\n"
+msgstr "Upotreba: %s\n"
+
+#: ../devsupport/optparse.py:387
+msgid "Usage"
+msgstr "Upotreba"
+
+#: ../devsupport/optparse.py:412
+msgid "integer"
+msgstr "cijeli broj"
+
+#: ../devsupport/optparse.py:413
+msgid "long integer"
+msgstr "dugački cijeli broj"
+
+#: ../devsupport/optparse.py:414
+msgid "floating-point"
+msgstr "pomični zarez"
+
+#: ../devsupport/optparse.py:415
+msgid "complex"
+msgstr "kompleksni"
+
+#: ../devsupport/optparse.py:423
+#, python-format
+msgid "option %s: invalid %s value: %r"
+msgstr "opcija %s: neispravna vrijednost za %s: %r"
+
+#: ../devsupport/optparse.py:431
+#, python-format
+msgid "option %s: invalid choice: %r (choose from %s)"
+msgstr "opcija %s: neispravni odabir: %r (odaberi iz %s)"
+
+#: ../devsupport/optparse.py:1246
+msgid "show this help message and exit"
+msgstr "prikaži ovu poruku pomoći i izađi"
+
+#: ../devsupport/optparse.py:1251
+msgid "show program's version number and exit"
+msgstr "prikaži broj verzije programa i izađi"
+
+#: ../devsupport/optparse.py:1274
+msgid "%prog [options]"
+msgstr "%prog [opcije]"
+
+#: ../devsupport/optparse.py:1484 ../devsupport/optparse.py:1523
+#, python-format
+msgid "%s option requires an argument"
+msgstr "%s opcija zahtijeva argument"
+
+#: ../devsupport/optparse.py:1486 ../devsupport/optparse.py:1525
+#, python-format
+msgid "%s option requires %d arguments"
+msgstr "%s opcija zahtijeva %d argumenta"
+
+#: ../devsupport/optparse.py:1495
+#, python-format
+msgid "%s option does not take a value"
+msgstr "%s opcija ne prihvaća vrijednost"

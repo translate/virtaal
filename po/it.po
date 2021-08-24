@@ -449,7 +449,7 @@ msgid ""
 "At the end of a translation, simply press <Enter> to continue with the next "
 "one."
 msgstr ""
-"Alla fine della traduzione, premere semplicemente <Invio> per continuare con "
+"Alla fine della traduzione, premere semplicemente <Enter> per continuare con "
 "la successiva."
 
 #: ../virtaal/tips.py:28
@@ -463,21 +463,21 @@ msgstr ""
 #: ../virtaal/tips.py:31
 msgid "To mark the current translation as fuzzy, simply press <Alt+U>."
 msgstr ""
-"Per segnare la presente traduzione come \"fuzzy\", basta premere <Alt+U>."
+"Per segnare la presente traduzione come fuzzy, basta premere <Alt+U>."
 
 #: ../virtaal/tips.py:32
 msgid ""
 "To mark the current translation as incomplete, simply press <Ctrl+Shift"
 "+Enter>."
 msgstr ""
-"Per segnare la presente traduzione come \"incompleta\", basta premere <Ctrl"
+"Per segnare la presente traduzione come incompleta, basta premere <Ctrl"
 "+Shift+Enter>."
 
 # 75%
 #: ../virtaal/tips.py:33
 msgid "To mark the current translation as complete, simply press <Ctrl+Enter>."
 msgstr ""
-"Per segnare la presente traduzione come \"completa\", basta premere <Ctrl"
+"Per segnare la presente traduzione come completa, basta premere <Ctrl"
 "+Enter>."
 
 #: ../virtaal/tips.py:34
@@ -585,7 +585,7 @@ msgstr "Parole che si devono tradurre"
 
 #: ../virtaal/controllers/checkscontroller.py:50
 msgid "Newlines"
-msgstr "Nuove linee "
+msgstr "Nuove linee"
 
 # 94%
 #: ../virtaal/controllers/checkscontroller.py:51
@@ -628,7 +628,7 @@ msgstr "Corto"
 
 #: ../virtaal/controllers/checkscontroller.py:60
 msgid "Simple capitalization"
-msgstr "Uso semplice di maiuscole "
+msgstr "Uso semplice di maiuscole"
 
 #: ../virtaal/controllers/checkscontroller.py:61
 msgid "Simple plural(s)"
@@ -640,7 +640,7 @@ msgstr "Virgolette semplici"
 
 #: ../virtaal/controllers/checkscontroller.py:63
 msgid "Spelling"
-msgstr "Ortografia "
+msgstr "Ortografia"
 
 #: ../virtaal/controllers/checkscontroller.py:64
 msgid "Starting capitalization"
@@ -656,7 +656,7 @@ msgstr "Spaziatura iniziale"
 
 #: ../virtaal/controllers/checkscontroller.py:67
 msgid "Tabs"
-msgstr "Tabulati "
+msgstr "Tabulati"
 
 #: ../virtaal/controllers/checkscontroller.py:68
 msgid "Unchanged"
@@ -682,7 +682,7 @@ msgstr "Tag XML"
 
 #: ../virtaal/controllers/checkscontroller.py:111
 msgid "Default"
-msgstr "Per difetto "
+msgstr "Per difetto"
 
 #: ../virtaal/controllers/checkscontroller.py:112
 msgid "OpenOffice.org"
@@ -961,7 +961,7 @@ msgstr "Segnaposti in stringhe Drupal"
 
 #: ../virtaal/controllers/storecontroller.py:198
 msgid "No source or translatable files in bundle"
-msgstr "Non ci sono i file d'origine o traducibili nel pacchetto  "
+msgstr "Non ci sono i file d'origine o traducibili nel pacchetto"
 
 #: ../virtaal/controllers/storecontroller.py:230
 msgid "The file contains nothing to translate."
@@ -1996,7 +1996,7 @@ msgstr "Non tradotto:"
 
 #: ../virtaal/views/propertiesview.py:33
 msgid "Needs work:"
-msgstr "Ha bisogno di lavoro "
+msgstr "Ha bisogno di lavoro:"
 
 #: ../virtaal/views/propertiesview.py:34
 msgid "Rejected:"
@@ -2285,7 +2285,7 @@ msgstr "File Gettext PO"
 
 #: ../devsupport/tmp_strings.py:24
 msgid "Gettext MO file"
-msgstr "File Gettext MO "
+msgstr "File Gettext MO"
 
 #: ../devsupport/tmp_strings.py:25
 msgid "Qt .qm file"

@@ -23,7 +23,7 @@ msgstr ""
 #: ../share/virtaal/virtaal.ui.h:18 ../virtaal/support/native_widgets.py:103
 #: ../virtaal/views/mainview.py:842
 msgid "Virtaal"
-msgstr "ਵਿਰਟਾਲ"
+msgstr "ਵਿਰਤਾਲ"
 
 #: ../share/applications/virtaal.desktop.in.h:2
 msgid "Translation Tool"

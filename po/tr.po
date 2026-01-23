@@ -1224,7 +1224,7 @@ msgstr "Virtaal herhangi bir ayar veya veriyi geçiremedi"
 
 #: ../virtaal/plugins/migration.py:108
 msgid "Nothing migrated"
-msgstr "Hiçbirşey geçirilemedi"
+msgstr "Hiçbir şey geçirilemedi"
 
 #: ../virtaal/plugins/migration.py:178
 msgid "Poedit settings"
@@ -1324,7 +1324,7 @@ msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:262
 msgid "Error opening file"
-msgstr "Dosya açarken hata"
+msgstr "Dosyayı açarken hata yaşandı."
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:402
 #, python-format
@@ -1338,7 +1338,7 @@ msgstr "_Hedef terim — %(langname)s"
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:447
 msgid "Identical entry already exists."
-msgstr "Aynı girdi zaten var."
+msgstr "Aynı girdi zaten bulunmakta."
 
 #. l10n: The variable is an existing term formatted for emphasis. The default is bold formatting, but you can remove/change the markup if needed. Leave it unchanged if you are unsure.
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:462
@@ -1491,7 +1491,7 @@ msgstr "Apertium'dan incelenmemiş makine çevirileri"
 
 #: ../virtaal/plugins/tm/tmview.py:110
 msgid "Translation _Suggestions"
-msgstr "Çeviri Ö_nerileri"
+msgstr "Çeviri Önerileri"
 
 #: ../virtaal/plugins/tm/tmview.py:151
 #, python-format
@@ -2416,7 +2416,7 @@ msgstr "%s seçeneği bir değer almaz"
 #~ msgstr "Yerel çeviri dosyaları"
 
 #~ msgid "Currently open file"
-#~ msgstr "Şu anda açık dosya"
+#~ msgstr "Şu anda açık olan dosya"
 
 #~ msgid "Machine Translation with libtranslate"
 #~ msgstr "Libtranslate ile makine çevirisi"

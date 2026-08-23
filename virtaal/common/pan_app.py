@@ -47,7 +47,10 @@ def get_config_dir():
 
     return confdir
 
-if os.name == 'nt':
+# Only for the packaged (frozen/PyInstaller) build - a windowed
+# subsystem executable has no console, so this is the only way to get
+# error messages out of it.
+if os.name == 'nt' and getattr(sys, 'frozen', False):
     filename_template = os.path.join(get_config_dir(), '%s_virtaal.log')
     sys.stdout = open(filename_template % ('stdout'), 'w')
     sys.stderr = open(filename_template % ('stderr'), 'w')

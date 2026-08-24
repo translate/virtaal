@@ -52,8 +52,8 @@ def get_config_dir():
 # error messages out of it.
 if os.name == 'nt' and getattr(sys, 'frozen', False):
     filename_template = os.path.join(get_config_dir(), '%s_virtaal.log')
-    sys.stdout = open(filename_template % ('stdout'), 'w')
-    sys.stderr = open(filename_template % ('stderr'), 'w')
+    sys.stdout = open(filename_template % ('stdout'), 'w', buffering=1)
+    sys.stderr = open(filename_template % ('stderr'), 'w', buffering=1)
 
 
 # Ok, now we can continue with what we actually wanted to do

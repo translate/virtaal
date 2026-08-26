@@ -51,10 +51,9 @@ classifiers = [
     "Intended Audience :: Developers",
     "Intended Audience :: End Users/Desktop",
     "Intended Audience :: Information Technology",
-    "License :: OSI Approved :: GNU General Public License (GPL)",
     "Programming Language :: Python",
     "Topic :: Software Development :: Localization",
-    "Topic :: Text Processing :: Linguistic"
+    "Topic :: Text Processing :: Linguistic",
     "Operating System :: OS Independent",
     "Operating System :: Microsoft :: Windows",
     "Operating System :: Unix"
@@ -620,7 +619,7 @@ def main(options):
     create_manifest(options['data_files'], no_install_files, no_install_dirs)
     setup(name="virtaal",
           version=virtaal_version,
-          license="GNU General Public License (GPL)",
+          license="GPL-2.0-or-later",
           description=virtaal_description,
           long_description="""Virtaal is used to create program translations.
 

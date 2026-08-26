@@ -4,6 +4,7 @@
 /MANIFEST
 /MANIFEST.in
 /mo
+*.egg-info/
 
 # /docs/
 /docs/_build/

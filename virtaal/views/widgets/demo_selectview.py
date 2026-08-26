@@ -18,17 +18,24 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+"""Manual, interactive demo for SelectView - opens a real window for a
+human to eyeball, not an automated test. Run directly:
+python demo_selectview.py
+(Renamed from test_selectview.py, which pytest was picking up by
+filename convention alone despite having no assertions.)"""
+
 import gtk
 
-from selectdialog import SelectDialog
+from selectview import SelectView
 
 
-class TestSelectDialog(object):
-    """
-    Test runner for SelectDialog.
-    """
-
+class SelectViewTestWindow(gtk.Window):
     def __init__(self):
+        super(SelectViewTestWindow, self).__init__()
+        self.connect('destroy', lambda *args: gtk.main_quit())
+        self.add(self.create_selectview())
+
+    def create_selectview(self):
         self.items = (
             {'enabled': True,  'name': 'item1', 'desc': 'desc1'},
             {'enabled': False, 'name': 'item2'                 },
@@ -37,19 +44,18 @@ class TestSelectDialog(object):
             {'enabled': True,  'name': 'item5', 'desc': ''     },
             {'enabled': False, 'name': '',      'desc': 'desc6'},
         )
-        self.dialog = SelectDialog(self.items, title='Test runner', message='Select the items you want:')
-        self.dialog.connect('item-enabled',   self._on_dialog_action, 'Enabled')
-        self.dialog.connect('item-disabled',  self._on_dialog_action, 'Disabled')
-        self.dialog.connect('item-selected',  self._on_dialog_action, 'Selected')
-        self.dialog.connect('selection-done', self._on_dialog_action, 'Selection done')
+        self.selectview = SelectView(self.items)
+        self.selectview.connect('item-enabled', self._on_item_action, 'enabled')
+        self.selectview.connect('item-disabled', self._on_item_action, 'disabled')
+        self.selectview.connect('item-selected', self._on_item_action, 'selected')
+        return self.selectview
 
-    def run(self):
-        self.dialog.run()
 
-    def _on_dialog_action(self, dialog, item, action):
-        print '%s: %s' % (action, item)
+    def _on_item_action(self, sender, item_info, action):
+        print 'Item %s: %s' % (action, item_info)
 
 
 if __name__ == '__main__':
-    runner = TestSelectDialog()
-    runner.run()
+    win = SelectViewTestWindow()
+    win.show_all()
+    gtk.main()

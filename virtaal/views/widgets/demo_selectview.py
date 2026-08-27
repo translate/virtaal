@@ -27,7 +27,7 @@ from .selectview import SelectView
 
 class SelectViewTestWindow(Gtk.Window):
     def __init__(self):
-        super(SelectViewTestWindow, self).__init__()
+        super().__init__()
         self.connect('destroy', lambda *args: Gtk.main_quit())
         self.add(self.create_selectview())
 

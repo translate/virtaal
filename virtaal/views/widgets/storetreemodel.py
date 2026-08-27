@@ -40,7 +40,7 @@ class StoreTreeModel(GObject.GObject, Gtk.TreeModel):
     """
 
     def __init__(self, storemodel):
-        super(StoreTreeModel, self).__init__()
+        super().__init__()
         self._store = storemodel
         self._store_len = len(storemodel)
         self._current_editable = 0

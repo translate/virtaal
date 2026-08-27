@@ -66,7 +66,7 @@ class TMModel(BaseTMModel):
             lambda langreq, response: self.got_language_pairs(response)
         )
 
-        super(TMModel, self).__init__(controller)
+        super().__init__(controller)
 
 
     # METHODS #

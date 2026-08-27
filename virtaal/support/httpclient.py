@@ -166,7 +166,7 @@ class RESTRequest(HTTPRequest):
     """Single HTTP REST request, blocking if used standalone."""
 
     def __init__(self, url, id, method='GET', data=None, headers=None, user_agent=None, params=None):
-        super(RESTRequest, self).__init__(url, method, data, headers, user_agent=user_agent, follow_location=True)
+        super().__init__(url, method, data, headers, user_agent=user_agent, follow_location=True)
 
         url = self.url
         self.id = id

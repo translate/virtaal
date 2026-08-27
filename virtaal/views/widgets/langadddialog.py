@@ -31,7 +31,7 @@ class LanguageAddDialog(object):
 
     # INITIALIZERS #
     def __init__(self, parent=None):
-        super(LanguageAddDialog, self).__init__()
+        super().__init__()
 
         self.gui = BaseView.load_builder_file(
             ["virtaal", "virtaal.ui"],

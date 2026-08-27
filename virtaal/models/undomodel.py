@@ -29,7 +29,7 @@ class UndoModel(BaseModel):
     def __init__(self, controller):
         self.controller = controller
 
-        super(UndoModel, self).__init__()
+        super().__init__()
         self.index = -1
         self.recording = False
         self.undo_stack = []

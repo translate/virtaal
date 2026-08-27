@@ -37,7 +37,7 @@ class WelcomeScreen(Gtk.ScrolledWindow):
         """Constructor.
             @type  gui: C{Gtk.Builder}
             @param gui: The GtkBuilder XML object to retrieve the welcome screen from."""
-        super(WelcomeScreen, self).__init__()
+        super().__init__()
 
         self.gui = gui
 

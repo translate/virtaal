@@ -52,7 +52,7 @@ class CellRendererWidget(Gtk.CellRenderer):
 
     # INITIALIZERS #
     def __init__(self, strfunc, default_width=-1, widget_func=None):
-        super(CellRendererWidget, self).__init__()
+        super().__init__()
 
         self.default_width = default_width
         self._editing = False
@@ -155,7 +155,7 @@ class CellWidget(Gtk.HBox, Gtk.CellEditable):
 
     # INITIALIZERS #
     def __init__(self, *widgets):
-        super(CellWidget, self).__init__()
+        super().__init__()
         for w in widgets:
             if w.get_parent() is not None:
                 w.get_parent().remove(w)
@@ -177,7 +177,7 @@ if __name__ == "__main__":
     class Tree(Gtk.TreeView):
         def __init__(self):
             self.store = Gtk.ListStore(str, TYPE_PYOBJECT, bool)
-            super(Tree, self).__init__()
+            super().__init__()
             self.set_model(self.store)
             self.set_headers_visible(True)
 

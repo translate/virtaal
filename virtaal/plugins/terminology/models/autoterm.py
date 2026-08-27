@@ -47,7 +47,7 @@ class TerminologyModel(BaseTerminologyModel):
 
     # INITIALIZERS #
     def __init__(self, internal_name, controller):
-        super(TerminologyModel, self).__init__(controller)
+        super().__init__(controller)
         self.internal_name = internal_name
         self.client = HTTPClient()
         self.client.set_virtaal_useragent()

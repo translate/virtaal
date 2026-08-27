@@ -40,7 +40,7 @@ class SelectDialog(GObjectWrapper):
 
     # INITIALIZERS #
     def __init__(self, items=None, title=None, message=None, parent=None, size=None):
-        super(SelectDialog, self).__init__()
+        super().__init__()
         self.sview = SelectView(items)
         self._create_gui(title, message, parent)
         self._connect_signals()

@@ -224,7 +224,7 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
                     self._create_widget_for_item(row)
                 ])
 
-        super(SelectView, self).set_model(self._model)
+        super().set_model(self._model)
 
 
     # EVENT HANDLERS #

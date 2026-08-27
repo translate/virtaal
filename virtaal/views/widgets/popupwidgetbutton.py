@@ -67,7 +67,7 @@ class PopupWidgetButton(Gtk.ToggleButton):
 
     # INITIALIZERS #
     def __init__(self, widget, label='Pop-up', popup_pos=POS_NW_SW, main_window=None, sticky=False):
-        super(PopupWidgetButton, self).__init__(label=label)
+        super().__init__(label=label)
         if not sticky:
             self.connect('focus-out-event', self._on_focus_out_event)
         if main_window:

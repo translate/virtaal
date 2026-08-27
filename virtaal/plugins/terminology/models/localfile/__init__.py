@@ -51,7 +51,7 @@ class TerminologyModel(BaseTerminologyModel):
 
     # INITIALIZERS #
     def __init__(self, internal_name, controller):
-        super(TerminologyModel, self).__init__(controller)
+        super().__init__(controller)
 
         self.matcher = None
         self.internal_name = internal_name
@@ -66,7 +66,7 @@ class TerminologyModel(BaseTerminologyModel):
     def destroy(self):
         self.view.destroy()
         self.save_config()
-        super(TerminologyModel, self).destroy()
+        super().destroy()
         if self.matcher in TerminologyPlaceable.matchers:
             TerminologyPlaceable.matchers.remove(self.matcher)
 
@@ -104,7 +104,7 @@ class TerminologyModel(BaseTerminologyModel):
         return units
 
     def load_config(self):
-        super(TerminologyModel, self).load_config()
+        super().load_config()
         conffiles = []
         for filename in self.config['files'].split(','):
             if os.path.exists(filename):

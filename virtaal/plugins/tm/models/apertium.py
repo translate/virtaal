@@ -21,7 +21,11 @@
 """A TM provider that can query the web service for the Apertium software for
 Machine Translation.
 
-http://wiki.apertium.org/wiki/Apertium_web_service
+https://wiki.apertium.org/wiki/Apertium_web_service
+
+Note: the old api.apertium.org/json service (with its appId query parameter)
+has been retired; this now targets the APY instance Apertium itself hosts,
+which needs no appId.
 """
 
 from urllib.parse import urlencode
@@ -44,10 +48,7 @@ class TMModel(BaseTMModel):
     display_name = _('Apertium')
     description = _('Unreviewed machine translations from Apertium')
 
-    url = "http://api.apertium.org/json"
-    default_config = {
-        "appid" : "",
-    }
+    url = "https://www.apertium.org/apy"
 
     # INITIALISERS #
     def __init__(self, internal_name, controller):
@@ -56,9 +57,8 @@ class TMModel(BaseTMModel):
         self.load_config()
 
         self.client = HTTPClient()
-        self.url_getpairs = "%(url)s/listPairs?appId=%(appid)s" % {"url": self.url, "appid": self.config["appid"]}
+        self.url_getpairs = "%(url)s/listPairs" % {"url": self.url}
         self.url_translate = "%(url)s/translate" % {"url": self.url}
-        self.appid = self.config['appid']
         langreq = RESTRequest(self.url_getpairs, '')
         self.client.add(langreq)
         langreq.connect(
@@ -82,7 +82,6 @@ class TMModel(BaseTMModel):
             self.emit('match-found', query_str, self.cache[query_str])
         else:
             values = {
-                'appId': self.appid,
                 'q': query_str,
                 'langpair': "%s|%s" % (self.source_lang, self.target_lang),
                 'markUnknown': "no",

@@ -146,7 +146,13 @@ class UndoController(BaseController):
         def refresh():
             textbox.refresh_cursor_pos = undo_info['cursorpos']
             # TODO: try to avoid full refresh
+            # This runs via idle_add, after _enable_unit_signals() above
+            # has already re-enabled everything - textbox.refresh()'s
+            # set_text() would otherwise fire the "changed" signal and
+            # re-mark the document modified right after undo cleared it.
+            self._disable_unit_signals()
             textbox.refresh(update=True)
+            self._enable_unit_signals()
 
         GObject.idle_add(refresh)
 
@@ -177,6 +183,12 @@ class UndoController(BaseController):
                 self._perform_undo(ui)
         else:
             self._perform_undo(undo_info)
+
+        # Clear the modified flag once undo lands back at the position
+        # the file was last opened/saved (UndoModel.mark_clean()) -
+        # _modified is otherwise never touched by undo.
+        if self.model.is_at_clean_position():
+            self.main_controller.store_controller.set_modified(False)
 
     @if_enabled
     def _on_unit_delete_text(self, unit_controller, unit, deleted, parent, offset, cursor_pos, elem, target_num):

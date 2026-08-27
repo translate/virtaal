@@ -33,6 +33,9 @@ class UndoModel(BaseModel):
         self.index = -1
         self.recording = False
         self.undo_stack = []
+        # Undo-stack position at the last "file is unmodified" point
+        # (open/save) - see mark_clean()/is_at_clean_position().
+        self.clean_index = -1
 
 
     # METHODS #
@@ -40,6 +43,19 @@ class UndoModel(BaseModel):
         """Clear the undo stack and reset the index pointer."""
         self.undo_stack = []
         self.index = -1
+        self.clean_index = -1
+
+    def mark_clean(self):
+        """Record the current undo-stack position as "the file is
+            unmodified" - call this right after a file is opened or
+            saved."""
+        self.clean_index = self.index
+
+    def is_at_clean_position(self):
+        """Whether the undo stack is currently at the position last marked
+            clean by mark_clean() - i.e. whatever's changed since then has
+            all been undone."""
+        return self.index == self.clean_index
 
     def pop(self, permanent=False):
         if not self.undo_stack or not (0 <= self.index < len(self.undo_stack)):

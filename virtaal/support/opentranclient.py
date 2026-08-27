@@ -32,6 +32,7 @@ from translate.lang import data
 from translate.search.lshtein import LevenshteinComparer
 
 from virtaal.support.httpclient import HTTPClient, RESTRequest
+from virtaal.support.translate_compat import forceunicode
 
 
 class OpenTranClient(GObject.GObject, HTTPClient):
@@ -147,7 +148,7 @@ class OpenTranClient(GObject.GObject, HTTPClient):
         suggestions = self._loads_safe(response)
         if not suggestions:
             return []
-        id = data.forceunicode(id)
+        id = forceunicode(id)
         self.last_suggestions.extend(suggestions)  # we keep it for the terminology back-end
         results = []
         for suggestion in suggestions:
@@ -158,9 +159,9 @@ class OpenTranClient(GObject.GObject, HTTPClient):
             else:
                 continue
             result = {}
-            result['target'] = data.forceunicode(suggestion['text'])
+            result['target'] = forceunicode(suggestion['text'])
             result['tmsource'] = suggestion['projects'][0]['name']
-            result['source'] = data.forceunicode(suggestion['projects'][0]['orig_phrase'])
+            result['source'] = forceunicode(suggestion['projects'][0]['orig_phrase'])
             #open-tran often gives too many results with many which can't really be
             #considered to be suitable for translation memory
             result['quality'] = self.comparer.similarity(id, result['source'], self.min_similarity)

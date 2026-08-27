@@ -73,9 +73,27 @@ Shortcuts
 +--------------------------+-------------------------------------------+
 | :kbd:`F9`                | Show/Hide translation suggestions         |
 +--------------------------+-------------------------------------------+
+| :kbd:`Escape`            | Hide translation suggestions, if shown    |
++--------------------------+-------------------------------------------+
 | :kbd:`Ctrl+T`            | Add a term to the local terminology file  |
 +--------------------------+-------------------------------------------+
 | Right click on selection | Access external look-up features          |
++--------------------------+-------------------------------------------+
+
++--------------------------+-------------------------------------------+
+|   Moving focus                                                       |
++==========================+===========================================+
+| :kbd:`Tab`               | Move to the next target field (for units  |
+|                          | with more than one, e.g. plural forms)    |
++--------------------------+-------------------------------------------+
+| :kbd:`Shift+Tab`         | Move to the previous target field         |
++--------------------------+-------------------------------------------+
+| :kbd:`Ctrl+Tab`          | Jump to the language-pair selector        |
++--------------------------+-------------------------------------------+
+| :kbd:`Ctrl+Shift+Tab`    | Jump to the "Navigation:" mode selector   |
++--------------------------+-------------------------------------------+
+| :kbd:`Escape`            | Close the search bar and return to normal |
+|                          | editing (only while Search mode is active)|
 +--------------------------+-------------------------------------------+
 
 See the :doc:`tips and tricks <tips>` page for more usage tips.

@@ -1,0 +1,40 @@
+# A PO file with a deliberate mix of workflow states, for testing
+# Virtaal's Workflow navigation mode (virtaal/modes/workflowmode.py).
+#
+# Plain gettext PO can only represent three distinct workflow states -
+# confirmed by reading translate.storage.pocommon.pounit.get_state_n():
+# untranslated (empty target), needs-work (the '#, fuzzy' flag), and
+# translated (has a target, not fuzzy). "Rejected"/"Needs review"/
+# "Reviewed" (workflow.StateEnum's other three values) are unreachable
+# for this format - they only apply to richer formats (XLIFF, TS) that
+# have their own native state field. This file has one unit in each of
+# the three states .po can actually represent - the maximum meaningful
+# coverage for this format, not an attempt at all six.
+# Copyright 2026 Zuza Software Foundation
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2026-08-25 00:00+0000\n"
+"PO-Revision-Date: 2026-08-25 00:00+0000\n"
+"Last-Translator: Virtaal test suite\n"
+"Language-Team: translate-dev@lists.sourceforge.net\n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Untranslated state: empty target.
+msgid "This string has not been translated yet"
+msgstr ""
+
+#. Needs-work state: the fuzzy flag, usually set by msgmerge when a
+#. source string changes and the old translation may no longer match.
+#, fuzzy
+msgid "This string's translation may be out of date"
+msgstr "This string's translation may possibly be out of date"
+
+#. Translated state: has a target, not fuzzy - the normal "done" state.
+msgid "This string has been translated normally"
+msgstr "This string has been translated normally, in British English"

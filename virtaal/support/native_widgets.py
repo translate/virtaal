@@ -49,12 +49,18 @@ def _dialog_to_use():
                 pan_app.ui_language == 'en' or \
                 gettext.dgettext('kdelibs4', '') or \
                 not gettext.dgettext('gtk30', '')):
-            import distutils.spawn
-            if distutils.spawn.find_executable("kdialog") is not None:
+            import shutil
+            if shutil.which("kdialog") is not None:
                 return 'kdialog'
 
     if sys.platform == 'darwin':
-        return 'darwin'
+        try:
+            import objc
+            import AppKit
+        except ImportError:
+            pass
+        else:
+            return 'darwin'
 
     return None # default
 

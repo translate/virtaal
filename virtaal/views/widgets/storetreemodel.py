@@ -20,15 +20,24 @@
 
 from gi.repository import GObject
 from gi.repository import Gtk
-from pygtkcompat.generictreemodel import GenericTreeModel
 
 from virtaal.views import markup
 
 COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE = 0, 1, 2
 
 
-class StoreTreeModel(GenericTreeModel):
-    """Custom C{Gtk.TreeModel} adapted from the old C{UnitModel} class."""
+class StoreTreeModel(GObject.GObject, Gtk.TreeModel):
+    """Custom C{Gtk.TreeModel} adapted from the old C{UnitModel} class.
+
+    This implements Gtk.TreeModel's do_* virtual methods directly. It used
+    to be built on pygtkcompat.generictreemodel.GenericTreeModel's on_*
+    convenience wrappers, but that module was removed from PyGObject
+    (deprecated November 2023, removed 2024/2025) and relied on ctypes to
+    poke a Python object pointer into a Gtk.TreeIter's C struct - exactly
+    the kind of thing not worth resurrecting. This model is flat
+    (LIST_ONLY, no real tree hierarchy), so each row is just addressed by
+    its integer index, stored directly in Gtk.TreeIter.user_data.
+    """
 
     def __init__(self, storemodel):
         super(StoreTreeModel, self).__init__()
@@ -36,13 +45,13 @@ class StoreTreeModel(GenericTreeModel):
         self._store_len = len(storemodel)
         self._current_editable = 0
 
-    def on_get_flags(self):
+    def do_get_flags(self):
         return Gtk.TreeModelFlags.ITERS_PERSIST | Gtk.TreeModelFlags.LIST_ONLY
 
-    def on_get_n_columns(self):
+    def do_get_n_columns(self):
         return 3
 
-    def on_get_column_type(self, index):
+    def do_get_column_type(self, index):
         if index == 0:
             return GObject.TYPE_STRING
         elif index == 1:
@@ -50,13 +59,19 @@ class StoreTreeModel(GenericTreeModel):
         elif index == 2:
             return GObject.TYPE_BOOLEAN
 
-    def on_get_iter(self, path):
-        return path[0]
+    def do_get_iter(self, path):
+        rowref = path.get_indices()[0]
+        if 0 <= rowref < self._store_len:
+            it = Gtk.TreeIter()
+            it.user_data = rowref
+            return True, it
+        return False, None
 
-    def on_get_path(self, rowref):
-        return (rowref,)
+    def do_get_path(self, iter_):
+        return Gtk.TreePath((iter_.user_data,))
 
-    def on_get_value(self, rowref, column):
+    def do_get_value(self, iter_, column):
+        rowref = iter_.user_data
         if column <= 1:
             unit = self._store[rowref]
             if column == 0:
@@ -71,35 +86,38 @@ class StoreTreeModel(GenericTreeModel):
         else:
             return self._current_editable == rowref
 
-    def on_iter_next(self, rowref):
+    def do_iter_next(self, iter_):
+        rowref = iter_.user_data
         if rowref < self._store_len - 1:
-            return rowref + 1
-        else:
-            return None
-
-    def on_iter_children(self, parent):
-        if parent == None and self._store_len > 0:
-            return 0
-        else:
-            return None
-
-    def on_iter_has_child(self, rowref):
+            iter_.user_data = rowref + 1
+            return True
         return False
 
-    def on_iter_n_children(self, rowref):
-        if rowref == None:
+    def do_iter_children(self, parent):
+        if parent is None and self._store_len > 0:
+            it = Gtk.TreeIter()
+            it.user_data = 0
+            return True, it
+        return False, None
+
+    def do_iter_has_child(self, iter_):
+        return False
+
+    def do_iter_n_children(self, iter_):
+        if iter_ is None:
             return self._store_len
         else:
             return 0
 
-    def on_iter_nth_child(self, parent, n):
-        if parent == None:
-            return n
-        else:
-            return None
+    def do_iter_nth_child(self, parent, n):
+        if parent is None and 0 <= n < self._store_len:
+            it = Gtk.TreeIter()
+            it.user_data = n
+            return True, it
+        return False, None
 
-    def on_iter_parent(self, child):
-        return None
+    def do_iter_parent(self, child):
+        return False, None
 
     # Non-model-interface methods
 
@@ -110,7 +128,7 @@ class StoreTreeModel(GenericTreeModel):
         self.row_changed(new_path, self.get_iter(new_path))
 
     def store_index_to_path(self, store_index):
-        return self.on_get_path(store_index)
+        return (store_index,)
 
     def path_to_store_index(self, path):
         if path is None:

@@ -261,7 +261,10 @@ class Plugin(BasePlugin):
         def add_widgets():
             if hasattr(self, 'lastunit'):
                 if self.lastunit.hasplural():
-                    for target in self.lastunit.target:
+                    # target is a multistring (subclasses str) - iterate
+                    # target.strings, not target itself, or this yields
+                    # characters of the first plural form only.
+                    for target in self.lastunit.target.strings:
                         if target:
                             #logging.debug('Adding words: %s' % (self.autocomp.wordsep_re.split(str(target))))
                             self.autocomp.add_words(self.autocomp.wordsep_re.split(str(target)))

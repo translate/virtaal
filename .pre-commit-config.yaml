@@ -1,5 +1,4 @@
-# See docs/development.rst for setup instructions and what's
-# deliberately excluded for now, and why.
+# See docs/development.rst for setup instructions.
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -13,6 +12,11 @@ repos:
       - id: check-toml
       - id: check-merge-conflict
       - id: check-added-large-files
+      - id: check-ast
+      - id: debug-statements
+        # devsupport/debugging.py's whole purpose is a decorator that
+        # intentionally drops into pdb - not an accidental leftover.
+        exclude: ^devsupport/debugging\.py$
 
   - repo: local
     hooks:

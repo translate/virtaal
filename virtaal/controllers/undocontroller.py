@@ -146,7 +146,23 @@ class UndoController(BaseController):
         def refresh():
             textbox.refresh_cursor_pos = undo_info['cursorpos']
             # TODO: try to avoid full refresh
+            #
+            # 2026-08-24: this runs via GObject.idle_add, i.e. on the next
+            # main-loop iteration, well after _enable_unit_signals() above
+            # has already re-enabled everything - so textbox.refresh()'s
+            # own textbox.set_text() call (which fires the buffer's
+            # "changed" signal) was running *unblocked*, propagating
+            # through _on_target_changed() to re-mark the document
+            # modified right after the undo above had correctly cleared
+            # it (reported live: Ctrl+Z back to an unchanged file still
+            # left it flagged as modified). Same class of bug as the
+            # signal-during-repopulation issue elsewhere this session
+            # (UnitView.load_unit()'s own disable_signals()/
+            # enable_signals() guard exists for exactly this reason) -
+            # wrap this deferred refresh the same way.
+            self._disable_unit_signals()
             textbox.refresh(update=True)
+            self._enable_unit_signals()
 
         GObject.idle_add(refresh)
 
@@ -177,6 +193,17 @@ class UndoController(BaseController):
                 self._perform_undo(ui)
         else:
             self._perform_undo(undo_info)
+
+        # Reported live, 2026-08-24: undoing back to what was on disk
+        # still left the file flagged as modified. storecontroller.py's
+        # _modified is a plain boolean that undo never touched - clear it
+        # specifically when the undo stack is back at the position it was
+        # in when the file was last opened/saved (see
+        # UndoModel.mark_clean()/is_at_clean_position()), rather than
+        # trying to derive _modified from undo state generally (it's also
+        # set by things undo doesn't track, like language/state changes).
+        if self.model.is_at_clean_position():
+            self.main_controller.store_controller.set_modified(False)
 
     @if_enabled
     def _on_unit_delete_text(self, unit_controller, unit, deleted, parent, offset, cursor_pos, elem, target_num):

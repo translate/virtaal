@@ -142,6 +142,15 @@ class StoreController(BaseController):
     def is_modified(self):
         return self._modified
 
+    def set_modified(self, value):
+        """Public setter for other controllers (e.g. UndoController, when
+            an undo lands back on the position the file was last opened/
+            saved at) that need to update the modified flag without
+            duplicating the main_controller.set_saveable() call that
+            always needs to go with it."""
+        self._modified = value
+        self.main_controller.set_saveable(value)
+
     def _get_unitcontroller(self):
         return self._unit_controller
 
@@ -294,8 +303,14 @@ class StoreController(BaseController):
                         self.main_controller.open_file(filename)
                         self.cursor.pos = cursor_pos
                     self._proj_file_saved_id = self.connect('store-saved', post_save)
-        self._modified = False
-        self.main_controller.set_saveable(False)
+        self.set_modified(False)
+        # A save doesn't clear the undo stack (you can still undo past a
+        # save point) - unlike open_file()/close_file(), which do get a
+        # fresh clean_index for free from UndoModel.clear() (see
+        # UndoController._on_store_loaded_closed(), triggered by the
+        # store-loaded/store-closed signals both of those already emit),
+        # a save needs its own explicit "this is the new clean point" mark.
+        self.main_controller.undo_controller.model.mark_clean()
         self.emit('store-saved')
 
     def binary_export(self, filename):
@@ -311,8 +326,7 @@ class StoreController(BaseController):
         del self.project
         self.project = None
         self.store = None
-        self._modified = False
-        self.main_controller.set_saveable(False)
+        self.set_modified(False)
         self.view.hide() # This MUST be called BEFORE `self.cursor = None`
         self.emit('store-closed') # This should be emitted BEFORE `self.cursor = None` to allow any other modules to disconnect from the cursor
         self.cursor = None

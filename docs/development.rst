@@ -7,11 +7,8 @@ Hygiene checks (pre-commit / prek)
 ===================================
 
 This repo uses a `pre-commit <https://pre-commit.com>`_-format config
-(``.pre-commit-config.yaml``) for basic hygiene checks: trailing
-whitespace, end-of-file newlines, valid YAML/TOML, no leftover
-merge-conflict markers, no accidental large files, and a local check
-that ``po/virtaal.pot`` is kept up to date with the translatable
-strings it should contain.
+(``.pre-commit-config.yaml``) for basic hygiene checks - see that file
+for the current list, rather than duplicating it here.
 
 Run it with `prek <https://prek.j178.dev/>`_ - a drop-in, single-binary
 reimplementation of pre-commit, no Python runtime needed to run the

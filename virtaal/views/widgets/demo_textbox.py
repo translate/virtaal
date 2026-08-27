@@ -18,6 +18,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+"""Manual, interactive demo for TextBox - opens a real window for a human
+to eyeball, not an automated test. Run directly: python demo_textbox.py
+(Renamed from test_textbox.py, which pytest was picking up by filename
+convention alone despite having no assertions.)"""
+
 from gi.repository import Gtk
 
 from .textbox import TextBox

@@ -234,7 +234,7 @@ class StoreController(BaseController):
 
         # if file is a template, force saveas
         import re
-        _pot_re = re.compile("\.pot(\.gz|\.bz2)?$")
+        _pot_re = re.compile(r"\.pot(\.gz|\.bz2)?$")
         if _pot_re.search(filename):
             force_saveas = True
             self.store._trans_store.filename = _pot_re.sub('.po', filename)

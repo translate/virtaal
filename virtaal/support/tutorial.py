@@ -287,7 +287,7 @@ def create_localized_tutorial():
        u"translation field. Right now Virtaal has only one empty terminology "
        u"glossary, but you can start filling it. In order to do that select "
        u"the original text, press Ctrl+T, provide a translation for your "
-       u"language, and save."),
+       u"language."),
      u"Filter",
      u"verb"),
 

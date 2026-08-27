@@ -20,7 +20,7 @@
 
 import logging
 
-import xmlrpc.client as xmlrpclib
+import xmlrpclib
 from gi.repository import GObject
 
 from virtaal.support.httpclient import HTTPClient, HTTPRequest

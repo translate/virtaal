@@ -29,9 +29,9 @@ here are gone entirely, not modernized: both were Python-2-only code
 that couldn't even be parsed under Python 3 (the InnoSetup script
 generator used `print >> ofi` statement syntax), let alone run. macOS
 packaging now lives in devsupport/packaging/macos/, independent of
-`pip install .`; Windows packaging is tracked as a separate open item
-in ISSUE_TRIAGE.md. The custom `DepCheckInstall` install command is
-also gone - it duplicated bin/virtaal's own startup dependency check,
+`pip install .`; Windows packaging is a separate, not-yet-started item.
+The custom `DepCheckInstall` install command is also gone - it
+duplicated bin/virtaal's own startup dependency check,
 and re-checking importability at *build* time (in a possibly
 not-yet-fully-set-up environment) rather than at actual app *startup*
 caused real, confusing CI failures during this exact rewrite.

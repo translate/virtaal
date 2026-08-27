@@ -35,17 +35,13 @@ class UndoModel(BaseModel):
         self.undo_stack = []
         # The undo-stack position at the last "this file is unmodified"
         # point (just opened, or just saved) - see mark_clean()/is_dirty().
-        # Reported live, 2026-08-24: undoing a change all the way back to
-        # what was on disk still left the file flagged as modified,
-        # prompting to save on close for a file with no real changes.
         # storecontroller.py's own _modified flag is a plain boolean set
-        # True by any edit and never reset by undo - there was never a
-        # mechanism connecting the undo stack's position back to it.
-        # Comparing against a remembered clean position (the standard
-        # approach for this, letting undo/redo naturally cross back over
-        # a "nothing to save" line) fixes it without touching _modified's
-        # own semantics for the many non-undo-tracked things that also set
-        # it (state changes, language changes, etc.).
+        # True by any edit, with no mechanism connecting it back to the
+        # undo stack's position on its own; comparing against a
+        # remembered clean position lets undo/redo naturally cross back
+        # over a "nothing to save" line without touching _modified's own
+        # semantics for the many non-undo-tracked things that also set it
+        # (state changes, language changes, etc.).
         self.clean_index = -1
 
 

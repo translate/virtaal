@@ -34,12 +34,10 @@ def run_in_thread(widget, target, args):
         # win32_open_dialog() hitting a missing pywin32 import) used to
         # just kill this thread silently - q.put() never runs, the
         # caller gets back None indistinguishable from a real "no file
-        # chosen" cancel, and nothing is logged anywhere. Confirmed live,
-        # 2026-08-23: the symptom is "doesn't crash, dialog just doesn't
-        # open". Logging it here doesn't fix whatever the target itself
-        # got wrong, but it stops silent failures - see also the guard
-        # added to native_widgets._dialog_to_use() for the win32 case
-        # specifically.
+        # chosen" cancel, and nothing is logged anywhere. Logging it here
+        # doesn't fix whatever the target itself got wrong, but it stops
+        # silent failures - see also the guard added to
+        # native_widgets._dialog_to_use() for the win32 case specifically.
         try:
             q.put(target(*kwargs))
         except Exception:

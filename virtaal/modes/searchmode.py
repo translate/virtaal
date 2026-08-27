@@ -130,6 +130,7 @@ class SearchMode(BaseMode):
         if not self.ent_search.get_text():
             self.storecursor.indices = self.storecursor.model.stats['total']
         else:
+            self._cancel_search_timeout()
             self.update_search()
 
         def grab_focus():
@@ -382,6 +383,7 @@ class SearchMode(BaseMode):
             return
 
         if getattr(self, 'matchcursor', None) is None:
+            self._cancel_search_timeout()
             self.update_search()
             self._move_match(offset)
             return
@@ -389,6 +391,7 @@ class SearchMode(BaseMode):
         old_match_index = self.matchcursor.index
         if not self.matches or old_match_index != self.matchcursor.index:
             logging.debug('_move_match: no matches or stale matchcursor - re-searching instead of moving')
+            self._cancel_search_timeout()
             self.update_search()
             return
 
@@ -406,12 +409,14 @@ class SearchMode(BaseMode):
                 self.replace_match(match, repl_str)
 
         self.controller.main_controller.undo_controller.record_stop()
+        self._cancel_search_timeout()
         self.update_search()
 
 
     # EVENT HANDLERS #
     def _on_entry_activate(self, entry):
         logging.debug('_on_entry_activate: Enter activated ent_search (text=%r)' % (entry.get_text()))
+        self._cancel_search_timeout()
         self.update_search()
         self._move_match(0) # Select the current match.
 
@@ -423,6 +428,7 @@ class SearchMode(BaseMode):
     def _on_replace_clicked(self, btn):
         if not self.storecursor or not self.ent_search.get_text() or not self.ent_replace.get_text():
             return
+        self._cancel_search_timeout()
         self.update_search()
 
         if self.chk_replace_all.get_active():
@@ -447,6 +453,7 @@ class SearchMode(BaseMode):
                 # give the impression that we replaced something (bug 1636)
                 self.storecursor.move(1)
 
+        self._cancel_search_timeout()
         self.update_search()
 
     def _on_search_clicked(self, btn):
@@ -464,10 +471,16 @@ class SearchMode(BaseMode):
             return
         self._move_match(-1)
 
-    def _on_search_text_changed(self, entry):
+    def _cancel_search_timeout(self):
+        """Cancel any pending debounced update_search() call - needed
+            before calling update_search() directly, bypassing the
+            debounce, so a stale timeout doesn't also fire later."""
         if self._search_timeout:
             GObject.source_remove(self._search_timeout)
+            self._search_timeout = 0
 
+    def _on_search_text_changed(self, entry):
+        self._cancel_search_timeout()
         self._search_timeout = GObject.timeout_add(self.SEARCH_DELAY, self.update_search)
 
     def _on_start_search(self, _accel_group, _acceleratable, _keyval, _modifier):
@@ -510,4 +523,5 @@ class SearchMode(BaseMode):
                 self.matchcursor.indices = range(len(self.matches))
 
     def _refresh_proxy(self, *args):
+        self._cancel_search_timeout()
         self.update_search()

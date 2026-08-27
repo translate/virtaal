@@ -21,6 +21,7 @@
 import logging
 import os
 import socket
+import sys
 
 from virtaal.common import pan_app
 from . import remotetm
@@ -53,13 +54,15 @@ class TMModel(remotetm.TMModel):
             port = self.config["tmserver_port"]
         else:
             port = find_free_port(self.config["tmserver_bind"], 49152, 65535)
-        if os.name == "nt":
-            executable = os.path.abspath(os.path.join(pan_app.main_dir, u"tmserver.exe"))
-        else:
-            executable = u"tmserver"
-
+        # translate-toolkit's own "tmserver" console script (which this used
+        # to rely on being on PATH) was removed upstream between releases
+        # 3.18.1 and 3.19.0, with no replacement - see virtaal/support/
+        # tmserver.py, which vendors it, for the full story. Running it as
+        # "-m virtaal.support.tmserver" under our own interpreter needs
+        # nothing installed or on PATH, and works the same on Windows and
+        # POSIX, so there's no more need for a separate .exe case.
         command = [
-            executable,
+            sys.executable, "-m", "virtaal.support.tmserver",
             "-b", self.config["tmserver_bind"],
             "-p", str(port),
             "-d", self.config["tmdb"],
@@ -73,8 +76,19 @@ class TMModel(remotetm.TMModel):
         logging.debug("launching tmserver with command {}".format(" ".join(command)))
         try:
             import subprocess
+            import virtaal
             from virtaal.support import tmclient
-            self.tmserver = subprocess.Popen(command)
+
+            # Make sure the subprocess can "import virtaal.support.tmserver"
+            # regardless of how *this* process ended up able to (an explicit
+            # PYTHONPATH from a source checkout, an editable install, ...) -
+            # harmless to add even if it's already on sys.path some other way.
+            virtaal_parent = os.path.dirname(os.path.dirname(os.path.abspath(virtaal.__file__)))
+            env = os.environ.copy()
+            existing_path = env.get("PYTHONPATH", "")
+            env["PYTHONPATH"] = os.pathsep.join(filter(None, [virtaal_parent, existing_path]))
+
+            self.tmserver = subprocess.Popen(command, env=env)
             url = "http://%s:%d/tmserver" % (self.config["tmserver_bind"], port)
 
             self.tmclient = tmclient.TMClient(url)

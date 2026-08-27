@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
+import logging
 import queue
 import threading
 
@@ -29,7 +30,13 @@ def run_in_thread(widget, target, args):
     # Idea from tortoisehg's gtklib.py
     q = queue.Queue()
     def func(*kwargs):
-        q.put(target(*kwargs))
+        # An uncaught exception here used to kill the thread silently,
+        # with the caller getting back None indistinguishable from a
+        # real cancel.
+        try:
+            q.put(target(*kwargs))
+        except Exception:
+            logging.exception("run_in_thread: %r raised", target)
 
     thread = threading.Thread(target=func, args=args)
     thread.start()

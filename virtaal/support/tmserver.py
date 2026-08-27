@@ -28,8 +28,16 @@
 # from translate-toolkit with no replacement between releases 3.18.1 and
 # 3.19.0. The localtm TM plugin's whole point is a zero-config local TM
 # server it spawns itself, so this is vendored rather than dropped.
-# Nothing below this banner has been altered yet in this commit. See the
-# follow-up commit for the Python-3-only / standalone adaptation.
+# Adapted for standalone use: selector/wsgi/tmdb moved from translate.misc /
+# translate.storage to virtaal.support alongside this file (also vendored,
+# same commit); everything else translate.storage still provides untouched.
+# Also: every response handler here now returns bytes, not str - the cheroot
+# version this now runs under (wsgi.py) enforces PEP 3333 strictly and
+# raises ValueError("WSGI Applications must yield bytes") on a plain str,
+# where whatever server this ran under in 2010 was more lenient. Along the
+# way, translate_unit's JSONP callback wrapping is fixed too: it used to
+# build f"{callback}({response})" on an already-encoded bytes object,
+# embedding a literal "b'...'" in the output.
 
 """
 A translation memory server using tmdb for storage, communicates with
@@ -43,8 +51,9 @@ from argparse import ArgumentParser
 from io import BytesIO
 from urllib import parse
 
-from translate.misc import selector, wsgi
-from translate.storage import base, factory, tmdb
+from translate.storage import base, factory
+
+from virtaal.support import selector, tmdb, wsgi
 
 logger = logging.getLogger(__name__)
 
@@ -101,14 +110,14 @@ class TMServer:
         start_response("200 OK", [("Content-type", "text/plain")])
         candidates = self.tmdb.translate_unit(uid, slang, tlang)
         logger.debug("candidates: %s", candidates)
-        response = json.dumps(candidates, indent=4).encode("utf-8")
+        response = json.dumps(candidates, indent=4)
         params = parse.parse_qs(environ.get("QUERY_STRING", ""))
         try:
             callback = params.get("callback", [])[0]
             response = f"{callback}({response})"
         except IndexError:
             pass
-        return [response]
+        return [response.encode("utf-8")]
 
     @selector.opliant
     def add_unit(self, environ, start_response, uid, slang, tlang):
@@ -118,7 +127,7 @@ class TMServer:
         unit = base.TranslationUnit(data["source"])
         unit.target = data["target"]
         self.tmdb.add_unit(unit, slang, tlang)
-        return [""]
+        return [b""]
 
     @selector.opliant
     def update_unit(self, environ, start_response, uid, slang, tlang):
@@ -128,7 +137,7 @@ class TMServer:
         unit = base.TranslationUnit(data["source"])
         unit.target = data["target"]
         self.tmdb.add_unit(unit, slang, tlang)
-        return [""]
+        return [b""]
 
     @selector.opliant
     def forget_unit(self, environ, start_response, uid):
@@ -136,7 +145,7 @@ class TMServer:
         start_response("200 OK", [("Content-type", "text/plain")])
         # uid = unicode(urllib.unquote_plus(uid), "utf-8")
 
-        return ["FIXME"]
+        return [b"FIXME"]
 
     @selector.opliant
     def get_store_stats(self, environ, start_response, sid):
@@ -144,7 +153,7 @@ class TMServer:
         start_response("200 OK", [("Content-type", "text/plain")])
         # sid = unicode(urllib.unquote_plus(sid), "utf-8")
 
-        return ["FIXME"]
+        return [b"FIXME"]
 
     @selector.opliant
     def upload_store(self, environ, start_response, sid, slang, tlang):
@@ -155,7 +164,7 @@ class TMServer:
         store = factory.getobject(data)  # ty:ignore[invalid-argument-type]
         count = self.tmdb.add_store(store, slang, tlang)
         response = f"added {count} units from {sid}"
-        return [response]
+        return [response.encode("utf-8")]
 
     @selector.opliant
     def add_store(self, environ, start_response, sid, slang, tlang):
@@ -164,7 +173,7 @@ class TMServer:
         units = json.loads(environ["wsgi.input"].read(int(environ["CONTENT_LENGTH"])))
         count = self.tmdb.add_list(units, slang, tlang)
         response = f"added {count} units from {sid}"
-        return [response]
+        return [response.encode("utf-8")]
 
     @selector.opliant
     def forget_store(self, environ, start_response, sid):
@@ -172,7 +181,7 @@ class TMServer:
         start_response("200 OK", [("Content-type", "text/plain")])
         # sid = unicode(urllib.unquote_plus(sid), "utf-8")
 
-        return ["FIXME"]
+        return [b"FIXME"]
 
 
 def main() -> None:

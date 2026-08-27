@@ -20,6 +20,7 @@
 
 import locale
 import os
+import subprocess
 import sys
 
 from gi.repository import Gdk
@@ -118,18 +119,26 @@ class MainView(BaseView):
         self.app_menu = None
 
         if sys.platform == 'darwin':
+            # Follow the system light/dark appearance - GTK3 themes (Adwaita
+            # included) already derive their colours from this setting.
             try:
-                Gtk.rc_parse(pan_app.get_abs_data_filename(["themes", "OSX_Leopard_theme", "gtkrc"]))
-            except:
+                is_dark = subprocess.run(
+                    ["defaults", "read", "-g", "AppleInterfaceStyle"],
+                    capture_output=True).stdout.strip() == b"Dark"
+                Gtk.Settings.get_default().set_property(
+                    "gtk-application-prefer-dark-theme", is_dark)
+            except (OSError, subprocess.SubprocessError):
                 import logging
-                logging.exception("Couldn't find OSX_Leopard_theme")
+                logging.exception("Couldn't determine macOS appearance")
 
             # Sometimes we have two resize grips: one from GTK, one from Aqua. We
             # might want to disable the GTK one:
             #self.gui.get_object('status_bar').set_property("has-resize-grip", False)
             try:
-                import gtk_osxapplication
-                osxapp = gtk_osxapplication.OSXApplication()
+                import gi
+                gi.require_version("GtkosxApplication", "1.0")
+                from gi.repository import GtkosxApplication
+                osxapp = GtkosxApplication.Application()
                 # Move the menu bar to the mac menu
                 self.menubar.hide()
                 osxapp.set_menu_bar(self.menubar)
@@ -152,9 +161,10 @@ class MainView(BaseView):
                 osxapp.ready()
                 osxapp.connect("NSApplicationOpenFile", self._on_osx_openfile_event)
                 osxapp.connect("NSApplicationBlockTermination", self._on_quit)
-            except ImportError as e:
+                self._osxapp = osxapp  # keep a reference; the signals need it to stay alive
+            except (ImportError, ValueError):
                 import logging
-                logging.debug("gtk_osxapplication module not found. Expect zero integration with the Mac desktop.")
+                logging.debug("GtkosxApplication not found (brew install gtk-mac-integration for native macOS menu-bar integration). Expect zero integration with the Mac desktop.")
 
         self.main_window.connect('destroy', self._on_quit)
         self.main_window.connect('delete-event', self._on_quit)
@@ -871,14 +881,13 @@ class MainView(BaseView):
         self.app_menu.popup(None, None, None, 0, 0, Gtk.get_current_event_time())
 
     def _on_osx_openfile_event(self, macapp, filename):
-        # Note! A limitation of the current GTK-OSX code
-        # (2.18) is that we cannot perform any operations
-        # involving the GTK run-loop within this handler,
+        # Note! A limitation of GtkosxApplication is that we cannot perform
+        # any operations involving the GTK run-loop within this handler,
         # therefore we schedule the load to occur afterwards.
         # See gdk/quartz/gdkeventloop-quartz.c in the GTK+ source.
-        from gobject import idle_add
+        from gi.repository import GLib
         def callback():
             self.controller.open_file(filename)
-        idle_add(callback)
+        GLib.idle_add(callback)
         # We must indicate we handled this or crash
         return True

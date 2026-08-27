@@ -35,12 +35,12 @@
 """
 
 import logging
-import _thread
 import os.path
 import re
+import six
 import stat
 import sys
-from collections import UserDict
+from six.moves import _thread, UserDict
 from sqlite3 import dbapi2
 
 from translate import __version__ as toolkitversion
@@ -311,7 +311,7 @@ class StatsCache(object):
 
             def connect(cache):
                 # sqlite needs to get the name in utf-8 on all platforms
-                cache.con = dbapi2.connect(statsfile)
+                cache.con = dbapi2.connect(statsfile.encode('utf-8') if six.PY2 else statsfile)
                 cache.cur = cache.con.cursor()
 
             def clear_old_data(cache):
@@ -347,7 +347,7 @@ class StatsCache(object):
                 if not os.path.exists(cachedir):
                     os.mkdir(cachedir)
                 if isinstance(cachedir, bytes):
-                    cachedir = str(cachedir, sys.getfilesystemencoding())
+                    cachedir = six.text_type(cachedir, sys.getfilesystemencoding())
                 cls.defaultfile = os.path.realpath(os.path.join(cachedir, u"stats.db"))
             statsfile = cls.defaultfile
         else:
@@ -419,7 +419,7 @@ class StatsCache(object):
         store can be a TranslationFile object or a callback that returns one.
         """
         if isinstance(filename, bytes):
-            filename = str(filename, sys.getfilesystemencoding())
+            filename = six.text_type(filename, sys.getfilesystemencoding())
         realpath = os.path.realpath(filename)
         self.cur.execute("""SELECT fileid, st_mtime, st_size FROM files
                 WHERE path=?;""", (realpath,))
@@ -541,7 +541,7 @@ class StatsCache(object):
                 if unitindex:
                     index = unitindex
                 failures = checker.run_filters(unit)
-                for checkname, checkmessage in failures.items():
+                for checkname, checkmessage in six.iteritems(failures):
                     unitvalues.append((index, fileid, configid, checkname, checkmessage))
                     errornames.append("check-" + checkname)
         checker.setsuggestionstore(None)

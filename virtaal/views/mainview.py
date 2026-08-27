@@ -186,7 +186,7 @@ class MainView(BaseView):
         self.gui.get_object('mnu_report_bug').connect('activate', self._on_report_bug)
         self.gui.get_object('mnu_about').connect('activate', self._on_help_about)
 
-        self.main_window.set_icon_from_file(pan_app.get_abs_data_filename(["icons", "virtaal.ico"]))
+        self.main_window.set_icon_from_file(pan_app.get_abs_data_filename(["icons", "virtaal.png"]))
         self.main_window.resize(
             int(pan_app.settings.general['windowwidth']),
             int(pan_app.settings.general['windowheight'])
@@ -746,7 +746,8 @@ class MainView(BaseView):
         if not self.btn_app:
             self.btn_app = self.gui.get_object('btn_app')
             image = self.gui.get_object('img_app')
-            image.set_from_file(pan_app.get_abs_data_filename(['icons', 'hicolor', '24x24', 'mimetypes', 'x-translation.png']))
+            # icons/, not icons/hicolor/ - that's Linux-only desktop/MIME data.
+            image.set_from_file(pan_app.get_abs_data_filename(['icons', 'x-translation.png']))
             self.app_menu = Gtk.Menu()
             self.btn_app.connect('pressed', self._on_app_pressed)
             self.btn_app.show()

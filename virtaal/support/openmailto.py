@@ -291,37 +291,39 @@ def mailto(address, to=None, cc=None, bcc=None, subject=None, body=None,
 
 
 if __name__ == '__main__':
-    from optparse import OptionParser
+    from argparse import ArgumentParser
 
-    version = '%%prog %s' % __version__
     usage = (
-        '\n\n%prog FILENAME [FILENAME(s)] -- for opening files'
-        '\n\n%prog -m [OPTIONS] ADDRESS [ADDRESS(es)] -- for sending e-mails'
+        '\n\n%(prog)s FILENAME [FILENAME(s)] -- for opening files'
+        '\n\n%(prog)s -m [OPTIONS] ADDRESS [ADDRESS(es)] -- for sending e-mails'
     )
 
-    parser = OptionParser(usage=usage, version=version, description=__doc__)
-    parser.add_option('-m', '--mailto', dest='mailto_mode', default=False, \
-                      action='store_true', help='set mailto mode. '
-                      'If not set any other option is ignored')
-    parser.add_option('--cc', dest='cc', help='specify a recipient to be '
-                      'copied on the e-mail')
-    parser.add_option('--bcc', dest='bcc', help='specify a recipient to be '
-                      'blindly copied on the e-mail')
-    parser.add_option('--subject', dest='subject',
-                      help='specify a subject for the e-mail')
-    parser.add_option('--body', dest='body', help='specify a body for the '
-                      'e-mail. Since the user will be able to make changes '
-                      'before actually sending the e-mail, this can be used '
-                      'to provide the user with a template for the e-mail '
-                      'text may contain linebreaks')
-    parser.add_option('--attach', dest='attach', help='specify an attachment '
-                      'for the e-mail. file must point to an existing file')
+    parser = ArgumentParser(usage=usage, description=__doc__)
+    parser.add_argument('-v', '--version', action='version',
+                         version='%(prog)s ' + __version__)
+    parser.add_argument('-m', '--mailto', dest='mailto_mode', default=False,
+                         action='store_true', help='set mailto mode. '
+                         'If not set any other option is ignored')
+    parser.add_argument('--cc', dest='cc', help='specify a recipient to be '
+                         'copied on the e-mail')
+    parser.add_argument('--bcc', dest='bcc', help='specify a recipient to be '
+                         'blindly copied on the e-mail')
+    parser.add_argument('--subject', dest='subject',
+                         help='specify a subject for the e-mail')
+    parser.add_argument('--body', dest='body', help='specify a body for the '
+                         'e-mail. Since the user will be able to make changes '
+                         'before actually sending the e-mail, this can be used '
+                         'to provide the user with a template for the e-mail '
+                         'text may contain linebreaks')
+    parser.add_argument('--attach', dest='attach', help='specify an attachment '
+                         'for the e-mail. file must point to an existing file')
+    # nargs='+' makes argparse itself require at least one FILENAME/ADDRESS
+    # and reject zero, with its own error - no need for optparse's old
+    # manual "if not args: print_usage(); exit(1)" check any more.
+    parser.add_argument('args', nargs='+', metavar='FILENAME/ADDRESS')
 
-    (options, args) = parser.parse_args()
-
-    if not args:
-        parser.print_usage()
-        parser.exit(1)
+    options = parser.parse_args()
+    args = options.args
 
     if options.mailto_mode:
         if not mailto(args, None, options.cc, options.bcc, options.subject,

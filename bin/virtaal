@@ -85,32 +85,31 @@ def main(argv):
     startup_file = None
 
     if len(argv) > 1:
-        import optparse
-        from optparse import OptionParser, make_option
+        import argparse
 
         from virtaal import __version__
 
-        optparse._ = _
-        usage = _("%prog [options] [translation_file]")
-        option_list = [
-            make_option("-l", "--log",
-                        action="store", type="string", dest="log", metavar=_("LOG"),
-                        help=_("turn on logging, storing the result to the supplied filename.")),
-            make_option("-c", "--config",
-                        action="store", type="string", dest="config", metavar=_("CONFIG"),
-                        help=_("use the configuration file given by the supplied filename.")),
-            make_option("-D", "--debug",
-                        action="store_true", dest="debug", default=False,
-                        help=_("enable debugging features")),
-        ]
+        # No optparse._ = _ equivalent - argparse's own generated chrome
+        # (e.g. "show this help message and exit") isn't translated any
+        # more. Virtaal's own help text below is unaffected.
+        parser = argparse.ArgumentParser()
+        parser.add_argument("-v", "--version", action="version", version=__version__.ver)
+        parser.add_argument("-l", "--log", dest="log", metavar=_("LOG"),
+                             help=_("turn on logging, storing the result to the supplied filename."))
+        parser.add_argument("-c", "--config", dest="config", metavar=_("CONFIG"),
+                             help=_("use the configuration file given by the supplied filename."))
+        parser.add_argument("-D", "--debug", dest="debug", action="store_true", default=False,
+                             help=_("enable debugging features"))
         # Profiling does not make sense in packaged versions.  Set to True to disable profiling.
         if not packaged:
-            option_list.insert(0, make_option("-P", "--profile", action="store",
-                                              type="string", dest="profile",
-                                              metavar=_("PROFILE"),
-                                              #l10n: 'profiling' refers to performance testing
-                                              help=_("perform profiling, storing the result to the supplied filename.")))
-        parser = OptionParser(option_list=option_list, usage=usage, version=__version__.ver)
+            parser.add_argument("-P", "--profile", dest="profile", metavar=_("PROFILE"),
+                                 #l10n: 'profiling' refers to performance testing
+                                 help=_("perform profiling, storing the result to the supplied filename."))
+        # nargs='?' makes this genuinely optional and means argparse itself
+        # rejects more than one positional argument (with its own
+        # "unrecognized arguments" error) - no need for optparse's old
+        # manual get_startup_file()/len(args) check any more.
+        parser.add_argument("translation_file", nargs="?", default=None)
 
 
         def set_logging(options):
@@ -121,8 +120,6 @@ def main(argv):
             level = options.debug and logging.DEBUG or logging.INFO
             if options.debug:
                 format = '%(levelname)7s %(module)s.%(funcName)s:%(lineno)d: %(message)s'
-                if sys.version_info[:2] < (2, 5):
-                    format = '%(levelname)7s %(module)s [%(filename)s:%(lineno)d]: %(message)s'
             else:
                 format = '%(asctime)s %(levelname)s %(message)s'
             if options.log is None:
@@ -138,25 +135,17 @@ def main(argv):
 
         def set_config(options):
             try:
-                if options.config != None:
+                if options.config is not None:
                     pan_app.settings = pan_app.Settings(path.abspath(options.config))
-            except:
+            except Exception:
                 parser.error(_("Could not read configuration file '%(filename)s'") % {"filename": options.config})
 
-        def get_startup_file(options):
-            if len(args) > 1:
-                parser.error(_("invalid number of arguments"))
-            elif len(args) == 1:
-                return args[0]
-            else:
-                return None
 
-
-        options, args = parser.parse_args(argv[1:])
+        options = parser.parse_args(argv[1:])
         pan_app.DEBUG = options.debug
         set_config(options)
         set_logging(options)
-        startup_file = get_startup_file(options)
+        startup_file = options.translation_file
     else:
         # No arguments given, so we save some time by avoiding all the things
         # that could have happened on the command line

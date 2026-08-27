@@ -26,7 +26,6 @@ from translate.storage.placeables import StringElem, parse as elem_parse
 from virtaal.views import placeablesguiinfo
 from virtaal.views.theme import current_theme
 
-from six import text_type as unicode
 
 
 def colors_equal(a, b):
@@ -171,7 +170,7 @@ class TextBox(Gtk.TextView):
     def set_text(self, text, update=False):
         """Set the text rendered in this text box.
             Uses C{Gtk.TextBuffer.set_text()}.
-            @type  text: str|unicode|L{StringElem}
+            @type  text: str|str|L{StringElem}
             @param text: The text to render in this text box."""
         if not isinstance(text, StringElem):
             text = StringElem(text)
@@ -225,7 +224,7 @@ class TextBox(Gtk.TextView):
                 offset = self.elem.gui_info.index(elem)
             #logging.debug('offset for %s: %d' % (repr(elem), offset))
             if offset >= 0:
-                #logging.debug('[%s] at offset %d' % (unicode(elem).encode('utf-8'), offset))
+                #logging.debug('[%s] at offset %d' % (str(elem).encode('utf-8'), offset))
                 start_index = offset
                 end_index = offset + elem.gui_info.length()
                 interval = end_index - start_index
@@ -447,7 +446,7 @@ class TextBox(Gtk.TextView):
             i += 1
         self.selected_elem_index = i
         self.selected_elem = elem
-        #logging.debug('Selected element: %s (%s)' % (repr(self.selected_elem), unicode(self.selected_elem)))
+        #logging.debug('Selected element: %s (%s)' % (repr(self.selected_elem), str(self.selected_elem)))
         if not hasattr(elem, 'gui_info') or not elem.gui_info:
             elem.gui_info = placeablesguiinfo.StringElemGUI(elem, self, fg=current_theme['selected_placeable_fg'], bg=current_theme['selected_placeable_bg'])
         else:
@@ -718,7 +717,7 @@ class TextBox(Gtk.TextView):
         #))
 
         succeeded = False
-        if not (left is None and right is None) and (left is not right or not unicode(left)):
+        if not (left is None and right is None) and (left is not right or not str(left)):
             succeeded = self.elem.insert_between(left, right, ins_text)
             #logging.debug('self.elem.insert_between(%s, %s, "%s"): %s' % (repr(left), repr(right), ins_text, succeeded))
         if not succeeded and left is not None and left is right and left.isleaf():
@@ -803,4 +802,4 @@ class TextBox(Gtk.TextView):
 
     # SPECIAL METHODS #
     def __repr__(self):
-        return '<TextBox %x %s "%s">' % (id(self), self.role, unicode(self.elem))
+        return '<TextBox %x %s "%s">' % (id(self), self.role, str(self.elem))

@@ -19,7 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from six.moves.urllib import parse
+from urllib import parse
 from os import path
 
 from gi.repository import Gtk

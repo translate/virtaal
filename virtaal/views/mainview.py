@@ -17,7 +17,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
-from __future__ import absolute_import, print_function, unicode_literals
 
 import locale
 import os
@@ -25,7 +24,6 @@ import sys
 
 from gi.repository import Gdk
 from gi.repository import Gtk
-from six import string_types
 
 from virtaal.common import pan_app
 from virtaal.common.utils import get_unicode
@@ -376,7 +374,7 @@ class MainView(BaseView):
             filename = get_unicode(data.get_data().split(b"\r\n")[0], 'utf-8')
             if filename.startswith("file://"):
                 # This is a URI, so we handle encoded characters like spaces:
-                from six.moves.urllib_parse import unquote
+                from urllib.parse import unquote
                 filename = unquote(filename)
                 #TODO: only bother if the extension is supported?
                 self.controller.open_file(filename)
@@ -482,7 +480,7 @@ class MainView(BaseView):
     def append_menu_item(self, name, menu, after=None):
         """Add a new menu item with the given name to the menu with the given
             name (C{menu})."""
-        if isinstance(after, (str, string_types)):
+        if isinstance(after, str):
             after = self.find_menu(after)
 
         parent_item = None
@@ -877,10 +875,10 @@ class MainView(BaseView):
         # (2.18) is that we cannot perform any operations
         # involving the GTK run-loop within this handler,
         # therefore we schedule the load to occur afterwards.
-        # See gdk/quartz/gdkeventloop-quartz.c in the GTK+ source. 
+        # See gdk/quartz/gdkeventloop-quartz.c in the GTK+ source.
         from gobject import idle_add
         def callback():
             self.controller.open_file(filename)
-        idle_add(callback) 
+        idle_add(callback)
         # We must indicate we handled this or crash
-        return True 
+        return True

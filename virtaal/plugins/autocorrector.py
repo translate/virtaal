@@ -27,7 +27,6 @@ import re
 import zipfile
 
 from gi.repository import GObject
-from six import text_type as unicode, string_types as basestring
 
 from virtaal.common import pan_app
 from virtaal.controllers.baseplugin import BasePlugin
@@ -83,13 +82,13 @@ class AutoCorrector(object):
     def autocorrect(self, src, endindex, inserted=u''):
         """Apply auto-correction to source string.
 
-            @type  src: basestring
+            @type  src: str
             @param src: The candidate-string for auto-correction.
             @type  endindex: int
             @param endindex: The logical end of the string. ie. The part of the
                 string _before_ this index tested for the presence of a
                 correctable string.
-            @type  inserted: basestring
+            @type  inserted: str
             @param inserted: The string that was inserted at I{endindex}
 
             @rtype: 2-tuple
@@ -182,7 +181,7 @@ class AutoCorrector(object):
         # Add auto-correction regex for each loaded word.
         for key, value in self.correctiondict.items():
             # lxml gives bytestrings for ASCII only values
-            self.correctiondict[key] = (unicode(value), re.compile(r'\b%s$' % (re.escape(key)), re.UNICODE))
+            self.correctiondict[key] = (str(value), re.compile(r'\b%s$' % (re.escape(key)), re.UNICODE))
 
         self.lang = lang
         return
@@ -218,10 +217,10 @@ class AutoCorrector(object):
         self.widgets.add(textbox)
 
     def _on_insert_text(self, textbox, text, cursorpos, elem):
-        if not isinstance(text, basestring):
+        if not isinstance(text, str):
             return
         if not self.wordsep_re.split(text)[-1]:
-            bufftext = unicode(elem)
+            bufftext = str(elem)
             offset = elem.gui_info.gui_to_tree_index(cursorpos)
             reprange, replacement = self.autocorrect(bufftext, offset, text)
             if reprange is not None:

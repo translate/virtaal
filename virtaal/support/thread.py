@@ -19,7 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-from six.moves import queue
+import queue
 import threading
 
 from gi.repository import Gtk

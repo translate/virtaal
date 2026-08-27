@@ -18,7 +18,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
-from __future__ import absolute_import, print_function, unicode_literals
 
 from gi.repository import Gtk
 from gi.repository.GObject import idle_add
@@ -81,7 +80,7 @@ class WelcomeScreenView(BaseView):
             if width_col1 > 0.7 * screenwidth:
                 width_col1 = int(0.7 * screenwidth)
                 col1.set_size_request(width_col1, -1)
-                
+
             maxwidth = 1.8 * width_col1
             # Preliminary width is the whole_screen - width_col1 - 30
             # The "50" above is just to make sure we don't go under the

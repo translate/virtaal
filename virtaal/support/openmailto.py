@@ -35,7 +35,6 @@ import os
 import sys
 import logging
 
-from six import string_types
 
 # Some imports are only necessary on some platforms, and are postponed to try
 # to speed up startup
@@ -97,7 +96,7 @@ class Controller(BaseController):
         return not returncode
 
     def open(self, filename):
-        if isinstance(filename, string_types):
+        if isinstance(filename, str):
             cmdline = self.args + [filename]
         else:
             # assume it is a sequence
@@ -219,7 +218,7 @@ def _fix_addersses(**kwargs):
             if not headervalue:
                 del kwargs[headername]
                 continue
-            elif not isinstance(headervalue, string_types):
+            elif not isinstance(headervalue, str):
                 # assume it is a sequence
                 headervalue = ','.join(headervalue)
 
@@ -241,7 +240,7 @@ def _fix_addersses(**kwargs):
 def mailto_format(**kwargs):
     # @TODO: implement utf8 option
 
-    from email.Utils import encode_rfc2231
+    from email.utils import encode_rfc2231
     kwargs = _fix_addersses(**kwargs)
     parts = []
     for headername in ('to', 'cc', 'bcc', 'subject', 'body', 'attach'):

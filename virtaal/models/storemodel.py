@@ -17,11 +17,9 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
-from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
-from six import string_types
 
 from virtaal.common import pan_app
 from .basemodel import BaseModel
@@ -129,7 +127,7 @@ class StoreModel(BaseModel):
     def load_file(self, fileobj):
         # Adapted from Document.__init__()
         filename = fileobj
-        if isinstance(filename, string_types):
+        if isinstance(filename, str):
             if not os.path.exists(filename):
                 raise IOError(_('The file does not exist.'))
             if not os.path.isfile(filename):
@@ -246,7 +244,7 @@ class StoreModel(BaseModel):
         if isinstance(store, poheader) and not store.header():
             store.updateheader(add=True)
             new_stats = {}
-            for key, values in self.stats.iteritems():
+            for key, values in self.stats.items():
                 new_stats[key] = [value+1 for value in values]
             self.stats = new_stats
 

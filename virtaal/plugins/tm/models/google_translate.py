@@ -20,7 +20,8 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import logging
-import urllib
+
+from urllib.parse import quote_plus
 
 import pycurl
 
@@ -48,8 +49,8 @@ class TMModel(BaseTMModel):
     """This is a Google Translate translation memory model.
 
     The plugin uses the U{Google AJAX Languages API<http://code.google.com/apis/ajaxlanguage/>}
-    to query Google's machine translation services.  The implementation makes use of the 
-    U{RESTful<http://code.google.com/apis/ajaxlanguage/documentation/#fonje>} interface for 
+    to query Google's machine translation services.  The implementation makes use of the
+    U{RESTful<http://code.google.com/apis/ajaxlanguage/documentation/#fonje>} interface for
     Non-JavaScript environments.
     """
 
@@ -91,12 +92,12 @@ class TMModel(BaseTMModel):
             logging.debug('language pair not supported: %s => %s' % (source_lang, target_lang))
             return
 
-        if self.cache.has_key(query_str):
+        if query_str in self.cache:
             self.emit('match-found', query_str, self.cache[query_str])
         else:
             real_url = self.translate_url % {
                 'key':     self.config['api_key'],
-                'message': urllib.quote_plus(query_str.encode('utf-8')),
+                'message': quote_plus(query_str.encode('utf-8')),
                 'from':    source_lang,
                 'to':      target_lang,
             }

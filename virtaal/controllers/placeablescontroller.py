@@ -18,10 +18,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
-from __future__ import absolute_import, print_function, unicode_literals
 
 from gi.repository import GObject
-from six import text_type as unicode
 from translate.storage.placeables import general, StringElem, parse as parse_placeables
 
 from virtaal.common import pan_app, GObjectWrapper
@@ -196,7 +194,7 @@ class PlaceablesController(BaseController):
         for elem in elems:
             elem = elem
             parsed = parse_placeables(elem, parsers)
-            if isinstance(elem, unicode) and parsed != StringElem(elem):
+            if isinstance(elem, str) and parsed != StringElem(elem):
                 parent = elem.get_parent_elem(elem)
                 if parent is not None:
                     parent.sub[parent.sub.index(elem)] = StringElem(parsed)

@@ -18,7 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from six import text_type
 
 from .basetmmodel import BaseTMModel
 
@@ -48,7 +47,7 @@ class TMModel(BaseTMModel):
         from virtaal.support.mosesclient import MosesClient
         # let's map servers to clients to detect duplicates
         client_map = {}
-        for lang_pair, server in self.config.iteritems():
+        for lang_pair, server in self.config.items():
             pair = lang_pair.split("->")
             if self.clients.get(pair[0]) is None:
                 self.clients[pair[0]] = {}
@@ -64,7 +63,7 @@ class TMModel(BaseTMModel):
     # METHODS #
     def query(self, tmcontroller, unit):
         if self.source_lang in self.clients and self.target_lang in self.clients[self.source_lang]:
-            query_str = text_type(unit.source) # cast in case of multistrings
+            query_str = str(unit.source) # cast in case of multistrings
             if query_str in self.cache:
                 self.emit('match-found', query_str, [self.cache[query_str]])
                 return

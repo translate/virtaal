@@ -24,7 +24,6 @@
 import re
 
 from gi.repository import GObject
-from six import text_type as unicode, string_types as basestring
 
 try:
     from collections import defaultdict
@@ -132,7 +131,7 @@ class AutoCompletor(object):
 
     def remove_words(self, words):
         """Remove a word or words from the list of words to auto-complete."""
-        if isinstance(words, basestring):
+        if isinstance(words, str):
             del self._word_freq[words]
             self._word_list.remove(words)
         else:
@@ -153,15 +152,15 @@ class AutoCompletor(object):
         self.widgets.add(textbox)
 
     def _on_insert_text(self, textbox, text, offset, elem):
-        if not isinstance(text, basestring) or self.wordsep_re.match(text):
+        if not isinstance(text, str) or self.wordsep_re.match(text):
             return
         # We are only interested in single character insertions, otherwise we
         # react similarly for paste and similar events
         if len(text) > 1:
             return
 
-        prefix = unicode(textbox.get_text(0, offset) + text)
-        postfix = unicode(textbox.get_text(offset))
+        prefix = str(textbox.get_text(0, offset) + text)
+        postfix = str(textbox.get_text(offset))
         buffer = textbox.buffer
 
         # Quick fix to check that we don't autocomplete in the middle of a word.
@@ -264,12 +263,12 @@ class Plugin(BasePlugin):
                 if self.lastunit.hasplural():
                     for target in self.lastunit.target:
                         if target:
-                            #logging.debug('Adding words: %s' % (self.autocomp.wordsep_re.split(unicode(target))))
-                            self.autocomp.add_words(self.autocomp.wordsep_re.split(unicode(target)))
+                            #logging.debug('Adding words: %s' % (self.autocomp.wordsep_re.split(str(target))))
+                            self.autocomp.add_words(self.autocomp.wordsep_re.split(str(target)))
                 else:
                     if self.lastunit.target:
-                        #logging.debug('Adding words: %s' % (self.autocomp.wordsep_re.split(unicode(self.lastunit.target))))
-                        self.autocomp.add_words(self.autocomp.wordsep_re.split(unicode(self.lastunit.target)))
+                        #logging.debug('Adding words: %s' % (self.autocomp.wordsep_re.split(str(self.lastunit.target))))
+                        self.autocomp.add_words(self.autocomp.wordsep_re.split(str(self.lastunit.target)))
             self.lastunit = cursor.deref()
 
         GObject.idle_add(add_widgets)

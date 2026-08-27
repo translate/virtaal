@@ -22,6 +22,33 @@
 import sys
 from os import path
 
+# A frozen build (PyInstaller) has no separate "python" executable to hand
+# "-m modname" to for launching a helper subprocess (see localtm.py, which
+# needs to run virtaal.support.tmserver as its own process) - sys.executable
+# there *is* this compiled launcher. Handle a "--run-module <name> [args...]"
+# sentinel ourselves, before anything else runs, and dispatch via runpy the
+# same way "-m" would. A no-op when not frozen - localtm.py only ever passes
+# this sentinel when getattr(sys, 'frozen', False) is true itself.
+if len(sys.argv) > 2 and sys.argv[1] == '--run-module':
+    import runpy
+    module_name = sys.argv[2]
+    sys.argv = sys.argv[2:]
+    runpy.run_module(module_name, run_name='__main__')
+    sys.exit(0)
+
+# A frozen build (PyInstaller) needs pycairo's own C-API capsule
+# ("cairo.CAPI") initialized before GTK's typelib-driven foreign-struct
+# registration (gi.require_foreign('cairo', 'Context'), triggered
+# automatically as a side effect of importing Gtk/Gdk, since their
+# typelibs declare a cairo dependency) runs - otherwise it fails with
+# `TypeError: Couldn't find foreign struct converter for 'cairo.Context'`
+# on every draw call, confirmed reproducible and fixed by this. A normal
+# (non-frozen) environment happens to already import cairo early enough
+# via some other path in the chain; PyInstaller's own import hooking for
+# gi.repository.* changes that ordering. Harmless and fast to do
+# unconditionally rather than only when frozen.
+import cairo  # noqa: F401
+
 from virtaal.common import pan_app
 
 # Some behaviour should vary, depending on whether Virtaal is packaged or not
@@ -35,7 +62,7 @@ if not packaged:
     # We can't meaningfully report on these, and we build our own windows
     # version, so let's leave this out for the benefit of startup time.
     from virtaal.support import depcheck
-    optional_modules = ['enchant', 'gtkspell', 'psycopg2', 'libproxy']
+    optional_modules = ['enchant', 'gtkspell', 'libproxy']
     error_messages = {
         'translate':  'Translate Toolkit >= %s is required for Virtaal to function.' % str(depcheck.MIN_TRANSLATE_VERSION),
         'gtk':        'Gtk >= %s and PyGTK is required for Virtaal to function.' % str(depcheck.MIN_GTK_VERSION),
@@ -46,7 +73,6 @@ if not packaged:
         'wsgiref':    'WSGIRef is required for Virtaal to function.',
         'enchant':    'Enchant not installed: Spell checking will not work.',
         'gtkspell':   'GtkSpell not installed: Spell checking will not work.',
-        'psycopg2':   'PsycoPG not installed: The TinyTM plug-in will not work.',
         'libproxy':   'libproxy is not installed: it improves support for network proxies on Linux.',
         'diff_match_patch': 'diff_match_patch is not installed: it is required for TM functionality.',
     }
@@ -201,4 +227,21 @@ def main(argv):
     runner(startup_file)
 
 if __name__ == "__main__":
-    main(sys.argv)
+    try:
+        main(sys.argv)
+    except KeyboardInterrupt:
+        # Ctrl-C from the CLI shouldn't dump a traceback - PyGObject's own
+        # Gtk.main() re-raises KeyboardInterrupt through its SIGINT fallback
+        # handling (gi/_ossighelper.py) rather than swallowing it, so this
+        # has to be caught here at the true top level to actually stop it.
+        # os._exit(), not sys.exit(): a normal Ctrl-C here skips
+        # default_runner()'s own os._exit(0) (that line is never reached
+        # once an exception is propagating), and sys.exit() would go
+        # through ordinary interpreter finalization - which forces a
+        # gc.collect() despite virtaal.main.Virtaal's gc.disable(), and
+        # reproduces the exact GTK teardown segfault that os._exit(0) was
+        # added to dodge on the normal-quit path (see main.py). 130 is the
+        # conventional shell exit code for "terminated by SIGINT" (128 +
+        # signal number 2).
+        import os
+        os._exit(130)

@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 from gi.repository import Gtk
+from gi.repository.GObject import idle_add
 
 from virtaal.views.widgets.popupmenubutton import PopupMenuButton, POS_NW_SW
 from .basemode import BaseMode
@@ -123,11 +124,18 @@ class WorkflowMode(BaseMode):
 
     # EVENT HANDLERS #
     def _on_state_menuitem_toggled(self, checkmenuitem):
+        # update_indices() rebuilds the treeview; deferred to idle_add
+        # so that doesn't happen while the popup's own grab is still
+        # held (a plausible segfault source - see the commit message).
         self.filter_states = []
         for menuitem in self.btn_popup.menu:
             if not isinstance(menuitem, Gtk.CheckMenuItem) or not menuitem.get_active():
                 continue
             if menuitem in self._menuitem_states:
                 self.filter_states.append(self._menuitem_states[menuitem])
-        self.update_indices()
+        idle_add(self._apply_filter_states)
         self._update_button_label()
+
+    def _apply_filter_states(self):
+        self.update_indices()
+        return False

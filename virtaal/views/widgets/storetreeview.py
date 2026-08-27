@@ -60,6 +60,10 @@ class StoreTreeView(Gtk.TreeView):
         # to you.
         self._waiting_for_row_change = 0
 
+        # GObject.timeout_add() id for the pending debounced
+        # on_configure_event() action, or None.
+        self._configure_timeout_id = None
+
     def _enable_tooltips(self):
         if hasattr(self, "set_tooltip_column"):
             self.set_tooltip_column(COLUMN_NOTE)
@@ -69,7 +73,13 @@ class StoreTreeView(Gtk.TreeView):
         self.connect('key-press-event', self._on_key_press)
         self.connect("cursor-changed", self._on_cursor_changed)
         self.connect("button-press-event", self._on_button_press)
-        self.connect('focus-in-event', self.on_configure_event)
+        self.connect('focus-in-event', self._on_focus_in)
+        # Keeps the FIXED-sizing column's width tied to this treeview's
+        # own real allocation - see _make_column() for why this exists.
+        self.connect('size-allocate', self._on_size_allocate)
+        # Cancel the pending debounce timer on teardown - it would
+        # otherwise fire after this widget is destroyed.
+        self.connect('destroy', self._on_destroy)
 
         # The following connections are necessary, because Gtk+ apparently *only* uses accelerators
         # to add pretty key-bindings next to menu items and does not really care if an accelerator
@@ -88,8 +98,23 @@ class StoreTreeView(Gtk.TreeView):
 
     def _make_column(self, renderer):
         column = Gtk.TreeViewColumn(None, renderer, unit=COLUMN_UNIT, editable=COLUMN_EDITABLE)
-        column.set_expand(True)
+        # FIXED sizing avoids set_expand(True)'s natural-size
+        # renegotiation, which could grow the column unboundedly on
+        # some GTK3 builds - see _on_size_allocate() for the real width.
+        column.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
+        column.set_fixed_width(1)  # corrected on the first real size-allocate
         return column
+
+    def _on_size_allocate(self, _widget, allocation):
+        # A couple of pixels of margin avoids fighting a vertical
+        # scrollbar for the same space; guarded on an actual change so
+        # this doesn't itself trigger another reallocation.
+        column = self.get_columns()[0] if self.get_columns() else None
+        if not column:
+            return
+        new_width = max(1, allocation.width - 2)
+        if column.get_fixed_width() != new_width:
+            column.set_fixed_width(new_width)
 
 
     # METHODS #
@@ -111,6 +136,10 @@ class StoreTreeView(Gtk.TreeView):
             #      still have no idea why exactly it is needed. This just seems
             #      to be the correct GTK black magic incantation to make it
             #      "work".
+            #
+            # No Gtk.main_iteration() flush here - it re-entered
+            # UnitView.load_unit()'s signal-blocking window and
+            # spuriously marked a just-opened file modified.
             self.set_cursor(newpath, self.get_columns()[0], start_editing=True)
             self.get_model().set_editable(newpath)
             def change_cursor():
@@ -189,17 +218,46 @@ class StoreTreeView(Gtk.TreeView):
             return self._keyboard_move(1)
         return True
 
-    def on_configure_event(self, widget, _event, *_user_args):
-        path, column = self.get_cursor()
-
-        self.columns_autosize()
-        if path != None:
-            def do_setcursor():
-                self.set_cursor(path, column, start_editing=True)
-
-            GObject.idle_add(do_setcursor)
-
+    def on_configure_event(self, widget, event, *_user_args):
+        # Debounced - restoring cursor state on every raw configure-event
+        # tick during a live resize drag is wasteful. The growth bug
+        # itself is fixed at the source (_make_column()); this is just
+        # settle-then-restore-cursor housekeeping.
+        logging.debug("storetreeview: configure-event %dx%d", event.width, event.height)
+        if self._configure_timeout_id is not None:
+            GObject.source_remove(self._configure_timeout_id)
+        self._configure_timeout_id = GObject.timeout_add(200, self._on_configure_settled)
         return False
+
+    def _on_configure_settled(self):
+        self._configure_timeout_id = None
+        logging.debug("storetreeview: debounce settled, window=%s", self._window_size())
+        self._restore_cursor()
+        return False  # one-shot: don't repeat this GObject.timeout_add
+
+    def _on_destroy(self, _widget):
+        if self._configure_timeout_id is not None:
+            GObject.source_remove(self._configure_timeout_id)
+            self._configure_timeout_id = None
+
+    def _on_focus_in(self, widget, _event, *_user_args):
+        # Restore cursor/editing state on refocus, same as
+        # on_configure_event()'s settle handler.
+        self._restore_cursor()
+        return False
+
+    def _window_size(self):
+        window = self.get_toplevel()
+        if window and isinstance(window, Gtk.Window) and window.get_realized():
+            return window.get_size()
+        return None
+
+    def _restore_cursor(self):
+        # Safety-net check only, no corrective action: a reactive
+        # resize() here is what caused the original growth bug.
+        size = self._window_size()
+        if size and size[0] > 1024:
+            logging.warning("storetreeview: window width %d after a resize/focus settle - investigate if seen again", size[0])
 
     def _on_cursor_changed(self, _treeview):
         path, _column = self.get_cursor()

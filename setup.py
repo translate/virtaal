@@ -528,7 +528,6 @@ def add_mac_options(options):
     # http://developer.apple.com/documentation/MacOSX/Conceptual/BPRuntimeConfig/Articles/PListKeys.html
     if py2app is None:
         return options
-    options['data_files'].extend([('share/OSX_Leopard_theme', glob(path.join('devsupport', 'OSX_Leopard_theme', '*')))])
     options['data_files'].extend([('', ['devsupport/virtaal.icns'])])
 
     # For some reason py2app can't handle bin/virtaal since it doesn't end in .py

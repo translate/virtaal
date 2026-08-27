@@ -75,8 +75,14 @@ class Plugin(BasePlugin):
             else:
                 self.poedit_dir = path.expanduser('~/.poedit')
 
-            self.lokalize_rc = path.expanduser('~/.kde/share/config/lokalizerc')
-            self.lokalize_tm_dir = path.expanduser('~/.kde/share/apps/lokalize/')
+            # KDE moved app configs/data from ~/.kde/share/{config,apps}/ to
+            # the XDG base dirs with the KDE4->Frameworks 5 transition
+            # (~2014) - these are the current locations, not the ~/.kde/...
+            # ones this code originally targeted.
+            xdg_config_home = os.environ.get('XDG_CONFIG_HOME') or path.expanduser('~/.config')
+            xdg_data_home = os.environ.get('XDG_DATA_HOME') or path.expanduser('~/.local/share')
+            self.lokalize_rc = path.join(xdg_config_home, 'lokalizerc')
+            self.lokalize_tm_dir = path.join(xdg_data_home, 'lokalize')
 
             self.poedit_settings_import()
             self.lokalize_settings_import()
@@ -189,23 +195,56 @@ class Plugin(BasePlugin):
         """Attempt to import the Translation Memory used in Lokalize."""
         if not path.isdir(self.lokalize_tm_dir):
             return
-        databases = [name for name in os.listdir(self.lokalize_tm_dir) if path.exists(name)]
-        for database in databases:
-            self.do_lokalize_tm_import(database)
+        # Each configured TM in Lokalize is a "<name>.db" sqlite file
+        # directly under this directory (see src/tm/dbfilesmodel.cpp and
+        # the TM_DATABASE_EXTENSION/REMOTETM_DATABASE_EXTENSION macros in
+        # src/tm/jobs.h upstream) - "*-journal.db" is sqlite's own journal
+        # file, not a database, and "*.remotedb" just points at a remote
+        # TM server, with nothing local to read.
+        for name in os.listdir(self.lokalize_tm_dir):
+            if not name.endswith('.db') or name.endswith('-journal.db'):
+                continue
+            filename = path.join(self.lokalize_tm_dir, name)
+            if path.isfile(filename):
+                self.do_lokalize_tm_import(filename)
 
     def do_lokalize_tm_import(self, filename):
         """Import the given Translation Memory file used by Lokalize."""
-        lang = self.main_controller.lang_controller.target_lang.code
         connection = dbapi2.connect(filename)
         cursor = connection.cursor()
-        cursor.execute("""SELECT english, target from tm_main;""")
-        for (source, target) in cursor:
-            unit = { "source" : source,
-                     "target" : target,
-                     "context" : ""
-                     }
-            self.tmdb.add_dict(unit, "en", lang, commit=False)
-        self.tmdb.connection.commit()
-        connection.close()
-        self.migrated.append(_("Lokalize's Translation Memory: %(database_name)s") % \
-                {"database_name": path.basename(filename)})
+        try:
+            # tm_config holds one row per (key, value): key 2 is the
+            # source language code, key 3 the target - see setConfig()/
+            # getConfig() in src/tm/jobs.cpp upstream. Older/emptied
+            # databases may not have it, hence the fallback below.
+            cursor.execute("SELECT value FROM tm_config WHERE key = 2;")
+            row = cursor.fetchone()
+            source_lang = row[0] if row else "en"
+            cursor.execute("SELECT value FROM tm_config WHERE key = 3;")
+            row = cursor.fetchone()
+            target_lang = row[0] if row else self.main_controller.lang_controller.target_lang.code
+
+            # Lokalize normalizes its schema across source_strings/
+            # target_strings/main (foreign keys), not a single flat table -
+            # see initSqliteDb() in src/tm/jobs.cpp upstream.
+            cursor.execute("""
+                SELECT source_strings.source, target_strings.target
+                FROM main
+                JOIN source_strings ON main.source = source_strings.id
+                JOIN target_strings ON main.target = target_strings.id;
+            """)
+            count = 0
+            for (source, target) in cursor:
+                unit = { "source" : source,
+                         "target" : target,
+                         "context" : ""
+                         }
+                self.tmdb.add_dict(unit, source_lang, target_lang, commit=False)
+                count += 1
+        finally:
+            connection.close()
+
+        if count:
+            self.tmdb.connection.commit()
+            self.migrated.append(_("Lokalize's Translation Memory: %(database_name)s") % \
+                    {"database_name": path.basename(filename)})

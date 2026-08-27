@@ -98,12 +98,16 @@ class SearchMode(BaseMode):
         Gtk.AccelMap.add_entry("<Virtaal>/Edit/Search: Next", Gdk.KEY_G, Gdk.ModifierType.CONTROL_MASK)
         Gtk.AccelMap.add_entry("<Virtaal>/Edit/Search: Previous", Gdk.KEY_G,
                                Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK)
+        # tmview.py has its own global Escape accelerator ("Hide TM") -
+        # both fire when relevant, deliberately (see _on_close_search()).
+        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Search: Close", Gdk.KEY_Escape, 0)
 
         self.accel_group = Gtk.AccelGroup()
         self.accel_group.connect_by_path("<Virtaal>/Edit/Search", self._on_start_search)
         self.accel_group.connect_by_path("<Virtaal>/Edit/Search Ctrl+F", self._on_start_search)
         self.accel_group.connect_by_path("<Virtaal>/Edit/Search: Next", self._on_search_next)
         self.accel_group.connect_by_path("<Virtaal>/Edit/Search: Previous", self._on_search_prev)
+        self.accel_group.connect_by_path("<Virtaal>/Edit/Search: Close", self._on_close_search)
 
         self.controller.main_controller.view.add_accel_group(self.accel_group)
 
@@ -464,6 +468,16 @@ class SearchMode(BaseMode):
         if self.controller.main_controller.store_controller.store is None:
             return
         self.controller.select_mode(self)
+
+    def _on_close_search(self, *args):
+        """Escape leaves Search mode and returns to the default mode.
+            This accelerator is always registered (see _setup_key_bindings()),
+            not just while Search is the active mode, so guard on that here -
+            otherwise Escape would do this from *any* mode."""
+        if self.controller.current_mode is not self:
+            return False
+        self.controller.select_default_mode()
+        return True
 
     def _on_style_set(self, widget, prev_style=None):
         self.default_base = widget.get_style_context().get_background_color(Gtk.StateType.NORMAL)

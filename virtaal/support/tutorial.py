@@ -395,7 +395,7 @@ def create_localized_tutorial():
             # crash, even if it has only a msgstr for plural entries, and it
             # shows the appropiate number of translation fields (for the target
             # language).
-            unit.settarget([u"", u""])
+            unit.target = [u"", u""]
 
         unit.addnote(comment, "developer")
         unit.setcontext(context)

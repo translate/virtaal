@@ -30,7 +30,7 @@ class GObjectWrapper(GObject.GObject):
 
     # INITIALIZERS #
     def __init__(self):
-        super(GObjectWrapper, self).__init__()
+        super().__init__()
         self._all_signals = []
         for type_ in self.__class__.mro():
             if issubclass(type_, GObject.GObject):
@@ -58,4 +58,4 @@ class GObjectWrapper(GObject.GObject):
     def emit(self, signame, *args):
         if signame in self._enabled_signals:
             #logging.debug('emit("%s", %s)' % (signame, ','.join([repr(arg) for arg in args])))
-            super(GObjectWrapper, self).emit(signame, *args)
+            super().emit(signame, *args)

@@ -44,7 +44,7 @@ class TerminologyGUIInfo(StringElemGUI):
 
     def __init__(self, elem, textbox, **kwargs):
         assert elem.__class__.__name__ == 'TerminologyPlaceable'
-        super(TerminologyGUIInfo, self).__init__(elem, textbox, **kwargs)
+        super().__init__(elem, textbox, **kwargs)
 
 
     # METHODS #
@@ -74,7 +74,7 @@ class TerminologyCombo(Gtk.ComboBox):
 
     # INITIALIZERS #
     def __init__(self, elem):
-        super(TerminologyCombo, self).__init__()
+        super().__init__()
         self.elem = elem
         self.insert_iter = None
         self.selected_string = None

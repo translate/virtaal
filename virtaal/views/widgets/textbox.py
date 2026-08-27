@@ -93,7 +93,7 @@ class TextBox(Gtk.TextView):
         @type  selector_textbox: C{TextBox}
         @param selector_textbox: The text box in which placeable selection
             (@see{select_elem}) should happen. Optional."""
-        super(TextBox, self).__init__()
+        super().__init__()
         self.buffer = self.get_buffer()
         self.elem = None
         self.main_controller = main_controller

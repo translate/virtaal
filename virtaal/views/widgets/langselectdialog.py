@@ -33,7 +33,7 @@ class LanguageSelectDialog(object):
 
     # INITIALIZERS #
     def __init__(self, languages, parent=None):
-        super(LanguageSelectDialog, self).__init__()
+        super().__init__()
 
         self.gui = BaseView.load_builder_file(
             ["virtaal", "virtaal.ui"],
@@ -174,4 +174,3 @@ class LanguageSelectDialog(object):
         path = model.get_path(i)
         treeview.get_selection().select_iter(i)
         treeview.scroll_to_cell(path)
-

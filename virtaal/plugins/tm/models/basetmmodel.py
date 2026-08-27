@@ -68,7 +68,7 @@ class BaseTMModel(BaseModel):
 
             Only call this from child classes once the object was successfully
             created and want to be connected to signals."""
-        super(BaseTMModel, self).__init__()
+        super().__init__()
         self.config = {}
         self.controller = controller
         self._connect_ids = []

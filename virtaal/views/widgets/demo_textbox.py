@@ -25,7 +25,7 @@ from .textbox import TextBox
 
 class TextWindow(Gtk.Window):
     def __init__(self, textbox=None):
-        super(TextWindow, self).__init__()
+        super().__init__()
         if textbox is None:
             textbox = TextBox(self)
 

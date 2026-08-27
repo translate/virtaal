@@ -34,7 +34,7 @@ class TMWindow(Gtk.Window):
 
     # INITIALIZERS #
     def __init__(self, view):
-        super(TMWindow, self).__init__(Gtk.WindowType.POPUP)
+        super().__init__(Gtk.WindowType.POPUP)
         self.view = view
 
         # set_has_frame is the method of Gtk.Enter, not found on Gtk.Window
@@ -175,7 +175,7 @@ class TMSourceColRenderer(Gtk.CellRenderer):
 
     # INITIALIZERS #
     def __init__(self, view):
-        super(TMSourceColRenderer, self).__init__()
+        super().__init__()
 
         self.view = view
         self.matchdata = None
@@ -248,7 +248,7 @@ class TMMatchRenderer(Gtk.CellRenderer):
 
     # INITIALIZERS #
     def __init__(self, view):
-        super(TMMatchRenderer, self).__init__()
+        super().__init__()
 
         self.view = view
         self.layout = None

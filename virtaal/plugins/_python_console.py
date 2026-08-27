@@ -14,7 +14,7 @@ from virtaal.controllers.baseplugin import BasePlugin
 
 class PythonConsole(Gtk.ScrolledWindow):
     def __init__(self, namespace = {}, destroy_cb = None):
-        super(PythonConsole, self).__init__()
+        super().__init__()
 
         self.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         self.set_shadow_type(Gtk.ShadowType.IN)

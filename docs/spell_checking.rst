@@ -33,8 +33,9 @@ On Linux systems, you need to have the following packages installed:
 
 - enchant
 - pyenchant
-- gtkspell
-- pygtkspell (might be packaged as gnome-python-extras or something similar)
+- gtkspell3 (GTK3, accessed via GObject Introspection - e.g.
+  ``gir1.2-gtkspell3-3.0`` on Debian/Ubuntu, ``gtkspell3`` on Homebrew;
+  the older ``pygtkspell`` Python-binding package was GTK2-only and
+  isn't needed any more)
 - Spell checkers for the languages that you are interested in (all checkers
   supported by your enchant installation should be usable)
-

@@ -72,7 +72,7 @@ classifiers = [
 from translate.tools.pocompile import convertmo
 mo_files = []
 
-for lang in open(path.join('po', 'LINGUAS')):
+for lang in open(path.join('po', 'LINGUAS'), encoding='utf-8'):
     lang = lang.rstrip()
     po_filename = path.join('po', lang+'.po')
     mo_filename = path.join('mo', lang, 'virtaal.mo')
@@ -80,7 +80,7 @@ for lang in open(path.join('po', 'LINGUAS')):
     if not path.exists(path.join('mo', lang)):
         os.makedirs(path.join('mo', lang))
 
-    convertmo(open(po_filename), open(mo_filename, 'w'), None)
+    convertmo(open(po_filename, 'rb'), open(mo_filename, 'w'), None)
 
     mo_files.append(
         ( path.join(TARGET_DATA_DIR, 'locale', lang, 'LC_MESSAGES'), [mo_filename])
@@ -88,7 +88,7 @@ for lang in open(path.join('po', 'LINGUAS')):
 
 # Build lite files as needed on Win32 and OS X
 if os.name == 'nt' or sys.platform == 'darwin':
-    for lang in open(path.join('po', 'LINGUAS-lite')):
+    for lang in open(path.join('po', 'LINGUAS-lite'), encoding='utf-8'):
         app, lang = lang.rstrip().split('/')
         po_filename = path.join('po', 'lite', app, lang+'.po')
         mo_filename = path.join('mo', lang, app+'.mo')
@@ -96,7 +96,7 @@ if os.name == 'nt' or sys.platform == 'darwin':
         if not path.exists(path.join('mo', lang)):
             os.makedirs(path.join('mo', lang))
 
-        convertmo(open(po_filename), open(mo_filename, 'w'), None)
+        convertmo(open(po_filename, 'rb'), open(mo_filename, 'w'), None)
 
         mo_files.append(
             ( path.join(TARGET_DATA_DIR, 'locale', lang, 'LC_MESSAGES'), [mo_filename])

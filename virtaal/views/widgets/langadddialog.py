@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+
 from gi.repository import Gtk
 
 from virtaal.views.baseview import BaseView
@@ -96,7 +97,7 @@ class LanguageAddDialog(object):
         # TODO: Add more sanity checks
         code = self.langcode
         try:
-            ascii_code = unicode(code, 'ascii')
+            ascii_code = str(code, 'ascii')
         except UnicodeDecodeError:
             return _('Language code must be an ASCII string.')
 

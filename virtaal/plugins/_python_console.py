@@ -8,7 +8,6 @@ from gi.repository import GObject
 from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import Pango
-from six import exec_
 
 from virtaal.controllers.baseplugin import BasePlugin
 
@@ -257,7 +256,7 @@ class PythonConsole(Gtk.ScrolledWindow):
                 if r is not None:
                     print(repr(r))
             except SyntaxError:
-                exec_(command, globals=self.namespace)
+                exec(command, self.namespace)
         except:
             if hasattr(sys, 'last_type') and sys.last_type == SystemExit:
                 self.destroy()

@@ -21,13 +21,12 @@
 """A TM provider that can query the web service for Micrsoft Translator
 Machine Translations."""
 
-from six.moves.urllib import parse as urllib
+from urllib import parse as urllib
 
 from .basetmmodel import BaseTMModel
 
 from virtaal.support.httpclient import HTTPClient, RESTRequest
 
-from six import text_type as unicode
 
 # Code corrections
 code_translation = {
@@ -106,8 +105,8 @@ class TMModel(BaseTMModel):
 
     def got_translation(self, val, query_str):
         """Handle the response from the web service now that it came in."""
-        if not isinstance(val, unicode):
-            val = unicode(val, 'utf-8')
+        if not isinstance(val, str):
+            val = str(val, 'utf-8')
         val = strip_bom(val)
         match = {
             'source': query_str,

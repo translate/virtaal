@@ -24,7 +24,7 @@ Machine Translation.
 http://wiki.apertium.org/wiki/Apertium_web_service
 """
 
-from six.moves.urllib.parse import urlencode
+from urllib.parse import urlencode
 # These two json modules are API compatible
 try:
     import simplejson as json #should be a bit faster; needed for Python < 2.6
@@ -78,7 +78,7 @@ class TMModel(BaseTMModel):
             return
 
         query_str = unit.source
-        if self.cache.has_key(query_str):
+        if query_str in self.cache:
             self.emit('match-found', query_str, self.cache[query_str])
         else:
             values = {

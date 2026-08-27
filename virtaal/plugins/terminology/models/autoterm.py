@@ -17,7 +17,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
-from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 import os
@@ -166,7 +165,7 @@ class TerminologyModel(BaseTerminologyModel):
             self.client.get(url, callback, etag, error_callback=error_log)
 
     def _get_ext_from_url(self, url):
-        from urlparse import urlparse
+        from urllib.parse import urlparse
         parsed = urlparse(url)
         #dir, filename = os.path.split(parsed.path)
         #rewritten for compatibility with Python 2.4:
@@ -179,7 +178,7 @@ class TerminologyModel(BaseTerminologyModel):
         return ext
 
     def _get_ext_from_store_guess(self, content):
-        from StringIO import StringIO
+        from io import StringIO
         from translate.storage.factory import _guessextention
         s = StringIO(content)
         try:

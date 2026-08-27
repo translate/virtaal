@@ -19,12 +19,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
-from __future__ import absolute_import, print_function, unicode_literals
 __all__ = ["generic"]
 
-from six import class_types as ClassType
 from types import FunctionType
-classtypes = type, ClassType
+classtypes = (type,)
 
 
 def generic(func):

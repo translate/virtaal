@@ -20,11 +20,11 @@
 
 import logging
 
-import xmlrpclib
+import xmlrpc.client as xmlrpclib
 from gi.repository import GObject
-from translate.lang import data
 
 from virtaal.support.httpclient import HTTPClient, HTTPRequest
+from virtaal.support.translate_compat import forceunicode
 
 # Moses handles these characters as spaced out
 punc_symbols = '''.,?!:;'"“”‘’—)'''
@@ -41,8 +41,8 @@ def prepare(query_str):
     return query_str
 
 def fixup(source, response):
-    source = data.forceunicode(source)
-    response = data.forceunicode(response)
+    source = forceunicode(source)
+    response = forceunicode(response)
     from translate.filters.autocorrect import correct
     tmp = correct(source, response)
     if tmp:
@@ -122,4 +122,4 @@ class MosesClient(GObject.GObject, HTTPClient):
         suggestion = self._loads_safe(response)
         if not suggestion:
             return None
-        return fixup(id, data.forceunicode(suggestion['text']))
+        return fixup(id, forceunicode(suggestion['text']))

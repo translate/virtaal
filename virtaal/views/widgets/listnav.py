@@ -23,7 +23,6 @@ ListNavigator: A composite widget for navigating in a list of "states" by using
 "previous" and "next" buttons as well as a pop-up list containing all available
 options.
 """
-from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 

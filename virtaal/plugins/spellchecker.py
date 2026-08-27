@@ -204,9 +204,9 @@ class Plugin(BasePlugin):
 
         if request.status == 200:
             logging.debug('Got a dictionary')
-            from six import BytesIO as StringIO
+            from io import BytesIO
             import tarfile
-            file_obj = StringIO(result)
+            file_obj = BytesIO(result)
             tar = tarfile.open(fileobj=file_obj)
             if not self._tar_ok(tar):
                 return

@@ -18,7 +18,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
-from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
@@ -408,7 +407,7 @@ class StoreController(BaseController):
                 logging.exception("Error converting file to translatable file:")
 
         # Let's entirely clear things in the view to ensure that no signals
-        # are still attached to old models before we start chaning things. See 
+        # are still attached to old models before we start chaning things. See
         # bug 1854.
         self.view.load_store(None)
         self.store.update_file(filename)

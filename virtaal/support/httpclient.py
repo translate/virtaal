@@ -19,11 +19,11 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import logging
+from io import BytesIO
 
 import pycurl
 from gi.repository import GObject
-from six import BytesIO as StringIO
-from six.moves.urllib import request, parse
+from urllib import request, parse
 
 try:
     import libproxy
@@ -51,8 +51,8 @@ class HTTPRequest(GObjectWrapper):
             headers_only=False, user_agent=None, follow_location=False,
             force_quiet=True):
         GObjectWrapper.__init__(self)
-        self.result = StringIO()
-        self.result_headers = StringIO()
+        self.result = BytesIO()
+        self.result_headers = BytesIO()
 
         self.url = url
         self.method = method
@@ -82,7 +82,7 @@ class HTTPRequest(GObjectWrapper):
             self.curl.setopt(pycurl.CUSTOMREQUEST, method)
         if data:
             if method == "PUT":
-                self.data = StringIO.StringIO(data)
+                self.data = BytesIO(data)
                 self.curl.setopt(pycurl.READFUNCTION, self.data.read)
                 self.curl.setopt(pycurl.INFILESIZE, len(self.data.getvalue()))
             else:

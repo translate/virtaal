@@ -29,8 +29,6 @@
 import os
 import sys
 
-from six import PY3
-
 from .utils import get_unicode
 
 
@@ -57,7 +55,8 @@ if os.name == 'nt':
 
 # Ok, now we can continue with what we actually wanted to do
 
-from six.moves import configparser as ConfigParser, builtins as  __builtin__
+import configparser as ConfigParser
+import builtins as __builtin__
 import locale, gettext
 from virtaal.support.libi18n.locale import fix_locale, fix_libintl
 from translate.misc import file_discovery
@@ -269,16 +268,13 @@ if ui_language:
     except locale.Error:
         pass
     languages = [ui_language, locale_lang]
-    gettext.translation('virtaal', languages=languages, fallback=True).install(unicode=1)
+    gettext.translation('virtaal', languages=languages, fallback=True).install()
 else:
     fix_locale()
     try:
         #if the locale is not installed it can cause a traceback
         locale.setlocale(locale.LC_ALL, '')
-        if PY3:
-            gettext.install('virtaal')
-        else:
-            gettext.install("virtaal", unicode=1)
+        gettext.install('virtaal')
     except locale.Error as e:
         import logging
         logging.warning("Couldn't set the locale: %s", e)

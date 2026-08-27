@@ -34,8 +34,8 @@ import struct
 import sys
 from os import path
 
-from six.moves import cStringIO as StringIO
-from six.moves import configparser as ConfigParser
+from io import StringIO
+import configparser as ConfigParser
 
 try:
     from sqlite3 import dbapi2
@@ -52,7 +52,7 @@ from translate.storage import tmdb
 def _prepare_db_string(string):
     """Helper method needed by the Berkeley DB TM converters."""
     string = '"%s"' % string
-    string = unicode(extractpoline(string), 'utf-8')
+    string = str(extractpoline(string), 'utf-8')
     return string
 
 class Plugin(BasePlugin):
@@ -148,9 +148,9 @@ class Plugin(BasePlugin):
         else:
             self.poedit_config = ConfigParser.ConfigParser()
             poedit_config_file = open(config_filename, 'r')
-            contents = StringIO.StringIO('[poedit_headerless_file]\n' + poedit_config_file.read())
+            contents = StringIO('[poedit_headerless_file]\n' + poedit_config_file.read())
             poedit_config_file.close()
-            self.poedit_config.readfp(contents)
+            self.poedit_config.read_file(contents)
             def get_thing(section, item):
                 dictionary = dict(self.poedit_config.items(section or 'poedit_headerless_file'))
                 return dictionary.get(item, None)
@@ -192,7 +192,7 @@ class Plugin(BasePlugin):
                 continue
             sources = bsddb.hashopen(strings_db_file, 'r')
             targets = bsddb.rnopen(translations_db_file, 'r')
-            for source, str_index in sources.iteritems():
+            for source, str_index in sources.items():
                 unit = {"context" : ""}
                 # the index is a four byte integer encoded as a string
                 # was little endian on my machine, not sure if it is universal
@@ -220,7 +220,7 @@ class Plugin(BasePlugin):
             lang = tm_filename.replace("translations.", "").replace(".db", "")
             translations = bsddb.btopen(tm_file, 'r')
 
-            for source, target in translations.iteritems():
+            for source, target in translations.items():
                 unit = {"context" : ""}
                 source = source[:-1] # null-terminated
                 target = target[16:-1] # 16 bytes of padding, null-terminated

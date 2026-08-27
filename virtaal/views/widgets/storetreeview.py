@@ -61,7 +61,7 @@ class StoreTreeView(Gtk.TreeView):
         self._waiting_for_row_change = 0
 
         # GObject.timeout_add() id for the pending debounced
-        # on_configure_event() action, or None.
+        # on_configure_event() action - see that method for why.
         self._configure_timeout_id = None
 
     def _enable_tooltips(self):
@@ -161,9 +161,18 @@ class StoreTreeView(Gtk.TreeView):
             # just-opened file as modified.
             self.set_cursor(newpath, self.get_columns()[0], start_editing=True)
             self.get_model().set_editable(newpath)
+            # change_cursor() below is deferred via GObject.idle_add(), so
+            # it can run after the file has since been closed and a
+            # different one opened - guard against re-running set_cursor()
+            # against a path/model that's no longer current, which could
+            # start editing an arbitrary unit in the new file and
+            # spuriously mark it modified.
+            scheduled_model = model
             def change_cursor():
-                self.set_cursor(newpath, self.get_columns()[0], start_editing=True)
                 self._waiting_for_row_change -= 1
+                if self.get_model() is not scheduled_model:
+                    return
+                self.set_cursor(newpath, self.get_columns()[0], start_editing=True)
             self._waiting_for_row_change += 1
             GObject.idle_add(change_cursor, priority=GObject.PRIORITY_DEFAULT_IDLE)
 

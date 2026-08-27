@@ -570,5 +570,22 @@ class StoreController(BaseController):
         self.store.set_target_language(langcode)
 
     def _unit_modified(self, emitter, unit):
-        self._modified = True
-        self.main_controller.set_saveable(self._modified)
+        # close_file() tears down the treeview's model while a cell may
+        # still be actively being edited (via StoreView.hide() ->
+        # StoreTreeView.set_model(None)); that teardown can fire a late
+        # "modified" signal arriving after self.store has already been
+        # reset. This StoreController is a singleton reused across every
+        # file open, so a stray True landing here with no file open would
+        # persist and poison whatever gets opened next.
+        if self.store is None:
+            return
+        # A stray "modified" signal can also arrive from the *previous*
+        # file's own teardown after a new file is already open and
+        # current (self.store is the new file's store by then, so the
+        # guard above doesn't catch it) - `unit` is still one of the old
+        # file's unit objects, from a store that's since been replaced.
+        # Compare the specific unit against the currently open store's
+        # own units, not just whether a store exists at all.
+        if unit not in self.store.get_units():
+            return
+        self.set_modified(True)

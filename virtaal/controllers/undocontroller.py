@@ -143,7 +143,15 @@ class UndoController(BaseController):
         self._enable_unit_signals()
 
         textbox = self.unit_controller.view.targets[undo_info['targetn']]
+        # This deferred refresh() can run after a different file is
+        # already open and load_unit() has repopulated this same, reused
+        # textbox widget for a different unit - guard against acting on
+        # a stale undo then (same class of bug as the scheduled_model
+        # guard in StoreTreeView.select_index()'s change_cursor()).
+        scheduled_unit = undo_info['unit']
         def refresh():
+            if self.unit_controller.current_unit is not scheduled_unit:
+                return
             textbox.refresh_cursor_pos = undo_info['cursorpos']
             # TODO: try to avoid full refresh
             #

@@ -39,7 +39,7 @@ class AutoCorrector(object):
     correction files.
     """
 
-    wordsep_re = re.compile('\W+', re.UNICODE)
+    wordsep_re = re.compile(r'\W+', re.UNICODE)
 
     REPLACEMENT, REGEX = range(2)
 

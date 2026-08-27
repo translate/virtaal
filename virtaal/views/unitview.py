@@ -52,7 +52,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         'editing-canceled': (bool, 'Editing cancelled', 'Editing was cancelled', False, PARAM_READWRITE),
     }
 
-    first_word_re = re.compile("(?m)(?u)^(<[^>]+>|\\\\[nt]|[\W$^\n])*(\\b|\\Z)")
+    first_word_re = re.compile("(?m)(?u)^(<[^>]+>|\\\\[nt]|[\\W$^\n])*(\\b|\\Z)")
     """A regular expression to help us find a meaningful place to position the
         cursor initially."""
 

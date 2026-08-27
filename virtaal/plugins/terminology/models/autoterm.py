@@ -35,13 +35,32 @@ THREE_DAYS = 60 * 60 * 24 * 3
 
 
 class TerminologyModel(BaseTerminologyModel):
-    """A terminology back-end to access the Translate.org.za-managed terminology."""
+    """A terminology back-end to access community-maintained localization terminology.
+
+        Was originally Translate.org.za's own terminology.locamotion.org,
+        a set of static per-language-pair files - now decommissioned.
+        Replaced with Mozilla's Pontoon terminology
+        (pontoon.mozilla.org/terminology/<locale>.tbx), a live,
+        actively-maintained source. Two structural differences from the
+        old source that matter here: (1) English-source only - Pontoon's
+        terminology has no concept of an arbitrary source language,
+        every file is English-to-<locale>, so this model only fetches
+        anything when the project's own source language is English;
+        other source languages get an empty store, same as before this
+        file existed at all. (2) TBX-Basic format (ISO 30042:ed-2, root
+        <tbx style="dca" type="TBX-Basic">, <conceptEntry> entries), not
+        the older MARTIF-rooted TBX (root <martif>, <termEntry>)
+        translate-toolkit's own tbx.py module supports - parsed directly
+        in this file (_parse_tbx_basic()) rather than waiting on/
+        extending translate-toolkit's own TBX support.
+        """
 
     __gtype_name__ = 'AutoTermTerminology'
     display_name = _('Localization Terminology')
     description = _('Selected localization terminology')
 
-    _l10n_URL = 'http://terminology.locamotion.org/l10n/%(srclang)s/%(tgtlang)s'
+    # Locale-only (no source language segment) - see class docstring.
+    _l10n_URL = 'https://pontoon.mozilla.org/terminology/%(tgtlang)s.tbx'
 
     TERMDIR = os.path.join(pan_app.get_config_dir(), 'autoterm')
 
@@ -85,7 +104,15 @@ class TerminologyModel(BaseTerminologyModel):
 
         if os.path.isfile(filename):
             logging.debug('Loading terminology from %s' % (filename))
-            self.store = factory.getobject(filename)
+            if filename.lower().endswith('.tbx'):
+                # Pontoon's export is the TBX-Basic dialect, which
+                # translate-toolkit's own tbx.py doesn't parse (it
+                # targets the older MARTIF-rooted TBX) - see this
+                # class's own docstring. Parsed directly here instead.
+                with open(filename, 'rb') as f:
+                    self.store = _parse_tbx_basic(f.read())
+            else:
+                self.store = factory.getobject(filename)
         else:
             logging.debug('Creating empty terminology store')
             self.store = TranslationStore()
@@ -101,7 +128,9 @@ class TerminologyModel(BaseTerminologyModel):
         if tgtlang is None:
             tgtlang = self.target_lang
         if not ext:
-            ext = 'po'
+            # Pontoon only ever serves .tbx - see class docstring. 'po'
+            # was the old terminology.locamotion.org source's format.
+            ext = 'tbx'
 
         base = '%s__%s' % (srclang, tgtlang)
         for filename in os.listdir(self.TERMDIR):
@@ -125,6 +154,15 @@ class TerminologyModel(BaseTerminologyModel):
 
         if srclang is None or tgtlang is None:
             raise ValueError('Both srclang and tgtlang must be specified')
+
+        if not _is_english(srclang):
+            # Pontoon's terminology is English-source only (see class
+            # docstring) - nothing to fetch for any other source
+            # language. Same end state as before this source existed:
+            # an empty store, no placeable matches, no error.
+            logging.debug('Source language %r is not English - Pontoon terminology has nothing to offer, using an empty store' % (srclang,))
+            self.init_matcher()
+            return
 
         if not self.is_update_needed(srclang, tgtlang):
             logging.debug('Skipping update for (%s, %s) language pair' % (srclang, tgtlang))
@@ -250,3 +288,59 @@ class TerminologyModel(BaseTerminologyModel):
     def _on_lang_changed(self, lang_controller, lang, which):
         setattr(self, '%s_lang' % (which), lang)
         self.update_terms(self.source_lang, self.target_lang)
+
+
+def _is_english(langcode):
+    """Whether the given language code is some variety of English
+        (en, en_US, en-GB, ...) - Pontoon's terminology is English-source
+        only, see TerminologyModel's own docstring."""
+    return str(langcode).replace('-', '_').split('_')[0].lower() == 'en'
+
+
+# TBX-Basic dialect (ISO 30042:ed-2) namespace - what Pontoon actually
+# exports. Distinct from, and structurally incompatible with, the older
+# MARTIF-rooted TBX translate-toolkit's own tbx.py module supports (see
+# TerminologyModel's own docstring for the confirmed AssertionError).
+_TBX_BASIC_NS = 'urn:iso:std:iso:30042:ed-2'
+_XML_NS = 'http://www.w3.org/XML/1998/namespace'
+
+
+def _parse_tbx_basic(content):
+    """Parse a TBX-Basic (ISO 30042:ed-2) document's bytes into a plain
+        C{TranslationStore}, one unit per concept entry that has both an
+        English source term and a target-language term. Malformed or
+        genuinely empty input (e.g. a locale Pontoon has no terminology
+        for - a valid header with a completely empty <body>) both just
+        produce an empty store, matching this model's existing "nothing
+        to show" behaviour rather than raising."""
+    store = TranslationStore()
+    from lxml import etree
+    try:
+        root = etree.fromstring(content)
+    except etree.Error as e:
+        logging.debug('Could not parse TBX-Basic content: %s' % (e,))
+        return store
+
+    ns = {'t': _TBX_BASIC_NS, 'xml': _XML_NS}
+    for entry in root.findall('.//t:conceptEntry', ns):
+        source_term = None
+        target_term = None
+        for langsec in entry.findall('t:langSec', ns):
+            lang = langsec.get('{%s}lang' % (_XML_NS,)) or ''
+            term_el = langsec.find('t:termSec/t:term', ns)
+            if term_el is None or not term_el.text:
+                continue
+            if _is_english(lang):
+                source_term = term_el.text
+            else:
+                # First non-English langSec found is the target - a
+                # concept entry only ever carries the one target locale
+                # that was requested (Pontoon builds the file per
+                # locale), so there's nothing to disambiguate between
+                # multiple targets here.
+                target_term = term_el.text
+        if source_term and target_term:
+            unit = store.addsourceunit(source_term)
+            unit.target = target_term
+
+    return store

@@ -17,14 +17,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
-from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 import os
 import sys
 
 from gi.repository.GObject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT, idle_add
-from six import PY3
 
 from virtaal.common import pan_app, GObjectWrapper
 from virtaal.common.utils import get_unicode
@@ -32,19 +30,13 @@ from .basecontroller import BaseController
 from .baseplugin import PluginUnsupported, BasePlugin
 
 if os.name == 'nt':
-    if PY3:
-        sys.path.insert(0, pan_app.main_dir)
-    else:
-        sys.path.insert(0, pan_app.main_dir.encode(sys.getfilesystemencoding()))
+    sys.path.insert(0, pan_app.main_dir)
 if 'RESOURCEPATH' in os.environ:
     sys.path.insert(0, os.path.join(os.environ['RESOURCEPATH']))
 
 # The following line allows us to import user plug-ins from ~/.virtaal/virtaal_plugins
 # (see PluginController.PLUGIN_MODULES)
-if PY3:
-    sys.path.insert(0, pan_app.get_config_dir())
-else:
-    sys.path.insert(0, pan_app.get_config_dir().encode(sys.getfilesystemencoding()))
+sys.path.insert(0, pan_app.get_config_dir())
 
 class PluginController(BaseController):
     """This controller is responsible for all plug-in management."""

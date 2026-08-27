@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+
 from virtaal.support import opentranclient
 
 from virtaal.common import pan_app
@@ -59,7 +60,7 @@ class TMModel(BaseTMModel):
 
     def query(self, tmcontroller, unit):
         query_str = unit.source
-        if self.cache.has_key(query_str):
+        if query_str in self.cache:
             self.emit('match-found', query_str, self.cache[query_str])
         else:
             self.tmclient.translate_unit(query_str, self._handle_matches)
@@ -67,8 +68,8 @@ class TMModel(BaseTMModel):
     def _handle_matches(self, widget, query_str, matches):
         """Handle the matches when returned from self.tmclient."""
         for match in matches:
-            if not isinstance(match['target'], unicode):
-                match['target'] = unicode(match['target'], 'utf-8')
+            if not isinstance(match['target'], str):
+                match['target'] = str(match['target'], 'utf-8')
             if 'tmsource' in match:
                 # Try to replace some long names like "OpenOffice.org" which
                 # doesn't display nicely:

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from __future__ import absolute_import, unicode_literals, print_function
 
 from gi.repository import Gdk
 from gi.repository import Gtk

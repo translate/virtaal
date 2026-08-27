@@ -20,7 +20,6 @@
 
 from gi.repository import Gdk, Gtk, GObject
 
-from six import string_types as unicode
 
 # Positioning constants below:
 # POS_CENTER_BELOW: Centers the pop-up window below the button (default).
@@ -70,7 +69,7 @@ class PopupMenuButton(Gtk.ToggleButton):
         self._menu_selection_done_id = self.menu.connect('selection-done', self._on_menu_selection_done)
 
     def _get_text(self):
-        return unicode(self.get_label())
+        return str(self.get_label())
     def _set_text(self, value):
         self.set_label(value)
     text = property(_get_text, _set_text)

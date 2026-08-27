@@ -17,7 +17,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
-from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
@@ -93,4 +92,3 @@ class LanguageModel(BaseModel):
         normalized_keys = [data.normalize_code(lang) for lang in languages_keys]
         i =  normalized_keys.index(data.normalize_code(langcode))
         return languages_keys[i]
-

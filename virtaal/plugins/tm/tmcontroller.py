@@ -22,9 +22,10 @@
 import os.path
 
 from gi.repository import GObject
-from translate.lang.data import forceunicode, normalize
+from translate.lang.data import normalize
 
 from virtaal.controllers.basecontroller import BaseController
+from virtaal.support.translate_compat import forceunicode
 
 
 class TMController(BaseController):

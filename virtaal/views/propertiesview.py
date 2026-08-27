@@ -36,7 +36,7 @@ def _statistics(stats):
             "unreviewed": _("Translated:"),
             "final": _("Reviewed:"),
     }
-    from translate.storage import statsdb
+    from virtaal.support import statsdb
     state_dict = statsdb.extended_state_strings
 
     # just to check that the code didn't get out of sync somewhere:

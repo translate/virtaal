@@ -20,7 +20,7 @@
 
 import logging
 
-import xmlrpclib
+import xmlrpc.client as xmlrpclib
 from gi.repository import GObject
 
 from virtaal.support.httpclient import HTTPClient, HTTPRequest
@@ -66,7 +66,7 @@ class MosesClient(GObject.GObject, HTTPClient):
     }
 
     def __init__(self, url):
-        super(MosesClient, self).__init__()
+        super().__init__()
         HTTPClient.__init__(self)
 
         self.url = url + '/RPC2'

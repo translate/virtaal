@@ -27,7 +27,7 @@ from virtaal.support import openmailto
 
 class AboutDialog(Gtk.AboutDialog):
     def __init__(self, parent):
-        super(AboutDialog, self).__init__()
+        super().__init__()
         self._register_uri_handlers()
         self.set_name("Virtaal")
         self.set_version(__version__.ver)

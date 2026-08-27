@@ -34,7 +34,7 @@ class TMModel(BaseTMModel):
 
     # INITIALIZERS #
     def __init__(self, internal_name, controller):
-        super(TMModel, self).__init__(controller)
+        super().__init__(controller)
 
         self.matcher = None
         self.internal_name = internal_name

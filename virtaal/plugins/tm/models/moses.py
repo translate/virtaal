@@ -37,7 +37,7 @@ class TMModel(BaseTMModel):
     # INITIALIZERS #
     def __init__(self, internal_name, controller):
         self.internal_name = internal_name
-        super(TMModel, self).__init__(controller)
+        super().__init__(controller)
 
         self.load_config()
         self.clients = {}

@@ -34,7 +34,7 @@ except ImportError:
 
         def __getitem__(self, key):
             if key in self:
-                return super(defaultdict, self).__getitem__(key)
+                return super().__getitem__(key)
             else:
                 return self.__factory()
 

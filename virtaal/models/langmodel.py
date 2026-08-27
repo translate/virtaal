@@ -44,7 +44,7 @@ class LanguageModel(BaseModel):
         """Constructor.
             Looks up the language information based on the given language code
             (C{langcode})."""
-        super(LanguageModel, self).__init__()
+        super().__init__()
         if not self.languages:
             self.languages.update(toolkit_langs)
         self.languages.update(more_langs)

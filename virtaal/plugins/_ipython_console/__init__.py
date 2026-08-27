@@ -15,7 +15,7 @@ class IPythonWindow(Gtk.Window):
 
     # INITIALIZERS #
     def __init__(self, namespace={}, destroy_cb=None):
-        super(IPythonWindow, self).__init__()
+        super().__init__()
         self._setup_console()
         self.console.updateNamespace(namespace)
 

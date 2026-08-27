@@ -43,7 +43,7 @@ class ListNavigator(Gtk.HBox):
 
     # INITIALIZERS #
     def __init__(self):
-        super(ListNavigator, self).__init__()
+        super().__init__()
         self._init_widgets()
 
     def _init_treeview(self):

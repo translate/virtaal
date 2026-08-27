@@ -45,7 +45,7 @@ class EntryDialog(Gtk.Dialog):
     """A simple dialog containing a dialog for user input."""
 
     def __init__(self, parent):
-        super(EntryDialog, self).__init__(title='Input Dialog', parent=parent)
+        super().__init__(title='Input Dialog', parent=parent)
         self.set_size_request(450, 100)
 
         self.lbl_message = Gtk.Label()
@@ -70,7 +70,7 @@ class EntryDialog(Gtk.Dialog):
 
         self.show_all()
         self.ent_input.grab_focus()
-        response = super(EntryDialog, self).run()
+        response = super().run()
 
         return response, get_unicode(self.ent_input.get_text(), 'utf-8')
 
@@ -78,7 +78,7 @@ class EntryDialog(Gtk.Dialog):
         self.lbl_message.set_markup(message)
 
     def set_title(self, title):
-        super(EntryDialog, self).set_title(title)
+        super().set_title(title)
 
 # XXX: This class is based on main_window.py:Virtaal from the pre-MVC days (Virtaal 0.2).
 class MainView(BaseView):

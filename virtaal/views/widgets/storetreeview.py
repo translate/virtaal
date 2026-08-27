@@ -42,7 +42,7 @@ class StoreTreeView(Gtk.TreeView):
     # INITIALIZERS #
     def __init__(self, view):
         self.view = view
-        super(StoreTreeView, self).__init__()
+        super().__init__()
 
         self.set_headers_visible(False)
         # self.set_direction(Gtk.TextDirection.LTR)
@@ -124,7 +124,7 @@ class StoreTreeView(Gtk.TreeView):
             model = StoreTreeModel(storemodel)
         else:
             model = None
-        super(StoreTreeView, self).set_model(model)
+        super().set_model(model)
 
     def _keyboard_move(self, offset):
         if not self.view.controller.get_store():

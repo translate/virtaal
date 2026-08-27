@@ -256,7 +256,7 @@ class ConsoleView(Gtk.TextView):
     '''
     Initialize console view.
     '''
-    super(ConsoleView, self).__init__()
+    super().__init__()
     self.modify_font(Pango.FontDescription('Mono'))
     self.set_cursor_visible(True)
     self.text_buffer = self.get_buffer()

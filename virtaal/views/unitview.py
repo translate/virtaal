@@ -292,7 +292,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         self.emit('modified')
 
     def show(self):
-        super(UnitView, self).show()
+        super().show()
 
     def update_languages(self):
         srclang = self.controller.main_controller.lang_controller.source_lang.code

@@ -35,7 +35,7 @@ class LabelExpander(Gtk.EventBox):
     }
 
     def __init__(self, widget, get_text, expanded=False):
-        super(LabelExpander, self).__init__()
+        super().__init__()
 
         label_text = Gtk.Label()
         label_text.set_single_line_mode(False)

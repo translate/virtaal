@@ -52,10 +52,14 @@ class Plugin(BasePlugin):
 
         if os.name == 'nt':
             DICTDIR = os.path.join(os.environ['APPDATA'], 'enchant', 'myspell')
-            # if we can't decode it as ascii, enchant won't work on Windows
+            # DICTDIR is already str (unicode text) under Python 3, so there's
+            # nothing to decode - .decode() doesn't exist on str at all and
+            # raised AttributeError unconditionally here. The original intent
+            # (enchant won't work on Windows with a non-ascii path) still
+            # applies though, so check encodability instead of decoding.
             try:
-                DICTDIR = DICTDIR.decode('ascii')
-            except UnicodeDecodeError:
+                DICTDIR.encode('ascii')
+            except UnicodeEncodeError:
                 raise PluginUnsupported("Spell checking is not supported with non-ascii username")
 
         # If these imports fail, the plugin is automatically disabled

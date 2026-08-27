@@ -98,15 +98,9 @@ class SearchMode(BaseMode):
         Gtk.AccelMap.add_entry("<Virtaal>/Edit/Search: Next", Gdk.KEY_G, Gdk.ModifierType.CONTROL_MASK)
         Gtk.AccelMap.add_entry("<Virtaal>/Edit/Search: Previous", Gdk.KEY_G,
                                Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK)
-        # Reported live, 2026-08-24: no way to leave Search mode with the
-        # keyboard at all - the only exit was the "Navigation:" mode
-        # dropdown, a mouse-only path, directly against Virtaal's own
-        # keyboard-only-navigation goal. There was never an Escape
-        # binding here to begin with (confirmed - nothing in this file
-        # handled it), not a regression. Escape is the near-universal
-        # convention for "close this search bar" (browsers, IDEs, GTK's
-        # own GtkSearchBar) so this adds it as a new accelerator, same
-        # pattern as F3/Ctrl+F above it.
+        # Escape is the near-universal convention for "close this search
+        # bar" (browsers, IDEs, GTK's own GtkSearchBar) - same pattern
+        # as F3/Ctrl+F above it.
         Gtk.AccelMap.add_entry("<Virtaal>/Edit/Search: Close", Gdk.KEY_Escape, 0)
 
         self.accel_group = Gtk.AccelGroup()
@@ -137,6 +131,7 @@ class SearchMode(BaseMode):
         if not self.ent_search.get_text():
             self.storecursor.indices = self.storecursor.model.stats['total']
         else:
+            self._cancel_search_timeout()
             self.update_search()
 
         def grab_focus():
@@ -391,6 +386,7 @@ class SearchMode(BaseMode):
             return
 
         if getattr(self, 'matchcursor', None) is None:
+            self._cancel_search_timeout()
             self.update_search()
             self._move_match(offset)
             return
@@ -398,6 +394,7 @@ class SearchMode(BaseMode):
         old_match_index = self.matchcursor.index
         if not self.matches or old_match_index != self.matchcursor.index:
             logging.debug('_move_match: no matches or stale matchcursor - re-searching instead of moving')
+            self._cancel_search_timeout()
             self.update_search()
             return
 
@@ -415,12 +412,14 @@ class SearchMode(BaseMode):
                 self.replace_match(match, repl_str)
 
         self.controller.main_controller.undo_controller.record_stop()
+        self._cancel_search_timeout()
         self.update_search()
 
 
     # EVENT HANDLERS #
     def _on_entry_activate(self, entry):
         logging.debug('_on_entry_activate: Enter activated ent_search (text=%r)' % (entry.get_text()))
+        self._cancel_search_timeout()
         self.update_search()
         self._move_match(0) # Select the current match.
 
@@ -432,6 +431,7 @@ class SearchMode(BaseMode):
     def _on_replace_clicked(self, btn):
         if not self.storecursor or not self.ent_search.get_text() or not self.ent_replace.get_text():
             return
+        self._cancel_search_timeout()
         self.update_search()
 
         if self.chk_replace_all.get_active():
@@ -456,6 +456,7 @@ class SearchMode(BaseMode):
                 # give the impression that we replaced something (bug 1636)
                 self.storecursor.move(1)
 
+        self._cancel_search_timeout()
         self.update_search()
 
     def _on_search_clicked(self, btn):
@@ -473,10 +474,24 @@ class SearchMode(BaseMode):
             return
         self._move_match(-1)
 
-    def _on_search_text_changed(self, entry):
+    def _cancel_search_timeout(self):
+        """Cancel any pending debounced update_search() call.
+
+        update_search() itself only zeroes self._search_timeout (not a
+        source_remove() - GLib has already auto-removed a fired,
+        non-repeating timeout's source by the time anything else could
+        observe it, and removing it again would warn). Callers that
+        invoke update_search() directly, bypassing the debounce, need
+        this instead: a genuinely still-pending timeout from an earlier
+        keystroke would otherwise fire later regardless, running a
+        redundant search.
+        """
         if self._search_timeout:
             GObject.source_remove(self._search_timeout)
+            self._search_timeout = 0
 
+    def _on_search_text_changed(self, entry):
+        self._cancel_search_timeout()
         self._search_timeout = GObject.timeout_add(self.SEARCH_DELAY, self.update_search)
 
     def _on_start_search(self, _accel_group, _acceleratable, _keyval, _modifier):
@@ -519,4 +534,5 @@ class SearchMode(BaseMode):
                 self.matchcursor.indices = range(len(self.matches))
 
     def _refresh_proxy(self, *args):
+        self._cancel_search_timeout()
         self.update_search()

@@ -143,7 +143,12 @@ class UndoController(BaseController):
         self._enable_unit_signals()
 
         textbox = self.unit_controller.view.targets[undo_info['targetn']]
+        # Guard against this deferred refresh() running after a
+        # different, reused unit is now loaded into the same textbox.
+        scheduled_unit = undo_info['unit']
         def refresh():
+            if self.unit_controller.current_unit is not scheduled_unit:
+                return
             textbox.refresh_cursor_pos = undo_info['cursorpos']
             # TODO: try to avoid full refresh
             # This runs via idle_add, after _enable_unit_signals() above

@@ -59,10 +59,9 @@ classifiers = [
     "Intended Audience :: Developers",
     "Intended Audience :: End Users/Desktop",
     "Intended Audience :: Information Technology",
-    "License :: OSI Approved :: GNU General Public License (GPL)",
     "Programming Language :: Python",
     "Topic :: Software Development :: Localization",
-    "Topic :: Text Processing :: Linguistic"
+    "Topic :: Text Processing :: Linguistic",
     "Operating System :: OS Independent",
     "Operating System :: Microsoft :: Windows",
     "Operating System :: Unix"
@@ -93,12 +92,12 @@ if os.name == 'nt' or sys.platform == 'darwin':
         app, lang = lang.rstrip().split('/')
         po_filename = path.join('po', 'lite', app, lang+'.po')
         mo_filename = path.join('mo', lang, app+'.mo')
-    
+
         if not path.exists(path.join('mo', lang)):
             os.makedirs(path.join('mo', lang))
-    
+
         convertmo(open(po_filename), open(mo_filename, 'w'), None)
-    
+
         mo_files.append(
             ( path.join(TARGET_DATA_DIR, 'locale', lang, 'LC_MESSAGES'), [mo_filename])
         )
@@ -629,7 +628,7 @@ def main(options):
     create_manifest(options['data_files'], no_install_files, no_install_dirs)
     setup(name="virtaal",
           version=virtaal_version,
-          license="GNU General Public License (GPL)",
+          license="GPL-2.0-or-later",
           description=virtaal_description,
           long_description="""Virtaal is used to create program translations.
 
@@ -647,7 +646,7 @@ if __name__ == '__main__':
     main(options)
     # For some reason, Resources/lib/python2.5/lib-dynload is not in the Python
     # path. We need to get it in, therefore this hack.
-    if sys.platform == 'darwin':
+    if sys.platform == 'darwin' and 'py2app' in sys.argv:
         f = open('dist/virtaal.app/Contents/Resources/__boot__.py', "r+")
         s = f.read()
         f.truncate(0)

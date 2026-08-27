@@ -28,7 +28,7 @@ class Plugin(BasePlugin):
     description = _('Translation memory suggestions')
     version = 0.1
     default_config = {
-        'disabled_models': '_dummytm,remotetm,tinytm,apertium,google_translate,moses',
+        'disabled_models': '_dummytm,remotetm,apertium,google_translate,moses',
         'max_matches': '5',
         'min_quality': '70'
     }

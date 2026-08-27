@@ -142,6 +142,11 @@ class StoreController(BaseController):
     def is_modified(self):
         return self._modified
 
+    def set_modified(self, value):
+        """Set the modified flag, also updating set_saveable()."""
+        self._modified = value
+        self.main_controller.set_saveable(value)
+
     def _get_unitcontroller(self):
         return self._unit_controller
 
@@ -294,8 +299,10 @@ class StoreController(BaseController):
                         self.main_controller.open_file(filename)
                         self.cursor.pos = cursor_pos
                     self._proj_file_saved_id = self.connect('store-saved', post_save)
-        self._modified = False
-        self.main_controller.set_saveable(False)
+        self.set_modified(False)
+        # Unlike open_file()/close_file(), a save doesn't clear the undo
+        # stack, so it needs its own explicit clean-point mark.
+        self.main_controller.undo_controller.model.mark_clean()
         self.emit('store-saved')
 
     def binary_export(self, filename):
@@ -311,8 +318,7 @@ class StoreController(BaseController):
         del self.project
         self.project = None
         self.store = None
-        self._modified = False
-        self.main_controller.set_saveable(False)
+        self.set_modified(False)
         self.view.hide() # This MUST be called BEFORE `self.cursor = None`
         self.emit('store-closed') # This should be emitted BEFORE `self.cursor = None` to allow any other modules to disconnect from the cursor
         self.cursor = None

@@ -199,7 +199,9 @@ class SearchMode(BaseMode):
 
     def update_search(self):
         self._search_timeout = 0
-        from translate.tools.pogrep import GrepFilter
+        # See virtaal.support.pogrep_compat for why this isn't imported
+        # straight from translate.tools.pogrep.
+        from virtaal.support.pogrep_compat import GrepFilter
         self.filter = GrepFilter(
             searchstring=get_unicode(self.ent_search.get_text(), 'utf-8'),
             searchparts=('source', 'target'),

@@ -40,7 +40,6 @@ import gettext
 import locale
 import os
 import re
-import six
 
 try:
     import pycountry
@@ -137,7 +136,7 @@ def gettext_domain(langcode, domain, localedir=None):
         # On Windows the default locale is not used for some reason
         kwargs['languages'] = [locale.getdefaultlocale()[0]]
     t = gettext.translation(**kwargs)
-    return t.ugettext if six.PY2 else t.gettext
+    return t.gettext
 
 
 def gettext_lang(langcode=None):
@@ -173,5 +172,5 @@ def forceunicode(string):
         encoding = getattr(string, "encoding", "utf-8")
         string = string.decode(encoding)
     elif isinstance(string, StringElem):
-        string = six.text_type(string)
+        string = str(string)
     return string

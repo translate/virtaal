@@ -20,9 +20,9 @@
 
 from gi.repository import Gtk, Gdk
 from gi.repository.GObject import SignalFlags
-from translate.lang import data
 from translate.storage.placeables import StringElem, parse as elem_parse
 
+from virtaal.support.translate_compat import forceunicode
 from virtaal.views import placeablesguiinfo
 from virtaal.views.theme import current_theme
 
@@ -165,7 +165,7 @@ class TextBox(Gtk.TextView):
             start_iter = self.buffer.get_start_iter()
         if end_iter is None:
             end_iter = self.buffer.get_end_iter()
-        return data.forceunicode(self.buffer.get_text(start_iter, end_iter, include_hidden_chars=True))
+        return forceunicode(self.buffer.get_text(start_iter, end_iter, include_hidden_chars=True))
 
     def set_text(self, text, update=False):
         """Set the text rendered in this text box.
@@ -702,7 +702,7 @@ class TextBox(Gtk.TextView):
         if self.elem is None:
             return
 
-        ins_text = data.forceunicode(ins_text[:length])
+        ins_text = forceunicode(ins_text[:length])
         buff_offset = iter.get_offset()
         gui_info = self.elem.gui_info
         left = gui_info.elem_at_offset(buff_offset-1)

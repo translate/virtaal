@@ -118,7 +118,7 @@ class StoreModel(BaseModel):
         """Return totals for word and string counts."""
         if not self.filename:
             return {}
-        from translate.storage import statsdb
+        from virtaal.support import statsdb
         totals = statsdb.StatsCache().file_extended_totals(self.filename,  self._trans_store)
         return totals
 
@@ -167,7 +167,7 @@ class StoreModel(BaseModel):
         if filename is None:
             filename = self.filename
 
-        from translate.storage import statsdb
+        from virtaal.support import statsdb
         stats = statsdb.StatsCache().filestatestats(filename,  self._trans_store, extended=True)
         self._valid_units = stats['total']
         self.stats = fix_indexes(stats)
@@ -186,7 +186,7 @@ class StoreModel(BaseModel):
         else:
             self._checker = checker
 
-        from translate.storage import statsdb
+        from virtaal.support import statsdb
         errors = statsdb.StatsCache().filechecks(filename, checker, self._trans_store)
         self.checks = fix_indexes(errors, self._valid_units)
         return self.checks

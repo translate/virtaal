@@ -1,0 +1,15 @@
+# See docs/development.rst for setup instructions and what's
+# deliberately excluded for now, and why.
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: \.pot?$
+      - id: end-of-file-fixer
+        exclude: \.pot?$
+      - id: check-yaml
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files

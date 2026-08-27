@@ -17,22 +17,18 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+import gi
 
-"""Manual, interactive demo for SelectView - opens a real window for a
-human to eyeball, not an automated test. Run directly:
-python demo_selectview.py
-(Renamed from test_selectview.py, which pytest was picking up by
-filename convention alone despite having no assertions.)"""
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
-import gtk
-
-from selectview import SelectView
+from .selectview import SelectView
 
 
-class SelectViewTestWindow(gtk.Window):
+class SelectViewTestWindow(Gtk.Window):
     def __init__(self):
         super(SelectViewTestWindow, self).__init__()
-        self.connect('destroy', lambda *args: gtk.main_quit())
+        self.connect('destroy', lambda *args: Gtk.main_quit())
         self.add(self.create_selectview())
 
     def create_selectview(self):
@@ -52,10 +48,10 @@ class SelectViewTestWindow(gtk.Window):
 
 
     def _on_item_action(self, sender, item_info, action):
-        print 'Item %s: %s' % (action, item_info)
+        print('Item %s: %s' % (action, item_info))
 
 
 if __name__ == '__main__':
     win = SelectViewTestWindow()
     win.show_all()
-    gtk.main()
+    Gtk.main()

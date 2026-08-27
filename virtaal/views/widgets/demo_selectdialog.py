@@ -18,15 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-"""Manual, interactive demo for SelectDialog - opens a real dialog for a
-human to eyeball, not an automated test. Run directly:
-python demo_selectdialog.py
-(Renamed from test_selectdialog.py, which pytest was picking up by
-filename convention alone despite having no assertions.)"""
-
-import gtk
-
-from selectdialog import SelectDialog
+from .selectdialog import SelectDialog
 
 
 class TestSelectDialog(object):
@@ -53,7 +45,7 @@ class TestSelectDialog(object):
         self.dialog.run()
 
     def _on_dialog_action(self, dialog, item, action):
-        print '%s: %s' % (action, item)
+        print('%s: %s' % (action, item))
 
 
 if __name__ == '__main__':

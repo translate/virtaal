@@ -562,5 +562,11 @@ class StoreController(BaseController):
         self.store.set_target_language(langcode)
 
     def _unit_modified(self, emitter, unit):
-        self._modified = True
-        self.main_controller.set_saveable(self._modified)
+        # Guard against a late "modified" signal from a just-closed or
+        # just-replaced file's teardown - both no file open at all, and
+        # a unit belonging to a store that's since been replaced.
+        if self.store is None:
+            return
+        if unit not in self.store.get_units():
+            return
+        self.set_modified(True)

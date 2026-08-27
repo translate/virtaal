@@ -13,3 +13,11 @@ repos:
       - id: check-toml
       - id: check-merge-conflict
       - id: check-added-large-files
+
+  - repo: local
+    hooks:
+      - id: check-pot-freshness
+        name: check po/virtaal.pot is up to date with translatable sources
+        entry: po/check-pot-freshness.sh
+        language: system
+        pass_filenames: true

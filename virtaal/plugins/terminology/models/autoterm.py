@@ -178,19 +178,13 @@ class TerminologyModel(BaseTerminologyModel):
         return ext
 
     def _get_ext_from_store_guess(self, content):
-        # Confirmed live, 2026-08-25: two compounding bugs, both from
-        # the same Python 2 str==bytes assumption. (1) content (from
-        # _process_header's result, ultimately httpclient.py's
-        # BytesIO().getvalue()) is real bytes, not str - StringIO(bytes)
-        # raises TypeError immediately. (2) translate.storage.factory's
-        # own guess function was renamed upstream from the (misspelled)
-        # _guessextention to _guess_extension at some point - the old
-        # name no longer exists at all, so this import always raised
-        # ImportError before content's own type even mattered. The new
-        # _guess_extension() also confirms content should be bytes: it
-        # checks storefile.read(600) against byte-string literals like
-        # b"<xliff ", so BytesIO (not StringIO) is correct either way,
-        # not just a type-error workaround.
+        # content (from _process_header's result, ultimately
+        # httpclient.py's BytesIO().getvalue()) is real bytes, not str -
+        # BytesIO, not StringIO. translate.storage.factory's guess
+        # function was also renamed upstream from the misspelled
+        # _guessextention to _guess_extension; the new one checks
+        # storefile.read(600) against byte-string literals like
+        # b"<xliff ", confirming bytes is correct here too.
         from io import BytesIO
         from translate.storage.factory import _guess_extension
         s = BytesIO(content)
@@ -215,28 +209,19 @@ class TerminologyModel(BaseTerminologyModel):
                 localfile = os.path.join(self.TERMDIR, localfile)
             logging.debug('Saving to %s' % (localfile))
             # result is real bytes (httpclient.py's BytesIO().getvalue()),
-            # not str - confirmed live, 2026-08-25: open(..., 'w') (text
-            # mode) raises "TypeError: write() argument must be str, not
-            # bytes" under Python 3, every single time a terminology
-            # download actually succeeded. Worked in Python 2 only
-            # because str and bytes were the same type there. Writing
-            # 'wb' (not decoding first) preserves the exact downloaded
-            # bytes regardless of the server's actual charset, matching
-            # what the original Python 2 code effectively did.
+            # not str - 'wb' (not text mode, and not decoding first)
+            # preserves the exact downloaded bytes regardless of the
+            # server's actual charset.
             open(localfile, 'wb').write(result)
 
-            # Find ETag header and save the value. request.result_headers
-            # is httpclient.py's own BytesIO (raw HTTP header bytes, same
-            # as `result` above) - .getvalue().splitlines() is therefore
-            # a list of bytes lines, not str, so both the b'etag:' match
-            # and the final slice need to work in bytes; only the stored
-            # value itself is decoded to str, since self.config's value
-            # ends up formatted straight into a str header
-            # ('If-None-Match: "%s"' % etag) in _check_for_update().
-            # Confirmed live, 2026-08-25, same root cause as the two
-            # fixes just above - Python 2's str==bytes let the original
-            # 'etag:' str literal match bytes lines directly; Python 3
-            # can't.
+            # request.result_headers is httpclient.py's own BytesIO (raw
+            # HTTP header bytes, same as `result` above) -
+            # .getvalue().splitlines() is a list of bytes lines, so both
+            # the b'etag:' match and the final slice need to work in
+            # bytes; only the stored value itself is decoded to str,
+            # since self.config's value ends up formatted straight into a
+            # str header ('If-None-Match: "%s"' % etag) in
+            # _check_for_update().
             headers = request.result_headers.getvalue().splitlines()
             etag = ''
             etagline = [l for l in headers if l.lower().startswith(b'etag:')]

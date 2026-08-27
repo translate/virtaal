@@ -178,11 +178,13 @@ class TerminologyModel(BaseTerminologyModel):
         return ext
 
     def _get_ext_from_store_guess(self, content):
-        from io import StringIO
-        from translate.storage.factory import _guessextention
-        s = StringIO(content)
+        # content is real bytes, not str - BytesIO, not StringIO.
+        # _guessextention was also renamed upstream to _guess_extension.
+        from io import BytesIO
+        from translate.storage.factory import _guess_extension
+        s = BytesIO(content)
         try:
-            return _guessextention(s)
+            return _guess_extension(s)
         except ValueError:
             pass
         return None
@@ -201,14 +203,16 @@ class TerminologyModel(BaseTerminologyModel):
                 localfile = self._get_curr_term_filename(ext=ext)
                 localfile = os.path.join(self.TERMDIR, localfile)
             logging.debug('Saving to %s' % (localfile))
-            open(localfile, 'w').write(result)
+            # result is real bytes - 'wb' preserves it exactly.
+            open(localfile, 'wb').write(result)
 
-            # Find ETag header and save the value
+            # Headers are bytes too; only the stored etag value itself
+            # is decoded to str (used later as a str header value).
             headers = request.result_headers.getvalue().splitlines()
             etag = ''
-            etagline = [l for l in headers if l.lower().startswith('etag:')]
+            etagline = [l for l in headers if l.lower().startswith(b'etag:')]
             if etagline:
-                etag = etagline[0][7:-1]
+                etag = etagline[0][7:-1].decode('ascii', errors='replace')
             self.config[os.path.abspath(localfile)] = etag
         else:
             logging.debug('Unhandled status code: %d' % (request.status))

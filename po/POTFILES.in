@@ -56,4 +56,3 @@ virtaal/models/storemodel.py
 share/mime/packages/virtaal-mimetype.xml.in
 devsupport/tmp_strings.py
 bin/virtaal
-devsupport/optparse.py

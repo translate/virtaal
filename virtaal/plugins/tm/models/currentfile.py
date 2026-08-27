@@ -20,6 +20,8 @@
 
 from translate.search import match
 
+from virtaal.support.match_compat import matcher as _matcher
+
 from .basetmmodel import BaseTMModel
 
 
@@ -62,7 +64,7 @@ class TMModel(BaseTMModel):
                 'max_candidates': self.controller.max_matches,
                 'min_similarity': self.controller.min_quality
             }
-            self.matcher = match.matcher(store, **options)
+            self.matcher = _matcher(store, **options)
         else:
             self.matcher.extendtm(store.units)
         self.cache = {}

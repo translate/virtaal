@@ -21,16 +21,12 @@
 """Plugin to import data from other applications.
 
 Currently there is some support for importing settings from Poedit and
-Lokalize. Translation Memory can be imported from Poedit and Lokalize.
+Lokalize, and Translation Memory from Lokalize. (Poedit's and KBabel's TM
+import both relied on the Python 2-only bsddb module and were removed.)
 """
 
-try:
-    import bsddb
-except ImportError:
-    bsddb = None
 import logging
 import os
-import struct
 import sys
 from os import path
 
@@ -45,15 +41,8 @@ except ImportError:
 from virtaal.common import pan_app
 from virtaal.controllers.baseplugin import BasePlugin
 
-from translate.storage.pypo import extractpoline
-from translate.storage import tmdb
+from virtaal.support import tmdb
 
-
-def _prepare_db_string(string):
-    """Helper method needed by the Berkeley DB TM converters."""
-    string = '"%s"' % string
-    string = str(extractpoline(string), 'utf-8')
-    return string
 
 class Plugin(BasePlugin):
     description = _('Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal.')
@@ -86,16 +75,10 @@ class Plugin(BasePlugin):
             else:
                 self.poedit_dir = path.expanduser('~/.poedit')
 
-            #TODO: check if we can do better than hardcoding the kbabel location
-            #this path is specified in ~/.kde/config/kbabel.defaultproject and kbabeldictrc
-            self.kbabel_dir = path.expanduser('~/.kde/share/apps/kbabeldict/dbsearchengine')
-
             self.lokalize_rc = path.expanduser('~/.kde/share/config/lokalizerc')
             self.lokalize_tm_dir = path.expanduser('~/.kde/share/apps/lokalize/')
 
             self.poedit_settings_import()
-            self.poedit_tm_import()
-            self.kbabel_tm_import()
             self.lokalize_settings_import()
             self.lokalize_tm_import()
 
@@ -169,70 +152,21 @@ class Plugin(BasePlugin):
         if translator_email:
             pan_app.settings.translator['email'] = translator_email
 
-        self.poedit_database_path = get_thing('TM', 'database_path')
-        self.poedit_languages = []
-        languages = get_thing('TM', 'languages')
-        if languages:
-            self.poedit_languages = languages.split(':')
-
         if lastdir or name or translator_email:
             pan_app.settings.write()
             self.migrated.append(_("Poedit settings"))
 
-    def poedit_tm_import(self):
-        """Attempt to import the Translation Memory used in KBabel."""
-        if bsddb is None or not hasattr(self, "poedit_database_path"):
-            return
-
-        # import each language separately
-        for lang in self.poedit_languages:
-            strings_db_file = path.join(self.poedit_database_path, lang, 'strings.db')
-            translations_db_file = path.join(self.poedit_database_path, lang, 'translations.db')
-            if not path.exists(strings_db_file) or not path.exists(translations_db_file):
-                continue
-            sources = bsddb.hashopen(strings_db_file, 'r')
-            targets = bsddb.rnopen(translations_db_file, 'r')
-            for source, str_index in sources.items():
-                unit = {"context" : ""}
-                # the index is a four byte integer encoded as a string
-                # was little endian on my machine, not sure if it is universal
-                index = struct.unpack('i', str_index)
-                target = targets[index[0]][:-1] # null-terminated
-                unit["source"] = _prepare_db_string(source)
-                unit["target"] = _prepare_db_string(target)
-                self.tmdb.add_dict(unit, "en", lang, commit=False)
-            self.tmdb.connection.commit()
-
-            logging.debug('%d units migrated from Poedit TM: %s.' % (len(sources), lang))
-            sources.close()
-            targets.close()
-            self.migrated.append(_("Poedit's Translation Memory: %(database_language_code)s") % \
-                    {"database_language_code": lang})
-
-    def kbabel_tm_import(self):
-        """Attempt to import the Translation Memory used in KBabel."""
-        if bsddb is None or not path.exists(self.kbabel_dir):
-            return
-        for tm_filename in os.listdir(self.kbabel_dir):
-            if not tm_filename.startswith("translations.") or not tm_filename.endswith(".db"):
-                continue
-            tm_file = path.join(self.kbabel_dir, tm_filename)
-            lang = tm_filename.replace("translations.", "").replace(".db", "")
-            translations = bsddb.btopen(tm_file, 'r')
-
-            for source, target in translations.items():
-                unit = {"context" : ""}
-                source = source[:-1] # null-terminated
-                target = target[16:-1] # 16 bytes of padding, null-terminated
-                unit["source"] = _prepare_db_string(source)
-                unit["target"] = _prepare_db_string(target)
-                self.tmdb.add_dict(unit, "en", lang, commit=False)
-            self.tmdb.connection.commit()
-
-            logging.debug('%d units migrated from KBabel %s TM.' % (len(translations), lang))
-            translations.close()
-            self.migrated.append(_("KBabel's Translation Memory: %(database_language_code)s") % \
-                      {"database_language_code": lang})
+    # poedit_tm_import() and kbabel_tm_import() used to live here: both
+    # imported Poedit's/KBabel's Translation Memory out of Berkeley DB
+    # files via the stdlib `bsddb` module. `bsddb` was Python 2-only and
+    # was never ported to Python 3 (no replacement in the standard
+    # library), so both were permanently unreachable dead code under
+    # Python 3 - the try/except above always left bsddb as None, and both
+    # methods bailed out in their very first line whenever that was the
+    # case. Removed rather than ported, along with the now-unused
+    # `_prepare_db_string()` helper (translate.storage.pypo.extractpoline,
+    # which it needed, was itself removed upstream - not worth chasing
+    # for code nothing could ever call).
 
     def lokalize_settings_import(self):
         """Attempt to import the settings from Lokalize."""

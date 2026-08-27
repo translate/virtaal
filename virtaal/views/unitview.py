@@ -139,7 +139,16 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             self.targets[self.focused_target_n].move_elem_selection(-1)
         def on_transfer(*args):
             focused = get_focused(self.targets)
-            self.copy_original(focused)
+            # copy_original() assumes a real textbox (its only other
+            # caller, this file's own alt-down key-press handler, always
+            # has one - it fires directly on the textbox in question).
+            # This one doesn't have that guarantee: reachable via the
+            # Edit menu item or its Alt+Down accelerator regardless of
+            # which widget currently has keyboard focus, unlike
+            # on_cut()/on_copy()/on_paste() just above, which already
+            # guard the same get_focused() possibly returning None.
+            if focused is not None:
+                self.copy_original(focused)
         mnu_next.connect('activate', on_next)
         mnu_prev.connect('activate', on_prev)
         mnu_transfer.connect('activate', on_transfer)

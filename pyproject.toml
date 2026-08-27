@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "virtaal"
+dynamic = ["version"]
+description = "A tool to create program translations."
+readme = "README.rst"
+license = "GPL-2.0-or-later"
+authors = [
+    {name = "Translate.org.za"},
+]
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Information Technology",
+    "Programming Language :: Python",
+    "Topic :: Software Development :: Localization",
+    "Topic :: Text Processing :: Linguistic",
+    "Operating System :: OS Independent",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: Unix",
+]
+# GTK3/PyGObject deliberately NOT listed here: `pip install pygobject`
+# only succeeds if GTK3's own headers/libs are already present on the
+# system, which varies wildly by platform (apt/Homebrew/gvsbuild) - see
+# each CI job and .claude/skills/run-virtaal/SKILL.md's prerequisites.
+# It's a documented system prerequisite, not a normal pip dependency,
+# same reason most GTK Python projects don't declare it either.
+dependencies = [
+    "translate-toolkit",
+    "pycurl",
+    "diff_match_patch",
+    "lxml",
+    "python-Levenshtein",
+    "cheroot",
+]
+
+[project.optional-dependencies]
+spellcheck = ["pyenchant"]
+test = ["pytest"]
+docs = ["Sphinx"]
+
+[project.urls]
+Homepage = "https://virtaal.translatehouse.org"
+Repository = "https://github.com/translate/virtaal"
+
+[tool.setuptools]
+script-files = ["bin/virtaal"]
+# bin/virtaal stays a real script file (not a console_scripts entry
+# point): it has its own dependency-check-then-launch logic keyed off
+# `sys.argv`/`__file__` that a thin entry-point wrapper would need to
+# preserve carefully - a bigger, separate refactor, not part of this
+# packaging cleanup.
+
+[tool.setuptools.dynamic]
+version = {attr = "virtaal.__version__.ver"}
+
+[tool.setuptools.packages.find]
+include = ["virtaal*"]
+exclude = ["virtaal.test"]
+# virtaal.test has no __init__.py (not a real package - pytest doesn't
+# need one for discovery), so it's excluded here rather than shipped.
+# devsupport* is excluded implicitly by only including virtaal* at all -
+# it never was packaged for a real install, only usable from a source
+# checkout (see bin/virtaal's profiling support, which already degrades
+# gracefully when devsupport.profiling isn't importable).

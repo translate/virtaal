@@ -261,7 +261,22 @@ class Plugin(BasePlugin):
         def add_widgets():
             if hasattr(self, 'lastunit'):
                 if self.lastunit.hasplural():
-                    for target in self.lastunit.target:
+                    # Confirmed live, 2026-08-25: self.lastunit.target for
+                    # a plural unit is a multistring, which subclasses
+                    # str - iterating it directly (as this did) yields
+                    # individual *characters* of just the first plural
+                    # form, not each form's own text, matching how any
+                    # plain str behaves under `for x in some_str`.
+                    # unitview.py's own plural handling already uses
+                    # target.strings for exactly this reason (confirmed
+                    # by reading it) - this was the one place in the
+                    # codebase that didn't. Practical impact was muted
+                    # (single characters almost never pass isusable()'s
+                    # length check, so this rarely produced a visibly
+                    # wrong suggestion) but it meant words appearing only
+                    # in a plural-form translation were never actually
+                    # added to the autocomplete pool.
+                    for target in self.lastunit.target.strings:
                         if target:
                             #logging.debug('Adding words: %s' % (self.autocomp.wordsep_re.split(str(target))))
                             self.autocomp.add_words(self.autocomp.wordsep_re.split(str(target)))

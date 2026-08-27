@@ -30,7 +30,7 @@ class Plugin(BasePlugin):
     version = 0.1
     default_config = {
         'backends_dialog_width': 400,
-        'disabled_models': 'opentran',
+        'disabled_models': '',
         'max_matches': '5',
         'min_quality': '70'
     }

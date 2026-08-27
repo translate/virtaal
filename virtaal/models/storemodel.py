@@ -25,6 +25,12 @@ from virtaal.common import pan_app
 from .basemodel import BaseModel
 
 
+class SaveCancelled(Exception):
+    """Raised when the user cancels the translator info prompt during
+        save - expected, not an error, so handled separately from a
+        real save failure."""
+
+
 def fix_indexes(stats, valid_units=None):
     """convert statsdb array to use model index instead of storage class index"""
     if valid_units is None:
@@ -259,7 +265,7 @@ class StoreModel(BaseModel):
             team = self.controller.main_controller.get_translator_team()
             if name is None or email is None or team is None:
                 # User cancelled
-                raise Exception('Save cancelled.')
+                raise SaveCancelled()
             pan_app.settings.translator["name"] = name
             pan_app.settings.translator["email"] = email
             pan_app.settings.translator["team"] = team

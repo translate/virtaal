@@ -28,6 +28,7 @@ from gi.repository import Gtk, GObject
 
 from .basecontroller import BaseController
 from virtaal.common import GObjectWrapper, pan_app
+from virtaal.models.storemodel import SaveCancelled
 from virtaal.views.mainview import MainView
 
 
@@ -255,6 +256,9 @@ class MainController(BaseController):
         try:
             self.store_controller.save_file(filename)
             return True
+        except SaveCancelled:
+            # Expected, not an error - no traceback, no dialog.
+            pass
         except IOError as exc:
             self.show_error(
                 _("Could not save file.\n\n%(error_message)s\n\nTry saving to a different location.") % {'error_message': str(exc)}

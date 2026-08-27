@@ -99,5 +99,6 @@ reading the instructions on the following pages:
    localising_virtaal
    building
    testing
+   development
    development_plans
    suggestions

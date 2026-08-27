@@ -193,6 +193,15 @@ def main(argv):
                 except Exception:
                     pass
             run_virtaal(startup_file)
+            # virtaal.main.Virtaal disables the cyclic GC for the whole
+            # run (see there for why), but normal CPython interpreter
+            # finalization forces one last gc.collect() regardless of
+            # that, which reproduced the exact same GTK teardown
+            # segfault at exit instead of during use. Skip normal
+            # finalization to avoid it; there's nothing left to flush
+            # or clean up at this point.
+            import os
+            os._exit(0)
 
         if options and getattr(options, "profile", None) != None:
             return profile_runner

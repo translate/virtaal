@@ -57,6 +57,23 @@ class Virtaal(object):
     """The main Virtaal program entry point."""
 
     def __init__(self, startupfile):
+        # PyGObject-wrapped GTK widgets routinely end up in Python
+        # reference cycles (e.g. via bound-method signal connections),
+        # and GTK's C-level widget dispose/unparent chain is not
+        # reentrant: if the cyclic GC frees such a widget at an
+        # arbitrary bytecode boundary - including while GTK is already
+        # mid-callback tearing down something else - it segfaults deep
+        # inside GTK (gtk_menu_shell_forall /
+        # gtk_widget_propagate_hierarchy_changed, reached through
+        # pygobject_dealloc -> g_object_unref -> gtk_widget_dispose).
+        # Confirmed via macOS crash reports and reproduced directly
+        # (about half of repeated test-suite runs crashed with the
+        # collector left on, none did with it disabled). We rely on
+        # CPython's refcounting for the deterministic case and simply
+        # never run the cyclic collector for the rest.
+        import gc
+        gc.disable()
+
         # We try to get the welcomescreen loaded as early as possible
         from virtaal.controllers.maincontroller import MainController
         from virtaal.controllers.welcomescreencontroller import WelcomeScreenController

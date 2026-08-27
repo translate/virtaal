@@ -1,0 +1,43 @@
+TM plugin TODO
+==============
+
+Import an arbitrary file into local TM
+---------------------------------------
+The plumbing already exists but nothing in the UI calls it: remotetm.py
+(which localtm inherits from) has upload_store(store_controller), which
+pushes a whole store into the TM database via tmclient.upload_store() ->
+tmserver.py's PUT /store/{sid} -> factory.getobject() - so it already
+accepts anything translate-toolkit can parse, TMX included. Only
+push_store() (auto-triggered on saving the *current* file) is wired to
+anything; upload_store() is dead from a UI standpoint.
+
+Add a real UI action - a file-chooser dialog, roughly "Import into
+Translation Memory..." - that runs the chosen file through
+factory.getobject() and pushes it into localtm via that same path,
+without needing the file open as the current document.
+
+This is the practical way to help users migrating from other CAT tools,
+Poedit in particular: Poedit's own TM is a Lucene index (see
+src/tm/transmem.cpp upstream) - not worth reading directly from Python,
+but Poedit can export it to TMX (src/tm/tmx_io.cpp upstream), and this
+action would let a user bring that straight in. Not Poedit-specific
+though - works for any TMX/PO/XLIFF a user points it at.
+
+Re-validate migration.py against upstream releases
+----------------------------------------------------
+virtaal/plugins/migration.py's Lokalize import broke silently over time
+purely from KDE/Lokalize moving on - wrong config/TM paths (pre-KDE4
+~/.kde/... locations, superseded by XDG base dirs ~2014) and a schema
+that had since been normalized across multiple tables. Worth periodically
+re-checking its assumptions (paths, file formats, DB schemas) against
+each app's current source, the same way this got fixed:
+  - Poedit: https://github.com/vslavik/poedit (src/tm/*)
+  - Lokalize: https://invent.kde.org/sdk/lokalize (src/tm/*)
+  - KBabel: dead since ~2008, superseded by Lokalize in KDE4 - nothing to
+    check, just confirm it's still dead.
+
+No fixed cadence agreed yet - these apps don't release often enough to
+need checking every virtaal release, but drift silently enough (no
+loud failure, just a plugin that quietly migrates nothing) that it's
+worth a deliberate look now and then rather than waiting for a bug
+report.

@@ -210,10 +210,23 @@ DROP TRIGGER IF EXISTS sources_delete_trig;
         # TODO: is that really the best way to handle unspecified
         # source and target languages? what about conflicts between
         # unit attributes and passed arguments
-        if unit.getsourcelanguage():
-            source_lang = unit.getsourcelanguage()
-        if unit.gettargetlanguage():
-            target_lang = unit.gettargetlanguage()
+        #
+        # A bare TranslationUnit (as add_unit/tmserver.py builds one from a
+        # single {"source", "target"} dict, with no store behind it) has no
+        # language of its own: current translate-toolkit's
+        # getsourcelanguage()/gettargetlanguage() unconditionally delegate to
+        # self._store, which raises AttributeError instead of returning None
+        # for such a unit - hence the guard here.
+        try:
+            if unit.getsourcelanguage():
+                source_lang = unit.getsourcelanguage()
+        except AttributeError:
+            pass
+        try:
+            if unit.gettargetlanguage():
+                target_lang = unit.gettargetlanguage()
+        except AttributeError:
+            pass
 
         if not source_lang:
             raise LanguageError("undefined source language")

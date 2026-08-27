@@ -17,6 +17,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+
+"""Manual, interactive demo for SelectView - opens a real window for a
+human to eyeball, not an automated test. Run directly:
+python demo_selectview.py
+(Renamed from test_selectview.py, which pytest was picking up by
+filename convention alone despite having no assertions.)"""
+
 import gi
 
 gi.require_version('Gtk', '3.0')

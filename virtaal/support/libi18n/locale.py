@@ -343,9 +343,9 @@ def fix_libintl(main_dir):
     # See https://bugzilla.gnome.org/show_bug.cgi?id=574520
     from ctypes import cdll
     libintl = cdll.intl
-    # we need main_dir in the filesystem encoding:
-    main_dir = main_dir.encode(sys.getfilesystemencoding())
     locale_dir = os.path.join(main_dir, "share", "locale")
+    # ctypes needs locale_dir in the filesystem encoding, as bytes:
+    locale_dir = locale_dir.encode(sys.getfilesystemencoding())
     libintl.bindtextdomain("virtaal", locale_dir)
     libintl.bind_textdomain_codeset("virtaal", 'UTF-8')
     del libintl

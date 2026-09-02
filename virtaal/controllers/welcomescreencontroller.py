@@ -61,9 +61,8 @@ class WelcomeScreenController(BaseController):
         self.view.show()
 
     def open_cheatsheat(self):
-        from virtaal.support import openmailto
-        # FIXME: The URL below is just a temporary solution
-        openmailto.open(_('http://translate.sourceforge.net/wiki/virtaal/cheatsheet'))
+        from virtaal.views.widgets.shortcutswindow import ShortcutsWindow
+        ShortcutsWindow(self.main_controller.view.main_window)
 
     def open_file(self, filename=None):
         self.main_controller.open_file(filename)

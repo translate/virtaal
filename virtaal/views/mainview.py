@@ -184,6 +184,7 @@ class MainView(BaseView):
         self.gui.get_object('mnu_tutorial').connect('activate', self._on_tutorial)
         self.gui.get_object('mnu_localization_guide').connect('activate', self._on_localization_guide)
         self.gui.get_object('mnu_report_bug').connect('activate', self._on_report_bug)
+        self.gui.get_object('mnu_shortcuts').connect('activate', self._on_shortcuts)
         self.gui.get_object('mnu_about').connect('activate', self._on_help_about)
 
         self.main_window.set_icon_from_file(pan_app.get_abs_data_filename(["icons", "virtaal.png"]))
@@ -826,6 +827,10 @@ class MainView(BaseView):
     def _on_help_about(self, _widget=None):
         from .widgets.aboutdialog import AboutDialog
         AboutDialog(self.main_window)
+
+    def _on_shortcuts(self, _widget=None):
+        from .widgets.shortcutswindow import ShortcutsWindow
+        ShortcutsWindow(self.main_window)
 
     def _on_quit(self, *args):
         self.controller.quit()

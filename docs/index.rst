@@ -22,9 +22,10 @@ Read more about the :doc:`features <features>` in Virtaal, or view the
 <http://l10n.mozilla-community.org/pootle/screencasts/virtaal-0.3.ogv>`_ (33MB,
 Ogg Theora format) to see some of these features in action.
 
-Learn more about :doc:`using Virtaal <using_virtaal>`, available
-:doc:`shortcuts <cheatsheet>` and some extra :doc:`tips and tricks <tips>` for
-people who want to customise their installation.
+Learn more about :doc:`using Virtaal <using_virtaal>` and some extra
+:doc:`tips and tricks <tips>` for people who want to customise their
+installation. Keyboard shortcuts are available from Virtaal's own
+Help menu.
 
 .. toctree::
    :maxdepth: 1
@@ -33,7 +34,6 @@ people who want to customise their installation.
    using_virtaal
    features
    screenshots
-   cheatsheet
    tips
 
 .. _index#installation:

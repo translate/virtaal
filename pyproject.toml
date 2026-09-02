@@ -9,7 +9,7 @@ description = "A tool to create program translations."
 readme = "README.rst"
 license = "GPL-2.0-or-later"
 authors = [
-    {name = "Translate.org.za"},
+    {name = "Translate"},
 ]
 requires-python = ">=3.10"
 classifiers = [

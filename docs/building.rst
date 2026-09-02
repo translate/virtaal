@@ -16,20 +16,22 @@ To get the source code direction from Git use this command::
 Required Packages
 =================
 
-- `GTK+ <http://www.gtk.org/download/index.php>`_ runtime (for Windows download
-  the `latest bundle <http://www.gtk.org/download/win32.php>`_)
-- `PyGTK <http://pygtk.org/downloads.html>`_
-- `lxml <https://pypi.python.org/pypi/lxml/>`_
-- libglade and its python bindings (might be called something like
-  pygtk2.0-libglade on your Linux distribution)
-- Translate-toolkit (if a current enough version is packaged, it might be
-  called python-translate on your Linux distribution)
-- simplejson (might be called something like python-simplejson on your Linux
-  distribution)
-- PyCurl (might be called something like python-curl or python-pycurl on your
-  Linux distribution)
-- sqlite3 (only required if using Python 2.4)
-- wsgiref (only required if using Python 2.4)
+- GTK3 and PyGObject (``python3-gi``/``gir1.2-gtk-3.0`` or similar on
+  Linux, Homebrew's ``pygobject3``/``gtk+3`` on macOS, `gvsbuild
+  <https://github.com/wingtk/gvsbuild>`_ on Windows) - a system
+  prerequisite, not something ``pip install`` provisions on its own;
+  see ``.github/workflows/ci.yml`` for exactly what each platform's CI
+  job installs
+- `Translate Toolkit <https://pypi.org/project/translate-toolkit/>`_
+- `lxml <https://pypi.org/project/lxml/>`_
+- `PyCurl <https://pypi.org/project/pycurl/>`_
+- `diff_match_patch <https://pypi.org/project/diff-match-patch/>`_
+- `python-Levenshtein <https://pypi.org/project/python-Levenshtein/>`_
+- `cheroot <https://pypi.org/project/cheroot/>`_
+
+The Python packages above are all declared in ``pyproject.toml`` and
+installed automatically by ``pip install .`` - only GTK3/PyGObject
+needs installing separately first.
 
 .. _building#optional_packages:
 

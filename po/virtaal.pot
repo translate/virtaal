@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-02 18:22+0100\n"
+"POT-Creation-Date: 2026-09-02 18:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2153,6 +2153,26 @@ msgstr ""
 
 #: ../devsupport/tmp_strings.py:26
 msgid "OmegaT Glossary"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py:29
+msgid "usage: "
+msgstr ""
+
+#: ../devsupport/tmp_strings.py:30
+msgid "positional arguments"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py:31
+msgid "options"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py:32
+msgid "show this help message and exit"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py:33
+msgid "show program's version number and exit"
 msgstr ""
 
 #: ../bin/virtaal:111

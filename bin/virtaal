@@ -103,9 +103,9 @@ def main(argv):
 
         from virtaal import __version__
 
-        # No optparse._ = _ equivalent - argparse's own generated chrome
-        # (e.g. "show this help message and exit") isn't translated any
-        # more. Virtaal's own help text below is unaffected.
+        # argparse's own _ is independent of Virtaal's gettext.install()
+        # - without this, its generated chrome stays untranslated.
+        argparse._ = _
         parser = argparse.ArgumentParser()
         parser.add_argument("-v", "--version", action="version", version=__version__.ver)
         parser.add_argument("-l", "--log", dest="log", metavar=_("LOG"),

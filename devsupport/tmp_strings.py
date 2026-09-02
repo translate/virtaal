@@ -24,3 +24,10 @@ _("Gettext PO file")
 _("Gettext MO file")
 _("Qt .qm file")
 _("OmegaT Glossary")
+
+# Argparse strings
+_("usage: ")
+_("positional arguments")
+_("options")
+_("show this help message and exit")
+_("show program's version number and exit")

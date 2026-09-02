@@ -1,0 +1,146 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  pre-commit:
+    # Lints only the files that changed, not the whole tree - many
+    # pre-existing files don't pass .pre-commit-config.yaml's hooks yet.
+    # Falls back to the parent commit, then to --all-files, if there's
+    # no usable diff base (first push to a branch, a force push, or a
+    # repo's very first commit).
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      - name: Run pre-commit on changed files
+        run: |
+          base="${{ github.event.pull_request.base.sha || github.event.before }}"
+          if [ -z "$base" ] || [ "$base" = "0000000000000000000000000000000000000000" ]; then
+            base=""
+          elif ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+            # A force-push can leave github.event.before pointing at a
+            # commit this checkout no longer has.
+            base=""
+          fi
+          if [ -z "$base" ]; then
+            base=$(git rev-parse HEAD^ 2>/dev/null || true)
+          fi
+          if [ -z "$base" ]; then
+            pre-commit run --all-files
+          else
+            pre-commit run --from-ref "$base" --to-ref HEAD
+          fi
+
+  docs-and-translations:
+    # Own job rather than running once per matrix cell below - neither
+    # step is packaging- or platform-specific.
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y intltool
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install Sphinx
+
+      - name: Update translations
+        run: ./maketranslations
+
+      - name: Build docs
+        run: make docs
+
+  test:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            at-spi2-core \
+            gir1.2-gtk-3.0 \
+            gir1.2-gtkspell3-3.0 \
+            gobject-introspection \
+            hunspell-en-us \
+            libcairo2-dev \
+            libenchant-2-dev \
+            libgirepository-2.0-dev \
+            libglib2.0-dev \
+            libgnutls28-dev \
+            pkg-config \
+            python3-dev \
+            xvfb
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          # setuptools/wheel needed explicitly: "Install virtaal" below
+          # uses --no-build-isolation, so pip won't provision its own
+          # build backend into a throwaway env.
+          pip install setuptools wheel
+          # translate-toolkit has to be pre-installed, not just declared
+          # as a dependency: setup.py's own top-level code imports it
+          # directly (for .mo compilation), before pip has satisfied
+          # pyproject.toml's declared dependencies.
+          pip install translate-toolkit
+          # GTK3/PyGObject aren't declared in pyproject.toml at all -
+          # pip install pygobject only succeeds with GTK3 headers
+          # already present, which apt provides here.
+          pip install pygobject
+          pip install pyenchant
+
+      - name: Install virtaal
+        # Not `python setup.py install` - unreliable about where it
+        # puts the script. --no-build-isolation so setup.py's own
+        # `from translate.tools.pocompile import convertmo` sees the
+        # translate-toolkit installed above.
+        run: |
+          # shellcheck disable=SC2102  # .[test] is pip extras syntax, not a glob range
+          pip install --no-build-isolation .[test]
+
+      - name: Compile-check all Python files
+        run: find . -name "*.py" -exec python -m py_compile {} +
+
+      - name: Run tests
+        run: xvfb-run -a --server-args="-screen 0 1024x768x24" pytest -rvxs virtaal
+
+      - name: Smoke test the CLI
+        run: xvfb-run -a --server-args="-screen 0 1024x768x24" virtaal --help

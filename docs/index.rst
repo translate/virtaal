@@ -18,9 +18,7 @@ Virtaal is built on the powerful API of the `Translate Toolkit
 meaning "For Language", but also refers to translation.
 
 Read more about the :doc:`features <features>` in Virtaal, or view the
-:doc:`screenshots <screenshots>`.  You can also download a `screencast
-<http://l10n.mozilla-community.org/pootle/screencasts/virtaal-0.3.ogv>`_ (33MB,
-Ogg Theora format) to see some of these features in action.
+:doc:`screenshots <screenshots>`.
 
 Learn more about :doc:`using Virtaal <using_virtaal>` and some extra
 :doc:`tips and tricks <tips>` for people who want to customise their
@@ -40,37 +38,8 @@ Help menu.
 
 Installation
 ============
-.. toctree::
-   :maxdepth: 1
-   :hidden:
-
-   fedora_custom_repo
-
-+-----------------+--------------------------------------------------------------+---------------------------------------------+
-| Platform        | Instructions                                                 |  Notes                                      |
-+=================+==============================================================+=============================================+
-| Windows         | `Download Virtaal setup.exe                                  | Includes all dependencies                   |
-|                 | <http://sourceforge.net/projects/translate/files/Virtaal/>`_ |                                             |
-+-----------------+--------------------------------------------------------------+---------------------------------------------+
-| Mac OS X        | `Download Virtaal .dmg                                       | Beta release. OS X 10.5 and greater         |
-|                 | <http://sourceforge.net/projects/translate/files/Virtaal/>`_ |                                             |
-+-----------------+--------------------------------------------------------------+---------------------------------------------+
-| Ubuntu          | `Translate.org.za Tools PPA                                  | Also available in software center           |
-|                 | <https://launchpad.net/~translate.org.za/+archive/ppa>`_     |                                             |
-+-----------------+--------------------------------------------------------------+---------------------------------------------+
-| Fedora          | yum install virtaal                                          | Or use the graphical package manager.       |
-|                 |                                                              | For older Fedora releases use the           |
-|                 |                                                              | :doc:`custom repo <fedora_custom_repo>`     |
-+-----------------+--------------------------------------------------------------+---------------------------------------------+
-| Mandriva        | urpmi virtaal                                                | Or simply use the graphical package manager |
-+-----------------+--------------------------------------------------------------+---------------------------------------------+
-| Debian Squeeze  | apt-get install virtaal                                      | Or simply use the graphical package manager |
-+-----------------+--------------------------------------------------------------+---------------------------------------------+
-| openSUSE        | zypper install virtaal                                       | Or simply use the graphical package manager |
-+-----------------+--------------------------------------------------------------+---------------------------------------------+
-| Other           | `Download source .zip or .tar.bz2                            | Make sure you have all the dependencies     |
-|                 | <http://sourceforge.net/projects/translate/files/Virtaal>`_  | including the latest Translate Toolkit      |
-+-----------------+--------------------------------------------------------------+---------------------------------------------+
+No packaged builds exist yet for this Python 3 + GTK3 release - build
+from source, see :doc:`building`.
 
 .. _index#contact:
 

@@ -771,7 +771,7 @@ msgid ""
 msgstr ""
 "無法開啟文件。\n"
 "\n"
-"%(錯誤訊息)s\n"
+"%(error_message)s\n"
 "\n"
 "嘗試開啟不同的文件。"
 
@@ -785,7 +785,7 @@ msgid ""
 msgstr ""
 "無法儲存文件。\n"
 "\n"
-"%(錯誤訊息)s"
+"%(error_message)s"
 
 #: ../virtaal/controllers/maincontroller.py:314
 msgid "Reload File"

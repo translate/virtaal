@@ -88,7 +88,7 @@ For users running from a tarball, we do some dependency checking when starting
 Virtaal to be able to give accurate error messages in case of missing
 dependencies. However, if you have all of these sorted out in your package
 dependencies, there is no need for Virtaal to do this any more. In the file
-`bin/virtaal`, uncomment the line 
+`bin/virtaal`, uncomment the line
 
 .. code-block:: python
 
@@ -111,7 +111,7 @@ Windows
    or just ensure that the Translate Toolkit is in your :envvar:`PYTHONPATH`.
 
 If you would like to build a stand-alone Windows installer, you will also need
-to get: 
+to get:
 
 - `Py2exe <http://py2exe.org>`_
 - `InnoSetup <http://www.jrsoftware.org/isinfo.php>`_
@@ -146,6 +146,6 @@ Older
 -----
 Older attempt, no success yet using this way:
 
-Install the Gtk+ Mac OSX framework: https://www.gtk.org/download/macos.php 
+Install the Gtk+ Mac OSX framework: https://www.gtk.org/download/macos.php
 Install pygtk and pygobject from the GNOME FTP mirrors: ftp://ftp.gnome.org./pub/GNOME/sources/
 (extract, still need to get pygobject installed)

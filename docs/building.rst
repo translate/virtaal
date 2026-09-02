@@ -102,19 +102,18 @@ loss of functionality.
 Windows
 =======
 
-.. note:: For the translate-toolkit, be sure to get the Python library -- the
-   one marked ``win32.exe`` -- and not the stand-alone Windows installer, which
-   is labelled ``setup.exe``.  You might need to create this yourself with ::
+Requires `gvsbuild <https://github.com/wingtk/gvsbuild>`_'s GTK3
+build and `Inno Setup <https://jrsoftware.org/isinfo.php>`_, in
+addition to the running-from-source prerequisites above::
 
-       python setup.py bdist_wininst
+  devsupport\packaging\windows\build_standalone.ps1
+  devsupport\packaging\windows\build_installer.ps1
 
-   or just ensure that the Translate Toolkit is in your :envvar:`PYTHONPATH`.
-
-If you would like to build a stand-alone Windows installer, you will also need
-to get:
-
-- `Py2exe <http://py2exe.org>`_
-- `InnoSetup <http://www.jrsoftware.org/isinfo.php>`_
+The first produces a frozen ``dist\virtaal\`` tree (PyInstaller,
+one-dir mode - see that script's own comments for why not
+``--onefile``); the second wraps it into a single
+``virtaal-<version>-setup.exe`` via Inno Setup
+(``devsupport/packaging/windows/virtaal.iss``).
 
 .. _building#osx:
 

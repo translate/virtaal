@@ -62,12 +62,24 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y intltool
+          sudo apt-get install -y \
+            gettext \
+            intltool
 
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
           pip install Sphinx
+
+      - name: Check translation catalogs
+        # -c fails on real errors (mismatched printf-style placeholders,
+        # msgid/msgstr newline mismatches, etc.), not just warnings.
+        run: |
+          status=0
+          for f in po/*.po; do
+            msgfmt -c -o /dev/null "$f" || status=1
+          done
+          exit $status
 
       - name: Update translations
         run: ./maketranslations

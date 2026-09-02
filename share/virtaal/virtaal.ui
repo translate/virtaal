@@ -940,6 +940,16 @@ If you are translating from English to French then French would be your translat
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="mnu_shortcuts">
+                        <property name="label" translatable="yes">Keyboard _Shortcuts</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="use_underline">True</property>
+                        <accelerator key="question" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkSeparatorMenuItem" id="separator_mnu_help_1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>

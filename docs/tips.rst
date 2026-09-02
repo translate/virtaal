@@ -26,7 +26,8 @@ system:
 |               | ``C:\Users\%USERNAME%\AppData\Roaming\Virtaal``                   |
 +---------------+-------------------------------------------------------------------+
 
-Most features are available via easy :doc:`shortcuts <cheatsheet>`.
+Most features are available via easy keyboard shortcuts - see
+Help > Keyboard Shortcuts in Virtaal itself.
 
 .. _tips#migrating_to_another_account/computer:
 

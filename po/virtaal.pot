@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-02 18:23+0100\n"
+"POT-Creation-Date: 2026-09-02 18:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
-#: ../share/virtaal/virtaal.ui.h:18 ../virtaal/views/mainview.py:850
+#: ../share/virtaal/virtaal.ui.h:18 ../virtaal/views/mainview.py:855
 msgid "Virtaal"
 msgstr ""
 
@@ -234,202 +234,207 @@ msgid "Report a _Bug"
 msgstr ""
 
 #: ../share/virtaal/virtaal.ui.h:40
-msgid "Virtaal Preferences"
+msgid "Keyboard _Shortcuts"
 msgstr ""
 
 #: ../share/virtaal/virtaal.ui.h:41
+msgid "Virtaal Preferences"
+msgstr ""
+
+#: ../share/virtaal/virtaal.ui.h:42
 msgid "The name stored in the file header"
 msgstr ""
 
 #. l10n: This label is for the name of the translator
-#: ../share/virtaal/virtaal.ui.h:43
+#: ../share/virtaal/virtaal.ui.h:44
 msgid "Name:"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:44
+#: ../share/virtaal/virtaal.ui.h:45
 msgid "The e-mail address stored in the file header"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:45
+#: ../share/virtaal/virtaal.ui.h:46
 msgid "E-mail address:"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:46
+#: ../share/virtaal/virtaal.ui.h:47
 msgid ""
 "The team information stored in the file header. This can be an e-mail "
 "address or a URL, for example."
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:47
+#: ../share/virtaal/virtaal.ui.h:48
 msgid "Team:"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:48
+#: ../share/virtaal/virtaal.ui.h:49
 msgid "<b>Translator Information</b>"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:49
+#: ../share/virtaal/virtaal.ui.h:50
 msgid "Source text:"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:50
+#: ../share/virtaal/virtaal.ui.h:51
 msgid "Target text:"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:51
+#: ../share/virtaal/virtaal.ui.h:52
 msgid "Use _Default Fonts"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:52
+#: ../share/virtaal/virtaal.ui.h:53
 msgid "<b>Fonts</b>"
 msgstr ""
 
 #. l10n: This tab label refers to the general preferences
-#: ../share/virtaal/virtaal.ui.h:54
+#: ../share/virtaal/virtaal.ui.h:55
 msgid "General"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:55
+#: ../share/virtaal/virtaal.ui.h:56
 msgid ""
 "Placeables are special parts of the text that can be automatically "
 "highlighted and easily inserted into the translation."
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:56
+#: ../share/virtaal/virtaal.ui.h:57
 msgid "Placeables"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:57
+#: ../share/virtaal/virtaal.ui.h:58
+#: ../virtaal/views/widgets/shortcutswindow.py:58
 msgid "Plug-ins"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:58
+#: ../share/virtaal/virtaal.ui.h:59
 msgid "Properties"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:59
+#: ../share/virtaal/virtaal.ui.h:60
 msgid "<b>Words</b> (total):"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:60
+#: ../share/virtaal/virtaal.ui.h:61
 msgid "<b>Strings</b> (total):"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:61
+#: ../share/virtaal/virtaal.ui.h:62
 msgid "File type:"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:62
+#: ../share/virtaal/virtaal.ui.h:63
 msgid "File size:"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:63
+#: ../share/virtaal/virtaal.ui.h:64
 msgid "Location:"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:64
+#: ../share/virtaal/virtaal.ui.h:65
 msgid "Add Term"
 msgstr ""
 
 #. l10n: This label refers to comments about a new term that is added
-#: ../share/virtaal/virtaal.ui.h:66
+#: ../share/virtaal/virtaal.ui.h:67
 msgid "C_omments"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:67
+#: ../share/virtaal/virtaal.ui.h:68
 msgid "Terminology _file:"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:68
+#: ../share/virtaal/virtaal.ui.h:69
 msgid "Terminology Files"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:69
+#: ../share/virtaal/virtaal.ui.h:70
 msgid "Add URL"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:70
+#: ../share/virtaal/virtaal.ui.h:71
 msgid "URL:"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:71
+#: ../share/virtaal/virtaal.ui.h:72
 msgid "Put queries in quotes"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:72
+#: ../share/virtaal/virtaal.ui.h:73
 msgid "<b>Options</b>"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:73
+#: ../share/virtaal/virtaal.ui.h:74
 msgid "Web Look-ups"
 msgstr ""
 
 #. l10n: Remove the tags if underlining is unsuitable for your language. Most languages will not need to change this. Translate the word Open normally.
-#: ../share/virtaal/virtaal.ui.h:75
+#: ../share/virtaal/virtaal.ui.h:76
 msgid "<u>Open</u>"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:76
+#: ../share/virtaal/virtaal.ui.h:77
 msgid "<b><big>Recent Files</big></b>"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:77
+#: ../share/virtaal/virtaal.ui.h:78
 msgid "<u>Tutorial</u>"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:78
+#: ../share/virtaal/virtaal.ui.h:79
 msgid "<u>Cheat Sheet</u>"
 msgstr ""
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.ui.h:80
+#: ../share/virtaal/virtaal.ui.h:81
 #: ../virtaal/controllers/welcomescreencontroller.py:39
 msgid "http://translate.sourceforge.net/wiki/virtaal/features"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:81
+#: ../share/virtaal/virtaal.ui.h:82
 msgid "<u>More...</u>"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:82
+#: ../share/virtaal/virtaal.ui.h:83
 msgid "<u>Features</u>"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:83
+#: ../share/virtaal/virtaal.ui.h:84
 msgid "<b><big>Getting Started</big></b>"
 msgstr ""
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.ui.h:85
+#: ../share/virtaal/virtaal.ui.h:86
 #: ../virtaal/controllers/welcomescreencontroller.py:35
 msgid "http://translate.sourceforge.net/wiki/virtaal/using_virtaal"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:86
+#: ../share/virtaal/virtaal.ui.h:87
 msgid "<u>Manual</u>"
 msgstr ""
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.ui.h:88
+#: ../share/virtaal/virtaal.ui.h:89
 #: ../virtaal/controllers/welcomescreencontroller.py:36
 msgid "http://translate.sourceforge.net/wiki/guide/start"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:89
+#: ../share/virtaal/virtaal.ui.h:90
 msgid "<u>Localization Guide</u>"
 msgstr ""
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
-#: ../share/virtaal/virtaal.ui.h:91
+#: ../share/virtaal/virtaal.ui.h:92
 #: ../virtaal/controllers/welcomescreencontroller.py:38
 msgid "http://translate.sourceforge.net/wiki/virtaal/index#contact"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:92
+#: ../share/virtaal/virtaal.ui.h:93
 msgid "<u>Feedback</u>"
 msgstr ""
 
-#: ../share/virtaal/virtaal.ui.h:93
+#: ../share/virtaal/virtaal.ui.h:94
 msgid "<b><big>Support</big></b>"
 msgstr ""
 
@@ -712,7 +717,7 @@ msgstr ""
 #: ../virtaal/controllers/maincontroller.py:241
 #: ../virtaal/support/native_widgets.py:153
 #: ../virtaal/support/native_widgets.py:212
-#: ../virtaal/support/native_widgets.py:263 ../virtaal/views/mainview.py:331
+#: ../virtaal/support/native_widgets.py:263 ../virtaal/views/mainview.py:332
 msgid "Save"
 msgstr ""
 
@@ -960,10 +965,6 @@ msgstr ""
 msgid "Reviewed"
 msgstr ""
 
-#: ../virtaal/controllers/welcomescreencontroller.py:66
-msgid "http://translate.sourceforge.net/wiki/virtaal/cheatsheet"
-msgstr ""
-
 #: ../virtaal/modes/defaultmode.py:28
 msgid "All"
 msgstr ""
@@ -987,6 +988,7 @@ msgid "Incomplete"
 msgstr ""
 
 #: ../virtaal/modes/searchmode.py:35 ../virtaal/modes/searchmode.py:68
+#: ../virtaal/views/widgets/shortcutswindow.py:45
 msgid "Search"
 msgstr ""
 
@@ -1239,13 +1241,13 @@ msgid "Add Files"
 msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:190
-#: ../virtaal/support/native_widgets.py:90 ../virtaal/views/mainview.py:276
+#: ../virtaal/support/native_widgets.py:90 ../virtaal/views/mainview.py:277
 msgid "All Supported Files"
 msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:216
 #: ../virtaal/support/native_widgets.py:179
-#: ../virtaal/support/native_widgets.py:209 ../virtaal/views/mainview.py:320
+#: ../virtaal/support/native_widgets.py:209 ../virtaal/views/mainview.py:321
 msgid "All Files"
 msgstr ""
 
@@ -1431,7 +1433,7 @@ msgstr ""
 
 #: ../virtaal/support/native_widgets.py:140
 #: ../virtaal/support/native_widgets.py:180
-#: ../virtaal/support/native_widgets.py:249 ../virtaal/views/mainview.py:269
+#: ../virtaal/support/native_widgets.py:249 ../virtaal/views/mainview.py:270
 msgid "Choose a Translation File"
 msgstr ""
 
@@ -1819,17 +1821,17 @@ msgstr ""
 msgid "_New Language Pair..."
 msgstr ""
 
-#: ../virtaal/views/mainview.py:238
+#: ../virtaal/views/mainview.py:239
 msgid "Error"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:350
+#: ../virtaal/views/mainview.py:351
 msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:353
+#: ../virtaal/views/mainview.py:354
 msgid "_Discard"
 msgstr ""
 
@@ -1837,16 +1839,16 @@ msgstr ""
 #. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
 #. %(current_file)s is the file name of the current file
 #. most languages will not need to change this
-#: ../virtaal/views/mainview.py:438
+#: ../virtaal/views/mainview.py:439
 #, python-format
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:463
+#: ../virtaal/views/mainview.py:464
 msgid "Please enter the number of noun forms (plurals) to use"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:469
+#: ../virtaal/views/mainview.py:470
 msgid "Please enter the plural equation to use"
 msgstr ""
 
@@ -1993,6 +1995,150 @@ msgstr ""
 
 #: ../virtaal/views/widgets/selectview.py:133
 msgid "Configure..."
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:29
+msgid "Global"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:30
+msgid "Open a file"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:31
+msgid "Save the current file"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:32
+msgid "Close the current file"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:33
+msgid "Quit Virtaal"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:34
+msgid "Show preferences dialog"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:35
+msgid "Show file properties and statistics"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:36
+msgid "Toggle fullscreen mode"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:37
+msgid "Show this Keyboard Shortcuts window"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:39
+msgid "Navigation"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:40
+msgid "Move to next translation"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:41
+msgid "Move to previous unit"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:42
+msgid "Move to next unit"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:43
+msgid "Move 10 units up"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:44
+msgid "Move 10 units down"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:46
+msgid "Move to next search match"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:47
+msgid "Move to previous search match"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:49
+msgid "Units"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:50
+msgid "Select previous placeable"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:51
+msgid "Select next placeable"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:52
+msgid "Copy the source or selected placeable to the target"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:53
+msgid "Enter a new line"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:54
+msgid "Mark unit \"Needs work\" as \"Translated\" and go to the next unit"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:55
+msgid "Mark unit as \"Needs work\" and go to the next unit"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:56
+msgid "Undo the last change"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:59
+msgid "Use the first translation suggestion"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:60
+msgid "Show/Hide checks"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:61
+msgid "Show/Hide translation suggestions"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:62
+msgid "Hide translation suggestions, if shown"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:63
+msgid "Add a term to the local terminology file"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:65
+msgid "Moving focus"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:66
+msgid "Move to the next target field"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:67
+msgid "Move to the previous target field"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:68
+msgid "Jump to the language-pair selector"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:69
+msgid "Jump to the \"Navigation:\" mode selector"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py:70
+msgid "Close the search bar and return to normal editing"
 msgstr ""
 
 #: ../virtaal/views/widgets/welcomescreen.py:96

@@ -720,7 +720,7 @@ msgid ""
 msgstr ""
 "Pe onongo romo yabo fail.\n"
 "\n"
-"%(bal_kwena)s\n"
+"%(error_message)s\n"
 "\n"
 "Tem me yabo fail mapat."
 
@@ -742,7 +742,7 @@ msgid ""
 msgstr ""
 "Pe onongo romo gwoko fail.\n"
 "\n"
-"%(bal_kwena)\n"
+"%(error_message)s\n"
 "\n"
 "tem me gwoko ne ikom kabedo mapat."
 
@@ -755,7 +755,7 @@ msgid ""
 msgstr ""
 "Pe onongo romo gwoko fail.\n"
 "\n"
-"%(bal_kwena)"
+"%(error_message)s"
 
 #: ../virtaal/controllers/maincontroller.py:275
 msgid "Can only export Gettext PO files"
@@ -1913,7 +1913,7 @@ msgstr "Kwon Purujek"
 #: ../virtaal/views/checksprojview.py:63
 #, python-format
 msgid "Checks: %(checker_name)s"
-msgstr "Roto: %(roto_nying)s"
+msgstr "Roto: %(checker_name)s"
 
 #: ../virtaal/views/langview.py:76
 msgid "_New Language Pair..."
@@ -1942,7 +1942,7 @@ msgstr "_Ywee"
 #: ../virtaal/views/mainview.py:430
 #, python-format
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
-msgstr "%(modified_marker)s%(fcurrent_file)s - Virtaal"
+msgstr "%(modified_marker)s%(current_file)s - Virtaal"
 
 #: ../virtaal/views/mainview.py:455
 msgid "Please enter the number of noun forms (plurals) to use"

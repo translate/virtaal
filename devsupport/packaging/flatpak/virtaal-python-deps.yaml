@@ -1,0 +1,109 @@
+# Generated with flatpak-pip-generator --yaml --requirements-file=requirements.txt --output virtaal-python-deps
+name: virtaal-python-deps
+buildsystem: simple
+build-commands: []
+modules:
+  - name: python3-translate-toolkit
+    buildsystem: simple
+    build-commands:
+      - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
+        --prefix=${FLATPAK_DEST} "translate-toolkit" --no-build-isolation
+    sources:
+      - &id001
+        type: file
+        url: https://files.pythonhosted.org/packages/ad/a9/970b8fa0ecc4fbf1dfaed0d89bbc1fc1421b25ec26a2038c91e872dc6c8e/lxml-6.1.2.tar.gz
+        sha256: 1055241852f2b02068af4a625a5d32c087db193c12251928af2562ecd2239f18
+      - type: file
+        url: https://files.pythonhosted.org/packages/33/6b/5ee7fab140e1bea5d09b0096fb7f6cf0cb84a56ef0d91c45992a0f557b46/translate_toolkit-3.19.18-py3-none-any.whl
+        sha256: fd454595230c158e46017c446ab6359a2f50246345f821ca4e90fe0855e7f48e
+      # Rust/maturin sdist can't build in this sandboxed pip env -
+      # swapped for the manylinux wheel instead.
+      - type: file
+        url: https://files.pythonhosted.org/packages/ac/3e/1098f0173c72842abb9ed0c290c4ce431efbe72e735423091653e1414e8a/unicode_segmentation_rs-0.3.3-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+        sha256: 2cc0bdaf83102e048b71e39229642854f3661a0a3377b302f1d807e16a390eb3
+  - name: python3-pycurl
+    buildsystem: simple
+    build-commands:
+      - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
+        --prefix=${FLATPAK_DEST} "pycurl" --no-build-isolation
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/81/bc/705aa3bc36b99946a128d068e1afd4b6f3eebb36c6b97f551f3d2d740460/pycurl-7.47.0.tar.gz
+        sha256: 5e3cf357939da8d4ceefe3c7f305afcf9b47cba66cfd95e7768ca43b38445e14
+  - name: python3-diff_match_patch
+    buildsystem: simple
+    build-commands:
+      - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
+        --prefix=${FLATPAK_DEST} "diff_match_patch" --no-build-isolation
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/f7/bb/2aa9b46a01197398b901e458974c20ed107935c26e44e37ad5b0e5511e44/diff_match_patch-20241021-py3-none-any.whl
+        sha256: 93cea333fb8b2bc0d181b0de5e16df50dd344ce64828226bda07728818936782
+  - name: python3-lxml
+    buildsystem: simple
+    build-commands:
+      - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
+        --prefix=${FLATPAK_DEST} "lxml" --no-build-isolation
+    sources:
+      - *id001
+  - name: python3-python-Levenshtein
+    buildsystem: simple
+    build-commands:
+      # levenshtein/rapidfuzz use the scikit-build-core backend, which
+      # also isn't importable in this sandboxed pip env - bootstrap it
+      # (plus cmake/ninja, in case the SDK doesn't provide them) from
+      # local wheels first, then build these two from source.
+      - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
+        --prefix=${FLATPAK_DEST} scikit-build-core packaging pathspec cmake ninja
+        --no-build-isolation
+      - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
+        --prefix=${FLATPAK_DEST} "python-Levenshtein" --no-build-isolation
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/ca/d9/5acd910cb9527d6aeba8dbc0a5d1093e72921f2d0ca586a4594660615688/levenshtein-0.27.4.tar.gz
+        sha256: 3df1c12bf5e485774d6387f3894271ef3724414ecc20dd238ae4d2333e093c83
+      - type: file
+        url: https://files.pythonhosted.org/packages/c0/76/a14c46a124ec1cb731087d05e85dfdd09835a297473e6de52a049dbb8f2c/python_levenshtein-0.27.4-py3-none-any.whl
+        sha256: cf956834cffa7690e2242eec385b77805fe256d164015583ba45649dc75144e1
+      - type: file
+        url: https://files.pythonhosted.org/packages/2c/21/ef6157213316e85790041254259907eb722e00b03480256c0545d98acd33/rapidfuzz-3.14.5.tar.gz
+        sha256: ba10ac57884ce82112f7ed910b67e7fb6072d8ef2c06e30dc63c0f604a112e0e
+      - type: file
+        url: https://files.pythonhosted.org/packages/b7/b0/7ad8fa9aebb0835b2e20afebf1483cbe175d1612fe01e85042ce9ced8755/scikit_build_core-1.0.3-py3-none-any.whl
+        sha256: ae95427b7d3c14a6cf8bbfd4d901f6138ab64c99e20cbe8ea7d75cd26093f085
+      - type: file
+        url: https://files.pythonhosted.org/packages/63/34/ba1c580383c9eada3711951fef0795c80b829a078d72188184bcab9dd527/packaging-26.3-py3-none-any.whl
+        sha256: d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c
+      - type: file
+        url: https://files.pythonhosted.org/packages/f1/d9/7fb5aa316bc299258e68c73ba3bddbc499654a07f151cba08f6153988714/pathspec-1.1.1-py3-none-any.whl
+        sha256: a00ce642f577bf7f473932318056212bc4f8bfdf53128c78bbd5af0b9b20b189
+      - type: file
+        url: https://files.pythonhosted.org/packages/5d/b7/b8d0b15f57b37ac5b9e374169471f045da3a715b7f0f3af681011415d972/cmake-4.4.2-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+        sha256: 27b024e903ef985b37183d754a5c61230b56b41fe0971cd44b71b80c787ec594
+      - type: file
+        url: https://files.pythonhosted.org/packages/ed/de/0e6edf44d6a04dabd0318a519125ed0415ce437ad5a1ec9b9be03d9048cf/ninja-1.13.0-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+        sha256: fb46acf6b93b8dd0322adc3a4945452a4e774b75b91293bafcc7b7f8e6517dfa
+  - name: python3-cheroot
+    buildsystem: simple
+    build-commands:
+      - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
+        --prefix=${FLATPAK_DEST} "cheroot" --no-build-isolation
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/41/99/af65511a10c4212438ac52bc5e45e486e7a04d292201ad84dfd9208fe9a8/cheroot-11.1.2-py3-none-any.whl
+        sha256: 0f6c0ba05c00fbc869fb46b1de4ec2384e1d85418ae963d3bc10ae83b688dbfa
+      - type: file
+        url: https://files.pythonhosted.org/packages/02/36/ecc85bc96c273dc8a11273ed4782272975e6338d4a3e9228621175edf0e3/jaraco_functools-4.6.0-py3-none-any.whl
+        sha256: 99e3dc0060c5cbe8fcd1cdb36258e2a65ca40f1566b2033b12abb1bb44dd3c30
+      - type: file
+        url: https://files.pythonhosted.org/packages/e8/3d/1087453384dbde46a8c7f9356eead2c58be8a7bf156bca40243377c85715/more_itertools-11.1.0-py3-none-any.whl
+        sha256: 4b65538ae22f6fed0ce4874efd317463a7489796a0939fa66824dd542125a192
+  - name: python3-pyenchant
+    buildsystem: simple
+    build-commands:
+      - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
+        --prefix=${FLATPAK_DEST} "pyenchant" --no-build-isolation
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/38/b0/35926bad6885fb7bc24aa7e1b45e6d86540c6c57ee4abc4fed1ef58d4ec0/pyenchant-3.3.0-py3-none-any.whl
+        sha256: 3da00b1d01314d85aac733bb997415d7a3e875666dc81735ddcf320aa36b7a70

@@ -89,7 +89,7 @@ class LanguageModel(BaseModel):
         self.plural = self.languages[langcode][2]
 
     def _match_normalized_langcode(self, langcode):
-        languages_keys = self.languages.keys()
+        languages_keys = list(self.languages.keys())
         normalized_keys = [data.normalize_code(lang) for lang in languages_keys]
         i =  normalized_keys.index(data.normalize_code(langcode))
         return languages_keys[i]

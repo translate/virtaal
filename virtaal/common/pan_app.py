@@ -61,7 +61,7 @@ if os.name == 'nt' and getattr(sys, 'frozen', False):
 import configparser as ConfigParser
 import builtins as __builtin__
 import locale, gettext
-from virtaal.support.libi18n.locale import fix_locale, fix_libintl
+from virtaal.support.libi18n.locale import fix_locale, fix_libintl, bind_libintl_posix
 from translate.misc import file_discovery
 from translate.lang import data
 
@@ -283,6 +283,31 @@ else:
         logging.warning("Couldn't set the locale: %s", e)
         # See bug 3109
         __builtin__.__dict__['_'] = lambda s: s
+
+
+def set_ui_language(lang):
+    """Override the UI language after startup - used by bin/virtaal's
+    --pseudo-translation/--pseudo-translation-bidi. fallback=False: a
+    missing catalog should raise, not silently fall back to English.
+
+    localedir is passed explicitly - gettext's default search path is
+    keyed off sys.base_prefix rather than sys.prefix, so it misses
+    translations installed into a venv (which is where
+    devsupport/pseudo-translation's own generated locales land).
+    """
+    global ui_language
+    fix_locale(lang)
+    try:
+        locale.setlocale(locale.LC_ALL, lang)
+    except locale.Error:
+        pass
+    localedir = os.path.join(sys.prefix, 'share', 'locale')
+    gettext.translation('virtaal', localedir=localedir, languages=[lang], fallback=False).install()
+    if sys.platform != 'win32':
+        # Gtk.Builder's own translatable strings go through C-level
+        # gettext, not Python's - see bind_libintl_posix's docstring.
+        bind_libintl_posix(localedir)
+    ui_language = lang
 
 
 # Determine the directory the main executable is running from

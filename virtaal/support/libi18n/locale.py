@@ -349,3 +349,23 @@ def fix_libintl(main_dir):
     libintl.bindtextdomain("virtaal", locale_dir)
     libintl.bind_textdomain_codeset("virtaal", 'UTF-8')
     del libintl
+
+
+def bind_libintl_posix(locale_dir):
+    """The POSIX equivalent of fix_libintl() above (same underlying
+    reason, bugzilla.gnome.org/574520): Gtk.Builder's translatable
+    strings go through real C-level gettext, independent of Python's
+    own gettext module - without this they keep using whatever locale
+    directory the system's default search path points at.
+
+    Best-effort and silent on failure.
+    """
+    import ctypes
+    import ctypes.util
+    try:
+        libname = ctypes.util.find_library('intl')
+        libintl = ctypes.CDLL(libname) if libname else ctypes.CDLL(None)
+        libintl.bindtextdomain(b"virtaal", locale_dir.encode(sys.getfilesystemencoding()))
+        libintl.bind_textdomain_codeset(b"virtaal", b"UTF-8")
+    except (OSError, AttributeError):
+        pass

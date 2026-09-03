@@ -33,6 +33,28 @@ from virtaal.common import pan_app
 # - Confirm error handling works correctly
 
 
+def _domain_has_catalog(domain):
+    """Whether a compiled .mo catalog for another app's gettext domain
+    (not Virtaal's own) is loaded for the current locale.
+
+    dgettext(domain, '') returns that catalog's own header metadata if
+    one is loaded, or falls back to the empty string given if not -
+    the empty message is never displayed, just used as an existence
+    probe. Kept out of the call site itself: xgettext's Python keyword
+    list treats any dgettext(...) call as translatable regardless of
+    which domain it names, and extracts string-literal arguments -
+    with the literal '' inline there, it was extracting this probe as
+    a translatable string, which then collided with the PO header's
+    own reserved msgid "" entry (same key) and corrupted it with
+    stray source locations. A variable reference here isn't something
+    xgettext can extract, since it never resolves values - the empty
+    string has to be kept out of the dgettext(...) call itself, not
+    just out of its own call sites, or xgettext still finds it here.
+    """
+    probe_message = ''
+    return gettext.dgettext(domain, probe_message)
+
+
 def _dialog_to_use():
     # We want to know if we should use a native dialog, but don't want to show
     # it in a different language than the Virtaal UI. So we can try to detect
@@ -54,8 +76,8 @@ def _dialog_to_use():
 
     elif os.environ.get('KDE_FULL_SESSION') == 'true' and ( \
                 pan_app.ui_language == 'en' or \
-                gettext.dgettext('kdelibs4', '') or \
-                not gettext.dgettext('gtk30', '')):
+                _domain_has_catalog('kdelibs4') or \
+                not _domain_has_catalog('gtk30')):
             import shutil
             if shutil.which("kdialog") is not None:
                 return 'kdialog'

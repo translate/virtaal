@@ -30,3 +30,9 @@ repos:
         entry: po/check-pot-freshness.sh
         language: system
         pass_filenames: true
+      - id: check-icons-freshness
+        name: check macOS .icns files are up to date with their .svg sources
+        entry: devsupport/mac-bundle/check_icons_freshness.sh
+        language: system
+        pass_filenames: false
+        files: ^devsupport/mac-bundle/(VirtaalDocumentIcon_.*\.svg|icons/VolumeIcon_virtaal\.svg)$

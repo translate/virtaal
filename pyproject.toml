@@ -33,6 +33,12 @@ classifiers = [
 # same reason most GTK Python projects don't declare it either.
 dependencies = [
     "translate-toolkit",
+    # translate-toolkit gates Fluent (.ftl) support behind its own
+    # "fluent" extra rather than a plain dependency - without this,
+    # translate.storage.factory still lists "Fluent file" in the
+    # supported-formats list (and Virtaal's Open dialog offers it),
+    # but actually opening one raises ModuleNotFoundError.
+    "fluent.syntax>=0.19,<0.20",
     "pycurl",
     "diff_match_patch",
     "lxml",

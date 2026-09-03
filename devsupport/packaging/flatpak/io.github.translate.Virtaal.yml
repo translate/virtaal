@@ -1,0 +1,53 @@
+id: io.github.translate.Virtaal
+runtime: org.gnome.Platform
+runtime-version: "50"
+sdk: org.gnome.Sdk
+command: virtaal
+
+finish-args:
+  # No --filesystem=host: Gtk.FileChooserDialog already works through
+  # the portal-provided file picker inside a sandbox.
+  - --share=ipc
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --device=dri
+  # TM/terminology plugins do real HTTP lookups.
+  - --share=network
+
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - /share/gir-1.0
+  - /share/man
+  - "*.la"
+  - "*.a"
+
+modules:
+  # Generated via flatpak-builder-tools' flatpak-pip-generator against
+  # this repo's pyproject.toml.
+  - virtaal-python-deps.yaml
+
+  - name: virtaal
+    buildsystem: simple
+    build-commands:
+      # --no-build-isolation: setup.py imports translate-toolkit
+      # directly, which needs it already installed.
+      - pip3 install --verbose --exists-action=i --no-build-isolation
+        --prefix=${FLATPAK_DEST} .
+      # share/applications/virtaal.desktop and share/metainfo/
+      # virtaal.metainfo.xml are ./maketranslations' real,
+      # already-translated output (run on the host before this build -
+      # see ci.yml) - not the .in templates. Icon= still has to be
+      # renamed to match the app id inside the sandbox, or
+      # appstreamcli compose fails with icon-not-found.
+      - sed 's/^Icon=virtaal$/Icon=io.github.translate.Virtaal/'
+        share/applications/virtaal.desktop > virtaal.desktop
+      - install -Dm644 virtaal.desktop
+        ${FLATPAK_DEST}/share/applications/io.github.translate.Virtaal.desktop
+      - install -Dm644 share/metainfo/virtaal.metainfo.xml
+        ${FLATPAK_DEST}/share/metainfo/io.github.translate.Virtaal.metainfo.xml
+      - install -Dm644 share/icons/virtaal.png
+        ${FLATPAK_DEST}/share/icons/hicolor/64x64/apps/io.github.translate.Virtaal.png
+    sources:
+      - type: dir
+        path: ../../..

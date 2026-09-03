@@ -97,6 +97,32 @@ dependencies, there is no need for Virtaal to do this any more. In the file
 by removing the hash sign. This way Virtaal can start a bit quicker with no
 loss of functionality.
 
+.. _building#flatpak:
+
+Linux (Flatpak)
+===============
+
+Requires `flatpak and flatpak-builder
+<https://docs.flatpak.org/en/latest/first-build.html>`_, plus the
+``org.gnome.Platform``/``org.gnome.Sdk`` runtime at version 50::
+
+  flatpak remote-add --if-not-exists --user flathub \
+    https://dl.flathub.org/repo/flathub.flatpakrepo
+  flatpak install --user flathub org.gnome.Platform//50 org.gnome.Sdk//50
+
+  cd devsupport/packaging/flatpak
+  flatpak-builder --user --install-deps-from=flathub --force-clean \
+    --repo=repo build-dir io.github.translate.Virtaal.yml
+
+This produces a local build in ``build-dir``, runnable directly with::
+
+  flatpak-builder --run build-dir io.github.translate.Virtaal.yml virtaal
+
+``virtaal-python-deps.yaml`` is machine-generated from
+``pyproject.toml`` via flatpak-builder-tools' `flatpak-pip-generator
+<https://github.com/flatpak/flatpak-builder-tools/tree/master/pip>`_
+and shouldn't be hand-edited except where noted in its own comments.
+
 .. _building#windows:
 
 Windows

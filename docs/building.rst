@@ -115,36 +115,33 @@ one-dir mode - see that script's own comments for why not
 ``virtaal-<version>-setup.exe`` via Inno Setup
 (``devsupport/packaging/windows/virtaal.iss``).
 
-.. _building#osx:
+.. _building#macos:
 
-OSX
-===
-This is just some notes -- it is incomplete and might be entirely off the mark.
-Virtaal and all dependencies run on OSX, but we still need help to document the
-simplest process, and to build installable packages.
+macOS
+=====
 
-This was tried so far on Mac OSX Tiger (10.5):
+A plain ``python3 -m venv`` can't see Homebrew's GTK3/PyGObject at
+all - create the venv with ``--system-site-packages`` instead, after
+installing the running-from-source prerequisites above via Homebrew
+(``pygobject3 gtk+3 gtk-mac-integration``, plus ``enchant
+gtkspell3`` for spell checking)::
 
-Install the "inst" directory from this disk image somewhere:
-http://www.immunityinc.com/downloads/CANVAS_OSX_SUPPORT.dmg
+  brew install pygobject3 gtk+3 gtk-mac-integration enchant gtkspell3
+  python3 -m venv --system-site-packages .venv
+  . .venv/bin/activate
+  pip install --no-build-isolation .[test]
+  python bin/virtaal
 
-This GTK+ port does not need X11.
+Building a distributable ``.app``/``.dmg`` uses `PyInstaller
+<https://pyinstaller.org/>`_ and `dmgbuild
+<https://dmgbuild.readthedocs.io/>`_ on top of the above::
 
-add ``inst/lib/python2.5/site-packages`` to :envvar:`PYTHONPATH`
+  devsupport/packaging/macos/build_standalone.sh
+  devsupport/packaging/macos/build_dmg.sh
 
-run python bin/virtaal
-
-If you want, get the OS X Leopard theme: http://kims-area.com/?q=node/4 Install
-it into `inst/share/themes/` and add an environment variable::
-
-   export GTK2_RC_FILES=inst/share/themes/OS\ X\ Leopard/gtk-2.0/gtkrc
-
-.. image:: /_static/virtaal-osx.png
-
-Older
------
-Older attempt, no success yet using this way:
-
-Install the Gtk+ Mac OSX framework: https://www.gtk.org/download/macos.php
-Install pygtk and pygobject from the GNOME FTP mirrors: ftp://ftp.gnome.org./pub/GNOME/sources/
-(extract, still need to get pygobject installed)
+The first produces ``dist/Virtaal.app`` (PyInstaller, settings in
+``devsupport/packaging/macos/virtaal.spec``); the second wraps it
+into ``dist/Virtaal.dmg`` (settings in
+``devsupport/packaging/macos/dmgbuild-settings.py``). CI's
+``build-macos-app`` job runs these same two scripts and uploads the
+results as workflow artifacts on every push.

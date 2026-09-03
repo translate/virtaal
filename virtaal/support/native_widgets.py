@@ -40,10 +40,17 @@ def _dialog_to_use():
     ui_language = pan_app.ui_language
 
     if sys.platform == 'win32':
-        from virtaal.support.libi18n.locale import get_win32_lang
-        win32_lang = get_win32_lang(system_ui=True)
-        if win32_lang == ui_language or ui_language == 'en' and win32_lang == 'C':
-            return 'win32'
+        try:
+            import winxpgui  # noqa: F401
+            import win32con  # noqa: F401
+            import pywintypes  # noqa: F401
+        except ImportError:
+            pass
+        else:
+            from virtaal.support.libi18n.locale import get_win32_lang
+            win32_lang = get_win32_lang(system_ui=True)
+            if win32_lang == ui_language or ui_language == 'en' and win32_lang == 'C':
+                return 'win32'
 
     elif os.environ.get('KDE_FULL_SESSION') == 'true' and ( \
                 pan_app.ui_language == 'en' or \

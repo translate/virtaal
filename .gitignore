@@ -32,6 +32,7 @@
 
 # General
 *.pyc
+__pycache__/
 
 # gh-pages branch
 _site

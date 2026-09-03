@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tmx SYSTEM "tmx14.dtd">
+<!--
+  A small English -> Afrikaans TMX file for exercising Virtaal's TMX
+  support (open via the "TMX Translation Memory" filter, and as a
+  translation-memory source for fuzzy-match lookups). Generated via
+  translate.storage.tmx.tmxfile rather than hand-written, so the XML
+  shape is exactly what the toolkit itself produces.
+-->
+<tmx version="1.4">
+  <header creationtool="Translate Toolkit" creationtoolversion="3.19.18" segtype="sentence" o-tmf="UTF-8" adminlang="en" srclang="en" datatype="PlainText"/>
+  <body>
+    <tu srclang="en">
+      <tuv xml:lang="en">
+        <seg>Open</seg>
+      </tuv>
+      <tuv xml:lang="af">
+        <seg>Maak oop</seg>
+      </tuv>
+    </tu>
+    <tu srclang="en">
+      <tuv xml:lang="en">
+        <seg>Save</seg>
+      </tuv>
+      <tuv xml:lang="af">
+        <seg>Stoor</seg>
+      </tuv>
+    </tu>
+    <tu srclang="en">
+      <tuv xml:lang="en">
+        <seg>Cancel</seg>
+      </tuv>
+      <tuv xml:lang="af">
+        <seg>Kanselleer</seg>
+      </tuv>
+    </tu>
+    <tu srclang="en">
+      <tuv xml:lang="en">
+        <seg>The file could not be opened.</seg>
+      </tuv>
+      <tuv xml:lang="af">
+        <seg>Die lêer kon nie geopen word nie.</seg>
+      </tuv>
+    </tu>
+    <tu srclang="en">
+      <tuv xml:lang="en">
+        <seg>Translation memory</seg>
+      </tuv>
+      <tuv xml:lang="af">
+        <seg>Vertaalgeheue</seg>
+      </tuv>
+    </tu>
+    <tu srclang="en">
+      <tuv xml:lang="en">
+        <seg>Untranslated</seg>
+      </tuv>
+      <tuv xml:lang="af">
+        <seg>Onvertaal</seg>
+      </tuv>
+    </tu>
+  </body>
+</tmx>

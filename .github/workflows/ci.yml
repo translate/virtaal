@@ -493,3 +493,16 @@ jobs:
           name: Virtaal-windows-installer
           path: dist\installer\*.exe
           if-no-files-found: error
+
+  core-checks:
+    name: core checks
+    needs: [pre-commit, docs-and-translations, test]
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Fail if any required job failed
+        run: |
+          if [ "${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}" = "true" ]; then
+            echo "::error::One or more required jobs did not succeed."
+            exit 1
+          fi

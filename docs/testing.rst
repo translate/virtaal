@@ -47,6 +47,24 @@ directly:
 Add more here as a format or scenario needs its own dedicated
 coverage.
 
+.. _testing#pseudo_translation:
+
+Pseudo-Translation
+===================
+
+Generate and run against two synthetic locales, covering every
+translatable string without needing a real translation::
+
+  python devsupport/pseudo-translation/generate_pseudo_translation.py
+  virtaal --pseudo-translation devsupport/testfiles/checks.po
+  virtaal --pseudo-translation-bidi devsupport/testfiles/checks.po
+
+``--pseudo-translation`` wraps every string in brackets (``[Save]``) -
+useful for spotting hardcoded strings and layout truncation.
+``--pseudo-translation-bidi`` additionally mirrors the whole UI
+layout, simulating a right-to-left translation while keeping the text
+itself readable Latin script.
+
 .. _testing#windows_ci:
 
 Windows CI Checks

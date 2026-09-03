@@ -1,0 +1,54 @@
+; runvirtaal.py GtkAccelMap rc-file         -*- scheme -*-
+; this file is an automated accelerator map dump
+;
+
+; File Menu
+(gtk_accel_path "<Virtaal>/File/Open" "<Meta>o")
+(gtk_accel_path "<Virtaal>/File/Close" "<Meta>w")
+(gtk_accel_path "<Virtaal>/File/Save" "<Meta>s")
+(gtk_accel_path "<Virtaal>/File/Save As" "<Meta><Shift>s")
+(gtk_accel_path "<Virtaal>/File/Properties" "<Mod5>Return")
+
+; Edit Menu
+(gtk_accel_path "<Virtaal>/Edit/Preferences" "<Meta>,")
+(gtk_accel_path "<Virtaal>/Edit/Cut" "<Meta>x")
+(gtk_accel_path "<Virtaal>/Edit/Copy" "<Meta>c")
+(gtk_accel_path "<Virtaal>/Edit/Paste" "<Meta>v")
+(gtk_accel_path "<Virtaal>/Edit/Undo" "<Meta>z")
+
+; Translation Memory
+(gtk_accel_path "<Virtaal>/TM/Toggle Show TM" "F9")
+(gtk_accel_path "<Virtaal>/TM/Hide TM" "Escape")
+(gtk_accel_path "<Virtaal>/TM/Select match 1" "<Meta>1")
+(gtk_accel_path "<Virtaal>/TM/Select match 2" "<Meta>2")
+(gtk_accel_path "<Virtaal>/TM/Select match 3" "<Meta>3")
+(gtk_accel_path "<Virtaal>/TM/Select match 4" "<Meta>4")
+(gtk_accel_path "<Virtaal>/TM/Select match 5" "<Meta>5")
+(gtk_accel_path "<Virtaal>/TM/Select match 6" "<Meta>6")
+(gtk_accel_path "<Virtaal>/TM/Select match 7" "<Meta>7")
+(gtk_accel_path "<Virtaal>/TM/Select match 8" "<Meta>8")
+(gtk_accel_path "<Virtaal>/TM/Select match 9" "<Meta>9")
+
+; Placeables
+(gtk_accel_path "<Virtaal>/Edit/Prev Placeable" "<Mod5>Left")
+(gtk_accel_path "<Virtaal>/Edit/Next Placeable" "<Mod5>Right")
+(gtk_accel_path "<Virtaal>/Edit/Transfer" "<Mod5>Down")
+
+
+; Unit navigation
+(gtk_accel_path "<Virtaal>/Navigation/PgUp" "<Meta>Page_Up")
+(gtk_accel_path "<Virtaal>/Navigation/PgDown" "<Meta>Page_Down")
+(gtk_accel_path "<Virtaal>/Navigation/Up" "<Meta>Up")
+(gtk_accel_path "<Virtaal>/Navigation/Down" "<Meta>Down")
+
+; Searching
+(gtk_accel_path "<Virtaal>/Edit/Search: Previous" "<Shift><Meta>g")
+(gtk_accel_path "<Virtaal>/Edit/Search: Next" "<Meta>g")
+(gtk_accel_path "<Virtaal>/Edit/Search" "F3")
+(gtk_accel_path "<Virtaal>/Edit/Search Ctrl+F" "<Meta>f")
+
+; Terminology
+(gtk_accel_path "<Virtaal>/Terminology/Add Term" "<Meta>t")
+
+; Plugins - Python console
+(gtk_accel_path "<Virtaal>/View/Python Console" "<Meta>y")

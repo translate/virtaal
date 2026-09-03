@@ -7,6 +7,14 @@
 # test that happened not to show it. That line is stripped out before
 # comparing, so only real content changes trip this.
 #
+# `#:` location comments (source file:line references) are also
+# ignored by default - they drift on their own as unrelated code
+# elsewhere shifts line numbers, with no effect on what translators
+# actually see, so routine commits shouldn't have to regenerate the
+# whole file just to keep them current. Set POT_STRICT_LOCATIONS=1 to
+# also require these be current - the real check to run before a
+# release, where accurate source references matter.
+#
 # Requires `intltool-update` on PATH (`brew install intltool` /
 # `apt install intltool`). Not everyone doing a routine commit will have
 # it installed - this degrades to a note, not a failure, in that case;
@@ -93,32 +101,39 @@ if [ "${#missing[@]}" -gt 0 ]; then
     exit 1
 fi
 
-strip_creation_date() {
-    grep -v '^"POT-Creation-Date:' "$1" | git hash-object --stdin
+hash_relevant() {
+    local filtered
+    filtered=$(grep -v '^"POT-Creation-Date:' "$1")
+    if [ "${POT_STRICT_LOCATIONS:-}" != "1" ]; then
+        filtered=$(printf '%s\n' "$filtered" | grep -v '^#:')
+    fi
+    printf '%s\n' "$filtered" | git hash-object --stdin
 }
 
 original_backup=$(mktemp)
 trap 'rm -f "$original_backup"' EXIT
 cp po/virtaal.pot "$original_backup"
 
-before=$(strip_creation_date po/virtaal.pot)
+before=$(hash_relevant po/virtaal.pot)
 if ! make_output=$(make pot 2>&1); then
     echo "'make pot' itself failed (not just stale - couldn't regenerate at all):" >&2
     echo "$make_output" >&2
     exit 1
 fi
-after=$(strip_creation_date po/virtaal.pot)
+after=$(hash_relevant po/virtaal.pot)
 
 if [ "$before" = "$after" ]; then
-    # Only the POT-Creation-Date timestamp changed (make pot stamps a
-    # fresh one every run, unconditionally) - restore the exact
-    # original bytes (not just content-equivalent - a command
-    # substitution round-trip would silently normalize trailing
-    # newlines) so this hook doesn't leave a spurious diff behind on
-    # an otherwise-clean pass. pre-commit treats *any* file changing
-    # during a hook's run as reportable, regardless of the hook's own
-    # exit code - confirmed the hard way, this used to fail every
-    # relevant commit even when nothing was actually stale.
+    # Nothing relevant changed - just the POT-Creation-Date timestamp
+    # (make pot stamps a fresh one every run, unconditionally) and/or
+    # location comments (ignored unless POT_STRICT_LOCATIONS=1, see
+    # above). Restore the exact original bytes (not just
+    # content-equivalent - a command substitution round-trip would
+    # silently normalize trailing newlines) so this hook doesn't leave
+    # a spurious diff behind on an otherwise-clean pass. pre-commit
+    # treats *any* file changing during a hook's run as reportable,
+    # regardless of the hook's own exit code - confirmed the hard way,
+    # this used to fail every relevant commit even when nothing was
+    # actually stale.
     cp "$original_backup" po/virtaal.pot
 else
     echo "po/virtaal.pot is now stale relative to your changes." >&2

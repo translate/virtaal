@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2013,2016 F Wolff <friedel _at_ translate.org.za> -->
-<application>
- <id type="desktop">virtaal.desktop</id>
+<component type="desktop-application">
+ <id>io.github.translate.Virtaal</id>
  <metadata_license>CC-BY-SA-3.0</metadata_license>
- <project_license>GPL-2.0+</project_license>
+ <project_license>GPL-2.0-or-later</project_license>
  <!-- l10n: The name should be less than 30 characters -->
  <_name>Virtaal Translation Tool</_name>
  <!-- l10n: The summary should be less than 100 characters -->
@@ -27,20 +27,25 @@
  </description>
  <screenshots>
   <screenshot type="default">
-    <image>https://raw.github.com/translate/virtaal/master/docs/_static/appdata/welcome.png</image>
+    <image>https://raw.githubusercontent.com/translate/virtaal/main/docs/_static/appdata/welcome.png</image>
     <!-- l10n: Captions should be shorter than 50 characters -->
     <_caption>Easy access to recent files and documentation</_caption>
   </screenshot>
   <screenshot>
-    <image>https://raw.github.com/translate/virtaal/master/docs/_static/appdata/placeable.png</image>
+    <image>https://raw.githubusercontent.com/translate/virtaal/main/docs/_static/appdata/placeable.png</image>
     <_caption>Recognized elements don't need to be typed</_caption>
   </screenshot>
   <screenshot>
-    <image>https://raw.github.com/translate/virtaal/master/docs/_static/appdata/window.png</image>
+    <image>https://raw.githubusercontent.com/translate/virtaal/main/docs/_static/appdata/window.png</image>
     <_caption>Quality checks while you type</_caption>
   </screenshot>
  </screenshots>
- <url type="homepage">http://virtaal.org/</url>
- <updatecontact>dev _at_ translate.org.za</updatecontact>
+ <url type="homepage">https://virtaal.translatehouse.org</url>
+ <url type="bugtracker">https://github.com/translate/virtaal/issues</url>
+ <url type="vcs-browser">https://github.com/translate/virtaal</url>
+ <update_contact>dev _at_ translate.org.za</update_contact>
  <translation type="gettext">virtaal</translation>
-</application>
+ <launchable type="desktop-id">io.github.translate.Virtaal.desktop</launchable>
+ <!-- No objectionable content of any kind - a translation editor. -->
+ <content_rating type="oars-1.1"/>
+</component>

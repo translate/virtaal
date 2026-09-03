@@ -686,6 +686,42 @@ jobs:
           path: dist/Virtaal.dmg
           if-no-files-found: error
 
+  build-flatpak:
+    # flatpak-builder is Linux-only - this is the only place the
+    # manifest gets built and smoke-tested.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install flatpak and flatpak-builder
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y flatpak flatpak-builder gettext intltool xvfb
+          flatpak remote-add --if-not-exists --user flathub \
+            https://dl.flathub.org/repo/flathub.flatpakrepo
+
+      - name: Build translated .desktop/.metainfo.xml
+        run: ./maketranslations
+
+      - name: Install the GNOME runtime/SDK
+        run: |
+          flatpak install --user -y flathub org.gnome.Platform//50 org.gnome.Sdk//50
+
+      - name: Build the Flatpak
+        working-directory: devsupport/packaging/flatpak
+        run: |
+          flatpak-builder --user --install-deps-from=flathub --force-clean \
+            --repo=repo build-dir io.github.translate.Virtaal.yml
+
+      - name: Smoke test - the built app actually runs
+        working-directory: devsupport/packaging/flatpak
+        # No display server on this runner - same headless gap the
+        # Linux `test` job's own `xvfb-run` step already solves.
+        run: |
+          xvfb-run -a --server-args="-screen 0 1024x768x24" \
+            flatpak-builder --run build-dir io.github.translate.Virtaal.yml \
+            virtaal --version
+
   core-checks:
     name: core checks
     needs: [pre-commit, docs-and-translations]

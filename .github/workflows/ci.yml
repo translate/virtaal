@@ -494,6 +494,197 @@ jobs:
           path: dist\installer\*.exe
           if-no-files-found: error
 
+  test-macos:
+    runs-on: macos-latest
+    # Single Python version (whatever Homebrew currently ships), not the
+    # 3.10-3.14 matrix the Linux job runs: unlike apt, Homebrew doesn't
+    # provide an easy way to build PyGObject against several Python
+    # versions at once, and this job's whole approach hinges on using
+    # Homebrew's own Python (see the venv step below) rather than
+    # actions/setup-python's.
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - name: Install system dependencies (Homebrew)
+        # pygobject3/gtk+3 for the app itself, gtk-mac-integration for
+        # native macOS menu-bar support, enchant/gtkspell3 for the
+        # spellchecker plugin. gobject-introspection/cairo/pkg-config/
+        # gettext are build-time needs `pip install pygobject` depends
+        # on that apt provides directly on the Linux job but Homebrew
+        # splits into separate formulae.
+        run: |
+          # GitHub's macos-latest image comes with aws/tap pre-tapped but
+          # untrusted, which prints an "untrusted tap" warning on every
+          # `brew install` even though we never use it - untap it (not
+          # HOMEBREW_NO_REQUIRE_TAP_TRUST, which Homebrew's own message
+          # says is being removed) since nothing here needs it.
+          brew untap aws/tap || true
+          brew install pygobject3 gtk+3 gtk-mac-integration \
+            gobject-introspection cairo pkg-config gettext \
+            enchant gtkspell3
+
+      - name: Create venv with system site-packages
+        # --system-site-packages so this venv's Python can see Homebrew's
+        # compiled `gi` module - a plain venv can't see it at all.
+        # Appending to GITHUB_PATH (rather than
+        # `source .venv/bin/activate`, which only affects the shell it
+        # runs in) makes every later step in this job use the venv
+        # automatically.
+        run: |
+          python3 -m venv --system-site-packages .venv
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install setuptools wheel
+          # Pre-installed for the same reason as the Linux job: setup.py
+          # imports it directly at the top level, before pyproject.toml's
+          # declared dependencies get a chance to be satisfied. GTK3/
+          # PyGObject need no separate pip install here (unlike Linux) -
+          # the --system-site-packages venv above already sees Homebrew's
+          # brew-installed `gi` module directly.
+          pip install translate-toolkit
+          pip install pyenchant
+
+      - name: Install virtaal
+        # .[test] pulls in pyproject.toml's declared dependencies
+        # (pycurl, lxml, diff_match_patch, python-Levenshtein, cheroot)
+        # plus pytest, in one step instead of eight separate ones.
+        run: pip install --no-build-isolation .[test]
+
+      - name: Compile-check all Python files
+        run: find . -name "*.py" -exec python -m py_compile {} +
+
+      - name: Run tests
+        # No xvfb-run equivalent: macOS's WindowServer is a real system
+        # daemon that's always running, even in CI, unlike X11 which has
+        # no display server at all without one.
+        run: pytest -rvxs virtaal
+
+      - name: Smoke test the CLI
+        run: virtaal --help
+
+  build-macos-app:
+    runs-on: macos-latest
+    needs: test-macos
+    # Separate job from test-macos, not extra steps tacked onto it:
+    # PyInstaller has to trace and copy the whole dependency tree, which
+    # is genuinely slow, and this only needs to run once the fast pytest
+    # job has already confirmed the app itself works - no point spending
+    # the extra time building a bundle around a broken app.
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      # Same Homebrew/venv setup as test-macos - PyInstaller needs a real,
+      # working GTK3/PyGObject environment to trace and bundle, not just
+      # virtaal's own pure-Python dependencies.
+      - name: Install system dependencies (Homebrew)
+        run: |
+          brew untap aws/tap || true
+          brew install pygobject3 gtk+3 gtk-mac-integration \
+            gobject-introspection cairo pkg-config gettext \
+            enchant gtkspell3
+
+      - name: Create venv with system site-packages
+        run: |
+          python3 -m venv --system-site-packages .venv
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install setuptools wheel
+          pip install translate-toolkit
+          pip install pyenchant
+          pip install pyinstaller
+
+      - name: Install virtaal
+        run: pip install --no-build-isolation .
+
+      - name: Build self-contained .app bundle
+        run: devsupport/packaging/macos/build_standalone.sh
+
+      - name: Verify the bundle launches cleanly
+        # Launch with a real file in the background, confirm the process
+        # is still alive after enough time for GTK/plugin init, and
+        # confirm the log is clean - empty, not just "didn't crash".
+        # enchant is deliberately excluded from this bundle (see
+        # virtaal.spec's comment) so "Failed to load plugin
+        # spellchecker"-type lines are expected and fine; anything else
+        # in the log is not.
+        run: |
+          dist/Virtaal.app/Contents/MacOS/virtaal devsupport/testfiles/checks.po > /tmp/bundle-launch.log 2>&1 &
+          PID=$!
+          sleep 6
+          if ! kill -0 "$PID" 2>/dev/null; then
+            echo "::error::Bundle exited within 6s of launch"
+            cat /tmp/bundle-launch.log
+            exit 1
+          fi
+          kill "$PID"
+          pkill -f virtaal.support.tmserver || true
+          if grep -Eqv "spellchecker|enchant|GtkosxApplication" /tmp/bundle-launch.log; then
+            echo "::error::Unexpected output in the bundle's log"
+            cat /tmp/bundle-launch.log
+            exit 1
+          fi
+
+      - name: Package the bundle for upload
+        # Pointing upload-artifact straight at the dist/Virtaal.app
+        # *directory* lets its own zip/re-serve pipeline mangle the
+        # bundle - the code signature (embedded in
+        # Contents/_CodeSignature, hashes every file's exact
+        # bytes/permissions) comes out invalid on download, which macOS
+        # reports as "Virtaal.app is damaged and can't be opened" -
+        # persists even after clearing the quarantine flag, since it's a
+        # broken signature, not a quarantine block. `ditto` is Apple's
+        # own tool for archiving app bundles for exactly this reason -
+        # unlike a plain zip/tar, it's bundle-aware and preserves the
+        # signature, symlinks (including Contents/MacOS/share), and
+        # extended attributes faithfully.
+        run: ditto -c -k --sequesterRsrc --keepParent dist/Virtaal.app dist/Virtaal-macos-app.zip
+
+      - name: Verify the signature survives the archive step
+        # Cheap, immediate check that the fix above actually works -
+        # unzip with ditto (not plain unzip - same bundle-aware reasoning
+        # as packaging) and re-check codesign right here.
+        run: |
+          ditto -x -k dist/Virtaal-macos-app.zip /tmp/verify-signature
+          codesign -dv --verbose=4 /tmp/verify-signature/Virtaal.app
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: Virtaal-macos-app
+          path: dist/Virtaal-macos-app.zip
+          if-no-files-found: error
+
+      - name: Build .dmg installer
+        run: devsupport/packaging/macos/build_dmg.sh
+
+      - name: Verify the .dmg mounts and contains a real app
+        # A .dmg is a single opaque file, unlike the raw .app directory
+        # above - no ditto-style archiving trick needed for the artifact
+        # upload itself, but still worth confirming the disk image is
+        # genuinely mountable and has what it should before shipping it
+        # as a build artifact, rather than assuming dmgbuild succeeding
+        # silently means the result is actually usable.
+        run: |
+          hdiutil attach dist/Virtaal.dmg -mountpoint /tmp/verify-dmg -nobrowse -quiet
+          test -x /tmp/verify-dmg/Virtaal.app/Contents/MacOS/virtaal
+          test -L /tmp/verify-dmg/Applications
+          hdiutil detach /tmp/verify-dmg -quiet
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: Virtaal-macos-dmg
+          path: dist/Virtaal.dmg
+          if-no-files-found: error
+
   core-checks:
     name: core checks
     needs: [pre-commit, docs-and-translations, test]

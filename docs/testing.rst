@@ -29,9 +29,23 @@ On Linux without a real display, wrap it in ``xvfb-run`` (CI does)::
   xvfb-run -a --server-args="-screen 0 1024x768x24" pytest -rvxs virtaal
 
 Real translation files for manual testing live under
-``devsupport/testfiles/`` - ``checks.po`` (exercises most quality
-checks), ``plurals.po``/``plurals-zero.po`` (nplurals=3 and nplurals=1
-respectively), and others added as specific bugs were found and fixed.
+``devsupport/testfiles/``, one per format or scenario worth testing
+directly:
+
+* ``checks.po`` - exercises most quality checks.
+* ``plurals.po``/``plurals-zero.po`` - nplurals=3 and nplurals=1
+  respectively.
+* ``workflow.po``/``workflow.xliff`` - between the two, covers five of
+  ``WorkflowMode``'s six states.
+* ``workflow.mo`` - a compiled Gettext catalog (``pocompile``), one
+  translated unit; compilation itself drops untranslated/fuzzy
+  entries.
+* ``workflow.tmx``, ``workflow.tbx``, ``workflow.ts`` (Qt Linguist),
+  ``workflow.qph`` (Qt Phrase Book), ``workflow.ftl`` (Fluent) - cover
+  translate-toolkit's other supported formats beyond Gettext PO.
+
+Add more here as a format or scenario needs its own dedicated
+coverage.
 
 .. _testing#windows_ci:
 

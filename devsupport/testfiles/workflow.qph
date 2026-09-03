@@ -1,0 +1,22 @@
+<!DOCTYPE QPH>
+<!--
+  A small English -> Afrikaans Qt Phrase Book for exercising Virtaal's
+  QPH support (open via the "Qt Phrase Book" filter) - Qt's own
+  glossary format, the same space workflow.tbx covers for TBX.
+  Generated via translate.storage.qph.QphFile rather than
+  hand-written.
+-->
+<QPH language="af">
+  <phrase>
+    <source>translation memory</source>
+    <target>vertaalgeheue</target>
+  </phrase>
+  <phrase>
+    <source>source language</source>
+    <target>brontaal</target>
+  </phrase>
+  <phrase>
+    <source>target language</source>
+    <target>doeltaal</target>
+  </phrase>
+</QPH>

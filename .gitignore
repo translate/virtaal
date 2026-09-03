@@ -30,6 +30,9 @@
 /share/virtaal/virtaal-mimetype.xml
 /share/virtaal/virtaal.desktop
 
+# /virtaal/
+/virtaal/_build_info.py
+
 # General
 *.pyc
 __pycache__/

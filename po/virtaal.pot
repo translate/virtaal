@@ -3,14 +3,12 @@
 # This file is distributed under the same license as the Virtaal package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../virtaal/support/native_widgets.py:50
-#: ../virtaal/support/native_widgets.py:51
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-02 18:35+0100\n"
+"POT-Creation-Date: 2026-09-03 18:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
-#: ../share/virtaal/virtaal.ui.h:18 ../virtaal/views/mainview.py:855
+#: ../share/virtaal/virtaal.ui.h:18 ../virtaal/views/mainview.py:870
 msgid "Virtaal"
 msgstr ""
 
@@ -304,7 +302,7 @@ msgid "Placeables"
 msgstr ""
 
 #: ../share/virtaal/virtaal.ui.h:58
-#: ../virtaal/views/widgets/shortcutswindow.py:58
+#: ../virtaal/views/widgets/shortcutswindow.py:57
 msgid "Plug-ins"
 msgstr ""
 
@@ -715,9 +713,9 @@ msgid ""
 msgstr ""
 
 #: ../virtaal/controllers/maincontroller.py:241
-#: ../virtaal/support/native_widgets.py:153
-#: ../virtaal/support/native_widgets.py:212
-#: ../virtaal/support/native_widgets.py:263 ../virtaal/views/mainview.py:332
+#: ../virtaal/support/native_widgets.py:182
+#: ../virtaal/support/native_widgets.py:241
+#: ../virtaal/support/native_widgets.py:292 ../virtaal/views/mainview.py:347
 msgid "Save"
 msgstr ""
 
@@ -988,7 +986,7 @@ msgid "Incomplete"
 msgstr ""
 
 #: ../virtaal/modes/searchmode.py:35 ../virtaal/modes/searchmode.py:68
-#: ../virtaal/views/widgets/shortcutswindow.py:45
+#: ../virtaal/views/widgets/shortcutswindow.py:44
 msgid "Search"
 msgstr ""
 
@@ -1241,13 +1239,13 @@ msgid "Add Files"
 msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:190
-#: ../virtaal/support/native_widgets.py:90 ../virtaal/views/mainview.py:277
+#: ../virtaal/support/native_widgets.py:119 ../virtaal/views/mainview.py:292
 msgid "All Supported Files"
 msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:216
-#: ../virtaal/support/native_widgets.py:179
-#: ../virtaal/support/native_widgets.py:209 ../virtaal/views/mainview.py:321
+#: ../virtaal/support/native_widgets.py:208
+#: ../virtaal/support/native_widgets.py:238 ../virtaal/views/mainview.py:336
 msgid "All Files"
 msgstr ""
 
@@ -1431,13 +1429,13 @@ msgstr ""
 msgid "?"
 msgstr ""
 
-#: ../virtaal/support/native_widgets.py:140
-#: ../virtaal/support/native_widgets.py:180
-#: ../virtaal/support/native_widgets.py:249 ../virtaal/views/mainview.py:270
+#: ../virtaal/support/native_widgets.py:169
+#: ../virtaal/support/native_widgets.py:209
+#: ../virtaal/support/native_widgets.py:278 ../virtaal/views/mainview.py:285
 msgid "Choose a Translation File"
 msgstr ""
 
-#: ../virtaal/support/native_widgets.py:160
+#: ../virtaal/support/native_widgets.py:189
 msgid ""
 "A file named \"%1\" already exists. Are you sure you want to overwrite it?"
 msgstr ""
@@ -1702,20 +1700,18 @@ msgstr ""
 
 #: ../virtaal/support/tutorial.py:285
 msgid ""
-"Virtaal is able to provide suggestions from several terminology glossaries "
-"and provides easy shortcuts to allow paste them in the translation field. "
-"Right now Virtaal has only one empty terminology glossary, but you can start "
-"filling it. In order to do that select the original text, press Ctrl+T, "
-"provide a translation for your language."
+"You can maintain a local terminology file to help you translate "
+"consistently. To add a term, select a word (or words), press Ctrl+T and fill "
+"in the details for the new term. Select the text below and add a term for it."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:295
+#: ../virtaal/support/tutorial.py:293
 msgid ""
 "In the previous entry you have created one terminology entry for the "
 "\"filter\" verb. Now do the same for \"filter\" noun."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:300
+#: ../virtaal/support/tutorial.py:298
 msgid ""
 "If you have created any terminology in the previous entries you may now see "
 "some of the words with a green background (or other color depending on your "
@@ -1728,20 +1724,20 @@ msgid ""
 "translation field."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:313
+#: ../virtaal/support/tutorial.py:311
 msgid ""
 "This message has two lines. Make sure that your translation also contains "
 "two lines. You can separate lines with Shift+Enter or copy newline "
 "placeables (displayed as ¶)."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:320
+#: ../virtaal/support/tutorial.py:318
 msgid ""
 "This message contains tab characters to separate some headings. Make sure "
 "you separate your translations in the same way."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:325
+#: ../virtaal/support/tutorial.py:323
 msgid ""
 "This message contains a large number that is formatted according to the "
 "American convention. Translate this but make sure to format the number "
@@ -1751,7 +1747,7 @@ msgid ""
 "formatting: this number is bigger than one thousand."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:335
+#: ../virtaal/support/tutorial.py:333
 msgid ""
 "This message refers to miles. If the programmers encourage it, you might "
 "want to change this to kilometres in your translation, if kilometers are "
@@ -1760,7 +1756,7 @@ msgid ""
 "number is changed, but in this case it is safe to do so."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:344
+#: ../virtaal/support/tutorial.py:342
 msgid ""
 "This message contains a link that the user will be able to click on to visit "
 "the help page. Make sure you correctly keep the information between the "
@@ -1768,7 +1764,7 @@ msgid ""
 "tags, even if your language uses a different type of quotation marks."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:354
+#: ../virtaal/support/tutorial.py:352
 #, python-format
 msgid ""
 "This message contains a similar link, but the programmers decided to rather "
@@ -1777,14 +1773,14 @@ msgid ""
 "opening and closing tags of the previous translation."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:362
+#: ../virtaal/support/tutorial.py:360
 msgid ""
 "This message contains the <b> and </b> tags to emphasize a word, while "
 "everything is within the <p> and </p> tags. Make sure your whole translation "
 "is within the <p> and </p> tags."
 msgstr ""
 
-#: ../virtaal/support/tutorial.py:368
+#: ../virtaal/support/tutorial.py:366
 msgid ""
 "This message contains a similar link that is contained within <span> and </"
 "span>. Make sure you correctly keep all the tags (<...>), and that the link "
@@ -1821,17 +1817,17 @@ msgstr ""
 msgid "_New Language Pair..."
 msgstr ""
 
-#: ../virtaal/views/mainview.py:239
+#: ../virtaal/views/mainview.py:254
 msgid "Error"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:351
+#: ../virtaal/views/mainview.py:366
 msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:354
+#: ../virtaal/views/mainview.py:369
 msgid "_Discard"
 msgstr ""
 
@@ -1839,16 +1835,16 @@ msgstr ""
 #. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
 #. %(current_file)s is the file name of the current file
 #. most languages will not need to change this
-#: ../virtaal/views/mainview.py:439
+#: ../virtaal/views/mainview.py:454
 #, python-format
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:464
+#: ../virtaal/views/mainview.py:479
 msgid "Please enter the number of noun forms (plurals) to use"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:470
+#: ../virtaal/views/mainview.py:485
 msgid "Please enter the plural equation to use"
 msgstr ""
 
@@ -1997,147 +1993,147 @@ msgstr ""
 msgid "Configure..."
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:29
+#: ../virtaal/views/widgets/shortcutswindow.py:28
 msgid "Global"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:30
+#: ../virtaal/views/widgets/shortcutswindow.py:29
 msgid "Open a file"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:31
+#: ../virtaal/views/widgets/shortcutswindow.py:30
 msgid "Save the current file"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:32
+#: ../virtaal/views/widgets/shortcutswindow.py:31
 msgid "Close the current file"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:33
+#: ../virtaal/views/widgets/shortcutswindow.py:32
 msgid "Quit Virtaal"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:34
+#: ../virtaal/views/widgets/shortcutswindow.py:33
 msgid "Show preferences dialog"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:35
+#: ../virtaal/views/widgets/shortcutswindow.py:34
 msgid "Show file properties and statistics"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:36
+#: ../virtaal/views/widgets/shortcutswindow.py:35
 msgid "Toggle fullscreen mode"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:37
+#: ../virtaal/views/widgets/shortcutswindow.py:36
 msgid "Show this Keyboard Shortcuts window"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:39
+#: ../virtaal/views/widgets/shortcutswindow.py:38
 msgid "Navigation"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:40
+#: ../virtaal/views/widgets/shortcutswindow.py:39
 msgid "Move to next translation"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:41
+#: ../virtaal/views/widgets/shortcutswindow.py:40
 msgid "Move to previous unit"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:42
+#: ../virtaal/views/widgets/shortcutswindow.py:41
 msgid "Move to next unit"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:43
+#: ../virtaal/views/widgets/shortcutswindow.py:42
 msgid "Move 10 units up"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:44
+#: ../virtaal/views/widgets/shortcutswindow.py:43
 msgid "Move 10 units down"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:46
+#: ../virtaal/views/widgets/shortcutswindow.py:45
 msgid "Move to next search match"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:47
+#: ../virtaal/views/widgets/shortcutswindow.py:46
 msgid "Move to previous search match"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:49
+#: ../virtaal/views/widgets/shortcutswindow.py:48
 msgid "Units"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:50
+#: ../virtaal/views/widgets/shortcutswindow.py:49
 msgid "Select previous placeable"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:51
+#: ../virtaal/views/widgets/shortcutswindow.py:50
 msgid "Select next placeable"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:52
+#: ../virtaal/views/widgets/shortcutswindow.py:51
 msgid "Copy the source or selected placeable to the target"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:53
+#: ../virtaal/views/widgets/shortcutswindow.py:52
 msgid "Enter a new line"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:54
+#: ../virtaal/views/widgets/shortcutswindow.py:53
 msgid "Mark unit \"Needs work\" as \"Translated\" and go to the next unit"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:55
+#: ../virtaal/views/widgets/shortcutswindow.py:54
 msgid "Mark unit as \"Needs work\" and go to the next unit"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:56
+#: ../virtaal/views/widgets/shortcutswindow.py:55
 msgid "Undo the last change"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:59
+#: ../virtaal/views/widgets/shortcutswindow.py:58
 msgid "Use the first translation suggestion"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:60
+#: ../virtaal/views/widgets/shortcutswindow.py:59
 msgid "Show/Hide checks"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:61
+#: ../virtaal/views/widgets/shortcutswindow.py:60
 msgid "Show/Hide translation suggestions"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:62
+#: ../virtaal/views/widgets/shortcutswindow.py:61
 msgid "Hide translation suggestions, if shown"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:63
+#: ../virtaal/views/widgets/shortcutswindow.py:62
 msgid "Add a term to the local terminology file"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:65
+#: ../virtaal/views/widgets/shortcutswindow.py:64
 msgid "Moving focus"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:66
+#: ../virtaal/views/widgets/shortcutswindow.py:65
 msgid "Move to the next target field"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:67
+#: ../virtaal/views/widgets/shortcutswindow.py:66
 msgid "Move to the previous target field"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:68
+#: ../virtaal/views/widgets/shortcutswindow.py:67
 msgid "Jump to the language-pair selector"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:69
+#: ../virtaal/views/widgets/shortcutswindow.py:68
 msgid "Jump to the \"Navigation:\" mode selector"
 msgstr ""
 
-#: ../virtaal/views/widgets/shortcutswindow.py:70
+#: ../virtaal/views/widgets/shortcutswindow.py:69
 msgid "Close the search bar and return to normal editing"
 msgstr ""
 

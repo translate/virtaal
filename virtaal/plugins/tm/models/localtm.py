@@ -61,8 +61,18 @@ class TMModel(remotetm.TMModel):
         # "-m virtaal.support.tmserver" under our own interpreter needs
         # nothing installed or on PATH, and works the same on Windows and
         # POSIX, so there's no more need for a separate .exe case.
-        command = [
-            sys.executable, "-m", "virtaal.support.tmserver",
+        #
+        # A frozen build (PyInstaller) has no separate "python" to hand
+        # "-m" to - sys.executable there *is* the bundled app's own
+        # compiled launcher, which doesn't understand "-m" at all. bin/
+        # virtaal handles a "--run-module <name>" sentinel for exactly this
+        # case (dispatches via runpy, same as -m would), gated the same
+        # way this branches.
+        if getattr(sys, "frozen", False):
+            command = [sys.executable, "--run-module", "virtaal.support.tmserver"]
+        else:
+            command = [sys.executable, "-m", "virtaal.support.tmserver"]
+        command += [
             "-b", self.config["tmserver_bind"],
             "-p", str(port),
             "-d", self.config["tmdb"],
@@ -76,17 +86,20 @@ class TMModel(remotetm.TMModel):
         logging.debug("launching tmserver with command {}".format(" ".join(command)))
         try:
             import subprocess
-            import virtaal
             from virtaal.support import tmclient
 
-            # Make sure the subprocess can "import virtaal.support.tmserver"
-            # regardless of how *this* process ended up able to (an explicit
-            # PYTHONPATH from a source checkout, an editable install, ...) -
-            # harmless to add even if it's already on sys.path some other way.
-            virtaal_parent = os.path.dirname(os.path.dirname(os.path.abspath(virtaal.__file__)))
             env = os.environ.copy()
-            existing_path = env.get("PYTHONPATH", "")
-            env["PYTHONPATH"] = os.pathsep.join(filter(None, [virtaal_parent, existing_path]))
+            if not getattr(sys, "frozen", False):
+                # Make sure the subprocess can "import virtaal.support.tmserver"
+                # regardless of how *this* process ended up able to (an
+                # explicit PYTHONPATH from a source checkout, an editable
+                # install, ...) - harmless to add even if it's already on
+                # sys.path some other way. Not needed (or meaningful) when
+                # frozen - everything's already bundled together.
+                import virtaal
+                virtaal_parent = os.path.dirname(os.path.dirname(os.path.abspath(virtaal.__file__)))
+                existing_path = env.get("PYTHONPATH", "")
+                env["PYTHONPATH"] = os.pathsep.join(filter(None, [virtaal_parent, existing_path]))
 
             self.tmserver = subprocess.Popen(command, env=env)
             url = "http://%s:%d/tmserver" % (self.config["tmserver_bind"], port)

@@ -21,6 +21,18 @@ modules:
       - type: file
         url: https://files.pythonhosted.org/packages/ac/3e/1098f0173c72842abb9ed0c290c4ce431efbe72e735423091653e1414e8a/unicode_segmentation_rs-0.3.3-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
         sha256: 2cc0bdaf83102e048b71e39229642854f3661a0a3377b302f1d807e16a390eb3
+  - name: python3-fluent.syntax
+    buildsystem: simple
+    build-commands:
+      - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
+        --prefix=${FLATPAK_DEST} "fluent.syntax" --no-build-isolation
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/54/28/475734afb670bf7932caa1828183a4687cac51111950b9fb633c4f976afc/fluent.syntax-0.19.0-py2.py3-none-any.whl
+        sha256: b352b3475fac6c6ed5f06527921f432aac073d764445508ee5218aeccc7cc5c4
+      - type: file
+        url: https://files.pythonhosted.org/packages/49/d3/b8441a820a491ddfc024b0b0cf0393375b75ea13866d9c66727e54c2fc80/typing_extensions-4.16.0-py3-none-any.whl
+        sha256: 481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8
   - name: python3-pycurl
     buildsystem: simple
     build-commands:

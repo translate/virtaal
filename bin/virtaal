@@ -114,6 +114,12 @@ def main(argv):
                              help=_("use the configuration file given by the supplied filename."))
         parser.add_argument("-D", "--debug", dest="debug", action="store_true", default=False,
                              help=_("enable debugging features"))
+        pseudo_group = parser.add_mutually_exclusive_group()
+        pseudo_group.add_argument("--pseudo-translation", dest="pseudo_translation", action="store_true", default=False,
+                             help=_("use a synthetic pseudo-translation for every UI string "
+                                     "(see devsupport/pseudo-translation/generate_pseudo_translation.py)"))
+        pseudo_group.add_argument("--pseudo-translation-bidi", dest="pseudo_translation_bidi", action="store_true", default=False,
+                             help=_("like --pseudo-translation, but also simulates a right-to-left UI layout"))
         # Profiling does not make sense in packaged versions.  Set to True to disable profiling.
         if not packaged:
             parser.add_argument("-P", "--profile", dest="profile", metavar=_("PROFILE"),
@@ -155,10 +161,26 @@ def main(argv):
                 parser.error(_("Could not read configuration file '%(filename)s'") % {"filename": options.config})
 
 
+        def set_pseudo_translation(options):
+            if not (options.pseudo_translation or options.pseudo_translation_bidi):
+                return
+            lang = 'pseudo-bidi' if options.pseudo_translation_bidi else 'pseudo'
+            try:
+                pan_app.set_ui_language(lang)
+            except OSError:
+                parser.error("No '%s' locale found - run "
+                              "devsupport/pseudo-translation/generate_pseudo_translation.py first" % lang)
+            if options.pseudo_translation_bidi:
+                # Must run before the first widget is constructed.
+                from gi.repository import Gtk
+                Gtk.Widget.set_default_direction(Gtk.TextDirection.RTL)
+
+
         options = parser.parse_args(argv[1:])
         pan_app.DEBUG = options.debug
         set_config(options)
         set_logging(options)
+        set_pseudo_translation(options)
         startup_file = options.translation_file
     else:
         # No arguments given, so we save some time by avoiding all the things

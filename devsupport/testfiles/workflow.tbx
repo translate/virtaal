@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE martif PUBLIC "ISO 12200:1999A//DTD MARTIF core (DXFcdV04)//EN" "TBXcdv04.dtd">
+<!--
+  A small English -> Afrikaans TBX glossary for exercising Virtaal's
+  TBX support (open via the "TBX Glossary" filter). Distinct in
+  purpose from workflow.tmx: a glossary of specific terms, not a
+  translation-memory of full UI strings. Generated via
+  translate.storage.tbx.tbxfile rather than hand-written.
+-->
+<martif type="TBX" xml:lang="en">
+    <martifHeader>
+        <fileDesc>
+            <sourceDesc>
+                <p>Translate Toolkit</p>
+            </sourceDesc>
+        </fileDesc>
+    </martifHeader>
+    <text>
+        <body>
+            <termEntry>
+                <langSet xml:lang="en"><tig><term>translation memory</term></tig></langSet>
+                <langSet xml:lang="af"><tig><term>vertaalgeheue</term></tig></langSet>
+            </termEntry>
+            <termEntry>
+                <langSet xml:lang="en"><tig><term>source language</term></tig></langSet>
+                <langSet xml:lang="af"><tig><term>brontaal</term></tig></langSet>
+            </termEntry>
+            <termEntry>
+                <langSet xml:lang="en"><tig><term>target language</term></tig></langSet>
+                <langSet xml:lang="af"><tig><term>doeltaal</term></tig></langSet>
+            </termEntry>
+            <termEntry>
+                <langSet xml:lang="en"><tig><term>fuzzy</term></tig></langSet>
+                <langSet xml:lang="af"><tig><term>wasig</term></tig></langSet>
+            </termEntry>
+        </body>
+    </text>
+</martif>

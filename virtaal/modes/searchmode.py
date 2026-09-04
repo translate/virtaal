@@ -65,7 +65,7 @@ class SearchMode(BaseMode):
         self.ent_search = Gtk.Entry()
         self.ent_search.connect('changed', self._on_search_text_changed)
         self.ent_search.connect('activate', self._on_entry_activate)
-        self.btn_search = Gtk.Button(_('Search'))
+        self.btn_search = Gtk.Button(label=_('Search'))
         self.btn_search.connect('clicked', self._on_search_clicked)
         self.chk_casesensitive = Gtk.CheckButton.new_with_mnemonic(_('_Case sensitive'))
         self.chk_casesensitive.connect('toggled', self._refresh_proxy)
@@ -82,7 +82,7 @@ class SearchMode(BaseMode):
         self.lbl_replace = Gtk.Label(label=_('Replace with'))
         self.ent_replace = Gtk.Entry()
         # l10n: Button text
-        self.btn_replace = Gtk.Button(_('Replace'))
+        self.btn_replace = Gtk.Button(label=_('Replace'))
         self.btn_replace.connect('clicked', self._on_replace_clicked)
         # l10n: Check box
         self.chk_replace_all = Gtk.CheckButton.new_with_mnemonic(_('Replace _All'))

@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import GObject
+from gi.repository import GLib
 from gi.repository import Gdk
 from gi.repository import Gtk
 from translate.storage.placeables import StringElem
@@ -159,7 +159,7 @@ class UndoController(BaseController):
             textbox.refresh(update=True)
             self._enable_unit_signals()
 
-        GObject.idle_add(refresh)
+        GLib.idle_add(refresh)
 
     def _select_unit(self, unit):
         """Select the given unit in the store view.

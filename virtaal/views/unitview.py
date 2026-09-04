@@ -21,8 +21,8 @@
 import logging
 import re
 
-from gi.repository import Gtk, Gdk
-from gi.repository.GObject import idle_add, PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from gi.repository import GLib, Gtk, Gdk
+from gi.repository.GObject import PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 from translate.lang import factory
 
 from virtaal.common import GObjectWrapper
@@ -407,7 +407,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
             # Alt-Down
             elif eventname == 'alt-down':
-                idle_add(self.copy_original, textbox)
+                GLib.idle_add(self.copy_original, textbox)
                 return True
 
             # Shift-Tab

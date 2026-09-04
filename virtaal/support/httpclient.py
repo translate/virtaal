@@ -22,7 +22,7 @@ import logging
 from io import BytesIO
 
 import pycurl
-from gi.repository import GObject
+from gi.repository import GLib, GObject
 from urllib import request, parse
 
 try:
@@ -205,7 +205,7 @@ class HTTPClient(object):
     def run(self):
         """client should not be running when request queue is empty"""
         if self.running: return
-        GObject.timeout_add(100, self.perform)
+        GLib.timeout_add(100, self.perform)
         self.running = True
 
     def close_request(self, handle):

@@ -4,7 +4,7 @@ import re
 import sys
 import traceback
 
-from gi.repository import GObject
+from gi.repository import GLib
 from gi.repository import Gdk
 from gi.repository import Gtk
 from gi.repository import Pango
@@ -88,7 +88,7 @@ class PythonConsole(Gtk.ScrolledWindow):
                 cur = buffer.get_end_iter()
 
             buffer.place_cursor(cur)
-            GObject.idle_add(self.scroll_to_end)
+            GLib.idle_add(self.scroll_to_end)
             return True
 
         elif event.keyval == Gdk.KEY_Return:
@@ -132,7 +132,7 @@ class PythonConsole(Gtk.ScrolledWindow):
             cur = buffer.get_end_iter()
             buffer.move_mark(inp_mark, cur)
             buffer.place_cursor(cur)
-            GObject.idle_add(self.scroll_to_end)
+            GLib.idle_add(self.scroll_to_end)
             return True
 
         elif event.keyval == Gdk.KEY_KP_Down or \
@@ -140,7 +140,7 @@ class PythonConsole(Gtk.ScrolledWindow):
             # Next entry from history
             view.emit_stop_by_name("key_press_event")
             self.history_down()
-            GObject.idle_add(self.scroll_to_end)
+            GLib.idle_add(self.scroll_to_end)
             return True
 
         elif event.keyval == Gdk.KEY_KP_Up or \
@@ -148,7 +148,7 @@ class PythonConsole(Gtk.ScrolledWindow):
             # Previous entry from history
             view.emit_stop_by_name("key_press_event")
             self.history_up()
-            GObject.idle_add(self.scroll_to_end)
+            GLib.idle_add(self.scroll_to_end)
             return True
 
         elif event.keyval == Gdk.KEY_KP_Left or \
@@ -221,7 +221,7 @@ class PythonConsole(Gtk.ScrolledWindow):
             buffer.insert(buffer.get_end_iter(), text)
         else:
             buffer.insert_with_tags(buffer.get_end_iter(), text, tag)
-        GObject.idle_add(self.scroll_to_end)
+        GLib.idle_add(self.scroll_to_end)
 
     def eval(self, command, display_command = False):
         buffer = self.view.get_buffer()

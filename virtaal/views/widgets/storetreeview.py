@@ -21,7 +21,7 @@
 
 import logging
 
-from gi.repository import GObject
+from gi.repository import GLib, GObject
 from gi.repository import Gtk
 
 from .storecellrenderer import StoreCellRenderer
@@ -60,7 +60,7 @@ class StoreTreeView(Gtk.TreeView):
         # to you.
         self._waiting_for_row_change = 0
 
-        # GObject.timeout_add() id for the pending debounced
+        # GLib.timeout_add() id for the pending debounced
         # on_configure_event() action - see that method for why.
         self._configure_timeout_id = None
 
@@ -151,7 +151,7 @@ class StoreTreeView(Gtk.TreeView):
                     return
                 self.set_cursor(newpath, self.get_columns()[0], start_editing=True)
             self._waiting_for_row_change += 1
-            GObject.idle_add(change_cursor, priority=GObject.PRIORITY_DEFAULT_IDLE)
+            GLib.idle_add(change_cursor, priority=GLib.PRIORITY_DEFAULT_IDLE)
 
     def set_model(self, storemodel):
         if storemodel:
@@ -230,19 +230,19 @@ class StoreTreeView(Gtk.TreeView):
         # settle-then-restore-cursor housekeeping.
         logging.debug("storetreeview: configure-event %dx%d", event.width, event.height)
         if self._configure_timeout_id is not None:
-            GObject.source_remove(self._configure_timeout_id)
-        self._configure_timeout_id = GObject.timeout_add(200, self._on_configure_settled)
+            GLib.source_remove(self._configure_timeout_id)
+        self._configure_timeout_id = GLib.timeout_add(200, self._on_configure_settled)
         return False
 
     def _on_configure_settled(self):
         self._configure_timeout_id = None
         logging.debug("storetreeview: debounce settled, window=%s", self._window_size())
         self._restore_cursor()
-        return False  # one-shot: don't repeat this GObject.timeout_add
+        return False  # one-shot: don't repeat this GLib.timeout_add
 
     def _on_destroy(self, _widget):
         if self._configure_timeout_id is not None:
-            GObject.source_remove(self._configure_timeout_id)
+            GLib.source_remove(self._configure_timeout_id)
             self._configure_timeout_id = None
 
     def _on_focus_in(self, widget, _event, *_user_args):
@@ -276,7 +276,7 @@ class StoreTreeView(Gtk.TreeView):
             self.view.cursor.index = index
 
         # We defer the scrolling until GTK has finished all its current drawing
-        # tasks, hence the GObject.idle_add. If we don't wait, then the TreeView
+        # tasks, hence the GLib.idle_add. If we don't wait, then the TreeView
         # draws the editor widget in the wrong position. Presumably GTK issues
         # a redraw event for the editor widget at a given x-y position and then also
         # issues a TreeView scroll; thus, the editor widget gets drawn at the wrong
@@ -290,7 +290,7 @@ class StoreTreeView(Gtk.TreeView):
                 self.scroll_to_cell(path, self.get_column(0), True, 0.5, 0.0)
             return False
 
-        GObject.idle_add(do_scroll)
+        GLib.idle_add(do_scroll)
         return True
 
     def _on_key_press(self, _widget, _event, _data=None):

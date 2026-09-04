@@ -56,8 +56,8 @@ class WelcomeScreenController(BaseController):
     def activate(self):
         """Show the welcome screen and trigger activation logic (ie. find
             recent files)."""
-        from gi.repository import GObject
-        GObject.idle_add(self.update_recent, priority=GObject.PRIORITY_LOW)
+        from gi.repository import GLib
+        GLib.idle_add(self.update_recent, priority=GLib.PRIORITY_LOW)
         self.view.show()
 
     def open_cheatsheat(self):

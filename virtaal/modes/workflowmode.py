@@ -19,7 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 from gi.repository import Gtk
-from gi.repository.GObject import idle_add
+from gi.repository import GLib
 
 from virtaal.views.widgets.popupmenubutton import PopupMenuButton, POS_NW_SW
 from .basemode import BaseMode
@@ -133,7 +133,7 @@ class WorkflowMode(BaseMode):
                 continue
             if menuitem in self._menuitem_states:
                 self.filter_states.append(self._menuitem_states[menuitem])
-        idle_add(self._apply_filter_states)
+        GLib.idle_add(self._apply_filter_states)
         self._update_button_label()
 
     def _apply_filter_states(self):

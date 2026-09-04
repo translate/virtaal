@@ -569,13 +569,30 @@ jobs:
         run: virtaal --help
 
   build-macos-app:
-    runs-on: macos-latest
     needs: test-macos
     # Separate job from test-macos, not extra steps tacked onto it:
     # PyInstaller has to trace and copy the whole dependency tree, which
     # is genuinely slow, and this only needs to run once the fast pytest
     # job has already confirmed the app itself works - no point spending
     # the extra time building a bundle around a broken app.
+    #
+    # Two-leg matrix, not a single macos-latest job: PyInstaller builds
+    # a single-architecture bundle matching the host it runs on, and
+    # Homebrew doesn't ship universal2 GTK3 bottles, so an arm64-only
+    # build won't run on an Intel Mac at all (Rosetta 2 only
+    # translates x86_64 -> arm64, not the reverse). A real universal2
+    # bundle isn't attempted - every dependency would need to be built
+    # as a fat binary from source, which Homebrew doesn't support -
+    # building both architectures separately is the practical fix.
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-latest
+            arch: arm64
+          - runner: macos-26-intel
+            arch: x86_64
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -660,7 +677,7 @@ jobs:
 
       - uses: actions/upload-artifact@v7
         with:
-          name: Virtaal-macos-app
+          name: Virtaal-macos-app-${{ matrix.arch }}
           path: dist/Virtaal-macos-app.zip
           if-no-files-found: error
 
@@ -682,7 +699,7 @@ jobs:
 
       - uses: actions/upload-artifact@v7
         with:
-          name: Virtaal-macos-dmg
+          name: Virtaal-macos-dmg-${{ matrix.arch }}
           path: dist/Virtaal.dmg
           if-no-files-found: error
 

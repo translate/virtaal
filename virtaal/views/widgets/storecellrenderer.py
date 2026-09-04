@@ -145,6 +145,10 @@ class StoreCellRenderer(Gtk.CellRenderer):
         self.editable = False
         self.source_layout = None
         self.target_layout = None
+        # See do_get_size()'s own comment - a real Pango-measurement
+        # cache, only ever consulted mid-resize, invalidated below on
+        # any unit change so it can never leak between rows.
+        self._cached_height = None
 
 
     # ACCESSORS #
@@ -158,6 +162,7 @@ class StoreCellRenderer(Gtk.CellRenderer):
         else:
             self.props.cell_background_set = False
         self.__unit = value
+        self._cached_height = None
 
     unit = property(_get_unit, _set_unit, None, None)
 
@@ -170,24 +175,42 @@ class StoreCellRenderer(Gtk.CellRenderer):
         return getattr(self, pspec.name)
 
     def do_get_size(self, widget, _cell_area):
-        #TODO: store last unitid and computed dimensions
         width = widget.get_toplevel().get_allocation().width - 32
         if width < -1:
             width = -1
         if self.editable:
-            editor = self.view.get_unit_celleditor(self.unit)
-            editor.set_size_request(width, -1)
-            editor.show()
-            # fixme: this will make vbox_editor width too large
-            compute_optimal_height(editor, width)
-            parent_height = widget.get_allocation().height
-            if parent_height < -1:
-                parent_height = widget.size_request()[1]
-            if parent_height > 0:
-                self.check_editor_height(editor, width, parent_height)
-            size_request = editor.size_request()
-            height = size_request.height
-            height += self.ROW_PADDING
+            # compute_optimal_height() below does real Pango text-layout
+            # measurement across every textview in the editor (source,
+            # target, notes, ...) - genuinely expensive, and GTK calls
+            # this on every size-allocate. During a live window resize
+            # that's many calls per second for no visual benefit (word-
+            # wrap barely changes between two nearly-identical widths) -
+            # the cause of very slow, unresponsive horizontal window
+            # dragging. Reuse storetreeview.py's
+            # existing configure-event debounce: skip the expensive
+            # recompute while a resize is still in progress, do one real
+            # one once it settles (StoreTreeView._on_configure_settled
+            # forces that via queue_resize()). Never skipped for a
+            # genuine content edit - _set_unit() clears this on every
+            # row change, and edits don't happen mid-resize.
+            treeview = self.view._treeview
+            if treeview.is_resizing and self._cached_height is not None:
+                height = self._cached_height
+            else:
+                editor = self.view.get_unit_celleditor(self.unit)
+                editor.set_size_request(width, -1)
+                editor.show()
+                # fixme: this will make vbox_editor width too large
+                compute_optimal_height(editor, width)
+                parent_height = widget.get_allocation().height
+                if parent_height < -1:
+                    parent_height = widget.size_request()[1]
+                if parent_height > 0:
+                    self.check_editor_height(editor, width, parent_height)
+                size_request = editor.size_request()
+                height = size_request.height
+                height += self.ROW_PADDING
+                self._cached_height = height
         else:
             height = self.compute_cell_height(widget, width)
         #height = min(height, 600)

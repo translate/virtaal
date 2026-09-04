@@ -393,6 +393,12 @@ jobs:
 
       - name: Build self-contained bundle
         shell: pwsh
+        env:
+          # actions/checkout on a pull_request event checks out GitHub's
+          # own ephemeral preview-merge commit, not the PR branch's real
+          # head - pass the real head SHA so the embedded build_commit
+          # is one a human can actually compare against their checkout.
+          VIRTAAL_BUILD_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
         run: devsupport\packaging\windows\build_standalone.ps1
 
       - name: Verify the bundle actually runs
@@ -625,6 +631,12 @@ jobs:
         run: pip install --no-build-isolation .
 
       - name: Build self-contained .app bundle
+        env:
+          # actions/checkout on a pull_request event checks out GitHub's
+          # own ephemeral preview-merge commit, not the PR branch's real
+          # head - pass the real head SHA so the embedded build_commit
+          # is one a human can actually compare against their checkout.
+          VIRTAAL_BUILD_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
         run: devsupport/packaging/macos/build_standalone.sh
 
       - name: Verify the bundle launches cleanly

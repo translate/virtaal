@@ -44,7 +44,17 @@ Remove-Item -Recurse -Force -ErrorAction SilentlyContinue build\virtaal, dist\vi
 # sys.path.insert(0, ROOT) (repo root first) means this local-tree file
 # wins over any installed site-packages copy of virtaal when
 # collect_submodules("virtaal") picks it up below.
-$commit = (git rev-parse HEAD).Trim()
+#
+# $env:VIRTAAL_BUILD_COMMIT lets CI override this: `git rev-parse HEAD`
+# on a pull_request-triggered runner is GitHub's own ephemeral
+# preview-merge commit, not the branch's real head - fetchable nowhere,
+# so useless for a human comparing a downloaded build against their own
+# checkout. CI passes the real head SHA explicitly instead.
+if ($env:VIRTAAL_BUILD_COMMIT) {
+    $commit = $env:VIRTAAL_BUILD_COMMIT
+} else {
+    $commit = (git rev-parse HEAD).Trim()
+}
 "commit = `"$commit`"" | Set-Content -Path virtaal\_build_info.py -Encoding utf8
 Write-Host "Building from commit $commit"
 

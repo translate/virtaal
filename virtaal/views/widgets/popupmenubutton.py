@@ -63,8 +63,23 @@ class PopupMenuButton(Gtk.ToggleButton):
 
     # ACCESSORS #
     def set_menu(self, menu):
-        if getattr(self, '_menu_selection_done_id', None):
-            self.menu.disconnect(self._menu_selection_done_id)
+        old_menu = getattr(self, 'menu', None)
+        if old_menu is not None:
+            if getattr(self, '_menu_selection_done_id', None):
+                old_menu.disconnect(self._menu_selection_done_id)
+            # Destroy the replaced menu now, rather than dropping the
+            # reference and leaving it to Python's cyclic GC: a GC pass
+            # can deallocate one of the menu's own child menuitems
+            # independently, in a different order, within the same
+            # collection sweep that also disposes the menu itself -
+            # when the menu's own C-level destroy then cascades to that
+            # already-freed child (gtk_widget_dispose ->
+            # gtk_container_destroy -> gtk_menu_shell_forall), GTK
+            # either logs "gtk_widget_destroy: assertion 'GTK_IS_WIDGET
+            # (widget)' failed" or segfaults outright, depending on
+            # timing. This was Release Blocker #8's real root cause,
+            # confirmed via a G_DEBUG=fatal-criticals + lldb backtrace.
+            old_menu.destroy()
         self.menu = menu
         self._menu_selection_done_id = self.menu.connect('selection-done', self._on_menu_selection_done)
 

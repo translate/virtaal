@@ -80,6 +80,21 @@ class WorkflowMode(BaseMode):
         self.storecursor.indices = indices
 
     def _add_widgets(self):
+        # Destroy the previous popup button and its menu now rather
+        # than just dropping the references - see
+        # PopupMenuButton.set_menu()'s own comment for why relying on
+        # Python's cyclic GC to eventually collect them isn't safe
+        # here. destroy()ing the button doesn't reach the menu itself
+        # (it's attached via GTK's popup mechanism, not as a normal
+        # child), so both need doing explicitly.
+        if hasattr(self, 'btn_popup'):
+            self.btn_popup.menu.destroy()
+            self.btn_popup.destroy()
+            # destroy() above already tore down the old menuitems -
+            # forget them, rather than leaking their now-dead widget
+            # references in this dict forever.
+            self._menuitem_states = {}
+
         table = self.controller.view.mode_box
         self.btn_popup = PopupMenuButton(menu_pos=POS_NW_SW)
         self.btn_popup.set_relief(Gtk.ReliefStyle.NORMAL)

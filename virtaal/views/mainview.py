@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import locale
+import logging
 import os
 import subprocess
 import sys
@@ -909,8 +910,12 @@ class MainView(BaseView):
             and not (event.new_window_state & Gdk.WindowState.FULLSCREEN)
         )
         if left_fullscreen and getattr(self, '_pre_fullscreen_size', None):
-            self.main_window.resize(*self._pre_fullscreen_size)
+            target_size = self._pre_fullscreen_size
             self._pre_fullscreen_size = None
+            store_controller = self.controller.store_controller
+            if store_controller.store is not None:
+                store_controller.view._treeview.reset_column_width()
+            self.main_window.resize(*target_size)
 
     def _on_app_pressed(self, btn):
         self.app_menu.popup(None, None, None, 0, 0, Gtk.get_current_event_time())

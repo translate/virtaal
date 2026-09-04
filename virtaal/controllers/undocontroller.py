@@ -195,6 +195,19 @@ class UndoController(BaseController):
         if self.model.is_at_clean_position():
             self.main_controller.store_controller.set_modified(False)
 
+        # Reported live (Dwayne): undoing a change back to an empty
+        # target left the unit's workflow state stuck at "Translated".
+        # _perform_undo() deliberately disables unit signals around the
+        # text-reverting action (to avoid re-marking the document
+        # modified), so the normal typing-triggered state timer
+        # (_unit_modified -> _start_state_timer -> _state_timer_expired)
+        # never runs for an undo. Re-run its own EMPTY<->UNREVIEWED
+        # check directly - never overrides a deliberate user pick
+        # (_state_sticky).
+        current_unit = self.unit_controller.current_unit
+        if current_unit is not None and current_unit.STATE and not getattr(current_unit, '_state_sticky', False):
+            self.unit_controller._correct_empty_state(current_unit)
+
     @if_enabled
     def _on_unit_delete_text(self, unit_controller, unit, deleted, parent, offset, cursor_pos, elem, target_num):
         def undo_action(unit):

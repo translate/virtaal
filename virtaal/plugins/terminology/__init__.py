@@ -29,7 +29,11 @@ class Plugin(BasePlugin):
     version = 0.1
     default_config = {
         'backends_dialog_width': 400,
-        'disabled_models': '',
+        # autoterm's default URL (terminology.locamotion.org) is dead -
+        # disabled until it has somewhere working to point at. The
+        # plugin itself (fetch-any-URL terminology) stays, since it's a
+        # distinct concept from Pontoon's own fixed, specific source.
+        'disabled_models': 'autoterm',
         'max_matches': '5',
         'min_quality': '70'
     }

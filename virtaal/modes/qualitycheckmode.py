@@ -92,6 +92,22 @@ class QualityCheckMode(BaseMode):
         self.storecursor.indices = indices
 
     def _add_widgets(self):
+        # Destroy the previous popup button and its menu now rather
+        # than just dropping the references - see
+        # PopupMenuButton.set_menu()'s own comment for why relying on
+        # Python's cyclic GC to eventually collect them isn't safe
+        # here. destroy()ing the button doesn't reach the menu itself
+        # (it's attached via GTK's popup mechanism, not as a normal
+        # child), so both need doing explicitly.
+        if hasattr(self, 'btn_popup'):
+            self.btn_popup.menu.destroy()
+            self.btn_popup.destroy()
+            # destroy() above already tore down the old menuitems -
+            # forget them, so _create_menu_entries() (called via
+            # _create_checks_menu() below) doesn't try to disconnect/
+            # destroy them a second time.
+            self._menuitem_checks = {}
+
         table = self.controller.view.mode_box
         self.btn_popup = PopupMenuButton(menu_pos=POS_NW_SW)
         self.btn_popup.set_relief(Gtk.ReliefStyle.NORMAL)
@@ -112,7 +128,12 @@ class QualityCheckMode(BaseMode):
     def _create_menu_entries(self, menu):
         for mi, (name, signal_id) in self._menuitem_checks.items():
             mi.disconnect(signal_id)
-            menu.remove(mi)
+            # destroy(), not menu.remove(): unparenting alone leaves
+            # the menuitem for Python's cyclic GC to eventually
+            # collect, which isn't safe to rely on here - see
+            # PopupMenuButton.set_menu()'s comment for the full
+            # mechanism (Release Blocker #8).
+            mi.destroy()
         assert not menu.get_children()
         self._menuitem_checks = {}
         for check_name, display_name in sorted(self.checks_names.items(), key=lambda x: locale.strxfrm(x[1])):

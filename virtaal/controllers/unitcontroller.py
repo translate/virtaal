@@ -175,6 +175,13 @@ class UnitController(BaseController):
         self._state_timer_active = False
         if unit is not self.current_unit:
             return
+        self._correct_empty_state(unit)
+
+    def _correct_empty_state(self, unit):
+        """Move a unit between EMPTY and UNREVIEWED based on its
+        actual target content right now - the automatic half of
+        workflow-state tracking, as opposed to a deliberate user pick
+        (see set_current_state()'s own from_user/_state_sticky)."""
         if unit.hasplural():
             target_len = min([len(s) for s in unit.target.strings])
         else:

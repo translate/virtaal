@@ -24,7 +24,7 @@
 # un-escaped back to a single pair of braces - Inno's .iss syntax uses
 # {{ to write a literal { into AppId, so the GUID Inno actually writes
 # into the registry key name is just {B3B6...}, not {{B3B6...}}).
-$script:VirtaalAppId = '{B3B6E6A0-6E8B-4B6C-9C7E-3C6F6E6E6E6E}'
+$script:VirtaalAppId = '{6249E57B-4B71-4E69-8174-F261A0DD9DAE}'
 
 function Find-VirtaalUninstallEntry {
     <#
@@ -184,14 +184,18 @@ function Install-Virtaal {
 
     if ($proc.ExitCode -ne 0) {
         Write-Host "::error::Installer exited with code $($proc.ExitCode)"
-        if (Test-Path $logPath) { Get-Content $logPath }
+        # Write-Host, not bare Get-Content - its output would
+        # otherwise join this function's own return value.
+        if (Test-Path $logPath) { Get-Content $logPath | ForEach-Object { Write-Host $_ } }
         return $null
     }
 
     $entry = Find-VirtaalUninstallEntry
     if (-not $entry) {
         Write-Host "::error::Installer reported success (exit 0) but no uninstall registry entry was found afterwards"
-        if (Test-Path $logPath) { Get-Content $logPath }
+        # Write-Host, not bare Get-Content - its output would
+        # otherwise join this function's own return value.
+        if (Test-Path $logPath) { Get-Content $logPath | ForEach-Object { Write-Host $_ } }
         return $null
     }
     $exePath = Join-Path $entry.InstallLocation "virtaal.exe"

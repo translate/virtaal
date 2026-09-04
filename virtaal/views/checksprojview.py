@@ -43,7 +43,7 @@ class ChecksProjectView(BaseView):
             checkername = self.controller._checker_code_to_name[checkercode]
             names.append(checkername)
         for checkername in sorted(names, key=locale.strxfrm):
-            mitem = Gtk.MenuItem(checkername)
+            mitem = Gtk.MenuItem(label=checkername)
             mitem.show()
             mitem.connect('activate', self._on_menu_item_activate)
             menu.append(mitem)

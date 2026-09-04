@@ -62,8 +62,8 @@ class ListNavigator(Gtk.HBox):
         # Create widgets
         self.btn_back = Gtk.Button()
         self.btn_forward = Gtk.Button()
-        self.btn_back.add(Gtk.Arrow(Gtk.ArrowType.LEFT, Gtk.ShadowType.NONE))
-        self.btn_forward.add(Gtk.Arrow(Gtk.ArrowType.RIGHT, Gtk.ShadowType.NONE))
+        self.btn_back.add(Gtk.Arrow(arrow_type=Gtk.ArrowType.LEFT, shadow_type=Gtk.ShadowType.NONE))
+        self.btn_forward.add(Gtk.Arrow(arrow_type=Gtk.ArrowType.RIGHT, shadow_type=Gtk.ShadowType.NONE))
 
         self.tvw_items, self.lst_items = self._init_treeview()
         frame = Gtk.Frame()

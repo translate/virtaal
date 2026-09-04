@@ -23,6 +23,11 @@ on:
 jobs:
   fuzz-linux:
     runs-on: ubuntu-24.04
+    # Backstop only - fuzz_ui.py's own watchdog (2x --duration-seconds)
+    # should always fire first and leave a real stack trace; this just
+    # bounds the worst case if that somehow doesn't fire, rather than
+    # running for hours (GitHub's default job timeout).
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7
         with:
@@ -79,6 +84,8 @@ jobs:
 
   fuzz-macos:
     runs-on: macos-latest
+    # See fuzz-linux's own comment on this - same backstop reasoning.
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7
         with:
@@ -136,6 +143,8 @@ jobs:
 
   fuzz-windows:
     runs-on: windows-latest
+    # See fuzz-linux's own comment on this - same backstop reasoning.
+    timeout-minutes: 45
     # See test-windows in ci.yml for why gvsbuild/MSVC, not MSYS2.
     env:
       gvsbuild_version: "2026.8.0"

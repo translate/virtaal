@@ -97,6 +97,14 @@ class StoreView(BaseView):
     def hide(self):
         self.parent_widget.props.visible = False
         self.load_store(None)
+        # The treeview's FIXED-width column (storetreeview.py's
+        # _on_size_allocate) holds whatever width the window was at
+        # when this file was open - hiding it here doesn't reset that,
+        # so it silently becomes the *next* file's window's effective
+        # minimum size once its treeview is shown again (same
+        # mechanism as mainview.py's F11 fix). Relax it now, while
+        # nothing is displayed, rather than leaving it to bite later.
+        self._treeview.reset_column_width()
 
     def load_store(self, store):
         self.store = store

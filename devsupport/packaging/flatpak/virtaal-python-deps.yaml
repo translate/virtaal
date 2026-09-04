@@ -17,10 +17,16 @@ modules:
         url: https://files.pythonhosted.org/packages/33/6b/5ee7fab140e1bea5d09b0096fb7f6cf0cb84a56ef0d91c45992a0f557b46/translate_toolkit-3.19.18-py3-none-any.whl
         sha256: fd454595230c158e46017c446ab6359a2f50246345f821ca4e90fe0855e7f48e
       # Rust/maturin sdist can't build in this sandboxed pip env -
-      # swapped for the manylinux wheel instead.
+      # swapped for the manylinux wheels instead. Both architectures
+      # present: pip picks whichever matches the platform building
+      # this module, so the same manifest works for both the x86_64
+      # and aarch64 build-flatpak CI legs.
       - type: file
         url: https://files.pythonhosted.org/packages/ac/3e/1098f0173c72842abb9ed0c290c4ce431efbe72e735423091653e1414e8a/unicode_segmentation_rs-0.3.3-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
         sha256: 2cc0bdaf83102e048b71e39229642854f3661a0a3377b302f1d807e16a390eb3
+      - type: file
+        url: https://files.pythonhosted.org/packages/6f/e3/e415eebcebdfe75b8c2f38c6f5d45925de08e55f96599b9a017113463bff/unicode_segmentation_rs-0.3.3-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+        sha256: 958aaa06d801c087bdc4b9bc02b3897efc283677f27861bbc6ee5136eaa3ab32
   - name: python3-fluent.syntax
     buildsystem: simple
     build-commands:
@@ -89,12 +95,20 @@ modules:
       - type: file
         url: https://files.pythonhosted.org/packages/f1/d9/7fb5aa316bc299258e68c73ba3bddbc499654a07f151cba08f6153988714/pathspec-1.1.1-py3-none-any.whl
         sha256: a00ce642f577bf7f473932318056212bc4f8bfdf53128c78bbd5af0b9b20b189
+      # x86_64 and aarch64 wheels both present, same reason as
+      # unicode_segmentation_rs above.
       - type: file
         url: https://files.pythonhosted.org/packages/5d/b7/b8d0b15f57b37ac5b9e374169471f045da3a715b7f0f3af681011415d972/cmake-4.4.2-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
         sha256: 27b024e903ef985b37183d754a5c61230b56b41fe0971cd44b71b80c787ec594
       - type: file
+        url: https://files.pythonhosted.org/packages/0f/4f/925a2a60ae544791599e2fb14d3619d979511a56518e512081e7ef4b5f8d/cmake-4.4.2-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl
+        sha256: fc9d9f95dc9a542db99ca96cba1c275adeeb497ff2e134c780a9677b8578bd05
+      - type: file
         url: https://files.pythonhosted.org/packages/ed/de/0e6edf44d6a04dabd0318a519125ed0415ce437ad5a1ec9b9be03d9048cf/ninja-1.13.0-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
         sha256: fb46acf6b93b8dd0322adc3a4945452a4e774b75b91293bafcc7b7f8e6517dfa
+      - type: file
+        url: https://files.pythonhosted.org/packages/8e/de/6e1cd6b84b412ac1ef327b76f0641aeb5dcc01e9d3f9eee0286d0c34fd93/ninja-1.13.0-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl
+        sha256: 3d00c692fb717fd511abeb44b8c5d00340c36938c12d6538ba989fe764e79630
   - name: python3-cheroot
     buildsystem: simple
     build-commands:

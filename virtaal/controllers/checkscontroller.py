@@ -20,8 +20,7 @@
 
 import logging
 
-from gi.repository import GLib
-from gi.repository.GObject import SIGNAL_RUN_FIRST
+from gi.repository import GLib, GObject
 
 from virtaal.common import GObjectWrapper
 from .basecontroller import BaseController
@@ -83,8 +82,8 @@ class ChecksController(BaseController):
 
     __gtype_name__ = 'ChecksController'
     __gsignals__ = {
-        'checker-set':  (SIGNAL_RUN_FIRST, None, (object,)),
-        'unit-checked': (SIGNAL_RUN_FIRST, None, (object, object, object))
+        'checker-set':  (GObject.SignalFlags.RUN_FIRST, None, (object,)),
+        'unit-checked': (GObject.SignalFlags.RUN_FIRST, None, (object, object, object))
     }
 
     CHECK_TIMEOUT = 500

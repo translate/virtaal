@@ -22,8 +22,8 @@ import logging
 import os
 import sys
 
-from gi.repository import GLib
-from gi.repository.GObject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from gi.repository import GLib, GObject
+from gi.repository.GObject import TYPE_PYOBJECT
 
 from virtaal.common import pan_app, GObjectWrapper
 from virtaal.common.utils import get_unicode
@@ -44,8 +44,8 @@ class PluginController(BaseController):
 
     __gtype_name__ = 'PluginController'
     __gsignals__ = {
-        'plugin-enabled':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'plugin-disabled': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'plugin-enabled':  (GObject.SignalFlags.RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'plugin-disabled': (GObject.SignalFlags.RUN_FIRST, None, (TYPE_PYOBJECT,)),
     }
 
     # The following class variables are set for the main plug-in controller.

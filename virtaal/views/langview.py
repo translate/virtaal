@@ -66,7 +66,7 @@ class LanguageView(BaseView):
 
         self.recent_items = []
         for i in range(self.controller.NUM_RECENT):
-            item = Gtk.MenuItem('')
+            item = Gtk.MenuItem(label='')
             item.connect('activate', self._on_pairitem_activated, i)
             self.recent_items.append(item)
         seperator = Gtk.SeparatorMenuItem()

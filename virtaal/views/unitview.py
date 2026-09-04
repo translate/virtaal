@@ -76,7 +76,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         self.connect('key-press-event', self._on_key_press_event)
         # We automatically inherrit the tooltip from the Treeview, so we have
         # to show our own custom one to not have a tooltip obscuring things
-        invisible_tooltip = Gtk.Window(Gtk.WindowType.POPUP)
+        invisible_tooltip = Gtk.Window(type=Gtk.WindowType.POPUP)
         invisible_tooltip.resize(1,1)
         invisible_tooltip.set_opacity(0)
         self.set_tooltip_window(invisible_tooltip)

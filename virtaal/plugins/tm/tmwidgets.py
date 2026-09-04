@@ -34,7 +34,7 @@ class TMWindow(Gtk.Window):
 
     # INITIALIZERS #
     def __init__(self, view):
-        super().__init__(Gtk.WindowType.POPUP)
+        super().__init__(type=Gtk.WindowType.POPUP)
         self.view = view
 
         # set_has_frame is the method of Gtk.Enter, not found on Gtk.Window

@@ -37,7 +37,13 @@ rm -rf build/virtaal dist/Virtaal.app
 # sys.path.insert(0, ROOT) (repo root first) means this local-tree file
 # wins over any installed site-packages copy of virtaal when
 # collect_submodules("virtaal") picks it up below.
-commit="$(git rev-parse HEAD)"
+#
+# $VIRTAAL_BUILD_COMMIT lets CI override this: `git rev-parse HEAD` on
+# a pull_request-triggered runner is GitHub's own ephemeral
+# preview-merge commit, not the branch's real head - fetchable nowhere,
+# so useless for a human comparing a downloaded build against their own
+# checkout. CI passes the real head SHA explicitly instead.
+commit="${VIRTAAL_BUILD_COMMIT:-$(git rev-parse HEAD)}"
 echo "commit = \"$commit\"" > virtaal/_build_info.py
 echo "Building from commit $commit"
 

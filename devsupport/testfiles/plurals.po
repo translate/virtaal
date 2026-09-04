@@ -1,0 +1,58 @@
+# A PO file with genuine msgid_plural units, for testing Virtaal's
+# plural-form handling (unitview.py's target-widget layout: one target
+# textbox per plural form, all shown simultaneously side by side - see
+# _layout_update_states()/the code right above it, gated on
+# unit.hasplural() and lang_controller.target_lang.nplurals). No other
+# fixture under devsupport/testfiles/ or po/ has a genuine
+# msgid_plural unit, so this code path had never been exercised by
+# this test battery before.
+#
+# Tagged Language: pl (Polish) rather than English deliberately -
+# English's nplurals=2 only ever exercises two target textboxes, the
+# same shape as any ordinary non-plural multi-target case. Polish has
+# a real, common nplurals=3 rule (form 0 for n==1, form 1 for small
+# counts ending 2-4, form 2 for everything else) - genuinely exercises
+# a third target textbox no other fixture in this repo reaches.
+# msgstr[] content is plain, labelled English (not real Polish)
+# deliberately, same reasoning as rtl.po's legible-flipped-glyphs
+# choice: a screenshot is directly checkable without needing Polish
+# literacy to confirm which textbox is which form.
+# Copyright 2026 Zuza Software Foundation
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2026-08-25 00:00+0000\n"
+"PO-Revision-Date: 2026-08-25 00:00+0000\n"
+"Last-Translator: Virtaal test suite\n"
+"Language-Team: translate-dev@lists.sourceforge.net\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n"
+"%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#. Simple counting example - three genuinely different target textboxes
+#. should appear (form 0: n==1, form 1: n%10 in 2-4, form 2: everything
+#. else), each independently editable.
+msgid "%d file"
+msgid_plural "%d files"
+msgstr[0] "PLURAL FORM 0 (n==1): %d file"
+msgstr[1] "PLURAL FORM 1 (n%10 in 2..4): %d files"
+msgstr[2] "PLURAL FORM 2 (everything else): %d files"
+
+#. A second plural unit - two genuine plural units in one file so
+#. navigating between them (not just viewing the first one) is also
+#. exercised.
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] "PLURAL FORM 0 (n==1): %d new message"
+msgstr[1] "PLURAL FORM 1 (n%10 in 2..4): %d new messages"
+msgstr[2] "PLURAL FORM 2 (everything else): %d new messages"
+
+#. An ordinary, non-plural unit too - confirms plural and non-plural
+#. units can sit in the same file and navigate correctly between each
+#. other (a single target textbox for this one, not three).
+msgid "An ordinary, non-plural string in the same file"
+msgstr "An ordinary, non-plural translation"

@@ -229,13 +229,21 @@ def main():
                          help='RNG seed - printed at the start of every run so a crash can be replayed exactly.')
     parser.add_argument('--log', default=None,
                          help='Path to append the action log to (default: a temp file, path printed at startup).')
+    parser.add_argument('--watchdog-seconds', type=int, default=None,
+                         help='Force-exit with a full stack dump if still running after this long '
+                              '(default: 2x --duration-seconds, or 1800 for a fixed --iterations run) - '
+                              'catches a step() that never returns instead of hanging the CI job for hours.')
     args = parser.parse_args()
 
     seed = args.seed if args.seed is not None else random.SystemRandom().randrange(2**32)
     log_path = args.log or os.path.join(tempfile.gettempdir(), 'virtaal-fuzz-%d.log' % (seed))
 
     faulthandler.enable()
-    print('seed=%d log=%s' % (seed, log_path))
+    watchdog_seconds = args.watchdog_seconds
+    if watchdog_seconds is None:
+        watchdog_seconds = args.duration_seconds * 2 if args.duration_seconds else 1800
+    faulthandler.dump_traceback_later(watchdog_seconds, exit=True)
+    print('seed=%d log=%s watchdog_seconds=%d' % (seed, log_path, watchdog_seconds))
 
     fuzzer = Fuzzer(seed=seed, log_path=log_path)
     fuzzer.run(iterations=None if args.duration_seconds else args.iterations,

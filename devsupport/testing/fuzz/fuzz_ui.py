@@ -59,6 +59,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
+from virtaal.common import pan_app
 from virtaal.controllers.maincontroller import MainController
 from virtaal.controllers.storecontroller import StoreController
 from virtaal.controllers.unitcontroller import UnitController
@@ -89,6 +90,11 @@ class Fuzzer:
         self._log_file = open(log_path, 'a', buffering=1)
         self._tempdir = tempfile.mkdtemp(prefix='virtaal-fuzz-')
         self.iteration = 0
+
+        # Avoids StoreModel._update_header()'s modal save-time prompt.
+        pan_app.settings.translator['name'] = 'Fuzzer'
+        pan_app.settings.translator['email'] = 'fuzzer@example.com'
+        pan_app.settings.translator['team'] = 'none'
 
         self._build_controllers()
         self.store_controller.open_file(self.rng.choice(self.testfiles))

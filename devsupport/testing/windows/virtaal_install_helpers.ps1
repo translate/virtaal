@@ -20,11 +20,19 @@
 #   # ... drive $install.ExePath with virtaal_ui_test_helpers.ps1 ...
 #   Uninstall-Virtaal | Out-Null                        # tear down again
 
-# Must match virtaal.iss's [Setup] AppId exactly (with the outer {{ }}
-# un-escaped back to a single pair of braces - Inno's .iss syntax uses
-# {{ to write a literal { into AppId, so the GUID Inno actually writes
-# into the registry key name is just {B3B6...}, not {{B3B6...}}).
-$script:VirtaalAppId = '{6249E57B-4B71-4E69-8174-F261A0DD9DAE}'
+# Read straight from virtaal.iss rather than hardcoding a copy that can
+# drift out of sync - Inno's .iss syntax writes a literal { via {{, so
+# strip one leading brace to get the GUID Inno actually writes into the
+# registry key name.
+$script:VirtaalIssPath = Join-Path $PSScriptRoot '..\..\packaging\windows\virtaal.iss'
+function Get-VirtaalAppId {
+    $line = Select-String -Path $script:VirtaalIssPath -Pattern '^AppId=\{\{(.+)\}$'
+    if (-not $line) {
+        throw "Could not find AppId= in $script:VirtaalIssPath"
+    }
+    return '{' + $line.Matches[0].Groups[1].Value + '}'
+}
+$script:VirtaalAppId = Get-VirtaalAppId
 
 function Find-VirtaalUninstallEntry {
     <#

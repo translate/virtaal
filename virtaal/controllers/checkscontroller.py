@@ -20,7 +20,8 @@
 
 import logging
 
-from gi.repository.GObject import SIGNAL_RUN_FIRST, timeout_add, PRIORITY_LOW
+from gi.repository import GLib
+from gi.repository.GObject import SIGNAL_RUN_FIRST
 
 from virtaal.common import GObjectWrapper
 from .basecontroller import BaseController
@@ -209,7 +210,7 @@ class ChecksController(BaseController):
             # haven't changed units yet, probably strange timing issue
             return
         self._check_timer_active = True
-        timeout_add(self.CHECK_TIMEOUT, self._check_timer_expired, self.last_unit, priority=PRIORITY_LOW)
+        GLib.timeout_add(self.CHECK_TIMEOUT, self._check_timer_expired, self.last_unit, priority=GLib.PRIORITY_LOW)
 
     def get_check_name(self, check):
         """Return the human readable form of the given check name."""

@@ -19,8 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk
-from gi.repository.GObject import idle_add
+from gi.repository import GLib, Gtk
 
 from virtaal.common.pan_app import get_abs_data_filename, ui_language
 from virtaal.views.widgets.welcomescreen import WelcomeScreen
@@ -91,7 +90,7 @@ class WelcomeScreenView(BaseView):
                 width = int(maxwidth)
 
             txt.set_size_request(width, -1)
-        idle_add(calculate_width)
+        GLib.idle_add(calculate_width)
 
     def update_recent_buttons(self, items):
         # if there are no items (maybe failure in xbel), hide the whole widget

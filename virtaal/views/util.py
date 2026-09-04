@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import GObject
+from gi.repository import GLib
 from gi.repository import Gtk
 
 __all__ = ['pulse']
@@ -72,7 +72,7 @@ def pulse_step(widget, steptime, colordiff, stopcolor, component):
         return
 
     modify_func(Gtk.StateType.NORMAL, col)
-    GObject.timeout_add(steptime, pulse_step, widget, steptime, colordiff, stopcolor, component)
+    GLib.timeout_add(steptime, pulse_step, widget, steptime, colordiff, stopcolor, component)
 
 def pulse(widget, color, fadetime=5000, steptime=10, component='bg'):
     """Fade the background colour of the current widget from the given colour
@@ -109,4 +109,4 @@ def pulse(widget, color, fadetime=5000, steptime=10, component='bg'):
         blue=color[COL_BLUE]
     )
     modify_func(Gtk.StateType.NORMAL, pulsecol)
-    GObject.timeout_add(steptime, pulse_step, widget, steptime, colordiff, stopcolor, component)
+    GLib.timeout_add(steptime, pulse_step, widget, steptime, colordiff, stopcolor, component)

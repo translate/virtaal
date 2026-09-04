@@ -26,7 +26,7 @@ import os
 import re
 import zipfile
 
-from gi.repository import GObject
+from gi.repository import GLib
 
 from virtaal.common import pan_app
 from virtaal.controllers.baseplugin import BasePlugin
@@ -226,7 +226,7 @@ class AutoCorrector(object):
             if reprange is not None:
                 # Updating of the buffer is deferred until after this signal
                 # and its side effects are taken care of. We abuse
-                # GObject.idle_add for that.
+                # GLib.idle_add for that.
                 def correct_text():
                     buffer = textbox.buffer
                     start_iter = elem.gui_info.treeindex_to_iter(reprange[0])
@@ -242,10 +242,10 @@ class AutoCorrector(object):
                         textbox.refresh_cursor_pos = newcursorpos
                         textbox.refresh()
 
-                    GObject.idle_add(refresh)
+                    GLib.idle_add(refresh)
                     return False
 
-                GObject.idle_add(correct_text)
+                GLib.idle_add(correct_text)
 
     def _remove_textbox(self, textbox):
         """Remove the given C{TextBox} from the list of widgets to do
@@ -279,7 +279,7 @@ class Plugin(BasePlugin):
                     self.autocorr.add_widget(target)
                 return False
 
-            GObject.idle_add(add_widgets)
+            GLib.idle_add(add_widgets)
 
         def on_store_loaded(storecontroller):
             self.autocorr.load_dictionary(lang=self.main_controller.lang_controller.target_lang.code)

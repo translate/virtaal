@@ -216,8 +216,8 @@ class MainView(BaseView):
         self._setup_key_bindings()
         self._track_window_state()
         self._setup_dnd()
-        from gi.repository import GObject
-        GObject.idle_add(self._setup_recent_files, priority=GObject.PRIORITY_LOW)
+        from gi.repository import GLib
+        GLib.idle_add(self._setup_recent_files, priority=GLib.PRIORITY_LOW)
         self.main_window.connect('style-set', self._on_style_set)
         self.main_window.connect('style-updated', self._on_style_set)
 
@@ -591,8 +591,6 @@ class MainView(BaseView):
         if pan_app.settings.general['maximized']:
             self.main_window.maximize()
         self.main_window.show()
-        from gi.repository.GObject import threads_init
-        threads_init()
 
         # Uncomment this line to measure startup time until the window shows.
         # It causes the program to quit immediately when the window is shown:

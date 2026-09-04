@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import GObject, Gtk, Gdk
+from gi.repository import GLib, GObject, Gtk, Gdk
 
 from virtaal.views.theme import current_theme
 
@@ -109,7 +109,7 @@ class WelcomeScreen(Gtk.ScrolledWindow):
             background = context.get_background_color(Gtk.StateType.NORMAL)
             txt_features.override_background_color(Gtk.StateType.NORMAL, background)
 
-        GObject.idle_add(_set_text, features, priority=GObject.PRIORITY_LOW)
+        GLib.idle_add(_set_text, features, priority=GLib.PRIORITY_LOW)
 
 
     # METHODS #

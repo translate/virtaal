@@ -116,6 +116,20 @@ class StoreTreeView(Gtk.TreeView):
         if column.get_fixed_width() != new_width:
             column.set_fixed_width(new_width)
 
+    def reset_column_width(self):
+        """Relax the FIXED-width column back to its placeholder size
+        (see _make_column()), letting the next size-allocate correct
+        it for real. A FIXED-width column's current width becomes part
+        of the toplevel window's own effective minimum size - confirmed
+        live: main_window.resize() to a smaller size was silently
+        clamped back up, unchanged, while this column still held its
+        fullscreen-era width. Called right before a resize() that needs
+        to shrink the window past whatever width this column is
+        currently holding (F11 fullscreen exit is the real case)."""
+        column = self.get_columns()[0] if self.get_columns() else None
+        if column:
+            column.set_fixed_width(1)
+
 
     # METHODS #
     def select_index(self, index):

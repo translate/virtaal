@@ -107,7 +107,16 @@ def main(argv):
         # - without this, its generated chrome stays untranslated.
         argparse._ = _
         parser = argparse.ArgumentParser()
-        parser.add_argument("-v", "--version", action="version", version=__version__.ver)
+        # See virtaal.__version__.build_commit's own docstring. Short
+        # (7-char) since a human's the one reading this, matching
+        # `git rev-parse --short`. Note for a packaged Windows build:
+        # pan_app's stdout/stderr redirection runs at import time,
+        # before this ever executes, so this text lands in
+        # %APPDATA%\Virtaal\stdout_virtaal.log, not a caller's console.
+        version_string = __version__.ver
+        if __version__.build_commit:
+            version_string += " (%s)" % __version__.build_commit[:7]
+        parser.add_argument("-v", "--version", action="version", version=version_string)
         parser.add_argument("-l", "--log", dest="log", metavar=_("LOG"),
                              help=_("turn on logging, storing the result to the supplied filename."))
         parser.add_argument("-c", "--config", dest="config", metavar=_("CONFIG"),

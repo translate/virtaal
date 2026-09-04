@@ -1,0 +1,50 @@
+# A PO file for the *other* plural edge case from plurals.po: a
+# language with nplurals=1 (no plural distinction in the language at
+# all - Japanese, Chinese, Korean, Vietnamese, ... all real examples).
+#
+# plurals.po (nplurals=3, Polish) exercises unitview.py showing *more*
+# target textboxes than the common two-form case; this exercises the
+# opposite: a msgid_plural unit that should still show only *one*
+# target textbox, not silently break or show a leftover second one.
+# The loop that shows/hides target widgets (unitview.py's
+# _layout_update_units(), right above _layout_update_states()) is
+# bounded by nplurals, driven by the file's own Language header via
+# lang_controller.target_lang.nplurals - not by how many msgstr[]
+# entries the raw file happens to have - so this is a real, distinct
+# code path from plurals.po's, not just the same thing under a
+# different language name.
+#
+# Tagged Language: ja (Japanese, nplurals=1, always plural form 0).
+# msgstr[] content is plain, labelled English (not real Japanese),
+# same reasoning as plurals.po/rtl.po - legible to a non-Japanese-
+# reading developer checking a screenshot.
+# Copyright 2026 Zuza Software Foundation
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2026-08-25 00:00+0000\n"
+"PO-Revision-Date: 2026-08-25 00:00+0000\n"
+"Last-Translator: Virtaal test suite\n"
+"Language-Team: translate-dev@lists.sourceforge.net\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. Only ONE target textbox should appear for this, despite being a
+#. genuine msgid_plural unit - nplurals=1 means no plural distinction.
+msgid "%d file"
+msgid_plural "%d files"
+msgstr[0] "ONLY FORM (nplurals=1, always form 0): %d file(s)"
+
+#. A second plural unit, same reasoning as plurals.po's second one -
+#. confirms navigating between two nplurals=1 plural units works too.
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] "ONLY FORM (nplurals=1, always form 0): %d new message(s)"
+
+#. An ordinary, non-plural unit in the same file too.
+msgid "An ordinary, non-plural string in the same file"
+msgstr "An ordinary, non-plural translation"

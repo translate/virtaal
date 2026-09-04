@@ -289,7 +289,6 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
     def modified(self):
         self._modified = True
-        #logging.debug('emit("modified")')
         self.emit('modified')
 
     def show(self):

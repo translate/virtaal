@@ -21,7 +21,7 @@
 
 import logging
 
-from gi.repository import GObject, Gtk, Gdk
+from gi.repository import GLib, Gtk, Gdk
 
 from virtaal.common.utils import get_unicode
 from virtaal.controllers.cursor import Cursor
@@ -141,7 +141,7 @@ class SearchMode(BaseMode):
             return False
 
         # FIXME: The following line is a VERY UGLY HACK, but at least it works.
-        GObject.timeout_add(100, grab_focus)
+        GLib.timeout_add(100, grab_focus)
 
     def select_match(self, match):
         """Select the specified match in the GUI."""
@@ -177,7 +177,7 @@ class SearchMode(BaseMode):
             return False
 
         # TODO: Implement for 'notes' and 'locations' parts
-        GObject.idle_add(select_match_text)
+        GLib.idle_add(select_match_text)
 
     def replace_match(self, match, replace_str):
         main_controller = self.controller.main_controller
@@ -250,7 +250,7 @@ class SearchMode(BaseMode):
             self.ent_search.set_position(curpos)
             return False
 
-        GObject.idle_add(grabfocus)
+        GLib.idle_add(grabfocus)
 
     def unselected(self):
         # TODO: Unhightlight the previously selected unit
@@ -476,12 +476,12 @@ class SearchMode(BaseMode):
             before calling update_search() directly, bypassing the
             debounce, so a stale timeout doesn't also fire later."""
         if self._search_timeout:
-            GObject.source_remove(self._search_timeout)
+            GLib.source_remove(self._search_timeout)
             self._search_timeout = 0
 
     def _on_search_text_changed(self, entry):
         self._cancel_search_timeout()
-        self._search_timeout = GObject.timeout_add(self.SEARCH_DELAY, self.update_search)
+        self._search_timeout = GLib.timeout_add(self.SEARCH_DELAY, self.update_search)
 
     def _on_start_search(self, _accel_group, _acceleratable, _keyval, _modifier):
         """This is called via the accelerator."""

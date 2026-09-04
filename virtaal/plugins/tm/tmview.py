@@ -21,7 +21,7 @@
 
 import logging
 
-from gi.repository import Gdk
+from gi.repository import GLib, GObject, Gdk
 
 from virtaal.common import GObjectWrapper
 from virtaal.views.baseview import BaseView
@@ -257,7 +257,7 @@ class TMView(BaseView, GObjectWrapper):
             if selected:
                 self.tmwindow.update_geometry(selected)
 
-        GObject.idle_add(update)
+        GLib.idle_add(update)
 
     def _get_selected_unit_view(self):
         n = self.controller.main_controller.unit_controller.view.focused_target_n

@@ -21,7 +21,7 @@
 
 import os.path
 
-from gi.repository import GObject
+from gi.repository import GLib, GObject
 from translate.lang.data import normalize
 
 from virtaal.controllers.basecontroller import BaseController
@@ -199,8 +199,8 @@ class TMController(BaseController):
             return False
 
         if self._delay_id:
-            GObject.source_remove(self._delay_id)
-        self._delay_id = GObject.timeout_add(self.QUERY_DELAY, start_query)
+            GLib.source_remove(self._delay_id)
+        self._delay_id = GLib.timeout_add(self.QUERY_DELAY, start_query)
 
 
     # EVENT HANDLERS #
@@ -243,7 +243,7 @@ class TMController(BaseController):
             self._on_cursor_changed(self.storecursor)
             return False
 
-        GObject.idle_add(handle_first_unit)
+        GLib.idle_add(handle_first_unit)
 
     def _on_target_focused(self, unitcontroller, target_n):
         #import logging

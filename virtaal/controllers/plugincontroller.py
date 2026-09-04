@@ -22,7 +22,8 @@ import logging
 import os
 import sys
 
-from gi.repository.GObject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT, idle_add
+from gi.repository import GLib
+from gi.repository.GObject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
 
 from virtaal.common import pan_app, GObjectWrapper
 from virtaal.common.utils import get_unicode
@@ -138,7 +139,7 @@ class PluginController(BaseController):
             if name in disabled_plugins:
                 continue
             # We use idle_add(), so that the UI will respond sooner
-            idle_add(self.enable_plugin, name)
+            GLib.idle_add(self.enable_plugin, name)
         logging.info('Queued all plugins for loading')
 
     def shutdown(self):

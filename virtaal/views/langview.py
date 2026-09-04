@@ -22,7 +22,7 @@ import locale
 import logging
 import os
 
-from gi.repository import GObject
+from gi.repository import GLib
 from gi.repository import Gdk
 from gi.repository import Gtk
 
@@ -98,7 +98,7 @@ class LanguageView(BaseView):
             for s in [Gtk.StateType.ACTIVE, Gtk.StateType.NORMAL, Gtk.StateType.PRELIGHT, Gtk.StateType.SELECTED]:
                 self.popupbutton.modify_fg(s, Gdk.color_parse('#f66'))
 
-        GObject.idle_add(notify)
+        GLib.idle_add(notify)
 
     def notify_diff_langs(self):
         def notify():
@@ -106,7 +106,7 @@ class LanguageView(BaseView):
             for state in states:
                 self.popupbutton.modify_fg(state, None)
 
-        GObject.idle_add(notify)
+        GLib.idle_add(notify)
 
     def show(self):
         """Add the managed C{PopupMenuButton} to the C{MainView}'s status bar."""

@@ -3,6 +3,11 @@ name: Tests
 on:
   push:
     branches: [main]
+    # branches:/tags: are independent filters under the same push:
+    # trigger (an OR, not additive scoping) - without this, a tag push
+    # alone never matches on.push at all, so the release job's own
+    # `if:` condition never gets a chance to evaluate.
+    tags: ["v*"]
   pull_request:
   merge_group:
   workflow_dispatch:
@@ -778,3 +783,55 @@ jobs:
             echo "::error::One or more required jobs did not succeed."
             exit 1
           fi
+
+  release:
+    # Fires only on a v* tag push. Deliberately depends on the *build*
+    # jobs, not a rebuild of its own - each already needs its own
+    # test-windows/test-macos job, so by the time this job's
+    # dependencies are satisfied, both artifacts are already proven
+    # working by the same run's own test suite.
+    runs-on: ubuntu-24.04
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [build-windows-installer, build-macos-app]
+    permissions:
+      # Default GITHUB_TOKEN permissions are read-only here - `gh
+      # release create` needs contents: write, granted only to this
+      # one job, not the whole workflow.
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Download Windows installer
+        uses: actions/download-artifact@v7
+        with:
+          name: Virtaal-windows-installer
+          path: release-assets
+
+      - name: Download macOS dmg (arm64)
+        uses: actions/download-artifact@v7
+        with:
+          name: Virtaal-macos-dmg-arm64
+          path: release-assets
+
+      - name: Download macOS dmg (x86_64)
+        uses: actions/download-artifact@v7
+        with:
+          name: Virtaal-macos-dmg-x86_64
+          path: release-assets
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${GITHUB_REF#refs/tags/}"
+          # Pre-release convention: any semver pre-release suffix
+          # (-beta, -rc, -alpha) marks it as a GitHub pre-release, so
+          # it doesn't show as "Latest" ahead of a real stable release.
+          prerelease_flag=""
+          case "$tag" in
+            *-beta*|*-rc*|*-alpha*) prerelease_flag="--prerelease" ;;
+          esac
+          gh release create "$tag" release-assets/* \
+            --title "$tag" \
+            --generate-notes \
+            $prerelease_flag

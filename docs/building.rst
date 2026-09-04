@@ -123,6 +123,11 @@ This produces a local build in ``build-dir``, runnable directly with::
 <https://github.com/flatpak/flatpak-builder-tools/tree/master/pip>`_
 and shouldn't be hand-edited except where noted in its own comments.
 
+flatpak-builder builds for whatever CPU architecture it runs on - a
+real aarch64 CI runner and an aarch64 ``org.gnome.Platform`` runtime
+both already exist, so CI builds and smoke-tests both x86_64 and
+aarch64 as a matrix, rather than shipping only one.
+
 .. _building#windows:
 
 Windows

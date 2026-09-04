@@ -64,6 +64,12 @@ class StoreTreeView(Gtk.TreeView):
         # on_configure_event() action - see that method for why.
         self._configure_timeout_id = None
 
+        # See StoreCellRenderer.do_get_size()'s own comment - True for
+        # the duration of a live resize (first configure-event to
+        # debounce-settled), used there to skip expensive per-allocate
+        # editor-height remeasurement until the resize actually stops.
+        self.is_resizing = False
+
     def _enable_tooltips(self):
         if hasattr(self, "set_tooltip_column"):
             self.set_tooltip_column(COLUMN_NOTE)
@@ -243,6 +249,7 @@ class StoreTreeView(Gtk.TreeView):
         # itself is fixed at the source (_make_column()); this is just
         # settle-then-restore-cursor housekeeping.
         logging.debug("storetreeview: configure-event %dx%d", event.width, event.height)
+        self.is_resizing = True
         if self._configure_timeout_id is not None:
             GLib.source_remove(self._configure_timeout_id)
         self._configure_timeout_id = GLib.timeout_add(200, self._on_configure_settled)
@@ -250,7 +257,13 @@ class StoreTreeView(Gtk.TreeView):
 
     def _on_configure_settled(self):
         self._configure_timeout_id = None
+        self.is_resizing = False
         logging.debug("storetreeview: debounce settled, window=%s", self._window_size())
+        # do_get_size() was skipping real height recomputation while
+        # is_resizing was True (see its own comment) - ask GTK to
+        # re-request sizes now that it's settled, so the row(s) it
+        # skipped get one real, correct measurement at the final width.
+        self.queue_resize()
         self._restore_cursor()
         return False  # one-shot: don't repeat this GLib.timeout_add
 

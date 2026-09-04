@@ -811,13 +811,25 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           name: Virtaal-macos-dmg-arm64
-          path: release-assets
+          path: release-assets/arm64
 
       - name: Download macOS dmg (x86_64)
         uses: actions/download-artifact@v7
         with:
           name: Virtaal-macos-dmg-x86_64
-          path: release-assets
+          path: release-assets/x86_64
+
+      - name: Flatten and rename macOS dmgs
+        # Both matrix legs' build_dmg.sh produce a file called plainly
+        # "Virtaal.dmg" - the artifact *names* differ (arm64/x86_64)
+        # but the file inside each doesn't, so downloading both into
+        # the same release-assets/ directory silently overwrote one
+        # with the other before gh release create ever ran, shipping
+        # only one architecture with no error at all.
+        run: |
+          mv release-assets/arm64/Virtaal.dmg release-assets/Virtaal-macos-arm64.dmg
+          mv release-assets/x86_64/Virtaal.dmg release-assets/Virtaal-macos-x86_64.dmg
+          rmdir release-assets/arm64 release-assets/x86_64
 
       - name: Create GitHub Release
         env:

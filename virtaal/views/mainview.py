@@ -817,6 +817,12 @@ class MainView(BaseView):
 
     def _on_fullscreen(self, widget=None):
         if widget.get_active():
+            # GTK/GDK's Windows backend doesn't reliably restore the
+            # pre-fullscreen size on its own (can stay near-fullscreen
+            # width after unfullscreen()) - save
+            # it here and restore explicitly once _on_window_state_event
+            # confirms fullscreen has actually ended.
+            self._pre_fullscreen_size = self.main_window.get_size()
             self.main_window.fullscreen()
             self.status_bar.hide()
             self.show_app_icon()
@@ -895,6 +901,16 @@ class MainView(BaseView):
     def _on_window_state_event(self, widget, event):
         mnu_fullscreen = self.gui.get_object('mnu_fullscreen')
         mnu_fullscreen.set_active(event.new_window_state & Gdk.WindowState.FULLSCREEN)
+        # React to the real, confirmed transition, not the unfullscreen()
+        # call itself (which doesn't reliably take effect synchronously
+        # on Windows) - see _on_fullscreen()'s own comment.
+        left_fullscreen = (
+            event.changed_mask & Gdk.WindowState.FULLSCREEN
+            and not (event.new_window_state & Gdk.WindowState.FULLSCREEN)
+        )
+        if left_fullscreen and getattr(self, '_pre_fullscreen_size', None):
+            self.main_window.resize(*self._pre_fullscreen_size)
+            self._pre_fullscreen_size = None
 
     def _on_app_pressed(self, btn):
         self.app_menu.popup(None, None, None, 0, 0, Gtk.get_current_event_time())

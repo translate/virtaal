@@ -20,7 +20,7 @@
 
 from gi.repository import Gtk, Gdk
 from gi.repository import Pango
-from gi.repository.GObject import SIGNAL_RUN_FIRST
+from gi.repository import GObject
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.views.widgets.selectview import SelectView
@@ -32,7 +32,7 @@ class PreferencesView(BaseView, GObjectWrapper):
 
     __gtype_name__ = 'PreferencesView'
     __gsignals__ = {
-        'prefs-done': (SIGNAL_RUN_FIRST, None, ()),
+        'prefs-done': (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
     # INITIALIZERS #

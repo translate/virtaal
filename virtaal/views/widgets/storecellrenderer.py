@@ -114,14 +114,14 @@ class StoreCellRenderer(Gtk.CellRenderer):
             object,
             "The unit",
             "The unit that this renderer is currently handling",
-            GObject.PARAM_READWRITE
+            GObject.ParamFlags.READWRITE
         ),
         "editable": (
             bool,
             "editable",
             "A boolean indicating whether this unit is currently editable",
             False,
-            GObject.PARAM_READWRITE
+            GObject.ParamFlags.READWRITE
         ),
     }
 

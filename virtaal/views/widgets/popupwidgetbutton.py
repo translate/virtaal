@@ -25,7 +25,7 @@ pop-up window.
 
 from gi.repository import Gdk
 from gi.repository import Gtk
-from gi.repository.GObject import SIGNAL_RUN_FIRST
+from gi.repository import GObject
 
 # XXX: Kudo's to Toms Bauģis <toms.baugis at gmail.com> who wrote the
 #      ActivityEntry widget for the hamster-applet project. A lot of this
@@ -61,8 +61,8 @@ class PopupWidgetButton(Gtk.ToggleButton):
     """Extends a C{Gtk.ToggleButton} to show a given widget in a pop-up window."""
     __gtype_name__ = 'PopupWidgetButton'
     __gsignals__ = {
-        'shown':  (SIGNAL_RUN_FIRST, None, ()),
-        'hidden': (SIGNAL_RUN_FIRST, None, ()),
+        'shown':  (GObject.SignalFlags.RUN_FIRST, None, ()),
+        'hidden': (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
     # INITIALIZERS #

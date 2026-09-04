@@ -407,7 +407,16 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
             # Alt-Down
             elif eventname == 'alt-down':
-                GLib.idle_add(self.copy_original, textbox)
+                # Guard against the unit changing before this deferred
+                # call runs - copy_original() reads self.unit and
+                # writes into textbox unconditionally, so a stale call
+                # would silently overwrite whatever unit is now loaded.
+                scheduled_unit = self.unit
+                def do_copy_original():
+                    if self.unit is scheduled_unit:
+                        self.copy_original(textbox)
+                    return False
+                GLib.idle_add(do_copy_original)
                 return True
 
             # Shift-Tab

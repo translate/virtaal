@@ -1,12 +1,13 @@
 <#
 .SYNOPSIS
-Compiles devsupport/testing/rtl-debug.po (a synthetic RTL translation of
-Virtaal's own UI catalog - see that file's own header for what it is and
-why) and installs it into a built/installed virtaal.exe's own directory,
-so the app can be launched under it to check whether the whole UI chrome
-(menus, toolbar, status bar - not just editor text) actually mirrors
-under a right-to-left language. Doesn't launch Virtaal itself - that's
-a manual step, since judging "does this look correctly mirrored" needs
+Generates the synthetic RTL debug catalog (devsupport/pseudo-
+translation/generate_pseudo_translation.py's "fa" locale - see that
+script's own docstring for what it is and why) directly into a
+built/installed virtaal.exe's own directory, so the app can be
+launched under it to check whether the whole UI chrome (menus,
+toolbar, status bar - not just editor text) actually mirrors under a
+right-to-left language. Doesn't launch Virtaal itself - that's a
+manual step, since judging "does this look correctly mirrored" needs
 a human looking at it, not something this battery's usual title-bar/
 log-content checks can verify.
 
@@ -46,30 +47,23 @@ if (-not (Test-Path $ExePath)) {
 }
 
 $exeDir = Split-Path -Parent (Resolve-Path $ExePath)
-$targetDir = Join-Path $exeDir "share\locale\fa\LC_MESSAGES"
-New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
-$targetMo = Join-Path $targetDir "virtaal.mo"
+$localeDir = Join-Path $exeDir "share\locale"
 
-# Same pure-Python compiler setup.py's own mo-compile step uses
-# (translate.tools.pocompile.convertmo) - no external msgfmt.exe needed,
-# guaranteed available anywhere Virtaal itself can run since
-# translate-toolkit is already a hard dependency.
+# Same generator bin/virtaal --pseudo-translation/--pseudo-translation-bidi
+# use for a dev checkout - --localedir points it at the frozen bundle's
+# own directory instead. Also (harmlessly) writes the pseudo/pseudo-bidi
+# locales alongside "fa" - a small bonus, not a cost.
 $py = ".\.venv\Scripts\python.exe"
 if (-not (Test-Path $py)) { $py = "python" }
-& $py -c @"
-from translate.tools.pocompile import convertmo
-with open('devsupport/testing/rtl-debug.po', encoding='utf-8') as inf, open(r'$targetMo', 'w') as outf:
-    convertmo(inf, outf, None)
-print('Compiled', len(open(r'$targetMo', 'rb').read()), 'bytes to', r'$targetMo')
-"@
+& $py devsupport\pseudo-translation\generate_pseudo_translation.py --localedir $localeDir
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "::error::Compiling rtl-debug.po failed - see above"
+    Write-Host "::error::generate_pseudo_translation.py failed - see above"
     exit 1
 }
 
 Write-Host ""
-Write-Host "Installed the synthetic RTL debug catalog at:"
-Write-Host "  $targetMo"
+Write-Host "Installed the synthetic RTL debug catalog under:"
+Write-Host "  $localeDir\fa\LC_MESSAGES\virtaal.mo"
 Write-Host ""
 Write-Host "To actually see it, launch manually (not automated - this needs a human looking at the result):"
 Write-Host "  `$env:LANG = `"fa_IR.UTF-8`""

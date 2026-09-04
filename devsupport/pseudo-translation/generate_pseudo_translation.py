@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generates two synthetic gettext locales from po/virtaal.pot, for
+"""Generates synthetic gettext locales from po/virtaal.pot, for
 exercising every translatable string in the UI without an actual
 translation:
 
@@ -11,11 +11,21 @@ translation:
   text itself readable Latin script (an isolate only sets the base
   direction of the run it wraps, it doesn't reorder or transliterate).
   Bracketed too, since the isolate marks alone are invisible.
+- fa: every string's Unicode glyphs visually flipped (podebug's own
+  "flipped" style) - not a real Farsi translation, just tagged with a
+  real RTL-recognised language code so launching under it (LANG=
+  fa_IR.UTF-8 LANGUAGE=fa) exercises actual whole-window RTL mirroring
+  (menu/toolbar/status-bar placement), which pseudo-bidi's isolate
+  marks alone don't necessarily trigger. Harder to read than
+  pseudo-bidi, deliberately - it's testing Pango's real bidi character
+  reordering, not just that embedded bidi runs don't corrupt layout.
 
-Compiled straight into the active environment's own share/locale/, so
-bin/virtaal --pseudo-translation/--pseudo-translation-bidi work with
-no separate install step.
+Compiled straight into the active environment's own share/locale/ by
+default (so bin/virtaal --pseudo-translation/--pseudo-translation-bidi
+work with no separate install step) - pass --localedir to write
+somewhere else instead, e.g. a frozen build's own share/locale/.
 """
+import argparse
 import os
 import sys
 import tempfile
@@ -44,13 +54,19 @@ podebug.podebug.rewrite_bidi = rewrite_bidi
 LOCALES = {
     "pseudo": "bracket",
     "pseudo-bidi": "bidi",
+    "fa": "flipped",
 }
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--localedir", default=None,
+                         help="Where to write share/locale-style output (default: sys.prefix/share/locale)")
+    args = parser.parse_args()
+
     root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     potfile = os.path.join(root, "po", "virtaal.pot")
-    localedir = os.path.join(sys.prefix, "share", "locale")
+    localedir = args.localedir or os.path.join(sys.prefix, "share", "locale")
 
     for code, rewritestyle in LOCALES.items():
         with tempfile.NamedTemporaryFile(suffix=".po") as tmp_po:

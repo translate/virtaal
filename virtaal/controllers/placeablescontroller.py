@@ -236,11 +236,24 @@ class PlaceablesController(BaseController):
     def _on_style_set(self, widget, prev_style=None):
         textbox = None
 
-        # Refresh text boxes' colours
+        # textbox.refresh() (textbox.py) redisplays a textbox's current
+        # content and unconditionally emits 'changed' regardless of
+        # whether any text actually changed - main_window's
+        # 'style-set'/'style-updated' signals can fire from unrelated
+        # GTK operations (a widget being shown/hidden as part of mode
+        # switching, for one), well outside load_unit()'s own
+        # disable_signals() window. Confirmed live: this fired while a
+        # freshly-opened file's unit was loading, its 'changed' reached
+        # UnitView._on_target_changed unguarded, and got misreported as
+        # a real edit on the new file. Reuse load_unit()'s own guard -
+        # this is a pure style/colour redisplay, never a real edit.
         unitview = self.main_controller.unit_controller.view
+        unitview.disable_signals(['modified', 'insert-text', 'delete-text'])
+        # Refresh text boxes' colours
         for textbox in unitview.sources + unitview.targets:
             if textbox.props.visible:
                 textbox.refresh()
+        unitview.enable_signals(['modified', 'insert-text', 'delete-text'])
 
         if textbox:
             placeablesguiinfo.update_style(textbox)

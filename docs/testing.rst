@@ -52,7 +52,7 @@ coverage.
 Pseudo-Translation
 ===================
 
-Generate and run against two synthetic locales, covering every
+Generate and run against synthetic locales, covering every
 translatable string without needing a real translation::
 
   python devsupport/pseudo-translation/generate_pseudo_translation.py
@@ -61,9 +61,20 @@ translatable string without needing a real translation::
 
 ``--pseudo-translation`` wraps every string in brackets (``[Save]``) -
 useful for spotting hardcoded strings and layout truncation.
-``--pseudo-translation-bidi`` additionally mirrors the whole UI
-layout, simulating a right-to-left translation while keeping the text
-itself readable Latin script.
+``--pseudo-translation-bidi`` wraps every string in Unicode RTL
+isolate marks too, simulating a right-to-left translation's text runs
+while keeping the text itself readable Latin script.
+
+The same script also writes a third, ``fa``-tagged locale with every
+string's glyphs visually flipped (not a real Farsi translation - a
+real RTL-recognised language code, for exercising actual whole-window
+RTL mirroring under a genuine locale rather than just isolate-wrapped
+text)::
+
+  LANG=fa_IR.UTF-8 LANGUAGE=fa virtaal devsupport/testfiles/checks.po
+
+See ``devsupport/testing/windows/Enable-VirtaalRtlDebug.ps1`` for
+installing this into a frozen build instead of a dev checkout.
 
 .. _testing#windows_ci:
 

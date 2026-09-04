@@ -34,6 +34,14 @@ modules:
       # directly, which needs it already installed.
       - pip3 install --verbose --exists-action=i --no-build-isolation
         --prefix=${FLATPAK_DEST} .
+      # setup.py's own Linux data_files (this build is a real Linux
+      # install) already dropped plain-named virtaal.desktop/
+      # virtaal.metainfo.xml here - both now carry the same <id>
+      # io.github.translate.Virtaal as the renamed copies installed
+      # below, and appstreamcli compose fails with duplicate-component
+      # if both are left in place.
+      - rm -f ${FLATPAK_DEST}/share/applications/virtaal.desktop
+        ${FLATPAK_DEST}/share/metainfo/virtaal.metainfo.xml
       # share/applications/virtaal.desktop and share/metainfo/
       # virtaal.metainfo.xml are ./maketranslations' real,
       # already-translated output (run on the host before this build -

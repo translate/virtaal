@@ -21,8 +21,8 @@
 import logging
 import re
 
-from gi.repository import GLib, Gtk, Gdk
-from gi.repository.GObject import PARAM_READWRITE, SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from gi.repository import GLib, GObject, Gtk, Gdk
+from gi.repository.GObject import TYPE_PYOBJECT
 from translate.lang import factory
 
 from virtaal.common import GObjectWrapper
@@ -38,18 +38,18 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
     __gtype_name__ = "UnitView"
     __gsignals__ = {
-        'delete-text':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT, int, int, TYPE_PYOBJECT, int)),
-        'insert-text':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, int, TYPE_PYOBJECT, int)),
-        'paste-start':    (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT, int)),
-        'modified':       (SIGNAL_RUN_FIRST, None, ()),
-        'unit-done':      (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'targets-created':(SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'sources-created':(SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'target-focused': (SIGNAL_RUN_FIRST, None, (int,)),
-        'textview-language-changed': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT)),
+        'delete-text':    (GObject.SignalFlags.RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT, int, int, TYPE_PYOBJECT, int)),
+        'insert-text':    (GObject.SignalFlags.RUN_FIRST, None, (TYPE_PYOBJECT, int, TYPE_PYOBJECT, int)),
+        'paste-start':    (GObject.SignalFlags.RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT, int)),
+        'modified':       (GObject.SignalFlags.RUN_FIRST, None, ()),
+        'unit-done':      (GObject.SignalFlags.RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'targets-created':(GObject.SignalFlags.RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'sources-created':(GObject.SignalFlags.RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'target-focused': (GObject.SignalFlags.RUN_FIRST, None, (int,)),
+        'textview-language-changed': (GObject.SignalFlags.RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT)),
     }
     __gproperties__ = {
-        'editing-canceled': (bool, 'Editing cancelled', 'Editing was cancelled', False, PARAM_READWRITE),
+        'editing-canceled': (bool, 'Editing cancelled', 'Editing was cancelled', False, GObject.ParamFlags.READWRITE),
     }
 
     first_word_re = re.compile("(?m)(?u)^(<[^>]+>|\\\\[nt]|[\\W$^\n])*(\\b|\\Z)")

@@ -19,7 +19,8 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 from gi.repository import Gtk
-from gi.repository.GObject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from gi.repository import GObject
+from gi.repository.GObject import TYPE_PYOBJECT
 
 from virtaal.common import GObjectWrapper
 from .selectview import SelectView
@@ -32,10 +33,10 @@ class SelectDialog(GObjectWrapper):
 
     __gtype_name__ = 'SelectDialog'
     __gsignals__ = {
-        'item-enabled':   (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'item-disabled':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'item-selected':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'selection-done': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'item-enabled':   (GObject.SignalFlags.RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'item-disabled':  (GObject.SignalFlags.RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'item-selected':  (GObject.SignalFlags.RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'selection-done': (GObject.SignalFlags.RUN_FIRST, None, (TYPE_PYOBJECT,)),
     }
 
     # INITIALIZERS #

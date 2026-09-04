@@ -31,7 +31,7 @@ class LabelExpander(Gtk.EventBox):
                      "expanded",
                      "A boolean indicating whether this widget has been expanded to show its contained widget",
                      False,
-                     GObject.PARAM_READWRITE),
+                     GObject.ParamFlags.READWRITE),
     }
 
     def __init__(self, widget, get_text, expanded=False):

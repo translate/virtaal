@@ -21,7 +21,8 @@
 from locale import strxfrm
 
 from gi.repository import Gtk
-from gi.repository.GObject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT
+from gi.repository import GObject
+from gi.repository.GObject import TYPE_PYOBJECT
 
 from virtaal.common import GObjectWrapper
 from virtaal.views.widgets.cellrendererwidget import CellRendererWidget
@@ -43,9 +44,9 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
 
     __gtype_name__ = 'SelectView'
     __gsignals__ = {
-        'item-enabled':  (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'item-disabled': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
-        'item-selected': (SIGNAL_RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'item-enabled':  (GObject.SignalFlags.RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'item-disabled': (GObject.SignalFlags.RUN_FIRST, None, (TYPE_PYOBJECT,)),
+        'item-selected': (GObject.SignalFlags.RUN_FIRST, None, (TYPE_PYOBJECT,)),
     }
 
     CONTENT_VBOX = 'vb_content'

@@ -167,7 +167,7 @@ class TMSourceColRenderer(Gtk.CellRenderer):
             GObject.TYPE_PYOBJECT,
             "The match data.",
             "The match data that this renderer is currently handling",
-            GObject.PARAM_READWRITE
+            GObject.ParamFlags.READWRITE
         ),
     }
 
@@ -234,7 +234,7 @@ class TMMatchRenderer(Gtk.CellRenderer):
             GObject.TYPE_PYOBJECT,
             "The match data.",
             "The match data that this renderer is currently handling",
-            GObject.PARAM_READWRITE
+            GObject.ParamFlags.READWRITE
         ),
     }
 

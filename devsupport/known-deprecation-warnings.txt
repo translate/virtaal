@@ -1,0 +1,28 @@
+# Deprecation warnings not yet fixed, checked against by
+# virtaal/conftest.py's pytest_sessionfinish hook. Any DeprecationWarning
+# (or PendingDeprecationWarning) raised during the test suite that isn't
+# an exact prefix match for one of these lines fails the run - remove a
+# line once its warning is actually fixed, don't add new ones to paper
+# over a regression.
+#
+# Real GTK3 API migrations (Gtk.Table, CSS/style-based widget APIs) that
+# need actual visual verification, not a mechanical rename - see
+# #3376/#3377/#3378's own follow-up note.
+Gtk.Table.attach is deprecated
+Gtk.StyleContext.get_font is deprecated
+Gtk.StyleContext.get_background_color is deprecated
+Gtk.Widget.modify_fg is deprecated
+Gtk.Widget.modify_font is deprecated
+Gtk.Widget.override_background_color is deprecated
+Gtk.Widget.reparent is deprecated
+Gtk.Widget.get_child_requisition is deprecated
+Gtk.Widget.size_request is deprecated
+Gtk.Widget.get_style is deprecated
+Gtk.paint_layout is deprecated
+Gtk.TreeView.set_rules_hint is deprecated
+Gtk.ScrolledWindow.add_with_viewport is deprecated
+Gtk.Window.set_opacity is deprecated
+
+# Not ours to fix - third-party libraries' own internal code.
+The 'u' type code is deprecated
+GLib.unix_signal_add_full is deprecated

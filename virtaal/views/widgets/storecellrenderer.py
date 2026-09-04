@@ -178,6 +178,7 @@ class StoreCellRenderer(Gtk.CellRenderer):
         width = widget.get_toplevel().get_allocation().width - 32
         if width < -1:
             width = -1
+        treeview = self.view._treeview
         if self.editable:
             # compute_optimal_height() below does real Pango text-layout
             # measurement across every textview in the editor (source,
@@ -193,7 +194,6 @@ class StoreCellRenderer(Gtk.CellRenderer):
             # forces that via queue_resize()). Never skipped for a
             # genuine content edit - _set_unit() clears this on every
             # row change, and edits don't happen mid-resize.
-            treeview = self.view._treeview
             if treeview.is_resizing and self._cached_height is not None:
                 height = self._cached_height
             else:
@@ -212,7 +212,17 @@ class StoreCellRenderer(Gtk.CellRenderer):
                 height += self.ROW_PADDING
                 self._cached_height = height
         else:
-            height = self.compute_cell_height(widget, width)
+            # Same reasoning as the editable branch above - real Pango
+            # measurement (two fresh layouts, source and target) on
+            # every size-allocate, but this branch runs for *every*
+            # visible non-editable row, not just one - the bulk of the
+            # real cost during a live resize, not the editable row
+            # alone.
+            if treeview.is_resizing and self._cached_height is not None:
+                height = self._cached_height
+            else:
+                height = self.compute_cell_height(widget, width)
+                self._cached_height = height
         #height = min(height, 600)
         y_offset = self.ROW_PADDING / 2
         return 0, y_offset, width, height

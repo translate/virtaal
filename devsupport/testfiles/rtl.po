@@ -1,0 +1,58 @@
+# A PO file with synthetic right-to-left target text, for testing
+# Virtaal's bidi text rendering (text direction, mixed-script layout,
+# cursor behaviour) without needing a real Arabic/Hebrew translation.
+#
+# Generated via translate-toolkit's own podebug tool -
+# `--rewrite=flipped` transposes each source
+# string into visually-flipped Unicode glyphs and wraps it in U+202E
+# (RIGHT-TO-LEFT OVERRIDE), which forces genuine RTL rendering in any
+# bidi-aware text widget, the same mechanism a real RTL language
+# triggers, without depending on this checkout actually having real
+# Arabic/Hebrew content. Deliberately not derived from checks.po (a
+# checks-oriented fixture, not meant for this) - a small, purpose-made
+# source file instead, chosen to stress specific real bidi cases:
+# plain RTL flow, embedded LTR numerals within RTL text (numerals stay
+# visually LTR even inside the flipped/RTL string below - a case naive
+# renderers get wrong), an embedded Latin-script word (mixed-script
+# layout), RTL punctuation mirroring, and line-wrapping under RTL.
+#
+# Regenerate by running podebug against a plain (untranslated) source
+# file with these same 5 msgids and --rewrite=flipped.
+# Copyright 2026 Zuza Software Foundation
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2026-08-25 00:00+0000\n"
+"PO-Revision-Date: 2026-08-25 00:00+0000\n"
+"Last-Translator: Virtaal test suite\n"
+"Language-Team: translate-dev@lists.sourceforge.net\n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. A plain sentence - baseline RTL text flow and cursor behaviour.
+msgid "A simple sentence for testing right-to-left rendering"
+msgstr "‮∀ sıɯdʅǝ sǝuʇǝuɔǝ ɟoɹ ʇǝsʇıuƃ ɹıƃɥʇ-ʇo-ʅǝɟʇ ɹǝupǝɹıuƃ"
+
+#. Embedded numbers - a real bidi stress case (numerals stay LTR inside
+#. RTL text; a naive renderer often gets this wrong).
+msgid "Item number 42 was ordered on 2026-08-25"
+msgstr "‮Iʇǝɯ unɯqǝɹ 42‮ ʍɐs oɹpǝɹǝp ou 2026-08-25"
+
+#. Embedded Latin-script word - mixed-script layout within one string.
+msgid "Please open the Settings menu to continue"
+msgstr "‮Ԁʅǝɐsǝ odǝu ʇɥǝ Sǝʇʇıuƃs ɯǝun ʇo ɔouʇıunǝ"
+
+#. Punctuation-heavy - RTL punctuation mirroring (parentheses, quotes).
+msgid "Is this correct? (Please check the value: \"42\".)"
+msgstr "‮Is ʇɥıs ɔoɹɹǝɔʇ¿ (Ԁʅǝɐsǝ ɔɥǝɔʞ ʇɥǝ ʌɐʅnǝ: „42‮„˙)"
+
+#. A longer paragraph-style string - wrapping behaviour under RTL.
+msgid "This is a longer piece of text meant to wrap across more than one line, to check how the editor handles line-wrapping and cursor movement in right-to-left text."
+msgstr ""
+"‮⊥ɥıs ıs ɐ ʅouƃǝɹ dıǝɔǝ oɟ ʇǝxʇ ɯǝɐuʇ ʇo ʍɹɐd ɐɔɹoss ɯoɹǝ ʇɥɐu ouǝ ʅıuǝ´ ʇo "
+"ɔɥǝɔʞ ɥoʍ ʇɥǝ ǝpıʇoɹ ɥɐupʅǝs ʅıuǝ-ʍɹɐddıuƃ ɐup ɔnɹsoɹ ɯoʌǝɯǝuʇ ıu ɹıƃɥʇ-ʇo-"
+"ʅǝɟʇ ʇǝxʇ˙"

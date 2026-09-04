@@ -20,3 +20,40 @@
 
 """This file contains the version."""
 ver = "1.0.0-beta1"
+
+
+def _get_build_commit():
+    """The git commit this build was made from, or None if that's not
+    knowable.
+
+    Two sources, tried in order:
+
+    1. virtaal._build_info, a plain "commit = '<sha>'" file the
+       packaging scripts (devsupport/packaging/*/build_standalone.*)
+       generate fresh just before running PyInstaller - not checked
+       into git (see .gitignore). The only source that works in a
+       frozen build, which has no .git directory or git binary.
+    2. A live `git rev-parse HEAD`, for everything else (running from
+       a checkout directly, e.g. bin/virtaal or the run-virtaal
+       skill).
+    """
+    try:
+        from virtaal._build_info import commit
+        return commit
+    except ImportError:
+        pass
+    try:
+        import subprocess
+        from os import path
+        repo_root = path.dirname(path.dirname(path.abspath(__file__)))
+        result = subprocess.run(
+            ['git', 'rev-parse', 'HEAD'], cwd=repo_root,
+            capture_output=True, text=True, timeout=2)
+        if result.returncode == 0:
+            return result.stdout.strip()
+    except Exception:
+        pass
+    return None
+
+
+build_commit = _get_build_commit()

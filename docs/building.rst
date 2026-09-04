@@ -171,3 +171,13 @@ into ``dist/Virtaal.dmg`` (settings in
 ``devsupport/packaging/macos/dmgbuild-settings.py``). CI's
 ``build-macos-app`` job runs these same two scripts and uploads the
 results as workflow artifacts on every push.
+
+This produces a single-architecture build matching whatever
+Python/Homebrew it's built with - Homebrew doesn't ship universal2
+GTK3 bottles, so there's no ``lipo``-style fat binary available here.
+An arm64-only build won't run on an Intel Mac at all (Rosetta 2 only
+translates x86_64 -> arm64, never the reverse), so CI builds both
+architectures separately (a matrix job - see ``build-macos-app`` in
+``ci.yml`` for the current runner labels) and uploads them as
+separate artifacts (``Virtaal-macos-app-arm64``/``-x86_64`` and the
+``.dmg`` equivalents) rather than one universal bundle.

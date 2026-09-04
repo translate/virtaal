@@ -1,0 +1,228 @@
+name: UI fuzzing
+
+# Not a pass/fail gate on every push - see
+# FEATURE-CRASH-HARDENING.md's "Where this runs". Runs Virtaal through
+# varied, randomised UI interaction well beyond what the pytest suite
+# covers, on a schedule, to shake out more instances of Release
+# Blocker #8's pattern (a live GTK object graph torn down in a way
+# that isn't safe against Python's own garbage collection) before a
+# release does. A red run here means a real native crash was found -
+# check the uploaded log/backtrace artifact, it's not a flaky test to
+# just re-run.
+
+on:
+  schedule:
+    - cron: "0 3 * * *" # 03:00 UTC nightly
+  workflow_dispatch:
+    inputs:
+      duration_seconds:
+        description: "How long to fuzz for, per platform (seconds)"
+        type: number
+        default: 600
+
+jobs:
+  fuzz-linux:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            gdb \
+            gir1.2-gtk-3.0 \
+            gir1.2-gtkspell3-3.0 \
+            gobject-introspection \
+            libcairo2-dev \
+            libenchant-2-dev \
+            libgirepository-2.0-dev \
+            libglib2.0-dev \
+            libgnutls28-dev \
+            pkg-config \
+            python3-dev \
+            xvfb
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install setuptools wheel
+          pip install translate-toolkit
+          pip install pygobject
+          pip install pyenchant
+
+      - name: Install virtaal
+        run: pip install --no-build-isolation .
+
+      - name: Fuzz
+        run: |
+          xvfb-run -a --server-args="-screen 0 1024x768x24" \
+            devsupport/testing/fuzz/run_fuzz.sh \
+            --duration-seconds "${{ inputs.duration_seconds || 600 }}" \
+            --log fuzz-linux.log
+        env:
+          PYTHONFAULTHANDLER: "1"
+
+      - name: Upload fuzz log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fuzz-log-linux
+          path: fuzz-linux.log
+          if-no-files-found: ignore
+
+  fuzz-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - name: Install system dependencies (Homebrew)
+        run: |
+          brew untap aws/tap || true
+          brew install pygobject3 gtk+3 gtk-mac-integration \
+            gobject-introspection cairo pkg-config gettext \
+            enchant gtkspell3
+
+      - name: Create venv with system site-packages
+        run: |
+          python3 -m venv --system-site-packages .venv
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install setuptools wheel
+          pip install translate-toolkit
+          pip install pyenchant
+
+      - name: Install virtaal
+        run: pip install --no-build-isolation .
+
+      - name: Fuzz
+        run: |
+          devsupport/testing/fuzz/run_fuzz.sh \
+            --duration-seconds "${{ inputs.duration_seconds || 600 }}" \
+            --log fuzz-macos.log
+        env:
+          PYTHONFAULTHANDLER: "1"
+
+      - name: Collect any system crash reports
+        # run_fuzz.sh's lldb backtrace is usually enough on its own,
+        # but macOS's own crash reporter captures the same crash
+        # independently (see the Release Blocker #8 investigation) -
+        # cheap to grab as a second source.
+        if: always()
+        run: |
+          mkdir -p crash-reports
+          cp ~/Library/Logs/DiagnosticReports/Python-*.ips crash-reports/ 2>/dev/null || true
+
+      - name: Upload fuzz log and any crash reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fuzz-log-macos
+          path: |
+            fuzz-macos.log
+            crash-reports/
+          if-no-files-found: ignore
+
+  fuzz-windows:
+    runs-on: windows-latest
+    # See test-windows in ci.yml for why gvsbuild/MSVC, not MSYS2.
+    env:
+      gvsbuild_version: "2026.8.0"
+      CC: cl
+      CXX: cl
+      PKG_CONFIG_PATH: 'C:\gtk\lib\pkgconfig'
+      GI_TYPELIB_PATH: 'C:\gtk\lib\girepository-1.0'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - name: Cache GTK3 (gvsbuild)
+        id: cache-gtk
+        uses: actions/cache@v6
+        with:
+          path: C:\gtk
+          key: windows-gvsbuild-${{ env.gvsbuild_version }}
+
+      - name: Download prebuilt GTK3 (gvsbuild)
+        if: steps.cache-gtk.outputs.cache-hit != 'true'
+        shell: pwsh
+        run: |
+          gh release download --repo wingtk/gvsbuild "${{ env.gvsbuild_version }}" -p "GTK3_Gvsbuild_${{ env.gvsbuild_version }}_x64.zip"
+          7z x "GTK3_Gvsbuild_${{ env.gvsbuild_version }}_x64.zip" -oC:\gtk -y
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Add GTK3 to PATH
+        shell: pwsh
+        run: echo "C:\gtk\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Set up MSVC build environment
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Add GTK3 to MSVC build environment
+        shell: pwsh
+        run: |
+          echo "INCLUDE=$env:INCLUDE;C:\gtk\include;C:\gtk\include\cairo;C:\gtk\include\glib-2.0;C:\gtk\include\gobject-introspection-1.0;C:\gtk\lib\glib-2.0\include" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          echo "LIB=$env:LIB;C:\gtk\lib" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+
+      - name: Restore PKG_CONFIG_PATH after setup-python
+        shell: pwsh
+        run: echo "PKG_CONFIG_PATH=C:\gtk\lib\pkgconfig" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Ensure GTK3 DLLs are found by Python's extension loader
+        shell: pwsh
+        run: |
+          $sitepkgs = python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])"
+          $content = "import os`nif os.name == 'nt':`n    os.add_dll_directory(r'C:\gtk\bin')`n"
+          Set-Content -Path "$sitepkgs\sitecustomize.py" -Value $content -NoNewline
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install setuptools wheel
+          pip install pycairo
+          pip install pygobject
+          pip install translate-toolkit
+          pip install python-Levenshtein
+          pip install pycurl
+          pip install lxml
+          pip install diff_match_patch
+          pip install cheroot
+
+      - name: Install virtaal
+        run: pip install --no-build-isolation .
+
+      - name: Fuzz
+        # No gdb/lldb equivalent readily available here - relies on
+        # faulthandler for the Python-level trace, same as
+        # test-windows in ci.yml. A crash still fails this step (a
+        # native access violation's exit code is never 0), it just
+        # won't have a native backtrace attached.
+        run: |
+          python devsupport/testing/fuzz/fuzz_ui.py --duration-seconds ${{ inputs.duration_seconds || 600 }} --log fuzz-windows.log
+        env:
+          PYTHONFAULTHANDLER: "1"
+
+      - name: Upload fuzz log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fuzz-log-windows
+          path: fuzz-windows.log
+          if-no-files-found: ignore

@@ -768,7 +768,7 @@ jobs:
 
   core-checks:
     name: core checks
-    needs: [pre-commit, docs-and-translations]
+    needs: [pre-commit, docs-and-translations, test, test-windows, test-macos]
     if: always()
     runs-on: ubuntu-24.04
     steps:

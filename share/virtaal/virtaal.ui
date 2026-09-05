@@ -1998,6 +1998,7 @@ If you are translating from English to French then French would be your translat
                 <property name="secondary_icon_activatable">False</property>
                 <property name="primary_icon_sensitive">True</property>
                 <property name="secondary_icon_sensitive">True</property>
+                <property name="activates_default">True</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -2030,6 +2031,7 @@ If you are translating from English to French then French would be your translat
                 <property name="secondary_icon_activatable">False</property>
                 <property name="primary_icon_sensitive">True</property>
                 <property name="secondary_icon_sensitive">True</property>
+                <property name="activates_default">True</property>
               </object>
               <packing>
                 <property name="expand">True</property>

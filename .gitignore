@@ -37,6 +37,9 @@
 *.pyc
 __pycache__/
 
+# venv
+.venv
+
 # gh-pages branch
 _site
 _layouts

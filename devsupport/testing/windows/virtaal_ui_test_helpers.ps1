@@ -452,10 +452,13 @@ function Assert-VirtaalLogsClean {
     Same allowlist-of-lines shape as the "Verify the bundle actually
     runs" step in ci.yml: fails (writes ::error:: and returns $false) if
     either log file contains a line not covered by $AllowlistPatterns
-    (an array of regex strings). Starts with no allowlist by default -
-    the known-clean baseline for this frozen build is empty logs.
+    (an array of regex strings). The baseline always allows pan_app.py's
+    own launch-separator line (written unconditionally on every start,
+    now that the logs are appended to rather than truncated) - anything
+    past that is real unexpected output.
     #>
     param([string[]]$AllowlistPatterns = @(), [switch]$AllowDebugLog)
+    $AllowlistPatterns = $AllowlistPatterns + '^=== launch \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} ===$'
     if ($script:VirtaalAppDebugLog -or $AllowDebugLog) {
         # bin\virtaal's -D/--debug format is '%(levelname)7s
         # %(module)s...' - levelname right-justified to 7 chars, so

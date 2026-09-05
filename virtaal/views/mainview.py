@@ -903,10 +903,26 @@ class MainView(BaseView):
         if left_fullscreen and getattr(self, '_pre_fullscreen_size', None):
             target_size = self._pre_fullscreen_size
             self._pre_fullscreen_size = None
-            store_controller = self.controller.store_controller
-            if store_controller.store is not None:
-                store_controller.view._treeview.reset_column_width()
-            self.main_window.resize(*target_size)
+            # Deferred, not resized right here: this event fires the
+            # moment the state *changes*, still mid-transition on both
+            # the Win32 and Quartz backends (Quartz's exit-fullscreen is
+            # a genuinely animated ~0.3-0.5s transition) - a resize()
+            # issued now gets silently overridden once that transition's
+            # own final frame lands, on both platforms alike. 250ms,
+            # not the original 500ms: a real debug trace (2026-09-05)
+            # showed the transition's own settle already visible in
+            # storetreeview's 200ms debounce by the time this fires -
+            # 500ms was adding a second, visually distinct delay on top
+            # of an already-finished transition, not covering a real gap.
+            from gi.repository import GLib
+            GLib.timeout_add(250, self._restore_pre_fullscreen_size, target_size)
+
+    def _restore_pre_fullscreen_size(self, target_size):
+        store_controller = self.controller.store_controller
+        if store_controller.store is not None:
+            store_controller.view._treeview.reset_column_width()
+        self.main_window.resize(*target_size)
+        return False  # one-shot: don't repeat this GLib.timeout_add
 
     def _on_app_pressed(self, btn):
         self.app_menu.popup(None, None, None, 0, 0, Gtk.get_current_event_time())

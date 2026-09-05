@@ -138,5 +138,17 @@ Root: HKCU; Subkey: "Software\Classes\.ftl"; ValueType: string; ValueData: "Virt
 ; mechanism for a right-click/"Open with" action that doesn't touch
 ; whatever already owns the extension's default).
 Root: HKCU; Subkey: "Software\Classes\SystemFileAssociations\.ts\shell\VirtaalEdit"; ValueType: string; ValueName: ""; ValueData: "Edit with Virtaal"; Tasks: fileassoc; Flags: uninsdeletekey
-Root: HKCU; Subkey: "Software\Classes\SystemFileAssociations\.ts\shell\VirtaalEdit\DefaultIcon"; ValueType: string; ValueData: "{app}\share\icons\x-translation.ico"; Tasks: fileassoc
+; A verb's own icon is a plain "Icon" value on the verb key itself, not
+; a DefaultIcon subkey (that convention is for a ProgID's icon, not a
+; verb's) - the previous DefaultIcon subkey here was never read.
+Root: HKCU; Subkey: "Software\Classes\SystemFileAssociations\.ts\shell\VirtaalEdit"; ValueType: string; ValueName: "Icon"; ValueData: "{app}\share\icons\x-translation.ico"; Tasks: fileassoc
 Root: HKCU; Subkey: "Software\Classes\SystemFileAssociations\.ts\shell\VirtaalEdit\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: fileassoc
+
+; .ts has no default ProgID (see above), so it never enters the "Open
+; with" candidate list the way the other 11 formats do automatically.
+; Applications\<exe>\SupportedTypes is the separate mechanism that adds
+; it there.
+Root: HKCU; Subkey: "Software\Classes\Applications\{#MyAppExeName}"; ValueType: string; ValueName: "FriendlyAppName"; ValueData: "{#MyAppName}"; Tasks: fileassoc; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\Applications\{#MyAppExeName}\DefaultIcon"; ValueType: string; ValueData: "{app}\{#MyAppExeName},0"; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\Applications\{#MyAppExeName}\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\Applications\{#MyAppExeName}\SupportedTypes"; ValueType: string; ValueName: ".ts"; ValueData: ""; Tasks: fileassoc

@@ -280,15 +280,15 @@ class MainView(BaseView):
 
     @property
     def open_chooser(self):
-        # Open (file chooser) dialog
+        # FileChooserNative, not FileChooserDialog, for the real native
+        # Windows/macOS picker instead of GTK's own drawn one.
         if not self._open_chooser:
-            self._open_chooser = Gtk.FileChooserDialog(
+            self._open_chooser = Gtk.FileChooserNative.new(
                 _('Choose a Translation File'),
                 self.main_window,
                 Gtk.FileChooserAction.OPEN,
-                (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
+                None, None,
             )
-            self._open_chooser.set_default_response(Gtk.ResponseType.OK)
             all_supported_filter = Gtk.FileFilter()
             all_supported_filter.set_name(_("All Supported Files"))
             self._open_chooser.add_filter(all_supported_filter)
@@ -342,16 +342,16 @@ class MainView(BaseView):
 
     @property
     def save_chooser(self):
-        # Save (file chooser) dialog
+        # Save (file chooser) dialog - see open_chooser above for why
+        # FileChooserNative, not FileChooserDialog.
         if not self._save_chooser:
-            self._save_chooser = Gtk.FileChooserDialog(
+            self._save_chooser = Gtk.FileChooserNative.new(
                 _("Save"),
                 self.main_window,
                 Gtk.FileChooserAction.SAVE,
-                (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_SAVE, Gtk.ResponseType.OK)
+                None, None,
             )
             self._save_chooser.set_do_overwrite_confirmation(True)
-            self._save_chooser.set_default_response(Gtk.ResponseType.OK)
         return self._save_chooser
 
     @property
@@ -628,34 +628,18 @@ class MainView(BaseView):
             C{None} otherwise."""
         last_path = get_unicode(pan_app.settings.general["lastdir"]) or u""
 
-        # Do native dialogs in a thread so that GTK can continue drawing.
-        from virtaal.support import native_widgets
-        dialog_to_use = native_widgets.dialog_to_use
-        if dialog_to_use:
-            from virtaal.support.thread import run_in_thread
-            open_dialog_func = None
-            if dialog_to_use == 'kdialog':
-                open_dialog_func = native_widgets.kdialog_open_dialog
-            elif native_widgets.dialog_to_use == 'win32':
-                open_dialog_func = native_widgets.win32_open_dialog
-            elif native_widgets.dialog_to_use == 'darwin':
-                open_dialog_func = native_widgets.darwin_open_dialog
-            if open_dialog_func:
-                return run_in_thread(self.main_window, open_dialog_func, (self.main_window, title, last_path))
-
-        # otherwise we always fall back to the default code
         if title:
             self.open_chooser.set_title(title)
 
         if os.path.exists(last_path):
             self.open_chooser.set_current_folder(last_path)
 
+        # Not tracked as the new _top_window (unlike the other dialogs
+        # below): FileChooserNative isn't a Gtk.Window, so it can't
+        # itself be passed to another dialog's set_transient_for later.
         self.open_chooser.set_transient_for(self._top_window)
-        old_top = self._top_window
-        self._top_window = self.open_chooser
         response = self.open_chooser.run() == Gtk.ResponseType.OK
         self.open_chooser.hide()
-        self._top_window = old_top
 
         if response:
             filename = get_unicode(self.open_chooser.get_filename())
@@ -703,22 +687,6 @@ class MainView(BaseView):
         if not current_filename:
             current_filename = self.controller.get_store().get_filename()
 
-        # Do native dialogs in a thread so that GTK can continue drawing.
-        from virtaal.support import native_widgets
-        dialog_to_use = native_widgets.dialog_to_use
-        save_dialog_func = None
-        if dialog_to_use:
-            from virtaal.support.thread import run_in_thread
-            if dialog_to_use == 'kdialog':
-                save_dialog_func = native_widgets.kdialog_save_dialog
-            elif native_widgets.dialog_to_use == 'win32':
-                save_dialog_func = native_widgets.win32_save_dialog
-            elif native_widgets.dialog_to_use == 'darwin':
-                dialog_to_use = native_widgets.darwin_save_dialog
-            if save_dialog_func:
-                return run_in_thread(self.main_window, save_dialog_func, (self.main_window, title, current_filename))
-
-        # otherwise we always fall back to the default code
         if title:
             self.save_chooser.set_title(title)
 
@@ -728,12 +696,10 @@ class MainView(BaseView):
             self.save_chooser.set_current_folder(directory)
         self.save_chooser.set_current_name(filename)
 
+        # Not tracked as the new _top_window - see show_open_dialog.
         self.save_chooser.set_transient_for(self._top_window)
-        old_top = self._top_window
-        self._top_window = self.save_chooser
         response = self.save_chooser.run()
         self.save_chooser.hide()
-        self._top_window = old_top
 
         if response == Gtk.ResponseType.OK:
             filename = get_unicode(self.save_chooser.get_filename())

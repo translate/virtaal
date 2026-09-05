@@ -18,6 +18,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import logging
+import os
 from io import BytesIO
 
 import pycurl
@@ -69,6 +70,13 @@ class HTTPRequest(GObjectWrapper):
         # We want to use gzip and deflate if possible:
         self.curl.setopt(pycurl.ENCODING, "") # use all available encodings
         self.curl.setopt(pycurl.URL, self.url)
+
+        if os.name == 'nt':
+            # curl's schannel (Windows-native TLS) backend treats being
+            # unable to reach the CA's own revocation-check servers as
+            # a hard failure. SSLOPT_NO_REVOKE disables that check;
+            # curl only defines it for schannel, so it's a no-op elsewhere.
+            self.curl.setopt(pycurl.SSL_OPTIONS, pycurl.SSLOPT_NO_REVOKE)
 
         # let's set the HTTP request method
         if method == 'GET':

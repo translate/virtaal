@@ -791,6 +791,31 @@ class MainView(BaseView):
         from virtaal.support import openmailto
         openmailto.open("http://translate.sourceforge.net/wiki/virtaal/index")
 
+    def show_update_notice(self, tag_name, html_url):
+        """Called at most once per session, from a frozen build only,
+            if virtaal.support.update_check finds a newer release than
+            this one."""
+        from virtaal.__version__ import ver
+
+        infobar = Gtk.InfoBar()
+        infobar.set_message_type(Gtk.MessageType.INFO)
+        infobar.set_show_close_button(True)
+        label = Gtk.Label(label=_('Virtaal %s is available (you have %s)') % (tag_name, ver))
+        infobar.get_content_area().pack_start(label, True, True, 0)
+        infobar.add_button(_('Download'), Gtk.ResponseType.OK)
+
+        def on_response(infobar, response_id):
+            if response_id == Gtk.ResponseType.OK:
+                from virtaal.support import openmailto
+                openmailto.open(html_url)
+            infobar.destroy()
+        infobar.connect('response', on_response)
+
+        infobar.show_all()
+        vbox_main = self.gui.get_object('vbox_main')
+        vbox_main.pack_start(infobar, False, False, 0)
+        vbox_main.reorder_child(infobar, 1)  # directly below the menu bar
+
     def _on_file_open(self, _widget):
         self.open_file()
 

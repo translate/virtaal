@@ -12,6 +12,10 @@
 # reached via bin/virtaal's own runpy-based "--run-module" dispatch -
 # see localtm.py.
 #
+# Same reasoning covers translate.storage: factory.getobject() imports
+# a format's backend module by a runtime-computed string, invisible to
+# PyInstaller unless collected explicitly too.
+#
 # --onedir (not --onefile): translate.misc.file_discovery's frozen-mode
 # data lookup (os.path.dirname(sys.executable), confirmed by reading the
 # installed package directly) assumes a flat, same-directory-as-
@@ -130,7 +134,7 @@ a = Analysis(  # noqa: F821
         (str(TRANSLATE_SHARE), "share"),
     ]
     + mo_files,
-    hiddenimports=collect_submodules("virtaal"),
+    hiddenimports=collect_submodules("virtaal") + collect_submodules("translate.storage"),
     hooksconfig={
         "gi": {
             "module-versions": {

@@ -12,25 +12,19 @@ References
 
 Installation
 ------------
-The easiest way for most users to install Virtaal is through the provided
-packages, or through the packaging system of their distribution. On the
-Virtaal website there should be packages for Windows and several other systems.
-If you want to install from source code, you will need to ensure you have all
-the dependencies. For more information on building Virtaal to install it
-yourself, please consult the website here:
+Download the latest release (Windows installer, macOS ``.dmg``) from
+the `Releases page <https://github.com/translate/virtaal/releases>`_.
+Linux users can build a Flatpak, or build from source - see
 http://docs.translatehouse.org/projects/virtaal/en/latest/building.html
 
 Note that you will probably already want the Translate Toolkit installed and
-working before you attempt to install Virtaal.
+working before you attempt to install Virtaal from source.
 
 Reporting bugs
 --------------
-Please report bugs by clicking on '*Help->Report bug...*' from within Virtaal
-(this requires a Bugzilla account).  Alternatively report directly using this
-URL: <https://github.com/translate/virtaal/issues/new>
-
-Taking the time to create a bugzilla account will help ensure that you can track
-progress, provide feedback and allows others to see your bug report.
+Please report bugs by clicking on '*Help->Report bug...*' from within Virtaal,
+or directly using this URL: <https://github.com/translate/virtaal/issues/new>
+(requires a GitHub account).
 
 Design principles
 -----------------

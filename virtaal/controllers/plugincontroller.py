@@ -224,6 +224,10 @@ class PluginController(BaseController):
             for _finder, name, _ispkg in pkgutil.iter_modules(package.__path__):
                 if self._is_wrong_plugin_name(name):
                     continue
+                # Don't show dev-only plugins (_helloworld, _python_console,
+                # ...) on frozen builds, regardless of DEBUG's value here.
+                if getattr(sys, 'frozen', False) and name[0] == u'_':
+                    continue
                 if pan_app.DEBUG or name[0] != u'_':
                     plugin_names.append(name)
 

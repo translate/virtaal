@@ -56,7 +56,7 @@ class TerminologyModel(BaseTerminologyModel):
         extending translate-toolkit's own TBX support.
         """
 
-    __gtype_name__ = 'AutoTermTerminology'
+    __gtype_name__ = 'PontoonTerminology'
     display_name = _('Mozilla Pontoon')
     description = _('Community localization terminology from Mozilla Pontoon')
 

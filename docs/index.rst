@@ -38,17 +38,17 @@ Help menu.
 
 Installation
 ============
-No packaged builds exist yet for this Python 3 + GTK3 release - build
-from source, see :doc:`building`.
+Download the latest release (Windows installer, macOS `.dmg`) from the
+`Releases page <https://github.com/translate/virtaal/releases>`_.
+Linux users can build a `Flatpak
+<https://github.com/translate/virtaal/tree/main/devsupport/packaging/flatpak>`_,
+or build from source - see :doc:`building`.
 
 .. _index#contact:
 
 Contact
 =======
-- Chat in our `channel <https://gitter.im/translate/pootle>`_
 - `Report bugs <https://github.com/translate/virtaal/issues/new>`_
-- Join the `Translate-devel mailing list
-  <https://lists.sourceforge.net/lists/listinfo/translate-devel>`_
 
 .. _index#contributing:
 

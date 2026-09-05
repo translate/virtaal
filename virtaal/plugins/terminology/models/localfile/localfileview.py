@@ -178,14 +178,12 @@ class FileSelectDialog:
 
     def _init_add_chooser(self):
         # The following code was mostly copied from virtaal.views.MainView._create_dialogs()
-        #TODO: use native dialogues
-        dlg = Gtk.FileChooserDialog(
+        dlg = Gtk.FileChooserNative.new(
             _('Add Files'),
             self.controller.main_controller.view.main_window,
             Gtk.FileChooserAction.OPEN,
-            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
+            None, None,
         )
-        dlg.set_default_response(Gtk.ResponseType.OK)
         all_supported_filter = Gtk.FileFilter()
         all_supported_filter.set_name(_("All Supported Files"))
         dlg.add_filter(all_supported_filter)
@@ -238,7 +236,6 @@ class FileSelectDialog:
 
     # EVENT HANDLERS #
     def _on_add_file_clicked(self, button):
-        self.add_chooser.show_all()
         response = self.add_chooser.run()
         self.add_chooser.hide()
 

@@ -62,11 +62,18 @@ class Plugin(BasePlugin):
             except UnicodeEncodeError:
                 raise PluginUnsupported("Spell checking is not supported with non-ascii username")
 
-        # If these imports fail, the plugin is automatically disabled
-        import gi
-        gi.require_version('GtkSpell', '3.0')
-        from gi.repository import GtkSpell as gtkspell
-        import enchant
+        # If these imports fail, the plugin is automatically disabled -
+        # gi.require_version() raises ValueError (not ImportError) when
+        # the typelib itself is simply missing (true for this project's
+        # gvsbuild GTK3 build, which doesn't ship GtkSpell/enchant at
+        # all), so both need catching here, not just ImportError.
+        try:
+            import gi
+            gi.require_version('GtkSpell', '3.0')
+            from gi.repository import GtkSpell as gtkspell
+            import enchant
+        except (ImportError, ValueError) as e:
+            raise PluginUnsupported(str(e))
         self.gtkspell = gtkspell
         self.enchant = enchant
         # languages that we've handled before:

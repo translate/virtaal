@@ -190,7 +190,10 @@ class TerminologyModel(BaseTerminologyModel):
         if os.path.isfile(localfile) and localfile in self.config:
             etag = self.config[os.path.abspath(localfile)]
 
-        url = self._l10n_URL % {'srclang': srclang, 'tgtlang': tgtlang}
+        url = self._l10n_URL % {
+            'srclang': _pontoon_locale_code(srclang),
+            'tgtlang': _pontoon_locale_code(tgtlang),
+        }
 
         if not os.path.isfile(localfile):
             localfile = None
@@ -292,6 +295,23 @@ def _is_english(langcode):
         only, see TerminologyModel's own docstring."""
     normalized = normalize_code(langcode)
     return bool(normalized) and normalized.split('-')[0] == 'en'
+
+
+def _pontoon_locale_code(langcode):
+    """Convert a Virtaal-style language code (e.g. "en_GB") to the exact
+        form Pontoon's own static file naming expects. Two things
+        normalize_code() alone doesn't get right for this specific server:
+        it lowercases the whole code (Pontoon's server is case-sensitive
+        and serves "en-GB.tbx", not "en-gb.tbx" - confirmed live, the
+        lowercase form 404s), and Virtaal's own codes use an underscore
+        separator where Pontoon's file names use a hyphen. Language
+        subtag lowercase, region subtag uppercase - the standard BCP 47
+        casing convention, not something Pontoon invented."""
+    normalized = normalize_code(langcode)
+    parts = normalized.split('-')
+    if len(parts) > 1:
+        parts[1] = parts[1].upper()
+    return '-'.join(parts)
 
 
 # TBX-Basic dialect (ISO 30042:ed-2) namespace - what Pontoon actually

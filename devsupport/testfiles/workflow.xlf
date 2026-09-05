@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  An XLIFF file with one unit in each WorkflowMode.StateEnum state that
+  XLIFF's state/approved attributes can actually represent, via
+  translate-toolkit's Xliff1Unit.get_state_n() - EMPTY, NEEDS_WORK,
+  NEEDS_REVIEW, UNREVIEWED, FINAL. REJECTED is deliberately not
+  included: no XLIFF state string maps to it in this toolkit version
+  (confirmed - Xliff1Unit.statemap never produces StateEnum.REJECTED,
+  and set_state_n(REJECTED) round-trips back as EMPTY instead). See
+  workflow.po in this same directory for the three states plain
+  Gettext PO can represent (EMPTY/NEEDS_WORK/UNREVIEWED, as
+  untranslated/fuzzy/translated) - between the two files, five of the
+  six states have real fixtures; REJECTED has none in either format.
+-->
+<xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.1">
+<file original="workflow.xliff" source-language="en" target-language="en-GB" datatype="plaintext">
+<body>
+<trans-unit id="1">
+  <source>This string has not been translated yet</source>
+  <target xml:lang="en-GB"></target>
+</trans-unit>
+<trans-unit id="2">
+  <source>This string's translation may be out of date</source>
+  <target xml:lang="en-GB" state="needs-translation">This string's translation may possibly be out of date</target>
+</trans-unit>
+<trans-unit id="3" approved="no">
+  <source>This string is translated and waiting for review</source>
+  <target xml:lang="en-GB" state="needs-review-translation">This string is translated and waiting for review</target>
+</trans-unit>
+<trans-unit id="4" approved="yes">
+  <source>This string is translated - the normal "done" state</source>
+  <target xml:lang="en-GB" state="translated">This string is translated - the normal "done" state</target>
+</trans-unit>
+<trans-unit id="5" approved="yes">
+  <source>This string has been reviewed and signed off</source>
+  <target xml:lang="en-GB" state="signed-off">This string has been reviewed and signed off</target>
+</trans-unit>
+</body>
+</file>
+</xliff>

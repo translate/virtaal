@@ -26,6 +26,8 @@
 # after the GUI is already showing.
 
 
+import sys
+
 from gi.repository import GLib
 
 
@@ -155,6 +157,18 @@ class Virtaal(object):
         defer(PreferencesController, main_controller)
         defer(PropertiesController, main_controller)
         defer(main_controller.load_plugins)
+
+        # Only bundled builds (macOS .app, Windows installer) can't
+        # already control their own updates the way a checkout/pip
+        # install can.
+        if getattr(sys, 'frozen', False):
+            defer(self._check_for_update)
+
+    def _check_for_update(self):
+        from virtaal.__version__ import ver
+        from virtaal.support.update_check import UpdateChecker
+
+        UpdateChecker(ver, self.main_controller.view.show_update_notice).check()
 
 
     # METHODS #

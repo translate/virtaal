@@ -1,0 +1,19 @@
+name: Feature request
+description: Suggest something Virtaal doesn't do yet
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: What are you trying to do today that Virtaal doesn't support, or makes awkward?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you like to see?
+      description: Your idea for how this could work - a rough sketch is fine, it doesn't need to be a full design.
+    validations:
+      required: false

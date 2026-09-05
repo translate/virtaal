@@ -194,30 +194,35 @@ class PluginController(BaseController):
         return plugin_class
 
     def _find_plugin_names(self):
-        """Look in C{self.PLUGIN_DIRS} for importable Python modules.
+        """Look in each of C{self.PLUGIN_MODULES}'s packages for importable
+            submodules, via C{pkgutil.iter_modules()} rather than scanning
+            C{self.PLUGIN_DIRS} on the filesystem directly - the latter
+            always found nothing in a frozen (PyInstaller) build, since
+            pure-Python modules are bundled into an archive there, not laid
+            out as loose files on disk, so the "plugins" directory simply
+            doesn't exist to list. pkgutil.iter_modules() works against a
+            package's __path__ either way, frozen or not.
             @note: Hidden files/directories are ignored.
             @note: If a plug-in is in a directory, it's C{self.PLUGIN_CLASSNAME}
                 class should be exposed in the plug-in's __init__.py file.
             @returns: A list of module names, assumed to be plug-ins."""
+        import importlib
+        import pkgutil
+
         plugin_names = []
 
-        for dir in self.PLUGIN_DIRS:
-            if not os.path.isdir(dir):
+        for plugin_module in self.PLUGIN_MODULES:
+            try:
+                package = importlib.import_module(plugin_module)
+            except ImportError:
                 continue
-            for name in os.listdir(dir):
+            if not hasattr(package, '__path__'):
+                continue
+            for _finder, name, _ispkg in pkgutil.iter_modules(package.__path__):
                 if self._is_wrong_plugin_name(name):
                     continue
-                fullpath = os.path.join(dir, name)
-                if os.path.isdir(fullpath):
-                    # XXX: The plug-in system assumes that a plug-in in a directory makes the Plugin class accessible via it's __init__.py
-                    if pan_app.DEBUG or name[0] != u'_':
-                        plugin_names.append(name)
-                elif os.path.isfile(fullpath) and not name.startswith(u'__init__.py'):
-                    if u'.py' not in name:
-                        continue
-                    plugname = u'.'.join(name.split(os.extsep)[:-1]) # Effectively removes extension, preserving other .'s in the name
-                    if pan_app.DEBUG or plugname[0] != u'_':
-                        plugin_names.append(plugname)
+                if pan_app.DEBUG or name[0] != u'_':
+                    plugin_names.append(name)
 
         plugin_names = list(set(plugin_names))
         #logging.debug('Found plugins: %s' % (', '.join(plugin_names)))

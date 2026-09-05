@@ -51,9 +51,17 @@ def get_config_dir():
 # subsystem executable has no console, so this is the only way to get
 # error messages out of it.
 if os.name == 'nt' and getattr(sys, 'frozen', False):
+    import time
     filename_template = os.path.join(get_config_dir(), '%s_virtaal.log')
-    sys.stdout = open(filename_template % ('stdout'), 'w', buffering=1)
-    sys.stderr = open(filename_template % ('stderr'), 'w', buffering=1)
+    # Append, not overwrite - a crash's own log was otherwise wiped the
+    # moment the app was relaunched to look at it. A separator line
+    # marks where each launch's own output starts, since a single file
+    # can now span several runs.
+    sys.stdout = open(filename_template % ('stdout'), 'a', buffering=1)
+    sys.stderr = open(filename_template % ('stderr'), 'a', buffering=1)
+    _launch_marker = '=== launch %s ===\n' % (time.strftime('%Y-%m-%d %H:%M:%S'))
+    sys.stdout.write(_launch_marker)
+    sys.stderr.write(_launch_marker)
 
 
 # Ok, now we can continue with what we actually wanted to do

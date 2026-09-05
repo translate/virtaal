@@ -14,6 +14,10 @@
 # across the whole virtaal package (not just .plugins) is the simplest way
 # to not have to enumerate either by hand, at negligible cost for a
 # pure-Python package this size.
+#
+# Same reasoning covers translate.storage: factory.getobject() imports
+# a format's backend module by a runtime-computed string, invisible to
+# PyInstaller unless collected explicitly too.
 import os
 import sys
 from pathlib import Path
@@ -69,7 +73,7 @@ a = Analysis(  # noqa: F821
         (str(ROOT / "devsupport" / "mac-bundle" / "VirtaalDocument.icns"), "."),
     ]
     + mo_files,
-    hiddenimports=collect_submodules("virtaal"),
+    hiddenimports=collect_submodules("virtaal") + collect_submodules("translate.storage"),
     hooksconfig={
         "gi": {
             "module-versions": {

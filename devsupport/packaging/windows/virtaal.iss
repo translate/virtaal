@@ -6,18 +6,12 @@
 ; (or via build_installer.ps1, which reads the version from
 ; virtaal/__version__.py itself rather than needing it typed in by hand.)
 ;
-; File-association design directly fixes the old #894 bug (ISSUE_TRIAGE.md):
-; the previous, now-fully-removed InnoSetup script wrote HKEY_CLASSES_ROOT
-; (machine-wide, needs admin) associations for every format
-; translate-toolkit happened to recognise, unconditionally, with no
-; installer checkbox - including generic extensions (OmegaT Glossary's
-; .utf8/.tab) that weren't really Virtaal's to claim, which is the most
-; likely actual source of the original user complaint. This version:
-;   - is opt-in (an unchecked [Tasks] entry - a bare install makes zero
+; File associations avoid claiming extensions unprompted or
+; system-wide:
+;   - opt-in (an unchecked [Tasks] entry - a bare install makes zero
 ;     registry changes)
-;   - uses HKCU (per-user, no admin elevation needed), not HKCR
-;   - uses a small, deliberately curated extension list, not an
-;     auto-enumerated one
+;   - HKCU (per-user, no admin elevation needed), not HKCR
+;   - a small, curated extension list, not an auto-enumerated one
 
 #ifndef MyAppVersion
   #define MyAppVersion "0.0.0"
@@ -75,50 +69,74 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Flags: nowait postinstall skipifsilent
 
-; One [Registry] block per associated extension, all gated on the
-; "fileassoc" task and all under HKCU (per-user, no elevation) rather than
-; HKCR (machine-wide) - see the file header. uninsdeletevalue means
-; uninstalling cleanly removes exactly what this added, nothing more.
+; One ProgID per format (not one shared ProgID for all 12 extensions) -
+; each gets its own label. Labels follow the same convention
+; share/mime/packages/virtaal-mimetype.xml.in already uses on Linux
+; (translatable file -> "XXX Translation File", TM -> "XXX Translation
+; Memory", compiled -> "XXX Message File"), reusing its exact wording
+; for the 5 formats both lists cover.
+;
+; All gated on the "fileassoc" task and under HKCU (per-user, no
+; elevation) rather than HKCR (machine-wide) - see the file header.
+; uninsdeletevalue/uninsdeletekey mean uninstalling cleanly removes
+; exactly what this added, nothing more.
 ;
 ; Extension list is deliberately curated (translate-toolkit's
-; factory.supported_files() is NOT auto-enumerated here) - .po,
-; .xlf/.xliff/.sdlxliff, .mo/.gmo, .qm, .tbx, .tmx, .ts, .qph, .ftl, .wxl.
-; Notably absent: OmegaT Glossary's generic .utf8/.tab - the most likely
-; actual offender in the original #894 complaint, and not really Virtaal's
-; to claim regardless.
+; factory.supported_files() is NOT auto-enumerated here) - excludes a
+; few rarely-used extensions likely to clash with other software.
 [Registry]
-Root: HKCU; Subkey: "Software\Classes\Virtaal.TranslationFile"; ValueType: string; ValueName: ""; ValueData: "Virtaal Translation File"; Tasks: fileassoc; Flags: uninsdeletekey
-Root: HKCU; Subkey: "Software\Classes\Virtaal.TranslationFile\DefaultIcon"; ValueType: string; ValueData: "{app}\share\icons\x-translation.ico"; Tasks: fileassoc
-Root: HKCU; Subkey: "Software\Classes\Virtaal.TranslationFile\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\Virtaal.PoFile"; ValueType: string; ValueName: ""; ValueData: "PO Translation File"; Tasks: fileassoc; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\Virtaal.PoFile\DefaultIcon"; ValueType: string; ValueData: "{app}\share\icons\x-translation.ico"; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\Virtaal.PoFile\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\.po"; ValueType: string; ValueData: "Virtaal.PoFile"; Tasks: fileassoc; Flags: uninsdeletevalue
 
-#define Ext1 ".po"
-#define Ext2 ".xlf"
-#define Ext3 ".xliff"
-#define Ext4 ".sdlxliff"
-#define Ext5 ".mo"
-#define Ext6 ".gmo"
-#define Ext7 ".qm"
-#define Ext8 ".tbx"
-#define Ext9 ".tmx"
-#define Ext10 ".ts"
-#define Ext11 ".qph"
-#define Ext12 ".ftl"
+Root: HKCU; Subkey: "Software\Classes\Virtaal.XliffFile"; ValueType: string; ValueName: ""; ValueData: "XLIFF Translation File"; Tasks: fileassoc; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\Virtaal.XliffFile\DefaultIcon"; ValueType: string; ValueData: "{app}\share\icons\x-translation.ico"; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\Virtaal.XliffFile\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\.xlf"; ValueType: string; ValueData: "Virtaal.XliffFile"; Tasks: fileassoc; Flags: uninsdeletevalue
+Root: HKCU; Subkey: "Software\Classes\.xliff"; ValueType: string; ValueData: "Virtaal.XliffFile"; Tasks: fileassoc; Flags: uninsdeletevalue
 
-Root: HKCU; Subkey: "Software\Classes\{#Ext1}"; ValueType: string; ValueData: "Virtaal.TranslationFile"; Tasks: fileassoc; Flags: uninsdeletevalue
-Root: HKCU; Subkey: "Software\Classes\{#Ext2}"; ValueType: string; ValueData: "Virtaal.TranslationFile"; Tasks: fileassoc; Flags: uninsdeletevalue
-Root: HKCU; Subkey: "Software\Classes\{#Ext3}"; ValueType: string; ValueData: "Virtaal.TranslationFile"; Tasks: fileassoc; Flags: uninsdeletevalue
-Root: HKCU; Subkey: "Software\Classes\{#Ext4}"; ValueType: string; ValueData: "Virtaal.TranslationFile"; Tasks: fileassoc; Flags: uninsdeletevalue
-Root: HKCU; Subkey: "Software\Classes\{#Ext5}"; ValueType: string; ValueData: "Virtaal.TranslationFile"; Tasks: fileassoc; Flags: uninsdeletevalue
-Root: HKCU; Subkey: "Software\Classes\{#Ext6}"; ValueType: string; ValueData: "Virtaal.TranslationFile"; Tasks: fileassoc; Flags: uninsdeletevalue
-Root: HKCU; Subkey: "Software\Classes\{#Ext7}"; ValueType: string; ValueData: "Virtaal.TranslationFile"; Tasks: fileassoc; Flags: uninsdeletevalue
-Root: HKCU; Subkey: "Software\Classes\{#Ext8}"; ValueType: string; ValueData: "Virtaal.TranslationFile"; Tasks: fileassoc; Flags: uninsdeletevalue
-Root: HKCU; Subkey: "Software\Classes\{#Ext9}"; ValueType: string; ValueData: "Virtaal.TranslationFile"; Tasks: fileassoc; Flags: uninsdeletevalue
-Root: HKCU; Subkey: "Software\Classes\{#Ext10}"; ValueType: string; ValueData: "Virtaal.TranslationFile"; Tasks: fileassoc; Flags: uninsdeletevalue
-Root: HKCU; Subkey: "Software\Classes\{#Ext11}"; ValueType: string; ValueData: "Virtaal.TranslationFile"; Tasks: fileassoc; Flags: uninsdeletevalue
-Root: HKCU; Subkey: "Software\Classes\{#Ext12}"; ValueType: string; ValueData: "Virtaal.TranslationFile"; Tasks: fileassoc; Flags: uninsdeletevalue
-; .wxl (Windows Installer XML localization) deliberately omitted from the
-; numbered list above despite being in the design doc's original scope -
-; .wxl is WiX's own format extension and Windows Installer XML has nothing
-; to do with translation file review; kept out pending confirmation this
-; was ever a real, intentional Virtaal association rather than inherited
-; noise from the old auto-enumerated list.
+Root: HKCU; Subkey: "Software\Classes\Virtaal.SdlXliffFile"; ValueType: string; ValueName: ""; ValueData: "SDL XLIFF Translation File"; Tasks: fileassoc; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\Virtaal.SdlXliffFile\DefaultIcon"; ValueType: string; ValueData: "{app}\share\icons\x-translation.ico"; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\Virtaal.SdlXliffFile\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\.sdlxliff"; ValueType: string; ValueData: "Virtaal.SdlXliffFile"; Tasks: fileassoc; Flags: uninsdeletevalue
+
+Root: HKCU; Subkey: "Software\Classes\Virtaal.GettextMoFile"; ValueType: string; ValueName: ""; ValueData: "Gettext Message File"; Tasks: fileassoc; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\Virtaal.GettextMoFile\DefaultIcon"; ValueType: string; ValueData: "{app}\share\icons\x-translation.ico"; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\Virtaal.GettextMoFile\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\.mo"; ValueType: string; ValueData: "Virtaal.GettextMoFile"; Tasks: fileassoc; Flags: uninsdeletevalue
+Root: HKCU; Subkey: "Software\Classes\.gmo"; ValueType: string; ValueData: "Virtaal.GettextMoFile"; Tasks: fileassoc; Flags: uninsdeletevalue
+
+Root: HKCU; Subkey: "Software\Classes\Virtaal.QmFile"; ValueType: string; ValueName: ""; ValueData: "Qt Message File"; Tasks: fileassoc; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\Virtaal.QmFile\DefaultIcon"; ValueType: string; ValueData: "{app}\share\icons\x-translation.ico"; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\Virtaal.QmFile\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\.qm"; ValueType: string; ValueData: "Virtaal.QmFile"; Tasks: fileassoc; Flags: uninsdeletevalue
+
+Root: HKCU; Subkey: "Software\Classes\Virtaal.TbxFile"; ValueType: string; ValueName: ""; ValueData: "TBX Glossary"; Tasks: fileassoc; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\Virtaal.TbxFile\DefaultIcon"; ValueType: string; ValueData: "{app}\share\icons\x-translation.ico"; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\Virtaal.TbxFile\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\.tbx"; ValueType: string; ValueData: "Virtaal.TbxFile"; Tasks: fileassoc; Flags: uninsdeletevalue
+
+Root: HKCU; Subkey: "Software\Classes\Virtaal.TmxFile"; ValueType: string; ValueName: ""; ValueData: "TMX Translation Memory"; Tasks: fileassoc; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\Virtaal.TmxFile\DefaultIcon"; ValueType: string; ValueData: "{app}\share\icons\x-translation.ico"; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\Virtaal.TmxFile\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\.tmx"; ValueType: string; ValueData: "Virtaal.TmxFile"; Tasks: fileassoc; Flags: uninsdeletevalue
+
+Root: HKCU; Subkey: "Software\Classes\Virtaal.QphFile"; ValueType: string; ValueName: ""; ValueData: "Qt Phrase Book"; Tasks: fileassoc; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\Virtaal.QphFile\DefaultIcon"; ValueType: string; ValueData: "{app}\share\icons\x-translation.ico"; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\Virtaal.QphFile\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\.qph"; ValueType: string; ValueData: "Virtaal.QphFile"; Tasks: fileassoc; Flags: uninsdeletevalue
+
+Root: HKCU; Subkey: "Software\Classes\Virtaal.FluentFile"; ValueType: string; ValueName: ""; ValueData: "Fluent Translation File"; Tasks: fileassoc; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\Virtaal.FluentFile\DefaultIcon"; ValueType: string; ValueData: "{app}\share\icons\x-translation.ico"; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\Virtaal.FluentFile\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\.ftl"; ValueType: string; ValueData: "Virtaal.FluentFile"; Tasks: fileassoc; Flags: uninsdeletevalue
+
+; .ts also means MPEG-2 Transport Stream, likely already claimed by a
+; video app - a secondary "Edit with Virtaal" verb instead of a
+; default association, via SystemFileAssociations (Windows' own
+; mechanism for a right-click/"Open with" action that doesn't touch
+; whatever already owns the extension's default).
+Root: HKCU; Subkey: "Software\Classes\SystemFileAssociations\.ts\shell\VirtaalEdit"; ValueType: string; ValueName: ""; ValueData: "Edit with Virtaal"; Tasks: fileassoc; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\SystemFileAssociations\.ts\shell\VirtaalEdit\DefaultIcon"; ValueType: string; ValueData: "{app}\share\icons\x-translation.ico"; Tasks: fileassoc
+Root: HKCU; Subkey: "Software\Classes\SystemFileAssociations\.ts\shell\VirtaalEdit\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: fileassoc

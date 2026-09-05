@@ -48,7 +48,7 @@ GNU Library General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program; if not, see <http://www.gnu.org/licenses/>.""")
-        self.set_website("http://translate.sourceforge.net/wiki/virtaal/index")
+        self.set_website("https://virtaal.translatehouse.org")
         self.set_website_label(_("Virtaal website"))
         authors = [
                 "Friedel Wolff",

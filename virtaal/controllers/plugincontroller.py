@@ -109,7 +109,10 @@ class PluginController(BaseController):
             try:
                 self.plugins[name] = plugin_class(name, self.controller)
             except PluginUnsupported as pu:
-                logging.info(pu.message)
+                # Exception.message was a Python 2-only attribute -
+                # PluginUnsupported (controllers/baseplugin.py) is a bare
+                # Exception subclass with no such attribute in Python 3.
+                logging.info(str(pu))
                 return None
             self.emit('plugin-enabled', self.plugins[name])
             logging.info('    - ' + getattr(self.plugins[name], self.PLUGIN_NAME_ATTRIB, name))

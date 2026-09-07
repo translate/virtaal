@@ -638,7 +638,7 @@ class MainView(BaseView):
         # below): FileChooserNative isn't a Gtk.Window, so it can't
         # itself be passed to another dialog's set_transient_for later.
         self.open_chooser.set_transient_for(self._top_window)
-        response = self.open_chooser.run() == Gtk.ResponseType.OK
+        response = self.open_chooser.run() == Gtk.ResponseType.ACCEPT
         self.open_chooser.hide()
 
         if response:
@@ -701,7 +701,7 @@ class MainView(BaseView):
         response = self.save_chooser.run()
         self.save_chooser.hide()
 
-        if response == Gtk.ResponseType.OK:
+        if response == Gtk.ResponseType.ACCEPT:
             filename = get_unicode(self.save_chooser.get_filename())
             #FIXME: do we need uri here?
             return filename

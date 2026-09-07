@@ -33,6 +33,13 @@ if (-not $pyinstallerInstalled) {
     & $Python -m pip install pyinstaller
 }
 
+# pyenchant's Windows wheel is self-contained (libenchant + backends +
+# dictionaries) - virtaal.spec bundles its data/ dir from this install.
+$pyenchantInstalled = & $Python -m pip show pyenchant 2>$null
+if (-not $pyenchantInstalled) {
+    & $Python -m pip install pyenchant
+}
+
 Remove-Item -Recurse -Force -ErrorAction SilentlyContinue build\virtaal, dist\virtaal
 
 # See virtaal/__version__.py's build_commit docstring: a frozen build has

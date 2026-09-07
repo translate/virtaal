@@ -147,7 +147,11 @@ a = Analysis(  # noqa: F821
     pathex=[str(ROOT)],
     binaries=binaries,
     datas=datas,
-    hiddenimports=collect_submodules("virtaal") + collect_submodules("translate.storage"),
+    hiddenimports=(
+        collect_submodules("virtaal")
+        + collect_submodules("translate.storage")
+        + collect_submodules("enchant")
+    ),
     # Keep enchant's .py files loose on disk, not archived - its
     # __file__-relative data lookup above needs a real path.
     module_collection_mode={"enchant": "py"},

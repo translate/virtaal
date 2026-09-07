@@ -29,11 +29,12 @@
 import os
 import sys
 
+from .platform import platform
 from .utils import get_unicode
 
 
 def get_config_dir():
-    if os.name == 'nt':
+    if platform.is_windows:
         confdir = os.path.join(os.environ['APPDATA'], 'Virtaal')
     elif sys.platform == 'darwin':
         confdir = os.path.expanduser('~/Library/Application Support/Virtaal')
@@ -58,7 +59,7 @@ def _open_frozen_log(path):
 # Only for the packaged (frozen/PyInstaller) build - a windowed
 # subsystem executable has no console, so this is the only way to get
 # error messages out of it.
-if os.name == 'nt' and getattr(sys, 'frozen', False):
+if platform.is_windows and getattr(sys, 'frozen', False):
     import time
     filename_template = os.path.join(get_config_dir(), '%s_virtaal.log')
     sys.stdout = _open_frozen_log(filename_template % ('stdout'))
@@ -332,7 +333,7 @@ else:
     main_dir = os.path.dirname(get_unicode(sys.argv[0]))
 
 
-if os.name =='nt' and getattr(sys, 'frozen', False):
+if platform.is_windows and getattr(sys, 'frozen', False):
     fix_libintl(main_dir)
 
 if _(''):

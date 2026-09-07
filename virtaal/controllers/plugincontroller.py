@@ -26,11 +26,12 @@ from gi.repository import GLib, GObject
 from gi.repository.GObject import TYPE_PYOBJECT
 
 from virtaal.common import pan_app, GObjectWrapper
+from virtaal.common.platform import platform
 from virtaal.common.utils import get_unicode
 from .basecontroller import BaseController
 from .baseplugin import PluginUnsupported, BasePlugin
 
-if os.name == 'nt':
+if platform.is_windows:
     sys.path.insert(0, pan_app.main_dir)
 if 'RESOURCEPATH' in os.environ:
     sys.path.insert(0, os.path.join(os.environ['RESOURCEPATH']))
@@ -81,7 +82,7 @@ class PluginController(BaseController):
         self.plugins       = {}
         self.pluginmodules = {}
 
-        if os.name == 'nt':
+        if platform.is_windows:
             self.PLUGIN_DIRS.insert(0, os.path.join(pan_app.main_dir, u'virtaal_plugins'))
         if 'RESOURCEPATH' in os.environ:
             self.PLUGIN_DIRS.insert(0, os.path.join(os.environ['RESOURCEPATH'].decode(sys.getfilesystemencoding()), u'virtaal_plugins'))

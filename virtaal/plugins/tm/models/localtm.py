@@ -69,7 +69,7 @@ class TMModel(remotetm.TMModel):
         # virtaal handles a "--run-module <name>" sentinel for exactly this
         # case (dispatches via runpy, same as -m would), gated the same
         # way this branches.
-        if getattr(sys, "frozen", False):
+        if platform.is_frozen:
             command = [sys.executable, "--run-module", "virtaal.support.tmserver"]
         else:
             command = [sys.executable, "-m", "virtaal.support.tmserver"]
@@ -90,7 +90,7 @@ class TMModel(remotetm.TMModel):
             from virtaal.support import tmclient
 
             env = os.environ.copy()
-            if not getattr(sys, "frozen", False):
+            if not platform.is_frozen:
                 # Make sure the subprocess can "import virtaal.support.tmserver"
                 # regardless of how *this* process ended up able to (an
                 # explicit PYTHONPATH from a source checkout, an editable

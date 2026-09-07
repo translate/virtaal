@@ -47,18 +47,24 @@ def get_config_dir():
 
     return confdir
 
+def _open_frozen_log(path):
+    """Open a frozen-build log file for append.
+
+    No explicit encoding defaults to the system locale's codepage on
+    Windows (e.g. cp1252), which can't represent arbitrary translated
+    text - logging.debug() itself could then raise UnicodeEncodeError."""
+    return open(path, 'a', buffering=1, encoding='utf-8', errors='backslashreplace')
+
 # Only for the packaged (frozen/PyInstaller) build - a windowed
 # subsystem executable has no console, so this is the only way to get
 # error messages out of it.
 if os.name == 'nt' and getattr(sys, 'frozen', False):
     import time
     filename_template = os.path.join(get_config_dir(), '%s_virtaal.log')
-    # Append, not overwrite - a crash's own log was otherwise wiped the
-    # moment the app was relaunched to look at it. A separator line
-    # marks where each launch's own output starts, since a single file
-    # can now span several runs.
-    sys.stdout = open(filename_template % ('stdout'), 'a', buffering=1)
-    sys.stderr = open(filename_template % ('stderr'), 'a', buffering=1)
+    sys.stdout = _open_frozen_log(filename_template % ('stdout'))
+    sys.stderr = _open_frozen_log(filename_template % ('stderr'))
+    # A separator line marks where each launch's own output starts,
+    # since a single file can now span several runs.
     _launch_marker = '=== launch %s ===\n' % (time.strftime('%Y-%m-%d %H:%M:%S'))
     sys.stdout.write(_launch_marker)
     sys.stderr.write(_launch_marker)

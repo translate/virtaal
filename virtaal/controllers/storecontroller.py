@@ -88,9 +88,10 @@ class StoreController(BaseController):
         if self._archivetemp:
             return self._targetfname
 
-        from translate.storage.bundleprojstore import BundleProjectStore
-        if self.project and isinstance(self.project.store, BundleProjectStore):
-            return self.project.store.zip.filename
+        if self.project:
+            from translate.storage.bundleprojstore import BundleProjectStore
+            if isinstance(self.project.store, BundleProjectStore):
+                return self.project.store.zip.filename
         return None
 
     def get_store(self):

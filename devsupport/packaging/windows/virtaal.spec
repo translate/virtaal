@@ -56,6 +56,16 @@ from virtaal.__version__ import ver as virtaal_version  # noqa: E402
 import translate  # noqa: E402
 TRANSLATE_SHARE = Path(translate.__file__).parent / "share"
 
+# pyenchant's Windows wheel is self-contained (libenchant + backends +
+# English dictionaries under enchant/data/); _enchant.py finds it via
+# its own __file__ at runtime, so bundling the dir at the same relative
+# path is enough - see module_collection_mode below.
+try:
+    import enchant
+    ENCHANT_DATA = Path(enchant.__file__).parent / "data"
+except ImportError:
+    ENCHANT_DATA = None
+
 COPYRIGHT = "Copyright 2007-2026 Translate. GNU General Public License."
 
 
@@ -124,17 +134,23 @@ binaries = []
 if gio_modules_dir.is_dir():
     binaries.append((str(gio_modules_dir), "lib/gio/modules"))
 
+datas = [
+    (str(ROOT / "share" / "virtaal"), "share/virtaal"),
+    (str(ROOT / "share" / "icons"), "share/icons"),
+    (str(TRANSLATE_SHARE), "share"),
+] + mo_files
+if ENCHANT_DATA is not None and ENCHANT_DATA.is_dir():
+    datas.append((str(ENCHANT_DATA), "enchant/data"))
+
 a = Analysis(  # noqa: F821
     [str(ROOT / "bin" / "virtaal")],
     pathex=[str(ROOT)],
     binaries=binaries,
-    datas=[
-        (str(ROOT / "share" / "virtaal"), "share/virtaal"),
-        (str(ROOT / "share" / "icons"), "share/icons"),
-        (str(TRANSLATE_SHARE), "share"),
-    ]
-    + mo_files,
+    datas=datas,
     hiddenimports=collect_submodules("virtaal") + collect_submodules("translate.storage"),
+    # Keep enchant's .py files loose on disk, not archived - its
+    # __file__-relative data lookup above needs a real path.
+    module_collection_mode={"enchant": "py"},
     hooksconfig={
         "gi": {
             "module-versions": {
@@ -153,15 +169,6 @@ a = Analysis(  # noqa: F821
     # dead weight here either way).
     excludes=[
         "FixTk", "tcl", "tk", "_tkinter", "tkinter", "Tkinter", "devsupport",
-        # pyenchant loads the SYSTEM libenchant via ctypes at runtime, not
-        # a static import PyInstaller's analysis can see - never bundled
-        # regardless of whether it's excluded here. The pinned gvsbuild
-        # GTK3 build this project uses doesn't ship enchant/gtkspell at
-        # all (confirmed live in the Windows 11 ARM64 VM this session -
-        # "GtkSpell not installed"), so the spellchecker plugin already
-        # degrades gracefully without it, same as a plain checkout
-        # running without enchant/gtkspell installed locally.
-        "enchant",
     ],
     noarchive=False,
 )

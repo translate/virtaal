@@ -57,3 +57,10 @@ def _get_build_commit():
 
 
 build_commit = _get_build_commit()
+
+
+def version_string():
+    """`ver`, with the short build commit appended when known, e.g.
+    "1.0.0-beta1 (5bb637f)" - falls back to "(unknown)" rather than a
+    literal "None" when build_commit isn't available."""
+    return "%s (%s)" % (ver, build_commit[:7] if build_commit else "unknown")

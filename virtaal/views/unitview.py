@@ -388,7 +388,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             if not eventname:
                 return False
             if eventname in  ('enter', 'ctrl-enter', 'ctrl-shift-enter'):
-                if next_textbox is not None and next_textbox.props.visible:
+                if next_textbox is not None and next_textbox.get_parent().props.visible:
                     self.focus_text_view(next_textbox)
                 else:
                     if eventname == 'ctrl-enter' and self.unit.STATE:

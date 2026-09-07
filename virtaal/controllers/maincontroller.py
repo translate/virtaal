@@ -19,8 +19,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import os
-
 import gi
 
 gi.require_version('Gtk', '3.0')
@@ -28,6 +26,7 @@ from gi.repository import Gtk, GObject
 
 from .basecontroller import BaseController
 from virtaal.common import GObjectWrapper, pan_app
+from virtaal.common.platform import platform
 from virtaal.models.storemodel import SaveCancelled
 from virtaal.views.mainview import MainView
 
@@ -197,7 +196,7 @@ class MainController(BaseController):
             # Unnecessary to test for 'discard'
 
         if filename.startswith('file://'):
-            if os.name == "nt":
+            if platform.is_windows:
                 filename = filename[len('file:///'):]
             else:
                 filename = filename[len('file://'):]

@@ -24,6 +24,7 @@ import socket
 import sys
 
 from virtaal.common import pan_app
+from virtaal.common.platform import platform
 from . import remotetm
 from .basetmmodel import BaseTMModel
 
@@ -119,7 +120,7 @@ class TMModel(remotetm.TMModel):
         ))
 
     def destroy(self):
-        if os.name == "nt":
+        if platform.is_windows:
             import ctypes
             ctypes.windll.kernel32.TerminateProcess(int(self.tmserver._handle), -1)
             logging.debug("killing tmserver with handle %d" % int(self.tmserver._handle))

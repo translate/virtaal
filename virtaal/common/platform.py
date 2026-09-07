@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# Copyright 2026 Zuza Software Foundation
+#
+# This file is part of Virtaal.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <http://www.gnu.org/licenses/>.
+
+"""A single, testable place to ask "which platform is this?".
+
+Replaces the scattered ``os.name == 'nt'`` / ``sys.platform ==
+'darwin'`` / ``getattr(sys, 'frozen', False)`` checks across the
+codebase with one small class. The constructor accepts overrides for
+exactly this reason: reading ``os.name``/``sys.platform`` at call time
+is untestable on CI, which only ever runs as one real OS, so tests
+inject a platform instead of monkeypatching global state:
+
+    windows = Platform(os_name='nt', sys_platform='win32')
+    assert windows.is_windows and not windows.is_mac
+"""
+
+import os
+import sys
+
+
+class Platform:
+    def __init__(self, os_name=None, sys_platform=None, frozen=None, environ=None):
+        self.is_windows = (os_name if os_name is not None else os.name) == 'nt'
+        self.is_mac = (sys_platform if sys_platform is not None else sys.platform) == 'darwin'
+        self.is_linux = not self.is_windows and not self.is_mac
+        self.is_frozen = bool(frozen if frozen is not None else getattr(sys, 'frozen', False))
+
+
+platform = Platform()

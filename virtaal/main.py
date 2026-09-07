@@ -26,9 +26,9 @@
 # after the GUI is already showing.
 
 
-import sys
-
 from gi.repository import GLib
+
+from virtaal.common.platform import platform
 
 
 class _Deferer:
@@ -161,7 +161,7 @@ class Virtaal(object):
         # Only bundled builds (macOS .app, Windows installer) can't
         # already control their own updates the way a checkout/pip
         # install can.
-        if getattr(sys, 'frozen', False):
+        if platform.is_frozen:
             defer(self._check_for_update)
 
     def _check_for_update(self):

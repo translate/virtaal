@@ -59,7 +59,7 @@ def _open_frozen_log(path):
 # Only for the packaged (frozen/PyInstaller) build - a windowed
 # subsystem executable has no console, so this is the only way to get
 # error messages out of it.
-if platform.is_windows and getattr(sys, 'frozen', False):
+if platform.is_windows and platform.is_frozen:
     import time
     filename_template = os.path.join(get_config_dir(), '%s_virtaal.log')
     sys.stdout = _open_frozen_log(filename_template % ('stdout'))
@@ -327,13 +327,13 @@ def set_ui_language(lang):
 
 # Determine the directory the main executable is running from
 main_dir = u''
-if getattr(sys, 'frozen', False):
+if platform.is_frozen:
     main_dir = os.path.dirname(get_unicode(sys.executable))
 else:
     main_dir = os.path.dirname(get_unicode(sys.argv[0]))
 
 
-if platform.is_windows and getattr(sys, 'frozen', False):
+if platform.is_windows and platform.is_frozen:
     fix_libintl(main_dir)
 
 if _(''):

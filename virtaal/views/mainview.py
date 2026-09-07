@@ -304,6 +304,7 @@ class MainView(BaseView):
                     continue
                 new_filter = Gtk.FileFilter()
                 new_filter.set_name(name)
+                # Extensions only - mimetypes prevent native file dialogues.
                 if extensions:
                     for extension in extensions:
                         new_filter.add_pattern("*." + extension)
@@ -311,10 +312,6 @@ class MainView(BaseView):
                         for compress_extension in storage_factory.decompressclass.keys():
                             new_filter.add_pattern("*.%s.%s" % (extension, compress_extension))
                             all_supported_filter.add_pattern("*.%s.%s" % (extension, compress_extension))
-                if mimetypes:
-                    for mimetype in mimetypes:
-                        new_filter.add_mime_type(mimetype)
-                        all_supported_filter.add_mime_type(mimetype)
                 self._open_chooser.add_filter(new_filter)
 
             # doc_filter = Gtk.FileFilter()

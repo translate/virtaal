@@ -27,6 +27,7 @@ from gettext import dgettext
 
 from gi.repository import GLib
 
+from virtaal.common.platform import platform
 from virtaal.controllers.baseplugin import PluginUnsupported, BasePlugin
 
 
@@ -50,7 +51,7 @@ class Plugin(BasePlugin):
     def __init__(self, internal_name, main_controller):
         self.internal_name = internal_name
 
-        if os.name == 'nt':
+        if platform.is_windows:
             DICTDIR = os.path.join(os.environ['APPDATA'], 'enchant', 'myspell')
             # DICTDIR is already str (unicode text) under Python 3, so there's
             # nothing to decode - .decode() doesn't exist on str at all and
@@ -144,7 +145,7 @@ class Plugin(BasePlugin):
 
     def _download_checker(self, language):
         """A Windows-and Mac only way to obtain new dictionaries."""
-        if os.name == 'nt' and 'APPDATA' not in os.environ:
+        if platform.is_windows and 'APPDATA' not in os.environ:
             # We won't have an idea of where to save it, so let's give up now
             return
         if language in self.clients:
@@ -221,7 +222,7 @@ class Plugin(BasePlugin):
             tar = tarfile.open(fileobj=file_obj)
             if not self._tar_ok(tar):
                 return
-            if os.name == 'nt':
+            if platform.is_windows:
                 DICTDIR = os.path.join(os.environ['APPDATA'], 'enchant', 'myspell')
             elif sys.platform == 'darwin':
                 DICTDIR = os.path.expanduser("~/.enchant/myspell")
@@ -280,7 +281,7 @@ class Plugin(BasePlugin):
                 #logging.debug('No code in enchant.list_languages() that starts with "%s"' % (language))
 
                 # If we are on Windows or Mac, let's try to download a spell checker:
-                if os.name == 'nt' or sys.platform == 'darwin':
+                if platform.is_windows or sys.platform == 'darwin':
                     self._download_checker(language)
                     # If we get it, it will only be activated asynchronously
                     # later

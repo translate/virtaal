@@ -28,6 +28,7 @@ from gi.repository import Gdk
 from gi.repository import Gtk
 
 from virtaal.common import pan_app
+from virtaal.common.platform import platform
 from virtaal.common.utils import get_unicode
 from virtaal.views import theme
 from .baseview import BaseView
@@ -93,7 +94,7 @@ class MainView(BaseView):
         self.controller = controller
         self.modified = False
 
-        if os.name == 'nt':
+        if platform.is_windows:
             # Make sure that rule-hints are shown in Windows
             rc_string = """
                 style "show-rules"
@@ -411,7 +412,7 @@ class MainView(BaseView):
     def _on_style_set(self, widget, prev_style=None):
         theme.update_style(widget)
         # on windows the tooltip colour is wrong in inverse themes (bug 1923)
-        if os.name == 'nt':
+        if platform.is_windows:
             if theme.INVERSE:
                 tooltip_text = "white"
             else:
@@ -884,7 +885,7 @@ class MainView(BaseView):
             if getattr(self, '_uri', None):
                 recent.rm.add_item(self._uri)
             else:
-                if os.name == 'nt':
+                if platform.is_windows:
                     url = 'file:///' + os.path.abspath(store_controller.store.filename)
                 else:
                     url = 'file://' + os.path.abspath(store_controller.store.filename)

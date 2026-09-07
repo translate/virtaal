@@ -20,12 +20,12 @@
 
 import locale
 import logging
-import os
 
 from gi.repository import GLib
 from gi.repository import Gdk
 from gi.repository import Gtk
 
+from virtaal.common.platform import platform
 from virtaal.models.langmodel import LanguageModel
 from .baseview import BaseView
 from .widgets.popupmenubutton import PopupMenuButton
@@ -89,7 +89,7 @@ class LanguageView(BaseView):
         # While it seems that the arrows are not well supported on Windows
         # systems, we fall back to using the French quotes. It automatically
         # does the right thing for RTL.
-        if os.name == 'nt':
+        if platform.is_windows:
             pairlabel = u'%s » %s' % (srclang.name, tgtlang.name)
         return pairlabel
 

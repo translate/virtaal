@@ -49,6 +49,8 @@ from translate.misc.multistring import multistring
 from translate.storage import factory
 from translate.storage.workflow import StateEnum
 
+from virtaal.common.platform import platform
+
 
 logger = logging.getLogger(__name__)
 
@@ -340,7 +342,7 @@ class StatsCache(object):
             if not cls.defaultfile:
                 userdir = os.path.expanduser("~")
                 cachedir = None
-                if os.name == "nt":
+                if platform.is_windows:
                     cachedir = os.path.join(userdir, "Translate Toolkit")
                 else:
                     cachedir = os.path.join(userdir, ".translate_toolkit")

@@ -38,13 +38,14 @@ vendoring note above for exactly where these came from and why).
 
 import gettext
 import locale
-import os
 import re
 
 try:
     import pycountry
 except ImportError:
     pycountry = None
+
+from virtaal.common.platform import platform
 
 
 _fixed_names = {
@@ -132,7 +133,7 @@ def gettext_domain(langcode, domain, localedir=None):
         fallback=True)
     if langcode:
         kwargs['languages'] = [langcode]
-    elif os.name == "nt":
+    elif platform.is_windows:
         # On Windows the default locale is not used for some reason
         kwargs['languages'] = [locale.getdefaultlocale()[0]]
     t = gettext.translation(**kwargs)

@@ -30,7 +30,20 @@ never installed, not because of any GTK2/GTK3 incompatibility).
 
 import pytest
 
-from virtaal.plugins.spellchecker import _dict_add_re
+from virtaal.plugins.spellchecker import Plugin, _dict_add_re
+
+
+class _FakeEnchant:
+    """Records what language code it was actually asked about, without
+    needing real enchant/dictionaries installed."""
+
+    def __init__(self, known_dicts):
+        self.known_dicts = known_dicts
+        self.checked = []
+
+    def dict_exists(self, language):
+        self.checked.append(language)
+        return language in self.known_dicts
 
 
 def test_dict_add_re_matches_gtkspell_suggestion():
@@ -43,6 +56,22 @@ def test_dict_add_re_matches_gtkspell_suggestion():
 
 def test_dict_add_re_no_match_on_unrelated_label():
     assert _dict_add_re.match("Ignore All") is None
+
+
+@pytest.mark.parametrize("language,expected", [("pt", "pt_PT"), ("de", "de_DE")])
+def test_on_unit_lang_changed_maps_to_country_variant(language, expected):
+    """Regression: a `==` vs `=` typo made these branches no-ops, so 'pt'
+    and 'de' were probed against enchant as themselves instead of the
+    country variant, the same treatment 'en' already got correctly."""
+    plugin = Plugin.__new__(Plugin)
+    plugin.gtkspell = object()
+    plugin.enchant = _FakeEnchant(known_dicts={expected})
+    plugin._seen_languages = {}
+    plugin._enchant_languages = []
+
+    Plugin._on_unit_lang_changed(plugin, unit_view=None, text_view=None, language=language)
+
+    assert plugin.enchant.checked == [expected]
 
 
 def test_spellchecker_dependencies_importable():

@@ -184,11 +184,11 @@ class TerminologyModel(BaseTerminologyModel):
         return (time.mktime(datetime.now().timetuple()) - stats.st_mtime) > THREE_DAYS
 
     def _check_for_update(self, srclang, tgtlang):
-        localfile = self._get_curr_term_filename(srclang, tgtlang)
-        localfile = os.path.join(self.TERMDIR, localfile)
+        filename = self._get_curr_term_filename(srclang, tgtlang)
+        localfile = os.path.join(self.TERMDIR, filename)
         etag = None
-        if os.path.isfile(localfile) and localfile in self.config:
-            etag = self.config[os.path.abspath(localfile)]
+        if os.path.isfile(localfile) and filename in self.config:
+            etag = self.config[filename]
 
         url = self._l10n_URL % {
             'srclang': _pontoon_locale_code(srclang),
@@ -264,7 +264,7 @@ class TerminologyModel(BaseTerminologyModel):
             etagline = [l for l in headers if l.lower().startswith(b'etag:')]
             if etagline:
                 etag = etagline[0][7:-1].decode('ascii', errors='replace')
-            self.config[os.path.abspath(localfile)] = etag
+            self.config[os.path.basename(localfile)] = etag
         else:
             logging.debug('Unhandled status code: %d' % (request.status))
             localfile = ''

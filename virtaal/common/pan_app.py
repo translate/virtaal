@@ -97,11 +97,6 @@ def osx_lang():
     return CoreFoundation.CFLocaleCopyPreferredLanguages()[0]
 
 def get_locale_lang():
-    #if we wanted to determine the UI language ourselves, this should work:
-    #lang = locale.getdefaultlocale(('LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG'))[0]
-    #if not lang and sys.platform == "darwin":
-    #   lang = osx_lang()
-
     # guess default target lang based on locale, simplify to commonly used form
     try:
         lang = locale.getdefaultlocale(('LANGUAGE', 'LC_ALL', 'LANG'))[0]

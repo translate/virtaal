@@ -227,7 +227,7 @@ class PluginController(BaseController):
                     continue
                 # Don't show dev-only plugins (_helloworld, _python_console,
                 # ...) on frozen builds, regardless of DEBUG's value here.
-                if getattr(sys, 'frozen', False) and name[0] == u'_':
+                if platform.is_frozen and name[0] == u'_':
                     continue
                 if pan_app.DEBUG or name[0] != u'_':
                     plugin_names.append(name)

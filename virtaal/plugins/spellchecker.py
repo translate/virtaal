@@ -22,7 +22,6 @@ import logging
 import os
 import os.path
 import re
-import sys
 from gettext import dgettext
 
 from gi.repository import GLib
@@ -224,7 +223,7 @@ class Plugin(BasePlugin):
                 return
             if platform.is_windows:
                 DICTDIR = os.path.join(os.environ['APPDATA'], 'enchant', 'myspell')
-            elif sys.platform == 'darwin':
+            elif platform.is_mac:
                 DICTDIR = os.path.expanduser("~/.enchant/myspell")
             self._ensure_dir(DICTDIR)
             tar.extractall(DICTDIR)
@@ -281,7 +280,7 @@ class Plugin(BasePlugin):
                 #logging.debug('No code in enchant.list_languages() that starts with "%s"' % (language))
 
                 # If we are on Windows or Mac, let's try to download a spell checker:
-                if platform.is_windows or sys.platform == 'darwin':
+                if platform.is_windows or platform.is_mac:
                     self._download_checker(language)
                     # If we get it, it will only be activated asynchronously
                     # later

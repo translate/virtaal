@@ -459,6 +459,29 @@ function Assert-VirtaalLogsClean {
     #>
     param([string[]]$AllowlistPatterns = @(), [switch]$AllowDebugLog)
     $AllowlistPatterns = $AllowlistPatterns + '^=== launch \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} \| Virtaal .+ ===$'
+    # The bundled Windows build only ships pyenchant's own English
+    # dictionaries (see devsupport/packaging/windows/virtaal.spec) -
+    # opening a non-English file (po\af.po, used elsewhere in this
+    # battery for an unrelated window-growth check) legitimately hits
+    # translate.filters.spelling's own "no dictionary for this
+    # language" path, which it logs as an ERROR-level traceback by
+    # design before degrading gracefully (no crash). Expected until the
+    # Sourcing stage adds real per-language dictionary downloads - see
+    # PLAN-SPELLCHECK.md. Patterns are anchored to translate.filters.
+    # spelling's/enchant's own file paths specifically, not generic
+    # "Traceback"/"File" lines, so a real Virtaal-internal crash (whose
+    # frames would show virtaal's own paths) still fails this check.
+    $AllowlistPatterns = $AllowlistPatterns + @(
+        '^ERROR:translate\.filters\.spelling:Dictionary not found$',
+        '^Traceback \(most recent call last\):$',
+        '^During handling of the above exception, another exception occurred:$',
+        '^\s*File "translate\\filters\\spelling\.py", line \d+, in _get_checker$',
+        '^\s*File ".*\\enchant\\checker\\__init__\.py", line \d+, in __init__$',
+        '^\s*File ".*\\enchant\\tokenize\\__init__\.py", line \d+, in get_tokenizer$',
+        '^\s*tokenize = get_tokenizer\(.*\)$',
+        '^\s*raise (DefaultLanguageNotFoundError|TokenizerNotFoundError)\(.*\)( from None)?$',
+        '^enchant\.errors\.(DefaultLanguageNotFoundError|TokenizerNotFoundError): .+$'
+    )
     if ($script:VirtaalAppDebugLog -or $AllowDebugLog) {
         # bin\virtaal's -D/--debug format is '%(levelname)7s
         # %(module)s...' - levelname right-justified to 7 chars, so

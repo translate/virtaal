@@ -29,6 +29,7 @@
 import os
 import sys
 
+from virtaal.__version__ import version_string
 from .platform import platform
 from .utils import get_unicode
 
@@ -56,6 +57,12 @@ def _open_frozen_log(path):
     text - logging.debug() itself could then raise UnicodeEncodeError."""
     return open(path, 'a', buffering=1, encoding='utf-8', errors='backslashreplace')
 
+def _build_launch_marker(timestamp):
+    """The separator line written to a frozen build's log at each
+    launch - a single file can span several runs, so this both marks
+    where one starts and identifies which build produced it."""
+    return '=== launch %s | Virtaal %s ===\n' % (timestamp, version_string())
+
 # Only for the packaged (frozen/PyInstaller) build - a windowed
 # subsystem executable has no console, so this is the only way to get
 # error messages out of it.
@@ -64,9 +71,7 @@ if platform.is_windows and platform.is_frozen:
     filename_template = os.path.join(get_config_dir(), '%s_virtaal.log')
     sys.stdout = _open_frozen_log(filename_template % ('stdout'))
     sys.stderr = _open_frozen_log(filename_template % ('stderr'))
-    # A separator line marks where each launch's own output starts,
-    # since a single file can now span several runs.
-    _launch_marker = '=== launch %s ===\n' % (time.strftime('%Y-%m-%d %H:%M:%S'))
+    _launch_marker = _build_launch_marker(time.strftime('%Y-%m-%d %H:%M:%S'))
     sys.stdout.write(_launch_marker)
     sys.stderr.write(_launch_marker)
 

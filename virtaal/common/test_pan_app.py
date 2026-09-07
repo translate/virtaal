@@ -20,7 +20,14 @@
 
 import pytest
 
-from virtaal.common.pan_app import _open_frozen_log
+from virtaal.common import pan_app
+from virtaal.common.pan_app import _build_launch_marker, _open_frozen_log
+
+
+def test_build_launch_marker_includes_version(monkeypatch):
+    monkeypatch.setattr(pan_app, 'version_string', lambda: '1.0.0-beta1 (5bb637f)')
+    marker = _build_launch_marker('2026-09-07 22:00:00')
+    assert marker == '=== launch 2026-09-07 22:00:00 | Virtaal 1.0.0-beta1 (5bb637f) ===\n'
 
 
 def test_open_frozen_log_survives_characters_a_locale_codepage_cant(tmp_path):

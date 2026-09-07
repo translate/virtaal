@@ -23,6 +23,8 @@
 import os
 import sys
 
+from virtaal.common.platform import platform
+
 
 def _isofromlangid(langid):
     # ISO 639-1
@@ -323,7 +325,7 @@ def fix_locale(lang=None):
     """This fixes some strange issues to ensure locale and gettext works
     correctly, also within glade, even with a non-default locale passed as
     parameter."""
-    if sys.platform == 'win32':
+    if platform.is_windows:
         lang = lang or _getlang()
 
         _putenv('LANGUAGE', lang)

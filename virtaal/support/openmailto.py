@@ -35,6 +35,8 @@ import os
 import sys
 import logging
 
+from virtaal.common.platform import platform
+
 
 # Some imports are only necessary on some platforms, and are postponed to try
 # to speed up startup
@@ -63,7 +65,7 @@ class Controller(BaseController):
 
     def _invoke(self, cmdline):
         import subprocess
-        if sys.platform[:3] == 'win':
+        if platform.is_windows:
             closefds = False
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
@@ -71,8 +73,8 @@ class Controller(BaseController):
             closefds = True
             startupinfo = None
 
-        if (os.environ.get('DISPLAY') or sys.platform[:3] == 'win' or
-                                                    sys.platform == 'darwin'):
+        if (os.environ.get('DISPLAY') or platform.is_windows or
+                                                    platform.is_mac):
             inout = subprocess.DEVNULL
         else:
             # for TTY programs, we need stdin/out
@@ -108,7 +110,7 @@ class Controller(BaseController):
 
 
 # Platform support for Windows
-if sys.platform[:3] == 'win':
+if platform.is_windows:
 
     class Start(BaseController):
         '''Controller for the win32 start progam through os.startfile.'''
@@ -128,7 +130,7 @@ if sys.platform[:3] == 'win':
 
 
 # Platform support for MacOS
-elif sys.platform == 'darwin':
+elif platform.is_mac:
     _controllers['open']= Controller('open')
     _open = _controllers['open'].open
 

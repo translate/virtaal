@@ -458,7 +458,7 @@ function Assert-VirtaalLogsClean {
     past that is real unexpected output.
     #>
     param([string[]]$AllowlistPatterns = @(), [switch]$AllowDebugLog)
-    $AllowlistPatterns = $AllowlistPatterns + '^=== launch \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} ===$'
+    $AllowlistPatterns = $AllowlistPatterns + '^=== launch \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} \| Virtaal .+ ===$'
     if ($script:VirtaalAppDebugLog -or $AllowDebugLog) {
         # bin\virtaal's -D/--debug format is '%(levelname)7s
         # %(module)s...' - levelname right-justified to 7 chars, so

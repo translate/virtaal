@@ -22,7 +22,6 @@ import locale
 import logging
 import os
 import subprocess
-import sys
 
 from gi.repository import Gdk
 from gi.repository import Gtk
@@ -120,7 +119,7 @@ class MainView(BaseView):
         self.btn_app = None
         self.app_menu = None
 
-        if sys.platform == 'darwin':
+        if platform.is_mac:
             # Follow the system light/dark appearance - GTK3 themes (Adwaita
             # included) already derive their colours from this setting.
             try:
@@ -168,7 +167,7 @@ class MainView(BaseView):
                 import logging
                 logging.debug("GtkosxApplication not found (brew install gtk-mac-integration for native macOS menu-bar integration). Expect zero integration with the Mac desktop.")
 
-        elif sys.platform == 'win32':
+        elif platform.is_windows:
             # AppsUseLightTheme: 0 means dark, 1 (or absent) means light.
             try:
                 import winreg
@@ -392,7 +391,7 @@ class MainView(BaseView):
         self.main_window.connect("drag-data-received", self._on_drag_data_received)
 
     def _on_drag_data_received(self, w, context, x, y, data, info, time):
-        if sys.platform == 'darwin' or Gtk.targets_include_uri(context.list_targets()):
+        if platform.is_mac or Gtk.targets_include_uri(context.list_targets()):
             # We don't check for valid targets on Mac (darwin) since there is
             # a bug in target_incude_uri on that platform, no adverse situations
             # seem to arise but we leave other platforms to do the right thing.

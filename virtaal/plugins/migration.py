@@ -27,7 +27,6 @@ import both relied on the Python 2-only bsddb module and were removed.)
 
 import logging
 import os
-import sys
 from os import path
 
 from io import StringIO
@@ -39,6 +38,7 @@ except ImportError:
     from pysqlite2 import dbapi2
 
 from virtaal.common import pan_app
+from virtaal.common.platform import platform
 from virtaal.controllers.baseplugin import BasePlugin
 
 from virtaal.support import tmdb
@@ -61,7 +61,7 @@ class Plugin(BasePlugin):
 
     def _init_plugin(self):
         # Source paths need to be set up before the evidence check below.
-        if sys.platform == "darwin":
+        if platform.is_mac:
             self.poedit_dir = path.expanduser('~/Library/Preferences')
         else:
             self.poedit_dir = path.expanduser('~/.poedit')
@@ -126,13 +126,13 @@ class Plugin(BasePlugin):
         return False
 
     def _poedit_config_exists(self):
-        if sys.platform == 'darwin':
+        if platform.is_mac:
             config_filename = path.join(self.poedit_dir, 'net.poedit.Poedit.cfg')
         else:
             config_filename = path.join(self.poedit_dir, 'config')
         if path.exists(config_filename):
             return True
-        if sys.platform != 'win32':
+        if not platform.is_windows:
             return False
         try:
             import winreg
@@ -146,7 +146,7 @@ class Plugin(BasePlugin):
 
     def poedit_settings_import(self):
         """Attempt to import the settings from Poedit."""
-        if sys.platform == 'darwin':
+        if platform.is_mac:
             config_filename = path.join(self.poedit_dir, 'net.poedit.Poedit.cfg')
         else:
             config_filename = path.join(self.poedit_dir, 'config')

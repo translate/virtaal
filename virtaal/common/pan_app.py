@@ -36,7 +36,7 @@ from .utils import get_unicode
 def get_config_dir():
     if platform.is_windows:
         confdir = os.path.join(os.environ['APPDATA'], 'Virtaal')
-    elif sys.platform == 'darwin':
+    elif platform.is_mac:
         confdir = os.path.expanduser('~/Library/Application Support/Virtaal')
     else:
         #TODO: skuif na ~/.config/virtaal en migreer
@@ -105,7 +105,7 @@ def get_locale_lang():
     # guess default target lang based on locale, simplify to commonly used form
     try:
         lang = locale.getdefaultlocale(('LANGUAGE', 'LC_ALL', 'LANG'))[0]
-        if not lang and sys.platform == "darwin":
+        if not lang and platform.is_mac:
            lang = osx_lang()
         if lang:
             return data.simplify_to_common(lang)
@@ -318,7 +318,7 @@ def set_ui_language(lang):
         pass
     localedir = os.path.join(sys.prefix, 'share', 'locale')
     gettext.translation('virtaal', localedir=localedir, languages=[lang], fallback=False).install()
-    if sys.platform != 'win32':
+    if not platform.is_windows:
         # Gtk.Builder's own translatable strings go through C-level
         # gettext, not Python's - see bind_libintl_posix's docstring.
         bind_libintl_posix(localedir)

@@ -18,7 +18,7 @@
 # Requires `intltool-update` on PATH (`brew install intltool` /
 # `apt install intltool`). Not everyone doing a routine commit will have
 # it installed - this degrades to a note, not a failure, in that case;
-# CI's docs-and-translations job always has it and is the real backstop.
+# CI's pre-commit job always has it and is the real backstop.
 set -eu
 cd "$(git rev-parse --show-toplevel)"
 
@@ -76,7 +76,7 @@ if ! command -v intltool-update >/dev/null 2>&1; then
     echo "NOTE: a file listed in po/POTFILES.in changed, but intltool-update" >&2
     echo "isn't installed here to check whether po/virtaal.pot needs" >&2
     echo "regenerating (brew install intltool / apt install intltool)." >&2
-    echo "CI's docs-and-translations job will still catch it if this is missed." >&2
+    echo "CI's pre-commit job will still catch it if this is missed." >&2
     exit 0
 fi
 

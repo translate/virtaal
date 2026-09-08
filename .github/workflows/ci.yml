@@ -34,6 +34,14 @@ jobs:
         with:
           python-version: "3.x"
 
+      - name: Install system dependencies
+        # intltool-update: po/check-pot-freshness.sh needs it to check
+        # po/virtaal.pot against po/POTFILES.in; without it, that hook
+        # silently no-ops instead of enforcing anything.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y intltool
+
       - name: Install pre-commit
         run: pip install pre-commit
 

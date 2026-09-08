@@ -147,6 +147,7 @@ class Virtaal(object):
         from virtaal.controllers.checkscontroller import ChecksController
         from virtaal.controllers.undocontroller import UndoController
         from virtaal.controllers.propertiescontroller import PropertiesController
+        from virtaal.support.dictionary_download_watcher import DictionaryDownloadWatcher
 
         defer = self.defer
         main_controller = self.main_controller
@@ -156,6 +157,7 @@ class Virtaal(object):
         defer(PluginController, main_controller)
         defer(PreferencesController, main_controller)
         defer(PropertiesController, main_controller)
+        defer(DictionaryDownloadWatcher, main_controller)
         defer(main_controller.load_plugins)
 
         # Only bundled builds (macOS .app, Windows installer) can't

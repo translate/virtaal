@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2009,2011 Zuza Software Foundation
 #
@@ -41,7 +40,7 @@ class TMModel(remotetm.TMModel):
     default_config = {
         "tmserver_bind" : "localhost",
         "tmserver_port" : "55555",
-        "tmdb" : os.path.join(pan_app.get_config_dir(), u"tm.db")
+        "tmdb" : os.path.join(pan_app.get_config_dir(), "tm.db")
     }
 
     # INITIALIZERS #
@@ -135,7 +134,7 @@ def test_port(host, port):
     try:
         s.bind((host, port))
         return True
-    except socket.error:
+    except OSError:
         return False
 
 

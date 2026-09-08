@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2026 Zuza Software Foundation
 #
@@ -162,7 +161,7 @@ class Fuzzer:
         unit = self.store_controller.cursor and self.store_controller.cursor.deref()
         if unit is None:
             return
-        text = 'fuzz-%d-%s' % (self.iteration, self.rng.choice(['a', 'ab\tcd', '', '<x>y</x>', u'ünïcödé']))
+        text = 'fuzz-%d-%s' % (self.iteration, self.rng.choice(['a', 'ab\tcd', '', '<x>y</x>', 'ünïcödé']))
         self.unit_controller.set_unit_target(0, text)
 
     def _act_undo(self):

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2010-2011 Zuza Software Foundation
 #
@@ -146,17 +145,17 @@ class QualityCheckMode(BaseMode):
 
     def _update_button_label(self):
         check_labels = [mi.get_child().get_label() for mi in self.btn_popup.menu if mi.get_active()]
-        btn_label = u''
+        btn_label = ''
         if not check_labels:
             #l10n: This is the button where the user can select units by failing quality checks
-            btn_label = _(u'Select Checks')
+            btn_label = _('Select Checks')
         elif len(check_labels) == len(self.checks_names):
             #l10n: This refers to quality checks
-            btn_label = _(u'All Checks')
+            btn_label = _('All Checks')
         else:
-            btn_label = u', '.join(check_labels[:3])
+            btn_label = ', '.join(check_labels[:3])
             if len(check_labels) > 3:
-                btn_label += u'...'
+                btn_label += '...'
         self.btn_popup.set_label(btn_label)
 
 

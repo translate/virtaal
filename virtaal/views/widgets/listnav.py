@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2010-2011 Zuza Software Foundation
 #
@@ -239,7 +238,7 @@ if __name__ == '__main__':
     listnav.connect('selection-changed', on_selection_changed)
 
     def create_test_model():
-        class Item(object):
+        class Item:
             def __init__(self, i):
                 self.i = i
             def __str__(self):

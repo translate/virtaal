@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2009 Zuza Software Foundation
 #
@@ -100,7 +99,7 @@ class Plugin(BasePlugin):
             if self.migrated:
                 message = _('Migration was successfully completed') + '\n\n'
                 message += _('The following items were migrated:') + '\n\n'
-                message += u"\n".join([u" • %s" % item for item in self.migrated])
+                message += "\n".join([" • %s" % item for item in self.migrated])
                 #   (we can mark this ^^^ for translation if somebody asks)
                 self.main_controller.show_info(_('Migration completed'), message)
             else:
@@ -163,7 +162,7 @@ class Plugin(BasePlugin):
                 key = None
                 try:
                     key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Vaclav Slavik\Poedit\%s" % section)
-                except WindowsError:
+                except OSError:
                     return
 
                 data = None
@@ -173,7 +172,7 @@ class Plugin(BasePlugin):
                         name, data, type = winreg.EnumValue(key, i)
                         if name == item:
                             break
-                except EnvironmentError as e:
+                except OSError as e:
                     pass
                 except Exception as e:
                     logging.exception("Error obtaining from registry: %s, %s", section, item)
@@ -181,7 +180,7 @@ class Plugin(BasePlugin):
 
         else:
             self.poedit_config = ConfigParser.ConfigParser()
-            poedit_config_file = open(config_filename, 'r')
+            poedit_config_file = open(config_filename)
             contents = StringIO('[poedit_headerless_file]\n' + poedit_config_file.read())
             poedit_config_file.close()
             self.poedit_config.read_file(contents)

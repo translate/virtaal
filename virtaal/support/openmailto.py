@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2009 Zuza Software Foundation
 #
@@ -46,7 +45,7 @@ _controllers = {}
 _open = None
 
 
-class BaseController(object):
+class BaseController:
     '''Base class for open program controllers.'''
 
     def __init__(self, name):
@@ -118,7 +117,7 @@ if platform.is_windows:
         def open(self, filename):
             try:
                 os.startfile(filename)
-            except WindowsError:
+            except OSError:
                 # [Error 22] No application is associated with the specified
                 # file for this operation: '<URL>'
                 return False

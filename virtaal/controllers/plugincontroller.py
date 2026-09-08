@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
 #
@@ -56,8 +55,8 @@ class PluginController(BaseController):
     PLUGIN_CLASS_INFO_ATTRIBS = ['description', 'display_name', 'version']
     """Attributes of the plug-in class that contain info about it. Should contain PLUGIN_NAME_ATTRIB."""
     PLUGIN_DIRS = [
-        os.path.join(pan_app.get_config_dir(), u'virtaal_plugins'),
-        os.path.join(get_unicode(os.path.dirname(__file__)), u'..', u'plugins')
+        os.path.join(pan_app.get_config_dir(), 'virtaal_plugins'),
+        os.path.join(get_unicode(os.path.dirname(__file__)), '..', 'plugins')
     ]
     """The directories to search for plug-in names."""
     PLUGIN_INTERFACE = BasePlugin
@@ -83,9 +82,9 @@ class PluginController(BaseController):
         self.pluginmodules = {}
 
         if platform.is_windows:
-            self.PLUGIN_DIRS.insert(0, os.path.join(pan_app.main_dir, u'virtaal_plugins'))
+            self.PLUGIN_DIRS.insert(0, os.path.join(pan_app.main_dir, 'virtaal_plugins'))
         if 'RESOURCEPATH' in os.environ:
-            self.PLUGIN_DIRS.insert(0, os.path.join(os.environ['RESOURCEPATH'].decode(sys.getfilesystemencoding()), u'virtaal_plugins'))
+            self.PLUGIN_DIRS.insert(0, os.path.join(os.environ['RESOURCEPATH'].decode(sys.getfilesystemencoding()), 'virtaal_plugins'))
 
 
     # METHODS #
@@ -121,7 +120,7 @@ class PluginController(BaseController):
         except Exception as e:
             # the name is unicode which can trigger encoding issues in the
             # logging module, so let's encode it now already
-            logging.exception('Failed to load plugin "{}"\n{}'.format(name, e))
+            logging.exception(f'Failed to load plugin "{name}"\n{e}')
 
         return None
 
@@ -227,9 +226,9 @@ class PluginController(BaseController):
                     continue
                 # Don't show dev-only plugins (_helloworld, _python_console,
                 # ...) on frozen builds, regardless of DEBUG's value here.
-                if platform.is_frozen and name[0] == u'_':
+                if platform.is_frozen and name[0] == '_':
                     continue
-                if pan_app.DEBUG or name[0] != u'_':
+                if pan_app.DEBUG or name[0] != '_':
                     plugin_names.append(name)
 
         plugin_names = list(set(plugin_names))
@@ -238,4 +237,4 @@ class PluginController(BaseController):
 
     @staticmethod
     def _is_wrong_plugin_name(name):
-        return name.startswith(u'.') or name.startswith(u'test_') or name == '__pycache__'
+        return name.startswith('.') or name.startswith('test_') or name == '__pycache__'

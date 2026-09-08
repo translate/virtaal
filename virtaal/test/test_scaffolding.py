@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2009 Zuza Software Foundation
 #
@@ -31,7 +30,7 @@ from virtaal.controllers.checkscontroller import ChecksController
 from virtaal.controllers.langcontroller import LanguageController
 
 
-class TestScaffolding(object):
+class TestScaffolding:
     def setup_class(self):
         self.main_controller = MainController()
         self.store_controller = StoreController(self.main_controller)

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright 2009-2011 Zuza Software Foundation
 # Copyright 2016 F Wolff
@@ -251,7 +250,7 @@ class FileSelectDialog:
             try:
                 import os.path
                 if not os.path.isfile(filename):
-                    raise IOError(_('"%s" is not a usable file.') % filename)
+                    raise OSError(_('"%s" is not a usable file.') % filename)
                 store = store_factory.getobject(filename)
                 currfiles.append(filename)
                 self.lst_files.append([filename, False])
@@ -372,7 +371,7 @@ class TermAddDialog:
     def reset(self):
         unitview = self.unit_controller.view
 
-        source_text = u''
+        source_text = ''
         for src in unitview.sources:
             selection = src.buffer.get_selection_bounds()
             if selection:
@@ -385,7 +384,7 @@ class TermAddDialog:
         srclang = self.lang_controller.source_lang.code
         self.ent_source.get_pango_context().set_language(rendering.get_language(srclang))
 
-        target_text = u''
+        target_text = ''
         for tgt in unitview.targets:
             selection = tgt.buffer.get_selection_bounds()
             if selection:
@@ -400,8 +399,8 @@ class TermAddDialog:
 
         self.eb_add_term_errors.hide()
         self.btn_add_term.props.sensitive = True
-        self.lbl_srclang.set_text_with_mnemonic(_(u'_Source term — %(langname)s') % {'langname': self.lang_controller.source_lang.name})
-        self.lbl_tgtlang.set_text_with_mnemonic(_(u'_Target term — %(langname)s') % {'langname': self.lang_controller.target_lang.name})
+        self.lbl_srclang.set_text_with_mnemonic(_('_Source term — %(langname)s') % {'langname': self.lang_controller.source_lang.name})
+        self.lbl_tgtlang.set_text_with_mnemonic(_('_Target term — %(langname)s') % {'langname': self.lang_controller.target_lang.name})
 
         self.lst_termfiles.clear()
 

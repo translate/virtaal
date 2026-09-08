@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2009 Zuza Software Foundation
 #
@@ -47,7 +46,7 @@ def make_pango_layout(widget, text, width):
     pango_layout = Pango.Layout(widget.get_pango_context())
     pango_layout.set_width(width * Pango.SCALE)
     pango_layout.set_wrap(Pango.WrapMode.WORD_CHAR)
-    pango_layout.set_text(text or u"")
+    pango_layout.set_text(text or "")
     return pango_layout
 
 

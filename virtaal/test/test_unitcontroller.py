@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2009 Zuza Software Foundation
 #
@@ -46,8 +45,8 @@ class TestUnitController(TestScaffolding):
         test_unit = self.trans_store.getunits()[1]
         view = self.unit_controller.load_unit(test_unit)
 
-        self.unit_controller.set_unit_target(0, [u'Test',])
-        assert str(self.unit_controller.view.targets[0].elem) == u'Test'
+        self.unit_controller.set_unit_target(0, ['Test',])
+        assert str(self.unit_controller.view.targets[0].elem) == 'Test'
 
     def test_stale_alt_down_does_not_corrupt_a_later_unit(self):
         """Alt+Down ('transfer from source') defers its copy via

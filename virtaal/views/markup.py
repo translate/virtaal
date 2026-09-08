@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2007-2011 Zuza Software Foundation
 # Copyright 2014 F Wolff
@@ -38,7 +37,7 @@ def _fancyspaces(string):
     spaces = string.group()
 #    while spaces[0] in "\t\n\r":
 #        spaces = spaces[1:]
-    return u'<span underline="error" foreground="grey">%s</span>' % spaces
+    return '<span underline="error" foreground="grey">%s</span>' % spaces
 
 
 # Highlighting for XML
@@ -47,30 +46,30 @@ def _fancyspaces(string):
 _xml_re = re.compile("&lt;[^>]+>")
 def _fancy_xml(escape):
     """Marks up the XML to appear in the warning red colour."""
-    return u'<span foreground="%s">%s</span>' % (current_theme['markup_warning_fg'], escape.group())
+    return '<span foreground="%s">%s</span>' % (current_theme['markup_warning_fg'], escape.group())
 
 def _subtle_escape(escape):
     """Marks up the given escape to appear in a subtle grey colour."""
-    return u'<span foreground="%s">%s</span>' % (current_theme['subtle_fg'], escape)
+    return '<span foreground="%s">%s</span>' % (current_theme['subtle_fg'], escape)
 
 def _escape_entities(s):
     """Escapes '&' and '<' in literal text so that they are not seen as markup."""
-    s = s.replace(u"&", u"&amp;") # Must be done first!
-    s = s.replace(u"<", u"&lt;")
+    s = s.replace("&", "&amp;") # Must be done first!
+    s = s.replace("<", "&lt;")
     s = _xml_re.sub(_fancy_xml, s)
     return s
 
 
 # Public methods
 
-def markuptext(text, fancyspaces=True, markupescapes=True, diff_text=u""):
+def markuptext(text, fancyspaces=True, markupescapes=True, diff_text=""):
     """Markup the given text to be pretty Pango markup.
 
     Special characters (&, <) are converted, XML markup highlighted with
     escapes and unusual spaces optionally being indicated."""
     # locations are coming through here for some reason - tooltips, maybe
     if not text:
-        return u""
+        return ""
 
     if diff_text and diff_text != text:
         text = pango_diff(diff_text, text)
@@ -82,9 +81,9 @@ def markuptext(text, fancyspaces=True, markupescapes=True, diff_text=u""):
 
     if markupescapes:
 #        text = text.replace(u"\r\n", _subtle_escape(u'¶\r\n')
-        text = text.replace(u"\n", _subtle_escape(u'¶\n'))
-        if text.endswith(u'\n</span>'):
-            text = text[:-len(u'\n</span>')] + u'</span>'
+        text = text.replace("\n", _subtle_escape('¶\n'))
+        if text.endswith('\n</span>'):
+            text = text[:-len('\n</span>')] + '</span>'
 
     return text
 
@@ -92,7 +91,7 @@ def escape(text):
     """This is to escape text for use with Gtk.TextView"""
     if not text:
         return ""
-    text = text.replace("\n", u'¶\n')
+    text = text.replace("\n", '¶\n')
     if text.endswith("\n"):
         text = text[:-len("\n")]
     return text
@@ -154,15 +153,15 @@ def pango_diff(a, b):
     replace_attr_add = _diff_pango_templates['replace_attr_add'] % current_theme
     replace_attr_add_case = _diff_pango_templates['replace_attr_add_case'] % current_theme
 
-    textdiff = u"" # to store the final result
-    removed = u"" # the removed text that we might still want to add
+    textdiff = "" # to store the final result
+    removed = "" # the removed text that we might still want to add
     diff = differencer.diff_main(a, b)
     differencer.diff_cleanupSemantic(diff)
     for op, text in diff:
         if op == 0: # equality
             if removed:
                 textdiff += _pango_spans(delete_attr, removed)
-                removed = u""
+                removed = ""
             textdiff += _escape_entities(text)
         elif op == 1: # insertion
             if removed:
@@ -185,7 +184,7 @@ def pango_diff(a, b):
                             not removed.isalpha():
                         textdiff += _pango_spans(delete_attr, removed)
                     textdiff += _pango_spans(replace_attr_add, text)
-                removed = u""
+                removed = ""
             else:
                 # plain insertion
                 textdiff += _pango_spans(insert_attr, text)

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2009 Zuza Software Foundation
 #
@@ -25,7 +24,7 @@ def label(code):
         return '%s %s:%d' % (code.co_name, code.co_filename, code.co_firstlineno)
 
 
-class KCacheGrind(object):
+class KCacheGrind:
     def __init__(self, profiler):
         self.data = profiler.getstats()
         self.out_file = None
@@ -110,7 +109,7 @@ def profile_func(filename=None, mode='w+'):
                 k_cache_grind = KCacheGrind(profiler)
                 k_cache_grind.output(profile_file)
                 profile_file.close()
-            except IOError:
+            except OSError:
                 logging.exception(_("Could not open profile file '%(filename)s'") % {"filename": filename})
 
             return retval

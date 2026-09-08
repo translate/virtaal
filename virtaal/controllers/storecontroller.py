@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2010 Zuza Software Foundation
 # Copyright 2014 F Wolff
@@ -486,16 +485,16 @@ class StoreController(BaseController):
         from translate.storage.project import split_extensions
         fname, extensions = split_extensions(infilename)
 
-        prefix = fname + u'_%s__%s' % (
+        prefix = fname + '_%s__%s' % (
             self.main_controller.lang_controller.source_lang.code,
             self.main_controller.lang_controller.target_lang.code
         )
         if extensions:
             extensions_parts = extensions.split(os.extsep)
-            extensions_parts[-1] = u'zip'
+            extensions_parts[-1] = 'zip'
             suffix = os.extsep.join([''] + extensions_parts)
         else:
-            suffix = os.extsep + u'zip'
+            suffix = os.extsep + 'zip'
 
         if not force_temp:
             # Try foo_en__af.zip
@@ -507,7 +506,7 @@ class StoreController(BaseController):
                 except Exception:
                     pass
 
-            prefix += u'_'
+            prefix += '_'
 
             # Try foo_en__af_XXXXX.zip
             try:
@@ -540,7 +539,7 @@ class StoreController(BaseController):
             directory, fname = os.path.split(guess)
             from translate.storage.project import split_extensions
             basefname, extensions = split_extensions(fname)
-            guess = basefname + u'_%s__%s' % (
+            guess = basefname + '_%s__%s' % (
                 self.main_controller.lang_controller.source_lang.code,
                 self.main_controller.lang_controller.target_lang.code
             )

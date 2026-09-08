@@ -20,16 +20,20 @@
 
 """Tests for the spellchecker plugin.
 
-These deliberately avoid instantiating virtaal.plugins.spellchecker.Plugin
+These mostly avoid instantiating virtaal.plugins.spellchecker.Plugin
 itself, since __init__ needs a full MainController/GTK unit view - out of
 reach for a plain unit test. What's covered instead: the plugin's
 dependency-free helper logic, and a regression check for the fix landed in
 commit 7663e3e9 (the plugin silently failing to load because pyenchant was
-never installed, not because of any GTK2/GTK3 incompatibility).
+never installed, not because of any GTK2/GTK3 incompatibility). The one
+exception is the frozen-build check below, which is guaranteed to raise
+before __init__ ever touches main_controller.
 """
 
 import pytest
 
+from virtaal.common.platform import platform
+from virtaal.controllers.baseplugin import PluginUnsupported
 from virtaal.plugins.spellchecker import Plugin, _dict_add_re
 
 
@@ -72,6 +76,15 @@ def test_on_unit_lang_changed_maps_to_country_variant(language, expected):
     Plugin._on_unit_lang_changed(plugin, unit_view=None, text_view=None, language=language)
 
     assert plugin.enchant.checked == [expected]
+
+
+def test_unsupported_in_any_frozen_build(monkeypatch):
+    """A frozen build never bundles a version-matched gtkspell3 - a
+    system-found one can mismatch the frozen app's own bundled GTK3
+    and crash outright."""
+    monkeypatch.setattr(platform, 'is_frozen', True)
+    with pytest.raises(PluginUnsupported):
+        Plugin('spellchecker', None)
 
 
 def test_spellchecker_dependencies_importable():

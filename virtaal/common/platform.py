@@ -20,27 +20,29 @@
 
 """A single, testable place to ask "which platform is this?".
 
-Replaces the scattered ``os.name == 'nt'`` / ``sys.platform ==
-'darwin'`` / ``getattr(sys, 'frozen', False)`` checks across the
-codebase with one small class. The constructor accepts overrides for
-exactly this reason: reading ``os.name``/``sys.platform`` at call time
-is untestable on CI, which only ever runs as one real OS, so tests
-inject a platform instead of monkeypatching global state:
+The constructor accepts overrides for testability: reading
+``os.name``/``sys.platform`` at call time is untestable on CI, which
+only ever runs as one real OS, so tests inject a platform instead of
+monkeypatching global state:
 
     windows = Platform(os_name='nt', sys_platform='win32')
     assert windows.is_windows and not windows.is_mac
 """
 
 import os
+import platform as platform_module
 import sys
 
 
 class Platform:
-    def __init__(self, os_name=None, sys_platform=None, frozen=None, environ=None):
+    def __init__(self, os_name=None, sys_platform=None, frozen=None, environ=None, machine=None):
         self.is_windows = (os_name if os_name is not None else os.name) == 'nt'
         self.is_mac = (sys_platform if sys_platform is not None else sys.platform) == 'darwin'
         self.is_linux = not self.is_windows and not self.is_mac
         self.is_frozen = bool(frozen if frozen is not None else getattr(sys, 'frozen', False))
+        machine = machine if machine is not None else platform_module.machine()
+        self.is_intel = machine == 'x86_64'
+        self.is_arm = machine == 'arm64'
 
 
 platform = Platform()

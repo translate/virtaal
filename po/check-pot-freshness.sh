@@ -115,11 +115,25 @@ trap 'rm -f "$original_backup"' EXIT
 cp po/virtaal.pot "$original_backup"
 
 before=$(hash_relevant po/virtaal.pot)
-if ! make_output=$(make pot 2>&1); then
-    echo "'make pot' itself failed (not just stale - couldn't regenerate at all):" >&2
-    echo "$make_output" >&2
-    exit 1
-fi
+
+# intltool-update --pot is genuinely flaky, independent of this repo -
+# confirmed the hard way, on both a local macOS checkout and a fresh
+# Ubuntu CI runner: intermittently fails with "xgettext: error while
+# opening './POTFILES.in.temp'" (a race in intltool's own temp-file
+# handling, not anything wrong with the source or POTFILES.in itself -
+# a same-input rerun succeeds cleanly). Retry a few times before
+# treating it as a real failure; a genuine problem (e.g. a syntax
+# error xgettext can't parse) fails identically every attempt, so this
+# doesn't mask anything real, just the transient race.
+attempt=1
+while ! make_output=$(make pot 2>&1); do
+    if [ "$attempt" -ge 3 ]; then
+        echo "'make pot' itself failed (not just stale - couldn't regenerate at all, after $attempt attempts):" >&2
+        echo "$make_output" >&2
+        exit 1
+    fi
+    attempt=$((attempt + 1))
+done
 after=$(hash_relevant po/virtaal.pot)
 
 if [ "$before" = "$after" ]; then

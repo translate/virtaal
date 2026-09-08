@@ -81,7 +81,7 @@ class PythonConsole(Gtk.ScrolledWindow):
             cur = buffer.get_end_iter()
             buffer.move_mark(inp_mark, cur)
 
-            # Keep indentation of precendent line
+            # Keep indentation of precedent line
             spaces = re.match(self.__spaces_pattern, line)
             if spaces is not None:
                 buffer.insert(cur, line[spaces.start() : spaces.end()])

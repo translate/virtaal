@@ -129,7 +129,7 @@ class PreferencesController(BaseController):
                 })
         # XXX: Note that we ignore plugin_controller.get_disabled_plugins(),
         # because we need to know which plug-ins are currently enabled/disabled
-        # (not dependant on config).
+        # (not dependent on config).
 
         self.view.plugin_data = plugin_items
 

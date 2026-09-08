@@ -80,8 +80,8 @@ class Controller(BaseController):
             # for TTY programs, we need stdin/out
             inout = None
 
-        # if possible, put the child precess in separate process group,
-        # so keyboard interrupts don't affect child precess as well as
+        # if possible, put the child process in separate process group,
+        # so keyboard interrupts don't affect child process as well as
         # Python
         setsid = getattr(os, 'setsid', None)
         if not setsid:
@@ -92,7 +92,7 @@ class Controller(BaseController):
                                 preexec_fn=setsid, startupinfo=startupinfo)
 
         # It is assumed that this kind of tools (gnome-open, kfmclient,
-        # exo-open, xdg-open and open for OSX) immediately exit after lauching
+        # exo-open, xdg-open and open for OSX) immediately exit after launching
         # the specific application
         returncode = pipe.wait()
         return not returncode
@@ -113,7 +113,7 @@ class Controller(BaseController):
 if platform.is_windows:
 
     class Start(BaseController):
-        '''Controller for the win32 start progam through os.startfile.'''
+        '''Controller for the win32 start program through os.startfile.'''
 
         def open(self, filename):
             try:

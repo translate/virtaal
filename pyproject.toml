@@ -88,3 +88,24 @@ builtins = ["_"]
 # Deliberately not the default style/whitespace rule families -
 # that's ruff format's job, not enabled yet.
 select = ["F", "UP"]
+ignore = [
+    # %-format -> f-string: 198 sites, needs real per-call
+    # verification (escaping/argument-shape can change), not a
+    # mechanical rename - same "known, not fixed yet" treatment as
+    # devsupport/known-deprecation-warnings.txt.
+    "UP031",
+    # unused-variable: 42 sites, needs per-site judgement (some are
+    # genuinely dead, some computed for a side effect) rather than a
+    # blind removal.
+    "F841",
+]
+
+[tool.codespell]
+skip = "*.po,*.pot,po,ChangeLog,build,dist,*.egg-info,docs/_themes,devsupport/testfiles,.git"
+# datas: PyInstaller's own datas= kwarg, not a typo. gir: GObject
+# Introspection Repository (.gir) files, not "git". abd: "Alaa Abd El
+# Fattah" (a real name, aboutdialog.py). bable: "Bable", Asturian's
+# own alternate ISO language name (translate_compat.py). inout: a
+# deliberate (if terse) variable name for a stream used as stdin/
+# stdout/stderr together (openmailto.py), not a typo of "input".
+ignore-words-list = "datas,gir,abd,bable,inout"

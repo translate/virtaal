@@ -255,7 +255,7 @@ class FileTotals(object):
 
 
 def emptyfiletotals():
-    """Returns a dictionary with all statistics initalised to 0."""
+    """Returns a dictionary with all statistics initialised to 0."""
     return FileTotals.new_record()
 
 
@@ -415,7 +415,7 @@ class StatsCache(object):
         if file not in cache or has been updated since last record
         update, recalculate stats.
 
-        optional argument store can be used to avoid unnessecary
+        optional argument store can be used to avoid unnecessary
         reparsing of already loaded translation files.
 
         store can be a TranslationFile object or a callback that returns one.

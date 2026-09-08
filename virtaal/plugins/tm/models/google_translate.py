@@ -125,7 +125,7 @@ class TMModel(BaseTMModel):
         # release code to handle the eminent disappearance of the API. Although
         # version 2 is now supported, the code is a bit more careful (as most
         # code probably should be) and in case of error we make the list of
-        # supported languages empty so that no unnecesary network activity is
+        # supported languages empty so that no unnecessary network activity is
         # performed if we can't communicate with the available API any more.
         try:
             data = json.loads(val)

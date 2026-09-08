@@ -69,10 +69,10 @@ class LanguageView(BaseView):
             item = Gtk.MenuItem(label='')
             item.connect('activate', self._on_pairitem_activated, i)
             self.recent_items.append(item)
-        seperator = Gtk.SeparatorMenuItem()
+        separator = Gtk.SeparatorMenuItem()
         self.other_item = Gtk.MenuItem.new_with_mnemonic(_('_New Language Pair...'))
         self.other_item.connect('activate', self._on_other_activated)
-        [self.menu.append(item) for item in (seperator, self.other_item)]
+        [self.menu.append(item) for item in (separator, self.other_item)]
         self.update_recent_pairs()
 
     # METHODS #
@@ -81,7 +81,7 @@ class LanguageView(BaseView):
             # We need to make sure we get the direction correct if the
             # language names are untranslated. The right-to-left embedding
             # (RLE) characters ensure that untranslated language names will
-            # still diplay with the correct direction as they are present
+            # still display with the correct direction as they are present
             # in the interface.
             pairlabel = u'\u202b%s ← \u202b%s' % (srclang.name, tgtlang.name)
         else:

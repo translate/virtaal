@@ -1,5 +1,5 @@
 multiple files / bundles
-integration of conveters
+integration of converters
 edit comments
 edit header
 
@@ -30,4 +30,3 @@ Known Issues
 "Flickering" artefacts when the editor is drawn. This comes about because the the
 treeview draws a block of a different colour before it draws the editor widget. If
 the user quickly moves through the cells, this creates the illusion of flickering.
-

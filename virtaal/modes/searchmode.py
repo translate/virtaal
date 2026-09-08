@@ -77,7 +77,7 @@ class SearchMode(BaseMode):
         # Widgets for replace (second row)
         # l10n: This text label shows in front of the text box where the replacement
         # text is typed. Keep in mind that the text box will appear after this text.
-        # If this sentence construction is hard to use, consdider translating this as
+        # If this sentence construction is hard to use, consider translating this as
         # "Replacement"
         self.lbl_replace = Gtk.Label(label=_('Replace with'))
         self.ent_replace = Gtk.Entry()
@@ -506,7 +506,7 @@ class SearchMode(BaseMode):
         self.ent_search.override_background_color(Gtk.StateType.NORMAL, self.default_base)
 
     def _on_textbox_refreshed(self, textbox, elem):
-        """Redoes highlighting after a C{StringElem} render destoyed it."""
+        """Redoes highlighting after a C{StringElem} render destroyed it."""
         if not textbox.props.visible or not bool(elem):
             return
 

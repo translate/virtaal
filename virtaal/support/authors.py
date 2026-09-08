@@ -10,20 +10,25 @@ the same single source everyone else (GitHub, Pootle-style
 convention) reads, instead of a separately hand-maintained copy that
 inevitably drifts.
 
-AUTHORS.md deliberately stays a real top-level file (not under
-share/), so it doesn't go through pan_app.get_abs_data_filename()'s
-share/-only resolution - it needs its own, here."""
+AUTHORS.md is a real top-level file (for the GitHub/Pootle
+convention), not under share/ - so a dev checkout and a frozen build
+each need their own resolution here, tried first; share/virtaal/
+AUTHORS.md (a symlink to the real one) covers every other real
+install via pan_app.get_abs_data_filename()'s usual share/
+resolution."""
 
 import os
-import sys
+
+from virtaal.common.platform import platform
 
 
 def find_authors_md():
-    """The real AUTHORS.md path, in a dev checkout or a frozen build
-        (bundled at the bundle root - see devsupport/packaging/*/
-        virtaal.spec's datas), or None if it can't be found."""
+    """The real AUTHORS.md path, in a dev checkout, a frozen build, or
+        an installed package (Flatpak, or a plain pip install), or
+        None if it can't be found."""
     candidates = []
-    if getattr(sys, 'frozen', False):
+    if platform.is_frozen:
+        import sys
         # RESOURCEPATH: same env var translate-toolkit's own
         # file_discovery.get_abs_data_filename() checks for a macOS
         # .app bundle's Contents/Resources - PyInstaller's BUNDLE step
@@ -34,7 +39,9 @@ def find_authors_md():
         candidates.append(os.path.join(os.path.dirname(sys.executable), 'AUTHORS.md'))
     else:
         # This file lives at virtaal/support/authors.py - the repo
-        # root is two directories up.
+        # root is two directories up. Only actually a real path in a
+        # dev checkout - harmless to still try it in an installed
+        # package, the isfile() check below just won't find anything.
         candidates.append(os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             os.pardir, os.pardir, 'AUTHORS.md'))
@@ -42,7 +49,19 @@ def find_authors_md():
         candidate = os.path.normpath(candidate)
         if os.path.isfile(candidate):
             return candidate
-    return None
+
+    # A real install that isn't PyInstaller-frozen (Flatpak's `pip3
+    # install --prefix=...`, or a plain `pip install .`) doesn't carry
+    # a checkout-relative repo root at all. share/virtaal/AUTHORS.md is
+    # a symlink to the real one (setup.py's own data_files already
+    # globs everything under share/virtaal/*.* into any such install,
+    # no separate packaging step needed) - resolved the same way every
+    # other data file in this codebase already is.
+    from virtaal.common import pan_app
+    try:
+        return pan_app.get_abs_data_filename(['virtaal', 'AUTHORS.md'])
+    except ValueError:
+        return None
 
 
 def parse_contributors(path):

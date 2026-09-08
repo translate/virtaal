@@ -1,23 +1,14 @@
-#!/usr/bin/env python
 #
-# Copyright 2026 Zuza Software Foundation
+# Copyright (C) Virtaal contributors.
 #
-# This file is part of Virtaal.
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, see <http://www.gnu.org/licenses/>.
+# This file is part of Virtaal. It is distributed under the GPL2 or
+# later license. See the LICENSE file for a copy of the license and
+# the AUTHORS.md file for copyright and authorship information.
 
-from virtaal.support.authors import find_authors_md, parse_authors_md
+import os
+
+from virtaal.support import authors
+from virtaal.support.authors import find_authors_md, parse_contributors
 
 
 def test_find_authors_md_locates_the_real_repo_root_file():
@@ -26,14 +17,31 @@ def test_find_authors_md_locates_the_real_repo_root_file():
     assert path.endswith('AUTHORS.md')
 
 
-def test_parse_authors_md_reads_the_real_file():
-    contributors, donors = parse_authors_md(find_authors_md())
+def test_find_authors_md_falls_back_to_share_virtaal(tmp_path, monkeypatch):
+    """A real install that isn't PyInstaller-frozen (Flatpak, or a
+        plain pip install) has no checkout-relative repo root at all -
+        find_authors_md() needs to fall through to
+        pan_app.get_abs_data_filename()'s share/ resolution, which
+        share/virtaal/AUTHORS.md (a symlink to the real file) is set
+        up to satisfy."""
+    # Simulate "not a checkout" by pointing this module's own
+    # __file__ somewhere with no AUTHORS.md two directories up.
+    monkeypatch.setattr(authors, '__file__', str(tmp_path / "support" / "authors.py"))
+
+    path = find_authors_md()
+
+    assert path is not None
+    assert path.endswith(os.path.join('share', 'virtaal', 'AUTHORS.md'))
+    assert 'Friedel Wolff' in parse_contributors(path)
+
+
+def test_parse_contributors_reads_the_real_file():
+    contributors = parse_contributors(find_authors_md())
     assert 'Friedel Wolff' in contributors
     assert 'Dwayne Bailey' in contributors
-    assert ('Mozilla Corporation', 'http://mozilla.com/') in donors
 
 
-def test_parse_authors_md_sections(tmp_path):
+def test_parse_contributors_sections(tmp_path):
     md = tmp_path / "AUTHORS.md"
     md.write_text(
         "# Title\n"
@@ -52,7 +60,7 @@ def test_parse_authors_md_sections(tmp_path):
         "- Bob\n",
         encoding='utf-8')
 
-    contributors, donors = parse_authors_md(str(md))
+    contributors = parse_contributors(str(md))
 
+    # Donors and funders isn't parsed here - see AboutDialog for why.
     assert contributors == ['Alice', 'Bob']
-    assert donors == [('Example Org', 'https://example.org/')]

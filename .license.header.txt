@@ -1,5 +1,6 @@
 Python
 
+#
 # Copyright (C) Virtaal contributors.
 #
 # This file is part of Virtaal. It is distributed under the GPL2 or

@@ -27,6 +27,30 @@ PYTHON="$PWD/.venv/bin/python3"
 
 "$PYTHON" -m pip show pyinstaller >/dev/null 2>&1 || "$PYTHON" -m pip install pyinstaller
 
+# pyenchant stopped shipping self-contained macOS wheels after 2.0.0 -
+# that one is an Intel-only universal (i386+x86_64) bundle of
+# libenchant 1.x + myspell backend + a few dictionaries, its exports
+# matching what modern pyenchant's _enchant.py calls. No arm64 build
+# exists, so this step - and virtaal.spec's use of its output - is a
+# no-op there. Only the native bits are staged here; virtaal.spec
+# still bundles *current* pyenchant's own Python code, pointed at this
+# dylib via PYENCHANT_LIBRARY_PATH/ENCHANT_MODULE_DIR/ENCHANT_DATA_DIR
+# (pan_app.py sets these, frozen+Intel only).
+rm -rf build/enchant_intel
+if [ "$(uname -m)" = "x86_64" ]; then
+    curl -sL -o /tmp/pyenchant-2.0.0-mac.whl \
+        "https://files.pythonhosted.org/packages/4f/c5/5c18df3c5dbf2ce1e6fc8b0fcce1a5dfe7c4ec5ab33b76722fcca9cbfff5/pyenchant-2.0.0-py2.py3.cp27.cp32.cp33.cp34.cp35.cp36.pp27.pp33.pp35-none-macosx_10_6_intel.macosx_10_9_intel.whl"
+    mkdir -p build/enchant_intel
+    # Only en_GB (checks.po's own target language) - enough to prove
+    # spell checking works; every other dictionary comes via download
+    # (dictionary_source.py), not bundled.
+    unzip -q /tmp/pyenchant-2.0.0-mac.whl 'enchant/lib/*' \
+        'enchant/share/enchant/myspell/en_GB.aff' \
+        'enchant/share/enchant/myspell/en_GB.dic' \
+        -d build/enchant_intel
+    rm /tmp/pyenchant-2.0.0-mac.whl
+fi
+
 rm -rf build/virtaal dist/Virtaal.app
 
 # See virtaal/__version__.py's build_commit docstring: a frozen build has

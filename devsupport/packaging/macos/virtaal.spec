@@ -57,23 +57,37 @@ mo_files = [
     for p in (ROOT / "mo").rglob("*.mo")
 ]
 
+# build_standalone.sh stages this (Intel builds only) from an old,
+# self-contained pyenchant wheel - see that script's own comment.
+# pan_app.py points PYENCHANT_LIBRARY_PATH at it, frozen+Intel only;
+# absent here just means an arm64 build, same as today.
+ENCHANT_INTEL_DIR = ROOT / "build" / "enchant_intel" / "enchant"
+_bundle_enchant = ENCHANT_INTEL_DIR.is_dir()
+
+datas = [
+    (str(ROOT / "share" / "virtaal"), "share/virtaal"),
+    (str(ROOT / "share" / "icons"), "share/icons"),
+    (str(TRANSLATE_SHARE), "share"),
+    # CFBundleTypeIconFile below (via document_types()) names this
+    # file directly, but PyInstaller's BUNDLE step only auto-copies
+    # the icon passed to EXE/BUNDLE's own icon= argument - anything
+    # referenced solely from info_plist needs its own datas entry to
+    # actually land in Contents/Resources.
+    (str(ROOT / "devsupport" / "mac-bundle" / "VirtaalDocument.icns"), "."),
+] + mo_files
+if _bundle_enchant:
+    datas.append((str(ENCHANT_INTEL_DIR), "share/enchant_intel"))
+
 a = Analysis(  # noqa: F821
     [str(ROOT / "bin" / "virtaal")],
     pathex=[str(ROOT)],
     binaries=[],
-    datas=[
-        (str(ROOT / "share" / "virtaal"), "share/virtaal"),
-        (str(ROOT / "share" / "icons"), "share/icons"),
-        (str(TRANSLATE_SHARE), "share"),
-        # CFBundleTypeIconFile below (via document_types()) names this
-        # file directly, but PyInstaller's BUNDLE step only auto-copies
-        # the icon passed to EXE/BUNDLE's own icon= argument - anything
-        # referenced solely from info_plist needs its own datas entry to
-        # actually land in Contents/Resources.
-        (str(ROOT / "devsupport" / "mac-bundle" / "VirtaalDocument.icns"), "."),
-    ]
-    + mo_files,
-    hiddenimports=collect_submodules("virtaal") + collect_submodules("translate.storage"),
+    datas=datas,
+    hiddenimports=(
+        collect_submodules("virtaal")
+        + collect_submodules("translate.storage")
+        + (collect_submodules("enchant") if _bundle_enchant else [])
+    ),
     hooksconfig={
         "gi": {
             "module-versions": {
@@ -91,26 +105,15 @@ a = Analysis(  # noqa: F821
     # devsupport isn't needed at runtime in a frozen build - its one
     # consumer (profiling support) is already `if not packaged:`-gated
     # off in bin/virtaal itself.
-    excludes=[
-        "FixTk", "tcl", "tk", "_tkinter", "tkinter", "Tkinter", "devsupport",
-        # pyenchant's _enchant.py loads the SYSTEM libenchant via
-        # ctypes.util.find_library() + ctypes.cdll.LoadLibrary() - a
-        # runtime call PyInstaller's static analysis can't see at all, so
-        # it's never bundled/relinked. On a machine with Homebrew's GTK3
-        # stack also installed, that finds and loads Homebrew's OWN
-        # libenchant, which pulls in Homebrew's entire glib/gobject/gio/
-        # gmodule chain as its own (unbundled, absolute-path)
-        # dependencies. Two independent, complete GObject runtimes in one
-        # process splits the type registry enough to break cairo's
-        # foreign-struct-converter registration (TypeError: Couldn't find
-        # foreign struct converter for 'cairo.Context') and trips the
-        # ObjC runtime's duplicate-class warning
-        # (GNotificationCenterDelegate). Spell checking already degrades
-        # gracefully without enchant; properly self-contained spell
-        # checking would need libenchant and its own dependency chain
-        # vendored and relinked too, not attempted here.
-        "enchant",
-    ],
+    excludes=(
+        ["FixTk", "tcl", "tk", "_tkinter", "tkinter", "Tkinter", "devsupport"]
+        # No bundled dylib for this build (arm64, or staging failed) -
+        # exclude enchant rather than let it fall through to Homebrew's
+        # own copy (this CI job installs it) and crash: two separate
+        # glib/gobject stacks in one process split the ObjC runtime's
+        # class registry.
+        + ([] if _bundle_enchant else ["enchant"])
+    ),
     noarchive=False,
 )
 

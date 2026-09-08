@@ -18,16 +18,39 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import os
+
 import pytest
 
 from virtaal.common import pan_app
-from virtaal.common.pan_app import _build_launch_marker, _open_frozen_log
+from virtaal.common.pan_app import _build_launch_marker, _open_frozen_log, _set_enchant_env_vars
 
 
 def test_build_launch_marker_includes_version(monkeypatch):
     monkeypatch.setattr(pan_app, 'version_string', lambda: '1.0.0-beta1 (5bb637f)')
     marker = _build_launch_marker('2026-09-07 22:00:00')
     assert marker == '=== launch 2026-09-07 22:00:00 | Virtaal 1.0.0-beta1 (5bb637f) ===\n'
+
+
+def test_set_enchant_env_vars_points_at_bundled_dylib(monkeypatch):
+    # _set_enchant_env_vars() writes os.environ directly (setdefault, not
+    # monkeypatch) - real spellchecker-using tests elsewhere in the suite
+    # would pick up these bogus paths for the rest of the process if left
+    # behind, so this can't rely on monkeypatch's own auto-cleanup alone.
+    for key in ('PYENCHANT_LIBRARY_PATH', 'ENCHANT_MODULE_DIR', 'ENCHANT_DATA_DIR'):
+        monkeypatch.delenv(key, raising=False)
+    enchant_dir = os.path.join('Some', 'App.app', 'Contents', 'Resources', 'enchant_intel')
+    try:
+        _set_enchant_env_vars(enchant_dir)
+        assert os.environ['PYENCHANT_LIBRARY_PATH'] == \
+            os.path.join(enchant_dir, 'lib', 'libenchant.1.dylib')
+        assert os.environ['ENCHANT_MODULE_DIR'] == \
+            os.path.join(enchant_dir, 'lib', 'enchant')
+        assert os.environ['ENCHANT_DATA_DIR'] == \
+            os.path.join(enchant_dir, 'share', 'enchant')
+    finally:
+        for key in ('PYENCHANT_LIBRARY_PATH', 'ENCHANT_MODULE_DIR', 'ENCHANT_DATA_DIR'):
+            os.environ.pop(key, None)
 
 
 def test_open_frozen_log_survives_characters_a_locale_codepage_cant(tmp_path):

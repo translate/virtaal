@@ -84,6 +84,11 @@ class WelcomeScreenController(BaseController):
         openmailto.open(self.LINKS[name])
         return True
 
+    def open_bug_report(self):
+        from virtaal.support import openmailto
+        from virtaal.support.bug_report import build_bug_report_url
+        openmailto.open(build_bug_report_url())
+
     def update_recent(self):
         from virtaal.views import recent
         self._recent_files = [{

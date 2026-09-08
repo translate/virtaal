@@ -130,5 +130,7 @@ class WelcomeScreenView(BaseView):
             self.controller.open_tutorial()
         elif name == 'cheatsheet':
             self.controller.open_cheatsheat()
+        elif name == 'report_bug':
+            self.controller.open_bug_report()
         else:
             self.controller.try_open_link(name)

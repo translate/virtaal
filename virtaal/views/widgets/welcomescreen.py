@@ -63,7 +63,7 @@ class WelcomeScreen(Gtk.ScrolledWindow):
         button_names = (
             'open', 'recent1', 'recent2', 'recent3', 'recent4', 'recent5',
             'tutorial', 'cheatsheet', 'features_more', 'manual', 'locguide',
-            'feedback'
+            'feedback', 'report_bug'
         )
         for bname in button_names:
             btn = self.gui.get_object('btn_' + bname)

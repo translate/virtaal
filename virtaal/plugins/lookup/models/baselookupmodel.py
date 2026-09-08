@@ -35,7 +35,7 @@ class BaseLookupModel:
     def create_menu_items(self, query, role, srclang, tgtlang):
         """Create the a list C{Gtk.MenuItem}s for the given parameters.
 
-        @type  query: basestring
+        @type  query: str
         @param query: The string to use in the look-up.
         @type  query_is_src: bool
         @param query_is_src: C{True} if C{query} is from a source text box. C{False} otherwise.

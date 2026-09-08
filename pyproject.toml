@@ -101,7 +101,7 @@ ignore = [
 ]
 
 [tool.codespell]
-skip = "*.po,*.pot,po,ChangeLog,build,dist,*.egg-info,docs/_themes,devsupport/testfiles,.git"
+skip = "*.po,*.pot,po/*,ChangeLog,build,dist,*.egg-info,docs/_themes,devsupport/testfiles,.git"
 # datas: PyInstaller's own datas= kwarg, not a typo. gir: GObject
 # Introspection Repository (.gir) files, not "git". abd: "Alaa Abd El
 # Fattah" (a real name, aboutdialog.py). bable: "Bable", Asturian's

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2009 Zuza Software Foundation
 # Copyright 2014 F Wolff
@@ -130,7 +129,7 @@ class LookupModel(BaseLookupModel):
         open(url)
 
 
-class WebLookupConfigDialog(object):
+class WebLookupConfigDialog:
     """Dialog manages the URLs used by the web look-up plug-in."""
 
     COL_NAME, COL_URL, COL_QUOTE, COL_DATA = range(4)
@@ -229,7 +228,7 @@ class WebLookupConfigDialog(object):
         selected[0].remove(selected[1])
 
 
-class WebLookupAddDialog(object):
+class WebLookupAddDialog:
     """The dialog used to add URLs for the web look-up plug-in."""
 
     # INITIALIZERS #

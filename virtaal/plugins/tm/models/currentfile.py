@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
 #
@@ -98,7 +97,7 @@ class TMModel(BaseTMModel):
             #l10n: Try to keep this as short as possible.
             m['tmsource'] = _('This file')
             matches.append(m)
-        return [m for m in matches if m['quality'] != u'100']
+        return [m for m in matches if m['quality'] != '100']
 
     def _check_alttrans(self, unit):
         if not hasattr(unit, 'getalttrans'):
@@ -126,12 +125,11 @@ class TMModel(BaseTMModel):
                         # Experimental code to test lmc research. Everything
                         # in a try block, just in case.
                         try:
-                            from lxml import etree
                             import os.path
                             extras = xmlelement.xpath('processing-instruction()')
                             meta = dict((pi.target, pi.text) for pi in extras)
                             tmsource = [meta.get("contact-name", ""), meta.get("category", ""), os.path.splitext(meta.get("original", ""))[0]]
-                            tmsource = u"\n".join(filter(None, tmsource))
+                            tmsource = "\n".join(filter(None, tmsource))
                         except Exception as e:
                             import logging
                             logging.info(e)

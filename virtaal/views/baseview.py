@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2009 Zuza Software Foundation
 # Copyright 2013 F Wolff
@@ -27,7 +26,7 @@ from virtaal.common import pan_app
 _builders = {}
 
 
-class BaseView(object):
+class BaseView:
     """Interface for views."""
 
     def __init__(self):

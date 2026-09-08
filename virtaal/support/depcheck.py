@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2009-2010 Zuza Software Foundation
 # Copyright 2013,2015 F Wolff
@@ -18,6 +17,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+
+import importlib.util
 
 __all__ = ['check_dependencies', 'extra_tests', 'import_checks']
 
@@ -46,28 +47,12 @@ def test_gtk_version():
     return False
 
 def test_sqlite3_version():
-    try:
-        #TODO: work out if we need certain versions
-        try:
-            from sqlite3 import dbapi2
-        except ImportError:
-            from pysqlite2 import dbapi2
-        return True
-    except Exception:
-        pass
-    return False
+    #TODO: work out if we need certain versions
+    return importlib.util.find_spec('sqlite3.dbapi2') is not None
 
 def test_json():
     # We can work with simplejson or json (available since Python 2.6)
-    try:
-        try:
-            import simplejson as json
-        except ImportError:
-            import json
-        return True
-    except Exception:
-        pass
-    return False
+    return importlib.util.find_spec('simplejson') is not None or importlib.util.find_spec('json') is not None
 
 MIN_TRANSLATE_VERSION = (1, 9, 0)
 def test_translate_toolkit_version():

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2009 Zuza Software Foundation
 #
@@ -24,7 +23,7 @@ from gi.repository import Gtk
 from virtaal.views.baseview import BaseView
 
 
-class LanguageAddDialog(object):
+class LanguageAddDialog:
     """
     Represents and manages an instance of the dialog used for adding a language.
     """

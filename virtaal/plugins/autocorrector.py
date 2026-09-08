@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2009 Zuza Software Foundation
 # Copyright 2013 F Wolff
@@ -30,7 +29,7 @@ from virtaal.controllers.baseplugin import BasePlugin
 from virtaal.views.widgets.textbox import TextBox
 
 
-class AutoCorrector(object):
+class AutoCorrector:
     """
     Does auto-correction on editable text widgets using OpenOffice.org auto-
     correction files.
@@ -77,7 +76,7 @@ class AutoCorrector(object):
 
         raise ValueError("Widget type %s not supported." % (type(widget)))
 
-    def autocorrect(self, src, endindex, inserted=u''):
+    def autocorrect(self, src, endindex, inserted=''):
         """Apply auto-correction to source string.
 
             @type  src: str
@@ -95,7 +94,7 @@ class AutoCorrector(object):
                 range with.
             """
         if not self.correctiondict:
-            return None, u''
+            return None, ''
 
         candidate = src[:endindex]
 
@@ -106,7 +105,7 @@ class AutoCorrector(object):
                 replacement = self.correctiondict[key][self.REPLACEMENT]
                 return replace_range, replacement
 
-        return None, u'' # No corrections done
+        return None, '' # No corrections done
 
     def clear_widgets(self):
         """Removes references to all widgets that is being auto-corrected."""

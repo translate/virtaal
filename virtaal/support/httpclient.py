@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
 # 2013,2015,2016 Friedel Wolff
@@ -179,7 +178,7 @@ class RESTRequest(HTTPRequest):
         self.curl.setopt(pycurl.URL, url)
 
 
-class HTTPClient(object):
+class HTTPClient:
     """Non-blocking client that can handle multiple (asynchronous) HTTP requests."""
 
     def __init__(self):

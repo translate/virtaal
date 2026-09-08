@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2010-2011 Zuza Software Foundation
 #
@@ -120,17 +119,17 @@ class WorkflowMode(BaseMode):
 
     def _update_button_label(self):
         state_labels = [mi.get_child().get_label() for mi in self.btn_popup.menu if mi.get_active()]
-        btn_label = u''
+        btn_label = ''
         if not state_labels:
             #l10n: This is the button where the user can select units by workflow state
-            btn_label = _(u'Select States')
+            btn_label = _('Select States')
         elif len(state_labels) == len(self.state_names):
             #l10n: This refers to workflow states
-            btn_label = _(u'All States')
+            btn_label = _('All States')
         else:
-            btn_label = u', '.join(state_labels[:3])
+            btn_label = ', '.join(state_labels[:3])
             if len(state_labels) > 3:
-                btn_label += u'...'
+                btn_label += '...'
         self.btn_popup.set_label(btn_label)
 
     def _disable(self):

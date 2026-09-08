@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
 # Copyright 2013-2014 F Wolff
@@ -55,7 +54,7 @@ class _Deferer:
         self._todo.append((func, args))
 
 
-class Virtaal(object):
+class Virtaal:
     """The main Virtaal program entry point."""
 
     def __init__(self, startupfile):

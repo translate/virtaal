@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
 #
@@ -135,9 +134,9 @@ class StoreModel(BaseModel):
         filename = fileobj
         if isinstance(filename, str):
             if not os.path.exists(filename):
-                raise IOError(_('The file does not exist.'))
+                raise OSError(_('The file does not exist.'))
             if not os.path.isfile(filename):
-                raise IOError(_('Not a valid file.'))
+                raise OSError(_('Not a valid file.'))
         else:
             # Try and determine the file name of the file object
             filename = getattr(fileobj, 'name', None)
@@ -276,7 +275,7 @@ class StoreModel(BaseModel):
             header_updates["PO_Revision_Date"] = time.strftime("%Y-%m-%d %H:%M") + tzstring()
             header_updates["X_Generator"] = pan_app.x_generator
             if name or email:
-                header_updates["Last_Translator"] = u"%s <%s>" % (name, email)
+                header_updates["Last_Translator"] = "%s <%s>" % (name, email)
                 self._trans_store.updatecontributor(name, email)
             if team:
                 header_updates["Language-Team"] = team

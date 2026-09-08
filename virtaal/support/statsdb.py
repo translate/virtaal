@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright 2007-2010 Zuza Software Foundation
 #
@@ -183,7 +182,7 @@ def statefordb(unit):
     return UNTRANSLATED
 
 
-class FileTotals(object):
+class FileTotals:
     keys = ['translatedsourcewords',
             'fuzzysourcewords',
             'untranslatedsourcewords',
@@ -294,7 +293,7 @@ def suggestion_filename(filename):
 
 
 # ALL PUBLICLY ACCESSIBLE METHODS MUST BE DECORATED WITH THE transaction DECORATOR.
-class StatsCache(object):
+class StatsCache:
     """An object instantiated as a singleton for each statsfile that provides
     access to the database cache from a pool of StatsCache objects.
     """
@@ -350,7 +349,7 @@ class StatsCache(object):
                     os.mkdir(cachedir)
                 if isinstance(cachedir, bytes):
                     cachedir = str(cachedir, sys.getfilesystemencoding())
-                cls.defaultfile = os.path.realpath(os.path.join(cachedir, u"stats.db"))
+                cls.defaultfile = os.path.realpath(os.path.join(cachedir, "stats.db"))
             statsfile = cls.defaultfile
         else:
             statsfile = os.path.realpath(statsfile)

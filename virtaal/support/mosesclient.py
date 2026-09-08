@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2011 Zuza Software Foundation
 #
@@ -28,16 +27,16 @@ from virtaal.support.translate_compat import forceunicode
 
 # Moses handles these characters as spaced out
 punc_symbols = '''.,?!:;'"“”‘’—)'''
-punc_tuples = [(c, u" %s" % c) for c in punc_symbols]
+punc_tuples = [(c, " %s" % c) for c in punc_symbols]
 
 
 def prepare(query_str):
     query_str = query_str.lower()
     for c, repl in punc_tuples:
         query_str = query_str.replace(c, repl)
-    query_str = query_str.replace(u"(", u"( ")
+    query_str = query_str.replace("(", "( ")
     # Newlines need special handling since Moses doesn't support it:
-    query_str = query_str.replace(u"\n", u" __::__ ")
+    query_str = query_str.replace("\n", " __::__ ")
     return query_str
 
 def fixup(source, response):
@@ -47,10 +46,10 @@ def fixup(source, response):
     tmp = correct(source, response)
     if tmp:
         response = tmp
-    response = response.replace(u" __::__ ", "\n")
+    response = response.replace(" __::__ ", "\n")
     # and again for the sake of \n\n:
-    response = response.replace(u"__::__ ", "\n")
-    response = response.replace(u"( ", u"(")
+    response = response.replace("__::__ ", "\n")
+    response = response.replace("( ", "(")
     for c, repl in punc_tuples:
         response = response.replace(repl, c)
     return response

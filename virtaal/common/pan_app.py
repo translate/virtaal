@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2007-2010 Zuza Software Foundation
 # Copyright 2013-2014 F Wolff
@@ -93,7 +92,7 @@ DEBUG = True # Enable debugging by default, while bin/virtaal still disables it 
 
 
 x_generator = 'Virtaal ' + ver
-default_config_name = u"virtaal.ini"
+default_config_name = "virtaal.ini"
 
 
 def osx_lang():
@@ -123,7 +122,7 @@ def name():
         name = pwd.getpwnam(name)[4].split(",")[0]
     except ImportError as _e:
         pass
-    return name or u""
+    return name or ""
 
 def get_default_font():
     default_font = 'monospace'
@@ -327,7 +326,7 @@ def set_ui_language(lang):
 
 
 # Determine the directory the main executable is running from
-main_dir = u''
+main_dir = ''
 if platform.is_frozen:
     main_dir = os.path.dirname(get_unicode(sys.executable))
 else:

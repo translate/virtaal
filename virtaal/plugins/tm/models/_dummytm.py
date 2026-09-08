@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2009 Zuza Software Foundation
 #
@@ -40,7 +39,7 @@ class TMModel(BaseTMModel):
         tm_matches = []
         tm_matches.append({
             'source': 'This match has no "quality" field',
-            'target': u'Hierdie woordeboek het geen "quality"-veld nie.',
+            'target': 'Hierdie woordeboek het geen "quality"-veld nie.',
             'tmsource': 'DummyTM'
         })
         tm_matches.append({
@@ -51,7 +50,7 @@ class TMModel(BaseTMModel):
         })
         reverse_str = list(query_str)
         reverse_str.reverse()
-        reverse_str = u''.join(reverse_str)
+        reverse_str = ''.join(reverse_str)
         tm_matches.append({
             'source': reverse_str.lower(),
             'target': reverse_str.upper(),

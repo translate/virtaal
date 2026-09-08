@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2010 Zuza Software Foundation
 # Copyright 2013-2015 F Wolff
@@ -19,7 +18,6 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import locale
-import logging
 import os
 import subprocess
 import time
@@ -624,7 +622,7 @@ class MainView(BaseView):
     def show_open_dialog(self, title=''):
         """@returns: The selected file name and URI if the OK button was clicked.
             C{None} otherwise."""
-        last_path = get_unicode(pan_app.settings.general["lastdir"]) or u""
+        last_path = get_unicode(pan_app.settings.general["lastdir"]) or ""
 
         if title:
             self.open_chooser.set_title(title)

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2010 Zuza Software Foundation
 # Copyright 2013 F Wolff
@@ -258,7 +257,7 @@ class MainController(BaseController):
         except SaveCancelled:
             # Expected, not an error - no traceback, no dialog.
             pass
-        except IOError as exc:
+        except OSError as exc:
             self.show_error(
                 _("Could not save file.\n\n%(error_message)s\n\nTry saving to a different location.") % {'error_message': str(exc)}
             )
@@ -292,7 +291,7 @@ class MainController(BaseController):
         try:
             self.store_controller.binary_export(filename)
             return True
-        except IOError as exc:
+        except OSError as exc:
             self.show_error(
                 _("Could not export file.\n\n%(error_message)s\n\nTry saving to a different location.") % {'error_message': str(exc)}
             )

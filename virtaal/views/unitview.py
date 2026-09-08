@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2011 Zuza Software Foundation
 #
@@ -365,7 +364,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
     # GUI BUILDING CODE #
     def _create_sources(self):
         for i in range(len(self.sources), self.MAX_SOURCES):
-            source = self._create_textbox(u'', editable=False, role='source')
+            source = self._create_textbox('', editable=False, role='source')
             textbox = source.get_child()
             textbox.modify_font(rendering.get_source_font_description())
             self._widgets['vbox_sources'].pack_start(source, True, True, 0)
@@ -435,7 +434,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             return False
 
         for i in range(len(self.targets), self.MAX_TARGETS):
-            target = self._create_textbox(u'', editable=True, role='target')
+            target = self._create_textbox('', editable=True, role='target')
             textbox = target.get_child()
             textbox.modify_font(rendering.get_target_font_description())
             textbox.selector_textboxes = self.sources
@@ -453,14 +452,14 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
         self.emit('targets-created', self.targets)
 
-    def _create_textbox(self, text=u'', editable=True, role=None, scroll_policy=Gtk.PolicyType.EXTERNAL):
+    def _create_textbox(self, text='', editable=True, role=None, scroll_policy=Gtk.PolicyType.EXTERNAL):
         textbox = TextBox(self.controller.main_controller, role=role)
         textbox.set_editable(editable)
         textbox.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
         textbox.set_border_window_size(Gtk.TextWindowType.TOP, 1)
         textbox.set_left_margin(2)
         textbox.set_right_margin(2)
-        textbox.set_text(text or u'')
+        textbox.set_text(text or '')
         textbox.connect('focus-in-event', self._on_textbox_focused)
         textbox.connect('focus-out-event', self._on_textbox_unfocused)
 
@@ -495,10 +494,10 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
             self._widgets['notes'][origin] = label
 
-        note_text = self.unit.getnotes(origin) or u""
+        note_text = self.unit.getnotes(origin) or ""
 
         if origin == "programmer" and len(note_text) < 15 and self.unit is not None and self.unit.getlocations():
-            note_text += u"  " + u" ".join(self.unit.getlocations()[:3])
+            note_text += "  " + " ".join(self.unit.getlocations()[:3])
 
         # FIXME: This is a temporary quick fix (to bug 1145) to ensure that
         # excessive translator comments don't cover the whole display.
@@ -529,7 +528,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             if num_source_widgets >= 1:
                 # The above condition should *never* be False
                 textbox = self.sources[0]
-                textbox.set_text(u'')
+                textbox.set_text('')
                 textbox.get_parent().show()
             for i in range(1, num_source_widgets):
                 self.sources[i].get_parent().hide_all()
@@ -564,7 +563,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
         if self.unit.getcontext():
             self._widgets['context_info'].show()
-            self._widgets['context_info'].set_text(self.unit.getcontext() or u"")
+            self._widgets['context_info'].set_text(self.unit.getcontext() or "")
         else:
             self._widgets['context_info'].hide()
 
@@ -581,7 +580,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             if num_target_widgets >= 1:
                 # The above condition should *never* be False
                 textbox = self.targets[0]
-                textbox.set_text(u'')
+                textbox.set_text('')
                 textbox.get_parent().show_all()
             for i in range(1, num_target_widgets):
                 self.targets[i].get_parent().hide_all()
@@ -600,7 +599,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         for i in range(self.MAX_TARGETS):
             if i < nplurals:
                 # plural forms already in file
-                targetstr = u''
+                targetstr = ''
                 if i < rich_target_len and rich_target[i] is not None:
                     targetstr = rich_target[i]
                 self.targets[i].modify_font(rendering.get_target_font_description())
@@ -674,7 +673,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             rich_target = self.unit.rich_target
             if self.unit.hasplural() and len(rich_target) < nplurals:
                 # pad the target with empty strings
-                rich_target += (nplurals - len(rich_target)) * [u""]
+                rich_target += (nplurals - len(rich_target)) * [""]
             rich_target[index] = tgt.elem
             self.unit.rich_target = rich_target
         else:
@@ -685,7 +684,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
                 target = self.unit.target.strings
                 if len(target) < nplurals:
                     # pad the target with empty strings
-                    target += (nplurals - len(target)) * [u""]
+                    target += (nplurals - len(target)) * [""]
                 target[index] = newtext
                 self.unit.target = target
             elif index == 0:

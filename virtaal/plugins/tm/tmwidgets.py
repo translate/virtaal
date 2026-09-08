@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2010 Zuza Software Foundation
 #
@@ -18,7 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-import logging
 
 from gi.repository import GObject
 from gi.repository import Gtk
@@ -153,7 +151,7 @@ class TMWindow(Gtk.Window):
         else:
             cell_renderer.set_property('value', 0)
         #l10n: This indicates a suggestion from machine translation. It is displayed instead of the match percentage.
-        cell_renderer.set_property('text', _(u"?"))
+        cell_renderer.set_property('text', _("?"))
 
 
 class TMSourceColRenderer(Gtk.CellRenderer):
@@ -187,7 +185,7 @@ class TMSourceColRenderer(Gtk.CellRenderer):
             return 0, 0, 0, 0
 
         label = Gtk.Label()
-        label.set_markup(u'<small>%s</small>' % self.matchdata['tmsource'])
+        label.set_markup('<small>%s</small>' % self.matchdata['tmsource'])
         label.get_pango_context().set_base_gravity(Pango.Gravity.AUTO)
         label.set_angle(270)
         size = label.get_layout().get_pixel_size()
@@ -209,7 +207,7 @@ class TMSourceColRenderer(Gtk.CellRenderer):
         y = cell_area.y + y_offset + self.YPAD
 
         label = Gtk.Label()
-        label.set_markup(u'<small>%s</small>' % self.matchdata['tmsource'])
+        label.set_markup('<small>%s</small>' % self.matchdata['tmsource'])
         label.get_pango_context().set_base_dir(Pango.Direction.TTB_LTR)
         if widget.get_direction() == Gtk.TextDirection.RTL:
             label.set_angle(90)
@@ -329,7 +327,7 @@ class TMMatchRenderer(Gtk.CellRenderer):
             height = self.source_layout.get_pixel_size()[1] + self.target_layout.get_pixel_size()[1]
             return height + self.LINE_SEPARATION + self.ROW_PADDING
 
-    def _get_pango_layout(self, widget, text, width, font_description, diff_text=u""):
+    def _get_pango_layout(self, widget, text, width, font_description, diff_text=""):
         '''Gets the Pango layout used in the cell in a TreeView widget.'''
         # We can't use widget.get_pango_context() because we'll end up
         # overwriting the language and font settings if we don't have a

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2010 Zuza Software Foundation
 #
@@ -74,7 +73,7 @@ def gtk_textview_compute_optimal_height(widget, width):
     # To use height estimation for all units (not just empty units), use:
     #if True:
     if not buftext:
-        text = getattr(widget, '_source_text', u"")
+        text = getattr(widget, '_source_text', "")
         if text:
             lang = factory.getlanguage(pan_app.settings.language["targetlang"])
             buftext = lang.alter_length(text)
@@ -284,7 +283,7 @@ class StoreCellRenderer(Gtk.CellRenderer):
         layout.set_wrap(Pango.WrapMode.WORD_CHAR)
         layout.set_width(width * Pango.SCALE)
         #XXX - plurals?
-        text = text or u""
+        text = text or ""
         layout.set_markup(markup.markuptext(text))
         return layout
 

@@ -41,7 +41,7 @@ Advantages:
   - Algorithms are designed to minimize the number of compares
     which can be expensive.
 
-  - Natural support for sets of sets.  No special accomodation needs to
+  - Natural support for sets of sets.  No special accommodation needs to
     be made to use a set or dict as a set member, but users need to be
     careful to not mutate a member of a set since that may breaks its
     sort invariant.

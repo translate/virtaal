@@ -145,7 +145,7 @@ class AutoCorrector(object):
         from lxml import etree
         xml = etree.fromstring(xml_bytes)
         # Sample element from DocumentList.xml (it has no root element!):
-        #   <block-list:block block-list:abbreviated-name="teh" block-list:name="the"/>
+        #   <block-list:block block-list:abbreviated-name="teh" block-list:name="the"/>  # codespell:ignore teh
         # This means that xml.iterchildren() will return an iterator over all
         # of <block-list> elements and entry.values() will return a 2-tuple
         # with the values of the "abbreviated-name" and "name" attributes.

@@ -827,7 +827,7 @@ class MainView(BaseView):
         self.controller.open_tutorial()
 
     def _on_localization_guide(self, _widget=None):
-        # Should be more redundent
+        # Should be more redundant
         # If the guide is installed and no internet then open local
         # If Internet then go live, if no Internet or guide then disable
         from virtaal.support import openmailto

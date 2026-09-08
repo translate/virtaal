@@ -31,7 +31,7 @@ from virtaal.views.theme import current_theme
 
 class LocalFileView:
     """
-    Class that manages the localfile terminology plug-in's GUI presense and interaction.
+    Class that manages the localfile terminology plug-in's GUI presence and interaction.
     """
 
     # INITIALIZERS #

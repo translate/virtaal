@@ -244,7 +244,7 @@ class Plugin(BasePlugin):
         for target in textboxes:
                 self.autocomp.add_widget(target)
 
-    # METHDOS #
+    # METHODS #
     def destroy(self):
         """Remove all signal-connections."""
         self.autocomp.clear_words()

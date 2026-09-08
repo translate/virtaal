@@ -1,0 +1,13 @@
+Python
+
+#!/usr/bin/env python
+#
+# Copyright (C) Virtaal contributors.
+#
+# This file is part of Virtaal. It is distributed under the GPL2 or
+# later license. See the LICENSE file for a copy of the license and
+# the AUTHORS file for copyright and authorship information.
+
+
+(No shebang line unless the file is actually executable - see
+virtaal/main.py, bin/virtaal.)

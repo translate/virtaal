@@ -69,7 +69,7 @@ class LanguageAddDialog(object):
 
     def _get_nplurals(self):
         return int(self.sbtn_nplurals.get_value())
-    def _set_nplurals(self):
+    def _set_nplurals(self, value):
         self.sbtn_nplurals.set_value(int(value))
     nplurals = property(_get_nplurals, _set_nplurals)
 

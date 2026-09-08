@@ -188,7 +188,8 @@ class SearchMode(BaseMode):
 
         if unit_controller is None:
             if match.unit.hasplural():
-                string_n = match.unit.target.strings[match.part_n]
+                strings = match.unit.target.strings
+                string_n = strings[match.part_n]
                 strings[match.part_n] = string_n[:match.start] + replace_str + string_n[match.end:]
                 match.unit.target = strings
             else:

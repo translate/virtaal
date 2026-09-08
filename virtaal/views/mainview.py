@@ -22,6 +22,7 @@ import locale
 import logging
 import os
 import subprocess
+import time
 
 from gi.repository import Gdk
 from gi.repository import Gtk

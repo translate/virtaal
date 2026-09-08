@@ -131,6 +131,7 @@ def get_default_font():
 
     # First try and get the default font size from GConf
     try:
+        import gi
         gi.require_version('GConf', '2.0')
         from gi.repository import GConf
         client = GConf.Client.get_default()

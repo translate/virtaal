@@ -81,7 +81,7 @@ class TMClient(HTTPClient):
 
     def forget_unit(self, unit_source, source_lang, target_lang, callback=None):
         request = RESTRequest(
-                self.base_url + "/%s/%s/unit" % (source_lang, target_lang, self.user_agent),
+                self.base_url + "/%s/%s/unit" % (source_lang, target_lang),
                 unit_source, "DELETE",
                 user_agent=self.user_agent)
         self.add(request)

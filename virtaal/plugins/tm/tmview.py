@@ -21,11 +21,11 @@
 
 import logging
 
-from gi.repository import GLib, GObject, Gdk
+from gi.repository import GLib, GObject, Gdk, Gtk
 
 from virtaal.common import GObjectWrapper
 from virtaal.views.baseview import BaseView
-from .tmwidgets import *
+from .tmwidgets import TMWindow
 
 
 class TMView(BaseView, GObjectWrapper):

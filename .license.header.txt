@@ -1,13 +1,15 @@
 Python
 
-#!/usr/bin/env python
-#
 # Copyright (C) Virtaal contributors.
 #
 # This file is part of Virtaal. It is distributed under the GPL2 or
 # later license. See the LICENSE file for a copy of the license and
-# the AUTHORS file for copyright and authorship information.
+# the AUTHORS.md file for copyright and authorship information.
 
 
-(No shebang line unless the file is actually executable - see
-virtaal/main.py, bin/virtaal.)
+A `#!/usr/bin/env python` shebang may appear directly above this block
+on `setup.py`, the one `.py` file that's actually run directly
+(`./setup.py build`, see docs/building.rst) - don't add one anywhere
+else (see PR #3430; almost no file here is run directly, so a shebang
+on it is just noise). The header check tolerates an optional shebang
+line before the block, it doesn't require its absence.

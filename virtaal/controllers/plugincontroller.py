@@ -83,7 +83,7 @@ class PluginController(BaseController):
         if platform.is_windows:
             self.PLUGIN_DIRS.insert(0, os.path.join(pan_app.main_dir, 'virtaal_plugins'))
         if 'RESOURCEPATH' in os.environ:
-            self.PLUGIN_DIRS.insert(0, os.path.join(os.environ['RESOURCEPATH'].decode(sys.getfilesystemencoding()), 'virtaal_plugins'))
+            self.PLUGIN_DIRS.insert(0, os.path.join(os.environ['RESOURCEPATH'], 'virtaal_plugins'))
 
 
     # METHODS #

@@ -96,13 +96,20 @@ def fetch_document_list(folder):
 # --- Where a downloaded DocumentList.xml needs to end up for
 #     AutoCorrector to find it ---
 
+def autocorrect_root_dir():
+    """The directory holding one subdirectory per locale - what
+    virtaal/plugins/autocorrector.py's Plugin passes to AutoCorrector
+    as acorpath. Under this app's own per-user config directory
+    (unlike enchant, autocorrect has no third-party convention of its
+    own to match)."""
+    from virtaal.common import pan_app
+    return os.path.join(pan_app.get_config_dir(), 'autocorr')
+
+
 def autocorrect_write_dir(locale_code):
     """Where AutoCorrector looks for a downloaded locale's
-    DocumentList.xml - one subdirectory per locale, under this app's
-    own per-user config directory (unlike enchant, autocorrect has no
-    third-party convention of its own to match)."""
-    from virtaal.common import pan_app
-    return os.path.join(pan_app.get_config_dir(), 'autocorr', locale_code.replace('-', '_'))
+    DocumentList.xml."""
+    return os.path.join(autocorrect_root_dir(), locale_code.replace('-', '_'))
 
 
 def download_document_list(locale_code, target_dir=None):

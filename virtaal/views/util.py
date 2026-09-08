@@ -20,6 +20,7 @@
 
 from gi.repository import GLib
 from gi.repository import Gtk
+from gi.repository import Gdk
 
 __all__ = ['pulse']
 

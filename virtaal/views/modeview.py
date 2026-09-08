@@ -93,7 +93,7 @@ class ModeView(GObjectWrapper, BaseView):
         if displayname in self.displayname_index:
             self.cmb_modes.set_active(self.displayname_index[displayname])
         else:
-            raise ValueError('Unknown mode specified: %s' % (mode_name))
+            raise ValueError('Unknown mode specified: %s' % (displayname))
 
     def show(self):
         self.mode_box.show_all()

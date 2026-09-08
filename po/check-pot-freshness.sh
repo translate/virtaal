@@ -103,7 +103,12 @@ fi
 
 hash_relevant() {
     local filtered
-    filtered=$(grep -v '^"POT-Creation-Date:' "$1")
+    # --no-wrap first: different xgettext versions (e.g. Homebrew vs.
+    # apt's gettext-tools) wrap long msgid/msgstr lines at different
+    # widths - confirmed the hard way, a real false-positive here on
+    # otherwise byte-identical content. One line per string sidesteps
+    # that entirely, regardless of which version generated the file.
+    filtered=$(msgcat --no-wrap "$1" | grep -v '^"POT-Creation-Date:')
     if [ "${POT_STRICT_LOCATIONS:-}" != "1" ]; then
         filtered=$(printf '%s\n' "$filtered" | grep -v '^#:')
     fi

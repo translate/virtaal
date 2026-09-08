@@ -213,6 +213,11 @@ def download_dictionary(locale_code, target_dir=None):
             content = fetch_dictionary_file(folder, filename)
         except (HTTPError, URLError) as e:
             logging.warning('Could not download %s/%s: %s', folder, filename, e)
+            # A dictionary needs every one of its files (e.g. .aff
+            # without .dic is useless to enchant) - don't leave a
+            # partial one behind for a later run to mistake as real.
+            for path in written:
+                os.remove(path)
             return None
         dest = os.path.join(target_dir, filename)
         with open(dest, 'wb') as f:

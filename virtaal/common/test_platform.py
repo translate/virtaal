@@ -87,3 +87,24 @@ def test_flatpak():
 def test_not_flatpak():
     p = Platform(environ={})
     assert not p.is_flatpak
+
+
+def test_install_method_windows_installer():
+    p = Platform(os_name='nt', sys_platform='win32', frozen=True, environ={})
+    assert p.install_method() == 'Windows installer'
+
+
+def test_install_method_macos_dmg():
+    p = Platform(os_name='posix', sys_platform='darwin', frozen=True, environ={})
+    assert p.install_method() == 'macOS .dmg'
+
+
+def test_install_method_flatpak_takes_priority_over_frozen():
+    p = Platform(os_name='posix', sys_platform='linux', frozen=True,
+                 environ={'FLATPAK_ID': 'org.translate.Virtaal'})
+    assert p.install_method() == 'Flatpak'
+
+
+def test_install_method_unknown_for_a_plain_source_checkout():
+    p = Platform(os_name='posix', sys_platform='linux', frozen=False, environ={})
+    assert p.install_method() is None

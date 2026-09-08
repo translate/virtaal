@@ -44,5 +44,19 @@ class Platform:
         environ = environ if environ is not None else os.environ
         self.is_flatpak = 'FLATPAK_ID' in environ
 
+    def install_method(self):
+        """A human-readable label for how this build was installed, or
+            None if that can't be told apart (pip install vs. a distro
+            package - neither frozen nor Flatpak, nothing left to
+            distinguish them by)."""
+        if self.is_flatpak:
+            return 'Flatpak'
+        if self.is_frozen:
+            if self.is_windows:
+                return 'Windows installer'
+            if self.is_mac:
+                return 'macOS .dmg'
+        return None
+
 
 platform = Platform()

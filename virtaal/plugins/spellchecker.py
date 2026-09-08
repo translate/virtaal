@@ -50,6 +50,14 @@ class Plugin(BasePlugin):
     def __init__(self, internal_name, main_controller):
         self.internal_name = internal_name
 
+        if platform.is_frozen:
+            # No version-matched gtkspell3 bundled yet (UI-stage work) -
+            # a frozen build must never trust a system-found one: a
+            # mismatched GTK3 copy crashes outright (GTK_IS_TEXT_VIEW
+            # assertion, ObjC duplicate-class registration) rather than
+            # just failing to import.
+            raise PluginUnsupported("gtkspell3 isn't bundled in a frozen build")
+
         if platform.is_windows:
             DICTDIR = os.path.join(os.environ['APPDATA'], 'enchant', 'myspell')
             # DICTDIR is already str (unicode text) under Python 3, so there's

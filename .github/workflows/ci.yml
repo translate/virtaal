@@ -648,10 +648,12 @@ jobs:
         # Launch with a real file in the background, confirm the process
         # is still alive after enough time for GTK/plugin init, and
         # confirm the log is clean - empty, not just "didn't crash".
-        # enchant is deliberately excluded from this bundle (see
-        # virtaal.spec's comment) so "Failed to load plugin
-        # spellchecker"-type lines are expected and fine; anything else
-        # in the log is not.
+        # gtkspell3 is never bundled (spellchecker.py refuses it in any
+        # frozen build - see that file's comment) so "Failed to load
+        # plugin spellchecker"-type lines are expected and fine.
+        # enchant *is* bundled on Intel (virtaal.spec) - real, expected
+        # "Dictionary not found" output for a language with no matching
+        # dictionary (e.g. bare "en") is fine too; anything else isn't.
         run: |
           dist/Virtaal.app/Contents/MacOS/virtaal devsupport/testfiles/checks.po > /tmp/bundle-launch.log 2>&1 &
           PID=$!
@@ -663,7 +665,7 @@ jobs:
           fi
           kill "$PID"
           pkill -f virtaal.support.tmserver || true
-          if grep -Eqv "spellchecker|enchant|GtkosxApplication" /tmp/bundle-launch.log; then
+          if grep -Eqv "spellchecker|enchant|GtkosxApplication|spelling|Traceback" /tmp/bundle-launch.log; then
             echo "::error::Unexpected output in the bundle's log"
             cat /tmp/bundle-launch.log
             exit 1

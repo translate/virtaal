@@ -30,10 +30,7 @@ from os import path
 from io import StringIO
 import configparser as ConfigParser
 
-try:
-    from sqlite3 import dbapi2
-except ImportError:
-    from pysqlite2 import dbapi2
+from sqlite3 import dbapi2
 
 from virtaal.common import pan_app
 from virtaal.common.platform import platform

@@ -19,15 +19,20 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 """Tests for dictionary_source's pure enumerate/parse/match logic - the
-network calls themselves are thin, untested wrappers (see that
-module's own docstring); what's tested here is real content (fixtures
-below are actual copies from github.com/LibreOffice/dictionaries, not
-hand-written guesses), so a real repo-shape change would actually be
-caught.
+raw network calls (fetch_dictionary_tree/fetch_xcu/fetch_dictionary_file)
+are thin, untested wrappers (see that module's own docstring);
+download_dictionary()'s own orchestration is tested here with those
+three monkeypatched away. Fixtures below are actual copies from
+github.com/LibreOffice/dictionaries, not hand-written guesses, so a
+real repo-shape change would actually be caught.
 """
 
+from urllib.error import URLError
+
+from virtaal.support import dictionary_source
 from virtaal.support.dictionary_source import (
     candidate_folders,
+    download_dictionary,
     find_dictionary,
     list_dictionary_folders,
     parse_dictionaries_xcu,
@@ -184,3 +189,23 @@ def test_find_dictionary_falls_back_to_scanning_other_folders():
 def test_find_dictionary_returns_none_when_nothing_matches():
     result = find_dictionary('xx_YY', {'de': 's1'}, lambda folder: DE_XCU)
     assert result is None
+
+
+def test_download_dictionary_cleans_up_partial_write_on_failure(monkeypatch, tmp_path):
+    """de_DE_frami has two files - if the second one fails, the first
+    must not be left behind for a later run to mistake as a complete,
+    real dictionary."""
+    monkeypatch.setattr(dictionary_source, 'fetch_dictionary_tree',
+                         lambda: {'tree': [{'path': 'de/dictionaries.xcu'}]})
+    monkeypatch.setattr(dictionary_source, 'fetch_xcu', lambda folder: DE_XCU)
+
+    def fetch_dictionary_file(folder, filename):
+        if filename.endswith('.dic'):
+            raise URLError('boom')
+        return b'aff content'
+    monkeypatch.setattr(dictionary_source, 'fetch_dictionary_file', fetch_dictionary_file)
+
+    result = download_dictionary('de_DE', target_dir=str(tmp_path))
+
+    assert result is None
+    assert list(tmp_path.iterdir()) == []

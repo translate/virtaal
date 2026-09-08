@@ -34,17 +34,11 @@ _dict_add_re = re.compile('Add "(.*)" to Dictionary')
 
 
 class Plugin(BasePlugin):
-    """A plugin to control spell checking.
-
-    It can also download spell checkers on Windows and Mac."""
+    """A plugin to control spell checking."""
 
     display_name = _('Spell Checker')
     description = _('Check spelling and provide suggestions')
     version = 0.1
-
-    _base_URL = 'http://dictionary.locamotion.org/hunspell/'
-    _dict_URL = _base_URL + '%s.tar.bz2'
-    _lang_list = 'languages.txt'
 
     # INITIALIZERS #
     def __init__(self, internal_name, main_controller):
@@ -88,11 +82,6 @@ class Plugin(BasePlugin):
         self._seen_languages = {}
         # languages supported by enchant:
         self._enchant_languages = self.enchant.list_languages()
-
-        # HTTP clients (Windows and Mac only)
-        self.clients = {}
-        # downloadable languages (Windows and Mac only)
-        self.languages = set()
 
         unit_view = main_controller.unit_controller.view
         self.unit_view = unit_view
@@ -138,109 +127,6 @@ class Plugin(BasePlugin):
 
     # METHODS #
 
-    def _build_client(self, url, clients_id, callback, error_callback=None):
-        from virtaal.support.httpclient import HTTPClient
-        client = HTTPClient()
-        client.set_virtaal_useragent()
-        self.clients[clients_id] = client
-        if logging.root.level != logging.DEBUG:
-            client.get(url, callback)
-        else:
-            def error_log(request, result):
-                logging.debug('Could not get %s: status %d' % (url, request.status))
-            client.get(url, callback, error_callback=error_log)
-
-    def _download_checker(self, language):
-        """A Windows-and Mac only way to obtain new dictionaries."""
-        if platform.is_windows and 'APPDATA' not in os.environ:
-            # We won't have an idea of where to save it, so let's give up now
-            return
-        if language in self.clients:
-            # We already tried earlier, or started the process
-            return
-        if not self.languages:
-            if self._lang_list not in self.clients:
-                # We don't yet have a list of available languages
-                url = self._base_URL + self._lang_list #index page listing all the dictionaries
-                callback = lambda *args: self._process_index(language=language, *args)
-                self._build_client(url, self._lang_list, callback)
-                # self._process_index will call this again, so we can exit
-            return
-
-        language_to_download = None
-        # People almost definitely want 'en_US' for 'en', so let's ensure
-        # that we get that right:
-        if language == 'en':
-            language_to_download = 'en_US'
-            self.clients[language] = None
-        else:
-            # Let's see if a dictionary is available for this language:
-            for l in self.languages:
-                if l == language or l.startswith(language+'_'):
-                    self.clients[language] = None
-                    logging.debug("Will use %s to spell check %s", l, language)
-                    language_to_download = l
-                    break
-            else:
-                # No dictionary available
-                # Indicate that we never need to try this language:
-                logging.debug("Found no suitable language for spell checking")
-                self.clients[language] = None
-                return
-
-       # Now download the actual files after we have determined that it is
-       # available
-        callback = lambda *args: self._process_tarball(language=language, *args)
-        url = self._dict_URL % language_to_download
-        self._build_client(url, language, callback)
-
-
-    def _tar_ok(self, tar):
-        # TODO: Verify that the tarball is ok:
-        # - only two files
-        # - must be .aff and .dic
-        # - language codes should be sane
-        # - file sizes should be ok
-        # - no directory structure
-        return True
-
-    def _ensure_dir(self, dir):
-        if not os.path.isdir(dir):
-            os.makedirs(dir)
-
-    def _process_index(self, request, result, language=None):
-        """Process the list of languages."""
-        if request.status == 200 and not self.languages:
-            self.languages = set(result.split())
-            self._download_checker(language)
-        else:
-            logging.debug("Couldn't get list of spell checkers")
-            #TODO: disable plugin
-
-    def _process_tarball(self, request, result, language=None):
-        # Indicate that we already tried and shouldn't try again later:
-        self.clients[language] = None
-
-        if request.status == 200:
-            logging.debug('Got a dictionary')
-            from io import BytesIO
-            import tarfile
-            file_obj = BytesIO(result)
-            tar = tarfile.open(fileobj=file_obj)
-            if not self._tar_ok(tar):
-                return
-            if platform.is_windows:
-                DICTDIR = os.path.join(os.environ['APPDATA'], 'enchant', 'myspell')
-            elif platform.is_mac:
-                DICTDIR = os.path.expanduser("~/.enchant/myspell")
-            self._ensure_dir(DICTDIR)
-            tar.extractall(DICTDIR)
-            self._seen_languages.pop(language, None)
-            self._enchant_languages = self.enchant.list_languages()
-            self.unit_view.update_languages()
-        else:
-            logging.debug("Couldn't get a dictionary. Status code: %d" % (request.status))
-
     def _disable_checking(self, text_view):
         """Disable checking on the given text_view."""
         if getattr(text_view, 'spell_lang', 'xxxx') is None:
@@ -285,14 +171,10 @@ class Plugin(BasePlugin):
                     language = code
                     break
             else:
-                #logging.debug('No code in enchant.list_languages() that starts with "%s"' % (language))
-
-                # If we are on Windows or Mac, let's try to download a spell checker:
-                if platform.is_windows or platform.is_mac:
-                    self._download_checker(language)
-                    # If we get it, it will only be activated asynchronously
-                    # later
-                #TODO: packagekit on Linux?
+                # DictionaryDownloadWatcher (wired to LanguageController,
+                # not this per-textview signal) handles trying to
+                # download a missing dictionary - nothing to do here but
+                # degrade gracefully for now.
 
                 # We couldn't find a dictionary for "language", so we should make sure that we don't
                 # have a spell checker for a different language on the text view. See bug 717.

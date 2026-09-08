@@ -409,12 +409,12 @@ class StoreController(BaseController):
                 #   translation store. This will happen when filename already
                 #   refers to a translation store and we just converted it to
                 #   a non-translation store format. FIXME: This might indicate
-                #   a problem with the convert_factory not distinguising between
+                #   a problem with the convert_factory not distinguishing between
                 #   its input and output document types.
                 logging.exception("Error converting file to translatable file:")
 
         # Let's entirely clear things in the view to ensure that no signals
-        # are still attached to old models before we start chaning things. See
+        # are still attached to old models before we start changing things. See
         # bug 1854.
         self.view.load_store(None)
         self.store.update_file(filename)

@@ -174,7 +174,7 @@ class ListNavigator(Gtk.HBox):
         assert widget is self.btn_popup
 
         # See virtaal.views.widgets.textbox.TextBox._on_key_pressed for an
-        # explanation fo the filter below.
+        # explanation of the filter below.
         filtered_state = event.get_state() & (
                     Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.MOD1_MASK | Gdk.ModifierType.MOD4_MASK | Gdk.ModifierType.SHIFT_MASK)
         keyval = event.keyval
@@ -199,7 +199,7 @@ class ListNavigator(Gtk.HBox):
 
         self.btn_popup.set_label(selected_name)
 
-        # If setting to "untranslated" internally (when we don't wan't to emit
+        # If setting to "untranslated" internally (when we don't want to emit
         # the changed event), we can allow the unselectable ones, since we are
         # in control:
         if self._should_emit_changed and selected_name in self.unselectable:

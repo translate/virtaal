@@ -74,7 +74,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         self._modified = False
 
         self.connect('key-press-event', self._on_key_press_event)
-        # We automatically inherrit the tooltip from the Treeview, so we have
+        # We automatically inherit the tooltip from the Treeview, so we have
         # to show our own custom one to not have a tooltip obscuring things
         invisible_tooltip = Gtk.Window(type=Gtk.WindowType.POPUP)
         invisible_tooltip.resize(1,1)
@@ -544,7 +544,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             if i < num_unit_sources:
                 sourcestr = self.unit.rich_source[i]
                 self.sources[i].modify_font(rendering.get_source_font_description())
-                # FIXME: This modfies the unit's copy - we should not do this
+                # FIXME: This modifies the unit's copy - we should not do this
                 self.sources[i].set_text(sourcestr)
                 parent.show_all()
                 #logging.debug('Showing source #%d: %s' % (i, self.sources[i]))
@@ -649,7 +649,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         """Update it without emitting any signals or recreating anything."""
         self._widgets['state'].select_by_name(newstate)
 
-    # EVENT HANLDERS #
+    # EVENT HANDLERS #
     def _on_state_changed(self, listnav, newstate):
         if self.controller.current_unit._workflow:
             self.controller.set_current_state(newstate, from_user=True)

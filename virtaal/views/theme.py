@@ -147,7 +147,7 @@ def update_style(widget):
 
 # these are based on an (old?) Web Content Accessibility Guidelines of the w3c
 # See  http://juicystudio.com/article/luminositycontrastratioalgorithm.php
-# TODO: Might be a bit newer/better, so we shuld consider updating the code:
+# TODO: Might be a bit newer/better, so we should consider updating the code:
 #      http://www.w3.org/TR/WCAG20/Overview.html
 
 def _luminance(c):

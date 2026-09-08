@@ -391,7 +391,7 @@ def create_localized_tutorial():
         if isinstance(source, list):
             # Maybe unnecessary since when Virtaal opens the file and doesn't
             # crash, even if it has only a msgstr for plural entries, and it
-            # shows the appropiate number of translation fields (for the target
+            # shows the appropriate number of translation fields (for the target
             # language).
             unit.target = [u"", u""]
 

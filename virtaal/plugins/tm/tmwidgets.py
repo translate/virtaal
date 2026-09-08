@@ -132,7 +132,7 @@ class TMWindow(Gtk.Window):
         window.get_toplevel().move_resize(x,y, width,height)
 
 
-    # EVENT HANLDERS #
+    # EVENT HANDLERS #
     def _percent_data_func(self, column, cell_renderer, tree_model, iter, user_data):
         match_data = tree_model.get_value(iter, 0)
         if match_data.get('quality', None) is not None:

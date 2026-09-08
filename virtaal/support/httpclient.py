@@ -188,7 +188,7 @@ class HTTPClient(object):
 
         # Since pycurl doesn't keep references to requests, requests
         # get garbage collected before they are done. We need to keep requests in
-        # a set and detroy them manually.
+        # a set and destroy them manually.
         self.requests = set()
         self.curl = pycurl.CurlMulti()
         self.user_agent = None

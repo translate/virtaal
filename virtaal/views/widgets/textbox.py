@@ -291,7 +291,7 @@ class TextBox(Gtk.TextView):
             def show_widget():
                 cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)
                 anchor = self.buffer.create_child_anchor(cursor_iter)
-                # It is necessary to recreate cursor_iter becuase, for some inexplicable reason,
+                # It is necessary to recreate cursor_iter because, for some inexplicable reason,
                 # the Gtk guys thought it acceptable to have create_child_anchor() above CHANGE
                 # THE PARAMETER ITER'S VALUE! But only in some cases, while the moon is 73.8% full
                 # and it's after 16:33. Documenting this is obviously also too much to ask.
@@ -598,7 +598,7 @@ class TextBox(Gtk.TextView):
             # d |  Placeable  |  N/A        #
             #################################
             # The table above specifies what should be deleted for editable and
-            # non-editable placeables when the cursor is at a specific boundry
+            # non-editable placeables when the cursor is at a specific boundary
             # position (a, b, c, d) and a specified key is pressed (backspace or
             # delete). Without widgets, positions b and c fall away.
             #

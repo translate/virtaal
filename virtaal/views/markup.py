@@ -41,7 +41,7 @@ def _fancyspaces(string):
     return u'<span underline="error" foreground="grey">%s</span>' % spaces
 
 
-# Highligting for XML
+# Highlighting for XML
 
 # incorrect XML might be marked up incorrectly:  "<a> text </a more text bla"
 _xml_re = re.compile("&lt;[^>]+>")
@@ -66,7 +66,7 @@ def _escape_entities(s):
 def markuptext(text, fancyspaces=True, markupescapes=True, diff_text=u""):
     """Markup the given text to be pretty Pango markup.
 
-    Special characters (&, <) are converted, XML markup highligthed with
+    Special characters (&, <) are converted, XML markup highlighted with
     escapes and unusual spaces optionally being indicated."""
     # locations are coming through here for some reason - tooltips, maybe
     if not text:
@@ -175,7 +175,7 @@ def pango_diff(a, b):
                 # can give a subtle highlighting for mostly case differences:
                 if (len_text > 5 or len_removed < len_text + 2) and \
                         removed.lower().endswith(text.lower()):
-                    # a more subtle replace highligting, since only case differs
+                    # a more subtle replace highlighting, since only case differs
                     textdiff += _pango_spans(replace_attr_add_case, text)
                 else:
                     # Replacement. We only show the deleted part of the

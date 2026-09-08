@@ -76,7 +76,7 @@ class LanguageModel(BaseModel):
                     try:
                         langcode = self._match_normalized_langcode(langcode)
                     except ValueError:
-                        logging.info("unkown language %s" % langcode)
+                        logging.info("unknown language %s" % langcode)
                         self.name = langcode
                         self.code = langcode
                         self.nplurals = 0

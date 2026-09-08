@@ -21,14 +21,11 @@
 
 """Contains the AutoCorrector class."""
 
-import logging
 import os
 import re
-import zipfile
 
 from gi.repository import GLib
 
-from virtaal.common import pan_app
 from virtaal.controllers.baseplugin import BasePlugin
 from virtaal.views.widgets.textbox import TextBox
 
@@ -44,16 +41,17 @@ class AutoCorrector(object):
     REPLACEMENT, REGEX = range(2)
 
     def __init__(self, main_controller, lang='', acorpath=None):
-        """Create a new AutoCorrector instance and load the OpenOffice.org
-            auto-correction diction for language code 'lang'.
+        """Create a new AutoCorrector instance and load the LibreOffice
+            auto-correction data for language code 'lang'.
 
             @type  lang: str
             @param lang: The code of the language to load auto-correction data
                 for. See M{load_dictionary} for more information about how this
                 parameter is used.
             @type  acorpath: str
-            @param acorpath: The path to the directory containing the
-                OpenOffice.org auto-correction data files (acor_*.dat).
+            @param acorpath: The path to the directory holding one
+                subdirectory per locale, each with a DocumentList.xml
+                (see autocorrect_source.py) - <acorpath>/<lang>/DocumentList.xml.
             """
         self.main_controller = main_controller
         self.lang = None
@@ -115,28 +113,21 @@ class AutoCorrector(object):
         for w in set(self.widgets):
             self.remove_widget(w)
 
-    def load_dictionary(self, lang):
-        """Load the OpenOffice.org auto-correction dictionary for language
-            'lang'.
+    def load_dictionary(self, lang, force=False):
+        """Load the LibreOffice auto-correction data for language 'lang'.
 
-            OpenOffice.org's auto-correction data files are in named in the
-            format "acor_I{lang}-I{country}.dat", where I{lang} is the ISO
-            language code and I{country} the country code. This function can
-            handle (for example) "af", "af_ZA" or "af-ZA" to load the Afrikaans
-            data file. Here are the steps taken in trying to find the correct
-            data file:
-              - Underscores are replaced with hyphens in C{lang} ("af_ZA" ->
-                "af-ZA").
-              - The file for C{lang} is opened ("acor_af-ZA.dat").
-              - If the open fails, the language code ("af") is extracted and the
-                first file found starting with "acor_af" and ending in ".dat" is
-                used.
+            Data lives one directory per locale under self.acorpath
+            (see autocorrect_source.py), each holding a bare
+            DocumentList.xml - <acorpath>/<lang>/DocumentList.xml. This
+            handles "af", "af_ZA" or "af-ZA": tries the exact locale
+            directory first ("af_ZA"), then the first directory found
+            starting with the bare language part ("af").
 
-            These steps imply that if "af" is given as lang, the data file
-            "acor_af-ZA.dat" will end up being loaded.
+            force re-loads even if 'lang' is already self.lang - used
+            after a background download completes for a language that
+            had nothing available the first time round.
             """
-        # Change "af_ZA" to "af-ZA", which OOo uses to store acor files.
-        if lang == self.lang:
+        if lang == self.lang and not force:
             return
 
         if not lang:
@@ -144,32 +135,15 @@ class AutoCorrector(object):
             self.lang = ''
             return
 
-        lang = lang.replace('_', '-')
-        try:
-            acor = zipfile.ZipFile(os.path.join(self.acorpath, 'acor_%s.dat' % lang))
-        except IOError as _exc:
-            # Try to find a file that starts with 'acor_%s' % (lang[0]) (where
-            # lang[0] is the part of lang before the '-') and ends with '.dat'
-            langparts = lang.split('-')
-            filenames = [fn for fn in os.listdir(self.acorpath) if fn.startswith('acor_%s' % langparts[0])
-                                                                   and fn.endswith('.dat')]
-            for fn in filenames:
-                try:
-                    acor = zipfile.ZipFile(os.path.join(self.acorpath, fn))
-                    break
-                except IOError:
-                    logging.exception('Unable to load auto-correction data file for language %s' % (lang))
+        lang = lang.replace('-', '_')
+        xml_bytes = self._read_document_list(lang)
+        if xml_bytes is None:
+            self.correctiondict = {}
+            self.lang = ''
+            return
 
-            else:
-                # If no acceptable auto-correction file was found, we create an
-                # empty dictionary.
-                self.correctiondict = {}
-                self.lang = ''
-                return
-
-        xmlstr = acor.read('DocumentList.xml')
         from lxml import etree
-        xml = etree.fromstring(xmlstr)
+        xml = etree.fromstring(xml_bytes)
         # Sample element from DocumentList.xml (it has no root element!):
         #   <block-list:block block-list:abbreviated-name="teh" block-list:name="the"/>
         # This means that xml.iterchildren() will return an iterator over all
@@ -185,6 +159,25 @@ class AutoCorrector(object):
 
         self.lang = lang
         return
+
+    def _read_document_list(self, lang):
+        """The raw DocumentList.xml bytes for lang, or None if nothing
+            local covers it."""
+        exact = os.path.join(self.acorpath, lang, 'DocumentList.xml')
+        if os.path.isfile(exact):
+            with open(exact, 'rb') as f:
+                return f.read()
+
+        if not os.path.isdir(self.acorpath):
+            return None
+        langpart = lang.split('_')[0]
+        for name in sorted(os.listdir(self.acorpath)):
+            if name == langpart or name.startswith(langpart + '_'):
+                candidate = os.path.join(self.acorpath, name, 'DocumentList.xml')
+                if os.path.isfile(candidate):
+                    with open(candidate, 'rb') as f:
+                        return f.read()
+        return None
 
     def remove_widget(self, widget):
         """Remove a widget (currently only C{TextBox}es are accepted) from
@@ -270,7 +263,9 @@ class Plugin(BasePlugin):
         self._init_plugin()
 
     def _init_plugin(self):
-        self.autocorr = AutoCorrector(self.main_controller, acorpath=pan_app.get_abs_data_filename(['virtaal', 'autocorr']))
+        from virtaal.support.autocorrect_source import autocorrect_root_dir
+        self.autocorr = AutoCorrector(self.main_controller, acorpath=autocorrect_root_dir())
+        self._autocorr_tried = set()
 
         def on_cursor_change(cursor):
             def add_widgets():
@@ -281,8 +276,25 @@ class Plugin(BasePlugin):
 
             GLib.idle_add(add_widgets)
 
+        def maybe_download(lang):
+            # Nothing local covered it (load_dictionary() always
+            # replaces correctiondict, so this reflects lang's own
+            # outcome) - try once per language per run.
+            if not lang or self.autocorr.correctiondict or lang in self._autocorr_tried:
+                return
+            self._autocorr_tried.add(lang)
+
+            def on_done():
+                self.autocorr.load_dictionary(lang, force=True)
+                on_cursor_change(None)
+
+            from virtaal.support.autocorrect_downloader import AutocorrectDownloader
+            AutocorrectDownloader(lang, on_done=on_done).start()
+
         def on_store_loaded(storecontroller):
-            self.autocorr.load_dictionary(lang=self.main_controller.lang_controller.target_lang.code)
+            lang = self.main_controller.lang_controller.target_lang.code
+            self.autocorr.load_dictionary(lang=lang)
+            maybe_download(lang)
 
             if getattr(self, '_cursor_changed_id', None):
                 self.store_cursor.disconnect(self._cursor_changed_id)
@@ -292,6 +304,7 @@ class Plugin(BasePlugin):
 
         def on_target_lang_changed(lang_controller, lang):
             self.autocorr.load_dictionary(lang)
+            maybe_download(lang)
             # If the previous language didn't have a correction list, we might
             # have never attached, so let's make sure we attach.
             on_cursor_change(None)

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #
 # Copyright 2013 Zuza Software Foundation
 # Copyright 2012 Leandro Regueiro Iglesias

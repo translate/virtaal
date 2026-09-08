@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #
 # Copyright 2008-2011 Zuza Software Foundation
 #

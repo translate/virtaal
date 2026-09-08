@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #
 # Copyright (C) 2007-2008 Dieter Verfaillie <dieterv@optionexplicit.be>
 # Copyright 2009-2010 Zuza Software Foundation

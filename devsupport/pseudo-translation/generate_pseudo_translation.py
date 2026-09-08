@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Generates synthetic gettext locales from po/virtaal.pot, for
 exercising every translatable string in the UI without an actual
 translation:

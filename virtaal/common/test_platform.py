@@ -63,6 +63,7 @@ def test_defaults_fall_back_to_real_os_and_sys():
     assert p.is_frozen == bool(getattr(sys, 'frozen', False))
     assert p.is_intel == (platform_module.machine() == 'x86_64')
     assert p.is_arm == (platform_module.machine() == 'arm64')
+    assert p.is_flatpak == ('FLATPAK_ID' in os.environ)
 
 
 def test_intel():
@@ -75,3 +76,13 @@ def test_arm():
     p = Platform(machine='arm64')
     assert not p.is_intel
     assert p.is_arm
+
+
+def test_flatpak():
+    p = Platform(environ={'FLATPAK_ID': 'org.translate.Virtaal'})
+    assert p.is_flatpak
+
+
+def test_not_flatpak():
+    p = Platform(environ={})
+    assert not p.is_flatpak

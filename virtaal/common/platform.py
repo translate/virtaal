@@ -41,6 +41,8 @@ class Platform:
         machine = machine if machine is not None else platform_module.machine()
         self.is_intel = machine == 'x86_64'
         self.is_arm = machine == 'arm64'
+        environ = environ if environ is not None else os.environ
+        self.is_flatpak = 'FLATPAK_ID' in environ
 
 
 platform = Platform()

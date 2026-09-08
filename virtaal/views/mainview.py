@@ -853,7 +853,8 @@ class MainView(BaseView):
 
     def _on_report_bug(self, _widget=None):
         from virtaal.support import openmailto
-        openmailto.open("https://github.com/translate/virtaal/issues/new")
+        from virtaal.support.bug_report import build_bug_report_url
+        openmailto.open(build_bug_report_url())
 
     def _on_store_closed(self, store_controller):
         for widget_name in ('mnu_saveas', 'mnu_close', 'mnu_update', 'mnu_properties', 'mnu_binary_export'):

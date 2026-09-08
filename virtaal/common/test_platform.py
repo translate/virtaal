@@ -19,6 +19,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import os
+import platform as platform_module
 import sys
 
 from virtaal.common.platform import Platform
@@ -62,3 +63,17 @@ def test_defaults_fall_back_to_real_os_and_sys():
     assert p.is_windows == (os.name == 'nt')
     assert p.is_mac == (sys.platform == 'darwin')
     assert p.is_frozen == bool(getattr(sys, 'frozen', False))
+    assert p.is_intel == (platform_module.machine() == 'x86_64')
+    assert p.is_arm == (platform_module.machine() == 'arm64')
+
+
+def test_intel():
+    p = Platform(machine='x86_64')
+    assert p.is_intel
+    assert not p.is_arm
+
+
+def test_arm():
+    p = Platform(machine='arm64')
+    assert not p.is_intel
+    assert p.is_arm

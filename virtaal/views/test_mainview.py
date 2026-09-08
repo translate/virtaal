@@ -95,6 +95,21 @@ def test_show_save_dialog_returns_filename_on_accept():
     assert view.show_save_dialog('Save', current_filename='/tmp/test.po') == '/tmp/test.po'
 
 
+def test_report_bug_opens_the_prefilled_template(monkeypatch):
+    from virtaal.support import openmailto
+
+    opened = []
+    monkeypatch.setattr(openmailto, 'open', lambda url: opened.append(url))
+
+    view = MainView.__new__(MainView)
+    view._on_report_bug()
+
+    assert len(opened) == 1
+    assert opened[0].startswith(
+        'https://github.com/translate/virtaal/issues/new?')
+    assert 'template=bug_report.yml' in opened[0]
+
+
 def test_show_save_dialog_returns_none_on_cancel():
     view = _make_view_with_chooser(
         '_save_chooser', _FakeChooser(Gtk.ResponseType.CANCEL))

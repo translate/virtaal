@@ -140,7 +140,14 @@ datas = [
     (str(TRANSLATE_SHARE), "share"),
 ] + mo_files
 if ENCHANT_DATA is not None and ENCHANT_DATA.is_dir():
-    datas.append((str(ENCHANT_DATA), "enchant/data"))
+    # Only en_GB - enough to test; the rest comes via download, not
+    # bundled (~20MB of unused dictionaries otherwise).
+    for p in ENCHANT_DATA.rglob("*"):
+        if p.is_dir():
+            continue
+        if p.parent.name == "hunspell" and p.stem != "en_GB":
+            continue
+        datas.append((str(p), str(Path("enchant/data") / p.relative_to(ENCHANT_DATA).parent)))
 
 a = Analysis(  # noqa: F821
     [str(ROOT / "bin" / "virtaal")],

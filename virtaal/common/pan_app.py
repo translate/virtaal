@@ -357,6 +357,23 @@ def get_abs_data_filename(path_parts, basedirs=None):
     ]
     return file_discovery.get_abs_data_filename(path_parts, basedirs=basedirs)
 
+def _set_enchant_env_vars(enchant_dir):
+    """Point pyenchant at the self-contained dylib bundled at
+    enchant_dir (virtaal.spec's own layout: lib/, lib/enchant/,
+    share/enchant/) instead of letting it fall through to Homebrew's
+    own copy - a second glib/gobject stack in the same process crashes
+    cairo/the ObjC runtime, see that spec's own comment."""
+    os.environ.setdefault('PYENCHANT_LIBRARY_PATH', os.path.join(enchant_dir, 'lib', 'libenchant.1.dylib'))
+    os.environ.setdefault('ENCHANT_MODULE_DIR', os.path.join(enchant_dir, 'lib', 'enchant'))
+    os.environ.setdefault('ENCHANT_DATA_DIR', os.path.join(enchant_dir, 'share', 'enchant'))
+
+# Frozen Intel-only - no arm64 build of the bundled dylib exists yet.
+if platform.is_mac and platform.is_frozen and platform.is_intel:
+    try:
+        _set_enchant_env_vars(get_abs_data_filename(["enchant_intel"]))
+    except ValueError:
+        pass
+
 def load_config(filename, section=None):
     """Load the configuration from the given filename (and optional section
         into a dictionary structure.

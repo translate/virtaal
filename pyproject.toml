@@ -75,3 +75,16 @@ exclude = ["virtaal.test"]
 # it never was packaged for a real install, only usable from a source
 # checkout (see bin/virtaal's profiling support, which already degrades
 # gracefully when devsupport.profiling isn't importable).
+
+# gettext.install('virtaal') (pan_app.py) puts `_` into builtins at
+# runtime - invisible to static analysis, so every translatable
+# string would otherwise flag as F821.
+[tool.ruff]
+builtins = ["_"]
+
+[tool.ruff.lint]
+# F (pyflakes: unused imports/variables, undefined names) + UP
+# (pyupgrade: obsolete py2-compat patterns like super(Cls, self)).
+# Deliberately not the default style/whitespace rule families -
+# that's ruff format's job, not enabled yet.
+select = ["F", "UP"]

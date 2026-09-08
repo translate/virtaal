@@ -20,7 +20,7 @@ from functools import reduce
 from io import StringIO
 
 import IPython
-from gi.repository import GLib, Pango, Gtk
+from gi.repository import GLib, Pango, Gtk, Gdk
 
 
 class IterableIPShell:

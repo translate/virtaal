@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2010 Zuza Software Foundation
 #
@@ -112,9 +111,9 @@ class ChecksUnitView(BaseView):
         if not failures:
             # We want an empty button, but this causes a bug where subsequent
             # updates don't show, so we set it to a non-breaking space
-            self.lbl_btnchecks.set_text(u"\u202a")
+            self.lbl_btnchecks.set_text("\u202a")
             self._show_empty_label()
-            self.btn_checks.set_tooltip_text(u"")
+            self.btn_checks.set_tooltip_text("")
             return
 
         self.lst_checks.clear()

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright 2009-2011 Zuza Software Foundation
 # Copyright 2013-2015 F Wolff
@@ -176,7 +175,7 @@ class TextBox(Gtk.TextView):
             text = StringElem(text)
 
         if self.elem is None:
-            self.elem = StringElem(u'')
+            self.elem = StringElem('')
 
         if text is not self.elem:
             # If text is self.elem, we are busy with a refresh and we should remember the selected element.
@@ -492,7 +491,7 @@ class TextBox(Gtk.TextView):
         if not self.placeables_controller:
             return
         if self.elem is None:
-            self.elem = StringElem(u'')
+            self.elem = StringElem('')
 
         self.add_default_gui_info(self.elem)
 

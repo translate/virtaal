@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2007-2011 Zuza Software Foundation
 # Copyright 2013,2015 F Wolff
@@ -153,7 +152,7 @@ def main(argv):
             else:
                 try:
                     logging.basicConfig(level=level, format=format, filename=path.abspath(options.log), filemode='w')
-                except IOError:
+                except OSError:
                     parser.error(_("Could not open log file '%(filename)s'") % {"filename": options.log})
 
             logging.info("Virtaal %s", __version__.version_string())
@@ -213,7 +212,7 @@ def main(argv):
 
             try:
                 profile(open(options.profile, 'w+'), startup_file)
-            except IOError:
+            except OSError:
                 parser.error(_("Could not open profile file '%(filename)s'") % {"filename":options.profile})
 
         def default_runner(startup_file):

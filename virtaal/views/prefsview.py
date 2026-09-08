@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2009 Zuza Software Foundation
 #
@@ -145,11 +144,11 @@ class PreferencesView(BaseView, GObjectWrapper):
         if not isinstance(value, dict):
             raise ValueError('Value must be a dictionary')
         if 'name' in value:
-            self._widgets['ent_translator'].set_text(value['name'] or u'')
+            self._widgets['ent_translator'].set_text(value['name'] or '')
         if 'email' in value:
-            self._widgets['ent_email'].set_text(value['email'] or u'')
+            self._widgets['ent_email'].set_text(value['email'] or '')
         if 'team' in value:
-            self._widgets['ent_team'].set_text(value['team'] or u'')
+            self._widgets['ent_team'].set_text(value['team'] or '')
     user_data = property(_get_user_data, _set_user_data)
 
 

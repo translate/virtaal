@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # --- Vendored into Virtaal ---
 # Copied verbatim from translate-toolkit (PyPI: translate-toolkit), file

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2009 Zuza Software Foundation
 #
@@ -26,7 +25,7 @@ from virtaal.common import pan_app
 class PluginUnsupported(Exception):
     pass
 
-class BasePlugin(object):
+class BasePlugin:
     """The base interface to be implemented by all plug-ins."""
 
     configure_func = None
@@ -46,7 +45,7 @@ class BasePlugin(object):
             raise Exception('No name specified')
         if str(cls.version) <= '0':
             raise Exception('Invalid version number specified')
-        return super(BasePlugin, cls).__new__(cls)
+        return super().__new__(cls)
 
     def __init__(self):
         raise NotImplementedError('This interface cannot be instantiated.')

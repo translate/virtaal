@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2009 Zuza Software Foundation
 #
@@ -21,7 +20,7 @@
 from .selectdialog import SelectDialog
 
 
-class TestSelectDialog(object):
+class TestSelectDialog:
     """
     Test runner for SelectDialog.
     """

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2009-2011 Zuza Software Foundation
 #
@@ -83,14 +82,14 @@ class LanguageView(BaseView):
             # (RLE) characters ensure that untranslated language names will
             # still display with the correct direction as they are present
             # in the interface.
-            pairlabel = u'\u202b%s ← \u202b%s' % (srclang.name, tgtlang.name)
+            pairlabel = '\u202b%s ← \u202b%s' % (srclang.name, tgtlang.name)
         else:
-            pairlabel = u'%s → %s' % (srclang.name, tgtlang.name)
+            pairlabel = '%s → %s' % (srclang.name, tgtlang.name)
         # While it seems that the arrows are not well supported on Windows
         # systems, we fall back to using the French quotes. It automatically
         # does the right thing for RTL.
         if platform.is_windows:
-            pairlabel = u'%s » %s' % (srclang.name, tgtlang.name)
+            pairlabel = '%s » %s' % (srclang.name, tgtlang.name)
         return pairlabel
 
     def notify_same_langs(self):

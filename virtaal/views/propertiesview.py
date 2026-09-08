@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2011 Zuza Software Foundation
 # Copyright 2016 F Wolff
@@ -202,7 +201,7 @@ class PropertiesView(BaseView, GObjectWrapper):
         if file_size:
             #Let's get this from glib20.mo so that we're consistent with the file dialogue
             from gettext import dgettext
-            i18n_filesize = dgettext('glib20', u"%.1f KB") % (file_size / 1024.0)
+            i18n_filesize = dgettext('glib20', "%.1f KB") % (file_size / 1024.0)
             self._widgets['lbl_filesize'].set_text(i18n_filesize)
 
         self._widgets['dialog'].run()

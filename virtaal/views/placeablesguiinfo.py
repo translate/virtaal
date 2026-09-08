@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2009-2010 Zuza Software Foundation
 # Copyright 2013,2016 F Wolff
@@ -32,7 +31,7 @@ def _count_anchors(buffer, itr):
     return anchor_text.count('\ufffc')
 
 
-class StringElemGUI(object):
+class StringElemGUI:
     """
     A convenient container for all GUI properties of a L{StringElem}.
     """
@@ -301,7 +300,7 @@ class BxGUI(StringElemGUI):
             font_desc = get_role_font_description(self.textbox.role)
             lbl.modify_font(font_desc)
             self.textbox.get_pango_context().set_font_description(font_desc)
-            w, h = make_pango_layout(self.textbox, u'((', 100).get_pixel_size()
+            w, h = make_pango_layout(self.textbox, '((', 100).get_pixel_size()
             lbl.set_size_request(-1, int(h/1.2))
 
 
@@ -315,7 +314,7 @@ class ExGUI(StringElemGUI):
             font_desc = get_role_font_description(self.textbox.role)
             lbl.modify_font(font_desc)
             self.textbox.get_pango_context().set_font_description(font_desc)
-            w, h = make_pango_layout(self.textbox, u'))', 100).get_pixel_size()
+            w, h = make_pango_layout(self.textbox, '))', 100).get_pixel_size()
             lbl.set_size_request(-1, int(h/1.2))
 
 
@@ -324,12 +323,12 @@ class NewlineGUI(StringElemGUI):
     fg = theme.current_theme['subtle_fg']
 
     def create_repr_widgets(self):
-        lbl = Gtk.Label(label=u'¶')
+        lbl = Gtk.Label(label='¶')
         lbl.modify_fg(Gtk.StateType.NORMAL, Gdk.color_parse(self.fg))  # foreground is light grey
         font_desc = get_role_font_description(self.textbox.role)
         lbl.modify_font(font_desc)
         self.textbox.get_pango_context().set_font_description(font_desc)
-        w, h = make_pango_layout(self.textbox, u'¶', 100).get_pixel_size()
+        w, h = make_pango_layout(self.textbox, '¶', 100).get_pixel_size()
         lbl.set_size_request(-1, int(h/1.2))
         self.widgets.append(lbl)
 
@@ -357,7 +356,7 @@ class GPlaceableGUI(StringElemGUI):
             font_desc = get_role_font_description(self.textbox.role)
             lbl.modify_font(font_desc)
             self.textbox.get_pango_context().set_font_description(font_desc)
-            w, h = make_pango_layout(self.textbox, u'<foo>', 100).get_pixel_size()
+            w, h = make_pango_layout(self.textbox, '<foo>', 100).get_pixel_size()
             lbl.set_size_request(-1, int(h/1.2))
 
 
@@ -373,7 +372,7 @@ class XPlaceableGUI(StringElemGUI):
         font_desc = get_role_font_description(self.textbox.role)
         lbl.modify_font(font_desc)
         self.textbox.get_pango_context().set_font_description(font_desc)
-        w, h = make_pango_layout(self.textbox, u'[foo]', 100).get_pixel_size()
+        w, h = make_pango_layout(self.textbox, '[foo]', 100).get_pixel_size()
         lbl.set_size_request(-1, int(h/1.2))
 
 
@@ -403,7 +402,7 @@ class UnknownXMLGUI(StringElemGUI):
 
         for lbl in self.widgets:
             lbl.modify_font(get_role_font_description(self.textbox.role))
-            w, h = make_pango_layout(self.textbox, u'{foo}', 100).get_pixel_size()
+            w, h = make_pango_layout(self.textbox, '{foo}', 100).get_pixel_size()
             lbl.set_size_request(-1, int(h/1.2))
 
 def update_style(widget):

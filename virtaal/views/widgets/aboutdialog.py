@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2010 Zuza Software Foundation
 #
@@ -31,7 +30,7 @@ class AboutDialog(Gtk.AboutDialog):
         self._register_uri_handlers()
         self.set_name("Virtaal")
         self.set_version(__version__.ver)
-        self.set_copyright(_(u"Copyright © 2007-2010 Zuza Software Foundation"))
+        self.set_copyright(_("Copyright © 2007-2010 Zuza Software Foundation"))
         # l10n: Please retain the literal name "Virtaal", but feel free to
         # additionally transliterate the name and to add a translation of "For Language", which is what the name means.
         self.set_comments(_("Virtaal is a program for doing translation.") + "\n\n" +
@@ -57,9 +56,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.""")
                 "Walter Leibbrandt",
         ]
         if pan_app.ui_language == "ar":
-            authors.append(u"علاء عبد الفتاح")
+            authors.append("علاء عبد الفتاح")
         else:
-            authors.append(u"Alaa Abd El Fattah")
+            authors.append("Alaa Abd El Fattah")
         authors.extend([
                 "",  # just for spacing
                 _("We thank our donors:"),

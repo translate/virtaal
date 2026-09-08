@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright 2007-2011 Zuza Software Foundation
 #
@@ -98,7 +97,7 @@ def tr_lang(langcode=None):
             language, country = match.groups()
             if country != "macrolanguage":
                 return (
-                    u"%s (%s)"
+                    "%s (%s)"
                     % (_fix_language_name(langfunc(language)),
                        countryfunc(country)))
         return _fix_language_name(langfunc(name))

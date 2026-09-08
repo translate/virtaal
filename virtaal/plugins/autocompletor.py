@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2008-2010 Zuza Software Foundation
 # Copyright 2013 F Wolff
@@ -42,7 +41,7 @@ from virtaal.controllers.baseplugin import BasePlugin
 from virtaal.views.widgets.textbox import TextBox
 
 
-class AutoCompletor(object):
+class AutoCompletor:
     """
     Does auto-completion of registered words in registered widgets.
     """
@@ -105,7 +104,7 @@ class AutoCompletor(object):
         for w in self._word_list:
             if w.startswith(word):
                 return w, w[len(word):]
-        return None, u''
+        return None, ''
 
     def clear_widgets(self):
         """Release all registered widgets from the spell of auto-completion."""

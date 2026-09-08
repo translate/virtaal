@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright 2009-2010 Zuza Software Foundation
 # Copyright 2016 F Wolff
@@ -147,7 +146,7 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
             s = widget.lbl_name.get_label()
         if widget.lbl_desc:
             # avoid the import of xml.sax.saxutils.escape
-            escaped = widget.lbl_desc.get_text().replace(u"&", u"&amp;").replace(u"<", u"&lt;") # & must be first
+            escaped = widget.lbl_desc.get_text().replace("&", "&amp;").replace("<", "&lt;") # & must be first
             s += '\n' + escaped
         return s
 

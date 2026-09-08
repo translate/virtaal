@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Copyright 2009 Zuza Software Foundation
 #
@@ -19,7 +18,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-class BaseLookupModel(object):
+class BaseLookupModel:
     """The base interface to be implemented by all look-up backend models."""
 
     description = ""

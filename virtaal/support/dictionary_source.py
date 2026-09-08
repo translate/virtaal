@@ -177,15 +177,11 @@ def dictionary_write_dir():
     """Where enchant's hunspell backend looks for user-installed
     dictionaries.
 
-    NOT independently verified on every platform - built from
-    enchant's own get_user_config_dir() (the one per-user directory
-    pyenchant itself exposes cross-platform) plus a "hunspell"
-    subdirectory, the naming the currently-bundled Windows dictionaries
-    already use (enchant/data/mingw64/share/enchant/hunspell/ in that
-    wheel). Confirming this against a real hunspell-enabled enchant
-    install (this session's own dev machine only had aspell/AppleSpell
-    providers available, not hunspell) is a real follow-up, not done
-    here.
+    Confirmed against libenchant's own current source (rrthomas/enchant,
+    lib/provider.vala): a provider's user dict dir is
+    get_user_config_dir()/<provider's own identify string>, and the
+    hunspell provider's identify() returns literally "hunspell" -
+    matching enchant.get_user_config_dir() (Python) plus that name.
     """
     import enchant
     return os.path.join(enchant.get_user_config_dir(), 'hunspell')

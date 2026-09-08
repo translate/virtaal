@@ -5,7 +5,7 @@ from gi.repository import Gtk
 from gi.repository import Pango
 
 from virtaal.controllers.baseplugin import BasePlugin
-from .ipython_view import *
+from .ipython_view import IPythonView
 
 
 class IPythonWindow(Gtk.Window):

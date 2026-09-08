@@ -17,17 +17,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import json
 import logging
 
 from urllib.parse import quote_plus
 
 import pycurl
-
-# These two json modules are API compatible
-try:
-    import simplejson as json #should be a bit faster; needed for Python < 2.6
-except ImportError:
-    import json #available since Python 2.6
 
 from virtaal.common.utils import get_unicode
 from .basetmmodel import BaseTMModel, unescape_html_entities

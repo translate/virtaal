@@ -26,12 +26,8 @@ has been retired; this now targets the APY instance Apertium itself hosts,
 which needs no appId.
 """
 
+import json
 from urllib.parse import urlencode
-# These two json modules are API compatible
-try:
-    import simplejson as json #should be a bit faster; needed for Python < 2.6
-except ImportError:
-    import json #available since Python 2.6
 
 from .basetmmodel import BaseTMModel, unescape_html_entities
 

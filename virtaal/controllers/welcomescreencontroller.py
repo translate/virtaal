@@ -30,11 +30,10 @@ class WelcomeScreenController(BaseController):
     """The maximum number of recent items to display."""
 
     LINKS = {
-        'manual':   _('http://translate.sourceforge.net/wiki/virtaal/using_virtaal'),
-        'locguide': _('http://translate.sourceforge.net/wiki/guide/start'),
-        # FIXME: The URL below should be replaced with a proper feedback URL
-        'feedback': _("http://translate.sourceforge.net/wiki/virtaal/index#contact"),
-        'features_more': _('http://translate.sourceforge.net/wiki/virtaal/features')
+        'manual':   _('https://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html'),
+        'locguide': _('https://docs.translatehouse.org/projects/localization-guide/en/'),
+        'feedback': _('https://docs.translatehouse.org/projects/virtaal/en/latest/index.html#contact'),
+        'features_more': _('https://docs.translatehouse.org/projects/virtaal/en/latest/features.html'),
     }
 
     # INITIALIZERS #

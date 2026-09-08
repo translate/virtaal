@@ -111,7 +111,7 @@ def create_localized_tutorial():
        "convenient to copy the entire source string with Alt+Down. Here is "
        "almost nothing to translate, so just press Alt+Down and make "
        "corrections if necessary."),
-     "<b><a href=\"http://virtaal.org/\">Virtaal</a></b>",
+     "<b><a href=\"https://virtaal.translatehouse.org/\">Virtaal</a></b>",
      ""),
 
     (_("Placeables are special parts of the text, like the © symbol, that "
@@ -231,7 +231,7 @@ def create_localized_tutorial():
 
     (_("This message contains the URL (web address) of the project website. "
        "It must be transferred as a placeable or typed over exactly."),
-     "Visit the project website at http://virtaal.org/",
+     "Visit the project website at https://virtaal.translatehouse.org/",
      ""),
 
     (_("This message refers to a website with more information. Sometimes "

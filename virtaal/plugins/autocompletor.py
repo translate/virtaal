@@ -20,21 +20,9 @@
 """Contains the AutoCompletor class."""
 
 import re
+from collections import defaultdict
 
 from gi.repository import GLib
-
-try:
-    from collections import defaultdict
-except ImportError:
-    class defaultdict(dict):
-        def __init__(self, default_factory=lambda: None):
-            self.__factory = default_factory
-
-        def __getitem__(self, key):
-            if key in self:
-                return super().__getitem__(key)
-            else:
-                return self.__factory()
 
 from virtaal.controllers.baseplugin import BasePlugin
 from virtaal.views.widgets.textbox import TextBox

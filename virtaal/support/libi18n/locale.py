@@ -16,6 +16,9 @@
 #
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; If not, see <http://www.gnu.org/licenses/>.
+#
+# Later modifications: Copyright (C) Virtaal contributors. See the
+# AUTHORS.md file for copyright and authorship information.
 
 
 import os

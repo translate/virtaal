@@ -323,6 +323,7 @@ class TermAddDialog:
             setattr(self, name, self.gui.get_object(name))
 
         self.dialog = self.gui.get_object('TermAddDlg')
+        self.dialog.set_default_response(Gtk.ResponseType.OK)
 
         cellr = Gtk.CellRendererText()
         cellr.props.ellipsize = Pango.EllipsizeMode.MIDDLE

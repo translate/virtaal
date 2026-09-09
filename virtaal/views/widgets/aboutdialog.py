@@ -21,6 +21,7 @@ from gi.repository import Gtk, GdkPixbuf
 from virtaal import __version__
 from virtaal.common import pan_app
 from virtaal.support import openmailto
+from virtaal.support.authors import find_authors_md, parse_contributors
 
 
 class AboutDialog(Gtk.AboutDialog):
@@ -48,24 +49,37 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, see <http://www.gnu.org/licenses/>.""")
         self.set_website("https://virtaal.translatehouse.org")
         self.set_website_label(_("Virtaal website"))
-        authors = [
-                "Friedel Wolff",
-                "Wynand Winterbach",
-                "Dwayne Bailey",
-                "Walter Leibbrandt",
-        ]
+        # Contributors: read from AUTHORS.md rather than keeping a
+        # second, separately maintained copy here - the two had
+        # already drifted (this list used to be a handful of names;
+        # AUTHORS.md has the real, fuller one). Personal names aren't
+        # run through _() - proper names aren't translated.
+        authors_md = find_authors_md()
+        authors = parse_contributors(authors_md) if authors_md else []
+        if not authors:
+            # AUTHORS.md missing or unparsable (shouldn't happen in a
+            # normal checkout or a correctly packaged build) - fall
+            # back to the founding four rather than an empty tab.
+            authors = ["Friedel Wolff", "Dwayne Bailey", "Walter Leibbrandt", "Wynand Winterbach"]
+
         if pan_app.ui_language == "ar":
-            authors.append("علاء عبد الفتاح")
-        else:
-            authors.append("Alaa Abd El Fattah")
+            authors = ["علاء عبد الفتاح" if name == "Alaa Abd el Fattah" else name
+                       for name in authors]
+
+        # Donors: kept as real literals, not sourced from AUTHORS.md -
+        # these are stable, already-translated strings (several
+        # locales have real translations, e.g. po/af.po's
+        # "Internasionale ontwikkelingsnavorsingsentrum" for the IDRC)
+        # and round-tripping them through a data file's exact wording
+        # would silently break that lookup on the slightest edit there.
         authors.extend([
-                "",  # just for spacing
-                _("We thank our donors:"),
-                _("The International Development Research Centre"),
-                "\thttp://idrc.ca/",
-                _("Mozilla Corporation"),
-                "\thttp://mozilla.com/",
-                ])
+            "",  # just for spacing
+            _("We thank our donors:"),
+            _("The International Development Research Centre"),
+            "\thttp://idrc.ca/",
+            _("Mozilla Corporation"),
+            "\thttp://mozilla.com/",
+        ])
         self.set_authors(authors)
         # l10n: Rather than translating, fill in the names of the translators
         self.set_translator_credits(_("translator-credits"))

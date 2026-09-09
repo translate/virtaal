@@ -96,6 +96,14 @@ class Fuzzer:
         pan_app.settings.translator['team'] = 'none'
 
         self._build_controllers()
+        # Real usage always has a mapped, realized top-level window -
+        # without it, every widget here is a bare in-memory GObject
+        # with no native window-server surface, which very plausibly
+        # can't reproduce the class of native teardown race this
+        # exists to catch at all. Go straight to the window itself,
+        # not MainView.show() - that also calls Gtk.main(), and this
+        # fuzzer already pumps its own loop manually in step().
+        self.main_controller.view.main_window.show()
         self.store_controller.open_file(self.rng.choice(self.testfiles))
         self._load_current_unit()
 

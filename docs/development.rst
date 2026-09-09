@@ -20,3 +20,12 @@ checks themselves::
 That installs a git hook so the checks run automatically before each
 commit. ``pre-commit`` itself also still works unmodified against the
 same config file, if you'd rather use that.
+
+Copyright headers
+===================
+
+New ``.py`` files should carry the header documented in
+``.license.header.txt`` at the repo root - see ``AUTHORS.md`` for the
+full contributor list this points at. One of the pre-commit checks
+above verifies it on every changed file that already has some header;
+it doesn't require one on a file that never had one.

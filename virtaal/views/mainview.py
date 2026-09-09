@@ -6,6 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import locale
+import logging
 import os
 import subprocess
 import time
@@ -116,7 +117,6 @@ class MainView(BaseView):
                 Gtk.Settings.get_default().set_property(
                     "gtk-application-prefer-dark-theme", is_dark)
             except (OSError, subprocess.SubprocessError):
-                import logging
                 logging.exception("Couldn't determine macOS appearance")
 
             # Sometimes we have two resize grips: one from GTK, one from Aqua. We
@@ -158,7 +158,6 @@ class MainView(BaseView):
                 osxapp.connect("NSApplicationBlockTermination", self._on_quit)
                 self._osxapp = osxapp  # keep a reference; the signals need it to stay alive
             except (ImportError, ValueError):
-                import logging
                 logging.debug("GtkosxApplication not found (brew install gtk-mac-integration for native macOS menu-bar integration). Expect zero integration with the Mac desktop.")
 
         elif platform.is_windows:
@@ -173,7 +172,6 @@ class MainView(BaseView):
                 Gtk.Settings.get_default().set_property(
                     "gtk-application-prefer-dark-theme", apps_use_light_theme == 0)
             except OSError:
-                import logging
                 logging.exception("Couldn't determine Windows theme")
 
         self.main_window.connect('destroy', self._on_quit)

@@ -48,7 +48,7 @@ dependencies = [
 
 [project.optional-dependencies]
 spellcheck = ["pyenchant"]
-test = ["pytest"]
+test = ["pytest", "pytest-cov"]
 docs = ["Sphinx"]
 
 [project.urls]

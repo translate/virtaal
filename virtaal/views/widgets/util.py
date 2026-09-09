@@ -18,17 +18,17 @@
 
 __all__ = ['forall_widgets']
 
+import functools
+
 from gi.repository import Gtk
 
-from virtaal.support.simplegeneric import generic
 
-
-@generic
+@functools.singledispatch
 def get_children(widget):
     return []
 
 
-@get_children.when_type(Gtk.Container)
+@get_children.register(Gtk.Container)
 def get_children_container(widget):
     return widget.get_children()
 

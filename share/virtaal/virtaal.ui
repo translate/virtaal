@@ -1951,6 +1951,7 @@ If you are translating from English to French then French would be your translat
                 <property name="label">gtk-add</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="can_default">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
@@ -1992,6 +1993,7 @@ If you are translating from English to French then French would be your translat
               <object class="GtkEntry" id="ent_source">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="activates_default">True</property>
                 <property name="invisible_char">●</property>
                 <property name="width_chars">45</property>
                 <property name="primary_icon_activatable">False</property>
@@ -2024,6 +2026,7 @@ If you are translating from English to French then French would be your translat
               <object class="GtkEntry" id="ent_target">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="activates_default">True</property>
                 <property name="invisible_char">●</property>
                 <property name="width_chars">45</property>
                 <property name="primary_icon_activatable">False</property>

@@ -56,9 +56,10 @@ class LocalFileView:
         accel_group = self.menu.get_accel_group()
         if accel_group is None:
             accel_group = Gtk.AccelGroup()
-            self.menu.set_accel_group(accel_group)
+            self.mainview.add_accel_group(accel_group)
         self.mnu_add_term.set_accel_path("<Virtaal>/Terminology/Add Term")
         self.menu.set_accel_group(accel_group)
+        self.mainview.sync_menubar()
 
     def destroy(self):
         for gobj, signal_id in self._signal_ids:

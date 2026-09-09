@@ -39,7 +39,9 @@ jobs:
 
       - name: Install system dependencies
         run: |
-          sudo apt-get update
+          # A stale/broken package-index mirror snapshot happens often
+          # enough on GitHub-hosted Ubuntu runners to just retry.
+          for i in 1 2 3; do sudo apt-get update && break || sleep 10; done
           sudo apt-get install -y \
             gdb \
             gir1.2-gtk-3.0 \

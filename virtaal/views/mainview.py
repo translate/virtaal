@@ -416,6 +416,16 @@ class MainView(BaseView):
             @type accel_group: Gtk.AccelGroup"""
         self.main_window.add_accel_group(accel_group)
 
+    def sync_menubar(self):
+        """On macOS, push a plugin's own accelerator (added to the
+            native menu bar after GtkosxApplication.ready() already
+            ran) into the native menu items' key equivalents - without
+            this, the accelerator's GtkAccelGroup entry exists but
+            never actually fires. No-op elsewhere."""
+        osxapp = getattr(self, '_osxapp', None)
+        if osxapp is not None:
+            osxapp.sync_menubar()
+
     def set_saveable(self, value):
         # Repeatedly doing all of this is unnecessary, and can make the window
         # title flash slightly. So if the file is already modified, don't

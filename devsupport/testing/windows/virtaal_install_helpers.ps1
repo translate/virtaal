@@ -184,6 +184,22 @@ function Install-Virtaal {
         return $null
     }
 
+    # Launching an .exe directly off a mapped/shared-folder drive (a
+    # VM's host-shared Z:\, or a real network share) can fail here
+    # with a garbled "The file size exceeds the limit allowed and
+    # cannot be saved" error, unrelated to the installer's actual
+    # size - Windows needs to memory-map the PE image to run it, and
+    # a virtualized/network filesystem driver often can't do that
+    # properly. Stage a local copy first whenever the source isn't
+    # already on a fixed local disk.
+    $driveType = try { ([System.IO.DriveInfo](Split-Path $InstallerPath -Qualifier)).DriveType } catch { $null }
+    if ($driveType -ne [System.IO.DriveType]::Fixed) {
+        $localInstallerPath = Join-Path $env:TEMP (Split-Path $InstallerPath -Leaf)
+        Write-Host "Staging installer to local disk ($InstallerPath is on a $driveType drive): $localInstallerPath ..."
+        Copy-Item -Path $InstallerPath -Destination $localInstallerPath -Force
+        $InstallerPath = $localInstallerPath
+    }
+
     $logPath = Join-Path $env:TEMP "virtaal-install-$(Get-Date -Format 'yyyyMMddHHmmss').log"
     Write-Host "Installing $InstallerPath (log: $logPath) ..."
     $proc = Start-Process -FilePath $InstallerPath `

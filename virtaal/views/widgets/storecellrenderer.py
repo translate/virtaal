@@ -16,26 +16,27 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import functools
+
 from gi.repository import GObject, Gtk, Pango
 from translate.lang import factory
 
 from virtaal.common import pan_app
-from virtaal.support.simplegeneric import generic
 from virtaal.views import markup, rendering
 from virtaal.views.theme import current_theme
 
 
-@generic
+@functools.singledispatch
 def compute_optimal_height(widget, width):
     raise NotImplementedError()
 
 
-@compute_optimal_height.when_type(Gtk.Widget)
+@compute_optimal_height.register(Gtk.Widget)
 def gtk_widget_compute_optimal_height(widget, width):
     pass
 
 
-@compute_optimal_height.when_type(Gtk.Container)
+@compute_optimal_height.register(Gtk.Container)
 def gtk_container_compute_optimal_height(widget, width):
     if not widget.props.visible:
         return
@@ -45,7 +46,7 @@ def gtk_container_compute_optimal_height(widget, width):
         compute_optimal_height(child, width)
 
 
-@compute_optimal_height.when_type(Gtk.Grid)
+@compute_optimal_height.register(Gtk.Grid)
 def gtk_table_compute_optimal_height(widget, width):
     for child in widget.get_children():
         if child.props.name != "vbox_middle":
@@ -54,7 +55,7 @@ def gtk_table_compute_optimal_height(widget, width):
         compute_optimal_height(child, width / 2)
 
 
-@compute_optimal_height.when_type(Gtk.TextView)
+@compute_optimal_height.register(Gtk.TextView)
 def gtk_textview_compute_optimal_height(widget, width):
     if not widget.props.visible:
         return
@@ -88,7 +89,7 @@ def gtk_textview_compute_optimal_height(widget, width):
     widget.get_parent().set_size_request(-1, h + border)
 
 
-@compute_optimal_height.when_type(Gtk.Label)
+@compute_optimal_height.register(Gtk.Label)
 def gtk_label_compute_optimal_height(widget, width):
     if widget.get_text().strip() == "":
         widget.set_size_request(width, 0)

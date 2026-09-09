@@ -935,6 +935,15 @@ class MainView(BaseView):
         if store_controller.store is not None:
             store_controller.view._treeview.reset_column_width()
         self.main_window.resize(*target_size)
+        if platform.is_mac:
+            # resize() alone can apply internally (what get_size() and
+            # the saved settings see) without the native window frame
+            # visually updating - only some later Cocoa-level
+            # interaction (e.g. opening a menu) was doing that. Force
+            # it through right away instead of waiting on one.
+            Gdk.flush()
+            while Gtk.events_pending():
+                Gtk.main_iteration()
         return False  # one-shot: don't repeat this GLib.timeout_add
 
     def _on_app_pressed(self, btn):

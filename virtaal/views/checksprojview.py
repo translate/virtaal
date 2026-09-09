@@ -22,6 +22,7 @@ import locale
 from gi.repository import Gtk
 
 from virtaal.views.widgets.popupmenubutton import PopupMenuButton
+
 from .baseview import BaseView
 
 

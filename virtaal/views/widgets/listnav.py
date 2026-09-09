@@ -24,7 +24,7 @@ options.
 
 import logging
 
-from gi.repository import Gtk, GObject, Gdk
+from gi.repository import Gdk, GObject, Gtk
 
 from .popupwidgetbutton import PopupWidgetButton
 

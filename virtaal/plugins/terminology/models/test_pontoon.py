@@ -16,10 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+import configparser
 import io
 import os
-
-import configparser
 
 from virtaal.plugins.terminology.models.pontoon import TerminologyModel
 

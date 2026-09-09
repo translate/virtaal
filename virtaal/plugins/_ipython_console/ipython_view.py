@@ -15,11 +15,10 @@ import os
 import re
 import sys
 from functools import reduce
-
 from io import StringIO
 
 import IPython
-from gi.repository import GLib, Pango, Gtk, Gdk
+from gi.repository import Gdk, GLib, Gtk, Pango
 
 
 class IterableIPShell:

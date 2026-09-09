@@ -19,12 +19,11 @@
 import locale
 import logging
 
-from gi.repository import GLib
-from gi.repository import Gdk
-from gi.repository import Gtk
+from gi.repository import Gdk, GLib, Gtk
 
 from virtaal.common.platform import platform
 from virtaal.models.langmodel import LanguageModel
+
 from .baseview import BaseView
 from .widgets.popupmenubutton import PopupMenuButton
 
@@ -41,8 +40,8 @@ class LanguageView(BaseView):
         self._init_gui()
 
     def _create_dialogs(self):
-        from .widgets.langselectdialog import LanguageSelectDialog
         from .widgets.langadddialog import LanguageAddDialog
+        from .widgets.langselectdialog import LanguageSelectDialog
         langs = [LanguageModel(lc) for lc in LanguageModel.languages]
         langs.sort(key=lambda x: locale.strxfrm(x.name))
         self.select_dialog = LanguageSelectDialog(langs, parent=self.controller.main_controller.view.main_window)

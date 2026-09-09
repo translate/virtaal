@@ -19,9 +19,9 @@
 
 # These two json modules are API compatible
 try:
-    import simplejson as json #should be a bit faster; needed for Python < 2.6
+    import simplejson as json  #should be a bit faster; needed for Python < 2.6
 except ImportError:
-    import json #available since Python 2.6
+    import json  #available since Python 2.6
 
 import pycurl
 

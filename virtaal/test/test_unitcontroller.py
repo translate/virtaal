@@ -20,9 +20,8 @@ import os
 import tempfile
 
 from gi.repository import Gdk, GLib
-from translate.storage import factory
-
 from test_scaffolding import TestScaffolding
+from translate.storage import factory
 
 from virtaal.controllers.placeablescontroller import PlaceablesController
 

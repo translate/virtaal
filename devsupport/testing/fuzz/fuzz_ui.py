@@ -54,17 +54,18 @@ REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 
 sys.path.insert(0, REPO_ROOT)
 
 import gi
+
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 from virtaal.common import pan_app
-from virtaal.controllers.maincontroller import MainController
-from virtaal.controllers.storecontroller import StoreController
-from virtaal.controllers.unitcontroller import UnitController
-from virtaal.controllers.undocontroller import UndoController
-from virtaal.controllers.modecontroller import ModeController
 from virtaal.controllers.checkscontroller import ChecksController
 from virtaal.controllers.langcontroller import LanguageController
+from virtaal.controllers.maincontroller import MainController
+from virtaal.controllers.modecontroller import ModeController
+from virtaal.controllers.storecontroller import StoreController
+from virtaal.controllers.undocontroller import UndoController
+from virtaal.controllers.unitcontroller import UnitController
 
 TESTFILES_DIR = os.path.join(REPO_ROOT, 'devsupport', 'testfiles')
 DEFAULT_TESTFILES = ['workflow.po', 'workflow.xliff', 'workflow.ts', 'checks.po']

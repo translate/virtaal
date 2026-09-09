@@ -17,8 +17,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import Gtk.gdk
-from gi.repository import GObject
-from gi.repository import Gtk
+from gi.repository import GObject, Gtk
 
 from virtaal.views import markup
 

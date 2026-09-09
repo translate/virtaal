@@ -19,6 +19,7 @@
 """Performs external look-ups on selected text."""
 
 from virtaal.controllers.baseplugin import BasePlugin
+
 from .lookupcontroller import LookupController
 
 

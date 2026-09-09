@@ -33,8 +33,8 @@
 
 """
 
-import logging
 import _thread
+import logging
 import os.path
 import re
 import stat
@@ -49,7 +49,6 @@ from translate.storage import factory
 from translate.storage.workflow import StateEnum
 
 from virtaal.common.platform import platform
-
 
 logger = logging.getLogger(__name__)
 

@@ -19,8 +19,7 @@
 
 from locale import strxfrm
 
-from gi.repository import Gtk
-from gi.repository import GObject
+from gi.repository import GObject, Gtk
 from gi.repository.GObject import TYPE_PYOBJECT
 
 from virtaal.common import GObjectWrapper

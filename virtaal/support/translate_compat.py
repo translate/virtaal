@@ -46,7 +46,6 @@ except ImportError:
 
 from virtaal.common.platform import platform
 
-
 _fixed_names = {
     "Asturian; Bable; Leonese; Asturleonese": "Asturian",
     "Bokmål, Norwegian; Norwegian Bokmål": "Norwegian Bokmål",

@@ -1,9 +1,8 @@
 
-from gi.repository import Gdk
-from gi.repository import Gtk
-from gi.repository import Pango
+from gi.repository import Gdk, Gtk, Pango
 
 from virtaal.controllers.baseplugin import BasePlugin
+
 from .ipython_view import IPythonView
 
 

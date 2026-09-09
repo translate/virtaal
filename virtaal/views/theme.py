@@ -22,7 +22,7 @@
 The colors are kept as strings so that the can easily be interpolated into
 pango markup. A different solution is likely to be better in the long run."""
 
-from gi.repository import Gtk, Gdk
+from gi.repository import Gdk, Gtk
 
 INVERSE = False
 """Whether we are currently in an inverse type of theme (lite text on dark

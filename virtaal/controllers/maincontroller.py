@@ -20,13 +20,14 @@
 import gi
 
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, GObject
+from gi.repository import GObject, Gtk
 
-from .basecontroller import BaseController
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.common.platform import platform
 from virtaal.models.storemodel import SaveCancelled
 from virtaal.views.mainview import MainView
+
+from .basecontroller import BaseController
 
 
 class MainController(BaseController):
@@ -224,8 +225,8 @@ class MainController(BaseController):
 
         # Open the file just created on the fly.
         self.open_file(filename, forget_dir=True)
-        import shutil
         import os.path
+        import shutil
         shutil.rmtree(os.path.dirname(filename))
 
 

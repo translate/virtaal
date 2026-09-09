@@ -22,6 +22,7 @@ import logging
 from gi.repository import Gtk
 
 from virtaal.common import GObjectWrapper
+
 from .baseview import BaseView
 
 

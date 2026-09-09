@@ -19,11 +19,12 @@
 import logging
 import re
 
-from gi.repository import GLib, GObject, Gtk, Gdk
+from gi.repository import Gdk, GLib, GObject, Gtk
 from gi.repository.GObject import TYPE_PYOBJECT
 from translate.lang import factory
 
 from virtaal.common import GObjectWrapper
+
 from . import rendering
 from .baseview import BaseView
 from .widgets.listnav import ListNavigator

@@ -20,9 +20,9 @@ import gi
 
 gi.require_version('Gtk', '3.0')
 
-from gi.repository import Gtk
-from gi.repository import Pango
-from gi.repository.GObject import ParamFlags, SignalFlags, TYPE_PYOBJECT
+from gi.repository import Gtk, Pango
+from gi.repository.GObject import TYPE_PYOBJECT, ParamFlags, SignalFlags
+
 PARAM_READWRITE = ParamFlags.READWRITE
 SIGNAL_RUN_FIRST = SignalFlags.RUN_FIRST
 

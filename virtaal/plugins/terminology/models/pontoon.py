@@ -28,6 +28,7 @@ from translate.storage.placeables.terminology import TerminologyPlaceable
 
 from virtaal.common import pan_app
 from virtaal.support.httpclient import HTTPClient
+
 from .basetermmodel import BaseTerminologyModel
 
 THREE_DAYS = 60 * 60 * 24 * 3
@@ -224,6 +225,7 @@ class TerminologyModel(BaseTerminologyModel):
         # function was also renamed upstream from the misspelled
         # _guessextention to _guess_extension.
         from io import BytesIO
+
         from translate.storage.factory import _guess_extension
         s = BytesIO(content)
         try:

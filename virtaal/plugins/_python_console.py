@@ -3,10 +3,7 @@ import re
 import sys
 import traceback
 
-from gi.repository import GLib
-from gi.repository import Gdk
-from gi.repository import Gtk
-from gi.repository import Pango
+from gi.repository import Gdk, GLib, Gtk, Pango
 
 from virtaal.controllers.baseplugin import BasePlugin
 

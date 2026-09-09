@@ -17,12 +17,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import GLib
-from gi.repository import Gdk
-from gi.repository import Gtk
+from gi.repository import Gdk, GLib, Gtk
 from translate.storage.placeables import StringElem
 
 from virtaal.common import GObjectWrapper, pan_app
+
 from .basecontroller import BaseController
 
 

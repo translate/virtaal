@@ -18,8 +18,7 @@
 
 import locale
 
-from gi.repository import GObject
-from gi.repository import Gtk
+from gi.repository import GObject, Gtk
 
 from virtaal.views.baseview import BaseView
 

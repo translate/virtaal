@@ -18,6 +18,7 @@
 
 from .basetmmodel import unescape_html_entities
 
+
 def test_unescape_html_entities():
     """Test the unescaping of &amp; and &#39; type HTML escapes"""
     assert unescape_html_entities("This &amp; That") == "This & That"

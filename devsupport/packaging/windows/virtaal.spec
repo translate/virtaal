@@ -138,6 +138,10 @@ datas = [
     (str(ROOT / "share" / "virtaal"), "share/virtaal"),
     (str(ROOT / "share" / "icons"), "share/icons"),
     (str(TRANSLATE_SHARE), "share"),
+    # virtaal/support/authors.py reads this at the bundle root - it
+    # stays a real top-level file (not under share/) so it's still
+    # recognised by GitHub/the AUTHORS convention in a checkout too.
+    (str(ROOT / "AUTHORS.md"), "."),
 ] + mo_files
 if ENCHANT_DATA is not None and ENCHANT_DATA.is_dir():
     # Only en_GB - enough to test; the rest comes via download, not

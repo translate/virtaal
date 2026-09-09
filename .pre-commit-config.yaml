@@ -52,3 +52,9 @@ repos:
         language: system
         pass_filenames: false
         files: ^devsupport/mac-bundle/(VirtaalDocumentIcon_.*\.svg|icons/VolumeIcon_virtaal\.svg)$
+      - id: check-copyright-header
+        name: check the unified copyright header (.license.header.txt)
+        entry: devsupport/check-copyright-header.sh
+        language: system
+        files: \.py$
+        pass_filenames: true

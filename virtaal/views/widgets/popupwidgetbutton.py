@@ -21,9 +21,7 @@ PopupWidgetButton: Extends a C{Gtk.ToggleButton} to show a given widget in a
 pop-up window.
 """
 
-from gi.repository import Gdk
-from gi.repository import Gtk
-from gi.repository import GObject
+from gi.repository import Gdk, GObject, Gtk
 
 # XXX: Kudo's to Toms Bauģis <toms.baugis at gmail.com> who wrote the
 #      ActivityEntry widget for the hamster-applet project. A lot of this

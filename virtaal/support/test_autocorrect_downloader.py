@@ -23,7 +23,10 @@ I/O, so the test drives the chain step by step, synchronously."""
 import json
 
 from virtaal.support.autocorrect_downloader import AutocorrectDownloader
-from virtaal.support.test_autocorrect_source import AF_ZA_DOCUMENT_LIST, CONTENTS_LISTING
+from virtaal.support.test_autocorrect_source import (
+    AF_ZA_DOCUMENT_LIST,
+    CONTENTS_LISTING,
+)
 
 LISTING_RESULT = json.dumps(CONTENTS_LISTING).encode('utf-8')
 

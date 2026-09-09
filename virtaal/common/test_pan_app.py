@@ -21,7 +21,11 @@ import os
 import pytest
 
 from virtaal.common import pan_app
-from virtaal.common.pan_app import _build_launch_marker, _open_frozen_log, _set_enchant_env_vars
+from virtaal.common.pan_app import (
+    _build_launch_marker,
+    _open_frozen_log,
+    _set_enchant_env_vars,
+)
 
 
 def test_build_launch_marker_includes_version(monkeypatch):

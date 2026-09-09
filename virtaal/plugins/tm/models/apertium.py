@@ -29,10 +29,10 @@ which needs no appId.
 import json
 from urllib.parse import urlencode
 
-from .basetmmodel import BaseTMModel, unescape_html_entities
-
 from virtaal.common.utils import get_unicode
 from virtaal.support.httpclient import HTTPClient, RESTRequest
+
+from .basetmmodel import BaseTMModel, unescape_html_entities
 
 
 class TMModel(BaseTMModel):

@@ -23,19 +23,16 @@ Lokalize, and Translation Memory from Lokalize. (Poedit's and KBabel's TM
 import both relied on the Python 2-only bsddb module and were removed.)
 """
 
+import configparser as ConfigParser
 import logging
 import os
-from os import path
-
 from io import StringIO
-import configparser as ConfigParser
-
+from os import path
 from sqlite3 import dbapi2
 
 from virtaal.common import pan_app
 from virtaal.common.platform import platform
 from virtaal.controllers.baseplugin import BasePlugin
-
 from virtaal.support import tmdb
 
 

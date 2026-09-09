@@ -20,7 +20,8 @@ import locale
 
 from gi.repository import Gtk
 
-from virtaal.views.widgets.popupmenubutton import PopupMenuButton, POS_NW_SW
+from virtaal.views.widgets.popupmenubutton import POS_NW_SW, PopupMenuButton
+
 from .basemode import BaseMode
 
 

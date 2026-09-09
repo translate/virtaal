@@ -23,11 +23,12 @@ import sys
 from gi.repository import GLib, GObject
 from gi.repository.GObject import TYPE_PYOBJECT
 
-from virtaal.common import pan_app, GObjectWrapper
+from virtaal.common import GObjectWrapper, pan_app
 from virtaal.common.platform import platform
 from virtaal.common.utils import get_unicode
+
 from .basecontroller import BaseController
-from .baseplugin import PluginUnsupported, BasePlugin
+from .baseplugin import BasePlugin, PluginUnsupported
 
 if platform.is_windows:
     sys.path.insert(0, pan_app.main_dir)

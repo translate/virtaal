@@ -17,6 +17,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 from virtaal.common import GObjectWrapper, pan_app
+
 from .basecontroller import BaseController
 
 

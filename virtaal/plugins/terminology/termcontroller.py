@@ -25,6 +25,7 @@ from virtaal.common import GObjectWrapper
 from virtaal.controllers.basecontroller import BaseController
 from virtaal.controllers.plugincontroller import PluginController
 from virtaal.views import placeablesguiinfo
+
 from .models.basetermmodel import BaseTerminologyModel
 from .termview import TerminologyGUIInfo, TerminologyView
 

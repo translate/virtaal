@@ -29,12 +29,11 @@ and for sending e-mail using the user's preferred composer."""
 __version__ = '1.0'
 __all__ = ['open', 'mailto']
 
+import logging
 import os
 import sys
-import logging
 
 from virtaal.common.platform import platform
-
 
 # Some imports are only necessary on some platforms, and are postponed to try
 # to speed up startup
@@ -136,8 +135,8 @@ elif platform.is_mac:
 # Platform support for Unix
 else:
 
-    import subprocess
     import shutil
+    import subprocess
 
     class KfmClient(Controller):
         '''Controller for the KDE kfmclient program.'''

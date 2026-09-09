@@ -19,11 +19,10 @@
 
 import logging
 
-from gi.repository import GLib, GObject
-from gi.repository import Gtk
+from gi.repository import GLib, GObject, Gtk
 
 from .storecellrenderer import StoreCellRenderer
-from .storetreemodel import COLUMN_NOTE, COLUMN_UNIT, COLUMN_EDITABLE, StoreTreeModel
+from .storetreemodel import COLUMN_EDITABLE, COLUMN_NOTE, COLUMN_UNIT, StoreTreeModel
 
 
 class StoreTreeView(Gtk.TreeView):

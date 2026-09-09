@@ -22,6 +22,7 @@ import os
 from gi.repository import GObject
 
 from virtaal.common import GObjectWrapper
+
 from .basecontroller import BaseController
 
 
@@ -184,12 +185,14 @@ class StoreController(BaseController):
             self.cursor.index = i
 
     def open_file(self, filename, uri='', forget_dir=False):
-        from virtaal.models.storemodel import StoreModel
         from translate.convert import factory as convert_factory
+
+        from virtaal.models.storemodel import StoreModel
         force_saveas = False
         extension = filename.split(os.extsep)[-1]
         if extension == 'zip':
             import logging
+
             from translate.storage import bundleprojstore
             try:
                 from translate.storage.project import Project
@@ -385,6 +388,7 @@ class StoreController(BaseController):
         from translate.convert import factory as convert_factory
         if extension in convert_factory.converters:
             import logging
+
             from translate.storage import factory
             try:
                 outfile = convert_factory.convert(open(filename))[0]
@@ -481,6 +485,7 @@ class StoreController(BaseController):
 
             @returns: The suggested file name for the bundle."""
         from tempfile import mkstemp
+
         from translate.storage.project import split_extensions
         fname, extensions = split_extensions(infilename)
 

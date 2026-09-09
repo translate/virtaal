@@ -25,8 +25,7 @@ from gettext import dgettext
 from gi.repository import GLib
 
 from virtaal.common.platform import platform
-from virtaal.controllers.baseplugin import PluginUnsupported, BasePlugin
-
+from virtaal.controllers.baseplugin import BasePlugin, PluginUnsupported
 
 _dict_add_re = re.compile('Add "(.*)" to Dictionary')
 
@@ -70,8 +69,8 @@ class Plugin(BasePlugin):
         try:
             import gi
             gi.require_version('GtkSpell', '3.0')
-            from gi.repository import GtkSpell as gtkspell
             import enchant
+            from gi.repository import GtkSpell as gtkspell
         except (ImportError, ValueError) as e:
             raise PluginUnsupported(str(e))
         self.gtkspell = gtkspell

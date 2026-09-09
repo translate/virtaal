@@ -17,14 +17,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk, Gdk
+from gi.repository import Gdk, Gtk
 from gi.repository.GObject import SignalFlags
-from translate.storage.placeables import StringElem, parse as elem_parse
+from translate.storage.placeables import StringElem
+from translate.storage.placeables import parse as elem_parse
 
 from virtaal.support.translate_compat import forceunicode
 from virtaal.views import placeablesguiinfo
 from virtaal.views.theme import current_theme
-
 
 
 def colors_equal(a, b):

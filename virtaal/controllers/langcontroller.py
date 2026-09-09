@@ -22,6 +22,7 @@ from gi.repository import GObject
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.models.langmodel import LanguageModel
+
 from .basecontroller import BaseController
 
 

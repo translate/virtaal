@@ -16,12 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk, Gdk
-from gi.repository import Pango
-from gi.repository import GObject
+from gi.repository import Gdk, GObject, Gtk, Pango
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.views.widgets.selectview import SelectView
+
 from .baseview import BaseView
 
 

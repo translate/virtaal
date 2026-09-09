@@ -18,6 +18,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 from virtaal.common.utils import get_unicode
+
 from .basecontroller import BaseController
 
 

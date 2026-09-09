@@ -22,13 +22,13 @@ import os
 import subprocess
 import time
 
-from gi.repository import Gdk
-from gi.repository import Gtk
+from gi.repository import Gdk, Gtk
 
 from virtaal.common import pan_app
 from virtaal.common.platform import platform
 from virtaal.common.utils import get_unicode
 from virtaal.views import theme
+
 from .baseview import BaseView
 
 

@@ -18,10 +18,12 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 from gi.repository import GObject
-from translate.storage.placeables import general, StringElem, parse as parse_placeables
+from translate.storage.placeables import StringElem, general
+from translate.storage.placeables import parse as parse_placeables
 
-from virtaal.common import pan_app, GObjectWrapper
+from virtaal.common import GObjectWrapper, pan_app
 from virtaal.views import placeablesguiinfo
+
 from .basecontroller import BaseController
 
 

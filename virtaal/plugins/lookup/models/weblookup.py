@@ -17,11 +17,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from urllib import parse
 from os import path
+from urllib import parse
 
-from gi.repository import Gtk
-from gi.repository import Pango
+from gi.repository import Gtk, Pango
 
 from virtaal.common import pan_app
 from virtaal.views.baseview import BaseView

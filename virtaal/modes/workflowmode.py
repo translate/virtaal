@@ -16,10 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk
-from gi.repository import GLib
+from gi.repository import GLib, Gtk
 
-from virtaal.views.widgets.popupmenubutton import PopupMenuButton, POS_NW_SW
+from virtaal.views.widgets.popupmenubutton import POS_NW_SW, PopupMenuButton
+
 from .basemode import BaseMode
 
 

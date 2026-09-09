@@ -83,11 +83,12 @@ exclude = ["virtaal.test"]
 builtins = ["_"]
 
 [tool.ruff.lint]
-# F (pyflakes: unused imports/variables, undefined names) + UP
-# (pyupgrade: obsolete py2-compat patterns like super(Cls, self)).
-# Deliberately not the default style/whitespace rule families -
-# that's ruff format's job, not enabled yet.
-select = ["F", "UP"]
+# F (pyflakes: unused imports/variables, undefined names), UP
+# (pyupgrade: obsolete py2-compat patterns like super(Cls, self)), and
+# I (isort: import sorting/grouping). Deliberately not the default
+# style/whitespace rule families - that's ruff format's job, not
+# enabled yet.
+select = ["F", "I", "UP"]
 ignore = [
     # %-format -> f-string: 198 sites, needs real per-call
     # verification (escaping/argument-shape can change), not a

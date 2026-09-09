@@ -22,7 +22,6 @@ from gi.repository import GObject
 
 from virtaal.support.sorted_set import SortedSet
 
-
 # FIXME: Add docstrings!
 
 class UnionSetEnumerator(GObject.GObject):

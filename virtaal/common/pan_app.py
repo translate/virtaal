@@ -28,6 +28,7 @@ import os
 import sys
 
 from virtaal.__version__ import version_string
+
 from .platform import platform
 from .utils import get_unicode
 
@@ -76,14 +77,16 @@ if platform.is_windows and platform.is_frozen:
 
 # Ok, now we can continue with what we actually wanted to do
 
-import configparser as ConfigParser
 import builtins as __builtin__
-import locale, gettext
-from virtaal.support.libi18n.locale import fix_locale, fix_libintl, bind_libintl_posix
-from translate.misc import file_discovery
+import configparser as ConfigParser
+import gettext
+import locale
+
 from translate.lang import data
+from translate.misc import file_discovery
 
 from virtaal.__version__ import ver
+from virtaal.support.libi18n.locale import bind_libintl_posix, fix_libintl, fix_locale
 
 DEBUG = True # Enable debugging by default, while bin/virtaal still disables it by default.
              # This means that if Virtaal (or parts thereof) is run in some other strange way,

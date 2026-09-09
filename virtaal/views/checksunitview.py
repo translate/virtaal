@@ -18,12 +18,12 @@
 
 import locale
 
-from gi.repository import Gtk
-from gi.repository import Pango
+from gi.repository import Gtk, Pango
 from translate.lang import factory as lang_factory
 
 from virtaal.common.pan_app import ui_language
-from virtaal.views.widgets.popupwidgetbutton import PopupWidgetButton, POS_SE_NE
+from virtaal.views.widgets.popupwidgetbutton import POS_SE_NE, PopupWidgetButton
+
 from .baseview import BaseView
 
 

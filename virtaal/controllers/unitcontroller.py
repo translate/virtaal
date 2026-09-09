@@ -19,9 +19,10 @@
 from gi.repository.GLib import timeout_add
 from gi.repository.GObject import SignalFlags
 from translate.storage import workflow
-from translate.storage.workflow import Workflow, UnitState
+from translate.storage.workflow import UnitState, Workflow
 
 from virtaal.common import GObjectWrapper
+
 from .basecontroller import BaseController
 
 

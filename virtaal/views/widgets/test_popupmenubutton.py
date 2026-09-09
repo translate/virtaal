@@ -27,6 +27,7 @@ collect whenever and however it likes."""
 from unittest.mock import MagicMock
 
 import gi
+
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 

@@ -76,8 +76,8 @@ class Virtaal:
 
         # We try to get the welcomescreen loaded as early as possible
         from virtaal.controllers.maincontroller import MainController
-        from virtaal.controllers.welcomescreencontroller import WelcomeScreenController
         from virtaal.controllers.storecontroller import StoreController
+        from virtaal.controllers.welcomescreencontroller import WelcomeScreenController
 
         main_controller = MainController()
         store_controller = StoreController(main_controller)
@@ -106,10 +106,10 @@ class Virtaal:
 
     def _open_with_file(self, startupfile):
         # Things needed for opening a file, including inter-dependencies
-        from virtaal.controllers.unitcontroller import UnitController
-        from virtaal.controllers.modecontroller import ModeController
         from virtaal.controllers.langcontroller import LanguageController
+        from virtaal.controllers.modecontroller import ModeController
         from virtaal.controllers.placeablescontroller import PlaceablesController
+        from virtaal.controllers.unitcontroller import UnitController
 
         main_controller = self.main_controller
 
@@ -125,10 +125,10 @@ class Virtaal:
         return main_controller.open_file(startupfile)
 
     def _open_with_welcome(self):
-        from virtaal.controllers.unitcontroller import UnitController
-        from virtaal.controllers.modecontroller import ModeController
         from virtaal.controllers.langcontroller import LanguageController
+        from virtaal.controllers.modecontroller import ModeController
         from virtaal.controllers.placeablescontroller import PlaceablesController
+        from virtaal.controllers.unitcontroller import UnitController
 
         defer = self.defer
         main_controller = self.main_controller
@@ -140,12 +140,14 @@ class Virtaal:
         self.defer(self._load_extras)
 
     def _load_extras(self):
+        from virtaal.controllers.checkscontroller import ChecksController
         from virtaal.controllers.plugincontroller import PluginController
         from virtaal.controllers.prefscontroller import PreferencesController
-        from virtaal.controllers.checkscontroller import ChecksController
-        from virtaal.controllers.undocontroller import UndoController
         from virtaal.controllers.propertiescontroller import PropertiesController
-        from virtaal.support.dictionary_download_watcher import DictionaryDownloadWatcher
+        from virtaal.controllers.undocontroller import UndoController
+        from virtaal.support.dictionary_download_watcher import (
+            DictionaryDownloadWatcher,
+        )
 
         defer = self.defer
         main_controller = self.main_controller

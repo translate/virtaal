@@ -18,15 +18,16 @@
 
 import os
 import tempfile
+
 from translate.storage import factory
 
-from virtaal.controllers.maincontroller import MainController
-from virtaal.controllers.storecontroller import StoreController
-from virtaal.controllers.unitcontroller import UnitController
-from virtaal.controllers.undocontroller import UndoController
-from virtaal.controllers.modecontroller import ModeController
 from virtaal.controllers.checkscontroller import ChecksController
 from virtaal.controllers.langcontroller import LanguageController
+from virtaal.controllers.maincontroller import MainController
+from virtaal.controllers.modecontroller import ModeController
+from virtaal.controllers.storecontroller import StoreController
+from virtaal.controllers.undocontroller import UndoController
+from virtaal.controllers.unitcontroller import UnitController
 
 
 class TestScaffolding:

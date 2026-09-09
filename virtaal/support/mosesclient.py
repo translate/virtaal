@@ -17,8 +17,8 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import logging
-
 import xmlrpc.client as xmlrpclib
+
 from gi.repository import GObject
 
 from virtaal.support.httpclient import HTTPClient, HTTPRequest

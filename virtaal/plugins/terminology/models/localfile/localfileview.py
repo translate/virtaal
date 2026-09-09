@@ -19,9 +19,7 @@
 
 import locale
 
-from gi.repository import Gdk
-from gi.repository import Gtk
-from gi.repository import Pango
+from gi.repository import Gdk, Gtk, Pango
 from translate.storage import factory as store_factory
 
 from virtaal.views.baseview import BaseView
@@ -455,6 +453,7 @@ class TermAddDialog:
             # We want to separate multiple terms with the correct list
             # separator for the UI language:
             from translate.lang import factory as lang_factory
+
             from virtaal.common.pan_app import ui_language
             separator = lang_factory.getlanguage(ui_language).listseperator
 

@@ -1,7 +1,6 @@
 import sys
 
 
-
 def get_unicode(string, encoding=None):
     if isinstance(string, str):
         return string

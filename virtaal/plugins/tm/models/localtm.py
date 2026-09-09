@@ -23,6 +23,7 @@ import sys
 
 from virtaal.common import pan_app
 from virtaal.common.platform import platform
+
 from . import remotetm
 from .basetmmodel import BaseTMModel
 
@@ -85,6 +86,7 @@ class TMModel(remotetm.TMModel):
         logging.debug("launching tmserver with command {}".format(" ".join(command)))
         try:
             import subprocess
+
             from virtaal.support import tmclient
 
             env = os.environ.copy()

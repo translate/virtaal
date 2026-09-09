@@ -18,6 +18,7 @@
 
 from virtaal.support.set_enumerator import UnionSetEnumerator
 from virtaal.support.sorted_set import SortedSet
+
 from .basemode import BaseMode
 
 

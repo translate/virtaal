@@ -18,6 +18,7 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 from virtaal.controllers.baseplugin import BasePlugin
+
 from .tmcontroller import TMController
 
 

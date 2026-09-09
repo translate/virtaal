@@ -16,9 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from virtaal.models.storemodel import StoreModel
-
 from test_scaffolding import TestScaffolding
+
+from virtaal.models.storemodel import StoreModel
 
 
 class TestStoreModel(TestScaffolding):

@@ -21,6 +21,7 @@ from gi.repository import GLib, Gtk
 
 from virtaal.common.pan_app import get_abs_data_filename, ui_language
 from virtaal.views.widgets.welcomescreen import WelcomeScreen
+
 from .baseview import BaseView
 
 

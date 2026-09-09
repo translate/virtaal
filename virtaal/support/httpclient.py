@@ -19,10 +19,10 @@
 
 import logging
 from io import BytesIO
+from urllib import parse, request
 
 import pycurl
 from gi.repository import GLib, GObject
-from urllib import request, parse
 
 try:
     import libproxy
@@ -253,6 +253,7 @@ class HTTPClient:
         if self.user_agent and self.user_agent.startswith('Virtaal'):
             return
         import sys
+
         from virtaal.__version__ import ver as version
         platform = sys.platform
         if platform.startswith('linux'):

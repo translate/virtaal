@@ -23,6 +23,7 @@ from translate.lang.data import languages as toolkit_langs
 
 from virtaal.common.pan_app import ui_language
 from virtaal.support.translate_compat import tr_lang
+
 from .basemodel import BaseModel
 
 gettext_lang = tr_lang(ui_language)

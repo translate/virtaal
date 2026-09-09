@@ -19,15 +19,14 @@
 
 import json
 import logging
-
 from urllib.parse import quote_plus
 
 import pycurl
 
 from virtaal.common.utils import get_unicode
-from .basetmmodel import BaseTMModel, unescape_html_entities
 from virtaal.support.httpclient import HTTPClient, RESTRequest
 
+from .basetmmodel import BaseTMModel, unescape_html_entities
 
 # Some codes are weird or can be reused for others
 code_translation = {

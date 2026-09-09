@@ -20,7 +20,6 @@
 
 from gettext import gettext as _
 
-
 tips = [
     _("At the end of a translation, simply press <Enter> to continue with the next one."),
     _("To copy the original string into the target field, simply press <Alt+Down>."),

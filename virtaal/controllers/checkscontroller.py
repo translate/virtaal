@@ -22,6 +22,7 @@ import logging
 from gi.repository import GLib, GObject
 
 from virtaal.common import GObjectWrapper
+
 from .basecontroller import BaseController
 
 check_names = {

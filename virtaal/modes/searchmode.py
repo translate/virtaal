@@ -19,11 +19,12 @@
 
 import logging
 
-from gi.repository import GLib, Gtk, Gdk
+from gi.repository import Gdk, GLib, Gtk
 
 from virtaal.common.utils import get_unicode
 from virtaal.controllers.cursor import Cursor
 from virtaal.views.theme import current_theme
+
 from .basemode import BaseMode
 
 

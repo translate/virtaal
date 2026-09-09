@@ -18,8 +18,8 @@
 
 import os
 
-
 from virtaal.common import pan_app
+
 from .basemodel import BaseModel
 
 
@@ -211,8 +211,8 @@ class StoreModel(BaseModel):
         self._trans_store.fileobj = oldfileobj #Let's attempt to keep the old file and name if possible
 
         #FIXME: ugly tempfile hack, can we please have a pure store implementation of statsdb
-        import tempfile
         import os
+        import tempfile
         tempfd, tempfilename = tempfile.mkstemp()
         os.write(tempfd, str(self._trans_store))
         self.update_stats(filename=tempfilename)

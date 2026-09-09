@@ -16,11 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk
-from gi.repository import GObject
+from gi.repository import GObject, Gtk
 from gi.repository.GObject import TYPE_PYOBJECT
 
 from virtaal.common import GObjectWrapper
+
 from .selectview import SelectView
 
 

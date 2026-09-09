@@ -20,6 +20,7 @@
 __all__ = ["generic"]
 
 from types import FunctionType
+
 classtypes = (type,)
 
 

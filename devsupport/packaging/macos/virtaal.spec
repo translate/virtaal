@@ -74,6 +74,10 @@ datas = [
     # referenced solely from info_plist needs its own datas entry to
     # actually land in Contents/Resources.
     (str(ROOT / "devsupport" / "mac-bundle" / "VirtaalDocument.icns"), "."),
+    # virtaal/support/authors.py reads this at the bundle root - it
+    # stays a real top-level file (not under share/) so it's still
+    # recognised by GitHub/the AUTHORS convention in a checkout too.
+    (str(ROOT / "AUTHORS.md"), "."),
 ] + mo_files
 if _bundle_enchant:
     datas.append((str(ENCHANT_INTEL_DIR), "share/enchant_intel"))

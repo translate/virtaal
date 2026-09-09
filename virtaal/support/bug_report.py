@@ -19,7 +19,6 @@ from virtaal.common.platform import platform as _platform
 
 REPO_URL = "https://github.com/translate/virtaal"
 
-# GitHub's "os" dropdown only prefills on an exact option-text match.
 _OS_LABELS = (
     ('is_windows', 'Windows'),
     ('is_mac', 'macOS'),

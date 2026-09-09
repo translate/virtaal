@@ -2,7 +2,6 @@
 share/applications/virtaal.desktop.in
 share/metainfo/virtaal.metainfo.xml.in
 [type: gettext/glade]share/virtaal/virtaal.ui
-virtaal/tips.py
 virtaal/controllers/checkscontroller.py
 virtaal/controllers/maincontroller.py
 virtaal/controllers/placeablescontroller.py

@@ -509,8 +509,11 @@ class MainView(BaseView):
         else:
             after_index = parent_menu.get_children().index(after) + 1
             parent_menu.insert(menuitem, after_index)
-        if self.menu_structure.get_property('visible'):
-            self.menu_structure.show_all()
+        # Not gated on self.menu_structure's own visibility - on macOS
+        # that's self.menubar, permanently hidden once handed off to
+        # the native menu bar, so a plugin's own menu item never
+        # showed there at all.
+        menuitem.show()
         return menuitem
 
     def find_menu(self, label):

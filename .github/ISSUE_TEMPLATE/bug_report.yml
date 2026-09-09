@@ -30,29 +30,19 @@ body:
     validations:
       required: true
 
-  - type: dropdown
+  - type: input
     id: install-method
     attributes:
       label: How did you install Virtaal?
-      options:
-        - Windows installer
-        - macOS .dmg
-        - Flatpak
-        - pip install / from source checkout
-        - Linux distro package
-        - Other (please describe below)
+      placeholder: e.g. Windows installer, macOS .dmg, Flatpak, pip install, Linux distro package
     validations:
       required: true
 
-  - type: dropdown
+  - type: input
     id: os
     attributes:
       label: Operating system
-      options:
-        - Windows
-        - macOS
-        - Linux
-        - Other
+      placeholder: e.g. Windows, macOS, Linux
     validations:
       required: true
 

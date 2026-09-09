@@ -18,6 +18,9 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
+#
+# Later modifications: Copyright (C) Virtaal contributors. See the
+# AUTHORS.md file for copyright and authorship information.
 
 """ altsets.py -- An alternate implementation of Sets.py
 

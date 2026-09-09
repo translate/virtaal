@@ -141,6 +141,17 @@ def test_candidate_folders_tries_exact_then_bare_language():
     assert candidate_folders('xx_YY', known) == []
 
 
+def test_candidate_folders_bare_language_resolves_single_region():
+    # af has no bare folder of its own, only af_ZA - real LibreOffice data.
+    known = {'af_ZA': 'x'}
+    assert candidate_folders('af', known) == ['af_ZA']
+
+
+def test_candidate_folders_bare_language_ambiguous_region_gives_up():
+    known = {'en_AU': 'x', 'en_GB': 'y', 'en_US': 'z'}
+    assert candidate_folders('en', known) == []
+
+
 def test_find_dictionary_uses_candidate_before_scanning_everything():
     folders = {'de': 's1', 'ar': 's2'}
     fetched = []

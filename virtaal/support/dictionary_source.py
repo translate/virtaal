@@ -103,10 +103,21 @@ def candidate_folders(locale_code, known_folders):
     are the full underscored locale ('af_ZA') - so try the exact
     match, then the bare language part, before falling back to a full
     scan elsewhere. Doesn't guarantee a hit; the caller still needs to
-    check the actual xcu content."""
+    check the actual xcu content.
+
+    A bare language code with no region of its own (just 'af', not
+    'af_ZA') also gets the single folder starting with 'af_', if
+    there's exactly one - some languages (af, ga, lb...) only exist
+    as one region-qualified folder, with no bare fallback. Left alone
+    when there's more than one such folder (en, pt, sr, zh...): no
+    good way to guess the right region from a bare code alone."""
     locale_code = locale_code.replace('-', '_')
     lang = locale_code.split('_')[0]
     candidates = [c for c in (locale_code, lang) if c in known_folders]
+    if not candidates:
+        prefix_matches = [f for f in known_folders if f.startswith(lang + '_')]
+        if len(prefix_matches) == 1:
+            candidates = prefix_matches
     # Stable order, no duplicates, without needing a set (small lists).
     seen = []
     for c in candidates:

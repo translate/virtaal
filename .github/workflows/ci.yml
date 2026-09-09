@@ -39,7 +39,9 @@ jobs:
         # po/virtaal.pot against po/POTFILES.in; without it, that hook
         # silently no-ops instead of enforcing anything.
         run: |
-          sudo apt-get update
+          # A stale/broken package-index mirror snapshot happens often
+          # enough on GitHub-hosted Ubuntu runners to just retry.
+          for i in 1 2 3; do sudo apt-get update && break || sleep 10; done
           sudo apt-get install -y intltool
 
       - name: Install pre-commit
@@ -80,7 +82,9 @@ jobs:
 
       - name: Install system dependencies
         run: |
-          sudo apt-get update
+          # A stale/broken package-index mirror snapshot happens often
+          # enough on GitHub-hosted Ubuntu runners to just retry.
+          for i in 1 2 3; do sudo apt-get update && break || sleep 10; done
           sudo apt-get install -y \
             gettext \
             intltool
@@ -124,7 +128,9 @@ jobs:
 
       - name: Install system dependencies
         run: |
-          sudo apt-get update
+          # A stale/broken package-index mirror snapshot happens often
+          # enough on GitHub-hosted Ubuntu runners to just retry.
+          for i in 1 2 3; do sudo apt-get update && break || sleep 10; done
           sudo apt-get install -y \
             at-spi2-core \
             gir1.2-gtk-3.0 \
@@ -770,7 +776,9 @@ jobs:
 
       - name: Install flatpak and flatpak-builder
         run: |
-          sudo apt-get update
+          # A stale/broken package-index mirror snapshot happens often
+          # enough on GitHub-hosted Ubuntu runners to just retry.
+          for i in 1 2 3; do sudo apt-get update && break || sleep 10; done
           sudo apt-get install -y flatpak flatpak-builder gettext intltool xvfb
           flatpak remote-add --if-not-exists --user flathub \
             https://dl.flathub.org/repo/flathub.flatpakrepo

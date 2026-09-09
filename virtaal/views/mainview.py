@@ -390,6 +390,7 @@ class MainView(BaseView):
             gdk_window = self.main_window.get_window()
             if gdk_window and not (gdk_window.get_state() & Gdk.WindowState.FULLSCREEN):
                 self._pre_fullscreen_size = self.main_window.get_size()
+                logging.debug("fullscreen: captured pre-fullscreen size %s", self._pre_fullscreen_size)
             return False
 
         def on_configure_event(widget, event):
@@ -907,6 +908,9 @@ class MainView(BaseView):
     def _on_window_state_event(self, widget, event):
         mnu_fullscreen = self.gui.get_object('mnu_fullscreen')
         mnu_fullscreen.set_active(event.new_window_state & Gdk.WindowState.FULLSCREEN)
+        logging.debug(
+            "fullscreen: window-state-event new=%s changed=%s size=%s",
+            event.new_window_state, event.changed_mask, self.main_window.get_size())
         # React to the real, confirmed transition, not the unfullscreen()
         # call itself (which doesn't reliably take effect synchronously
         # on Windows).
@@ -917,6 +921,7 @@ class MainView(BaseView):
         if left_fullscreen and getattr(self, '_pre_fullscreen_size', None):
             target_size = self._pre_fullscreen_size
             self._pre_fullscreen_size = None
+            logging.debug("fullscreen: leaving, will restore to %s in 250ms", target_size)
             # Deferred, not resized right here: this event fires the
             # moment the state *changes*, still mid-transition on both
             # the Win32 and Quartz backends (Quartz's exit-fullscreen is
@@ -932,7 +937,9 @@ class MainView(BaseView):
         store_controller = self.controller.store_controller
         if store_controller.store is not None:
             store_controller.view._treeview.reset_column_width()
+        logging.debug("fullscreen: resizing to %s (get_size() was %s)", target_size, self.main_window.get_size())
         self.main_window.resize(*target_size)
+        logging.debug("fullscreen: get_size() now reports %s", self.main_window.get_size())
         return False  # one-shot: don't repeat this GLib.timeout_add
 
     def _on_app_pressed(self, btn):

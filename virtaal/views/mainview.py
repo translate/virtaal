@@ -379,16 +379,26 @@ class MainView(BaseView):
         # (the green button, Fn+F), not just our own _on_fullscreen() -
         # by the time a window-state-event confirms fullscreen has
         # started, get_size() already reports the fullscreen size, so
-        # the pre-fullscreen size has to be tracked continuously
-        # beforehand instead. Queries the GdkWindow's own state directly
-        # rather than a same-transition window-state-event flag - the
-        # two signals' relative firing order isn't guaranteed, and a
-        # flag not yet updated would let this capture the fullscreen
-        # size itself instead of the real pre-fullscreen one.
-        def on_configure_event(widget, event):
-            gdk_window = widget.get_window()
+        # the pre-fullscreen size has to be tracked beforehand instead.
+        # Debounced, not committed on every event: macOS's own
+        # fullscreen transition is a multi-frame animation, and an
+        # intermediate frame's own configure-event can still report
+        # not-yet-fullscreen (the state bit lags the size changes) -
+        # only a size that's stayed put for a real moment is trustworthy.
+        self._size_settle_source = None
+
+        def commit_pre_fullscreen_size():
+            self._size_settle_source = None
+            gdk_window = self.main_window.get_window()
             if gdk_window and not (gdk_window.get_state() & Gdk.WindowState.FULLSCREEN):
                 self._pre_fullscreen_size = self.main_window.get_size()
+            return False
+
+        def on_configure_event(widget, event):
+            from gi.repository import GLib
+            if self._size_settle_source is not None:
+                GLib.source_remove(self._size_settle_source)
+            self._size_settle_source = GLib.timeout_add(300, commit_pre_fullscreen_size)
         self.main_window.connect('configure-event', on_configure_event)
 
     def _setup_dnd(self):

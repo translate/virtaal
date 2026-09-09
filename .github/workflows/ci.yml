@@ -812,19 +812,19 @@ jobs:
       - uses: actions/checkout@v7
 
       - name: Download Windows installer
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: Virtaal-windows-installer
           path: release-assets
 
       - name: Download macOS dmg (arm64)
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: Virtaal-macos-dmg-arm64
           path: release-assets/arm64
 
       - name: Download macOS dmg (x86_64)
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: Virtaal-macos-dmg-x86_64
           path: release-assets/x86_64

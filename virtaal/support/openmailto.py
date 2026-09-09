@@ -22,6 +22,9 @@
 #   Copyright (c) 2007, Antonio Valentino
 #   Obtained from http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/511443
 #   which is licensed under the Python license.
+#
+# Later modifications: Copyright (C) Virtaal contributors. See the
+# AUTHORS.md file for copyright and authorship information.
 
 """Utilities for opening files or URLs in the registered default application
 and for sending e-mail using the user's preferred composer."""

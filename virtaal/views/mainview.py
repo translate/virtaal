@@ -136,6 +136,13 @@ class MainView(BaseView):
                 mnu_quit = self.gui.get_object("mnu_quit")
                 mnu_quit.hide()
                 self.gui.get_object("separator_mnu_file_2").hide()
+                # macOS already adds its own native "Enter Full Screen" to
+                # every resizable window - our own GDK-level fullscreen()
+                # is a different mechanism (no real fullscreen Space,
+                # Esc/mouse-to-top-of-screen native affordances not
+                # engaged) and can leave the window with no way back to
+                # the menu bar. Hide it here, keep only the native one.
+                self.gui.get_object("mnu_fullscreen").hide()
                 # Move the about menu item
                 mnu_about = self.gui.get_object("mnu_about")
                 osxapp.insert_app_menu_item(mnu_about, 0)
@@ -362,10 +369,27 @@ class MainView(BaseView):
 
     def _track_window_state(self):
         self._window_is_maximized = False
+        self._pre_fullscreen_size = None
 
         def on_state_event(widget, event):
             self._window_is_maximized = bool(event.new_window_state & Gdk.WindowState.MAXIMIZED)
         self.main_window.connect('window-state-event', on_state_event)
+
+        # Covers entering fullscreen via macOS's own native mechanism
+        # (the green button, Fn+F), not just our own _on_fullscreen() -
+        # by the time a window-state-event confirms fullscreen has
+        # started, get_size() already reports the fullscreen size, so
+        # the pre-fullscreen size has to be tracked continuously
+        # beforehand instead. Queries the GdkWindow's own state directly
+        # rather than a same-transition window-state-event flag - the
+        # two signals' relative firing order isn't guaranteed, and a
+        # flag not yet updated would let this capture the fullscreen
+        # size itself instead of the real pre-fullscreen one.
+        def on_configure_event(widget, event):
+            gdk_window = widget.get_window()
+            if gdk_window and not (gdk_window.get_state() & Gdk.WindowState.FULLSCREEN):
+                self._pre_fullscreen_size = self.main_window.get_size()
+        self.main_window.connect('configure-event', on_configure_event)
 
     def _setup_dnd(self):
         """configures drag and drop"""
@@ -796,12 +820,6 @@ class MainView(BaseView):
 
     def _on_fullscreen(self, widget=None):
         if widget.get_active():
-            # GTK/GDK's Windows backend doesn't reliably restore the
-            # pre-fullscreen size on its own (can stay near-fullscreen
-            # width after unfullscreen()) - save
-            # it here and restore explicitly once _on_window_state_event
-            # confirms fullscreen has actually ended.
-            self._pre_fullscreen_size = self.main_window.get_size()
             self.main_window.fullscreen()
             self.status_bar.hide()
             self.show_app_icon()
@@ -883,7 +901,7 @@ class MainView(BaseView):
         mnu_fullscreen.set_active(event.new_window_state & Gdk.WindowState.FULLSCREEN)
         # React to the real, confirmed transition, not the unfullscreen()
         # call itself (which doesn't reliably take effect synchronously
-        # on Windows) - see _on_fullscreen()'s own comment.
+        # on Windows).
         left_fullscreen = (
             event.changed_mask & Gdk.WindowState.FULLSCREEN
             and not (event.new_window_state & Gdk.WindowState.FULLSCREEN)

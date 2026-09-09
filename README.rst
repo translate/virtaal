@@ -1,3 +1,6 @@
+.. image:: https://codecov.io/gh/translate/virtaal/branch/main/graph/badge.svg
+   :target: https://codecov.io/gh/translate/virtaal
+
 Introduction
 ------------
 Virtaal is a graphical program for doing translation. It is meant to be easy

@@ -171,7 +171,23 @@ jobs:
         run: find . -name "*.py" -exec python -m py_compile {} +
 
       - name: Run tests
-        run: xvfb-run -a --server-args="-screen 0 1024x768x24" pytest -rvxs virtaal
+        # Coverage only collected/uploaded once, on one matrix version -
+        # every version already runs the same tests, so N uploads would
+        # just be redundant, not N times the information.
+        run: |
+          if [ "${{ matrix.python-version }}" = "3.13" ]; then
+            xvfb-run -a --server-args="-screen 0 1024x768x24" pytest -rvxs --cov=virtaal --cov-report=xml virtaal
+          else
+            xvfb-run -a --server-args="-screen 0 1024x768x24" pytest -rvxs virtaal
+          fi
+
+      - name: Upload coverage to Codecov
+        if: matrix.python-version == '3.13'
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.xml
+          fail_ci_if_error: false
 
       - name: Smoke test the CLI
         run: xvfb-run -a --server-args="-screen 0 1024x768x24" virtaal --help

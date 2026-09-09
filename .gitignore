@@ -5,6 +5,8 @@
 /MANIFEST.in
 /mo
 *.egg-info/
+/.coverage
+/coverage.xml
 
 # /docs/
 /docs/_build/

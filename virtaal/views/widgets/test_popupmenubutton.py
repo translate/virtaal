@@ -5,13 +5,13 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-"""Regression tests for Release Blocker #8 (a native segfault from popup-menu
-teardown racing Python's GC - see WorkflowMode/QualityCheckMode's own
-_add_widgets() comment for the full mechanism). The crash itself was only
-~30% reproducible and kills the whole test process on a hit, so it can't be
-tested directly - these instead assert the fix's actual invariant: a
-replaced menu is destroy()ed deterministically, not just dropped for GC to
-collect whenever and however it likes."""
+"""Regression tests for a native segfault from popup-menu teardown racing
+Python's GC (see WorkflowMode/QualityCheckMode's own _add_widgets() comment
+for the full mechanism). The crash itself was only ~30% reproducible and
+kills the whole test process on a hit, so it can't be tested directly -
+these instead assert the fix's actual invariant: a replaced menu is
+destroy()ed deterministically, not just dropped for GC to collect whenever
+and however it likes."""
 
 from unittest.mock import MagicMock
 

@@ -120,8 +120,8 @@ if ($AppDebugLog) { Set-VirtaalAppDebugLog; Write-Host "-AppDebugLog: Virtaal la
 # collapses it to the one string "18 24", space-joined, which then
 # fails to parse as a single number). Also split each element on comma
 # so the quoted form (-RunTest "18,24", one array element containing a
-# comma) works too - confirmed live, 2026-08-24: [int[]] alone binds
-# the unquoted form correctly but silently mis-binds a quoted
+# comma) works too - [int[]] alone binds the unquoted form correctly
+# but silently mis-binds a quoted
 # "18,24" as 1824 (PowerShell's string-to-int conversion treats the
 # comma as a thousands separator, no error at all), so this
 # deliberately stays [string[]] + explicit TryParse rather than
@@ -159,9 +159,9 @@ function Invoke-VirtaalCheck {
     .SYNOPSIS
     Runs one check's $Body, catching any *unexpected* exception as a Fail
     result instead of letting it abort every check after it and skip
-    Tear down entirely - confirmed live 2026-08-24: an unhandled
-    Start-Process error partway through the battery left Virtaal
-    installed and every later check unrun, with no summary at all. $Body
+    Tear down entirely - an unhandled Start-Process error partway
+    through the battery used to leave Virtaal installed and every
+    later check unrun, with no summary at all. $Body
     is dot-sourced (not called in a child scope) so it can set $t itself
     and have this wrapper's own finally still see it for cleanup; $Body
     is expected to call Add-Result for its own outcome - this wrapper
@@ -194,12 +194,10 @@ function Invoke-VirtaalCheck {
     } catch {
         Add-Result $Name "Fail" "unexpected error: $_"
     } finally {
-        # Start-VirtaalTest now screenshots every file-argument launch
-        # unconditionally (2026-08-24 - this glitch turned out to be far
-        # more common than its original "rare, hard to reproduce"
-        # characterization, just too fast to see without -HumanDelayMs).
-        # Surfaced here once, for every check, rather than needing each
-        # one to reference $t.OpenScreenshot in its own Add-Result call.
+        # Start-VirtaalTest screenshots every file-argument launch
+        # unconditionally - surfaced here once, for every check, rather
+        # than needing each one to reference $t.OpenScreenshot in its
+        # own Add-Result call.
         if ($t -and $t.OpenScreenshot) { Write-Host "  (open screenshot: $($t.OpenScreenshot))" }
         if ($t) { Stop-VirtaalTest $t }
     }
@@ -315,25 +313,17 @@ function Find-VirtaalUnit {
     quality check, ...) rather than whatever the file's first unit
     happens to be.
 
-    Two real, distinct bugs previously hid behind the same "doesn't move
-    to unit" symptom here - both confirmed live, not guessed:
+    Two distinct bugs previously hid behind the same "doesn't move to
+    unit" symptom here:
 
     1. searchmode.py's update_search() crashed on *every* search under
        Python 3.14 (translate-toolkit's GrepFilter.getmatches() ORs in
        re.LOCALE, invalid for a str pattern - see
        virtaal/support/pogrep_compat.py, fixed 7bc977aa). That exception
        aborted _on_entry_activate before it ever reached _move_match(), so
-       Enter looked like it did nothing. Two earlier attempts to fix this
-       function by widening its settle times (800ms/500ms, then
-       2000ms/2000ms) never had a chance of working - the search wasn't
-       failing to catch up, it was throwing before it ever ran. Confirmed
-       both by a live manual repro (Ctrl+F "XML" in checks.po, same
-       traceback from Enter and from clicking Search) and by this
-       function's own log-clean checks going quiet in exactly the runs
-       where this was the cause.
+       Enter looked like it did nothing.
 
-    2. With (1) fixed, the symptom *still* reproduced live. Root cause:
-       Send-VirtaalKeys calls SetForegroundWindow on every single
+    2. Send-VirtaalKeys calls SetForegroundWindow on every single
        invocation, and this function called it three times back to back
        (^f, then $SearchText, then {ENTER}) - each a separate window
        re-activation that can disrupt which GTK widget currently holds
@@ -407,19 +397,18 @@ if (-not $SkipCommitCheck) {
     # pan_app.py), not any console - there is no console for a
     # windowed-subsystem exe - so read it back from there, not from
     # Start-Process itself.
-    # Not just `(git ... rev-parse HEAD).Trim()` - confirmed live,
-    # 2026-08-24: git refuses to operate at all ("detected dubious
-    # ownership") against this checkout when it's reached via the
+    # Not just `(git ... rev-parse HEAD).Trim()` - git refuses to
+    # operate at all ("detected dubious ownership") against this
+    # checkout when it's reached via the
     # UTM/WebDAV-mounted share path (//localhost@.../DavWWWRoot/virtaal)
     # rather than a plain local path, printing its error to stdout and
     # exiting non-zero - .Trim() on that then crashes with a cryptic
     # "cannot call a method on a null-valued expression" instead of a
     # useful message. Check $LASTEXITCODE explicitly and fail with git's
     # own remediation instead.
-    # Confirmed live, 2026-08-24, on the real Windows PowerShell 5.1 this
-    # battery actually runs under (not reproducible with cross-platform
-    # PowerShell 7's git handling, which behaves differently here): with
-    # $ErrorActionPreference = "Stop" in effect (set at the top of this
+    # On the real Windows PowerShell 5.1 this battery actually runs
+    # under (PowerShell 7's git handling behaves differently here):
+    # with $ErrorActionPreference = "Stop" in effect (set at the top of this
     # script), a native command's stderr output - even merged into the
     # pipeline via 2>&1 - is itself an ErrorRecord, so the *terminating*
     # dubious-ownership error still aborted this whole script, "2>&1"
@@ -604,10 +593,8 @@ Invoke-VirtaalCheck "Navigation doesn't grow window" {
     # bug (fixed 7fd21615) - kept here too since this is testing the real
     # installed build, not just whatever CI happened to build from.
     #
-    # No longer takes its own screenshot at open - Start-VirtaalTest does
-    # that automatically now for every file-argument launch (see its own
-    # comments: this glitch turned out to be far more common than
-    # originally thought, not specific to this one check).
+    # No longer takes its own screenshot at open - Start-VirtaalTest
+    # does that automatically now for every file-argument launch.
     $t = Start-VirtaalTest -ExePath $install.ExePath -Arguments "po\af.po"
     if (-not $t) {
         Add-Result "Navigation doesn't grow window" "Fail" "app didn't launch"
@@ -1097,36 +1084,25 @@ Invoke-VirtaalCheck "Navigation mode switching (Incomplete/Quality Checks/Workfl
     # three: Incomplete (quicktransmode.py), Quality Checks
     # (qualitycheckmode.py), Workflow (workflowmode.py).
     #
-    # First attempt (Alt+A mnemonic focus + type-ahead) confirmed live,
-    # 2026-08-25, to fail identically for all three modes - "Incomplete:
-    # NOT reached; Quality Checks: NOT reached; Workflow: NOT reached",
-    # screenshot showing "Navigation: All" untouched. That's consistent
-    # with the mnemonic focus step itself never landing (if the combo
-    # never gets focus, none of the type-ahead presses that follow do
-    # anything) - not re-guessing at why *that* specific mechanism
-    # failed (no menu-bar equivalent exists to cross-check against
-    # either - confirmed by reading virtaal.ui's own menu_navigation
-    # contents: just Up/Down/Page Up/Page Down, nothing about these
-    # three modes).
-    #
-    # Switched to a mechanism already proven live elsewhere in this
-    # battery instead: a real mouse click (coordinates read directly off
-    # a real saved screenshot of this exact combo, not guessed) to open
-    # the popup, then Home (jump to the first item, "All", removing any
-    # dependency on knowing what was selected before) + Down N times +
-    # Enter to reach the target mode by absolute position - arrow-key
-    # navigation *within an already-open* GTK combo popup is standard,
-    # well-established behaviour, unlike the closed-combo mnemonic/
-    # type-ahead path that just failed. Combo order confirmed by reading
-    # modes/__init__.py's modeclasses list: 0=All, 1=Incomplete,
-    # 2=Search, 3=Quality Checks, 4=Workflow.
+    # Alt+A mnemonic focus + type-ahead doesn't work for a *closed*
+    # combo here - no menu-bar equivalent exists to cross-check against
+    # either (virtaal.ui's own menu_navigation only has Up/Down/Page
+    # Up/Page Down, nothing about these three modes). Uses a real mouse
+    # click instead (coordinates read directly off a real saved
+    # screenshot of this exact combo, not guessed) to open the popup,
+    # then Home (jump to the first item, "All", removing any dependency
+    # on knowing what was selected before) + Down N times + Enter to
+    # reach the target mode by absolute position - arrow-key navigation
+    # *within an already-open* GTK combo popup is standard,
+    # well-established behaviour. Combo order from modes/__init__.py's
+    # modeclasses list: 0=All, 1=Incomplete, 2=Search, 3=Quality
+    # Checks, 4=Workflow.
     #
     # Screenshots the open popup itself for the *first* mode only (not
-    # all three, to keep this check's output manageable) - if this still
+    # all three, to keep this check's output manageable) - if this
     # doesn't work, that one screenshot tells us directly whether the
-    # click even opened the popup at all, isolating that from whether
-    # the keyboard selection within it worked, rather than having to
-    # guess between two possible failure points again.
+    # click even opened the popup, isolating that from whether the
+    # keyboard selection within it worked.
     #
     # Verified via modecontroller.py's own "Mode selected: %s" INFO log
     # line (self.current_mode.name, the internal name - QuickTranslate/
@@ -1301,20 +1277,13 @@ Invoke-VirtaalCheck "Placeable stepping and copy-into-target on a real placeable
     # tree - screenshots at each step are the only real evidence here,
     # same honest bar as the click checks.
     #
-    # {ESC} originally did NOT exit Search mode - confirmed live,
-    # 2026-08-24, via a saved screenshot showing the search bar still
-    # fully active with Alt+Right/Down having had no effect (this check
-    # reported Skip that run instead of Pass/Fail - not a false
-    # negative, a real gap this check hadn't accounted for). Traced to a
-    # genuine, separate accessibility bug rather than a wrong assumption
-    # in this script: there was no Escape binding anywhere in
-    # searchmode.py at all - the only way out of Search mode was the
-    # "Navigation:" mode dropdown, a mouse-only path, against Virtaal's
-    # own keyboard-only-navigation goal. Fixed at the source
-    # (searchmode.py's _on_close_search(), same commit as this comment) -
-    # Escape now calls back into ModeController.select_default_mode()
-    # when Search is the active mode. This check now doubles as that
-    # fix's own regression test.
+    # {ESC} exits Search mode via searchmode.py's _on_close_search(),
+    # which calls back into ModeController.select_default_mode() when
+    # Search is the active mode - previously there was no Escape
+    # binding at all in searchmode.py, so the only way out of Search
+    # mode was the "Navigation:" mode dropdown, a mouse-only path
+    # against Virtaal's own keyboard-only-navigation goal. This check
+    # doubles as that fix's own regression test.
     $t = Start-VirtaalTest -ExePath $install.ExePath -Arguments "devsupport\testfiles\checks.po"
     if (-not $t) {
         Add-Result "Placeable stepping and copy-into-target on a real placeable" "Fail" "app didn't launch"
@@ -1454,15 +1423,12 @@ Invoke-VirtaalCheck "Ctrl+S with known translator info saves directly" {
     # about the modified marker not always reflecting reality.
     #
     # Explicitly forces "translator info already known" via
-    # Set-VirtaalTranslatorInfo first - a real live failure here
-    # (2026-08-24) turned out to be storemodel.py's own legitimate
-    # "Header information" prompt (mainview.py's EntryDialog, shown by
-    # _update_header() whenever name/email/team are unset) blocking the
-    # save, not a bug - correct behaviour when that info really is
-    # missing, but this check specifically wants the direct-save path,
-    # so it no longer depends on whatever this VM's config happens to
-    # have from earlier runs. See the next check for the "info is
-    # genuinely missing" path, which the prompt exists for.
+    # Set-VirtaalTranslatorInfo first, rather than depending on
+    # whatever this VM's config happens to have from earlier runs -
+    # storemodel.py's own "Header information" prompt (mainview.py's
+    # EntryDialog, shown by _update_header() whenever name/email/team
+    # are unset) would otherwise block the save. See the next check for
+    # the "info is genuinely missing" path, which the prompt exists for.
     Set-VirtaalTranslatorInfo
     $scratch = New-VirtaalScratchFile -SourceRelativePath "po\af.po" -Suffix "save-test"
     $mtimeBefore = (Get-Item $scratch).LastWriteTimeUtc
@@ -1567,12 +1533,10 @@ Invoke-VirtaalCheck "Ctrl+S with missing translator info prompts, then saves" {
                     # -AppDebugLog's instrumentation (searchmode.py/
                     # unitcontroller.py/storecontroller.py's signal-chain
                     # tracing, added investigating this exact marker-not-
-                    # clearing bug) was never actually surfaced here before -
-                    # confirmed live, 2026-08-25: a real run with -AppDebugLog
-                    # active reproduced this exact failure with zero debug
-                    # lines visible anywhere in the transcript. Dump the logs
-                    # unconditionally on failure now so the trace is actually
-                    # readable, not just known to exist somewhere on the VM.
+                    # clearing bug) was never actually surfaced here.
+                    # Dump the logs unconditionally on failure so the trace
+                    # is actually readable, not just known to exist
+                    # somewhere on the VM.
                     Write-VirtaalLogs
                     Add-Result "Ctrl+S with missing translator info prompts, then saves" "Fail" "$promptCount prompt(s) answered, title after save=`"$titleAfterSave`", file written=$fileWritten - screenshot: $shot"
                 }

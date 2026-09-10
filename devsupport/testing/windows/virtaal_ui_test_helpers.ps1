@@ -465,12 +465,11 @@ function Assert-VirtaalLogsClean {
     # battery for an unrelated window-growth check) legitimately hits
     # translate.filters.spelling's own "no dictionary for this
     # language" path, which it logs as an ERROR-level traceback by
-    # design before degrading gracefully (no crash). Expected until the
-    # Sourcing stage adds real per-language dictionary downloads - see
-    # PLAN-SPELLCHECK.md. Patterns are anchored to translate.filters.
-    # spelling's/enchant's own file paths specifically, not generic
-    # "Traceback"/"File" lines, so a real Virtaal-internal crash (whose
-    # frames would show virtaal's own paths) still fails this check.
+    # design before degrading gracefully (no crash). Patterns are
+    # anchored to translate.filters.spelling's/enchant's own file
+    # paths specifically, not generic "Traceback"/"File" lines, so a
+    # real Virtaal-internal crash (whose frames would show virtaal's
+    # own paths) still fails this check.
     $AllowlistPatterns = $AllowlistPatterns + @(
         '^ERROR:translate\.filters\.spelling:Dictionary not found$',
         '^Traceback \(most recent call last\):$',

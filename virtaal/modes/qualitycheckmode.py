@@ -120,7 +120,7 @@ class QualityCheckMode(BaseMode):
             # the menuitem for Python's cyclic GC to eventually
             # collect, which isn't safe to rely on here - see
             # PopupMenuButton.set_menu()'s comment for the full
-            # mechanism (Release Blocker #8).
+            # mechanism.
             mi.destroy()
         assert not menu.get_children()
         self._menuitem_checks = {}

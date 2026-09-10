@@ -291,8 +291,8 @@ def _pontoon_locale_code(langcode):
         form Pontoon's own static file naming expects. Two things
         normalize_code() alone doesn't get right for this specific server:
         it lowercases the whole code (Pontoon's server is case-sensitive
-        and serves "en-GB.tbx", not "en-gb.tbx" - confirmed live, the
-        lowercase form 404s), and Virtaal's own codes use an underscore
+        and serves "en-GB.tbx", not "en-gb.tbx" - the lowercase form
+        404s), and Virtaal's own codes use an underscore
         separator where Pontoon's file names use a hyphen. Language
         subtag lowercase, region subtag uppercase - the standard BCP 47
         casing convention, not something Pontoon invented."""

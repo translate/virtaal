@@ -37,7 +37,7 @@ class HTTPRequest(GObjectWrapper):
 
     def __init__(self, url, method='GET', data=None, headers=None,
             headers_only=False, user_agent=None, follow_location=False,
-            force_quiet=True):
+            force_quiet=True, download=False):
         GObjectWrapper.__init__(self)
         self.result = BytesIO()
         self.result_headers = BytesIO()
@@ -58,6 +58,14 @@ class HTTPRequest(GObjectWrapper):
         # We want to use gzip and deflate if possible:
         self.curl.setopt(pycurl.ENCODING, "") # use all available encodings
         self.curl.setopt(pycurl.URL, self.url)
+        self.curl.setopt(pycurl.CONNECTTIMEOUT, 10)
+        if download:
+            # Downloads can take long on a slow connection. Only abort
+            # if it stalls (under 1 byte/s for 30s).
+            self.curl.setopt(pycurl.LOW_SPEED_LIMIT, 1)
+            self.curl.setopt(pycurl.LOW_SPEED_TIME, 30)
+        else:
+            self.curl.setopt(pycurl.TIMEOUT, 15)
 
         if os.name == 'nt':
             # curl's schannel (Windows-native TLS) backend treats being
@@ -234,12 +242,13 @@ class HTTPClient:
             return False
         return True
 
-    def get(self, url, callback, etag=None, error_callback=None):
+    def get(self, url, callback, etag=None, error_callback=None, download=False):
         headers = None
         if etag:
             # See http://en.wikipedia.org/wiki/HTTP_ETag for more details about ETags
             headers = ['If-None-Match: "%s"' % (etag)]
-        request = HTTPRequest(url, headers=headers, user_agent=self.user_agent, follow_location=True)
+        request = HTTPRequest(url, headers=headers, user_agent=self.user_agent,
+                follow_location=True, download=download)
         self.add(request)
 
         if callback:

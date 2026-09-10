@@ -146,11 +146,11 @@ class TerminologyModel(BaseTerminologyModel):
         callback = lambda *args: self._process_header(localfile=localfile, *args)
 
         if logging.root.level != logging.DEBUG:
-            self.client.get(url, callback, etag)
+            self.client.get(url, callback, etag, download=True)
         else:
             def error_log(request, result):
                 logging.debug('Could not get %s: status %d' % (url, request.status))
-            self.client.get(url, callback, etag, error_callback=error_log)
+            self.client.get(url, callback, etag, error_callback=error_log, download=True)
 
     def _get_ext_from_url(self, url):
         from urllib.parse import urlparse

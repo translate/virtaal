@@ -58,7 +58,7 @@ class AutocorrectDownloader:
         if folder is None:
             return self._give_up()
         url = RAW_BASE + folder + '/DocumentList.xml'
-        self._client.get(url, self._on_document_list, error_callback=self._on_error)
+        self._client.get(url, self._on_document_list, error_callback=self._on_error, download=True)
 
     def _on_document_list(self, _request, result):
         target_dir = self.target_dir or autocorrect_write_dir(self.locale_code)

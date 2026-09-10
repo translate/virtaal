@@ -8,12 +8,14 @@
 # carry this header - either a genuine third-party notice sits above
 # it instead (locale.py, openmailto.py, sorted_set.py,
 # simplegeneric.py all still append it underneath their own, so they
-# pass), or the file is wholesale vendored code with no Virtaal
-# copyright to state at all (ipython_view.py, selector.py, statsdb.py,
-# tmdb.py, tmserver.py, translate_compat.py, wsgi.py).
+# pass), the file is wholesale vendored code with no Virtaal copyright
+# to state at all (ipython_view.py, selector.py, statsdb.py, tmdb.py,
+# tmserver.py, translate_compat.py, wsgi.py), or its own descriptive
+# comment starts with a bare "#" too, tripping the heuristic below
+# (docs/conf.py).
 #
 # Doesn't touch files that never had a header at all before this
-# check existed (see FEATURE doc's own note - a real, separate,
+# check existed (a real, separate,
 # not-yet-made decision) - only checks files that already do.
 set -eu
 
@@ -25,6 +27,7 @@ HEADER='#
 # the AUTHORS.md file for copyright and authorship information.'
 
 ALLOWLIST='
+docs/conf.py
 virtaal/support/libi18n/locale.py
 virtaal/support/openmailto.py
 virtaal/support/sorted_set.py

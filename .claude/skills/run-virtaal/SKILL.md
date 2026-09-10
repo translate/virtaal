@@ -115,6 +115,63 @@ transition) never risks capturing something unrelated:
 screencapture -x -R 0,0,<screen-width>,120 /path/to/out.png
 ```
 
+## Sending real keyboard shortcuts
+
+`osascript`'s own process invocation briefly returns focus to whatever
+shell/terminal ran it - `set frontmost of process "Python" to true` followed
+by a *separate* `osascript` call for the keystroke can silently land the
+keystroke back in your own terminal instead (confirmed live: a shortcut
+appeared to "not fire" for several rounds until this was caught). Always
+combine the frontmost-set and the keystroke in **one** `osascript` invocation,
+with a short `delay` between them:
+
+```applescript
+tell application "System Events"
+    set frontmost of process "Python" to true
+    delay 0.3
+    keystroke "o" using command down
+end tell
+```
+
+If the user is also active on the same machine, their own focus changes can
+race with this the same way - don't automate keystrokes while someone else
+might be using the machine concurrently (see `macos-ui-automation-safety`).
+
+## Inspecting a native menu item's real key equivalent
+
+Don't infer whether a shortcut works from the menu's visible label alone -
+query the actual accessibility attributes, and separately confirm the
+keypress really dispatches (a label can be correct while the underlying
+`Gtk.AccelMap`/`GtkosxApplication` wiring still doesn't fire, or vice versa -
+both have been observed independently):
+
+```applescript
+tell application "System Events"
+    tell process "Python"
+        set fileMenu to menu 1 of menu bar item "File" of menu bar 1
+        repeat with mi in menu items of fileMenu
+            try
+                log {name of mi, value of attribute "AXMenuItemCmdChar" of mi, value of attribute "AXMenuItemCmdModifiers" of mi}
+            end try
+        end repeat
+    end tell
+end tell
+```
+
+`AXMenuItemCmdModifiers` of `0` means Command alone; nonzero values add
+Shift/Option/Control - a character that itself needs Shift to type (like
+`?`) can show a nonzero value without that being a bug. A missing
+`AXMenuItemCmdChar` means no key equivalent is assigned at all, regardless of
+what `Gtk.AccelMap`/`accel_path` claims.
+
+## Testing settings persistence without touching real config
+
+`bin/virtaal --config <path>` points at an isolated `.ini` file instead of
+the real `~/Library/Application Support/Virtaal/virtaal.ini` - use this for
+anything that reads/writes settings (window size/position, recent files,
+etc.) so a test run can never corrupt or race with the user's own config,
+especially if they might launch their own instance concurrently.
+
 ## Cleanup
 
 Kill the PID you launched, delete any scratch screenshots, and uninstall

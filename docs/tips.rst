@@ -115,4 +115,3 @@ increase the setting for ``max_matches``.
 Note that you can specify these same parameters for most of the individual
 sources of TM suggestions. Try adding or editing these settings in ``tm.ini``
 under a heading corresponding to the name of the plugin.
-

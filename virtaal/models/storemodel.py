@@ -8,6 +8,7 @@
 import os
 
 from virtaal.common import pan_app
+from virtaal.support import qm_compat  # noqa: F401 - applies its patch on import
 
 from .basemodel import BaseModel
 

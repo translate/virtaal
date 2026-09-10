@@ -17,13 +17,12 @@ class TestModeController(TestScaffolding):
         assert default_mode == self.mode_controller.modes[self.mode_controller.default_mode_name]
 
     def test_reselecting_menu_modes_destroys_previous_popup(self):
-        """Regression test for Release Blocker #8: WorkflowMode and
-        QualityCheckMode each build a fresh Gtk.Menu (with real
-        Gtk.CheckMenuItem children) every time they're selected - the
-        previous one must be destroy()ed deterministically, not just
-        dropped for Python's GC to collect (see their own
-        _add_widgets() comment for why relying on GC caused a native
-        segfault)."""
+        """WorkflowMode and QualityCheckMode each build a fresh
+        Gtk.Menu (with real Gtk.CheckMenuItem children) every time
+        they're selected - the previous one must be destroy()ed
+        deterministically, not just dropped for Python's GC to collect
+        (see their own _add_widgets() comment for why relying on GC
+        caused a native segfault)."""
         self.store_controller.open_file(self.testfile[1])
         default_mode = self.mode_controller.modes[self.mode_controller.default_mode_name]
 

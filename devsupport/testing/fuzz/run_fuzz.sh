@@ -1,7 +1,6 @@
 #!/bin/sh
 # Runs fuzz_ui.py under whichever native debugger is available, so a crash
-# leaves behind a real backtrace instead of just "the process died" - see
-# FEATURE-CRASH-HARDENING.md's "Crash capture" section.
+# leaves behind a real backtrace instead of just "the process died".
 #
 # Usage: devsupport/testing/fuzz/run_fuzz.sh [fuzz_ui.py arguments]
 #   devsupport/testing/fuzz/run_fuzz.sh --duration-seconds 1200
@@ -36,9 +35,8 @@ elif command -v lldb >/dev/null 2>&1; then
     echo "Running under lldb (macOS crash capture)"
     # --one-line-on-crash: only fires if the target actually stops on a
     # signal, unlike gdb's approach above - lldb's batch mode otherwise
-    # halts the command queue on any unexpected stop (see the Release
-    # Blocker #8 investigation for why "bt" alone after "continue"
-    # silently produces nothing).
+    # halts the command queue on any unexpected stop, which is why "bt"
+    # alone after "continue" would otherwise silently produce nothing.
     #
     # lldb's own exit code reflects whether *lldb* ran cleanly, not the
     # inferior's exit status - "Process N exited with status = C" is

@@ -63,8 +63,7 @@ class PopupMenuButton(Gtk.ToggleButton):
             # gtk_container_destroy -> gtk_menu_shell_forall), GTK
             # either logs "gtk_widget_destroy: assertion 'GTK_IS_WIDGET
             # (widget)' failed" or segfaults outright, depending on
-            # timing. This was Release Blocker #8's real root cause,
-            # confirmed via a G_DEBUG=fatal-criticals + lldb backtrace.
+            # timing.
             old_menu.destroy()
         self.menu = menu
         self._menu_selection_done_id = self.menu.connect('selection-done', self._on_menu_selection_done)

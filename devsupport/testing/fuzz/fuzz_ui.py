@@ -5,15 +5,14 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-"""In-process UI fuzzer - see FEATURE-CRASH-HARDENING.md for the design this
-implements.
+"""In-process UI fuzzer.
 
 Drives Virtaal's real controllers through varied, randomised interaction
 (navigate, switch mode, edit, undo, save, close/reopen, resize) well beyond
-what the pytest suite exercises, to shake out more instances of Release
-Blocker #8's pattern (a live GTK object graph torn down in a way that isn't
-safe against Python's own garbage collection) before a release does, not
-just the one instance already root-caused and fixed there.
+what the pytest suite exercises, to shake out more instances of a live GTK
+object graph torn down in a way that isn't safe against Python's own
+garbage collection - a real crash class already hit and fixed once, not a
+hypothetical one - before a release does.
 
 A found crash is a real native crash (the process dies, non-zero/negative
 exit code) - this script can't catch that itself, only leave behind enough
@@ -59,10 +58,10 @@ from virtaal.controllers.unitcontroller import UnitController
 TESTFILES_DIR = os.path.join(REPO_ROOT, 'devsupport', 'testfiles')
 DEFAULT_TESTFILES = ['workflow.po', 'workflow.xliff', 'workflow.ts', 'checks.po']
 
-# Deliberately excluded for now, see FEATURE-CRASH-HARDENING.md: toggling
-# spellcheck/TM requires main_controller.load_plugins(), which does real
-# network downloads and spawns a tmserver subprocess - too slow/flaky for
-# a tight fuzz loop. A plugin-aware fuzzer is a real, separate follow-up.
+# Deliberately excluded for now: toggling spellcheck/TM requires
+# main_controller.load_plugins(), which does real network downloads and
+# spawns a tmserver subprocess - too slow/flaky for a tight fuzz loop.
+# A plugin-aware fuzzer is a real, separate follow-up.
 
 
 class Fuzzer:
@@ -202,8 +201,8 @@ class Fuzzer:
         # Pump the real GTK main loop so anything the action deferred
         # (GLib.idle_add/timeout_add, signal emission) actually runs
         # before the next action - the same interleaving a real user
-        # session has, and exactly the kind of timing Release Blocker
-        # #8 depended on.
+        # session has, and exactly the kind of timing a deferred
+        # object teardown needs to actually race against.
         while Gtk.events_pending():
             Gtk.main_iteration()
 

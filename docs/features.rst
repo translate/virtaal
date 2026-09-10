@@ -54,23 +54,20 @@ Virtaal will make you more productive
 - Terminology help. Suggestions can come from:
 
   - Local files on your computer
-  - `Open-Tran.eu <http://open-tran.eu>`_
-  - :doc:`Automatically downloaded terminology files <autoterm>`
+  - `Mozilla Pontoon <https://pontoon.mozilla.org/terminology/>`_,
+    for any language it covers
 
 - Reuse existing translations. Suggestions can come from:
 
   - The current file
   - Alternative translations (previous msgid in PO, or alt-trans in XLIFF)
   - Previously saved translations
-  - `Open-Tran.eu <http://open-tran.eu>`_
   - A team / office TM server
-  - A tinyTM server
   - :doc:`Amagama <amagama>`
 
 - Machine translation
 
   - :doc:`Google Translate <google>`
-  - :doc:`Microsoft Translator <microsofttranslator>`
   - :doc:`Apertium <apertium>`
   - :doc:`Moses <moses>`
 
@@ -79,7 +76,6 @@ Virtaal will make you more productive
    :hidden:
 
    google
-   microsofttranslator
    apertium
    moses
 

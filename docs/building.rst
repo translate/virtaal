@@ -40,20 +40,11 @@ Optional Packages
 
 These are not build dependencies but usually improve the user experience.
 
-- psyco -- provides a nice speedup
-- Enchant, pyenchant, gtkspell and pygtkspell (might be packaged as
+- Enchant, pyenchant and GtkSpell3 (might be packaged as
   gnome-python-extras or something similar) -- provides all :doc:`spell
-  checking <spell_checking>` functionality.  For Windows:
-
-  - See `Gramps
-    <http://gramps-project.org/wiki/index.php?title=Windows_installer>`_ and
-    `PyEnchant <http://pythonhosted.org/pyenchant/>`_ for Windows installers
-  - While gtkspell expects libenchant.dll, copy libenchant-1.dll to the
-    alternate name (`setup.py` expects both while this is the case)
-  - Remove the .dll files of dependencies shipped with pyenchant (iconv, glib,
-    gmodule, intl) -- they conflict with the ones coming from GTK but are
-    picked up by setup.py for some reason
-
+  checking <spell_checking>` functionality. The frozen Windows/macOS
+  builds already bundle enchant + one starter dictionary each; only a
+  from-source checkout needs these installed separately.
 - iso-codes -- if you want translated language names
 - libproxy and its Python binding, which might be called something like
   python-libproxy on your system -- improved support for proxies on Linux
@@ -61,8 +52,6 @@ These are not build dependencies but usually improve the user experience.
 - The optional fts3 module for sqlite3 will be used if it is available -
   provides speedups with TM retrieval  (it is safe to just overwrite a better
   sqlite library over the one available in Python for Windows)
-- libtranslate -- used by Machine Translation plugin
-- psycopg2 -- for TinyTM plugin
 - python-Levenshtein -- speeds up Levenshtein distance measures, if not present
   we'll use a pure Python version.
 
@@ -72,13 +61,9 @@ UNIX
 ====
 
 You should be able to run Virtaal from the source tree. If you would like to
-install Virtaal, you can build it using ::
+install Virtaal::
 
-  ./setup.py build
-
-and then you can install it with ::
-
-  sudo ./setup.py install
+  pip install .
 
 .. _building#distribution_packagers:
 

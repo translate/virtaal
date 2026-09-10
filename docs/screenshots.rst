@@ -24,7 +24,7 @@ Translation Memory Suggestions
 ==============================
 
 Virtaal can also provide suggestions for whole strings from sources such as the
-current file, previous translations, Open-Tran.eu and several others.
+current file, previous translations, Amagama and several others.
 
 .. figure:: /_static/virtaal-tm.png
 

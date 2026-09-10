@@ -142,6 +142,13 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         Gtk.AccelMap.add_entry("<Virtaal>/Edit/Next Placeable", Gdk.KEY_Right, Gdk.ModifierType.MOD1_MASK)
         Gtk.AccelMap.add_entry("<Virtaal>/Edit/Prev Placeable", Gdk.KEY_Left, Gdk.ModifierType.MOD1_MASK)
         Gtk.AccelMap.add_entry("<Virtaal>/Edit/Transfer", Gdk.KEY_Down, Gdk.ModifierType.MOD1_MASK)
+        # virtaal.ui's own accel_path for these three (Cut/Copy/Paste) was
+        # shadowed by a hardcoded <accelerator modifiers="GDK_CONTROL_MASK">,
+        # which fires literal Ctrl directly and never reaches
+        # GtkosxApplication's Ctrl->Cmd translation on macOS.
+        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Cut", Gdk.KEY_x, Gdk.ModifierType.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Copy", Gdk.KEY_c, Gdk.ModifierType.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Paste", Gdk.KEY_v, Gdk.ModifierType.CONTROL_MASK)
 
         accel_group = menu_edit.get_accel_group()
         if not accel_group:
@@ -152,6 +159,10 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         mnu_next.set_accel_path("<Virtaal>/Edit/Next Placeable")
         mnu_prev.set_accel_path("<Virtaal>/Edit/Prev Placeable")
         mnu_transfer.set_accel_path("<Virtaal>/Edit/Transfer")
+        self.mnu_cut.set_accel_path("<Virtaal>/Edit/Cut")
+        self.mnu_copy.set_accel_path("<Virtaal>/Edit/Copy")
+        self.mnu_paste.set_accel_path("<Virtaal>/Edit/Paste")
+        self.controller.main_controller.view.sync_menubar()
 
         # Disable the menu items to start with, because we can't assume that a
         # store is loaded. See _set_menu_items_sensitive() for more activation.

@@ -74,7 +74,10 @@ class PreferencesView(BaseView, GObjectWrapper):
         self._widgets['scrwnd_plugins'].show_all()
 
     def _setup_key_bindings(self):
-        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Preferences", Gdk.KEY_p, Gdk.ModifierType.CONTROL_MASK)
+        # Comma, not "p" - Cmd+, is the macOS system convention for
+        # Preferences, translated from Ctrl+, the same way every other
+        # accelerator here relies on GtkosxApplication's Ctrl->Cmd mapping.
+        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Preferences", Gdk.KEY_comma, Gdk.ModifierType.CONTROL_MASK)
 
     def _setup_menu_item(self):
         mainview = self.controller.main_controller.view
@@ -89,6 +92,7 @@ class PreferencesView(BaseView, GObjectWrapper):
 
         mnu_prefs.set_accel_path("<Virtaal>/Edit/Preferences")
         mnu_prefs.connect('activate', self._show_preferences)
+        mainview.sync_menubar()
 
     # ACCESSORS #
     def _get_font_data(self):

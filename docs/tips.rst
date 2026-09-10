@@ -116,19 +116,3 @@ Note that you can specify these same parameters for most of the individual
 sources of TM suggestions. Try adding or editing these settings in ``tm.ini``
 under a heading corresponding to the name of the plugin.
 
-.. _tips#make_open-tran.eu_faster:
-
-Make Open-Tran.eu faster
-========================
-Do you wish the suggestions from `Open-Tran.eu <http://open-tran.eu>`_ could
-come faster? The speed of this translation memory plugin depends a lot on your
-network connection.  One way that could help to make it faster, is to avoid DNS
-lookups. You can do that by adding open-tran.eu into your :wp:`hosts file
-<Hosts_file>`.  ::
-
-    85.214.16.47            open-tran.eu
-
-(or whatever the IP address of open-tran.eu is)
-
-If you don't know about hosts files and their syntax, it might be best not to
-play with this setting.

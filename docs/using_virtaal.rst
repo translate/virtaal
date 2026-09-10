@@ -233,8 +233,8 @@ the source text is confidential, this is probably not a good idea.
 Contributions to Remote TMs
 ---------------------------
 
-Although Virtaal may query remote translation memories such as the online TM
-Open-Tran, none of your own translations are automatically uploaded or
+Although Virtaal may query remote translation memories such as Amagama,
+none of your own translations are automatically uploaded or
 contributed to a public or remote TM.  The only way you can contribute your
 translations to a public or remote TM is to send the PO file yourself, for
 example via e-mail.

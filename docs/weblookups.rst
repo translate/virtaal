@@ -159,22 +159,6 @@ Wikipedia in other language encyclopaedias.
 
     http://%(querylang)s.wikipedia.org/wiki/%(query)s
 
-.. _weblookups#open-tran.eu:
-
-Open-Tran.eu
-------------
-
-`Open-Tran.eu <http://open-tran.eu/>`_ contains all of the open source software
-translations available.  While there is already a Translation Memory plugin you
-might want to quickly see how a phrase has been translated or used in other
-software translations.
-
-- quote: yes
-
-::
-
-    http://%(querylang)s.%(nonquerylang)s.open-tran.eu/suggest/%(query)s
-
 .. _weblookups#wordnet:
 
 WordNet

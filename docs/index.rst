@@ -54,10 +54,10 @@ Contact
 
 Contributing
 ============
-There are many ways of contributing to Virtaal. Join the mailing list or IRC
-channel to join our effort. You can join our effort to distribute Virtaal by
-sharing informing with people, writing documentation or packaging for more
-platforms.
+There are many ways of contributing to Virtaal - sharing it with people,
+writing documentation, packaging for more platforms, or contributing code
+via `GitHub <https://github.com/translate/virtaal>`_ (see
+`CONTRIBUTING.md <https://github.com/translate/virtaal/blob/main/CONTRIBUTING.md>`_).
 
 If you would like to contribute to the Virtaal software, you can start by
 reading the instructions on the following pages:

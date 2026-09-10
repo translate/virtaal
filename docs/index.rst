@@ -33,6 +33,7 @@ Help menu.
    features
    screenshots
    tips
+   releases/index
 
 .. _index#installation:
 

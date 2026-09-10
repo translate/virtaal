@@ -66,7 +66,9 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         # to show our own custom one to not have a tooltip obscuring things
         invisible_tooltip = Gtk.Window(type=Gtk.WindowType.POPUP)
         invisible_tooltip.resize(1,1)
-        invisible_tooltip.set_opacity(0)
+        # Gtk.Window.set_opacity is deprecated; the inherited
+        # Gtk.Widget one isn't, so call that overload explicitly.
+        Gtk.Widget.set_opacity(invisible_tooltip, 0)
         self.set_tooltip_window(invisible_tooltip)
         self.connect('query-tooltip', self._on_query_tooltip)
 
@@ -78,7 +80,11 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             'targets': []
         }
         self._get_widgets()
-        self._widgets['vbox_editor'].reparent(self)
+        # Gtk.Widget.reparent is deprecated with no direct replacement;
+        # this is the documented manual equivalent.
+        vbox_editor = self._widgets['vbox_editor']
+        vbox_editor.get_parent().remove(vbox_editor)
+        self.add(vbox_editor)
         self._setup_menus()
         self.unit = None
 

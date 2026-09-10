@@ -228,6 +228,17 @@ class StoreModel(BaseModel):
             from translate.storage import ts2 as ts
             if isinstance(store, ts.tsfile):
                 return store.nplural()
+            # No plural-count declaration to read for this format (e.g.
+            # .qm - translate-toolkit's own NumerusRules section reader
+            # is unimplemented) - infer it from the data itself: the
+            # longest target multistring actually present, same as
+            # this used to work before poheader/tsfile got a proper
+            # declaration to read instead.
+            from translate.misc.multistring import multistring
+            return max(
+                (len(unit.target.strings) for unit in store.units
+                    if isinstance(unit.target, multistring)),
+                default=None)
 
     def _correct_header(self, store):
         """This ensures that the file has a header if it is a poheader type of

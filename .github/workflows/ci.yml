@@ -25,6 +25,7 @@ jobs:
     # no usable diff base (first push to a branch, a force push, or a
     # repo's very first commit).
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
         with:
@@ -70,6 +71,7 @@ jobs:
     # Own job rather than running once per matrix cell below - neither
     # step is packaging- or platform-specific.
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v7
@@ -112,6 +114,7 @@ jobs:
 
   test:
     runs-on: ubuntu-24.04
+    timeout-minutes: 15
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
@@ -208,6 +211,7 @@ jobs:
 
   test-windows:
     runs-on: windows-latest
+    timeout-minutes: 15
     # Uses gvsbuild for GTK3 (prebuilt binaries a regular
     # actions/setup-python CPython can build PyGObject against via
     # MSVC), not MSYS2's own Python - MSYS2's ABI doesn't match the
@@ -354,6 +358,7 @@ jobs:
 
   build-windows-installer:
     runs-on: windows-latest
+    timeout-minutes: 20
     needs: test-windows
     # Separate job from test-windows, not extra steps tacked onto it -
     # PyInstaller has to trace and copy the whole dependency tree,
@@ -546,6 +551,7 @@ jobs:
 
   test-macos:
     runs-on: macos-latest
+    timeout-minutes: 10
     # Single Python version (whatever Homebrew currently ships), not the
     # 3.10-3.14 matrix the Linux job runs: unlike apt, Homebrew doesn't
     # provide an easy way to build PyGObject against several Python
@@ -642,6 +648,7 @@ jobs:
           - runner: macos-26-intel
             arch: x86_64
     runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
         with:
@@ -779,6 +786,7 @@ jobs:
           - runner: ubuntu-24.04-arm
             arch: aarch64
     runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
 
@@ -818,6 +826,7 @@ jobs:
     needs: [pre-commit, docs-and-translations, test, test-windows, test-macos]
     if: always()
     runs-on: ubuntu-24.04
+    timeout-minutes: 5
     steps:
       - name: Fail if any required job failed
         run: |
@@ -833,6 +842,7 @@ jobs:
     # dependencies are satisfied, both artifacts are already proven
     # working by the same run's own test suite.
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
     if: startsWith(github.ref, 'refs/tags/v')
     needs: [build-windows-installer, build-macos-app]
     permissions:

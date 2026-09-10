@@ -200,6 +200,10 @@ class MainView(BaseView):
             int(pan_app.settings.general['windowwidth']),
             int(pan_app.settings.general['windowheight'])
         )
+        windowx = pan_app.settings.general['windowx']
+        windowy = pan_app.settings.general['windowy']
+        if windowx != '' and windowy != '':
+            self.main_window.move(int(windowx), int(windowy))
         self._top_window = self.main_window
 
         self.main_window.connect('window-state-event', self._on_window_state_event)
@@ -603,6 +607,11 @@ class MainView(BaseView):
 
     def hide(self):
         """Hide and don't return until it is really hidden."""
+        # get_size()/get_position() are unreliable once the window is
+        # hidden - capture geometry now, quit() reads this instead of
+        # asking the (by then hidden) window directly.
+        self._pre_hide_size = self.main_window.get_size()
+        self._pre_hide_position = self.main_window.get_position()
         self.main_window.hide()
         while Gtk.events_pending():
             Gtk.main_iteration()
@@ -611,9 +620,12 @@ class MainView(BaseView):
         if self._window_is_maximized:
             pan_app.settings.general['maximized'] = 1
         else:
-            width, height = self.main_window.get_size()
+            width, height = getattr(self, '_pre_hide_size', None) or self.main_window.get_size()
             pan_app.settings.general['windowwidth'] = width
             pan_app.settings.general['windowheight'] = height
+            x, y = getattr(self, '_pre_hide_position', None) or self.main_window.get_position()
+            pan_app.settings.general['windowx'] = x
+            pan_app.settings.general['windowy'] = y
             pan_app.settings.general['maximized'] = ''
         pan_app.settings.write()
         Gtk.main_quit()

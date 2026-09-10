@@ -87,3 +87,70 @@ against the repo's own history instead of the dead external link:
 Label the whole category `bugzilla-import` alongside its normal type/
 platform/l10n labels, so it stays visibly distinct from an issue with a
 real, contactable reporter.
+
+## Verifying against current code applies beyond Bugzilla imports too
+
+The credit-check/git-log technique above isn't Bugzilla-import-specific
+- apply the same "verify, don't assume" bar to any old report that
+looks superseded, real reporter or not. Confirmed real closes from a
+full sweep of translate/virtaal's backlog (2026-09-10/11), each with
+its own concrete evidence, not a guess:
+
+- **A feature genuinely shipped since**: grep the codebase/git log for
+  the specific thing asked for (a window-position-persistence request
+  closed by pointing at the exact feature now working;
+  `git log --grep`, not just "this feels done").
+- **A dependency/plugin fully removed**: if the report is scoped to a
+  library that's since been dropped entirely (`grep -rl
+  <libraryname> virtaal/` returning nothing), the issue no longer
+  applies regardless of what it originally asked for - close citing
+  the absence, not a fix.
+- **A duplicate of a fix landed in the same release cycle**: check
+  this session's own recent PRs/RELEASE-BLOCKERS.md before assuming an
+  old report is still open - two closures this sweep were reports of
+  the exact same bug just fixed hours earlier.
+- **Actually reproduce it against current code, live**: for a report
+  describing a specific technical failure mode (a parsing bug, a
+  round-trip corruption), write the smallest real reproduction against
+  current code/dependencies rather than reasoning about whether it
+  "sounds fixed" - one confirmed close this sweep was a Unicode/XML
+  round-trip bug, verified by actually serializing and re-parsing the
+  problem characters through the current library, not by reading the
+  fix code and assuming.
+
+In every case, the close comment cites the concrete evidence (a commit,
+a grep result, an actual test run) - never a bare "fixed" or "no
+longer applicable" with nothing to check it against.
+
+## Batch mechanics
+
+Fetching many issue bodies at once (title + body, to actually read
+before labeling, not just titles) - GraphQL aliases in one request
+beats N separate `gh issue view` calls:
+
+```
+NUMS="123 456 789"
+Q="{ repository(owner: \"translate\", name: \"virtaal\") {"
+for n in ${=NUMS}; do   # zsh: ${=NUMS} forces word-splitting - a bare $NUMS does NOT split in zsh, unlike bash
+  Q="$Q i$n: issue(number: $n) { number title body author { login } } "
+done
+Q="$Q } }"
+gh api graphql -f query="$Q"
+```
+
+Ranking a batch of unlabeled issues to work through: sort by comment
+count (a real, if crude, signal of engagement/severity) - the same
+"sampled highest-signal" precedent `ISSUE_TRIAGE.md` already used.
+
+**`gh issue edit --add-label` can fail silently in a loop** - a batch
+of ~40 calls had 3 report a generic "failed to update 1 issue" with no
+indication of which ones. Re-check the actual label state afterward
+rather than trusting the loop's own output:
+
+```
+for n in <the numbers you just tried>; do
+  gh issue view "$n" --repo translate/virtaal --json labels -q '[.labels[].name] | join(",")'
+done
+```
+
+and retry whichever came back empty.

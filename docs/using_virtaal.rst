@@ -5,7 +5,7 @@ Using Virtaal
 *************
 Virtaal is meant to be powerful yet simple to use. You can increase your
 productivity by ensuring you know all the shortcuts and tricks and without
-being distracted by a cluttered interface. 
+being distracted by a cluttered interface.
 
 Although most features are available using the mouse, Virtaal is designed to
 encourage you to work as much as possible with your keyboard to increase your

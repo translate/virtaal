@@ -467,7 +467,7 @@ class StatsCache:
                 # what about plurals in .source and .target?
                 unit_state_for_db = statefordb(unit)
                 unitvalues.append((unit.getid(), fileid, index,
-                                   unit.source, unit.target,
+                                   unit.source or "", unit.target,
                                    sourcewords, targetwords,
                                    unit_state_for_db,
                                    unit.get_state_id()))

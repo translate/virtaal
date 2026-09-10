@@ -13,6 +13,7 @@
 # packaged windows build. This has to happen as early as possible, otherwise
 # error messages will not be available for inspection.
 import os
+import re
 import sys
 
 from virtaal.__version__ import version_string
@@ -36,19 +37,41 @@ def get_config_dir():
 
     return confdir
 
-def _open_frozen_log(path):
-    """Open a frozen-build log file for append.
-
-    No explicit encoding defaults to the system locale's codepage on
-    Windows (e.g. cp1252), which can't represent arbitrary translated
-    text - logging.debug() itself could then raise UnicodeEncodeError."""
-    return open(path, 'a', buffering=1, encoding='utf-8', errors='backslashreplace')
-
 def _build_launch_marker(timestamp):
     """The separator line written to a frozen build's log at each
     launch - a single file can span several runs, so this both marks
     where one starts and identifies which build produced it."""
     return '=== launch %s | Virtaal %s ===\n' % (timestamp, version_string())
+
+_LAUNCH_MARKER_RE = re.compile(r'^=== launch .*? \| Virtaal .* ===$', re.MULTILINE)
+KEEP_LAST_N_LAUNCHES = 2
+
+def _trim_log_to_last_launches(path, keep=KEEP_LAST_N_LAUNCHES):
+    """Keep only the last `keep` launches of an existing frozen log,
+    splitting on its own launch-marker line rather than a raw byte
+    count - a byte cut risks starting mid-launch with nothing to
+    orient from, a launch-count cut always leaves complete records."""
+    try:
+        with open(path, encoding='utf-8', errors='backslashreplace') as f:
+            content = f.read()
+    except OSError:
+        return
+    markers = [m.start() for m in _LAUNCH_MARKER_RE.finditer(content)]
+    if len(markers) <= keep:
+        return
+    with open(path, 'w', encoding='utf-8', errors='backslashreplace') as f:
+        f.write(content[markers[-keep]:])
+
+def _open_frozen_log(path):
+    """Open a frozen-build log file for append, trimmed to its last
+    few launches first - unbounded growth was fine for an occasional
+    --debug run, not as a default for every launch.
+
+    No explicit encoding defaults to the system locale's codepage on
+    Windows (e.g. cp1252), which can't represent arbitrary translated
+    text - logging.debug() itself could then raise UnicodeEncodeError."""
+    _trim_log_to_last_launches(path)
+    return open(path, 'a', buffering=1, encoding='utf-8', errors='backslashreplace')
 
 # Only for the packaged (frozen/PyInstaller) build - a windowed
 # subsystem executable has no console, so this is the only way to get

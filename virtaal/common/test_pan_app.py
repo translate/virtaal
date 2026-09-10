@@ -14,6 +14,7 @@ from virtaal.common.pan_app import (
     _build_launch_marker,
     _open_frozen_log,
     _set_enchant_env_vars,
+    _trim_log_to_last_launches,
 )
 
 
@@ -66,3 +67,51 @@ def test_open_frozen_log_survives_characters_a_locale_codepage_cant(tmp_path):
 
     with open(path, encoding='utf-8') as f:
         assert message in f.read()
+
+
+def _launch(n):
+    return '=== launch 2026-09-%02d 00:00:00 | Virtaal 1.0.0-beta1 (abc%04d) ===\ncontent %d\n' % (n, n, n)
+
+
+def test_trim_log_to_last_launches_keeps_only_the_tail(tmp_path):
+    path = str(tmp_path / "test.log")
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(''.join(_launch(n) for n in range(1, 6)))
+
+    _trim_log_to_last_launches(path, keep=2)
+
+    with open(path, encoding='utf-8') as f:
+        kept = f.read()
+    assert kept == _launch(4) + _launch(5)
+
+
+def test_trim_log_to_last_launches_leaves_a_short_log_alone(tmp_path):
+    path = str(tmp_path / "test.log")
+    original = _launch(1) + _launch(2)
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(original)
+
+    _trim_log_to_last_launches(path, keep=2)
+
+    with open(path, encoding='utf-8') as f:
+        assert f.read() == original
+
+
+def test_trim_log_to_last_launches_tolerates_a_missing_file(tmp_path):
+    _trim_log_to_last_launches(str(tmp_path / "missing.log"), keep=2)  # doesn't raise
+
+
+def test_open_frozen_log_trims_before_appending(tmp_path):
+    path = str(tmp_path / "test.log")
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(''.join(_launch(n) for n in range(1, 4)))
+
+    f = _open_frozen_log(path)
+    try:
+        f.write(_launch(4))
+    finally:
+        f.close()
+
+    with open(path, encoding='utf-8') as f:
+        kept = f.read()
+    assert kept == _launch(2) + _launch(3) + _launch(4)

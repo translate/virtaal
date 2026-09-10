@@ -7,6 +7,7 @@
 # Alexander Dupuy <alex.dupuy@mac.com>, 2008-2009
 # Julen Ruiz Aizpuru <julenx@gmail.com>, 2008-2009
 # Omar Campagne <ocampagne@gmail.com>, 2010, 2011.
+# Javier Serrador <fserrador@gmail.com>, 2019.
 #: ../virtaal/support/native_widgets.py:49
 #: ../virtaal/support/native_widgets.py:50
 msgid ""
@@ -14,8 +15,8 @@ msgstr ""
 "Project-Id-Version: Virtaal 0.7\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2014-02-11 21:11+0000\n"
-"PO-Revision-Date: 2013-10-20 19:28+0000\n"
-"Last-Translator: Adolfo <fitoschido@ubuntu.com>\n"
+"PO-Revision-Date: 2019-08-24 00:41+0200\n"
+"Last-Translator: Javier Serrador <fserrador@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -51,6 +52,10 @@ msgid ""
 "resources to make translation fun, while helping to improve translation "
 "quality."
 msgstr ""
+"Virtaal es una programa para hacar traducciones. Intenta una delicada "
+"combinación de simplicidad y potencia. Integrado con recursos seleccionados "
+"por conexión para hacer la traducción divertida, mientras que ayuda a "
+"mejorar la calidad de traducción."
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:2
 #, fuzzy
@@ -69,7 +74,7 @@ msgstr ""
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:3
 msgid "Some features:"
-msgstr ""
+msgstr "Algunas características:"
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:4
 #, fuzzy
@@ -84,11 +89,11 @@ msgstr "Asistencia de terminología"
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:6
 msgid "AutoCompletor and AutoCorrector"
-msgstr ""
+msgstr "AutoCompletador y AutoCorrector"
 
 #: ../share/appdata/virtaal.appdata.xml.in.h:7
 msgid "Quality checks with customization for many languages"
-msgstr ""
+msgstr "Comprobaciones de calidad con personalización para muchos idiomas"
 
 #: ../share/virtaal/virtaal.ui.h:1
 msgid "Add Missing Language"
@@ -1558,13 +1563,15 @@ msgstr "Seleccione un archivo de traducción"
 #: ../virtaal/support/native_widgets.py:152
 msgid ""
 "A file named \"%1\" already exists. Are you sure you want to overwrite it?"
-msgstr ""
+msgstr "Ya existe un fichero nombreado «%1». ¿Seguro que quiere sobrescribirlo?"
 
 #: ../virtaal/support/tutorial.py:38
 msgid ""
 "Welcome to the Virtaal tutorial. You can do the first translation by typing "
 "just the translation for \"Welcome\". Then press Enter."
 msgstr ""
+"Bienvenido al tuttorial Virtaal. Puede hacer la primera traducción tecleando "
+"tan solo la tradución para \"Welcome\". Después pulse Intro."
 
 #: ../virtaal/support/tutorial.py:43
 msgid ""
@@ -1572,6 +1579,10 @@ msgid ""
 "spelling mistakes are indicated similarly to word processors. Make sure the "
 "correct language is selected in the bottom right of the window."
 msgstr ""
+"Traduce este mensaje más largo levemente. Si está disponible un comprobador "
+"ortográfico, los defectos ortográficos son indicados similarmente para los "
+"procesamientos de palabras. Asegúrese que el idioma correcto está "
+"seleccionado a la parte derecha inferior de la pantalla."
 
 #: ../virtaal/support/tutorial.py:50
 msgid ""
@@ -1579,6 +1590,9 @@ msgid ""
 "attention to while translating software programs. It will help you to avoid "
 "some problems and produce translations of a higher quality."
 msgstr ""
+"Este turorial le mostrará algunas de las funciones que quizá quiera poner "
+"atención para cuando traduzca programas de software. Le ayudará a evitar "
+"algunos problemas y produzca traducciones de gran calidad."
 
 #: ../virtaal/support/tutorial.py:57
 msgid ""
@@ -1587,6 +1601,10 @@ msgid ""
 "be relevant to translation in your language. For many languages there are "
 "established translation rules."
 msgstr ""
+"Algunos de los avisos solo serán relevantes para algunos idiomas. Por "
+"ejemplo, si su idioma no utiliza el alfabeto latino, algunas de las "
+"advertencias quiźa no sean relevantas para traducir en su idioma. Para "
+"muchos idiomas hay reglas de traducción establecidas."
 
 #: ../virtaal/support/tutorial.py:64
 msgid ""
@@ -1594,6 +1612,9 @@ msgid ""
 "Translate this message with careful attention to write \"Virtaal\" with a "
 "capital letter."
 msgstr ""
+"El uso correcto de las letras capitales (mayúsculas que marcan "
+"capitalización) son importantes en muchos idiomas. Traduzca este mensaje con "
+"mucha atención para escribir «Virtaal» como capital con letra mayúscula."
 
 #: ../virtaal/support/tutorial.py:70
 msgid ""
@@ -1603,6 +1624,12 @@ msgid ""
 "by following the normal capitalisation rules for your language. If your "
 "language does not use capital letters, simply translate it normally."
 msgstr ""
+"Dentro de este mensaje, el inglés utiliza una letra capital para muchas "
+"palabras. Además no otros lenguajes utilizan este estilo. A no ser que su "
+"idioma definitivamente necesite seguir el estilo inglés (llamado también "
+"Title Case), traduzca esto siguiento la capitalización normal de reglas para "
+"su idioma. Si su idioma no utiliza letras capitales, simplemente tradúzcalo "
+"normalmente."
 
 #: ../virtaal/support/tutorial.py:79
 msgid ""
@@ -1612,6 +1639,11 @@ msgid ""
 "to copy the suggested translation to the current translation. Remember to "
 "always review suggestions before you use them."
 msgstr ""
+"Si tradujo el mensaje anterior debería ver una ventana con esa traducción y "
+"un porcentaje indicando cuánto es de similar la cadena original (inglés) es. "
+"Eso es la memoria de traducción de Virtaal funcionando. Pulse Control+1 para "
+"copiar la traducción sugerida a la traducción actual. Recuerda siempre "
+"revisar sugerencias antes de utilizarlas."
 
 #: ../virtaal/support/tutorial.py:88
 msgid ""
@@ -1619,6 +1651,9 @@ msgid ""
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a capital letter as well."
 msgstr ""
+"Esto es un mensaje simple que inicia con una letra capital en inglés. Si su "
+"idioma utiliza letras capitales, además definitivamente quiere iniciar su "
+"traducción con una letra caputal tan bien."
 
 #: ../virtaal/support/tutorial.py:95
 msgid ""
@@ -1626,17 +1661,25 @@ msgid ""
 "your language uses capital letters, you almost definitely want to start your "
 "translation with a lower case letter as well."
 msgstr ""
+"Esto es un mensaje simple que inicia con una letra minúscula en inglés. Si "
+"su idioma utiliza letras capitales, además definitivamente quiere iniciar su "
+"traducción con una letra caputal tan bien."
 
 #: ../virtaal/support/tutorial.py:102
 msgid ""
 "This message is a question. Make sure that you use the correct question mark "
 "in your translation as well."
 msgstr ""
+"Este mensaje es una pregunta. Asegúrese que se utiliza el formato correcto "
+"en su traducción, en español, las preguntas se inician «¿» y terminan con "
+"«?»."
 
 #: ../virtaal/support/tutorial.py:107
 msgid ""
 "This message is a label as part of a form. Note how it ends with a colon (:)."
 msgstr ""
+"Este mensaje es una etiqueta como parte de un formulario.\n"
+"Anote cómo termina con un dos puntos (:)."
 
 #: ../virtaal/support/tutorial.py:112
 msgid ""
@@ -1644,6 +1687,10 @@ msgid ""
 "copy the entire source string with Alt+Down. Here is almost nothing to "
 "translate, so just press Alt+Down and make corrections if necessary."
 msgstr ""
+"Si el origen permanecerá mayormente o completamente no modificado es "
+"conveniente copiar la cadena origen completa con Alt+↓. Aquí está además "
+"nada que traducir, por lo que tan solo pulse Alt+↓ y haga las correcciones "
+"si es necesario."
 
 #: ../virtaal/support/tutorial.py:119
 #, fuzzy
@@ -1664,6 +1711,9 @@ msgid ""
 "holders, acronyms and many more. Move to each one with Alt+Right and "
 "transfer it down with Alt+Down."
 msgstr ""
+"Lugares ubicables reconocidos incluyen símbolos especiales, números, lugares "
+"de cobertura variables, acrónimos y muchos más. Mueva a cada uno con Alt+→ y "
+"transfieralo con Alt+↓."
 
 #: ../virtaal/support/tutorial.py:132
 msgid ""
@@ -1671,6 +1721,9 @@ msgid ""
 "a dialogue to appear instead of just performing an action. Be sure to end "
 "your message with ... as well."
 msgstr ""
+"Este mensaje termina con … para indicar pulsar sobre este texto causará que "
+"un diálogo para aparecer en vez de tan solo efectuar una operación. "
+"Asegúrese terminar su mensaje con … además."
 
 #: ../virtaal/support/tutorial.py:138
 msgid ""
@@ -1678,6 +1731,9 @@ msgid ""
 "Select the special character with Alt+Right and copy it to your translation "
 "with Alt+Down. Don't just type three dot characters."
 msgstr ""
+"Este mensaje termina con un carácter específico que parece puntos "
+"suspensivos. Seleccione el caracter especial con Alt+→ y cópielo a su "
+"traducción con Alt+↓. No teclee los tres caracteres de puntos."
 
 #: ../virtaal/support/tutorial.py:145
 msgid ""
@@ -1685,6 +1741,9 @@ msgid ""
 "with a capital letter if your language uses them, and end each sentence "
 "properly."
 msgstr ""
+"Este mensaje tiene dos enunciados. Tradújelos y asegúrese que inicia cada "
+"uno con una letra capital si su idioma las utiliza, y finaliza cada "
+"enunciado apropiadamente."
 
 #: ../virtaal/support/tutorial.py:151
 msgid ""
@@ -1693,6 +1752,11 @@ msgid ""
 "<b> and </b> in the translation around the part that corresponds to \"now\". "
 "Read more about XML markup here: http://en.wikipedia.org/wiki/XML"
 msgstr ""
+"Este mensaje marca la palabra \"ahora\" como importante con etiquetado "
+"bastardilla. Estos etiquetados pueden ser transferidos desde la fuente con "
+"Alt+→ y Alt+↓. Deje los <b> y </b> dentro de la traducción alrededor de la "
+"parte que corresponda al \"now\". Lea más acerca del marcaje XML aquí: "
+"http://es.wikipedia.org/wiki/XML"
 
 #: ../virtaal/support/tutorial.py:159
 msgid ""
@@ -1700,6 +1764,9 @@ msgid ""
 "the previous translation with Ctrl+1. Note how the only difference is that "
 "this one ends with a full stop after the last tag."
 msgstr ""
+"Este mensaje es muy similar al mensaje anterior. Utilice la sugerencia de la "
+"traducción anterior con Ctrl+1. Note que la única diferencia es que este "
+"termina con un punto a parete tras el último segmento."
 
 #: ../virtaal/support/tutorial.py:166
 #, python-format
@@ -1710,6 +1777,11 @@ msgid ""
 "with a number e.g. 'Number of files copied: 5'.  Note that \"%d\" does not "
 "refer to a percentage."
 msgstr ""
+"Dentro de este mensaje «%d» es un contenedor (variable) que representa un "
+"número. Asegúrese que su traducción contenga «%d» en algún lugar. Dentro de "
+"este caso se refiere a un número de ficheros. Cuando este mensaje sea "
+"empleado el «%d» será remplazado con un número p.e. «Número de ficheros "
+"copiados: 5». Note que «%d» no refiere a un porcentaje."
 
 #: ../virtaal/support/tutorial.py:174
 #, python-format
@@ -1722,6 +1794,13 @@ msgid ""
 "translatehouse.org/projects/localization-guide/en/latest/guide/translation/"
 "plurals.html"
 msgstr ""
+"En este mensaje, «%d» se refiere otra vez al número de ficheros, pero anote "
+"cómo la «(s)» se emplea para mostrar que no conocemos cuántos estarán. Esto "
+"es a menudo difícil traduccirlo bien. Si encuentra esto en la traducción de "
+"software, quizá quiere escuchar desde los desarrolladores si esto puede ser "
+"evitado. Lea más acerca de esto y decida cómo hacerlo en su idioma: http://"
+"docs.translatehouse.org/projects/localization-guide/es/latest/guide/"
+"translation/plurals.html"
 
 #: ../virtaal/support/tutorial.py:185
 msgid ""
@@ -1731,6 +1810,11 @@ msgid ""
 "translatehouse.org/projects/localization-guide/en/latest/guide/translation/"
 "plurals.html"
 msgstr ""
+"En este mensaje la manera propia de traducir plurales son visto. Necesita "
+"introducir entre 1 a 6 versiones distintas de la traducción para asegurar la "
+"gramática correcta dentro de su idioma. Lea más acerca de esto aquí: http://"
+"docs.translatehouse.org/projects/localization-guide/en/latest/guide/"
+"translation/plurals.html"
 
 #: ../virtaal/support/tutorial.py:196
 #, python-format
@@ -1740,6 +1824,11 @@ msgid ""
 "used, the %s will be replaced with a file name e.g. 'The file will be saved "
 "as example.odt'.  Note that \"%s\" does not refer to a percentage."
 msgstr ""
+"Dentro de este mensaje, «%s» es un contenedor (variable) que representa un "
+"nombre de fichero. Asegúrese que su traducción contenga %s en algún lugar. "
+"Cuando este mensaje se utilice, el %s será sustituido por un nombre de "
+"fichero p.e. 'El fichero será guardado como ejemplo.odt'.  Note que «%s» no "
+"se refiere a un porcentaje."
 
 #: ../virtaal/support/tutorial.py:204
 #, python-format
@@ -1750,6 +1839,11 @@ msgid ""
 "as English, type it exactly as shown for the English. If your language uses "
 "different characters you can just type them around the variable."
 msgstr ""
+"Dentro de este mensaje la variable está rodeada por comillas dobles (\"). "
+"Asegúrese de que su traducción contenga la variable %s y rodeada "
+"similarmente con comillas de la forma requerida por su idioma. Si su idioma "
+"es el español, las comillas dobles las sustituirá por el entrecomillado en "
+"el español «»."
 
 #: ../virtaal/support/tutorial.py:213
 msgid ""
@@ -1758,6 +1852,11 @@ msgid ""
 "appear unchanged somewhere in your translation. These type of variables give "
 "you an idea of what they will contain. In this case, it will contain a name."
 msgstr ""
+"Dentro de este mensaje, «%(name)s» es un contenedor (variable). Note que la «"
+"s» es parte de la variable, y que la variable completa desde '%' hasta la "
+"'s' debería aparecer sin cambios en algún lugar dentro de su traducción. "
+"Este tipo de variables dan una idea de qué contendrá. En este caso, "
+"contendrá un nombre."
 
 #: ../virtaal/support/tutorial.py:221
 msgid ""
@@ -1765,6 +1864,9 @@ msgid ""
 "you translate it by being as polite or respectful as is necessary for your "
 "culture."
 msgstr ""
+"Dentro de este mensaje el usuario del software se le solicita hacer algo. "
+"Asegúrese que lo traduzca siendo tan educado o respetuoso como sea necesario "
+"para su cultura."
 
 #: ../virtaal/support/tutorial.py:227
 msgid ""
@@ -1772,12 +1874,17 @@ msgid ""
 "languages will not translate it, but your language might use a "
 "transliteration if you don't use the Latin script for your language."
 msgstr ""
+"Dentro de este mensaje hay referencia a «Linux» (un nombre de producto). "
+"Muchos idiomas no lo traducen, pero su idioma quizá utilice una "
+"transliteración si no utiliza el guión Latín para su idioma."
 
 #: ../virtaal/support/tutorial.py:234
 msgid ""
 "This message contains the URL (web address) of the project website. It must "
 "be transferred as a placeable or typed over exactly."
 msgstr ""
+"Este mensaje contiene el URL (dirección web) del sitio web del proyecto. "
+"Debe ser transferido como un ubicable o tecleable exactamente."
 
 #: ../virtaal/support/tutorial.py:239
 msgid ""
@@ -1787,6 +1894,11 @@ msgid ""
 "to your language code so that the address points to the corresponding "
 "article in your language about XML."
 msgstr ""
+"Este mensaje refiere a un sitio web con más información. Algunas veces quizá "
+"sea permitido o recomendado para cambiar la URL (dirección web) a un sitio "
+"web en su idioma. En este caso, sustituya el «en» al inicio de la dirección "
+"de su código del idioma que la dirección apunta al artículo correspondiente "
+"en su idioma según el XML."
 
 #: ../virtaal/support/tutorial.py:248
 msgid ""
@@ -1794,6 +1906,9 @@ msgid ""
 "Make sure you can see the context information showing that this is a verb "
 "(an action as in \"click here to view it\")."
 msgstr ""
+"Esta traducción contiene una palabra ambigua -- tiene dos significados "
+"posibles.  Asegúrese que pueda ver la información contextual mostrarndo que "
+"esto es un verbo (como una acceisón dentro de «pulse aquí para verlo»)."
 
 #: ../virtaal/support/tutorial.py:255
 msgid ""
@@ -1803,6 +1918,12 @@ msgid ""
 "your previous translation as a suggestion, take care to only use it if it is "
 "definitely appropriate in this case as well."
 msgstr ""
+"Esta traducción contiene una palabra ambigua - tiene dos significados "
+"posibles. Asegúrese que pueda ver la información contextual mostrando que "
+"este es un nombre (un cosa como en «pulse para cambiar la vista para "
+"pantalla completa»).  Si Virtaal da su traducción anterior como una "
+"sugerencia, tome en cuenta que solo utilicela si es definitivamente "
+"apropiada para esta caso tal como sea correcta."
 
 #: ../virtaal/support/tutorial.py:264
 msgid ""
@@ -1815,14 +1936,23 @@ msgid ""
 "is before this letter and it means that this accelerator could be triggered "
 "by pressing Alt+F."
 msgstr ""
+"Una tecla aceleradora es una tecla del teclado que puede pulsar para "
+"rápidamente acceder un menú o función. Es además invocado como tecla "
+"caliente, tecla de acceso o mnemonico. Dentro del interfaz del programa son "
+"mostrados como una letra de alineado (_) dentro de la etiqueta textual. "
+"Dentro del texto traducible son marcados utilizando algunos caracteres como "
+"el _guión bajo_ aquí, pero otros caracteres son empleados para esto "
+"también.  En este caso la tecla aceleradora es \"f\" desde que el _guión "
+"bajo_ está antes de esta letra y significa que esta acelerador pudo ser "
+"disparado pulsando Alt+F."
 
 #: ../virtaal/support/tutorial.py:276
 msgid "In this entry you can see other kind of accelerator."
-msgstr ""
+msgstr "En este apunte puede ver otra familia de acelerador."
 
 #: ../virtaal/support/tutorial.py:280
 msgid "And another kind of accelerator."
-msgstr ""
+msgstr "Y otra familia de acelerador."
 
 #: ../virtaal/support/tutorial.py:285
 msgid ""
@@ -1832,12 +1962,20 @@ msgid ""
 "filling it. In order to do that select the original text, press Ctrl+T, "
 "provide a translation for your language, and save."
 msgstr ""
+"Virtaal es capaz de proporcionar sugerencias desde varios glosarios "
+"terminológicos y proporciona enlaces fáciles para permitir pegarlos dentro "
+"del campo de traducción.  Justo ahora Virtaal tiene solo un glosario "
+"terminológico vacío, pero puede comenzar a rellenarlo.  Con el fin de "
+"seleccionar el texto original, pulse Ctrl+T, proporcione una traducción para "
+"su idioma, y guarde."
 
 #: ../virtaal/support/tutorial.py:295
 msgid ""
 "In the previous entry you have created one terminology entry for the the "
 "\"filter\" verb. Now do the same for \"filter\" noun."
 msgstr ""
+"Dentro del apunte anterior puede tener creado un apunte terminológico para "
+"el verbo «filtro». Ahora haga lo mismo para el nombre «filtro»."
 
 #: ../virtaal/support/tutorial.py:300
 msgid ""
@@ -1851,6 +1989,16 @@ msgid ""
 "you have selected the desired suggestion press Enter to copy it to the "
 "translation field."
 msgstr ""
+"Si ha creado cualquier terminología dentro de los apuntes anteriores quizá "
+"ahora ve alguna de las palabras con un fondo verde (u otro color "
+"dependienteo de su tema). Esto significa que Virtaal tiene terminologías "
+"sugeridas para esa palabra. Emplee Alt+→ para seleccionar la palabra "
+"resaltada, y después pulse Alt+↓. Si solo una sugerencia es proporcionada "
+"Alt+↓ tan solo copia la sugerencia al campo de traducción. Pero si varias "
+"sugerencias están disponibles Alt+↓ muestra un listado de sugerencias la "
+"cual puede navegar utilizando teclas de Arriba y Abajo. Una vez que ha "
+"seleccionado la sugerencia deseada pulse Intro para copiarlo al campo de "
+"traducción."
 
 #: ../virtaal/support/tutorial.py:313
 msgid ""
@@ -1858,12 +2006,17 @@ msgid ""
 "two lines. You can separate lines with Shift+Enter or copying new-line "
 "placeables (displayed as ¶)."
 msgstr ""
+"Este mensaje tiene dos líneas. Asegúrese que su traducción también contenga "
+"dos líneas. Puede separar líneas con Mayús+Intro o copiando líneas nuevas "
+"localizables (reproducidas como ¶)."
 
 #: ../virtaal/support/tutorial.py:320
 msgid ""
 "This message contains tab characters to separate some headings. Make sure "
 "you separate your translations in the same way."
 msgstr ""
+"Este mensaje contiene caracteres tabulares para separar algunas cabeceras.  "
+"Asegúrese que separa sus traducciones de la misma forma."
 
 #: ../virtaal/support/tutorial.py:325
 msgid ""
@@ -1874,6 +2027,12 @@ msgid ""
 "different number system. Make sure that you understand the American "
 "formatting: the number is bigger than one thousand."
 msgstr ""
+"Este mensaje contiene un número grande que está formateado de acuerdo con la "
+"convención americana. Traduzca este pero asegúrese que proporciona el "
+"formato numérico de acuerdo con la convención de su idioma. Quizá necesara "
+"cambiar la coma (,) y el punto (.) a otros caracteres, y quizá necesita "
+"utilizar un sistemá numérico diferente. Asegúrese que entiende el formato "
+"americano: el número es mayor que un mil."
 
 #: ../virtaal/support/tutorial.py:335
 msgid ""
@@ -1883,6 +2042,12 @@ msgid ""
 "kilometres. Note that automated tests for \"numbers\" will complain if the "
 "number is changed, but in this case it is safe to do."
 msgstr ""
+"Este mensaje se refiere a miles. Si los programadores lo fomenta, quizá "
+"necesita cambiar esto a kilómetros dentro de su traducción, si los "
+"kilómetros son más comunmente usandos dentro de su idioma. Note que 1 milla "
+"es alrededor de 1'6 kilómetros. Note que las pruebas autáticas para «números"
+"» protestarán si el número ha sido cambiado, pero en este co es seguro "
+"hacerlo."
 
 #: ../virtaal/support/tutorial.py:344
 msgid ""
@@ -1892,6 +2057,11 @@ msgid ""
 "changed in tags, even if your language uses a different type of quotation "
 "marks."
 msgstr ""
+"Este mensaje contiene un enlace que el usuario será capaz de pulsar encima "
+"para visitar la página de ayuda. Asegúrese que mantenga la información entre "
+"los angulares (<...>) correctamente. Las comillas dobles (\") nunca deberían "
+"ser modificadas en etiquetas, incluso si su idioma un tipo distinto de "
+"marcas de etiquetación."
 
 #: ../virtaal/support/tutorial.py:354
 #, python-format
@@ -1901,6 +2071,11 @@ msgid ""
 "Make sure you position the two variables (%s) so that they correspond to the "
 "opening and closing tag of the previous translation."
 msgstr ""
+"Este mensaje contiene un enlace similar, pero los programadores decidieron "
+"en vez de insertar las etiquetas con variables por lo que los traductores no "
+"pueden cambiarlas. Asegúrese de que su posición los dos variables (%s) tales "
+"que correspondan a la etiqueta de apoertura y cierre de la anterior "
+"traduccións."
 
 #: ../virtaal/support/tutorial.py:362
 msgid ""
@@ -1908,6 +2083,9 @@ msgid ""
 "everything is inside <p> and </p> tags. Make sure your whole translation is "
 "inside <p> and </p> tags."
 msgstr ""
+"Este mensaje contienen las equiquetas <b> y </b> para enfacitar una palabra, "
+"mientras que cada cosa que esté entre <p> y </p>. Asegúrese que su "
+"traducción completa está dentro de las etiquetas <p> y </p>."
 
 #: ../virtaal/support/tutorial.py:368
 msgid ""
@@ -1919,6 +2097,14 @@ msgid ""
 "is contained in the <span> tags. Note how the full stop is still inside the "
 "</span> tag."
 msgstr ""
+"Este mensaje contiene un enlace similar que está contenido dentro de <span> "
+"y <span>. Asegúrese que mantiene todas las etiquetas (<...>) correctamente, "
+"y que el enlace está contenido completamente dentro de las etiquetas <span> "
+"y </span> dentro de su traducción. Asegúrese que el texto dentro de las "
+"etiquetas \"a\" correspondan al \"help page\" y que su traducción "
+"correspondiente a la segunda frase esté contenida dentro de las etiquetas "
+"<span>. Note cómo la detención completa está aún dentro de la etiqueta <span>"
+"."
 
 #: ../virtaal/views/checksunitview.py:73
 msgid "No issues"

@@ -64,7 +64,12 @@ class HTTPRequest(GObjectWrapper):
             # unable to reach the CA's own revocation-check servers as
             # a hard failure. SSLOPT_NO_REVOKE disables that check;
             # curl only defines it for schannel, so it's a no-op elsewhere.
-            self.curl.setopt(pycurl.SSL_OPTIONS, pycurl.SSLOPT_NO_REVOKE)
+            # NO_REVOKE alone still isn't enough on a real Windows VM -
+            # CRYPT_E_REVOKED still occurred live with it set. curl's
+            # own docs list CURLSSLOPT_REVOKE_BEST_EFFORT (1<<3) as
+            # needed alongside it for schannel specifically; pycurl
+            # doesn't name this constant, hence the literal.
+            self.curl.setopt(pycurl.SSL_OPTIONS, pycurl.SSLOPT_NO_REVOKE | 8)
 
         # let's set the HTTP request method
         if method == 'GET':

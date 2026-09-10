@@ -6,6 +6,8 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 
+import logging
+
 from gi.repository import GObject, Gtk, Pango
 
 from virtaal.views import markup, rendering
@@ -124,6 +126,10 @@ class TMWindow(Gtk.Window):
             # Should never legitimately be outside 0-100; GtkCellRendererProgress's
             # "value" property is a C gint, so an out-of-range value crashes
             # with OverflowError. Clamp defensively regardless of root cause.
+            if quality < 0 or quality > 100:
+                logging.warning(
+                    "Out-of-range TM match quality %r for source=%r target=%r",
+                    quality, match_data.get('source'), match_data.get('target'))
             quality = max(0, min(100, quality))
             cell_renderer.set_property('value', quality)
             #l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.

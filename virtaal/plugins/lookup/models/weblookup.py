@@ -38,6 +38,11 @@ class LookupModel(BaseLookupModel):
             'url': 'http://%(querylang)s.wikipedia.org/wiki/%(query)s',
             'quoted': False,
         },
+        {
+            'display_name': _('Wiktionary'),
+            'url': 'http://%(querylang)s.wiktionary.org/wiki/%(query)s',
+            'quoted': False,
+        },
     ]
     """A list of dictionaries containing data about each URL:
     * C{display_name}: The name that will be shown in the context menu

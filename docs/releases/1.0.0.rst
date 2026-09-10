@@ -1,0 +1,36 @@
+
+.. _releases#1.0.0:
+
+Virtaal 1.0.0
+*************
+
+Virtaal is back after being dormant since 2020, ported from Python 2/GTK2
+to Python 3/GTK3 - a rewrite of most of the application's internals with
+no intended change to the day-to-day translating experience.
+
+Getting it
+==========
+- Windows installer, macOS ``.dmg`` (Intel and Apple Silicon), and a
+  Flatpak build for Linux - see :ref:`Installation <index#installation>`.
+- macOS and Windows binaries are currently unsigned - Gatekeeper/
+  SmartScreen will warn on first launch.
+
+Highlights
+==========
+- Full Python 3 / GTK 3 port.
+- Native file-open/save dialogs on macOS and Windows.
+- macOS keyboard shortcuts now use Cmd instead of Ctrl throughout.
+- Virtaal remembers its window position and size between runs.
+- Spell checking works in the frozen Windows and macOS Intel builds.
+- Windows file-association handling fixed, including per-format icons
+  and ``.ts`` (Qt Linguist vs. MPEG Transport Stream) disambiguation.
+- HTTP requests (terminology/TM lookups, dictionary and autocorrect
+  downloads) now time out instead of hanging indefinitely.
+
+Known issues
+============
+- No spell checking in the frozen macOS Apple Silicon build.
+- Some complex scripts (e.g. Amharic) may not render correctly in the
+  frozen Windows build.
+- The Keyboard Shortcuts window shows "Meta" instead of the Cmd symbol
+  on macOS; the shortcuts themselves work correctly.

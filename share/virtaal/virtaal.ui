@@ -543,7 +543,6 @@ If you are translating from English to French then French would be your translat
                         <property name="accel_path">&lt;Virtaal&gt;/File/Open</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <accelerator key="o" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
@@ -556,7 +555,6 @@ If you are translating from English to French then French would be your translat
                         <property name="accel_path">&lt;Virtaal&gt;/File/Save</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <accelerator key="s" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
@@ -652,7 +650,6 @@ If you are translating from English to French then French would be your translat
                         <property name="accel_path">&lt;Virtaal&gt;/File/Close</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <accelerator key="w" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
@@ -689,7 +686,6 @@ If you are translating from English to French then French would be your translat
                         <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <accelerator key="z" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
@@ -707,7 +703,6 @@ If you are translating from English to French then French would be your translat
                         <property name="accel_path">&lt;Virtaal&gt;/Edit/Cut</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <accelerator key="x" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
@@ -719,7 +714,6 @@ If you are translating from English to French then French would be your translat
                         <property name="accel_path">&lt;Virtaal&gt;/Edit/Copy</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <accelerator key="c" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
@@ -731,7 +725,6 @@ If you are translating from English to French then French would be your translat
                         <property name="accel_path">&lt;Virtaal&gt;/Edit/Paste</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <accelerator key="v" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
@@ -790,6 +783,15 @@ If you are translating from English to French then French would be your translat
                         <property name="accel_path">&lt;Virtaal&gt;/Edit/Preferences</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <!-- Unlike its siblings, this item is moved into
+                             macOS's native App Menu (insert_app_menu_item(),
+                             mainview.py) - that menu doesn't pick up an
+                             accelerator from accel_path/AccelMap the way the
+                             regular menu bar does (confirmed: neither a
+                             plain re-sync nor re-inserting the item again
+                             assigns it a key equivalent there). Left as
+                             literal Ctrl+P until that's understood, rather
+                             than shipping no shortcut at all. -->
                         <accelerator key="p" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
@@ -945,8 +947,8 @@ If you are translating from English to French then French would be your translat
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
+                        <property name="accel_path">&lt;Virtaal&gt;/Help/Shortcuts</property>
                         <property name="use_underline">True</property>
-                        <accelerator key="question" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>

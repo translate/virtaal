@@ -369,6 +369,43 @@ class MainView(BaseView):
         self.accel_group = Gtk.AccelGroup()
         self.main_window.add_accel_group(self.accel_group)
 
+        # These items' own accel_path is already set via virtaal.ui - the
+        # missing piece was a registered Gtk.AccelMap entry and an accel
+        # group actually reaching the menu, both of which virtaal.ui's own
+        # hardcoded <accelerator modifiers="GDK_CONTROL_MASK"> bypassed
+        # (fires literal Ctrl directly, never going through GtkosxApplication's
+        # Ctrl->Cmd translation on macOS - see mnu_add_term's identical fix).
+        for path, key in (
+            ("<Virtaal>/File/Open", Gdk.KEY_o),
+            ("<Virtaal>/File/Save", Gdk.KEY_s),
+            ("<Virtaal>/File/Close", Gdk.KEY_w),
+            ("<Virtaal>/Help/Shortcuts", Gdk.KEY_question),
+        ):
+            Gtk.AccelMap.add_entry(path, key, Gdk.ModifierType.CONTROL_MASK)
+        self.gui.get_object('menu_file').set_accel_group(self.accel_group)
+        self.gui.get_object('menu_help').set_accel_group(self.accel_group)
+        self.gui.get_object('mnu_shortcuts').set_accel_path("<Virtaal>/Help/Shortcuts")
+
+        # GtkosxApplication only pushes a menu item's accelerator into the
+        # native menu when that item is (re)parented - mnu_add_term's own
+        # fix relied on being added to its menu for the first time post-
+        # ready(); these items were already in place at ready() time, so
+        # sync_menubar() alone doesn't touch them. Removing and
+        # reinserting at the same position triggers the same "parent-set"
+        # GtkosxApplication is watching for.
+        for menu_id, item_id in (
+            ('menu_file', 'mnu_open'),
+            ('menu_file', 'mnu_save'),
+            ('menu_file', 'mnu_close'),
+            ('menu_help', 'mnu_shortcuts'),
+        ):
+            menu = self.gui.get_object(menu_id)
+            item = self.gui.get_object(item_id)
+            pos = menu.get_children().index(item)
+            menu.remove(item)
+            menu.insert(item, pos)
+        self.sync_menubar()
+
     def _track_window_state(self):
         self._window_is_maximized = False
         self._pre_fullscreen_size = None

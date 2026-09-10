@@ -48,6 +48,7 @@ class UndoController(BaseController):
         self.mnu_undo = mainview.gui.get_object('mnu_undo')
         self.mnu_undo.set_accel_path('<Virtaal>/Edit/Undo')
         self.mnu_undo.connect('activate', self._on_undo_activated)
+        mainview.sync_menubar()
 
     def _setup_key_bindings(self):
         """Setup Gtk+ key bindings (accelerators).
@@ -57,8 +58,10 @@ class UndoController(BaseController):
         Gtk.AccelMap.add_entry("<Virtaal>/Edit/Undo", Gdk.KEY_z, Gdk.ModifierType.CONTROL_MASK)
 
         self.accel_group = Gtk.AccelGroup()
-        # The following line was commented out, because it caused a double undo when pressing
-        # Ctrl+Z, but only one if done through the menu item. This way it all works as expected.
+        # Not connect_by_path() - mnu_undo's own accel_path already fires
+        # its 'activate' signal (connected below) once a matching accel
+        # group reaches the window; adding this too calls the handler a
+        # second time per keypress (caused a double undo).
         #self.accel_group.connect_by_path("<Virtaal>/Edit/Undo", self._on_undo_activated)
 
         mainview = self.main_controller.view # FIXME: Is this acceptable?

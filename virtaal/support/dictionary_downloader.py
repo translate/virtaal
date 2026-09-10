@@ -89,6 +89,7 @@ class DictionaryDownloader:
             url,
             lambda request, result, fn=filename: self._on_file(fn, result),
             error_callback=lambda request, status, fn=filename: self._on_file_error(fn, status),
+            download=True,
         )
 
     def _on_file(self, filename, result):

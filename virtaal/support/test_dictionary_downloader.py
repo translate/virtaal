@@ -27,7 +27,7 @@ class _FakeClient:
     def __init__(self):
         self.calls = []
 
-    def get(self, url, callback, error_callback=None):
+    def get(self, url, callback, error_callback=None, download=False):
         self.calls.append((url, callback, error_callback))
 
     def last_url(self):

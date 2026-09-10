@@ -103,3 +103,69 @@ def test_show_save_dialog_returns_none_on_cancel():
     view = _make_view_with_chooser(
         '_save_chooser', _FakeChooser(Gtk.ResponseType.CANCEL))
     assert view.show_save_dialog('Save', current_filename='/tmp/test.po') is None
+
+
+class _FakeWidget:
+    def __init__(self):
+        self.sensitive = None
+
+    def set_sensitive(self, value):
+        self.sensitive = value
+
+
+class _FakeGui:
+    """Only get_object('vbox_main') returns something real (for the
+    InfoBar packing calls) - everything else is a throwaway widget
+    that just records set_sensitive()."""
+
+    def __init__(self, vbox):
+        self._vbox = vbox
+        self._widgets = {}
+
+    def get_object(self, name):
+        if name == 'vbox_main':
+            return self._vbox
+        return self._widgets.setdefault(name, _FakeWidget())
+
+
+def _make_bare_view():
+    view = MainView.__new__(MainView)
+    view.gui = _FakeGui(Gtk.Box())
+    return view
+
+
+def test_show_readonly_notice_adds_a_non_dismissible_infobar():
+    view = _make_bare_view()
+    view.show_readonly_notice('cannot save')
+    assert view._readonly_infobar in view.gui._vbox.get_children()
+    assert view._readonly_infobar.get_show_close_button() is False
+
+
+def test_show_readonly_notice_replaces_rather_than_stacks():
+    view = _make_bare_view()
+    view.show_readonly_notice('first')
+    view.show_readonly_notice('second')
+    assert len(view.gui._vbox.get_children()) == 1
+
+
+def test_hide_readonly_notice_removes_it():
+    view = _make_bare_view()
+    view.show_readonly_notice('cannot save')
+    view.hide_readonly_notice()
+    assert view._readonly_infobar is None
+    assert view.gui._vbox.get_children() == []
+
+
+def test_hide_readonly_notice_is_a_noop_without_one():
+    view = _make_bare_view()
+    view.hide_readonly_notice()  # must not raise
+
+
+def test_set_saveable_stays_disabled_for_an_unsavable_store():
+    view = _make_bare_view()
+    view.modified = False
+    view._store_unsavable = True
+    view.controller = type('_C', (), {'get_store_filename': lambda self: None})()
+    view.set_saveable(True)
+    assert view.gui.get_object('mnu_save').sensitive is False
+    assert view.modified is False

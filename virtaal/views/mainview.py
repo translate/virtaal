@@ -16,6 +16,7 @@ from gi.repository import Gdk, Gtk
 from virtaal.common import pan_app
 from virtaal.common.platform import platform
 from virtaal.common.utils import get_unicode
+from virtaal.support.store_capabilities import can_serialize
 from virtaal.views import theme
 
 from .baseview import BaseView
@@ -506,6 +507,10 @@ class MainView(BaseView):
         # bother redoing all of this.
         if value and self.modified:
             return
+        if getattr(self, '_store_unsavable', False):
+            # Editing (which normally re-enables Save) can't make a
+            # format like .qm any more saveable.
+            value = False
         menuitem = self.gui.get_object("mnu_save")
         menuitem.set_sensitive(value)
         menuitem = self.gui.get_object("mnu_revert")
@@ -861,6 +866,28 @@ class MainView(BaseView):
         vbox_main.pack_start(infobar, False, False, 0)
         vbox_main.reorder_child(infobar, 1)  # directly below the menu bar
 
+    def show_readonly_notice(self, message):
+        """A persistent (no close button) InfoBar, for a condition the
+        user can't dismiss away - e.g. a file format that can't be
+        saved. Replaces any existing one instead of stacking."""
+        self.hide_readonly_notice()
+        infobar = Gtk.InfoBar()
+        infobar.set_message_type(Gtk.MessageType.WARNING)
+        label = Gtk.Label(label=message)
+        label.set_line_wrap(True)
+        infobar.get_content_area().pack_start(label, True, True, 0)
+        infobar.show_all()
+        vbox_main = self.gui.get_object('vbox_main')
+        vbox_main.pack_start(infobar, False, False, 0)
+        vbox_main.reorder_child(infobar, 1)  # directly below the menu bar
+        self._readonly_infobar = infobar
+
+    def hide_readonly_notice(self):
+        infobar = getattr(self, '_readonly_infobar', None)
+        if infobar:
+            infobar.destroy()
+            self._readonly_infobar = None
+
     def _on_file_open(self, _widget):
         self.open_file()
 
@@ -938,9 +965,19 @@ class MainView(BaseView):
             self.gui.get_object(widget_name).set_sensitive(False)
         self.status_bar.set_sensitive(False)
         self.main_window.set_title(_('Virtaal'))
+        self.hide_readonly_notice()
+        self._store_unsavable = False
 
     def _on_store_loaded(self, store_controller):
-        self.gui.get_object('mnu_saveas').set_sensitive(True)
+        self._store_unsavable = not can_serialize(store_controller.store._trans_store)
+        if self._store_unsavable:
+            self.show_readonly_notice(
+                _('This file format cannot be saved - neither Save nor Save As will work.'))
+            self.gui.get_object('mnu_save').set_sensitive(False)
+        else:
+            self.hide_readonly_notice()
+
+        self.gui.get_object('mnu_saveas').set_sensitive(not self._store_unsavable)
         self.gui.get_object('mnu_close').set_sensitive(True)
         self.gui.get_object('mnu_update').set_sensitive(True)
         self.gui.get_object('mnu_properties').set_sensitive(True)

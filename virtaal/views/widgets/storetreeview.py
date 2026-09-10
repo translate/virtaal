@@ -58,7 +58,6 @@ class StoreTreeView(Gtk.TreeView):
     def _enable_tooltips(self):
         if hasattr(self, "set_tooltip_column"):
             self.set_tooltip_column(COLUMN_NOTE)
-        self.set_rules_hint(True)
 
     def _install_callbacks(self):
         self.connect('key-press-event', self._on_key_press)

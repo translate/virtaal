@@ -479,7 +479,8 @@ function Assert-VirtaalLogsClean {
         '^\s*File ".*\\enchant\\tokenize\\__init__\.py", line \d+, in get_tokenizer$',
         '^\s*tokenize = get_tokenizer\(.*\)$',
         '^\s*raise (DefaultLanguageNotFoundError|TokenizerNotFoundError)\(.*\)( from None)?$',
-        '^enchant\.errors\.(DefaultLanguageNotFoundError|TokenizerNotFoundError): .+$'
+        '^enchant\.errors\.(DefaultLanguageNotFoundError|TokenizerNotFoundError): .+$',
+        '^WARNING:root:Out-of-range TM match quality .+$'
     )
     if ($script:VirtaalAppDebugLog -or $AllowDebugLog) {
         # bin\virtaal's -D/--debug format is '%(levelname)7s

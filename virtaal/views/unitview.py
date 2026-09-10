@@ -11,6 +11,7 @@ import re
 from gi.repository import Gdk, GLib, GObject, Gtk
 from gi.repository.GObject import TYPE_PYOBJECT
 from translate.lang import factory
+from translate.misc.multistring import multistring
 
 from virtaal.common import GObjectWrapper
 
@@ -541,7 +542,11 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             return
 
         num_unit_sources = 1
-        if self.unit.hasplural():
+        if self.unit.hasplural() and isinstance(self.unit.source, multistring):
+            # Gettext-style msgid/msgid_plural formats have a separate
+            # source string per plural form - Qt's .qm doesn't (a
+            # single "%n ..." source covers every target form), so
+            # source stays a single string even for a plural unit.
             num_unit_sources = len(self.unit.source.strings)
 
         for i in range(self.MAX_SOURCES):

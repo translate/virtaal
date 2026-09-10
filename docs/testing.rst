@@ -43,6 +43,11 @@ directly:
 * ``workflow.tmx``, ``workflow.tbx``, ``workflow.ts`` (Qt Linguist),
   ``workflow.qph`` (Qt Phrase Book), ``workflow.ftl`` (Fluent) - cover
   translate-toolkit's other supported formats beyond Gettext PO.
+* ``workflow.qm`` - compiled from ``workflow.ts`` via Qt's own
+  ``lrelease`` (not translate-toolkit - it can't write ``.qm``), so
+  it's real Qt output, not something translate-toolkit round-tripped
+  itself. Includes a ``numerus="yes"`` plural message; regenerate with
+  ``lrelease workflow.ts -qm workflow.qm`` after editing the ``.ts``.
 
 Add more here as a format or scenario needs its own dedicated
 coverage.

@@ -133,7 +133,7 @@ Google Translate
 
 ::
 
-    http://translate.google.com/#%(querylang)s|%(nonquerylang)s|%(query)s
+    http://translate.google.com/?sl=%(querylang)s&tl=%(nonquerylang)s&text=%(query)s
 
 .. _weblookups#general:
 

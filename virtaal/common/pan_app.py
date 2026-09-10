@@ -195,6 +195,8 @@ class Settings:
         "maximized": '',
         "windowwidth": 796,
         "windowheight": 544,
+        "windowx": '',
+        "windowy": '',
     }
     language =      {
         "nplurals": 0,

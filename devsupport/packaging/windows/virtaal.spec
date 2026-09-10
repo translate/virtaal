@@ -144,12 +144,15 @@ datas = [
     (str(ROOT / "AUTHORS.md"), "."),
 ] + mo_files
 if ENCHANT_DATA is not None and ENCHANT_DATA.is_dir():
-    # Only en_GB - enough to test; the rest comes via download, not
-    # bundled (~20MB of unused dictionaries otherwise).
+    # Only en_US (the traditional software source language) and en_GB
+    # (checks.po's own target language, exercised by ci.yml's bundle-
+    # launch check) - the rest comes via download, not bundled (~20MB
+    # of unused dictionaries otherwise).
+    BUNDLED_DICTS = ("en_US", "en_GB")
     for p in ENCHANT_DATA.rglob("*"):
         if p.is_dir():
             continue
-        if p.parent.name == "hunspell" and p.stem != "en_GB":
+        if p.parent.name == "hunspell" and p.stem not in BUNDLED_DICTS:
             continue
         datas.append((str(p), str(Path("enchant/data") / p.relative_to(ENCHANT_DATA).parent)))
 
@@ -158,6 +161,10 @@ a = Analysis(  # noqa: F821
     pathex=[str(ROOT)],
     binaries=binaries,
     datas=datas,
+    # Overrides pyinstaller-hooks-contrib's own hook-enchant.py, which
+    # bundles every dictionary in the wheel regardless of the en_GB
+    # filtering above - see that file's own docstring.
+    hookspath=[str(ROOT / "devsupport" / "packaging" / "windows" / "pyinstaller-hooks")],
     hiddenimports=(
         collect_submodules("virtaal")
         + collect_submodules("translate.storage")

@@ -147,12 +147,20 @@ class Virtaal:
         defer(PropertiesController, main_controller)
         defer(DictionaryDownloadWatcher, main_controller)
         defer(main_controller.load_plugins)
+        defer(self._check_for_config_recovery)
 
         # Only bundled builds (macOS .app, Windows installer) can't
         # already control their own updates the way a checkout/pip
         # install can.
         if platform.is_frozen:
             defer(self._check_for_update)
+
+    def _check_for_config_recovery(self):
+        from virtaal.common import pan_app
+
+        backup_path = pan_app.settings.config_recovery_backup
+        if backup_path:
+            self.main_controller.view.show_config_recovery_notice(backup_path)
 
     def _check_for_update(self):
         from virtaal.__version__ import ver

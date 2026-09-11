@@ -13,6 +13,7 @@ from virtaal.common import pan_app
 from virtaal.common.pan_app import (
     _build_launch_marker,
     _open_frozen_log,
+    _read_ini_recovering,
     _set_enchant_env_vars,
     _trim_log_to_last_launches,
 )
@@ -99,6 +100,55 @@ def test_trim_log_to_last_launches_leaves_a_short_log_alone(tmp_path):
 
 def test_trim_log_to_last_launches_tolerates_a_missing_file(tmp_path):
     _trim_log_to_last_launches(str(tmp_path / "missing.log"), keep=2)  # doesn't raise
+
+
+def test_read_ini_recovering_leaves_a_valid_file_alone(tmp_path):
+    path = tmp_path / "settings.ini"
+    path.write_text("[general]\nlastdir = /tmp\n")
+
+    parser = pan_app.ConfigParser.RawConfigParser()
+    backup_path = _read_ini_recovering(parser, str(path))
+
+    assert backup_path is None
+    assert parser.get("general", "lastdir") == "/tmp"
+    assert path.exists()
+
+
+def test_read_ini_recovering_backs_up_a_corrupt_file(tmp_path):
+    # Real Windows crash (#3327): a user's virtaal.ini got zero-filled,
+    # raising configparser.MissingSectionHeaderError unhandled at
+    # startup, before any window could even be drawn.
+    path = tmp_path / "settings.ini"
+    path.write_bytes(b"\x00" * 200)
+
+    parser = pan_app.ConfigParser.RawConfigParser()
+    backup_path = _read_ini_recovering(parser, str(path))
+
+    assert backup_path == str(path) + ".broken"
+    assert not path.exists()
+    assert open(backup_path, 'rb').read() == b"\x00" * 200
+    assert parser.sections() == []
+
+
+def test_read_ini_recovering_does_not_clobber_an_existing_backup(tmp_path):
+    path = tmp_path / "settings.ini"
+    path.write_bytes(b"\x00" * 10)
+    (tmp_path / "settings.ini.broken").write_text("earlier backup")
+
+    parser = pan_app.ConfigParser.RawConfigParser()
+    backup_path = _read_ini_recovering(parser, str(path))
+
+    assert backup_path == str(path) + ".broken.2"
+
+
+def test_settings_recovers_from_a_corrupt_virtaal_ini(tmp_path):
+    path = tmp_path / "virtaal.ini"
+    path.write_bytes(b"\x00" * 200)
+
+    settings = pan_app.Settings(str(path))
+
+    assert settings.config_recovery_backup == str(path) + ".broken"
+    assert settings.config.sections() == settings.sections  # all empty, none lost
 
 
 def test_open_frozen_log_trims_before_appending(tmp_path):

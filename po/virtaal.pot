@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-10 09:02+0100\n"
+"POT-Creation-Date: 2026-09-11 12:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
-#: ../share/virtaal/virtaal.ui.h:18 ../virtaal/views/mainview.py:891
+#: ../share/virtaal/virtaal.ui.h:18 ../virtaal/views/mainview.py:961
 msgid "Virtaal"
 msgstr ""
 
@@ -689,7 +689,7 @@ msgid ""
 msgstr ""
 
 #: ../virtaal/controllers/maincontroller.py:227
-#: ../virtaal/views/mainview.py:338
+#: ../virtaal/views/mainview.py:342
 msgid "Save"
 msgstr ""
 
@@ -1217,12 +1217,12 @@ msgid "Add Files"
 msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:174
-#: ../virtaal/views/mainview.py:285
+#: ../virtaal/views/mainview.py:289
 msgid "All Supported Files"
 msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py:200
-#: ../virtaal/views/mainview.py:326
+#: ../virtaal/views/mainview.py:330
 msgid "All Files"
 msgstr ""
 
@@ -1391,26 +1391,26 @@ msgid "Select the sources that should be queried for translation memory"
 msgstr ""
 
 #. l10n: match quality column label
-#: ../virtaal/plugins/tm/tmwidgets.py:50
+#: ../virtaal/plugins/tm/tmwidgets.py:52
 msgid "%"
 msgstr ""
 
-#: ../virtaal/plugins/tm/tmwidgets.py:52
+#: ../virtaal/plugins/tm/tmwidgets.py:54
 msgid "Matches"
 msgstr ""
 
-#: ../virtaal/plugins/tm/tmwidgets.py:54
+#: ../virtaal/plugins/tm/tmwidgets.py:56
 msgid "TM Source"
 msgstr ""
 
 #. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
-#: ../virtaal/plugins/tm/tmwidgets.py:130
+#: ../virtaal/plugins/tm/tmwidgets.py:136
 #, python-format
 msgid "%(match_quality)s%%"
 msgstr ""
 
 #. l10n: This indicates a suggestion from machine translation. It is displayed instead of the match percentage.
-#: ../virtaal/plugins/tm/tmwidgets.py:140
+#: ../virtaal/plugins/tm/tmwidgets.py:146
 msgid "?"
 msgstr ""
 
@@ -1791,21 +1791,21 @@ msgstr ""
 msgid "_New Language Pair..."
 msgstr ""
 
-#: ../virtaal/views/mainview.py:247
+#: ../virtaal/views/mainview.py:251
 msgid "Error"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:279
+#: ../virtaal/views/mainview.py:283
 msgid "Choose a Translation File"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:356
+#: ../virtaal/views/mainview.py:360
 msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:359
+#: ../virtaal/views/mainview.py:363
 msgid "_Discard"
 msgstr ""
 
@@ -1813,26 +1813,33 @@ msgstr ""
 #. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
 #. %(current_file)s is the file name of the current file
 #. most languages will not need to change this
-#: ../virtaal/views/mainview.py:482
+#: ../virtaal/views/mainview.py:523
 #, python-format
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:507
+#: ../virtaal/views/mainview.py:548
 msgid "Please enter the number of noun forms (plurals) to use"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:513
+#: ../virtaal/views/mainview.py:554
 msgid "Please enter the plural equation to use"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:799
+#: ../virtaal/views/mainview.py:848
 #, python-format
 msgid "Virtaal %s is available (you have %s)"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:801
+#: ../virtaal/views/mainview.py:850
 msgid "Download"
+msgstr ""
+
+#: ../virtaal/views/mainview.py:871
+#, python-format
+msgid ""
+"Your settings file could not be read, so Virtaal started with default "
+"settings. The old file was kept at: %s"
 msgstr ""
 
 #. l10n: This refers to the 'mode' that determines how Virtaal moves
@@ -1903,15 +1910,15 @@ msgstr ""
 msgid "Preview failed"
 msgstr ""
 
-#: ../virtaal/views/unitview.py:609
+#: ../virtaal/views/unitview.py:638
 msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr ""
 
-#: ../virtaal/views/unitview.py:610
+#: ../virtaal/views/unitview.py:639
 msgid "Click to move to a specific state in the workflow"
 msgstr ""
 
-#: ../virtaal/views/unitview.py:611
+#: ../virtaal/views/unitview.py:640
 msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr ""
 
@@ -2144,11 +2151,11 @@ msgstr ""
 msgid "Many plugins and options for customization"
 msgstr ""
 
-#: ../virtaal/models/storemodel.py:125
+#: ../virtaal/models/storemodel.py:126
 msgid "The file does not exist."
 msgstr ""
 
-#: ../virtaal/models/storemodel.py:127
+#: ../virtaal/models/storemodel.py:128
 msgid "Not a valid file."
 msgstr ""
 

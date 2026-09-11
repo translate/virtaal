@@ -22,6 +22,34 @@ from .platform import platform
 from .utils import get_unicode
 
 
+def _read_ini_recovering(parser, filename):
+    """Read filename into parser, recovering from a corrupt/unreadable
+    file instead of crashing - it may be a user's own hand-edited file
+    they'd want back, so back it up rather than overwriting or
+    discarding it silently, and leave parser empty so the caller falls
+    back to its own defaults.
+
+    Returns the backup path, or None if the file was fine (or absent)."""
+    try:
+        parser.read(filename)
+        return None
+    except (ConfigParser.Error, UnicodeDecodeError) as e:
+        for section in parser.sections():
+            parser.remove_section(section)
+        backup_path = filename + '.broken'
+        n = 1
+        while os.path.exists(backup_path):
+            n += 1
+            backup_path = '%s.broken.%d' % (filename, n)
+        try:
+            os.replace(filename, backup_path)
+        except OSError:
+            backup_path = None
+        import logging
+        logging.warning("%r is corrupt (%s) - backed up to %r and starting fresh", filename, e, backup_path)
+        return backup_path
+
+
 def get_config_dir():
     if platform.is_windows:
         confdir = os.path.join(os.environ['APPDATA'], 'Virtaal')
@@ -230,11 +258,12 @@ class Settings:
 
         self.language["targetlang"] = data.simplify_to_common(get_locale_lang())
         self.config = ConfigParser.RawConfigParser()
+        self.config_recovery_backup = None
         self.read()
 
     def read(self):
         """Read the configuration file and set the dictionaries up."""
-        self.config.read(self.filename)
+        self.config_recovery_backup = _read_ini_recovering(self.config, self.filename)
         for section in self.sections:
             if not self.config.has_section(section):
                 self.config.add_section(section)
@@ -397,7 +426,7 @@ def load_config(filename, section=None):
             section was specified. Otherwise a simple dictionary representing
             the given configuration section."""
     parser = ConfigParser.RawConfigParser()
-    parser.read(filename)
+    _read_ini_recovering(parser, filename)
 
     if section:
         if section not in parser.sections():
@@ -418,7 +447,7 @@ def save_config(filename, config, section=None):
             specified, it should be a 2D-dictionary representing the entire
             configuration file."""
     parser = ConfigParser.ConfigParser()
-    parser.read(filename)
+    _read_ini_recovering(parser, filename)
 
     if section:
         config = {section: config}

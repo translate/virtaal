@@ -42,6 +42,7 @@ PrivilegesRequiredOverridesAllowed=dialog
 OutputDir=..\..\..\dist\installer
 OutputBaseFilename=virtaal-{#MyAppVersion}-setup
 SetupIconFile={#IconsDir}\virtaal.ico
+UninstallDisplayIcon={app}\{#MyAppExeName}
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern

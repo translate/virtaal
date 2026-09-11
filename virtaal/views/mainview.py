@@ -861,6 +861,27 @@ class MainView(BaseView):
         vbox_main.pack_start(infobar, False, False, 0)
         vbox_main.reorder_child(infobar, 1)  # directly below the menu bar
 
+    def show_config_recovery_notice(self, backup_path):
+        """Called at most once per session, if pan_app.Settings found
+            virtaal.ini unreadable and started fresh with defaults."""
+        infobar = Gtk.InfoBar()
+        infobar.set_message_type(Gtk.MessageType.WARNING)
+        infobar.set_show_close_button(True)
+        label = Gtk.Label(label=_(
+            "Your settings file could not be read, so Virtaal started with "
+            "default settings. The old file was kept at: %s") % backup_path)
+        label.set_line_wrap(True)
+        infobar.get_content_area().pack_start(label, True, True, 0)
+
+        def on_response(infobar, response_id):
+            infobar.destroy()
+        infobar.connect('response', on_response)
+
+        infobar.show_all()
+        vbox_main = self.gui.get_object('vbox_main')
+        vbox_main.pack_start(infobar, False, False, 0)
+        vbox_main.reorder_child(infobar, 1)  # directly below the menu bar
+
     def _on_file_open(self, _widget):
         self.open_file()
 

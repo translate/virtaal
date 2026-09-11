@@ -187,7 +187,9 @@ class StoreModel(BaseModel):
 
     def update_file(self, filename):
         # Adapted from Document.__init__()
-        from translate.storage import factory, statsdb
+        from translate.storage import factory
+
+        from virtaal.support import statsdb
         newstore = factory.getobject(filename)
         oldfilename = self._trans_store.filename
         oldfileobj = self._trans_store.fileobj
@@ -204,9 +206,9 @@ class StoreModel(BaseModel):
         import os
         import tempfile
         tempfd, tempfilename = tempfile.mkstemp()
-        os.write(tempfd, str(self._trans_store))
+        os.close(tempfd)  # savefile() reopens the path itself
+        self._trans_store.savefile(tempfilename)
         self.update_stats(filename=tempfilename)
-        os.close(tempfd)
         os.remove(tempfilename)
 
         self.controller.compare_stats(oldstats, self.stats)

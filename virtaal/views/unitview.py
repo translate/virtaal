@@ -612,7 +612,14 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
                 self.targets[i].set_text(targetstr)
                 self.targets[i].get_parent().show_all()
                 self.targets[i].selector_textboxes = visible_sources
-                self.targets[i].selector_textbox = visible_sources[0]
+                # Match each target's own plural form to the
+                # corresponding source form (msgid vs msgid_plural) -
+                # not always source[0], or Alt+Down on target[1] copies
+                # the singular msgid instead of msgid_plural
+                # (translate/virtaal#3329). Formats with only one
+                # source regardless of plural count (e.g. .qm's single
+                # "%n ..." source) still fall back to it.
+                self.targets[i].selector_textbox = visible_sources[min(i, len(visible_sources) - 1)]
                 #logging.debug('Showing target #%d: %s' % (i, self.targets[i]))
             else:
                 # outside plural range

@@ -1,22 +1,28 @@
 #!/bin/bash
 
-packagename=$(egrep "^X-PACKAGENAME" Makevars | sed "s/X-PACKAGENAME = //g")
-package=$(egrep "^DOMAIN" Makevars | sed "s/DOMAIN = //g")
+packagename=$(grep -E "^X-PACKAGENAME" Makevars | sed "s/X-PACKAGENAME = //g")
+package=$(grep -E "^DOMAIN" Makevars | sed "s/DOMAIN = //g")
 
+# shellcheck disable=SC2089,SC2090
+# Deliberately a flat string, not an array: this is exported as an
+# environment variable for intltool-update's own Perl script to read
+# and splice into a shell command it builds itself - a bash array
+# can't cross that process boundary.
 XGETTEXT_ARGS='\
 --add-comments=l10n \
 --add-location=file \
 --copyright-holder="Zuza Software Foundation (Translate.org.za)" \
 --package-name "'$packagename'" \
---package-version `egrep "^ver " ../'$package'/__version__.py | sed "s/ver = //;s/\"//g"` \
+--package-version `grep -E "^ver " ../'$package'/__version__.py | sed "s/ver = //;s/\"//g"` \
 '
+# shellcheck disable=SC2090
 export XGETTEXT_ARGS
 
 # Hack around the fact that intltool-update does not do --previous
-if [ $# -eq 1 -a -f $1.po ]; then
+if [ "$#" -eq 1 ] && [ -f "$1.po" ]; then
 	# We are trying to update an existing translation
 	# intltool-update xy ==> intltool-update --pot && intltool-update --dist xy
-	intltool-update --pot && msgmerge --previous --update $1.po $package.pot
+	intltool-update --pot && msgmerge --previous --update "$1.po" "$package.pot"
 else
-	intltool-update $*
+	intltool-update "$@"
 fi

@@ -104,6 +104,7 @@ class Fuzzer:
             (10, 'save_temp', self._act_save_temp),
             (10, 'close_reopen', self._act_close_reopen),
             (10, 'resize_window', self._act_resize_window),
+            (10, 'advance_state', self._act_advance_state),
         ]
 
     def _build_controllers(self):
@@ -178,6 +179,15 @@ class Fuzzer:
     def _act_resize_window(self):
         window = self.main_controller.view.main_window
         window.resize(self.rng.randint(300, 1200), self.rng.randint(200, 900))
+
+    def _act_advance_state(self):
+        # Ctrl+Enter/Ctrl+Shift+Enter, and the Navigation menu's
+        # equivalent items - all three call this same method.
+        unit = self.store_controller.cursor and self.store_controller.cursor.deref()
+        if unit is None:
+            return
+        self._load_current_unit()
+        self.unit_controller.view.advance_workflow_state(self.rng.choice([1, -1]))
 
     # RUN LOOP #
 

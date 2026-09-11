@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-11 12:51+0100\n"
+"POT-Creation-Date: 2026-09-11 13:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
-#: ../share/virtaal/virtaal.ui.h:18 ../virtaal/views/mainview.py:961
+#: ../share/virtaal/virtaal.ui.h:18 ../virtaal/views/mainview.py:985
 msgid "Virtaal"
 msgstr ""
 
@@ -1809,33 +1809,37 @@ msgstr ""
 msgid "_Discard"
 msgstr ""
 
+#: ../virtaal/views/mainview.py:462
+msgid "Could not open the dropped file - its file name could not be decoded."
+msgstr ""
+
 #. l10n: This is the title of the main window of Virtaal
 #. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
 #. %(current_file)s is the file name of the current file
 #. most languages will not need to change this
-#: ../virtaal/views/mainview.py:523
+#: ../virtaal/views/mainview.py:547
 #, python-format
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:548
+#: ../virtaal/views/mainview.py:572
 msgid "Please enter the number of noun forms (plurals) to use"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:554
+#: ../virtaal/views/mainview.py:578
 msgid "Please enter the plural equation to use"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:848
+#: ../virtaal/views/mainview.py:872
 #, python-format
 msgid "Virtaal %s is available (you have %s)"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:850
+#: ../virtaal/views/mainview.py:874
 msgid "Download"
 msgstr ""
 
-#: ../virtaal/views/mainview.py:871
+#: ../virtaal/views/mainview.py:895
 #, python-format
 msgid ""
 "Your settings file could not be read, so Virtaal started with default "

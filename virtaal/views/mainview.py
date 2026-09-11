@@ -456,15 +456,39 @@ class MainView(BaseView):
 
             # the data comes as a string with each URI on a line; lines
             # terminated with '\r\n. For now we just take the first one:
-            filename = get_unicode(data.get_data().split(b"\r\n")[0], 'utf-8')
-            if filename.startswith("file://"):
-                # This is a URI, so we handle encoded characters like spaces:
-                from urllib.parse import unquote
-                filename = unquote(filename)
+            raw = data.get_data().split(b"\r\n")[0]
+            filename = self._decode_dropped_uri(raw)
+            if filename is None:
+                self.controller.show_error(_("Could not open the dropped file - its file name could not be decoded."))
+            elif filename.startswith("file://"):
                 #TODO: only bother if the extension is supported?
                 self.controller.open_file(filename)
 
         return True
+
+    def _decode_dropped_uri(self, raw):
+        """Decode one dropped text/uri-list line to a file:// URI
+        string, or None if it can't be decoded at all.
+
+        Percent-encoded non-ASCII bytes are assumed to be UTF-8 - what
+        GLib/GDK use on Linux/macOS. GTK's Windows backend has been
+        reported to percent-encode using the system codepage instead
+        for non-ASCII file names (#3331), so retry with that rather
+        than silently losing the file on decode failure."""
+        from urllib.parse import unquote
+
+        try:
+            filename = raw.decode('utf-8')
+        except UnicodeDecodeError:
+            return None
+        if not filename.startswith("file://"):
+            return filename
+        try:
+            return unquote(filename, errors='strict')
+        except UnicodeDecodeError:
+            if platform.is_windows:
+                return unquote(filename, encoding=locale.getpreferredencoding(False), errors='replace')
+            return unquote(filename, errors='replace')
 
     def _on_style_set(self, widget, prev_style=None):
         theme.update_style(widget)

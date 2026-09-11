@@ -87,6 +87,12 @@ step, easy to forget:
   got pushed to `dwaynebailey/virtaal`, not `translate/virtaal` - diff
   `git ls-remote --tags upstream` against `git ls-remote --tags origin`
   before assuming upstream's tag list is complete.
+- **When 1.0.0 itself (not a beta/rc) ships**: the 12 historic SourceForge
+  releases (`0.2` through `0.7.1`, backstopped 2026-09-11 with their
+  original SourceForge files as assets) were all created with
+  `--prerelease`, purely so beta1 stayed the one highlighted "Latest"
+  release. Once a real 1.0.0 is live, flip them to real releases:
+  `gh release edit <tag> --repo translate/virtaal --prerelease=false`.
 
 ## Silent vs. public prereleases
 

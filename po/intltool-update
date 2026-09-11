@@ -5,6 +5,7 @@ package=$(egrep "^DOMAIN" Makevars | sed "s/DOMAIN = //g")
 
 XGETTEXT_ARGS='\
 --add-comments=l10n \
+--add-location=file \
 --copyright-holder="Zuza Software Foundation (Translate.org.za)" \
 --package-name "'$packagename'" \
 --package-version `egrep "^ver " ../'$package'/__version__.py | sed "s/ver = //;s/\"//g"` \

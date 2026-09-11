@@ -7,13 +7,13 @@
 # test that happened not to show it. That line is stripped out before
 # comparing, so only real content changes trip this.
 #
-# `#:` location comments (source file:line references) are also
-# ignored by default - they drift on their own as unrelated code
-# elsewhere shifts line numbers, with no effect on what translators
-# actually see, so routine commits shouldn't have to regenerate the
-# whole file just to keep them current. Set POT_STRICT_LOCATIONS=1 to
-# also require these be current - the real check to run before a
-# release, where accurate source references matter.
+# `#:` location comments are filename-only (po/intltool-update passes
+# xgettext --add-location=file), so unrelated line-number shifts
+# elsewhere in a file no longer touch them at all. They're still
+# ignored here by default, belt-and-braces, since a string moving to a
+# different file entirely is still possible - it has no effect on what
+# translators actually see either way. Set POT_STRICT_LOCATIONS=1 to
+# also require these be current.
 #
 # Requires `intltool-update` on PATH (`brew install intltool` /
 # `apt install intltool`). Not everyone doing a routine commit will have

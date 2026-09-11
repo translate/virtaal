@@ -133,6 +133,15 @@ class TestUnitController(TestScaffolding):
         fixed - it isn't, and it isn't a bug in this function either."""
         self._assert_initial_cursor_position("%B", "%|B")
 
+    def test_advance_workflow_state_on_a_freshly_loaded_unit(self):
+        """load_unit() left the state-nav widget's own selection
+        unset - move_state() (Ctrl+Enter, Ctrl+Shift+Enter, and the
+        Navigation menu's equivalent items) crashed with TypeError on
+        the very first attempt on any freshly loaded unit."""
+        test_unit = self.trans_store.getunits()[1]
+        view = self.unit_controller.load_unit(test_unit)
+        view.advance_workflow_state(1)  # must not raise
+
     def test_stale_alt_down_does_not_corrupt_a_later_unit(self):
         """Alt+Down ('transfer from source') defers its copy via
         GLib.idle_add(). If the loaded unit changes before that runs,

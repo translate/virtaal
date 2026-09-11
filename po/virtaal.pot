@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-12 09:23+0100\n"
+"POT-Creation-Date: 2026-09-12 09:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -209,6 +209,14 @@ msgstr ""
 
 #: ../share/virtaal/virtaal.ui.h
 msgid "_Page Down"
+msgstr ""
+
+#: ../share/virtaal/virtaal.ui.h ../virtaal/views/unitview.py
+msgid "Move one step forward in the workflow (Ctrl+Enter)"
+msgstr ""
+
+#: ../share/virtaal/virtaal.ui.h ../virtaal/views/unitview.py
+msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
 msgstr ""
 
 #: ../share/virtaal/virtaal.ui.h
@@ -1900,15 +1908,7 @@ msgid "Preview failed"
 msgstr ""
 
 #: ../virtaal/views/unitview.py
-msgid "Move one step back in the workflow (Ctrl+Shift+Enter)"
-msgstr ""
-
-#: ../virtaal/views/unitview.py
 msgid "Click to move to a specific state in the workflow"
-msgstr ""
-
-#: ../virtaal/views/unitview.py
-msgid "Move one step forward in the workflow (Ctrl+Enter)"
 msgstr ""
 
 #: ../virtaal/views/widgets/aboutdialog.py

@@ -395,13 +395,11 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
                 if next_textbox is not None and next_textbox.get_parent().props.visible:
                     self.focus_text_view(next_textbox)
                 else:
-                    if eventname == 'ctrl-enter' and self.unit.STATE:
+                    if eventname == 'ctrl-enter':
                         #Ctrl+Enter means additionally advance the unit in the workflow
-                        listnav = self._widgets['state']
-                        listnav.move_state(1)
-                    elif eventname == 'ctrl-shift-enter' and self.unit.STATE:
-                        listnav = self._widgets['state']
-                        listnav.move_state(-1)
+                        self.advance_workflow_state(1)
+                    elif eventname == 'ctrl-shift-enter':
+                        self.advance_workflow_state(-1)
                     # textbox is the last text view in this unit, so we need to move on
                     # to the next one.
                     self._on_key_press_event(None, event)
@@ -661,6 +659,14 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             select_name=state_name,
         )
         self._widgets['state'].show_all()
+
+    def advance_workflow_state(self, offset):
+        """Move the current unit's workflow state one step forward
+        (offset=1) or back (offset=-1) - shared by Ctrl+Enter/
+        Ctrl+Shift+Enter and the Navigation menu's equivalent items."""
+        if not self.unit.STATE:
+            return
+        self._widgets['state'].move_state(offset)
 
     def update_state(self, newstate):
         """Update it without emitting any signals or recreating anything."""

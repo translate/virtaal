@@ -185,6 +185,9 @@ class MainView(BaseView):
         self.gui.get_object('mnu_binary_export').connect('activate', self._on_file_binary_export)
         self.gui.get_object('mnu_revert').connect('activate', self._on_file_revert)
         self.gui.get_object('mnu_quit').connect('activate', self._on_quit)
+        # Navigation menu signals
+        self.gui.get_object('mnu_state_advance').connect('activate', self._on_state_advance)
+        self.gui.get_object('mnu_state_reverse').connect('activate', self._on_state_reverse)
         # View menu signals
         self.gui.get_object('mnu_fullscreen').connect('activate', self._on_fullscreen)
         # Help menu signals
@@ -965,6 +968,12 @@ class MainView(BaseView):
         self.controller.quit()
         return True
 
+    def _on_state_advance(self, _widget=None):
+        self.controller.unit_controller.view.advance_workflow_state(1)
+
+    def _on_state_reverse(self, _widget=None):
+        self.controller.unit_controller.view.advance_workflow_state(-1)
+
     def _on_recent_file_activated(self, chooser):
         item = chooser.get_current_item()
         if item.exists():
@@ -979,7 +988,8 @@ class MainView(BaseView):
         openmailto.open(build_bug_report_url())
 
     def _on_store_closed(self, store_controller):
-        for widget_name in ('mnu_saveas', 'mnu_close', 'mnu_update', 'mnu_properties', 'mnu_binary_export'):
+        for widget_name in ('mnu_saveas', 'mnu_close', 'mnu_update', 'mnu_properties', 'mnu_binary_export',
+                             'mnu_state_advance', 'mnu_state_reverse'):
             self.gui.get_object(widget_name).set_sensitive(False)
         self.status_bar.set_sensitive(False)
         self.main_window.set_title(_('Virtaal'))
@@ -989,6 +999,8 @@ class MainView(BaseView):
         self.gui.get_object('mnu_close').set_sensitive(True)
         self.gui.get_object('mnu_update').set_sensitive(True)
         self.gui.get_object('mnu_properties').set_sensitive(True)
+        self.gui.get_object('mnu_state_advance').set_sensitive(True)
+        self.gui.get_object('mnu_state_reverse').set_sensitive(True)
         filename = store_controller.get_store_filename()
         #TODO: move logic to storecontroller
         if filename.endswith('.po') or filename.endswith('.po.bz2') or filename.endswith('.po.gz'):

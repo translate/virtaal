@@ -174,7 +174,23 @@ especially if they might launch their own instance concurrently.
 
 ## Cleanup
 
-Kill the PID you launched, delete any scratch screenshots, and uninstall
+**Killing the PID you launched does not kill its `tmserver` child** -
+the local TM plugin spawns `python3 -m virtaal.support.tmserver` as a
+separate process, which survives its parent being killed and keeps
+running indefinitely (confirmed directly: 30+ of these accumulated
+silently across one session's worth of test launches, each holding a
+real local port). Kill both:
+
+```
+pkill -f "virtaal.support.tmserver"
+kill <the bin/virtaal PID you launched>
+```
+
+or just `pkill -f "bin/virtaal"` first, then the tmserver pkill above,
+if you've lost track of the exact PID. Check for leftovers before
+assuming a session is clean: `ps aux | grep -i "[P]ython.*virtaal"`.
+
+Also delete any scratch screenshots, and uninstall
 `pyobjc-framework-Quartz` plus what it pulled in (`pyobjc-core`,
 `pyobjc-framework-Cocoa`) from the project's `.venv` if you installed it for
 mouse-movement support - don't leave the dev environment with dependencies

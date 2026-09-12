@@ -60,8 +60,11 @@ def get_config_dir():
         confdir = os.path.expanduser('~/.virtaal')
 
     confdir = get_unicode(confdir)
-    if not os.path.exists(confdir):
-        os.makedirs(confdir)
+    try:
+        os.makedirs(confdir, exist_ok=True)
+    except FileExistsError:
+        import logging
+        logging.warning("%r exists but is not a directory", confdir)
 
     return confdir
 

@@ -680,12 +680,19 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
     def _on_key_press_event(self, _widget, event, *_args):
         if event.keyval == Gdk.KEY_Return or event.keyval == Gdk.KEY_KP_Enter:
-            self.must_advance = True
-            # Clear selected elements
-            self.editing_done()
+            self.finish_editing_and_advance()
             return True
         self.must_advance = False
         return False
+
+    def finish_editing_and_advance(self):
+        """Finish editing the current unit and move to the next one -
+        what Enter does once there's no further target textbox to move
+        to within this unit (also used by Ctrl+Enter/Ctrl+Shift+Enter,
+        after they've changed the workflow state)."""
+        self.must_advance = True
+        # Clear selected elements
+        self.editing_done()
 
     def _on_query_tooltip(self, widget, x, y, keyboard_mode, tooltip):
         return True

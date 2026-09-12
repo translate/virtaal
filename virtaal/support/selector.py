@@ -169,6 +169,13 @@ class Selector:
 
     def __call__(self, environ, start_response):
         """Delegate request to the appropriate WSGI app."""
+        # Diverges from the vendored original: PEP 3333 requires
+        # PATH_INFO to be UTF-8 bytes decoded as latin-1 ("native
+        # string" convention) - matching unquoted/decoded against it
+        # directly mangles any non-ASCII path segment (e.g. a Cyrillic
+        # TM source string), corrupting the very text this routes on
+        # (translate/virtaal#1405).
+        environ["PATH_INFO"] = environ["PATH_INFO"].encode("latin-1").decode("utf-8")
         app, svars, methods, matched = self.select(
             environ["PATH_INFO"], environ["REQUEST_METHOD"]
         )

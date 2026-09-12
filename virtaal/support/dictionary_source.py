@@ -126,7 +126,7 @@ def candidate_folders(locale_code, known_folders):
     return seen
 
 
-def _locale_covers(locale_code, entry_locales):
+def locale_covers(locale_code, entry_locales):
     """True if locale_code is covered by entry_locales (a dictionary's
     own advertised locale list, already underscore-normalised).
 
@@ -158,7 +158,7 @@ def find_dictionary(locale_code, folders, fetch_xcu):
     ordered += [f for f in folders if f not in ordered]
     for folder in ordered:
         for entry in parse_dictionaries_xcu(fetch_xcu(folder)):
-            if _locale_covers(locale_code, entry['locales']):
+            if locale_covers(locale_code, entry['locales']):
                 return folder, entry['files']
     return None
 

@@ -45,6 +45,9 @@ class Virtaal:
     """The main Virtaal program entry point."""
 
     def __init__(self, startupfile):
+        from virtaal.support.crash_dialog import install as install_crash_dialog
+        install_crash_dialog()
+
         # PyGObject-wrapped GTK widgets routinely end up in Python
         # reference cycles (e.g. via bound-method signal connections),
         # and GTK's C-level widget dispose/unparent chain is not

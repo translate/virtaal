@@ -285,11 +285,12 @@ class SearchMode(BaseMode):
         return [match for match in self.matches if match.unit is unit]
 
     def _get_unit_matches_dict(self):
+        # Keyed by id(), not the unit itself - translate-toolkit's
+        # lxml-based units (XLIFF, TMX, TS) define __eq__ without
+        # __hash__, making them unhashable.
         d = {}
         for match in self.matches:
-            if match.unit not in d:
-                d[match.unit] = []
-            d[match.unit].append(match)
+            d.setdefault(id(match.unit), []).append(match)
         return d
 
     def _highlight_matches(self):
@@ -392,7 +393,7 @@ class SearchMode(BaseMode):
         repl_str = self.ent_replace.get_text()
         unit_matches = self._get_unit_matches_dict()
 
-        for unit, matches in unit_matches.items():
+        for matches in unit_matches.values():
             for match in reversed(matches):
                 self.replace_match(match, repl_str)
 

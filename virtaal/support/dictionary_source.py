@@ -126,6 +126,21 @@ def candidate_folders(locale_code, known_folders):
     return seen
 
 
+def _locale_covers(locale_code, entry_locales):
+    """True if locale_code is covered by entry_locales (a dictionary's
+    own advertised locale list, already underscore-normalised).
+
+    Checks for an exact match first. If locale_code has no region of
+    its own ("ca", not "ca_ES"), also matches any of that language's
+    regional variants - some real dictionaries (e.g. "ca"'s) only ever
+    list regional variants, never the bare language."""
+    if locale_code in entry_locales:
+        return True
+    if '_' not in locale_code:
+        return any(loc.startswith(locale_code + '_') for loc in entry_locales)
+    return False
+
+
 def find_dictionary(locale_code, folders, fetch_xcu):
     """Find the HunSpellDic_* entry covering locale_code.
 
@@ -143,7 +158,7 @@ def find_dictionary(locale_code, folders, fetch_xcu):
     ordered += [f for f in folders if f not in ordered]
     for folder in ordered:
         for entry in parse_dictionaries_xcu(fetch_xcu(folder)):
-            if locale_code in entry['locales']:
+            if _locale_covers(locale_code, entry['locales']):
                 return folder, entry['files']
     return None
 

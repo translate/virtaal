@@ -28,6 +28,7 @@ from virtaal.support.dictionary_source import (
     candidate_folders,
     dictionary_write_dir,
     list_dictionary_folders,
+    locale_covers,
     parse_dictionaries_xcu,
 )
 
@@ -75,7 +76,7 @@ class DictionaryDownloader:
 
     def _on_xcu(self, _request, result):
         for entry in parse_dictionaries_xcu(result):
-            if self.locale_code in entry['locales']:
+            if locale_covers(self.locale_code, entry['locales']):
                 self._files = list(entry['files'])
                 return self._fetch_next_file()
         self._try_next_folder()

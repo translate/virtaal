@@ -13,7 +13,7 @@ import json
 import os
 
 from virtaal.support.dictionary_downloader import DictionaryDownloader
-from virtaal.support.test_dictionary_source import AR_XCU, DE_XCU
+from virtaal.support.test_dictionary_source import AR_XCU, CA_XCU, DE_XCU
 
 TREE_RESULT = json.dumps({
     'tree': [
@@ -161,6 +161,22 @@ def test_default_on_done_is_a_noop(tmp_path):
     xcu_cb(None, DE_XCU)
     _, xcu_cb2, _ = client.calls[-1]
     xcu_cb2(None, AR_XCU)  # no exception
+
+
+def test_bare_language_matches_a_regional_only_dictionary(tmp_path):
+    # "ca"'s own dictionary never lists bare "ca", only ca_ES/ca_AD/...
+    client = _FakeClient()
+    done = []
+    downloader = DictionaryDownloader('ca', on_done=lambda: done.append(True),
+                                       client=client, target_dir=str(tmp_path))
+
+    downloader.start()
+    _, tree_cb, _ = client.calls[-1]
+    tree_cb(None, json.dumps({'tree': [{'path': 'ca/dictionaries.xcu'}]}).encode('utf-8'))
+    _, xcu_cb, _ = client.calls[-1]
+    xcu_cb(None, CA_XCU)
+
+    assert client.last_url().endswith('ca.aff')
 
 
 def test_default_target_dir_is_dictionary_write_dir(monkeypatch):

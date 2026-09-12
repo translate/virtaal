@@ -57,6 +57,13 @@ class SelectDialog(GObjectWrapper):
 
         scrolled_window = Gtk.ScrolledWindow()
         scrolled_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        # A ScrolledWindow doesn't request its child's actual width by
+        # default - it happily shrinks it and adds a horizontal
+        # scrollbar instead, which is how a row's inline "Configure..."
+        # button ended up clipped. Grow to fit instead, so this scales
+        # with whatever a given translation's actual text needs rather
+        # than a fixed guess in one language.
+        scrolled_window.set_propagate_natural_width(True)
         scrolled_window.add(self.sview)
         self.dialog.get_child().pack_end(scrolled_window, True, True, 0)
         self.dialog.add_buttons(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE)

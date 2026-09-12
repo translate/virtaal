@@ -189,6 +189,46 @@ def test_find_dictionary_returns_none_when_nothing_matches():
     assert result is None
 
 
+# Actual copy of ca/dictionaries.xcu (blob
+# 2939195f27f7f005cd7082b355276938a9d00d0d) - the general dictionary's
+# own Locales never lists bare "ca", only its regional variants.
+CA_XCU = b"""<?xml version="1.0" encoding="UTF-8"?>
+<oor:component-data xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema" oor:name="Linguistic" oor:package="org.openoffice.Office">
+ <node oor:name="ServiceManager">
+    <node oor:name="Dictionaries">
+        <node oor:name="HunSpellDic_catalan_general" oor:op="fuse">
+            <prop oor:name="Locations" oor:type="oor:string-list">
+                <value>%origin%/ca.aff %origin%/ca.dic</value>
+            </prop>
+            <prop oor:name="Format" oor:type="xs:string">
+                <value>DICT_SPELL</value>
+            </prop>
+            <prop oor:name="Locales" oor:type="oor:string-list">
+                <value>ca-ES ca-AD ca-FR ca-IT</value>
+            </prop>
+        </node>
+        <node oor:name="HunSpellDic_catalan_valencia" oor:op="fuse">
+            <prop oor:name="Locations" oor:type="oor:string-list">
+                <value>%origin%/ca-valencia.aff %origin%/ca-valencia.dic</value>
+            </prop>
+            <prop oor:name="Format" oor:type="xs:string">
+                <value>DICT_SPELL</value>
+            </prop>
+            <prop oor:name="Locales" oor:type="oor:string-list">
+                <value>ca-ES-valencia</value>
+            </prop>
+        </node>
+    </node>
+ </node>
+</oor:component-data>
+"""
+
+
+def test_find_dictionary_matches_a_bare_language_against_regional_variants():
+    result = find_dictionary('ca', {'ca': 's1'}, lambda folder: CA_XCU)
+    assert result == ('ca', ['ca.aff', 'ca.dic'])
+
+
 def test_download_dictionary_cleans_up_partial_write_on_failure(monkeypatch, tmp_path):
     """de_DE_frami has two files - if the second one fails, the first
     must not be left behind for a later run to mistake as a complete,

@@ -6,6 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import importlib.util
+import logging
 
 __all__ = ['check_dependencies', 'extra_tests', 'import_checks']
 
@@ -30,7 +31,7 @@ def test_gtk_version():
         # That seems to be fixed in time for 2.18 which was released in
         # September 2009
     except Exception:
-        pass
+        logging.debug("gtk dependency check failed", exc_info=True)
     return False
 
 def test_sqlite3_version():
@@ -47,7 +48,7 @@ def test_translate_toolkit_version():
         from translate.__version__ import ver
         return ver >= MIN_TRANSLATE_VERSION
     except Exception:
-        pass
+        logging.debug("translate-toolkit dependency check failed", exc_info=True)
     return False
 
 

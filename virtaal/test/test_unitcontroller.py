@@ -160,6 +160,44 @@ class TestUnitController(TestScaffolding):
         assert test_unit.get_state_id() == before, \
             "advance_workflow_state() alone shouldn't persist to the real unit yet"
 
+    def test_loading_a_fuzzy_unit_colours_the_editor_background(self, monkeypatch):
+        # The row being actively edited is drawn by UnitView itself, not
+        # StoreCellRenderer.do_render() - #3321's fix doesn't reach it.
+        # Uses a fresh, isolated unit rather than this fixture's shared
+        # ones - pypo.pounit.set_state_n() force-clears fuzzy on a unit
+        # with an empty target, and this class's other tests leave the
+        # shared units' target content in whatever state they last set
+        # it to, which markfuzzy() alone can't reliably override here.
+        from translate.storage import pypo
+        fuzzy_unit = pypo.pofile().addsourceunit("Fuzzy test string")
+        fuzzy_unit.target = "Fuzzy test string, translated"
+        fuzzy_unit.markfuzzy(True)
+        fuzzy_unit._modified = False  # normally set by UnitController.load_unit(), bypassed here
+        assert fuzzy_unit.isfuzzy()
+
+        other_unit = self.trans_store.getunits()[2]
+        self.unit_controller.load_unit(other_unit)  # a real reload below, not a same-unit no-op
+        view = self.unit_controller.view
+        calls = []
+        monkeypatch.setattr(view, 'override_background_color', lambda state, color: calls.append(color))
+
+        view.load_unit(fuzzy_unit)
+
+        assert calls and calls[-1] is not None
+
+    def test_loading_a_non_fuzzy_unit_clears_the_editor_background(self, monkeypatch):
+        units = self.trans_store.getunits()
+        plain_unit, other_unit = units[1], units[2]
+        assert not plain_unit.isfuzzy()
+        self.unit_controller.load_unit(other_unit)
+        view = self.unit_controller.view
+        calls = []
+        monkeypatch.setattr(view, 'override_background_color', lambda state, color: calls.append(color))
+
+        self.unit_controller.load_unit(plain_unit)
+
+        assert calls and calls[-1] is None
+
     def test_stale_alt_down_does_not_corrupt_a_later_unit(self):
         """Alt+Down ('transfer from source') defers its copy via
         GLib.idle_add(). If the loaded unit changes before that runs,

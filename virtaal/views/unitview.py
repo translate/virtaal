@@ -17,6 +17,7 @@ from virtaal.common import GObjectWrapper
 
 from . import rendering
 from .baseview import BaseView
+from .theme import current_theme, str_to_rgba
 from .widgets.listnav import ListNavigator
 from .widgets.textbox import TextBox
 
@@ -282,6 +283,10 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             src.select_elem(elem=None)
 
         self.unit = unit
+        if unit.isfuzzy():
+            self.override_background_color(Gtk.StateFlags.NORMAL, str_to_rgba(current_theme['fuzzy_row_bg']))
+        else:
+            self.override_background_color(Gtk.StateFlags.NORMAL, None)
         self.disable_signals(['modified', 'insert-text', 'delete-text'])
         self._update_editor_gui()
         self.enable_signals(['modified', 'insert-text', 'delete-text'])

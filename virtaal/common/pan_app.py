@@ -454,9 +454,15 @@ def save_config(filename, config, section=None):
 
     if section:
         config = {section: config}
-
-    for sect in config.keys():
-        parser.remove_section(sect)
+        for sect in config.keys():
+            parser.remove_section(sect)
+    else:
+        # config is the entire file's content per this function's own
+        # contract above - a section missing from it (e.g. an item the
+        # caller deleted since the last save) must not survive from
+        # what's already on disk.
+        for sect in parser.sections():
+            parser.remove_section(sect)
 
     for section, section_conf in config.items():
         if section not in parser.sections():

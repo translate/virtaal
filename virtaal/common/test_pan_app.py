@@ -165,6 +165,32 @@ def test_settings_recovers_from_a_corrupt_virtaal_ini(tmp_path):
     assert settings.config.sections() == settings.sections  # all empty, none lost
 
 
+def test_save_config_without_a_section_removes_entries_absent_from_the_new_data(tmp_path):
+    # #1906: deleting a web look-up entry showed as removed in the UI
+    # but stayed in weblookup.ini - each entry is its own section, and
+    # a deleted one is simply absent from the dict handed to the next
+    # save, not explicitly removed by the caller.
+    path = str(tmp_path / 'test.ini')
+    pan_app.save_config(path, {'Google': {'url': 'http://google.com'},
+                                'Wikipedia': {'url': 'http://wikipedia.org'}})
+
+    pan_app.save_config(path, {'Google': {'url': 'http://google.com'}})
+
+    assert pan_app.load_config(path) == {'Google': {'url': 'http://google.com'}}
+
+
+def test_save_config_with_a_section_leaves_other_sections_alone(tmp_path):
+    path = str(tmp_path / 'test.ini')
+    pan_app.save_config(path, {'name': 'af_ZA'}, section='plugin_a')
+    pan_app.save_config(path, {'name': 'de_DE'}, section='plugin_b')
+
+    pan_app.save_config(path, {'name': 'af_ZA_updated'}, section='plugin_a')
+
+    conf = pan_app.load_config(path)
+    assert conf['plugin_a'] == {'name': 'af_ZA_updated'}
+    assert conf['plugin_b'] == {'name': 'de_DE'}
+
+
 def test_open_frozen_log_trims_before_appending(tmp_path):
     path = str(tmp_path / "test.log")
     with open(path, 'w', encoding='utf-8') as f:

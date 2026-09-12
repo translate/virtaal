@@ -1,0 +1,49 @@
+# Manual test file for initial cursor placement (translate/virtaal#1841).
+#
+# Each unit below is pre-filled and marked fuzzy, mirroring the real
+# scenario this matters for (a fuzzy match or an existing translation
+# a translator is revising) - an empty/untranslated unit always starts
+# the cursor at position 0, nothing interesting to check there.
+#
+# Open each unit in Virtaal and check where the cursor lands
+# automatically, without clicking anywhere - it should skip past
+# leading non-editable content (a newline, an XML tag, a recognised
+# %-style placeholder) onto the first real translatable text, not land
+# inside the non-editable part.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+#. Expect: cursor after the newline, at the start of "A new paragraph".
+#, fuzzy
+msgid "\nA new paragraph"
+msgstr "\nA new paragraph"
+
+#. Expect: cursor after <b>, at the start of "bold text".
+#, fuzzy
+msgid "<b>bold text</b>"
+msgstr "<b>bold text</b>"
+
+#. Expect: cursor at the very end - the whole string is the tag, nothing to edit before it.
+#, fuzzy
+msgid "<b>"
+msgstr "<b>"
+
+#. Expect: cursor after %s, at the start of " files copied".
+#, fuzzy
+msgid "%s files copied"
+msgstr "%s files copied"
+
+#. Expect: cursor after %1, at the start of " of ".
+#, fuzzy
+msgid "%1 of %2 files copied"
+msgstr "%1 of %2 files copied"
+
+#. Known gap, not fixed here: %B isn't a real Python or Qt format
+#. specifier, so it isn't recognised as a placeable at all - expect
+#. the cursor to land between % and B (mid-token), not after the
+#. whole "%B". This is %B not being a valid placeholder, not a bug in
+#. the cursor-placement logic itself.
+#, fuzzy
+msgid "%B is not a real format specifier"
+msgstr "%B is not a real format specifier"

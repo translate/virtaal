@@ -88,6 +88,51 @@ class TestUnitController(TestScaffolding):
         assert view.mnu_copy.get_sensitive()
         assert not view.mnu_paste.get_sensitive()  # can't paste into a source
 
+    def _assert_initial_cursor_position(self, text, expected_marked):
+        """expected_marked is text with a '|' inserted at the offset
+        _get_editing_start_pos() is expected to place the cursor at."""
+        if not getattr(self.main_controller, 'placeables_controller', None):
+            PlaceablesController(self.main_controller)
+
+        test_unit = self.trans_store.getunits()[1]
+        view = self.unit_controller.load_unit(test_unit)
+        target = view.targets[0]
+        target.set_text(text)
+
+        pos = view._get_editing_start_pos(target.elem)
+
+        assert text[:pos] + '|' + text[pos:] == expected_marked
+
+    def test_initial_cursor_skips_a_leading_newline(self):
+        # translate/virtaal#1841
+        self._assert_initial_cursor_position("\nSome text", "\n|Some text")
+
+    def test_initial_cursor_skips_a_leading_xml_tag(self):
+        # translate/virtaal#1841
+        self._assert_initial_cursor_position("<b>bold</b>", "<b>|bold</b>")
+
+    def test_initial_cursor_goes_to_the_end_after_a_lone_xml_tag(self):
+        self._assert_initial_cursor_position("<b>", "<b>|")
+
+    def test_initial_cursor_skips_a_recognised_python_format_specifier(self):
+        # translate/virtaal#1841
+        self._assert_initial_cursor_position("%s files copied", "%s| files copied")
+
+    def test_initial_cursor_skips_a_recognised_qt_format_specifier(self):
+        self._assert_initial_cursor_position("%1 files copied", "%1| files copied")
+
+    def test_initial_cursor_goes_to_the_end_when_the_whole_string_is_a_placeable(self):
+        self._assert_initial_cursor_position("%s", "%s|")
+
+    def test_initial_cursor_lands_mid_token_for_an_unrecognised_percent_sequence(self):
+        """#1841's reported "%B" case: %B isn't a valid Python or Qt
+        format specifier, so translate-toolkit doesn't recognise it as
+        a placeable at all - it's just punctuation followed by a word
+        character, and the cursor lands between them. Documenting the
+        actual (still slightly awkward) behaviour, not asserting it's
+        fixed - it isn't, and it isn't a bug in this function either."""
+        self._assert_initial_cursor_position("%B", "%|B")
+
     def test_stale_alt_down_does_not_corrupt_a_later_unit(self):
         """Alt+Down ('transfer from source') defers its copy via
         GLib.idle_add(). If the loaded unit changes before that runs,

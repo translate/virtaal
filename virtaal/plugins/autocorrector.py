@@ -130,13 +130,14 @@ class AutoCorrector:
 
         from lxml import etree
         xml = etree.fromstring(xml_bytes)
-        # Sample element from DocumentList.xml (it has no root element!):
+        # Sample element from DocumentList.xml:
         #   <block-list:block block-list:abbreviated-name="teh" block-list:name="the"/>  # codespell:ignore teh
-        # This means that xml.iterchildren() will return an iterator over all
-        # of <block-list> elements and entry.values() will return a 2-tuple
-        # with the values of the "abbreviated-name" and "name" attributes.
-        # That is how I got to the simple line below.
-        self.correctiondict = dict([entry.values() for entry in xml.iterchildren()])
+        # entry.values() returns a 2-tuple of the "abbreviated-name" and
+        # "name" attributes. Several real DocumentList.xml files (e.g.
+        # "ca"'s) also have license-header XML comments as top-level
+        # children - iterchildren(etree.Element) excludes those, since
+        # a comment's own .values() is always empty.
+        self.correctiondict = dict([entry.values() for entry in xml.iterchildren(etree.Element)])
 
         # Add auto-correction regex for each loaded word.
         for key, value in self.correctiondict.items():

@@ -37,6 +37,23 @@ def test_load_dictionary_reads_the_exact_locale_directory(tmp_path):
     assert corrector.correctiondict['adt'][0] == 'dat'
 
 
+def test_load_dictionary_skips_leading_comments(tmp_path):
+    # "ca"'s real DocumentList.xml (and others) have license-header XML
+    # comments as top-level children, alongside the real block entries.
+    content = b"""<?xml version="1.0" encoding="utf-8"?>
+<block-list:block-list xmlns:block-list="http://openoffice.org/2001/block-list">
+<!-- license header -->
+  <block-list:block block-list:abbreviated-name="adt" block-list:name="dat"/>
+</block-list:block-list>
+"""
+    _write_document_list(tmp_path, 'af_ZA', content=content)
+    corrector = AutoCorrector(main_controller=None, acorpath=str(tmp_path))
+
+    corrector.load_dictionary('af_ZA')  # must not raise
+
+    assert corrector.correctiondict['adt'][0] == 'dat'
+
+
 def test_load_dictionary_accepts_hyphenated_input(tmp_path):
     _write_document_list(tmp_path, 'af_ZA')
     corrector = AutoCorrector(main_controller=None, acorpath=str(tmp_path))

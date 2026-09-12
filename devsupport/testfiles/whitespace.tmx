@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tmx SYSTEM "tmx14.dtd">
+<tmx version="1.4">
+  <header creationtool="Translate Toolkit" creationtoolversion="3.19.18" segtype="sentence" o-tmf="UTF-8" adminlang="en" srclang="en" datatype="PlainText"/>
+  <body>
+    <tu>
+      <note>leading-space: U+0020 SPACE, leading</note>
+      <tuv xml:lang="en">
+        <seg> Leading»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>trailing-space: U+0020 SPACE, trailing</note>
+      <tuv xml:lang="en">
+        <seg>«Trailing </seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>double-space: two U+0020 SPACE in a row, mid-sentence</note>
+      <tuv xml:lang="en">
+        <seg>«Double  space»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>nbsp-leading: U+00A0 NO-BREAK SPACE, leading</note>
+      <tuv xml:lang="en">
+        <seg> NBSP leading»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>nbsp-trailing: U+00A0 NO-BREAK SPACE, trailing</note>
+      <tuv xml:lang="en">
+        <seg>«NBSP trailing </seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>nbsp-inline: U+00A0 NO-BREAK SPACE, mid-string (the classic number+unit case)</note>
+      <tuv xml:lang="en">
+        <seg>«10 km»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>en-space: U+2002 EN SPACE</note>
+      <tuv xml:lang="en">
+        <seg>«En space»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>em-space: U+2003 EM SPACE</note>
+      <tuv xml:lang="en">
+        <seg>«Em space»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>thin-space: U+2009 THIN SPACE</note>
+      <tuv xml:lang="en">
+        <seg>«Thin space»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>hair-space: U+200A HAIR SPACE</note>
+      <tuv xml:lang="en">
+        <seg>«Hair space»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>narrow-nbsp: U+202F NARROW NO-BREAK SPACE</note>
+      <tuv xml:lang="en">
+        <seg>«Narrow NBSP»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>figure-space: U+2007 FIGURE SPACE</note>
+      <tuv xml:lang="en">
+        <seg>«Figure space»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>punctuation-space: U+2008 PUNCTUATION SPACE</note>
+      <tuv xml:lang="en">
+        <seg>«Punctuation space»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>ideographic-space: U+3000 IDEOGRAPHIC SPACE</note>
+      <tuv xml:lang="en">
+        <seg>«Ideographic　space»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>mathematical-space: U+205F MEDIUM MATHEMATICAL SPACE</note>
+      <tuv xml:lang="en">
+        <seg>«Math space»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>ogham-space-mark: U+1680 OGHAM SPACE MARK (has a visible glyph in some fonts, unlike the others here)</note>
+      <tuv xml:lang="en">
+        <seg>«Ogham mark»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>zwsp-inline: U+200B ZERO WIDTH SPACE, mid-word - invisible by design. Can't be verified by eye; check with a hex dump/codepoint inspector after saving, not by looking at it.</note>
+      <tuv xml:lang="en">
+        <seg>«Zero​width»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>tab-leading: U+0009 TAB, leading (bonus - not one of the originally requested cases, but a common real one)</note>
+      <tuv xml:lang="en">
+        <seg>	Tab leading»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>tab-trailing: U+0009 TAB, trailing (bonus, ditto)</note>
+      <tuv xml:lang="en">
+        <seg>«Tab trailing	</seg>
+      </tuv>
+    </tu>
+  </body>
+</tmx>

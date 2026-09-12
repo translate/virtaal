@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" version="1.1">
+  <file original="NoName" source-language="en" datatype="plaintext">
+    <body>
+      <trans-unit xml:space="preserve" id="2">
+        <source> Leading»</source>
+        <context-group name="" purpose="location">
+          <context context-type="sourcefile">leading-space</context>
+        </context-group>
+        <note from="developer">U+0020 SPACE, leading</note>
+      </trans-unit>
+      <trans-unit xml:space="preserve" id="3">
+        <source>«Trailing </source>
+        <context-group name="" purpose="location">
+          <context context-type="sourcefile">trailing-space</context>
+        </context-group>
+        <note from="developer">U+0020 SPACE, trailing</note>
+      </trans-unit>
+      <trans-unit xml:space="preserve" id="4">
+        <source>«Double  space»</source>
+        <context-group name="" purpose="location">
+          <context context-type="sourcefile">double-space</context>
+        </context-group>
+        <note from="developer">two U+0020 SPACE in a row, mid-sentence</note>
+      </trans-unit>
+      <trans-unit xml:space="preserve" id="5">
+        <source> NBSP leading»</source>
+        <context-group name="" purpose="location">
+          <context context-type="sourcefile">nbsp-leading</context>
+        </context-group>
+        <note from="developer">U+00A0 NO-BREAK SPACE, leading</note>
+      </trans-unit>
+      <trans-unit xml:space="preserve" id="6">
+        <source>«NBSP trailing </source>
+        <context-group name="" purpose="location">
+          <context context-type="sourcefile">nbsp-trailing</context>
+        </context-group>
+        <note from="developer">U+00A0 NO-BREAK SPACE, trailing</note>
+      </trans-unit>
+      <trans-unit xml:space="preserve" id="7">
+        <source>«10 km»</source>
+        <context-group name="" purpose="location">
+          <context context-type="sourcefile">nbsp-inline</context>
+        </context-group>
+        <note from="developer">U+00A0 NO-BREAK SPACE, mid-string (the classic number+unit case)</note>
+      </trans-unit>
+      <trans-unit xml:space="preserve" id="8">
+        <source>«En space»</source>
+        <context-group name="" purpose="location">
+          <context context-type="sourcefile">en-space</context>
+        </context-group>
+        <note from="developer">U+2002 EN SPACE</note>
+      </trans-unit>
+      <trans-unit xml:space="preserve" id="9">
+        <source>«Em space»</source>
+        <context-group name="" purpose="location">
+          <context context-type="sourcefile">em-space</context>
+        </context-group>
+        <note from="developer">U+2003 EM SPACE</note>
+      </trans-unit>
+      <trans-unit xml:space="preserve" id="10">
+        <source>«Thin space»</source>
+        <context-group name="" purpose="location">
+          <context context-type="sourcefile">thin-space</context>
+        </context-group>
+        <note from="developer">U+2009 THIN SPACE</note>
+      </trans-unit>
+      <trans-unit xml:space="preserve" id="11">
+        <source>«Hair space»</source>
+        <context-group name="" purpose="location">
+          <context context-type="sourcefile">hair-space</context>
+        </context-group>
+        <note from="developer">U+200A HAIR SPACE</note>
+      </trans-unit>
+      <trans-unit xml:space="preserve" id="12">
+        <source>«Narrow NBSP»</source>
+        <context-group name="" purpose="location">
+          <context context-type="sourcefile">narrow-nbsp</context>
+        </context-group>
+        <note from="developer">U+202F NARROW NO-BREAK SPACE</note>
+      </trans-unit>
+      <trans-unit xml:space="preserve" id="13">
+        <source>«Figure space»</source>
+        <context-group name="" purpose="location">
+          <context context-type="sourcefile">figure-space</context>
+        </context-group>
+        <note from="developer">U+2007 FIGURE SPACE</note>
+      </trans-unit>
+      <trans-unit xml:space="preserve" id="14">
+        <source>«Punctuation space»</source>
+        <context-group name="" purpose="location">
+          <context context-type="sourcefile">punctuation-space</context>
+        </context-group>
+        <note from="developer">U+2008 PUNCTUATION SPACE</note>
+      </trans-unit>
+      <trans-unit xml:space="preserve" id="15">
+        <source>«Ideographic　space»</source>
+        <context-group name="" purpose="location">
+          <context context-type="sourcefile">ideographic-space</context>
+        </context-group>
+        <note from="developer">U+3000 IDEOGRAPHIC SPACE</note>
+      </trans-unit>
+      <trans-unit xml:space="preserve" id="16">
+        <source>«Math space»</source>
+        <context-group name="" purpose="location">
+          <context context-type="sourcefile">mathematical-space</context>
+        </context-group>
+        <note from="developer">U+205F MEDIUM MATHEMATICAL SPACE</note>
+      </trans-unit>
+      <trans-unit xml:space="preserve" id="17">
+        <source>«Ogham mark»</source>
+        <context-group name="" purpose="location">
+          <context context-type="sourcefile">ogham-space-mark</context>
+        </context-group>
+        <note from="developer">U+1680 OGHAM SPACE MARK (has a visible glyph in some fonts, unlike the others here)</note>
+      </trans-unit>
+      <trans-unit xml:space="preserve" id="18">
+        <source>«Zero​width»</source>
+        <context-group name="" purpose="location">
+          <context context-type="sourcefile">zwsp-inline</context>
+        </context-group>
+        <note from="developer">U+200B ZERO WIDTH SPACE, mid-word - invisible by design. Can't be verified by eye; check with a hex dump/codepoint inspector after saving, not by looking at it.</note>
+      </trans-unit>
+      <trans-unit xml:space="preserve" id="19">
+        <source>	Tab leading»</source>
+        <context-group name="" purpose="location">
+          <context context-type="sourcefile">tab-leading</context>
+        </context-group>
+        <note from="developer">U+0009 TAB, leading (bonus - not one of the originally requested cases, but a common real one)</note>
+      </trans-unit>
+      <trans-unit xml:space="preserve" id="20">
+        <source>«Tab trailing	</source>
+        <context-group name="" purpose="location">
+          <context context-type="sourcefile">tab-trailing</context>
+        </context-group>
+        <note from="developer">U+0009 TAB, trailing (bonus, ditto)</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

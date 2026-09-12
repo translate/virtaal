@@ -16,6 +16,7 @@ from virtaal.common.pan_app import (
     _read_ini_recovering,
     _set_enchant_env_vars,
     _trim_log_to_last_launches,
+    get_config_dir,
 )
 
 
@@ -100,6 +101,19 @@ def test_trim_log_to_last_launches_leaves_a_short_log_alone(tmp_path):
 
 def test_trim_log_to_last_launches_tolerates_a_missing_file(tmp_path):
     _trim_log_to_last_launches(str(tmp_path / "missing.log"), keep=2)  # doesn't raise
+
+
+def test_get_config_dir_tolerates_a_plain_file_at_that_path(tmp_path, monkeypatch):
+    # Real crash (#1427): os.makedirs() raised unhandled if the config
+    # path already existed as a plain file, not a directory.
+    monkeypatch.setattr(pan_app.platform, 'is_windows', False)
+    monkeypatch.setattr(pan_app.platform, 'is_mac', False)
+    confdir = tmp_path / ".virtaal"
+    confdir.write_text("not a directory")
+    monkeypatch.setattr(os.path, 'expanduser', lambda p: str(confdir) if p == '~/.virtaal' else p)
+
+    assert get_config_dir() == str(confdir)  # doesn't raise
+    assert confdir.is_file()  # left alone, not clobbered
 
 
 def test_read_ini_recovering_leaves_a_valid_file_alone(tmp_path):

@@ -858,7 +858,7 @@ class MainView(BaseView):
 
     def _on_documentation(self, _widget=None):
         from virtaal.support import openmailto
-        openmailto.open("http://translate.sourceforge.net/wiki/virtaal/index")
+        openmailto.open("https://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html")
 
     def show_update_notice(self, tag_name, html_url):
         """Called at most once per session, from a frozen build only,
@@ -951,7 +951,7 @@ class MainView(BaseView):
         # If the guide is installed and no internet then open local
         # If Internet then go live, if no Internet or guide then disable
         from virtaal.support import openmailto
-        openmailto.open("http://translate.sourceforge.net/wiki/guide/start")
+        openmailto.open("https://docs.translatehouse.org/projects/localization-guide/en/")
 
     def _on_help_about(self, _widget=None):
         from .widgets.aboutdialog import AboutDialog

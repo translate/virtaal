@@ -137,6 +137,61 @@ If the user is also active on the same machine, their own focus changes can
 race with this the same way - don't automate keystrokes while someone else
 might be using the machine concurrently (see `macos-ui-automation-safety`).
 
+## Navigating into nested UI (Preferences, tabs, per-row buttons)
+
+**Preferences lives under the "Python" app menu, not Edit** - macOS's
+native menu bar puts it where `mainview.py`'s `osxapp.insert_app_menu_item`
+moved it, labelled "Settings…" (the system's own standard relabelling of
+"Preferences…"), not under Virtaal's own Edit menu:
+
+```applescript
+tell application "System Events"
+    tell process "Python"
+        click menu bar item "Python" of menu bar 1
+        delay 0.4
+        click menu item "Settings…" of menu 1 of menu bar item "Python" of menu bar 1
+    end tell
+end tell
+```
+
+**GTK's own internal widgets (notebook tabs, per-row buttons inside a
+TreeView) are mostly invisible to the accessibility tree** - `entire
+contents of window "Virtaal Preferences"` returns almost nothing below the
+window's own chrome buttons, so `click button "Plug-ins" of ...` fails with
+"Invalid index" or "Can't get...". Two fallbacks, both confirmed working:
+
+- **Keyboard navigation** for things like notebook tabs - focus the window,
+  then send arrow-key codes directly (`key code 124` is Right, `123` Left):
+  ```
+  tell application "System Events"
+      set frontmost of process "Python" to true
+      key code 124
+      key code 124
+  end tell
+  ```
+  (two Right-arrows moves General -> Placeables -> Plug-ins).
+- **Real coordinate clicks** via `click at {x, y}` (a direct System Events
+  command, not an AX action) when there's no keyboard path. Coordinates are
+  in the same **point** units as `position`/`size of window` - NOT the pixel
+  units a screenshot uses. A screenshot is 2x on Retina, so convert: `sips -g
+  pixelWidth -g pixelHeight file.png` against the window's own `size` gives
+  the real scale factor; divide the pixel coordinates you read off the image
+  by that factor before adding the window's `position` offset.
+
+**A row's inline button (e.g. a plugin's "Configure..." in the Plug-ins
+list) only exists as a real, clickable widget once that row is in GTK's
+*editing* state** - `CellRendererWidget.do_render()` only paints a text
+layout (name + description) for the normal, non-editing row; the actual
+embedded `Gtk.Button` is part of the widget `do_start_editing()` builds and
+shows, which only happens once the row is selected. Clicking (or
+arrow-keying to) the row first is required before its button is reachable
+at all - and get the row's own y-coordinate right, since a click a row or
+two off just silently selects/edits the wrong plugin.
+
+A stray, empty, tiny window can appear right after a synthetic click or
+keystroke (no title, no content) - same benign tooltip-popup artifact noted
+under fullscreen above, not a sign the action failed.
+
 ## Inspecting a native menu item's real key equivalent
 
 Don't infer whether a shortcut works from the menu's visible label alone -
@@ -179,16 +234,20 @@ the local TM plugin spawns `python3 -m virtaal.support.tmserver` as a
 separate process, which survives its parent being killed and keeps
 running indefinitely (confirmed directly: 30+ of these accumulated
 silently across one session's worth of test launches, each holding a
-real local port). Kill both:
+real local port). **`pkill -f "virtaal.support.tmserver"` is too broad** -
+it matches every tmserver on the machine by command-line substring,
+including ones from a session you didn't start (confirmed live: it killed
+a pre-existing, unrelated tmserver that had been running since before this
+session began). Find and kill only the one your own launch spawned:
 
 ```
-pkill -f "virtaal.support.tmserver"
+ps aux | grep "[v]irtaal.support.tmserver"   # note the PID and port
+kill <that PID>
 kill <the bin/virtaal PID you launched>
 ```
 
-or just `pkill -f "bin/virtaal"` first, then the tmserver pkill above,
-if you've lost track of the exact PID. Check for leftovers before
-assuming a session is clean: `ps aux | grep -i "[P]ython.*virtaal"`.
+Check for leftovers before assuming a session is clean: `ps aux | grep
+-i "[P]ython.*virtaal"`.
 
 Also delete any scratch screenshots, and uninstall
 `pyobjc-framework-Quartz` plus what it pulled in (`pyobjc-core`,

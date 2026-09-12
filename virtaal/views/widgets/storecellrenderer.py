@@ -12,7 +12,7 @@ from translate.lang import factory
 
 from virtaal.common import pan_app
 from virtaal.views import markup, rendering
-from virtaal.views.theme import current_theme
+from virtaal.views.theme import current_theme, str_to_rgba
 
 
 @functools.singledispatch
@@ -223,9 +223,29 @@ class StoreCellRenderer(Gtk.CellRenderer):
             self._editor_modified_id = editor.connect("modified", self._on_modified)
         return editor
 
-    def do_render(self, window, widget, _background_area, cell_area, _flags):
+    def _paint_fuzzy_background_if_selected(self, cr, background_area, flags):
+        """GTK only honours cell_background while a row isn't selected -
+            the theme's own selection highlight otherwise unconditionally
+            replaces it, hiding the fuzzy indicator on exactly the rows a
+            translator is most likely to have selected."""
+        if self.unit is None or not self.unit.isfuzzy():
+            return
+        if not flags & Gtk.CellRendererState.SELECTED:
+            return
+
+        rgba = str_to_rgba(current_theme['fuzzy_row_bg'])
+        cr.save()
+        cr.set_source_rgba(rgba.red, rgba.green, rgba.blue, rgba.alpha)
+        cr.rectangle(background_area.x, background_area.y, background_area.width, background_area.height)
+        cr.fill()
+        cr.restore()
+
+    def do_render(self, window, widget, background_area, cell_area, flags):
         if self.editable:
             return True
+
+        self._paint_fuzzy_background_if_selected(window, background_area, flags)
+
         x_offset, y_offset, width, _height = self.do_get_size(widget, cell_area)
         x = cell_area.x + x_offset
         y = cell_area.y + y_offset

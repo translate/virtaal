@@ -118,9 +118,9 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
         #TODO: ideally we need an accesskey, but it is not currently working
         if 'config' in item and callable(item['config']):
             btnconf = Gtk.Button(_('Configure...'))
-            def clicked(button, event):
+            def clicked(button):
                 item['config'](self.get_toplevel())
-            btnconf.connect('button-release-event', clicked)
+            btnconf.connect('clicked', clicked)
             btnconf.config_func = item['config']
             hbox.pack_start(btnconf, False, True, 0)
 

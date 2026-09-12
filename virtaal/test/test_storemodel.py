@@ -92,3 +92,30 @@ def test_last_translator_is_name_and_email_when_both_are_given(tmp_path):
     model, path = _model_with_translator_info(tmp_path, name="Jan Alleman", email="me@example.com")
     model.save_file()
     assert 'Last-Translator: Jan Alleman <me@example.com>\\n' in path.read_text()
+
+
+def test_vanished_ts_translation_is_excluded_but_does_not_crash(tmp_path):
+    # #3263: a Qt .ts <translation type="vanished"> unit used to crash
+    # StoreModel.load_file() outright - it should load cleanly and be
+    # hidden from the UI (obsolete), not shown alongside real units.
+    path = tmp_path / "test.ts"
+    path.write_text('''<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="gd">
+<context>
+    <name>Test</name>
+    <message>
+        <source>OK</source>
+        <translation type="vanished">Ceart ma-thà</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Sguir dheth</translation>
+    </message>
+</context>
+</TS>
+''', encoding='utf-8')
+
+    model = StoreModel(str(path), controller=None)
+
+    assert [str(u.source) for u in model.get_units()] == ['Cancel']

@@ -94,12 +94,16 @@ class DictionaryDownloader:
         )
 
     def _on_file(self, filename, result):
-        target_dir = self.target_dir or dictionary_write_dir()
-        os.makedirs(target_dir, exist_ok=True)
-        dest = os.path.join(target_dir, filename)
-        with open(dest, 'wb') as f:
-            f.write(result)
-        self._written.append(dest)
+        try:
+            target_dir = self.target_dir or dictionary_write_dir()
+            os.makedirs(target_dir, exist_ok=True)
+            dest = os.path.join(target_dir, filename)
+            with open(dest, 'wb') as f:
+                f.write(result)
+            self._written.append(dest)
+        except Exception as e:
+            logging.debug('dictionary download: could not write %s: %s', filename, e)
+            return self._on_file_error(filename, None)
         self._fetch_next_file()
 
     def _on_file_error(self, filename, status):

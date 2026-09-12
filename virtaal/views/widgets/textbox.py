@@ -785,6 +785,7 @@ class TextBox(Gtk.TextView):
 
     def _on_event_remove_suggestion(self, *args):
         self.suggestion = None
+        self.refresh_cursor_pos = -1
 
 
     # SPECIAL METHODS #

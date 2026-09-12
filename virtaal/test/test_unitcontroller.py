@@ -142,6 +142,24 @@ class TestUnitController(TestScaffolding):
         view = self.unit_controller.load_unit(test_unit)
         view.advance_workflow_state(1)  # must not raise
 
+    def test_advance_workflow_state_alone_does_not_persist(self):
+        """advance_workflow_state() only moves the state-nav widget's
+        own selection - the real underlying unit state is only written
+        once editing finishes (UnitController._unit_done(), fired when
+        loading the next unit after finish_editing_and_advance()/
+        editing_done() - not exercised by this lightweight harness, but
+        verified live end to end). The Navigation menu's combined
+        actions must call both, not just the state change."""
+        test_unit = self.trans_store.getunits()[1]
+        test_unit.target = 'A translation'
+        view = self.unit_controller.load_unit(test_unit)
+        view.modified()  # marks the unit modified, as a real edit would
+
+        before = test_unit.get_state_id()
+        view.advance_workflow_state(1)
+        assert test_unit.get_state_id() == before, \
+            "advance_workflow_state() alone shouldn't persist to the real unit yet"
+
     def test_stale_alt_down_does_not_corrupt_a_later_unit(self):
         """Alt+Down ('transfer from source') defers its copy via
         GLib.idle_add(). If the loaded unit changes before that runs,

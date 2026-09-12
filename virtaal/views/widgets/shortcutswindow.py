@@ -37,8 +37,8 @@ SHORTCUT_GROUPS = [
         ("<Alt>Right", _("Select next placeable")),
         ("<Alt>Down", _("Copy the source or selected placeable to the target")),
         ("<Shift>Return", _("Enter a new line")),
-        ("<Primary>Return", _('Mark unit "Needs work" as "Translated" and go to the next unit')),
-        ("<Primary><Shift>Return", _('Mark unit as "Needs work" and go to the next unit')),
+        ("<Primary>Return", _("Next Unit and Advance State")),
+        ("<Primary><Shift>Return", _("Next Unit and Reverse State")),
         ("<Primary>z", _("Undo the last change")),
     ]),
     (_("Plug-ins"), [

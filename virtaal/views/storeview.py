@@ -50,6 +50,16 @@ class StoreView(BaseView):
                                Gdk.ModifierType.CONTROL_MASK)
         Gtk.AccelMap.add_entry("<Virtaal>/Navigation/PgDown", Gtk.accelerator_parse("Page_Down")[0],
                                Gdk.ModifierType.CONTROL_MASK)
+        # Same physical key as the target textbox's own Ctrl+Enter/
+        # Ctrl+Shift+Enter handling (unitview.py) - harmless overlap,
+        # since a focused textbox's own key handler consumes the event
+        # before it ever reaches this window-level accelerator. This is
+        # what makes the shortcut reachable when the textbox *doesn't*
+        # have focus, and what shows it as a real accelerator in the
+        # menu instead of baked into the label text.
+        Gtk.AccelMap.add_entry("<Virtaal>/Navigation/StateAdvance", Gdk.KEY_Return, Gdk.ModifierType.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Navigation/StateReverse", Gdk.KEY_Return,
+                               Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK)
 
         self.accel_group = Gtk.AccelGroup()
         self.accel_group.connect_by_path("<Virtaal>/Navigation/Up", self._treeview._move_up)
@@ -58,6 +68,12 @@ class StoreView(BaseView):
         self.accel_group.connect_by_path("<Virtaal>/Navigation/PgDown", self._treeview._move_pgdown)
 
         mainview = self.controller.main_controller.view
+        # Reuses MainView's own handlers (state change + advance to the
+        # next unit, same combination the textbox's own Ctrl+Enter/
+        # Ctrl+Shift+Enter handling performs) rather than duplicating
+        # that logic here.
+        self.accel_group.connect_by_path("<Virtaal>/Navigation/StateAdvance", lambda *a: mainview._on_state_advance())
+        self.accel_group.connect_by_path("<Virtaal>/Navigation/StateReverse", lambda *a: mainview._on_state_reverse())
         mainview.add_accel_group(self.accel_group)
         mainview.gui.get_object('menu_navigation').set_accel_group(self.accel_group)
         self.mnu_up = mainview.gui.get_object('mnu_up')
@@ -68,6 +84,20 @@ class StoreView(BaseView):
         self.mnu_down.set_accel_path('<Virtaal>/Navigation/Down')
         self.mnu_pageup.set_accel_path('<Virtaal>/Navigation/PgUp')
         self.mnu_pagedown.set_accel_path('<Virtaal>/Navigation/PgDown')
+        mainview.gui.get_object('mnu_state_advance').set_accel_path('<Virtaal>/Navigation/StateAdvance')
+        mainview.gui.get_object('mnu_state_reverse').set_accel_path('<Virtaal>/Navigation/StateReverse')
+
+        # GtkosxApplication only picks up a menu item's accelerator for
+        # the native menu bar when the item is (re)parented, not just
+        # because its accel_path/accel_group changed - same fix as
+        # mainview.py's own File/Help items (mnu_open et al.).
+        menu_navigation = mainview.gui.get_object('menu_navigation')
+        for item_id in ('mnu_state_advance', 'mnu_state_reverse'):
+            item = mainview.gui.get_object(item_id)
+            pos = menu_navigation.get_children().index(item)
+            menu_navigation.remove(item)
+            menu_navigation.insert(item, pos)
+        mainview.sync_menubar()
 
         self._set_menu_items_sensitive(False)
 

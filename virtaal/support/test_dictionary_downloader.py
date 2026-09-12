@@ -179,6 +179,31 @@ def test_bare_language_matches_a_regional_only_dictionary(tmp_path):
     assert client.last_url().endswith('ca.aff')
 
 
+def test_write_failure_cleans_up_and_gives_up_instead_of_crashing(tmp_path, monkeypatch):
+    # dictionary_write_dir() calls into libenchant via ctypes - its
+    # exact behaviour depends on whichever build got bundled (a
+    # missing symbol was observed live on one packaged build).
+    import virtaal.support.dictionary_downloader as dictionary_downloader
+    def raises():
+        raise AttributeError('symbol not found')
+    monkeypatch.setattr(dictionary_downloader, 'dictionary_write_dir', raises)
+
+    client = _FakeClient()
+    done = []
+    downloader = DictionaryDownloader('de_DE', on_done=lambda: done.append(True), client=client)
+
+    downloader.start()
+    _, tree_cb, _ = client.calls[-1]
+    tree_cb(None, TREE_RESULT)
+    _, xcu_cb, _ = client.calls[-1]
+    xcu_cb(None, DE_XCU)
+    _, aff_cb, _ = client.calls[-1]
+
+    aff_cb(None, b'aff content')  # must not raise
+
+    assert done == [True]
+
+
 def test_default_target_dir_is_dictionary_write_dir(monkeypatch):
     import virtaal.support.dictionary_downloader as dictionary_downloader
     monkeypatch.setattr(dictionary_downloader, 'dictionary_write_dir', lambda: '/fake/dir')

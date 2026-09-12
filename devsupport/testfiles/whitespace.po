@@ -1,0 +1,108 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-12 18:11+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+
+#. U+0020 SPACE, leading
+#: leading-space
+msgid " Leading»"
+msgstr ""
+
+#. U+0020 SPACE, trailing
+#: trailing-space
+msgid "«Trailing "
+msgstr ""
+
+#. two U+0020 SPACE in a row, mid-sentence
+#: double-space
+msgid "«Double  space»"
+msgstr ""
+
+#. U+00A0 NO-BREAK SPACE, leading
+#: nbsp-leading
+msgid " NBSP leading»"
+msgstr ""
+
+#. U+00A0 NO-BREAK SPACE, trailing
+#: nbsp-trailing
+msgid "«NBSP trailing "
+msgstr ""
+
+#. U+00A0 NO-BREAK SPACE, mid-string (the classic number+unit case)
+#: nbsp-inline
+msgid "«10 km»"
+msgstr ""
+
+#. U+2002 EN SPACE
+#: en-space
+msgid "«En space»"
+msgstr ""
+
+#. U+2003 EM SPACE
+#: em-space
+msgid "«Em space»"
+msgstr ""
+
+#. U+2009 THIN SPACE
+#: thin-space
+msgid "«Thin space»"
+msgstr ""
+
+#. U+200A HAIR SPACE
+#: hair-space
+msgid "«Hair space»"
+msgstr ""
+
+#. U+202F NARROW NO-BREAK SPACE
+#: narrow-nbsp
+msgid "«Narrow NBSP»"
+msgstr ""
+
+#. U+2007 FIGURE SPACE
+#: figure-space
+msgid "«Figure space»"
+msgstr ""
+
+#. U+2008 PUNCTUATION SPACE
+#: punctuation-space
+msgid "«Punctuation space»"
+msgstr ""
+
+#. U+3000 IDEOGRAPHIC SPACE
+#: ideographic-space
+msgid "«Ideographic　space»"
+msgstr ""
+
+#. U+205F MEDIUM MATHEMATICAL SPACE
+#: mathematical-space
+msgid "«Math space»"
+msgstr ""
+
+#. U+1680 OGHAM SPACE MARK (has a visible glyph in some fonts, unlike the others here)
+#: ogham-space-mark
+msgid "«Ogham mark»"
+msgstr ""
+
+#. U+200B ZERO WIDTH SPACE, mid-word - invisible by design. Can't be verified by eye; check with a hex dump/codepoint inspector after saving, not by looking at it.
+#: zwsp-inline
+msgid "«Zero​width»"
+msgstr ""
+
+#. U+0009 TAB, leading (bonus - not one of the originally requested cases, but a common real one)
+#: tab-leading
+msgid "\tTab leading»"
+msgstr ""
+
+#. U+0009 TAB, trailing (bonus, ditto)
+#: tab-trailing
+msgid "«Tab trailing\t"
+msgstr ""

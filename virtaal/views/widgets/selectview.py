@@ -232,8 +232,6 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
         model, iter = selection.get_selected()
         if iter and self._model.iter_is_valid(iter):
             self.selected_item = self.get_item(iter)
-            path = model.get_path(iter)
-            self.set_cursor(path, self.namedesc_col, start_editing=True)
             self.emit('item-selected', self.selected_item)
 
     def do_row_activated(self, path, column):

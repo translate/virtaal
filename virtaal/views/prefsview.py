@@ -38,7 +38,7 @@ class PreferencesView(BaseView, GObjectWrapper):
 
         widget_names = (
             'btn_default_fonts', 'ent_email', 'ent_team', 'ent_translator',
-            'fbtn_source', 'fbtn_target', 'scrwnd_placeables', 'scrwnd_plugins',
+            'fbtn_source', 'fbtn_target', 'notebook1', 'scrwnd_placeables', 'scrwnd_plugins',
         )
         for name in widget_names:
             self._widgets[name] = self.gui.get_object(name)
@@ -52,6 +52,20 @@ class PreferencesView(BaseView, GObjectWrapper):
         self._init_font_gui()
         self._init_placeables_page()
         self._init_plugins_page()
+        self._widgets['notebook1'].connect('switch-page', self._on_switch_page)
+
+    def _on_switch_page(self, notebook, page, _page_num):
+        # Tab/Down from the tab strip alone doesn't reliably hand the
+        # list itself real keyboard focus (confirmed live) - grab it
+        # explicitly for whichever page just became current, so
+        # keyboard-only use doesn't need an extra click first.
+        for sview in (self.placeables_select, self.plugins_select):
+            ancestor = sview
+            while ancestor is not None and ancestor.get_parent() is not notebook:
+                ancestor = ancestor.get_parent()
+            if ancestor is page:
+                sview.grab_focus()
+                return
 
     def _init_font_gui(self):
         def reset_fonts(button):

@@ -5,7 +5,9 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-from gi.repository import Gtk
+from types import SimpleNamespace
+
+from gi.repository import Gdk, Gtk
 
 from virtaal.views.widgets.selectview import SelectView
 
@@ -35,6 +37,40 @@ def test_row_activated_still_starts_editing(monkeypatch):
     sview.do_row_activated(Gtk.TreePath.new_from_indices([0]), sview.namedesc_col)
 
     assert calls
+
+
+def test_space_toggles_the_enabled_state_at_the_cursor_row():
+    # GTK's own Space handling only reaches the Enabled checkbox if
+    # the cursor's focus column happens to be that one - it's always
+    # namedesc_col here once a row's been activated, so Space silently
+    # did nothing.
+    sview = _make_view()
+    sview.set_cursor(Gtk.TreePath.new_from_indices([0]))
+    before = sview.get_all_items()[0]['enabled']
+
+    sview._on_key_press(sview, SimpleNamespace(keyval=Gdk.KEY_space))
+
+    assert sview.get_all_items()[0]['enabled'] != before
+
+
+def test_enter_activates_the_cursor_row(monkeypatch):
+    sview = _make_view()
+    sview.set_cursor(Gtk.TreePath.new_from_indices([0]))
+    calls = []
+    monkeypatch.setattr(sview, 'set_cursor', lambda *a, **k: calls.append((a, k)))
+
+    sview._on_key_press(sview, SimpleNamespace(keyval=Gdk.KEY_Return))
+
+    assert calls
+
+
+def test_other_keys_are_left_to_the_default_handling():
+    sview = _make_view()
+    sview.set_cursor(Gtk.TreePath.new_from_indices([0]))
+
+    handled = sview._on_key_press(sview, SimpleNamespace(keyval=Gdk.KEY_Down))
+
+    assert handled is False
 
 
 def test_configure_button_responds_to_the_clicked_signal():

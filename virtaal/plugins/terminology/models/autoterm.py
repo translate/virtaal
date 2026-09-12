@@ -178,6 +178,21 @@ class TerminologyModel(BaseTerminologyModel):
             pass
         return None
 
+    def _parses_as(self, content, ext):
+        """A captive-portal/signon network responds with its own login
+        page instead of the real file, but still with a normal 200
+        status - check the response actually parses as the format
+        we're about to save it as before trusting it."""
+        from io import BytesIO
+
+        buf = BytesIO(content)
+        buf.name = 'dummy.%s' % (ext)
+        try:
+            factory.getobject(buf)
+        except Exception:
+            return False
+        return True
+
     def _process_header(self, request, result, localfile=None):
         if request.status == 304:
             logging.debug('ETag matches for file %s :)' % (localfile))
@@ -191,6 +206,14 @@ class TerminologyModel(BaseTerminologyModel):
                     ext = 'po'
                 localfile = self._get_curr_term_filename(ext=ext)
                 localfile = os.path.join(self.TERMDIR, localfile)
+            else:
+                ext = os.path.splitext(localfile)[1].lstrip(os.extsep)
+
+            if not self._parses_as(result, ext):
+                logging.debug('Response for %s does not parse as %s - discarding' % (localfile, ext))
+                self.init_matcher(localfile if os.path.isfile(localfile) else '')
+                return
+
             logging.debug('Saving to %s' % (localfile))
             # result is real bytes - 'wb' preserves it exactly.
             open(localfile, 'wb').write(result)

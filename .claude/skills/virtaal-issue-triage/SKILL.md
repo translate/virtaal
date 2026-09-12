@@ -122,6 +122,41 @@ In every case, the close comment cites the concrete evidence (a commit,
 a grep result, an actual test run) - never a bare "fixed" or "no
 longer applicable" with nothing to check it against.
 
+## `gh issue list` silently caps at 30
+
+**Always pass `--limit` explicitly** (500 comfortably covers this
+repo's whole open backlog) - without it, `gh issue list` defaults to
+30 results, sorted by most-recently-updated, with no warning that
+anything was cut off. Confirmed the hard way (2026-09-12): a sweep
+believed to cover "all 30 open issues" was actually only the 30
+most-recently-touched ones (many touched by this session's own earlier
+comments) - the repo actually had 211 open, 89 of them real bug
+reports (non-enhancement/question) sitting untouched below that
+default page. Get the true count first (`gh issue list --repo
+translate/virtaal --state open --limit 500 --json number -q
+'length'`) before ever calling a review pass "done" or "the whole
+backlog."
+
+## Checking a report that links an external tracker bug
+
+If the report itself links a bug on another project's tracker (a GTK/
+GNOME bug for an input-method or rendering issue is common here),
+check *that* bug's actual resolution status directly rather than
+inferring from "we ported to a newer toolkit version" alone - it's
+concrete evidence, not a plausibility argument:
+
+```
+curl -sL -A "Mozilla/5.0" "https://bugzilla.gnome.org/show_bug.cgi?id=NNNNNN" \
+  | grep -iE "bz_status_|RESOLVED|duplicate"
+```
+
+Old GNOME Bugzilla redirects to a banner page for GitLab now, but the
+original bug's page still renders below it with real status - resolved
+directly, or marked a duplicate of another bug worth checking too (a
+confirmed 2026-09-12 case: two separate Virtaal issues, filed years
+apart, both root-caused to the same one upstream GTK bug, itself
+RESOLVED FIXED - closed both off that single piece of evidence).
+
 ## Batch mechanics
 
 Fetching many issue bodies at once (title + body, to actually read

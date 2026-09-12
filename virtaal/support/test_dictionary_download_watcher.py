@@ -8,9 +8,15 @@
 from virtaal.support.dictionary_download_watcher import DictionaryDownloadWatcher
 
 
+class _FakeLanguageModel:
+    def __init__(self, code):
+        self.code = code
+
+
 class _FakeLangController:
-    def __init__(self):
+    def __init__(self, target_lang=None):
         self.handlers = {}
+        self.target_lang = _FakeLanguageModel(target_lang) if target_lang else None
 
     def connect(self, signal, handler):
         self.handlers[signal] = handler
@@ -20,8 +26,8 @@ class _FakeLangController:
 
 
 class _FakeMainController:
-    def __init__(self):
-        self.lang_controller = _FakeLangController()
+    def __init__(self, target_lang=None):
+        self.lang_controller = _FakeLangController(target_lang)
 
 
 class _FakeEnchant:
@@ -50,9 +56,9 @@ class _FakeDownloader:
         self.started = True
 
 
-def _make_watcher(known_dicts=()):
+def _make_watcher(known_dicts=(), target_lang=None):
     _FakeDownloader.instances = []
-    main_controller = _FakeMainController()
+    main_controller = _FakeMainController(target_lang)
     watcher = DictionaryDownloadWatcher(
         main_controller,
         enchant_module=_FakeEnchant(known_dicts),
@@ -98,3 +104,22 @@ def test_on_done_callback_does_not_raise():
     main_controller, _watcher = _make_watcher(known_dicts=set())
     main_controller.lang_controller.emit_target_lang_changed('af_ZA')
     _FakeDownloader.instances[0].on_done()  # must not raise
+
+
+def test_checks_the_already_current_language_at_construction():
+    # target-lang-changed never fires for a language that's already
+    # the saved default when LanguageController starts up - the
+    # already-current value needs checking directly too.
+    _watcher = _make_watcher(known_dicts=set(), target_lang='ca')[1]
+    assert len(_FakeDownloader.instances) == 1
+    assert _FakeDownloader.instances[0].language == 'ca'
+
+
+def test_does_not_check_a_current_language_that_already_has_a_dictionary():
+    _make_watcher(known_dicts={'ca'}, target_lang='ca')
+    assert _FakeDownloader.instances == []
+
+
+def test_no_current_language_is_not_an_error():
+    _make_watcher(known_dicts=set(), target_lang=None)  # must not raise
+    assert _FakeDownloader.instances == []

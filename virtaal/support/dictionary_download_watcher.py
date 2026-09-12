@@ -36,8 +36,10 @@ class DictionaryDownloadWatcher:
         self._downloader_factory = downloader_factory or DictionaryDownloader
         self._tried = set()
         if self._enchant is not None:
-            main_controller.lang_controller.connect(
-                'target-lang-changed', self._on_target_lang_changed)
+            lang_controller = main_controller.lang_controller
+            lang_controller.connect('target-lang-changed', self._on_target_lang_changed)
+            if lang_controller.target_lang:
+                self._on_target_lang_changed(lang_controller, lang_controller.target_lang.code)
 
     def _has_dictionary(self, language):
         if self._enchant.dict_exists(language):

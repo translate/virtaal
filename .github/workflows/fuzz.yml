@@ -17,8 +17,8 @@ on:
     inputs:
       duration_seconds:
         description: "How long to fuzz for, per platform (seconds)"
-        type: number
-        default: 600
+        type: string
+        default: "600"
 
 jobs:
   fuzz-linux:

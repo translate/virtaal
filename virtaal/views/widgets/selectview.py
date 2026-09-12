@@ -7,7 +7,7 @@
 
 from locale import strxfrm
 
-from gi.repository import GObject, Gtk
+from gi.repository import Gdk, GObject, Gtk
 from gi.repository.GObject import TYPE_PYOBJECT
 
 from virtaal.common import GObjectWrapper
@@ -73,6 +73,7 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
 
     def _connect_events(self):
         self.get_selection().connect('changed', self._on_selection_change)
+        self.connect('key-press-event', self._on_key_press)
 
     def _set_defaults(self):
         self.set_rules_hint(True)
@@ -118,9 +119,9 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
         #TODO: ideally we need an accesskey, but it is not currently working
         if 'config' in item and callable(item['config']):
             btnconf = Gtk.Button(_('Configure...'))
-            def clicked(button, event):
+            def clicked(button):
                 item['config'](self.get_toplevel())
-            btnconf.connect('button-release-event', clicked)
+            btnconf.connect('clicked', clicked)
             btnconf.config_func = item['config']
             hbox.pack_start(btnconf, False, True, 0)
 
@@ -189,6 +190,7 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
             if self.get_item(itr) == item:
                 found = True
                 break
+            itr = self._model.iter_next(itr)
         if found and itr and self._model.iter_is_valid(itr):
             self.get_selection().select_iter(itr)
             self.selected_item = item
@@ -232,9 +234,26 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
         model, iter = selection.get_selected()
         if iter and self._model.iter_is_valid(iter):
             self.selected_item = self.get_item(iter)
-            path = model.get_path(iter)
-            self.set_cursor(path, self.namedesc_col, start_editing=True)
             self.emit('item-selected', self.selected_item)
 
     def do_row_activated(self, path, column):
         self.set_cursor(path, self.namedesc_col, start_editing=True)
+
+    def _on_key_press(self, widget, event):
+        # GTK's own Space/Enter handling only reaches the toggle column
+        # or activates the row depending on which column the cursor's
+        # own keyboard focus is currently on - here that's always
+        # namedesc_col once a row's been activated once, so Space could
+        # never reach the Enabled checkbox. Handle both explicitly,
+        # tied to the cursor row rather than whichever column GTK
+        # thinks currently has focus.
+        path, _column = self.get_cursor()
+        if path is None:
+            return False
+        if event.keyval in (Gdk.KEY_space, Gdk.KEY_KP_Space):
+            self._on_item_toggled(None, path)
+            return True
+        if event.keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter):
+            self.do_row_activated(path, self.namedesc_col)
+            return True
+        return False

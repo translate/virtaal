@@ -13,12 +13,6 @@ from virtaal.support import qm_compat  # noqa: F401 - applies its patch on impor
 from .basemodel import BaseModel
 
 
-class SaveCancelled(Exception):
-    """Raised when the user cancels the translator info prompt during
-        save - expected, not an error, so handled separately from a
-        real save failure."""
-
-
 def fix_indexes(stats, valid_units=None):
     """convert statsdb array to use model index instead of storage class index"""
     if valid_units is None:
@@ -264,21 +258,24 @@ class StoreModel(BaseModel):
             name = self.controller.main_controller.get_translator_name()
             email = self.controller.main_controller.get_translator_email()
             team = self.controller.main_controller.get_translator_team()
-            if name is None or email is None or team is None:
-                # User cancelled
-                raise SaveCancelled()
-            pan_app.settings.translator["name"] = name
-            pan_app.settings.translator["email"] = email
-            pan_app.settings.translator["team"] = team
+            if name:
+                pan_app.settings.translator["name"] = name
+            if email:
+                pan_app.settings.translator["email"] = email
+            if team:
+                pan_app.settings.translator["team"] = team
             pan_app.settings.write()
 
             header_updates = {}
             import time
             header_updates["PO_Revision_Date"] = time.strftime("%Y-%m-%d %H:%M") + tzstring()
             header_updates["X_Generator"] = pan_app.x_generator
-            if name or email:
+            if name and email:
                 header_updates["Last_Translator"] = "%s <%s>" % (name, email)
                 self._trans_store.updatecontributor(name, email)
+            elif name:
+                header_updates["Last_Translator"] = name
+                self._trans_store.updatecontributor(name)
             if team:
                 header_updates["Language-Team"] = team
             target_lang = self.controller.main_controller.lang_controller.target_lang

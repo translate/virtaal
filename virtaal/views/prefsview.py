@@ -38,7 +38,7 @@ class PreferencesView(BaseView, GObjectWrapper):
 
         widget_names = (
             'btn_default_fonts', 'ent_email', 'ent_team', 'ent_translator',
-            'fbtn_source', 'fbtn_target', 'notebook1', 'scrwnd_placeables', 'scrwnd_plugins',
+            'fbtn_source', 'fbtn_target', 'scrwnd_placeables', 'scrwnd_plugins',
         )
         for name in widget_names:
             self._widgets[name] = self.gui.get_object(name)
@@ -52,20 +52,6 @@ class PreferencesView(BaseView, GObjectWrapper):
         self._init_font_gui()
         self._init_placeables_page()
         self._init_plugins_page()
-        self._widgets['notebook1'].connect('switch-page', self._on_switch_page)
-
-    def _on_switch_page(self, notebook, page, _page_num):
-        # Tab/Down from the tab strip alone doesn't reliably hand the
-        # list itself real keyboard focus (confirmed live) - grab it
-        # explicitly for whichever page just became current, so
-        # keyboard-only use doesn't need an extra click first.
-        for sview in (self.placeables_select, self.plugins_select):
-            ancestor = sview
-            while ancestor is not None and ancestor.get_parent() is not notebook:
-                ancestor = ancestor.get_parent()
-            if ancestor is page:
-                sview.grab_focus()
-                return
 
     def _init_font_gui(self):
         def reset_fonts(button):
@@ -83,6 +69,10 @@ class PreferencesView(BaseView, GObjectWrapper):
         # entirely. Grow to fit instead, so this scales with whatever
         # a given translation's actual text needs.
         self._widgets['scrwnd_placeables'].set_propagate_natural_width(True)
+        # The .ui file marks this focusable, which swallows Tab/Down
+        # meant for the list inside it - the scroller chrome itself
+        # has no reason to be a stop in the focus chain.
+        self._widgets['scrwnd_placeables'].set_can_focus(False)
         self._widgets['scrwnd_placeables'].add(self.placeables_select)
         self._widgets['scrwnd_placeables'].show_all()
 
@@ -91,6 +81,7 @@ class PreferencesView(BaseView, GObjectWrapper):
         self.plugins_select.connect('item-enabled', self._on_plugin_toggled)
         self.plugins_select.connect('item-disabled', self._on_plugin_toggled)
         self._widgets['scrwnd_plugins'].set_propagate_natural_width(True)
+        self._widgets['scrwnd_plugins'].set_can_focus(False)
         self._widgets['scrwnd_plugins'].add(self.plugins_select)
         self._widgets['scrwnd_plugins'].show_all()
 

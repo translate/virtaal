@@ -180,9 +180,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             mnu_next.set_sensitive(True)
             mnu_prev.set_sensitive(True)
             mnu_transfer.set_sensitive(True)
-            self.mnu_cut.set_sensitive(True)
-            self.mnu_copy.set_sensitive(True)
-            self.mnu_paste.set_sensitive(True)
+            self._update_edit_menu_sensitivity()
         self.controller.main_controller.store_controller.connect('store-closed', on_store_closed)
         self.controller.main_controller.store_controller.connect('store-loaded', on_store_loaded)
 
@@ -469,6 +467,8 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         textbox.set_text(text or '')
         textbox.connect('focus-in-event', self._on_textbox_focused)
         textbox.connect('focus-out-event', self._on_textbox_unfocused)
+        textbox.get_buffer().connect(
+            'notify::has-selection', lambda *args: self._update_edit_menu_sensitivity())
 
         scrollwnd = Gtk.ScrolledWindow()
         scrollwnd.set_policy(Gtk.PolicyType.NEVER, scroll_policy)
@@ -735,9 +735,28 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         self.emit('paste-start', old_text, offsets, target_num)
 
     def _on_textbox_focused(self, textbox, event):
-        for mnu in (self.mnu_cut, self.mnu_copy, self.mnu_paste):
-            mnu.set_sensitive(True)
+        self._update_edit_menu_sensitivity()
 
     def _on_textbox_unfocused(self, textbox, event):
-        for mnu in (self.mnu_cut, self.mnu_copy, self.mnu_paste):
-            mnu.set_sensitive(False)
+        self._update_edit_menu_sensitivity()
+
+    def _update_edit_menu_sensitivity(self):
+        """Recompute Cut/Copy/Paste sensitivity for whichever textbox
+            is currently focused, if any."""
+        focused = None
+        for textbox in self.targets + self.sources:
+            if textbox.is_focus():
+                focused = textbox
+                break
+
+        if focused is None:
+            self.mnu_cut.set_sensitive(False)
+            self.mnu_copy.set_sensitive(False)
+            self.mnu_paste.set_sensitive(False)
+            return
+
+        has_selection = focused.get_buffer().get_has_selection()
+        is_target = focused in self.targets
+        self.mnu_cut.set_sensitive(is_target and has_selection)
+        self.mnu_copy.set_sensitive(has_selection)
+        self.mnu_paste.set_sensitive(is_target)

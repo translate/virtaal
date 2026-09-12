@@ -35,6 +35,59 @@ class TestUnitController(TestScaffolding):
         self.unit_controller.set_unit_target(0, ['Test',])
         assert str(self.unit_controller.view.targets[0].elem) == 'Test'
 
+    def test_cut_copy_disabled_without_a_selection(self, monkeypatch):
+        # #1021: Cut/Copy used to stay enabled the whole time a textbox
+        # had focus, regardless of whether anything was selected.
+        test_unit = self.trans_store.getunits()[1]
+        view = self.unit_controller.load_unit(test_unit)
+        monkeypatch.setattr(view.targets[0], 'is_focus', lambda: True)
+
+        view._update_edit_menu_sensitivity()
+
+        assert not view.mnu_cut.get_sensitive()
+        assert not view.mnu_copy.get_sensitive()
+        assert view.mnu_paste.get_sensitive()  # no selection needed to paste
+
+    def test_cut_copy_enabled_with_a_selection_in_the_target(self, monkeypatch):
+        if not getattr(self.main_controller, 'placeables_controller', None):
+            PlaceablesController(self.main_controller)
+
+        test_unit = self.trans_store.getunits()[1]
+        view = self.unit_controller.load_unit(test_unit)
+        target = view.targets[0]
+        target.set_text('some text')
+        buf = target.get_buffer()
+        buf.select_range(buf.get_start_iter(), buf.get_end_iter())
+        monkeypatch.setattr(target, 'is_focus', lambda: True)
+
+        view._update_edit_menu_sensitivity()
+
+        assert view.mnu_cut.get_sensitive()
+        assert view.mnu_copy.get_sensitive()
+
+    def test_copy_but_not_cut_enabled_for_a_selection_in_a_source(self, monkeypatch):
+        # Sources aren't editable - Cut never applies to them, even
+        # with text selected.
+        if not getattr(self.main_controller, 'placeables_controller', None):
+            PlaceablesController(self.main_controller)
+
+        # A different unit than the other tests here use - load_unit()
+        # no-ops if asked to reload whatever's already showing, which
+        # would leave a stale/empty source buffer since these tests
+        # share one UnitController across the whole class.
+        test_unit = self.trans_store.getunits()[2]
+        view = self.unit_controller.load_unit(test_unit)
+        source = view.sources[0]
+        buf = source.get_buffer()
+        buf.select_range(buf.get_start_iter(), buf.get_end_iter())
+        monkeypatch.setattr(source, 'is_focus', lambda: True)
+
+        view._update_edit_menu_sensitivity()
+
+        assert not view.mnu_cut.get_sensitive()
+        assert view.mnu_copy.get_sensitive()
+        assert not view.mnu_paste.get_sensitive()  # can't paste into a source
+
     def test_stale_alt_down_does_not_corrupt_a_later_unit(self):
         """Alt+Down ('transfer from source') defers its copy via
         GLib.idle_add(). If the loaded unit changes before that runs,

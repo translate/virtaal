@@ -13,7 +13,7 @@ it guards."""
 
 import io
 
-from translate.storage import xliff
+from translate.storage import pypo, xliff
 
 
 def test_xliff_preserves_a_trailing_non_breaking_space():
@@ -39,3 +39,31 @@ def test_xliff_preserves_a_trailing_non_breaking_space():
     reparsed = xliff.xlifffile(buf.getvalue())
 
     assert reparsed.units[0].target == "Bonjour\xa0"
+
+
+def test_po_header_comments_round_trip_unchanged():
+    # #3231: blank "#" lines and leading-space indentation in the
+    # header comments used to be stripped/reformatted on save.
+    content = b'''# Danish translation for X
+# Copyright (C) 2016 X
+#
+# scootergrisen, 2016.
+#
+#
+#
+# test1
+#  test2
+#
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\\n"
+
+msgid "Hello"
+msgstr "Bonjour"
+'''
+    store = pypo.pofile(content)
+
+    buf = io.BytesIO()
+    store.serialize(buf)
+
+    assert buf.getvalue() == content

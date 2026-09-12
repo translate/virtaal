@@ -23,7 +23,7 @@ code_translation = {
     'nb': 'no', # Google maps no (Norwegian) to its Norwegian (Bokmål) (nb) translator
 }
 
-virtaal_referrer = "http://virtaal.org/"
+virtaal_referrer = "https://virtaal.translatehouse.org/"
 
 class TMModel(BaseTMModel):
     """This is a Google Translate translation memory model.

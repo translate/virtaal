@@ -190,6 +190,7 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
             if self.get_item(itr) == item:
                 found = True
                 break
+            itr = self._model.iter_next(itr)
         if found and itr and self._model.iter_is_valid(itr):
             self.get_selection().select_iter(itr)
             self.selected_item = item

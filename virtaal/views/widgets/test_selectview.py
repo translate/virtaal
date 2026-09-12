@@ -73,6 +73,19 @@ def test_other_keys_are_left_to_the_default_handling():
     assert handled is False
 
 
+def test_select_item_finds_a_row_that_is_not_the_first():
+    # The search loop never advanced its iterator past the first row -
+    # selecting anything else spun forever (confirmed live: 100% CPU,
+    # the process never returning). Sorted by name, "B" is the second
+    # of the two rows _make_view() creates.
+    sview = _make_view()
+    target = sview.get_all_items()[1]
+
+    sview.select_item(target)
+
+    assert sview.get_selected_item() == target
+
+
 def test_configure_button_responds_to_the_clicked_signal():
     # Enter/Space on a focused button fires 'clicked' - the button
     # used to only listen for 'button-release-event', which a real

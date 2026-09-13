@@ -192,6 +192,37 @@ A stray, empty, tiny window can appear right after a synthetic click or
 keystroke (no title, no content) - same benign tooltip-popup artifact noted
 under fullscreen above, not a sign the action failed.
 
+## A list stuck on its first row / Tab skipping past it entirely
+
+If arrow-key navigation into a `Gtk.TreeView`-based list (Preferences'
+plugin/placeables lists, External Look-up's own URL-management list, the
+language-selection dialog, the terminology-files dialog - all built the
+same way) either does nothing or lands on the first row and then won't
+move further, check the `.ui` file for the `Gtk.ScrolledWindow` wrapping
+that treeview: Glade's own default is `can_focus="True"` on the
+ScrolledWindow itself, which swallows Tab/Down before it ever reaches the
+real treeview inside. `set_can_focus(False)` on the ScrolledWindow (in the
+Python code that builds/wires the list, not the `.ui` file) is the fix -
+confirmed live across all four dialogs above, each with the identical
+symptom and identical root cause. This has already recurred enough times
+in this codebase that it's worth checking proactively in any *new*
+list-in-a-dialog, not just waiting for a bug report about it.
+
+Two related, separately-confirmed gotchas on the same class of widget:
+- `Gtk.TreeSelection.select_iter()` changes which row is *highlighted*
+  but does **not** move the treeview's own keyboard *cursor* - Space/Enter
+  act on `get_cursor()`'s row, not the selection, so code that
+  programmatically reselects a row after some refresh (e.g. rebuilding the
+  model) needs an explicit `treeview.set_cursor(path)` too, or Space/Enter
+  keep acting on a stale row until the user nudges Up/Down first.
+- Don't try to fix "the list never gets real keyboard focus" by calling
+  `grab_focus()` on it from a `Gtk.Notebook`'s `switch-page` signal - that
+  steals focus from the tab strip on *every* tab change, which breaks
+  multi-hop Right-arrow tab-browsing entirely (confirmed live: Right got
+  stuck on the second tab, never reaching the third). The ScrolledWindow
+  fix above is the actual root cause; fix that instead of grabbing focus
+  after the fact.
+
 ## Inspecting a native menu item's real key equivalent
 
 Don't infer whether a shortcut works from the menu's visible label alone -

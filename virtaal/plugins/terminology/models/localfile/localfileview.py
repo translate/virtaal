@@ -132,6 +132,10 @@ class FileSelectDialog:
         self.tvw_termfiles.get_selection().connect('changed', self._on_selection_changed)
 
     def _init_treeview(self):
+        # The .ui file marks this focusable, swallowing Tab/Down meant
+        # for the treeview inside it.
+        self.tvw_termfiles.get_parent().set_can_focus(False)
+
         self.lst_files = Gtk.ListStore(str, bool)
         self.tvw_termfiles.set_model(self.lst_files)
 

@@ -83,8 +83,12 @@ class SelectDialog(GObjectWrapper):
         if isinstance(parent, Gtk.Widget):
             self.dialog.reparent(parent)
         self.dialog.show_all()
+        self.dialog.present()
+        transient_for = self.dialog.get_transient_for()
         self.response = self.dialog.run()
         self.dialog.hide()
+        if transient_for is not None:
+            transient_for.present()
         self.emit('selection-done', self.sview.get_all_items())
         return self.response
 

@@ -20,12 +20,24 @@ class _FakeEntry:
         pass
 
 
-class _FakeDialog:
+class _FakeTopWindow:
     def __init__(self):
+        self.presented = False
+
+    def present(self):
+        self.presented = True
+
+
+class _FakeDialog:
+    def __init__(self, transient_for=None):
         self.calls = []
+        self._transient_for = transient_for
 
     def set_transient_for(self, window):
         pass
+
+    def get_transient_for(self):
+        return self._transient_for
 
     def show(self):
         self.calls.append('show')
@@ -53,6 +65,19 @@ def test_run_shows_before_presenting():
     add_dialog.run()
 
     assert add_dialog.dialog.calls == ['show', 'present']
+
+
+def test_run_restores_the_parents_focus_on_close():
+    add_dialog = TermAddDialog.__new__(TermAddDialog)
+    top_window = _FakeTopWindow()
+    add_dialog.dialog = _FakeDialog(transient_for=top_window)
+    add_dialog.ent_source = _FakeEntry()
+    add_dialog.reset = lambda: None
+    add_dialog._on_entry_changed = lambda *args: None
+
+    add_dialog.run()
+
+    assert top_window.presented
 
 
 def test_treeview_scrolled_window_is_not_focusable(monkeypatch):

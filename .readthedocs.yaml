@@ -16,7 +16,7 @@ build:
 
 python:
   install:
-  - method: uv
-    command: sync
-    groups:
-    - docs
+  - method: pip
+    path: .
+    extra_requirements:
+      - docs

@@ -130,8 +130,12 @@ class LanguageSelectDialog:
         self._select_lang(self.tvw_targetlang, tgtlang)
 
         self.tvw_targetlang.grab_focus()
+        self.dialog.present()
+        transient_for = self.dialog.get_transient_for()
         response = self.dialog.run() == Gtk.ResponseType.OK
         self.dialog.hide()
+        if transient_for is not None:
+            transient_for.present()
         return response
 
     def update_languages(self, langs):

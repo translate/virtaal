@@ -205,8 +205,12 @@ class WebLookupConfigDialog:
             self.dialog.set_transient_for(parent)
 
         self.dialog.show()
+        self.dialog.present()
+        transient_for = self.dialog.get_transient_for()
         self.dialog.run()
         self.dialog.hide()
+        if transient_for is not None:
+            transient_for.present()
 
 
     # SIGNAL HANDLERS #
@@ -255,8 +259,12 @@ class WebLookupAddDialog:
         self.cbtn_url_quote.set_active(False)
 
         self.dialog.show()
+        self.dialog.present()
+        transient_for = self.dialog.get_transient_for()
         response = self.dialog.run()
         self.dialog.hide()
+        if transient_for is not None:
+            transient_for.present()
 
         if response != Gtk.ResponseType.OK:
             return None

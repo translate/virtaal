@@ -227,8 +227,12 @@ class FileSelectDialog:
         self.clear_selection()
 
         self.dialog.show_all()
+        self.dialog.present()
+        transient_for = self.dialog.get_transient_for()
         self.dialog.run()
         self.dialog.hide()
+        if transient_for is not None:
+            transient_for.present()
 
 
     # EVENT HANDLERS #
@@ -424,10 +428,13 @@ class TermAddDialog:
 
         self.dialog.show()
         self.dialog.present()
+        transient_for = self.dialog.get_transient_for()
         self._on_entry_changed(None)
         self.ent_source.grab_focus()
         response = self.dialog.run()
         self.dialog.hide()
+        if transient_for is not None:
+            transient_for.present()
 
         if response != Gtk.ResponseType.OK:
             return

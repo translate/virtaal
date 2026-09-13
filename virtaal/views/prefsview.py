@@ -151,8 +151,12 @@ class PreferencesView(BaseView, GObjectWrapper):
         self.plugins_select.select_item(None)
         self.controller.update_prefs_gui_data()
         #logging.debug('Plug-in data: %s' % (str(self.plugin_data)))
+        self._widgets['dialog'].present()
+        transient_for = self._widgets['dialog'].get_transient_for()
         self._widgets['dialog'].run()
         self._widgets['dialog'].hide()
+        if transient_for is not None:
+            transient_for.present()
         self.emit('prefs-done')
 
 

@@ -151,6 +151,10 @@ class WebLookupConfigDialog:
         self.add_dialog = WebLookupAddDialog(self.dialog)
 
     def _init_treeview(self):
+        # The .ui file marks this focusable, swallowing Tab/Down meant
+        # for the treeview inside it.
+        self.tvw_urls.get_parent().set_can_focus(False)
+
         self.lst_urls = Gtk.ListStore(str, str, bool, object)
         self.tvw_urls.set_model(self.lst_urls)
 

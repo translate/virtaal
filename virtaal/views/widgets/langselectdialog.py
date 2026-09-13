@@ -48,6 +48,11 @@ class LanguageSelectDialog:
         self.btn_cancel.connect('clicked', lambda *args: self.dialog.response(Gtk.ResponseType.CANCEL))
 
     def _init_treeviews(self):
+        # The .ui file marks these focusable, swallowing Tab/Down meant
+        # for the treeviews inside them.
+        self.tvw_sourcelang.get_parent().set_can_focus(False)
+        self.tvw_targetlang.get_parent().set_can_focus(False)
+
         self.lst_langs_src = Gtk.ListStore(GObject.TYPE_STRING, GObject.TYPE_STRING)
         self.lst_langs_tgt = Gtk.ListStore(GObject.TYPE_STRING, GObject.TYPE_STRING)
         self.tvw_sourcelang.set_model(self.lst_langs_src)

@@ -55,11 +55,17 @@ class LocalFileView:
         Gtk.AccelMap.add_entry("<Virtaal>/Terminology/Add Term", Gdk.KEY_t, Gdk.ModifierType.CONTROL_MASK)
         accel_group = self.menu.get_accel_group()
         if accel_group is None:
+            # Attaching an already-attached group is a Gtk-CRITICAL -
+            # the Edit menu usually already has one by this point.
             accel_group = Gtk.AccelGroup()
             self.mainview.add_accel_group(accel_group)
         self.mnu_add_term.set_accel_path("<Virtaal>/Terminology/Add Term")
         self.menu.set_accel_group(accel_group)
         self.mainview.sync_menubar()
+        # sync_menubar() alone doesn't fire the shortcut - connect_by_path()
+        # activates straight off the accel_group instead, same as
+        # _python_console.py/tmview.py.
+        accel_group.connect_by_path("<Virtaal>/Terminology/Add Term", self._on_add_term)
 
     def destroy(self):
         for gobj, signal_id in self._signal_ids:
@@ -84,7 +90,8 @@ class LocalFileView:
 
 
     # EVENT HANDLERS #
-    def _on_add_term(self, menuitem):
+    def _on_add_term(self, *args):
+        # Bound to both 'activate' and connect_by_path() - different argument counts.
         self.addterm.run(parent=self.mainview.main_window)
 
     def _on_select_term_files(self, menuitem):

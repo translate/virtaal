@@ -151,6 +151,9 @@ class PreferencesView(BaseView, GObjectWrapper):
         self.plugins_select.select_item(None)
         self.controller.update_prefs_gui_data()
         #logging.debug('Plug-in data: %s' % (str(self.plugin_data)))
+        # present() only raises/focuses an already-realized window -
+        # show() explicitly first, run() alone doesn't guarantee that.
+        self._widgets['dialog'].show()
         self._widgets['dialog'].present()
         transient_for = self._widgets['dialog'].get_transient_for()
         self._widgets['dialog'].run()

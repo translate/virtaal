@@ -130,6 +130,9 @@ class LanguageSelectDialog:
         self._select_lang(self.tvw_targetlang, tgtlang)
 
         self.tvw_targetlang.grab_focus()
+        # present() only raises/focuses an already-realized window -
+        # show() explicitly first, run() alone doesn't guarantee that.
+        self.dialog.show()
         self.dialog.present()
         transient_for = self.dialog.get_transient_for()
         response = self.dialog.run() == Gtk.ResponseType.OK

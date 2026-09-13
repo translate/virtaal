@@ -6,8 +6,13 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import builtins
+import logging
 import os
 
+import pytest
+
+from virtaal.controllers import plugincontroller
 from virtaal.controllers.plugincontroller import PluginController
 
 
@@ -30,3 +35,50 @@ def test_resourcepath_plugin_dir_construction(monkeypatch):
         assert pc.PLUGIN_DIRS[0] == os.path.join('/tmp/fake_resources', 'virtaal_plugins')
     finally:
         PluginController.PLUGIN_DIRS[:] = original_dirs
+
+
+def _make_controller():
+    pc = PluginController(controller=object(), classname='TestPlugin')
+    pc.PLUGIN_MODULES = ['some.candidate.location']
+    return pc
+
+
+def test_get_plugin_class_stays_quiet_when_a_candidate_location_is_missing(monkeypatch, caplog):
+    # Several candidate package locations are tried in turn (e.g. the
+    # optional virtaal_plugins.* directory before the bundled
+    # virtaal.plugins.* one) - one of them simply not existing at all
+    # is expected, not an error worth logging.
+    pc = _make_controller()
+    real_import = builtins.__import__
+    def fake_import(name, *a, **k):
+        if name.startswith('some.candidate.location'):
+            raise ModuleNotFoundError("No module named 'some'", name='some')
+        return real_import(name, *a, **k)
+    monkeypatch.setattr('builtins.__import__', fake_import)
+    monkeypatch.setattr(plugincontroller.pan_app, 'DEBUG', True)
+    caplog.set_level(logging.DEBUG)
+
+    with pytest.raises(Exception, match='Could not find plug-in'):
+        pc._get_plugin_class('myplugin')
+
+    assert not any('from ' in r.message and 'import' in r.message for r in caplog.records)
+
+
+def test_get_plugin_class_logs_a_plugins_own_missing_dependency(monkeypatch, caplog):
+    # e.g. _ipython_console needing the optional ipython package - a
+    # real, existing plugin module whose own internal import fails,
+    # not "no such plugin".
+    pc = _make_controller()
+    real_import = builtins.__import__
+    def fake_import(name, *a, **k):
+        if name.startswith('some.candidate.location'):
+            raise ModuleNotFoundError("No module named 'ipython'", name='ipython')
+        return real_import(name, *a, **k)
+    monkeypatch.setattr('builtins.__import__', fake_import)
+    monkeypatch.setattr(plugincontroller.pan_app, 'DEBUG', True)
+    caplog.set_level(logging.DEBUG)
+
+    with pytest.raises(Exception, match='Could not find plug-in'):
+        pc._get_plugin_class('myplugin')
+
+    assert any('from ' in r.message and 'import' in r.message for r in caplog.records)

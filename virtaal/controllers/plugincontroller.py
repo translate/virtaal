@@ -164,7 +164,13 @@ class PluginController(BaseController):
                 )
                 break
             except ImportError as ie:
-                if not ie.args[0].startswith('No module named') and pan_app.DEBUG:
+                # Suppress only a missing candidate location itself
+                # (ie.name is one of modulename's own path components)
+                # - a plugin's own internal import failing is a
+                # different module and always worth logging.
+                missing = ie.name or ''
+                candidate_missing = missing == modulename or modulename.startswith(missing + '.')
+                if not candidate_missing and pan_app.DEBUG:
                     logging.exception('from %s import %s' % (modulename, self.PLUGIN_CLASSNAME))
 
         if module is None:

@@ -820,8 +820,11 @@ class MainView(BaseView):
         old_top = self._top_window
         self._top_window = self.confirm_dialog
         self.confirm_dialog.__save_button.grab_focus()
+        self.confirm_dialog.show()
+        self.confirm_dialog.present()
         response = self.confirm_dialog.run()
         self.confirm_dialog.hide()
+        old_top.present()
         self._top_window = old_top
 
         if response == Gtk.ResponseType.YES:

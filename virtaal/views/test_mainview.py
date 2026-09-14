@@ -141,3 +141,56 @@ def test_decode_dropped_uri_falls_back_to_system_codepage_on_windows(monkeypatch
 def test_decode_dropped_uri_returns_none_for_undecodable_bytes():
     view = MainView.__new__(MainView)
     assert view._decode_dropped_uri(b'\xff\xfe not utf-8') is None
+
+
+# show_save_confirm_dialog(): dialog focus on macOS (#3525)
+
+class _FakeSaveButton:
+    def grab_focus(self):
+        pass
+
+
+class _FakeConfirmDialog:
+    def __init__(self):
+        self.calls = []
+        self._MainView__save_button = _FakeSaveButton()
+
+    def set_transient_for(self, window):
+        pass
+
+    def show(self):
+        self.calls.append('show')
+
+    def present(self):
+        self.calls.append('present')
+
+    def run(self):
+        return Gtk.ResponseType.YES
+
+    def hide(self):
+        pass
+
+
+class _FakeTopWindow:
+    def __init__(self):
+        self.presented = False
+
+    def present(self):
+        self.presented = True
+
+
+def test_show_save_confirm_dialog_shows_before_presenting_and_restores_parent_focus():
+    # present() only raises/focuses an already-realized window - on
+    # the very first run() the dialog isn't yet, so show() has to
+    # come first or the dialog opens without real OS focus.
+    view = MainView.__new__(MainView)
+    dialog = _FakeConfirmDialog()
+    view._confirm_dialog = dialog
+    top_window = _FakeTopWindow()
+    view._top_window = top_window
+
+    view.show_save_confirm_dialog()
+
+    assert dialog.calls == ['show', 'present']
+    assert top_window.presented
+    assert view._top_window is top_window

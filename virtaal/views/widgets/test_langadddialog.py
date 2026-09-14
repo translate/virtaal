@@ -56,3 +56,33 @@ def test_check_input_sanity_accepts_an_ascii_langcode():
     dialog = _dialog_with_langcode('en')
 
     assert dialog.check_input_sanity() == ''
+
+
+class _FakeDialog:
+    def __init__(self):
+        self.calls = []
+
+    def show(self):
+        self.calls.append('show')
+
+    def present(self):
+        self.calls.append('present')
+
+    def run(self):
+        return Gtk.ResponseType.CANCEL
+
+    def hide(self):
+        pass
+
+
+def test_run_shows_before_presenting():
+    # run() called dialog.run() with no show()/present() beforehand -
+    # same #3515/#3525 pattern, show() has to come first since
+    # present() only raises an already-realized window.
+    dialog = LanguageAddDialog.__new__(LanguageAddDialog)
+    dialog.dialog = _FakeDialog()
+    dialog.clear = lambda: None
+
+    dialog.run()
+
+    assert dialog.dialog.calls == ['show', 'present']

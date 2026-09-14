@@ -76,6 +76,8 @@ class LanguageAddDialog:
     def run(self, clear=True):
         if clear:
             self.clear()
+        self.dialog.show()
+        self.dialog.present()
         response = self.dialog.run() == Gtk.ResponseType.OK
         self.dialog.hide()
         return response

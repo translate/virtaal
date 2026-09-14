@@ -1,0 +1,5 @@
+msgid "Please add  password to terminology Ctrl-T"
+msgstr ""
+
+msgid "Password should be highligted now and in the previous password related unit"
+msgstr ""

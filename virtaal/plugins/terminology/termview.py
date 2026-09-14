@@ -74,7 +74,7 @@ class TerminologyCombo(Gtk.ComboBox):
         # Set the font correctly for the target
         if cell_renderers:
             cell_renderers[0].props.font_desc = rendering.get_target_font_description()
-        self.menu = self.menu_get_for_attach_widget()[0]
+        self.menu = Gtk.Menu.get_for_attach_widget(self)[0]
         self.menu.connect('selection-done', self._on_selection_done)
 
     def __init_combo(self):
@@ -84,7 +84,7 @@ class TerminologyCombo(Gtk.ComboBox):
 
         self.set_model(self._model)
         self._renderer = Gtk.CellRendererText()
-        self.pack_start(self._renderer, True, True, 0)
+        self.pack_start(self._renderer, True)
         self.add_attribute(self._renderer, 'text', 0)
 
         # Force the "appears-as-list" style property to 0

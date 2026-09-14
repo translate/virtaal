@@ -5,11 +5,25 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-from gi.repository import Pango
+from gi.repository import Gtk, Pango
 
 from virtaal.common import pan_app
 
 _font_descriptions = {}
+
+def set_widget_font(widget, font_desc):
+    """Apply a Pango.FontDescription to a widget via CSS -
+        Gtk.Widget.modify_font() is deprecated. The font: shorthand
+        also accepts Pango's own syntax, but GTK's CSS parser rejects
+        some descriptions under it ("not a number") and warns it's
+        deprecated regardless - set family/size as their own
+        properties instead."""
+    size = font_desc.get_size() / Pango.SCALE
+    unit = 'px' if font_desc.get_size_is_absolute() else 'pt'
+    css = '* { font-family: "%s"; font-size: %s%s; }' % (font_desc.get_family(), size, unit)
+    provider = Gtk.CssProvider()
+    provider.load_from_data(css.encode())
+    widget.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
 def get_font_description(code):
     """Provide a Pango.FontDescription and keep it for reuse."""

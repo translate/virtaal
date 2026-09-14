@@ -17,7 +17,7 @@ from virtaal.common import GObjectWrapper
 
 from . import rendering
 from .baseview import BaseView
-from .theme import current_theme, str_to_rgba
+from .theme import current_theme
 from .widgets.listnav import ListNavigator
 from .widgets.textbox import TextBox
 
@@ -62,6 +62,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
         self.must_advance = False
         self._modified = False
+        self._bg_provider = None
 
         self.connect('key-press-event', self._on_key_press_event)
         # We automatically inherit the tooltip from the Treeview, so we have
@@ -267,6 +268,19 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         #logging.debug('emit("target-focused", focused_target_n=%d)' % (self._focused_target_n))
         self.emit('target-focused', self._focused_target_n)
 
+    def _set_fuzzy_background(self, color):
+        """Highlight (or clear, if C{color} is C{None}) this unit's
+            background - override_background_color() is deprecated."""
+        style = self.get_style_context()
+        if self._bg_provider is not None:
+            style.remove_provider(self._bg_provider)
+            self._bg_provider = None
+        if color is not None:
+            provider = Gtk.CssProvider()
+            provider.load_from_data(('* { background-color: %s; }' % color).encode())
+            style.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+            self._bg_provider = provider
+
     def load_unit(self, unit):
         """Load a GUI (C{Gtk.CellEditable}) for the given unit."""
         assert unit
@@ -284,9 +298,9 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
         self.unit = unit
         if unit.isfuzzy():
-            self.override_background_color(Gtk.StateFlags.NORMAL, str_to_rgba(current_theme['fuzzy_row_bg']))
+            self._set_fuzzy_background(current_theme['fuzzy_row_bg'])
         else:
-            self.override_background_color(Gtk.StateFlags.NORMAL, None)
+            self._set_fuzzy_background(None)
         self.disable_signals(['modified', 'insert-text', 'delete-text'])
         self._update_editor_gui()
         self.enable_signals(['modified', 'insert-text', 'delete-text'])
@@ -376,7 +390,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         for i in range(len(self.sources), self.MAX_SOURCES):
             source = self._create_textbox('', editable=False, role='source')
             textbox = source.get_child()
-            textbox.modify_font(rendering.get_source_font_description())
+            rendering.set_widget_font(textbox, rendering.get_source_font_description())
             self._widgets['vbox_sources'].pack_start(source, True, True, 0)
             self.sources.append(textbox)
 

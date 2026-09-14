@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Manual test file for the XLIFF-only placeable types (see
+     virtaal/views/placeablesguiinfo.py's element_gui_map) - a plain
+     PO msgid can't produce these, they only ever come from rich
+     inline markup. Verified against translate.storage.xliff's own
+     rich_source output before writing this file: <g> -> G,
+     <x/> -> X, <bx/>/<ex/> -> Bx/Ex, <ph>/<it> -> UnknownXML (base.Ph
+     itself isn't reachable from XLIFF 1.2's own placeable mapping).
+     Open each unit and check the tag is visually distinct from the
+     surrounding plain text. -->
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="placeables.xliff">
+    <body>
+      <trans-unit id="1">
+        <!-- Expect: <here> shown as a single paired placeable
+             (base.G), not as separate open/close tags. -->
+        <source>Click <g id="1">here</g> to continue.</source>
+        <target>Click <g id="1">here</g> to continue.</target>
+      </trans-unit>
+      <trans-unit id="2">
+        <!-- Expect: a single standalone placeable (base.X) for the
+             line break, nothing either side of it editable through. -->
+        <source>A line break<x id="2"/>after it.</source>
+        <target>A line break<x id="2"/>after it.</target>
+      </trans-unit>
+      <trans-unit id="3">
+        <!-- Expect: two separate standalone placeables (base.Bx,
+             base.Ex) bracketing "bold" - unlike <g>, the text between
+             them stays plain/editable. -->
+        <source>Some <bx id="3"/>bold<ex id="3"/> text.</source>
+        <target>Some <bx id="3"/>bold<ex id="3"/> text.</target>
+      </trans-unit>
+      <trans-unit id="4">
+        <!-- Expect: CODE shown as a single opaque placeable
+             (xliff.UnknownXML). -->
+        <source>A placeholder: <ph id="4">CODE</ph> here.</source>
+        <target>A placeholder: <ph id="4">CODE</ph> here.</target>
+      </trans-unit>
+      <trans-unit id="5">
+        <!-- Expect: "opening" shown as a single opaque placeable
+             (xliff.UnknownXML, same as <ph> above) - an isolated tag
+             with no matching close in this unit. -->
+        <source>An <it id="5" pos="open">opening</it> isolated tag.</source>
+        <target>An <it id="5" pos="open">opening</it> isolated tag.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

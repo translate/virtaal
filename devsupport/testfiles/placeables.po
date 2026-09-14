@@ -1,0 +1,55 @@
+# Manual test file for placeable rendering/styling - one unit per
+# placeable type Virtaal recognises in plain text (see
+# virtaal/views/placeablesguiinfo.py's element_gui_map, and
+# translate.storage.placeables.general.parsers for what's reachable
+# outside XLIFF). Open each unit and check the placeable is visually
+# distinct (its own colour/background) from the surrounding plain
+# text. Placeable types that only ever appear in rich-markup formats
+# (XLIFF's <g>/<x>/<bx>/<ex>/<ph> et al) are in placeables.xliff
+# instead - a plain PO msgid can't produce them.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+#. Expect: a small pilcrow (paragraph mark) in place of the newline.
+msgid "First line.\nSecond line."
+msgstr "First line.\nSecond line."
+
+#. Expect: the URL styled/underlined as a link.
+msgid "See https://virtaal.org for details."
+msgstr "See https://virtaal.org for details."
+
+#. Expect: the address styled/underlined as a link.
+msgid "Contact us at translate-devel@lists.sourceforge.net."
+msgstr "Contact us at translate-devel@lists.sourceforge.net."
+
+#. Expect: the <a> and </a> tags picked out from the surrounding
+#. plain text (translate.storage.placeables.general.XMLTagPlaceable -
+#. generic markup detection, distinct from XLIFF's own <g>/<x>/etc).
+msgid "Click <a>here</a> to continue."
+msgstr "Click <a>here</a> to continue."
+
+#. Expect: %s picked out from the surrounding plain text.
+msgid "%s files copied"
+msgstr "%s files copied"
+
+#. Expect: %d picked out - a different Python format code, same
+#. placeable type as %s above.
+msgid "%d files removed"
+msgstr "%d files removed"
+
+#. Expect: %(count)s picked out - Python's named-parameter form.
+msgid "%(count)s files renamed"
+msgstr "%(count)s files renamed"
+
+#. Expect: %1 picked out - Qt's format style, a different placeable
+#. type/colour to the three Python ones above.
+msgid "%1 files moved"
+msgstr "%1 files moved"
+
+#. Expect: the same newline styling as the first unit, but on a fuzzy
+#. unit - checks the fuzzy row background and the placeable's own
+#. colour don't fight each other.
+#, fuzzy
+msgid "Fuzzy line one.\nFuzzy line two."
+msgstr "Fuzzy line one.\nFuzzy line two."

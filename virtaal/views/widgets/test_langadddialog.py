@@ -13,6 +13,17 @@ from gi.repository import Gtk
 from virtaal.views.widgets.langadddialog import LanguageAddDialog
 
 
+def test_nplurals_spinner_has_a_real_range():
+    # sbtn_nplurals had no adjustment configured in the .ui file, so its
+    # range defaulted to [0, 0] - any value set on it clamped straight
+    # back to zero.
+    dialog = LanguageAddDialog()
+
+    dialog.nplurals = 3
+
+    assert dialog.nplurals == 3
+
+
 def test_nplurals_setter_accepts_a_value():
     """_set_nplurals() was missing its value parameter entirely - the
     nplurals property setter raised TypeError on any assignment,

@@ -105,6 +105,9 @@ class StoreTreeView(Gtk.TreeView):
         new_width = max(1, allocation.width - 2)
         if column.get_fixed_width() != new_width:
             column.set_fixed_width(new_width)
+            path, editcol = self.get_cursor()
+            if path is not None:
+                self.set_cursor(path, editcol or column, start_editing=True)
 
     def reset_column_width(self):
         """Relax the FIXED-width column back to its placeholder size

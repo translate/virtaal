@@ -1,0 +1,8 @@
+msgid ""
+msgstr ""
+
+msgid "Is this drink a verb or a noun?"
+msgstr ""
+
+msgid "Surely this drink is a verb!"
+msgstr ""

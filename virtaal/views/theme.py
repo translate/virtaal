@@ -35,6 +35,15 @@ def str_to_rgba(s):
     return rgba
 
 
+def set_widget_fg_color(widget, color):
+    """Apply a foreground colour (any CSS colour string) to a widget -
+        Gtk.Widget.modify_fg() and Gdk.color_parse() are both
+        deprecated."""
+    provider = Gtk.CssProvider()
+    provider.load_from_data(('* { color: %s; }' % color).encode())
+    widget.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+
+
 _default_theme = {
     # Generic styling for a URL
     'url_fg': '#0000ff',   # Adwaita: #1b6acb

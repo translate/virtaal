@@ -5,7 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-from gi.repository import Gdk, Gtk, Pango
+from gi.repository import Gtk, Pango
 from translate.storage.placeables import StringElem, base, general, xliff
 
 from virtaal.views import theme
@@ -310,7 +310,7 @@ class NewlineGUI(StringElemGUI):
 
     def create_repr_widgets(self):
         lbl = Gtk.Label(label='¶')
-        lbl.modify_fg(Gtk.StateType.NORMAL, Gdk.color_parse(self.fg))  # foreground is light grey
+        theme.set_widget_fg_color(lbl, self.fg)  # foreground is light grey
         font_desc = get_role_font_description(self.textbox.role)
         lbl.modify_font(font_desc)
         self.textbox.get_pango_context().set_font_description(font_desc)
@@ -394,7 +394,9 @@ class UnknownXMLGUI(StringElemGUI):
 def update_style(widget):
     _style = widget.get_style_context()
     fg = _style.get_color(Gtk.StateType.NORMAL)
-    bg = _style.get_background_color(Gtk.StateType.NORMAL)
+    found, bg = _style.lookup_color('theme_base_color')
+    if not found:
+        bg = _style.get_background_color(Gtk.StateType.NORMAL)
     StringElemGUI.fg = theme.rgba_to_str(fg)
     StringElemGUI.bg = theme.rgba_to_str(bg)
     PhGUI.fg = theme.current_theme['markup_warning_fg']

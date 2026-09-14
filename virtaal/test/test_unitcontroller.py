@@ -179,7 +179,7 @@ class TestUnitController(TestScaffolding):
         self.unit_controller.load_unit(other_unit)  # a real reload below, not a same-unit no-op
         view = self.unit_controller.view
         calls = []
-        monkeypatch.setattr(view, 'override_background_color', lambda state, color: calls.append(color))
+        monkeypatch.setattr(view, '_set_fuzzy_background', lambda color: calls.append(color))
 
         view.load_unit(fuzzy_unit)
 
@@ -192,7 +192,7 @@ class TestUnitController(TestScaffolding):
         self.unit_controller.load_unit(other_unit)
         view = self.unit_controller.view
         calls = []
-        monkeypatch.setattr(view, 'override_background_color', lambda state, color: calls.append(color))
+        monkeypatch.setattr(view, '_set_fuzzy_background', lambda color: calls.append(color))
 
         self.unit_controller.load_unit(plain_unit)
 

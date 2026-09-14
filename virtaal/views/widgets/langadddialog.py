@@ -71,7 +71,7 @@ class LanguageAddDialog:
     def clear(self):
         for entry in (self.ent_langname, self.ent_langcode, self.ent_plural):
             entry.set_text('')
-        self.sbtn_nplurals.set_value(0)
+        self.sbtn_nplurals.set_value(2)
 
     def run(self, clear=True):
         if clear:

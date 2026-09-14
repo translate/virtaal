@@ -2,6 +2,13 @@
 <interface domain="virtaal">
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkAdjustment" id="adjustment_nplurals">
+    <property name="lower">1</property>
+    <property name="upper">6</property>
+    <property name="value">2</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">1</property>
+  </object>
   <object class="GtkDialog" id="LanguageAdder">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -196,6 +203,7 @@
                             <property name="can_focus">True</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
+                            <property name="adjustment">adjustment_nplurals</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>

@@ -45,7 +45,9 @@ class TerminologyGUIInfo(StringElemGUI):
         from gi.repository import Gtk
         _style = widget.get_style_context()
         fg = _style.get_color(Gtk.StateType.NORMAL)
-        bg = _style.get_background_color(Gtk.StateType.NORMAL)
+        found, bg = _style.lookup_color('theme_base_color')
+        if not found:
+            bg = _style.get_background_color(Gtk.StateType.NORMAL)
         if is_inverse(fg, bg):
             self.fg = _inverse_fg
             self.bg = _inverse_bg

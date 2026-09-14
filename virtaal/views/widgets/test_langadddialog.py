@@ -23,3 +23,25 @@ def test_nplurals_setter_accepts_a_value():
     dialog.nplurals = 3
 
     assert dialog.sbtn_nplurals.get_value() == 3
+
+
+def _dialog_with_langcode(code):
+    dialog = LanguageAddDialog.__new__(LanguageAddDialog)
+    dialog.ent_langcode = Gtk.Entry()
+    dialog.ent_langcode.set_text(code)
+    return dialog
+
+
+def test_check_input_sanity_rejects_a_non_ascii_langcode():
+    """check_input_sanity() used str(code, 'ascii') to validate the code
+    - a Python 2 idiom for decoding bytes that raises TypeError on a
+    str in Python 3, rather than reporting the code as invalid (#3532)."""
+    dialog = _dialog_with_langcode('ém')
+
+    assert dialog.check_input_sanity() != ''
+
+
+def test_check_input_sanity_accepts_an_ascii_langcode():
+    dialog = _dialog_with_langcode('en')
+
+    assert dialog.check_input_sanity() == ''

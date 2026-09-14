@@ -411,6 +411,7 @@ class TermAddDialog:
             self.dialog.set_transient_for(parent)
 
         self.dialog.show()
+        self.dialog.present()
         self._on_entry_changed(None)
         self.ent_source.grab_focus()
         response = self.dialog.run()

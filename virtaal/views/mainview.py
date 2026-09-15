@@ -196,6 +196,12 @@ class MainView(BaseView):
         self.gui.get_object('mnu_tutorial').connect('activate', self._on_tutorial)
         self.gui.get_object('mnu_localization_guide').connect('activate', self._on_localization_guide)
         self.gui.get_object('mnu_report_bug').connect('activate', self._on_report_bug)
+        mnu_show_logs = self.gui.get_object('mnu_show_logs')
+        # Matches pan_app.py's own gate on writing these logs at all.
+        if platform.is_windows and platform.is_frozen:
+            mnu_show_logs.connect('activate', self._on_show_logs)
+        else:
+            mnu_show_logs.hide()
         self.gui.get_object('mnu_shortcuts').connect('activate', self._on_shortcuts)
         self.gui.get_object('mnu_about').connect('activate', self._on_help_about)
 
@@ -997,6 +1003,45 @@ class MainView(BaseView):
         from virtaal.support import openmailto
         from virtaal.support.bug_report import build_bug_report_url
         openmailto.open(build_bug_report_url())
+
+    def _on_show_logs(self, _widget=None):
+        # Only reachable once mnu_show_logs's own gate is satisfied,
+        # and pan_app.py writes a launch marker to both files at import
+        # time regardless - always non-empty here.
+        log_names = ('stdout_virtaal.log', 'stderr_virtaal.log')
+        found = []
+        for name in log_names:
+            path = os.path.join(pan_app.get_config_dir(), name)
+            try:
+                with open(path, encoding='utf-8', errors='replace') as f:
+                    content = f.read()
+            except OSError:
+                continue
+            if content:
+                found.append((name, content))
+
+        dialog = Gtk.Dialog(title=_("Logs"), transient_for=self.main_window)
+        dialog.add_button(_("_Close"), Gtk.ResponseType.CLOSE)
+        dialog.set_default_size(700, 500)
+
+        textview = Gtk.TextView()
+        textview.set_editable(False)
+        textview.set_monospace(True)
+        textview.set_left_margin(6)
+        textview.set_top_margin(6)
+        textview.get_buffer().set_text(
+            '\n\n'.join('=== %s ===\n%s' % (name, content) for name, content in found)
+        )
+
+        scrolled = Gtk.ScrolledWindow()
+        scrolled.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        scrolled.add(textview)
+        dialog.get_content_area().pack_start(scrolled, True, True, 0)
+
+        dialog.show_all()
+        dialog.present()
+        dialog.run()
+        dialog.destroy()
 
     def _on_store_closed(self, store_controller):
         for widget_name in ('mnu_saveas', 'mnu_close', 'mnu_update', 'mnu_properties', 'mnu_binary_export',

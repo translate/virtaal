@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-15 22:06+0100\n"
+"POT-Creation-Date: 2026-09-15 22:49+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -241,6 +241,10 @@ msgstr ""
 
 #: ../share/virtaal/virtaal.ui.h
 msgid "Report a _Bug"
+msgstr ""
+
+#: ../share/virtaal/virtaal.ui.h
+msgid "Show Lo_gs"
 msgstr ""
 
 #: ../share/virtaal/virtaal.ui.h
@@ -1876,6 +1880,14 @@ msgstr ""
 msgid ""
 "Your settings file could not be read, so Virtaal started with default "
 "settings. The old file was kept at: %s"
+msgstr ""
+
+#: ../virtaal/views/mainview.py
+msgid "Logs"
+msgstr ""
+
+#: ../virtaal/views/mainview.py
+msgid "_Close"
 msgstr ""
 
 #. l10n: This refers to the 'mode' that determines how Virtaal moves

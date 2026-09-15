@@ -60,7 +60,16 @@ def _prop_value(node, prop_name):
     for prop in node.iterfind('prop'):
         if prop.get(_OOR + 'name') == prop_name:
             value = prop.find('value')
-            return value.text if value is not None else None
+            if value is None:
+                return None
+            # A string-list's <value> is usually plain space-separated
+            # text, but some real files (tr_TR, zu_ZA) instead nest one
+            # <it> element per item - only .text would silently return
+            # nothing for those.
+            items = value.findall('it')
+            if items:
+                return ' '.join(it.text or '' for it in items)
+            return value.text
     return None
 
 
@@ -76,7 +85,10 @@ def parse_dictionaries_xcu(xml_bytes):
     result = []
     for node in root.iter('node'):
         name = node.get(_OOR + 'name', '')
-        if not name.startswith('HunSpellDic_'):
+        # Usually a bare "HunSpellDic_xx", but pl_PL's is
+        # "org.openoffice.pl.HunSpellDic_pl_PL" - match the substring
+        # rather than requiring it at the very start.
+        if 'HunSpellDic_' not in name:
             continue
         if _prop_value(node, 'Format') != 'DICT_SPELL':
             continue

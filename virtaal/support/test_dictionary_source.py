@@ -229,6 +229,66 @@ def test_find_dictionary_matches_a_bare_language_against_regional_variants():
     assert result == ('ca', ['ca.aff', 'ca.dic'])
 
 
+# Actual copy of pl_PL/dictionaries.xcu (blob
+# 5dcbd4d3de75e9438369329e80b8e6384c183d28) - its node names are
+# prefixed ("org.openoffice.pl.HunSpellDic_pl_PL"), not bare.
+PL_XCU = b"""<?xml version="1.0" encoding="UTF-8"?>
+<oor:component-data xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema" oor:name="Linguistic" oor:package="org.openoffice.Office">
+ <node oor:name="ServiceManager">
+    <node oor:name="Dictionaries">
+        <node oor:name="org.openoffice.pl.HunSpellDic_pl_PL" oor:op="fuse">
+            <prop oor:name="Locations" oor:type="oor:string-list">
+                <value>%origin%/pl_PL.aff %origin%/pl_PL.dic</value>
+            </prop>
+            <prop oor:name="Format" oor:type="xs:string">
+                <value>DICT_SPELL</value>
+            </prop>
+            <prop oor:name="Locales" oor:type="oor:string-list">
+                <value>pl-PL</value>
+            </prop>
+        </node>
+    </node>
+ </node>
+</oor:component-data>
+"""
+
+# Actual copy of tr_TR/dictionaries.xcu (blob
+# e69f2834515b273de95127d11897929c7dcd4ae7) - Locales is a list of
+# <it> elements, not plain space-separated text.
+TR_XCU = b"""<?xml version="1.0" encoding="UTF-8"?>
+<oor:component-data xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema" oor:name="Linguistic" oor:package="org.openoffice.Office">
+ <node oor:name="ServiceManager">
+    <node oor:name="Dictionaries">
+        <node oor:name="HunSpellDic_tr_TR" oor:op="fuse">
+            <prop oor:name="Locations" oor:type="oor:string-list">
+                <value>%origin%/tr_TR.aff %origin%/tr_TR.dic</value>
+            </prop>
+            <prop oor:name="Format" oor:type="xs:string">
+                <value>DICT_SPELL</value>
+            </prop>
+            <prop oor:name="Locales" oor:type="oor:string-list">
+                <value><it>tr-TR</it><it>tr</it></value>
+            </prop>
+        </node>
+    </node>
+ </node>
+</oor:component-data>
+"""
+
+
+def test_parse_dictionaries_xcu_matches_a_namespaced_node_name():
+    entries = parse_dictionaries_xcu(PL_XCU)
+    assert len(entries) == 1
+    assert entries[0]['files'] == ['pl_PL.aff', 'pl_PL.dic']
+    assert entries[0]['locales'] == ['pl_PL']
+
+
+def test_parse_dictionaries_xcu_reads_locales_given_as_it_elements():
+    entries = parse_dictionaries_xcu(TR_XCU)
+    assert len(entries) == 1
+    assert entries[0]['locales'] == ['tr_TR', 'tr']
+
+
 def test_download_dictionary_cleans_up_partial_write_on_failure(monkeypatch, tmp_path):
     """de_DE_frami has two files - if the second one fails, the first
     must not be left behind for a later run to mistake as a complete,

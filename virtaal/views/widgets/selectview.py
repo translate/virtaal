@@ -196,6 +196,9 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
             itr = self._model.iter_next(itr)
         if found and itr and self._model.iter_is_valid(itr):
             self.get_selection().select_iter(itr)
+            # select_iter() alone doesn't move the keyboard cursor -
+            # Space/Enter act on get_cursor()'s row, not the selection.
+            self.set_cursor(self._model.get_path(itr))
             self.selected_item = current
         else:
             self.selected_item = None

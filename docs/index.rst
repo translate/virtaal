@@ -49,7 +49,8 @@ or build from source - see :doc:`building`.
 
 Contact
 =======
-- `Report bugs <https://github.com/translate/virtaal/issues/new>`_
+- `Report bugs <https://github.com/translate/virtaal/issues/new?template=bug_report.yml>`_
+- `Suggest a feature <https://github.com/translate/virtaal/issues/new?template=feature_request.yml>`_
 
 .. _index#contributing:
 
@@ -71,4 +72,3 @@ reading the instructions on the following pages:
    testing
    development
    development_plans
-   suggestions

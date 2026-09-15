@@ -11,10 +11,10 @@ an in-memory {word: [(part_of_speech, [synonyms]), ...]} lookup.
 Deliberately ignores the accompanying .idx file - it's only an
 optimisation for random-access reads of a .dat too big to load
 whole, and real repo folders don't reliably ship one (LibreOffice's
-own pl_PL, for one, has no .idx alongside its real .dat). These
-thesauruses are a few MB at most - loading the whole file once and
-keying a dict by word is simpler, and just as fast for a single
-look-up, as maintaining the .idx's byte-offset index would be.
+own pl_PL, for one, has no .idx alongside its real .dat). Real sizes
+vary a lot - English's own is 18MB raw - but loading the whole file
+once and keying a dict by word is simpler, and just as fast for a
+single look-up, as maintaining the .idx's byte-offset index would be.
 
 Format (matches LibreOffice's own pl_PL/th_pl_PL_v2.dat, not just
 mythes' own README's higher-level description):

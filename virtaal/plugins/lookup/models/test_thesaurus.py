@@ -280,6 +280,29 @@ def test_on_download_does_not_start_a_second_thread_while_one_is_in_flight(monke
     assert threads[0].started
 
 
+def test_on_download_finished_starts_parsing_the_dat_it_just_fetched(monkeypatch, tmp_path):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    _write_dat(tmp_path, 'pl_PL', SAMPLE_DAT)
+    threads = _patch_threads(monkeypatch)
+    model = _make_model()
+
+    model._on_download_finished('pl_PL', True)
+
+    assert len(threads) == 1
+    assert threads[0].target == model._parse
+    assert threads[0].args == ('pl_PL', str(tmp_path / 'pl_PL' / 'th_sample.dat'))
+
+
+def test_on_download_finished_does_not_parse_after_a_failed_download(monkeypatch, tmp_path):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    threads = _patch_threads(monkeypatch)
+    model = _make_model()
+
+    model._on_download_finished('pl_PL', False)
+
+    assert threads == []
+
+
 def test_init_auto_downloads_for_the_current_source_and_target_languages(monkeypatch, tmp_path):
     monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
     threads = _patch_threads(monkeypatch)
@@ -291,15 +314,18 @@ def test_init_auto_downloads_for_the_current_source_and_target_languages(monkeyp
     assert all(t.started for t in threads)
 
 
-def test_init_skips_auto_download_when_already_cached(monkeypatch, tmp_path):
+def test_init_parses_instead_of_downloading_when_already_cached(monkeypatch, tmp_path):
     monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
     _write_dat(tmp_path, 'pl_PL', SAMPLE_DAT)
     threads = _patch_threads(monkeypatch)
 
     model = _make_model(source_lang='pl_PL', target_lang='en')
 
-    assert len(threads) == 1
-    assert threads[0].args[0] == 'en'
+    assert len(threads) == 2
+    check_threads = [t for t in threads if t.target == model._check]
+    parse_threads = [t for t in threads if t.target == model._parse]
+    assert [t.args[0] for t in check_threads] == ['en']
+    assert [t.args[0] for t in parse_threads] == ['pl_PL']
 
 
 def test_lang_changed_signal_triggers_an_auto_download(monkeypatch, tmp_path):

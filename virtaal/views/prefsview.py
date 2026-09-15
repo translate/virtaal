@@ -67,6 +67,10 @@ class PreferencesView(BaseView, GObjectWrapper):
         # default, which is how a plugin's "Configure..." button ended
         # up hidden - grow to fit instead.
         self._widgets['scrwnd_placeables'].set_propagate_natural_width(True)
+        # The .ui file marks this focusable, which swallows Tab/Down
+        # meant for the list inside it - the scroller chrome itself
+        # has no reason to be a stop in the focus chain.
+        self._widgets['scrwnd_placeables'].set_can_focus(False)
         self._widgets['scrwnd_placeables'].add(self.placeables_select)
         self._widgets['scrwnd_placeables'].show_all()
 
@@ -75,6 +79,7 @@ class PreferencesView(BaseView, GObjectWrapper):
         self.plugins_select.connect('item-enabled', self._on_plugin_toggled)
         self.plugins_select.connect('item-disabled', self._on_plugin_toggled)
         self._widgets['scrwnd_plugins'].set_propagate_natural_width(True)
+        self._widgets['scrwnd_plugins'].set_can_focus(False)
         self._widgets['scrwnd_plugins'].add(self.plugins_select)
         self._widgets['scrwnd_plugins'].show_all()
 

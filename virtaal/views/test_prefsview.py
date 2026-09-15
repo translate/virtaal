@@ -61,3 +61,21 @@ def test_placeables_page_scrolled_window_propagates_natural_width():
     view._init_placeables_page()
 
     assert view._widgets['scrwnd_placeables'].get_property('propagate-natural-width')
+
+
+def test_plugins_page_scrolled_window_is_not_focusable():
+    # The .ui file marks it focusable, which swallows Tab/Down meant
+    # for the list inside it.
+    view = _load_widgets()
+
+    view._init_plugins_page()
+
+    assert not view._widgets['scrwnd_plugins'].get_can_focus()
+
+
+def test_placeables_page_scrolled_window_is_not_focusable():
+    view = _load_widgets()
+
+    view._init_placeables_page()
+
+    assert not view._widgets['scrwnd_placeables'].get_can_focus()

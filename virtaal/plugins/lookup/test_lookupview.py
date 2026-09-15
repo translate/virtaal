@@ -8,6 +8,12 @@
 from gi.repository import Gtk, Pango
 
 from virtaal.plugins.lookup.lookupview import LookupView
+from virtaal.views.widgets.wordatcursor import WordAtCursorSelector
+
+
+class _FakeIter:
+    def inside_word(self):
+        return False
 
 
 class _FakeBuffer:
@@ -22,6 +28,15 @@ class _FakeBuffer:
 
     def get_text(self, *args, **kwargs):
         return self._text
+
+    def get_insert(self):
+        # Only reached when get_has_selection() is already False -
+        # select_word_at_cursor() only needs inside_word() to decide
+        # there's nothing to select.
+        return None
+
+    def get_iter_at_mark(self, mark):
+        return _FakeIter()
 
 
 class _FakeTextbox:
@@ -58,6 +73,7 @@ def _make_view(plugins):
     view = LookupView.__new__(LookupView)
     view.controller = _FakeController(plugins)
     view.lang_controller = _FakeLangController()
+    view._word_selector = WordAtCursorSelector()
     return view
 
 
@@ -81,3 +97,41 @@ def test_populate_popup_ellipsizes_a_long_selection():
     label_widget = item.get_child()
     assert label_widget.get_ellipsize() == Pango.EllipsizeMode.MIDDLE
     assert label_widget.get_max_width_chars() == 40
+
+
+class _RealTextbox:
+    """A real Gtk.TextBuffer, not a fake - GTK's own word-boundary
+    logic (inside_word()/starts_word()/ends_word()) is exactly what's
+    under test here, not worth reimplementing in a fake."""
+
+    def __init__(self, text, cursor_offset, role='source'):
+        self.buffer = Gtk.TextBuffer()
+        self.buffer.set_text(text)
+        self.buffer.place_cursor(self.buffer.get_iter_at_offset(cursor_offset))
+        self.role = role
+
+
+def test_populate_popup_selects_the_word_under_the_cursor_when_nothing_is_selected():
+    # A plain right-click (nothing dragged out first) shouldn't
+    # require selecting a word first - the spell checker's own
+    # right-click suggestions already work this way.
+    view = _make_view({'weblookup': _FakeModel()})
+    menu = Gtk.Menu()
+    textbox = _RealTextbox('The quick brown fox', cursor_offset=6)
+
+    view._on_populate_popup(textbox, menu)
+
+    start, end = textbox.buffer.get_selection_bounds()
+    assert textbox.buffer.get_text(start, end, False) == 'quick'
+    assert menu.get_children() != []
+
+
+def test_populate_popup_does_nothing_when_the_cursor_is_not_inside_a_word():
+    view = _make_view({'weblookup': _FakeModel()})
+    menu = Gtk.Menu()
+    textbox = _RealTextbox('The quick brown fox', cursor_offset=3)
+
+    view._on_populate_popup(textbox, menu)
+
+    assert not textbox.buffer.get_has_selection()
+    assert menu.get_children() == []

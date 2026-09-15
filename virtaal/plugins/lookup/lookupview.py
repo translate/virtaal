@@ -12,6 +12,7 @@ from gi.repository import Gtk, Pango
 from virtaal.common.utils import get_unicode
 from virtaal.views.baseview import BaseView
 from virtaal.views.widgets.selectdialog import SelectDialog
+from virtaal.views.widgets.wordatcursor import WordAtCursorSelector
 
 
 class LookupView(BaseView):
@@ -27,6 +28,7 @@ class LookupView(BaseView):
 
         self._textbox_ids = []
         self._unitview_ids = []
+        self._word_selector = WordAtCursorSelector()
         unitview = controller.main_controller.unit_controller.view
         if unitview.sources:
             self._connect_to_textboxes(unitview, unitview.sources)
@@ -39,6 +41,10 @@ class LookupView(BaseView):
 
     def _connect_to_textboxes(self, unitview, textboxes):
         for textbox in textboxes:
+            self._textbox_ids.append((
+                textbox,
+                textbox.connect('button-press-event', self._word_selector.on_button_press)
+            ))
             self._textbox_ids.append((
                 textbox,
                 textbox.connect('populate-popup', self._on_populate_popup)
@@ -106,6 +112,8 @@ class LookupView(BaseView):
 
     def _on_populate_popup(self, textbox, menu):
         buf = textbox.buffer
+        if not buf.get_has_selection():
+            self._word_selector.select_word_at_cursor(buf)
         if not buf.get_has_selection():
             return
 

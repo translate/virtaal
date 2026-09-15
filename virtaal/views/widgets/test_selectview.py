@@ -27,7 +27,10 @@ def test_select_item_finds_a_row_that_is_not_the_first():
 
 
 def _make_view():
-    return SelectView(items=[{'name': 'A', 'enabled': True}, {'name': 'B', 'enabled': True}])
+    return SelectView(items=[
+        {'name': 'A', 'enabled': True, 'data': 'a'},
+        {'name': 'B', 'enabled': True, 'data': 'b'},
+    ])
 
 
 def test_selection_change_does_not_start_editing(monkeypatch):
@@ -93,6 +96,19 @@ def test_select_item_finds_a_row_that_is_not_the_first():
     sview.select_item(target)
 
     assert sview.get_selected_item() == target
+
+
+def test_select_item_matches_a_row_whose_enabled_state_has_changed():
+    # Toggling a row's own checkbox rebuilds the model from scratch,
+    # then re-selects using a snapshot taken just before the toggle -
+    # matching on the whole item (including 'enabled', the very field
+    # that just flipped) meant it could never find itself again.
+    sview = _make_view()
+    stale = dict(sview.get_all_items()[1], enabled=False)  # the real row is enabled=True
+
+    sview.select_item(stale)
+
+    assert sview.get_selected_item()['data'] == stale['data']
 
 
 def test_configure_button_responds_to_the_clicked_signal():

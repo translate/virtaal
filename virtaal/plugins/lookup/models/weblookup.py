@@ -138,8 +138,11 @@ class WebLookupConfigDialog:
             self.dialog.set_transient_for(parent)
             self.dialog.set_icon(parent.get_toplevel().get_icon())
 
-        self._init_widgets()
-        self._init_treeview()
+        already_initialized = bool(self.tvw_urls.get_columns())
+        if not already_initialized:
+            self._init_widgets()
+            self._init_treeview()
+        self.lst_urls = self.tvw_urls.get_model()
 
     def _get_widgets(self):
         widget_names = ('btn_url_add', 'btn_url_remove', 'tvw_urls')

@@ -135,30 +135,48 @@ class StoreTreeView(Gtk.TreeView):
         selected_path = isinstance(selected[1], Gtk.TreeIter) and model.get_path(selected[1]) or None
 
         if selected[1] is None or (selected_path and selected_path != newpath):
-            #logging.debug('select_index()->self.set_cursor(path="%s")' % (newpath))
-            # XXX: Both of the "self.set_cursor()" calls below are necessary in
-            #      order to have both bug 869 fixed and keep search highlighting
-            #      in working order. After exhaustive inspection of the
-            #      interaction between emitted signals involved, Friedel and I
-            #      still have no idea why exactly it is needed. This just seems
-            #      to be the correct GTK black magic incantation to make it
-            #      "work".
-            #
-            # No Gtk.main_iteration() flush here - it re-entered
-            # UnitView.load_unit()'s signal-blocking window and
-            # spuriously marked a just-opened file modified.
-            self.set_cursor(newpath, self.get_columns()[0], start_editing=True)
-            self.get_model().set_editable(newpath)
-            # Guard against change_cursor() below (deferred via idle_add)
-            # running after a different file's model is now current.
-            scheduled_model = model
-            def change_cursor():
-                self._waiting_for_row_change -= 1
-                if self.get_model() is not scheduled_model:
-                    return
-                self.set_cursor(newpath, self.get_columns()[0], start_editing=True)
-            self._waiting_for_row_change += 1
-            GLib.idle_add(change_cursor, priority=GLib.PRIORITY_DEFAULT_IDLE)
+            self._start_editing_cycle(model, newpath)
+
+    def _start_editing_cycle(self, model, path):
+        #logging.debug('_start_editing_cycle()->self.set_cursor(path="%s")' % (path))
+        # XXX: Both of the "self.set_cursor()" calls below are necessary in
+        #      order to have both bug 869 fixed and keep search highlighting
+        #      in working order. After exhaustive inspection of the
+        #      interaction between emitted signals involved, Friedel and I
+        #      still have no idea why exactly it is needed. This just seems
+        #      to be the correct GTK black magic incantation to make it
+        #      "work".
+        #
+        # No Gtk.main_iteration() flush here - it re-entered
+        # UnitView.load_unit()'s signal-blocking window and
+        # spuriously marked a just-opened file modified.
+        self.set_cursor(path, self.get_columns()[0], start_editing=True)
+        self.get_model().set_editable(path)
+        # Guard against change_cursor() below (deferred via idle_add)
+        # running after a different file's model is now current.
+        scheduled_model = model
+        def change_cursor():
+            self._waiting_for_row_change -= 1
+            if self.get_model() is not scheduled_model:
+                return
+            self.set_cursor(path, self.get_columns()[0], start_editing=True)
+        self._waiting_for_row_change += 1
+        GLib.idle_add(change_cursor, priority=GLib.PRIORITY_DEFAULT_IDLE)
+
+    def refresh_current_row(self):
+        """Redo the current row's editing cycle in place, without
+        changing which row is selected - e.g. after a plugin has
+        changed the current unit's rendered content in place (a
+        terminology match appearing/disappearing, #3240). select_index()
+        skips its own editing cycle when the path hasn't changed, so
+        that case has to be driven directly."""
+        model = self.get_model()
+        if not model or not isinstance(model, StoreTreeModel):
+            return
+        path, _column = self.get_cursor()
+        if path is None:
+            return
+        self._start_editing_cycle(model, path)
 
     def set_model(self, storemodel):
         if storemodel:

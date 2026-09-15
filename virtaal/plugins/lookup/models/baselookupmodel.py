@@ -20,6 +20,12 @@ class BaseLookupModel:
     only model that currently sets its own; every model needs this
     attribute to exist at all, not just the ones with something to
     configure - select_backends() reads it off every enabled model."""
+    TOP_LEVEL = False
+    """If True, this model's menu items sit directly in the
+    right-click menu, as a sibling of the "Look-up" submenu that
+    holds everyone else's - for something specific enough (e.g.
+    thesaurus synonyms) that nesting it one level deeper, alongside
+    unrelated web look-ups, would just make it slower to reach."""
 
     # INITIALIZERS #
     def __init__(self, internal_name, controller):

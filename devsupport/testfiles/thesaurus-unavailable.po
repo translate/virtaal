@@ -1,0 +1,38 @@
+# A PO file for manually testing the Thesaurus look-up plugin's
+# "confirmed unavailable" path - source (English) has a real thesaurus
+# in LibreOffice's dictionaries repo, but the target (Afrikaans) has
+# none at all (confirmed directly against the real repo, not assumed -
+# hunspell's affix-based approach doesn't suit Zulu/Afrikaans well
+# enough for one to exist there). Right-clicking an English word should
+# offer real synonyms; right-clicking the Afrikaans translation should
+# show no Thesaurus entry at all, not a "Download" button that would
+# only ever fail.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2026-09-15 00:00+0000\n"
+"PO-Revision-Date: 2026-09-15 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: af_ZA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Right-click "happy" for synonyms; "gelukkig" should show no Thesaurus entry.
+msgid "She seemed very happy today."
+msgstr "Sy het vandag baie gelukkig gelyk."
+
+#. Right-click "beautiful" for synonyms; "pragtige" should show no Thesaurus entry.
+msgid "It was a beautiful sunset."
+msgstr "Dit was 'n pragtige sonsondergang."
+
+#. Right-click "quick" for synonyms; "vinnig" should show no Thesaurus entry.
+msgid "He gave a quick reply."
+msgstr "Hy het vinnig geantwoord."
+
+#. Right-click "small" for synonyms; "klein" should show no Thesaurus entry.
+msgid "It was a small mistake."
+msgstr "Dit was 'n klein fout."

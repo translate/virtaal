@@ -132,22 +132,30 @@ class LookupView(BaseView):
         menu_item.get_child().set_max_width_chars(40)
 
         plugins = self.controller.plugin_controller.plugins
-        menu_items = []
+        top_level_items = []
+        nested_items = []
         names = list(plugins.keys())
         names.sort()
         for name in names:
-            menu_items.extend(
-                plugins[name].create_menu_items(selection, role, srclang, tgtlang, textbox)
-            )
-        if not menu_items:
+            items = plugins[name].create_menu_items(selection, role, srclang, tgtlang, textbox)
+            if getattr(plugins[name], 'TOP_LEVEL', False):
+                top_level_items.extend(items)
+            else:
+                nested_items.extend(items)
+        if not top_level_items and not nested_items:
             return
-
-        for i in menu_items:
-            lookup_menu.append(i)
 
         sep = Gtk.SeparatorMenuItem()
         sep.show()
         menu.append(sep)
-        menu_item.set_submenu(lookup_menu)
-        menu_item.show_all()
-        menu.append(menu_item)
+
+        for i in top_level_items:
+            i.show()
+            menu.append(i)
+
+        if nested_items:
+            for i in nested_items:
+                lookup_menu.append(i)
+            menu_item.set_submenu(lookup_menu)
+            menu_item.show_all()
+            menu.append(menu_item)

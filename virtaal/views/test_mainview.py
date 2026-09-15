@@ -102,6 +102,18 @@ def test_report_bug_opens_the_prefilled_template(monkeypatch):
     assert 'template=bug_report.yml' in opened[0]
 
 
+def test_show_logs_displays_existing_log_content(monkeypatch, tmp_path):
+    from virtaal.common import pan_app
+
+    (tmp_path / 'stdout_virtaal.log').write_text('hello from stdout')
+    monkeypatch.setattr(pan_app, 'get_config_dir', lambda: str(tmp_path))
+    monkeypatch.setattr(Gtk.Dialog, 'run', lambda self: Gtk.ResponseType.CLOSE)
+    view = MainView.__new__(MainView)
+    view.main_window = None
+
+    view._on_show_logs()
+
+
 def test_show_save_dialog_returns_none_on_cancel():
     view = _make_view_with_chooser(
         '_save_chooser', _FakeChooser(Gtk.ResponseType.CANCEL))

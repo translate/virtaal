@@ -7,7 +7,7 @@
 
 import logging
 
-from gi.repository import Gtk
+from gi.repository import Gtk, Pango
 
 from virtaal.common.utils import get_unicode
 from virtaal.views.baseview import BaseView
@@ -115,12 +115,13 @@ class LookupView(BaseView):
         tgtlang   = self.lang_controller.target_lang.code
 
         lookup_menu = Gtk.Menu()
-        if len(selection) > 40:
-            #l10n: The menu entry when looking up a very long selection of text. Here start and end are snippets from the start and end of the long selection.
-            selection_entry = _('Look-up "%(start)s … %(end)s"') % {'start': selection[:15], 'end': selection[-15:]}
-        else:
-            selection_entry = _('Look-up "%(selection)s"') % {'selection': selection}
+        selection_entry = _('Look-up "%(selection)s"') % {'selection': selection}
         menu_item = Gtk.MenuItem(selection_entry)
+        # Pango ellipsizes on grapheme clusters, unlike a raw string
+        # slice - safer for combining marks (e.g. Arabic niqqud,
+        # Devanagari conjuncts) than truncating the string ourselves.
+        menu_item.get_child().set_ellipsize(Pango.EllipsizeMode.MIDDLE)
+        menu_item.get_child().set_max_width_chars(40)
 
         plugins = self.controller.plugin_controller.plugins
         menu_items = []

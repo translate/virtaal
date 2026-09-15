@@ -7,7 +7,7 @@
 
 from locale import strxfrm
 
-from gi.repository import GObject, Gtk
+from gi.repository import Gdk, GObject, Gtk
 from gi.repository.GObject import TYPE_PYOBJECT
 
 from virtaal.common import GObjectWrapper
@@ -73,6 +73,7 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
 
     def _connect_events(self):
         self.get_selection().connect('changed', self._on_selection_change)
+        self.connect('key-press-event', self._on_key_press)
 
     def _set_defaults(self):
         self.set_rules_hint(True)
@@ -237,3 +238,17 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
 
     def do_row_activated(self, path, column):
         self.set_cursor(path, self.namedesc_col, start_editing=True)
+
+    def _on_key_press(self, widget, event):
+        # GTK's Space/Enter handling depends on the cursor's column,
+        # which is always namedesc_col here - handle both explicitly.
+        path, _column = self.get_cursor()
+        if path is None:
+            return False
+        if event.keyval in (Gdk.KEY_space, Gdk.KEY_KP_Space):
+            self._on_item_toggled(None, path)
+            return True
+        if event.keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter):
+            self.do_row_activated(path, self.namedesc_col)
+            return True
+        return False

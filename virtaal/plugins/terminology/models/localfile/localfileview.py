@@ -354,6 +354,7 @@ class TermAddDialog:
 
         store.save()
         self.term_model.matcher.extendtm(unit)
+        self.term_model.controller.rescan_current_unit()
         #logging.debug('Added new term: [%s] => [%s], file=%s' % (source, target, store.filename))
 
     def reset(self):

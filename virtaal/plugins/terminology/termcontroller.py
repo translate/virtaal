@@ -8,6 +8,7 @@
 import os.path
 
 from gi.repository import GObject
+from translate.storage.placeables import parse as elem_parse
 from translate.storage.placeables import terminology
 
 from virtaal.common import GObjectWrapper
@@ -51,14 +52,9 @@ class TerminologyController(BaseController):
         self._load_models()
 
     def _connect_signals(self):
-        def lang_changed(ctrlr, lang):
-            for src in self.main_controller.unit_controller.view.sources:
-                src.elem.remove_type(terminology.TerminologyPlaceable)
-                src.refresh()
-
         lang_controller = self.main_controller.lang_controller
-        lang_controller.connect('source-lang-changed', lang_changed)
-        lang_controller.connect('target-lang-changed', lang_changed)
+        lang_controller.connect('source-lang-changed', lambda *args: self.rescan_current_unit())
+        lang_controller.connect('target-lang-changed', lambda *args: self.rescan_current_unit())
 
     def _load_models(self):
         self.plugin_controller = PluginController(self, 'TerminologyModel')
@@ -71,6 +67,7 @@ class TerminologyController(BaseController):
         self.plugin_controller.PLUGIN_INTERFACE = BaseTerminologyModel
         self.plugin_controller.PLUGIN_MODULES = ['virtaal_plugins.terminology.models', 'virtaal.plugins.terminology.models']
         self.plugin_controller.get_disabled_plugins = lambda *args: self.disabled_model_names
+        self.plugin_controller.connect('plugin-enabled', lambda *args: self.rescan_current_unit())
         self.plugin_controller.load_plugins()
 
 
@@ -79,6 +76,20 @@ class TerminologyController(BaseController):
         self.view.destroy()
         self.plugin_controller.shutdown()
         self.placeables_controller.remove_parsers(terminology.parsers)
+
+    def rescan_current_unit(self):
+        """Force the current unit's terminology to be re-scanned (#3240).
+
+        remove_type() alone only strips stale matches - refresh() re-renders
+        the tree but never re-runs the placeable parsers, so parse() is what
+        actually re-detects current ones."""
+        unit_controller = getattr(self.main_controller, 'unit_controller', None)
+        if unit_controller is None:
+            return
+        for src in unit_controller.view.sources:
+            src.elem.remove_type(terminology.TerminologyPlaceable)
+            elem_parse(src.elem, terminology.parsers)
+            src.refresh(update=True)
 
 
     # EVENT HANDLERS #

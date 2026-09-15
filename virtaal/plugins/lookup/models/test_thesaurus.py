@@ -10,7 +10,7 @@ from urllib.error import HTTPError
 from gi.repository import Gtk
 
 from virtaal.plugins.lookup.models import thesaurus as thesaurus_module
-from virtaal.plugins.lookup.models.thesaurus import LookupModel
+from virtaal.plugins.lookup.models.thesaurus import _WORD_ANNOTATION_RE, LookupModel
 from virtaal.support import mythes
 
 SAMPLE_DAT = (
@@ -187,6 +187,36 @@ def test_create_menu_items_offers_synonyms_once_a_thesaurus_is_parsed():
     assert len(items) == 1
     labels = [i.get_label() for i in items[0].get_submenu().get_children()]
     assert labels == ['abaja', 'sukmana', 'płaszcz']
+
+
+def test_word_annotation_re_strips_a_space_preceded_qualifier():
+    assert _WORD_ANNOTATION_RE.sub('', 'bantam (similar term)') == 'bantam'
+
+
+def test_word_annotation_re_leaves_a_glued_word_form_variant_alone():
+    # French/German both glue an optional word-form variant directly
+    # onto the base word with no space ("plier(se)" for "se plier",
+    # "Dieberei(en)" for the plural) - structurally different from a
+    # detachable qualifier, and not something this should touch.
+    assert _WORD_ANNOTATION_RE.sub('', 'plier(se)') == 'plier(se)'
+    assert _WORD_ANNOTATION_RE.sub('', 'Dieberei(en)') == 'Dieberei(en)'
+
+
+def test_create_menu_items_inserts_the_bare_word_without_its_mythes_annotation():
+    dat = b'UTF-8\nsmall|1\n-|little|bantam (similar term)\n'
+    model = _make_model()
+    model._thesauruses['pl_PL'] = mythes.parse_thesaurus(dat)
+    calls = []
+    model.controller = _FakeController()
+    model._replace_selection = lambda textbox, word: calls.append(word)
+
+    items = model.create_menu_items('small', 'source', 'pl_PL', 'en', None)
+
+    annotated_item = next(i for i in items[0].get_submenu().get_children()
+                           if i.get_label() == 'bantam (similar term)')
+    annotated_item.activate()
+
+    assert calls == ['bantam']
 
 
 def test_create_menu_items_returns_nothing_for_an_unknown_word():

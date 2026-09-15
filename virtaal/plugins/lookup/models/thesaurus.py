@@ -38,6 +38,7 @@ would only ever fail."""
 
 import logging
 import os
+import re
 import threading
 
 from gi.repository import GLib, Gtk
@@ -75,6 +76,17 @@ def _cached_dat_path(locale_code):
 def _language_name(locale_code):
     from virtaal.models.langmodel import LanguageModel
     return LanguageModel(locale_code).name
+
+
+# MyThes' own qualifier convention, e.g. "bantam (similar term)" or
+# French's "vieux (familier)" - present across languages, always with
+# a preceding space, and common enough in English's own thesaurus to
+# be the majority case (~54% of all synonym occurrences), not an edge
+# case. Requiring the space matters: French also glues a reflexive
+# marker directly onto some verbs with no space ("plier(se)", for "se
+# plier") - real, different from a qualifier, and not something this
+# should touch.
+_WORD_ANNOTATION_RE = re.compile(r'\s+\([^)]*\)$')
 
 
 class LookupModel(BaseLookupModel):
@@ -160,8 +172,11 @@ class LookupModel(BaseLookupModel):
                 header.set_sensitive(False)
                 submenu.append(header)
             for synonym in synonyms:
+                # Keep the annotation in the label (see
+                # _WORD_ANNOTATION_RE above) but never insert it.
+                word = _WORD_ANNOTATION_RE.sub('', synonym)
                 synonym_item = Gtk.MenuItem(synonym)
-                synonym_item.connect('activate', self._on_insert_synonym, synonym, textbox)
+                synonym_item.connect('activate', self._on_insert_synonym, word, textbox)
                 submenu.append(synonym_item)
         item.set_submenu(submenu)
         return item

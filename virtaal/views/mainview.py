@@ -830,7 +830,8 @@ class MainView(BaseView):
         self.confirm_dialog.present()
         response = self.confirm_dialog.run()
         self.confirm_dialog.hide()
-        old_top.present()
+        from gi.repository import GLib
+        GLib.idle_add(old_top.present)
         self._top_window = old_top
 
         if response == Gtk.ResponseType.YES:

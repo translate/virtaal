@@ -8,7 +8,7 @@
 from os import path
 from urllib import parse
 
-from gi.repository import Gtk, Pango
+from gi.repository import GLib, Gtk, Pango
 
 from virtaal.common import pan_app
 from virtaal.views.baseview import BaseView
@@ -213,7 +213,7 @@ class WebLookupConfigDialog:
         self.dialog.run()
         self.dialog.hide()
         if transient_for is not None:
-            transient_for.present()
+            GLib.idle_add(transient_for.present)
 
 
     # SIGNAL HANDLERS #
@@ -267,7 +267,7 @@ class WebLookupAddDialog:
         response = self.dialog.run()
         self.dialog.hide()
         if transient_for is not None:
-            transient_for.present()
+            GLib.idle_add(transient_for.present)
 
         if response != Gtk.ResponseType.OK:
             return None

@@ -301,7 +301,8 @@ class FileSelectDialog:
         response = self.add_chooser.run()
         self.add_chooser.hide()
 
-        if response != Gtk.ResponseType.OK:
+        # GtkFileChooserNative returns ACCEPT on a real accept, never OK.
+        if response != Gtk.ResponseType.ACCEPT:
             return
 
         mainview = self.term_model.controller.main_controller.view

@@ -159,3 +159,37 @@ def test_treeview_scrolled_window_is_not_focusable(monkeypatch):
     dialog = FileSelectDialog(model=SimpleNamespace(controller=None, config={'files': []}))
 
     assert not dialog.tvw_termfiles.get_parent().get_can_focus()
+
+
+class _FakeAddChooser:
+    def __init__(self, response, filenames=()):
+        self._response = response
+        self._filenames = filenames
+
+    def run(self):
+        return self._response
+
+    def hide(self):
+        pass
+
+    def get_filenames(self):
+        return self._filenames
+
+
+def test_add_file_clicked_adds_the_file_on_accept(monkeypatch, tmp_path):
+    # GtkFileChooserNative returns ACCEPT on a real accept, never OK -
+    # comparing against OK meant a real pick silently did nothing.
+    monkeypatch.setattr(FileSelectDialog, '_init_add_chooser', lambda self: None)
+    picked = tmp_path / 'terms.po'
+    picked.write_text('')
+    config = {'files': []}
+    fake_controller = SimpleNamespace(main_controller=SimpleNamespace(view=None))
+    model = SimpleNamespace(
+        controller=fake_controller, config=config,
+        save_config=lambda: None, load_files=lambda: None)
+    dialog = FileSelectDialog(model=model)
+    dialog.add_chooser = _FakeAddChooser(Gtk.ResponseType.ACCEPT, filenames=[str(picked)])
+
+    dialog._on_add_file_clicked(None)
+
+    assert str(picked) in config['files']

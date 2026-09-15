@@ -13,6 +13,7 @@ from translate.storage import factory as store_factory
 from virtaal.common.utils import get_unicode
 from virtaal.views.baseview import BaseView
 from virtaal.views.theme import current_theme
+from virtaal.views.widgets.wordatcursor import WordAtCursorSelector
 
 
 class LocalFileView:
@@ -28,6 +29,7 @@ class LocalFileView:
         self._signal_ids = []
         self._textbox_ids = []
         self._unitview_ids = []
+        self._word_selector = WordAtCursorSelector()
         self._setup_menus()
         self._connect_context_menu()
         self._addterm = None
@@ -48,6 +50,10 @@ class LocalFileView:
 
     def _connect_to_textboxes(self, unitview, textboxes):
         for textbox in textboxes:
+            self._textbox_ids.append((
+                textbox,
+                textbox.connect('button-press-event', self._word_selector.on_button_press)
+            ))
             self._textbox_ids.append((
                 textbox,
                 textbox.connect('populate-popup', self._on_populate_popup)
@@ -125,6 +131,8 @@ class LocalFileView:
 
     def _on_populate_popup(self, textbox, menu):
         buf = textbox.buffer
+        if not buf.get_has_selection():
+            self._word_selector.select_word_at_cursor(buf)
         if not buf.get_has_selection():
             return
 

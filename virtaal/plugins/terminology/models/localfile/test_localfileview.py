@@ -14,10 +14,12 @@ from virtaal.plugins.terminology.models.localfile.localfileview import (
     LocalFileView,
     TermAddDialog,
 )
+from virtaal.views.widgets.wordatcursor import WordAtCursorSelector
 
 
 def _fake_view_with_selection(text=None):
     view = LocalFileView.__new__(LocalFileView)
+    view._word_selector = WordAtCursorSelector()
     calls = []
     view._on_add_term = lambda *args: calls.append(args)
     textbox = SimpleNamespace(buffer=Gtk.TextBuffer())
@@ -100,6 +102,24 @@ def test_populate_popup_does_nothing_without_a_selection():
     view._on_populate_popup(textbox, menu)
 
     assert menu.get_children() == []
+
+
+def test_populate_popup_uses_the_word_under_the_cursor_when_nothing_is_selected():
+    # A plain right-click (nothing dragged out first) shouldn't
+    # require selecting a word first - same as the Look-up plugin.
+    view = LocalFileView.__new__(LocalFileView)
+    view._word_selector = WordAtCursorSelector()
+    calls = []
+    view._on_add_term = lambda *args: calls.append(args)
+    textbox = SimpleNamespace(buffer=Gtk.TextBuffer())
+    textbox.buffer.set_text('a widget here')
+    textbox.buffer.place_cursor(textbox.buffer.get_iter_at_offset(4))  # inside "widget"
+    menu = Gtk.Menu()
+
+    view._on_populate_popup(textbox, menu)
+
+    items = menu.get_children()
+    assert items[1].get_label() == 'Add Term "widget"...'
 
 
 def test_populate_popup_adds_add_term_for_a_selection():

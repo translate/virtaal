@@ -28,7 +28,7 @@ class BaseLookupModel:
 
 
     # METHODS #
-    def create_menu_items(self, query, role, srclang, tgtlang):
+    def create_menu_items(self, query, role, srclang, tgtlang, textbox):
         """Create the a list C{Gtk.MenuItem}s for the given parameters.
 
         @type  query: str
@@ -38,7 +38,11 @@ class BaseLookupModel:
         @type  srclang: str
         @param srclang: The language code of the source language.
         @type  tgtlang: str
-        @param tgtlang: The language code of the target language."""
+        @param tgtlang: The language code of the target language.
+        @type  textbox: the source/target text box the selection came
+            from - only needed by a model whose action edits that
+            selection in place (e.g. inserting a chosen synonym)
+            rather than just opening something external."""
         raise NotImplementedError()
 
     def destroy(self):

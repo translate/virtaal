@@ -200,10 +200,12 @@ class _FakeTopWindow:
         self.presented = True
 
 
-def test_show_save_confirm_dialog_shows_before_presenting_and_restores_parent_focus():
+def test_show_save_confirm_dialog_shows_before_presenting_and_restores_parent_focus(monkeypatch):
     # present() only raises/focuses an already-realized window - on
     # the very first run() the dialog isn't yet, so show() has to
     # come first or the dialog opens without real OS focus.
+    from gi.repository import GLib
+    monkeypatch.setattr(GLib, 'idle_add', lambda func, *args: func(*args))
     view = MainView.__new__(MainView)
     dialog = _FakeConfirmDialog()
     view._confirm_dialog = dialog

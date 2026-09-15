@@ -6,8 +6,13 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import pytest
+from gi.repository import Gtk
 
-from virtaal.plugins.lookup.models.weblookup import WebLookupConfigDialog
+from virtaal.plugins.lookup.models import weblookup
+from virtaal.plugins.lookup.models.weblookup import (
+    WebLookupAddDialog,
+    WebLookupConfigDialog,
+)
 from virtaal.views import baseview
 
 
@@ -57,3 +62,29 @@ def test_every_instance_shares_the_same_url_list():
     second.urldata = [{'display_name': 'Example', 'url': 'http://example.com', 'quoted': False}]
 
     assert first.urldata == second.urldata
+
+
+def test_run_restores_the_parents_focus_on_close(monkeypatch):
+    monkeypatch.setattr(weblookup.GLib, 'idle_add', lambda func, *args: func(*args))
+    dialog = WebLookupConfigDialog(parent=None)
+    parent = Gtk.Window()
+    calls = []
+    monkeypatch.setattr(dialog.dialog, 'run', lambda: Gtk.ResponseType.CLOSE)
+    monkeypatch.setattr(parent, 'present', lambda: calls.append('parent'))
+
+    dialog.run(parent=parent)
+
+    assert calls == ['parent']
+
+
+def test_add_dialog_run_restores_the_parents_focus_on_close(monkeypatch):
+    monkeypatch.setattr(weblookup.GLib, 'idle_add', lambda func, *args: func(*args))
+    parent = Gtk.Window()
+    dialog = WebLookupAddDialog(parent=parent)
+    calls = []
+    monkeypatch.setattr(dialog.dialog, 'run', lambda: Gtk.ResponseType.CANCEL)
+    monkeypatch.setattr(parent, 'present', lambda: calls.append('parent'))
+
+    dialog.run()
+
+    assert calls == ['parent']

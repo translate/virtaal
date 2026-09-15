@@ -9,6 +9,7 @@ from types import SimpleNamespace
 
 from gi.repository import Gtk, Pango
 
+from virtaal.plugins.terminology.models.localfile import localfileview
 from virtaal.plugins.terminology.models.localfile.localfileview import (
     FileSelectDialog,
     LocalFileView,
@@ -82,7 +83,10 @@ def test_run_shows_before_presenting():
     assert add_dialog.dialog.calls == ['show', 'present']
 
 
-def test_run_restores_the_parents_focus_on_close():
+def test_run_restores_the_parents_focus_on_close(monkeypatch):
+    from virtaal.plugins.terminology.models.localfile import localfileview
+    monkeypatch.setattr(localfileview.GLib, 'idle_add', lambda func, *args: func(*args))
+
     add_dialog = TermAddDialog.__new__(TermAddDialog)
     top_window = _FakeTopWindow()
     add_dialog.dialog = _FakeDialog(transient_for=top_window)
@@ -193,3 +197,15 @@ def test_add_file_clicked_adds_the_file_on_accept(monkeypatch, tmp_path):
     dialog._on_add_file_clicked(None)
 
     assert str(picked) in config['files']
+
+
+def test_add_file_clicked_restores_the_parents_focus_regardless_of_response(monkeypatch):
+    monkeypatch.setattr(FileSelectDialog, '_init_add_chooser', lambda self: None)
+    calls = []
+    monkeypatch.setattr(localfileview.GLib, 'idle_add', lambda func, *args: calls.append((func, args)))
+    dialog = FileSelectDialog(model=SimpleNamespace(controller=None, config={'files': []}))
+    dialog.add_chooser = _FakeAddChooser(Gtk.ResponseType.CANCEL)
+
+    dialog._on_add_file_clicked(None)
+
+    assert len(calls) == 1

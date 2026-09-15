@@ -7,7 +7,7 @@
 
 import locale
 
-from gi.repository import Gdk, Gtk, Pango
+from gi.repository import Gdk, GLib, Gtk, Pango
 from translate.storage import factory as store_factory
 
 from virtaal.common.utils import get_unicode
@@ -293,13 +293,14 @@ class FileSelectDialog:
         self.dialog.run()
         self.dialog.hide()
         if transient_for is not None:
-            transient_for.present()
+            GLib.idle_add(transient_for.present)
 
 
     # EVENT HANDLERS #
     def _on_add_file_clicked(self, button):
         response = self.add_chooser.run()
         self.add_chooser.hide()
+        GLib.idle_add(self.dialog.present)
 
         # GtkFileChooserNative returns ACCEPT on a real accept, never OK.
         if response != Gtk.ResponseType.ACCEPT:
@@ -496,7 +497,7 @@ class TermAddDialog:
         response = self.dialog.run()
         self.dialog.hide()
         if transient_for is not None:
-            transient_for.present()
+            GLib.idle_add(transient_for.present)
 
         if response != Gtk.ResponseType.OK:
             return

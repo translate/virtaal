@@ -7,6 +7,7 @@
 
 from gi.repository import Gtk
 
+from virtaal.views.widgets import selectdialog
 from virtaal.views.widgets.selectdialog import SelectDialog
 
 
@@ -14,6 +15,7 @@ def test_run_presents_the_window_and_restores_the_parents_focus(monkeypatch):
     # show_all() alone doesn't request real OS-level focus on macOS -
     # confirmed live: the window opened but stayed unfocused until
     # clicked, and closing it left the parent unfocused too.
+    monkeypatch.setattr(selectdialog.GLib, 'idle_add', lambda func, *args: func(*args))
     dialog = SelectDialog()
     parent = Gtk.Window()
     dialog.set_transient_for(parent)

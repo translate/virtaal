@@ -5,7 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-from gi.repository import Gdk, GObject, Gtk, Pango
+from gi.repository import Gdk, GLib, GObject, Gtk, Pango
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.views.widgets.selectview import SelectView
@@ -159,7 +159,7 @@ class PreferencesView(BaseView, GObjectWrapper):
         self._widgets['dialog'].run()
         self._widgets['dialog'].hide()
         if transient_for is not None:
-            transient_for.present()
+            GLib.idle_add(transient_for.present)
         self.emit('prefs-done')
 
 

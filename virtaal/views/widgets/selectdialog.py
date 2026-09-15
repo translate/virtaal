@@ -5,7 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-from gi.repository import GObject, Gtk
+from gi.repository import GLib, GObject, Gtk
 from gi.repository.GObject import TYPE_PYOBJECT
 
 from virtaal.common import GObjectWrapper
@@ -88,7 +88,7 @@ class SelectDialog(GObjectWrapper):
         self.response = self.dialog.run()
         self.dialog.hide()
         if transient_for is not None:
-            transient_for.present()
+            GLib.idle_add(transient_for.present)
         self.emit('selection-done', self.sview.get_all_items())
         return self.response
 

@@ -86,6 +86,14 @@ def test_other_keys_are_left_to_the_default_handling():
     assert handled is False
 
 
+def test_column_width_accounts_for_a_configure_button_on_any_row():
+    plain = SelectView(items=[{'name': 'A', 'enabled': True, 'data': 'a'}])
+    with_button = SelectView(items=[{'name': 'A', 'enabled': True, 'data': 'a',
+                                      'config': lambda parent: None}])
+
+    assert with_button.namedesc_col.get_min_width() > plain.namedesc_col.get_min_width()
+
+
 def test_select_item_finds_a_row_that_is_not_the_first():
     # The search loop never advanced its iterator past the first row -
     # selecting anything else spun forever at 100% CPU. Sorted by

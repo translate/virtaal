@@ -86,6 +86,15 @@ def test_other_keys_are_left_to_the_default_handling():
     assert handled is False
 
 
+def test_column_width_accounts_for_a_configure_button_on_any_row():
+    plain = SelectView(items=[{'name': 'A', 'enabled': True, 'data': 'a'}])
+    with_button = SelectView(items=[{'name': 'A', 'enabled': True, 'data': 'a',
+                                      'config': lambda parent: None}])
+
+    assert with_button.namedesc_col.get_min_width() > plain.namedesc_col.get_min_width()
+
+
+
 def test_select_item_matches_a_row_whose_enabled_state_has_changed():
     # Toggling a row's own checkbox rebuilds the model from scratch,
     # then re-selects using a snapshot taken just before the toggle -

@@ -87,7 +87,7 @@ class LookupModel(BaseLookupModel):
         self.URLDATA = configure_dialog.urldata
         #logging.debug('New URL data: %s' % (self.URLDATA))
 
-    def create_menu_items(self, query, role, srclang, tgtlang):
+    def create_menu_items(self, query, role, srclang, tgtlang, textbox):
         querylang = role == 'source' and srclang or tgtlang
         nonquerylang = role != 'source' and srclang or tgtlang
         query = parse.quote(query.encode('utf-8'))

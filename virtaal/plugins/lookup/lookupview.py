@@ -137,7 +137,7 @@ class LookupView(BaseView):
         names.sort()
         for name in names:
             menu_items.extend(
-                plugins[name].create_menu_items(selection, role, srclang, tgtlang)
+                plugins[name].create_menu_items(selection, role, srclang, tgtlang, textbox)
             )
         if not menu_items:
             return

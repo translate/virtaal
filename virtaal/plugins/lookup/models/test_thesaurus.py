@@ -261,3 +261,93 @@ def test_maybe_auto_download_normalises_hyphenated_locale_codes(monkeypatch, tmp
 
     assert len(threads) == 1
     assert threads[0].args[0] == 'de_DE'
+
+
+# Checking availability before ever downloading (a light tree + xcu
+# fetch, not the .dat file itself) - a locale confirmed to have no
+# thesaurus in the repo at all should never offer a "Download" button
+# that would only ever fail.
+
+def _patch_idle_add_to_run_immediately(monkeypatch):
+    monkeypatch.setattr(thesaurus_module.GLib, 'idle_add', lambda func, *args: func(*args))
+
+
+def test_check_marks_a_locale_unavailable_when_nothing_is_found(monkeypatch):
+    monkeypatch.setattr(thesaurus_module, 'fetch_dictionary_tree', lambda: {})
+    monkeypatch.setattr(thesaurus_module, 'list_dictionary_folders', lambda tree: {})
+    monkeypatch.setattr(thesaurus_module, 'find_dictionary', lambda *a, **k: None)
+    _patch_idle_add_to_run_immediately(monkeypatch)
+    model = _make_model()
+    model._checking.add('af_ZA')
+
+    model._check('af_ZA')
+
+    assert 'af_ZA' not in model._checking
+    assert 'af_ZA' in model._unavailable
+
+
+def test_check_starts_a_download_when_a_thesaurus_is_found(monkeypatch):
+    monkeypatch.setattr(thesaurus_module, 'fetch_dictionary_tree', lambda: {})
+    monkeypatch.setattr(thesaurus_module, 'list_dictionary_folders', lambda tree: {})
+    monkeypatch.setattr(thesaurus_module, 'find_dictionary', lambda *a, **k: ('pl', ['th_pl_PL.dat']))
+    _patch_idle_add_to_run_immediately(monkeypatch)
+    threads = _patch_threads(monkeypatch)
+    model = _make_model()
+    model._checking.add('pl_PL')
+
+    model._check('pl_PL')
+
+    assert 'pl_PL' not in model._checking
+    assert 'pl_PL' in model._downloading
+    assert len(threads) == 1
+    assert threads[0].target == model._download
+    assert threads[0].args[0] == 'pl_PL'
+
+
+def test_create_menu_items_returns_nothing_for_an_unavailable_locale():
+    model = _make_model()
+    model._unavailable.add('af_ZA')
+
+    assert model.create_menu_items('word', 'source', 'af_ZA', 'en', None) == []
+
+
+def test_create_menu_items_shows_a_checking_status():
+    model = _make_model()
+    model._checking.add('pl_PL')
+
+    items = model.create_menu_items('word', 'source', 'pl_PL', 'en', None)
+
+    assert len(items) == 1
+    assert 'Checking' in items[0].get_label()
+    assert not items[0].get_sensitive()
+
+
+def test_create_menu_items_shows_the_language_name_while_downloading():
+    model = _make_model()
+    model._downloading.add('pl_PL')
+
+    items = model.create_menu_items('word', 'source', 'pl_PL', 'en', None)
+
+    assert len(items) == 1
+    assert items[0].get_label() == 'Downloading Polish thesaurus…'
+    assert not items[0].get_sensitive()
+
+
+def test_create_menu_items_download_button_names_the_language():
+    model = _make_model()
+
+    items = model.create_menu_items('word', 'source', 'af_ZA', 'en', None)
+
+    assert len(items) == 1
+    assert items[0].get_label() == 'Download Afrikaans thesaurus…'
+    assert items[0].get_sensitive()
+
+
+def test_on_download_starts_a_check_not_a_direct_download(monkeypatch):
+    threads = _patch_threads(monkeypatch)
+    model = _make_model()
+
+    model._on_download(None, 'pl_PL')
+
+    assert 'pl_PL' in model._checking
+    assert threads[0].target == model._check

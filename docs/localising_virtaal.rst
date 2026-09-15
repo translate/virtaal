@@ -124,10 +124,13 @@ Here we give some pointers to help localisers of the Virtaal interface.
 
 Some instructions:
 
-- Check if someone is already working on your language on `Pootle
-  <http://pootle.locamotion.org/projects/virtaal/>`_
-- If not, get the `Latest POT file
-  <https://github.com/translate/virtaal/raw/master/po/virtaal.pot>`_
+- Check `po/ <https://github.com/translate/virtaal/tree/main/po>`_ for
+  whether your language already has a ``.po`` file - if so, that's
+  your starting point rather than a blank one.
+- Otherwise, get the `latest POT file
+  <https://github.com/translate/virtaal/raw/main/po/virtaal.pot>`_ and
+  start a new translation from it (any PO editor works - including
+  Virtaal itself).
 - Be very familiar with all the :doc:`features <features>` of Virtaal,
   especially :doc:`placeables <placeables>`.
 - Generate the .mo file with "msgfmt -cv", and put it in your system location
@@ -144,8 +147,11 @@ Some instructions:
     how much space is available.  It is usually around 11 characters in the
     worst case.
 
-- Send your translated file to one of the developers, or attach it to a bug
-  report, or upload it to Pootle.
+- Submit your translated ``.po`` file as a `pull request
+  <https://github.com/translate/virtaal/pulls>`_ (see `CONTRIBUTING.md
+  <https://github.com/translate/virtaal/blob/main/CONTRIBUTING.md>`_)
+  - or, if you're not comfortable with git, attach it to a `new issue
+  <https://github.com/translate/virtaal/issues/new>`_ instead.
 - We currently use the InnoSetup installer for building our Windows installers.
   You might want to check that the localisation for your language is there and
   an official translation.

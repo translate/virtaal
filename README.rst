@@ -29,6 +29,12 @@ Please report bugs by clicking on '*Help->Report bug...*' from within Virtaal,
 or directly using this URL: <https://github.com/translate/virtaal/issues/new>
 (requires a GitHub account).
 
+Contributing
+------------
+Want to contribute - code, translations, anything else? See
+`CONTRIBUTING.md
+<https://github.com/translate/virtaal/blob/main/CONTRIBUTING.md>`_.
+
 Design principles
 -----------------
 * Good looking

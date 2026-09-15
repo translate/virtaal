@@ -12,14 +12,17 @@ DICT_THES support).
 Neither downloading nor parsing a locale's thesaurus ever happens
 inline from create_menu_items() (called synchronously while building
 a context menu, on the UI thread) - both are real work large enough
-to matter (English's real thesaurus, at time of writing: ~250-340ms
-to parse). Once parsed, a locale's
-thesaurus is kept in memory for the rest of the session - every
-subsequent look-up is then an in-memory dict access, not worth
-optimising further (e.g. via the .idx files mythes' own C++ library
-uses for random-access reads - real folders don't reliably ship one
-anyway, en's own included, and it would only ever help this one-time
-parse, not the free lookups after it).
+to matter (English's real thesaurus, at time of writing: ~1.5s to
+parse - it's the largest of the bundled languages, at 18MB raw).
+Once parsed, a locale's thesaurus is kept in memory for the rest of
+the session - every subsequent look-up is then an in-memory dict
+access, not worth optimising further (e.g. via the .idx files mythes'
+own C++ library uses for random-access reads - real folders don't
+reliably ship one anyway, en's own included, and it would only ever
+help this one-time parse, not the free lookups after it). Nothing
+currently evicts an old entry once loaded - English alone parses to
+~150MB resident; a session that looks up several language pairs
+keeps every one of them in memory for as long as the app runs.
 
 Also downloads proactively on source/target-lang-changed (which fires
 on opening a file too, not just an explicit language-picker change),
@@ -120,12 +123,8 @@ class LookupModel(BaseLookupModel):
         if locale_code in self._parsing:
             return [self._create_status_item(_('Loading thesaurus…'))]
 
-        if locale_code not in self._parse_failed:
-            dat_path = _cached_dat_path(locale_code)
-            if dat_path is not None:
-                self._parsing.add(locale_code)
-                threading.Thread(target=self._parse, args=(locale_code, dat_path), daemon=True).start()
-                return [self._create_status_item(_('Loading thesaurus…'))]
+        if self._maybe_start_parse(locale_code):
+            return [self._create_status_item(_('Loading thesaurus…'))]
 
         if locale_code in self._unavailable:
             return []
@@ -192,8 +191,26 @@ class LookupModel(BaseLookupModel):
             return
         self._auto_tried.add(locale_code)
         if _cached_dat_path(locale_code) is not None:
+            self._maybe_start_parse(locale_code)
             return
         self._start_check(locale_code)
+
+    def _maybe_start_parse(self, locale_code):
+        """Starts a background parse of locale_code's cached .dat if
+        one isn't already loaded, in flight, or previously failed.
+        Returns True if a parse is now in flight (already was, or
+        just started) - callers use that to decide whether to show a
+        "Loading…" item."""
+        if locale_code in self._thesauruses or locale_code in self._parse_failed:
+            return False
+        if locale_code in self._parsing:
+            return True
+        dat_path = _cached_dat_path(locale_code)
+        if dat_path is None:
+            return False
+        self._parsing.add(locale_code)
+        threading.Thread(target=self._parse, args=(locale_code, dat_path), daemon=True).start()
+        return True
 
     def _start_check(self, locale_code):
         if locale_code in self._checking or locale_code in self._downloading:
@@ -234,6 +251,7 @@ class LookupModel(BaseLookupModel):
         # Only the .dat matters (see this module's own docstring) - a
         # real folder (fr_FR, for one) has no .idx alongside it at all.
         dat_files = [f for f in files if f.endswith('.dat')]
+        succeeded = False
         try:
             target_dir = os.path.join(thesaurus_cache_dir(), locale_code)
             os.makedirs(target_dir, exist_ok=True)
@@ -241,10 +259,16 @@ class LookupModel(BaseLookupModel):
                 content = fetch_dictionary_file(folder, filename)
                 with open(os.path.join(target_dir, filename), 'wb') as f:
                     f.write(content)
+            succeeded = True
         except Exception as e:
             logging.debug('Thesaurus download failed for %s: %s', locale_code, e)
         finally:
-            GLib.idle_add(self._downloading.discard, locale_code)
+            GLib.idle_add(self._on_download_finished, locale_code, succeeded)
+
+    def _on_download_finished(self, locale_code, succeeded):
+        self._downloading.discard(locale_code)
+        if succeeded:
+            self._maybe_start_parse(locale_code)
 
     def _parse(self, locale_code, dat_path):
         try:

@@ -192,7 +192,9 @@ def test_find_dictionary_returns_none_when_nothing_matches():
 
 # Actual copy of ca/dictionaries.xcu (blob
 # 2939195f27f7f005cd7082b355276938a9d00d0d) - the general dictionary's
-# own Locales never lists bare "ca", only its regional variants.
+# own Locales never lists bare "ca", only its regional variants. Also
+# has a real ThesDic_ca-ES (DICT_THES) node alongside the spelling
+# ones, same file.
 CA_XCU = b"""<?xml version="1.0" encoding="UTF-8"?>
 <oor:component-data xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema" oor:name="Linguistic" oor:package="org.openoffice.Office">
  <node oor:name="ServiceManager">
@@ -219,6 +221,17 @@ CA_XCU = b"""<?xml version="1.0" encoding="UTF-8"?>
                 <value>ca-ES-valencia</value>
             </prop>
         </node>
+        <node oor:name="ThesDic_ca-ES" oor:op="fuse">
+            <prop oor:name="Locations" oor:type="oor:string-list">
+                <value>%origin%/th_ca_ES_v3.dat %origin%/th_ca_ES_v3.idx</value>
+            </prop>
+            <prop oor:name="Format" oor:type="xs:string">
+                <value>DICT_THES</value>
+            </prop>
+            <prop oor:name="Locales" oor:type="oor:string-list">
+                <value>ca-ES ca-ES-valencia ca-AD ca-FR ca-IT</value>
+            </prop>
+        </node>
     </node>
  </node>
 </oor:component-data>
@@ -228,6 +241,17 @@ CA_XCU = b"""<?xml version="1.0" encoding="UTF-8"?>
 def test_find_dictionary_matches_a_bare_language_against_regional_variants():
     result = find_dictionary('ca', {'ca': 's1'}, lambda folder: CA_XCU)
     assert result == ('ca', ['ca.aff', 'ca.dic'])
+
+
+def test_parse_dictionaries_xcu_can_select_a_thesaurus_instead():
+    entries = parse_dictionaries_xcu(CA_XCU, dict_format='DICT_THES')
+    assert len(entries) == 1
+    assert entries[0]['files'] == ['th_ca_ES_v3.dat', 'th_ca_ES_v3.idx']
+
+
+def test_find_dictionary_can_look_for_a_thesaurus_instead():
+    result = find_dictionary('ca_ES', {'ca': 's1'}, lambda folder: CA_XCU, dict_format='DICT_THES')
+    assert result == ('ca', ['th_ca_ES_v3.dat', 'th_ca_ES_v3.idx'])
 
 
 # Actual copy of pl_PL/dictionaries.xcu (blob

@@ -73,24 +73,23 @@ def _prop_value(node, prop_name):
     return None
 
 
-def parse_dictionaries_xcu(xml_bytes):
+def parse_dictionaries_xcu(xml_bytes, dict_format='DICT_SPELL'):
     """Parse one folder's dictionaries.xcu into a list of
-    {'files': [...], 'locales': [...]} dicts, one per HunSpellDic_*
-    node (Format == DICT_SPELL specifically - hyphenation/thesaurus
-    nodes in the same file are real but out of scope here). 'files'
-    are bare filenames (the "%origin%/" prefix stripped); 'locales'
-    are underscore-normalised (enchant's own convention), not the
-    repo's hyphenated BCP47 form. Pure function, no I/O."""
+    {'files': [...], 'locales': [...]} dicts, one per node matching
+    `dict_format` ('DICT_SPELL' for spelling, 'DICT_THES' for a
+    thesaurus, 'DICT_HYPH' for hyphenation). 'files' are bare
+    filenames (the "%origin%/" prefix stripped); 'locales' are
+    underscore-normalised (enchant's own convention), not the repo's
+    hyphenated BCP47 form. Pure function, no I/O.
+
+    Matches on the Format property alone, not the node's own name
+    (e.g. "HunSpellDic_xx") - pl_PL's is namespaced
+    ("org.openoffice.pl.HunSpellDic_pl_PL"), so name-prefix matching
+    already proved unreliable."""
     root = etree.fromstring(xml_bytes)
     result = []
     for node in root.iter('node'):
-        name = node.get(_OOR + 'name', '')
-        # Usually a bare "HunSpellDic_xx", but pl_PL's is
-        # "org.openoffice.pl.HunSpellDic_pl_PL" - match the substring
-        # rather than requiring it at the very start.
-        if 'HunSpellDic_' not in name:
-            continue
-        if _prop_value(node, 'Format') != 'DICT_SPELL':
+        if _prop_value(node, 'Format') != dict_format:
             continue
         locations = (_prop_value(node, 'Locations') or '').split()
         files = [
@@ -153,8 +152,9 @@ def locale_covers(locale_code, entry_locales):
     return False
 
 
-def find_dictionary(locale_code, folders, fetch_xcu):
-    """Find the HunSpellDic_* entry covering locale_code.
+def find_dictionary(locale_code, folders, fetch_xcu, dict_format='DICT_SPELL'):
+    """Find the dictionary entry (of `dict_format` - see
+    parse_dictionaries_xcu()) covering locale_code.
 
     folders: {folder_path: sha}, from list_dictionary_folders().
     fetch_xcu: callable(folder_path) -> xcu bytes - injected so this
@@ -169,7 +169,7 @@ def find_dictionary(locale_code, folders, fetch_xcu):
     ordered = candidate_folders(locale_code, folders)
     ordered += [f for f in folders if f not in ordered]
     for folder in ordered:
-        for entry in parse_dictionaries_xcu(fetch_xcu(folder)):
+        for entry in parse_dictionaries_xcu(fetch_xcu(folder), dict_format):
             if locale_covers(locale_code, entry['locales']):
                 return folder, entry['files']
     return None
@@ -233,11 +233,13 @@ def dictionary_write_dir():
     return os.path.join(enchant.get_user_config_dir(), 'hunspell')
 
 
-def download_dictionary(locale_code, target_dir=None):
-    """Find and download the hunspell dictionary covering locale_code,
-    writing its files into target_dir (dictionary_write_dir() by
-    default). Returns the list of local file paths written, or None if
-    no dictionary covers this locale.
+def download_dictionary(locale_code, target_dir=None, dict_format='DICT_SPELL'):
+    """Find and download the dictionary (of `dict_format` - see
+    parse_dictionaries_xcu()) covering locale_code, writing its files
+    into target_dir (dictionary_write_dir() by default - only correct
+    for the default 'DICT_SPELL', a caller asking for another format
+    needs its own target_dir). Returns the list of local file paths
+    written, or None if no dictionary covers this locale.
 
     Synchronous, real network I/O - not meant to be called from the
     UI thread as-is; see this module's own docstring."""
@@ -246,7 +248,7 @@ def download_dictionary(locale_code, target_dir=None):
 
     tree = fetch_dictionary_tree()
     folders = list_dictionary_folders(tree)
-    match = find_dictionary(locale_code, folders, fetch_xcu)
+    match = find_dictionary(locale_code, folders, fetch_xcu, dict_format)
     if match is None:
         logging.debug('No LibreOffice dictionary found for %s', locale_code)
         return None

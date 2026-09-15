@@ -5,8 +5,6 @@
 Quality Checks
 **************
 
-.. versionadded:: 0.7
-
 Virtaal provides a powerful way of reviewing translations for quality. It
 exposes most of the :ref:`pofilter checks <toolkit:pofilter_tests>` that can
 test for several issues that can affect the quality of your translations.

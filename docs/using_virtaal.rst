@@ -177,8 +177,6 @@ To move back from the search box to your translation, simply press
 Quality Checks Mode
 -------------------
 
-.. versionadded:: 0.7
-
 In the “Quality checks” navigation mode, you can select certain quality checks
 from the list of possible issues seen by Virtaal. For more information, visit
 the :doc:`quality checks <checks>` page.

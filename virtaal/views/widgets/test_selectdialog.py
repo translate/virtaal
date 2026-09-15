@@ -27,3 +27,11 @@ def test_run_presents_the_window_and_restores_the_parents_focus(monkeypatch):
     dialog.run(items=[])
 
     assert calls == ['dialog', 'parent']
+
+
+def test_scrolled_window_propagates_natural_width():
+    dialog = SelectDialog()
+
+    scrolled_window = dialog.sview.get_parent()
+
+    assert scrolled_window.get_property('propagate-natural-width')

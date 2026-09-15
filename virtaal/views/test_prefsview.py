@@ -8,6 +8,7 @@
 from gi.repository import Gtk
 
 from virtaal.views import prefsview
+from virtaal.views.baseview import BaseView
 from virtaal.views.prefsview import PreferencesView
 
 
@@ -34,3 +35,29 @@ def test_run_restores_the_parents_focus_on_close(monkeypatch):
     view.show()
 
     assert calls == ['parent']
+
+
+def _load_widgets():
+    view = PreferencesView.__new__(PreferencesView)
+    gui = BaseView.load_builder_file(["virtaal", "virtaal.ui"], root='PreferencesDlg', domain="virtaal")
+    view._widgets = {
+        'scrwnd_placeables': gui.get_object('scrwnd_placeables'),
+        'scrwnd_plugins': gui.get_object('scrwnd_plugins'),
+    }
+    return view
+
+
+def test_plugins_page_scrolled_window_propagates_natural_width():
+    view = _load_widgets()
+
+    view._init_plugins_page()
+
+    assert view._widgets['scrwnd_plugins'].get_property('propagate-natural-width')
+
+
+def test_placeables_page_scrolled_window_propagates_natural_width():
+    view = _load_widgets()
+
+    view._init_placeables_page()
+
+    assert view._widgets['scrwnd_placeables'].get_property('propagate-natural-width')

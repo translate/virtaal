@@ -192,8 +192,29 @@ def fetch_xcu(folder):
     return _get(RAW_BASE + folder + _XCU_SUFFIX)
 
 
+def dictionary_file_url_candidates(folder, filename):
+    """Where a dictionary file might actually be, in the order to try.
+
+    dictionaries.xcu's %origin% is meant to be the folder the xcu
+    itself lives in, and usually is - but a handful of real packages
+    (ca, ckb, fr_FR, sv_SE) nest the actual files one level deeper, in
+    a 'dictionaries/' subfolder alongside other extension bits
+    (scripts, images). Pure function, no I/O."""
+    return [
+        RAW_BASE + folder + '/' + filename,
+        RAW_BASE + folder + '/dictionaries/' + filename,
+    ]
+
+
 def fetch_dictionary_file(folder, filename):
-    return _get(RAW_BASE + folder + '/' + filename)
+    candidates = dictionary_file_url_candidates(folder, filename)
+    for url in candidates[:-1]:
+        try:
+            return _get(url)
+        except HTTPError as e:
+            if e.code != 404:
+                raise
+    return _get(candidates[-1])
 
 
 # --- Where downloaded dictionaries need to end up for enchant to find them ---

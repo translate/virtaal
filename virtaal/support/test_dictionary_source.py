@@ -14,11 +14,12 @@ github.com/LibreOffice/dictionaries, not hand-written guesses, so a
 real repo-shape change would actually be caught.
 """
 
-from urllib.error import URLError
+from urllib.error import HTTPError, URLError
 
 from virtaal.support import dictionary_source
 from virtaal.support.dictionary_source import (
     candidate_folders,
+    dictionary_file_url_candidates,
     download_dictionary,
     find_dictionary,
     list_dictionary_folders,
@@ -287,6 +288,40 @@ def test_parse_dictionaries_xcu_reads_locales_given_as_it_elements():
     entries = parse_dictionaries_xcu(TR_XCU)
     assert len(entries) == 1
     assert entries[0]['locales'] == ['tr_TR', 'tr']
+
+
+def test_dictionary_file_url_candidates_tries_the_folder_before_a_dictionaries_subfolder():
+    candidates = dictionary_file_url_candidates('fr_FR', 'fr.aff')
+    assert candidates[0].endswith('/fr_FR/fr.aff')
+    assert candidates[1].endswith('/fr_FR/dictionaries/fr.aff')
+
+
+def test_fetch_dictionary_file_falls_back_to_the_dictionaries_subfolder(monkeypatch):
+    calls = []
+
+    def fake_get(url):
+        calls.append(url)
+        if url.endswith('/dictionaries/fr.aff'):
+            return b'real content'
+        raise HTTPError(url, 404, 'not found', {}, None)
+
+    monkeypatch.setattr(dictionary_source, '_get', fake_get)
+
+    assert dictionary_source.fetch_dictionary_file('fr_FR', 'fr.aff') == b'real content'
+    assert len(calls) == 2
+
+
+def test_fetch_dictionary_file_raises_a_non_404_error_immediately(monkeypatch):
+    def fake_get(url):
+        raise HTTPError(url, 500, 'server error', {}, None)
+
+    monkeypatch.setattr(dictionary_source, '_get', fake_get)
+
+    try:
+        dictionary_source.fetch_dictionary_file('de', 'de_DE_frami.aff')
+        assert False, 'expected HTTPError'
+    except HTTPError as e:
+        assert e.code == 500
 
 
 def test_download_dictionary_cleans_up_partial_write_on_failure(monkeypatch, tmp_path):

@@ -70,6 +70,7 @@ jobs:
   docs-and-translations:
     # Own job rather than running once per matrix cell below - neither
     # step is packaging- or platform-specific.
+    needs: pre-commit
     runs-on: ubuntu-24.04
     timeout-minutes: 10
 
@@ -113,6 +114,7 @@ jobs:
         run: make docs
 
   test:
+    needs: pre-commit
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     continue-on-error: ${{ matrix.experimental }}
@@ -210,6 +212,7 @@ jobs:
         run: xvfb-run -a --server-args="-screen 0 1024x768x24" virtaal --help
 
   test-windows:
+    needs: pre-commit
     runs-on: windows-latest
     timeout-minutes: 15
     # Uses gvsbuild for GTK3 (prebuilt binaries a regular
@@ -550,6 +553,7 @@ jobs:
           if-no-files-found: error
 
   test-macos:
+    needs: pre-commit
     runs-on: macos-latest
     timeout-minutes: 10
     # Single Python version (whatever Homebrew currently ships), not the
@@ -768,6 +772,7 @@ jobs:
           if-no-files-found: error
 
   build-flatpak:
+    needs: test
     # flatpak-builder is Linux-only - this is the only place the
     # manifest gets built and smoke-tested.
     #

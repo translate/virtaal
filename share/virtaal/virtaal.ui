@@ -975,6 +975,12 @@ If you are translating from English to French then French would be your translat
                       </object>
                     </child>
                     <child>
+                      <object class="GtkSeparatorMenuItem" id="separator_mnu_help_docs">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkImageMenuItem" id="mnu_report_bug">
                         <property name="label" translatable="yes">Report a _Bug</property>
                         <property name="visible">True</property>
@@ -991,6 +997,12 @@ If you are translating from English to French then French would be your translat
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separator_mnu_help_0">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </object>
                     </child>
                     <child>

@@ -103,15 +103,24 @@ def test_report_bug_opens_the_prefilled_template(monkeypatch):
 
 
 def test_show_logs_displays_existing_log_content(monkeypatch, tmp_path):
+    from virtaal.__version__ import version_string
     from virtaal.common import pan_app
 
     (tmp_path / 'stdout_virtaal.log').write_text('hello from stdout')
     monkeypatch.setattr(pan_app, 'get_config_dir', lambda: str(tmp_path))
     monkeypatch.setattr(Gtk.Dialog, 'run', lambda self: Gtk.ResponseType.CLOSE)
+    shown = {}
+    real_set_text = Gtk.TextBuffer.set_text
+    monkeypatch.setattr(
+        Gtk.TextBuffer, 'set_text',
+        lambda self, text, *args: (shown.setdefault('text', text), real_set_text(self, text, -1))[-1])
     view = MainView.__new__(MainView)
     view.main_window = None
 
     view._on_show_logs()
+
+    assert shown['text'].startswith('Virtaal %s\n\n' % version_string())
+    assert 'hello from stdout' in shown['text']
 
 
 def test_show_save_dialog_returns_none_on_cancel():

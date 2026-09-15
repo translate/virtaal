@@ -199,6 +199,13 @@ class LookupModel(BaseLookupModel):
         buf.delete(start_iter, end_iter)
         buf.insert(start_iter, synonym)
         undo_controller.record_stop()
+        # A programmatic buf.insert()/delete() doesn't fire GTK's own
+        # begin/end-user-action bracket the way interactive typing
+        # does, which is what normally drives TextBox's own "changed"
+        # signal (see textbox.py's _on_end_user_action) - without this,
+        # the edit never reaches the document-modified tracking at all.
+        # Same fix termview.py's own suggestion-insert already uses.
+        textbox.emit('changed')
 
     def _maybe_auto_download(self, locale_code):
         locale_code = locale_code.replace('-', '_')

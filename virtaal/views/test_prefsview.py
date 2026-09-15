@@ -79,3 +79,45 @@ def test_placeables_page_scrolled_window_is_not_focusable():
     view._init_placeables_page()
 
     assert not view._widgets['scrwnd_placeables'].get_can_focus()
+
+
+def _make_plugin_items(count, enabled_name=None):
+    return [
+        {
+            'name': 'Plugin %02d' % i,
+            'desc': '',
+            'enabled': 'Plugin %02d' % i == enabled_name,
+            'data': {'internal_name': 'plugin%02d' % i},
+            'config': None,
+        }
+        for i in range(count)
+    ]
+
+
+def test_plugin_data_restores_scroll_position_after_a_rebuild(monkeypatch):
+    # Restoring scroll position is deferred via GLib.idle_add() -
+    # captured and called directly here rather than pumping the real
+    # main loop: an unrealized treeview (no window, no allocation)
+    # never finishes GTK's own idle-driven row-height revalidation,
+    # hanging a real macOS CI runner for 10+ minutes before being
+    # force-cancelled.
+    idle_calls = []
+    monkeypatch.setattr(prefsview.GLib, 'idle_add', lambda func, *args: idle_calls.append((func, args)))
+
+    view = _load_widgets()
+    view._init_plugins_page()
+
+    view.plugin_data = _make_plugin_items(50, enabled_name='Plugin 25')
+    view.plugins_select.select_item({'data': {'internal_name': 'plugin25'}})
+    vadj = view.plugins_select.get_vadjustment()
+    vadj.set_upper(2000)
+    vadj.set_value(900)
+
+    view.plugin_data = _make_plugin_items(50, enabled_name='Plugin 25')
+
+    # One idle_add per plugin_data assignment above - the second one
+    # is the rebuild whose scroll position this test cares about.
+    assert len(idle_calls) == 2
+    func, args = idle_calls[-1]
+    func(*args)
+    assert vadj.get_value() == 900

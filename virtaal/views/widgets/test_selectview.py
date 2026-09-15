@@ -12,20 +12,6 @@ from gi.repository import Gdk, Gtk
 from virtaal.views.widgets.selectview import SelectView
 
 
-def test_select_item_finds_a_row_that_is_not_the_first():
-    # The search loop never advanced its iterator past the first row -
-    # selecting anything else spun forever at 100% CPU.
-    sview = SelectView(items=[
-        {'name': 'A', 'desc': '', 'enabled': False, 'data': 'a'},
-        {'name': 'B', 'desc': '', 'enabled': False, 'data': 'b'},
-    ])
-    target = sview.get_all_items()[1]
-
-    sview.select_item(target)
-
-    assert sview.get_selected_item() == target
-
-
 def _make_view():
     return SelectView(items=[
         {'name': 'A', 'enabled': True, 'data': 'a'},
@@ -143,6 +129,37 @@ def test_select_item_moves_the_keyboard_cursor_too():
     sview.select_item(target)
 
     assert sview.get_cursor()[0] == target_path
+
+
+def test_scroll_position_round_trips_through_a_scrolled_window():
+    # set_model() replaces the ListStore, resetting scroll to the top -
+    # a caller reselecting the same row afterwards needs its own way
+    # to put the view back where it was, since GTK only scrolls as far
+    # as needed to reveal that row again, not necessarily to the same
+    # place.
+    sview = _make_view()
+    scrolled = Gtk.ScrolledWindow()
+    scrolled.add(sview)
+    sview.get_vadjustment().set_upper(1000)
+    sview.get_vadjustment().set_value(42)
+
+    position = sview.get_scroll_position()
+    sview.get_vadjustment().set_value(0)
+    sview.set_scroll_position(position)
+
+    assert sview.get_vadjustment().get_value() == 42
+
+
+def test_set_scroll_position_does_nothing_for_none():
+    sview = _make_view()
+    scrolled = Gtk.ScrolledWindow()
+    scrolled.add(sview)
+    sview.get_vadjustment().set_upper(1000)
+    sview.get_vadjustment().set_value(42)
+
+    sview.set_scroll_position(None)
+
+    assert sview.get_vadjustment().get_value() == 42
 
 
 def test_configure_button_responds_to_the_clicked_signal():

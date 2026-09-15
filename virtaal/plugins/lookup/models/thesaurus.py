@@ -25,10 +25,13 @@ Also downloads proactively on source/target-lang-changed (which fires
 on opening a file too, not just an explicit language-picker change),
 same trigger virtaal.support.dictionary_download_watcher already uses
 for spell-check dictionaries - by the time anyone actually right-clicks
-a word, the download has usually already finished in the background,
-and the "Download thesaurus..." menu item is only ever seen if that
-didn't work out (no network yet, or genuinely no thesaurus for that
-locale)."""
+a word, the download has usually already finished in the background.
+
+A locale's availability is checked (a light tree + xcu fetch, no big
+file) before ever downloading anything - once a locale is confirmed to
+have no thesaurus in the repo at all, no menu item is shown for it
+again this session, rather than offering a "Download" button that
+would only ever fail."""
 
 import logging
 import os
@@ -38,7 +41,13 @@ from gi.repository import GLib, Gtk
 
 from virtaal.common import pan_app
 from virtaal.support import mythes
-from virtaal.support.dictionary_source import download_dictionary
+from virtaal.support.dictionary_source import (
+    download_dictionary,
+    fetch_dictionary_tree,
+    fetch_xcu,
+    find_dictionary,
+    list_dictionary_folders,
+)
 
 try:
     from virtaal.plugins.lookup.models.baselookupmodel import BaseLookupModel
@@ -60,6 +69,11 @@ def _cached_dat_path(locale_code):
     return None
 
 
+def _language_name(locale_code):
+    from virtaal.models.langmodel import LanguageModel
+    return LanguageModel(locale_code).name
+
+
 class LookupModel(BaseLookupModel):
     """Look up the selected word in a downloaded thesaurus."""
 
@@ -74,9 +88,11 @@ class LookupModel(BaseLookupModel):
         self.controller = controller
         self.internal_name = internal_name
         self._thesauruses = {}  # locale_code -> parsed {word: meanings}
+        self._checking = set()  # locale_codes: availability check in flight
+        self._unavailable = set()  # locale_codes confirmed to have no thesaurus at all
         self._downloading = set()  # locale_codes with a download in flight
         self._parsing = set()  # locale_codes with a background parse in flight
-        self._auto_tried = set()  # locale_codes an automatic download was already attempted for
+        self._auto_tried = set()  # locale_codes an automatic check/download was already attempted for
 
         lang_controller = self.controller.main_controller.lang_controller
         lang_controller.connect('source-lang-changed', self._on_lang_changed)
@@ -101,31 +117,36 @@ class LookupModel(BaseLookupModel):
             return [self._create_synonym_item(meanings, textbox)]
 
         if locale_code in self._parsing:
-            return [self._create_loading_item()]
+            return [self._create_status_item(_('Loading thesaurus…'))]
 
         dat_path = _cached_dat_path(locale_code)
         if dat_path is not None:
             self._parsing.add(locale_code)
             threading.Thread(target=self._parse, args=(locale_code, dat_path), daemon=True).start()
-            return [self._create_loading_item()]
+            return [self._create_status_item(_('Loading thesaurus…'))]
+
+        if locale_code in self._unavailable:
+            return []
+
+        if locale_code in self._checking:
+            #l10n: shown in the selected text's right-click menu while checking whether a thesaurus exists for this language at all
+            return [self._create_status_item(_('Checking for thesaurus…'))]
+
+        if locale_code in self._downloading:
+            #l10n: %(language)s is a language name, e.g. "Afrikaans"
+            return [self._create_status_item(_('Downloading %(language)s thesaurus…') % {'language': _language_name(locale_code)})]
 
         return [self._create_download_item(locale_code)]
 
-    def _create_loading_item(self):
-        #l10n: shown in the selected text's right-click menu while a downloaded thesaurus is still being parsed
-        item = Gtk.MenuItem(_('Loading thesaurus…'))
+    def _create_status_item(self, label):
+        item = Gtk.MenuItem(label)
         item.set_sensitive(False)
         return item
 
     def _create_download_item(self, locale_code):
-        if locale_code in self._downloading:
-            #l10n: shown in the selected text's right-click menu while a thesaurus download is in progress
-            item = Gtk.MenuItem(_('Downloading thesaurus…'))
-            item.set_sensitive(False)
-        else:
-            #l10n: %(locale)s is a language code, e.g. "en_ZA"
-            item = Gtk.MenuItem(_('Download thesaurus for %(locale)s…') % {'locale': locale_code})
-            item.connect('activate', self._on_download, locale_code)
+        #l10n: %(language)s is a language name, e.g. "Afrikaans"
+        item = Gtk.MenuItem(_('Download %(language)s thesaurus…') % {'language': _language_name(locale_code)})
+        item.connect('activate', self._on_download, locale_code)
         return item
 
     def _create_synonym_item(self, meanings, textbox):
@@ -164,11 +185,34 @@ class LookupModel(BaseLookupModel):
         self._auto_tried.add(locale_code)
         if _cached_dat_path(locale_code) is not None:
             return
-        self._start_download(locale_code)
+        self._start_check(locale_code)
 
-    def _start_download(self, locale_code):
-        if locale_code in self._downloading:
+    def _start_check(self, locale_code):
+        if locale_code in self._checking or locale_code in self._downloading:
             return
+        self._checking.add(locale_code)
+        threading.Thread(target=self._check, args=(locale_code,), daemon=True).start()
+
+    def _check(self, locale_code):
+        try:
+            tree = fetch_dictionary_tree()
+            folders = list_dictionary_folders(tree)
+            match = find_dictionary(locale_code, folders, fetch_xcu, dict_format='DICT_THES')
+        except Exception:
+            logging.exception('Thesaurus availability check failed for %s', locale_code)
+            GLib.idle_add(self._checking.discard, locale_code)
+            return
+        if match is None:
+            GLib.idle_add(self._on_unavailable, locale_code)
+        else:
+            GLib.idle_add(self._on_available, locale_code)
+
+    def _on_unavailable(self, locale_code):
+        self._checking.discard(locale_code)
+        self._unavailable.add(locale_code)
+
+    def _on_available(self, locale_code):
+        self._checking.discard(locale_code)
         self._downloading.add(locale_code)
         threading.Thread(target=self._download, args=(locale_code,), daemon=True).start()
 
@@ -199,7 +243,7 @@ class LookupModel(BaseLookupModel):
         self._maybe_auto_download(locale_code)
 
     def _on_download(self, menuitem, locale_code):
-        self._start_download(locale_code)
+        self._start_check(locale_code)
 
     def _on_insert_synonym(self, menuitem, synonym, textbox):
         self._replace_selection(textbox, synonym)

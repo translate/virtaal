@@ -261,6 +261,13 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
             self._on_item_toggled(None, path)
             return True
         if event.keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter):
-            self.do_row_activated(path, self.namedesc_col)
+            # Call straight through rather than just entering editing
+            # state, matching what a mouse click on the button does.
+            iter = self._model.get_iter(path)
+            item = self.get_item(iter) if iter else None
+            if item and 'config' in item:
+                item['config'](self.get_toplevel())
+            else:
+                self.do_row_activated(path, self.namedesc_col)
             return True
         return False

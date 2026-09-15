@@ -77,6 +77,21 @@ def test_enter_activates_the_cursor_row(monkeypatch):
     assert calls
 
 
+def test_enter_calls_config_directly_when_the_row_has_one():
+    # Configure... only exists as a real widget once the row's in
+    # GTK's editing state - calling straight through on Enter matches
+    # what a mouse click on the button itself already does, instead of
+    # needing a second press once editing starts.
+    calls = []
+    sview = SelectView(items=[{'name': 'A', 'enabled': True, 'data': 'a',
+                                'config': lambda parent: calls.append(parent)}])
+    sview.set_cursor(Gtk.TreePath.new_from_indices([0]))
+
+    sview._on_key_press(sview, SimpleNamespace(keyval=Gdk.KEY_Return))
+
+    assert calls
+
+
 def test_other_keys_are_left_to_the_default_handling():
     sview = _make_view()
     sview.set_cursor(Gtk.TreePath.new_from_indices([0]))

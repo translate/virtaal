@@ -150,7 +150,7 @@ class LookupView(BaseView):
         menu.append(sep)
 
         for i in top_level_items:
-            i.show()
+            i.show_all()
             menu.append(i)
 
         if nested_items:

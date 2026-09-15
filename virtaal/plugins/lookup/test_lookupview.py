@@ -59,6 +59,9 @@ class _FakeTopLevelModel:
 
     def create_menu_items(self, *args):
         item = Gtk.MenuItem(label='Synonyms')
+        submenu = Gtk.Menu()
+        submenu.append(Gtk.MenuItem(label='sukmana'))
+        item.set_submenu(submenu)
         return [item]
 
 
@@ -86,6 +89,17 @@ def _make_view(plugins):
     view.lang_controller = _FakeLangController()
     view._word_selector = WordAtCursorSelector()
     return view
+
+
+def test_top_level_model_items_with_a_submenu_show_their_children():
+    view = _make_view({'thesaurus': _FakeTopLevelModel()})
+    menu = Gtk.Menu()
+
+    view._on_populate_popup(_FakeTextbox('word'), menu)
+
+    synonyms_item = next(i for i in menu.get_children() if i.get_label() == 'Synonyms')
+    assert synonyms_item.get_submenu() is not None
+    assert all(child.get_visible() for child in synonyms_item.get_submenu().get_children())
 
 
 def test_top_level_model_items_go_directly_into_the_context_menu():

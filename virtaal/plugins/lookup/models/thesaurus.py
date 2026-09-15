@@ -92,6 +92,7 @@ class LookupModel(BaseLookupModel):
         self._unavailable = set()  # locale_codes confirmed to have no thesaurus at all
         self._downloading = set()  # locale_codes with a download in flight
         self._parsing = set()  # locale_codes with a background parse in flight
+        self._parse_failed = set()  # locale_codes whose cached .dat failed to parse
         self._auto_tried = set()  # locale_codes an automatic check/download was already attempted for
 
         lang_controller = self.controller.main_controller.lang_controller
@@ -119,11 +120,12 @@ class LookupModel(BaseLookupModel):
         if locale_code in self._parsing:
             return [self._create_status_item(_('Loading thesaurus…'))]
 
-        dat_path = _cached_dat_path(locale_code)
-        if dat_path is not None:
-            self._parsing.add(locale_code)
-            threading.Thread(target=self._parse, args=(locale_code, dat_path), daemon=True).start()
-            return [self._create_status_item(_('Loading thesaurus…'))]
+        if locale_code not in self._parse_failed:
+            dat_path = _cached_dat_path(locale_code)
+            if dat_path is not None:
+                self._parsing.add(locale_code)
+                threading.Thread(target=self._parse, args=(locale_code, dat_path), daemon=True).start()
+                return [self._create_status_item(_('Loading thesaurus…'))]
 
         if locale_code in self._unavailable:
             return []
@@ -190,6 +192,7 @@ class LookupModel(BaseLookupModel):
     def _start_check(self, locale_code):
         if locale_code in self._checking or locale_code in self._downloading:
             return
+        self._parse_failed.discard(locale_code)
         self._checking.add(locale_code)
         threading.Thread(target=self._check, args=(locale_code,), daemon=True).start()
 
@@ -243,9 +246,13 @@ class LookupModel(BaseLookupModel):
                 thesaurus = mythes.parse_thesaurus(f.read())
         except Exception as e:
             logging.debug('Thesaurus parsing failed for %s: %s', locale_code, e)
-            GLib.idle_add(self._parsing.discard, locale_code)
+            GLib.idle_add(self._on_parse_failed, locale_code)
             return
         GLib.idle_add(self._on_parsed, locale_code, thesaurus)
+
+    def _on_parse_failed(self, locale_code):
+        self._parsing.discard(locale_code)
+        self._parse_failed.add(locale_code)
 
     def _on_parsed(self, locale_code, thesaurus):
         self._thesauruses[locale_code] = thesaurus

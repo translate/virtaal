@@ -143,6 +143,41 @@ def test_on_parsed_caches_the_result_and_clears_the_parsing_flag():
     assert 'pl_PL' not in model._parsing
 
 
+def test_on_parse_failed_stops_retrying_the_same_cached_dat():
+    model = _make_model()
+    model._parsing.add('pl_PL')
+
+    model._on_parse_failed('pl_PL')
+
+    assert 'pl_PL' not in model._parsing
+    assert 'pl_PL' in model._parse_failed
+
+
+def test_create_menu_items_does_not_reparse_a_locale_that_already_failed(monkeypatch, tmp_path):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    _write_dat(tmp_path, 'pl_PL', SAMPLE_DAT)
+    threads = _patch_threads(monkeypatch)
+    model = _make_model()
+    model._parse_failed.add('pl_PL')
+
+    items = model.create_menu_items('abaja', 'source', 'pl_PL', 'en', None)
+
+    assert threads == []
+    assert len(items) == 1
+    assert 'Download' in items[0].get_label()
+
+
+def test_start_check_clears_a_previous_parse_failure(monkeypatch):
+    threads = _patch_threads(monkeypatch)
+    model = _make_model()
+    model._parse_failed.add('pl_PL')
+
+    model._start_check('pl_PL')
+
+    assert 'pl_PL' not in model._parse_failed
+    assert len(threads) == 1
+
+
 def test_create_menu_items_offers_synonyms_once_a_thesaurus_is_parsed():
     model = _make_model()
     model._thesauruses['pl_PL'] = mythes.parse_thesaurus(SAMPLE_DAT)

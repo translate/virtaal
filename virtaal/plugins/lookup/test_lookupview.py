@@ -137,7 +137,7 @@ def test_populate_popup_does_nothing_without_a_selection():
 
 
 def test_populate_popup_ellipsizes_a_long_selection():
-    view = _make_view({'weblookup': _FakeModel()})
+    view = _make_view({'weblookup': _FakeNestedModel()})
     menu = Gtk.Menu()
 
     view._on_populate_popup(_FakeTextbox('a' * 60), menu)

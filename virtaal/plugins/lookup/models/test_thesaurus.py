@@ -247,6 +247,10 @@ class _Textbox:
     def __init__(self, buffer, role='target'):
         self.buffer = buffer
         self.role = role
+        self.emitted = []
+
+    def emit(self, signal, *args):
+        self.emitted.append(signal)
 
 
 def test_replace_selection_swaps_the_selected_text_and_records_undo():
@@ -262,6 +266,7 @@ def test_replace_selection_swaps_the_selected_text_and_records_undo():
 
     assert buf.get_text(buf.get_start_iter(), buf.get_end_iter(), False) == 'a sukmana b'
     assert model.controller.main_controller.undo_controller.calls == ['start', 'stop']
+    assert textbox.emitted == ['changed']
 
 
 def test_replace_selection_leaves_source_text_untouched():
@@ -277,6 +282,7 @@ def test_replace_selection_leaves_source_text_untouched():
 
     assert buf.get_text(buf.get_start_iter(), buf.get_end_iter(), False) == 'a płaszcz b'
     assert model.controller.main_controller.undo_controller.calls == []
+    assert textbox.emitted == []
 
 
 def test_download_writes_only_dat_files_ignoring_a_missing_idx(monkeypatch, tmp_path):

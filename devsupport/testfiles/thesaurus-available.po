@@ -1,0 +1,34 @@
+# A PO file for manually testing the Thesaurus look-up plugin - source
+# (English) and target (French) both have a real thesaurus in
+# LibreOffice's dictionaries repo, and every highlighted word below is
+# confirmed (by actually querying the real, downloaded thesaurus data,
+# not guessed) to return real synonyms on both sides.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2026-09-15 00:00+0000\n"
+"PO-Revision-Date: 2026-09-15 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. Right-click "happy"/"heureuse" on either side for synonyms.
+msgid "She seemed very happy today."
+msgstr "Elle semblait très heureuse aujourd'hui."
+
+#. Right-click "beautiful"/"beau" on either side for synonyms.
+msgid "It was a beautiful sunset."
+msgstr "C'était un beau coucher de soleil."
+
+#. Right-click "quick"/"rapide" on either side for synonyms.
+msgid "He gave a quick reply."
+msgstr "Il a donné une réponse rapide."
+
+#. Right-click "small"/"petite" on either side for synonyms.
+msgid "It was a small mistake."
+msgstr "C'était une petite erreur."

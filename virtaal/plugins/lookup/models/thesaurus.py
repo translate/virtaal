@@ -67,6 +67,7 @@ class LookupModel(BaseLookupModel):
     #l10n: plugin name
     display_name = _('Thesaurus')
     description = _('Look up synonyms for the selected word')
+    TOP_LEVEL = True
 
     # INITIALIZERS #
     def __init__(self, internal_name, controller):

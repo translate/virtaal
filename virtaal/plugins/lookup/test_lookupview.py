@@ -54,9 +54,20 @@ class _FakeLangController:
     target_lang = _FakeLang()
 
 
-class _FakeModel:
+class _FakeTopLevelModel:
+    TOP_LEVEL = True
+
     def create_menu_items(self, *args):
-        return [Gtk.MenuItem(label='Google')]
+        item = Gtk.MenuItem(label='Synonyms')
+        return [item]
+
+
+class _FakeNestedModel:
+    TOP_LEVEL = False
+
+    def create_menu_items(self, *args):
+        item = Gtk.MenuItem(label='Google')
+        return [item]
 
 
 class _FakePluginController:
@@ -77,8 +88,33 @@ def _make_view(plugins):
     return view
 
 
+def test_top_level_model_items_go_directly_into_the_context_menu():
+    # A thesaurus result is specific enough that nesting it one level
+    # deeper, alongside unrelated web look-ups, would just make it
+    # slower to reach - unlike weblookup, it sits as its own entry.
+    view = _make_view({'thesaurus': _FakeTopLevelModel(), 'weblookup': _FakeNestedModel()})
+    menu = Gtk.Menu()
+
+    view._on_populate_popup(_FakeTextbox('word'), menu)
+
+    top_level_labels = [i.get_label() for i in menu.get_children() if isinstance(i, Gtk.MenuItem) and i.get_label()]
+    assert 'Synonyms' in top_level_labels
+    assert 'Google' not in top_level_labels
+
+
+def test_nested_model_items_stay_under_the_look_up_submenu():
+    view = _make_view({'weblookup': _FakeNestedModel()})
+    menu = Gtk.Menu()
+
+    view._on_populate_popup(_FakeTextbox('word'), menu)
+
+    lookup_item = next(i for i in menu.get_children() if isinstance(i, Gtk.MenuItem) and i.get_submenu())
+    submenu_labels = [i.get_label() for i in lookup_item.get_submenu().get_children()]
+    assert submenu_labels == ['Google']
+
+
 def test_populate_popup_does_nothing_without_a_selection():
-    view = _make_view({'weblookup': _FakeModel()})
+    view = _make_view({'thesaurus': _FakeTopLevelModel()})
     menu = Gtk.Menu()
 
     view._on_populate_popup(_FakeTextbox(''), menu)
@@ -115,7 +151,7 @@ def test_populate_popup_selects_the_word_under_the_cursor_when_nothing_is_select
     # A plain right-click (nothing dragged out first) shouldn't
     # require selecting a word first - the spell checker's own
     # right-click suggestions already work this way.
-    view = _make_view({'weblookup': _FakeModel()})
+    view = _make_view({'thesaurus': _FakeTopLevelModel()})
     menu = Gtk.Menu()
     textbox = _RealTextbox('The quick brown fox', cursor_offset=6)
 
@@ -127,7 +163,7 @@ def test_populate_popup_selects_the_word_under_the_cursor_when_nothing_is_select
 
 
 def test_populate_popup_does_nothing_when_the_cursor_is_not_inside_a_word():
-    view = _make_view({'weblookup': _FakeModel()})
+    view = _make_view({'thesaurus': _FakeTopLevelModel()})
     menu = Gtk.Menu()
     textbox = _RealTextbox('The quick brown fox', cursor_offset=3)
 

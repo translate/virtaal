@@ -177,6 +177,22 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
 
         return item
 
+    def get_scroll_position(self):
+        vadj = self.get_vadjustment()
+        return vadj.get_value() if vadj else None
+
+    def set_scroll_position(self, value):
+        # Restores where the list was scrolled to before a
+        # set_model() rebuild - replacing the model resets it to the
+        # top, which reselecting the same row doesn't undo (GTK only
+        # scrolls as far as needed to make that row visible again,
+        # landing it wherever that happens to be, not where it was).
+        if value is None:
+            return
+        vadj = self.get_vadjustment()
+        if vadj:
+            vadj.set_value(value)
+
     def get_selected_item(self):
         return self.selected_item
 

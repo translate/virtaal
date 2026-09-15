@@ -133,16 +133,24 @@ class PreferencesView(BaseView, GObjectWrapper):
         return self.placeables_select.get_all_items()
     def _set_placeables_data(self, value):
         selected = self.placeables_select.get_selected_item()
+        scroll = self.placeables_select.get_scroll_position()
         self.placeables_select.set_model(value)
         self.placeables_select.select_item(selected)
+        # GTK defers scrolling the reselected row into view until it's
+        # revalidated the rebuilt model's row heights (its own idle
+        # callback) - restoring the old position synchronously here
+        # gets overwritten by that once it runs. Queue behind it.
+        GLib.idle_add(self.placeables_select.set_scroll_position, scroll)
     placeables_data = property(_get_placeables_data, _set_placeables_data)
 
     def _get_plugin_data(self):
         return self.plugins_select.get_all_items()
     def _set_plugin_data(self, value):
         selected = self.plugins_select.get_selected_item()
+        scroll = self.plugins_select.get_scroll_position()
         self.plugins_select.set_model(value)
         self.plugins_select.select_item(selected)
+        GLib.idle_add(self.plugins_select.set_scroll_position, scroll)
     plugin_data = property(_get_plugin_data, _set_plugin_data)
 
     def _get_user_data(self):

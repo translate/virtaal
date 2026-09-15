@@ -28,6 +28,12 @@ from virtaal.support.dictionary_source import (
     parse_dictionaries_xcu,
 )
 
+# Folders with no HunSpellDic_* entry at all, permanently - not an
+# upstream restructuring to catch. zu_ZA only ships a hyphenation
+# dictionary; hunspell's affix-based approach doesn't suit Zulu well
+# enough for a usable spelling dictionary to exist there.
+NO_SPELL_DICTIONARY = {'zu_ZA'}
+
 
 def _file_exists(folder, filename):
     for url in dictionary_file_url_candidates(folder, filename):
@@ -48,6 +54,8 @@ def check_folder(folder):
     except Exception as e:
         return ['%s: could not parse dictionaries.xcu (%s)' % (folder, e)]
     if not entries:
+        if folder in NO_SPELL_DICTIONARY:
+            return []
         return ['%s: dictionaries.xcu has no HunSpellDic_* entries' % folder]
     problems = []
     for entry in entries:

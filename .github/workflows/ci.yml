@@ -153,6 +153,7 @@ jobs:
             gobject-introspection \
             hunspell-en-us \
             libcairo2-dev \
+            libcurl4-gnutls-dev \
             libenchant-2-dev \
             libgirepository-2.0-dev \
             libglib2.0-dev \

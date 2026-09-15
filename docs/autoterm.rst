@@ -4,8 +4,6 @@
 Automatic Terminology Assistance
 ********************************
 
-.. versionadded:: 0.5
-
 Virtaal can provide terminology help in many ways. One of the most powerful
 ways is where Virtaal downloads a recommended file of localisation terms for
 your language.

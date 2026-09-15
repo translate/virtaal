@@ -14,8 +14,6 @@ ability to add it to the personal word list.
 Windows
 =======
 
-.. versionadded:: 0.7
-
 Currently only Hunspell and Myspell spell checkers are supported.  You need to
 install spell checkers for the languages that you are interested in.
 

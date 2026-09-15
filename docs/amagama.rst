@@ -4,8 +4,6 @@
 Amagama
 *******
 
-.. versionadded:: 0.7
-
 Virtaal provides TM suggestions from the Amagama Translation Memory server.
 Amagama contains translations of FOSS projects.
 

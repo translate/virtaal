@@ -70,8 +70,6 @@ The best way to change the language of the Virtaal interface, is to change the
 locale of your system. For Windows, this is done in the Control Center under
 the Regional Settings, for example.
 
-.. versionchanged:: 0.7
-
 You can specify a language for the interface that is different from the
 language of the system. To do this, first ensure that Virtaal is closed
 entirely. Then open the file ``virtaal.ini`` and edit the setting ``uilang``

@@ -4,8 +4,6 @@
 Google Translate
 ****************
 
-.. versionadded:: 0.5
-
 `Google Translate <http://translate.google.com/>`_ is an online service for
 machine translation (MT). Familiarise yourself with Google's `terms of service
 <https://developers.google.com/translate/v2/terms>`_. Note that since Virtaal
@@ -22,4 +20,3 @@ Remember that the suggestions from the Google Translate plugin are unreviewed
 machine-generated translations, that could be wrong, inaccurate, or flawed in
 some other way. It is meant as a way to help you increase your productivity,
 not to substitute the expertise of a human translator.
-

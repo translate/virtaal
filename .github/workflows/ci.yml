@@ -45,10 +45,12 @@ jobs:
           for i in 1 2 3; do sudo apt-get update && break || sleep 10; done
           sudo apt-get install -y intltool
 
-      - name: Install pre-commit
-        run: pip install pre-commit
+      - name: Install prek
+        # Drop-in, Rust-based pre-commit replacement - same
+        # .pre-commit-config.yaml, no per-hook virtualenv bootstrap.
+        run: pip install prek
 
-      - name: Run pre-commit on changed files
+      - name: Run prek on changed files
         run: |
           base="${{ github.event.pull_request.base.sha || github.event.before }}"
           if [ -z "$base" ] || [ "$base" = "0000000000000000000000000000000000000000" ]; then
@@ -62,9 +64,9 @@ jobs:
             base=$(git rev-parse HEAD^ 2>/dev/null || true)
           fi
           if [ -z "$base" ]; then
-            pre-commit run --all-files
+            prek run --all-files
           else
-            pre-commit run --from-ref "$base" --to-ref HEAD
+            prek run --from-ref "$base" --to-ref HEAD
           fi
 
   docs-and-translations:

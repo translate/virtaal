@@ -19,6 +19,7 @@ virtaal/plugins/autocorrector.py
 virtaal/plugins/spellchecker.py
 virtaal/plugins/lookup/__init__.py
 virtaal/plugins/lookup/lookupview.py
+virtaal/plugins/lookup/models/thesaurus.py
 virtaal/plugins/lookup/models/weblookup.py
 virtaal/plugins/migration.py
 virtaal/plugins/terminology/__init__.py

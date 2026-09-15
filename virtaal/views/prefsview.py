@@ -63,6 +63,10 @@ class PreferencesView(BaseView, GObjectWrapper):
         self.placeables_select = SelectView()
         self.placeables_select.connect('item-enabled', self._on_placeable_toggled)
         self.placeables_select.connect('item-disabled', self._on_placeable_toggled)
+        # ScrolledWindow doesn't request its child's actual width by
+        # default, which is how a plugin's "Configure..." button ended
+        # up hidden - grow to fit instead.
+        self._widgets['scrwnd_placeables'].set_propagate_natural_width(True)
         self._widgets['scrwnd_placeables'].add(self.placeables_select)
         self._widgets['scrwnd_placeables'].show_all()
 
@@ -70,6 +74,7 @@ class PreferencesView(BaseView, GObjectWrapper):
         self.plugins_select = SelectView()
         self.plugins_select.connect('item-enabled', self._on_plugin_toggled)
         self.plugins_select.connect('item-disabled', self._on_plugin_toggled)
+        self._widgets['scrwnd_plugins'].set_propagate_natural_width(True)
         self._widgets['scrwnd_plugins'].add(self.plugins_select)
         self._widgets['scrwnd_plugins'].show_all()
 

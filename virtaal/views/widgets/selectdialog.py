@@ -57,6 +57,10 @@ class SelectDialog(GObjectWrapper):
 
         scrolled_window = Gtk.ScrolledWindow()
         scrolled_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        # ScrolledWindow doesn't request its child's actual width by
+        # default, which is how a row's "Configure..." button ended up
+        # clipped - grow to fit instead.
+        scrolled_window.set_propagate_natural_width(True)
         scrolled_window.add(self.sview)
         self.dialog.get_child().pack_end(scrolled_window, True, True, 0)
         self.dialog.add_buttons(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE)

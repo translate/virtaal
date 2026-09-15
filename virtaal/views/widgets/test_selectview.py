@@ -134,6 +134,17 @@ def test_select_item_matches_a_row_whose_enabled_state_has_changed():
     assert sview.get_selected_item()['data'] == stale['data']
 
 
+def test_select_item_moves_the_keyboard_cursor_too():
+    sview = _make_view()
+    target_path = Gtk.TreePath.new_from_indices([1])
+    sview.set_cursor(Gtk.TreePath.new_from_indices([0]))
+    target = sview.get_all_items()[1]
+
+    sview.select_item(target)
+
+    assert sview.get_cursor()[0] == target_path
+
+
 def test_configure_button_responds_to_the_clicked_signal():
     # Enter/Space on a focused button fires 'clicked' - the button
     # used to only listen for 'button-release-event', which a real

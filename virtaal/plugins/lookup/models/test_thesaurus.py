@@ -5,6 +5,8 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+from urllib.error import HTTPError
+
 from gi.repository import Gtk
 
 from virtaal.plugins.lookup.models import thesaurus as thesaurus_module
@@ -193,6 +195,25 @@ def test_replace_selection_swaps_the_selected_text_and_records_undo():
 
     assert buf.get_text(buf.get_start_iter(), buf.get_end_iter(), False) == 'a sukmana b'
     assert model.controller.main_controller.undo_controller.calls == ['start', 'stop']
+
+
+def test_download_writes_only_dat_files_ignoring_a_missing_idx(monkeypatch, tmp_path):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    fetched = []
+
+    def fake_fetch(folder, filename):
+        fetched.append(filename)
+        if filename.endswith('.idx'):
+            raise HTTPError('url', 404, 'not found', {}, None)
+        return b'UTF-8\nabaja|1\n-|abaja\n'
+    monkeypatch.setattr(thesaurus_module, 'fetch_dictionary_file', fake_fetch)
+
+    model = _make_model()
+    model._download('fr_FR', 'fr_FR', ['thes_fr.dat', 'thes_fr.idx'])
+
+    assert fetched == ['thes_fr.dat']
+    assert (tmp_path / 'fr_FR' / 'thes_fr.dat').read_bytes() == b'UTF-8\nabaja|1\n-|abaja\n'
+    assert 'fr_FR' not in model._downloading
 
 
 def test_on_download_does_not_start_a_second_thread_while_one_is_in_flight(monkeypatch, tmp_path):

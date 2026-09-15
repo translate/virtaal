@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-15 17:05+0100\n"
+"POT-Creation-Date: 2026-09-15 20:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1080,6 +1080,36 @@ msgstr ""
 #: ../virtaal/plugins/lookup/lookupview.py
 #, python-format
 msgid "Look-up \"%(selection)s\""
+msgstr ""
+
+#. l10n: plugin name
+#: ../virtaal/plugins/lookup/models/thesaurus.py
+msgid "Thesaurus"
+msgstr ""
+
+#: ../virtaal/plugins/lookup/models/thesaurus.py
+msgid "Look up synonyms for the selected word"
+msgstr ""
+
+#. l10n: shown in the selected text's right-click menu while a downloaded thesaurus is still being parsed
+#: ../virtaal/plugins/lookup/models/thesaurus.py
+msgid "Loading thesaurus…"
+msgstr ""
+
+#. l10n: shown in the selected text's right-click menu while a thesaurus download is in progress
+#: ../virtaal/plugins/lookup/models/thesaurus.py
+msgid "Downloading thesaurus…"
+msgstr ""
+
+#. l10n: %(locale)s is a language code, e.g. "en_ZA"
+#: ../virtaal/plugins/lookup/models/thesaurus.py
+#, python-format
+msgid "Download thesaurus for %(locale)s…"
+msgstr ""
+
+#. l10n: The menu entry offering synonyms for the selected word.
+#: ../virtaal/plugins/lookup/models/thesaurus.py
+msgid "Synonyms"
 msgstr ""
 
 #. l10n: plugin name

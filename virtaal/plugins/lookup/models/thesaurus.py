@@ -19,7 +19,16 @@ subsequent look-up is then an in-memory dict access, not worth
 optimising further (e.g. via the .idx files mythes' own C++ library
 uses for random-access reads - real folders don't reliably ship one
 anyway, en's own included, and it would only ever help this one-time
-parse, not the free lookups after it)."""
+parse, not the free lookups after it).
+
+Also downloads proactively on source/target-lang-changed (which fires
+on opening a file too, not just an explicit language-picker change),
+same trigger virtaal.support.dictionary_download_watcher already uses
+for spell-check dictionaries - by the time anyone actually right-clicks
+a word, the download has usually already finished in the background,
+and the "Download thesaurus..." menu item is only ever seen if that
+didn't work out (no network yet, or genuinely no thesaurus for that
+locale)."""
 
 import logging
 import os
@@ -66,6 +75,15 @@ class LookupModel(BaseLookupModel):
         self._thesauruses = {}  # locale_code -> parsed {word: meanings}
         self._downloading = set()  # locale_codes with a download in flight
         self._parsing = set()  # locale_codes with a background parse in flight
+        self._auto_tried = set()  # locale_codes an automatic download was already attempted for
+
+        lang_controller = self.controller.main_controller.lang_controller
+        lang_controller.connect('source-lang-changed', self._on_lang_changed)
+        lang_controller.connect('target-lang-changed', self._on_lang_changed)
+        if lang_controller.source_lang:
+            self._maybe_auto_download(lang_controller.source_lang.code)
+        if lang_controller.target_lang:
+            self._maybe_auto_download(lang_controller.target_lang.code)
 
     # METHODS #
     def create_menu_items(self, query, role, srclang, tgtlang, textbox):
@@ -138,6 +156,21 @@ class LookupModel(BaseLookupModel):
         buf.insert(start_iter, synonym)
         undo_controller.record_stop()
 
+    def _maybe_auto_download(self, locale_code):
+        locale_code = locale_code.replace('-', '_')
+        if locale_code in self._auto_tried:
+            return
+        self._auto_tried.add(locale_code)
+        if _cached_dat_path(locale_code) is not None:
+            return
+        self._start_download(locale_code)
+
+    def _start_download(self, locale_code):
+        if locale_code in self._downloading:
+            return
+        self._downloading.add(locale_code)
+        threading.Thread(target=self._download, args=(locale_code,), daemon=True).start()
+
     def _download(self, locale_code):
         try:
             download_dictionary(locale_code, target_dir=os.path.join(thesaurus_cache_dir(), locale_code), dict_format='DICT_THES')
@@ -161,11 +194,11 @@ class LookupModel(BaseLookupModel):
         self._parsing.discard(locale_code)
 
     # SIGNAL HANDLERS #
+    def _on_lang_changed(self, _lang_controller, locale_code):
+        self._maybe_auto_download(locale_code)
+
     def _on_download(self, menuitem, locale_code):
-        if locale_code in self._downloading:
-            return
-        self._downloading.add(locale_code)
-        threading.Thread(target=self._download, args=(locale_code,), daemon=True).start()
+        self._start_download(locale_code)
 
     def _on_insert_synonym(self, menuitem, synonym, textbox):
         self._replace_selection(textbox, synonym)

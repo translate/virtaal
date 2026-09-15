@@ -42,7 +42,7 @@ from gi.repository import GLib, Gtk
 from virtaal.common import pan_app
 from virtaal.support import mythes
 from virtaal.support.dictionary_source import (
-    download_dictionary,
+    fetch_dictionary_file,
     fetch_dictionary_tree,
     fetch_xcu,
     find_dictionary,
@@ -198,29 +198,42 @@ class LookupModel(BaseLookupModel):
             tree = fetch_dictionary_tree()
             folders = list_dictionary_folders(tree)
             match = find_dictionary(locale_code, folders, fetch_xcu, dict_format='DICT_THES')
-        except Exception:
-            logging.exception('Thesaurus availability check failed for %s', locale_code)
+        except Exception as e:
+            # Same as dictionary_downloader.py's own DEBUG-level
+            # logging for this - a failed background network check
+            # must never surface as an application error, including
+            # in a build-verification log-content check.
+            logging.debug('Thesaurus availability check failed for %s: %s', locale_code, e)
             GLib.idle_add(self._checking.discard, locale_code)
             return
         if match is None:
             GLib.idle_add(self._on_unavailable, locale_code)
         else:
-            GLib.idle_add(self._on_available, locale_code)
+            folder, files = match
+            GLib.idle_add(self._on_available, locale_code, folder, files)
 
     def _on_unavailable(self, locale_code):
         self._checking.discard(locale_code)
         self._unavailable.add(locale_code)
 
-    def _on_available(self, locale_code):
+    def _on_available(self, locale_code, folder, files):
         self._checking.discard(locale_code)
         self._downloading.add(locale_code)
-        threading.Thread(target=self._download, args=(locale_code,), daemon=True).start()
+        threading.Thread(target=self._download, args=(locale_code, folder, files), daemon=True).start()
 
-    def _download(self, locale_code):
+    def _download(self, locale_code, folder, files):
+        # Only the .dat matters (see this module's own docstring) - a
+        # real folder (fr_FR, for one) has no .idx alongside it at all.
+        dat_files = [f for f in files if f.endswith('.dat')]
         try:
-            download_dictionary(locale_code, target_dir=os.path.join(thesaurus_cache_dir(), locale_code), dict_format='DICT_THES')
-        except Exception:
-            logging.exception('Thesaurus download failed for %s', locale_code)
+            target_dir = os.path.join(thesaurus_cache_dir(), locale_code)
+            os.makedirs(target_dir, exist_ok=True)
+            for filename in dat_files:
+                content = fetch_dictionary_file(folder, filename)
+                with open(os.path.join(target_dir, filename), 'wb') as f:
+                    f.write(content)
+        except Exception as e:
+            logging.debug('Thesaurus download failed for %s: %s', locale_code, e)
         finally:
             GLib.idle_add(self._downloading.discard, locale_code)
 
@@ -228,8 +241,8 @@ class LookupModel(BaseLookupModel):
         try:
             with open(dat_path, 'rb') as f:
                 thesaurus = mythes.parse_thesaurus(f.read())
-        except Exception:
-            logging.exception('Thesaurus parsing failed for %s', locale_code)
+        except Exception as e:
+            logging.debug('Thesaurus parsing failed for %s: %s', locale_code, e)
             GLib.idle_add(self._parsing.discard, locale_code)
             return
         GLib.idle_add(self._on_parsed, locale_code, thesaurus)

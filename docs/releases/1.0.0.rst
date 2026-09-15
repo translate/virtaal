@@ -4,6 +4,11 @@
 Virtaal 1.0.0
 *************
 
+This page currently describes `v1.0.0-beta1
+<https://github.com/translate/virtaal/releases/tag/v1.0.0-beta1>`_, the
+first pre-release of the 1.0.0 line - it'll be updated as later betas and
+the final 1.0.0 ship.
+
 Virtaal is back after being dormant since 2020, ported from Python 2/GTK2
 to Python 3/GTK3 - a rewrite of most of the application's internals with
 no intended change to the day-to-day translating experience.

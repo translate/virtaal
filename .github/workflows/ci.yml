@@ -807,9 +807,6 @@ jobs:
           flatpak remote-add --if-not-exists --user flathub \
             https://dl.flathub.org/repo/flathub.flatpakrepo
 
-      - name: Build translated .desktop/.metainfo.xml
-        run: ./maketranslations
-
       - name: Install the GNOME runtime/SDK
         run: |
           flatpak install --user -y flathub org.gnome.Platform//50 org.gnome.Sdk//50

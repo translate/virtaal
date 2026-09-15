@@ -7,12 +7,25 @@
 
 from types import SimpleNamespace
 
-from gi.repository import Gtk
+from gi.repository import Gtk, Pango
 
 from virtaal.plugins.terminology.models.localfile.localfileview import (
     FileSelectDialog,
+    LocalFileView,
     TermAddDialog,
 )
+
+
+def _fake_view_with_selection(text=None):
+    view = LocalFileView.__new__(LocalFileView)
+    calls = []
+    view._on_add_term = lambda *args: calls.append(args)
+    textbox = SimpleNamespace(buffer=Gtk.TextBuffer())
+    if text is not None:
+        textbox.buffer.set_text(text)
+        textbox.buffer.select_range(
+            textbox.buffer.get_start_iter(), textbox.buffer.get_end_iter())
+    return view, textbox, calls
 
 
 class _FakeEntry:
@@ -78,6 +91,43 @@ def test_run_restores_the_parents_focus_on_close():
     add_dialog.run()
 
     assert top_window.presented
+
+
+def test_populate_popup_does_nothing_without_a_selection():
+    view, textbox, calls = _fake_view_with_selection()
+    menu = Gtk.Menu()
+
+    view._on_populate_popup(textbox, menu)
+
+    assert menu.get_children() == []
+
+
+def test_populate_popup_adds_add_term_for_a_selection():
+    view, textbox, calls = _fake_view_with_selection('widget')
+    menu = Gtk.Menu()
+
+    view._on_populate_popup(textbox, menu)
+
+    items = menu.get_children()
+    assert len(items) == 2
+    assert isinstance(items[0], Gtk.SeparatorMenuItem)
+    assert items[1].get_label() == 'Add Term "widget"...'
+
+    items[1].activate()
+    assert calls
+
+
+def test_populate_popup_ellipsizes_a_long_selection():
+    view, textbox, calls = _fake_view_with_selection('a' * 60)
+    menu = Gtk.Menu()
+
+    view._on_populate_popup(textbox, menu)
+
+    item = menu.get_children()[1]
+    assert item.get_label() == 'Add Term "%s"...' % ('a' * 60)
+    label_widget = item.get_child()
+    assert label_widget.get_ellipsize() == Pango.EllipsizeMode.MIDDLE
+    assert label_widget.get_max_width_chars() == 40
 
 
 def test_treeview_scrolled_window_is_not_focusable(monkeypatch):

@@ -10,6 +10,7 @@ import locale
 from gi.repository import Gdk, Gtk, Pango
 from translate.storage import factory as store_factory
 
+from virtaal.common.utils import get_unicode
 from virtaal.views.baseview import BaseView
 from virtaal.views.theme import current_theme
 
@@ -25,12 +26,33 @@ class LocalFileView:
         self.controller = model.controller
         self.mainview = model.controller.main_controller.view
         self._signal_ids = []
+        self._textbox_ids = []
+        self._unitview_ids = []
         self._setup_menus()
+        self._connect_context_menu()
         self._addterm = None
         self._fileselect = None
 
 
     # METHODS #
+    def _connect_context_menu(self):
+        unitview = self.controller.main_controller.unit_controller.view
+        if unitview.sources:
+            self._connect_to_textboxes(unitview, unitview.sources)
+        else:
+            self._unitview_ids.append(unitview.connect('sources-created', self._connect_to_textboxes))
+        if unitview.targets:
+            self._connect_to_textboxes(unitview, unitview.targets)
+        else:
+            self._unitview_ids.append(unitview.connect('targets-created', self._connect_to_textboxes))
+
+    def _connect_to_textboxes(self, unitview, textboxes):
+        for textbox in textboxes:
+            self._textbox_ids.append((
+                textbox,
+                textbox.connect('populate-popup', self._on_populate_popup)
+            ))
+
     def _setup_menus(self):
         mnu_transfer = self.mainview.gui.get_object('mnu_placnext')
         self.mnui_edit = self.mainview.gui.get_object('menuitem_edit')
@@ -70,6 +92,10 @@ class LocalFileView:
     def destroy(self):
         for gobj, signal_id in self._signal_ids:
             gobj.disconnect(signal_id)
+        for signal_id in self._unitview_ids:
+            self.controller.main_controller.unit_controller.view.disconnect(signal_id)
+        for textbox, signal_id in self._textbox_ids:
+            textbox.disconnect(signal_id)
 
         self.menu.remove(self.mnu_select_files)
         self.menu.remove(self.mnu_add_term)
@@ -96,6 +122,33 @@ class LocalFileView:
 
     def _on_select_term_files(self, menuitem):
         self.fileselect.run(parent=self.mainview.main_window)
+
+    def _on_populate_popup(self, textbox, menu):
+        buf = textbox.buffer
+        if not buf.get_has_selection():
+            return
+
+        selection = get_unicode(buf.get_text(*buf.get_selection_bounds(), include_hidden_chars=False)).strip()
+        if not selection:
+            return
+
+        label = _('Add Term "%(selection)s"...') % {'selection': selection}
+        menu_item = Gtk.MenuItem(label=label)
+        # Pango ellipsizes on grapheme clusters, unlike a raw string
+        # slice - safer for combining marks (e.g. Arabic niqqud,
+        # Devanagari conjuncts) than truncating the string ourselves.
+        menu_item.get_child().set_ellipsize(Pango.EllipsizeMode.MIDDLE)
+        menu_item.get_child().set_max_width_chars(40)
+        # addterm.reset() already picks up whatever's currently
+        # selected in any source/target textbox - no need to pass the
+        # selection through explicitly.
+        menu_item.connect('activate', self._on_add_term)
+        menu_item.show()
+
+        sep = Gtk.SeparatorMenuItem()
+        sep.show()
+        menu.append(sep)
+        menu.append(menu_item)
 
 
 class FileSelectDialog:

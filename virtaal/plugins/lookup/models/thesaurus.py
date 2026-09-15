@@ -168,6 +168,12 @@ class LookupModel(BaseLookupModel):
         return item
 
     def _replace_selection(self, textbox, synonym):
+        # Source textboxes are only set non-editable at the widget
+        # level (set_editable(False)) - that blocks interactive
+        # typing, not a direct buffer.insert()/delete() call like
+        # this one, so it has to be checked explicitly here too.
+        if textbox.role != 'target':
+            return
         buf = textbox.buffer
         if not buf.get_has_selection():
             return

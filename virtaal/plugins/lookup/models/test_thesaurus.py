@@ -213,23 +213,40 @@ def test_create_menu_items_uses_the_target_language_for_a_target_selection():
     assert items[0].get_label() == 'Synonyms'
 
 
+class _Textbox:
+    def __init__(self, buffer, role='target'):
+        self.buffer = buffer
+        self.role = role
+
+
 def test_replace_selection_swaps_the_selected_text_and_records_undo():
     buf = Gtk.TextBuffer()
     buf.set_text('a płaszcz b')
     start = buf.get_iter_at_offset(2)
     end = buf.get_iter_at_offset(9)
     buf.select_range(start, end)
-
-    class _Textbox:
-        pass
-    textbox = _Textbox()
-    textbox.buffer = buf
+    textbox = _Textbox(buf)
 
     model = _make_model()
     model._replace_selection(textbox, 'sukmana')
 
     assert buf.get_text(buf.get_start_iter(), buf.get_end_iter(), False) == 'a sukmana b'
     assert model.controller.main_controller.undo_controller.calls == ['start', 'stop']
+
+
+def test_replace_selection_leaves_source_text_untouched():
+    buf = Gtk.TextBuffer()
+    buf.set_text('a płaszcz b')
+    start = buf.get_iter_at_offset(2)
+    end = buf.get_iter_at_offset(9)
+    buf.select_range(start, end)
+    textbox = _Textbox(buf, role='source')
+
+    model = _make_model()
+    model._replace_selection(textbox, 'sukmana')
+
+    assert buf.get_text(buf.get_start_iter(), buf.get_end_iter(), False) == 'a płaszcz b'
+    assert model.controller.main_controller.undo_controller.calls == []
 
 
 def test_download_writes_only_dat_files_ignoring_a_missing_idx(monkeypatch, tmp_path):

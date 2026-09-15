@@ -82,7 +82,10 @@ class TerminologyController(BaseController):
 
         remove_type() alone only strips stale matches - refresh() re-renders
         the tree but never re-runs the placeable parsers, so parse() is what
-        actually re-detects current ones."""
+        actually re-detects current ones. The current row's own height in
+        the store treeview also isn't renegotiated just because its content
+        changed underneath it (#3526's same FIXED-column cause, triggered
+        here by a later async event rather than a column-width change)."""
         unit_controller = getattr(self.main_controller, 'unit_controller', None)
         if unit_controller is None:
             return
@@ -90,6 +93,11 @@ class TerminologyController(BaseController):
             src.elem.remove_type(terminology.TerminologyPlaceable)
             elem_parse(src.elem, terminology.parsers)
             src.refresh(update=True)
+
+        store_controller = getattr(self.main_controller, 'store_controller', None)
+        if store_controller is None or store_controller.cursor is None:
+            return
+        store_controller.view._treeview.refresh_current_row()
 
 
     # EVENT HANDLERS #

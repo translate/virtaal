@@ -29,24 +29,38 @@ class _FakeUndoController:
         self.calls.append('stop')
 
 
+class _FakeLanguage:
+    def __init__(self, code):
+        self.code = code
+
+
+class _FakeLangController:
+    """Real signal dispatch (not a mock) - source/target-lang-changed
+    also fires on opening a file, not just an explicit language-picker
+    change, and the plugin's whole point is reacting to either."""
+
+    def __init__(self, source_lang=None, target_lang=None):
+        self.source_lang = _FakeLanguage(source_lang) if source_lang else None
+        self.target_lang = _FakeLanguage(target_lang) if target_lang else None
+        self._handlers = {}
+
+    def connect(self, signal, handler):
+        self._handlers.setdefault(signal, []).append(handler)
+
+    def emit(self, signal, code):
+        for handler in self._handlers.get(signal, []):
+            handler(self, code)
+
+
 class _FakeMainController:
-    def __init__(self):
+    def __init__(self, source_lang=None, target_lang=None):
         self.undo_controller = _FakeUndoController()
+        self.lang_controller = _FakeLangController(source_lang, target_lang)
 
 
 class _FakeController:
-    def __init__(self):
-        self.main_controller = _FakeMainController()
-
-
-def _make_model():
-    return LookupModel('thesaurus', _FakeController())
-
-
-def _write_dat(cache_dir, locale_code, content):
-    folder = cache_dir / locale_code
-    folder.mkdir(parents=True, exist_ok=True)
-    (folder / 'th_sample.dat').write_bytes(content)
+    def __init__(self, source_lang=None, target_lang=None):
+        self.main_controller = _FakeMainController(source_lang, target_lang)
 
 
 class _FakeThread:
@@ -57,6 +71,22 @@ class _FakeThread:
 
     def start(self):
         self.started = True
+
+
+def _make_model(source_lang=None, target_lang=None):
+    return LookupModel('thesaurus', _FakeController(source_lang, target_lang))
+
+
+def _write_dat(cache_dir, locale_code, content):
+    folder = cache_dir / locale_code
+    folder.mkdir(parents=True, exist_ok=True)
+    (folder / 'th_sample.dat').write_bytes(content)
+
+
+def _patch_threads(monkeypatch):
+    threads = []
+    monkeypatch.setattr(thesaurus_module.threading, 'Thread', lambda **kwargs: threads.append(_FakeThread(**kwargs)) or threads[-1])
+    return threads
 
 
 def test_create_menu_items_offers_a_download_when_nothing_is_cached(monkeypatch, tmp_path):
@@ -72,8 +102,7 @@ def test_create_menu_items_offers_a_download_when_nothing_is_cached(monkeypatch,
 def test_create_menu_items_starts_a_background_parse_when_a_dat_is_cached_but_not_yet_parsed(monkeypatch, tmp_path):
     monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
     _write_dat(tmp_path, 'pl_PL', SAMPLE_DAT)
-    threads = []
-    monkeypatch.setattr(thesaurus_module.threading, 'Thread', lambda **kwargs: threads.append(_FakeThread(**kwargs)) or threads[-1])
+    threads = _patch_threads(monkeypatch)
     model = _make_model()
 
     items = model.create_menu_items('abaja', 'source', 'pl_PL', 'en', None)
@@ -90,8 +119,7 @@ def test_create_menu_items_starts_a_background_parse_when_a_dat_is_cached_but_no
 def test_create_menu_items_shows_loading_without_starting_a_second_parse(monkeypatch, tmp_path):
     monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
     _write_dat(tmp_path, 'pl_PL', SAMPLE_DAT)
-    threads = []
-    monkeypatch.setattr(thesaurus_module.threading, 'Thread', lambda **kwargs: threads.append(_FakeThread(**kwargs)) or threads[-1])
+    threads = _patch_threads(monkeypatch)
     model = _make_model()
     model._parsing.add('pl_PL')
 
@@ -169,8 +197,7 @@ def test_replace_selection_swaps_the_selected_text_and_records_undo():
 
 def test_on_download_does_not_start_a_second_thread_while_one_is_in_flight(monkeypatch, tmp_path):
     monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
-    threads = []
-    monkeypatch.setattr(thesaurus_module.threading, 'Thread', lambda **kwargs: threads.append(_FakeThread(**kwargs)) or threads[-1])
+    threads = _patch_threads(monkeypatch)
     model = _make_model()
 
     model._on_download(None, 'pl_PL')
@@ -178,3 +205,59 @@ def test_on_download_does_not_start_a_second_thread_while_one_is_in_flight(monke
 
     assert len(threads) == 1
     assert threads[0].started
+
+
+def test_init_auto_downloads_for_the_current_source_and_target_languages(monkeypatch, tmp_path):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    threads = _patch_threads(monkeypatch)
+
+    model = _make_model(source_lang='pl_PL', target_lang='en')
+
+    assert len(threads) == 2
+    assert {t.args[0] for t in threads} == {'pl_PL', 'en'}
+    assert all(t.started for t in threads)
+
+
+def test_init_skips_auto_download_when_already_cached(monkeypatch, tmp_path):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    _write_dat(tmp_path, 'pl_PL', SAMPLE_DAT)
+    threads = _patch_threads(monkeypatch)
+
+    model = _make_model(source_lang='pl_PL', target_lang='en')
+
+    assert len(threads) == 1
+    assert threads[0].args[0] == 'en'
+
+
+def test_lang_changed_signal_triggers_an_auto_download(monkeypatch, tmp_path):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    threads = _patch_threads(monkeypatch)
+    model = _make_model()
+    assert threads == []
+
+    model.controller.main_controller.lang_controller.emit('target-lang-changed', 'de_DE')
+
+    assert len(threads) == 1
+    assert threads[0].args[0] == 'de_DE'
+
+
+def test_maybe_auto_download_does_not_retry_the_same_locale_twice(monkeypatch, tmp_path):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    threads = _patch_threads(monkeypatch)
+    model = _make_model()
+
+    model._maybe_auto_download('de_DE')
+    model._maybe_auto_download('de_DE')
+
+    assert len(threads) == 1
+
+
+def test_maybe_auto_download_normalises_hyphenated_locale_codes(monkeypatch, tmp_path):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    threads = _patch_threads(monkeypatch)
+    model = _make_model()
+
+    model._maybe_auto_download('de-DE')
+
+    assert len(threads) == 1
+    assert threads[0].args[0] == 'de_DE'

@@ -1029,8 +1029,10 @@ class MainView(BaseView):
         textview.set_monospace(True)
         textview.set_left_margin(6)
         textview.set_top_margin(6)
+        from virtaal.__version__ import version_string
         textview.get_buffer().set_text(
-            '\n\n'.join('=== %s ===\n%s' % (name, content) for name, content in found)
+            'Virtaal %s\n\n' % version_string()
+            + '\n\n'.join('=== %s ===\n%s' % (name, content) for name, content in found)
         )
 
         scrolled = Gtk.ScrolledWindow()

@@ -233,8 +233,8 @@ jobs:
     env:
       gvsbuild_version: "2026.8.0"
       # INCLUDE/LIB not set here as static values - they need to be
-      # *appended to* whatever ilammy/msvc-dev-cmd computes below, not
-      # replace it. See the "Add GTK3 to MSVC build environment" step.
+      # *appended to* whatever vs-shell computes below, not replace it.
+      # See the "Add GTK3 to MSVC build environment" step.
       CC: cl
       CXX: cl
       # Forces meson (pygobject's build backend) to use MSVC - without
@@ -280,12 +280,14 @@ jobs:
         # windows-latest has the MSVC toolchain (cl.exe) installed but
         # not on PATH/INCLUDE/LIB by default - runs the equivalent of
         # vcvarsall.bat and persists the result for every later step.
-        uses: ilammy/msvc-dev-cmd@v1
+        # ilammy/msvc-dev-cmd did this but is Node20-only with no
+        # newer release - vs-shell is a Node-free composite action.
+        uses: egor-tensin/vs-shell@v2
 
       - name: Add GTK3 to MSVC build environment
-        # Must run *after* msvc-dev-cmd, appending to its INCLUDE/LIB
+        # Must run *after* vs-shell, appending to its INCLUDE/LIB
         # rather than replacing them - cl.exe needs its own CRT/Windows
-        # SDK headers/libs (from msvc-dev-cmd) *and* GTK3's (from
+        # SDK headers/libs (from vs-shell) *and* GTK3's (from
         # gvsbuild) at once.
         shell: pwsh
         run: |
@@ -409,7 +411,7 @@ jobs:
         shell: pwsh
         run: echo "C:\gtk\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-      - uses: ilammy/msvc-dev-cmd@v1
+      - uses: egor-tensin/vs-shell@v2
 
       - name: Add GTK3 to MSVC build environment
         shell: pwsh

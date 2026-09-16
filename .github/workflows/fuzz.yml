@@ -185,7 +185,7 @@ jobs:
         run: echo "C:\gtk\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Set up MSVC build environment
-        uses: ilammy/msvc-dev-cmd@v1
+        uses: egor-tensin/vs-shell@v2
 
       - name: Add GTK3 to MSVC build environment
         shell: pwsh

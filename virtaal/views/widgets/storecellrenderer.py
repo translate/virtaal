@@ -67,6 +67,11 @@ def gtk_textview_compute_optimal_height(widget, width):
             buftext = markup.escape(buftext)
 
     _w, h = rendering.make_pango_layout(widget, buftext, width - border).get_pixel_size()
+    # Blind to embedded placeable widgets - approximate their real height too (#3536).
+    for child in widget.get_children():
+        # A third is small enough to avoid ballooning, large enough to
+        # be mostly safe.
+        h += child.get_preferred_height()[1] // 3
     if h == 0:
         # No idea why this bug happens, but it often happens for the first unit
         # directly after the file is opened. For now we try to guess a more

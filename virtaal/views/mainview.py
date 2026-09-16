@@ -904,6 +904,26 @@ class MainView(BaseView):
         vbox_main.pack_start(infobar, False, False, 0)
         vbox_main.reorder_child(infobar, 1)  # directly below the menu bar
 
+    def show_language_change_notice(self):
+        """Called once the UI language is changed in Preferences - a
+            running app can't retranslate widgets already built with the
+            old language's strings, so restarting is the only way to
+            see the new one applied throughout."""
+        infobar = Gtk.InfoBar()
+        infobar.set_message_type(Gtk.MessageType.INFO)
+        infobar.set_show_close_button(True)
+        label = Gtk.Label(label=_('Restart Virtaal for the new language to take effect.'))
+        infobar.get_content_area().pack_start(label, True, True, 0)
+
+        def on_response(infobar, response_id):
+            infobar.destroy()
+        infobar.connect('response', on_response)
+
+        infobar.show_all()
+        vbox_main = self.gui.get_object('vbox_main')
+        vbox_main.pack_start(infobar, False, False, 0)
+        vbox_main.reorder_child(infobar, 1)  # directly below the menu bar
+
     def _on_file_open(self, _widget):
         self.open_file()
 

@@ -16,23 +16,27 @@ To get the source code direction from Git use this command::
 Required Packages
 =================
 
-- GTK3, PyGObject, cairo (``python3-gi``/``gir1.2-gtk-3.0``/``cairo2``
-  or similar on Linux, Homebrew's ``pygobject3``/``gtk+3``/``cairo`` on macOS,
-  `gvsbuild <https://github.com/wingtk/gvsbuild>`_ on Windows) - a system
-  prerequisite, not something ``pip install`` provisions on its own;
-  see ``.github/workflows/ci.yml`` for exactly what each platform's CI
-  job installs
+- GTK3, PyGObject, and cairo - a system prerequisite, not something
+  ``pip install`` provisions on its own; see
+  ``.github/workflows/ci.yml`` for exactly what each platform's CI job
+  installs:
+
+  - Linux: ``python3-gi``/``gir1.2-gtk-3.0``/``libcairo2-dev`` or similar
+  - macOS: Homebrew's ``pygobject3``/``gtk+3``/``cairo``
+  - Windows: `gvsbuild <https://github.com/wingtk/gvsbuild>`_
+- `pycairo <https://pypi.org/project/pycairo/>`_ - also needs
+  installing separately (``pip install pycairo``), not part of
+  ``pip install .``
 - `Translate Toolkit <https://pypi.org/project/translate-toolkit/>`_
 - `lxml <https://pypi.org/project/lxml/>`_
 - `PyCurl <https://pypi.org/project/pycurl/>`_
 - `diff_match_patch <https://pypi.org/project/diff-match-patch/>`_
 - `python-Levenshtein <https://pypi.org/project/python-Levenshtein/>`_
 - `cheroot <https://pypi.org/project/cheroot/>`_
-- `pycairo <https://pypi.org/project/pycairo/>`_
 
-The Python packages above are all declared in ``pyproject.toml`` and
-installed automatically by ``pip install .`` - only GTK3/PyGObject
-needs installing separately first.
+The remaining Python packages above are all declared in ``pyproject.toml`` and
+installed automatically by ``pip install .`` - only GTK3/PyGObject/cairo
+and pycairo need installing separately first.
 
 .. _building#optional_packages:
 

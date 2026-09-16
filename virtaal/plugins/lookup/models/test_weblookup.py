@@ -10,6 +10,7 @@ from gi.repository import Gtk
 
 from virtaal.plugins.lookup.models import weblookup
 from virtaal.plugins.lookup.models.weblookup import (
+    LookupModel,
     WebLookupAddDialog,
     WebLookupConfigDialog,
 )
@@ -34,7 +35,7 @@ def test_reopening_the_dialog_does_not_duplicate_columns():
     WebLookupConfigDialog(parent=None)
     dialog = WebLookupConfigDialog(parent=None)
 
-    assert len(dialog.tvw_urls.get_columns()) == 3
+    assert len(dialog.tvw_urls.get_columns()) == 4
 
 
 def test_reopening_the_dialog_does_not_duplicate_button_handlers():
@@ -88,3 +89,95 @@ def test_add_dialog_run_restores_the_parents_focus_on_close(monkeypatch):
     dialog.run()
 
     assert calls == ['parent']
+
+
+# Disabling a web look-up
+
+def _model(monkeypatch, tmp_path):
+    monkeypatch.setattr(weblookup.pan_app, 'get_config_dir', lambda: str(tmp_path))
+    return LookupModel('weblookup', controller=None)
+
+
+def test_disabled_defaults_are_shipped_disabled(monkeypatch, tmp_path):
+    # Bing/Yahoo are shipped as real entries, not left out entirely,
+    # but disabled by default - redundant with Google for the
+    # search-engine case.
+    model = _model(monkeypatch, tmp_path)
+
+    disabled_names = {u['display_name'] for u in model.URLDATA if not u['enabled']}
+
+    assert disabled_names == {'Bing', 'Yahoo'}
+
+
+def test_create_menu_items_skips_a_disabled_lookup(monkeypatch, tmp_path):
+    model = _model(monkeypatch, tmp_path)
+    model.URLDATA = [
+        {'display_name': 'On', 'url': 'http://example.com/?q=%(query)s', 'quoted': False, 'enabled': True},
+        {'display_name': 'Off', 'url': 'http://example.org/?q=%(query)s', 'quoted': False, 'enabled': False},
+    ]
+
+    items = model.create_menu_items('word', 'source', 'en', 'en', None)
+
+    assert [i.get_label() for i in items] == ['On']
+
+
+def test_create_menu_items_treats_a_missing_enabled_key_as_enabled(monkeypatch, tmp_path):
+    # A user's own custom entry, saved before this key existed.
+    model = _model(monkeypatch, tmp_path)
+    model.URLDATA = [{'display_name': 'Custom', 'url': 'http://example.com/?q=%(query)s', 'quoted': False}]
+
+    items = model.create_menu_items('word', 'source', 'en', 'en', None)
+
+    assert [i.get_label() for i in items] == ['Custom']
+
+
+def test_load_urldata_defaults_a_saved_entry_without_enabled_to_enabled(monkeypatch, tmp_path):
+    monkeypatch.setattr(weblookup.pan_app, 'get_config_dir', lambda: str(tmp_path))
+    (tmp_path / 'weblookup.ini').write_text(
+        '[Old Custom]\ndisplay_name = Old Custom\nurl = http://example.com/?q=%(query)s\nquoted = False\n')
+
+    model = LookupModel('weblookup', controller=None)
+
+    saved = next(u for u in model.URLDATA if u['display_name'] == 'Old Custom')
+    assert saved['enabled'] is True
+
+
+def test_load_urldata_adds_new_defaults_missing_from_a_saved_config(monkeypatch, tmp_path):
+    # A config saved before Bing/Yahoo existed only has the original
+    # three entries - they shouldn't vanish just because a user
+    # already had a weblookup.ini.
+    monkeypatch.setattr(weblookup.pan_app, 'get_config_dir', lambda: str(tmp_path))
+    (tmp_path / 'weblookup.ini').write_text(
+        '[Google]\ndisplay_name = Google\nurl = http://www.google.com/search?q=%(query)s\nquoted = True\nenabled = True\n')
+
+    model = LookupModel('weblookup', controller=None)
+
+    names = {u['display_name']: u['enabled'] for u in model.URLDATA}
+    assert names['Google'] is True
+    assert names['Bing'] is False
+    assert names['Yahoo'] is False
+
+
+def test_enabled_toggle_updates_the_underlying_url_dict():
+    dialog = WebLookupConfigDialog(parent=None)
+    url = {'display_name': 'Example', 'url': 'http://example.com', 'quoted': False, 'enabled': True}
+    dialog.urldata = [url]
+
+    dialog._on_enabled_toggled(None, '0')
+
+    assert dialog.lst_urls[0][dialog.COL_ENABLED] is False
+    assert dialog.urldata[0]['enabled'] is False
+
+
+def test_quote_toggle_updates_the_underlying_url_dict():
+    # Pre-existing gap, same root cause as the enabled toggle above:
+    # the CellRendererToggle had no 'toggled' handler at all, so a
+    # click showed the checkbox flip but never actually saved it.
+    dialog = WebLookupConfigDialog(parent=None)
+    url = {'display_name': 'Example', 'url': 'http://example.com', 'quoted': False, 'enabled': True}
+    dialog.urldata = [url]
+
+    dialog._on_quote_toggled(None, '0')
+
+    assert dialog.lst_urls[0][dialog.COL_QUOTE] is True
+    assert dialog.urldata[0]['quoted'] is True

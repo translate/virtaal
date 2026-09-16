@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta2\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-16 15:45+0100\n"
+"POT-Creation-Date: 2026-09-16 16:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1149,6 +1149,20 @@ msgid "Wiktionary"
 msgstr ""
 
 #: ../virtaal/plugins/lookup/models/weblookup.py
+msgid "Bing"
+msgstr ""
+
+#: ../virtaal/plugins/lookup/models/weblookup.py
+msgid "Yahoo"
+msgstr ""
+
+#. l10n: Whether this look-up is offered at all
+#: ../virtaal/plugins/lookup/models/weblookup.py
+#: ../virtaal/views/widgets/selectview.py
+msgid "Enabled"
+msgstr ""
+
+#: ../virtaal/plugins/lookup/models/weblookup.py
 #: ../virtaal/views/widgets/selectview.py
 msgid "Name"
 msgstr ""
@@ -2060,10 +2074,6 @@ msgstr ""
 #. l10n: This is the column heading for the language code
 #: ../virtaal/views/widgets/langselectdialog.py
 msgid "Code"
-msgstr ""
-
-#: ../virtaal/views/widgets/selectview.py
-msgid "Enabled"
 msgstr ""
 
 #: ../virtaal/views/widgets/selectview.py

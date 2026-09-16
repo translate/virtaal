@@ -32,16 +32,35 @@ class LookupModel(BaseLookupModel):
             'display_name': _('Google'),
             'url': 'http://www.google.com/search?q=%(query)s',
             'quoted': True,
+            'enabled': True,
         },
         {
             'display_name': _('Wikipedia'),
             'url': 'http://%(querylang)s.wikipedia.org/wiki/%(query)s',
             'quoted': False,
+            'enabled': True,
         },
         {
             'display_name': _('Wiktionary'),
             'url': 'http://%(querylang)s.wiktionary.org/wiki/%(query)s',
             'quoted': False,
+            'enabled': True,
+        },
+        # Redundant with Google for the search-engine case - shipped
+        # disabled rather than left out entirely, so enabling one is a
+        # checkbox away instead of needing to know the URL to add it
+        # by hand.
+        {
+            'display_name': _('Bing'),
+            'url': 'http://www.bing.com/search?q=%(query)s',
+            'quoted': True,
+            'enabled': False,
+        },
+        {
+            'display_name': _('Yahoo'),
+            'url': 'http://search.yahoo.com/search?p=%(query)s',
+            'quoted': True,
+            'enabled': False,
         },
     ]
     """A list of dictionaries containing data about each URL:
@@ -49,6 +68,7 @@ class LookupModel(BaseLookupModel):
     * C{url}: The actual URL that will be queried. See below for template
         variables.
     * C{quoted}: Whether or not the query string should be put in quotes (").
+    * C{enabled}: Whether this look-up is offered at all.
 
     Valid template variables in 'url' fields are:
     * C{%(query)s}: The selected text that makes up the look-up query.
@@ -71,11 +91,16 @@ class LookupModel(BaseLookupModel):
         self._load_urldata()
 
     def _load_urldata(self):
-        urls = pan_app.load_config(self.urldata_file).values()
+        urls = list(pan_app.load_config(self.urldata_file).values())
         if urls:
             for u in urls:
                 if 'quoted' in u:
                     u['quoted'] = u['quoted'] == 'True'
+                # A saved entry from before this key existed has no
+                # 'enabled' value - default it to enabled.
+                u['enabled'] = u.get('enabled', 'True') == 'True'
+            saved_names = {u['display_name'] for u in urls}
+            urls += [u for u in type(self).URLDATA if u['display_name'] not in saved_names]
             self.URLDATA = urls
 
 
@@ -93,6 +118,8 @@ class LookupModel(BaseLookupModel):
         query = parse.quote(query.encode('utf-8'))
         items = []
         for urlinfo in self.URLDATA:
+            if not urlinfo.get('enabled', True):
+                continue
             uquery = query
             if 'quoted' in urlinfo and urlinfo['quoted']:
                 uquery = '"' + uquery + '"'
@@ -123,7 +150,7 @@ class LookupModel(BaseLookupModel):
 class WebLookupConfigDialog:
     """Dialog manages the URLs used by the web look-up plug-in."""
 
-    COL_NAME, COL_URL, COL_QUOTE, COL_DATA = range(4)
+    COL_ENABLED, COL_NAME, COL_URL, COL_QUOTE, COL_DATA = range(5)
 
     # INITIALIZERS #
     def __init__(self, parent):
@@ -158,15 +185,24 @@ class WebLookupConfigDialog:
         # for the treeview inside it.
         self.tvw_urls.get_parent().set_can_focus(False)
 
-        self.lst_urls = Gtk.ListStore(str, str, bool, object)
+        self.lst_urls = Gtk.ListStore(bool, str, str, bool, object)
         self.tvw_urls.set_model(self.lst_urls)
+
+        cell = Gtk.CellRendererToggle()
+        cell.set_radio(False)
+        cell.connect('toggled', self._on_enabled_toggled)
+        #l10n: Whether this look-up is offered at all
+        col = Gtk.TreeViewColumn(_('Enabled'))
+        col.pack_start(cell, True)
+        col.add_attribute(cell, 'active', self.COL_ENABLED)
+        self.tvw_urls.append_column(col)
 
         cell = Gtk.CellRendererText()
         col = Gtk.TreeViewColumn(_('Name'))
         col.pack_start(cell, True)
         col.add_attribute(cell, 'text', self.COL_NAME)
         col.props.resizable = True
-        col.set_sort_column_id(0)
+        col.set_sort_column_id(1)
         self.tvw_urls.append_column(col)
 
         cell = Gtk.CellRendererText()
@@ -176,11 +212,12 @@ class WebLookupConfigDialog:
         col.add_attribute(cell, 'text', self.COL_URL)
         col.props.resizable = True
         col.set_expand(True)
-        col.set_sort_column_id(1)
+        col.set_sort_column_id(2)
         self.tvw_urls.append_column(col)
 
         cell = Gtk.CellRendererToggle()
         cell.set_radio(False)
+        cell.connect('toggled', self._on_quote_toggled)
         #l10n: Whether the selected text should be surrounded by "quotes"
         col = Gtk.TreeViewColumn(_('Quote Query'))
         col.pack_start(cell, True)
@@ -198,7 +235,7 @@ class WebLookupConfigDialog:
     def _set_urldata(self, value):
         self.lst_urls.clear()
         for url in value:
-            self.lst_urls.append((url['display_name'], url['url'], url['quoted'], url))
+            self.lst_urls.append((url.get('enabled', True), url['display_name'], url['url'], url['quoted'], url))
     urldata = property(_get_urldata, _set_urldata)
 
 
@@ -221,13 +258,23 @@ class WebLookupConfigDialog:
         url = self.add_dialog.run()
         if url is None:
             return
-        self.lst_urls.append((url['display_name'], url['url'], url['quoted'], url))
+        self.lst_urls.append((url['enabled'], url['display_name'], url['url'], url['quoted'], url))
 
     def _on_remove_clicked(self, button):
         selected = self.tvw_urls.get_selection().get_selected()
         if not selected or not selected[1]:
             return
         selected[0].remove(selected[1])
+
+    def _on_enabled_toggled(self, cell, path):
+        new_value = not self.lst_urls[path][self.COL_ENABLED]
+        self.lst_urls[path][self.COL_ENABLED] = new_value
+        self.lst_urls[path][self.COL_DATA]['enabled'] = new_value
+
+    def _on_quote_toggled(self, cell, path):
+        new_value = not self.lst_urls[path][self.COL_QUOTE]
+        self.lst_urls[path][self.COL_QUOTE] = new_value
+        self.lst_urls[path][self.COL_DATA]['quoted'] = new_value
 
 
 class WebLookupAddDialog:
@@ -276,5 +323,6 @@ class WebLookupAddDialog:
             'display_name':   self.ent_url_name.get_text(),
             'url':            self.ent_url.get_text(),
             'quoted':         self.cbtn_url_quote.get_active(),
+            'enabled':        True,
         }
         return self.url

@@ -70,20 +70,20 @@ def _make_view_with_chooser(attr, chooser):
 
 def test_show_open_dialog_returns_filename_on_accept():
     view = _make_view_with_chooser(
-        '_open_chooser', _FakeChooser(Gtk.ResponseType.ACCEPT))
+        'open_chooser', _FakeChooser(Gtk.ResponseType.ACCEPT))
     filename, uri = view.show_open_dialog()
     assert filename == '/tmp/test.po'
 
 
 def test_show_open_dialog_returns_nothing_on_cancel():
     view = _make_view_with_chooser(
-        '_open_chooser', _FakeChooser(Gtk.ResponseType.CANCEL))
+        'open_chooser', _FakeChooser(Gtk.ResponseType.CANCEL))
     assert view.show_open_dialog() == ()
 
 
 def test_show_save_dialog_returns_filename_on_accept():
     view = _make_view_with_chooser(
-        '_save_chooser', _FakeChooser(Gtk.ResponseType.ACCEPT))
+        'save_chooser', _FakeChooser(Gtk.ResponseType.ACCEPT))
     assert view.show_save_dialog('Save', current_filename='/tmp/test.po') == '/tmp/test.po'
 
 
@@ -125,7 +125,7 @@ def test_show_logs_displays_existing_log_content(monkeypatch, tmp_path):
 
 def test_show_save_dialog_returns_none_on_cancel():
     view = _make_view_with_chooser(
-        '_save_chooser', _FakeChooser(Gtk.ResponseType.CANCEL))
+        'save_chooser', _FakeChooser(Gtk.ResponseType.CANCEL))
     assert view.show_save_dialog('Save', current_filename='/tmp/test.po') is None
 
 
@@ -208,7 +208,7 @@ def test_show_save_confirm_dialog_shows_before_presenting_and_restores_parent_fo
     monkeypatch.setattr(GLib, 'idle_add', lambda func, *args: func(*args))
     view = MainView.__new__(MainView)
     dialog = _FakeConfirmDialog()
-    view._confirm_dialog = dialog
+    view.confirm_dialog = dialog
     top_window = _FakeTopWindow()
     view._top_window = top_window
 

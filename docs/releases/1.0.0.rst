@@ -4,10 +4,9 @@
 Virtaal 1.0.0
 *************
 
-This page currently describes `v1.0.0-beta1
-<https://github.com/translate/virtaal/releases/tag/v1.0.0-beta1>`_, the
-first pre-release of the 1.0.0 line - it'll be updated as later betas and
-the final 1.0.0 ship.
+This page currently describes `v1.0.0-beta2
+<https://github.com/translate/virtaal/releases/tag/v1.0.0-beta2>`_ - it'll
+be updated as later betas and the final 1.0.0 ship.
 
 Virtaal is back after being dormant since 2020, ported from Python 2/GTK2
 to Python 3/GTK3 - a rewrite of most of the application's internals with
@@ -17,8 +16,20 @@ Getting it
 ==========
 - Windows installer, macOS ``.dmg`` (Intel and Apple Silicon), and a
   Flatpak build for Linux - see :ref:`Installation <index#installation>`.
-- macOS and Windows binaries are currently unsigned - Gatekeeper/
-  SmartScreen will warn on first launch.
+
+.. warning::
+   macOS and Windows binaries are currently unsigned - Gatekeeper/
+   SmartScreen will warn on first launch. This is expected:
+
+   - **macOS**: don't double-click the app on first launch - it'll
+     refuse to open at all ("Apple could not verify... is free of
+     malware"), with no way past that dialog itself. Instead,
+     right-click (or Control-click) ``Virtaal.app`` in Finder and
+     choose **Open** from the menu - the dialog that appears this time
+     has an **Open** button. Only needed once; a normal double-click
+     works from then on.
+   - **Windows**: the installer shows a blue "Windows protected your
+     PC" screen. Click **More info**, then **Run anyway**.
 
 Highlights
 ==========
@@ -31,6 +42,26 @@ Highlights
   and ``.ts`` (Qt Linguist vs. MPEG Transport Stream) disambiguation.
 - HTTP requests (terminology/TM lookups, dictionary and autocorrect
   downloads) now time out instead of hanging indefinitely.
+- A right-click thesaurus look-up plugin; right-click "Add Term..." for
+  a selected word or phrase; look-ups no longer require selecting a
+  word first.
+- Help > Show Logs, and a crash dialog with a one-click bug-report
+  button on uncaught exceptions.
+- Real OS keyboard focus on macOS across most dialogs (Preferences,
+  Add Term, Add Missing Language, Save/Discard/Cancel, and more);
+  Preferences also opens via Cmd+, and is titled "Settings" to match
+  the system convention.
+- Several crash fixes: adding a language with a non-ASCII code,
+  Replace All on XLIFF/TMX/TS files, File > Update, a corrupt config
+  file, and TM matching on non-ASCII text.
+- The Web Look-ups dialog no longer duplicates its own columns and
+  buttons (each click firing once per time the dialog had ever been
+  opened) when reopened.
+- Preferences' Plug-ins/Placeables lists and the Select Look-up
+  Services dialog: a plugin's "Configure..." button is no longer
+  hidden by a too-narrow column, arrow-key navigation no longer steals
+  keyboard focus into a row, and a toggle no longer risks a 100%-CPU
+  hang or loses your place in a scrolled list.
 
 Known issues
 ============

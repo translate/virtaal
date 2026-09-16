@@ -20,6 +20,9 @@ on:
         type: string
         default: "600"
 
+permissions:
+  contents: read
+
 jobs:
   fuzz-linux:
     runs-on: ubuntu-24.04

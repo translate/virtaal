@@ -17,6 +17,9 @@ on:
         type: boolean
         default: false
 
+permissions:
+  contents: read
+
 jobs:
   pre-commit:
     # Lints only the files that changed, not the whole tree - many

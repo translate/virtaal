@@ -7,7 +7,7 @@
 
 from locale import strxfrm
 
-from gi.repository import GObject, Gtk
+from gi.repository import Gdk, GObject, Gtk
 from gi.repository.GObject import TYPE_PYOBJECT
 
 from virtaal.common import GObjectWrapper
@@ -47,9 +47,9 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
         self.selected_item = None
         if not items:
             items = Gtk.ListStore(bool, str, str, TYPE_PYOBJECT, TYPE_PYOBJECT)
-        self.set_model(items)
 
         self._add_columns()
+        self.set_model(items)
         self._set_defaults()
         self._connect_events()
 
@@ -73,6 +73,7 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
 
     def _connect_events(self):
         self.get_selection().connect('changed', self._on_selection_change)
+        self.connect('key-press-event', self._on_key_press)
 
     def _set_defaults(self):
         self.set_rules_hint(True)
@@ -118,9 +119,9 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
         #TODO: ideally we need an accesskey, but it is not currently working
         if 'config' in item and callable(item['config']):
             btnconf = Gtk.Button(_('Configure...'))
-            def clicked(button, event):
+            def clicked(button):
                 item['config'](self.get_toplevel())
-            btnconf.connect('button-release-event', clicked)
+            btnconf.connect('clicked', clicked)
             btnconf.config_func = item['config']
             hbox.pack_start(btnconf, False, True, 0)
 
@@ -176,6 +177,22 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
 
         return item
 
+    def get_scroll_position(self):
+        vadj = self.get_vadjustment()
+        return vadj.get_value() if vadj else None
+
+    def set_scroll_position(self, value):
+        # Restores where the list was scrolled to before a
+        # set_model() rebuild - replacing the model resets it to the
+        # top, which reselecting the same row doesn't undo (GTK only
+        # scrolls as far as needed to make that row visible again,
+        # landing it wherever that happens to be, not where it was).
+        if value is None:
+            return
+        vadj = self.get_vadjustment()
+        if vadj:
+            vadj.set_value(value)
+
     def get_selected_item(self):
         return self.selected_item
 
@@ -183,16 +200,22 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
         if item is None:
             self.get_selection().unselect_all()
             return
+        # Matched on 'data' alone - a stale snapshot's 'enabled' field
+        # can differ from the freshly rebuilt row it should still match.
         found = False
         itr = self._model.get_iter_first()
         while itr is not None and self._model.iter_is_valid(itr):
-            if self.get_item(itr) == item:
+            current = self.get_item(itr)
+            if current['data'] == item['data']:
                 found = True
                 break
             itr = self._model.iter_next(itr)
         if found and itr and self._model.iter_is_valid(itr):
             self.get_selection().select_iter(itr)
-            self.selected_item = item
+            # select_iter() alone doesn't move the keyboard cursor -
+            # Space/Enter act on get_cursor()'s row, not the selection.
+            self.set_cursor(self._model.get_path(itr))
+            self.selected_item = current
         else:
             self.selected_item = None
 
@@ -203,14 +226,23 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
             self._model = Gtk.ListStore(bool, str, str, TYPE_PYOBJECT, TYPE_PYOBJECT)
             items = list(items)
             items.sort(key=lambda x: strxfrm(x.get('name', '')))
+            # CellRendererWidget.do_get_size() only measures whichever
+            # row's widget is assigned to it at query time - measure
+            # every row's real widget upfront instead.
+            widest = 0
             for row in items:
+                widget = self._create_widget_for_item(row)
+                widget.show_all()
+                widest = max(widest, widget.get_preferred_width()[1])
                 self._model.append([
                     row.get('enabled', False),
                     row.get('name', ''),
                     row.get('desc', ''),
                     row.get('data', None),
-                    self._create_widget_for_item(row)
+                    widget
                 ])
+            if widest:
+                self.namedesc_col.set_min_width(widest)
 
         super().set_model(self._model)
 
@@ -233,9 +265,28 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
         model, iter = selection.get_selected()
         if iter and self._model.iter_is_valid(iter):
             self.selected_item = self.get_item(iter)
-            path = model.get_path(iter)
-            self.set_cursor(path, self.namedesc_col, start_editing=True)
             self.emit('item-selected', self.selected_item)
 
     def do_row_activated(self, path, column):
         self.set_cursor(path, self.namedesc_col, start_editing=True)
+
+    def _on_key_press(self, widget, event):
+        # GTK's Space/Enter handling depends on the cursor's column,
+        # which is always namedesc_col here - handle both explicitly.
+        path, _column = self.get_cursor()
+        if path is None:
+            return False
+        if event.keyval in (Gdk.KEY_space, Gdk.KEY_KP_Space):
+            self._on_item_toggled(None, path)
+            return True
+        if event.keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter):
+            # Call straight through rather than just entering editing
+            # state, matching what a mouse click on the button does.
+            iter = self._model.get_iter(path)
+            item = self.get_item(iter) if iter else None
+            if item and 'config' in item:
+                item['config'](self.get_toplevel())
+            else:
+                self.do_row_activated(path, self.namedesc_col)
+            return True
+        return False

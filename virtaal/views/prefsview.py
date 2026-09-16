@@ -66,6 +66,14 @@ class PreferencesView(BaseView, GObjectWrapper):
         self.placeables_select = SelectView()
         self.placeables_select.connect('item-enabled', self._on_placeable_toggled)
         self.placeables_select.connect('item-disabled', self._on_placeable_toggled)
+        # ScrolledWindow doesn't request its child's actual width by
+        # default, which is how a plugin's "Configure..." button ended
+        # up hidden - grow to fit instead.
+        self._widgets['scrwnd_placeables'].set_propagate_natural_width(True)
+        # The .ui file marks this focusable, which swallows Tab/Down
+        # meant for the list inside it - the scroller chrome itself
+        # has no reason to be a stop in the focus chain.
+        self._widgets['scrwnd_placeables'].set_can_focus(False)
         self._widgets['scrwnd_placeables'].add(self.placeables_select)
         self._widgets['scrwnd_placeables'].show_all()
 
@@ -73,6 +81,8 @@ class PreferencesView(BaseView, GObjectWrapper):
         self.plugins_select = SelectView()
         self.plugins_select.connect('item-enabled', self._on_plugin_toggled)
         self.plugins_select.connect('item-disabled', self._on_plugin_toggled)
+        self._widgets['scrwnd_plugins'].set_propagate_natural_width(True)
+        self._widgets['scrwnd_plugins'].set_can_focus(False)
         self._widgets['scrwnd_plugins'].add(self.plugins_select)
         self._widgets['scrwnd_plugins'].show_all()
 
@@ -126,16 +136,24 @@ class PreferencesView(BaseView, GObjectWrapper):
         return self.placeables_select.get_all_items()
     def _set_placeables_data(self, value):
         selected = self.placeables_select.get_selected_item()
+        scroll = self.placeables_select.get_scroll_position()
         self.placeables_select.set_model(value)
         self.placeables_select.select_item(selected)
+        # GTK defers scrolling the reselected row into view until it's
+        # revalidated the rebuilt model's row heights (its own idle
+        # callback) - restoring the old position synchronously here
+        # gets overwritten by that once it runs. Queue behind it.
+        GLib.idle_add(self.placeables_select.set_scroll_position, scroll)
     placeables_data = property(_get_placeables_data, _set_placeables_data)
 
     def _get_plugin_data(self):
         return self.plugins_select.get_all_items()
     def _set_plugin_data(self, value):
         selected = self.plugins_select.get_selected_item()
+        scroll = self.plugins_select.get_scroll_position()
         self.plugins_select.set_model(value)
         self.plugins_select.select_item(selected)
+        GLib.idle_add(self.plugins_select.set_scroll_position, scroll)
     plugin_data = property(_get_plugin_data, _set_plugin_data)
 
     def _get_user_data(self):

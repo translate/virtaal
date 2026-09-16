@@ -27,12 +27,14 @@ class AutoCompletor:
     DEFAULT_COMPLETION_LENGTH = 4 # The default minimum length of a word that may
                                   # be auto-completed.
 
-    def __init__(self, main_controller, word_list=[], comp_len=DEFAULT_COMPLETION_LENGTH):
+    def __init__(self, main_controller, word_list=None, comp_len=DEFAULT_COMPLETION_LENGTH):
         """Constructor.
 
             @type  word_list: iterable
             @param word_list: A list of words that should be auto-completed."""
         self.main_controller = main_controller
+        if word_list is None:
+            word_list = []
         assert isinstance(word_list, list)
         self.comp_len = comp_len
         self.clear_words()

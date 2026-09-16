@@ -12,10 +12,10 @@ class IPythonWindow(Gtk.Window):
     FONT = "Luxi Mono 10"
 
     # INITIALIZERS #
-    def __init__(self, namespace={}, destroy_cb=None):
+    def __init__(self, namespace=None, destroy_cb=None):
         super().__init__()
         self._setup_console()
-        self.console.updateNamespace(namespace)
+        self.console.updateNamespace(namespace if namespace is not None else {})
 
     def _setup_console(self):
         self.scrolled_win = Gtk.ScrolledWindow()

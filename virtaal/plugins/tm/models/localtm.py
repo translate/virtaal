@@ -103,10 +103,7 @@ class TMModel(remotetm.TMModel):
         # Do not use super() here, as remotetm.TMModel does a bit more than we
         # want in this case.
         BaseTMModel.__init__(self, controller)
-        self._connect_ids.append((
-            self.controller.main_controller.store_controller.connect("store-saved", self.push_store),
-            self.controller.main_controller.store_controller
-        ))
+        self._signal_tracker.connect(self.controller.main_controller.store_controller, "store-saved", self.push_store)
 
     def destroy(self):
         if platform.is_windows:

@@ -9,6 +9,7 @@ import logging
 
 from gi.repository import Gtk
 
+from virtaal.common import SignalTracker
 from virtaal.views import rendering
 from virtaal.views.baseview import BaseView
 from virtaal.views.placeablesguiinfo import StringElemGUI
@@ -143,13 +144,12 @@ class TerminologyView(BaseView):
     # INITIALIZERS #
     def __init__(self, controller):
         self.controller = controller
-        self._signal_ids = []
+        self._signal_tracker = SignalTracker()
 
 
     # METHODS #
     def destroy(self):
-        for gobj, signal_id in self._signal_ids:
-            gobj.disconnect(signal_id)
+        self._signal_tracker.disconnect_all()
 
     def select_backends(self, parent):
         selectdlg = SelectDialog(

@@ -19,6 +19,7 @@ class UndoModel(BaseModel):
         self.index = -1
         self.recording = False
         self.undo_stack = []
+        self.redo_stack = []
         # Undo-stack position at the last "file is unmodified" point
         # (open/save) - see mark_clean()/is_at_clean_position().
         self.clean_index = -1
@@ -28,6 +29,7 @@ class UndoModel(BaseModel):
     def clear(self):
         """Clear the undo stack and reset the index pointer."""
         self.undo_stack = []
+        self.redo_stack = []
         self.index = -1
         self.clean_index = -1
 
@@ -79,6 +81,7 @@ class UndoModel(BaseModel):
                 self.undo_stack = []
             if self.index != len(self.undo_stack) - 1:
                 self.undo_stack = self.undo_stack[:self.index+1]
+            self.redo_stack = []
             self.undo_stack.append(undo_dict)
         self.index = len(self.undo_stack) - 1
 
@@ -91,9 +94,26 @@ class UndoModel(BaseModel):
         if self.index != len(self.undo_stack) - 1:
             self.undo_stack = self.undo_stack[:self.index+1]
 
+        self.redo_stack = []
         self.undo_stack.append([])
         self.index = len(self.undo_stack) - 1
         self.recording = True
+
+    def push_redo(self, redo_dict):
+        """Push a redo-action onto the redo stack - see pop().
+            @type  redo_dict: dict
+            @param redo_dict: Same shape as an undo dictionary passed to
+                push(); built by the caller from whatever state undoing
+                is about to overwrite."""
+        self.redo_stack.append(redo_dict)
+
+    def pop_redo(self):
+        """Pop and return the most recently undone action, re-advancing
+            C{index} so a following undo lands back on the same entry."""
+        if not self.redo_stack:
+            return None
+        self.index += 1
+        return self.redo_stack.pop()
 
     def record_stop(self):
         if not self.recording:

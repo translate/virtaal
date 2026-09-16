@@ -6,7 +6,6 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import logging
-import os
 from io import BytesIO
 from urllib import parse, request
 
@@ -20,6 +19,7 @@ except ImportError:
     libproxy = None
 
 from virtaal.common.gobjectwrapper import GObjectWrapper
+from virtaal.common.platform import platform
 
 __all__ = ['HTTPClient', 'HTTPRequest', 'RESTRequest']
 
@@ -67,7 +67,7 @@ class HTTPRequest(GObjectWrapper):
         else:
             self.curl.setopt(pycurl.TIMEOUT, 15)
 
-        if os.name == 'nt':
+        if platform.is_windows:
             # curl's schannel (Windows-native TLS) backend treats being
             # unable to reach the CA's own revocation-check servers as
             # a hard failure. SSLOPT_NO_REVOKE disables that check;

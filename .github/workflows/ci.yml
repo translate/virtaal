@@ -863,6 +863,11 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v7
+        with:
+          # git describe (below, to find the real previous release tag)
+          # needs the tag's own commit in history - the default shallow
+          # checkout won't have it.
+          fetch-depth: 0
 
       - name: Download Windows installer
         uses: actions/download-artifact@v8
@@ -906,7 +911,16 @@ jobs:
           case "$tag" in
             *-beta*|*-rc*|*-alpha*) prerelease_flag="--prerelease" ;;
           esac
+          # --generate-notes with no start tag lets GitHub pick the
+          # "previous release" by publish date, which the historic
+          # 0.6.x/0.7.x SourceForge-backstop tags (not real ancestors
+          # of this history, but published after v1.0.0-beta1) throw
+          # off - walk real git ancestry instead.
+          notes_start_tag=$(git describe --tags --abbrev=0 --match 'v*' "$tag^" 2>/dev/null || true)
+          start_flag=""
+          [ -n "$notes_start_tag" ] && start_flag="--notes-start-tag $notes_start_tag"
           gh release create "$tag" release-assets/* \
             --title "$tag" \
             --generate-notes \
+            $start_flag \
             $prerelease_flag

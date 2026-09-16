@@ -5,15 +5,14 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-import os
-
 from gi.repository import GObject
 
-from virtaal.common import SignalTracker, pan_app
+from virtaal.common import SignalTracker
+from virtaal.common.configurable import Configurable
 from virtaal.models.basemodel import BaseModel
 
 
-class BaseTerminologyModel(BaseModel):
+class BaseTerminologyModel(BaseModel, Configurable):
     """The base interface to be implemented by all terminology backend models."""
 
     __gtype_name__ = None
@@ -21,12 +20,12 @@ class BaseTerminologyModel(BaseModel):
         'match-found': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_STRING, GObject.TYPE_PYOBJECT,))
     }
 
+    CONFIG_FILENAME = "terminology.ini"
+
     configure_func = None
     """A function that starts the configuration, if available."""
     display_name = None
     """The backend's name, suitable for display."""
-    default_config = {}
-    """Default configuration shared by all terminology model plug-ins."""
 
     # INITIALIZERS #
     def __init__(self, controller):
@@ -48,15 +47,3 @@ class BaseTerminologyModel(BaseModel):
     def destroy(self):
         self.save_config()
         self._signal_tracker.disconnect_all()
-
-    def load_config(self):
-        """Load terminology backend config from default location"""
-        self.config = {}
-        self.config.update(self.default_config)
-        config_file = os.path.join(pan_app.get_config_dir(), "terminology.ini")
-        self.config.update(pan_app.load_config(config_file, self.internal_name))
-
-    def save_config(self):
-        """Save terminology backend config to default location"""
-        config_file = os.path.join(pan_app.get_config_dir(), "terminology.ini")
-        pan_app.save_config(config_file, self.config, self.internal_name)

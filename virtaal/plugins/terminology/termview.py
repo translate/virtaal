@@ -5,8 +5,6 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-import logging
-
 from gi.repository import Gtk
 
 from virtaal.common import SignalTracker
@@ -14,7 +12,6 @@ from virtaal.views import rendering
 from virtaal.views.baseview import BaseView
 from virtaal.views.placeablesguiinfo import StringElemGUI
 from virtaal.views.theme import is_inverse
-from virtaal.views.widgets.selectdialog import SelectDialog
 
 _default_fg = '#006600'
 _default_bg = '#eeffee'
@@ -152,46 +149,12 @@ class TerminologyView(BaseView):
         self._signal_tracker.disconnect_all()
 
     def select_backends(self, parent):
-        selectdlg = SelectDialog(
+        from virtaal.views.backendselect import select_backends
+        select_backends(
+            self.controller.main_controller, self.controller.plugin_controller,
+            self.controller.config, 'basetermmodel',
             title=_('Select Terminology Sources'),
             message=_('Select the sources of terminology suggestions'),
-            parent=parent,
             size=(self.controller.config['backends_dialog_width'], 300),
+            parent=parent,
         )
-        selectdlg.set_icon(self.controller.main_controller.view.main_window.get_icon())
-
-        items = []
-        plugin_controller = self.controller.plugin_controller
-        for plugin_name in plugin_controller._find_plugin_names():
-            if plugin_name == 'basetermmodel':
-                continue
-            try:
-                info = plugin_controller.get_plugin_info(plugin_name)
-            except Exception as e:
-                logging.debug('Problem getting information for plugin %s' % plugin_name)
-                continue
-            enabled = plugin_name in plugin_controller.plugins
-            config = enabled and plugin_controller.plugins[plugin_name] or None
-            items.append({
-                'name': info['display_name'],
-                'desc': info['description'],
-                'data': {'internal_name': plugin_name},
-                'enabled': enabled,
-                'config': config,
-            })
-
-        def item_enabled(dlg, item):
-            internal_name = item['data']['internal_name']
-            plugin_controller.enable_plugin(internal_name)
-            if internal_name in self.controller.config['disabled_models']:
-                self.controller.config['disabled_models'].remove(internal_name)
-
-        def item_disabled(dlg, item):
-            internal_name = item['data']['internal_name']
-            plugin_controller.disable_plugin(internal_name)
-            if internal_name not in self.controller.config['disabled_models']:
-                self.controller.config['disabled_models'].append(internal_name)
-
-        selectdlg.connect('item-enabled',  item_enabled)
-        selectdlg.connect('item-disabled', item_disabled)
-        selectdlg.run(items=items)

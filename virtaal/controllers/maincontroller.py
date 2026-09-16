@@ -41,6 +41,7 @@ class MainController(BaseController):
         self._undo_controller = None
         self._unit_controller = None
         self._welcomescreen_controller = None
+        self._opening_file = False
         self.view = MainView(self)
 
     def load_plugins(self):
@@ -165,11 +166,34 @@ class MainController(BaseController):
     def open_file(self, filename=None, uri='', forget_dir=False):
         """Open the file given by C{filename}.
             @returns: The filename opened, or C{None} if an error has occurred."""
-        # We might be a bit early for some of the other controllers, so let's
-        # make it our problem and ensure the last ones are in the main
-        # controller.
-        while not self.placeables_controller:
+        # The wait below pumps the main loop, which can re-enter this
+        # same method (e.g. a macOS "open file" event arriving while
+        # placeables_controller never gets constructed at all, as
+        # happens outside the real app's own startup sequence) -
+        # unbounded recursive stack growth, a multi-minute CI/local
+        # hang with no error output. Bailing out on a re-entrant call,
+        # rather than just bounding each level's own wait, is what
+        # actually stops the recursion.
+        if self._opening_file:
+            return None
+        self._opening_file = True
+        try:
+            return self._open_file(filename, uri, forget_dir)
+        finally:
+            self._opening_file = False
+
+    def _open_file(self, filename, uri, forget_dir):
+        # We might be a bit early for some of the other controllers, so
+        # let's make it our problem and ensure the last ones are in the
+        # main controller. Bounded, not an unconditional while - belt
+        # and suspenders alongside the re-entrancy guard above.
+        for _ in range(1000):
+            if self.placeables_controller:
+                break
             Gtk.main_iteration()
+        else:
+            import logging
+            logging.warning('open_file(): gave up waiting for placeables_controller')
         if filename is None:
             return self.view.open_file()
         if self.store_controller.is_modified():

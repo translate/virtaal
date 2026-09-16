@@ -50,6 +50,9 @@ dependencies = [
 spellcheck = ["pyenchant"]
 test = ["pytest", "pytest-cov"]
 docs = ["Sphinx"]
+# Not wired into pre-commit or CI - GTK/GI stub coverage isn't good
+# enough yet for a repo-wide rollout.
+type-check = ["ty"]
 
 [project.urls]
 Homepage = "https://virtaal.translatehouse.org"

@@ -111,6 +111,9 @@ def main(argv):
                                      "(see devsupport/pseudo-translation/generate_pseudo_translation.py)"))
         pseudo_group.add_argument("--pseudo-translation-bidi", dest="pseudo_translation_bidi", action="store_true", default=False,
                              help=_("like --pseudo-translation, but also simulates a right-to-left UI layout"))
+        pseudo_group.add_argument("--lang", dest="lang", metavar=_("LANG"),
+                             help=_("override the UI language for this run (e.g. \"fr\"), "
+                                     "without changing the saved Preferences setting"))
         # Profiling does not make sense in packaged versions.  Set to True to disable profiling.
         if not packaged:
             parser.add_argument("-P", "--profile", dest="profile", metavar=_("PROFILE"),
@@ -169,11 +172,21 @@ def main(argv):
                 Gtk.Widget.set_default_direction(Gtk.TextDirection.RTL)
 
 
+        def set_lang(options):
+            if not options.lang:
+                return
+            try:
+                pan_app.set_ui_language(options.lang)
+            except OSError:
+                parser.error(_("No translation found for language '%(lang)s'") % {"lang": options.lang})
+
+
         options = parser.parse_args(argv[1:])
         pan_app.DEBUG = options.debug
         set_config(options)
         set_logging(options)
         set_pseudo_translation(options)
+        set_lang(options)
         startup_file = options.translation_file
     else:
         # No arguments given, so we save some time by avoiding all the things

@@ -44,8 +44,8 @@ class EntryDialog(Gtk.Dialog):
         self.ent_input.set_activates_default(True)
         self.vbox.pack_start(self.ent_input, True, True, 0)
 
-        self.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
-        self.add_button(Gtk.STOCK_OK, Gtk.ResponseType.OK)
+        self.add_button(_("_Cancel"), Gtk.ResponseType.CANCEL)
+        self.add_button(_("_OK"), Gtk.ResponseType.OK)
         self.set_default_response(Gtk.ResponseType.OK)
 
     def run(self, title=None, message=None, keepInput=False):
@@ -369,9 +369,9 @@ class MainView(BaseView):
                 Gtk.ButtonsType.NONE,
                 _("The current file has been modified.\nDo you want to save your changes?")
             )
-            self._confirm_dialog.__save_button = self._confirm_dialog.add_button(Gtk.STOCK_SAVE, RESPONSE_SAVE)
+            self._confirm_dialog.__save_button = self._confirm_dialog.add_button(_("_Save"), RESPONSE_SAVE)
             self._confirm_dialog.add_button(_("_Discard"), RESPONSE_DISCARD)
-            self._confirm_dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
+            self._confirm_dialog.add_button(_("_Cancel"), Gtk.ResponseType.CANCEL)
             self._confirm_dialog.set_default_response(RESPONSE_SAVE)
         return self._confirm_dialog
 

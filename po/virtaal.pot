@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta2\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-16 15:09+0100\n"
+"POT-Creation-Date: 2026-09-16 15:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1452,6 +1452,28 @@ msgstr ""
 #. l10n: This indicates a suggestion from machine translation. It is displayed instead of the match percentage.
 #: ../virtaal/plugins/tm/tmwidgets.py
 msgid "?"
+msgstr ""
+
+#: ../virtaal/support/crash_dialog.py
+msgid "Virtaal hit an unexpected error"
+msgstr ""
+
+#: ../virtaal/support/crash_dialog.py
+msgid ""
+"This might not affect your current work, but if it keeps happening, "
+"reporting it helps get it fixed."
+msgstr ""
+
+#: ../virtaal/support/crash_dialog.py
+msgid "Details"
+msgstr ""
+
+#: ../virtaal/support/crash_dialog.py
+msgid "Close"
+msgstr ""
+
+#: ../virtaal/support/crash_dialog.py
+msgid "Report This Bug…"
 msgstr ""
 
 #: ../virtaal/support/tutorial.py

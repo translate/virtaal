@@ -38,6 +38,7 @@ virtaal/plugins/tm/models/remotetm.py
 virtaal/plugins/tm/models/apertium.py
 virtaal/plugins/tm/tmview.py
 virtaal/plugins/tm/tmwidgets.py
+virtaal/support/crash_dialog.py
 virtaal/support/tutorial.py
 virtaal/views/checksunitview.py
 virtaal/views/checksprojview.py

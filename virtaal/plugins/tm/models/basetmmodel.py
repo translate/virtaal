@@ -5,13 +5,13 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-import os
 import re
 from html import entities as htmlentitydefs
 
 from gi.repository import GObject
 
-from virtaal.common import SignalTracker, pan_app
+from virtaal.common import SignalTracker
+from virtaal.common.configurable import Configurable
 from virtaal.models.basemodel import BaseModel
 
 
@@ -31,13 +31,15 @@ def unescape_html_entities(text):
     return re.sub(r"&(#[0-9]+|\w+);", fixup, text)
 
 
-class BaseTMModel(BaseModel):
+class BaseTMModel(BaseModel, Configurable):
     """The base interface to be implemented by all TM backend models."""
 
     __gtype_name__ = None
     __gsignals__ = {
         'match-found': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_STRING, GObject.TYPE_PYOBJECT,))
     }
+
+    CONFIG_FILENAME = "tm.ini"
 
     description = ""
     """A description of the backend. Will be displayed to users."""
@@ -46,8 +48,6 @@ class BaseTMModel(BaseModel):
 
     configure_func = None
     """A function that starts the configuration, if available."""
-    default_config = {}
-    """Default configuration shared by all TM model plug-ins."""
 
     # INITIALIZERS #
     def __init__(self, controller):
@@ -89,18 +89,6 @@ class BaseTMModel(BaseModel):
         All TM backends must implement this method, check for
         suggested translations for unit, emit "match-found" on success."""
         pass
-
-    def load_config(self):
-        """load TM backend config from default location"""
-        self.config = {}
-        self.config.update(self.default_config)
-        config_file = os.path.join(pan_app.get_config_dir(), "tm.ini")
-        self.config.update(pan_app.load_config(config_file, self.internal_name))
-
-    def save_config(self):
-        """save TM backend config to default location"""
-        config_file = os.path.join(pan_app.get_config_dir(), "tm.ini")
-        pan_app.save_config(config_file, self.config, self.internal_name)
 
     def set_source_lang(self, language):
         """models override this to implement their own

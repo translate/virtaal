@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta2\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-17 08:52+0100\n"
+"POT-Creation-Date: 2026-09-21 20:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2435,6 +2435,16 @@ msgid "like --pseudo-translation, but also simulates a right-to-left UI layout"
 msgstr ""
 
 #: ../bin/virtaal
+msgid "LANG"
+msgstr ""
+
+#: ../bin/virtaal
+msgid ""
+"override the UI language for this run (e.g. \"fr\"), without changing the "
+"saved Preferences setting"
+msgstr ""
+
+#: ../bin/virtaal
 msgid "PROFILE"
 msgstr ""
 
@@ -2448,6 +2458,10 @@ msgstr ""
 
 #: ../bin/virtaal
 msgid "Could not read configuration file '%(filename)s'"
+msgstr ""
+
+#: ../bin/virtaal
+msgid "No translation found for language '%(lang)s'"
 msgstr ""
 
 #: ../bin/virtaal

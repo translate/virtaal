@@ -74,10 +74,11 @@ jobs:
         run: |
           xvfb-run -a --server-args="-screen 0 1024x768x24" \
             devsupport/testing/fuzz/run_fuzz.sh \
-            --duration-seconds "${{ inputs.duration_seconds || 600 }}" \
+            --duration-seconds "$DURATION_SECONDS" \
             --log fuzz-linux.log
         env:
           PYTHONFAULTHANDLER: "1"
+          DURATION_SECONDS: ${{ inputs.duration_seconds || 600 }}
 
       - name: Upload fuzz log
         if: always()
@@ -121,10 +122,11 @@ jobs:
       - name: Fuzz
         run: |
           devsupport/testing/fuzz/run_fuzz.sh \
-            --duration-seconds "${{ inputs.duration_seconds || 600 }}" \
+            --duration-seconds "$DURATION_SECONDS" \
             --log fuzz-macos.log
         env:
           PYTHONFAULTHANDLER: "1"
+          DURATION_SECONDS: ${{ inputs.duration_seconds || 600 }}
 
       - name: Collect any system crash reports
         # run_fuzz.sh's lldb backtrace is usually enough on its own,
@@ -229,9 +231,10 @@ jobs:
         # native access violation's exit code is never 0), it just
         # won't have a native backtrace attached.
         run: |
-          python devsupport/testing/fuzz/fuzz_ui.py --duration-seconds ${{ inputs.duration_seconds || 600 }} --log fuzz-windows.log
+          python devsupport/testing/fuzz/fuzz_ui.py --duration-seconds $env:DURATION_SECONDS --log fuzz-windows.log
         env:
           PYTHONFAULTHANDLER: "1"
+          DURATION_SECONDS: ${{ inputs.duration_seconds || 600 }}
 
       - name: Upload fuzz log
         if: always()

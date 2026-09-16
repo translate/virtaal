@@ -64,17 +64,17 @@ class LocalFileView:
         self.mnui_edit = self.mainview.gui.get_object('menuitem_edit')
         self.menu = self.mnui_edit.get_submenu()
 
-        self.mnu_select_files, _menu = self.mainview.find_menu_item(_('Terminology _Files...'), self.mnui_edit)
+        self.mnu_select_files, _menu = self.mainview.find_menu_item(_('Terminology _Files…'), self.mnui_edit)
         if not self.mnu_select_files:
-            self.mnu_select_files = self.mainview.append_menu_item(_('Terminology _Files...'), self.mnui_edit, after=mnu_transfer)
+            self.mnu_select_files = self.mainview.append_menu_item(_('Terminology _Files…'), self.mnui_edit, after=mnu_transfer)
         self._signal_ids.append((
             self.mnu_select_files,
             self.mnu_select_files.connect('activate', self._on_select_term_files)
         ))
 
-        self.mnu_add_term, _menu = self.mainview.find_menu_item(_('Add _Term...'), self.mnui_edit)
+        self.mnu_add_term, _menu = self.mainview.find_menu_item(_('Add _Term…'), self.mnui_edit)
         if not self.mnu_add_term:
-            self.mnu_add_term = self.mainview.append_menu_item(_('Add _Term...'), self.mnui_edit, after=mnu_transfer)
+            self.mnu_add_term = self.mainview.append_menu_item(_('Add _Term…'), self.mnui_edit, after=mnu_transfer)
         self._signal_ids.append((
             self.mnu_add_term,
             self.mnu_add_term.connect('activate', self._on_add_term)
@@ -140,7 +140,7 @@ class LocalFileView:
         if not selection:
             return
 
-        label = _('Add Term "%(selection)s"...') % {'selection': selection}
+        label = _('Add Term "%(selection)s"…') % {'selection': selection}
         menu_item = Gtk.MenuItem(label=label)
         # Pango ellipsizes on grapheme clusters, unlike a raw string
         # slice - safer for combining marks (e.g. Arabic niqqud,

@@ -228,7 +228,7 @@ class Plugin(BasePlugin):
 
             if label == "More...":
                 #l10n: This refers to spelling suggestions
-                item.set_property('label', _("More..."))
+                item.set_property('label', _("More…"))
 
             m = _dict_add_re.match(label)
             if m:

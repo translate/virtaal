@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Virtaal 1.0.0-beta1\n"
+"Project-Id-Version: Virtaal 1.0.0-beta2\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-16 01:25+0100\n"
+"POT-Creation-Date: 2026-09-16 13:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -407,7 +407,7 @@ msgid ""
 msgstr ""
 
 #: ../share/virtaal/virtaal.ui.h
-msgid "<u>More...</u>"
+msgid "<u>More…</u>"
 msgstr ""
 
 #: ../share/virtaal/virtaal.ui.h
@@ -1054,7 +1054,7 @@ msgstr ""
 
 #. l10n: This refers to spelling suggestions
 #: ../virtaal/plugins/spellchecker.py
-msgid "More..."
+msgid "More…"
 msgstr ""
 
 #. l10n: This refers to the spell checking dictionary
@@ -1236,16 +1236,16 @@ msgid "Local terminology files"
 msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py
-msgid "Terminology _Files..."
+msgid "Terminology _Files…"
 msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py
-msgid "Add _Term..."
+msgid "Add _Term…"
 msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py
 #, python-format
-msgid "Add Term \"%(selection)s\"..."
+msgid "Add Term \"%(selection)s\"…"
 msgstr ""
 
 #: ../virtaal/plugins/terminology/models/localfile/localfileview.py
@@ -1828,7 +1828,7 @@ msgid "Checks: %(checker_name)s"
 msgstr ""
 
 #: ../virtaal/views/langview.py
-msgid "_New Language Pair..."
+msgid "_New Language Pair…"
 msgstr ""
 
 #: ../virtaal/views/mainview.py
@@ -2033,7 +2033,7 @@ msgid "Enabled"
 msgstr ""
 
 #: ../virtaal/views/widgets/selectview.py
-msgid "Configure..."
+msgid "Configure…"
 msgstr ""
 
 #: ../virtaal/views/widgets/shortcutswindow.py

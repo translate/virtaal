@@ -201,9 +201,9 @@ jobs:
         # just be redundant, not N times the information.
         run: |
           if [ "${{ matrix.python-version }}" = "3.13" ]; then
-            xvfb-run -a --server-args="-screen 0 1024x768x24" pytest -rvxs --cov=virtaal --cov-report=xml virtaal
+            xvfb-run -a --server-args="-screen 0 1024x768x24" pytest -rvxs -n auto --cov=virtaal --cov-report=xml virtaal
           else
-            xvfb-run -a --server-args="-screen 0 1024x768x24" pytest -rvxs virtaal
+            xvfb-run -a --server-args="-screen 0 1024x768x24" pytest -rvxs -n auto virtaal
           fi
 
       - name: Upload coverage to Codecov
@@ -329,6 +329,7 @@ jobs:
           pip install diff_match_patch
           pip install cheroot
           pip install pytest
+          pip install pytest-xdist
 
       - name: Install virtaal
         run: pip install --no-build-isolation .
@@ -358,7 +359,7 @@ jobs:
         # No xvfb-run equivalent needed - Windows always has its own
         # native windowing system available, even in a non-interactive
         # CI session, unlike X11.
-        run: pytest -rvxs virtaal
+        run: pytest -rvxs -n auto virtaal
         env:
           PYTHONFAULTHANDLER: "1"
 
@@ -628,7 +629,7 @@ jobs:
         # No xvfb-run equivalent: macOS's WindowServer is a real system
         # daemon that's always running, even in CI, unlike X11 which has
         # no display server at all without one.
-        run: pytest -rvxs virtaal
+        run: pytest -rvxs -n auto virtaal
 
       - name: Smoke test the CLI
         run: virtaal --help

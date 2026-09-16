@@ -30,10 +30,10 @@ from virtaal.common.platform import platform
 def _isofromlangid(langid):
     # ISO 639-1
     #    http://www.loc.gov/standards/iso639-2/
-    # List of existing mui packs:
-    #    http://www.microsoft.com/globaldev/reference/win2k/setup/Langid.mspx
-    # List of known id's
-    #    http://www.microsoft.com/globaldev/reference/lcid-all.mspx
+    # The original mui-pack and known-id's pages this table was built
+    # from (globaldev/reference/*.mspx) are long gone. The current
+    # Microsoft reference for language identifiers is:
+    #    https://learn.microsoft.com/en-us/windows/win32/intl/language-identifier-constants-and-strings
 
     lcid = {1078:    'af',    # Afrikaans - South Africa
             1052:    'sq',    # Albanian - Albania
@@ -314,7 +314,8 @@ def _putenv(name, value):
     result = kernel32.SetEnvironmentVariableW(name, value)
     del kernel32
     if result == 0:
-        raise
+        from ctypes import WinError
+        raise WinError()
 
     from ctypes import cdll
     msvcrt = cdll.msvcrt

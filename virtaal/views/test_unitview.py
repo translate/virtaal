@@ -10,7 +10,10 @@ unit's second (or later) target copied the singular source instead of
 the matching plural source form.
 """
 
+from gi.repository import Gtk
 from translate.misc.multistring import multistring
+from translate.storage.placeables import general, parse
+from translate.storage.placeables.strelem import StringElem
 
 from virtaal.views.unitview import UnitView
 
@@ -174,3 +177,86 @@ def test_cut_copy_paste_disabled_before_any_store_event():
     assert not view.mnu_cut.get_sensitive()
     assert not view.mnu_copy.get_sensitive()
     assert not view.mnu_paste.get_sensitive()
+
+
+# _on_target_populate_popup(): right-click "Placeables" submenu
+
+class _FakeSourceTextbox:
+    unselectables = [StringElem]
+
+    def __init__(self, text):
+        self.elem = parse(text, general.parsers)
+
+
+class _FakeTargetTextbox:
+    def __init__(self, source_textbox):
+        self.selector_textbox = source_textbox
+        self.inserted = []
+
+    def insert_translation(self, elem):
+        self.inserted.append(elem)
+
+
+def _make_popup_view():
+    view = UnitView.__new__(UnitView)
+    non_target_placeables = [general.UrlPlaceable]
+    placeables_controller = type('_PC', (), {'non_target_placeables': non_target_placeables})()
+    main_controller = type('_MC', (), {'placeables_controller': placeables_controller})()
+    view.controller = type('_C', (), {'main_controller': main_controller})()
+    return view
+
+
+def _submenu_labels(menu):
+    for item in menu.get_children():
+        if item.get_submenu() is not None:
+            return [i.get_label() for i in item.get_submenu().get_children()]
+    return None
+
+
+def test_populate_popup_lists_every_recognised_source_placeable():
+    view = _make_popup_view()
+    source = _FakeSourceTextbox('Save %s files now')
+    target = _FakeTargetTextbox(source)
+    menu = Gtk.Menu()
+
+    view._on_target_populate_popup(target, menu)
+
+    assert _submenu_labels(menu) == ['%s']
+
+
+def test_populate_popup_excludes_non_target_placeables():
+    # URLs stay source-only - matches copy_original()'s own filtering.
+    view = _make_popup_view()
+    source = _FakeSourceTextbox('Save %s files at https://example.com now')
+    target = _FakeTargetTextbox(source)
+    menu = Gtk.Menu()
+
+    view._on_target_populate_popup(target, menu)
+
+    assert _submenu_labels(menu) == ['%s']
+
+
+def test_populate_popup_adds_nothing_when_the_source_has_no_placeables():
+    view = _make_popup_view()
+    source = _FakeSourceTextbox('Just plain text, nothing to offer')
+    target = _FakeTargetTextbox(source)
+    menu = Gtk.Menu()
+
+    view._on_target_populate_popup(target, menu)
+
+    assert menu.get_children() == []
+
+
+def test_populate_popup_item_inserts_the_placeable_on_activate():
+    view = _make_popup_view()
+    source = _FakeSourceTextbox('Save %s files now')
+    target = _FakeTargetTextbox(source)
+    menu = Gtk.Menu()
+
+    view._on_target_populate_popup(target, menu)
+    for item in menu.get_children():
+        if item.get_submenu() is not None:
+            item.get_submenu().get_children()[0].activate()
+
+    assert len(target.inserted) == 1
+    assert str(target.inserted[0]) == '%s'

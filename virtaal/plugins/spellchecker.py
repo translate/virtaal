@@ -13,6 +13,7 @@ from gettext import dgettext
 
 from gi.repository import GLib
 
+from virtaal.common import SignalTracker
 from virtaal.common.platform import platform
 from virtaal.controllers.baseplugin import BasePlugin, PluginUnsupported
 
@@ -71,10 +72,9 @@ class Plugin(BasePlugin):
 
         unit_view = main_controller.unit_controller.view
         self.unit_view = unit_view
-        self._connect_id = self.unit_view.connect('textview-language-changed', self._on_unit_lang_changed)
+        self._signal_tracker = SignalTracker()
+        self._signal_tracker.connect(self.unit_view, 'textview-language-changed', self._on_unit_lang_changed)
 
-        self._textbox_ids = []
-        self._unitview_ids = []
         # For some reason the i18n of gtkspell doesn't work on Windows, so we
         # intervene. We also don't want the Languages submenu, so we remove it.
         if unit_view.sources:
@@ -83,32 +83,24 @@ class Plugin(BasePlugin):
             for textview in unit_view.sources:
                 self._on_unit_lang_changed(unit_view, textview, srclang)
         else:
-            self._unitview_ids.append(unit_view.connect('sources-created', self._connect_to_textboxes))
+            self._signal_tracker.connect(unit_view, 'sources-created', self._connect_to_textboxes)
         if unit_view.targets:
             self._connect_to_textboxes(unit_view, unit_view.targets)
             tgtlang = main_controller.lang_controller.target_lang.code
             for textview in unit_view.targets:
                 self._on_unit_lang_changed(unit_view, textview, tgtlang)
         else:
-            self._unitview_ids.append(unit_view.connect('targets-created', self._connect_to_textboxes))
+            self._signal_tracker.connect(unit_view, 'targets-created', self._connect_to_textboxes)
 
     def destroy(self):
         """Remove signal connections and disable spell checking."""
-        for id in self._unitview_ids:
-            self.unit_view.disconnect(id)
-        for textbox, id in self._textbox_ids:
-            textbox.disconnect(id)
-        if getattr(self, '_connect_id', None):
-            self.unit_view.disconnect(self._connect_id)
+        self._signal_tracker.disconnect_all()
         for text_view in self.unit_view.sources + self.unit_view.targets:
             self._disable_checking(text_view)
 
     def _connect_to_textboxes(self, unitview, textboxes):
         for textbox in textboxes:
-            self._textbox_ids.append((
-                textbox,
-                textbox.connect('populate-popup', self._on_populate_popup)
-            ))
+            self._signal_tracker.connect(textbox, 'populate-popup', self._on_populate_popup)
 
 
     # METHODS #

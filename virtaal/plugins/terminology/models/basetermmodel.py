@@ -9,7 +9,7 @@ import os
 
 from gi.repository import GObject
 
-from virtaal.common import pan_app
+from virtaal.common import SignalTracker, pan_app
 from virtaal.models.basemodel import BaseModel
 
 
@@ -37,7 +37,7 @@ class BaseTerminologyModel(BaseModel):
         super().__init__()
         self.config = {}
         self.controller = controller
-        self._connect_ids = []
+        self._signal_tracker = SignalTracker()
 
         #static suggestion cache for slow terminology queries
         #TODO: cache invalidation, maybe decorate query to automate cache handling?
@@ -47,8 +47,7 @@ class BaseTerminologyModel(BaseModel):
     # METHODS #
     def destroy(self):
         self.save_config()
-        #disconnect all signals
-        [widget.disconnect(cid) for (cid, widget) in self._connect_ids]
+        self._signal_tracker.disconnect_all()
 
     def load_config(self):
         """Load terminology backend config from default location"""

@@ -9,7 +9,7 @@ import logging
 
 from gi.repository import Gdk, GLib, GObject, Gtk
 
-from virtaal.common import GObjectWrapper
+from virtaal.common import GObjectWrapper, SignalTracker
 from virtaal.views.baseview import BaseView
 
 from .tmwidgets import TMWindow
@@ -32,35 +32,19 @@ class TMView(BaseView, GObjectWrapper):
         self.max_matches = max_matches
         self._may_show_tmwindow = True # is it allowed to display now (application is in focus)
         self._should_show_tmwindow = False # should it be displayed now (even if it doesn't, due to application focus?
-        self._signal_ids = []
+        self._signal_tracker = SignalTracker()
 
         self.tmwindow = TMWindow(self)
         main_window = self.controller.main_controller.view.main_window
 
-        self._signal_ids.append((
-            self.tmwindow.treeview,
-            self.tmwindow.treeview.connect('row-activated', self._on_row_activated)
-        ))
-        self._signal_ids.append((
+        self._signal_tracker.connect(self.tmwindow.treeview, 'row-activated', self._on_row_activated)
+        self._signal_tracker.connect(
             controller.main_controller.store_controller.view.parent_widget.get_vscrollbar(),
-            controller.main_controller.store_controller.view.parent_widget.get_vscrollbar().connect('value-changed', self._on_store_view_scroll)
-        ))
-        self._signal_ids.append((
-            main_window,
-            main_window.connect('grab-notify', self._on_grab_notify_mainwindow)
-        ))
-        self._signal_ids.append((
-            main_window,
-            main_window.connect('configure_event', self._on_configure_mainwindow)
-        ))
-        self._signal_ids.append((
-            controller.main_controller.store_controller,
-            controller.main_controller.store_controller.connect('store-closed', self._on_store_closed)
-        ))
-        self._signal_ids.append((
-            controller.main_controller.store_controller,
-            controller.main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
-        ))
+            'value-changed', self._on_store_view_scroll)
+        self._signal_tracker.connect(main_window, 'grab-notify', self._on_grab_notify_mainwindow)
+        self._signal_tracker.connect(main_window, 'configure_event', self._on_configure_mainwindow)
+        self._signal_tracker.connect(controller.main_controller.store_controller, 'store-closed', self._on_store_closed)
+        self._signal_tracker.connect(controller.main_controller.store_controller, 'store-loaded', self._on_store_loaded)
 
         self._setup_key_bindings()
         self._setup_menu_items()
@@ -118,8 +102,7 @@ class TMView(BaseView, GObjectWrapper):
         self.hide()
 
     def destroy(self):
-        for gobj, signal_id in self._signal_ids:
-            gobj.disconnect(signal_id)
+        self._signal_tracker.disconnect_all()
 
         self.menu.remove(self.mnu_suggestions)
 

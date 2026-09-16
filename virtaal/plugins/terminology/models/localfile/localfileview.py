@@ -10,6 +10,7 @@ import locale
 from gi.repository import Gdk, GLib, Gtk, Pango
 from translate.storage import factory as store_factory
 
+from virtaal.common import SignalTracker
 from virtaal.common.utils import get_unicode
 from virtaal.views.baseview import BaseView
 from virtaal.views.theme import current_theme
@@ -26,9 +27,7 @@ class LocalFileView:
         self.term_model = model
         self.controller = model.controller
         self.mainview = model.controller.main_controller.view
-        self._signal_ids = []
-        self._textbox_ids = []
-        self._unitview_ids = []
+        self._signal_tracker = SignalTracker()
         self._word_selector = WordAtCursorSelector()
         self._setup_menus()
         self._connect_context_menu()
@@ -42,22 +41,16 @@ class LocalFileView:
         if unitview.sources:
             self._connect_to_textboxes(unitview, unitview.sources)
         else:
-            self._unitview_ids.append(unitview.connect('sources-created', self._connect_to_textboxes))
+            self._signal_tracker.connect(unitview, 'sources-created', self._connect_to_textboxes)
         if unitview.targets:
             self._connect_to_textboxes(unitview, unitview.targets)
         else:
-            self._unitview_ids.append(unitview.connect('targets-created', self._connect_to_textboxes))
+            self._signal_tracker.connect(unitview, 'targets-created', self._connect_to_textboxes)
 
     def _connect_to_textboxes(self, unitview, textboxes):
         for textbox in textboxes:
-            self._textbox_ids.append((
-                textbox,
-                textbox.connect('button-press-event', self._word_selector.on_button_press)
-            ))
-            self._textbox_ids.append((
-                textbox,
-                textbox.connect('populate-popup', self._on_populate_popup)
-            ))
+            self._signal_tracker.connect(textbox, 'button-press-event', self._word_selector.on_button_press)
+            self._signal_tracker.connect(textbox, 'populate-popup', self._on_populate_popup)
 
     def _setup_menus(self):
         mnu_transfer = self.mainview.gui.get_object('mnu_placnext')
@@ -67,18 +60,12 @@ class LocalFileView:
         self.mnu_select_files, _menu = self.mainview.find_menu_item(_('Terminology _Files…'), self.mnui_edit)
         if not self.mnu_select_files:
             self.mnu_select_files = self.mainview.append_menu_item(_('Terminology _Files…'), self.mnui_edit, after=mnu_transfer)
-        self._signal_ids.append((
-            self.mnu_select_files,
-            self.mnu_select_files.connect('activate', self._on_select_term_files)
-        ))
+        self._signal_tracker.connect(self.mnu_select_files, 'activate', self._on_select_term_files)
 
         self.mnu_add_term, _menu = self.mainview.find_menu_item(_('Add _Term…'), self.mnui_edit)
         if not self.mnu_add_term:
             self.mnu_add_term = self.mainview.append_menu_item(_('Add _Term…'), self.mnui_edit, after=mnu_transfer)
-        self._signal_ids.append((
-            self.mnu_add_term,
-            self.mnu_add_term.connect('activate', self._on_add_term)
-        ))
+        self._signal_tracker.connect(self.mnu_add_term, 'activate', self._on_add_term)
 
         Gtk.AccelMap.add_entry("<Virtaal>/Terminology/Add Term", Gdk.KEY_t, Gdk.ModifierType.CONTROL_MASK)
         accel_group = self.menu.get_accel_group()
@@ -96,12 +83,7 @@ class LocalFileView:
         accel_group.connect_by_path("<Virtaal>/Terminology/Add Term", self._on_add_term)
 
     def destroy(self):
-        for gobj, signal_id in self._signal_ids:
-            gobj.disconnect(signal_id)
-        for signal_id in self._unitview_ids:
-            self.controller.main_controller.unit_controller.view.disconnect(signal_id)
-        for textbox, signal_id in self._textbox_ids:
-            textbox.disconnect(signal_id)
+        self._signal_tracker.disconnect_all()
 
         self.menu.remove(self.mnu_select_files)
         self.menu.remove(self.mnu_add_term)

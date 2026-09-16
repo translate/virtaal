@@ -53,14 +53,8 @@ class TerminologyModel(BaseTerminologyModel):
         lang_controller = self.main_controller.lang_controller
         self.source_lang = lang_controller.source_lang.code
         self.target_lang = lang_controller.target_lang.code
-        self._connect_ids.append((
-            lang_controller.connect('source-lang-changed', self._on_lang_changed, 'source'),
-            lang_controller
-        ))
-        self._connect_ids.append((
-            lang_controller.connect('target-lang-changed', self._on_lang_changed, 'target'),
-            lang_controller
-        ))
+        self._signal_tracker.connect(lang_controller, 'source-lang-changed', self._on_lang_changed, 'source')
+        self._signal_tracker.connect(lang_controller, 'target-lang-changed', self._on_lang_changed, 'target')
 
         self.update_terms()
 

@@ -7,5 +7,6 @@
 
 from . import pan_app
 from .gobjectwrapper import GObjectWrapper
+from .signaltracker import SignalTracker
 
-__all__ = ['pan_app', 'GObjectWrapper']
+__all__ = ['pan_app', 'GObjectWrapper', 'SignalTracker']

@@ -11,7 +11,7 @@ from html import entities as htmlentitydefs
 
 from gi.repository import GObject
 
-from virtaal.common import pan_app
+from virtaal.common import SignalTracker, pan_app
 from virtaal.models.basemodel import BaseModel
 
 
@@ -58,8 +58,8 @@ class BaseTMModel(BaseModel):
         super().__init__()
         self.config = {}
         self.controller = controller
-        self._connect_ids = []
-        self._connect_ids.append((self.controller.connect('start-query', self.query), self.controller))
+        self._signal_tracker = SignalTracker()
+        self._signal_tracker.connect(self.controller, 'start-query', self.query)
 
         #static suggestion cache for slow TM queries
         #TODO: cache invalidation, maybe decorate query to automate cache handling?
@@ -73,16 +73,15 @@ class BaseTMModel(BaseModel):
         self._set_source_lang(None, lang_controller.source_lang.code)
         self._set_target_lang(None, lang_controller.target_lang.code)
         self._set_checker(None, checks_controller.code)
-        self._connect_ids.append((lang_controller.connect('source-lang-changed', self._set_source_lang), lang_controller))
-        self._connect_ids.append((lang_controller.connect('target-lang-changed', self._set_target_lang), lang_controller))
-        self._connect_ids.append((checks_controller.connect('checker-set', self._set_checker), checks_controller))
+        self._signal_tracker.connect(lang_controller, 'source-lang-changed', self._set_source_lang)
+        self._signal_tracker.connect(lang_controller, 'target-lang-changed', self._set_target_lang)
+        self._signal_tracker.connect(checks_controller, 'checker-set', self._set_checker)
 
 
     # METHODS #
     def destroy(self):
         self.save_config()
-        #disconnect all signals
-        [widget.disconnect(cid) for (cid, widget) in self._connect_ids]
+        self._signal_tracker.disconnect_all()
 
     def query(self, tmcontroller, unit):
         """Attempt to give suggestions applicable to query_str.

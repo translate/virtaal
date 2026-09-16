@@ -9,6 +9,7 @@ import logging
 
 from gi.repository import Gtk, Pango
 
+from virtaal.common import SignalTracker
 from virtaal.common.utils import get_unicode
 from virtaal.views.baseview import BaseView
 from virtaal.views.widgets.selectdialog import SelectDialog
@@ -26,37 +27,27 @@ class LookupView(BaseView):
         self.controller = controller
         self.lang_controller = controller.main_controller.lang_controller
 
-        self._textbox_ids = []
-        self._unitview_ids = []
+        self._signal_tracker = SignalTracker()
         self._word_selector = WordAtCursorSelector()
         unitview = controller.main_controller.unit_controller.view
         if unitview.sources:
             self._connect_to_textboxes(unitview, unitview.sources)
         else:
-            self._unitview_ids.append(unitview.connect('sources-created', self._connect_to_textboxes))
+            self._signal_tracker.connect(unitview, 'sources-created', self._connect_to_textboxes)
         if unitview.targets:
             self._connect_to_textboxes(unitview, unitview.targets)
         else:
-            self._unitview_ids.append(unitview.connect('targets-created', self._connect_to_textboxes))
+            self._signal_tracker.connect(unitview, 'targets-created', self._connect_to_textboxes)
 
     def _connect_to_textboxes(self, unitview, textboxes):
         for textbox in textboxes:
-            self._textbox_ids.append((
-                textbox,
-                textbox.connect('button-press-event', self._word_selector.on_button_press)
-            ))
-            self._textbox_ids.append((
-                textbox,
-                textbox.connect('populate-popup', self._on_populate_popup)
-            ))
+            self._signal_tracker.connect(textbox, 'button-press-event', self._word_selector.on_button_press)
+            self._signal_tracker.connect(textbox, 'populate-popup', self._on_populate_popup)
 
 
     # METHODS #
     def destroy(self):
-        for id in self._unitview_ids:
-            self.controller.main_controller.unit_controller.view.disconnect(id)
-        for textbox, id in self._textbox_ids:
-            textbox.disconnect(id)
+        self._signal_tracker.disconnect_all()
 
     def select_backends(self, parent):
         selectdlg = SelectDialog(

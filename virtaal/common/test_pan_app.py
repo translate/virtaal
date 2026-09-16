@@ -270,6 +270,28 @@ def test_ensure_dev_locale_installed_tolerates_a_missing_source(tmp_path, monkey
     assert not (localedir / 'xx').exists()
 
 
+def test_ensure_dev_locale_installed_compiles_the_po_when_no_mo_was_ever_built(tmp_path, monkeypatch):
+    # A checkout that's never run `pip install -e .` (so setup.py's own
+    # mo/ compile step never ran) still has po/<lang>.po - translate-
+    # toolkit (a hard dependency already) can compile that directly.
+    monkeypatch.setattr(pan_app.platform, 'is_frozen', False)
+    repo_root = tmp_path / 'repo'
+    (repo_root / 'po').mkdir(parents=True)
+    (repo_root / 'po' / 'xx.po').write_text(
+        'msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-8\\n"\n\n'
+        'msgid "Hello"\nmsgstr "Kgotso"\n',
+        encoding='utf-8')
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(repo_root))
+    localedir = tmp_path / 'localedir'
+
+    pan_app._ensure_dev_locale_installed('xx', str(localedir))
+
+    import gettext
+    with open(localedir / 'xx' / 'LC_MESSAGES' / 'virtaal.mo', 'rb') as f:
+        translation = gettext.GNUTranslations(f)
+    assert translation.gettext('Hello') == 'Kgotso'
+
+
 def test_get_available_ui_languages_has_no_system_default_entry_of_its_own(tmp_path, monkeypatch):
     # pan_app.py is in po/POTFILES.skip - a label here would never be
     # translatable. The caller (prefsview.py) adds one instead.

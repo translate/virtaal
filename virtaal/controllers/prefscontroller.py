@@ -65,6 +65,7 @@ class PreferencesController(BaseController):
 
     def update_prefs_gui_data(self):
         self._update_font_gui_data()
+        self._update_language_gui_data()
         self._update_placeables_gui_data()
         self._update_plugin_gui_data()
         self._update_user_gui_data()
@@ -74,6 +75,9 @@ class PreferencesController(BaseController):
             'source': pan_app.settings.language['sourcefont'],
             'target': pan_app.settings.language['targetfont'],
         }
+
+    def _update_language_gui_data(self):
+        self.view.ui_language = pan_app.settings.language['uilang']
 
     def _update_placeables_gui_data(self):
         items = []
@@ -141,3 +145,13 @@ class PreferencesController(BaseController):
         user_data = view.user_data
         for key in ('name', 'email', 'team'):
             pan_app.settings.translator[key] = user_data[key]
+
+        new_ui_language = view.ui_language
+        if new_ui_language != pan_app.settings.language['uilang']:
+            pan_app.settings.language['uilang'] = new_ui_language
+            # A running app can't retranslate widgets already built with
+            # the old language's strings - restarting is the only way
+            # to see the new one applied throughout.
+            self.main_controller.view.show_info_dialog(
+                title=_('Language changed'),
+                message=_('Restart Virtaal for the new language to take effect.'))

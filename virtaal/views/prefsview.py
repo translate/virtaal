@@ -38,7 +38,7 @@ class PreferencesView(BaseView, GObjectWrapper):
         )
 
         widget_names = (
-            'btn_default_fonts', 'ent_email', 'ent_team', 'ent_translator',
+            'btn_default_fonts', 'cmb_ui_language', 'ent_email', 'ent_team', 'ent_translator',
             'fbtn_source', 'fbtn_target', 'scrwnd_placeables', 'scrwnd_plugins',
         )
         for name in widget_names:
@@ -53,8 +53,14 @@ class PreferencesView(BaseView, GObjectWrapper):
     def _init_gui(self):
         self._get_widgets()
         self._init_font_gui()
+        self._init_language_gui()
         self._init_placeables_page()
         self._init_plugins_page()
+
+    def _init_language_gui(self):
+        self._widgets['cmb_ui_language'].append('', _('System default'))
+        for code, name in pan_app.get_available_ui_languages():
+            self._widgets['cmb_ui_language'].append(code, name)
 
     def _init_font_gui(self):
         def reset_fonts(button):
@@ -152,6 +158,12 @@ class PreferencesView(BaseView, GObjectWrapper):
         self.plugins_select.select_item(selected)
         GLib.idle_add(self.plugins_select.set_scroll_position, scroll)
     plugin_data = property(_get_plugin_data, _set_plugin_data)
+
+    def _get_ui_language(self):
+        return self._widgets['cmb_ui_language'].get_active_id() or ''
+    def _set_ui_language(self, value):
+        self._widgets['cmb_ui_language'].set_active_id(value or '')
+    ui_language = property(_get_ui_language, _set_ui_language)
 
     def _get_user_data(self):
         return {

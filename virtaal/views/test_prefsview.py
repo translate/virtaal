@@ -5,11 +5,20 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import pytest
 from gi.repository import Gtk
 
-from virtaal.views import prefsview
+from virtaal.views import baseview, prefsview
 from virtaal.views.baseview import BaseView
 from virtaal.views.prefsview import PreferencesView
+
+
+@pytest.fixture(autouse=True)
+def _fresh_builder_cache(monkeypatch):
+    # _load_widgets() below loads real widgets from virtaal.ui - a
+    # cached builder would hand back the very same GtkComboBoxText
+    # object (and whatever it was left showing) across tests.
+    monkeypatch.setattr(baseview, '_builders', {})
 
 
 class _FakeSelectView:
@@ -41,10 +50,40 @@ def _load_widgets():
     view = PreferencesView.__new__(PreferencesView)
     gui = BaseView.load_builder_file(["virtaal", "virtaal.ui"], root='PreferencesDlg', domain="virtaal")
     view._widgets = {
+        'cmb_ui_language': gui.get_object('cmb_ui_language'),
         'scrwnd_placeables': gui.get_object('scrwnd_placeables'),
         'scrwnd_plugins': gui.get_object('scrwnd_plugins'),
     }
     return view
+
+
+def test_init_language_gui_puts_system_default_first_then_the_available_languages(monkeypatch):
+    monkeypatch.setattr(prefsview.pan_app, 'get_available_ui_languages',
+                         lambda: [('af', 'Afrikaans'), ('fr', 'French')])
+    view = _load_widgets()
+
+    view._init_language_gui()
+
+    ids = [row[1] for row in view._widgets['cmb_ui_language'].get_model()]
+    assert ids == ['', 'af', 'fr']
+
+
+def test_ui_language_property_round_trips_through_the_combo(monkeypatch):
+    monkeypatch.setattr(prefsview.pan_app, 'get_available_ui_languages', lambda: [('af', 'Afrikaans')])
+    view = _load_widgets()
+    view._init_language_gui()
+
+    view.ui_language = 'af'
+
+    assert view.ui_language == 'af'
+
+
+def test_ui_language_defaults_to_empty_string_when_nothing_selected(monkeypatch):
+    monkeypatch.setattr(prefsview.pan_app, 'get_available_ui_languages', lambda: [])
+    view = _load_widgets()
+    view._init_language_gui()
+
+    assert view.ui_language == ''
 
 
 def test_plugins_page_scrolled_window_propagates_natural_width():

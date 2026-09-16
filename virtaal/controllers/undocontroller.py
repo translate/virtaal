@@ -9,6 +9,7 @@ from gi.repository import Gdk, GLib, Gtk
 from translate.storage.placeables import StringElem
 
 from virtaal.common import GObjectWrapper, pan_app
+from virtaal.common.platform import platform
 
 from .basecontroller import BaseController
 
@@ -48,6 +49,9 @@ class UndoController(BaseController):
         self.mnu_undo = mainview.gui.get_object('mnu_undo')
         self.mnu_undo.set_accel_path('<Virtaal>/Edit/Undo')
         self.mnu_undo.connect('activate', self._on_undo_activated)
+        self.mnu_redo = mainview.gui.get_object('mnu_redo')
+        self.mnu_redo.set_accel_path('<Virtaal>/Edit/Redo')
+        self.mnu_redo.connect('activate', self._on_redo_activated)
         mainview.sync_menubar()
 
     def _setup_key_bindings(self):
@@ -56,6 +60,16 @@ class UndoController(BaseController):
             it will be the only functionality in such a class. Therefore, it
             is done here. At least for now."""
         Gtk.AccelMap.add_entry("<Virtaal>/Edit/Undo", Gdk.KEY_z, Gdk.ModifierType.CONTROL_MASK)
+        if platform.is_mac:
+            # GtkosxApplication's Ctrl->Cmd translation (every other
+            # accelerator here relies on it) doesn't reach a compound
+            # Ctrl+Shift accelerator - it's left showing/firing on the
+            # literal Ctrl+Shift+Z instead. Cmd+Shift+Z arrives as
+            # META_MASK|MOD2_MASK|SHIFT_MASK; register that directly.
+            redo_mods = Gdk.ModifierType.META_MASK | Gdk.ModifierType.MOD2_MASK | Gdk.ModifierType.SHIFT_MASK
+        else:
+            redo_mods = Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK
+        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Redo", Gdk.KEY_z, redo_mods)
 
         self.accel_group = Gtk.AccelGroup()
         # Not connect_by_path() - mnu_undo's own accel_path already fires
@@ -121,6 +135,23 @@ class UndoController(BaseController):
             C{self._disable_unit_signals()}."""
         self.unit_controller.view.enable_signals()
 
+    def _snapshot_for_redo(self, undo_info):
+        """Capture a target textbox's current state, wrapped the same way
+            push_current_text() wraps one, so it can be replayed later by
+            _perform_undo() - reused as-is for redo, since "apply this
+            stored state" is the same operation in either direction."""
+        textbox = self.unit_controller.view.targets[undo_info['targetn']]
+        current_text = textbox.elem.copy()
+        curpos = textbox.get_cursor_position()
+        def redo_action(unit):
+            textbox.elem.sub = current_text.sub
+        return {
+            'action': redo_action,
+            'cursorpos': curpos,
+            'targetn': undo_info['targetn'],
+            'unit': undo_info['unit'],
+        }
+
     def _perform_undo(self, undo_info):
         self._select_unit(undo_info['unit'])
 
@@ -160,10 +191,9 @@ class UndoController(BaseController):
 
     # EVENT HANDLERS #
     def _on_store_loaded_closed(self, storecontroller):
-        if storecontroller.store is not None:
-            self.mnu_undo.set_sensitive(True)
-        else:
-            self.mnu_undo.set_sensitive(False)
+        has_store = storecontroller.store is not None
+        self.mnu_undo.set_sensitive(has_store)
+        self.mnu_redo.set_sensitive(has_store)
         self.model.clear()
 
     @if_enabled
@@ -172,15 +202,33 @@ class UndoController(BaseController):
         if not undo_info:
             return
 
-        if isinstance(undo_info, list):
-            for ui in reversed(undo_info):
-                self._perform_undo(ui)
-        else:
-            self._perform_undo(undo_info)
+        undo_list = undo_info if isinstance(undo_info, list) else [undo_info]
+        # Snapshot each affected target's current state before undoing it -
+        # the only place the "forward" direction is still recoverable from,
+        # since undo_list's own actions only know how to reverse it.
+        redo_list = [self._snapshot_for_redo(ui) for ui in undo_list]
+        self.model.push_redo(redo_list if isinstance(undo_info, list) else redo_list[0])
 
+        for ui in reversed(undo_list):
+            self._perform_undo(ui)
+
+        self._correct_state_after_undo_redo()
+
+    @if_enabled
+    def _on_redo_activated(self, *args):
+        redo_info = self.model.pop_redo()
+        if not redo_info:
+            return
+
+        for ri in (redo_info if isinstance(redo_info, list) else [redo_info]):
+            self._perform_undo(ri)
+
+        self._correct_state_after_undo_redo()
+
+    def _correct_state_after_undo_redo(self):
         # Clear the modified flag once undo lands back at the position
         # the file was last opened/saved (UndoModel.mark_clean()) -
-        # _modified is otherwise never touched by undo.
+        # _modified is otherwise never touched by undo/redo.
         if self.model.is_at_clean_position():
             self.main_controller.store_controller.set_modified(False)
 
@@ -190,7 +238,7 @@ class UndoController(BaseController):
         # text-reverting action (to avoid re-marking the document
         # modified), so the normal typing-triggered state timer
         # (_unit_modified -> _start_state_timer -> _state_timer_expired)
-        # never runs for an undo. Re-run its own EMPTY<->UNREVIEWED
+        # never runs for an undo/redo. Re-run its own EMPTY<->UNREVIEWED
         # check directly - never overrides a deliberate user pick
         # (_state_sticky).
         current_unit = self.unit_controller.current_unit

@@ -133,52 +133,17 @@ class TMView(BaseView, GObjectWrapper):
         self.isvisible = False
 
     def select_backends(self, parent):
-        from virtaal.views.widgets.selectdialog import SelectDialog
-        selectdlg = SelectDialog(
+        from virtaal.views.backendselect import select_backends
+        select_backends(
+            self.controller.main_controller, self.controller.plugin_controller,
+            self.controller.config, 'basetmmodel',
             #l10n: The 'sources' here refer to different translation memory plugins,
             #such as local tm, open-tran.eu, the current file, etc.
             title=_('Select sources of Translation Memory'),
             message=_('Select the sources that should be queried for translation memory'),
-            parent=parent,
             size=(550, 580),
+            parent=parent,
         )
-        selectdlg.set_icon(self.controller.main_controller.view.main_window.get_icon())
-
-        items = []
-        plugin_controller = self.controller.plugin_controller
-        for plugin_name in plugin_controller._find_plugin_names():
-            if plugin_name == 'basetmmodel':
-                continue
-            try:
-                info = plugin_controller.get_plugin_info(plugin_name)
-            except Exception as e:
-                logging.debug('Problem getting information for plugin %s' % plugin_name)
-                continue
-            enabled = plugin_name in plugin_controller.plugins
-            config = enabled and plugin_controller.plugins[plugin_name].configure_func or None
-            items.append({
-                'name': info['display_name'],
-                'desc': info['description'],
-                'data': {'internal_name': plugin_name},
-                'enabled': enabled,
-                'config': config,
-            })
-
-        def item_enabled(dlg, item):
-            internal_name = item['data']['internal_name']
-            plugin_controller.enable_plugin(internal_name)
-            if internal_name in self.controller.config['disabled_models']:
-                self.controller.config['disabled_models'].remove(internal_name)
-
-        def item_disabled(dlg, item):
-            internal_name = item['data']['internal_name']
-            plugin_controller.disable_plugin(internal_name)
-            if internal_name not in self.controller.config['disabled_models']:
-                self.controller.config['disabled_models'].append(internal_name)
-
-        selectdlg.connect('item-enabled',  item_enabled)
-        selectdlg.connect('item-disabled', item_disabled)
-        selectdlg.run(items=items)
 
     def select_match(self, match_data):
         """Select the match data as accepted by the user."""

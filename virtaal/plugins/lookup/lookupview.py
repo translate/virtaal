@@ -5,14 +5,11 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-import logging
-
 from gi.repository import Gtk, Pango
 
 from virtaal.common import SignalTracker
 from virtaal.common.utils import get_unicode
 from virtaal.views.baseview import BaseView
-from virtaal.views.widgets.selectdialog import SelectDialog
 from virtaal.views.widgets.wordatcursor import WordAtCursorSelector
 
 
@@ -50,53 +47,17 @@ class LookupView(BaseView):
         self._signal_tracker.disconnect_all()
 
     def select_backends(self, parent):
-        selectdlg = SelectDialog(
+        from virtaal.views.backendselect import select_backends
+        select_backends(
+            self.controller.main_controller, self.controller.plugin_controller,
+            self.controller.config, 'baselookupmodel',
             #l10n: The 'services' here refer to different look-up plugins,
             #such as web look-up, etc.
             title=_('Select Look-up Services'),
             message=_('Select the services that should be used to perform look-ups'),
-            size=(self.controller.config['backends_dialog_width'], 200)
+            size=(self.controller.config['backends_dialog_width'], 200),
+            parent=parent,
         )
-        if isinstance(parent, Gtk.Window):
-            selectdlg.set_transient_for(parent)
-            selectdlg.set_icon(parent.get_icon())
-
-        items = []
-        plugin_controller = self.controller.plugin_controller
-        for plugin_name in plugin_controller._find_plugin_names():
-            if plugin_name == 'baselookupmodel':
-                continue
-            try:
-                info = plugin_controller.get_plugin_info(plugin_name)
-            except Exception as e:
-                logging.debug('Problem getting information for plugin %s' % plugin_name)
-                continue
-            enabled = plugin_name in plugin_controller.plugins
-            config = enabled and plugin_controller.plugins[plugin_name].configure_func or None
-
-            items.append({
-                'name': info['display_name'],
-                'desc': info['description'],
-                'data': {'internal_name': plugin_name},
-                'enabled': enabled,
-                'config': config,
-            })
-
-        def item_enabled(dlg, item):
-            internal_name = item['data']['internal_name']
-            plugin_controller.enable_plugin(internal_name)
-            if internal_name in self.controller.config['disabled_models']:
-                self.controller.config['disabled_models'].remove(internal_name)
-
-        def item_disabled(dlg, item):
-            internal_name = item['data']['internal_name']
-            plugin_controller.disable_plugin(internal_name)
-            if internal_name not in self.controller.config['disabled_models']:
-                self.controller.config['disabled_models'].append(internal_name)
-
-        selectdlg.connect('item-enabled',  item_enabled)
-        selectdlg.connect('item-disabled', item_disabled)
-        selectdlg.run(items=items)
 
 
     # SIGNAL HANDLERS #

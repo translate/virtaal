@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta2\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-16 13:52+0100\n"
+"POT-Creation-Date: 2026-09-16 15:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1832,6 +1832,14 @@ msgid "_New Language Pair…"
 msgstr ""
 
 #: ../virtaal/views/mainview.py
+msgid "_Cancel"
+msgstr ""
+
+#: ../virtaal/views/mainview.py
+msgid "_OK"
+msgstr ""
+
+#: ../virtaal/views/mainview.py
 msgid "Error"
 msgstr ""
 
@@ -1843,6 +1851,10 @@ msgstr ""
 msgid ""
 "The current file has been modified.\n"
 "Do you want to save your changes?"
+msgstr ""
+
+#: ../virtaal/views/mainview.py
+msgid "_Save"
 msgstr ""
 
 #: ../virtaal/views/mainview.py

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta1\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-15 22:49+0100\n"
+"POT-Creation-Date: 2026-09-16 01:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1012,6 +1012,10 @@ msgstr ""
 #. l10n: This refers to workflow states
 #: ../virtaal/modes/workflowmode.py
 msgid "All States"
+msgstr ""
+
+#: ../virtaal/views/prefsview.py
+msgid "Settings"
 msgstr ""
 
 #: ../virtaal/plugins/autocompletor.py

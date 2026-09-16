@@ -8,6 +8,7 @@
 from gi.repository import Gdk, GLib, GObject, Gtk, Pango
 
 from virtaal.common import GObjectWrapper, pan_app
+from virtaal.common.platform import platform
 from virtaal.views.widgets.selectview import SelectView
 
 from .baseview import BaseView
@@ -46,6 +47,8 @@ class PreferencesView(BaseView, GObjectWrapper):
         self._widgets['dialog'] = self.gui.get_object('PreferencesDlg')
         self._widgets['dialog'].set_transient_for(self.controller.main_controller.view.main_window)
         self._widgets['dialog'].set_icon(self.controller.main_controller.view.main_window.get_icon())
+        if platform.is_mac:
+            self._widgets['dialog'].set_title(_('Settings'))
 
     def _init_gui(self):
         self._get_widgets()

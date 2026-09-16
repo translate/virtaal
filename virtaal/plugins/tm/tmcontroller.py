@@ -5,8 +5,6 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-import os.path
-
 from gi.repository import GLib, GObject
 from translate.lang.data import normalize
 
@@ -60,17 +58,10 @@ class TMController(BaseController):
 
     def _load_models(self):
         from virtaal.controllers.plugincontroller import PluginController
-        self.plugin_controller = PluginController(self, 'TMModel')
-        self.plugin_controller.PLUGIN_CLASS_INFO_ATTRIBS = ['display_name', 'description']
-        new_dirs = []
-        for dir in self.plugin_controller.PLUGIN_DIRS:
-           new_dirs.append(os.path.join(dir, 'tm', 'models'))
-        self.plugin_controller.PLUGIN_DIRS = new_dirs
 
         from .models.basetmmodel import BaseTMModel
-        self.plugin_controller.PLUGIN_INTERFACE = BaseTMModel
-        self.plugin_controller.PLUGIN_MODULES = ['virtaal_plugins.tm.models', 'virtaal.plugins.tm.models']
-        self.plugin_controller.get_disabled_plugins = lambda *args: self.disabled_model_names
+        self.plugin_controller = PluginController.for_backend(
+            self, 'TMModel', 'tm', BaseTMModel, lambda *args: self.disabled_model_names)
 
         self._model_signal_ids = {}
         def on_plugin_enabled(plugin_ctrlr, plugin):

@@ -5,8 +5,6 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-import os
-
 from gi.repository import GObject
 
 from virtaal.common import GObjectWrapper
@@ -39,17 +37,9 @@ class LookupController(BaseController):
         self._load_models()
 
     def _load_models(self):
-        self.plugin_controller = PluginController(self, 'LookupModel')
-        self.plugin_controller.PLUGIN_CLASS_INFO_ATTRIBS = ['display_name', 'description']
-        new_dirs = []
-        for dir in self.plugin_controller.PLUGIN_DIRS:
-           new_dirs.append(os.path.join(dir, 'lookup', 'models'))
-        self.plugin_controller.PLUGIN_DIRS = new_dirs
-
-        self.plugin_controller.PLUGIN_INTERFACE = BaseLookupModel
-        self.plugin_controller.PLUGIN_MODULES = ['virtaal_plugins.lookup.models', 'virtaal.plugins.lookup.models']
-        self.plugin_controller.get_disabled_plugins = lambda *args: self.disabled_model_names
-
+        self.plugin_controller = PluginController.for_backend(
+            self, 'LookupModel', 'lookup', BaseLookupModel,
+            lambda *args: self.disabled_model_names)
         self.plugin_controller.load_plugins()
 
 

@@ -108,71 +108,9 @@ class MainView(BaseView):
         self.app_menu = None
 
         if platform.is_mac:
-            # Follow the system light/dark appearance - GTK3 themes (Adwaita
-            # included) already derive their colours from this setting.
-            try:
-                is_dark = subprocess.run(
-                    ["defaults", "read", "-g", "AppleInterfaceStyle"],
-                    capture_output=True).stdout.strip() == b"Dark"
-                Gtk.Settings.get_default().set_property(
-                    "gtk-application-prefer-dark-theme", is_dark)
-            except (OSError, subprocess.SubprocessError):
-                logging.exception("Couldn't determine macOS appearance")
-
-            # Sometimes we have two resize grips: one from GTK, one from Aqua. We
-            # might want to disable the GTK one:
-            #self.gui.get_object('status_bar').set_property("has-resize-grip", False)
-            try:
-                import gi
-                gi.require_version("GtkosxApplication", "1.0")
-                from gi.repository import GtkosxApplication
-                osxapp = GtkosxApplication.Application()
-                # Move the menu bar to the mac menu
-                self.menubar.hide()
-                osxapp.set_menu_bar(self.menubar)
-                # Ensure Ctrl-O change to Cmd-O, etc
-                osxapp.set_use_quartz_accelerators(True)
-                # Move the quit menu item
-                mnu_quit = self.gui.get_object("mnu_quit")
-                mnu_quit.hide()
-                self.gui.get_object("separator_mnu_file_2").hide()
-                # macOS already adds its own native "Enter Full Screen" to
-                # every resizable window - our own GDK-level fullscreen()
-                # is a different mechanism (no real fullscreen Space,
-                # Esc/mouse-to-top-of-screen native affordances not
-                # engaged) and can leave the window with no way back to
-                # the menu bar. Hide it here, keep only the native one.
-                self.gui.get_object("mnu_fullscreen").hide()
-                # Move the about menu item
-                mnu_about = self.gui.get_object("mnu_about")
-                osxapp.insert_app_menu_item(mnu_about, 0)
-                self.gui.get_object("separator_mnu_help_1").hide()
-                # Move the preferences menu item
-                osxapp.insert_app_menu_item(Gtk.SeparatorMenuItem(), 1)
-                mnu_prefs = self.gui.get_object("mnu_prefs")
-                osxapp.insert_app_menu_item(mnu_prefs, 2)
-                self.gui.get_object("separator_mnu_edit_3").hide()
-                Gtk.AccelMap.load(pan_app.get_abs_data_filename(["virtaal", "virtaal.accel"]))
-                osxapp.ready()
-                osxapp.connect("NSApplicationOpenFile", self._on_osx_openfile_event)
-                osxapp.connect("NSApplicationBlockTermination", self._on_quit)
-                self._osxapp = osxapp  # keep a reference; the signals need it to stay alive
-            except (ImportError, ValueError):
-                logging.debug("GtkosxApplication not found (brew install gtk-mac-integration for native macOS menu-bar integration). Expect zero integration with the Mac desktop.")
-
+            self._setup_macos_integration()
         elif platform.is_windows:
-            # AppsUseLightTheme: 0 means dark, 1 (or absent) means light.
-            try:
-                import winreg
-                key = winreg.OpenKey(
-                    winreg.HKEY_CURRENT_USER,
-                    r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize")
-                apps_use_light_theme, _ = winreg.QueryValueEx(key, "AppsUseLightTheme")
-                winreg.CloseKey(key)
-                Gtk.Settings.get_default().set_property(
-                    "gtk-application-prefer-dark-theme", apps_use_light_theme == 0)
-            except OSError:
-                logging.exception("Couldn't determine Windows theme")
+            self._setup_windows_integration()
 
         self.main_window.connect('destroy', self._on_quit)
         self.main_window.connect('delete-event', self._on_quit)
@@ -227,6 +165,73 @@ class MainView(BaseView):
         GLib.idle_add(self._setup_recent_files, priority=GLib.PRIORITY_LOW)
         self.main_window.connect('style-set', self._on_style_set)
         self.main_window.connect('style-updated', self._on_style_set)
+
+    def _setup_macos_integration(self):
+        # Follow the system light/dark appearance - GTK3 themes (Adwaita
+        # included) already derive their colours from this setting.
+        try:
+            is_dark = subprocess.run(
+                ["defaults", "read", "-g", "AppleInterfaceStyle"],
+                capture_output=True).stdout.strip() == b"Dark"
+            Gtk.Settings.get_default().set_property(
+                "gtk-application-prefer-dark-theme", is_dark)
+        except (OSError, subprocess.SubprocessError):
+            logging.exception("Couldn't determine macOS appearance")
+
+        # Sometimes we have two resize grips: one from GTK, one from Aqua. We
+        # might want to disable the GTK one:
+        #self.gui.get_object('status_bar').set_property("has-resize-grip", False)
+        try:
+            import gi
+            gi.require_version("GtkosxApplication", "1.0")
+            from gi.repository import GtkosxApplication
+            osxapp = GtkosxApplication.Application()
+            # Move the menu bar to the mac menu
+            self.menubar.hide()
+            osxapp.set_menu_bar(self.menubar)
+            # Ensure Ctrl-O change to Cmd-O, etc
+            osxapp.set_use_quartz_accelerators(True)
+            # Move the quit menu item
+            mnu_quit = self.gui.get_object("mnu_quit")
+            mnu_quit.hide()
+            self.gui.get_object("separator_mnu_file_2").hide()
+            # macOS already adds its own native "Enter Full Screen" to
+            # every resizable window - our own GDK-level fullscreen()
+            # is a different mechanism (no real fullscreen Space,
+            # Esc/mouse-to-top-of-screen native affordances not
+            # engaged) and can leave the window with no way back to
+            # the menu bar. Hide it here, keep only the native one.
+            self.gui.get_object("mnu_fullscreen").hide()
+            # Move the about menu item
+            mnu_about = self.gui.get_object("mnu_about")
+            osxapp.insert_app_menu_item(mnu_about, 0)
+            self.gui.get_object("separator_mnu_help_1").hide()
+            # Move the preferences menu item
+            osxapp.insert_app_menu_item(Gtk.SeparatorMenuItem(), 1)
+            mnu_prefs = self.gui.get_object("mnu_prefs")
+            osxapp.insert_app_menu_item(mnu_prefs, 2)
+            self.gui.get_object("separator_mnu_edit_3").hide()
+            Gtk.AccelMap.load(pan_app.get_abs_data_filename(["virtaal", "virtaal.accel"]))
+            osxapp.ready()
+            osxapp.connect("NSApplicationOpenFile", self._on_osx_openfile_event)
+            osxapp.connect("NSApplicationBlockTermination", self._on_quit)
+            self._osxapp = osxapp  # keep a reference; the signals need it to stay alive
+        except (ImportError, ValueError):
+            logging.debug("GtkosxApplication not found (brew install gtk-mac-integration for native macOS menu-bar integration). Expect zero integration with the Mac desktop.")
+
+    def _setup_windows_integration(self):
+        # AppsUseLightTheme: 0 means dark, 1 (or absent) means light.
+        try:
+            import winreg
+            key = winreg.OpenKey(
+                winreg.HKEY_CURRENT_USER,
+                r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize")
+            apps_use_light_theme, _ = winreg.QueryValueEx(key, "AppsUseLightTheme")
+            winreg.CloseKey(key)
+            Gtk.Settings.get_default().set_property(
+                "gtk-application-prefer-dark-theme", apps_use_light_theme == 0)
+        except OSError:
+            logging.exception("Couldn't determine Windows theme")
 
     def _create_dialogs(self):
         self._input_dialog = None

@@ -16,6 +16,7 @@ line, `#`-comments allowed) - remove a line there once its warning is
 actually fixed. Anything NOT matching that list fails the run.
 """
 
+import gettext
 import warnings
 from pathlib import Path
 
@@ -53,6 +54,17 @@ def pytest_configure(config):
     warnings.filterwarnings("always", category=DeprecationWarning)
     warnings.filterwarnings("always", category=PendingDeprecationWarning)
     warnings.showwarning = _record_warning
+
+
+@pytest.fixture(autouse=True, scope="session")
+def _force_english_translations():
+    """pan_app installs a real gettext translation at import time,
+    keyed off a developer's own real uilang setting in their local
+    virtaal.ini - tests asserting a literal English string would
+    otherwise pass or fail depending on whose machine runs them.
+    NullTranslations().install() makes _()/ngettext() pass strings
+    through unchanged, independent of that."""
+    gettext.NullTranslations().install()
 
 
 @pytest.fixture(autouse=True, scope="session")

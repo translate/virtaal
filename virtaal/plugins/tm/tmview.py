@@ -47,11 +47,7 @@ class TMView(BaseView, GObjectWrapper):
         ))
         self._signal_ids.append((
             main_window,
-            main_window.connect('focus-in-event', self._on_focus_in_mainwindow)
-        ))
-        self._signal_ids.append((
-            main_window,
-            main_window.connect('focus-out-event', self._on_focus_out_mainwindow)
+            main_window.connect('grab-notify', self._on_grab_notify_mainwindow)
         ))
         self._signal_ids.append((
             main_window,
@@ -255,23 +251,29 @@ class TMView(BaseView, GObjectWrapper):
 
 
     # EVENT HANDLERS #
-    def _on_focus_in_mainwindow(self, widget, event):
-        self._may_show_tmwindow = True
-        if not self._should_show_tmwindow or self.isvisible:
-            return
-        if not self.controller.storecursor:
-            return # No store loaded
-        self.show()
+    def _on_grab_notify_mainwindow(self, widget, was_grabbed):
+        # focus-in/out-event used to drive this, but a same-app modal
+        # dialog (e.g. Preferences) never triggers those on the main
+        # window - it stays "focused" the whole time, so the popup was
+        # never hidden and drew over the dialog. grab-notify fires when
+        # the window is actually shadowed by another widget's grab,
+        # which is what a running Gtk.Dialog does.
+        if was_grabbed:
+            self._may_show_tmwindow = True
+            if not self._should_show_tmwindow or self.isvisible:
+                return
+            if not self.controller.storecursor:
+                return # No store loaded
+            self.show()
 
-        selected = self._get_selected_unit_view()
-        self.tmwindow.update_geometry(selected)
-
-    def _on_focus_out_mainwindow(self, widget, event):
-        self._may_show_tmwindow = False
-        if not self.isvisible:
-            return
-        self.hide()
-        self._should_show_tmwindow = True
+            selected = self._get_selected_unit_view()
+            self.tmwindow.update_geometry(selected)
+        else:
+            self._may_show_tmwindow = False
+            if not self.isvisible:
+                return
+            self.hide()
+            self._should_show_tmwindow = True
 
     def _on_configure_mainwindow(self, widget, event):
         if self._should_show_tmwindow:

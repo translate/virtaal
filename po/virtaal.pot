@@ -298,7 +298,8 @@ msgid ""
 "highlighted and easily inserted into the translation."
 msgstr ""
 
-#: share/virtaal/virtaal.ui
+#. l10n: A submenu listing every placeable recognised in the source, to insert into the target.
+#: share/virtaal/virtaal.ui virtaal/views/unitview.py
 msgid "Placeables"
 msgstr ""
 

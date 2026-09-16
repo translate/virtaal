@@ -56,7 +56,7 @@ class LanguageView(BaseView):
             item.connect('activate', self._on_pairitem_activated, i)
             self.recent_items.append(item)
         separator = Gtk.SeparatorMenuItem()
-        self.other_item = Gtk.MenuItem.new_with_mnemonic(_('_New Language Pair...'))
+        self.other_item = Gtk.MenuItem.new_with_mnemonic(_('_New Language Pair…'))
         self.other_item.connect('activate', self._on_other_activated)
         [self.menu.append(item) for item in (separator, self.other_item)]
         self.update_recent_pairs()

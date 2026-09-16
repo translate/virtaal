@@ -123,7 +123,7 @@ def test_populate_popup_uses_the_word_under_the_cursor_when_nothing_is_selected(
     view._on_populate_popup(textbox, menu)
 
     items = menu.get_children()
-    assert items[1].get_label() == 'Add Term "widget"...'
+    assert items[1].get_label() == 'Add Term "widget"…'
 
 
 def test_populate_popup_adds_add_term_for_a_selection():
@@ -135,7 +135,7 @@ def test_populate_popup_adds_add_term_for_a_selection():
     items = menu.get_children()
     assert len(items) == 2
     assert isinstance(items[0], Gtk.SeparatorMenuItem)
-    assert items[1].get_label() == 'Add Term "widget"...'
+    assert items[1].get_label() == 'Add Term "widget"…'
 
     items[1].activate()
     assert calls
@@ -148,7 +148,7 @@ def test_populate_popup_ellipsizes_a_long_selection():
     view._on_populate_popup(textbox, menu)
 
     item = menu.get_children()[1]
-    assert item.get_label() == 'Add Term "%s"...' % ('a' * 60)
+    assert item.get_label() == 'Add Term "%s"…' % ('a' * 60)
     label_widget = item.get_child()
     assert label_widget.get_ellipsize() == Pango.EllipsizeMode.MIDDLE
     assert label_widget.get_max_width_chars() == 40

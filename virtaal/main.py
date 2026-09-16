@@ -75,6 +75,7 @@ class Virtaal:
 
         self.defer = _Deferer()
         self.main_controller = main_controller
+        self._install_signal_handlers()
 
         if startupfile:
             # Just call the open plainly - we want it done before we start the
@@ -94,6 +95,24 @@ class Virtaal:
             # so we defer as much as possible.
             self.defer(self._open_with_welcome)
 
+
+    def _install_signal_handlers(self):
+        """An external SIGTERM/SIGINT (a test harness's `kill`, Ctrl+C,
+        systemd/launchd stopping the process) previously killed the
+        process immediately, without reaching quit()'s own
+        plugin-shutdown path - orphaning any subprocess a plugin
+        launched (e.g. localtm.py's tmserver). GLib.unix_signal_add
+        integrates with the main loop, unlike signal.signal() - safe
+        to call back into GTK/GLib from. POSIX-only; Windows has no
+        equivalent signal to catch here."""
+        if platform.is_windows:
+            return
+        import signal
+        def handle_signal(signum):
+            self.main_controller.quit(force=True)
+            return GLib.SOURCE_REMOVE
+        for sig in (signal.SIGTERM, signal.SIGINT):
+            GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, sig, handle_signal, sig)
 
     def _open_with_file(self, startupfile):
         # Things needed for opening a file, including inter-dependencies

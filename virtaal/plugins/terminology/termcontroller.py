@@ -5,8 +5,6 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-import os.path
-
 from gi.repository import GObject
 from translate.storage.placeables import parse as elem_parse
 from translate.storage.placeables import terminology
@@ -57,16 +55,9 @@ class TerminologyController(BaseController):
         lang_controller.connect('target-lang-changed', lambda *args: self.rescan_current_unit())
 
     def _load_models(self):
-        self.plugin_controller = PluginController(self, 'TerminologyModel')
-        self.plugin_controller.PLUGIN_CLASS_INFO_ATTRIBS = ['description', 'display_name']
-        new_dirs = []
-        for dir in self.plugin_controller.PLUGIN_DIRS:
-           new_dirs.append(os.path.join(dir, 'terminology', 'models'))
-        self.plugin_controller.PLUGIN_DIRS = new_dirs
-
-        self.plugin_controller.PLUGIN_INTERFACE = BaseTerminologyModel
-        self.plugin_controller.PLUGIN_MODULES = ['virtaal_plugins.terminology.models', 'virtaal.plugins.terminology.models']
-        self.plugin_controller.get_disabled_plugins = lambda *args: self.disabled_model_names
+        self.plugin_controller = PluginController.for_backend(
+            self, 'TerminologyModel', 'terminology', BaseTerminologyModel,
+            lambda *args: self.disabled_model_names)
         self.plugin_controller.connect('plugin-enabled', lambda *args: self.rescan_current_unit())
         self.plugin_controller.load_plugins()
 

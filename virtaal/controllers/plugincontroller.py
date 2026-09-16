@@ -75,6 +75,21 @@ class PluginController(BaseController):
         if 'RESOURCEPATH' in os.environ:
             self.PLUGIN_DIRS.insert(0, os.path.join(os.environ['RESOURCEPATH'], 'virtaal_plugins'))
 
+    @classmethod
+    def for_backend(cls, owner, classname, category, interface, get_disabled,
+                     class_info_attribs=('display_name', 'description')):
+        """Build a PluginController for one of the backend categories
+        (terminology/tm/lookup) - each owning controller's _load_models()
+        otherwise reimplements this identically, differing only by these
+        parameters."""
+        pc = cls(owner, classname)
+        pc.PLUGIN_CLASS_INFO_ATTRIBS = list(class_info_attribs)
+        pc.PLUGIN_DIRS = [os.path.join(d, category, 'models') for d in pc.PLUGIN_DIRS]
+        pc.PLUGIN_INTERFACE = interface
+        pc.PLUGIN_MODULES = [f'virtaal_plugins.{category}.models', f'virtaal.plugins.{category}.models']
+        pc.get_disabled_plugins = get_disabled
+        return pc
+
 
     # METHODS #
     def disable_plugin(self, name):

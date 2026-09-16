@@ -16,9 +16,9 @@ To get the source code direction from Git use this command::
 Required Packages
 =================
 
-- GTK3 and PyGObject (``python3-gi``/``gir1.2-gtk-3.0`` or similar on
-  Linux, Homebrew's ``pygobject3``/``gtk+3`` on macOS, `gvsbuild
-  <https://github.com/wingtk/gvsbuild>`_ on Windows) - a system
+- GTK3, PyGObject, cairo (``python3-gi``/``gir1.2-gtk-3.0``/``cairo2``
+  or similar on Linux, Homebrew's ``pygobject3``/``gtk+3``/``cairo`` on macOS,
+  `gvsbuild <https://github.com/wingtk/gvsbuild>`_ on Windows) - a system
   prerequisite, not something ``pip install`` provisions on its own;
   see ``.github/workflows/ci.yml`` for exactly what each platform's CI
   job installs
@@ -28,6 +28,7 @@ Required Packages
 - `diff_match_patch <https://pypi.org/project/diff-match-patch/>`_
 - `python-Levenshtein <https://pypi.org/project/python-Levenshtein/>`_
 - `cheroot <https://pypi.org/project/cheroot/>`_
+- `pycairo <https://pypi.org/project/pycairo/>`_
 
 The Python packages above are all declared in ``pyproject.toml`` and
 installed automatically by ``pip install .`` - only GTK3/PyGObject

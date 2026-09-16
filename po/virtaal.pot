@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta2\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-16 15:44+0100\n"
+"POT-Creation-Date: 2026-09-16 15:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1924,7 +1924,7 @@ msgstr ""
 msgid "Logs"
 msgstr ""
 
-#: ../virtaal/views/mainview.py
+#: ../virtaal/views/mainview.py ../virtaal/views/widgets/selectdialog.py
 msgid "_Close"
 msgstr ""
 

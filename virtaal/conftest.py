@@ -19,6 +19,10 @@ actually fixed. Anything NOT matching that list fails the run.
 import warnings
 from pathlib import Path
 
+import pytest
+
+from virtaal.support import statsdb
+
 _ALLOWLIST_PATH = (
     Path(__file__).resolve().parent.parent
     / "devsupport"
@@ -49,6 +53,16 @@ def pytest_configure(config):
     warnings.filterwarnings("always", category=DeprecationWarning)
     warnings.filterwarnings("always", category=PendingDeprecationWarning)
     warnings.showwarning = _record_warning
+
+
+@pytest.fixture(autouse=True, scope="session")
+def _isolate_stats_cache(tmp_path_factory):
+    """Building a StoreModel (several test files) opens
+    statsdb.StatsCache's default ~/.translate_toolkit/stats.db - under
+    pytest-xdist, concurrent workers hitting that one real, shared file
+    race on its delete-and-recreate logic (clear_old_data). Give each
+    worker its own file instead."""
+    statsdb.StatsCache.defaultfile = str(tmp_path_factory.mktemp("stats") / "stats.db")
 
 
 def pytest_sessionfinish(session, exitstatus):

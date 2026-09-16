@@ -123,6 +123,7 @@ import builtins as __builtin__
 import configparser as ConfigParser
 import gettext
 import locale
+import shutil
 
 from translate.lang import data
 from translate.misc import file_discovery
@@ -209,6 +210,30 @@ def get_default_font():
     return default_font
 
 defaultfont = get_default_font()
+
+def _repo_root():
+    """The checkout root two levels above this file - only meaningful
+        for a dev checkout, never called when C{platform.is_frozen}."""
+    return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+def _ensure_dev_locale_installed(lang, localedir):
+    """A C{pip install -e .} dev checkout never actually gets
+        setup.py's own compiled C{mo/<lang>/virtaal.mo} copied into
+        C{sys.prefix}'s C{share/locale/} - a known setuptools
+        limitation with C{data_files} and editable installs. Self-heal
+        it here, once, straight from the repo's own compiled C{mo/}
+        tree (built by C{setup.py} at C{pip install -e .} time)
+        instead of requiring a separate manual step."""
+    if platform.is_frozen:
+        return
+    target = os.path.join(localedir, lang, 'LC_MESSAGES', 'virtaal.mo')
+    if os.path.isfile(target):
+        return
+    source = os.path.join(_repo_root(), 'mo', lang, 'virtaal.mo')
+    if not os.path.isfile(source):
+        return
+    os.makedirs(os.path.dirname(target), exist_ok=True)
+    shutil.copyfile(source, target)
 
 
 class Settings:
@@ -332,8 +357,13 @@ if ui_language:
         locale.setlocale(locale.LC_ALL, ui_language)
     except locale.Error:
         pass
+    # localedir passed explicitly, same reason as set_ui_language()'s
+    # own docstring: gettext's default search path is keyed off
+    # sys.base_prefix, missing a venv's own installed translations.
+    localedir = os.path.join(sys.prefix, 'share', 'locale')
+    _ensure_dev_locale_installed(ui_language, localedir)
     languages = [ui_language, locale_lang]
-    gettext.translation('virtaal', languages=languages, fallback=True).install()
+    gettext.translation('virtaal', localedir=localedir, languages=languages, fallback=True).install()
 else:
     fix_locale()
     try:
@@ -347,9 +377,38 @@ else:
         __builtin__.__dict__['_'] = lambda s: s
 
 
+def get_available_ui_languages():
+    """Language codes Virtaal has a real, loadable translation for,
+        mapped to display names, sorted by name. Looks both at
+        C{sys.prefix}'s C{share/locale/} (a packaged install) and the
+        repo's own C{mo/} tree (a dev checkout - see
+        C{_ensure_dev_locale_installed}'s docstring), since either one
+        alone can be empty depending on how Virtaal is currently run.
+
+        Doesn't include a "system default" placeholder itself - this
+        module is in po/POTFILES.skip (its own _('') probe below would
+        otherwise mean gettext isn't set up yet when it runs), so a
+        user-facing label belongs in the caller instead."""
+    from translate.lang.data import languages as toolkit_langs
+
+    codes = set()
+    for localedir in (os.path.join(sys.prefix, 'share', 'locale'), os.path.join(_repo_root(), 'mo')):
+        try:
+            entries = os.listdir(localedir)
+        except OSError:
+            continue
+        for code in entries:
+            mo_names = ('virtaal.mo', os.path.join('LC_MESSAGES', 'virtaal.mo'))
+            if any(os.path.isfile(os.path.join(localedir, code, mo_name)) for mo_name in mo_names):
+                codes.add(code)
+
+    result = [(code, toolkit_langs[code][0] if code in toolkit_langs else code) for code in codes]
+    result.sort(key=lambda pair: pair[1])
+    return result
+
 def set_ui_language(lang):
     """Override the UI language after startup - used by bin/virtaal's
-    --pseudo-translation/--pseudo-translation-bidi. fallback=False: a
+    --lang/--pseudo-translation/--pseudo-translation-bidi. fallback=False: a
     missing catalog should raise, not silently fall back to English.
 
     localedir is passed explicitly - gettext's default search path is
@@ -364,6 +423,7 @@ def set_ui_language(lang):
     except locale.Error:
         pass
     localedir = os.path.join(sys.prefix, 'share', 'locale')
+    _ensure_dev_locale_installed(lang, localedir)
     gettext.translation('virtaal', localedir=localedir, languages=[lang], fallback=False).install()
     if not platform.is_windows:
         # Gtk.Builder's own translatable strings go through C-level

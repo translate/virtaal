@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta2\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-16 16:51+0100\n"
+"POT-Creation-Date: 2026-09-17 08:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -171,6 +171,10 @@ msgstr ""
 
 #: ../share/virtaal/virtaal.ui.h
 msgid "_Edit"
+msgstr ""
+
+#: ../share/virtaal/virtaal.ui.h
+msgid "_Redo"
 msgstr ""
 
 #. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
@@ -2170,6 +2174,10 @@ msgstr ""
 
 #: ../virtaal/views/widgets/shortcutswindow.py
 msgid "Undo the last change"
+msgstr ""
+
+#: ../virtaal/views/widgets/shortcutswindow.py
+msgid "Redo the last undone change"
 msgstr ""
 
 #: ../virtaal/views/widgets/shortcutswindow.py

@@ -40,6 +40,7 @@ SHORTCUT_GROUPS = [
         ("<Primary>Return", _("Next Unit and Advance State")),
         ("<Primary><Shift>Return", _("Next Unit and Reverse State")),
         ("<Primary>z", _("Undo the last change")),
+        ("<Primary><Shift>z", _("Redo the last undone change")),
     ]),
     (_("Plug-ins"), [
         ("<Primary>1", _("Use the first translation suggestion")),

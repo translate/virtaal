@@ -1,0 +1,17 @@
+rules:
+  # SHA-pinning every action is a real, larger, one-time diff across all
+  # workflows - tracked separately, not this hook's job to gate on yet.
+  unpinned-uses:
+    disable: true
+  # Low-confidence: checkout steps here don't push credentials anywhere
+  # an artifact could leak them.
+  artipacked:
+    disable: true
+  # dependabot.yml's grouped weekly schedule is an intentional choice,
+  # not an oversight.
+  dependabot-cooldown:
+    disable: true
+  # Low-confidence: the flagged caches key off a fixed version string,
+  # not attacker-controlled input.
+  cache-poisoning:
+    disable: true

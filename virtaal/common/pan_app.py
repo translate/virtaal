@@ -221,19 +221,32 @@ def _ensure_dev_locale_installed(lang, localedir):
         setup.py's own compiled C{mo/<lang>/virtaal.mo} copied into
         C{sys.prefix}'s C{share/locale/} - a known setuptools
         limitation with C{data_files} and editable installs. Self-heal
-        it here, once, straight from the repo's own compiled C{mo/}
-        tree (built by C{setup.py} at C{pip install -e .} time)
-        instead of requiring a separate manual step."""
+        it here, once: reuse the repo's own compiled C{mo/} tree if
+        C{setup.py} already built one, otherwise compile C{po/<lang>.po}
+        directly - translate-toolkit (a hard dependency already) ships
+        the exact compiler C{setup.py} itself uses, so this needs
+        nothing beyond what's already installed, in a checkout that's
+        never run C{pip install -e .} at all."""
     if platform.is_frozen:
         return
     target = os.path.join(localedir, lang, 'LC_MESSAGES', 'virtaal.mo')
     if os.path.isfile(target):
         return
-    source = os.path.join(_repo_root(), 'mo', lang, 'virtaal.mo')
-    if not os.path.isfile(source):
+
+    repo_root = _repo_root()
+    source = os.path.join(repo_root, 'mo', lang, 'virtaal.mo')
+    if os.path.isfile(source):
+        os.makedirs(os.path.dirname(target), exist_ok=True)
+        shutil.copyfile(source, target)
         return
+
+    po_file = os.path.join(repo_root, 'po', lang + '.po')
+    if not os.path.isfile(po_file):
+        return
+    from translate.tools.pocompile import convertmo
     os.makedirs(os.path.dirname(target), exist_ok=True)
-    shutil.copyfile(source, target)
+    with open(po_file, 'rb') as infile, open(target, 'w') as outfile:
+        convertmo(infile, outfile, None)
 
 
 class Settings:

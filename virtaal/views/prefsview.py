@@ -94,6 +94,16 @@ class PreferencesView(BaseView, GObjectWrapper):
         mnu_prefs.connect('activate', self._show_preferences)
         mainview.sync_menubar()
 
+        # Preferences is moved into macOS's native App Menu (see
+        # mainview.py's insert_app_menu_item()), which never picks up a
+        # key equivalent from accel_path/AccelMap the way the regular
+        # menu bar does - so the Ctrl-then-Quartz-translates-to-Cmd
+        # convention every other shortcut here relies on never fires.
+        # Real Cmd+comma arrives as META_MASK|MOD2_MASK, not
+        # CONTROL_MASK - bind that directly instead.
+        accel_group.connect(Gdk.KEY_comma, Gdk.ModifierType.META_MASK | Gdk.ModifierType.MOD2_MASK,
+                             Gtk.AccelFlags.VISIBLE, self._show_preferences)
+
     # ACCESSORS #
     def _get_font_data(self):
         return {

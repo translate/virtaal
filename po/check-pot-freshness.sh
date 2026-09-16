@@ -1,7 +1,12 @@
 #!/bin/bash
-# Pre-commit hook: warn if a file that feeds po/virtaal.pot (see
-# po/POTFILES.in) changed without po/virtaal.pot being regenerated to
-# match. `make pot` runs `po/intltool-update --pot`, which stamps a
+# Pre-commit hook, two checks:
+# 1. Fail if any source file has gettext markers but isn't listed in
+#    po/POTFILES.in or po/POTFILES.skip - its strings would otherwise
+#    never be extracted for translation at all.
+# 2. Warn if a file that feeds po/virtaal.pot (see po/POTFILES.in)
+#    changed without po/virtaal.pot being regenerated to match.
+#
+# `make pot` runs `po/intltool-update --pot`, which stamps a
 # fresh `POT-Creation-Date` header every single run regardless of
 # content - verified the hard way, by trusting an initial same-minute
 # test that happened not to show it. That line is stripped out before
@@ -25,28 +30,43 @@ cd "$(git rev-parse --show-toplevel)"
 changed=("$@")
 [ "${#changed[@]}" -eq 0 ] && exit 0
 
-# Separate, non-blocking check: a *new* .py file with gettext markers
-# that isn't in po/POTFILES.in at all wouldn't be caught by the
-# staleness check below (which only looks at files POTFILES.in already
-# lists) - it'd just be silently missing from translation, forever.
-# Note rather than fail: grep-based detection has real false-positive
-# risk (e.g. an unrelated variable literally named `_`), and this is a
-# "did you forget" nudge, not an invariant like staleness is.
+# A file with gettext markers that isn't in po/POTFILES.in at all
+# wouldn't be caught by the staleness check below (which only looks at
+# files POTFILES.in already lists) - it'd just be silently missing
+# from translation, forever (confirmed the hard way: crash_dialog.py
+# sat in neither POTFILES.in nor POTFILES.skip for a whole port cycle
+# before this check existed). intltool-update --maintain is the
+# authoritative whole-repo check for this - real xgettext-based
+# extraction, not a grep heuristic, and it already respects
+# POTFILES.skip - so an entry it flags is a hard fail, not just a
+# note. Only build/dist output (stale generated copies of real source
+# files, not gaps) is filtered out below.
 # .ui/.glade files aren't checked here (translatable="yes" attributes,
 # not _()/N_()/ngettext() calls - a different check, not implemented).
-for f in "${changed[@]}"; do
-    case "$f" in
-        *.py) ;;
-        *) continue ;;
-    esac
-    [ -f "$f" ] || continue
-    case "$f" in
-        devsupport/*|*/_*|_*) continue ;;  # debug-only plugins, dev tooling - see plugincontroller.py's `name[0] != '_'`
-    esac
-    if grep -qE '\b(_|N_|ngettext)\(' "$f" && ! grep -qxF "$f" po/POTFILES.in; then
-        echo "NOTE: $f has gettext markers (_()/N_()/ngettext()) but isn't listed in po/POTFILES.in - its strings won't be extracted for translation. Add it there if that's not intentional." >&2
+if ! command -v intltool-update >/dev/null 2>&1; then
+    echo "NOTE: intltool-update isn't installed here to check for source files" >&2
+    echo "missing from po/POTFILES.in (brew install intltool / apt install intltool)." >&2
+    echo "CI's pre-commit job will still catch it if this is missed." >&2
+else
+    rm -f po/missing
+    (cd po && intltool-update --maintain >/dev/null 2>&1) || true
+    if [ -f po/missing ]; then
+        real_missing=()
+        while IFS= read -r f; do
+            case "$f" in
+                build/*|dist/*|"") continue ;;
+            esac
+            real_missing+=("$f")
+        done < po/missing
+        rm -f po/missing
+        if [ "${#real_missing[@]}" -gt 0 ]; then
+            echo "File(s) have gettext markers (_()/N_()/ngettext()) but aren't listed in po/POTFILES.in or po/POTFILES.skip - their strings won't be extracted for translation:" >&2
+            printf '  %s\n' "${real_missing[@]}" >&2
+            echo "Add them to po/POTFILES.in (or po/POTFILES.skip if deliberately excluded)." >&2
+            exit 1
+        fi
     fi
-done
+fi
 
 relevant=false
 for f in "${changed[@]}"; do

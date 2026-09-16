@@ -29,10 +29,10 @@ class TerminologyController(BaseController):
     }
 
     # INITIALIZERS #
-    def __init__(self, main_controller, config={}):
+    def __init__(self, main_controller, config=None):
         GObjectWrapper.__init__(self)
 
-        self.config = config
+        self.config = config if config is not None else {}
         self.main_controller = main_controller
         self.placeables_controller = main_controller.placeables_controller
 

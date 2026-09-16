@@ -38,7 +38,7 @@ class IterableIPShell:
   @ivar complete_sep: Separation delimiters for completion function.
   @type complete_sep: _sre.SRE_Pattern
   '''
-  def __init__(self,argv=[],user_ns=None,user_global_ns=None,
+  def __init__(self,argv=None,user_ns=None,user_global_ns=None,
                cin=None, cout=None,cerr=None, input_func=None):
     '''
 
@@ -58,6 +58,8 @@ class IterableIPShell:
     @param input_func: Replacement for builtin raw_input()
     @type input_func: function
     '''
+    if argv is None:
+      argv = []
     if input_func:
       IPython.iplib.raw_input_original = input_func
     if cin:

@@ -27,11 +27,11 @@ class TMController(BaseController):
         before the TM is queried."""
 
     # INITIALIZERS #
-    def __init__(self, main_controller, config={}):
+    def __init__(self, main_controller, config=None):
         from virtaal.common import GObjectWrapper
         GObjectWrapper.__init__(self)
 
-        self.config = config
+        self.config = config if config is not None else {}
         self.main_controller = main_controller
         self.disabled_model_names = ['basetmmodel'] + self.config.get('disabled_models', [])
         self.max_matches = self.config.get('max_matches', 5)

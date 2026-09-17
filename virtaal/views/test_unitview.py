@@ -101,3 +101,71 @@ def test_targets_fall_back_to_the_single_source_when_there_is_only_one():
 
     assert view.targets[0].selector_textbox is view.sources[0]
     assert view.targets[1].selector_textbox is view.sources[0]
+
+
+class _FakeMenuWidget:
+    def __init__(self):
+        self._sensitive = True
+
+    def set_sensitive(self, value):
+        self._sensitive = value
+
+    def get_sensitive(self):
+        return self._sensitive
+
+    def connect(self, signal, handler):
+        pass
+
+    def set_accel_path(self, path):
+        pass
+
+    def set_accel_group(self, group):
+        pass
+
+    def get_accel_group(self):
+        return None
+
+
+class _FakeSetupMenusGui:
+    def __init__(self):
+        names = ('mnu_cut', 'mnu_copy', 'mnu_paste', 'mnu_placnext', 'mnu_placprev', 'mnu_transfer', 'menu_edit')
+        self._widgets = {name: _FakeMenuWidget() for name in names}
+
+    def get_object(self, name):
+        return self._widgets[name]
+
+
+class _FakeSetupMenusMainView:
+    def __init__(self):
+        self.gui = _FakeSetupMenusGui()
+
+    def add_accel_group(self, group):
+        pass
+
+    def sync_menubar(self):
+        pass
+
+
+class _FakeSetupMenusStoreController:
+    def connect(self, signal, handler):
+        pass
+
+
+def test_cut_copy_paste_disabled_before_any_store_event():
+    # _set_menu_items_sensitive(False) (called right after this in the
+    # real constructor) doesn't touch Cut/Copy/Paste - only the
+    # store-closed handler does, and it's otherwise never called until
+    # a real store-closed event fires, which never happens on a fresh
+    # startup with no file ever opened.
+    view = UnitView.__new__(UnitView)
+    main_controller = type('_MC', (), {
+        'view': _FakeSetupMenusMainView(),
+        'store_controller': _FakeSetupMenusStoreController(),
+    })()
+    view.controller = type('_C', (), {'main_controller': main_controller})()
+
+    view._setup_menus()
+
+    assert not view.mnu_cut.get_sensitive()
+    assert not view.mnu_copy.get_sensitive()
+    assert not view.mnu_paste.get_sensitive()

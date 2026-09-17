@@ -183,6 +183,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             mnu_prev.set_sensitive(True)
             mnu_transfer.set_sensitive(True)
             self._update_edit_menu_sensitivity()
+        on_store_closed()
         self.controller.main_controller.store_controller.connect('store-closed', on_store_closed)
         self.controller.main_controller.store_controller.connect('store-loaded', on_store_loaded)
 

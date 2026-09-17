@@ -38,3 +38,25 @@ def test_open_file_ignores_a_reentrant_call():
     controller._opening_file = True
 
     assert controller.open_file('somefile.po') is None
+
+
+def test_open_file_with_no_filename_actually_opens_the_chosen_one(monkeypatch):
+    # view.open_file() (the welcome screen's "Open" link, or an empty
+    # File>Open) shows a chooser and calls back into open_file() with
+    # the chosen filename - the guard, still set from this outer
+    # filename=None call, used to silently swallow that real one too.
+    controller = MainController.__new__(MainController)
+    controller._placeables_controller = object()
+    controller._opening_file = False
+    opened = []
+    controller._store_controller = SimpleNamespace(
+        is_modified=lambda: False,
+        open_file=lambda filename, uri, forget_dir=False: opened.append(filename),
+        store=None,
+    )
+    controller._mode_controller = SimpleNamespace(refresh_mode=lambda: None)
+    controller.view = SimpleNamespace(open_file=lambda: controller.open_file('chosen.po'))
+
+    controller.open_file(None)
+
+    assert opened == ['chosen.po']

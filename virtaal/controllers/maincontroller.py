@@ -195,7 +195,16 @@ class MainController(BaseController):
             import logging
             logging.warning('open_file(): gave up waiting for placeables_controller')
         if filename is None:
-            return self.view.open_file()
+            # view.open_file() shows the chooser then calls back into
+            # this same open_file() with the chosen filename - the
+            # re-entrancy guard above would otherwise silently swallow
+            # that real, legitimate call too (the wait loop it actually
+            # guards against has already passed by this point).
+            self._opening_file = False
+            try:
+                return self.view.open_file()
+            finally:
+                self._opening_file = True
         if self.store_controller.is_modified():
             response = self.view.show_save_confirm_dialog()
             if response == 'save':

@@ -189,3 +189,18 @@ def test_sensitivity_reflects_undo_redo_stack_state():
 
     controller._on_redo_activated()
     assert (undo_calls[-1], redo_calls[-1]) == (True, False)
+
+
+def test_typing_updates_sensitivity():
+    # Real per-keystroke edits go through _on_unit_insert_text /
+    # _on_unit_delete_text, a separate path from push_current_text()
+    # that must update sensitivity itself.
+    textbox = _FakeTextbox('a')
+    unit = _FakeUnit()
+    controller = _make_controller(textbox, unit)
+    undo_calls = []
+    controller.mnu_undo.set_sensitive = undo_calls.append
+
+    controller._on_unit_insert_text(None, unit, 'x', 0, textbox.elem, 0)
+
+    assert undo_calls[-1] is True

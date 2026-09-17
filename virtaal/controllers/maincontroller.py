@@ -195,7 +195,11 @@ class MainController(BaseController):
             import logging
             logging.warning('open_file(): gave up waiting for placeables_controller')
         if filename is None:
-            return self.view.open_file()
+            self._opening_file = False
+            try:
+                return self.view.open_file()
+            finally:
+                self._opening_file = True
         if self.store_controller.is_modified():
             response = self.view.show_save_confirm_dialog()
             if response == 'save':

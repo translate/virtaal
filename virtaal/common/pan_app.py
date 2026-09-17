@@ -404,6 +404,7 @@ def get_available_ui_languages():
         module is in po/POTFILES.skip (its own _('') probe below would
         otherwise mean gettext isn't set up yet when it runs), so a
         user-facing label belongs in the caller instead."""
+    from translate.lang.data import _fixed_names
     from translate.lang.data import languages as toolkit_langs
 
     codes = set()
@@ -419,7 +420,14 @@ def get_available_ui_languages():
             if any(os.path.isfile(os.path.join(localedir, code, mo_name)) for mo_name in mo_names):
                 codes.add(code)
 
-    result = [(code, toolkit_langs[code][0] if code in toolkit_langs else code) for code in codes]
+    def display_name(code):
+        name = toolkit_langs[code][0] if code in toolkit_langs else code
+        # toolkit's own raw names are the semicolon-joined MARC/ISO 639-2
+        # entry ("Catalan; Valencian") - _fixed_names is its own cleanup
+        # table for these, defined but never applied by toolkit itself.
+        return _fixed_names.get(name, name)
+
+    result = [(code, display_name(code)) for code in codes]
     result.sort(key=lambda pair: pair[1])
     return result
 

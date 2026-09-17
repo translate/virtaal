@@ -322,6 +322,21 @@ def test_get_available_ui_languages_finds_languages_in_either_location(tmp_path,
     assert langs['af'] == 'Afrikaans'
 
 
+def test_get_available_ui_languages_cleans_up_a_semicolon_joined_name(tmp_path, monkeypatch):
+    # toolkit's own raw name for 'nso' is the semicolon-joined MARC/ISO
+    # 639-2 entry "Pedi; Sepedi; Northern Sotho" - not something to
+    # show a user as-is.
+    prefix = tmp_path / 'prefix'
+    (prefix / 'share' / 'locale' / 'nso' / 'LC_MESSAGES').mkdir(parents=True)
+    (prefix / 'share' / 'locale' / 'nso' / 'LC_MESSAGES' / 'virtaal.mo').write_bytes(b'x')
+    monkeypatch.setattr(pan_app.sys, 'prefix', str(prefix))
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(tmp_path / 'repo'))
+
+    langs = dict(pan_app.get_available_ui_languages())
+
+    assert langs['nso'] == 'Northern Sotho'
+
+
 def test_get_available_ui_languages_falls_back_to_the_code_for_an_unknown_language(tmp_path, monkeypatch):
     prefix = tmp_path / 'prefix'
     (prefix / 'share' / 'locale' / 'zzz' / 'LC_MESSAGES').mkdir(parents=True)

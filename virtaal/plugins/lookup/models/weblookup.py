@@ -8,6 +8,12 @@
 from os import path
 from urllib import parse
 
+
+def _slugify(display_name):
+    """A stable id derived from a user's own typed name, so they're
+        never asked for one directly - "My Site" -> "my_site"."""
+    return display_name.strip().lower().replace(' ', '_')
+
 from gi.repository import GLib, Gtk, Pango
 
 from virtaal.common import pan_app
@@ -29,18 +35,21 @@ class LookupModel(BaseLookupModel):
 
     URLDATA = [
         {
+            'id': 'google',
             'display_name': _('Google'),
             'url': 'http://www.google.com/search?q=%(query)s',
             'quoted': True,
             'enabled': True,
         },
         {
+            'id': 'wikipedia',
             'display_name': _('Wikipedia'),
             'url': 'http://%(querylang)s.wikipedia.org/wiki/%(query)s',
             'quoted': False,
             'enabled': True,
         },
         {
+            'id': 'wiktionary',
             'display_name': _('Wiktionary'),
             'url': 'http://%(querylang)s.wiktionary.org/wiki/%(query)s',
             'quoted': False,
@@ -51,12 +60,14 @@ class LookupModel(BaseLookupModel):
         # checkbox away instead of needing to know the URL to add it
         # by hand.
         {
+            'id': 'bing',
             'display_name': _('Bing'),
             'url': 'http://www.bing.com/search?q=%(query)s',
             'quoted': True,
             'enabled': False,
         },
         {
+            'id': 'yahoo',
             'display_name': _('Yahoo'),
             'url': 'http://search.yahoo.com/search?p=%(query)s',
             'quoted': True,
@@ -64,6 +75,11 @@ class LookupModel(BaseLookupModel):
         },
     ]
     """A list of dictionaries containing data about each URL:
+    * C{id}: A stable, untranslated identifier - used as the saved
+        config's own key instead of C{display_name}, which changes
+        with the UI language. Absent on a user's own custom entry,
+        whose C{display_name} is untranslated free text anyway and
+        so already stable enough to serve as its own id.
     * C{display_name}: The name that will be shown in the context menu
     * C{url}: The actual URL that will be queried. See below for template
         variables.
@@ -93,14 +109,21 @@ class LookupModel(BaseLookupModel):
     def _load_urldata(self):
         urls = list(pan_app.load_config(self.urldata_file).values())
         if urls:
+            # A save from before 'id' existed has none - resolve it by
+            # matching its own (untranslated, at the time) display_name
+            # against the current defaults'. A genuinely custom entry
+            # matches nothing here and gets one derived the same way a
+            # newly-added one would.
+            display_to_id = {d['display_name']: d['id'] for d in type(self).URLDATA}
             for u in urls:
                 if 'quoted' in u:
                     u['quoted'] = u['quoted'] == 'True'
                 # A saved entry from before this key existed has no
                 # 'enabled' value - default it to enabled.
                 u['enabled'] = u.get('enabled', 'True') == 'True'
-            saved_names = {u['display_name'] for u in urls}
-            urls += [u for u in type(self).URLDATA if u['display_name'] not in saved_names]
+                u.setdefault('id', display_to_id.get(u['display_name'], _slugify(u['display_name'])))
+            saved_ids = {u['id'] for u in urls}
+            urls += [u for u in type(self).URLDATA if u['id'] not in saved_ids]
             self.URLDATA = urls
 
 
@@ -137,7 +160,10 @@ class LookupModel(BaseLookupModel):
         return items
 
     def _save_urldata(self):
-        config = dict([ (u['display_name'], u) for u in self.URLDATA ])
+        # Keyed by id, not display_name - the section name must stay
+        # stable across a UI language change, unlike the translated
+        # display_name.
+        config = dict([ (u.get('id', u['display_name']), u) for u in self.URLDATA ])
         pan_app.save_config(self.urldata_file, config)
 
     def destroy(self):
@@ -322,8 +348,10 @@ class WebLookupAddDialog:
         if response != Gtk.ResponseType.OK:
             return None
 
+        name = self.ent_url_name.get_text()
         self.url = {
-            'display_name':   self.ent_url_name.get_text(),
+            'id':             _slugify(name),
+            'display_name':   name,
             'url':            self.ent_url.get_text(),
             'quoted':         self.cbtn_url_quote.get_active(),
             'enabled':        True,

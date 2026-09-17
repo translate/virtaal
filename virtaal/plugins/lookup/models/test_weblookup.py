@@ -91,6 +91,24 @@ def test_add_dialog_run_restores_the_parents_focus_on_close(monkeypatch):
     assert calls == ['parent']
 
 
+def test_add_dialog_derives_an_id_from_the_typed_name(monkeypatch):
+    # Never asks the user for one directly.
+    monkeypatch.setattr(weblookup.GLib, 'idle_add', lambda func, *args: func(*args))
+    dialog = WebLookupAddDialog(parent=None)
+
+    def _type_and_confirm():
+        # run() resets the entries first - simulate the user typing
+        # during the (here, mocked) modal call itself.
+        dialog.ent_url_name.set_text('My Site')
+        dialog.ent_url.set_text('http://example.com/?q=%(query)s')
+        return Gtk.ResponseType.OK
+    monkeypatch.setattr(dialog.dialog, 'run', _type_and_confirm)
+
+    url = dialog.run()
+
+    assert url['id'] == 'my_site'
+
+
 # Disabling a web look-up
 
 def _model(monkeypatch, tmp_path):
@@ -181,6 +199,40 @@ def test_quote_toggle_updates_the_underlying_url_dict():
 
     assert dialog.lst_urls[0][dialog.COL_QUOTE] is True
     assert dialog.urldata[0]['quoted'] is True
+
+
+def test_save_urldata_keys_by_id_not_the_translatable_display_name(monkeypatch, tmp_path):
+    # display_name is translated for the menu - it must not also be
+    # the saved config's own section name, or a translated UI language
+    # renders the built-in look-ups unrecognisable on the next load.
+    monkeypatch.setattr(weblookup.pan_app, 'get_config_dir', lambda: str(tmp_path))
+    model = _model(monkeypatch, tmp_path)
+    # Simulates a translated UI - display_name in Arabic, as if a
+    # translator had rendered "Google" into Arabic script.
+    model.URLDATA = [dict(u) for u in type(model).URLDATA]
+    for u in model.URLDATA:
+        if u['id'] == 'google':
+            u['display_name'] = 'ﺝﻮﺠﻟ'
+
+    model.destroy()
+
+    saved = weblookup.pan_app.load_config(model.urldata_file)
+    assert 'google' in saved
+    assert saved['google']['display_name'] == 'ﺝﻮﺠﻟ'
+
+
+def test_load_urldata_resolves_a_legacy_saves_id_by_display_name(monkeypatch, tmp_path):
+    # A save from before 'id' existed only has display_name - matching
+    # it against the current defaults' own display_name recovers the
+    # right id instead of treating it as a separate custom entry.
+    monkeypatch.setattr(weblookup.pan_app, 'get_config_dir', lambda: str(tmp_path))
+    (tmp_path / 'weblookup.ini').write_text(
+        '[Google]\ndisplay_name = Google\nurl = http://www.google.com/search?q=%(query)s\nquoted = True\nenabled = True\n')
+
+    model = LookupModel('weblookup', controller=None)
+
+    google = next(u for u in model.URLDATA if u['display_name'] == 'Google')
+    assert google['id'] == 'google'
 
 
 def test_configure_saves_immediately_rather_than_waiting_for_destroy(monkeypatch, tmp_path):

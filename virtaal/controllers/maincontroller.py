@@ -8,7 +8,7 @@
 import gi
 
 gi.require_version('Gtk', '3.0')
-from gi.repository import GObject, Gtk
+from gi.repository import GLib, GObject, Gtk
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.common.platform import platform
@@ -387,6 +387,17 @@ class MainController(BaseController):
         return self.view.show_info_dialog(title=title, message=msg)
 
     def quit(self, force=False):
+        # Gtk.Dialog.run() has its own main loop, unaffected by
+        # Gtk.main_quit() below - force any open dialog closed first.
+        dialogs_open = False
+        for window in Gtk.Window.list_toplevels():
+            if isinstance(window, Gtk.Dialog) and window is not self.view.main_window and window.get_visible():
+                window.response(Gtk.ResponseType.CANCEL)
+                dialogs_open = True
+        if dialogs_open:
+            GLib.idle_add(self.quit, force)
+            return False
+
         if self.store_controller.is_modified() and not force:
             response = self.view.show_save_confirm_dialog()
             if response == 'save':

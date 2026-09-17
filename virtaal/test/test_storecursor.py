@@ -19,6 +19,7 @@ class TestCursor(TestScaffolding):
         assert cursor.pos == len(cursor.indices) - 1
 
     def test_indices(self):
+        self.store_controller.open_file(self.testfile[1])
         cursor = self.store_controller.cursor
         cursor.pos = 0
         cursor.indices = [1, 2]

@@ -60,11 +60,17 @@ class _FakeUnitController:
         self.view = _FakeView(textbox, unit)
         self.current_unit = unit
 
+    def connect(self, signal, handler):
+        pass
+
 
 class _FakeStoreController:
     store = object()
 
     def set_modified(self, modified):
+        pass
+
+    def connect(self, signal, handler):
         pass
 
 
@@ -78,6 +84,38 @@ class _FakeMainController:
 
 class _FakeMenuItem:
     def set_sensitive(self, sensitive):
+        pass
+
+    def set_accel_path(self, path):
+        pass
+
+    def set_accel_group(self, group):
+        pass
+
+    def connect(self, signal, handler):
+        pass
+
+
+class _FakeMainViewGui:
+    def __init__(self, widgets):
+        self._widgets = widgets
+
+    def get_object(self, name):
+        return self._widgets[name]
+
+
+class _FakeMainView:
+    def __init__(self):
+        self.gui = _FakeMainViewGui({
+            'menu_edit': _FakeMenuItem(),
+            'mnu_undo': _FakeMenuItem(),
+            'mnu_redo': _FakeMenuItem(),
+        })
+
+    def add_accel_group(self, group):
+        pass
+
+    def sync_menubar(self):
         pass
 
 
@@ -270,3 +308,27 @@ def test_redo_cursor_position_survives_a_unit_switch():
 
     redo_of_a = controller.model.redo_stack[1]
     assert redo_of_a['cursorpos'] == 1  # right after 'x', not the reload's 0
+
+
+def test_init_disables_undo_redo_immediately():
+    # Otherwise stuck at the .ui file's default (enabled) until a later
+    # store-loaded/closed or edit event happens to fire - never, on a
+    # welcome screen where no file's ever been opened this session.
+    main_controller = _FakeMainController()
+    main_controller.view = _FakeMainView()
+    unit = _FakeUnit()
+    textbox = _FakeTextbox('')
+    main_controller.store_controller.unit_controller = _FakeUnitController(textbox, unit)
+    main_controller.store_controller.store = None
+
+    controller = UndoController.__new__(UndoController)
+    undo_calls, redo_calls = [], []
+    monkeypatch_undo = main_controller.view.gui.get_object('mnu_undo')
+    monkeypatch_redo = main_controller.view.gui.get_object('mnu_redo')
+    monkeypatch_undo.set_sensitive = undo_calls.append
+    monkeypatch_redo.set_sensitive = redo_calls.append
+
+    UndoController.__init__(controller, main_controller)
+
+    assert undo_calls[-1] is False
+    assert redo_calls[-1] is False

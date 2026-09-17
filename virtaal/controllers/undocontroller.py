@@ -36,6 +36,7 @@ class UndoController(BaseController):
 
         self._setup_key_bindings()
         self._connect_undo_signals()
+        self._update_sensitivity()
 
     def _connect_undo_signals(self):
         # First connect to the unit controller

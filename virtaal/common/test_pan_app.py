@@ -191,6 +191,17 @@ def test_save_config_with_a_section_leaves_other_sections_alone(tmp_path):
     assert conf['plugin_b'] == {'name': 'de_DE'}
 
 
+def test_save_config_round_trips_non_ascii_values(tmp_path):
+    # save_config()'s own file open had no explicit encoding, so it
+    # silently used the platform default (cp1252 on Windows) instead
+    # of UTF-8 - crashed outright saving a translated (e.g. Arabic)
+    # display_name.
+    path = str(tmp_path / 'test.ini')
+    pan_app.save_config(path, {'google': {'display_name': 'ﺝﻮﺠﻟ'}})
+
+    assert pan_app.load_config(path) == {'google': {'display_name': 'ﺝﻮﺠﻟ'}}
+
+
 def test_open_frozen_log_trims_before_appending(tmp_path):
     path = str(tmp_path / "test.log")
     with open(path, 'w', encoding='utf-8') as f:

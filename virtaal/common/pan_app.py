@@ -377,6 +377,13 @@ if ui_language:
     _ensure_dev_locale_installed(ui_language, localedir)
     languages = [ui_language, locale_lang]
     gettext.translation('virtaal', localedir=localedir, languages=languages, fallback=True).install()
+    if not platform.is_windows:
+        # Gtk.Builder's own translatable strings (Welcome screen,
+        # Preferences, ...) go through C-level gettext, not Python's -
+        # see bind_libintl_posix's docstring. set_ui_language() below
+        # does this too - this is the same setup for the saved uilang
+        # setting at normal startup, when --lang isn't passed.
+        bind_libintl_posix(localedir)
 else:
     fix_locale()
     try:

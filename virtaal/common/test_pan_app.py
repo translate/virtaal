@@ -205,3 +205,149 @@ def test_open_frozen_log_trims_before_appending(tmp_path):
     with open(path, encoding='utf-8') as f:
         kept = f.read()
     assert kept == _launch(2) + _launch(3) + _launch(4)
+
+
+# UI language selector (translate/virtaal#1492)
+
+def test_ensure_dev_locale_installed_copies_from_the_repo_mo_tree(tmp_path, monkeypatch):
+    monkeypatch.setattr(pan_app.platform, 'is_frozen', False)
+    repo_root = tmp_path / 'repo'
+    (repo_root / 'mo' / 'xx').mkdir(parents=True)
+    (repo_root / 'mo' / 'xx' / 'virtaal.mo').write_bytes(b'fake-mo-content')
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(repo_root))
+    localedir = tmp_path / 'localedir'
+
+    pan_app._ensure_dev_locale_installed('xx', str(localedir))
+
+    installed = localedir / 'xx' / 'LC_MESSAGES' / 'virtaal.mo'
+    assert installed.read_bytes() == b'fake-mo-content'
+
+
+def test_ensure_dev_locale_installed_is_a_noop_when_already_present(tmp_path, monkeypatch):
+    monkeypatch.setattr(pan_app.platform, 'is_frozen', False)
+    localedir = tmp_path / 'localedir'
+    existing = localedir / 'xx' / 'LC_MESSAGES'
+    existing.mkdir(parents=True)
+    (existing / 'virtaal.mo').write_bytes(b'already-there')
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(tmp_path / 'unused'))
+
+    pan_app._ensure_dev_locale_installed('xx', str(localedir))
+
+    assert (existing / 'virtaal.mo').read_bytes() == b'already-there'
+
+
+def test_ensure_dev_locale_installed_does_nothing_when_frozen(tmp_path, monkeypatch):
+    monkeypatch.setattr(pan_app.platform, 'is_frozen', True)
+    repo_root = tmp_path / 'repo'
+    (repo_root / 'mo' / 'xx').mkdir(parents=True)
+    (repo_root / 'mo' / 'xx' / 'virtaal.mo').write_bytes(b'fake')
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(repo_root))
+    localedir = tmp_path / 'localedir'
+
+    pan_app._ensure_dev_locale_installed('xx', str(localedir))
+
+    assert not (localedir / 'xx').exists()
+
+
+def test_ensure_dev_locale_installed_tolerates_a_missing_source(tmp_path, monkeypatch):
+    monkeypatch.setattr(pan_app.platform, 'is_frozen', False)
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(tmp_path / 'nonexistent'))
+    localedir = tmp_path / 'localedir'
+
+    pan_app._ensure_dev_locale_installed('xx', str(localedir))  # should not raise
+
+    assert not (localedir / 'xx').exists()
+
+
+def test_ensure_dev_locale_installed_compiles_the_po_when_no_mo_was_ever_built(tmp_path, monkeypatch):
+    # A checkout that's never run `pip install -e .` (so setup.py's own
+    # mo/ compile step never ran) still has po/<lang>.po - translate-
+    # toolkit (a hard dependency already) can compile that directly.
+    monkeypatch.setattr(pan_app.platform, 'is_frozen', False)
+    repo_root = tmp_path / 'repo'
+    (repo_root / 'po').mkdir(parents=True)
+    (repo_root / 'po' / 'xx.po').write_text(
+        'msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-8\\n"\n\n'
+        'msgid "Hello"\nmsgstr "Kgotso"\n',
+        encoding='utf-8')
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(repo_root))
+    localedir = tmp_path / 'localedir'
+
+    pan_app._ensure_dev_locale_installed('xx', str(localedir))
+
+    import gettext
+    with open(localedir / 'xx' / 'LC_MESSAGES' / 'virtaal.mo', 'rb') as f:
+        translation = gettext.GNUTranslations(f)
+    assert translation.gettext('Hello') == 'Kgotso'
+
+
+def test_get_available_ui_languages_has_no_system_default_entry_of_its_own(tmp_path, monkeypatch):
+    # pan_app.py is in po/POTFILES.skip - a label here would never be
+    # translatable. The caller (prefsview.py) adds one instead.
+    monkeypatch.setattr(pan_app.sys, 'prefix', str(tmp_path / 'prefix'))
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(tmp_path / 'repo'))
+
+    langs = pan_app.get_available_ui_languages()
+
+    assert langs == []
+
+
+def test_get_available_ui_languages_finds_languages_in_either_location(tmp_path, monkeypatch):
+    # A packaged install populates sys.prefix's share/locale/; a dev
+    # checkout instead has the repo's own flat mo/<code>/virtaal.mo
+    # (see _ensure_dev_locale_installed) - both need to be offered.
+    prefix = tmp_path / 'prefix'
+    repo = tmp_path / 'repo'
+    (prefix / 'share' / 'locale' / 'fr' / 'LC_MESSAGES').mkdir(parents=True)
+    (prefix / 'share' / 'locale' / 'fr' / 'LC_MESSAGES' / 'virtaal.mo').write_bytes(b'x')
+    (repo / 'mo' / 'af').mkdir(parents=True)
+    (repo / 'mo' / 'af' / 'virtaal.mo').write_bytes(b'x')
+    monkeypatch.setattr(pan_app.sys, 'prefix', str(prefix))
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(repo))
+
+    langs = dict(pan_app.get_available_ui_languages())
+
+    assert langs['fr'] == 'French'
+    assert langs['af'] == 'Afrikaans'
+
+
+def test_get_available_ui_languages_cleans_up_a_semicolon_joined_name(tmp_path, monkeypatch):
+    # toolkit's own raw name for 'nso' is the semicolon-joined MARC/ISO
+    # 639-2 entry "Pedi; Sepedi; Northern Sotho" - not something to
+    # show a user as-is.
+    prefix = tmp_path / 'prefix'
+    (prefix / 'share' / 'locale' / 'nso' / 'LC_MESSAGES').mkdir(parents=True)
+    (prefix / 'share' / 'locale' / 'nso' / 'LC_MESSAGES' / 'virtaal.mo').write_bytes(b'x')
+    monkeypatch.setattr(pan_app.sys, 'prefix', str(prefix))
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(tmp_path / 'repo'))
+
+    langs = dict(pan_app.get_available_ui_languages())
+
+    assert langs['nso'] == 'Northern Sotho'
+
+
+def test_get_available_ui_languages_falls_back_to_the_code_for_an_unknown_language(tmp_path, monkeypatch):
+    prefix = tmp_path / 'prefix'
+    (prefix / 'share' / 'locale' / 'zzz' / 'LC_MESSAGES').mkdir(parents=True)
+    (prefix / 'share' / 'locale' / 'zzz' / 'LC_MESSAGES' / 'virtaal.mo').write_bytes(b'x')
+    monkeypatch.setattr(pan_app.sys, 'prefix', str(prefix))
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(tmp_path / 'repo'))
+
+    langs = dict(pan_app.get_available_ui_languages())
+
+    assert langs['zzz'] == 'zzz'
+
+
+def test_get_available_ui_languages_excludes_pseudo_translations(tmp_path, monkeypatch):
+    # devsupport/pseudo-translation's own generated locales - a testing
+    # aid, not a real language a user would pick in Preferences.
+    prefix = tmp_path / 'prefix'
+    for code in ('pseudo', 'pseudo-bidi', 'af'):
+        (prefix / 'share' / 'locale' / code / 'LC_MESSAGES').mkdir(parents=True)
+        (prefix / 'share' / 'locale' / code / 'LC_MESSAGES' / 'virtaal.mo').write_bytes(b'x')
+    monkeypatch.setattr(pan_app.sys, 'prefix', str(prefix))
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(tmp_path / 'repo'))
+
+    langs = dict(pan_app.get_available_ui_languages())
+
+    assert set(langs) == {'af'}

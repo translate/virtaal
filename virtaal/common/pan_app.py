@@ -123,6 +123,7 @@ import builtins as __builtin__
 import configparser as ConfigParser
 import gettext
 import locale
+import shutil
 
 from translate.lang import data
 from translate.misc import file_discovery
@@ -209,6 +210,43 @@ def get_default_font():
     return default_font
 
 defaultfont = get_default_font()
+
+def _repo_root():
+    """The checkout root two levels above this file - only meaningful
+        for a dev checkout, never called when C{platform.is_frozen}."""
+    return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+def _ensure_dev_locale_installed(lang, localedir):
+    """A C{pip install -e .} dev checkout never actually gets
+        setup.py's own compiled C{mo/<lang>/virtaal.mo} copied into
+        C{sys.prefix}'s C{share/locale/} - a known setuptools
+        limitation with C{data_files} and editable installs. Self-heal
+        it here, once: reuse the repo's own compiled C{mo/} tree if
+        C{setup.py} already built one, otherwise compile C{po/<lang>.po}
+        directly - translate-toolkit (a hard dependency already) ships
+        the exact compiler C{setup.py} itself uses, so this needs
+        nothing beyond what's already installed, in a checkout that's
+        never run C{pip install -e .} at all."""
+    if platform.is_frozen:
+        return
+    target = os.path.join(localedir, lang, 'LC_MESSAGES', 'virtaal.mo')
+    if os.path.isfile(target):
+        return
+
+    repo_root = _repo_root()
+    source = os.path.join(repo_root, 'mo', lang, 'virtaal.mo')
+    if os.path.isfile(source):
+        os.makedirs(os.path.dirname(target), exist_ok=True)
+        shutil.copyfile(source, target)
+        return
+
+    po_file = os.path.join(repo_root, 'po', lang + '.po')
+    if not os.path.isfile(po_file):
+        return
+    from translate.tools.pocompile import convertmo
+    os.makedirs(os.path.dirname(target), exist_ok=True)
+    with open(po_file, 'rb') as infile, open(target, 'w') as outfile:
+        convertmo(infile, outfile, None)
 
 
 class Settings:
@@ -332,8 +370,20 @@ if ui_language:
         locale.setlocale(locale.LC_ALL, ui_language)
     except locale.Error:
         pass
+    # localedir passed explicitly, same reason as set_ui_language()'s
+    # own docstring: gettext's default search path is keyed off
+    # sys.base_prefix, missing a venv's own installed translations.
+    localedir = os.path.join(sys.prefix, 'share', 'locale')
+    _ensure_dev_locale_installed(ui_language, localedir)
     languages = [ui_language, locale_lang]
-    gettext.translation('virtaal', languages=languages, fallback=True).install()
+    gettext.translation('virtaal', localedir=localedir, languages=languages, fallback=True).install()
+    if not platform.is_windows:
+        # Gtk.Builder's own translatable strings (Welcome screen,
+        # Preferences, ...) go through C-level gettext, not Python's -
+        # see bind_libintl_posix's docstring. set_ui_language() below
+        # does this too - this is the same setup for the saved uilang
+        # setting at normal startup, when --lang isn't passed.
+        bind_libintl_posix(localedir)
 else:
     fix_locale()
     try:
@@ -347,9 +397,48 @@ else:
         __builtin__.__dict__['_'] = lambda s: s
 
 
+def get_available_ui_languages():
+    """Language codes Virtaal has a real, loadable translation for,
+        mapped to display names, sorted by name. Looks both at
+        C{sys.prefix}'s C{share/locale/} (a packaged install) and the
+        repo's own C{mo/} tree (a dev checkout - see
+        C{_ensure_dev_locale_installed}'s docstring), since either one
+        alone can be empty depending on how Virtaal is currently run.
+
+        Doesn't include a "system default" placeholder itself - this
+        module is in po/POTFILES.skip (its own _('') probe below would
+        otherwise mean gettext isn't set up yet when it runs), so a
+        user-facing label belongs in the caller instead."""
+    from translate.lang.data import _fixed_names
+    from translate.lang.data import languages as toolkit_langs
+
+    codes = set()
+    for localedir in (os.path.join(sys.prefix, 'share', 'locale'), os.path.join(_repo_root(), 'mo')):
+        try:
+            entries = os.listdir(localedir)
+        except OSError:
+            continue
+        for code in entries:
+            if code in ('pseudo', 'pseudo-bidi'):
+                continue
+            mo_names = ('virtaal.mo', os.path.join('LC_MESSAGES', 'virtaal.mo'))
+            if any(os.path.isfile(os.path.join(localedir, code, mo_name)) for mo_name in mo_names):
+                codes.add(code)
+
+    def display_name(code):
+        name = toolkit_langs[code][0] if code in toolkit_langs else code
+        # toolkit's own raw names are the semicolon-joined MARC/ISO 639-2
+        # entry ("Catalan; Valencian") - _fixed_names is its own cleanup
+        # table for these, defined but never applied by toolkit itself.
+        return _fixed_names.get(name, name)
+
+    result = [(code, display_name(code)) for code in codes]
+    result.sort(key=lambda pair: pair[1])
+    return result
+
 def set_ui_language(lang):
     """Override the UI language after startup - used by bin/virtaal's
-    --pseudo-translation/--pseudo-translation-bidi. fallback=False: a
+    --lang/--pseudo-translation/--pseudo-translation-bidi. fallback=False: a
     missing catalog should raise, not silently fall back to English.
 
     localedir is passed explicitly - gettext's default search path is
@@ -364,6 +453,7 @@ def set_ui_language(lang):
     except locale.Error:
         pass
     localedir = os.path.join(sys.prefix, 'share', 'locale')
+    _ensure_dev_locale_installed(lang, localedir)
     gettext.translation('virtaal', localedir=localedir, languages=[lang], fallback=False).install()
     if not platform.is_windows:
         # Gtk.Builder's own translatable strings go through C-level

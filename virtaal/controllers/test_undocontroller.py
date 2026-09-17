@@ -11,16 +11,32 @@ from virtaal.controllers.undocontroller import UndoController
 from virtaal.models.undomodel import UndoModel
 
 
+class _FakeGuiInfo:
+    """Just enough of StringElemGUI for _on_unit_insert_text's own
+        undo_action() (elem.gui_info.gui_to_tree_index()) - a flat,
+        placeable-free string needs no real offset translation."""
+    def gui_to_tree_index(self, offset):
+        return offset
+
+
 class _FakeTextbox:
     def __init__(self, text):
         self.elem = StringElem(text)
-        self.refresh_cursor_pos = None
+        self.elem.gui_info = _FakeGuiInfo()
+        self.refresh_cursor_pos = -1
+        # Mimics the real widget: only moves once refresh() actually
+        # runs - which undocontroller.py defers via GLib.idle_add, so a
+        # test driving multiple steps without pumping the main loop
+        # models a chain outrunning that deferred flush.
+        self._rendered_cursor_pos = len(text)
 
     def get_cursor_position(self):
-        return len(str(self.elem))
+        return self._rendered_cursor_pos
 
     def refresh(self, update=True):
-        pass
+        if self.refresh_cursor_pos >= 0:
+            self._rendered_cursor_pos = self.refresh_cursor_pos
+        self.refresh_cursor_pos = -1
 
 
 class _FakeView:
@@ -204,3 +220,53 @@ def test_typing_updates_sensitivity():
     controller._on_unit_insert_text(None, unit, 'x', 0, textbox.elem, 0)
 
     assert undo_calls[-1] is True
+
+
+def test_chained_undo_redo_uses_each_edits_own_recorded_cursor_position():
+    # _perform_undo()'s own cursor restore is deferred (GLib.idle_add) -
+    # a chained undo/redo faster than that must not rely on a live
+    # widget read, which can still be showing an earlier step's state.
+    textbox = _FakeTextbox('a')
+    unit = _FakeUnit()
+    controller = _make_controller(textbox, unit)
+
+    controller._on_unit_insert_text(None, unit, 'b', 1, textbox.elem, 0)
+    textbox.elem.sub = StringElem('ab').sub
+    controller._on_unit_insert_text(None, unit, 'c', 2, textbox.elem, 0)
+    textbox.elem.sub = StringElem('abc').sub
+
+    controller._on_undo_activated()  # abc -> ab (deferred refresh never runs)
+    controller._on_undo_activated()  # ab -> a
+
+    # redo_stack[1] is the 'b' edit's own redo entry, built while the
+    # widget was still showing the 'c' edit's not-yet-flushed cursor.
+    redo_of_b = controller.model.redo_stack[1]
+    assert redo_of_b['cursorpos'] == 2  # right after 'b'
+
+
+def test_redo_cursor_position_survives_a_unit_switch():
+    # _select_unit() reloading a reused widget for a different unit can
+    # reset its live cursor to that reload's own default - not the
+    # position this specific edit's redo should land on.
+    textbox = _FakeTextbox('')
+    unit_a, unit_b = _FakeUnit(), _FakeUnit()
+    controller = _make_controller(textbox, unit_a)
+
+    def select_unit(unit, force=False):
+        controller.unit_controller.view.unit = unit
+        controller.unit_controller.current_unit = unit
+        textbox._rendered_cursor_pos = 0  # a fresh unit's own default
+    controller.main_controller.select_unit = select_unit
+
+    controller._on_unit_insert_text(None, unit_a, 'x', 0, textbox.elem, 0)
+    textbox.elem.sub = StringElem('x').sub
+
+    select_unit(unit_b)
+    controller._on_unit_insert_text(None, unit_b, 'y', 0, textbox.elem, 0)
+    textbox.elem.sub = StringElem('y').sub
+
+    controller._on_undo_activated()  # undoes unit_b's 'y'
+    controller._on_undo_activated()  # undoes unit_a's 'x' - switches back to A first
+
+    redo_of_a = controller.model.redo_stack[1]
+    assert redo_of_a['cursorpos'] == 1  # right after 'x', not the reload's 0

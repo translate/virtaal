@@ -43,6 +43,8 @@ class Plugin(BasePlugin):
 
     def configure(self, parent):
         self.termcontroller.view.select_backends(parent)
+        self.config = self.termcontroller.config
+        self.save_config()
 
     def destroy(self):
         self.config = self.termcontroller.config

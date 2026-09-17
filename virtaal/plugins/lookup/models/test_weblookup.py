@@ -181,3 +181,28 @@ def test_quote_toggle_updates_the_underlying_url_dict():
 
     assert dialog.lst_urls[0][dialog.COL_QUOTE] is True
     assert dialog.urldata[0]['quoted'] is True
+
+
+def test_configure_saves_immediately_rather_than_waiting_for_destroy(monkeypatch, tmp_path):
+    monkeypatch.setattr(weblookup.pan_app, 'get_config_dir', lambda: str(tmp_path))
+    model = LookupModel('weblookup', controller=None)
+
+    class _FakeConfigureDialog:
+        def __init__(self, parent):
+            self.urldata = None
+
+        def run(self):
+            # Simulates the user editing the list before closing the
+            # dialog - a real dialog's urldata only reflects this once
+            # run() returns, not before.
+            self.urldata = [
+                {'display_name': 'Only', 'url': 'http://example.com/?q=%(query)s', 'quoted': False, 'enabled': True},
+            ]
+
+    monkeypatch.setattr(weblookup, 'WebLookupConfigDialog', lambda parent: _FakeConfigureDialog(parent))
+    parent = type('_FakeParent', (), {'get_toplevel': lambda self: None})()
+
+    model.configure(parent)
+
+    reloaded = weblookup.pan_app.load_config(model.urldata_file)
+    assert 'Only' in reloaded

@@ -40,6 +40,8 @@ class Plugin(BasePlugin):
     # METHODS #
     def configure(self, parent):
         self.controller.view.select_backends(parent)
+        self.config = self.controller.config
+        self.save_config()
 
     def destroy(self):
         self.config = self.controller.config

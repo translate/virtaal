@@ -116,6 +116,12 @@ class UndoController(BaseController):
         if pan_app.DEBUG:
             data['desc'] = 'Set target %d text to %s' % (targetn, repr(current_text)),
         self.model.push(data)
+        self._update_sensitivity()
+
+    def _update_sensitivity(self):
+        has_store = self.main_controller.store_controller.store is not None
+        self.mnu_undo.set_sensitive(has_store and self.model.can_undo())
+        self.mnu_redo.set_sensitive(has_store and self.model.can_redo())
 
     def record_stop(self):
         self.model.record_stop()
@@ -139,7 +145,10 @@ class UndoController(BaseController):
         """Capture a target textbox's current state, wrapped the same way
             push_current_text() wraps one, so it can be replayed later by
             _perform_undo() - reused as-is for redo, since "apply this
-            stored state" is the same operation in either direction."""
+            stored state" is the same operation in either direction. Must
+            be called only once undo_info['unit'] is loaded into the view
+            - targets[] is a reused widget, so calling it earlier
+            captures the wrong unit's state."""
         textbox = self.unit_controller.view.targets[undo_info['targetn']]
         current_text = textbox.elem.copy()
         curpos = textbox.get_cursor_position()
@@ -152,13 +161,16 @@ class UndoController(BaseController):
             'unit': undo_info['unit'],
         }
 
-    def _perform_undo(self, undo_info):
+    def _perform_undo(self, undo_info, capture_redo=False):
         self._select_unit(undo_info['unit'])
 
         #if 'desc' in undo_info:
         #    logging.debug('Description: %s' % (undo_info['desc']))
 
         self._disable_unit_signals()
+        # Now that _select_unit() above has loaded the right unit - see
+        # _snapshot_for_redo()'s own note.
+        redo_snapshot = self._snapshot_for_redo(undo_info) if capture_redo else None
         undo_info['action'](undo_info['unit'])
         self._enable_unit_signals()
 
@@ -180,6 +192,7 @@ class UndoController(BaseController):
             self._enable_unit_signals()
 
         GLib.idle_add(refresh)
+        return redo_snapshot
 
     def _select_unit(self, unit):
         """Select the given unit in the store view.
@@ -191,10 +204,8 @@ class UndoController(BaseController):
 
     # EVENT HANDLERS #
     def _on_store_loaded_closed(self, storecontroller):
-        has_store = storecontroller.store is not None
-        self.mnu_undo.set_sensitive(has_store)
-        self.mnu_redo.set_sensitive(has_store)
         self.model.clear()
+        self._update_sensitivity()
 
     @if_enabled
     def _on_undo_activated(self, *args):
@@ -203,14 +214,15 @@ class UndoController(BaseController):
             return
 
         undo_list = undo_info if isinstance(undo_info, list) else [undo_info]
-        # Snapshot each affected target's current state before undoing it -
-        # the only place the "forward" direction is still recoverable from,
-        # since undo_list's own actions only know how to reverse it.
-        redo_list = [self._snapshot_for_redo(ui) for ui in undo_list]
-        self.model.push_redo(redo_list if isinstance(undo_info, list) else redo_list[0])
-
+        # Snapshot each affected target's current state right as it's
+        # undone (inside _perform_undo(), once the right unit is loaded)
+        # - the only place the "forward" direction is still recoverable
+        # from, since undo_list's own actions only know how to reverse it.
+        redo_list = []
         for ui in reversed(undo_list):
-            self._perform_undo(ui)
+            redo_list.insert(0, self._perform_undo(ui, capture_redo=True))
+
+        self.model.push_redo(redo_list if isinstance(undo_info, list) else redo_list[0])
 
         self._correct_state_after_undo_redo()
 
@@ -226,11 +238,10 @@ class UndoController(BaseController):
         self._correct_state_after_undo_redo()
 
     def _correct_state_after_undo_redo(self):
-        # Clear the modified flag once undo lands back at the position
-        # the file was last opened/saved (UndoModel.mark_clean()) -
-        # _modified is otherwise never touched by undo/redo.
-        if self.model.is_at_clean_position():
-            self.main_controller.store_controller.set_modified(False)
+        # _modified is otherwise never touched by undo/redo - set it to
+        # match whether we're at the last clean (opened/saved) position,
+        # in either direction.
+        self.main_controller.store_controller.set_modified(not self.model.is_at_clean_position())
 
         # Undoing a change back to an empty target can leave the unit's
         # workflow state stuck at "Translated" otherwise.
@@ -244,6 +255,8 @@ class UndoController(BaseController):
         current_unit = self.unit_controller.current_unit
         if current_unit is not None and current_unit.STATE and not getattr(current_unit, '_state_sticky', False):
             self.unit_controller._correct_empty_state(current_unit)
+
+        self._update_sensitivity()
 
     @if_enabled
     def _on_unit_delete_text(self, unit_controller, unit, deleted, parent, offset, cursor_pos, elem, target_num):

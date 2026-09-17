@@ -26,6 +26,12 @@ class UndoModel(BaseModel):
 
 
     # METHODS #
+    def can_undo(self):
+        return 0 <= self.index < len(self.undo_stack)
+
+    def can_redo(self):
+        return bool(self.redo_stack)
+
     def clear(self):
         """Clear the undo stack and reset the index pointer."""
         self.undo_stack = []

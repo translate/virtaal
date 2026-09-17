@@ -83,3 +83,22 @@ def test_clear_empties_the_redo_stack():
     model.clear()
 
     assert model.pop_redo() is None
+
+
+def test_can_undo_and_can_redo_track_stack_state():
+    model = UndoModel(controller=None)
+    assert not model.can_undo()
+    assert not model.can_redo()
+
+    model.push(_entry(1))
+    assert model.can_undo()
+    assert not model.can_redo()
+
+    model.pop()
+    model.push_redo(_entry('redo-of-1'))
+    assert not model.can_undo()
+    assert model.can_redo()
+
+    model.pop_redo()
+    assert model.can_undo()
+    assert not model.can_redo()

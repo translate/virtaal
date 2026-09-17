@@ -285,6 +285,7 @@ class UndoController(BaseController):
         if pan_app.DEBUG:
             data['desc'] = 'offset=%d, deleted="%s", parent=%s, cursor_pos=%d, elem=%s' % (offset, repr(deleted), repr(parent), cursor_pos, repr(elem))
         self.model.push(data)
+        self._update_sensitivity()
 
     @if_enabled
     def _on_unit_insert_text(self, unit_controller, unit, ins_text, offset, elem, target_num):
@@ -310,3 +311,4 @@ class UndoController(BaseController):
         if pan_app.DEBUG:
             data['desc'] = 'ins_text="%s", offset=%d, elem=%s' % (ins_text, offset, repr(elem))
         self.model.push(data)
+        self._update_sensitivity()

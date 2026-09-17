@@ -31,7 +31,7 @@ def _read_ini_recovering(parser, filename):
 
     Returns the backup path, or None if the file was fine (or absent)."""
     try:
-        parser.read(filename)
+        parser.read(filename, encoding='utf-8')
         return None
     except (ConfigParser.Error, UnicodeDecodeError) as e:
         for section in parser.sections():
@@ -315,7 +315,7 @@ class Settings:
         project_dir = os.path.split(self.filename)[0]
         if not os.path.isdir(project_dir):
             os.makedirs(project_dir)
-        file = open(self.filename, 'w')
+        file = open(self.filename, 'w', encoding='utf-8')
         self.config.write(file)
         file.close()
 
@@ -472,6 +472,6 @@ def save_config(filename, config, section=None):
                 value = ','.join(value)
             parser.set(section, key, str(value))
 
-    conffile = open(filename, 'w')
+    conffile = open(filename, 'w', encoding='utf-8')
     parser.write(conffile)
     conffile.close()

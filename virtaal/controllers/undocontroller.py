@@ -151,7 +151,16 @@ class UndoController(BaseController):
             captures the wrong unit's state."""
         textbox = self.unit_controller.view.targets[undo_info['targetn']]
         current_text = textbox.elem.copy()
-        curpos = textbox.get_cursor_position()
+        # Prefer the position the original edit itself recorded over a
+        # live widget read: _select_unit() switching a reused widget to
+        # a different unit, or a still-pending deferred refresh() from
+        # an earlier chained step, can each make the widget's own
+        # cursor position meaningless at this point. Not every push()
+        # site records one (push_current_text() can't know it in
+        # advance), hence the fallback.
+        curpos = undo_info.get('redo_cursorpos')
+        if curpos is None:
+            curpos = textbox.get_cursor_position()
         def redo_action(unit):
             textbox.elem.sub = current_text.sub
         return {
@@ -279,6 +288,8 @@ class UndoController(BaseController):
         data = {
             'action': undo_action,
             'cursorpos': cursor_pos,
+            # Redoing re-deletes the range - cursor lands where it starts.
+            'redo_cursorpos': offset,
             'targetn': target_num,
             'unit': unit,
         }
@@ -306,7 +317,9 @@ class UndoController(BaseController):
             'action': undo_action,
             'unit': unit,
             'targetn': target_num,
-            'cursorpos': offset
+            'cursorpos': offset,
+            # Redoing re-inserts ins_text - cursor lands right after it.
+            'redo_cursorpos': offset + len_ins_text,
         }
         if pan_app.DEBUG:
             data['desc'] = 'ins_text="%s", offset=%d, elem=%s' % (ins_text, offset, repr(elem))

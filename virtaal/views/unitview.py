@@ -183,6 +183,11 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             mnu_prev.set_sensitive(True)
             mnu_transfer.set_sensitive(True)
             self._update_edit_menu_sensitivity()
+        # _set_menu_items_sensitive(False) above doesn't touch Cut/Copy/
+        # Paste - only this handler does, and it's otherwise never
+        # called until a real store-closed event fires, which never
+        # happens on a fresh startup with no file ever opened.
+        on_store_closed()
         self.controller.main_controller.store_controller.connect('store-closed', on_store_closed)
         self.controller.main_controller.store_controller.connect('store-loaded', on_store_loaded)
 

@@ -332,3 +332,18 @@ def test_get_available_ui_languages_falls_back_to_the_code_for_an_unknown_langua
     langs = dict(pan_app.get_available_ui_languages())
 
     assert langs['zzz'] == 'zzz'
+
+
+def test_get_available_ui_languages_excludes_pseudo_translations(tmp_path, monkeypatch):
+    # devsupport/pseudo-translation's own generated locales - a testing
+    # aid, not a real language a user would pick in Preferences.
+    prefix = tmp_path / 'prefix'
+    for code in ('pseudo', 'pseudo-bidi', 'af'):
+        (prefix / 'share' / 'locale' / code / 'LC_MESSAGES').mkdir(parents=True)
+        (prefix / 'share' / 'locale' / code / 'LC_MESSAGES' / 'virtaal.mo').write_bytes(b'x')
+    monkeypatch.setattr(pan_app.sys, 'prefix', str(prefix))
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(tmp_path / 'repo'))
+
+    langs = dict(pan_app.get_available_ui_languages())
+
+    assert set(langs) == {'af'}

@@ -162,7 +162,7 @@ class Plugin(BasePlugin):
 
         else:
             self.poedit_config = ConfigParser.ConfigParser()
-            poedit_config_file = open(config_filename)
+            poedit_config_file = open(config_filename, encoding='utf-8')
             contents = StringIO('[poedit_headerless_file]\n' + poedit_config_file.read())
             poedit_config_file.close()
             self.poedit_config.read_file(contents)

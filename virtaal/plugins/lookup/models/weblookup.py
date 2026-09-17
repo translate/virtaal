@@ -110,7 +110,7 @@ class LookupModel(BaseLookupModel):
         configure_dialog.urldata = self.URLDATA
         configure_dialog.run()
         self.URLDATA = configure_dialog.urldata
-        #logging.debug('New URL data: %s' % (self.URLDATA))
+        self._save_urldata()
 
     def create_menu_items(self, query, role, srclang, tgtlang, textbox):
         querylang = role == 'source' and srclang or tgtlang
@@ -136,9 +136,12 @@ class LookupModel(BaseLookupModel):
             items.append(i)
         return items
 
-    def destroy(self):
+    def _save_urldata(self):
         config = dict([ (u['display_name'], u) for u in self.URLDATA ])
         pan_app.save_config(self.urldata_file, config)
+
+    def destroy(self):
+        self._save_urldata()
 
 
     # SIGNAL HANDLERS #

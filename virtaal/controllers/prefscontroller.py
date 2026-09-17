@@ -149,9 +149,4 @@ class PreferencesController(BaseController):
         new_ui_language = view.ui_language
         if new_ui_language != pan_app.settings.language['uilang']:
             pan_app.settings.language['uilang'] = new_ui_language
-            # A running app can't retranslate widgets already built with
-            # the old language's strings - restarting is the only way
-            # to see the new one applied throughout.
-            self.main_controller.view.show_info_dialog(
-                title=_('Language changed'),
-                message=_('Restart Virtaal for the new language to take effect.'))
+            self.main_controller.view.show_language_change_notice()

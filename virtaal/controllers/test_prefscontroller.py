@@ -22,10 +22,10 @@ class _FakeUnitControllerView:
 
 class _FakeMainControllerView:
     def __init__(self):
-        self.info_dialogs = []
+        self.language_change_notices = 0
 
-    def show_info_dialog(self, title='', message=''):
-        self.info_dialogs.append((title, message))
+    def show_language_change_notice(self):
+        self.language_change_notices += 1
 
 
 class _FakeMainController:
@@ -61,7 +61,7 @@ def test_prefs_done_shows_a_restart_notice_when_the_language_changed(monkeypatch
 
     controller._on_prefs_done(_FakeView(ui_language='af'))
 
-    assert len(controller.main_controller.view.info_dialogs) == 1
+    assert controller.main_controller.view.language_change_notices == 1
 
 
 def test_prefs_done_does_nothing_when_the_language_is_unchanged(monkeypatch):
@@ -70,7 +70,7 @@ def test_prefs_done_does_nothing_when_the_language_is_unchanged(monkeypatch):
     controller._on_prefs_done(_FakeView(ui_language='af'))
 
     assert pan_app.settings.language['uilang'] == 'af'
-    assert controller.main_controller.view.info_dialogs == []
+    assert controller.main_controller.view.language_change_notices == 0
 
 
 def test_update_language_gui_data_reads_the_saved_setting(monkeypatch):

@@ -41,14 +41,13 @@ jobs:
           cache-dependency-path: pyproject.toml
 
       - name: Install system dependencies
-        # intltool-update: po/check-pot-freshness.sh needs it to check
-        # po/virtaal.pot against po/POTFILES.in; without it, that hook
-        # silently no-ops instead of enforcing anything.
+        # gettext (xgettext/msgmerge/msgcat): po/check-pot-freshness.sh
+        # needs these to check po/virtaal.pot against po/POTFILES.in.
         run: |
           # A stale/broken package-index mirror snapshot happens often
           # enough on GitHub-hosted Ubuntu runners to just retry.
           for i in 1 2 3; do sudo apt-get update && break || sleep 10; done
-          sudo apt-get install -y intltool
+          sudo apt-get install -y gettext
 
       - name: Install prek
         # Drop-in, Rust-based pre-commit replacement - same
@@ -97,9 +96,7 @@ jobs:
           # A stale/broken package-index mirror snapshot happens often
           # enough on GitHub-hosted Ubuntu runners to just retry.
           for i in 1 2 3; do sudo apt-get update && break || sleep 10; done
-          sudo apt-get install -y \
-            gettext \
-            intltool
+          sudo apt-get install -y gettext
 
       - name: Install Python dependencies
         run: |
@@ -820,7 +817,7 @@ jobs:
           # A stale/broken package-index mirror snapshot happens often
           # enough on GitHub-hosted Ubuntu runners to just retry.
           for i in 1 2 3; do sudo apt-get update && break || sleep 10; done
-          sudo apt-get install -y flatpak flatpak-builder gettext intltool xvfb
+          sudo apt-get install -y flatpak flatpak-builder gettext xvfb
           flatpak remote-add --if-not-exists --user flathub \
             https://dl.flathub.org/repo/flathub.flatpakrepo
 

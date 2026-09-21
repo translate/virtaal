@@ -5,6 +5,7 @@ share/metainfo/virtaal.metainfo.xml.in
 virtaal/controllers/checkscontroller.py
 virtaal/controllers/maincontroller.py
 virtaal/controllers/placeablescontroller.py
+virtaal/controllers/prefscontroller.py
 virtaal/controllers/storecontroller.py
 virtaal/controllers/unitcontroller.py
 virtaal/controllers/welcomescreencontroller.py

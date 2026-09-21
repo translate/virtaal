@@ -182,7 +182,7 @@ a = Analysis(  # noqa: F821
     },
     # devsupport isn't needed at runtime in a frozen build (its one
     # consumer, profiling support, is already `if not packaged:`-gated
-    # off in bin/virtaal itself). Excluding it also avoids a real bug
+    # off in virtaal/cli.py). Excluding it also avoids a real bug
     # found during frozen-build testing: a vendored Python-2-era
     # "Optik" optparse.py inside devsupport/ was shadowing the real
     # stdlib module for bin/virtaal's bare `import optparse` (since

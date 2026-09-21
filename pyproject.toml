@@ -76,7 +76,7 @@ exclude = ["virtaal.test"]
 # need one for discovery), so it's excluded here rather than shipped.
 # devsupport* is excluded implicitly by only including virtaal* at all -
 # it never was packaged for a real install, only usable from a source
-# checkout (see bin/virtaal's profiling support, which already degrades
+# checkout (see virtaal/cli.py's profiling support, which already degrades
 # gracefully when devsupport.profiling isn't importable).
 
 # gettext.install('virtaal') (pan_app.py) puts `_` into builtins at

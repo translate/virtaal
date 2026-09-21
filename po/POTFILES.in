@@ -1,10 +1,9 @@
-[encoding: UTF-8]
-[type: gettext/glade]share/virtaal/virtaal.ui
-bin/virtaal
 devsupport/tmp_strings.py
 share/applications/virtaal.desktop.in
 share/metainfo/virtaal.metainfo.xml.in
 share/mime/packages/virtaal-mimetype.xml.in
+share/virtaal/virtaal.ui
+virtaal/cli.py
 virtaal/controllers/checkscontroller.py
 virtaal/controllers/maincontroller.py
 virtaal/controllers/placeablescontroller.py

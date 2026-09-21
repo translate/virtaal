@@ -11,10 +11,10 @@ docs:
 	cd ${DOCS_DIR}; make SPHINXOPTS="-W -q" html
 
 pot:
-	cd ${SRC_DIR}/po; ./intltool-update --pot
+	cd ${SRC_DIR}/po; ./update-pot
 
 po/%.po: po/virtaal.pot
-	cd ${SRC_DIR}/po; ./intltool-update $(*F)
+	msgmerge --previous --update ${SRC_DIR}/po/$*.po ${SRC_DIR}/po/virtaal.pot
 
 update-translations: ${SRC_DIR}/po/*.po
 

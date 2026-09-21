@@ -11,11 +11,6 @@
 # /docs/
 /docs/_build/
 
-# /po/
-/po/missing
-/po/.intltool-merge-cache
-/po/notexist
-
 # /share/appdata/
 /share/appdata/virtaal.appdata.xml
 

@@ -17,8 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Pootle 2.5.1-rc1\n"
-"X-POOTLE-MTIME: 1389931379.000000\n"
 
 # Chinese translators:
 # Virtaal作者群認為軟體名稱不一定要維持原文，如果翻成中文效果更好，那也不介意將名子翻成中文。我對此沒什麼主意，其他中文譯者看到這段留言就自己評估吧。By 劉書源 2009-12-13

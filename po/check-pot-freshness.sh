@@ -6,24 +6,19 @@
 # 2. Warn if a file that feeds po/virtaal.pot (see po/POTFILES.in)
 #    changed without po/virtaal.pot being regenerated to match.
 #
-# `make pot` runs `po/intltool-update --pot`, which stamps a
-# fresh `POT-Creation-Date` header every single run regardless of
-# content - verified the hard way, by trusting an initial same-minute
-# test that happened not to show it. That line is stripped out before
-# comparing, so only real content changes trip this.
+# `make pot` runs `po/update-pot` (xgettext), which stamps a fresh
+# `POT-Creation-Date` header every single run regardless of content -
+# verified the hard way, by trusting an initial same-minute test that
+# happened not to show it. That line is stripped out before comparing,
+# so only real content changes trip this.
 #
-# `#:` location comments are filename-only (po/intltool-update passes
+# `#:` location comments are filename-only (po/update-pot passes
 # xgettext --add-location=file), so unrelated line-number shifts
 # elsewhere in a file no longer touch them at all. They're still
 # ignored here by default, belt-and-braces, since a string moving to a
 # different file entirely is still possible - it has no effect on what
 # translators actually see either way. Set POT_STRICT_LOCATIONS=1 to
 # also require these be current.
-#
-# Requires `intltool-update` on PATH (`brew install intltool` /
-# `apt install intltool`). Not everyone doing a routine commit will have
-# it installed - this degrades to a note, not a failure, in that case;
-# CI's pre-commit job always has it and is the real backstop.
 set -eu
 cd "$(git rev-parse --show-toplevel)"
 
@@ -35,38 +30,18 @@ changed=("$@")
 # files POTFILES.in already lists) - it'd just be silently missing
 # from translation, forever (confirmed the hard way: crash_dialog.py
 # sat in neither POTFILES.in nor POTFILES.skip for a whole port cycle
-# before this check existed). intltool-update --maintain is the
-# authoritative whole-repo check for this - real xgettext-based
-# extraction, not a grep heuristic, and it already respects
-# POTFILES.skip - so an entry it flags is a hard fail, not just a
-# note. Only build/dist output (stale generated copies of real source
-# files, not gaps) is filtered out below.
+# before this check existed). po/check-potfiles-coverage.py is the
+# whole-repo check for this - real ast-based call detection, not a
+# grep heuristic, and it already respects POTFILES.skip - so an entry
+# it flags is a hard fail, not just a note.
 # .ui/.glade files aren't checked here (translatable="yes" attributes,
 # not _()/N_()/ngettext() calls - a different check, not implemented).
-if ! command -v intltool-update >/dev/null 2>&1; then
-    echo "NOTE: intltool-update isn't installed here to check for source files" >&2
-    echo "missing from po/POTFILES.in (brew install intltool / apt install intltool)." >&2
-    echo "CI's pre-commit job will still catch it if this is missed." >&2
-else
-    rm -f po/missing
-    (cd po && intltool-update --maintain >/dev/null 2>&1) || true
-    if [ -f po/missing ]; then
-        real_missing=()
-        while IFS= read -r f; do
-            case "$f" in
-                build/*|dist/*|"") continue ;;
-            esac
-            real_missing+=("$f")
-        done < po/missing
-        rm -f po/missing
-        if [ "${#real_missing[@]}" -gt 0 ]; then
-            echo "File(s) have gettext markers (_()/N_()/ngettext()) but aren't listed in po/POTFILES.in or po/POTFILES.skip - their strings won't be extracted for translation:" >&2
-            printf '  %s\n' "${real_missing[@]}" >&2
-            echo "Add them to po/POTFILES.in (or po/POTFILES.skip if deliberately excluded)." >&2
-            exit 1
-        fi
-    fi
-fi
+coverage_output=$(python3 po/check-potfiles-coverage.py) || {
+    echo "File(s) have gettext markers (_()/N_()/ngettext()/C_()) but aren't listed in po/POTFILES.in or po/POTFILES.skip - their strings won't be extracted for translation:" >&2
+    echo "  ${coverage_output//$'\n'/$'\n'  }" >&2
+    echo "Add them to po/POTFILES.in (or po/POTFILES.skip if deliberately excluded)." >&2
+    exit 1
+}
 
 relevant=false
 for f in "${changed[@]}"; do
@@ -92,21 +67,13 @@ if [ "$relevant" = false ]; then
     exit 0
 fi
 
-if ! command -v intltool-update >/dev/null 2>&1; then
-    echo "NOTE: a file listed in po/POTFILES.in changed, but intltool-update" >&2
-    echo "isn't installed here to check whether po/virtaal.pot needs" >&2
-    echo "regenerating (brew install intltool / apt install intltool)." >&2
-    echo "CI's pre-commit job will still catch it if this is missed." >&2
-    exit 0
-fi
-
 # Explicit check for entries pointing at files that no longer exist -
 # this is exactly the bug that motivated this hook (po/POTFILES.in
 # still listed three plugins removed in an earlier commit, silently
 # breaking `make pot` for everything after). Reported here, upfront
 # and by name, rather than relying on `make pot`/xgettext below: it
 # stops at the *first* missing file it hits and its error is easy to
-# miss among the routine intltool-update Perl warnings.
+# miss among xgettext's own routine warnings.
 missing=()
 while IFS= read -r potfile; do
     case "$potfile" in
@@ -141,24 +108,11 @@ cp po/virtaal.pot "$original_backup"
 
 before=$(hash_relevant po/virtaal.pot)
 
-# intltool-update --pot is genuinely flaky, independent of this repo -
-# confirmed the hard way, on both a local macOS checkout and a fresh
-# Ubuntu CI runner: intermittently fails with "xgettext: error while
-# opening './POTFILES.in.temp'" (a race in intltool's own temp-file
-# handling, not anything wrong with the source or POTFILES.in itself -
-# a same-input rerun succeeds cleanly). Retry a few times before
-# treating it as a real failure; a genuine problem (e.g. a syntax
-# error xgettext can't parse) fails identically every attempt, so this
-# doesn't mask anything real, just the transient race.
-attempt=1
-while ! make_output=$(make pot 2>&1); do
-    if [ "$attempt" -ge 3 ]; then
-        echo "'make pot' itself failed (not just stale - couldn't regenerate at all, after $attempt attempts):" >&2
-        echo "$make_output" >&2
-        exit 1
-    fi
-    attempt=$((attempt + 1))
-done
+if ! make_output=$(make pot 2>&1); then
+    echo "'make pot' itself failed (not just stale - couldn't regenerate at all):" >&2
+    echo "$make_output" >&2
+    exit 1
+fi
 after=$(hash_relevant po/virtaal.pot)
 
 if [ "$before" = "$after" ]; then

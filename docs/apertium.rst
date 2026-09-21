@@ -20,10 +20,9 @@ therefore take a moment before they are displayed. Future versions might be
 able to make use of a locally installed copy of Apertium. Join us to make this
 a reality. Also keep in mind that your source text is sent unencrypted over the
 Internet, and therefore no confidential translation should be done using this
-plug-in. 
+plug-in.
 
 Remember that the suggestions from the Apertium plugin are unreviewed
 machine-generated translations, that could be wrong, inaccurate, or flawed in
 some other way. It is meant as a way to help you increase your productivity,
 not to substitute the expertise of a human translator.
-

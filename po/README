@@ -13,7 +13,7 @@ From package root, run:
 
 ./maketranslations
 
-This will use the .po files and .xml.in and 
+This will use the .po files and .xml.in and
 .desktop.in to create a .xml and .desktop file
 
 Lite Versions

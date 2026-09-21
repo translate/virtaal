@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+# Copyright (C) Virtaal contributors.
+#
+# This file is part of Virtaal. It is distributed under the GPL2 or
+# later license. See the LICENSE file for a copy of the license and
+# the AUTHORS.md file for copyright and authorship information.
+
+# Regenerates po/virtaal.pot from po/POTFILES.in. Replaces intltool-
+# update --pot.
+#
+# xgettext's own by-extension language auto-detection can't tell a
+# .desktop.in or a GtkBuilder .ui file apart from plain text/XML -
+# intltool's per-line [type: ...] POTFILES.in annotations covered
+# exactly this gap. Runs xgettext once per group of files needing a
+# non-default language, --join-existing accumulating into one pot,
+# then one final pass for everything else (plain .py files,
+# virtaal.metainfo.xml.in, and virtaal-mimetype.xml.in - all three
+# correctly auto-detected by extension on their own: the first two via
+# gettext's own bundled metainfo.its, the last via po/its/'s own
+# shared-mime-info.its/.loc pair, found via GETTEXTDATADIRS below).
+set -euo pipefail
+cd "$(dirname "$0")"
+
+export GETTEXTDATADIRS="$PWD${GETTEXTDATADIRS:+:$GETTEXTDATADIRS}"
+
+version=$(grep -E '^ver ' ../virtaal/__version__.py | sed 's/ver = //;s/"//g')
+common_args=(
+    --directory=..
+    --from-code=UTF-8
+    --add-comments=l10n
+    --add-location=file
+    --copyright-holder="Zuza Software Foundation (Translate.org.za)"
+    --package-name=Virtaal
+    --package-version="$version"
+    --msgid-bugs-address=translate-devel@lists.sourceforge.net
+)
+
+out=virtaal.pot
+rm -f "$out"
+
+desktop_files=()
+glade_files=()
+default_files=()
+
+while IFS= read -r f; do
+    [ -z "$f" ] && continue
+    case "$f" in
+        share/applications/*.desktop.in) desktop_files+=("$f") ;;
+        *.ui) glade_files+=("$f") ;;
+        *) default_files+=("$f") ;;
+    esac
+done < POTFILES.in
+
+joined=""
+run_group() {
+    if [ -n "$joined" ]; then
+        xgettext "${common_args[@]}" --join-existing "$@" -o "$out"
+    else
+        xgettext "${common_args[@]}" "$@" -o "$out"
+    fi
+    joined=1
+}
+
+[ "${#desktop_files[@]}" -gt 0 ] && run_group -L Desktop "${desktop_files[@]}"
+[ "${#glade_files[@]}" -gt 0 ] && run_group -L Glade "${glade_files[@]}"
+[ "${#default_files[@]}" -gt 0 ] && run_group "${default_files[@]}"

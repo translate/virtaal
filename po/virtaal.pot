@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta2\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-21 20:26+0100\n"
+"POT-Creation-Date: 2026-09-21 20:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -304,6 +304,14 @@ msgstr ""
 
 #: ../share/virtaal/virtaal.ui.h
 msgid "<b>Fonts</b>"
+msgstr ""
+
+#: ../share/virtaal/virtaal.ui.h
+msgid "Language:"
+msgstr ""
+
+#: ../share/virtaal/virtaal.ui.h
+msgid "<b>Language</b>"
 msgstr ""
 
 #. l10n: This tab label refers to the general preferences
@@ -1020,6 +1028,10 @@ msgstr ""
 
 #: ../virtaal/views/prefsview.py
 msgid "Settings"
+msgstr ""
+
+#: ../virtaal/views/prefsview.py
+msgid "System default"
 msgstr ""
 
 #: ../virtaal/plugins/autocompletor.py
@@ -1936,6 +1948,10 @@ msgstr ""
 msgid ""
 "Your settings file could not be read, so Virtaal started with default "
 "settings. The old file was kept at: %s"
+msgstr ""
+
+#: ../virtaal/views/mainview.py
+msgid "Restart Virtaal for the new language to take effect."
 msgstr ""
 
 #: ../virtaal/views/mainview.py

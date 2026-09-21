@@ -42,4 +42,3 @@ help:
 	@echo "  publish-translations - send all *.po to Pootle translations server"
 	@echo "  publish-pot - send virtaal.pot to Pootle translations server"
 	@echo
-

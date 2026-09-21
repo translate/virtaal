@@ -52,4 +52,3 @@
 
 ; Plugins - Python console
 (gtk_accel_path "<Virtaal>/View/Python Console" "<Meta>y")
-

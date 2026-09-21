@@ -57,10 +57,11 @@ coverage.
 Pseudo-Translation
 ===================
 
-Generate and run against synthetic locales, covering every
-translatable string without needing a real translation::
+Run against synthetic locales, covering every translatable string
+without needing a real translation - both regenerate their locale
+fresh from the current ``po/virtaal.pot`` on every run, so there's no
+separate generation step::
 
-  python devsupport/pseudo-translation/generate_pseudo_translation.py
   virtaal --pseudo-translation devsupport/testfiles/checks.po
   virtaal --pseudo-translation-bidi devsupport/testfiles/checks.po
 
@@ -70,12 +71,15 @@ useful for spotting hardcoded strings and layout truncation.
 isolate marks too, simulating a right-to-left translation's text runs
 while keeping the text itself readable Latin script.
 
-The same script also writes a third, ``fa``-tagged locale with every
-string's glyphs visually flipped (not a real Farsi translation - a
-real RTL-recognised language code, for exercising actual whole-window
-RTL mirroring under a genuine locale rather than just isolate-wrapped
-text)::
+``devsupport/pseudo-translation/generate_pseudo_translation.py`` also
+writes a third, ``fa``-tagged locale with every string's glyphs
+visually flipped (not a real Farsi translation - a real
+RTL-recognised language code, for exercising actual whole-window RTL
+mirroring under a genuine locale rather than just isolate-wrapped
+text). Unlike the two above, this one has no dedicated ``--lang``
+shortcut that regenerates it automatically, so run the script first::
 
+  python devsupport/pseudo-translation/generate_pseudo_translation.py
   LANG=fa_IR.UTF-8 LANGUAGE=fa virtaal devsupport/testfiles/checks.po
 
 See ``devsupport/testing/windows/Enable-VirtaalRtlDebug.ps1`` for

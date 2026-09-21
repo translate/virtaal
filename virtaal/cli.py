@@ -158,6 +158,15 @@ def main(argv):
             if not (options.pseudo_translation or options.pseudo_translation_bidi):
                 return
             lang = 'pseudo-bidi' if options.pseudo_translation_bidi else 'pseudo'
+            if not packaged:
+                import importlib.util
+                repo_root = path.dirname(path.dirname(path.abspath(__file__)))
+                generator_path = path.join(repo_root, 'devsupport', 'pseudo-translation',
+                                            'generate_pseudo_translation.py')
+                spec = importlib.util.spec_from_file_location('generate_pseudo_translation', generator_path)
+                generator = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(generator)
+                generator.generate_locale(lang)
             try:
                 pan_app.set_ui_language(lang)
             except OSError:

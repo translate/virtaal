@@ -22,7 +22,8 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-export GETTEXTDATADIRS="$PWD${GETTEXTDATADIRS:+:$GETTEXTDATADIRS}"
+gettextdatadirs="$PWD${GETTEXTDATADIRS:+:$GETTEXTDATADIRS}"
+export GETTEXTDATADIRS="$gettextdatadirs"
 
 version=$(grep -E '^ver ' ../virtaal/__version__.py | sed 's/ver = //;s/"//g')
 common_args=(

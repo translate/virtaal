@@ -334,6 +334,8 @@ if ui_language:
         pass
     languages = [ui_language, locale_lang]
     gettext.translation('virtaal', languages=languages, fallback=True).install()
+    if not platform.is_windows:
+        bind_libintl_posix(os.path.join(sys.prefix, 'share', 'locale'))
 else:
     fix_locale()
     try:

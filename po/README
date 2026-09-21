@@ -1,13 +1,13 @@
 Updating translations
 ---------------------
-from po/
+from package root
 
-./intltool-update --pot
-./intltool-update xy
+make pot
+make po/xy.po
 
 Generating the .xml and .desktop files
 --------------------------------------
-Ensure that you have intltool installed
+Ensure that you have gettext installed
 
 From package root, run:
 

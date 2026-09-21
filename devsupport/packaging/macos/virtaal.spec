@@ -108,7 +108,7 @@ a = Analysis(  # noqa: F821
     },
     # devsupport isn't needed at runtime in a frozen build - its one
     # consumer (profiling support) is already `if not packaged:`-gated
-    # off in bin/virtaal itself.
+    # off in virtaal/cli.py.
     excludes=(
         ["FixTk", "tcl", "tk", "_tkinter", "tkinter", "Tkinter", "devsupport"]
         # No bundled dylib for this build (arm64, or staging failed) -

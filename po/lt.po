@@ -18,9 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
 "%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Pootle 2.5.1-rc1\n"
 "X-Project-Style: default\n"
-"X-POOTLE-MTIME: 1372434786.000000\n"
 
 #: ../share/applications/virtaal.desktop.in.h:1
 #: ../share/virtaal/virtaal.ui.h:18 ../virtaal/support/native_widgets.py:103

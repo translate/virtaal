@@ -37,6 +37,8 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.x"
+          cache: pip
+          cache-dependency-path: pyproject.toml
 
       - name: Install system dependencies
         # intltool-update: po/check-pot-freshness.sh needs it to check
@@ -87,6 +89,8 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.x"
+          cache: pip
+          cache-dependency-path: pyproject.toml
 
       - name: Install system dependencies
         run: |
@@ -143,6 +147,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           allow-prereleases: true
+          cache: pip
+          cache-dependency-path: pyproject.toml
 
       - name: Install system dependencies
         run: |
@@ -297,6 +303,8 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.x"
+          cache: pip
+          cache-dependency-path: pyproject.toml
 
       - name: Restore PKG_CONFIG_PATH after setup-python
         # actions/setup-python overwrites PKG_CONFIG_PATH via
@@ -319,19 +327,12 @@ jobs:
           Set-Content -Path "$sitepkgs\sitecustomize.py" -Value $content -NoNewline
 
       - name: Install Python dependencies
+        # One call, not one pip invocation per package - each separate
+        # invocation pays its own resolver/startup cost, measurably
+        # slower on Windows than the equivalent single batched install.
         run: |
           pip install --upgrade pip
-          pip install setuptools wheel
-          pip install pycairo
-          pip install pygobject
-          pip install translate-toolkit
-          pip install python-Levenshtein
-          pip install pycurl
-          pip install lxml
-          pip install diff_match_patch
-          pip install cheroot
-          pip install pytest
-          pip install pytest-xdist
+          pip install setuptools wheel pycairo pygobject translate-toolkit python-Levenshtein pycurl lxml diff_match_patch cheroot pytest pytest-xdist
 
       - name: Install virtaal
         run: pip install --no-build-isolation .
@@ -422,6 +423,8 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.x"
+          cache: pip
+          cache-dependency-path: pyproject.toml
 
       - name: Restore PKG_CONFIG_PATH after setup-python
         shell: pwsh
@@ -435,18 +438,11 @@ jobs:
           Set-Content -Path "$sitepkgs\sitecustomize.py" -Value $content -NoNewline
 
       - name: Install Python dependencies
+        # One call, not one pip invocation per package - see test-windows's
+        # own step comment for why.
         run: |
           pip install --upgrade pip
-          pip install setuptools wheel
-          pip install pycairo
-          pip install pygobject
-          pip install translate-toolkit
-          pip install python-Levenshtein
-          pip install pycurl
-          pip install lxml
-          pip install diff_match_patch
-          pip install cheroot
-          pip install pyinstaller
+          pip install setuptools wheel pycairo pygobject translate-toolkit python-Levenshtein pycurl lxml diff_match_patch cheroot pyinstaller
 
       - name: Install virtaal
         run: pip install --no-build-isolation .
@@ -605,6 +601,15 @@ jobs:
           python3 -m venv --system-site-packages .venv
           echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
 
+      - name: Cache pip downloads
+        # No actions/setup-python here (Homebrew's own Python is used
+        # instead, see above), so its built-in `cache: pip` isn't
+        # available - cache pip's own download cache directly.
+        uses: actions/cache@v6
+        with:
+          path: ~/Library/Caches/pip
+          key: pip-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('pyproject.toml') }}
+
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
@@ -682,13 +687,19 @@ jobs:
           python3 -m venv --system-site-packages .venv
           echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
 
+      - name: Cache pip downloads
+        # No actions/setup-python here (Homebrew's own Python is used
+        # instead, see above), so its built-in `cache: pip` isn't
+        # available - cache pip's own download cache directly.
+        uses: actions/cache@v6
+        with:
+          path: ~/Library/Caches/pip
+          key: pip-${{ runner.os }}-${{ matrix.arch }}-${{ hashFiles('pyproject.toml') }}
+
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
-          pip install setuptools wheel
-          pip install translate-toolkit
-          pip install pyenchant
-          pip install pyinstaller
+          pip install setuptools wheel translate-toolkit pyenchant pyinstaller
 
       - name: Install virtaal
         run: pip install --no-build-isolation .
@@ -812,6 +823,16 @@ jobs:
           sudo apt-get install -y flatpak flatpak-builder gettext intltool xvfb
           flatpak remote-add --if-not-exists --user flathub \
             https://dl.flathub.org/repo/flathub.flatpakrepo
+
+      - name: Cache the GNOME runtime/SDK
+        # Only changes when the manifest bumps runtime-version - avoids
+        # re-downloading the whole GNOME Platform/Sdk from Flathub on
+        # every run. `flatpak install` below still runs unconditionally;
+        # it's already a fast no-op when the runtime is already present.
+        uses: actions/cache@v6
+        with:
+          path: ~/.local/share/flatpak
+          key: flatpak-runtime-${{ matrix.arch }}-${{ hashFiles('devsupport/packaging/flatpak/io.github.translate.Virtaal.yml') }}
 
       - name: Install the GNOME runtime/SDK
         run: |

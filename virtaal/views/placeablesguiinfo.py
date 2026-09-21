@@ -9,7 +9,11 @@ from gi.repository import Gtk, Pango
 from translate.storage.placeables import StringElem, base, general, xliff
 
 from virtaal.views import theme
-from virtaal.views.rendering import get_role_font_description, make_pango_layout
+from virtaal.views.rendering import (
+    get_role_font_description,
+    make_pango_layout,
+    set_widget_font,
+)
 
 
 def _count_anchors(buffer, itr):
@@ -284,7 +288,7 @@ class BxGUI(StringElemGUI):
 
         for lbl in self.widgets:
             font_desc = get_role_font_description(self.textbox.role)
-            lbl.modify_font(font_desc)
+            set_widget_font(lbl, font_desc)
             self.textbox.get_pango_context().set_font_description(font_desc)
             w, h = make_pango_layout(self.textbox, '((', 100).get_pixel_size()
             lbl.set_size_request(-1, int(h/1.2))
@@ -298,7 +302,7 @@ class ExGUI(StringElemGUI):
 
         for lbl in self.widgets:
             font_desc = get_role_font_description(self.textbox.role)
-            lbl.modify_font(font_desc)
+            set_widget_font(lbl, font_desc)
             self.textbox.get_pango_context().set_font_description(font_desc)
             w, h = make_pango_layout(self.textbox, '))', 100).get_pixel_size()
             lbl.set_size_request(-1, int(h/1.2))
@@ -312,7 +316,7 @@ class NewlineGUI(StringElemGUI):
         lbl = Gtk.Label(label='¶')
         theme.set_widget_fg_color(lbl, self.fg)  # foreground is light grey
         font_desc = get_role_font_description(self.textbox.role)
-        lbl.modify_font(font_desc)
+        set_widget_font(lbl, font_desc)
         self.textbox.get_pango_context().set_font_description(font_desc)
         w, h = make_pango_layout(self.textbox, '¶', 100).get_pixel_size()
         lbl.set_size_request(-1, int(h/1.2))
@@ -340,7 +344,7 @@ class GPlaceableGUI(StringElemGUI):
 
         for lbl in self.widgets:
             font_desc = get_role_font_description(self.textbox.role)
-            lbl.modify_font(font_desc)
+            set_widget_font(lbl, font_desc)
             self.textbox.get_pango_context().set_font_description(font_desc)
             w, h = make_pango_layout(self.textbox, '<foo>', 100).get_pixel_size()
             lbl.set_size_request(-1, int(h/1.2))
@@ -356,7 +360,7 @@ class XPlaceableGUI(StringElemGUI):
             lbl.set_text('[%s]' % (self.elem.id))
 
         font_desc = get_role_font_description(self.textbox.role)
-        lbl.modify_font(font_desc)
+        set_widget_font(lbl, font_desc)
         self.textbox.get_pango_context().set_font_description(font_desc)
         w, h = make_pango_layout(self.textbox, '[foo]', 100).get_pixel_size()
         lbl.set_size_request(-1, int(h/1.2))
@@ -387,7 +391,7 @@ class UnknownXMLGUI(StringElemGUI):
             self.widgets[0].set_text('{%s' % (info))
 
         for lbl in self.widgets:
-            lbl.modify_font(get_role_font_description(self.textbox.role))
+            set_widget_font(lbl, get_role_font_description(self.textbox.role))
             w, h = make_pango_layout(self.textbox, '{foo}', 100).get_pixel_size()
             lbl.set_size_request(-1, int(h/1.2))
 

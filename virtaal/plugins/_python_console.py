@@ -6,6 +6,7 @@ import traceback
 from gi.repository import Gdk, GLib, Gtk, Pango
 
 from virtaal.controllers.baseplugin import BasePlugin
+from virtaal.views.rendering import set_widget_font
 
 
 class PythonConsole(Gtk.ScrolledWindow):
@@ -15,7 +16,7 @@ class PythonConsole(Gtk.ScrolledWindow):
         self.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         self.set_shadow_type(Gtk.ShadowType.IN)
         self.view = Gtk.TextView()
-        self.view.modify_font(Pango.FontDescription('Monospace'))
+        set_widget_font(self.view, Pango.FontDescription('Monospace'))
         self.view.set_editable(True)
         self.view.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
         self.add(self.view)

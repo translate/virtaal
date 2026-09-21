@@ -2,6 +2,7 @@
 from gi.repository import Gdk, Gtk, Pango
 
 from virtaal.controllers.baseplugin import BasePlugin
+from virtaal.views.rendering import set_widget_font
 
 from .ipython_view import IPythonView
 
@@ -21,7 +22,7 @@ class IPythonWindow(Gtk.Window):
         self.scrolled_win = Gtk.ScrolledWindow()
         self.scrolled_win.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         self.console = IPythonView()
-        self.console.modify_font(Pango.FontDescription(self.FONT))
+        set_widget_font(self.console, Pango.FontDescription(self.FONT))
         self.console.set_wrap_mode(Gtk.WrapMode.CHAR)
 
         self.scrolled_win.add(self.console)

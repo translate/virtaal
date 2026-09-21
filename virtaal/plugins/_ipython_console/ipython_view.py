@@ -20,6 +20,8 @@ from io import StringIO
 import IPython
 from gi.repository import Gdk, GLib, Gtk, Pango
 
+from virtaal.views.rendering import set_widget_font
+
 
 class IterableIPShell:
   '''
@@ -257,7 +259,7 @@ class ConsoleView(Gtk.TextView):
     Initialize console view.
     '''
     super().__init__()
-    self.modify_font(Pango.FontDescription('Mono'))
+    set_widget_font(self, Pango.FontDescription('Mono'))
     self.set_cursor_visible(True)
     self.text_buffer = self.get_buffer()
     self.mark = self.text_buffer.create_mark('scroll_mark',

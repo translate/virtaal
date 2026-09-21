@@ -11,7 +11,7 @@ from translate.storage.placeables import StringElem
 from translate.storage.placeables import parse as elem_parse
 
 from virtaal.support.translate_compat import forceunicode
-from virtaal.views import placeablesguiinfo
+from virtaal.views import placeablesguiinfo, theme
 from virtaal.views.theme import current_theme
 
 
@@ -335,19 +335,35 @@ class TextBox(Gtk.TextView):
             self.selector_textbox = self.selector_textboxes[(st_index + direction) % st_len]
         self.__color_selector_textboxes()
 
+    @staticmethod
+    def __set_selector_fg(widget, color):
+        """Colour one selector's parent - override_color() is
+            deprecated. Tracks its own provider on the widget itself,
+            since each of self.selector_textboxes' parents needs its
+            own (this recolours all of them on every selection
+            change)."""
+        style = widget.get_style_context()
+        old = getattr(widget, '_selector_fg_provider', None)
+        if old is not None:
+            style.remove_provider(old)
+        provider = Gtk.CssProvider()
+        provider.load_from_data(('* { color: %s; }' % color).encode())
+        style.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        widget._selector_fg_provider = provider
+
     def __color_selector_textboxes(self, *args):
         """Put a highlighting border around the current selector text box."""
         if not hasattr(self, 'selector_color'):
-            self.selector_color = Gdk.color_parse(current_theme['selector_textbox'])
+            self.selector_color = current_theme['selector_textbox']
         if not hasattr(self, 'nonselector_color'):
-            self.nonselector_color = self.get_parent().get_style_context().get_color(Gtk.StateType.NORMAL)
+            fg = self.get_parent().get_style_context().get_color(Gtk.StateType.NORMAL)
+            self.nonselector_color = theme.rgba_to_str(fg)
 
         for selector in self.selector_textboxes:
             if selector is self.selector_textbox:
-                selector.get_parent().override_color(Gtk.StateType.NORMAL, Gdk.RGBA(*self.selector_color.to_floats()))
+                self.__set_selector_fg(selector.get_parent(), self.selector_color)
             else:
-                selector.get_parent().override_color(Gtk.StateType.NORMAL,
-                                                     Gdk.RGBA(*self.nonselector_color.to_floats()))
+                self.__set_selector_fg(selector.get_parent(), self.nonselector_color)
 
     def place_cursor(self, cursor_pos):
         cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)

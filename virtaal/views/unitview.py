@@ -324,12 +324,12 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
         for textview in self.sources:
             self._update_textview_language(textview, srclang)
-            textview.modify_font(rendering.get_source_font_description())
+            rendering.set_widget_font(textview, rendering.get_source_font_description())
             # This causes some problems, so commented out for now
             #textview.get_pango_context().set_font_description(rendering.get_source_font_description())
         for textview in self.targets:
             self._update_textview_language(textview, tgtlang)
-            textview.modify_font(rendering.get_target_font_description())
+            rendering.set_widget_font(textview, rendering.get_target_font_description())
             textview.get_pango_context().set_font_description(rendering.get_target_font_description())
 
     def _get_editing_start_pos(self, elem):
@@ -459,7 +459,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         for i in range(len(self.targets), self.MAX_TARGETS):
             target = self._create_textbox('', editable=True, role='target')
             textbox = target.get_child()
-            textbox.modify_font(rendering.get_target_font_description())
+            rendering.set_widget_font(textbox, rendering.get_target_font_description())
             textbox.selector_textboxes = self.sources
             textbox.selector_textbox = self.sources[0]
             textbox.connect('paste-clipboard', self._on_textbox_paste_clipboard, i)
@@ -571,7 +571,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             parent = self.sources[i].get_parent()
             if i < num_unit_sources:
                 sourcestr = self.unit.rich_source[i]
-                self.sources[i].modify_font(rendering.get_source_font_description())
+                rendering.set_widget_font(self.sources[i], rendering.get_source_font_description())
                 # FIXME: This modifies the unit's copy - we should not do this
                 self.sources[i].set_text(sourcestr)
                 parent.show_all()
@@ -631,7 +631,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
                 targetstr = ''
                 if i < rich_target_len and rich_target[i] is not None:
                     targetstr = rich_target[i]
-                self.targets[i].modify_font(rendering.get_target_font_description())
+                rendering.set_widget_font(self.targets[i], rendering.get_target_font_description())
                 self.targets[i].set_text(targetstr)
                 self.targets[i].get_parent().show_all()
                 self.targets[i].selector_textboxes = visible_sources

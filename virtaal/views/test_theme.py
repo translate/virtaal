@@ -8,7 +8,7 @@
 from gi.repository import Gtk
 
 from virtaal.views import theme
-from virtaal.views.theme import set_widget_fg_color
+from virtaal.views.theme import set_widget_bg_color, set_widget_fg_color
 
 
 def test_set_widget_fg_color_accepts_a_hex_colour():
@@ -22,6 +22,16 @@ def test_set_widget_fg_color_accepts_a_hex_colour():
 def test_set_widget_fg_color_accepts_a_named_colour():
     label = Gtk.Label()
     set_widget_fg_color(label, 'grey')
+
+
+def test_set_widget_bg_color_accepts_a_hex_colour():
+    label = Gtk.Label()
+    set_widget_bg_color(label, '#666')
+
+
+def test_set_widget_bg_color_accepts_a_named_colour():
+    label = Gtk.Label()
+    set_widget_bg_color(label, 'grey')
 
 
 def test_update_style_detects_a_light_theme():

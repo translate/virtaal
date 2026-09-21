@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+Locates shared-mime-info.its for virtaal-mimetype.xml.in - gettext's
+own bundled .loc files (its/*.loc, e.g. metainfo.loc) follow this
+exact pattern for their own rule files. xgettext/msgfmt find this via
+GETTEXTDATADIRS=po (set by po/update-pot and maketranslations), which
+they search as GETTEXTDATADIRS/its/*.loc.
+
+Patterns match post-".in"-stripping, same as gettext's own bundled
+.loc files (e.g. metainfo.loc's "*.metainfo.xml", not
+"*.metainfo.xml.in") - confirmed empirically, not documented.
+-->
+<locatingRules>
+  <locatingRule name="shared-mime-info" pattern="*-mimetype.xml">
+    <documentRule localName="mime-info" target="shared-mime-info.its"/>
+  </locatingRule>
+</locatingRules>

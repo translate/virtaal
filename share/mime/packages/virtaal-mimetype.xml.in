@@ -13,14 +13,15 @@ Naming convention:
 
 See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-latest.html
 -->
-<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
+<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'
+           xmlns:its='http://www.w3.org/2005/11/its' its:version="2.0">
 
   <mime-type type="application/x-tmx">
     <sub-class-of type="application/xml"/>
     <icon name="x-translation"/>
-    <_comment>TMX Translation Memory</_comment>
-    <_acronym>TMX</_acronym>
-    <_expanded-acronym>Translation Memory eXchange</_expanded-acronym>
+    <comment its:translate="yes">TMX Translation Memory</comment>
+    <acronym its:translate="yes">TMX</acronym>
+    <expanded-acronym its:translate="yes">Translation Memory eXchange</expanded-acronym>
     <glob pattern="*.tmx"/>
     <magic priority="80">
       <match value="&lt;tmx" type="string" offset="0:256"/>
@@ -31,9 +32,9 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
   <mime-type type="application/x-tbx">
     <sub-class-of type="application/xml"/>
     <icon name="x-translation"/>
-    <_comment>TBX Glossary</_comment>
-    <_acronym>TBX</_acronym>
-    <_expanded-acronym>TermBase eXchange</_expanded-acronym>
+    <comment its:translate="yes">TBX Glossary</comment>
+    <acronym its:translate="yes">TBX</acronym>
+    <expanded-acronym its:translate="yes">TermBase eXchange</expanded-acronym>
     <glob pattern="*.tbx"/>
     <magic priority="80">
       <match value="&lt;martif type=&quot;TBX&quot;" type="string" offset="0:256"/>
@@ -43,7 +44,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
   <mime-type type="text/x-wordfast">
     <sub-class-of type="text/tab-separated-values"/>
     <icon name="x-translation"/>
-    <_comment>Wordfast Translation Memory</_comment>
+    <comment its:translate="yes">Wordfast Translation Memory</comment>
     <glob pattern="*.txt"/>
     <magic priority="80">
       <match value="%Wordfast TM" type="string" offset="0:256"/>
@@ -55,18 +56,18 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
   <mime-type type="application/x-linguist">
     <sub-class-of type="application/xml"/>
     <icon name="x-translation"/>
-    <_comment>Qt Linguist Translation File</_comment>
+    <comment its:translate="yes">Qt Linguist Translation File</comment>
     <glob pattern="*.ts"/>
   </mime-type>
 
   <mime-type type="application/x-qm">
-    <_comment>Qt Message File</_comment>
+    <comment its:translate="yes">Qt Message File</comment>
     <glob pattern="*.qm"/>
   </mime-type>
 
   <mime-type type="application/x-qph">
     <icon name="x-translation"/>
-    <_comment>Qt Phrase Book</_comment>
+    <comment its:translate="yes">Qt Phrase Book</comment>
     <glob pattern="*.qph"/>
     <magic priority="50">
       <match value="&lt;QPH&gt;" type="string" offset="0:256"/>
@@ -75,9 +76,9 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
 
   <mime-type type="text/x-ini">
     <sub-class-of type="text/plain"/>
-    <_comment>INI File</_comment>
-    <_acronym>INI</_acronym>
-    <_expanded-acronym>Initialization</_expanded-acronym>
+    <comment its:translate="yes">INI File</comment>
+    <acronym its:translate="yes">INI</acronym>
+    <expanded-acronym its:translate="yes">Initialization</expanded-acronym>
     <glob pattern="*.ini"/>
     <!-- <alias type="application/textedit"/> -->
     <alias type="zz-application/zz-winassoc-ini"/>
@@ -85,22 +86,22 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
 
   <mime-type type="text/x-properties">
     <sub-class-of type="text/plain"/>
-    <_comment>Java Properties File</_comment>
+    <comment its:translate="yes">Java Properties File</comment>
     <glob pattern="*.properties"/>
   </mime-type>
 
   <mime-type type="text/x-sdf">
     <sub-class-of type="text/tab-separated-values"/>
-    <_comment>OpenOffice.org Translation File</_comment>
+    <comment its:translate="yes">OpenOffice.org Translation File</comment>
     <glob pattern="*.sdf"/>
   </mime-type>
 
   <mime-type type="application/x-xliff+xml">
     <sub-class-of type="application/xml"/>
     <icon name="x-translation"/>
-    <_comment>XLIFF Translation File</_comment>
-    <_acronym>XLIFF</_acronym>
-    <_expanded-acronym>XML Localization Interchange File Format</_expanded-acronym>
+    <comment its:translate="yes">XLIFF Translation File</comment>
+    <acronym its:translate="yes">XLIFF</acronym>
+    <expanded-acronym its:translate="yes">XML Localization Interchange File Format</expanded-acronym>
     <glob pattern="*.xlf"/>
     <glob pattern="*.xliff"/>
     <magic priority="80">
@@ -112,15 +113,15 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
 
   <mime-type type="text/x-rc">
     <sub-class-of type="text/x-csrc"/>
-    <_comment>C++ RC File</_comment>
-    <_acronym>RC</_acronym>
-    <_expanded-acronym>Resource Compiler</_expanded-acronym>
+    <comment its:translate="yes">C++ RC File</comment>
+    <acronym its:translate="yes">RC</acronym>
+    <expanded-acronym its:translate="yes">Resource Compiler</expanded-acronym>
     <glob pattern="*.rc"/>
   </mime-type>
 
   <mime-type type="text/x-msg">
     <sub-class-of type="text/x-tcl"/>
-    <_comment>Tcl Translation File</_comment>
+    <comment its:translate="yes">Tcl Translation File</comment>
     <glob pattern="*.msg"/>
     <magic priority="50">
       <match value="::msgcat::mcset" type="string" offset="0:160"/>
@@ -129,7 +130,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
 
   <mime-type type="application/x-javascript-msg">
     <sub-class-of type="application/javascript"/>
-    <_comment>JavaScript error message file</_comment>
+    <comment its:translate="yes">JavaScript error message file</comment>
     <glob pattern="*.msg"/>
     <magic priority="50">
       <match value="MSG_DEF(" type="string" offset="0:2560"/>
@@ -139,7 +140,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
   <mime-type type="text/x-gettext-translation-template">
     <sub-class-of type="text/plain"/>
     <icon name="x-translation"/>
-    <_comment>Gettext Translation Template</_comment>
+    <comment its:translate="yes">Gettext Translation Template</comment>
     <glob pattern="*.pot"/>
     <magic priority="50">
       <match value="msgid" type="string" offset="0:256"/>
@@ -150,7 +151,7 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
 
   <mime-type type="application/x-ttx">
     <sub-class-of type="application/xml"/>
-    <_comment>Trados Tag Editor</_comment>
+    <comment its:translate="yes">Trados Tag Editor</comment>
     <glob pattern="*.ttx"/>
     <magic priority="50">
       <match value="&lt;TRADOStag" type="string" offset="0:256"/>
@@ -159,16 +160,16 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
 
   <mime-type type="application/x-strings">
     <sub-class-of type="text/plain"/>
-    <_comment>OS X Strings File</_comment>
+    <comment its:translate="yes">OS X Strings File</comment>
     <glob pattern="*.strings"/>
   </mime-type>
 
   <mime-type type="text/x-utx">
     <sub-class-of type="text/tab-separated-values"/>
     <icon name="x-translation"/>
-    <_comment>UTX Dictionary</_comment>
-    <_acronym>UTX</_acronym>
-    <_expanded-acronym>Universal Terminology eXchange</_expanded-acronym>
+    <comment its:translate="yes">UTX Dictionary</comment>
+    <acronym its:translate="yes">UTX</acronym>
+    <expanded-acronym its:translate="yes">Universal Terminology eXchange</expanded-acronym>
     <glob pattern="*.utx"/>
     <magic priority="80">
       <match value="#UTX" type="string" offset="0:5"/>

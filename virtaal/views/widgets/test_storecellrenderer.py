@@ -57,7 +57,7 @@ def _realized_textview(text, pilcrows=0):
     # a with-pilcrow textview measure in a different font than a plain
     # one, comparing two fonts' line heights instead of the
     # placeable's actual contribution.
-    textview.modify_font(rendering.get_target_font_description())
+    rendering.set_widget_font(textview, rendering.get_target_font_description())
     textview.get_pango_context().set_font_description(rendering.get_target_font_description())
     buf = textview.get_buffer()
     remaining = pilcrows

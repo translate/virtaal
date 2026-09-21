@@ -7,6 +7,7 @@
 
 from types import SimpleNamespace
 
+from gi.repository import Gtk
 from translate.storage import xliff
 
 from virtaal.modes.searchmode import SearchMode
@@ -82,3 +83,33 @@ def test_replace_all_on_xliff_units():
 
     assert units[0].target == 'REPLACED'
     assert units[1].target == 'REPLACED and also REPLACED'
+
+
+def test_set_search_bg_accepts_a_colour():
+    # A malformed generated CSS string raises Gtk.CssProvider's own
+    # GLib.GError - this is really a check that the string built here
+    # is valid CSS, not just that the call completes.
+    mode = SearchMode.__new__(SearchMode)
+    mode.ent_search = Gtk.Entry()
+    mode._search_bg_provider = None
+
+    mode._set_search_bg('#f66')
+
+
+def test_set_search_bg_removes_its_previous_provider_on_a_later_call(monkeypatch):
+    """Each call used to only ever add a new provider - toggling
+        between the warning colour and the default on every keystroke
+        would accumulate one per keystroke, never freed."""
+    mode = SearchMode.__new__(SearchMode)
+    mode.ent_search = Gtk.Entry()
+    mode._search_bg_provider = None
+
+    removed = []
+    style = mode.ent_search.get_style_context()
+    monkeypatch.setattr(style, 'remove_provider', lambda provider: removed.append(provider))
+
+    mode._set_search_bg('#f66')
+    first_provider = mode._search_bg_provider
+    mode._set_search_bg('#fff')
+
+    assert removed == [first_provider]

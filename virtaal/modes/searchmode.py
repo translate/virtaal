@@ -11,7 +11,7 @@ from gi.repository import Gdk, GLib, Gtk
 
 from virtaal.common.utils import get_unicode
 from virtaal.controllers.cursor import Cursor
-from virtaal.views.theme import current_theme
+from virtaal.views.theme import current_theme, rgba_to_str
 
 from .basemode import BaseMode
 
@@ -33,6 +33,7 @@ class SearchMode(BaseMode):
             @param controller: The ModeController managing navigation modes."""
         self.controller = controller
         self.unitview = controller.main_controller.unit_controller.view
+        self._search_bg_provider = None
 
         self._create_widgets()
         self._setup_key_bindings()
@@ -207,7 +208,7 @@ class SearchMode(BaseMode):
         logging.debug('Search text: %s (%d matches)' % (self.ent_search.get_text(), len(indexes)))
 
         if indexes:
-            self.ent_search.override_background_color(Gtk.StateType.NORMAL, self.default_base)
+            self._set_search_bg(self.default_base)
 
             self.storecursor.indices = indexes
             # Select initial match for in the current unit.
@@ -220,11 +221,9 @@ class SearchMode(BaseMode):
             self.matchcursor.index = match_index
         else:
             if self.ent_search.get_text():
-                rgba = Gdk.RGBA()
-                rgba.parse(current_theme['warning_bg'])
-                self.ent_search.override_background_color(Gtk.StateType.NORMAL, rgba)
+                self._set_search_bg(current_theme['warning_bg'])
             else:
-                self.ent_search.override_background_color(Gtk.StateType.NORMAL, self.default_base)
+                self._set_search_bg(self.default_base)
 
             self.filter.re_search = None
             # Act like the "Default" mode...
@@ -489,9 +488,24 @@ class SearchMode(BaseMode):
         self.controller.select_default_mode()
         return True
 
+    def _set_search_bg(self, color):
+        """Colour ent_search's background - override_background_color()
+            is deprecated."""
+        style = self.ent_search.get_style_context()
+        if self._search_bg_provider is not None:
+            style.remove_provider(self._search_bg_provider)
+        provider = Gtk.CssProvider()
+        provider.load_from_data(('* { background-color: %s; background-image: none; }' % color).encode())
+        style.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        self._search_bg_provider = provider
+
     def _on_style_set(self, widget, prev_style=None):
-        self.default_base = widget.get_style_context().get_background_color(Gtk.StateType.NORMAL)
-        self.ent_search.override_background_color(Gtk.StateType.NORMAL, self.default_base)
+        style = widget.get_style_context()
+        found, background = style.lookup_color('theme_base_color')
+        if not found:
+            background = style.get_background_color(Gtk.StateType.NORMAL)
+        self.default_base = rgba_to_str(background)
+        self._set_search_bg(self.default_base)
 
     def _on_textbox_refreshed(self, textbox, elem):
         """Redoes highlighting after a C{StringElem} render destroyed it."""

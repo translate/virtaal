@@ -44,6 +44,18 @@ def set_widget_fg_color(widget, color):
     widget.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
 
+def set_widget_bg_color(widget, color):
+    """Apply a background colour (any CSS colour string) to a widget -
+        Gtk.Widget.modify_bg() and Gdk.color_parse() are both
+        deprecated. background-image: none is needed too - some
+        widgets (Gtk.Entry, confirmed live) keep their theme's own
+        background-image layered on top of a background-color-only
+        override otherwise."""
+    provider = Gtk.CssProvider()
+    provider.load_from_data(('* { background-color: %s; background-image: none; }' % color).encode())
+    widget.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+
+
 _default_theme = {
     # Generic styling for a URL
     'url_fg': '#0000ff',   # Adwaita: #1b6acb

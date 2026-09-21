@@ -5,9 +5,10 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-from gi.repository import Gdk, GLib, GObject, Gtk
+from gi.repository import GLib, GObject, Gtk
 
-from virtaal.views.theme import current_theme
+from virtaal.views import theme
+from virtaal.views.theme import current_theme, set_widget_bg_color, set_widget_fg_color
 
 
 class WelcomeScreen(Gtk.ScrolledWindow):
@@ -27,6 +28,7 @@ class WelcomeScreen(Gtk.ScrolledWindow):
         super().__init__()
 
         self.gui = gui
+        self._child_fg_provider = None
 
         self.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
 
@@ -59,10 +61,7 @@ class WelcomeScreen(Gtk.ScrolledWindow):
 
 
     def _style_widgets(self):
-        url_fg_color = Gdk.color_parse(current_theme['url_fg'])
-
-        for s in [Gtk.StateType.ACTIVE, Gtk.StateType.NORMAL, Gtk.StateType.SELECTED]:
-            self.widgets['exp_features'].get_children()[1].modify_fg(s, url_fg_color)
+        set_widget_fg_color(self.widgets['exp_features'].get_children()[1], current_theme['url_fg'])
 
         # Find a Gtk.Label as a child of the button...
         for btn in self.widgets['buttons'].values():
@@ -75,8 +74,7 @@ class WelcomeScreen(Gtk.ScrolledWindow):
                         label = widget
                         break
             if label:
-                for s in [Gtk.StateType.ACTIVE, Gtk.StateType.NORMAL, Gtk.StateType.SELECTED]:
-                    label.modify_fg(s, url_fg_color)
+                set_widget_fg_color(label, current_theme['url_fg'])
 
     def _init_feature_view(self):
         features = "\n".join([
@@ -93,8 +91,10 @@ class WelcomeScreen(Gtk.ScrolledWindow):
             txt_features = self.widgets['txt_features']
             txt_features.get_buffer().set_text(features)
             context = txt_features.get_parent().get_style_context()
-            background = context.get_background_color(Gtk.StateType.NORMAL)
-            txt_features.override_background_color(Gtk.StateType.NORMAL, background)
+            found, background = context.lookup_color('theme_base_color')
+            if not found:
+                background = context.get_background_color(Gtk.StateType.NORMAL)
+            set_widget_bg_color(txt_features, theme.rgba_to_str(background))
 
         GLib.idle_add(_set_text, features, priority=GLib.PRIORITY_LOW)
 
@@ -109,6 +109,15 @@ class WelcomeScreen(Gtk.ScrolledWindow):
         self.emit('button-clicked', name)
 
     def do_style_set(self, previous_style):
-        self.get_child().override_color(Gtk.StateFlags.NORMAL,
-                                        self.get_style_context().get_color(Gtk.StateFlags.NORMAL))
+        # override_color() is deprecated - match self.get_child()'s
+        # foreground to our own via a CSS provider instead.
+        child_style = self.get_child().get_style_context()
+        if self._child_fg_provider is not None:
+            child_style.remove_provider(self._child_fg_provider)
+        color = theme.rgba_to_str(self.get_style_context().get_color(Gtk.StateFlags.NORMAL))
+        provider = Gtk.CssProvider()
+        provider.load_from_data(('* { color: %s; }' % color).encode())
+        child_style.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        self._child_fg_provider = provider
+
         self._style_widgets()

@@ -26,6 +26,11 @@ class _FakeParent:
         pass
 
 
+class _FakeStyleContext:
+    def add_provider(self, *_a):
+        pass
+
+
 class _FakeTextbox:
     def __init__(self, visible=True):
         self.props = type('_Props', (), {'visible': visible})()
@@ -33,8 +38,8 @@ class _FakeTextbox:
         self.selector_textboxes = None
         self.selector_textbox = None
 
-    def modify_font(self, *_a):
-        pass
+    def get_style_context(self):
+        return _FakeStyleContext()
 
     def set_text(self, text):
         self.text = text

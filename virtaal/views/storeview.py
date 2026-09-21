@@ -7,6 +7,7 @@
 
 from gi.repository import Gdk, Gtk
 
+from . import theme
 from .baseview import BaseView
 from .widgets.storetreeview import StoreTreeView
 
@@ -26,6 +27,7 @@ class StoreView(BaseView):
 
         self.cursor = None
         self._cursor_changed_id = 0
+        self._treeview_bg_provider = None
 
         self._init_treeview()
         self._add_accelerator_bindings()
@@ -189,5 +191,15 @@ class StoreView(BaseView):
         # The following color change is to reduce the flickering seen when
         # changing units. It's not the perfect cure, but helps a lot.
         # https://github.com/translate/virtaal/issues/1412
-        self._treeview.override_background_color(Gtk.StateFlags.NORMAL,
-                                                 widget.get_style_context().get_background_color(Gtk.StateType.NORMAL))
+        style = widget.get_style_context()
+        found, background = style.lookup_color('theme_base_color')
+        if not found:
+            background = style.get_background_color(Gtk.StateType.NORMAL)
+
+        treeview_style = self._treeview.get_style_context()
+        if self._treeview_bg_provider is not None:
+            treeview_style.remove_provider(self._treeview_bg_provider)
+        provider = Gtk.CssProvider()
+        provider.load_from_data(('* { background-color: %s; background-image: none; }' % theme.rgba_to_str(background)).encode())
+        treeview_style.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        self._treeview_bg_provider = provider

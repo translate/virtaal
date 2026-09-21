@@ -8,7 +8,7 @@
 import locale
 import logging
 
-from gi.repository import Gdk, GLib, Gtk
+from gi.repository import GLib, Gtk
 
 from virtaal.common.platform import platform
 from virtaal.models.langmodel import LanguageModel
@@ -26,6 +26,7 @@ class LanguageView(BaseView):
     # INITIALIZERS #
     def __init__(self, controller):
         self.controller = controller
+        self._popupbutton_fg_provider = None
         self._init_gui()
 
     def _create_dialogs(self):
@@ -79,20 +80,24 @@ class LanguageView(BaseView):
             pairlabel = '%s » %s' % (srclang.name, tgtlang.name)
         return pairlabel
 
-    def notify_same_langs(self):
-        def notify():
-            for s in [Gtk.StateType.ACTIVE, Gtk.StateType.NORMAL, Gtk.StateType.PRELIGHT, Gtk.StateType.SELECTED]:
-                self.popupbutton.modify_fg(s, Gdk.color_parse('#f66'))
+    def _set_popupbutton_fg(self, color):
+        """Highlight (or clear, if C{color} is C{None}) the language
+            pair button's foreground - modify_fg() is deprecated."""
+        style = self.popupbutton.get_style_context()
+        if self._popupbutton_fg_provider is not None:
+            style.remove_provider(self._popupbutton_fg_provider)
+            self._popupbutton_fg_provider = None
+        if color is not None:
+            provider = Gtk.CssProvider()
+            provider.load_from_data(('* { color: %s; }' % color).encode())
+            style.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+            self._popupbutton_fg_provider = provider
 
-        GLib.idle_add(notify)
+    def notify_same_langs(self):
+        GLib.idle_add(lambda: self._set_popupbutton_fg('#f66'))
 
     def notify_diff_langs(self):
-        def notify():
-            states = [Gtk.StateFlags.ACTIVE, Gtk.StateFlags.NORMAL, Gtk.StateFlags.PRELIGHT, Gtk.StateFlags.SELECTED]
-            for state in states:
-                self.popupbutton.modify_fg(state, None)
-
-        GLib.idle_add(notify)
+        GLib.idle_add(lambda: self._set_popupbutton_fg(None))
 
     def show(self):
         """Add the managed C{PopupMenuButton} to the C{MainView}'s status bar."""

@@ -13,7 +13,7 @@ from translate.storage import factory as store_factory
 from virtaal.common import SignalTracker
 from virtaal.common.utils import get_unicode
 from virtaal.views.baseview import BaseView
-from virtaal.views.theme import current_theme
+from virtaal.views.theme import current_theme, set_widget_bg_color
 from virtaal.views.widgets.wordatcursor import WordAtCursorSelector
 
 
@@ -428,7 +428,7 @@ class TermAddDialog:
                 break
 
         from virtaal.views import rendering
-        self.ent_source.modify_font(rendering.get_source_font_description())
+        rendering.set_widget_font(self.ent_source, rendering.get_source_font_description())
         self.ent_source.set_text(source_text.strip())
         srclang = self.lang_controller.source_lang.code
         self.ent_source.get_pango_context().set_language(rendering.get_language(srclang))
@@ -439,7 +439,7 @@ class TermAddDialog:
             if selection:
                 target_text = tgt.get_text(*selection)
                 break
-        self.ent_target.modify_font(rendering.get_target_font_description())
+        rendering.set_widget_font(self.ent_target, rendering.get_target_font_description())
         self.ent_target.set_text(target_text.strip())
         tgtlang = self.lang_controller.target_lang.code
         self.ent_target.get_pango_context().set_language(rendering.get_language(tgtlang))
@@ -498,7 +498,7 @@ class TermAddDialog:
         dup = self.term_model.get_duplicates(src_text, tgt_text)
         if dup:
             self.lbl_add_term_errors.set_text(_('Identical entry already exists.'))
-            self.eb_add_term_errors.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse(current_theme['warning_bg']))
+            set_widget_bg_color(self.eb_add_term_errors, current_theme['warning_bg'])
             self.eb_add_term_errors.show_all()
             self.btn_add_term.props.sensitive = False
             return
@@ -518,6 +518,6 @@ class TermAddDialog:
                 'translations': translations
             }
             self.lbl_add_term_errors.set_markup(errormsg)
-            self.eb_add_term_errors.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse(current_theme['warning_bg']))
+            set_widget_bg_color(self.eb_add_term_errors, current_theme['warning_bg'])
             self.eb_add_term_errors.show_all()
             return

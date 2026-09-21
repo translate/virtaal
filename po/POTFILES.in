@@ -1,7 +1,10 @@
 [encoding: UTF-8]
+[type: gettext/glade]share/virtaal/virtaal.ui
+bin/virtaal
+devsupport/tmp_strings.py
 share/applications/virtaal.desktop.in
 share/metainfo/virtaal.metainfo.xml.in
-[type: gettext/glade]share/virtaal/virtaal.ui
+share/mime/packages/virtaal-mimetype.xml.in
 virtaal/controllers/checkscontroller.py
 virtaal/controllers/maincontroller.py
 virtaal/controllers/placeablescontroller.py
@@ -9,20 +12,20 @@ virtaal/controllers/prefscontroller.py
 virtaal/controllers/storecontroller.py
 virtaal/controllers/unitcontroller.py
 virtaal/controllers/welcomescreencontroller.py
+virtaal/models/storemodel.py
 virtaal/modes/defaultmode.py
 virtaal/modes/qualitycheckmode.py
 virtaal/modes/quicktransmode.py
 virtaal/modes/searchmode.py
 virtaal/modes/workflowmode.py
-virtaal/views/prefsview.py
 virtaal/plugins/autocompletor.py
 virtaal/plugins/autocorrector.py
-virtaal/plugins/spellchecker.py
 virtaal/plugins/lookup/__init__.py
 virtaal/plugins/lookup/lookupview.py
 virtaal/plugins/lookup/models/thesaurus.py
 virtaal/plugins/lookup/models/weblookup.py
 virtaal/plugins/migration.py
+virtaal/plugins/spellchecker.py
 virtaal/plugins/terminology/__init__.py
 virtaal/plugins/terminology/models/autoterm.py
 virtaal/plugins/terminology/models/localfile/__init__.py
@@ -31,21 +34,22 @@ virtaal/plugins/terminology/models/pontoon.py
 virtaal/plugins/terminology/termview.py
 virtaal/plugins/tm/__init__.py
 virtaal/plugins/tm/models/amagama.py
+virtaal/plugins/tm/models/apertium.py
 virtaal/plugins/tm/models/currentfile.py
 virtaal/plugins/tm/models/google_translate.py
 virtaal/plugins/tm/models/localtm.py
 virtaal/plugins/tm/models/moses.py
 virtaal/plugins/tm/models/remotetm.py
-virtaal/plugins/tm/models/apertium.py
 virtaal/plugins/tm/tmview.py
 virtaal/plugins/tm/tmwidgets.py
 virtaal/support/crash_dialog.py
 virtaal/support/tutorial.py
-virtaal/views/checksunitview.py
 virtaal/views/checksprojview.py
+virtaal/views/checksunitview.py
 virtaal/views/langview.py
 virtaal/views/mainview.py
 virtaal/views/modeview.py
+virtaal/views/prefsview.py
 virtaal/views/propertiesview.py
 virtaal/views/storeview.py
 virtaal/views/unitview.py
@@ -56,7 +60,3 @@ virtaal/views/widgets/selectdialog.py
 virtaal/views/widgets/selectview.py
 virtaal/views/widgets/shortcutswindow.py
 virtaal/views/widgets/welcomescreen.py
-virtaal/models/storemodel.py
-share/mime/packages/virtaal-mimetype.xml.in
-devsupport/tmp_strings.py
-bin/virtaal

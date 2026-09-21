@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta2\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-21 20:56+0100\n"
+"POT-Creation-Date: 2026-09-21 22:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,79 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: ../share/applications/virtaal.desktop.in.h ../share/virtaal/virtaal.ui.h
-#: ../virtaal/views/mainview.py
-msgid "Virtaal"
-msgstr ""
-
-#: ../share/applications/virtaal.desktop.in.h
-msgid "Translation Tool"
-msgstr ""
-
-#. l10n: The summary should be less than 100 characters
-#: ../share/applications/virtaal.desktop.in.h
-#: ../share/metainfo/virtaal.metainfo.xml.in.h
-msgid ""
-"A translation tool to help a human translator translate files into other "
-"languages"
-msgstr ""
-
-#. l10n: The name should be less than 30 characters
-#: ../share/metainfo/virtaal.metainfo.xml.in.h
-msgid "Virtaal Translation Tool"
-msgstr ""
-
-#. l10n: Paragraphs should be less than 600 characters
-#: ../share/metainfo/virtaal.metainfo.xml.in.h
-msgid ""
-"Virtaal is a program for doing translation. It aims for a delightful "
-"combination of simplicity and power. It integrates with selected online "
-"resources to make translation fun, while helping to improve translation "
-"quality."
-msgstr ""
-
-#: ../share/metainfo/virtaal.metainfo.xml.in.h
-msgid ""
-"The initial focus is on software translation (localization or l10n), but is "
-"definitely meant to be useful as a general purpose tool for Computer Aided "
-"Translation (CAT)."
-msgstr ""
-
-#: ../share/metainfo/virtaal.metainfo.xml.in.h
-msgid "Some features:"
-msgstr ""
-
-#. l10n: These list items should be less than 100 characters
-#: ../share/metainfo/virtaal.metainfo.xml.in.h
-msgid "Translation reuse (translation memory)"
-msgstr ""
-
-#: ../share/metainfo/virtaal.metainfo.xml.in.h
-#: ../virtaal/views/widgets/welcomescreen.py
-msgid "Terminology assistance"
-msgstr ""
-
-#: ../share/metainfo/virtaal.metainfo.xml.in.h
-msgid "AutoCompletor and AutoCorrector"
-msgstr ""
-
-#: ../share/metainfo/virtaal.metainfo.xml.in.h
-msgid "Quality checks with customization for many languages"
-msgstr ""
-
-#. l10n: Captions should be shorter than 50 characters
-#: ../share/metainfo/virtaal.metainfo.xml.in.h
-msgid "Easy access to recent files and documentation"
-msgstr ""
-
-#: ../share/metainfo/virtaal.metainfo.xml.in.h
-msgid "Recognized elements don't need to be typed"
-msgstr ""
-
-#: ../share/metainfo/virtaal.metainfo.xml.in.h
-msgid "Quality checks while you type"
-msgstr ""
 
 #: ../share/virtaal/virtaal.ui.h
 msgid "Add Missing Language"
@@ -151,6 +78,11 @@ msgstr ""
 
 #: ../share/virtaal/virtaal.ui.h
 msgid "_Add Missing Language..."
+msgstr ""
+
+#: ../share/virtaal/virtaal.ui.h ../share/applications/virtaal.desktop.in.h
+#: ../virtaal/views/mainview.py
+msgid "Virtaal"
 msgstr ""
 
 #: ../share/virtaal/virtaal.ui.h
@@ -472,6 +404,294 @@ msgstr ""
 
 #: ../share/virtaal/virtaal.ui.h
 msgid "<b><big>Support</big></b>"
+msgstr ""
+
+#: ../bin/virtaal
+msgid "LOG"
+msgstr ""
+
+#: ../bin/virtaal
+msgid "turn on logging, storing the result to the supplied filename."
+msgstr ""
+
+#: ../bin/virtaal
+msgid "CONFIG"
+msgstr ""
+
+#: ../bin/virtaal
+msgid "use the configuration file given by the supplied filename."
+msgstr ""
+
+#: ../bin/virtaal
+msgid "enable debugging features"
+msgstr ""
+
+#: ../bin/virtaal
+msgid ""
+"use a synthetic pseudo-translation for every UI string (see devsupport/"
+"pseudo-translation/generate_pseudo_translation.py)"
+msgstr ""
+
+#: ../bin/virtaal
+msgid "like --pseudo-translation, but also simulates a right-to-left UI layout"
+msgstr ""
+
+#: ../bin/virtaal
+msgid "LANG"
+msgstr ""
+
+#: ../bin/virtaal
+msgid ""
+"override the UI language for this run (e.g. \"fr\"), without changing the "
+"saved Preferences setting"
+msgstr ""
+
+#: ../bin/virtaal
+msgid "PROFILE"
+msgstr ""
+
+#: ../bin/virtaal
+msgid "perform profiling, storing the result to the supplied filename."
+msgstr ""
+
+#: ../bin/virtaal
+msgid "Could not open log file '%(filename)s'"
+msgstr ""
+
+#: ../bin/virtaal
+msgid "Could not read configuration file '%(filename)s'"
+msgstr ""
+
+#: ../bin/virtaal
+msgid "No translation found for language '%(lang)s'"
+msgstr ""
+
+#: ../bin/virtaal
+msgid "Profiling support is not available"
+msgstr ""
+
+#: ../bin/virtaal
+msgid "Could not open profile file '%(filename)s'"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py
+msgid "Gettext PO file"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py
+msgid "Gettext MO file"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py
+msgid "Qt .qm file"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py
+msgid "OmegaT Glossary"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py
+msgid "usage: "
+msgstr ""
+
+#: ../devsupport/tmp_strings.py
+msgid "positional arguments"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py
+msgid "options"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py
+msgid "show this help message and exit"
+msgstr ""
+
+#: ../devsupport/tmp_strings.py
+msgid "show program's version number and exit"
+msgstr ""
+
+#: ../share/applications/virtaal.desktop.in.h
+msgid "Translation Tool"
+msgstr ""
+
+#. l10n: The summary should be less than 100 characters
+#: ../share/applications/virtaal.desktop.in.h
+#: ../share/metainfo/virtaal.metainfo.xml.in.h
+msgid ""
+"A translation tool to help a human translator translate files into other "
+"languages"
+msgstr ""
+
+#. l10n: The name should be less than 30 characters
+#: ../share/metainfo/virtaal.metainfo.xml.in.h
+msgid "Virtaal Translation Tool"
+msgstr ""
+
+#. l10n: Paragraphs should be less than 600 characters
+#: ../share/metainfo/virtaal.metainfo.xml.in.h
+msgid ""
+"Virtaal is a program for doing translation. It aims for a delightful "
+"combination of simplicity and power. It integrates with selected online "
+"resources to make translation fun, while helping to improve translation "
+"quality."
+msgstr ""
+
+#: ../share/metainfo/virtaal.metainfo.xml.in.h
+msgid ""
+"The initial focus is on software translation (localization or l10n), but is "
+"definitely meant to be useful as a general purpose tool for Computer Aided "
+"Translation (CAT)."
+msgstr ""
+
+#: ../share/metainfo/virtaal.metainfo.xml.in.h
+msgid "Some features:"
+msgstr ""
+
+#. l10n: These list items should be less than 100 characters
+#: ../share/metainfo/virtaal.metainfo.xml.in.h
+msgid "Translation reuse (translation memory)"
+msgstr ""
+
+#: ../share/metainfo/virtaal.metainfo.xml.in.h
+#: ../virtaal/views/widgets/welcomescreen.py
+msgid "Terminology assistance"
+msgstr ""
+
+#: ../share/metainfo/virtaal.metainfo.xml.in.h
+msgid "AutoCompletor and AutoCorrector"
+msgstr ""
+
+#: ../share/metainfo/virtaal.metainfo.xml.in.h
+msgid "Quality checks with customization for many languages"
+msgstr ""
+
+#. l10n: Captions should be shorter than 50 characters
+#: ../share/metainfo/virtaal.metainfo.xml.in.h
+msgid "Easy access to recent files and documentation"
+msgstr ""
+
+#: ../share/metainfo/virtaal.metainfo.xml.in.h
+msgid "Recognized elements don't need to be typed"
+msgstr ""
+
+#: ../share/metainfo/virtaal.metainfo.xml.in.h
+msgid "Quality checks while you type"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "TMX Translation Memory"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "TMX"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "Translation Memory eXchange"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "TBX Glossary"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "TBX"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "TermBase eXchange"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "Wordfast Translation Memory"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "Qt Linguist Translation File"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "Qt Message File"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "Qt Phrase Book"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "INI File"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "INI"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "Initialization"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "Java Properties File"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "OpenOffice.org Translation File"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "XLIFF Translation File"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "XLIFF"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "XML Localization Interchange File Format"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "C++ RC File"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "RC"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "Resource Compiler"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "Tcl Translation File"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "JavaScript error message file"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "Gettext Translation Template"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "Trados Tag Editor"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "OS X Strings File"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "UTX Dictionary"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "UTX"
+msgstr ""
+
+#: ../share/mime/packages/virtaal-mimetype.xml.in.h
+msgid "Universal Terminology eXchange"
 msgstr ""
 
 #: ../virtaal/controllers/checkscontroller.py
@@ -958,6 +1178,14 @@ msgstr ""
 msgid "Reviewed"
 msgstr ""
 
+#: ../virtaal/models/storemodel.py
+msgid "The file does not exist."
+msgstr ""
+
+#: ../virtaal/models/storemodel.py
+msgid "Not a valid file."
+msgstr ""
+
 #: ../virtaal/modes/defaultmode.py
 msgid "All"
 msgstr ""
@@ -1026,14 +1254,6 @@ msgstr ""
 msgid "All States"
 msgstr ""
 
-#: ../virtaal/views/prefsview.py
-msgid "Settings"
-msgstr ""
-
-#: ../virtaal/views/prefsview.py
-msgid "System default"
-msgstr ""
-
 #: ../virtaal/plugins/autocompletor.py
 msgid "Automatically complete long words while you type"
 msgstr ""
@@ -1048,39 +1268,6 @@ msgstr ""
 
 #: ../virtaal/plugins/autocorrector.py
 msgid "AutoCorrector"
-msgstr ""
-
-#: ../virtaal/plugins/spellchecker.py
-msgid "Spell Checker"
-msgstr ""
-
-#: ../virtaal/plugins/spellchecker.py
-msgid "Check spelling and provide suggestions"
-msgstr ""
-
-#. l10n: This refers to spell checking
-#: ../virtaal/plugins/spellchecker.py
-msgid "<i>(no suggestions)</i>"
-msgstr ""
-
-#. l10n: This refers to spell checking
-#: ../virtaal/plugins/spellchecker.py
-msgid "Ignore All"
-msgstr ""
-
-#. l10n: This refers to spelling suggestions
-#: ../virtaal/plugins/spellchecker.py
-msgid "More…"
-msgstr ""
-
-#. l10n: This refers to the spell checking dictionary
-#: ../virtaal/plugins/spellchecker.py
-#, python-format
-msgid "Add \"%s\" to Dictionary"
-msgstr ""
-
-#: ../virtaal/plugins/spellchecker.py
-msgid "Languages"
 msgstr ""
 
 #: ../virtaal/plugins/lookup/__init__.py
@@ -1241,6 +1428,39 @@ msgstr ""
 msgid "Lokalize's Translation Memory: %(database_name)s"
 msgstr ""
 
+#: ../virtaal/plugins/spellchecker.py
+msgid "Spell Checker"
+msgstr ""
+
+#: ../virtaal/plugins/spellchecker.py
+msgid "Check spelling and provide suggestions"
+msgstr ""
+
+#. l10n: This refers to spell checking
+#: ../virtaal/plugins/spellchecker.py
+msgid "<i>(no suggestions)</i>"
+msgstr ""
+
+#. l10n: This refers to spell checking
+#: ../virtaal/plugins/spellchecker.py
+msgid "Ignore All"
+msgstr ""
+
+#. l10n: This refers to spelling suggestions
+#: ../virtaal/plugins/spellchecker.py
+msgid "More…"
+msgstr ""
+
+#. l10n: This refers to the spell checking dictionary
+#: ../virtaal/plugins/spellchecker.py
+#, python-format
+msgid "Add \"%s\" to Dictionary"
+msgstr ""
+
+#: ../virtaal/plugins/spellchecker.py
+msgid "Languages"
+msgstr ""
+
 #: ../virtaal/plugins/terminology/__init__.py
 msgid "Terminology Help"
 msgstr ""
@@ -1375,6 +1595,15 @@ msgstr ""
 msgid "Previous translations for Free and Open Source Software"
 msgstr ""
 
+#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
+#: ../virtaal/plugins/tm/models/apertium.py
+msgid "Apertium"
+msgstr ""
+
+#: ../virtaal/plugins/tm/models/apertium.py
+msgid "Unreviewed machine translations from Apertium"
+msgstr ""
+
 #: ../virtaal/plugins/tm/models/currentfile.py
 msgid "Current File"
 msgstr ""
@@ -1430,15 +1659,6 @@ msgstr ""
 #. l10n: Try to keep this as short as possible.
 #: ../virtaal/plugins/tm/models/remotetm.py
 msgid "Remote TM"
-msgstr ""
-
-#. l10n: Try to keep this as short as possible. Feel free to transliterate in CJK languages for optimal vertical display.
-#: ../virtaal/plugins/tm/models/apertium.py
-msgid "Apertium"
-msgstr ""
-
-#: ../virtaal/plugins/tm/models/apertium.py
-msgid "Unreviewed machine translations from Apertium"
 msgstr ""
 
 #: ../virtaal/plugins/tm/tmview.py
@@ -1857,6 +2077,16 @@ msgid ""
 "</span> tag."
 msgstr ""
 
+#: ../virtaal/views/checksprojview.py
+msgid "Project Type"
+msgstr ""
+
+#. l10n: The label indicating the checker style (GNOME/KDE/whatever)
+#: ../virtaal/views/checksprojview.py
+#, python-format
+msgid "Checks: %(checker_name)s"
+msgstr ""
+
 #: ../virtaal/views/checksunitview.py
 msgid "No issues"
 msgstr ""
@@ -1867,16 +2097,6 @@ msgstr ""
 
 #: ../virtaal/views/checksunitview.py
 msgid "Description"
-msgstr ""
-
-#: ../virtaal/views/checksprojview.py
-msgid "Project Type"
-msgstr ""
-
-#. l10n: The label indicating the checker style (GNOME/KDE/whatever)
-#: ../virtaal/views/checksprojview.py
-#, python-format
-msgid "Checks: %(checker_name)s"
 msgstr ""
 
 #: ../virtaal/views/langview.py
@@ -1966,6 +2186,14 @@ msgstr ""
 #. between units.
 #: ../virtaal/views/modeview.py
 msgid "N_avigation:"
+msgstr ""
+
+#: ../virtaal/views/prefsview.py
+msgid "Settings"
+msgstr ""
+
+#: ../virtaal/views/prefsview.py
+msgid "System default"
 msgstr ""
 
 #: ../virtaal/views/propertiesview.py
@@ -2258,232 +2486,4 @@ msgstr ""
 
 #: ../virtaal/views/widgets/welcomescreen.py
 msgid "Many plugins and options for customization"
-msgstr ""
-
-#: ../virtaal/models/storemodel.py
-msgid "The file does not exist."
-msgstr ""
-
-#: ../virtaal/models/storemodel.py
-msgid "Not a valid file."
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "TMX Translation Memory"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "TMX"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "Translation Memory eXchange"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "TBX Glossary"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "TBX"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "TermBase eXchange"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "Wordfast Translation Memory"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "Qt Linguist Translation File"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "Qt Message File"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "Qt Phrase Book"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "INI File"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "INI"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "Initialization"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "Java Properties File"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "OpenOffice.org Translation File"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "XLIFF Translation File"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "XLIFF"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "XML Localization Interchange File Format"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "C++ RC File"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "RC"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "Resource Compiler"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "Tcl Translation File"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "JavaScript error message file"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "Gettext Translation Template"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "Trados Tag Editor"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "OS X Strings File"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "UTX Dictionary"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "UTX"
-msgstr ""
-
-#: ../share/mime/packages/virtaal-mimetype.xml.in.h
-msgid "Universal Terminology eXchange"
-msgstr ""
-
-#: ../devsupport/tmp_strings.py
-msgid "Gettext PO file"
-msgstr ""
-
-#: ../devsupport/tmp_strings.py
-msgid "Gettext MO file"
-msgstr ""
-
-#: ../devsupport/tmp_strings.py
-msgid "Qt .qm file"
-msgstr ""
-
-#: ../devsupport/tmp_strings.py
-msgid "OmegaT Glossary"
-msgstr ""
-
-#: ../devsupport/tmp_strings.py
-msgid "usage: "
-msgstr ""
-
-#: ../devsupport/tmp_strings.py
-msgid "positional arguments"
-msgstr ""
-
-#: ../devsupport/tmp_strings.py
-msgid "options"
-msgstr ""
-
-#: ../devsupport/tmp_strings.py
-msgid "show this help message and exit"
-msgstr ""
-
-#: ../devsupport/tmp_strings.py
-msgid "show program's version number and exit"
-msgstr ""
-
-#: ../bin/virtaal
-msgid "LOG"
-msgstr ""
-
-#: ../bin/virtaal
-msgid "turn on logging, storing the result to the supplied filename."
-msgstr ""
-
-#: ../bin/virtaal
-msgid "CONFIG"
-msgstr ""
-
-#: ../bin/virtaal
-msgid "use the configuration file given by the supplied filename."
-msgstr ""
-
-#: ../bin/virtaal
-msgid "enable debugging features"
-msgstr ""
-
-#: ../bin/virtaal
-msgid ""
-"use a synthetic pseudo-translation for every UI string (see devsupport/"
-"pseudo-translation/generate_pseudo_translation.py)"
-msgstr ""
-
-#: ../bin/virtaal
-msgid "like --pseudo-translation, but also simulates a right-to-left UI layout"
-msgstr ""
-
-#: ../bin/virtaal
-msgid "LANG"
-msgstr ""
-
-#: ../bin/virtaal
-msgid ""
-"override the UI language for this run (e.g. \"fr\"), without changing the "
-"saved Preferences setting"
-msgstr ""
-
-#: ../bin/virtaal
-msgid "PROFILE"
-msgstr ""
-
-#: ../bin/virtaal
-msgid "perform profiling, storing the result to the supplied filename."
-msgstr ""
-
-#: ../bin/virtaal
-msgid "Could not open log file '%(filename)s'"
-msgstr ""
-
-#: ../bin/virtaal
-msgid "Could not read configuration file '%(filename)s'"
-msgstr ""
-
-#: ../bin/virtaal
-msgid "No translation found for language '%(lang)s'"
-msgstr ""
-
-#: ../bin/virtaal
-msgid "Profiling support is not available"
-msgstr ""
-
-#: ../bin/virtaal
-msgid "Could not open profile file '%(filename)s'"
 msgstr ""

@@ -57,28 +57,40 @@ LOCALES = {
 }
 
 
+def _repo_root():
+    return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+
+def generate_locale(code, localedir=None):
+    """(re)generates a single pseudo-translation locale's virtaal.mo
+    from the current po/virtaal.pot, returning the mo path written.
+    Cheap enough to call on every launch - see bin/virtaal's
+    --pseudo-translation/--pseudo-translation-bidi handling."""
+    rewritestyle = LOCALES[code]
+    potfile = os.path.join(_repo_root(), "po", "virtaal.pot")
+    localedir = localedir or os.path.join(sys.prefix, "share", "locale")
+
+    with tempfile.NamedTemporaryFile(suffix=".po") as tmp_po:
+        with open(potfile, "rb") as infile:
+            podebug.convertpo(infile, tmp_po, None, rewritestyle=rewritestyle)
+        tmp_po.flush()
+
+        mo_dir = os.path.join(localedir, code, "LC_MESSAGES")
+        os.makedirs(mo_dir, exist_ok=True)
+        mo_path = os.path.join(mo_dir, "virtaal.mo")
+        with open(tmp_po.name, "rb") as compile_in, open(mo_path, "w") as compile_out:
+            convertmo(compile_in, compile_out, None)
+        return mo_path
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--localedir", default=None,
                          help="Where to write share/locale-style output (default: sys.prefix/share/locale)")
     args = parser.parse_args()
 
-    root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    potfile = os.path.join(root, "po", "virtaal.pot")
-    localedir = args.localedir or os.path.join(sys.prefix, "share", "locale")
-
-    for code, rewritestyle in LOCALES.items():
-        with tempfile.NamedTemporaryFile(suffix=".po") as tmp_po:
-            with open(potfile, "rb") as infile:
-                podebug.convertpo(infile, tmp_po, None, rewritestyle=rewritestyle)
-            tmp_po.flush()
-
-            mo_dir = os.path.join(localedir, code, "LC_MESSAGES")
-            os.makedirs(mo_dir, exist_ok=True)
-            mo_path = os.path.join(mo_dir, "virtaal.mo")
-            with open(tmp_po.name, "rb") as compile_in, open(mo_path, "w") as compile_out:
-                convertmo(compile_in, compile_out, None)
-            print("Wrote %s" % mo_path)
+    for code in LOCALES:
+        print("Wrote %s" % generate_locale(code, args.localedir))
 
 
 if __name__ == "__main__":

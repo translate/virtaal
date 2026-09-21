@@ -12,18 +12,21 @@ desktop=share/applications/$targetapp.desktop
 metainfo=share/metainfo/$targetapp.metainfo.xml
 mimetype=share/mime/packages/$targetapp-mimetype.xml
 
-cache="po/.intltool-merge-cache"
-rm -f $cache
+# GETTEXTDATADIRS: po/its/ holds a custom ITS rule for
+# virtaal-mimetype.xml.in - shared-mime-info XML has no rule built
+# into gettext itself, unlike .desktop/GtkBuilder/AppStream.
+gettextdatadirs="$(pwd)/po${GETTEXTDATADIRS:+:$GETTEXTDATADIRS}"
+export GETTEXTDATADIRS="$gettextdatadirs"
 
 if [ -d po ]; then
 	if [ -f  "${mimetype}".in ]; then
-		intltool-merge --xml-style --cache "$cache" po "${mimetype}".in "$mimetype"
+		msgfmt --xml --template "${mimetype}".in -d po -o "$mimetype"
 	fi
 	if [ -f  "${metainfo}".in ]; then
-		intltool-merge --xml-style --cache "$cache" po "${metainfo}".in "$metainfo"
+		msgfmt --xml --template "${metainfo}".in -d po -o "$metainfo"
 	fi
 	if [ -f  "${desktop}".in ]; then
-		intltool-merge --desktop-style --cache "$cache" po "${desktop}".in "$desktop"
+		msgfmt --desktop --template "${desktop}".in -d po -o "$desktop"
 	fi
 else
 	echo "$0: No translation directory"

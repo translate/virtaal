@@ -52,14 +52,15 @@ class SelectDialog(GObjectWrapper):
         if isinstance(parent, Gtk.Widget):
             self.set_transient_for(parent)
         self.dialog.set_title(title is not None and title or 'Select items')
+        content_area = self.dialog.get_content_area()
         self.message = Gtk.Label(label=message is not None and message or '')
-        self.dialog.get_child().pack_start(self.message, expand=False, fill=False, padding=10)
+        content_area.pack_start(self.message, expand=False, fill=False, padding=10)
 
         scrolled_window = Gtk.ScrolledWindow()
         scrolled_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         scrolled_window.set_propagate_natural_width(True)
         scrolled_window.add(self.sview)
-        self.dialog.get_child().pack_end(scrolled_window, True, True, 0)
+        content_area.pack_end(scrolled_window, True, True, 0)
         self.dialog.add_buttons(_("_Close"), Gtk.ResponseType.CLOSE)
 
 

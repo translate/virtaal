@@ -68,6 +68,27 @@ class PreferencesView(BaseView, GObjectWrapper):
             self._widgets['fbtn_target'].set_font_name(pan_app.get_default_font())
         self._widgets['btn_default_fonts'].connect('clicked', reset_fonts)
 
+        for fbtn in (self._widgets['fbtn_source'], self._widgets['fbtn_target']):
+            fbtn.connect('clicked', self._on_font_button_clicked)
+
+    def _on_font_button_clicked(self, fbtn):
+        # GtkFontButton manages its own internal GtkFontChooserDialog with
+        # no public accessor for it, so find the dialog it just opened via
+        # the toplevel window list to manage its focus like every other
+        # dialog in this view (present()/restore-focus - see the rest of
+        # this file and its sibling dialogs for the same pattern).
+        def find_and_present():
+            prefs_dialog = self._widgets['dialog']
+            for window in Gtk.Window.list_toplevels():
+                if window is prefs_dialog or not window.get_visible():
+                    continue
+                if isinstance(window, Gtk.Dialog) and window.get_transient_for() is prefs_dialog:
+                    window.present()
+                    window.connect('hide', lambda w: GLib.idle_add(prefs_dialog.present))
+                    break
+            return False
+        GLib.idle_add(find_and_present)
+
     def _init_placeables_page(self):
         self.placeables_select = SelectView()
         self.placeables_select.connect('item-enabled', self._on_placeable_toggled)

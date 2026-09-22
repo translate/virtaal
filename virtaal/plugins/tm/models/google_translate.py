@@ -53,7 +53,7 @@ class TMModel(BaseTMModel):
             return
         self.client = HTTPClient()
         self._languages = set()
-        langreq = RESTRequest(self.url_getlanguages % self.config, '')
+        langreq = RESTRequest(self.languages_url % {'key': self.config['api_key']}, '')
         self.client.add(langreq)
         langreq.connect(
             'http-success',

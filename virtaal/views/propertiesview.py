@@ -134,8 +134,9 @@ class PropertiesView(BaseView, GObjectWrapper):
                 vbox_string_labels, vbox_string_stats, vbox_string_perc):
             for child in vbox.get_children():
                 vbox.remove(child)
-        total_words = 0
-        total_strings = 0
+        total_words = sum(words for (_desc, _strings, words) in statistics)
+        total_strings = sum(strings for (_desc, strings, _words) in statistics)
+
         for (description, strings, words) in statistics:
             # Add two identical labels for the word/string descriptions
             lbl_desc = Gtk.Label(label=description)
@@ -148,32 +149,21 @@ class PropertiesView(BaseView, GObjectWrapper):
             lbl_desc.show()
             vbox_string_labels.pack_start(lbl_desc, True, True, 0)
 
-            # Now for the numbers
-            total_words += words
-            lbl_stats = Gtk.Label(label=str(words))
-            lbl_stats.set_alignment(1.0, 0.5)
+            # Number and percentage in one label, left aligned to match
+            # lbl_word_total/lbl_string_total - keeping them as separate
+            # labels/columns left the percentage's own alignment fighting
+            # the number's, reading as neither left- nor right-aligned (#3683).
+            word_percentage = _nice_percentage(words, total_words)
+            lbl_stats = Gtk.Label(label='%d  %s' % (words, word_percentage))
+            lbl_stats.set_alignment(0.0, 0.5)
             lbl_stats.show()
             vbox_word_stats.pack_start(lbl_stats, True, True, 0)
 
-            total_strings += strings
-            lbl_stats = Gtk.Label(label=str(strings))
-            lbl_stats.set_alignment(1.0, 0.5)
+            string_percentage = _nice_percentage(strings, total_strings)
+            lbl_stats = Gtk.Label(label='%d  %s' % (strings, string_percentage))
+            lbl_stats.set_alignment(0.0, 0.5)
             lbl_stats.show()
             vbox_string_stats.pack_start(lbl_stats, True, True, 0)
-
-        # Now we do the percentages:
-        for (description, strings, words) in statistics:
-            percentage = _nice_percentage(words, total_words)
-            lbl_perc = Gtk.Label(label=percentage)
-            lbl_perc.set_alignment(0.0, 0.5)
-            lbl_perc.show()
-            vbox_word_perc.pack_start(lbl_perc, True, True, 0)
-
-            percentage = _nice_percentage(strings, total_strings)
-            lbl_perc = Gtk.Label(label=percentage)
-            lbl_perc.set_alignment(0.0, 0.5)
-            lbl_perc.show()
-            vbox_string_perc.pack_start(lbl_perc, True, True, 0)
 
 
         #l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.

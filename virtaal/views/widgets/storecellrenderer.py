@@ -79,7 +79,9 @@ def gtk_textview_compute_optimal_height(widget, width):
         h = 28
     parent = widget.get_parent()
     if isinstance(parent, Gtk.ScrolledWindow) and parent.get_shadow_type() != Gtk.ShadowType.NONE:
-        border += 2 * parent.get_style().ythickness
+        parent_style = parent.get_style_context()
+        frame_border = parent_style.get_border(parent_style.get_state())
+        border += frame_border.top + frame_border.bottom
     widget.get_parent().set_size_request(-1, h + border)
 
 

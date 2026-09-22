@@ -147,7 +147,7 @@ class LookupModel(BaseLookupModel):
             if 'quoted' in urlinfo and urlinfo['quoted']:
                 uquery = '"' + uquery + '"'
 
-            i = Gtk.MenuItem(urlinfo['display_name'])
+            i = Gtk.MenuItem(label=urlinfo['display_name'])
             lookup_str = urlinfo['url'] % {
                 'query':        uquery,
                 'querylang':    querylang,

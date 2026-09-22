@@ -152,30 +152,30 @@ class LookupModel(BaseLookupModel):
         return [self._create_download_item(locale_code)]
 
     def _create_status_item(self, label):
-        item = Gtk.MenuItem(label)
+        item = Gtk.MenuItem(label=label)
         item.set_sensitive(False)
         return item
 
     def _create_download_item(self, locale_code):
         #l10n: %(language)s is a language name, e.g. "Afrikaans"
-        item = Gtk.MenuItem(_('Download %(language)s thesaurus…') % {'language': _language_name(locale_code)})
+        item = Gtk.MenuItem(label=_('Download %(language)s thesaurus…') % {'language': _language_name(locale_code)})
         item.connect('activate', self._on_download, locale_code)
         return item
 
     def _create_synonym_item(self, meanings, textbox):
         #l10n: The menu entry offering synonyms for the selected word.
-        item = Gtk.MenuItem(_('Synonyms'))
+        item = Gtk.MenuItem(label=_('Synonyms'))
         submenu = Gtk.Menu()
         for pos, synonyms in meanings:
             if pos and pos != '-':
-                header = Gtk.MenuItem(pos)
+                header = Gtk.MenuItem(label=pos)
                 header.set_sensitive(False)
                 submenu.append(header)
             for synonym in synonyms:
                 # Keep the annotation in the label (see
                 # _WORD_ANNOTATION_RE above) but never insert it.
                 word = _WORD_ANNOTATION_RE.sub('', synonym)
-                synonym_item = Gtk.MenuItem(synonym)
+                synonym_item = Gtk.MenuItem(label=synonym)
                 synonym_item.connect('activate', self._on_insert_synonym, word, textbox)
                 submenu.append(synonym_item)
         item.set_submenu(submenu)

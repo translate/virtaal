@@ -197,6 +197,7 @@ class FileSelectDialog:
         col.pack_start(cell, True)
         col.add_attribute(cell, 'active', self.COL_EXTEND)
         col.set_expand(False)
+        col.set_min_width(90) # wide enough for the header label itself
         self.tvw_termfiles.append_column(col)
 
         extend_file = self.term_model.config.get('extendfile', '')

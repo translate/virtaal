@@ -117,8 +117,7 @@ class Plugin(BasePlugin):
             # At least on Mandriva .get_from_text_view() sometimes returns
             # a SystemError without a description. Things seem to work fine
             # anyway, so let's ignore it and hope for the best.
-            raise e
-            pass
+            logging.debug("gtkspell.Checker.get_from_text_view() raised: %s", e)
         if not spell is None:
             spell.detach()
         text_view.spell_lang = None
@@ -180,7 +179,7 @@ class Plugin(BasePlugin):
                 # At least on Mandriva .get_from_text_view() sometimes returns
                 # a SystemError without a description. Things seem to work fine
                 # anyway, so let's ignore it and hope for the best.
-                pass
+                logging.debug("gtkspell.Checker.get_from_text_view() raised: %s", e)
             if spell is None:
                 spell = self.gtkspell.Checker()
                 spell.attach(text_view)

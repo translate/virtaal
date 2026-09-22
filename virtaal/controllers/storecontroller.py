@@ -413,7 +413,7 @@ class StoreController(BaseController):
         self.main_controller.set_saveable(self._modified)
         self.main_controller.set_force_saveas(self._modified)
 
-        from cursor import Cursor
+        from .cursor import Cursor
         self.cursor = Cursor(self.store, self.store.stats['total'])
 
         self.view.load_store(self.store)

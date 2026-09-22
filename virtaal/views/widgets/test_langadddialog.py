@@ -74,6 +74,9 @@ class _FakeDialog:
     def hide(self):
         pass
 
+    def get_transient_for(self):
+        return None
+
 
 def _dialog_with_ok_button(code=''):
     dialog = LanguageAddDialog.__new__(LanguageAddDialog)

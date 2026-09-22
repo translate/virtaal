@@ -6,7 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 
-from gi.repository import Gtk
+from gi.repository import GLib, Gtk
 
 from virtaal.views.baseview import BaseView
 
@@ -82,8 +82,11 @@ class LanguageAddDialog:
         self._update_ok_sensitivity()
         self.dialog.show()
         self.dialog.present()
+        transient_for = self.dialog.get_transient_for()
         response = self.dialog.run() == Gtk.ResponseType.OK
         self.dialog.hide()
+        if transient_for is not None:
+            GLib.idle_add(transient_for.present)
         return response
 
     def check_input_sanity(self):

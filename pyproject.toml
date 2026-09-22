@@ -44,6 +44,7 @@ dependencies = [
     "lxml",
     "python-Levenshtein",
     "cheroot",
+    "bottle",
 ]
 
 [project.optional-dependencies]

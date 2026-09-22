@@ -198,7 +198,6 @@ class Plugin(BasePlugin):
 
     def _fix_menu(self, menu):
         _entries_above_separator = False
-        _now_remove_separator = False
         for item in menu:
             if item.get_name() == 'GtkSeparatorMenuItem':
                 if not _entries_above_separator:
@@ -228,10 +227,9 @@ class Plugin(BasePlugin):
                 item.set_property('label', _('Add "%s" to Dictionary') % word)
 
             # We don't want a language selector - we have our own
-            if label in dgettext('gtkspell', 'Languages'):
+            if label == dgettext('gtkspell', 'Languages'):
                 menu.remove(item)
                 if not _entries_above_separator:
-                    _now_remove_separator = True
                     continue
 
             _entries_above_separator = True

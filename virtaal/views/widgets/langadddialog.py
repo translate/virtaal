@@ -31,6 +31,9 @@ class LanguageAddDialog:
             self.dialog.set_transient_for(parent)
             self.dialog.set_icon(parent.get_toplevel().get_icon())
 
+        self.ent_langcode.connect('changed', self._on_langcode_changed)
+        self._update_ok_sensitivity()
+
     def _get_widgets(self):
         """Load the GtkBuilder file and get the widgets we would like to use."""
         widget_names = ('btn_add_ok', 'ent_langname', 'ent_langcode', 'sbtn_nplurals', 'ent_plural')
@@ -76,6 +79,7 @@ class LanguageAddDialog:
     def run(self, clear=True):
         if clear:
             self.clear()
+        self._update_ok_sensitivity()
         self.dialog.show()
         self.dialog.present()
         response = self.dialog.run() == Gtk.ResponseType.OK
@@ -92,3 +96,11 @@ class LanguageAddDialog:
             return _('Language code must be at least 2 characters long.')
 
         return ''
+
+
+    # EVENT HANDLERS #
+    def _on_langcode_changed(self, entry):
+        self._update_ok_sensitivity()
+
+    def _update_ok_sensitivity(self):
+        self.btn_add_ok.set_sensitive(not self.check_input_sanity())

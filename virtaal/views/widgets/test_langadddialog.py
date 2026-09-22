@@ -75,6 +75,30 @@ class _FakeDialog:
         pass
 
 
+def _dialog_with_ok_button(code=''):
+    dialog = LanguageAddDialog.__new__(LanguageAddDialog)
+    dialog.ent_langcode = Gtk.Entry()
+    dialog.ent_langcode.set_text(code)
+    dialog.btn_add_ok = Gtk.Button()
+    dialog._update_ok_sensitivity()
+    return dialog
+
+
+def test_ok_button_is_insensitive_for_a_too_short_langcode():
+    dialog = _dialog_with_ok_button('e')
+
+    assert dialog.btn_add_ok.get_sensitive() is False
+
+
+def test_ok_button_becomes_sensitive_once_the_langcode_is_valid():
+    dialog = _dialog_with_ok_button()
+    dialog.ent_langcode.connect('changed', dialog._on_langcode_changed)
+
+    dialog.ent_langcode.set_text('en')
+
+    assert dialog.btn_add_ok.get_sensitive() is True
+
+
 def test_run_shows_before_presenting():
     # run() called dialog.run() with no show()/present() beforehand -
     # same #3515/#3525 pattern, show() has to come first since
@@ -82,6 +106,8 @@ def test_run_shows_before_presenting():
     dialog = LanguageAddDialog.__new__(LanguageAddDialog)
     dialog.dialog = _FakeDialog()
     dialog.clear = lambda: None
+    dialog.btn_add_ok = Gtk.Button()
+    dialog.ent_langcode = Gtk.Entry()
 
     dialog.run()
 

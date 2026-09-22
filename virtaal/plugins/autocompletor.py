@@ -108,15 +108,16 @@ class AutoCompletor:
     def remove_words(self, words):
         """Remove a word or words from the list of words to auto-complete."""
         if isinstance(words, str):
-            del self._word_freq[words]
-            self._word_list.remove(words)
-        else:
-            for w in words:
-                try:
-                    del self._word_freq[w]
-                    self._word_list.remove(w)
-                except KeyError:
-                    pass
+            words = [words]
+        for w in words:
+            try:
+                del self._word_freq[w]
+            except KeyError:
+                pass
+            try:
+                self._word_list.remove(w)
+            except ValueError:
+                pass
 
     def _add_text_box(self, textbox):
         """Add the given L{TextBox} to the list of widgets to do auto-

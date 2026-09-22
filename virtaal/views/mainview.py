@@ -848,7 +848,7 @@ class MainView(BaseView):
     def _on_controller_registered(self, main_controller, new_controller):
         if not main_controller.store_controller == new_controller:
             return
-        if getattr(self, '_store_loaded_handler_id ', None):
+        if getattr(self, '_store_loaded_handler_id', None):
             main_controller.store_controller.disconnect(self._store_loaded_handler_id)
 
         self._store_closed_handler_id = new_controller.connect('store-closed', self._on_store_closed)

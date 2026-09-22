@@ -123,10 +123,6 @@ class Virtaal:
 
         main_controller = self.main_controller
 
-        if isinstance(startupfile, bytes):
-            from virtaal.common.utils import get_unicode
-            startupfile = get_unicode(startupfile)
-
         UnitController(main_controller.store_controller)
         ModeController(main_controller)
         LanguageController(main_controller)

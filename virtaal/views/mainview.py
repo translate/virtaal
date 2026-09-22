@@ -16,7 +16,6 @@ from gi.repository import Gdk, Gtk
 
 from virtaal.common import pan_app
 from virtaal.common.platform import platform
-from virtaal.common.utils import get_unicode
 from virtaal.views import theme
 
 from .baseview import BaseView
@@ -62,7 +61,7 @@ class EntryDialog(Gtk.Dialog):
         self.ent_input.grab_focus()
         response = super().run()
 
-        return response, get_unicode(self.ent_input.get_text(), 'utf-8')
+        return response, self.ent_input.get_text()
 
     def set_message(self, message):
         self.lbl_message.set_markup(message)
@@ -723,7 +722,7 @@ class MainView(BaseView):
     def show_open_dialog(self, title=''):
         """@returns: The selected file name and URI if the OK button was clicked.
             C{None} otherwise."""
-        last_path = get_unicode(pan_app.settings.general["lastdir"]) or ""
+        last_path = pan_app.settings.general["lastdir"] or ""
 
         if title:
             self.open_chooser.set_title(title)
@@ -739,9 +738,9 @@ class MainView(BaseView):
         self.open_chooser.hide()
 
         if response:
-            filename = get_unicode(self.open_chooser.get_filename())
+            filename = self.open_chooser.get_filename()
             pan_app.settings.general["lastdir"] = os.path.dirname(filename)
-            return (filename, get_unicode(self.open_chooser.get_uri(), 'utf-8'))
+            return (filename, self.open_chooser.get_uri())
         else:
             return ()
 
@@ -799,7 +798,7 @@ class MainView(BaseView):
         self.save_chooser.hide()
 
         if response == Gtk.ResponseType.ACCEPT:
-            filename = get_unicode(self.save_chooser.get_filename())
+            filename = self.save_chooser.get_filename()
             #FIXME: do we need uri here?
             return filename
 
@@ -1002,7 +1001,7 @@ class MainView(BaseView):
             # For now we only handle local files, and limited the recent
             # manager to only give us those anyway, so we can get the filename
             self._uri = item.get_uri()
-            self.controller.open_file(item.get_uri_display(), uri=get_unicode(item.get_uri(), 'utf-8'))
+            self.controller.open_file(item.get_uri_display(), uri=item.get_uri())
 
     def _on_report_bug(self, _widget=None):
         from virtaal.support import openmailto

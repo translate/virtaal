@@ -14,7 +14,6 @@ from gi.repository.GObject import TYPE_PYOBJECT
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.common.platform import platform
-from virtaal.common.utils import get_unicode
 
 from .basecontroller import BaseController
 from .baseplugin import BasePlugin, PluginUnsupported
@@ -45,7 +44,7 @@ class PluginController(BaseController):
     """Attributes of the plug-in class that contain info about it. Should contain PLUGIN_NAME_ATTRIB."""
     PLUGIN_DIRS = [
         os.path.join(pan_app.get_config_dir(), 'virtaal_plugins'),
-        os.path.join(get_unicode(os.path.dirname(__file__)), '..', 'plugins')
+        os.path.join(os.path.dirname(__file__), '..', 'plugins')
     ]
     """The directories to search for plug-in names."""
     PLUGIN_INTERFACE = BasePlugin

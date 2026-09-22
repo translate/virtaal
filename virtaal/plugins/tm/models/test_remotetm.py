@@ -101,11 +101,11 @@ def test_handle_matches_caches_none_and_emits_nothing_when_there_are_no_matches(
     assert matches == []
 
 
-def test_handle_matches_labels_and_decodes_each_match_then_emits():
+def test_handle_matches_labels_each_match_then_emits():
     model = _model()
     emitted = []
     model.connect('match-found', lambda m, q, r: emitted.append((q, r)))
-    raw_matches = [{'target': b'Hallo', 'source': 'hello'}]
+    raw_matches = [{'target': 'Hallo', 'source': 'hello'}]
 
     model._handle_matches(None, 'hello', raw_matches)
 

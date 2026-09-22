@@ -18,7 +18,6 @@ which needs no appId.
 import json
 from urllib.parse import urlencode
 
-from virtaal.common.utils import get_unicode
 from virtaal.support.httpclient import HTTPClient, RESTRequest
 
 from .basetmmodel import BaseTMModel, unescape_html_entities
@@ -100,7 +99,6 @@ class TMModel(BaseTMModel):
         target = unescape_html_entities(target)
         if target.endswith("\n") and not query_str.endswith("\n"):
             target = target[:-1]# chop of \n
-        target = get_unicode(target, 'utf-8')
         match = {
             'source': query_str,
             'target': target,

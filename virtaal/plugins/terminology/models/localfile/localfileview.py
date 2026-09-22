@@ -11,7 +11,6 @@ from gi.repository import Gdk, GLib, Gtk, Pango
 from translate.storage import factory as store_factory
 
 from virtaal.common import SignalTracker
-from virtaal.common.utils import get_unicode
 from virtaal.views.baseview import BaseView
 from virtaal.views.theme import current_theme, set_widget_bg_color
 from virtaal.views.widgets.wordatcursor import WordAtCursorSelector
@@ -118,7 +117,7 @@ class LocalFileView:
         if not buf.get_has_selection():
             return
 
-        selection = get_unicode(buf.get_text(*buf.get_selection_bounds(), include_hidden_chars=False)).strip()
+        selection = buf.get_text(*buf.get_selection_bounds(), include_hidden_chars=False).strip()
         if not selection:
             return
 

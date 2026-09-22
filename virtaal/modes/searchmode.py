@@ -9,7 +9,6 @@ import logging
 
 from gi.repository import Gdk, GLib, Gtk
 
-from virtaal.common.utils import get_unicode
 from virtaal.controllers.cursor import Cursor
 from virtaal.views.theme import current_theme, rgba_to_str
 
@@ -195,7 +194,7 @@ class SearchMode(BaseMode):
         # straight from translate.tools.pogrep.
         from virtaal.support.pogrep_compat import GrepFilter
         self.filter = GrepFilter(
-            searchstring=get_unicode(self.ent_search.get_text(), 'utf-8'),
+            searchstring=self.ent_search.get_text(),
             searchparts=('source', 'target'),
             ignorecase=not self.chk_casesensitive.get_active(),
             useregexp=self.chk_regex.get_active(),

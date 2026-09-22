@@ -8,7 +8,6 @@
 from gi.repository import Gtk, Pango
 
 from virtaal.common import SignalTracker
-from virtaal.common.utils import get_unicode
 from virtaal.views.baseview import BaseView
 from virtaal.views.widgets.wordatcursor import WordAtCursorSelector
 
@@ -69,7 +68,7 @@ class LookupView(BaseView):
         if not buf.get_has_selection():
             return
 
-        selection = get_unicode(buf.get_text(*buf.get_selection_bounds(), include_hidden_chars=False)).strip()
+        selection = buf.get_text(*buf.get_selection_bounds(), include_hidden_chars=False).strip()
         role      = textbox.role
         srclang   = self.lang_controller.source_lang.code
         tgtlang   = self.lang_controller.target_lang.code

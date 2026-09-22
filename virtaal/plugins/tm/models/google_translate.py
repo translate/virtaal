@@ -11,7 +11,6 @@ from urllib.parse import quote_plus
 
 import pycurl
 
-from virtaal.common.utils import get_unicode
 from virtaal.support.httpclient import HTTPClient, RESTRequest
 
 from .basetmmodel import BaseTMModel, unescape_html_entities
@@ -119,7 +118,6 @@ class TMModel(BaseTMModel):
             return
 
         target_unescaped = unescape_html_entities(text)
-        target_unescaped = get_unicode(target_unescaped, 'utf-8')
         match = {
             'source': query_str,
             'target': target_unescaped,

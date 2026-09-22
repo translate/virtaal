@@ -5,8 +5,6 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-from virtaal.common.utils import get_unicode
-
 from .basecontroller import BaseController
 
 
@@ -56,7 +54,7 @@ class WelcomeScreenController(BaseController):
     def open_recent(self, n):
         n -= 1 # Shift from nominal value [1; 5] to index value [0; 4]
         if 0 <= n <= len(self._recent_files)-1:
-            self.open_file(get_unicode(self._recent_files[n]['uri'], 'utf-8'))
+            self.open_file(self._recent_files[n]['uri'])
         else:
             import logging
             logging.debug('Invalid recent file index (%d) given. Recent files: %s)' % (n, self._recent_files))

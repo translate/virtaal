@@ -5,8 +5,6 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-from virtaal.common.utils import get_unicode
-
 from .basetmmodel import BaseTMModel
 
 
@@ -61,7 +59,6 @@ class TMModel(BaseTMModel):
         if matches:
             for match in matches:
                 match['tmsource'] = self.shortname
-                match['target'] = get_unicode(match['target'], 'utf-8')
             self.emit('match-found', query_str, matches)
 
     def push_store(self, store_controller):

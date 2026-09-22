@@ -19,7 +19,6 @@ import sys
 from virtaal.__version__ import version_string
 
 from .platform import platform
-from .utils import get_unicode
 
 
 def _read_ini_recovering(parser, filename):
@@ -59,7 +58,6 @@ def get_config_dir():
         #TODO: skuif na ~/.config/virtaal en migreer
         confdir = os.path.expanduser('~/.virtaal')
 
-    confdir = get_unicode(confdir)
     try:
         os.makedirs(confdir, exist_ok=True)
     except FileExistsError:
@@ -160,7 +158,7 @@ def get_locale_lang():
 
 def name():
     import getpass
-    name = get_unicode(getpass.getuser())  # username only
+    name = getpass.getuser()  # username only
     # pwd is only available on UNIX
     try:
         import pwd
@@ -460,9 +458,9 @@ def set_ui_language(lang):
 # Determine the directory the main executable is running from
 main_dir = ''
 if platform.is_frozen:
-    main_dir = os.path.dirname(get_unicode(sys.executable))
+    main_dir = os.path.dirname(sys.executable)
 else:
-    main_dir = os.path.dirname(get_unicode(sys.argv[0]))
+    main_dir = os.path.dirname(sys.argv[0])
 
 
 if platform.is_windows and platform.is_frozen:
@@ -485,7 +483,7 @@ def get_abs_data_filename(path_parts, basedirs=None):
     if basedirs is None:
         basedirs = []
     basedirs += [
-        os.path.join(os.path.dirname(get_unicode(__file__)), os.path.pardir),
+        os.path.join(os.path.dirname(__file__), os.path.pardir),
     ]
     return file_discovery.get_abs_data_filename(path_parts, basedirs=basedirs)
 

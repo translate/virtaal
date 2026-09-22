@@ -117,5 +117,7 @@ skip = "*.po,*.pot,po/*,ChangeLog,build,dist,*.egg-info,docs/_themes,devsupport/
 # Fattah" (a real name, aboutdialog.py). bable: "Bable", Asturian's
 # own alternate ISO language name (translate_compat.py). inout: a
 # deliberate (if terse) variable name for a stream used as stdin/
-# stdout/stderr together (openmailto.py), not a typo of "input".
-ignore-words-list = "datas,gir,abd,bable,inout"
+# stdout/stderr together (openmailto.py), not a typo of "input". afile:
+# translate-toolkit's own parameter/variable name throughout the
+# vendored bundleprojstore.py/projstore.py, not a typo of "a file".
+ignore-words-list = "datas,gir,abd,bable,inout,afile"

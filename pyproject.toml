@@ -104,6 +104,23 @@ ignore = [
     "F841",
 ]
 
+[tool.coverage.run]
+# Dev tooling that only ever runs by a developer invoking it directly
+# (a manual-test script, a fake backend for eyeballing UI, a plugin
+# template to copy) - not reachable application logic, so it can never
+# meaningfully be unit tested. Left in and counted, they permanently
+# drag the real coverage figure down instead of reflecting it.
+omit = [
+    "virtaal/plugins/_helloworld.py",
+    "virtaal/plugins/_ipython_console/__init__.py",
+    "virtaal/plugins/_ipython_console/ipython_view.py",
+    "virtaal/plugins/_python_console.py",
+    "virtaal/plugins/tm/models/_dummytm.py",
+    "virtaal/views/widgets/demo_selectdialog.py",
+    "virtaal/views/widgets/demo_selectview.py",
+    "virtaal/views/widgets/demo_textbox.py",
+]
+
 [tool.coverage.report]
 # Ratchets up over time as real tests get added - a couple points
 # below the real current figure, so an incidental single-line drop on

@@ -103,8 +103,8 @@ class QualityCheckMode(BaseMode):
 
         self.widgets = [self.btn_popup]
 
-        xoptions = Gtk.AttachOptions.FILL
-        table.attach(self.btn_popup, 2, 3, 0, 1, xoptions=xoptions)
+        self.btn_popup.set_vexpand(True)
+        table.attach(self.btn_popup, 2, 0, 1, 1)
 
         table.show_all()
 

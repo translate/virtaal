@@ -78,11 +78,9 @@
                     <property name="can_focus">False</property>
                     <property name="left_padding">12</property>
                     <child>
-                      <object class="GtkTable" id="table1">
+                      <object class="GtkGrid" id="tbl_language_adder">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="n_rows">6</property>
-                        <property name="n_columns">2</property>
                         <property name="row_spacing">10</property>
                         <child>
                           <object class="GtkLabel" id="label4">
@@ -91,10 +89,11 @@
                             <property name="xalign">1</property>
                             <property name="xpad">10</property>
                             <property name="label" translatable="yes">Language name:</property>
+                            <property name="valign">center</property>
                           </object>
                           <packing>
-                            <property name="x_options">GTK_FILL</property>
-                            <property name="y_options"></property>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">0</property>
                           </packing>
                         </child>
                         <child>
@@ -104,12 +103,11 @@
                             <property name="xalign">1</property>
                             <property name="xpad">10</property>
                             <property name="label" translatable="yes">ISO code:</property>
+                            <property name="valign">center</property>
                           </object>
                           <packing>
+                            <property name="left_attach">0</property>
                             <property name="top_attach">1</property>
-                            <property name="bottom_attach">2</property>
-                            <property name="x_options">GTK_FILL</property>
-                            <property name="y_options"></property>
                           </packing>
                         </child>
                         <child>
@@ -118,11 +116,12 @@
                             <property name="can_focus">True</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
+                            <property name="halign">center</property>
+                            <property name="vexpand">True</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="right_attach">2</property>
-                            <property name="x_options"></property>
+                            <property name="top_attach">0</property>
                           </packing>
                         </child>
                         <child>
@@ -132,24 +131,25 @@
                             <property name="max_length">100</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
+                            <property name="halign">center</property>
+                            <property name="vexpand">True</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="right_attach">2</property>
                             <property name="top_attach">1</property>
-                            <property name="bottom_attach">2</property>
-                            <property name="x_options"></property>
                           </packing>
                         </child>
                         <child>
                           <object class="GtkHSeparator" id="hseparator3">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="vexpand">True</property>
                           </object>
                           <packing>
-                            <property name="right_attach">2</property>
+                            <property name="left_attach">0</property>
                             <property name="top_attach">2</property>
-                            <property name="bottom_attach">3</property>
+                            <property name="width">2</property>
                           </packing>
                         </child>
                         <child>
@@ -159,12 +159,11 @@
                             <property name="xalign">1</property>
                             <property name="xpad">10</property>
                             <property name="label" translatable="yes">Plural expression:</property>
+                            <property name="valign">center</property>
                           </object>
                           <packing>
+                            <property name="left_attach">0</property>
                             <property name="top_attach">5</property>
-                            <property name="bottom_attach">6</property>
-                            <property name="x_options">GTK_FILL</property>
-                            <property name="y_options"></property>
                           </packing>
                         </child>
                         <child>
@@ -173,13 +172,12 @@
                             <property name="can_focus">True</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
+                            <property name="halign">center</property>
+                            <property name="vexpand">True</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="right_attach">2</property>
                             <property name="top_attach">5</property>
-                            <property name="bottom_attach">6</property>
-                            <property name="x_options"></property>
                           </packing>
                         </child>
                         <child>
@@ -189,12 +187,11 @@
                             <property name="xalign">1</property>
                             <property name="xpad">10</property>
                             <property name="label" translatable="yes">Number of plurals:</property>
+                            <property name="valign">center</property>
                           </object>
                           <packing>
+                            <property name="left_attach">0</property>
                             <property name="top_attach">4</property>
-                            <property name="bottom_attach">5</property>
-                            <property name="x_options">GTK_FILL</property>
-                            <property name="y_options"></property>
                           </packing>
                         </child>
                         <child>
@@ -205,13 +202,11 @@
                             <property name="secondary_icon_activatable">False</property>
                             <property name="adjustment">adjustment_nplurals</property>
                             <property name="numeric">True</property>
+                            <property name="vexpand">True</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="right_attach">2</property>
                             <property name="top_attach">4</property>
-                            <property name="bottom_attach">5</property>
-                            <property name="x_options">GTK_FILL</property>
                           </packing>
                         </child>
                         <child>
@@ -222,11 +217,13 @@
                             <property name="yalign">0.10000000149011612</property>
                             <property name="label" translatable="yes">Depending on the translation task, the plural information might be optional.</property>
                             <property name="wrap">True</property>
+                            <property name="hexpand">True</property>
+                            <property name="vexpand">True</property>
                           </object>
                           <packing>
-                            <property name="right_attach">2</property>
+                            <property name="left_attach">0</property>
                             <property name="top_attach">3</property>
-                            <property name="bottom_attach">4</property>
+                            <property name="width">2</property>
                           </packing>
                         </child>
                       </object>
@@ -1069,11 +1066,9 @@ If you are translating from English to French then French would be your translat
               </packing>
             </child>
             <child>
-              <object class="GtkTable" id="mode_box">
+              <object class="GtkGrid" id="mode_box">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="n_rows">2</property>
-                <property name="n_columns">6</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -1218,11 +1213,9 @@ If you are translating from English to French then French would be your translat
                         <property name="left_padding">12</property>
                         <property name="right_padding">10</property>
                         <child>
-                          <object class="GtkTable" id="table2">
+                          <object class="GtkGrid" id="tbl_translator_info">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="n_rows">3</property>
-                            <property name="n_columns">2</property>
                             <child>
                               <object class="GtkLabel" id="label10">
                                 <property name="visible">True</property>
@@ -1230,11 +1223,12 @@ If you are translating from English to French then French would be your translat
                                 <property name="tooltip_text" translatable="yes">The name stored in the file header</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes" comments="l10n: This label is for the name of the translator">Name:</property>
+                                <property name="margin-start">3</property>
+                                <property name="margin-end">3</property>
                               </object>
                               <packing>
-                                <property name="x_options">GTK_FILL</property>
-                                <property name="y_options">GTK_FILL</property>
-                                <property name="x_padding">3</property>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">0</property>
                               </packing>
                             </child>
                             <child>
@@ -1247,11 +1241,11 @@ If you are translating from English to French then French would be your translat
                                 <property name="secondary_icon_activatable">False</property>
                                 <property name="primary_icon_sensitive">True</property>
                                 <property name="secondary_icon_sensitive">True</property>
+                                <property name="hexpand">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="right_attach">2</property>
-                                <property name="y_options">GTK_FILL</property>
+                                <property name="top_attach">0</property>
                               </packing>
                             </child>
                             <child>
@@ -1261,13 +1255,12 @@ If you are translating from English to French then French would be your translat
                                 <property name="tooltip_text" translatable="yes">The e-mail address stored in the file header</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">E-mail address:</property>
+                                <property name="margin-start">3</property>
+                                <property name="margin-end">3</property>
                               </object>
                               <packing>
+                                <property name="left_attach">0</property>
                                 <property name="top_attach">1</property>
-                                <property name="bottom_attach">2</property>
-                                <property name="x_options">GTK_FILL</property>
-                                <property name="y_options">GTK_FILL</property>
-                                <property name="x_padding">3</property>
                               </packing>
                             </child>
                             <child>
@@ -1280,13 +1273,11 @@ If you are translating from English to French then French would be your translat
                                 <property name="secondary_icon_activatable">False</property>
                                 <property name="primary_icon_sensitive">True</property>
                                 <property name="secondary_icon_sensitive">True</property>
+                                <property name="hexpand">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="right_attach">2</property>
                                 <property name="top_attach">1</property>
-                                <property name="bottom_attach">2</property>
-                                <property name="y_options">GTK_FILL</property>
                               </packing>
                             </child>
                             <child>
@@ -1296,13 +1287,12 @@ If you are translating from English to French then French would be your translat
                                 <property name="tooltip_text" translatable="yes">The team information stored in the file header. This can be an e-mail address or a URL, for example.</property>
                                 <property name="xalign">1</property>
                                 <property name="label" translatable="yes">Team:</property>
+                                <property name="margin-start">3</property>
+                                <property name="margin-end">3</property>
                               </object>
                               <packing>
+                                <property name="left_attach">0</property>
                                 <property name="top_attach">2</property>
-                                <property name="bottom_attach">3</property>
-                                <property name="x_options">GTK_FILL</property>
-                                <property name="y_options">GTK_FILL</property>
-                                <property name="x_padding">3</property>
                               </packing>
                             </child>
                             <child>
@@ -1315,13 +1305,11 @@ If you are translating from English to French then French would be your translat
                                 <property name="secondary_icon_activatable">False</property>
                                 <property name="primary_icon_sensitive">True</property>
                                 <property name="secondary_icon_sensitive">True</property>
+                                <property name="hexpand">True</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="right_attach">2</property>
                                 <property name="top_attach">2</property>
-                                <property name="bottom_attach">3</property>
-                                <property name="y_options">GTK_FILL</property>
                               </packing>
                             </child>
                           </object>
@@ -1362,22 +1350,21 @@ If you are translating from English to French then French would be your translat
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
-                              <object class="GtkTable" id="table3">
+                              <object class="GtkGrid" id="tbl_font_selection">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="n_rows">2</property>
-                                <property name="n_columns">2</property>
                                 <child>
                                   <object class="GtkLabel" id="label14">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="xalign">1</property>
                                     <property name="label" translatable="yes">Source text:</property>
+                                    <property name="margin-start">3</property>
+                                    <property name="margin-end">3</property>
                                   </object>
                                   <packing>
-                                    <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options">GTK_FILL</property>
-                                    <property name="x_padding">3</property>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">0</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -1386,13 +1373,12 @@ If you are translating from English to French then French would be your translat
                                     <property name="can_focus">False</property>
                                     <property name="xalign">1</property>
                                     <property name="label" translatable="yes">Target text:</property>
+                                    <property name="margin-start">3</property>
+                                    <property name="margin-end">3</property>
                                   </object>
                                   <packing>
+                                    <property name="left_attach">0</property>
                                     <property name="top_attach">1</property>
-                                    <property name="bottom_attach">2</property>
-                                    <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options">GTK_FILL</property>
-                                    <property name="x_padding">3</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -1403,11 +1389,11 @@ If you are translating from English to French then French would be your translat
                                     <property name="use_action_appearance">False</property>
                                     <property name="use_font">True</property>
                                     <property name="use_size">True</property>
+                                    <property name="hexpand">True</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="right_attach">2</property>
-                                    <property name="y_options">GTK_FILL</property>
+                                    <property name="top_attach">0</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -1418,13 +1404,11 @@ If you are translating from English to French then French would be your translat
                                     <property name="use_action_appearance">False</property>
                                     <property name="use_font">True</property>
                                     <property name="use_size">True</property>
+                                    <property name="hexpand">True</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="right_attach">2</property>
                                     <property name="top_attach">1</property>
-                                    <property name="bottom_attach">2</property>
-                                    <property name="y_options">GTK_FILL</property>
                                   </packing>
                                 </child>
                               </object>
@@ -1716,12 +1700,10 @@ If you are translating from English to French then French would be your translat
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <child>
-              <object class="GtkTable" id="tbl_properties">
+              <object class="GtkGrid" id="tbl_properties">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="border_width">5</property>
-                <property name="n_rows">9</property>
-                <property name="n_columns">2</property>
                 <property name="column_spacing">12</property>
                 <property name="row_spacing">6</property>
                 <child>
@@ -1731,23 +1713,33 @@ If you are translating from English to French then French would be your translat
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">&lt;b&gt;Words&lt;/b&gt; (total):</property>
                     <property name="use_markup">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                   </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="lbl_word_total">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="xalign">0</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkVBox" id="vbox_word_labels">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                     <child>
                       <placeholder/>
                     </child>
@@ -1759,14 +1751,16 @@ If you are translating from English to French then French would be your translat
                     </child>
                   </object>
                   <packing>
+                    <property name="left_attach">0</property>
                     <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkVBox" id="vbox_string_labels">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                     <child>
                       <placeholder/>
                     </child>
@@ -1778,8 +1772,8 @@ If you are translating from English to French then French would be your translat
                     </child>
                   </object>
                   <packing>
+                    <property name="left_attach">0</property>
                     <property name="top_attach">4</property>
-                    <property name="bottom_attach">5</property>
                   </packing>
                 </child>
                 <child>
@@ -1789,10 +1783,12 @@ If you are translating from English to French then French would be your translat
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">&lt;b&gt;Strings&lt;/b&gt; (total):</property>
                     <property name="use_markup">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                   </object>
                   <packing>
+                    <property name="left_attach">0</property>
                     <property name="top_attach">3</property>
-                    <property name="bottom_attach">4</property>
                   </packing>
                 </child>
                 <child>
@@ -1800,22 +1796,24 @@ If you are translating from English to French then French would be your translat
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="xalign">0</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
                     <property name="top_attach">3</property>
-                    <property name="bottom_attach">4</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkHSeparator" id="hseparator5">
                     <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                   </object>
                   <packing>
-                    <property name="right_attach">2</property>
+                    <property name="left_attach">0</property>
                     <property name="top_attach">2</property>
-                    <property name="bottom_attach">3</property>
+                    <property name="width">2</property>
                   </packing>
                 </child>
                 <child>
@@ -1823,6 +1821,8 @@ If you are translating from English to French then French would be your translat
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="spacing">6</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                     <child>
                       <object class="GtkVBox" id="vbox_string_stats">
                         <property name="visible">True</property>
@@ -1869,9 +1869,7 @@ If you are translating from English to French then French would be your translat
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
                     <property name="top_attach">4</property>
-                    <property name="bottom_attach">5</property>
                   </packing>
                 </child>
                 <child>
@@ -1879,6 +1877,8 @@ If you are translating from English to French then French would be your translat
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="spacing">6</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                     <child>
                       <object class="GtkVBox" id="vbox_word_stats">
                         <property name="visible">True</property>
@@ -1925,19 +1925,19 @@ If you are translating from English to French then French would be your translat
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
                     <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkHSeparator" id="hseparator6">
                     <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                   </object>
                   <packing>
-                    <property name="right_attach">2</property>
+                    <property name="left_attach">0</property>
                     <property name="top_attach">5</property>
-                    <property name="bottom_attach">6</property>
+                    <property name="width">2</property>
                   </packing>
                 </child>
                 <child>
@@ -1946,10 +1946,12 @@ If you are translating from English to French then French would be your translat
                     <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">File type:</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                   </object>
                   <packing>
+                    <property name="left_attach">0</property>
                     <property name="top_attach">6</property>
-                    <property name="bottom_attach">7</property>
                   </packing>
                 </child>
                 <child>
@@ -1957,12 +1959,12 @@ If you are translating from English to French then French would be your translat
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="xalign">0</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
                     <property name="top_attach">6</property>
-                    <property name="bottom_attach">7</property>
                   </packing>
                 </child>
                 <child>
@@ -1971,10 +1973,12 @@ If you are translating from English to French then French would be your translat
                     <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">File size:</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                   </object>
                   <packing>
+                    <property name="left_attach">0</property>
                     <property name="top_attach">7</property>
-                    <property name="bottom_attach">8</property>
                   </packing>
                 </child>
                 <child>
@@ -1982,12 +1986,12 @@ If you are translating from English to French then French would be your translat
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="xalign">0</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
                     <property name="top_attach">7</property>
-                    <property name="bottom_attach">8</property>
                   </packing>
                 </child>
                 <child>
@@ -1996,10 +2000,12 @@ If you are translating from English to French then French would be your translat
                     <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="label" translatable="yes">Location:</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                   </object>
                   <packing>
+                    <property name="left_attach">0</property>
                     <property name="top_attach">8</property>
-                    <property name="bottom_attach">9</property>
                   </packing>
                 </child>
                 <child>
@@ -2010,12 +2016,12 @@ If you are translating from English to French then French would be your translat
                     <property name="xalign">0</property>
                     <property name="selectable">True</property>
                     <property name="ellipsize">start</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
                     <property name="top_attach">8</property>
-                    <property name="bottom_attach">9</property>
                   </packing>
                 </child>
               </object>
@@ -2327,15 +2333,15 @@ If you are translating from English to French then French would be your translat
           </packing>
         </child>
         <child>
-          <object class="GtkTable" id="table4">
+          <object class="GtkGrid" id="tbl_term_files">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="n_rows">2</property>
-            <property name="n_columns">2</property>
             <child>
               <object class="GtkHBox" id="hbox6">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="valign">center</property>
                 <child>
                   <object class="GtkHButtonBox" id="hbuttonbox4">
                     <property name="visible">True</property>
@@ -2407,9 +2413,8 @@ If you are translating from English to French then French would be your translat
                 </child>
               </object>
               <packing>
+                <property name="left_attach">0</property>
                 <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-                <property name="y_options"></property>
               </packing>
             </child>
             <child>
@@ -2419,6 +2424,8 @@ If you are translating from English to French then French would be your translat
                 <property name="hscrollbar_policy">automatic</property>
                 <property name="vscrollbar_policy">automatic</property>
                 <property name="shadow_type">in</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
                 <child>
                   <object class="GtkTreeView" id="tvw_termfiles">
                     <property name="visible">True</property>
@@ -2426,6 +2433,10 @@ If you are translating from English to French then French would be your translat
                   </object>
                 </child>
               </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+              </packing>
             </child>
             <child>
               <placeholder/>
@@ -2638,21 +2649,22 @@ If you are translating from English to French then French would be your translat
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkTable" id="table5">
+              <object class="GtkGrid" id="tbl_weblookup_add">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="n_rows">2</property>
-                <property name="n_columns">2</property>
                 <child>
                   <object class="GtkLabel" id="lbl1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">Name:</property>
+                    <property name="vexpand">True</property>
+                    <property name="margin-start">2</property>
+                    <property name="margin-end">2</property>
                   </object>
                   <packing>
-                    <property name="x_options">GTK_FILL</property>
-                    <property name="x_padding">2</property>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -2661,12 +2673,13 @@ If you are translating from English to French then French would be your translat
                     <property name="can_focus">False</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">URL:</property>
+                    <property name="vexpand">True</property>
+                    <property name="margin-start">2</property>
+                    <property name="margin-end">2</property>
                   </object>
                   <packing>
+                    <property name="left_attach">0</property>
                     <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
-                    <property name="x_options">GTK_FILL</property>
-                    <property name="x_padding">2</property>
                   </packing>
                 </child>
                 <child>
@@ -2678,10 +2691,12 @@ If you are translating from English to French then French would be your translat
                     <property name="secondary_icon_activatable">False</property>
                     <property name="primary_icon_sensitive">True</property>
                     <property name="secondary_icon_sensitive">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -2693,12 +2708,12 @@ If you are translating from English to French then French would be your translat
                     <property name="secondary_icon_activatable">False</property>
                     <property name="primary_icon_sensitive">True</property>
                     <property name="secondary_icon_sensitive">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
                     <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
                   </packing>
                 </child>
               </object>

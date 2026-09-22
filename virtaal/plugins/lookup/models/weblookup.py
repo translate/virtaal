@@ -322,6 +322,9 @@ class WebLookupAddDialog:
             self.dialog.set_transient_for(parent)
             self.dialog.set_icon(parent.get_toplevel().get_icon())
 
+        self.ent_url_name.connect('changed', self._on_field_changed)
+        self.ent_url.connect('changed', self._on_field_changed)
+
     def _get_widgets(self):
         widget_names = ('btn_url_cancel', 'btn_url_ok', 'cbtn_url_quote', 'ent_url_name', 'ent_url')
 
@@ -337,6 +340,7 @@ class WebLookupAddDialog:
         self.ent_url_name.set_text('')
         self.cbtn_url_quote.set_active(False)
         self.ent_url_name.grab_focus()
+        self._update_ok_sensitivity()
 
         self.dialog.show()
         self.dialog.present()
@@ -358,3 +362,13 @@ class WebLookupAddDialog:
             'enabled':        True,
         }
         return self.url
+
+
+    # EVENT HANDLERS #
+    def _on_field_changed(self, entry):
+        self._update_ok_sensitivity()
+
+    def _update_ok_sensitivity(self):
+        self.btn_url_ok.set_sensitive(
+            bool(self.ent_url_name.get_text()) and bool(self.ent_url.get_text())
+        )

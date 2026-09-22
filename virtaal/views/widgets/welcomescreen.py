@@ -37,7 +37,7 @@ class WelcomeScreen(Gtk.ScrolledWindow):
             raise ValueError('Welcome screen not found in GtkBuikder object.')
         child = win.get_child()
         win.remove(child)
-        self.add_with_viewport(child)
+        self.add(child)
 
         self._get_widgets()
         self._init_feature_view()

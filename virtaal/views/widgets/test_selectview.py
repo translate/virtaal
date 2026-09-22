@@ -128,26 +128,26 @@ def test_scroll_position_round_trips_through_a_scrolled_window():
     sview = _make_view()
     scrolled = Gtk.ScrolledWindow()
     scrolled.add(sview)
-    sview.get_vadjustment().set_upper(1000)
-    sview.get_vadjustment().set_value(42)
+    sview.props.vadjustment.set_upper(1000)
+    sview.props.vadjustment.set_value(42)
 
     position = sview.get_scroll_position()
-    sview.get_vadjustment().set_value(0)
+    sview.props.vadjustment.set_value(0)
     sview.set_scroll_position(position)
 
-    assert sview.get_vadjustment().get_value() == 42
+    assert sview.props.vadjustment.get_value() == 42
 
 
 def test_set_scroll_position_does_nothing_for_none():
     sview = _make_view()
     scrolled = Gtk.ScrolledWindow()
     scrolled.add(sview)
-    sview.get_vadjustment().set_upper(1000)
-    sview.get_vadjustment().set_value(42)
+    sview.props.vadjustment.set_upper(1000)
+    sview.props.vadjustment.set_value(42)
 
     sview.set_scroll_position(None)
 
-    assert sview.get_vadjustment().get_value() == 42
+    assert sview.props.vadjustment.get_value() == 42
 
 
 def test_configure_button_responds_to_the_clicked_signal():

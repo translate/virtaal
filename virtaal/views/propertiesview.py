@@ -7,7 +7,7 @@
 
 import logging
 
-from gi.repository import Gtk
+from gi.repository import GLib, Gtk
 
 from virtaal.common import GObjectWrapper
 
@@ -182,8 +182,15 @@ class PropertiesView(BaseView, GObjectWrapper):
             i18n_filesize = dgettext('glib20', "%.1f KB") % (file_size / 1024.0)
             self._widgets['lbl_filesize'].set_text(i18n_filesize)
 
+        # present() only raises/focuses an already-realized window -
+        # show() explicitly first, run() alone doesn't guarantee that.
+        self._widgets['dialog'].show()
+        self._widgets['dialog'].present()
+        transient_for = self._widgets['dialog'].get_transient_for()
         self._widgets['dialog'].run()
         self._widgets['dialog'].hide()
+        if transient_for is not None:
+            GLib.idle_add(transient_for.present)
 
 
     # EVENT HANDLERS #

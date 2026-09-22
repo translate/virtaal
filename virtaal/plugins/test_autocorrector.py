@@ -114,3 +114,52 @@ def test_autocorrect_with_no_dictionary_does_nothing(tmp_path):
 
     assert reprange is None
     assert replacement == ''
+
+
+def test_autocorrect_with_a_dictionary_but_no_match_does_nothing(tmp_path):
+    _write_document_list(tmp_path, 'af_ZA')
+    corrector = AutoCorrector(main_controller=None, acorpath=str(tmp_path))
+    corrector.load_dictionary('af_ZA')
+
+    reprange, replacement = corrector.autocorrect('nothing correctable here', 24)
+
+    assert reprange is None
+    assert replacement == ''
+
+
+def test_add_widget_does_nothing_without_a_dictionary(tmp_path):
+    corrector = AutoCorrector(main_controller=None, acorpath=str(tmp_path))
+
+    corrector.add_widget(object())  # must not raise, silently ignored
+
+    assert corrector.widgets == set()
+
+
+def test_add_widget_ignores_a_widget_already_added(tmp_path):
+    _write_document_list(tmp_path, 'af_ZA')
+    corrector = AutoCorrector(main_controller=None, acorpath=str(tmp_path))
+    corrector.load_dictionary('af_ZA')
+    already_added = object()
+    corrector.widgets.add(already_added)
+
+    corrector.add_widget(already_added)  # must not raise or duplicate
+
+    assert corrector.widgets == {already_added}
+
+
+def test_add_widget_rejects_an_unsupported_widget_type(tmp_path):
+    _write_document_list(tmp_path, 'af_ZA')
+    corrector = AutoCorrector(main_controller=None, acorpath=str(tmp_path))
+    corrector.load_dictionary('af_ZA')
+
+    try:
+        corrector.add_widget(object())
+        assert False, 'expected ValueError'
+    except ValueError:
+        pass
+
+
+def test_remove_widget_does_nothing_without_a_dictionary(tmp_path):
+    corrector = AutoCorrector(main_controller=None, acorpath=str(tmp_path))
+
+    corrector.remove_widget(object())  # must not raise

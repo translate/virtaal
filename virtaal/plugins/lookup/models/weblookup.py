@@ -336,6 +336,7 @@ class WebLookupAddDialog:
         self.ent_url.set_text('')
         self.ent_url_name.set_text('')
         self.cbtn_url_quote.set_active(False)
+        self.ent_url_name.grab_focus()
 
         self.dialog.show()
         self.dialog.present()

@@ -112,7 +112,7 @@ class TMView(BaseView, GObjectWrapper):
         liststore.clear()
         for match in matches:
             tooltip = ''
-            if len(liststore) <= 9:
+            if len(liststore) < 9:
                 tooltip = _('Ctrl+%(number_key)d') % {"number_key": len(liststore)+1}
             liststore.append([match, tooltip])
 

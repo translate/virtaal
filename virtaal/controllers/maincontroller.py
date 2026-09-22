@@ -374,21 +374,21 @@ class MainController(BaseController):
         """Select the specified unit in the store view."""
         self.store_controller.select_unit(unit, force)
 
-    def show_error(self, msg):
+    def show_error(self, msg, parent=None):
         """Shortcut for C{self.view.show_error_dialog()}"""
-        return self.view.show_error_dialog(message=msg)
+        return self.view.show_error_dialog(message=msg, parent=parent)
 
     def show_input(self, title='', msg=''):
         """Shortcut for C{self.view.show_input_dialog()}"""
         return self.view.show_input_dialog(title=title, message=msg)
 
-    def show_prompt(self, title='', msg=''):
+    def show_prompt(self, title='', msg='', parent=None):
         """Shortcut for C{self.view.show_prompt_dialog()}"""
-        return self.view.show_prompt_dialog(title=title, message=msg)
+        return self.view.show_prompt_dialog(title=title, message=msg, parent=parent)
 
-    def show_info(self, title='', msg=''):
+    def show_info(self, title='', msg='', parent=None):
         """Shortcut for C{self.view.show_info_dialog()}"""
-        return self.view.show_info_dialog(title=title, message=msg)
+        return self.view.show_info_dialog(title=title, message=msg, parent=parent)
 
     def quit(self, force=False):
         # Gtk.Dialog.run() has its own main loop, unaffected by

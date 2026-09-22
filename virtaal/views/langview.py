@@ -152,7 +152,7 @@ class LanguageView(BaseView):
 
         err = self.add_dialog.check_input_sanity()
         if err:
-            self.controller.main_controller.show_error(err)
+            self.controller.main_controller.show_error(err, parent=self.select_dialog.dialog)
             return
 
         name = self.add_dialog.langname

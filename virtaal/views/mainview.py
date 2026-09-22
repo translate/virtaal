@@ -737,20 +737,20 @@ class MainView(BaseView):
         else:
             return ()
 
-    def show_error_dialog(self, title='', message='', markup=''):
+    def show_error_dialog(self, title='', message='', markup='', parent=None):
         fill_dialog(self.error_dialog, title, message, markup)
 
-        self.error_dialog.set_transient_for(self._top_window)
+        self.error_dialog.set_transient_for(parent or self._top_window)
         old_top = self._top_window
         self._top_window = self.error_dialog
         response = self.error_dialog.run()
         self.error_dialog.hide()
         self._top_window = old_top
 
-    def show_prompt_dialog(self, title='', message='', markup=''):
+    def show_prompt_dialog(self, title='', message='', markup='', parent=None):
         fill_dialog(self.prompt_dialog, title, message, markup)
 
-        self.prompt_dialog.set_transient_for(self._top_window)
+        self.prompt_dialog.set_transient_for(parent or self._top_window)
         old_top = self._top_window
         self._top_window = self.prompt_dialog
         response = self.prompt_dialog.run()
@@ -759,11 +759,11 @@ class MainView(BaseView):
 
         return response == Gtk.ResponseType.YES
 
-    def show_info_dialog(self, title='', message='', markup=''):
+    def show_info_dialog(self, title='', message='', markup='', parent=None):
         """shows a simple info dialog containing a message and an OK button"""
         fill_dialog(self.info_dialog, title, message, markup)
 
-        self.info_dialog.set_transient_for(self._top_window)
+        self.info_dialog.set_transient_for(parent or self._top_window)
         old_top = self._top_window
         self._top_window = self.info_dialog
         response = self.info_dialog.run()

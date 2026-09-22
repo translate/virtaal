@@ -34,8 +34,8 @@ class ModeView(GObjectWrapper, BaseView):
     def _build_gui(self):
         # Get the mode container from the main controller
         # We need the *same* GtkBuilder instance as used by the MainView, because we need
-        # the Gtk.Table as already added to the main window. Loading the GtkBuilder file again
-        # would create a new main window with a different Gtk.Table.
+        # the Gtk.Grid as already added to the main window. Loading the GtkBuilder file again
+        # would create a new main window with a different Gtk.Grid.
         gui = self.controller.main_controller.view.gui # FIXME: Is this acceptable?
         self.mode_box = gui.get_object('mode_box')
 
@@ -48,9 +48,13 @@ class ModeView(GObjectWrapper, BaseView):
         self.lbl_mode.set_markup_with_mnemonic(_('N_avigation:'))
         self.lbl_mode.props.xpad = 3
         self.lbl_mode.set_mnemonic_widget(self.cmb_modes)
+        self.lbl_mode.set_halign(Gtk.Align.CENTER)
+        self.lbl_mode.set_valign(Gtk.Align.CENTER)
+        self.cmb_modes.set_halign(Gtk.Align.CENTER)
+        self.cmb_modes.set_valign(Gtk.Align.CENTER)
 
-        self.mode_box.attach(self.lbl_mode, 0, 1, 0, 1, xoptions=0, yoptions=0)
-        self.mode_box.attach(self.cmb_modes, 1, 2, 0, 1, xoptions=0, yoptions=0)
+        self.mode_box.attach(self.lbl_mode, 0, 0, 1, 1)
+        self.mode_box.attach(self.cmb_modes, 1, 0, 1, 1)
 
     def _load_modes(self):
         self.displayname_index = {}

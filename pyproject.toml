@@ -104,6 +104,12 @@ ignore = [
     "F841",
 ]
 
+[tool.coverage.report]
+# Ratchets up over time as real tests get added - a couple points
+# below the real current figure, so an incidental single-line drop on
+# an unrelated PR doesn't fail CI on its own.
+fail_under = 57
+
 [tool.codespell]
 skip = "*.po,*.pot,po/*,ChangeLog,build,dist,*.egg-info,docs/_themes,devsupport/testfiles,.git"
 # datas: PyInstaller's own datas= kwarg, not a typo. gir: GObject

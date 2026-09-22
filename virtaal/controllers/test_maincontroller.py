@@ -124,7 +124,7 @@ def _controller_for_export(bundle_filename, raises=None):
     controller = MainController.__new__(MainController)
     controller.view = SimpleNamespace(
         show_save_dialog=lambda current_filename, title: current_filename,
-        show_error_dialog=lambda message: calls.__setitem__('error', message),
+        show_error_dialog=lambda message, parent=None: calls.__setitem__('error', message),
     )
     controller._store_controller = SimpleNamespace(
         get_bundle_filename=lambda: bundle_filename,
@@ -244,7 +244,7 @@ def test_save_file_clears_force_saveas_after_a_successful_save():
 def test_do_save_file_shows_an_error_dialog_on_oserror():
     controller = _controller_for_save(save_raises=OSError('disk full'))
     errors = []
-    controller.view = SimpleNamespace(show_error_dialog=lambda message: errors.append(message))
+    controller.view = SimpleNamespace(show_error_dialog=lambda message, parent=None: errors.append(message))
 
     result = controller.save_file(filename='explicit.po')
 
@@ -255,7 +255,7 @@ def test_do_save_file_shows_an_error_dialog_on_oserror():
 def test_do_save_file_shows_an_error_dialog_on_a_generic_exception():
     controller = _controller_for_save(save_raises=ValueError('unexpected'))
     errors = []
-    controller.view = SimpleNamespace(show_error_dialog=lambda message: errors.append(message))
+    controller.view = SimpleNamespace(show_error_dialog=lambda message, parent=None: errors.append(message))
 
     result = controller.save_file(filename='explicit.po')
 

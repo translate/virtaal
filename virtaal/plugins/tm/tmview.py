@@ -217,6 +217,14 @@ class TMView(BaseView, GObjectWrapper):
             selected = self._get_selected_unit_view()
             self.tmwindow.update_geometry(selected)
         else:
+            if isinstance(Gtk.grab_get_current(), Gtk.Menu):
+                # A plain popup menu (e.g. the Workflow/Quality-Check mode
+                # buttons) also takes an implicit grab when it opens, same
+                # as a modal dialog. Treating that as "a modal dialog
+                # opened" and hiding this window fights with the menu's
+                # own grab and can dismiss the menu prematurely (#3689).
+                # Only an actual modal window should hide the TM window.
+                return
             self._may_show_tmwindow = False
             if not self.isvisible:
                 return

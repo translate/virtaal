@@ -5,8 +5,10 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import re
 from types import SimpleNamespace
 
+import pytest
 from gi.repository import Gtk
 from translate.storage import xliff
 
@@ -113,3 +115,333 @@ def test_set_search_bg_removes_its_previous_provider_on_a_later_call(monkeypatch
     mode._set_search_bg('#fff')
 
     assert removed == [first_provider]
+
+
+# _get_matches_for_unit() #
+
+def test_get_matches_for_unit_filters_by_unit_identity():
+    mode = SearchMode.__new__(SearchMode)
+    unit_a, unit_b = object(), object()
+    match_a = _FakeMatch(unit_a, part_n=0, start=0, end=0)
+    match_b = _FakeMatch(unit_b, part_n=0, start=0, end=0)
+    mode.matches = [match_a, match_b]
+
+    assert mode._get_matches_for_unit(unit_a) == [match_a]
+
+
+# _move_match() #
+
+def test_move_match_ignores_a_call_when_not_the_current_mode():
+    mode = SearchMode.__new__(SearchMode)
+    mode.controller = SimpleNamespace(current_mode=SimpleNamespace(name='OtherMode'))
+
+    mode._move_match(1)  # must not raise
+
+
+def test_move_match_researches_with_no_matchcursor_yet_then_selects():
+    mode = SearchMode.__new__(SearchMode)
+    mode.controller = SimpleNamespace(current_mode=mode)
+    calls = []
+    match_obj = object()
+
+    def fake_update_search():
+        calls.append('update')
+        mode.matches = [match_obj]
+        mode.matchcursor = SimpleNamespace(index=0, move=lambda offset: calls.append(('move', offset)))
+
+    mode._cancel_search_timeout = lambda: calls.append('cancel')
+    mode.update_search = fake_update_search
+    mode.select_match = lambda m: calls.append(('select', m))
+
+    mode._move_match(1)
+
+    assert calls == ['cancel', 'update', ('move', 1), ('select', match_obj)]
+
+
+def test_move_match_researches_instead_of_moving_a_stale_cursor():
+    mode = SearchMode.__new__(SearchMode)
+    mode.controller = SimpleNamespace(current_mode=mode)
+    mode.matches = []  # no matches -> stale
+    mode.matchcursor = SimpleNamespace(index=0)
+    calls = []
+    mode._cancel_search_timeout = lambda: calls.append('cancel')
+    mode.update_search = lambda: calls.append('update')
+
+    mode._move_match(1)
+
+    assert calls == ['cancel', 'update']
+
+
+def test_move_match_moves_and_selects_when_matches_are_fresh():
+    mode = SearchMode.__new__(SearchMode)
+    mode.controller = SimpleNamespace(current_mode=mode)
+    match_obj = object()
+    mode.matches = [match_obj]
+    moved = []
+    mode.matchcursor = SimpleNamespace(index=0, move=lambda offset: moved.append(offset))
+    selected = []
+    mode.select_match = lambda m: selected.append(m)
+
+    mode._move_match(1)
+
+    assert moved == [1]
+    assert selected == [match_obj]
+
+
+# _cancel_search_timeout() #
+
+def test_cancel_search_timeout_removes_a_pending_timeout(monkeypatch):
+    mode = SearchMode.__new__(SearchMode)
+    mode._search_timeout = 123
+    removed = []
+    monkeypatch.setattr('virtaal.modes.searchmode.GLib.source_remove', removed.append)
+
+    mode._cancel_search_timeout()
+
+    assert removed == [123]
+    assert mode._search_timeout == 0
+
+
+def test_cancel_search_timeout_is_a_noop_without_a_pending_timeout(monkeypatch):
+    mode = SearchMode.__new__(SearchMode)
+    mode._search_timeout = 0
+    removed = []
+    monkeypatch.setattr('virtaal.modes.searchmode.GLib.source_remove', removed.append)
+
+    mode._cancel_search_timeout()
+
+    assert removed == []
+
+
+# _on_unit_modified() #
+
+def test_on_unit_modified_removes_a_target_match_that_no_longer_matches():
+    mode = SearchMode.__new__(SearchMode)
+    unit = object()
+    match = SimpleNamespace(unit=unit, part='target', start=0, end=3, get_getter=lambda: (lambda: 'xyz'))
+    mode.matches = [match]
+    mode.matchcursor = SimpleNamespace(indices=None)
+    mode.filter = SimpleNamespace(re_search=re.compile('abc'))
+
+    mode._on_unit_modified(None, unit)
+
+    assert mode.matches == []
+
+
+def test_on_unit_modified_keeps_a_target_match_that_still_matches():
+    mode = SearchMode.__new__(SearchMode)
+    unit = object()
+    match = SimpleNamespace(unit=unit, part='target', start=0, end=3, get_getter=lambda: (lambda: 'abc'))
+    mode.matches = [match]
+    mode.filter = SimpleNamespace(re_search=re.compile('abc'))
+
+    mode._on_unit_modified(None, unit)
+
+    assert mode.matches == [match]
+
+
+def test_on_unit_modified_ignores_a_source_match():
+    mode = SearchMode.__new__(SearchMode)
+    unit = object()
+    match = SimpleNamespace(unit=unit, part='source', start=0, end=3, get_getter=lambda: (lambda: 'xyz'))
+    mode.matches = [match]
+    mode.filter = SimpleNamespace(re_search=re.compile('abc'))
+
+    mode._on_unit_modified(None, unit)
+
+    assert mode.matches == [match]
+
+
+# search/replace event handler guards #
+
+def test_on_search_next_ignores_a_call_with_no_store_open():
+    mode = SearchMode.__new__(SearchMode)
+    mode.controller = SimpleNamespace(main_controller=SimpleNamespace(store_controller=SimpleNamespace(store=None)))
+    mode._move_match = lambda offset: pytest.fail('must not move without an open store')
+
+    mode._on_search_next()
+
+
+def test_on_search_next_moves_forward_with_a_store_open():
+    mode = SearchMode.__new__(SearchMode)
+    mode.controller = SimpleNamespace(main_controller=SimpleNamespace(store_controller=SimpleNamespace(store=object())))
+    moved = []
+    mode._move_match = moved.append
+
+    mode._on_search_next()
+
+    assert moved == [1]
+
+
+def test_on_search_prev_moves_backward_with_a_store_open():
+    mode = SearchMode.__new__(SearchMode)
+    mode.controller = SimpleNamespace(main_controller=SimpleNamespace(store_controller=SimpleNamespace(store=object())))
+    moved = []
+    mode._move_match = moved.append
+
+    mode._on_search_prev()
+
+    assert moved == [-1]
+
+
+def test_on_start_search_ignores_a_call_with_no_store_open():
+    mode = SearchMode.__new__(SearchMode)
+    mode.controller = SimpleNamespace(main_controller=SimpleNamespace(store_controller=SimpleNamespace(store=None)))
+    mode.controller.select_mode = lambda m: pytest.fail('must not switch mode without an open store')
+
+    mode._on_start_search(None, None, None, None)
+
+
+def test_on_start_search_switches_to_search_mode_with_a_store_open():
+    mode = SearchMode.__new__(SearchMode)
+    mode.controller = SimpleNamespace(main_controller=SimpleNamespace(store_controller=SimpleNamespace(store=object())))
+    selected = []
+    mode.controller.select_mode = selected.append
+
+    mode._on_start_search(None, None, None, None)
+
+    assert selected == [mode]
+
+
+def test_on_close_search_ignores_a_call_when_not_the_current_mode():
+    mode = SearchMode.__new__(SearchMode)
+    mode.controller = SimpleNamespace(current_mode=object())
+    mode.controller.select_default_mode = lambda: pytest.fail('must not switch away from another mode')
+
+    assert mode._on_close_search() is False
+
+
+def test_on_close_search_returns_to_the_default_mode():
+    mode = SearchMode.__new__(SearchMode)
+    mode.controller = SimpleNamespace(current_mode=mode)
+    calls = []
+    mode.controller.select_default_mode = lambda: calls.append(True)
+
+    assert mode._on_close_search() is True
+    assert calls == [True]
+
+
+# _on_replace_clicked() #
+
+def _replace_clicked_mode(**overrides):
+    mode = SearchMode.__new__(SearchMode)
+    mode.storecursor = SimpleNamespace(deref=lambda: None, move=lambda offset: None)
+    mode.ent_search = SimpleNamespace(get_text=lambda: 'search')
+    mode.ent_replace = SimpleNamespace(get_text=lambda: 'replacement')
+    mode.chk_replace_all = SimpleNamespace(get_active=lambda: False)
+    mode.matches = []
+    mode.filter = SimpleNamespace(re_search=None)
+    mode._cancel_search_timeout = lambda: None
+    mode.update_search = lambda: None
+    for name, value in overrides.items():
+        setattr(mode, name, value)
+    return mode
+
+
+def test_on_replace_clicked_ignores_a_call_with_no_open_store():
+    mode = _replace_clicked_mode(storecursor=None)
+    mode._replace_all = lambda: pytest.fail('must not act without an open store')
+
+    mode._on_replace_clicked(None)
+
+
+def test_on_replace_clicked_ignores_a_call_with_no_search_text():
+    mode = _replace_clicked_mode(ent_search=SimpleNamespace(get_text=lambda: ''))
+    mode._replace_all = lambda: pytest.fail('must not act without search text')
+
+    mode._on_replace_clicked(None)
+
+
+def test_on_replace_clicked_ignores_a_call_with_no_replacement_text():
+    mode = _replace_clicked_mode(ent_replace=SimpleNamespace(get_text=lambda: ''))
+    mode._replace_all = lambda: pytest.fail('must not act without replacement text')
+
+    mode._on_replace_clicked(None)
+
+
+def test_on_replace_clicked_delegates_to_replace_all_when_checked():
+    mode = _replace_clicked_mode(chk_replace_all=SimpleNamespace(get_active=lambda: True))
+    calls = []
+    mode._replace_all = lambda: calls.append(True)
+
+    mode._on_replace_clicked(None)
+
+    assert calls == [True]
+
+
+def test_on_replace_clicked_replaces_the_current_unit_match_and_drops_it():
+    current_unit = object()
+    other_match = SimpleNamespace(unit=object(), part='target')
+    current_match = SimpleNamespace(unit=current_unit, part='target')
+    mode = _replace_clicked_mode(
+        storecursor=SimpleNamespace(deref=lambda: current_unit),
+        matches=[other_match, current_match],
+    )
+    mode.controller = SimpleNamespace(main_controller=SimpleNamespace(
+        undo_controller=SimpleNamespace(record_start=lambda: None, record_stop=lambda: None)
+    ))
+    replaced = []
+    mode.replace_match = lambda match, repl: replaced.append((match, repl))
+
+    mode._on_replace_clicked(None)
+
+    assert replaced == [(current_match, 'replacement')]
+    assert mode.matches == [other_match]
+
+
+def test_on_replace_clicked_advances_the_cursor_when_the_current_unit_has_no_match():
+    mode = _replace_clicked_mode(filter=SimpleNamespace(re_search=re.compile('search')))
+    moved = []
+    mode.storecursor.move = moved.append
+
+    mode._on_replace_clicked(None)
+
+    assert moved == [1]
+
+
+# trivial delegators #
+
+def test_on_entry_activate_searches_and_selects_the_current_match():
+    mode = SearchMode.__new__(SearchMode)
+    mode.ent_search = SimpleNamespace(get_text=lambda: 'text')
+    calls = []
+    mode._cancel_search_timeout = lambda: calls.append('cancel')
+    mode.update_search = lambda: calls.append('update')
+    mode._move_match = lambda offset: calls.append(('move', offset))
+
+    mode._on_entry_activate(mode.ent_search)
+
+    assert calls == ['cancel', 'update', ('move', 0)]
+
+
+def test_on_search_clicked_moves_to_the_next_match():
+    mode = SearchMode.__new__(SearchMode)
+    moved = []
+    mode._move_match = moved.append
+
+    mode._on_search_clicked(None)
+
+    assert moved == [1]
+
+
+def test_on_cursor_changed_asserts_it_is_the_store_cursor_and_rehighlights():
+    mode = SearchMode.__new__(SearchMode)
+    cursor = object()
+    mode.storecursor = cursor
+    calls = []
+    mode._highlight_matches = lambda: calls.append(True)
+
+    mode._on_cursor_changed(cursor)
+
+    assert calls == [True]
+
+
+def test_refresh_proxy_researches():
+    mode = SearchMode.__new__(SearchMode)
+    calls = []
+    mode._cancel_search_timeout = lambda: calls.append('cancel')
+    mode.update_search = lambda: calls.append('update')
+
+    mode._refresh_proxy()
+
+    assert calls == ['cancel', 'update']

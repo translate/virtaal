@@ -198,8 +198,7 @@ def get_default_font():
         import gi
         gi.require_version('Gtk', '3.0')
         from gi.repository import Gtk
-        style_context = Gtk.Label().get_style_context()
-        font_name = style_context.get_font(style_context.get_state()).to_string()
+        font_name = Gtk.Label().get_pango_context().get_font_description().to_string()
         font_size = font_name.split(' ')[-1]
 
     if font_size:

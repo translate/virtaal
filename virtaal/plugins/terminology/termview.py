@@ -101,14 +101,9 @@ class TerminologyCombo(Gtk.ComboBox):
         self.add_attribute(self._renderer, 'text', 0)
 
         # Force the "appears-as-list" style property to 0
-        rc_string = """
-            style "not-a-list"
-            {
-                GtkComboBox::appears-as-list = 0
-            }
-            class "GtkComboBox" style "not-a-list"
-            """
-        Gtk.rc_parse_string(rc_string)
+        provider = Gtk.CssProvider()
+        provider.load_from_data(b'combobox { -GtkComboBox-appears-as-list: 0; }')
+        self.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
 
     # METHODS #

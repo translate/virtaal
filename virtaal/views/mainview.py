@@ -21,6 +21,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import locale
 import os
+import platform
 import sys
 
 from gi.repository import Gdk
@@ -92,17 +93,14 @@ class MainView(BaseView):
             @param controller: The controller that this view is "connected" to."""
         self.controller = controller
         self.modified = False
+        self._tooltip_fg_provider = None
 
-        if os.name == 'nt':
+        if platform.system() == 'Windows':
             # Make sure that rule-hints are shown in Windows
-            rc_string = """
-                style "show-rules"
-                {
-                    GtkTreeView::allow-rules = 1
-                }
-                class "GtkTreeView" style "show-rules"
-                """
-            Gtk.rc_parse_string(rc_string)
+            provider = Gtk.CssProvider()
+            provider.load_from_data(b'treeview { -GtkTreeView-allow-rules: 1; }')
+            Gtk.StyleContext.add_provider_for_screen(
+                Gdk.Screen.get_default(), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
         # Set the GtkBuilder file
         self.gui = self.load_builder_file(["virtaal", "virtaal.ui"], root='MainWindow', domain="virtaal")
@@ -386,19 +384,15 @@ class MainView(BaseView):
     def _on_style_set(self, widget, prev_style=None):
         theme.update_style(widget)
         # on windows the tooltip colour is wrong in inverse themes (bug 1923)
-        if os.name == 'nt':
-            if theme.INVERSE:
-                tooltip_text = "white"
-            else:
-                tooltip_text = "black"
-            rc_string = """
-                style "better-tooltips"
-                {
-                    fg[NORMAL] = "%s"
-                }
-                widget "gtk-tooltip*" style "better-tooltips"
-                """ % tooltip_text
-            Gtk.rc_parse_string(rc_string)
+        if platform.system() == 'Windows':
+            tooltip_text = "white" if theme.INVERSE else "black"
+            screen = Gdk.Screen.get_default()
+            if self._tooltip_fg_provider is not None:
+                Gtk.StyleContext.remove_provider_for_screen(screen, self._tooltip_fg_provider)
+            provider = Gtk.CssProvider()
+            provider.load_from_data(('.tooltip { color: %s; }' % tooltip_text).encode())
+            Gtk.StyleContext.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+            self._tooltip_fg_provider = provider
 
 
     # ACCESSORS #

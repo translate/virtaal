@@ -10,7 +10,8 @@
 # simplegeneric.py all still append it underneath their own, so they
 # pass), the file is wholesale vendored code with no Virtaal copyright
 # to state at all (ipython_view.py, selector.py, statsdb.py, tmdb.py,
-# tmserver.py, translate_compat.py, wsgi.py), or its own descriptive
+# tmserver.py, translate_compat.py, wsgi.py, bundleprojstore.py,
+# project.py, projstore.py, test_bundleprojstore.py), or its own descriptive
 # comment starts with a bare "#" too, tripping the heuristic below
 # (docs/conf.py).
 #
@@ -39,6 +40,10 @@ virtaal/support/tmdb.py
 virtaal/support/tmserver.py
 virtaal/support/translate_compat.py
 virtaal/support/wsgi.py
+virtaal/support/bundleprojstore.py
+virtaal/support/project.py
+virtaal/support/projstore.py
+virtaal/support/test_bundleprojstore.py
 '
 
 changed=("$@")

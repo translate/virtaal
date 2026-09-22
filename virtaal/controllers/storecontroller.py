@@ -76,7 +76,7 @@ class StoreController(BaseController):
             return self._targetfname
 
         if self.project:
-            from translate.storage.bundleprojstore import BundleProjectStore
+            from virtaal.support.bundleprojstore import BundleProjectStore
             if isinstance(self.project.store, BundleProjectStore):
                 return self.project.store.zip.filename
         return None
@@ -93,7 +93,7 @@ class StoreController(BaseController):
             return ''
         filename = ''
         if self.project:
-            from translate.storage.bundleprojstore import BundleProjectStore
+            from virtaal.support.bundleprojstore import BundleProjectStore
             if isinstance(self.project.store, BundleProjectStore):
                 # This should always be the case
                 filename = self.project.store.zip.filename + ':'
@@ -181,9 +181,9 @@ class StoreController(BaseController):
         if extension == 'zip':
             import logging
 
-            from translate.storage import bundleprojstore
+            from virtaal.support import bundleprojstore
             try:
-                from translate.storage.project import Project
+                from virtaal.support.project import Project
                 self.project = Project(bundleprojstore.BundleProjectStore(filename))
             except bundleprojstore.InvalidBundleError as err:
                 logging.exception('Unable to load project bundle')
@@ -207,8 +207,8 @@ class StoreController(BaseController):
             self._targetfname = self._get_new_bundle_filename(filename)
             tempfname = self._get_new_bundle_filename(filename, force_temp=True)
             self._archivetemp = tempfname
-            from translate.storage import bundleprojstore
-            from translate.storage.project import Project
+            from virtaal.support import bundleprojstore
+            from virtaal.support.project import Project
             self.project = Project(projstore=bundleprojstore.BundleProjectStore(tempfname))
             srcfile, srcfilename, transfile, transfilename = self.project.add_source_convert(filename)
             self.real_filename = transfile.name
@@ -258,7 +258,7 @@ class StoreController(BaseController):
         else:
             # XXX: filename is the name that the bundle archive should be saved
             #      as, seeing as self.store is opened from a temporary file
-            #      (see translate.storage.bundleprojstore.BundleProjectStore.get_file())
+            #      (see virtaal.support.bundleprojstore.BundleProjectStore.get_file())
             self.store.save_file()
 
             proj_fname = self.project.get_proj_filename(self.real_filename)
@@ -338,7 +338,7 @@ class StoreController(BaseController):
             if readonly:
                 # Read-only files to in the temp directory with a different
                 # layout of its filename.
-                from translate.storage.project import split_extensions
+                from virtaal.support.project import split_extensions
                 fname, ext = split_extensions(export_projfname.split('/')[-1])
                 fname = 'virtaal_preview_' + fname + '_'
                 ext = os.extsep + ext
@@ -474,7 +474,7 @@ class StoreController(BaseController):
             @returns: The suggested file name for the bundle."""
         from tempfile import mkstemp
 
-        from translate.storage.project import split_extensions
+        from virtaal.support.project import split_extensions
         fname, extensions = split_extensions(infilename)
 
         prefix = fname + '_%s__%s' % (
@@ -529,7 +529,7 @@ class StoreController(BaseController):
             guess = os.path.join(directory, guess)
         if os.path.isfile(guess):
             directory, fname = os.path.split(guess)
-            from translate.storage.project import split_extensions
+            from virtaal.support.project import split_extensions
             basefname, extensions = split_extensions(fname)
             guess = basefname + '_%s__%s' % (
                 self.main_controller.lang_controller.source_lang.code,

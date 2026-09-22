@@ -5,18 +5,20 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import functools
 import json
 import threading
 import time
 import urllib.request
 from urllib.parse import quote
 
-from virtaal.support import tmserver, wsgi
+from virtaal.support import tmserver
 
 
 def _start_server(db_path, port):
     app = tmserver.TMServer(str(db_path), None)
-    thread = threading.Thread(target=wsgi.launch_server, args=('localhost', port, app.rest), daemon=True)
+    run = functools.partial(app.rest.run, host='localhost', port=port, server='cheroot', quiet=True)
+    thread = threading.Thread(target=run, daemon=True)
     thread.start()
     time.sleep(0.5)  # give cheroot a moment to actually bind before the first request
     return app

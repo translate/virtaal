@@ -33,6 +33,7 @@ Required Packages
 - `diff_match_patch <https://pypi.org/project/diff-match-patch/>`_
 - `python-Levenshtein <https://pypi.org/project/python-Levenshtein/>`_
 - `cheroot <https://pypi.org/project/cheroot/>`_
+- `Bottle <https://pypi.org/project/bottle/>`_
 
 The remaining Python packages above are all declared in ``pyproject.toml`` and
 installed automatically by ``pip install .`` - only GTK3/PyGObject/cairo

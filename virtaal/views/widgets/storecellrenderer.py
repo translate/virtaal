@@ -197,11 +197,10 @@ class StoreCellRenderer(Gtk.CellRenderer):
                 compute_optimal_height(editor, width)
                 parent_height = widget.get_allocation().height
                 if parent_height < -1:
-                    parent_height = widget.size_request()[1]
+                    parent_height = widget.get_preferred_size()[1].height
                 if parent_height > 0:
                     self.check_editor_height(editor, width, parent_height)
-                size_request = editor.size_request()
-                height = size_request.height
+                height = editor.get_preferred_size()[1].height
                 height += self.ROW_PADDING
                 self._cached_height = height
         else:
@@ -262,28 +261,15 @@ class StoreCellRenderer(Gtk.CellRenderer):
             target_x += width/2
         else:
             source_x += (width/2) + 10
-        Gtk.paint_layout(
-            style=widget.get_style(),
-            cr=window,
-            state_type=Gtk.StateType.NORMAL,
-            use_text=False,
-            widget=widget,
-            detail='',
-            x=source_x,
-            y=y,
-            layout=self.source_layout
-        )
-        Gtk.paint_layout(
-            style=widget.get_style(),
-            cr=window,
-            state_type=Gtk.StateType.NORMAL,
-            use_text=False,
-            widget=widget,
-            detail='',
-            x=target_x,
-            y=y,
-            layout=self.target_layout
-        )
+        # NORMAL regardless of selection - _paint_fuzzy_background_if_selected()
+        # already handles the selected-row background, text shouldn't also
+        # pick up a "selected" style on top of it.
+        style_context = widget.get_style_context()
+        style_context.save()
+        style_context.set_state(Gtk.StateFlags.NORMAL)
+        Gtk.render_layout(style_context, window, source_x, y, self.source_layout)
+        Gtk.render_layout(style_context, window, target_x, y, self.target_layout)
+        style_context.restore()
 
 
     # METHODS #
@@ -324,8 +310,8 @@ class StoreCellRenderer(Gtk.CellRenderer):
         notesheight = 0
 
         for note in editor._widgets['notes'].values():
-            size_request = note.size_request()
-            notesheight += size_request.height
+            _minimum, natural = note.get_preferred_size()
+            notesheight += natural.height
 
         maxheight = parentheight - notesheight
 
@@ -340,7 +326,8 @@ class StoreCellRenderer(Gtk.CellRenderer):
         max_tb_height = maxheight / len(visible_textboxes)
 
         for textbox in visible_textboxes:
-            if textbox.props.visible and textbox.get_parent().size_request().height > max_tb_height:
+            _minimum, natural = textbox.get_parent().get_preferred_size()
+            if textbox.props.visible and natural.height > max_tb_height:
                 textbox.get_parent().set_size_request(-1, max_tb_height)
                 #logging.debug('%s.set_size_request(-1, %d)' % (textbox.parent, max_tb_height))
 

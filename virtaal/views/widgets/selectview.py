@@ -76,7 +76,6 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
         self.connect('key-press-event', self._on_key_press)
 
     def _set_defaults(self):
-        self.set_rules_hint(True)
         self.props.activate_on_single_click = True
         self.props.enable_search = False
 
@@ -91,7 +90,8 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
         if 'name' in item and item['name']:
             name = (self.bold_name and '<b>%s</b>' or '%s') % (item['name'])
             lbl = Gtk.Label()
-            lbl.set_alignment(0, 0)
+            lbl.set_xalign(0)
+            lbl.set_yalign(0)
             lbl.set_text(name)
             lbl.set_use_markup(self.bold_name)
             lbl.set_property('xpad', 2)
@@ -102,7 +102,8 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
         vbox.lbl_desc = None
         if 'desc' in item and item['desc']:
             lbl = Gtk.Label()
-            lbl.set_alignment(0, 0)
+            lbl.set_xalign(0)
+            lbl.set_yalign(0)
             lbl.set_line_wrap(True)
             lbl.set_text(item['desc'])
             lbl.set_use_markup(False)
@@ -178,7 +179,7 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
         return item
 
     def get_scroll_position(self):
-        vadj = self.get_vadjustment()
+        vadj = self.props.vadjustment
         return vadj.get_value() if vadj else None
 
     def set_scroll_position(self, value):
@@ -189,7 +190,7 @@ class SelectView(Gtk.TreeView, GObjectWrapper):
         # landing it wherever that happens to be, not where it was).
         if value is None:
             return
-        vadj = self.get_vadjustment()
+        vadj = self.props.vadjustment
         if vadj:
             vadj.set_value(value)
 

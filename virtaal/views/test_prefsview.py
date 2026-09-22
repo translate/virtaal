@@ -148,7 +148,7 @@ def test_plugin_data_restores_scroll_position_after_a_rebuild(monkeypatch):
 
     view.plugin_data = _make_plugin_items(50, enabled_name='Plugin 25')
     view.plugins_select.select_item({'data': {'internal_name': 'plugin25'}})
-    vadj = view.plugins_select.get_vadjustment()
+    vadj = view.plugins_select.props.vadjustment
     vadj.set_upper(2000)
     vadj.set_value(900)
 

@@ -901,6 +901,12 @@ class MainView(BaseView):
             running app can't retranslate widgets already built with the
             old language's strings, so restarting is the only way to
             see the new one applied throughout."""
+        # Changing the language repeatedly without restarting shouldn't
+        # stack up a duplicate copy of this notice each time (#3695).
+        existing = getattr(self, '_language_change_infobar', None)
+        if existing is not None:
+            return
+
         infobar = Gtk.InfoBar()
         infobar.set_message_type(Gtk.MessageType.INFO)
         infobar.set_show_close_button(True)
@@ -908,9 +914,11 @@ class MainView(BaseView):
         infobar.get_content_area().pack_start(label, True, True, 0)
 
         def on_response(infobar, response_id):
+            self._language_change_infobar = None
             infobar.destroy()
         infobar.connect('response', on_response)
 
+        self._language_change_infobar = infobar
         infobar.show_all()
         vbox_main = self.gui.get_object('vbox_main')
         vbox_main.pack_start(infobar, False, False, 0)

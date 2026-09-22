@@ -15,6 +15,7 @@ which is never returned by a real click - clicking Open/Save silently
 did nothing, no error.
 """
 
+from types import SimpleNamespace
 from urllib.parse import quote
 
 import gi
@@ -217,3 +218,41 @@ def test_show_save_confirm_dialog_shows_before_presenting_and_restores_parent_fo
     assert dialog.calls == ['show', 'present']
     assert top_window.presented
     assert view._top_window is top_window
+
+
+# _on_controller_registered(): only the store controller's own
+# registration wires up store-closed/store-loaded, and a later
+# re-registration disconnects the previous store-loaded handler
+# rather than leaking it.
+
+def test_on_controller_registered_ignores_a_different_controller():
+    view = MainView.__new__(MainView)
+    main_controller = SimpleNamespace(store_controller=object())
+
+    view._on_controller_registered(main_controller, object())  # must not raise
+
+
+def test_on_controller_registered_connects_store_signals():
+    connected = []
+    store_controller = SimpleNamespace(connect=lambda signal, handler: connected.append(signal) or signal)
+    main_controller = SimpleNamespace(store_controller=store_controller)
+    view = MainView.__new__(MainView)
+
+    view._on_controller_registered(main_controller, store_controller)
+
+    assert connected == ['store-closed', 'store-loaded']
+    assert view._store_loaded_handler_id == 'store-loaded'
+
+
+def test_on_controller_registered_disconnects_the_previous_store_loaded_handler():
+    disconnected = []
+    store_controller = SimpleNamespace(
+        connect=lambda signal, handler: signal,
+        disconnect=lambda handler_id: disconnected.append(handler_id))
+    main_controller = SimpleNamespace(store_controller=store_controller)
+    view = MainView.__new__(MainView)
+    view._store_loaded_handler_id = 'old-handler-id'
+
+    view._on_controller_registered(main_controller, store_controller)
+
+    assert disconnected == ['old-handler-id']

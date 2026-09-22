@@ -19,9 +19,10 @@ from types import SimpleNamespace
 from urllib.parse import quote
 
 import gi
+import pytest
 
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+from gi.repository import Gdk, Gtk
 
 from virtaal.common.platform import platform
 from virtaal.views.mainview import MainView
@@ -220,6 +221,301 @@ def test_show_save_confirm_dialog_shows_before_presenting_and_restores_parent_fo
     assert view._top_window is top_window
 
 
+# quit(): window geometry persisted before Gtk.main_quit()
+
+class _FakeMainWindow:
+    def __init__(self, size=(800, 600), position=(10, 20)):
+        self._size = size
+        self._position = position
+
+    def get_size(self):
+        return self._size
+
+    def get_position(self):
+        return self._position
+
+
+def _view_for_quit(monkeypatch, maximized=False):
+    from virtaal.common import pan_app
+
+    monkeypatch.setattr(pan_app.settings, 'general', {})
+    monkeypatch.setattr(pan_app.settings, 'write', lambda: None)
+    monkeypatch.setattr(Gtk, 'main_quit', lambda: None)
+    view = MainView.__new__(MainView)
+    view._window_is_maximized = maximized
+    view.main_window = _FakeMainWindow()
+    return view
+
+
+def test_quit_records_maximized_without_reading_window_geometry(monkeypatch):
+    from virtaal.common import pan_app
+
+    view = _view_for_quit(monkeypatch, maximized=True)
+    view.main_window.get_size = lambda: pytest.fail('should not be read while maximized')
+    view.main_window.get_position = lambda: pytest.fail('should not be read while maximized')
+
+    view.quit()
+
+    assert pan_app.settings.general['maximized'] == 1
+
+
+def test_quit_saves_current_window_geometry_when_not_maximized(monkeypatch):
+    from virtaal.common import pan_app
+
+    view = _view_for_quit(monkeypatch, maximized=False)
+
+    view.quit()
+
+    assert pan_app.settings.general['windowwidth'] == 800
+    assert pan_app.settings.general['windowheight'] == 600
+    assert pan_app.settings.general['windowx'] == 10
+    assert pan_app.settings.general['windowy'] == 20
+    assert pan_app.settings.general['maximized'] == ''
+
+
+def test_quit_prefers_geometry_captured_before_hiding(monkeypatch):
+    # get_size()/get_position() are unreliable once main_window.hide()
+    # has already run - hide() captures geometry beforehand for quit()
+    # to use instead of asking the (by then hidden) window directly.
+    from virtaal.common import pan_app
+
+    view = _view_for_quit(monkeypatch, maximized=False)
+    view._pre_hide_size = (700, 500)
+    view._pre_hide_position = (5, 6)
+    view.main_window.get_size = lambda: pytest.fail('should use the pre-hide size')
+    view.main_window.get_position = lambda: pytest.fail('should use the pre-hide position')
+
+    view.quit()
+
+    assert pan_app.settings.general['windowwidth'] == 700
+    assert pan_app.settings.general['windowheight'] == 500
+    assert pan_app.settings.general['windowx'] == 5
+    assert pan_app.settings.general['windowy'] == 6
+
+
+def test_quit_calls_gtk_main_quit(monkeypatch):
+    view = _view_for_quit(monkeypatch)
+    calls = []
+    monkeypatch.setattr(Gtk, 'main_quit', lambda: calls.append('quit'))
+
+    view.quit()
+
+    assert calls == ['quit']
+
+
+# _on_window_state_event() / _restore_pre_fullscreen_size(): native
+# fullscreen (macOS green button, Fn+F) restoring the pre-fullscreen
+# window size on exit.
+
+class _FakeMenuItem:
+    def __init__(self):
+        self.active = None
+
+    def set_active(self, value):
+        self.active = value
+
+
+def _view_for_window_state(fullscreen_menu):
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: fullscreen_menu)
+    view.main_window = _FakeMainWindow()
+    return view
+
+
+def _state_event(new_state, changed_mask):
+    return SimpleNamespace(new_window_state=new_state, changed_mask=changed_mask)
+
+
+def test_on_window_state_event_activates_the_fullscreen_menu_item():
+    menuitem = _FakeMenuItem()
+    view = _view_for_window_state(menuitem)
+
+    view._on_window_state_event(view.main_window, _state_event(
+        Gdk.WindowState.FULLSCREEN, Gdk.WindowState.FULLSCREEN))
+
+    assert menuitem.active
+
+
+def test_on_window_state_event_schedules_a_restore_when_leaving_fullscreen(monkeypatch):
+    from gi.repository import GLib
+
+    scheduled = []
+    monkeypatch.setattr(GLib, 'timeout_add', lambda delay, func, *args: scheduled.append((delay, func, args)))
+    view = _view_for_window_state(_FakeMenuItem())
+    view._pre_fullscreen_size = (640, 480)
+
+    view._on_window_state_event(view.main_window, _state_event(
+        Gdk.WindowState(0), Gdk.WindowState.FULLSCREEN))
+
+    assert scheduled == [(250, view._restore_pre_fullscreen_size, ((640, 480),))]
+    assert view._pre_fullscreen_size is None
+
+
+def test_on_window_state_event_does_not_schedule_a_restore_when_entering_fullscreen(monkeypatch):
+    from gi.repository import GLib
+
+    scheduled = []
+    monkeypatch.setattr(GLib, 'timeout_add', lambda delay, func, *args: scheduled.append((delay, func, args)))
+    view = _view_for_window_state(_FakeMenuItem())
+    view._pre_fullscreen_size = (640, 480)
+
+    view._on_window_state_event(view.main_window, _state_event(
+        Gdk.WindowState.FULLSCREEN, Gdk.WindowState.FULLSCREEN))
+
+    assert scheduled == []
+
+
+def test_on_window_state_event_skips_restore_without_a_captured_size(monkeypatch):
+    from gi.repository import GLib
+
+    scheduled = []
+    monkeypatch.setattr(GLib, 'timeout_add', lambda delay, func, *args: scheduled.append((delay, func, args)))
+    view = _view_for_window_state(_FakeMenuItem())
+
+    view._on_window_state_event(view.main_window, _state_event(
+        Gdk.WindowState(0), Gdk.WindowState.FULLSCREEN))
+
+    assert scheduled == []
+
+
+def test_restore_pre_fullscreen_size_resizes_and_resets_the_column_width():
+    view = MainView.__new__(MainView)
+    view.main_window = _FakeMainWindow()
+    resized = []
+    view.main_window.resize = lambda w, h: resized.append((w, h))
+    reset_calls = []
+    view.controller = SimpleNamespace(store_controller=SimpleNamespace(
+        store=object(), view=SimpleNamespace(_treeview=SimpleNamespace(
+            reset_column_width=lambda: reset_calls.append(1)))))
+
+    result = view._restore_pre_fullscreen_size((1024, 768))
+
+    assert resized == [(1024, 768)]
+    assert reset_calls == [1]
+    assert result is False
+
+
+def test_restore_pre_fullscreen_size_skips_column_reset_without_a_loaded_store():
+    view = MainView.__new__(MainView)
+    view.main_window = _FakeMainWindow()
+    view.main_window.resize = lambda w, h: None
+    view.controller = SimpleNamespace(store_controller=SimpleNamespace(store=None))
+
+    view._restore_pre_fullscreen_size((1024, 768))  # must not raise
+
+
+# _on_store_closed() / _on_store_loaded(): menu sensitivity and the
+# recent-files list.
+
+class _FakeSensitiveWidget:
+    def __init__(self):
+        self.sensitive = []
+
+    def set_sensitive(self, value):
+        self.sensitive.append(value)
+
+
+def _view_for_store_signals():
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: _FakeSensitiveWidget())
+    view.status_bar = _FakeSensitiveWidget()
+    view.main_window = SimpleNamespace(set_title=lambda title: setattr(view, '_title', title))
+    return view
+
+
+def test_on_store_closed_disables_menu_items_and_resets_the_title():
+    view = _view_for_store_signals()
+
+    view._on_store_closed(SimpleNamespace())
+
+    assert view.status_bar.sensitive == [False]
+    assert view._title == 'Virtaal'
+
+
+def test_on_store_loaded_enables_binary_export_only_for_a_po_file(monkeypatch):
+    from virtaal.views import recent
+    monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: None))
+    binary_export = _FakeSensitiveWidget()
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: binary_export if name == 'mnu_binary_export' else _FakeSensitiveWidget())
+    view.status_bar = _FakeSensitiveWidget()
+    store_controller = SimpleNamespace(
+        get_store_filename=lambda: 'document.odt', project=None,
+        store=SimpleNamespace(filename='/tmp/document.odt'))
+
+    view._on_store_loaded(store_controller)
+
+    assert binary_export.sensitive == []
+
+
+def test_on_store_loaded_enables_binary_export_for_a_compressed_po_file(monkeypatch):
+    from virtaal.views import recent
+    monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: None))
+    binary_export = _FakeSensitiveWidget()
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: binary_export if name == 'mnu_binary_export' else _FakeSensitiveWidget())
+    view.status_bar = _FakeSensitiveWidget()
+    store_controller = SimpleNamespace(
+        get_store_filename=lambda: 'translations/af.po.gz', project=None,
+        store=SimpleNamespace(filename='/tmp/translations/af.po.gz'))
+
+    view._on_store_loaded(store_controller)
+
+    assert binary_export.sensitive == [True]
+
+
+def test_on_store_loaded_adds_the_bundle_filename_for_a_project(monkeypatch):
+    from virtaal.views import recent
+    added = []
+    monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: added.append(uri)))
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: _FakeSensitiveWidget())
+    view.status_bar = _FakeSensitiveWidget()
+    store_controller = SimpleNamespace(
+        get_store_filename=lambda: 'bundle.zip', project=True, _archivetemp=False,
+        get_bundle_filename=lambda: '/tmp/bundle.zip')
+
+    view._on_store_loaded(store_controller)
+
+    assert added == ['file:///tmp/bundle.zip']
+
+
+def test_on_store_loaded_adds_the_dropped_uri_when_one_was_recorded(monkeypatch):
+    from virtaal.views import recent
+    added = []
+    monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: added.append(uri)))
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: _FakeSensitiveWidget())
+    view.status_bar = _FakeSensitiveWidget()
+    view._uri = 'file:///tmp/dropped.po'
+    store_controller = SimpleNamespace(
+        get_store_filename=lambda: 'dropped.po', project=None,
+        store=SimpleNamespace(filename='/tmp/dropped.po'))
+
+    view._on_store_loaded(store_controller)
+
+    assert added == ['file:///tmp/dropped.po']
+
+
+def test_on_store_loaded_adds_an_extra_leading_slash_on_windows(monkeypatch):
+    import os
+
+    from virtaal.views import recent
+    added = []
+    monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: added.append(uri)))
+    monkeypatch.setattr(platform, 'is_windows', True)
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: _FakeSensitiveWidget())
+    view.status_bar = _FakeSensitiveWidget()
+    store_controller = SimpleNamespace(
+        get_store_filename=lambda: 'opened.po', project=None,
+        store=SimpleNamespace(filename='/tmp/opened.po'))
+
+    view._on_store_loaded(store_controller)
+
+    assert added == ['file:///' + os.path.abspath('/tmp/opened.po')]
+
+
 # _on_controller_registered(): only the store controller's own
 # registration wires up store-closed/store-loaded, and a later
 # re-registration disconnects the previous store-loaded handler
@@ -256,3 +552,132 @@ def test_on_controller_registered_disconnects_the_previous_store_loaded_handler(
     view._on_controller_registered(main_controller, store_controller)
 
     assert disconnected == ['old-handler-id']
+
+
+# find_menu() / find_menu_item(): GTK mnemonic parsing consumes a
+# label's leading "_" before get_text() ever sees it, so a caller
+# searching by its own "_"-prefixed label relies on the fallback that
+# strips the underscore from the search term instead.
+
+def _menu_structure(*labels):
+    menubar = Gtk.MenuBar()
+    for label in labels:
+        menubar.append(Gtk.MenuItem.new_with_mnemonic(label))
+    return menubar
+
+
+def test_find_menu_matches_the_mnemonic_stripped_display_label():
+    view = MainView.__new__(MainView)
+    view.menu_structure = _menu_structure('_File', '_Edit')
+
+    found = view.find_menu('File')
+
+    assert found.get_child().get_text() == 'File'
+
+
+def test_find_menu_falls_back_to_stripping_the_search_labels_underscore():
+    view = MainView.__new__(MainView)
+    view.menu_structure = _menu_structure('_File', '_Edit')
+
+    found = view.find_menu('_Edit')
+
+    assert found.get_child().get_text() == 'Edit'
+
+
+def test_find_menu_returns_none_for_no_match():
+    view = MainView.__new__(MainView)
+    view.menu_structure = _menu_structure('_File')
+
+    assert view.find_menu('Nonexistent') is None
+
+
+def _submenu(*labels):
+    parent = Gtk.MenuItem.new_with_mnemonic('_Edit')
+    submenu = Gtk.Menu()
+    for label in labels:
+        submenu.append(Gtk.MenuItem.new_with_mnemonic(label))
+    parent.set_submenu(submenu)
+    return parent
+
+
+def test_find_menu_item_matches_the_mnemonic_stripped_display_label():
+    view = MainView.__new__(MainView)
+    parent = _submenu('Add _Term…')
+
+    item, menu = view.find_menu_item('Add Term…', parent)
+
+    assert menu is parent
+    assert item.get_child().get_text() == 'Add Term…'
+
+
+def test_find_menu_item_falls_back_to_stripping_the_search_labels_underscore():
+    view = MainView.__new__(MainView)
+    parent = _submenu('Add _Term…')
+
+    item, menu = view.find_menu_item('Add _Term…', parent)
+
+    assert item.get_child().get_text() == 'Add Term…'
+
+
+def test_find_menu_item_returns_none_for_no_match():
+    view = MainView.__new__(MainView)
+    parent = _submenu('Add _Term…')
+
+    item, menu = view.find_menu_item('Nonexistent', parent)
+
+    assert (item, menu) == (None, None)
+
+
+# set_saveable(): the modified-marker/title guard.
+
+def test_set_saveable_skips_redundant_updates_while_already_modified():
+    # Repeating this work while already marked modified would flash
+    # the window title unnecessarily.
+    view = MainView.__new__(MainView)
+    view.modified = True
+    view.gui = SimpleNamespace(get_object=lambda name: pytest.fail('should not touch any widget'))
+
+    view.set_saveable(True)  # must not raise
+
+
+def test_set_saveable_marks_the_title_modified():
+    save_item = _FakeSensitiveWidget()
+    revert_item = _FakeSensitiveWidget()
+    widgets = {'mnu_save': save_item, 'mnu_revert': revert_item}
+    view = MainView.__new__(MainView)
+    view.modified = False
+    view.gui = SimpleNamespace(get_object=lambda name: widgets[name])
+    view.controller = SimpleNamespace(get_store_filename=lambda: '/tmp/document.po')
+    view.main_window = SimpleNamespace(set_title=lambda title: setattr(view, '_title', title))
+
+    view.set_saveable(True)
+
+    assert save_item.sensitive == [True]
+    assert revert_item.sensitive == [True]
+    assert view._title == '*document.po - Virtaal'
+    assert view.modified is True
+
+
+def test_set_saveable_clears_the_modified_marker():
+    widgets = {'mnu_save': _FakeSensitiveWidget(), 'mnu_revert': _FakeSensitiveWidget()}
+    view = MainView.__new__(MainView)
+    view.modified = True
+    view.gui = SimpleNamespace(get_object=lambda name: widgets[name])
+    view.controller = SimpleNamespace(get_store_filename=lambda: '/tmp/document.po')
+    view.main_window = SimpleNamespace(set_title=lambda title: setattr(view, '_title', title))
+
+    view.set_saveable(False)
+
+    assert view._title == 'document.po - Virtaal'
+    assert view.modified is False
+
+
+def test_set_saveable_skips_the_title_without_a_filename():
+    widgets = {'mnu_save': _FakeSensitiveWidget(), 'mnu_revert': _FakeSensitiveWidget()}
+    view = MainView.__new__(MainView)
+    view.modified = False
+    view.gui = SimpleNamespace(get_object=lambda name: widgets[name])
+    view.controller = SimpleNamespace(get_store_filename=lambda: None)
+    view.main_window = SimpleNamespace(set_title=lambda title: pytest.fail('no filename to show'))
+
+    view.set_saveable(True)  # must not raise

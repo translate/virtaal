@@ -2634,7 +2634,7 @@ If you are translating from English to French then French would be your translat
             </child>
             <child>
               <object class="GtkButton" id="btn_url_ok">
-                <property name="label">gtk-ok</property>
+                <property name="label">gtk-add</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>

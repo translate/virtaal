@@ -136,12 +136,7 @@ class TMWindow(Gtk.Window):
             cell_renderer.set_property('text', _("%(match_quality)s%%") % \
                     {"match_quality": quality})
             return
-        elif Gtk.gtk_version < (2, 16, 0):
-            # Rendering bug with some older versions of GTK if a progress is at
-            # 0%. GNOME bug 567253.
-            cell_renderer.set_property('value', 3)
-        else:
-            cell_renderer.set_property('value', 0)
+        cell_renderer.set_property('value', 0)
         #l10n: This indicates a suggestion from machine translation. It is displayed instead of the match percentage.
         cell_renderer.set_property('text', _("?"))
 

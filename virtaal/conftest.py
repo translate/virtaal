@@ -6,9 +6,18 @@ tried and rejected: several deprecated GTK calls fire their warning
 from inside a live GTK/PyGObject C call, and turning that into a
 raised Python exception mid-call measurably worsens this suite's
 pre-existing native segfault flakiness (35% vs 5% crash rate over 40
-trials). Instead, warnings are only ever recorded as they happen
-(`"always"`, never `"error"`) and checked once at the very end, so a
-run that would otherwise pass is never interrupted mid-test.
+trials). Instead, warnings are only ever recorded as they happen and
+checked once at the very end, so a run that would otherwise pass is
+never interrupted mid-test.
+
+Warnings are collected via the `pytest_warning_recorded` hook, not by
+assigning `warnings.showwarning` directly - pytest's own warnings
+plugin wraps every test phase in `warnings.catch_warnings(record=True)`,
+which replaces `showwarning` for the phase's whole duration and so
+silently shadows a plain module-level override for as long as any test
+is actually running (verified directly: a `showwarning`-based version
+of this hook recorded nothing and always exited 0, even for a warning
+pytest's own summary showed it had captured).
 
 Known, not-yet-fixed warnings are listed in
 devsupport/known-deprecation-warnings.txt (one message prefix per
@@ -17,7 +26,6 @@ actually fixed. Anything NOT matching that list fails the run.
 """
 
 import gettext
-import warnings
 from pathlib import Path
 
 import pytest
@@ -45,15 +53,9 @@ def _load_allowlist():
     return prefixes
 
 
-def _record_warning(message, category, filename, lineno, file=None, line=None):
-    if issubclass(category, _WATCHED_CATEGORIES):
-        _seen_messages.add(str(message))
-
-
-def pytest_configure(config):
-    warnings.filterwarnings("always", category=DeprecationWarning)
-    warnings.filterwarnings("always", category=PendingDeprecationWarning)
-    warnings.showwarning = _record_warning
+def pytest_warning_recorded(warning_message, when, nodeid, location):
+    if issubclass(warning_message.category, _WATCHED_CATEGORIES):
+        _seen_messages.add(str(warning_message.message))
 
 
 @pytest.fixture(autouse=True, scope="session")

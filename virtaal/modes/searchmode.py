@@ -52,6 +52,9 @@ class SearchMode(BaseMode):
         self.ent_search = Gtk.Entry()
         self.ent_search.connect('changed', self._on_search_text_changed)
         self.ent_search.connect('activate', self._on_entry_activate)
+        self.ent_search.connect('focus-out-event', self._on_search_focus_out)
+        self.ent_search.connect('focus-in-event', self._on_search_focus_in)
+        self._search_cursor_pos = None
         self.btn_search = Gtk.Button(label=_('Search'))
         self.btn_search.connect('clicked', self._on_search_clicked)
         self.chk_casesensitive = Gtk.CheckButton.new_with_mnemonic(_('_Case sensitive'))
@@ -420,6 +423,18 @@ class SearchMode(BaseMode):
 
 
     # EVENT HANDLERS #
+    def _on_search_focus_out(self, entry, event):
+        self._search_cursor_pos = entry.get_position()
+        return False
+
+    def _on_search_focus_in(self, entry, event):
+        # Tabbing back into the entry otherwise resets the cursor to the
+        # start instead of restoring where the user was last editing (#3699).
+        pos = self._search_cursor_pos
+        if pos is not None:
+            GLib.idle_add(entry.set_position, pos)
+        return False
+
     def _on_entry_activate(self, entry):
         logging.debug('_on_entry_activate: Enter activated ent_search (text=%r)' % (entry.get_text()))
         self._cancel_search_timeout()

@@ -13,7 +13,16 @@ echo "LANGUAGE=$LANGUAGE"
 litedir=lite
 
 if [ "$lang" == "de_DE" ]; then
-	./intltool-update --pot --gettext-package="$package"
+	# update-pot writes virtaal.pot in place - back it up/restore
+	# so this doesn't dirty the tracked file.
+	original_pot=$(mktemp)
+	trap 'rm -f "$original_pot"' EXIT
+	cp virtaal.pot "$original_pot"
+	./update-pot
+	mv virtaal.pot "$potfile"
+	cp "$original_pot" virtaal.pot
+	rm -f "$original_pot"
+	trap - EXIT
 	podebug --rewrite=xxx -f "" --progress=none "$potfile" "$lang.po"
 	podebug --rewrite=xxx -f "" --ignore=gtk --progress=none "$litedir/gtk20/gtk20.pot" "$litedir/gtk20/$lang.po"
 	podebug --rewrite=xxx -f "" --progress=none "$litedir/glib20/glib20.pot" "$litedir/glib20/$lang.po"

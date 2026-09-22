@@ -5,6 +5,9 @@
 # line once its warning is actually fixed, don't add new ones to paper
 # over a regression.
 
+# Undeprecated in https://github.com/python/cpython/issues/130796
+'locale.getdefaultlocale' is deprecated
+
 # Not ours to fix - third-party libraries' own internal code.
 The 'u' type code is deprecated
 GLib.unix_signal_add_full is deprecated

@@ -311,7 +311,8 @@ def test_set_virtaal_useragent_on_an_unrecognized_windows_version_omits_the_name
     assert client.user_agent.startswith('Virtaal/')
 
 
-def test_set_virtaal_useragent_on_macos_includes_the_release():
+def test_set_virtaal_useragent_on_macos_includes_the_release(monkeypatch):
+    monkeypatch.setattr(sys, 'platform', 'darwin')
     client = HTTPClient()
 
     client.set_virtaal_useragent()

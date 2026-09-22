@@ -298,12 +298,25 @@ class SearchMode(BaseMode):
         return d
 
     def _highlight_matches(self):
-        if getattr(self.filter, 're_search', None) is None:
-            return
-
+        no_search = getattr(self.filter, 're_search', None) is None
         for textbox in self.unitview.sources + self.unitview.targets:
             if textbox.props.visible:
-                self._highlight_textbox_matches(textbox)
+                if no_search:
+                    # No active search (e.g. the search term was cleared) -
+                    # clear any highlighting left over from a previous search.
+                    self._clear_textbox_highlight(textbox)
+                else:
+                    self._highlight_textbox_matches(textbox)
+
+    def _clear_textbox_highlight(self, textbox):
+        buff = textbox.buffer
+        try:
+            tagtable = buff.get_tag_table()
+            tag = tagtable.lookup('search_highlight')
+            if tag:
+                tagtable.remove(tag)
+        except ValueError as ve:
+            logging.exception("Removing search highlighting tag exception:")
 
     def _get_matches_for_textbox(self, textbox):
         role = textbox.role

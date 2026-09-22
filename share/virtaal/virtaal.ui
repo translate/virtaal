@@ -81,6 +81,8 @@
                       <object class="GtkGrid" id="tbl_language_adder">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="hexpand">False</property>
+                        <property name="vexpand">False</property>
                         <property name="row_spacing">10</property>
                         <child>
                           <object class="GtkLabel" id="label4">
@@ -116,7 +118,6 @@
                             <property name="can_focus">True</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
-                            <property name="halign">center</property>
                             <property name="vexpand">True</property>
                           </object>
                           <packing>
@@ -131,7 +132,6 @@
                             <property name="max_length">100</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
-                            <property name="halign">center</property>
                             <property name="vexpand">True</property>
                           </object>
                           <packing>
@@ -172,7 +172,6 @@
                             <property name="can_focus">True</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
-                            <property name="halign">center</property>
                             <property name="vexpand">True</property>
                           </object>
                           <packing>
@@ -1069,6 +1068,8 @@ If you are translating from English to French then French would be your translat
               <object class="GtkGrid" id="mode_box">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">False</property>
+                <property name="vexpand">False</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -1216,6 +1217,8 @@ If you are translating from English to French then French would be your translat
                           <object class="GtkGrid" id="tbl_translator_info">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="hexpand">False</property>
+                            <property name="vexpand">False</property>
                             <child>
                               <object class="GtkLabel" id="label10">
                                 <property name="visible">True</property>
@@ -1353,6 +1356,8 @@ If you are translating from English to French then French would be your translat
                               <object class="GtkGrid" id="tbl_font_selection">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="hexpand">False</property>
+                                <property name="vexpand">False</property>
                                 <child>
                                   <object class="GtkLabel" id="label14">
                                     <property name="visible">True</property>
@@ -1703,6 +1708,8 @@ If you are translating from English to French then French would be your translat
               <object class="GtkGrid" id="tbl_properties">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">False</property>
+                <property name="vexpand">False</property>
                 <property name="border_width">5</property>
                 <property name="column_spacing">12</property>
                 <property name="row_spacing">6</property>
@@ -2336,6 +2343,8 @@ If you are translating from English to French then French would be your translat
           <object class="GtkGrid" id="tbl_term_files">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="hexpand">False</property>
+            <property name="vexpand">False</property>
             <child>
               <object class="GtkHBox" id="hbox6">
                 <property name="visible">True</property>
@@ -2652,6 +2661,8 @@ If you are translating from English to French then French would be your translat
               <object class="GtkGrid" id="tbl_weblookup_add">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="hexpand">False</property>
+                <property name="vexpand">False</property>
                 <child>
                   <object class="GtkLabel" id="lbl1">
                     <property name="visible">True</property>

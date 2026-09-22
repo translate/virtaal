@@ -330,9 +330,10 @@ def test_compute_cell_height_right_aligns_for_rtl():
 
 def _sized_textbox(height, visible=True):
     # Realized (via a real OffscreenWindow, like _realized_textview()
-    # above) so the parent box's own .size_request() actually reflects
-    # the child's requested height - an unrealized box's requisition
-    # stays at its default (0), never recomputed from children at all.
+    # above) so the parent box's own get_preferred_size() actually
+    # reflects the child's requested height - an unrealized box's
+    # requisition stays at its default (0), never recomputed from
+    # children at all.
     win = Gtk.OffscreenWindow()
     box = Gtk.Box()
     label = Gtk.Label()
@@ -388,10 +389,10 @@ def test_check_editor_height_skips_an_invisible_textbox():
 def test_check_editor_height_gives_up_when_notes_leave_no_room():
     renderer = StoreCellRenderer(None)
     tall_target = _sized_textbox(500)
-    # check_editor_height() calls .size_request() on the note directly
-    # (not via a parent) - it needs to be realized itself, same as
-    # _sized_textbox()'s own targets/sources, or its explicit request
-    # never shows up in the *computed* size .size_request() reports.
+    # check_editor_height() calls get_preferred_size() on the note
+    # directly (not via a parent) - it needs to be realized itself,
+    # same as _sized_textbox()'s own targets/sources, or its explicit
+    # request never shows up in the computed size it reports.
     huge_note = _sized_textbox(1000)
     editor = SimpleNamespace(_widgets={
         'notes': {'note1': huge_note},
@@ -494,12 +495,13 @@ def test_do_render_paints_the_source_and_target_layouts(monkeypatch):
     # Real pixel-level verification (render to a surface, check
     # non-zero data) hit a genuine Windows-only Cairo failure
     # (cairo.MemoryError on surface.flush(), confirmed via CI - not
-    # reproducible on macOS/Linux) in this already-deprecated
-    # Gtk.paint_layout() path. Verifying the calls themselves is both
-    # more portable and a more direct test of do_render()'s own logic
-    # (source/target offsets, which layout goes where) anyway.
+    # reproducible on macOS/Linux). Verifying the calls themselves is
+    # both more portable and a more direct test of do_render()'s own
+    # logic (source/target offsets, which layout goes where) anyway.
     paints = []
-    monkeypatch.setattr(Gtk, 'paint_layout', lambda **kwargs: paints.append(kwargs))
+    monkeypatch.setattr(
+        Gtk, 'render_layout',
+        lambda context, cr, x, y, layout: paints.append({'x': x, 'y': y, 'layout': layout}))
     renderer = _renderer_with_view()
     renderer.editable = False
     widget = _toplevel_widget()

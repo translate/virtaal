@@ -55,11 +55,9 @@ class CellRendererWidget(Gtk.CellRenderer):
         width, height = layout.get_pixel_size()
 
         if self.widget:
-            requisition = self.widget.size_request()
-            w = requisition.width
-            h = requisition.height
-            width =  max(width,  w)
-            height = max(height, h)
+            _minimum, natural = self.widget.get_preferred_size()
+            width =  max(width,  natural.width)
+            height = max(height, natural.height)
 
         height += self.YPAD * 2
         width  += self.XPAD * 2

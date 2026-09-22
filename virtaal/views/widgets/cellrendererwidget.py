@@ -16,17 +16,6 @@ PARAM_READWRITE = ParamFlags.READWRITE
 SIGNAL_RUN_FIRST = SignalFlags.RUN_FIRST
 
 
-def flagstr(flags):
-    """Create a string-representation for the given flags structure."""
-    fset = []
-    for f in dir(Gtk):
-        if not f.startswith('CELL_RENDERER_'):
-            continue
-        if flags & getattr(Gtk, f):
-            fset.append(f)
-    return '|'.join(fset)
-
-
 class CellRendererWidget(Gtk.CellRenderer):
     __gtype_name__ = 'CellRendererWidget'
     __gproperties__ = {
@@ -42,7 +31,6 @@ class CellRendererWidget(Gtk.CellRenderer):
         super().__init__()
 
         self.default_width = default_width
-        self._editing = False
         self.strfunc = strfunc
         self.widget = None
         self.widget_func = widget_func or (lambda item: None)
@@ -57,8 +45,6 @@ class CellRendererWidget(Gtk.CellRenderer):
         return getattr(self, pspec.name)
 
     def do_get_size(self, widget, cell_area=None):
-        #print '%s>> on_get_size()' % (self.strfunc(self.widget))
-
         if cell_area is not None:
             return self.XPAD, self.YPAD, cell_area.width - 2*self.XPAD, cell_area.height - 2*self.YPAD
 
@@ -75,14 +61,12 @@ class CellRendererWidget(Gtk.CellRenderer):
             width =  max(width,  w)
             height = max(height, h)
 
-        #print 'width %d | height %d | lw %d | lh %d' % (width, height, lw, lh)
         height += self.YPAD * 2
         width  += self.XPAD * 2
 
         return self.XPAD, self.YPAD, width, height
 
     def do_render(self, window, widget, bg_area, cell_area, flags):
-        # print '%s>> on_render(flags=%s)' % (self.strfunc(self.widget), flagstr(flags))
         if flags & Gtk.CellRendererState.SELECTED:
             if self.props.editing == True:
                 # the widget will render itself
@@ -158,38 +142,3 @@ class CellWidget(Gtk.HBox, Gtk.CellEditable):
 
     def do_start_editing(self, *args):
         pass
-
-
-if __name__ == "__main__":
-    class Tree(Gtk.TreeView):
-        def __init__(self):
-            self.store = Gtk.ListStore(str, TYPE_PYOBJECT, bool)
-            super().__init__()
-            self.set_model(self.store)
-            self.set_headers_visible(True)
-
-            self.append_column(Gtk.TreeViewColumn('First', Gtk.CellRendererText(), text=0))
-            self.append_column(Gtk.TreeViewColumn('Second', CellRendererWidget(
-                lambda widget: '<b>' + widget.get_children()[0].get_label() + '</b>'), widget=1))
-
-        def insert(self, name):
-            iter = self.store.append()
-            hb = Gtk.HBox()
-            hb.pack_start(Gtk.Button.new_with_label(name), False, True, 0)
-            lbl = Gtk.Label(label=(name + ' ') * 20)
-            lbl.set_line_wrap(True)
-            hb.pack_start(lbl, False, True, 0)
-            self.store.set(iter, 0, name, 1, hb, 2, True)
-
-
-    w = Gtk.Window()
-    w.set_position(Gtk.WindowPosition.CENTER)
-    w.connect('delete-event', Gtk.main_quit)
-    t = Tree()
-    t.insert('foo')
-    t.insert('bar')
-    t.insert('baz')
-    w.add(t)
-
-    w.show_all()
-    Gtk.main()

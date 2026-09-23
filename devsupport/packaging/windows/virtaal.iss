@@ -100,6 +100,10 @@ Name: "belarusian"; MessagesFile: "languages\Belarusian.isl"
 Name: "bengali"; MessagesFile: "languages\Bengali.islu"
 Name: "valencian"; MessagesFile: "languages\Valencian.isl"
 Name: "icelandic"; MessagesFile: "languages\Icelandic.isl"
+; Last updated Inno 4.0.x - the oldest of the vendored files, so more
+; wizard strings than the others above are likely to fall back to
+; English.
+Name: "asturian"; MessagesFile: "languages\Asturian.isl"
 
 [Tasks]
 Name: "fileassoc"; Description: "Associate Virtaal with translation file types (.po, .xlf, .tmx, ...)"; Flags: unchecked

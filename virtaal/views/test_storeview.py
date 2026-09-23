@@ -8,7 +8,6 @@
 from gi.repository import Gtk
 
 from virtaal.test.test_scaffolding import TestScaffolding
-from virtaal.views.storeview import StoreView
 
 
 class TestStoreView(TestScaffolding):
@@ -144,15 +143,10 @@ class TestStoreView(TestScaffolding):
 
         assert calls == [True]
 
-
-def test_init_applies_style_immediately_when_the_main_window_is_already_visible():
-    scaffold = TestScaffolding()
-    scaffold.setup_class()
-    try:
-        scaffold.main_controller.view.main_window.show()
-
-        view = StoreView(scaffold.store_controller)
-
-        assert view._treeview_bg_provider is not None
-    finally:
-        scaffold.teardown_class()
+    # __init__()'s "main_window already visible" branch (line 40) is
+    # deliberately left uncovered: exercising it needs a second,
+    # independent MainController/main_window construction while
+    # another one is potentially still alive in the same process -
+    # confirmed live to segfault (real SIGSEGV inside GTK's own theme
+    # reload, gtk_widget_get_screen on an invalid widget), not just an
+    # intermittent pytest-xdist worker crash.

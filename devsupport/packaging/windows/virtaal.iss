@@ -82,6 +82,16 @@ Name: "swedish"; MessagesFile: "compiler:Languages\Swedish.isl"
 Name: "thai"; MessagesFile: "compiler:Languages\Thai.isl"
 Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
+; Vendored from https://jrsoftware.org/files/istrans/ into .\languages\
+; - not bundled with Inno itself. Translator-credit headers kept intact
+; (required by Inno's own redistribution license).
+; Actively maintained (targets Inno 6.4.0+/6.5.0+):
+Name: "afrikaans"; MessagesFile: "languages\Afrikaans.isl"
+Name: "greek"; MessagesFile: "languages\Greek.isl"
+Name: "englishbritish"; MessagesFile: "languages\EnglishBritish.isl"
+Name: "basque"; MessagesFile: "languages\Basque.isl"
+Name: "galician"; MessagesFile: "languages\Galician.isl"
+Name: "vietnamese"; MessagesFile: "languages\Vietnamese.isl"
 
 [Tasks]
 Name: "fileassoc"; Description: "Associate Virtaal with translation file types (.po, .xlf, .tmx, ...)"; Flags: unchecked

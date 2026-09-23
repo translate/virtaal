@@ -5,6 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import os
 from types import SimpleNamespace
 
 import pytest
@@ -131,7 +132,8 @@ def test_init_configures_the_plugin_controller_for_the_terminology_backend():
     pc = controller.plugin_controller
     assert pc.PLUGIN_INTERFACE.__name__ == 'BaseTerminologyModel'
     assert pc.get_disabled_plugins() == ['basetermmodel']
-    assert all(d.endswith('terminology/models') for d in pc.PLUGIN_DIRS)
+    expected_suffix = os.path.join('terminology', 'models')
+    assert all(d.endswith(expected_suffix) for d in pc.PLUGIN_DIRS)
 
 
 def test_destroy_tears_down_the_view_and_plugins(monkeypatch):

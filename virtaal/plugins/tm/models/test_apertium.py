@@ -6,6 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import json
+import logging
 from types import SimpleNamespace
 
 from gi.repository import GObject
@@ -128,10 +129,15 @@ def test_got_translation_unescapes_html_entities():
     assert model.cache['Tom & Jerry'][0]['target'] == 'Tom & Jerry'
 
 
-def test_got_translation_ignores_a_non_200_response():
+def test_got_translation_ignores_a_non_200_response(caplog):
+    # Regression: the debug log call here passed (query_str, details) as
+    # a single tuple instead of two separate args, so actually
+    # formatting the message raised TypeError instead of just logging.
     model = _model()
     response = json.dumps({'responseStatus': 500, 'responseDetails': 'boom'})
 
-    model.got_translation(response, 'hello')  # must not raise
+    with caplog.at_level(logging.DEBUG):
+        model.got_translation(response, 'hello')  # must not raise
 
     assert model.cache == {}
+    assert "Failed to translate 'hello':\nboom" in caplog.text

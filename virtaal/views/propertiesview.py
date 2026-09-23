@@ -140,12 +140,12 @@ class PropertiesView(BaseView, GObjectWrapper):
         for (description, strings, words) in statistics:
             # Add two identical labels for the word/string descriptions
             lbl_desc = Gtk.Label(label=description)
-            lbl_desc.set_alignment(1.0, 0.5) # Right aligned
+            lbl_desc.set_xalign(1.0)  # Right aligned
             lbl_desc.show()
             vbox_word_labels.pack_start(lbl_desc, True, True, 0)
 
             lbl_desc = Gtk.Label(label=description)
-            lbl_desc.set_alignment(1.0, 0.5) # Right aligned
+            lbl_desc.set_xalign(1.0)  # Right aligned
             lbl_desc.show()
             vbox_string_labels.pack_start(lbl_desc, True, True, 0)
 
@@ -155,13 +155,13 @@ class PropertiesView(BaseView, GObjectWrapper):
             # the number's, reading as neither left- nor right-aligned (#3683).
             word_percentage = _nice_percentage(words, total_words)
             lbl_stats = Gtk.Label(label='%d  %s' % (words, word_percentage))
-            lbl_stats.set_alignment(0.0, 0.5)
+            lbl_stats.set_xalign(0.0)
             lbl_stats.show()
             vbox_word_stats.pack_start(lbl_stats, True, True, 0)
 
             string_percentage = _nice_percentage(strings, total_strings)
             lbl_stats = Gtk.Label(label='%d  %s' % (strings, string_percentage))
-            lbl_stats.set_alignment(0.0, 0.5)
+            lbl_stats.set_xalign(0.0)
             lbl_stats.show()
             vbox_string_stats.pack_start(lbl_stats, True, True, 0)
 

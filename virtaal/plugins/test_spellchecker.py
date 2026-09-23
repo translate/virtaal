@@ -476,21 +476,21 @@ def test_spellchecker_dependencies_importable():
 
     Skips (rather than fails) when these optional system dependencies
     aren't installed, since the plugin is designed to degrade gracefully
-    without them - see .claude/skills/run-virtaal/SKILL.md. CI always
-    installs them (.github/workflows/ci.yml), so this is a real, enforced
-    check there rather than a permanent skip.
+    without them. CI always installs them (.github/workflows/ci.yml), so
+    these skip branches are unreachable there - excluded from coverage
+    rather than left to intermittently fail the patch-coverage check.
     """
     try:
         import enchant
-    except ImportError:
-        pytest.skip("pyenchant not installed - optional, see SKILL.md")
+    except ImportError:  # pragma: no cover
+        pytest.skip("pyenchant not installed - optional")
 
     try:
         import gi
         gi.require_version("GtkSpell", "3.0")
         from gi.repository import GtkSpell  # noqa: F401
-    except (ImportError, ValueError):
-        pytest.skip("GtkSpell 3.0 typelib not installed - optional, see SKILL.md")
+    except (ImportError, ValueError):  # pragma: no cover
+        pytest.skip("GtkSpell 3.0 typelib not installed - optional")
 
     assert enchant.list_languages(), (
         "enchant imported but reports no available dictionaries/providers "

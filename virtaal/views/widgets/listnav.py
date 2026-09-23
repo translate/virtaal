@@ -86,9 +86,9 @@ class ListNavigator(Gtk.HBox):
         # keep it in the sane borders
         i = min(max(i, 0), len(self.tvw_items.get_model()) - 1)
 
-        _itr = model.get_iter(i)
-        selected_name  = model.get_value(itr, self.COL_DISPLAY)
-        if selected_name in self.unselectable:
+        target_itr = model.get_iter(i)
+        target_name = model.get_value(target_itr, self.COL_DISPLAY)
+        if target_name in self.unselectable:
             return
 
         self.tvw_items.scroll_to_cell(i, use_align=True, row_align=0.4)

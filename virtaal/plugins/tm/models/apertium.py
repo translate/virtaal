@@ -92,7 +92,7 @@ class TMModel(BaseTMModel):
 
         if data['responseStatus'] != 200:
             import logging
-            logging.debug("Failed to translate '%s':\n%s", (query_str, data['responseDetails']))
+            logging.debug("Failed to translate '%s':\n%s", query_str, data['responseDetails'])
             return
 
         target = data['responseData']['translatedText']

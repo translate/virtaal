@@ -6,9 +6,11 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 from gi.repository import Gdk, GLib, GObject, Gtk, Pango
+from translate.lang.data import languages as toolkit_langs
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.common.platform import platform
+from virtaal.support.translate_compat import tr_lang
 from virtaal.views.widgets.selectview import SelectView
 
 from .baseview import BaseView
@@ -71,6 +73,17 @@ class PreferencesView(BaseView, GObjectWrapper):
         for fbtn in (self._widgets['fbtn_source'], self._widgets['fbtn_target']):
             fbtn.connect('clicked', self._on_font_button_clicked)
 
+        # Preview both fonts with the whole language pair, source and
+        # target, in their own scripts - either font may end up showing
+        # source-language content too (placeables, copy-paste, mixed
+        # text), so a translator needs to see both, not just the one
+        # language that font's own text box normally carries.
+        lang_controller = self.controller.main_controller.lang_controller
+        preview = self._pair_preview_text(lang_controller.source_lang, lang_controller.target_lang)
+        if preview is not None:
+            self._widgets['fbtn_source'].set_preview_text(preview)
+            self._widgets['fbtn_target'].set_preview_text(preview)
+
     def _on_font_button_clicked(self, fbtn):
         # GtkFontButton manages its own internal GtkFontChooserDialog with
         # no public accessor for it, so find the dialog it just opened via
@@ -88,6 +101,24 @@ class PreferencesView(BaseView, GObjectWrapper):
                     break
             return False
         GLib.idle_add(find_and_present)
+
+    def _pair_preview_text(self, source_lang, target_lang):
+        source_name = self._lang_endonym(source_lang)
+        target_name = self._lang_endonym(target_lang)
+        if source_name is None or target_name is None:
+            return None
+        # Same arrow/RTL/Windows convention as LanguageView's own
+        # language-pair label (langview.py's _get_display_string).
+        if self._widgets['fbtn_target'].get_direction() == Gtk.TextDirection.RTL:
+            return '‫%s ← ‫%s' % (source_name, target_name)
+        if platform.is_windows:
+            return '%s » %s' % (source_name, target_name)
+        return '%s → %s' % (source_name, target_name)
+
+    def _lang_endonym(self, lang):
+        if lang is None or lang.code not in toolkit_langs:
+            return None
+        return tr_lang(lang.code)(toolkit_langs[lang.code][0])
 
     def _init_placeables_page(self):
         self.placeables_select = SelectView()

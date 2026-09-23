@@ -7,12 +7,24 @@
 
 """Compatibility shim around translate-toolkit's search.match.matcher.
 
-matcher.matches() keeps its top-N candidates in a min-heap of
-(similarity, candidate) tuples; on a similarity tie, heapq falls back
-to comparing the candidates themselves, and TranslationUnit defines no
-ordering - "TypeError: '<' not supported between instances of
-'TranslationUnit' and 'TranslationUnit'". Upstream bug; drop this shim
-once translate-toolkit fixes it.
+Fixes two upstream bugs:
+
+- matcher.matches() keeps its top-N candidates in a min-heap of
+  (similarity, candidate) tuples; on a similarity tie, heapq falls back
+  to comparing the candidates themselves, and TranslationUnit defines no
+  ordering - "TypeError: '<' not supported between instances of
+  'TranslationUnit' and 'TranslationUnit'".
+
+- matcher.buildunits() embeds the raw, unrounded similarity float in the
+  candidate's PO comment as e.g. "98.30508474576271%". match.unit2dict()
+  later recovers the quality from that comment with the regex
+  r"([0-9]+)%", which greedily grabs whatever digit run immediately
+  precedes the "%" - for a non-integer score that's the tail of the
+  fractional part (here "30508474576271"), not the integer percentage.
+  Round the score to a whole percent before it reaches buildunits(), so
+  the note has no decimal point left to confuse the regex - #3706.
+
+Both are upstream bugs; drop this shim once translate-toolkit fixes them.
 """
 
 import heapq
@@ -24,7 +36,8 @@ from translate.search.match import sourcelen
 
 
 class matcher(_UpstreamMatcher):
-    """matcher with the heapq tie-breaking crash fixed."""
+    """matcher with the heapq tie-breaking crash and the quality-note
+    rounding bug fixed."""
 
     def matches(self, text):
         # Identical to upstream, except the heap tuples carry an extra
@@ -65,5 +78,9 @@ class matcher(_UpstreamMatcher):
         # Remove the empty ones, drop the tiebreaker (buildunits() below
         # expects plain (score, candidate) pairs, same as upstream).
         bestcandidates = [(item[0], item[2]) for item in bestcandidates if item[0] != 0]
+        # Sort on the exact score, then round only for buildunits() - see
+        # the module docstring. Rounding before the sort would let two
+        # close scores (e.g. 85.6 and 85.3) tie and lose their real order.
         bestcandidates.sort(key=itemgetter(0), reverse=True)
+        bestcandidates = [(round(score), candidate) for score, candidate in bestcandidates]
         return self.buildunits(bestcandidates)

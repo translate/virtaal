@@ -5,7 +5,9 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import logging
 import os
+from types import SimpleNamespace
 
 import pytest
 
@@ -362,3 +364,192 @@ def test_get_available_ui_languages_excludes_pseudo_translations(tmp_path, monke
     langs = dict(pan_app.get_available_ui_languages())
 
     assert set(langs) == {'af'}
+
+
+# _read_ini_recovering()'s remaining branches #
+
+def test_read_ini_recovering_clears_sections_already_on_the_parser(tmp_path):
+    # A parser handed in already populated (e.g. re-reading into one
+    # that outlived an earlier successful read) must not keep stale
+    # sections once the file underneath it turns out to be corrupt.
+    path = tmp_path / "settings.ini"
+    path.write_bytes(b"\x00" * 200)
+    parser = pan_app.ConfigParser.RawConfigParser()
+    parser.add_section('stale')
+
+    _read_ini_recovering(parser, str(path))
+
+    assert parser.sections() == []
+
+
+def test_read_ini_recovering_tolerates_a_failed_backup_rename(tmp_path, monkeypatch):
+    path = tmp_path / "settings.ini"
+    path.write_bytes(b"\x00" * 200)
+    monkeypatch.setattr(pan_app.os, 'replace', lambda *a: (_ for _ in ()).throw(OSError()))
+    parser = pan_app.ConfigParser.RawConfigParser()
+
+    backup_path = _read_ini_recovering(parser, str(path))
+
+    assert backup_path is None
+    assert path.exists()  # never actually moved
+
+
+# get_config_dir()'s Windows branch #
+
+def test_get_config_dir_on_windows(monkeypatch, tmp_path):
+    monkeypatch.setattr(pan_app.platform, 'is_windows', True)
+    monkeypatch.setenv('APPDATA', str(tmp_path))
+
+    confdir = get_config_dir()
+
+    assert confdir == os.path.join(str(tmp_path), 'Virtaal')
+    assert os.path.isdir(confdir)
+
+
+# _repo_root() #
+
+def test_repo_root_resolves_to_the_real_checkout_root():
+    root = pan_app._repo_root()
+
+    assert os.path.isdir(os.path.join(root, 'virtaal'))
+    assert os.path.isfile(os.path.join(root, 'pyproject.toml'))
+
+
+# name() #
+
+def test_name_tolerates_a_missing_pwd_module(monkeypatch):
+    import sys
+    monkeypatch.setitem(sys.modules, 'pwd', None)  # forces `import pwd` to raise ImportError
+
+    result = pan_app.name()
+
+    assert result  # falls back to plain getpass.getuser()
+
+
+# get_locale_lang() #
+
+def test_get_locale_lang_uses_osx_lang_when_locale_is_unset_on_mac(monkeypatch):
+    monkeypatch.setattr(pan_app.locale, 'getdefaultlocale', lambda *a: (None, None))
+    monkeypatch.setattr(pan_app.platform, 'is_mac', True)
+    monkeypatch.setattr(pan_app, 'osx_lang', lambda: 'fr_FR')
+
+    assert pan_app.get_locale_lang() == pan_app.data.simplify_to_common('fr_FR')
+
+
+def test_get_locale_lang_falls_back_to_en_on_error(monkeypatch, caplog):
+    def _raise(*a):
+        raise RuntimeError('no locale')
+    monkeypatch.setattr(pan_app.locale, 'getdefaultlocale', _raise)
+
+    with caplog.at_level(logging.WARNING):
+        result = pan_app.get_locale_lang()
+
+    assert result == 'en'
+    assert any('no locale' in r.message for r in caplog.records)
+
+
+# get_default_font() #
+
+def test_get_default_font_falls_back_to_gio_when_gconf_is_unavailable(monkeypatch):
+    import gi
+    real_require_version = gi.require_version
+    def fake_require_version(namespace, version):
+        if namespace == 'GConf':
+            raise ImportError('no GConf')
+        return real_require_version(namespace, version)
+    monkeypatch.setattr(gi, 'require_version', fake_require_version)
+
+    font = pan_app.get_default_font()
+
+    assert font  # the real system GSettings font name, whatever it is
+
+
+def test_get_default_font_falls_back_to_gtk_when_gconf_raises_unexpectedly(monkeypatch):
+    # The real, unmocked behaviour on a system with no GConf typelib at
+    # all: gi.require_version() itself raises ValueError, not
+    # ImportError - only the generic `except Exception` catches it.
+    import gi
+    real_require_version = gi.require_version
+    def fake_require_version(namespace, version):
+        if namespace == 'GConf':
+            raise ValueError('Namespace GConf not available')
+        return real_require_version(namespace, version)
+    monkeypatch.setattr(gi, 'require_version', fake_require_version)
+
+    font = pan_app.get_default_font()
+
+    assert font.startswith('monospace ')
+
+
+# Settings #
+
+def test_settings_raises_for_a_missing_explicit_filename(tmp_path):
+    with pytest.raises(Exception):
+        pan_app.Settings(str(tmp_path / 'does-not-exist.ini'))
+
+
+def test_settings_write_creates_the_config_directory_if_missing(tmp_path):
+    seed = tmp_path / 'seed.ini'
+    seed.write_text('')
+    settings = pan_app.Settings(str(seed))
+    new_path = tmp_path / 'newdir' / 'virtaal.ini'
+    settings.filename = str(new_path)
+
+    settings.write()
+
+    assert new_path.is_file()
+
+
+# save_config() #
+
+def test_save_config_joins_list_values(tmp_path):
+    path = str(tmp_path / 'test.ini')
+
+    pan_app.save_config(path, {'section': {'items': ['a', 'b', 'c']}})
+
+    assert pan_app.load_config(path, 'section')['items'] == 'a,b,c'
+
+
+# set_ui_language() #
+
+def test_set_ui_language_installs_the_translation_and_updates_the_module_global(monkeypatch):
+    installed = []
+    fake_translation = SimpleNamespace(install=lambda: installed.append(True))
+    monkeypatch.setattr(pan_app.gettext, 'translation',
+                         lambda *a, **kw: fake_translation)
+    monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: None)
+    monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
+    monkeypatch.setattr(pan_app.platform, 'is_windows', True)  # skips bind_libintl_posix
+
+    pan_app.set_ui_language('af')
+
+    assert installed == [True]
+    assert pan_app.ui_language == 'af'
+
+
+def test_set_ui_language_binds_libintl_on_non_windows(monkeypatch):
+    fake_translation = SimpleNamespace(install=lambda: None)
+    monkeypatch.setattr(pan_app.gettext, 'translation', lambda *a, **kw: fake_translation)
+    monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: None)
+    monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
+    monkeypatch.setattr(pan_app.platform, 'is_windows', False)
+    bound = []
+    monkeypatch.setattr(pan_app, 'bind_libintl_posix', bound.append)
+
+    pan_app.set_ui_language('af')
+
+    assert bound == [os.path.join(pan_app.sys.prefix, 'share', 'locale')]
+
+
+def test_set_ui_language_tolerates_an_unsupported_locale(monkeypatch):
+    fake_translation = SimpleNamespace(install=lambda: None)
+    monkeypatch.setattr(pan_app.gettext, 'translation', lambda *a, **kw: fake_translation)
+    monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: None)
+    monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
+    monkeypatch.setattr(pan_app.platform, 'is_windows', True)
+    monkeypatch.setattr(pan_app.locale, 'setlocale',
+                         lambda *a: (_ for _ in ()).throw(pan_app.locale.Error()))
+
+    pan_app.set_ui_language('xx_XX')  # must not raise
+
+    assert pan_app.ui_language == 'xx_XX'

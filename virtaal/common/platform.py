@@ -22,7 +22,8 @@ import sys
 
 
 class Platform:
-    def __init__(self, os_name=None, sys_platform=None, frozen=None, environ=None, machine=None):
+    def __init__(self, os_name=None, sys_platform=None, frozen=None, environ=None, machine=None,
+                 executable=None, prefix=None):
         self.is_windows = (os_name if os_name is not None else os.name) == 'nt'
         self.is_mac = (sys_platform if sys_platform is not None else sys.platform) == 'darwin'
         self.is_linux = not self.is_windows and not self.is_mac
@@ -32,6 +33,19 @@ class Platform:
         self.is_arm = machine == 'arm64'
         environ = environ if environ is not None else os.environ
         self.is_flatpak = 'FLATPAK_ID' in environ
+        # A frozen build's sys.prefix is the build machine's own Python
+        # install prefix, not the bundle - callers that need the real
+        # bundle directory (e.g. to find data files packaged alongside
+        # the executable) want this instead. None when not frozen -
+        # there's no single bundle directory to speak of.
+        executable = executable if executable is not None else sys.executable
+        self.bundle_dir = os.path.dirname(executable) if self.is_frozen else None
+        # Where a packaged install's compiled translations live -
+        # bundle_dir when frozen (see above), sys.prefix otherwise
+        # (gettext's own default search path is keyed off
+        # sys.base_prefix, missing a venv's own installed translations).
+        prefix = prefix if prefix is not None else sys.prefix
+        self.locale_dir = os.path.join(self.bundle_dir or prefix, 'share', 'locale')
 
     def install_method(self):
         """A human-readable label for how this build was installed, or

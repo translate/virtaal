@@ -50,3 +50,7 @@ assets/
 # Ephemeral transcripts from Invoke-VirtaalLocalTestPass.ps1 - run
 # records, not something to commit.
 /devsupport/testing/windows/.local-test-runs/
+
+# devsupport/screenshots/
+# generate_appdata_screenshots.py --check's output when images differ.
+/screenshot-artifacts/

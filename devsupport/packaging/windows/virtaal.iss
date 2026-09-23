@@ -92,6 +92,14 @@ Name: "englishbritish"; MessagesFile: "languages\EnglishBritish.isl"
 Name: "basque"; MessagesFile: "languages\Basque.isl"
 Name: "galician"; MessagesFile: "languages\Galician.isl"
 Name: "vietnamese"; MessagesFile: "languages\Vietnamese.isl"
+; Older (last updated Inno 5.5.3-6.1.0) - may fall back to English for
+; wizard strings added since; needs a look during manual testing.
+; Bengali.islu targets generic Bengali, not bn_IN specifically - a real
+; dialect mismatch, not something fixable on Virtaal's side.
+Name: "belarusian"; MessagesFile: "languages\Belarusian.isl"
+Name: "bengali"; MessagesFile: "languages\Bengali.islu"
+Name: "valencian"; MessagesFile: "languages\Valencian.isl"
+Name: "icelandic"; MessagesFile: "languages\Icelandic.isl"
 
 [Tasks]
 Name: "fileassoc"; Description: "Associate Virtaal with translation file types (.po, .xlf, .tmx, ...)"; Flags: unchecked

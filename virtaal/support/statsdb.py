@@ -754,4 +754,4 @@ class StatsCache:
         for threads in self._caches.values():
             for cache in threads.values():
                 cache.con.close()
-        self._caches = {}
+        self._caches.clear()

@@ -193,18 +193,11 @@ def test_getfileid_calls_a_callable_store(tmp_path):
 
 # close() #
 
-def test_close_closes_every_cached_connection(tmp_path):
+def test_close_closes_every_cached_connection_and_clears_the_registry(tmp_path):
     # Swap out the real, shared class-level cache pool for the
     # duration of this test - close() iterates and closes *every*
     # cached connection process-wide, not just this instance's, and
     # the real pool is shared with the rest of this test session.
-    #
-    # Note: close()'s own `self._caches = {}` sets an *instance*
-    # attribute, shadowing rather than clearing the class-level dict
-    # __new__() actually reads from - the registry entry (now pointing
-    # at a closed, unusable connection) is never actually removed.
-    # This is real, vendored-as-is upstream behaviour (see this
-    # module's own copyright banner), not something to fix here.
     original_caches = statsdb.StatsCache._caches
     statsdb.StatsCache._caches = {}
     try:
@@ -214,5 +207,6 @@ def test_close_closes_every_cached_connection(tmp_path):
 
         with pytest.raises(statsdb.dbapi2.ProgrammingError):
             cache.cur.execute("SELECT 1")
+        assert statsdb.StatsCache._caches == {}
     finally:
         statsdb.StatsCache._caches = original_caches

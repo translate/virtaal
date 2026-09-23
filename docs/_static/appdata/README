@@ -1,3 +1,20 @@
-These files are screenshots used for the AppData files. They can be used for
-other purposes, but other screenshots can't be used for AppData in general as
-they need specific sizes.
+These are the screenshots used for AppData/Flathub (see
+virtaal.metainfo.xml.in) and the website. They're generated, not hand-
+captured - don't edit or replace them directly.
+
+To refresh them:
+
+    python3 devsupport/screenshots/generate_appdata_screenshots.py --write
+
+CI also runs this in --check mode on every build-flatpak run (#3625) and
+uploads freshly generated images as a build artifact whenever they've
+drifted from what's committed. That check never blocks the build - the
+<image> tags in virtaal.metainfo.xml.in are plain URLs, not files bundled
+into the flatpak, so a stale screenshot is cosmetic, not a functional
+problem. If CI flags drift, download the artifact and commit the refreshed
+PNGs.
+
+Committed images should always come from that CI (Linux) run, not a local
+capture on another OS - font rendering differs enough between platforms
+that a locally-captured image would show as "different" on every future
+check even when nothing is actually wrong.

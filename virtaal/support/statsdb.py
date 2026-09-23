@@ -145,9 +145,6 @@ class Record(UserDict):
         self._compute_derived_values(self)
         return result
 
-    def as_string_for_db(self):
-        return ",".join([repr(x) for x in self.to_tuple()])
-
 
 def transaction(f):
     """Modifies f to commit database changes if it executes without exceptions.
@@ -240,10 +237,10 @@ class FileTotals:
         return Record(FileTotals.keys, result.fetchone(), self._compute_derived_values)
 
     def __setitem__(self, fileid, record):
-        self.cur.execute("""
-            INSERT OR REPLACE into filetotals
-            VALUES (%(fileid)d, %(vals)s);
-        """ % {'fileid': fileid, 'vals': record.as_string_for_db()})
+        placeholders = ", ".join(["?"] * (len(record.record_keys) + 1))
+        self.cur.execute(
+            "INSERT OR REPLACE INTO filetotals VALUES (%s);" % placeholders,
+            (fileid,) + record.to_tuple())
 
     def __delitem__(self, fileid):
         self.cur.execute("""

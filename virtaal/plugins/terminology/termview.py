@@ -104,10 +104,10 @@ class TerminologyCombo(Gtk.ComboBox):
         if iter:
             self.selected_string = self._model.get_value(iter, 0)
 
-        if self.parent:
-            self.parent.grab_focus()
+        parent = self.get_parent()
+        if parent:
+            parent.grab_focus()
 
-        parent = self.parent
         buffer = parent.get_buffer()
         parent.remove(self)
         if self.insert_offset >= 0:

@@ -45,6 +45,11 @@ dependencies = [
     "python-Levenshtein",
     "cheroot",
     "bottle",
+    # translate-toolkit's tr_lang() (language-pair labels, font preview
+    # text) prefers pycountry's bundled locale data over the system
+    # iso-codes package - without it, those names silently fall back to
+    # English wherever the OS doesn't happen to have iso-codes installed.
+    "pycountry",
 ]
 
 [project.optional-dependencies]

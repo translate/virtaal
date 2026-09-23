@@ -246,12 +246,15 @@ def test_init_sets_up_widgets_dict_and_bindings():
     assert mnu_prefs.get_accel_path() == "<Virtaal>/Edit/Preferences"
 
 
-def _load_full_view(monkeypatch):
+def _load_full_view(monkeypatch, source_lang=None, target_lang=None):
     monkeypatch.setattr(prefsview.pan_app, 'get_available_ui_languages', lambda: [])
     view = PreferencesView.__new__(PreferencesView)
     main_window = Gtk.Window()
     view.controller = SimpleNamespace(
-        main_controller=SimpleNamespace(view=SimpleNamespace(main_window=main_window)),
+        main_controller=SimpleNamespace(
+            view=SimpleNamespace(main_window=main_window),
+            lang_controller=SimpleNamespace(source_lang=source_lang, target_lang=target_lang),
+        ),
     )
     view._widgets = {}
     view._init_gui()
@@ -274,6 +277,76 @@ def test_init_gui_wires_the_default_fonts_button(monkeypatch):
 
     assert view._widgets['fbtn_source'].get_font() == 'Sans 10'
     assert view._widgets['fbtn_target'].get_font() == 'Sans 10'
+
+
+def test_init_font_gui_previews_both_fonts_with_the_whole_language_pair(monkeypatch):
+    monkeypatch.setattr(prefsview, 'tr_lang', lambda code: (lambda name: f'{name} [{code}]'))
+    monkeypatch.setattr(prefsview.platform, 'is_windows', False)
+    source_lang = SimpleNamespace(code='fr')
+    target_lang = SimpleNamespace(code='am')
+
+    view = _load_full_view(monkeypatch, source_lang=source_lang, target_lang=target_lang)
+
+    assert view._widgets['fbtn_source'].get_preview_text() == 'French [fr] → Amharic [am]'
+    assert view._widgets['fbtn_target'].get_preview_text() == 'French [fr] → Amharic [am]'
+
+
+def test_init_font_gui_leaves_the_default_preview_when_no_language_is_selected(monkeypatch):
+    default_preview = Gtk.FontButton().get_preview_text()
+
+    view = _load_full_view(monkeypatch)
+
+    assert view._widgets['fbtn_source'].get_preview_text() == default_preview
+    assert view._widgets['fbtn_target'].get_preview_text() == default_preview
+
+
+def test_init_font_gui_leaves_the_default_preview_for_an_unknown_language_code(monkeypatch):
+    default_preview = Gtk.FontButton().get_preview_text()
+
+    view = _load_full_view(
+        monkeypatch, source_lang=SimpleNamespace(code='not-a-real-code'), target_lang=SimpleNamespace(code='fr'),
+    )
+
+    assert view._widgets['fbtn_source'].get_preview_text() == default_preview
+    assert view._widgets['fbtn_target'].get_preview_text() == default_preview
+
+
+# _pair_preview_text() #
+
+def test_pair_preview_text_rtl(monkeypatch):
+    monkeypatch.setattr(prefsview.platform, 'is_windows', False)
+    monkeypatch.setattr(prefsview, 'tr_lang', lambda code: (lambda name: name))
+    view = PreferencesView.__new__(PreferencesView)
+    view._widgets = {'fbtn_target': Gtk.Button()}
+    view._widgets['fbtn_target'].set_direction(Gtk.TextDirection.RTL)
+
+    result = view._pair_preview_text(SimpleNamespace(code='en'), SimpleNamespace(code='ar'))
+
+    assert result == '‫English ← ‫Arabic'
+
+
+def test_pair_preview_text_ltr_default(monkeypatch):
+    monkeypatch.setattr(prefsview.platform, 'is_windows', False)
+    monkeypatch.setattr(prefsview, 'tr_lang', lambda code: (lambda name: name))
+    view = PreferencesView.__new__(PreferencesView)
+    view._widgets = {'fbtn_target': Gtk.Button()}
+    view._widgets['fbtn_target'].set_direction(Gtk.TextDirection.LTR)
+
+    result = view._pair_preview_text(SimpleNamespace(code='en'), SimpleNamespace(code='fr'))
+
+    assert result == 'English → French'
+
+
+def test_pair_preview_text_uses_french_quotes_on_windows(monkeypatch):
+    monkeypatch.setattr(prefsview.platform, 'is_windows', True)
+    monkeypatch.setattr(prefsview, 'tr_lang', lambda code: (lambda name: name))
+    view = PreferencesView.__new__(PreferencesView)
+    view._widgets = {'fbtn_target': Gtk.Button()}
+    view._widgets['fbtn_target'].set_direction(Gtk.TextDirection.LTR)
+
+    result = view._pair_preview_text(SimpleNamespace(code='en'), SimpleNamespace(code='fr'))
+
+    assert result == 'English » French'
 
 
 def test_on_font_button_clicked_presents_the_open_font_dialog_and_restores_focus(monkeypatch):
@@ -386,7 +459,10 @@ def test_show_initialises_the_gui_on_first_call(monkeypatch):
     view = PreferencesView.__new__(PreferencesView)
     main_window = Gtk.Window()
     controller = SimpleNamespace(
-        main_controller=SimpleNamespace(view=SimpleNamespace(main_window=main_window)),
+        main_controller=SimpleNamespace(
+            view=SimpleNamespace(main_window=main_window),
+            lang_controller=SimpleNamespace(source_lang=None, target_lang=None),
+        ),
         update_prefs_gui_data=lambda: None,
     )
     view.controller = controller

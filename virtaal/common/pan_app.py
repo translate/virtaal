@@ -181,14 +181,15 @@ def get_default_font():
         font_name = client.get_string('/desktop/gnome/interface/monospace_font_name')
         font_size = font_name.split(' ')[-1]
     except ImportError as ie:
-        from gi.repository import Gio
-        settings = Gio.Settings.new('org.gnome.desktop.interface')
-        font_name = settings.get_string('monospace-font-name')
-        if font_name:
-            return font_name
-    except ImportError as ie:
-        import logging
-        logging.debug('Unable to import gconf module: %s', ie)
+        try:
+            from gi.repository import Gio
+            settings = Gio.Settings.new('org.gnome.desktop.interface')
+            font_name = settings.get_string('monospace-font-name')
+            if font_name:
+                return font_name
+        except ImportError as ie2:
+            import logging
+            logging.debug('Unable to import gconf module: %s', ie2)
     except Exception:
         # Ignore any other errors and try the next method
         pass

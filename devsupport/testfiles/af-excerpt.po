@@ -1,0 +1,92 @@
+# A small, frozen excerpt of Virtaal's own real Afrikaans translation
+# (po/af.po), kept for devsupport/screenshots/generate_appdata_screenshots.py
+# - unit 6 below has a genuine printf check failure. Deliberately a
+# snapshot, not a live reference to po/af.po: a translator fixing that
+# unit shouldn't silently break (or need to keep broken) this fixture.
+# Update by hand if a better example is ever needed.
+msgid ""
+msgstr ""
+"Project-Id-Version: Virtaal 0.4\n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2014-02-11 21:10+0000\n"
+"PO-Revision-Date: 2011-05-27 02:12+0000\n"
+"Last-Translator: F Wolff <friedel@translate.org.za>\n"
+"Language-Team: translate-discuss-af@lists.sourceforge.net\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+"Language: af\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Project-Style: gnome\n"
+
+#: ../share/applications/virtaal.desktop.in.h:1
+#: ../share/virtaal/virtaal.ui.h:18 ../virtaal/support/native_widgets.py:103
+#: ../virtaal/views/mainview.py:842
+msgid "Virtaal"
+msgstr "Virtaal"
+
+#: ../share/applications/virtaal.desktop.in.h:2
+msgid "Translation Tool"
+msgstr "Vertaalprogram"
+
+#: ../share/applications/virtaal.desktop.in.h:3
+msgid ""
+"A translation tool to help a human translator translate files into other "
+"languages"
+msgstr ""
+"'n Vertaalprogram om 'n vertaler te help om lêers na ander tale te vertaal"
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:1
+msgid ""
+"Virtaal is a program for doing translation. It aims for a delightful "
+"combination of simplicity and power. It integrates with selected online "
+"resources to make translation fun, while helping to improve translation "
+"quality."
+msgstr ""
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:2
+#, fuzzy
+#| msgid ""
+#| "The initial focus is on software translation (localization or l10n), but "
+#| "we definitely intend it to be useful as a general purpose tool for "
+#| "Computer Aided Translation (CAT)."
+msgid ""
+"The initial focus is on software translation (localization or l10n), but is "
+"definitely meant to be useful as a general purpose tool for Computer Aided "
+"Translation (CAT)."
+msgstr ""
+"Die aanvanklike fokus is op die vertaling van sagteware (lokalisering of "
+"l10n), maar ons beplan definitief dat dit nuttig sal wees as 'n algemene "
+"hulp vir rekenaargesteunde vertaling."
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:3
+msgid "Some features:"
+msgstr ""
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:4
+#, fuzzy
+#| msgid "Existing translations: %(translations)s"
+msgid "Translation reuse (translation memory)"
+msgstr "Bestaande vertalings: %(translations)s"
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:5
+#: ../virtaal/views/widgets/welcomescreen.py:80
+msgid "Terminology assistance"
+msgstr "Terminologiehulp"
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:6
+msgid "AutoCompletor and AutoCorrector"
+msgstr ""
+
+#: ../share/appdata/virtaal.appdata.xml.in.h:7
+msgid "Quality checks with customization for many languages"
+msgstr ""
+
+#: ../share/virtaal/virtaal.ui.h:1
+msgid "Add Missing Language"
+msgstr "Voeg ontbrekende taal by"
+
+#: ../share/virtaal/virtaal.ui.h:2
+msgid "Language name:"
+msgstr "Taalnaam:"

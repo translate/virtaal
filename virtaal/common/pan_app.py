@@ -370,8 +370,10 @@ if ui_language:
         pass
     # localedir passed explicitly, same reason as set_ui_language()'s
     # own docstring: gettext's default search path is keyed off
-    # sys.base_prefix, missing a venv's own installed translations.
-    localedir = os.path.join(sys.prefix, 'share', 'locale')
+    # sys.base_prefix, missing a venv's own installed translations -
+    # platform.locale_dir additionally corrects for sys.prefix being
+    # wrong in a frozen build.
+    localedir = platform.locale_dir
     _ensure_dev_locale_installed(ui_language, localedir)
     languages = [ui_language, locale_lang]
     gettext.translation('virtaal', localedir=localedir, languages=languages, fallback=True).install()
@@ -393,8 +395,8 @@ else:
 def get_available_ui_languages():
     """Language codes Virtaal has a real, loadable translation for,
         mapped to display names, sorted by name. Looks both at
-        C{sys.prefix}'s C{share/locale/} (a packaged install) and the
-        repo's own C{mo/} tree (a dev checkout - see
+        C{platform.locale_dir} (a packaged install) and the repo's own
+        C{mo/} tree (a dev checkout - see
         C{_ensure_dev_locale_installed}'s docstring), since either one
         alone can be empty depending on how Virtaal is currently run.
 
@@ -406,7 +408,7 @@ def get_available_ui_languages():
     from translate.lang.data import languages as toolkit_langs
 
     codes = set()
-    for localedir in (os.path.join(sys.prefix, 'share', 'locale'), os.path.join(_repo_root(), 'mo')):
+    for localedir in (platform.locale_dir, os.path.join(_repo_root(), 'mo')):
         try:
             entries = os.listdir(localedir)
         except OSError:
@@ -437,7 +439,9 @@ def set_ui_language(lang):
     localedir is passed explicitly - gettext's default search path is
     keyed off sys.base_prefix rather than sys.prefix, so it misses
     translations installed into a venv (which is where
-    devsupport/pseudo-translation's own generated locales land).
+    devsupport/pseudo-translation's own generated locales land) -
+    platform.locale_dir additionally corrects for sys.prefix being
+    wrong in a frozen build.
     """
     global ui_language
     fix_locale(lang)
@@ -445,7 +449,7 @@ def set_ui_language(lang):
         locale.setlocale(locale.LC_ALL, lang)
     except locale.Error:
         pass
-    localedir = os.path.join(sys.prefix, 'share', 'locale')
+    localedir = platform.locale_dir
     _ensure_dev_locale_installed(lang, localedir)
     gettext.translation('virtaal', localedir=localedir, languages=[lang], fallback=False).install()
     if not platform.is_windows:
@@ -456,11 +460,7 @@ def set_ui_language(lang):
 
 
 # Determine the directory the main executable is running from
-main_dir = ''
-if platform.is_frozen:
-    main_dir = os.path.dirname(sys.executable)
-else:
-    main_dir = os.path.dirname(sys.argv[0])
+main_dir = platform.bundle_dir or os.path.dirname(sys.argv[0])
 
 
 if platform.is_windows and platform.is_frozen:

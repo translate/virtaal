@@ -297,7 +297,7 @@ def test_ensure_dev_locale_installed_compiles_the_po_when_no_mo_was_ever_built(t
 def test_get_available_ui_languages_has_no_system_default_entry_of_its_own(tmp_path, monkeypatch):
     # pan_app.py is in po/POTFILES.skip - a label here would never be
     # translatable. The caller (prefsview.py) adds one instead.
-    monkeypatch.setattr(pan_app.sys, 'prefix', str(tmp_path / 'prefix'))
+    monkeypatch.setattr(pan_app.platform, 'locale_dir', str(tmp_path / 'prefix' / 'share' / 'locale'))
     monkeypatch.setattr(pan_app, '_repo_root', lambda: str(tmp_path / 'repo'))
 
     langs = pan_app.get_available_ui_languages()
@@ -306,16 +306,16 @@ def test_get_available_ui_languages_has_no_system_default_entry_of_its_own(tmp_p
 
 
 def test_get_available_ui_languages_finds_languages_in_either_location(tmp_path, monkeypatch):
-    # A packaged install populates sys.prefix's share/locale/; a dev
-    # checkout instead has the repo's own flat mo/<code>/virtaal.mo
-    # (see _ensure_dev_locale_installed) - both need to be offered.
-    prefix = tmp_path / 'prefix'
+    # A packaged install populates platform.locale_dir; a dev checkout
+    # instead has the repo's own flat mo/<code>/virtaal.mo (see
+    # _ensure_dev_locale_installed) - both need to be offered.
+    locale_dir = tmp_path / 'prefix' / 'share' / 'locale'
     repo = tmp_path / 'repo'
-    (prefix / 'share' / 'locale' / 'fr' / 'LC_MESSAGES').mkdir(parents=True)
-    (prefix / 'share' / 'locale' / 'fr' / 'LC_MESSAGES' / 'virtaal.mo').write_bytes(b'x')
+    (locale_dir / 'fr' / 'LC_MESSAGES').mkdir(parents=True)
+    (locale_dir / 'fr' / 'LC_MESSAGES' / 'virtaal.mo').write_bytes(b'x')
     (repo / 'mo' / 'af').mkdir(parents=True)
     (repo / 'mo' / 'af' / 'virtaal.mo').write_bytes(b'x')
-    monkeypatch.setattr(pan_app.sys, 'prefix', str(prefix))
+    monkeypatch.setattr(pan_app.platform, 'locale_dir', str(locale_dir))
     monkeypatch.setattr(pan_app, '_repo_root', lambda: str(repo))
 
     langs = dict(pan_app.get_available_ui_languages())
@@ -328,10 +328,10 @@ def test_get_available_ui_languages_cleans_up_a_semicolon_joined_name(tmp_path, 
     # toolkit's own raw name for 'nso' is the semicolon-joined MARC/ISO
     # 639-2 entry "Pedi; Sepedi; Northern Sotho" - not something to
     # show a user as-is.
-    prefix = tmp_path / 'prefix'
-    (prefix / 'share' / 'locale' / 'nso' / 'LC_MESSAGES').mkdir(parents=True)
-    (prefix / 'share' / 'locale' / 'nso' / 'LC_MESSAGES' / 'virtaal.mo').write_bytes(b'x')
-    monkeypatch.setattr(pan_app.sys, 'prefix', str(prefix))
+    locale_dir = tmp_path / 'prefix' / 'share' / 'locale'
+    (locale_dir / 'nso' / 'LC_MESSAGES').mkdir(parents=True)
+    (locale_dir / 'nso' / 'LC_MESSAGES' / 'virtaal.mo').write_bytes(b'x')
+    monkeypatch.setattr(pan_app.platform, 'locale_dir', str(locale_dir))
     monkeypatch.setattr(pan_app, '_repo_root', lambda: str(tmp_path / 'repo'))
 
     langs = dict(pan_app.get_available_ui_languages())
@@ -340,10 +340,10 @@ def test_get_available_ui_languages_cleans_up_a_semicolon_joined_name(tmp_path, 
 
 
 def test_get_available_ui_languages_falls_back_to_the_code_for_an_unknown_language(tmp_path, monkeypatch):
-    prefix = tmp_path / 'prefix'
-    (prefix / 'share' / 'locale' / 'zzz' / 'LC_MESSAGES').mkdir(parents=True)
-    (prefix / 'share' / 'locale' / 'zzz' / 'LC_MESSAGES' / 'virtaal.mo').write_bytes(b'x')
-    monkeypatch.setattr(pan_app.sys, 'prefix', str(prefix))
+    locale_dir = tmp_path / 'prefix' / 'share' / 'locale'
+    (locale_dir / 'zzz' / 'LC_MESSAGES').mkdir(parents=True)
+    (locale_dir / 'zzz' / 'LC_MESSAGES' / 'virtaal.mo').write_bytes(b'x')
+    monkeypatch.setattr(pan_app.platform, 'locale_dir', str(locale_dir))
     monkeypatch.setattr(pan_app, '_repo_root', lambda: str(tmp_path / 'repo'))
 
     langs = dict(pan_app.get_available_ui_languages())
@@ -354,11 +354,11 @@ def test_get_available_ui_languages_falls_back_to_the_code_for_an_unknown_langua
 def test_get_available_ui_languages_excludes_pseudo_translations(tmp_path, monkeypatch):
     # devsupport/pseudo-translation's own generated locales - a testing
     # aid, not a real language a user would pick in Preferences.
-    prefix = tmp_path / 'prefix'
+    locale_dir = tmp_path / 'prefix' / 'share' / 'locale'
     for code in ('pseudo', 'pseudo-bidi', 'af'):
-        (prefix / 'share' / 'locale' / code / 'LC_MESSAGES').mkdir(parents=True)
-        (prefix / 'share' / 'locale' / code / 'LC_MESSAGES' / 'virtaal.mo').write_bytes(b'x')
-    monkeypatch.setattr(pan_app.sys, 'prefix', str(prefix))
+        (locale_dir / code / 'LC_MESSAGES').mkdir(parents=True)
+        (locale_dir / code / 'LC_MESSAGES' / 'virtaal.mo').write_bytes(b'x')
+    monkeypatch.setattr(pan_app.platform, 'locale_dir', str(locale_dir))
     monkeypatch.setattr(pan_app, '_repo_root', lambda: str(tmp_path / 'repo'))
 
     langs = dict(pan_app.get_available_ui_languages())
@@ -533,12 +533,36 @@ def test_set_ui_language_binds_libintl_on_non_windows(monkeypatch):
     monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: None)
     monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
     monkeypatch.setattr(pan_app.platform, 'is_windows', False)
+    monkeypatch.setattr(pan_app.platform, 'locale_dir', '/fake/venv/share/locale')
     bound = []
     monkeypatch.setattr(pan_app, 'bind_libintl_posix', bound.append)
 
     pan_app.set_ui_language('af')
 
-    assert bound == [os.path.join(pan_app.sys.prefix, 'share', 'locale')]
+    assert bound == ['/fake/venv/share/locale']
+
+
+def test_set_ui_language_uses_platform_locale_dir(monkeypatch):
+    # Real bug this guards against: pan_app.py used to compute this
+    # itself from sys.prefix directly, which is wrong in a frozen
+    # build (see test_platform.py's own coverage of that) - it must go
+    # through platform.locale_dir instead, not re-derive it.
+    seen_localedirs = []
+    fake_translation = SimpleNamespace(install=lambda: None)
+
+    def fake_gettext_translation(domain, localedir, languages, fallback):
+        seen_localedirs.append(localedir)
+        return fake_translation
+
+    monkeypatch.setattr(pan_app.gettext, 'translation', fake_gettext_translation)
+    monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: None)
+    monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
+    monkeypatch.setattr(pan_app.platform, 'is_windows', True)  # skips bind_libintl_posix
+    monkeypatch.setattr(pan_app.platform, 'locale_dir', '/fake/bundle/share/locale')
+
+    pan_app.set_ui_language('af')
+
+    assert seen_localedirs == ['/fake/bundle/share/locale']
 
 
 def test_set_ui_language_tolerates_an_unsupported_locale(monkeypatch):

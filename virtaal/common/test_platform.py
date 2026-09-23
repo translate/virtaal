@@ -55,6 +55,31 @@ def test_defaults_fall_back_to_real_os_and_sys():
     assert p.is_flatpak == ('FLATPAK_ID' in os.environ)
 
 
+def test_bundle_dir_is_the_executables_directory_when_frozen():
+    p = Platform(frozen=True, executable='/fake/bundle/virtaal.exe')
+    assert p.bundle_dir == '/fake/bundle'
+
+
+def test_bundle_dir_is_none_when_not_frozen():
+    p = Platform(frozen=False, executable='/fake/bundle/virtaal.exe')
+    assert p.bundle_dir is None
+
+
+def test_locale_dir_uses_the_bundle_dir_when_frozen():
+    # Real bug this guards against: sys.prefix in a frozen build is the
+    # build machine's own Python install prefix, not the bundle - the
+    # app's own translations never loaded, in any language, because
+    # gettext.translation() (fallback=True) silently found nothing at
+    # that wrong path.
+    p = Platform(frozen=True, executable='/fake/bundle/virtaal.exe', prefix='/wrong/build/prefix')
+    assert p.locale_dir == os.path.join('/fake/bundle', 'share', 'locale')
+
+
+def test_locale_dir_uses_sys_prefix_when_not_frozen():
+    p = Platform(frozen=False, prefix='/fake/venv')
+    assert p.locale_dir == os.path.join('/fake/venv', 'share', 'locale')
+
+
 def test_intel():
     p = Platform(machine='x86_64')
     assert p.is_intel

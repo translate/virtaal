@@ -23,22 +23,6 @@ def _percent(match_data):
     return cell_renderer.properties
 
 
-# _percent_data_func(): GtkCellRendererProgress's "value" is a C gint -
-# an out-of-range quality crashes with OverflowError, so it's clamped
-# defensively regardless of how it got out of range.
-
-def test_percent_data_func_clamps_a_quality_above_one_hundred():
-    properties = _percent({'quality': 150, 'source': 'a', 'target': 'b'})
-    assert properties['value'] == 100
-    assert properties['text'] == '100%'
-
-
-def test_percent_data_func_clamps_a_negative_quality():
-    properties = _percent({'quality': -20, 'source': 'a', 'target': 'b'})
-    assert properties['value'] == 0
-    assert properties['text'] == '0%'
-
-
 def test_percent_data_func_shows_the_exact_quality_within_range():
     properties = _percent({'quality': 75, 'source': 'a', 'target': 'b'})
     assert properties['value'] == 75

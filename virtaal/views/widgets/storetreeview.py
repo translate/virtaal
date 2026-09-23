@@ -291,9 +291,12 @@ class StoreTreeView(Gtk.TreeView):
 
     def _restore_cursor(self):
         # Safety-net check only, no corrective action: a reactive
-        # resize() here is what caused the original growth bug.
+        # resize() here is what caused the original growth bug. A wide
+        # window during/just after a real fullscreen toggle is expected,
+        # not a regression - only warn outside of that.
         size = self._window_size()
-        if size and size[0] > 1024:
+        mainview = self.view.controller.main_controller.view
+        if size and size[0] > 1024 and not mainview.is_fullscreen_or_restoring():
             logging.warning("storetreeview: window width %d after a resize/focus settle - investigate if seen again", size[0])
 
     def _on_cursor_changed(self, _treeview):

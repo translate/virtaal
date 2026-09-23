@@ -399,6 +399,7 @@ class MainView(BaseView):
     def _track_window_state(self):
         self._window_is_maximized = False
         self._pre_fullscreen_size = None
+        self._restoring_from_fullscreen = False
 
         def on_state_event(widget, event):
             self._window_is_maximized = bool(event.new_window_state & Gdk.WindowState.MAXIMIZED)
@@ -1101,6 +1102,7 @@ class MainView(BaseView):
         if left_fullscreen and getattr(self, '_pre_fullscreen_size', None):
             target_size = self._pre_fullscreen_size
             self._pre_fullscreen_size = None
+            self._restoring_from_fullscreen = True
             logging.debug("fullscreen: leaving, will restore to %s in 250ms", target_size)
             # Deferred, not resized right here: this event fires the
             # moment the state *changes*, still mid-transition on both
@@ -1113,6 +1115,14 @@ class MainView(BaseView):
             from gi.repository import GLib
             GLib.timeout_add(250, self._restore_pre_fullscreen_size, target_size)
 
+    def is_fullscreen_or_restoring(self):
+        """True while genuinely fullscreen, or transiently wide while
+        resizing back from it - the window legitimately exceeds normal
+        widths in both cases."""
+        gdk_window = self.main_window.get_window()
+        is_fullscreen = bool(gdk_window and gdk_window.get_state() & Gdk.WindowState.FULLSCREEN)
+        return is_fullscreen or self._restoring_from_fullscreen
+
     def _restore_pre_fullscreen_size(self, target_size):
         store_controller = self.controller.store_controller
         if store_controller.store is not None:
@@ -1120,6 +1130,7 @@ class MainView(BaseView):
         logging.debug("fullscreen: resizing to %s (get_size() was %s)", target_size, self.main_window.get_size())
         self.main_window.resize(*target_size)
         logging.debug("fullscreen: get_size() now reports %s", self.main_window.get_size())
+        self._restoring_from_fullscreen = False
         return False  # one-shot: don't repeat this GLib.timeout_add
 
     def _on_app_pressed(self, btn):

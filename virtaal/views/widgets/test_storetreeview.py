@@ -458,8 +458,16 @@ def test_window_size_returns_the_real_size_for_a_realized_window():
     assert size is not None
 
 
+def _fake_storetreeview_self(width, is_fullscreen_or_restoring):
+    return SimpleNamespace(
+        _window_size=lambda: (width, 100),
+        view=SimpleNamespace(controller=SimpleNamespace(main_controller=SimpleNamespace(
+            view=SimpleNamespace(is_fullscreen_or_restoring=lambda: is_fullscreen_or_restoring)))),
+    )
+
+
 def test_restore_cursor_warns_on_an_unexpectedly_wide_window(caplog):
-    view = SimpleNamespace(_window_size=lambda: (2000, 100))
+    view = _fake_storetreeview_self(2000, is_fullscreen_or_restoring=False)
 
     with caplog.at_level(logging.WARNING):
         StoreTreeView._restore_cursor(view)
@@ -468,7 +476,16 @@ def test_restore_cursor_warns_on_an_unexpectedly_wide_window(caplog):
 
 
 def test_restore_cursor_is_quiet_for_a_normal_width(caplog):
-    view = SimpleNamespace(_window_size=lambda: (800, 100))
+    view = _fake_storetreeview_self(800, is_fullscreen_or_restoring=False)
+
+    with caplog.at_level(logging.WARNING):
+        StoreTreeView._restore_cursor(view)
+
+    assert caplog.records == []
+
+
+def test_restore_cursor_is_quiet_for_a_wide_window_while_fullscreen(caplog):
+    view = _fake_storetreeview_self(2000, is_fullscreen_or_restoring=True)
 
     with caplog.at_level(logging.WARNING):
         StoreTreeView._restore_cursor(view)

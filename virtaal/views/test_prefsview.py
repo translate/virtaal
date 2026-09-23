@@ -284,21 +284,31 @@ def test_on_font_button_clicked_presents_the_open_font_dialog_and_restores_focus
     prefs_dialog.show()
     font_dialog = Gtk.Dialog(transient_for=prefs_dialog)
     font_dialog.show()
-    presented = []
-    monkeypatch.setattr(font_dialog, 'present', lambda: presented.append(True))
+    try:
+        # find_and_present() below scans every real GTK toplevel window
+        # still alive in the process (Gtk.Window.list_toplevels()),
+        # including whatever earlier test files left un-destroyed.
+        # Restrict it to this test's own two dialogs so it doesn't
+        # depend on - or crash on - that ambient global state.
+        monkeypatch.setattr(prefsview.Gtk.Window, 'list_toplevels',
+                             staticmethod(lambda: [prefs_dialog, font_dialog]))
+        presented = []
+        monkeypatch.setattr(font_dialog, 'present', lambda: presented.append(True))
 
-    view._on_font_button_clicked(view._widgets['fbtn_source'])
-    # _on_font_button_clicked runs its work via GLib.idle_add - fire it now.
-    func, args = idle_calls[-1]
-    func(*args)
+        view._on_font_button_clicked(view._widgets['fbtn_source'])
+        # _on_font_button_clicked runs its work via GLib.idle_add - fire it now.
+        func, args = idle_calls[-1]
+        func(*args)
 
-    assert presented == [True]
-    hide_calls = []
-    monkeypatch.setattr(prefs_dialog, 'present', lambda: hide_calls.append(True))
-    font_dialog.emit('hide')
-    hide_func, hide_args = idle_calls[-1]
-    hide_func(*hide_args)
-    assert hide_calls == [True]
+        assert presented == [True]
+        hide_calls = []
+        monkeypatch.setattr(prefs_dialog, 'present', lambda: hide_calls.append(True))
+        font_dialog.emit('hide')
+        hide_func, hide_args = idle_calls[-1]
+        hide_func(*hide_args)
+        assert hide_calls == [True]
+    finally:
+        font_dialog.destroy()
 
 
 def test_font_data_round_trips_through_the_font_buttons(monkeypatch):

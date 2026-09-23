@@ -260,40 +260,53 @@ function Set-VirtaalTranslatorInfo {
 function Open-VirtaalFileViaDialog {
     <#
     .SYNOPSIS
-    Sends Ctrl+O, waits for the file-open dialog, navigates to
-    $FullPath via GTK's Ctrl+L location bar, and presses Enter. Returns
-    the dialog's HWND on success or $null if Ctrl+O never opened one -
-    doesn't verify the resulting title itself, since different callers
-    want different filename checks.
+    Sends Ctrl+O, waits for the file-open dialog, jumps straight to its
+    "File name:" field with Alt+N, types the full path, and presses
+    Enter. Returns the dialog's HWND on success or $null if Ctrl+O
+    never opened one - doesn't verify the resulting title itself,
+    since different callers want different filename checks.
 
-    Takes a *full* path, not a bare filename - see the history below for
-    why. Extracted into one place (was duplicated across three checks)
-    specifically so a reliability fix here benefits all of them at once,
-    and so a future failure has one call site to add more diagnostics
-    to instead of three.
+    Takes a *full* path, not a bare filename - see the history below
+    for why. Extracted into one place (was duplicated across three
+    checks) specifically so a reliability fix here benefits all of
+    them at once, and so a future failure has one call site to add
+    more diagnostics to instead of three.
 
     History: originally typed a bare filename directly into the file
     list, relying on GTK's interactive/type-ahead search (the same
     mechanism the run-virtaal skill's macOS driver relies on for its
-    native NSOpenPanel) - reasoned, at the time, to be flaky from a race
-    between the dialog reporting itself foreground and its internal
-    focus settling. That diagnosis was wrong: a saved screenshot from a
-    live failure (2026-08-24) showed the dialog's search UI itself
-    active with "af.po" typed and "No Results Found" - GTK3's file
-    chooser search is a broader, non-recursive-by-default search
-    feature, not a simple filter of the currently-browsed directory's
-    contents, so a bare filename only works if the dialog already
-    happens to be browsing the right folder (recent files, mostly by
-    luck). Ctrl+L's location bar takes an unambiguous full path
-    instead and doesn't depend on whatever directory the dialog opened
-    to.
+    native NSOpenPanel) - a saved screenshot from a live failure
+    (2026-08-24) showed the dialog's search UI itself active with
+    "af.po" typed and "No Results Found": GTK3's file chooser search is
+    a broader, non-recursive-by-default search feature, not a simple
+    filter of the currently-browsed directory's contents, so a bare
+    filename only works if the dialog already happens to be browsing
+    the right folder.
+
+    Then tried the Ctrl+L location bar two different ways - a full
+    path in one shot (Windows' address-bar-style location entry treats
+    an existing *file* path as something to open/execute directly, the
+    same as Explorer's own address bar, so this could pop up Windows'
+    native "How do you want to open this file?" chooser instead of
+    just selecting it), and folder-then-{TAB}-then-filename (a live
+    screenshot showed {TAB} landing in the dialog's search box instead
+    of the file list for one folder, triggering a recursive search
+    with multiple hits instead of a direct selection - which folder
+    ends up where after {TAB} isn't consistent).
+
+    Alt+N sidesteps all of it: "File name:" is the one control in this
+    dialog whose entire job is "hand this path back to the calling app"
+    - unlike the address bar (navigates or shell-executes) or the file
+    list/search box (selection, not text entry), typing a full path
+    there and pressing Enter is exactly the standard, universal way
+    every Windows Open dialog supports picking an arbitrary file.
     #>
     param([Parameter(Mandatory)]$Instance, [Parameter(Mandatory)][string]$FullPath, [int]$DialogTimeoutSeconds = 8)
     Send-VirtaalKeys $Instance "^o"
     $dlg = Wait-VirtaalPopup $Instance -TimeoutSeconds $DialogTimeoutSeconds
     if (-not $dlg) { return $null }
     Start-Sleep -Milliseconds 500
-    Send-VirtaalPopupKeys $dlg "^l"
+    Send-VirtaalPopupKeys $dlg "%n"
     Start-Sleep -Milliseconds 300
     Send-VirtaalPopupKeys $dlg $FullPath
     Start-Sleep -Milliseconds 300

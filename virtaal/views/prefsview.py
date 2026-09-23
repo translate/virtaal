@@ -64,8 +64,8 @@ class PreferencesView(BaseView, GObjectWrapper):
 
     def _init_font_gui(self):
         def reset_fonts(button):
-            self._widgets['fbtn_source'].set_font_name(pan_app.get_default_font())
-            self._widgets['fbtn_target'].set_font_name(pan_app.get_default_font())
+            self._widgets['fbtn_source'].set_font(pan_app.get_default_font())
+            self._widgets['fbtn_target'].set_font(pan_app.get_default_font())
         self._widgets['btn_default_fonts'].connect('clicked', reset_fonts)
 
         for fbtn in (self._widgets['fbtn_source'], self._widgets['fbtn_target']):
@@ -144,16 +144,16 @@ class PreferencesView(BaseView, GObjectWrapper):
     # ACCESSORS #
     def _get_font_data(self):
         return {
-            'source': self._widgets['fbtn_source'].get_font_name(),
-            'target': self._widgets['fbtn_target'].get_font_name(),
+            'source': self._widgets['fbtn_source'].get_font(),
+            'target': self._widgets['fbtn_target'].get_font(),
         }
     def _set_font_data(self, value):
         if not isinstance(value, dict) or not 'source' in value or not 'target' in value:
             raise ValueError('Value must be a dictionary')
         sourcefont = Pango.FontDescription(value['source'])
         targetfont = Pango.FontDescription(value['target'])
-        self._widgets['fbtn_source'].set_font_name(value['source'])
-        self._widgets['fbtn_target'].set_font_name(value['target'])
+        self._widgets['fbtn_source'].set_font(value['source'])
+        self._widgets['fbtn_target'].set_font(value['target'])
     font_data = property(_get_font_data, _set_font_data)
 
     def _get_placeables_data(self):

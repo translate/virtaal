@@ -132,7 +132,7 @@ class PopupWidgetButton(Gtk.ToggleButton):
 
     def _update_popup_geometry(self):
         self.popup.set_size_request(-1, -1)
-        requisition = self.popup.get_child_requisition()
+        requisition = self.popup.get_preferred_size()[1]
         width = requisition.width
         height = requisition.height
 

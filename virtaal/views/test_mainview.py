@@ -224,15 +224,19 @@ def test_show_save_confirm_dialog_shows_before_presenting_and_restores_parent_fo
 # quit(): window geometry persisted before Gtk.main_quit()
 
 class _FakeMainWindow:
-    def __init__(self, size=(800, 600), position=(10, 20)):
+    def __init__(self, size=(800, 600), position=(10, 20), gdk_window=None):
         self._size = size
         self._position = position
+        self._gdk_window = gdk_window
 
     def get_size(self):
         return self._size
 
     def get_position(self):
         return self._position
+
+    def get_window(self):
+        return self._gdk_window
 
 
 def _view_for_quit(monkeypatch, maximized=False):
@@ -349,6 +353,7 @@ def test_on_window_state_event_schedules_a_restore_when_leaving_fullscreen(monke
 
     assert scheduled == [(250, view._restore_pre_fullscreen_size, ((640, 480),))]
     assert view._pre_fullscreen_size is None
+    assert view._restoring_from_fullscreen is True
 
 
 def test_on_window_state_event_does_not_schedule_a_restore_when_entering_fullscreen(monkeypatch):
@@ -381,6 +386,7 @@ def test_on_window_state_event_skips_restore_without_a_captured_size(monkeypatch
 def test_restore_pre_fullscreen_size_resizes_and_resets_the_column_width():
     view = MainView.__new__(MainView)
     view.main_window = _FakeMainWindow()
+    view._restoring_from_fullscreen = True
     resized = []
     view.main_window.resize = lambda w, h: resized.append((w, h))
     reset_calls = []
@@ -393,6 +399,7 @@ def test_restore_pre_fullscreen_size_resizes_and_resets_the_column_width():
     assert resized == [(1024, 768)]
     assert reset_calls == [1]
     assert result is False
+    assert view._restoring_from_fullscreen is False
 
 
 def test_restore_pre_fullscreen_size_skips_column_reset_without_a_loaded_store():
@@ -402,6 +409,33 @@ def test_restore_pre_fullscreen_size_skips_column_reset_without_a_loaded_store()
     view.controller = SimpleNamespace(store_controller=SimpleNamespace(store=None))
 
     view._restore_pre_fullscreen_size((1024, 768))  # must not raise
+
+
+def test_is_fullscreen_or_restoring_true_while_gdk_reports_fullscreen():
+    gdk_window = SimpleNamespace(get_state=lambda: Gdk.WindowState.FULLSCREEN)
+    view = MainView.__new__(MainView)
+    view.main_window = _FakeMainWindow(gdk_window=gdk_window)
+    view._restoring_from_fullscreen = False
+
+    assert view.is_fullscreen_or_restoring() is True
+
+
+def test_is_fullscreen_or_restoring_true_while_restoring_even_if_not_fullscreen():
+    gdk_window = SimpleNamespace(get_state=lambda: Gdk.WindowState(0))
+    view = MainView.__new__(MainView)
+    view.main_window = _FakeMainWindow(gdk_window=gdk_window)
+    view._restoring_from_fullscreen = True
+
+    assert view.is_fullscreen_or_restoring() is True
+
+
+def test_is_fullscreen_or_restoring_false_for_an_ordinary_window():
+    gdk_window = SimpleNamespace(get_state=lambda: Gdk.WindowState(0))
+    view = MainView.__new__(MainView)
+    view.main_window = _FakeMainWindow(gdk_window=gdk_window)
+    view._restoring_from_fullscreen = False
+
+    assert view.is_fullscreen_or_restoring() is False
 
 
 # _on_store_closed() / _on_store_loaded(): menu sensitivity and the

@@ -130,7 +130,10 @@ omit = [
 fail_under = 57
 
 [tool.codespell]
-skip = "*.po,*.pot,po/*,ChangeLog,build,dist,*.egg-info,docs/_themes,devsupport/testfiles,.git"
+skip = "*.po,*.pot,po/*,ChangeLog,build,dist,*.egg-info,docs/_themes,devsupport/testfiles,.git,virtaal/support/test_statsdb_ported.py"
+# test_statsdb_ported.py: verbatim French/Afrikaans PO fixture content
+# ported from translate-toolkit's own test suite, same reasoning as
+# skipping *.po/*.pot themselves.
 # datas: PyInstaller's own datas= kwarg, not a typo. gir: GObject
 # Introspection Repository (.gir) files, not "git". abd: "Alaa Abd El
 # Fattah" (a real name, aboutdialog.py). bable: "Bable", Asturian's

@@ -105,7 +105,8 @@ class TMClient(HTTPClient):
     def add_store(self, filename, store, source_lang, target_lang, callback=None):
         request = RESTRequest(
                 self.base_url + "/%s/%s/store" % (source_lang, target_lang),
-                filename, "POST", json.dumps(store))
+                filename, "POST", json.dumps(store),
+                user_agent=self.user_agent)
         self.add(request)
         if callback:
             request.connect(
@@ -116,7 +117,8 @@ class TMClient(HTTPClient):
     def forget_store(self, store, callback=None):
         request = RESTRequest(
                 self.base_url + "/store",
-                store.filename, "DELETE")
+                store.filename, "DELETE",
+                user_agent=self.user_agent)
         self.add(request)
         if callback:
             request.connect(

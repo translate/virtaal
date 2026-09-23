@@ -89,7 +89,8 @@ def test_set_popupbutton_fg_removes_its_previous_provider_on_a_later_call(monkey
 
 # _get_display_string() #
 
-def test_get_display_string_rtl():
+def test_get_display_string_rtl(monkeypatch):
+    monkeypatch.setattr(langview.platform, 'is_windows', False)
     view = LanguageView.__new__(LanguageView)
     view.popupbutton = Gtk.Button()
     view.popupbutton.set_direction(Gtk.TextDirection.RTL)
@@ -99,7 +100,8 @@ def test_get_display_string_rtl():
     assert result == '‫English ← ‫Arabic'
 
 
-def test_get_display_string_ltr_default():
+def test_get_display_string_ltr_default(monkeypatch):
+    monkeypatch.setattr(langview.platform, 'is_windows', False)
     view = LanguageView.__new__(LanguageView)
     view.popupbutton = Gtk.Button()
     view.popupbutton.set_direction(Gtk.TextDirection.LTR)

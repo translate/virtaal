@@ -40,6 +40,27 @@ def test_open_file_ignores_a_reentrant_call():
     assert controller.open_file('somefile.po') is None
 
 
+def test_open_file_shows_a_translated_error_message_on_failure():
+    # The wait loop's own `for _ in range(1000)` used to shadow the
+    # gettext `_` builtin for the rest of this method, so the error
+    # message below raised TypeError instead of ever reaching the
+    # dialog.
+    def raise_missing(*args, **kwargs):
+        raise OSError('The file does not exist.')
+
+    controller = MainController.__new__(MainController)
+    controller._opening_file = False
+    controller._placeables_controller = object()
+    controller._store_controller = SimpleNamespace(is_modified=lambda: False, open_file=raise_missing, store=None)
+    errors = []
+    controller.view = SimpleNamespace(show_error_dialog=lambda message, parent=None: errors.append(message))
+
+    result = controller.open_file('missing.po')
+
+    assert result is False
+    assert errors == ['missing.po:\nCould not open file.\n\nThe file does not exist.\n\nTry opening a different file.']
+
+
 def test_quit_closes_a_still_open_dialog_and_retries_instead_of_hanging(monkeypatch):
     # macOS's global Cmd+Q accelerator can reach quit() while a
     # Gtk.Dialog.run() (Preferences, Properties, ...) is still blocking

@@ -187,7 +187,7 @@ class MainController(BaseController):
         # let's make it our problem and ensure the last ones are in the
         # main controller. Bounded, not an unconditional while - belt
         # and suspenders alongside the re-entrancy guard above.
-        for _ in range(1000):
+        for attempt in range(1000):
             if self.placeables_controller:
                 break
             Gtk.main_iteration()

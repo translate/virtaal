@@ -715,3 +715,44 @@ def test_set_saveable_skips_the_title_without_a_filename():
     view.main_window = SimpleNamespace(set_title=lambda title: pytest.fail('no filename to show'))
 
     view.set_saveable(True)  # must not raise
+
+
+# _setup_key_bindings() #
+
+def _real_view_for_key_bindings():
+    """A minimal but real-widget-backed self for _setup_key_bindings() -
+    real Gtk.Builder objects support get_children()/remove()/insert()/
+    set_accel_group()/set_accel_path() out of the box, unlike a fake."""
+    builder = Gtk.Builder()
+    builder.add_from_file('share/virtaal/virtaal.ui')
+    return SimpleNamespace(gui=builder, main_window=builder.get_object('MainWindow'), sync_menubar=lambda: None)
+
+
+def test_setup_key_bindings_registers_preferences_with_ctrl_p_off_mac(monkeypatch):
+    # Spies on the call rather than checking Gtk.AccelMap's own
+    # resulting state: that's real global process state, and
+    # add_entry() is a no-op once a path already has an entry - two
+    # tests toggling is_mac against the same path would contaminate
+    # each other regardless of run order.
+    monkeypatch.setattr(platform, 'is_mac', False)
+    calls = []
+    monkeypatch.setattr(Gtk.AccelMap, 'add_entry', lambda path, key, mods: calls.append((path, key, mods)))
+    view = _real_view_for_key_bindings()
+
+    MainView._setup_key_bindings(view)
+
+    assert ("<Virtaal>/Edit/Preferences", Gdk.KEY_p, Gdk.ModifierType.CONTROL_MASK) in calls
+
+
+def test_setup_key_bindings_leaves_preferences_alone_on_mac(monkeypatch):
+    # macOS keeps its own conventional Cmd+, from virtaal.accel, loaded
+    # separately in _setup_macos_integration() - this function must not
+    # also register Preferences itself when is_mac.
+    monkeypatch.setattr(platform, 'is_mac', True)
+    calls = []
+    monkeypatch.setattr(Gtk.AccelMap, 'add_entry', lambda path, key, mods: calls.append((path, key, mods)))
+    view = _real_view_for_key_bindings()
+
+    MainView._setup_key_bindings(view)
+
+    assert not any(path == "<Virtaal>/Edit/Preferences" for path, key, mods in calls)

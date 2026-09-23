@@ -47,10 +47,10 @@ class WelcomeScreenView(BaseView):
             self.parent_widget.remove(self.widget)
 
     def show(self):
-        if not self.widget.get_parent():
-            self.parent_widget.add(self.widget)
-        else:
-            self.widget.reparent(self.parent_widget)
+        old_parent = self.widget.get_parent()
+        if old_parent:
+            old_parent.remove(self.widget)
+        self.parent_widget.add(self.widget)
         self.parent_widget.child_set_property(self.widget, 'position', self.PARENT_VBOX_POSITION)
         self.parent_widget.child_set_property(self.widget, 'expand', True)
 

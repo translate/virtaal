@@ -16,6 +16,7 @@ import pytest
 from virtaal.common.platform import platform
 from virtaal.support.libi18n import locale as locale_module
 from virtaal.support.libi18n.locale import (
+    _bundled_macos_libintl,
     _getlang,
     _isofromlangid,
     _putenv,
@@ -123,6 +124,48 @@ def test_fix_locale_on_windows_falls_back_to_getlang_when_no_lang_given(monkeypa
     fix_locale(None)
 
     assert locale_module.os.environ['LANGUAGE'] == 'fr'
+
+
+def test_bundled_macos_libintl_finds_the_versioned_file(tmp_path):
+    bundle_dir = tmp_path / 'Contents' / 'MacOS'
+    bundle_dir.mkdir(parents=True)
+    frameworks_dir = tmp_path / 'Contents' / 'Frameworks'
+    frameworks_dir.mkdir()
+    (frameworks_dir / 'libintl.8.dylib').touch()
+
+    assert _bundled_macos_libintl(str(bundle_dir)) == str(frameworks_dir / 'libintl.8.dylib')
+
+
+def test_bundled_macos_libintl_returns_none_when_absent(tmp_path):
+    bundle_dir = tmp_path / 'Contents' / 'MacOS'
+    bundle_dir.mkdir(parents=True)
+
+    assert _bundled_macos_libintl(str(bundle_dir)) is None
+
+
+def test_bind_libintl_posix_prefers_the_bundled_macos_copy(tmp_path, monkeypatch):
+    # A frozen macOS build vendors its own libintl in Contents/
+    # Frameworks/ - a separate loaded image from any system copy
+    # (e.g. Homebrew's) that ctypes.util.find_library() would find
+    # instead. Regression test: GTK's own translation calls are
+    # linked against the bundled copy, so binding the wrong one
+    # leaves every .ui string untranslated with no error at all.
+    bundle_dir = tmp_path / 'Contents' / 'MacOS'
+    bundle_dir.mkdir(parents=True)
+    frameworks_dir = tmp_path / 'Contents' / 'Frameworks'
+    frameworks_dir.mkdir()
+    (frameworks_dir / 'libintl.8.dylib').touch()
+    monkeypatch.setattr(locale_module.platform, 'is_mac', True)
+    monkeypatch.setattr(locale_module.platform, 'is_frozen', True)
+    monkeypatch.setattr(locale_module.platform, 'bundle_dir', str(bundle_dir))
+    opened = []
+    monkeypatch.setattr(ctypes, 'CDLL', lambda name: opened.append(name) or SimpleNamespace(
+        bindtextdomain=lambda *a: None, bind_textdomain_codeset=lambda *a: None))
+    monkeypatch.setattr(ctypes.util, 'find_library', lambda name: '/opt/homebrew/lib/libintl.dylib')
+
+    bind_libintl_posix('/tmp/some/locale/dir')
+
+    assert opened == [str(frameworks_dir / 'libintl.8.dylib')]
 
 
 def test_bind_libintl_posix_binds_the_domain():

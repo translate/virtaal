@@ -359,6 +359,24 @@ def fix_libintl(main_dir):
     del libintl
 
 
+def _bundled_macos_libintl(bundle_dir):
+    """The frozen macOS .app's own copy of libintl, in Contents/
+    Frameworks/ (a sibling of Contents/MacOS/, where bundle_dir
+    points) - a separate loaded image from any system copy (e.g.
+    Homebrew's), with its own independent gettext state.
+    ctypes.util.find_library() only searches system paths, so on a
+    machine that also has a system libintl installed, it resolves to
+    that wrong instance: GTK's own dgettext() calls, linked against
+    the bundled copy, never see anything bound there. None if
+    bundle_dir doesn't point at one."""
+    frameworks_dir = os.path.join(os.path.dirname(bundle_dir), 'Frameworks')
+    for name in ('libintl.8.dylib', 'libintl.dylib'):
+        path = os.path.join(frameworks_dir, name)
+        if os.path.isfile(path):
+            return path
+    return None
+
+
 def bind_libintl_posix(locale_dir):
     """The POSIX equivalent of fix_libintl() above (same underlying
     reason, bugzilla.gnome.org/574520): Gtk.Builder's translatable
@@ -371,7 +389,11 @@ def bind_libintl_posix(locale_dir):
     import ctypes
     import ctypes.util
     try:
-        libname = ctypes.util.find_library('intl')
+        libname = None
+        if platform.is_mac and platform.is_frozen and platform.bundle_dir:
+            libname = _bundled_macos_libintl(platform.bundle_dir)
+        if libname is None:
+            libname = ctypes.util.find_library('intl')
         libintl = ctypes.CDLL(libname) if libname else ctypes.CDLL(None)
         libintl.bindtextdomain(b"virtaal", locale_dir.encode(sys.getfilesystemencoding()))
         libintl.bind_textdomain_codeset(b"virtaal", b"UTF-8")

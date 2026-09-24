@@ -48,7 +48,11 @@ for f in "${changed[@]}"; do
     # po/POTFILES.in itself governs what `make pot` extracts - editing
     # it (adding/removing entries) is exactly as relevant as editing
     # one of the files it lists, but it doesn't list itself.
-    if [ "$f" = "po/POTFILES.in" ]; then
+    # virtaal/__version__.py isn't in POTFILES.in either (no
+    # translatable strings) but po/update-pot reads it directly for
+    # xgettext's --package-version, so a version bump alone still
+    # makes the pot's header stale.
+    if [ "$f" = "po/POTFILES.in" ] || [ "$f" = "virtaal/__version__.py" ]; then
         relevant=true
     fi
 done

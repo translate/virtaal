@@ -462,6 +462,41 @@ def test_save_file_plain_saves_and_marks_clean():
     assert emitted == [True]
 
 
+# save_file() - project path #
+
+def test_save_file_project_opens_the_real_file_in_binary_mode(tmp_path):
+    real_file = tmp_path / 'source.po'
+    real_file.write_bytes((
+        'msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-8\\n"\n'
+        '\nmsgid "coffee"\nmsgstr "café ☕"\n'
+    ).encode())
+
+    controller = _controller()
+    controller.project = SimpleNamespace(
+        get_proj_filename=lambda fname: 'trans/source.po',
+        update_file=lambda proj_fname, infile: updated.update(
+            proj_fname=proj_fname, infile=infile
+        ),
+        convert_forward=lambda *a, **k: None,
+        save=lambda: None,
+    )
+    updated = {}
+    controller.real_filename = str(real_file)
+    controller._unit_controller = SimpleNamespace(prepare_for_save=lambda: None)
+    controller.store = SimpleNamespace(save_file=lambda: None)
+    controller.main_controller = SimpleNamespace(
+        undo_controller=SimpleNamespace(model=SimpleNamespace(mark_clean=lambda: None)),
+        set_saveable=lambda v: None,
+    )
+    controller._archivetemp = None
+
+    controller.save_file()
+
+    assert updated['proj_fname'] == 'trans/source.po'
+    assert updated['infile'].mode == 'rb'
+    assert updated['infile'].read() == real_file.read_bytes()
+
+
 # binary_export() #
 
 def test_binary_export_writes_the_compiled_store(monkeypatch, tmp_path):
@@ -529,6 +564,42 @@ def test_update_file_replaces_the_cursor_on_an_already_open_store():
     assert controller.cursor.model is controller.store
     assert shown == [None, controller.store, 'shown']
     assert emitted == [True]
+
+
+def test_update_file_converts_a_new_file_reading_it_in_binary_mode(monkeypatch, tmp_path):
+    from translate.convert import factory as convert_factory
+    from translate.storage import factory as store_factory
+
+    src = tmp_path / "input.po"
+    src.write_bytes('msgid "x"\nmsgstr "café"\n'.encode())
+
+    monkeypatch.setitem(convert_factory.converters, "po", object())
+
+    captured = {}
+
+    def fake_convert(infile, *args, **kwargs):
+        captured['mode'] = infile.mode
+        captured['content'] = infile.read()
+        return SimpleNamespace(name=str(tmp_path / "output.mo")), "mo"
+
+    monkeypatch.setattr(convert_factory, "convert", fake_convert)
+    monkeypatch.setattr(store_factory, "getobject", lambda name: None)
+
+    controller = _controller()
+    controller.store = SimpleNamespace(
+        update_file=lambda filename: None,
+        stats={'total': []},
+    )
+    controller.main_controller = SimpleNamespace(
+        set_saveable=lambda v: None,
+        set_force_saveas=lambda v: None,
+    )
+    controller._view = SimpleNamespace(load_store=lambda *a: None, show=lambda: None)
+
+    controller.update_file(str(src))
+
+    assert captured['mode'] == 'rb'
+    assert captured['content'] == src.read_bytes()
 
 
 # update_store_checks() #

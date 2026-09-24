@@ -30,6 +30,8 @@
 # Virtaal's own project/bundle file support (open_file()'s .zip branch,
 # save_file()'s project branch, export_project_file()) still needs it,
 # so it's vendored rather than dropped - see translate/virtaal#3632.
+# _update_from_tempfiles()'s open() was changed to binary mode - see
+# translate/virtaal#3609.
 
 import contextlib
 import os
@@ -254,7 +256,7 @@ class BundleProjectStore(ProjectStore):
     def _update_from_tempfiles(self) -> None:
         """Update project files from temporary files."""
         for tempfname, value in self._tempfiles.items():
-            tmp = open(tempfname)
+            tmp = open(tempfname, 'rb')
             self.update_file(value, tmp)
             if not tmp.closed:
                 tmp.close()

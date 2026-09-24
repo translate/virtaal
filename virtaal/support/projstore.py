@@ -30,6 +30,8 @@
 # Virtaal's own project/bundle file support (open_file()'s .zip branch,
 # save_file()'s project branch, export_project_file()) still needs it,
 # so it's vendored rather than dropped - see translate/virtaal#3632.
+# append_file()'s open() was changed to binary mode - see
+# translate/virtaal#3609.
 
 import contextlib
 import os
@@ -148,7 +150,7 @@ class ProjectStore:
 
         if isinstance(afile, str) and os.path.isfile(afile) and not fname:
             # Try and use afile as the file name
-            fname, afile = afile, open(afile)
+            fname, afile = afile, open(afile, 'rb')
 
         # Check if we can get an real file name
         realfname = fname

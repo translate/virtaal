@@ -2,11 +2,11 @@ auto: true
 
 name: Virtaal
 description: Powerful, uncluttered XLIFF and PO editor.
-latest_version: 1.0.0-beta2
+latest_version: 1.0.0-beta3
 author: Translate House
 
 about_url: https://translatehouse.org/about.html
 docs_url: https://docs.translatehouse.org/projects/virtaal/en/latest/
 gh_url: https://github.com/translate/virtaal
 contact_url: https://github.com/translate/virtaal/issues
-download_url: https://github.com/translate/virtaal/releases/tag/v1.0.0-beta2
+download_url: https://github.com/translate/virtaal/releases/tag/v1.0.0-beta3

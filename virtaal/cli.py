@@ -218,7 +218,7 @@ def main(argv):
                 profile_file.close()
 
             try:
-                profile(open(options.profile, 'w+'), startup_file)
+                profile(open(options.profile, 'w+', encoding='utf-8'), startup_file)
             except OSError:
                 parser.error(_("Could not open profile file '%(filename)s'") % {"filename":options.profile})
 

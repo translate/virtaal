@@ -466,6 +466,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             textbox.connect('text-inserted', self._on_target_insert_text, i)
             textbox.connect('text-deleted', self._on_target_delete_range, i)
             textbox.connect('changed', self._on_target_changed, i)
+            textbox.connect('populate-popup', self._on_target_populate_popup)
 
             self._widgets['vbox_targets'].pack_start(target, True, True, 0)
             self.targets.append(textbox)
@@ -744,6 +745,41 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
                 raise IndexError()
 
         self.modified()
+
+    def _on_target_populate_popup(self, textbox, menu):
+        # Every placeable Virtaal recognised in the *source*, regardless
+        # of the target's own cursor/selection - matches copy_original()'s
+        # own non_target_placeables filtering for what's sensible to
+        # insert on the target side (URLs, email addresses, CamelCase,
+        # etc. stay source-only).
+        source_textbox = textbox.selector_textbox
+        if source_textbox.elem is None:
+            return
+        non_target_placeables = self.controller.main_controller.placeables_controller.non_target_placeables
+        elems = [
+            e for e in source_textbox.elem.depth_first()
+            if e.__class__ not in source_textbox.unselectables
+            and e.__class__ not in non_target_placeables
+        ]
+        if not elems:
+            return
+
+        placeables_menu = Gtk.Menu()
+        for elem in elems:
+            item = Gtk.MenuItem(label=str(elem))
+            item.connect('activate', lambda item, elem=elem: textbox.insert_translation(elem))
+            item.show()
+            placeables_menu.append(item)
+
+        sep = Gtk.SeparatorMenuItem()
+        sep.show()
+        menu.append(sep)
+
+        #l10n: A submenu listing every placeable recognised in the source, to insert into the target.
+        menu_item = Gtk.MenuItem(label=_('Placeables'))
+        menu_item.set_submenu(placeables_menu)
+        menu_item.show_all()
+        menu.append(menu_item)
 
     def _on_target_insert_text(self, textbox, ins_text, offset, elem, target_num):
         #logging.debug('emit("insert-text", ins_text="%s", offset=%d, elem=%s, target_num=%d)' % (ins_text, offset, repr(elem), target_num))

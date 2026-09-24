@@ -10,7 +10,7 @@ import logging
 from gi.repository import GLib, GObject, Gtk
 
 from .storecellrenderer import StoreCellRenderer
-from .storetreemodel import COLUMN_EDITABLE, COLUMN_NOTE, COLUMN_UNIT, StoreTreeModel
+from .storetreemodel import COLUMN_EDITABLE, COLUMN_UNIT, StoreTreeModel
 
 
 class StoreTreeView(Gtk.TreeView):
@@ -34,7 +34,6 @@ class StoreTreeView(Gtk.TreeView):
 
         self.renderer = self._make_renderer()
         self.append_column(self._make_column(self.renderer))
-        self._enable_tooltips()
 
         self._install_callbacks()
 
@@ -54,10 +53,6 @@ class StoreTreeView(Gtk.TreeView):
         # debounce-settled), used there to skip expensive per-allocate
         # editor-height remeasurement until the resize actually stops.
         self.is_resizing = False
-
-    def _enable_tooltips(self):
-        if hasattr(self, "set_tooltip_column"):
-            self.set_tooltip_column(COLUMN_NOTE)
 
     def _install_callbacks(self):
         self.connect('key-press-event', self._on_key_press)

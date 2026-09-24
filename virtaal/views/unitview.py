@@ -65,15 +65,6 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         self._bg_provider = None
 
         self.connect('key-press-event', self._on_key_press_event)
-        # We automatically inherit the tooltip from the Treeview, so we have
-        # to show our own custom one to not have a tooltip obscuring things
-        invisible_tooltip = Gtk.Window(type=Gtk.WindowType.POPUP)
-        invisible_tooltip.resize(1,1)
-        # Gtk.Window.set_opacity is deprecated; the inherited
-        # Gtk.Widget one isn't, so call that overload explicitly.
-        Gtk.Widget.set_opacity(invisible_tooltip, 0)
-        self.set_tooltip_window(invisible_tooltip)
-        self.connect('query-tooltip', self._on_query_tooltip)
 
         self._widgets = {
             'context_info': None,
@@ -713,9 +704,6 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         self.must_advance = True
         # Clear selected elements
         self.editing_done()
-
-    def _on_query_tooltip(self, widget, x, y, keyboard_mode, tooltip):
-        return True
 
     def _on_target_changed(self, buffer, index):
         tgt = self.targets[index]

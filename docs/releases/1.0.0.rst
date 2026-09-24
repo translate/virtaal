@@ -28,6 +28,15 @@ Getting it
      choose **Open** from the menu - the dialog that appears this time
      has an **Open** button. Only needed once; a normal double-click
      works from then on.
+
+     If it instead says *"Virtaal is damaged and can't be opened"*,
+     that's Gatekeeper's stricter response to a completely unsigned
+     app - the right-click-Open trick above won't clear it. Open
+     Terminal and run::
+
+        xattr -cr /path/to/Virtaal.app
+
+     then double-click normally.
    - **Windows**: the installer shows a blue "Windows protected your
      PC" screen. Click **More info**, then **Run anyway**.
 

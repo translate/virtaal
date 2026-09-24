@@ -26,6 +26,8 @@ $version = & python -c "from virtaal.__version__ import ver; print(ver)"
 
 New-Item -ItemType Directory -Force -Path dist\installer | Out-Null
 
+& python devsupport\packaging\windows\generate_installer_translations.py devsupport\packaging\windows\installer-strings.iss
+
 & iscc "/DMyAppVersion=$version" devsupport\packaging\windows\virtaal.iss
 
 Write-Host "Built dist\installer\virtaal-$version-setup.exe"

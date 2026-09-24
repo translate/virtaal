@@ -266,7 +266,8 @@ class StoreController(BaseController):
                 # This really shouldn't happen
                 raise ValueError("Unable to determine file's project name: %s" % (self.real_filename))
 
-            self.project.update_file(proj_fname, open(self.real_filename, 'rb'))
+            with open(self.real_filename, 'rb') as infile:
+                self.project.update_file(proj_fname, infile)
             self.project.convert_forward(proj_fname, overwrite_output=True)
             self.project.save()
 
@@ -379,7 +380,8 @@ class StoreController(BaseController):
 
             from translate.storage import factory
             try:
-                outfile = convert_factory.convert(open(filename, 'rb'))[0]
+                with open(filename, 'rb') as infile:
+                    outfile = convert_factory.convert(infile)[0]
                 factory.getobject(outfile.name)
                 filename = outfile.name
                 def unlink_outfile():

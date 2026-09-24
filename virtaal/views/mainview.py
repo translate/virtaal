@@ -17,6 +17,7 @@ from gi.repository import Gdk, Gtk
 from virtaal.common import pan_app
 from virtaal.common.platform import platform
 from virtaal.views import theme
+from virtaal.views.widgets.navribbon import NavRibbon
 
 from .baseview import BaseView
 
@@ -100,6 +101,7 @@ class MainView(BaseView):
         self.status_bar = self.gui.get_object("status_bar")
         self.status_bar.set_sensitive(False)
         self.statusbar_context_id = self.status_bar.get_context_id("statusbar")
+        self._setup_nav_ribbon()
         #Only used in full screen, initialised as needed
         self.btn_app = None
         self.app_menu = None
@@ -443,6 +445,31 @@ class MainView(BaseView):
         self.main_window.drag_dest_set(Gtk.DestDefaults.ALL, None, Gdk.DragAction.COPY | Gdk.DragAction.MOVE)
         self.main_window.drag_dest_add_uri_targets()
         self.main_window.connect("drag-data-received", self._on_drag_data_received)
+
+    def _setup_nav_ribbon(self):
+        """Wraps scrwnd_storeview in a new horizontal box with a
+        NavRibbon sibling on the right edge - virtaal.ui itself has no
+        such split (scrwnd_storeview spans the full window width, a
+        direct child of vbox_main), so this is done here at runtime
+        rather than in the .ui file, the same way show_update_notice()
+        et al already insert widgets into vbox_main."""
+        vbox_main = self.gui.get_object('vbox_main')
+        scrwnd_storeview = self.gui.get_object('scrwnd_storeview')
+
+        expand, fill, padding, pack_type = vbox_main.query_child_packing(scrwnd_storeview)
+        position = vbox_main.child_get_property(scrwnd_storeview, 'position')
+
+        vbox_main.remove(scrwnd_storeview)
+
+        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        hbox.pack_start(scrwnd_storeview, True, True, 0)
+        self.nav_ribbon = NavRibbon(self.controller, scrwnd_storeview)
+        hbox.pack_start(self.nav_ribbon, False, False, 0)
+
+        vbox_main.pack_start(hbox, expand, fill, padding)
+        vbox_main.set_child_packing(hbox, expand, fill, padding, pack_type)
+        vbox_main.reorder_child(hbox, position)
+        hbox.show_all()
 
     def _on_drag_data_received(self, w, context, x, y, data, info, time):
         if platform.is_mac or Gtk.targets_include_uri(context.list_targets()):

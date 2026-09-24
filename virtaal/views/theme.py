@@ -79,6 +79,18 @@ _default_theme = {
     'diff_delete_bg': '#ccc',
     # background for replacement (deletion+insertion)
     'diff_replace_bg': '#ffff70',
+    # unit navigation ribbon: a subdued traffic-light ramp, checked
+    # with has_reasonable_contrast() against the window background
+    # rather than has_good_contrast()'s stricter text-contrast bar,
+    # since these are status chips, not text.
+    'ribbon_untranslated_bg': '#bbbbbb',
+    'ribbon_fuzzy_bg': '#e0a030',
+    'ribbon_check_failure_bg': '#d06060',
+    'ribbon_rejected_bg': '#c87850',
+    'ribbon_unreviewed_bg': '#a8d8a8',
+    'ribbon_needs_review_bg': '#5aa85a',
+    'ribbon_final_bg': '#2e7d32',
+    'ribbon_viewport_bg': 'rgba(0, 0, 0, 0.12)',
 }
 
 _inverse_theme = {
@@ -94,6 +106,14 @@ _inverse_theme = {
     'diff_insert_bg': '#005500',
     'diff_delete_bg': '#333',
     'diff_replace_bg': '#4a4a00',
+    'ribbon_untranslated_bg': '#5a5a5a',
+    'ribbon_fuzzy_bg': '#c98a3a',
+    'ribbon_check_failure_bg': '#b25454',
+    'ribbon_rejected_bg': '#a86a48',
+    'ribbon_unreviewed_bg': '#3a6b3a',
+    'ribbon_needs_review_bg': '#4f9350',
+    'ribbon_final_bg': '#5fc264',
+    'ribbon_viewport_bg': 'rgba(255, 255, 255, 0.18)',
 }
 
 current_theme = _default_theme.copy()

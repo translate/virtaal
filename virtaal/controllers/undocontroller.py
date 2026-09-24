@@ -266,6 +266,13 @@ class UndoController(BaseController):
         if current_unit is not None and current_unit.STATE and not getattr(current_unit, '_state_sticky', False):
             self.unit_controller._correct_empty_state(current_unit)
 
+        # Same reasoning as above, for anything listening for
+        # 'unit-done' rather than reading the unit's state directly
+        # (e.g. the nav ribbon) - undo/redo settles a unit's state
+        # without ever emitting it otherwise.
+        if current_unit is not None:
+            self.unit_controller.emit('unit-done', current_unit, True)
+
         self._update_sensitivity()
 
     @if_enabled

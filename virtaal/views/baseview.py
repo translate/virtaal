@@ -26,8 +26,8 @@ class BaseView:
             return _builders[_id]
         buildername = pan_app.get_abs_data_filename(path_parts)
         builder = Builder()
-        builder.add_from_file(buildername)
         builder.set_translation_domain(domain)
+        builder.add_from_file(buildername)
         _builders[_id] = builder
         return builder
 

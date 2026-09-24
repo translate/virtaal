@@ -30,18 +30,19 @@ class TMView(BaseView, GObjectWrapper):
         self.controller = controller
         self.isvisible = False
         self.max_matches = max_matches
-        self._may_show_tmwindow = True # is it allowed to display now (application is in focus)
         self._should_show_tmwindow = False # should it be displayed now (even if it doesn't, due to application focus?
         self._signal_tracker = SignalTracker()
 
         self.tmwindow = TMWindow(self)
         main_window = self.controller.main_controller.view.main_window
+        self._may_show_tmwindow = main_window.props.is_active # is it allowed to display now (application is in focus)?
 
         self._signal_tracker.connect(self.tmwindow.treeview, 'row-activated', self._on_row_activated)
         self._signal_tracker.connect(
             controller.main_controller.store_controller.view.parent_widget.get_vscrollbar(),
             'value-changed', self._on_store_view_scroll)
         self._signal_tracker.connect(main_window, 'grab-notify', self._on_grab_notify_mainwindow)
+        self._signal_tracker.connect(main_window, 'notify::is-active', self._on_active_notify_mainwindow)
         self._signal_tracker.connect(main_window, 'configure_event', self._on_configure_mainwindow)
         self._signal_tracker.connect(controller.main_controller.store_controller, 'store-closed', self._on_store_closed)
         self._signal_tracker.connect(controller.main_controller.store_controller, 'store-loaded', self._on_store_loaded)
@@ -175,8 +176,11 @@ class TMView(BaseView, GObjectWrapper):
 
     def show(self, force=False):
         """Show the TM window."""
-        if not self.active or (self.isvisible and not force) or not self._may_show_tmwindow:
+        if not self.active or (self.isvisible and not force):
             return # This window is already visible
+        if not self._may_show_tmwindow:
+            self._should_show_tmwindow = True
+            return
         self.tmwindow.show_all()
         self.isvisible = True
         self._should_show_tmwindow = False
@@ -200,22 +204,13 @@ class TMView(BaseView, GObjectWrapper):
 
     # EVENT HANDLERS #
     def _on_grab_notify_mainwindow(self, widget, was_grabbed):
-        # focus-in/out-event used to drive this, but a same-app modal
-        # dialog (e.g. Preferences) never triggers those on the main
-        # window - it stays "focused" the whole time, so the popup was
-        # never hidden and drew over the dialog. grab-notify fires when
-        # the window is actually shadowed by another widget's grab,
-        # which is what a running Gtk.Dialog does.
+        # A same-app modal dialog or menu takes a GTK grab without
+        # moving real WM focus off the main window, so is-active can't
+        # see it - that's what grab-notify handles. A real focus change
+        # (e.g. Alt+Tab) never takes a grab; see
+        # _on_active_notify_mainwindow below.
         if was_grabbed:
-            self._may_show_tmwindow = True
-            if not self._should_show_tmwindow or self.isvisible:
-                return
-            if not self.controller.storecursor:
-                return # No store loaded
-            self.show()
-
-            selected = self._get_selected_unit_view()
-            self.tmwindow.update_geometry(selected)
+            self._on_mainwindow_focus_gained()
         else:
             if isinstance(Gtk.grab_get_current(), Gtk.Menu):
                 # A plain popup menu (e.g. the Workflow/Quality-Check mode
@@ -225,11 +220,31 @@ class TMView(BaseView, GObjectWrapper):
                 # own grab and can dismiss the menu prematurely (#3689).
                 # Only an actual modal window should hide the TM window.
                 return
-            self._may_show_tmwindow = False
-            if not self.isvisible:
-                return
-            self.hide()
-            self._should_show_tmwindow = True
+            self._on_mainwindow_focus_lost()
+
+    def _on_active_notify_mainwindow(self, widget, pspec):
+        if widget.props.is_active:
+            self._on_mainwindow_focus_gained()
+        else:
+            self._on_mainwindow_focus_lost()
+
+    def _on_mainwindow_focus_gained(self):
+        self._may_show_tmwindow = True
+        if not self._should_show_tmwindow or self.isvisible:
+            return
+        if not self.controller.storecursor:
+            return # No store loaded
+        self.show()
+
+        selected = self._get_selected_unit_view()
+        self.tmwindow.update_geometry(selected)
+
+    def _on_mainwindow_focus_lost(self):
+        self._may_show_tmwindow = False
+        if not self.isvisible:
+            return
+        self.hide()
+        self._should_show_tmwindow = True
 
     def _on_configure_mainwindow(self, widget, event):
         if self._should_show_tmwindow:

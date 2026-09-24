@@ -93,7 +93,7 @@ if sys.platform not in ('win32', 'darwin'):
     # App icon itself, so `Icon=virtaal` in virtaal.desktop.in resolves
     # via the hicolor theme instead of falling back to a generic icon -
     # no scalable/ yet, there's no SVG source for the app icon.
-    for size in ("16x16", "24x24", "32x32", "48x48", "64x64", "128x128"):
+    for size in ("16x16", "24x24", "32x32", "48x48", "64x64", "128x128", "256x256"):
         data_files.append(
             (path.join(TARGET_DATA_DIR, "icons", "hicolor", size, "apps"),
              glob(path.join(SOURCE_DATA_DIR, "icons", "hicolor", size, "apps", "*.*")))

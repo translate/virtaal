@@ -6,7 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 """This file contains the version."""
-ver = "1.0.0-beta2"
+ver = "1.0.0-beta3"
 
 
 def _get_build_commit():

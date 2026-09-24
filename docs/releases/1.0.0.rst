@@ -94,3 +94,5 @@ Known issues
   frozen Windows build.
 - The Keyboard Shortcuts window shows "Meta" instead of the Cmd symbol
   on macOS; the shortcuts themselves work correctly.
+- Selecting "Incomplete" from the Navigation combo right after launch
+  can fail to switch modes; selecting any other mode works.

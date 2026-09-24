@@ -54,3 +54,8 @@ assets/
 # devsupport/screenshots/
 # generate_appdata_screenshots.py --check's output when images differ.
 /screenshot-artifacts/
+
+# devsupport/packaging/windows/
+# generate_installer_translations.py's output - regenerated fresh from
+# po/*.po on every build_installer.ps1 run, not committed.
+/devsupport/packaging/windows/installer-strings.iss

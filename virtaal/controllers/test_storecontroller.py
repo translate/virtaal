@@ -475,7 +475,7 @@ def test_save_file_project_opens_the_real_file_in_binary_mode(tmp_path):
     controller.project = SimpleNamespace(
         get_proj_filename=lambda fname: 'trans/source.po',
         update_file=lambda proj_fname, infile: updated.update(
-            proj_fname=proj_fname, infile=infile
+            proj_fname=proj_fname, mode=infile.mode, content=infile.read()
         ),
         convert_forward=lambda *a, **k: None,
         save=lambda: None,
@@ -493,8 +493,8 @@ def test_save_file_project_opens_the_real_file_in_binary_mode(tmp_path):
     controller.save_file()
 
     assert updated['proj_fname'] == 'trans/source.po'
-    assert updated['infile'].mode == 'rb'
-    assert updated['infile'].read() == real_file.read_bytes()
+    assert updated['mode'] == 'rb'
+    assert updated['content'] == real_file.read_bytes()
 
 
 # binary_export() #

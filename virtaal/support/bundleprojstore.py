@@ -256,10 +256,8 @@ class BundleProjectStore(ProjectStore):
     def _update_from_tempfiles(self) -> None:
         """Update project files from temporary files."""
         for tempfname, value in self._tempfiles.items():
-            tmp = open(tempfname, 'rb')
-            self.update_file(value, tmp)
-            if not tmp.closed:
-                tmp.close()
+            with open(tempfname, 'rb') as tmp:
+                self.update_file(value, tmp)
 
     def _zip_add(self, pfname, infile) -> None:
         """Add the contents of ``infile`` to the zip with file name ``pfname``."""

@@ -162,12 +162,19 @@ def test_fix_libintl_passes_bytes_not_str_to_bindtextdomain(monkeypatch):
     # char* function, so a str "virtaal" arrived there as just "v".
     # The real DLL call (below) doesn't catch this: a wrong domain name
     # still binds *something* without raising.
+    #
+    # Replaces ctypes.cdll itself (not just its .intl attribute) -
+    # monkeypatch.setattr's own bookkeeping reads the current value of
+    # whatever it's about to replace, and ctypes.cdll.intl is a real
+    # LibraryLoader.__getattr__ property that dlopens on access, which
+    # fails outright on a Linux runner with no bare "intl" library to
+    # find at all.
     calls = []
     fake_libintl = SimpleNamespace(
         bindtextdomain=lambda domain, dirname: calls.append(('bindtextdomain', domain, dirname)),
         bind_textdomain_codeset=lambda domain, codeset: calls.append(('bind_textdomain_codeset', domain, codeset)),
     )
-    monkeypatch.setattr(ctypes.cdll, 'intl', fake_libintl, raising=False)
+    monkeypatch.setattr(ctypes, 'cdll', SimpleNamespace(intl=fake_libintl))
 
     fix_libintl('/fake/bundle')
 

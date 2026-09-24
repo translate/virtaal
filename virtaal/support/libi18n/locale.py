@@ -348,10 +348,14 @@ def fix_libintl(main_dir):
     from ctypes import cdll
     libintl = cdll.intl
     locale_dir = os.path.join(main_dir, "share", "locale")
-    # ctypes needs locale_dir in the filesystem encoding, as bytes:
+    # ctypes needs every argument here as bytes, not str: with no
+    # argtypes declared, ctypes marshals a plain str as a wide
+    # (wchar_t*) string, which bindtextdomain (a narrow char* function)
+    # then reads only up to its first embedded null byte - "virtaal"
+    # arrives there as just "v".
     locale_dir = locale_dir.encode(sys.getfilesystemencoding())
-    libintl.bindtextdomain("virtaal", locale_dir)
-    libintl.bind_textdomain_codeset("virtaal", 'UTF-8')
+    libintl.bindtextdomain(b"virtaal", locale_dir)
+    libintl.bind_textdomain_codeset(b"virtaal", b"UTF-8")
     del libintl
 
 

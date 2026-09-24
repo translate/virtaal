@@ -165,6 +165,14 @@ def test_show_does_nothing_while_shadowed_by_another_grab():
     assert calls == []
 
 
+def test_show_marks_a_blocked_match_as_pending_instead_of_dropping_it():
+    view = _tmview(may_show=False)
+
+    view.show()
+
+    assert view._should_show_tmwindow is True
+
+
 def test_show_displays_the_window_and_updates_state():
     view = _tmview()
     view._should_show_tmwindow = True
@@ -278,6 +286,35 @@ def test_grab_notify_shadowed_does_nothing_when_already_hidden():
 
     assert hidden == []
     assert view._may_show_tmwindow is False
+
+
+# _on_active_notify_mainwindow(): real WM-level focus changes (Alt+Tab
+# to another app), which grab-notify never sees.
+
+def test_active_notify_mainwindow_hides_a_visible_window_when_deactivated():
+    view = _view_for_grab_notify(isvisible=True)
+    hidden = []
+    view.hide = lambda: hidden.append('hidden')
+
+    view._on_active_notify_mainwindow(SimpleNamespace(props=SimpleNamespace(is_active=False)), None)
+
+    assert view._may_show_tmwindow is False
+    assert hidden == ['hidden']
+    assert view._should_show_tmwindow is True
+
+
+def test_active_notify_mainwindow_reshows_a_pending_window_when_activated():
+    view = _view_for_grab_notify(should_show=True, isvisible=False)
+    shown = []
+    view.show = lambda: shown.append('shown')
+    geometry_calls = []
+    view.tmwindow.update_geometry = lambda widget: geometry_calls.append(widget)
+
+    view._on_active_notify_mainwindow(SimpleNamespace(props=SimpleNamespace(is_active=True)), None)
+
+    assert view._may_show_tmwindow is True
+    assert shown == ['shown']
+    assert geometry_calls == ['the-selected-view']
 
 
 # _on_configure_mainwindow(): recompute geometry only for a pending

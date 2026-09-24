@@ -271,7 +271,7 @@ class HTTPClient:
             # All systems supporting systemd:
             if os.path.isfile('/etc/os-release'):
                 try:
-                    lines = open('/etc/os-release').read().splitlines()
+                    lines = open('/etc/os-release', encoding='utf-8').read().splitlines()
                     distro = None
                     distro_version = None
                     for line in lines:
@@ -288,7 +288,7 @@ class HTTPClient:
             # Debian, Ubuntu, Mandriva:
             elif os.path.isfile('/etc/lsb-release'):
                 try:
-                    lines = open('/etc/lsb-release').read().splitlines()
+                    lines = open('/etc/lsb-release', encoding='utf-8').read().splitlines()
                     for line in lines:
                         if line.startswith('DISTRIB_DESCRIPTION'):
                             distro = line.split('=')[-1]
@@ -299,7 +299,7 @@ class HTTPClient:
             # Fedora, RHEL:
             elif os.path.isfile('/etc/system-release'):
                 try:
-                    lines = open('/etc/system-release').read().splitlines()
+                    lines = open('/etc/system-release', encoding='utf-8').read().splitlines()
                     for line in lines:
                         distro, dummy, distro_version, codename = line.split()
                         platform = '%s; %s %s' % (platform, distro, distro_version)

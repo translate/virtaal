@@ -422,6 +422,85 @@ def test_open_file_strips_the_directory_when_forced_saveas_and_forget_dir(monkey
 
     assert controller.store._trans_store.filename == 'template.po'
 
+
+# open_file() - bundle (.zip) and convertible-format paths #
+
+class _FakeProject:
+    """A stand-in for virtaal.support.project.Project - constructed the
+    same way _open_bundle()/_open_convertible() build the real one, via
+    either a positional or a `projstore=` keyword arg."""
+
+    def __init__(self, projstore):
+        self.store = projstore
+
+    def convert_forward(self, sourcefile):
+        self.store.transfiles.append('converted.po')
+
+    def get_file(self, name):
+        return SimpleNamespace(name='/tmp/' + name)
+
+    def add_source_convert(self, filename):
+        return (
+            SimpleNamespace(name=filename), filename,
+            SimpleNamespace(name='/tmp/converted-target.po'), 'converted-target.po',
+        )
+
+
+def _patch_project(monkeypatch, store):
+    import virtaal.support.bundleprojstore as bundleprojstore
+    import virtaal.support.project as project
+    monkeypatch.setattr(bundleprojstore, 'BundleProjectStore', lambda filename: store)
+    monkeypatch.setattr(project, 'Project', _FakeProject)
+    return bundleprojstore
+
+
+def test_open_file_via_bundle_loads_the_projects_first_transfile(monkeypatch):
+    _patch_project(monkeypatch, SimpleNamespace(transfiles=['doc.po'], sourcefiles=[]))
+    controller = _open_file_controller(monkeypatch, units=[object()])
+
+    controller.open_file('bundle.zip')
+
+    assert controller.real_filename == '/tmp/doc.po'
+    assert controller.force_saveas_calls == [False]
+
+
+def test_open_file_via_bundle_converts_the_first_source_file_when_none_exists(monkeypatch):
+    store = SimpleNamespace(transfiles=[], sourcefiles=['doc.odt'])
+    _patch_project(monkeypatch, store)
+    controller = _open_file_controller(monkeypatch, units=[object()])
+
+    controller.open_file('bundle.zip')
+
+    assert store.transfiles == ['converted.po']
+    assert controller.real_filename == '/tmp/converted.po'
+
+
+def test_open_file_via_bundle_raises_when_nothing_to_convert(monkeypatch):
+    bundleprojstore = _patch_project(monkeypatch, SimpleNamespace(transfiles=[], sourcefiles=[]))
+    controller = _open_file_controller(monkeypatch, units=[])
+
+    with pytest.raises(bundleprojstore.InvalidBundleError):
+        controller.open_file('bundle.zip')
+
+
+def test_open_file_converts_a_non_native_format_and_forces_saveas(monkeypatch):
+    from translate.convert import factory as convert_factory
+    monkeypatch.setitem(convert_factory.converters, 'odt', object())
+    _patch_project(monkeypatch, SimpleNamespace(transfiles=[], sourcefiles=[]))
+    controller = _open_file_controller(monkeypatch, units=[object()])
+    monkeypatch.setattr(
+        controller, '_get_new_bundle_filename',
+        lambda filename, force_temp=False: 'temp.zip' if force_temp else 'bundle.zip',
+    )
+
+    controller.open_file('doc.odt')
+
+    assert controller.real_filename == '/tmp/converted-target.po'
+    assert controller.force_saveas_calls == [True]
+    assert controller._targetfname == 'bundle.zip'
+    assert controller._archivetemp == 'temp.zip'
+
+
 def test_revert_file_reopens_the_current_store_filename():
     controller = _controller()
     controller.store = SimpleNamespace(filename="/path/to/file.po")

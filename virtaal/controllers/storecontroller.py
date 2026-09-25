@@ -366,44 +366,50 @@ class StoreController(BaseController):
     def revert_file(self):
         self.open_file(self.store.filename)
 
+    def _convert_for_update(self, filename):
+        extension = filename.split(os.extsep)[-1]
+        from translate.convert import factory as convert_factory
+        if extension not in convert_factory.converters:
+            return filename
+
+        import logging
+
+        from translate.storage import factory
+        try:
+            with open(filename, 'rb') as infile:
+                outfile = convert_factory.convert(infile)[0]
+            factory.getobject(outfile.name)
+            filename = outfile.name
+            def unlink_outfile():
+                try:
+                    os.unlink(filename)
+                except Exception:
+                    logging.exception("Unable to delete file %s:" % (filename))
+        except Exception:
+            # Anticipated exceptions/errors:
+            # * Conversion error: anything that went wrong in
+            #   convert_factory.convert(). This is likely if filename is a
+            #   translation store that needs a template to be converted by
+            #   the (automatically) selected converter.
+            # * AttributeError on "outfile.name": if outfile is not a file-
+            #   like object (with a "name" attribute)
+            # * ValueError on factory.getobject(): outfile is not a
+            #   translation store. This will happen when filename already
+            #   refers to a translation store and we just converted it to
+            #   a non-translation store format. FIXME: This might indicate
+            #   a problem with the convert_factory not distinguishing between
+            #   its input and output document types.
+            logging.exception("Error converting file to translatable file:")
+
+        return filename
+
     def update_file(self, filename, uri=''):
         if not self.store:
             #FIXME: we should never allow updates if no file is already open
             self.open_file(filename, uri=uri)
             return
 
-        post_update_action = None
-        extension = filename.split(os.extsep)[-1]
-        from translate.convert import factory as convert_factory
-        if extension in convert_factory.converters:
-            import logging
-
-            from translate.storage import factory
-            try:
-                with open(filename, 'rb') as infile:
-                    outfile = convert_factory.convert(infile)[0]
-                factory.getobject(outfile.name)
-                filename = outfile.name
-                def unlink_outfile():
-                    try:
-                        os.unlink(filename)
-                    except Exception:
-                        logging.exception("Unable to delete file %s:" % (filename))
-            except Exception:
-                # Anticipated exceptions/errors:
-                # * Conversion error: anything that went wrong in
-                #   convert_factory.convert(). This is likely if filename is a
-                #   translation store that needs a template to be converted by
-                #   the (automatically) selected converter.
-                # * AttributeError on "outfile.name": if outfile is not a file-
-                #   like object (with a "name" attribute)
-                # * ValueError on factory.getobject(): outfile is not a
-                #   translation store. This will happen when filename already
-                #   refers to a translation store and we just converted it to
-                #   a non-translation store format. FIXME: This might indicate
-                #   a problem with the convert_factory not distinguishing between
-                #   its input and output document types.
-                logging.exception("Error converting file to translatable file:")
+        filename = self._convert_for_update(filename)
 
         # Let's entirely clear things in the view to ensure that no signals
         # are still attached to old models before we start changing things. See

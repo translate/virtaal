@@ -63,7 +63,12 @@ def gtk_textview_compute_optimal_height(widget, width):
         text = getattr(widget, '_source_text', "")
         if text:
             lang = factory.getlanguage(pan_app.settings.language["targetlang"])
-            buftext = lang.alter_length(text)
+            try:
+                buftext = lang.alter_length(text)
+            except TypeError:
+                # A language class's length_difference() can return a
+                # non-int that alter_length() then fails to slice with (#3770).
+                buftext = text
             buftext = markup.escape(buftext)
 
     _w, h = rendering.make_pango_layout(widget, buftext, width - border).get_pixel_size()

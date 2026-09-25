@@ -155,10 +155,14 @@ def test_update_geometry_flips_above_the_source_when_there_is_no_room_below():
     window.destroy()
 
 
-def test_update_geometry_sizes_the_popup_from_the_real_theme_border():
+def test_update_geometry_sizes_the_popup_from_the_real_theme_border(monkeypatch):
+    # rows_height() is fixed here rather than measured from real rows -
+    # its own real value isn't stable across a full suite run (a known,
+    # separate GTK cross-test state issue - #3738), and isn't what this
+    # test is about. What matters here is that the *border* added on
+    # top of it is queried from the real theme, not a hardcoded guess.
     tmwindow = TMWindow(None)
-    tmwindow.liststore.append([{'quality': 90, 'tmsource': 'x'}, 'match'])
-    tmwindow.treeview.columns_autosize()
+    monkeypatch.setattr(tmwindow, 'rows_height', lambda: 100)
     tmwindow.show_all()
     _process_events()
 
@@ -170,7 +174,7 @@ def test_update_geometry_sizes_the_popup_from_the_real_theme_border():
     _process_events()
 
     border = tmwindow.scrolled_window.get_style_context().get_border(Gtk.StateFlags.NORMAL)
-    expected_height = min(tmwindow.rows_height(), tmwindow.MAX_HEIGHT) + border.top + border.bottom
+    expected_height = 100 + border.top + border.bottom
 
     tmwindow.update_geometry(target)
     _process_events()

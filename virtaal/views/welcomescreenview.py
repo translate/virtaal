@@ -105,6 +105,12 @@ class WelcomeScreenView(BaseView):
         for i in range(len(items), 5):
             buttons[i].props.visible = False
 
+        # GTK doesn't consistently restore focus here on its own.
+        if items:
+            buttons[0].grab_focus()
+        else:
+            self.widget.widgets['buttons']['open'].grab_focus()
+
 
     # EVENT HANDLERS #
     def _on_button_clicked(self, button, name):

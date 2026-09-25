@@ -103,8 +103,8 @@ class TMWindow(Gtk.Window):
             # See bug 1809 for more detail.
             tm_source_width = self.tvc_perc.get_width()
         width = widget_alloc.width + self.tvc_perc.get_width() + tm_source_width + scrollbar_width
-        height = min(self.rows_height(), self.MAX_HEIGHT) + 4
-        # TODO: Replace the hard-coded value above with a query to the theme. It represents the width of the shadow of self.scrolled_window
+        shadow_border = self.scrolled_window.get_style_context().get_border(Gtk.StateFlags.NORMAL)
+        height = min(self.rows_height(), self.MAX_HEIGHT) + shadow_border.top + shadow_border.bottom
 
         # Anchor below by default; flip above the source text (not just
         # the target, which sits right below it) when below doesn't fit.

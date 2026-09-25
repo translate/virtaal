@@ -55,7 +55,7 @@ def get_config_dir():
     elif platform.is_mac:
         confdir = os.path.expanduser('~/Library/Application Support/Virtaal')
     else:
-        #TODO: skuif na ~/.config/virtaal en migreer
+        #TODO: move to ~/.config/virtaal and migrate
         confdir = os.path.expanduser('~/.virtaal')
 
     try:

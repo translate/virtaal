@@ -33,7 +33,6 @@ class StoreController(BaseController):
         self.main_controller.store_controller = self
         self._unit_controller = None # This is set by UnitController itself when it is created
 
-        self._archivetemp = None
         self.cursor = None
         self.handler_ids = {}
         self._modified = False
@@ -47,8 +46,6 @@ class StoreController(BaseController):
     def destroy(self):
         if self.project:
             del self.project
-        if self._archivetemp and os.path.isfile(self._archivetemp):
-            os.unlink(self._archivetemp)
         for tempfile in self._tempfiles:
             try:
                 os.unlink(tempfile)
@@ -72,9 +69,6 @@ class StoreController(BaseController):
 
     def get_bundle_filename(self):
         """Returns the file name of the bundle archive, if we are working with one."""
-        if self._archivetemp:
-            return self._targetfname
-
         if self.project:
             from virtaal.support.bundleprojstore import BundleProjectStore
             if isinstance(self.project.store, BundleProjectStore):
@@ -198,24 +192,6 @@ class StoreController(BaseController):
         )
         self.store = StoreModel(transfile, self)
 
-    def _open_convertible(self, filename):
-        import logging
-
-        from virtaal.models.storemodel import StoreModel
-        from virtaal.support import bundleprojstore
-        from virtaal.support.project import Project
-
-        # Use temporary file name for bundle archive
-        self._targetfname = self._get_new_bundle_filename(filename)
-        tempfname = self._get_new_bundle_filename(filename, force_temp=True)
-        self._archivetemp = tempfname
-        self.project = Project(projstore=bundleprojstore.BundleProjectStore(tempfname))
-        srcfile, srcfilename, transfile, transfilename = self.project.add_source_convert(filename)
-        self.real_filename = transfile.name
-
-        logging.info('Converted document %s to translatable file %s' % (srcfilename, self.real_filename))
-        self.store = StoreModel(transfile, self)
-
     def _open_plain(self, filename):
         from virtaal.models.storemodel import StoreModel
         self.store = StoreModel(filename, self)
@@ -230,15 +206,10 @@ class StoreController(BaseController):
         return filename, force_saveas
 
     def open_file(self, filename, uri='', forget_dir=False):
-        from translate.convert import factory as convert_factory
-
         extension = filename.split(os.extsep)[-1]
         force_saveas = False
         if extension == 'zip':
             self._open_bundle(filename)
-        elif extension in convert_factory.converters:
-            self._open_convertible(filename)
-            force_saveas = True
         else:
             self._open_plain(filename)
 
@@ -287,26 +258,6 @@ class StoreController(BaseController):
                 self.project.update_file(proj_fname, infile)
             self.project.convert_forward(proj_fname, overwrite_output=True)
             self.project.save()
-
-            if self._archivetemp:
-                if self._archivetemp == filename:
-                    self._archivetemp = None
-                else:
-                    assert self.project.store.zip.filename == self._archivetemp
-                    self.project.close()
-                    self.project = None
-                    import shutil
-                    shutil.move(self._archivetemp, filename)
-                    self._archivetemp = None
-
-                    cursor_pos = self.cursor.pos
-                    def post_save(sender):
-                        if not hasattr(self, '_proj_file_saved_id'):
-                            return
-                        self.disconnect(self._proj_file_saved_id)
-                        self.main_controller.open_file(filename)
-                        self.cursor.pos = cursor_pos
-                    self._proj_file_saved_id = self.connect('store-saved', post_save)
         self.set_modified(False)
         # Unlike open_file()/close_file(), a save doesn't clear the undo
         # stack, so it needs its own explicit clean-point mark.
@@ -383,50 +334,11 @@ class StoreController(BaseController):
     def revert_file(self):
         self.open_file(self.store.filename)
 
-    def _convert_for_update(self, filename):
-        extension = filename.split(os.extsep)[-1]
-        from translate.convert import factory as convert_factory
-        if extension not in convert_factory.converters:
-            return filename
-
-        import logging
-
-        from translate.storage import factory
-        try:
-            with open(filename, 'rb') as infile:
-                outfile = convert_factory.convert(infile)[0]
-            factory.getobject(outfile.name)
-            filename = outfile.name
-            def unlink_outfile():
-                try:
-                    os.unlink(filename)
-                except Exception:
-                    logging.exception("Unable to delete file %s:" % (filename))
-        except Exception:
-            # Anticipated exceptions/errors:
-            # * Conversion error: anything that went wrong in
-            #   convert_factory.convert(). This is likely if filename is a
-            #   translation store that needs a template to be converted by
-            #   the (automatically) selected converter.
-            # * AttributeError on "outfile.name": if outfile is not a file-
-            #   like object (with a "name" attribute)
-            # * ValueError on factory.getobject(): outfile is not a
-            #   translation store. This will happen when filename already
-            #   refers to a translation store and we just converted it to
-            #   a non-translation store format. FIXME: This might indicate
-            #   a problem with the convert_factory not distinguishing between
-            #   its input and output document types.
-            logging.exception("Error converting file to translatable file:")
-
-        return filename
-
     def update_file(self, filename, uri=''):
         if not self.store:
             #FIXME: we should never allow updates if no file is already open
             self.open_file(filename, uri=uri)
             return
-
-        filename = self._convert_for_update(filename)
 
         # Let's entirely clear things in the view to ensure that no signals
         # are still attached to old models before we start changing things. See
@@ -480,71 +392,6 @@ class StoreController(BaseController):
 
         #l10n: this refers to updating a file to a new template (POT file)
         self.main_controller.show_info(_("File Updated"), output)
-
-    def _get_new_bundle_filename(self, infilename, force_temp=False):
-        """Creates a file name that can be used for a bundle, based on the given
-            file name.
-
-            First tries to create a bundle in the same directory as the given
-            file by the transformation in the following example:
-            C{foo.odt -> foo_en__af.zip}
-            where "en" and "af" are the currently selected source and target
-            languages.
-
-            If a file with that name already exists, an attempt will be made to
-            create a file name in the format C{foo_en__af_XXXXX.zip} in the
-            document's directory. If that fails (the directory might not be
-            writable), a temporary file name of the same format is created.
-
-            @returns: The suggested file name for the bundle."""
-        from tempfile import mkstemp
-
-        from virtaal.support.project import split_extensions
-        fname, extensions = split_extensions(infilename)
-
-        prefix = fname + '_%s__%s' % (
-            self.main_controller.lang_controller.source_lang.code,
-            self.main_controller.lang_controller.target_lang.code
-        )
-        if extensions:
-            extensions_parts = extensions.split(os.extsep)
-            extensions_parts[-1] = 'zip'
-            suffix = os.extsep.join([''] + extensions_parts)
-        else:
-            suffix = os.extsep + 'zip'
-
-        if not force_temp:
-            # Try foo_en__af.zip
-            outfname = prefix + suffix
-            if not os.path.isfile(outfname):
-                try:
-                    os.unlink(outfname)
-                    return outfname
-                except Exception:
-                    pass
-
-            prefix += '_'
-
-            # Try foo_en__af_XXXXX.zip
-            try:
-                directory = os.path.split(os.path.abspath(infilename))[0]
-                if not directory:
-                    directory = None
-                fd, outfname = mkstemp(suffix=suffix, prefix=prefix, dir=directory)
-                os.close(fd)
-                if os.path.isfile(outfname):
-                    os.unlink(outfname)
-                return outfname
-            except Exception:
-                pass
-
-        # Try /tmp/foo_en__af_XXXXX.zip as a last resort
-        prefix = os.path.basename(prefix)
-        fd, outfname = mkstemp(suffix=suffix, prefix=prefix)
-        os.close(fd)
-        if os.path.isfile(outfname):
-            os.unlink(outfname)
-        return outfname
 
     def _guess_export_filename(self, projfname):
         guess = projfname.split('/')[-1]

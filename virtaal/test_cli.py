@@ -6,6 +6,8 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import logging
+import re
+from pathlib import Path
 
 import pytest
 
@@ -218,3 +220,20 @@ def test_profile_runs_under_cprofile_and_writes_kcachegrind_output(monkeypatch, 
 def test_profile_with_an_unwritable_path_is_a_fatal_argument_error(monkeypatch):
     with pytest.raises(SystemExit):
         cli.main(['virtaal', '--profile', '/nonexistent-dir/out.profile'])
+
+
+def test_every_cli_option_is_documented_in_docs_cli_options_rst():
+    docs_path = Path(__file__).resolve().parent.parent / "docs" / "cli_options.rst"
+    docs_text = docs_path.read_text()
+
+    missing = [
+        option
+        for action in cli.build_parser()._actions
+        for option in action.option_strings
+        if not re.search(r'(?<![\w-])' + re.escape(option) + r'(?![\w-])', docs_text)
+    ]
+
+    assert not missing, (
+        f"bin/virtaal accepts {missing} but docs/cli_options.rst doesn't "
+        "mention it - see #3777"
+    )

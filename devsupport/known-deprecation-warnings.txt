@@ -11,3 +11,5 @@
 # Not ours to fix - third-party libraries' own internal code.
 The 'u' type code is deprecated
 GLib.unix_signal_add_full is deprecated
+'asyncio.AbstractEventLoopPolicy' is deprecated
+'asyncio.get_event_loop_policy' is deprecated

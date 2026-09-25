@@ -11,9 +11,12 @@ from gi.repository import GObject
 
 from virtaal.support.sorted_set import SortedSet
 
-# FIXME: Add docstrings!
 
 class UnionSetEnumerator(GObject.GObject):
+    """Presents the union of several C{SortedSet}s as a single sorted set,
+        emitting C{add}/C{remove} signals (with the changed element's
+        position in the union) as the underlying sets change."""
+
     __gtype_name__ = "UnionSetEnumerator"
 
     __gsignals__ = {
@@ -22,6 +25,8 @@ class UnionSetEnumerator(GObject.GObject):
     }
 
     def __init__(self, *sets):
+        """Constructor.
+            @param sets: The C{SortedSet}s whose union this enumerator tracks."""
         GObject.GObject.__init__(self)
 
         if len(sets) > 0:

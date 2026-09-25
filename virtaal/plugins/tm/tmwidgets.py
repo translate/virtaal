@@ -39,7 +39,6 @@ class TMWindow(Gtk.Window):
     def _create_treeview(self):
         self.liststore = Gtk.ListStore(GObject.TYPE_PYOBJECT, GObject.TYPE_STRING)
         treeview = Gtk.TreeView(model=self.liststore)
-        treeview.set_rules_hint(False)
         treeview.set_headers_visible(False)
 
         self.perc_renderer = Gtk.CellRendererProgress()
@@ -225,7 +224,8 @@ class TMSourceColRenderer(Gtk.CellRenderer):
             label.set_angle(90)
         else:
             label.set_angle(270)
-        label.set_alignment(0.5, 0.5)
+        label.set_xalign(0.5)
+        label.set_yalign(0.5)
         layout = label.get_layout()
         size = layout.get_pixel_size()
         Gtk.render_layout(widget.get_style_context(), window, x+size.height, y, layout)

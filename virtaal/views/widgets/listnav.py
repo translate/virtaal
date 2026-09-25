@@ -204,7 +204,7 @@ class ListNavigator(Gtk.HBox):
 
 
 if __name__ == '__main__':
-    # XXX: Uncomment below to test RTL
+    # Uncomment below to test RTL
     #Gtk.widget_set_default_direction(Gtk.TextDirection.RTL)
     listnav = ListNavigator()
 

@@ -220,8 +220,21 @@ class StoreCellRenderer(Gtk.CellRenderer):
             else:
                 height = self.compute_cell_height(widget, width)
                 self._cached_height = height
-        #height = min(height, 600)
+        # Otherwise scroll_to_cell can't centre this row near the end
+        # of the file (translate/virtaal#1366).
+        extra_padding = 0
+        store = self.view.controller.get_store()
+        if store and self.unit is store[-1]:
+            viewport_height = treeview.get_allocation().height
+            if viewport_height > 0:
+                extra_padding = viewport_height // 2
+                height += extra_padding
+
         y_offset = self.ROW_PADDING / 2
+        if self.editable:
+            # Shift to the padded cell's own centre only once this row
+            # is the active one, so it lands level with other rows.
+            y_offset += extra_padding / 2
         return 0, y_offset, width, height
 
     def do_start_editing(self, _event, tree_view, path, _bg_area, cell_area, _flags):

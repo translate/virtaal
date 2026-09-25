@@ -111,6 +111,23 @@ class MainView(BaseView):
 
         self.main_window.connect('destroy', self._on_quit)
         self.main_window.connect('delete-event', self._on_quit)
+        self._connect_menu_signals()
+
+        self._restore_window_geometry()
+        self._top_window = self.main_window
+
+        self.main_window.connect('window-state-event', self._on_window_state_event)
+
+        self.controller.connect('controller-registered', self._on_controller_registered)
+        self._setup_key_bindings()
+        self._track_window_state()
+        self._setup_dnd()
+        from gi.repository import GLib
+        GLib.idle_add(self._setup_recent_files, priority=GLib.PRIORITY_LOW)
+        self.main_window.connect('style-set', self._on_style_set)
+        self.main_window.connect('style-updated', self._on_style_set)
+
+    def _connect_menu_signals(self):
         # File menu signals
         self.gui.get_object('mnu_open').connect('activate', self._on_file_open)
         self.gui.get_object('mnu_save').connect('activate', self._on_file_save)
@@ -140,6 +157,7 @@ class MainView(BaseView):
         self.gui.get_object('mnu_shortcuts').connect('activate', self._on_shortcuts)
         self.gui.get_object('mnu_about').connect('activate', self._on_help_about)
 
+    def _restore_window_geometry(self):
         self.main_window.set_icon_from_file(pan_app.get_abs_data_filename(["icons", "virtaal.png"]))
         self.main_window.resize(
             int(pan_app.settings.general['windowwidth']),
@@ -149,18 +167,6 @@ class MainView(BaseView):
         windowy = pan_app.settings.general['windowy']
         if windowx != '' and windowy != '':
             self.main_window.move(int(windowx), int(windowy))
-        self._top_window = self.main_window
-
-        self.main_window.connect('window-state-event', self._on_window_state_event)
-
-        self.controller.connect('controller-registered', self._on_controller_registered)
-        self._setup_key_bindings()
-        self._track_window_state()
-        self._setup_dnd()
-        from gi.repository import GLib
-        GLib.idle_add(self._setup_recent_files, priority=GLib.PRIORITY_LOW)
-        self.main_window.connect('style-set', self._on_style_set)
-        self.main_window.connect('style-updated', self._on_style_set)
 
     def _setup_macos_integration(self):
         # Follow the system light/dark appearance - GTK3 themes (Adwaita

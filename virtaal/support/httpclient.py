@@ -155,7 +155,6 @@ class HTTPRequest(GObjectWrapper):
         """called after http request is done"""
         self.status = self.curl.getinfo(pycurl.HTTP_CODE)
 
-        #TODO: handle 3xx, throw exception on other codes
         if self.status >= 200 and self.status < 300:
             # 2xx indicated success
             self.emit("http-success", self.result.getvalue())

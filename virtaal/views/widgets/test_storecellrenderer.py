@@ -311,12 +311,15 @@ def test_get_pango_layout_defaults_a_falsy_text_to_empty():
 
 def _renderer_for_unit(source, target):
     renderer = StoreCellRenderer(SimpleNamespace(
-        controller=SimpleNamespace(main_controller=SimpleNamespace(
-            lang_controller=SimpleNamespace(
-                source_lang=SimpleNamespace(code='en'),
-                target_lang=SimpleNamespace(code='en'),
-            )
-        ))
+        controller=SimpleNamespace(
+            main_controller=SimpleNamespace(
+                lang_controller=SimpleNamespace(
+                    source_lang=SimpleNamespace(code='en'),
+                    target_lang=SimpleNamespace(code='en'),
+                )
+            ),
+            get_store=lambda: None,
+        )
     ))
     renderer.unit = SimpleNamespace(isfuzzy=lambda: False, source=source, target=target)
     return renderer
@@ -432,12 +435,15 @@ def _renderer_with_view(is_resizing=False):
     treeview = SimpleNamespace(is_resizing=is_resizing)
     view = SimpleNamespace(
         _treeview=treeview,
-        controller=SimpleNamespace(main_controller=SimpleNamespace(
-            lang_controller=SimpleNamespace(
-                source_lang=SimpleNamespace(code='en'),
-                target_lang=SimpleNamespace(code='en'),
-            )
-        )),
+        controller=SimpleNamespace(
+            main_controller=SimpleNamespace(
+                lang_controller=SimpleNamespace(
+                    source_lang=SimpleNamespace(code='en'),
+                    target_lang=SimpleNamespace(code='en'),
+                )
+            ),
+            get_store=lambda: None,
+        ),
     )
     renderer = StoreCellRenderer(view)
     renderer.unit = SimpleNamespace(isfuzzy=lambda: False, source='src', target='tgt')
@@ -473,6 +479,57 @@ def test_do_get_size_reuses_the_cached_height_while_resizing():
     _x, _y, _width, height = renderer.do_get_size(widget, None)
 
     assert height == 12345
+
+
+def test_do_get_size_pads_the_last_units_row_with_extra_scrollable_space():
+    renderer = _renderer_with_view(is_resizing=False)
+    renderer.editable = False
+    renderer.view._treeview.get_allocation = lambda: SimpleNamespace(height=300)
+    widget = _toplevel_widget()
+
+    renderer.view.controller.get_store = lambda: []
+    _x, _y, _width, height_without_padding = renderer.do_get_size(widget, None)
+
+    renderer._cached_height = None
+    renderer.view.controller.get_store = lambda: [renderer.unit]
+    _x, _y, _width, height_with_padding = renderer.do_get_size(widget, None)
+
+    assert height_with_padding == height_without_padding + 150
+
+
+def test_do_get_size_keeps_padding_trailing_for_a_non_active_last_row():
+    # A non-active last row (some other unit is being edited) must not
+    # shift its content down within the padded cell - that would open
+    # up a gap between the previous row and this one's visible source
+    # text, instead of the padding staying after it as intended.
+    renderer = _renderer_with_view(is_resizing=False)
+    renderer.editable = False
+    renderer.view._treeview.get_allocation = lambda: SimpleNamespace(height=300)
+    renderer.view.controller.get_store = lambda: [renderer.unit]
+    widget = _toplevel_widget()
+
+    _x, y_offset, _width, _height = renderer.do_get_size(widget, None)
+
+    assert y_offset == renderer.ROW_PADDING / 2
+
+
+def test_do_get_size_centres_the_last_units_own_content_when_it_is_active():
+    # Once the last row is itself the one being edited, its content
+    # needs to sit at the padded cell's own centre - scroll_to_cell
+    # centres the whole cell, and every other (unpadded) active row's
+    # content already sits at its own cell's centre by construction
+    # (ROW_PADDING split evenly above/below), so this keeps the last
+    # unit levelled with the rest instead of rendering high.
+    renderer = _renderer_with_view(is_resizing=True)
+    renderer.editable = True
+    renderer._cached_height = 100
+    renderer.view._treeview.get_allocation = lambda: SimpleNamespace(height=300)
+    renderer.view.controller.get_store = lambda: [renderer.unit]
+    widget = _toplevel_widget()
+
+    _x, y_offset, _width, _height = renderer.do_get_size(widget, None)
+
+    assert y_offset == renderer.ROW_PADDING / 2 + 75
 
 
 def test_set_unit_clears_the_cached_height():

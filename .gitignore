@@ -15,7 +15,7 @@
 /share/appdata/virtaal.appdata.xml
 
 # /share/metainfo/
-/share/metainfo/virtaal.metainfo.xml
+/share/metainfo/io.github.translate.Virtaal.metainfo.xml
 
 # /share/applications/
 /share/applications/*.desktop

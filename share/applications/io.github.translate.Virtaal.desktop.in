@@ -6,7 +6,7 @@ GenericName=Translation Tool
 Comment=Translation tool to help a human translator translate files into other languages
 TryExec=virtaal
 Exec=virtaal %f
-Icon=virtaal
+Icon=io.github.translate.Virtaal
 MimeType=text/x-gettext-translation;text/x-gettext-translation-template;application/x-gettext;application/x-gettext-translation;application/x-po;text/x-po;application/x-xliff+xml;application/x-xliff;text/x-wordfast;application/x-tmx;application/x-tbx;application/x-linguist;application/x-qph;application/x-qm;
 # Not yet supported
 # application/x-sdf;

@@ -1,6 +1,6 @@
 devsupport/tmp_strings.py
-share/applications/virtaal.desktop.in
-share/metainfo/virtaal.metainfo.xml.in
+share/applications/io.github.translate.Virtaal.desktop.in
+share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 share/mime/packages/virtaal-mimetype.xml.in
 share/virtaal/virtaal.ui
 virtaal/cli.py

@@ -6,7 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 
-from gi.repository import GObject, Gtk, Pango
+from gi.repository import Gdk, GObject, Gtk, Pango
 
 from virtaal.views import markup, rendering
 
@@ -91,13 +91,12 @@ class TMWindow(Gtk.Window):
         scrollbar_width = vscrollbar.props.visible and vscrollbar.get_allocation().width + 1 or 0
 
         origin = gdkwin.get_origin()
-        x, y = origin.x, origin.y
+        x = origin.x
 
         if widget.get_direction() == Gtk.TextDirection.LTR:
             x -= self.tvc_perc.get_width()
         else:
             x -= self.tvc_tm_source.get_width() + scrollbar_width
-        y += widget_alloc.height + 2
 
         tm_source_width = self.tvc_tm_source.get_width()
         if tm_source_width > 100:
@@ -107,6 +106,42 @@ class TMWindow(Gtk.Window):
         width = widget_alloc.width + self.tvc_perc.get_width() + tm_source_width + scrollbar_width
         height = min(self.rows_height(), self.MAX_HEIGHT) + 4
         # TODO: Replace the hard-coded value above with a query to the theme. It represents the width of the shadow of self.scrolled_window
+
+        # Anchor below by default; flip above the source text (not just
+        # the target, which sits right below it) when below doesn't fit.
+        # selector_textbox already references the target's source.
+        above_anchor = widget
+        source_textbox = getattr(widget, 'selector_textbox', None)
+        if source_textbox is not None and source_textbox is not widget:
+            above_anchor = source_textbox
+        above_origin = origin
+        if above_anchor is not widget:
+            above_gdkwin = above_anchor.get_window(Gtk.TextWindowType.WIDGET)
+            if above_gdkwin is not None:
+                above_origin = above_gdkwin.get_origin()
+
+        # Bound against the window's own frame, not the monitor - the
+        # window doesn't necessarily fill it. Fall back to the monitor's
+        # workarea if the frame isn't available.
+        below_y = origin.y + widget_alloc.height + 2
+        above_y = above_origin.y - height - 2
+        y = below_y
+
+        geom = None
+        toplevel_window = widget.get_toplevel().get_window()
+        if toplevel_window is not None:
+            geom = toplevel_window.get_frame_extents()
+        if geom is None:
+            monitor = Gdk.Display.get_default().get_monitor_at_window(gdkwin)
+            if monitor:
+                geom = monitor.get_workarea()
+
+        if geom is not None:
+            x = max(geom.x, min(x, geom.x + geom.width - width))
+            if below_y + height > geom.y + geom.height and above_y >= geom.y:
+                y = above_y
+            else:
+                y = max(geom.y, min(below_y, geom.y + geom.height - height))
 
         #logging.debug('TMWindow.update_geometry(%dx%d +%d+%d)' % (width, height, x, y))
         self.resize(width, height)

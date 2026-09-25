@@ -55,6 +55,10 @@ class WelcomeScreenView(BaseView):
         self.parent_widget.child_set_property(self.widget, 'expand', True)
 
         self.widget.show()
+        # Anchor focus on 'open' so the first Down/Tab reaches the first
+        # recent file, rather than pre-focusing recent1 itself and having
+        # that keypress skip straight past it to the second.
+        self.widget.widgets['buttons']['open'].grab_focus()
 
         def calculate_width():
             txt = self.widget.widgets['txt_features']
@@ -104,12 +108,6 @@ class WelcomeScreenView(BaseView):
             buttons[i].props.visible = True
         for i in range(len(items), 5):
             buttons[i].props.visible = False
-
-        # GTK doesn't consistently restore focus here on its own.
-        if items:
-            buttons[0].grab_focus()
-        else:
-            self.widget.widgets['buttons']['open'].grab_focus()
 
 
     # EVENT HANDLERS #

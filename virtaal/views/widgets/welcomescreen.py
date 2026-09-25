@@ -41,6 +41,7 @@ class WelcomeScreen(Gtk.ScrolledWindow):
 
         self._get_widgets()
         self._init_feature_view()
+        self._init_features_expander()
 
     def _get_widgets(self):
         self.widgets = {}
@@ -90,13 +91,31 @@ class WelcomeScreen(Gtk.ScrolledWindow):
             # .get_buffer() is a bit expensive during startup
             txt_features = self.widgets['txt_features']
             txt_features.get_buffer().set_text(features)
-            context = txt_features.get_parent().get_style_context()
-            found, background = context.lookup_color('theme_base_color')
-            if not found:
-                background = context.get_background_color(Gtk.StateType.NORMAL)
-            set_widget_bg_color(txt_features, theme.rgba_to_str(background))
+            # Transparent, not theme_base_color - GtkTextView's own default
+            # is an opaque entry/textview-style background (usually white),
+            # which doesn't match the welcome screen's actual page
+            # background on most themes.
+            set_widget_bg_color(txt_features, 'transparent')
+            # GtkTextView's own '.view' theme class can carry a different
+            # default font to the welcome screen's labels - inherit theirs.
+            provider = Gtk.CssProvider()
+            provider.load_from_data(b'* { font: inherit; }')
+            txt_features.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
         GLib.idle_add(_set_text, features, priority=GLib.PRIORITY_LOW)
+
+    def _init_features_expander(self):
+        # GtkExpander's focus chain reaches into its child area even while
+        # collapsed - without this, Down would land on the invisible
+        # 'More...' button instead of moving past the expander.
+        exp_features = self.widgets['exp_features']
+        btn_more = self.widgets['buttons']['features_more']
+
+        def _sync_more_focusability(expander, param):
+            btn_more.set_can_focus(expander.get_expanded())
+
+        _sync_more_focusability(exp_features, None)
+        exp_features.connect('notify::expanded', _sync_more_focusability)
 
 
     # METHODS #

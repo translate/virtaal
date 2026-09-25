@@ -124,137 +124,136 @@ def run_virtaal(startup_file):
     prog.run()
 
 
+def _set_logging(options, parser):
+    if options.log is None and not options.debug:
+        return
+
+    import logging
+
+    from virtaal import __version__
+
+    level = options.debug and logging.DEBUG or logging.INFO
+    if options.debug:
+        format = '%(levelname)7s %(module)s.%(funcName)s:%(lineno)d: %(message)s'
+    else:
+        format = '%(asctime)s %(levelname)s %(message)s'
+    if options.log is None:
+        logging.basicConfig(level=level, format=format, stream=sys.stderr)
+    elif options.log.upper() in ('-', 'STDOUT'):
+        logging.basicConfig(level=level, format=format, stream=sys.stdout)
+    else:
+        try:
+            logging.basicConfig(level=level, format=format, filename=path.abspath(options.log), filemode='w')
+        except OSError:
+            parser.error(_("Could not open log file '%(filename)s'") % {"filename": options.log})
+
+    logging.info("Virtaal %s", __version__.version_string())
+
+
+def _set_config(options, parser):
+    try:
+        if options.config is not None:
+            pan_app.settings = pan_app.Settings(path.abspath(options.config))
+    except Exception:
+        parser.error(_("Could not read configuration file '%(filename)s'") % {"filename": options.config})
+
+
+def _set_pseudo_translation(options, parser):
+    if not (options.pseudo_translation or options.pseudo_translation_bidi):
+        return
+    lang = 'pseudo-bidi' if options.pseudo_translation_bidi else 'pseudo'
+    if not packaged:
+        import importlib.util
+        repo_root = path.dirname(path.dirname(path.abspath(__file__)))
+        generator_path = path.join(repo_root, 'devsupport', 'pseudo-translation',
+                                    'generate_pseudo_translation.py')
+        spec = importlib.util.spec_from_file_location('generate_pseudo_translation', generator_path)
+        generator = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(generator)
+        generator.generate_locale(lang)
+    try:
+        pan_app.set_ui_language(lang)
+    except OSError:
+        parser.error("No '%s' locale found - run "
+                      "devsupport/pseudo-translation/generate_pseudo_translation.py first" % lang)
+    if options.pseudo_translation_bidi:
+        # Must run before the first widget is constructed.
+        from gi.repository import Gtk
+        Gtk.Widget.set_default_direction(Gtk.TextDirection.RTL)
+
+
+def _set_lang(options, parser):
+    if not options.lang:
+        return
+    try:
+        pan_app.set_ui_language(options.lang)
+    except OSError:
+        parser.error(_("No translation found for language '%(lang)s'") % {"lang": options.lang})
+
+
+def _run_profiled(profile_file, startup_file):
+    import cProfile
+    import logging
+    try:
+        import devsupport.profiling as profiling
+    except ImportError:
+        #l10n: This refers to performance profiling for developers
+        logging.error(_("Profiling support is not available"))
+        sys.exit(1)
+    logging.info('Starting profiling run')
+    profiler = cProfile.Profile()
+    profiler.runcall(run_virtaal, startup_file)
+    k_cache_grind = profiling.KCacheGrind(profiler)
+    k_cache_grind.output(profile_file)
+    profile_file.close()
+
+
+def _profile_runner(options, parser, startup_file):
+    try:
+        _run_profiled(open(options.profile, 'w+', encoding='utf-8'), startup_file)
+    except OSError:
+        parser.error(_("Could not open profile file '%(filename)s'") % {"filename": options.profile})
+
+
+def _default_runner(startup_file):
+    if not pan_app.DEBUG:
+        try:
+            import psyco
+            psyco.full()
+        except Exception:
+            pass
+    run_virtaal(startup_file)
+    # virtaal.main.Virtaal disables the cyclic GC for the whole
+    # run (see there for why), but normal CPython interpreter
+    # finalization forces one last gc.collect() regardless of
+    # that, which reproduced the exact same GTK teardown
+    # segfault at exit instead of during use. Skip normal
+    # finalization to avoid it; there's nothing left to flush
+    # or clean up at this point.
+    import os
+    os._exit(0)
+
+
 def main(argv):
     options = None
     parser = None
     startup_file = None
 
     if len(argv) > 1:
-        from virtaal import __version__
-
         parser = build_parser()
-
-        def set_logging(options):
-            if options.log is None and not options.debug:
-                return
-
-            import logging
-            level = options.debug and logging.DEBUG or logging.INFO
-            if options.debug:
-                format = '%(levelname)7s %(module)s.%(funcName)s:%(lineno)d: %(message)s'
-            else:
-                format = '%(asctime)s %(levelname)s %(message)s'
-            if options.log is None:
-                logging.basicConfig(level=level, format=format, stream=sys.stderr)
-            elif options.log.upper() in ('-', 'STDOUT'):
-                logging.basicConfig(level=level, format=format, stream=sys.stdout)
-            else:
-                try:
-                    logging.basicConfig(level=level, format=format, filename=path.abspath(options.log), filemode='w')
-                except OSError:
-                    parser.error(_("Could not open log file '%(filename)s'") % {"filename": options.log})
-
-            logging.info("Virtaal %s", __version__.version_string())
-
-
-        def set_config(options):
-            try:
-                if options.config is not None:
-                    pan_app.settings = pan_app.Settings(path.abspath(options.config))
-            except Exception:
-                parser.error(_("Could not read configuration file '%(filename)s'") % {"filename": options.config})
-
-
-        def set_pseudo_translation(options):
-            if not (options.pseudo_translation or options.pseudo_translation_bidi):
-                return
-            lang = 'pseudo-bidi' if options.pseudo_translation_bidi else 'pseudo'
-            if not packaged:
-                import importlib.util
-                repo_root = path.dirname(path.dirname(path.abspath(__file__)))
-                generator_path = path.join(repo_root, 'devsupport', 'pseudo-translation',
-                                            'generate_pseudo_translation.py')
-                spec = importlib.util.spec_from_file_location('generate_pseudo_translation', generator_path)
-                generator = importlib.util.module_from_spec(spec)
-                spec.loader.exec_module(generator)
-                generator.generate_locale(lang)
-            try:
-                pan_app.set_ui_language(lang)
-            except OSError:
-                parser.error("No '%s' locale found - run "
-                              "devsupport/pseudo-translation/generate_pseudo_translation.py first" % lang)
-            if options.pseudo_translation_bidi:
-                # Must run before the first widget is constructed.
-                from gi.repository import Gtk
-                Gtk.Widget.set_default_direction(Gtk.TextDirection.RTL)
-
-
-        def set_lang(options):
-            if not options.lang:
-                return
-            try:
-                pan_app.set_ui_language(options.lang)
-            except OSError:
-                parser.error(_("No translation found for language '%(lang)s'") % {"lang": options.lang})
-
-
         options = parser.parse_args(argv[1:])
         pan_app.DEBUG = options.debug
-        set_config(options)
-        set_logging(options)
-        set_pseudo_translation(options)
-        set_lang(options)
+        _set_config(options, parser)
+        _set_logging(options, parser)
+        _set_pseudo_translation(options, parser)
+        _set_lang(options, parser)
         startup_file = options.translation_file
     else:
         # No arguments given, so we save some time by avoiding all the things
         # that could have happened on the command line
         pan_app.DEBUG = False
 
-    def get_virtaal_runner(options):
-        def profile_runner(startup_file):
-            def profile(profile_file, startup_file):
-                import cProfile
-                import logging
-                try:
-                    import devsupport.profiling as profiling
-                except ImportError:
-                    #l10n: This refers to performance profiling for developers
-                    logging.error(_("Profiling support is not available"))
-                    sys.exit(1)
-                logging.info('Starting profiling run')
-                profiler = cProfile.Profile()
-                profiler.runcall(run_virtaal, startup_file)
-                k_cache_grind = profiling.KCacheGrind(profiler)
-                k_cache_grind.output(profile_file)
-                profile_file.close()
-
-            try:
-                profile(open(options.profile, 'w+', encoding='utf-8'), startup_file)
-            except OSError:
-                parser.error(_("Could not open profile file '%(filename)s'") % {"filename":options.profile})
-
-        def default_runner(startup_file):
-            if not pan_app.DEBUG:
-                try:
-                    import psyco
-                    psyco.full()
-                except Exception:
-                    pass
-            run_virtaal(startup_file)
-            # virtaal.main.Virtaal disables the cyclic GC for the whole
-            # run (see there for why), but normal CPython interpreter
-            # finalization forces one last gc.collect() regardless of
-            # that, which reproduced the exact same GTK teardown
-            # segfault at exit instead of during use. Skip normal
-            # finalization to avoid it; there's nothing left to flush
-            # or clean up at this point.
-            import os
-            os._exit(0)
-
-        if options and getattr(options, "profile", None) != None:
-            return profile_runner
-        else:
-            return default_runner
-
-    runner = get_virtaal_runner(options)
-    runner(startup_file)
+    if options and getattr(options, "profile", None) != None:
+        _profile_runner(options, parser, startup_file)
+    else:
+        _default_runner(startup_file)

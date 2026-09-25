@@ -153,3 +153,29 @@ def test_update_geometry_flips_above_the_source_when_there_is_no_room_below():
 
     tmwindow.destroy()
     window.destroy()
+
+
+def test_update_geometry_sizes_the_popup_from_the_real_theme_border():
+    tmwindow = TMWindow(None)
+    tmwindow.liststore.append([{'quality': 90, 'tmsource': 'x'}, 'match'])
+    tmwindow.treeview.columns_autosize()
+    tmwindow.show_all()
+    _process_events()
+
+    window = Gtk.Window()
+    target = Gtk.TextView()
+    target.set_size_request(200, 30)
+    window.add(target)
+    window.show_all()
+    _process_events()
+
+    border = tmwindow.scrolled_window.get_style_context().get_border(Gtk.StateFlags.NORMAL)
+    expected_height = min(tmwindow.rows_height(), tmwindow.MAX_HEIGHT) + border.top + border.bottom
+
+    tmwindow.update_geometry(target)
+    _process_events()
+
+    assert tmwindow.get_window().get_height() == expected_height
+
+    tmwindow.destroy()
+    window.destroy()

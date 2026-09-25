@@ -109,8 +109,10 @@ def main(argv):
         pseudo_group.add_argument("--pseudo-translation-bidi", dest="pseudo_translation_bidi", action="store_true", default=False,
                              help=_("like --pseudo-translation, but also simulates a right-to-left UI layout"))
         pseudo_group.add_argument("--lang", dest="lang", metavar=_("LANG"),
-                             help=_("override the UI language for this run (e.g. \"fr\"), "
-                                     "without changing the saved Preferences setting"))
+                             help=_("override the UI language for this run (e.g. \"fr\"; "
+                                     "\"en\" for the untranslated source strings; \"system\" "
+                                     "for the OS's own default), without changing the saved "
+                                     "Preferences setting"))
         # Profiling does not make sense in packaged versions.  Set to True to disable profiling.
         if not packaged:
             parser.add_argument("-P", "--profile", dest="profile", metavar=_("PROFILE"),

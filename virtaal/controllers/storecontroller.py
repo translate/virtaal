@@ -158,11 +158,11 @@ class StoreController(BaseController):
 
         i = 0
         try:
-            # XXX: list.index() is O(n) - pretty bad in a long file if we're
-            # looking for something towards the end. Keep in mind that it
-            # calls unit.__eq__ which does a *lot* of things.
+            # list.index() here is O(n) (and unit.__eq__ isn't cheap), but
+            # select_unit() is only reached from search-result jumps and
+            # undo/redo, not per-navigation, so it's a deliberate tradeoff
+            # rather than a hot-path problem worth an index-based API.
             i = self.store.get_units().index(unit)
-            #TODO: consider replacing with API that uses index instead of unit
         except Exception as exc:
             import logging
             logging.debug('Unit not found:\n%s' % (exc))

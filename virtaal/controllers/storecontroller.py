@@ -172,53 +172,75 @@ class StoreController(BaseController):
         else:
             self.cursor.index = i
 
+    def _open_bundle(self, filename):
+        import logging
+
+        from virtaal.models.storemodel import StoreModel
+        from virtaal.support import bundleprojstore
+        try:
+            from virtaal.support.project import Project
+            self.project = Project(bundleprojstore.BundleProjectStore(filename))
+        except bundleprojstore.InvalidBundleError as err:
+            logging.exception('Unable to load project bundle')
+
+        if not len(self.project.store.transfiles):
+            # FIXME: Ask the user to select a source file to convert?
+            if not len(self.project.store.sourcefiles):
+                raise bundleprojstore.InvalidBundleError(_('No source or translatable files in bundle'))
+            self.project.convert_forward(self.project.store.sourcefiles[0])
+
+        # FIXME: Ask the user which translatable file to open?
+        transfile = self.project.get_file(self.project.store.transfiles[0])
+        self.real_filename = transfile.name
+        logging.info(
+            'Editing translation file %s:%s' %
+            (filename, self.project.store.transfiles[0])
+        )
+        self.store = StoreModel(transfile, self)
+
+    def _open_convertible(self, filename):
+        import logging
+
+        from virtaal.models.storemodel import StoreModel
+        from virtaal.support import bundleprojstore
+        from virtaal.support.project import Project
+
+        # Use temporary file name for bundle archive
+        self._targetfname = self._get_new_bundle_filename(filename)
+        tempfname = self._get_new_bundle_filename(filename, force_temp=True)
+        self._archivetemp = tempfname
+        self.project = Project(projstore=bundleprojstore.BundleProjectStore(tempfname))
+        srcfile, srcfilename, transfile, transfilename = self.project.add_source_convert(filename)
+        self.real_filename = transfile.name
+
+        logging.info('Converted document %s to translatable file %s' % (srcfilename, self.real_filename))
+        self.store = StoreModel(transfile, self)
+
+    def _open_plain(self, filename):
+        from virtaal.models.storemodel import StoreModel
+        self.store = StoreModel(filename, self)
+
+    def _rename_pot_template(self, filename, force_saveas):
+        import re
+        pot_re = re.compile(r"\.pot(\.gz|\.bz2)?$")
+        if pot_re.search(filename):
+            force_saveas = True
+            filename = pot_re.sub('.po', filename)
+            self.store._trans_store.filename = filename
+        return filename, force_saveas
+
     def open_file(self, filename, uri='', forget_dir=False):
         from translate.convert import factory as convert_factory
 
-        from virtaal.models.storemodel import StoreModel
-        force_saveas = False
         extension = filename.split(os.extsep)[-1]
+        force_saveas = False
         if extension == 'zip':
-            import logging
-
-            from virtaal.support import bundleprojstore
-            try:
-                from virtaal.support.project import Project
-                self.project = Project(bundleprojstore.BundleProjectStore(filename))
-            except bundleprojstore.InvalidBundleError as err:
-                logging.exception('Unable to load project bundle')
-
-            if not len(self.project.store.transfiles):
-                # FIXME: Ask the user to select a source file to convert?
-                if not len(self.project.store.sourcefiles):
-                    raise bundleprojstore.InvalidBundleError(_('No source or translatable files in bundle'))
-                self.project.convert_forward(self.project.store.sourcefiles[0])
-
-            # FIXME: Ask the user which translatable file to open?
-            transfile = self.project.get_file(self.project.store.transfiles[0])
-            self.real_filename = transfile.name
-            logging.info(
-                'Editing translation file %s:%s' %
-                (filename, self.project.store.transfiles[0])
-            )
-            self.store = StoreModel(transfile, self)
+            self._open_bundle(filename)
         elif extension in convert_factory.converters:
-            # Use temporary file name for bundle archive
-            self._targetfname = self._get_new_bundle_filename(filename)
-            tempfname = self._get_new_bundle_filename(filename, force_temp=True)
-            self._archivetemp = tempfname
-            from virtaal.support import bundleprojstore
-            from virtaal.support.project import Project
-            self.project = Project(projstore=bundleprojstore.BundleProjectStore(tempfname))
-            srcfile, srcfilename, transfile, transfilename = self.project.add_source_convert(filename)
-            self.real_filename = transfile.name
-
-            import logging
-            logging.info('Converted document %s to translatable file %s' % (srcfilename, self.real_filename))
-            self.store = StoreModel(transfile, self)
+            self._open_convertible(filename)
             force_saveas = True
         else:
-            self.store = StoreModel(filename, self)
+            self._open_plain(filename)
 
         if len(self.store.get_units()) < 1:
             # clean up, otherwise self.store still contains the store
@@ -228,12 +250,7 @@ class StoreController(BaseController):
         self._modified = False
 
         # if file is a template, force saveas
-        import re
-        _pot_re = re.compile(r"\.pot(\.gz|\.bz2)?$")
-        if _pot_re.search(filename):
-            force_saveas = True
-            self.store._trans_store.filename = _pot_re.sub('.po', filename)
-            filename = _pot_re.sub('.po', filename)
+        filename, force_saveas = self._rename_pot_template(filename, force_saveas)
 
         # forgetting the directory only makes sense if we force save as
         if force_saveas and forget_dir:

@@ -30,6 +30,9 @@ You can invoke Virtaal from the command line with ::
 
     virtaal <filename>
 
+See the :doc:`command line options <cli_options>` page for the full list of
+flags Virtaal accepts (e.g. :option:`virtaal --lang`).
+
 A list of supported translation formats can be found on the :doc:`features
 <features>` page.
 

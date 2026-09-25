@@ -65,19 +65,21 @@ separate generation step::
   virtaal --pseudo-translation devsupport/testfiles/checks.po
   virtaal --pseudo-translation-bidi devsupport/testfiles/checks.po
 
-``--pseudo-translation`` wraps every string in brackets (``[Save]``) -
-useful for spotting hardcoded strings and layout truncation.
-``--pseudo-translation-bidi`` wraps every string in Unicode RTL
-isolate marks too, simulating a right-to-left translation's text runs
-while keeping the text itself readable Latin script.
+:option:`virtaal --pseudo-translation` wraps every string in brackets
+(``[Save]``) - useful for spotting hardcoded strings and layout
+truncation. :option:`virtaal --pseudo-translation-bidi` wraps every
+string in Unicode RTL isolate marks too, simulating a right-to-left
+translation's text runs while keeping the text itself readable Latin
+script.
 
 ``devsupport/pseudo-translation/generate_pseudo_translation.py`` also
 writes a third, ``fa``-tagged locale with every string's glyphs
 visually flipped (not a real Farsi translation - a real
 RTL-recognised language code, for exercising actual whole-window RTL
 mirroring under a genuine locale rather than just isolate-wrapped
-text). Unlike the two above, this one has no dedicated ``--lang``
-shortcut that regenerates it automatically, so run the script first::
+text). Unlike the two above, this one has no dedicated
+:option:`virtaal --lang` shortcut that regenerates it automatically,
+so run the script first::
 
   python devsupport/pseudo-translation/generate_pseudo_translation.py
   LANG=fa_IR.UTF-8 LANGUAGE=fa virtaal devsupport/testfiles/checks.po

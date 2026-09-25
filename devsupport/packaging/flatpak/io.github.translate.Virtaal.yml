@@ -34,29 +34,15 @@ modules:
       # directly, which needs it already installed.
       - pip3 install --verbose --exists-action=i --no-build-isolation
         --prefix=${FLATPAK_DEST} .
-      # setup.py's own Linux data_files (this build is a real Linux
-      # install) already dropped plain-named virtaal.desktop/
-      # virtaal.metainfo.xml here - both now carry the same <id>
-      # io.github.translate.Virtaal as the renamed copies installed
-      # below, and appstreamcli compose fails with duplicate-component
-      # if both are left in place.
-      - rm -f ${FLATPAK_DEST}/share/applications/virtaal.desktop
-        ${FLATPAK_DEST}/share/metainfo/virtaal.metainfo.xml
+      # Two calls, not one: the mimetype package keeps the plain
+      # "virtaal" target name, while the desktop file and metainfo are
+      # already named after the app id in the source tree.
       - ./maketranslations
-      # share/applications/virtaal.desktop and share/metainfo/
-      # virtaal.metainfo.xml are ./maketranslations' real,
-      # already-translated output (run on the host before this build -
-      # see ci.yml) - not the .in templates. Icon= still has to be
-      # renamed to match the app id inside the sandbox, or
-      # appstreamcli compose fails with icon-not-found.
-      - sed 's/^Icon=virtaal$/Icon=io.github.translate.Virtaal/'
-        share/applications/virtaal.desktop > virtaal.desktop
-      - install -Dm644 virtaal.desktop
+      - ./maketranslations io.github.translate.Virtaal
+      - install -Dm644 share/applications/io.github.translate.Virtaal.desktop
         ${FLATPAK_DEST}/share/applications/io.github.translate.Virtaal.desktop
-      - install -Dm644 share/metainfo/virtaal.metainfo.xml
+      - install -Dm644 share/metainfo/io.github.translate.Virtaal.metainfo.xml
         ${FLATPAK_DEST}/share/metainfo/io.github.translate.Virtaal.metainfo.xml
-      - install -Dm644 share/icons/virtaal.png
-        ${FLATPAK_DEST}/share/icons/hicolor/64x64/apps/io.github.translate.Virtaal.png
     sources:
       - type: dir
         path: ../../..

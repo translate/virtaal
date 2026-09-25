@@ -17,17 +17,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: share/applications/virtaal.desktop.in share/virtaal/virtaal.ui
-#: virtaal/views/mainview.py
+#: share/applications/io.github.translate.Virtaal.desktop.in
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
 msgid "Virtaal"
 msgstr ""
 
-#: share/applications/virtaal.desktop.in
+#: share/applications/io.github.translate.Virtaal.desktop.in
 msgid "Translation Tool"
 msgstr ""
 
 #. l10n: The summary should be less than 100 characters
-#: share/applications/virtaal.desktop.in share/metainfo/virtaal.metainfo.xml.in
+#: share/applications/io.github.translate.Virtaal.desktop.in
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid ""
 "Translation tool to help a human translator translate files into other "
 "languages"
@@ -450,12 +451,12 @@ msgid "show program's version number and exit"
 msgstr ""
 
 #. l10n: The name should be less than 30 characters
-#: share/metainfo/virtaal.metainfo.xml.in
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Virtaal Translation Tool"
 msgstr ""
 
 #. l10n: Paragraphs should be less than 600 characters
-#: share/metainfo/virtaal.metainfo.xml.in
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid ""
 "Virtaal is a program for doing translation. It aims for a delightful "
 "combination of simplicity and power. It integrates with selected online "
@@ -463,45 +464,45 @@ msgid ""
 "quality."
 msgstr ""
 
-#: share/metainfo/virtaal.metainfo.xml.in
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid ""
 "The initial focus is on software translation (localization or l10n), but is "
 "definitely meant to be useful as a general purpose tool for Computer Aided "
 "Translation (CAT)."
 msgstr ""
 
-#: share/metainfo/virtaal.metainfo.xml.in
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Some features:"
 msgstr ""
 
 #. l10n: These list items should be less than 100 characters
-#: share/metainfo/virtaal.metainfo.xml.in
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Translation reuse (translation memory)"
 msgstr ""
 
-#: share/metainfo/virtaal.metainfo.xml.in
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 #: virtaal/views/widgets/welcomescreen.py
 msgid "Terminology assistance"
 msgstr ""
 
-#: share/metainfo/virtaal.metainfo.xml.in
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "AutoCompletor and AutoCorrector"
 msgstr ""
 
-#: share/metainfo/virtaal.metainfo.xml.in
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Quality checks with customization for many languages"
 msgstr ""
 
 #. l10n: Captions should be shorter than 50 characters
-#: share/metainfo/virtaal.metainfo.xml.in
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Easy access to recent files and documentation"
 msgstr ""
 
-#: share/metainfo/virtaal.metainfo.xml.in
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Recognized elements don't need to be typed"
 msgstr ""
 
-#: share/metainfo/virtaal.metainfo.xml.in
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
 msgid "Quality checks while you type"
 msgstr ""
 

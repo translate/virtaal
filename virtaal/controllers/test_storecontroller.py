@@ -48,7 +48,6 @@ def _controller():
     GObjectWrapper.__init__(controller)
     controller.project = None
     controller.store = None
-    controller._archivetemp = None
     controller._tempfiles = []
     controller.handler_ids = {}
     return controller
@@ -58,24 +57,6 @@ def _controller():
 
 def test_destroy_with_nothing_open_is_a_noop():
     controller = _controller()
-    controller.destroy()  # must not raise
-
-
-def test_destroy_unlinks_an_existing_archivetemp(tmp_path):
-    controller = _controller()
-    archivetemp = tmp_path / "bundle.zip"
-    archivetemp.write_text("data")
-    controller._archivetemp = str(archivetemp)
-
-    controller.destroy()
-
-    assert not archivetemp.exists()
-
-
-def test_destroy_ignores_a_missing_archivetemp(tmp_path):
-    controller = _controller()
-    controller._archivetemp = str(tmp_path / "does-not-exist.zip")
-
     controller.destroy()  # must not raise
 
 
@@ -129,14 +110,6 @@ def test_get_nplurals_is_zero_without_a_store():
 
 # get_bundle_filename() #
 
-def test_get_bundle_filename_prefers_archivetemp():
-    controller = _controller()
-    controller._archivetemp = "/tmp/some-temp.zip"
-    controller._targetfname = "/tmp/final-name.zip"
-
-    assert controller.get_bundle_filename() == "/tmp/final-name.zip"
-
-
 def test_get_bundle_filename_for_a_real_bundle():
     controller = _controller()
     controller.project = SimpleNamespace(store=_fake_bundle("bundle.zip"))
@@ -144,7 +117,7 @@ def test_get_bundle_filename_for_a_real_bundle():
     assert controller.get_bundle_filename() == "bundle.zip"
 
 
-def test_get_bundle_filename_without_a_project_or_archivetemp():
+def test_get_bundle_filename_without_a_project():
     controller = _controller()
 
     assert controller.get_bundle_filename() is None
@@ -423,12 +396,11 @@ def test_open_file_strips_the_directory_when_forced_saveas_and_forget_dir(monkey
     assert controller.store._trans_store.filename == 'template.po'
 
 
-# open_file() - bundle (.zip) and convertible-format paths #
+# open_file() - bundle (.zip) path #
 
 class _FakeProject:
     """A stand-in for virtaal.support.project.Project - constructed the
-    same way _open_bundle()/_open_convertible() build the real one, via
-    either a positional or a `projstore=` keyword arg."""
+    same way _open_bundle() builds the real one."""
 
     def __init__(self, projstore):
         self.store = projstore
@@ -438,12 +410,6 @@ class _FakeProject:
 
     def get_file(self, name):
         return SimpleNamespace(name='/tmp/' + name)
-
-    def add_source_convert(self, filename):
-        return (
-            SimpleNamespace(name=filename), filename,
-            SimpleNamespace(name='/tmp/converted-target.po'), 'converted-target.po',
-        )
 
 
 def _patch_project(monkeypatch, store):
@@ -481,24 +447,6 @@ def test_open_file_via_bundle_raises_when_nothing_to_convert(monkeypatch):
 
     with pytest.raises(bundleprojstore.InvalidBundleError):
         controller.open_file('bundle.zip')
-
-
-def test_open_file_converts_a_non_native_format_and_forces_saveas(monkeypatch):
-    from translate.convert import factory as convert_factory
-    monkeypatch.setitem(convert_factory.converters, 'odt', object())
-    _patch_project(monkeypatch, SimpleNamespace(transfiles=[], sourcefiles=[]))
-    controller = _open_file_controller(monkeypatch, units=[object()])
-    monkeypatch.setattr(
-        controller, '_get_new_bundle_filename',
-        lambda filename, force_temp=False: 'temp.zip' if force_temp else 'bundle.zip',
-    )
-
-    controller.open_file('doc.odt')
-
-    assert controller.real_filename == '/tmp/converted-target.po'
-    assert controller.force_saveas_calls == [True]
-    assert controller._targetfname == 'bundle.zip'
-    assert controller._archivetemp == 'temp.zip'
 
 
 def test_revert_file_reopens_the_current_store_filename():
@@ -567,7 +515,6 @@ def test_save_file_project_opens_the_real_file_in_binary_mode(tmp_path):
         undo_controller=SimpleNamespace(model=SimpleNamespace(mark_clean=lambda: None)),
         set_saveable=lambda v: None,
     )
-    controller._archivetemp = None
 
     controller.save_file()
 
@@ -643,42 +590,6 @@ def test_update_file_replaces_the_cursor_on_an_already_open_store():
     assert controller.cursor.model is controller.store
     assert shown == [None, controller.store, 'shown']
     assert emitted == [True]
-
-
-def test_update_file_converts_a_new_file_reading_it_in_binary_mode(monkeypatch, tmp_path):
-    from translate.convert import factory as convert_factory
-    from translate.storage import factory as store_factory
-
-    src = tmp_path / "input.po"
-    src.write_bytes('msgid "x"\nmsgstr "café"\n'.encode())
-
-    monkeypatch.setitem(convert_factory.converters, "po", object())
-
-    captured = {}
-
-    def fake_convert(infile, *args, **kwargs):
-        captured['mode'] = infile.mode
-        captured['content'] = infile.read()
-        return SimpleNamespace(name=str(tmp_path / "output.mo")), "mo"
-
-    monkeypatch.setattr(convert_factory, "convert", fake_convert)
-    monkeypatch.setattr(store_factory, "getobject", lambda name: None)
-
-    controller = _controller()
-    controller.store = SimpleNamespace(
-        update_file=lambda filename: None,
-        stats={'total': []},
-    )
-    controller.main_controller = SimpleNamespace(
-        set_saveable=lambda v: None,
-        set_force_saveas=lambda v: None,
-    )
-    controller._view = SimpleNamespace(load_store=lambda *a: None, show=lambda: None)
-
-    controller.update_file(str(src))
-
-    assert captured['mode'] == 'rb'
-    assert captured['content'] == src.read_bytes()
 
 
 # update_store_checks() #

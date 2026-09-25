@@ -506,6 +506,11 @@ msgstr ""
 msgid "Quality checks while you type"
 msgstr ""
 
+#. l10n: The developer/organisation name "Translate", not the verb "to translate"
+#: share/metainfo/io.github.translate.Virtaal.metainfo.xml.in
+msgid "Translate"
+msgstr ""
+
 #: share/mime/packages/virtaal-mimetype.xml.in
 msgid "TMX Translation Memory"
 msgstr ""

@@ -46,6 +46,21 @@
  <update_contact>dev _at_ translate.org.za</update_contact>
  <translation type="gettext">virtaal</translation>
  <launchable type="desktop-id">io.github.translate.Virtaal.desktop</launchable>
+ <developer id="io.github.translate">
+  <!-- l10n: The developer/organisation name "Translate", not the verb "to translate" -->
+  <name>Translate</name>
+ </developer>
+ <releases>
+  <release version="1.0.0~beta3" date="2026-09-24" type="development">
+   <url>https://github.com/translate/virtaal/releases/tag/v1.0.0-beta3</url>
+  </release>
+  <release version="1.0.0~beta2" date="2026-09-16" type="development">
+   <url>https://github.com/translate/virtaal/releases/tag/v1.0.0-beta2</url>
+  </release>
+  <release version="1.0.0~beta1" date="2026-09-10" type="development">
+   <url>https://github.com/translate/virtaal/releases/tag/v1.0.0-beta1</url>
+  </release>
+ </releases>
  <!-- No objectionable content of any kind - a translation editor. -->
  <content_rating type="oars-1.1"/>
 </component>

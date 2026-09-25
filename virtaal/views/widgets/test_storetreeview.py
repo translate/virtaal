@@ -39,13 +39,14 @@ class _FakeColumn:
         self._width = width
 
 
-def _make_view(column_width, cursor):
+def _make_view(column_width, cursor, is_resizing=False):
     column = _FakeColumn(column_width)
     calls = []
     view = SimpleNamespace(
         get_columns=lambda: [column],
         get_cursor=lambda: cursor,
         set_cursor=lambda *args, **kwargs: calls.append((args, kwargs)),
+        is_resizing=is_resizing,
     )
     return view, column, calls
 
@@ -66,6 +67,20 @@ def test_on_size_allocate_restarts_editing_the_current_row_when_the_width_change
 
     assert column.get_fixed_width() == 798
     assert calls == [((path, editcol), {'start_editing': True})]
+
+
+def test_on_size_allocate_tracks_width_but_skips_restarting_editing_mid_resize():
+    # Restarting the editing cycle on every allocation during a live
+    # resize drag locks the editing row's editor to a stale, wide
+    # width (#3595) - the column width itself still tracks regardless.
+    path, editcol = object(), object()
+    view, column, calls = _make_view(column_width=1, cursor=(path, editcol), is_resizing=True)
+    allocation = SimpleNamespace(width=800)
+
+    StoreTreeView._on_size_allocate(view, None, allocation)
+
+    assert column.get_fixed_width() == 798
+    assert calls == []
 
 
 def test_on_size_allocate_is_a_noop_when_the_width_is_unchanged():
@@ -387,11 +402,19 @@ def test_on_configure_event_cancels_a_previous_pending_timer(monkeypatch):
 
 
 def test_on_configure_settled_clears_state_and_restores_the_cursor():
+    # Also does its own, unconditional set_cursor(start_editing=True) -
+    # _on_size_allocate()'s own call was skipped throughout the drag
+    # and might never fire here either (#3595).
+    path, editcol = object(), object()
     calls = []
+    column = _FakeColumn(798)
     view = SimpleNamespace(
         _configure_timeout_id='timer-id',
         is_resizing=True,
         queue_resize=lambda: calls.append('queue_resize'),
+        get_columns=lambda: [column],
+        get_cursor=lambda: (path, editcol),
+        set_cursor=lambda *args, **kwargs: calls.append((args, kwargs)),
         _restore_cursor=lambda: calls.append('restore_cursor'),
         _window_size=lambda: None,
     )
@@ -401,7 +424,7 @@ def test_on_configure_settled_clears_state_and_restores_the_cursor():
     assert result is False
     assert view._configure_timeout_id is None
     assert view.is_resizing is False
-    assert calls == ['queue_resize', 'restore_cursor']
+    assert calls == ['queue_resize', ((path, editcol), {'start_editing': True}), 'restore_cursor']
 
 
 def test_on_destroy_cancels_a_pending_timer(monkeypatch):

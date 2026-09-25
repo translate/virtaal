@@ -30,6 +30,7 @@ from pathlib import Path
 
 import pytest
 
+from virtaal.models import langmodel
 from virtaal.support import statsdb
 
 _ALLOWLIST_PATH = (
@@ -65,8 +66,14 @@ def _force_english_translations():
     virtaal.ini - tests asserting a literal English string would
     otherwise pass or fail depending on whose machine runs them.
     NullTranslations().install() makes _()/ngettext() pass strings
-    through unchanged, independent of that."""
+    through unchanged, independent of that.
+
+    langmodel.gettext_lang is a separate translator bound from the
+    same real uilang, via the system's iso_639 catalog, that renders
+    LanguageModel(...).name - untouched by the patch above since it
+    bypasses the builtin _() entirely."""
     gettext.NullTranslations().install()
+    langmodel.gettext_lang = lambda name: name
 
 
 @pytest.fixture(autouse=True, scope="session")

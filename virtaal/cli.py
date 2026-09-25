@@ -68,6 +68,53 @@ if not packaged:
             sys.exit(1)
 # OK, dependencies seem to be acceptable
 
+def build_parser():
+    """Construct bin/virtaal's own argparse.ArgumentParser. Split out
+    from main() so test_cli.py can introspect the real option list
+    (e.g. to check it's fully documented in docs/cli_options.rst)
+    without duplicating it."""
+    import argparse
+
+    from virtaal import __version__
+
+    # argparse's own _ is independent of Virtaal's gettext.install()
+    # - without this, its generated chrome stays untranslated.
+    argparse._ = _
+    parser = argparse.ArgumentParser()
+    # Note for a packaged Windows build: pan_app's stdout/stderr
+    # redirection runs at import time, before this ever executes,
+    # so this text lands in %APPDATA%\Virtaal\stdout_virtaal.log,
+    # not a caller's console.
+    parser.add_argument("-v", "--version", action="version", version=__version__.version_string())
+    parser.add_argument("-l", "--log", dest="log", metavar=_("LOG"),
+                         help=_("turn on logging, storing the result to the supplied filename."))
+    parser.add_argument("-c", "--config", dest="config", metavar=_("CONFIG"),
+                         help=_("use the configuration file given by the supplied filename."))
+    parser.add_argument("-D", "--debug", dest="debug", action="store_true", default=False,
+                         help=_("enable debugging features"))
+    pseudo_group = parser.add_mutually_exclusive_group()
+    pseudo_group.add_argument("--pseudo-translation", dest="pseudo_translation", action="store_true", default=False,
+                         help=_("use a synthetic pseudo-translation for every UI string "
+                                 "(see devsupport/pseudo-translation/generate_pseudo_translation.py)"))
+    pseudo_group.add_argument("--pseudo-translation-bidi", dest="pseudo_translation_bidi", action="store_true", default=False,
+                         help=_("like --pseudo-translation, but also simulates a right-to-left UI layout"))
+    pseudo_group.add_argument("--lang", dest="lang", metavar=_("LANG"),
+                         help=_("override the UI language for this run (e.g. \"fr\"; "
+                                 "\"en\" for the untranslated source strings; \"system\" "
+                                 "for the OS's own default), without changing the saved "
+                                 "Preferences setting"))
+    # Profiling does not make sense in packaged versions.  Set to True to disable profiling.
+    if not packaged:
+        parser.add_argument("-P", "--profile", dest="profile", metavar=_("PROFILE"),
+                             #l10n: 'profiling' refers to performance testing
+                             help=_("perform profiling, storing the result to the supplied filename."))
+    # nargs='?' makes this genuinely optional and means argparse itself
+    # rejects more than one positional argument (with its own
+    # "unrecognized arguments" error).
+    parser.add_argument("translation_file", nargs="?", default=None)
+    return parser
+
+
 def run_virtaal(startup_file):
     # The Virtaal class is imported here to allow changes made in this module (eg. pan_app.DEBUG)
     # to be visible to the rest of the program, seeing as Virtaal imports all controllers, which
@@ -83,47 +130,9 @@ def main(argv):
     startup_file = None
 
     if len(argv) > 1:
-        import argparse
-
         from virtaal import __version__
 
-        # argparse's own _ is independent of Virtaal's gettext.install()
-        # - without this, its generated chrome stays untranslated.
-        argparse._ = _
-        parser = argparse.ArgumentParser()
-        # Note for a packaged Windows build: pan_app's stdout/stderr
-        # redirection runs at import time, before this ever executes,
-        # so this text lands in %APPDATA%\Virtaal\stdout_virtaal.log,
-        # not a caller's console.
-        parser.add_argument("-v", "--version", action="version", version=__version__.version_string())
-        parser.add_argument("-l", "--log", dest="log", metavar=_("LOG"),
-                             help=_("turn on logging, storing the result to the supplied filename."))
-        parser.add_argument("-c", "--config", dest="config", metavar=_("CONFIG"),
-                             help=_("use the configuration file given by the supplied filename."))
-        parser.add_argument("-D", "--debug", dest="debug", action="store_true", default=False,
-                             help=_("enable debugging features"))
-        pseudo_group = parser.add_mutually_exclusive_group()
-        pseudo_group.add_argument("--pseudo-translation", dest="pseudo_translation", action="store_true", default=False,
-                             help=_("use a synthetic pseudo-translation for every UI string "
-                                     "(see devsupport/pseudo-translation/generate_pseudo_translation.py)"))
-        pseudo_group.add_argument("--pseudo-translation-bidi", dest="pseudo_translation_bidi", action="store_true", default=False,
-                             help=_("like --pseudo-translation, but also simulates a right-to-left UI layout"))
-        pseudo_group.add_argument("--lang", dest="lang", metavar=_("LANG"),
-                             help=_("override the UI language for this run (e.g. \"fr\"; "
-                                     "\"en\" for the untranslated source strings; \"system\" "
-                                     "for the OS's own default), without changing the saved "
-                                     "Preferences setting"))
-        # Profiling does not make sense in packaged versions.  Set to True to disable profiling.
-        if not packaged:
-            parser.add_argument("-P", "--profile", dest="profile", metavar=_("PROFILE"),
-                                 #l10n: 'profiling' refers to performance testing
-                                 help=_("perform profiling, storing the result to the supplied filename."))
-        # nargs='?' makes this genuinely optional and means argparse itself
-        # rejects more than one positional argument (with its own
-        # "unrecognized arguments" error) - no need for optparse's old
-        # manual get_startup_file()/len(args) check any more.
-        parser.add_argument("translation_file", nargs="?", default=None)
-
+        parser = build_parser()
 
         def set_logging(options):
             if options.log is None and not options.debug:

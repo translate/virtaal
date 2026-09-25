@@ -163,6 +163,15 @@ def test_show_schedules_the_width_calculation(monkeypatch):
     func(*args)  # must not raise on an unrealized/zero-allocation widget
 
 
+def test_show_focuses_open(monkeypatch):
+    monkeypatch.setattr(welcomescreenview.GLib, 'idle_add', lambda *a, **k: None)
+    view = _make_view()
+
+    view.show()
+
+    assert view.widget.widgets['buttons']['open'].is_focus()
+
+
 # update_recent_buttons() #
 
 def test_update_recent_buttons_hides_the_frame_when_there_are_no_items():
@@ -208,28 +217,6 @@ def test_update_recent_buttons_hides_the_unused_trailing_buttons(monkeypatch):
 
     for i in range(3, 6):
         assert view.widget.widgets['buttons']['recent%d' % i].props.visible is False
-
-
-def test_update_recent_buttons_focuses_the_first_recent_file(monkeypatch):
-    monkeypatch.setattr(welcomescreenview.GLib, 'idle_add', lambda *a, **k: None)
-    view = _make_view()
-    view.show()  # gives the widget a real GtkWindow toplevel, needed for focus
-    monkeypatch.setattr(welcomescreenview, 'get_abs_data_filename', lambda parts: '/icons/x-translation.png')
-
-    view.update_recent_buttons(_recent_items(2))
-
-    assert view.widget.widgets['buttons']['recent1'].is_focus()
-
-
-def test_update_recent_buttons_focuses_open_when_there_are_no_recent_files(monkeypatch):
-    monkeypatch.setattr(welcomescreenview.GLib, 'idle_add', lambda *a, **k: None)
-    view = _make_view()
-    view.show()
-    view.widget.widgets['buttons']['tutorial'].grab_focus()
-
-    view.update_recent_buttons([])
-
-    assert view.widget.widgets['buttons']['open'].is_focus()
 
 
 # _on_button_clicked() #

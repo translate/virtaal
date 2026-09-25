@@ -92,7 +92,7 @@ if [ "${#missing[@]}" -gt 0 ]; then
     exit 1
 fi
 
-hash_relevant() {
+filter_relevant() {
     local filtered
     # --no-wrap first: different xgettext versions (e.g. Homebrew vs.
     # apt's gettext-tools) wrap long msgid/msgstr lines at different
@@ -103,7 +103,11 @@ hash_relevant() {
     if [ "${POT_STRICT_LOCATIONS:-}" != "1" ]; then
         filtered=$(printf '%s\n' "$filtered" | grep -v '^#:')
     fi
-    printf '%s\n' "$filtered" | git hash-object --stdin
+    printf '%s\n' "$filtered"
+}
+
+hash_relevant() {
+    filter_relevant "$1" | git hash-object --stdin
 }
 
 original_backup=$(mktemp)
@@ -135,5 +139,7 @@ if [ "$before" = "$after" ]; then
 else
     echo "po/virtaal.pot is now stale relative to your changes." >&2
     echo "'make pot' just regenerated it (already written to disk) - review the diff and 'git add po/virtaal.pot', or 'git checkout po/virtaal.pot' if this diff is unrelated to what you're committing." >&2
+    echo >&2
+    diff -u <(filter_relevant "$original_backup") <(filter_relevant po/virtaal.pot) >&2 || true
     exit 1
 fi

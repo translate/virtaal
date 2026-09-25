@@ -509,7 +509,9 @@ class TextBox(Gtk.TextView):
         tagtable = self.buffer.get_tag_table()
         def remtag(tag, data):
             tagtable.remove(tag)
-        # FIXME: The following line caused the program to segfault, so it's removed (for now).
+        # Left disabled: calling tagtable.foreach(remtag) here segfaults
+        # GTK (tag removal during foreach), not just a "for now" fix.
+        # See #3791 for a real fix (remove tags in a separate pass).
         #tagtable.foreach(remtag)
         # At this point we have a tree of string elements with GUI info.
         self.apply_gui_info(self.elem)

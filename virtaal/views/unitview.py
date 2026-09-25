@@ -22,6 +22,13 @@ from .widgets.listnav import ListNavigator
 from .widgets.textbox import TextBox
 
 
+def _get_focused_widget(widgets):
+    for textview in widgets:
+        if textview.is_focus():
+            return textview
+    return None
+
+
 class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
     """View for translation units and its actions. It should not be used at
     all when no current unit is being edited. """
@@ -83,55 +90,24 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         self.unit = None
 
     def _setup_menus(self):
-        def get_focused(widgets):
-            for textview in widgets:
-                if textview.is_focus():
-                    return textview
-            return None
-
-        clipboard = Gtk.Clipboard.get(selection=Gdk.SELECTION_CLIPBOARD)
-        def on_cut(menuitem):
-            focused = get_focused(self.targets)
-            if focused is not None:
-                focused.get_buffer().cut_clipboard(clipboard, True)
-        def on_copy(menuitem):
-            focused = get_focused(self.targets + self.sources)
-            if focused is not None:
-                focused.get_buffer().copy_clipboard(clipboard)
-        def on_paste(menuitem):
-            focused = get_focused(self.targets)
-            if focused is not None:
-                focused.get_buffer().paste_clipboard(clipboard, None, True)
-
         maingui = self.controller.main_controller.view.gui
         self.mnu_cut = maingui.get_object('mnu_cut')
         self.mnu_copy = maingui.get_object('mnu_copy')
         self.mnu_paste = maingui.get_object('mnu_paste')
 
-        self.mnu_cut.connect('activate', on_cut)
-        self.mnu_copy.connect('activate', on_copy)
-        self.mnu_paste.connect('activate', on_paste)
+        self.mnu_cut.connect('activate', self._on_cut)
+        self.mnu_copy.connect('activate', self._on_copy)
+        self.mnu_paste.connect('activate', self._on_paste)
 
         # And now for the "Transfer from source" and placeable selection menu items
-        mnu_next = maingui.get_object('mnu_placnext')
-        mnu_prev = maingui.get_object('mnu_placprev')
-        mnu_transfer = maingui.get_object('mnu_transfer')
-        self.mnu_next = mnu_next
-        self.mnu_prev = mnu_prev
-        self.mnu_transfer = mnu_transfer
+        self.mnu_next = maingui.get_object('mnu_placnext')
+        self.mnu_prev = maingui.get_object('mnu_placprev')
+        self.mnu_transfer = maingui.get_object('mnu_transfer')
         menu_edit = maingui.get_object('menu_edit')
 
-        def on_next(*args):
-            self.targets[self.focused_target_n].move_elem_selection(1)
-        def on_prev(*args):
-            self.targets[self.focused_target_n].move_elem_selection(-1)
-        def on_transfer(*args):
-            focused = get_focused(self.targets)
-            if focused is not None:
-                self.copy_original(focused)
-        mnu_next.connect('activate', on_next)
-        mnu_prev.connect('activate', on_prev)
-        mnu_transfer.connect('activate', on_transfer)
+        self.mnu_next.connect('activate', self._on_next_placeable)
+        self.mnu_prev.connect('activate', self._on_prev_placeable)
+        self.mnu_transfer.connect('activate', self._on_transfer)
 
         Gtk.AccelMap.add_entry("<Virtaal>/Edit/Next Placeable", Gdk.KEY_Right, Gdk.ModifierType.MOD1_MASK)
         Gtk.AccelMap.add_entry("<Virtaal>/Edit/Prev Placeable", Gdk.KEY_Left, Gdk.ModifierType.MOD1_MASK)
@@ -150,9 +126,9 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
         self.controller.main_controller.view.add_accel_group(accel_group)
         menu_edit.set_accel_group(accel_group)
-        mnu_next.set_accel_path("<Virtaal>/Edit/Next Placeable")
-        mnu_prev.set_accel_path("<Virtaal>/Edit/Prev Placeable")
-        mnu_transfer.set_accel_path("<Virtaal>/Edit/Transfer")
+        self.mnu_next.set_accel_path("<Virtaal>/Edit/Next Placeable")
+        self.mnu_prev.set_accel_path("<Virtaal>/Edit/Prev Placeable")
+        self.mnu_transfer.set_accel_path("<Virtaal>/Edit/Transfer")
         self.mnu_cut.set_accel_path("<Virtaal>/Edit/Cut")
         self.mnu_copy.set_accel_path("<Virtaal>/Edit/Copy")
         self.mnu_paste.set_accel_path("<Virtaal>/Edit/Paste")
@@ -162,22 +138,52 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         # store is loaded. See _set_menu_items_sensitive() for more activation.
         self._set_menu_items_sensitive(False)
 
-        def on_store_closed(*args):
-            mnu_next.set_sensitive(False)
-            mnu_prev.set_sensitive(False)
-            mnu_transfer.set_sensitive(False)
-            self.mnu_cut.set_sensitive(False)
-            self.mnu_copy.set_sensitive(False)
-            self.mnu_paste.set_sensitive(False)
-        def on_store_loaded(*args):
-            mnu_next.set_sensitive(True)
-            mnu_prev.set_sensitive(True)
-            mnu_transfer.set_sensitive(True)
-            self._update_edit_menu_sensitivity()
-        on_store_closed()
-        self.controller.main_controller.store_controller.connect('store-closed', on_store_closed)
-        self.controller.main_controller.store_controller.connect('store-loaded', on_store_loaded)
+        self._on_store_closed()
+        self.controller.main_controller.store_controller.connect('store-closed', self._on_store_closed)
+        self.controller.main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
 
+    def _on_cut(self, menuitem):
+        focused = _get_focused_widget(self.targets)
+        if focused is not None:
+            clipboard = Gtk.Clipboard.get(selection=Gdk.SELECTION_CLIPBOARD)
+            focused.get_buffer().cut_clipboard(clipboard, True)
+
+    def _on_copy(self, menuitem):
+        focused = _get_focused_widget(self.targets + self.sources)
+        if focused is not None:
+            clipboard = Gtk.Clipboard.get(selection=Gdk.SELECTION_CLIPBOARD)
+            focused.get_buffer().copy_clipboard(clipboard)
+
+    def _on_paste(self, menuitem):
+        focused = _get_focused_widget(self.targets)
+        if focused is not None:
+            clipboard = Gtk.Clipboard.get(selection=Gdk.SELECTION_CLIPBOARD)
+            focused.get_buffer().paste_clipboard(clipboard, None, True)
+
+    def _on_next_placeable(self, *args):
+        self.targets[self.focused_target_n].move_elem_selection(1)
+
+    def _on_prev_placeable(self, *args):
+        self.targets[self.focused_target_n].move_elem_selection(-1)
+
+    def _on_transfer(self, *args):
+        focused = _get_focused_widget(self.targets)
+        if focused is not None:
+            self.copy_original(focused)
+
+    def _on_store_closed(self, *args):
+        self.mnu_next.set_sensitive(False)
+        self.mnu_prev.set_sensitive(False)
+        self.mnu_transfer.set_sensitive(False)
+        self.mnu_cut.set_sensitive(False)
+        self.mnu_copy.set_sensitive(False)
+        self.mnu_paste.set_sensitive(False)
+
+    def _on_store_loaded(self, *args):
+        self.mnu_next.set_sensitive(True)
+        self.mnu_prev.set_sensitive(True)
+        self.mnu_transfer.set_sensitive(True)
+        self._update_edit_menu_sensitivity()
 
     # ACCESSORS #
     def is_modified(self):

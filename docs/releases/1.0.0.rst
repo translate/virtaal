@@ -73,8 +73,8 @@ Highlights
   hang or loses your place in a scrolled list.
 - Fixed: Virtaal's own interface translations failed to load at all in
   a frozen build, regardless of the selected UI language.
-- A Preferences UI language selector, and a ``--lang`` command-line
-  flag to override it for one run.
+- A Preferences UI language selector, and a :option:`virtaal --lang`
+  command-line flag to override it for one run.
 - Redo (Ctrl+Shift+Z), alongside the existing Undo.
 - The Windows installer now offers many more UI languages, matching
   Inno Setup's own bundled set instead of a hand-maintained subset.

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-24 09:16+0100\n"
+"POT-Creation-Date: 2026-09-25 16:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -657,8 +657,9 @@ msgstr ""
 
 #: virtaal/cli.py
 msgid ""
-"override the UI language for this run (e.g. \"fr\"), without changing the "
-"saved Preferences setting"
+"override the UI language for this run (e.g. \"fr\"; \"en\" for the "
+"untranslated source strings; \"system\" for the OS's own default), without "
+"changing the saved Preferences setting"
 msgstr ""
 
 #: virtaal/cli.py

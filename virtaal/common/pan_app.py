@@ -129,6 +129,11 @@ from translate.misc import file_discovery
 from virtaal.__version__ import ver
 from virtaal.support.libi18n.locale import bind_libintl_posix, fix_libintl, fix_locale
 
+# fix_locale(lang) sets these unconditionally (LANG/LC_ALL too on
+# Windows) whenever an explicit language is requested below - captured
+# here so _install_system_ui_language() can restore them.
+_ORIGINAL_LOCALE_ENV = {name: os.environ.get(name) for name in ('LANGUAGE', 'LANG', 'LC_ALL')}
+
 DEBUG = True # Enable debugging by default, while bin/virtaal still disables it by default.
              # This means that if Virtaal (or parts thereof) is run in some other strange way,
              # debugging is enabled.
@@ -358,38 +363,79 @@ class Settings:
         self.language['sourcefont'] = fonts[0]
         self.language['targetfont'] = fonts[1]
 
-settings = Settings()
+def _install_explicit_ui_language(lang, languages, fallback):
+    """Shared plumbing for installing one specific language's gettext
+    catalog: set the process locale, self-heal a dev checkout's
+    catalog (see _ensure_dev_locale_installed), install it, and bind
+    libintl for Gtk.Builder's C-level gettext calls. `lang` is the
+    process locale to request; `languages` is gettext's own lookup
+    order, which can fall further back than `lang` alone (e.g. to the
+    OS locale, for a saved uilang preference). Used by both startup's
+    "uilang saved" branch and set_ui_language()'s explicit-language
+    case.
 
-ui_language = settings.language["uilang"]
-if ui_language:
-    locale_lang = get_locale_lang()
-    fix_locale(ui_language)
+    localedir is passed explicitly - gettext's default search path is
+    keyed off sys.base_prefix rather than sys.prefix, so it misses
+    translations installed into a venv (which is where
+    devsupport/pseudo-translation's own generated locales land) -
+    platform.locale_dir additionally corrects for sys.prefix being
+    wrong in a frozen build."""
+    fix_locale(lang)
     try:
-        locale.setlocale(locale.LC_ALL, ui_language)
+        locale.setlocale(locale.LC_ALL, lang)
     except locale.Error:
         pass
-    # localedir passed explicitly, same reason as set_ui_language()'s
-    # own docstring: gettext's default search path is keyed off
-    # sys.base_prefix, missing a venv's own installed translations -
-    # platform.locale_dir additionally corrects for sys.prefix being
-    # wrong in a frozen build.
     localedir = platform.locale_dir
-    _ensure_dev_locale_installed(ui_language, localedir)
-    languages = [ui_language, locale_lang]
-    gettext.translation('virtaal', localedir=localedir, languages=languages, fallback=True).install()
+    _ensure_dev_locale_installed(lang, localedir)
+    gettext.translation('virtaal', localedir=localedir, languages=languages, fallback=fallback).install()
     if not platform.is_windows:
+        # Gtk.Builder's own translatable strings go through C-level
+        # gettext, not Python's - see bind_libintl_posix's docstring.
         bind_libintl_posix(localedir)
-else:
+
+
+def _install_system_ui_language():
+    """Install whatever gettext resolves from the OS's own locale
+    environment (LANGUAGE/LC_ALL/LC_MESSAGES/LANG), ignoring any saved
+    uilang preference. Shared between startup's "no uilang saved"
+    branch and bin/virtaal's --lang=system override."""
+    for name, value in _ORIGINAL_LOCALE_ENV.items():
+        if value is None:
+            os.environ.pop(name, None)
+        else:
+            os.environ[name] = value
     fix_locale()
+    # Same localedir reason as _install_explicit_ui_language's own
+    # docstring. bind_libintl_posix re-points libintl's C-level
+    # textdomain too, in case a language was already bound (e.g. a
+    # saved uilang preference) - otherwise Gtk.Builder strings stay in
+    # that old language while Python-level strings switch.
+    localedir = platform.locale_dir
+    # Best-guess at what gettext is about to resolve, so a dev checkout
+    # self-heals here too (see _ensure_dev_locale_installed) - otherwise
+    # this stays untranslated for a language --lang=<code> would find.
+    _ensure_dev_locale_installed(get_locale_lang(), localedir)
     try:
         #if the locale is not installed it can cause a traceback
         locale.setlocale(locale.LC_ALL, '')
-        gettext.install('virtaal')
+        gettext.install('virtaal', localedir=localedir)
     except locale.Error as e:
         import logging
         logging.warning("Couldn't set the locale: %s", e)
         # See bug 3109
         __builtin__.__dict__['_'] = lambda s: s
+    if not platform.is_windows:
+        bind_libintl_posix(localedir)
+
+
+settings = Settings()
+
+ui_language = settings.language["uilang"]
+if ui_language:
+    locale_lang = get_locale_lang()
+    _install_explicit_ui_language(ui_language, [ui_language, locale_lang], fallback=True)
+else:
+    _install_system_ui_language()
 
 
 def get_available_ui_languages():
@@ -433,30 +479,35 @@ def get_available_ui_languages():
 
 def set_ui_language(lang):
     """Override the UI language after startup - used by bin/virtaal's
-    --lang/--pseudo-translation/--pseudo-translation-bidi. fallback=False: a
-    missing catalog should raise, not silently fall back to English.
+    --lang/--pseudo-translation/--pseudo-translation-bidi.
 
-    localedir is passed explicitly - gettext's default search path is
-    keyed off sys.base_prefix rather than sys.prefix, so it misses
-    translations installed into a venv (which is where
-    devsupport/pseudo-translation's own generated locales land) -
-    platform.locale_dir additionally corrects for sys.prefix being
-    wrong in a frozen build.
+    lang='system' re-resolves the OS's own locale via
+    _install_system_ui_language, ignoring any saved uilang preference.
+    'en' aliases to 'en_US', and neither raises for a missing catalog -
+    English is Virtaal's own source language and ships no catalog of
+    its own; any other requested language still raises (fallback=False)
+    as a likely typo. The explicit-language case shares
+    _install_explicit_ui_language with startup's own "uilang saved"
+    branch.
     """
     global ui_language
-    fix_locale(lang)
-    try:
-        locale.setlocale(locale.LC_ALL, lang)
-    except locale.Error:
-        pass
-    localedir = platform.locale_dir
-    _ensure_dev_locale_installed(lang, localedir)
-    gettext.translation('virtaal', localedir=localedir, languages=[lang], fallback=False).install()
-    if not platform.is_windows:
-        # Gtk.Builder's own translatable strings go through C-level
-        # gettext, not Python's - see bind_libintl_posix's docstring.
-        bind_libintl_posix(localedir)
-    ui_language = lang
+    if lang == 'system':
+        _install_system_ui_language()
+        # Matches startup's own `if _(''): ... else: 'en'` guard below -
+        # a resolved system locale with no real catalog must report
+        # 'en', not the untranslated locale code (aboutdialog.py keys
+        # RTL layout off ui_language).
+        ui_language = get_locale_lang() if _('') else 'en'
+        return
+
+    if lang == 'en':
+        lang = 'en_US'
+    _install_explicit_ui_language(lang, [lang], fallback=lang == 'en_US')
+    # 'en' is this module's canonical "untranslated UI" value elsewhere
+    # (the 'system' branch above, the module-level fallback below) -
+    # collapse en_US back to it too, so a future `== 'en'` check (like
+    # aboutdialog.py's `== 'ar'`) doesn't miss this case.
+    ui_language = 'en' if lang == 'en_US' else lang
 
 
 # Determine the directory the main executable is running from

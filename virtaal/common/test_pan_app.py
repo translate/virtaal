@@ -577,3 +577,208 @@ def test_set_ui_language_tolerates_an_unsupported_locale(monkeypatch):
     pan_app.set_ui_language('xx_XX')  # must not raise
 
     assert pan_app.ui_language == 'xx_XX'
+
+
+def test_set_ui_language_aliases_en_to_en_us(monkeypatch):
+    seen = {}
+
+    def fake_gettext_translation(domain, localedir, languages, fallback):
+        seen['languages'] = languages
+        seen['fallback'] = fallback
+        return SimpleNamespace(install=lambda: None)
+
+    monkeypatch.setattr(pan_app.gettext, 'translation', fake_gettext_translation)
+    monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: None)
+    monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
+    monkeypatch.setattr(pan_app.platform, 'is_windows', True)
+
+    pan_app.set_ui_language('en')
+
+    assert seen['languages'] == ['en_US']
+    # 'en' is this module's canonical "untranslated UI" value elsewhere
+    # (see the 'system' and module-level fallbacks) - en_US collapses
+    # back to it rather than being reported as a one-off.
+    assert pan_app.ui_language == 'en'
+
+
+def test_set_ui_language_en_us_does_not_raise_without_a_catalog(monkeypatch):
+    # #3774: English is Virtaal's own source language and ships no
+    # catalog of its own - unlike any other requested language, a
+    # missing catalog for it isn't a typo and must not raise.
+    monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: None)
+    monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
+    monkeypatch.setattr(pan_app.platform, 'is_windows', True)
+    monkeypatch.setattr(pan_app.platform, 'locale_dir', '/nonexistent/locale/dir')
+
+    pan_app.set_ui_language('en_US')  # must not raise OSError
+
+    assert pan_app.ui_language == 'en'
+
+
+def test_set_ui_language_other_missing_catalogs_still_raise(monkeypatch):
+    # Only en/en_US get the "no catalog is fine" treatment - any other
+    # requested language with no catalog is still very likely a typo.
+    monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: None)
+    monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
+    monkeypatch.setattr(pan_app.platform, 'is_windows', True)
+    monkeypatch.setattr(pan_app.platform, 'locale_dir', '/nonexistent/locale/dir')
+
+    with pytest.raises(OSError):
+        pan_app.set_ui_language('xx_XX_bogus')
+
+
+def test_set_ui_language_system_ignores_a_saved_preference(monkeypatch):
+    # --lang=system must re-resolve the OS locale even when a uilang
+    # preference is already saved/installed.
+    installed = []
+    monkeypatch.setattr(pan_app.gettext, 'install', lambda *a, **kw: installed.append(a))
+    monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
+    monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: None)
+    monkeypatch.setattr(pan_app.locale, 'setlocale', lambda *a: None)
+    monkeypatch.setattr(pan_app, 'get_locale_lang', lambda: 'fr')
+    monkeypatch.setattr('builtins._', lambda s: s or 'PO header')  # a real catalog is loaded
+    monkeypatch.delenv('LANGUAGE', raising=False)
+    pan_app.ui_language = 'en'  # simulate an already-installed override
+
+    pan_app.set_ui_language('system')
+
+    assert installed == [('virtaal',)]
+    assert pan_app.ui_language == 'fr'
+
+
+def test_set_ui_language_system_reports_en_without_a_real_catalog(monkeypatch):
+    # Matches startup's own `if _(''): ... else: 'en'` guard -
+    # a resolved system locale with no real catalog must report 'en',
+    # not the untranslated locale code (aboutdialog.py keys RTL layout
+    # off ui_language).
+    monkeypatch.setattr(pan_app.gettext, 'install', lambda *a, **kw: None)
+    monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
+    monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: None)
+    monkeypatch.setattr(pan_app.locale, 'setlocale', lambda *a: None)
+    monkeypatch.setattr(pan_app, 'get_locale_lang', lambda: 'ar')
+    monkeypatch.setattr('builtins._', lambda s: s)  # NullTranslations-style passthrough
+    monkeypatch.delenv('LANGUAGE', raising=False)
+
+    pan_app.set_ui_language('system')
+
+    assert pan_app.ui_language == 'en'
+
+
+def test_set_ui_language_system_self_heals_a_dev_checkout(monkeypatch):
+    # The explicit-language branch below self-heals a dev
+    # checkout's uncompiled catalog (_ensure_dev_locale_installed) -
+    # --lang=system must do the same for its best-guess language, or
+    # it silently stays untranslated where --lang=<code> would work.
+    seen = []
+    monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: seen.append((lang, localedir)))
+    monkeypatch.setattr(pan_app.gettext, 'install', lambda *a, **kw: None)
+    monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
+    monkeypatch.setattr(pan_app.locale, 'setlocale', lambda *a: None)
+    monkeypatch.setattr(pan_app, 'get_locale_lang', lambda: 'fr')
+    monkeypatch.setattr(pan_app.platform, 'locale_dir', '/fake/venv/share/locale')
+    monkeypatch.delenv('LANGUAGE', raising=False)
+
+    pan_app.set_ui_language('system')
+
+    assert seen == [('fr', '/fake/venv/share/locale')]
+
+
+def test_set_ui_language_system_clears_a_language_env_override(monkeypatch):
+    # fix_locale(lang) sets os.environ['LANGUAGE'] unconditionally, even
+    # on POSIX - gettext checks LANGUAGE before LC_ALL/LANG, so
+    # --lang=system must undo that override or it keeps resolving to
+    # the previous explicit language.
+    monkeypatch.setattr(pan_app, '_ORIGINAL_LOCALE_ENV', {'LANGUAGE': None, 'LANG': None, 'LC_ALL': None})
+    monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
+    monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: None)
+    monkeypatch.setattr(pan_app.locale, 'setlocale', lambda *a: None)
+    monkeypatch.setattr(pan_app.gettext, 'install', lambda *a, **kw: None)
+    monkeypatch.setattr(pan_app, 'get_locale_lang', lambda: 'fr')
+    monkeypatch.setenv('LANGUAGE', 'af')
+
+    pan_app.set_ui_language('system')
+
+    assert 'LANGUAGE' not in os.environ
+
+
+def test_set_ui_language_system_restores_the_original_locale_env(monkeypatch):
+    # Also covers Windows, where fix_locale(lang=None) recomputes LANG/
+    # LC_ALL/LANGUAGE via _getlang(), which reads LANG back - a stale
+    # LANG left over from an earlier explicit language would otherwise
+    # poison that resolution too.
+    monkeypatch.setattr(pan_app, '_ORIGINAL_LOCALE_ENV', {'LANGUAGE': 'de', 'LANG': 'de', 'LC_ALL': 'de'})
+    monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
+    monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: None)
+    monkeypatch.setattr(pan_app.locale, 'setlocale', lambda *a: None)
+    monkeypatch.setattr(pan_app.gettext, 'install', lambda *a, **kw: None)
+    monkeypatch.setattr(pan_app, 'get_locale_lang', lambda: 'de')
+    monkeypatch.setenv('LANGUAGE', 'af')
+    monkeypatch.setenv('LANG', 'af')
+    monkeypatch.setenv('LC_ALL', 'af')
+
+    pan_app.set_ui_language('system')
+
+    assert os.environ['LANGUAGE'] == 'de'
+    assert os.environ['LANG'] == 'de'
+    assert os.environ['LC_ALL'] == 'de'
+
+
+def test_set_ui_language_system_uses_platform_locale_dir(monkeypatch):
+    # Same bug class as test_set_ui_language_uses_platform_locale_dir:
+    # gettext's own default search path misses a venv's installed
+    # translations - must go through platform.locale_dir explicitly
+    # here too.
+    seen_localedirs = []
+
+    def fake_gettext_install(domain, localedir):
+        seen_localedirs.append(localedir)
+
+    monkeypatch.setattr(pan_app.gettext, 'install', fake_gettext_install)
+    monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
+    monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: None)
+    monkeypatch.setattr(pan_app.locale, 'setlocale', lambda *a: None)
+    monkeypatch.setattr(pan_app, 'get_locale_lang', lambda: 'fr')
+    monkeypatch.setattr(pan_app.platform, 'is_windows', True)  # skips bind_libintl_posix
+    monkeypatch.setattr(pan_app.platform, 'locale_dir', '/fake/venv/share/locale')
+    monkeypatch.delenv('LANGUAGE', raising=False)
+
+    pan_app.set_ui_language('system')
+
+    assert seen_localedirs == ['/fake/venv/share/locale']
+
+
+def test_set_ui_language_system_binds_libintl_on_non_windows(monkeypatch):
+    # A previously-bound explicit language (e.g. a saved uilang
+    # preference already installed at startup) needs libintl's
+    # C-level textdomain re-pointed too, or Gtk.Builder-sourced
+    # strings stay in that old language.
+    monkeypatch.setattr(pan_app.gettext, 'install', lambda *a, **kw: None)
+    monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
+    monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: None)
+    monkeypatch.setattr(pan_app.locale, 'setlocale', lambda *a: None)
+    monkeypatch.setattr(pan_app, 'get_locale_lang', lambda: 'fr')
+    monkeypatch.setattr(pan_app.platform, 'is_windows', False)
+    monkeypatch.setattr(pan_app.platform, 'locale_dir', '/fake/venv/share/locale')
+    bound = []
+    monkeypatch.setattr(pan_app, 'bind_libintl_posix', bound.append)
+    monkeypatch.delenv('LANGUAGE', raising=False)
+
+    pan_app.set_ui_language('system')
+
+    assert bound == ['/fake/venv/share/locale']
+
+
+def test_set_ui_language_system_tolerates_an_unsupported_locale(monkeypatch):
+    monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
+    monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: None)
+    monkeypatch.setattr(pan_app.locale, 'setlocale',
+                         lambda *a: (_ for _ in ()).throw(pan_app.locale.Error()))
+    monkeypatch.setattr(pan_app, 'get_locale_lang', lambda: 'fr')
+    monkeypatch.delenv('LANGUAGE', raising=False)
+
+    pan_app.set_ui_language('system')  # must not raise
+
+    # _install_system_ui_language()'s own locale.Error recovery installs
+    # an untranslated passthrough _, so this matches the "no real
+    # catalog" case: 'en', not the raw locale code.
+    assert pan_app.ui_language == 'en'

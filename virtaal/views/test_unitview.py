@@ -174,3 +174,129 @@ def test_cut_copy_paste_disabled_before_any_store_event():
     assert not view.mnu_cut.get_sensitive()
     assert not view.mnu_copy.get_sensitive()
     assert not view.mnu_paste.get_sensitive()
+
+
+class _FakeBuffer:
+    def __init__(self):
+        self.cut_calls = []
+        self.copy_calls = []
+        self.paste_calls = []
+
+    def cut_clipboard(self, clipboard, default_editable):
+        self.cut_calls.append(default_editable)
+
+    def copy_clipboard(self, clipboard):
+        self.copy_calls.append(clipboard)
+
+    def paste_clipboard(self, clipboard, override_location, default_editable):
+        self.paste_calls.append(default_editable)
+
+
+class _FakeEditableTextbox:
+    def __init__(self, focused=False):
+        self._focused = focused
+        self.buffer = _FakeBuffer()
+        self.move_calls = []
+
+    def is_focus(self):
+        return self._focused
+
+    def get_buffer(self):
+        return self.buffer
+
+    def move_elem_selection(self, direction):
+        self.move_calls.append(direction)
+
+
+def test_cut_cuts_from_the_focused_target_only():
+    view = UnitView.__new__(UnitView)
+    unfocused, focused = _FakeEditableTextbox(), _FakeEditableTextbox(focused=True)
+    view._widgets = {'targets': [unfocused, focused], 'sources': []}
+
+    view._on_cut(None)
+
+    assert focused.buffer.cut_calls == [True]
+    assert unfocused.buffer.cut_calls == []
+
+
+def test_cut_does_nothing_when_no_target_is_focused():
+    view = UnitView.__new__(UnitView)
+    view._widgets = {'targets': [_FakeEditableTextbox()], 'sources': []}
+
+    view._on_cut(None)  # must not raise
+
+
+def test_copy_copies_from_a_focused_source_as_well_as_a_focused_target():
+    view = UnitView.__new__(UnitView)
+    focused_source = _FakeEditableTextbox(focused=True)
+    view._widgets = {'targets': [_FakeEditableTextbox()], 'sources': [focused_source]}
+
+    view._on_copy(None)
+
+    assert len(focused_source.buffer.copy_calls) == 1
+
+
+def test_paste_pastes_into_the_focused_target():
+    view = UnitView.__new__(UnitView)
+    focused = _FakeEditableTextbox(focused=True)
+    view._widgets = {'targets': [focused], 'sources': []}
+
+    view._on_paste(None)
+
+    assert focused.buffer.paste_calls == [True]
+
+
+def test_next_placeable_moves_selection_forward_on_the_focused_target():
+    view = UnitView.__new__(UnitView)
+    other, current = _FakeEditableTextbox(), _FakeEditableTextbox()
+    view._widgets = {'targets': [other, current], 'sources': []}
+    view._focused_target_n = 1
+
+    view._on_next_placeable()
+
+    assert current.move_calls == [1]
+    assert other.move_calls == []
+
+
+def test_prev_placeable_moves_selection_backward_on_the_focused_target():
+    view = UnitView.__new__(UnitView)
+    current, other = _FakeEditableTextbox(), _FakeEditableTextbox()
+    view._widgets = {'targets': [current, other], 'sources': []}
+    view._focused_target_n = 0
+
+    view._on_prev_placeable()
+
+    assert current.move_calls == [-1]
+
+
+def test_transfer_copies_the_source_into_the_focused_target():
+    view = UnitView.__new__(UnitView)
+    focused = _FakeEditableTextbox(focused=True)
+    view._widgets = {'targets': [focused], 'sources': []}
+    copied = []
+    view.copy_original = lambda textbox: copied.append(textbox)
+
+    view._on_transfer()
+
+    assert copied == [focused]
+
+
+def test_store_loaded_enables_placeable_navigation_and_recomputes_edit_menu():
+    view = UnitView.__new__(UnitView)
+    view.mnu_next = _FakeMenuWidget()
+    view.mnu_prev = _FakeMenuWidget()
+    view.mnu_transfer = _FakeMenuWidget()
+    view.mnu_cut = _FakeMenuWidget()
+    view.mnu_copy = _FakeMenuWidget()
+    view.mnu_paste = _FakeMenuWidget()
+    view._widgets = {'targets': [], 'sources': []}
+
+    view._on_store_loaded()
+
+    assert view.mnu_next.get_sensitive()
+    assert view.mnu_prev.get_sensitive()
+    assert view.mnu_transfer.get_sensitive()
+    # Nothing focused, so _update_edit_menu_sensitivity() disables all three.
+    assert not view.mnu_cut.get_sensitive()
+    assert not view.mnu_copy.get_sensitive()
+    assert not view.mnu_paste.get_sensitive()

@@ -1,0 +1,816 @@
+# Manual test file for TM-popup off-screen positioning (translate/virtaal#1366).
+#
+# Units 1-4 are translated so they can fuzzy-match the last unit via the
+# 'Current File' TM model, at varying similarity - producing a MULTI-ROW
+# popup (closer to a real worst case) rather than a single suggestion.
+# Navigate to the LAST unit (near-duplicate of unit 1) in a tall/
+# maximized window - it should trigger a multi-match TM suggestion
+# popup. Check whether the popup renders fully on-screen and clear of
+# the source text.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+#. Seed unit 1 for Current File TM matching (multi-row popup).
+msgid "The quick brown fox jumps over the lazy dog near the riverbank"
+msgstr "Die vinnige bruin jakkals spring oor die lui hond naby die rivierwal"
+
+#. Seed unit 2 for Current File TM matching (multi-row popup).
+msgid "The quick brown fox jumps over the lazy dog near the riverside"
+msgstr "Die vinnige bruin jakkals spring oor die lui hond naby die rivierkant"
+
+#. Seed unit 3 for Current File TM matching (multi-row popup).
+msgid "The quick brown fox jumps over a lazy dog near the river"
+msgstr "Die vinnige bruin jakkals spring oor 'n lui hond naby die rivier"
+
+#. Seed unit 4 for Current File TM matching (multi-row popup).
+msgid "The quick brown fox jumped over the lazy dog near the river"
+msgstr "Die vinnige bruin jakkals het oor die lui hond naby die rivier gespring"
+
+#. Filler unit 5 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 5 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 6 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 6 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 7 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 7 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 8 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 8 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 9 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 9 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 10 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 10 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 11 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 11 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 12 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 12 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 13 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 13 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 14 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 14 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 15 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 15 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 16 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 16 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 17 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 17 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 18 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 18 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 19 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 19 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 20 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 20 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 21 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 21 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 22 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 22 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 23 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 23 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 24 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 24 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 25 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 25 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 26 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 26 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 27 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 27 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 28 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 28 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 29 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 29 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 30 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 30 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 31 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 31 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 32 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 32 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 33 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 33 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 34 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 34 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 35 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 35 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 36 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 36 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 37 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 37 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 38 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 38 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 39 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 39 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 40 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 40 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 41 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 41 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 42 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 42 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 43 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 43 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 44 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 44 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 45 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 45 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 46 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 46 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 47 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 47 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 48 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 48 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 49 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 49 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 50 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 50 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 51 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 51 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 52 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 52 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 53 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 53 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 54 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 54 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 55 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 55 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 56 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 56 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 57 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 57 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 58 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 58 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 59 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 59 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 60 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 60 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 61 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 61 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 62 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 62 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 63 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 63 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 64 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 64 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 65 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 65 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 66 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 66 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 67 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 67 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 68 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 68 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 69 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 69 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 70 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 70 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 71 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 71 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 72 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 72 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 73 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 73 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 74 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 74 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 75 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 75 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 76 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 76 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 77 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 77 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 78 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 78 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 79 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 79 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 80 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 80 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 81 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 81 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 82 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 82 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 83 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 83 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 84 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 84 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 85 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 85 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 86 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 86 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 87 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 87 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 88 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 88 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 89 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 89 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 90 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 90 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 91 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 91 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 92 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 92 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 93 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 93 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 94 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 94 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 95 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 95 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 96 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 96 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 97 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 97 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 98 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 98 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 99 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 99 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 100 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 100 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 101 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 101 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 102 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 102 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 103 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 103 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 104 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 104 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 105 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 105 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 106 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 106 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 107 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 107 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 108 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 108 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 109 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 109 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 110 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 110 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 111 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 111 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 112 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 112 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 113 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 113 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 114 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 114 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 115 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 115 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 116 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 116 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 117 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 117 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 118 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 118 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 119 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 119 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 120 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 120 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 121 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 121 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 122 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 122 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 123 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 123 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 124 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 124 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 125 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 125 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 126 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 126 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 127 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 127 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 128 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 128 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 129 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 129 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 130 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 130 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 131 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 131 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 132 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 132 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 133 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 133 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 134 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 134 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 135 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 135 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 136 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 136 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 137 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 137 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 138 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 138 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 139 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 139 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 140 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 140 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 141 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 141 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 142 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 142 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 143 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 143 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 144 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 144 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 145 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 145 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 146 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 146 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 147 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 147 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 148 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 148 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 149 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 149 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 150 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 150 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 151 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 151 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 152 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 152 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 153 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 153 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 154 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 154 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 155 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 155 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 156 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 156 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 157 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 157 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 158 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 158 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 159 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 159 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 160 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 160 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 161 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 161 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 162 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 162 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 163 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 163 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 164 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 164 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 165 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 165 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 166 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 166 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 167 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 167 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 168 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 168 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 169 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 169 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 170 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 170 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 171 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 171 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 172 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 172 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 173 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 173 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 174 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 174 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 175 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 175 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 176 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 176 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 177 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 177 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 178 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 178 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 179 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 179 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 180 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 180 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 181 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 181 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 182 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 182 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 183 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 183 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 184 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 184 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 185 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 185 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 186 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 186 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 187 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 187 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 188 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 188 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 189 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 189 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 190 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 190 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 191 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 191 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 192 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 192 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 193 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 193 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 194 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 194 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 195 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 195 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 196 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 196 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 197 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 197 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 198 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 198 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 199 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 199 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. Filler unit 200 - just padding so the list is tall enough to scroll on a large/vertically-maximized display.
+msgid "Filler line 200 to pad the list of units so it is tall enough."
+msgstr ""
+
+#. LAST unit - near-duplicate of the seed units, should fuzzy-match several of them via Current File TM.
+msgid "The quick brown fox jumps over the lazy dog near the river"
+msgstr ""

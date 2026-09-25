@@ -7,7 +7,7 @@
  <!-- l10n: The name should be less than 30 characters -->
  <name>Virtaal Translation Tool</name>
  <!-- l10n: The summary should be less than 100 characters -->
- <summary>A translation tool to help a human translator translate files into other languages</summary>
+ <summary>Translation tool to help a human translator translate files into other languages</summary>
  <description>
   <!-- l10n: Paragraphs should be less than 600 characters -->
   <p>

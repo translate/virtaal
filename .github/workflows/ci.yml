@@ -222,7 +222,7 @@ jobs:
         # coverage upload above.
         if: matrix.python-version == '3.13'
         id: screenshots
-        # Deliberately non-blocking (#3625): virtaal.metainfo.xml.in's
+        # Deliberately non-blocking (#3625): io.github.translate.Virtaal.metainfo.xml.in's
         # <image> tags are plain raw.githubusercontent.com URLs, not files
         # bundled into any build, so a stale screenshot can't break
         # anything - this step only ever flags drift, it doesn't fail the
@@ -866,7 +866,7 @@ jobs:
           # A stale/broken package-index mirror snapshot happens often
           # enough on GitHub-hosted Ubuntu runners to just retry.
           for i in 1 2 3; do sudo apt-get update && break || sleep 10; done
-          sudo apt-get install -y flatpak flatpak-builder gettext xvfb
+          sudo apt-get install -y flatpak flatpak-builder gettext xvfb appstream
           flatpak remote-add --if-not-exists --user flathub \
             https://dl.flathub.org/repo/flathub.flatpakrepo
 
@@ -889,6 +889,16 @@ jobs:
         run: |
           flatpak-builder --user --install-deps-from=flathub --force-clean \
             --repo=repo build-dir io.github.translate.Virtaal.yml
+
+      - name: Validate the installed metainfo
+        working-directory: devsupport/packaging/flatpak
+        # The real, translated file as flatpak-builder actually installed
+        # it, not the source template - catches a launchable/icon/id
+        # mismatch that only shows up post-build, not just AppStream
+        # schema errors the .in template alone could already fail on.
+        run: |
+          metainfo=$(find build-dir/files/share/metainfo -name '*.metainfo.xml')
+          appstreamcli validate --pedantic --explain "$metainfo"
 
       - name: Smoke test - the built app actually runs
         working-directory: devsupport/packaging/flatpak

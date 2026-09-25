@@ -246,6 +246,25 @@ def test_compute_optimal_height_textview_falls_back_to_source_text_when_buffer_i
     assert textview.get_parent().get_size_request()[1] > 0
 
 
+def test_compute_optimal_height_textview_survives_a_buggy_length_difference(monkeypatch):
+    # A language class's own length_difference() misbehaving (#3770)
+    # shouldn't crash row-height estimation.
+    textview = _realized_textview('')
+    textview._source_text = 'A reasonably long source sentence.'
+
+    class _BuggyLang:
+        def alter_length(self, text):
+            raise TypeError("slice indices must be integers or None or have an __index__ method")
+
+    monkeypatch.setattr(
+        'virtaal.views.widgets.storecellrenderer.factory.getlanguage',
+        lambda code: _BuggyLang())
+
+    compute_optimal_height(textview, 200)  # must not raise
+
+    assert textview.get_parent().get_size_request()[1] > 0
+
+
 def test_compute_optimal_height_label_with_only_whitespace_gets_zero_height():
     label = Gtk.Label(label='   ')
 

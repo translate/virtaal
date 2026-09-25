@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-25 16:04+0100\n"
+"POT-Creation-Date: 2026-09-25 18:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgstr ""
 #. l10n: The summary should be less than 100 characters
 #: share/applications/virtaal.desktop.in share/metainfo/virtaal.metainfo.xml.in
 msgid ""
-"A translation tool to help a human translator translate files into other "
+"Translation tool to help a human translator translate files into other "
 "languages"
 msgstr ""
 

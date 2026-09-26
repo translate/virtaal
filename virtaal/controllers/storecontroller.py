@@ -391,7 +391,7 @@ class StoreController(BaseController):
                    new_trans, new_fuzzy, new_untrans, new_total)
 
         #l10n: this refers to updating a file to a new template (POT file)
-        self.main_controller.show_info(_("File Updated"), output)
+        self.main_controller.show_template_update_notice(_("File Updated"), output)
 
     def _guess_export_filename(self, projfname):
         guess = projfname.split('/')[-1]

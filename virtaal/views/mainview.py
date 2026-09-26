@@ -926,6 +926,37 @@ class MainView(BaseView):
         vbox_main.pack_start(infobar, False, False, 0)
         vbox_main.reorder_child(infobar, 1)  # directly below the menu bar
 
+    def show_template_update_notice(self, title, message):
+        """Dismissable notice with the before/after stats from "Update from Template" (#3808)."""
+        existing = getattr(self, '_template_update_infobar', None)
+        if existing is not None:
+            existing.destroy()
+
+        infobar = Gtk.InfoBar()
+        infobar.set_message_type(Gtk.MessageType.INFO)
+        infobar.set_show_close_button(True)
+
+        heading = Gtk.Label()
+        heading.set_markup('<b>%s</b>' % title.replace('&', '&amp;').replace('<', '&lt;'))
+        heading.set_xalign(0)
+        body = Gtk.Label(label=message)
+        body.set_xalign(0)
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
+        box.pack_start(heading, False, False, 0)
+        box.pack_start(body, False, False, 0)
+        infobar.get_content_area().pack_start(box, True, True, 0)
+
+        def on_response(infobar, response_id):
+            self._template_update_infobar = None
+            infobar.destroy()
+        infobar.connect('response', on_response)
+
+        self._template_update_infobar = infobar
+        infobar.show_all()
+        vbox_main = self.gui.get_object('vbox_main')
+        vbox_main.pack_start(infobar, False, False, 0)
+        vbox_main.reorder_child(infobar, 1)  # directly below the menu bar
+
     def _on_file_open(self, _widget):
         self.open_file()
 

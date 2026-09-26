@@ -324,3 +324,13 @@ def test_close_file_closes_after_discarding_changes():
     controller.close_file()
 
     assert calls == ['closed']
+
+
+def test_show_template_update_notice_delegates_to_the_view():
+    shown = []
+    controller = MainController.__new__(MainController)
+    controller.view = SimpleNamespace(show_template_update_notice=lambda title, msg: shown.append((title, msg)))
+
+    controller.show_template_update_notice('File Updated', 'Before:\n\tTranslated: 1')
+
+    assert shown == [('File Updated', 'Before:\n\tTranslated: 1')]

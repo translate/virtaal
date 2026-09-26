@@ -117,6 +117,19 @@ its own concrete evidence, not a guess:
   round-trip bug, verified by actually serializing and re-parsing the
   problem characters through the current library, not by reading the
   fix code and assuming.
+- **An asset request (icon/image), by rendering and comparing**: for a
+  report asking for an icon/image deliverable, check the actual asset
+  tree against the specific thing asked for (sizes present, theme
+  directories, format) rather than assuming a same-themed file already
+  covers it. Confirmed 2026-09-26, translate/virtaal#748/#1512 (old
+  hicolor app-icon requests) - fully satisfied by the current
+  `share/icons/hicolor/` tree, closed directly. While checking a
+  related "do we have an SVG source" question, a same-motif file
+  (`virtaal_logo.svg`, a wordmark logo) looked like a plausible source
+  for the app icon glyph at a glance - only rendering both
+  (`rsvg-convert`) and comparing images side by side showed they're
+  unrelated artwork. Don't infer shared provenance from a shared theme;
+  render and look.
 
 In every case, the close comment cites the concrete evidence (a commit,
 a grep result, an actual test run) - never a bare "fixed" or "no

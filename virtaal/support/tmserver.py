@@ -140,7 +140,7 @@ class TMServer:
         return self.forget_store(sid)
 
 
-def main() -> None:
+def build_parser() -> ArgumentParser:
     parser = ArgumentParser()
     parser.add_argument(
         "-d",
@@ -211,8 +211,11 @@ def main() -> None:
         default=False,
         help="enable debugging features",
     )
+    return parser
 
-    args = parser.parse_args()
+
+def main() -> None:
+    args = build_parser().parse_args()
 
     # setup debugging
     format = "%(asctime)s %(levelname)s %(message)s"

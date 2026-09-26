@@ -586,7 +586,9 @@ def test_update_file_replaces_the_cursor_on_an_already_open_store():
 
     assert controller._modified is True
     assert saveable_calls == [True]
-    assert saveas_calls == [True]
+    # Unlike open_file() with a bare .pot, updating an already-open file
+    # keeps saving to its existing path - no forced Save As (#3808).
+    assert saveas_calls == []
     assert controller.cursor.model is controller.store
     assert shown == [None, controller.store, 'shown']
     assert emitted == [True]

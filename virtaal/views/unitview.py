@@ -402,75 +402,75 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         self.emit('sources-created', self.sources)
 
     def _create_targets(self):
-        def on_textbox_n_press_event(textbox, event, eventname):
-            """Handle special keypresses in the textarea."""
-
-        def target_key_press_event(textbox, event, eventname, next_textbox):
-            if not eventname:
-                return False
-            if eventname in  ('enter', 'ctrl-enter', 'ctrl-shift-enter'):
-                if next_textbox is not None and next_textbox.get_parent().props.visible:
-                    self.focus_text_view(next_textbox)
-                else:
-                    if eventname == 'ctrl-enter':
-                        #Ctrl+Enter means additionally advance the unit in the workflow
-                        self.advance_workflow_state(1)
-                    elif eventname == 'ctrl-shift-enter':
-                        self.advance_workflow_state(-1)
-                    # textbox is the last text view in this unit, so we need to move on
-                    # to the next one.
-                    self._on_key_press_event(None, event)
-
-                return True
-
-            # Alt-Down
-            elif eventname == 'alt-down':
-                # Guard against the unit changing before this deferred
-                # call runs - copy_original() reads self.unit and
-                # writes into textbox unconditionally, so a stale call
-                # would silently overwrite whatever unit is now loaded.
-                scheduled_unit = self.unit
-                def do_copy_original():
-                    if self.unit is scheduled_unit:
-                        self.copy_original(textbox)
-                    return False
-                GLib.idle_add(do_copy_original)
-                return True
-
-            # Shift-Tab
-            elif eventname == 'shift-tab':
-                if self.focused_target_n > 0:
-                    self.focused_target_n -= 1
-                return True
-            # Ctrl-Tab
-            elif eventname == 'ctrl-tab':
-                self.controller.main_controller.lang_controller.view.focus()
-                return True
-            # Ctrl-Shift-Tab
-            elif eventname == 'ctrl-shift-tab':
-                self.controller.main_controller.mode_controller.view.focus()
-                return True
-
-            return False
-
         for i in range(len(self.targets), self.MAX_TARGETS):
-            target = self._create_textbox('', editable=True, role='target')
-            textbox = target.get_child()
-            rendering.set_widget_font(textbox, rendering.get_target_font_description())
-            textbox.selector_textboxes = self.sources
-            textbox.selector_textbox = self.sources[0]
-            textbox.connect('paste-clipboard', self._on_textbox_paste_clipboard, i)
-            textbox.connect('text-inserted', self._on_target_insert_text, i)
-            textbox.connect('text-deleted', self._on_target_delete_range, i)
-            textbox.connect('changed', self._on_target_changed, i)
-
-            self._widgets['vbox_targets'].pack_start(target, True, True, 0)
-            self.targets.append(textbox)
+            self._add_target_textbox(i)
 
         for target, next_target in zip(self.targets, self.targets[1:] + [None]):
-            target.connect('key-pressed', target_key_press_event, next_target)
+            target.connect('key-pressed', self._on_target_key_pressed, next_target)
 
         self.emit('targets-created', self.targets)
+
+    def _add_target_textbox(self, index):
+        target = self._create_textbox('', editable=True, role='target')
+        textbox = target.get_child()
+        rendering.set_widget_font(textbox, rendering.get_target_font_description())
+        textbox.selector_textboxes = self.sources
+        textbox.selector_textbox = self.sources[0]
+        textbox.connect('paste-clipboard', self._on_textbox_paste_clipboard, index)
+        textbox.connect('text-inserted', self._on_target_insert_text, index)
+        textbox.connect('text-deleted', self._on_target_delete_range, index)
+        textbox.connect('changed', self._on_target_changed, index)
+
+        self._widgets['vbox_targets'].pack_start(target, True, True, 0)
+        self.targets.append(textbox)
+
+    def _on_target_key_pressed(self, textbox, event, eventname, next_textbox):
+        if not eventname:
+            return False
+        if eventname in  ('enter', 'ctrl-enter', 'ctrl-shift-enter'):
+            if next_textbox is not None and next_textbox.get_parent().props.visible:
+                self.focus_text_view(next_textbox)
+            else:
+                if eventname == 'ctrl-enter':
+                    #Ctrl+Enter means additionally advance the unit in the workflow
+                    self.advance_workflow_state(1)
+                elif eventname == 'ctrl-shift-enter':
+                    self.advance_workflow_state(-1)
+                # textbox is the last text view in this unit, so we need to move on
+                # to the next one.
+                self._on_key_press_event(None, event)
+
+            return True
+
+        # Alt-Down
+        elif eventname == 'alt-down':
+            # Guard against the unit changing before this deferred
+            # call runs - copy_original() reads self.unit and
+            # writes into textbox unconditionally, so a stale call
+            # would silently overwrite whatever unit is now loaded.
+            scheduled_unit = self.unit
+            def do_copy_original():
+                if self.unit is scheduled_unit:
+                    self.copy_original(textbox)
+                return False
+            GLib.idle_add(do_copy_original)
+            return True
+
+        # Shift-Tab
+        elif eventname == 'shift-tab':
+            if self.focused_target_n > 0:
+                self.focused_target_n -= 1
+            return True
+        # Ctrl-Tab
+        elif eventname == 'ctrl-tab':
+            self.controller.main_controller.lang_controller.view.focus()
+            return True
+        # Ctrl-Shift-Tab
+        elif eventname == 'ctrl-shift-tab':
+            self.controller.main_controller.mode_controller.view.focus()
+            return True
+
+        return False
 
     def _create_textbox(self, text='', editable=True, role=None, scroll_policy=Gtk.PolicyType.EXTERNAL):
         textbox = TextBox(self.controller.main_controller, role=role)

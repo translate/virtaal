@@ -25,6 +25,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gdk, Gtk
 
 from virtaal.common.platform import platform
+from virtaal.views import mainview
 from virtaal.views.mainview import MainView
 
 
@@ -693,7 +694,8 @@ def test_set_saveable_marks_the_title_modified(monkeypatch):
     view.modified = False
     view.gui = SimpleNamespace(get_object=lambda name: widgets[name])
     view.controller = SimpleNamespace(get_store_filename=lambda: '/tmp/document.po')
-    view.main_window = SimpleNamespace(set_title=lambda title: setattr(view, '_title', title))
+    view.main_window = SimpleNamespace(
+        set_title=lambda title: setattr(view, '_title', title), get_window=lambda: None)
 
     view.set_saveable(True)
 
@@ -710,7 +712,8 @@ def test_set_saveable_clears_the_modified_marker(monkeypatch):
     view.modified = True
     view.gui = SimpleNamespace(get_object=lambda name: widgets[name])
     view.controller = SimpleNamespace(get_store_filename=lambda: '/tmp/document.po')
-    view.main_window = SimpleNamespace(set_title=lambda title: setattr(view, '_title', title))
+    view.main_window = SimpleNamespace(
+        set_title=lambda title: setattr(view, '_title', title), get_window=lambda: None)
 
     view.set_saveable(False)
 
@@ -726,7 +729,8 @@ def test_set_saveable_omits_the_app_name_when_the_platform_says_so(monkeypatch):
     view.modified = False
     view.gui = SimpleNamespace(get_object=lambda name: widgets[name])
     view.controller = SimpleNamespace(get_store_filename=lambda: '/tmp/document.po')
-    view.main_window = SimpleNamespace(set_title=lambda title: setattr(view, '_title', title))
+    view.main_window = SimpleNamespace(
+        set_title=lambda title: setattr(view, '_title', title), get_window=lambda: None)
 
     view.set_saveable(True)
 
@@ -739,9 +743,96 @@ def test_set_saveable_skips_the_title_without_a_filename():
     view.modified = False
     view.gui = SimpleNamespace(get_object=lambda name: widgets[name])
     view.controller = SimpleNamespace(get_store_filename=lambda: None)
-    view.main_window = SimpleNamespace(set_title=lambda title: pytest.fail('no filename to show'))
+    view.main_window = SimpleNamespace(
+        set_title=lambda title: pytest.fail('no filename to show'), get_window=lambda: None)
 
     view.set_saveable(True)  # must not raise
+
+
+def test_set_saveable_skips_the_title_star_when_the_native_marker_works(monkeypatch):
+    monkeypatch.setattr(platform, 'is_mac', True)
+    monkeypatch.setattr(mainview, '_set_document_edited', lambda gdk_window, edited: None)
+    widgets = {'mnu_save': _FakeSensitiveWidget(), 'mnu_revert': _FakeSensitiveWidget()}
+    view = MainView.__new__(MainView)
+    view.modified = False
+    view.gui = SimpleNamespace(get_object=lambda name: widgets[name])
+    view.controller = SimpleNamespace(get_store_filename=lambda: '/tmp/document.po')
+    view.main_window = SimpleNamespace(
+        set_title=lambda title: setattr(view, '_title', title), get_window=lambda: object())
+
+    view.set_saveable(True)
+
+    assert view._title == 'document.po - Virtaal'
+
+
+def test_set_saveable_falls_back_to_the_title_star_when_the_native_marker_fails(monkeypatch):
+    monkeypatch.setattr(platform, 'is_mac', True)
+
+    def _raise(gdk_window, edited):
+        raise OSError('no such symbol')
+    monkeypatch.setattr(mainview, '_set_document_edited', _raise)
+    widgets = {'mnu_save': _FakeSensitiveWidget(), 'mnu_revert': _FakeSensitiveWidget()}
+    view = MainView.__new__(MainView)
+    view.modified = False
+    view.gui = SimpleNamespace(get_object=lambda name: widgets[name])
+    view.controller = SimpleNamespace(get_store_filename=lambda: '/tmp/document.po')
+    view.main_window = SimpleNamespace(
+        set_title=lambda title: setattr(view, '_title', title), get_window=lambda: object())
+
+    view.set_saveable(True)
+
+    assert view._title == '*document.po - Virtaal'
+
+
+# _update_document_edited(): the native macOS unsaved-changes marker #
+
+def test_update_document_edited_noop_off_mac(monkeypatch):
+    monkeypatch.setattr(platform, 'is_mac', False)
+    monkeypatch.setattr(mainview, '_set_document_edited',
+        lambda gdk_window, edited: pytest.fail('should not touch the native window off mac'))
+    view = MainView.__new__(MainView)
+    view.main_window = SimpleNamespace(
+        get_window=lambda: pytest.fail('should not be read off mac'))
+
+    view._update_document_edited(True)  # must not raise
+
+
+def test_update_document_edited_noop_without_a_realized_window(monkeypatch):
+    monkeypatch.setattr(platform, 'is_mac', True)
+    monkeypatch.setattr(mainview, '_set_document_edited',
+        lambda gdk_window, edited: pytest.fail('should not touch a nonexistent window'))
+    view = MainView.__new__(MainView)
+    view.main_window = SimpleNamespace(get_window=lambda: None)
+
+    view._update_document_edited(True)  # must not raise
+
+
+def test_update_document_edited_calls_the_native_setter(monkeypatch):
+    monkeypatch.setattr(platform, 'is_mac', True)
+    gdk_window = object()
+    calls = []
+    monkeypatch.setattr(mainview, '_set_document_edited',
+        lambda window, edited: calls.append((window, edited)))
+    view = MainView.__new__(MainView)
+    view.main_window = SimpleNamespace(get_window=lambda: gdk_window)
+
+    view._update_document_edited(True)
+
+    assert calls == [(gdk_window, True)]
+
+
+def test_update_document_edited_swallows_native_setter_errors(monkeypatch):
+    # The underlying ctypes calls reach into undocumented GDK/AppKit
+    # internals - a failure there shouldn't crash the save path.
+    monkeypatch.setattr(platform, 'is_mac', True)
+
+    def _raise(gdk_window, edited):
+        raise OSError('no such symbol')
+    monkeypatch.setattr(mainview, '_set_document_edited', _raise)
+    view = MainView.__new__(MainView)
+    view.main_window = SimpleNamespace(get_window=lambda: object())
+
+    view._update_document_edited(True)  # must not raise
 
 
 # _setup_key_bindings() #

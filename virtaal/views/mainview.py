@@ -986,6 +986,40 @@ class MainView(BaseView):
         vbox_main.pack_start(infobar, False, False, 0)
         vbox_main.reorder_child(infobar, 1)  # directly below the menu bar
 
+    def show_same_lang_notice(self, on_change_pair):
+        """Show a dismissable notice that source and target language are
+            the same; on_change_pair runs if its button is clicked."""
+        existing = getattr(self, '_same_lang_infobar', None)
+        if existing is not None:
+            return
+
+        infobar = Gtk.InfoBar()
+        infobar.set_message_type(Gtk.MessageType.WARNING)
+        infobar.set_show_close_button(True)
+        label = Gtk.Label(label=_('Source and target language are the same.'))
+        infobar.get_content_area().pack_start(label, True, True, 0)
+        infobar.add_button(_('Change Language Pair'), Gtk.ResponseType.OK)
+
+        def on_response(infobar, response_id):
+            if response_id == Gtk.ResponseType.OK:
+                on_change_pair()
+                return
+            self._same_lang_infobar = None
+            infobar.destroy()
+        infobar.connect('response', on_response)
+
+        self._same_lang_infobar = infobar
+        infobar.show_all()
+        vbox_main = self.gui.get_object('vbox_main')
+        vbox_main.pack_start(infobar, False, False, 0)
+        vbox_main.reorder_child(infobar, 1)  # directly below the menu bar
+
+    def hide_same_lang_notice(self):
+        infobar = getattr(self, '_same_lang_infobar', None)
+        if infobar is not None:
+            self._same_lang_infobar = None
+            infobar.destroy()
+
     def _on_file_open(self, _widget):
         self.open_file()
 

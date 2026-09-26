@@ -52,39 +52,7 @@ def _make_view(**controller_kwargs):
     view.controller = controller
     view.popupbutton = PopupMenuButton()  # update_recent_pairs()'s _init_menu() needs its real set_menu()
     view.menu = None
-    view._popupbutton_fg_provider = None
     return view
-
-
-def test_set_popupbutton_fg_accepts_a_colour():
-    # A malformed generated CSS string raises Gtk.CssProvider's own
-    # GLib.GError - this is really a check that the string built here
-    # is valid CSS, not just that the call completes.
-    view = LanguageView.__new__(LanguageView)
-    view.popupbutton = Gtk.Button()
-    view._popupbutton_fg_provider = None
-
-    view._set_popupbutton_fg('#f66')
-
-
-def test_set_popupbutton_fg_removes_its_previous_provider_on_a_later_call(monkeypatch):
-    """notify_same_langs()/notify_diff_langs() toggle this on every
-        cursor change - each call used to only ever add a new
-        provider, accumulating one per toggle, never freed."""
-    view = LanguageView.__new__(LanguageView)
-    view.popupbutton = Gtk.Button()
-    view._popupbutton_fg_provider = None
-
-    removed = []
-    style = view.popupbutton.get_style_context()
-    monkeypatch.setattr(style, 'remove_provider', lambda provider: removed.append(provider))
-
-    view._set_popupbutton_fg('#f66')
-    first_provider = view._popupbutton_fg_provider
-    view._set_popupbutton_fg(None)
-
-    assert removed == [first_provider]
-    assert view._popupbutton_fg_provider is None
 
 
 # _get_display_string() #
@@ -124,27 +92,39 @@ def test_get_display_string_uses_french_quotes_on_windows(monkeypatch):
 
 # notify_same_langs() / notify_diff_langs() #
 
-def test_notify_same_langs_highlights_the_button(monkeypatch):
-    monkeypatch.setattr(langview.GLib, 'idle_add', lambda func: func())
+def test_notify_same_langs_shows_the_main_view_notice(monkeypatch):
+    monkeypatch.setattr(langview.GLib, 'idle_add', lambda func, *args: func(*args))
+    activated = []
+    callbacks = []
     view = LanguageView.__new__(LanguageView)
-    view.popupbutton = Gtk.Button()
-    view._popupbutton_fg_provider = None
+    view._on_other_activated = lambda menuitem: activated.append(menuitem)
+    view.controller = SimpleNamespace(
+        main_controller=SimpleNamespace(
+            view=SimpleNamespace(show_same_lang_notice=lambda cb: callbacks.append(cb))
+        )
+    )
 
     view.notify_same_langs()
+    callbacks[0]()  # the callback passed to show_same_lang_notice()
 
-    assert view._popupbutton_fg_provider is not None
+    assert activated == [None]
 
 
-def test_notify_diff_langs_clears_the_highlight(monkeypatch):
-    monkeypatch.setattr(langview.GLib, 'idle_add', lambda func: func())
+def test_notify_diff_langs_hides_the_main_view_notice(monkeypatch):
+    monkeypatch.setattr(langview.GLib, 'idle_add', lambda func, *args: func(*args))
+    calls = []
     view = LanguageView.__new__(LanguageView)
-    view.popupbutton = Gtk.Button()
-    view._popupbutton_fg_provider = None
-    view.notify_same_langs()
+    view.controller = SimpleNamespace(
+        main_controller=SimpleNamespace(
+            view=SimpleNamespace(hide_same_lang_notice=lambda: calls.append('hidden'))
+        )
+    )
 
     view.notify_diff_langs()
 
-    assert view._popupbutton_fg_provider is None
+    assert calls == ['hidden']
+
+
 
 
 # show() / focus() #

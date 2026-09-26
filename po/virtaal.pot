@@ -2195,6 +2195,14 @@ msgid "Restart Virtaal for the new language to take effect."
 msgstr ""
 
 #: virtaal/views/mainview.py
+msgid "Source and target language are the same."
+msgstr ""
+
+#: virtaal/views/mainview.py
+msgid "Change Language Pair"
+msgstr ""
+
+#: virtaal/views/mainview.py
 msgid "Logs"
 msgstr ""
 

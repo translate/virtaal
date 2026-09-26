@@ -24,6 +24,10 @@ class BasePlugin(Configurable):
     """The plug-in's name, suitable for display."""
     version = '0'
     """The plug-in's version number."""
+    controller = None
+    """The plug-in's own sub-controller, for plug-ins whose configure()/
+        destroy() are the shared implementation below (one exposing a
+        C{view.select_backends()})."""
 
     # INITIALIZERS #
     def __new__(cls, *args, **kwargs):
@@ -38,7 +42,16 @@ class BasePlugin(Configurable):
         raise NotImplementedError('This interface cannot be instantiated.')
 
     # METHODS #
+    def configure(self, parent):
+        """Shows C{self.controller}'s backend-selection dialog and persists
+            the resulting config. Used by plug-ins that set
+            C{self.configure_func = self.configure}."""
+        self.controller.view.select_backends(parent)
+        self.save_config()
+
     def destroy(self):
         """This method is called by C{PluginController.shutdown()} and should be
             implemented by all plug-ins that need to do clean-up."""
-        pass
+        if self.controller is not None:
+            self.save_config()
+            self.controller.destroy()

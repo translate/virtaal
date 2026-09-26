@@ -33,16 +33,4 @@ class Plugin(BasePlugin):
         self.config['max_matches'] = int(self.config['max_matches'])
         self.config['min_quality'] = int(self.config['min_quality'])
 
-        self.tmcontroller = TMController(self.main_controller, self.config)
-
-
-    # METHODS #
-    def configure(self, parent):
-        self.tmcontroller.view.select_backends(parent)
-        self.config = self.tmcontroller.config
-        self.save_config()
-
-    def destroy(self):
-        self.config = self.tmcontroller.config
-        self.save_config()
-        self.tmcontroller.destroy()
+        self.controller = TMController(self.main_controller, self.config)

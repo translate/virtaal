@@ -39,14 +39,4 @@ class Plugin(BasePlugin):
         self.config['max_matches'] = int(self.config['max_matches'])
         self.config['min_quality'] = int(self.config['min_quality'])
 
-        self.termcontroller = TerminologyController(self.main_controller, self.config)
-
-    def configure(self, parent):
-        self.termcontroller.view.select_backends(parent)
-        self.config = self.termcontroller.config
-        self.save_config()
-
-    def destroy(self):
-        self.config = self.termcontroller.config
-        self.save_config()
-        self.termcontroller.destroy()
+        self.controller = TerminologyController(self.main_controller, self.config)

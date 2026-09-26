@@ -18,6 +18,7 @@ import json
 import logging
 import re
 
+from virtaal.common.platform import platform
 from virtaal.support.httpclient import HTTPClient
 
 RELEASES_API_URL = 'https://api.github.com/repos/translate/virtaal/releases'
@@ -58,11 +59,33 @@ def is_newer(remote_version, local_version):
         return False
 
 
+def find_asset_url(assets, plat=platform):
+    """Pick the release asset's browser_download_url matching this
+        platform, or None if no confident match exists - either an
+        unsupported platform (e.g. Linux, which ships no direct asset -
+        see build-flatpak in ci.yml) or a release missing the expected
+        asset. Names are exactly what .github/workflows/ci.yml's
+        release job produces: 'virtaal-<version>-setup.exe' and the
+        version-independent 'Virtaal-macos-<arch>.dmg'."""
+    if plat.is_windows:
+        suffix = '-setup.exe'
+        matches = [a for a in assets if a.get('name', '').endswith(suffix)]
+    elif plat.is_mac and plat.is_arm:
+        matches = [a for a in assets if a.get('name') == 'Virtaal-macos-arm64.dmg']
+    elif plat.is_mac and plat.is_intel:
+        matches = [a for a in assets if a.get('name') == 'Virtaal-macos-x86_64.dmg']
+    else:
+        matches = []
+    return matches[0]['browser_download_url'] if matches else None
+
+
 class UpdateChecker:
     """Checks once, asynchronously, whether a newer release exists than
-        local_version - calling on_update_available(tag_name, html_url)
-        if so. Silent (just logs) on any failure: network errors must
-        never surface as an application error to the user."""
+        local_version - calling on_update_available(tag_name, html_url,
+        asset_url) if so, where asset_url is find_asset_url()'s result
+        (None if no matching downloadable asset was found). Silent
+        (just logs) on any failure: network errors must never surface
+        as an application error to the user."""
 
     def __init__(self, local_version, on_update_available):
         self.local_version = local_version
@@ -79,6 +102,7 @@ class UpdateChecker:
             latest = releases[0]
             tag_name = latest['tag_name']
             html_url = latest['html_url']
+            assets = latest.get('assets', [])
         except (ValueError, KeyError, IndexError, UnicodeDecodeError) as e:
             # ValueError covers both json.loads() and int() failures;
             # IndexError is an empty releases list (nothing published
@@ -87,7 +111,7 @@ class UpdateChecker:
             logging.debug('update check: could not use response: %s' % (e,))
             return
         if is_newer(tag_name, self.local_version):
-            self.on_update_available(tag_name, html_url)
+            self.on_update_available(tag_name, html_url, find_asset_url(assets))
 
     def _on_error(self, _request, status):
         logging.debug('update check: request failed, status=%r' % (status,))

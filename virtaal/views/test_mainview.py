@@ -821,3 +821,58 @@ def test_show_template_update_notice_dismiss_clears_the_tracked_infobar():
     infobar.emit('response', Gtk.ResponseType.CLOSE)
 
     assert view._template_update_infobar is None
+
+
+# show_update_notice() - #3616's platform-specific download button
+
+def _real_view_for_update_notice():
+    builder = Gtk.Builder()
+    builder.add_from_file('share/virtaal/virtaal.ui')
+    return SimpleNamespace(gui=builder)
+
+
+def _emit_response(view, response_id):
+    vbox_main = view.gui.get_object('vbox_main')
+    infobar = next(c for c in vbox_main.get_children() if isinstance(c, Gtk.InfoBar))
+    infobar.emit('response', response_id)
+    vbox_main.remove(infobar)
+
+
+def test_show_update_notice_without_asset_url_downloads_the_release_page(monkeypatch):
+    from virtaal.support import openmailto
+    opened = []
+    monkeypatch.setattr(openmailto, 'open', lambda url: opened.append(url))
+    view = _real_view_for_update_notice()
+
+    MainView.show_update_notice(view, 'v1.0.0', 'https://github.com/translate/virtaal/releases/tag/v1.0.0')
+
+    _emit_response(view, Gtk.ResponseType.OK)
+    assert opened == ['https://github.com/translate/virtaal/releases/tag/v1.0.0']
+
+
+def test_show_update_notice_with_asset_url_download_button_opens_the_asset(monkeypatch):
+    from virtaal.support import openmailto
+    opened = []
+    monkeypatch.setattr(openmailto, 'open', lambda url: opened.append(url))
+    view = _real_view_for_update_notice()
+
+    MainView.show_update_notice(
+        view, 'v1.0.0', 'https://github.com/translate/virtaal/releases/tag/v1.0.0',
+        asset_url='https://github.com/translate/virtaal/releases/download/v1.0.0/virtaal-1.0.0-setup.exe')
+
+    _emit_response(view, Gtk.ResponseType.OK)
+    assert opened == ['https://github.com/translate/virtaal/releases/download/v1.0.0/virtaal-1.0.0-setup.exe']
+
+
+def test_show_update_notice_with_asset_url_release_notes_button_opens_the_release_page(monkeypatch):
+    from virtaal.support import openmailto
+    opened = []
+    monkeypatch.setattr(openmailto, 'open', lambda url: opened.append(url))
+    view = _real_view_for_update_notice()
+
+    MainView.show_update_notice(
+        view, 'v1.0.0', 'https://github.com/translate/virtaal/releases/tag/v1.0.0',
+        asset_url='https://github.com/translate/virtaal/releases/download/v1.0.0/virtaal-1.0.0-setup.exe')
+
+    _emit_response(view, Gtk.ResponseType.HELP)
+    assert opened == ['https://github.com/translate/virtaal/releases/tag/v1.0.0']

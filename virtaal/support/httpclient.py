@@ -58,6 +58,16 @@ class HTTPRequest(GObjectWrapper):
         # We want to use gzip and deflate if possible:
         self.curl.setopt(pycurl.ENCODING, "") # use all available encodings
         self.curl.setopt(pycurl.URL, self.url)
+        self._configure_timeouts(download)
+        self._configure_windows_tls_workaround()
+        self._configure_method(method, data, headers, headers_only, user_agent, follow_location)
+        self._configure_proxy()
+
+        # self reference required, because CurlMulti will only return
+        # Curl handles
+        self.curl.request = self
+
+    def _configure_timeouts(self, download):
         self.curl.setopt(pycurl.CONNECTTIMEOUT, 10)
         if download:
             # Downloads can take long on a slow connection. Only abort
@@ -67,18 +77,21 @@ class HTTPRequest(GObjectWrapper):
         else:
             self.curl.setopt(pycurl.TIMEOUT, 15)
 
-        if platform.is_windows:
-            # curl's schannel (Windows-native TLS) backend treats being
-            # unable to reach the CA's own revocation-check servers as
-            # a hard failure. SSLOPT_NO_REVOKE disables that check;
-            # curl only defines it for schannel, so it's a no-op elsewhere.
-            # NO_REVOKE alone still isn't enough on a real Windows VM -
-            # CRYPT_E_REVOKED still occurred live with it set. curl's
-            # own docs list CURLSSLOPT_REVOKE_BEST_EFFORT (1<<3) as
-            # needed alongside it for schannel specifically; pycurl
-            # doesn't name this constant, hence the literal.
-            self.curl.setopt(pycurl.SSL_OPTIONS, pycurl.SSLOPT_NO_REVOKE | 8)
+    def _configure_windows_tls_workaround(self):
+        if not platform.is_windows:
+            return
+        # curl's schannel (Windows-native TLS) backend treats being
+        # unable to reach the CA's own revocation-check servers as
+        # a hard failure. SSLOPT_NO_REVOKE disables that check;
+        # curl only defines it for schannel, so it's a no-op elsewhere.
+        # NO_REVOKE alone still isn't enough on a real Windows VM -
+        # CRYPT_E_REVOKED still occurred live with it set. curl's
+        # own docs list CURLSSLOPT_REVOKE_BEST_EFFORT (1<<3) as
+        # needed alongside it for schannel specifically; pycurl
+        # doesn't name this constant, hence the literal.
+        self.curl.setopt(pycurl.SSL_OPTIONS, pycurl.SSLOPT_NO_REVOKE | 8)
 
+    def _configure_method(self, method, data, headers, headers_only, user_agent, follow_location):
         # let's set the HTTP request method
         if method == 'GET':
             self.curl.setopt(pycurl.HTTPGET, 1)
@@ -106,6 +119,7 @@ class HTTPRequest(GObjectWrapper):
         if follow_location:
             self.curl.setopt(pycurl.FOLLOWLOCATION, 1)
 
+    def _configure_proxy(self):
         if libproxy:
             for proxy in proxy_factory.getProxies(self.url):
                 # https://github.com/libproxy/libproxy/issues/65
@@ -136,10 +150,6 @@ class HTTPRequest(GObjectWrapper):
                 proxies = request.getproxies()
                 if protocol in proxies and not request.proxy_bypass(host):
                     self.curl.setopt(pycurl.PROXY, proxies[protocol])
-
-        # self reference required, because CurlMulti will only return
-        # Curl handles
-        self.curl.request = self
 
     def __repr__(self):
         return '<%s:%s>' % (self.method, self.get_effective_url())

@@ -266,6 +266,11 @@ class TextBox(Gtk.TextView):
         self.buffer.handler_unblock_by_func(self._on_delete_range)
 
     def insert_translation(self, elem):
+        # Group the selection-delete with whatever follows into one undo entry.
+        recording = self.undo_controller and not self.undo_controller.model.recording
+        if recording:
+            self.undo_controller.record_start()
+
         selection = self.buffer.get_selection_bounds()
         if selection:
             self.buffer.delete(*selection)
@@ -276,6 +281,10 @@ class TextBox(Gtk.TextView):
         cursor_pos = self.buffer.props.cursor_position
         widget = elem.gui_info.get_insert_widget()
         if widget:
+            # The actual insertion is deferred past this method returning -
+            # stop recording now rather than holding it open across that.
+            if recording:
+                self.undo_controller.record_stop()
             def show_widget():
                 cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)
                 anchor = self.buffer.create_child_anchor(cursor_iter)
@@ -314,6 +323,8 @@ class TextBox(Gtk.TextView):
             else:
                 self.buffer.insert_at_cursor(translation)
                 cursor_pos += len(translation)
+            if recording:
+                self.undo_controller.record_stop()
         self.refresh_cursor_pos = cursor_pos
         self.refresh(update=True)
 

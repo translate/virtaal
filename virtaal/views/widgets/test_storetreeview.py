@@ -263,32 +263,75 @@ def test_keyboard_move_defers_while_a_row_change_is_pending():
     assert StoreTreeView._keyboard_move(view, 1) is True
 
 
-def test_keyboard_move_moves_the_cursor_by_the_given_offset():
-    calls = []
+def _make_move_view(cursor_move, monkeypatch, timeout_calls=None):
+    if timeout_calls is not None:
+        monkeypatch.setattr(GLib, 'timeout_add', lambda ms, func: timeout_calls.append((ms, func)) or 'throttle-id')
     view = SimpleNamespace(
         view=SimpleNamespace(
             controller=SimpleNamespace(get_store=lambda: object()),
-            cursor=SimpleNamespace(move=calls.append),
+            cursor=SimpleNamespace(move=cursor_move),
         ),
         _waiting_for_row_change=0,
+        _pending_move_offset=0,
+        _move_throttle_id=None,
     )
+    view._apply_pending_move = lambda: StoreTreeView._apply_pending_move(view)
+    view._on_move_throttle = lambda: StoreTreeView._on_move_throttle(view)
+    return view
+
+
+def test_keyboard_move_moves_the_cursor_by_the_given_offset(monkeypatch):
+    calls = []
+    view = _make_move_view(calls.append, monkeypatch, timeout_calls=[])
 
     assert StoreTreeView._keyboard_move(view, 5) is True
     assert calls == [5]
 
 
-def test_keyboard_move_tolerates_an_out_of_range_move():
+def test_keyboard_move_tolerates_an_out_of_range_move(monkeypatch):
     def _raise(offset):
         raise IndexError()
-    view = SimpleNamespace(
-        view=SimpleNamespace(
-            controller=SimpleNamespace(get_store=lambda: object()),
-            cursor=SimpleNamespace(move=_raise),
-        ),
-        _waiting_for_row_change=0,
-    )
+    view = _make_move_view(_raise, monkeypatch, timeout_calls=[])
 
     assert StoreTreeView._keyboard_move(view, 1) is True
+
+
+def test_keyboard_move_throttles_repeats_within_a_burst(monkeypatch):
+    # The first move of a burst applies immediately (calls == [1]) and
+    # starts a throttle timer - a second move arriving before that
+    # timer ticks must not apply straight away, only accumulate, so a
+    # held-down nav key doesn't fire a full editing-cycle per repeat
+    # (#3805).
+    calls = []
+    timeout_calls = []
+    view = _make_move_view(calls.append, monkeypatch, timeout_calls=timeout_calls)
+
+    StoreTreeView._keyboard_move(view, 1)
+    StoreTreeView._keyboard_move(view, 1)
+
+    assert calls == [1]
+    assert view._pending_move_offset == 1
+    assert view._move_throttle_id == 'throttle-id'
+    assert timeout_calls[0][0] == 50
+
+
+def test_on_move_throttle_applies_and_keeps_ticking_while_offset_is_pending():
+    calls = []
+    view = SimpleNamespace(
+        _pending_move_offset=3,
+        _move_throttle_id='throttle-id',
+    )
+    view._apply_pending_move = lambda: (calls.append(view._pending_move_offset), setattr(view, '_pending_move_offset', 0))
+
+    assert StoreTreeView._on_move_throttle(view) is True
+    assert calls == [3]
+
+
+def test_on_move_throttle_stops_once_caught_up():
+    view = SimpleNamespace(_pending_move_offset=0, _move_throttle_id='throttle-id')
+
+    assert StoreTreeView._on_move_throttle(view) is False
+    assert view._move_throttle_id is None
 
 
 def test_move_methods_delegate_to_keyboard_move_with_the_right_offset():
@@ -430,7 +473,7 @@ def test_on_configure_settled_clears_state_and_restores_the_cursor():
 def test_on_destroy_cancels_a_pending_timer(monkeypatch):
     removed = []
     monkeypatch.setattr(GLib, 'source_remove', removed.append)
-    view = SimpleNamespace(_configure_timeout_id='timer-id')
+    view = SimpleNamespace(_configure_timeout_id='timer-id', _move_throttle_id=None)
 
     StoreTreeView._on_destroy(view, None)
 
@@ -438,8 +481,19 @@ def test_on_destroy_cancels_a_pending_timer(monkeypatch):
     assert view._configure_timeout_id is None
 
 
+def test_on_destroy_cancels_a_pending_move_throttle_timer(monkeypatch):
+    removed = []
+    monkeypatch.setattr(GLib, 'source_remove', removed.append)
+    view = SimpleNamespace(_configure_timeout_id=None, _move_throttle_id='timer-id')
+
+    StoreTreeView._on_destroy(view, None)
+
+    assert removed == ['timer-id']
+    assert view._move_throttle_id is None
+
+
 def test_on_destroy_does_nothing_without_a_pending_timer():
-    view = SimpleNamespace(_configure_timeout_id=None)
+    view = SimpleNamespace(_configure_timeout_id=None, _move_throttle_id=None)
 
     StoreTreeView._on_destroy(view, None)  # must not raise
 

@@ -202,6 +202,45 @@ def test_lang_with_no_matching_translation_is_a_fatal_argument_error(monkeypatch
         cli.main(['virtaal', '--lang', 'zz'])
 
 
+def test_rtl_locale_without_a_translation_is_forced_back_to_ltr(monkeypatch):
+    # See issue #1806: GTK decides its own default direction from its
+    # own translation for the process locale, independent of whether
+    # virtaal itself is translated.
+    monkeypatch.setattr(pan_app, 'has_ui_translation', False)
+    from gi.repository import Gtk
+    monkeypatch.setattr(Gtk, 'get_locale_direction', lambda: Gtk.TextDirection.RTL)
+    directions = []
+    monkeypatch.setattr(Gtk.Widget, 'set_default_direction', staticmethod(lambda d: directions.append(d)))
+
+    _run_cli(monkeypatch, ['virtaal'])
+
+    assert directions == [Gtk.TextDirection.LTR]
+
+
+def test_rtl_locale_with_a_real_translation_is_left_alone(monkeypatch):
+    monkeypatch.setattr(pan_app, 'has_ui_translation', True)
+    from gi.repository import Gtk
+    monkeypatch.setattr(Gtk, 'get_locale_direction', lambda: Gtk.TextDirection.RTL)
+    directions = []
+    monkeypatch.setattr(Gtk.Widget, 'set_default_direction', staticmethod(lambda d: directions.append(d)))
+
+    _run_cli(monkeypatch, ['virtaal'])
+
+    assert directions == []
+
+
+def test_ltr_default_direction_is_left_alone_regardless_of_translation(monkeypatch):
+    monkeypatch.setattr(pan_app, 'has_ui_translation', False)
+    from gi.repository import Gtk
+    monkeypatch.setattr(Gtk, 'get_locale_direction', lambda: Gtk.TextDirection.LTR)
+    directions = []
+    monkeypatch.setattr(Gtk.Widget, 'set_default_direction', staticmethod(lambda d: directions.append(d)))
+
+    _run_cli(monkeypatch, ['virtaal'])
+
+    assert directions == []
+
+
 def test_profile_runs_under_cprofile_and_writes_kcachegrind_output(monkeypatch, tmp_path):
     import devsupport.profiling as profiling
 

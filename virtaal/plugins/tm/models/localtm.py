@@ -36,13 +36,24 @@ class TMModel(remotetm.TMModel):
     def __init__(self, internal_name, controller):
         self.internal_name = internal_name
         self.load_config()
-
-        # test if port specified in config is free
         self.config["tmserver_port"] = int(self.config["tmserver_port"])
+
+        port = self._pick_port()
+        command = self._build_tmserver_command(port, controller)
+        self._launch_tmserver(command, port)
+
+        # Do not use super() here, as remotetm.TMModel does a bit more than we
+        # want in this case.
+        BaseTMModel.__init__(self, controller)
+        self._signal_tracker.connect(self.controller.main_controller.store_controller, "store-saved", self.push_store)
+
+    def _pick_port(self):
+        # test if port specified in config is free
         if test_port(self.config["tmserver_bind"], self.config["tmserver_port"]):
-            port = self.config["tmserver_port"]
-        else:
-            port = find_free_port(self.config["tmserver_bind"], 49152, 65535)
+            return self.config["tmserver_port"]
+        return find_free_port(self.config["tmserver_bind"], 49152, 65535)
+
+    def _build_tmserver_command(self, port, controller):
         # translate-toolkit's own "tmserver" console script (which this used
         # to rely on being on PATH) was removed upstream between releases
         # 3.18.1 and 3.19.0, with no replacement - see virtaal/support/
@@ -71,26 +82,31 @@ class TMModel(remotetm.TMModel):
 
         if pan_app.DEBUG:
             command.append("--debug")
+        return command
 
+    def _build_subprocess_env(self):
+        env = os.environ.copy()
+        if not platform.is_frozen:
+            # Make sure the subprocess can "import virtaal.support.tmserver"
+            # regardless of how *this* process ended up able to (an
+            # explicit PYTHONPATH from a source checkout, an editable
+            # install, ...) - harmless to add even if it's already on
+            # sys.path some other way. Not needed (or meaningful) when
+            # frozen - everything's already bundled together.
+            import virtaal
+            virtaal_parent = os.path.dirname(os.path.dirname(os.path.abspath(virtaal.__file__)))
+            existing_path = env.get("PYTHONPATH", "")
+            env["PYTHONPATH"] = os.pathsep.join(filter(None, [virtaal_parent, existing_path]))
+        return env
+
+    def _launch_tmserver(self, command, port):
         logging.debug("launching tmserver with command {}".format(" ".join(command)))
         try:
             import subprocess
 
             from virtaal.support import tmclient
 
-            env = os.environ.copy()
-            if not platform.is_frozen:
-                # Make sure the subprocess can "import virtaal.support.tmserver"
-                # regardless of how *this* process ended up able to (an
-                # explicit PYTHONPATH from a source checkout, an editable
-                # install, ...) - harmless to add even if it's already on
-                # sys.path some other way. Not needed (or meaningful) when
-                # frozen - everything's already bundled together.
-                import virtaal
-                virtaal_parent = os.path.dirname(os.path.dirname(os.path.abspath(virtaal.__file__)))
-                existing_path = env.get("PYTHONPATH", "")
-                env["PYTHONPATH"] = os.pathsep.join(filter(None, [virtaal_parent, existing_path]))
-
+            env = self._build_subprocess_env()
             self.tmserver = subprocess.Popen(command, env=env)
             url = "http://%s:%d/tmserver" % (self.config["tmserver_bind"], port)
 
@@ -99,11 +115,6 @@ class TMModel(remotetm.TMModel):
             message = "Failed to start TM server: %s" % str(e)
             logging.exception('Failed to start TM server')
             raise
-
-        # Do not use super() here, as remotetm.TMModel does a bit more than we
-        # want in this case.
-        BaseTMModel.__init__(self, controller)
-        self._signal_tracker.connect(self.controller.main_controller.store_controller, "store-saved", self.push_store)
 
     def destroy(self):
         if platform.is_windows:

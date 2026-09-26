@@ -527,6 +527,35 @@ def test_set_ui_language_installs_the_translation_and_updates_the_module_global(
     assert pan_app.ui_language == 'af'
 
 
+def test_set_ui_language_sets_has_ui_translation_true_for_a_real_catalog(monkeypatch):
+    # cli.py's own RTL-without-translation fix (issue #1806) depends on
+    # this flag staying in sync with whatever set_ui_language() just
+    # installed, not just the module-level startup install.
+    fake_translation = SimpleNamespace(install=lambda: None)
+    monkeypatch.setattr(pan_app.gettext, 'translation', lambda *a, **kw: fake_translation)
+    monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: None)
+    monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
+    monkeypatch.setattr(pan_app.platform, 'is_windows', True)  # skips bind_libintl_posix
+    monkeypatch.setattr('builtins._', lambda s: s or 'PO header')  # a real catalog is loaded
+
+    pan_app.set_ui_language('af')
+
+    assert pan_app.has_ui_translation is True
+
+
+def test_set_ui_language_sets_has_ui_translation_false_without_a_real_catalog(monkeypatch):
+    fake_translation = SimpleNamespace(install=lambda: None)
+    monkeypatch.setattr(pan_app.gettext, 'translation', lambda *a, **kw: fake_translation)
+    monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: None)
+    monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
+    monkeypatch.setattr(pan_app.platform, 'is_windows', True)
+    monkeypatch.setattr('builtins._', lambda s: s)  # NullTranslations-style passthrough
+
+    pan_app.set_ui_language('en')
+
+    assert pan_app.has_ui_translation is False
+
+
 def test_set_ui_language_binds_libintl_on_non_windows(monkeypatch):
     fake_translation = SimpleNamespace(install=lambda: None)
     monkeypatch.setattr(pan_app.gettext, 'translation', lambda *a, **kw: fake_translation)
@@ -644,6 +673,34 @@ def test_set_ui_language_system_ignores_a_saved_preference(monkeypatch):
 
     assert installed == [('virtaal',)]
     assert pan_app.ui_language == 'fr'
+
+
+def test_set_ui_language_system_sets_has_ui_translation_true_for_a_real_catalog(monkeypatch):
+    monkeypatch.setattr(pan_app.gettext, 'install', lambda *a, **kw: None)
+    monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
+    monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: None)
+    monkeypatch.setattr(pan_app.locale, 'setlocale', lambda *a: None)
+    monkeypatch.setattr(pan_app, 'get_locale_lang', lambda: 'fr')
+    monkeypatch.setattr('builtins._', lambda s: s or 'PO header')  # a real catalog is loaded
+    monkeypatch.delenv('LANGUAGE', raising=False)
+
+    pan_app.set_ui_language('system')
+
+    assert pan_app.has_ui_translation is True
+
+
+def test_set_ui_language_system_sets_has_ui_translation_false_without_a_real_catalog(monkeypatch):
+    monkeypatch.setattr(pan_app.gettext, 'install', lambda *a, **kw: None)
+    monkeypatch.setattr(pan_app, 'fix_locale', lambda lang=None: None)
+    monkeypatch.setattr(pan_app, '_ensure_dev_locale_installed', lambda lang, localedir: None)
+    monkeypatch.setattr(pan_app.locale, 'setlocale', lambda *a: None)
+    monkeypatch.setattr(pan_app, 'get_locale_lang', lambda: 'fa')
+    monkeypatch.setattr('builtins._', lambda s: s)  # NullTranslations-style passthrough
+    monkeypatch.delenv('LANGUAGE', raising=False)
+
+    pan_app.set_ui_language('system')
+
+    assert pan_app.has_ui_translation is False
 
 
 def test_set_ui_language_system_reports_en_without_a_real_catalog(monkeypatch):

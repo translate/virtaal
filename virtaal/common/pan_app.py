@@ -428,6 +428,14 @@ def _install_system_ui_language():
         bind_libintl_posix(localedir)
 
 
+def _has_real_translation():
+    """Whether a real virtaal.mo catalog is currently installed, as
+    opposed to gettext's NullTranslations fallback - the empty msgid
+    always resolves to the PO header's own metadata for a real
+    catalog, and is only ever '' for NullTranslations."""
+    return bool(_(''))
+
+
 settings = Settings()
 
 ui_language = settings.language["uilang"]
@@ -490,19 +498,21 @@ def set_ui_language(lang):
     _install_explicit_ui_language with startup's own "uilang saved"
     branch.
     """
-    global ui_language
+    global ui_language, has_ui_translation
     if lang == 'system':
         _install_system_ui_language()
-        # Matches startup's own `if _(''): ... else: 'en'` guard below -
-        # a resolved system locale with no real catalog must report
+        # Matches startup's own has_ui_translation guard below - a
+        # resolved system locale with no real catalog must report
         # 'en', not the untranslated locale code (aboutdialog.py keys
         # RTL layout off ui_language).
-        ui_language = get_locale_lang() if _('') else 'en'
+        has_ui_translation = _has_real_translation()
+        ui_language = get_locale_lang() if has_ui_translation else 'en'
         return
 
     if lang == 'en':
         lang = 'en_US'
     _install_explicit_ui_language(lang, [lang], fallback=lang == 'en_US')
+    has_ui_translation = _has_real_translation()
     # 'en' is this module's canonical "untranslated UI" value elsewhere
     # (the 'system' branch above, the module-level fallback below) -
     # collapse en_US back to it too, so a future `== 'en'` check (like
@@ -517,7 +527,8 @@ main_dir = platform.bundle_dir or os.path.dirname(sys.argv[0])
 if platform.is_windows and platform.is_frozen:
     fix_libintl(main_dir)
 
-if _(''):
+has_ui_translation = _has_real_translation()
+if has_ui_translation:
     # If this is true, we have a translated interface
     ui_language = ui_language or get_locale_lang()
 else:

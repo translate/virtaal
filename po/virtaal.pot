@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-26 01:24+0100\n"
+"POT-Creation-Date: 2026-09-26 16:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2173,6 +2173,10 @@ msgstr ""
 #: virtaal/views/mainview.py
 #, python-format
 msgid "Virtaal %s is available (you have %s)"
+msgstr ""
+
+#: virtaal/views/mainview.py
+msgid "Release Notes"
 msgstr ""
 
 #: virtaal/views/mainview.py

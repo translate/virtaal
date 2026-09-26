@@ -873,10 +873,14 @@ class MainView(BaseView):
         from virtaal.support import openmailto
         openmailto.open("https://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html")
 
-    def show_update_notice(self, tag_name, html_url):
+    def show_update_notice(self, tag_name, html_url, asset_url=None):
         """Called at most once per session, from a frozen build only,
             if virtaal.support.update_check finds a newer release than
-            this one."""
+            this one. asset_url is the platform-specific installer
+            found by update_check.find_asset_url(), or None if it
+            couldn't work one out - in which case Download itself
+            falls back to the release page, same as before this
+            existed, and there's no separate Release Notes button."""
         from virtaal.__version__ import ver
 
         infobar = Gtk.InfoBar()
@@ -884,11 +888,15 @@ class MainView(BaseView):
         infobar.set_show_close_button(True)
         label = Gtk.Label(label=_('Virtaal %s is available (you have %s)') % (tag_name, ver))
         infobar.get_content_area().pack_start(label, True, True, 0)
+        if asset_url:
+            infobar.add_button(_('Release Notes'), Gtk.ResponseType.HELP)
         infobar.add_button(_('Download'), Gtk.ResponseType.OK)
 
         def on_response(infobar, response_id):
+            from virtaal.support import openmailto
             if response_id == Gtk.ResponseType.OK:
-                from virtaal.support import openmailto
+                openmailto.open(asset_url or html_url)
+            elif response_id == Gtk.ResponseType.HELP:
                 openmailto.open(html_url)
             infobar.destroy()
         infobar.connect('response', on_response)

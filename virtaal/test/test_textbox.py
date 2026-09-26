@@ -9,9 +9,11 @@ import pytest
 from gi.repository import Gdk
 from test_scaffolding import TestScaffolding
 from translate.storage import factory
+from translate.storage.placeables import general
 from translate.storage.placeables.strelem import StringElem
 
 from virtaal.controllers.placeablescontroller import PlaceablesController
+from virtaal.views.widgets import textbox as textbox_module
 from virtaal.views.widgets.textbox import colors_equal
 
 PLACEABLES_PO = "devsupport/testfiles/placeables.po"
@@ -170,3 +172,97 @@ class TestTextBox(TestScaffolding):
         textbox = self._target_for('%s files copied')
 
         assert repr(textbox) == f'<TextBox {id(textbox):x} target "%s files copied">'
+
+    def _capture_idle_add(self, monkeypatch):
+        # Pumping the real main loop to let GLib.idle_add fire hangs in
+        # this suite (issue #3738's leaked windows) - capture and invoke
+        # the callback directly instead, per test_localfileview.py.
+        calls = []
+        monkeypatch.setattr(textbox_module.GLib, 'idle_add', lambda func, *a: calls.append(func))
+        return calls
+
+    def test_live_typed_newline_is_recognized_immediately(self, monkeypatch):
+        # #3604 regression test. insert_interactive_at_cursor, not the
+        # plain insert_at_cursor - matches a real keystroke, and is the
+        # only one of the two that exercises begin/end-user-action.
+        calls = self._capture_idle_add(monkeypatch)
+        textbox = self._target_for('%s files copied')
+        textbox.place_cursor(len(textbox.get_text()))
+
+        textbox.buffer.insert_interactive_at_cursor('\n', -1, True)
+
+        assert any(
+            isinstance(e, general.NewlinePlaceable) for e in textbox.elem.depth_first()
+        )
+        assert len(calls) == 1
+        calls[0]()
+
+        assert textbox.get_text() == '%s files copied\n'
+        # The newline is now rendered as a pilcrow widget plus the real
+        # "\n" character, so the buffer's GUI length is one slot longer
+        # than the tree text - and the cursor must land at the true end.
+        assert textbox.buffer.props.cursor_position == textbox.elem.gui_info.length()
+
+        # Typing right after the pilcrow must not inherit its grey tag.
+        textbox.buffer.insert_interactive_at_cursor('d', -1, True)
+        d_iter = textbox.buffer.get_iter_at_mark(textbox.buffer.get_insert())
+        d_iter.backward_char()
+        assert d_iter.get_tags() == []
+
+    def test_live_typed_xml_tag_is_recognized_immediately(self, monkeypatch):
+        # Generalizes the #3604 fix beyond newlines: any placeable type
+        # recognized at load time must also be recognized live.
+        calls = self._capture_idle_add(monkeypatch)
+        textbox = self._target_for('%d files removed')
+        textbox.place_cursor(len(textbox.get_text()))
+
+        textbox.buffer.insert_interactive_at_cursor('<a>', -1, True)
+
+        assert any(
+            isinstance(e, general.XMLTagPlaceable) for e in textbox.elem.depth_first()
+        )
+        assert len(calls) == 1
+        calls[0]()
+
+        assert textbox.get_text() == '%d files removed<a>'
+
+    def test_live_typing_that_matches_no_placeable_is_a_noop(self, monkeypatch):
+        calls = self._capture_idle_add(monkeypatch)
+        textbox = self._target_for('%(count)s files renamed')
+        textbox.place_cursor(len(textbox.get_text()))
+        elem_count_before = len(list(textbox.elem.depth_first()))
+
+        textbox.buffer.insert_interactive_at_cursor('x', -1, True)
+
+        assert textbox.get_text() == '%(count)s files renamedx'
+        assert len(list(textbox.elem.depth_first())) == elem_count_before
+        assert calls == []
+
+    def test_undo_reverts_a_live_recognized_placeable(self, monkeypatch):
+        # Exercises the exact undo_action closure _on_unit_insert_text
+        # records (undocontroller.py) rather than going through
+        # mnu_undo.activate()'s full _select_unit() path - that path
+        # needs a StoreController.cursor that only gets set up by
+        # actually opening a file, which TestScaffolding's minimal
+        # factory.getobject()+load_unit() setup never does.
+        calls = self._capture_idle_add(monkeypatch)
+        textbox = self._target_for('%1 files moved')
+        self.undo_controller.model.clear()
+        original_text = textbox.get_text()
+        textbox.place_cursor(len(original_text))
+
+        textbox.buffer.insert_interactive_at_cursor('\n', -1, True)
+        assert any(
+            isinstance(e, general.NewlinePlaceable) for e in textbox.elem.depth_first()
+        )
+        assert len(calls) == 1
+        calls[0]()
+
+        undo_info = self.undo_controller.model.pop()
+        undo_info['action'](undo_info['unit'])
+        textbox.refresh(update=True)
+
+        assert not any(
+            isinstance(e, general.NewlinePlaceable) for e in textbox.elem.depth_first()
+        )
+        assert textbox.get_text() == original_text

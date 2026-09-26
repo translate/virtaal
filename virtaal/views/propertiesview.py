@@ -118,22 +118,41 @@ class PropertiesView(BaseView, GObjectWrapper):
             self._init_gui()
         self.controller.update_gui_data()
         statistics = _statistics(self.stats)
+        self._update_tooltip()
+        self._clear_stat_rows()
+        self._populate_stat_rows(statistics)
+        self._update_file_info_labels()
+
+        # present() only raises/focuses an already-realized window -
+        # show() explicitly first, run() alone doesn't guarantee that.
+        self._widgets['dialog'].show()
+        self._widgets['dialog'].present()
+        transient_for = self._widgets['dialog'].get_transient_for()
+        self._widgets['dialog'].run()
+        self._widgets['dialog'].hide()
+        if transient_for is not None:
+            GLib.idle_add(transient_for.present)
+
+    def _update_tooltip(self):
         tbl_properties = self._widgets['tbl_properties']
         if self.controller.main_controller.store_controller.is_modified():
             tbl_properties.set_tooltip_text(_("Save the file for up-to-date information"))
         else:
             tbl_properties.set_tooltip_text("")
-        vbox_word_labels = self._widgets['vbox_word_labels']
-        vbox_word_stats = self._widgets['vbox_word_stats']
-        vbox_word_perc = self._widgets['vbox_word_perc']
-        vbox_string_labels = self._widgets['vbox_string_labels']
-        vbox_string_stats = self._widgets['vbox_string_stats']
-        vbox_string_perc = self._widgets['vbox_string_perc']
+
+    def _clear_stat_rows(self):
         # Remove all previous work so that we can start afresh:
-        for vbox in (vbox_word_labels, vbox_word_stats, vbox_word_perc,
-                vbox_string_labels, vbox_string_stats, vbox_string_perc):
+        for name in ('vbox_word_labels', 'vbox_word_stats', 'vbox_word_perc',
+                'vbox_string_labels', 'vbox_string_stats', 'vbox_string_perc'):
+            vbox = self._widgets[name]
             for child in vbox.get_children():
                 vbox.remove(child)
+
+    def _populate_stat_rows(self, statistics):
+        vbox_word_labels = self._widgets['vbox_word_labels']
+        vbox_word_stats = self._widgets['vbox_word_stats']
+        vbox_string_labels = self._widgets['vbox_string_labels']
+        vbox_string_stats = self._widgets['vbox_string_stats']
         total_words = sum(words for (_desc, _strings, words) in statistics)
         total_strings = sum(strings for (_desc, strings, _words) in statistics)
 
@@ -165,11 +184,11 @@ class PropertiesView(BaseView, GObjectWrapper):
             lbl_stats.show()
             vbox_string_stats.pack_start(lbl_stats, True, True, 0)
 
-
         #l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
         self._widgets['lbl_word_total'].set_markup(_("<b>%d</b>") % total_words)
         self._widgets['lbl_string_total'].set_markup(_("<b>%d</b>") % total_strings)
 
+    def _update_file_info_labels(self):
         self._widgets['lbl_type'].set_text(self.data['file_type'])
         filename = self.data.get('file_location', '')
         self._widgets['lbl_location'].set_text(filename)
@@ -181,16 +200,6 @@ class PropertiesView(BaseView, GObjectWrapper):
             from gettext import dgettext
             i18n_filesize = dgettext('glib20', "%.1f KB") % (file_size / 1024.0)
             self._widgets['lbl_filesize'].set_text(i18n_filesize)
-
-        # present() only raises/focuses an already-realized window -
-        # show() explicitly first, run() alone doesn't guarantee that.
-        self._widgets['dialog'].show()
-        self._widgets['dialog'].present()
-        transient_for = self._widgets['dialog'].get_transient_for()
-        self._widgets['dialog'].run()
-        self._widgets['dialog'].hide()
-        if transient_for is not None:
-            GLib.idle_add(transient_for.present)
 
 
     # EVENT HANDLERS #

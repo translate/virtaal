@@ -83,6 +83,16 @@ def test_show_open_dialog_returns_nothing_on_cancel():
     assert view.show_open_dialog() == ()
 
 
+def test_template_chooser_only_offers_pot_files():
+    view = MainView.__new__(MainView)
+    view.main_window = None
+
+    filters = view.template_chooser.list_filters()
+    assert len(filters) == 1
+    _name, entries = filters[0].to_gvariant()
+    assert {pattern for _type, pattern in entries} == {'*.pot', '*.pot.gz', '*.pot.bz2'}
+
+
 def test_show_save_dialog_returns_filename_on_accept():
     view = _make_view_with_chooser(
         'save_chooser', _FakeChooser(Gtk.ResponseType.ACCEPT))

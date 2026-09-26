@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-25 18:20+0100\n"
+"POT-Creation-Date: 2026-09-26 01:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2125,6 +2125,14 @@ msgstr ""
 
 #: virtaal/views/mainview.py
 msgid "Choose a Translation File"
+msgstr ""
+
+#: virtaal/views/mainview.py
+msgid "Choose a PO Template File"
+msgstr ""
+
+#: virtaal/views/mainview.py
+msgid "PO Template Files"
 msgstr ""
 
 #: virtaal/views/mainview.py

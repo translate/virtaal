@@ -322,6 +322,25 @@ class MainView(BaseView):
         return chooser
 
     @cached_property
+    def template_chooser(self):
+        # "Update from Template" (#3808) should only offer .pot files,
+        # unlike open_chooser above which lists every translatable format.
+        chooser = Gtk.FileChooserNative.new(
+            _('Choose a PO Template File'),
+            self.main_window,
+            Gtk.FileChooserAction.OPEN,
+            None, None,
+        )
+        pot_filter = Gtk.FileFilter()
+        pot_filter.set_name(_("PO Template Files"))
+        from translate.storage import factory as storage_factory
+        pot_filter.add_pattern("*.pot")
+        for compress_extension in storage_factory.decompressclass.keys():
+            pot_filter.add_pattern("*.pot.%s" % compress_extension)
+        chooser.add_filter(pot_filter)
+        return chooser
+
+    @cached_property
     def save_chooser(self):
         # Save (file chooser) dialog - see open_chooser above for why
         # FileChooserNative, not FileChooserDialog.
@@ -714,28 +733,30 @@ class MainView(BaseView):
             return text
         return None
 
-    def show_open_dialog(self, title=''):
+    def show_open_dialog(self, title='', chooser=None):
         """@returns: The selected file name and URI if the OK button was clicked.
             C{None} otherwise."""
+        if chooser is None:
+            chooser = self.open_chooser
         last_path = pan_app.settings.general["lastdir"] or ""
 
         if title:
-            self.open_chooser.set_title(title)
+            chooser.set_title(title)
 
         if os.path.exists(last_path):
-            self.open_chooser.set_current_folder(last_path)
+            chooser.set_current_folder(last_path)
 
         # Not tracked as the new _top_window (unlike the other dialogs
         # below): FileChooserNative isn't a Gtk.Window, so it can't
         # itself be passed to another dialog's set_transient_for later.
-        self.open_chooser.set_transient_for(self._top_window)
-        response = self.open_chooser.run() == Gtk.ResponseType.ACCEPT
-        self.open_chooser.hide()
+        chooser.set_transient_for(self._top_window)
+        response = chooser.run() == Gtk.ResponseType.ACCEPT
+        chooser.hide()
 
         if response:
-            filename = self.open_chooser.get_filename()
+            filename = chooser.get_filename()
             pan_app.settings.general["lastdir"] = os.path.dirname(filename)
-            return (filename, self.open_chooser.get_uri())
+            return (filename, chooser.get_uri())
         else:
             return ()
 
@@ -973,7 +994,7 @@ class MainView(BaseView):
         self.controller.close_file()
 
     def _on_file_update(self, _widget):
-        filename_and_uri = self.show_open_dialog()
+        filename_and_uri = self.show_open_dialog(chooser=self.template_chooser)
         if filename_and_uri:
             filename, uri = filename_and_uri
             self._uri = uri

@@ -5,6 +5,8 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import ctypes
+import ctypes.util
 import locale
 import logging
 import os
@@ -19,6 +21,25 @@ from virtaal.common.platform import platform
 from virtaal.views import theme
 
 from .baseview import BaseView
+
+
+def _set_document_edited(gdk_window, edited):
+    """ctypes.CDLL(None) reuses libgdk, already loaded via
+        gi.repository.Gdk, rather than a hardcoded library path.
+        hash() on a PyGObject object is its underlying GObject
+        pointer - a long-standing PyGObject convention."""
+    libgdk = ctypes.CDLL(None)
+    libgdk.gdk_quartz_window_get_nswindow.restype = ctypes.c_void_p
+    libgdk.gdk_quartz_window_get_nswindow.argtypes = [ctypes.c_void_p]
+    nswindow_ptr = libgdk.gdk_quartz_window_get_nswindow(ctypes.c_void_p(hash(gdk_window)))
+
+    objc = ctypes.CDLL(ctypes.util.find_library("objc"))
+    objc.sel_registerName.restype = ctypes.c_void_p
+    objc.sel_registerName.argtypes = [ctypes.c_char_p]
+    objc.objc_msgSend.restype = None
+    objc.objc_msgSend.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_bool]
+    sel = objc.sel_registerName(b"setDocumentEdited:")
+    objc.objc_msgSend(ctypes.c_void_p(nswindow_ptr), sel, edited)
 
 
 def fill_dialog(dialog, title='', message='', markup=''):
@@ -541,10 +562,11 @@ class MainView(BaseView):
         menuitem.set_sensitive(value)
         menuitem = self.gui.get_object("mnu_revert")
         menuitem.set_sensitive(value)
+        native_marker = self._update_document_edited(value)
         filename = self.controller.get_store_filename()
         if filename:
             modified = ""
-            if value:
+            if value and not native_marker:
                 modified = "*"
             if platform.use_app_name_in_title():
                 #l10n: This is the title of the main window of Virtaal
@@ -567,6 +589,24 @@ class MainView(BaseView):
                     ).rstrip()
                 )
         self.modified = value
+
+    def _update_document_edited(self, modified):
+        """Mirror the modified state in macOS's native window-close-
+            button marker. Returns whether it was actually set, so
+            set_saveable() can fall back to the title-bar star when
+            it wasn't (off mac, unrealized window, or a ctypes
+            failure)."""
+        if not platform.is_mac:
+            return False
+        gdk_window = self.main_window.get_window()
+        if gdk_window is None:
+            return False
+        try:
+            _set_document_edited(gdk_window, modified)
+            return True
+        except (OSError, AttributeError):
+            logging.exception("Couldn't set the native macOS unsaved-changes marker")
+            return False
 
     def set_statusbar_message(self, msg):
         self.status_bar.pop(self.statusbar_context_id)

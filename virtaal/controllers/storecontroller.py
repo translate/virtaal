@@ -348,7 +348,7 @@ class StoreController(BaseController):
 
         self._modified = True
         self.main_controller.set_saveable(self._modified)
-        self.main_controller.set_force_saveas(self._modified)
+        # Don't force Save As (#3808) - the file already has a real path.
 
         from .cursor import Cursor
         self.cursor = Cursor(self.store, self.store.stats['total'])

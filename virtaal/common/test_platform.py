@@ -121,3 +121,30 @@ def test_install_method_flatpak_takes_priority_over_frozen():
 def test_install_method_unknown_for_a_plain_source_checkout():
     p = Platform(os_name='posix', sys_platform='linux', frozen=False, environ={})
     assert p.install_method() is None
+
+
+def test_use_app_name_in_title_windows():
+    p = Platform(os_name='nt', sys_platform='win32', frozen=False)
+    assert p.use_app_name_in_title()
+    p = Platform(os_name='nt', sys_platform='win32', frozen=True)
+    assert p.use_app_name_in_title()
+
+
+def test_use_app_name_in_title_mac_dev_mode():
+    # Dev-mode diagnostic aid: no bundle to name the process "Virtaal"
+    # from, so it shows as bare "Python" in the Dock/Cmd-Tab otherwise.
+    p = Platform(os_name='posix', sys_platform='darwin', frozen=False)
+    assert p.use_app_name_in_title()
+
+
+def test_use_app_name_in_title_mac_frozen():
+    # A real .app bundle already identifies itself as "Virtaal".
+    p = Platform(os_name='posix', sys_platform='darwin', frozen=True)
+    assert not p.use_app_name_in_title()
+
+
+def test_use_app_name_in_title_linux():
+    p = Platform(os_name='posix', sys_platform='linux', frozen=False)
+    assert not p.use_app_name_in_title()
+    p = Platform(os_name='posix', sys_platform='linux', frozen=True)
+    assert not p.use_app_name_in_title()

@@ -47,6 +47,20 @@ class Platform:
         prefix = prefix if prefix is not None else sys.prefix
         self.locale_dir = os.path.join(self.bundle_dir or prefix, 'share', 'locale')
 
+    def use_app_name_in_title(self):
+        """Whether the window title should keep the app-name suffix
+            (e.g. "af.po - Virtaal") rather than just the document
+            name (translate/virtaal#549).
+
+            True on Windows; on macOS only while unfrozen, since a
+            frozen .app already shows "Virtaal" in the Dock/⌘-Tab (an
+            unfrozen dev launch shows bare "Python" there)."""
+        if self.is_windows:
+            return True
+        if self.is_mac:
+            return not self.is_frozen
+        return False
+
     def install_method(self):
         """A human-readable label for how this build was installed, or
             None if that can't be told apart (pip install vs. a distro

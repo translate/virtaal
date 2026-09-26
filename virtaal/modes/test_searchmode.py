@@ -213,31 +213,47 @@ def test_cancel_search_timeout_is_a_noop_without_a_pending_timeout(monkeypatch):
     assert removed == []
 
 
-# _on_unit_modified() #
+# _on_unit_modified() / _sync_matches_for_key() (#1789) #
 
-def test_on_unit_modified_removes_a_target_match_that_no_longer_matches():
+def test_on_unit_modified_shifts_a_target_match_past_an_edit_before_it():
     mode = SearchMode.__new__(SearchMode)
     unit = object()
-    match = SimpleNamespace(unit=unit, part='target', start=0, end=3, get_getter=lambda: (lambda: 'xyz'))
+    match = SimpleNamespace(unit=unit, part='target', part_n=0, start=0, end=3,
+                             get_getter=lambda: (lambda: 'xcat'))
     mode.matches = [match]
-    mode.matchcursor = SimpleNamespace(indices=None)
-    mode.filter = SimpleNamespace(re_search=re.compile('abc'))
+    mode._match_text_cache = {(id(unit), 'target', 0): 'cat'}
+
+    mode._on_unit_modified(None, unit)
+
+    assert (match.start, match.end) == (1, 4)
+    assert mode.matches == [match]
+
+
+def test_on_unit_modified_keeps_a_target_match_unaffected_by_a_later_edit():
+    mode = SearchMode.__new__(SearchMode)
+    unit = object()
+    match = SimpleNamespace(unit=unit, part='target', part_n=0, start=0, end=3,
+                             get_getter=lambda: (lambda: 'catx'))
+    mode.matches = [match]
+    mode._match_text_cache = {(id(unit), 'target', 0): 'cat'}
+
+    mode._on_unit_modified(None, unit)
+
+    assert (match.start, match.end) == (0, 3)
+    assert mode.matches == [match]
+
+
+def test_on_unit_modified_drops_a_target_match_the_edit_overlapped():
+    mode = SearchMode.__new__(SearchMode)
+    unit = object()
+    match = SimpleNamespace(unit=unit, part='target', part_n=0, start=0, end=3,
+                             get_getter=lambda: (lambda: 'dog'))
+    mode.matches = [match]
+    mode._match_text_cache = {(id(unit), 'target', 0): 'cat'}
 
     mode._on_unit_modified(None, unit)
 
     assert mode.matches == []
-
-
-def test_on_unit_modified_keeps_a_target_match_that_still_matches():
-    mode = SearchMode.__new__(SearchMode)
-    unit = object()
-    match = SimpleNamespace(unit=unit, part='target', start=0, end=3, get_getter=lambda: (lambda: 'abc'))
-    mode.matches = [match]
-    mode.filter = SimpleNamespace(re_search=re.compile('abc'))
-
-    mode._on_unit_modified(None, unit)
-
-    assert mode.matches == [match]
 
 
 def test_on_unit_modified_ignores_a_source_match():
@@ -245,11 +261,62 @@ def test_on_unit_modified_ignores_a_source_match():
     unit = object()
     match = SimpleNamespace(unit=unit, part='source', start=0, end=3, get_getter=lambda: (lambda: 'xyz'))
     mode.matches = [match]
-    mode.filter = SimpleNamespace(re_search=re.compile('abc'))
 
     mode._on_unit_modified(None, unit)
 
     assert mode.matches == [match]
+
+
+# _sync_matches_for_key() directly - the #1789 undo path goes through
+# this without 'unit-modified' ever firing (see _on_textbox_refreshed) #
+
+def test_sync_matches_for_key_seeds_the_cache_without_shifting_on_first_sight():
+    mode = SearchMode.__new__(SearchMode)
+    unit = object()
+    match = SimpleNamespace(unit=unit, part='target', part_n=0, start=2, end=5,
+                             get_getter=lambda: (lambda: 'Virtaal'))
+    mode.matches = [match]
+    mode._match_text_cache = {}
+
+    mode._sync_matches_for_key((id(unit), 'target', 0))
+
+    assert (match.start, match.end) == (2, 5)
+    assert mode._match_text_cache[(id(unit), 'target', 0)] == 'Virtaal'
+
+
+def test_sync_matches_for_key_round_trips_an_insert_then_its_undo():
+    """Scenario A from #1789: insert "taal" in front of "Virtaal", then
+        undo it - the highlight on "rta" should end up back where it
+        started, not stuck at the offset it had mid-edit."""
+    mode = SearchMode.__new__(SearchMode)
+    unit = object()
+    text = ['Virtaal']
+    match = SimpleNamespace(unit=unit, part='target', part_n=0, start=2, end=5,
+                             get_getter=lambda: (lambda: text[0]))
+    mode.matches = [match]
+    key = (id(unit), 'target', 0)
+    mode._match_text_cache = {key: 'Virtaal'}
+
+    text[0] = 'taalVirtaal'
+    mode._sync_matches_for_key(key)
+    assert (match.start, match.end) == (6, 9)
+    assert text[0][match.start:match.end] == 'rta'
+
+    text[0] = 'Virtaal'  # undo
+    mode._sync_matches_for_key(key)
+    assert (match.start, match.end) == (2, 5)
+    assert text[0][match.start:match.end] == 'rta'
+
+
+def test_sync_matches_for_key_drops_the_stale_cache_entry_once_unmatched():
+    mode = SearchMode.__new__(SearchMode)
+    key = (1, 'target', 0)
+    mode.matches = []
+    mode._match_text_cache = {key: 'old text'}
+
+    mode._sync_matches_for_key(key)
+
+    assert key not in mode._match_text_cache
 
 
 # search/replace event handler guards #

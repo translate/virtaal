@@ -182,12 +182,16 @@ class UndoController(BaseController):
             curpos = textbox.get_cursor_position()
         def redo_action(unit):
             textbox.elem.sub = current_text.sub
-        return {
+        redo_info = {
             'action': redo_action,
             'cursorpos': curpos,
             'targetn': undo_info['targetn'],
             'unit': undo_info['unit'],
         }
+        for key in ('state_before', 'state_after'):
+            if key in undo_info:
+                redo_info[key] = undo_info[key]
+        return redo_info
 
     def _perform_undo(self, undo_info, capture_redo=False):
         if undo_info.get('kind') == 'navigate':
@@ -221,6 +225,12 @@ class UndoController(BaseController):
         redo_snapshot = self._snapshot_for_redo(undo_info) if capture_redo else None
         undo_info['action'](undo_info['unit'])
         self._enable_unit_signals()
+
+        if 'state_before' in undo_info and 'state_after' in undo_info:
+            # Restore the automatic state correction this edit caused,
+            # alongside the text - same undo step, not a separate one.
+            restore_to = undo_info['state_before'] if capture_redo else undo_info['state_after']
+            self.unit_controller.set_current_state(restore_to)
 
         textbox = self.unit_controller.view.targets[undo_info['targetn']]
         # Guard against this deferred refresh() running after a
@@ -332,6 +342,11 @@ class UndoController(BaseController):
             'targetn': target_num,
             'unit': unit,
         }
+        if unit.STATE:
+            # May get a 'state_after' attached if this specific edit
+            # triggers the automatic empty/unreviewed correction - see
+            # UnitController._correct_empty_state().
+            data['state_before'] = unit._current_state
         if pan_app.DEBUG:
             data['desc'] = 'offset=%d, deleted="%s", parent=%s, cursor_pos=%d, elem=%s' % (offset, repr(deleted), repr(parent), cursor_pos, repr(elem))
         self.model.push(data)
@@ -360,6 +375,8 @@ class UndoController(BaseController):
             # Redoing re-inserts ins_text - cursor lands right after it.
             'redo_cursorpos': offset + len_ins_text,
         }
+        if unit.STATE:
+            data['state_before'] = unit._current_state
         if pan_app.DEBUG:
             data['desc'] = 'ins_text="%s", offset=%d, elem=%s' % (ins_text, offset, repr(elem))
         self.model.push(data)

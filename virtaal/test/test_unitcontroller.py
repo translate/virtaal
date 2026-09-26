@@ -189,6 +189,31 @@ class TestUnitController(TestScaffolding):
         assert test_unit._state_sticky is True
         assert self.undo_controller.model.undo_stack == []
 
+    def test_correct_empty_state_attaches_state_after_to_the_undo_entry(self):
+        # translate/virtaal#1886: the text-change entry an edit already
+        # pushed must learn what the automatic correction changed the
+        # state to - see test_undocontroller.py for the actual
+        # undo/redo restoration this feeds into.
+        from translate.storage import pypo
+        fuzzy_unit = pypo.pofile().addsourceunit("Fuzzy test string")
+        fuzzy_unit.target = "Fuzzy test string, translated"
+        fuzzy_unit.markfuzzy(True)
+        fuzzy_unit._modified = False
+        self.unit_controller.load_unit(fuzzy_unit)
+        self.undo_controller.model.clear()
+        before_state = fuzzy_unit._current_state
+        assert before_state != workflow.StateEnum.EMPTY
+
+        self.undo_controller._on_unit_delete_text(
+            None, fuzzy_unit, fuzzy_unit.rich_target, None, 0, 0, fuzzy_unit.rich_target, 0)
+        fuzzy_unit.target = ''
+        self.unit_controller._correct_empty_state(fuzzy_unit)  # the debounced timer's own effect
+
+        assert fuzzy_unit._current_state == workflow.StateEnum.EMPTY
+        entry = self.undo_controller.model.undo_stack[-1]
+        assert entry['state_before'] == before_state
+        assert entry['state_after'] == workflow.StateEnum.EMPTY
+
     def test_loading_a_fuzzy_unit_colours_the_editor_background(self, monkeypatch):
         # The row being actively edited is drawn by UnitView itself, not
         # StoreCellRenderer.do_render() - #3321's fix doesn't reach it.

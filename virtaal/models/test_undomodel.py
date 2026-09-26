@@ -224,3 +224,61 @@ def test_push_of_a_kind_tagged_entry_still_gets_navigation_inference():
     model.push({'kind': 'state', 'unit': unit_b, 'from_state': 0, 'to_state': 100})
 
     assert model.undo_stack[1] == {'kind': 'navigate', 'unit': unit_b, 'from_unit': unit_a}
+
+
+def _text_entry_with_state(unit, state_before):
+    return {'action': _noop, 'unit': unit, 'targetn': 0, 'cursorpos': 0, 'state_before': state_before}
+
+
+def test_attach_state_after_records_it_on_the_top_entry():
+    model = UndoModel(controller=None)
+    unit = object()
+    model.push(_text_entry_with_state(unit, state_before=80))
+
+    model.attach_state_after(unit, 0)
+
+    assert model.undo_stack[-1]['state_after'] == 0
+
+
+def test_attach_state_after_reaches_into_the_last_item_of_a_group():
+    model = UndoModel(controller=None)
+    unit = object()
+    model.record_start()
+    model.push(_entry_for(unit, 'b1'))
+    model.push(_text_entry_with_state(unit, state_before=80))
+    model.record_stop()
+
+    model.attach_state_after(unit, 0)
+
+    assert model.undo_stack[-1][-1]['state_after'] == 0
+
+
+def test_attach_state_after_is_a_noop_once_something_was_undone():
+    model = UndoModel(controller=None)
+    unit = object()
+    model.push(_text_entry_with_state(unit, state_before=80))
+    model.pop()
+
+    model.attach_state_after(unit, 0)
+
+    assert 'state_after' not in model.undo_stack[-1]
+
+
+def test_attach_state_after_is_a_noop_for_a_different_unit():
+    model = UndoModel(controller=None)
+    unit_a, unit_b = object(), object()
+    model.push(_text_entry_with_state(unit_a, state_before=80))
+
+    model.attach_state_after(unit_b, 0)
+
+    assert 'state_after' not in model.undo_stack[-1]
+
+
+def test_attach_state_after_is_a_noop_without_state_before():
+    model = UndoModel(controller=None)
+    unit = object()
+    model.push(_entry_for(unit, 'a1'))  # no 'state_before'
+
+    model.attach_state_after(unit, 0)
+
+    assert 'state_after' not in model.undo_stack[-1]

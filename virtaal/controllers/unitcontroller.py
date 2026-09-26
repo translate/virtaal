@@ -194,10 +194,18 @@ class UnitController(BaseController):
         else:
             target_len = len(unit.target)
         empty_state = unit._current_state == workflow.StateEnum.EMPTY
+        newstate = None
         if target_len and empty_state:
-            self.set_current_state(workflow.StateEnum.UNREVIEWED)
+            newstate = workflow.StateEnum.UNREVIEWED
         elif not target_len and not empty_state:
-            self.set_current_state(workflow.StateEnum.EMPTY)
+            newstate = workflow.StateEnum.EMPTY
+        if newstate is None:
+            return
+
+        self.set_current_state(newstate)
+        undo_controller = getattr(self.main_controller, 'undo_controller', None)
+        if undo_controller:
+            undo_controller.model.attach_state_after(unit, newstate)
 
     def _start_state_timer(self):
         if self._state_timer_active:

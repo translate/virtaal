@@ -276,62 +276,74 @@ class HTTPClient:
         from virtaal.__version__ import ver as version
         platform = sys.platform
         if platform.startswith('linux'):
-            import os
-            # All systems supporting systemd:
-            if os.path.isfile('/etc/os-release'):
-                try:
-                    lines = open('/etc/os-release', encoding='utf-8').read().splitlines()
-                    distro = None
-                    distro_version = None
-                    for line in lines:
-                        if line.startswith('NAME'):
-                            distro = line.split('=')[-1]
-                            distro = distro.replace('"', '')
-                        if line.startswith('VERSION'):
-                            distro_version = line.split('=')[-1]
-                            distro_version = distro_version.replace('"', '')
-                    platform = '%s; %s %s' % (platform, distro, distro_version)
-                except Exception as e:
-                    pass
-
-            # Debian, Ubuntu, Mandriva:
-            elif os.path.isfile('/etc/lsb-release'):
-                try:
-                    lines = open('/etc/lsb-release', encoding='utf-8').read().splitlines()
-                    for line in lines:
-                        if line.startswith('DISTRIB_DESCRIPTION'):
-                            distro = line.split('=')[-1]
-                            distro = distro.replace('"', '')
-                            platform = '%s; %s' % (platform, distro)
-                except Exception as e:
-                    pass
-            # Fedora, RHEL:
-            elif os.path.isfile('/etc/system-release'):
-                try:
-                    lines = open('/etc/system-release', encoding='utf-8').read().splitlines()
-                    for line in lines:
-                        distro, dummy, distro_version, codename = line.split()
-                        platform = '%s; %s %s' % (platform, distro, distro_version)
-                except Exception as e:
-                    pass
+            platform = self._linux_platform_string(platform)
         elif platform.startswith('win'):
-            major, minor = sys.getwindowsversion()[:2]
-            # from http://msdn.microsoft.com/en-us/library/ms724833%28v=vs.85%29.aspx
-            name_dict = {
-                    (5, 0): "Windows 2000",
-                    (5, 1): "Windows XP",
-                    (6, 0): "Windows Vista", # Also Windows Server 2008
-                    (6, 1): "Windows 7",     # Also Windows Server 2008 R2
-                    (6, 2): "Windows 8",     # Also Windows Server 2012
-                    (6, 3): "Windows 8.1",   # Also Windows Server 2012 R2
-                   (10, 0): "Windows 10",
-            }
-            # (5, 2) includes XP Professional x64 Edition, Server 2003, Home Server, Server 2003 R2
-            name = name_dict.get((major, minor), None)
-            if name:
-                platform = '%s; %s' % (platform, name)
+            platform = self._windows_platform_string(platform)
         elif platform.startswith('darwin'):
-            import platform as plat
-            release, versioninfo, machine = plat.mac_ver()
-            platform = "%s; %s %s" % (platform, release, machine)
+            platform = self._macos_platform_string(platform)
         self.user_agent = 'Virtaal/%s (%s)' % (version, platform)
+
+    def _linux_platform_string(self, platform):
+        import os
+        # All systems supporting systemd:
+        if os.path.isfile('/etc/os-release'):
+            try:
+                lines = open('/etc/os-release', encoding='utf-8').read().splitlines()
+                distro = None
+                distro_version = None
+                for line in lines:
+                    if line.startswith('NAME'):
+                        distro = line.split('=')[-1]
+                        distro = distro.replace('"', '')
+                    if line.startswith('VERSION'):
+                        distro_version = line.split('=')[-1]
+                        distro_version = distro_version.replace('"', '')
+                platform = '%s; %s %s' % (platform, distro, distro_version)
+            except Exception as e:
+                pass
+
+        # Debian, Ubuntu, Mandriva:
+        elif os.path.isfile('/etc/lsb-release'):
+            try:
+                lines = open('/etc/lsb-release', encoding='utf-8').read().splitlines()
+                for line in lines:
+                    if line.startswith('DISTRIB_DESCRIPTION'):
+                        distro = line.split('=')[-1]
+                        distro = distro.replace('"', '')
+                        platform = '%s; %s' % (platform, distro)
+            except Exception as e:
+                pass
+        # Fedora, RHEL:
+        elif os.path.isfile('/etc/system-release'):
+            try:
+                lines = open('/etc/system-release', encoding='utf-8').read().splitlines()
+                for line in lines:
+                    distro, dummy, distro_version, codename = line.split()
+                    platform = '%s; %s %s' % (platform, distro, distro_version)
+            except Exception as e:
+                pass
+        return platform
+
+    def _windows_platform_string(self, platform):
+        import sys
+        major, minor = sys.getwindowsversion()[:2]
+        # from http://msdn.microsoft.com/en-us/library/ms724833%28v=vs.85%29.aspx
+        name_dict = {
+                (5, 0): "Windows 2000",
+                (5, 1): "Windows XP",
+                (6, 0): "Windows Vista", # Also Windows Server 2008
+                (6, 1): "Windows 7",     # Also Windows Server 2008 R2
+                (6, 2): "Windows 8",     # Also Windows Server 2012
+                (6, 3): "Windows 8.1",   # Also Windows Server 2012 R2
+               (10, 0): "Windows 10",
+        }
+        # (5, 2) includes XP Professional x64 Edition, Server 2003, Home Server, Server 2003 R2
+        name = name_dict.get((major, minor), None)
+        if name:
+            platform = '%s; %s' % (platform, name)
+        return platform
+
+    def _macos_platform_string(self, platform):
+        import platform as plat
+        release, versioninfo, machine = plat.mac_ver()
+        return "%s; %s %s" % (platform, release, machine)

@@ -108,6 +108,12 @@ class TerminologyCombo(Gtk.ComboBox):
         if parent:
             parent.grab_focus()
 
+        # Group the anchor-delete with the term-insert into one undo entry.
+        undo_controller = getattr(parent, 'undo_controller', None)
+        recording = undo_controller and not undo_controller.model.recording
+        if recording:
+            undo_controller.record_start()
+
         buffer = parent.get_buffer()
         parent.remove(self)
         if self.insert_offset >= 0:
@@ -121,6 +127,9 @@ class TerminologyCombo(Gtk.ComboBox):
             if self.selected_string:
                 buffer.insert(iterins, self.selected_string)
                 parent.emit("changed")
+
+        if recording:
+            undo_controller.record_stop()
 
 
     # EVENT HANDLERS #

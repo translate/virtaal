@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-26 16:20+0100\n"
+"POT-Creation-Date: 2026-09-26 21:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2160,6 +2160,15 @@ msgstr ""
 #: virtaal/views/mainview.py
 #, python-format
 msgid "%(modified_marker)s%(current_file)s - Virtaal"
+msgstr ""
+
+#. l10n: This is the title of the main window of Virtaal, without the app name
+#. %(modified_marker)s is a star that is displayed if the file is modified, and should be at the start of the window title
+#. %(current_file)s is the file name of the current file
+#. most languages will not need to change this
+#: virtaal/views/mainview.py
+#, python-format
+msgid "%(modified_marker)s%(current_file)s"
 msgstr ""
 
 #: virtaal/views/mainview.py

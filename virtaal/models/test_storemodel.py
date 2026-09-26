@@ -49,3 +49,22 @@ def test_update_file_merges_a_newer_template(tmp_path):
 
     units = {u.source: u.target for u in model.get_units()}
     assert units == {"Hello": "Hallo", "World": ""}
+
+
+def test_update_file_then_save_writes_back_to_the_original_path(tmp_path):
+    # Real bug (#3808): the tempfile-based stats hack left .fileobj bound
+    # to its own removed tempfile, so save() wrote to a stale path
+    # instead of old_path.
+    old_path = tmp_path / "old.po"
+    new_path = tmp_path / "new.po"
+    old_path.write_bytes(_OLD_PO)
+    new_path.write_bytes(_NEW_PO)
+
+    model = StoreModel(str(old_path), _FakeController())
+    model.update_file(str(new_path))
+    model._trans_store.save()
+
+    with open(old_path, "rb") as f:
+        saved = f.read()
+    assert b"World" in saved
+    assert set(tmp_path.iterdir()) == {old_path, new_path}

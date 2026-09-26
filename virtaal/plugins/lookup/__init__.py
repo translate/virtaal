@@ -35,15 +35,3 @@ class Plugin(BasePlugin):
 
     def _init_plugin(self):
         self.controller = LookupController(self, self.config)
-
-
-    # METHODS #
-    def configure(self, parent):
-        self.controller.view.select_backends(parent)
-        self.config = self.controller.config
-        self.save_config()
-
-    def destroy(self):
-        self.config = self.controller.config
-        self.save_config()
-        self.controller.destroy()

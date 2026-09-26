@@ -684,7 +684,8 @@ def test_set_saveable_skips_redundant_updates_while_already_modified():
     view.set_saveable(True)  # must not raise
 
 
-def test_set_saveable_marks_the_title_modified():
+def test_set_saveable_marks_the_title_modified(monkeypatch):
+    monkeypatch.setattr(platform, 'use_app_name_in_title', lambda: True)
     save_item = _FakeSensitiveWidget()
     revert_item = _FakeSensitiveWidget()
     widgets = {'mnu_save': save_item, 'mnu_revert': revert_item}
@@ -702,7 +703,8 @@ def test_set_saveable_marks_the_title_modified():
     assert view.modified is True
 
 
-def test_set_saveable_clears_the_modified_marker():
+def test_set_saveable_clears_the_modified_marker(monkeypatch):
+    monkeypatch.setattr(platform, 'use_app_name_in_title', lambda: True)
     widgets = {'mnu_save': _FakeSensitiveWidget(), 'mnu_revert': _FakeSensitiveWidget()}
     view = MainView.__new__(MainView)
     view.modified = True
@@ -714,6 +716,21 @@ def test_set_saveable_clears_the_modified_marker():
 
     assert view._title == 'document.po - Virtaal'
     assert view.modified is False
+
+
+def test_set_saveable_omits_the_app_name_when_the_platform_says_so(monkeypatch):
+    # e.g. a frozen macOS .app - the Dock/Cmd-Tab already show "Virtaal".
+    monkeypatch.setattr(platform, 'use_app_name_in_title', lambda: False)
+    widgets = {'mnu_save': _FakeSensitiveWidget(), 'mnu_revert': _FakeSensitiveWidget()}
+    view = MainView.__new__(MainView)
+    view.modified = False
+    view.gui = SimpleNamespace(get_object=lambda name: widgets[name])
+    view.controller = SimpleNamespace(get_store_filename=lambda: '/tmp/document.po')
+    view.main_window = SimpleNamespace(set_title=lambda title: setattr(view, '_title', title))
+
+    view.set_saveable(True)
+
+    assert view._title == '*document.po'
 
 
 def test_set_saveable_skips_the_title_without_a_filename():

@@ -194,7 +194,6 @@ class StoreModel(BaseModel):
 
         from translate.convert import pot2po
         self._trans_store = pot2po.convert_stores(newstore, self._trans_store, fuzzymatching=False)
-        self._trans_store.fileobj = oldfileobj #Let's attempt to keep the old file and name if possible
 
         #FIXME: ugly tempfile hack, can we please have a pure store implementation of statsdb
         import os
@@ -207,8 +206,10 @@ class StoreModel(BaseModel):
 
         self.controller.compare_stats(oldstats, self.stats)
 
-        # store filename or else save is confused
+        # store filename/fileobj or else save is confused (#3808) -
+        # savefile() above rebound both to the now-removed stats tempfile.
         self._trans_store.filename = oldfilename
+        self._trans_store.fileobj = oldfileobj
         self._correct_header(self._trans_store)
         self.nplurals = self._compute_nplurals(self._trans_store)
 

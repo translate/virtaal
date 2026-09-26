@@ -616,9 +616,10 @@ def test_update_store_checks_delegates_to_the_store():
 # compare_stats() #
 
 def test_compare_stats_shows_before_and_after_counts():
+    # A dismissable notice, not a blocking modal (#3808).
     controller = _controller()
     shown = []
-    controller.main_controller = SimpleNamespace(show_info=lambda title, msg: shown.append((title, msg)))
+    controller.main_controller = SimpleNamespace(show_template_update_notice=lambda title, msg: shown.append((title, msg)))
     oldstats = {'translated': [1], 'fuzzy': [1, 2], 'untranslated': []}
     newstats = {'translated': [1, 2, 3], 'fuzzy': [], 'untranslated': [1]}
 

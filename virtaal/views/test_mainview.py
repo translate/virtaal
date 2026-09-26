@@ -756,3 +756,58 @@ def test_setup_key_bindings_leaves_preferences_alone_on_mac(monkeypatch):
     MainView._setup_key_bindings(view)
 
     assert not any(path == "<Virtaal>/Edit/Preferences" for path, key, mods in calls)
+
+
+# show_template_update_notice(): dismissable "Update from Template" stats
+# notice, replacing a blocking modal dialog (#3808).
+
+class _FakeVboxMain:
+    def __init__(self):
+        self.packed = []
+
+    def pack_start(self, widget, expand, fill, padding):
+        self.packed.append(widget)
+
+    def reorder_child(self, widget, position):
+        pass
+
+
+def _view_for_template_update_notice():
+    vbox = _FakeVboxMain()
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: vbox)
+    return view, vbox
+
+
+def test_show_template_update_notice_packs_a_dismissable_infobar():
+    view, vbox = _view_for_template_update_notice()
+
+    view.show_template_update_notice('File Updated', 'Before:\n\tTranslated: 1')
+
+    assert len(vbox.packed) == 1
+    infobar = vbox.packed[0]
+    assert isinstance(infobar, Gtk.InfoBar)
+    assert infobar.get_message_type() == Gtk.MessageType.INFO
+    assert infobar.get_show_close_button() is True
+
+
+def test_show_template_update_notice_replaces_a_previous_one():
+    view, vbox = _view_for_template_update_notice()
+    view.show_template_update_notice('First', 'msg')
+    first = view._template_update_infobar
+
+    view.show_template_update_notice('Second', 'msg2')
+
+    assert len(vbox.packed) == 2
+    assert view._template_update_infobar is not first
+    assert first.get_parent() is None  # destroyed, not just replaced in our own attribute
+
+
+def test_show_template_update_notice_dismiss_clears_the_tracked_infobar():
+    view, vbox = _view_for_template_update_notice()
+    view.show_template_update_notice('File Updated', 'msg')
+    infobar = view._template_update_infobar
+
+    infobar.emit('response', Gtk.ResponseType.CLOSE)
+
+    assert view._template_update_infobar is None

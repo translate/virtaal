@@ -128,6 +128,24 @@ class UndoModel(BaseModel):
     def _navigation_entry(self, unit):
         return {'kind': 'navigate', 'unit': unit, 'from_unit': self._last_pushed_unit}
 
+    def attach_state_after(self, unit, state_after):
+        """Record what an automatic state correction changed a unit's
+            state to, onto the text-change entry currently on top of
+            the stack for that unit - so undoing the text also
+            restores the state that came with it. A no-op unless that
+            entry is still exactly where it was pushed (nothing
+            undone/redone/pushed since) and opted in via 'state_before'
+            (see UndoController._on_unit_insert_text/_delete_text)."""
+        if self.index < 0 or self.index != len(self.undo_stack) - 1:
+            return
+        top = self.undo_stack[-1]
+        entry = top[-1] if isinstance(top, list) and top else top
+        if not isinstance(entry, dict) or entry.get('kind'):
+            return
+        if entry.get('unit') is not unit or 'state_before' not in entry:
+            return
+        entry['state_after'] = state_after
+
     def record_start(self):
         if self.recording:
             raise Exception('Undo already recording.')

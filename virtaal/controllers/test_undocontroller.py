@@ -60,13 +60,21 @@ class _FakeUnitController:
         self.view = _FakeView(textbox, unit)
         self.current_unit = unit
         self.restored_states = []  # [(state, sticky), ...]
+        self.set_states = []  # [state, ...], from set_current_state()
 
     def connect(self, signal, handler):
         pass
 
+    def set_current_state(self, newstate, from_user=False):
+        self.current_unit.state = newstate
+        self.set_states.append(newstate)
+
     def restore_state(self, state, sticky):
         self.current_unit.state = state
         self.restored_states.append((state, sticky))
+
+    def _correct_empty_state(self, unit):
+        pass  # _correct_state_after_undo_redo()'s own re-check; not under test here
 
 
 class _FakeStoreController:
@@ -440,6 +448,28 @@ def test_undo_after_a_pure_navigation_still_jumps_and_reverts_together():
 
     assert controller.unit_controller.current_unit is unit_a  # jumped...
     assert controller.unit_controller.restored_states == [(80, False)]  # ...and reverted, same keypress
+
+
+def test_undo_of_a_text_edit_restores_its_bundled_state_change():
+    # translate/virtaal#1886: undo must restore the state an edit's
+    # own automatic correction changed, not just the text.
+    textbox = _FakeTextbox('a')
+    unit = _FakeUnit()
+    unit.STATE = True
+    unit._current_state = 80  # e.g. fuzzy, before the edit
+    controller = _make_controller(textbox, unit)
+
+    controller._on_unit_delete_text(None, unit, StringElem('a'), None, 0, 0, textbox.elem, 0)
+    textbox.elem.sub = StringElem('').sub
+    controller.model.attach_state_after(unit, 0)  # what _correct_empty_state() does next
+
+    controller._on_undo_activated()
+    assert str(textbox.elem) == 'a'
+    assert controller.unit_controller.set_states[-1] == 80
+
+    controller._on_redo_activated()
+    assert str(textbox.elem) == ''
+    assert controller.unit_controller.set_states[-1] == 0
 
 
 def test_init_disables_undo_redo_immediately():

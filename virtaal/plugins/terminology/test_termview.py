@@ -102,12 +102,30 @@ def test_update_style_falls_back_to_default_colors_when_not_inverse(monkeypatch)
     assert TerminologyGUIInfo.bg == termview._default_bg
 
 
+class _FakeUndoController:
+    """Just enough of UndoController for insert_selected()'s
+        record_start()/record_stop() calls."""
+    def __init__(self):
+        from virtaal.models.undomodel import UndoModel
+        self.model = UndoModel(self)
+        self.record_start_calls = 0
+        self.record_stop_calls = 0
+
+    def record_start(self):
+        self.record_start_calls += 1
+        self.model.record_start()
+
+    def record_stop(self):
+        self.record_stop_calls += 1
+        self.model.record_stop()
+
+
 def _make_combo_in_textview(translations):
     # insert_selected() relies on the real TextBox's own 'changed' signal
     # and refresh_cursor_pos attribute - a plain Gtk.TextView has neither.
     combo = TerminologyCombo(_term_elem(translations))
     window = Gtk.Window()
-    main_controller = SimpleNamespace(placeables_controller=object(), undo_controller=object())
+    main_controller = SimpleNamespace(placeables_controller=object(), undo_controller=_FakeUndoController())
     textview = TextBox(main_controller)
     window.add(textview)
     buffer = textview.get_buffer()
@@ -142,6 +160,19 @@ def test_insert_selected_inserts_the_chosen_translation():
     assert _buffer_text(buffer) == 'dryf'
     assert combo.get_parent() is None
     assert textview.is_focus()
+
+
+def test_insert_selected_groups_the_anchor_delete_and_insert_into_one_undo_step():
+    combo, textview, buffer = _make_combo_in_textview(['drank', 'dryf'])
+    combo.insert_offset = 0
+    combo.set_active(1)  # 'dryf'
+
+    combo.insert_selected()
+
+    undo_controller = textview.undo_controller
+    assert undo_controller.record_start_calls == 1
+    assert undo_controller.record_stop_calls == 1
+    assert not undo_controller.model.recording  # closed, not left open
 
 
 def test_insert_selected_does_nothing_when_no_translation_is_selected():

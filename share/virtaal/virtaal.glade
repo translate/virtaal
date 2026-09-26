@@ -3,8 +3,6 @@
   <!-- interface-requires gtk+ 2.16 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="MainWindow">
-    <property name="width_request">620</property>
-    <property name="height_request">400</property>
     <property name="title" translatable="yes">Virtaal</property>
     <child>
       <widget class="GtkVBox" id="vbox_main">

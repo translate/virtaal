@@ -515,8 +515,6 @@ If you are translating from English to French then French would be your translat
     </child>
   </object>
   <object class="GtkWindow" id="MainWindow">
-    <property name="width_request">620</property>
-    <property name="height_request">400</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Virtaal</property>
     <child>

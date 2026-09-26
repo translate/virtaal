@@ -1,0 +1,41 @@
+# Manual test file for search-highlight not shifting on edit
+# (translate/virtaal#1789).
+#
+# Editing text before a search-match highlight doesn't move the
+# highlight to track the match's new position - it stays at the old
+# character offset instead of following the text, or vanishes.
+#
+# Scenario A - undo puts the highlight out of sync:
+# 1. Search for "rta" (Ctrl+F) - unit 1 ("Virtaal") matches and "rta"
+#    is highlighted.
+# 2. Click into unit 1's target and type "taal" in front of it, so it
+#    reads "taalVirtaal".
+# 3. Press Ctrl+Z to undo that insertion, back to "Virtaal".
+#    Expect: the highlight is still on "rta" inside "Virtaal".
+#    Bug: the highlight stays at the offset it had in "taalVirtaal",
+#    now landing on the wrong letters (or off the end of the word).
+#
+# Scenario B - typing before a match removes the highlight:
+# 1. Search for "rta" (Ctrl+F) - unit 2 ("sortable") matches "rta" at
+#    "so[rta]ble".
+# 2. Press Enter to jump into unit 2's target; "rta" is selected/
+#    highlighted. Press Home (or click) to move the cursor to the
+#    start of the target WITHOUT typing over that selection.
+# 3. Type a single character at the start, e.g. "x", so the text reads
+#    "xsortable".
+#    Expect: the highlight stays on "rta" (now one character further
+#    along, at "xso[rta]ble").
+#    Bug: the highlight is removed instead of kept/adjusted.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+#. Scenario A - undo the leading "taal" insertion and check the
+#. highlight follows "rta" back here.
+msgid "Virtaal"
+msgstr "Virtaal"
+
+#. Scenario B - move the cursor to the start (without disturbing the
+#. selected match) and type a character there.
+msgid "sortable"
+msgstr "sortable"

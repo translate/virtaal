@@ -6,6 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import logging
+from difflib import SequenceMatcher
 
 from gi.repository import Gdk, GLib, Gtk
 
@@ -46,6 +47,9 @@ class SearchMode(BaseMode):
         self.select_first_match = True
         self._search_timeout = 0
         self._unit_modified_id = 0
+        # (unit id, part, part_n) -> the text self.matches' offsets into
+        # it were last computed against; see _sync_matches_for_key().
+        self._match_text_cache = {}
 
     def _create_widgets(self):
         # Widgets for search functionality (in first row)
@@ -207,6 +211,10 @@ class SearchMode(BaseMode):
         self.matches, indexes = self.filter.getmatches(store_units)
         self.matchcursor = Cursor(self.matches, range(len(self.matches)))
 
+        self._match_text_cache = {}
+        for match in self.matches:
+            self._match_text_cache.setdefault(self._match_key(match), match.get_getter()())
+
         logging.debug('Search text: %s (%d matches)' % (self.ent_search.get_text(), len(indexes)))
 
         if indexes:
@@ -255,6 +263,7 @@ class SearchMode(BaseMode):
             self._unit_modified_id = 0
 
         self.matches = []
+        self._match_text_cache = {}
 
     def _add_widgets(self):
         table = self.controller.view.mode_box
@@ -321,21 +330,67 @@ class SearchMode(BaseMode):
         except ValueError as ve:
             logging.exception("Removing search highlighting tag exception:")
 
-    def _get_matches_for_textbox(self, textbox):
+    def _get_textbox_part(self, textbox):
+        """@returns: (role, part_n) identifying which part of the current
+            unit this textbox renders, e.g. ('target', 0)."""
         role = textbox.role
-        unit = self.unitview.unit
         if role == 'source':
-            textbox_n = self.unitview.sources.index(textbox)
+            return role, self.unitview.sources.index(textbox)
         elif role == 'target':
-            textbox_n = self.unitview.targets.index(textbox)
-        else:
-            raise ValueError('Could not find text box in sources or targets: %s' % (textbox))
+            return role, self.unitview.targets.index(textbox)
+        raise ValueError('Could not find text box in sources or targets: %s' % (textbox))
+
+    def _get_matches_for_textbox(self, textbox):
+        unit = self.unitview.unit
+        role, textbox_n = self._get_textbox_part(textbox)
         return [
             m for m in self.matches
             if m.unit is unit and \
                 m.part == role and \
                 m.part_n == textbox_n
         ]
+
+    def _match_key(self, match):
+        return (id(match.unit), match.part, match.part_n)
+
+    def _sync_matches_for_key(self, key):
+        """Re-align this unit/part's matches with its live text: shift
+            offsets past an edit, or drop a match the edit itself
+            overlapped.
+
+            Only handles a single contiguous edit region - one keystroke
+            or one undo/redo step, which is all this needs to handle."""
+        matches = [m for m in self.matches if self._match_key(m) == key]
+        if not matches:
+            self._match_text_cache.pop(key, None)
+            return
+
+        new_text = matches[0].get_getter()()
+        old_text = self._match_text_cache.get(key)
+        self._match_text_cache[key] = new_text
+        if old_text is None or old_text == new_text:
+            return
+
+        changes = [op for op in SequenceMatcher(a=old_text, b=new_text, autojunk=False).get_opcodes()
+                   if op[0] != 'equal']
+        if not changes:
+            return
+        edit_start = min(op[1] for op in changes)
+        edit_end = max(op[2] for op in changes)
+        delta = len(new_text) - len(old_text)
+
+        for match in list(matches):
+            if match.end <= edit_start:
+                continue  # entirely before the edit - unaffected
+            elif match.start >= edit_end:
+                match.start += delta
+                match.end += delta
+            else:
+                # The edit overlapped the match's own text, which no
+                # longer means what it matched.
+                self.matches.remove(match)
+                if getattr(self, 'matchcursor', None) is not None:
+                    self.matchcursor.indices = range(len(self.matches))
 
     def _highlight_textbox_matches(self, textbox, select_match=True):
         buff = textbox.buffer
@@ -541,22 +596,28 @@ class SearchMode(BaseMode):
         self._set_search_bg(self.default_base)
 
     def _on_textbox_refreshed(self, textbox, elem):
-        """Redoes highlighting after a C{StringElem} render destroyed it."""
+        """Redoes highlighting after a C{StringElem} render destroyed it.
+            Unlike 'unit-modified', undo doesn't suppress this signal, so
+            it's also where matches get re-synced after an undo/redo."""
         if not textbox.props.visible or not bool(elem):
             return
+
+        unit = self.unitview.unit
+        if unit is not None:
+            try:
+                role, part_n = self._get_textbox_part(textbox)
+            except ValueError:
+                role = None
+            if role is not None:
+                self._sync_matches_for_key((id(unit), role, part_n))
 
         self._highlight_textbox_matches(textbox, select_match=False)
 
     def _on_unit_modified(self, unit_controller, current_unit):
-        unit_matches = self._get_matches_for_unit(current_unit)
-        for match in unit_matches:
-            # Modifications can only affect the target:
-            if not match.part == 'target':
-                continue
-            if not self.filter.re_search.match(match.get_getter()()[match.start:match.end]):
-                logging.debug('Match to remove: %s' % (match))
-                self.matches.remove(match)
-                self.matchcursor.indices = range(len(self.matches))
+        # Modifications can only affect the target:
+        part_ns = {m.part_n for m in self._get_matches_for_unit(current_unit) if m.part == 'target'}
+        for part_n in part_ns:
+            self._sync_matches_for_key((id(current_unit), 'target', part_n))
 
     def _refresh_proxy(self, *args):
         self._cancel_search_timeout()

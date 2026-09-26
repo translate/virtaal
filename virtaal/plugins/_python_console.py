@@ -63,109 +63,127 @@ class PythonConsole(Gtk.ScrolledWindow):
 
         elif event.keyval == Gdk.KEY_Return and \
                 event.get_state() == Gdk.ModifierType.CONTROL_MASK:
-            # Get the command
-            buffer = view.get_buffer()
-            inp_mark = buffer.get_mark("input")
-            inp = buffer.get_iter_at_mark(inp_mark)
-            cur = buffer.get_end_iter()
-            line = buffer.get_text(inp, cur)
-            self.current_command = self.current_command + line + "\n"
-            self.history_add(line)
-
-            # Prepare the new line
-            cur = buffer.get_end_iter()
-            buffer.insert(cur, "\n... ")
-            cur = buffer.get_end_iter()
-            buffer.move_mark(inp_mark, cur)
-
-            # Keep indentation of precedent line
-            spaces = re.match(self.__spaces_pattern, line)
-            if spaces is not None:
-                buffer.insert(cur, line[spaces.start() : spaces.end()])
-                cur = buffer.get_end_iter()
-
-            buffer.place_cursor(cur)
-            GLib.idle_add(self.scroll_to_end)
-            return True
+            return self.__on_key_ctrl_return(view)
 
         elif event.keyval == Gdk.KEY_Return:
-            # Get the marks
-            buffer = view.get_buffer()
-            lin_mark = buffer.get_mark("input-line")
-            inp_mark = buffer.get_mark("input")
-
-            # Get the command line
-            inp = buffer.get_iter_at_mark(inp_mark)
-            cur = buffer.get_end_iter()
-            line = buffer.get_text(inp, cur)
-            self.current_command = self.current_command + line + "\n"
-            self.history_add(line)
-
-            # Make the line blue
-            lin = buffer.get_iter_at_mark(lin_mark)
-            buffer.apply_tag(self.command, lin, cur)
-            buffer.insert(cur, "\n")
-
-            cur_strip = self.current_command.rstrip()
-
-            if cur_strip.endswith(":") \
-            or (self.current_command[-2:] != "\n\n" and self.block_command):
-                # Unfinished block command
-                self.block_command = True
-                com_mark = "... "
-            elif cur_strip.endswith("\\"):
-                com_mark = "... "
-            else:
-                # Eval the command
-                self.__run(self.current_command)
-                self.current_command = ''
-                self.block_command = False
-                com_mark = ">>> "
-
-            # Prepare the new line
-            cur = buffer.get_end_iter()
-            buffer.move_mark(lin_mark, cur)
-            buffer.insert(cur, com_mark)
-            cur = buffer.get_end_iter()
-            buffer.move_mark(inp_mark, cur)
-            buffer.place_cursor(cur)
-            GLib.idle_add(self.scroll_to_end)
-            return True
+            return self.__on_key_return(view)
 
         elif event.keyval == Gdk.KEY_KP_Down or \
                 event.keyval == Gdk.KEY_Down:
-            # Next entry from history
-            view.emit_stop_by_name("key_press_event")
-            self.history_down()
-            GLib.idle_add(self.scroll_to_end)
-            return True
+            return self.__on_key_history_down(view)
 
         elif event.keyval == Gdk.KEY_KP_Up or \
                 event.keyval == Gdk.KEY_Up:
-            # Previous entry from history
-            view.emit_stop_by_name("key_press_event")
-            self.history_up()
-            GLib.idle_add(self.scroll_to_end)
-            return True
+            return self.__on_key_history_up(view)
 
         elif event.keyval == Gdk.KEY_KP_Left or \
                 event.keyval == Gdk.KEY_Left or \
                 event.keyval == Gdk.KEY_BackSpace:
-            buffer = view.get_buffer()
-            inp = buffer.get_iter_at_mark(buffer.get_mark("input"))
-            cur = buffer.get_iter_at_mark(buffer.get_insert())
-            return inp.compare(cur) == 0
+            return self.__on_key_left_or_backspace(view)
 
         elif event.keyval == Gdk.KEY_Home:
-            # Go to the begin of the command instead of the begin of
-            # the line
-            buffer = view.get_buffer()
-            inp = buffer.get_iter_at_mark(buffer.get_mark("input"))
-            if event.get_state() == Gdk.ModifierType.SHIFT_MASK:
-                buffer.move_mark_by_name("insert", inp)
-            else:
-                buffer.place_cursor(inp)
-            return True
+            return self.__on_key_home(view, event)
+
+    def __on_key_ctrl_return(self, view):
+        # Get the command
+        buffer = view.get_buffer()
+        inp_mark = buffer.get_mark("input")
+        inp = buffer.get_iter_at_mark(inp_mark)
+        cur = buffer.get_end_iter()
+        line = buffer.get_text(inp, cur)
+        self.current_command = self.current_command + line + "\n"
+        self.history_add(line)
+
+        # Prepare the new line
+        cur = buffer.get_end_iter()
+        buffer.insert(cur, "\n... ")
+        cur = buffer.get_end_iter()
+        buffer.move_mark(inp_mark, cur)
+
+        # Keep indentation of precedent line
+        spaces = re.match(self.__spaces_pattern, line)
+        if spaces is not None:
+            buffer.insert(cur, line[spaces.start() : spaces.end()])
+            cur = buffer.get_end_iter()
+
+        buffer.place_cursor(cur)
+        GLib.idle_add(self.scroll_to_end)
+        return True
+
+    def __on_key_return(self, view):
+        # Get the marks
+        buffer = view.get_buffer()
+        lin_mark = buffer.get_mark("input-line")
+        inp_mark = buffer.get_mark("input")
+
+        # Get the command line
+        inp = buffer.get_iter_at_mark(inp_mark)
+        cur = buffer.get_end_iter()
+        line = buffer.get_text(inp, cur)
+        self.current_command = self.current_command + line + "\n"
+        self.history_add(line)
+
+        # Make the line blue
+        lin = buffer.get_iter_at_mark(lin_mark)
+        buffer.apply_tag(self.command, lin, cur)
+        buffer.insert(cur, "\n")
+
+        cur_strip = self.current_command.rstrip()
+
+        if cur_strip.endswith(":") \
+        or (self.current_command[-2:] != "\n\n" and self.block_command):
+            # Unfinished block command
+            self.block_command = True
+            com_mark = "... "
+        elif cur_strip.endswith("\\"):
+            com_mark = "... "
+        else:
+            # Eval the command
+            self.__run(self.current_command)
+            self.current_command = ''
+            self.block_command = False
+            com_mark = ">>> "
+
+        # Prepare the new line
+        cur = buffer.get_end_iter()
+        buffer.move_mark(lin_mark, cur)
+        buffer.insert(cur, com_mark)
+        cur = buffer.get_end_iter()
+        buffer.move_mark(inp_mark, cur)
+        buffer.place_cursor(cur)
+        GLib.idle_add(self.scroll_to_end)
+        return True
+
+    def __on_key_history_down(self, view):
+        # Next entry from history
+        view.stop_emission_by_name("key_press_event")
+        self.history_down()
+        GLib.idle_add(self.scroll_to_end)
+        return True
+
+    def __on_key_history_up(self, view):
+        # Previous entry from history
+        view.stop_emission_by_name("key_press_event")
+        self.history_up()
+        GLib.idle_add(self.scroll_to_end)
+        return True
+
+    def __on_key_left_or_backspace(self, view):
+        buffer = view.get_buffer()
+        inp = buffer.get_iter_at_mark(buffer.get_mark("input"))
+        cur = buffer.get_iter_at_mark(buffer.get_insert())
+        return inp.compare(cur) == 0
+
+    def __on_key_home(self, view, event):
+        # Go to the begin of the command instead of the begin of
+        # the line
+        buffer = view.get_buffer()
+        inp = buffer.get_iter_at_mark(buffer.get_mark("input"))
+        if event.get_state() == Gdk.ModifierType.SHIFT_MASK:
+            buffer.move_mark_by_name("insert", inp)
+        else:
+            buffer.place_cursor(inp)
+        return True
 
     def __mark_set_cb(self, buffer, iter, name):
         input = buffer.get_iter_at_mark(buffer.get_mark("input"))

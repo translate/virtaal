@@ -931,6 +931,78 @@ def test_show_template_update_notice_dismiss_clears_the_tracked_infobar():
     assert view._template_update_infobar is None
 
 
+# show_same_lang_notice() / hide_same_lang_notice() - warn that source and
+# target language are the same (#1346), replacing the old red button text.
+
+def _view_for_same_lang_notice():
+    vbox = _FakeVboxMain()
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: vbox)
+    return view, vbox
+
+
+def test_show_same_lang_notice_packs_a_dismissable_infobar():
+    view, vbox = _view_for_same_lang_notice()
+
+    view.show_same_lang_notice(lambda: None)
+
+    assert len(vbox.packed) == 1
+    infobar = vbox.packed[0]
+    assert isinstance(infobar, Gtk.InfoBar)
+    assert infobar.get_message_type() == Gtk.MessageType.WARNING
+    assert infobar.get_show_close_button() is True
+
+
+def test_show_same_lang_notice_does_not_stack_a_second_one():
+    view, vbox = _view_for_same_lang_notice()
+    view.show_same_lang_notice(lambda: None)
+
+    view.show_same_lang_notice(lambda: None)
+
+    assert len(vbox.packed) == 1
+
+
+def test_show_same_lang_notice_change_pair_button_runs_the_callback_without_dismissing():
+    # Picking the same pair again (or cancelling) leaves the language
+    # controller's source/target unchanged, so no notify_diff_langs()
+    # follows - the notice has to stay up until it actually does.
+    view, vbox = _view_for_same_lang_notice()
+    calls = []
+    view.show_same_lang_notice(lambda: calls.append('changed'))
+    infobar = view._same_lang_infobar
+
+    infobar.emit('response', Gtk.ResponseType.OK)
+
+    assert calls == ['changed']
+    assert view._same_lang_infobar is infobar
+
+
+def test_show_same_lang_notice_dismiss_clears_the_tracked_infobar():
+    view, vbox = _view_for_same_lang_notice()
+    view.show_same_lang_notice(lambda: None)
+
+    view._same_lang_infobar.emit('response', Gtk.ResponseType.CLOSE)
+
+    assert view._same_lang_infobar is None
+
+
+def test_hide_same_lang_notice_destroys_a_shown_notice():
+    view, vbox = _view_for_same_lang_notice()
+    view.show_same_lang_notice(lambda: None)
+    infobar = view._same_lang_infobar
+
+    view.hide_same_lang_notice()
+
+    assert view._same_lang_infobar is None
+    assert infobar.get_parent() is None
+
+
+def test_hide_same_lang_notice_does_nothing_when_none_shown():
+    view, vbox = _view_for_same_lang_notice()
+
+    view.hide_same_lang_notice()  # must not raise
+
+
 # show_update_notice() - #3616's platform-specific download button
 
 def _real_view_for_update_notice():

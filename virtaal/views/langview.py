@@ -26,7 +26,6 @@ class LanguageView(BaseView):
     # INITIALIZERS #
     def __init__(self, controller):
         self.controller = controller
-        self._popupbutton_fg_provider = None
         self._init_gui()
 
     def _create_dialogs(self):
@@ -80,24 +79,11 @@ class LanguageView(BaseView):
             pairlabel = '%s » %s' % (srclang.name, tgtlang.name)
         return pairlabel
 
-    def _set_popupbutton_fg(self, color):
-        """Highlight (or clear, if C{color} is C{None}) the language
-            pair button's foreground - modify_fg() is deprecated."""
-        style = self.popupbutton.get_style_context()
-        if self._popupbutton_fg_provider is not None:
-            style.remove_provider(self._popupbutton_fg_provider)
-            self._popupbutton_fg_provider = None
-        if color is not None:
-            provider = Gtk.CssProvider()
-            provider.load_from_data(('* { color: %s; }' % color).encode())
-            style.add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-            self._popupbutton_fg_provider = provider
-
     def notify_same_langs(self):
-        GLib.idle_add(lambda: self._set_popupbutton_fg('#f66'))
+        GLib.idle_add(self.controller.main_controller.view.show_same_lang_notice, lambda: self._on_other_activated(None))
 
     def notify_diff_langs(self):
-        GLib.idle_add(lambda: self._set_popupbutton_fg(None))
+        GLib.idle_add(self.controller.main_controller.view.hide_same_lang_notice)
 
     def show(self):
         """Add the managed C{PopupMenuButton} to the C{MainView}'s status bar."""

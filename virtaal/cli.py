@@ -191,6 +191,17 @@ def _set_lang(options, parser):
         parser.error(_("No translation found for language '%(lang)s'") % {"lang": options.lang})
 
 
+def _fix_rtl_without_translation():
+    """Must run after pan_app has finished installing the UI locale
+    and before the first widget is constructed - same constraint as
+    _set_pseudo_translation's own direction override."""
+    if pan_app.has_ui_translation:
+        return
+    from gi.repository import Gtk
+    if Gtk.get_locale_direction() == Gtk.TextDirection.RTL:
+        Gtk.Widget.set_default_direction(Gtk.TextDirection.LTR)
+
+
 def _run_profiled(profile_file, startup_file):
     import cProfile
     import logging
@@ -252,6 +263,8 @@ def main(argv):
         # No arguments given, so we save some time by avoiding all the things
         # that could have happened on the command line
         pan_app.DEBUG = False
+
+    _fix_rtl_without_translation()
 
     if options and getattr(options, "profile", None) != None:
         _profile_runner(options, parser, startup_file)

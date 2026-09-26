@@ -10,6 +10,8 @@ unit's second (or later) target copied the singular source instead of
 the matching plural source form.
 """
 
+from types import SimpleNamespace
+
 from translate.misc.multistring import multistring
 
 from virtaal.views.unitview import UnitView
@@ -300,3 +302,146 @@ def test_store_loaded_enables_placeable_navigation_and_recomputes_edit_menu():
     assert not view.mnu_cut.get_sensitive()
     assert not view.mnu_copy.get_sensitive()
     assert not view.mnu_paste.get_sensitive()
+
+
+# _on_target_key_pressed() #
+
+def _view_for_key_press():
+    view = UnitView.__new__(UnitView)
+    view.unit = object()
+    return view
+
+
+def test_on_target_key_pressed_with_no_eventname_falls_through():
+    view = _view_for_key_press()
+
+    assert view._on_target_key_pressed(None, None, '', None) is False
+
+
+def test_on_target_key_pressed_enter_focuses_the_next_visible_target():
+    view = _view_for_key_press()
+    focused = []
+    view.focus_text_view = lambda tb: focused.append(tb)
+    next_textbox = SimpleNamespace(get_parent=lambda: SimpleNamespace(props=SimpleNamespace(visible=True)))
+
+    result = view._on_target_key_pressed(None, None, 'enter', next_textbox)
+
+    assert result is True
+    assert focused == [next_textbox]
+
+
+def test_on_target_key_pressed_ctrl_enter_advances_the_workflow_and_moves_on():
+    view = _view_for_key_press()
+    advanced = []
+    view.advance_workflow_state = lambda direction: advanced.append(direction)
+    key_press_calls = []
+    view._on_key_press_event = lambda widget, event: key_press_calls.append(event)
+
+    result = view._on_target_key_pressed(None, 'the-event', 'ctrl-enter', None)
+
+    assert result is True
+    assert advanced == [1]
+    assert key_press_calls == ['the-event']
+
+
+def test_on_target_key_pressed_ctrl_shift_enter_advances_the_workflow_backward():
+    view = _view_for_key_press()
+    advanced = []
+    view.advance_workflow_state = lambda direction: advanced.append(direction)
+    view._on_key_press_event = lambda widget, event: None
+
+    result = view._on_target_key_pressed(None, 'the-event', 'ctrl-shift-enter', None)
+
+    assert result is True
+    assert advanced == [-1]
+
+
+def test_on_target_key_pressed_alt_down_schedules_copy_original(monkeypatch):
+    view = _view_for_key_press()
+    scheduled = []
+    monkeypatch.setattr('virtaal.views.unitview.GLib.idle_add', lambda func: scheduled.append(func))
+    copied = []
+    view.copy_original = lambda textbox: copied.append(textbox)
+    textbox = object()
+
+    result = view._on_target_key_pressed(textbox, None, 'alt-down', None)
+
+    assert result is True
+    assert len(scheduled) == 1
+    scheduled[0]()  # run the deferred call as GLib would
+
+    assert copied == [textbox]
+
+
+def test_on_target_key_pressed_alt_down_skips_copy_if_the_unit_changed_first(monkeypatch):
+    view = _view_for_key_press()
+    scheduled = []
+    monkeypatch.setattr('virtaal.views.unitview.GLib.idle_add', lambda func: scheduled.append(func))
+    copied = []
+    view.copy_original = lambda textbox: copied.append(textbox)
+
+    view._on_target_key_pressed(object(), None, 'alt-down', None)
+    view.unit = object()  # a different unit loaded before the idle callback runs
+    scheduled[0]()
+
+    assert copied == []
+
+
+def test_on_target_key_pressed_shift_tab_moves_focus_back():
+    view = _view_for_key_press()
+    view._focused_target_n = 1
+    focused = []
+    view.focus_text_view = lambda tb: focused.append(tb)
+    view._widgets = {'targets': ['t0', 't1'], 'sources': []}
+
+    result = view._on_target_key_pressed(None, None, 'shift-tab', None)
+
+    assert result is True
+    # focused_target_n's setter delegates to focus_text_view(), which
+    # (mocked here) is what actually updates _focused_target_n for real.
+    assert focused == ['t0']
+
+
+def test_on_target_key_pressed_shift_tab_does_nothing_at_the_first_target():
+    view = _view_for_key_press()
+    view._focused_target_n = 0
+    focused = []
+    view.focus_text_view = lambda tb: focused.append(tb)
+
+    result = view._on_target_key_pressed(None, None, 'shift-tab', None)
+
+    assert result is True
+    assert view._focused_target_n == 0
+    assert focused == []
+
+
+def test_on_target_key_pressed_ctrl_tab_focuses_the_language_controller():
+    view = _view_for_key_press()
+    focused = []
+    view.controller = SimpleNamespace(main_controller=SimpleNamespace(
+        lang_controller=SimpleNamespace(view=SimpleNamespace(focus=lambda: focused.append(True))),
+    ))
+
+    result = view._on_target_key_pressed(None, None, 'ctrl-tab', None)
+
+    assert result is True
+    assert focused == [True]
+
+
+def test_on_target_key_pressed_ctrl_shift_tab_focuses_the_mode_controller():
+    view = _view_for_key_press()
+    focused = []
+    view.controller = SimpleNamespace(main_controller=SimpleNamespace(
+        mode_controller=SimpleNamespace(view=SimpleNamespace(focus=lambda: focused.append(True))),
+    ))
+
+    result = view._on_target_key_pressed(None, None, 'ctrl-shift-tab', None)
+
+    assert result is True
+    assert focused == [True]
+
+
+def test_on_target_key_pressed_unrecognized_eventname_falls_through():
+    view = _view_for_key_press()
+
+    assert view._on_target_key_pressed(None, None, 'something-else', None) is False

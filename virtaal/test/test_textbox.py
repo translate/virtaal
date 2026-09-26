@@ -157,10 +157,14 @@ class TestTextBox(TestScaffolding):
         textbox = self._target_for('%s files copied')
         textbox.set_visible(False)
         before = textbox.get_text()
+        try:
+            textbox.refresh()  # must not raise, and must not touch rendered text
 
-        textbox.refresh()  # must not raise, and must not touch rendered text
-
-        assert textbox.get_text() == before
+            assert textbox.get_text() == before
+        finally:
+            # Shared across the whole class - leaving it invisible would
+            # silently no-op every later test's refresh().
+            textbox.set_visible(True)
 
     def test_repr_includes_role_and_current_text(self):
         textbox = self._target_for('%s files copied')

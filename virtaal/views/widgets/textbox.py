@@ -5,7 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-from gi.repository import Gdk, Gtk
+from gi.repository import Gdk, GLib, Gtk
 from gi.repository.GObject import SignalFlags
 from translate.storage.placeables import StringElem
 from translate.storage.placeables import parse as elem_parse
@@ -111,6 +111,7 @@ class TextBox(Gtk.TextView):
         self.connect('key-press-event', self._on_key_pressed)
         self.connect('move-cursor', self._on_event_remove_suggestion)
         self.buffer.connect('insert-text', self._on_insert_text)
+        self.buffer.connect_after('insert-text', self._on_insert_text_after)
         self.buffer.connect('delete-range', self._on_delete_range)
         self.buffer.connect('begin-user-action', self._on_begin_user_action)
         self.buffer.connect('end-user-action', self._on_end_user_action)
@@ -501,10 +502,12 @@ class TextBox(Gtk.TextView):
 
         self.buffer.handler_block_by_func(self._on_delete_range)
         self.buffer.handler_block_by_func(self._on_insert_text)
+        self.buffer.handler_block_by_func(self._on_insert_text_after)
         self.elem.gui_info.render()
         self.show_suggestion()
         self.buffer.handler_unblock_by_func(self._on_delete_range)
         self.buffer.handler_unblock_by_func(self._on_insert_text)
+        self.buffer.handler_unblock_by_func(self._on_insert_text_after)
 
         tagtable = self.buffer.get_tag_table()
         def remtag(tag, data):
@@ -727,6 +730,7 @@ class TextBox(Gtk.TextView):
         ins_text = forceunicode(ins_text[:length])
         buff_offset = iter.get_offset()
         gui_info = self.elem.gui_info
+        tree_offset = gui_info.gui_to_tree_index(buff_offset)
         left = gui_info.elem_at_offset(buff_offset-1)
         right = gui_info.elem_at_offset(buff_offset)
 
@@ -761,9 +765,8 @@ class TextBox(Gtk.TextView):
                     succeeded = left.insert(len(left), ins_text)
                     #logging.debug('%s.insert(len(%s), "%s")' % (repr(left), repr(left), ins_text))
         if not succeeded:
-            offset = gui_info.gui_to_tree_index(buff_offset)
-            succeeded = self.elem.insert(offset, ins_text)
-            #logging.debug('self.elem.insert(%d, "%s"): %s' % (offset, ins_text, succeeded))
+            succeeded = self.elem.insert(tree_offset, ins_text)
+            #logging.debug('self.elem.insert(%d, "%s"): %s' % (tree_offset, ins_text, succeeded))
 
         if succeeded:
             self.elem.prune()
@@ -772,8 +775,45 @@ class TextBox(Gtk.TextView):
                 cursor_pos = self.buffer.props.cursor_position
             cursor_pos += len(ins_text)
             self.refresh_cursor_pos = cursor_pos
+            self._live_insert_pending = tree_offset
             #logging.debug('text-inserted: %s@%d of %s' % (ins_text, iter.get_offset(), repr(self.elem)))
             self.emit('text-inserted', ins_text, buff_offset, self.elem)
+
+    def _on_insert_text_after(self, buffer, iter, ins_text, length):
+        tree_offset = getattr(self, '_live_insert_pending', None)
+        self._live_insert_pending = None
+        if tree_offset is None or self.elem is None:
+            return
+
+        affected_leaf = self.elem.elem_at_offset(tree_offset)
+        if affected_leaf is None:
+            return
+
+        # Character count is unchanged by reparse - only node structure is -
+        # so any GUI-length growth here is purely new widgets (e.g. a
+        # pilcrow), and the cursor needs correcting by exactly that.
+        plain_len = len(str(affected_leaf))
+        elem_parse(affected_leaf, self.placeables_controller.get_parsers_for_textbox(self))
+
+        if affected_leaf.isleaf():
+            return
+
+        affected_leaf.gui_info = None
+        self.add_default_gui_info(affected_leaf)
+
+        cursor_pos = self.refresh_cursor_pos
+        if cursor_pos < 0:
+            cursor_pos = self.buffer.props.cursor_position
+        target_cursor_pos = cursor_pos + (affected_leaf.gui_info.length() - plain_len)
+        self.refresh_cursor_pos = target_cursor_pos
+
+        scheduled_elem = self.elem
+        def do_refresh():
+            if self.elem is scheduled_elem:
+                self.refresh(update=True)
+                self.place_cursor(target_cursor_pos)
+            return False
+        GLib.idle_add(do_refresh)
 
     def _on_key_pressed(self, widget, event, *args):
         evname = None

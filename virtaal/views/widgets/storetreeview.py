@@ -54,6 +54,10 @@ class StoreTreeView(Gtk.TreeView):
         # editor-height remeasurement until the resize actually stops.
         self.is_resizing = False
 
+        # Throttles rapid key-repeat navigation - see _keyboard_move() (#3805).
+        self._pending_move_offset = 0
+        self._move_throttle_id = None
+
     def _install_callbacks(self):
         self.connect('key-press-event', self._on_key_press)
         self.connect("cursor-changed", self._on_cursor_changed)
@@ -196,13 +200,29 @@ class StoreTreeView(Gtk.TreeView):
         if self._waiting_for_row_change > 0:
             return True
 
+        self._pending_move_offset += offset
+        if self._move_throttle_id is None:
+            # First move of a burst applies immediately; further
+            # repeats only accumulate until the next tick (#3805).
+            self._apply_pending_move()
+            self._move_throttle_id = GLib.timeout_add(50, self._on_move_throttle)
+
+        return True
+
+    def _apply_pending_move(self):
+        offset, self._pending_move_offset = self._pending_move_offset, 0
         try:
             #self._owner.set_statusbar_message(self.document.mode_cursor.move(offset))
             self.view.cursor.move(offset)
         except IndexError:
             pass
 
-        return True
+    def _on_move_throttle(self):
+        if self._pending_move_offset:
+            self._apply_pending_move()
+            return True  # keep ticking - more arrived since the last tick
+        self._move_throttle_id = None
+        return False  # caught up - one-shot until the next burst starts
 
     def _move_up(self, _accel_group, _acceleratable, _keyval, _modifier):
         return self._keyboard_move(-1)
@@ -281,6 +301,9 @@ class StoreTreeView(Gtk.TreeView):
         if self._configure_timeout_id is not None:
             GLib.source_remove(self._configure_timeout_id)
             self._configure_timeout_id = None
+        if self._move_throttle_id is not None:
+            GLib.source_remove(self._move_throttle_id)
+            self._move_throttle_id = None
 
     def _on_focus_in(self, widget, _event, *_user_args):
         # Restore cursor/editing state on refocus, same as

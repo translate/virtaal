@@ -265,7 +265,7 @@ class MainView(BaseView):
         except (ImportError, ValueError):
             logging.debug("GtkosxApplication not found (brew install gtk-mac-integration for native macOS menu-bar integration). Expect zero integration with the Mac desktop.")
 
-    def _setup_windows_integration(self):
+    def _detect_windows_is_dark(self):
         # AppsUseLightTheme: 0 means dark, 1 (or absent) means light.
         try:
             import winreg
@@ -274,10 +274,13 @@ class MainView(BaseView):
                 r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize")
             apps_use_light_theme, _ = winreg.QueryValueEx(key, "AppsUseLightTheme")
             winreg.CloseKey(key)
-            Gtk.Settings.get_default().set_property(
-                "gtk-application-prefer-dark-theme", apps_use_light_theme == 0)
         except OSError:
             logging.exception("Couldn't determine Windows theme")
+            return None
+        return apps_use_light_theme == 0
+
+    def _setup_windows_integration(self):
+        self._start_appearance_polling(self._detect_windows_is_dark)
 
     def _setup_recent_files(self):
         from virtaal.views import recent

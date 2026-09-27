@@ -15,6 +15,7 @@ which is never returned by a real click - clicking Open/Save silently
 did nothing, no error.
 """
 
+import sys
 from types import SimpleNamespace
 from urllib.parse import quote
 
@@ -940,6 +941,41 @@ def test_detect_macos_is_dark_returns_none_on_subprocess_error(monkeypatch):
     monkeypatch.setattr(mainview.subprocess, 'run', _raise)
 
     assert MainView._detect_macos_is_dark(None) is None
+
+
+# _detect_windows_is_dark() #
+
+def _fake_winreg(monkeypatch, apps_use_light_theme):
+    fake_key = object()
+    fake_module = SimpleNamespace(
+        HKEY_CURRENT_USER=object(),
+        OpenKey=lambda hive, path: fake_key,
+        QueryValueEx=lambda key, name: (apps_use_light_theme, 1),
+        CloseKey=lambda key: None,
+    )
+    monkeypatch.setitem(sys.modules, 'winreg', fake_module)
+    return fake_module
+
+
+def test_detect_windows_is_dark_true(monkeypatch):
+    _fake_winreg(monkeypatch, apps_use_light_theme=0)
+
+    assert MainView._detect_windows_is_dark(None) is True
+
+
+def test_detect_windows_is_dark_false(monkeypatch):
+    _fake_winreg(monkeypatch, apps_use_light_theme=1)
+
+    assert MainView._detect_windows_is_dark(None) is False
+
+
+def test_detect_windows_is_dark_returns_none_on_missing_registry_key(monkeypatch):
+    def _raise(hive, path):
+        raise OSError('registry key not found')
+    fake_module = SimpleNamespace(HKEY_CURRENT_USER=object(), OpenKey=_raise)
+    monkeypatch.setitem(sys.modules, 'winreg', fake_module)
+
+    assert MainView._detect_windows_is_dark(None) is None
 
 
 # _setup_key_bindings() #

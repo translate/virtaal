@@ -233,6 +233,143 @@ def test_show_save_confirm_dialog_shows_before_presenting_and_restores_parent_fo
     assert view._top_window is top_window
 
 
+# show_prompt_dialog()/show_error_dialog()/show_info_dialog(): same
+# missing-focus bug as show_save_confirm_dialog() (#3865)
+
+class _FakeMessageDialog:
+    def __init__(self, response=Gtk.ResponseType.YES):
+        self.calls = []
+        self._response = response
+
+    def set_title(self, title):
+        pass
+
+    def set_markup(self, markup):
+        pass
+
+    def set_transient_for(self, window):
+        pass
+
+    def show(self):
+        self.calls.append('show')
+
+    def present(self):
+        self.calls.append('present')
+
+    def run(self):
+        return self._response
+
+    def hide(self):
+        pass
+
+
+def test_show_prompt_dialog_shows_before_presenting_and_restores_parent_focus(monkeypatch):
+    from gi.repository import GLib
+    monkeypatch.setattr(GLib, 'idle_add', lambda func, *args: func(*args))
+    view = MainView.__new__(MainView)
+    dialog = _FakeMessageDialog(response=Gtk.ResponseType.YES)
+    view.prompt_dialog = dialog
+    top_window = _FakeTopWindow()
+    view._top_window = top_window
+
+    result = view.show_prompt_dialog(message='Reload the file?')
+
+    assert dialog.calls == ['show', 'present']
+    assert top_window.presented
+    assert view._top_window is top_window
+    assert result is True
+
+
+def test_show_error_dialog_shows_before_presenting_and_restores_parent_focus(monkeypatch):
+    from gi.repository import GLib
+    monkeypatch.setattr(GLib, 'idle_add', lambda func, *args: func(*args))
+    view = MainView.__new__(MainView)
+    dialog = _FakeMessageDialog(response=Gtk.ResponseType.OK)
+    view.error_dialog = dialog
+    top_window = _FakeTopWindow()
+    view._top_window = top_window
+
+    view.show_error_dialog(message='Could not open file.')
+
+    assert dialog.calls == ['show', 'present']
+    assert top_window.presented
+    assert view._top_window is top_window
+
+
+def test_show_info_dialog_shows_before_presenting_and_restores_parent_focus(monkeypatch):
+    from gi.repository import GLib
+    monkeypatch.setattr(GLib, 'idle_add', lambda func, *args: func(*args))
+    view = MainView.__new__(MainView)
+    dialog = _FakeMessageDialog(response=Gtk.ResponseType.OK)
+    view.info_dialog = dialog
+    top_window = _FakeTopWindow()
+    view._top_window = top_window
+
+    view.show_info_dialog(message='Done.')
+
+    assert dialog.calls == ['show', 'present']
+    assert top_window.presented
+    assert view._top_window is top_window
+
+
+class _FakeInputDialog:
+    def __init__(self, response=Gtk.ResponseType.OK, text='typed'):
+        self._response = response
+        self._text = text
+
+    def set_transient_for(self, window):
+        pass
+
+    def run(self, title=None, message=None):
+        return self._response, self._text
+
+    def hide(self):
+        pass
+
+
+def test_show_input_dialog_restores_parent_focus(monkeypatch):
+    from gi.repository import GLib
+    monkeypatch.setattr(GLib, 'idle_add', lambda func, *args: func(*args))
+    view = MainView.__new__(MainView)
+    view.input_dialog = _FakeInputDialog()
+    top_window = _FakeTopWindow()
+    view._top_window = top_window
+
+    result = view.show_input_dialog(message='How many plural forms?')
+
+    assert top_window.presented
+    assert view._top_window is top_window
+    assert result == 'typed'
+
+
+class _FakeEntryDialogEntry:
+    def set_text(self, text):
+        pass
+
+    def get_text(self):
+        return ''
+
+    def grab_focus(self):
+        pass
+
+
+def test_entry_dialog_run_presents_before_grabbing_focus(monkeypatch):
+    # present() only raises/focuses an already-realized window - it has
+    # to come after show_all(), matching every other dialog fixed for
+    # the same macOS AX-focus bug (#3865).
+    from virtaal.views.mainview import EntryDialog
+    dialog = EntryDialog.__new__(EntryDialog)
+    dialog.ent_input = _FakeEntryDialogEntry()
+    calls = []
+    dialog.show_all = lambda: calls.append('show_all')
+    dialog.present = lambda: calls.append('present')
+    monkeypatch.setattr(Gtk.Dialog, 'run', lambda self: Gtk.ResponseType.CANCEL)
+
+    dialog.run()
+
+    assert calls == ['show_all', 'present']
+
+
 # quit(): window geometry persisted before Gtk.main_quit()
 
 class _FakeMainWindow:

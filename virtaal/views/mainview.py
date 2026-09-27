@@ -109,6 +109,7 @@ class EntryDialog(Gtk.Dialog):
             self.ent_input.set_text('')
 
         self.show_all()
+        self.present()
         self.ent_input.grab_focus()
         response = super().run()
 
@@ -831,6 +832,8 @@ class MainView(BaseView):
         self._top_window = self.input_dialog
         response, text = self.input_dialog.run(title=title, message=message)
         self.input_dialog.hide()
+        from gi.repository import GLib
+        GLib.idle_add(old_top.present)
         self._top_window = old_top
 
         if response == Gtk.ResponseType.OK:
@@ -870,8 +873,12 @@ class MainView(BaseView):
         self.error_dialog.set_transient_for(parent or self._top_window)
         old_top = self._top_window
         self._top_window = self.error_dialog
+        self.error_dialog.show()
+        self.error_dialog.present()
         response = self.error_dialog.run()
         self.error_dialog.hide()
+        from gi.repository import GLib
+        GLib.idle_add(old_top.present)
         self._top_window = old_top
 
     def show_prompt_dialog(self, title='', message='', markup='', parent=None):
@@ -880,8 +887,12 @@ class MainView(BaseView):
         self.prompt_dialog.set_transient_for(parent or self._top_window)
         old_top = self._top_window
         self._top_window = self.prompt_dialog
+        self.prompt_dialog.show()
+        self.prompt_dialog.present()
         response = self.prompt_dialog.run()
         self.prompt_dialog.hide()
+        from gi.repository import GLib
+        GLib.idle_add(old_top.present)
         self._top_window = old_top
 
         return response == Gtk.ResponseType.YES
@@ -893,8 +904,12 @@ class MainView(BaseView):
         self.info_dialog.set_transient_for(parent or self._top_window)
         old_top = self._top_window
         self._top_window = self.info_dialog
+        self.info_dialog.show()
+        self.info_dialog.present()
         response = self.info_dialog.run()
         self.info_dialog.hide()
+        from gi.repository import GLib
+        GLib.idle_add(old_top.present)
         self._top_window = old_top
 
     def show_save_dialog(self, title, current_filename=None):

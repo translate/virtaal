@@ -126,6 +126,115 @@ jobs:
       - name: Build docs
         run: make docs
 
+  appdata-screenshots:
+    # Used to be 3.13-only steps bolted onto the `test` matrix below -
+    # unrelated to which Python version happens to run it, and it was
+    # the straggler leg dragging out the whole matrix (~50-60s extra:
+    # launching a real GTK app under Xvfb to render each screenshot
+    # state). Grouped with pre-commit/docs-and-translations instead -
+    # a "does the repo's own generated/checked-in content still match
+    # reality" check, not a functional test.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Install system dependencies
+        # Same package list as `test` below - launching a real Virtaal
+        # window to screenshot it needs the same GTK3/spellcheck/X11
+        # stack, not a trimmed-down subset.
+        run: |
+          # A stale/broken package-index mirror snapshot happens often
+          # enough on GitHub-hosted Ubuntu runners to just retry.
+          for i in 1 2 3; do sudo apt-get update && break || sleep 10; done
+          sudo apt-get install -y \
+            at-spi2-core \
+            gir1.2-gtk-3.0 \
+            gir1.2-gtkspell3-3.0 \
+            gobject-introspection \
+            hunspell-en-us \
+            libcairo2-dev \
+            libcurl4-gnutls-dev \
+            libenchant-2-dev \
+            libgirepository-2.0-dev \
+            libglib2.0-dev \
+            libgnutls28-dev \
+            pkg-config \
+            python3-dev \
+            xvfb \
+            openbox \
+            xdotool \
+            imagemagick \
+            fonts-lohit-beng-bengali
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install setuptools wheel
+          pip install translate-toolkit
+          pip install pygobject
+          pip install pyenchant
+
+      - name: Install virtaal
+        # No `.[test]` extras here - this job never runs pytest.
+        run: pip install --no-build-isolation .
+
+      - name: Generate and check AppData screenshots
+        id: screenshots
+        # Deliberately non-blocking (#3625): io.github.translate.Virtaal.metainfo.xml.in's
+        # <image> tags are plain raw.githubusercontent.com URLs, not files
+        # bundled into any build, so a stale screenshot can't break
+        # anything - this step only ever flags drift, it doesn't fail the
+        # job on a mismatch. It does fail on any other error (the script
+        # crashing, exit code 2) - that's a real regression, not drift.
+        #
+        # xvfb-run -a (auto-servernum): a hardcoded `Xvfb :99` here once
+        # collided with a stale lock from a prior display 99 ("Server is
+        # already active for display 99"), failing the whole step.
+        # openbox has to be started inside the same wrapped command so
+        # it shares xvfb-run's auto-picked DISPLAY and keeps running for
+        # the script's whole duration, not just for one command.
+        run: |
+          # Not `... --check; exit_code=$?`: GitHub Actions runs `run:`
+          # under `bash -e`, so a bare non-zero exit right there would
+          # abort the step before exit_code=$? is ever reached. Wrapping
+          # it in `if` is what keeps set -e from firing on it.
+          if xvfb-run -a --server-args="-screen 0 1024x768x24" bash -c '
+            openbox --sm-disable &
+            sleep 1
+            python3 devsupport/screenshots/generate_appdata_screenshots.py --check
+          '; then
+            exit_code=0
+          else
+            exit_code=$?
+          fi
+          if [ "$exit_code" -eq 0 ]; then
+            echo "mismatch=false" >> "$GITHUB_OUTPUT"
+          elif [ "$exit_code" -eq 1 ]; then
+            echo "mismatch=true" >> "$GITHUB_OUTPUT"
+            # Non-blocking doesn't mean invisible: a green job with an
+            # artifact nobody looks at is the same as no check at all.
+            echo "::warning title=AppData screenshots are stale::docs/_static/appdata/*.png no longer match what Virtaal actually renders - download the appdata-screenshots artifact from this run and commit the refresh."
+          else
+            exit "$exit_code"
+          fi
+
+      - name: Upload refreshed screenshots (only when stale)
+        if: steps.screenshots.outputs.mismatch == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: appdata-screenshots
+          path: screenshot-artifacts/
+          retention-days: 30
+
   test:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
@@ -222,58 +331,6 @@ jobs:
 
       - name: Smoke test the CLI
         run: xvfb-run -a --server-args="-screen 0 1024x768x24" virtaal --help
-
-      - name: Generate and check AppData screenshots
-        # Only once, not once per matrix leg - same reasoning as the
-        # coverage upload above.
-        if: matrix.python-version == '3.13'
-        id: screenshots
-        # Deliberately non-blocking (#3625): io.github.translate.Virtaal.metainfo.xml.in's
-        # <image> tags are plain raw.githubusercontent.com URLs, not files
-        # bundled into any build, so a stale screenshot can't break
-        # anything - this step only ever flags drift, it doesn't fail the
-        # job on a mismatch. It does fail on any other error (the script
-        # crashing, exit code 2) - that's a real regression, not drift.
-        #
-        # xvfb-run -a (auto-servernum), the same pattern the pytest and
-        # CLI smoke-test steps above already use - a hardcoded `Xvfb :99`
-        # here once collided with a stale lock from a prior display 99
-        # ("Server is already active for display 99"), failing the whole
-        # step. openbox has to be started inside the same wrapped command
-        # so it shares xvfb-run's auto-picked DISPLAY and keeps running
-        # for the script's whole duration, not just for one command.
-        run: |
-          # Not `... --check; exit_code=$?`: GitHub Actions runs `run:`
-          # under `bash -e`, so a bare non-zero exit right there would
-          # abort the step before exit_code=$? is ever reached. Wrapping
-          # it in `if` is what keeps set -e from firing on it.
-          if xvfb-run -a --server-args="-screen 0 1024x768x24" bash -c '
-            openbox --sm-disable &
-            sleep 1
-            python3 devsupport/screenshots/generate_appdata_screenshots.py --check
-          '; then
-            exit_code=0
-          else
-            exit_code=$?
-          fi
-          if [ "$exit_code" -eq 0 ]; then
-            echo "mismatch=false" >> "$GITHUB_OUTPUT"
-          elif [ "$exit_code" -eq 1 ]; then
-            echo "mismatch=true" >> "$GITHUB_OUTPUT"
-            # Non-blocking doesn't mean invisible: a green job with an
-            # artifact nobody looks at is the same as no check at all.
-            echo "::warning title=AppData screenshots are stale::docs/_static/appdata/*.png no longer match what Virtaal actually renders - download the appdata-screenshots artifact from this run and commit the refresh."
-          else
-            exit "$exit_code"
-          fi
-
-      - name: Upload refreshed screenshots (only when stale)
-        if: matrix.python-version == '3.13' && steps.screenshots.outputs.mismatch == 'true'
-        uses: actions/upload-artifact@v7
-        with:
-          name: appdata-screenshots
-          path: screenshot-artifacts/
-          retention-days: 30
 
   test-windows:
     runs-on: windows-latest
@@ -977,7 +1034,15 @@ jobs:
     # which shouldn't gate merging. Those endpoints exist for their own
     # sake (a single named outcome per platform, and what `release`
     # depends on), not to redefine what "core checks" means.
-    needs: [pre-commit, docs-and-translations, test, test-windows, test-macos]
+    needs:
+      [
+        pre-commit,
+        docs-and-translations,
+        appdata-screenshots,
+        test,
+        test-windows,
+        test-macos,
+      ]
     if: always()
     runs-on: ubuntu-24.04
     timeout-minutes: 5

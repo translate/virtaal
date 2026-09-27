@@ -3251,7 +3251,7 @@ If you are translating from English to French then French would be your translat
               <object class="GtkVBox" id="vbox11">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="spacing">15</property>
+                <property name="spacing">20</property>
                 <child>
                   <object class="GtkFrame" id="frame7">
                     <property name="visible">True</property>
@@ -3320,6 +3320,7 @@ If you are translating from English to French then French would be your translat
                               <object class="GtkExpander" id="exp_features">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="margin_top">12</property>
                                 <property name="use_markup">True</property>
                                 <child>
                                   <object class="GtkVBox" id="vbox13">

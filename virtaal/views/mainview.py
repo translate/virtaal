@@ -42,6 +42,36 @@ def _set_document_edited(gdk_window, edited):
     objc.objc_msgSend(ctypes.c_void_p(nswindow_ptr), sel, edited)
 
 
+def _note_recent_document(path):
+    """Feeds macOS's own document-tracking, independent of
+        GtkosxApplication (works even without gtk-mac-integration
+        installed) - the Dock icon's right-click menu and File > Open
+        Recent both come from here, complete with real Finder file-type
+        icons, and AppKit re-reads this list live on every right-click.
+        Clicking an entry re-delivers it through the same
+        NSApplicationOpenFile signal a Finder double-click uses."""
+    objc = ctypes.CDLL(ctypes.util.find_library("objc"))
+    objc.sel_registerName.restype = ctypes.c_void_p
+    objc.sel_registerName.argtypes = [ctypes.c_char_p]
+    objc.objc_getClass.restype = ctypes.c_void_p
+    objc.objc_getClass.argtypes = [ctypes.c_char_p]
+
+    def sel(name):
+        return objc.sel_registerName(name.encode())
+
+    def send(receiver, selector, *args, argtypes=None, restype=ctypes.c_void_p):
+        f = ctypes.CDLL(None).objc_msgSend
+        f.restype = restype
+        f.argtypes = [ctypes.c_void_p, ctypes.c_void_p] + (argtypes or [ctypes.c_void_p] * len(args))
+        return f(receiver, selector, *args)
+
+    nsstring = send(objc.objc_getClass(b"NSString"), sel("stringWithUTF8String:"),
+                    path.encode(), argtypes=[ctypes.c_char_p])
+    url = send(objc.objc_getClass(b"NSURL"), sel("fileURLWithPath:"), nsstring)
+    shared = send(objc.objc_getClass(b"NSDocumentController"), sel("sharedDocumentController"))
+    send(shared, sel("noteNewRecentDocumentURL:"), url, restype=None)
+
+
 def fill_dialog(dialog, title='', message='', markup=''):
     if title:
         dialog.set_title(title)
@@ -1141,7 +1171,9 @@ class MainView(BaseView):
         view.finish_editing_and_advance()
 
     def _on_recent_file_activated(self, chooser):
-        item = chooser.get_current_item()
+        self._open_recent_item(chooser.get_current_item())
+
+    def _open_recent_item(self, item):
         if item.exists():
             # For now we only handle local files, and limited the recent
             # manager to only give us those anyway, so we can get the filename
@@ -1218,16 +1250,26 @@ class MainView(BaseView):
         from virtaal.views import recent
         if store_controller.project:
             if not store_controller._archivetemp:
-                recent.rm.add_item('file://' + store_controller.get_bundle_filename())
+                path = store_controller.get_bundle_filename()
+                recent.rm.add_item('file://' + path)
+                if platform.is_mac:
+                    _note_recent_document(path)
         else:
             if getattr(self, '_uri', None):
                 recent.rm.add_item(self._uri)
+                if platform.is_mac:
+                    from gi.repository import GLib
+                    path, _host = GLib.filename_from_uri(self._uri)
+                    _note_recent_document(path)
             else:
+                path = os.path.abspath(store_controller.store.filename)
                 if platform.is_windows:
-                    url = 'file:///' + os.path.abspath(store_controller.store.filename)
+                    url = 'file:///' + path
                 else:
-                    url = 'file://' + os.path.abspath(store_controller.store.filename)
+                    url = 'file://' + path
                 recent.rm.add_item(url)
+                if platform.is_mac:
+                    _note_recent_document(path)
 
     def _on_window_state_event(self, widget, event):
         mnu_fullscreen = self.gui.get_object('mnu_fullscreen')

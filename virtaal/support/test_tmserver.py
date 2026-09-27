@@ -181,6 +181,110 @@ def test_unknown_path_returns_404(tmp_path):
     assert excinfo.value.code == 404
 
 
+# __init__()'s bytes-tmdbfile decode and tmfiles-loading branches #
+
+def test_init_decodes_a_bytes_tmdbfile(tmp_path):
+    db_path = str(tmp_path / 'tm.db').encode(sys.getfilesystemencoding())
+
+    server = tmserver.TMServer(db_path, None)
+
+    assert server.tmdb.add_dict({'source': 'cat', 'target': 'chat', 'context': ''}, 'en', 'fr') is None
+    assert server.tmdb.translate_unit('cat', 'en', 'fr')
+
+
+def test_init_loads_a_single_tm_file(tmp_path):
+    po_path = tmp_path / 'seed.po'
+    po_path.write_text('msgid "cat"\nmsgstr "chat"\n')
+
+    server = tmserver.TMServer(str(tmp_path / 'tm.db'), str(po_path), source_lang='en', target_lang='fr')
+
+    matches = server.tmdb.translate_unit('cat', 'en', 'fr')
+    assert matches[0]['target'] == 'chat'
+
+
+def test_init_loads_a_list_of_tm_files(tmp_path):
+    po1 = tmp_path / 'a.po'
+    po1.write_text('msgid "cat"\nmsgstr "chat"\n')
+    po2 = tmp_path / 'b.po'
+    po2.write_text('msgid "dog"\nmsgstr "chien"\n')
+
+    server = tmserver.TMServer(str(tmp_path / 'tm.db'), [str(po1), str(po2)], source_lang='en', target_lang='fr')
+
+    assert server.tmdb.translate_unit('cat', 'en', 'fr')[0]['target'] == 'chat'
+    assert server.tmdb.translate_unit('dog', 'en', 'fr')[0]['target'] == 'chien'
+
+
+# build_parser() #
+
+def test_build_parser_defaults():
+    args = tmserver.build_parser().parse_args([])
+
+    assert args.tmdbfile == ':memory:'
+    assert args.tmfiles is None
+    assert args.bind == 'localhost'
+    assert args.port == 8888
+    assert args.max_candidates == 3
+    assert args.min_similarity == 75
+    assert args.max_length == 1000
+    assert args.debug is False
+
+
+def test_build_parser_parses_provided_options():
+    args = tmserver.build_parser().parse_args([
+        '-d', 'my.db', '-f', 'a.po', '-f', 'b.po', '-s', 'en', '-t', 'fr',
+        '-b', '0.0.0.0', '-p', '9999',
+        '--max-candidates', '5', '--min-similarity', '50', '--max-length', '500',
+        '--debug',
+    ])
+
+    assert args.tmdbfile == 'my.db'
+    assert args.tmfiles == ['a.po', 'b.po']
+    assert args.source_lang == 'en'
+    assert args.target_lang == 'fr'
+    assert args.bind == '0.0.0.0'
+    assert args.port == 9999
+    assert args.max_candidates == 5
+    assert args.min_similarity == 50
+    assert args.max_length == 500
+    assert args.debug is True
+
+
+# main() - in-process, with the actual server bind/listen stubbed out #
+
+def test_main_runs_the_server_with_the_parsed_bind_and_port(monkeypatch, tmp_path):
+    calls = []
+    monkeypatch.setattr(sys, 'argv', ['tmserver', '-d', str(tmp_path / 'tm.db'), '-b', '127.0.0.1', '-p', '1234'])
+    monkeypatch.setattr(tmserver.Bottle, 'run', lambda self, **kwargs: calls.append(kwargs))
+
+    tmserver.main()
+
+    assert calls == [{'host': '127.0.0.1', 'port': 1234, 'server': 'cheroot', 'quiet': True}]
+
+
+def test_main_uses_a_more_verbose_format_and_keeps_cheroot_noisy_when_debugging(monkeypatch, tmp_path):
+    run_calls = []
+    basic_config_calls = []
+    monkeypatch.setattr(sys, 'argv', ['tmserver', '-d', str(tmp_path / 'tm.db'), '--debug'])
+    monkeypatch.setattr(tmserver.Bottle, 'run', lambda self, **kwargs: run_calls.append(kwargs))
+    monkeypatch.setattr(tmserver.logging, 'basicConfig', lambda **kwargs: basic_config_calls.append(kwargs))
+
+    tmserver.main()
+
+    assert basic_config_calls[0]['level'] == tmserver.logging.DEBUG
+    assert '%(funcName)s' in basic_config_calls[0]['format']
+    assert run_calls == [{'host': 'localhost', 'port': 8888, 'server': 'cheroot', 'quiet': False}]
+
+
+def test_main_swallows_a_keyboard_interrupt_from_the_server(monkeypatch, tmp_path):
+    monkeypatch.setattr(sys, 'argv', ['tmserver', '-d', str(tmp_path / 'tm.db')])
+
+    def raise_interrupt(self, **kwargs):
+        raise KeyboardInterrupt
+    monkeypatch.setattr(tmserver.Bottle, 'run', raise_interrupt)
+
+    tmserver.main()  # must not raise
+
+
 def test_main_serves_over_http_as_the_subprocess_localtm_spawns(tmp_path):
     # localtm.py always launches tmserver this way ("-m
     # virtaal.support.tmserver"), never by importing TMServer directly -

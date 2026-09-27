@@ -189,17 +189,40 @@ class MainView(BaseView):
         if windowx != '' and windowy != '':
             self.main_window.move(int(windowx), int(windowy))
 
-    def _setup_macos_integration(self):
-        # Follow the system light/dark appearance - GTK3 themes (Adwaita
-        # included) already derive their colours from this setting.
+    def _detect_macos_is_dark(self):
         try:
-            is_dark = subprocess.run(
+            return subprocess.run(
                 ["defaults", "read", "-g", "AppleInterfaceStyle"],
                 capture_output=True).stdout.strip() == b"Dark"
-            Gtk.Settings.get_default().set_property(
-                "gtk-application-prefer-dark-theme", is_dark)
         except (OSError, subprocess.SubprocessError):
             logging.exception("Couldn't determine macOS appearance")
+            return None
+
+    def _apply_appearance(self, detect_is_dark):
+        is_dark = detect_is_dark()
+        if is_dark is None:
+            return
+        settings = Gtk.Settings.get_default()
+        if settings.get_property("gtk-application-prefer-dark-theme") != is_dark:
+            settings.set_property("gtk-application-prefer-dark-theme", is_dark)
+
+    def _poll_appearance(self, detect_is_dark):
+        self._apply_appearance(detect_is_dark)
+        return True  # keep polling
+
+    def _start_appearance_polling(self, detect_is_dark):
+        # Follow the system light/dark appearance - GTK3 themes (Adwaita
+        # included) already derive their colours from this setting.
+        # Polled rather than pushed: neither platform's live
+        # notification for this (AppleInterfaceThemeChangedNotification,
+        # WM_SETTINGCHANGE) is reliably delivered to a bare, unbundled
+        # process.
+        self._apply_appearance(detect_is_dark)
+        from gi.repository import GLib
+        GLib.timeout_add_seconds(2, self._poll_appearance, detect_is_dark)
+
+    def _setup_macos_integration(self):
+        self._start_appearance_polling(self._detect_macos_is_dark)
 
         # Sometimes we have two resize grips: one from GTK, one from Aqua. We
         # might want to disable the GTK one:

@@ -144,7 +144,8 @@ class Project:
             convert_map = self.store.convert_map
             if input_fname in convert_map:
                 templ_fname = convert_map[input_fname][1]
-                template = self.get_file(templ_fname)
+                if templ_fname:
+                    template = self.get_file(templ_fname)
             elif input_type == "trans":
                 # inputfile is a translatable file, so it needed to be converted
                 # from some input document. Let's try and use that document as a

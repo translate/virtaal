@@ -129,12 +129,32 @@ def test_show_logs_displays_existing_log_content(monkeypatch, tmp_path):
         Gtk.TextBuffer, 'set_text',
         lambda self, text, *args: (shown.setdefault('text', text), real_set_text(self, text, -1))[-1])
     view = MainView.__new__(MainView)
-    view.main_window = None
+    view.main_window = Gtk.Window()
 
     view._on_show_logs()
 
     assert shown['text'].startswith('Virtaal %s\n\n' % version_string())
     assert 'hello from stdout' in shown['text']
+
+
+def test_show_logs_restores_main_window_focus_on_close(monkeypatch, tmp_path):
+    from gi.repository import GLib
+
+    from virtaal.common import pan_app
+
+    (tmp_path / 'stdout_virtaal.log').write_text('hello from stdout')
+    monkeypatch.setattr(pan_app, 'get_config_dir', lambda: str(tmp_path))
+    monkeypatch.setattr(Gtk.Dialog, 'run', lambda self: Gtk.ResponseType.CLOSE)
+    monkeypatch.setattr(GLib, 'idle_add', lambda func, *args: func(*args))
+
+    view = MainView.__new__(MainView)
+    view.main_window = Gtk.Window()
+    calls = []
+    monkeypatch.setattr(view.main_window, 'present', lambda: calls.append('present'))
+
+    view._on_show_logs()
+
+    assert calls == ['present']
 
 
 def test_show_save_dialog_returns_none_on_cancel():

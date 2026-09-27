@@ -1251,6 +1251,8 @@ class MainView(BaseView):
         dialog.present()
         dialog.run()
         dialog.destroy()
+        from gi.repository import GLib
+        GLib.idle_add(self.main_window.present)
 
     def _on_store_closed(self, store_controller):
         for widget_name in ('mnu_saveas', 'mnu_close', 'mnu_update', 'mnu_properties', 'mnu_binary_export',

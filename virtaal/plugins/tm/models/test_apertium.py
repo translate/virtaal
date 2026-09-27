@@ -11,6 +11,7 @@ from types import SimpleNamespace
 
 from gi.repository import GObject
 
+from virtaal.plugins.tm.models import apertium
 from virtaal.plugins.tm.models.apertium import TMModel
 
 
@@ -23,6 +24,54 @@ def _model():
     model.language_pairs = [('en', 'af')]
     model.url_translate = 'https://www.apertium.org/apy/translate'
     return model
+
+
+def _fake_controller():
+    connectable = lambda: SimpleNamespace(connect=lambda signal, handler, *a: 1)
+    lang_controller = connectable()
+    lang_controller.source_lang = SimpleNamespace(code='en')
+    lang_controller.target_lang = SimpleNamespace(code='af')
+    checks_controller = connectable()
+    checks_controller.code = 'standard'
+    main_controller = SimpleNamespace(lang_controller=lang_controller, checks_controller=checks_controller)
+    controller = connectable()
+    controller.main_controller = main_controller
+    return controller
+
+
+class _FakeHTTPClient:
+    def __init__(self):
+        self.added = []
+
+    def add(self, request):
+        self.added.append(request)
+
+
+# __init__(): requests the server's language pairs up front and wires
+# got_language_pairs() as the callback.
+
+def test_init_requests_language_pairs_from_the_apy_endpoint(monkeypatch):
+    monkeypatch.setattr(apertium, 'HTTPClient', _FakeHTTPClient)
+    monkeypatch.setattr(TMModel, 'load_config', lambda self: setattr(self, 'config', {}))
+
+    model = TMModel('apertium', _fake_controller())
+
+    assert model.url_getpairs == 'https://www.apertium.org/apy/listPairs'
+    assert model.url_translate == 'https://www.apertium.org/apy/translate'
+    assert len(model.client.added) == 1
+    assert model.client.added[0].url == model.url_getpairs
+
+
+def test_init_wires_the_response_to_got_language_pairs(monkeypatch):
+    monkeypatch.setattr(apertium, 'HTTPClient', _FakeHTTPClient)
+    monkeypatch.setattr(TMModel, 'load_config', lambda self: setattr(self, 'config', {}))
+    received = []
+    monkeypatch.setattr(TMModel, 'got_language_pairs', lambda self, response: received.append(response))
+
+    model = TMModel('apertium', _fake_controller())
+    model.client.added[0].emit('http-success', 'the response body')
+
+    assert received == ['the response body']
 
 
 # got_language_pairs()

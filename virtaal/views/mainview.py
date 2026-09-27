@@ -1282,14 +1282,11 @@ class MainView(BaseView):
                     _note_recent_document(path)
         else:
             path = os.path.abspath(store_controller.store.filename)
-            if getattr(self, '_uri', None):
-                recent.rm.add_item(self._uri)
+            if platform.is_windows:
+                url = 'file:///' + path
             else:
-                if platform.is_windows:
-                    url = 'file:///' + path
-                else:
-                    url = 'file://' + path
-                recent.rm.add_item(url)
+                url = 'file://' + path
+            recent.rm.add_item(url)
             if platform.is_mac:
                 _note_recent_document(path)
 

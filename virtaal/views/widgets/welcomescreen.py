@@ -110,12 +110,18 @@ class WelcomeScreen(Gtk.ScrolledWindow):
         # 'More...' button instead of moving past the expander.
         exp_features = self.widgets['exp_features']
         btn_more = self.widgets['buttons']['features_more']
+        txt_features = self.widgets['txt_features']
 
         def _sync_more_focusability(expander, param):
             btn_more.set_can_focus(expander.get_expanded())
 
+        def _resettle_features_height(expander, param):
+            if expander.get_expanded():
+                GLib.idle_add(txt_features.queue_resize)
+
         _sync_more_focusability(exp_features, None)
         exp_features.connect('notify::expanded', _sync_more_focusability)
+        exp_features.connect('notify::expanded', _resettle_features_height)
 
 
     # METHODS #

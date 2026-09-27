@@ -212,7 +212,6 @@ class StoreTreeView(Gtk.TreeView):
     def _apply_pending_move(self):
         offset, self._pending_move_offset = self._pending_move_offset, 0
         try:
-            #self._owner.set_statusbar_message(self.document.mode_cursor.move(offset))
             self.view.cursor.move(offset)
         except IndexError:
             pass

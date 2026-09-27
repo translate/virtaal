@@ -11,7 +11,6 @@ import locale
 import logging
 import os
 import subprocess
-import time
 from functools import cached_property
 
 from gi.repository import Gdk, Gtk
@@ -675,8 +674,6 @@ class MainView(BaseView):
     def set_statusbar_message(self, msg):
         self.status_bar.pop(self.statusbar_context_id)
         self.status_bar.push(self.statusbar_context_id, msg)
-        if msg:
-            time.sleep(self.WRAP_DELAY)
 
 
     # METHODS #

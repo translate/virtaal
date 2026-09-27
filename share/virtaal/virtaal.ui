@@ -3228,6 +3228,7 @@ If you are translating from English to French then French would be your translat
                       <object class="GtkLabel" id="lbl_recent_files">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="margin_left">10</property>
                         <property name="label" translatable="yes">&lt;b&gt;&lt;big&gt;Recent Files&lt;/big&gt;&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </object>
@@ -3257,6 +3258,7 @@ If you are translating from English to French then French would be your translat
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label_xalign">0</property>
+                    <property name="margin_top">13</property>
                     <property name="shadow_type">none</property>
                     <child>
                       <object class="GtkAlignment" id="alignment8">

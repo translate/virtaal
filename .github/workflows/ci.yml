@@ -440,7 +440,7 @@ jobs:
         # slower on Windows than the equivalent single batched install.
         run: |
           pip install --upgrade pip
-          pip install setuptools wheel pycairo pygobject translate-toolkit python-Levenshtein pycurl lxml diff_match_patch cheroot pytest pytest-xdist
+          pip install setuptools wheel pycairo pygobject translate-toolkit python-Levenshtein pycurl lxml diff_match_patch cheroot pytest pytest-xdist pytest-cov
 
       - name: Install virtaal
         run: pip install --no-build-isolation .
@@ -469,10 +469,22 @@ jobs:
       - name: Run tests
         # No xvfb-run equivalent needed - Windows always has its own
         # native windowing system available, even in a non-interactive
-        # CI session, unlike X11.
-        run: pytest -rvxs -n auto virtaal
+        # CI session, unlike X11. Coverage collected here too, not just
+        # on Linux's test (3.13) - platform-gated code (sitecustomize's
+        # DLL-directory handling, Windows-specific paths in platform.py)
+        # never executes on Linux, so without this it always looks
+        # 0%-covered to Codecov's patch-coverage check regardless of
+        # how well it's actually tested here.
+        run: pytest -rvxs -n auto --cov=virtaal --cov-report=xml virtaal
         env:
           PYTHONFAULTHANDLER: "1"
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v7
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.xml
+          fail_ci_if_error: false
 
       - name: Smoke test the CLI
         run: virtaal --help
@@ -760,8 +772,17 @@ jobs:
       - name: Run tests
         # No xvfb-run equivalent: macOS's WindowServer is a real system
         # daemon that's always running, even in CI, unlike X11 which has
-        # no display server at all without one.
-        run: pytest -rvxs -n auto virtaal
+        # no display server at all without one. Coverage collected here
+        # too, not just on Linux's test (3.13) - see test-windows's own
+        # comment for why.
+        run: pytest -rvxs -n auto --cov=virtaal --cov-report=xml virtaal
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v7
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.xml
+          fail_ci_if_error: false
 
       - name: Smoke test the CLI
         run: virtaal --help

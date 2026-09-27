@@ -12,7 +12,10 @@ the matching plural source form.
 
 from types import SimpleNamespace
 
+import pytest
+from gi.repository import Gdk, Gtk
 from translate.misc.multistring import multistring
+from translate.storage.placeables.strelem import StringElem
 
 from virtaal.views.unitview import UnitView
 
@@ -445,3 +448,446 @@ def test_on_target_key_pressed_unrecognized_eventname_falls_through():
     view = _view_for_key_press()
 
     assert view._on_target_key_pressed(None, None, 'something-else', None) is False
+
+
+# is_modified() / get_target_n() / set_target_n() #
+
+def test_is_modified_reflects_the_modified_flag():
+    view = UnitView.__new__(UnitView)
+    view._modified = True
+
+    assert view.is_modified() is True
+
+
+def test_get_target_n_returns_the_textboxs_text():
+    view = UnitView.__new__(UnitView)
+    tb = _FakeTextbox()
+    tb.get_text = lambda: 'hello'
+    view._widgets = {'targets': [tb]}
+
+    assert view.get_target_n(0) == 'hello'
+
+
+def test_set_target_n_sets_text_without_moving_the_cursor_by_default():
+    view = UnitView.__new__(UnitView)
+    tb = _FakeTextbox()
+    view._widgets = {'targets': [tb]}
+
+    view.set_target_n(0, 'hello')
+
+    assert tb.text == 'hello'
+
+
+def test_set_target_n_places_the_cursor_when_a_position_is_given():
+    view = UnitView.__new__(UnitView)
+    buf = Gtk.TextBuffer()
+    buf.set_text('hello')
+    placed = []
+    tb = _FakeTextbox()
+    tb.buffer = SimpleNamespace(
+        place_cursor=lambda it: placed.append(it.get_offset()),
+        get_iter_at_offset=lambda offset: buf.get_iter_at_offset(offset),
+    )
+    view._widgets = {'targets': [tb]}
+
+    view.set_target_n(0, 'hello', cursor_pos=3)
+
+    assert tb.text == 'hello'
+    assert placed == [3]
+
+
+# copy_original() #
+
+def test_copy_original_inserts_the_selected_placeable_when_one_is_selected():
+    view = UnitView.__new__(UnitView)
+    source = SimpleNamespace(selected_elem='some-elem')
+    inserted, moved = [], []
+    textbox = SimpleNamespace(
+        selector_textbox=source,
+        insert_translation=inserted.append,
+        move_elem_selection=moved.append,
+    )
+
+    view.copy_original(textbox)
+
+    assert inserted == ['some-elem']
+    assert moved == [1]
+
+
+def _copy_original_view(source_text, target_lang_code, role='target'):
+    view = UnitView.__new__(UnitView)
+    view._get_editing_start_pos = lambda elem: 0
+    undo_calls = []
+    placeables_controller = SimpleNamespace(
+        get_parsers_for_textbox=lambda tb: [],
+        apply_parsers=lambda elem, parsers: None,
+        non_target_placeables=[],
+    )
+    main_controller = SimpleNamespace(
+        undo_controller=SimpleNamespace(push_current_text=undo_calls.append),
+        lang_controller=SimpleNamespace(target_lang=SimpleNamespace(code=target_lang_code)),
+        placeables_controller=placeables_controller,
+    )
+    view.controller = SimpleNamespace(main_controller=main_controller)
+    view.unit = SimpleNamespace(rich_source=[StringElem(source_text)])
+
+    source_textbox = SimpleNamespace(selected_elem=None)
+    set_calls, refresh_calls = [], []
+    textbox = SimpleNamespace(
+        selector_textbox=source_textbox,
+        selector_textboxes=[source_textbox],
+        role=role,
+        elem=None,
+        set_text=lambda tgt: set_calls.append(str(tgt)),
+        refresh=lambda: refresh_calls.append(True),
+    )
+    return view, textbox, undo_calls, set_calls, refresh_calls
+
+
+def test_copy_original_copies_the_source_verbatim_when_punctuation_is_unaffected():
+    view, textbox, undo_calls, set_calls, refresh_calls = _copy_original_view('Hello world', 'en')
+
+    view.copy_original(textbox)
+
+    assert set_calls == ['Hello world']
+    assert len(undo_calls) == 1
+    assert refresh_calls == [True]
+
+
+def test_copy_original_applies_punctuation_translation_when_it_differs():
+    view, textbox, undo_calls, set_calls, refresh_calls = _copy_original_view('Hello: world', 'fr')
+
+    view.copy_original(textbox)
+
+    assert set_calls == ['Hello: world', 'Hello\xa0: world']
+    assert len(undo_calls) == 2
+    assert refresh_calls == [True]
+
+
+# do_start_editing() #
+
+def test_do_start_editing_focuses_the_first_target():
+    view = UnitView.__new__(UnitView)
+    view._widgets = {'targets': ['t0', 't1']}
+    focused = []
+    view.focus_text_view = focused.append
+
+    view.do_start_editing()
+
+    assert focused == ['t0']
+
+
+# load_unit() #
+
+def test_load_unit_does_nothing_when_the_same_unit_is_already_loaded():
+    view = UnitView.__new__(UnitView)
+    unit = object()
+    view.unit = unit
+    view._update_editor_gui = lambda: pytest.fail('must not rebuild the editor for the same unit')
+
+    view.load_unit(unit)  # must not raise
+
+
+# update_languages() / _update_textview_language() #
+
+class _FakePangoContext:
+    def __init__(self):
+        self.language = None
+        self.font_description = None
+
+    def set_language(self, lang):
+        self.language = lang
+
+    def set_font_description(self, desc):
+        self.font_description = desc
+
+
+def test_update_languages_applies_fonts_and_languages_to_sources_and_targets():
+    view = UnitView.__new__(UnitView)
+    pango_ctx_src = _FakePangoContext()
+    pango_ctx_tgt = _FakePangoContext()
+    src = _FakeTextbox()
+    src.get_pango_context = lambda: pango_ctx_src
+    tgt = _FakeTextbox()
+    tgt.get_pango_context = lambda: pango_ctx_tgt
+    view._widgets = {'sources': [src], 'targets': [tgt]}
+    emitted = []
+    view.emit = lambda signal, *args: emitted.append((signal, args))
+    view.controller = SimpleNamespace(main_controller=SimpleNamespace(
+        lang_controller=SimpleNamespace(
+            source_lang=SimpleNamespace(code='en'),
+            target_lang=SimpleNamespace(code='fr'),
+        )))
+
+    view.update_languages()
+
+    assert pango_ctx_src.language is not None
+    assert pango_ctx_tgt.language is not None
+    assert pango_ctx_tgt.font_description is not None
+    assert ('textview-language-changed', (src, 'en')) in emitted
+    assert ('textview-language-changed', (tgt, 'fr')) in emitted
+
+
+# _create_workflow_liststore() #
+
+def test_create_workflow_liststore_returns_an_empty_store_without_a_workflow():
+    view = UnitView.__new__(UnitView)
+    view.controller = SimpleNamespace(current_unit=SimpleNamespace(_workflow=None))
+
+    lst = view._create_workflow_liststore()
+
+    assert len(lst) == 0
+
+
+# _layout_update_notes() #
+
+def test_layout_update_notes_truncates_a_long_translator_comment():
+    view = UnitView.__new__(UnitView)
+    label = SimpleNamespace(texts=[])
+    label.set_text = label.texts.append
+    label.show_all = lambda: None
+    label.hide = lambda: None
+    view._widgets = {'notes': {'translator': label}}
+    long_comment = 'x' * 250
+    view.unit = SimpleNamespace(getnotes=lambda origin: long_comment, getlocations=lambda: [])
+
+    view._layout_update_notes('translator')
+
+    assert label.texts == [long_comment[:200] + '...']
+
+
+# _layout_update_sources() / _layout_update_targets() - unit-is-None branch #
+
+def test_layout_update_sources_hides_extra_boxes_when_no_unit_is_loaded():
+    view = UnitView.__new__(UnitView)
+    view._create_sources = lambda: None
+    src0, src1 = _FakeTextbox(), _FakeTextbox()
+    parent0, parent1 = SimpleNamespace(shown=[]), SimpleNamespace(hidden=[])
+    parent0.show = lambda: parent0.shown.append(True)
+    parent1.hide_all = lambda: parent1.hidden.append(True)
+    src0.get_parent = lambda: parent0
+    src1.get_parent = lambda: parent1
+    view._widgets = {'sources': [src0, src1]}
+    view.unit = None
+
+    view._layout_update_sources()
+
+    assert src0.text == ''
+    assert parent0.shown == [True]
+    assert parent1.hidden == [True]
+
+
+def test_layout_update_targets_hides_extra_boxes_when_no_unit_is_loaded():
+    view = UnitView.__new__(UnitView)
+    view._create_targets = lambda: None
+    tgt0, tgt1 = _FakeTextbox(), _FakeTextbox()
+    parent0, parent1 = SimpleNamespace(shown=[]), SimpleNamespace(hidden=[])
+    parent0.show_all = lambda: parent0.shown.append(True)
+    parent1.hide_all = lambda: parent1.hidden.append(True)
+    tgt0.get_parent = lambda: parent0
+    tgt1.get_parent = lambda: parent1
+    view._widgets = {'targets': [tgt0, tgt1]}
+    view.unit = None
+
+    view._layout_update_targets()
+
+    assert tgt0.text == ''
+    assert parent0.shown == [True]
+    assert parent1.hidden == [True]
+
+
+# _layout_update_states() / advance_workflow_state() / update_state() #
+
+def test_layout_update_states_hides_the_state_widget_without_any_state_names():
+    view = UnitView.__new__(UnitView)
+    widget = SimpleNamespace(hidden=[])
+    widget.hide = lambda: widget.hidden.append(True)
+    view._widgets = {'state': widget}
+    view.controller = SimpleNamespace(get_unit_state_names=lambda: {})
+    view.unit = SimpleNamespace(STATE=True)
+
+    view._layout_update_states()
+
+    assert widget.hidden == [True]
+
+
+def test_advance_workflow_state_does_nothing_without_a_stateful_unit():
+    view = UnitView.__new__(UnitView)
+    view.unit = SimpleNamespace(STATE=False)
+    view._widgets = {'state': SimpleNamespace(move_state=lambda offset: pytest.fail('must not move state'))}
+
+    view.advance_workflow_state(1)  # must not raise
+
+
+def test_update_state_selects_by_name():
+    view = UnitView.__new__(UnitView)
+    selected = []
+    view._widgets = {'state': SimpleNamespace(select_by_name=selected.append)}
+
+    view.update_state('translated')
+
+    assert selected == ['translated']
+
+
+# _on_state_changed() #
+
+def test_on_state_changed_updates_workflow_state_and_marks_modified():
+    view = UnitView.__new__(UnitView)
+    calls = []
+    view.controller = SimpleNamespace(
+        current_unit=SimpleNamespace(_workflow=True),
+        set_current_state=lambda newstate, from_user: calls.append((newstate, from_user)),
+    )
+    view.modified = lambda: calls.append('modified')
+
+    view._on_state_changed(None, 'reviewed')
+
+    assert calls == [('reviewed', True), 'modified']
+
+
+def test_on_state_changed_skips_setting_state_without_a_workflow():
+    view = UnitView.__new__(UnitView)
+    calls = []
+    view.controller = SimpleNamespace(current_unit=SimpleNamespace(_workflow=None))
+    view.modified = lambda: calls.append('modified')
+
+    view._on_state_changed(None, 'reviewed')
+
+    assert calls == ['modified']
+
+
+# _on_key_press_event() #
+
+def test_on_key_press_event_resets_must_advance_for_a_non_enter_key():
+    view = UnitView.__new__(UnitView)
+    view.must_advance = True
+
+    result = view._on_key_press_event(None, SimpleNamespace(keyval=Gdk.KEY_a))
+
+    assert result is False
+    assert view.must_advance is False
+
+
+# _on_target_changed() #
+
+def test_on_target_changed_writes_a_plain_string_target_and_marks_modified():
+    view = UnitView.__new__(UnitView)
+    tb = _FakeTextbox()
+    tb.elem = None
+    tb.get_text = lambda: 'hello'
+    view._widgets = {'targets': [tb]}
+    view.unit = SimpleNamespace(hasplural=lambda: False, target=None)
+    view.controller = SimpleNamespace(main_controller=SimpleNamespace(
+        lang_controller=SimpleNamespace(target_lang=SimpleNamespace(nplurals=1))))
+    modified_calls = []
+    view.modified = lambda: modified_calls.append(True)
+
+    view._on_target_changed(None, 0)
+
+    assert view.unit.target == 'hello'
+    assert modified_calls == [True]
+
+
+def test_on_target_changed_raises_for_a_nonzero_index_on_a_non_plural_unit():
+    view = UnitView.__new__(UnitView)
+    tb = _FakeTextbox()
+    tb.elem = None
+    tb.get_text = lambda: 'hello'
+    view._widgets = {'targets': [None, tb]}
+    view.unit = SimpleNamespace(hasplural=lambda: False)
+    view.controller = SimpleNamespace(main_controller=SimpleNamespace(
+        lang_controller=SimpleNamespace(target_lang=SimpleNamespace(nplurals=1))))
+    view.modified = lambda: None
+
+    with pytest.raises(IndexError):
+        view._on_target_changed(None, 1)
+
+
+def test_on_target_changed_pads_and_writes_a_plural_target():
+    view = UnitView.__new__(UnitView)
+    tb = _FakeTextbox()
+    tb.elem = None
+    tb.get_text = lambda: 'two'
+    view._widgets = {'targets': [None, tb]}
+    view.unit = SimpleNamespace(hasplural=lambda: True, target=SimpleNamespace(strings=['one']))
+    view.controller = SimpleNamespace(main_controller=SimpleNamespace(
+        lang_controller=SimpleNamespace(target_lang=SimpleNamespace(nplurals=3))))
+    modified_calls = []
+    view.modified = lambda: modified_calls.append(True)
+
+    view._on_target_changed(None, 1)
+
+    assert view.unit.target == ['one', 'two', '']
+    assert modified_calls == [True]
+
+
+def test_on_target_changed_writes_a_placeable_element_and_marks_modified():
+    view = UnitView.__new__(UnitView)
+    elem = object()
+    tb = _FakeTextbox()
+    tb.elem = elem
+    view._widgets = {'targets': [tb]}
+    view.unit = SimpleNamespace(hasplural=lambda: False, rich_target=[None])
+    view.controller = SimpleNamespace(main_controller=SimpleNamespace(
+        lang_controller=SimpleNamespace(target_lang=SimpleNamespace(nplurals=1))))
+    modified_calls = []
+    view.modified = lambda: modified_calls.append(True)
+
+    view._on_target_changed(None, 0)
+
+    assert view.unit.rich_target == [elem]
+    assert modified_calls == [True]
+
+
+def test_on_target_changed_pads_a_plural_rich_target_before_writing_the_element():
+    view = UnitView.__new__(UnitView)
+    elem = object()
+    tb = _FakeTextbox()
+    tb.elem = elem
+    view._widgets = {'targets': [None, tb]}
+    view.unit = SimpleNamespace(hasplural=lambda: True, rich_target=['one'])
+    view.controller = SimpleNamespace(main_controller=SimpleNamespace(
+        lang_controller=SimpleNamespace(target_lang=SimpleNamespace(nplurals=3))))
+    modified_calls = []
+    view.modified = lambda: modified_calls.append(True)
+
+    view._on_target_changed(None, 1)
+
+    assert view.unit.rich_target == ['one', elem, '']
+    assert modified_calls == [True]
+
+
+# _on_textbox_paste_clipboard() / _on_textbox_focused() / _on_textbox_unfocused() #
+
+def test_on_textbox_paste_clipboard_emits_paste_start_with_offsets():
+    view = UnitView.__new__(UnitView)
+    buf = Gtk.TextBuffer()
+    buf.set_text('hello world')
+    buf.place_cursor(buf.get_iter_at_offset(5))
+    textbox = SimpleNamespace(buffer=buf, get_text=lambda: 'hello world')
+    emitted = []
+    view.emit = lambda signal, *args: emitted.append((signal, args))
+
+    view._on_textbox_paste_clipboard(textbox, 2)
+
+    assert emitted == [('paste-start', ('hello world', {'insert_offset': 5, 'selection_offset': 5}, 2))]
+
+
+def test_on_textbox_focused_recomputes_edit_menu_sensitivity():
+    view = UnitView.__new__(UnitView)
+    calls = []
+    view._update_edit_menu_sensitivity = lambda: calls.append('focused')
+
+    view._on_textbox_focused(None, None)
+
+    assert calls == ['focused']
+
+
+def test_on_textbox_unfocused_recomputes_edit_menu_sensitivity():
+    view = UnitView.__new__(UnitView)
+    calls = []
+    view._update_edit_menu_sensitivity = lambda: calls.append('unfocused')
+
+    view._on_textbox_unfocused(None, None)
+
+    assert calls == ['unfocused']

@@ -835,6 +835,113 @@ def test_update_document_edited_swallows_native_setter_errors(monkeypatch):
     view._update_document_edited(True)  # must not raise
 
 
+# _apply_appearance() / _poll_appearance() / _start_appearance_polling():
+# shared live dark/light tracking, polled rather than pushed, driven by
+# a per-platform detect_is_dark callable.
+
+class _FakeGtkSettings:
+    def __init__(self, prefer_dark=False):
+        self._prefer_dark = prefer_dark
+        self.set_calls = []
+
+    def get_property(self, name):
+        assert name == "gtk-application-prefer-dark-theme"
+        return self._prefer_dark
+
+    def set_property(self, name, value):
+        assert name == "gtk-application-prefer-dark-theme"
+        self._prefer_dark = value
+        self.set_calls.append(value)
+
+
+def test_apply_appearance_enables_dark_theme(monkeypatch):
+    fake_settings = _FakeGtkSettings(prefer_dark=False)
+    monkeypatch.setattr(mainview.Gtk.Settings, 'get_default', lambda: fake_settings)
+
+    MainView._apply_appearance(None, lambda: True)
+
+    assert fake_settings.set_calls == [True]
+
+
+def test_apply_appearance_enables_light_theme(monkeypatch):
+    fake_settings = _FakeGtkSettings(prefer_dark=True)
+    monkeypatch.setattr(mainview.Gtk.Settings, 'get_default', lambda: fake_settings)
+
+    MainView._apply_appearance(None, lambda: False)
+
+    assert fake_settings.set_calls == [False]
+
+
+def test_apply_appearance_skips_redundant_set(monkeypatch):
+    fake_settings = _FakeGtkSettings(prefer_dark=True)
+    monkeypatch.setattr(mainview.Gtk.Settings, 'get_default', lambda: fake_settings)
+
+    MainView._apply_appearance(None, lambda: True)
+
+    assert fake_settings.set_calls == []
+
+
+def test_apply_appearance_skips_when_detection_fails(monkeypatch):
+    fake_settings = _FakeGtkSettings(prefer_dark=False)
+    monkeypatch.setattr(mainview.Gtk.Settings, 'get_default', lambda: fake_settings)
+
+    MainView._apply_appearance(None, lambda: None)
+
+    assert fake_settings.set_calls == []
+
+
+def test_poll_appearance_keeps_polling():
+    calls = []
+    dummy = SimpleNamespace(_apply_appearance=lambda detect: calls.append(detect))
+    detect_is_dark = lambda: True
+
+    assert MainView._poll_appearance(dummy, detect_is_dark) is True
+    assert calls == [detect_is_dark]
+
+
+def test_start_appearance_polling_applies_immediately_and_schedules_polling(monkeypatch):
+    from gi.repository import GLib
+    applied = []
+    dummy = SimpleNamespace(
+        _apply_appearance=lambda detect: applied.append(detect),
+        _poll_appearance=object())
+    scheduled = []
+    monkeypatch.setattr(GLib, 'timeout_add_seconds', lambda seconds, func, *args: scheduled.append((seconds, func, args)))
+    detect_is_dark = lambda: True
+
+    MainView._start_appearance_polling(dummy, detect_is_dark)
+
+    assert applied == [detect_is_dark]
+    assert scheduled == [(2, dummy._poll_appearance, (detect_is_dark,))]
+
+
+# _detect_macos_is_dark() #
+
+def test_detect_macos_is_dark_true(monkeypatch):
+    monkeypatch.setattr(mainview.subprocess, 'run',
+        lambda *a, **k: SimpleNamespace(stdout=b"Dark\n"))
+
+    assert MainView._detect_macos_is_dark(None) is True
+
+
+def test_detect_macos_is_dark_false_when_key_absent(monkeypatch):
+    # macOS only sets AppleInterfaceStyle at all when Dark is active -
+    # `defaults read` prints nothing to stdout (its error goes to
+    # stderr) when the key doesn't exist, i.e. Light/Auto.
+    monkeypatch.setattr(mainview.subprocess, 'run',
+        lambda *a, **k: SimpleNamespace(stdout=b""))
+
+    assert MainView._detect_macos_is_dark(None) is False
+
+
+def test_detect_macos_is_dark_returns_none_on_subprocess_error(monkeypatch):
+    def _raise(*a, **k):
+        raise OSError('no such command')
+    monkeypatch.setattr(mainview.subprocess, 'run', _raise)
+
+    assert MainView._detect_macos_is_dark(None) is None
+
+
 # _setup_key_bindings() #
 
 def _real_view_for_key_bindings():

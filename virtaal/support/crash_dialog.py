@@ -93,6 +93,10 @@ def _show_dialog(full_text):
     dialog.add_button(_("Report This Bug…"), Gtk.ResponseType.ACCEPT)
     dialog.set_default_response(Gtk.ResponseType.ACCEPT)
 
+    # present() only raises/focuses an already-realized window -
+    # show() explicitly first, run() alone doesn't guarantee that.
+    dialog.show()
+    dialog.present()
     response = dialog.run()
     dialog.destroy()
     if response == Gtk.ResponseType.ACCEPT:

@@ -19,6 +19,7 @@
 # a format's backend module by a runtime-computed string, invisible to
 # PyInstaller unless collected explicitly too.
 import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -57,6 +58,25 @@ mo_files = [
     for p in (ROOT / "mo").rglob("*.mo")
 ]
 
+# gtkosx_application_init() (gtk-mac-integration's own C code) rebinds
+# its gettext domain to <bundle>/Contents/Resources/share/locale
+# whenever it detects real bundle identity - true for every frozen
+# build - so without its own locale files landing there too, the
+# "Hide"/"Quit"/"Services"/"Show All"/"About %s" strings it builds
+# itself always fall back to English, regardless of UI language.
+try:
+    _gtkmac_prefix = subprocess.run(
+        ["brew", "--prefix", "gtk-mac-integration"],
+        capture_output=True, text=True, check=True,
+    ).stdout.strip()
+    _gtkmac_locale_dir = Path(_gtkmac_prefix) / "share" / "locale"
+except (OSError, subprocess.CalledProcessError):
+    _gtkmac_locale_dir = None
+gtkmac_mo_files = [
+    (str(p), str(Path("share", "locale") / p.relative_to(_gtkmac_locale_dir).parent))
+    for p in (_gtkmac_locale_dir.rglob("*.mo") if _gtkmac_locale_dir and _gtkmac_locale_dir.is_dir() else [])
+]
+
 # build_standalone.sh stages this (Intel builds only) from an old,
 # self-contained pyenchant wheel - see that script's own comment.
 # pan_app.py points PYENCHANT_LIBRARY_PATH at it, frozen+Intel only;
@@ -78,7 +98,7 @@ datas = [
     # stays a real top-level file (not under share/) so it's still
     # recognised by GitHub/the AUTHORS convention in a checkout too.
     (str(ROOT / "AUTHORS.md"), "."),
-] + mo_files
+] + mo_files + gtkmac_mo_files
 if _bundle_enchant:
     datas.append((str(ENCHANT_INTEL_DIR), "share/enchant_intel"))
 

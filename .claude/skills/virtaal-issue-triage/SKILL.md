@@ -31,6 +31,11 @@ ones without checking first (`gh label list --repo translate/virtaal`):
 - `easyhack` - only apply this yourself if the fix is genuinely obvious
   from reading the report; don't guess optimistically.
 - `bugzilla-import` - see below.
+- `code smell` (added 2026-09-27) - a complexity/duplication/structural
+  finding flagged for investigation, no single fix attached. Covers
+  both the manual AST-scan refactor campaign's own issues (#3806,
+  #3812) and the automated ruff/pylint findings from the non-blocking
+  `code-smell` CI job (#3850).
 
 ## Old reports and the rewrite
 

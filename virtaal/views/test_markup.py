@@ -12,6 +12,8 @@ label_expander.py. Uses the live current_theme colours for assertions
 (rather than hardcoding hex codes) so these don't go stale if the theme's
 palette changes."""
 
+import pytest
+
 from virtaal.views.markup import markuptext
 from virtaal.views.theme import current_theme
 
@@ -55,6 +57,43 @@ def test_markuptext_marks_up_unusual_spaces():
     # the actual space characters are preserved inside the markup, not lost
     assert result.replace('<span underline="error" foreground="grey">', "") \
                   .replace("</span>", "") == "  lead double  trail  "
+
+
+def test_markuptext_marks_up_leading_and_trailing_tab():
+    span = '<span underline="error" foreground="grey">%s</span>'
+    assert markuptext("\tleading") == span % "\t" + "leading"
+    assert markuptext("trailing\t") == "trailing" + span % "\t"
+
+
+def test_markuptext_marks_up_nbsp_leading_trailing_and_inline():
+    # NBSP is unusual wherever it appears - unlike a regular space, a single
+    # inline one (the classic number+unit case, e.g. "10 km") is also
+    # flagged, not just doubled/leading/trailing occurrences.
+    nbsp = " "
+    span = '<span underline="error" foreground="grey">%s</span>'
+    assert markuptext(nbsp + "leading") == span % nbsp + "leading"
+    assert markuptext("trailing" + nbsp) == "trailing" + span % nbsp
+    assert markuptext("10" + nbsp + "km") == "10" + span % nbsp + "km"
+
+
+@pytest.mark.parametrize("char", [
+    " ",  # OGHAM SPACE MARK
+    " ",  # EN SPACE
+    " ",  # EM SPACE
+    " ",  # FIGURE SPACE
+    " ",  # PUNCTUATION SPACE
+    " ",  # THIN SPACE
+    " ",  # HAIR SPACE
+    "​",  # ZERO WIDTH SPACE
+    " ",  # NARROW NO-BREAK SPACE
+    " ",  # MEDIUM MATHEMATICAL SPACE
+    "　",  # IDEOGRAPHIC SPACE
+])
+def test_markuptext_marks_up_unicode_space_separators(char):
+    # Mirrors the case list in devsupport/testfiles/whitespace.po - a single
+    # occurrence of any of these mid-word is unusual and should be flagged.
+    span = '<span underline="error" foreground="grey">%s</span>'
+    assert markuptext("a" + char + "b") == "a" + span % char + "b"
 
 
 def test_markuptext_fancyspaces_false_leaves_spaces_alone():

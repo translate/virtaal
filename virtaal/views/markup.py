@@ -14,9 +14,15 @@ from virtaal.views.theme import current_theme
 # We want to draw unexpected spaces specially so that users can spot them
 # easily without having to resort to showing all spaces weirdly
 _fancy_spaces_re = re.compile(r"""(?m)  #Multiline expression
-        [ ]{2,}|     #More than two consecutive
-        ^[ ]+|       #At start of a line
-        [ ]+$        #At end of line""", re.VERBOSE)
+        [ ]{2,}|     #More than two consecutive regular spaces
+        ^[ ]+|       #Regular space(s) at start of a line
+        [ ]+$|       #Regular space(s) at end of a line
+        #Tab, NBSP, and other Unicode space separators (incl. ZWSP) are
+        #unusual wherever they occur, even singly - unlike a regular
+        #space, there's no innocent reason for one of these to be in
+        #translated text.
+        [\t   -​  　]+
+        """, re.VERBOSE)
 """A regular expression object to find all unusual spaces we want to show"""
 
 def _fancyspaces(string):

@@ -1494,3 +1494,725 @@ def test_on_store_loaded_skips_noting_a_document_off_mac(monkeypatch):
         store=SimpleNamespace(filename='/tmp/opened.po'))
 
     view._on_store_loaded(store_controller)  # must not raise
+
+
+# fill_dialog() #
+
+class _FakeDialogForFill:
+    def __init__(self):
+        self.title = None
+        self.markup = None
+
+    def set_title(self, title):
+        self.title = title
+
+    def set_markup(self, markup):
+        self.markup = markup
+
+
+def test_fill_dialog_sets_the_title_when_given():
+    dialog = _FakeDialogForFill()
+    mainview.fill_dialog(dialog, title='A Title')
+    assert dialog.title == 'A Title'
+
+
+def test_fill_dialog_leaves_the_title_unset_without_one():
+    dialog = _FakeDialogForFill()
+    mainview.fill_dialog(dialog)
+    assert dialog.title is None
+
+
+def test_fill_dialog_prefers_markup_over_a_plain_message():
+    dialog = _FakeDialogForFill()
+    mainview.fill_dialog(dialog, message='ignored', markup='<b>bold</b>')
+    assert dialog.markup == '<b>bold</b>'
+
+
+def test_fill_dialog_escapes_a_plain_messages_angle_brackets():
+    dialog = _FakeDialogForFill()
+    mainview.fill_dialog(dialog, message='a < b')
+    assert dialog.markup == 'a &lt; b'
+
+
+# open_chooser / save_chooser - real native file-chooser construction #
+
+def test_open_chooser_builds_a_real_native_file_chooser():
+    view = MainView.__new__(MainView)
+    view.main_window = Gtk.Window()
+
+    chooser = view.open_chooser
+
+    assert isinstance(chooser, Gtk.FileChooserNative)
+    assert len(chooser.list_filters()) > 1  # "All Supported Files" + one per format + "All Files"
+
+
+def test_save_chooser_builds_a_real_native_file_chooser():
+    view = MainView.__new__(MainView)
+    view.main_window = Gtk.Window()
+
+    chooser = view.save_chooser
+
+    assert isinstance(chooser, Gtk.FileChooserNative)
+
+
+# show_open_dialog()/show_save_dialog()'s remaining branches #
+
+def test_show_open_dialog_sets_a_custom_title_when_given():
+    chooser = _FakeChooser(Gtk.ResponseType.CANCEL)
+    view = _make_view_with_chooser('open_chooser', chooser)
+
+    view.show_open_dialog(title='Pick a file')
+
+    assert chooser.title == 'Pick a file'
+
+
+def test_show_save_dialog_falls_back_to_the_open_stores_filename():
+    view = _make_view_with_chooser('save_chooser', _FakeChooser(Gtk.ResponseType.CANCEL))
+    view.controller = SimpleNamespace(get_store=lambda: SimpleNamespace(get_filename=lambda: '/tmp/fallback.po'))
+
+    assert view.show_save_dialog('Save') is None
+
+
+# show_save_confirm_dialog()'s discard/cancel branches (the 'save'
+# branch is already covered above, #3525) #
+
+class _FakeConfirmDialogWithResponse(_FakeConfirmDialog):
+    def __init__(self, response):
+        super().__init__()
+        self._response = response
+
+    def run(self):
+        return self._response
+
+
+def test_show_save_confirm_dialog_returns_discard_on_the_discard_response(monkeypatch):
+    from gi.repository import GLib
+    monkeypatch.setattr(GLib, 'idle_add', lambda func, *args: func(*args))
+    view = MainView.__new__(MainView)
+    view.confirm_dialog = _FakeConfirmDialogWithResponse(Gtk.ResponseType.NO)
+    view._top_window = _FakeTopWindow()
+
+    assert view.show_save_confirm_dialog() == 'discard'
+
+
+def test_show_save_confirm_dialog_returns_cancel_on_any_other_response(monkeypatch):
+    from gi.repository import GLib
+    monkeypatch.setattr(GLib, 'idle_add', lambda func, *args: func(*args))
+    view = MainView.__new__(MainView)
+    view.confirm_dialog = _FakeConfirmDialogWithResponse(Gtk.ResponseType.CANCEL)
+    view._top_window = _FakeTopWindow()
+
+    assert view.show_save_confirm_dialog() == 'cancel'
+
+
+# ask_plural_info() #
+
+def test_ask_plural_info_returns_the_languages_own_plural_info_when_defined(monkeypatch):
+    from translate.lang import factory as langfactory
+    lang = SimpleNamespace(nplurals=2, pluralequation='(n != 1)')
+    monkeypatch.setattr(langfactory, 'getlanguage', lambda code: lang)
+    view = MainView.__new__(MainView)
+    view.controller = SimpleNamespace(lang_controller=SimpleNamespace(target_lang=SimpleNamespace(code='af')))
+
+    assert view.ask_plural_info() == (2, '(n != 1)')
+
+
+def test_ask_plural_info_prompts_for_an_equation_when_the_default_is_a_placeholder(monkeypatch):
+    # nplurals > 1 with the "0" placeholder equation means the language
+    # database doesn't actually know this language's real rule.
+    from translate.lang import factory as langfactory
+    lang = SimpleNamespace(nplurals=3, pluralequation='0')
+    monkeypatch.setattr(langfactory, 'getlanguage', lambda code: lang)
+    view = MainView.__new__(MainView)
+    view.controller = SimpleNamespace(lang_controller=SimpleNamespace(target_lang=SimpleNamespace(code='ar')))
+    view.show_input_dialog = lambda message: 'n % 100 == 1 ? 0 : 1'
+
+    assert view.ask_plural_info() == (3, 'n % 100 == 1 ? 0 : 1')
+
+
+def test_ask_plural_info_prompts_for_a_plural_count_when_the_language_has_none(monkeypatch):
+    from translate.lang import factory as langfactory
+    lang = SimpleNamespace(nplurals=0, pluralequation='0')
+    monkeypatch.setattr(langfactory, 'getlanguage', lambda code: lang)
+    view = MainView.__new__(MainView)
+    view.controller = SimpleNamespace(lang_controller=SimpleNamespace(target_lang=SimpleNamespace(code='xx')))
+    prompts = iter(['not a number', '1'])
+    view.show_input_dialog = lambda message: next(prompts)
+
+    assert view.ask_plural_info() == (1, '0')
+
+
+# append_menu_item() #
+
+def _menu_with_item(label):
+    menu = Gtk.Menu()
+    item = Gtk.MenuItem(label=label)
+    menu.append(item)
+    parent_item = Gtk.MenuItem(label='Parent')
+    parent_item.set_submenu(menu)
+    return parent_item, menu, item
+
+
+def test_append_menu_item_adds_to_the_end_by_default():
+    view = MainView.__new__(MainView)
+    parent_item, menu, existing = _menu_with_item('Existing')
+
+    new_item = view.append_menu_item('New', parent_item)
+
+    assert menu.get_children() == [existing, new_item]
+    assert new_item.get_visible() is True
+
+
+def test_append_menu_item_inserts_after_a_given_item():
+    view = MainView.__new__(MainView)
+    parent_item, menu, existing = _menu_with_item('Existing')
+    trailing = Gtk.MenuItem(label='Trailing')
+    menu.append(trailing)
+
+    new_item = view.append_menu_item('New', parent_item, after=existing)
+
+    assert menu.get_children() == [existing, new_item, trailing]
+
+
+def test_append_menu_item_resolves_a_string_menu_name():
+    view = MainView.__new__(MainView)
+    parent_item, menu, existing = _menu_with_item('Existing')
+    view.find_menu = lambda label: parent_item if label == 'File' else None
+
+    new_item = view.append_menu_item('New', 'File')
+
+    assert menu.get_children() == [existing, new_item]
+
+
+def test_append_menu_item_returns_none_when_the_target_menu_is_missing():
+    view = MainView.__new__(MainView)
+    view.find_menu = lambda label: None
+
+    assert view.append_menu_item('New', 'Missing') is None
+
+
+def test_append_menu_item_resolves_a_string_after_label():
+    view = MainView.__new__(MainView)
+    parent_item, menu, existing = _menu_with_item('Existing')
+    view.find_menu = lambda label: existing if label == 'Existing' else None
+
+    new_item = view.append_menu_item('New', parent_item, after='Existing')
+
+    assert menu.get_children() == [existing, new_item]
+
+
+# _setup_windows_integration() / _setup_recent_files() - both only
+# ever run for real via a GLib scheduling call this suite never pumps #
+
+def test_setup_windows_integration_polls_the_windows_dark_mode_detector(monkeypatch):
+    from gi.repository import GLib
+    scheduled = []
+    monkeypatch.setattr(GLib, 'timeout_add_seconds', lambda seconds, cb, *a: scheduled.append((seconds, cb, a)))
+    view = MainView.__new__(MainView)
+    applied = []
+    view._apply_appearance = applied.append
+
+    view._setup_windows_integration()
+
+    assert applied == [view._detect_windows_is_dark]
+    assert scheduled == [(2, view._poll_appearance, (view._detect_windows_is_dark,))]
+
+
+def test_setup_recent_files_wires_the_recent_chooser_into_its_menu(monkeypatch):
+    from virtaal.views import recent
+    fake_rc = SimpleNamespace(connect=lambda signal, handler: None)
+    monkeypatch.setattr(recent, 'rc', fake_rc)
+    view = MainView.__new__(MainView)
+    submenus = []
+    recent_files_menu = SimpleNamespace(set_submenu=submenus.append)
+    view.gui = SimpleNamespace(get_object=lambda name: recent_files_menu)
+
+    view._setup_recent_files()
+
+    assert submenus == [fake_rc]
+
+
+# _on_osx_openfile_event() - GtkosxApplication's own "open this file"
+# signal; deferred via idle_add since GTK's own run-loop can't be
+# touched from inside this handler (gdk/quartz/gdkeventloop-quartz.c) #
+
+def test_on_osx_openfile_event_defers_opening_via_idle_add(monkeypatch):
+    from gi.repository import GLib
+    scheduled = []
+    monkeypatch.setattr(GLib, 'idle_add', scheduled.append)
+    opened = []
+    view = MainView.__new__(MainView)
+    view.controller = SimpleNamespace(open_file=lambda filename: opened.append(filename))
+
+    result = view._on_osx_openfile_event(None, 'dropped.po')
+
+    assert result is True
+    assert len(scheduled) == 1
+    scheduled[0]()
+    assert opened == ['dropped.po']
+
+
+# _on_drag_data_received() - dropping a file onto the main window #
+
+def test_on_drag_data_received_opens_a_decoded_file_uri(monkeypatch):
+    monkeypatch.setattr(platform, 'is_mac', False)
+    monkeypatch.setattr(Gtk, 'targets_include_uri', lambda targets: True)
+    view = MainView.__new__(MainView)
+    opened = []
+    view.controller = SimpleNamespace(
+        open_file=lambda filename: opened.append(filename),
+        show_error=lambda msg: pytest.fail('must not show an error for a valid drop'))
+    context = SimpleNamespace(list_targets=lambda: ['text/uri-list'])
+    data = SimpleNamespace(get_data=lambda: b'file:///tmp/dropped.po\r\n')
+
+    result = view._on_drag_data_received(None, context, 0, 0, data, 0, 0)
+
+    assert result is True
+    assert opened == ['file:///tmp/dropped.po']
+
+
+def test_on_drag_data_received_shows_an_error_for_undecodable_bytes(monkeypatch):
+    monkeypatch.setattr(platform, 'is_mac', False)
+    monkeypatch.setattr(Gtk, 'targets_include_uri', lambda targets: True)
+    view = MainView.__new__(MainView)
+    errors = []
+    view.controller = SimpleNamespace(
+        show_error=lambda msg: errors.append(msg),
+        open_file=lambda *a: pytest.fail('must not open an undecodable drop'))
+    context = SimpleNamespace(list_targets=lambda: ['text/uri-list'])
+    data = SimpleNamespace(get_data=lambda: b'\xff\xfe not utf-8\r\n')
+
+    view._on_drag_data_received(None, context, 0, 0, data, 0, 0)
+
+    assert len(errors) == 1
+
+
+def test_on_drag_data_received_ignores_a_non_file_drop(monkeypatch):
+    monkeypatch.setattr(platform, 'is_mac', False)
+    monkeypatch.setattr(Gtk, 'targets_include_uri', lambda targets: True)
+    view = MainView.__new__(MainView)
+    view.controller = SimpleNamespace(
+        open_file=lambda *a: pytest.fail('must not open a non-file:// drop'),
+        show_error=lambda *a: pytest.fail('must not show an error for a non-URI drop'))
+    context = SimpleNamespace(list_targets=lambda: ['text/uri-list'])
+    data = SimpleNamespace(get_data=lambda: b'not-a-uri\r\n')
+
+    view._on_drag_data_received(None, context, 0, 0, data, 0, 0)  # must not raise
+
+
+def test_on_drag_data_received_ignores_unsupported_targets(monkeypatch):
+    monkeypatch.setattr(platform, 'is_mac', False)
+    monkeypatch.setattr(Gtk, 'targets_include_uri', lambda targets: False)
+    view = MainView.__new__(MainView)
+    view.controller = SimpleNamespace(open_file=lambda *a: pytest.fail('must not open with unsupported targets'))
+    context = SimpleNamespace(list_targets=lambda: [])
+    data = SimpleNamespace(get_data=lambda: b'file:///tmp/dropped.po\r\n')
+
+    assert view._on_drag_data_received(None, context, 0, 0, data, 0, 0) is True
+
+
+# _on_style_set()'s Windows-only tooltip-contrast provider (bug 1923) #
+
+def test_on_style_set_adds_a_tooltip_colour_provider_on_windows(monkeypatch):
+    monkeypatch.setattr(platform, 'is_windows', True)
+    monkeypatch.setattr(mainview.theme, 'update_style', lambda w: None)
+    monkeypatch.setattr(mainview.theme, 'INVERSE', False)
+    view = MainView.__new__(MainView)
+    view._tooltip_fg_provider = None
+    widget = Gtk.Entry()
+
+    view._on_style_set(widget)
+
+    assert view._tooltip_fg_provider is not None
+
+
+def test_on_style_set_replaces_a_previous_tooltip_provider(monkeypatch):
+    monkeypatch.setattr(platform, 'is_windows', True)
+    monkeypatch.setattr(mainview.theme, 'update_style', lambda w: None)
+    monkeypatch.setattr(mainview.theme, 'INVERSE', True)
+    view = MainView.__new__(MainView)
+    view._tooltip_fg_provider = None
+    widget = Gtk.Entry()
+    view._on_style_set(widget)
+    first_provider = view._tooltip_fg_provider
+
+    view._on_style_set(widget)
+
+    assert view._tooltip_fg_provider is not first_provider
+
+
+def test_on_style_set_leaves_no_tooltip_provider_off_windows(monkeypatch):
+    monkeypatch.setattr(platform, 'is_windows', False)
+    monkeypatch.setattr(mainview.theme, 'update_style', lambda w: None)
+    view = MainView.__new__(MainView)
+    view._tooltip_fg_provider = None
+    widget = Gtk.Entry()
+
+    view._on_style_set(widget)
+
+    assert view._tooltip_fg_provider is None
+
+
+# open_file() / hide() / show() #
+
+def test_open_file_opens_the_chosen_file_and_records_its_uri():
+    opened = []
+    view = MainView.__new__(MainView)
+    view.show_open_dialog = lambda: ('chosen.po', 'file:///chosen.po')
+    view.controller = SimpleNamespace(open_file=lambda filename, uri=None: opened.append((filename, uri)))
+
+    view.open_file()
+
+    assert opened == [('chosen.po', 'file:///chosen.po')]
+    assert view._uri == 'file:///chosen.po'
+
+
+def test_open_file_returns_false_when_the_chooser_is_cancelled():
+    view = MainView.__new__(MainView)
+    view.show_open_dialog = lambda: ()
+    view.controller = SimpleNamespace(open_file=lambda *a, **k: pytest.fail('must not open anything'))
+
+    assert view.open_file() is False
+
+
+def test_hide_captures_geometry_then_hides_and_pumps_pending_events(monkeypatch):
+    # Never pump the *real* main loop in a test - depending on what's
+    # left over from the rest of the suite's own real GTK objects,
+    # Gtk.main_iteration() can process a pending event that itself
+    # blocks (e.g. a nested dialog), hanging the whole run.
+    monkeypatch.setattr(Gtk, 'events_pending', lambda: False)
+    calls = []
+    view = MainView.__new__(MainView)
+    view.main_window = SimpleNamespace(
+        get_size=lambda: (640, 480),
+        get_position=lambda: (1, 2),
+        hide=lambda: calls.append('hide'),
+    )
+
+    view.hide()
+
+    assert calls == ['hide']
+    assert view._pre_hide_size == (640, 480)
+    assert view._pre_hide_position == (1, 2)
+
+
+def test_show_maximizes_when_previously_maximized(monkeypatch):
+    from virtaal.common import pan_app
+    monkeypatch.setattr(pan_app.settings, 'general', {'maximized': 1})
+    monkeypatch.setattr(Gtk, 'main', lambda: None)
+    view = MainView.__new__(MainView)
+    calls = []
+    view.main_window = SimpleNamespace(maximize=lambda: calls.append('maximize'), show=lambda: calls.append('show'))
+
+    view.show()
+
+    assert calls == ['maximize', 'show']
+
+
+def test_show_does_not_maximize_when_not_previously_maximized(monkeypatch):
+    from virtaal.common import pan_app
+    monkeypatch.setattr(pan_app.settings, 'general', {'maximized': ''})
+    monkeypatch.setattr(Gtk, 'main', lambda: None)
+    view = MainView.__new__(MainView)
+    calls = []
+    view.main_window = SimpleNamespace(maximize=lambda: calls.append('maximize'), show=lambda: calls.append('show'))
+
+    view.show()
+
+    assert calls == ['show']
+
+
+# show_config_recovery_notice() / show_language_change_notice() -
+# same dismissable-InfoBar pattern as show_template_update_notice() #
+
+def test_show_config_recovery_notice_packs_a_warning_infobar():
+    vbox = _FakeVboxMain()
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: vbox)
+
+    view.show_config_recovery_notice('/tmp/virtaal.ini.bak')
+
+    assert len(vbox.packed) == 1
+    infobar = vbox.packed[0]
+    assert isinstance(infobar, Gtk.InfoBar)
+    assert infobar.get_message_type() == Gtk.MessageType.WARNING
+
+
+def test_show_config_recovery_notice_dismisses_on_response():
+    vbox = _FakeVboxMain()
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: vbox)
+    view.show_config_recovery_notice('/tmp/virtaal.ini.bak')
+    infobar = vbox.packed[0]
+
+    infobar.emit('response', Gtk.ResponseType.CLOSE)  # must not raise
+
+    assert infobar.get_parent() is None
+
+
+def test_show_language_change_notice_packs_an_info_infobar():
+    vbox = _FakeVboxMain()
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: vbox)
+
+    view.show_language_change_notice()
+
+    assert len(vbox.packed) == 1
+    infobar = vbox.packed[0]
+    assert isinstance(infobar, Gtk.InfoBar)
+    assert infobar.get_message_type() == Gtk.MessageType.INFO
+
+
+def test_show_language_change_notice_does_not_stack_a_second_one():
+    vbox = _FakeVboxMain()
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: vbox)
+    view.show_language_change_notice()
+
+    view.show_language_change_notice()
+
+    assert len(vbox.packed) == 1
+
+
+def test_show_language_change_notice_dismiss_clears_the_tracked_infobar():
+    vbox = _FakeVboxMain()
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: vbox)
+    view.show_language_change_notice()
+
+    view._language_change_infobar.emit('response', Gtk.ResponseType.CLOSE)
+
+    assert view._language_change_infobar is None
+
+
+# set_statusbar_message() - only the empty-message branch: a truthy
+# message hits `self.WRAP_DELAY`, an attribute this class never
+# defines anywhere (a real, pre-existing bug) - but the method is only
+# ever called from a line that's commented out in storetreeview.py, so
+# it's currently unreachable in the live app; left as a known gap
+# rather than exercising a crash. #
+
+def test_set_statusbar_message_clears_with_an_empty_message():
+    calls = []
+    view = MainView.__new__(MainView)
+    view.status_bar = SimpleNamespace(
+        pop=lambda ctx: calls.append(('pop', ctx)),
+        push=lambda ctx, msg: calls.append(('push', ctx, msg)),
+    )
+    view.statusbar_context_id = 7
+
+    view.set_statusbar_message('')
+
+    assert calls == [('pop', 7), ('push', 7, '')]
+
+
+# _on_fullscreen() - show_app_icon()/hide_app_icon() are stubbed out:
+# both use Gtk.Widget.reparent(), a real deprecated GTK call with no
+# replacement short of rebuilding the menu bar, out of scope here #
+
+def test_on_fullscreen_enters_fullscreen_and_shows_the_app_icon():
+    calls = []
+    view = MainView.__new__(MainView)
+    view.main_window = SimpleNamespace(
+        fullscreen=lambda: calls.append('fullscreen'), unfullscreen=lambda: calls.append('unfullscreen'))
+    view.status_bar = SimpleNamespace(hide=lambda: calls.append('status-hide'), show=lambda: calls.append('status-show'))
+    view.menubar = SimpleNamespace(hide=lambda: calls.append('menubar-hide'), show=lambda: calls.append('menubar-show'))
+    view.show_app_icon = lambda: calls.append('show-app-icon')
+    view.hide_app_icon = lambda: calls.append('hide-app-icon')
+
+    view._on_fullscreen(SimpleNamespace(get_active=lambda: True))
+
+    assert calls == ['fullscreen', 'status-hide', 'show-app-icon', 'menubar-hide']
+
+
+def test_on_fullscreen_leaves_fullscreen_and_hides_the_app_icon():
+    calls = []
+    view = MainView.__new__(MainView)
+    view.main_window = SimpleNamespace(
+        fullscreen=lambda: calls.append('fullscreen'), unfullscreen=lambda: calls.append('unfullscreen'))
+    view.status_bar = SimpleNamespace(hide=lambda: calls.append('status-hide'), show=lambda: calls.append('status-show'))
+    view.menubar = SimpleNamespace(hide=lambda: calls.append('menubar-hide'), show=lambda: calls.append('menubar-show'))
+    view.show_app_icon = lambda: calls.append('show-app-icon')
+    view.hide_app_icon = lambda: calls.append('hide-app-icon')
+
+    view._on_fullscreen(SimpleNamespace(get_active=lambda: False))
+
+    assert calls == ['unfullscreen', 'status-show', 'hide-app-icon', 'menubar-show']
+
+
+# trivial menu/signal delegators #
+
+def test_on_file_open_delegates_to_open_file():
+    view = MainView.__new__(MainView)
+    calls = []
+    view.open_file = lambda: calls.append('opened')
+
+    view._on_file_open(None)
+
+    assert calls == ['opened']
+
+
+def test_on_file_save_delegates_to_the_controller():
+    view = MainView.__new__(MainView)
+    calls = []
+    view.controller = SimpleNamespace(save_file=lambda: calls.append('saved'))
+
+    view._on_file_save()
+
+    assert calls == ['saved']
+
+
+def test_on_file_saveas_forces_the_saveas_dialog():
+    view = MainView.__new__(MainView)
+    calls = []
+    view.controller = SimpleNamespace(save_file=lambda force_saveas: calls.append(force_saveas))
+
+    view._on_file_saveas()
+
+    assert calls == [True]
+
+
+def test_on_file_binary_export_delegates_to_the_controller():
+    view = MainView.__new__(MainView)
+    calls = []
+    view.controller = SimpleNamespace(binary_export=lambda: calls.append('exported'))
+
+    view._on_file_binary_export()
+
+    assert calls == ['exported']
+
+
+def test_on_file_close_delegates_to_the_controller():
+    view = MainView.__new__(MainView)
+    calls = []
+    view.controller = SimpleNamespace(close_file=lambda: calls.append('closed'))
+
+    view._on_file_close()
+
+    assert calls == ['closed']
+
+
+def test_on_file_update_opens_a_template_and_updates_the_current_file():
+    view = MainView.__new__(MainView)
+    view.template_chooser = object()
+    view.show_open_dialog = lambda chooser: ('template.pot', 'file:///template.pot')
+    calls = []
+    view.controller = SimpleNamespace(update_file=lambda filename, uri=None: calls.append((filename, uri)))
+
+    view._on_file_update(None)
+
+    assert calls == [('template.pot', 'file:///template.pot')]
+    assert view._uri == 'file:///template.pot'
+
+
+def test_on_file_update_does_nothing_when_the_chooser_is_cancelled():
+    view = MainView.__new__(MainView)
+    view.template_chooser = object()
+    view.show_open_dialog = lambda chooser: ()
+    view.controller = SimpleNamespace(update_file=lambda *a, **k: pytest.fail('must not update anything'))
+
+    view._on_file_update(None)  # must not raise
+
+
+def test_on_file_revert_delegates_to_the_controller():
+    view = MainView.__new__(MainView)
+    calls = []
+    view.controller = SimpleNamespace(revert_file=lambda: calls.append('reverted'))
+
+    view._on_file_revert()
+
+    assert calls == ['reverted']
+
+
+def test_on_tutorial_delegates_to_the_controller():
+    view = MainView.__new__(MainView)
+    calls = []
+    view.controller = SimpleNamespace(open_tutorial=lambda: calls.append('opened'))
+
+    view._on_tutorial()
+
+    assert calls == ['opened']
+
+
+def test_on_quit_delegates_to_the_controller_and_swallows_the_event():
+    view = MainView.__new__(MainView)
+    calls = []
+    view.controller = SimpleNamespace(quit=lambda: calls.append('quit'))
+
+    assert view._on_quit() is True
+    assert calls == ['quit']
+
+
+def test_on_next_unit_advances_the_unit_view():
+    view = MainView.__new__(MainView)
+    calls = []
+    view.controller = SimpleNamespace(unit_controller=SimpleNamespace(
+        view=SimpleNamespace(finish_editing_and_advance=lambda: calls.append('advanced'))))
+
+    view._on_next_unit()
+
+    assert calls == ['advanced']
+
+
+def test_on_state_advance_advances_the_workflow_state_forward():
+    view = MainView.__new__(MainView)
+    calls = []
+    unit_view = SimpleNamespace(
+        advance_workflow_state=lambda offset: calls.append(('advance', offset)),
+        finish_editing_and_advance=lambda: calls.append('advanced'),
+    )
+    view.controller = SimpleNamespace(unit_controller=SimpleNamespace(view=unit_view))
+
+    view._on_state_advance()
+
+    assert calls == [('advance', 1), 'advanced']
+
+
+def test_on_state_reverse_advances_the_workflow_state_backward():
+    view = MainView.__new__(MainView)
+    calls = []
+    unit_view = SimpleNamespace(
+        advance_workflow_state=lambda offset: calls.append(('advance', offset)),
+        finish_editing_and_advance=lambda: calls.append('advanced'),
+    )
+    view.controller = SimpleNamespace(unit_controller=SimpleNamespace(view=unit_view))
+
+    view._on_state_reverse()
+
+    assert calls == [('advance', -1), 'advanced']
+
+
+def test_on_documentation_opens_the_docs_url(monkeypatch):
+    from virtaal.support import openmailto
+    opened = []
+    monkeypatch.setattr(openmailto, 'open', lambda url: opened.append(url))
+    view = MainView.__new__(MainView)
+
+    view._on_documentation()
+
+    assert opened == ['https://docs.translatehouse.org/projects/virtaal/en/latest/using_virtaal.html']
+
+
+def test_on_localization_guide_opens_the_guide_url(monkeypatch):
+    from virtaal.support import openmailto
+    opened = []
+    monkeypatch.setattr(openmailto, 'open', lambda url: opened.append(url))
+    view = MainView.__new__(MainView)
+
+    view._on_localization_guide()
+
+    assert opened == ['https://docs.translatehouse.org/projects/localization-guide/en/']
+
+
+def test_on_help_about_shows_a_real_about_dialog():
+    view = MainView.__new__(MainView)
+    view.main_window = Gtk.Window()
+
+    view._on_help_about()  # must not raise
+
+
+def test_on_shortcuts_shows_a_real_shortcuts_window():
+    view = MainView.__new__(MainView)
+    view.main_window = Gtk.Window()
+
+    view._on_shortcuts()  # must not raise

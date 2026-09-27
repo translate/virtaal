@@ -1189,6 +1189,16 @@ def test_setup_key_bindings_leaves_preferences_alone_on_mac(monkeypatch):
     assert not any(path == "<Virtaal>/Edit/Preferences" for path, key, mods in calls)
 
 
+def test_setup_osx_help_menu_gives_osxapp_the_help_menu_item():
+    view = SimpleNamespace(gui=SimpleNamespace(get_object=lambda name: name))
+    calls = []
+    osxapp = SimpleNamespace(set_help_menu=lambda item: calls.append(item))
+
+    MainView._setup_osx_help_menu(view, osxapp)
+
+    assert calls == ["menuitem_help"]
+
+
 # show_template_update_notice(): dismissable "Update from Template" stats
 # notice, replacing a blocking modal dialog (#3808).
 

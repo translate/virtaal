@@ -54,12 +54,12 @@ class UnionSetEnumerator(GObject.GObject):
         if element not in self.set:
             self.set.add(element)
             cursor_pos = bisect_left(self.set.data, element)
-            self.emit('add', self, cursor_pos, element)
+            self.emit('add', cursor_pos, element)
 
     def _before_remove(self, _src, _pos, element):
         if element in self.set:
             self.set.remove(element)
-            self.emit('remove', self, bisect_left(self.set.data, element), element)
+            self.emit('remove', bisect_left(self.set.data, element), element)
 
     def remove(self, element):
         for set_ in self.sets:

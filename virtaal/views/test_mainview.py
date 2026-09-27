@@ -481,6 +481,7 @@ def test_on_store_closed_disables_menu_items_and_resets_the_title():
 def test_on_store_loaded_enables_binary_export_only_for_a_po_file(monkeypatch):
     from virtaal.views import recent
     monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: None))
+    monkeypatch.setattr(mainview, '_note_recent_document', lambda path: None)
     binary_export = _FakeSensitiveWidget()
     view = MainView.__new__(MainView)
     view.gui = SimpleNamespace(get_object=lambda name: binary_export if name == 'mnu_binary_export' else _FakeSensitiveWidget())
@@ -497,6 +498,7 @@ def test_on_store_loaded_enables_binary_export_only_for_a_po_file(monkeypatch):
 def test_on_store_loaded_enables_binary_export_for_a_compressed_po_file(monkeypatch):
     from virtaal.views import recent
     monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: None))
+    monkeypatch.setattr(mainview, '_note_recent_document', lambda path: None)
     binary_export = _FakeSensitiveWidget()
     view = MainView.__new__(MainView)
     view.gui = SimpleNamespace(get_object=lambda name: binary_export if name == 'mnu_binary_export' else _FakeSensitiveWidget())
@@ -514,6 +516,7 @@ def test_on_store_loaded_adds_the_bundle_filename_for_a_project(monkeypatch):
     from virtaal.views import recent
     added = []
     monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: added.append(uri)))
+    monkeypatch.setattr(mainview, '_note_recent_document', lambda path: None)
     view = MainView.__new__(MainView)
     view.gui = SimpleNamespace(get_object=lambda name: _FakeSensitiveWidget())
     view.status_bar = _FakeSensitiveWidget()
@@ -530,6 +533,7 @@ def test_on_store_loaded_adds_the_dropped_uri_when_one_was_recorded(monkeypatch)
     from virtaal.views import recent
     added = []
     monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: added.append(uri)))
+    monkeypatch.setattr(mainview, '_note_recent_document', lambda path: None)
     view = MainView.__new__(MainView)
     view.gui = SimpleNamespace(get_object=lambda name: _FakeSensitiveWidget())
     view.status_bar = _FakeSensitiveWidget()
@@ -549,6 +553,7 @@ def test_on_store_loaded_adds_an_extra_leading_slash_on_windows(monkeypatch):
     from virtaal.views import recent
     added = []
     monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: added.append(uri)))
+    monkeypatch.setattr(mainview, '_note_recent_document', lambda path: None)
     monkeypatch.setattr(platform, 'is_windows', True)
     view = MainView.__new__(MainView)
     view.gui = SimpleNamespace(get_object=lambda name: _FakeSensitiveWidget())
@@ -1199,3 +1204,122 @@ def test_show_update_notice_with_asset_url_release_notes_button_opens_the_releas
 
     _emit_response(view, Gtk.ResponseType.HELP)
     assert opened == ['https://github.com/translate/virtaal/releases/tag/v1.0.0']
+
+
+# _open_recent_item() / _on_recent_file_activated() #
+
+class _FakeRecentInfo:
+    def __init__(self, uri, exists=True):
+        self._uri = uri
+        self._exists = exists
+
+    def get_uri(self):
+        return self._uri
+
+    def get_uri_display(self):
+        return self._uri.removeprefix('file://')
+
+    def exists(self):
+        return self._exists
+
+
+def test_open_recent_item_opens_an_existing_file():
+    opened = []
+    view = SimpleNamespace(controller=SimpleNamespace(open_file=lambda display, uri: opened.append((display, uri))))
+
+    MainView._open_recent_item(view, _FakeRecentInfo('file:///tmp/document.po'))
+
+    assert opened == [('/tmp/document.po', 'file:///tmp/document.po')]
+    assert view._uri == 'file:///tmp/document.po'
+
+
+def test_open_recent_item_skips_a_missing_file():
+    view = SimpleNamespace(controller=SimpleNamespace(
+        open_file=lambda display, uri: pytest.fail('should not open a file that no longer exists')))
+
+    MainView._open_recent_item(view, _FakeRecentInfo('file:///tmp/gone.po', exists=False))  # must not raise
+
+
+def test_on_recent_file_activated_delegates_to_open_recent_item():
+    item = _FakeRecentInfo('file:///tmp/document.po')
+    opened = []
+    view = SimpleNamespace(_open_recent_item=lambda i: opened.append(i))
+
+    MainView._on_recent_file_activated(view, SimpleNamespace(get_current_item=lambda: item))
+
+    assert opened == [item]
+
+
+# _on_store_loaded()'s macOS hook: _note_recent_document() #
+
+def test_on_store_loaded_notes_the_bundle_filename_on_mac(monkeypatch):
+    from virtaal.views import recent
+    monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: None))
+    monkeypatch.setattr(platform, 'is_mac', True)
+    noted = []
+    monkeypatch.setattr(mainview, '_note_recent_document', lambda path: noted.append(path))
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: _FakeSensitiveWidget())
+    view.status_bar = _FakeSensitiveWidget()
+    store_controller = SimpleNamespace(
+        get_store_filename=lambda: 'bundle.zip', project=True, _archivetemp=False,
+        get_bundle_filename=lambda: '/tmp/bundle.zip')
+
+    view._on_store_loaded(store_controller)
+
+    assert noted == ['/tmp/bundle.zip']
+
+
+def test_on_store_loaded_notes_the_dropped_uri_on_mac(monkeypatch):
+    from virtaal.views import recent
+    monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: None))
+    monkeypatch.setattr(platform, 'is_mac', True)
+    noted = []
+    monkeypatch.setattr(mainview, '_note_recent_document', lambda path: noted.append(path))
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: _FakeSensitiveWidget())
+    view.status_bar = _FakeSensitiveWidget()
+    view._uri = 'file:///tmp/dropped.po'
+    store_controller = SimpleNamespace(
+        get_store_filename=lambda: 'dropped.po', project=None,
+        store=SimpleNamespace(filename='/tmp/dropped.po'))
+
+    view._on_store_loaded(store_controller)
+
+    from gi.repository import GLib
+    assert noted == [GLib.filename_from_uri('file:///tmp/dropped.po')[0]]
+
+
+def test_on_store_loaded_notes_the_plain_filename_on_mac(monkeypatch):
+    import os
+
+    from virtaal.views import recent
+    monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: None))
+    monkeypatch.setattr(platform, 'is_mac', True)
+    noted = []
+    monkeypatch.setattr(mainview, '_note_recent_document', lambda path: noted.append(path))
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: _FakeSensitiveWidget())
+    view.status_bar = _FakeSensitiveWidget()
+    store_controller = SimpleNamespace(
+        get_store_filename=lambda: 'opened.po', project=None,
+        store=SimpleNamespace(filename='/tmp/opened.po'))
+
+    view._on_store_loaded(store_controller)
+
+    assert noted == [os.path.abspath('/tmp/opened.po')]
+
+
+def test_on_store_loaded_skips_noting_a_document_off_mac(monkeypatch):
+    from virtaal.views import recent
+    monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: None))
+    monkeypatch.setattr(platform, 'is_mac', False)
+    monkeypatch.setattr(mainview, '_note_recent_document', lambda path: pytest.fail('mac-only call'))
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: _FakeSensitiveWidget())
+    view.status_bar = _FakeSensitiveWidget()
+    store_controller = SimpleNamespace(
+        get_store_filename=lambda: 'opened.po', project=None,
+        store=SimpleNamespace(filename='/tmp/opened.po'))
+
+    view._on_store_loaded(store_controller)  # must not raise

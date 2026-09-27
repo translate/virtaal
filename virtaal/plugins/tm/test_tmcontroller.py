@@ -7,7 +7,23 @@
 
 from types import SimpleNamespace
 
+import pytest
+
 from virtaal.plugins.tm.tmcontroller import TMController
+
+
+def _bare_controller(**overrides):
+    controller = TMController.__new__(TMController)
+    for name, value in overrides.items():
+        setattr(controller, name, value)
+    return controller
+
+
+class _FakePlugin:
+    """A plain, hashable stand-in for a plugin - unlike SimpleNamespace,
+    whose own __eq__ makes it unusable as a dict key."""
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
 
 
 def _make_controller(matches=None, max_matches=5, current_query='hello', storecursor=True):
@@ -110,3 +126,478 @@ def test_accept_response_sorts_by_quality_descending_and_truncates_to_max_matche
     ])
 
     assert [m['target'] for m in controller.matches] == ['hoog', 'middel']
+
+
+# __init__() #
+
+def test_init_computes_config_and_delegates_to_helpers(monkeypatch):
+    calls = []
+    monkeypatch.setattr(TMController, '_load_models', lambda self: calls.append('load_models'))
+    monkeypatch.setattr(TMController, '_connect_plugin', lambda self: calls.append('connect_plugin'))
+    fake_view = SimpleNamespace()
+    monkeypatch.setattr('virtaal.plugins.tm.tmview.TMView', lambda controller, max_matches: fake_view)
+    main_controller = object()
+
+    controller = TMController(main_controller, config={'max_matches': 3, 'min_quality': 50, 'disabled_models': ['foo']})
+
+    assert controller.main_controller is main_controller
+    assert controller.max_matches == 3
+    assert controller.min_quality == 50
+    assert controller.disabled_model_names == ['basetmmodel', 'foo']
+    assert controller.storecursor is None
+    assert controller.view is fake_view
+    assert calls == ['load_models', 'connect_plugin']
+
+
+def test_init_defaults_config_when_none_given(monkeypatch):
+    monkeypatch.setattr(TMController, '_load_models', lambda self: None)
+    monkeypatch.setattr(TMController, '_connect_plugin', lambda self: None)
+    monkeypatch.setattr('virtaal.plugins.tm.tmview.TMView', lambda controller, max_matches: SimpleNamespace())
+
+    controller = TMController(object())
+
+    assert controller.config == {}
+    assert controller.max_matches == 5
+    assert controller.min_quality == 75
+    assert controller.disabled_model_names == ['basetmmodel']
+
+
+# _load_models() #
+
+def test_load_models_builds_the_plugin_controller_and_loads_plugins(monkeypatch):
+    controller = _bare_controller(disabled_model_names=['x', 'y'], _signal_ids={})
+    captured = {}
+
+    def fake_for_backend(owner, classname, category, interface, get_disabled):
+        captured['args'] = (owner, classname, category, interface, get_disabled)
+        return SimpleNamespace(connect=lambda signal, handler: f'sig-{signal}', load_plugins=lambda: calls.append('loaded'))
+    calls = []
+    monkeypatch.setattr('virtaal.controllers.plugincontroller.PluginController.for_backend', fake_for_backend)
+
+    controller._load_models()
+
+    owner, classname, category, interface, get_disabled = captured['args']
+    assert (owner, classname, category) == (controller, 'TMModel', 'tm')
+    assert get_disabled() == ['x', 'y']
+    assert calls == ['loaded']
+    assert controller._signal_ids['plugin-enabled'] == 'sig-plugin-enabled'
+    assert controller._signal_ids['plugin-disabled'] == 'sig-plugin-disabled'
+
+
+def test_load_models_on_plugin_enabled_connects_match_found_to_accept_response(monkeypatch):
+    controller = _bare_controller(disabled_model_names=[], _signal_ids={})
+    handlers = {}
+    monkeypatch.setattr(
+        'virtaal.controllers.plugincontroller.PluginController.for_backend',
+        lambda *a: SimpleNamespace(
+            connect=lambda signal, handler: handlers.__setitem__(signal, handler) or f'sig-{signal}',
+            load_plugins=lambda: None,
+        ),
+    )
+    controller._load_models()
+    plugin = _FakePlugin(connect=lambda signal, handler: 'plugin-sig')
+
+    handlers['plugin-enabled'](None, plugin)
+
+    assert controller._model_signal_ids[plugin] == 'plugin-sig'
+
+
+def test_load_models_on_plugin_disabled_disconnects_the_model(monkeypatch):
+    controller = _bare_controller(disabled_model_names=[], _signal_ids={})
+    handlers = {}
+    monkeypatch.setattr(
+        'virtaal.controllers.plugincontroller.PluginController.for_backend',
+        lambda *a: SimpleNamespace(
+            connect=lambda signal, handler: handlers.__setitem__(signal, handler) or f'sig-{signal}',
+            load_plugins=lambda: None,
+        ),
+    )
+    controller._load_models()
+    disconnected = []
+    plugin = _FakePlugin(disconnect=disconnected.append)
+    controller._model_signal_ids[plugin] = 'plugin-sig'
+
+    handlers['plugin-disabled'](None, plugin)
+
+    assert disconnected == ['plugin-sig']
+
+
+# _connect_plugin() #
+
+def _fake_store_controller(store=None):
+    connected = []
+
+    def connect(signal, handler):
+        connected.append(signal)
+        return f'sig-{signal}'
+    sc = SimpleNamespace(connect=connect, get_store=lambda: store)
+    sc._connected = connected
+    return sc
+
+
+def test_connect_plugin_subscribes_to_store_loaded_and_closed():
+    controller = _bare_controller()
+    store_controller = _fake_store_controller(store=None)
+    controller.main_controller = SimpleNamespace(store_controller=store_controller, mode_controller=None)
+
+    controller._connect_plugin()
+
+    assert store_controller._connected == ['store-loaded', 'store-closed']
+    assert controller._store_loaded_id == 'sig-store-loaded'
+    assert controller._store_closed_id == 'sig-store-closed'
+
+
+def test_connect_plugin_immediately_loads_an_already_open_store():
+    controller = _bare_controller()
+    calls = []
+    controller._on_store_loaded = lambda sc: calls.append(sc)
+    store_controller = _fake_store_controller(store=object())
+    controller.main_controller = SimpleNamespace(store_controller=store_controller, mode_controller=None)
+    controller.view = SimpleNamespace(_should_show_tmwindow=False)
+
+    controller._connect_plugin()
+
+    assert calls == [store_controller]
+    assert controller.view._should_show_tmwindow is True
+
+
+def test_connect_plugin_subscribes_to_mode_selected_when_a_mode_controller_exists():
+    controller = _bare_controller()
+    store_controller = _fake_store_controller()
+    mode_controller = SimpleNamespace(connect=lambda signal, handler: 'sig-mode-selected')
+    controller.main_controller = SimpleNamespace(store_controller=store_controller, mode_controller=mode_controller)
+
+    controller._connect_plugin()
+
+    assert controller._mode_selected_id == 'sig-mode-selected'
+
+
+def test_connect_plugin_skips_mode_selected_without_a_mode_controller():
+    controller = _bare_controller()
+    store_controller = _fake_store_controller()
+    controller.main_controller = SimpleNamespace(store_controller=store_controller, mode_controller=None)
+
+    controller._connect_plugin()
+
+    assert not hasattr(controller, '_mode_selected_id')
+
+
+# destroy() #
+
+def test_destroy_tears_down_the_view_and_all_registered_signals():
+    controller = _bare_controller()
+    calls = []
+    controller.view = SimpleNamespace(hide=lambda: calls.append('hide'), destroy=lambda: calls.append('destroy'))
+    store_controller = SimpleNamespace(disconnect=lambda sid: calls.append(('store', sid)))
+    store_controller.cursor = SimpleNamespace(disconnect=lambda sid: calls.append(('cursor', sid)))
+    mode_controller = SimpleNamespace(disconnect=lambda sid: calls.append(('mode', sid)))
+    unit_controller = SimpleNamespace(view=SimpleNamespace(disconnect=lambda sid: calls.append(('target', sid))))
+    controller.main_controller = SimpleNamespace(
+        store_controller=store_controller, mode_controller=mode_controller, unit_controller=unit_controller,
+    )
+    controller._store_loaded_id = 'store-id'
+    controller._cursor_changed_id = 'cursor-id'
+    controller._mode_selected_id = 'mode-id'
+    controller._target_focused_id = 'target-id'
+    controller.plugin_controller = SimpleNamespace(shutdown=lambda: calls.append('shutdown'))
+
+    controller.destroy()
+
+    assert calls == [
+        'hide', 'destroy', ('store', 'store-id'), ('cursor', 'cursor-id'),
+        ('mode', 'mode-id'), ('target', 'target-id'), 'shutdown',
+    ]
+
+
+def test_destroy_skips_optional_signals_that_were_never_connected():
+    controller = _bare_controller()
+    calls = []
+    controller.view = SimpleNamespace(hide=lambda: calls.append('hide'), destroy=lambda: calls.append('destroy'))
+    controller.main_controller = SimpleNamespace(
+        store_controller=SimpleNamespace(disconnect=lambda sid: calls.append(('store', sid))),
+    )
+    controller._store_loaded_id = 'store-id'
+    controller.plugin_controller = SimpleNamespace(shutdown=lambda: calls.append('shutdown'))
+
+    controller.destroy()
+
+    assert calls == ['hide', 'destroy', ('store', 'store-id'), 'shutdown']
+
+
+# select_match() #
+
+def test_select_match_pushes_undo_and_sets_the_focused_target():
+    controller = _bare_controller()
+    calls = []
+    view = SimpleNamespace(focused_target_n=1, get_target_n=lambda n: 'old text', targets=['textbox0', 'textbox1'])
+    unit_controller = SimpleNamespace(view=view, set_unit_target=lambda n, text: calls.append(('set', n, text)))
+    controller.main_controller = SimpleNamespace(
+        unit_controller=unit_controller,
+        undo_controller=SimpleNamespace(push_current_text=lambda textbox: calls.append(('push', textbox))),
+    )
+
+    controller.select_match({'target': 'hallo'})
+
+    assert calls == [('push', 'textbox1'), ('set', 1, 'hallo')]
+
+
+# send_tm_query() #
+
+def test_send_tm_query_uses_the_given_unit_and_clears_previous_matches():
+    controller = _bare_controller(matches=['stale'])
+    calls = []
+    controller.view = SimpleNamespace(clear=lambda: calls.append('clear'))
+    emitted = []
+    controller.emit = lambda signal, unit: emitted.append((signal, unit))
+    unit = SimpleNamespace(source='hello')
+
+    controller.send_tm_query(unit)
+
+    assert controller.unit is unit
+    assert controller.current_query == 'hello'
+    assert controller.matches == []
+    assert calls == ['clear']
+    assert emitted == [('start-query', unit)]
+
+
+def test_send_tm_query_reuses_the_existing_unit_when_none_given():
+    controller = _bare_controller(unit=SimpleNamespace(source='bye'))
+    controller.view = SimpleNamespace(clear=lambda: None)
+    controller.emit = lambda *a: None
+
+    controller.send_tm_query()
+
+    assert controller.current_query == 'bye'
+
+
+# start_query() #
+
+def test_start_query_does_nothing_without_a_store_cursor():
+    controller = _bare_controller(storecursor=None)
+
+    controller.start_query()  # must not raise
+
+
+def _controller_for_start_query(**overrides):
+    overrides.setdefault('_delay_id', None)
+    controller = _bare_controller(storecursor=SimpleNamespace(deref=lambda: pytest.fail('must not re-derive a cached unit')), **overrides)
+    controller.view = SimpleNamespace(hide=lambda: None)
+    return controller
+
+
+def test_start_query_uses_the_cached_unit_when_already_set(monkeypatch):
+    scheduled = []
+    monkeypatch.setattr('virtaal.plugins.tm.tmcontroller.GLib.timeout_add', lambda delay, cb: scheduled.append((delay, cb)) or 'timeout-id')
+    controller = _controller_for_start_query(unit=SimpleNamespace(source='x'))
+    controller.main_controller = SimpleNamespace(unit_controller=SimpleNamespace(view=SimpleNamespace(connect=lambda signal, handler: 'sig-target-focused')))
+
+    controller.start_query()
+
+    assert controller._target_focused_id == 'sig-target-focused'
+    assert scheduled and scheduled[0][0] == TMController.QUERY_DELAY
+
+
+def test_start_query_derives_the_unit_from_the_cursor_when_none_cached(monkeypatch):
+    monkeypatch.setattr('virtaal.plugins.tm.tmcontroller.GLib.timeout_add', lambda delay, cb: 'timeout-id')
+    controller = _bare_controller(storecursor=SimpleNamespace(deref=lambda: 'derived-unit'), _delay_id=None)
+    controller.main_controller = SimpleNamespace(unit_controller=SimpleNamespace(view=SimpleNamespace(connect=lambda *a: 'sig')))
+    controller.view = SimpleNamespace(hide=lambda: None)
+
+    controller.start_query()
+
+    assert controller.unit == 'derived-unit'
+
+
+def test_start_query_disconnects_a_previous_target_focused_subscription(monkeypatch):
+    monkeypatch.setattr('virtaal.plugins.tm.tmcontroller.GLib.timeout_add', lambda delay, cb: 'timeout-id')
+    disconnected = []
+    unit_view = SimpleNamespace(connect=lambda signal, handler: 'new-sig', disconnect=disconnected.append)
+    controller = _controller_for_start_query(unit='cached', _target_focused_id='old-sig')
+    controller.main_controller = SimpleNamespace(unit_controller=SimpleNamespace(view=unit_view))
+
+    controller.start_query()
+
+    assert disconnected == ['old-sig']
+    assert controller._target_focused_id == 'new-sig'
+
+
+def test_start_query_cancels_a_pending_delayed_query_before_scheduling_a_new_one(monkeypatch):
+    removed = []
+    monkeypatch.setattr('virtaal.plugins.tm.tmcontroller.GLib.source_remove', removed.append)
+    monkeypatch.setattr('virtaal.plugins.tm.tmcontroller.GLib.timeout_add', lambda delay, cb: 'new-timeout-id')
+    controller = _controller_for_start_query(unit='cached', _delay_id='old-timeout-id')
+    controller.main_controller = SimpleNamespace(unit_controller=SimpleNamespace(view=SimpleNamespace(connect=lambda *a: 'sig')))
+
+    controller.start_query()
+
+    assert removed == ['old-timeout-id']
+    assert controller._delay_id == 'new-timeout-id'
+
+
+def test_start_query_schedules_send_tm_query_after_the_delay(monkeypatch):
+    scheduled = []
+    monkeypatch.setattr('virtaal.plugins.tm.tmcontroller.GLib.timeout_add', lambda delay, cb: scheduled.append(cb) or 'id')
+    controller = _controller_for_start_query(unit='cached')
+    controller.main_controller = SimpleNamespace(unit_controller=SimpleNamespace(view=SimpleNamespace(connect=lambda *a: 'sig')))
+    sent = []
+    controller.send_tm_query = lambda: sent.append(True)
+
+    controller.start_query()
+    result = scheduled[0]()  # invoke the deferred start_query() closure
+
+    assert sent == [True]
+    assert controller._delay_id is None
+    assert result is False
+
+
+# _on_cursor_changed() #
+
+def test_on_cursor_changed_clears_storecursor_and_returns_when_none():
+    controller = _bare_controller()
+    controller.start_query = lambda: pytest.fail('must not query without a cursor')
+
+    result = controller._on_cursor_changed(None)
+
+    assert controller.storecursor is None
+    assert result is None
+
+
+def test_on_cursor_changed_returns_when_the_dereffed_unit_is_none():
+    cursor = SimpleNamespace(deref=lambda: None)
+    controller = _bare_controller()
+    controller.start_query = lambda: pytest.fail('must not query without a unit')
+
+    controller._on_cursor_changed(cursor)
+
+    assert controller.unit is None
+
+
+def test_on_cursor_changed_hides_suggestions_for_an_already_translated_unit():
+    unit = SimpleNamespace(istranslated=lambda: True)
+    cursor = SimpleNamespace(deref=lambda: unit)
+    controller = _bare_controller()
+    controller.start_query = lambda: 'started'
+    calls = []
+    controller.view = SimpleNamespace(active=True, mnu_suggestions=SimpleNamespace(set_active=calls.append))
+
+    result = controller._on_cursor_changed(cursor)
+
+    assert calls == [False]
+    assert result == 'started'
+
+
+def test_on_cursor_changed_shows_suggestions_for_an_untranslated_unit():
+    unit = SimpleNamespace(istranslated=lambda: False)
+    cursor = SimpleNamespace(deref=lambda: unit)
+    controller = _bare_controller()
+    controller.start_query = lambda: None
+    calls = []
+    controller.view = SimpleNamespace(active=False, mnu_suggestions=SimpleNamespace(set_active=calls.append))
+
+    controller._on_cursor_changed(cursor)
+
+    assert calls == [True]
+
+
+def test_on_cursor_changed_leaves_suggestions_alone_when_neither_condition_matches():
+    unit = SimpleNamespace(istranslated=lambda: False)
+    cursor = SimpleNamespace(deref=lambda: unit)
+    controller = _bare_controller()
+    controller.start_query = lambda: None
+    controller.view = SimpleNamespace(
+        active=True,
+        mnu_suggestions=SimpleNamespace(set_active=lambda v: pytest.fail('must not toggle')),
+    )
+
+    controller._on_cursor_changed(cursor)
+
+
+# _on_mode_selected() / _on_target_focused() #
+
+def test_on_mode_selected_updates_the_view_geometry():
+    controller = _bare_controller()
+    calls = []
+    controller.view = SimpleNamespace(update_geometry=lambda: calls.append(True))
+
+    controller._on_mode_selected(None, None)
+
+    assert calls == [True]
+
+
+def test_on_target_focused_updates_the_view_geometry():
+    controller = _bare_controller()
+    calls = []
+    controller.view = SimpleNamespace(update_geometry=lambda: calls.append(True))
+
+    controller._on_target_focused(None, 0)
+
+    assert calls == [True]
+
+
+# _on_store_closed() #
+
+def test_on_store_closed_disconnects_the_cursor_and_hides_the_view():
+    controller = _bare_controller()
+    disconnected = []
+    controller.storecursor = SimpleNamespace(disconnect=disconnected.append)
+    controller._cursor_changed_id = 'sig-id'
+    calls = []
+    controller.view = SimpleNamespace(hide=lambda: calls.append('hide'))
+
+    controller._on_store_closed(None)
+
+    assert disconnected == ['sig-id']
+    assert controller.storecursor is None
+    assert controller._cursor_changed_id == 0
+    assert calls == ['hide']
+
+
+def test_on_store_closed_is_safe_without_a_prior_cursor_subscription():
+    controller = _bare_controller()
+    controller.view = SimpleNamespace(hide=lambda: None)
+
+    controller._on_store_closed(None)  # must not raise
+
+    assert controller.storecursor is None
+
+
+# _on_store_loaded() #
+
+def test_on_store_loaded_connects_the_new_cursor_and_schedules_the_first_unit(monkeypatch):
+    idle_calls = []
+    monkeypatch.setattr('virtaal.plugins.tm.tmcontroller.GLib.idle_add', idle_calls.append)
+    new_cursor = SimpleNamespace(connect=lambda signal, handler: 'new-sig')
+    controller = _bare_controller()
+
+    controller._on_store_loaded(SimpleNamespace(cursor=new_cursor))
+
+    assert controller.storecursor is new_cursor
+    assert controller._cursor_changed_id == 'new-sig'
+    assert len(idle_calls) == 1
+
+
+def test_on_store_loaded_disconnects_the_previous_cursor_first(monkeypatch):
+    monkeypatch.setattr('virtaal.plugins.tm.tmcontroller.GLib.idle_add', lambda f: None)
+    disconnected = []
+    old_cursor = SimpleNamespace(disconnect=disconnected.append)
+    new_cursor = SimpleNamespace(connect=lambda signal, handler: 'new-sig')
+    controller = _bare_controller(storecursor=old_cursor, _cursor_changed_id='old-sig')
+
+    controller._on_store_loaded(SimpleNamespace(cursor=new_cursor))
+
+    assert disconnected == ['old-sig']
+
+
+def test_on_store_loaded_handles_the_first_unit_via_the_idle_callback(monkeypatch):
+    idle_calls = []
+    monkeypatch.setattr('virtaal.plugins.tm.tmcontroller.GLib.idle_add', idle_calls.append)
+    new_cursor = SimpleNamespace(connect=lambda signal, handler: 'new-sig')
+    controller = _bare_controller()
+    seen = []
+    controller._on_cursor_changed = lambda cursor: seen.append(cursor)
+
+    controller._on_store_loaded(SimpleNamespace(cursor=new_cursor))
+    result = idle_calls[0]()
+
+    assert seen == [new_cursor]
+    assert result is False

@@ -288,6 +288,7 @@ class MainView(BaseView):
             mnu_prefs = self.gui.get_object("mnu_prefs")
             osxapp.insert_app_menu_item(mnu_prefs, 2)
             self.gui.get_object("separator_mnu_edit_3").hide()
+            self._setup_osx_help_menu(osxapp)
             Gtk.AccelMap.load(pan_app.get_abs_data_filename(["virtaal", "virtaal.accel"]))
             osxapp.ready()
             osxapp.connect("NSApplicationOpenFile", self._on_osx_openfile_event)
@@ -295,6 +296,12 @@ class MainView(BaseView):
             self._osxapp = osxapp  # keep a reference; the signals need it to stay alive
         except (ImportError, ValueError):
             logging.debug("GtkosxApplication not found (brew install gtk-mac-integration for native macOS menu-bar integration). Expect zero integration with the Mac desktop.")
+
+    def _setup_osx_help_menu(self, osxapp):
+        # Also unlocks macOS's native Help-menu search field, but only
+        # when this menu's title matches the Mac's system display
+        # language's own word for "Help" - not virtaal's UI language.
+        osxapp.set_help_menu(self.gui.get_object("menuitem_help"))
 
     def _detect_windows_is_dark(self):
         # AppsUseLightTheme: 0 means dark, 1 (or absent) means light.

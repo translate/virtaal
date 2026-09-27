@@ -27,6 +27,13 @@ jobs:
     # Falls back to the parent commit, then to --all-files, if there's
     # no usable diff base (first push to a branch, a force push, or a
     # repo's very first commit).
+    #
+    # Nothing else needs: this job any more - it doesn't produce
+    # anything the test/build jobs consume, so it now starts alongside
+    # them instead of gating them, same reasoning as build-flatpak's
+    # own comment further down. core-checks still depends on it
+    # directly, so a lint failure still blocks merging - it just no
+    # longer blocks the rest of the run from starting first.
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -75,8 +82,8 @@ jobs:
 
   docs-and-translations:
     # Own job rather than running once per matrix cell below - neither
-    # step is packaging- or platform-specific.
-    needs: pre-commit
+    # step is packaging- or platform-specific. Doesn't need pre-commit
+    # to finish first - see pre-commit's own comment.
     runs-on: ubuntu-24.04
     timeout-minutes: 10
 
@@ -120,7 +127,6 @@ jobs:
         run: make docs
 
   test:
-    needs: pre-commit
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     strategy:
@@ -270,7 +276,6 @@ jobs:
           retention-days: 30
 
   test-windows:
-    needs: pre-commit
     runs-on: windows-latest
     timeout-minutes: 15
     # Uses gvsbuild for GTK3 (prebuilt binaries a regular
@@ -418,11 +423,13 @@ jobs:
   build-windows-installer:
     runs-on: windows-latest
     timeout-minutes: 20
-    needs: test-windows
     # Separate job from test-windows, not extra steps tacked onto it -
-    # PyInstaller has to trace and copy the whole dependency tree,
-    # which is genuinely slow, and this only needs to run once the
-    # fast pytest job has already confirmed the app itself works.
+    # PyInstaller has to trace and copy the whole dependency tree, which
+    # is genuinely slow. Doesn't need: test-windows to finish first any
+    # more - it doesn't consume anything test-windows produces, so
+    # serializing them only cost wall-clock time (same reasoning as
+    # build-flatpak's own comment). The `windows` endpoint job still
+    # gates on both.
     env:
       gvsbuild_version: "2026.8.0"
       CC: cl
@@ -603,8 +610,23 @@ jobs:
           path: dist\installer\*.exe
           if-no-files-found: error
 
+  windows:
+    # Endpoint standing in for `test-windows` + `build-windows-installer`
+    # - gives `release` (and a human skimming the Actions tab) one named
+    # outcome for "the Windows track" instead of two. Deliberately not
+    # depended on by core-checks - see that job's own comment. No `if:
+    # always()` needed: `release` doesn't override the default `needs:`
+    # skip propagation, so if either job fails, this one is simply
+    # skipped too, and `release` skips right along with it. The
+    # `linux`/`macos` endpoints mirror this same shape for their own
+    # platform.
+    needs: [test-windows, build-windows-installer]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 1
+    steps:
+      - run: echo "test-windows and build-windows-installer both passed"
+
   test-macos:
-    needs: pre-commit
     runs-on: macos-latest
     timeout-minutes: 10
     # Single Python version (whatever Homebrew currently ships), not the
@@ -688,12 +710,13 @@ jobs:
         run: virtaal --help
 
   build-macos-app:
-    needs: test-macos
     # Separate job from test-macos, not extra steps tacked onto it:
     # PyInstaller has to trace and copy the whole dependency tree, which
-    # is genuinely slow, and this only needs to run once the fast pytest
-    # job has already confirmed the app itself works - no point spending
-    # the extra time building a bundle around a broken app.
+    # is genuinely slow. Doesn't need: test-macos to finish first any
+    # more - it doesn't consume anything test-macos produces, so
+    # serializing them only cost wall-clock time (same reasoning as
+    # build-flatpak's own comment). The `macos` endpoint job still
+    # gates on both.
     #
     # Two-leg matrix, not a single macos-latest job: PyInstaller builds
     # a single-architecture bundle matching the host it runs on, and
@@ -837,10 +860,22 @@ jobs:
           path: dist/Virtaal.dmg
           if-no-files-found: error
 
+  macos:
+    # Endpoint standing in for `test-macos` + `build-macos-app` (both
+    # architecture legs) - see the `windows` endpoint's own comment for
+    # why no `if: always()` is needed here.
+    needs: [test-macos, build-macos-app]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 1
+    steps:
+      - run: echo "test-macos and build-macos-app both passed"
+
   build-flatpak:
-    needs: test
     # flatpak-builder is Linux-only - this is the only place the
-    # manifest gets built and smoke-tested.
+    # manifest gets built and smoke-tested. Starts alongside `test`,
+    # not after it - it doesn't consume anything `test` produces, so
+    # serializing them only cost wall-clock time. The `linux` endpoint
+    # job below still gates on both.
     #
     # Two-leg matrix, not a single ubuntu-24.04 job: flatpak-builder
     # (like PyInstaller for the macOS build above) builds for whatever
@@ -921,8 +956,27 @@ jobs:
             flatpak-builder --run build-dir io.github.translate.Virtaal.yml \
             virtaal --version
 
+  linux:
+    # Endpoint standing in for `test` + `build-flatpak`, which now run
+    # in parallel rather than one gating the other (see build-flatpak's
+    # own comment). See the `windows` endpoint's own comment for why no
+    # `if: always()` is needed here. `release` depends on this even
+    # though nothing here publishes a flatpak yet - a broken flatpak
+    # build shouldn't ship a release either.
+    needs: [test, build-flatpak]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 1
+    steps:
+      - run: echo "test and build-flatpak both passed"
+
   core-checks:
     name: core checks
+    # Deliberately the fast test jobs directly, not the linux/windows/
+    # macos endpoints below - those also bundle in the slow packaging
+    # builds (build-flatpak/build-windows-installer/build-macos-app),
+    # which shouldn't gate merging. Those endpoints exist for their own
+    # sake (a single named outcome per platform, and what `release`
+    # depends on), not to redefine what "core checks" means.
     needs: [pre-commit, docs-and-translations, test, test-windows, test-macos]
     if: always()
     runs-on: ubuntu-24.04
@@ -936,15 +990,18 @@ jobs:
           fi
 
   release:
-    # Fires only on a v* tag push. Deliberately depends on the *build*
-    # jobs, not a rebuild of its own - each already needs its own
-    # test-windows/test-macos job, so by the time this job's
-    # dependencies are satisfied, both artifacts are already proven
-    # working by the same run's own test suite.
+    # Fires only on a v* tag push. Deliberately depends on the
+    # linux/windows/macos endpoints, not a rebuild of its own - each
+    # already requires its own test-*/build-* pair to have passed (see
+    # those endpoints' own comments), so by the time this job's
+    # dependencies are satisfied, every artifact is already proven
+    # working by the same run's own test suite. `linux` (build-flatpak)
+    # is included even though nothing here publishes a flatpak yet -
+    # a broken flatpak build shouldn't ship a release either.
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     if: startsWith(github.ref, 'refs/tags/v')
-    needs: [build-windows-installer, build-macos-app]
+    needs: [linux, windows, macos]
     permissions:
       # Default GITHUB_TOKEN permissions are read-only here - `gh
       # release create` needs contents: write, granted only to this

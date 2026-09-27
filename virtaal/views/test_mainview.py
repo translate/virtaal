@@ -529,22 +529,30 @@ def test_on_store_loaded_adds_the_bundle_filename_for_a_project(monkeypatch):
     assert added == ['file:///tmp/bundle.zip']
 
 
-def test_on_store_loaded_adds_the_dropped_uri_when_one_was_recorded(monkeypatch):
+def test_on_store_loaded_adds_the_store_filename_even_with_a_stale_uri_set(monkeypatch):
+    # store_controller.store.filename, not self._uri: some open_file()
+    # callers (the welcome screen's recent-files list, the macOS Dock's
+    # own openFile: event) never set self._uri, leaving it stale from
+    # whatever a *different*, earlier open last set it to - it must
+    # never be trusted here even when it happens to be set (#3863).
+    import os
+
     from virtaal.views import recent
     added = []
     monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: added.append(uri)))
     monkeypatch.setattr(mainview, '_note_recent_document', lambda path: None)
+    monkeypatch.setattr(platform, 'is_windows', False)
     view = MainView.__new__(MainView)
     view.gui = SimpleNamespace(get_object=lambda name: _FakeSensitiveWidget())
     view.status_bar = _FakeSensitiveWidget()
-    view._uri = 'file:///tmp/dropped.po'
+    view._uri = 'file:///tmp/stale-from-an-earlier-open.po'
     store_controller = SimpleNamespace(
         get_store_filename=lambda: 'dropped.po', project=None,
         store=SimpleNamespace(filename='/tmp/dropped.po'))
 
     view._on_store_loaded(store_controller)
 
-    assert added == ['file:///tmp/dropped.po']
+    assert added == ['file://' + os.path.abspath('/tmp/dropped.po')]
 
 
 def test_on_store_loaded_adds_an_extra_leading_slash_on_windows(monkeypatch):

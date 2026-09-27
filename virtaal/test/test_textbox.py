@@ -14,7 +14,7 @@ from translate.storage.placeables.strelem import StringElem
 
 from virtaal.controllers.placeablescontroller import PlaceablesController
 from virtaal.views.widgets import textbox as textbox_module
-from virtaal.views.widgets.textbox import colors_equal
+from virtaal.views.widgets.textbox import TextBox, colors_equal
 
 PLACEABLES_PO = "devsupport/testfiles/placeables.po"
 
@@ -266,3 +266,80 @@ class TestTextBox(TestScaffolding):
             isinstance(e, general.NewlinePlaceable) for e in textbox.elem.depth_first()
         )
         assert textbox.get_text() == original_text
+
+    def test_get_stringelem_returns_none_without_an_elem(self):
+        textbox = TextBox(self.main_controller)
+
+        assert textbox.get_stringelem() is None
+
+    def test_init_sets_the_initial_text_when_given(self):
+        textbox = TextBox(self.main_controller, text='hello')
+
+        assert textbox.get_text() == 'hello'
+
+    def test_get_text_accepts_integer_offsets(self):
+        textbox = self._target_for('%s files copied')
+
+        assert textbox.get_text(0, 2) == '%s'
+
+    def test_get_cursor_position_returns_the_buffers_cursor_position(self):
+        textbox = self._target_for('%s files copied')
+        textbox.place_cursor(3)
+
+        assert textbox.get_cursor_position() == 3
+
+    def test_suggestion_setter_replaces_an_existing_visible_suggestion(self):
+        textbox = self._target_for('%d files removed')
+        textbox.set_text('%d files removed')  # reset - an earlier test in this shared-widget class may have mutated it
+        textbox.suggestion = {'text': ' first', 'offset': len('%d files removed')}
+        assert textbox.suggestion_is_visible()
+
+        textbox.suggestion = {'text': ' second', 'offset': len('%d files removed')}
+
+        assert textbox.suggestion['text'] == ' second'
+        assert textbox.get_text() == '%d files removed second'
+
+    def test_on_key_pressed_tab_accepts_a_visible_suggestion(self):
+        textbox = self._target_for('%d files removed')
+        textbox.set_text('%d files removed')  # reset - an earlier test in this shared-widget class may have mutated it
+        textbox.suggestion = {'text': ' extra', 'offset': len('%d files removed')}
+        emitted = []
+        textbox.emit = lambda signal, *args: emitted.append((signal, args))
+
+        result = textbox._on_key_pressed(textbox, _FakeKeyEvent(Gdk.KEY_Tab))
+
+        assert result is True
+        assert textbox.suggestion is None
+        assert textbox.get_text() == '%d files removed extra'
+        assert ('changed', ()) in emitted
+
+    def test_on_key_pressed_recognizes_a_special_key_combo(self):
+        textbox = self._target_for('%s files copied')
+        emitted = []
+        textbox.emit = lambda signal, *args: emitted.append(args) or True
+        event = _FakeKeyEvent(Gdk.KEY_Return, Gdk.ModifierType.CONTROL_MASK)
+
+        result = textbox._on_key_pressed(textbox, event)
+
+        assert result is True
+        assert emitted == [(event, 'ctrl-enter')]
+
+    def test_on_key_pressed_passes_through_an_unrecognized_key(self):
+        textbox = self._target_for('%s files copied')
+        emitted = []
+        textbox.emit = lambda signal, *args: emitted.append(args) or False
+        event = _FakeKeyEvent(Gdk.KEY_a, 0)
+
+        result = textbox._on_key_pressed(textbox, event)
+
+        assert result is False
+        assert emitted == [(event, None)]
+
+
+class _FakeKeyEvent:
+    def __init__(self, keyval, state=0):
+        self.keyval = keyval
+        self._state = state
+
+    def get_state(self):
+        return self._state

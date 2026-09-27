@@ -235,6 +235,62 @@ jobs:
           path: screenshot-artifacts/
           retention-days: 30
 
+  code-smell:
+    # Advisory only - deliberately not in core-checks' `needs:` below, and
+    # never fails on its own findings, so nothing here can block a merge.
+    # Complements the blocking pre-commit ruff-check hook (pyproject.toml's
+    # [tool.ruff.lint] select = F/I/UP only): flags complexity/structural
+    # smells ruff can catch but that hook doesn't select, plus duplicated
+    # code blocks, which ruff has no rule for at all.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Install ruff and pylint
+        run: pip install ruff pylint
+
+      - name: Check for overly complex functions (ruff)
+        # C901 (mccabe complexity) + ruff's ported pylint-refactor "too
+        # many X" structural smells (PLR09xx: branches/returns/args/
+        # statements/public methods; PLR17xx: nested blocks, plus the
+        # if-vs-min/max rule). Not PLR2004 (magic values) or PLR6301
+        # (no-self-use) - verified locally that either would flood this
+        # codebase's normal style with low-value hits.
+        #
+        # One aggregate ::warning:: rather than one per finding (as
+        # --output-format=github would give): GitHub Actions silently
+        # caps annotations per step at ~10 (verified live on this
+        # codebase's real 77 findings - only 11 survived), so a
+        # per-finding annotation here would quietly under-report as
+        # the codebase changes. Same aggregate shape as the pylint
+        # step below.
+        run: |
+          ruff check --select C901,PLR09,PLR17 --exit-zero --output-format=concise virtaal | tee ruff-smell.log
+          count=$(grep -oE '^Found [0-9]+' ruff-smell.log | grep -oE '[0-9]+' || true)
+          if [ "${count:-0}" -gt 0 ]; then
+            echo "::warning title=Complex/smelly code found::ruff found $count complexity/structural-smell finding(s) - see this job's 'Check for overly complex functions (ruff)' step output for details."
+          fi
+
+      - name: Check for duplicated code blocks (pylint)
+        # pylint's duplicate-code (R0801) is the one smell ruff has no
+        # rule for. Exits non-zero on any finding (verified locally) -
+        # `|| true` keeps it advisory; the aggregate count still gets a
+        # loud ::warning:: rather than being buried in a green job's
+        # own log with nothing pointing at it.
+        run: |
+          pylint --disable=all --enable=duplicate-code virtaal 2>&1 | tee pylint-duplicate.log || true
+          count=$(grep -c '(duplicate-code)$' pylint-duplicate.log || true)
+          if [ "${count:-0}" -gt 0 ]; then
+            echo "::warning title=Duplicated code found::pylint's duplicate-code check found $count duplicated block(s) - see this job's 'Check for duplicated code blocks (pylint)' step output for details."
+          fi
+
   test:
     runs-on: ubuntu-24.04
     timeout-minutes: 15

@@ -77,3 +77,47 @@ def test_dialog_raising_does_not_recurse_or_propagate(monkeypatch):
     crash_dialog._on_uncaught_exception(*_exc_info(ValueError, 'boom'))  # must not raise
 
     assert len(calls) == 1
+
+
+# _show_dialog(): dialog focus on macOS (#3865-adjacent - same missing
+# show()/present() bug, found while auditing for other hidden instances)
+
+def test_show_dialog_shows_before_presenting(monkeypatch):
+    from gi.repository import Gtk
+
+    calls = []
+
+    class _FakeDialog:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def format_secondary_text(self, text):
+            pass
+
+        def get_content_area(self):
+            return Gtk.Box()
+
+        def add_button(self, label, response):
+            pass
+
+        def set_default_response(self, response):
+            pass
+
+        def show(self):
+            calls.append('show')
+
+        def present(self):
+            calls.append('present')
+
+        def run(self):
+            calls.append('run')
+            return Gtk.ResponseType.CLOSE
+
+        def destroy(self):
+            calls.append('destroy')
+
+    monkeypatch.setattr(Gtk, 'MessageDialog', _FakeDialog)
+
+    crash_dialog._show_dialog('traceback text')
+
+    assert calls == ['show', 'present', 'run', 'destroy']

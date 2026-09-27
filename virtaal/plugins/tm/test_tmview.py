@@ -7,8 +7,9 @@
 
 from types import SimpleNamespace
 
-from gi.repository import GObject, Gtk
+from gi.repository import Gdk, GObject, Gtk
 
+from virtaal.common import GObjectWrapper
 from virtaal.plugins.tm.tmview import TMView
 
 
@@ -429,3 +430,213 @@ def test_get_selected_unit_view_returns_the_focused_target():
         unit_controller=SimpleNamespace(view=SimpleNamespace(focused_target_n=1, targets=['first', target]))))
 
     assert view._get_selected_unit_view() is target
+
+
+# destroy() / select_backends() / select_match() / update_geometry() #
+
+def test_destroy_disconnects_signals_and_removes_the_suggestions_menu_item():
+    view = TMView.__new__(TMView)
+    disconnected = []
+    view._signal_tracker = SimpleNamespace(disconnect_all=lambda: disconnected.append(True))
+    removed = []
+    view.menu = SimpleNamespace(remove=removed.append)
+    view.mnu_suggestions = object()
+
+    view.destroy()
+
+    assert disconnected == [True]
+    assert removed == [view.mnu_suggestions]
+
+
+def test_select_backends_delegates_to_the_backend_selector(monkeypatch):
+    view = TMView.__new__(TMView)
+    view.controller = SimpleNamespace(
+        main_controller='main-controller', plugin_controller='plugin-controller', config='config')
+    calls = []
+    monkeypatch.setattr('virtaal.views.backendselect.select_backends', lambda *a, **k: calls.append((a, k)))
+    parent = object()
+
+    view.select_backends(parent)
+
+    args, kwargs = calls[0]
+    assert args == ('main-controller', 'plugin-controller', 'config', 'basetmmodel')
+    assert kwargs['parent'] is parent
+
+
+def test_select_match_delegates_to_the_controller():
+    view = TMView.__new__(TMView)
+    calls = []
+    view.controller = SimpleNamespace(select_match=calls.append)
+
+    view.select_match({'source': 'x'})
+
+    assert calls == [{'source': 'x'}]
+
+
+def test_update_geometry_updates_the_tmwindow_when_a_target_is_focused(monkeypatch):
+    idle_calls = []
+    monkeypatch.setattr('virtaal.plugins.tm.tmview.GLib.idle_add', idle_calls.append)
+    view = TMView.__new__(TMView)
+    view._get_selected_unit_view = lambda: 'the-target'
+    updated = []
+    view.tmwindow = SimpleNamespace(update_geometry=updated.append)
+
+    view.update_geometry()
+
+    assert len(idle_calls) == 1
+    idle_calls[0]()  # run the deferred update for real
+
+    assert updated == ['the-target']
+
+
+def test_update_geometry_does_nothing_without_a_focused_target(monkeypatch):
+    idle_calls = []
+    monkeypatch.setattr('virtaal.plugins.tm.tmview.GLib.idle_add', idle_calls.append)
+    view = TMView.__new__(TMView)
+    view._get_selected_unit_view = lambda: None
+    updated = []
+    view.tmwindow = SimpleNamespace(update_geometry=updated.append)
+
+    view.update_geometry()
+    idle_calls[0]()
+
+    assert updated == []
+
+
+# _on_grab_notify_mainwindow()'s popup-menu guard (#3689) #
+
+def test_grab_notify_shadowed_by_a_popup_menu_does_not_hide(monkeypatch):
+    view = _view_for_grab_notify(isvisible=True)
+    hidden = []
+    view.hide = lambda: hidden.append('hidden')
+    monkeypatch.setattr(Gtk, 'grab_get_current', lambda: Gtk.Menu())
+
+    view._on_grab_notify_mainwindow(None, False)
+
+    assert hidden == []
+
+
+# remaining trivial event handlers #
+
+def test_on_hide_tm_hides_the_window():
+    view = TMView.__new__(TMView)
+    hidden = []
+    view.hide = lambda: hidden.append(1)
+
+    view._on_hide_tm(None, None, None, None)
+
+    assert hidden == [1]
+
+
+def test_on_row_activated_selects_the_matched_row():
+    view = _tmview()
+    view.tmwindow.liststore.append([{'source': 'picked'}, ''])
+    itr = view.tmwindow.liststore.get_iter_first()
+    path = view.tmwindow.liststore.get_path(itr)
+    selected = []
+    view.select_match = selected.append
+    treeview = SimpleNamespace(get_model=lambda: view.tmwindow.liststore)
+
+    view._on_row_activated(treeview, path, 'column')
+
+    assert selected == [{'source': 'picked'}]
+
+
+def test_on_select_match_selects_the_index_from_the_accelerator_keyval():
+    view = TMView.__new__(TMView)
+    calls = []
+    view.select_match_index = calls.append
+
+    view._on_select_match(None, None, Gdk.KEY_0 + 3, None)
+
+    assert calls == [3]
+
+
+def test_on_store_closed_hides_and_disables_the_suggestions_toggle():
+    view = TMView.__new__(TMView)
+    calls = []
+    view.hide = lambda: calls.append('hide')
+    view.mnu_suggestions = SimpleNamespace(set_sensitive=lambda v: calls.append(('sensitive', v)))
+
+    view._on_store_closed(None)
+
+    assert calls == ['hide', ('sensitive', False)]
+
+
+def test_on_store_loaded_enables_the_suggestions_toggle():
+    view = TMView.__new__(TMView)
+    calls = []
+    view.mnu_suggestions = SimpleNamespace(set_sensitive=calls.append)
+
+    view._on_store_loaded(None)
+
+    assert calls == [True]
+
+
+# __init__() / _setup_key_bindings() / _setup_menu_items() #
+
+def test_setup_key_bindings_registers_hide_and_select_match_accelerators(monkeypatch):
+    view = TMView.__new__(TMView)
+    added = []
+    view.controller = SimpleNamespace(main_controller=SimpleNamespace(view=SimpleNamespace(add_accel_group=added.append)))
+    registered = []
+    monkeypatch.setattr(Gtk.AccelMap, 'add_entry', lambda path, key, mods: registered.append(path))
+
+    view._setup_key_bindings()
+
+    assert registered[0] == "<Virtaal>/TM/Hide TM"
+    assert registered[1:] == ["<Virtaal>/TM/Select match %d" % i for i in range(1, 10)]
+    assert added == [view.accel_group]
+
+
+def _real_builder():
+    builder = Gtk.Builder()
+    builder.add_from_file('share/virtaal/virtaal.ui')
+    return builder
+
+
+def test_setup_menu_items_adds_a_translation_suggestions_toggle():
+    view = TMView.__new__(TMView)
+    view.accel_group = Gtk.AccelGroup()
+    view.isvisible = False
+    started = []
+    view.controller = SimpleNamespace(
+        main_controller=SimpleNamespace(view=SimpleNamespace(menubar=None, gui=_real_builder())),
+        start_query=lambda: started.append(True),
+    )
+
+    view._setup_menu_items()
+
+    assert view.mnu_suggestions in view.menu.get_children()
+    assert view.mnu_suggestions.get_active() is True
+    # set_active(True) fires 'toggled' for real - nothing was visible yet, so it starts a query
+    assert started == [True]
+
+
+class _FakeSignalSource(GObjectWrapper):
+    __gtype_name__ = 'TMViewTestStoreController'
+    __gsignals__ = {
+        'store-closed': (GObject.SignalFlags.RUN_FIRST, None, ()),
+        'store-loaded': (GObject.SignalFlags.RUN_FIRST, None, ()),
+    }
+
+
+def test_init_wires_key_bindings_menu_and_store_signals():
+    main_window = Gtk.Window()
+    store_controller = _FakeSignalSource()
+    store_controller.view = SimpleNamespace(parent_widget=Gtk.ScrolledWindow())
+    added_accel_groups = []
+    controller = SimpleNamespace(main_controller=SimpleNamespace(
+        view=SimpleNamespace(menubar=None, gui=_real_builder(), main_window=main_window,
+                              add_accel_group=added_accel_groups.append),
+        store_controller=store_controller,
+    ))
+
+    view = TMView(controller, max_matches=5)
+
+    assert view.max_matches == 5
+    assert view.isvisible is False
+    assert view._may_show_tmwindow == main_window.props.is_active
+    assert added_accel_groups == [view.accel_group]
+    assert view.mnu_suggestions.get_active() is True
+    assert len(view._signal_tracker._ids) == 7

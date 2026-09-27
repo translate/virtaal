@@ -169,6 +169,9 @@ class Project:
             options=conv_options,
             convert_options=options.get("convert_options"),
         )
+        # Only .name is used from here on - close the handle now so the
+        # unlink()/rename() below don't hit an open-file lock on Windows.
+        converted_file.close()
 
         # Determine the file name and path where the output should be moved.
         if not output_fname:

@@ -22,6 +22,19 @@ def _model():
     return model
 
 
+def _fake_controller():
+    connectable = lambda: SimpleNamespace(connect=lambda signal, handler, *a: 1)
+    lang_controller = connectable()
+    lang_controller.source_lang = SimpleNamespace(code='fr')
+    lang_controller.target_lang = SimpleNamespace(code='en')
+    checks_controller = connectable()
+    checks_controller.code = 'standard'
+    main_controller = SimpleNamespace(lang_controller=lang_controller, checks_controller=checks_controller)
+    controller = connectable()
+    controller.main_controller = main_controller
+    return controller
+
+
 class _FakeMosesClient:
     def __init__(self, server):
         self.server = server
@@ -45,6 +58,17 @@ def _init_plugin(monkeypatch, model, config):
     monkeypatch.setattr(mosesclient_module, 'MosesClient', _FakeMosesClient)
     model.config = config
     model._init_plugin()
+
+
+def test_init_loads_config_and_builds_clients(monkeypatch):
+    import virtaal.support.mosesclient as mosesclient_module
+    monkeypatch.setattr(mosesclient_module, 'MosesClient', _FakeMosesClient)
+    monkeypatch.setattr(TMModel, 'load_config', lambda self: setattr(self, 'config', {'fr->en': 'http://a'}))
+
+    model = TMModel('moses', _fake_controller())
+
+    assert model.internal_name == 'moses'
+    assert model.clients['fr']['en'].server == 'http://a'
 
 
 def test_init_plugin_maps_each_pair_to_a_client(monkeypatch):

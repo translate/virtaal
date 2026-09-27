@@ -1995,13 +1995,6 @@ def test_show_language_change_notice_dismiss_clears_the_tracked_infobar():
     assert view._language_change_infobar is None
 
 
-# set_statusbar_message() - only the empty-message branch: a truthy
-# message hits `self.WRAP_DELAY`, an attribute this class never
-# defines anywhere (a real, pre-existing bug) - but the method is only
-# ever called from a line that's commented out in storetreeview.py, so
-# it's currently unreachable in the live app; left as a known gap
-# rather than exercising a crash. #
-
 def test_set_statusbar_message_clears_with_an_empty_message():
     calls = []
     view = MainView.__new__(MainView)
@@ -2014,6 +2007,20 @@ def test_set_statusbar_message_clears_with_an_empty_message():
     view.set_statusbar_message('')
 
     assert calls == [('pop', 7), ('push', 7, '')]
+
+
+def test_set_statusbar_message_pushes_a_non_empty_message():
+    calls = []
+    view = MainView.__new__(MainView)
+    view.status_bar = SimpleNamespace(
+        pop=lambda ctx: calls.append(('pop', ctx)),
+        push=lambda ctx, msg: calls.append(('push', ctx, msg)),
+    )
+    view.statusbar_context_id = 7
+
+    view.set_statusbar_message('wrapped around')
+
+    assert calls == [('pop', 7), ('push', 7, 'wrapped around')]
 
 
 # _on_fullscreen() - show_app_icon()/hide_app_icon() are stubbed out:

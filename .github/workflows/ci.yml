@@ -884,6 +884,18 @@ jobs:
         run: |
           flatpak install --user -y flathub org.gnome.Platform//50 org.gnome.Sdk//50
 
+      - name: Cache flatpak-builder's module state
+        # Downloaded sources plus built output for each Python deps
+        # module - lxml, pycurl and rapidfuzz (via python-Levenshtein)
+        # compile from source tarballs, so without this every run
+        # recompiles all of them from scratch even when neither
+        # manifest has changed. --force-clean below only wipes
+        # build-dir, not this state dir.
+        uses: actions/cache@v6
+        with:
+          path: devsupport/packaging/flatpak/.flatpak-builder
+          key: flatpak-builder-state-${{ matrix.arch }}-${{ hashFiles('devsupport/packaging/flatpak/io.github.translate.Virtaal.yml', 'devsupport/packaging/flatpak/virtaal-python-deps.yaml') }}
+
       - name: Build the Flatpak
         working-directory: devsupport/packaging/flatpak
         run: |

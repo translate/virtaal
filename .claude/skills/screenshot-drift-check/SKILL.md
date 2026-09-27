@@ -56,6 +56,15 @@ check last ran green on that code).
 
 ## Fixing drift
 
+This repo commonly has many concurrent worktrees/sessions active (see
+`virtaal-heavy-concurrent-sessions` memory) - don't assume the checkout
+you're sitting in is free of unrelated WIP. Check `git status`, and if
+there's anything on disk you didn't put there, build the fix in a fresh
+`git worktree add <scratch-path> -b <branch> upstream/main` instead of
+committing into a shared checkout (`shared-checkout-awareness` skill covers
+why and how). This also sidesteps `origin/main` being stale relative to
+`upstream/main` in a fork+upstream setup.
+
 The workflow already builds the fix artifact - don't regenerate locally,
 pull what CI produced:
 
@@ -66,11 +75,15 @@ git add docs/_static/appdata/*.png
 git commit -m "docs: refresh stale AppData screenshots"
 ```
 
-Before committing, `git diff --stat` the images and sanity-check they look
-like a real UI change (a theme tweak, a new widget) rather than something
-that snuck in via a broken capture (blank window, wrong state) - the
-generation script fails hard (exit 2) on a real error, but a bad crop or
-timing race that still produces *a* PNG wouldn't necessarily.
+Before committing, actually *look* at old vs. new side by side (the Read
+tool renders a PNG directly; there's no guarantee a system Python here has
+Pillow installed for a pixel-diff script) and sanity-check the change looks
+like a real UI change (a theme tweak, a scroll/layout shift, a new widget)
+rather than a broken capture (blank window, wrong state). `git diff --stat`
+on a binary file only reports a byte-size delta, not content - it can't
+tell you which of those two this is. The generation script fails hard
+(exit 2) on a real error, but a bad crop or timing race that still produces
+*a* PNG wouldn't necessarily.
 
 Open this as its own PR/commit rather than folding it into unrelated work in
 progress - it's an independent, mechanical refresh.

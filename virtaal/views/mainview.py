@@ -1281,21 +1281,17 @@ class MainView(BaseView):
                 if platform.is_mac:
                     _note_recent_document(path)
         else:
+            path = os.path.abspath(store_controller.store.filename)
             if getattr(self, '_uri', None):
                 recent.rm.add_item(self._uri)
-                if platform.is_mac:
-                    from gi.repository import GLib
-                    path, _host = GLib.filename_from_uri(self._uri)
-                    _note_recent_document(path)
             else:
-                path = os.path.abspath(store_controller.store.filename)
                 if platform.is_windows:
                     url = 'file:///' + path
                 else:
                     url = 'file://' + path
                 recent.rm.add_item(url)
-                if platform.is_mac:
-                    _note_recent_document(path)
+            if platform.is_mac:
+                _note_recent_document(path)
 
     def _on_window_state_event(self, widget, event):
         mnu_fullscreen = self.gui.get_object('mnu_fullscreen')

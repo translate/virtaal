@@ -32,6 +32,10 @@
 # so it's vendored rather than dropped - see translate/virtaal#3632.
 # append_file()'s open() was changed to binary mode - see
 # translate/virtaal#3609.
+# get_file()'s two "is the resolved name actually a real file" checks
+# were testing the wrong variable (`not rfile` instead of `not rfname`),
+# crashing with TypeError instead of the intended OSError whenever a
+# closed handle's name/filename didn't resolve - fixed here.
 
 import contextlib
 import os
@@ -251,9 +255,9 @@ class ProjectStore:
             rfname = fname
             if not os.path.isfile(rfname):
                 rfname = getattr(rfile, "name", None)
-            if not rfile or not os.path.isfile(rfname):  # ty:ignore[invalid-argument-type]
+            if not rfname or not os.path.isfile(rfname):
                 rfname = getattr(rfile, "filename", None)
-            if not rfile or not os.path.isfile(rfname):  # ty:ignore[invalid-argument-type]
+            if not rfname or not os.path.isfile(rfname):
                 raise OSError(f"Could not locate file: {rfile} ({fname})")
             rfile = open(rfname, mode)  # ty:ignore[no-matching-overload]
             self._files[fname] = rfile

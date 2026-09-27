@@ -66,7 +66,7 @@ class StoreTreeModel(GObject.GObject, Gtk.TreeModel):
                     locations = unit.getlocations()
                     if locations:
                         note_text = locations[0]
-                return markup.markuptext(note_text, fancyspaces=False, markupescapes=False) or None
+                return markup.markuptext(note_text, fancyspaces=False, markupescapes=False)
             else:
                 return unit
         else:

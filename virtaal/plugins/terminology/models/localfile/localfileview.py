@@ -317,6 +317,7 @@ class FileSelectDialog:
         remfile = model.get_value(selected, self.COL_FILE)
         extend = model.get_value(selected, self.COL_EXTEND)
         self.term_model.config['files'].remove(remfile)
+        model.remove(selected)
 
         if extend:
             self.term_model.config['extendfile'] = ''
@@ -327,7 +328,6 @@ class FileSelectDialog:
 
         self.term_model.save_config()
         self.term_model.load_files() # FIXME: This could be optimized to only remove the selected file from the terminology matcher.
-        model.remove(selected)
 
     def _on_open_termfile_clicked(self, button):
         selection = self.tvw_termfiles.get_selection()

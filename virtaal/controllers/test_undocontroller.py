@@ -196,11 +196,13 @@ def test_undo_snapshots_the_unit_actually_undone_not_whatever_is_on_screen():
     textbox.elem = StringElem('B2')
 
     controller._on_undo_activated()  # B2 -> B1
+    controller._on_undo_activated()  # navigate back to A (no text change)
     controller._on_undo_activated()  # A2 -> A1
 
     controller._on_redo_activated()  # A1 -> A2
     assert str(textbox.elem) == 'A2'
 
+    controller._on_redo_activated()  # navigate forward to B
     controller._on_redo_activated()  # B1 -> B2
     assert str(textbox.elem) == 'B2'
 
@@ -304,10 +306,47 @@ def test_redo_cursor_position_survives_a_unit_switch():
     textbox.elem.sub = StringElem('y').sub
 
     controller._on_undo_activated()  # undoes unit_b's 'y'
-    controller._on_undo_activated()  # undoes unit_a's 'x' - switches back to A first
+    controller._on_undo_activated()  # navigate back to A (no text change)
+    controller._on_undo_activated()  # undoes unit_a's 'x'
 
-    redo_of_a = controller.model.redo_stack[1]
+    redo_of_a = controller.model.redo_stack[2]
     assert redo_of_a['cursorpos'] == 1  # right after 'x', not the reload's 0
+
+
+def test_undo_across_units_navigates_before_reverting():
+    # translate/virtaal#2081: undoing across units must land on the
+    # earlier unit first and revert its text on the next undo - not
+    # jump and revert in the same keypress.
+    textbox = _FakeTextbox('A1')
+    unit_a, unit_b = _FakeUnit(), _FakeUnit()
+    controller = _make_controller(textbox, unit_a)
+    content = {unit_a: 'A1', unit_b: 'B1'}
+
+    def select_unit(unit, force=False):
+        view = controller.unit_controller.view
+        content[view.unit] = str(textbox.elem)
+        view.unit = unit
+        controller.unit_controller.current_unit = unit
+        textbox.elem = StringElem(content[unit])
+    controller.main_controller.select_unit = select_unit
+
+    controller.push_current_text(textbox)
+    textbox.elem = StringElem('A2')
+
+    select_unit(unit_b)
+    controller.push_current_text(textbox)
+    textbox.elem = StringElem('B2')
+
+    controller._on_undo_activated()  # reverts B2 -> B1, stays on B
+    assert controller.unit_controller.current_unit is unit_b
+    assert str(textbox.elem) == 'B1'
+
+    controller._on_undo_activated()  # navigates to A - text untouched
+    assert controller.unit_controller.current_unit is unit_a
+    assert str(textbox.elem) == 'A2'
+
+    controller._on_undo_activated()  # reverts A2 -> A1
+    assert str(textbox.elem) == 'A1'
 
 
 def test_init_disables_undo_redo_immediately():

@@ -23,6 +23,10 @@ class UndoModel(BaseModel):
         # Undo-stack position at the last "file is unmodified" point
         # (open/save) - see mark_clean()/is_at_clean_position().
         self.clean_index = -1
+        # The unit push() last recorded an act for - lets push() detect
+        # a navigation between two pushed acts and record it as its own
+        # undo-able step. See _maybe_insert_navigation().
+        self._last_pushed_unit = None
 
 
     # METHODS #
@@ -38,6 +42,7 @@ class UndoModel(BaseModel):
         self.redo_stack = []
         self.index = -1
         self.clean_index = -1
+        self._last_pushed_unit = None
 
     def mark_clean(self):
         """Record the current undo-stack position as "the file is
@@ -80,7 +85,13 @@ class UndoModel(BaseModel):
             if not key in undo_dict:
                 raise ValueError('Invalid undo dictionary!')
 
+        unit = undo_dict['unit']
         if self.recording:
+            group = self.undo_stack[-1]
+            if not group and self._navigated_to(unit):
+                # First push into this group - the navigation entry
+                # belongs before the (already-appended) group, not in it.
+                self.undo_stack.insert(-1, self._navigation_entry(unit))
             self.undo_stack[-1].append(undo_dict)
         else:
             if self.index < 0:
@@ -88,8 +99,29 @@ class UndoModel(BaseModel):
             if self.index != len(self.undo_stack) - 1:
                 self.undo_stack = self.undo_stack[:self.index+1]
             self.redo_stack = []
+            self._resync_last_pushed_unit()
+            if self._navigated_to(unit):
+                self.undo_stack.append(self._navigation_entry(unit))
             self.undo_stack.append(undo_dict)
         self.index = len(self.undo_stack) - 1
+        self._last_pushed_unit = unit
+
+    def _navigated_to(self, unit):
+        return self._last_pushed_unit is not None and unit is not self._last_pushed_unit
+
+    def _resync_last_pushed_unit(self):
+        """Recompute _last_pushed_unit from whatever's actually on top of
+            the stack now - must run right after truncating it (a fresh
+            push/record_start after undoing something discards whatever
+            redo history followed). Otherwise a stale value surviving
+            from a since-discarded future push can make the very next
+            push think it's crossing a unit boundary that, on the
+            current stack, doesn't actually lead anywhere - and insert a
+            navigation entry for it regardless."""
+        self._last_pushed_unit = self.entry_unit(self.undo_stack[-1]) if self.undo_stack else None
+
+    def _navigation_entry(self, unit):
+        return {'kind': 'navigate', 'unit': unit, 'from_unit': self._last_pushed_unit}
 
     def record_start(self):
         if self.recording:
@@ -101,6 +133,7 @@ class UndoModel(BaseModel):
             self.undo_stack = self.undo_stack[:self.index+1]
 
         self.redo_stack = []
+        self._resync_last_pushed_unit()
         self.undo_stack.append([])
         self.index = len(self.undo_stack) - 1
         self.recording = True

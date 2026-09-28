@@ -201,6 +201,7 @@ class UndoController(BaseController):
             # _on_redo_activated) means going forward to where it led.
             if capture_redo:
                 self._select_unit(undo_info['from_unit'])
+                self._restore_navigation_cursor(undo_info)
                 return dict(undo_info)
             self._select_unit(undo_info['unit'])
             return None
@@ -258,6 +259,28 @@ class UndoController(BaseController):
             @type  unit: translate.storage.base.TranslationUnit
             @param unit: The unit to select in the store view."""
         self.main_controller.select_unit(unit, force=True)
+
+    def _restore_navigation_cursor(self, undo_info):
+        """Put the cursor back where undoing a navigate act's own
+            from_unit/from_targetn/from_cursorpos says it was, instead
+            of wherever _select_unit() just defaulted it to - a no-op
+            if the navigate entry has none (an older redo entry from
+            before this existed, or its own last-completed-entry
+            lookup found nothing to record)."""
+        cursorpos = undo_info.get('from_cursorpos')
+        targetn = undo_info.get('from_targetn')
+        if cursorpos is None or targetn is None:
+            return
+        textbox = self.unit_controller.view.targets[targetn]
+        scheduled_unit = undo_info['from_unit']
+        def refresh():
+            if self.unit_controller.current_unit is not scheduled_unit:
+                return
+            textbox.refresh_cursor_pos = cursorpos
+            self._disable_unit_signals()
+            textbox.refresh(update=True)
+            self._enable_unit_signals()
+        GLib.idle_add(refresh)
 
 
     # EVENT HANDLERS #

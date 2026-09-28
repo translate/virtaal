@@ -126,7 +126,30 @@ class UndoModel(BaseModel):
         self._last_pushed_unit = self.entry_unit(self.undo_stack[-1]) if self.undo_stack else None
 
     def _navigation_entry(self, unit):
-        return {'kind': 'navigate', 'unit': unit, 'from_unit': self._last_pushed_unit}
+        entry = {'kind': 'navigate', 'unit': unit, 'from_unit': self._last_pushed_unit}
+        # Where to put the cursor back on undo - the unit we're leaving
+        # has just had its own edit pushed (that's how this navigation
+        # got inferred in the first place). Its *redo* cursorpos is the
+        # position after that edit - where the user was actually
+        # sitting when they navigated away; 'cursorpos' is instead
+        # where undoing that one edit lands, one character earlier.
+        last = self._last_completed_entry()
+        if isinstance(last, dict) and not last.get('kind'):
+            entry['from_cursorpos'] = last.get('redo_cursorpos', last['cursorpos'])
+            entry['from_targetn'] = last['targetn']
+        return entry
+
+    def _last_completed_entry(self):
+        """The most recently pushed entry, ignoring the current
+            recording group while it's still empty (record_start()
+            already appended it before this push() call runs)."""
+        stack = self.undo_stack
+        if self.recording and stack and isinstance(stack[-1], list) and not stack[-1]:
+            stack = stack[:-1]
+        if not stack:
+            return None
+        top = stack[-1]
+        return top[-1] if isinstance(top, list) and top else top
 
     def attach_state_after(self, unit, state_after):
         """Record what an automatic state correction changed a unit's

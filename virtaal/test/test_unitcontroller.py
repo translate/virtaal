@@ -10,7 +10,7 @@ import tempfile
 
 from gi.repository import Gdk, GLib
 from test_scaffolding import TestScaffolding
-from translate.storage import factory
+from translate.storage import factory, workflow
 
 from virtaal.controllers.placeablescontroller import PlaceablesController
 
@@ -159,6 +159,35 @@ class TestUnitController(TestScaffolding):
         view.advance_workflow_state(1)
         assert test_unit.get_state_id() == before, \
             "advance_workflow_state() alone shouldn't persist to the real unit yet"
+
+    def test_advance_workflow_state_records_an_undoable_state_change(self):
+        test_unit = self.trans_store.getunits()[1]
+        view = self.unit_controller.load_unit(test_unit)
+        self.undo_controller.model.clear()
+        before_state = test_unit._current_state
+        before_sticky = test_unit._state_sticky
+
+        view.advance_workflow_state(-1)  # already-translated unit moves back a step
+
+        assert test_unit._current_state != before_state
+        assert self.undo_controller.model.pop() == {
+            'kind': 'state',
+            'unit': test_unit,
+            'from_state': before_state,
+            'from_sticky': before_sticky,
+            'to_state': test_unit._current_state,
+        }
+
+    def test_restore_state_reapplies_state_and_stickiness_without_recording_again(self):
+        test_unit = self.trans_store.getunits()[1]
+        self.unit_controller.load_unit(test_unit)
+        self.undo_controller.model.clear()
+
+        self.unit_controller.restore_state(workflow.StateEnum.NEEDS_REVIEW, True)
+
+        assert test_unit._current_state == workflow.StateEnum.NEEDS_REVIEW
+        assert test_unit._state_sticky is True
+        assert self.undo_controller.model.undo_stack == []
 
     def test_loading_a_fuzzy_unit_colours_the_editor_background(self, monkeypatch):
         # The row being actively edited is drawn by UnitView itself, not

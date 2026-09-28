@@ -119,6 +119,24 @@ class UndoController(BaseController):
         self.model.push(data)
         self._update_sensitivity()
 
+    def push_state_change(self, unit, from_state, from_sticky, to_state):
+        """Record a deliberate workflow-state pick as its own undo-able
+            act - see UnitController.set_current_state()'s own
+            from_user branch, the only caller. Pushing straight to
+            self.model here (as this used to) skips this same
+            sensitivity refresh every other push site already does -
+            the menu item (and its Cmd+Z accelerator, which GTK won't
+            activate on an insensitive item) stayed disabled until some
+            unrelated later push happened to refresh it."""
+        self.model.push({
+            'kind': 'state',
+            'unit': unit,
+            'from_state': from_state,
+            'from_sticky': from_sticky,
+            'to_state': to_state,
+        })
+        self._update_sensitivity()
+
     def _update_sensitivity(self):
         has_store = self.main_controller.store_controller.store is not None
         self.mnu_undo.set_sensitive(has_store and self.model.can_undo())
@@ -181,6 +199,15 @@ class UndoController(BaseController):
                 self._select_unit(undo_info['from_unit'])
                 return dict(undo_info)
             self._select_unit(undo_info['unit'])
+            return None
+
+        if undo_info.get('kind') == 'state':
+            self._select_unit(undo_info['unit'])
+            if capture_redo:
+                self.unit_controller.restore_state(undo_info['from_state'], undo_info['from_sticky'])
+                return dict(undo_info)
+            # Redoing re-applies the deliberate pick - sticky again.
+            self.unit_controller.restore_state(undo_info['to_state'], True)
             return None
 
         self._select_unit(undo_info['unit'])

@@ -13,15 +13,23 @@ from virtaal.views.theme import current_theme
 
 # We want to draw unexpected spaces specially so that users can spot them
 # easily without having to resort to showing all spaces weirdly
-_fancy_spaces_re = re.compile(r"""(?m)  #Multiline expression
+_unusual_spaces_re = re.compile(r"""(?m)  #Multiline expression
         [ ]{2,}|     #More than two consecutive regular spaces
         ^[ ]+|       #Regular space(s) at start of a line
         [ ]+$|       #Regular space(s) at end of a line
-        #Tab, NBSP, and other Unicode space separators (incl. ZWSP) are
-        #unusual wherever they occur, even singly - unlike a regular
-        #space, there's no innocent reason for one of these to be in
-        #translated text.
-        [\t   -​  　]+
+        #Tab and the Unicode space separators below are unusual wherever
+        #they occur, even singly - unlike a regular space, there's no
+        #innocent reason for one of these to be in translated text.
+        #Written as code points (not the literal characters, which are
+        #invisible and indistinguishable from each other in a diff or
+        #an editor):
+        #  \u00a0        NO-BREAK SPACE
+        #  \u1680        OGHAM SPACE MARK
+        #  \u2000-\u200b EN QUAD .. ZERO WIDTH SPACE
+        #  \u202f        NARROW NO-BREAK SPACE
+        #  \u205f        MEDIUM MATHEMATICAL SPACE
+        #  \u3000        IDEOGRAPHIC SPACE
+        [\t\u00a0\u1680\u2000-\u200b\u202f\u205f\u3000]+
         """, re.VERBOSE)
 """A regular expression object to find all unusual spaces we want to show"""
 
@@ -70,7 +78,7 @@ def markuptext(text, fancyspaces=True, markupescapes=True, diff_text=""):
         text = _escape_entities(text)
 
     if fancyspaces:
-        text = _fancy_spaces_re.sub(_fancyspaces, text)
+        text = _unusual_spaces_re.sub(_fancyspaces, text)
 
     if markupescapes:
 #        text = text.replace(u"\r\n", _subtle_escape(u'¶\r\n')

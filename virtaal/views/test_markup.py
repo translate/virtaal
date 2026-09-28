@@ -69,7 +69,7 @@ def test_markuptext_marks_up_nbsp_leading_trailing_and_inline():
     # NBSP is unusual wherever it appears - unlike a regular space, a single
     # inline one (the classic number+unit case, e.g. "10 km") is also
     # flagged, not just doubled/leading/trailing occurrences.
-    nbsp = " "
+    nbsp = "\u00a0"  # NO-BREAK SPACE
     span = '<span underline="error" foreground="grey">%s</span>'
     assert markuptext(nbsp + "leading") == span % nbsp + "leading"
     assert markuptext("trailing" + nbsp) == "trailing" + span % nbsp
@@ -77,17 +77,17 @@ def test_markuptext_marks_up_nbsp_leading_trailing_and_inline():
 
 
 @pytest.mark.parametrize("char", [
-    " ",  # OGHAM SPACE MARK
-    " ",  # EN SPACE
-    " ",  # EM SPACE
-    " ",  # FIGURE SPACE
-    " ",  # PUNCTUATION SPACE
-    " ",  # THIN SPACE
-    " ",  # HAIR SPACE
-    "​",  # ZERO WIDTH SPACE
-    " ",  # NARROW NO-BREAK SPACE
-    " ",  # MEDIUM MATHEMATICAL SPACE
-    "　",  # IDEOGRAPHIC SPACE
+    "\u1680",  # OGHAM SPACE MARK
+    "\u2002",  # EN SPACE
+    "\u2003",  # EM SPACE
+    "\u2007",  # FIGURE SPACE
+    "\u2008",  # PUNCTUATION SPACE
+    "\u2009",  # THIN SPACE
+    "\u200a",  # HAIR SPACE
+    "\u200b",  # ZERO WIDTH SPACE
+    "\u202f",  # NARROW NO-BREAK SPACE
+    "\u205f",  # MEDIUM MATHEMATICAL SPACE
+    "\u3000",  # IDEOGRAPHIC SPACE
 ])
 def test_markuptext_marks_up_unicode_space_separators(char):
     # Mirrors the case list in devsupport/testfiles/whitespace.po - a single

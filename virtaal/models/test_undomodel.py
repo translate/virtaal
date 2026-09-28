@@ -121,7 +121,10 @@ def test_push_inserts_a_navigation_entry_between_different_units():
 
     assert [e.get('id', e.get('kind')) for e in model.undo_stack] == ['a1', 'navigate', 'b1']
     nav = model.undo_stack[1]
-    assert nav == {'kind': 'navigate', 'unit': unit_b, 'from_unit': unit_a}
+    assert nav == {
+        'kind': 'navigate', 'unit': unit_b, 'from_unit': unit_a,
+        'from_cursorpos': 0, 'from_targetn': 0,
+    }
 
 
 def test_push_inserts_no_navigation_entry_for_the_same_unit():
@@ -203,7 +206,10 @@ def test_record_start_group_gets_a_navigation_entry_before_it():
     model.record_stop()
 
     assert len(model.undo_stack) == 3
-    assert model.undo_stack[1] == {'kind': 'navigate', 'unit': unit_b, 'from_unit': unit_a}
+    assert model.undo_stack[1] == {
+        'kind': 'navigate', 'unit': unit_b, 'from_unit': unit_a,
+        'from_cursorpos': 0, 'from_targetn': 0,
+    }
     assert model.undo_stack[2] == [_entry_for(unit_b, 'b1'), _entry_for(unit_b, 'b2')]
 
 
@@ -223,7 +229,10 @@ def test_push_of_a_kind_tagged_entry_still_gets_navigation_inference():
 
     model.push({'kind': 'state', 'unit': unit_b, 'from_state': 0, 'to_state': 100})
 
-    assert model.undo_stack[1] == {'kind': 'navigate', 'unit': unit_b, 'from_unit': unit_a}
+    assert model.undo_stack[1] == {
+        'kind': 'navigate', 'unit': unit_b, 'from_unit': unit_a,
+        'from_cursorpos': 0, 'from_targetn': 0,
+    }
 
 
 def _text_entry_with_state(unit, state_before):

@@ -7,6 +7,7 @@
 
 from translate.storage.placeables import StringElem
 
+from virtaal.controllers import undocontroller as undocontroller_module
 from virtaal.controllers.undocontroller import UndoController
 from virtaal.models.undomodel import UndoModel
 
@@ -378,6 +379,48 @@ def test_undo_across_units_navigates_before_reverting():
 
     controller._on_undo_activated()  # reverts A2 -> A1
     assert str(textbox.elem) == 'A1'
+
+
+def test_undo_across_units_restores_the_cursor_it_left_at(monkeypatch):
+    # Landing back on a unit via navigate-undo used _select_unit()'s
+    # own smart-start cursor default - confusing next to where the
+    # user had actually left off editing that unit. Uses the real
+    # typing path (_on_unit_insert_text) rather than push_current_text()
+    # - only the former sets 'redo_cursorpos', which is the field this
+    # is meant to use (the position *after* the edit, not before it -
+    # a wrong choice here previously landed the cursor one character
+    # early and went uncaught, since push_current_text() entries never
+    # have a 'redo_cursorpos' to tell the two apart).
+    calls = []
+    monkeypatch.setattr(undocontroller_module.GLib, 'idle_add', lambda func, *a: calls.append(func))
+    textbox = _FakeTextbox('')
+    unit_a, unit_b = _FakeUnit(), _FakeUnit()
+    controller = _make_controller(textbox, unit_a)
+    content = {unit_a: '', unit_b: ''}
+
+    def select_unit(unit, force=False):
+        view = controller.unit_controller.view
+        content[view.unit] = str(textbox.elem)
+        view.unit = unit
+        controller.unit_controller.current_unit = unit
+        textbox.elem = StringElem(content[unit])
+        textbox.elem.gui_info = _FakeGuiInfo()
+        textbox._rendered_cursor_pos = 0  # a fresh unit's own smart-start default
+    controller.main_controller.select_unit = select_unit
+
+    controller._on_unit_insert_text(None, unit_a, 'one', 0, textbox.elem, 0)
+    textbox.elem.sub = StringElem('one').sub  # cursor now after "one", position 3
+
+    select_unit(unit_b)
+    controller._on_unit_insert_text(None, unit_b, 'B1', 0, textbox.elem, 0)
+    textbox.elem.sub = StringElem('B1').sub
+
+    controller._on_undo_activated()  # reverts B1, stays on B
+    controller._on_undo_activated()  # navigates to A
+
+    assert calls, 'expected a deferred cursor-restore refresh() to be scheduled'
+    calls[-1]()  # run it directly, same as this suite's other deferred-refresh tests
+    assert textbox._rendered_cursor_pos == 3  # right after "one", not one character early
 
 
 def test_undo_redo_of_a_deliberate_state_change():

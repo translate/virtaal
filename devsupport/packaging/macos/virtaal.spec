@@ -165,7 +165,7 @@ app = BUNDLE(  # noqa: F821
     coll,
     name="Virtaal.app",
     icon=str(ROOT / "devsupport" / "virtaal.icns"),
-    bundle_identifier="za.org.translate.virtaal",
+    bundle_identifier="org.translatehouse.virtaal",
     version=virtaal_version,
     info_plist={
         "CFBundleDisplayName": "Virtaal",

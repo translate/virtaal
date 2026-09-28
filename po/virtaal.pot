@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-28 04:12+0100\n"
+"POT-Creation-Date: 2026-09-28 04:14+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -940,6 +940,14 @@ msgstr ""
 
 #: virtaal/controllers/maincontroller.py virtaal/views/mainview.py
 msgid "Save"
+msgstr ""
+
+#: virtaal/controllers/maincontroller.py
+#, python-format
+msgid ""
+"%(filename)s is read-only.\n"
+"\n"
+"Try saving to a different location."
 msgstr ""
 
 #: virtaal/controllers/maincontroller.py

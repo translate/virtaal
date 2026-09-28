@@ -267,6 +267,27 @@ def test_save_file_clears_force_saveas_after_a_successful_save():
     assert controller.get_force_saveas() is False
 
 
+@pytest.mark.skipif(platform.is_windows, reason="os.chmod doesn't model POSIX write permission on Windows")
+def test_save_file_rejects_a_readonly_target_before_ever_calling_save(tmp_path):
+    # A Save As target can be read-only too (the original file, confirmed
+    # to replace) - must fail here, before any header-info prompts (#517).
+    controller = _controller_for_save()
+    real_file = tmp_path / "readonly.po"
+    real_file.write_text("")
+    os.chmod(real_file, 0o444)
+    errors = []
+    controller.view = SimpleNamespace(show_error_dialog=lambda message, parent=None: errors.append(message))
+
+    try:
+        result = controller.save_file(filename=str(real_file))
+    finally:
+        os.chmod(real_file, 0o644)  # allow tmp_path's own cleanup to remove it
+
+    assert result is False
+    assert controller.calls['saved'] == []
+    assert len(errors) == 1
+
+
 def test_do_save_file_shows_an_error_dialog_on_oserror():
     controller = _controller_for_save(save_raises=OSError('disk full'))
     errors = []

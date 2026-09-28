@@ -496,7 +496,7 @@ jobs:
         # slower on Windows than the equivalent single batched install.
         run: |
           pip install --upgrade pip
-          pip install setuptools wheel pycairo pygobject translate-toolkit python-Levenshtein pycurl lxml diff_match_patch cheroot pytest pytest-xdist pytest-cov
+          pip install setuptools wheel pycairo pygobject translate-toolkit python-Levenshtein pycurl lxml diff_match_patch cheroot pytest pytest-xdist pytest-cov pytest-timeout
 
       - name: Install virtaal
         run: pip install --no-build-isolation .

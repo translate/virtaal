@@ -5,9 +5,6 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-import os
-import sys
-
 import pytest
 from gi.repository import Gdk
 from test_scaffolding import TestScaffolding
@@ -270,13 +267,6 @@ class TestTextBox(TestScaffolding):
         )
         assert textbox.get_text() == original_text
 
-    @pytest.mark.skipif(
-        sys.platform == "darwin" and os.environ.get("CI") == "true",
-        reason="Crashes the pytest-xdist worker on CI's macOS runner - issue #3738 "
-               "(TestScaffolding's leaked real MainController + shared builder cache), "
-               "not this test's own logic: passes reliably (15/15) locally on the same "
-               "platform. Re-enable once #3738 is fixed.",
-    )
     def test_insert_translation_groups_a_selection_replace_into_one_undo_step(self):
         textbox = self._target_for('%s files copied')
         self.undo_controller.model.clear()

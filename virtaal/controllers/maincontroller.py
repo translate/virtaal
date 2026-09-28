@@ -5,6 +5,8 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import os
+
 import gi
 
 gi.require_version('Gtk', '3.0')
@@ -254,6 +256,15 @@ class MainController(BaseController):
             filename = self.view.show_save_dialog(current_filename=filename, title=_("Save"))
             if not filename:
                 return False
+
+        # A Save As target can be read-only too (e.g. the original file,
+        # picked again and confirmed to replace) - fail before header-info
+        # prompts or the write itself, not after (#517).
+        if filename and os.path.exists(filename) and not os.access(filename, os.W_OK):
+            self.show_error(
+                _("%(filename)s is read-only.\n\nTry saving to a different location.") % {'filename': filename}
+            )
+            return False
 
         if self._do_save_file(filename):
             if self.get_force_saveas():

@@ -47,7 +47,7 @@ def build_plist():
         "CFBundleDisplayName": "Virtaal",
         "CFBundleExecutable": "Virtaal",
         "CFBundleIconFile": "virtaal.icns",
-        "CFBundleIdentifier": "za.org.translate.virtaal",
+        "CFBundleIdentifier": "org.translatehouse.virtaal",
         "CFBundleInfoDictionaryVersion": "6.0",
         "CFBundleName": "Virtaal",
         "CFBundlePackageType": "APPL",

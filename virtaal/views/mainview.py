@@ -1143,6 +1143,40 @@ class MainView(BaseView):
             self._same_lang_infobar = None
             infobar.destroy()
 
+    def show_read_only_notice(self):
+        """Show a dismissable notice that the opened file can't be
+            written to (#517); its own button offers Save As directly."""
+        existing = getattr(self, '_read_only_infobar', None)
+        if existing is not None:
+            return
+
+        infobar = Gtk.InfoBar()
+        infobar.set_message_type(Gtk.MessageType.WARNING)
+        infobar.set_show_close_button(True)
+        label = Gtk.Label(label=_('This file is read-only.'))
+        infobar.get_content_area().pack_start(label, True, True, 0)
+        infobar.add_button(_('Save As…'), Gtk.ResponseType.OK)
+
+        def on_response(infobar, response_id):
+            if response_id == Gtk.ResponseType.OK:
+                self.controller.save_file(force_saveas=True)
+                return
+            self._read_only_infobar = None
+            infobar.destroy()
+        infobar.connect('response', on_response)
+
+        self._read_only_infobar = infobar
+        infobar.show_all()
+        vbox_main = self.gui.get_object('vbox_main')
+        vbox_main.pack_start(infobar, False, False, 0)
+        vbox_main.reorder_child(infobar, 1)  # directly below the menu bar
+
+    def hide_read_only_notice(self):
+        infobar = getattr(self, '_read_only_infobar', None)
+        if infobar is not None:
+            self._read_only_infobar = None
+            infobar.destroy()
+
     def _on_file_open(self, _widget):
         self.open_file()
 

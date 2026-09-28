@@ -1326,6 +1326,78 @@ def test_hide_same_lang_notice_does_nothing_when_none_shown():
     view.hide_same_lang_notice()  # must not raise
 
 
+# show_read_only_notice() / hide_read_only_notice() - warn that the opened
+# file can't be saved in place (#517).
+
+def _view_for_read_only_notice():
+    vbox = _FakeVboxMain()
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: vbox)
+    return view, vbox
+
+
+def test_show_read_only_notice_packs_a_dismissable_infobar():
+    view, vbox = _view_for_read_only_notice()
+
+    view.show_read_only_notice()
+
+    assert len(vbox.packed) == 1
+    infobar = vbox.packed[0]
+    assert isinstance(infobar, Gtk.InfoBar)
+    assert infobar.get_message_type() == Gtk.MessageType.WARNING
+    assert infobar.get_show_close_button() is True
+
+
+def test_show_read_only_notice_does_not_stack_a_second_one():
+    view, vbox = _view_for_read_only_notice()
+    view.show_read_only_notice()
+
+    view.show_read_only_notice()
+
+    assert len(vbox.packed) == 1
+
+
+def test_show_read_only_notice_save_as_button_saves_without_dismissing():
+    # A cancelled/failed Save As shouldn't dismiss the warning - only a
+    # real successful save does that.
+    view, vbox = _view_for_read_only_notice()
+    calls = []
+    view.controller = SimpleNamespace(save_file=lambda force_saveas: calls.append(force_saveas))
+    view.show_read_only_notice()
+    infobar = view._read_only_infobar
+
+    infobar.emit('response', Gtk.ResponseType.OK)
+
+    assert calls == [True]
+    assert view._read_only_infobar is infobar
+
+
+def test_show_read_only_notice_dismiss_clears_the_tracked_infobar():
+    view, vbox = _view_for_read_only_notice()
+    view.show_read_only_notice()
+
+    view._read_only_infobar.emit('response', Gtk.ResponseType.CLOSE)
+
+    assert view._read_only_infobar is None
+
+
+def test_hide_read_only_notice_destroys_a_shown_notice():
+    view, vbox = _view_for_read_only_notice()
+    view.show_read_only_notice()
+    infobar = view._read_only_infobar
+
+    view.hide_read_only_notice()
+
+    assert view._read_only_infobar is None
+    assert infobar.get_parent() is None
+
+
+def test_hide_read_only_notice_does_nothing_when_none_shown():
+    view, vbox = _view_for_read_only_notice()
+
+    view.hide_read_only_notice()  # must not raise
+
+
 # show_update_notice() - #3616's platform-specific download button
 
 def _real_view_for_update_notice():

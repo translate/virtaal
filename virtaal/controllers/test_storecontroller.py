@@ -5,6 +5,8 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import os
+import sys
 from types import SimpleNamespace
 
 import pytest
@@ -307,7 +309,11 @@ def test_close_file_resets_state_and_emits_store_closed():
     controller._modified = True
     controller.cursor = object()
     saveable_calls = []
-    controller.main_controller = SimpleNamespace(set_saveable=saveable_calls.append)
+    hidden_notice = []
+    controller.main_controller = SimpleNamespace(
+        set_saveable=saveable_calls.append,
+        view=SimpleNamespace(hide_read_only_notice=lambda: hidden_notice.append(True)),
+    )
     hidden = []
     controller._view = SimpleNamespace(hide=lambda: hidden.append(True))
     emitted = []
@@ -320,6 +326,7 @@ def test_close_file_resets_state_and_emits_store_closed():
     assert controller._modified is False
     assert saveable_calls == [False]
     assert hidden == [True]
+    assert hidden_notice == [True]
     assert controller.cursor is None
     assert emitted == [True]
 
@@ -336,9 +343,14 @@ def _open_file_controller(monkeypatch, units):
     controller = _controller()
     controller.force_saveas_calls = []
     controller.saveable_calls = []
+    controller.read_only_notice_calls = []
     controller.main_controller = SimpleNamespace(
         set_force_saveas=controller.force_saveas_calls.append,
         set_saveable=controller.saveable_calls.append,
+        view=SimpleNamespace(
+            show_read_only_notice=lambda: controller.read_only_notice_calls.append('shown'),
+            hide_read_only_notice=lambda: controller.read_only_notice_calls.append('hidden'),
+        ),
     )
     controller.shown = []
     controller._view = SimpleNamespace(
@@ -362,6 +374,7 @@ def test_open_file_loads_and_shows_a_plain_file(monkeypatch):
     assert controller.saveable_calls == [False]
     assert controller.cursor.model is controller.store
     assert controller.shown == [controller.store, 'shown']
+    assert controller.read_only_notice_calls == ['hidden']
     assert emitted == [True]
 
 
@@ -385,6 +398,24 @@ def test_open_file_forces_saveas_and_renames_a_pot_template(monkeypatch):
 
     assert controller.force_saveas_calls == [True]
     assert controller.store._trans_store.filename == 'template.po'
+    # A template is a deliberate force-saveas, not a surprise - no notice.
+    assert controller.read_only_notice_calls == ['hidden']
+
+
+@pytest.mark.skipif(sys.platform == "win32", reason="os.chmod doesn't model POSIX write permission on Windows")
+def test_open_file_forces_saveas_and_shows_notice_for_a_readonly_file(monkeypatch, tmp_path):
+    unit = object()
+    controller = _open_file_controller(monkeypatch, units=[unit])
+    real_file = tmp_path / "readonly.po"
+    real_file.write_text("")
+    os.chmod(real_file, 0o444)
+    try:
+        controller.open_file(str(real_file))
+    finally:
+        os.chmod(real_file, 0o644)  # allow tmp_path's own cleanup to remove it
+
+    assert controller.force_saveas_calls == [True]
+    assert controller.read_only_notice_calls == ['shown']
 
 
 def test_open_file_strips_the_directory_when_forced_saveas_and_forget_dir(monkeypatch):
@@ -471,11 +502,13 @@ def test_save_file_plain_saves_and_marks_clean():
     controller.store = SimpleNamespace(save_file=saved.append)
     controller._modified = True
     marked_clean = []
+    hidden_notice = []
     controller.main_controller = SimpleNamespace(
         undo_controller=SimpleNamespace(
             model=SimpleNamespace(mark_clean=lambda: marked_clean.append(True))
         ),
         set_saveable=lambda v: None,
+        view=SimpleNamespace(hide_read_only_notice=lambda: hidden_notice.append(True)),
     )
     emitted = []
     controller.connect('store-saved', lambda *_: emitted.append(True))
@@ -486,6 +519,7 @@ def test_save_file_plain_saves_and_marks_clean():
     assert saved == ['out.po']
     assert controller._modified is False
     assert marked_clean == [True]
+    assert hidden_notice == [True]
     assert emitted == [True]
 
 
@@ -514,6 +548,7 @@ def test_save_file_project_opens_the_real_file_in_binary_mode(tmp_path):
     controller.main_controller = SimpleNamespace(
         undo_controller=SimpleNamespace(model=SimpleNamespace(mark_clean=lambda: None)),
         set_saveable=lambda v: None,
+        view=SimpleNamespace(hide_read_only_notice=lambda: None),
     )
 
     controller.save_file()

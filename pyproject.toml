@@ -54,7 +54,7 @@ dependencies = [
 
 [project.optional-dependencies]
 spellcheck = ["pyenchant"]
-test = ["pytest", "pytest-cov", "pytest-xdist"]
+test = ["pytest", "pytest-cov", "pytest-xdist", "pytest-timeout"]
 docs = ["Sphinx"]
 # Not wired into pre-commit or CI - GTK/GI stub coverage isn't good
 # enough yet for a repo-wide rollout.
@@ -71,6 +71,14 @@ script-files = ["bin/virtaal"]
 # `sys.argv`/`__file__` that a thin entry-point wrapper would need to
 # preserve carefully - a bigger, separate refactor, not part of this
 # packaging cleanup.
+
+[tool.pytest.ini_options]
+# A hung test used to consume a whole CI job's 10-minute budget with no
+# indication of which test or where - timeout-method=thread dumps every
+# thread's stack (faulthandler) before failing just that one test, so a
+# hang becomes a normal, located failure instead of a silent timeout.
+timeout = 30
+timeout_method = "thread"
 
 [tool.setuptools.dynamic]
 version = {attr = "virtaal.__version__.ver"}

@@ -831,7 +831,11 @@ jobs:
         # no display server at all without one. Coverage collected here
         # too, not just on Linux's test (3.13) - see test-windows's own
         # comment for why.
-        run: pytest -rvxs -n auto --cov=virtaal --cov-report=xml virtaal
+        #
+        # -v is temporary, for #3738: it prints each worker's per-test
+        # progress instead of dots, so a crash's preceding test on that
+        # worker is visible in the log. Revert once that issue is fixed.
+        run: pytest -rvxs -v -n auto --cov=virtaal --cov-report=xml virtaal
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7

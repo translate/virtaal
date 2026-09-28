@@ -205,9 +205,15 @@ class StoreController(BaseController):
             self.store._trans_store.filename = filename
         return filename, force_saveas
 
+    def _is_readonly(self, filename):
+        """Whether the file actually opened (the bundle itself for a
+            .zip, not its extracted temp copy) can't be written to."""
+        return os.path.isfile(filename) and not os.access(filename, os.W_OK)
+
     def open_file(self, filename, uri='', forget_dir=False):
         extension = filename.split(os.extsep)[-1]
         force_saveas = False
+        readonly = self._is_readonly(filename)
         if extension == 'zip':
             self._open_bundle(filename)
         else:
@@ -223,6 +229,11 @@ class StoreController(BaseController):
         # if file is a template, force saveas
         filename, force_saveas = self._rename_pot_template(filename, force_saveas)
 
+        # a read-only file also forces saveas (#517), but unlike a
+        # template it's unexpected, so it gets a notice too
+        if readonly:
+            force_saveas = True
+
         # forgetting the directory only makes sense if we force save as
         if force_saveas and forget_dir:
             filename = os.path.split(filename)[1]
@@ -230,6 +241,11 @@ class StoreController(BaseController):
 
         self.main_controller.set_force_saveas(force_saveas)
         self.main_controller.set_saveable(self._modified)
+
+        if readonly:
+            self.main_controller.view.show_read_only_notice()
+        else:
+            self.main_controller.view.hide_read_only_notice()
 
         from .cursor import Cursor
         self.cursor = Cursor(self.store, self.store.stats['total'])
@@ -259,6 +275,8 @@ class StoreController(BaseController):
             self.project.convert_forward(proj_fname, overwrite_output=True)
             self.project.save()
         self.set_modified(False)
+        # reaching here means the write succeeded, so any stale notice goes
+        self.main_controller.view.hide_read_only_notice()
         # Unlike open_file()/close_file(), a save doesn't clear the undo
         # stack, so it needs its own explicit clean-point mark.
         self.main_controller.undo_controller.model.mark_clean()
@@ -278,6 +296,7 @@ class StoreController(BaseController):
         self.project = None
         self.store = None
         self.set_modified(False)
+        self.main_controller.view.hide_read_only_notice()
         self.view.hide() # This MUST be called BEFORE `self.cursor = None`
         self.emit('store-closed') # This should be emitted BEFORE `self.cursor = None` to allow any other modules to disconnect from the cursor
         self.cursor = None

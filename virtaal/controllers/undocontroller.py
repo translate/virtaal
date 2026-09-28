@@ -172,6 +172,17 @@ class UndoController(BaseController):
         }
 
     def _perform_undo(self, undo_info, capture_redo=False):
+        if undo_info.get('kind') == 'navigate':
+            # capture_redo is only true from the real undo path
+            # (_on_undo_activated) - undoing this act means going back
+            # to where we were before it; redoing it (the other path,
+            # _on_redo_activated) means going forward to where it led.
+            if capture_redo:
+                self._select_unit(undo_info['from_unit'])
+                return dict(undo_info)
+            self._select_unit(undo_info['unit'])
+            return None
+
         self._select_unit(undo_info['unit'])
 
         #if 'desc' in undo_info:

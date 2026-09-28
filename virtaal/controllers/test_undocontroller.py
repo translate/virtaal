@@ -137,6 +137,7 @@ def _make_controller(textbox, unit):
     controller = UndoController.__new__(UndoController)
     controller.enabled = True
     controller.model = UndoModel(controller)
+    controller._pending_refresh = None
     controller.main_controller = _FakeMainController()
     controller.unit_controller = _FakeUnitController(textbox, unit)
     controller.mnu_undo = _FakeMenuItem()
@@ -343,6 +344,48 @@ def test_redo_cursor_position_survives_a_unit_switch():
 
     redo_of_a = controller.model.redo_stack[2]
     assert redo_of_a['cursorpos'] == 1  # right after 'x', not the reload's 0
+
+
+def test_crossing_units_during_undo_flushes_the_earlier_units_pending_refresh(monkeypatch):
+    # _schedule_cursor_restore()'s own refresh() is deferred via
+    # GLib.idle_add(), which runs behind whatever input events are
+    # already queued - a fast enough next undo/redo can switch units
+    # before an earlier step's refresh() ever fires. In the real app
+    # that refresh() is also what commits the edited text back to the
+    # underlying translation unit (TextBox.refresh()'s own
+    # set_text()/'changed' chain) - silently dropping it, not just its
+    # cursor position. _select_unit() must flush it first.
+    calls = []
+    monkeypatch.setattr(undocontroller_module.GLib, 'idle_add', lambda func, *a: calls.append(func))
+    textbox = _FakeTextbox('')
+    unit_a, unit_b = _FakeUnit(), _FakeUnit()
+    controller = _make_controller(textbox, unit_a)
+    content = {unit_a: '', unit_b: ''}
+
+    def select_unit(unit, force=False):
+        view = controller.unit_controller.view
+        content[view.unit] = str(textbox.elem)
+        view.unit = unit
+        controller.unit_controller.current_unit = unit
+        textbox.elem = StringElem(content[unit])
+        textbox.elem.gui_info = _FakeGuiInfo()
+    controller.main_controller.select_unit = select_unit
+
+    controller._on_unit_insert_text(None, unit_a, 'one', 0, textbox.elem, 0)
+    textbox.elem.sub = StringElem('one').sub
+
+    select_unit(unit_b)
+    controller._on_unit_insert_text(None, unit_b, 'B1', 0, textbox.elem, 0)
+    textbox.elem.sub = StringElem('B1').sub
+
+    controller._on_undo_activated()  # reverts B1, schedules a refresh for B - GLib hasn't run it yet
+    assert controller._pending_refresh is not None
+    refresh_ran = []
+    orig_refresh = textbox.refresh
+    textbox.refresh = lambda *a, **kw: (refresh_ran.append(True), orig_refresh(*a, **kw))[-1]
+
+    controller._on_undo_activated()  # navigates to A - must not strand B's still-queued refresh
+    assert refresh_ran, "B's pending refresh (and whatever it commits) must run before switching away"
 
 
 def test_undo_across_units_navigates_before_reverting():

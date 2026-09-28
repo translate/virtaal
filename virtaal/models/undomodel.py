@@ -56,6 +56,30 @@ class UndoModel(BaseModel):
             all been undone."""
         return self.index == self.clean_index
 
+    def peek(self):
+        """The entry a following pop() would return, without consuming
+            it - lets a caller check where the stack expects the display
+            to currently be before actually undoing anything."""
+        if not self.undo_stack or not (0 <= self.index < len(self.undo_stack)):
+            return None
+        return self.undo_stack[self.index]
+
+    def peek_redo(self):
+        """The entry a following pop_redo() would return, without
+            consuming it - see peek()."""
+        if not self.redo_stack:
+            return None
+        return self.redo_stack[-1]
+
+    @staticmethod
+    def entry_unit(entry):
+        """The unit an undo/redo entry (a plain dict, or a recording
+            group's list - all of whose items share one unit) is
+            anchored to."""
+        if isinstance(entry, list):
+            entry = entry[0] if entry else None
+        return entry.get('unit') if isinstance(entry, dict) else None
+
     def pop(self, permanent=False):
         if not self.undo_stack or not (0 <= self.index < len(self.undo_stack)):
             return None

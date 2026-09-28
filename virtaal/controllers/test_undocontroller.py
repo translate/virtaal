@@ -423,6 +423,41 @@ def test_undo_across_units_restores_the_cursor_it_left_at(monkeypatch):
     assert textbox._rendered_cursor_pos == 3  # right after "one", not one character early
 
 
+def test_undo_after_a_drifted_navigation_restores_the_cursor_it_left_at(monkeypatch):
+    # The drift-resolution navigate-only step (_needs_navigation_first())
+    # used _select_unit()'s own smart-start cursor default too - same bug
+    # as the previous test, but for landing on a unit to resolve drift
+    # rather than for a real navigate-kind undo.
+    calls = []
+    monkeypatch.setattr(undocontroller_module.GLib, 'idle_add', lambda func, *a: calls.append(func))
+    textbox = _FakeTextbox('')
+    unit_a, unit_b = _FakeUnit(), _FakeUnit()
+    controller = _make_controller(textbox, unit_a)
+    content = {unit_a: '', unit_b: ''}
+
+    def select_unit(unit, force=False):
+        view = controller.unit_controller.view
+        content[view.unit] = str(textbox.elem)
+        view.unit = unit
+        controller.unit_controller.current_unit = unit
+        textbox.elem = StringElem(content[unit])
+        textbox.elem.gui_info = _FakeGuiInfo()
+        textbox._rendered_cursor_pos = 0  # a fresh unit's own smart-start default
+    controller.main_controller.select_unit = select_unit
+
+    controller._on_unit_insert_text(None, unit_a, 'one', 0, textbox.elem, 0)
+    textbox.elem.sub = StringElem('one').sub  # cursor now after "one", position 3
+
+    select_unit(unit_b)  # e.g. wrapping past the last unit - never pushed
+
+    controller._on_undo_activated()  # resolves the drift, doesn't touch the stack yet
+    assert controller.unit_controller.current_unit is unit_a
+
+    assert calls, 'expected a deferred cursor-restore refresh() to be scheduled'
+    calls[-1]()
+    assert textbox._rendered_cursor_pos == 3  # right after "one", not the fresh-unit default
+
+
 def test_undo_redo_of_a_deliberate_state_change():
     textbox = _FakeTextbox('a')
     unit = _FakeUnit()
@@ -467,12 +502,13 @@ def test_undo_of_a_state_change_then_an_edit_elsewhere_navigates_first():
     assert controller.unit_controller.restored_states[-1] == (80, False)
 
 
-def test_undo_after_a_pure_navigation_still_jumps_and_reverts_together():
-    # Known gap: navigation is only inferred between two *pushed* acts
-    # (undomodel.py's push()). Ctrl+Enter's own move to the next unit
-    # is a pure focus change with no push of its own, so if nothing is
-    # edited there before undo, the original jump-and-revert-together
-    # problem this feature exists to fix still applies to this one case.
+def test_undo_after_a_pure_navigation_navigates_before_reverting():
+    # Navigation is only ever pushed retroactively, between two pushed
+    # acts (undomodel.py's push()) - Ctrl+Enter's own move to the next
+    # unit is a pure focus change with no push of its own. Undoing must
+    # still resolve that drift as its own step first, the same as any
+    # other cross-unit undo - not combine it with reverting whatever's
+    # actually on the stack in the same keypress.
     textbox = _FakeTextbox('A1')
     unit_a, unit_b = _FakeUnit(), _FakeUnit()
     controller = _make_controller(textbox, unit_a)
@@ -488,9 +524,71 @@ def test_undo_after_a_pure_navigation_still_jumps_and_reverts_together():
     select_unit(unit_b)  # e.g. Ctrl+Enter's own focus move - never pushed
 
     controller._on_undo_activated()
+    assert controller.unit_controller.current_unit is unit_a  # resolves the drift...
+    assert controller.unit_controller.restored_states == []  # ...without touching the stack yet
 
-    assert controller.unit_controller.current_unit is unit_a  # jumped...
-    assert controller.unit_controller.restored_states == [(80, False)]  # ...and reverted, same keypress
+    controller._on_undo_activated()  # now actually reverts the state change
+    assert controller.unit_controller.restored_states[-1] == (80, False)
+
+
+def test_multiple_untracked_navigations_compact_into_one_undo_step():
+    # Browsing through several units with no edits along the way must
+    # not replay each hop as its own undo press - there's only the one
+    # entry actually on the stack to land back on, however many
+    # untracked hops happened after it.
+    textbox = _FakeTextbox('A1')
+    unit_a, unit_b, unit_c = _FakeUnit(), _FakeUnit(), _FakeUnit()
+    controller = _make_controller(textbox, unit_a)
+
+    def select_unit(unit, force=False):
+        controller.unit_controller.view.unit = unit
+        controller.unit_controller.current_unit = unit
+    controller.main_controller.select_unit = select_unit
+
+    controller.push_current_text(textbox)  # records 'A1' as the undo target
+    textbox.elem = StringElem('A2')  # the actual edit
+
+    select_unit(unit_b)  # browsing onward - neither hop is pushed
+    select_unit(unit_c)
+
+    controller._on_undo_activated()  # resolves the drift in one step, however far
+    assert controller.unit_controller.current_unit is unit_a
+    assert str(textbox.elem) == 'A2'  # not yet reverted
+
+    controller._on_undo_activated()  # now actually reverts
+    assert str(textbox.elem) == 'A1'
+
+
+def test_redoing_a_navigation_moves_forward_regardless_of_current_position():
+    # Unlike undo, redoing a navigate-kind entry always just moves
+    # forward to wherever it goes - there's no "expected prior
+    # position" to resolve first the way a text/state entry has.
+    textbox = _FakeTextbox('A1')
+    unit_a, unit_b, unit_c = _FakeUnit(), _FakeUnit(), _FakeUnit()
+    controller = _make_controller(textbox, unit_a)
+    content = {unit_a: 'A1', unit_b: 'B1'}
+
+    def select_unit(unit, force=False):
+        view = controller.unit_controller.view
+        content[view.unit] = str(textbox.elem)
+        view.unit = unit
+        controller.unit_controller.current_unit = unit
+        textbox.elem = StringElem(content.get(unit, ''))
+    controller.main_controller.select_unit = select_unit
+
+    controller.push_current_text(textbox)
+    textbox.elem = StringElem('A2')
+    select_unit(unit_b)
+    controller.push_current_text(textbox)
+    textbox.elem = StringElem('B2')
+
+    controller._on_undo_activated()  # B2 -> B1
+    controller._on_undo_activated()  # navigate back to A - pushes a navigate-kind redo entry
+    assert controller.unit_controller.current_unit is unit_a
+
+    select_unit(unit_c)  # browse somewhere else entirely before redoing
+    controller._on_redo_activated()  # still just moves forward to B, unconditionally
+    assert controller.unit_controller.current_unit is unit_b
 
 
 def test_undo_of_a_text_edit_restores_its_bundled_state_change():

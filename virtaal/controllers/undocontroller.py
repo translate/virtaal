@@ -271,10 +271,46 @@ class UndoController(BaseController):
         targetn = undo_info.get('from_targetn')
         if cursorpos is None or targetn is None:
             return
+        self._schedule_cursor_restore(undo_info['from_unit'], targetn, cursorpos)
+
+    def _cursor_for_entry(self, entry, use_redo_cursorpos):
+        """(targetn, cursorpos) for the position an undo/redo entry (or
+            a recording group's list - its last item is the one whose
+            resting position matters) itself records, or None if it's a
+            kind with no such position (state/navigate) or an older
+            entry that predates one of these fields existing."""
+        tail = entry[-1] if isinstance(entry, list) and entry else entry
+        if not isinstance(tail, dict) or tail.get('kind'):
+            return None
+        targetn = tail.get('targetn')
+        cursorpos = tail.get('redo_cursorpos', tail.get('cursorpos')) if use_redo_cursorpos else tail.get('cursorpos')
+        if targetn is None or cursorpos is None:
+            return None
+        return targetn, cursorpos
+
+    def _restore_drifted_cursor(self, entry, unit, is_redo):
+        """After _needs_navigation_first() has just moved the display to
+            an entry's own unit to resolve drift - without consuming the
+            entry itself - put the cursor where that unit is actually
+            currently sitting, instead of wherever _select_unit() just
+            defaulted it to. Undoing arrives at a unit as it now stands
+            (that entry's own post-edit resting position); redoing
+            arrives at a unit as it was left by the last undo (its
+            pre-edit position) - the entry itself hasn't been applied
+            yet either way, only navigated towards."""
+        cursor = self._cursor_for_entry(entry, use_redo_cursorpos=not is_redo)
+        if cursor is None:
+            return
+        targetn, cursorpos = cursor
+        self._schedule_cursor_restore(unit, targetn, cursorpos)
+
+    def _schedule_cursor_restore(self, unit, targetn, cursorpos):
+        """Defer landing the cursor at (targetn, cursorpos) until unit is
+            actually the one on screen - the caller may have just
+            triggered an async unit switch."""
         textbox = self.unit_controller.view.targets[targetn]
-        scheduled_unit = undo_info['from_unit']
         def refresh():
-            if self.unit_controller.current_unit is not scheduled_unit:
+            if self.unit_controller.current_unit is not unit:
                 return
             textbox.refresh_cursor_pos = cursorpos
             self._disable_unit_signals()
@@ -288,11 +324,38 @@ class UndoController(BaseController):
         self.model.clear()
         self._update_sensitivity()
 
+    def _needs_navigation_first(self, entry, is_redo):
+        """Whether the display must be moved to this (about-to-be-
+            applied) entry's own unit before it's safe to pop and apply
+            it - i.e. the display has already drifted away from the
+            stack's own position via plain navigation, which (by
+            design) isn't itself tracked as its own act. Reports this
+            once regardless of how many untracked hops happened - there
+            was only ever the one entry on top to land on, so resolving
+            it always takes exactly one keypress, never a chain of them.
+
+            Not true for a navigate-kind entry being redone: applying
+            that one always just moves forward to wherever it goes,
+            unconditionally - see the 'navigate' branch in
+            _perform_undo()."""
+        head = entry[0] if isinstance(entry, list) and entry else entry
+        if is_redo and isinstance(head, dict) and head.get('kind') == 'navigate':
+            return False
+        target_unit = self.model.entry_unit(entry)
+        return target_unit is not None and target_unit is not self.unit_controller.current_unit
+
     @if_enabled
     def _on_undo_activated(self, *args):
-        undo_info = self.model.pop()
-        if not undo_info:
+        top = self.model.peek()
+        if not top:
             return
+        if self._needs_navigation_first(top, is_redo=False):
+            target_unit = self.model.entry_unit(top)
+            self._select_unit(target_unit)
+            self._restore_drifted_cursor(top, target_unit, is_redo=False)
+            return
+
+        undo_info = self.model.pop()
 
         undo_list = undo_info if isinstance(undo_info, list) else [undo_info]
         # Snapshot each affected target's current state right as it's
@@ -309,9 +372,16 @@ class UndoController(BaseController):
 
     @if_enabled
     def _on_redo_activated(self, *args):
-        redo_info = self.model.pop_redo()
-        if not redo_info:
+        top = self.model.peek_redo()
+        if not top:
             return
+        if self._needs_navigation_first(top, is_redo=True):
+            target_unit = self.model.entry_unit(top)
+            self._select_unit(target_unit)
+            self._restore_drifted_cursor(top, target_unit, is_redo=True)
+            return
+
+        redo_info = self.model.pop_redo()
 
         for ri in (redo_info if isinstance(redo_info, list) else [redo_info]):
             self._perform_undo(ri)

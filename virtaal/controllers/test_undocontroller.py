@@ -656,6 +656,54 @@ def test_undo_of_a_text_edit_restores_its_bundled_state_change():
     assert controller.unit_controller.set_states[-1] == 0
 
 
+def test_undo_of_a_bundled_state_change_survives_the_automatic_recheck(monkeypatch):
+    # translate/virtaal#1886, a second bug in the same area:
+    # _correct_state_after_undo_redo()'s own automatic empty/unreviewed
+    # re-check reads unit.target - but the just-applied undo/redo
+    # action's own text commit is still pending via GLib.idle_add() (see
+    # _schedule_cursor_restore()), so it can see stale, not-yet-restored
+    # content and silently override a state this same step just
+    # restored via the bundled state_before/state_after mechanism.
+    monkeypatch.setattr(undocontroller_module.GLib, 'idle_add', lambda func, *a: calls.append(func))
+    calls = []
+    textbox = _FakeTextbox('a')
+    unit = _FakeUnit()
+    unit.STATE = True
+    unit._current_state = 80  # fuzzy, before the edit
+    unit.target = 'a'  # what the real _correct_empty_state() reads - lags
+                        # behind textbox.elem until refresh() runs
+    controller = _make_controller(textbox, unit)
+
+    orig_refresh = textbox.refresh
+    def refresh_and_commit(*a, **kw):
+        orig_refresh(*a, **kw)
+        unit.target = str(textbox.elem)  # what TextBox.refresh()'s own set_text()/'changed' chain does for real
+    textbox.refresh = refresh_and_commit
+
+    def correct_empty_state(u):
+        # A faithful-enough stand-in for the real
+        # UnitController._correct_empty_state(): EMPTY<->UNREVIEWED
+        # based on u.target, not textbox.elem - that distinction is the
+        # whole point of this test.
+        target_len = len(u.target)
+        empty_state = u._current_state == 0
+        if target_len and empty_state:
+            u._current_state = 999
+        elif not target_len and not empty_state:
+            u._current_state = 0
+    controller.unit_controller._correct_empty_state = correct_empty_state
+
+    controller._on_unit_delete_text(None, unit, StringElem('a'), None, 0, 0, textbox.elem, 0)
+    textbox.elem.sub = StringElem('').sub
+    unit.target = ''  # the debounced correction's own refresh already committed this by now
+    controller.model.attach_state_after(unit, 0)
+
+    controller._on_undo_activated()
+
+    assert str(textbox.elem) == 'a'
+    assert unit._current_state == 80  # the bundled restore must survive the automatic re-check
+
+
 def test_init_disables_undo_redo_immediately():
     # Otherwise stuck at the .ui file's default (enabled) until a later
     # store-loaded/closed or edit event happens to fire - never, on a

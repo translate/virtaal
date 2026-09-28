@@ -417,6 +417,13 @@ class UndoController(BaseController):
         # (_state_sticky).
         current_unit = self.unit_controller.current_unit
         if current_unit is not None and current_unit.STATE and not getattr(current_unit, '_state_sticky', False):
+            # The action just applied still has its own text commit
+            # pending via GLib.idle_add() (see _schedule_cursor_restore())
+            # - flush it now, or this reads a stale, not-yet-restored
+            # target and can silently override a state this same
+            # undo/redo step just restored (including an explicit
+            # bundled state_before/state_after).
+            self._flush_pending_refresh()
             self.unit_controller._correct_empty_state(current_unit)
 
         self._update_sensitivity()

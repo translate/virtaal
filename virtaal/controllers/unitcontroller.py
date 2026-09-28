@@ -81,12 +81,31 @@ class UnitController(BaseController):
     def set_current_state(self, newstate, from_user=False):
         if isinstance(newstate, workflow.UnitState):
             newstate = newstate.state_value
+        if from_user:
+            # A deliberate pick, unlike the automatic empty/unreviewed
+            # correction - record it as its own undo-able act.
+            undo_controller = getattr(self.main_controller, 'undo_controller', None)
+            if undo_controller:
+                undo_controller.push_state_change(
+                    self.current_unit,
+                    self.current_unit._current_state,
+                    self.current_unit._state_sticky,
+                    newstate,
+                )
         self.current_unit._current_state = newstate
         if from_user:
             # No need to update the GUI, and we should make the choice sticky
             self.current_unit._state_sticky = True
         else:
             self.view.update_state(self._unit_state_names[newstate])
+
+    def restore_state(self, state, sticky):
+        """Reapply a state/stickiness pair from an undo/redo of a
+            deliberate set_current_state(from_user=True) - unlike that
+            method, never records another undo-able act."""
+        self.current_unit._current_state = state
+        self.current_unit._state_sticky = sticky
+        self.view.update_state(self._unit_state_names[state])
 
     def load_unit(self, unit):
         if self.current_unit and self.current_unit is unit:

@@ -205,3 +205,22 @@ def test_record_start_group_gets_a_navigation_entry_before_it():
     assert len(model.undo_stack) == 3
     assert model.undo_stack[1] == {'kind': 'navigate', 'unit': unit_b, 'from_unit': unit_a}
     assert model.undo_stack[2] == [_entry_for(unit_b, 'b1'), _entry_for(unit_b, 'b2')]
+
+
+def test_push_accepts_a_kind_tagged_entry_without_the_text_edit_keys():
+    model = UndoModel(controller=None)
+    unit = object()
+
+    model.push({'kind': 'state', 'unit': unit, 'from_state': 0, 'to_state': 100})
+
+    assert model.undo_stack == [{'kind': 'state', 'unit': unit, 'from_state': 0, 'to_state': 100}]
+
+
+def test_push_of_a_kind_tagged_entry_still_gets_navigation_inference():
+    model = UndoModel(controller=None)
+    unit_a, unit_b = object(), object()
+    model.push(_entry_for(unit_a, 'a1'))
+
+    model.push({'kind': 'state', 'unit': unit_b, 'from_state': 0, 'to_state': 100})
+
+    assert model.undo_stack[1] == {'kind': 'navigate', 'unit': unit_b, 'from_unit': unit_a}

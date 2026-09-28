@@ -59,9 +59,14 @@ class _FakeUnitController:
     def __init__(self, textbox, unit):
         self.view = _FakeView(textbox, unit)
         self.current_unit = unit
+        self.restored_states = []  # [(state, sticky), ...]
 
     def connect(self, signal, handler):
         pass
+
+    def restore_state(self, state, sticky):
+        self.current_unit.state = state
+        self.restored_states.append((state, sticky))
 
 
 class _FakeStoreController:
@@ -262,6 +267,24 @@ def test_typing_updates_sensitivity():
     assert undo_calls[-1] is True
 
 
+def test_push_state_change_updates_sensitivity():
+    # UnitController.set_current_state()'s own from_user branch used to
+    # push straight to model.push(), skipping this - the Undo menu item
+    # (and its Cmd+Z accelerator, which GTK won't activate on an
+    # insensitive item) stayed disabled after a deliberate state change
+    # until some unrelated later push happened to refresh it, making
+    # undo appear to do nothing at all.
+    textbox = _FakeTextbox('a')
+    unit = _FakeUnit()
+    controller = _make_controller(textbox, unit)
+    undo_calls = []
+    controller.mnu_undo.set_sensitive = undo_calls.append
+
+    controller.push_state_change(unit, 80, False, 100)
+
+    assert undo_calls[-1] is True
+
+
 def test_chained_undo_redo_uses_each_edits_own_recorded_cursor_position():
     # _perform_undo()'s own cursor restore is deferred (GLib.idle_add) -
     # a chained undo/redo faster than that must not rely on a live
@@ -347,6 +370,76 @@ def test_undo_across_units_navigates_before_reverting():
 
     controller._on_undo_activated()  # reverts A2 -> A1
     assert str(textbox.elem) == 'A1'
+
+
+def test_undo_redo_of_a_deliberate_state_change():
+    textbox = _FakeTextbox('a')
+    unit = _FakeUnit()
+    controller = _make_controller(textbox, unit)
+    controller.model.push({
+        'kind': 'state', 'unit': unit, 'from_state': 80, 'from_sticky': False, 'to_state': 100,
+    })
+
+    controller._on_undo_activated()
+    assert controller.unit_controller.restored_states[-1] == (80, False)
+
+    controller._on_redo_activated()
+    assert controller.unit_controller.restored_states[-1] == (100, True)
+
+
+def test_undo_of_a_state_change_then_an_edit_elsewhere_navigates_first():
+    # Ctrl+Enter's state advance (unit A) followed by editing unit B:
+    # undoing must land back on A before reverting its state change,
+    # the same two-step behaviour as a plain text edit gets.
+    textbox = _FakeTextbox('B1')
+    unit_a, unit_b = _FakeUnit(), _FakeUnit()
+    controller = _make_controller(textbox, unit_a)
+
+    def select_unit(unit, force=False):
+        controller.unit_controller.view.unit = unit
+        controller.unit_controller.current_unit = unit
+    controller.main_controller.select_unit = select_unit
+
+    controller.model.push({
+        'kind': 'state', 'unit': unit_a, 'from_state': 80, 'from_sticky': False, 'to_state': 100,
+    })
+    select_unit(unit_b)
+    controller.push_current_text(textbox)
+    textbox.elem = StringElem('B2')
+
+    controller._on_undo_activated()  # reverts B2 -> B1
+    controller._on_undo_activated()  # navigates back to A - state untouched
+    assert controller.unit_controller.current_unit is unit_a
+    assert controller.unit_controller.restored_states == []
+
+    controller._on_undo_activated()  # reverts A's state change
+    assert controller.unit_controller.restored_states[-1] == (80, False)
+
+
+def test_undo_after_a_pure_navigation_still_jumps_and_reverts_together():
+    # Known gap: navigation is only inferred between two *pushed* acts
+    # (undomodel.py's push()). Ctrl+Enter's own move to the next unit
+    # is a pure focus change with no push of its own, so if nothing is
+    # edited there before undo, the original jump-and-revert-together
+    # problem this feature exists to fix still applies to this one case.
+    textbox = _FakeTextbox('A1')
+    unit_a, unit_b = _FakeUnit(), _FakeUnit()
+    controller = _make_controller(textbox, unit_a)
+
+    def select_unit(unit, force=False):
+        controller.unit_controller.view.unit = unit
+        controller.unit_controller.current_unit = unit
+    controller.main_controller.select_unit = select_unit
+
+    controller.model.push({
+        'kind': 'state', 'unit': unit_a, 'from_state': 80, 'from_sticky': False, 'to_state': 100,
+    })
+    select_unit(unit_b)  # e.g. Ctrl+Enter's own focus move - never pushed
+
+    controller._on_undo_activated()
+
+    assert controller.unit_controller.current_unit is unit_a  # jumped...
+    assert controller.unit_controller.restored_states == [(80, False)]  # ...and reverted, same keypress
 
 
 def test_init_disables_undo_redo_immediately():

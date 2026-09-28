@@ -80,10 +80,15 @@ class UndoModel(BaseModel):
                    value, to effect the undo).
                  - "unit": Value is the unit on which the undo-action is applicable.
                  - "targetn": The index of the target on which the undo is applicable.
-                 - "cursorpos": The position of the cursor after the undo."""
-        for key in ('action', 'unit', 'targetn', 'cursorpos'):
-            if not key in undo_dict:
-                raise ValueError('Invalid undo dictionary!')
+                 - "cursorpos": The position of the cursor after the undo.
+
+            A dict with a "kind" key (e.g. a navigation or state-change
+            act) is a different, self-describing family and skips the
+            checks above - see UndoController._perform_undo()."""
+        if 'kind' not in undo_dict:
+            for key in ('action', 'unit', 'targetn', 'cursorpos'):
+                if not key in undo_dict:
+                    raise ValueError('Invalid undo dictionary!')
 
         unit = undo_dict['unit']
         if self.recording:

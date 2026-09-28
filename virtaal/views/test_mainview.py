@@ -732,6 +732,77 @@ def test_on_store_loaded_adds_an_extra_leading_slash_on_windows(monkeypatch):
     assert added == ['file:///' + os.path.abspath('/tmp/opened.po')]
 
 
+# _on_store_saved(): a plain save or a Save As also refreshes the
+# recent-files list and macOS Dock entry (#3902) - previously only
+# _on_store_loaded() did, so the new filename picked in a Save As
+# dialog (including one forced by a .pot template's first save, or by
+# #517's read-only-file redirect) never showed up in Recent Files.
+
+def test_on_store_saved_adds_the_bundle_filename_for_a_project(monkeypatch):
+    from virtaal.views import recent
+    added = []
+    monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: added.append(uri)))
+    monkeypatch.setattr(mainview, '_note_recent_document', lambda path: None)
+    view = MainView.__new__(MainView)
+    store_controller = SimpleNamespace(
+        project=True, _archivetemp=False, get_bundle_filename=lambda: '/tmp/bundle.zip')
+
+    view._on_store_saved(store_controller)
+
+    assert added == ['file:///tmp/bundle.zip']
+
+
+def test_on_store_saved_adds_the_current_store_filename(monkeypatch):
+    import os
+
+    from virtaal.views import recent
+    added = []
+    monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: added.append(uri)))
+    monkeypatch.setattr(mainview, '_note_recent_document', lambda path: None)
+    monkeypatch.setattr(platform, 'is_windows', False)
+    view = MainView.__new__(MainView)
+    store_controller = SimpleNamespace(
+        project=None, store=SimpleNamespace(filename='/tmp/save-as-target.po'))
+
+    view._on_store_saved(store_controller)
+
+    assert added == ['file://' + os.path.abspath('/tmp/save-as-target.po')]
+
+
+def test_on_store_saved_adds_an_extra_leading_slash_on_windows(monkeypatch):
+    import os
+
+    from virtaal.views import recent
+    added = []
+    monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: added.append(uri)))
+    monkeypatch.setattr(mainview, '_note_recent_document', lambda path: None)
+    monkeypatch.setattr(platform, 'is_windows', True)
+    view = MainView.__new__(MainView)
+    store_controller = SimpleNamespace(
+        project=None, store=SimpleNamespace(filename='/tmp/save-as-target.po'))
+
+    view._on_store_saved(store_controller)
+
+    assert added == ['file:///' + os.path.abspath('/tmp/save-as-target.po')]
+
+
+def test_on_store_saved_notes_the_store_filename_on_mac(monkeypatch):
+    import os
+
+    from virtaal.views import recent
+    noted = []
+    monkeypatch.setattr(recent, 'rm', SimpleNamespace(add_item=lambda uri: None))
+    monkeypatch.setattr(platform, 'is_mac', True)
+    monkeypatch.setattr(mainview, '_note_recent_document', lambda path: noted.append(path))
+    view = MainView.__new__(MainView)
+    store_controller = SimpleNamespace(
+        project=None, store=SimpleNamespace(filename='/tmp/save-as-target.po'))
+
+    view._on_store_saved(store_controller)
+
+    assert noted == [os.path.abspath('/tmp/save-as-target.po')]
+
+
 # _on_controller_registered(): only the store controller's own
 # registration wires up store-closed/store-loaded, and a later
 # re-registration disconnects the previous store-loaded handler
@@ -752,8 +823,9 @@ def test_on_controller_registered_connects_store_signals():
 
     view._on_controller_registered(main_controller, store_controller)
 
-    assert connected == ['store-closed', 'store-loaded']
+    assert connected == ['store-closed', 'store-loaded', 'store-saved']
     assert view._store_loaded_handler_id == 'store-loaded'
+    assert view._store_saved_handler_id == 'store-saved'
 
 
 def test_on_controller_registered_disconnects_the_previous_store_loaded_handler():

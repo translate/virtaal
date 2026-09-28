@@ -991,6 +991,7 @@ class MainView(BaseView):
 
         self._store_closed_handler_id = new_controller.connect('store-closed', self._on_store_closed)
         self._store_loaded_handler_id = new_controller.connect('store-loaded', self._on_store_loaded)
+        self._store_saved_handler_id = new_controller.connect('store-saved', self._on_store_saved)
 
     def _on_documentation(self, _widget=None):
         from virtaal.support import openmailto
@@ -1328,6 +1329,12 @@ class MainView(BaseView):
             self.gui.get_object('mnu_binary_export').set_sensitive(True)
 
         self.status_bar.set_sensitive(True)
+        self._add_recent_file(store_controller)
+
+    def _on_store_saved(self, store_controller):
+        self._add_recent_file(store_controller)
+
+    def _add_recent_file(self, store_controller):
         from virtaal.views import recent
         if store_controller.project:
             if not store_controller._archivetemp:

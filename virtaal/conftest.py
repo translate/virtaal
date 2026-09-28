@@ -26,9 +26,14 @@ actually fixed. Anything NOT matching that list fails the run.
 """
 
 import gettext
+import os
+import subprocess
+import sys
+import tempfile
 from pathlib import Path
 
 import pytest
+from _pytest import runner
 
 from virtaal.models import langmodel
 from virtaal.support import statsdb
@@ -57,6 +62,84 @@ def _load_allowlist():
 def pytest_warning_recorded(warning_message, when, nodeid, location):
     if issubclass(warning_message.category, _WATCHED_CATEGORIES):
         _seen_messages.add(str(warning_message.message))
+
+
+def _is_testscaffolding_subclass(cls):
+    # virtaal/test has no __init__.py, so test files import this bare
+    # (`from test_scaffolding import TestScaffolding`, pytest's legacy
+    # rootdir-relative import mode) while this conftest imports it
+    # fully-qualified - two distinct module objects for the same file,
+    # so a plain issubclass() against either import silently never
+    # matches the other. Compare by name instead.
+    return any(
+        c.__module__.rsplit(".", 1)[-1] == "test_scaffolding" and c.__name__ == "TestScaffolding"
+        for c in cls.__mro__
+    )
+
+
+def _make_report(item, when, passed, output=""):
+    if passed:
+        call = runner.CallInfo.from_call(lambda: None, when)
+    else:
+        def _raise():
+            raise AssertionError(
+                "macOS subprocess-isolated run failed (issue #3738):\n" + output
+            )
+        call = runner.CallInfo.from_call(_raise, when)
+    return runner.pytest_runtest_makereport(item, call)
+
+
+@pytest.hookimpl(tryfirst=True)
+def pytest_runtest_protocol(item, nextitem):
+    """TestScaffolding builds a real MainController(), which on macOS
+    engages GtkosxApplication - a documented wrapper around Cocoa's
+    NSApplication, itself a process-wide singleton (issue #3738).
+    Running two of these in the same process hangs (second
+    construction fights the singleton); running them via
+    pytest-xdist's normal in-process model or via fork-based isolation
+    (pytest-forked) both hit real, unfixable native crashes/hangs -
+    verified empirically, not assumed. A genuinely fresh subprocess
+    (re-exec, not fork) has no such inherited state, so each
+    TestScaffolding test runs as its own `pytest <nodeid>` child
+    process on macOS only; other platforms are unaffected."""
+    if sys.platform != "darwin" or os.environ.get("_VIRTAAL_TESTSCAFFOLDING_ISOLATED"):
+        return None
+    cls = getattr(item, "cls", None)
+    if cls is None or not _is_testscaffolding_subclass(cls):
+        return None
+
+    ihook = item.ihook
+    ihook.pytest_runtest_logstart(nodeid=item.nodeid, location=item.location)
+
+    # A per-invocation --basetemp, not pytest's shared default
+    # (/tmp/pytest-of-<user>/): concurrent xdist workers each spawning
+    # their own subprocess otherwise race on that shared root's
+    # pytest-current symlink retention/cleanup, surfacing as a rare
+    # FileNotFoundError in an unrelated test - confirmed live under
+    # -n auto on the full suite.
+    with tempfile.TemporaryDirectory(prefix="virtaal-testscaffolding-isolated-") as basetemp:
+        proc = subprocess.run(
+            [
+                sys.executable, "-m", "pytest",
+                "-p", "no:cacheprovider",
+                "--basetemp", basetemp,
+                "-q", item.nodeid,
+            ],
+            capture_output=True,
+            text=True,
+            cwd=str(Path(__file__).resolve().parent.parent),
+            env={**os.environ, "_VIRTAAL_TESTSCAFFOLDING_ISOLATED": "1"},
+        )
+    passed = proc.returncode == 0
+    output = proc.stdout + proc.stderr
+
+    for when in ("setup", "call", "teardown"):
+        report = _make_report(item, when, passed if when == "call" else True, output)
+        ihook.pytest_runtest_logreport(report=report)
+
+    item.session._setupstate.teardown_exact(nextitem)
+    ihook.pytest_runtest_logfinish(nodeid=item.nodeid, location=item.location)
+    return True
 
 
 @pytest.fixture(autouse=True, scope="session")

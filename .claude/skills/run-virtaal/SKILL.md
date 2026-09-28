@@ -23,6 +23,42 @@ source .venv/bin/activate
 python3 bin/virtaal -D <file> > /tmp/virtaal-test.log 2>&1 &
 ```
 
+**If `<repo root>` is a worktree (or any checkout other than the one this
+`.venv` was originally `pip install -e`'d from), this silently runs the
+wrong code.** The editable install's own finder
+(`site-packages/__editable___virtaal_*_finder.py`) maps the whole `virtaal`
+package to a single hardcoded path recorded at install time - normally the
+main checkout. A plain script launch (`python3 bin/virtaal ...`) does *not*
+add the worktree to `sys.path` (unlike `-c` or `-m`, whose `sys.path[0]`
+already covers cwd), so the import falls through to that hardcoded mapping
+and quietly runs whatever's checked out *there* right now - not this
+worktree's branch, and not even necessarily on any branch at all. Confirmed
+live (2026-09-27, PR #3840): a real, reproducible undo/redo bug report
+turned out to be entirely this - the fix was correct the whole time, the
+test session just hadn't actually been exercising it after a couple of
+restarts.
+
+Force the worktree ahead of that mapping with `PYTHONPATH`:
+```
+cd <worktree root>
+PYTHONPATH="$(pwd)" .venv/bin/python3 bin/virtaal -D <file> > /tmp/virtaal-test.log 2>&1 &
+```
+A worktree-isolated session's Bash tool refuses any command with `PYTHONPATH=`
+in it (same guard as `HOME=`, see below) - use a small Python launcher that
+sets `env["PYTHONPATH"]` on `subprocess.Popen` instead, and run *that* with a
+plain `python3 launcher.py` call.
+
+**Always confirm which code actually loaded before trusting a test
+session**, especially after more than one restart in a row - the version
+line in the debug log includes the build commit:
+```
+grep "Virtaal 1.0.0" <your log file>   # e.g. "Virtaal 1.0.0-beta3 (aa631db)"
+git log -1 --oneline                    # from the worktree - should match
+```
+A mismatch here means the launch resolved to the wrong checkout, not that
+the code itself is broken - re-launch with `PYTHONPATH` set correctly
+before concluding anything about the actual bug.
+
 - `-D`/`--debug` is required to get `DEBUG`-level output at all - without it
   only `WARNING`+ shows, and in a different format. With it, lines look like
   `DEBUG mainview._on_window_state_event:921: fullscreen: ...` - grep the log

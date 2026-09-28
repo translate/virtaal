@@ -33,6 +33,9 @@ class UndoController(BaseController):
         self.enabled = True
         from virtaal.models.undomodel import UndoModel
         self.model = UndoModel(self)
+        # The refresh() scheduled by _schedule_cursor_restore() that
+        # hasn't fired yet, if any - see _flush_pending_refresh().
+        self._pending_refresh = None
 
         self._setup_key_bindings()
         self._connect_undo_signals()
@@ -233,24 +236,8 @@ class UndoController(BaseController):
             restore_to = undo_info['state_before'] if capture_redo else undo_info['state_after']
             self.unit_controller.set_current_state(restore_to)
 
-        textbox = self.unit_controller.view.targets[undo_info['targetn']]
-        # Guard against this deferred refresh() running after a
-        # different, reused unit is now loaded into the same textbox.
-        scheduled_unit = undo_info['unit']
-        def refresh():
-            if self.unit_controller.current_unit is not scheduled_unit:
-                return
-            textbox.refresh_cursor_pos = undo_info['cursorpos']
-            # TODO: try to avoid full refresh
-            # This runs via idle_add, after _enable_unit_signals() above
-            # has already re-enabled everything - textbox.refresh()'s
-            # set_text() would otherwise fire the "changed" signal and
-            # re-mark the document modified right after undo cleared it.
-            self._disable_unit_signals()
-            textbox.refresh(update=True)
-            self._enable_unit_signals()
-
-        GLib.idle_add(refresh)
+        # TODO: try to avoid full refresh
+        self._schedule_cursor_restore(undo_info['unit'], undo_info['targetn'], undo_info['cursorpos'])
         return redo_snapshot
 
     def _select_unit(self, unit):
@@ -258,7 +245,26 @@ class UndoController(BaseController):
             This is to select the unit where the undo-action took place.
             @type  unit: translate.storage.base.TranslationUnit
             @param unit: The unit to select in the store view."""
+        self._flush_pending_refresh()
         self.main_controller.select_unit(unit, force=True)
+
+    def _flush_pending_refresh(self):
+        """Run a refresh scheduled by _schedule_cursor_restore() right
+            now, if it hasn't fired yet, before switching away from the
+            unit it belongs to. GLib runs idle callbacks behind whatever
+            input events are already queued - a fast enough next
+            undo/redo can otherwise switch units before an earlier
+            step's deferred refresh() ever runs, silently dropping
+            whatever it was meant to commit (in the real app, that's
+            where the edited text is actually written back to the
+            underlying translation unit - see TextBox.refresh()'s own
+            set_text()/'changed' chain). Safe to call unconditionally:
+            a no-op once nothing is pending, and idempotent if GLib
+            later runs the same callback anyway - its own scheduled-unit
+            guard makes the second call a no-op."""
+        pending = self._pending_refresh
+        if pending is not None:
+            pending()
 
     def _restore_navigation_cursor(self, undo_info):
         """Put the cursor back where undoing a navigate act's own
@@ -307,15 +313,21 @@ class UndoController(BaseController):
     def _schedule_cursor_restore(self, unit, targetn, cursorpos):
         """Defer landing the cursor at (targetn, cursorpos) until unit is
             actually the one on screen - the caller may have just
-            triggered an async unit switch."""
+            triggered an async unit switch. Tracked via
+            self._pending_refresh so _select_unit() can flush it early
+            if it's still outstanding when the display moves on again -
+            see _flush_pending_refresh()."""
         textbox = self.unit_controller.view.targets[targetn]
         def refresh():
+            if self._pending_refresh is refresh:
+                self._pending_refresh = None
             if self.unit_controller.current_unit is not unit:
                 return
             textbox.refresh_cursor_pos = cursorpos
             self._disable_unit_signals()
             textbox.refresh(update=True)
             self._enable_unit_signals()
+        self._pending_refresh = refresh
         GLib.idle_add(refresh)
 
 

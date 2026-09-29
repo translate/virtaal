@@ -1,0 +1,29 @@
+# A small, purpose-built fixture for docs/screenshots.rst's XML placeable
+# screenshot (issue #3746). Deliberately synthetic, not an excerpt of real
+# translator work: unit 1 below combines two different placeable kinds (a
+# link tag with an attribute, and a bold tag) in one string, richer than
+# the single <b>...</b> pair xml-placeable.png showed before.
+msgid ""
+msgstr ""
+"Project-Id-Version: Virtaal 0.4\n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2014-02-11 21:10+0000\n"
+"PO-Revision-Date: 2011-05-27 02:12+0000\n"
+"Last-Translator: F Wolff <friedel@translate.org.za>\n"
+"Language-Team: translate-discuss-af@lists.sourceforge.net\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+"Language: af\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Project-Style: gnome\n"
+
+msgid "Cancel"
+msgstr "Kanselleer"
+
+msgid "Click <a href=\"%(url)s\">here</a> to <b>continue</b>."
+msgstr "Klik <a href=\"%(url)s\">hier</a> om <b>voort te gaan</b>."
+
+msgid "Close"
+msgstr "Maak toe"

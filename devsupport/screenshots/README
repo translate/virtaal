@@ -1,0 +1,31 @@
+Two scripts drive a real Virtaal window to generate screenshots, rather
+than relying on hand-captures that go stale silently:
+
+    generate_appdata_screenshots.py   docs/_static/appdata/*.png
+    generate_docs_screenshots.py      docs/_static/*.png (screenshots.rst)
+
+Both take --write (regenerate into the real output directory) or --check
+(regenerate into a temp dir, compare against what's committed, exit
+non-zero on drift). CI runs --check on every build-flatpak run and
+uploads freshly generated images as a build artifact whenever they've
+drifted - both checks are non-blocking, so a stale screenshot never fails
+the build. If CI flags drift, download the artifact and commit the
+refreshed PNGs - see docs/_static/appdata/README for why that should
+always come from CI's own Linux run, not a local capture on another OS.
+
+testenv.py holds setup shared by both scripts: isolating $HOME so a run
+can never touch a real user's Virtaal config, forcing a consistent light
+theme regardless of the host's own dark-mode setting, and parking the
+mouse cursor clear of the window on a real X11 session.
+
+content/appdata/ and content/docs/ hold each script's own purpose-built
+fixtures - never devsupport/testfiles/, which is shared pytest fixture
+territory too easy to disturb by mistake for an unrelated test change.
+Each fixture is named for what it demonstrates (checks.po, terminology.po,
+...), not for its internal category (a docs- or testfiles- prefix) or the
+excerpt's source language - a fixture's own filename can end up visible
+on screen itself (a window title, the Welcome Screen's Recent Files
+list), so it needs to read as a plausible real file, not leaked internal
+plumbing. The two scripts get their own subdirectory rather than a flat
+shared one so each can use its own short, natural name (e.g. a
+"placeable.po") without colliding with the other's.

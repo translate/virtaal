@@ -42,6 +42,34 @@ def test_combo_lists_translations_in_sorted_order():
     assert [row[0] for row in combo._model] == ['argief', 'dokument', 'lêer']
 
 
+def test_get_termcombo_css_provider_is_cached():
+    termview._termcombo_css_provider = None
+    try:
+        provider = termview._get_termcombo_css_provider()
+
+        assert termview._get_termcombo_css_provider() is provider
+    finally:
+        termview._termcombo_css_provider = None
+
+
+def test_combo_chrome_is_hidden_so_only_the_popup_list_is_visible():
+    # The combo is meant to stay invisible until it pops up - a full-size
+    # GTK3 button+arrow here means it's back to showing chrome inline.
+    combo = TerminologyCombo(_term_elem(['drank', 'dryf']))
+    window = Gtk.OffscreenWindow()
+    window.add(combo)
+    window.show_all()
+    while Gtk.events_pending():
+        Gtk.main_iteration()
+
+    _, natural_size = combo.get_preferred_size()
+
+    # GTK3's default combobox chrome (button padding/border + arrow icon)
+    # is roughly 75x34 - a hidden-chrome combo should be much smaller.
+    assert natural_size.width < 50
+    assert natural_size.height < 25
+
+
 def test_terminology_gui_info_requires_a_terminology_placeable():
     with pytest.raises(AssertionError):
         TerminologyGUIInfo(StringElem('x'), textbox=None)

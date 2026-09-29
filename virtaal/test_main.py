@@ -165,6 +165,56 @@ def test_open_with_file_constructs_controllers_in_order_and_opens_the_file(monke
     assert result == 'opened'
 
 
+# Virtaal._open_startup_file() #
+
+def test_open_startup_file_hides_the_loading_notice_and_defers_load_extras_on_success():
+    v = Virtaal.__new__(Virtaal)
+    v._open_with_file = lambda filename: True
+    calls = []
+    v.main_controller = SimpleNamespace(
+        welcomescreen_controller=SimpleNamespace(activate=lambda: calls.append('activated')),
+        view=SimpleNamespace(
+            hide_loading_notice=lambda: calls.append('hidden'),
+            show_startup_open_failure_notice=lambda f, r: calls.append(('shown', f, r))))
+    deferred = []
+    v.defer = lambda func, *args: deferred.append((func, args))
+
+    v._open_startup_file('some.po')
+
+    # No welcome screen re-activation and no failure notice on success -
+    # only the loading notice (shown synchronously earlier by __init__)
+    # gets torn down.
+    assert calls == ['hidden']
+    assert deferred == [(v._load_extras, ())]
+
+
+def test_open_startup_file_shows_the_welcome_screen_and_failure_notice_with_the_reason_on_failure():
+    v = Virtaal.__new__(Virtaal)
+    v._open_with_file = lambda filename: False
+    calls = []
+    connected = []
+    v.main_controller = SimpleNamespace(
+        last_open_error='The file does not exist.',
+        welcomescreen_controller=SimpleNamespace(activate=lambda: calls.append('activated')),
+        store_controller=SimpleNamespace(connect=lambda signal, handler: connected.append((signal, handler))),
+        view=SimpleNamespace(
+            hide_loading_notice=lambda: calls.append('hidden'),
+            show_startup_open_failure_notice=lambda f, r: calls.append(('shown', f, r)),
+            hide_startup_open_failure_notice=lambda: calls.append('hidden-on-next-open')))
+    deferred = []
+    v.defer = lambda func, *args: deferred.append((func, args))
+
+    v._open_startup_file('missing.po')
+
+    assert calls == ['hidden', 'activated', ('shown', 'missing.po', 'The file does not exist.')]
+    assert deferred == [(v._load_extras, ())]
+    # A later successful open clears the notice instead of leaving it as
+    # a stale reminder about a file the user has since moved past.
+    assert [signal for signal, _handler in connected] == ['store-loaded']
+    connected[0][1]()
+    assert calls[-1] == 'hidden-on-next-open'
+
+
 def test_open_with_welcome_defers_controller_construction_and_load_extras():
     v = Virtaal.__new__(Virtaal)
     v.main_controller = SimpleNamespace(store_controller='store-controller')
@@ -284,19 +334,21 @@ class _FakeDeferer:
         self.calls.append((func, args))
 
 
-def _stub_virtaal_construction(monkeypatch, open_file_result=None):
+def _stub_virtaal_construction(monkeypatch):
     import virtaal.main as main_module
     monkeypatch.setattr('virtaal.support.crash_dialog.install', lambda: None)
     monkeypatch.setattr('gc.disable', lambda: None)
     monkeypatch.setattr(Virtaal, '_install_signal_handlers', lambda self: None)
-    # _open_with_file()/._open_with_welcome() have their own dedicated
-    # tests above - stub them here so __init__'s own branching is what
-    # this test actually exercises.
-    monkeypatch.setattr(Virtaal, '_open_with_file', lambda self, filename: open_file_result)
     monkeypatch.setattr(main_module, '_Deferer', _FakeDeferer)
 
+    loading_notices = []
+    failure_notices = []
     store_controller = SimpleNamespace()
-    main_controller = SimpleNamespace(store_controller=store_controller)
+    main_controller = SimpleNamespace(
+        store_controller=store_controller,
+        view=SimpleNamespace(
+            show_loading_notice=lambda f: loading_notices.append(f),
+            show_startup_open_failure_notice=lambda f, r: failure_notices.append((f, r))))
     monkeypatch.setattr('virtaal.controllers.maincontroller.MainController', lambda: main_controller)
     monkeypatch.setattr('virtaal.controllers.storecontroller.StoreController', lambda mc: store_controller)
 
@@ -313,37 +365,34 @@ def _stub_virtaal_construction(monkeypatch, open_file_result=None):
     monkeypatch.setattr(
         'virtaal.controllers.welcomescreencontroller.WelcomeScreenController', _FakeWelcomeScreenController)
 
-    return main_controller, welcome_instances, _FakeWelcomeScreenController
+    return main_controller, welcome_instances, _FakeWelcomeScreenController, loading_notices, failure_notices
 
 
 def test_init_without_a_startupfile_shows_the_welcome_screen_directly(monkeypatch):
-    main_controller, welcome_instances, _FakeWSC = _stub_virtaal_construction(monkeypatch)
+    main_controller, welcome_instances, _FakeWSC, loading_notices, failure_notices = _stub_virtaal_construction(
+        monkeypatch)
 
     v = Virtaal('')
 
     assert v.main_controller is main_controller
     assert len(welcome_instances) == 1
     assert welcome_instances[0].activated is True
+    assert loading_notices == []
     assert v.defer.calls == [(v._open_with_welcome, ())]
 
 
-def test_init_with_a_startupfile_that_opens_successfully_defers_the_welcome_screen(monkeypatch):
-    main_controller, welcome_instances, _FakeWSC = _stub_virtaal_construction(monkeypatch, open_file_result=True)
+def test_init_with_a_startupfile_shows_a_loading_notice_instead_and_defers_the_open(monkeypatch):
+    # WelcomeScreenController is constructed (needed for its
+    # 'store-closed' handler later) but left un-activated here -
+    # _open_startup_file (tested separately above) decides what to do
+    # once the open resolves.
+    main_controller, welcome_instances, _FakeWSC, loading_notices, failure_notices = _stub_virtaal_construction(
+        monkeypatch)
 
     v = Virtaal('some.po')
 
-    assert welcome_instances == []  # not shown directly - only via the deferred call below
-    assert v.defer.calls == [
-        (_FakeWSC, (main_controller,)),
-        (v._load_extras, ()),
-    ]
-
-
-def test_init_with_a_startupfile_that_fails_to_open_shows_the_welcome_screen_directly(monkeypatch):
-    main_controller, welcome_instances, _FakeWSC = _stub_virtaal_construction(monkeypatch, open_file_result=False)
-
-    v = Virtaal('missing.po')
-
     assert len(welcome_instances) == 1
-    assert welcome_instances[0].activated is True
-    assert v.defer.calls == [(v._load_extras, ())]
+    assert welcome_instances[0].activated is False
+    assert loading_notices == ['some.po']
+    assert failure_notices == []
+    assert v.defer.calls == [(v._open_startup_file, ('some.po',))]

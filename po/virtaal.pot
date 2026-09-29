@@ -692,11 +692,6 @@ msgstr ""
 msgid "No translation found for language '%(lang)s'"
 msgstr ""
 
-#. l10n: This refers to performance profiling for developers
-#: virtaal/cli.py
-msgid "Profiling support is not available"
-msgstr ""
-
 #: virtaal/cli.py
 #, python-format
 msgid "Could not open profile file '%(filename)s'"
@@ -1131,14 +1126,6 @@ msgstr ""
 msgid "Placeholders in Drupal strings"
 msgstr ""
 
-#: virtaal/controllers/storecontroller.py
-msgid "No source or translatable files in bundle"
-msgstr ""
-
-#: virtaal/controllers/storecontroller.py
-msgid "The file contains nothing to translate."
-msgstr ""
-
 #. l10n: The heading of statistics before updating to the new template
 #: virtaal/controllers/storecontroller.py
 msgid "Before:"
@@ -1192,14 +1179,6 @@ msgstr ""
 
 #: virtaal/controllers/unitcontroller.py
 msgid "Reviewed"
-msgstr ""
-
-#: virtaal/models/storemodel.py
-msgid "The file does not exist."
-msgstr ""
-
-#: virtaal/models/storemodel.py
-msgid "Not a valid file."
 msgstr ""
 
 #: virtaal/modes/defaultmode.py
@@ -1534,11 +1513,6 @@ msgstr ""
 #: virtaal/plugins/terminology/models/localfile/localfileview.py
 #: virtaal/views/mainview.py
 msgid "All Files"
-msgstr ""
-
-#: virtaal/plugins/terminology/models/localfile/localfileview.py
-#, python-format
-msgid "\"%s\" is not a usable file."
 msgstr ""
 
 #: virtaal/plugins/terminology/models/localfile/localfileview.py

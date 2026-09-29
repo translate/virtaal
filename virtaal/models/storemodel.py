@@ -117,9 +117,9 @@ class StoreModel(BaseModel):
         filename = fileobj
         if isinstance(filename, str):
             if not os.path.exists(filename):
-                raise OSError(_('The file does not exist.'))
+                raise OSError('The file does not exist.')
             if not os.path.isfile(filename):
-                raise OSError(_('Not a valid file.'))
+                raise OSError('Not a valid file.')
         else:
             # Try and determine the file name of the file object
             filename = getattr(fileobj, 'name', None)

@@ -297,7 +297,7 @@ class FileSelectDialog:
             try:
                 import os.path
                 if not os.path.isfile(filename):
-                    raise OSError(_('"%s" is not a usable file.') % filename)
+                    raise OSError('"%s" is not a usable file.' % filename)
                 store = store_factory.getobject(filename)
                 currfiles.append(filename)
                 self.lst_files.append([filename, False])

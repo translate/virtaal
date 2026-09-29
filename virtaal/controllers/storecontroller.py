@@ -180,7 +180,7 @@ class StoreController(BaseController):
         if not len(self.project.store.transfiles):
             # FIXME: Ask the user to select a source file to convert?
             if not len(self.project.store.sourcefiles):
-                raise bundleprojstore.InvalidBundleError(_('No source or translatable files in bundle'))
+                raise bundleprojstore.InvalidBundleError('No source or translatable files in bundle')
             self.project.convert_forward(self.project.store.sourcefiles[0])
 
         # FIXME: Ask the user which translatable file to open?
@@ -222,7 +222,7 @@ class StoreController(BaseController):
         if len(self.store.get_units()) < 1:
             # clean up, otherwise self.store still contains the store
             self.close_file()
-            raise ValueError(_('The file contains nothing to translate.'))
+            raise ValueError('The file contains nothing to translate.')
 
         self._modified = False
 

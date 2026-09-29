@@ -208,8 +208,7 @@ def _run_profiled(profile_file, startup_file):
     try:
         import devsupport.profiling as profiling
     except ImportError:
-        #l10n: This refers to performance profiling for developers
-        logging.error(_("Profiling support is not available"))
+        logging.error("Profiling support is not available")
         sys.exit(1)
     logging.info('Starting profiling run')
     profiler = cProfile.Profile()

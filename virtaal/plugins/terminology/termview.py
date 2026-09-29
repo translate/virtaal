@@ -56,6 +56,37 @@ class TerminologyGUIInfo(StringElemGUI):
             self.bg = _default_bg
 
 
+_termcombo_css_provider = None
+
+def _get_termcombo_css_provider():
+    """
+    Must be added screen-wide, not on the combo's own style context -
+    GTK3's "button.combo"/"arrow" nodes are internal to ComboBox and a
+    per-widget provider can't reach them.
+    """
+    global _termcombo_css_provider
+    if _termcombo_css_provider is None:
+        _termcombo_css_provider = Gtk.CssProvider()
+        _termcombo_css_provider.load_from_data(b'''
+            #termcombo button.combo {
+                background: none;
+                background-image: none;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                min-width: 0;
+                min-height: 0;
+            }
+            #termcombo arrow {
+                min-width: 0;
+                min-height: 0;
+                padding: 0;
+                opacity: 0;
+            }
+        ''')
+    return _termcombo_css_provider
+
+
 class TerminologyCombo(Gtk.ComboBox):
     """
     A combo box containing translation matches.
@@ -89,10 +120,9 @@ class TerminologyCombo(Gtk.ComboBox):
         self.pack_start(self._renderer, True)
         self.add_attribute(self._renderer, 'text', 0)
 
-        # Force the "appears-as-list" style property to 0
-        provider = Gtk.CssProvider()
-        provider.load_from_data(b'combobox { -GtkComboBox-appears-as-list: 0; }')
-        self.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        Gtk.StyleContext.add_provider_for_screen(
+            self.get_screen(), _get_termcombo_css_provider(),
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
 
     # METHODS #

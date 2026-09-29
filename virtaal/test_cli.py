@@ -7,6 +7,7 @@
 
 import logging
 import re
+import sys
 from pathlib import Path
 
 import pytest
@@ -254,6 +255,16 @@ def test_profile_runs_under_cprofile_and_writes_kcachegrind_output(monkeypatch, 
 
     assert started == ['file.po']
     assert written == [str(profile_file)]
+
+
+def test_profile_without_the_profiling_devsupport_module_available_is_a_fatal_error(monkeypatch, tmp_path, caplog):
+    monkeypatch.setitem(sys.modules, 'devsupport.profiling', None)
+    profile_file = tmp_path / 'out.profile'
+
+    with pytest.raises(SystemExit):
+        cli.main(['virtaal', '--profile', str(profile_file), 'file.po'])
+
+    assert 'Profiling support is not available' in caplog.text
 
 
 def test_profile_with_an_unwritable_path_is_a_fatal_argument_error(monkeypatch):

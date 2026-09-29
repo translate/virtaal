@@ -5,6 +5,8 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import locale
+
 from gi.repository import Gtk
 
 from virtaal.common import SignalTracker
@@ -79,7 +81,7 @@ class TerminologyCombo(Gtk.ComboBox):
 
     def __init_combo(self):
         self._model = Gtk.ListStore(str)
-        for trans in self.elem.translations:
+        for trans in sorted(self.elem.translations, key=locale.strxfrm):
             self._model.append([trans])
 
         self.set_model(self._model)

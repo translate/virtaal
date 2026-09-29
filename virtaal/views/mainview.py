@@ -1051,6 +1051,72 @@ class MainView(BaseView):
         vbox_main.pack_start(infobar, False, False, 0)
         vbox_main.reorder_child(infobar, 1)  # directly below the menu bar
 
+    def show_loading_notice(self, filename):
+        """Shown instead of the full Welcome screen while a startup
+            file is still being opened (main.py's deferred
+            _open_startup_file) - plain text, not this file's usual
+            Gtk.InfoBar, since there's nothing to acknowledge for
+            something this transient."""
+        existing = getattr(self, '_loading_label', None)
+        if existing is not None:
+            return
+
+        label = Gtk.Label(label=_("Loading '%s'…") % filename)
+        label.set_halign(Gtk.Align.CENTER)
+        label.set_valign(Gtk.Align.CENTER)
+        label.show()
+
+        self._loading_label = label
+        vbox_main = self.gui.get_object('vbox_main')
+        vbox_main.pack_start(label, True, True, 0)
+        # Same slot the Welcome screen itself occupies (see
+        # welcomescreenview.py's PARENT_VBOX_POSITION) - nothing else is
+        # in it yet at this point, since WelcomeScreenController is
+        # constructed but deliberately left un-activated for this gap.
+        vbox_main.reorder_child(label, 2)
+
+    def hide_loading_notice(self):
+        label = getattr(self, '_loading_label', None)
+        if label is not None:
+            self._loading_label = None
+            label.destroy()
+
+    def show_startup_open_failure_notice(self, filename, reason=None):
+        """Called when the file passed on the command line at startup
+            couldn't be opened - main.py's own deferred open already
+            triggers the usual show_error_dialog() for the specific
+            error; this is a lasting reminder on the Welcome screen
+            once that dialog is dismissed, not a duplicate of it. Also
+            cleared by main.py once the user successfully opens any
+            other file - see hide_startup_open_failure_notice()."""
+        infobar = Gtk.InfoBar()
+        infobar.set_message_type(Gtk.MessageType.WARNING)
+        infobar.set_show_close_button(True)
+        if reason:
+            text = _("Couldn't open '%(file)s': %(reason)s") % {'file': filename, 'reason': reason}
+        else:
+            text = _("Couldn't open '%(file)s'.") % {'file': filename}
+        label = Gtk.Label(label=text)
+        label.set_line_wrap(True)
+        infobar.get_content_area().pack_start(label, True, True, 0)
+
+        def on_response(infobar, response_id):
+            self._startup_open_failure_infobar = None
+            infobar.destroy()
+        infobar.connect('response', on_response)
+
+        self._startup_open_failure_infobar = infobar
+        infobar.show_all()
+        vbox_main = self.gui.get_object('vbox_main')
+        vbox_main.pack_start(infobar, False, False, 0)
+        vbox_main.reorder_child(infobar, 1)  # directly below the menu bar
+
+    def hide_startup_open_failure_notice(self):
+        infobar = getattr(self, '_startup_open_failure_infobar', None)
+        if infobar is not None:
+            self._startup_open_failure_infobar = None
+            infobar.destroy()
+
     def show_language_change_notice(self):
         """Called once the UI language is changed in Preferences - a
             running app can't retranslate widgets already built with the

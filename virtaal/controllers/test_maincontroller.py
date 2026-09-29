@@ -64,6 +64,7 @@ def test_open_file_shows_a_translated_error_message_on_failure():
 
     assert result is False
     assert errors == ['missing.po:\nCould not open file.\n\nThe file does not exist.\n\nTry opening a different file.']
+    assert controller.last_open_error == 'The file does not exist.'
 
 
 def test_quit_closes_a_still_open_dialog_and_retries_instead_of_hanging(monkeypatch):

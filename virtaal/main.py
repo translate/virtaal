@@ -77,22 +77,17 @@ class Virtaal:
         self.main_controller = main_controller
         self._install_signal_handlers()
 
+        # WelcomeScreenController is always constructed (its 'store-closed'
+        # handler is what re-shows it later if the user closes their file)
+        # but only activated now for the no-file case - a startup file
+        # shows a lightweight loading notice instead until the open
+        # resolves, falling back to the full welcome screen on failure.
+        wc = WelcomeScreenController(main_controller)
         if startupfile:
-            # Just call the open plainly - we want it done before we start the
-            # event loop.
-            if self._open_with_file(startupfile):
-                self.defer(WelcomeScreenController, main_controller)
-            else:
-                # Something went wrong, and we have to show the welcome screen
-                wc = WelcomeScreenController(main_controller)
-                wc.activate()
-            self.defer(self._load_extras)
-
+            main_controller.view.show_loading_notice(startupfile)
+            self.defer(self._open_startup_file, startupfile)
         else:
-            wc = WelcomeScreenController(main_controller)
             wc.activate()
-            # Now we try to get the event loop started as quickly as possible,
-            # so we defer as much as possible.
             self.defer(self._open_with_welcome)
 
 
@@ -129,6 +124,19 @@ class Virtaal:
         PlaceablesController(main_controller)
 
         return main_controller.open_file(startupfile)
+
+    def _open_startup_file(self, startupfile):
+        main_controller = self.main_controller
+        main_controller.view.hide_loading_notice()
+        if not self._open_with_file(startupfile):
+            main_controller.welcomescreen_controller.activate()
+            main_controller.view.show_startup_open_failure_notice(
+                startupfile, main_controller.last_open_error)
+            # Otherwise it just sits there as a stale reminder about a
+            # file the user has since moved past.
+            main_controller.store_controller.connect(
+                'store-loaded', lambda *a: main_controller.view.hide_startup_open_failure_notice())
+        self.defer(self._load_extras)
 
     def _open_with_welcome(self):
         from virtaal.controllers.langcontroller import LanguageController

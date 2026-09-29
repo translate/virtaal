@@ -2104,6 +2104,113 @@ def test_show_config_recovery_notice_dismisses_on_response():
     assert infobar.get_parent() is None
 
 
+# show_loading_notice() / hide_loading_notice() - a lightweight status
+# label shown while main.py's deferred startup-file open is in progress #
+
+def test_show_loading_notice_packs_a_centered_label():
+    vbox = _FakeVboxMain()
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: vbox)
+
+    view.show_loading_notice('some.po')
+
+    assert len(vbox.packed) == 1
+    label = vbox.packed[0]
+    assert isinstance(label, Gtk.Label)
+    assert "some.po" in label.get_text()
+    assert label.get_halign() == Gtk.Align.CENTER
+    assert label.get_valign() == Gtk.Align.CENTER
+
+
+def test_show_loading_notice_does_not_stack_a_second_one():
+    vbox = _FakeVboxMain()
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: vbox)
+    view.show_loading_notice('some.po')
+
+    view.show_loading_notice('other.po')
+
+    assert len(vbox.packed) == 1
+
+
+def test_hide_loading_notice_destroys_a_shown_notice():
+    vbox = _FakeVboxMain()
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: vbox)
+    view.show_loading_notice('some.po')
+    label = view._loading_label
+
+    view.hide_loading_notice()
+
+    assert view._loading_label is None
+    assert label.get_parent() is None
+
+
+def test_hide_loading_notice_does_nothing_when_none_shown():
+    view = MainView.__new__(MainView)
+
+    view.hide_loading_notice()  # must not raise
+
+
+# show_startup_open_failure_notice() - same dismissable-InfoBar pattern
+# as show_config_recovery_notice(), shown alongside the modal error
+# dialog after a failed startup-file open #
+
+def test_show_startup_open_failure_notice_includes_the_reason_when_given():
+    vbox = _FakeVboxMain()
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: vbox)
+
+    view.show_startup_open_failure_notice('missing.po', 'The file does not exist.')
+
+    infobar = vbox.packed[0]
+    assert isinstance(infobar, Gtk.InfoBar)
+    assert infobar.get_message_type() == Gtk.MessageType.WARNING
+    label = infobar.get_content_area().get_children()[0]
+    assert label.get_text() == "Couldn't open 'missing.po': The file does not exist."
+
+
+def test_show_startup_open_failure_notice_falls_back_without_a_reason():
+    vbox = _FakeVboxMain()
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: vbox)
+
+    view.show_startup_open_failure_notice('missing.po', None)
+
+    label = vbox.packed[0].get_content_area().get_children()[0]
+    assert label.get_text() == "Couldn't open 'missing.po'."
+
+
+def test_show_startup_open_failure_notice_dismisses_on_response():
+    vbox = _FakeVboxMain()
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: vbox)
+    view.show_startup_open_failure_notice('missing.po', 'gone')
+    infobar = vbox.packed[0]
+
+    infobar.emit('response', Gtk.ResponseType.CLOSE)  # must not raise
+
+    assert infobar.get_parent() is None
+
+
+def test_hide_startup_open_failure_notice_destroys_a_shown_notice():
+    vbox = _FakeVboxMain()
+    view = MainView.__new__(MainView)
+    view.gui = SimpleNamespace(get_object=lambda name: vbox)
+    view.show_startup_open_failure_notice('missing.po', 'gone')
+    infobar = vbox.packed[0]
+
+    view.hide_startup_open_failure_notice()
+
+    assert infobar.get_parent() is None
+
+
+def test_hide_startup_open_failure_notice_does_nothing_when_none_shown():
+    view = MainView.__new__(MainView)
+
+    view.hide_startup_open_failure_notice()  # must not raise
+
+
 def test_show_language_change_notice_packs_an_info_infobar():
     vbox = _FakeVboxMain()
     view = MainView.__new__(MainView)

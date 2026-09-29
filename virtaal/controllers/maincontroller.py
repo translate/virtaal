@@ -44,6 +44,11 @@ class MainController(BaseController):
         self._unit_controller = None
         self._welcomescreen_controller = None
         self._opening_file = False
+        # Set alongside show_error() below on a failed open_file() -
+        # lets a caller that needs the reason (main.py's startup path)
+        # pick it up without open_file()'s own True/False contract
+        # having to change for its many other callers.
+        self.last_open_error = None
         self.view = MainView(self)
 
     def load_plugins(self):
@@ -229,6 +234,7 @@ class MainController(BaseController):
         except Exception as exc:
             import logging
             logging.exception('MainController.open_file(filename="%s", uri="%s")' % (filename, uri))
+            self.last_open_error = str(exc)
             self.show_error(
                 filename + ":\n" + _("Could not open file.\n\n%(error_message)s\n\nTry opening a different file.") % {'error_message': str(exc)}
             )

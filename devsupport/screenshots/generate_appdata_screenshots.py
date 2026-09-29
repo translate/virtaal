@@ -117,6 +117,16 @@ def _run(out_dir):
     main_controller = app.main_controller
     window = main_controller.view.main_window
 
+    # Waits for main.py's own deferred startup-file open to finish -
+    # see driver() below, which blocks on this before the first capture.
+    _startup_open_done = [not first_source]
+
+    def _on_startup_store_loaded(*_args):
+        _startup_open_done[0] = True
+
+    if first_source:
+        main_controller.store_controller.connect('store-loaded', _on_startup_store_loaded)
+
     def capture_with_decorations(out_path):
         """Capture via the window manager's own frame (title bar,
         shadow), using xdotool + ImageMagick's `import`. Returns False
@@ -163,6 +173,13 @@ def _run(out_dir):
         pixbuf.savev(str(out_path), "png", [], [])
 
     def driver():
+        # Wait for the deferred startup-file open (see
+        # _on_startup_store_loaded above) to actually finish, bounded so
+        # a genuine open failure doesn't hang forever.
+        for _ in range(200):
+            if _startup_open_done[0]:
+                break
+            yield
         # Give the controllers main.py defers via GLib.idle_add (checks,
         # undo, plugins, ...) a chance to actually construct before the
         # first capture - they only run once Gtk.main() is pumping.

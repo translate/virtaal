@@ -7,6 +7,7 @@
 
 from types import SimpleNamespace
 
+import pytest
 from test_scaffolding import TestScaffolding
 
 from virtaal.models.storemodel import StoreModel
@@ -18,6 +19,16 @@ class TestStoreModel(TestScaffolding):
         self.model.load_file(self.testfile[1])
         assert len(self.model) <= len(self.trans_store.units)
         assert self.model.get_filename() == self.testfile[1]
+
+
+def test_load_file_raises_for_a_nonexistent_path(tmp_path):
+    with pytest.raises(OSError, match='The file does not exist.'):
+        StoreModel(str(tmp_path / 'missing.po'), controller=None)
+
+
+def test_load_file_raises_for_a_path_that_is_not_a_file(tmp_path):
+    with pytest.raises(OSError, match='Not a valid file.'):
+        StoreModel(str(tmp_path), controller=None)
 
 
 def test_compute_nplurals_infers_from_data_when_the_format_has_no_declaration():

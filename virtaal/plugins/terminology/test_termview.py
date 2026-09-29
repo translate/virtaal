@@ -34,6 +34,14 @@ def test_combo_handles_more_than_one_translation():
     TerminologyCombo(_term_elem(['drank', 'dryf']))
 
 
+def test_combo_lists_translations_in_sorted_order():
+    # TerminologyPlaceable.translations comes from a set() in
+    # translate-toolkit, so its order differs between runs (#3912).
+    combo = TerminologyCombo(_term_elem(['lêer', 'dokument', 'argief']))
+
+    assert [row[0] for row in combo._model] == ['argief', 'dokument', 'lêer']
+
+
 def test_terminology_gui_info_requires_a_terminology_placeable():
     with pytest.raises(AssertionError):
         TerminologyGUIInfo(StringElem('x'), textbox=None)

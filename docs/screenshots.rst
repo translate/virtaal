@@ -59,6 +59,10 @@ Virtaal can help you improve your translations with :doc:`quality checks
 <checks>`, either showing the errors in the current translation unit, or by
 navigating the file in Quality Checks mode.
 
+.. figure:: /_static/checks.png
+
+   Quality Checks mode, showing a translation that fails two checks at once
+
 .. _screenshots#virtaal_on_windows:
 
 Virtaal on Windows

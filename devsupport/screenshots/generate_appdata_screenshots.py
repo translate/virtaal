@@ -28,7 +28,6 @@ Both modes run the exact same generation code, so "does it match" and
 """
 
 import argparse
-import atexit
 import filecmp
 import os
 import shutil
@@ -37,17 +36,9 @@ import sys
 import tempfile
 from pathlib import Path
 
-# This must happen before any virtaal import: pan_app.get_config_dir()
-# resolves against $HOME ("~/.virtaal" on Linux, "~/Library/Application
-# Support/Virtaal" on macOS), and MainView.quit() would otherwise persist
-# this script's capture window size into a real user's Virtaal config.
-# Redirecting HOME to a throwaway directory keeps this script from ever
-# touching that file - the driver below calls Gtk.main_quit() directly
-# instead of main_controller.quit() for the same reason (no save-prompt,
-# no settings write).
-_fake_home = tempfile.mkdtemp(prefix="virtaal-screenshot-home-")
-atexit.register(shutil.rmtree, _fake_home, ignore_errors=True)
-os.environ["HOME"] = _fake_home
+from testenv import force_light_theme, isolate_home, park_cursor
+
+isolate_home()
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 APPDATA_DIR = REPO_ROOT / "docs" / "_static" / "appdata"
@@ -107,15 +98,7 @@ def _run(out_dir):
     # Disabling the plugin up front sidesteps needing a matching
     # dictionary for every fixture's target language.
     pan_app.settings.plugin_state["spellchecker"] = "disabled"
-
-    # Xvfb has no real cursor theme, and (lacking hardware cursor
-    # support) draws the pointer by overwriting framebuffer pixels
-    # directly - without a theme that's a solid black square, and it
-    # showed up baked into every capture at whatever fixed screen
-    # position the pointer defaulted to. Parking it off in a corner,
-    # once, keeps it away from the window entirely.
-    if os.environ.get("DISPLAY") and shutil.which("xdotool"):
-        subprocess.run(["xdotool", "mousemove", "2000", "2000"], check=False)
+    force_light_theme()
 
     # The Welcome Screen's "Recent Files" reads Gtk.RecentManager, which
     # starts genuinely empty under the isolated HOME above - pre-populate
@@ -185,6 +168,10 @@ def _run(out_dir):
         # first capture - they only run once Gtk.main() is pumping.
         for _ in range(10):
             yield
+        # Needs the window realized (a real GdkWindow, with a real
+        # on-screen position) to compute a safe parking spot - not
+        # available yet back when Virtaal() was only just constructed.
+        park_cursor(window)
         for i, (name, source, index, crop) in enumerate(STATES):
             if i > 0 and source is not None:
                 main_controller.open_file(str(source))

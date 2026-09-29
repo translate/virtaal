@@ -35,7 +35,7 @@ jobs:
     # directly, so a lint failure still blocks merging - it just no
     # longer blocks the rest of the run from starting first.
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
         with:
@@ -85,7 +85,7 @@ jobs:
     # step is packaging- or platform-specific. Doesn't need pre-commit
     # to finish first - see pre-commit's own comment.
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 5
 
     steps:
       - uses: actions/checkout@v7
@@ -275,7 +275,7 @@ jobs:
     # smells ruff can catch but that hook doesn't select, plus duplicated
     # code blocks, which ruff has no rule for at all.
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
 
@@ -325,7 +325,7 @@ jobs:
 
   test:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
@@ -579,7 +579,7 @@ jobs:
 
   build-windows-installer:
     runs-on: windows-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     # Separate job from test-windows, not extra steps tacked onto it -
     # PyInstaller has to trace and copy the whole dependency tree, which
     # is genuinely slow. Doesn't need: test-windows to finish first any
@@ -1058,7 +1058,7 @@ jobs:
           - runner: ubuntu-24.04-arm
             arch: aarch64
     runs-on: ${{ matrix.runner }}
-    timeout-minutes: 20
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
 

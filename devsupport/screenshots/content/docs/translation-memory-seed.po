@@ -1,0 +1,28 @@
+# A small, purpose-built fixture for docs/screenshots.rst's Translation
+# Memory Suggestions screenshot (issue #3746). Pushed into a throwaway
+# local tmserver (see generate_docs_screenshots.py's TM state) to seed it
+# with two real translations, each one word off from translation-
+# memory.po's demo unit - close enough for a genuine fuzzy (non-100%)
+# match, not identical.
+# Deliberately synthetic, not an excerpt of real translator work.
+msgid ""
+msgstr ""
+"Project-Id-Version: Virtaal 0.4\n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2014-02-11 21:10+0000\n"
+"PO-Revision-Date: 2011-05-27 02:12+0000\n"
+"Last-Translator: F Wolff <friedel@translate.org.za>\n"
+"Language-Team: translate-discuss-af@lists.sourceforge.net\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+"Language: af\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Project-Style: gnome\n"
+
+msgid "Please save your file before exiting."
+msgstr "Stoor asseblief jou lêer voor jy uitgaan."
+
+msgid "Please save your document before closing."
+msgstr "Stoor asseblief jou dokument voor toemaak."

@@ -51,6 +51,7 @@ os.environ["HOME"] = _fake_home
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 APPDATA_DIR = REPO_ROOT / "docs" / "_static" / "appdata"
+CONTENT = Path(__file__).resolve().parent / "content" / "appdata"
 TESTFILES = REPO_ROOT / "devsupport" / "testfiles"
 
 # Real Flathub screenshots for apps in this category (GTranslator, Lokalize,
@@ -65,8 +66,9 @@ WINDOW_HEIGHT = 650
 # around the unit editor instead of keeping the full window).
 #
 # placeable.png and window.png use frozen excerpts of Virtaal's own real
-# Afrikaans/Bengali translations (devsupport/testfiles/{af,bn}-excerpt.po),
-# not po/af.po or po/bn_IN.po directly. Earlier versions of this script
+# Afrikaans/Bengali translations (content/appdata/{placeable,window}.po -
+# see this directory's own README for the naming convention), not
+# po/af.po or po/bn_IN.po directly. Earlier versions of this script
 # searched those live files at run time for a currently-failing unit -
 # real content, but a moving target: a translator fixing the exact bug
 # being shown would silently break the demo (or require it to *stay*
@@ -78,10 +80,10 @@ STATES = [
     ("welcome.png", None, None, False),
     # Unit 7: "<b>Original</b>" -> "<b>মূল ভাষা</b>" - a single XML-tag
     # placeable.
-    ("placeable.png", TESTFILES / "bn-excerpt.po", 7, True),
+    ("placeable.png", CONTENT / "placeable.po", 7, True),
     # Unit 6: "Translation reuse (translation memory)" -> "Bestaande
     # vertalings: %(translations)s" - a genuine printf check failure.
-    ("window.png", TESTFILES / "af-excerpt.po", 6, False),
+    ("window.png", CONTENT / "window.po", 6, False),
 ]
 STATE_NAMES = [name for name, *_rest in STATES]
 

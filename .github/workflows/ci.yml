@@ -235,6 +235,38 @@ jobs:
           path: screenshot-artifacts/
           retention-days: 30
 
+      - name: Generate and check docs screenshots
+        id: docs-screenshots
+        # Same non-blocking contract as the AppData check above (#3746):
+        # docs/screenshots.rst's images are just as cosmetic - flag drift,
+        # don't fail the job on it.
+        run: |
+          if xvfb-run -a --server-args="-screen 0 1024x768x24" bash -c '
+            openbox --sm-disable &
+            sleep 1
+            python3 devsupport/screenshots/generate_docs_screenshots.py --check
+          '; then
+            exit_code=0
+          else
+            exit_code=$?
+          fi
+          if [ "$exit_code" -eq 0 ]; then
+            echo "mismatch=false" >> "$GITHUB_OUTPUT"
+          elif [ "$exit_code" -eq 1 ]; then
+            echo "mismatch=true" >> "$GITHUB_OUTPUT"
+            echo "::warning title=Docs screenshots are stale::docs/_static/*.png (screenshots.rst) no longer match what Virtaal actually renders - download the docs-screenshots artifact from this run and commit the refresh."
+          else
+            exit "$exit_code"
+          fi
+
+      - name: Upload refreshed docs screenshots (only when stale)
+        if: steps.docs-screenshots.outputs.mismatch == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: docs-screenshots
+          path: docs-screenshot-artifacts/
+          retention-days: 30
+
   code-smell:
     # Advisory only - deliberately not in core-checks' `needs:` below, and
     # never fails on its own findings, so nothing here can block a merge.

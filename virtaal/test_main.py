@@ -13,7 +13,22 @@ from gi.repository import GLib
 
 from virtaal.common import pan_app
 from virtaal.common.platform import platform
-from virtaal.main import Virtaal, _Deferer
+from virtaal.main import Virtaal, _Deferer, _resolve_startup_path
+
+# _resolve_startup_path() #
+
+def test_resolve_startup_path_leaves_a_plain_path_untouched():
+    assert _resolve_startup_path('some.po') == 'some.po'
+
+
+def test_resolve_startup_path_strips_a_posix_file_uri(monkeypatch):
+    monkeypatch.setattr(platform, 'is_windows', False)
+    assert _resolve_startup_path('file:///home/user/af.po') == '/home/user/af.po'
+
+
+def test_resolve_startup_path_strips_a_windows_file_uri(monkeypatch):
+    monkeypatch.setattr(platform, 'is_windows', True)
+    assert _resolve_startup_path('file:///C:/translations/af.po') == 'C:/translations/af.po'
 
 
 def _deferer(monkeypatch):
@@ -334,12 +349,13 @@ class _FakeDeferer:
         self.calls.append((func, args))
 
 
-def _stub_virtaal_construction(monkeypatch):
+def _stub_virtaal_construction(monkeypatch, startupfile_exists=True):
     import virtaal.main as main_module
     monkeypatch.setattr('virtaal.support.crash_dialog.install', lambda: None)
     monkeypatch.setattr('gc.disable', lambda: None)
     monkeypatch.setattr(Virtaal, '_install_signal_handlers', lambda self: None)
     monkeypatch.setattr(main_module, '_Deferer', _FakeDeferer)
+    monkeypatch.setattr('os.path.exists', lambda path: startupfile_exists)
 
     loading_notices = []
     failure_notices = []
@@ -381,13 +397,13 @@ def test_init_without_a_startupfile_shows_the_welcome_screen_directly(monkeypatc
     assert v.defer.calls == [(v._open_with_welcome, ())]
 
 
-def test_init_with_a_startupfile_shows_a_loading_notice_instead_and_defers_the_open(monkeypatch):
+def test_init_with_an_existing_startupfile_shows_a_loading_notice_instead_and_defers_the_open(monkeypatch):
     # WelcomeScreenController is constructed (needed for its
     # 'store-closed' handler later) but left un-activated here -
     # _open_startup_file (tested separately above) decides what to do
     # once the open resolves.
     main_controller, welcome_instances, _FakeWSC, loading_notices, failure_notices = _stub_virtaal_construction(
-        monkeypatch)
+        monkeypatch, startupfile_exists=True)
 
     v = Virtaal('some.po')
 
@@ -396,3 +412,18 @@ def test_init_with_a_startupfile_shows_a_loading_notice_instead_and_defers_the_o
     assert loading_notices == ['some.po']
     assert failure_notices == []
     assert v.defer.calls == [(v._open_startup_file, ('some.po',))]
+
+
+def test_init_with_a_missing_startupfile_skips_the_loading_notice_but_still_defers_the_real_open(monkeypatch):
+    # _open_startup_file still runs unconditionally (tested separately
+    # above) - only the loading-notice flash is skipped here.
+    main_controller, welcome_instances, _FakeWSC, loading_notices, failure_notices = _stub_virtaal_construction(
+        monkeypatch, startupfile_exists=False)
+
+    v = Virtaal('missing.po')
+
+    assert len(welcome_instances) == 1
+    assert welcome_instances[0].activated is False
+    assert loading_notices == []
+    assert failure_notices == []
+    assert v.defer.calls == [(v._open_startup_file, ('missing.po',))]

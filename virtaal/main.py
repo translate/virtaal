@@ -17,6 +17,18 @@ from gi.repository import GLib
 from virtaal.common.platform import platform
 
 
+def _resolve_startup_path(startupfile):
+    """Mirrors MainController._open_file()'s own file:// URI handling,
+    just enough to check existence before committing to the deferred
+    open below - not a replacement for that method's own handling,
+    which still runs for real once the open is attempted."""
+    if startupfile.startswith('file://'):
+        if platform.is_windows:
+            return startupfile[len('file:///'):]
+        return startupfile[len('file://'):]
+    return startupfile
+
+
 class _Deferer:
     _todo = []
 
@@ -84,7 +96,12 @@ class Virtaal:
         # resolves, falling back to the full welcome screen on failure.
         wc = WelcomeScreenController(main_controller)
         if startupfile:
-            main_controller.view.show_loading_notice(startupfile)
+            # Only gates the loading notice - _open_startup_file always
+            # runs regardless, since it does controller construction
+            # later deferred code depends on either way.
+            import os
+            if os.path.exists(_resolve_startup_path(startupfile)):
+                main_controller.view.show_loading_notice(startupfile)
             self.defer(self._open_startup_file, startupfile)
         else:
             wc.activate()

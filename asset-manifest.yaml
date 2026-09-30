@@ -1,0 +1,1242 @@
+autocorrect:
+  af_ZA:
+    files:
+    - name: DocumentList.xml
+      sha: 099a3072ae564fac9d9bf85d91e84e3eda546b76
+    folder: af-ZA
+  bg:
+    files:
+    - name: DocumentList.xml
+      sha: 226a31d5194e4e020d6893c68157ebb3d46ad571
+    folder: bg
+  ca:
+    files:
+    - name: DocumentList.xml
+      sha: fa3ef04a07cc05ab6ac9a93c04f90e36cb948be8
+    folder: ca
+  cs:
+    files:
+    - name: DocumentList.xml
+      sha: b375be76f1c8ea3a27ff5d1a9bc32a6159dd5568
+    folder: cs
+  da:
+    files:
+    - name: DocumentList.xml
+      sha: 6a0e62218edb0b726f026986b917d596cbc76862
+    folder: da
+  de:
+    files:
+    - name: DocumentList.xml
+      sha: eceb23985ec5b207f1f63fc8e3c105eeda885e45
+    folder: de
+  dsb:
+    files:
+    - name: DocumentList.xml
+      sha: 119364c0d534aa86e2fbd95ee0f183db4100527d
+    folder: dsb
+  el:
+    files:
+    - name: DocumentList.xml
+      sha: 3668f00dd9d0fb6dbda6527dc970d927b4be0b76
+    folder: el
+  en_AU:
+    files:
+    - name: DocumentList.xml
+      sha: 40c5348455194d614de4e8abb0d4e75067479880
+    folder: en-AU
+  en_GB:
+    files:
+    - name: DocumentList.xml
+      sha: 143cf9b79071fbabc39dfbb579f9e0b374e755a9
+    folder: en-GB
+  en_US:
+    files:
+    - name: DocumentList.xml
+      sha: e3acab7a1c9ade245c124407144193d5b90985cb
+    folder: en-US
+  en_ZA:
+    files:
+    - name: DocumentList.xml
+      sha: 4bea710c99a94f1a67ec3158184f6167d8ce5f7b
+    folder: en-ZA
+  es:
+    files:
+    - name: DocumentList.xml
+      sha: 3eedb9816bcb1cdd306ded8c46abbea3f083522e
+    folder: es
+  fa:
+    files:
+    - name: DocumentList.xml
+      sha: e77b1f15b190061f15fea5d426b99497396a8448
+    folder: fa
+  fi:
+    files:
+    - name: DocumentList.xml
+      sha: 007ea526731f197499e60d37e9666d9fbd016665
+    folder: fi
+  fr:
+    files:
+    - name: DocumentList.xml
+      sha: b899567640887f4cdadad44f8bd064830779de1d
+    folder: fr
+  ga_IE:
+    files:
+    - name: DocumentList.xml
+      sha: a029061e5c02c62d16b4fa022a3712f000a31bc0
+    folder: ga-IE
+  hr:
+    files:
+    - name: DocumentList.xml
+      sha: b7d9a59b7bd9d22ee2c62690b0375dc5f87a722a
+    folder: hr
+  hsb:
+    files:
+    - name: DocumentList.xml
+      sha: 4cb865d29397e0458895ab5735c47b8c18fc47db
+    folder: hsb
+  hu:
+    files:
+    - name: DocumentList.xml
+      sha: 039145399434c7b2478022ff7f8b0bb67575b9ef
+    folder: hu
+  is:
+    files:
+    - name: DocumentList.xml
+      sha: 14eba5b3be978a6f905fc23b92656db2767ae8db
+    folder: is
+  it:
+    files:
+    - name: DocumentList.xml
+      sha: 6e4e02fa5ea8aa430e900adf9769382aea723f64
+    folder: it
+  ja:
+    files:
+    - name: DocumentList.xml
+      sha: 3aae11a7ea271fda951d8c9a2e4777a9ea57ea31
+    folder: ja
+  ko:
+    files:
+    - name: DocumentList.xml
+      sha: 6f3ceca090d4cacd7100a4b588a83fb6b993be06
+    folder: ko
+  lb_LU:
+    files:
+    - name: DocumentList.xml
+      sha: a40f9526d77a21146809772072e29adb25b993c1
+    folder: lb-LU
+  lt:
+    files:
+    - name: DocumentList.xml
+      sha: 2a11e990f4fd7fde84074cc90cb44dac1c62171a
+    folder: lt
+  mn:
+    files:
+    - name: DocumentList.xml
+      sha: ee84cf5d10d8bac578f960122fbd49f2283d6d6f
+    folder: mn
+  mr:
+    files:
+    - name: DocumentList.xml
+      sha: 0f638006a0a8cec1214cc60fb551636af624626f
+    folder: mr
+  nl:
+    files:
+    - name: DocumentList.xml
+      sha: cea1f26bccca532e69555bf83144cd9a21ddc2c4
+    folder: nl
+  nl_BE:
+    files:
+    - name: DocumentList.xml
+      sha: 76521b3fc5b1b55201c8f643586f150fee85dbb8
+    folder: nl-BE
+  pl:
+    files:
+    - name: DocumentList.xml
+      sha: 4a043c1d8fe956fe18fe0512b1275107438a514a
+    folder: pl
+  pt:
+    files:
+    - name: DocumentList.xml
+      sha: 26245a70ddbffb81b45e762428be3bfcf5db2a36
+    folder: pt
+  pt_BR:
+    files:
+    - name: DocumentList.xml
+      sha: efd490c96d767aa12bf1a4c439f6a67404214c32
+    folder: pt-BR
+  pt_PT:
+    files:
+    - name: DocumentList.xml
+      sha: ab6e85dfd17eb505c04bef8852aaf15c4919159f
+    folder: pt-PT
+  ro:
+    files:
+    - name: DocumentList.xml
+      sha: 600a4cc66b722cb7345aed3313a0ef508f207bd9
+    folder: ro
+  ru:
+    files:
+    - name: DocumentList.xml
+      sha: 0021b996e9cf026f8fa5eef150a59d0a850172fa
+    folder: ru
+  sk:
+    files:
+    - name: DocumentList.xml
+      sha: 4010171c26c8ab8f09a3f8189cf64eceb1fe12db
+    folder: sk
+  sl:
+    files:
+    - name: DocumentList.xml
+      sha: 0fd7cc323330b507ff4311a5a2531dc79f2b6364
+    folder: sl
+  sr_CS:
+    files:
+    - name: DocumentList.xml
+      sha: c56d9f73d9ce221d2d9155ae05b9a31848848aa0
+    folder: sr-CS
+  sr_Latn_CS:
+    files:
+    - name: DocumentList.xml
+      sha: 88ecb3541cbfc38646e39c8c0b06f40cf569a708
+    folder: sr-Latn-CS
+  sr_Latn_ME:
+    files:
+    - name: DocumentList.xml
+      sha: 88ecb3541cbfc38646e39c8c0b06f40cf569a708
+    folder: sr-Latn-ME
+  sr_Latn_RS:
+    files:
+    - name: DocumentList.xml
+      sha: 88ecb3541cbfc38646e39c8c0b06f40cf569a708
+    folder: sr-Latn-RS
+  sr_ME:
+    files:
+    - name: DocumentList.xml
+      sha: c56d9f73d9ce221d2d9155ae05b9a31848848aa0
+    folder: sr-ME
+  sr_RS:
+    files:
+    - name: DocumentList.xml
+      sha: c56d9f73d9ce221d2d9155ae05b9a31848848aa0
+    folder: sr-RS
+  sv:
+    files:
+    - name: DocumentList.xml
+      sha: 0a5f821ea57e87e9ea1719a92f57b5f573ada187
+    folder: sv
+  th:
+    files:
+    - name: DocumentList.xml
+      sha: cf06db51f29f80b7b658f1055b578939f513f1e8
+    folder: th
+  tr:
+    files:
+    - name: DocumentList.xml
+      sha: fe767b23aa3074b8e9151ebe3c40a0447b3ec5e0
+    folder: tr
+  vi:
+    files:
+    - name: DocumentList.xml
+      sha: cabc2ea01985c75ad4a8a0444c97531761efaa21
+    folder: vi
+  vro:
+    files:
+    - name: DocumentList.xml
+      sha: 81ff2ece1f55b33bcc52d3d5dc5ae289026ed897
+    folder: vro
+  zh_CN:
+    files:
+    - name: DocumentList.xml
+      sha: 67c019980c2023a0c8bf6d82f7a9bc2606059b46
+    folder: zh-CN
+  zh_TW:
+    files:
+    - name: DocumentList.xml
+      sha: 5dd5ba7b31be105c375016ebce805e2005ffa3d8
+    folder: zh-TW
+dictionary:
+  af_NA:
+    files: &id001
+    - name: af_ZA.aff
+      sha: 33348f4ed8e11a04f146edc79debd6c983d4cc2d
+    - name: af_ZA.dic
+      sha: 582bf75110080f296d1d597f27eb9c98d1ea5c2e
+    folder: af_ZA
+  af_ZA:
+    files: *id001
+    folder: af_ZA
+  an:
+    files: &id002
+    - name: an_ES.aff
+      sha: 556d8668dcdd22cd10dda4510fb7f0a6c8911e6a
+    - name: an_ES.dic
+      sha: cca4218798a0fb0985f5530ad26402562a3bf408
+    folder: an_ES
+  an_ES:
+    files: *id002
+    folder: an_ES
+  ar_AE:
+    files: &id003
+    - name: ar.aff
+      sha: 42285cff6415879518b46bd05ce9d89e4a30d153
+    - name: ar.dic
+      sha: 3fc60d11d07d869c979e1b7c22d96453cb13fb67
+    folder: ar
+  ar_BH:
+    files: *id003
+    folder: ar
+  ar_DZ:
+    files: *id003
+    folder: ar
+  ar_EG:
+    files: *id003
+    folder: ar
+  ar_IQ:
+    files: *id003
+    folder: ar
+  ar_JO:
+    files: *id003
+    folder: ar
+  ar_KW:
+    files: *id003
+    folder: ar
+  ar_LB:
+    files: *id003
+    folder: ar
+  ar_LY:
+    files: *id003
+    folder: ar
+  ar_MA:
+    files: *id003
+    folder: ar
+  ar_OM:
+    files: *id003
+    folder: ar
+  ar_QA:
+    files: *id003
+    folder: ar
+  ar_SA:
+    files: *id003
+    folder: ar
+  ar_SD:
+    files: *id003
+    folder: ar
+  ar_SY:
+    files: *id003
+    folder: ar
+  ar_TN:
+    files: *id003
+    folder: ar
+  ar_YE:
+    files: *id003
+    folder: ar
+  as_IN:
+    files:
+    - name: as_IN.aff
+      sha: d7870e21959c22d88b293b51d10dd725c1264d0b
+    - name: as_IN.dic
+      sha: 3c043cb93209d1dd5b37219276e3f1e667d07d38
+    folder: as_IN
+  be_BY:
+    files:
+    - name: be-official.aff
+      sha: 4c1aa6651e3e51cbc9835e69e62dd22e333afaaf
+    - name: be-official.dic
+      sha: dd9de938f5d059e8478cc7ddf1dab65de2ab0e65
+    folder: be_BY
+  bg_BG:
+    files:
+    - name: bg_BG.aff
+      sha: 84e1bbb99c8a16980074db28c487621a9aa59272
+    - name: bg_BG.dic
+      sha: 0b19dc57f5b9934f3ba7c8b86caa0769dcbc436b
+    folder: bg_BG
+  bn_BD:
+    files: &id004
+    - name: bn_BD.aff
+      sha: 969885f6f73bd6fe655979110238d4d20753c844
+    - name: bn_BD.dic
+      sha: dbd9ff9e6899b9440a3d2b3d2aa933422321fbfd
+    folder: bn_BD
+  bn_IN:
+    files: *id004
+    folder: bn_BD
+  bo:
+    files: &id005
+    - name: bo.aff
+      sha: f583723c1669f88aa09205c26e8e7562b63f04b8
+    - name: bo.dic
+      sha: b8731ef0b40e752453378f00604bb00eeb2b7f02
+    folder: bo
+  bo_CN:
+    files: *id005
+    folder: bo
+  bo_IN:
+    files: *id005
+    folder: bo
+  br_FR:
+    files:
+    - name: br_FR.aff
+      sha: b4cef0c1d8b28535dc5563ebc22f884ddd3a9dc4
+    - name: br_FR.dic
+      sha: f3d000ecae6962ed538750e280a5e08a7ae5e479
+    folder: br_FR
+  bs:
+    files: &id006
+    - name: bs_BA.aff
+      sha: 196ab5e9d9f84eeb19904ef8794a87d0eeb88e33
+    - name: bs_BA.dic
+      sha: 47e994509e95a049e98992fc663e5a66f6e88f85
+    folder: bs_BA
+  bs_BA:
+    files: *id006
+    folder: bs_BA
+  ca_AD:
+    files: &id007
+    - name: ca.aff
+      sha: bec76152f8d7e528a889b3689e6a63f3d30624bc
+    - name: ca.dic
+      sha: f781edfad28fa81201bc7f414ebece62846b0e61
+    folder: ca
+  ca_ES:
+    files: *id007
+    folder: ca
+  ca_ES_valencia:
+    files:
+    - name: ca-valencia.aff
+      sha: e299925e1e53743229f6127bb0a3d4fee7cd8444
+    - name: ca-valencia.dic
+      sha: 5de3c30f835dfbf0d84f92a20ba655621b7a5938
+    folder: ca
+  ca_FR:
+    files: *id007
+    folder: ca
+  ca_IT:
+    files: *id007
+    folder: ca
+  ckb_IQ:
+    files: &id008
+    - name: ckb.aff
+      sha: df5601ab487784e5b9d43c1804638f77d36e2746
+    - name: ckb.dic
+      sha: 989ea0341844e40893f713dde2b9b801782856ad
+    folder: ckb
+  ckb_IR:
+    files: *id008
+    folder: ckb
+  cs_CZ:
+    files:
+    - name: cs_CZ.aff
+      sha: 9ebd2c44607cb515a1f69d96c3215cd27ccb523c
+    - name: cs_CZ.dic
+      sha: eef8d834994a592926e0e2aed005f38beaed7deb
+    folder: cs_CZ
+  da_DK:
+    files:
+    - name: da_DK.aff
+      sha: 97b224bff19f29c702a3df1237444ca9a877547e
+    - name: da_DK.dic
+      sha: f5e6ca77405c2d0725c4ba0ecc3ae26f4204cb20
+    folder: da_DK
+  de_AT:
+    files:
+    - name: de_AT_frami.aff
+      sha: 9be547c4587d5c9dedd606d3c220ead41f786575
+    - name: de_AT_frami.dic
+      sha: 7858516abf677eca5deb8090050466047bb81f56
+    folder: de
+  de_CH:
+    files:
+    - name: de_CH_frami.aff
+      sha: 1bccc156ea871ad7529906f2061f09747769672e
+    - name: de_CH_frami.dic
+      sha: ea103c61bf42b5239e9ba824d962c491a5181a00
+    folder: de
+  de_DE:
+    files:
+    - name: de_DE_frami.aff
+      sha: 12b9b584bd0806589bb499ae2967ae42b5cf87a6
+    - name: de_DE_frami.dic
+      sha: 3d02c29db21679f65331a1ba5bb068babbb5fb45
+    folder: de
+  el_GR:
+    files:
+    - name: el_GR.aff
+      sha: 5d1c46c359b26ca4ce79ecb0ad5a33055664e40b
+    - name: el_GR.dic
+      sha: 6e95b425672375218813f3d446372ae54e65710c
+    folder: el_GR
+  en_AU:
+    files:
+    - name: en_AU.aff
+      sha: 290acfe87caf0f7ef44cf04dba4cd3b3cf2dbc58
+    - name: en_AU.dic
+      sha: c7e8ccb71535d1c854ee0ba71cf27cfc93ac48ba
+    folder: en
+  en_BS:
+    files: &id009
+    - name: en_GB.aff
+      sha: 9a084c73a41341c96ca25cb35d35aba8542d56f2
+    - name: en_GB.dic
+      sha: 3237865eb11f85c34a650f18757c9c54f3d98bd3
+    folder: en
+  en_BZ:
+    files: *id009
+    folder: en
+  en_CA:
+    files:
+    - name: en_CA.aff
+      sha: 290acfe87caf0f7ef44cf04dba4cd3b3cf2dbc58
+    - name: en_CA.dic
+      sha: 8399e7ca1906e0f89f0fe4da5a05b67f4ccf787f
+    folder: en
+  en_GB:
+    files: *id009
+    folder: en
+  en_GH:
+    files: *id009
+    folder: en
+  en_IE:
+    files: *id009
+    folder: en
+  en_IL:
+    files: &id011
+    - name: en_US.aff
+      sha: 290acfe87caf0f7ef44cf04dba4cd3b3cf2dbc58
+    - name: en_US.dic
+      sha: b41fd203e6daf76934db99dec6572a230516368a
+    folder: en
+  en_IN:
+    files: *id009
+    folder: en
+  en_JM:
+    files: *id009
+    folder: en
+  en_MW:
+    files: &id010
+    - name: en_ZA.aff
+      sha: 4929331c4d2e52110fdbc5c31cc5b0ed63b4c5e7
+    - name: en_ZA.dic
+      sha: b21796b381fe54063796a3b57ac88f3145d7f476
+    folder: en
+  en_NA:
+    files: *id010
+    folder: en
+  en_NZ:
+    files: *id009
+    folder: en
+  en_PH:
+    files: *id011
+    folder: en
+  en_TT:
+    files: *id009
+    folder: en
+  en_US:
+    files: *id011
+    folder: en
+  en_ZA:
+    files: *id010
+    folder: en
+  en_ZW:
+    files: *id010
+    folder: en
+  eo:
+    files:
+    - name: eo.aff
+      sha: aa9d4c3fd54a6bee943d0f10ac05fc7645429eac
+    - name: eo.dic
+      sha: eb21e2ad0c89df2afb305b9999a8a97527195231
+    folder: eo
+  es_AR:
+    files:
+    - name: es_AR.aff
+      sha: 47abbea470d6833f167bbef45fdfc069798f2d98
+    - name: es_AR.dic
+      sha: 29b1759a105c35f8a701b0411b7c46368450448f
+    folder: es
+  es_BO:
+    files:
+    - name: es_BO.aff
+      sha: 166b7c3219494e3c9d890fc3c90c519b09c0989f
+    - name: es_BO.dic
+      sha: 7dd6700d1c4e04cd347bac6b7b636ea328fb2934
+    folder: es
+  es_CL:
+    files:
+    - name: es_CL.aff
+      sha: 166b7c3219494e3c9d890fc3c90c519b09c0989f
+    - name: es_CL.dic
+      sha: c6a97dbb763423b1f0b70f4a82396479dc38bf63
+    folder: es
+  es_CO:
+    files:
+    - name: es_CO.aff
+      sha: 7006bd57f81057ca2a372a6476b9251a9af9baeb
+    - name: es_CO.dic
+      sha: a964745f64f1f6b1294cfc801207478b007bf296
+    folder: es
+  es_CR:
+    files:
+    - name: es_CR.aff
+      sha: 166b7c3219494e3c9d890fc3c90c519b09c0989f
+    - name: es_CR.dic
+      sha: 1db3bd51307d40912ce0b047b3c4c4e2dda626ed
+    folder: es
+  es_CU:
+    files:
+    - name: es_CU.aff
+      sha: 166b7c3219494e3c9d890fc3c90c519b09c0989f
+    - name: es_CU.dic
+      sha: 883b1c603b2bd2bb28cde446ec636fc1de2f3af4
+    folder: es
+  es_DO:
+    files:
+    - name: es_DO.aff
+      sha: 166b7c3219494e3c9d890fc3c90c519b09c0989f
+    - name: es_DO.dic
+      sha: fe4f9f3d446e5ade8665affee25b7ae7014c8f1b
+    folder: es
+  es_EC:
+    files:
+    - name: es_EC.aff
+      sha: 166b7c3219494e3c9d890fc3c90c519b09c0989f
+    - name: es_EC.dic
+      sha: e100469c7cf75f6a0d313090e71cd3f2069e8cd4
+    folder: es
+  es_ES:
+    files:
+    - name: es_ES.aff
+      sha: 8ece2647bffe4e36f5deaf38f1a40e7452e9edf6
+    - name: es_ES.dic
+      sha: 4a1b9b29175abc663949c16aacd5650475cc4f85
+    folder: es
+  es_GQ:
+    files:
+    - name: es_GQ.aff
+      sha: 410df2287a06cf30af8e5d8f9b3ada29bd01dcfc
+    - name: es_GQ.dic
+      sha: 1ebe40e99e2424a49eb7b2a5259c6d5878b54a4c
+    folder: es
+  es_GT:
+    files:
+    - name: es_GT.aff
+      sha: d7f251cd3671d05d92ad9a99d44e3c6d04bd06b3
+    - name: es_GT.dic
+      sha: 3e185112ce60c30fa24dd7eab38854f1d9ad2039
+    folder: es
+  es_HN:
+    files:
+    - name: es_HN.aff
+      sha: 166b7c3219494e3c9d890fc3c90c519b09c0989f
+    - name: es_HN.dic
+      sha: 5344a6cf425e42935c0018a73baa3d2fafd994a2
+    folder: es
+  es_MX:
+    files:
+    - name: es_MX.aff
+      sha: e8fc101aabecedfa1423da4d51a2f620eee46762
+    - name: es_MX.dic
+      sha: 60fbc98976417a58bae2a74b1fb95d747f963614
+    folder: es
+  es_NI:
+    files:
+    - name: es_NI.aff
+      sha: 166b7c3219494e3c9d890fc3c90c519b09c0989f
+    - name: es_NI.dic
+      sha: 4a611b9fc9844ed224beb010ef03d02b48a5b64b
+    folder: es
+  es_PA:
+    files:
+    - name: es_PA.aff
+      sha: 166b7c3219494e3c9d890fc3c90c519b09c0989f
+    - name: es_PA.dic
+      sha: f0ea34f296376586625053f5586c2c61e93fcb0f
+    folder: es
+  es_PE:
+    files:
+    - name: es_PE.aff
+      sha: e8fc101aabecedfa1423da4d51a2f620eee46762
+    - name: es_PE.dic
+      sha: e67af62a78d8403a50179a4732596756e05b9d58
+    folder: es
+  es_PH:
+    files:
+    - name: es_PH.aff
+      sha: 410df2287a06cf30af8e5d8f9b3ada29bd01dcfc
+    - name: es_PH.dic
+      sha: c0f65a80787721a638f75a331c76bc722c20e0db
+    folder: es
+  es_PR:
+    files:
+    - name: es_PR.aff
+      sha: 166b7c3219494e3c9d890fc3c90c519b09c0989f
+    - name: es_PR.dic
+      sha: 4da6c9876035a22a55b536b2df840eb74802b146
+    folder: es
+  es_PY:
+    files:
+    - name: es_PY.aff
+      sha: 166b7c3219494e3c9d890fc3c90c519b09c0989f
+    - name: es_PY.dic
+      sha: d21d98551cd34ba08b247d6caf55b737ea03b266
+    folder: es
+  es_SV:
+    files:
+    - name: es_SV.aff
+      sha: 166b7c3219494e3c9d890fc3c90c519b09c0989f
+    - name: es_SV.dic
+      sha: 47cdc64d95f30cec9fce13c033e979ea9b97e9af
+    folder: es
+  es_US:
+    files:
+    - name: es_US.aff
+      sha: 410df2287a06cf30af8e5d8f9b3ada29bd01dcfc
+    - name: es_US.dic
+      sha: ad0c81ddefa64af750a6279ddb56e7676e114a88
+    folder: es
+  es_UY:
+    files:
+    - name: es_UY.aff
+      sha: 830666f27e284dbb58fcf02e08028ca992d81add
+    - name: es_UY.dic
+      sha: e12a18218d4085b52774ba29b7f367c713dfc810
+    folder: es
+  es_VE:
+    files:
+    - name: es_VE.aff
+      sha: e8fc101aabecedfa1423da4d51a2f620eee46762
+    - name: es_VE.dic
+      sha: 16f99378d884d32dfec0c93ea429f396be8ffce0
+    folder: es
+  et_EE:
+    files:
+    - name: et_EE.aff
+      sha: 303980f77944bbadc87b2ff3aa422764c98fafb0
+    - name: et_EE.dic
+      sha: 639e86962a4a892768b3f53bf3e9ceb2f180f418
+    folder: et_EE
+  fa_IR:
+    files:
+    - name: fa-IR.aff
+      sha: 35f26b106baec21af94e7e9a62867ab607f4999e
+    - name: fa-IR.dic
+      sha: a9de32bc9833896f47f8b6fc82691ee710252ea2
+    folder: fa_IR
+  fr_BE:
+    files: &id012
+    - name: fr.aff
+      sha: bc5cee894fa19d37c10b65192128677fbbc68ccb
+    - name: fr.dic
+      sha: fdb058b940dbb690ac17c0c8e231497d678d216e
+    folder: fr_FR
+  fr_BF:
+    files: *id012
+    folder: fr_FR
+  fr_BJ:
+    files: *id012
+    folder: fr_FR
+  fr_CA:
+    files: *id012
+    folder: fr_FR
+  fr_CH:
+    files: *id012
+    folder: fr_FR
+  fr_CI:
+    files: *id012
+    folder: fr_FR
+  fr_FR:
+    files: *id012
+    folder: fr_FR
+  fr_LU:
+    files: *id012
+    folder: fr_FR
+  fr_MC:
+    files: *id012
+    folder: fr_FR
+  fr_ML:
+    files: *id012
+    folder: fr_FR
+  fr_NE:
+    files: *id012
+    folder: fr_FR
+  fr_SN:
+    files: *id012
+    folder: fr_FR
+  fr_TG:
+    files: *id012
+    folder: fr_FR
+  gd_GB:
+    files:
+    - name: gd_GB.aff
+      sha: bb6a63b02a87643961df97ff0553c46b0448f1d9
+    - name: gd_GB.dic
+      sha: c5e8eb419c3cd2b8c4f085e8272453d727ed3105
+    folder: gd_GB
+  gl:
+    files: &id013
+    - name: gl_ES.aff
+      sha: 6af2e365c9a13fbebe12ae66495da8585767426a
+    - name: gl_ES.dic
+      sha: d707bfc8741e52a6932cc9f0e1fe6c161fbdf2ec
+    folder: gl
+  gl_ES:
+    files: *id013
+    folder: gl
+  gu_IN:
+    files:
+    - name: gu_IN.aff
+      sha: 201a8688d0fbcd0b7981cb84b4688e3c04bab82d
+    - name: gu_IN.dic
+      sha: 1f88a0834f1355d00bafc6ab44546f3864954421
+    folder: gu_IN
+  gug_PY:
+    files:
+    - name: gug.aff
+      sha: 0a6c117cc1a9d9bd776ed26a093828263cfd9b72
+    - name: gug.dic
+      sha: 4ed87976a2de3171ddf96049ffa7a23b2189ffcc
+    folder: gug
+  he_IL:
+    files:
+    - name: he_IL.aff
+      sha: eaaa52e2eb54a0426d8f14491b4623757101733b
+    - name: he_IL.dic
+      sha: 1893d41682b72b53f328021f4a9563e5b06f1c09
+    folder: he_IL
+  hi_IN:
+    files:
+    - name: hi_IN.aff
+      sha: 6fca3ed326ab982de207ae120efc1659fc90d093
+    - name: hi_IN.dic
+      sha: 146545b06232a3fbd241f5709e999e29062bfa47
+    folder: hi_IN
+  hr_HR:
+    files:
+    - name: hr_HR.aff
+      sha: 3e9131271e063e5e41a2f14a93fa91c0eab6ef64
+    - name: hr_HR.dic
+      sha: 050409744d22ee4dc7f1f83afa2f49b076f80bad
+    folder: hr_HR
+  hu_HU:
+    files:
+    - name: hu_HU.aff
+      sha: b808cb467449684a642b631a205ecbddc9dc8e1c
+    - name: hu_HU.dic
+      sha: a39532ed2967a62ee6218c8e363fb97642a3a472
+    folder: hu_HU
+  id_ID:
+    files:
+    - name: id_ID.aff
+      sha: 6b1b68cdc83246434c2c87358dbd56470c26b17a
+    - name: id_ID.dic
+      sha: b7dbe8e70d11262536d56d710a9072b6e186084a
+    folder: id
+  is:
+    files: &id014
+    - name: is.aff
+      sha: 888cc1a5adfdd8f9460851c129d80d3a58771bba
+    - name: is.dic
+      sha: e17932e4e8dbd2dc401d20aba15f53ef2de697fa
+    folder: is
+  is_IS:
+    files: *id014
+    folder: is
+  it_CH:
+    files: &id015
+    - name: it_IT.aff
+      sha: 33baffde761b2e2ca2fe9b3bcf54d928b29f3cd4
+    - name: it_IT.dic
+      sha: bb7549a2819ffd722ea7ff3509c56e7316ae84f0
+    folder: it_IT
+  it_IT:
+    files: *id015
+    folder: it_IT
+  kmr_Latn_SY:
+    files: &id016
+    - name: kmr_Latn.aff
+      sha: 502c19dc60989f443938f7210e6dc64509f540e4
+    - name: kmr_Latn.dic
+      sha: 087d93414b0cf4a4c5af1d79fbea98be8a28e325
+    folder: kmr_Latn
+  kmr_Latn_TR:
+    files: *id016
+    folder: kmr_Latn
+  kn_IN:
+    files:
+    - name: kn_IN.aff
+      sha: fba392988626691a70022ec0d484cdd7ff2db3be
+    - name: kn_IN.dic
+      sha: fbb58a6fc0b0d02f9fcc03f1a697f82c7b047a4f
+    folder: kn_IN
+  ko_KR:
+    files:
+    - name: ko_KR.aff
+      sha: 07da872819098044aca77f45f77028bf3781d3b8
+    - name: ko_KR.dic
+      sha: 88ba338618c7ab5d3128bff77f6b8706ddc1d87a
+    folder: ko_KR
+  lo_LA:
+    files:
+    - name: lo_LA.aff
+      sha: 979e3c22848ef7ff29a867191ddafaacbc4d4fbc
+    - name: lo_LA.dic
+      sha: 839675812444d1e68e235edecc606166c5ac69be
+    folder: lo_LA
+  lt_LT:
+    files:
+    - name: lt.aff
+      sha: 29cdfc05350e4e9fa5a6f72358792db5c8735a0b
+    - name: lt.dic
+      sha: 31af587645d2ad1d1e1f3718bc88203cb2dd996e
+    folder: lt_LT
+  lv_LV:
+    files:
+    - name: lv_LV.aff
+      sha: ad29c4cee3d2e3a5731bf23a249273d45e692d5c
+    - name: lv_LV.dic
+      sha: fcdad2047aea7fd27914490ff73ccba90878680b
+    folder: lv_LV
+  mn_Cyrl_MN:
+    files:
+    - name: mn_MN.aff
+      sha: 0389df5bd5cb99db9916186a83c7c116575fc7cd
+    - name: mn_MN.dic
+      sha: 1a4c7880d43a294696eb0e7b98cecf6d9e04afe5
+    folder: mn_MN
+  mr_IN:
+    files:
+    - name: mr_IN.aff
+      sha: 047cf17415d0c59b8b40e0dad7d09f8354e341c7
+    - name: mr_IN.dic
+      sha: 0f03f896cdd85fddaf0329fba523f9c7cbf23a75
+    folder: mr_IN
+  nb_NO:
+    files:
+    - name: nb_NO.aff
+      sha: 33ec7dfa33e3ee3528a469ec07e817d1a504a3b6
+    - name: nb_NO.dic
+      sha: 761ead5428d126099bbb8c4e3522a15a6249aa40
+    folder: 'no'
+  ne_NP:
+    files:
+    - name: ne_NP.aff
+      sha: a3adc577d3117e95c073892d0b187f5c9c9d31be
+    - name: ne_NP.dic
+      sha: 074a083cd85a458cd53653600b1438b3e40e750b
+    folder: ne_NP
+  nl_AW:
+    files: &id017
+    - name: nl_NL.aff
+      sha: 28c160b72e6e6779d910d91e105a3df9b26f79c3
+    - name: nl_NL.dic
+      sha: 444fd9c6243b0e4c873786f32e086fd9ed0a6075
+    folder: nl_NL
+  nl_BE:
+    files: *id017
+    folder: nl_NL
+  nl_NL:
+    files: *id017
+    folder: nl_NL
+  nl_SR:
+    files: *id017
+    folder: nl_NL
+  nn_NO:
+    files:
+    - name: nn_NO.aff
+      sha: 561b8e48e5adc290a4232abd7f0251b42d65fdf4
+    - name: nn_NO.dic
+      sha: 166c3a7b254a0f42a230549e358ddfce5ed582a8
+    folder: 'no'
+  oc_FR:
+    files: &id018
+    - name: oc_FR.aff
+      sha: 0f99aacb42a9a836c36c8f1698828a5adff4953b
+    - name: oc_FR.dic
+      sha: 18d63d0fc1bfc61bb7127c835220291ab3ab7eeb
+    folder: oc_FR
+  oc_FR_lengadoc:
+    files: *id018
+    folder: oc_FR
+  or_IN:
+    files:
+    - name: or_IN.aff
+      sha: d319ac7c9d95b34b58da34d0e44829b3e5e8ab40
+    - name: or_IN.dic
+      sha: 6d99fd941aaa62590954e81f607cdc6265c88337
+    folder: or_IN
+  pl_PL:
+    files:
+    - name: pl_PL.aff
+      sha: a57905a9ca3473313613322c05ed63ea75f11839
+    - name: pl_PL.dic
+      sha: 0a6df9f690a40c87269eb2b1863f06741129d15a
+    folder: pl_PL
+  pt_BR:
+    files:
+    - name: pt_BR.aff
+      sha: 4664ad6fc893e5683c1140eab8c1e1faeca802d3
+    - name: pt_BR.dic
+      sha: 849c1dcaf873e72e364f7a64b6f1f2a679bbb097
+    folder: pt_BR
+  pt_PT:
+    files:
+    - name: pt_PT.aff
+      sha: ef6aaf55ccc2cfba2948cf5a92eb5f4849634c12
+    - name: pt_PT.dic
+      sha: 2b6da831cdf48eeb3df605ad2841732ef5f13981
+    folder: pt_PT
+  ro_RO:
+    files:
+    - name: ro_RO.aff
+      sha: 757892ee0d74c778cedebfdd2a07ef135ddd3e7b
+    - name: ro_RO.dic
+      sha: 1a843e14aaa3458b6550a06567d648749903293c
+    folder: ro
+  ru_RU:
+    files:
+    - name: ru_RU.aff
+      sha: b6bef6d261914c579542b59c89dd03b83ae5927c
+    - name: ru_RU.dic
+      sha: e5cfd3614c2303be12da481198b5d914e592da9c
+    folder: ru_RU
+  si_LK:
+    files:
+    - name: si_LK.aff
+      sha: aba49c35e78a5fd341479c2a27ba5723b11395f9
+    - name: si_LK.dic
+      sha: 11a46f977ddc4b342ac0df7a30d4dc5eb48565d2
+    folder: si_LK
+  sk_SK:
+    files:
+    - name: sk_SK.aff
+      sha: a1a9eaab1e519059c4c4667486805bbbf2d6144b
+    - name: sk_SK.dic
+      sha: 7ce548b22afc2644a1e5f16b830e71ac147070b6
+    folder: sk_SK
+  sl_SI:
+    files:
+    - name: sl_SI.aff
+      sha: 9f2397ee45c3343d2da8a973490cf2bbb6848a1a
+    - name: sl_SI.dic
+      sha: 6a3ce6bd62cd017a731c47492fb5cd81fb136e38
+    folder: sl_SI
+  sq_AL:
+    files:
+    - name: sq_AL.aff
+      sha: 62978266524af9304e2c296b3ef76521b0338fd4
+    - name: sq_AL.dic
+      sha: f52338bef93ac732f8a77f8e9201372526caf8ef
+    folder: sq_AL
+  sr_CS:
+    files: &id020
+    - name: sr.aff
+      sha: 4d34e90c5cc2f540de81868024178f1c00148b50
+    - name: sr.dic
+      sha: 428c7492fc867827733e9c5df29eab419efed167
+    folder: sr
+  sr_Latn_CS:
+    files: &id019
+    - name: sr-Latn.aff
+      sha: 73cfaf094c12292cdcdcbc1daa536169a4901985
+    - name: sr-Latn.dic
+      sha: f876334232b1bc5bcee737cefb395ffa4e2220a8
+    folder: sr
+  sr_Latn_RS:
+    files: *id019
+    folder: sr
+  sr_RS:
+    files: *id020
+    folder: sr
+  sv:
+    files: &id021
+    - name: sv_SE.aff
+      sha: f767007dbbe6bd53ade64900258bbdbc5a2b2075
+    - name: sv_SE.dic
+      sha: 1ef5b05b2e52064455804403964e5bc28409a45a
+    folder: sv_SE
+  sv_FI:
+    files:
+    - name: sv_FI.aff
+      sha: 7dd3ebfecb88db77f5018b92bde6eeb7ed91909f
+    - name: sv_FI.dic
+      sha: 2ca5343a3f5c6075b171a7722b9388ba5b11eb51
+    folder: sv_SE
+  sv_SE:
+    files: *id021
+    folder: sv_SE
+  sw_TZ:
+    files:
+    - name: sw_TZ.aff
+      sha: c1371abd05488f2d4f7dd27c35da5939a75dbbb7
+    - name: sw_TZ.dic
+      sha: 228cb40b9eca1fbaade783ba04e48a5a5963809a
+    folder: sw_TZ
+  ta_IN:
+    files:
+    - name: ta_IN.aff
+      sha: 985b2107110dd6bff12e6321956053afdbb168ff
+    - name: ta_IN.dic
+      sha: 95af60d3f9accc163587d96c5640b5853f470854
+    folder: ta_IN
+  te:
+    files: &id022
+    - name: te_IN.aff
+      sha: 148aca62107fa52eb2f8f2671e5ba2a6bd0724d8
+    - name: te_IN.dic
+      sha: cfed8626ecbd39e0ccd694c685d9fa4c34c33f2b
+    folder: te_IN
+  te_IN:
+    files: *id022
+    folder: te_IN
+  th_TH:
+    files:
+    - name: th_TH.aff
+      sha: c830be2f7aecbd566dbddc1dda55f771371d4fd0
+    - name: th_TH.dic
+      sha: 477890cb3b17a1eb5e5aaf4bc6cf6d6b77dde167
+    folder: th_TH
+  tr:
+    files: &id023
+    - name: tr_TR.aff
+      sha: 975fb9eb39d1759d2a6fe5bc358b6a9ad22d41e9
+    - name: tr_TR.dic
+      sha: 341ed7c918b9b2a53db363a880ba897209e4d0fc
+    folder: tr_TR
+  tr_TR:
+    files: *id023
+    folder: tr_TR
+  uk_UA:
+    files:
+    - name: uk_UA.aff
+      sha: 2a604054953b9997b1b7250427fb244736a1c66b
+    - name: uk_UA.dic
+      sha: ff848bbb610332bec2fa867f91d7489154c3585d
+    folder: uk_UA
+  vi_VN:
+    files:
+    - name: vi_VN.aff
+      sha: fd69df8a9e1b37865c3e31bc7b1786640ed2ee51
+    - name: vi_VN.dic
+      sha: d9395e9b75c613a830cb5a360e5932ab03d97c4c
+    folder: vi
+thesaurus:
+  bg_BG:
+    files:
+    - name: th_bg_BG_v2.dat
+      sha: 27350100cd3d26975c6896c56e2cb492f49b9078
+    folder: bg_BG
+  de:
+    files: &id024
+    - name: th_de_DE_v2.dat
+      sha: d87b468675c64835f33e5108452b72555045697d
+    folder: de
+  de_AT:
+    files: *id024
+    folder: de
+  de_CH:
+    files:
+    - name: th_de_CH_v2.dat
+      sha: 6e39864503f9e1f9531bbcdccf62c32be1e1683c
+    folder: de
+  de_DE:
+    files: *id024
+    folder: de
+  en_AU:
+    files: &id025
+    - name: th_en_US_v2.dat
+      sha: 035f9721fe08789806b6318221ce33467f149de4
+    folder: en
+  en_BS:
+    files: *id025
+    folder: en
+  en_BZ:
+    files: *id025
+    folder: en
+  en_CA:
+    files: *id025
+    folder: en
+  en_GB:
+    files: *id025
+    folder: en
+  en_GH:
+    files: *id025
+    folder: en
+  en_IE:
+    files: *id025
+    folder: en
+  en_IL:
+    files: *id025
+    folder: en
+  en_IN:
+    files: *id025
+    folder: en
+  en_JM:
+    files: *id025
+    folder: en
+  en_MW:
+    files: *id025
+    folder: en
+  en_NA:
+    files: *id025
+    folder: en
+  en_NZ:
+    files: *id025
+    folder: en
+  en_PH:
+    files: *id025
+    folder: en
+  en_TT:
+    files: *id025
+    folder: en
+  en_US:
+    files: *id025
+    folder: en
+  en_ZA:
+    files: *id025
+    folder: en
+  en_ZW:
+    files: *id025
+    folder: en
+  eo:
+    files:
+    - name: th_eo.dat
+      sha: 73bb7e1e8ef4afb46fd77ece468f86c8ee34e729
+    folder: eo
+  it_CH:
+    files: &id026
+    - name: th_it_IT_v2.dat
+      sha: 61884d9ffebdbe12b3ae21c83ba78c92712751a7
+    folder: it_IT
+  it_IT:
+    files: *id026
+    folder: it_IT
+  lv_LV:
+    files:
+    - name: th_lv_LV_v2.dat
+      sha: 78825bbb5c839a0a3d3f9953737dde951267f50c
+    folder: lv_LV
+  nb_NO:
+    files:
+    - name: th_nb_NO_v2.dat
+      sha: 3a016c8e2c2e56ef05d37befb1d3fb6cacba4c9a
+    folder: 'no'
+  ne_NP:
+    files:
+    - name: th_ne_NP_v2.dat
+      sha: 3347a96aa925eb8378dd2335e3227edb9ec2639c
+    folder: ne_NP
+  nn_NO:
+    files:
+    - name: th_nn_NO_v2.dat
+      sha: 1bfccfde6b5875f0b9f21e98cf39fdad70d4ad8b
+    folder: 'no'
+  sv_SE:
+    files:
+    - name: th_sv_SE.dat
+      sha: 58c8f990cb7e64ed6f99d9bbf497da8f08ce7138
+    folder: sv_SE
+  uk_UA:
+    files:
+    - name: th_uk_UA.dat
+      sha: 1ea826b4baf1fe629df5dbeec586136bfcd4854b
+    folder: uk_UA

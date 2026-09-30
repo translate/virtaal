@@ -17,7 +17,7 @@ exception is the frozen-build check below, which is guaranteed to raise
 before __init__ ever touches main_controller.
 
 The rest of the methods (_disable_checking, _activate_checker,
-_on_populate_popup/_fix_menu, _connect_to_textboxes/destroy) don't touch
+_on_populate_popup, _connect_to_textboxes/destroy) don't touch
 main_controller at all - built directly via Plugin.__new__(Plugin) with
 just the instance state each one reads, same as the tests above.
 """
@@ -90,7 +90,7 @@ def _fake_gtkspell(existing=None, get_from_text_view_raises=None):
 
 def test_dict_add_re_matches_gtkspell_suggestion():
     """_dict_add_re extracts the word from GtkSpell's context-menu label
-    ('Add "x" to Dictionary'), which _fix_menu() then re-translates."""
+    ('Add "x" to Dictionary'), which _on_populate_popup() then re-translates."""
     m = _dict_add_re.match('Add "virtaal" to Dictionary')
     assert m is not None
     assert m.group(1) == "virtaal"
@@ -328,19 +328,6 @@ def test_activate_checker_disables_the_plugin_on_an_unexpected_error():
 
 # _on_populate_popup() #
 
-def test_on_populate_popup_schedules_fix_menu(monkeypatch):
-    calls = []
-    monkeypatch.setattr(GLib, 'idle_add', lambda *a, **k: calls.append((a, k)))
-    plugin = Plugin.__new__(Plugin)
-    menu = object()
-
-    plugin._on_populate_popup(textbox=None, menu=menu)
-
-    assert calls == [((plugin._fix_menu, menu), {})]
-
-
-# _fix_menu() #
-
 def _menu_with(*labels_or_separator):
     """A real Gtk.Menu, populated with real Gtk.MenuItems for each label
     (or a real Gtk.SeparatorMenuItem for the literal `None`)."""
@@ -360,7 +347,7 @@ def test_fix_menu_translates_known_gtkspell_labels(monkeypatch):
     menu = _menu_with('<i>(no suggestions)</i>', 'Ignore All', 'More...', 'Add "virtaal" to Dictionary')
     plugin = Plugin.__new__(Plugin)
 
-    plugin._fix_menu(menu)
+    plugin._on_populate_popup(textbox=None, menu=menu)
 
     labels = [item.get_property('label') for item in menu]
     assert labels == [
@@ -375,7 +362,7 @@ def test_fix_menu_removes_an_exact_languages_match():
     menu = _menu_with('Languages')
     plugin = Plugin.__new__(Plugin)
 
-    plugin._fix_menu(menu)
+    plugin._on_populate_popup(textbox=None, menu=menu)
 
     assert menu.get_children() == []
 
@@ -388,7 +375,7 @@ def test_fix_menu_keeps_a_label_that_is_only_a_substring_of_languages():
     menu = _menu_with('an')
     plugin = Plugin.__new__(Plugin)
 
-    plugin._fix_menu(menu)
+    plugin._on_populate_popup(textbox=None, menu=menu)
 
     assert len(menu.get_children()) == 1
 
@@ -397,7 +384,7 @@ def test_fix_menu_stops_at_the_first_separator():
     menu = _menu_with('Ignore All', None, 'Languages')
     plugin = Plugin.__new__(Plugin)
 
-    plugin._fix_menu(menu)
+    plugin._on_populate_popup(textbox=None, menu=menu)
 
     # The separator had real entries before it, so it's kept, and
     # everything after it - including "Languages" - is never reached.
@@ -411,7 +398,7 @@ def test_fix_menu_removes_a_leading_separator_with_nothing_before_it():
     menu = _menu_with(None, 'Ignore All')
     plugin = Plugin.__new__(Plugin)
 
-    plugin._fix_menu(menu)
+    plugin._on_populate_popup(textbox=None, menu=menu)
 
     remaining = menu.get_children()
     assert len(remaining) == 1
@@ -432,6 +419,25 @@ def test_connect_to_textboxes_wires_populate_popup():
 
     assert len(fix_menu_calls) == 1
     assert fix_menu_calls[0][0] is textbox
+
+
+def test_connect_to_textboxes_runs_after_other_populate_popup_handlers():
+    # Regression: connected as a normal (before-phase) handler, ours used
+    # to run before gtkspell's own populate-popup handler ever added
+    # "Languages" - forcing a reactive remove-after-show that couldn't
+    # cleanly shrink the already-displayed popup. connect_after ensures
+    # ours runs last, so removal happens before the menu is ever shown.
+    plugin = Plugin.__new__(Plugin)
+    plugin._signal_tracker = SignalTracker()
+    order = []
+    plugin._on_populate_popup = lambda textbox, menu: order.append('spellchecker')
+    textbox = Gtk.TextView()
+    textbox.connect('populate-popup', lambda *a: order.append('other-plugin'))
+
+    plugin._connect_to_textboxes(unitview=None, textboxes=[textbox])
+    textbox.emit('populate-popup', Gtk.Menu())
+
+    assert order == ['other-plugin', 'spellchecker']
 
 
 def test_destroy_disconnects_signals_and_disables_every_textview():

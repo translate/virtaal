@@ -12,12 +12,19 @@ class _FakeObject:
     def __init__(self):
         self._next_id = 1
         self.connected = []
+        self.connected_after = []
         self.disconnected = []
 
     def connect(self, signal_name, handler, *args):
         signal_id = self._next_id
         self._next_id += 1
         self.connected.append((signal_name, handler, args))
+        return signal_id
+
+    def connect_after(self, signal_name, handler, *args):
+        signal_id = self._next_id
+        self._next_id += 1
+        self.connected_after.append((signal_name, handler, args))
         return signal_id
 
     def disconnect(self, signal_id):
@@ -32,6 +39,27 @@ def test_connect_returns_the_real_signal_id():
 
     assert signal_id == 1
     assert obj.connected == [('activate', obj.connected[0][1], ())]
+
+
+def test_connect_after_true_uses_connect_after():
+    obj = _FakeObject()
+    tracker = SignalTracker()
+
+    signal_id = tracker.connect(obj, 'populate-popup', lambda: None, after=True)
+
+    assert signal_id == 1
+    assert obj.connected == []
+    assert obj.connected_after == [('populate-popup', obj.connected_after[0][1], ())]
+
+
+def test_connect_after_true_is_still_disconnected_by_disconnect_all():
+    obj = _FakeObject()
+    tracker = SignalTracker()
+    signal_id = tracker.connect(obj, 'populate-popup', lambda: None, after=True)
+
+    tracker.disconnect_all()
+
+    assert obj.disconnected == [signal_id]
 
 
 def test_disconnect_all_disconnects_every_tracked_signal():

@@ -15,8 +15,11 @@ class SignalTracker:
     def __init__(self):
         self._ids = []
 
-    def connect(self, obj, signal_name, handler, *args):
-        signal_id = obj.connect(signal_name, handler, *args)
+    def connect(self, obj, signal_name, handler, *args, after=False):
+        if after:
+            signal_id = obj.connect_after(signal_name, handler, *args)
+        else:
+            signal_id = obj.connect(signal_name, handler, *args)
         self._ids.append((obj, signal_id))
         return signal_id
 

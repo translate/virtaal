@@ -100,7 +100,12 @@ class Plugin(BasePlugin):
 
     def _connect_to_textboxes(self, unitview, textboxes):
         for textbox in textboxes:
-            self._signal_tracker.connect(textbox, 'populate-popup', self._on_populate_popup)
+            # after=True: gtkspell (and the other populate-popup plugins)
+            # connect normally and build their items synchronously in the
+            # same emission - running after them means "Languages" can be
+            # removed before the menu is ever shown, instead of shrinking
+            # an already-visible popup (which GTK doesn't support cleanly).
+            self._signal_tracker.connect(textbox, 'populate-popup', self._on_populate_popup, after=True)
 
 
     # METHODS #
@@ -192,11 +197,6 @@ class Plugin(BasePlugin):
             #TODO: unload plugin
 
     def _on_populate_popup(self, textbox, menu):
-        # We can't work with the menu immediately, since gtkspell only adds its
-        # entries in the event handler.
-        GLib.idle_add(self._fix_menu, menu)
-
-    def _fix_menu(self, menu):
         _entries_above_separator = False
         for item in menu:
             if item.get_name() == 'GtkSeparatorMenuItem':

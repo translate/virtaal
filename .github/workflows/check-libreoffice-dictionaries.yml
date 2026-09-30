@@ -1,15 +1,18 @@
 name: Check LibreOffice dictionaries
 
-# Not a pass/fail gate on every push. Virtaal's spell-check download
-# feature (virtaal/support/dictionary_source.py) sources hunspell
-# dictionaries directly from github.com/LibreOffice/dictionaries -
-# this runs monthly to catch an upstream repo restructuring (a moved
-# file, a renamed folder, a changed dictionaries.xcu shape) before a
-# user's download silently fails.
+# Not a pass/fail gate on every push. Virtaal's downloadable-asset
+# support (spell-check dictionaries, thesauruses, autocorrect data -
+# see virtaal/support/asset_manifest.py) sources everything directly
+# from LibreOffice's own dictionaries and core repos - this runs weekly
+# to catch an upstream repo restructuring (a moved file, a renamed
+# folder, a changed dictionaries.xcu shape) before a user's download
+# silently fails, and, on a clean run, publishes the manifest
+# asset_manifest.py fetches at runtime instead of doing this same
+# discovery live.
 
 on:
   schedule:
-    - cron: "0 4 1 * *" # 04:00 UTC, first of the month
+    - cron: "0 4 * * 1" # 04:00 UTC, every Monday
   workflow_dispatch:
 
 permissions:
@@ -18,6 +21,8 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-24.04
+    outputs:
+      manifest_path: ${{ steps.generate.outputs.manifest_path }}
     steps:
       - uses: actions/checkout@v7
 
@@ -28,13 +33,47 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install lxml
+          pip install lxml PyYAML
 
-      - name: Check every dictionary folder resolves
-        run: python3 devsupport/testing/check_libreoffice_dictionaries.py
+      - name: Validate every asset folder and generate the manifest
+        id: generate
+        run: |
+          manifest_path="${RUNNER_TEMP}/asset-manifest.yaml"
+          python3 devsupport/testing/generate_asset_manifest.py --manifest-out "$manifest_path"
+          echo "manifest_path=$manifest_path" >> "$GITHUB_OUTPUT"
         env:
           # Only virtaal.support.dictionary_source is needed here, not
           # the full app - avoids installing the whole dependency set
           # (translate-toolkit, pygobject, ...) for a lightweight
-          # monthly check.
+          # weekly check.
           PYTHONPATH: .
+
+  publish:
+    needs: check
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Switch to (or create) the asset-manifest branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin asset-manifest >/dev/null 2>&1; then
+            git fetch origin asset-manifest
+            git checkout asset-manifest
+          else
+            git checkout --orphan asset-manifest
+            git rm -rf . >/dev/null
+          fi
+
+      - name: Commit and push if changed
+        env:
+          MANIFEST_PATH: ${{ needs.check.outputs.manifest_path }}
+        run: |
+          cp "$MANIFEST_PATH" asset-manifest.yaml
+          git add asset-manifest.yaml
+          git diff --cached --quiet && exit 0
+          git commit -m "Update asset manifest for $(date -u +%F)"
+          git push origin asset-manifest

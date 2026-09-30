@@ -16,7 +16,9 @@ from types import SimpleNamespace
 import pytest
 from gi.repository import Gtk
 
+from virtaal.common import pan_app
 from virtaal.plugins.autocorrector import AutoCorrector, Plugin
+from virtaal.support.asset_manifest import entry_shas, installed_asset_key
 from virtaal.support.test_autocorrect_source import AF_ZA_DOCUMENT_LIST
 from virtaal.views.widgets.textbox import TextBox
 
@@ -356,14 +358,43 @@ def test_on_insert_text_schedules_and_applies_a_correction(monkeypatch, tmp_path
 # Plugin - completely untested until now #
 
 class _FakeAutocorrectDownloader:
-    started = []
+    started = []  # live-discovery start() calls: [lang, ...]
+    known_files_started = []  # start_with_known_files() calls: [(lang, folder, files), ...]
+    instances = []
 
     def __init__(self, lang, on_done):
         self.lang = lang
         self.on_done = on_done
+        _FakeAutocorrectDownloader.instances.append(self)
 
     def start(self):
         _FakeAutocorrectDownloader.started.append(self.lang)
+
+    def start_with_known_files(self, folder, files):
+        _FakeAutocorrectDownloader.known_files_started.append((self.lang, folder, files))
+
+
+class _FakeAssetManifest:
+    """entries: {locale: entry}. has_data defaults to whether entries
+    is non-empty - pass it explicitly for the "manifest was genuinely
+    fetched but has nothing for this locale" case, distinct from
+    "never fetched at all". ensure_fresh() always calls on_done()
+    immediately - the manifest's own refresh timing is tested in
+    test_asset_manifest.py, not here."""
+
+    def __init__(self, entries=None, has_data=None):
+        self.entries = entries or {}
+        self._has_data = bool(self.entries) if has_data is None else has_data
+
+    def ensure_fresh(self, on_done=None):
+        (on_done or (lambda: None))()
+
+    def get(self, resource_type, locale_code):
+        assert resource_type == 'autocorrect'
+        return self.entries.get(locale_code)
+
+    def has_data(self):
+        return self._has_data
 
 
 def _fake_cursor():
@@ -395,13 +426,19 @@ def _plugin_main_controller(store=None, targets=None, target_lang_code='af'):
     return main_controller, calls
 
 
-def _init_plugin(monkeypatch, acorpath, **kwargs):
+def _init_plugin(monkeypatch, acorpath, manifest_entries=None, manifest_has_data=None, lull_calls=None, **kwargs):
     monkeypatch.setattr('virtaal.support.autocorrect_source.autocorrect_root_dir', lambda: str(acorpath))
     monkeypatch.setattr('virtaal.plugins.autocorrector.GLib.idle_add', lambda f: f())
     monkeypatch.setattr('virtaal.support.autocorrect_downloader.AutocorrectDownloader', _FakeAutocorrectDownloader)
     _FakeAutocorrectDownloader.started = []
+    _FakeAutocorrectDownloader.known_files_started = []
+    _FakeAutocorrectDownloader.instances = []
+    lull_calls = lull_calls if lull_calls is not None else []
     main_controller, calls = _plugin_main_controller(**kwargs)
-    plugin = Plugin('autocorrector', main_controller)
+    plugin = Plugin(
+        'autocorrector', main_controller,
+        asset_manifest=_FakeAssetManifest(manifest_entries, has_data=manifest_has_data),
+        schedule_after_idle_lull=lambda callback: lull_calls.append(callback))
     return plugin, main_controller, calls
 
 
@@ -458,7 +495,7 @@ def test_maybe_download_reloads_and_reattaches_when_the_download_completes(monke
     def fake_start(self):
         _FakeAutocorrectDownloader.started.append(self.lang)
         _write_document_list(tmp_path, self.lang)  # simulate the download landing
-        self.on_done()
+        self.on_done(True)
     monkeypatch.setattr(_FakeAutocorrectDownloader, 'start', fake_start)
     plugin, main_controller, calls = _init_plugin(monkeypatch, tmp_path, store=None, targets=[], target_lang_code='xx')
     on_store_loaded = next(h for s, h in calls if s == 'store-loaded')
@@ -479,6 +516,77 @@ def test_maybe_download_only_tries_once_per_language_per_run(monkeypatch, tmp_pa
     on_store_loaded(SimpleNamespace(cursor=cursor))
 
     assert _FakeAutocorrectDownloader.started == ['xx']
+
+
+def test_does_nothing_when_a_fetched_manifest_confirms_no_entry_for_locale(monkeypatch, tmp_path):
+    # The manifest is comprehensive once fetched - a miss here is
+    # authoritative, not "we don't know yet" - must not redo live
+    # discovery every cold start for a locale with genuinely nothing.
+    plugin, main_controller, calls = _init_plugin(
+        monkeypatch, tmp_path, store=None, targets=[], target_lang_code='xx', manifest_has_data=True)
+    on_store_loaded = next(h for s, h in calls if s == 'store-loaded')
+    cursor, _ = _fake_cursor()
+
+    on_store_loaded(SimpleNamespace(cursor=cursor))
+
+    assert _FakeAutocorrectDownloader.started == []
+    assert _FakeAutocorrectDownloader.known_files_started == []
+
+
+_XX_ENTRY = {'folder': 'xx', 'files': [{'name': 'DocumentList.xml', 'sha': 's1'}]}
+
+
+def test_downloads_via_known_files_after_a_lull_when_manifest_has_an_entry(monkeypatch, tmp_path):
+    pan_app.settings.installed_assets = {}
+    lull_calls = []
+    plugin, main_controller, calls = _init_plugin(
+        monkeypatch, tmp_path, store=None, targets=[], target_lang_code='xx',
+        manifest_entries={'xx': _XX_ENTRY}, lull_calls=lull_calls)
+    on_store_loaded = next(h for s, h in calls if s == 'store-loaded')
+    cursor, _ = _fake_cursor()
+
+    on_store_loaded(SimpleNamespace(cursor=cursor))
+
+    assert _FakeAutocorrectDownloader.known_files_started == []  # not yet - waiting for the lull
+    assert len(lull_calls) == 1
+    lull_calls[0]()  # simulate the lull passing
+
+    assert _FakeAutocorrectDownloader.known_files_started == [('xx', 'xx', ['DocumentList.xml'])]
+    assert _FakeAutocorrectDownloader.started == []
+
+
+def test_skips_download_when_installed_sha_already_matches_the_manifest(monkeypatch, tmp_path):
+    pan_app.settings.installed_assets = {installed_asset_key('autocorrect', 'xx'): entry_shas(_XX_ENTRY)}
+    plugin, main_controller, calls = _init_plugin(
+        monkeypatch, tmp_path, store=None, targets=[], target_lang_code='xx',
+        manifest_entries={'xx': _XX_ENTRY})
+    on_store_loaded = next(h for s, h in calls if s == 'store-loaded')
+    cursor, _ = _fake_cursor()
+
+    on_store_loaded(SimpleNamespace(cursor=cursor))
+
+    assert _FakeAutocorrectDownloader.started == []
+    assert _FakeAutocorrectDownloader.known_files_started == []
+
+
+def test_records_installed_sha_only_on_a_successful_known_download(monkeypatch, tmp_path):
+    pan_app.settings.installed_assets = {}
+    lull_calls = []
+    plugin, main_controller, calls = _init_plugin(
+        monkeypatch, tmp_path, store=None, targets=[], target_lang_code='xx',
+        manifest_entries={'xx': _XX_ENTRY}, lull_calls=lull_calls)
+    on_store_loaded = next(h for s, h in calls if s == 'store-loaded')
+    cursor, _ = _fake_cursor()
+    on_store_loaded(SimpleNamespace(cursor=cursor))
+    lull_calls[0]()
+    key = installed_asset_key('autocorrect', 'xx')
+    downloader = _FakeAutocorrectDownloader.instances[0]
+
+    downloader.on_done(False)
+    assert key not in pan_app.settings.installed_assets
+
+    downloader.on_done(True)
+    assert pan_app.settings.installed_assets[key] == entry_shas(_XX_ENTRY)
 
 
 def test_plugin_connects_to_an_already_loaded_store_at_construction(monkeypatch, tmp_path):

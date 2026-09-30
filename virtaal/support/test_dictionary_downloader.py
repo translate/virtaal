@@ -7,7 +7,9 @@
 
 """Tests for DictionaryDownloader's callback-chain orchestration - a
 _FakeClient records each .get() call instead of doing real network
-I/O, so the test drives the chain step by step, synchronously."""
+I/O, so the test drives the chain step by step, synchronously.
+on_done(success) - done lists below record the bool passed, not just
+that it fired."""
 
 import json
 import os
@@ -37,7 +39,7 @@ class _FakeClient:
 def test_full_chain_writes_both_files(tmp_path):
     client = _FakeClient()
     done = []
-    downloader = DictionaryDownloader('de_DE', on_done=lambda: done.append(True),
+    downloader = DictionaryDownloader('de_DE', on_done=lambda success: done.append(success),
                                        client=client, target_dir=str(tmp_path))
 
     downloader.start()
@@ -66,7 +68,7 @@ def test_full_chain_writes_both_files(tmp_path):
 def test_xcu_error_tries_the_next_folder(tmp_path):
     client = _FakeClient()
     done = []
-    downloader = DictionaryDownloader('ar_EG', on_done=lambda: done.append(True),
+    downloader = DictionaryDownloader('ar_EG', on_done=lambda success: done.append(success),
                                        client=client, target_dir=str(tmp_path))
 
     downloader.start()
@@ -86,7 +88,7 @@ def test_xcu_error_tries_the_next_folder(tmp_path):
 def test_no_matching_locale_gives_up(tmp_path):
     client = _FakeClient()
     done = []
-    downloader = DictionaryDownloader('xx_YY', on_done=lambda: done.append(True),
+    downloader = DictionaryDownloader('xx_YY', on_done=lambda success: done.append(success),
                                        client=client, target_dir=str(tmp_path))
 
     downloader.start()
@@ -97,14 +99,14 @@ def test_no_matching_locale_gives_up(tmp_path):
     _, xcu_cb2, _ = client.calls[-1]
     xcu_cb2(None, AR_XCU)
 
-    assert done == [True]
+    assert done == [False]
     assert list(tmp_path.iterdir()) == []
 
 
 def test_file_error_cleans_up_and_gives_up(tmp_path):
     client = _FakeClient()
     done = []
-    downloader = DictionaryDownloader('de_DE', on_done=lambda: done.append(True),
+    downloader = DictionaryDownloader('de_DE', on_done=lambda success: done.append(success),
                                        client=client, target_dir=str(tmp_path))
 
     downloader.start()
@@ -120,34 +122,34 @@ def test_file_error_cleans_up_and_gives_up(tmp_path):
     _, _dic_cb, dic_err = client.calls[-1]
     dic_err(None, 500)
 
-    assert done == [True]
+    assert done == [False]
     assert list(tmp_path.iterdir()) == []
 
 
 def test_bad_tree_response_gives_up(tmp_path):
     client = _FakeClient()
     done = []
-    downloader = DictionaryDownloader('de_DE', on_done=lambda: done.append(True),
+    downloader = DictionaryDownloader('de_DE', on_done=lambda success: done.append(success),
                                        client=client, target_dir=str(tmp_path))
 
     downloader.start()
     _, tree_cb, _ = client.calls[-1]
     tree_cb(None, b'not json')
 
-    assert done == [True]
+    assert done == [False]
 
 
 def test_tree_request_error_gives_up(tmp_path):
     client = _FakeClient()
     done = []
-    downloader = DictionaryDownloader('de_DE', on_done=lambda: done.append(True),
+    downloader = DictionaryDownloader('de_DE', on_done=lambda success: done.append(success),
                                        client=client, target_dir=str(tmp_path))
 
     downloader.start()
     _, _tree_cb, tree_err = client.calls[-1]
     tree_err(None, 500)
 
-    assert done == [True]
+    assert done == [False]
 
 
 def test_default_on_done_is_a_noop(tmp_path):
@@ -167,7 +169,7 @@ def test_bare_language_matches_a_regional_only_dictionary(tmp_path):
     # "ca"'s own dictionary never lists bare "ca", only ca_ES/ca_AD/...
     client = _FakeClient()
     done = []
-    downloader = DictionaryDownloader('ca', on_done=lambda: done.append(True),
+    downloader = DictionaryDownloader('ca', on_done=lambda success: done.append(success),
                                        client=client, target_dir=str(tmp_path))
 
     downloader.start()
@@ -190,7 +192,7 @@ def test_write_failure_cleans_up_and_gives_up_instead_of_crashing(tmp_path, monk
 
     client = _FakeClient()
     done = []
-    downloader = DictionaryDownloader('de_DE', on_done=lambda: done.append(True), client=client)
+    downloader = DictionaryDownloader('de_DE', on_done=lambda success: done.append(success), client=client)
 
     downloader.start()
     _, tree_cb, _ = client.calls[-1]
@@ -201,7 +203,26 @@ def test_write_failure_cleans_up_and_gives_up_instead_of_crashing(tmp_path, monk
 
     aff_cb(None, b'aff content')  # must not raise
 
+    assert done == [False]
+
+
+def test_start_with_known_files_skips_discovery(tmp_path):
+    client = _FakeClient()
+    done = []
+    downloader = DictionaryDownloader('de_DE', on_done=lambda success: done.append(success),
+                                       client=client, target_dir=str(tmp_path))
+
+    downloader.start_with_known_files('de', ['de_DE_frami.aff', 'de_DE_frami.dic'])
+    assert client.last_url().endswith('de/de_DE_frami.aff')
+
+    _, aff_cb, _ = client.calls[-1]
+    aff_cb(None, b'aff content')
+    _, dic_cb, _ = client.calls[-1]
+    dic_cb(None, b'dic content')
+
     assert done == [True]
+    assert (tmp_path / 'de_DE_frami.aff').read_bytes() == b'aff content'
+    assert (tmp_path / 'de_DE_frami.dic').read_bytes() == b'dic content'
 
 
 def test_default_target_dir_is_dictionary_write_dir(monkeypatch):

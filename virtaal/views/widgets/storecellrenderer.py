@@ -134,6 +134,11 @@ class StoreCellRenderer(Gtk.CellRenderer):
     ROW_PADDING = 10
     """The number of pixels between rows."""
 
+    VIEWPORT_ROW_BUFFER = 25
+    """Rows within this many positions of the visible range still get
+    an exact Pango measurement - a margin against get_visible_range()
+    under-reporting how many rows actually fit mid-validation."""
+
     # INITIALIZERS #
     def __init__(self, view):
         super().__init__()
@@ -147,6 +152,11 @@ class StoreCellRenderer(Gtk.CellRenderer):
         # cache, only ever consulted mid-resize, invalidated below on
         # any unit change so it can never leak between rows.
         self._cached_height = None
+        # store identity/length -> {id(unit): index}, rebuilt only when
+        # the store itself changes.
+        self._index_cache = None
+        # font description string -> (char_width, line_height).
+        self._metrics_cache = {}
 
 
     # ACCESSORS #
@@ -271,6 +281,10 @@ class StoreCellRenderer(Gtk.CellRenderer):
         self._paint_fuzzy_background_if_selected(window, background_area, flags)
 
         x_offset, y_offset, width, _height = self.do_get_size(widget, cell_area)
+        if self.source_layout is None or self.target_layout is None:
+            # A row being painted is visible by definition, even if the
+            # cached viewport do_get_size() just used said otherwise.
+            self._compute_exact_height(widget, width)
         x = cell_area.x + x_offset
         y = cell_area.y + y_offset
         source_x = x
@@ -306,6 +320,21 @@ class StoreCellRenderer(Gtk.CellRenderer):
         return layout
 
     def compute_cell_height(self, widget, width):
+        treeview = self.view._treeview
+        store = self.view.controller.get_store()
+        if not self._row_needs_exact_height(treeview, store):
+            self.source_layout = None
+            self.target_layout = None
+            treeview.mark_row_estimated(self.unit)
+            source_height = self._estimate_text_height(widget, self.unit.source, width / 2,
+                    rendering.get_source_font_description())
+            target_height = self._estimate_text_height(widget, self.unit.target, width / 2,
+                    rendering.get_target_font_description())
+            return max(source_height, target_height) + self.ROW_PADDING
+
+        return self._compute_exact_height(widget, width)
+
+    def _compute_exact_height(self, widget, width):
         lang_controller = self.view.controller.main_controller.lang_controller
         srclang = lang_controller.source_lang.code
         tgtlang = lang_controller.target_lang.code
@@ -322,7 +351,61 @@ class StoreCellRenderer(Gtk.CellRenderer):
             self.target_layout.set_alignment(Pango.Alignment.RIGHT)
         _layout_width, source_height = self.source_layout.get_pixel_size()
         _layout_width, target_height = self.target_layout.get_pixel_size()
+        self.view._treeview.mark_row_measured_exactly(self.unit)
         return max(source_height, target_height) + self.ROW_PADDING
+
+    def _row_needs_exact_height(self, treeview, store):
+        if not store:
+            return True
+        if self.unit is store[-1]:
+            # scroll_to_cell() can target this row directly (#1366) -
+            # an estimate here would show up as a visible jump once
+            # the real height replaces it right as it's scrolled to.
+            return True
+        # See StoreTreeView.get_cached_visible_range()'s own comment for
+        # why this isn't just treeview.get_visible_range().
+        visible_range = treeview.get_cached_visible_range()
+        if visible_range is None:
+            return False
+        start_index = visible_range[0] - self.VIEWPORT_ROW_BUFFER
+        end_index = visible_range[1] + self.VIEWPORT_ROW_BUFFER
+        index = self._unit_index(store)
+        if index is None:
+            return True
+        return start_index <= index <= end_index
+
+    def _unit_index(self, store):
+        cache = self._index_cache
+        if cache is None or cache[0] is not store or cache[1] != len(store):
+            index_by_id = {id(unit): i for i, unit in enumerate(store)}
+            cache = (store, len(store), index_by_id)
+            self._index_cache = cache
+        return cache[2].get(id(self.unit))
+
+    def _font_metrics(self, widget, font_description):
+        # get_metrics() does a real font lookup - worth caching across
+        # thousands of rows that all share the same handful of fonts.
+        key = font_description.to_string()
+        cached = self._metrics_cache.get(key)
+        if cached is None:
+            context = widget.get_pango_context()
+            metrics = context.get_metrics(font_description, None)
+            cached = (
+                max(metrics.get_approximate_char_width(), 1),
+                metrics.get_ascent() + metrics.get_descent(),
+            )
+            self._metrics_cache[key] = cached
+        return cached
+
+    def _estimate_text_height(self, widget, text, width, font_description):
+        """A cheap, unshaped height estimate (character count against
+        the font's average advance width) - skips building or measuring
+        an actual Pango.Layout entirely."""
+        char_width, line_height = self._font_metrics(widget, font_description)
+        chars_per_line = max(1, (width * Pango.SCALE) // char_width)
+        lines = text.split('\n') if text else ['']
+        num_lines = sum(-(-max(len(line), 1) // chars_per_line) for line in lines)
+        return (line_height * max(num_lines, 1)) / Pango.SCALE
 
     def check_editor_height(self, editor, width, parentheight):
         notesheight = 0

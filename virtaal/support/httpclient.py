@@ -9,6 +9,7 @@ import logging
 from io import BytesIO
 from urllib import parse, request
 
+import certifi
 import pycurl
 from gi.repository import GLib, GObject
 
@@ -59,6 +60,7 @@ class HTTPRequest(GObjectWrapper):
         self.curl.setopt(pycurl.ENCODING, "") # use all available encodings
         self.curl.setopt(pycurl.URL, self.url)
         self._configure_timeouts(download)
+        self._configure_ca_bundle()
         self._configure_windows_tls_workaround()
         self._configure_method(method, data, headers, headers_only, user_agent, follow_location)
         self._configure_proxy()
@@ -66,6 +68,9 @@ class HTTPRequest(GObjectWrapper):
         # self reference required, because CurlMulti will only return
         # Curl handles
         self.curl.request = self
+
+    def _configure_ca_bundle(self):
+        self.curl.setopt(pycurl.CAINFO, certifi.where())
 
     def _configure_timeouts(self, download):
         self.curl.setopt(pycurl.CONNECTTIMEOUT, 10)

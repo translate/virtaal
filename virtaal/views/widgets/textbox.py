@@ -107,6 +107,7 @@ class TextBox(Gtk.TextView):
         self.main_controller = main_controller
         self.placeables_controller = main_controller.placeables_controller
         self.refresh_cursor_pos = -1
+        self._structural_change_pending = False
         self.role = role
         self.selector_textbox = selector_textbox or self
         self.selector_textboxes = [selector_textbox or self]
@@ -614,7 +615,17 @@ class TextBox(Gtk.TextView):
             return
         if self.undo_controller.model.recording:
             self.undo_controller.record_stop()
-        self.refresh()
+        if self._structural_change_pending:
+            self._structural_change_pending = False
+            self.refresh()
+        elif self.refresh_cursor_pos >= 0:
+            # No structure changed, so the buffer already matches self.elem -
+            # skip the rebuild, just keep the cursor onscreen. set_text()
+            # would normally emit 'changed' as part of that rebuild - do it
+            # directly instead, or the edit never reaches unit.target.
+            self.place_cursor(self.refresh_cursor_pos)
+            self.refresh_cursor_pos = -1
+            self.emit("changed")
 
     def _delete_at_placeable_boundary(self, start_iter, start_elem, start_elem_offset,
                                        start_elem_len, cursor_pos, key_is_delete,
@@ -789,6 +800,7 @@ class TextBox(Gtk.TextView):
 
         if deleted:
             self.elem.prune()
+            self._structural_change_pending = True
             self.emit(
                 'text-deleted', deleted, parent, index,
                 self.buffer.props.cursor_position, self.elem
@@ -869,6 +881,7 @@ class TextBox(Gtk.TextView):
         if affected_leaf.isleaf():
             return
 
+        self._structural_change_pending = True
         affected_leaf.gui_info = None
         self.add_default_gui_info(affected_leaf)
 

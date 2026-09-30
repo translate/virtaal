@@ -299,6 +299,57 @@ class TestTextBox(TestScaffolding):
         assert len(list(textbox.elem.depth_first())) == elem_count_before
         assert calls == []
 
+    def test_plain_keystroke_does_not_rebuild_the_buffer(self, monkeypatch):
+        # #2020: a full refresh()/set_text() rebuild on every keystroke is
+        # what resets the scrollbar on a long unit. A plain character (no
+        # placeable/structure change) is already applied natively by GTK,
+        # so end-user-action must only reposition the cursor, not rebuild.
+        calls = self._capture_idle_add(monkeypatch)
+        textbox = self._target_for('%(count)s files renamed')
+        textbox.set_text('%(count)s files renamed')  # reset - an earlier test in this shared-widget class may have mutated it
+        textbox.place_cursor(len(textbox.get_text()))
+        refresh_calls = []
+        monkeypatch.setattr(textbox, 'refresh', lambda *a, **kw: refresh_calls.append(1))
+
+        textbox.buffer.insert_interactive_at_cursor('x', -1, True)
+
+        assert calls == []
+        assert refresh_calls == []
+        assert textbox.get_text() == '%(count)s files renamedx'
+        assert textbox.buffer.props.cursor_position == len('%(count)s files renamedx')
+
+    def test_plain_keystroke_still_emits_changed(self, monkeypatch):
+        # set_text() is the only other place that emits 'changed' - the
+        # unit-level listener that commits the edit into unit.target relies
+        # on it. Skipping refresh() for a plain keystroke must not also
+        # skip that emission, or the edit never reaches the underlying unit
+        # (looks right on screen, vanishes on navigating away and back).
+        self._capture_idle_add(monkeypatch)
+        textbox = self._target_for('%(count)s files renamed')
+        textbox.set_text('%(count)s files renamed')  # reset - an earlier test in this shared-widget class may have mutated it
+        textbox.place_cursor(len(textbox.get_text()))
+        changed_calls = []
+        textbox.connect('changed', lambda *a: changed_calls.append(1))
+
+        textbox.buffer.insert_interactive_at_cursor('x', -1, True)
+
+        assert changed_calls == [1]
+
+    def test_structural_keystroke_still_rebuilds_the_buffer(self, monkeypatch):
+        # Typing a placeable-forming character (e.g. a newline) still needs
+        # the real rebuild, since gui_info/widgets genuinely changed.
+        calls = self._capture_idle_add(monkeypatch)
+        textbox = self._target_for('%s files copied')
+        textbox.set_text('%s files copied')  # reset - an earlier test in this shared-widget class may have mutated it
+        textbox.place_cursor(len(textbox.get_text()))
+        refresh_calls = []
+        monkeypatch.setattr(textbox, 'refresh', lambda *a, **kw: refresh_calls.append(1))
+
+        textbox.buffer.insert_interactive_at_cursor('\n', -1, True)
+
+        assert refresh_calls == [1]
+        assert len(calls) == 1  # the idle_add-deferred do_refresh, unaffected
+
     def test_undo_reverts_a_live_recognized_placeable(self, monkeypatch):
         # Exercises the exact undo_action closure _on_unit_insert_text
         # records (undocontroller.py) rather than going through

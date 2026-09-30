@@ -34,7 +34,7 @@ class _FakeClient:
 def test_full_chain_writes_the_file(tmp_path):
     client = _FakeClient()
     done = []
-    downloader = AutocorrectDownloader('af_ZA', on_done=lambda: done.append(True),
+    downloader = AutocorrectDownloader('af_ZA', on_done=done.append,
                                         client=client, target_dir=str(tmp_path))
 
     downloader.start()
@@ -56,34 +56,34 @@ def test_full_chain_writes_the_file(tmp_path):
 def test_no_folder_guess_gives_up(tmp_path):
     client = _FakeClient()
     done = []
-    downloader = AutocorrectDownloader('xx_YY', on_done=lambda: done.append(True),
+    downloader = AutocorrectDownloader('xx_YY', on_done=done.append,
                                         client=client, target_dir=str(tmp_path))
 
     downloader.start()
     _, listing_cb, _ = client.calls[-1]
     listing_cb(None, LISTING_RESULT)
 
-    assert done == [True]
+    assert done == [False]
     assert list(tmp_path.iterdir()) == []
 
 
 def test_listing_request_error_gives_up(tmp_path):
     client = _FakeClient()
     done = []
-    downloader = AutocorrectDownloader('af_ZA', on_done=lambda: done.append(True),
+    downloader = AutocorrectDownloader('af_ZA', on_done=done.append,
                                         client=client, target_dir=str(tmp_path))
 
     downloader.start()
     _, _listing_cb, listing_err = client.calls[-1]
     listing_err(None, 500)
 
-    assert done == [True]
+    assert done == [False]
 
 
 def test_document_list_request_error_gives_up(tmp_path):
     client = _FakeClient()
     done = []
-    downloader = AutocorrectDownloader('af_ZA', on_done=lambda: done.append(True),
+    downloader = AutocorrectDownloader('af_ZA', on_done=done.append,
                                         client=client, target_dir=str(tmp_path))
 
     downloader.start()
@@ -92,21 +92,21 @@ def test_document_list_request_error_gives_up(tmp_path):
     _, _doc_cb, doc_err = client.calls[-1]
     doc_err(None, 404)
 
-    assert done == [True]
+    assert done == [False]
     assert list(tmp_path.iterdir()) == []
 
 
 def test_bad_listing_response_gives_up(tmp_path):
     client = _FakeClient()
     done = []
-    downloader = AutocorrectDownloader('af_ZA', on_done=lambda: done.append(True),
+    downloader = AutocorrectDownloader('af_ZA', on_done=done.append,
                                         client=client, target_dir=str(tmp_path))
 
     downloader.start()
     _, listing_cb, _ = client.calls[-1]
     listing_cb(None, b'not json')
 
-    assert done == [True]
+    assert done == [False]
 
 
 def test_default_on_done_is_a_noop(tmp_path):
@@ -115,3 +115,21 @@ def test_default_on_done_is_a_noop(tmp_path):
     downloader.start()
     _, listing_cb, _ = client.calls[-1]
     listing_cb(None, LISTING_RESULT)  # no exception
+
+
+def test_start_with_known_files_skips_discovery(tmp_path):
+    client = _FakeClient()
+    done = []
+    downloader = AutocorrectDownloader('af_ZA', on_done=done.append,
+                                        client=client, target_dir=str(tmp_path))
+
+    downloader.start_with_known_files('af-ZA', ['DocumentList.xml'])
+    assert client.last_url() == (
+        'https://raw.githubusercontent.com/LibreOffice/core/master/'
+        'extras/source/autocorr/lang/af-ZA/DocumentList.xml')
+
+    _, doc_cb, _ = client.calls[-1]
+    doc_cb(None, AF_ZA_DOCUMENT_LIST)
+
+    assert done == [True]
+    assert (tmp_path / 'DocumentList.xml').read_bytes() == AF_ZA_DOCUMENT_LIST

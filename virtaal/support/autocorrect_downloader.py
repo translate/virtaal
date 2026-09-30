@@ -9,10 +9,11 @@
 via the app's own async HTTPClient - the non-blocking counterpart to
 autocorrect_source.py's synchronous download_document_list().
 
-Simpler than DictionaryDownloader: no per-file content check needed
-once a folder's guessed (find_document_list_folder() is pure and
-already gives a single, definite answer), so this is a two-step chain
-(folder listing -> one file), not a fan-out over candidates.
+start_with_known_files() is the normal path - the autocorrector plugin
+already knows folder/file from virtaal.support.asset_manifest's cached
+manifest, no live discovery needed. start() (a two-step chain: folder
+listing -> one file) is kept as the fallback for when the manifest
+can't say what to fetch.
 """
 
 import json
@@ -30,13 +31,15 @@ from virtaal.support.autocorrect_source import (
 
 class AutocorrectDownloader:
     """Downloads locale_code's autocorrect data in the background,
-    calling on_done() (no arguments) once it's either written or given
-    up. Silent on failure, same as UpdateChecker: network problems
-    must never surface as an application error to the user."""
+    calling on_done(success) once it's either written or given up.
+    Silent on failure, same as UpdateChecker: network problems must
+    never surface as an application error to the user - success is
+    passed only so a caller can decide whether to record this as
+    installed, not to raise anything on failure."""
 
     def __init__(self, locale_code, on_done=None, client=None, target_dir=None):
         self.locale_code = locale_code.replace('-', '_')
-        self.on_done = on_done or (lambda: None)
+        self.on_done = on_done or (lambda success: None)
         self.target_dir = target_dir
         if client is None:
             from virtaal.support.httpclient import HTTPClient
@@ -45,7 +48,20 @@ class AutocorrectDownloader:
         self._client = client
 
     def start(self):
+        """Live discovery - a listing call, then a guessed folder's
+        DocumentList.xml. Used as the fallback when asset_manifest.py's
+        manifest can't say what to fetch (never successfully fetched,
+        or has nothing for this locale)."""
         self._client.get(CONTENTS_URL, self._on_listing, error_callback=self._on_error)
+
+    def start_with_known_files(self, folder, files):
+        """Skips discovery entirely - folder/file already known (from
+        asset_manifest.py's manifest), straight to fetching it. files
+        always holds exactly one name (DocumentList.xml) - kept as a
+        list for the same call shape as DictionaryDownloader's own
+        start_with_known_files()."""
+        url = RAW_BASE + folder + '/' + files[0]
+        self._client.get(url, self._on_document_list, error_callback=self._on_error, download=True)
 
     def _on_listing(self, _request, result):
         try:
@@ -67,7 +83,7 @@ class AutocorrectDownloader:
         with open(dest, 'wb') as f:
             f.write(result)
         logging.debug('Downloaded autocorrect data for %s', self.locale_code)
-        self.on_done()
+        self.on_done(True)
 
     def _on_error(self, _request, status):
         logging.debug('autocorrect download: request failed, status=%r', status)
@@ -75,4 +91,4 @@ class AutocorrectDownloader:
 
     def _give_up(self):
         logging.debug('No LibreOffice autocorrect data found for %s', self.locale_code)
-        self.on_done()
+        self.on_done(False)

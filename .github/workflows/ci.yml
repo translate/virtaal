@@ -178,9 +178,9 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
-          pip install setuptools wheel
+          pip install setuptools==84.0.0 wheel==0.48.0
           pip install translate-toolkit
-          pip install pygobject
+          pip install pygobject==3.58.0
           pip install pyenchant
 
       - name: Install virtaal
@@ -374,7 +374,7 @@ jobs:
           # setuptools/wheel needed explicitly: "Install virtaal" below
           # uses --no-build-isolation, so pip won't provision its own
           # build backend into a throwaway env.
-          pip install setuptools wheel
+          pip install setuptools==84.0.0 wheel==0.48.0
           # translate-toolkit has to be pre-installed, not just declared
           # as a dependency: setup.py's own top-level code imports it
           # directly (for .mo compilation), before pip has satisfied
@@ -383,7 +383,7 @@ jobs:
           # GTK3/PyGObject aren't declared in pyproject.toml at all -
           # pip install pygobject only succeeds with GTK3 headers
           # already present, which apt provides here.
-          pip install pygobject
+          pip install pygobject==3.58.0
           pip install pyenchant
 
       - name: Install virtaal
@@ -528,7 +528,7 @@ jobs:
         # slower on Windows than the equivalent single batched install.
         run: |
           pip install --upgrade pip
-          pip install setuptools wheel pycairo pygobject translate-toolkit python-Levenshtein pycurl lxml diff_match_patch cheroot pytest pytest-xdist pytest-cov pytest-timeout
+          pip install setuptools==84.0.0 wheel==0.48.0 pycairo==1.29.1 pygobject==3.58.0 translate-toolkit python-Levenshtein pycurl lxml diff_match_patch cheroot pytest pytest-xdist pytest-cov pytest-timeout
 
       - name: Install virtaal
         run: pip install --no-build-isolation .
@@ -652,7 +652,7 @@ jobs:
         # own step comment for why.
         run: |
           pip install --upgrade pip
-          pip install setuptools wheel pycairo pygobject translate-toolkit python-Levenshtein pycurl lxml diff_match_patch cheroot pyinstaller
+          pip install setuptools==84.0.0 wheel==0.48.0 pycairo==1.29.1 pygobject==3.58.0 translate-toolkit python-Levenshtein pycurl lxml diff_match_patch cheroot pyinstaller==6.22.3
 
       - name: Install virtaal
         run: pip install --no-build-isolation .
@@ -838,7 +838,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
-          pip install setuptools wheel
+          pip install setuptools==84.0.0 wheel==0.48.0
           # Pre-installed for the same reason as the Linux job: setup.py
           # imports it directly at the top level, before pyproject.toml's
           # declared dependencies get a chance to be satisfied. GTK3/
@@ -934,7 +934,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
-          pip install setuptools wheel translate-toolkit pyenchant pyinstaller
+          pip install setuptools==84.0.0 wheel==0.48.0 translate-toolkit pyenchant pyinstaller==6.22.3
 
       - name: Install virtaal
         run: pip install --no-build-isolation .

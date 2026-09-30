@@ -62,6 +62,12 @@ repos:
         language: system
         pass_filenames: false
         files: ^devsupport/mac-bundle/(VirtaalDocumentIcon_.*\.svg|icons/VolumeIcon_virtaal\.svg)$
+      - id: check-flatpak-deps-sync
+        name: check flatpak's pinned deps are in sync with pyproject.toml
+        entry: devsupport/packaging/flatpak/check_flatpak_deps_sync.py
+        language: system
+        files: ^(pyproject\.toml|devsupport/packaging/flatpak/virtaal-python-deps\.yaml)$
+        pass_filenames: false
       - id: check-copyright-header
         name: check the unified copyright header (.license.header.txt)
         entry: devsupport/check-copyright-header.sh

@@ -1,0 +1,92 @@
+# A standard, purpose-built fixture for Virtaal's manual per-platform
+# screenshots (docs/screenshots.rst's Windows/macOS images, issue #3746) -
+# unlike content/appdata and content/docs, this one isn't driven by a
+# script; a person opens it directly and captures the window themselves,
+# so it's a single file shared by every platform instead of one fixture
+# per feature. Deliberately synthetic, not an excerpt of real translator
+# work. Unit 10 ("Please review your ... before %(date)s.") is the one to
+# select before capturing - see this directory's README.
+msgid ""
+msgstr ""
+"Project-Id-Version: Virtaal 0.4\n"
+"Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2014-02-11 21:10+0000\n"
+"PO-Revision-Date: 2011-05-27 02:12+0000\n"
+"Last-Translator: F Wolff <friedel@translate.org.za>\n"
+"Language-Team: translate-discuss-af@lists.sourceforge.net\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+"Language: af\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Project-Style: gnome\n"
+
+msgid "Welcome to Example App."
+msgstr "Welkom by Voorbeeld-toepassing."
+
+msgid "Settings"
+msgstr "Instellings"
+
+msgid "Please review your <a href=\"%(url)s\">account settings</a> before %(time)s."
+msgstr "Gaan asseblief jou <a href=\"%(url)s\">rekeninginstellings</a> na voor %(time)s."
+
+msgid "Cancel"
+msgstr "Kanselleer"
+
+msgid "Save changes"
+msgstr "Stoor veranderinge"
+
+msgid "Your session has expired."
+msgstr ""
+
+msgid "Loading, please wait..."
+msgstr "Laai tans, wag asseblief..."
+
+#, fuzzy
+msgid "An error occurred while saving your file."
+msgstr "'n Fout het voorgekom tydens stoor."
+
+msgid "Delete"
+msgstr "Vee uit"
+
+#, fuzzy
+msgid "Please review your <a href=\"%(url)s\">account settings</a> before %(date)s."
+msgstr "Gaan asseblief jou <a href=\"%(url)s\">rekeninginstellings</a> na voor "
+
+msgid "Download"
+msgstr "Laai af"
+
+msgid "Upload"
+msgstr ""
+
+msgid "Profile picture"
+msgstr "Profielprent"
+
+#, fuzzy
+msgid "Notifications"
+msgstr "Kennisgewings"
+
+msgid "Privacy Policy"
+msgstr "Privaatheidsbeleid"
+
+msgid "Terms of Service"
+msgstr "Diensbepalings"
+
+msgid "Log out"
+msgstr "Meld af"
+
+msgid "Search"
+msgstr "Soek"
+
+msgid "Help"
+msgstr "Hulp"
+
+msgid "About"
+msgstr "Aangaande"
+
+msgid "Close"
+msgstr "Maak toe"
+
+msgid "OK"
+msgstr "OK"

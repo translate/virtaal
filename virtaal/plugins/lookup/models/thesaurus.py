@@ -30,11 +30,13 @@ same trigger virtaal.support.dictionary_download_watcher already uses
 for spell-check dictionaries - by the time anyone actually right-clicks
 a word, the download has usually already finished in the background.
 
-A locale's availability is checked (a light tree + xcu fetch, no big
-file) before ever downloading anything - once a locale is confirmed to
-have no thesaurus in the repo at all, no menu item is shown for it
-again this session, rather than offering a "Download" button that
-would only ever fail."""
+A locale's availability is checked against asset_manifest.py's cached
+manifest first - an instant local lookup once cached, not the live
+tree + xcu fetch every locale used to need. Once a locale is confirmed
+to have no thesaurus at all, no menu item is shown for it again this
+session, rather than offering a "Download" button that would only ever
+fail. Only falls back to the live tree + xcu check when the manifest
+itself was never fetched successfully."""
 
 import logging
 import os
@@ -44,7 +46,9 @@ import threading
 from gi.repository import GLib, Gtk
 
 from virtaal.common import pan_app
+from virtaal.support import asset_manifest as asset_manifest_module
 from virtaal.support import mythes
+from virtaal.support.asset_manifest import AssetManifest
 from virtaal.support.dictionary_source import (
     fetch_dictionary_file,
     fetch_dictionary_tree,
@@ -99,9 +103,11 @@ class LookupModel(BaseLookupModel):
     TOP_LEVEL = True
 
     # INITIALIZERS #
-    def __init__(self, internal_name, controller):
+    def __init__(self, internal_name, controller, asset_manifest=None, schedule_after_idle_lull=None):
         self.controller = controller
         self.internal_name = internal_name
+        self._asset_manifest = asset_manifest
+        self._schedule_after_idle_lull = schedule_after_idle_lull or asset_manifest_module.schedule_after_idle_lull
         self._thesauruses = {}  # locale_code -> parsed {word: meanings}
         self._checking = set()  # locale_codes: availability check in flight
         self._unavailable = set()  # locale_codes confirmed to have no thesaurus at all
@@ -117,6 +123,11 @@ class LookupModel(BaseLookupModel):
             self._maybe_auto_download(lang_controller.source_lang.code)
         if lang_controller.target_lang:
             self._maybe_auto_download(lang_controller.target_lang.code)
+
+    def _get_asset_manifest(self):
+        if self._asset_manifest is None:
+            self._asset_manifest = AssetManifest()
+        return self._asset_manifest
 
     # METHODS #
     def create_menu_items(self, query, role, srclang, tgtlang, textbox):
@@ -215,7 +226,24 @@ class LookupModel(BaseLookupModel):
         if _cached_dat_path(locale_code) is not None:
             self._maybe_start_parse(locale_code)
             return
-        self._start_check(locale_code)
+        self._get_asset_manifest().ensure_fresh(
+            on_done=lambda: self._after_manifest_fresh(locale_code))
+
+    def _after_manifest_fresh(self, locale_code):
+        manifest = self._get_asset_manifest()
+        entry = manifest.get('thesaurus', locale_code)
+        if entry is None:
+            if not manifest.has_data():
+                return self._start_check(locale_code)
+            self._unavailable.add(locale_code)  # manifest is authoritative - genuinely nothing for this locale
+            return
+        # Same idle-lull gate dictionary/autocorrect downloads already
+        # use for a manifest-known download - live discovery (below,
+        # only used when the manifest itself was never fetched) stays
+        # unthrottled, so a first-ever encounter still downloads
+        # promptly.
+        self._schedule_after_idle_lull(
+            lambda: self._start_download(locale_code, entry['folder'], [f['name'] for f in entry['files']]))
 
     def _maybe_start_parse(self, locale_code):
         """Starts a background parse of locale_code's cached .dat if
@@ -262,10 +290,21 @@ class LookupModel(BaseLookupModel):
 
     def _on_unavailable(self, locale_code):
         self._checking.discard(locale_code)
+        if locale_code in self._downloading:
+            return  # the manifest path already resolved this while this live check was still in flight
         self._unavailable.add(locale_code)
 
     def _on_available(self, locale_code, folder, files):
         self._checking.discard(locale_code)
+        self._start_download(locale_code, folder, files)
+
+    def _start_download(self, locale_code, folder, files):
+        # A live check (via _on_download) and the manifest path
+        # (_after_manifest_fresh) can both resolve for the same locale
+        # during the manifest's own idle-lull-gated refresh window -
+        # whichever gets here first wins, the other is a no-op.
+        if locale_code in self._downloading:
+            return
         self._downloading.add(locale_code)
         threading.Thread(target=self._download, args=(locale_code, folder, files), daemon=True).start()
 

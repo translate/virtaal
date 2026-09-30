@@ -1403,11 +1403,10 @@ class MainView(BaseView):
     def _add_recent_file(self, store_controller):
         from virtaal.views import recent
         if store_controller.project:
-            if not store_controller._archivetemp:
-                path = store_controller.get_bundle_filename()
-                recent.rm.add_item('file://' + path)
-                if platform.is_mac:
-                    _note_recent_document(path)
+            path = store_controller.get_bundle_filename()
+            recent.rm.add_item('file://' + path)
+            if platform.is_mac:
+                _note_recent_document(path)
         else:
             path = os.path.abspath(store_controller.store.filename)
             if platform.is_windows:

@@ -241,7 +241,7 @@ class HTTPClient:
         # see E_* constants in pycurl for error_code
         self.curl.remove_handle(fail_tuple[0])
         self.requests.remove(fail_tuple[0].request)
-        logging.debug(fail_tuple[2])
+        logging.debug('%s: %s', fail_tuple[0].request.url, fail_tuple[2])
 
     def perform(self):
         """main event loop function, non blocking execution of all queued requests"""

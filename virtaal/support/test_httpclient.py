@@ -141,8 +141,9 @@ def _client():
 class _FakeRequest:
     # SimpleNamespace defines __eq__, which makes it unhashable - these
     # go into HTTPClient.requests, a real set.
-    def __init__(self, curl=None, handle_result=None):
+    def __init__(self, curl=None, handle_result=None, url='http://example.com'):
         self.curl = curl
+        self.url = url
         if handle_result is not None:
             self.handle_result = handle_result
 
@@ -234,6 +235,19 @@ def test_perform_closes_a_failed_request_without_calling_handle_result():
 
     assert request not in client.requests
     assert handle in client.curl.removed
+
+
+def test_close_failed_request_logs_the_url_alongside_the_error(caplog):
+    client = _client()
+    request = _FakeRequest(url='http://example.com/unit')
+    handle = SimpleNamespace(request=request)
+    client.requests = {request}
+
+    with caplog.at_level('DEBUG'):
+        client.close_failed_request((handle, 42, 'timed out'))
+
+    assert 'http://example.com/unit' in caplog.text
+    assert 'timed out' in caplog.text
 
 
 # HTTPClient.get()

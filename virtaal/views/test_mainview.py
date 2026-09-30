@@ -678,7 +678,7 @@ def test_on_store_loaded_adds_the_bundle_filename_for_a_project(monkeypatch):
     view.gui = SimpleNamespace(get_object=lambda name: _FakeSensitiveWidget())
     view.status_bar = _FakeSensitiveWidget()
     store_controller = SimpleNamespace(
-        get_store_filename=lambda: 'bundle.zip', project=True, _archivetemp=False,
+        get_store_filename=lambda: 'bundle.zip', project=True,
         get_bundle_filename=lambda: '/tmp/bundle.zip')
 
     view._on_store_loaded(store_controller)
@@ -745,7 +745,7 @@ def test_on_store_saved_adds_the_bundle_filename_for_a_project(monkeypatch):
     monkeypatch.setattr(mainview, '_note_recent_document', lambda path: None)
     view = MainView.__new__(MainView)
     store_controller = SimpleNamespace(
-        project=True, _archivetemp=False, get_bundle_filename=lambda: '/tmp/bundle.zip')
+        project=True, get_bundle_filename=lambda: '/tmp/bundle.zip')
 
     view._on_store_saved(store_controller)
 
@@ -1581,7 +1581,7 @@ def test_on_store_loaded_notes_the_bundle_filename_on_mac(monkeypatch):
     view.gui = SimpleNamespace(get_object=lambda name: _FakeSensitiveWidget())
     view.status_bar = _FakeSensitiveWidget()
     store_controller = SimpleNamespace(
-        get_store_filename=lambda: 'bundle.zip', project=True, _archivetemp=False,
+        get_store_filename=lambda: 'bundle.zip', project=True,
         get_bundle_filename=lambda: '/tmp/bundle.zip')
 
     view._on_store_loaded(store_controller)

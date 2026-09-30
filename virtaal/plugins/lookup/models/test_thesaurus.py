@@ -5,8 +5,6 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-from urllib.error import HTTPError
-
 from gi.repository import Gtk
 
 from virtaal.plugins.lookup.models import thesaurus as thesaurus_module
@@ -99,12 +97,35 @@ class _FakeAssetManifest:
         return self._has_data
 
 
-def _make_model(source_lang=None, target_lang=None, manifest_entries=None, manifest_has_data=None, lull_calls=None):
+class _FakeDownloader:
+    """Records start_with_known_files() calls instead of doing real
+    network I/O - the async counterpart to _FakeThread above, for the
+    one piece (the actual file fetch) that no longer runs in a plain
+    thread. Real chain behaviour (fetching, writing, filtering to
+    .dat) is tested on its own in test_thesaurus_downloader.py."""
+
+    instances = []
+
+    def __init__(self, locale_code, on_done=None, target_dir=None):
+        self.locale_code = locale_code
+        self.on_done = on_done
+        self.target_dir = target_dir
+        self.known_files_call = None
+        _FakeDownloader.instances.append(self)
+
+    def start_with_known_files(self, folder, files):
+        self.known_files_call = (folder, files)
+
+
+def _make_model(source_lang=None, target_lang=None, manifest_entries=None, manifest_has_data=None, lull_calls=None,
+                 downloader_factory=None):
     lull_calls = lull_calls if lull_calls is not None else []
+    _FakeDownloader.instances = []
     return LookupModel(
         'thesaurus', _FakeController(source_lang, target_lang),
         asset_manifest=_FakeAssetManifest(manifest_entries, has_data=manifest_has_data),
-        schedule_after_idle_lull=lambda callback: lull_calls.append(callback))
+        schedule_after_idle_lull=lambda callback: lull_calls.append(callback),
+        downloader_factory=downloader_factory or _FakeDownloader)
 
 
 def _write_dat(cache_dir, locale_code, content):
@@ -313,25 +334,6 @@ def test_replace_selection_leaves_source_text_untouched():
     assert textbox.emitted == []
 
 
-def test_download_writes_only_dat_files_ignoring_a_missing_idx(monkeypatch, tmp_path):
-    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
-    fetched = []
-
-    def fake_fetch(folder, filename):
-        fetched.append(filename)
-        if filename.endswith('.idx'):
-            raise HTTPError('url', 404, 'not found', {}, None)
-        return b'UTF-8\nabaja|1\n-|abaja\n'
-    monkeypatch.setattr(thesaurus_module, 'fetch_dictionary_file', fake_fetch)
-
-    model = _make_model()
-    model._download('fr_FR', 'fr_FR', ['thes_fr.dat', 'thes_fr.idx'])
-
-    assert fetched == ['thes_fr.dat']
-    assert (tmp_path / 'fr_FR' / 'thes_fr.dat').read_bytes() == b'UTF-8\nabaja|1\n-|abaja\n'
-    assert 'fr_FR' not in model._downloading
-
-
 def test_on_download_does_not_start_a_second_thread_while_one_is_in_flight(monkeypatch, tmp_path):
     monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
     threads = _patch_threads(monkeypatch)
@@ -442,13 +444,16 @@ def test_downloads_after_a_lull_when_the_manifest_has_an_entry(monkeypatch, tmp_
 
     assert 'pl_PL' not in model._checking  # no live check needed
     assert threads == []  # not yet - waiting for the lull
+    assert _FakeDownloader.instances == []
     assert len(lull_calls) == 1
     lull_calls[0]()  # simulate the lull passing
 
     assert 'pl_PL' in model._downloading
-    assert len(threads) == 1
-    assert threads[0].target == model._download
-    assert threads[0].args == ('pl_PL', 'pl', ['th_pl_PL.dat'])
+    assert threads == []  # the download itself no longer needs its own thread
+    assert len(_FakeDownloader.instances) == 1
+    downloader = _FakeDownloader.instances[0]
+    assert downloader.locale_code == 'pl_PL'
+    assert downloader.known_files_call == ('pl', ['th_pl_PL.dat'])
 
 
 def test_marks_unavailable_directly_when_a_fetched_manifest_confirms_no_entry(monkeypatch, tmp_path):
@@ -492,20 +497,18 @@ def test_lazily_constructs_a_real_asset_manifest_when_none_is_injected(monkeypat
 
 def test_on_available_does_not_start_a_second_download_once_the_manifest_already_started_one(monkeypatch, tmp_path):
     monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
-    threads = _patch_threads(monkeypatch)
     model = _make_model()
     model._start_download('pl_PL', 'pl', ['th_pl_PL.dat'])  # the manifest path won already
     model._checking.add('pl_PL')  # a live check was also in flight
 
     model._on_available('pl_PL', 'pl', ['th_pl_PL.dat'])  # the live check's own result arrives late
 
-    assert len(threads) == 1  # no second download thread
+    assert len(_FakeDownloader.instances) == 1  # no second downloader
     assert 'pl_PL' not in model._checking
 
 
 def test_on_unavailable_does_not_override_a_download_the_manifest_already_started(monkeypatch, tmp_path):
     monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
-    _patch_threads(monkeypatch)
     model = _make_model()
     model._start_download('pl_PL', 'pl', ['th_pl_PL.dat'])
     model._checking.add('pl_PL')
@@ -544,7 +547,6 @@ def test_check_starts_a_download_when_a_thesaurus_is_found(monkeypatch):
     monkeypatch.setattr(thesaurus_module, 'list_dictionary_folders', lambda tree: {})
     monkeypatch.setattr(thesaurus_module, 'find_dictionary', lambda *a, **k: ('pl', ['th_pl_PL.dat']))
     _patch_idle_add_to_run_immediately(monkeypatch)
-    threads = _patch_threads(monkeypatch)
     model = _make_model()
     model._checking.add('pl_PL')
 
@@ -552,9 +554,10 @@ def test_check_starts_a_download_when_a_thesaurus_is_found(monkeypatch):
 
     assert 'pl_PL' not in model._checking
     assert 'pl_PL' in model._downloading
-    assert len(threads) == 1
-    assert threads[0].target == model._download
-    assert threads[0].args[0] == 'pl_PL'
+    assert len(_FakeDownloader.instances) == 1
+    downloader = _FakeDownloader.instances[0]
+    assert downloader.locale_code == 'pl_PL'
+    assert downloader.known_files_call == ('pl', ['th_pl_PL.dat'])
 
 
 def test_create_menu_items_returns_nothing_for_an_unavailable_locale():

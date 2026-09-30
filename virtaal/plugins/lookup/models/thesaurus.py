@@ -36,7 +36,12 @@ tree + xcu fetch every locale used to need. Once a locale is confirmed
 to have no thesaurus at all, no menu item is shown for it again this
 session, rather than offering a "Download" button that would only ever
 fail. Only falls back to the live tree + xcu check when the manifest
-itself was never fetched successfully."""
+itself was never fetched successfully - that live check
+(dictionary_source.fetch_dictionary_tree/fetch_xcu/find_dictionary)
+stays synchronous, run in its own thread (below); only the actual file
+fetch, once folder/files are known either way, goes through
+thesaurus_downloader.py's async HTTPClient chain instead of a second
+blocking call in that same thread."""
 
 import logging
 import os
@@ -50,12 +55,12 @@ from virtaal.support import asset_manifest as asset_manifest_module
 from virtaal.support import mythes
 from virtaal.support.asset_manifest import AssetManifest
 from virtaal.support.dictionary_source import (
-    fetch_dictionary_file,
     fetch_dictionary_tree,
     fetch_xcu,
     find_dictionary,
     list_dictionary_folders,
 )
+from virtaal.support.thesaurus_downloader import ThesaurusDownloader
 
 try:
     from virtaal.plugins.lookup.models.baselookupmodel import BaseLookupModel
@@ -103,11 +108,13 @@ class LookupModel(BaseLookupModel):
     TOP_LEVEL = True
 
     # INITIALIZERS #
-    def __init__(self, internal_name, controller, asset_manifest=None, schedule_after_idle_lull=None):
+    def __init__(self, internal_name, controller, asset_manifest=None, schedule_after_idle_lull=None,
+                 downloader_factory=None):
         self.controller = controller
         self.internal_name = internal_name
         self._asset_manifest = asset_manifest
         self._schedule_after_idle_lull = schedule_after_idle_lull or asset_manifest_module.schedule_after_idle_lull
+        self._downloader_factory = downloader_factory or ThesaurusDownloader
         self._thesauruses = {}  # locale_code -> parsed {word: meanings}
         self._checking = set()  # locale_codes: availability check in flight
         self._unavailable = set()  # locale_codes confirmed to have no thesaurus at all
@@ -306,25 +313,10 @@ class LookupModel(BaseLookupModel):
         if locale_code in self._downloading:
             return
         self._downloading.add(locale_code)
-        threading.Thread(target=self._download, args=(locale_code, folder, files), daemon=True).start()
-
-    def _download(self, locale_code, folder, files):
-        # Only the .dat matters (see this module's own docstring) - a
-        # real folder (fr_FR, for one) has no .idx alongside it at all.
-        dat_files = [f for f in files if f.endswith('.dat')]
-        succeeded = False
-        try:
-            target_dir = os.path.join(thesaurus_cache_dir(), locale_code)
-            os.makedirs(target_dir, exist_ok=True)
-            for filename in dat_files:
-                content = fetch_dictionary_file(folder, filename)
-                with open(os.path.join(target_dir, filename), 'wb') as f:
-                    f.write(content)
-            succeeded = True
-        except Exception as e:
-            logging.debug('Thesaurus download failed for %s: %s', locale_code, e)
-        finally:
-            GLib.idle_add(self._on_download_finished, locale_code, succeeded)
+        downloader = self._downloader_factory(
+            locale_code, on_done=lambda success: self._on_download_finished(locale_code, success),
+            target_dir=os.path.join(thesaurus_cache_dir(), locale_code))
+        downloader.start_with_known_files(folder, files)
 
     def _on_download_finished(self, locale_code, succeeded):
         self._downloading.discard(locale_code)

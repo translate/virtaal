@@ -10,12 +10,16 @@ the app's own async HTTPClient - the non-blocking counterpart to
 dictionary_source.py's synchronous download_dictionary() (kept as-is:
 simpler, directly testable, still useful standalone).
 
-Reimplements dictionary_source.py's fetch/match orchestration as an
-explicit callback chain (tree -> candidate xcu(s) -> files), since
-find_dictionary()/download_dictionary() are both written as blocking
-loops - one request in flight at a time doesn't fit that shape. The
-pure logic (list_dictionary_folders/candidate_folders/
-parse_dictionaries_xcu) is reused unchanged.
+start_with_known_files() is the normal path - dictionary_download_watcher.py
+already knows folder/files from virtaal.support.asset_manifest's cached
+manifest, no live discovery needed. start() reimplements
+dictionary_source.py's own fetch/match orchestration as an explicit
+callback chain (tree -> candidate xcu(s) -> files) instead, kept as the
+fallback for when the manifest can't say what to fetch - find_dictionary()/
+download_dictionary() are both written as blocking loops, so one
+request in flight at a time doesn't fit that shape. The pure logic
+(list_dictionary_folders/candidate_folders/parse_dictionaries_xcu) is
+reused unchanged either way.
 """
 
 import json
@@ -35,13 +39,15 @@ from virtaal.support.dictionary_source import (
 
 class DictionaryDownloader:
     """Downloads locale_code's hunspell dictionary in the background,
-    calling on_done() (no arguments) once it's either written or given
-    up. Silent on failure, same as UpdateChecker: network problems
-    must never surface as an application error to the user."""
+    calling on_done(success) once it's either written or given up.
+    Silent on failure, same as UpdateChecker: network problems must
+    never surface as an application error to the user - success is
+    passed only so a caller can decide whether to record this as
+    installed, not to raise anything on failure."""
 
     def __init__(self, locale_code, on_done=None, client=None, target_dir=None):
         self.locale_code = locale_code.replace('-', '_')
-        self.on_done = on_done or (lambda: None)
+        self.on_done = on_done or (lambda success: None)
         self.target_dir = target_dir
         if client is None:
             from virtaal.support.httpclient import HTTPClient
@@ -51,7 +57,18 @@ class DictionaryDownloader:
         self._written = []
 
     def start(self):
+        """Live discovery - a tree call, then per-candidate-folder xcu
+        fetches, same as always. Used as the fallback when
+        asset_manifest.py's manifest can't say what to fetch (never
+        successfully fetched, or has nothing for this locale)."""
         self._client.get(TREE_URL, self._on_tree, error_callback=self._on_error)
+
+    def start_with_known_files(self, folder, files):
+        """Skips discovery entirely - folder/files already known (from
+        asset_manifest.py's manifest), straight to fetching them."""
+        self._folder = folder
+        self._files = list(files)
+        self._fetch_next_file()
 
     def _on_tree(self, _request, result):
         try:
@@ -115,7 +132,7 @@ class DictionaryDownloader:
 
     def _on_success(self):
         logging.debug('Downloaded dictionary for %s', self.locale_code)
-        self.on_done()
+        self.on_done(True)
 
     def _on_error(self, _request, status):
         logging.debug('dictionary download: request failed, status=%r', status)
@@ -123,4 +140,4 @@ class DictionaryDownloader:
 
     def _give_up(self):
         logging.debug('No LibreOffice dictionary found for %s', self.locale_code)
-        self.on_done()
+        self.on_done(False)

@@ -265,7 +265,8 @@ def _ensure_dev_locale_installed(lang, localedir):
 class Settings:
     """Handles loading/saving settings from/to a configuration file."""
 
-    sections = ["translator", "general", "language", "placeable_state", "plugin_state", "undo"]
+    sections = ["translator", "general", "language", "placeable_state", "plugin_state", "undo",
+                "installed_assets"]
 
     translator =    {
         "name": name(),
@@ -279,6 +280,8 @@ class Settings:
         "windowheight": 544,
         "windowx": '',
         "windowy": '',
+        "assets_manifest_fetched": "",
+        "assets_manifest_etag": "",
     }
     language =      {
         "nplurals": 0,
@@ -300,6 +303,13 @@ class Settings:
     undo = {
         "depth": 10000,
     }
+    # Dynamic keys, one per "<resource_type>.<locale>" already downloaded
+    # via asset_manifest.py (configparser lowercases keys and rejects
+    # ':' as a delimiter, so '.' + lower() - see asset_manifest.py's own
+    # installed_asset_key()) - value is the comma-joined shas of the
+    # files last installed for it, compared against the manifest's
+    # current shas to decide whether a redownload is needed.
+    installed_assets = {}
 
     def __init__(self, filename = None):
         """Load settings, using the given or default filename"""
@@ -334,6 +344,8 @@ class Settings:
             self.plugin_state[key] = value
         for key, value in self.config.items("undo"):
             self.undo[key] = value
+        for key, value in self.config.items("installed_assets"):
+            self.installed_assets[key] = value
 
         # Make sure we have some kind of font names to work with
         for font in ('sourcefont', 'targetfont'):
@@ -361,6 +373,8 @@ class Settings:
             self.config.set("plugin_state", key, self.plugin_state[key])
         for key in self.undo:
             self.config.set("undo", key, self.undo[key])
+        for key in self.installed_assets:
+            self.config.set("installed_assets", key, self.installed_assets[key])
 
         # make sure that the configuration directory exists
         project_dir = os.path.split(self.filename)[0]

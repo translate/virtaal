@@ -146,9 +146,6 @@ class LookupModel(BaseLookupModel):
         if locale_code in self._parsing:
             return [self._create_status_item(_('Loading thesaurus…'))]
 
-        if self._maybe_start_parse(locale_code):
-            return [self._create_status_item(_('Loading thesaurus…'))]
-
         if locale_code in self._unavailable:
             return []
 
@@ -159,6 +156,9 @@ class LookupModel(BaseLookupModel):
         if locale_code in self._downloading:
             #l10n: %(language)s is a language name, e.g. "Afrikaans"
             return [self._create_status_item(_('Downloading %(language)s thesaurus…') % {'language': _language_name(locale_code)})]
+
+        if self._maybe_start_parse(locale_code):
+            return [self._create_status_item(_('Loading thesaurus…'))]
 
         return [self._create_download_item(locale_code)]
 

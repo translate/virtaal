@@ -586,6 +586,42 @@ def test_create_menu_items_shows_the_language_name_while_downloading():
     assert not items[0].get_sensitive()
 
 
+# _maybe_start_parse() does real filesystem I/O (get_config_dir()'s own
+# os.makedirs() plus a directory listing) - none of unavailable/
+# checking/downloading can have anything on disk worth parsing yet, so
+# create_menu_items() must never reach it for those, on every single
+# right-click, for every locale without a cached thesaurus.
+
+def _fail_if_called(monkeypatch):
+    def boom(locale_code):
+        raise AssertionError('_cached_dat_path() must not be called here')
+    monkeypatch.setattr(thesaurus_module, '_cached_dat_path', boom)
+
+
+def test_create_menu_items_skips_the_filesystem_check_for_an_unavailable_locale(monkeypatch):
+    _fail_if_called(monkeypatch)
+    model = _make_model()
+    model._unavailable.add('af_ZA')
+
+    model.create_menu_items('word', 'source', 'af_ZA', 'en', None)  # must not raise
+
+
+def test_create_menu_items_skips_the_filesystem_check_while_checking(monkeypatch):
+    _fail_if_called(monkeypatch)
+    model = _make_model()
+    model._checking.add('pl_PL')
+
+    model.create_menu_items('word', 'source', 'pl_PL', 'en', None)  # must not raise
+
+
+def test_create_menu_items_skips_the_filesystem_check_while_downloading(monkeypatch):
+    _fail_if_called(monkeypatch)
+    model = _make_model()
+    model._downloading.add('pl_PL')
+
+    model.create_menu_items('word', 'source', 'pl_PL', 'en', None)  # must not raise
+
+
 def test_create_menu_items_download_button_names_the_language():
     model = _make_model()
 

@@ -66,6 +66,7 @@ dependencies = [
     # iso-codes package - without it, those names silently fall back to
     # English wherever the OS doesn't happen to have iso-codes installed.
     "pycountry==26.2.16",
+    "PyYAML==6.0.3",
 ]
 
 [project.optional-dependencies]

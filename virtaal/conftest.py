@@ -23,6 +23,13 @@ Known, not-yet-fixed warnings are listed in
 devsupport/known-deprecation-warnings.txt (one message prefix per
 line, `#`-comments allowed) - remove a line there once its warning is
 actually fixed. Anything NOT matching that list fails the run.
+
+A few specific, known-harmless warnings are filtered out entirely via
+pyproject.toml's own `filterwarnings` instead of being listed here -
+not the same thing as the blanket `error::DeprecationWarning` rule
+rejected above. Those never reach this hook at all any more (a
+pytest-xdist worker-crash risk, not this file's own concern), so don't
+expect them to show up in _seen_messages.
 """
 
 import gettext

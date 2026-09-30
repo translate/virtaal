@@ -46,7 +46,14 @@ def pyproject_dependency_names(text):
         line for line in match.group(1).splitlines() if not line.strip().startswith('#')
     )
     names = []
-    for requirement in re.findall(r'["\']([^"\']+)["\']', block):
+    # Double-quote delimited only, not a "either quote char" alternation:
+    # a PEP 508 environment marker (e.g. "pkg==1.0; python_version < '3.11'")
+    # has its own single-quoted substring inside the double-quoted
+    # requirement string - matching either quote char independently
+    # mismatches the pairing and picks up "3.11" as a bogus package name.
+    # Every requirement string in this file is double-quoted by
+    # convention; content can freely contain single quotes.
+    for requirement in re.findall(r'"([^"]*)"', block):
         # PEP 508: name is the leading identifier, before any version
         # specifier/extra/marker.
         name_match = re.match(r'^([A-Za-z0-9][A-Za-z0-9._-]*)', requirement)

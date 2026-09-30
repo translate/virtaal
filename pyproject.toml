@@ -32,33 +32,49 @@ classifiers = [
 # It's a documented system prerequisite, not a normal pip dependency,
 # same reason most GTK Python projects don't declare it either.
 dependencies = [
-    "translate-toolkit",
+    # translate-toolkit 3.18.0+ dropped Python 3.10 support - this
+    # project's own requires-python floor - so a single pin can't cover
+    # the whole matrix; last 3.10-compatible release pinned there,
+    # latest pinned everywhere else, same as pip's own unpinned
+    # resolution already did per-interpreter before this was pinned.
+    "translate-toolkit==3.17.5; python_version < '3.11'",
+    "translate-toolkit==3.20.0; python_version >= '3.11'",
     # translate-toolkit gates Fluent (.ftl) support behind its own
     # "fluent" extra rather than a plain dependency - without this,
     # translate.storage.factory still lists "Fluent file" in the
     # supported-formats list (and Virtaal's Open dialog offers it),
     # but actually opening one raises ModuleNotFoundError.
-    "fluent.syntax>=0.19,<0.20",
-    "pycurl",
-    "diff_match_patch",
-    "lxml",
-    "python-Levenshtein",
-    "cheroot",
-    "bottle",
+    "fluent.syntax==0.19.0",
+    "pycurl==7.48.0",
+    "diff_match_patch==20241021",
+    # translate-toolkit 3.17.5 (the python_version < '3.11' pin above)
+    # itself constrains lxml to <6.1 - a real cross-package conflict,
+    # not just an availability gap, so this needs the same split.
+    "lxml==6.0.4; python_version < '3.11'",
+    "lxml==6.1.3; python_version >= '3.11'",
+    # Same story as translate-toolkit above: python-Levenshtein's own
+    # Levenshtein engine dependency dropped Python 3.10 support at
+    # 0.27.5 (0.27.4 still supports it) - python-Levenshtein's own
+    # metadata alone doesn't show this, only its unpinned transitive
+    # Levenshtein dependency does.
+    "python-Levenshtein==0.27.4; python_version < '3.11'",
+    "python-Levenshtein==0.27.5; python_version >= '3.11'",
+    "cheroot==11.1.2",
+    "bottle==0.13.4",
     # translate-toolkit's tr_lang() (language-pair labels, font preview
     # text) prefers pycountry's bundled locale data over the system
     # iso-codes package - without it, those names silently fall back to
     # English wherever the OS doesn't happen to have iso-codes installed.
-    "pycountry",
+    "pycountry==26.2.16",
 ]
 
 [project.optional-dependencies]
-spellcheck = ["pyenchant"]
-test = ["pytest", "pytest-cov", "pytest-xdist", "pytest-timeout"]
-docs = ["Sphinx"]
+spellcheck = ["pyenchant==3.3.0"]
+test = ["pytest==9.1.1", "pytest-cov==7.1.0", "pytest-xdist==3.8.0", "pytest-timeout==2.4.0"]
+docs = ["Sphinx==9.1.0"]
 # Not wired into pre-commit or CI - GTK/GI stub coverage isn't good
 # enough yet for a repo-wide rollout.
-type-check = ["ty"]
+type-check = ["ty==0.0.84"]
 
 [project.urls]
 Homepage = "https://virtaal.translatehouse.org"

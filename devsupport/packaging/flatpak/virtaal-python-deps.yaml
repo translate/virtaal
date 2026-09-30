@@ -11,11 +11,11 @@ modules:
     sources:
       - &id001
         type: file
-        url: https://files.pythonhosted.org/packages/ad/a9/970b8fa0ecc4fbf1dfaed0d89bbc1fc1421b25ec26a2038c91e872dc6c8e/lxml-6.1.2.tar.gz
-        sha256: 1055241852f2b02068af4a625a5d32c087db193c12251928af2562ecd2239f18
+        url: https://files.pythonhosted.org/packages/23/ad/28ecd7cb894d172f3c9c80a075eeeb2017ac62e3632cee05a5f9493547eb/lxml-6.1.3.tar.gz
+        sha256: 45222d94ddd511536f3b2f7d9deae3b2339b4ce0f075f1ca25703b07cad9dd21
       - type: file
-        url: https://files.pythonhosted.org/packages/33/6b/5ee7fab140e1bea5d09b0096fb7f6cf0cb84a56ef0d91c45992a0f557b46/translate_toolkit-3.19.18-py3-none-any.whl
-        sha256: fd454595230c158e46017c446ab6359a2f50246345f821ca4e90fe0855e7f48e
+        url: https://files.pythonhosted.org/packages/12/1d/c935763bd2eaaf285fe523cba1dd5361b82a9aeb3ac8b08f72ffb74e77af/translate_toolkit-3.20.0-py3-none-any.whl
+        sha256: 7f11fc8addccc1f4aafa073f5624b264897a2bb688d4308a53154f2792b929f3
       # Rust/maturin sdist can't build in this sandboxed pip env -
       # swapped for the manylinux wheels instead. Both architectures
       # present: pip picks whichever matches the platform building
@@ -46,8 +46,8 @@ modules:
         --prefix=${FLATPAK_DEST} "pycurl" --no-build-isolation
     sources:
       - type: file
-        url: https://files.pythonhosted.org/packages/81/bc/705aa3bc36b99946a128d068e1afd4b6f3eebb36c6b97f551f3d2d740460/pycurl-7.47.0.tar.gz
-        sha256: 5e3cf357939da8d4ceefe3c7f305afcf9b47cba66cfd95e7768ca43b38445e14
+        url: https://files.pythonhosted.org/packages/fe/62/5851dbbaba9b8ba69019ee74213f1c31b0b2b7ba643ad48e9407638b0dea/pycurl-7.48.0.tar.gz
+        sha256: b70961a76c412cd34f9cc2c9558e63f89fb37045c59eee396c585b52973be280
   - name: python3-diff_match_patch
     buildsystem: simple
     build-commands:
@@ -78,14 +78,14 @@ modules:
         --prefix=${FLATPAK_DEST} "python-Levenshtein" --no-build-isolation
     sources:
       - type: file
-        url: https://files.pythonhosted.org/packages/ca/d9/5acd910cb9527d6aeba8dbc0a5d1093e72921f2d0ca586a4594660615688/levenshtein-0.27.4.tar.gz
-        sha256: 3df1c12bf5e485774d6387f3894271ef3724414ecc20dd238ae4d2333e093c83
+        url: https://files.pythonhosted.org/packages/81/ab/d55fdebfdee7605df174913708d44f75dfec0ec5e4e5fd8e978bb88897eb/levenshtein-0.27.5.tar.gz
+        sha256: 22021caf5867a46fae5ab927bbdcb430599d7e5ee3898449cbbe430ff07b7d08
       - type: file
-        url: https://files.pythonhosted.org/packages/c0/76/a14c46a124ec1cb731087d05e85dfdd09835a297473e6de52a049dbb8f2c/python_levenshtein-0.27.4-py3-none-any.whl
-        sha256: cf956834cffa7690e2242eec385b77805fe256d164015583ba45649dc75144e1
+        url: https://files.pythonhosted.org/packages/4a/2c/9bcea060eb5231d33ca753e6e6a7c2fa42cbfd068a1cbb46f8b1f62d9d14/python_levenshtein-0.27.5-py3-none-any.whl
+        sha256: da716ff072204e2a6432c68bd9ff92c3e7f1202e4a908640717f191dbb482693
       - type: file
-        url: https://files.pythonhosted.org/packages/2c/21/ef6157213316e85790041254259907eb722e00b03480256c0545d98acd33/rapidfuzz-3.14.5.tar.gz
-        sha256: ba10ac57884ce82112f7ed910b67e7fb6072d8ef2c06e30dc63c0f604a112e0e
+        url: https://files.pythonhosted.org/packages/18/97/226c43b7b5d957bc3840ed52ea99eed261f99834c4619be7a4742cbaeafa/rapidfuzz-3.14.6.tar.gz
+        sha256: e13a8160d017b499ec7a2fa9d0ce1ae2e7377080815785819f966fb235d4eb60
       - type: file
         url: https://files.pythonhosted.org/packages/b7/b0/7ad8fa9aebb0835b2e20afebf1483cbe175d1612fe01e85042ce9ced8755/scikit_build_core-1.0.3-py3-none-any.whl
         sha256: ae95427b7d3c14a6cf8bbfd4d901f6138ab64c99e20cbe8ea7d75cd26093f085

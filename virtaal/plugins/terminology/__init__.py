@@ -36,6 +36,13 @@ class Plugin(BasePlugin):
         self.load_config()
         self.config['backends_dialog_width'] = int(self.config['backends_dialog_width'])
         self.config['disabled_models'] = self.config['disabled_models'].split(',')
+        # A profile saved before autoterm's own default disabling (see
+        # default_config above) keeps whatever disabled_models it last
+        # saved, silently re-enabling a plugin whose one URL has been
+        # dead for years - this isn't a user preference to honour, so
+        # enforce it regardless of what an old config says.
+        if 'autoterm' not in self.config['disabled_models']:
+            self.config['disabled_models'].append('autoterm')
         self.config['max_matches'] = int(self.config['max_matches'])
         self.config['min_quality'] = int(self.config['min_quality'])
 

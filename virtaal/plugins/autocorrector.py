@@ -12,7 +12,14 @@ import re
 
 from gi.repository import GLib
 
+from virtaal.common import pan_app
 from virtaal.controllers.baseplugin import BasePlugin
+from virtaal.support import asset_manifest as asset_manifest_module
+from virtaal.support.asset_manifest import (
+    AssetManifest,
+    entry_shas,
+    installed_asset_key,
+)
 from virtaal.views.widgets.textbox import TextBox
 
 
@@ -243,11 +250,18 @@ class Plugin(BasePlugin):
     display_name = _('AutoCorrector')
     version = 0.1
 
-    def __init__(self, internal_name, main_controller):
+    def __init__(self, internal_name, main_controller, asset_manifest=None, schedule_after_idle_lull=None):
         self.internal_name = internal_name
         self.main_controller = main_controller
+        self._asset_manifest = asset_manifest
+        self._schedule_after_idle_lull = schedule_after_idle_lull or asset_manifest_module.schedule_after_idle_lull
 
         self._init_plugin()
+
+    def _get_asset_manifest(self):
+        if self._asset_manifest is None:
+            self._asset_manifest = AssetManifest()
+        return self._asset_manifest
 
     def _init_plugin(self):
         from virtaal.support.autocorrect_source import autocorrect_root_dir
@@ -271,12 +285,37 @@ class Plugin(BasePlugin):
                 return
             self._autocorr_tried.add(lang)
 
-            def on_done():
+            def reload():
                 self.autocorr.load_dictionary(lang, force=True)
                 on_cursor_change(None)
 
-            from virtaal.support.autocorrect_downloader import AutocorrectDownloader
-            AutocorrectDownloader(lang, on_done=on_done).start()
+            def start_known(entry):
+                from virtaal.support.autocorrect_downloader import AutocorrectDownloader
+
+                def on_done(success):
+                    if success:
+                        pan_app.settings.installed_assets[installed_asset_key('autocorrect', lang)] = entry_shas(entry)
+                    reload()
+                AutocorrectDownloader(lang, on_done=on_done).start_with_known_files(
+                    entry['folder'], [f['name'] for f in entry['files']])
+
+            def start_live():
+                from virtaal.support.autocorrect_downloader import AutocorrectDownloader
+                AutocorrectDownloader(lang, on_done=lambda success: reload()).start()
+
+            def after_manifest_fresh():
+                manifest = self._get_asset_manifest()
+                entry = manifest.get('autocorrect', lang)
+                if entry is None:
+                    if not manifest.has_data():
+                        return start_live()
+                    return  # manifest is authoritative - genuinely nothing for this locale
+                key = installed_asset_key('autocorrect', lang)
+                if pan_app.settings.installed_assets.get(key) == entry_shas(entry):
+                    return  # already installed and unchanged
+                self._schedule_after_idle_lull(lambda: start_known(entry))
+
+            self._get_asset_manifest().ensure_fresh(on_done=after_manifest_fresh)
 
         def on_store_loaded(storecontroller):
             lang = self.main_controller.lang_controller.target_lang.code

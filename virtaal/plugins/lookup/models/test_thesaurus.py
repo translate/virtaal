@@ -75,8 +75,36 @@ class _FakeThread:
         self.started = True
 
 
-def _make_model(source_lang=None, target_lang=None):
-    return LookupModel('thesaurus', _FakeController(source_lang, target_lang))
+class _FakeAssetManifest:
+    """entries: {locale: entry}. has_data defaults to whether entries
+    is non-empty - pass it explicitly for the "manifest was genuinely
+    fetched but has nothing for this locale" case, distinct from
+    "never fetched at all". ensure_fresh() always calls on_done()
+    immediately, so the fallback-to-live-check path (the default, with
+    no entries) behaves exactly like every pre-manifest test here
+    already expects."""
+
+    def __init__(self, entries=None, has_data=None):
+        self.entries = entries or {}
+        self._has_data = bool(self.entries) if has_data is None else has_data
+
+    def ensure_fresh(self, on_done=None):
+        (on_done or (lambda: None))()
+
+    def get(self, resource_type, locale_code):
+        assert resource_type == 'thesaurus'
+        return self.entries.get(locale_code)
+
+    def has_data(self):
+        return self._has_data
+
+
+def _make_model(source_lang=None, target_lang=None, manifest_entries=None, manifest_has_data=None, lull_calls=None):
+    lull_calls = lull_calls if lull_calls is not None else []
+    return LookupModel(
+        'thesaurus', _FakeController(source_lang, target_lang),
+        asset_manifest=_FakeAssetManifest(manifest_entries, has_data=manifest_has_data),
+        schedule_after_idle_lull=lambda callback: lull_calls.append(callback))
 
 
 def _write_dat(cache_dir, locale_code, content):
@@ -396,6 +424,96 @@ def test_maybe_auto_download_normalises_hyphenated_locale_codes(monkeypatch, tmp
 
     assert len(threads) == 1
     assert threads[0].args[0] == 'de_DE'
+
+
+# Manifest-aware auto-download - a cached manifest turns the
+# availability check into an instant local lookup, no thread at all.
+
+_PL_PL_ENTRY = {'folder': 'pl', 'files': [{'name': 'th_pl_PL.dat', 'sha': 's1'}]}
+
+
+def test_downloads_after_a_lull_when_the_manifest_has_an_entry(monkeypatch, tmp_path):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    threads = _patch_threads(monkeypatch)
+    lull_calls = []
+    model = _make_model(manifest_entries={'pl_PL': _PL_PL_ENTRY}, lull_calls=lull_calls)
+
+    model._maybe_auto_download('pl_PL')
+
+    assert 'pl_PL' not in model._checking  # no live check needed
+    assert threads == []  # not yet - waiting for the lull
+    assert len(lull_calls) == 1
+    lull_calls[0]()  # simulate the lull passing
+
+    assert 'pl_PL' in model._downloading
+    assert len(threads) == 1
+    assert threads[0].target == model._download
+    assert threads[0].args == ('pl_PL', 'pl', ['th_pl_PL.dat'])
+
+
+def test_marks_unavailable_directly_when_a_fetched_manifest_confirms_no_entry(monkeypatch, tmp_path):
+    # The manifest is comprehensive once fetched - a miss here is
+    # authoritative, not "we don't know yet" - must not redo a live
+    # check every cold start for a locale with genuinely no thesaurus.
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    threads = _patch_threads(monkeypatch)
+    model = _make_model(manifest_has_data=True)
+
+    model._maybe_auto_download('af_ZA')
+
+    assert 'af_ZA' in model._unavailable
+    assert threads == []
+
+
+def test_falls_back_to_a_live_check_when_the_manifest_was_never_fetched(monkeypatch, tmp_path):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    threads = _patch_threads(monkeypatch)
+    model = _make_model()  # default: empty entries, has_data() False
+
+    model._maybe_auto_download('pl_PL')
+
+    assert 'pl_PL' in model._checking
+    assert len(threads) == 1
+    assert threads[0].target == model._check
+
+
+def test_lazily_constructs_a_real_asset_manifest_when_none_is_injected(monkeypatch, tmp_path):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    model = LookupModel('thesaurus', _FakeController())
+
+    assert model._asset_manifest is None
+    assert isinstance(model._get_asset_manifest(), thesaurus_module.AssetManifest)
+
+
+# A manual "Download" click (_on_download, still live-discovery only)
+# and the manifest path can both resolve for the same locale during
+# the manifest's own idle-lull-gated refresh window - whichever wins
+# first must not be redundantly clobbered/duplicated by the other.
+
+def test_on_available_does_not_start_a_second_download_once_the_manifest_already_started_one(monkeypatch, tmp_path):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    threads = _patch_threads(monkeypatch)
+    model = _make_model()
+    model._start_download('pl_PL', 'pl', ['th_pl_PL.dat'])  # the manifest path won already
+    model._checking.add('pl_PL')  # a live check was also in flight
+
+    model._on_available('pl_PL', 'pl', ['th_pl_PL.dat'])  # the live check's own result arrives late
+
+    assert len(threads) == 1  # no second download thread
+    assert 'pl_PL' not in model._checking
+
+
+def test_on_unavailable_does_not_override_a_download_the_manifest_already_started(monkeypatch, tmp_path):
+    monkeypatch.setattr(thesaurus_module, 'thesaurus_cache_dir', lambda: str(tmp_path))
+    _patch_threads(monkeypatch)
+    model = _make_model()
+    model._start_download('pl_PL', 'pl', ['th_pl_PL.dat'])
+    model._checking.add('pl_PL')
+
+    model._on_unavailable('pl_PL')  # the live check's own result arrives late, disagreeing
+
+    assert 'pl_PL' not in model._unavailable
+    assert 'pl_PL' not in model._checking
 
 
 # Checking availability before ever downloading (a light tree + xcu

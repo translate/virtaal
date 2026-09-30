@@ -64,12 +64,16 @@ class _FakeDownloader:
 
 
 class _FakeAssetManifest:
-    """entries: {(resource_type, locale): entry}. ensure_fresh() always
-    calls on_done() immediately - the manifest's own refresh timing is
-    tested separately in test_asset_manifest.py."""
+    """entries: {(resource_type, locale): entry}. has_data defaults to
+    whether entries is non-empty - pass it explicitly for the "manifest
+    was genuinely fetched but has nothing for this locale" case, distinct
+    from "never fetched at all" (empty entries, has_data left False).
+    ensure_fresh() always calls on_done() immediately - the manifest's
+    own refresh timing is tested separately in test_asset_manifest.py."""
 
-    def __init__(self, entries=None):
+    def __init__(self, entries=None, has_data=None):
         self.entries = entries or {}
+        self._has_data = bool(self.entries) if has_data is None else has_data
 
     def ensure_fresh(self, on_done=None):
         (on_done or (lambda: None))()
@@ -77,8 +81,11 @@ class _FakeAssetManifest:
     def get(self, resource_type, locale_code):
         return self.entries.get((resource_type, locale_code))
 
+    def has_data(self):
+        return self._has_data
 
-def _make_watcher(known_dicts=(), target_lang=None, manifest_entries=None, lull_calls=None):
+
+def _make_watcher(known_dicts=(), target_lang=None, manifest_entries=None, manifest_has_data=None, lull_calls=None):
     _FakeDownloader.instances = []
     lull_calls = lull_calls if lull_calls is not None else []
     main_controller = _FakeMainController(target_lang)
@@ -86,7 +93,7 @@ def _make_watcher(known_dicts=(), target_lang=None, manifest_entries=None, lull_
         main_controller,
         enchant_module=_FakeEnchant(known_dicts),
         downloader_factory=_FakeDownloader,
-        asset_manifest=_FakeAssetManifest(manifest_entries),
+        asset_manifest=_FakeAssetManifest(manifest_entries, has_data=manifest_has_data),
         schedule_after_idle_lull=lambda callback: lull_calls.append(callback),
     )
     return main_controller, watcher
@@ -126,13 +133,23 @@ def test_skips_download_when_a_country_variant_covers_a_bare_code():
     assert _FakeDownloader.instances == []
 
 
-def test_falls_back_to_live_discovery_when_manifest_has_no_entry():
+def test_falls_back_to_live_discovery_when_manifest_was_never_fetched():
     main_controller, _watcher = _make_watcher(known_dicts=set())
     main_controller.lang_controller.emit_target_lang_changed('af_ZA')
     assert len(_FakeDownloader.instances) == 1
     assert _FakeDownloader.instances[0].language == 'af_ZA'
     assert _FakeDownloader.instances[0].started
     assert _FakeDownloader.instances[0].known_files_call is None
+
+
+def test_does_nothing_when_a_fetched_manifest_confirms_no_entry_for_locale():
+    # The manifest is comprehensive once fetched - a miss here is
+    # authoritative, not "we don't know yet" - must not redo live
+    # discovery every cold start for a locale with genuinely no
+    # upstream dictionary.
+    main_controller, _watcher = _make_watcher(known_dicts=set(), manifest_has_data=True)
+    main_controller.lang_controller.emit_target_lang_changed('af_ZA')
+    assert _FakeDownloader.instances == []
 
 
 def test_only_tries_each_language_once_per_run():

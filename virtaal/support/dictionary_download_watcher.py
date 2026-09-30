@@ -16,10 +16,10 @@ system package manager to fall back on) and of ChecksController.
 
 Looks the language up in asset_manifest.py's cached manifest first -
 no live discovery needed once it's cached, and nothing to fetch at all
-if what's installed already matches the manifest's current sha. Only
-falls back to DictionaryDownloader's own live discovery when the
-manifest itself was never fetched successfully, or has nothing for
-this locale.
+if what's installed already matches the manifest's current sha, or if
+the manifest (comprehensive once fetched) confirms nothing exists for
+this locale. Only falls back to DictionaryDownloader's own live
+discovery when the manifest itself was never fetched successfully.
 """
 
 import logging
@@ -82,9 +82,12 @@ class DictionaryDownloadWatcher:
             on_done=lambda: self._maybe_download(language))
 
     def _maybe_download(self, language):
-        entry = self._get_asset_manifest().get('dictionary', language)
+        manifest = self._get_asset_manifest()
+        entry = manifest.get('dictionary', language)
         if entry is None:
-            return self._start_live_discovery(language)
+            if not manifest.has_data():
+                return self._start_live_discovery(language)
+            return  # manifest is authoritative - genuinely nothing for this locale
         key = installed_asset_key('dictionary', language)
         if pan_app.settings.installed_assets.get(key) == entry_shas(entry):
             return  # already installed and unchanged

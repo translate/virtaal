@@ -189,6 +189,15 @@ class AssetManifest:
         logging.debug('asset manifest: fetch failed')
         on_done()
 
+    def has_data(self):
+        """True once the manifest has real data loaded - from a cached
+        file on disk or a successful fetch - False only when it's
+        never been successfully fetched at all. Lets a caller tell
+        get() returning None because there's nothing for this locale
+        (authoritative - the manifest is comprehensive) apart from
+        returning None because there's no manifest to consult yet."""
+        return self._data is not None
+
     def get(self, resource_type, locale_code):
         """{folder, files: [{name, sha}, ...]} covering locale_code
         for resource_type, or None if the manifest was never

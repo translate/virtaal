@@ -244,6 +244,13 @@ def test_get_returns_none_when_never_fetched(tmp_path):
     assert manifest.get('dictionary', 'de_DE') is None
 
 
+def test_has_data_distinguishes_never_fetched_from_fetched_empty(tmp_path):
+    manifest = _make_manifest(tmp_path)
+    assert not manifest.has_data()
+    manifest._data = {}
+    assert manifest.has_data()
+
+
 def test_get_matches_bare_language_and_misses_unknown_locale(tmp_path):
     manifest = _make_manifest(tmp_path)
     manifest._data = yaml.safe_load(YAML_BYTES)

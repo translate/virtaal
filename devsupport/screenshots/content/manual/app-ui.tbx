@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE martif PUBLIC "ISO 12200:1999A//DTD MARTIF core (DXFcdV04)//EN" "TBXcdv04.dtd">
+<!--
+  A small English -> Afrikaans TBX glossary paired with app-ui.po (issue
+  #3746's manual per-platform screenshot fixture). "account" appears in
+  app-ui.po's unit 10, so Virtaal highlights it as a recognised term as
+  soon as that unit is open - no insertion needed for the screenshot.
+-->
+<martif type="TBX" xml:lang="en">
+    <martifHeader>
+        <fileDesc>
+            <sourceDesc>
+                <p>Translate Toolkit</p>
+            </sourceDesc>
+        </fileDesc>
+    </martifHeader>
+    <text>
+        <body>
+            <termEntry>
+                <langSet xml:lang="en"><tig><term>account</term></tig></langSet>
+                <langSet xml:lang="af"><tig><term>rekening</term></tig></langSet>
+            </termEntry>
+        </body>
+    </text>
+</martif>

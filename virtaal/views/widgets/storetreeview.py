@@ -58,6 +58,13 @@ class StoreTreeView(Gtk.TreeView):
         self._pending_move_offset = 0
         self._move_throttle_id = None
 
+        # id(unit) of every row StoreCellRenderer last gave an estimated
+        # (not exact) height - see _revalidate_visible_estimated_rows().
+        self._estimated_unit_ids = set()
+        self._visible_range_cache = None  # see get_cached_visible_range()
+        self._revalidate_scheduled = False
+        self.connect('notify::vadjustment', self._on_vadjustment_notify)
+
     def _install_callbacks(self):
         self.connect('key-press-event', self._on_key_press)
         self.connect("cursor-changed", self._on_cursor_changed)
@@ -111,6 +118,78 @@ class StoreTreeView(Gtk.TreeView):
             path, editcol = self.get_cursor()
             if path is not None:
                 self.set_cursor(path, editcol or column, start_editing=True)
+        self._schedule_revalidate_visible_estimated_rows()
+
+    def _on_vadjustment_notify(self, _widget, _pspec):
+        # Only assigned once this treeview is inside a Gtk.ScrolledWindow
+        # (StoreView.show()), not yet at construction time.
+        vadjustment = self.props.vadjustment
+        if vadjustment:
+            vadjustment.connect('value-changed', self._on_vscroll)
+
+    def _on_vscroll(self, _adjustment):
+        self._schedule_revalidate_visible_estimated_rows()
+
+    def mark_row_estimated(self, unit):
+        self._estimated_unit_ids.add(id(unit))
+
+    def mark_row_measured_exactly(self, unit):
+        self._estimated_unit_ids.discard(id(unit))
+
+    def get_cached_visible_range(self):
+        """The (start_index, end_index) pair get_visible_range() last
+        returned, or None. StoreCellRenderer reads this instead of
+        calling get_visible_range() itself - do_get_size() is called
+        *by* GTK's own row-height validation, and get_visible_range()
+        depends on that same in-progress row-height state, so calling
+        it back from there is an unsafe reentrant call. This is only
+        ever refreshed from a safe, non-reentrant context - a real
+        size-allocate or scroll."""
+        return self._visible_range_cache
+
+    def _schedule_revalidate_visible_estimated_rows(self):
+        # Deferred, not run synchronously from the caller - this can
+        # change a row's height via model.row_changed(), and so this
+        # treeview's own total content height, mutating the very
+        # vadjustment whose own 'value-changed' signal may still be
+        # mid-dispatch in the scroll case.
+        if self._revalidate_scheduled:
+            return
+        self._revalidate_scheduled = True
+        GLib.idle_add(self._do_revalidate_visible_estimated_rows)
+
+    def _do_revalidate_visible_estimated_rows(self):
+        self._revalidate_scheduled = False
+        self._revalidate_visible_estimated_rows()
+        return GLib.SOURCE_REMOVE
+
+    def _revalidate_visible_estimated_rows(self):
+        """Refresh the cached visible range, then force GTK to re-query
+        the height of any row within the renderer's own near-viewport
+        buffer that's still carrying an estimated (not exact) height -
+        see StoreCellRenderer._row_needs_exact_height(). Without the
+        re-query, a row scrolled into view keeps whatever height it was
+        last validated at instead of being re-measured on its own."""
+        visible_range = self.get_visible_range()
+        if visible_range is None:
+            self._visible_range_cache = None
+        else:
+            start, end = visible_range
+            self._visible_range_cache = (start.get_indices()[0], end.get_indices()[0])
+
+        if not self._estimated_unit_ids or self._visible_range_cache is None:
+            return
+        model = self.get_model()
+        if not isinstance(model, StoreTreeModel):
+            return
+        buffer = self.renderer.VIEWPORT_ROW_BUFFER
+        start_index = max(0, self._visible_range_cache[0] - buffer)
+        end_index = min(model._store_len - 1, self._visible_range_cache[1] + buffer)
+        for index in range(start_index, end_index + 1):
+            unit = model._store[index]
+            if id(unit) in self._estimated_unit_ids:
+                path = Gtk.TreePath((index,))
+                model.row_changed(path, model.get_iter(path))
 
     def reset_column_width(self):
         """Relax the FIXED-width column back to its placeholder size
@@ -182,6 +261,8 @@ class StoreTreeView(Gtk.TreeView):
         self._start_editing_cycle(model, path)
 
     def set_model(self, storemodel):
+        self._estimated_unit_ids = set()
+        self._visible_range_cache = None
         if storemodel:
             model = StoreTreeModel(storemodel)
         else:

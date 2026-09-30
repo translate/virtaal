@@ -318,8 +318,11 @@ def _renderer_for_unit(source, target):
                     target_lang=SimpleNamespace(code='en'),
                 )
             ),
+            # A falsy store makes _row_needs_exact_height() always pick
+            # the real-measurement branch these tests are exercising.
             get_store=lambda: None,
-        )
+        ),
+        _treeview=SimpleNamespace(mark_row_estimated=lambda unit: None, mark_row_measured_exactly=lambda unit: None),
     ))
     renderer.unit = SimpleNamespace(isfuzzy=lambda: False, source=source, target=target)
     return renderer
@@ -346,6 +349,161 @@ def test_compute_cell_height_right_aligns_for_rtl():
     assert renderer.source_layout.get_alignment() == 2  # Pango.Alignment.RIGHT
     assert renderer.target_layout.get_alignment() == 2
     textview.set_direction(Gtk.TextDirection.NONE)
+
+
+# _row_needs_exact_height() / _unit_index() - the estimate/exact split #
+
+def _fake_unit():
+    return SimpleNamespace(isfuzzy=lambda: False)
+
+
+def _fake_treeview(visible_start, visible_end):
+    return SimpleNamespace(get_cached_visible_range=lambda: (visible_start, visible_end))
+
+
+def test_row_needs_exact_height_true_for_the_last_row_even_far_off_range():
+    store = [_fake_unit() for _ in range(100)]
+    renderer = StoreCellRenderer(None)
+    renderer.unit = store[-1]
+
+    assert renderer._row_needs_exact_height(_fake_treeview(0, 5), store) is True
+
+
+def test_row_needs_exact_height_true_within_the_viewport_buffer():
+    store = [_fake_unit() for _ in range(200)]
+    renderer = StoreCellRenderer(None)
+    renderer.unit = store[30]  # visible end (10) + VIEWPORT_ROW_BUFFER (25) covers it
+
+    assert renderer._row_needs_exact_height(_fake_treeview(0, 10), store) is True
+
+
+def test_row_needs_exact_height_false_far_outside_the_viewport():
+    store = [_fake_unit() for _ in range(200)]
+    renderer = StoreCellRenderer(None)
+    renderer.unit = store[100]
+
+    assert renderer._row_needs_exact_height(_fake_treeview(0, 10), store) is False
+
+
+def test_row_needs_exact_height_true_without_a_store():
+    renderer = StoreCellRenderer(None)
+    renderer.unit = _fake_unit()
+
+    assert renderer._row_needs_exact_height(_fake_treeview(0, 10), None) is True
+
+
+def test_row_needs_exact_height_false_when_the_visible_range_is_unknown():
+    # Falls back to the estimate rather than forcing exact measurement
+    # for every row just because the range is momentarily unknown.
+    store = [_fake_unit() for _ in range(5)]
+    renderer = StoreCellRenderer(None)
+    renderer.unit = store[0]
+    treeview = SimpleNamespace(get_cached_visible_range=lambda: None)
+
+    assert renderer._row_needs_exact_height(treeview, store) is False
+
+
+def test_unit_index_rebuilds_only_when_the_store_changes():
+    store = [_fake_unit(), _fake_unit(), _fake_unit()]
+    renderer = StoreCellRenderer(None)
+
+    renderer.unit = store[1]
+    assert renderer._unit_index(store) == 1
+    cache_after_first = renderer._index_cache
+
+    renderer.unit = store[2]
+    assert renderer._unit_index(store) == 2
+    assert renderer._index_cache is cache_after_first  # same store, reused
+
+    other_store = [_fake_unit()]
+    renderer.unit = other_store[0]
+    assert renderer._unit_index(other_store) == 0
+    assert renderer._index_cache is not cache_after_first
+
+
+# _estimate_text_height() / _font_metrics() #
+
+def test_estimate_text_height_is_positive_and_grows_with_more_text():
+    renderer = StoreCellRenderer(None)
+    textview = Gtk.TextView()
+    font_description = rendering.get_source_font_description()
+
+    short_height = renderer._estimate_text_height(textview, 'hi', 200, font_description)
+    long_height = renderer._estimate_text_height(textview, 'word ' * 200, 200, font_description)
+
+    assert short_height > 0
+    assert long_height > short_height
+
+
+def test_estimate_text_height_treats_falsy_text_as_a_single_line():
+    renderer = StoreCellRenderer(None)
+    textview = Gtk.TextView()
+
+    height = renderer._estimate_text_height(textview, '', 200, rendering.get_source_font_description())
+
+    assert height > 0
+
+
+def test_font_metrics_are_cached_per_font_description():
+    renderer = StoreCellRenderer(None)
+    textview = Gtk.TextView()
+    font_description = rendering.get_source_font_description()
+
+    first = renderer._font_metrics(textview, font_description)
+    second = renderer._font_metrics(textview, font_description)
+
+    assert first == second
+    assert len(renderer._metrics_cache) == 1
+
+
+# compute_cell_height() - the estimate/exact split, end to end #
+
+def _renderer_for_bulk_store(store, index, visible_start=0, visible_end=5):
+    marks = []
+    treeview = SimpleNamespace(
+        is_resizing=False,
+        get_cached_visible_range=lambda: (visible_start, visible_end),
+        mark_row_estimated=lambda unit: marks.append(('estimated', unit)),
+        mark_row_measured_exactly=lambda unit: marks.append(('exact', unit)),
+    )
+    renderer = StoreCellRenderer(SimpleNamespace(
+        controller=SimpleNamespace(
+            main_controller=SimpleNamespace(
+                lang_controller=SimpleNamespace(
+                    source_lang=SimpleNamespace(code='en'),
+                    target_lang=SimpleNamespace(code='en'),
+                )
+            ),
+            get_store=lambda: store,
+        ),
+        _treeview=treeview,
+    ))
+    renderer.unit = store[index]
+    return renderer, marks
+
+
+def test_compute_cell_height_uses_the_cheap_estimate_far_outside_the_viewport():
+    store = [SimpleNamespace(isfuzzy=lambda: False, source=f's{i}', target=f't{i}') for i in range(200)]
+    renderer, marks = _renderer_for_bulk_store(store, index=100)
+    textview = Gtk.TextView()
+
+    height = renderer.compute_cell_height(textview, 200)
+
+    assert height > 0
+    assert renderer.source_layout is None
+    assert renderer.target_layout is None
+    assert marks == [('estimated', store[100])]
+
+
+def test_compute_cell_height_uses_a_real_layout_within_the_viewport():
+    store = [SimpleNamespace(isfuzzy=lambda: False, source=f's{i}', target=f't{i}') for i in range(200)]
+    renderer, marks = _renderer_for_bulk_store(store, index=2)
+    textview = Gtk.TextView()
+
+    renderer.compute_cell_height(textview, 200)
+
+    assert renderer.source_layout is not None
+    assert marks == [('exact', store[2])]
 
 
 # check_editor_height() #
@@ -432,7 +590,11 @@ def test_check_editor_height_gives_up_when_notes_leave_no_room():
 # do_get_size() - the non-editable branch and the resize-debounce cache #
 
 def _renderer_with_view(is_resizing=False):
-    treeview = SimpleNamespace(is_resizing=is_resizing)
+    treeview = SimpleNamespace(
+        is_resizing=is_resizing,
+        mark_row_estimated=lambda unit: None,
+        mark_row_measured_exactly=lambda unit: None,
+    )
     view = SimpleNamespace(
         _treeview=treeview,
         controller=SimpleNamespace(
@@ -588,6 +750,26 @@ def test_do_render_paints_the_source_and_target_layouts(monkeypatch):
     assert paints[0]['layout'] is renderer.source_layout
     assert paints[1]['layout'] is renderer.target_layout
     assert paints[1]['x'] > paints[0]['x']  # target sits right of source (LTR)
+
+
+def test_do_render_forces_a_real_layout_for_a_row_do_get_size_only_estimated(monkeypatch):
+    # do_get_size()'s own decision reads a cached (so sometimes stale)
+    # viewport - must not paint the None layouts an estimated row leaves
+    # behind just because that decision was stale (Gtk.render_layout(...,
+    # None) raises).
+    paints = []
+    monkeypatch.setattr(
+        Gtk, 'render_layout',
+        lambda context, cr, x, y, layout: paints.append(layout))
+    store = [SimpleNamespace(isfuzzy=lambda: False, source=f's{i}', target=f't{i}') for i in range(200)]
+    renderer, _marks = _renderer_for_bulk_store(store, index=100)  # outside the fake viewport
+    widget = _toplevel_widget()
+
+    renderer.do_render(object(), widget, _rectangle(200, 50), _rectangle(200, 50), Gtk.CellRendererState(0))
+
+    assert renderer.source_layout is not None
+    assert renderer.target_layout is not None
+    assert paints == [renderer.source_layout, renderer.target_layout]
 
 
 # _on_editor_done() / _on_modified() #

@@ -47,6 +47,7 @@ def _make_view(column_width, cursor, is_resizing=False):
         get_cursor=lambda: cursor,
         set_cursor=lambda *args, **kwargs: calls.append((args, kwargs)),
         is_resizing=is_resizing,
+        _schedule_revalidate_visible_estimated_rows=lambda: None,
     )
     return view, column, calls
 
@@ -244,6 +245,120 @@ def test_set_model_clears_with_a_falsy_storemodel():
     view.set_model(None)
 
     assert view.get_model() is None
+
+
+def test_set_model_clears_previously_estimated_row_ids():
+    view = _real_storetreeview()
+    view.mark_row_estimated('stale')
+
+    view.set_model(['unit0'])
+
+    assert view._estimated_unit_ids == set()
+
+
+def test_set_model_clears_the_cached_visible_range():
+    view = _real_storetreeview()
+    view.set_model(['unit0'])
+    view.get_visible_range = lambda: (Gtk.TreePath((0,)), Gtk.TreePath((0,)))
+    view._revalidate_visible_estimated_rows()
+    assert view.get_cached_visible_range() == (0, 0)
+
+    view.set_model(['unit0', 'unit1'])
+
+    assert view.get_cached_visible_range() is None
+
+
+# mark_row_estimated() / mark_row_measured_exactly() / _revalidate_visible_estimated_rows() #
+# - the estimate/exact split's other half, StoreCellRenderer._row_needs_exact_height(),
+# lives in test_storecellrenderer.py.
+
+def test_mark_row_estimated_and_measured_exactly_track_by_unit_identity():
+    view = _real_storetreeview()
+    unit = object()
+
+    view.mark_row_estimated(unit)
+    assert id(unit) in view._estimated_unit_ids
+
+    view.mark_row_measured_exactly(unit)
+    assert id(unit) not in view._estimated_unit_ids
+
+
+def test_revalidate_visible_estimated_rows_refreshes_the_cache_with_nothing_estimated():
+    view = _real_storetreeview()
+    view.set_model(['unit0'])
+    view.get_visible_range = lambda: (Gtk.TreePath((0,)), Gtk.TreePath((0,)))
+
+    view._revalidate_visible_estimated_rows()  # must not raise
+
+    assert view.get_cached_visible_range() == (0, 0)
+
+
+def test_revalidate_visible_estimated_rows_is_a_noop_without_a_model():
+    view = _real_storetreeview()
+    view.mark_row_estimated('x')
+
+    view._revalidate_visible_estimated_rows()  # must not raise
+
+
+def test_revalidate_visible_estimated_rows_clears_the_cache_when_the_range_is_unknown():
+    view = _real_storetreeview()
+    view.set_model(['unit0'])
+    view.mark_row_estimated('unit0')
+    view.get_visible_range = lambda: None
+
+    view._revalidate_visible_estimated_rows()  # must not raise
+
+    assert view.get_cached_visible_range() is None
+
+
+def test_revalidate_visible_estimated_rows_forces_a_row_changed_within_the_buffer():
+    view = _real_storetreeview()
+    units = list(range(200))
+    view.set_model(units)
+    view.get_visible_range = lambda: (Gtk.TreePath((0,)), Gtk.TreePath((5,)))
+    view.mark_row_estimated(units[5])  # within the buffer (up to 5 + 25)
+    view.mark_row_estimated(units[150])  # far outside it
+
+    model = view.get_model()
+    changed = []
+    model.row_changed = lambda path, it: changed.append(path.get_indices()[0])
+
+    view._revalidate_visible_estimated_rows()
+
+    assert changed == [5]
+
+
+def test_vadjustment_notify_connects_scrolling_to_revalidation():
+    view = _real_storetreeview()
+    calls = []
+    view._revalidate_visible_estimated_rows = lambda: calls.append(True)
+    scrolled = Gtk.ScrolledWindow()
+    scrolled.add(view)  # assigns a real vadjustment, firing notify::vadjustment
+
+    vadjustment = view.props.vadjustment
+    assert vadjustment is not None
+    vadjustment.emit('value-changed')
+
+    # Deferred via GLib.idle_add(), not run synchronously from the
+    # signal handler - see _schedule_revalidate_visible_estimated_rows().
+    assert calls == []
+    while Gtk.events_pending():
+        Gtk.main_iteration()
+    assert calls == [True]
+
+
+def test_schedule_revalidate_visible_estimated_rows_coalesces_repeat_calls():
+    view = _real_storetreeview()
+    calls = []
+    view._revalidate_visible_estimated_rows = lambda: calls.append(True)
+
+    view._schedule_revalidate_visible_estimated_rows()
+    view._schedule_revalidate_visible_estimated_rows()
+    view._schedule_revalidate_visible_estimated_rows()
+    while Gtk.events_pending():
+        Gtk.main_iteration()
+
+    assert calls == [True]
 
 
 # _keyboard_move() / _move_*() #

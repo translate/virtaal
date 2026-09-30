@@ -294,6 +294,29 @@ def test_ensure_dev_locale_installed_compiles_the_po_when_no_mo_was_ever_built(t
     assert translation.gettext('Hello') == 'Kgotso'
 
 
+def test_ensure_dev_locale_installed_does_not_poison_the_cache_on_a_failed_compile(tmp_path, monkeypatch):
+    # A convertmo() failure (#3926) must not poison the .mo cache.
+    monkeypatch.setattr(pan_app.platform, 'is_frozen', False)
+    repo_root = tmp_path / 'repo'
+    (repo_root / 'po').mkdir(parents=True)
+    (repo_root / 'po' / 'xx.po').write_text('bogus', encoding='utf-8')
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(repo_root))
+    localedir = tmp_path / 'localedir'
+
+    def _broken_convertmo(infile, outfile, template):
+        raise ValueError('simulated compile failure')
+
+    monkeypatch.setattr(
+        'translate.tools.pocompile.convertmo', _broken_convertmo)
+
+    with pytest.raises(ValueError):
+        pan_app._ensure_dev_locale_installed('xx', str(localedir))
+
+    target_dir = localedir / 'xx' / 'LC_MESSAGES'
+    assert not (target_dir / 'virtaal.mo').exists()
+    assert not target_dir.exists() or list(target_dir.iterdir()) == []
+
+
 def test_get_available_ui_languages_has_no_system_default_entry_of_its_own(tmp_path, monkeypatch):
     # pan_app.py is in po/POTFILES.skip - a label here would never be
     # translatable. The caller (prefsview.py) adds one instead.

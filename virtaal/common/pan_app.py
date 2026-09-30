@@ -122,6 +122,7 @@ import configparser as ConfigParser
 import gettext
 import locale
 import shutil
+import tempfile
 
 from translate.lang import data
 from translate.misc import file_discovery
@@ -248,8 +249,17 @@ def _ensure_dev_locale_installed(lang, localedir):
         return
     from translate.tools.pocompile import convertmo
     os.makedirs(os.path.dirname(target), exist_ok=True)
-    with open(po_file, 'rb') as infile, open(target, 'w') as outfile:
-        convertmo(infile, outfile, None)
+    fd, tmp_target = tempfile.mkstemp(dir=os.path.dirname(target))
+    os.close(fd)
+    try:
+        # convertmo() reopens outfile by its .name; fdopen()'s .name is
+        # an int, not a path, so this must be a real path-backed file.
+        with open(tmp_target, 'w') as outfile, open(po_file, 'rb') as infile:
+            convertmo(infile, outfile, None)
+        os.replace(tmp_target, target)
+    except Exception:
+        os.remove(tmp_target)
+        raise
 
 
 class Settings:

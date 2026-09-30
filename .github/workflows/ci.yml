@@ -1058,7 +1058,13 @@ jobs:
           - runner: ubuntu-24.04-arm
             arch: aarch64
     runs-on: ${{ matrix.runner }}
-    timeout-minutes: 5
+    # A cache hit finishes in under 5 minutes, but a cache miss (the
+    # pinned Python deps version bumping, e.g.) means flatpak-builder
+    # recompiles lxml/pycurl/rapidfuzz from source, which doesn't fit
+    # in 5 - every cache-miss run was hitting that wall and getting
+    # cancelled outright. Matches build-macos-app's own budget for a
+    # similarly compile-heavy cold path.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
 

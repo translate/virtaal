@@ -67,12 +67,13 @@ navigating the file in Quality Checks mode.
 
 Virtaal on Windows
 ==================
-Here Virtaal is Running on Windows Vista. Virtaal should work well on all
-Windows systems from Windows 2000 onwards with the installer we provide.
+Here Virtaal is running on Windows, showing placeables, a recognised
+terminology term, and a translation memory suggestion together in one
+translation.
 
-.. figure:: /_static/virtaal-vista.jpg
+.. figure:: /_static/virtaal-windows.png
 
-   Virtaal running on Windows Vista
+   Virtaal running on Windows
 
 .. _screenshots#virtaal_on_macos:
 

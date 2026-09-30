@@ -74,13 +74,14 @@ Windows systems from Windows 2000 onwards with the installer we provide.
 
    Virtaal running on Windows Vista
 
-.. _screenshots#virtaal_on_os_x:
+.. _screenshots#virtaal_on_macos:
 
-Virtaal on OS X
-===============
-Here Virtaal is running, and nicely integrated, on OS X and shows the search
-functionality.
+Virtaal on macOS
+================
+Here Virtaal is running on macOS, showing placeables, a recognised
+terminology term, and a translation memory suggestion together in one
+translation.
 
-.. figure:: /_static/virtaal-osx.png
+.. figure:: /_static/virtaal-mac.png
 
-   Virtaal running on OSX
+   Virtaal running on macOS

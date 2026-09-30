@@ -96,6 +96,20 @@ script-files = ["bin/virtaal"]
 # hang becomes a normal, located failure instead of a silent timeout.
 timeout = 30
 timeout_method = "thread"
+# PyGObject's own internal deprecation warnings (not from virtaal's own
+# code) can crash a pytest-xdist worker outright when reported back to
+# the master process - unserialize_warning_message()'s getattr(mod,
+# class_name) hits gi/__init__.py's deliberate guard against the old
+# `import gobject` pattern, mistaking a warning's own module for that.
+# Filtering them here means they're never captured for cross-worker
+# reporting at all - PR #3817 fixed one instance of this same
+# INTERNALERROR class (a different warning); these are pre-existing,
+# unrelated warnings that can hit the identical vulnerability.
+filterwarnings = [
+    "ignore:GLib.unix_signal_add_full is deprecated:Warning",
+    "ignore:.*AbstractEventLoopPolicy.*:Warning",
+    "ignore:.*get_event_loop_policy.*:Warning",
+]
 
 [tool.setuptools.dynamic]
 version = {attr = "virtaal.__version__.ver"}

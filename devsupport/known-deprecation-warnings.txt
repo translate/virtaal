@@ -10,6 +10,9 @@
 
 # Not ours to fix - third-party libraries' own internal code.
 The 'u' type code is deprecated
-GLib.unix_signal_add_full is deprecated
-'asyncio.AbstractEventLoopPolicy' is deprecated
-'asyncio.get_event_loop_policy' is deprecated
+
+# GLib.unix_signal_add_full/asyncio.AbstractEventLoopPolicy/
+# asyncio.get_event_loop_policy used to be listed here too - pyproject.toml's
+# own filterwarnings now suppresses all three before pytest ever records
+# them, so this allowlist never sees them any more either; listing them
+# here would be dead, unreachable documentation.

@@ -46,6 +46,9 @@ dependencies = [
     # but actually opening one raises ModuleNotFoundError.
     "fluent.syntax==0.19.0",
     "pycurl==7.48.0",
+    # pycurl's own wheel bundles no CA bundle to verify against - see
+    # httpclient.py's own _configure_ca_bundle().
+    "certifi==2026.7.22",
     "diff_match_patch==20241021",
     # translate-toolkit 3.17.5 (the python_version < '3.11' pin above)
     # itself constrains lxml to <6.1 - a real cross-package conflict,

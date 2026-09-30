@@ -48,6 +48,16 @@ modules:
       - type: file
         url: https://files.pythonhosted.org/packages/fe/62/5851dbbaba9b8ba69019ee74213f1c31b0b2b7ba643ad48e9407638b0dea/pycurl-7.48.0.tar.gz
         sha256: b70961a76c412cd34f9cc2c9558e63f89fb37045c59eee396c585b52973be280
+  - name: python3-certifi
+    buildsystem: simple
+    build-commands:
+      - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
+        --prefix=${FLATPAK_DEST} "certifi" --no-build-isolation
+    sources:
+      # A single universal wheel - pure Python, no per-arch build.
+      - type: file
+        url: https://files.pythonhosted.org/packages/0b/a7/71ac2cff56fec219ed242bb11b8efb69fcc4bec75db06fb7bfe35de520e6/certifi-2026.7.22-py3-none-any.whl
+        sha256: 62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775
   - name: python3-diff_match_patch
     buildsystem: simple
     build-commands:

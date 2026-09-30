@@ -10,10 +10,36 @@ import os
 import sys
 from types import SimpleNamespace
 
+import certifi
 import pycurl
 from gi.repository import GLib
 
 from virtaal.support.httpclient import HTTPClient, HTTPRequest, RESTRequest
+
+# HTTPRequest's own CA bundle configuration - pycurl's wheel bundles no
+# CA bundle of its own, so without this, verification silently depends
+# on whatever (if anything) the host's OpenSSL default search path
+# finds. A plain dict-recording stand-in for pycurl.Curl(), since
+# real Curl objects don't support reading back a setopt value.
+
+class _RecordingCurl:
+    def __init__(self):
+        self.opts = {}
+
+    def setopt(self, opt, value):
+        self.opts[opt] = value
+
+    def getinfo(self, opt):
+        return None
+
+
+def test_configures_the_ca_bundle_via_certifi(monkeypatch):
+    monkeypatch.setattr('virtaal.support.httpclient.pycurl.Curl', _RecordingCurl)
+
+    req = HTTPRequest('http://example.com')
+
+    assert req.curl.opts[pycurl.CAINFO] == certifi.where()
+
 
 # RESTRequest: URL-building around an optional id and query params.
 # get_effective_url() reflects the built URL directly from the real

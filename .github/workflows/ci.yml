@@ -1480,8 +1480,18 @@ jobs:
           notes_start_tag=$(git describe --tags --abbrev=0 --match 'v*' "$tag^" 2>/dev/null || true)
           start_flag=""
           [ -n "$notes_start_tag" ] && start_flag="--notes-start-tag $notes_start_tag"
+          # Human-readable notes (docs/releases/1.0.0-github-notes.md)
+          # are prepended ahead of GitHub's own --generate-notes output
+          # (gh's documented behaviour for combining --notes-file with
+          # --generate-notes) - normal users read the top, the
+          # generated commit list underneath still covers "the
+          # changelog" for anyone who wants it.
+          notes_file="docs/releases/1.0.0-github-notes.md"
+          notes_flag=""
+          [ -f "$notes_file" ] && notes_flag="--notes-file $notes_file"
           gh release create "$tag" release-assets/* \
             --title "$tag" \
             --generate-notes \
+            $notes_flag \
             $start_flag \
             $prerelease_flag

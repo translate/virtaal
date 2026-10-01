@@ -323,12 +323,12 @@ class TestTextBox(TestScaffolding):
         assert textbox.suggestion['text'] == ' second'
         assert textbox.get_text() == '%d files removed second'
 
-    def test_on_key_pressed_tab_accepts_a_visible_suggestion(self):
+    def test_on_key_pressed_tab_accepts_a_visible_suggestion(self, monkeypatch):
         textbox = self._target_for('%d files removed')
         textbox.set_text('%d files removed')  # reset - an earlier test in this shared-widget class may have mutated it
         textbox.suggestion = {'text': ' extra', 'offset': len('%d files removed')}
         emitted = []
-        textbox.emit = lambda signal, *args: emitted.append((signal, args))
+        monkeypatch.setattr(textbox, 'emit', lambda signal, *args: emitted.append((signal, args)))
 
         result = textbox._on_key_pressed(textbox, _FakeKeyEvent(Gdk.KEY_Tab))
 
@@ -337,10 +337,10 @@ class TestTextBox(TestScaffolding):
         assert textbox.get_text() == '%d files removed extra'
         assert ('changed', ()) in emitted
 
-    def test_on_key_pressed_recognizes_a_special_key_combo(self):
+    def test_on_key_pressed_recognizes_a_special_key_combo(self, monkeypatch):
         textbox = self._target_for('%s files copied')
         emitted = []
-        textbox.emit = lambda signal, *args: emitted.append(args) or True
+        monkeypatch.setattr(textbox, 'emit', lambda signal, *args: emitted.append(args) or True)
         event = _FakeKeyEvent(Gdk.KEY_Return, Gdk.ModifierType.CONTROL_MASK)
 
         result = textbox._on_key_pressed(textbox, event)
@@ -348,10 +348,10 @@ class TestTextBox(TestScaffolding):
         assert result is True
         assert emitted == [(event, 'ctrl-enter')]
 
-    def test_on_key_pressed_passes_through_an_unrecognized_key(self):
+    def test_on_key_pressed_passes_through_an_unrecognized_key(self, monkeypatch):
         textbox = self._target_for('%s files copied')
         emitted = []
-        textbox.emit = lambda signal, *args: emitted.append(args) or False
+        monkeypatch.setattr(textbox, 'emit', lambda signal, *args: emitted.append(args) or False)
         event = _FakeKeyEvent(Gdk.KEY_a, 0)
 
         result = textbox._on_key_pressed(textbox, event)

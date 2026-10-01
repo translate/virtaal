@@ -37,22 +37,29 @@ class QualityCheckMode(BaseMode):
 
 
     # METHODS #
-    def _prepare_stats(self):
+    def _prepare_stats(self, keep_selected=False):
+        """Refresh the per-check failure stats.
+            @param keep_selected: Keep selected checks listed even once they
+                have no failures left, so they can still be deselected."""
         self.store_controller.update_store_checks(checker=self.main_controller.checks_controller.get_checker())
         self.stats = self.store_controller.get_store_checks()
-        # A currently selected check might disappear if the style changes:
-        self.filter_checks = [check for check in self.filter_checks if check in self.stats]
+        if not keep_selected:
+            # A currently selected check might disappear if the style changes:
+            self.filter_checks = [check for check in self.filter_checks if check in self.stats]
         self.storecursor = self.store_controller.cursor
         self.checks_names = {}
         for check, indices in self.stats.items():
             if indices and check not in ('total', 'translated', 'untranslated', 'extended'):
+                self.checks_names[check] = self.main_controller.checks_controller.get_check_name(check)
+        for check in self.filter_checks:
+            if check not in self.checks_names:
                 self.checks_names[check] = self.main_controller.checks_controller.get_check_name(check)
 
     def selected(self):
         self._prepare_stats()
         self._checker_set_id = self.main_controller.checks_controller.connect('checker-set', self._on_checker_set)
         # redo stats on save to refresh navigation controls
-        self._store_saved_id = self.store_controller.connect('store-saved', self._on_checker_set)
+        self._store_saved_id = self.store_controller.connect('store-saved', self._on_store_saved)
 
         self._add_widgets()
         self._update_button_label()
@@ -126,7 +133,7 @@ class QualityCheckMode(BaseMode):
         self._menuitem_checks = {}
         for check_name, display_name in sorted(self.checks_names.items(), key=lambda x: locale.strxfrm(x[1])):
             #l10n: %s is the name of the check and must be first. %d is the number of failures
-            menuitem = Gtk.CheckMenuItem(label="%s (%d)" % (display_name, len(self.stats[check_name])))
+            menuitem = Gtk.CheckMenuItem(label="%s (%d)" % (display_name, len(self.stats.get(check_name, []))))
             menuitem.set_active(check_name in self.filter_checks)
             menuitem.show()
             self._menuitem_checks[menuitem] = (check_name, menuitem.connect('toggled', self._on_check_menuitem_toggled))
@@ -154,6 +161,13 @@ class QualityCheckMode(BaseMode):
         self._create_menu_entries(self.btn_popup.menu)
         self._update_button_label()
         self.update_indices()
+
+    def _on_store_saved(self, store_controller):
+        # Refresh the counts only: the units under review stay until the
+        # selection changes.
+        self._prepare_stats(keep_selected=True)
+        self._create_menu_entries(self.btn_popup.menu)
+        self._update_button_label()
 
     def _on_check_menuitem_toggled(self, checkmenuitem):
         self.filter_checks = []

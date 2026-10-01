@@ -170,3 +170,13 @@ def test_showing_the_popup_does_not_change_the_text_or_line_height():
     assert textbox.get_buffer().props.text == 'drink'
     assert textbox.get_children() == []
     assert textbox.get_iter_location(textbox.get_buffer().get_start_iter()).height == height_before
+
+
+def test_dismiss_releases_the_native_window():
+    # macOS can re-show a hidden transient window when its parent is moved.
+    popup, accepted = _show(_textbox_in_window())
+    assert popup.get_realized()
+
+    popup.dismiss()
+
+    assert not popup.get_realized()

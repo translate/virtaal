@@ -5,7 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-from gi.repository import GObject
+from gi.repository import GObject, Gtk
 from translate.storage.placeables import StringElem, general
 from translate.storage.placeables import parse as parse_placeables
 
@@ -222,29 +222,19 @@ class PlaceablesController(BaseController):
 
     # EVENT HANDLERS #
     def _on_style_set(self, widget, prev_style=None):
-        textbox = None
-
-        # textbox.refresh() (textbox.py) redisplays a textbox's current
-        # content and unconditionally emits 'changed' regardless of
-        # whether any text actually changed - main_window's
-        # 'style-set'/'style-updated' signals can fire from unrelated
-        # GTK operations (a widget being shown/hidden as part of mode
-        # switching, for one), well outside load_unit()'s own
-        # disable_signals() window. This fires while a freshly-opened
-        # file's unit is loading, its 'changed' reaches
-        # UnitView._on_target_changed unguarded, and gets misreported as
-        # a real edit on the new file. Reuse load_unit()'s own guard -
-        # this is a pure style/colour redisplay, never a real edit.
         unitview = self.main_controller.unit_controller.view
-        unitview.disable_signals(['modified', 'insert-text', 'delete-text'])
-        # Refresh text boxes' colours
-        for textbox in unitview.sources + unitview.targets:
-            if textbox.props.visible:
-                textbox.refresh()
-        unitview.enable_signals(['modified', 'insert-text', 'delete-text'])
+        textboxes = [tb for tb in unitview.sources + unitview.targets if tb.props.visible]
+        # Before the refresh below, so text is redrawn in the new colours.
+        # With no file open there is no text box yet; a bare TextView has
+        # the same colours.
+        placeablesguiinfo.update_style(textboxes[0] if textboxes else Gtk.TextView())
 
-        if textbox:
-            placeablesguiinfo.update_style(textbox)
+        # refresh() emits 'changed'; a colour redisplay is not an edit, so
+        # suppress it the way load_unit() does.
+        unitview.disable_signals(['modified', 'insert-text', 'delete-text'])
+        for textbox in textboxes:
+            textbox.refresh()
+        unitview.enable_signals(['modified', 'insert-text', 'delete-text'])
 
     def _on_quit(self, main_ctrlr):
         for parser in general.parsers:

@@ -69,6 +69,25 @@ def test_prepare_stats_drops_a_filter_check_that_disappeared():
     assert mode.filter_checks == ['brackets']
 
 
+def test_prepare_stats_can_keep_a_selected_check_with_no_failures_left():
+    mode = _mode(
+        filter_checks=['brackets'],
+        store_controller=SimpleNamespace(
+            update_store_checks=lambda checker: None,
+            get_store_checks=lambda: {'total': [0], 'printf': [0]},
+            cursor=SimpleNamespace(),
+        ),
+        main_controller=SimpleNamespace(
+            checks_controller=SimpleNamespace(get_checker=lambda: None, get_check_name=lambda c: c.upper())
+        ),
+    )
+
+    mode._prepare_stats(keep_selected=True)
+
+    assert mode.filter_checks == ['brackets']
+    assert mode.checks_names == {'printf': 'PRINTF', 'brackets': 'BRACKETS'}
+
+
 # update_indices() #
 
 def test_update_indices_does_nothing_without_a_cursor_model():
@@ -219,6 +238,33 @@ def test_on_check_menuitem_toggled_rebuilds_filter_checks_from_active_items():
     mode._on_check_menuitem_toggled(items[0])
 
     assert mode.filter_checks == ['brackets']
+
+
+# _on_store_saved() #
+
+def test_on_store_saved_refreshes_the_menu_but_keeps_the_units_under_review():
+    cursor = SimpleNamespace(model=[object()] * 3, indices=[0, 2])
+    btn = _button_with_checks()
+    mode = _mode(
+        filter_checks=['brackets'],
+        btn_popup=btn,
+        store_controller=SimpleNamespace(
+            update_store_checks=lambda checker: None,
+            get_store_checks=lambda: {'total': [0, 1, 2]},  # every failure fixed
+            cursor=cursor,
+        ),
+        main_controller=SimpleNamespace(
+            checks_controller=SimpleNamespace(get_checker=lambda: None, get_check_name=lambda c: 'Brackets')
+        ),
+    )
+
+    mode._on_store_saved(None)
+
+    assert cursor.indices == [0, 2]
+    assert mode.filter_checks == ['brackets']
+    items = btn.menu.get_children()
+    assert [i.get_label() for i in items] == ['Brackets (0)']
+    assert items[0].get_active() is True
 
 
 # unselected() #

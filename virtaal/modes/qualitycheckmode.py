@@ -69,15 +69,15 @@ class QualityCheckMode(BaseMode):
         if not self.storecursor or not self.storecursor.model:
             return
 
-        indices = []
+        if not self.filter_checks:
+            # No check selected is no filter: include every unit.
+            self.storecursor.indices = list(range(len(self.storecursor.model)))
+            return
+
+        indices = set()
         for check in self.filter_checks:
-            indices.extend(self.stats[check])
-            indices.sort()
-
-        if not indices:
-            indices = list(range(len(self.storecursor.model)))
-
-        self.storecursor.indices = indices
+            indices.update(self.stats.get(check, []))
+        self.storecursor.indices = sorted(indices)
 
     def _add_widgets(self):
         # Destroy the previous popup button and its menu now rather

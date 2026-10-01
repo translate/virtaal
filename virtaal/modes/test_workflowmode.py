@@ -62,6 +62,18 @@ def test_update_indices_shows_only_the_selected_states_units():
     assert cursor.indices == [0, 1, 3]
 
 
+def test_update_indices_is_empty_when_the_selected_states_have_no_units():
+    cursor = SimpleNamespace(
+        model=SimpleNamespace(stats={'total': [0, 1], 'extended': {'new': [], 'done': [0, 1]}}),
+        indices=None,
+    )
+    mode = _mode(storecursor=cursor, filter_states=['new'])
+
+    mode.update_indices()
+
+    assert cursor.indices == []
+
+
 # _update_button_label() #
 
 def test_update_button_label_prompts_when_nothing_is_selected():

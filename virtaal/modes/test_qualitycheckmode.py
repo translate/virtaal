@@ -99,6 +99,24 @@ def test_update_indices_shows_only_the_selected_checks_units():
     assert cursor.indices == [0, 1, 3]
 
 
+def test_update_indices_lists_a_unit_failing_two_selected_checks_once():
+    cursor = SimpleNamespace(model=[object()] * 3, indices=None)
+    mode = _mode(storecursor=cursor, filter_checks=['printf', 'brackets'], stats={'printf': [1], 'brackets': [1, 2]})
+
+    mode.update_indices()
+
+    assert cursor.indices == [1, 2]
+
+
+def test_update_indices_is_empty_when_the_selected_checks_have_no_failures():
+    cursor = SimpleNamespace(model=[object()] * 3, indices=None)
+    mode = _mode(storecursor=cursor, filter_checks=['brackets'], stats={'total': [0, 1, 2]})
+
+    mode.update_indices()
+
+    assert cursor.indices == []
+
+
 # _update_button_label() #
 
 def _button_with_checks(*names_and_active):

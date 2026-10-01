@@ -982,7 +982,7 @@ def test_update_search_caches_each_matchs_current_text(monkeypatch):
     assert mode._match_text_cache[key] == match.get_getter()()
 
 
-def test_update_search_falls_back_to_showing_everything_when_nothing_matches(monkeypatch):
+def test_update_search_navigates_nothing_when_nothing_matches(monkeypatch):
     monkeypatch.setattr('virtaal.modes.searchmode.GLib.idle_add', lambda f: None)
     units = [_xliff_unit('a', 'dog'), _xliff_unit('b', 'fish')]
     mode = _update_search_mode(units, 'cat')
@@ -991,7 +991,7 @@ def test_update_search_falls_back_to_showing_everything_when_nothing_matches(mon
 
     assert mode.matches == []
     assert mode.filter.re_search is None
-    assert mode.storecursor.indices == mode.storecursor.model.stats['total']
+    assert mode.storecursor.indices == []
     assert mode.ent_search.get_style_context().lookup_color('theme_base_color')  # provider was (re)installed
     assert mode._search_bg_provider is not None
 

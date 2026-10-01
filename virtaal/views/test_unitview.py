@@ -504,7 +504,7 @@ def test_copy_original_inserts_the_selected_placeable_when_one_is_selected():
     inserted, moved = [], []
     textbox = SimpleNamespace(
         selector_textbox=source,
-        insert_translation=inserted.append,
+        insert_translation=lambda elem: inserted.append(elem) or True,
         move_elem_selection=moved.append,
     )
 
@@ -512,6 +512,22 @@ def test_copy_original_inserts_the_selected_placeable_when_one_is_selected():
 
     assert inserted == ['some-elem']
     assert moved == [1]
+
+
+def test_copy_original_keeps_the_selection_while_a_candidate_is_chosen():
+    # #962: the source selection moved on as soon as the term list opened.
+    view = UnitView.__new__(UnitView)
+    source = SimpleNamespace(selected_elem='some-elem')
+    moved = []
+    textbox = SimpleNamespace(
+        selector_textbox=source,
+        insert_translation=lambda elem: False,
+        move_elem_selection=moved.append,
+    )
+
+    view.copy_original(textbox)
+
+    assert moved == []
 
 
 def _copy_original_view(source_text, target_lang_code, role='target'):

@@ -274,10 +274,12 @@ class TextBox(Gtk.TextView):
         self.buffer.handler_unblock_by_func(self._on_delete_range)
 
     def insert_translation(self, elem):
+        """Insert C{elem}'s translation at the cursor, or offer its candidates
+            to choose from. Returns C{False} if the insert waits on a choice."""
         candidates = elem.gui_info.get_insert_candidates()
         if candidates:
             self._show_insert_candidates(candidates)
-            return
+            return False
 
         # Group the selection-delete with whatever follows into one undo entry.
         recording = self.undo_controller and not self.undo_controller.model.recording
@@ -312,6 +314,7 @@ class TextBox(Gtk.TextView):
             self.undo_controller.record_stop()
         self.refresh_cursor_pos = cursor_pos
         self.refresh(update=True)
+        return True
 
     def _show_insert_candidates(self, candidates):
         # Deferred so the text layout is valid when positioning the popup.
@@ -343,6 +346,7 @@ class TextBox(Gtk.TextView):
         if recording:
             self.undo_controller.record_stop()
         self.emit('changed')
+        self.move_elem_selection(1)
 
     def move_elem_selection(self, offset):
         direction = int(offset/abs(offset)) # Reduce offset to one of -1, 0 or 1

@@ -133,6 +133,14 @@ class TMView(BaseView, GObjectWrapper):
         self.tmwindow.hide()
         self.isvisible = False
 
+    def suspend(self):
+        """Keep the TM window hidden while another popup (e.g. the target's
+            completion list) is over the editor, until L{resume}."""
+        self._on_mainwindow_focus_lost()
+
+    def resume(self):
+        self._on_mainwindow_focus_gained()
+
     def select_backends(self, parent):
         from virtaal.views.backendselect import select_backends
         select_backends(

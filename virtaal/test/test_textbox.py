@@ -469,6 +469,19 @@ class TestTextBox(TestScaffolding):
         assert result is False
         assert not popup.is_showing()
 
+    def test_unit_view_signals_when_the_popup_opens_and_closes(self, monkeypatch):
+        textbox = self._target_for('%s files copied')
+        toggled = []
+        handler_id = self.unit_controller.view.connect(
+            'completion-popup-toggled', lambda view, showing: toggled.append(showing))
+        try:
+            popup = self._open_candidates(monkeypatch, textbox)
+            popup.dismiss()
+        finally:
+            self.unit_controller.view.disconnect(handler_id)
+
+        assert toggled == [True, False]
+
     def test_moving_the_cursor_dismisses_the_popup(self, monkeypatch):
         textbox = self._target_for('%s files copied')
         popup = self._open_candidates(monkeypatch, textbox)

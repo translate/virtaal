@@ -63,7 +63,7 @@ class TMModel(BaseTMModel):
             # We don't want to cache alt trans, since this is different for
             # units with the same source text.
 
-        matches += self._check_alttrans(unit)
+        matches = matches + self._check_alttrans(unit)
         if matches:
             self.emit('match-found', query_str, matches)
 

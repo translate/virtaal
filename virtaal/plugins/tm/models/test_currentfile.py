@@ -224,3 +224,25 @@ def test_check_alttrans_falls_back_to_default_tmsource_if_lmc_parsing_raises():
     # The lmc-specific enrichment failed, but the plain "\n" + origin
     # append happens unconditionally afterwards regardless.
     assert results[0]['tmsource'] == 'This file\nlmc'
+
+
+def test_query_does_not_leak_alttrans_between_units_with_the_same_source():
+    # Units sharing a source share a cache entry, but each has its own alt-trans.
+    model = _make_model(min_quality=50)
+    model.cache = {}
+    model.matcher = _FakeMatcher([_FakeCandidate('Open file', 'Maak lêer oop', 80)])
+    emitted = []
+    model.emit = lambda signal, query_str, matches: emitted.append([m['target'] for m in matches])
+    unit_a = _FakeUnit('Open', alttrans=[_FakeAlt('Open', 'A')])
+    unit_b = _FakeUnit('Open', alttrans=[_FakeAlt('Open', 'B')])
+
+    model.query(None, unit_a)
+    model.query(None, unit_b)
+    model.query(None, unit_a)
+
+    assert emitted == [
+        ['Maak lêer oop', 'A'],
+        ['Maak lêer oop', 'B'],
+        ['Maak lêer oop', 'A'],
+    ]
+    assert [m['target'] for m in model.cache['Open']] == ['Maak lêer oop']

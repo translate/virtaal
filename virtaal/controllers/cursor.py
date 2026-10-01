@@ -43,12 +43,17 @@ class Cursor(GObjectWrapper):
         self.circular = circular
 
         self._pos = 0
+        # The index before indices last became empty, so refilling them
+        # puts the cursor back near the same unit.
+        self._last_index = 0
 
 
     # ACCESSORS #
     def _get_pos(self):
         return self._pos
     def _set_pos(self, value):
+        if not self._indices:
+            return
         if value == self._pos:
             return # Don't unnecessarily move the cursor (or emit 'cursor-changed', more specifically)
         if value >= len(self.indices):
@@ -77,14 +82,20 @@ class Cursor(GObjectWrapper):
     def _get_indices(self):
         return self._indices
     def _set_indices(self, value):
-        oldindex = self.index
+        oldindex = self.index if self._indices else self._last_index
         oldpos = self.pos
 
         self._indices = list(value)
 
-        self.index = oldindex
-        if len(self._indices) == 0:
+        if not self._indices:
+            # No 'cursor-changed': there is no unit to change to, and
+            # listeners would otherwise be handed index -1.
+            self._last_index = oldindex
+            self._pos = 0
             self.emit('cursor-empty')
+            return
+
+        self.index = oldindex
         if oldpos == self.pos and oldindex != self.index:
             self.emit('cursor-changed')
     indices = property(_get_indices, _set_indices)
@@ -95,6 +106,9 @@ class Cursor(GObjectWrapper):
             currently pointing to.
 
             @returns: C{self.model[self.index]}, or C{None} if any error occurred."""
+        if not self._indices:
+            # index is -1 here, which would silently deref the last item.
+            return None
         try:
             return self.model[self.index]
         except Exception as exc:
@@ -122,6 +136,8 @@ class Cursor(GObjectWrapper):
             The cursor will wrap around to the beginning if C{circular=True}
             was given when the cursor was created."""
         # FIXME: Possibly contains off-by-one bug(s)
+        if not self._indices:
+            return
         if 0 <= self.pos + offset < len(self._indices):
             self.pos += offset
         elif self.circular:

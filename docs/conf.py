@@ -270,9 +270,6 @@ coverage_write_headline = False
 # -- Options for Intersphinx -------------------------------------------------
 
 intersphinx_mapping = {
-    'python': ('https://docs.python.org/3/', None),
-    'django': ('https://django.readthedocs.io/en/stable/', None),
-    'pootle': ('https://docs.translatehouse.org/projects/pootle/en/latest/', None),
     'toolkit': ('https://docs.translatehouse.org/projects/translate-toolkit/en/latest/', None),
 }
 

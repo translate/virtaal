@@ -55,16 +55,15 @@ class WorkflowMode(BaseMode):
         if not self.storecursor or not self.storecursor.model:
             return
 
+        if not self.filter_states:
+            # No state selected is no filter: include every unit.
+            self.storecursor.indices = self.storecursor.model.stats['total']
+            return
+
         indices = []
         for state in self.filter_states:
-            indices.extend(self.storecursor.model.stats['extended'][state])
-
-        if not indices:
-            indices.extend(self.storecursor.model.stats['total'])
-        else:
-            indices.sort()
-
-        self.storecursor.indices = indices
+            indices.extend(self.storecursor.model.stats['extended'].get(state, []))
+        self.storecursor.indices = sorted(indices)
 
     def _add_widgets(self):
         # Destroy the previous popup button and its menu now rather

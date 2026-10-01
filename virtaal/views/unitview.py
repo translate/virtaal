@@ -213,8 +213,8 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
     def copy_original(self, textbox):
         if textbox.selector_textbox is not textbox and \
             textbox.selector_textbox.selected_elem is not None:
-            textbox.insert_translation(textbox.selector_textbox.selected_elem)
-            textbox.move_elem_selection(1)
+            if textbox.insert_translation(textbox.selector_textbox.selected_elem):
+                textbox.move_elem_selection(1)
             return
 
         undocontroller = self.controller.main_controller.undo_controller

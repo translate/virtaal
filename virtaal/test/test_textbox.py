@@ -408,6 +408,27 @@ class TestTextBox(TestScaffolding):
 
         assert textbox.get_text() == original_text
 
+    def test_accepting_a_candidate_moves_the_placeable_selection_on(self, monkeypatch):
+        textbox = self._target_for('%s files copied')
+        moved = []
+        monkeypatch.setattr(textbox, 'move_elem_selection', moved.append)
+        popup = self._open_candidates(monkeypatch, textbox)
+
+        assert moved == []
+        popup.accept()
+
+        assert moved == [1]
+
+    def test_dismissing_the_popup_keeps_the_placeable_selection(self, monkeypatch):
+        textbox = self._target_for('%s files copied')
+        moved = []
+        monkeypatch.setattr(textbox, 'move_elem_selection', moved.append)
+        popup = self._open_candidates(monkeypatch, textbox)
+
+        textbox._on_key_pressed(textbox, _FakeKeyEvent(Gdk.KEY_Escape))
+
+        assert moved == []
+
     def test_enter_on_the_popup_does_not_reach_the_unit_view(self, monkeypatch):
         # Enter is 'go to the next unit' once it reaches the unit view.
         textbox = self._target_for('%s files copied')

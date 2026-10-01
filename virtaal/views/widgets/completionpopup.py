@@ -124,6 +124,11 @@ class CompletionPopup(Gtk.Window):
         self._on_accept = None
         self._textview = None
         self.hide()
+        # On macOS a hidden transient window can be re-shown with its parent
+        # (e.g. after dragging the main window); dropping the native window
+        # rules that out.
+        if self.get_realized():
+            self.unrealize()
 
     def _fill(self, candidates, font):
         for row in self.listbox.get_children():

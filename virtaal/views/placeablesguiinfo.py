@@ -144,7 +144,9 @@ class StringElemGUI:
 
         return None
 
-    def get_insert_widget(self):
+    def get_insert_candidates(self):
+        """Strings to choose from when inserting this placeable, or C{None}
+        to insert its translation directly."""
         return None
 
     def gui_to_tree_index(self, index):

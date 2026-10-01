@@ -5,6 +5,8 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+from types import SimpleNamespace
+
 import pytest
 from gi.repository import Gdk
 from test_scaffolding import TestScaffolding
@@ -359,11 +361,128 @@ class TestTextBox(TestScaffolding):
         assert result is False
         assert emitted == [(event, None)]
 
+    def _open_candidates(self, monkeypatch, textbox, candidates=('drank', 'dryf')):
+        # Run the deferred show at once, and treat the (never shown) test
+        # widget as mapped.
+        monkeypatch.setattr(textbox_module.GLib, 'idle_add', lambda func: func())
+        monkeypatch.setattr(textbox, 'get_mapped', lambda: True)
+        elem = SimpleNamespace(gui_info=SimpleNamespace(
+            get_insert_candidates=lambda: list(candidates)))
+        textbox.insert_translation(elem)
+        return textbox.completion_popup
+
+    def test_insert_translation_with_candidates_opens_the_popup_without_editing(self, monkeypatch):
+        textbox = self._target_for('%s files copied')
+        textbox.set_text('%s files copied')
+        self.undo_controller.model.clear()
+
+        popup = self._open_candidates(monkeypatch, textbox)
+
+        assert popup.is_showing()
+        assert textbox.get_text() == '%s files copied'
+        assert self.undo_controller.model.pop() is None
+        popup.dismiss()
+
+    def test_accepting_a_candidate_replaces_the_selection_in_one_undo_step(self, monkeypatch):
+        textbox = self._target_for('%s files copied')
+        textbox.set_text('%s files copied')
+        original_text = textbox.get_text()
+        self.undo_controller.model.clear()
+        textbox.buffer.select_range(
+            textbox.buffer.get_iter_at_offset(3), textbox.buffer.get_iter_at_offset(8))
+        popup = self._open_candidates(monkeypatch, textbox)
+
+        popup.move_selection(1)
+        result = textbox._on_key_pressed(textbox, _FakeKeyEvent(Gdk.KEY_Return))
+
+        assert result is True
+        assert not popup.is_showing()
+        assert textbox.get_text() == '%s dryf copied'
+        undo_info = self.undo_controller.model.pop()
+        assert isinstance(undo_info, list)
+        assert len(undo_info) == 2  # the selection-delete and the insert, grouped
+
+        for entry in reversed(undo_info):
+            entry['action'](entry['unit'])
+        textbox.refresh(update=True)
+
+        assert textbox.get_text() == original_text
+
+    def test_enter_on_the_popup_does_not_reach_the_unit_view(self, monkeypatch):
+        # Enter is 'go to the next unit' once it reaches the unit view.
+        textbox = self._target_for('%s files copied')
+        textbox.set_text('%s files copied')
+        textbox.buffer.place_cursor(textbox.buffer.get_end_iter())
+        popup = self._open_candidates(monkeypatch, textbox)
+        emitted = []
+        monkeypatch.setattr(textbox, 'emit', lambda signal, *args: emitted.append(signal))
+
+        textbox._on_key_pressed(textbox, _FakeKeyEvent(Gdk.KEY_Return))
+
+        assert 'key-pressed' not in emitted
+        assert 'changed' in emitted
+        assert textbox.get_text() == '%s files copieddrank'
+
+    def test_escape_dismisses_the_popup_leaving_the_text_unchanged(self, monkeypatch):
+        textbox = self._target_for('%s files copied')
+        textbox.set_text('%s files copied')
+        popup = self._open_candidates(monkeypatch, textbox)
+        emitted = []
+        monkeypatch.setattr(textbox, 'emit', lambda signal, *args: emitted.append(signal))
+
+        result = textbox._on_key_pressed(textbox, _FakeKeyEvent(Gdk.KEY_Escape))
+
+        assert result is True
+        assert not popup.is_showing()
+        assert emitted == []
+        assert textbox.get_text() == '%s files copied'
+
+    def test_arrow_keys_move_the_popup_selection(self, monkeypatch):
+        textbox = self._target_for('%s files copied')
+        popup = self._open_candidates(monkeypatch, textbox, ('a', 'b', 'c'))
+
+        textbox._on_key_pressed(textbox, _FakeKeyEvent(Gdk.KEY_Down))
+        textbox._on_key_pressed(textbox, _FakeKeyEvent(Gdk.KEY_Down))
+        textbox._on_key_pressed(textbox, _FakeKeyEvent(Gdk.KEY_Up))
+
+        assert popup.selected_index() == 1
+        popup.dismiss()
+
+    def test_a_modifier_key_alone_keeps_the_popup_open(self, monkeypatch):
+        textbox = self._target_for('%s files copied')
+        popup = self._open_candidates(monkeypatch, textbox)
+
+        result = textbox._on_key_pressed(
+            textbox, _FakeKeyEvent(Gdk.KEY_Shift_L, is_modifier=True))
+
+        assert result is True
+        assert popup.is_showing()
+        popup.dismiss()
+
+    def test_typing_dismisses_the_popup_and_passes_the_key_on(self, monkeypatch):
+        textbox = self._target_for('%s files copied')
+        popup = self._open_candidates(monkeypatch, textbox)
+        monkeypatch.setattr(textbox, 'emit', lambda signal, *args: False)
+
+        result = textbox._on_key_pressed(textbox, _FakeKeyEvent(Gdk.KEY_a))
+
+        assert result is False
+        assert not popup.is_showing()
+
+    def test_moving_the_cursor_dismisses_the_popup(self, monkeypatch):
+        textbox = self._target_for('%s files copied')
+        popup = self._open_candidates(monkeypatch, textbox)
+
+        textbox._on_event_remove_suggestion(textbox)
+
+        assert not popup.is_showing()
+
 
 class _FakeKeyEvent:
-    def __init__(self, keyval, state=0):
+    def __init__(self, keyval, state=0, is_modifier=False):
         self.keyval = keyval
         self._state = state
+        self.is_modifier = is_modifier
 
     def get_state(self):
         return self._state

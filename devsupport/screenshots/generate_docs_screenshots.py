@@ -179,7 +179,7 @@ def _setup_terminology(app, window, main_controller):
     """Terminology Assistance: terminology.po's unit has one recognised
     term ("Cancel") with two candidate Afrikaans translations in
     terminology.tbx (see that fixture's own header comment), so
-    inserting it pops up TerminologyCombo's picker rather than inserting
+    inserting it pops up the completion popup rather than inserting
     a single match directly - real interactive methods throughout
     (move_elem_selection/copy_original), not synthesized key events. The
     target already has a partial translation typed, so the demo shows
@@ -208,18 +208,15 @@ def _setup_terminology(app, window, main_controller):
     yield from _settle(30)
 
 
-def _find_termcombo(main_controller):
+def _find_completion_popup(main_controller):
     unit_view = main_controller.unit_controller.view
-    target_textbox = unit_view.targets[0]
-    for child in target_textbox.get_children():
-        if child.get_name() == "termcombo":
-            return child
-    return None
+    popup = unit_view.targets[0].completion_popup
+    return popup if popup.is_showing() else None
 
 
 def _capture_with_popup(main_controller, window, popup_widget):
     """Composite the main window with an open popup widget beside it (a
-    combo dropdown, a suggestions window, ...), then crop to the active
+    completion popup, a suggestions window, ...), then crop to the active
     unit row plus however far the popup extends past it.
 
     A popup is a real, separate top-level GdkWindow - GTK never renders
@@ -228,8 +225,8 @@ def _capture_with_popup(main_controller, window, popup_widget):
     so a plain single-window capture can never see it. Capturing each
     real window separately and compositing them by their actual
     on-screen position is the general fix, reused across every docs
-    screenshot state that needs to show a popup (terminology's insert
-    combo, TM's suggestions window, ...).
+    screenshot state that needs to show a popup (terminology's
+    completion popup, TM's suggestions window, ...).
 
     `popup_widget` may be None (or realized but not visible/mapped, in
     which case its Gdk.Window is None) - some states only sometimes
@@ -280,10 +277,9 @@ def _capture_with_popup(main_controller, window, popup_widget):
 
 
 def _capture_terminology_combo(main_controller, window):
-    """The insertion UI shown alongside the highlighted term -
-    TerminologyCombo's own open dropdown menu."""
-    combo = _find_termcombo(main_controller)
-    return _capture_with_popup(main_controller, window, combo.menu if combo else None)
+    """The insertion UI shown alongside the highlighted term - the
+    target's completion popup listing the term's translations."""
+    return _capture_with_popup(main_controller, window, _find_completion_popup(main_controller))
 
 
 def _setup_tm(app, window, main_controller):
@@ -316,7 +312,7 @@ def _setup_tm(app, window, main_controller):
 def _capture_tm_suggestions(main_controller, window):
     """The suggestions window TM matches show in - a real, separate
     Gtk.Window(type=POPUP) (see tmwidgets.TMWindow), same situation as
-    TerminologyCombo's dropdown."""
+    the terminology completion popup."""
     tm_plugin = main_controller.plugin_controller.plugins.get("tm")
     tmwindow = tm_plugin.controller.view.tmwindow if tm_plugin else None
     return _capture_with_popup(main_controller, window, tmwindow)

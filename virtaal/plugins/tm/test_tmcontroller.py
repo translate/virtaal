@@ -299,13 +299,14 @@ def test_destroy_tears_down_the_view_and_all_registered_signals():
     controller._cursor_changed_id = 'cursor-id'
     controller._mode_selected_id = 'mode-id'
     controller._target_focused_id = 'target-id'
+    controller._completion_toggled_id = 'completion-id'
     controller.plugin_controller = SimpleNamespace(shutdown=lambda: calls.append('shutdown'))
 
     controller.destroy()
 
     assert calls == [
         'hide', 'destroy', ('store', 'store-id'), ('cursor', 'cursor-id'),
-        ('mode', 'mode-id'), ('target', 'target-id'), 'shutdown',
+        ('mode', 'mode-id'), ('target', 'target-id'), ('target', 'completion-id'), 'shutdown',
     ]
 
 
@@ -389,11 +390,12 @@ def test_start_query_uses_the_cached_unit_when_already_set(monkeypatch):
     scheduled = []
     monkeypatch.setattr('virtaal.plugins.tm.tmcontroller.GLib.timeout_add', lambda delay, cb: scheduled.append((delay, cb)) or 'timeout-id')
     controller = _controller_for_start_query(unit=SimpleNamespace(source='x'))
-    controller.main_controller = SimpleNamespace(unit_controller=SimpleNamespace(view=SimpleNamespace(connect=lambda signal, handler: 'sig-target-focused')))
+    controller.main_controller = SimpleNamespace(unit_controller=SimpleNamespace(view=SimpleNamespace(connect=lambda signal, handler: 'sig-' + signal)))
 
     controller.start_query()
 
     assert controller._target_focused_id == 'sig-target-focused'
+    assert controller._completion_toggled_id == 'sig-completion-popup-toggled'
     assert scheduled and scheduled[0][0] == TMController.QUERY_DELAY
 
 
@@ -522,6 +524,18 @@ def test_on_mode_selected_updates_the_view_geometry():
     controller._on_mode_selected(None, None)
 
     assert calls == [True]
+
+
+def test_completion_popup_toggled_suspends_and_resumes_the_view():
+    # The TM window and the completion list would otherwise overlap.
+    controller = _bare_controller()
+    calls = []
+    controller.view = SimpleNamespace(suspend=lambda: calls.append('suspend'), resume=lambda: calls.append('resume'))
+
+    controller._on_completion_popup_toggled(None, True)
+    controller._on_completion_popup_toggled(None, False)
+
+    assert calls == ['suspend', 'resume']
 
 
 def test_on_target_focused_updates_the_view_geometry():

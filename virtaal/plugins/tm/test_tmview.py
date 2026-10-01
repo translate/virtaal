@@ -640,3 +640,30 @@ def test_init_wires_key_bindings_menu_and_store_signals():
     assert added_accel_groups == [view.accel_group]
     assert view.mnu_suggestions.get_active() is True
     assert len(view._signal_tracker._ids) == 7
+
+
+# suspend() / resume(): kept hidden while the target's completion list is open
+
+def test_suspend_hides_a_visible_window_until_resume():
+    view = _view_for_grab_notify(isvisible=True)
+    shown = []
+    view.show = lambda: shown.append('shown')
+
+    view.suspend()
+
+    assert view.isvisible is False
+    assert view._may_show_tmwindow is False
+
+    view.resume()
+
+    assert shown == ['shown']
+
+
+def test_matches_arriving_while_suspended_wait_for_resume():
+    view = _view_for_grab_notify(isvisible=False)
+
+    view.suspend()
+    view.show()
+
+    assert view.isvisible is False
+    assert view._should_show_tmwindow is True

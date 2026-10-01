@@ -132,6 +132,8 @@ class TMController(BaseController):
             self.main_controller.mode_controller.disconnect(self._mode_selected_id)
         if getattr(self, '_target_focused_id', None):
             self.main_controller.unit_controller.view.disconnect(self._target_focused_id)
+        if getattr(self, '_completion_toggled_id', None):
+            self.main_controller.unit_controller.view.disconnect(self._completion_toggled_id)
 
         self.plugin_controller.shutdown()
 
@@ -168,6 +170,10 @@ class TMController(BaseController):
         if getattr(self, '_target_focused_id', None) and getattr(self, 'unit_view', None):
             self.unit_view.disconnect(self._target_focused_id)
         self._target_focused_id = self.unit_view.connect('target-focused', self._on_target_focused)
+        if getattr(self, '_completion_toggled_id', None):
+            self.unit_view.disconnect(self._completion_toggled_id)
+        self._completion_toggled_id = self.unit_view.connect(
+            'completion-popup-toggled', self._on_completion_popup_toggled)
         self.view.hide()
 
         def start_query():
@@ -221,6 +227,12 @@ class TMController(BaseController):
             return False
 
         GLib.idle_add(handle_first_unit)
+
+    def _on_completion_popup_toggled(self, unit_view, showing):
+        if showing:
+            self.view.suspend()
+        else:
+            self.view.resume()
 
     def _on_target_focused(self, unitcontroller, target_n):
         #import logging

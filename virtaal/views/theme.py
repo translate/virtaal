@@ -138,17 +138,12 @@ def update_style(widget):
     fg = rgba_to_str(fg)
     bg = rgba_to_str(bg)
 
-    # On some themes (notably Windows XP with classic style), diff_delete_bg is
-    # almost identical to the background colour used. So we use something from
-    # the gtk theme that is supposed to be different, but not much.
-    if not has_reasonable_contrast(bg, current_theme['diff_delete_bg']):
-        if INVERSE:
-            new_diff_delete_bg = "#000"
-        else:
-            new_diff_delete_bg = "#fff"
-        # we only want to change if it will actually result in something readable:
-        if has_good_contrast(fg, new_diff_delete_bg):
-            current_theme['diff_delete_bg'] = new_diff_delete_bg
+    # On some themes (notably Windows XP with classic style), a highlight
+    # background colour can be almost identical to the page background. So we
+    # fall back to something that is supposed to be different, but not much.
+    for key in ('diff_delete_bg', 'diff_insert_bg', 'diff_replace_bg',
+                'fuzzy_row_bg', 'warning_bg'):
+        current_theme[key] = _distinguishable_from(bg, fg, current_theme[key])
 
     url_fg = rgba_to_str(_style.get_color(Gtk.StateFlags.LINK))
     if has_good_contrast(bg, url_fg):
@@ -186,3 +181,14 @@ def has_reasonable_contrast(c1, c2):
     return _luminance_contrast_ratio(c1, c2) >= 1.2
     # constant determined by testing in many themes, Windows XP with "classic"
     # being the edge case
+
+
+def _distinguishable_from(bg, fg, color):
+    """Returns `color`, unless it isn't reasonably distinguishable from `bg`
+    (a highlight background disappearing into the page background), in which
+    case it falls back to a plain black/white - but only if that fallback
+    would still be readable against `fg`."""
+    if has_reasonable_contrast(bg, color):
+        return color
+    fallback = "#000" if INVERSE else "#fff"
+    return fallback if has_good_contrast(fg, fallback) else color

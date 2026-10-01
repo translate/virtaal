@@ -34,6 +34,51 @@ def test_set_widget_bg_color_accepts_a_named_colour():
     set_widget_bg_color(label, 'grey')
 
 
+def test_has_good_contrast_black_on_white():
+    assert theme.has_good_contrast('#000', '#fff') is True
+
+
+def test_has_good_contrast_false_for_close_greys():
+    # reasonably distinguishable, but not good enough for text:
+    assert theme.has_reasonable_contrast('#777', '#888') is True
+    assert theme.has_good_contrast('#777', '#888') is False
+
+
+def test_has_reasonable_contrast_false_for_identical_colours():
+    assert theme.has_reasonable_contrast('#fff', '#fff') is False
+
+
+def test_distinguishable_from_keeps_colour_with_good_contrast():
+    assert theme._distinguishable_from('#fff', '#000', '#000') == '#000'
+
+
+def test_distinguishable_from_falls_back_when_indistinguishable():
+    theme.INVERSE = False
+    try:
+        # '#eee' on '#eee' would vanish into the page background entirely
+        assert theme._distinguishable_from('#eee', '#000', '#eee') == '#fff'
+    finally:
+        theme.INVERSE = False
+
+
+def test_distinguishable_from_falls_back_to_black_when_inverse():
+    theme.INVERSE = True
+    try:
+        assert theme._distinguishable_from('#333', '#fff', '#333') == '#000'
+    finally:
+        theme.INVERSE = False
+
+
+def test_distinguishable_from_keeps_original_when_fallback_also_unreadable():
+    theme.INVERSE = False
+    try:
+        # the '#fff' fallback wouldn't be readable against this near-white fg,
+        # so the original (still indistinguishable from bg) colour is kept
+        assert theme._distinguishable_from('#ddd', '#eee', '#ddd') == '#ddd'
+    finally:
+        theme.INVERSE = False
+
+
 def test_update_style_detects_a_light_theme():
     # get_background_color() always returns fully transparent in
     # current GTK3, regardless of the widget's real theme - is_inverse()

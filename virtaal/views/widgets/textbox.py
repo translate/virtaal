@@ -85,7 +85,6 @@ class TextBox(Gtk.TextView):
         self.elem = None
         self.main_controller = main_controller
         self.placeables_controller = main_controller.placeables_controller
-        self.refresh_actions = []
         self.refresh_cursor_pos = -1
         self.role = role
         self.selector_textbox = selector_textbox or self
@@ -93,6 +92,7 @@ class TextBox(Gtk.TextView):
         self.selected_elem = None
         self.selected_elem_index = None
         self._suggestion = None
+        self._completion_popup = None
         self.undo_controller = main_controller.undo_controller
 
         self.__connect_default_handlers()
@@ -110,6 +110,7 @@ class TextBox(Gtk.TextView):
         self.connect('focus-out-event', self._on_event_remove_suggestion)
         self.connect('key-press-event', self._on_key_pressed)
         self.connect('move-cursor', self._on_event_remove_suggestion)
+        self.connect('unmap', self._on_event_remove_suggestion)
         self.buffer.connect('insert-text', self._on_insert_text)
         self.buffer.connect_after('insert-text', self._on_insert_text_after)
         self.buffer.connect('delete-range', self._on_delete_range)
@@ -135,6 +136,13 @@ class TextBox(Gtk.TextView):
         self._suggestion = value
         self.show_suggestion()
     suggestion = property(_get_suggestion, _set_suggestion)
+
+    @property
+    def completion_popup(self):
+        if self._completion_popup is None:
+            from virtaal.views.widgets.completionpopup import CompletionPopup
+            self._completion_popup = CompletionPopup()
+        return self._completion_popup
 
     # OVERRIDDEN METHODS #
     def get_stringelem(self):
@@ -266,6 +274,11 @@ class TextBox(Gtk.TextView):
         self.buffer.handler_unblock_by_func(self._on_delete_range)
 
     def insert_translation(self, elem):
+        candidates = elem.gui_info.get_insert_candidates()
+        if candidates:
+            self._show_insert_candidates(candidates)
+            return
+
         # Group the selection-delete with whatever follows into one undo entry.
         recording = self.undo_controller and not self.undo_controller.model.recording
         if recording:
@@ -279,54 +292,57 @@ class TextBox(Gtk.TextView):
             Gtk.main_iteration()
 
         cursor_pos = self.buffer.props.cursor_position
-        widget = elem.gui_info.get_insert_widget()
-        if widget:
-            # The actual insertion is deferred past this method returning -
-            # stop recording now rather than holding it open across that.
-            if recording:
-                self.undo_controller.record_stop()
-            def show_widget():
-                cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)
-                anchor = self.buffer.create_child_anchor(cursor_iter)
-                # It is necessary to recreate cursor_iter because, for some inexplicable reason,
-                # the Gtk guys thought it acceptable to have create_child_anchor() above CHANGE
-                # THE PARAMETER ITER'S VALUE! But only in some cases, while the moon is 73.8% full
-                # and it's after 16:33. Documenting this is obviously also too much to ask.
-                # Nevermind the fact that there isn't simply a Gtk.TextBuffer.remove_anchor() method
-                # or something similar. Why would you want to remove anything from a TextView that
-                # you have added anyway!?
-                # It's crap like this that'll make me ditch Gtk.
-                cursor_iter = self.buffer.get_iter_at_offset(cursor_pos)
-                self.add_child_at_anchor(widget, anchor)
-                widget.show_all()
-                if callable(getattr(widget, 'inserted', None)):
-                    widget.inserted(cursor_iter, anchor)
-            # show_widget() must be deferred until the refresh() following this
-            # signal's completion. Otherwise the changes made by show_widget()
-            # and those made by the refresh() will wage war on each other and
-            # leave Virtaal as one of the casualties thereof.
-            self.refresh_actions.append(show_widget)
-        else:
-            translation = elem.translate()
-            if isinstance(translation, StringElem):
-                self.add_default_gui_info(translation)
-                insert_offset = self.elem.gui_info.gui_to_tree_index(cursor_pos)
-                self.elem.insert(insert_offset, translation)
-                self.elem.prune()
+        translation = elem.translate()
+        if isinstance(translation, StringElem):
+            self.add_default_gui_info(translation)
+            insert_offset = self.elem.gui_info.gui_to_tree_index(cursor_pos)
+            self.elem.insert(insert_offset, translation)
+            self.elem.prune()
 
-                self.emit('text-inserted', translation, cursor_pos, self.elem)
+            self.emit('text-inserted', translation, cursor_pos, self.elem)
 
-                if hasattr(translation, 'gui_info'):
-                    cursor_pos += translation.gui_info.length()
-                else:
-                    cursor_pos += len(translation)
+            if hasattr(translation, 'gui_info'):
+                cursor_pos += translation.gui_info.length()
             else:
-                self.buffer.insert_at_cursor(translation)
                 cursor_pos += len(translation)
-            if recording:
-                self.undo_controller.record_stop()
+        else:
+            self.buffer.insert_at_cursor(translation)
+            cursor_pos += len(translation)
+        if recording:
+            self.undo_controller.record_stop()
         self.refresh_cursor_pos = cursor_pos
         self.refresh(update=True)
+
+    def _show_insert_candidates(self, candidates):
+        # Deferred so the text layout is valid when positioning the popup.
+        def show():
+            if not self.get_mapped():
+                return False
+            bounds = self.buffer.get_selection_bounds()
+            if bounds:
+                start, end = (itr.get_offset() for itr in bounds)
+            else:
+                start = end = self.buffer.props.cursor_position
+            self.completion_popup.show_at(
+                self, start, candidates,
+                lambda text: self._insert_candidate(text, start, end),
+            )
+            return False
+        GLib.idle_add(show)
+
+    def _insert_candidate(self, text, start, end):
+        # The selection-delete and the insert are one undo entry.
+        recording = self.undo_controller and not self.undo_controller.model.recording
+        if recording:
+            self.undo_controller.record_start()
+        if end > start:
+            self.buffer.delete(self.buffer.get_iter_at_offset(start),
+                               self.buffer.get_iter_at_offset(end))
+        self.refresh_cursor_pos = start
+        self.buffer.insert(self.buffer.get_iter_at_offset(start), text)
+        if recording:
+            self.undo_controller.record_stop()
+        self.emit('changed')
 
     def move_elem_selection(self, offset):
         direction = int(offset/abs(offset)) # Reduce offset to one of -1, 0 or 1
@@ -411,10 +427,6 @@ class TextBox(Gtk.TextView):
             self.place_cursor(self.refresh_cursor_pos)
         self.refresh_cursor_pos = -1
 
-        for action in self.refresh_actions:
-            if callable(action):
-                action()
-        self.refresh_actions = []
 
         self.emit('refreshed', self.elem)
 
@@ -829,6 +841,10 @@ class TextBox(Gtk.TextView):
     def _on_key_pressed(self, widget, event, *args):
         evname = None
 
+        if self._completion_popup is not None and self._completion_popup.is_showing():
+            if self._on_completion_key(event):
+                return True
+
         if self.suggestion_is_visible():
             if event.keyval == Gdk.KEY_Tab:
                 self.hide_suggestion()
@@ -869,7 +885,34 @@ class TextBox(Gtk.TextView):
 
         return self.emit('key-pressed', event, evname)
 
+    def _on_completion_key(self, event):
+        """Handle a key press while the completion popup is showing.
+        Returns C{True} if the key was used by the popup."""
+        if event.is_modifier:
+            return True
+        state = event.get_state() & (Gdk.ModifierType.CONTROL_MASK |
+            Gdk.ModifierType.MOD1_MASK | Gdk.ModifierType.MOD4_MASK |
+            Gdk.ModifierType.SHIFT_MASK)
+        popup = self._completion_popup
+        if not state:
+            if event.keyval in (Gdk.KEY_Up, Gdk.KEY_KP_Up):
+                popup.move_selection(-1)
+                return True
+            if event.keyval in (Gdk.KEY_Down, Gdk.KEY_KP_Down):
+                popup.move_selection(1)
+                return True
+            if event.keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter, Gdk.KEY_Tab):
+                popup.accept()
+                return True
+            if event.keyval == Gdk.KEY_Escape:
+                popup.dismiss()
+                return True
+        popup.dismiss()
+        return False
+
     def _on_event_remove_suggestion(self, *args):
+        if self._completion_popup is not None:
+            self._completion_popup.dismiss()
         self.suggestion = None
         self.refresh_cursor_pos = -1
 

@@ -7,10 +7,7 @@
 
 import locale
 
-from gi.repository import Gtk
-
 from virtaal.common import SignalTracker
-from virtaal.views import rendering
 from virtaal.views.baseview import BaseView
 from virtaal.views.placeablesguiinfo import StringElemGUI
 from virtaal.views.theme import is_inverse
@@ -22,8 +19,8 @@ _inverse_bg = '#003700'
 
 class TerminologyGUIInfo(StringElemGUI):
     """
-    GUI info object for terminology placeables. It creates a combo box to
-    choose the selected match from.
+    GUI info object for terminology placeables. A placeable with more than
+    one match offers them as insert candidates to choose from.
     """
     # MEMBERS #
     fg = _default_fg
@@ -35,9 +32,10 @@ class TerminologyGUIInfo(StringElemGUI):
 
 
     # METHODS #
-    def get_insert_widget(self):
+    def get_insert_candidates(self):
         if len(self.elem.translations) > 1:
-            return TerminologyCombo(self.elem)
+            # translations comes from a set(), so sort for a stable order (#3912).
+            return sorted(self.elem.translations, key=locale.strxfrm)
         return None
 
     @classmethod
@@ -54,119 +52,6 @@ class TerminologyGUIInfo(StringElemGUI):
         else:
             self.fg = _default_fg
             self.bg = _default_bg
-
-
-_termcombo_css_provider = None
-
-def _get_termcombo_css_provider():
-    """
-    Must be added screen-wide, not on the combo's own style context -
-    GTK3's "button.combo"/"arrow" nodes are internal to ComboBox and a
-    per-widget provider can't reach them.
-    """
-    global _termcombo_css_provider
-    if _termcombo_css_provider is None:
-        _termcombo_css_provider = Gtk.CssProvider()
-        _termcombo_css_provider.load_from_data(b'''
-            #termcombo button.combo {
-                background: none;
-                background-image: none;
-                border: none;
-                box-shadow: none;
-                padding: 0;
-                min-width: 0;
-                min-height: 0;
-            }
-            #termcombo arrow {
-                min-width: 0;
-                min-height: 0;
-                padding: 0;
-                opacity: 0;
-            }
-        ''')
-    return _termcombo_css_provider
-
-
-class TerminologyCombo(Gtk.ComboBox):
-    """
-    A combo box containing translation matches.
-    """
-
-    # INITIALIZERS #
-    def __init__(self, elem):
-        super().__init__()
-        self.elem = elem
-        self.insert_iter = None
-        self.selected_string = None
-        self.set_name('termcombo')
-        # Let's make it as small as possible, since we don't want to see the
-        # combo at all.
-        self.set_size_request(0, 0)
-        self.__init_combo()
-        cell_renderers = self.get_cells()
-        # Set the font correctly for the target
-        if cell_renderers:
-            cell_renderers[0].props.font_desc = rendering.get_target_font_description()
-        self.menu = Gtk.Menu.get_for_attach_widget(self)[0]
-        self.menu.connect('selection-done', self._on_selection_done)
-
-    def __init_combo(self):
-        self._model = Gtk.ListStore(str)
-        for trans in sorted(self.elem.translations, key=locale.strxfrm):
-            self._model.append([trans])
-
-        self.set_model(self._model)
-        self._renderer = Gtk.CellRendererText()
-        self.pack_start(self._renderer, True)
-        self.add_attribute(self._renderer, 'text', 0)
-
-        Gtk.StyleContext.add_provider_for_screen(
-            self.get_screen(), _get_termcombo_css_provider(),
-            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-
-
-    # METHODS #
-    def inserted(self, insert_iter, anchor):
-        self.insert_offset = insert_iter.get_offset()
-        self.grab_focus()
-        self.popup()
-
-    def insert_selected(self):
-        iter = self.get_active_iter()
-        if iter:
-            self.selected_string = self._model.get_value(iter, 0)
-
-        parent = self.get_parent()
-        if parent:
-            parent.grab_focus()
-
-        # Group the anchor-delete with the term-insert into one undo entry.
-        undo_controller = getattr(parent, 'undo_controller', None)
-        recording = undo_controller and not undo_controller.model.recording
-        if recording:
-            undo_controller.record_start()
-
-        buffer = parent.get_buffer()
-        parent.remove(self)
-        if self.insert_offset >= 0:
-            iterins  = buffer.get_iter_at_offset(self.insert_offset)
-            iternext = buffer.get_iter_at_offset(self.insert_offset + 1)
-            if iternext:
-                buffer.delete(iterins, iternext)
-
-            iterins  = buffer.get_iter_at_offset(self.insert_offset)
-            parent.refresh_cursor_pos = buffer.props.cursor_position
-            if self.selected_string:
-                buffer.insert(iterins, self.selected_string)
-                parent.emit("changed")
-
-        if recording:
-            undo_controller.record_stop()
-
-
-    # EVENT HANDLERS #
-    def _on_selection_done(self, menushell):
-        self.insert_selected()
 
 
 class TerminologyView(BaseView):

@@ -93,7 +93,7 @@ def test_create_tags_skips_falsy_colors():
     assert tag.props.background_set is False
 
 
-# create_repr_widgets() / copy() / get_insert_widget() / has_*_widget() #
+# create_repr_widgets() / copy() / get_insert_candidates() / has_*_widget() #
 
 def test_base_create_repr_widgets_adds_no_widgets():
     gui = StringElemGUI(elem=StringElem('hi'), textbox=_fake_textbox())
@@ -116,10 +116,10 @@ def test_copy_preserves_style_and_target():
     assert copied.cursor_allowed is False
 
 
-def test_get_insert_widget_is_none_by_default():
+def test_get_insert_candidates_is_none_by_default():
     gui = StringElemGUI(elem=StringElem('hi'), textbox=_fake_textbox())
 
-    assert gui.get_insert_widget() is None
+    assert gui.get_insert_candidates() is None
 
 
 def test_has_start_and_end_widget_are_false_with_no_widgets():

@@ -6,7 +6,7 @@
 # Uses dmgbuild (pure Python, no Finder AppleScript automation needed -
 # more reliable in CI than create-dmg's shell+osascript approach).
 # Layout/assets in devsupport/packaging/macos/dmgbuild-settings.py,
-# reusing devsupport/mac-bundle/virtaal_DMG_background.png and
+# reusing devsupport/mac-bundle/virtaal_DMG_background{,@2x}.png and
 # icons/VolumeIcon_virtaal.icns.
 set -eu
 cd "$(git rev-parse --show-toplevel)"

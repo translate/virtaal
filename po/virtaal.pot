@@ -1186,7 +1186,8 @@ msgstr ""
 msgid "Reviewed"
 msgstr ""
 
-#: virtaal/modes/defaultmode.py
+#. l10n: Context: show every unit, not only the matching ones
+#: virtaal/modes/defaultmode.py virtaal/views/modeview.py
 msgid "All"
 msgstr ""
 
@@ -2237,6 +2238,17 @@ msgstr ""
 #. between units.
 #: virtaal/views/modeview.py
 msgid "N_avigation:"
+msgstr ""
+
+#. l10n: Context: show no units around the one being edited
+#: virtaal/views/modeview.py
+msgid "None"
+msgstr ""
+
+#. l10n: How many units to show around the one being edited, when a
+#. navigation mode only goes to some units
+#: virtaal/views/modeview.py
+msgid "Conte_xt:"
 msgstr ""
 
 #: virtaal/views/prefsview.py

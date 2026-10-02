@@ -21,6 +21,8 @@ class ModeView(GObjectWrapper, BaseView):
     __gtype_name__ = 'ModeView'
     __gsignals__ = {
         "mode-selected": (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_STRING,)),
+        # The number of units to show around the one being edited, or None for all.
+        "context-selected": (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT,)),
     }
 
     # INITIALIZERS #
@@ -61,6 +63,32 @@ class ModeView(GObjectWrapper, BaseView):
         self.mode_box.attach(self.lbl_mode, 0, 0, 1, 1)
         self.mode_box.attach(self.cmb_modes, 1, 0, 1, 1)
 
+        self._build_context_gui(gui.get_object('hbox1'))
+
+    def _build_context_gui(self, top_bar):
+        self.cmb_context = Gtk.ComboBoxText()
+        self.cmb_context.set_wrap_width(1)
+        #l10n: Context: show no units around the one being edited
+        self.cmb_context.append('0', _('None'))
+        for count in ('1', '2', '3'):
+            self.cmb_context.append(count, count)
+        #l10n: Context: show every unit, not only the matching ones
+        self.cmb_context.append('all', _('All'))
+        self.cmb_context.connect('changed', self._on_cmbcontext_change)
+
+        lbl_context = Gtk.Label()
+        #l10n: How many units to show around the one being edited, when a
+        #navigation mode only goes to some units
+        lbl_context.set_markup_with_mnemonic(_('Conte_xt:'))
+        lbl_context.set_mnemonic_widget(self.cmb_context)
+
+        self.context_box = Gtk.Box(spacing=3)
+        self.context_box.pack_start(lbl_context, False, False, 0)
+        self.context_box.pack_start(self.cmb_context, False, False, 0)
+        self.context_box.set_valign(Gtk.Align.CENTER)
+        self.context_box.set_margin_end(6)
+        top_bar.pack_end(self.context_box, False, False, 0)
+
     def _load_modes(self):
         self.displayname_index = {}
         i = 0
@@ -74,6 +102,7 @@ class ModeView(GObjectWrapper, BaseView):
     # METHODS #
     def hide(self):
         self.mode_box.hide()
+        self.context_box.hide()
 
     def remove_mode_widgets(self, widgets):
         if not widgets:
@@ -101,6 +130,17 @@ class ModeView(GObjectWrapper, BaseView):
 
     def show(self):
         self.mode_box.show_all()
+        self.context_box.show_all()
+
+    def select_context(self, context):
+        """Show C{context} (a number of units, or None for all) as selected,
+            without emitting "context-selected"."""
+        self._ignore_context_change = True
+        self.cmb_context.set_active_id('all' if context is None else str(context))
+        self._ignore_context_change = False
+
+    def set_context_sensitive(self, sensitive):
+        self.context_box.set_sensitive(sensitive)
 
     def focus(self):
         self.cmb_modes.grab_focus()
@@ -109,5 +149,11 @@ class ModeView(GObjectWrapper, BaseView):
         cell.set_property('sensitive', model[iter_][0] not in self._unavailable)
 
     # EVENT HANDLERS #
+    def _on_cmbcontext_change(self, combo):
+        if getattr(self, '_ignore_context_change', False):
+            return
+        active = combo.get_active_id()
+        self.emit('context-selected', None if active == 'all' else int(active))
+
     def _on_cmbmode_change(self, combo):
         self.emit('mode-selected', combo.get_active_text())

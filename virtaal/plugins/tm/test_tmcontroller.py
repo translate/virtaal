@@ -264,12 +264,13 @@ def test_connect_plugin_immediately_loads_an_already_open_store():
 def test_connect_plugin_subscribes_to_mode_selected_when_a_mode_controller_exists():
     controller = _bare_controller()
     store_controller = _fake_store_controller()
-    mode_controller = SimpleNamespace(connect=lambda signal, handler: 'sig-mode-selected')
+    mode_controller = SimpleNamespace(connect=lambda signal, handler: 'sig-' + signal)
     controller.main_controller = SimpleNamespace(store_controller=store_controller, mode_controller=mode_controller)
 
     controller._connect_plugin()
 
     assert controller._mode_selected_id == 'sig-mode-selected'
+    assert controller._context_selected_id == 'sig-context-selected'
 
 
 def test_connect_plugin_skips_mode_selected_without_a_mode_controller():
@@ -298,6 +299,7 @@ def test_destroy_tears_down_the_view_and_all_registered_signals():
     controller._store_loaded_id = 'store-id'
     controller._cursor_changed_id = 'cursor-id'
     controller._mode_selected_id = 'mode-id'
+    controller._context_selected_id = 'context-id'
     controller._target_focused_id = 'target-id'
     controller._completion_toggled_id = 'completion-id'
     controller.plugin_controller = SimpleNamespace(shutdown=lambda: calls.append('shutdown'))
@@ -306,7 +308,8 @@ def test_destroy_tears_down_the_view_and_all_registered_signals():
 
     assert calls == [
         'hide', 'destroy', ('store', 'store-id'), ('cursor', 'cursor-id'),
-        ('mode', 'mode-id'), ('target', 'target-id'), ('target', 'completion-id'), 'shutdown',
+        ('mode', 'mode-id'), ('mode', 'context-id'), ('target', 'target-id'), ('target', 'completion-id'),
+        'shutdown',
     ]
 
 
@@ -535,6 +538,31 @@ def test_summon_without_a_file_does_nothing():
 
 
 # _on_mode_selected() / _on_target_focused() #
+
+@pytest.mark.parametrize('translated, active, summoned, queries', [
+    (False, True, False, [True]),
+    (True, True, False, []),    # translated units don't show suggestions by themselves
+    (False, False, False, []),
+    (True, False, True, [True]),  # asked for with F9
+])
+def test_a_context_change_queries_again_where_suggestions_apply(translated, active, summoned, queries):
+    unit = SimpleNamespace(istranslated=lambda: translated)
+    calls = []
+    controller = _bare_controller(storecursor=SimpleNamespace(deref=lambda: unit))
+    controller.view = SimpleNamespace(active=active, summoned=summoned)
+    controller.start_query = lambda: calls.append(True)
+
+    controller._on_context_selected(None, 1)
+
+    assert calls == queries
+
+
+def test_a_context_change_without_a_file_does_nothing():
+    controller = _bare_controller(storecursor=None)
+    controller.start_query = lambda: pytest.fail('must not query')
+
+    controller._on_context_selected(None, 1)
+
 
 def test_on_mode_selected_updates_the_view_geometry():
     controller = _bare_controller()

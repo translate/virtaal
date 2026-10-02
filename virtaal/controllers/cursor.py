@@ -26,6 +26,7 @@ class Cursor(GObjectWrapper):
     __gsignals__ = {
         "cursor-changed": (GObject.SignalFlags.RUN_FIRST, None, ()),
         "cursor-empty":   (GObject.SignalFlags.RUN_FIRST, None, ()),
+        "indices-changed": (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
 
@@ -91,6 +92,11 @@ class Cursor(GObjectWrapper):
     def _get_indices(self):
         return self._indices
     def _set_indices(self, value):
+        self._replace_indices(value)
+        self.emit('indices-changed')
+    indices = property(_get_indices, _set_indices)
+
+    def _replace_indices(self, value):
         visiting = self._visiting
         oldindex = self.index if self._indices else self._last_index
         oldpos = self.pos
@@ -119,7 +125,6 @@ class Cursor(GObjectWrapper):
         self.index = oldindex
         if oldpos == self.pos and oldindex != self.index:
             self.emit('cursor-changed')
-    indices = property(_get_indices, _set_indices)
 
     # METHODS #
     def deref(self):

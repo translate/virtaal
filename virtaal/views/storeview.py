@@ -7,15 +7,42 @@
 
 from gi.repository import Gdk, Gtk
 
+from virtaal.common import pan_app
+
 from . import theme
 from .baseview import BaseView
 from .widgets.storetreeview import StoreTreeView
-
 
 # XXX: ASSUMPTION: The model to display is self.controller.store
 # TODO: Add event handler for store controller's cursor-creation event, so that
 #       the store view can connect to the new cursor's "cursor-changed" event
 #       (which is currently done in load_store())
+CONTEXT_SETTING = 'navigation_context'
+CONTEXT_ALL = None
+
+
+def visible_units(matches, current, context, total):
+    """The store indices to show: every unit in C{matches}, and C{context}
+        units either side of C{current} (the unit being edited, or -1).
+        C{None} - every unit - if C{context} is L{CONTEXT_ALL} or the
+        matches already cover all C{total} units."""
+    if context is CONTEXT_ALL or len(matches) >= total:
+        return None
+    rows = set(matches)
+    if current >= 0:
+        rows.update(range(max(0, current - context), min(total, current + context + 1)))
+    return sorted(rows)
+
+
+def load_context_setting():
+    value = pan_app.settings.general.get(CONTEXT_SETTING, 'all')
+    return int(value) if value.isdigit() else CONTEXT_ALL
+
+
+def save_context_setting(context):
+    pan_app.settings.general[CONTEXT_SETTING] = 'all' if context is CONTEXT_ALL else str(context)
+
+
 class StoreView(BaseView):
     """The view of the store and interface to store-level actions."""
 
@@ -27,6 +54,11 @@ class StoreView(BaseView):
 
         self.cursor = None
         self._cursor_changed_id = 0
+        self._cursor_rows_ids = []
+        self._updating_rows = False
+        self._rows_outdated = False
+        # Units shown either side of the one being edited - see visible_units().
+        self.context = load_context_setting()
         self._treeview_bg_provider = None
 
         self._init_treeview()
@@ -132,9 +164,17 @@ class StoreView(BaseView):
             self._set_menu_items_sensitive(True)
             self.cursor = self.controller.cursor
             self._cursor_changed_id = self.cursor.connect('cursor-changed', self._on_cursor_change)
+            self._cursor_rows_ids = [
+                self.cursor.connect(signal, lambda *_args: self._update_visible_rows())
+                for signal in ('indices-changed', 'cursor-empty')
+            ]
+            self._update_visible_rows()
         else:
             if self._cursor_changed_id and self.cursor:
                 self.cursor.disconnect(self._cursor_changed_id)
+                for handler_id in self._cursor_rows_ids:
+                    self.cursor.disconnect(handler_id)
+                self._cursor_rows_ids = []
                 self.cursor = None
             self._set_menu_items_sensitive(False)
             self._treeview.set_model(None)
@@ -151,6 +191,45 @@ class StoreView(BaseView):
             return
         self._treeview.select_index(0)
 
+    def set_context(self, context):
+        """Show C{context} units either side of the one being edited, or
+            every unit for L{CONTEXT_ALL}."""
+        self.context = context
+        save_context_setting(context)
+        self._update_visible_rows()
+
+    def _update_visible_rows(self, restart_editing=True):
+        """@param restart_editing: Restart editing the current unit if the
+            rows change - not needed when the cursor is about to move.
+            @returns: Whether editing was stopped and is left to the caller
+                to restart."""
+        if not self.store or not self.cursor:
+            return False
+        if self._updating_rows:
+            # Asked again while the rows are changing: redo it once after.
+            self._rows_outdated = True
+            return False
+        self._updating_rows = True
+        editing_stopped = False
+        try:
+            self._rows_outdated = True
+            while self._rows_outdated:
+                self._rows_outdated = False
+                rows = visible_units(self.cursor.indices, self.cursor.index, self.context, len(self.store))
+                change = self._treeview.set_visible_rows(rows)
+                if not change or self.cursor.index < 0:
+                    continue
+                if change == 'rebuilt':
+                    self._treeview.select_index(self.cursor.index)
+                    editing_stopped = False
+                elif restart_editing:
+                    self._treeview.refresh_current_row()
+                else:
+                    editing_stopped = True
+        finally:
+            self._updating_rows = False
+        return editing_stopped
+
     def _set_menu_items_sensitive(self, sensitive=True):
         for widget in (self.mnu_up, self.mnu_down, self.mnu_pageup, self.mnu_pagedown):
             widget.set_sensitive(sensitive)
@@ -158,7 +237,10 @@ class StoreView(BaseView):
 
     # EVENT HANDLERS #
     def _on_cursor_change(self, cursor):
-        self._treeview.select_index(cursor.index)
+        # Hidden rows can leave GTK's own cursor already on the new unit,
+        # with editing stopped.
+        editing_stopped = self._update_visible_rows(restart_editing=False)
+        self._treeview.select_index(cursor.index, force=editing_stopped)
 
     def _on_export(self, menu_item):
         # TODO: Get file name from user.

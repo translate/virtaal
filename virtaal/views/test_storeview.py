@@ -51,7 +51,7 @@ class TestStoreView(TestScaffolding):
     def test_cursor_change_selects_the_new_index(self, monkeypatch):
         view = self.store_controller.view
         calls = []
-        monkeypatch.setattr(view._treeview, 'select_index', lambda i: calls.append(i))
+        monkeypatch.setattr(view._treeview, 'select_index', lambda i, force=False: calls.append(i))
 
         view.cursor.index = 1
 
@@ -128,7 +128,7 @@ class TestStoreView(TestScaffolding):
         view = self.store_controller.view
         self.store_controller.close_file()
         calls = []
-        monkeypatch.setattr(view._treeview, 'select_index', lambda i: calls.append(i))
+        monkeypatch.setattr(view._treeview, 'select_index', lambda i, force=False: calls.append(i))
 
         view.show()
 

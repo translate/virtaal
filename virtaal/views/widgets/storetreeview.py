@@ -207,8 +207,9 @@ class StoreTreeView(Gtk.TreeView):
 
 
     # METHODS #
-    def select_index(self, index):
-        """Select the row with the given index."""
+    def select_index(self, index, force=False):
+        """Select the row with the given index.
+            @param force: Start editing it even if it is already selected."""
         model = self.get_model()
         if not model or not isinstance(model, StoreTreeModel):
             return
@@ -219,7 +220,7 @@ class StoreTreeView(Gtk.TreeView):
         selected = self.get_selection().get_selected()
         selected_path = isinstance(selected[1], Gtk.TreeIter) and model.get_path(selected[1]) or None
 
-        if selected[1] is None or (selected_path and selected_path != newpath):
+        if force or selected[1] is None or (selected_path and selected_path != newpath):
             self._start_editing_cycle(model, newpath)
 
     def _start_editing_cycle(self, model, path):
@@ -279,11 +280,11 @@ class StoreTreeView(Gtk.TreeView):
     def set_visible_rows(self, rows):
         """Show only the units at the sorted store indices C{rows}, or every
             unit for C{None}.
-            @returns: Whether the model was rebuilt, so editing needs
-                restarting."""
+            @returns: C{None} if nothing changed, else C{'changed'} or, for
+                a new model, C{'rebuilt'}. Either way GTK has stopped editing."""
         model = self.get_model()
         if not isinstance(model, StoreTreeModel) or model.visible_rows == rows:
-            return False
+            return None
         if rows is not None:
             rows = list(rows)
         old = model.visible_rows
@@ -292,12 +293,18 @@ class StoreTreeView(Gtk.TreeView):
         else:
             changes = len(set(old).symmetric_difference(rows))
         if changes <= self.MAX_INCREMENTAL_ROW_CHANGES:
-            model.set_visible_rows(rows)
-            return False
+            # GTK moves its own cursor off deleted rows; that isn't a move
+            # of the store's cursor.
+            self._updating_rows = True
+            try:
+                model.set_visible_rows(rows)
+            finally:
+                self._updating_rows = False
+            return 'changed'
         editable = model._current_editable
         self.set_model(model._store, rows)
         self.get_model()._current_editable = editable
-        return True
+        return 'rebuilt'
 
     def _keyboard_move(self, offset):
         if not self.view.controller.get_store():
@@ -443,6 +450,8 @@ class StoreTreeView(Gtk.TreeView):
             logging.warning("storetreeview: window width %d after a resize/focus settle - investigate if seen again", size[0])
 
     def _on_cursor_changed(self, _treeview):
+        if getattr(self, '_updating_rows', False):
+            return True
         path, _column = self.get_cursor()
 
         model = _treeview.get_model()

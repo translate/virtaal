@@ -5,8 +5,13 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import importlib
+
+import pytest
 from gi.repository import Gtk
 
+from virtaal.common.platform import platform
+from virtaal.views.widgets import shortcutswindow
 from virtaal.views.widgets.shortcutswindow import SHORTCUT_GROUPS, ShortcutsWindow
 
 
@@ -27,3 +32,21 @@ def test_construction_builds_a_window_from_every_group():
     assert window.get_transient_for() is parent
     window.destroy()
     parent.destroy()
+
+
+@pytest.fixture
+def _restore_shortcuts_module(monkeypatch):
+    yield
+    monkeypatch.undo()
+    importlib.reload(shortcutswindow)
+
+
+@pytest.mark.parametrize('is_mac, accelerator', [(True, '<Primary>i'), (False, '<Alt>Return')])
+def test_properties_shortcut_matches_the_platform(monkeypatch, _restore_shortcuts_module, is_mac, accelerator):
+    # Cmd+I is the macOS convention for an item's info (Finder's Get Info).
+    monkeypatch.setattr(platform, 'is_mac', is_mac)
+    module = importlib.reload(shortcutswindow)
+
+    shortcuts = dict((description, accel) for _title, group in module.SHORTCUT_GROUPS for accel, description in group)
+
+    assert shortcuts['Show file properties and statistics'] == accelerator

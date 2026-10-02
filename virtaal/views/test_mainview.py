@@ -1285,6 +1285,10 @@ class _FakeVboxMain:
         pass
 
 
+_BEFORE = {'translated': 1, 'fuzzy': 2, 'untranslated': 0, 'total': 3}
+_AFTER = {'translated': 3, 'fuzzy': 0, 'untranslated': 1, 'total': 4}
+
+
 def _view_for_template_update_notice():
     vbox = _FakeVboxMain()
     view = MainView.__new__(MainView)
@@ -1295,7 +1299,7 @@ def _view_for_template_update_notice():
 def test_show_template_update_notice_packs_a_dismissable_infobar():
     view, vbox = _view_for_template_update_notice()
 
-    view.show_template_update_notice('File Updated', 'Before:\n\tTranslated: 1')
+    view.show_template_update_notice('File Updated', _BEFORE, _AFTER)
 
     assert len(vbox.packed) == 1
     infobar = vbox.packed[0]
@@ -1304,12 +1308,31 @@ def test_show_template_update_notice_packs_a_dismissable_infobar():
     assert infobar.get_show_close_button() is True
 
 
+def test_template_stats_grid_lays_out_before_after_and_change():
+    grid = MainView._template_stats_grid(_BEFORE, _AFTER)
+
+    def text(column, row):
+        return grid.get_child_at(column, row).get_text()
+
+    assert [text(c, 0) for c in (1, 2, 3)] == ['Before', 'After', 'Change']
+    assert [text(0, r) for r in (1, 2, 3, 4)] == ['Translated', 'Fuzzy', 'Untranslated', 'Total']
+    assert [text(c, 1) for c in (1, 2, 3)] == ['1', '3', '+2']
+    assert [text(c, 2) for c in (1, 2, 3)] == ['2', '0', '-2']
+    assert [text(c, 4) for c in (1, 2, 3)] == ['3', '4', '+1']
+
+
+def test_template_stats_grid_leaves_an_unchanged_count_blank():
+    grid = MainView._template_stats_grid(_BEFORE, _BEFORE)
+
+    assert grid.get_child_at(3, 1).get_text() == ''
+
+
 def test_show_template_update_notice_replaces_a_previous_one():
     view, vbox = _view_for_template_update_notice()
-    view.show_template_update_notice('First', 'msg')
+    view.show_template_update_notice('First', _BEFORE, _AFTER)
     first = view._template_update_infobar
 
-    view.show_template_update_notice('Second', 'msg2')
+    view.show_template_update_notice('Second', _BEFORE, _AFTER)
 
     assert len(vbox.packed) == 2
     assert view._template_update_infobar is not first
@@ -1318,7 +1341,7 @@ def test_show_template_update_notice_replaces_a_previous_one():
 
 def test_show_template_update_notice_dismiss_clears_the_tracked_infobar():
     view, vbox = _view_for_template_update_notice()
-    view.show_template_update_notice('File Updated', 'msg')
+    view.show_template_update_notice('File Updated', _BEFORE, _AFTER)
     infobar = view._template_update_infobar
 
     infobar.emit('response', Gtk.ResponseType.CLOSE)

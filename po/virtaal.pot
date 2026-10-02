@@ -710,12 +710,12 @@ msgstr ""
 msgid "Could not open profile file '%(filename)s'"
 msgstr ""
 
-#: virtaal/controllers/checkscontroller.py
+#: virtaal/controllers/checkscontroller.py virtaal/views/mainview.py
 msgid "Fuzzy"
 msgstr ""
 
 #: virtaal/controllers/checkscontroller.py
-#: virtaal/controllers/unitcontroller.py
+#: virtaal/controllers/unitcontroller.py virtaal/views/mainview.py
 msgid "Untranslated"
 msgstr ""
 
@@ -1139,36 +1139,6 @@ msgstr ""
 msgid "Placeholders in Drupal strings"
 msgstr ""
 
-#. l10n: The heading of statistics before updating to the new template
-#: virtaal/controllers/storecontroller.py
-msgid "Before:"
-msgstr ""
-
-#. l10n: The heading of statistics after updating to the new template
-#: virtaal/controllers/storecontroller.py
-msgid "After:"
-msgstr ""
-
-#: virtaal/controllers/storecontroller.py
-#, python-format
-msgid "Translated: %d"
-msgstr ""
-
-#: virtaal/controllers/storecontroller.py
-#, python-format
-msgid "Fuzzy: %d"
-msgstr ""
-
-#: virtaal/controllers/storecontroller.py
-#, python-format
-msgid "Untranslated: %d"
-msgstr ""
-
-#: virtaal/controllers/storecontroller.py
-#, python-format
-msgid "Total: %d"
-msgstr ""
-
 #. l10n: this refers to updating a file to a new template (POT file)
 #: virtaal/controllers/storecontroller.py
 msgid "File Updated"
@@ -1186,7 +1156,7 @@ msgstr ""
 msgid "Needs review"
 msgstr ""
 
-#: virtaal/controllers/unitcontroller.py
+#: virtaal/controllers/unitcontroller.py virtaal/views/mainview.py
 msgid "Translated"
 msgstr ""
 
@@ -2216,6 +2186,26 @@ msgstr ""
 
 #: virtaal/views/mainview.py
 msgid "Restart Virtaal for the new language to take effect."
+msgstr ""
+
+#. l10n: Column heading: unit counts before updating to the new template
+#: virtaal/views/mainview.py
+msgid "Before"
+msgstr ""
+
+#. l10n: Column heading: unit counts after updating to the new template
+#: virtaal/views/mainview.py
+msgid "After"
+msgstr ""
+
+#. l10n: Column heading: difference between the before and after unit counts
+#: virtaal/views/mainview.py
+msgid "Change"
+msgstr ""
+
+#. l10n: Row heading: total number of units in the file
+#: virtaal/views/mainview.py
+msgid "Total"
 msgstr ""
 
 #: virtaal/views/mainview.py

@@ -407,9 +407,9 @@ class MainController(BaseController):
         """Shortcut for C{self.view.show_info_dialog()}"""
         return self.view.show_info_dialog(title=title, message=msg, parent=parent)
 
-    def show_template_update_notice(self, title='', msg=''):
+    def show_template_update_notice(self, title, before, after):
         """Shortcut for C{self.view.show_template_update_notice()}"""
-        return self.view.show_template_update_notice(title, msg)
+        return self.view.show_template_update_notice(title, before, after)
 
     def quit(self, force=False):
         # Gtk.Dialog.run() has its own main loop, unaffected by

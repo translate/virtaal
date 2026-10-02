@@ -655,17 +655,18 @@ def test_compare_stats_shows_before_and_after_counts():
     # A dismissable notice, not a blocking modal (#3808).
     controller = _controller()
     shown = []
-    controller.main_controller = SimpleNamespace(show_template_update_notice=lambda title, msg: shown.append((title, msg)))
+    controller.main_controller = SimpleNamespace(
+        show_template_update_notice=lambda title, before, after: shown.append((title, before, after)))
     oldstats = {'translated': [1], 'fuzzy': [1, 2], 'untranslated': []}
     newstats = {'translated': [1, 2, 3], 'fuzzy': [], 'untranslated': [1]}
 
     controller.compare_stats(oldstats, newstats)
 
-    assert len(shown) == 1
-    title, message = shown[0]
-    assert title == "File Updated"
-    assert message.count('1') >= 1  # old translated/fuzzy counts appear
-    assert '3' in message  # new translated count appears
+    assert shown == [(
+        "File Updated",
+        {'translated': 1, 'fuzzy': 2, 'untranslated': 0, 'total': 3},
+        {'translated': 3, 'fuzzy': 0, 'untranslated': 1, 'total': 4},
+    )]
 
 
 # event handlers #

@@ -55,6 +55,8 @@ class ModeView(GObjectWrapper, BaseView):
         self.lbl_mode.set_markup_with_mnemonic(_('N_avigation:'))
         self.lbl_mode.props.xpad = 3
         self.lbl_mode.set_mnemonic_widget(self.cmb_modes)
+        # The mnemonic opens the list, so a keyboard choice is made from it.
+        self.cmb_modes.connect('mnemonic-activate', self._on_cmbmode_mnemonic)
         self.lbl_mode.set_halign(Gtk.Align.CENTER)
         self.lbl_mode.set_valign(Gtk.Align.CENTER)
         self.cmb_modes.set_halign(Gtk.Align.CENTER)
@@ -143,7 +145,9 @@ class ModeView(GObjectWrapper, BaseView):
         self.context_box.set_sensitive(sensitive)
 
     def focus(self):
+        """Open the mode list, so a keyboard choice is made from it."""
         self.cmb_modes.grab_focus()
+        self.cmb_modes.popup()
 
     def _set_cell_sensitive(self, _layout, cell, model, iter_, _data=None):
         cell.set_property('sensitive', model[iter_][0] not in self._unavailable)
@@ -154,6 +158,10 @@ class ModeView(GObjectWrapper, BaseView):
             return
         active = combo.get_active_id()
         self.emit('context-selected', None if active == 'all' else int(active))
+
+    def _on_cmbmode_mnemonic(self, _combo, _group_cycling):
+        self.focus()
+        return True
 
     def _on_cmbmode_change(self, combo):
         self.emit('mode-selected', combo.get_active_text())

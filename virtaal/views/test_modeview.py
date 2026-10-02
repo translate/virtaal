@@ -98,3 +98,26 @@ def test_select_context_shows_it_without_emitting():
 
     assert view.cmb_context.get_active_id() == 'all'
     assert selected == []
+
+
+
+def test_the_navigation_mnemonic_opens_the_mode_list():
+    view = _view_with_modes('All', 'Incomplete')
+    calls = []
+    view.cmb_modes.grab_focus = lambda: calls.append('focus')
+    view.cmb_modes.popup = lambda: calls.append('popup')
+
+    assert view._on_cmbmode_mnemonic(view.cmb_modes, False) is True
+    assert calls == ['focus', 'popup']
+
+
+def test_focus_opens_the_mode_list():
+    # Ctrl+Shift+Tab from the translation.
+    view = _view_with_modes('All', 'Incomplete')
+    calls = []
+    view.cmb_modes.grab_focus = lambda: calls.append('focus')
+    view.cmb_modes.popup = lambda: calls.append('popup')
+
+    view.focus()
+
+    assert calls == ['focus', 'popup']

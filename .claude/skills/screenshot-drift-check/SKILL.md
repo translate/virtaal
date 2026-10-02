@@ -1,15 +1,19 @@
 ---
 name: screenshot-drift-check
-description: Detect and act on the "AppData screenshots are stale" CI warning - a deliberately non-blocking `::warning::` annotation (issue #3625) that's easy to miss because it never fails a job or shows up anywhere but a run's ANNOTATIONS list. Load when asked to check CI health/release-readiness, before cutting a release, or periodically to catch drift that's been sitting unnoticed.
+description: Detect and act on the "AppData screenshots are stale" / "Docs screenshots are stale" CI warnings - deliberately non-blocking `::warning::` annotations (issues #3625, #3746) that's easy to miss because it never fails a job or shows up anywhere but a run's ANNOTATIONS list. Load when asked to check CI health/release-readiness, before cutting a release, or periodically to catch drift that's been sitting unnoticed.
 ---
 
 # Screenshot drift check
 
-`docs/_static/appdata/*.png` (referenced by `io.github.translate.Virtaal.
-metainfo.xml.in` as plain `raw.githubusercontent.com` URLs) are generated and
-compared against a live render by `devsupport/screenshots/
-generate_appdata_screenshots.py --check`, wired into `.github/workflows/
-ci.yml`. See `virtaal-screenshot-automation` memory for the full history.
+Two sets of screenshots are generated and compared against a live render
+by the `appdata-screenshots` job in `.github/workflows/ci.yml`:
+
+| Images | Script | Artifact on mismatch | Warning title |
+|---|---|---|---|
+| `docs/_static/appdata/*.png` (metainfo `raw.githubusercontent.com` URLs) | `generate_appdata_screenshots.py --check` | `appdata-screenshots` | AppData screenshots are stale |
+| `docs/_static/*.png` used by `docs/screenshots.rst` | `generate_docs_screenshots.py --check` | `docs-screenshots` | Docs screenshots are stale |
+
+Both scripts live in `devsupport/screenshots/`. See `virtaal-screenshot-automation` memory for the full history.
 
 This check is **intentionally non-blocking** - Dwayne confirmed staleness
 here is cosmetic (a stale URL image, not a build break), so the job passes
@@ -39,12 +43,14 @@ Grep across several recent runs at once rather than checking one at a time:
 
 ```
 for id in $(gh run list --workflow=ci.yml --limit 15 --json databaseId -q '.[].databaseId'); do
-  gh run view "$id" 2>/dev/null | grep -q "AppData screenshots are stale" && echo "$id"
+  gh run view "$id" 2>/dev/null | grep "no longer match what Virtaal actually renders" | sed "s/^/$id /"
 done
 ```
 
-Match on the annotation text ("AppData screenshots are stale" / "no longer
-match what Virtaal actually renders"), not a job name - the job that runs
+`gh run view` prints an annotation's message, not its title, so grep for
+the message ("no longer match what Virtaal actually renders", shared by
+both checks); the printed path says which set is stale. Match on that
+text, not a job name - the job that runs
 this check has already moved once (from a step inside the `test` job's
 python-3.13 leg, to its own `appdata-screenshots` job as of PR #3848) and
 may move again.
@@ -75,6 +81,16 @@ git add docs/_static/appdata/*.png
 git commit -m "docs: refresh stale AppData screenshots"
 ```
 
+For the docs set, download `docs-screenshots` and copy into
+`docs/_static/`. The artifact holds every docs screenshot, not just the
+stale ones - `cmp` each against the committed file and commit only those
+that differ.
+
+Before committing, check the render is deterministic: download the same
+artifact from two or three recent runs and compare checksums. If they
+agree, the committed image is simply out of date; if they don't,
+refreshing will just move the warning to the next run.
+
 Before committing, actually *look* at old vs. new side by side (the Read
 tool renders a PNG directly; there's no guarantee a system Python here has
 Pillow installed for a pixel-diff script) and sanity-check the change looks
@@ -88,9 +104,6 @@ tell you which of those two this is. The generation script fails hard
 Open this as its own PR/commit rather than folding it into unrelated work in
 progress - it's an independent, mechanical refresh.
 
-## Related, not the same thing
-
-Issue #3746 (docs/screenshots.rst's six 2013-era images) is a *different*,
-not-yet-built check - those aren't wired into CI at all yet. Don't conflate
-a report of drift there with this annotation; this skill only covers the
-`generate_appdata_screenshots.py --check` signal.
+A change of a pixel or two is still real drift - zoom the differing
+region (crop and upscale both images, side by side) to see what moved
+rather than assuming noise.

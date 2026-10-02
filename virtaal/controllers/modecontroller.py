@@ -110,6 +110,7 @@ class ModeController(BaseController):
         self.view.show()
         # Every unit is shown in the default mode, so context doesn't apply.
         self.view.set_context_sensitive(mode.name != self.default_mode_name)
+        self._apply_circular()
         self.current_mode.selected()
         import logging
         logging.info('Mode selected: %s' % (self.current_mode.name))
@@ -167,7 +168,14 @@ class ModeController(BaseController):
         self.main_controller.store_controller.view.set_context(context)
         self.emit('context-selected', context)
 
+    def _apply_circular(self):
+        cursor = self.main_controller.store_controller.cursor
+        if cursor is not None and self.current_mode is not None:
+            cursor.circular = self.current_mode.circular
+
     def _on_store_changed(self, _store_controller):
+        # A newly loaded store has a new cursor.
+        self._apply_circular()
         self.update_mode_availability()
 
     def _on_store_closed(self, store_controller):

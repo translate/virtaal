@@ -23,6 +23,7 @@ class QualityCheckMode(BaseMode):
 
     name = 'QualityCheck'
     display_name = _("Quality Checks")
+    circular = True
     widgets = []
 
     # INITIALIZERS #

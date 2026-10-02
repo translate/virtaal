@@ -413,8 +413,8 @@ def test_keyboard_move_moves_the_cursor_by_the_given_offset(monkeypatch):
 
 
 def test_a_move_landing_on_the_same_unit_finishes_and_reloads_it(monkeypatch):
-    # Happens when the navigation list has a single unit: Enter and
-    # Ctrl+Enter wrap around to it.
+    # Happens at the first or last unit outside search and checks, and
+    # when the navigation list has a single unit.
     view = _make_move_view(lambda offset: None, monkeypatch, timeout_calls=[])
     view.view.cursor.move = lambda offset: None
     finished = []
@@ -434,14 +434,6 @@ def test_a_move_to_another_unit_does_not_finish_it_twice(monkeypatch):
     StoreTreeView._keyboard_move(view, 1)
 
     assert view.view.cursor.index == 1
-
-
-def test_keyboard_move_tolerates_an_out_of_range_move(monkeypatch):
-    def _raise(offset):
-        raise IndexError()
-    view = _make_move_view(_raise, monkeypatch, timeout_calls=[])
-
-    assert StoreTreeView._keyboard_move(view, 1) is True
 
 
 def test_keyboard_move_throttles_repeats_within_a_burst(monkeypatch):

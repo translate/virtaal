@@ -14,6 +14,8 @@ from virtaal.common import pan_app
 from virtaal.views import markup, rendering
 from virtaal.views.theme import current_theme, str_to_rgba
 
+from .storetreemodel import StoreTreeModel
+
 
 @functools.singledispatch
 def compute_optimal_height(widget, width):
@@ -234,7 +236,7 @@ class StoreCellRenderer(Gtk.CellRenderer):
         # of the file (translate/virtaal#1366).
         extra_padding = 0
         store = self.view.controller.get_store()
-        if store and self.unit is store[-1]:
+        if store and self._is_last_row(treeview, store):
             viewport_height = treeview.get_allocation().height
             if viewport_height > 0:
                 extra_padding = viewport_height // 2
@@ -357,7 +359,7 @@ class StoreCellRenderer(Gtk.CellRenderer):
     def _row_needs_exact_height(self, treeview, store):
         if not store:
             return True
-        if self.unit is store[-1]:
+        if self._is_last_row(treeview, store):
             # scroll_to_cell() can target this row directly (#1366) -
             # an estimate here would show up as a visible jump once
             # the real height replaces it right as it's scrolled to.
@@ -369,10 +371,25 @@ class StoreCellRenderer(Gtk.CellRenderer):
             return False
         start_index = visible_range[0] - self.VIEWPORT_ROW_BUFFER
         end_index = visible_range[1] + self.VIEWPORT_ROW_BUFFER
-        index = self._unit_index(store)
-        if index is None:
+        row = self._row(treeview, store)
+        if row is None:
             return True
-        return start_index <= index <= end_index
+        return start_index <= row <= end_index
+
+    def _is_last_row(self, treeview, store):
+        model = treeview.get_model()
+        if isinstance(model, StoreTreeModel):
+            return model.row_count() > 0 and self.unit is model.unit_at_row(model.row_count() - 1)
+        return self.unit is store[-1]
+
+    def _row(self, treeview, store):
+        """This unit's row number, or C{None}."""
+        index = self._unit_index(store)
+        model = treeview.get_model()
+        if index is None or not isinstance(model, StoreTreeModel):
+            return index
+        path = model.store_index_to_path(index)
+        return None if path is None else path[0]
 
     def _unit_index(self, store):
         cache = self._index_cache

@@ -18,6 +18,7 @@ from virtaal.views.widgets.storecellrenderer import (
     StoreCellRenderer,
     compute_optimal_height,
 )
+from virtaal.views.widgets.storetreemodel import StoreTreeModel
 
 
 def test_compute_optimal_height_unregistered_type_raises():
@@ -357,8 +358,8 @@ def _fake_unit():
     return SimpleNamespace(isfuzzy=lambda: False)
 
 
-def _fake_treeview(visible_start, visible_end):
-    return SimpleNamespace(get_cached_visible_range=lambda: (visible_start, visible_end))
+def _fake_treeview(visible_start, visible_end, model=None):
+    return SimpleNamespace(get_cached_visible_range=lambda: (visible_start, visible_end), get_model=lambda: model)
 
 
 def test_row_needs_exact_height_true_for_the_last_row_even_far_off_range():
@@ -385,6 +386,27 @@ def test_row_needs_exact_height_false_far_outside_the_viewport():
     assert renderer._row_needs_exact_height(_fake_treeview(0, 10), store) is False
 
 
+def test_row_needs_exact_height_uses_rows_not_store_indices():
+    # With rows hidden, store index 100 can be the 3rd row on screen.
+    store = [_fake_unit() for _ in range(200)]
+    model = StoreTreeModel(store, rows=[0, 50, 100, 150])
+    renderer = StoreCellRenderer(None)
+    renderer.unit = store[100]
+
+    assert renderer._row_needs_exact_height(_fake_treeview(0, 2, model), store) is True
+
+
+def test_row_needs_exact_height_true_for_the_last_shown_row():
+    store = [_fake_unit() for _ in range(200)]
+    model = StoreTreeModel(store, rows=list(range(0, 200, 2)))
+    renderer = StoreCellRenderer(None)
+    renderer.unit = store[198]
+
+    assert renderer._is_last_row(_fake_treeview(0, 2, model), store) is True
+    renderer.unit = store[-1]
+    assert renderer._is_last_row(_fake_treeview(0, 2, model), store) is False
+
+
 def test_row_needs_exact_height_true_without_a_store():
     renderer = StoreCellRenderer(None)
     renderer.unit = _fake_unit()
@@ -398,7 +420,7 @@ def test_row_needs_exact_height_false_when_the_visible_range_is_unknown():
     store = [_fake_unit() for _ in range(5)]
     renderer = StoreCellRenderer(None)
     renderer.unit = store[0]
-    treeview = SimpleNamespace(get_cached_visible_range=lambda: None)
+    treeview = SimpleNamespace(get_cached_visible_range=lambda: None, get_model=lambda: None)
 
     assert renderer._row_needs_exact_height(treeview, store) is False
 
@@ -463,6 +485,7 @@ def _renderer_for_bulk_store(store, index, visible_start=0, visible_end=5):
     treeview = SimpleNamespace(
         is_resizing=False,
         get_cached_visible_range=lambda: (visible_start, visible_end),
+        get_model=lambda: None,
         mark_row_estimated=lambda unit: marks.append(('estimated', unit)),
         mark_row_measured_exactly=lambda unit: marks.append(('exact', unit)),
     )
@@ -592,6 +615,7 @@ def test_check_editor_height_gives_up_when_notes_leave_no_room():
 def _renderer_with_view(is_resizing=False):
     treeview = SimpleNamespace(
         is_resizing=is_resizing,
+        get_model=lambda: None,
         mark_row_estimated=lambda unit: None,
         mark_row_measured_exactly=lambda unit: None,
     )

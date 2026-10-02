@@ -202,7 +202,11 @@ def test_set_editable_moves_the_editable_flag_and_notifies_both_rows():
 # store_index_to_path() / path_to_store_index() #
 
 def test_store_index_to_path_wraps_the_index_in_a_tuple():
-    assert _model([]).store_index_to_path(5) == (5,)
+    assert _model(range(6)).store_index_to_path(5) == (5,)
+
+
+def test_store_index_to_path_is_none_outside_the_store():
+    assert _model([]).store_index_to_path(5) is None
 
 
 def test_path_to_store_index_returns_the_first_element():
@@ -211,3 +215,98 @@ def test_path_to_store_index_returns_the_first_element():
 
 def test_path_to_store_index_defaults_to_zero_without_a_path():
     assert _model([]).path_to_store_index(None) == 0
+
+
+# visible rows #
+
+def _rows_model(rows, n=8):
+    return StoreTreeModel(['unit%d' % i for i in range(n)], rows=rows)
+
+
+def _shown(model):
+    return [model.get_value(model.get_iter((row,)), 1) for row in range(model.iter_n_children(None))]
+
+
+def test_visible_rows_show_only_those_units_in_store_order():
+    model = _rows_model([1, 4, 5])
+
+    assert _shown(model) == ['unit1', 'unit4', 'unit5']
+    assert model.store_index_to_path(4) == (1,)
+    assert model.path_to_store_index((2,)) == 5
+    assert model.store_index_to_path(2) is None
+
+
+def test_editable_row_is_tracked_by_store_index():
+    model = _rows_model([1, 4, 5])
+
+    model.set_editable((1,))
+
+    assert model._current_editable == 4
+    assert model.get_value(model.get_iter((1,)), 2) is True
+    assert model.get_value(model.get_iter((0,)), 2) is False
+
+
+def _signals(model):
+    events = []
+    model.connect('row-deleted', lambda m, path: events.append(('deleted', str(path))))
+    model.connect('row-inserted', lambda m, path, it: events.append(('inserted', str(path), m.get_value(it, 1))))
+    return events
+
+
+def test_set_visible_rows_emits_only_the_rows_that_change():
+    model = _rows_model([1, 2, 3])
+    events = _signals(model)
+
+    model.set_visible_rows([2, 3, 4])
+
+    assert events == [('deleted', '0'), ('inserted', '2', 'unit4')]
+    assert _shown(model) == ['unit2', 'unit3', 'unit4']
+
+
+def test_set_visible_rows_none_shows_every_unit_again():
+    model = _rows_model([3], n=4)
+    events = _signals(model)
+
+    model.set_visible_rows(None)
+
+    assert model.visible_rows is None
+    assert _shown(model) == ['unit0', 'unit1', 'unit2', 'unit3']
+    assert [e[2] for e in events] == ['unit0', 'unit1', 'unit2']
+
+
+def test_set_visible_rows_from_every_unit_deletes_from_the_end():
+    model = _rows_model(None, n=4)
+    events = _signals(model)
+
+    model.set_visible_rows([1])
+
+    assert events == [('deleted', '3'), ('deleted', '2'), ('deleted', '0')]
+    assert _shown(model) == ['unit1']
+
+
+def test_set_visible_rows_can_empty_the_list():
+    model = _rows_model([1, 2])
+
+    model.set_visible_rows([])
+
+    assert model.iter_n_children(None) == 0
+
+
+def test_set_visible_rows_remeasures_the_old_and_new_last_rows():
+    model = _rows_model([1, 2, 6])
+    changed = []
+    model.connect('row-changed', lambda m, path, it: changed.append(m.get_value(it, 1)))
+
+    model.set_visible_rows([1, 2, 6, 7])
+
+    assert changed == ['unit6', 'unit7']
+
+
+def test_set_visible_rows_keeping_the_last_row_remeasures_nothing():
+    model = _rows_model([1, 2, 6])
+    changed = []
+    model.connect('row-changed', lambda m, path, it: changed.append(True))
+
+    model.set_visible_rows([2, 3, 6])
+
+    assert changed == []

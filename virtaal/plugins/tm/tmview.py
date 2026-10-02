@@ -39,6 +39,10 @@ class TMView(BaseView, GObjectWrapper):
         self.tmwindow = TMWindow(self)
         main_window = self.controller.main_controller.view.main_window
         self._may_show_tmwindow = main_window.props.is_active # is it allowed to display now (application is in focus)?
+        # The main window's last geometry, and the timer that ends a move
+        # or resize - see _on_configure_mainwindow().
+        self._mainwindow_geometry = None
+        self._move_settle_id = None
 
         self._signal_tracker.connect(self.tmwindow.treeview, 'row-activated', self._on_row_activated)
         self._signal_tracker.connect(
@@ -115,6 +119,9 @@ class TMView(BaseView, GObjectWrapper):
 
     def destroy(self):
         self._signal_tracker.disconnect_all()
+        if self._move_settle_id:
+            GLib.source_remove(self._move_settle_id)
+            self._move_settle_id = None
 
         self.menu.remove(self.mnu_suggestions)
         self.menu.remove(self.mnu_summon)
@@ -251,6 +258,8 @@ class TMView(BaseView, GObjectWrapper):
             self._on_mainwindow_focus_lost()
 
     def _on_mainwindow_focus_gained(self):
+        if self._move_settle_id:
+            return  # shown again once the main window settles
         self._may_show_tmwindow = True
         if not self._should_show_tmwindow or self.isvisible:
             return
@@ -268,7 +277,21 @@ class TMView(BaseView, GObjectWrapper):
         self.hide()
         self._should_show_tmwindow = True
 
+    # How long the main window must stay put before a move or resize ends.
+    MOVE_SETTLE_DELAY = 200
+
     def _on_configure_mainwindow(self, widget, event):
+        geometry = (event.x, event.y, event.width, event.height)
+        moved = self._mainwindow_geometry is not None and geometry != self._mainwindow_geometry
+        self._mainwindow_geometry = geometry
+        if moved:
+            # The suggestions are a separate window that doesn't follow the
+            # main one: hide them until it settles, as when focus is lost.
+            self._on_mainwindow_focus_lost()
+            if self._move_settle_id:
+                GLib.source_remove(self._move_settle_id)
+            self._move_settle_id = GLib.timeout_add(self.MOVE_SETTLE_DELAY, self._on_mainwindow_settled)
+            return
         if self._should_show_tmwindow:
             # For some reason tvc_tm_source needs this help to recalculate its
             # size, otherwise it goes through the roof (rhs of the screen), and
@@ -276,6 +299,12 @@ class TMView(BaseView, GObjectWrapper):
             # 1809.
             self.tmwindow.tvc_tm_source.queue_resize()
             self.update_geometry()
+
+    def _on_mainwindow_settled(self):
+        self._move_settle_id = None
+        if self.controller.main_controller.view.main_window.props.is_active:
+            self._on_mainwindow_focus_gained()
+        return GLib.SOURCE_REMOVE
 
     def _on_hide_tm(self, accel_group, acceleratable, keyval, modifier):
         self.hide()

@@ -9,7 +9,11 @@ import locale
 
 from gi.repository import Gtk
 
-from virtaal.views.widgets.popupmenubutton import POS_NW_SW, PopupMenuButton
+from virtaal.views.widgets.popupmenubutton import (
+    POS_NW_SW,
+    PopupMenuButton,
+    close_on_enter,
+)
 
 from .basemode import BaseMode
 
@@ -117,6 +121,7 @@ class QualityCheckMode(BaseMode):
 
     def _create_checks_menu(self):
         menu = Gtk.Menu()
+        close_on_enter(menu)
         self._create_menu_entries(menu)
         return menu
 

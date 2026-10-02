@@ -7,7 +7,11 @@
 
 from gi.repository import GLib, Gtk
 
-from virtaal.views.widgets.popupmenubutton import POS_NW_SW, PopupMenuButton
+from virtaal.views.widgets.popupmenubutton import (
+    POS_NW_SW,
+    PopupMenuButton,
+    close_on_enter,
+)
 
 from .basemode import BaseMode
 
@@ -122,6 +126,7 @@ class WorkflowMode(BaseMode):
 
     def _create_state_menu(self):
         menu = Gtk.Menu()
+        close_on_enter(menu)
 
         for iid, name in self.state_names:
             menuitem = Gtk.CheckMenuItem(label=name)

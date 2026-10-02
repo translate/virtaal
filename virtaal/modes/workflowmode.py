@@ -33,14 +33,11 @@ class WorkflowMode(BaseMode):
     # METHODS #
     def selected(self):
         self.storecursor = self.controller.main_controller.store_controller.cursor
-
-        self.state_names = self.controller.main_controller.unit_controller.get_unit_state_names()
-        if self.storecursor and self.storecursor.model and 'extended' in self.storecursor.model.stats:
-            self.state_names = [i for i in self.state_names.items() if i[0] in self.storecursor.model.stats['extended']]
-        else:
-            self.state_names = self.state_names.items()
-
-        self.state_names.sort(key=lambda x: x[0])
+        self.state_names = self._available_state_names()
+        # A ticked state this file doesn't have would otherwise keep
+        # filtering, with no menu item to untick it.
+        available = [iid for iid, _name in self.state_names]
+        self.filter_states = [state for state in self.filter_states if state in available]
 
         self._add_widgets()
         self._update_button_label()
@@ -64,6 +61,16 @@ class WorkflowMode(BaseMode):
         for state in self.filter_states:
             indices.extend(self.storecursor.model.stats['extended'].get(state, []))
         self.storecursor.indices = sorted(indices)
+
+    def _available_state_names(self):
+        """The (id, name) pairs of the workflow states this file's units are in."""
+        names = self.controller.main_controller.unit_controller.get_unit_state_names()
+        stats = self.storecursor.model.stats if self.storecursor and self.storecursor.model else {}
+        if 'extended' in stats:
+            items = [item for item in names.items() if item[0] in stats['extended']]
+        else:
+            items = list(names.items())
+        return sorted(items, key=lambda item: item[0])
 
     def _add_widgets(self):
         # Destroy the previous popup button and its menu now rather
@@ -98,6 +105,7 @@ class WorkflowMode(BaseMode):
 
         for iid, name in self.state_names:
             menuitem = Gtk.CheckMenuItem(label=name)
+            menuitem.set_active(iid in self.filter_states)
             menuitem.show()
             self._menuitem_states[menuitem] = iid
             menuitem.connect('toggled', self._on_state_menuitem_toggled)

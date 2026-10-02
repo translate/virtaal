@@ -55,6 +55,8 @@ class TMController(BaseController):
 
         if self.main_controller.mode_controller is not None:
             self._mode_selected_id = self.main_controller.mode_controller.connect('mode-selected', self._on_mode_selected)
+            self._context_selected_id = self.main_controller.mode_controller.connect(
+                'context-selected', self._on_context_selected)
 
     def _load_models(self):
         from virtaal.controllers.plugincontroller import PluginController
@@ -130,6 +132,8 @@ class TMController(BaseController):
             self.main_controller.store_controller.cursor.disconnect(self._cursor_changed_id)
         if getattr(self, '_mode_selected_id', None):
             self.main_controller.mode_controller.disconnect(self._mode_selected_id)
+        if getattr(self, '_context_selected_id', None):
+            self.main_controller.mode_controller.disconnect(self._context_selected_id)
         if getattr(self, '_target_focused_id', None):
             self.main_controller.unit_controller.view.disconnect(self._target_focused_id)
         if getattr(self, '_completion_toggled_id', None):
@@ -204,6 +208,16 @@ class TMController(BaseController):
             self.view.mnu_suggestions.set_active(True)
 
         return self.start_query()
+
+    def _on_context_selected(self, _modecontroller, _context):
+        # The editor moved with the rows around it: query again so the
+        # suggestions reappear under it, if they apply to this unit.
+        if not self.storecursor:
+            return
+        unit = self.storecursor.deref()
+        if getattr(self.view, 'summoned', False) or (
+                self.view.active and unit is not None and not unit.istranslated()):
+            self.start_query()
 
     def _on_mode_selected(self, modecontroller, mode):
         self.view.update_geometry()

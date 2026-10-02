@@ -803,9 +803,9 @@ def test_set_visible_rows_updates_a_small_change_in_place():
     view.set_model(['unit%d' % i for i in range(10)])
     model = view.get_model()
 
-    rebuilt = view.set_visible_rows([2, 3, 4])
+    change = view.set_visible_rows([2, 3, 4])
 
-    assert rebuilt is False
+    assert change == 'changed'
     assert view.get_model() is model
     assert model.visible_rows == [2, 3, 4]
 
@@ -816,9 +816,9 @@ def test_set_visible_rows_rebuilds_for_a_large_change_keeping_the_edited_unit():
     view.set_model(units)
     view.get_model()._current_editable = 250
 
-    rebuilt = view.set_visible_rows([249, 250, 251])
+    change = view.set_visible_rows([249, 250, 251])
 
-    assert rebuilt is True
+    assert change == 'rebuilt'
     assert view.get_model().visible_rows == [249, 250, 251]
     assert view.get_model()._current_editable == 250
 
@@ -828,5 +828,30 @@ def test_set_visible_rows_ignores_an_unchanged_list():
     view.set_model(['a', 'b'], rows=[1])
     model = view.get_model()
 
-    assert view.set_visible_rows([1]) is False
+    assert view.set_visible_rows([1]) is None
     assert view.get_model() is model
+
+
+def test_gtk_cursor_moves_while_rows_change_dont_move_the_store_cursor():
+    view = _real_storetreeview()
+    view.set_model(['unit%d' % i for i in range(10)])
+    view.view.cursor = SimpleNamespace(index=5)
+    view.set_cursor(Gtk.TreePath((5,)), view.get_columns()[0], False)
+    view.view.cursor.index = 0  # the store cursor is elsewhere
+
+    view.set_visible_rows([0, 1, 2])  # deletes GTK's cursor row
+
+    assert view.view.cursor.index == 0
+
+
+def test_select_index_with_force_restarts_editing_an_already_selected_row():
+    view = _real_storetreeview()
+    view.set_model(['a', 'b'])
+    started = []
+    view._start_editing_cycle = lambda model, path: started.append(str(path))
+    view.get_selection().select_path(Gtk.TreePath((1,)))
+
+    view.select_index(1)
+    view.select_index(1, force=True)
+
+    assert started == ['1']

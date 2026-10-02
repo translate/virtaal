@@ -58,3 +58,43 @@ def test_set_unavailable_modes_with_nothing_makes_every_mode_available_again():
     view.set_unavailable_modes([])
 
     assert _sensitivity(view) == {'All': True, 'Incomplete': True}
+
+
+# Context selector #
+
+def _context_view():
+    view = ModeView.__new__(ModeView)
+    from virtaal.common import GObjectWrapper
+    GObjectWrapper.__init__(view)
+    # Kept referenced: a collected top bar destroys the selector with it.
+    view.top_bar = Gtk.Box()
+    view._build_context_gui(view.top_bar)
+    selected = []
+    view.connect('context-selected', lambda v, context: selected.append(context))
+    return view, selected
+
+
+def test_context_selector_offers_none_to_all():
+    view, _selected = _context_view()
+
+    assert [row[0] for row in view.cmb_context.get_model()] == ['None', '1', '2', '3', 'All']
+
+
+def test_choosing_a_context_emits_it():
+    view, selected = _context_view()
+
+    view.cmb_context.set_active_id('2')
+    view.cmb_context.set_active_id('0')
+    view.cmb_context.set_active_id('all')
+
+    assert selected == [2, 0, None]
+
+
+def test_select_context_shows_it_without_emitting():
+    view, selected = _context_view()
+
+    view.select_context(3)
+    view.select_context(None)
+
+    assert view.cmb_context.get_active_id() == 'all'
+    assert selected == []

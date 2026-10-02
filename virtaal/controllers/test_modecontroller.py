@@ -59,8 +59,11 @@ def _selecting_controller(**availability):
         mode.name = name
         mode.widgets = []
         mode.selected = lambda name=name: selected.append(name)
+        mode.unselected = lambda: None
+    controller.view.remove_mode_widgets = lambda widgets: None
     controller.view.select_mode = lambda displayname: None
     controller.view.show = lambda: None
+    controller.view.set_context_sensitive = lambda sensitive: setattr(controller, 'context_sensitive', sensitive)
     controller.emit = lambda signal, mode: emitted.append(mode.name)
     return controller, selected, emitted
 
@@ -83,3 +86,25 @@ def test_select_mode_selects_the_default_mode_instead_of_an_unavailable_one():
 
     assert controller.current_mode.name == 'default'
     assert (selected, emitted) == (['default'], ['default'])
+
+
+def test_context_only_applies_outside_the_default_mode():
+    controller, _selected, _emitted = _selecting_controller(default=True, incomplete=True)
+
+    controller.select_mode(controller.modes['incomplete'])
+    assert controller.context_sensitive is True
+
+    controller.select_mode(controller.modes['default'])
+    assert controller.context_sensitive is False
+
+
+def test_context_selected_is_passed_to_the_store_view_then_announced():
+    controller = _controller(default=True)
+    events = []
+    controller.main_controller = SimpleNamespace(
+        store_controller=SimpleNamespace(view=SimpleNamespace(set_context=lambda c: events.append(('rows', c)))))
+    controller.emit = lambda signal, context: events.append((signal, context))
+
+    controller._on_context_selected(None, 2)
+
+    assert events == [('rows', 2), ('context-selected', 2)]

@@ -25,6 +25,8 @@ class ModeController(BaseController):
     __gtype_name__ = 'ModeController'
     __gsignals__ = {
         'mode-selected': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT,)),
+        # After the shown units have changed for the new context.
+        'context-selected': (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_PYOBJECT,)),
     }
     default_mode_name = 'Default'
 
@@ -39,6 +41,9 @@ class ModeController(BaseController):
         from virtaal.views.modeview import ModeView
         self.view = ModeView(self)
         self.view.connect('mode-selected', self._on_mode_selected)
+        from virtaal.views.storeview import load_context_setting
+        self.view.select_context(load_context_setting())
+        self.view.connect('context-selected', self._on_context_selected)
 
         self.current_mode = None
         self.view.select_mode(self.modenames[self.default_mode_name])
@@ -101,6 +106,8 @@ class ModeController(BaseController):
         self.view.select_mode(self.modenames[mode.name])
         self._ignore_mode_change = False
         self.view.show()
+        # Every unit is shown in the default mode, so context doesn't apply.
+        self.view.set_context_sensitive(mode.name != self.default_mode_name)
         self.current_mode.selected()
         import logging
         logging.info('Mode selected: %s' % (self.current_mode.name))
@@ -110,6 +117,10 @@ class ModeController(BaseController):
     def _on_mode_selected(self, _modeview, modename):
         if not getattr(self, '_ignore_mode_change', True):
             self.select_mode(self.get_mode_by_display_name(modename))
+
+    def _on_context_selected(self, _modeview, context):
+        self.main_controller.store_controller.view.set_context(context)
+        self.emit('context-selected', context)
 
     def _on_store_changed(self, _store_controller):
         self.update_mode_availability()

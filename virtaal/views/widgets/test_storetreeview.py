@@ -794,3 +794,39 @@ def test_on_modified_emits_the_modified_signal():
 
     assert result is True
     assert calls == ['modified']
+
+
+# set_visible_rows() #
+
+def test_set_visible_rows_updates_a_small_change_in_place():
+    view = _real_storetreeview()
+    view.set_model(['unit%d' % i for i in range(10)])
+    model = view.get_model()
+
+    rebuilt = view.set_visible_rows([2, 3, 4])
+
+    assert rebuilt is False
+    assert view.get_model() is model
+    assert model.visible_rows == [2, 3, 4]
+
+
+def test_set_visible_rows_rebuilds_for_a_large_change_keeping_the_edited_unit():
+    view = _real_storetreeview()
+    units = ['unit%d' % i for i in range(500)]
+    view.set_model(units)
+    view.get_model()._current_editable = 250
+
+    rebuilt = view.set_visible_rows([249, 250, 251])
+
+    assert rebuilt is True
+    assert view.get_model().visible_rows == [249, 250, 251]
+    assert view.get_model()._current_editable == 250
+
+
+def test_set_visible_rows_ignores_an_unchanged_list():
+    view = _real_storetreeview()
+    view.set_model(['a', 'b'], rows=[1])
+    model = view.get_model()
+
+    assert view.set_visible_rows([1]) is False
+    assert view.get_model() is model

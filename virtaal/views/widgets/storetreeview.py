@@ -184,11 +184,11 @@ class StoreTreeView(Gtk.TreeView):
             return
         buffer = self.renderer.VIEWPORT_ROW_BUFFER
         start_index = max(0, self._visible_range_cache[0] - buffer)
-        end_index = min(model._store_len - 1, self._visible_range_cache[1] + buffer)
-        for index in range(start_index, end_index + 1):
-            unit = model._store[index]
+        end_index = min(model.row_count() - 1, self._visible_range_cache[1] + buffer)
+        for row in range(start_index, end_index + 1):
+            unit = model.unit_at_row(row)
             if id(unit) in self._estimated_unit_ids:
-                path = Gtk.TreePath((index,))
+                path = Gtk.TreePath((row,))
                 model.row_changed(path, model.get_iter(path))
 
     def reset_column_width(self):
@@ -212,7 +212,10 @@ class StoreTreeView(Gtk.TreeView):
         model = self.get_model()
         if not model or not isinstance(model, StoreTreeModel):
             return
-        newpath = Gtk.TreePath(model.store_index_to_path(index))
+        path = model.store_index_to_path(index)
+        if path is None:
+            return
+        newpath = Gtk.TreePath(path)
         selected = self.get_selection().get_selected()
         selected_path = isinstance(selected[1], Gtk.TreeIter) and model.get_path(selected[1]) or None
 
@@ -260,14 +263,41 @@ class StoreTreeView(Gtk.TreeView):
             return
         self._start_editing_cycle(model, path)
 
-    def set_model(self, storemodel):
+    def set_model(self, storemodel, rows=None):
         self._estimated_unit_ids = set()
         self._visible_range_cache = None
         if storemodel:
-            model = StoreTreeModel(storemodel)
+            model = StoreTreeModel(storemodel, rows)
         else:
             model = None
         super().set_model(model)
+
+    # Beyond this many rows changing, rebuilding the model is cheaper than
+    # a row-inserted/row-deleted signal per row.
+    MAX_INCREMENTAL_ROW_CHANGES = 100
+
+    def set_visible_rows(self, rows):
+        """Show only the units at the sorted store indices C{rows}, or every
+            unit for C{None}.
+            @returns: Whether the model was rebuilt, so editing needs
+                restarting."""
+        model = self.get_model()
+        if not isinstance(model, StoreTreeModel) or model.visible_rows == rows:
+            return False
+        if rows is not None:
+            rows = list(rows)
+        old = model.visible_rows
+        if old is None or rows is None:
+            changes = abs(model._store_len - len(rows if old is None else old))
+        else:
+            changes = len(set(old).symmetric_difference(rows))
+        if changes <= self.MAX_INCREMENTAL_ROW_CHANGES:
+            model.set_visible_rows(rows)
+            return False
+        editable = model._current_editable
+        self.set_model(model._store, rows)
+        self.get_model()._current_editable = editable
+        return True
 
     def _keyboard_move(self, offset):
         if not self.view.controller.get_store():

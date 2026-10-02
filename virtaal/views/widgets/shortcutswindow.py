@@ -42,8 +42,8 @@ SHORTCUT_GROUPS = [
         ("<Primary><Shift>v", _("Replace the translation with the source")),
         ("<Primary>c", _("Copy the source, if nothing is selected")),
         ("<Shift>Return", _("Enter a new line")),
-        ("<Primary>Return", _("Next Unit and Advance State")),
-        ("<Primary><Shift>Return", _("Next Unit and Reverse State")),
+        ("<Control>Return", _("Next Unit and Advance State")),
+        ("<Control><Shift>Return", _("Next Unit and Reverse State")),
         ("<Primary>z", _("Undo the last change")),
         ("<Primary><Shift>z", _("Redo the last undone change")),
     ]),
@@ -58,8 +58,8 @@ SHORTCUT_GROUPS = [
     (_("Moving focus"), [
         ("Tab", _("Move to the next target field")),
         ("<Shift>Tab", _("Move to the previous target field")),
-        ("<Primary>Tab", _("Jump to the language-pair selector")),
-        ("<Primary><Shift>Tab", _('Jump to the "Navigation:" mode selector')),
+        ("<Control>Tab", _("Jump to the language-pair selector")),
+        ("<Control><Shift>Tab", _('Jump to the "Navigation:" mode selector')),
         ("Escape", _("Close the search bar and return to normal editing")),
     ]),
 ]

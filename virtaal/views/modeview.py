@@ -28,6 +28,7 @@ class ModeView(GObjectWrapper, BaseView):
         GObjectWrapper.__init__(self)
 
         self.controller = controller
+        self._unavailable = set()
         self._build_gui()
         self._load_modes()
 
@@ -41,6 +42,7 @@ class ModeView(GObjectWrapper, BaseView):
 
         self.cmb_modes = Gtk.ComboBoxText()
         self.cmb_modes.connect('changed', self._on_cmbmode_change)
+        self.cmb_modes.set_cell_data_func(self.cmb_modes.get_cells()[0], self._set_cell_sensitive)
 
         self.lbl_mode = Gtk.Label()
         #l10n: This refers to the 'mode' that determines how Virtaal moves
@@ -80,6 +82,14 @@ class ModeView(GObjectWrapper, BaseView):
                 if w in widgets:
                     self.mode_box.remove(w)
 
+    def set_unavailable_modes(self, displaynames):
+        """Grey out the given modes in the mode selector."""
+        self._unavailable = set(displaynames)
+        model = self.cmb_modes.get_model()
+        # row_changed() makes the popup re-read each row's sensitivity.
+        for row in model:
+            model.row_changed(row.path, row.iter)
+
     def select_mode(self, displayname):
         if displayname in self.displayname_index:
             self.cmb_modes.set_active(self.displayname_index[displayname])
@@ -91,6 +101,9 @@ class ModeView(GObjectWrapper, BaseView):
 
     def focus(self):
         self.cmb_modes.grab_focus()
+
+    def _set_cell_sensitive(self, _layout, cell, model, iter_, _data=None):
+        cell.set_property('sensitive', model[iter_][0] not in self._unavailable)
 
     # EVENT HANDLERS #
     def _on_cmbmode_change(self, combo):

@@ -56,3 +56,14 @@ def test_save_as_is_listed():
     shortcuts = dict((description, accel) for _title, group in SHORTCUT_GROUPS for accel, description in group)
 
     assert shortcuts['Save the current file under a new name'] == '<Primary><Shift>s'
+
+
+@pytest.mark.parametrize('is_mac, accelerator', [(True, '<Primary>slash'), (False, '<Primary>question')])
+def test_keyboard_shortcuts_shortcut_matches_the_platform(monkeypatch, _restore_shortcuts_module, is_mac, accelerator):
+    # macOS reserves Cmd+? for opening the Help menu.
+    monkeypatch.setattr(platform, 'is_mac', is_mac)
+    module = importlib.reload(shortcutswindow)
+
+    shortcuts = dict((description, accel) for _title, group in module.SHORTCUT_GROUPS for accel, description in group)
+
+    assert shortcuts['Show this Keyboard Shortcuts window'] == accelerator

@@ -23,7 +23,7 @@ SHORTCUT_GROUPS = [
         ("<Primary>p", _("Show preferences dialog")),
         ("<Primary>i" if platform.is_mac else "<Alt>Return", _("Show file properties and statistics")),
         ("F11", _("Toggle fullscreen mode")),
-        ("<Primary>question", _("Show this Keyboard Shortcuts window")),
+        ("<Primary>slash" if platform.is_mac else "<Primary>question", _("Show this Keyboard Shortcuts window")),
     ]),
     (_("Navigation"), [
         ("Return", _("Move to next translation")),

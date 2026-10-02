@@ -29,6 +29,9 @@ class TMView(BaseView, GObjectWrapper):
 
         self.controller = controller
         self.isvisible = False
+        # Show suggestions for the current unit even if it is translated or
+        # suggestions are off - see TMController.summon().
+        self.summoned = False
         self.max_matches = max_matches
         self._should_show_tmwindow = False # should it be displayed now (even if it doesn't, due to application focus?
         self._signal_tracker = SignalTracker()
@@ -78,16 +81,23 @@ class TMView(BaseView, GObjectWrapper):
         self.mnu_suggestions.show()
         self.menu.append(self.mnu_suggestions)
 
-        Gtk.AccelMap.add_entry("<Virtaal>/TM/Toggle Show TM", Gdk.KEY_F9, 0)
+        self.mnu_summon = Gtk.MenuItem.new_with_mnemonic(label=_('Suggestions for This _Unit'))
+        self.mnu_summon.show()
+        self.menu.append(self.mnu_summon)
+
+        Gtk.AccelMap.add_entry("<Virtaal>/TM/Toggle Show TM", Gdk.KEY_F9, Gdk.ModifierType.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/TM/Show TM for Unit", Gdk.KEY_F9, 0)
         accel_group = self.menu.get_accel_group()
         if accel_group is None:
             accel_group = self.accel_group
             self.menu.set_accel_group(self.accel_group)
         self.mnu_suggestions.set_accel_path("<Virtaal>/TM/Toggle Show TM")
+        self.mnu_summon.set_accel_path("<Virtaal>/TM/Show TM for Unit")
         self.menu.set_accel_group(accel_group)
 
         self.mnu_suggestions.connect('toggled', self._on_toggle_show_tm)
         self.mnu_suggestions.set_active(True)
+        self.mnu_summon.connect('activate', lambda *_args: self.controller.summon())
 
 
     # ACCESSORS #
@@ -107,6 +117,7 @@ class TMView(BaseView, GObjectWrapper):
         self._signal_tracker.disconnect_all()
 
         self.menu.remove(self.mnu_suggestions)
+        self.menu.remove(self.mnu_summon)
 
     def display_matches(self, matches):
         """Add the list of TM matches to those available and show the TM window."""
@@ -185,7 +196,7 @@ class TMView(BaseView, GObjectWrapper):
 
     def show(self, force=False):
         """Show the TM window."""
-        if not self.active or (self.isvisible and not force):
+        if not (self.active or self.summoned) or (self.isvisible and not force):
             return # This window is already visible
         if not len(self.tmwindow.liststore):
             return # Nothing to show
@@ -284,16 +295,18 @@ class TMView(BaseView, GObjectWrapper):
     def _on_store_closed(self, storecontroller):
         self.hide()
         self.mnu_suggestions.set_sensitive(False)
+        self.mnu_summon.set_sensitive(False)
 
     def _on_store_loaded(self, storecontroller):
         self.mnu_suggestions.set_sensitive(True)
+        self.mnu_summon.set_sensitive(True)
 
     def _on_store_view_scroll(self, *args):
         if self.isvisible:
             self.hide()
 
     def _on_toggle_show_tm(self, *args):
-        if not self.active and self.isvisible:
+        if not self.active and self.isvisible and not self.summoned:
             self.hide()
         elif self.active and not self.isvisible:
-            self.controller.start_query()
+            self.controller.update_suggestions()

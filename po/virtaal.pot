@@ -1661,6 +1661,10 @@ msgid "Translation _Suggestions"
 msgstr ""
 
 #: virtaal/plugins/tm/tmview.py
+msgid "Suggestions for This _Unit"
+msgstr ""
+
+#: virtaal/plugins/tm/tmview.py
 #, python-format
 msgid "Ctrl+%(number_key)d"
 msgstr ""
@@ -2488,7 +2492,11 @@ msgid "Show/Hide checks"
 msgstr ""
 
 #: virtaal/views/widgets/shortcutswindow.py
-msgid "Show/Hide translation suggestions"
+msgid "Show translation suggestions for this unit"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Turn translation suggestions on or off"
 msgstr ""
 
 #: virtaal/views/widgets/shortcutswindow.py

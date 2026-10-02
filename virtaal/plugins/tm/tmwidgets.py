@@ -50,6 +50,10 @@ class TMWindow(Gtk.Window):
         self.tvc_perc.set_cell_data_func(self.perc_renderer, self._percent_data_func)
         self.tvc_match = Gtk.TreeViewColumn(_('Matches'), self.match_renderer, matchdata=0)
         self.tvc_match.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
+        # Otherwise the last column, TM Source, takes any spare width -
+        # and update_geometry() sizes the window from that column, so
+        # every update made the window wider.
+        self.tvc_match.set_expand(True)
         self.tvc_tm_source = Gtk.TreeViewColumn(_('TM Source'), self.tm_source_renderer, matchdata=0)
         self.tvc_tm_source.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
 

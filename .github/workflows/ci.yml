@@ -863,7 +863,10 @@ jobs:
         # no display server at all without one. Coverage collected here
         # too, not just on Linux's test (3.13) - see test-windows's own
         # comment for why.
-        run: pytest -rvxs -n auto --cov=virtaal --cov-report=xml virtaal
+        # A test whose worker crashes outright (an intermittent native GTK
+        # crash on macOS) is rerun once; --rerun-except ".*" keeps every
+        # ordinary failure from being rerun.
+        run: pytest -rvxs -n auto --reruns 1 --rerun-except ".*" --cov=virtaal --cov-report=xml virtaal
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7

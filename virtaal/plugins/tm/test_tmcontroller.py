@@ -474,44 +474,64 @@ def test_on_cursor_changed_returns_when_the_dereffed_unit_is_none():
     assert controller.unit is None
 
 
-def test_on_cursor_changed_hides_suggestions_for_an_already_translated_unit():
-    unit = SimpleNamespace(istranslated=lambda: True)
-    cursor = SimpleNamespace(deref=lambda: unit)
-    controller = _bare_controller()
-    controller.start_query = lambda: 'started'
-    calls = []
-    controller.view = SimpleNamespace(active=True, mnu_suggestions=SimpleNamespace(set_active=calls.append))
-
-    result = controller._on_cursor_changed(cursor)
-
-    assert calls == [False]
-    assert result == 'started'
-
-
-def test_on_cursor_changed_shows_suggestions_for_an_untranslated_unit():
-    unit = SimpleNamespace(istranslated=lambda: False)
-    cursor = SimpleNamespace(deref=lambda: unit)
-    controller = _bare_controller()
-    controller.start_query = lambda: None
-    calls = []
-    controller.view = SimpleNamespace(active=False, mnu_suggestions=SimpleNamespace(set_active=calls.append))
-
-    controller._on_cursor_changed(cursor)
-
-    assert calls == [True]
-
-
-def test_on_cursor_changed_leaves_suggestions_alone_when_neither_condition_matches():
-    unit = SimpleNamespace(istranslated=lambda: False)
-    cursor = SimpleNamespace(deref=lambda: unit)
-    controller = _bare_controller()
-    controller.start_query = lambda: None
+def _suggestions_controller(unit, active=True, summoned=False, isvisible=False):
+    events = []
+    controller = _bare_controller(unit=unit, _delay_id=None, storecursor=object())
+    controller.start_query = lambda: events.append('query')
     controller.view = SimpleNamespace(
-        active=True,
-        mnu_suggestions=SimpleNamespace(set_active=lambda v: pytest.fail('must not toggle')),
+        active=active, summoned=summoned, isvisible=isvisible,
+        hide=lambda: events.append('hide'),
+        mnu_suggestions=SimpleNamespace(set_active=lambda v: pytest.fail('must not change the toggle')),
     )
+    return controller, events
 
-    controller._on_cursor_changed(cursor)
+
+@pytest.mark.parametrize('translated, active, expected', [
+    (False, True, ['query']),
+    (True, True, ['hide']),   # translated units only get suggestions on request
+    (False, False, ['hide']),
+    (True, False, ['hide']),
+])
+def test_on_cursor_changed_never_changes_the_toggle(translated, active, expected):
+    unit = SimpleNamespace(istranslated=lambda: translated)
+    controller, events = _suggestions_controller(unit, active=active, summoned=True)
+
+    controller._on_cursor_changed(SimpleNamespace(deref=lambda: unit))
+
+    assert events == expected
+    assert controller.view.summoned is False
+
+
+@pytest.mark.parametrize('active', [True, False])
+def test_summon_queries_a_translated_unit_whether_or_not_suggestions_are_on(active):
+    unit = SimpleNamespace(istranslated=lambda: True)
+    controller, events = _suggestions_controller(None, active=active)
+    controller.storecursor = SimpleNamespace(deref=lambda: unit)
+
+    controller.summon()
+
+    assert controller.unit is unit
+    assert controller.view.summoned is True
+    assert events == ['query']
+
+
+def test_summon_with_suggestions_already_shown_does_not_requery():
+    unit = SimpleNamespace(istranslated=lambda: False)
+    controller, events = _suggestions_controller(None, isvisible=True)
+    controller.storecursor = SimpleNamespace(deref=lambda: unit)
+
+    controller.summon()
+
+    assert events == []
+
+
+def test_summon_without_a_file_does_nothing():
+    controller, events = _suggestions_controller(None)
+    controller.storecursor = None
+
+    controller.summon()
+
+    assert events == []
 
 
 # _on_mode_selected() / _on_target_focused() #
@@ -615,3 +635,10 @@ def test_on_store_loaded_handles_the_first_unit_via_the_idle_callback(monkeypatc
 
     assert seen == [new_cursor]
     assert result is False
+
+
+def test_update_suggestions_before_a_file_is_open_does_nothing():
+    # TMView's constructor ticks the toggle before TMController has a view.
+    controller = _bare_controller(storecursor=None)
+
+    controller.update_suggestions()  # must not raise

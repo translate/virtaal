@@ -47,7 +47,8 @@ SHORTCUT_GROUPS = [
     (_("Plug-ins"), [
         ("<Primary>1", _("Use the first translation suggestion")),
         ("F8", _("Show/Hide checks")),
-        ("F9", _("Show/Hide translation suggestions")),
+        ("F9", _("Show translation suggestions for this unit")),
+        ("<Primary>F9", _("Turn translation suggestions on or off")),
         ("Escape", _("Hide translation suggestions, if shown")),
         ("<Primary>t", _("Add a term to the local terminology file")),
     ]),

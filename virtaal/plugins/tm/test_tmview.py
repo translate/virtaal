@@ -36,6 +36,7 @@ def _tmview(liststore=None, isvisible=False, active=True, may_show=True):
         liststore=liststore, treeview=_FakeTreeview(), tvc_match='tvc_match',
         show_all=lambda: None, hide=lambda: None, update_geometry=lambda widget: None)
     view.mnu_suggestions = SimpleNamespace(get_active=lambda: active)
+    view.summoned = False
     return view
 
 
@@ -124,6 +125,17 @@ def test_display_matches_does_not_show_the_window_when_there_are_no_matches():
 
 
 # show()/hide()/clear(): visibility guards
+
+def test_show_shows_summoned_suggestions_even_when_they_are_off():
+    store = Gtk.ListStore(GObject.TYPE_PYOBJECT, GObject.TYPE_STRING)
+    store.append([object(), ''])
+    view = _tmview(liststore=store, active=False)
+    view.summoned = True
+
+    view.show()
+
+    assert view.isvisible is True
+
 
 def test_show_does_nothing_when_the_suggestions_menu_item_is_inactive():
     view = _tmview(active=False)
@@ -381,9 +393,20 @@ def test_toggle_show_tm_hides_when_deactivated_while_visible():
     assert hidden == [1]
 
 
-def test_toggle_show_tm_starts_a_query_when_activated_while_hidden():
+def test_toggle_show_tm_keeps_summoned_suggestions_when_turned_off():
+    view = _tmview(isvisible=True, active=False)
+    view.summoned = True
+    hidden = []
+    view.hide = lambda: hidden.append(True)
+
+    view._on_toggle_show_tm()
+
+    assert hidden == []
+
+
+def test_toggle_show_tm_updates_suggestions_when_activated_while_hidden():
     view = _tmview(isvisible=False, active=True)
-    view.controller = SimpleNamespace(start_query=lambda: queries.append(1))
+    view.controller = SimpleNamespace(update_suggestions=lambda: queries.append(1))
     queries = []
 
     view._on_toggle_show_tm()
@@ -444,11 +467,12 @@ def test_destroy_disconnects_signals_and_removes_the_suggestions_menu_item():
     removed = []
     view.menu = SimpleNamespace(remove=removed.append)
     view.mnu_suggestions = object()
+    view.mnu_summon = object()
 
     view.destroy()
 
     assert disconnected == [True]
-    assert removed == [view.mnu_suggestions]
+    assert removed == [view.mnu_suggestions, view.mnu_summon]
 
 
 def test_select_backends_delegates_to_the_backend_selector(monkeypatch):
@@ -560,20 +584,22 @@ def test_on_store_closed_hides_and_disables_the_suggestions_toggle():
     calls = []
     view.hide = lambda: calls.append('hide')
     view.mnu_suggestions = SimpleNamespace(set_sensitive=lambda v: calls.append(('sensitive', v)))
+    view.mnu_summon = SimpleNamespace(set_sensitive=lambda v: calls.append(('summon sensitive', v)))
 
     view._on_store_closed(None)
 
-    assert calls == ['hide', ('sensitive', False)]
+    assert calls == ['hide', ('sensitive', False), ('summon sensitive', False)]
 
 
 def test_on_store_loaded_enables_the_suggestions_toggle():
     view = TMView.__new__(TMView)
     calls = []
     view.mnu_suggestions = SimpleNamespace(set_sensitive=calls.append)
+    view.mnu_summon = SimpleNamespace(set_sensitive=calls.append)
 
     view._on_store_loaded(None)
 
-    assert calls == [True]
+    assert calls == [True, True]
 
 
 # __init__() / _setup_key_bindings() / _setup_menu_items() #
@@ -602,18 +628,29 @@ def test_setup_menu_items_adds_a_translation_suggestions_toggle():
     view = TMView.__new__(TMView)
     view.accel_group = Gtk.AccelGroup()
     view.isvisible = False
+    view.summoned = False
     started = []
     view.controller = SimpleNamespace(
         main_controller=SimpleNamespace(view=SimpleNamespace(menubar=None, gui=_real_builder())),
-        start_query=lambda: started.append(True),
+        update_suggestions=lambda: started.append('update'),
+        summon=lambda: started.append('summon'),
     )
 
     view._setup_menu_items()
 
     assert view.mnu_suggestions in view.menu.get_children()
     assert view.mnu_suggestions.get_active() is True
-    # set_active(True) fires 'toggled' for real - nothing was visible yet, so it starts a query
-    assert started == [True]
+    # set_active(True) fires 'toggled' for real - nothing was visible yet
+    assert started == ['update']
+
+    def shortcut(item):
+        _found, key = Gtk.AccelMap.lookup_entry(item.get_accel_path())
+        return key.accel_key, key.accel_mods
+    # Cmd+F9 on macOS, via virtaal.accel
+    assert shortcut(view.mnu_suggestions) == (Gdk.KEY_F9, Gdk.ModifierType.CONTROL_MASK)
+    assert shortcut(view.mnu_summon) == (Gdk.KEY_F9, 0)
+    view.mnu_summon.activate()
+    assert started == ['update', 'summon']
 
 
 class _FakeSignalSource(GObjectWrapper):

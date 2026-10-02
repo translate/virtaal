@@ -17,7 +17,8 @@
 (gtk_accel_path "<Virtaal>/Edit/Undo" "<Meta>z")
 
 ; Translation Memory
-(gtk_accel_path "<Virtaal>/TM/Toggle Show TM" "F9")
+(gtk_accel_path "<Virtaal>/TM/Toggle Show TM" "<Meta>F9")
+(gtk_accel_path "<Virtaal>/TM/Show TM for Unit" "F9")
 (gtk_accel_path "<Virtaal>/TM/Hide TM" "Escape")
 (gtk_accel_path "<Virtaal>/TM/Select match 1" "<Meta>1")
 (gtk_accel_path "<Virtaal>/TM/Select match 2" "<Meta>2")

@@ -158,6 +158,31 @@ class TMController(BaseController):
         self.view.clear()
         self.emit('start-query', self.unit)
 
+    def update_suggestions(self):
+        """Query suggestions for the current unit if they are on and it
+            still needs work; translated units only get them on request."""
+        if not self.storecursor:
+            return
+        unit = getattr(self, 'unit', None)
+        if self.view.active and unit is not None and not unit.istranslated():
+            return self.start_query()
+        if getattr(self, '_delay_id', None):
+            GLib.source_remove(self._delay_id)
+            self._delay_id = None
+        self.view.hide()
+
+    def summon(self):
+        """Show suggestions for the current unit once, whether or not they
+            are on and the unit is translated."""
+        if not self.storecursor:
+            return
+        self.unit = self.storecursor.deref()
+        if self.unit is None:
+            return
+        self.view.summoned = True
+        if not self.view.isvisible:
+            self.start_query()
+
     def start_query(self):
         """Start a TM query after C{self.QUERY_DELAY} milliseconds."""
         if not self.storecursor:
@@ -198,12 +223,8 @@ class TMController(BaseController):
         if self.unit is None:
             return
 
-        if self.view.active and self.unit.istranslated():
-            self.view.mnu_suggestions.set_active(False)
-        elif not self.view.active and not self.unit.istranslated():
-            self.view.mnu_suggestions.set_active(True)
-
-        return self.start_query()
+        self.view.summoned = False
+        return self.update_suggestions()
 
     def _on_mode_selected(self, modecontroller, mode):
         self.view.update_geometry()

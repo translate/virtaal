@@ -1723,6 +1723,84 @@ If you are translating from English to French then French would be your translat
                 <property name="column_spacing">12</property>
                 <property name="row_spacing">6</property>
                 <child>
+                  <object class="GtkLabel" id="lbl_saved_heading">
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes">Saved file</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="lbl_live_heading">
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes">With unsaved changes</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="lbl_word_live_total">
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkVBox" id="vbox_word_live_stats">
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="lbl_string_live_total">
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkVBox" id="vbox_string_live_stats">
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">5</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkLabel" id="label41">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -1734,7 +1812,7 @@ If you are translating from English to French then French would be your translat
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">0</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
                 <child>
@@ -1747,7 +1825,7 @@ If you are translating from English to French then French would be your translat
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">0</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
                 <child>
@@ -1768,7 +1846,7 @@ If you are translating from English to French then French would be your translat
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
+                    <property name="top_attach">2</property>
                   </packing>
                 </child>
                 <child>
@@ -1789,7 +1867,7 @@ If you are translating from English to French then French would be your translat
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">4</property>
+                    <property name="top_attach">5</property>
                   </packing>
                 </child>
                 <child>
@@ -1804,7 +1882,7 @@ If you are translating from English to French then French would be your translat
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">3</property>
+                    <property name="top_attach">4</property>
                   </packing>
                 </child>
                 <child>
@@ -1817,7 +1895,7 @@ If you are translating from English to French then French would be your translat
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">3</property>
+                    <property name="top_attach">4</property>
                   </packing>
                 </child>
                 <child>
@@ -1828,8 +1906,8 @@ If you are translating from English to French then French would be your translat
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">2</property>
-                    <property name="width">2</property>
+                    <property name="top_attach">3</property>
+                    <property name="width">3</property>
                   </packing>
                 </child>
                 <child>
@@ -1885,7 +1963,7 @@ If you are translating from English to French then French would be your translat
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">4</property>
+                    <property name="top_attach">5</property>
                   </packing>
                 </child>
                 <child>
@@ -1941,7 +2019,7 @@ If you are translating from English to French then French would be your translat
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">1</property>
+                    <property name="top_attach">2</property>
                   </packing>
                 </child>
                 <child>
@@ -1952,8 +2030,8 @@ If you are translating from English to French then French would be your translat
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">5</property>
-                    <property name="width">2</property>
+                    <property name="top_attach">6</property>
+                    <property name="width">3</property>
                   </packing>
                 </child>
                 <child>
@@ -1967,7 +2045,7 @@ If you are translating from English to French then French would be your translat
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">6</property>
+                    <property name="top_attach">7</property>
                   </packing>
                 </child>
                 <child>
@@ -1980,7 +2058,7 @@ If you are translating from English to French then French would be your translat
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">6</property>
+                    <property name="top_attach">7</property>
                   </packing>
                 </child>
                 <child>
@@ -1994,7 +2072,7 @@ If you are translating from English to French then French would be your translat
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">7</property>
+                    <property name="top_attach">8</property>
                   </packing>
                 </child>
                 <child>
@@ -2007,7 +2085,7 @@ If you are translating from English to French then French would be your translat
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">7</property>
+                    <property name="top_attach">8</property>
                   </packing>
                 </child>
                 <child>
@@ -2021,7 +2099,7 @@ If you are translating from English to French then French would be your translat
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">8</property>
+                    <property name="top_attach">9</property>
                   </packing>
                 </child>
                 <child>
@@ -2038,7 +2116,7 @@ If you are translating from English to French then French would be your translat
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">8</property>
+                    <property name="top_attach">9</property>
                   </packing>
                 </child>
               </object>

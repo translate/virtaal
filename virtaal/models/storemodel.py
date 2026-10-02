@@ -110,6 +110,22 @@ class StoreModel(BaseModel):
         totals = statsdb.StatsCache().file_extended_totals(self.filename,  self._trans_store)
         return totals
 
+    def get_live_stats_totals(self):
+        """Return totals like C{get_stats_totals()}, counted from the units
+            in memory, unsaved changes included."""
+        from virtaal.support import statsdb
+        totals = {}
+        for unit in self._trans_store.units:
+            if not unit.istranslatable():
+                continue
+            sourcewords, targetwords = statsdb.wordsinunit(unit)
+            state = statsdb.extended_state_strings[unit.get_state_id()]
+            state_totals = totals.setdefault(state, {'units': 0, 'sourcewords': 0, 'targetwords': 0})
+            state_totals['units'] += 1
+            state_totals['sourcewords'] += sourcewords
+            state_totals['targetwords'] += targetwords
+        return totals
+
 
     # METHODS #
     def load_file(self, fileobj):

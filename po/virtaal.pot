@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-09-29 19:28+0100\n"
+"POT-Creation-Date: 2026-10-02 17:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -284,6 +284,14 @@ msgstr ""
 
 #: share/virtaal/virtaal.ui
 msgid "Properties"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "Saved file"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "With unsaved changes"
 msgstr ""
 
 #: share/virtaal/virtaal.ui
@@ -2133,7 +2141,7 @@ msgid ""
 "Do you want to save your changes?"
 msgstr ""
 
-#: virtaal/views/mainview.py
+#: virtaal/views/mainview.py virtaal/views/propertiesview.py
 msgid "_Save"
 msgstr ""
 
@@ -2298,7 +2306,7 @@ msgid "(%04.1f%%)"
 msgstr ""
 
 #: virtaal/views/propertiesview.py
-msgid "Save the file for up-to-date information"
+msgid "This file has unsaved changes."
 msgstr ""
 
 #. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.

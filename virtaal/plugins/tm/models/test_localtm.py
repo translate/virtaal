@@ -47,20 +47,21 @@ def test_test_port_false_for_an_occupied_port():
         s.close()
 
 
-def test_find_free_port_skips_an_occupied_port():
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind(('localhost', 0))
-    occupied_port = s.getsockname()[1]
-    try:
-        # A 2-port range containing only the occupied port and its
-        # immediate neighbour - narrow enough that a pass here is a
-        # real assertion, not a coincidence of a huge random range.
-        free_port = find_free_port('localhost', occupied_port, occupied_port + 2)
+def test_find_free_port_skips_an_occupied_port(monkeypatch):
+    # Whether a real neighbouring port is free depends on the machine (it
+    # made this flaky on Windows CI), so which ports are busy is set here;
+    # test_port() itself is covered against real sockets above.
+    monkeypatch.setattr(localtm, 'test_port', lambda host, port: port != 5000)
+    # Try the occupied port first, rather than a random order.
+    monkeypatch.setattr('random.shuffle', lambda ports: None)
 
-        assert free_port != occupied_port
-        assert port_is_free('localhost', free_port) is True
-    finally:
-        s.close()
+    assert find_free_port('localhost', 5000, 5002) == 5001
+
+
+def test_find_free_port_is_none_when_every_port_is_occupied(monkeypatch):
+    monkeypatch.setattr(localtm, 'test_port', lambda host, port: False)
+
+    assert find_free_port('localhost', 5000, 5002) is None
 
 
 def test_destroy_uses_sigterm_on_posix(monkeypatch):

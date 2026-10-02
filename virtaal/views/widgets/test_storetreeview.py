@@ -11,7 +11,8 @@ from types import SimpleNamespace
 import gi
 
 gi.require_version('Gtk', '3.0')
-from gi.repository import GLib, Gtk
+gi.require_version('Gdk', '3.0')
+from gi.repository import Gdk, GLib, Gtk
 
 from virtaal.views.widgets.storetreemodel import StoreTreeModel
 from virtaal.views.widgets.storetreeview import StoreTreeView
@@ -63,9 +64,9 @@ def test_on_size_allocate_restarts_editing_the_current_row_when_the_width_change
     # navigation does.
     path, editcol = object(), object()
     view, column, calls = _make_view(column_width=1, cursor=(path, editcol))
-    allocation = SimpleNamespace(width=800)
 
-    StoreTreeView._on_size_allocate(view, None, allocation)
+    assert StoreTreeView._set_column_width(view, 800) is True
+    StoreTreeView._on_size_allocate(view, True)
 
     assert column.get_fixed_width() == 798
     assert calls == [((path, editcol), {'start_editing': True})]
@@ -77,9 +78,9 @@ def test_on_size_allocate_tracks_width_but_skips_restarting_editing_mid_resize()
     # width (#3595) - the column width itself still tracks regardless.
     path, editcol = object(), object()
     view, column, calls = _make_view(column_width=1, cursor=(path, editcol), is_resizing=True)
-    allocation = SimpleNamespace(width=800)
 
-    StoreTreeView._on_size_allocate(view, None, allocation)
+    assert StoreTreeView._set_column_width(view, 800) is True
+    StoreTreeView._on_size_allocate(view, True)
 
     assert column.get_fixed_width() == 798
     assert calls == []
@@ -88,27 +89,46 @@ def test_on_size_allocate_tracks_width_but_skips_restarting_editing_mid_resize()
 def test_on_size_allocate_is_a_noop_when_the_width_is_unchanged():
     path, editcol = object(), object()
     view, column, calls = _make_view(column_width=798, cursor=(path, editcol))
-    allocation = SimpleNamespace(width=800)
 
-    StoreTreeView._on_size_allocate(view, None, allocation)
+    assert StoreTreeView._set_column_width(view, 800) is False
+    StoreTreeView._on_size_allocate(view, False)
 
     assert calls == []
 
 
 def test_on_size_allocate_does_nothing_extra_without_a_current_row():
     view, column, calls = _make_view(column_width=1, cursor=(None, None))
-    allocation = SimpleNamespace(width=800)
 
-    StoreTreeView._on_size_allocate(view, None, allocation)
+    StoreTreeView._set_column_width(view, 800)
+    StoreTreeView._on_size_allocate(view, True)
 
     assert column.get_fixed_width() == 798
     assert calls == []
 
 
-def test_on_size_allocate_does_nothing_without_a_column():
+def test_set_column_width_does_nothing_without_a_column():
     view = SimpleNamespace(get_columns=lambda: [])
 
-    StoreTreeView._on_size_allocate(view, None, SimpleNamespace(width=800))  # must not raise
+    assert StoreTreeView._set_column_width(view, 800) is False
+
+
+def test_size_allocate_lays_the_column_out_at_the_new_width():
+    # Otherwise, while narrowing, the column and its editor stay a step
+    # wider than the view.
+    treeview = _real_storetreeview()
+    column = treeview.get_columns()[0]
+    window = Gtk.OffscreenWindow()
+    window.add(treeview)
+    window.show_all()
+    try:
+        for width in (720, 700):
+            allocation = Gdk.Rectangle()
+            allocation.x, allocation.y, allocation.width, allocation.height = 0, 0, width, 100
+            treeview.size_allocate(allocation)
+            assert column.get_fixed_width() == width - 2
+            assert column.get_width() == width
+    finally:
+        window.destroy()
 
 
 def test_refresh_current_row_redoes_the_editing_cycle_in_place():

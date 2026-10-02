@@ -70,9 +70,6 @@ class StoreTreeView(Gtk.TreeView):
         self.connect("cursor-changed", self._on_cursor_changed)
         self.connect("button-press-event", self._on_button_press)
         self.connect('focus-in-event', self._on_focus_in)
-        # Keeps the FIXED-sizing column's width tied to this treeview's
-        # own real allocation - see _make_column() for why this exists.
-        self.connect('size-allocate', self._on_size_allocate)
         # Cancel the pending debounce timer on teardown - it would
         # otherwise fire after this widget is destroyed.
         self.connect('destroy', self._on_destroy)
@@ -96,28 +93,42 @@ class StoreTreeView(Gtk.TreeView):
         column = Gtk.TreeViewColumn(None, renderer, unit=COLUMN_UNIT, editable=COLUMN_EDITABLE)
         # FIXED sizing avoids set_expand(True)'s natural-size
         # renegotiation, which could grow the column unboundedly on
-        # some GTK3 builds - see _on_size_allocate() for the real width.
+        # some GTK3 builds - see do_size_allocate() for the real width.
         column.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
         column.set_fixed_width(1)  # corrected on the first real size-allocate
         return column
 
-    def _on_size_allocate(self, _widget, allocation):
+    def do_size_allocate(self, allocation):
+        # Keeps the FIXED column's width tied to this treeview's own
+        # allocation (see _make_column()). Set before chaining up, so
+        # this allocation already lays it out at the new width.
+        changed = self._set_column_width(allocation.width)
+        Gtk.TreeView.do_size_allocate(self, allocation)
+        self._on_size_allocate(changed)
+
+    def _set_column_width(self, width):
+        """@returns: whether the column's width changed."""
         # A couple of pixels of margin avoids fighting a vertical
         # scrollbar for the same space; guarded on an actual change so
         # this doesn't itself trigger another reallocation.
         column = self.get_columns()[0] if self.get_columns() else None
         if not column:
-            return
-        new_width = max(1, allocation.width - 2)
-        if column.get_fixed_width() != new_width:
-            column.set_fixed_width(new_width)
-            # A mid-drag cell_area here is intermediate, not final -
-            # defer to _on_configure_settled()'s own restore (#3595).
+            return False
+        new_width = max(1, width - 2)
+        if column.get_fixed_width() == new_width:
+            return False
+        column.set_fixed_width(new_width)
+        return True
+
+    def _on_size_allocate(self, width_changed):
+        # A mid-drag cell_area here is intermediate, not final -
+        # defer to _on_configure_settled()'s own restore (#3595).
+        if width_changed:
             if self.is_resizing:
                 return
             path, editcol = self.get_cursor()
             if path is not None:
-                self._restart_editing(path, editcol or column)
+                self._restart_editing(path, editcol or self.get_columns()[0])
         self._schedule_revalidate_visible_estimated_rows()
 
     def _on_vadjustment_notify(self, _widget, _pspec):

@@ -69,7 +69,6 @@ class StoreTreeView(Gtk.TreeView):
         self.connect('key-press-event', self._on_key_press)
         self.connect("cursor-changed", self._on_cursor_changed)
         self.connect("button-press-event", self._on_button_press)
-        self.connect('focus-in-event', self._on_focus_in)
         # Cancel the pending debounce timer on teardown - it would
         # otherwise fire after this widget is destroyed.
         self.connect('destroy', self._on_destroy)
@@ -387,10 +386,8 @@ class StoreTreeView(Gtk.TreeView):
         return True
 
     def on_configure_event(self, widget, event, *_user_args):
-        # Debounced - restoring cursor state on every raw configure-event
-        # tick during a live resize drag is wasteful. The growth bug
-        # itself is fixed at the source (_make_column()); this is just
-        # settle-then-restore-cursor housekeeping.
+        # Debounced - restarting editing on every raw configure-event
+        # tick during a live resize drag is wasteful.
         logging.debug("storetreeview: configure-event %dx%d", event.width, event.height)
         self.is_resizing = True
         if self._configure_timeout_id is not None:
@@ -413,7 +410,6 @@ class StoreTreeView(Gtk.TreeView):
         path, editcol = self.get_cursor()
         if column and path is not None:
             self._restart_editing(path, editcol or column)
-        self._restore_cursor()
         return False  # one-shot: don't repeat this GLib.timeout_add
 
     def _restart_editing(self, path, column):
@@ -437,27 +433,11 @@ class StoreTreeView(Gtk.TreeView):
             GLib.source_remove(self._move_throttle_id)
             self._move_throttle_id = None
 
-    def _on_focus_in(self, widget, _event, *_user_args):
-        # Restore cursor/editing state on refocus, same as
-        # on_configure_event()'s settle handler.
-        self._restore_cursor()
-        return False
-
     def _window_size(self):
         window = self.get_toplevel()
         if window and isinstance(window, Gtk.Window) and window.get_realized():
             return window.get_size()
         return None
-
-    def _restore_cursor(self):
-        # Safety-net check only, no corrective action: a reactive
-        # resize() here is what caused the original growth bug. A wide
-        # window during/just after a real fullscreen toggle is expected,
-        # not a regression - only warn outside of that.
-        size = self._window_size()
-        mainview = self.view.controller.main_controller.view
-        if size and size[0] > 1024 and not mainview.is_fullscreen_or_restoring():
-            logging.warning("storetreeview: window width %d after a resize/focus settle - investigate if seen again", size[0])
 
     def _on_cursor_changed(self, _treeview):
         if getattr(self, '_updating_rows', False):

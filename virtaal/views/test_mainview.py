@@ -1261,6 +1261,21 @@ def test_setup_key_bindings_leaves_preferences_alone_on_mac(monkeypatch):
     assert not any(path == "<Virtaal>/Edit/Preferences" for path, key, mods in calls)
 
 
+@pytest.mark.parametrize('is_mac, mods', [
+    (True, Gdk.ModifierType.META_MASK | Gdk.ModifierType.MOD2_MASK | Gdk.ModifierType.SHIFT_MASK),
+    (False, Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK),
+])
+def test_setup_key_bindings_registers_save_as(monkeypatch, is_mac, mods):
+    monkeypatch.setattr(platform, 'is_mac', is_mac)
+    calls = []
+    monkeypatch.setattr(Gtk.AccelMap, 'add_entry', lambda path, key, mods: calls.append((path, key, mods)))
+    view = _real_view_for_key_bindings()
+
+    MainView._setup_key_bindings(view)
+
+    assert ("<Virtaal>/File/Save As", Gdk.KEY_s, mods) in calls
+
+
 def test_setup_osx_help_menu_gives_osxapp_the_help_menu_item():
     view = SimpleNamespace(gui=SimpleNamespace(get_object=lambda name: name))
     calls = []

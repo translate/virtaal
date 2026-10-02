@@ -6,7 +6,6 @@
 (gtk_accel_path "<Virtaal>/File/Open" "<Meta>o")
 (gtk_accel_path "<Virtaal>/File/Close" "<Meta>w")
 (gtk_accel_path "<Virtaal>/File/Save" "<Meta>s")
-(gtk_accel_path "<Virtaal>/File/Save As" "<Meta><Shift>s")
 (gtk_accel_path "<Virtaal>/File/Properties" "<Meta>i")
 
 ; Edit Menu

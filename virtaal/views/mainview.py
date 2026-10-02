@@ -476,6 +476,12 @@ class MainView(BaseView):
             # macOS keeps its own conventional Cmd+, from virtaal.accel
             # instead (loaded in _setup_macos_integration()).
             Gtk.AccelMap.add_entry("<Virtaal>/Edit/Preferences", Gdk.KEY_p, Gdk.ModifierType.CONTROL_MASK)
+        if platform.is_mac:
+            # Ctrl->Cmd translation doesn't reach Ctrl+Shift - see Redo.
+            saveas_mods = Gdk.ModifierType.META_MASK | Gdk.ModifierType.MOD2_MASK | Gdk.ModifierType.SHIFT_MASK
+        else:
+            saveas_mods = Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK
+        Gtk.AccelMap.add_entry("<Virtaal>/File/Save As", Gdk.KEY_s, saveas_mods)
         self.gui.get_object('menu_file').set_accel_group(self.accel_group)
         self.gui.get_object('menu_help').set_accel_group(self.accel_group)
         self.gui.get_object('mnu_shortcuts').set_accel_path("<Virtaal>/Help/Shortcuts")
@@ -490,6 +496,7 @@ class MainView(BaseView):
         for menu_id, item_id in (
             ('menu_file', 'mnu_open'),
             ('menu_file', 'mnu_save'),
+            ('menu_file', 'mnu_saveas'),
             ('menu_file', 'mnu_close'),
             ('menu_help', 'mnu_shortcuts'),
         ):

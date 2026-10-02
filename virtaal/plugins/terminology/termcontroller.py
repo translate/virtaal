@@ -84,6 +84,7 @@ class TerminologyController(BaseController):
             src.elem.remove_type(terminology.TerminologyPlaceable)
             elem_parse(src.elem, terminology.parsers)
             src.refresh(update=True)
+        unit_controller.view.select_first_placeables()
 
         store_controller = getattr(self.main_controller, 'store_controller', None)
         if store_controller is None or store_controller.cursor is None:

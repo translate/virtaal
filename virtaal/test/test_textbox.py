@@ -293,6 +293,50 @@ class TestTextBox(TestScaffolding):
 
         assert textbox.get_text() == original_text
 
+    def test_loading_a_unit_selects_its_first_placeable(self):
+        # So that Alt+Down inserts it without Alt+Right first (#3963).
+        target = self._target_for('Click <a>here</a> to continue.')
+        source = target.selector_textbox
+
+        assert source.selected_elem is source.selectable_elems()[0]
+
+    def test_placeable_selection_stops_at_the_last_and_first_placeable(self):
+        target = self._target_for('Click <a>here</a> to continue.')
+        source = target.selector_textbox
+        elems = source.selectable_elems()
+        assert len(elems) >= 2
+
+        target.move_elem_selection(len(elems) + 3)
+        assert source.selected_elem is elems[-1]
+        target.move_elem_selection(1)
+        assert source.selected_elem is elems[-1]
+
+        target.move_elem_selection(-(len(elems) + 3))
+        assert source.selected_elem is elems[0]
+        target.move_elem_selection(-1)
+        assert source.selected_elem is elems[0]
+
+    def test_select_first_elem_replaces_a_stale_selection(self):
+        # A terminology rescan re-parses the source, replacing the placeables.
+        target = self._target_for('Click <a>here</a> to continue.')
+        source = target.selector_textbox
+        source.select_elem(elem=source.selectable_elems()[1])
+        source.selected_elem = StringElem('gone')
+
+        source.select_first_elem()
+
+        assert source.selected_elem is source.selectable_elems()[0]
+
+    def test_select_first_elem_ignores_text_without_placeable_gui_info(self):
+        # Without a PlaceablesController the text never gets gui_info; a
+        # unit load still calls this, and must not fail.
+        textbox = TextBox(self.main_controller)
+        textbox.elem = StringElem([StringElem('%s'), StringElem(' files')])
+
+        textbox.select_first_elem()
+
+        assert textbox.selected_elem is None
+
     def test_get_stringelem_returns_none_without_an_elem(self):
         textbox = TextBox(self.main_controller)
 

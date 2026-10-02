@@ -121,9 +121,14 @@ msgstr ""
 msgid "_Redo"
 msgstr ""
 
-#. l10n: Activating this menu item copies the whole source (or part thereof) to the target. The "copy" is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.
+#. l10n: Activating this menu item replaces the target with the whole source. The "copy" is not necessarily the same as the source: language-specific punctuation changes are made automatically.
 #: share/virtaal/virtaal.ui
 msgid "Transfer From Source"
+msgstr ""
+
+#. l10n: Inserts the highlighted placeable from the source into the translation, then highlights the next one.
+#: share/virtaal/virtaal.ui
+msgid "_Insert Placeable"
 msgstr ""
 
 #. l10n: More information about placeables: http://translate.sourceforge.net/wiki/virtaal/placeables
@@ -1797,8 +1802,8 @@ msgstr ""
 #: virtaal/support/tutorial.py
 msgid ""
 "If the source will remain mostly or completely unchanged it is convenient to "
-"copy the entire source string with Alt+Down. Here is almost nothing to "
-"translate, so just press Alt+Down and make corrections if necessary."
+"copy the entire source string with Ctrl+Shift+V. Here is almost nothing to "
+"translate, so just press Ctrl+Shift+V and make corrections if necessary."
 msgstr ""
 
 #: virtaal/support/tutorial.py
@@ -2451,7 +2456,15 @@ msgid "Select next placeable"
 msgstr ""
 
 #: virtaal/views/widgets/shortcutswindow.py
-msgid "Copy the source or selected placeable to the target"
+msgid "Insert the selected placeable"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Replace the translation with the source"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Copy the source, if nothing is selected"
 msgstr ""
 
 #: virtaal/views/widgets/shortcutswindow.py

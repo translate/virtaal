@@ -19,8 +19,8 @@ whitespace under test must be the string's actual first/last
 character (what Virtaal's own leading/trailing-space handling actually
 anchors on), not sit behind a visible delimiter.
 
-Targets are deliberately left untranslated - Alt+Down ("copy source to
-target") is the intended way to populate them while testing, so the
+Targets are deliberately left untranslated - Ctrl+Shift+V ("transfer from
+source") is the intended way to populate them while testing, so the
 exact codepoint reaches the target without anyone having to retype an
 invisible or exotic Unicode character by hand.
 """
@@ -83,7 +83,7 @@ def build_tmx():
         # tmx units are always translation pairs (no separate
         # untranslated state) - target mirrors source, since a TM
         # source viewed in Virtaal is read-only anyway (there's no
-        # Alt+Down workflow to exercise here as there is for PO/XLIFF).
+        # Ctrl+Shift+V workflow to exercise here as there is for PO/XLIFF).
         store.addsourceunit(text)
         store.units[-1].target = text
         store.units[-1].addnote(f"{slug}: {description}", origin="developer")

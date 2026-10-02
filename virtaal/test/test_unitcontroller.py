@@ -35,9 +35,10 @@ class TestUnitController(TestScaffolding):
         self.unit_controller.set_unit_target(0, ['Test',])
         assert str(self.unit_controller.view.targets[0].elem) == 'Test'
 
-    def test_cut_copy_disabled_without_a_selection(self, monkeypatch):
-        # #1021: Cut/Copy used to stay enabled the whole time a textbox
-        # had focus, regardless of whether anything was selected.
+    def test_cut_disabled_without_a_selection(self, monkeypatch):
+        # #1021: Cut used to stay enabled the whole time a textbox had
+        # focus. Copy stays enabled: with nothing selected it copies the
+        # source (#3963).
         test_unit = self.trans_store.getunits()[1]
         view = self.unit_controller.load_unit(test_unit)
         monkeypatch.setattr(view.targets[0], 'is_focus', lambda: True)
@@ -45,7 +46,7 @@ class TestUnitController(TestScaffolding):
         view._update_edit_menu_sensitivity()
 
         assert not view.mnu_cut.get_sensitive()
-        assert not view.mnu_copy.get_sensitive()
+        assert view.mnu_copy.get_sensitive()
         assert view.mnu_paste.get_sensitive()  # no selection needed to paste
 
     def test_cut_copy_enabled_with_a_selection_in_the_target(self, monkeypatch):

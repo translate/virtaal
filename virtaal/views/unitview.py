@@ -14,6 +14,7 @@ from translate.lang import factory
 from translate.misc.multistring import multistring
 
 from virtaal.common import GObjectWrapper
+from virtaal.common.platform import platform
 
 from . import rendering
 from .baseview import BaseView
@@ -104,15 +105,24 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         self.mnu_next = maingui.get_object('mnu_placnext')
         self.mnu_prev = maingui.get_object('mnu_placprev')
         self.mnu_transfer = maingui.get_object('mnu_transfer')
+        self.mnu_insert = maingui.get_object('mnu_placinsert')
         menu_edit = maingui.get_object('menu_edit')
 
         self.mnu_next.connect('activate', self._on_next_placeable)
         self.mnu_prev.connect('activate', self._on_prev_placeable)
         self.mnu_transfer.connect('activate', self._on_transfer)
+        self.mnu_insert.connect('activate', self._on_insert_placeable)
 
         Gtk.AccelMap.add_entry("<Virtaal>/Edit/Next Placeable", Gdk.KEY_Right, Gdk.ModifierType.MOD1_MASK)
         Gtk.AccelMap.add_entry("<Virtaal>/Edit/Prev Placeable", Gdk.KEY_Left, Gdk.ModifierType.MOD1_MASK)
-        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Transfer", Gdk.KEY_Down, Gdk.ModifierType.MOD1_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Insert Placeable", Gdk.KEY_Down, Gdk.ModifierType.MOD1_MASK)
+        if platform.is_mac:
+            # Same as Redo (undocontroller.py): GtkosxApplication's Ctrl->Cmd
+            # translation doesn't reach a compound Ctrl+Shift accelerator.
+            transfer_mods = Gdk.ModifierType.META_MASK | Gdk.ModifierType.MOD2_MASK | Gdk.ModifierType.SHIFT_MASK
+        else:
+            transfer_mods = Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK
+        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Transfer", Gdk.KEY_v, transfer_mods)
         # virtaal.ui's own accel_path for these three (Cut/Copy/Paste) was
         # shadowed by a hardcoded <accelerator modifiers="GDK_CONTROL_MASK">,
         # which fires literal Ctrl directly and never reaches
@@ -130,6 +140,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         self.mnu_next.set_accel_path("<Virtaal>/Edit/Next Placeable")
         self.mnu_prev.set_accel_path("<Virtaal>/Edit/Prev Placeable")
         self.mnu_transfer.set_accel_path("<Virtaal>/Edit/Transfer")
+        self.mnu_insert.set_accel_path("<Virtaal>/Edit/Insert Placeable")
         self.mnu_cut.set_accel_path("<Virtaal>/Edit/Cut")
         self.mnu_copy.set_accel_path("<Virtaal>/Edit/Copy")
         self.mnu_paste.set_accel_path("<Virtaal>/Edit/Paste")
@@ -153,7 +164,11 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         focused = _get_focused_widget(self.targets + self.sources)
         if focused is not None:
             clipboard = Gtk.Clipboard.get(selection=Gdk.SELECTION_CLIPBOARD)
-            focused.get_buffer().copy_clipboard(clipboard)
+            if focused.get_buffer().get_has_selection():
+                focused.get_buffer().copy_clipboard(clipboard)
+            else:
+                # Nothing selected: copy the source.
+                clipboard.set_text(focused.selector_textbox.get_text(), -1)
 
     def _on_paste(self, menuitem):
         focused = _get_focused_widget(self.targets)
@@ -172,10 +187,16 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         if focused is not None:
             self.copy_original(focused)
 
+    def _on_insert_placeable(self, *args):
+        focused = _get_focused_widget(self.targets)
+        if focused is not None:
+            self.insert_placeable(focused)
+
     def _on_store_closed(self, *args):
         self.mnu_next.set_sensitive(False)
         self.mnu_prev.set_sensitive(False)
         self.mnu_transfer.set_sensitive(False)
+        self.mnu_insert.set_sensitive(False)
         self.mnu_cut.set_sensitive(False)
         self.mnu_copy.set_sensitive(False)
         self.mnu_paste.set_sensitive(False)
@@ -184,6 +205,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         self.mnu_next.set_sensitive(True)
         self.mnu_prev.set_sensitive(True)
         self.mnu_transfer.set_sensitive(True)
+        self.mnu_insert.set_sensitive(True)
         self._update_edit_menu_sensitivity()
 
     # ACCESSORS #
@@ -210,13 +232,29 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
 
     # METHODS #
-    def copy_original(self, textbox):
-        if textbox.selector_textbox is not textbox and \
-            textbox.selector_textbox.selected_elem is not None:
-            if textbox.insert_translation(textbox.selector_textbox.selected_elem):
-                textbox.move_elem_selection(1)
-            return
+    def select_first_placeables(self):
+        """Select the first source placeable for each visible target, so that
+            Alt+Down inserts it straight away."""
+        for target in self.targets:
+            if target.get_parent().props.visible and target.selector_textbox is not target:
+                target.selector_textbox.select_first_elem()
 
+    def insert_placeable(self, textbox):
+        """Insert the selected source placeable's translation into
+            C{textbox}, then select the next placeable."""
+        source = textbox.selector_textbox
+        if source is textbox:
+            return
+        source.select_first_elem()
+        if source.selected_elem is None:
+            return
+        if textbox.insert_translation(source.selected_elem):
+            textbox.move_elem_selection(1)
+
+    def copy_original(self, textbox):
+        """Replace C{textbox}'s text with the source, adapted to the target
+            language's punctuation - undone in two steps, first the
+            punctuation, then the copy."""
         undocontroller = self.controller.main_controller.undo_controller
         lang = factory.getlanguage(self.controller.main_controller.lang_controller.target_lang.code)
 
@@ -306,6 +344,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
         for i in range(len(self.targets)):
             self.targets[i]._source_text = unit.source # FIXME: Find a better way to do this!
+        self.select_first_placeables()
 
         self._modified = False
 
@@ -357,7 +396,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         self._widgets['vbox_targets'].connect('key-press-event', self._on_key_press_event)
 
     def _set_menu_items_sensitive(self, sensitive=True):
-        for widget in (self.mnu_next, self.mnu_prev, self.mnu_transfer):
+        for widget in (self.mnu_next, self.mnu_prev, self.mnu_transfer, self.mnu_insert):
             widget.set_sensitive(sensitive)
 
     def _update_editor_gui(self):
@@ -450,16 +489,14 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
         # Alt-Down
         elif eventname == 'alt-down':
-            # Guard against the unit changing before this deferred
-            # call runs - copy_original() reads self.unit and
-            # writes into textbox unconditionally, so a stale call
-            # would silently overwrite whatever unit is now loaded.
+            # Deferred; skip it if the unit changed in the meantime, or it
+            # would write into whatever unit is now loaded.
             scheduled_unit = self.unit
-            def do_copy_original():
+            def do_insert_placeable():
                 if self.unit is scheduled_unit:
-                    self.copy_original(textbox)
+                    self.insert_placeable(textbox)
                 return False
-            GLib.idle_add(do_copy_original)
+            GLib.idle_add(do_insert_placeable)
             return True
 
         # Shift-Tab
@@ -791,5 +828,6 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         has_selection = focused.get_buffer().get_has_selection()
         is_target = focused in self.targets
         self.mnu_cut.set_sensitive(is_target and has_selection)
-        self.mnu_copy.set_sensitive(has_selection)
+        # With nothing selected, Copy copies the source.
+        self.mnu_copy.set_sensitive(True)
         self.mnu_paste.set_sensitive(is_target)

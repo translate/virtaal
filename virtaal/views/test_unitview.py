@@ -138,7 +138,8 @@ class _FakeMenuWidget:
 
 class _FakeSetupMenusGui:
     def __init__(self):
-        names = ('mnu_cut', 'mnu_copy', 'mnu_paste', 'mnu_placnext', 'mnu_placprev', 'mnu_transfer', 'menu_edit')
+        names = ('mnu_cut', 'mnu_copy', 'mnu_paste', 'mnu_placnext', 'mnu_placprev', 'mnu_transfer',
+                 'mnu_placinsert', 'menu_edit')
         self._widgets = {name: _FakeMenuWidget() for name in names}
 
     def get_object(self, name):
@@ -182,7 +183,8 @@ def test_cut_copy_paste_disabled_before_any_store_event():
 
 
 class _FakeBuffer:
-    def __init__(self):
+    def __init__(self, has_selection=True):
+        self.has_selection = has_selection
         self.cut_calls = []
         self.copy_calls = []
         self.paste_calls = []
@@ -193,15 +195,23 @@ class _FakeBuffer:
     def copy_clipboard(self, clipboard):
         self.copy_calls.append(clipboard)
 
+    def get_has_selection(self):
+        return self.has_selection
+
     def paste_clipboard(self, clipboard, override_location, default_editable):
         self.paste_calls.append(default_editable)
 
 
 class _FakeEditableTextbox:
-    def __init__(self, focused=False):
+    def __init__(self, focused=False, has_selection=True, text='', selector_textbox=None):
         self._focused = focused
-        self.buffer = _FakeBuffer()
+        self.buffer = _FakeBuffer(has_selection)
         self.move_calls = []
+        self._text = text
+        self.selector_textbox = selector_textbox or self
+
+    def get_text(self):
+        return self._text
 
     def is_focus(self):
         return self._focused
@@ -239,6 +249,28 @@ def test_copy_copies_from_a_focused_source_as_well_as_a_focused_target():
     view._on_copy(None)
 
     assert len(focused_source.buffer.copy_calls) == 1
+
+
+class _FakeClipboard:
+    def __init__(self):
+        self.texts = []
+
+    def set_text(self, text, length):
+        self.texts.append(text)
+
+
+def test_copy_with_nothing_selected_copies_the_source(monkeypatch):
+    clipboard = _FakeClipboard()
+    monkeypatch.setattr('virtaal.views.unitview.Gtk.Clipboard.get', lambda selection: clipboard)
+    view = UnitView.__new__(UnitView)
+    source = _FakeEditableTextbox(text='%s files copied')
+    target = _FakeEditableTextbox(focused=True, has_selection=False, selector_textbox=source)
+    view._widgets = {'targets': [target], 'sources': [source]}
+
+    view._on_copy(None)
+
+    assert clipboard.texts == ['%s files copied']
+    assert target.buffer.copy_calls == []
 
 
 def test_paste_pastes_into_the_focused_target():
@@ -291,6 +323,7 @@ def test_store_loaded_enables_placeable_navigation_and_recomputes_edit_menu():
     view.mnu_next = _FakeMenuWidget()
     view.mnu_prev = _FakeMenuWidget()
     view.mnu_transfer = _FakeMenuWidget()
+    view.mnu_insert = _FakeMenuWidget()
     view.mnu_cut = _FakeMenuWidget()
     view.mnu_copy = _FakeMenuWidget()
     view.mnu_paste = _FakeMenuWidget()
@@ -301,10 +334,26 @@ def test_store_loaded_enables_placeable_navigation_and_recomputes_edit_menu():
     assert view.mnu_next.get_sensitive()
     assert view.mnu_prev.get_sensitive()
     assert view.mnu_transfer.get_sensitive()
+    assert view.mnu_insert.get_sensitive()
     # Nothing focused, so _update_edit_menu_sensitivity() disables all three.
     assert not view.mnu_cut.get_sensitive()
     assert not view.mnu_copy.get_sensitive()
     assert not view.mnu_paste.get_sensitive()
+
+
+def test_copy_stays_enabled_with_nothing_selected():
+    # Copy with nothing selected copies the source (#3963).
+    view = UnitView.__new__(UnitView)
+    view.mnu_cut = _FakeMenuWidget()
+    view.mnu_copy = _FakeMenuWidget()
+    view.mnu_paste = _FakeMenuWidget()
+    target = _FakeEditableTextbox(focused=True, has_selection=False)
+    view._widgets = {'targets': [target], 'sources': []}
+
+    view._update_edit_menu_sensitivity()
+
+    assert view.mnu_copy.get_sensitive()
+    assert not view.mnu_cut.get_sensitive()
 
 
 # _on_target_key_pressed() #
@@ -359,12 +408,12 @@ def test_on_target_key_pressed_ctrl_shift_enter_advances_the_workflow_backward()
     assert advanced == [-1]
 
 
-def test_on_target_key_pressed_alt_down_schedules_copy_original(monkeypatch):
+def test_on_target_key_pressed_alt_down_schedules_insert_placeable(monkeypatch):
     view = _view_for_key_press()
     scheduled = []
     monkeypatch.setattr('virtaal.views.unitview.GLib.idle_add', lambda func: scheduled.append(func))
     copied = []
-    view.copy_original = lambda textbox: copied.append(textbox)
+    view.insert_placeable = lambda textbox: copied.append(textbox)
     textbox = object()
 
     result = view._on_target_key_pressed(textbox, None, 'alt-down', None)
@@ -496,39 +545,84 @@ def test_set_target_n_places_the_cursor_when_a_position_is_given():
     assert placed == [3]
 
 
-# copy_original() #
+# insert_placeable() #
 
-def test_copy_original_inserts_the_selected_placeable_when_one_is_selected():
-    view = UnitView.__new__(UnitView)
-    source = SimpleNamespace(selected_elem='some-elem')
+class _FakeSource:
+    def __init__(self, elems):
+        self._elems = elems
+        self.selected_elem = None
+
+    def select_first_elem(self):
+        if self._elems and self.selected_elem is None:
+            self.selected_elem = self._elems[0]
+
+
+def _insert_placeable_target(source, deferred=False):
     inserted, moved = [], []
     textbox = SimpleNamespace(
         selector_textbox=source,
-        insert_translation=lambda elem: inserted.append(elem) or True,
+        insert_translation=lambda elem: inserted.append(elem) or not deferred,
         move_elem_selection=moved.append,
     )
+    return textbox, inserted, moved
 
-    view.copy_original(textbox)
 
-    assert inserted == ['some-elem']
+def test_insert_placeable_inserts_the_selected_placeable_and_moves_on():
+    source = _FakeSource(['first', 'second'])
+    source.selected_elem = 'second'
+    textbox, inserted, moved = _insert_placeable_target(source)
+
+    UnitView.__new__(UnitView).insert_placeable(textbox)
+
+    assert inserted == ['second']
     assert moved == [1]
 
 
-def test_copy_original_keeps_the_selection_while_a_candidate_is_chosen():
-    # #962: the source selection moved on as soon as the term list opened.
-    view = UnitView.__new__(UnitView)
-    source = SimpleNamespace(selected_elem='some-elem')
-    moved = []
-    textbox = SimpleNamespace(
-        selector_textbox=source,
-        insert_translation=lambda elem: False,
-        move_elem_selection=moved.append,
-    )
+def test_insert_placeable_selects_the_first_placeable_when_none_is_selected():
+    textbox, inserted, moved = _insert_placeable_target(_FakeSource(['first', 'second']))
 
-    view.copy_original(textbox)
+    UnitView.__new__(UnitView).insert_placeable(textbox)
 
+    assert inserted == ['first']
+
+
+def test_insert_placeable_does_nothing_without_placeables():
+    # Alt+Down no longer falls back to copying the whole source.
+    textbox, inserted, moved = _insert_placeable_target(_FakeSource([]))
+
+    UnitView.__new__(UnitView).insert_placeable(textbox)
+
+    assert inserted == []
     assert moved == []
 
+
+def test_insert_placeable_keeps_the_selection_while_a_candidate_is_chosen():
+    # #962: the source selection moved on as soon as the term list opened.
+    source = _FakeSource(['term'])
+    textbox, inserted, moved = _insert_placeable_target(source, deferred=True)
+
+    UnitView.__new__(UnitView).insert_placeable(textbox)
+
+    assert inserted == ['term']
+    assert moved == []
+
+
+def test_select_first_placeables_skips_hidden_targets():
+    view = UnitView.__new__(UnitView)
+    visible_source, hidden_source = _FakeSource(['a']), _FakeSource(['b'])
+    parent = lambda visible: SimpleNamespace(props=SimpleNamespace(visible=visible))
+    view._widgets = {'targets': [
+        SimpleNamespace(selector_textbox=visible_source, get_parent=lambda: parent(True)),
+        SimpleNamespace(selector_textbox=hidden_source, get_parent=lambda: parent(False)),
+    ]}
+
+    view.select_first_placeables()
+
+    assert visible_source.selected_elem == 'a'
+    assert hidden_source.selected_elem is None
+
+
+# copy_original() #
 
 def _copy_original_view(source_text, target_lang_code, role='target'):
     view = UnitView.__new__(UnitView)

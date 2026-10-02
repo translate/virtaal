@@ -349,23 +349,38 @@ class TextBox(Gtk.TextView):
         self.move_elem_selection(1)
 
     def move_elem_selection(self, offset):
-        direction = int(offset/abs(offset)) # Reduce offset to one of -1, 0 or 1
-        st_index = self.selector_textboxes.index(self.selector_textbox)
-        st_len = len(self.selector_textboxes)
-
-        if self.selector_textbox.selected_elem_index is None:
-            if offset <= 0:
-                if offset < 0 and st_len > 1:
-                    self.selector_textbox = self.selector_textboxes[(st_index + direction) % st_len]
-                self.selector_textbox.select_elem(offset=offset)
-            else:
-                self.selector_textbox.select_elem(offset=offset-1)
+        """Move the source placeable selection C{offset} places, stopping at
+            the first and last placeable."""
+        source = self.selector_textbox
+        elems = source.selectable_elems()
+        if not elems:
+            return
+        if source._has_valid_selection(elems):
+            index = max(0, min(source.selected_elem_index + offset, len(elems) - 1))
         else:
-            self.selector_textbox.select_elem(offset=self.selector_textbox.selected_elem_index + offset)
-
-        if self.selector_textbox.selected_elem_index is None and direction >= 0:
-            self.selector_textbox = self.selector_textboxes[(st_index + direction) % st_len]
+            index = 0 if offset > 0 else len(elems) - 1
+        source.select_elem(elem=elems[index])
         self.__color_selector_textboxes()
+
+    def selectable_elems(self):
+        """The placeables that can be selected for insertion, in order."""
+        if self.elem is None:
+            return []
+        return [e for e in self.elem.depth_first() if e.__class__ not in self.unselectables]
+
+    def select_first_elem(self):
+        """Select the first placeable, unless one is already selected."""
+        if not getattr(self.elem, 'gui_info', None):
+            return  # Not rendered with placeables, so nothing to highlight.
+        elems = self.selectable_elems()
+        if elems and not self._has_valid_selection(elems):
+            self.select_elem(elem=elems[0])
+
+    def _has_valid_selection(self, elems):
+        # The selection goes stale when the text is re-parsed (e.g. a
+        # terminology rescan replaces the placeables).
+        return self.selected_elem_index is not None and \
+            any(e is self.selected_elem for e in elems)
 
     @staticmethod
     def __set_selector_fg(widget, color):
@@ -450,7 +465,7 @@ class TextBox(Gtk.TextView):
             self.emit('element-selected', self.selected_elem)
             return
 
-        filtered_elems = [e for e in self.elem.depth_first() if e.__class__ not in self.unselectables]
+        filtered_elems = self.selectable_elems()
         if not filtered_elems:
             return
 

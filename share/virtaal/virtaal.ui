@@ -1132,7 +1132,7 @@ If you are translating from English to French then French would be your translat
         <child>
           <object class="GtkScrolledWindow" id="scrwnd_storeview">
             <property name="can_focus">False</property>
-            <property name="hscrollbar_policy">never</property>
+            <property name="hscrollbar_policy">external</property>
             <property name="vscrollbar_policy">automatic</property>
             <child>
               <placeholder/>

@@ -5,7 +5,6 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-import logging
 from types import SimpleNamespace
 
 import gi
@@ -588,7 +587,7 @@ def test_on_configure_event_cancels_a_previous_pending_timer(monkeypatch):
     assert view._configure_timeout_id == 'new-timer-id'
 
 
-def test_on_configure_settled_clears_state_and_restores_the_cursor():
+def test_on_configure_settled_clears_state_and_restarts_editing():
     # Also does its own, unconditional set_cursor(start_editing=True) -
     # _on_size_allocate()'s own call was skipped throughout the drag
     # and might never fire here either (#3595).
@@ -603,7 +602,6 @@ def test_on_configure_settled_clears_state_and_restores_the_cursor():
         get_cursor=lambda: (path, editcol),
         set_cursor=lambda *args, **kwargs: calls.append((args, kwargs)),
         _restart_editing=lambda path, column: calls.append(((path, column), {'start_editing': True})),
-        _restore_cursor=lambda: calls.append('restore_cursor'),
         _window_size=lambda: None,
     )
 
@@ -612,7 +610,7 @@ def test_on_configure_settled_clears_state_and_restores_the_cursor():
     assert result is False
     assert view._configure_timeout_id is None
     assert view.is_resizing is False
-    assert calls == ['queue_resize', ((path, editcol), {'start_editing': True}), 'restore_cursor']
+    assert calls == ['queue_resize', ((path, editcol), {'start_editing': True})]
 
 
 def test_on_destroy_cancels_a_pending_timer(monkeypatch):
@@ -643,19 +641,7 @@ def test_on_destroy_does_nothing_without_a_pending_timer():
     StoreTreeView._on_destroy(view, None)  # must not raise
 
 
-# _on_focus_in() #
-
-def test_on_focus_in_restores_the_cursor():
-    calls = []
-    view = SimpleNamespace(_restore_cursor=lambda: calls.append(True))
-
-    result = StoreTreeView._on_focus_in(view, None, None)
-
-    assert result is False
-    assert calls == [True]
-
-
-# _window_size() / _restore_cursor() #
+# _window_size() #
 
 def test_window_size_returns_none_without_a_toplevel():
     view = SimpleNamespace(get_toplevel=lambda: None)
@@ -678,41 +664,6 @@ def test_window_size_returns_the_real_size_for_a_realized_window():
     size = StoreTreeView._window_size(view)
 
     assert size is not None
-
-
-def _fake_storetreeview_self(width, is_fullscreen_or_restoring):
-    return SimpleNamespace(
-        _window_size=lambda: (width, 100),
-        view=SimpleNamespace(controller=SimpleNamespace(main_controller=SimpleNamespace(
-            view=SimpleNamespace(is_fullscreen_or_restoring=lambda: is_fullscreen_or_restoring)))),
-    )
-
-
-def test_restore_cursor_warns_on_an_unexpectedly_wide_window(caplog):
-    view = _fake_storetreeview_self(2000, is_fullscreen_or_restoring=False)
-
-    with caplog.at_level(logging.WARNING):
-        StoreTreeView._restore_cursor(view)
-
-    assert any('window width' in r.message for r in caplog.records)
-
-
-def test_restore_cursor_is_quiet_for_a_normal_width(caplog):
-    view = _fake_storetreeview_self(800, is_fullscreen_or_restoring=False)
-
-    with caplog.at_level(logging.WARNING):
-        StoreTreeView._restore_cursor(view)
-
-    assert caplog.records == []
-
-
-def test_restore_cursor_is_quiet_for_a_wide_window_while_fullscreen(caplog):
-    view = _fake_storetreeview_self(2000, is_fullscreen_or_restoring=True)
-
-    with caplog.at_level(logging.WARNING):
-        StoreTreeView._restore_cursor(view)
-
-    assert caplog.records == []
 
 
 # _on_cursor_changed() #

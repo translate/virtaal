@@ -34,6 +34,26 @@ def colors_equal(a, b):
     return a.equal(b)
 
 
+_suggestion_provider = None
+_suggestion_color = None
+
+def _ensure_suggestion_css(screen):
+    """Style a suggestion's selection as subtle text rather than a real
+        selection. Screen-wide, since the selection node doesn't see
+        providers added to the textview's own style context."""
+    global _suggestion_provider, _suggestion_color
+    color = current_theme['subtle_fg']
+    if _suggestion_provider is None:
+        _suggestion_provider = Gtk.CssProvider()
+        Gtk.StyleContext.add_provider_for_screen(
+            screen, _suggestion_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+    if color != _suggestion_color:
+        _suggestion_provider.load_from_data((
+            'textview.suggestion text selection '
+            '{ color: %s; background-color: transparent; }' % color).encode())
+        _suggestion_color = color
+
+
 class TextBox(Gtk.TextView):
     """
     A C{Gtk.TextView} extended to work with our nifty L{StringElem} parsed
@@ -124,6 +144,7 @@ class TextBox(Gtk.TextView):
         if value is None:
             self.hide_suggestion()
             self._suggestion = None
+            self.get_style_context().remove_class('suggestion')
             return
 
         if not (isinstance(value, dict) and \
@@ -521,6 +542,8 @@ class TextBox(Gtk.TextView):
             )
         )
         self.buffer.select_range(*iters)
+        _ensure_suggestion_css(self.get_screen())
+        self.get_style_context().add_class('suggestion')
 
     def suggestion_is_visible(self):
         """Checks whether the current text suggestion is visible."""

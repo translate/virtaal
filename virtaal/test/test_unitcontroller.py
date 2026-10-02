@@ -419,3 +419,23 @@ msgstr ""
             self._assert_enter_key_survives_plural_unit(units[0], units[1], units[2])
         finally:
             os.unlink(path)
+
+    def test_finish_current_unit_applies_its_state_and_reloads_it(self):
+        test_unit = next(u for u in self.trans_store.getunits()[1:] if u.target)
+        self.unit_controller.load_unit(test_unit)
+        was_fuzzy = test_unit.isfuzzy()
+        new_state = workflow.StateEnum.UNREVIEWED if was_fuzzy else workflow.StateEnum.NEEDS_WORK
+        done = []
+        handler = self.unit_controller.connect('unit-done', lambda c, unit, modified: done.append(unit))
+        try:
+            self.unit_controller.set_current_state(new_state, from_user=True)
+            test_unit._modified = True
+
+            self.unit_controller.finish_current_unit()
+        finally:
+            self.unit_controller.disconnect(handler)
+
+        assert done == [test_unit]
+        assert test_unit.isfuzzy() is not was_fuzzy
+        assert self.unit_controller.current_unit is test_unit
+        assert test_unit._modified is False

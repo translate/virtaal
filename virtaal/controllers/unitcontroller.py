@@ -213,6 +213,17 @@ class UnitController(BaseController):
         self._state_timer_active = True
         timeout_add(self.STATE_TIMEOUT, self._state_timer_expired, self.current_unit)
 
+    def finish_current_unit(self):
+        """Finish the current unit and load it again, as moving to another
+            unit and back would - for a move that lands on the same unit."""
+        unit = self.current_unit
+        if unit is None:
+            return
+        self.view.emit('unit-done', unit)
+        self.current_unit = None
+        self.view.unit = None
+        self.load_unit(unit)
+
     def prepare_for_save(self):
         """Finalise outstanding changes to the toolkit store for saving."""
         unit = self.current_unit

@@ -381,10 +381,16 @@ def test_keyboard_move_defers_while_a_row_change_is_pending():
 def _make_move_view(cursor_move, monkeypatch, timeout_calls=None):
     if timeout_calls is not None:
         monkeypatch.setattr(GLib, 'timeout_add', lambda ms, func: timeout_calls.append((ms, func)) or 'throttle-id')
+    cursor = SimpleNamespace(index=0)
+
+    def move(offset):
+        cursor_move(offset)
+        cursor.index += offset
+    cursor.move = move
     view = SimpleNamespace(
         view=SimpleNamespace(
             controller=SimpleNamespace(get_store=lambda: object()),
-            cursor=SimpleNamespace(move=cursor_move),
+            cursor=cursor,
         ),
         _waiting_for_row_change=0,
         _pending_move_offset=0,
@@ -401,6 +407,30 @@ def test_keyboard_move_moves_the_cursor_by_the_given_offset(monkeypatch):
 
     assert StoreTreeView._keyboard_move(view, 5) is True
     assert calls == [5]
+
+
+def test_a_move_landing_on_the_same_unit_finishes_and_reloads_it(monkeypatch):
+    # Happens when the navigation list has a single unit: Enter and
+    # Ctrl+Enter wrap around to it.
+    view = _make_move_view(lambda offset: None, monkeypatch, timeout_calls=[])
+    view.view.cursor.move = lambda offset: None
+    finished = []
+    view.view.controller.main_controller = SimpleNamespace(
+        unit_controller=SimpleNamespace(finish_current_unit=lambda: finished.append('finish')))
+    view.refresh_current_row = lambda: finished.append('refresh')
+
+    StoreTreeView._keyboard_move(view, 1)
+
+    assert finished == ['finish', 'refresh']
+
+
+def test_a_move_to_another_unit_does_not_finish_it_twice(monkeypatch):
+    view = _make_move_view(lambda offset: None, monkeypatch, timeout_calls=[])
+    view.view.controller.main_controller = None  # would fail if finish was attempted
+
+    StoreTreeView._keyboard_move(view, 1)
+
+    assert view.view.cursor.index == 1
 
 
 def test_keyboard_move_tolerates_an_out_of_range_move(monkeypatch):

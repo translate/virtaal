@@ -57,14 +57,10 @@ class Cursor(GObjectWrapper):
     def _set_pos(self, value):
         if not self._indices:
             return
+        value = max(0, min(value, len(self._indices) - 1))
         if value == self._pos:
             return # Don't unnecessarily move the cursor (or emit 'cursor-changed', more specifically)
-        if value >= len(self.indices):
-            self._pos = len(self.indices) - 1
-        elif value < 0:
-            self._pos = 0
-        else:
-            self._pos = value
+        self._pos = value
         self.emit('cursor-changed')
     pos = property(_get_pos, _set_pos)
 
@@ -159,25 +155,24 @@ class Cursor(GObjectWrapper):
 
     def move(self, offset):
         """Move the cursor C{offset} positions down.
-            The cursor will wrap around to the beginning if C{circular=True}
-            was given when the cursor was created."""
+            The cursor wraps around if C{circular=True} was given when the
+            cursor was created, otherwise it stops at the first or last
+            position."""
         if not self._indices:
             return
         if self._visiting is not None:
             # Offset 1 is the first unit in indices after the visited one.
             after = bisect_left(self._indices, self._visiting)
             target = after + offset - 1 if offset > 0 else after + offset
-            if not 0 <= target < len(self._indices):
-                if not self.circular:
-                    raise IndexError()
+            if self.circular:
                 target %= len(self._indices)
+            else:
+                target = max(0, min(target, len(self._indices) - 1))
             self._visiting = None
             self._pos = target
             self.emit('cursor-changed')
             return
         if self.circular:
             self.pos = (self.pos + offset) % len(self._indices)
-        elif 0 <= self.pos + offset < len(self._indices):
-            self.pos += offset
         else:
-            raise IndexError()
+            self.pos += offset

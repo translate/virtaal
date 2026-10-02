@@ -14,9 +14,17 @@ from virtaal.controllers.modecontroller import ModeController
 def _controller(**availability):
     controller = ModeController.__new__(ModeController)
     controller.modes = {
-        name: SimpleNamespace(display_name=name.title(), is_available=lambda available=available: available)
+        name: SimpleNamespace(
+            display_name=name.title(),
+            is_available=lambda available=available: available,
+            circular=name in ('search', 'qualitycheck'),
+        )
         for name, available in availability.items()
     }
+    controller.current_mode = None
+    controller.main_controller = SimpleNamespace(
+        store_controller=SimpleNamespace(cursor=SimpleNamespace(circular=True)),
+    )
     controller.unavailable = None
     controller.view = SimpleNamespace(set_unavailable_modes=lambda names: setattr(controller, 'unavailable', names))
     return controller
@@ -86,6 +94,33 @@ def test_select_mode_selects_the_default_mode_instead_of_an_unavailable_one():
 
     assert controller.current_mode.name == 'default'
     assert (selected, emitted) == (['default'], ['default'])
+
+
+def test_select_mode_sets_whether_the_cursor_wraps():
+    # Search and checks step through hits; other modes are the document
+    # and stop at its ends (#3789).
+    controller, _selected, _emitted = _selecting_controller(default=True, search=True, qualitycheck=True)
+    cursor = controller.main_controller.store_controller.cursor
+
+    controller.select_mode(controller.modes['default'])
+    assert cursor.circular is False
+
+    controller.select_mode(controller.modes['search'])
+    assert cursor.circular is True
+
+    controller.select_mode(controller.modes['qualitycheck'])
+    assert cursor.circular is True
+
+
+def test_a_newly_loaded_store_cursor_wraps_as_the_current_mode_does():
+    controller = _controller(default=True, search=True)
+    controller.current_mode = controller.modes['search']
+    cursor = SimpleNamespace(circular=False)
+    controller.main_controller.store_controller.cursor = cursor
+
+    controller._on_store_changed(None)
+
+    assert cursor.circular is True
 
 
 def test_context_only_applies_outside_the_default_mode():

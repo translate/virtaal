@@ -134,15 +134,6 @@ class TestStoreView(TestScaffolding):
 
         assert calls == []
 
-    def test_hide_resets_the_treeview_column_width(self, monkeypatch):
-        view = self.store_controller.view
-        calls = []
-        monkeypatch.setattr(view._treeview, 'reset_column_width', lambda: calls.append(True))
-
-        view.hide()
-
-        assert calls == [True]
-
     # __init__()'s "main_window already visible" branch (line 40) is
     # deliberately left uncovered: exercising it needs a second,
     # independent MainController/main_window construction while

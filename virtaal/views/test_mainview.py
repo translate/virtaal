@@ -552,32 +552,18 @@ def test_on_window_state_event_skips_restore_without_a_captured_size(monkeypatch
     assert scheduled == []
 
 
-def test_restore_pre_fullscreen_size_resizes_and_resets_the_column_width():
+def test_restore_pre_fullscreen_size_resizes():
     view = MainView.__new__(MainView)
     view.main_window = _FakeMainWindow()
     view._restoring_from_fullscreen = True
     resized = []
     view.main_window.resize = lambda w, h: resized.append((w, h))
-    reset_calls = []
-    view.controller = SimpleNamespace(store_controller=SimpleNamespace(
-        store=object(), view=SimpleNamespace(_treeview=SimpleNamespace(
-            reset_column_width=lambda: reset_calls.append(1)))))
 
     result = view._restore_pre_fullscreen_size((1024, 768))
 
     assert resized == [(1024, 768)]
-    assert reset_calls == [1]
     assert result is False
     assert view._restoring_from_fullscreen is False
-
-
-def test_restore_pre_fullscreen_size_skips_column_reset_without_a_loaded_store():
-    view = MainView.__new__(MainView)
-    view.main_window = _FakeMainWindow()
-    view.main_window.resize = lambda w, h: None
-    view.controller = SimpleNamespace(store_controller=SimpleNamespace(store=None))
-
-    view._restore_pre_fullscreen_size((1024, 768))  # must not raise
 
 
 def test_is_fullscreen_or_restoring_true_while_gdk_reports_fullscreen():

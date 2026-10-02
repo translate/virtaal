@@ -70,31 +70,55 @@ def _process_events():
 WINDOW_HEIGHT = 700
 
 
-def _make_source_and_target(near_bottom):
-    """near_bottom=False packs a filler *after* source/target, pinning
-    them near the top (room below); near_bottom=True packs it *before*,
-    pinning them near the bottom (no room below) - within the same
-    realistically-tall window either way."""
+def _make_source_and_target(position, height=WINDOW_HEIGHT):
+    """Source and target, each in its own ScrolledWindow as in the real unit
+    view, pinned to the 'top' or 'bottom' of the window by a filler."""
     window = Gtk.Window()
     window.set_decorated(False)
     vbox = Gtk.VBox()
-    filler = Gtk.Label()
-    source = Gtk.TextView()
-    source.set_size_request(400, 30)
-    target = Gtk.TextView()
-    target.set_size_request(400, 30)
+    textviews = []
+    for _ in range(2):
+        textview = Gtk.TextView()
+        textview.set_size_request(400, 30)
+        scrolled = Gtk.ScrolledWindow()
+        scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.NEVER)
+        scrolled.add(textview)
+        textviews.append((textview, scrolled))
+    (source, source_scrolled), (target, target_scrolled) = textviews
     target.selector_textbox = source
-    if near_bottom:
-        vbox.pack_start(filler, True, True, 0)
-    vbox.pack_start(source, False, False, 0)
-    vbox.pack_start(target, False, False, 0)
-    if not near_bottom:
-        vbox.pack_start(filler, True, True, 0)
+    if position == 'bottom':
+        vbox.pack_start(Gtk.Label(), True, True, 0)
+    vbox.pack_start(source_scrolled, False, False, 0)
+    vbox.pack_start(target_scrolled, False, False, 0)
+    if position == 'top':
+        vbox.pack_start(Gtk.Label(), True, True, 0)
     window.add(vbox)
-    window.set_default_size(400, WINDOW_HEIGHT)
+    window.set_default_size(400, height)
     window.show_all()
     _process_events()
+    window.move(*_workarea_origin(target))
+    _process_events()
     return window, source, target
+
+
+def _workarea_origin(widget):
+    display = Gdk.Display.get_default()
+    workarea = display.get_monitor_at_window(widget.get_window(Gtk.TextWindowType.WIDGET)).get_workarea()
+    return workarea.x + 10, workarea.y + 10
+
+
+def _popup_span(tmwindow):
+    popup_window = tmwindow.get_window()
+    top = popup_window.get_root_origin().y
+    return top, top + popup_window.get_height()
+
+
+def _top(textview):
+    return textview.get_window(Gtk.TextWindowType.WIDGET).get_origin().y
+
+
+def _bottom(textview):
+    return _top(textview) + textview.get_parent().get_allocation().height
 
 
 def _make_tmwindow_with_matches(n=1):
@@ -108,90 +132,61 @@ def _make_tmwindow_with_matches(n=1):
 
 
 def test_update_geometry_pops_down_when_there_is_room_below():
-    window, _source, target = _make_source_and_target(near_bottom=False)
-    display = Gdk.Display.get_default()
-    monitor = display.get_monitor_at_window(target.get_window(Gtk.TextWindowType.WIDGET))
-    workarea = monitor.get_workarea()
-    window.move(workarea.x + 10, workarea.y + 10)
-    _process_events()
-
+    window, _source, target = _make_source_and_target('top')
     tmwindow = _make_tmwindow_with_matches()
-    target_origin = target.get_window(Gtk.TextWindowType.WIDGET).get_origin()
 
     tmwindow.update_geometry(target)
     _process_events()
 
-    popup_origin = tmwindow.get_window().get_root_origin()
-    assert popup_origin.y > target_origin.y
+    top, _ = _popup_span(tmwindow)
+    assert top >= _bottom(target)
 
     tmwindow.destroy()
     window.destroy()
 
 
 def test_update_geometry_flips_above_the_source_when_there_is_no_room_below():
-    window, source, target = _make_source_and_target(near_bottom=True)
-    display = Gdk.Display.get_default()
-    monitor = display.get_monitor_at_window(target.get_window(Gtk.TextWindowType.WIDGET))
-    workarea = monitor.get_workarea()
-    window.move(workarea.x + 10, workarea.y + 10)
-    _process_events()
-
+    window, source, target = _make_source_and_target('bottom')
     tmwindow = _make_tmwindow_with_matches(n=3)
-    source_origin = source.get_window(Gtk.TextWindowType.WIDGET).get_origin()
 
     tmwindow.update_geometry(target)
     _process_events()
 
-    popup_window = tmwindow.get_window()
-    popup_origin = popup_window.get_root_origin()
-    popup_bottom = popup_origin.y + popup_window.get_height()
-
-    # Must not overlap the source text it's meant to leave visible.
-    assert popup_bottom <= source_origin.y
-    # Must not overflow past the bottom of the usable screen area either.
-    assert popup_bottom <= workarea.y + workarea.height
+    _, bottom = _popup_span(tmwindow)
+    assert bottom <= _top(source)
 
     tmwindow.destroy()
     window.destroy()
 
 
-def test_update_geometry_shrinks_into_the_roomier_side_when_neither_fits():
-    # A unit in the middle of a short window: the popup fits neither below
-    # the target nor above the source, and must not be clamped over them.
-    window = Gtk.Window()
-    window.set_decorated(False)
-    vbox = Gtk.VBox()
-    source = Gtk.TextView()
-    source.set_size_request(400, 30)
-    target = Gtk.TextView()
-    target.set_size_request(400, 30)
-    target.selector_textbox = source
-    vbox.pack_start(Gtk.Label(), True, True, 0)
-    vbox.pack_start(source, False, False, 0)
-    vbox.pack_start(target, False, False, 0)
-    vbox.pack_start(Gtk.Label(), True, True, 0)
-    window.add(vbox)
-    window.set_default_size(400, 400)
-    window.show_all()
-    _process_events()
-    display = Gdk.Display.get_default()
-    workarea = display.get_monitor_at_window(target.get_window(Gtk.TextWindowType.WIDGET)).get_workarea()
-    window.move(workarea.x + 10, workarea.y + 10)
-    _process_events()
+# Too many matches to fit above or below a unit in a short window: the
+# popup must shrink rather than cover the unit.
 
+def test_update_geometry_shrinks_above_when_neither_side_fits():
+    window, source, target = _make_source_and_target('bottom', height=250)
     tmwindow = _make_tmwindow_with_matches(n=20)
-    source_top = source.get_window(Gtk.TextWindowType.WIDGET).get_origin().y
-    target_window = target.get_window(Gtk.TextWindowType.WIDGET)
-    target_bottom = target_window.get_origin().y + target.get_allocation().height
-    assert tmwindow.rows_height() > 400  # really doesn't fit either side
 
     tmwindow.update_geometry(target)
     _process_events()
 
-    popup_window = tmwindow.get_window()
-    popup_top = popup_window.get_root_origin().y
-    popup_bottom = popup_top + popup_window.get_height()
-    assert popup_bottom <= source_top or popup_top >= target_bottom
+    top, bottom = _popup_span(tmwindow)
+    assert bottom <= _top(source)
+    assert bottom - top < tmwindow.MAX_HEIGHT
+
+    tmwindow.destroy()
+    window.destroy()
+
+
+def test_update_geometry_shrinks_below_when_neither_side_fits():
+    window, _source, target = _make_source_and_target('top', height=250)
+    tmwindow = _make_tmwindow_with_matches(n=20)
+
+    tmwindow.update_geometry(target)
+    _process_events()
+
+    top, bottom = _popup_span(tmwindow)
+    assert top >= _bottom(target)
+    assert bottom - top < tmwindow.MAX_HEIGHT
 
     tmwindow.destroy()
     window.destroy()

@@ -74,6 +74,63 @@ def test_update_indices_is_empty_when_the_selected_states_have_no_units():
     assert cursor.indices == []
 
 
+# selected() #
+
+def _controller(stats, state_names=None):
+    cursor = SimpleNamespace(model=SimpleNamespace(stats=stats), indices=None)
+    names = state_names or {'new': 'New', 'fuzzy': 'Needs work', 'done': 'Done'}
+    return SimpleNamespace(
+        main_controller=SimpleNamespace(
+            store_controller=SimpleNamespace(cursor=cursor),
+            unit_controller=SimpleNamespace(get_unit_state_names=lambda: names),
+        ),
+        view=SimpleNamespace(mode_box=Gtk.Grid()),
+    )
+
+
+def test_selected_lists_only_the_states_this_file_has():
+    mode = _mode(controller=_controller({'total': [0, 1], 'extended': {'done': [0], 'new': [1]}}))
+
+    mode.selected()
+
+    assert mode.state_names == [('done', 'Done'), ('new', 'New')]
+
+
+def test_selected_lists_every_state_without_extended_stats():
+    mode = _mode(controller=_controller({'total': [0]}))
+
+    mode.selected()
+
+    assert [iid for iid, _name in mode.state_names] == ['done', 'fuzzy', 'new']
+
+
+def test_selected_ticks_the_menu_items_of_the_states_still_filtered():
+    mode = _mode(
+        filter_states=['fuzzy'],
+        controller=_controller({'total': [0, 1], 'extended': {'fuzzy': [1], 'done': [0]}}),
+    )
+
+    mode.selected()
+
+    ticked = [item.get_label() for item in mode.btn_popup.menu if item.get_active()]
+    assert ticked == ['Needs work']
+    assert mode.btn_popup.get_label() == 'Needs work'
+    assert mode.storecursor.indices == [1]
+
+
+def test_selected_drops_a_filtered_state_this_file_does_not_have():
+    # Happens when a file is opened while Workflow is the current mode.
+    mode = _mode(
+        filter_states=['fuzzy'],
+        controller=_controller({'total': [0, 1], 'extended': {'done': [0, 1]}}),
+    )
+
+    mode.selected()
+
+    assert mode.filter_states == []
+    assert mode.storecursor.indices == [0, 1]
+
+
 # _update_button_label() #
 
 def test_update_button_label_prompts_when_nothing_is_selected():

@@ -32,7 +32,13 @@ class PropertiesController(BaseController):
         if os.path.exists(filename):
             self.view.data['file_location'] = filename
             self.view.data['file_size'] = os.path.getsize(filename)
-        self.view.data['file_type'] = self.main_controller.store_controller.get_store().get_store_type()
-        self.view.stats = self.main_controller.store_controller.get_store().get_stats_totals()
+        store_controller = self.main_controller.store_controller
+        store = store_controller.get_store()
+        self.view.data['file_type'] = store.get_store_type()
+        self.view.stats = store.get_stats_totals()
+        self.view.live_stats = store.get_live_stats_totals() if store_controller.is_modified() else None
+
+    def save_file(self):
+        return self.main_controller.save_file()
 
     # EVENT HANDLERS #

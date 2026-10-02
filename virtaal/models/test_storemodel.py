@@ -132,3 +132,21 @@ def test_update_unit_stats_adds_a_state_no_unit_was_in(tmp_path):
 
     assert live == _recount(model, tmp_path)
     assert live['fuzzy'] == [0, 1]
+
+
+def test_get_live_stats_totals_matches_the_saved_totals_for_an_unmodified_file(tmp_path):
+    model = _states_model(tmp_path)
+
+    assert model.get_live_stats_totals() == model.get_stats_totals()
+
+
+def test_get_live_stats_totals_counts_unsaved_changes(tmp_path):
+    model = _states_model(tmp_path)
+    saved = model.get_stats_totals()
+    model[2].target = "Maak toe"
+
+    live = model.get_live_stats_totals()
+
+    assert model.get_stats_totals() == saved
+    assert 'empty' not in live
+    assert live['unreviewed'] == {'units': 2, 'sourcewords': 2, 'targetwords': 3}

@@ -14,9 +14,12 @@ from virtaal.common import GObjectWrapper
 from .baseview import BaseView
 
 
-def _statistics(stats):
+def _statistics(stats, states=None):
     """return string tuples (Description, value) when given the output of
-    statsdb.StatsCache::file_extended_totals"""
+    statsdb.StatsCache::file_extended_totals
+
+    states lists the state keys to include, counting absent ones as zero;
+    defaults to the states in stats."""
     descriptions = {
             "empty": _("Untranslated:"),
             "needs-work": _("Needs work:"),
@@ -32,13 +35,16 @@ def _statistics(stats):
     if not set(descriptions.keys()) == set(state_dict.values()):
         logging.warning("statsdb.state_dict doesn't correspond to descriptions here")
 
+    if states is None:
+        states = stats
     statistics = []
     # We want to build them up from untranslated -> reviewed
     for state in sorted(state_dict.keys()):
         key = state_dict[state]
-        if not key in stats:
+        if not key in states:
             continue
-        statistics.append((descriptions[key], stats[key]['units'], stats[key]['sourcewords']))
+        values = stats.get(key, {})
+        statistics.append((descriptions[key], values.get('units', 0), values.get('sourcewords', 0)))
     return statistics
 
 
@@ -64,6 +70,8 @@ class PropertiesView(BaseView, GObjectWrapper):
         self.controller = controller
         self._widgets = {}
         self.data = {}
+        self.stats = {}
+        self.live_stats = None
         self._setup_key_bindings()
         self._setup_menu_item()
 
@@ -80,6 +88,9 @@ class PropertiesView(BaseView, GObjectWrapper):
             'lbl_word_total', 'lbl_string_total',
             'vbox_word_labels', 'vbox_word_stats', 'vbox_word_perc',
             'vbox_string_labels', 'vbox_string_stats', 'vbox_string_perc',
+            'lbl_saved_heading', 'lbl_live_heading',
+            'lbl_word_live_total', 'lbl_string_live_total',
+            'vbox_word_live_stats', 'vbox_string_live_stats',
         )
         for name in widget_names:
             self._widgets[name] = self.gui.get_object(name)
@@ -87,6 +98,20 @@ class PropertiesView(BaseView, GObjectWrapper):
         self._widgets['dialog'] = self.gui.get_object('PropertiesDlg')
         self._widgets['dialog'].set_transient_for(self.controller.main_controller.view.main_window)
         self._widgets['dialog'].set_icon(self.controller.main_controller.view.main_window.get_icon())
+        self._widgets['infobar'] = self._create_unsaved_infobar()
+
+    def _create_unsaved_infobar(self):
+        infobar = Gtk.InfoBar()
+        infobar.set_message_type(Gtk.MessageType.WARNING)
+        label = Gtk.Label(label=_("This file has unsaved changes."))
+        label.show()
+        infobar.get_content_area().pack_start(label, False, False, 0)
+        infobar.add_button(_("_Save"), Gtk.ResponseType.ACCEPT)
+        infobar.connect('response', self._on_infobar_response)
+        content_area = self._widgets['dialog'].get_content_area()
+        content_area.pack_start(infobar, False, False, 0)
+        content_area.reorder_child(infobar, 0)
+        return infobar
 
     def _init_gui(self):
         self._get_widgets()
@@ -116,12 +141,7 @@ class PropertiesView(BaseView, GObjectWrapper):
     def show(self):
         if not self._widgets:
             self._init_gui()
-        self.controller.update_gui_data()
-        statistics = _statistics(self.stats)
-        self._update_tooltip()
-        self._clear_stat_rows()
-        self._populate_stat_rows(statistics)
-        self._update_file_info_labels()
+        self._refresh()
 
         # present() only raises/focuses an already-realized window -
         # show() explicitly first, run() alone doesn't guarantee that.
@@ -133,17 +153,27 @@ class PropertiesView(BaseView, GObjectWrapper):
         if transient_for is not None:
             GLib.idle_add(transient_for.present)
 
-    def _update_tooltip(self):
-        tbl_properties = self._widgets['tbl_properties']
-        if self.controller.main_controller.store_controller.is_modified():
-            tbl_properties.set_tooltip_text(_("Save the file for up-to-date information"))
-        else:
-            tbl_properties.set_tooltip_text("")
+    def _refresh(self):
+        self.controller.update_gui_data()
+        modified = self.live_stats is not None
+        states = set(self.stats) | set(self.live_stats or {})
+        self._clear_stat_rows()
+        self._populate_stat_rows(_statistics(self.stats, states))
+        if modified:
+            self._populate_live_stat_rows(_statistics(self.live_stats, states), _statistics(self.stats, states))
+        for name in ('infobar', 'lbl_saved_heading', 'lbl_live_heading',
+                'lbl_word_live_total', 'lbl_string_live_total',
+                'vbox_word_live_stats', 'vbox_string_live_stats'):
+            self._widgets[name].set_visible(modified)
+        self._update_file_info_labels()
+        # Shrink back to fit once the unsaved-changes column is hidden.
+        self._widgets['dialog'].resize(1, 1)
 
     def _clear_stat_rows(self):
         # Remove all previous work so that we can start afresh:
         for name in ('vbox_word_labels', 'vbox_word_stats', 'vbox_word_perc',
-                'vbox_string_labels', 'vbox_string_stats', 'vbox_string_perc'):
+                'vbox_string_labels', 'vbox_string_stats', 'vbox_string_perc',
+                'vbox_word_live_stats', 'vbox_string_live_stats'):
             vbox = self._widgets[name]
             for child in vbox.get_children():
                 vbox.remove(child)
@@ -188,6 +218,27 @@ class PropertiesView(BaseView, GObjectWrapper):
         self._widgets['lbl_word_total'].set_markup(_("<b>%d</b>") % total_words)
         self._widgets['lbl_string_total'].set_markup(_("<b>%d</b>") % total_strings)
 
+    def _populate_live_stat_rows(self, statistics, saved_statistics):
+        """Fill the unsaved-changes column, in bold where it differs from the saved file."""
+        total_words = sum(words for (_desc, _strings, words) in statistics)
+        total_strings = sum(strings for (_desc, strings, _words) in statistics)
+
+        for (_desc, strings, words), (_saved_desc, saved_strings, saved_words) in zip(statistics, saved_statistics):
+            for vbox_name, value, saved_value, total in (
+                    ('vbox_word_live_stats', words, saved_words, total_words),
+                    ('vbox_string_live_stats', strings, saved_strings, total_strings)):
+                text = GLib.markup_escape_text('%d  %s' % (value, _nice_percentage(value, total)))
+                if value != saved_value:
+                    text = '<b>%s</b>' % text
+                lbl_stats = Gtk.Label()
+                lbl_stats.set_markup(text)
+                lbl_stats.set_xalign(0.0)
+                lbl_stats.show()
+                self._widgets[vbox_name].pack_start(lbl_stats, True, True, 0)
+
+        self._widgets['lbl_word_live_total'].set_markup(_("<b>%d</b>") % total_words)
+        self._widgets['lbl_string_live_total'].set_markup(_("<b>%d</b>") % total_strings)
+
     def _update_file_info_labels(self):
         self._widgets['lbl_type'].set_text(self.data['file_type'])
         filename = self.data.get('file_location', '')
@@ -205,3 +256,7 @@ class PropertiesView(BaseView, GObjectWrapper):
     # EVENT HANDLERS #
     def _show_properties(self, *args):
         self.show()
+
+    def _on_infobar_response(self, _infobar, response_id):
+        if response_id == Gtk.ResponseType.ACCEPT and self.controller.save_file():
+            self._refresh()

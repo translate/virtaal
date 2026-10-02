@@ -52,6 +52,17 @@ def test_statistics_orders_by_state_and_skips_absent_keys():
     ]
 
 
+def test_statistics_counts_requested_states_absent_from_stats_as_zero():
+    stats = {'final': {'units': 5, 'sourcewords': 50}}
+
+    result = _statistics(stats, {'empty', 'final'})
+
+    assert result == [
+        ('Untranslated:', 0, 0),
+        ('Reviewed:', 5, 50),
+    ]
+
+
 # _nice_percentage() #
 
 def test_nice_percentage_zero_numerator():
@@ -78,15 +89,16 @@ def _real_builder():
     return builder
 
 
-def _fake_controller(builder=None, is_modified=False, store=None):
+def _fake_controller(builder=None, store=None):
     builder = builder or _real_builder()
     main_window = Gtk.Window()
     mainview = SimpleNamespace(gui=builder, main_window=main_window, add_accel_group=lambda ag: None)
     main_controller = SimpleNamespace(
         view=mainview,
-        store_controller=SimpleNamespace(is_modified=lambda: is_modified, get_store=lambda: store),
+        store_controller=SimpleNamespace(get_store=lambda: store),
     )
-    controller = SimpleNamespace(main_controller=main_controller, update_gui_data=lambda: None)
+    controller = SimpleNamespace(main_controller=main_controller, update_gui_data=lambda: None,
+                                 save_file=lambda: True)
     return controller
 
 
@@ -145,7 +157,10 @@ def test_get_widgets_loads_every_named_widget_and_configures_the_dialog():
                  'lbl_word_total', 'lbl_string_total',
                  'vbox_word_labels', 'vbox_word_stats', 'vbox_word_perc',
                  'vbox_string_labels', 'vbox_string_stats', 'vbox_string_perc',
-                 'dialog'):
+                 'lbl_saved_heading', 'lbl_live_heading',
+                 'lbl_word_live_total', 'lbl_string_live_total',
+                 'vbox_word_live_stats', 'vbox_string_live_stats',
+                 'dialog', 'infobar'):
         assert view._widgets[name] is not None
     assert view._widgets['dialog'].get_transient_for() is controller.main_controller.view.main_window
 
@@ -184,22 +199,126 @@ def test_show_calls_update_gui_data():
     assert calls == [True]
 
 
-def test_show_sets_a_tooltip_when_the_file_is_modified():
-    view = _show_ready_view(is_modified=True)
+_LIVE_ONLY_WIDGETS = ('infobar', 'lbl_saved_heading', 'lbl_live_heading',
+                      'lbl_word_live_total', 'lbl_string_live_total',
+                      'vbox_word_live_stats', 'vbox_string_live_stats')
+
+
+def test_show_hides_the_unsaved_changes_widgets_for_an_unmodified_file():
+    view = _show_ready_view()
 
     view.show()
 
-    assert view._widgets['tbl_properties'].get_tooltip_text() == 'Save the file for up-to-date information'
+    for name in _LIVE_ONLY_WIDGETS:
+        assert not view._widgets[name].get_visible(), name
 
 
-def test_show_clears_the_tooltip_when_the_file_is_not_modified():
-    view = _show_ready_view(is_modified=False)
+def test_show_shows_the_unsaved_changes_widgets_for_a_modified_file():
+    view = _show_ready_view()
+    view.live_stats = {}
+
     view.show()
-    view._widgets['tbl_properties'].set_tooltip_text('stale')
+
+    for name in _LIVE_ONLY_WIDGETS:
+        assert view._widgets[name].get_visible(), name
+
+
+def test_show_puts_the_infobar_above_the_notebook():
+    view = _show_ready_view()
+
+    children = view._widgets['dialog'].get_content_area().get_children()
+
+    assert children.index(view._widgets['infobar']) < children.index(view.gui.get_object('notebook2'))
+
+
+def _modified_view():
+    view = _show_ready_view()
+    view.stats = {
+        'empty': {'units': 2, 'sourcewords': 20},
+        'final': {'units': 8, 'sourcewords': 80},
+    }
+    # One unit of 10 words reviewed since the last save.
+    view.live_stats = {
+        'empty': {'units': 1, 'sourcewords': 10},
+        'final': {'units': 9, 'sourcewords': 90},
+    }
+    return view
+
+
+def test_show_fills_the_unsaved_changes_column():
+    view = _modified_view()
 
     view.show()
 
-    assert view._widgets['tbl_properties'].get_tooltip_text() is None
+    word_stats = [c.get_text() for c in view._widgets['vbox_word_live_stats'].get_children()]
+    assert word_stats == ['10  (10.0%)', '90  (90.0%)']
+    string_stats = [c.get_text() for c in view._widgets['vbox_string_live_stats'].get_children()]
+    assert string_stats == ['1  (10.0%)', '9  (90.0%)']
+    assert view._widgets['lbl_word_live_total'].get_label() == '<b>100</b>'
+    assert view._widgets['lbl_string_live_total'].get_label() == '<b>10</b>'
+
+
+def test_show_marks_unsaved_values_that_differ_from_the_saved_file():
+    view = _modified_view()
+    view.live_stats['final']['units'] = 8  # unchanged from the saved file
+
+    view.show()
+
+    string_markup = [c.get_label() for c in view._widgets['vbox_string_live_stats'].get_children()]
+    assert string_markup[0].startswith('<b>')
+    assert not string_markup[1].startswith('<b>')
+
+
+def test_show_lists_a_state_present_in_only_one_column_in_both():
+    view = _show_ready_view()
+    view.stats = {'empty': {'units': 1, 'sourcewords': 5}}
+    view.live_stats = {'final': {'units': 1, 'sourcewords': 5}}
+
+    view.show()
+
+    labels = [c.get_label() for c in view._widgets['vbox_word_labels'].get_children()]
+    assert labels == ['Untranslated:', 'Reviewed:']
+    saved = [c.get_label() for c in view._widgets['vbox_word_stats'].get_children()]
+    assert saved == ['5  (100%)', '0  (0%)']
+    live = [c.get_text() for c in view._widgets['vbox_word_live_stats'].get_children()]
+    assert live == ['0  (0%)', '5  (100%)']
+
+
+def test_infobar_save_refreshes_the_dialog_after_a_successful_save():
+    view = _modified_view()
+    view.show()
+
+    def update_gui_data():
+        view.stats, view.live_stats = view.live_stats, None
+    view.controller.update_gui_data = update_gui_data
+    view._widgets['infobar'].response(Gtk.ResponseType.ACCEPT)
+
+    assert not view._widgets['infobar'].get_visible()
+    saved = [c.get_label() for c in view._widgets['vbox_word_stats'].get_children()]
+    assert saved == ['10  (10.0%)', '90  (90.0%)']
+
+
+def test_show_shrinks_the_dialog_to_fit_its_content(monkeypatch):
+    view = _show_ready_view()
+    sizes = []
+    monkeypatch.setattr(view._widgets['dialog'], 'resize', lambda w, h: sizes.append((w, h)))
+
+    view.show()
+
+    assert sizes == [(1, 1)]
+
+
+def test_infobar_save_leaves_the_dialog_alone_when_the_save_fails():
+    view = _modified_view()
+    view.show()
+    refreshed = []
+    view.controller.update_gui_data = lambda: refreshed.append(True)
+    view.controller.save_file = lambda: False
+
+    view._widgets['infobar'].response(Gtk.ResponseType.ACCEPT)
+
+    assert refreshed == []
+    assert view._widgets['infobar'].get_visible()
 
 
 def test_show_populates_stats_labels_in_state_order():

@@ -10,11 +10,11 @@ from types import SimpleNamespace
 from virtaal.controllers.propertiescontroller import PropertiesController
 
 
-def _controller(store):
+def _controller(store, is_modified=False):
     controller = PropertiesController.__new__(PropertiesController)
     controller.view = SimpleNamespace(data={})
     controller.main_controller = SimpleNamespace(
-        store_controller=SimpleNamespace(get_store=lambda: store)
+        store_controller=SimpleNamespace(get_store=lambda: store, is_modified=lambda: is_modified)
     )
     return controller
 
@@ -51,3 +51,36 @@ def test_update_gui_data_skips_file_info_for_a_missing_file(tmp_path):
     assert 'file_size' not in controller.view.data
     assert controller.view.data['file_type'] == 'po'
     assert controller.view.stats == {'total': 0}
+
+
+def _store(tmp_path):
+    return SimpleNamespace(
+        get_filename=lambda: str(tmp_path / "file.po"),
+        get_store_type=lambda: 'po',
+        get_stats_totals=lambda: {'final': {'units': 1}},
+        get_live_stats_totals=lambda: {'empty': {'units': 1}},
+    )
+
+
+def test_update_gui_data_leaves_live_stats_unset_for_an_unmodified_file(tmp_path):
+    controller = _controller(_store(tmp_path))
+
+    controller.update_gui_data()
+
+    assert controller.view.live_stats is None
+
+
+def test_update_gui_data_sets_live_stats_for_a_modified_file(tmp_path):
+    controller = _controller(_store(tmp_path), is_modified=True)
+
+    controller.update_gui_data()
+
+    assert controller.view.stats == {'final': {'units': 1}}
+    assert controller.view.live_stats == {'empty': {'units': 1}}
+
+
+def test_save_file_returns_the_main_controller_result():
+    controller = PropertiesController.__new__(PropertiesController)
+    controller.main_controller = SimpleNamespace(save_file=lambda: False)
+
+    assert controller.save_file() is False

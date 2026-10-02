@@ -342,9 +342,8 @@ class StoreTreeView(Gtk.TreeView):
         path, _column, _x, _y = answer
         if old_path != path:
             index = self.get_model().path_to_store_index(path)
-            if index not in self.view.cursor.indices:
-                self.view.controller.main_controller.mode_controller.select_default_mode()
-            self.view.cursor.index = index
+            # A unit outside the mode's list is visited, staying in the mode.
+            self.view.cursor.visit(index)
 
         return True
 

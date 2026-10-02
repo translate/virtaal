@@ -23,6 +23,8 @@ class StoreController(BaseController):
         'store-loaded': (GObject.SignalFlags.RUN_FIRST, None, ()),
         'store-saved': (GObject.SignalFlags.RUN_FIRST, None, ()),
         'store-closed': (GObject.SignalFlags.RUN_FIRST, None, ()),
+        # The workflow state stats (store.stats) changed.
+        'stats-changed': (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
     # INITIALIZERS #
@@ -134,10 +136,14 @@ class StoreController(BaseController):
 
     def _set_unitcontroller(self, unitcont):
         """@type unitcont: UnitController"""
-        if self.unit_controller and 'unitview.unit-modified' in self.handler_ids:
-            self.unit_controller.disconnect(self.handler_ids['unitview.unit-modified'])
+        if self.unit_controller:
+            for key in ('unitview.unit-modified', 'unitview.unit-done'):
+                if key in self.handler_ids:
+                    self.unit_controller.disconnect(self.handler_ids.pop(key))
         self._unit_controller = unitcont
         self.handler_ids['unitview.unit-modified'] = self.unit_controller.connect('unit-modified', self._unit_modified)
+        # A unit's workflow state is only written to it once it is done.
+        self.handler_ids['unitview.unit-done'] = self.unit_controller.connect('unit-done', self._unit_done)
     unit_controller = property(_get_unitcontroller, _set_unitcontroller)
 
 
@@ -280,6 +286,7 @@ class StoreController(BaseController):
         # Unlike open_file()/close_file(), a save doesn't clear the undo
         # stack, so it needs its own explicit clean-point mark.
         self.main_controller.undo_controller.model.mark_clean()
+        self.emit('stats-changed')
         self.emit('store-saved')
 
     def binary_export(self, filename):
@@ -443,6 +450,18 @@ class StoreController(BaseController):
 
     def _on_target_lang_changed(self, _sender, langcode):
         self.store.set_target_language(langcode)
+
+    def _unit_done(self, _unit_controller, unit, _modified):
+        if self.store is None or not self.store.stats:
+            return
+        if self.cursor and self.cursor.deref() is unit:
+            index = self.cursor.index
+        else:
+            index = next((i for i, u in enumerate(self.store.get_units()) if u is unit), None)
+            if index is None:
+                return
+        if self.store.update_unit_stats(index):
+            self.emit('stats-changed')
 
     def _unit_modified(self, emitter, unit):
         # Guard against a late "modified" signal from a just-closed or

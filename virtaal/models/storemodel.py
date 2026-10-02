@@ -161,6 +161,36 @@ class StoreModel(BaseModel):
         self.stats = fix_indexes(stats)
         return self.stats
 
+    def update_unit_stats(self, index):
+        """Move the unit at C{index} to the stats lists for its current
+            state, without re-reading the file.
+            @returns: Whether the unit's state lists changed."""
+        if not self.stats:
+            return False
+        from bisect import insort
+
+        from virtaal.support import statsdb
+        unit = self[index]
+        extended = self.stats.setdefault('extended', {})
+        wanted = {statsdb.state_strings[statsdb.statefordb(unit)]}
+        current = {key for key in statsdb.state_strings.values() if index in self.stats.get(key, [])}
+        wanted_extended = unit.get_state_id()
+        current_extended = {state for state, indices in extended.items() if index in indices}
+        if current == wanted and current_extended == {wanted_extended}:
+            return False
+
+        for key in current:
+            self.stats[key].remove(index)
+        for key in wanted:
+            insort(self.stats.setdefault(key, []), index)
+        for state in current_extended:
+            extended[state].remove(index)
+            # Extended stats only list the states some unit is in.
+            if not extended[state]:
+                del extended[state]
+        insort(extended.setdefault(wanted_extended, []), index)
+        return True
+
     def update_checks(self, checker=None, filename=None):
         self.checks = None
         if self._trans_store is None:

@@ -233,7 +233,7 @@ def test_unit_controller_setter_connects_without_a_previous_one():
     controller.unit_controller = new_unitcontroller
 
     assert controller._unit_controller is new_unitcontroller
-    assert connected == [('unit-modified', controller._unit_modified)]
+    assert connected == [('unit-modified', controller._unit_modified), ('unit-done', controller._unit_done)]
     assert controller.handler_ids['unitview.unit-modified'] == 'handler-1'
 
 
@@ -243,11 +243,12 @@ def test_unit_controller_setter_disconnects_the_previous_one():
     old_unitcontroller = SimpleNamespace(disconnect=disconnected.append)
     controller._unit_controller = old_unitcontroller
     controller.handler_ids['unitview.unit-modified'] = 'old-handler'
+    controller.handler_ids['unitview.unit-done'] = 'old-done-handler'
     new_unitcontroller = SimpleNamespace(connect=lambda sig, cb: 'new-handler')
 
     controller.unit_controller = new_unitcontroller
 
-    assert disconnected == ['old-handler']
+    assert disconnected == ['old-handler', 'old-done-handler']
     assert controller._unit_controller is new_unitcontroller
     assert controller.handler_ids['unitview.unit-modified'] == 'new-handler'
 
@@ -758,3 +759,63 @@ def test_unit_modified_marks_the_store_modified():
     controller._unit_modified(None, unit)
 
     assert modified_calls == [True]
+
+
+# _unit_done() #
+
+class _StatsStore:
+    def __init__(self, units, changed):
+        self.units = units
+        self.stats = {'total': list(range(len(units)))}
+        self.changed = changed
+        self.updated = []
+
+    def get_units(self):
+        return self.units
+
+    def update_unit_stats(self, index):
+        self.updated.append(index)
+        return self.changed
+
+
+def _unit_done_controller(units, changed=True, cursor_unit=None):
+    controller = _controller()
+    controller.store = _StatsStore(units, changed)
+    controller.cursor = SimpleNamespace(deref=lambda: cursor_unit, index=0)
+    emitted = []
+    controller.connect('stats-changed', lambda c: emitted.append(True))
+    return controller, emitted
+
+
+def test_unit_done_updates_the_current_units_stats_and_emits_stats_changed():
+    units = [object(), object()]
+    controller, emitted = _unit_done_controller(units, cursor_unit=units[0])
+
+    controller._unit_done(None, units[0], True)
+
+    assert controller.store.updated == [0]
+    assert emitted == [True]
+
+
+def test_unit_done_finds_a_unit_the_cursor_already_left():
+    units = [object(), object()]
+    controller, _emitted = _unit_done_controller(units, cursor_unit=units[0])
+
+    controller._unit_done(None, units[1], True)
+
+    assert controller.store.updated == [1]
+
+
+def test_unit_done_without_a_state_change_emits_nothing():
+    units = [object()]
+    controller, emitted = _unit_done_controller(units, changed=False, cursor_unit=units[0])
+
+    controller._unit_done(None, units[0], False)
+
+    assert emitted == []
+
+
+def test_unit_done_with_no_file_open_does_nothing():
+    controller = _controller()
+
+    controller._unit_done(None, object(), True)  # must not raise

@@ -15,6 +15,7 @@ class TMWindow(Gtk.Window):
     """Constructs the main TM window and all its children."""
 
     MAX_HEIGHT = 300
+    MIN_HEIGHT = 60
 
     # INITIALIZERS #
     def __init__(self, view):
@@ -127,7 +128,7 @@ class TMWindow(Gtk.Window):
         # window doesn't necessarily fill it. Fall back to the monitor's
         # workarea if the frame isn't available.
         below_y = origin.y + widget_alloc.height + 2
-        above_y = above_origin.y - height - 2
+        above_bottom = above_origin.y - 2
         y = below_y
 
         geom = None
@@ -141,8 +142,22 @@ class TMWindow(Gtk.Window):
 
         if geom is not None:
             x = max(geom.x, min(x, geom.x + geom.width - width))
-            if below_y + height > geom.y + geom.height and above_y >= geom.y:
-                y = above_y
+            room_below = geom.y + geom.height - below_y
+            room_above = above_bottom - geom.y
+            min_height = min(height, self.MIN_HEIGHT)
+            if height <= room_below:
+                y = below_y
+            elif height <= room_above:
+                y = above_bottom - height
+            elif max(room_below, room_above) >= min_height:
+                # Fits neither side: shrink into the roomier one (the
+                # matches scroll) rather than clamp it over the unit.
+                if room_above > room_below:
+                    height = room_above
+                    y = geom.y
+                else:
+                    height = room_below
+                    y = below_y
             else:
                 y = max(geom.y, min(below_y, geom.y + geom.height - height))
 

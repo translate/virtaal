@@ -155,6 +155,48 @@ def test_update_geometry_flips_above_the_source_when_there_is_no_room_below():
     window.destroy()
 
 
+def test_update_geometry_shrinks_into_the_roomier_side_when_neither_fits():
+    # A unit in the middle of a short window: the popup fits neither below
+    # the target nor above the source, and must not be clamped over them.
+    window = Gtk.Window()
+    window.set_decorated(False)
+    vbox = Gtk.VBox()
+    source = Gtk.TextView()
+    source.set_size_request(400, 30)
+    target = Gtk.TextView()
+    target.set_size_request(400, 30)
+    target.selector_textbox = source
+    vbox.pack_start(Gtk.Label(), True, True, 0)
+    vbox.pack_start(source, False, False, 0)
+    vbox.pack_start(target, False, False, 0)
+    vbox.pack_start(Gtk.Label(), True, True, 0)
+    window.add(vbox)
+    window.set_default_size(400, 400)
+    window.show_all()
+    _process_events()
+    display = Gdk.Display.get_default()
+    workarea = display.get_monitor_at_window(target.get_window(Gtk.TextWindowType.WIDGET)).get_workarea()
+    window.move(workarea.x + 10, workarea.y + 10)
+    _process_events()
+
+    tmwindow = _make_tmwindow_with_matches(n=20)
+    source_top = source.get_window(Gtk.TextWindowType.WIDGET).get_origin().y
+    target_window = target.get_window(Gtk.TextWindowType.WIDGET)
+    target_bottom = target_window.get_origin().y + target.get_allocation().height
+    assert tmwindow.rows_height() > 400  # really doesn't fit either side
+
+    tmwindow.update_geometry(target)
+    _process_events()
+
+    popup_window = tmwindow.get_window()
+    popup_top = popup_window.get_root_origin().y
+    popup_bottom = popup_top + popup_window.get_height()
+    assert popup_bottom <= source_top or popup_top >= target_bottom
+
+    tmwindow.destroy()
+    window.destroy()
+
+
 def test_update_geometry_sizes_the_popup_from_the_real_theme_border(monkeypatch):
     # rows_height() is fixed here rather than measured from real rows -
     # its own real value isn't stable across a full suite run (a known,

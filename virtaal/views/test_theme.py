@@ -69,6 +69,16 @@ def test_distinguishable_from_falls_back_to_black_when_inverse():
         theme.INVERSE = False
 
 
+def test_distinguishable_from_keeps_a_highlight_the_fallback_would_hide():
+    # #3968: yellow on a white page is below the contrast threshold, but the
+    # '#fff' fallback is identical to the page and would hide it completely.
+    theme.INVERSE = False
+    try:
+        assert theme._distinguishable_from('#ffffff', '#000000', '#ffff70') == '#ffff70'
+    finally:
+        theme.INVERSE = False
+
+
 def test_distinguishable_from_keeps_original_when_fallback_also_unreadable():
     theme.INVERSE = False
     try:

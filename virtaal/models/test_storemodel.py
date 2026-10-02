@@ -68,3 +68,67 @@ def test_update_file_then_save_writes_back_to_the_original_path(tmp_path):
         saved = f.read()
     assert b"World" in saved
     assert set(tmp_path.iterdir()) == {old_path, new_path}
+
+
+_STATES_PO = b'''msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\\n"
+
+msgid "Open"
+msgstr "Oop"
+
+#, fuzzy
+msgid "Save"
+msgstr "Stoor"
+
+msgid "Close"
+msgstr ""
+'''
+
+
+def _states_model(tmp_path):
+    path = tmp_path / "states.po"
+    path.write_bytes(_STATES_PO)
+    return StoreModel(str(path), _FakeController())
+
+
+def _recount(model, tmp_path):
+    """The stats a fresh load of the model's current units gives."""
+    path = tmp_path / "recount.po"
+    model._trans_store.savefile(str(path))
+    return StoreModel(str(path), _FakeController()).stats
+
+
+def _copy(stats):
+    return {key: (dict((k, list(v)) for k, v in value.items()) if key == 'extended' else list(value))
+            for key, value in stats.items()}
+
+
+def test_update_unit_stats_matches_a_full_recount_after_a_state_change(tmp_path):
+    model = _states_model(tmp_path)
+    model[1].markfuzzy(False)
+
+    assert model.update_unit_stats(1) is True
+
+    assert model.stats == _recount(model, tmp_path)
+    live = model.stats
+    assert live['fuzzy'] == []
+
+
+def test_update_unit_stats_reports_no_change_when_the_state_is_unchanged(tmp_path):
+    model = _states_model(tmp_path)
+    before = _copy(model.stats)
+
+    assert model.update_unit_stats(0) is False
+    assert model.stats == before
+
+
+def test_update_unit_stats_adds_a_state_no_unit_was_in(tmp_path):
+    model = _states_model(tmp_path)
+    model[0].markfuzzy(True)
+
+    model.update_unit_stats(0)
+    live = model.stats
+
+    assert live == _recount(model, tmp_path)
+    assert live['fuzzy'] == [0, 1]

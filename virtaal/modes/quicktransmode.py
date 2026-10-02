@@ -44,12 +44,7 @@ class QuickTranslateMode(BaseMode):
         if not cursor or not cursor.model:
             return
 
-        indices = self._incomplete_indices(cursor)
-        if not indices:
-            self.controller.select_default_mode()
-            return
-
-        cursor.indices = indices
+        cursor.indices = self._incomplete_indices(cursor)
 
     def unselected(self):
         pass

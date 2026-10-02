@@ -101,6 +101,7 @@ class TMView(BaseView, GObjectWrapper):
         """Clear the TM matches."""
         self.tmwindow.liststore.clear()
         self.hide()
+        self._should_show_tmwindow = False
 
     def destroy(self):
         self._signal_tracker.disconnect_all()
@@ -186,6 +187,8 @@ class TMView(BaseView, GObjectWrapper):
         """Show the TM window."""
         if not self.active or (self.isvisible and not force):
             return # This window is already visible
+        if not len(self.tmwindow.liststore):
+            return # Nothing to show
         if not self._may_show_tmwindow:
             self._should_show_tmwindow = True
             return

@@ -292,10 +292,16 @@ class StoreTreeView(Gtk.TreeView):
 
     def _apply_pending_move(self):
         offset, self._pending_move_offset = self._pending_move_offset, 0
+        old_index = self.view.cursor.index
         try:
             self.view.cursor.move(offset)
         except IndexError:
-            pass
+            return
+        if offset and old_index >= 0 and self.view.cursor.index == old_index:
+            # A navigation list of one: finish the unit anyway, so its
+            # workflow state is applied.
+            self.view.controller.main_controller.unit_controller.finish_current_unit()
+            self.refresh_current_row()
 
     def _on_move_throttle(self):
         if self._pending_move_offset:

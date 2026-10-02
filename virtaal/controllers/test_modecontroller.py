@@ -108,3 +108,124 @@ def test_context_selected_is_passed_to_the_store_view_then_announced():
     controller._on_context_selected(None, 2)
 
     assert events == [('rows', 2), ('context-selected', 2)]
+
+
+# Choosing a mode from the list (#1925) #
+
+def _choosing_controller(monkeypatch, mode):
+    controller = _controller(default=True)
+    controller._ignore_mode_change = False
+    controller._mode_list_just_closed = False
+    controller.get_mode_by_display_name = lambda name: mode
+    controller.select_mode = lambda chosen: setattr(controller, 'current_mode', chosen)
+    events = []
+    target = SimpleNamespace(grab_focus=lambda: events.append('focus unit'))
+    controller.main_controller = SimpleNamespace(
+        unit_controller=SimpleNamespace(view=SimpleNamespace(targets=[target], focused_target_n=None)),
+        store_controller=SimpleNamespace(get_store=lambda: object()),
+    )
+    idles = []
+    monkeypatch.setattr('virtaal.controllers.modecontroller.GLib.idle_add', idles.append)
+
+    def run_idles():
+        while idles:
+            idles.pop(0)()
+    return controller, events, run_idles
+
+
+def _choose_from_list(controller, name):
+    # GTK closes the list, then reports the change.
+    controller._on_mode_list_shown(SimpleNamespace(props=SimpleNamespace(popup_shown=False)), None)
+    controller._on_mode_selected(None, name)
+
+
+def test_choosing_a_mode_from_the_list_goes_to_the_unit(monkeypatch):
+    controller, events, run_idles = _choosing_controller(monkeypatch, SimpleNamespace(widgets=[]))
+
+    _choose_from_list(controller, 'Incomplete')
+    run_idles()
+
+    assert events == ['focus unit']
+
+
+def test_arrowing_through_the_closed_selector_leaves_focus_there(monkeypatch):
+    controller, events, run_idles = _choosing_controller(monkeypatch, SimpleNamespace(widgets=[]))
+
+    controller._on_mode_selected(None, 'Incomplete')
+    run_idles()
+
+    assert events == []
+
+
+def test_a_change_long_after_the_list_closed_isnt_a_choice_from_it(monkeypatch):
+    controller, events, run_idles = _choosing_controller(monkeypatch, SimpleNamespace(widgets=[]))
+    controller.current_mode = SimpleNamespace(widgets=['search entry'])  # what the list closed on
+    controller._on_mode_list_shown(SimpleNamespace(props=SimpleNamespace(popup_shown=False)), None)
+    run_idles()
+
+    controller._on_mode_selected(None, 'Incomplete')
+    run_idles()
+
+    assert events == []
+
+
+def test_closing_the_list_without_a_change_carries_on_with_the_current_mode(monkeypatch):
+    # Choosing the mode that's already selected, or Escape.
+    controller, events, run_idles = _choosing_controller(monkeypatch, SimpleNamespace(widgets=[]))
+    controller.current_mode = SimpleNamespace(widgets=[])
+
+    controller._on_mode_list_shown(SimpleNamespace(props=SimpleNamespace(popup_shown=False)), None)
+    run_idles()
+
+    assert events == ['focus unit']
+
+
+def test_a_choice_from_the_list_carries_on_only_once(monkeypatch):
+    controller, events, run_idles = _choosing_controller(monkeypatch, SimpleNamespace(widgets=[]))
+
+    _choose_from_list(controller, 'Incomplete')
+    run_idles()
+
+    assert events == ['focus unit']
+
+
+def test_choosing_a_mode_with_a_menu_opens_it_then_goes_to_the_unit(monkeypatch):
+    class _Menu:
+        def connect(self, signal, handler):
+            self.closed = handler
+            return 1
+
+        def disconnect(self, handler_id):
+            pass
+    menu = _Menu()
+    button = SimpleNamespace(menu=menu, get_sensitive=lambda: True)
+    button.set_active = lambda active: events.append('menu open')
+    controller, events, run_idles = _choosing_controller(
+        monkeypatch, SimpleNamespace(widgets=[button], btn_popup=button))
+
+    _choose_from_list(controller, 'Quality Checks')
+    run_idles()
+    assert events == ['menu open']
+
+    menu.closed(menu)  # a check chosen with Enter, or Escape
+    run_idles()
+    assert events == ['menu open', 'focus unit']
+
+
+def test_choosing_search_leaves_focus_to_its_entry(monkeypatch):
+    controller, events, run_idles = _choosing_controller(monkeypatch, SimpleNamespace(widgets=['entry']))
+
+    _choose_from_list(controller, 'Search')
+    run_idles()
+
+    assert events == []
+
+
+def test_focus_translation_without_a_file_does_nothing():
+    controller = _controller(default=True)
+    controller.main_controller = SimpleNamespace(
+        unit_controller=SimpleNamespace(view=SimpleNamespace(targets=[], focused_target_n=None)),
+        store_controller=SimpleNamespace(get_store=lambda: None),
+    )
+
+    controller._focus_translation()  # must not raise

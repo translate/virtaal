@@ -5,7 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-from gi.repository import GObject
+from gi.repository import GLib, GObject
 
 from virtaal.common import GObjectWrapper
 
@@ -41,6 +41,8 @@ class ModeController(BaseController):
         from virtaal.views.modeview import ModeView
         self.view = ModeView(self)
         self.view.connect('mode-selected', self._on_mode_selected)
+        self._mode_list_just_closed = False
+        self.view.cmb_modes.connect('notify::popup-shown', self._on_mode_list_shown)
         from virtaal.views.storeview import load_context_setting
         self.view.select_context(load_context_setting())
         self.view.connect('context-selected', self._on_context_selected)
@@ -117,6 +119,49 @@ class ModeController(BaseController):
     def _on_mode_selected(self, _modeview, modename):
         if not getattr(self, '_ignore_mode_change', True):
             self.select_mode(self.get_mode_by_display_name(modename))
+            # A choice from the open list, not arrowing through the closed
+            # selector: carry on to what that mode needs next.
+            if self._mode_list_just_closed:
+                self._mode_list_just_closed = False
+                GLib.idle_add(self._continue_after_choosing_mode)
+
+    def _on_mode_list_shown(self, combo, _pspec):
+        if combo.props.popup_shown:
+            return
+        # A choice from the list is reported right after it closes.
+        self._mode_list_just_closed = True
+
+        def unchanged():
+            # Choosing the current mode again, or Escape: no change is
+            # reported, but the selector is done with all the same.
+            if self._mode_list_just_closed:
+                self._mode_list_just_closed = False
+                self._continue_after_choosing_mode()
+            return GLib.SOURCE_REMOVE
+        GLib.idle_add(unchanged)
+
+    def _continue_after_choosing_mode(self):
+        """Open the mode's own menu if it has one, then go to the unit being
+            translated; focus left on the selector would take keys like
+            Alt+Down (#1925). Search focuses its own entry."""
+        mode = self.current_mode
+        button = getattr(mode, 'btn_popup', None)
+        if button is not None and button.get_sensitive():
+            def on_menu_closed(menu):
+                menu.disconnect(handler_id)
+                GLib.idle_add(self._focus_translation)
+            handler_id = button.menu.connect('deactivate', on_menu_closed)
+            button.set_active(True)
+        elif not mode.widgets:
+            self._focus_translation()
+        return GLib.SOURCE_REMOVE
+
+    def _focus_translation(self):
+        unit_view = self.main_controller.unit_controller.view
+        targets = getattr(unit_view, 'targets', None)
+        if self.main_controller.store_controller.get_store() is not None and targets:
+            targets[unit_view.focused_target_n or 0].grab_focus()
+        return GLib.SOURCE_REMOVE
 
     def _on_context_selected(self, _modeview, context):
         self.main_controller.store_controller.view.set_context(context)

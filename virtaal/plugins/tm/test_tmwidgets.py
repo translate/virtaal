@@ -183,3 +183,14 @@ def test_update_geometry_sizes_the_popup_from_the_real_theme_border(monkeypatch)
 
     tmwindow.destroy()
     window.destroy()
+
+
+def test_spare_width_goes_to_the_matches_not_the_tm_source_column():
+    # update_geometry() sizes the window from the TM Source column's
+    # width; if that column took the spare width, each update would make
+    # the window wider. GTK gives spare width to the last column unless
+    # another one expands.
+    tmwindow = TMWindow(None)
+
+    assert tmwindow.tvc_match.get_expand() is True
+    assert tmwindow.tvc_tm_source.get_expand() is False

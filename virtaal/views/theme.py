@@ -70,6 +70,8 @@ _default_theme = {
     'warning_bg': '#f66',
     # row colour for fuzzy strings
     'fuzzy_row_bg': 'grey',
+    # line where units are hidden between two rows
+    'context_gap': '#404040',
     # selector text box border
     'selector_textbox': '#5096f3',
     # diffing markup:
@@ -90,6 +92,7 @@ _inverse_theme = {
     'ph_placeable_bg': '#101010',
     'warning_bg': '#900',
     'fuzzy_row_bg': '#474747',
+    'context_gap': '#a0a0a0',
     'selector_textbox': '#cbdffb',
     'diff_insert_bg': '#005500',
     'diff_delete_bg': '#333',
@@ -142,7 +145,7 @@ def update_style(widget):
     # background colour can be almost identical to the page background. So we
     # fall back to something that is supposed to be different, but not much.
     for key in ('diff_delete_bg', 'diff_insert_bg', 'diff_replace_bg',
-                'fuzzy_row_bg', 'warning_bg'):
+                'fuzzy_row_bg', 'warning_bg', 'context_gap'):
         current_theme[key] = _distinguishable_from(bg, fg, current_theme[key])
 
     url_fg = rgba_to_str(_style.get_color(Gtk.StateFlags.LINK))

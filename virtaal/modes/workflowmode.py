@@ -28,16 +28,19 @@ class WorkflowMode(BaseMode):
         self.controller = controller
         self.filter_states = []
         self._menuitem_states = {}
+        self._stats_changed_id = None
 
 
     # METHODS #
     def selected(self):
-        self.storecursor = self.controller.main_controller.store_controller.cursor
-        self.state_names = self._available_state_names()
-        # A ticked state this file doesn't have would otherwise keep
-        # filtering, with no menu item to untick it.
-        available = [iid for iid, _name in self.state_names]
-        self.filter_states = [state for state in self.filter_states if state in available]
+        store_controller = self.controller.main_controller.store_controller
+        self.storecursor = store_controller.cursor
+        if not self._stats_changed_id:
+            self._stats_changed_id = store_controller.connect('stats-changed', self._on_stats_changed)
+        self.state_names = self._format_state_names()
+        # Selecting the mode starts a new selection: drop ticked states
+        # that no unit is in.
+        self.filter_states = [state for state in self.filter_states if self._has_units(state)]
 
         self._add_widgets()
         self._update_button_label()
@@ -46,7 +49,9 @@ class WorkflowMode(BaseMode):
         self.update_indices()
 
     def unselected(self):
-        pass
+        if self._stats_changed_id:
+            self.controller.main_controller.store_controller.disconnect(self._stats_changed_id)
+            self._stats_changed_id = None
 
     def update_indices(self):
         if not self.storecursor or not self.storecursor.model:
@@ -62,15 +67,30 @@ class WorkflowMode(BaseMode):
             indices.extend(self.storecursor.model.stats['extended'].get(state, []))
         self.storecursor.indices = sorted(indices)
 
-    def _available_state_names(self):
-        """The (id, name) pairs of the workflow states this file's units are in."""
+    def _format_state_names(self):
+        """The (id, name) pairs of the workflow states the file's format has,
+            or of the states its units are in if the format has none."""
         names = self.controller.main_controller.unit_controller.get_unit_state_names()
-        stats = self.storecursor.model.stats if self.storecursor and self.storecursor.model else {}
-        if 'extended' in stats:
-            items = [item for item in names.items() if item[0] in stats['extended']]
-        else:
-            items = list(names.items())
-        return sorted(items, key=lambda item: item[0])
+        model = self.storecursor.model if self.storecursor else None
+        if not model:
+            return sorted(names.items())
+        states = []
+        if len(model):
+            # Negative states (obsolete) aren't workflow states.
+            states = [state for state, (low, _high) in type(model[0]).STATE.items() if low >= 0]
+        if not states:
+            states = list(model.stats.get('extended', {}))
+        return sorted((state, names[state]) for state in states if state in names)
+
+    def _has_units(self, state):
+        model = self.storecursor.model if self.storecursor else None
+        return bool(model and model.stats.get('extended', {}).get(state))
+
+    def _update_menu_sensitivity(self):
+        """Only states with units can be ticked; a ticked one stays
+            sensitive so it can be unticked."""
+        for menuitem, state in self._menuitem_states.items():
+            menuitem.set_sensitive(self._has_units(state) or menuitem.get_active())
 
     def _add_widgets(self):
         # Destroy the previous popup button and its menu now rather
@@ -106,6 +126,7 @@ class WorkflowMode(BaseMode):
         for iid, name in self.state_names:
             menuitem = Gtk.CheckMenuItem(label=name)
             menuitem.set_active(iid in self.filter_states)
+            menuitem.set_sensitive(self._has_units(iid) or iid in self.filter_states)
             menuitem.show()
             self._menuitem_states[menuitem] = iid
             menuitem.connect('toggled', self._on_state_menuitem_toggled)
@@ -144,6 +165,11 @@ class WorkflowMode(BaseMode):
                 self.filter_states.append(self._menuitem_states[menuitem])
         GLib.idle_add(self._apply_filter_states)
         self._update_button_label()
+        self._update_menu_sensitivity()
+
+    def _on_stats_changed(self, _store_controller):
+        # The units under review stay until the selection changes.
+        self._update_menu_sensitivity()
 
     def _apply_filter_states(self):
         self.update_indices()

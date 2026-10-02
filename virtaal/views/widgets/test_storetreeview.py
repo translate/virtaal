@@ -46,6 +46,7 @@ def _make_view(column_width, cursor, is_resizing=False):
         get_columns=lambda: [column],
         get_cursor=lambda: cursor,
         set_cursor=lambda *args, **kwargs: calls.append((args, kwargs)),
+        _restart_editing=lambda path, column: calls.append(((path, column), {'start_editing': True})),
         is_resizing=is_resizing,
         _schedule_revalidate_visible_estimated_rows=lambda: None,
     )
@@ -598,6 +599,7 @@ def test_on_configure_settled_clears_state_and_restores_the_cursor():
         get_columns=lambda: [column],
         get_cursor=lambda: (path, editcol),
         set_cursor=lambda *args, **kwargs: calls.append((args, kwargs)),
+        _restart_editing=lambda path, column: calls.append(((path, column), {'start_editing': True})),
         _restore_cursor=lambda: calls.append('restore_cursor'),
         _window_size=lambda: None,
     )
@@ -855,3 +857,41 @@ def test_select_index_with_force_restarts_editing_an_already_selected_row():
     view.select_index(1, force=True)
 
     assert started == ['1']
+
+
+
+# _restart_editing() #
+
+def _window_with_search_box():
+    view = _real_storetreeview()
+    view.set_model(['unit0', 'unit1'])
+    entry = Gtk.Entry()
+    entry.set_text('file')
+    editor = Gtk.TextView()  # stands in for the unit editor GTK focuses
+    box = Gtk.Box()
+    box.add(entry)
+    box.add(view)
+    window = Gtk.Window()
+    window.add(box)
+    view.set_cursor = lambda path, column, start_editing: window.set_focus(editor)
+    return window, view, entry
+
+
+def test_restarting_editing_after_a_resize_leaves_focus_in_the_search_box():
+    # The first time Search's controls appear, the window grows on macOS.
+    window, view, entry = _window_with_search_box()
+    window.set_focus(entry)
+
+    view._restart_editing(Gtk.TreePath((0,)), view.get_columns()[0])
+
+    assert window.get_focus() is entry
+    assert entry.get_selection_bounds() == ()
+
+
+def test_restarting_editing_with_focus_in_the_tree_view_lets_editing_take_it():
+    window, view, _entry = _window_with_search_box()
+    window.set_focus(view)
+
+    view._restart_editing(Gtk.TreePath((0,)), view.get_columns()[0])
+
+    assert isinstance(window.get_focus(), Gtk.TextView)

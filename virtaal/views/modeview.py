@@ -41,6 +41,9 @@ class ModeView(GObjectWrapper, BaseView):
         self.mode_box = gui.get_object('mode_box')
 
         self.cmb_modes = Gtk.ComboBoxText()
+        # Any wrap width opens the menu below the combo box, instead of
+        # over it lined up with the active mode.
+        self.cmb_modes.set_wrap_width(1)
         self.cmb_modes.connect('changed', self._on_cmbmode_change)
         self.cmb_modes.set_cell_data_func(self.cmb_modes.get_cells()[0], self._set_cell_sensitive)
 

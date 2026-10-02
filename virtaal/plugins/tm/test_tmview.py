@@ -30,6 +30,8 @@ def _tmview(liststore=None, isvisible=False, active=True, may_show=True):
     view.isvisible = isvisible
     view._may_show_tmwindow = may_show
     view._should_show_tmwindow = False
+    view._mainwindow_geometry = None
+    view._move_settle_id = None
     if liststore is None:
         liststore = Gtk.ListStore(GObject.TYPE_PYOBJECT, GObject.TYPE_STRING)
     view.tmwindow = SimpleNamespace(
@@ -336,6 +338,10 @@ def test_active_notify_mainwindow_reshows_a_pending_window_when_activated():
 # _on_configure_mainwindow(): recompute geometry only for a pending
 # (shadowed-but-should-show) window, not on every window move/resize.
 
+def _configure_event(x=10, y=20, width=800, height=600):
+    return SimpleNamespace(x=x, y=y, width=width, height=height)
+
+
 def test_configure_mainwindow_recalculates_when_a_show_is_pending():
     # bug 1809: tvc_tm_source needs an explicit queue_resize() here or
     # its width calculation goes unbounded on the next real layout.
@@ -345,7 +351,7 @@ def test_configure_mainwindow_recalculates_when_a_show_is_pending():
     calls = []
     view.update_geometry = lambda: calls.append('geometry')
 
-    view._on_configure_mainwindow(None, None)
+    view._on_configure_mainwindow(None, _configure_event())
 
     assert calls == ['resize', 'geometry']
 
@@ -356,9 +362,76 @@ def test_configure_mainwindow_does_nothing_without_a_pending_show():
     calls = []
     view.update_geometry = lambda: calls.append('geometry')
 
-    view._on_configure_mainwindow(None, None)  # must not raise
+    view._on_configure_mainwindow(None, _configure_event())  # must not raise
 
     assert calls == []
+
+
+# Moving or resizing the main window (#3924) #
+
+def _moving_view(monkeypatch, isvisible=True, is_active=True):
+    view = _view_for_grab_notify(isvisible=isvisible)
+    events = []
+    view.hide = lambda: (events.append('hide'), setattr(view, 'isvisible', False))
+    view.show = lambda: (events.append('show'), setattr(view, 'isvisible', True))
+    view.tmwindow.update_geometry = lambda widget: events.append('geometry')
+    view.controller.main_controller = SimpleNamespace(
+        view=SimpleNamespace(main_window=SimpleNamespace(props=SimpleNamespace(is_active=is_active))))
+    timers = []
+    monkeypatch.setattr('virtaal.plugins.tm.tmview.GLib.timeout_add', lambda ms, f: timers.append(f) or len(timers))
+    monkeypatch.setattr('virtaal.plugins.tm.tmview.GLib.source_remove', lambda timer_id: None)
+    view._on_configure_mainwindow(None, _configure_event())  # where the window starts
+    return view, events, timers
+
+
+def test_moving_the_main_window_hides_suggestions_until_it_settles(monkeypatch):
+    view, events, timers = _moving_view(monkeypatch)
+
+    view._on_configure_mainwindow(None, _configure_event(x=50))
+    view._on_configure_mainwindow(None, _configure_event(x=90))
+
+    assert events == ['hide']
+    timers[-1]()
+    assert events == ['hide', 'show', 'geometry']
+
+
+def test_suggestions_stay_hidden_while_the_main_window_moves(monkeypatch):
+    # E.g. a query finishing, or focus changing, mid-drag.
+    view, events, _timers = _moving_view(monkeypatch)
+    view._on_configure_mainwindow(None, _configure_event(x=50))
+
+    view._on_mainwindow_focus_gained()
+
+    assert events == ['hide']
+
+
+def test_a_configure_without_a_move_leaves_suggestions_alone(monkeypatch):
+    view, events, timers = _moving_view(monkeypatch)
+
+    view._on_configure_mainwindow(None, _configure_event())
+
+    assert events == []
+    assert timers == []
+
+
+def test_suggestions_hidden_before_the_move_stay_hidden(monkeypatch):
+    view, events, timers = _moving_view(monkeypatch, isvisible=False)
+
+    view._on_configure_mainwindow(None, _configure_event(x=50))
+    timers[-1]()
+
+    assert events == []
+
+
+def test_suggestions_wait_for_focus_if_the_window_isnt_active_when_it_settles(monkeypatch):
+    view, events, timers = _moving_view(monkeypatch, is_active=False)
+
+    view._on_configure_mainwindow(None, _configure_event(x=50))
+    timers[-1]()
+    assert events == ['hide']
+
+    view._on_mainwindow_focus_gained()
+    assert events == ['hide', 'show', 'geometry']
 
 
 # _on_store_view_scroll() / _on_toggle_show_tm()
@@ -462,6 +535,7 @@ def test_get_selected_unit_view_returns_the_focused_target():
 
 def test_destroy_disconnects_signals_and_removes_the_suggestions_menu_item():
     view = TMView.__new__(TMView)
+    view._move_settle_id = None
     disconnected = []
     view._signal_tracker = SimpleNamespace(disconnect_all=lambda: disconnected.append(True))
     removed = []

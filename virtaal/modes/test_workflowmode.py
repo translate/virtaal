@@ -17,6 +17,7 @@ def _mode(**overrides):
     mode = WorkflowMode.__new__(WorkflowMode)
     mode.filter_states = []
     mode._menuitem_states = {}
+    mode._stats_changed_id = None
     for name, value in overrides.items():
         setattr(mode, name, value)
     return mode
@@ -76,32 +77,52 @@ def test_update_indices_is_empty_when_the_selected_states_have_no_units():
 
 # selected() #
 
-def _controller(stats, state_names=None):
-    cursor = SimpleNamespace(model=SimpleNamespace(stats=stats), indices=None)
-    names = state_names or {'new': 'New', 'fuzzy': 'Needs work', 'done': 'Done'}
+_FORMAT_STATES = {'gone': (-100, 0), 'new': (0, 30), 'fuzzy': (30, 100), 'done': (100, 127)}
+
+
+class _Model:
+    def __init__(self, stats, states=_FORMAT_STATES):
+        self.stats = stats
+        unit_class = type('Unit', (), {'STATE': states})
+        self.units = [unit_class() for _index in stats['total']]
+
+    def __len__(self):
+        return len(self.units)
+
+    def __getitem__(self, index):
+        return self.units[index]
+
+
+def _controller(stats, states=_FORMAT_STATES):
+    cursor = SimpleNamespace(model=_Model(stats, states), indices=None)
+    names = {'gone': 'Obsolete', 'new': 'New', 'fuzzy': 'Needs work', 'done': 'Done'}
     return SimpleNamespace(
         main_controller=SimpleNamespace(
-            store_controller=SimpleNamespace(cursor=cursor),
+            store_controller=SimpleNamespace(cursor=cursor, connect=lambda signal, handler: 7, disconnect=lambda i: None),
             unit_controller=SimpleNamespace(get_unit_state_names=lambda: names),
         ),
         view=SimpleNamespace(mode_box=Gtk.Grid()),
     )
 
 
-def test_selected_lists_only_the_states_this_file_has():
+def _menu(mode):
+    return [(item.get_label(), item.get_active(), item.get_sensitive()) for item in mode.btn_popup.menu]
+
+
+def test_selected_lists_the_formats_states_and_greys_out_those_without_units():
     mode = _mode(controller=_controller({'total': [0, 1], 'extended': {'done': [0], 'new': [1]}}))
 
     mode.selected()
 
-    assert mode.state_names == [('done', 'Done'), ('new', 'New')]
+    assert _menu(mode) == [('Done', False, True), ('Needs work', False, False), ('New', False, True)]
 
 
-def test_selected_lists_every_state_without_extended_stats():
-    mode = _mode(controller=_controller({'total': [0]}))
+def test_selected_lists_the_states_units_are_in_for_a_format_without_states():
+    mode = _mode(controller=_controller({'total': [0], 'extended': {'done': [0]}}, states={}))
 
     mode.selected()
 
-    assert [iid for iid, _name in mode.state_names] == ['done', 'fuzzy', 'new']
+    assert mode.state_names == [('done', 'Done')]
 
 
 def test_selected_ticks_the_menu_items_of_the_states_still_filtered():
@@ -112,14 +133,13 @@ def test_selected_ticks_the_menu_items_of_the_states_still_filtered():
 
     mode.selected()
 
-    ticked = [item.get_label() for item in mode.btn_popup.menu if item.get_active()]
-    assert ticked == ['Needs work']
+    assert ('Needs work', True, True) in _menu(mode)
     assert mode.btn_popup.get_label() == 'Needs work'
     assert mode.storecursor.indices == [1]
 
 
-def test_selected_drops_a_filtered_state_this_file_does_not_have():
-    # Happens when a file is opened while Workflow is the current mode.
+def test_selected_drops_a_ticked_state_no_unit_is_in():
+    # Reselecting the mode, or opening a file while it is selected.
     mode = _mode(
         filter_states=['fuzzy'],
         controller=_controller({'total': [0, 1], 'extended': {'done': [0, 1]}}),
@@ -192,6 +212,7 @@ def test_on_state_menuitem_toggled_updates_filter_states_and_label(monkeypatch):
         btn_popup=btn,
         state_names=[('new', 'New'), ('done', 'Done')],
         _menuitem_states={items[0]: 'new', items[1]: 'done'},
+        storecursor=SimpleNamespace(model=None),
     )
 
     mode._on_state_menuitem_toggled(items[0])
@@ -212,9 +233,46 @@ def test_apply_filter_states_updates_indices_and_returns_false():
     assert result is False
 
 
+# _on_stats_changed() #
+
+def test_a_ticked_state_whose_units_all_move_on_stays_until_unticked(monkeypatch):
+    monkeypatch.setattr('virtaal.modes.workflowmode.GLib.idle_add', lambda f: None)
+    controller = _controller({'total': [0, 1], 'extended': {'fuzzy': [1], 'done': [0]}})
+    mode = _mode(controller=controller)
+    mode.selected()
+    fuzzy = [item for item in mode.btn_popup.menu if item.get_label() == 'Needs work'][0]
+    fuzzy.set_active(True)
+    mode.update_indices()
+    # Unit 1 is marked translated.
+    controller.main_controller.store_controller.cursor.model.stats['extended'] = {'done': [0, 1]}
+
+    mode._on_stats_changed(None)
+
+    assert ('Needs work', True, True) in _menu(mode)
+    assert mode.storecursor.indices == [1]
+
+    fuzzy.set_active(False)
+
+    assert ('Needs work', False, False) in _menu(mode)
+
+
 # unselected() #
 
-def test_unselected_does_nothing():
+def test_unselected_disconnects_from_stats_changed():
+    disconnected = []
+    mode = _mode(
+        _stats_changed_id=7,
+        controller=SimpleNamespace(main_controller=SimpleNamespace(
+            store_controller=SimpleNamespace(disconnect=disconnected.append))),
+    )
+
+    mode.unselected()
+
+    assert disconnected == [7]
+    assert mode._stats_changed_id is None
+
+
+def test_unselected_without_a_connection_does_nothing():
     mode = _mode()
 
     mode.unselected()  # must not raise

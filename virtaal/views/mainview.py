@@ -1145,8 +1145,10 @@ class MainView(BaseView):
         vbox_main.pack_start(infobar, False, False, 0)
         vbox_main.reorder_child(infobar, 1)  # directly below the menu bar
 
-    def show_template_update_notice(self, title, message):
-        """Dismissable notice with the before/after stats from "Update from Template" (#3808)."""
+    def show_template_update_notice(self, title, before, after):
+        """Dismissable notice with the before/after unit counts from "Update from Template" (#3808).
+
+            @param before, after: dicts of 'translated', 'fuzzy', 'untranslated' and 'total' counts"""
         existing = getattr(self, '_template_update_infobar', None)
         if existing is not None:
             existing.destroy()
@@ -1158,11 +1160,9 @@ class MainView(BaseView):
         heading = Gtk.Label()
         heading.set_markup('<b>%s</b>' % title.replace('&', '&amp;').replace('<', '&lt;'))
         heading.set_xalign(0)
-        body = Gtk.Label(label=message)
-        body.set_xalign(0)
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
         box.pack_start(heading, False, False, 0)
-        box.pack_start(body, False, False, 0)
+        box.pack_start(self._template_stats_grid(before, after), False, False, 0)
         infobar.get_content_area().pack_start(box, True, True, 0)
 
         def on_response(infobar, response_id):
@@ -1175,6 +1175,42 @@ class MainView(BaseView):
         vbox_main = self.gui.get_object('vbox_main')
         vbox_main.pack_start(infobar, False, False, 0)
         vbox_main.reorder_child(infobar, 1)  # directly below the menu bar
+
+    @staticmethod
+    def _template_stats_grid(before, after):
+        grid = Gtk.Grid(column_spacing=18, row_spacing=2)
+        headings = (
+            #l10n: Column heading: unit counts before updating to the new template
+            _("Before"),
+            #l10n: Column heading: unit counts after updating to the new template
+            _("After"),
+            #l10n: Column heading: difference between the before and after unit counts
+            _("Change"),
+        )
+        for column, text in enumerate(headings, 1):
+            label = Gtk.Label()
+            label.set_markup('<b>%s</b>' % text.replace('&', '&amp;').replace('<', '&lt;'))
+            label.set_xalign(1)
+            grid.attach(label, column, 0, 1, 1)
+
+        rows = (
+            ('translated', _("Translated")),
+            ('fuzzy', _("Fuzzy")),
+            ('untranslated', _("Untranslated")),
+            #l10n: Row heading: total number of units in the file
+            ('total', _("Total")),
+        )
+        for row, (key, text) in enumerate(rows, 1):
+            name = Gtk.Label(label=text)
+            name.set_xalign(0)
+            grid.attach(name, 0, row, 1, 1)
+            change = after[key] - before[key]
+            values = (str(before[key]), str(after[key]), '%+d' % change if change else '')
+            for column, value in enumerate(values, 1):
+                label = Gtk.Label(label=value)
+                label.set_xalign(1)
+                grid.attach(label, column, row, 1, 1)
+        return grid
 
     def show_same_lang_notice(self, on_change_pair):
         """Show a dismissable notice that source and target language are

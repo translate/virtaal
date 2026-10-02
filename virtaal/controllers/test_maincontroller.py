@@ -356,11 +356,12 @@ def test_close_file_closes_after_discarding_changes():
 def test_show_template_update_notice_delegates_to_the_view():
     shown = []
     controller = MainController.__new__(MainController)
-    controller.view = SimpleNamespace(show_template_update_notice=lambda title, msg: shown.append((title, msg)))
+    controller.view = SimpleNamespace(
+        show_template_update_notice=lambda title, before, after: shown.append((title, before, after)))
 
-    controller.show_template_update_notice('File Updated', 'Before:\n\tTranslated: 1')
+    controller.show_template_update_notice('File Updated', {'total': 1}, {'total': 2})
 
-    assert shown == [('File Updated', 'Before:\n\tTranslated: 1')]
+    assert shown == [('File Updated', {'total': 1}, {'total': 2})]
 
 
 # open_file()'s remaining branches: save-confirm, file:// stripping, reload-prompt #

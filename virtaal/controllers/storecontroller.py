@@ -392,32 +392,13 @@ class StoreController(BaseController):
         return store.update_checks(**kwargs)
 
     def compare_stats(self, oldstats, newstats):
-        #l10n: The heading of statistics before updating to the new template
-        before = _("Before:")
-        #l10n: The heading of statistics after updating to the new template
-        after = _("After:")
-        translated = _("Translated: %d")
-        fuzzy = _("Fuzzy: %d")
-        untranslated = _("Untranslated: %d")
-        total = _("Total: %d")
-        output = "%s\n\t%s\n\t%s\n\t%s\n\t%s\n" % (before, translated, fuzzy, untranslated, total)
-        output += "%s\n\t%s\n\t%s\n\t%s\n\t%s" % (after, translated, fuzzy, untranslated, total)
-
-        old_trans = len(oldstats['translated'])
-        old_fuzzy = len(oldstats['fuzzy'])
-        old_untrans = len(oldstats['untranslated'])
-        old_total = old_trans + old_fuzzy + old_untrans
-
-        new_trans = len(newstats['translated'])
-        new_fuzzy = len(newstats['fuzzy'])
-        new_untrans = len(newstats['untranslated'])
-        new_total = new_trans + new_fuzzy + new_untrans
-
-        output %= (old_trans, old_fuzzy, old_untrans, old_total,
-                   new_trans, new_fuzzy, new_untrans, new_total)
+        def counts(stats):
+            result = {state: len(stats[state]) for state in ('translated', 'fuzzy', 'untranslated')}
+            result['total'] = sum(result.values())
+            return result
 
         #l10n: this refers to updating a file to a new template (POT file)
-        self.main_controller.show_template_update_notice(_("File Updated"), output)
+        self.main_controller.show_template_update_notice(_("File Updated"), counts(oldstats), counts(newstats))
 
     def _guess_export_filename(self, projfname):
         guess = projfname.split('/')[-1]

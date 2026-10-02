@@ -37,6 +37,26 @@ def test_colors_equal_for_matching_rgba():
     assert colors_equal(a, b)
 
 
+def test_suggestion_css_follows_a_theme_colour_change(monkeypatch):
+    loaded = []
+    class FakeProvider:
+        def load_from_data(self, data):
+            loaded.append(data.decode())
+    monkeypatch.setattr(textbox_module, '_suggestion_provider', FakeProvider())
+    monkeypatch.setattr(textbox_module, '_suggestion_color', None)
+    monkeypatch.setitem(textbox_module.current_theme, 'subtle_fg', 'darkgrey')
+
+    textbox_module._ensure_suggestion_css(None)
+    textbox_module._ensure_suggestion_css(None)
+    monkeypatch.setitem(textbox_module.current_theme, 'subtle_fg', 'grey')
+    textbox_module._ensure_suggestion_css(None)
+
+    assert len(loaded) == 2
+    assert 'textview.suggestion text selection' in loaded[0]
+    assert 'color: darkgrey;' in loaded[0]
+    assert 'color: grey;' in loaded[1]
+
+
 def test_colors_equal_mixing_rgba_and_string():
     a = Gdk.RGBA()
     a.parse('#ff0000')
@@ -382,6 +402,27 @@ class TestTextBox(TestScaffolding):
         assert textbox.suggestion is None
         assert textbox.get_text() == '%d files removed extra'
         assert ('changed', ()) in emitted
+
+    def test_suggestion_is_styled_apart_from_a_real_selection(self):
+        textbox = self._target_for('%d files removed')
+        textbox.set_text('%d files removed')  # reset - an earlier test in this shared-widget class may have mutated it
+        style = textbox.get_style_context()
+
+        textbox.suggestion = {'text': ' extra', 'offset': len('%d files removed')}
+        assert style.has_class('suggestion')
+
+        textbox.suggestion = None
+        assert not style.has_class('suggestion')
+
+    def test_accepting_a_suggestion_drops_its_style(self, monkeypatch):
+        textbox = self._target_for('%d files removed')
+        textbox.set_text('%d files removed')  # reset - an earlier test in this shared-widget class may have mutated it
+        textbox.suggestion = {'text': ' extra', 'offset': len('%d files removed')}
+        monkeypatch.setattr(textbox, 'emit', lambda signal, *args: None)
+
+        textbox._on_key_pressed(textbox, _FakeKeyEvent(Gdk.KEY_Tab))
+
+        assert not textbox.get_style_context().has_class('suggestion')
 
     def test_on_key_pressed_recognizes_a_special_key_combo(self, monkeypatch):
         textbox = self._target_for('%s files copied')

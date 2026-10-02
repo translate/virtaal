@@ -29,6 +29,7 @@ from virtaal.views.widgets.popupmenubutton import (
     POS_SE_NE,
     POS_SW_NW,
     PopupMenuButton,
+    close_on_enter,
 )
 
 
@@ -192,3 +193,43 @@ def test_toggled_inactive_closes_the_menu(monkeypatch):
     button.set_active(False)
 
     assert calls == ['popdown']
+
+
+
+# close_on_enter() #
+
+def _key_event(keyval):
+    event = Gdk.Event.new(Gdk.EventType.KEY_PRESS)
+    event.keyval = keyval
+    return event
+
+
+def _check_menu():
+    menu = Gtk.Menu()
+    item = Gtk.CheckMenuItem(label='Needs work')
+    menu.append(item)
+    menu.show_all()
+    close_on_enter(menu)
+    cancelled = []
+    menu.cancel = lambda: cancelled.append(True)
+    return menu, item, cancelled
+
+
+def test_enter_closes_a_check_menu_without_toggling():
+    menu, item, cancelled = _check_menu()
+    menu.select_item(item)
+
+    handled = menu.emit('key-press-event', _key_event(Gdk.KEY_Return))
+
+    assert handled is True
+    assert cancelled == [True]
+    assert item.get_active() is False
+
+
+def test_other_keys_are_left_to_the_menu():
+    menu, _item, cancelled = _check_menu()
+
+    handled = menu.emit('key-press-event', _key_event(Gdk.KEY_space))
+
+    assert handled is False
+    assert cancelled == []

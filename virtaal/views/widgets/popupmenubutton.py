@@ -30,6 +30,21 @@ _rtl_pos_map = {
 }
 
 
+_ENTER_KEYS = (Gdk.KEY_Return, Gdk.KEY_KP_Enter, Gdk.KEY_ISO_Enter)
+
+
+def close_on_enter(menu):
+    """Make Enter close C{menu} like Escape, rather than toggling the
+        highlighted item - for a menu of check items, where Space already
+        toggles them."""
+    def on_key_press(menu, event):
+        if event.keyval in _ENTER_KEYS:
+            menu.cancel()
+            return True
+        return False
+    menu.connect('key-press-event', on_key_press)
+
+
 class PopupMenuButton(Gtk.ToggleButton):
     """A toggle button that displays a pop-up menu when clicked."""
 

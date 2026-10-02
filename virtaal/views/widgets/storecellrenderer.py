@@ -234,13 +234,8 @@ class StoreCellRenderer(Gtk.CellRenderer):
                 self._cached_height = height
         # Otherwise scroll_to_cell can't centre this row near the end
         # of the file (translate/virtaal#1366).
-        extra_padding = 0
-        store = self.view.controller.get_store()
-        if store and self._is_last_row(treeview, store):
-            viewport_height = treeview.get_allocation().height
-            if viewport_height > 0:
-                extra_padding = viewport_height // 2
-                height += extra_padding
+        extra_padding = self._last_row_padding(treeview)
+        height += extra_padding
 
         y_offset = self.ROW_PADDING / 2
         if self.editable:
@@ -276,11 +271,65 @@ class StoreCellRenderer(Gtk.CellRenderer):
         cr.fill()
         cr.restore()
 
+    GAP_LINE_WIDTH = 2
+
+    def _gap_edges(self, treeview):
+        """Whether units are hidden right above and right below this row."""
+        get_model = getattr(treeview, 'get_model', None)
+        model = get_model() if get_model else None
+        if not isinstance(model, StoreTreeModel) or model.visible_rows is None:
+            return False, False
+        store = self.view.controller.get_store()
+        index = self._unit_index(store)
+        row = self._row(treeview, store)
+        if index is None or row is None:
+            return False, False
+        above = index > 0 and (row == 0 or model.path_to_store_index((row - 1,)) != index - 1)
+        below = row == model.row_count() - 1 and index < len(store) - 1
+        return above, below
+
+    def _paint_gaps(self, cr, treeview, background_area):
+        above, below = self._gap_edges(treeview)
+        if not (above or below):
+            return
+        rgba = str_to_rgba(current_theme['context_gap'])
+        cr.save()
+        cr.set_source_rgba(rgba.red, rgba.green, rgba.blue, rgba.alpha)
+        if above:
+            cr.rectangle(background_area.x, background_area.y, background_area.width, self.GAP_LINE_WIDTH)
+        if below:
+            bottom = background_area.y + background_area.height - self._last_row_padding(treeview)
+            cr.rectangle(background_area.x, bottom - self.GAP_LINE_WIDTH, background_area.width, self.GAP_LINE_WIDTH)
+        cr.fill()
+        cr.restore()
+
+    def _clear_last_row_padding(self, cr, treeview, background_area):
+        """GTK fills the whole row, scroll padding too, with a fuzzy row's
+            background; the padding isn't part of the unit."""
+        if not self.props.cell_background_set:
+            return
+        padding = self._last_row_padding(treeview)
+        if not padding:
+            return
+        found, base = treeview.get_style_context().lookup_color('theme_base_color')
+        if not found:
+            return
+        cr.save()
+        cr.set_source_rgba(base.red, base.green, base.blue, base.alpha)
+        cr.rectangle(background_area.x, background_area.y + background_area.height - padding,
+                     background_area.width, padding)
+        cr.fill()
+        cr.restore()
+
     def do_render(self, window, widget, background_area, cell_area, flags):
+        if background_area is not None:
+            self._clear_last_row_padding(window, widget, background_area)
+        if not self.editable:
+            self._paint_fuzzy_background_if_selected(window, background_area, flags)
+        # Also for the editable row, under its editor.
+        self._paint_gaps(window, widget, background_area)
         if self.editable:
             return True
-
-        self._paint_fuzzy_background_if_selected(window, background_area, flags)
 
         x_offset, y_offset, width, _height = self.do_get_size(widget, cell_area)
         if self.source_layout is None or self.target_layout is None:
@@ -375,6 +424,13 @@ class StoreCellRenderer(Gtk.CellRenderer):
         if row is None:
             return True
         return start_index <= row <= end_index
+
+    def _last_row_padding(self, treeview):
+        """Space below the last row, so scroll_to_cell() can centre it."""
+        store = self.view.controller.get_store()
+        if store and self._is_last_row(treeview, store):
+            return max(treeview.get_allocation().height // 2, 0)
+        return 0
 
     def _is_last_row(self, treeview, store):
         model = treeview.get_model()

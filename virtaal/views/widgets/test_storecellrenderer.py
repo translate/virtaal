@@ -818,3 +818,112 @@ def test_on_modified_emits_modified():
     renderer._on_modified(None)
 
     assert emitted == [True]
+
+
+# _gap_edges() / _paint_gaps() #
+
+def _gap_renderer(rows, unit_index, n=10):
+    store = [_fake_unit() for _ in range(n)]
+    model = StoreTreeModel(store, rows=rows)
+    renderer = StoreCellRenderer(SimpleNamespace(controller=SimpleNamespace(get_store=lambda: store)))
+    renderer.unit = store[unit_index]
+    return renderer, SimpleNamespace(get_model=lambda: model, get_allocation=lambda: SimpleNamespace(height=0))
+
+
+@pytest.mark.parametrize('rows, unit_index, edges', [
+    ([2, 3, 7], 3, (False, False)),  # follows unit 2 directly
+    ([2, 3, 7], 7, (True, True)),    # units 4-6 and 8-9 hidden
+    ([2, 3, 7], 2, (True, False)),   # units 0-1 hidden
+    ([0, 1, 9], 0, (False, False)),
+    ([0, 1, 9], 9, (True, False)),   # last unit of the file
+])
+def test_gap_edges_mark_where_units_are_hidden(rows, unit_index, edges):
+    renderer, treeview = _gap_renderer(rows, unit_index)
+
+    assert renderer._gap_edges(treeview) == edges
+
+
+def test_gap_edges_none_when_every_unit_is_shown():
+    renderer, treeview = _gap_renderer(None, 5)
+
+    assert renderer._gap_edges(treeview) == (False, False)
+
+
+class _RecordingCairo:
+    def __init__(self):
+        self.rectangles = []
+        self.filled = False
+
+    def save(self):
+        pass
+
+    def restore(self):
+        pass
+
+    def set_source_rgba(self, *rgba):
+        pass
+
+    def rectangle(self, *rect):
+        self.rectangles.append(rect)
+
+    def fill(self):
+        self.filled = True
+
+
+def test_paint_gaps_draws_a_line_on_each_hidden_edge():
+    renderer, treeview = _gap_renderer([2, 3, 7], 7)
+    cr = _RecordingCairo()
+
+    renderer._paint_gaps(cr, treeview, SimpleNamespace(x=0, y=100, width=300, height=40))
+
+    assert cr.rectangles == [(0, 100, 300, 2), (0, 138, 300, 2)]
+    assert cr.filled
+
+
+def test_paint_gaps_draws_nothing_between_adjacent_units():
+    renderer, treeview = _gap_renderer([2, 3, 7], 3)
+    cr = _RecordingCairo()
+
+    renderer._paint_gaps(cr, treeview, SimpleNamespace(x=0, y=100, width=300, height=40))
+
+    assert cr.rectangles == []
+
+
+def test_paint_gaps_puts_the_bottom_line_above_the_last_rows_scroll_padding():
+    renderer, treeview = _gap_renderer([2, 3, 7], 7)
+    treeview.get_allocation = lambda: SimpleNamespace(height=200)  # 100px padding
+    cr = _RecordingCairo()
+
+    renderer._paint_gaps(cr, treeview, SimpleNamespace(x=0, y=100, width=300, height=140))
+
+    assert cr.rectangles[-1] == (0, 138, 300, 2)
+
+
+# _clear_last_row_padding() #
+
+def _padding_treeview(found=True):
+    base = SimpleNamespace(red=1.0, green=1.0, blue=1.0, alpha=1.0)
+    return SimpleNamespace(get_style_context=lambda: SimpleNamespace(lookup_color=lambda name: (found, base)))
+
+
+def test_clear_last_row_padding_repaints_a_fuzzy_last_rows_padding():
+    renderer = StoreCellRenderer(None)
+    renderer.props.cell_background_set = True
+    renderer._last_row_padding = lambda treeview: 100
+    cr = _RecordingCairo()
+
+    renderer._clear_last_row_padding(cr, _padding_treeview(), SimpleNamespace(x=0, y=50, width=300, height=140))
+
+    assert cr.rectangles == [(0, 90, 300, 100)]
+
+
+@pytest.mark.parametrize('fuzzy, padding', [(False, 100), (True, 0)])
+def test_clear_last_row_padding_leaves_other_rows_alone(fuzzy, padding):
+    renderer = StoreCellRenderer(None)
+    renderer.props.cell_background_set = fuzzy
+    renderer._last_row_padding = lambda treeview: padding
+    cr = _RecordingCairo()
+
+    renderer._clear_last_row_padding(cr, _padding_treeview(), SimpleNamespace(x=0, y=50, width=300, height=140))
+
+    assert cr.rectangles == []

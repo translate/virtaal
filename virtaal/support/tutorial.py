@@ -96,8 +96,8 @@ def create_localized_tutorial():
      ""),
 
     (_("If the source will remain mostly or completely unchanged it is "
-       "convenient to copy the entire source string with Alt+Down. Here is "
-       "almost nothing to translate, so just press Alt+Down and make "
+       "convenient to copy the entire source string with Ctrl+Shift+V. Here "
+       "is almost nothing to translate, so just press Ctrl+Shift+V and make "
        "corrections if necessary."),
      "<b><a href=\"https://virtaal.translatehouse.org/\">Virtaal</a></b>",
      ""),

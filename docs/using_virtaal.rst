@@ -89,8 +89,10 @@ Copy Original to Target
 Sometimes it is easier to have the original string as a start to only replace a
 few translatable elements. Translations containing XML markup or many variables
 might be more work to type again than to just start with the source text. You
-can easily copy the original text into your translation area by pressing
-:kbd:`Alt+Down`.
+can replace your translation with the original text by pressing
+:kbd:`Ctrl+Shift+V` (:menuselection:`Edit --> Transfer From Source`). To copy
+the original text without changing it, press :kbd:`Ctrl+C` with nothing
+selected and paste it with :kbd:`Ctrl+V`.
 
 For some languages, you will see how Virtaal automatically changes the
 punctuation marks to fit the conventions of your language. This could involve
@@ -99,7 +101,7 @@ For example, a "quotation" automatically becomes a « quotation » in French,
 without the translator having to change the quote characters or the spacing.
 
 If you don't want the changes to the source text that Virtaal automatically
-did, you can simply undo the step with :kbd:`Ctrl+Z`.
+did, press :kbd:`Ctrl+Z` once to undo them; press it again to undo the copy.
 
 .. _using_virtaal#copy_a_placeable_to_the_target:
 
@@ -108,11 +110,11 @@ Copy a Placeable to the Target
 
 :doc:`Placeables <placeables>` are special parts of the text that can be
 automatically highlighted and easily inserted into the translation. You will
-see that certain parts of the source text will be highlighted. To select which
-placeable to insert, press :kbd:`Alt+Right` to move the highlighting to the
-correct placeable.  You can insert the currently highlighted placeable by
-pressing :kbd:`Alt+Down`.  After you have inserted a placeable, the next
-placeable will be highlighted.
+see that certain parts of the source text will be highlighted, and the first
+placeable is selected. Press :kbd:`Alt+Down` to insert the selected placeable;
+the next one is then selected, so you can keep pressing :kbd:`Alt+Down`. To
+choose a different placeable, press :kbd:`Alt+Right` or :kbd:`Alt+Left`. The
+selection stops at the first and last placeable.
 
 .. _using_virtaal#copy_a_term_to_the_target:
 

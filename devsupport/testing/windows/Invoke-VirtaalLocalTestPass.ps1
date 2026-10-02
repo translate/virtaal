@@ -1237,14 +1237,13 @@ Invoke-VirtaalCheck "Plural-form units load cleanly (nplurals=3 and nplurals=1)"
 
 Invoke-VirtaalCheck "Placeable navigation/transfer shortcuts" {
     # <Virtaal>/Edit/Prev Placeable, Next Placeable (Alt+Left/Right -
-    # jump between placeables in the target) and Transfer (Alt+Down -
-    # copies source to an empty target) - see unitview.py's
-    # _setup_key_bindings. Only Alt+Down has an observable effect worth
+    # step between the source's placeables) and Transfer (Ctrl+Shift+V -
+    # replaces the target with the source) - see unitview.py's
+    # _setup_menus. Only Ctrl+Shift+V has an observable effect worth
     # checking for (copying into an *empty* target sets the modified
     # marker); like "Type + Ctrl+Z" above, this is Skipped rather than
-    # Failed if the current unit's target already had text (transfer
-    # then does nothing) rather than assuming every test file's first
-    # unit is untranslated.
+    # Failed if the current unit's target already matched the source
+    # rather than assuming every test file's first unit is untranslated.
     $t = Start-VirtaalTest -ExePath $install.ExePath -Arguments "devsupport\testfiles\checks.po"
     if (-not $t) {
         Add-Result "Placeable navigation/transfer shortcuts" "Fail" "app didn't launch"
@@ -1252,16 +1251,16 @@ Invoke-VirtaalCheck "Placeable navigation/transfer shortcuts" {
         Send-VirtaalKeys $t "%{RIGHT}"
         Send-VirtaalKeys $t "%{LEFT}"
         $titleBefore = Get-VirtaalTitle $t
-        Send-VirtaalKeys $t "%{DOWN}"
+        Send-VirtaalKeys $t "^+v"
         $titleAfter = Get-VirtaalTitle $t
         $stillAlive = Get-Process -Id $t.Process.Id -ErrorAction SilentlyContinue
         if (-not $stillAlive) {
             Add-Result "Placeable navigation/transfer shortcuts" "Fail" "process exited"
         } elseif ($titleAfter.StartsWith("*") -and -not $titleBefore.StartsWith("*")) {
-            Add-Result "Placeable navigation/transfer shortcuts" "Pass" "Alt+Down transferred source to an empty target"
+            Add-Result "Placeable navigation/transfer shortcuts" "Pass" "Ctrl+Shift+V transferred source to an empty target"
         } else {
             $logsClean = Assert-VirtaalLogsClean
-            Add-Result "Placeable navigation/transfer shortcuts" $(if ($logsClean) { "Skip" } else { "Fail" }) $(if ($logsClean) { "no crash; Alt+Down had no observable effect - target likely wasn't empty" } else { "unexpected log output - see above" })
+            Add-Result "Placeable navigation/transfer shortcuts" $(if ($logsClean) { "Skip" } else { "Fail" }) $(if ($logsClean) { "no crash; Ctrl+Shift+V had no observable effect - target likely wasn't empty" } else { "unexpected log output - see above" })
         }
     }
 }
@@ -1273,14 +1272,10 @@ Invoke-VirtaalCheck "Placeable stepping and copy-into-target on a real placeable
     # touches unitview.py's real placeable-stepping/insert code path at
     # all. Pointed out live, 2026-08-24: checks.po line 171
     # ("XML tags are <b>fun</b>") genuinely has placeables the app
-    # would highlight and let you step between - and, confirmed by
-    # reading copy_original() (unitview.py): when a placeable is
-    # currently selected, Alt+Down takes a completely different branch
-    # than the "transfer whole source" one the existing check exercises
-    # - it inserts *just that placeable* into the target
-    # (textbox.insert_translation(selected_elem)) and auto-advances to
-    # the next one (move_elem_selection(1)) - a real, previously
-    # entirely untested code path.
+    # would highlight and let you step between. Alt+Down
+    # (insert_placeable() in unitview.py) inserts *just the selected
+    # placeable* into the target and selects the next one - a different
+    # path from the whole-source transfer the check above exercises.
     #
     # Navigates to that unit via Ctrl+F (searchmode.py's
     # _on_entry_activate selects the first match on Enter) rather than

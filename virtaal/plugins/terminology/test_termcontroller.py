@@ -174,7 +174,9 @@ class _FakeSource:
 def test_rescan_current_unit_reparses_every_source(monkeypatch):
     controller, main_controller = _make_controller()
     sources = [_FakeSource(), _FakeSource()]
-    main_controller.unit_controller = SimpleNamespace(view=SimpleNamespace(sources=sources))
+    reselected = []
+    main_controller.unit_controller = SimpleNamespace(view=SimpleNamespace(
+        sources=sources, select_first_placeables=lambda: reselected.append(True)))
     parse_calls = []
     monkeypatch.setattr(termcontroller, 'elem_parse', lambda elem, parsers: parse_calls.append((elem, parsers)))
 
@@ -184,11 +186,13 @@ def test_rescan_current_unit_reparses_every_source(monkeypatch):
         assert source.elem.removed_types == [terminology.TerminologyPlaceable]
         assert source.refreshed == [True]
     assert len(parse_calls) == 2
+    # The rescan replaces the placeables, so the old selection is stale.
+    assert reselected == [True]
 
 
 def test_rescan_current_unit_stops_without_a_store_cursor():
     controller, main_controller = _make_controller()
-    main_controller.unit_controller = SimpleNamespace(view=SimpleNamespace(sources=[]))
+    main_controller.unit_controller = SimpleNamespace(view=SimpleNamespace(sources=[], select_first_placeables=lambda: None))
     main_controller.store_controller = SimpleNamespace(cursor=None)
 
     controller.rescan_current_unit()  # must not raise
@@ -196,7 +200,7 @@ def test_rescan_current_unit_stops_without_a_store_cursor():
 
 def test_rescan_current_unit_refreshes_the_current_store_row():
     controller, main_controller = _make_controller()
-    main_controller.unit_controller = SimpleNamespace(view=SimpleNamespace(sources=[]))
+    main_controller.unit_controller = SimpleNamespace(view=SimpleNamespace(sources=[], select_first_placeables=lambda: None))
     calls = []
     treeview = SimpleNamespace(refresh_current_row=lambda: calls.append(True))
     main_controller.store_controller = SimpleNamespace(

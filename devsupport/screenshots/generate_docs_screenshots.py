@@ -181,7 +181,7 @@ def _setup_terminology(app, window, main_controller):
     terminology.tbx (see that fixture's own header comment), so
     inserting it pops up the completion popup rather than inserting
     a single match directly - real interactive methods throughout
-    (move_elem_selection/copy_original), not synthesized key events. The
+    (insert_placeable), not synthesized key events. The
     target already has a partial translation typed, so the demo shows
     inserting a term mid-sentence, not into an empty field."""
     main_controller.open_file(str(CONTENT / "terminology.po"))
@@ -202,9 +202,7 @@ def _setup_terminology(app, window, main_controller):
     # to the end of the already-typed text first, so the demo shows a
     # translator inserting a term mid-sentence, not into an empty field.
     target_textbox.buffer.place_cursor(target_textbox.buffer.get_end_iter())
-    target_textbox.move_elem_selection(1)
-    yield from _settle(5)
-    unit_view.copy_original(target_textbox)
+    unit_view.insert_placeable(target_textbox)
     yield from _settle(30)
 
 

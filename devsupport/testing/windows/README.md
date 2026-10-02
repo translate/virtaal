@@ -164,8 +164,8 @@ side without anything needing to be copied out by hand.
   `unitview.py`'s target-widget layout, not the same case twice.
   Doesn't yet verify the right *number* of target
   textboxes actually renders - needs a human looking at the screenshot.
-- Placeable navigation/transfer (Alt+Left/Right/Down) - Alt+Down
-  specifically verified to copy source into an empty target.
+- Placeable navigation/transfer (Alt+Left/Right, Ctrl+Shift+V) -
+  Ctrl+Shift+V specifically verified to copy source into an empty target.
 - Click navigation, and clicking the two status-bar `PopupMenuButton`s
   (check-type/"Project Type" bottom-left, language-pair bottom-right) -
   all three best-effort (see `Send-VirtaalClick`'s own comments for why

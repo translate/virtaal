@@ -747,11 +747,22 @@ If you are translating from English to French then French would be your translat
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="mnu_transfer">
-                        <property name="label" translatable="yes" comments="l10n: Activating this menu item copies the whole source (or part thereof) to the target. The &quot;copy&quot; is not necessarily the same as the source: terminology placeables are translated when copied and language-specific punctionation changes are made automatically.">Transfer From Source</property>
+                        <property name="label" translatable="yes" comments="l10n: Activating this menu item replaces the target with the whole source. The &quot;copy&quot; is not necessarily the same as the source: language-specific punctuation changes are made automatically.">Transfer From Source</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="accel_path">&lt;Virtaal&gt;/Edit/Transfer</property>
+                        <property name="use_stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="mnu_placinsert">
+                        <property name="label" translatable="yes" comments="l10n: Inserts the highlighted placeable from the source into the translation, then highlights the next one.">_Insert Placeable</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="accel_path">&lt;Virtaal&gt;/Edit/Insert Placeable</property>
+                        <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
                         <accelerator key="Down" signal="activate" modifiers="GDK_MOD1_MASK"/>
                       </object>

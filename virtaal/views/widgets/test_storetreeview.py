@@ -177,23 +177,6 @@ def test_refresh_current_row_does_nothing_without_a_valid_model():
     StoreTreeView.refresh_current_row(view)  # must not raise
 
 
-# reset_column_width() #
-
-def test_reset_column_width_relaxes_a_fixed_width():
-    column = _FakeColumn(500)
-    view = SimpleNamespace(get_columns=lambda: [column])
-
-    StoreTreeView.reset_column_width(view)
-
-    assert column.get_fixed_width() == 1
-
-
-def test_reset_column_width_does_nothing_without_a_column():
-    view = SimpleNamespace(get_columns=lambda: [])
-
-    StoreTreeView.reset_column_width(view)  # must not raise
-
-
 # select_index() #
 
 def test_select_index_does_nothing_without_a_valid_model():

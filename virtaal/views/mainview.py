@@ -1498,9 +1498,6 @@ class MainView(BaseView):
         return is_fullscreen or self._restoring_from_fullscreen
 
     def _restore_pre_fullscreen_size(self, target_size):
-        store_controller = self.controller.store_controller
-        if store_controller.store is not None:
-            store_controller.view._treeview.reset_column_width()
         logging.debug("fullscreen: resizing to %s (get_size() was %s)", target_size, self.main_window.get_size())
         self.main_window.resize(*target_size)
         logging.debug("fullscreen: get_size() now reports %s", self.main_window.get_size())

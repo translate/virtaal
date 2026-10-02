@@ -9,7 +9,7 @@ import re
 
 from diff_match_patch import diff_match_patch
 
-from virtaal.views.theme import current_theme
+from virtaal.views.theme import current_theme, readable_fg
 
 # We want to draw unexpected spaces specially so that users can spot them
 # easily without having to resort to showing all spaces weirdly
@@ -122,21 +122,25 @@ _diff_pango_templates = {
                 "underline='single'"\
                 "underline_color='#777777'"\
                 "weight='bold'"\
-                "background='%(diff_insert_bg)s'",
+                "background='%(diff_insert_bg)s'"\
+                "foreground='%(diff_insert_fg)s'",
         'delete_attr':
                 "strikethrough='true'"\
                 "strikethrough_color='#777'"\
-                "background='%(diff_delete_bg)s'",
+                "background='%(diff_delete_bg)s'"\
+                "foreground='%(diff_delete_fg)s'",
         #replace_attr_remove = delete_attr
         'replace_attr_add':
                 "underline='single'"\
                 "underline_color='#777777'"\
                 "weight='bold'"
-                "background='%(diff_replace_bg)s'",
+                "background='%(diff_replace_bg)s'"\
+                "foreground='%(diff_replace_fg)s'",
         'replace_attr_add_case':
                 "underline='single'"\
                 "underline_color='#777777'"\
-                "background='%(diff_replace_bg)s'",
+                "background='%(diff_replace_bg)s'"\
+                "foreground='%(diff_replace_fg)s'",
 }
 
 differencer = diff_match_patch()
@@ -148,11 +152,16 @@ def pango_diff(a, b):
     much shorter string). Certain cases with mostly case differences are
     highlighted more subtly."""
 
-    insert_attr = _diff_pango_templates['insert_attr'] % current_theme
-    delete_attr = _diff_pango_templates['delete_attr'] % current_theme
+    # The highlight's own text colour, or a selected row's (white) text
+    # can be unreadable on a light highlight.
+    colours = dict(current_theme)
+    for key in ('diff_insert', 'diff_delete', 'diff_replace'):
+        colours[key + '_fg'] = readable_fg(current_theme[key + '_bg'])
+    insert_attr = _diff_pango_templates['insert_attr'] % colours
+    delete_attr = _diff_pango_templates['delete_attr'] % colours
     replace_attr_remove = delete_attr
-    replace_attr_add = _diff_pango_templates['replace_attr_add'] % current_theme
-    replace_attr_add_case = _diff_pango_templates['replace_attr_add_case'] % current_theme
+    replace_attr_add = _diff_pango_templates['replace_attr_add'] % colours
+    replace_attr_add_case = _diff_pango_templates['replace_attr_add_case'] % colours
 
     textdiff = "" # to store the final result
     removed = "" # the removed text that we might still want to add

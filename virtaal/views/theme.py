@@ -183,6 +183,13 @@ def has_reasonable_contrast(c1, c2):
     # being the edge case
 
 
+def readable_fg(bg):
+    """Black or white, whichever is more readable on `bg`."""
+    if _luminance_contrast_ratio(bg, "#000") >= _luminance_contrast_ratio(bg, "#fff"):
+        return "#000"
+    return "#fff"
+
+
 def _distinguishable_from(bg, fg, color):
     """Returns `color`, unless it isn't reasonably distinguishable from `bg`
     (a highlight background disappearing into the page background), in which

@@ -14,6 +14,7 @@ palette changes."""
 
 import pytest
 
+from virtaal.views import markup, theme
 from virtaal.views.markup import markuptext
 from virtaal.views.theme import current_theme
 
@@ -115,3 +116,17 @@ def test_markuptext_ignores_diff_text_when_equal_to_text():
     result = markuptext("same & same", diff_text="same & same")
     assert result == "same &amp; same"
     assert "<span" not in result
+
+
+def test_pango_diff_highlights_set_a_readable_text_colour():
+    # A selected TM row has white text; without its own colour a
+    # highlighted word was white on pale yellow.
+    result = markup.pango_diff('save before closing', 'save before exiting')
+
+    assert "background='%s'" % theme.current_theme['diff_replace_bg'] in result
+    assert "foreground='%s'" % theme.readable_fg(theme.current_theme['diff_replace_bg']) in result
+
+
+def test_readable_fg_picks_black_on_light_and_white_on_dark():
+    assert theme.readable_fg('#ffff70') == '#000'
+    assert theme.readable_fg('#4a4a00') == '#fff'

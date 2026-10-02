@@ -154,7 +154,8 @@ Virtaal will move you between certain rows. Normally it will move between all
 rows, but if you activate the "Incomplete" mode, it will move between
 untranslated and fuzzy units. This allows you to quickly find the places where
 you need to work. Translations will still appear between the same rows in the
-file so that you can see the context that you are translating in.
+file so that you can see the context that you are translating in, unless you
+choose less :ref:`context <using_virtaal#context>`.
 
 .. _using_virtaal#workflow_mode:
 
@@ -172,7 +173,8 @@ Searching Mode
 Activate searching mode in the mode selector at the top, or simply press
 :kbd:`F3`.  Virtaal will then move between all the rows that correspond to your
 search query. Translations will still appear between the same rows in the file
-so that you can see the context that you are translating in.
+so that you can see the context that you are translating in, unless you choose
+less :ref:`context <using_virtaal#context>`.
 
 To move back from the search box to your translation, simply press
 :kbd:`Enter`, or go back to another mode.
@@ -185,6 +187,19 @@ Quality Checks Mode
 In the “Quality checks” navigation mode, you can select certain quality checks
 from the list of possible issues seen by Virtaal. For more information, visit
 the :doc:`quality checks <checks>` page.
+
+.. _using_virtaal#context:
+
+Context
+-------
+In every mode except "All", the "Context" selector at the top chooses which
+rows are shown. "All", the default, shows every row. "None" shows only the
+rows the mode moves between, and 1, 2 or 3 also show that many rows on either
+side of the row you are translating. A darker line marks each place rows are
+hidden. If nothing matches, the list is empty.
+
+Clicking a row the mode doesn't move between takes you there without leaving
+the mode; :kbd:`Enter` then continues to the next matching row.
 
 .. _using_virtaal#privacy_issues:
 

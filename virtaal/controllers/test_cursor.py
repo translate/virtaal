@@ -5,6 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import pytest
 
 from virtaal.controllers.cursor import Cursor
 
@@ -177,3 +178,28 @@ def test_new_indices_including_the_visited_unit_end_the_visit():
     cursor.move(1)
 
     assert cursor.index == 4
+
+
+def _positioned_cursor(n, pos, circular):
+    cursor = Cursor(None, list(range(n)), circular=circular)
+    cursor.pos = pos
+    changes = []
+    cursor.connect('cursor-changed', lambda *args: changes.append(cursor.pos))
+    return cursor, changes
+
+
+@pytest.mark.parametrize('n, pos, offset, expected', [
+    (5, 4, 1, 0),
+    (5, 0, -1, 4),
+    (5, 3, 2, 0),
+    (5, 4, 5, 4),
+    # Offsets larger than the list, such as PageDown on a short list (#3789).
+    (3, 2, 10, 0),
+    (3, 0, -10, 2),
+    (7, 5, 10, 1),
+    (7, 2, -10, 6),
+])
+def test_move_circular_wraps(n, pos, offset, expected):
+    cursor, _changes = _positioned_cursor(n, pos, circular=True)
+    cursor.move(offset)
+    assert cursor.pos == expected

@@ -161,7 +161,6 @@ class Cursor(GObjectWrapper):
         """Move the cursor C{offset} positions down.
             The cursor will wrap around to the beginning if C{circular=True}
             was given when the cursor was created."""
-        # FIXME: Possibly contains off-by-one bug(s)
         if not self._indices:
             return
         if self._visiting is not None:
@@ -176,12 +175,9 @@ class Cursor(GObjectWrapper):
             self._pos = target
             self.emit('cursor-changed')
             return
-        if 0 <= self.pos + offset < len(self._indices):
+        if self.circular:
+            self.pos = (self.pos + offset) % len(self._indices)
+        elif 0 <= self.pos + offset < len(self._indices):
             self.pos += offset
-        elif self.circular:
-            if self.pos + offset >= 0:
-                self.pos = self.pos + offset - len(self._indices)
-            elif self.pos + offset < 0:
-                self.pos = self.pos + offset + len(self._indices)
         else:
             raise IndexError()

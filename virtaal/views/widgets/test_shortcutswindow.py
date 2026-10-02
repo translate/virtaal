@@ -67,3 +67,16 @@ def test_keyboard_shortcuts_shortcut_matches_the_platform(monkeypatch, _restore_
     shortcuts = dict((description, accel) for _title, group in module.SHORTCUT_GROUPS for accel, description in group)
 
     assert shortcuts['Show this Keyboard Shortcuts window'] == accelerator
+
+
+@pytest.mark.parametrize('description, accelerator', [
+    ('Next Unit and Advance State', '<Control>Return'),
+    ('Next Unit and Reverse State', '<Control><Shift>Return'),
+    ('Jump to the language-pair selector', '<Control>Tab'),
+    ('Jump to the "Navigation:" mode selector', '<Control><Shift>Tab'),
+])
+def test_textbox_shortcuts_use_control_on_every_platform(description, accelerator):
+    # Handled by the target textbox as literal Ctrl, never Cmd on macOS.
+    shortcuts = dict((desc, accel) for _title, group in SHORTCUT_GROUPS for accel, desc in group)
+
+    assert shortcuts[description] == accelerator

@@ -46,6 +46,8 @@ class Cursor(GObjectWrapper):
         # The index before indices last became empty, so refilling them
         # puts the cursor back near the same unit.
         self._last_index = 0
+        # A unit the cursor is on without it being in indices - see visit().
+        self._visiting = None
 
 
     # ACCESSORS #
@@ -66,6 +68,8 @@ class Cursor(GObjectWrapper):
     pos = property(_get_pos, _set_pos)
 
     def _get_index(self):
+        if self._visiting is not None:
+            return self._visiting
         l_indices = len(self._indices)
         if l_indices < 1:
             return -1
@@ -76,16 +80,33 @@ class Cursor(GObjectWrapper):
         """Move the cursor to the cursor to the position specified by C{index}.
             @type  index: int
             @param index: The index that the cursor should point to."""
+        was_visiting = self._visiting is not None
+        self._visiting = None
+        oldpos = self._pos
         self.pos = bisect_left(self._indices, index)
+        if was_visiting and self._indices and self._pos == oldpos:
+            self.emit('cursor-changed')
     index = property(_get_index, _set_index)
 
     def _get_indices(self):
         return self._indices
     def _set_indices(self, value):
+        visiting = self._visiting
         oldindex = self.index if self._indices else self._last_index
         oldpos = self.pos
 
         self._indices = list(value)
+
+        if visiting is not None:
+            # Stay on the visited unit; it may now be in indices.
+            if visiting in self._indices:
+                self._visiting = None
+                self._pos = self._indices.index(visiting)
+            else:
+                self._pos = min(bisect_left(self._indices, visiting), max(len(self._indices) - 1, 0))
+            if not self._indices:
+                self.emit('cursor-empty')
+            return
 
         if not self._indices:
             # No 'cursor-changed': there is no unit to change to, and
@@ -106,7 +127,7 @@ class Cursor(GObjectWrapper):
             currently pointing to.
 
             @returns: C{self.model[self.index]}, or C{None} if any error occurred."""
-        if not self._indices:
+        if self._visiting is None and not self._indices:
             # index is -1 here, which would silently deref the last item.
             return None
         try:
@@ -115,21 +136,21 @@ class Cursor(GObjectWrapper):
             logging.debug('Unable to dereference cursor:\n%s' % (exc))
             return None
 
+    def visit(self, index):
+        """Move the cursor to C{index} even if it isn't in C{self.indices},
+            without adding it: the next move goes to the nearest unit in
+            C{self.indices} by position."""
+        if index in self._indices:
+            self.index = index
+            return
+        if index == self._visiting:
+            return
+        self._visiting = index
+        self.emit('cursor-changed')
+
     def force_index(self, index):
-        """Force the cursor to move to the given index, even if it is not in the
-            C{self.indices} list.
-            This should only be used when absolutely necessary. Be prepared to
-            deal with the consequences of using this method."""
-        oldindex = self.index
-        if index not in self.indices:
-            newindices = list(self.indices)
-            insert_pos = bisect_left(self.indices, index)
-            if insert_pos == len(self.indices):
-                newindices.append(index)
-            else:
-                newindices.insert(insert_pos, index)
-            self.indices = newindices
-        self.index = index
+        """Move the cursor to C{index}, visiting it if it isn't in C{self.indices}."""
+        self.visit(index)
 
     def move(self, offset):
         """Move the cursor C{offset} positions down.
@@ -137,6 +158,18 @@ class Cursor(GObjectWrapper):
             was given when the cursor was created."""
         # FIXME: Possibly contains off-by-one bug(s)
         if not self._indices:
+            return
+        if self._visiting is not None:
+            # Offset 1 is the first unit in indices after the visited one.
+            after = bisect_left(self._indices, self._visiting)
+            target = after + offset - 1 if offset > 0 else after + offset
+            if not 0 <= target < len(self._indices):
+                if not self.circular:
+                    raise IndexError()
+                target %= len(self._indices)
+            self._visiting = None
+            self._pos = target
+            self.emit('cursor-changed')
             return
         if 0 <= self.pos + offset < len(self._indices):
             self.pos += offset

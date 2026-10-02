@@ -507,15 +507,13 @@ def test_on_button_press_ignores_a_click_with_no_row_underneath():
     assert StoreTreeView._on_button_press(view, view, event) is True
 
 
-def test_on_button_press_selects_the_clicked_row_and_switches_to_default_mode():
+def test_on_button_press_visits_the_clicked_row_staying_in_the_mode():
     view = _real_storetreeview()
     view.set_model(['unit0', 'unit1'])
     view.get_model().store_index_to_path = lambda i: (i,)
     view.get_model().path_to_store_index = lambda p: p[0]
-    calls = []
-    view.view.cursor = SimpleNamespace(indices=[], index=None)
-    view.view.controller.main_controller.mode_controller = SimpleNamespace(
-        select_default_mode=lambda: calls.append('default-mode'))
+    visited = []
+    view.view.cursor = SimpleNamespace(visit=visited.append)
     event = SimpleNamespace(window=view.get_bin_window(), x=5.0, y=5.0)
     monkeypatch_get_path_at_pos = (Gtk.TreePath((1,)), view.get_columns()[0], 0, 0)
     view.get_path_at_pos = lambda x, y: monkeypatch_get_path_at_pos
@@ -523,17 +521,14 @@ def test_on_button_press_selects_the_clicked_row_and_switches_to_default_mode():
 
     StoreTreeView._on_button_press(view, view, event)
 
-    assert calls == ['default-mode']
-    assert view.view.cursor.index == 1
+    assert visited == [1]
 
 
 def test_on_button_press_does_nothing_extra_when_the_row_is_unchanged():
     view = _real_storetreeview()
     view.set_model(['unit0'])
-    calls = []
-    view.view.cursor = SimpleNamespace(indices=[], index=None)
-    view.view.controller.main_controller.mode_controller = SimpleNamespace(
-        select_default_mode=lambda: calls.append('default-mode'))
+    visited = []
+    view.view.cursor = SimpleNamespace(visit=visited.append)
     event = SimpleNamespace(window=view.get_bin_window(), x=5.0, y=5.0)
     same_path = Gtk.TreePath((0,))
     view.get_path_at_pos = lambda x, y: (same_path, view.get_columns()[0], 0, 0)
@@ -541,7 +536,7 @@ def test_on_button_press_does_nothing_extra_when_the_row_is_unchanged():
 
     StoreTreeView._on_button_press(view, view, event)
 
-    assert calls == []
+    assert visited == []
 
 
 # _on_cell_edited() #

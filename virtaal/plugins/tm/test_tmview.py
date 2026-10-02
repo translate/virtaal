@@ -148,6 +148,7 @@ def test_show_does_nothing_when_already_visible_and_not_forced():
 
 def test_show_redisplays_an_already_visible_window_when_forced():
     view = _tmview(isvisible=True)
+    view.tmwindow.liststore.append([{'source': 'a'}, ''])
     calls = []
     view.tmwindow.show_all = lambda: calls.append('shown')
 
@@ -168,6 +169,7 @@ def test_show_does_nothing_while_shadowed_by_another_grab():
 
 def test_show_marks_a_blocked_match_as_pending_instead_of_dropping_it():
     view = _tmview(may_show=False)
+    view.tmwindow.liststore.append([{'source': 'a'}, ''])
 
     view.show()
 
@@ -176,6 +178,7 @@ def test_show_marks_a_blocked_match_as_pending_instead_of_dropping_it():
 
 def test_show_displays_the_window_and_updates_state():
     view = _tmview()
+    view.tmwindow.liststore.append([{'source': 'a'}, ''])
     view._should_show_tmwindow = True
     calls = []
     view.tmwindow.show_all = lambda: calls.append('shown')
@@ -661,9 +664,34 @@ def test_suspend_hides_a_visible_window_until_resume():
 
 def test_matches_arriving_while_suspended_wait_for_resume():
     view = _view_for_grab_notify(isvisible=False)
+    view.tmwindow.liststore.append([{'source': 'a'}, ''])
 
     view.suspend()
     view.show()
 
     assert view.isvisible is False
     assert view._should_show_tmwindow is True
+
+
+# #3972: never show an empty TM window
+
+def test_show_does_nothing_without_matches():
+    view = _tmview(isvisible=False)
+    shown = []
+    view.tmwindow.show_all = lambda: shown.append(True)
+
+    view.show()
+
+    assert shown == []
+    assert view.isvisible is False
+
+
+def test_clear_drops_a_pending_show():
+    view = _view_for_grab_notify(should_show=True, isvisible=False)
+    shown = []
+    view.show = lambda: shown.append('shown')
+
+    view.clear()
+    view._on_mainwindow_focus_gained()
+
+    assert shown == []

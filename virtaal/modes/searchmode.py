@@ -20,6 +20,7 @@ class SearchMode(BaseMode):
     """Search mode - Includes only units matching the given search string."""
 
     display_name = _("Search")
+    circular = True
     name = 'Search'
     widgets = []
 

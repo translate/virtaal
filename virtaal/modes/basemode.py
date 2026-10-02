@@ -13,6 +13,8 @@ class BaseMode:
     display_name = ''
     """Subclasses should mark this for translation with _()"""
     widgets = []
+    circular = False
+    """Whether navigation wraps from the last unit to the first."""
 
     # INITIALIZERS #
     def __init__(self, mode_controller):

@@ -254,7 +254,7 @@ class StoreController(BaseController):
             self.main_controller.view.hide_read_only_notice()
 
         from .cursor import Cursor
-        self.cursor = Cursor(self.store, self.store.stats['total'])
+        self.cursor = Cursor(self.store, self.store.stats['total'], circular=False)
 
         self.view.load_store(self.store)
         self.view.show()
@@ -377,7 +377,7 @@ class StoreController(BaseController):
         # Don't force Save As (#3808) - the file already has a real path.
 
         from .cursor import Cursor
-        self.cursor = Cursor(self.store, self.store.stats['total'])
+        self.cursor = Cursor(self.store, self.store.stats['total'], circular=False)
 
         self.view.load_store(self.store)
         self.view.show()

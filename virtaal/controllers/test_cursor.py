@@ -189,6 +189,28 @@ def _positioned_cursor(n, pos, circular):
 
 
 @pytest.mark.parametrize('n, pos, offset, expected', [
+    (5, 1, 1, 2),
+    (5, 1, -1, 0),
+    (5, 4, 1, 4),
+    (5, 0, -1, 0),
+    (5, 2, 10, 4),
+    (5, 2, -10, 0),
+    (1, 0, 1, 0),
+])
+def test_move_stops_at_the_ends(n, pos, offset, expected):
+    cursor, _changes = _positioned_cursor(n, pos, circular=False)
+    cursor.move(offset)
+    assert cursor.pos == expected
+
+
+def test_move_at_the_end_does_not_emit_cursor_changed():
+    cursor, changes = _positioned_cursor(5, 4, circular=False)
+    cursor.move(1)
+    cursor.move(10)
+    assert changes == []
+
+
+@pytest.mark.parametrize('n, pos, offset, expected', [
     (5, 4, 1, 0),
     (5, 0, -1, 4),
     (5, 3, 2, 0),
@@ -203,3 +225,19 @@ def test_move_circular_wraps(n, pos, offset, expected):
     cursor, _changes = _positioned_cursor(n, pos, circular=True)
     cursor.move(offset)
     assert cursor.pos == expected
+
+
+@pytest.mark.parametrize('visiting, offset, circular, expected', [
+    (6, 1, False, 8),
+    (6, -1, False, 5),
+    (9, 1, False, 8),
+    (1, -1, False, 2),
+    (6, 10, False, 8),
+    (9, 1, True, 2),
+    (1, -1, True, 8),
+])
+def test_move_from_a_visited_unit(visiting, offset, circular, expected):
+    cursor = Cursor(None, [2, 5, 8], circular=circular)
+    cursor.visit(visiting)
+    cursor.move(offset)
+    assert cursor.index == expected

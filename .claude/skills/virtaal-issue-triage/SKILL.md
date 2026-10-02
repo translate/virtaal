@@ -37,6 +37,30 @@ ones without checking first (`gh label list --repo translate/virtaal`):
   #3812) and the automated ruff/pylint findings from the non-blocking
   `code-smell` CI job (#3850).
 
+## Milestone scope
+
+Each milestone's description states its scope - read it
+(`gh api repos/translate/virtaal/milestones`) before assigning, and
+hold to it literally. Bugfix milestones fill up with anything that
+seemed urgent when it was filed; 1.0.1 had drifted to 43 open issues
+by 2026-10-03, and only 5 actually fit its scope.
+
+- **1.0.1** - crashes, installation problems, problems in packaged
+  builds only. A UI bug, a data-handling bug that doesn't crash, or a
+  macOS/Windows behaviour quirk that isn't specific to the packaged
+  build doesn't qualify, however annoying it is.
+- **1.1.0** - the TM/MT feature cluster, and the default home for
+  anything user-facing that doesn't fit a bugfix release.
+- **Backlog** - not user-facing: dev-checkout-only behaviour, test
+  suite isolation, asset/tooling automation, and code cleanup where
+  the dangerous path is already disabled (a commented-out call that
+  used to segfault is not a live crash).
+
+When pruning, the rule Dwayne gave: TM-related or potentially
+user-impacting -> 1.1.0, otherwise -> Backlog. An issue with an open PR
+still moves; the PR is unaffected. A milestone edit is a plain
+`gh issue edit <n> --milestone <title>` and needs no comment.
+
 ## Old reports and the rewrite
 
 Given the scale of the GTK3/Python 3 rewrite, treat any report against

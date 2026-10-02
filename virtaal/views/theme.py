@@ -187,8 +187,11 @@ def _distinguishable_from(bg, fg, color):
     """Returns `color`, unless it isn't reasonably distinguishable from `bg`
     (a highlight background disappearing into the page background), in which
     case it falls back to a plain black/white - but only if that fallback
-    would still be readable against `fg`."""
+    stands out from `bg` more than `color` does, and is still readable
+    against `fg`."""
     if has_reasonable_contrast(bg, color):
         return color
     fallback = "#000" if INVERSE else "#fff"
+    if _luminance_contrast_ratio(bg, fallback) <= _luminance_contrast_ratio(bg, color):
+        return color
     return fallback if has_good_contrast(fg, fallback) else color

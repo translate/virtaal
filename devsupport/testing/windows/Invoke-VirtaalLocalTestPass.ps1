@@ -1162,6 +1162,10 @@ Invoke-VirtaalCheck "Navigation mode switching (Incomplete/Quality Checks/Workfl
             }
             Send-VirtaalKeys $t "{ENTER}"
             Start-Sleep -Milliseconds 800
+            # Quality Checks/Workflow open their own menu once chosen -
+            # close it, or it swallows the next click on the combo.
+            Send-VirtaalKeys $t "{ESC}"
+            Start-Sleep -Milliseconds 300
             $logs = Get-VirtaalLogs
             $reached = @($logs.Stdout + $logs.Stderr) | Where-Object { $_ -match "Mode selected: $($mode.InternalName)$" }
             if ($reached) {

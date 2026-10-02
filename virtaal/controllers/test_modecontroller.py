@@ -47,3 +47,39 @@ def test_store_closed_makes_every_mode_available_again():
     controller._on_store_closed(None)
 
     assert controller.unavailable == []
+
+
+def _selecting_controller(**availability):
+    controller = _controller(**availability)
+    controller.default_mode_name = 'default'
+    controller.modenames = {name: name.title() for name in availability}
+    controller.current_mode = None
+    selected, emitted = [], []
+    for name, mode in controller.modes.items():
+        mode.name = name
+        mode.widgets = []
+        mode.selected = lambda name=name: selected.append(name)
+    controller.view.select_mode = lambda displayname: None
+    controller.view.show = lambda: None
+    controller.emit = lambda signal, mode: emitted.append(mode.name)
+    return controller, selected, emitted
+
+
+def test_select_mode_selects_an_available_mode():
+    controller, selected, emitted = _selecting_controller(default=True, incomplete=True)
+
+    controller.select_mode(controller.modes['incomplete'])
+
+    assert controller.current_mode.name == 'incomplete'
+    assert (selected, emitted) == (['incomplete'], ['incomplete'])
+
+
+def test_select_mode_selects_the_default_mode_instead_of_an_unavailable_one():
+    # Selecting Incomplete with nothing incomplete used to re-enter
+    # select_mode() from the mode's own selected() (#3763).
+    controller, selected, emitted = _selecting_controller(default=True, incomplete=False)
+
+    controller.select_mode(controller.modes['incomplete'])
+
+    assert controller.current_mode.name == 'default'
+    assert (selected, emitted) == (['default'], ['default'])

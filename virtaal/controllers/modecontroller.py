@@ -88,6 +88,10 @@ class ModeController(BaseController):
         self.select_mode(self.modes[name])
 
     def select_mode(self, mode):
+        if not mode.is_available():
+            # E.g. reapplying Incomplete to a newly opened file with nothing
+            # incomplete.
+            mode = self.modes[self.default_mode_name]
         if self.current_mode:
             self.view.remove_mode_widgets(self.current_mode.widgets)
             self.current_mode.unselected()

@@ -2402,6 +2402,10 @@ msgid "Save the current file"
 msgstr ""
 
 #: virtaal/views/widgets/shortcutswindow.py
+msgid "Save the current file under a new name"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
 msgid "Close the current file"
 msgstr ""
 

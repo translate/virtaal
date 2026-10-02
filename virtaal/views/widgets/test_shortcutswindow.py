@@ -50,3 +50,9 @@ def test_properties_shortcut_matches_the_platform(monkeypatch, _restore_shortcut
     shortcuts = dict((description, accel) for _title, group in module.SHORTCUT_GROUPS for accel, description in group)
 
     assert shortcuts['Show file properties and statistics'] == accelerator
+
+
+def test_save_as_is_listed():
+    shortcuts = dict((description, accel) for _title, group in SHORTCUT_GROUPS for accel, description in group)
+
+    assert shortcuts['Save the current file under a new name'] == '<Primary><Shift>s'

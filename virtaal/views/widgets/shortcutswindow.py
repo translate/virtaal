@@ -17,6 +17,7 @@ SHORTCUT_GROUPS = [
     (_("Global"), [
         ("<Primary>o", _("Open a file")),
         ("<Primary>s", _("Save the current file")),
+        ("<Primary><Shift>s", _("Save the current file under a new name")),
         ("<Primary>w", _("Close the current file")),
         ("<Primary>q", _("Quit Virtaal")),
         ("<Primary>p", _("Show preferences dialog")),

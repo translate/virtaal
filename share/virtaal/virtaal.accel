@@ -7,7 +7,7 @@
 (gtk_accel_path "<Virtaal>/File/Close" "<Meta>w")
 (gtk_accel_path "<Virtaal>/File/Save" "<Meta>s")
 (gtk_accel_path "<Virtaal>/File/Save As" "<Meta><Shift>s")
-(gtk_accel_path "<Virtaal>/File/Properties" "<Mod5>Return")
+(gtk_accel_path "<Virtaal>/File/Properties" "<Meta>i")
 
 ; Edit Menu
 (gtk_accel_path "<Virtaal>/Edit/Preferences" "<Meta>,")
@@ -29,12 +29,6 @@
 (gtk_accel_path "<Virtaal>/TM/Select match 7" "<Meta>7")
 (gtk_accel_path "<Virtaal>/TM/Select match 8" "<Meta>8")
 (gtk_accel_path "<Virtaal>/TM/Select match 9" "<Meta>9")
-
-; Placeables
-(gtk_accel_path "<Virtaal>/Edit/Prev Placeable" "<Mod5>Left")
-(gtk_accel_path "<Virtaal>/Edit/Next Placeable" "<Mod5>Right")
-(gtk_accel_path "<Virtaal>/Edit/Insert Placeable" "<Mod5>Down")
-
 
 ; Unit navigation
 (gtk_accel_path "<Virtaal>/Navigation/PgUp" "<Meta>Page_Up")

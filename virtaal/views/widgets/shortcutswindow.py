@@ -7,6 +7,8 @@
 
 from gi.repository import Gtk
 
+from virtaal.common.platform import platform
+
 # The one binding this doesn't cover: right-click for external
 # look-up, mouse-only so it doesn't fit a keyboard-shortcuts window.
 # Only imported lazily (see mainview.py's _on_shortcuts()), so _() is
@@ -18,7 +20,7 @@ SHORTCUT_GROUPS = [
         ("<Primary>w", _("Close the current file")),
         ("<Primary>q", _("Quit Virtaal")),
         ("<Primary>p", _("Show preferences dialog")),
-        ("<Alt>Return", _("Show file properties and statistics")),
+        ("<Primary>i" if platform.is_mac else "<Alt>Return", _("Show file properties and statistics")),
         ("F11", _("Toggle fullscreen mode")),
         ("<Primary>question", _("Show this Keyboard Shortcuts window")),
     ]),

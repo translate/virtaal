@@ -20,6 +20,10 @@ class BaseMode:
 
 
     # METHODS #
+    def is_available(self):
+        """Whether the mode has any units to navigate in the open file."""
+        return True
+
     def selected(self):
         """Signals that this mode has just been selected by the given document."""
         raise NotImplementedError()

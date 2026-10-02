@@ -27,16 +27,24 @@ class QuickTranslateMode(BaseMode):
 
 
     # METHODS #
+    def _incomplete_indices(self, cursor):
+        return list(UnionSetEnumerator(
+            SortedSet(cursor.model.stats['untranslated']),
+            SortedSet(cursor.model.stats['fuzzy'])
+        ).set)
+
+    def is_available(self):
+        cursor = self.controller.main_controller.store_controller.cursor
+        if not cursor or not cursor.model:
+            return True
+        return bool(self._incomplete_indices(cursor))
+
     def selected(self):
         cursor = self.controller.main_controller.store_controller.cursor
         if not cursor or not cursor.model:
             return
 
-        indices = list(UnionSetEnumerator(
-            SortedSet(cursor.model.stats['untranslated']),
-            SortedSet(cursor.model.stats['fuzzy'])
-        ).set)
-
+        indices = self._incomplete_indices(cursor)
         if not indices:
             self.controller.select_default_mode()
             return

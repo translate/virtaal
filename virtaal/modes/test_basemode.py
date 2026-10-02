@@ -25,3 +25,9 @@ def test_unselected_is_not_implemented():
     mode = BaseMode.__new__(BaseMode)
     with pytest.raises(NotImplementedError):
         mode.unselected()
+
+
+def test_is_available_by_default():
+    mode = BaseMode.__new__(BaseMode)
+
+    assert mode.is_available() is True

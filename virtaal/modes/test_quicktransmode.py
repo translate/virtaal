@@ -56,3 +56,19 @@ def test_unselected_does_nothing():
     mode = _mode(cursor=None)
 
     mode.unselected()  # must not raise
+
+
+def test_is_available_without_an_open_file():
+    assert _mode(cursor=None).is_available() is True
+
+
+def test_is_not_available_when_nothing_is_incomplete():
+    cursor = SimpleNamespace(model=SimpleNamespace(stats={'untranslated': [], 'fuzzy': []}))
+
+    assert _mode(cursor=cursor).is_available() is False
+
+
+def test_is_available_with_a_fuzzy_unit():
+    cursor = SimpleNamespace(model=SimpleNamespace(stats={'untranslated': [], 'fuzzy': [3]}))
+
+    assert _mode(cursor=cursor).is_available() is True

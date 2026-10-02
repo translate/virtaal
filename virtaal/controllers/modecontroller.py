@@ -43,7 +43,10 @@ class ModeController(BaseController):
         self.current_mode = None
         self.view.select_mode(self.modenames[self.default_mode_name])
 
-        self.main_controller.store_controller.connect('store-closed', self._on_store_closed)
+        store_controller = self.main_controller.store_controller
+        store_controller.connect('store-loaded', self._on_store_changed)
+        store_controller.connect('stats-changed', self._on_store_changed)
+        store_controller.connect('store-closed', self._on_store_closed)
 
     def _init_modes(self):
         self.modes = {}
@@ -69,6 +72,11 @@ class ModeController(BaseController):
             self.select_default_mode()
         else:
             self.select_mode(self.current_mode)
+
+    def update_mode_availability(self):
+        self.view.set_unavailable_modes(
+            [mode.display_name for mode in self.modes.values() if not mode.is_available()]
+        )
 
     def select_default_mode(self):
         self.select_mode_by_name(self.default_mode_name)
@@ -99,6 +107,10 @@ class ModeController(BaseController):
         if not getattr(self, '_ignore_mode_change', True):
             self.select_mode(self.get_mode_by_display_name(modename))
 
+    def _on_store_changed(self, _store_controller):
+        self.update_mode_availability()
+
     def _on_store_closed(self, store_controller):
+        self.view.set_unavailable_modes([])
         self.select_default_mode()
         self.view.hide()

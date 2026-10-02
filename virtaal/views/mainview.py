@@ -467,8 +467,6 @@ class MainView(BaseView):
         for path, key in (
             ("<Virtaal>/File/Open", Gdk.KEY_o),
             ("<Virtaal>/File/Save", Gdk.KEY_s),
-            ("<Virtaal>/File/Close", Gdk.KEY_w),
-            ("<Virtaal>/Help/Shortcuts", Gdk.KEY_question),
         ):
             Gtk.AccelMap.add_entry(path, key, Gdk.ModifierType.CONTROL_MASK)
         if not platform.is_mac:
@@ -477,11 +475,13 @@ class MainView(BaseView):
             # instead (loaded in _setup_macos_integration()).
             Gtk.AccelMap.add_entry("<Virtaal>/Edit/Preferences", Gdk.KEY_p, Gdk.ModifierType.CONTROL_MASK)
         if platform.is_mac:
-            # Ctrl->Cmd translation doesn't reach Ctrl+Shift - see Redo.
-            saveas_mods = Gdk.ModifierType.META_MASK | Gdk.ModifierType.MOD2_MASK | Gdk.ModifierType.SHIFT_MASK
+            # Ctrl->Cmd translation doesn't reach shifted keys - see Redo.
+            primary = Gdk.ModifierType.META_MASK | Gdk.ModifierType.MOD2_MASK
         else:
-            saveas_mods = Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK
-        Gtk.AccelMap.add_entry("<Virtaal>/File/Save As", Gdk.KEY_s, saveas_mods)
+            primary = Gdk.ModifierType.CONTROL_MASK
+        Gtk.AccelMap.add_entry("<Virtaal>/File/Save As", Gdk.KEY_s, primary | Gdk.ModifierType.SHIFT_MASK)
+        # macOS reserves Cmd+? for opening the Help menu.
+        Gtk.AccelMap.add_entry("<Virtaal>/Help/Shortcuts", Gdk.KEY_slash if platform.is_mac else Gdk.KEY_question, primary)
         self.gui.get_object('menu_file').set_accel_group(self.accel_group)
         self.gui.get_object('menu_help').set_accel_group(self.accel_group)
         self.gui.get_object('mnu_shortcuts').set_accel_path("<Virtaal>/Help/Shortcuts")

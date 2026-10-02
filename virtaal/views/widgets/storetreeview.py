@@ -117,7 +117,7 @@ class StoreTreeView(Gtk.TreeView):
                 return
             path, editcol = self.get_cursor()
             if path is not None:
-                self.set_cursor(path, editcol or column, start_editing=True)
+                self._restart_editing(path, editcol or column)
         self._schedule_revalidate_visible_estimated_rows()
 
     def _on_vadjustment_notify(self, _widget, _pspec):
@@ -415,9 +415,22 @@ class StoreTreeView(Gtk.TreeView):
         column = self.get_columns()[0] if self.get_columns() else None
         path, editcol = self.get_cursor()
         if column and path is not None:
-            self.set_cursor(path, editcol or column, start_editing=True)
+            self._restart_editing(path, editcol or column)
         self._restore_cursor()
         return False  # one-shot: don't repeat this GLib.timeout_add
+
+    def _restart_editing(self, path, column):
+        """Re-place the editor after a resize, without taking focus from a
+            widget outside this tree view, such as the search box."""
+        window = self.get_toplevel()
+        focus = window.get_focus() if isinstance(window, Gtk.Window) else None
+        self.set_cursor(path, column, start_editing=True)
+        if focus is None or focus is self or focus.is_ancestor(self) or window.get_focus() is focus:
+            return
+        if isinstance(focus, Gtk.Entry):
+            focus.grab_focus_without_selecting()
+        else:
+            focus.grab_focus()
 
     def _on_destroy(self, _widget):
         if self._configure_timeout_id is not None:

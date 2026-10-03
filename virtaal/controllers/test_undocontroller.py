@@ -62,6 +62,7 @@ class _FakeUnitController:
         self.current_unit = unit
         self.restored_states = []  # [(state, sticky), ...]
         self.set_states = []  # [state, ...], from set_current_state()
+        self.emitted = []
 
     def connect(self, signal, handler):
         pass
@@ -76,6 +77,9 @@ class _FakeUnitController:
 
     def _correct_empty_state(self, unit):
         pass  # _correct_state_after_undo_redo()'s own re-check; not under test here
+
+    def emit(self, signal, *args):
+        self.emitted.append((signal, *args))
 
 
 class _FakeStoreController:
@@ -238,6 +242,21 @@ def test_correct_state_after_undo_redo_updates_modified_flag():
 
     controller._on_redo_activated()
     assert modified_calls[-1] is True
+
+
+def test_correct_state_after_undo_redo_announces_unit_done():
+    # Undo/redo reverts a unit's translation without ever going through
+    # UnitView's normal edit-tracking signals (see _perform_undo()'s own
+    # disable_signals()/enable_signals() around the revert) - anything
+    # listening for 'unit-done' (e.g. the nav ribbon) would otherwise
+    # never learn the unit's state changed.
+    textbox = _FakeTextbox('a')
+    unit = _FakeUnit()
+    controller = _make_controller(textbox, unit)
+
+    controller._correct_state_after_undo_redo()
+
+    assert controller.unit_controller.emitted == [('unit-done', unit, True)]
 
 
 def test_sensitivity_reflects_undo_redo_stack_state():

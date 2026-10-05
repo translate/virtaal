@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-06 17:32+0000\n"
+"POT-Creation-Date: 2026-10-06 00:51+0100\n"
 "PO-Revision-Date: 2010-08-03 00:56+0000\n"
 "Last-Translator: cmarfo <cmarfo@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,28 +13,26 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Pootle 2.5.1-rc1\n"
 
-#: ../gtkspell/gtkspell.c:384
+#. Seen in: menus
 msgid "<i>(no suggestions)</i>"
 msgstr "<i>(adwenkyerɛ biara nni hɔ)</i>"
 
-#: ../gtkspell/gtkspell.c:398
-msgid "More..."
-msgstr "Bio..."
-
 #. + Add to Dictionary
-#: ../gtkspell/gtkspell.c:424
+#. Seen in: menus
 msgid "Add \"%s\" to Dictionary"
 msgstr "Fa \"%s\" ka Nsɛmfuasekyerɛ ho"
 
 #. - Ignore All
-#: ../gtkspell/gtkspell.c:435
+#. Seen in: menus
 msgid "Ignore All"
 msgstr "Bu wo eni gu wɔn Nyinara so"
 
-#: ../gtkspell/gtkspell.c:468
-msgid "Spelling Suggestions"
-msgstr "Adwenkyerɛ fa Spɛɛlen ho"
+msgid "More..."
+msgstr "Bio..."
+
+#~ msgid "Spelling Suggestions"
+#~ msgstr "Adwenkyerɛ fa Spɛɛlen ho"
 
 # New menu entry added in v2.0.15 (no available current POT file)
-msgid "Languages"
-msgstr "Akasa"
+#~ msgid "Languages"
+#~ msgstr "Akasa"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-06 17:32+0000\n"
+"POT-Creation-Date: 2026-10-06 00:51+0100\n"
 "PO-Revision-Date: 2011-05-11 16:24+0000\n"
 "Last-Translator: abel <sedric@translate.org.za>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,28 +13,26 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.1-rc1\n"
 
-#: ../gtkspell/gtkspell.c:384
+#. Seen in: menus
 msgid "<i>(no suggestions)</i>"
 msgstr "<i>(azikho iziphakamiso)</i>"
 
-#: ../gtkspell/gtkspell.c:398
-msgid "More..."
-msgstr "Okungaphezulu..."
-
 #. + Add to Dictionary
-#: ../gtkspell/gtkspell.c:424
+#. Seen in: menus
 msgid "Add \"%s\" to Dictionary"
 msgstr "Yongeza i-\"%s\" kusichazamazwi"
 
 #. - Ignore All
-#: ../gtkspell/gtkspell.c:435
+#. Seen in: menus
 msgid "Ignore All"
 msgstr "Ziba konke"
 
-#: ../gtkspell/gtkspell.c:468
-msgid "Spelling Suggestions"
-msgstr "Iziphakamiso zokupela"
+msgid "More..."
+msgstr "Okungaphezulu..."
+
+#~ msgid "Spelling Suggestions"
+#~ msgstr "Iziphakamiso zokupela"
 
 # New menu entry added in v2.0.15 (no available current POT file)
-msgid "Languages"
-msgstr "Izilimi"
+#~ msgid "Languages"
+#~ msgstr "Izilimi"

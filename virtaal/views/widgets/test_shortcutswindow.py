@@ -89,6 +89,8 @@ def _with_digits(monkeypatch, digits):
     import builtins
     real = builtins._
     monkeypatch.setattr(builtins, '_', lambda s: digits if s == '0123456789' else real(s))
+    from virtaal.common import pan_app
+    monkeypatch.setattr(pan_app, 'ui_language', 'en')
 
 
 @pytest.mark.parametrize('digits, expected', [

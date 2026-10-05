@@ -74,7 +74,9 @@ def _context_view():
     return view, selected
 
 
-def test_context_selector_offers_none_to_all():
+def test_context_selector_offers_none_to_all(monkeypatch):
+    from virtaal.common import pan_app
+    monkeypatch.setattr(pan_app, 'ui_language', 'en')
     view, _selected = _context_view()
 
     assert [row[0] for row in view.cmb_context.get_model()] == ['None', '1', '2', '3', 'All']

@@ -240,7 +240,7 @@ class PropertiesView(BaseView, GObjectWrapper):
         self._widgets['lbl_string_live_total'].set_markup(_("<b>%d</b>") % total_strings)
 
     def _update_file_info_labels(self):
-        self._widgets['lbl_type'].set_text(self.data['file_type'])
+        self._widgets['lbl_type'].set_text(_(self.data['file_type']))
         filename = self.data.get('file_location', '')
         self._widgets['lbl_location'].set_text(filename)
         if filename:

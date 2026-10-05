@@ -171,9 +171,12 @@ move only across units that need more work, review process, or both.
 
 Searching Mode
 --------------
-Activate searching mode in the mode selector at the top, or simply press
-:kbd:`F3`.  Virtaal will then move between all the rows that correspond to your
-search query. Translations will still appear between the same rows in the file
+Activate searching mode in the mode selector at the top, choose
+:menuselection:`Edit --> Find…`, or simply press :kbd:`Ctrl+F` or :kbd:`F3`.
+Virtaal will then move between all the rows that correspond to your search
+query. :menuselection:`Edit --> Find Next` (:kbd:`Ctrl+G`) and
+:menuselection:`Edit --> Find Previous` (:kbd:`Ctrl+Shift+G`) step through the
+matches. Translations will still appear between the same rows in the file
 so that you can see the context that you are translating in, unless you choose
 less :ref:`context <using_virtaal#context>`.
 

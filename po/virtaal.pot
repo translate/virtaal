@@ -121,6 +121,18 @@ msgstr ""
 msgid "_Redo"
 msgstr ""
 
+#: share/virtaal/virtaal.ui
+msgid "_Find…"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "Find Ne_xt"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "Find Pre_vious"
+msgstr ""
+
 #. l10n: Activating this menu item replaces the target with the whole source. The "copy" is not necessarily the same as the source: language-specific punctuation changes are made automatically.
 #: share/virtaal/virtaal.ui
 msgid "Transfer From Source"

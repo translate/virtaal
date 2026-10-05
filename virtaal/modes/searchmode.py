@@ -98,13 +98,47 @@ class SearchMode(BaseMode):
         Gtk.AccelMap.add_entry("<Virtaal>/Edit/Search: Close", Gdk.KEY_Escape, 0)
 
         self.accel_group = Gtk.AccelGroup()
+        # F3 has no menu item of its own.
         self.accel_group.connect_by_path("<Virtaal>/Edit/Search", self._on_start_search)
-        self.accel_group.connect_by_path("<Virtaal>/Edit/Search Ctrl+F", self._on_start_search)
-        self.accel_group.connect_by_path("<Virtaal>/Edit/Search: Next", self._on_search_next)
-        self.accel_group.connect_by_path("<Virtaal>/Edit/Search: Previous", self._on_search_prev)
         self.accel_group.connect_by_path("<Virtaal>/Edit/Search: Close", self._on_close_search)
 
-        self.controller.main_controller.view.add_accel_group(self.accel_group)
+        mainview = self.controller.main_controller.view
+        mainview.add_accel_group(self.accel_group)
+
+        menu_edit = mainview.gui.get_object('menu_edit')
+        if not menu_edit.get_accel_group():
+            menu_edit.set_accel_group(self.accel_group)
+        self.mnu_find = mainview.gui.get_object('mnu_find')
+        self.mnu_find_next = mainview.gui.get_object('mnu_find_next')
+        self.mnu_find_prev = mainview.gui.get_object('mnu_find_prev')
+        self.mnu_find.connect('activate', self._on_find)
+        self.mnu_find_next.connect('activate', self._on_search_next)
+        self.mnu_find_prev.connect('activate', self._on_search_prev)
+        self.mnu_find.set_accel_path("<Virtaal>/Edit/Search Ctrl+F")
+        self.mnu_find_next.set_accel_path("<Virtaal>/Edit/Search: Next")
+        self.mnu_find_prev.set_accel_path("<Virtaal>/Edit/Search: Previous")
+        # GtkosxApplication only shows an item's shortcut in the native
+        # menu when the item is (re)parented after its accel path is set.
+        for item in (self.mnu_find, self.mnu_find_next, self.mnu_find_prev):
+            pos = menu_edit.get_children().index(item)
+            menu_edit.remove(item)
+            menu_edit.insert(item, pos)
+        mainview.sync_menubar()
+
+        store_controller = self.controller.main_controller.store_controller
+        store_controller.connect('store-loaded', lambda *args: self._update_menu_sensitivity())
+        store_controller.connect('store-closed', lambda *args: self._update_menu_sensitivity())
+        self.controller.connect('mode-selected', lambda *args: self._update_menu_sensitivity())
+        self._update_menu_sensitivity()
+
+    def _update_menu_sensitivity(self):
+        """Find needs a file; Find Next and Find Previous also need Search
+            to be the current mode."""
+        has_file = self.controller.main_controller.store_controller.get_store() is not None
+        searching = getattr(self.controller, 'current_mode', None) is self
+        self.mnu_find.set_sensitive(has_file)
+        self.mnu_find_next.set_sensitive(has_file and searching)
+        self.mnu_find_prev.set_sensitive(has_file and searching)
 
 
     # METHODS #
@@ -540,15 +574,9 @@ class SearchMode(BaseMode):
         self._move_match(1)
 
     def _on_search_next(self, *args):
-        # FIXME: Remove the following check when these actions are connected to menu items.
-        if self.controller.main_controller.store_controller.store is None:
-            return
         self._move_match(1)
 
     def _on_search_prev(self, *args):
-        # FIXME: Remove the following check when these actions are connected to menu items.
-        if self.controller.main_controller.store_controller.store is None:
-            return
         self._move_match(-1)
 
     def _cancel_search_timeout(self):
@@ -564,10 +592,12 @@ class SearchMode(BaseMode):
         self._search_timeout = GLib.timeout_add(self.SEARCH_DELAY, self.update_search)
 
     def _on_start_search(self, _accel_group, _acceleratable, _keyval, _modifier):
-        """This is called via the accelerator."""
-        # FIXME: Remove the following check when these actions are connected to menu items.
+        """F3: unlike a menu item's shortcut, this fires with no file open too."""
         if self.controller.main_controller.store_controller.store is None:
             return
+        self._on_find()
+
+    def _on_find(self, *args):
         self.controller.select_mode(self)
 
     def _on_close_search(self, *args):

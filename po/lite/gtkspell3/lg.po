@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-06 17:32+0000\n"
+"POT-Creation-Date: 2026-10-06 00:51+0100\n"
 "PO-Revision-Date: 2010-08-03 01:08+0000\n"
 "Last-Translator: OLWENY <sjolweny85@yahoo.co.uk>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,28 +12,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Pootle 2.5.1-rc1\n"
 
-#: ../gtkspell/gtkspell.c:384
+#. Seen in: menus
 msgid "<i>(no suggestions)</i>"
 msgstr "<i>(tewali magezi gaweereddwa)</i>"
 
-#: ../gtkspell/gtkspell.c:398
-msgid "More..."
-msgstr "Yongera..."
-
 #. + Add to Dictionary
-#: ../gtkspell/gtkspell.c:424
+#. Seen in: menus
 msgid "Add \"%s\" to Dictionary"
 msgstr "Gattako \"%s\" ku Nkuluze"
 
 #. - Ignore All
-#: ../gtkspell/gtkspell.c:435
+#. Seen in: menus
 msgid "Ignore All"
 msgstr "Ziimura Byonna"
 
-#: ../gtkspell/gtkspell.c:468
-msgid "Spelling Suggestions"
-msgstr "Endowooza ku Mpandiika"
+msgid "More..."
+msgstr "Yongera..."
+
+#~ msgid "Spelling Suggestions"
+#~ msgstr "Endowooza ku Mpandiika"
 
 # New menu entry added in v2.0.15 (no available current POT file)
-msgid "Languages"
-msgstr "Ennimi"
+#~ msgid "Languages"
+#~ msgstr "Ennimi"

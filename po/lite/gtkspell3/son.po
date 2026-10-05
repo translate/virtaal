@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-06 17:32+0000\n"
+"POT-Creation-Date: 2026-10-06 00:51+0100\n"
 "PO-Revision-Date: 2010-08-03 01:16+0000\n"
 "Last-Translator: Mohomodou  <mh@bollag-areal.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,28 +13,26 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Pootle 2.5.1-rc1\n"
 
-#: ../gtkspell/gtkspell.c:384
+#. Seen in: menus
 msgid "<i>(no suggestions)</i>"
 msgstr "<i>(no suggestions)</i>"
 
-#: ../gtkspell/gtkspell.c:398
-msgid "More..."
-msgstr "Bešere..."
-
 #. + Add to Dictionary
-#: ../gtkspell/gtkspell.c:424
+#. Seen in: menus
 msgid "Add \"%s\" to Dictionary"
 msgstr "\"%s\" tonton kamasu ga"
 
 #. - Ignore All
-#: ../gtkspell/gtkspell.c:435
+#. Seen in: menus
 msgid "Ignore All"
 msgstr "Kul muray"
 
-#: ../gtkspell/gtkspell.c:468
-msgid "Spelling Suggestions"
-msgstr "Boŋhantum honnandiyaney"
+msgid "More..."
+msgstr "Bešere..."
+
+#~ msgid "Spelling Suggestions"
+#~ msgstr "Boŋhantum honnandiyaney"
 
 # New menu entry added in v2.0.15 (no available current POT file)
-msgid "Languages"
-msgstr "Šenney"
+#~ msgid "Languages"
+#~ msgstr "Šenney"

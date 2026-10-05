@@ -32,6 +32,7 @@ class Platform:
         self.is_intel = machine == 'x86_64'
         self.is_arm = machine == 'arm64'
         environ = environ if environ is not None else os.environ
+        self._environ = environ
         self.is_flatpak = 'FLATPAK_ID' in environ
         # A frozen build's sys.prefix is the build machine's own Python
         # install prefix, not the bundle - callers that need the real
@@ -73,6 +74,29 @@ class Platform:
                 return 'Windows installer'
             if self.is_mac:
                 return 'macOS .dmg'
+        return None
+
+    def build_type(self, checkout_dir=None):
+        """How this copy of Virtaal was built: 'flatpak', 'frozen' (a
+            PyInstaller build), 'source' (a git checkout) or 'installed'
+            (pip or a distro package)."""
+        if self.is_flatpak:
+            return 'flatpak'
+        if self.is_frozen:
+            return 'frozen'
+        if checkout_dir is None:
+            checkout_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        # .git is a file, not a directory, in a git worktree.
+        if os.path.exists(os.path.join(checkout_dir, '.git')):
+            return 'source'
+        return 'installed'
+
+    def ci_name(self):
+        """The CI service this is running under, or None."""
+        if self._environ.get('GITHUB_ACTIONS') == 'true':
+            return 'github-actions'
+        if self._environ.get('CI', '').lower() in ('true', '1'):
+            return 'ci'
         return None
 
 

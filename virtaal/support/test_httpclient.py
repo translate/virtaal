@@ -304,6 +304,29 @@ def test_set_virtaal_useragent_is_idempotent_once_already_set():
     assert client.user_agent == 'Virtaal/1.0 (custom)'
 
 
+def test_set_virtaal_useragent_ends_with_the_build_type_and_ci_service(monkeypatch):
+    from virtaal.support import httpclient
+    monkeypatch.setattr(httpclient.platform, 'build_type', lambda: 'frozen')
+    monkeypatch.setattr(httpclient.platform, 'ci_name', lambda: 'github-actions')
+    client = HTTPClient()
+
+    client.set_virtaal_useragent()
+
+    assert client.user_agent.startswith('Virtaal/')
+    assert client.user_agent.endswith(') Build/frozen CI/github-actions')
+
+
+def test_set_virtaal_useragent_leaves_out_ci_outside_ci(monkeypatch):
+    from virtaal.support import httpclient
+    monkeypatch.setattr(httpclient.platform, 'build_type', lambda: 'source')
+    monkeypatch.setattr(httpclient.platform, 'ci_name', lambda: None)
+    client = HTTPClient()
+
+    client.set_virtaal_useragent()
+
+    assert client.user_agent.endswith(') Build/source')
+
+
 def test_set_virtaal_useragent_reads_the_distro_from_os_release(monkeypatch, tmp_path):
     monkeypatch.setattr(sys, 'platform', 'linux')
     os_release = tmp_path / 'os-release'

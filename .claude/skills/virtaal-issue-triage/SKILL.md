@@ -238,3 +238,19 @@ done
 ```
 
 and retry whichever came back empty.
+
+**What closed an issue** - a merged PR, a commit, or a manual close -
+decides whether it earns a release milestone. The last ClosedEvent's
+`closer` says which:
+
+```
+gh api graphql -f query='{ repository(owner: "translate", name: "virtaal") { issue(number: N) { timelineItems(itemTypes: [CLOSED_EVENT], last: 1) { nodes { ... on ClosedEvent { closer { __typename ... on PullRequest { number merged } ... on Commit { oid } } } } } } } }'
+```
+
+A null `closer` is a manual close: read the closing comment, and check
+`git log upstream/main` for when the fix it cites actually landed.
+
+**`gh issue list --milestone` lags a just-made milestone edit** - two
+issues edited seconds earlier were missing from the list. Check
+`gh issue view N --json milestone` or the milestone's own
+`open_issues` count before re-editing.

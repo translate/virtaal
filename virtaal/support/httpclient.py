@@ -273,20 +273,24 @@ class HTTPClient:
             request.connect('http-server-error', error_callback)
 
     def set_virtaal_useragent(self):
-        """Set a nice user agent indicating Virtaal and its version."""
+        """Set a nice user agent indicating Virtaal, its version, how it
+            was built and any CI service running it, e.g.
+            "Virtaal/1.0.0 (Ubuntu 24.04) Build/source CI/github-actions"."""
         if self.user_agent and self.user_agent.startswith('Virtaal'):
             return
         import sys
 
         from virtaal.__version__ import ver as version
-        platform = sys.platform
-        if platform.startswith('linux'):
-            platform = self._linux_platform_string(platform)
-        elif platform.startswith('win'):
-            platform = self._windows_platform_string(platform)
-        elif platform.startswith('darwin'):
-            platform = self._macos_platform_string(platform)
-        self.user_agent = 'Virtaal/%s (%s)' % (version, platform)
+        os_name = sys.platform
+        if os_name.startswith('linux'):
+            os_name = self._linux_platform_string(os_name)
+        elif os_name.startswith('win'):
+            os_name = self._windows_platform_string(os_name)
+        elif os_name.startswith('darwin'):
+            os_name = self._macos_platform_string(os_name)
+        self.user_agent = 'Virtaal/%s (%s) Build/%s' % (version, os_name, platform.build_type())
+        if platform.ci_name():
+            self.user_agent += ' CI/%s' % platform.ci_name()
 
     def _linux_platform_string(self, platform):
         import os

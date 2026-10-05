@@ -9,6 +9,8 @@ import os
 import platform as platform_module
 import sys
 
+import pytest
+
 from virtaal.common.platform import Platform
 
 
@@ -148,3 +150,43 @@ def test_use_app_name_in_title_linux():
     assert not p.use_app_name_in_title()
     p = Platform(os_name='posix', sys_platform='linux', frozen=True)
     assert not p.use_app_name_in_title()
+
+
+# build_type() / ci_name() #
+
+def test_build_type_flatpak():
+    assert Platform(frozen=False, environ={'FLATPAK_ID': 'io.github.translate.Virtaal'}).build_type() == 'flatpak'
+
+
+def test_build_type_frozen():
+    assert Platform(frozen=True, environ={}).build_type() == 'frozen'
+
+
+def test_build_type_source_in_a_git_checkout_or_worktree(tmp_path):
+    (tmp_path / 'clone').mkdir()
+    (tmp_path / 'clone' / '.git').mkdir()
+    (tmp_path / 'worktree').mkdir()
+    (tmp_path / 'worktree' / '.git').write_text('gitdir: elsewhere')
+    p = Platform(frozen=False, environ={})
+
+    assert p.build_type(checkout_dir=str(tmp_path / 'clone')) == 'source'
+    assert p.build_type(checkout_dir=str(tmp_path / 'worktree')) == 'source'
+
+
+def test_build_type_installed_outside_a_checkout(tmp_path):
+    assert Platform(frozen=False, environ={}).build_type(checkout_dir=str(tmp_path)) == 'installed'
+
+
+def test_build_type_of_this_checkout_is_source():
+    assert Platform(frozen=False, environ={}).build_type() == 'source'
+
+
+@pytest.mark.parametrize('environ, expected', [
+    ({'GITHUB_ACTIONS': 'true', 'CI': 'true'}, 'github-actions'),
+    ({'CI': 'true'}, 'ci'),
+    ({'CI': '1'}, 'ci'),
+    ({'CI': 'false'}, None),
+    ({}, None),
+])
+def test_ci_name(environ, expected):
+    assert Platform(environ=environ).ci_name() == expected

@@ -367,11 +367,24 @@ def test_fix_menu_removes_an_exact_languages_match():
     assert menu.get_children() == []
 
 
+def test_fix_menu_removes_a_translated_languages_item(monkeypatch):
+    # gtkspell shows "Languages" from its own gtkspell3 catalog, so a
+    # translated UI only matches through that same domain.
+    from virtaal.plugins import spellchecker
+    monkeypatch.setattr(spellchecker.GLib, 'dgettext',
+                        lambda domain, msgid: 'Tale' if (domain, msgid) == ('gtkspell3', 'Languages') else msgid)
+    menu = _menu_with('Ignore All', 'Tale')
+    plugin = Plugin.__new__(Plugin)
+
+    plugin._on_populate_popup(textbox=None, menu=menu)
+
+    assert [item.get_property('label') for item in menu.get_children()] == ['Ignore All']
+
+
 def test_fix_menu_keeps_a_label_that_is_only_a_substring_of_languages():
     # Regression: `label in dgettext(...)` did a substring check rather
     # than comparing the whole label, so a short label like "an" was
-    # wrongly removed too (dgettext('gtkspell', 'Languages') returns the
-    # untranslated literal "Languages" here, and "an" is a substring of it).
+    # wrongly removed too ("an" is a substring of "Languages").
     menu = _menu_with('an')
     plugin = Plugin.__new__(Plugin)
 

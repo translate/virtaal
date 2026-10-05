@@ -9,7 +9,6 @@ import logging
 import os
 import os.path
 import re
-from gettext import dgettext
 
 from gi.repository import GLib
 
@@ -227,7 +226,7 @@ class Plugin(BasePlugin):
                 item.set_property('label', _('Add "%s" to Dictionary') % word)
 
             # We don't want a language selector - we have our own
-            if label == dgettext('gtkspell', 'Languages'):
+            if label == GLib.dgettext('gtkspell3', 'Languages'):
                 menu.remove(item)
                 if not _entries_above_separator:
                     continue

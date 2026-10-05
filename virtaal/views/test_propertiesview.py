@@ -377,6 +377,18 @@ def test_show_sets_file_type_and_location():
     assert view._widgets['lbl_location'].get_tooltip_text() == '/tmp/x.po'
 
 
+def test_show_translates_the_file_type(monkeypatch):
+    import builtins
+    real = builtins._
+    monkeypatch.setattr(builtins, '_', lambda s: 'Gettext PO-lêer' if s == 'Gettext PO file' else real(s))
+    view = _show_ready_view()
+    view.data = {'file_type': 'Gettext PO file'}
+
+    view.show()
+
+    assert view._widgets['lbl_type'].get_text() == 'Gettext PO-lêer'
+
+
 def test_show_leaves_location_tooltip_unset_without_a_location():
     view = _show_ready_view()
     view.data = {'file_type': 'PO'}

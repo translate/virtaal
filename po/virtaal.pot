@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Virtaal 1.0.0-beta3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2026-10-02 17:37+0100\n"
+"POT-Creation-Date: 2026-10-06 00:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -452,7 +452,15 @@ msgid "<b><big>Support</big></b>"
 msgstr ""
 
 #: devsupport/tmp_strings.py
-msgid "Gettext PO file"
+msgid "Base translation store"
+msgstr ""
+
+#: devsupport/tmp_strings.py
+msgid "Comma Separated Value"
+msgstr ""
+
+#: devsupport/tmp_strings.py
+msgid "Fluent file"
 msgstr ""
 
 #: devsupport/tmp_strings.py
@@ -460,11 +468,59 @@ msgid "Gettext MO file"
 msgstr ""
 
 #: devsupport/tmp_strings.py
-msgid "Qt .qm file"
+msgid "Gettext PO file"
+msgstr ""
+
+#: devsupport/tmp_strings.py
+msgid "Haiku catkeys file"
+msgstr ""
+
+#: devsupport/tmp_strings.py
+msgid "Mozilla .lang"
 msgstr ""
 
 #: devsupport/tmp_strings.py
 msgid "OmegaT Glossary"
+msgstr ""
+
+#: devsupport/tmp_strings.py
+msgid "Qt .qm file"
+msgstr ""
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "Qt Linguist Translation File"
+msgstr ""
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "Qt Phrase Book"
+msgstr ""
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "TBX Glossary"
+msgstr ""
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "TMX Translation Memory"
+msgstr ""
+
+#: devsupport/tmp_strings.py
+msgid "Trados Translation Memory"
+msgstr ""
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "UTX Dictionary"
+msgstr ""
+
+#: devsupport/tmp_strings.py
+msgid "WiX Localization File"
+msgstr ""
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "Wordfast Translation Memory"
+msgstr ""
+
+#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+msgid "XLIFF Translation File"
 msgstr ""
 
 #: devsupport/tmp_strings.py
@@ -549,19 +605,11 @@ msgid "Translate"
 msgstr ""
 
 #: share/mime/packages/virtaal-mimetype.xml.in
-msgid "TMX Translation Memory"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
 msgid "TMX"
 msgstr ""
 
 #: share/mime/packages/virtaal-mimetype.xml.in
 msgid "Translation Memory eXchange"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "TBX Glossary"
 msgstr ""
 
 #: share/mime/packages/virtaal-mimetype.xml.in
@@ -573,19 +621,7 @@ msgid "TermBase eXchange"
 msgstr ""
 
 #: share/mime/packages/virtaal-mimetype.xml.in
-msgid "Wordfast Translation Memory"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "Qt Linguist Translation File"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
 msgid "Qt Message File"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "Qt Phrase Book"
 msgstr ""
 
 #: share/mime/packages/virtaal-mimetype.xml.in
@@ -606,10 +642,6 @@ msgstr ""
 
 #: share/mime/packages/virtaal-mimetype.xml.in
 msgid "OpenOffice.org Translation File"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "XLIFF Translation File"
 msgstr ""
 
 #: share/mime/packages/virtaal-mimetype.xml.in
@@ -653,10 +685,6 @@ msgid "OS X Strings File"
 msgstr ""
 
 #: share/mime/packages/virtaal-mimetype.xml.in
-msgid "UTX Dictionary"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
 msgid "UTX"
 msgstr ""
 
@@ -695,7 +723,9 @@ msgid "like --pseudo-translation, but also simulates a right-to-left UI layout"
 msgstr ""
 
 #: virtaal/cli.py
-msgid "like --pseudo-translation, but prefixes every string with the catalog it comes from (e.g. \"vt:\" for Virtaal's own, \"gtk:\" for GTK's)"
+msgid ""
+"like --pseudo-translation, but prefixes every string with the catalog it "
+"comes from (e.g. \"vt:\" for Virtaal's own, \"gtk:\" for GTK's)"
 msgstr ""
 
 #: virtaal/cli.py

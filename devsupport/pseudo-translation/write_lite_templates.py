@@ -40,7 +40,10 @@ KEEP = {
               # The recent files menu numbers its first ten items with a
               # mnemonic, the rest without.
               "recent menu label\x04_%d. %s", "recent menu label\x04%d. %s"],
-    "glib20": [],
+    # GLib.format_size() in Properties: a harvest only sees one file
+    # size's unit.
+    "glib20": ["byte\0bytes", "format-size\x04%u %s", "format-size\x04%.1f\xa0%s",
+               "kB", "MB", "GB", "TB", "PB", "EB"],
 }
 WITHIN_NAMES = {"Menu": "menus", "AboutDialog": "About dialog",
                 "ShortcutsWindow": "Keyboard Shortcuts window"}

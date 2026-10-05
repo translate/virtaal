@@ -9,7 +9,7 @@ import logging
 from types import SimpleNamespace
 
 import pytest
-from gi.repository import Gtk
+from gi.repository import GLib, Gtk
 
 from virtaal.support import statsdb
 from virtaal.views import baseview
@@ -405,6 +405,16 @@ def test_show_sets_file_size_when_present():
     view.show()
 
     assert '2.0' in view._widgets['lbl_filesize'].get_text()
+
+
+def test_show_gives_a_large_file_size_in_a_larger_unit():
+    view = _show_ready_view()
+    view.data = {'file_type': 'PO', 'file_size': 5_242_880}
+
+    view.show()
+
+    assert view._widgets['lbl_filesize'].get_text() == GLib.format_size(5_242_880)
+    assert 'MB' in view._widgets['lbl_filesize'].get_text()
 
 
 def test_show_leaves_file_size_untouched_when_absent():

@@ -32,10 +32,11 @@ Currently we translate lite versions for:
 * gtkspell - http://translationproject.org/domain/gtkspell.html
 * Glib - http://l10n.gnome.org/module/glib/
 
-The GTK and GLib templates hold what Virtaal really shows, found by
-running it under --pseudo-translation-source. To regenerate them, on
-each platform you want covered (Linux needs a real locale such as
-LANG=en_US.UTF-8, not C):
+The GTK, GLib and gtkspell templates hold what Virtaal really shows,
+found by running it under --pseudo-translation-source. To regenerate
+them, on each platform you want covered (Linux needs a real locale such
+as LANG=en_US.UTF-8, not C; gtkspell's menu needs a spelling dictionary
+for Afrikaans, the harvest's target language):
 
   python devsupport/pseudo-translation/harvest_sources.py harvest.json
   python devsupport/pseudo-translation/resolve_sources.py harvest.json resolved.json

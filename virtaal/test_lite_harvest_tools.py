@@ -78,6 +78,18 @@ def test_resolve_text_resolves_each_tag_in_a_composite_string(resolve):
         ("iso639-3", "English"), ("iso639-3", "Afrikaans")]
 
 
+def test_load_catalogs_matches_msgids_without_their_markup(resolve, tmp_path):
+    # The harvest records labels' text, not their Pango markup.
+    generator = _load("generate_pseudo_translation")
+    mo_dir = tmp_path / "pseudo-source" / "LC_MESSAGES"
+    mo_dir.mkdir(parents=True)
+    generator.write_mo(str(mo_dir / "gtkspell3.mo"), {"<i>(no suggestions)</i>": "spell:<i>(no suggestions)</i>"})
+
+    catalogs = resolve.load_catalogs(str(tmp_path))
+
+    assert resolve.resolve_text("spell:(no suggestions)", catalogs) == [("gtkspell3", "<i>(no suggestions)</i>")]
+
+
 def test_resolve_text_reports_a_tag_nothing_matches(resolve):
     assert resolve.resolve_text("gtk:Unknown", _catalogs(resolve, "gtk30", ["_Save"])) == [("gtk30", None)]
 

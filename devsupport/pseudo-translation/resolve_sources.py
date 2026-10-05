@@ -10,7 +10,7 @@
 msgids they came from, using the pseudo-source catalogs
 generate_pseudo_translation.py wrote.
 
-A tag (gtk:, glib:, iso:) marks where a translated message starts; the
+A tag (gtk:, glib:, spell:, iso:) marks where a translated message starts; the
 msgid of that domain with the most literal text matching there - printf
 conversions as wildcards, ending at a word boundary - is the one shown. Text with a
 tag but no matching msgid is reported as unresolved.
@@ -31,10 +31,11 @@ import re
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-TAGS = {"gtk:": "gtk30", "glib:": "glib20", "iso:": "iso639-3"}
 # iso: covers both language and country names.
-DOMAINS = {"gtk30": "gtk:", "glib20": "glib:", "iso639-3": "iso:", "iso3166-1": "iso:"}
+DOMAINS = {"gtk30": "gtk:", "glib20": "glib:", "gtkspell3": "spell:", "iso639-3": "iso:", "iso3166-1": "iso:"}
 TAG_RE = re.compile(r"(?:vt|gtk|glib|iso|spell|mac):")
+# The harvest records labels without their Pango markup.
+MARKUP_RE = re.compile(r"<[^>]+>")
 PRINTF_RE = re.compile(r"%(?:\d+\$)?[-+ #0']*\d*(?:\.\d+)?[hlLqjzt]*[diouxXeEfFgGcspa]|%%")
 
 
@@ -73,6 +74,7 @@ def load_catalogs(locale_dir):
         for original in read_mo_originals(path):
             msgid = original.rpartition("\x04")[2]
             for form in msgid.split("\0"):
+                form = MARKUP_RE.sub("", form)
                 if form.strip():
                     entries.append((original, form, msgid_pattern(form)))
         catalogs[domain] = entries

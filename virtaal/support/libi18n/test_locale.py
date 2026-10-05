@@ -223,6 +223,26 @@ def test_bind_library_domains_binds_a_domain_with_a_catalog_for_the_language(
     assert libintl.bound[b'glib20'] == b'/glib/default'
 
 
+def test_rebind_library_domain_binds_to_virtaals_catalog(tmp_path, monkeypatch, fresh_library_defaults):
+    _write_catalog(tmp_path, 'af', 'gtkspell3')
+    monkeypatch.setenv('LANGUAGE', 'af')
+    libintl = _fake_libintl({b'gtkspell3': b'/gtkspell/default'})
+    monkeypatch.setattr(locale_module, '_posix_libintl', lambda: libintl)
+    monkeypatch.setattr(locale_module.platform, 'is_windows', False)
+    monkeypatch.setattr(locale_module.platform, 'locale_dir', str(tmp_path))
+
+    locale_module.rebind_library_domain(b'gtkspell3')
+
+    assert libintl.bound[b'gtkspell3'] == str(tmp_path).encode(sys.getfilesystemencoding())
+
+
+def test_rebind_library_domain_does_nothing_on_windows(monkeypatch):
+    monkeypatch.setattr(locale_module.platform, 'is_windows', True)
+    monkeypatch.setattr(locale_module, '_posix_libintl', lambda: pytest.fail('must not load libintl'))
+
+    locale_module.rebind_library_domain(b'gtkspell3')
+
+
 def test_bind_library_domains_restores_the_default_when_switching_away(
         tmp_path, monkeypatch, fresh_library_defaults):
     # Switching the UI language at runtime to one Virtaal has no gtk30

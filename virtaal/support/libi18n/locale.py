@@ -390,9 +390,6 @@ def _bind_library_domains(libintl, locale_dir):
     """Point each of LIBRARY_DOMAINS at locale_dir when it holds that
     domain's catalog for the current language, otherwise back at the
     library's own default."""
-    import ctypes
-    import gettext
-
     import gi
     gi.require_version('Gtk', '3.0')
     from gi.repository import GLib, Gtk  # noqa: F401
@@ -401,18 +398,48 @@ def _bind_library_domains(libintl, locale_dir):
     # translates anything over 1000 bytes).
     GLib.format_size(2000)
 
-    libintl.bindtextdomain.restype = ctypes.c_char_p
     for domain in LIBRARY_DOMAINS:
-        if domain not in _library_default_dirs:
-            _library_default_dirs[domain] = libintl.bindtextdomain(domain, None)
-        # Same LANGUAGE/LC_ALL/LC_MESSAGES/LANG lookup libintl does.
-        if gettext.find(domain.decode(), locale_dir):
-            dirname = locale_dir.encode(sys.getfilesystemencoding())
-        else:
-            dirname = _library_default_dirs[domain]
-        if dirname:
-            libintl.bindtextdomain(domain, dirname)
-            libintl.bind_textdomain_codeset(domain, b"UTF-8")
+        _bind_library_domain(libintl, domain, locale_dir)
+
+
+def _bind_library_domain(libintl, domain, locale_dir):
+    import ctypes
+    import gettext
+
+    libintl.bindtextdomain.restype = ctypes.c_char_p
+    if domain not in _library_default_dirs:
+        _library_default_dirs[domain] = libintl.bindtextdomain(domain, None)
+    # Same LANGUAGE/LC_ALL/LC_MESSAGES/LANG lookup libintl does.
+    if gettext.find(domain.decode(), locale_dir):
+        dirname = locale_dir.encode(sys.getfilesystemencoding())
+    else:
+        dirname = _library_default_dirs[domain]
+    if dirname:
+        libintl.bindtextdomain(domain, dirname)
+        libintl.bind_textdomain_codeset(domain, b"UTF-8")
+
+
+def _posix_libintl():
+    import ctypes
+    import ctypes.util
+    libname = None
+    if platform.is_mac and platform.is_frozen and platform.bundle_dir:
+        libname = _bundled_macos_libintl(platform.bundle_dir)
+    if libname is None:
+        libname = ctypes.util.find_library('intl')
+    return ctypes.CDLL(libname) if libname else ctypes.CDLL(None)
+
+
+def rebind_library_domain(domain):
+    """Bind a library's gettext domain as _bind_library_domains() does,
+    again - for a library that binds it itself after startup, as
+    gtkspell does for every checker it creates. POSIX only, best-effort."""
+    if platform.is_windows:
+        return
+    try:
+        _bind_library_domain(_posix_libintl(), domain, platform.locale_dir)
+    except (OSError, AttributeError):
+        pass
 
 
 def bind_libintl_posix(locale_dir):
@@ -425,15 +452,8 @@ def bind_libintl_posix(locale_dir):
 
     Best-effort and silent on failure.
     """
-    import ctypes
-    import ctypes.util
     try:
-        libname = None
-        if platform.is_mac and platform.is_frozen and platform.bundle_dir:
-            libname = _bundled_macos_libintl(platform.bundle_dir)
-        if libname is None:
-            libname = ctypes.util.find_library('intl')
-        libintl = ctypes.CDLL(libname) if libname else ctypes.CDLL(None)
+        libintl = _posix_libintl()
         libintl.bindtextdomain(b"virtaal", locale_dir.encode(sys.getfilesystemencoding()))
         libintl.bind_textdomain_codeset(b"virtaal", b"UTF-8")
         _bind_library_domains(libintl, locale_dir)

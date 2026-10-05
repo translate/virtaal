@@ -951,6 +951,9 @@ jobs:
           VIRTAAL_BUILD_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
         run: devsupport/packaging/macos/build_standalone.sh
 
+      - name: Sign the bundle
+        run: devsupport/packaging/macos/codesign_app.sh
+
       - name: Verify the bundle launches cleanly
         # Launch with a real file in the background, confirm the process
         # is still alive after enough time for GTK/plugin init, and
@@ -999,7 +1002,7 @@ jobs:
         # as packaging) and re-check codesign right here.
         run: |
           ditto -x -k dist/Virtaal-macos-app.zip /tmp/verify-signature
-          codesign -dv --verbose=4 /tmp/verify-signature/Virtaal.app
+          codesign --verify --deep --strict --verbose=2 /tmp/verify-signature/Virtaal.app
 
       - uses: actions/upload-artifact@v7
         with:

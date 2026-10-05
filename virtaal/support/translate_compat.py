@@ -90,16 +90,21 @@ def tr_lang(langcode=None):
     langfunc = gettext_lang(langcode)
     countryfunc = gettext_country(langcode)
 
+    def translate_language(language):
+        translated = langfunc(language)
+        if translated == language:
+            # A semicolon-joined name ("Spanish; Castilian") is often only
+            # translated in its cleaned-up form.
+            translated = langfunc(_fix_language_name(language))
+        return _fix_language_name(translated)
+
     def handlelanguage(name):
         match = dialect_name_re.match(name)
         if match:
             language, country = match.groups()
             if country != "macrolanguage":
-                return (
-                    "%s (%s)"
-                    % (_fix_language_name(langfunc(language)),
-                       countryfunc(country)))
-        return _fix_language_name(langfunc(name))
+                return "%s (%s)" % (translate_language(language), countryfunc(country))
+        return translate_language(name)
 
     return handlelanguage
 

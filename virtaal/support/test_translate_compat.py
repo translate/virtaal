@@ -101,6 +101,10 @@ def test_gettext_country_uses_pycountrys_locale_dir_when_available():
     assert f('anything') == 'anything'
 
 
+def test_tr_lang_translates_a_semicolon_joined_name_by_its_cleaned_up_form():
+    assert tr_lang('de')('Spanish; Castilian').startswith('Spanisch')
+
+
 def test_tr_lang_translates_the_country_too():
     assert tr_lang('de')('Portuguese (Brazil)') == 'Portugiesisch (Brasilien)'
 

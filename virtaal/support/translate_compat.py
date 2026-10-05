@@ -153,7 +153,7 @@ def gettext_country(langcode=None):
     """
     if pycountry is None:
         return gettext_domain(langcode, 'iso_3166')
-    return gettext_domain(langcode, 'iso3166', pycountry.LOCALES_DIR)
+    return gettext_domain(langcode, 'iso3166-1', pycountry.LOCALES_DIR)
 
 
 def forceunicode(string):

@@ -101,6 +101,10 @@ def test_gettext_country_uses_pycountrys_locale_dir_when_available():
     assert f('anything') == 'anything'
 
 
+def test_tr_lang_translates_the_country_too():
+    assert tr_lang('de')('Portuguese (Brazil)') == 'Portugiesisch (Brasilien)'
+
+
 def test_gettext_country_falls_back_to_iso_3166_without_pycountry(monkeypatch):
     monkeypatch.setattr(translate_compat, 'pycountry', None)
 

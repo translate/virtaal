@@ -81,8 +81,14 @@ class _FakeUnitController:
 class _FakeStoreController:
     store = object()
 
+    def __init__(self):
+        self.stats_updated = []
+
     def set_modified(self, modified):
         pass
+
+    def update_unit_stats(self, unit):
+        self.stats_updated.append(unit)
 
     def connect(self, signal, handler):
         pass
@@ -158,6 +164,22 @@ def test_undo_then_redo_round_trips_a_textboxs_text():
 
     controller._on_redo_activated()
     assert str(textbox.elem) == 'hello world'
+
+
+def test_undo_and_redo_refresh_the_units_state_lists():
+    # Otherwise a mode chosen before leaving the unit misses its new
+    # state (#4001).
+    textbox = _FakeTextbox('')
+    unit = _FakeUnit()
+    controller = _make_controller(textbox, unit)
+    store_controller = controller.main_controller.store_controller
+
+    controller.push_current_text(textbox)
+    textbox.elem.sub = StringElem('Klaar').sub
+    controller._on_undo_activated()
+    controller._on_redo_activated()
+
+    assert store_controller.stats_updated == [unit, unit]
 
 
 def test_redo_does_nothing_when_the_redo_stack_is_empty():

@@ -380,7 +380,7 @@ class UndoController(BaseController):
 
         self.model.push_redo(redo_list if isinstance(undo_info, list) else redo_list[0])
 
-        self._correct_state_after_undo_redo()
+        self._correct_state_after_undo_redo(self.model.entry_unit(undo_info))
 
     @if_enabled
     def _on_redo_activated(self, *args):
@@ -398,9 +398,9 @@ class UndoController(BaseController):
         for ri in (redo_info if isinstance(redo_info, list) else [redo_info]):
             self._perform_undo(ri)
 
-        self._correct_state_after_undo_redo()
+        self._correct_state_after_undo_redo(self.model.entry_unit(redo_info))
 
-    def _correct_state_after_undo_redo(self):
+    def _correct_state_after_undo_redo(self, unit=None):
         # _modified is otherwise never touched by undo/redo - set it to
         # match whether we're at the last clean (opened/saved) position,
         # in either direction.
@@ -425,6 +425,11 @@ class UndoController(BaseController):
             # bundled state_before/state_after).
             self._flush_pending_refresh()
             self.unit_controller._correct_empty_state(current_unit)
+
+        # Otherwise the unit's state lists only catch up once it's left,
+        # and a mode chosen before then misses it (#4001).
+        if unit is not None:
+            self.main_controller.store_controller.update_unit_stats(unit)
 
         self._update_sensitivity()
 

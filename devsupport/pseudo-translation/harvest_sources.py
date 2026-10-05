@@ -8,12 +8,13 @@
 
 """Drives a real Virtaal window under the pseudo-source locale and
 records every piece of UI text it can find, with the catalog its tag
-names (vt:, gtk:, glib:, iso:) or none.
+names (vt:, gtk:, glib:, spell:, iso:) or none.
 
-Activates every menu item in turn (except Quit), opening each dialog
-it leads to, and after each one walks every toplevel window - widgets,
-menus and submenus, tooltips, combo entries, column titles, window
-titles and accelerator labels. A dialog's run() returns Cancel at once
+Opens the text boxes' context menus, including the spelling menu on a
+misspelled word, then activates every menu item in turn (except Quit),
+opening each dialog it leads to. After each step it walks every
+toplevel window - widgets, menus and submenus, tooltips, combo entries,
+column titles, window titles and accelerator labels. A dialog's run() returns Cancel at once
 instead of blocking; native file choosers and links don't open.
 
 Writes JSON: {"strings": [{"text", "screen", "widget"}, ...]}. See
@@ -196,7 +197,7 @@ def run(output):
     from virtaal.common import pan_app
     from virtaal.main import Virtaal
 
-    pan_app.settings.plugin_state["spellchecker"] = "disabled"
+    pan_app.settings.plugin_state["spellchecker"] = "enabled"
     force_light_theme()
 
     workdir = tempfile.mkdtemp(prefix="virtaal-harvest-")
@@ -247,6 +248,21 @@ def run(output):
             yield from settle(3)
             visit("%s text box context menu" % role)
             for menu in Gtk.Menu.get_for_attach_widget(textbox):
+                menu.popdown()
+
+        # gtkspell's items for a misspelled word, with and without
+        # suggestions - if a dictionary for the target language exists.
+        target = unit_view.targets[0]
+        for word in ("Vertaalprogrm", "xqzvwkjhq"):
+            buffer = target.get_buffer()
+            buffer.set_text(word)
+            buffer.place_cursor(buffer.get_start_iter())
+            yield from settle()
+            target.grab_focus()
+            target.emit("popup-menu")
+            yield from settle(3)
+            visit("spelling menu for %s" % word)
+            for menu in Gtk.Menu.get_for_attach_widget(target):
                 menu.popdown()
 
         menubar = main_controller.view.gui.get_object("menubar")

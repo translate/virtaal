@@ -7,7 +7,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 """Rewrites po/lite/<domain>/<domain>.pot from resolve_sources.py's
-output: the GTK and GLib messages Virtaal really shows, each with where
+output: the GTK, GLib and gtkspell messages Virtaal really shows, each with where
 it was seen. With --merge, also updates each po/lite/<domain>/*.po to
 the new template.
 
@@ -31,7 +31,7 @@ from translate.storage import factory, pypo
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 LITE_DIR = os.path.join(REPO_ROOT, "po", "lite")
-DOMAINS = ("gtk30", "glib20")
+DOMAINS = ("gtk30", "glib20", "gtkspell3")
 EXCLUDED_WITHIN = {"FileChooser", "FontButton"}
 KEEP = {
     # The UI's text direction - a right-to-left language translates it
@@ -44,6 +44,9 @@ KEEP = {
     # size's unit.
     "glib20": ["byte\0bytes", "format-size\x04%u %s", "format-size\x04%.1f\xa0%s",
                "kB", "MB", "GB", "TB", "PB", "EB"],
+    # The spelling menu's items depend on the word: suggestions, too many
+    # suggestions, or none.
+    "gtkspell3": ["<i>(no suggestions)</i>", 'Add "%s" to Dictionary', "Ignore All", "More..."],
 }
 WITHIN_NAMES = {"Menu": "menus", "AboutDialog": "About dialog",
                 "ShortcutsWindow": "Keyboard Shortcuts window"}

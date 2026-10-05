@@ -26,4 +26,11 @@ rm -f dist/Virtaal.dmg
   --detach-retries 30 \
   "Virtaal" dist/Virtaal.dmg
 
+# Unsigned (ad-hoc) builds leave the .dmg itself unsigned - an ad-hoc
+# signature on a disk image means nothing to Gatekeeper.
+if [ -n "${CODESIGN_IDENTITY:-}" ]; then
+  codesign --sign "$CODESIGN_IDENTITY" --timestamp dist/Virtaal.dmg
+  codesign --verify --verbose=2 dist/Virtaal.dmg
+fi
+
 echo "Built dist/Virtaal.dmg"

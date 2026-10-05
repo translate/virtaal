@@ -169,6 +169,20 @@ the hardened runtime; the third wraps it into ``dist/Virtaal.dmg``
 CI's ``build-macos-app`` job runs these same scripts and uploads the
 results as workflow artifacts on every push.
 
+``codesign_app.sh`` signs ad-hoc unless ``CODESIGN_IDENTITY`` names a
+"Developer ID Application" certificate in your keychain, in which case
+``build_dmg.sh`` signs the ``.dmg`` too. A Developer ID build can then
+be notarized and stapled with an App Store Connect API key::
+
+  APPLE_API_KEY_PATH=AuthKey_XXXXXXXXXX.p8 APPLE_API_KEY_ID=XXXXXXXXXX \
+  APPLE_API_ISSUER_ID=<issuer-uuid> \
+    devsupport/packaging/macos/notarize.sh dist/Virtaal.dmg
+
+CI does all of this when the repository has the ``MACOS_CERTIFICATE``
+(base64 ``.p12``), ``MACOS_CERTIFICATE_PWD``, ``APPLE_API_KEY``
+(base64 ``.p8``), ``APPLE_API_KEY_ID`` and ``APPLE_API_ISSUER_ID``
+secrets.
+
 This produces a single-architecture build matching whatever
 Python/Homebrew it's built with - Homebrew doesn't ship universal2
 GTK3 bottles, so there's no ``lipo``-style fat binary available here.

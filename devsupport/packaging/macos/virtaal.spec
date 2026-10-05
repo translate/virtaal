@@ -154,7 +154,6 @@ exe = EXE(  # noqa: F821
     upx=False,
     console=False,
     icon=str(ROOT / "devsupport" / "virtaal.icns"),
-    codesign_identity=os.getenv("CODESIGN_IDENTITY"),
 )
 
 coll = COLLECT(  # noqa: F821

@@ -159,13 +159,14 @@ Building a distributable ``.app``/``.dmg`` uses `PyInstaller
 <https://dmgbuild.readthedocs.io/>`_ on top of the above::
 
   devsupport/packaging/macos/build_standalone.sh
+  devsupport/packaging/macos/codesign_app.sh
   devsupport/packaging/macos/build_dmg.sh
 
 The first produces ``dist/Virtaal.app`` (PyInstaller, settings in
-``devsupport/packaging/macos/virtaal.spec``); the second wraps it
-into ``dist/Virtaal.dmg`` (settings in
-``devsupport/packaging/macos/dmgbuild-settings.py``). CI's
-``build-macos-app`` job runs these same two scripts and uploads the
+``devsupport/packaging/macos/virtaal.spec``); the second signs it with
+the hardened runtime; the third wraps it into ``dist/Virtaal.dmg``
+(settings in ``devsupport/packaging/macos/dmgbuild-settings.py``).
+CI's ``build-macos-app`` job runs these same scripts and uploads the
 results as workflow artifacts on every push.
 
 This produces a single-architecture build matching whatever

@@ -378,7 +378,7 @@ def test_get_available_ui_languages_excludes_pseudo_translations(tmp_path, monke
     # devsupport/pseudo-translation's own generated locales - a testing
     # aid, not a real language a user would pick in Preferences.
     locale_dir = tmp_path / 'prefix' / 'share' / 'locale'
-    for code in ('pseudo', 'pseudo-bidi', 'af'):
+    for code in ('pseudo', 'pseudo-bidi', 'pseudo-source', 'af'):
         (locale_dir / code / 'LC_MESSAGES').mkdir(parents=True)
         (locale_dir / code / 'LC_MESSAGES' / 'virtaal.mo').write_bytes(b'x')
     monkeypatch.setattr(pan_app.platform, 'locale_dir', str(locale_dir))

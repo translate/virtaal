@@ -58,7 +58,7 @@ Pseudo-Translation
 ===================
 
 Run against synthetic locales, covering every translatable string
-without needing a real translation - both regenerate their locale
+without needing a real translation - each regenerates its locale
 fresh from the current ``po/virtaal.pot`` on every run, so there's no
 separate generation step::
 
@@ -71,6 +71,14 @@ truncation. :option:`virtaal --pseudo-translation-bidi` wraps every
 string in Unicode RTL isolate marks too, simulating a right-to-left
 translation's text runs while keeping the text itself readable Latin
 script.
+
+:option:`virtaal --pseudo-translation-source` prefixes every string with
+the catalog it comes from (``vt:Save``, ``gtk:_Open``, ``glib:%.1f MB``),
+showing which visible strings come from GTK or GLib rather than Virtaal,
+and which aren't translatable at all. GTK's and GLib's strings are taken
+from their installed catalogs (macOS and Linux only)::
+
+  virtaal --pseudo-translation-source devsupport/testfiles/checks.po
 
 ``devsupport/pseudo-translation/generate_pseudo_translation.py`` also
 writes a third, ``fa``-tagged locale with every string's glyphs

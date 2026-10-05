@@ -98,6 +98,9 @@ def build_parser():
                                  "(see devsupport/pseudo-translation/generate_pseudo_translation.py)"))
     pseudo_group.add_argument("--pseudo-translation-bidi", dest="pseudo_translation_bidi", action="store_true", default=False,
                          help=_("like --pseudo-translation, but also simulates a right-to-left UI layout"))
+    pseudo_group.add_argument("--pseudo-translation-source", dest="pseudo_translation_source", action="store_true", default=False,
+                         help=_("like --pseudo-translation, but prefixes every string with the catalog "
+                                 "it comes from (e.g. \"vt:\" for Virtaal's own, \"gtk:\" for GTK's)"))
     pseudo_group.add_argument("--lang", dest="lang", metavar=_("LANG"),
                          help=_("override the UI language for this run (e.g. \"fr\"; "
                                  "\"en\" for the untranslated source strings; \"system\" "
@@ -159,9 +162,14 @@ def _set_config(options, parser):
 
 
 def _set_pseudo_translation(options, parser):
-    if not (options.pseudo_translation or options.pseudo_translation_bidi):
+    if options.pseudo_translation_bidi:
+        lang = 'pseudo-bidi'
+    elif options.pseudo_translation_source:
+        lang = 'pseudo-source'
+    elif options.pseudo_translation:
+        lang = 'pseudo'
+    else:
         return
-    lang = 'pseudo-bidi' if options.pseudo_translation_bidi else 'pseudo'
     if not packaged:
         import importlib.util
         repo_root = path.dirname(path.dirname(path.abspath(__file__)))

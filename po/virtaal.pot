@@ -2281,6 +2281,13 @@ msgstr ""
 msgid "System default"
 msgstr ""
 
+#. l10n: A UI language: its name in your language, then in
+#. itself, e.g. "French - Français"
+#: virtaal/views/prefsview.py
+#, python-format
+msgid "%(language)s - %(endonym)s"
+msgstr ""
+
 #: virtaal/views/propertiesview.py
 msgid "Untranslated:"
 msgstr ""

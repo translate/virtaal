@@ -62,6 +62,11 @@ class PreferencesView(BaseView, GObjectWrapper):
     def _init_language_gui(self):
         self._widgets['cmb_ui_language'].append('', _('System default'))
         for code, name in pan_app.get_available_ui_languages():
+            endonym = pan_app.get_language_endonym(code)
+            if endonym and endonym != name:
+                #l10n: A UI language: its name in your language, then in
+                #itself, e.g. "French - Français"
+                name = _("%(language)s - %(endonym)s") % {'language': name, 'endonym': endonym}
             self._widgets['cmb_ui_language'].append(code, name)
 
     def _init_font_gui(self):

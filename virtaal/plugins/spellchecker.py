@@ -15,6 +15,7 @@ from gi.repository import GLib
 from virtaal.common import SignalTracker
 from virtaal.common.platform import platform
 from virtaal.controllers.baseplugin import BasePlugin, PluginUnsupported
+from virtaal.support.libi18n.locale import rebind_library_domain
 
 _dict_add_re = re.compile('Add "(.*)" to Dictionary')
 
@@ -186,6 +187,8 @@ class Plugin(BasePlugin):
                 logging.debug("gtkspell.Checker.get_from_text_view() raised: %s", e)
             if spell is None:
                 spell = self.gtkspell.Checker()
+                # Creating a checker binds gtkspell3 to its own catalogs.
+                rebind_library_domain(b"gtkspell3")
                 spell.attach(text_view)
             spell.set_language(language)
             spell.recheck_all()

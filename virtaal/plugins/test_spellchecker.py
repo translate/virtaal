@@ -296,6 +296,21 @@ def test_activate_checker_creates_and_attaches_a_new_checker_when_none_exists():
     assert text_view.spell_lang == 'en_US'
 
 
+def test_activate_checker_rebinds_gtkspells_domain_after_creating_a_checker(monkeypatch):
+    # Every new gtkspell checker binds gtkspell3 to gtkspell's own
+    # catalogs, so a lite or pseudo translation of it is only read if
+    # bound again after.
+    from virtaal.plugins import spellchecker
+    rebound = []
+    monkeypatch.setattr(spellchecker, 'rebind_library_domain', rebound.append)
+    plugin = Plugin.__new__(Plugin)
+    plugin.gtkspell, _created = _fake_gtkspell(existing=None)
+
+    plugin._activate_checker(SimpleNamespace(), 'en_US')
+
+    assert rebound == [b'gtkspell3']
+
+
 def test_activate_checker_ignores_a_systemerror_from_get_from_text_view(caplog):
     plugin = Plugin.__new__(Plugin)
     gtkspell, created = _fake_gtkspell(get_from_text_view_raises=SystemError('mandriva'))

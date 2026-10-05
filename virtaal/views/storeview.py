@@ -84,6 +84,8 @@ class StoreView(BaseView):
                                Gdk.ModifierType.CONTROL_MASK)
         Gtk.AccelMap.add_entry("<Virtaal>/Navigation/PgDown", Gtk.accelerator_parse("Page_Down")[0],
                                Gdk.ModifierType.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Navigation/First", Gdk.KEY_Home, Gdk.ModifierType.CONTROL_MASK)
+        Gtk.AccelMap.add_entry("<Virtaal>/Navigation/Last", Gdk.KEY_End, Gdk.ModifierType.CONTROL_MASK)
         # Same physical key as the target textbox's own Ctrl+Enter/
         # Ctrl+Shift+Enter handling (unitview.py) - harmless overlap,
         # since a focused textbox's own key handler consumes the event
@@ -100,6 +102,8 @@ class StoreView(BaseView):
         self.accel_group.connect_by_path("<Virtaal>/Navigation/Down", self._treeview._move_down)
         self.accel_group.connect_by_path("<Virtaal>/Navigation/PgUp", self._treeview._move_pgup)
         self.accel_group.connect_by_path("<Virtaal>/Navigation/PgDown", self._treeview._move_pgdown)
+        self.accel_group.connect_by_path("<Virtaal>/Navigation/First", self._treeview._move_first)
+        self.accel_group.connect_by_path("<Virtaal>/Navigation/Last", self._treeview._move_last)
 
         mainview = self.controller.main_controller.view
         # Reuses MainView's own handlers (state change + advance to the
@@ -114,10 +118,14 @@ class StoreView(BaseView):
         self.mnu_down = mainview.gui.get_object('mnu_down')
         self.mnu_pageup = mainview.gui.get_object('mnu_pageup')
         self.mnu_pagedown = mainview.gui.get_object('mnu_pagedown')
+        self.mnu_first = mainview.gui.get_object('mnu_first')
+        self.mnu_last = mainview.gui.get_object('mnu_last')
         self.mnu_up.set_accel_path('<Virtaal>/Navigation/Up')
         self.mnu_down.set_accel_path('<Virtaal>/Navigation/Down')
         self.mnu_pageup.set_accel_path('<Virtaal>/Navigation/PgUp')
         self.mnu_pagedown.set_accel_path('<Virtaal>/Navigation/PgDown')
+        self.mnu_first.set_accel_path('<Virtaal>/Navigation/First')
+        self.mnu_last.set_accel_path('<Virtaal>/Navigation/Last')
         mainview.gui.get_object('mnu_state_advance').set_accel_path('<Virtaal>/Navigation/StateAdvance')
         mainview.gui.get_object('mnu_state_reverse').set_accel_path('<Virtaal>/Navigation/StateReverse')
 
@@ -126,7 +134,7 @@ class StoreView(BaseView):
         # because its accel_path/accel_group changed - same fix as
         # mainview.py's own File/Help items (mnu_open et al.).
         menu_navigation = mainview.gui.get_object('menu_navigation')
-        for item_id in ('mnu_state_advance', 'mnu_state_reverse'):
+        for item_id in ('mnu_first', 'mnu_last', 'mnu_state_advance', 'mnu_state_reverse'):
             item = mainview.gui.get_object(item_id)
             pos = menu_navigation.get_children().index(item)
             menu_navigation.remove(item)
@@ -223,7 +231,7 @@ class StoreView(BaseView):
         return editing_stopped
 
     def _set_menu_items_sensitive(self, sensitive=True):
-        for widget in (self.mnu_up, self.mnu_down, self.mnu_pageup, self.mnu_pagedown):
+        for widget in (self.mnu_up, self.mnu_down, self.mnu_pageup, self.mnu_pagedown, self.mnu_first, self.mnu_last):
             widget.set_sensitive(sensitive)
 
 

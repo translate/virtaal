@@ -144,7 +144,8 @@ Navigation
 Above we saw how we can easily advance to the next point of translation by
 pressing :kbd:`Enter`. You can also move around easily between rows with
 :kbd:`Ctrl+Down` and :kbd:`Ctrl+Up`. To move in large steps, use
-:kbd:`Ctrl+PgDown` and :kbd:`Ctrl+PgUp`.
+:kbd:`Ctrl+PgDown` and :kbd:`Ctrl+PgUp`. To go straight to the first or
+last unit, use :kbd:`Ctrl+Home` and :kbd:`Ctrl+End`.
 
 .. _using_virtaal#incomplete_mode:
 

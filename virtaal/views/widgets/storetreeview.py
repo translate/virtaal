@@ -81,6 +81,8 @@ class StoreTreeView(Gtk.TreeView):
         mainview.gui.get_object('mnu_down').connect('activate', lambda *args: self._move_down(None, None, None, None))
         mainview.gui.get_object('mnu_pageup').connect('activate', lambda *args: self._move_pgup(None, None, None, None))
         mainview.gui.get_object('mnu_pagedown').connect('activate', lambda *args: self._move_pgdown(None, None, None, None))
+        mainview.gui.get_object('mnu_first').connect('activate', lambda *args: self._move_first(None, None, None, None))
+        mainview.gui.get_object('mnu_last').connect('activate', lambda *args: self._move_last(None, None, None, None))
 
     def _make_renderer(self):
         renderer = StoreCellRenderer(self.view)
@@ -351,6 +353,31 @@ class StoreTreeView(Gtk.TreeView):
 
     def _move_pgdown(self, _accel_group, _acceleratable, _keyval, _modifier):
         return self._keyboard_move(10)
+
+    def _keyboard_jump(self, last):
+        """Move to the first or last unit of the navigation list."""
+        if not self.view.controller.get_store():
+            return
+        if self._waiting_for_row_change > 0:
+            return True
+        cursor = self.view.cursor
+        if not cursor.indices:
+            return True
+        # Replaces any repeats still waiting for the next throttle tick.
+        self._pending_move_offset = 0
+        old_index = cursor.index
+        cursor.index = cursor.indices[-1] if last else cursor.indices[0]
+        if old_index >= 0 and cursor.index == old_index:
+            # Already there: finish the unit anyway, as a move would.
+            self.view.controller.main_controller.unit_controller.finish_current_unit()
+            self.refresh_current_row()
+        return True
+
+    def _move_first(self, _accel_group, _acceleratable, _keyval, _modifier):
+        return self._keyboard_jump(last=False)
+
+    def _move_last(self, _accel_group, _acceleratable, _keyval, _modifier):
+        return self._keyboard_jump(last=True)
 
 
     # EVENT HANDLERS #

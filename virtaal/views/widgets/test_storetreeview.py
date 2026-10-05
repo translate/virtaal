@@ -486,6 +486,97 @@ def test_move_methods_delegate_to_keyboard_move_with_the_right_offset():
     assert calls == [-1, 1, -10, 10]
 
 
+# _keyboard_jump() / _move_first() / _move_last() #
+
+def _make_jump_view(indices, index):
+    from virtaal.controllers.cursor import Cursor
+    cursor = Cursor(None, indices, circular=False)
+    cursor.index = index
+    finished = []
+    view = SimpleNamespace(
+        view=SimpleNamespace(
+            controller=SimpleNamespace(
+                get_store=lambda: object(),
+                main_controller=SimpleNamespace(
+                    unit_controller=SimpleNamespace(finish_current_unit=lambda: finished.append('finish'))),
+            ),
+            cursor=cursor,
+        ),
+        _waiting_for_row_change=0,
+        _pending_move_offset=0,
+        refresh_current_row=lambda: finished.append('refresh'),
+    )
+    return view, cursor, finished
+
+
+def test_keyboard_jump_moves_to_the_ends_of_the_navigation_list():
+    # In a mode like Incomplete, the ends are its first and last unit,
+    # not the file's.
+    view, cursor, finished = _make_jump_view([2, 5, 8], 5)
+
+    assert StoreTreeView._keyboard_jump(view, last=True) is True
+    assert cursor.index == 8
+    StoreTreeView._keyboard_jump(view, last=False)
+    assert cursor.index == 2
+    assert finished == []
+
+
+def test_keyboard_jump_to_the_unit_already_there_finishes_it():
+    view, cursor, finished = _make_jump_view([2, 5, 8], 8)
+
+    StoreTreeView._keyboard_jump(view, last=True)
+
+    assert cursor.index == 8
+    assert finished == ['finish', 'refresh']
+
+
+def test_keyboard_jump_from_a_visited_unit():
+    view, cursor, _finished = _make_jump_view([2, 5, 8], 5)
+    cursor.visit(6)
+
+    StoreTreeView._keyboard_jump(view, last=False)
+
+    assert cursor.index == 2
+
+
+def test_keyboard_jump_drops_moves_waiting_for_the_throttle():
+    view, cursor, _finished = _make_jump_view([2, 5, 8], 5)
+    view._pending_move_offset = 3
+
+    StoreTreeView._keyboard_jump(view, last=False)
+
+    assert view._pending_move_offset == 0
+    assert cursor.index == 2
+
+
+def test_keyboard_jump_does_nothing_without_a_store_or_units():
+    view, cursor, _finished = _make_jump_view([2, 5, 8], 5)
+    view.view.controller.get_store = lambda: None
+    assert StoreTreeView._keyboard_jump(view, last=True) is None
+
+    view, cursor, _finished = _make_jump_view([], 0)
+    assert StoreTreeView._keyboard_jump(view, last=True) is True
+    assert cursor.index == -1
+
+
+def test_keyboard_jump_defers_while_a_row_change_is_pending():
+    view, cursor, _finished = _make_jump_view([2, 5, 8], 5)
+    view._waiting_for_row_change = 1
+
+    assert StoreTreeView._keyboard_jump(view, last=True) is True
+    assert cursor.index == 5
+
+
+def test_move_first_and_last_delegate_to_keyboard_jump():
+    calls = []
+    view = SimpleNamespace(_keyboard_jump=lambda last: calls.append(last))
+
+    StoreTreeView._move_first(view, None, None, None, None)
+    StoreTreeView._move_last(view, None, None, None, None)
+
+    assert calls == [False, True]
+
+
 # _on_button_press() #
 
 def test_on_button_press_ignores_clicks_outside_the_treeviews_own_window():

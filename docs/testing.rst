@@ -73,10 +73,11 @@ translation's text runs while keeping the text itself readable Latin
 script.
 
 :option:`virtaal --pseudo-translation-source` prefixes every string with
-the catalog it comes from (``vt:Save``, ``gtk:_Open``, ``glib:%.1f MB``),
-showing which visible strings come from GTK or GLib rather than Virtaal,
-and which aren't translatable at all. GTK's and GLib's strings are taken
-from their installed catalogs (macOS and Linux only)::
+the catalog it comes from (``vt:Save``, ``gtk:_Open``, ``glib:%.1f MB``,
+``iso:German``), showing which visible strings come from GTK, GLib or
+the language and country name lists rather than Virtaal, and which
+aren't translatable at all. Library strings are taken from their
+installed catalogs (GTK's and GLib's on macOS and Linux only)::
 
   virtaal --pseudo-translation-source devsupport/testfiles/checks.po
 

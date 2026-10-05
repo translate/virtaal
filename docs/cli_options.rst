@@ -53,8 +53,8 @@ from the command line::
 .. option:: --pseudo-translation-source
 
    Prefix every UI string with the catalog it comes from: ``vt:`` for
-   Virtaal's own, ``gtk:`` for GTK's and ``glib:`` for GLib's (e.g.
-   ``gtk:_Open``). A string with no prefix isn't translatable. Mutually
+   Virtaal's own, ``gtk:`` for GTK's, ``glib:`` for GLib's and ``iso:``
+   for language and country names (e.g. ``gtk:_Open``). A string with no prefix isn't translatable. Mutually
    exclusive with the other pseudo-translation options and :option:`--lang`.
 
 .. option:: --lang <language>

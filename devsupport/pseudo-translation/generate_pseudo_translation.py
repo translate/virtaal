@@ -19,10 +19,11 @@ translation:
   pseudo-bidi, deliberately - it's testing Pango's real bidi character
   reordering, not just that embedded bidi runs don't corrupt layout.
 - pseudo-source: every string prefixed with the catalog it comes from
-  ("vt:Save" for Virtaal's own, "gtk:_Open", "glib:%.1f MB"), for
-  seeing which visible strings need a lite translation and which never
-  went through gettext at all. GTK's and GLib's strings are taken from
-  their own installed catalogs.
+  ("vt:Save" for Virtaal's own, "gtk:_Open", "glib:%.1f MB",
+  "iso:German" for language and country names), for seeing which
+  visible strings need a lite translation and which never went through
+  gettext at all. Library strings are taken from their own installed
+  catalogs.
 
 Compiled straight into the active environment's own share/locale/ by
 default (so bin/virtaal's --pseudo-translation* options work with no
@@ -64,11 +65,14 @@ LOCALES = {
 }
 
 # pseudo-source's tag for Virtaal's own catalog, and for each library
-# catalog its tag and the GI namespace whose install prefix holds it.
+# catalog its tag and where it's installed: a GI namespace whose install
+# prefix holds it, or pycountry.
 VIRTAAL_TAG = "vt:"
 LIBRARY_SOURCES = {
     "gtk30": ("gtk:", "Gtk"),
     "glib20": ("glib:", "GLib"),
+    "iso639-3": ("iso:", "pycountry"),
+    "iso3166-1": ("iso:", "pycountry"),
 }
 
 MO_MAGIC = 0x950412de
@@ -133,8 +137,11 @@ def tag_messages(originals, tag):
 
 
 def library_locale_dir(namespace):
-    """share/locale/ under the install prefix of a GI namespace's
-    typelib, or None."""
+    """pycountry's locale directory, or share/locale/ under the install
+    prefix of a GI namespace's typelib, or None."""
+    if namespace == "pycountry":
+        import pycountry
+        return pycountry.LOCALES_DIR
     import gi
     if namespace == "Gtk":
         gi.require_version("Gtk", "3.0")
@@ -196,7 +203,7 @@ def _generate_library_mos(mo_dir, localedir):
 
 def generate_locale(code, localedir=None):
     """(re)generates a single pseudo-translation locale's virtaal.mo
-    from the current po/virtaal.pot - plus gtk30.mo and glib20.mo for
+    from the current po/virtaal.pot - plus LIBRARY_SOURCES catalogs for
     pseudo-source - returning the virtaal.mo path written. Cheap enough
     to call on every launch - see bin/virtaal's --pseudo-translation*
     handling."""

@@ -482,8 +482,9 @@ def get_available_ui_languages():
         module is in po/POTFILES.skip (its own _('') probe below would
         otherwise mean gettext isn't set up yet when it runs), so a
         user-facing label belongs in the caller instead."""
-    from translate.lang.data import _fixed_names
     from translate.lang.data import languages as toolkit_langs
+
+    from virtaal.support.translate_compat import tr_lang
 
     codes = set()
     for localedir in (platform.locale_dir, os.path.join(_repo_root(), 'mo')):
@@ -498,12 +499,13 @@ def get_available_ui_languages():
             if any(os.path.isfile(os.path.join(localedir, code, mo_name)) for mo_name in mo_names):
                 codes.add(code)
 
+    # In the UI language, as the language selector shows them. tr_lang()
+    # also cleans up toolkit's semicolon-joined MARC/ISO 639-2 names
+    # ("Catalan; Valencian").
+    translate_name = tr_lang(ui_language)
+
     def display_name(code):
-        name = toolkit_langs[code][0] if code in toolkit_langs else code
-        # toolkit's own raw names are the semicolon-joined MARC/ISO 639-2
-        # entry ("Catalan; Valencian") - _fixed_names is its own cleanup
-        # table for these, defined but never applied by toolkit itself.
-        return _fixed_names.get(name, name)
+        return translate_name(toolkit_langs[code][0]) if code in toolkit_langs else code
 
     result = [(code, display_name(code)) for code in codes]
     result.sort(key=lambda pair: pair[1])

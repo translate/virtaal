@@ -340,6 +340,7 @@ def test_get_available_ui_languages_finds_languages_in_either_location(tmp_path,
     (repo / 'mo' / 'af' / 'virtaal.mo').write_bytes(b'x')
     monkeypatch.setattr(pan_app.platform, 'locale_dir', str(locale_dir))
     monkeypatch.setattr(pan_app, '_repo_root', lambda: str(repo))
+    monkeypatch.setattr(pan_app, 'ui_language', 'en')
 
     langs = dict(pan_app.get_available_ui_languages())
 
@@ -356,10 +357,24 @@ def test_get_available_ui_languages_cleans_up_a_semicolon_joined_name(tmp_path, 
     (locale_dir / 'nso' / 'LC_MESSAGES' / 'virtaal.mo').write_bytes(b'x')
     monkeypatch.setattr(pan_app.platform, 'locale_dir', str(locale_dir))
     monkeypatch.setattr(pan_app, '_repo_root', lambda: str(tmp_path / 'repo'))
+    monkeypatch.setattr(pan_app, 'ui_language', 'en')
 
     langs = dict(pan_app.get_available_ui_languages())
 
     assert langs['nso'] == 'Northern Sotho'
+
+
+def test_get_available_ui_languages_names_languages_in_the_ui_language(tmp_path, monkeypatch):
+    locale_dir = tmp_path / 'prefix' / 'share' / 'locale'
+    (locale_dir / 'fr' / 'LC_MESSAGES').mkdir(parents=True)
+    (locale_dir / 'fr' / 'LC_MESSAGES' / 'virtaal.mo').write_bytes(b'x')
+    monkeypatch.setattr(pan_app.platform, 'locale_dir', str(locale_dir))
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(tmp_path / 'repo'))
+    monkeypatch.setattr(pan_app, 'ui_language', 'de')
+
+    langs = dict(pan_app.get_available_ui_languages())
+
+    assert langs['fr'] == 'Französisch'
 
 
 def test_get_available_ui_languages_falls_back_to_the_code_for_an_unknown_language(tmp_path, monkeypatch):

@@ -8,6 +8,7 @@
 from gi.repository import GObject, Gtk
 
 from virtaal.common import GObjectWrapper
+from virtaal.support.libi18n.numbers import localise_digits
 
 from .baseview import BaseView
 
@@ -73,7 +74,7 @@ class ModeView(GObjectWrapper, BaseView):
         #l10n: Context: show no units around the one being edited
         self.cmb_context.append('0', _('None'))
         for count in ('1', '2', '3'):
-            self.cmb_context.append(count, count)
+            self.cmb_context.append(count, localise_digits(count))
         #l10n: Context: show every unit, not only the matching ones
         self.cmb_context.append('all', _('All'))
         self.cmb_context.connect('changed', self._on_cmbcontext_change)

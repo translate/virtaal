@@ -80,6 +80,19 @@ def test_context_selector_offers_none_to_all():
     assert [row[0] for row in view.cmb_context.get_model()] == ['None', '1', '2', '3', 'All']
 
 
+def test_context_selector_counts_use_the_ui_languages_digits(monkeypatch):
+    import builtins
+    real = builtins._
+    arabic_indic = '٠١٢٣٤٥٦٧٨٩'
+    monkeypatch.setattr(builtins, '_', lambda s: arabic_indic if s == '0123456789' else real(s))
+
+    view, _selected = _context_view()
+
+    assert [row[0] for row in view.cmb_context.get_model()][1:4] == ['١', '٢', '٣']
+    view.cmb_context.set_active_id('2')
+    assert view.cmb_context.get_active_id() == '2'
+
+
 def test_choosing_a_context_emits_it():
     view, selected = _context_view()
 

@@ -1728,6 +1728,13 @@ msgstr ""
 msgid "Report This Bug…"
 msgstr ""
 
+#. l10n: The digits zero to nine of your language's number system, in
+#. order, e.g. "٠١٢٣٤٥٦٧٨٩" for Arabic-Indic digits. Leave as
+#. "0123456789" if your language uses these digits.
+#: virtaal/support/libi18n/numbers.py
+msgid "0123456789"
+msgstr ""
+
 #: virtaal/support/tutorial.py
 msgid ""
 "Welcome to the Virtaal tutorial. You can do the first translation by typing "

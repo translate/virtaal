@@ -42,6 +42,7 @@ virtaal/plugins/tm/models/remotetm.py
 virtaal/plugins/tm/tmview.py
 virtaal/plugins/tm/tmwidgets.py
 virtaal/support/crash_dialog.py
+virtaal/support/libi18n/numbers.py
 virtaal/support/tutorial.py
 virtaal/views/checksprojview.py
 virtaal/views/checksunitview.py

@@ -124,17 +124,19 @@ def _fix_language_name(name):
 
 
 def gettext_domain(langcode, domain, localedir=None):
-    """Returns a gettext function for given iso domain"""
+    """Returns a gettext function for given iso domain, falling back to
+    Virtaal's own catalog (lite or pseudo translations) for what the one in
+    localedir lacks."""
     kwargs = dict(
         domain=domain,
-        localedir=localedir,
         fallback=True)
     if langcode:
         kwargs['languages'] = [langcode]
     elif platform.is_windows:
         # On Windows the default locale is not used for some reason
         kwargs['languages'] = [locale.getdefaultlocale()[0]]
-    t = gettext.translation(**kwargs)
+    t = gettext.translation(localedir=localedir, **kwargs)
+    t.add_fallback(gettext.translation(localedir=platform.locale_dir, **kwargs))
     return t.gettext
 
 

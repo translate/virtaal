@@ -113,6 +113,34 @@ def test_gettext_country_falls_back_to_iso_3166_without_pycountry(monkeypatch):
     assert f('anything') == 'anything'
 
 
+# Virtaal's own ISO catalogs (lite or pseudo translations) #
+
+def _install_catalog(locale_dir, lang, domain, entries):
+    from translate.tools.pocompile import convertmo
+    po = 'msgid ""\nmsgstr "Content-Type: text/plain; charset=UTF-8\\n"\n'
+    po += ''.join('\nmsgid "%s"\nmsgstr "%s"\n' % pair for pair in entries.items())
+    po_file = locale_dir / (lang + domain + '.po')
+    po_file.write_text(po, encoding='utf-8')
+    mo_dir = locale_dir / lang / 'LC_MESSAGES'
+    mo_dir.mkdir(parents=True, exist_ok=True)
+    with open(po_file, 'rb') as infile, open(mo_dir / (domain + '.mo'), 'w') as outfile:
+        convertmo(infile, outfile, None)
+
+
+def test_virtaals_own_catalog_fills_what_pycountrys_lacks(tmp_path, monkeypatch):
+    monkeypatch.setattr(platform, 'locale_dir', str(tmp_path))
+    _install_catalog(tmp_path, 'xx', 'iso639-3', {'Zulu': 'isiZulu'})
+
+    assert gettext_lang('xx')('Zulu') == 'isiZulu'
+
+
+def test_pycountrys_catalog_wins_over_virtaals_own(tmp_path, monkeypatch):
+    monkeypatch.setattr(platform, 'locale_dir', str(tmp_path))
+    _install_catalog(tmp_path, 'de', 'iso639-3', {'German': 'Not this'})
+
+    assert gettext_lang('de')('German') == 'Deutsch'
+
+
 # forceunicode() #
 
 def test_forceunicode_passes_through_none():

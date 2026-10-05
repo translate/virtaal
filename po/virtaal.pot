@@ -691,6 +691,10 @@ msgid "like --pseudo-translation, but also simulates a right-to-left UI layout"
 msgstr ""
 
 #: virtaal/cli.py
+msgid "like --pseudo-translation, but prefixes every string with the catalog it comes from (e.g. \"vt:\" for Virtaal's own, \"gtk:\" for GTK's)"
+msgstr ""
+
+#: virtaal/cli.py
 msgid "LANG"
 msgstr ""
 

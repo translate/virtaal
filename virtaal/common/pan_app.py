@@ -492,7 +492,7 @@ def get_available_ui_languages():
         except OSError:
             continue
         for code in entries:
-            if code in ('pseudo', 'pseudo-bidi'):
+            if code in ('pseudo', 'pseudo-bidi', 'pseudo-source'):
                 continue
             mo_names = ('virtaal.mo', os.path.join('LC_MESSAGES', 'virtaal.mo'))
             if any(os.path.isfile(os.path.join(localedir, code, mo_name)) for mo_name in mo_names):
@@ -511,7 +511,7 @@ def get_available_ui_languages():
 
 def set_ui_language(lang):
     """Override the UI language after startup - used by bin/virtaal's
-    --lang/--pseudo-translation/--pseudo-translation-bidi.
+    --lang and the --pseudo-translation* options.
 
     lang='system' re-resolves the OS's own locale via
     _install_system_ui_language, ignoring any saved uilang preference.

@@ -50,11 +50,18 @@ from the command line::
    while keeping the text itself readable. Mutually exclusive with
    :option:`--pseudo-translation` and :option:`--lang`.
 
+.. option:: --pseudo-translation-source
+
+   Prefix every UI string with the catalog it comes from: ``vt:`` for
+   Virtaal's own, ``gtk:`` for GTK's and ``glib:`` for GLib's (e.g.
+   ``gtk:_Open``). A string with no prefix isn't translatable. Mutually
+   exclusive with the other pseudo-translation options and :option:`--lang`.
+
 .. option:: --lang <language>
 
    Override the UI language for this run, without changing the saved
-   Preferences setting. Mutually exclusive with :option:`--pseudo-translation`
-   and :option:`--pseudo-translation-bidi`. ``<language>`` is one of:
+   Preferences setting. Mutually exclusive with the pseudo-translation
+   options. ``<language>`` is one of:
 
    - a language code (e.g. ``fr``) - Virtaal must have a translation for it
      (see :doc:`localising_virtaal`).

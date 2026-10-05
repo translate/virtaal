@@ -174,6 +174,17 @@ def test_pseudo_translation_bidi_also_forces_a_right_to_left_layout(monkeypatch)
     assert directions == [Gtk.TextDirection.RTL]
 
 
+def test_pseudo_translation_source_regenerates_its_locale_and_switches_to_it(monkeypatch):
+    generated = _stub_pseudo_generator(monkeypatch)
+    switched = []
+    monkeypatch.setattr(pan_app, 'set_ui_language', lambda lang: switched.append(lang))
+
+    _run_cli(monkeypatch, ['virtaal', '--pseudo-translation-source'])
+
+    assert generated == ['pseudo-source']
+    assert switched == ['pseudo-source']
+
+
 def test_pseudo_translation_with_no_matching_locale_is_a_fatal_argument_error(monkeypatch):
     _stub_pseudo_generator(monkeypatch)
 

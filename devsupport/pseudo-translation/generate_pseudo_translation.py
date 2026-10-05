@@ -18,14 +18,20 @@ translation:
   marks alone don't necessarily trigger. Harder to read than
   pseudo-bidi, deliberately - it's testing Pango's real bidi character
   reordering, not just that embedded bidi runs don't corrupt layout.
+- pseudo-source: every string prefixed with the catalog it comes from
+  ("vt:Save" for Virtaal's own, "gtk:_Open", "glib:%.1f MB"), for
+  seeing which visible strings need a lite translation and which never
+  went through gettext at all. GTK's and GLib's strings are taken from
+  their own installed catalogs.
 
 Compiled straight into the active environment's own share/locale/ by
-default (so bin/virtaal --pseudo-translation/--pseudo-translation-bidi
-work with no separate install step) - pass --localedir to write
+default (so bin/virtaal's --pseudo-translation* options work with no
+separate install step) - pass --localedir to write
 somewhere else instead, e.g. a frozen build's own share/locale/.
 """
 import argparse
 import os
+import struct
 import sys
 import tempfile
 
@@ -54,33 +60,152 @@ LOCALES = {
     "pseudo": "bracket",
     "pseudo-bidi": "bidi",
     "fa": "flipped",
+    "pseudo-source": None,
 }
+
+# pseudo-source's tag for Virtaal's own catalog, and for each library
+# catalog its tag and the GI namespace whose install prefix holds it.
+VIRTAAL_TAG = "vt:"
+LIBRARY_SOURCES = {
+    "gtk30": ("gtk:", "Gtk"),
+    "glib20": ("glib:", "GLib"),
+}
+
+MO_MAGIC = 0x950412de
+MO_HEADER = ("Content-Type: text/plain; charset=UTF-8\n"
+             "Plural-Forms: nplurals=2; plural=(n != 1);\n")
 
 
 def _repo_root():
     return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
-def generate_locale(code, localedir=None):
-    """(re)generates a single pseudo-translation locale's virtaal.mo
-    from the current po/virtaal.pot, returning the mo path written.
-    Cheap enough to call on every launch - see bin/virtaal's
-    --pseudo-translation/--pseudo-translation-bidi handling."""
-    rewritestyle = LOCALES[code]
-    potfile = os.path.join(_repo_root(), "po", "virtaal.pot")
-    localedir = localedir or os.path.join(sys.prefix, "share", "locale")
+def _mo_byteorder(data):
+    return "<" if struct.unpack("<I", data[:4])[0] == MO_MAGIC else ">"
 
+
+def read_mo_originals(path):
+    """Every msgid in a .mo file except the header, as stored: any
+    msgctxt in front of it, separated by \\x04, and any msgid_plural
+    after it, separated by \\0."""
+    with open(path, "rb") as f:
+        data = f.read()
+    byteorder = _mo_byteorder(data)
+    count, table = struct.unpack(byteorder + "II", data[8:16])
+    originals = []
+    for i in range(count):
+        length, offset = struct.unpack(byteorder + "II", data[table + 8 * i:table + 8 * i + 8])
+        if length:
+            originals.append(data[offset:offset + length].decode("utf-8"))
+    return originals
+
+
+def write_mo(path, messages):
+    """Writes {original: translation}, originals as read_mo_originals()
+    returns them, as a .mo file with a UTF-8, two-plural-form header."""
+    messages = dict(messages)
+    messages[""] = MO_HEADER
+    keys = sorted(messages)
+    strings = [k.encode("utf-8") for k in keys] + [messages[k].encode("utf-8") for k in keys]
+    originals_table = 7 * 4
+    position = originals_table + 16 * len(keys)
+    entries = []
+    for string in strings:
+        entries.append(struct.pack("<II", len(string), position))
+        position += len(string) + 1
+    with open(path, "wb") as f:
+        f.write(struct.pack("<7I", MO_MAGIC, 0, len(keys), originals_table,
+                            originals_table + 8 * len(keys), 0, 0))
+        f.write(b"".join(entries))
+        f.write(b"".join(string + b"\0" for string in strings))
+
+
+def tag_messages(originals, tag):
+    """{original: translation}, every form of every msgid prefixed with
+    tag. GTK reads its "default:LTR" message as the text direction, so
+    that stays untranslated."""
+    messages = {}
+    for original in originals:
+        msgid = original.rpartition("\x04")[2]
+        if msgid != "default:LTR":
+            messages[original] = "\0".join(tag + form for form in msgid.split("\0"))
+    return messages
+
+
+def library_locale_dir(namespace):
+    """share/locale/ under the install prefix of a GI namespace's
+    typelib, or None."""
+    import gi
+    if namespace == "Gtk":
+        gi.require_version("Gtk", "3.0")
+    __import__("gi.repository." + namespace)
+    from gi import _gi
+    path = _gi.Repository.get_default().get_typelib_path(namespace)
+    while path and os.path.dirname(path) != path:
+        path = os.path.dirname(path)
+        locale_dir = os.path.join(path, "share", "locale")
+        if os.path.isdir(locale_dir):
+            return locale_dir
+    return None
+
+
+def _mo_count(path):
+    with open(path, "rb") as f:
+        data = f.read(12)
+    return struct.unpack(_mo_byteorder(data) + "I", data[8:12])[0]
+
+
+def fullest_catalog(locale_dirs, domain):
+    """The real (not pseudo) <domain>.mo with the most messages, or
+    None."""
+    candidates = []
+    for locale_dir in filter(None, locale_dirs):
+        if not os.path.isdir(locale_dir):
+            continue
+        for lang in os.listdir(locale_dir):
+            path = os.path.join(locale_dir, lang, "LC_MESSAGES", domain + ".mo")
+            if lang not in LOCALES and os.path.isfile(path):
+                candidates.append(path)
+    return max(candidates, key=_mo_count, default=None)
+
+
+def _generate_virtaal_mo(code, mo_dir):
+    potfile = os.path.join(_repo_root(), "po", "virtaal.pot")
     with tempfile.NamedTemporaryFile(suffix=".po") as tmp_po:
         with open(potfile, "rb") as infile:
-            podebug.convertpo(infile, tmp_po, None, rewritestyle=rewritestyle)
+            if code == "pseudo-source":
+                podebug.convertpo(infile, tmp_po, None, format=VIRTAAL_TAG)
+            else:
+                podebug.convertpo(infile, tmp_po, None, rewritestyle=LOCALES[code])
         tmp_po.flush()
 
-        mo_dir = os.path.join(localedir, code, "LC_MESSAGES")
-        os.makedirs(mo_dir, exist_ok=True)
         mo_path = os.path.join(mo_dir, "virtaal.mo")
         with open(tmp_po.name, "rb") as compile_in, open(mo_path, "w") as compile_out:
             convertmo(compile_in, compile_out, None)
         return mo_path
+
+
+def _generate_library_mos(mo_dir, localedir):
+    for domain, (tag, namespace) in LIBRARY_SOURCES.items():
+        source = fullest_catalog([library_locale_dir(namespace), localedir], domain)
+        if source is None:
+            print("No installed %s catalog found, skipping it" % domain, file=sys.stderr)
+            continue
+        write_mo(os.path.join(mo_dir, domain + ".mo"), tag_messages(read_mo_originals(source), tag))
+
+
+def generate_locale(code, localedir=None):
+    """(re)generates a single pseudo-translation locale's virtaal.mo
+    from the current po/virtaal.pot - plus gtk30.mo and glib20.mo for
+    pseudo-source - returning the virtaal.mo path written. Cheap enough
+    to call on every launch - see bin/virtaal's --pseudo-translation*
+    handling."""
+    localedir = localedir or os.path.join(sys.prefix, "share", "locale")
+    mo_dir = os.path.join(localedir, code, "LC_MESSAGES")
+    os.makedirs(mo_dir, exist_ok=True)
+    if code == "pseudo-source":
+        _generate_library_mos(mo_dir, localedir)
+    return _generate_virtaal_mo(code, mo_dir)
 
 
 def main():

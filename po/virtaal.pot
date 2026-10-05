@@ -2377,11 +2377,6 @@ msgstr ""
 msgid "<b>%d</b>"
 msgstr ""
 
-#: virtaal/views/propertiesview.py
-#, python-format
-msgid "%.1f KB"
-msgstr ""
-
 #: virtaal/views/storeview.py
 msgid "Export failed"
 msgstr ""

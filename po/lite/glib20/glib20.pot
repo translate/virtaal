@@ -2,25 +2,41 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-06 17:33+0000\n"
+"POT-Creation-Date: 2026-10-06 00:20+0100\n"
 "PO-Revision-Date: 2011-05-03 16:35+0000\n"
 "Last-Translator: F Wolff <friedel@translate.org.za>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: templates\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Pootle 2.5.1-rc1\n"
 
-msgid "%.1f GB"
+msgctxt "format-size"
+msgid "%.1f %s"
 msgstr ""
 
-msgid "%.1f KB"
+msgctxt "format-size"
+msgid "%u %s"
 msgstr ""
 
-msgid "%.1f MB"
-msgstr ""
-
-msgid "%u byte"
-msgid_plural "%u bytes"
+msgid "byte"
+msgid_plural "bytes"
 msgstr[0] ""
+
+msgid "EB"
+msgstr ""
+
+msgid "GB"
+msgstr ""
+
+msgid "kB"
+msgstr ""
+
+msgid "MB"
+msgstr ""
+
+msgid "PB"
+msgstr ""
+
+msgid "TB"
+msgstr ""

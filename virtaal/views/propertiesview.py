@@ -247,10 +247,7 @@ class PropertiesView(BaseView, GObjectWrapper):
             self._widgets['lbl_location'].set_tooltip_text(filename)
         file_size = self.data.get('file_size', 0)
         if file_size:
-            #Let's get this from glib20.mo so that we're consistent with the file dialogue
-            from gettext import dgettext
-            i18n_filesize = dgettext('glib20', "%.1f KB") % (file_size / 1024.0)
-            self._widgets['lbl_filesize'].set_text(i18n_filesize)
+            self._widgets['lbl_filesize'].set_text(GLib.format_size(file_size))
 
 
     # EVENT HANDLERS #

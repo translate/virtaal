@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-06 17:32+0000\n"
+"POT-Creation-Date: 2026-10-06 00:20+0100\n"
 "PO-Revision-Date: 2011-05-27 02:12+0000\n"
 "Last-Translator: F Wolff <friedel@translate.org.za>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,16 +13,46 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.1-rc1\n"
 
-msgid "%.1f GB"
-msgstr "%.1f GG"
+msgctxt "format-size"
+msgid "%.1f %s"
+msgstr ""
 
-msgid "%.1f KB"
-msgstr "%.1f KG"
+msgctxt "format-size"
+msgid "%u %s"
+msgstr ""
 
-msgid "%.1f MB"
-msgstr "%.1f MG"
+msgid "byte"
+msgid_plural "bytes"
+msgstr[0] ""
 
-msgid "%u byte"
-msgid_plural "%u bytes"
-msgstr[0] "%u greep"
-msgstr[1] "%u grepe"
+msgid "EB"
+msgstr ""
+
+msgid "GB"
+msgstr ""
+
+msgid "kB"
+msgstr ""
+
+msgid "MB"
+msgstr ""
+
+msgid "PB"
+msgstr ""
+
+msgid "TB"
+msgstr ""
+
+#~ msgid "%.1f GB"
+#~ msgstr "%.1f GG"
+
+#~ msgid "%.1f KB"
+#~ msgstr "%.1f KG"
+
+#~ msgid "%.1f MB"
+#~ msgstr "%.1f MG"
+
+#~ msgid "%u byte"
+#~ msgid_plural "%u bytes"
+#~ msgstr[0] "%u greep"
+#~ msgstr[1] "%u grepe"

@@ -8,6 +8,7 @@
 from gi.repository import Gtk
 
 from virtaal.common.platform import platform
+from virtaal.support.libi18n.numbers import localise_digits
 
 # The one binding this doesn't cover: right-click for external
 # look-up, mouse-only so it doesn't fit a keyboard-shortcuts window.
@@ -80,5 +81,24 @@ class ShortcutsWindow(Gtk.ShortcutsWindow):
                 group.add(Gtk.ShortcutsShortcut(
                     visible=True, accelerator=accelerator, title=desc))
             section.add(group)
+        self._localise_page_numbers(section)
         self.add(section)
         self.show()
+
+    def _localise_page_numbers(self, section):
+        # GTK titles a long section's pages "_1", "_2", ... itself, in an
+        # internal stack it rebuilds on every reflow, untranslated.
+        children = []
+        section.forall(children.append)
+        for stack in children:
+            if isinstance(stack, Gtk.Stack):
+                stack.connect('add', self._on_page_added)
+
+    def _on_page_added(self, stack, page):
+        page.connect('child-notify::title', self._on_page_title_changed, stack)
+
+    @staticmethod
+    def _on_page_title_changed(page, pspec, stack):
+        title = stack.child_get_property(page, 'title')
+        if title and localise_digits(title) != title:
+            stack.child_set_property(page, 'title', localise_digits(title))

@@ -45,16 +45,23 @@ hold to it literally. Bugfix milestones fill up with anything that
 seemed urgent when it was filed; 1.0.1 had drifted to 43 open issues
 by 2026-10-03, and only 5 actually fit its scope.
 
-- **1.0.1** - crashes, installation problems, problems in packaged
-  builds only. A UI bug, a data-handling bug that doesn't crash, or a
-  macOS/Windows behaviour quirk that isn't specific to the packaged
-  build doesn't qualify, however annoying it is.
+- **1.0.0** - every issue closed by work landed on main before the
+  1.0.0 release, whatever milestone it was filed under (1.0.1, 1.1.0,
+  Backlog, an old 0.x one). Includes a manual close whose fix landed
+  this cycle, or that the py3/GTK3 rewrite or new packaging resolved.
+  Not duplicates, questions, notabug, unreproducible, upstream fixes,
+  or fixes from years ago.
+- **1.0.1** - crashes (including a disabled path that used to
+  segfault), installation problems, problems in packaged builds and
+  their build tooling, and localisation of Virtaal itself (UI
+  language, `--lang`, lite translations, uilang test isolation). It
+  stays open until packaged-build signing is in place, so near-misses
+  of that scope go here too. Not `l10n`-labelled features for
+  translators' own content (TM mnemonics, term capitalisation).
 - **1.1.0** - the TM/MT feature cluster, and the default home for
   anything user-facing that doesn't fit a bugfix release.
-- **Backlog** - not user-facing: dev-checkout-only behaviour, test
-  suite isolation, asset/tooling automation, and code cleanup where
-  the dangerous path is already disabled (a commented-out call that
-  used to segfault is not a live crash).
+- **Backlog** - not user-facing: dev-only behaviour unrelated to
+  localisation, asset automation, and code cleanup.
 
 When pruning, the rule Dwayne gave: TM-related or potentially
 user-impacting -> 1.1.0, otherwise -> Backlog. An issue with an open PR

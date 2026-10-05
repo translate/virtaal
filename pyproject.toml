@@ -172,9 +172,10 @@ omit = [
 
 [tool.coverage.report]
 # Ratchets up over time as real tests get added - a couple points
-# below the real current figure, so an incidental single-line drop on
-# an unrelated PR doesn't fail CI on its own.
-fail_under = 57
+# below the lowest per-platform figure (macOS, which skips more GTK
+# tests), so an incidental single-line drop on an unrelated PR doesn't
+# fail CI on its own.
+fail_under = 87
 
 [tool.codespell]
 skip = "*.po,*.pot,po/*,ChangeLog,build,dist,*.egg-info,docs/_themes,devsupport/testfiles,.git,virtaal/support/test_statsdb_ported.py,devsupport/packaging/windows/languages/*"

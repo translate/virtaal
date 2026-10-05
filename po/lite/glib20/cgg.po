@@ -12,6 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Pootle 2.5.1-rc1\n"
 
+#. Seen in: Properties dialog
 msgctxt "format-size"
 msgid "%.1f %s"
 msgstr ""
@@ -30,6 +31,7 @@ msgstr ""
 msgid "GB"
 msgstr ""
 
+#. Seen in: Properties dialog
 msgid "kB"
 msgstr ""
 

@@ -573,13 +573,13 @@ If you are translating from English to French then French would be your translat
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="mnu_revert">
-                        <property name="label">gtk-revert-to-saved</property>
+                        <property name="label" translatable="yes">Re_vert to Saved</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="use_stock">False</property>
                       </object>
                     </child>
                     <child>

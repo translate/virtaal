@@ -102,6 +102,10 @@ msgid "_File"
 msgstr ""
 
 #: share/virtaal/virtaal.ui
+msgid "Re_vert to Saved"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
 msgid "_Update from Template"
 msgstr ""
 
@@ -1027,11 +1031,11 @@ msgid ""
 msgstr ""
 
 #: virtaal/controllers/maincontroller.py
-msgid "Reload File"
+msgid "Revert to Saved"
 msgstr ""
 
 #: virtaal/controllers/maincontroller.py
-msgid "Reload file from last saved copy and lose all changes?"
+msgid "Revert to the last saved copy and lose all changes?"
 msgstr ""
 
 #. l10n: See http://en.wikipedia.org/wiki/CamelCase

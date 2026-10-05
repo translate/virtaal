@@ -377,6 +377,20 @@ def test_get_available_ui_languages_names_languages_in_the_ui_language(tmp_path,
     assert langs['fr'] == 'Französisch'
 
 
+def test_get_available_ui_languages_falls_back_to_pycountrys_name(tmp_path, monkeypatch):
+    # toolkit has no entry for Ganda.
+    locale_dir = tmp_path / 'prefix' / 'share' / 'locale'
+    (locale_dir / 'lg' / 'LC_MESSAGES').mkdir(parents=True)
+    (locale_dir / 'lg' / 'LC_MESSAGES' / 'virtaal.mo').write_bytes(b'x')
+    monkeypatch.setattr(pan_app.platform, 'locale_dir', str(locale_dir))
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(tmp_path / 'repo'))
+    monkeypatch.setattr(pan_app, 'ui_language', 'en')
+
+    langs = dict(pan_app.get_available_ui_languages())
+
+    assert langs['lg'] == 'Ganda'
+
+
 def test_get_available_ui_languages_falls_back_to_the_code_for_an_unknown_language(tmp_path, monkeypatch):
     locale_dir = tmp_path / 'prefix' / 'share' / 'locale'
     (locale_dir / 'zzz' / 'LC_MESSAGES').mkdir(parents=True)

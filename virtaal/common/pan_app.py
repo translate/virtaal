@@ -482,8 +482,6 @@ def get_available_ui_languages():
         module is in po/POTFILES.skip (its own _('') probe below would
         otherwise mean gettext isn't set up yet when it runs), so a
         user-facing label belongs in the caller instead."""
-    from translate.lang.data import languages as toolkit_langs
-
     from virtaal.support.translate_compat import tr_lang
 
     codes = set()
@@ -505,11 +503,39 @@ def get_available_ui_languages():
     translate_name = tr_lang(ui_language)
 
     def display_name(code):
-        return translate_name(toolkit_langs[code][0]) if code in toolkit_langs else code
+        name = _english_language_name(code)
+        return translate_name(name) if name else code
 
     result = [(code, display_name(code)) for code in codes]
     result.sort(key=lambda pair: pair[1])
     return result
+
+def _english_language_name(code):
+    """toolkit's English name for a language code, else pycountry's, or
+        None."""
+    from translate.lang.data import languages as toolkit_langs
+
+    from virtaal.support import translate_compat
+    if code in toolkit_langs:
+        return toolkit_langs[code][0]
+    if translate_compat.pycountry is None:
+        return None
+    base = code.split('@')[0].split('_')[0]
+    language = (translate_compat.pycountry.languages.get(alpha_2=base)
+                or translate_compat.pycountry.languages.get(alpha_3=base))
+    return language.name if language else None
+
+def get_language_endonym(code):
+    """A UI language's name in that language itself, or None if unknown
+        or untranslated."""
+    from virtaal.support.translate_compat import _fix_language_name, tr_lang
+    name = _english_language_name(code)
+    if name is None:
+        return None
+    endonym = tr_lang(code)(name)
+    if endonym == _fix_language_name(name) and not code.startswith('en'):
+        return None
+    return endonym
 
 def set_ui_language(lang):
     """Override the UI language after startup - used by bin/virtaal's

@@ -70,6 +70,31 @@ def test_init_language_gui_puts_system_default_first_then_the_available_language
     assert ids == ['', 'af', 'fr']
 
 
+def test_init_language_gui_adds_each_languages_own_name(monkeypatch):
+    monkeypatch.setattr(prefsview.pan_app, 'get_available_ui_languages',
+                         lambda: [('fr', 'Französisch'), ('de', 'Deutsch'), ('zzz', 'zzz')])
+    monkeypatch.setattr(prefsview.pan_app, 'get_language_endonym',
+                         {'fr': 'français', 'de': 'Deutsch'}.get)
+    view = _load_widgets()
+
+    view._init_language_gui()
+
+    names = [row[0] for row in view._widgets['cmb_ui_language'].get_model()][1:]
+    assert names == ['Französisch - français', 'Deutsch', 'zzz']
+
+
+def test_get_language_endonym_names_a_language_in_itself():
+    assert prefsview.pan_app.get_language_endonym('de') == 'Deutsch'
+    assert prefsview.pan_app.get_language_endonym('zzz') is None
+
+
+def test_get_language_endonym_is_none_when_untranslated():
+    # pycountry has no Faroese name for Faroese - the English one isn't
+    # its own name.
+    assert prefsview.pan_app.get_language_endonym('fo') is None
+    assert prefsview.pan_app.get_language_endonym('en_GB') == 'English (United Kingdom)'
+
+
 def test_ui_language_property_round_trips_through_the_combo(monkeypatch):
     monkeypatch.setattr(prefsview.pan_app, 'get_available_ui_languages', lambda: [('af', 'Afrikaans')])
     view = _load_widgets()

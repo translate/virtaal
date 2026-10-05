@@ -359,14 +359,6 @@ def test_sync_matches_for_key_drops_the_stale_cache_entry_once_unmatched():
 
 # search/replace event handler guards #
 
-def test_on_search_next_ignores_a_call_with_no_store_open():
-    mode = SearchMode.__new__(SearchMode)
-    mode.controller = SimpleNamespace(main_controller=SimpleNamespace(store_controller=SimpleNamespace(store=None)))
-    mode._move_match = lambda offset: pytest.fail('must not move without an open store')
-
-    mode._on_search_next()
-
-
 def test_on_search_next_moves_forward_with_a_store_open():
     mode = SearchMode.__new__(SearchMode)
     mode.controller = SimpleNamespace(main_controller=SimpleNamespace(store_controller=SimpleNamespace(store=object())))
@@ -550,14 +542,6 @@ def test_refresh_proxy_researches():
     mode._refresh_proxy()
 
     assert calls == ['cancel', 'update']
-
-
-def test_on_search_prev_ignores_a_call_with_no_store_open():
-    mode = SearchMode.__new__(SearchMode)
-    mode.controller = SimpleNamespace(main_controller=SimpleNamespace(store_controller=SimpleNamespace(store=None)))
-    mode._move_match = lambda offset: pytest.fail('must not move without an open store')
-
-    mode._on_search_prev()
 
 
 def test_replace_match_ignores_a_source_match():
@@ -1194,13 +1178,53 @@ def test_connect_textboxes_subscribes_every_source_and_target_to_refreshed():
 
 # __init__() / _create_widgets() / _setup_key_bindings() #
 
-def _real_controller():
-    return SimpleNamespace(
-        main_controller=SimpleNamespace(
+class _Signals:
+    def __init__(self):
+        self.handlers = {}
+
+    def connect(self, signal, handler):
+        self.handlers[signal] = handler
+
+    def emit(self, signal):
+        self.handlers[signal](self)
+
+
+class _StoreController(_Signals):
+    def __init__(self, store=None):
+        super().__init__()
+        self.store = store
+
+    def get_store(self):
+        return self.store
+
+
+class _ModeController(_Signals):
+    """Emits 'mode-selected' like ModeController, after setting current_mode."""
+
+    def __init__(self, store, view):
+        super().__init__()
+        self.current_mode = None
+        self.main_controller = SimpleNamespace(
             unit_controller=SimpleNamespace(view=SimpleNamespace(sources=[], targets=[])),
-            view=Gtk.Window(),
+            store_controller=_StoreController(store),
+            view=view,
         )
-    )
+
+    def select_mode(self, mode):
+        self.current_mode = mode
+        self.emit('mode-selected')
+
+
+def _real_controller(store=None):
+    menu_edit = Gtk.Menu()
+    items = {name: Gtk.MenuItem(label=name) for name in ('mnu_find', 'mnu_find_next', 'mnu_find_prev')}
+    for item in items.values():
+        menu_edit.append(item)
+    items['menu_edit'] = menu_edit
+    view = Gtk.Window()
+    view.gui = SimpleNamespace(get_object=items.get)
+    view.sync_menubar = lambda: None
+    return _ModeController(store, view)
 
 
 def test_init_builds_the_expected_widgets_and_initial_state():
@@ -1234,6 +1258,56 @@ def test_init_registers_the_search_accelerators_and_accel_group(monkeypatch):
         "<Virtaal>/Edit/Search: Close",
     ]
     assert list(Gtk.accel_groups_from_object(controller.main_controller.view)) == [mode.accel_group]
+
+
+def _sensitivity(mode):
+    return [item.get_sensitive() for item in (mode.mnu_find, mode.mnu_find_next, mode.mnu_find_prev)]
+
+
+def test_find_menu_items_follow_the_open_file_and_search_mode():
+    # An insensitive item's shortcut doesn't fire either.
+    controller = _real_controller()
+    store_controller = controller.main_controller.store_controller
+    mode = SearchMode(controller)
+    assert _sensitivity(mode) == [False, False, False]
+
+    store_controller.store = object()
+    store_controller.emit('store-loaded')
+    # Find Next/Previous only do something in Search mode.
+    assert _sensitivity(mode) == [True, False, False]
+
+    controller.select_mode(mode)
+    assert _sensitivity(mode) == [True, True, True]
+
+    controller.select_mode(SimpleNamespace())
+    assert _sensitivity(mode) == [True, False, False]
+
+    controller.select_mode(mode)
+    store_controller.store = None
+    store_controller.emit('store-closed')
+    assert _sensitivity(mode) == [False, False, False]
+
+
+def test_find_menu_items_carry_the_search_shortcuts():
+    mode = SearchMode(_real_controller(store=object()))
+
+    assert mode.mnu_find.get_accel_path() == "<Virtaal>/Edit/Search Ctrl+F"
+    assert mode.mnu_find_next.get_accel_path() == "<Virtaal>/Edit/Search: Next"
+    assert mode.mnu_find_prev.get_accel_path() == "<Virtaal>/Edit/Search: Previous"
+
+
+def test_find_menu_items_start_search_and_move_between_matches():
+    controller = _real_controller(store=object())
+    mode = SearchMode(controller)
+    moved = []
+    mode._move_match = moved.append
+
+    mode.mnu_find.activate()
+    assert controller.current_mode is mode
+    mode.mnu_find_next.activate()
+    mode.mnu_find_prev.activate()
+
+    assert moved == [1, -1]
 
 
 def test_create_widgets_wires_the_case_and_regex_toggles_to_refresh_proxy():

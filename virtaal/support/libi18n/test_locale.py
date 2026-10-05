@@ -143,7 +143,7 @@ def test_bundled_macos_libintl_returns_none_when_absent(tmp_path):
     assert _bundled_macos_libintl(str(bundle_dir)) is None
 
 
-def test_bind_libintl_posix_prefers_the_bundled_macos_copy(tmp_path, monkeypatch):
+def test_bind_libintl_posix_prefers_the_bundled_macos_copy(tmp_path, monkeypatch, fresh_library_defaults):
     # A frozen macOS build vendors its own libintl in Contents/
     # Frameworks/ - a separate loaded image from any system copy
     # (e.g. Homebrew's) that ctypes.util.find_library() would find
@@ -183,6 +183,104 @@ def test_bind_libintl_posix_swallows_a_missing_symbol(monkeypatch):
     monkeypatch.setattr(ctypes, 'CDLL', lambda name: SimpleNamespace())
 
     bind_libintl_posix('/tmp/some/locale/dir')  # must not raise
+
+
+@pytest.fixture
+def fresh_library_defaults(monkeypatch):
+    monkeypatch.setattr(locale_module, '_library_default_dirs', {})
+
+
+def _fake_libintl(defaults):
+    """A libintl stand-in whose bindtextdomain() answers a NULL dirname
+        query from `defaults` and records every real binding."""
+    bound = {}
+
+    def bindtextdomain(domain, dirname):
+        if dirname is None:
+            return bound.get(domain, defaults.get(domain))
+        bound[domain] = dirname
+        return dirname
+
+    return SimpleNamespace(bindtextdomain=bindtextdomain,
+                           bind_textdomain_codeset=lambda *a: None, bound=bound)
+
+
+def _write_catalog(locale_dir, lang, domain):
+    mo_dir = locale_dir / lang / 'LC_MESSAGES'
+    mo_dir.mkdir(parents=True, exist_ok=True)
+    (mo_dir / (domain + '.mo')).touch()
+
+
+def test_bind_library_domains_binds_a_domain_with_a_catalog_for_the_language(
+        tmp_path, monkeypatch, fresh_library_defaults):
+    _write_catalog(tmp_path, 'af', 'gtk30')
+    monkeypatch.setenv('LANGUAGE', 'af')
+    libintl = _fake_libintl({b'gtk30': b'/gtk/default', b'glib20': b'/glib/default'})
+
+    locale_module._bind_library_domains(libintl, str(tmp_path))
+
+    assert libintl.bound[b'gtk30'] == str(tmp_path).encode(sys.getfilesystemencoding())
+    assert libintl.bound[b'glib20'] == b'/glib/default'
+
+
+def test_bind_library_domains_restores_the_default_when_switching_away(
+        tmp_path, monkeypatch, fresh_library_defaults):
+    # Switching the UI language at runtime to one Virtaal has no gtk30
+    # catalog for must give GTK back its own catalogs, not leave it
+    # pointed at a directory where it finds nothing.
+    _write_catalog(tmp_path, 'af', 'gtk30')
+    libintl = _fake_libintl({b'gtk30': b'/gtk/default', b'glib20': b'/glib/default'})
+    monkeypatch.setenv('LANGUAGE', 'af')
+    locale_module._bind_library_domains(libintl, str(tmp_path))
+
+    monkeypatch.setenv('LANGUAGE', 'de')
+    locale_module._bind_library_domains(libintl, str(tmp_path))
+
+    assert libintl.bound[b'gtk30'] == b'/gtk/default'
+
+
+_FRESH_PROCESS_BIND = """
+import ctypes, ctypes.util, os, sys, types
+from gi.repository import GLib
+import virtaal
+# A bare virtaal.common package, skipping its __init__: that imports
+# pan_app, whose own startup already imports GTK and has GLib translate
+# something - exactly the ordering this test needs to control.
+common = types.ModuleType('virtaal.common')
+common.__path__ = [os.path.join(os.path.dirname(virtaal.__file__), 'common')]
+sys.modules['virtaal.common'] = common
+from virtaal.support.libi18n.locale import bind_libintl_posix
+bind_libintl_posix(sys.argv[1])
+# What the app does next: import GTK and let GLib translate something.
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+GLib.format_size(3000)
+libname = ctypes.util.find_library('intl')
+libintl = ctypes.CDLL(libname) if libname else ctypes.CDLL(None)
+libintl.bindtextdomain.restype = ctypes.c_char_p
+for domain in (b'gtk30', b'glib20'):
+    print(libintl.bindtextdomain(domain, None).decode())
+"""
+
+
+@pytest.mark.skipif(platform.is_windows, reason="bind_libintl_posix() is POSIX-only")
+def test_bind_libintl_posix_library_bindings_outlast_gtk_and_glib_first_use(tmp_path):
+    # Real libintl, real GTK and GLib: each binds its own domain on
+    # first use (GTK at import, GLib lazily on its first translated
+    # message), so a binding made too early is silently overwritten.
+    # A fresh process, since either may already have happened in this
+    # one.
+    import subprocess
+    _write_catalog(tmp_path, 'af', 'gtk30')
+    _write_catalog(tmp_path, 'af', 'glib20')
+    repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+    env = dict(os.environ, LANGUAGE='af', PYTHONPATH=repo_root)
+
+    result = subprocess.run([sys.executable, '-c', _FRESH_PROCESS_BIND, str(tmp_path)],
+                            env=env, capture_output=True, text=True, check=True)
+
+    assert result.stdout.split() == [str(tmp_path), str(tmp_path)]
 
 
 @pytest.mark.skipif(not platform.is_windows, reason="_putenv() is Windows-only ctypes plumbing")

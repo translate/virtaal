@@ -377,12 +377,51 @@ def _bundled_macos_libintl(bundle_dir):
     return None
 
 
+# GTK's and GLib's own gettext domains. Outside Windows each library
+# binds its domain to its own locale directory (GTK on macOS: the main
+# bundle's, Python.app's in a dev checkout), never Virtaal's.
+LIBRARY_DOMAINS = (b"gtk30", b"glib20")
+
+# Each library's own binding, restored when Virtaal has no catalog.
+_library_default_dirs = {}
+
+
+def _bind_library_domains(libintl, locale_dir):
+    """Point each of LIBRARY_DOMAINS at locale_dir when it holds that
+    domain's catalog for the current language, otherwise back at the
+    library's own default."""
+    import ctypes
+    import gettext
+
+    import gi
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import GLib, Gtk  # noqa: F401
+    # Each library binds its own domain on first use, overwriting ours:
+    # GTK on import, GLib on its first translated message (format_size()
+    # translates anything over 1000 bytes).
+    GLib.format_size(2000)
+
+    libintl.bindtextdomain.restype = ctypes.c_char_p
+    for domain in LIBRARY_DOMAINS:
+        if domain not in _library_default_dirs:
+            _library_default_dirs[domain] = libintl.bindtextdomain(domain, None)
+        # Same LANGUAGE/LC_ALL/LC_MESSAGES/LANG lookup libintl does.
+        if gettext.find(domain.decode(), locale_dir):
+            dirname = locale_dir.encode(sys.getfilesystemencoding())
+        else:
+            dirname = _library_default_dirs[domain]
+        if dirname:
+            libintl.bindtextdomain(domain, dirname)
+            libintl.bind_textdomain_codeset(domain, b"UTF-8")
+
+
 def bind_libintl_posix(locale_dir):
     """The POSIX equivalent of fix_libintl() above (same underlying
     reason, bugzilla.gnome.org/574520): Gtk.Builder's translatable
     strings go through real C-level gettext, independent of Python's
     own gettext module - without this they keep using whatever locale
-    directory the system's default search path points at.
+    directory the system's default search path points at. Also binds
+    GTK's and GLib's own domains (see _bind_library_domains).
 
     Best-effort and silent on failure.
     """
@@ -397,5 +436,6 @@ def bind_libintl_posix(locale_dir):
         libintl = ctypes.CDLL(libname) if libname else ctypes.CDLL(None)
         libintl.bindtextdomain(b"virtaal", locale_dir.encode(sys.getfilesystemencoding()))
         libintl.bind_textdomain_codeset(b"virtaal", b"UTF-8")
-    except (OSError, AttributeError):
+        _bind_library_domains(libintl, locale_dir)
+    except (OSError, AttributeError, ImportError, ValueError):
         pass

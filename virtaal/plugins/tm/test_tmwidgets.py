@@ -5,6 +5,8 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+from types import SimpleNamespace
+
 from gi.repository import Gdk, Gtk
 
 from virtaal.plugins.tm.tmwidgets import TMSourceColRenderer, TMWindow
@@ -121,14 +123,39 @@ def _bottom(textview):
     return _top(textview) + textview.get_parent().get_allocation().height
 
 
-def _make_tmwindow_with_matches(n=1):
-    tmwindow = TMWindow(None)
+def _fake_view():
+    """Just enough of a TMView for the match renderer to size real rows."""
+    lang = SimpleNamespace(source_lang=SimpleNamespace(code='en'), target_lang=SimpleNamespace(code='af'))
+    return SimpleNamespace(
+        get_target_width=lambda: 400,
+        controller=SimpleNamespace(main_controller=SimpleNamespace(lang_controller=lang)))
+
+
+def _make_tmwindow_with_matches(n=1, show=True):
+    tmwindow = TMWindow(_fake_view())
     for i in range(n):
-        tmwindow.liststore.append([{'quality': 90 - i, 'tmsource': 'Current file'}, f'match {i}'])
+        match = {'quality': 90 - i, 'tmsource': 'Current file', 'query_str': 'query',
+                 'source': f'source text {i}', 'target': f'target text {i}'}
+        tmwindow.liststore.append([match, f'match {i}'])
     tmwindow.treeview.columns_autosize()
+    if show:
+        tmwindow.show_all()
+        _process_events()
+    return tmwindow
+
+
+def test_rows_height_is_known_before_the_window_is_shown():
+    # update_geometry() places the window before it is first shown.
+    tmwindow = _make_tmwindow_with_matches(n=3, show=False)
+    before = tmwindow.rows_height()
+
     tmwindow.show_all()
     _process_events()
-    return tmwindow
+
+    assert before > 3 * 20
+    assert tmwindow.rows_height() == before
+
+    tmwindow.destroy()
 
 
 def test_update_geometry_pops_down_when_there_is_room_below():
@@ -165,6 +192,7 @@ def test_update_geometry_flips_above_the_source_when_there_is_no_room_below():
 def test_update_geometry_shrinks_above_when_neither_side_fits():
     window, source, target = _make_source_and_target('bottom', height=250)
     tmwindow = _make_tmwindow_with_matches(n=20)
+    assert tmwindow.rows_height() > tmwindow.MAX_HEIGHT
 
     tmwindow.update_geometry(target)
     _process_events()
@@ -180,6 +208,7 @@ def test_update_geometry_shrinks_above_when_neither_side_fits():
 def test_update_geometry_shrinks_below_when_neither_side_fits():
     window, _source, target = _make_source_and_target('top', height=250)
     tmwindow = _make_tmwindow_with_matches(n=20)
+    assert tmwindow.rows_height() > tmwindow.MAX_HEIGHT
 
     tmwindow.update_geometry(target)
     _process_events()

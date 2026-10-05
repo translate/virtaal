@@ -71,8 +71,10 @@ class TMWindow(Gtk.Window):
         itr = self.liststore.get_iter_first()
         vert_sep = self.treeview.style_get_property('vertical-separator')
         while itr and self.liststore.iter_is_valid(itr):
-            path = self.liststore.get_path(itr)
-            height += self.treeview.get_cell_area(path, self.tvc_match).height + vert_sep
+            # Measured from the renderer, not get_cell_area(): rows have no
+            # area until the window is shown, and it must be placed before.
+            self.tvc_match.cell_set_cell_data(self.liststore, itr, False, False)
+            height += self.tvc_match.cell_get_size().height + vert_sep
             itr = self.liststore.iter_next(itr)
         # This seems necessary on some themes, but on others (like wimp and the
         # large inverse theme of GNOME, it causes the scrollbar to appear.
@@ -84,7 +86,7 @@ class TMWindow(Gtk.Window):
     def update_geometry(self, widget):
         """Move this window to right below the given widget so that C{widget}'s
             bottom left corner and this window's top left corner line up."""
-        if not self.props.visible:
+        if not self.get_realized():
             return
 
         widget_alloc = widget.get_parent().get_allocation()
@@ -162,6 +164,7 @@ class TMWindow(Gtk.Window):
                 y = max(geom.y, min(below_y, geom.y + geom.height - height))
 
         #logging.debug('TMWindow.update_geometry(%dx%d +%d+%d)' % (width, height, x, y))
+        self.move(x, y)
         self.resize(width, height)
         self.scrolled_window.set_size_request(width, height)
         window = self.get_window()

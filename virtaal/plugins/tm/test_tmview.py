@@ -25,7 +25,7 @@ class _FakeTreeview:
         self.activated.append((path, column))
 
 
-def _tmview(liststore=None, isvisible=False, active=True, may_show=True):
+def _tmview(liststore=None, isvisible=False, active=True, may_show=True, target=None):
     view = TMView.__new__(TMView)
     view.isvisible = isvisible
     view._may_show_tmwindow = may_show
@@ -36,7 +36,12 @@ def _tmview(liststore=None, isvisible=False, active=True, may_show=True):
         liststore = Gtk.ListStore(GObject.TYPE_PYOBJECT, GObject.TYPE_STRING)
     view.tmwindow = SimpleNamespace(
         liststore=liststore, treeview=_FakeTreeview(), tvc_match='tvc_match',
-        show_all=lambda: None, hide=lambda: None, update_geometry=lambda widget: None)
+        show_all=lambda: None, hide=lambda: None, update_geometry=lambda widget: None,
+        get_child=lambda: SimpleNamespace(show_all=lambda: None), realize=lambda: None)
+    unit_view = SimpleNamespace(
+        focused_target_n=None if target is None else 0, targets=[target])
+    view.controller = SimpleNamespace(main_controller=SimpleNamespace(
+        unit_controller=SimpleNamespace(view=unit_view)))
     view.mnu_suggestions = SimpleNamespace(get_active=lambda: active)
     view.summoned = False
     return view
@@ -202,6 +207,20 @@ def test_show_displays_the_window_and_updates_state():
     assert calls == ['shown']
     assert view.isvisible is True
     assert view._should_show_tmwindow is False
+
+
+def test_show_places_the_window_before_showing_it():
+    # Shown first, it would appear where it last was and then jump.
+    target = object()
+    view = _tmview(target=target)
+    view.tmwindow.liststore.append([{'source': 'a'}, ''])
+    calls = []
+    view.tmwindow.update_geometry = lambda widget: calls.append(('placed', widget))
+    view.tmwindow.show_all = lambda: calls.append('shown')
+
+    view.show()
+
+    assert calls == [('placed', target), 'shown']
 
 
 def test_hide_marks_the_window_as_not_visible():

@@ -433,6 +433,10 @@ class StoreController(BaseController):
         self.store.set_target_language(langcode)
 
     def _unit_done(self, _unit_controller, unit, _modified):
+        self.update_unit_stats(unit)
+
+    def update_unit_stats(self, unit):
+        """Move C{unit} to the stats lists for its current state."""
         if self.store is None or not self.store.stats:
             return
         if self.cursor and self.cursor.deref() is unit:

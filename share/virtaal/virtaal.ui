@@ -901,6 +901,26 @@ If you are translating from English to French then French would be your translat
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="mnu_first">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="accel_path">&lt;Virtaal&gt;/Navigation/First</property>
+                        <property name="label" translatable="yes">_First Unit</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="mnu_last">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="accel_path">&lt;Virtaal&gt;/Navigation/Last</property>
+                        <property name="label" translatable="yes">_Last Unit</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkSeparatorMenuItem" id="separator_mnu_nav_state">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>

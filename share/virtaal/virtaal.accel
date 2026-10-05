@@ -34,6 +34,8 @@
 (gtk_accel_path "<Virtaal>/Navigation/PgDown" "<Meta>Page_Down")
 (gtk_accel_path "<Virtaal>/Navigation/Up" "<Meta>Up")
 (gtk_accel_path "<Virtaal>/Navigation/Down" "<Meta>Down")
+(gtk_accel_path "<Virtaal>/Navigation/First" "<Meta>Home")
+(gtk_accel_path "<Virtaal>/Navigation/Last" "<Meta>End")
 
 ; Searching
 (gtk_accel_path "<Virtaal>/Edit/Search: Previous" "<Shift><Meta>g")

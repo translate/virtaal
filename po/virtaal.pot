@@ -165,6 +165,14 @@ msgid "_Page Down"
 msgstr ""
 
 #: share/virtaal/virtaal.ui
+msgid "_First Unit"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
+msgid "_Last Unit"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
 msgid "Next Unit"
 msgstr ""
 
@@ -2451,6 +2459,14 @@ msgstr ""
 
 #: virtaal/views/widgets/shortcutswindow.py
 msgid "Move 10 units down"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to first unit"
+msgstr ""
+
+#: virtaal/views/widgets/shortcutswindow.py
+msgid "Move to last unit"
 msgstr ""
 
 #: virtaal/views/widgets/shortcutswindow.py

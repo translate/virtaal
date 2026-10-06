@@ -31,7 +31,7 @@ from translate.storage import factory, pypo
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 LITE_DIR = os.path.join(REPO_ROOT, "po", "lite")
-DOMAINS = ("gtk30", "glib20", "gtkspell3")
+DOMAINS = ("gtk30", "glib20", "gtkspell3", "gtk-mac-integration")
 EXCLUDED_WITHIN = {"FileChooser", "FontButton"}
 KEEP = {
     # The UI's text direction - a right-to-left language translates it
@@ -47,6 +47,10 @@ KEEP = {
     # The spelling menu's items depend on the word: suggestions, too many
     # suggestions, or none.
     "gtkspell3": ["<i>(no suggestions)</i>", 'Add "%s" to Dictionary', "Ignore All", "More..."],
+    # The macOS app menu is native, so no harvest sees it. Virtaal sets
+    # no Window menu, so Window, Minimize and Bring All to Front never
+    # show; About %s labels Virtaal's own About item.
+    "gtk-mac-integration": ["About %s", "Services", "Hide %s", "Hide Others", "Show All", "Quit %s"],
 }
 WITHIN_NAMES = {"Menu": "menus", "AboutDialog": "About dialog",
                 "ShortcutsWindow": "Keyboard Shortcuts window"}
@@ -95,12 +99,18 @@ def write_template(domain, originals):
     """Rewrite domain's template, keeping its header and developer
     comments."""
     path = os.path.join(LITE_DIR, domain, domain + ".pot")
-    old = factory.getobject(path)
-    old_notes = {(unit.getcontext() or "", str(unit.source)):
-                 "\n".join(line for line in unit.getnotes("developer").splitlines() if not line.startswith("Seen in: "))
-                 for unit in old.units if not unit.isheader()}
     store = pypo.pofile()
-    store.units = [old.header()] if old.header() else []
+    old_notes = {}
+    if os.path.exists(path):
+        old = factory.getobject(path)
+        old_notes = {(unit.getcontext() or "", str(unit.source)):
+                     "\n".join(line for line in unit.getnotes("developer").splitlines()
+                               if not line.startswith("Seen in: "))
+                     for unit in old.units if not unit.isheader()}
+        store.units = [old.header()] if old.header() else []
+    else:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        store.init_headers(charset="UTF-8", encoding="8bit", project_id_version="%s lite" % domain)
     store.updateheader(pot_creation_date=time.strftime("%Y-%m-%d %H:%M%z"))
     if store.units:
         # pot2po copies the template's Language over each merged .po's own.

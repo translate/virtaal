@@ -31,9 +31,12 @@ Currently we translate lite versions for:
 * GTK - http://l10n.gnome.org/module/gtk+ (scroll down to UI translations)
 * gtkspell - http://translationproject.org/domain/gtkspell.html
 * Glib - http://l10n.gnome.org/module/glib/
+* gtk-mac-integration (macOS app menu) - https://l10n.gnome.org/module/gtk-mac-integration/
 
 The GTK, GLib and gtkspell templates hold what Virtaal really shows,
-found by running it under --pseudo-translation-source. To regenerate
+found by running it under --pseudo-translation-source. The macOS app
+menu is native, so gtk-mac-integration's template is the fixed list in
+write_lite_templates.py's KEEP instead. To regenerate
 them, on each platform you want covered (Linux needs a real locale such
 as LANG=en_US.UTF-8, not C; gtkspell's menu needs a spelling dictionary
 for Afrikaans, the harvest's target language):

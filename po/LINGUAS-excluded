@@ -1,0 +1,6 @@
+# Translations in po/*.po deliberately left out of po/LINGUAS, one per
+# line with a reason: "lang  # reason". po/update-linguas.py --cut-off
+# adds those below the release threshold. Remove a line to ship it again.
+ach  # an abundance of serious issues (d46e9821, 2012)
+km  # no translations
+sq  # no translations

@@ -57,10 +57,10 @@ repos:
         pass_filenames: true
         require_serial: true
       - id: check-linguas
-        name: check po/LINGUAS ships the translations above the release threshold
+        name: check po/LINGUAS ships every translation not in po/LINGUAS-excluded
         entry: po/update-linguas.py --check
         language: system
-        files: ^po/(LINGUAS|virtaal\.pot|[^/]+\.po|update-linguas\.py)$
+        files: ^po/(LINGUAS|LINGUAS-excluded|[^/]+\.po|update-linguas\.py)$
         pass_filenames: false
       - id: check-icons-freshness
         name: check macOS .icns files are up to date with their .svg sources

@@ -135,9 +135,12 @@ def mismatched_catalogs(datas, mo_files):
 
 def merge(upstream_mo, lite_po, out_mo):
     """Writes out_mo: upstream_mo's messages (if it exists) with
-    lite_po's translations filling only what upstream doesn't
-    translate. Upstream's header, and so its Plural-Forms, wins."""
-    messages = {k: v for k, v in read_lite_po(lite_po).items() if v}
+    lite_po's translations (if it exists) filling only what upstream
+    doesn't translate. Upstream's header, and so its Plural-Forms,
+    wins."""
+    messages = {}
+    if lite_po and os.path.isfile(lite_po):
+        messages = {k: v for k, v in read_lite_po(lite_po).items() if v}
     if upstream_mo and os.path.isfile(upstream_mo):
         messages.update({k: v for k, v in read_mo(upstream_mo).items() if v})
     header = messages.get("", "Content-Type: text/plain; charset=UTF-8\n")

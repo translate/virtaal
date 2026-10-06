@@ -222,6 +222,84 @@ def test_open_frozen_log_trims_before_appending(tmp_path):
 
 # UI language selector (translate/virtaal#1492)
 
+def _library_sources(tmp_path, monkeypatch, upstream=True, lite_text='Lite save'):
+    from virtaal.support.libi18n import lite
+    upstream_dir = tmp_path / 'upstream'
+    if upstream:
+        lite.write_mo(str(upstream_dir / 'xx' / 'LC_MESSAGES' / 'gtk30.mo'),
+                      {'': 'Content-Type: text/plain; charset=UTF-8\n', '_Open': 'Upstream open'})
+    monkeypatch.setattr(lite, 'library_locale_dir', lambda namespace: str(upstream_dir) if namespace == 'Gtk' else None)
+    repo_root = tmp_path / 'repo'
+    (repo_root / 'po' / 'lite' / 'gtk30').mkdir(parents=True)
+    po = repo_root / 'po' / 'lite' / 'gtk30' / 'xx.po'
+    po.write_text('msgid ""\nmsgstr "Content-Type: text/plain; charset=UTF-8\\n"\n\n'
+                  'msgid "_Save"\nmsgstr "%s"\n' % lite_text, encoding='utf-8')
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(repo_root))
+    return po
+
+
+def _library_catalog(localedir):
+    import gettext
+    return gettext.translation('gtk30', str(localedir), languages=['xx'])
+
+
+def test_ensure_dev_library_catalogs_merges_upstream_and_lite(tmp_path, monkeypatch):
+    _library_sources(tmp_path, monkeypatch)
+    localedir = tmp_path / 'localedir'
+
+    pan_app._ensure_dev_library_catalogs('xx', str(localedir))
+
+    catalog = _library_catalog(localedir)
+    assert catalog.gettext('_Open') == 'Upstream open'
+    assert catalog.gettext('_Save') == 'Lite save'
+
+
+def test_ensure_dev_library_catalogs_rebuilds_only_when_a_source_is_newer(tmp_path, monkeypatch):
+    from virtaal.support.libi18n import lite
+    po = _library_sources(tmp_path, monkeypatch)
+    localedir = tmp_path / 'localedir'
+    pan_app._ensure_dev_library_catalogs('xx', str(localedir))
+    target = localedir / 'xx' / 'LC_MESSAGES' / 'gtk30.mo'
+    os.utime(target, (os.path.getmtime(po) + 10,) * 2)
+    po.write_text(po.read_text(encoding='utf-8').replace('Lite save', 'Newer save'), encoding='utf-8')
+    os.utime(po, (os.path.getmtime(target) - 5,) * 2)
+
+    pan_app._ensure_dev_library_catalogs('xx', str(localedir))
+    # read_mo(), not gettext.translation(), which caches by path.
+    assert lite.read_mo(str(target))['_Save'] == 'Lite save'
+
+    os.utime(po, (os.path.getmtime(target) + 5,) * 2)
+    pan_app._ensure_dev_library_catalogs('xx', str(localedir))
+    assert lite.read_mo(str(target))['_Save'] == 'Newer save'
+
+
+def test_ensure_dev_library_catalogs_leaves_nothing_behind_on_a_failed_merge(tmp_path, monkeypatch):
+    from virtaal.support.libi18n import lite
+    _library_sources(tmp_path, monkeypatch)
+    localedir = tmp_path / 'localedir'
+
+    def broken_merge(upstream_mo, lite_po, out_mo):
+        open(out_mo, 'w').write('partial')
+        raise ValueError('broken')
+    monkeypatch.setattr(lite, 'merge', broken_merge)
+    (localedir / 'xx' / 'LC_MESSAGES').mkdir(parents=True)
+
+    pan_app._ensure_dev_library_catalogs('xx', str(localedir))  # must not raise
+
+    assert os.listdir(localedir / 'xx' / 'LC_MESSAGES') == []
+
+
+def test_ensure_dev_library_catalogs_skips_a_library_with_no_catalog_at_all(tmp_path, monkeypatch):
+    from virtaal.support.libi18n import lite
+    monkeypatch.setattr(lite, 'library_locale_dir', lambda namespace: None)
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(tmp_path / 'repo'))
+    localedir = tmp_path / 'localedir'
+
+    pan_app._ensure_dev_library_catalogs('xx', str(localedir))
+
+    assert not localedir.exists()
+
+
 def test_ensure_dev_locale_installed_copies_from_the_repo_mo_tree(tmp_path, monkeypatch):
     monkeypatch.setattr(pan_app.platform, 'is_frozen', False)
     repo_root = tmp_path / 'repo'

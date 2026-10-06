@@ -25,10 +25,13 @@ the user has an end to end localised experience.
 
 A lite catalog exists only for a language whose upstream catalog doesn't
 translate every message in the lite template. It holds every message,
-pre-filled with whatever upstream already translates, since it replaces
-the upstream catalog at runtime. Once upstream translates them all, the
-lite catalog is retired. Ideally you should get these translations
-upstreamed.
+pre-filled with whatever upstream already translates. Once upstream
+translates them all, the lite catalog is retired. Ideally you should get
+these translations upstreamed.
+
+Builds and dev checkouts merge each lite catalog into the library's own
+catalog for that language: upstream's translation wins, and lite only
+fills the messages upstream lacks.
 
 Currently we translate lite versions for:
 * GTK - http://l10n.gnome.org/module/gtk+ (scroll down to UI translations)

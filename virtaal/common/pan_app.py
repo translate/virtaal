@@ -220,6 +220,38 @@ def _repo_root():
         for a dev checkout, never called when C{platform.is_frozen}."""
     return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+def _ensure_dev_library_catalogs(lang, localedir):
+    """A dev checkout's version of setup.py's lite step: for each
+        library (GTK, GLib, gtkspell, gtk-mac-integration), its own
+        installed catalog for C{lang} merged with Virtaal's lite one
+        from C{po/lite/}, into C{localedir} - where
+        bind_libintl_posix() then points that library. Rebuilt when
+        either source is newer. On macOS this is also what translates
+        GTK at all: there it otherwise looks in Python.app."""
+    import logging
+
+    from virtaal.support.libi18n import lite
+    for domain, namespace in lite.LIBRARY_NAMESPACES.items():
+        lite_po = os.path.join(_repo_root(), 'po', 'lite', domain, lang + '.po')
+        upstream_dir = lite.library_locale_dir(namespace)
+        upstream_mo = os.path.join(upstream_dir, lang, 'LC_MESSAGES', domain + '.mo') if upstream_dir else None
+        sources = [p for p in (lite_po, upstream_mo) if p and os.path.isfile(p)]
+        if not sources:
+            continue
+        target = os.path.join(localedir, lang, 'LC_MESSAGES', domain + '.mo')
+        if os.path.isfile(target) and os.path.getmtime(target) >= max(os.path.getmtime(p) for p in sources):
+            continue
+        # Built beside the target and swapped in, so a failure never
+        # leaves a broken catalog behind to be reused.
+        tmp_target = target + '.tmp'
+        try:
+            lite.merge(upstream_mo, lite_po, tmp_target)
+            os.replace(tmp_target, target)
+        except Exception:
+            logging.exception("Could not build the %s catalog for %s", domain, lang)
+            if os.path.exists(tmp_target):
+                os.remove(tmp_target)
+
 def _ensure_dev_locale_installed(lang, localedir):
     """A C{pip install -e .} dev checkout never actually gets
         setup.py's own compiled C{mo/<lang>/virtaal.mo} copied into
@@ -233,6 +265,7 @@ def _ensure_dev_locale_installed(lang, localedir):
         never run C{pip install -e .} at all."""
     if platform.is_frozen:
         return
+    _ensure_dev_library_catalogs(lang, localedir)
     target = os.path.join(localedir, lang, 'LC_MESSAGES', 'virtaal.mo')
     if os.path.isfile(target):
         return

@@ -64,6 +64,16 @@ def test_merge_without_an_upstream_catalog_is_the_lite_catalog(tmp_path):
     assert t.gettext("Untranslated") == "Untranslated"
 
 
+def test_merge_without_a_lite_catalog_is_the_upstream_catalog(tmp_path):
+    upstream_mo = str(tmp_path / "upstream.mo")
+    lite.write_mo(upstream_mo, {"": UPSTREAM_HEADER, "_Open": "Upstream open"})
+    out_dir = tmp_path / "out"
+
+    lite.merge(upstream_mo, None, str(out_dir / "xx" / "LC_MESSAGES" / "gtk30.mo"))
+
+    assert gettext.translation("gtk30", str(out_dir), languages=["xx"]).gettext("_Open") == "Upstream open"
+
+
 def test_merge_ignores_an_upstream_message_without_a_translation(tmp_path):
     t = _write(tmp_path, upstream={"_Save": ""})
 

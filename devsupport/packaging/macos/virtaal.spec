@@ -30,6 +30,7 @@ PACKAGING = ROOT / "devsupport" / "packaging" / "macos"
 
 sys.path.insert(0, str(ROOT))
 from virtaal.__version__ import ver as virtaal_version  # noqa: E402
+from virtaal.support.libi18n.lite import mismatched_catalogs  # noqa: E402
 
 sys.path.insert(0, str(PACKAGING))
 from generate_info_plist import document_types  # noqa: E402
@@ -140,6 +141,13 @@ a = Analysis(  # noqa: F821
     ),
     noarchive=False,
 )
+
+# PyInstaller keeps the first datas entry for a destination: our merged
+# lite catalogs, listed in datas above, must beat the copies GTK's and
+# GLib's own hooks (and gtkmac_mo_files) collect at the same path.
+_mismatched = mismatched_catalogs(a.datas, mo_files)
+if _mismatched:
+    raise SystemExit("Bundled another copy instead of Virtaal's catalog: %r" % _mismatched)
 
 pyz = PYZ(a.pure, a.zipped_data)  # noqa: F821
 

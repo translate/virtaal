@@ -374,7 +374,7 @@ msgstr "<u>教學</u>"
 
 #: ../share/virtaal/virtaal.ui.h:78
 msgid "<u>Cheat Sheet</u>"
-msgstr "<U>備忘單</ U>"
+msgstr "<u>備忘單</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.ui.h:80
@@ -388,7 +388,7 @@ msgstr "<u>更多...</u>"
 
 #: ../share/virtaal/virtaal.ui.h:82
 msgid "<u>Features</u>"
-msgstr "<U>特點</ U>"
+msgstr "<u>特點</u>"
 
 #: ../share/virtaal/virtaal.ui.h:83
 msgid "<b><big>Getting Started</big></b>"

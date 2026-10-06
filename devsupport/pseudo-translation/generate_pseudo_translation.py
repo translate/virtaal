@@ -165,12 +165,14 @@ def library_locale_dir(namespace):
         import pycountry
         return pycountry.LOCALES_DIR
     import gi
-    if namespace in ("Gtk", "GtkSpell", "GtkosxApplication"):
-        gi.require_version("Gtk", "3.0")
-        gi.require_version(namespace, "1.0" if namespace == "GtkosxApplication" else "3.0")
     try:
+        if namespace in ("Gtk", "GtkSpell", "GtkosxApplication"):
+            gi.require_version("Gtk", "3.0")
+            gi.require_version(namespace, "1.0" if namespace == "GtkosxApplication" else "3.0")
         __import__("gi.repository." + namespace)
-    except ImportError:
+    except (ImportError, ValueError):
+        # ValueError: a namespace this platform doesn't have
+        # (GtkosxApplication off macOS).
         return None
     from gi import _gi
     path = _gi.Repository.get_default().get_typelib_path(namespace)

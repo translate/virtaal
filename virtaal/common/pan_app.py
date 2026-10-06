@@ -558,16 +558,37 @@ def _english_language_name(code):
                 or translate_compat.pycountry.languages.get(alpha_3=base))
     return language.name if language else None
 
+# CLDR names for UI languages iso-codes can't name in themselves: no catalog,
+# or a name spelled as in English (Afrikaans), indistinguishable from untranslated.
+_CLDR_ENDONYMS = {
+    'af': 'Afrikaans',
+    'ak': 'Akan',
+    'cgg': 'Rukiga',
+    'ff': 'Pulaar',
+    'fo': 'føroyskt',
+    'km': 'ខ្មែរ',
+    'lg': 'Luganda',
+    'ne': 'नेपाली',
+    'nso': 'Sesotho sa Leboa',
+    'oc': 'occitan',
+    'pa': 'ਪੰਜਾਬੀ',
+    'si': 'සිංහල',
+    'sq': 'shqip',
+    'st': 'Sesotho',
+    'sw': 'Kiswahili',
+    'te': 'తెలుగు',
+}
+
 def get_language_endonym(code):
     """A UI language's name in that language itself, or None if unknown
         or untranslated."""
     from virtaal.support.translate_compat import _fix_language_name, tr_lang
     name = _english_language_name(code)
     if name is None:
-        return None
+        return _CLDR_ENDONYMS.get(code)
     endonym = tr_lang(code)(name)
     if endonym == _fix_language_name(name) and not code.startswith('en'):
-        return None
+        return _CLDR_ENDONYMS.get(code)
     return endonym
 
 def set_ui_language(lang):

@@ -8,7 +8,14 @@
 import sys
 from urllib.parse import parse_qs, urlsplit
 
+import pytest
+
 from virtaal.support import crash_dialog
+
+
+@pytest.fixture(autouse=True)
+def _fresh_shown_errors(monkeypatch):
+    monkeypatch.setattr(crash_dialog, '_shown_errors', set())
 
 
 def _exc_info(exc_type, message):
@@ -55,6 +62,28 @@ def test_uncaught_exception_shows_dialog_and_logs(monkeypatch, caplog):
     assert len(calls) == 1
     assert 'ValueError: boom' in calls[0]
     assert 'Uncaught exception' in caplog.text
+
+
+def test_repeated_error_shows_dialog_once_and_logs_repeats(monkeypatch, caplog):
+    calls = []
+    monkeypatch.setattr(crash_dialog, '_show_dialog', lambda text: calls.append(text))
+
+    # Same raise site, different message - still the same error.
+    for message in ('index 1', 'index 2', 'index 3'):
+        crash_dialog._on_uncaught_exception(*_exc_info(IndexError, message))
+
+    assert len(calls) == 1
+    assert caplog.text.count('Uncaught exception repeated: IndexError') == 2
+
+
+def test_different_error_still_shows_its_own_dialog(monkeypatch):
+    calls = []
+    monkeypatch.setattr(crash_dialog, '_show_dialog', lambda text: calls.append(text))
+
+    crash_dialog._on_uncaught_exception(*_exc_info(ValueError, 'boom'))
+    crash_dialog._on_uncaught_exception(*_exc_info(KeyError, 'boom'))
+
+    assert len(calls) == 2
 
 
 def test_build_report_url_labels_it_as_a_traceback():

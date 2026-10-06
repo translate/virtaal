@@ -10,6 +10,7 @@ import logging
 from gi.repository import GLib, Gtk
 
 from virtaal.common import GObjectWrapper
+from virtaal.support.libi18n.numbers import format_number, format_percent
 
 from .baseview import BaseView
 
@@ -49,14 +50,11 @@ def _statistics(stats, states=None):
 
 
 def _nice_percentage(numerator, denominator):
-    """Returns a string that is a nicely readable percentage."""
-    if numerator == 0:
-        return _("(0%)")
-    if numerator == denominator:
-        return _("(100%)")
-    percentage = numerator * 100.0 / denominator
-    #l10n: This is the formatting for percentages in the file properties. If unsure, just copy the original.
-    return _("(%04.1f%%)") % percentage
+    """numerator as a percentage of denominator, in parentheses, with one
+        decimal place unless it is 0% or 100%."""
+    decimals = 0 if numerator in (0, denominator) else 1
+    #l10n: A percentage in the file properties, e.g. "(25.5%)"
+    return _("(%s)") % format_percent(numerator / denominator if denominator else 0, decimals)
 
 
 class PropertiesView(BaseView, GObjectWrapper):
@@ -203,20 +201,19 @@ class PropertiesView(BaseView, GObjectWrapper):
             # labels/columns left the percentage's own alignment fighting
             # the number's, reading as neither left- nor right-aligned (#3683).
             word_percentage = _nice_percentage(words, total_words)
-            lbl_stats = Gtk.Label(label='%d  %s' % (words, word_percentage))
+            lbl_stats = Gtk.Label(label='%s  %s' % (format_number(words), word_percentage))
             lbl_stats.set_xalign(0.0)
             lbl_stats.show()
             vbox_word_stats.pack_start(lbl_stats, True, True, 0)
 
             string_percentage = _nice_percentage(strings, total_strings)
-            lbl_stats = Gtk.Label(label='%d  %s' % (strings, string_percentage))
+            lbl_stats = Gtk.Label(label='%s  %s' % (format_number(strings), string_percentage))
             lbl_stats.set_xalign(0.0)
             lbl_stats.show()
             vbox_string_stats.pack_start(lbl_stats, True, True, 0)
 
-        #l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
-        self._widgets['lbl_word_total'].set_markup(_("<b>%d</b>") % total_words)
-        self._widgets['lbl_string_total'].set_markup(_("<b>%d</b>") % total_strings)
+        self._widgets['lbl_word_total'].set_markup('<b>%s</b>' % format_number(total_words))
+        self._widgets['lbl_string_total'].set_markup('<b>%s</b>' % format_number(total_strings))
 
     def _populate_live_stat_rows(self, statistics, saved_statistics):
         """Fill the unsaved-changes column, in bold where it differs from the saved file."""
@@ -227,7 +224,7 @@ class PropertiesView(BaseView, GObjectWrapper):
             for vbox_name, value, saved_value, total in (
                     ('vbox_word_live_stats', words, saved_words, total_words),
                     ('vbox_string_live_stats', strings, saved_strings, total_strings)):
-                text = GLib.markup_escape_text('%d  %s' % (value, _nice_percentage(value, total)))
+                text = GLib.markup_escape_text('%s  %s' % (format_number(value), _nice_percentage(value, total)))
                 if value != saved_value:
                     text = '<b>%s</b>' % text
                 lbl_stats = Gtk.Label()
@@ -236,8 +233,8 @@ class PropertiesView(BaseView, GObjectWrapper):
                 lbl_stats.show()
                 self._widgets[vbox_name].pack_start(lbl_stats, True, True, 0)
 
-        self._widgets['lbl_word_live_total'].set_markup(_("<b>%d</b>") % total_words)
-        self._widgets['lbl_string_live_total'].set_markup(_("<b>%d</b>") % total_strings)
+        self._widgets['lbl_word_live_total'].set_markup('<b>%s</b>' % format_number(total_words))
+        self._widgets['lbl_string_live_total'].set_markup('<b>%s</b>' % format_number(total_strings))
 
     def _update_file_info_labels(self):
         self._widgets['lbl_type'].set_text(_(self.data['file_type']))

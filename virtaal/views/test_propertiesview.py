@@ -24,6 +24,12 @@ def _fresh_builder_cache(monkeypatch):
     monkeypatch.setattr(baseview, '_builders', {})
 
 
+@pytest.fixture(autouse=True)
+def _english_ui(monkeypatch):
+    from virtaal.common import pan_app
+    monkeypatch.setattr(pan_app, 'ui_language', 'en')
+
+
 def test_statistics_logs_warning_when_state_dict_out_of_sync(monkeypatch, caplog):
     """_statistics()'s consistency check between descriptions and
     statsdb.extended_state_strings used an undefined `logging` name -
@@ -73,12 +79,19 @@ def test_nice_percentage_full():
     assert _nice_percentage(50, 50) == '(100%)'
 
 
-def test_nice_percentage_pads_a_single_digit_percentage():
-    assert _nice_percentage(5, 100) == '(05.0%)'
+def test_nice_percentage_single_digit_percentage():
+    assert _nice_percentage(5, 100) == '(5.0%)'
 
 
 def test_nice_percentage_general_case():
     assert _nice_percentage(25, 100) == '(25.0%)'
+
+
+def test_nice_percentage_uses_the_ui_languages_format(monkeypatch):
+    from virtaal.common import pan_app
+    monkeypatch.setattr(pan_app, 'ui_language', 'de')
+
+    assert _nice_percentage(1, 8) == '(12,5\xa0%)'
 
 
 # PropertiesView construction #
@@ -339,6 +352,22 @@ def test_show_populates_stats_labels_in_state_order():
     assert word_stats == ['20  (20.0%)', '80  (80.0%)']
     string_stats = [c.get_label() for c in view._widgets['vbox_string_stats'].get_children()]
     assert string_stats == ['2  (20.0%)', '8  (80.0%)']
+
+
+def test_show_uses_the_ui_languages_number_format(monkeypatch):
+    from virtaal.common import pan_app
+    monkeypatch.setattr(pan_app, 'ui_language', 'fa')
+    view = _show_ready_view()
+    view.stats = {
+        'empty': {'units': 2, 'sourcewords': 2000},
+        'final': {'units': 8, 'sourcewords': 6000},
+    }
+
+    view.show()
+
+    word_stats = [c.get_label() for c in view._widgets['vbox_word_stats'].get_children()]
+    assert word_stats == ['۲٬۰۰۰  (۲۵٫۰%)', '۶٬۰۰۰  (۷۵٫۰%)']
+    assert view._widgets['lbl_word_total'].get_label() == '<b>۸٬۰۰۰</b>'
 
 
 def test_show_sets_the_word_and_string_totals():

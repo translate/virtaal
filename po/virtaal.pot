@@ -2338,28 +2338,14 @@ msgstr ""
 msgid "Reviewed:"
 msgstr ""
 
-#: virtaal/views/propertiesview.py
-msgid "(0%)"
-msgstr ""
-
-#: virtaal/views/propertiesview.py
-msgid "(100%)"
-msgstr ""
-
-#. l10n: This is the formatting for percentages in the file properties. If unsure, just copy the original.
+#. l10n: A percentage in the file properties, e.g. "(25.5%)"
 #: virtaal/views/propertiesview.py
 #, python-format
-msgid "(%04.1f%%)"
+msgid "(%s)"
 msgstr ""
 
 #: virtaal/views/propertiesview.py
 msgid "This file has unsaved changes."
-msgstr ""
-
-#. l10n: The total number of words. You can not use %Id at this stage. If unsure, just copy the original.
-#: virtaal/views/propertiesview.py
-#, python-format
-msgid "<b>%d</b>"
 msgstr ""
 
 #: virtaal/views/storeview.py

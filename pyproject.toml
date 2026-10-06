@@ -71,6 +71,8 @@ dependencies = [
     # English wherever the OS doesn't happen to have iso-codes installed.
     "pycountry==26.2.16",
     "PyYAML==6.0.3",
+    # Numbers in the UI language's own format (CLDR patterns and symbols).
+    "babel==2.18.0",
 ]
 
 [project.optional-dependencies]

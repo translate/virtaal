@@ -83,10 +83,8 @@ def test_context_selector_offers_none_to_all(monkeypatch):
 
 
 def test_context_selector_counts_use_the_ui_languages_digits(monkeypatch):
-    import builtins
-    real = builtins._
-    arabic_indic = '٠١٢٣٤٥٦٧٨٩'
-    monkeypatch.setattr(builtins, '_', lambda s: arabic_indic if s == '0123456789' else real(s))
+    from virtaal.common import pan_app
+    monkeypatch.setattr(pan_app, 'ui_language', 'ar_EG')
 
     view, _selected = _context_view()
 

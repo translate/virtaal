@@ -57,6 +57,17 @@ def test_lite_template_keys_match_mo_originals(generator):
     assert generator.lite_template_keys("iso639-3") is None
 
 
+def test_library_locale_dir_is_none_for_a_namespace_this_platform_lacks(generator, monkeypatch):
+    import gi
+
+    def unavailable(namespace, version):
+        raise ValueError("Namespace %s not available" % namespace)
+
+    monkeypatch.setattr(gi, "require_version", unavailable)
+
+    assert generator.library_locale_dir("GtkosxApplication") is None
+
+
 def test_tag_messages_leaves_gtks_text_direction_untranslated(generator):
     # GTK reads this message's translation as the UI's text direction.
     assert generator.tag_messages(["default:LTR"], "gtk:") == {}

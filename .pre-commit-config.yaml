@@ -56,6 +56,12 @@ repos:
         language: system
         pass_filenames: true
         require_serial: true
+      - id: check-linguas
+        name: check po/LINGUAS ships the translations above the release threshold
+        entry: po/update-linguas.py --check
+        language: system
+        files: ^po/(LINGUAS|virtaal\.pot|[^/]+\.po|update-linguas\.py)$
+        pass_filenames: false
       - id: check-icons-freshness
         name: check macOS .icns files are up to date with their .svg sources
         entry: devsupport/mac-bundle/check_icons_freshness.sh

@@ -56,17 +56,26 @@ for lang in open(path.join('po', 'LINGUAS'), encoding='utf-8'):
         (path.join(TARGET_DATA_DIR, 'locale', lang, 'LC_MESSAGES'), [mo_filename])
     )
 
-# Build lite files as needed on Win32 and OS X
+# Build lite files as needed on Win32 and OS X: each merged into the
+# library's own catalog on this build machine, so its other messages
+# stay translated (see virtaal/support/libi18n/lite.py).
 if os.name == 'nt' or sys.platform == 'darwin':
+    import importlib.util
+    _spec = importlib.util.spec_from_file_location(
+        'lite', path.join(path.dirname(path.abspath(__file__)), 'virtaal', 'support', 'libi18n', 'lite.py'))
+    lite = importlib.util.module_from_spec(_spec)
+    _spec.loader.exec_module(lite)
     for lang in open(path.join('po', 'LINGUAS-lite'), encoding='utf-8'):
         app, lang = lang.rstrip().split('/')
         po_filename = path.join('po', 'lite', app, lang + '.po')
         mo_filename = path.join('mo', lang, app + '.mo')
+        # iso_639 has no GI library: language names already fall back
+        # to Virtaal's own catalog at runtime (translate_compat).
+        namespace = lite.LIBRARY_NAMESPACES.get(app)
+        upstream_dir = lite.library_locale_dir(namespace) if namespace else None
+        upstream_mo = path.join(upstream_dir, lang, 'LC_MESSAGES', app + '.mo') if upstream_dir else None
 
-        if not path.exists(path.join('mo', lang)):
-            os.makedirs(path.join('mo', lang))
-
-        convertmo(open(po_filename, 'rb'), open(mo_filename, 'w'), None)
+        lite.merge(upstream_mo, po_filename, mo_filename)
 
         mo_files.append(
             (path.join(TARGET_DATA_DIR, 'locale', lang, 'LC_MESSAGES'), [mo_filename])

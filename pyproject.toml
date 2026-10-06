@@ -1,5 +1,6 @@
 [build-system]
-requires = ["setuptools>=68"]
+# setup.py compiles the .mo files with translate-toolkit.
+requires = ["setuptools>=68", "translate-toolkit>=3.17.5"]
 build-backend = "setuptools.build_meta"
 
 [project]

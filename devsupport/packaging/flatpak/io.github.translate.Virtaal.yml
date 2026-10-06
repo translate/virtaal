@@ -30,8 +30,9 @@ modules:
   - name: virtaal
     buildsystem: simple
     build-commands:
-      # --no-build-isolation: setup.py imports translate-toolkit
-      # directly, which needs it already installed.
+      # --no-build-isolation: the sandbox has no network, so pip can't
+      # provision [build-system].requires; it uses the setuptools and
+      # translate-toolkit already in the build env instead.
       - pip3 install --verbose --exists-action=i --no-build-isolation
         --prefix=${FLATPAK_DEST} .
       # Two calls, not one: the mimetype package keeps the plain

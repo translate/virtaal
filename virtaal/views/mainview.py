@@ -17,6 +17,7 @@ from gi.repository import Gdk, Gtk
 
 from virtaal.common import pan_app
 from virtaal.common.platform import platform
+from virtaal.support.libi18n.locale import rebind_library_domain
 from virtaal.views import theme
 
 from .baseview import BaseView
@@ -262,6 +263,9 @@ class MainView(BaseView):
             gi.require_version("GtkosxApplication", "1.0")
             from gi.repository import GtkosxApplication
             osxapp = GtkosxApplication.Application()
+            # It binds its own catalogs on creation; the app menu's
+            # strings are looked up in set_menu_bar() below.
+            rebind_library_domain(b"gtk-mac-integration")
             # Move the menu bar to the mac menu
             self.menubar.hide()
             osxapp.set_menu_bar(self.menubar)

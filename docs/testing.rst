@@ -74,10 +74,11 @@ script.
 
 :option:`virtaal --pseudo-translation-source` prefixes every string with
 the catalog it comes from (``vt:Save``, ``gtk:_Open``, ``glib:%.1f MB``,
-``iso:German``), showing which visible strings come from GTK, GLib or
-the language and country name lists rather than Virtaal, and which
-aren't translatable at all. Library strings are taken from their
-installed catalogs (GTK's and GLib's on macOS and Linux only)::
+``spell:Ignore All``, ``mac:Quit %s``, ``iso:German``), showing which
+visible strings come from GTK, GLib, gtkspell, the macOS menu
+integration or the language and country name lists rather than
+Virtaal, and which aren't translatable at all. Library strings are
+taken from their installed catalogs (macOS and Linux only)::
 
   virtaal --pseudo-translation-source devsupport/testfiles/checks.po
 

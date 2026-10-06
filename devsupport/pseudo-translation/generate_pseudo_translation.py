@@ -20,10 +20,10 @@ translation:
   reordering, not just that embedded bidi runs don't corrupt layout.
 - pseudo-source: every string prefixed with the catalog it comes from
   ("vt:Save" for Virtaal's own, "gtk:_Open", "glib:%.1f MB",
-  "spell:Ignore All", "iso:German" for language and country names), for
-  seeing which visible strings need a lite translation and which never
-  went through gettext at all. Library strings are taken from their own
-  installed catalogs.
+  "spell:Ignore All", "mac:Quit %s", "iso:German" for language and
+  country names), for seeing which visible strings need a lite
+  translation and which never went through gettext at all. Library
+  strings are taken from their own installed catalogs.
 
 Compiled straight into the active environment's own share/locale/ by
 default (so bin/virtaal's --pseudo-translation* options work with no
@@ -72,6 +72,7 @@ LIBRARY_SOURCES = {
     "gtk30": ("gtk:", "Gtk"),
     "glib20": ("glib:", "GLib"),
     "gtkspell3": ("spell:", "GtkSpell"),
+    "gtk-mac-integration": ("mac:", "GtkosxApplication"),
     "iso639-3": ("iso:", "pycountry"),
     "iso3166-1": ("iso:", "pycountry"),
 }
@@ -144,9 +145,9 @@ def library_locale_dir(namespace):
         import pycountry
         return pycountry.LOCALES_DIR
     import gi
-    if namespace in ("Gtk", "GtkSpell"):
+    if namespace in ("Gtk", "GtkSpell", "GtkosxApplication"):
         gi.require_version("Gtk", "3.0")
-        gi.require_version(namespace, "3.0")
+        gi.require_version(namespace, "1.0" if namespace == "GtkosxApplication" else "3.0")
     try:
         __import__("gi.repository." + namespace)
     except ImportError:

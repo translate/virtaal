@@ -460,7 +460,7 @@ msgstr "<u>手册</u>"
 #: ../share/virtaal/virtaal.ui.h
 #: ../virtaal/controllers/welcomescreencontroller.py
 msgid "https://docs.translatehouse.org/projects/localization-guide/en/"
-msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
+msgstr "https://docs.translatehouse.org/projects/localization-guide/en/"
 
 #: ../share/virtaal/virtaal.ui.h
 msgid "<u>Localization Guide</u>"

@@ -108,7 +108,9 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
-          pip install Sphinx
+          # The docs extra's own pins, without building virtaal itself.
+          python -c "import tomllib; print('\n'.join(tomllib.load(open('pyproject.toml', 'rb'))['project']['optional-dependencies']['docs']))" > "$RUNNER_TEMP/docs-requirements.txt"
+          pip install -r "$RUNNER_TEMP/docs-requirements.txt"
 
       - name: Check translation catalogs
         # -c fails on real errors (mismatched printf-style placeholders,

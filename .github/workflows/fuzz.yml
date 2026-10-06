@@ -62,13 +62,11 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
-          pip install setuptools wheel
-          pip install translate-toolkit
           pip install pygobject
           pip install pyenchant
 
       - name: Install virtaal
-        run: pip install --no-build-isolation .
+        run: pip install .
 
       - name: Fuzz
         run: |
@@ -112,12 +110,10 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
-          pip install setuptools wheel
-          pip install translate-toolkit
           pip install pyenchant
 
       - name: Install virtaal
-        run: pip install --no-build-isolation .
+        run: pip install .
 
       - name: Fuzz
         run: |
@@ -211,10 +207,8 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
-          pip install setuptools wheel
           pip install pycairo
           pip install pygobject
-          pip install translate-toolkit
           pip install python-Levenshtein
           pip install pycurl
           pip install lxml
@@ -222,7 +216,7 @@ jobs:
           pip install cheroot
 
       - name: Install virtaal
-        run: pip install --no-build-isolation .
+        run: pip install .
 
       - name: Fuzz
         # No gdb/lldb equivalent readily available here - relies on

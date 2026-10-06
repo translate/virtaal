@@ -151,7 +151,7 @@ gtkspell3`` for spell checking)::
   brew install pygobject3 gtk+3 gtk-mac-integration enchant gtkspell3
   python3 -m venv --system-site-packages .venv
   . .venv/bin/activate
-  pip install --no-build-isolation .[test]
+  pip install .[test]
   python bin/virtaal
 
 Building a distributable ``.app``/``.dmg`` uses `PyInstaller

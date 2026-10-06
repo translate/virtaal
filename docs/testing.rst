@@ -21,7 +21,7 @@ kept for hands-on widget debugging, not real coverage.
 
 Run it the same way CI does::
 
-  pip install --no-build-isolation .[test]
+  pip install .[test]
   pytest -rvxs virtaal
 
 On Linux without a real display, wrap it in ``xvfb-run`` (CI does)::
@@ -218,7 +218,7 @@ installs inside the VM, rather than improvising a different setup:
    on ``PATH``), set the same environment variables ``ci.yml``'s Windows job
    sets - ``PKG_CONFIG_PATH``, ``GI_TYPELIB_PATH``, ``INCLUDE``/``LIB`` pointing
    at ``C:\gtk``, and add ``C:\gtk\bin`` to ``PATH`` - before
-   ``pip install --no-build-isolation .[test]``. Read through the
+   ``pip install .[test]``. Read through the
    ``test-windows`` job's steps directly for the exact current values and
    ordering (some of them, like ``PKG_CONFIG_PATH``, get silently
    overwritten by other tools if set in the wrong order - see that

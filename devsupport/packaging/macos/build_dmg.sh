@@ -19,7 +19,7 @@ PYTHON="$PWD/.venv/bin/python3"
   exit 1
 }
 
-"$PYTHON" -m pip show dmgbuild >/dev/null 2>&1 || "$PYTHON" -m pip install dmgbuild
+"$PYTHON" -m pip install -q dmgbuild==1.6.7
 
 rm -f dist/Virtaal.dmg
 "$PYTHON" -m dmgbuild --settings devsupport/packaging/macos/dmgbuild-settings.py \

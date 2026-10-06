@@ -23,7 +23,9 @@ translation:
   "spell:Ignore All", "mac:Quit %s", "iso:German" for language and
   country names), for seeing which visible strings need a lite
   translation and which never went through gettext at all. Library
-  strings are taken from their own installed catalogs.
+  strings are taken from their own installed catalogs; one its lite
+  template (po/lite/<domain>/) lacks is marked "!" ("gtk!:Open"), a
+  gap in lite coverage.
 
 Compiled straight into the active environment's own share/locale/ by
 default (so bin/virtaal's --pseudo-translation* options work with no
@@ -126,15 +128,33 @@ def write_mo(path, messages):
         f.write(b"".join(string + b"\0" for string in strings))
 
 
-def tag_messages(originals, tag):
+def lite_template_keys(domain):
+    """Each message of po/lite/<domain>/<domain>.pot as a .mo original's
+    singular part ("msgctxt\\x04msgid"), or None without a template."""
+    path = os.path.join(_repo_root(), "po", "lite", domain, domain + ".pot")
+    if not os.path.isfile(path):
+        return None
+    from translate.storage import pypo
+    with open(path, "rb") as f:
+        units = pypo.pofile(f).units
+    return {(unit.getcontext() + "\x04" if unit.getcontext() else "") + str(unit.source.strings[0]
+                                                                         if unit.hasplural() else unit.source)
+            for unit in units if not unit.isheader()}
+
+
+def tag_messages(originals, tag, lite=None):
     """{original: translation}, every form of every msgid prefixed with
-    tag. GTK reads its "default:LTR" message as the text direction, so
-    that stays untranslated."""
+    tag - or, given lite (lite_template_keys()), with tag marked "!"
+    ("gtk!:") for a message the lite template lacks. GTK reads its
+    "default:LTR" message as the text direction, so that stays
+    untranslated."""
+    gap_tag = tag[:-1] + "!:"
     messages = {}
     for original in originals:
         msgid = original.rpartition("\x04")[2]
         if msgid != "default:LTR":
-            messages[original] = "\0".join(tag + form for form in msgid.split("\0"))
+            prefix = gap_tag if lite is not None and original.split("\0")[0] not in lite else tag
+            messages[original] = "\0".join(prefix + form for form in msgid.split("\0"))
     return messages
 
 
@@ -204,7 +224,8 @@ def _generate_library_mos(mo_dir, localedir):
         if source is None:
             print("No installed %s catalog found, skipping it" % domain, file=sys.stderr)
             continue
-        write_mo(os.path.join(mo_dir, domain + ".mo"), tag_messages(read_mo_originals(source), tag))
+        write_mo(os.path.join(mo_dir, domain + ".mo"),
+                 tag_messages(read_mo_originals(source), tag, lite_template_keys(domain)))
 
 
 def generate_locale(code, localedir=None):

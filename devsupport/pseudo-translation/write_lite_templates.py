@@ -54,7 +54,7 @@ KEEP = {
 }
 WITHIN_NAMES = {"Menu": "menus", "AboutDialog": "About dialog",
                 "ShortcutsWindow": "Keyboard Shortcuts window"}
-TAG_RE = re.compile(r"(?:vt|gtk|glib|iso|spell|mac):")
+TAG_RE = re.compile(r"(?:vt|gtk|glib|iso|spell|mac)!?:")
 WINDOW_RE = re.compile(r"^(\w+) (?:'(.*)'|None)$")
 
 

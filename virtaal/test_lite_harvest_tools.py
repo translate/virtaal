@@ -57,6 +57,12 @@ def test_resolve_text_takes_the_longest_match(resolve):
     assert resolve.resolve_text("gtk:Save _As", catalogs) == [("gtk30", "Save _As")]
 
 
+def test_resolve_text_reads_a_lite_gap_marker_as_its_tag(resolve):
+    catalogs = _catalogs(resolve, "gtk30", ["_Help"])
+
+    assert resolve.resolve_text("gtk!:_Help", catalogs) == [("gtk30", "_Help")]
+
+
 def test_resolve_text_prefers_literal_text_over_placeholders(resolve):
     catalogs = _catalogs(resolve, "glib20", ["format-size\x04%.1f", "kB"])
 
@@ -97,6 +103,7 @@ def test_resolve_text_reports_a_tag_nothing_matches(resolve):
 @pytest.mark.parametrize("within, window, expected", [
     ("Menu", "Window 'vt:Virtaal'", "menus"),
     ("", "Dialog 'vt:Add Term'", "Add Term dialog"),
+    ("", "Dialog 'gtk!:About'", "About dialog"),
     ("", "MessageDialog ''", "message dialogs"),
     ("", "Window 'vt:quality-checks.po - Virtaal'", "main window"),
     ("", "Window None", "main window"),

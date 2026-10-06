@@ -38,6 +38,25 @@ def test_tag_messages_tags_every_plural_form_and_keeps_the_context(generator):
     }
 
 
+def test_tag_messages_marks_what_the_lite_template_lacks(generator):
+    messages = generator.tag_messages(["Stock label\x04_Open", "_Help", "%u byte\0%u bytes"], "gtk:",
+                                      {"Stock label\x04_Open", "%u byte"})
+
+    assert messages == {
+        "Stock label\x04_Open": "gtk:_Open",
+        "_Help": "gtk!:_Help",
+        "%u byte\0%u bytes": "gtk:%u byte\0gtk:%u bytes",
+    }
+
+
+def test_lite_template_keys_match_mo_originals(generator):
+    keys = generator.lite_template_keys("glib20")
+
+    assert "format-size\x04%u %s" in keys
+    assert "byte" in keys
+    assert generator.lite_template_keys("iso639-3") is None
+
+
 def test_tag_messages_leaves_gtks_text_direction_untranslated(generator):
     # GTK reads this message's translation as the UI's text direction.
     assert generator.tag_messages(["default:LTR"], "gtk:") == {}

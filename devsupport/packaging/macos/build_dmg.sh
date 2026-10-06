@@ -29,7 +29,12 @@ rm -f dist/Virtaal.dmg
 # Unsigned (ad-hoc) builds leave the .dmg itself unsigned - an ad-hoc
 # signature on a disk image means nothing to Gatekeeper.
 if [ -n "${CODESIGN_IDENTITY:-}" ]; then
-  codesign --sign "$CODESIGN_IDENTITY" --timestamp dist/Virtaal.dmg
+  # Retried for the same timestamp-server failures as codesign_app.sh.
+  for attempt in 1 2 3; do
+    codesign --sign "$CODESIGN_IDENTITY" --force --timestamp dist/Virtaal.dmg && break
+    [ "$attempt" = 3 ] && exit 1
+    sleep 10
+  done
   codesign --verify --verbose=2 dist/Virtaal.dmg
 fi
 

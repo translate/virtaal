@@ -202,10 +202,8 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         self.mnu_paste.set_sensitive(False)
 
     def _on_store_loaded(self, *args):
-        self.mnu_next.set_sensitive(True)
-        self.mnu_prev.set_sensitive(True)
         self.mnu_transfer.set_sensitive(True)
-        self.mnu_insert.set_sensitive(True)
+        self._update_placeable_menu_sensitivity()
         self._update_edit_menu_sensitivity()
 
     # ACCESSORS #
@@ -399,6 +397,16 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         for widget in (self.mnu_next, self.mnu_prev, self.mnu_transfer, self.mnu_insert):
             widget.set_sensitive(sensitive)
 
+    def _update_placeable_menu_sensitivity(self):
+        """Only offer placeable navigation/insertion when a visible source
+            has a placeable to select."""
+        has_placeables = any(
+            src.get_parent().props.visible and src.selectable_elems()
+            for src in self.sources
+        )
+        for widget in (self.mnu_next, self.mnu_prev, self.mnu_insert):
+            widget.set_sensitive(has_placeables)
+
     def _update_editor_gui(self):
         """Build the default editor with the following components:
             - A C{Gtk.TextView} for each source
@@ -414,7 +422,8 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         self._layout_update_targets()
         self._layout_update_notes('translator')
         self._layout_update_states()
-        self._set_menu_items_sensitive(True)
+        self.mnu_transfer.set_sensitive(True)
+        self._update_placeable_menu_sensitivity()
 
     def _update_textview_language(self, text_view, language):
         language = str(language)

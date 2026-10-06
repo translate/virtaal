@@ -318,7 +318,7 @@ def test_transfer_copies_the_source_into_the_focused_target():
     assert copied == [focused]
 
 
-def test_store_loaded_enables_placeable_navigation_and_recomputes_edit_menu():
+def _placeable_menu_view(sources):
     view = UnitView.__new__(UnitView)
     view.mnu_next = _FakeMenuWidget()
     view.mnu_prev = _FakeMenuWidget()
@@ -327,18 +327,61 @@ def test_store_loaded_enables_placeable_navigation_and_recomputes_edit_menu():
     view.mnu_cut = _FakeMenuWidget()
     view.mnu_copy = _FakeMenuWidget()
     view.mnu_paste = _FakeMenuWidget()
-    view._widgets = {'targets': [], 'sources': []}
+    view._widgets = {'targets': [], 'sources': sources}
+    return view
+
+
+def _placeable_source(elems, visible=True):
+    parent = SimpleNamespace(props=SimpleNamespace(visible=visible))
+    return SimpleNamespace(selectable_elems=lambda: elems, get_parent=lambda: parent)
+
+
+def test_store_loaded_enables_transfer_and_recomputes_edit_menu():
+    view = _placeable_menu_view([])
 
     view._on_store_loaded()
 
-    assert view.mnu_next.get_sensitive()
-    assert view.mnu_prev.get_sensitive()
     assert view.mnu_transfer.get_sensitive()
-    assert view.mnu_insert.get_sensitive()
+    # No sources yet, so no placeables to navigate or insert.
+    assert not view.mnu_next.get_sensitive()
+    assert not view.mnu_prev.get_sensitive()
+    assert not view.mnu_insert.get_sensitive()
     # Nothing focused, so _update_edit_menu_sensitivity() disables all three.
     assert not view.mnu_cut.get_sensitive()
     assert not view.mnu_copy.get_sensitive()
     assert not view.mnu_paste.get_sensitive()
+
+
+def test_placeable_menu_disabled_when_source_has_no_placeables():
+    view = _placeable_menu_view([_placeable_source([])])
+
+    view._update_placeable_menu_sensitivity()
+
+    assert not view.mnu_next.get_sensitive()
+    assert not view.mnu_prev.get_sensitive()
+    assert not view.mnu_insert.get_sensitive()
+
+
+def test_placeable_menu_enabled_when_source_has_placeables():
+    view = _placeable_menu_view([_placeable_source(['%s'])])
+    for widget in (view.mnu_next, view.mnu_prev, view.mnu_insert):
+        widget.set_sensitive(False)
+
+    view._update_placeable_menu_sensitivity()
+
+    assert view.mnu_next.get_sensitive()
+    assert view.mnu_prev.get_sensitive()
+    assert view.mnu_insert.get_sensitive()
+
+
+def test_placeable_menu_ignores_hidden_sources():
+    # A hidden plural source keeps the previous unit's text.
+    view = _placeable_menu_view([_placeable_source([]), _placeable_source(['%s'], visible=False)])
+
+    view._update_placeable_menu_sensitivity()
+
+    assert not view.mnu_next.get_sensitive()
+    assert not view.mnu_insert.get_sensitive()
 
 
 def test_copy_stays_enabled_with_nothing_selected():

@@ -223,7 +223,9 @@ class PlaceablesController(BaseController):
     # EVENT HANDLERS #
     def _on_style_set(self, widget, prev_style=None):
         unitview = self.main_controller.unit_controller.view
-        textboxes = [tb for tb in unitview.sources + unitview.targets if tb.props.visible]
+        # is_visible(), not props.visible: unused plural targets are hidden by
+        # their container and still hold the last plural unit's text.
+        textboxes = [tb for tb in unitview.sources + unitview.targets if tb.is_visible()]
         # Before the refresh below, so text is redrawn in the new colours.
         # With no file open there is no text box yet; a bare TextView has
         # the same colours.

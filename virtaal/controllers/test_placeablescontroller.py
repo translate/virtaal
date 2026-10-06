@@ -14,10 +14,14 @@ from virtaal.views import placeablesguiinfo
 
 
 class _FakeTextbox:
-    def __init__(self, calls, name, visible=True):
+    def __init__(self, calls, name, visible=True, parent_visible=True):
         self.props = SimpleNamespace(visible=visible)
+        self._parent_visible = parent_visible
         self._calls = calls
         self.name = name
+
+    def is_visible(self):
+        return self.props.visible and self._parent_visible
 
     def refresh(self):
         self._calls.append(('refresh', self.name))
@@ -68,5 +72,19 @@ def test_style_set_ignores_hidden_text_boxes(monkeypatch):
     target = _FakeTextbox(calls, 'target')
 
     _controller(sources=[hidden], targets=[target])._on_style_set(None)
+
+    assert calls == [('update_style', target), ('refresh', 'target')]
+
+
+
+def test_style_set_ignores_text_boxes_in_a_hidden_container(monkeypatch):
+    # Unused plural targets: UnitView hides their container, and they still
+    # hold the last plural unit's text, so refreshing one edits the unit.
+    calls = []
+    _record_update_style(monkeypatch, calls)
+    target = _FakeTextbox(calls, 'target')
+    unused_plural = _FakeTextbox(calls, 'unused plural', parent_visible=False)
+
+    _controller(targets=[target, unused_plural])._on_style_set(None)
 
     assert calls == [('update_style', target), ('refresh', 'target')]

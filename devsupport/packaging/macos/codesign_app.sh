@@ -21,8 +21,14 @@ ENTITLEMENTS=devsupport/packaging/macos/entitlements.plist
   exit 1
 }
 
+# Apple's timestamp server occasionally fails a request ("A timestamp
+# was expected but was not found").
 sign() {
-  codesign --sign "$IDENTITY" --force --timestamp --options runtime "$@"
+  for attempt in 1 2 3; do
+    codesign --sign "$IDENTITY" --force --timestamp --options runtime "$@" && return
+    [ "$attempt" = 3 ] || sleep 10
+  done
+  return 1
 }
 
 # --mime-type rather than parsing file's free-text description: some

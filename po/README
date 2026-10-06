@@ -18,17 +18,21 @@ This will use the .po files and .xml.in and
 
 Which translations ship
 -----------------------
-LINGUAS lists the translations builds include: those translating at
-least 50% of virtaal.pot's messages (fuzzy ones don't count), plus the
-English variants. To update it, from package root:
+LINGUAS lists the translations builds include: every *.po not in
+LINGUAS-excluded, so a translation is only left out on purpose, with
+the reason on its LINGUAS-excluded line. After adding a .po or editing
+LINGUAS-excluded, from package root:
 
   po/update-linguas.py
 
-A language already shipping stays through the release candidates, so
-translators get the string freeze (rc1, then a translations-only rc2)
-to catch up on new strings; when cutting the final release, set
-ENFORCE_REMOVALS in update-linguas.py and rerun it. pre-commit checks LINGUAS
-against the rule.
+pre-commit checks LINGUAS against the rule.
+
+Translators get the release candidates (rc1 starts the string freeze,
+rc2 is translations only) to catch up on new strings. When cutting the
+final release, exclude the translations below 50% of virtaal.pot's
+messages (fuzzy ones don't count; English variants are exempt):
+
+  po/update-linguas.py --cut-off 1.0.0
 
 Lite Versions
 -------------

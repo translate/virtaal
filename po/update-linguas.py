@@ -6,18 +6,17 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-"""Applies the release threshold to po/LINGUAS, the translations
-    setup.py builds and ships: a po/<lang>.po ships when it translates
-    at least THRESHOLD percent of the current po/virtaal.pot's messages
-    (fuzzy ones don't count). English variants (en_*) always ship - they
-    only translate what differs from the source. EXCLUDED languages never
-    ship, whatever their coverage.
+"""Keeps po/LINGUAS, the translations setup.py builds and ships, to
+    every po/<lang>.po not in po/LINGUAS-excluded - so a translation is
+    only ever left out on purpose, with a reason.
 
-    Until ENFORCE_REMOVALS is set (when cutting the final release), a
-    language already in po/LINGUAS stays there below the threshold:
-    translators get the string freeze's release candidates (rc1, then a
-    translations-only rc2) to catch up on new strings before they're
-    dropped.
+    --cut-off VERSION applies the release threshold, when cutting a final
+    release: each shipped translation covering less than THRESHOLD
+    percent of the current po/virtaal.pot's messages (fuzzy ones don't
+    count) is added to po/LINGUAS-excluded, its coverage as the reason.
+    English variants (en_*) are exempt - they only translate what
+    differs from the source. Translators get the release candidates
+    (rc1, then a translations-only rc2) to catch up first.
 
     With --check, changes nothing: prints how po/LINGUAS differs from the
     rule and exits 1 if it does. Uses gettext's own tools only, so the
@@ -33,12 +32,20 @@ from pathlib import Path
 
 PO_DIR = Path(__file__).resolve().parent
 LINGUAS = PO_DIR / 'LINGUAS'
+EXCLUDED = PO_DIR / 'LINGUAS-excluded'
 TEMPLATE = PO_DIR / 'virtaal.pot'
 THRESHOLD = 50
-ENFORCE_REMOVALS = False
-EXCLUDED = {
-    'ach': 'disabled for an abundance of serious issues (d46e9821, 2012)',
-}
+
+
+def excluded():
+    """{lang: reason} from po/LINGUAS-excluded ("lang  # reason" lines)."""
+    lines = EXCLUDED.read_text(encoding='utf-8').splitlines()
+    return {line.partition('#')[0].strip(): line.partition('#')[2].strip()
+            for line in lines if line.strip() and not line.startswith('#')}
+
+
+def catalogs():
+    return sorted(po.stem for po in PO_DIR.glob('*.po'))
 
 
 def _statistics(po):
@@ -71,39 +78,40 @@ def coverage(po_path, total):
     return 100 * _statistics(merged).get('translated', 0) / total
 
 
-def qualifies(lang, percent):
-    if lang in EXCLUDED:
-        return False
-    return lang.startswith('en_') or percent >= THRESHOLD
-
-
-def expected(current):
-    """{lang: percent} of every translation, and the po/LINGUAS the rule
-        gives starting from current."""
+def below_threshold(langs):
+    """{lang: percent} of langs, English variants aside, under THRESHOLD."""
     total = sum(_statistics(TEMPLATE.read_bytes()).values())
-    percents = {po.stem: coverage(po, total) for po in sorted(PO_DIR.glob('*.po'))}
-    ships = {lang for lang, percent in percents.items() if qualifies(lang, percent)}
-    if not ENFORCE_REMOVALS:
-        ships |= {lang for lang in current if lang in percents and lang not in EXCLUDED}
-    return percents, sorted(ships)
+    percents = {lang: coverage(PO_DIR / (lang + '.po'), total) for lang in langs if not lang.startswith('en_')}
+    return {lang: percent for lang, percent in percents.items() if percent < THRESHOLD}
+
+
+def cut_off(version):
+    """Excludes the shipped translations below THRESHOLD, from version on."""
+    skip = excluded()
+    cut = below_threshold([lang for lang in catalogs() if lang not in skip])
+    with open(EXCLUDED, 'a', encoding='utf-8') as f:
+        for lang, percent in sorted(cut.items()):
+            f.write('%s  # below %d%% at %s (%d%%)\n' % (lang, THRESHOLD, version, percent))
+            print('excluded %s (%d%%)' % (lang, percent))
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('--check', action='store_true', help="report differences, don't write")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('--check', action='store_true', help="report differences, don't write")
+    group.add_argument('--cut-off', metavar='VERSION', help='exclude translations below the threshold')
     args = parser.parse_args()
 
+    if args.cut_off:
+        cut_off(args.cut_off)
+
+    skip = excluded()
     current = LINGUAS.read_text(encoding='utf-8').split()
-    percents, ships = expected(current)
+    ships = [lang for lang in catalogs() if lang not in skip]
     for lang in sorted(set(ships) - set(current)):
-        print('add %s (%d%%)' % (lang, percents[lang]))
+        print('add %s' % lang)
     for lang in sorted(set(current) - set(ships)):
-        reason = EXCLUDED.get(lang) or ('%d%%' % percents[lang] if lang in percents else 'no po file')
-        print('remove %s (%s)' % (lang, reason))
-    if not ENFORCE_REMOVALS:
-        for lang in sorted(lang for lang in ships if not qualifies(lang, percents[lang])):
-            print('below %d%%, dropped once ENFORCE_REMOVALS is set: %s (%d%%)'
-                  % (THRESHOLD, lang, percents[lang]))
+        print('remove %s (%s)' % (lang, skip.get(lang) or 'no po file'))
 
     if ships == current:
         return 0

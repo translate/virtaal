@@ -13,11 +13,11 @@ import pytest
 
 SCRIPT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "po", "update-linguas.py")
 
-pytestmark = pytest.mark.skipif(not shutil.which("msgmerge"), reason="needs gettext's msgmerge")
-
 TEMPLATE = ('msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-8\\n"\n\n'
             'msgid "One"\nmsgstr ""\n\nmsgid "Two"\nmsgstr ""\n\n'
             'msgid "Three"\nmsgstr ""\n\nmsgid "Four"\nmsgstr ""\n')
+
+needs_gettext = pytest.mark.skipif(not shutil.which("msgmerge"), reason="needs gettext's msgmerge")
 
 
 def _po(**targets):
@@ -37,48 +37,48 @@ def linguas(tmp_path, monkeypatch):
     spec.loader.exec_module(module)
     monkeypatch.setattr(module, "PO_DIR", tmp_path)
     monkeypatch.setattr(module, "LINGUAS", tmp_path / "LINGUAS")
+    monkeypatch.setattr(module, "EXCLUDED", tmp_path / "LINGUAS-excluded")
     monkeypatch.setattr(module, "TEMPLATE", tmp_path / "virtaal.pot")
-    monkeypatch.setattr(module, "EXCLUDED", {"ach": "reasons"})
     (tmp_path / "virtaal.pot").write_text(TEMPLATE, encoding="utf-8")
     (tmp_path / "de.po").write_text(_po(One="Eins", Two="Zwei"), encoding="utf-8")
     (tmp_path / "vi.po").write_text(_po(One="Một", Two=None), encoding="utf-8")
     (tmp_path / "ach.po").write_text(_po(One="a", Two="b", Three="c", Four="d"), encoding="utf-8")
     (tmp_path / "en_ZA.po").write_text(_po(), encoding="utf-8")
+    (tmp_path / "LINGUAS-excluded").write_text("# header\nach  # reasons\n", encoding="utf-8")
+    (tmp_path / "LINGUAS").write_text("de\n", encoding="utf-8")
     return module
 
 
-def test_coverage_counts_translated_messages_not_fuzzy_ones(linguas, tmp_path):
-    percents, _ = linguas.expected([])
-
-    assert percents == {"ach": 100, "de": 50, "en_ZA": 0, "vi": 25}
-
-
-def test_ships_above_threshold_english_variants_and_not_excluded(linguas):
-    _, ships = linguas.expected([])
-
-    assert ships == ["de", "en_ZA"]
+def _run(module, monkeypatch, *args):
+    monkeypatch.setattr("sys.argv", ["update-linguas.py", *args])
+    return module.main()
 
 
-def test_keeps_a_shipped_language_below_threshold_until_removals_are_enforced(linguas, monkeypatch):
-    assert linguas.expected(["vi", "ach"])[1] == ["de", "en_ZA", "vi"]
+def test_reads_exclusions_and_their_reasons(linguas):
+    assert linguas.excluded() == {"ach": "reasons"}
 
-    monkeypatch.setattr(linguas, "ENFORCE_REMOVALS", True)
 
-    assert linguas.expected(["vi", "ach"])[1] == ["de", "en_ZA"]
+def test_ships_every_catalog_not_excluded(linguas, tmp_path, monkeypatch):
+    assert _run(linguas, monkeypatch) == 0
+
+    assert (tmp_path / "LINGUAS").read_text(encoding="utf-8") == "de\nen_ZA\nvi\n"
 
 
 def test_check_reports_without_writing(linguas, tmp_path, monkeypatch, capsys):
-    (tmp_path / "LINGUAS").write_text("vi\n", encoding="utf-8")
-    monkeypatch.setattr("sys.argv", ["update-linguas.py", "--check"])
+    assert _run(linguas, monkeypatch, "--check") == 1
 
-    assert linguas.main() == 1
-    assert (tmp_path / "LINGUAS").read_text(encoding="utf-8") == "vi\n"
-    assert "add de (50%)" in capsys.readouterr().out
+    assert (tmp_path / "LINGUAS").read_text(encoding="utf-8") == "de\n"
+    assert "add vi" in capsys.readouterr().out
 
 
-def test_writes_linguas(linguas, tmp_path, monkeypatch):
-    (tmp_path / "LINGUAS").write_text("vi\n", encoding="utf-8")
-    monkeypatch.setattr("sys.argv", ["update-linguas.py"])
+@needs_gettext
+def test_coverage_counts_translated_messages_not_fuzzy_ones(linguas):
+    assert linguas.below_threshold(["ach", "de", "en_ZA", "vi"]) == {"vi": 25}
 
-    assert linguas.main() == 0
-    assert (tmp_path / "LINGUAS").read_text(encoding="utf-8") == "de\nen_ZA\nvi\n"
+
+@needs_gettext
+def test_cut_off_excludes_below_threshold_with_coverage_as_reason(linguas, tmp_path, monkeypatch):
+    assert _run(linguas, monkeypatch, "--cut-off", "1.0.0") == 0
+
+    assert linguas.excluded() == {"ach": "reasons", "vi": "below 50% at 1.0.0 (25%)"}
+    assert (tmp_path / "LINGUAS").read_text(encoding="utf-8") == "de\nen_ZA\n"

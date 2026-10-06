@@ -386,11 +386,12 @@ class TermAddDialog:
         self.dialog = self.gui.get_object('TermAddDlg')
         self.dialog.set_default_response(Gtk.ResponseType.OK)
 
-        cellr = Gtk.CellRendererText()
-        cellr.props.ellipsize = Pango.EllipsizeMode.MIDDLE
         self.lst_termfiles = Gtk.ListStore(str)
         self.cmb_termfile.set_model(self.lst_termfiles)
-        self.cmb_termfile.pack_start(cellr, True)
+        cellr = self.cmb_termfile.get_cells()[0]
+        cellr.props.ellipsize = Pango.EllipsizeMode.MIDDLE
+        cellr.props.max_width_chars = 50
+        self.cmb_termfile.connect('changed', self._on_termfile_changed)
 
         self.ent_source.connect('changed', self._on_entry_changed)
         self.ent_target.connect('changed', self._on_entry_changed)
@@ -488,6 +489,9 @@ class TermAddDialog:
 
 
     # EVENT HANDLERS #
+    def _on_termfile_changed(self, combo):
+        combo.set_tooltip_text(combo.get_active_text())
+
     def _on_entry_changed(self, entry):
         self.btn_add_term.props.sensitive = True
         self.eb_add_term_errors.hide()

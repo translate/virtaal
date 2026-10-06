@@ -151,6 +151,39 @@ def test_init_wires_entry_changed_signals_to_on_entry_changed(monkeypatch):
     assert len(calls) == 2
 
 
+def test_termfile_combo_ellipsizes_long_paths():
+    model = SimpleNamespace(controller=SimpleNamespace(main_controller=SimpleNamespace(
+        lang_controller=None, unit_controller=None)))
+    dialog = TermAddDialog(model=model)
+    path = '/very/long/directory/' * 10 + 'terminology.po'
+
+    # Only GtkComboBoxText's own cell, which actually shows the text.
+    cells = dialog.cmb_termfile.get_cells()
+    assert len(cells) == 1
+    assert cells[0].props.ellipsize == Pango.EllipsizeMode.MIDDLE
+
+    dialog.lst_termfiles.append([path])
+    dialog.cmb_termfile.set_active(0)
+
+    assert dialog.cmb_termfile.get_tooltip_text() == path
+
+    # The dialog must not have to be as wide as the full path: compare
+    # with an unellipsized combo showing the same path.
+    plain = Gtk.ComboBoxText()
+    plain.append_text(path)
+    plain.set_active(0)
+    window = Gtk.Window()
+    window.add(plain)
+    plain.show()
+    try:
+        _minimum, natural = dialog.cmb_termfile.get_preferred_width()
+        plain_minimum, _natural = plain.get_preferred_width()
+        assert natural < plain_minimum / 2
+    finally:
+        window.destroy()
+        dialog.dialog.destroy()
+
+
 def test_populate_popup_does_nothing_without_a_selection():
     view, textbox, calls = _fake_view_with_selection()
     menu = Gtk.Menu()

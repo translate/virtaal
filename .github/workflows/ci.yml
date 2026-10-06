@@ -579,7 +579,7 @@ jobs:
 
   build-windows-installer:
     runs-on: windows-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     # Separate job from test-windows, not extra steps tacked onto it -
     # PyInstaller has to trace and copy the whole dependency tree, which
     # is genuinely slow. Doesn't need: test-windows to finish first any
@@ -587,7 +587,17 @@ jobs:
     # serializing them only cost wall-clock time (same reasoning as
     # build-flatpak's own comment). The `windows` endpoint job still
     # gates on both.
+    #
+    # Pushes and manual runs are signed with Azure Artifact Signing once
+    # the AZURE_*/ARTIFACT_SIGNING_* repository variables exist; PR and
+    # merge-queue builds stay unsigned. The Azure federated credential
+    # trusts the windows-signing environment.
+    environment: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && vars.AZURE_CLIENT_ID != '' && vars.ARTIFACT_SIGNING_PROFILE != '' && 'windows-signing' || '' }}
+    permissions:
+      contents: read
+      id-token: write
     env:
+      WINDOWS_SIGNING: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && vars.AZURE_CLIENT_ID != '' && vars.ARTIFACT_SIGNING_PROFILE != '' }}
       gvsbuild_version: "2026.8.0"
       CC: cl
       CXX: cl
@@ -666,6 +676,33 @@ jobs:
           # is one a human can actually compare against their checkout.
           VIRTAAL_BUILD_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
         run: devsupport\packaging\windows\build_standalone.ps1
+
+      - name: Azure login
+        if: env.WINDOWS_SIGNING == 'true'
+        uses: azure/login@v3
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          # The app's only role is on the signing account, not a subscription.
+          allow-no-subscriptions: true
+
+      - name: Sign virtaal.exe
+        if: env.WINDOWS_SIGNING == 'true'
+        uses: azure/artifact-signing-action@v2
+        with:
+          endpoint: ${{ vars.ARTIFACT_SIGNING_ENDPOINT }}
+          signing-account-name: ${{ vars.ARTIFACT_SIGNING_ACCOUNT }}
+          certificate-profile-name: ${{ vars.ARTIFACT_SIGNING_PROFILE }}
+          files: ${{ github.workspace }}\dist\virtaal\virtaal.exe
+          exclude-environment-credential: true
+          exclude-workload-identity-credential: true
+          exclude-managed-identity-credential: true
+          exclude-shared-token-cache-credential: true
+          exclude-visual-studio-credential: true
+          exclude-visual-studio-code-credential: true
+          exclude-azure-powershell-credential: true
+          exclude-azure-developer-cli-credential: true
+          exclude-interactive-browser-credential: true
 
       - name: Verify the bundle actually runs
         # Launch with a real file in the background, confirm the
@@ -760,6 +797,35 @@ jobs:
       - name: Build installer
         shell: pwsh
         run: devsupport\packaging\windows\build_installer.ps1
+
+      - name: Sign the installer
+        if: env.WINDOWS_SIGNING == 'true'
+        uses: azure/artifact-signing-action@v2
+        with:
+          endpoint: ${{ vars.ARTIFACT_SIGNING_ENDPOINT }}
+          signing-account-name: ${{ vars.ARTIFACT_SIGNING_ACCOUNT }}
+          certificate-profile-name: ${{ vars.ARTIFACT_SIGNING_PROFILE }}
+          files-folder: ${{ github.workspace }}\dist\installer
+          files-folder-filter: exe
+          exclude-environment-credential: true
+          exclude-workload-identity-credential: true
+          exclude-managed-identity-credential: true
+          exclude-shared-token-cache-credential: true
+          exclude-visual-studio-credential: true
+          exclude-visual-studio-code-credential: true
+          exclude-azure-powershell-credential: true
+          exclude-azure-developer-cli-credential: true
+          exclude-interactive-browser-credential: true
+
+      - name: Verify the signatures
+        if: env.WINDOWS_SIGNING == 'true'
+        shell: pwsh
+        run: |
+          foreach ($file in @("dist\virtaal\virtaal.exe") + (Get-ChildItem dist\installer\*.exe).FullName) {
+            $signature = Get-AuthenticodeSignature $file
+            Write-Host "$file`: $($signature.Status) - $($signature.SignerCertificate.Subject)"
+            if ($signature.Status -ne 'Valid') { exit 1 }
+          }
 
       - uses: actions/upload-artifact@v7
         with:

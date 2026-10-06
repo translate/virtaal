@@ -10,7 +10,7 @@
 
 PyInstaller bundles whatever an import trace reaches, including guarded
 optional imports, so a stray package can vendor a native library that
-shadows GTK's (#3871). Packages from --system-site-packages count too.
+shadows GTK's (#3871).
 Set VIRTAAL_ALLOW_EXTRA_PACKAGES=1 to only warn.
 """
 

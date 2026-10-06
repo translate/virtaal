@@ -21,7 +21,9 @@ PYINSTALLER_VERSION=6.22.3  # keep in step with ci.yml's Windows build
 
 # A fresh venv, not .venv: PyInstaller bundles whatever an import trace
 # reaches, so a stray package can ship a native library that shadows
-# GTK's (#3871). --system-site-packages is for Homebrew's PyGObject.
+# GTK's (#3871). Only Homebrew's PyGObject and pycairo are linked in, not
+# its whole site-packages, which can hold anything (GitHub's runners ship
+# pydantic and cryptography there).
 BASE_PYTHON="${VIRTAAL_BUILD_PYTHON:-}"
 if [ -z "$BASE_PYTHON" ]; then
     probe="$PWD/.venv/bin/python3"
@@ -30,8 +32,16 @@ if [ -z "$BASE_PYTHON" ]; then
 fi
 VENV="$PWD/build/standalone-venv"
 rm -rf "$VENV"
-"$BASE_PYTHON" -m venv --system-site-packages "$VENV"
+"$BASE_PYTHON" -m venv "$VENV"
 PYTHON="$VENV/bin/python3"
+"$BASE_PYTHON" - "$("$PYTHON" -c 'import sysconfig; print(sysconfig.get_path("purelib"))')" <<'EOF'
+import glob, os, sys
+import cairo, gi
+for mod, dist in ((gi, "PyGObject"), (cairo, "pycairo")):
+    site = os.path.dirname(mod.__path__[0])
+    for src in [mod.__path__[0], *glob.glob(os.path.join(site, dist + "-*.dist-info"))]:
+        os.symlink(src, os.path.join(sys.argv[1], os.path.basename(src)))
+EOF
 # setup.py imports translate-toolkit to compile .mo files, so it has to
 # be present before virtaal's own install resolves it to the pinned one.
 "$PYTHON" -m pip install -q setuptools==84.0.0 wheel==0.48.0 \

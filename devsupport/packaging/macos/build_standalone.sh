@@ -17,15 +17,32 @@
 set -eu
 cd "$(git rev-parse --show-toplevel)"
 
-PYTHON="$PWD/.venv/bin/python3"
-[ -x "$PYTHON" ] || PYTHON="python3"
+PYINSTALLER_VERSION=6.22.3  # keep in step with ci.yml's Windows build
+
+# A fresh venv, not .venv: PyInstaller bundles whatever an import trace
+# reaches, so a stray package can ship a native library that shadows
+# GTK's (#3871). --system-site-packages is for Homebrew's PyGObject.
+BASE_PYTHON="${VIRTAAL_BUILD_PYTHON:-}"
+if [ -z "$BASE_PYTHON" ]; then
+    probe="$PWD/.venv/bin/python3"
+    [ -x "$probe" ] || probe="python3"
+    BASE_PYTHON="$("$probe" -c 'import os, sys; print(os.path.join(sys.base_prefix, "bin", "python%d.%d" % sys.version_info[:2]))')"
+fi
+VENV="$PWD/build/standalone-venv"
+rm -rf "$VENV"
+"$BASE_PYTHON" -m venv --system-site-packages "$VENV"
+PYTHON="$VENV/bin/python3"
+# setup.py imports translate-toolkit to compile .mo files, so it has to
+# be present before virtaal's own install resolves it to the pinned one.
+"$PYTHON" -m pip install -q setuptools==84.0.0 wheel==0.48.0 \
+    "pyinstaller==$PYINSTALLER_VERSION" translate-toolkit
+"$PYTHON" -m pip install -q --no-build-isolation ".[spellcheck]"
+"$PYTHON" devsupport/packaging/macos/check_build_venv.py
 
 # setup.py's mo-compile step runs unconditionally as a side effect of
 # *any* setup.py invocation (see setup.py's own module docstring) - this
 # is the documented way to trigger it without going through pip/build.
 "$PYTHON" setup.py --version >/dev/null
-
-"$PYTHON" -m pip show pyinstaller >/dev/null 2>&1 || "$PYTHON" -m pip install pyinstaller
 
 # pyenchant stopped shipping self-contained macOS wheels after 2.0.0 -
 # that one is an Intel-only universal (i386+x86_64) bundle of

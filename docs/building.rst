@@ -163,7 +163,10 @@ Building a distributable ``.app``/``.dmg`` uses `PyInstaller
   devsupport/packaging/macos/build_dmg.sh
 
 The first produces ``dist/Virtaal.app`` (PyInstaller, settings in
-``devsupport/packaging/macos/virtaal.spec``); the second signs it with
+``devsupport/packaging/macos/virtaal.spec``), building in its own fresh
+``build/standalone-venv`` rather than ``.venv``, and fails if that venv
+can see packages Virtaal doesn't depend on (PyInstaller may bundle
+them); the second signs it with
 the hardened runtime; the third wraps it into ``dist/Virtaal.dmg``
 (settings in ``devsupport/packaging/macos/dmgbuild-settings.py``).
 CI's ``build-macos-app`` job runs these same scripts and uploads the

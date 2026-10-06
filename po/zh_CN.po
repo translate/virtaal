@@ -1,22 +1,23 @@
 # This file is distributed under the same license as the Virtaal package.
-# egfree <eg2sex@gmail.com>, 2026.
+# CodeFreer, 2026.
 msgid ""
 msgstr ""
-"Project-Id-Version: Virtaal 0.5.0\n"
+"Project-Id-Version: Virtaal 1.0.0-beta3\n"
 "Report-Msgid-Bugs-To: translate-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2026-09-21 20:56+0100\n"
-"PO-Revision-Date: 2026-09-22 06:11+0800\n"
-"Last-Translator: egfree <eg2sex@gmail.com>\n"
+"PO-Revision-Date: 2026-10-06 21:55+0800\n"
+"Last-Translator: CodeFreer\n"
 "Language-Team: Virtaal zh_CN\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Virtaal 1.0.0-beta2\n"
+"X-Generator: Virtaal 1.0.0-beta3\n"
 
 # Chinese translators:
 # 保留 劉書源 2009-12-13 提示：Virtaal作者群認为软件名稱不一定要維持原文，如果翻成中文效果更好，那也不介意将名子翻成中文。我對此沒什麼主意，其他中文譯者看到這段留言就自己評估吧。
+# 生成的文件保存于 share/locale/
 #: ../share/applications/virtaal.desktop.in.h ../share/virtaal/virtaal.ui.h
 #: ../virtaal/views/mainview.py
 msgid "Virtaal"
@@ -419,7 +420,7 @@ msgstr "<u>教程</u>"
 
 #: ../share/virtaal/virtaal.ui.h
 msgid "<u>Cheat Sheet</u>"
-msgstr "<U>小抄纸</ U>"
+msgstr "<u>小抄纸</u>"
 
 #. l10n: Only change this URL if there is a translated version in your language, or if the default English is really unsuitable for users in your language
 #: ../share/virtaal/virtaal.ui.h
@@ -436,7 +437,7 @@ msgstr "<u>更多...</u>"
 
 #: ../share/virtaal/virtaal.ui.h
 msgid "<u>Features</u>"
-msgstr "<U>特点</ U>"
+msgstr "<u>特点</u>"
 
 #: ../share/virtaal/virtaal.ui.h
 msgid "<b><big>Getting Started</big></b>"
@@ -459,7 +460,7 @@ msgstr "<u>手册</u>"
 #: ../share/virtaal/virtaal.ui.h
 #: ../virtaal/controllers/welcomescreencontroller.py
 msgid "https://docs.translatehouse.org/projects/localization-guide/en/"
-msgstr "https://docs.translatehouse.org/projects/localization-guide/en/"
+msgstr "http://translate.sourceforge.net/wiki/virtaal/features"
 
 #: ../share/virtaal/virtaal.ui.h
 msgid "<u>Localization Guide</u>"

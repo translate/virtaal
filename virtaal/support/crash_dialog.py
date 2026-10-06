@@ -20,6 +20,9 @@ import traceback
 MAX_REPORTED_TRACEBACK_CHARS = 4000
 
 _showing_dialog = False
+# Errors already shown this session, by type and stack - not message,
+# which can vary between repeats (a key, an index, an address).
+_shown_errors = set()
 
 
 def install():
@@ -33,12 +36,21 @@ def _on_uncaught_exception(exc_type, exc_value, tb):
         sys.__excepthook__(exc_type, exc_value, tb)
         return
 
+    key = _error_key(exc_type, tb)
+    if key in _shown_errors:
+        # Typically raised again on every repaint, including the one
+        # triggered by closing the dialog - showing it again would loop.
+        logging.error("Uncaught exception repeated: %s: %s", exc_type.__name__, exc_value)
+        return
+
     full_text = "".join(traceback.format_exception(exc_type, exc_value, tb))
     logging.error("Uncaught exception:\n%s", full_text)
 
     if _showing_dialog:
         # The dialog itself raised - don't recurse into it again.
         return
+
+    _shown_errors.add(key)
 
     try:
         _showing_dialog = True
@@ -47,6 +59,14 @@ def _on_uncaught_exception(exc_type, exc_value, tb):
         logging.exception("Failed to show the crash dialog")
     finally:
         _showing_dialog = False
+# Errors already shown this session, by type and stack - not message,
+# which can vary between repeats (a key, an index, an address).
+_shown_errors = set()
+
+
+def _error_key(exc_type, tb):
+    frames = tuple((f.filename, f.lineno, f.name) for f in traceback.extract_tb(tb))
+    return (exc_type, frames)
 
 
 def truncate_for_report(text, limit=MAX_REPORTED_TRACEBACK_CHARS):

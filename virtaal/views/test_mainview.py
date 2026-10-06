@@ -2493,3 +2493,37 @@ def test_on_shortcuts_shows_a_real_shortcuts_window():
     view.main_window = Gtk.Window()
 
     view._on_shortcuts()  # must not raise
+
+
+def test_macos_integration_rebinds_its_catalog_before_building_the_app_menu(monkeypatch):
+    # GtkosxApplication binds its own catalogs on creation and looks up
+    # the app menu's strings (Hide, Quit, ...) in set_menu_bar().
+    from unittest import mock
+
+    import gi
+    from gi.repository import Gtk
+
+    from virtaal.views import mainview
+
+    calls = []
+
+    class FakeApplication:
+        def __init__(self):
+            calls.append('Application')
+
+        def set_menu_bar(self, menubar):
+            calls.append('set_menu_bar')
+
+        def __getattr__(self, name):
+            return lambda *args: None
+
+    monkeypatch.setattr(gi, 'require_version', lambda *args: None)
+    monkeypatch.setattr(gi.repository, 'GtkosxApplication',
+                        mock.Mock(Application=FakeApplication), raising=False)
+    monkeypatch.setattr(mainview, 'rebind_library_domain', lambda domain: calls.append(('rebind', domain)))
+    monkeypatch.setattr(Gtk.AccelMap, 'load', lambda path: None)
+    view = mock.Mock()
+
+    mainview.MainView._setup_macos_integration(view)
+
+    assert calls[:3] == ['Application', ('rebind', b'gtk-mac-integration'), 'set_menu_bar']

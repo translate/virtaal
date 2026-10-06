@@ -8,7 +8,7 @@
 
 """Drives a real Virtaal window under the pseudo-source locale and
 records every piece of UI text it can find, with the catalog its tag
-names (vt:, gtk:, glib:, spell:, iso:) or none.
+names (vt:, gtk:, glib:, spell:, mac:, iso:) or none.
 
 Opens the text boxes' context menus, including the spelling menu on a
 misspelled word, then activates every menu item in turn (except Quit),

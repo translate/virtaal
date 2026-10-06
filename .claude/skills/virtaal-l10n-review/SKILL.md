@@ -20,6 +20,14 @@ Catches format-string placeholder mismatches (`%s`/`%(name)s` between
 msgid and msgstr), broken plural forms, and encoding errors. A real,
 hard gate - not just a warning.
 
+## Is the language actually built?
+
+`setup.py` only builds languages listed in `po/LINGUAS`. A new
+`po/<lang>.po` that isn't listed there passes every check here and
+still never ships: zh_CN merged in #3626 and only reached users after
+#4030 added it. For a new language, confirm the PR adds it to
+`po/LINGUAS` too.
+
 ## Coverage against the *current* pot, not the file's own header
 
 A submission's `POT-Creation-Date`/location-comment style can look
@@ -73,6 +81,20 @@ into the translation unchanged, and that the translated length is in
 a plausible range for the source (a one-word msgid translated to a
 full sentence, or vice versa, is worth asking about).
 
+`msgfmt -c` doesn't validate markup, and a sample can miss it, so
+compare tags across every unit. Pango is case- and whitespace-strict:
+#3626 shipped `<U>…</ U>` for `<u>…</u>`, which breaks the label.
+
+```python
+import re
+tags = lambda t: sorted(re.findall(r'</?\s*[a-zA-Z]+(?:\s[^>]*)?>', t))
+for u in po.units:
+    if not u.isheader() and u.target and tags(u.source) != tags(u.target):
+        print(u.source, '->', u.target)
+```
+
+A translated key name (`<Enter>` -> `<Eingabe>`) is a legitimate hit.
+
 ## Check every URL-valued msgid specifically
 
 ```python
@@ -89,6 +111,19 @@ turned out to be a completely different, dead old URL, sourced from a
 stray translation-memory mismatch during the contributor's own tooling
 - worth checking every single one of these by hand since there are
 usually only a handful per file.
+
+## A returning contributor's resubmission
+
+Review the PR's diff against `upstream/main`, not just the resulting
+file. A contributor updating from their own local copy can silently
+undo fixes a maintainer pushed onto their earlier PR: #4030 brought
+back the exact stray URL fixed in #3626. Check each changed msgstr in
+the diff, not only new ones.
+
+A changed translator credit isn't always a dropped one: in #4030 the
+"replaced" `# Name <email>` line was the same contributor's own from
+#3626. Check `git log -p --follow po/<lang>.po` for who added the old
+line before flagging it.
 
 ## Root-causing a wrong-looking entry
 

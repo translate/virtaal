@@ -89,10 +89,18 @@ def test_get_language_endonym_names_a_language_in_itself():
 
 
 def test_get_language_endonym_is_none_when_untranslated():
-    # pycountry has no Faroese name for Faroese - the English one isn't
-    # its own name.
-    assert prefsview.pan_app.get_language_endonym('fo') is None
+    # Neither pycountry nor the CLDR fallback has a Songhay name for
+    # Songhay - the English one isn't its own name.
+    assert prefsview.pan_app.get_language_endonym('son') is None
     assert prefsview.pan_app.get_language_endonym('en_GB') == 'English (United Kingdom)'
+
+
+def test_get_language_endonym_falls_back_to_cldr():
+    # Afrikaans is spelled the same in English and Afrikaans; pycountry
+    # has no Faroese or Akan catalog at all.
+    assert prefsview.pan_app.get_language_endonym('af') == 'Afrikaans'
+    assert prefsview.pan_app.get_language_endonym('fo') == 'føroyskt'
+    assert prefsview.pan_app.get_language_endonym('ak') == 'Akan'
 
 
 def test_ui_language_property_round_trips_through_the_combo(monkeypatch):

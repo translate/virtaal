@@ -193,6 +193,35 @@ def test_lite_catalog_keeps_its_translations_and_fills_in_upstreams(lite_catalog
     assert targets == {"Quit %s": "Verlaat %s", "Show All": "Wys alles"}
 
 
+def test_lite_catalog_keeps_fuzzy_work_and_translator_comments(lite_catalogs):
+    from translate.storage import factory
+
+    module, domain_dir = lite_catalogs
+    (domain_dir / "am.po").write_text(
+        'msgid ""\nmsgstr ""\n"Language: am\\n"\n\n'
+        '# (review) capitals\nmsgid "Show All"\nmsgstr "Wys alles"\n\n'
+        '#, fuzzy\nmsgid "Quit %s"\nmsgstr "Verlaat %s"\n', encoding="utf-8")
+
+    translated = module.update("mac", "am", {})
+
+    units = {str(u.source): u for u in factory.getobject(str(domain_dir / "am.po")).units if not u.isheader()}
+    assert translated == 1
+    assert units["Show All"].getnotes("translator") == "(review) capitals"
+    assert units["Quit %s"].isfuzzy() and str(units["Quit %s"].target) == "Verlaat %s"
+
+
+def test_lite_catalog_takes_upstream_over_its_fuzzy_work(lite_catalogs):
+    from translate.storage import factory
+
+    module, domain_dir = lite_catalogs
+    (domain_dir / "am.po").write_text('#, fuzzy\nmsgid "Quit %s"\nmsgstr "Verlaat %s"\n', encoding="utf-8")
+
+    module.update("mac", "am", {("", "Quit %s"): "Verlaat tog %s"})
+
+    units = {str(u.source): u for u in factory.getobject(str(domain_dir / "am.po")).units if not u.isheader()}
+    assert not units["Quit %s"].isfuzzy() and str(units["Quit %s"].target) == "Verlaat tog %s"
+
+
 def test_linguas_lists_only_lite_catalogs_that_translate_something(lite_catalogs):
     module, domain_dir = lite_catalogs
     linguas = domain_dir.parent / "LINGUAS-lite"

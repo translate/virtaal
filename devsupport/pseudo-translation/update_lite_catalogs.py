@@ -14,9 +14,12 @@ Virtaal's UI languages (po/*.po):
 - otherwise: a lite catalog with every template message, each keeping
   its lite translation, else taking the library's own.
 
-A lite catalog replaces the library's own at runtime, so it has to carry
-everything the library already translates. po/LINGUAS-lite lists the
-lite catalogs that translate anything.
+A lite catalog is merged into the library's own when shipped, the
+library's translation winning, so only its gaps take effect; the
+pre-filled messages cover a build host with an older library catalog.
+po/LINGUAS-lite lists the lite catalogs that translate anything, for
+the languages Virtaal ships (po/LINGUAS, see po/update-linguas.py);
+the others' lite catalogs are kept for when their translation ships.
 """
 
 import argparse
@@ -33,6 +36,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(os.path.dirname(HERE))
 LITE_DIR = os.path.join(REPO_ROOT, "po", "lite")
 LINGUAS = os.path.join(REPO_ROOT, "po", "LINGUAS-lite")
+SHIPPED = os.path.join(REPO_ROOT, "po", "LINGUAS")
 
 
 def _generator():
@@ -48,6 +52,12 @@ def ui_languages():
         messages are already English."""
     return sorted(name[:-len(".po")] for name in os.listdir(os.path.join(REPO_ROOT, "po"))
                   if name.endswith(".po") and not name.startswith("en_"))
+
+
+def shipped_languages():
+    """The languages Virtaal ships its own translation for (po/LINGUAS)."""
+    with open(SHIPPED, encoding="utf-8") as f:
+        return set(f.read().split())
 
 
 def _key(unit):
@@ -106,6 +116,8 @@ def update(domain, lang, upstream):
 
     existing = factory.getobject(path) if os.path.exists(path) else None
     lite = _translations(existing) if existing else {}
+    previous = {_key(unit): unit for unit in existing.units
+                if not unit.isheader() and not unit.isobsolete()} if existing else {}
     store = _new_catalog(lang)
     if existing and existing.header():
         store.units = [existing.header()]
@@ -115,10 +127,17 @@ def update(domain, lang, upstream):
         unit.setcontext(message.getcontext())
         if message.getnotes("developer"):
             unit.addnote(message.getnotes("developer"), origin="developer")
+        before = previous.get(_key(message))
+        if before is not None and before.getnotes("translator"):
+            unit.addnote(before.getnotes("translator"), origin="translator")
         target = lite.get(_key(message)) or upstream.get(_key(message))
         if target:
             unit.target = target
             translated += 1
+        elif before is not None and before.isfuzzy() and before.target:
+            # Unfinished work: kept, still fuzzy, so it doesn't ship.
+            unit.target = before.target
+            unit.markfuzzy()
     if existing:
         store.units.extend(unit for unit in existing.units if unit.isobsolete())
     with open(path, "wb") as f:
@@ -144,7 +163,7 @@ def main():
                         choices=[d for d in generator.LIBRARY_SOURCES if os.path.isdir(os.path.join(LITE_DIR, d))])
     args = parser.parse_args()
 
-    shipped = {}
+    shipped, languages = {}, shipped_languages()
     for domain in args.domains:
         upstream_dir = generator.library_locale_dir(generator.LIBRARY_SOURCES[domain][1])
         if upstream_dir is None:
@@ -152,7 +171,7 @@ def main():
         shipped[domain] = []
         for lang in ui_languages():
             translated = update(domain, lang, upstream_translations(domain, lang, upstream_dir))
-            if translated:
+            if translated and lang in languages:
                 shipped[domain].append(lang)
         print("%s: %d lite catalogs translate something (upstream: %s)"
               % (domain, len(shipped[domain]), upstream_dir))

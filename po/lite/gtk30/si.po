@@ -97,7 +97,7 @@ msgstr ""
 #. About Dialog - License button
 #. Seen in: About dialog
 msgid "_License"
-msgstr ""
+msgstr "බලපත්‍රය (_L)"
 
 #. Revert Confirmation Dialog -> No
 #. Seen in: message dialogs
@@ -169,7 +169,7 @@ msgstr ""
 #. File dialog - Remove button
 #. Seen in: Terminology Files dialog
 msgid "_Remove"
-msgstr ""
+msgstr "ඉවත් කරන්න (_R)"
 
 #. File->Save
 #. Seen in: menus
@@ -217,7 +217,7 @@ msgstr ""
 #. About Dialog - Title
 #. Seen in: About dialog
 msgid "About %s"
-msgstr ""
+msgstr "%s සම්බන්ධව"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the alt key. If the text on this key isn't typically
@@ -233,12 +233,12 @@ msgstr ""
 #. About Dialog - Credits dialog - Tab - Artwork by
 #. Seen in: About dialog
 msgid "Artwork by"
-msgstr ""
+msgstr "කලා නිර්මාණය"
 
 #. About Dialog - Credits button
 #. Seen in: About dialog
 msgid "C_redits"
-msgstr ""
+msgstr "ස්තුතිය (_r)"
 
 #. Seen in: font chooser
 msgid "Character Variants"
@@ -280,7 +280,7 @@ msgstr ""
 #. * it isn't default:LTR or default:RTL it will not work
 #. Configuration: Direction
 msgid "default:LTR"
-msgstr ""
+msgstr "default:LTR"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -347,7 +347,7 @@ msgstr ""
 #. File ->Recent Files->No items found
 #. Seen in: menus
 msgid "No items found"
-msgstr ""
+msgstr "අයිතම හමුවුයේ නැත"
 
 #. Seen in: font chooser
 msgid "Number Case"
@@ -364,7 +364,7 @@ msgstr ""
 #. File->Recent Files->tooltip
 #. Seen in: menus
 msgid "Open '%s'"
-msgstr ""
+msgstr "'%s' විවෘත කරන්න"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -395,7 +395,7 @@ msgstr ""
 #. Font dialog: title
 #. Seen in: font chooser
 msgid "Pick a Font"
-msgstr ""
+msgstr "අක්‍ෂර රටාවක් තෝරන්න"
 
 #. Seen in: font chooser
 msgid "Preview text"
@@ -452,7 +452,7 @@ msgstr ""
 #. File dialog - Files - Grid label - Size
 #. Seen in: font chooser
 msgid "Size"
-msgstr ""
+msgstr "ප්‍රමාණය"
 
 #. Seen in: Keyboard Shortcuts window
 msgctxt "keyboard label"
@@ -462,7 +462,7 @@ msgstr ""
 #. About Dialog - Credits dialog - Tab - Translated by
 #. Seen in: About dialog
 msgid "Translated by"
-msgstr ""
+msgstr "පරිවර්තනය කළේ"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically

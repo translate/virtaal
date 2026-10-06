@@ -2,15 +2,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-06 00:20+0100\n"
-"PO-Revision-Date: 2011-05-19 09:06+0000\n"
-"Last-Translator: OLWENY <sjolweny85@yahoo.co.uk>\n"
+"POT-Creation-Date: 2026-10-06 18:10+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: lg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 3.19.19\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+"Language: af\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. This is the format that is used for items in a recent files menu.
 #. * The %d is the number of the item, the %s is the name of the item.
@@ -34,189 +35,189 @@ msgstr "_%d. %s"
 #. Seen in: menus
 msgctxt "Stock label"
 msgid "_About"
-msgstr "_Bikwata ku"
+msgstr "_Aangaande"
 
 #. Add button (various, add term, add terminology file)
 #. Seen in: Add Term dialog; Terminology Files dialog
 msgctxt "Stock label"
 msgid "_Add"
-msgstr "_Gatta"
+msgstr "_Voeg by"
 
 #. File dialog - Cancel button
 #. Seen in: Add Missing Language dialog; Add Term dialog; font chooser
 msgctxt "Stock label"
 msgid "_Cancel"
-msgstr "_Sazaamu"
+msgstr "_Kanselleer"
 
 #. File dialog - Cancel button
 #. Seen in: Add Missing Language dialog; Add Term dialog; font chooser
 msgid "_Cancel"
-msgstr "_Sazaamu"
+msgstr "_Kanselleer"
 
 #. About Dialog - Close button
 #. Seen in: *quality-checks.po dialog; Properties dialog; Settings dialog; Terminology Files dialog; Virtaal Preferences dialog; main window; menus; quality-checks.po dialog
 msgctxt "Stock label"
 msgid "_Close"
-msgstr "_Ggalawo"
+msgstr "_Sluit"
 
 #. About Dialog - Close button
 #. Seen in: *quality-checks.po dialog; Properties dialog; Settings dialog; Terminology Files dialog; Virtaal Preferences dialog; main window; menus; quality-checks.po dialog
 msgid "_Close"
-msgstr "_Ggalawo"
+msgstr "_Sluit"
 
 #. Right Click (on empty) -> Copy
 #. Seen in: menus
 msgctxt "Stock label"
 msgid "_Copy"
-msgstr "_Koppa"
+msgstr "_Kopieer"
 
 #. Right Click (on empty) -> Copy
 #. Seen in: menus
 msgid "_Copy"
-msgstr "_Koppa"
+msgstr "_Kopieer"
 
 #. Right Click (on empty) -> Delete
 #. Seen in: menus
 msgctxt "Stock label"
 msgid "_Delete"
-msgstr "_Sangula"
+msgstr "_Skrap"
 
 #. Right Click (on empty) -> Delete
 #. Seen in: menus
 msgid "_Delete"
-msgstr "_Sangula"
+msgstr "_Skrap"
 
 #. Navigation->Down
 #. GTK HEAD (allows future proofing)
 #. Seen in: menus
 msgctxt "Stock label, navigation"
 msgid "_Down"
-msgstr "_Wansi"
+msgstr "_Af"
 
 #. About Dialog - License button
 #. Seen in: About dialog
 msgid "_License"
-msgstr "_Lukusa"
+msgstr "_Lisensie"
 
 #. Revert Confirmation Dialog -> No
 #. Seen in: message dialogs
 msgctxt "Stock label"
 msgid "_No"
-msgstr "_Nedda"
+msgstr "_Nee"
 
 #. Revert Confirmation Dialog -> No
 #. Seen in: message dialogs
 msgid "_No"
-msgstr "_Nedda"
+msgstr "_Nee"
 
 #. Error Dialog -> OK
 #. Seen in: Add Missing Language dialog
 msgctxt "Stock label"
 msgid "_OK"
-msgstr "_Kale"
+msgstr "_OK"
 
 #. Error Dialog -> OK
 #. Seen in: Add Missing Language dialog
 msgid "_OK"
-msgstr "_Kale"
+msgstr "_OK"
 
 #. File->Open
 #. Seen in: *quality-checks.po dialog; Terminology Files dialog; main window; menus; quality-checks.po dialog
 msgctxt "Stock label"
 msgid "_Open"
-msgstr "_Ggulawo"
+msgstr "_Open"
 
 #. File->Open
 #. Seen in: *quality-checks.po dialog; Terminology Files dialog; main window; menus; quality-checks.po dialog
 msgid "_Open"
-msgstr "_Ggulawo"
+msgstr "_Open"
 
 #. Right Click (on empty) -> Paste
 #. Seen in: menus
 msgctxt "Stock label"
 msgid "_Paste"
-msgstr "_Teeka"
+msgstr "_Plak"
 
 #. Right Click (on empty) -> Paste
 #. Seen in: menus
 msgid "_Paste"
-msgstr "_Teeka"
+msgstr "_Plak"
 
 #. Edit->Preferences
 #. Seen in: menus
 msgctxt "Stock label"
 msgid "_Preferences"
-msgstr "_Eby'okweroboza"
+msgstr "_Voorkeure"
 
 #. Seen in: menus
 msgctxt "Stock label"
 msgid "_Properties"
-msgstr "_Ebikikwataako"
+msgstr "_Eienskappe"
 
 #. File->Quit
 #. Seen in: menus
 msgctxt "Stock label"
 msgid "_Quit"
-msgstr "_Vvawo"
+msgstr "_Sluit af"
 
 #. Remove button (remove terminology file)
 #. Seen in: Terminology Files dialog
 msgctxt "Stock label"
 msgid "_Remove"
-msgstr "_Jjamu"
+msgstr "Ve_rwyder"
 
 #. File dialog - Remove button
 #. Seen in: Terminology Files dialog
 msgid "_Remove"
-msgstr "_Gyawo"
+msgstr "Ve_rwyder"
 
 #. File->Save
 #. Seen in: menus
 msgctxt "Stock label"
 msgid "_Save"
-msgstr "_Tereka"
+msgstr "_Stoor"
 
 #. File->Save
 #. Seen in: menus
 msgid "_Save"
-msgstr "_Tereka"
+msgstr "_Stoor"
 
 #. Seen in: font chooser
 msgid "_Select"
-msgstr ""
+msgstr "_Kies"
 
 #. Seen in: Keyboard Shortcuts window
 msgid "_Show All"
-msgstr ""
+msgstr "_Vertoon alles"
 
 #. Edit->Undo
 #. Seen in: menus
 msgctxt "Stock label"
 msgid "_Undo"
-msgstr "_Zzayo"
+msgstr "_Ontdoen"
 
 #. Navigation->Up
 #. GTK HEAD (allows future proofing)
 #. Seen in: menus
 msgctxt "Stock label, navigation"
 msgid "_Up"
-msgstr "_Waggulu"
+msgstr "_Op"
 
 #. Revert Confirmation Dialog -> Yes
 #. Seen in: message dialogs
 msgctxt "Stock label"
 msgid "_Yes"
-msgstr "_Yee"
+msgstr "_Ja"
 
 #. Revert Confirmation Dialog -> Yes
 #. Seen in: message dialogs
 msgid "_Yes"
-msgstr "_Yee"
+msgstr "_Ja"
 
 #. About Dialog - Title
 #. Seen in: About dialog
 msgid "About %s"
-msgstr "Bikwata ku %s"
+msgstr "Aangaande %s"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the alt key. If the text on this key isn't typically
@@ -232,12 +233,12 @@ msgstr "Alt"
 #. About Dialog - Credits dialog - Tab - Artwork by
 #. Seen in: About dialog
 msgid "Artwork by"
-msgstr "Ebifananyi bya"
+msgstr "Kuns deur"
 
 #. About Dialog - Credits button
 #. Seen in: About dialog
 msgid "C_redits"
-msgstr "Ku_siimwa"
+msgstr "_Bedankings"
 
 #. Seen in: font chooser
 msgid "Character Variants"
@@ -245,7 +246,7 @@ msgstr ""
 
 #. Seen in: About dialog
 msgid "Created by"
-msgstr "Yakolebwa"
+msgstr "Geskep deur"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the control key. If the text on this key isn't typically
@@ -261,17 +262,17 @@ msgstr "Ctrl"
 #. Right Click (on empty) -> Cut
 #. Seen in: menus
 msgid "Cu_t"
-msgstr "Ssal_a"
+msgstr "K_nip"
 
 #. Right Click (on empty) -> Cut
 #. Seen in: menus
 msgctxt "Stock label"
 msgid "Cu_t"
-msgstr "Ssal_a"
+msgstr "K_nip"
 
 #. Seen in: font chooser
 msgid "Default"
-msgstr ""
+msgstr "Verstek"
 
 #. Translate to default:RTL if you want your widgets
 #. * to be RTL, otherwise translate to default:LTR.
@@ -279,7 +280,7 @@ msgstr ""
 #. * it isn't default:LTR or default:RTL it will not work
 #. Configuration: Direction
 msgid "default:LTR"
-msgstr "nkoleremu:LTR"
+msgstr "default:LTR"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -292,39 +293,39 @@ msgstr "nkoleremu:LTR"
 #. Seen in: menus
 msgctxt "keyboard label"
 msgid "Down"
-msgstr "Wansi"
+msgstr "Af"
 
 #. Seen in: Keyboard Shortcuts window; menus
 msgctxt "keyboard label"
 msgid "End"
-msgstr "End"
+msgstr "Einde"
 
 #. Seen in: Keyboard Shortcuts window
 msgctxt "keyboard label"
 msgid "Escape"
-msgstr "Escape"
+msgstr "Ontsnap"
 
 #. Seen in: font chooser
 msgid "Font Family"
-msgstr ""
+msgstr "Lettertipe-familie"
 
 #. Seen in: *quality-checks.po dialog; main window; menus; quality-checks.po dialog
 msgid "Home"
-msgstr ""
+msgstr "Tuis"
 
 #. Seen in: *quality-checks.po dialog; main window; menus; quality-checks.po dialog
 msgctxt "keyboard label"
 msgid "Home"
-msgstr "Home"
+msgstr "Tuis"
 
 #. Seen in: menus
 msgid "Insert _Emoji"
-msgstr ""
+msgstr "Voeg _Emoji in"
 
 #. Seen in: menus
 msgctxt "keyboard label"
 msgid "Left"
-msgstr "Kkono"
+msgstr "Links"
 
 #. Seen in: font chooser
 msgid "Letter Case"
@@ -337,16 +338,16 @@ msgstr ""
 #. Seen in: Keyboard Shortcuts window
 msgctxt "keyboard label"
 msgid "Meta"
-msgstr ""
+msgstr "Meta"
 
 #. Seen in: font chooser
 msgid "No Fonts Found"
-msgstr ""
+msgstr "Geen lettertipes gevind nie"
 
 #. File ->Recent Files->No items found
 #. Seen in: menus
 msgid "No items found"
-msgstr "Tewali kifuniddwa"
+msgstr "Geen items gevind nie"
 
 #. Seen in: font chooser
 msgid "Number Case"
@@ -363,7 +364,7 @@ msgstr ""
 #. File->Recent Files->tooltip
 #. Seen in: menus
 msgid "Open '%s'"
-msgstr "Ggulawo '%s'"
+msgstr "Open '%s'"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -376,7 +377,7 @@ msgstr "Ggulawo '%s'"
 #. Seen in: Keyboard Shortcuts window; menus
 msgctxt "keyboard label"
 msgid "Page_Down"
-msgstr "Page_Down"
+msgstr "Bladsy_af"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -389,79 +390,79 @@ msgstr "Page_Down"
 #. Seen in: Keyboard Shortcuts window; menus
 msgctxt "keyboard label"
 msgid "Page_Up"
-msgstr "Page_Up"
+msgstr "Bladsy_op"
 
 #. Font dialog: title
 #. Seen in: font chooser
 msgid "Pick a Font"
-msgstr "Londa Endabika y'ebigambo"
+msgstr "Kies 'n lettertipe"
 
 #. Seen in: font chooser
 msgid "Preview text"
-msgstr ""
+msgstr "Voorskou teks"
 
 #. Seen in: menus
 msgctxt "keyboard label"
 msgid "Return"
-msgstr "Ddayo"
+msgstr "Enter"
 
 #. Seen in: menus
 msgctxt "keyboard label"
 msgid "Right"
-msgstr "Kitufu"
+msgstr "Regs"
 
 #. File->Save As
 #. Seen in: menus
 msgctxt "Stock label"
 msgid "Save _As"
-msgstr "Tereka _Nga"
+msgstr "Stoor _as"
 
 #. Seen in: font chooser
 msgid "Search font name"
-msgstr ""
+msgstr "Deursoek lettertipename"
 
 #. Seen in: Keyboard Shortcuts window
 msgid "Search Results"
-msgstr ""
+msgstr "Soekresultate"
 
 #. Seen in: Keyboard Shortcuts window
 msgid "Search Shortcuts"
-msgstr ""
+msgstr "Deursoek kortpaaie"
 
 #. Right Click (on empty) -> Select All
 #. Seen in: menus
 msgid "Select _All"
-msgstr "Londa _Byonna"
+msgstr "Merk _alles"
 
 #. Right Click (on empty) -> Select All
 #. Seen in: menus
 msgctxt "Stock label"
 msgid "Select _All"
-msgstr "Londa _Byonna"
+msgstr "Selekteer _alles"
 
 #. Seen in: Keyboard Shortcuts window; menus
 msgctxt "keyboard label"
 msgid "Shift"
-msgstr ""
+msgstr "Shift"
 
 #. Seen in: Keyboard Shortcuts window
 msgid "Shortcuts"
-msgstr ""
+msgstr "Kortpaaie"
 
 #. File dialog - Files - Grid label - Size
 #. Seen in: font chooser
 msgid "Size"
-msgstr "Ekipimo"
+msgstr "Grootte"
 
 #. Seen in: Keyboard Shortcuts window
 msgctxt "keyboard label"
 msgid "Tab"
-msgstr "Tab"
+msgstr "Inkeep"
 
 #. About Dialog - Credits dialog - Tab - Translated by
 #. Seen in: About dialog
 msgid "Translated by"
-msgstr "Kivvunuddwa"
+msgstr "Vertaal deur"
 
 #. This is the text that should appear next to menu accelerators
 #. * If the text on this key isn't typically
@@ -474,157 +475,4 @@ msgstr "Kivvunuddwa"
 #. Seen in: menus
 msgctxt "keyboard label"
 msgid "Up"
-msgstr "Wangulu"
-
-#~ msgid "keyboard label|Ctrl"
-#~ msgstr "lama ya mapeesa|Ctrl"
-
-#~ msgid "keyboard label|Up"
-#~ msgstr "lama ya mapeesa|Up"
-
-#~ msgid "keyboard label|Down"
-#~ msgstr "lama ya mapeesa|Down"
-
-#~ msgid "keyboard label|Page_Up"
-#~ msgstr "lama ya mapeesa|Page_Up"
-
-#~ msgid "keyboard label|Page_Down"
-#~ msgstr "lama ya mapeesa|Page_Down"
-
-#~ msgid "_Revert"
-#~ msgstr "_Zzaayo"
-
-#~ msgctxt "Stock label"
-#~ msgid "_Revert"
-#~ msgstr "_Zzaayo"
-
-#~ msgid "A file named \"%s\" already exists.  Do you want to replace it?"
-#~ msgstr "Fayiro gyogamba \"%s\" weeri.  Oyagala kugisikiza?"
-
-#~ msgid ""
-#~ "The file already exists in \"%s\".  Replacing it will overwrite its contents."
-#~ msgstr ""
-#~ "Fayiro weeri mu \"%s\". Okugisikisa kujjakujjawo ebirimu kuteekewo ebirala."
-
-#~ msgid "_Replace"
-#~ msgstr "_Kizeemu"
-
-#~ msgid "recent menu label|_%d. %s"
-#~ msgstr "laama y'ebirimu ebikozeseddwa gyebuvuddeko_%d. %s"
-
-#~ msgid "recent menu label|%d. %s"
-#~ msgstr "laama y'ebirimu ebikozeseddwa gyebuvuddeko|%d. %s"
-
-#~ msgid "Navigation|_Up"
-#~ msgstr "Okulagirira|_Waggulu"
-
-#~ msgid "Navigation|_Down"
-#~ msgstr "Okulagirira|_Wansi"
-
-#~ msgid "Credits"
-#~ msgstr "Kusiimwa"
-
-#~ msgid "Written by"
-#~ msgstr "Kiwandikiddwa"
-
-#~ msgid "License"
-#~ msgstr "Lukusa"
-
-#~ msgid "Add the folder '%s' to the bookmarks"
-#~ msgstr "Gatta eterekero lya fayiro '%s' ku bulambe"
-
-#~ msgid "Add the current folder to the bookmarks"
-#~ msgstr "Gatta eterekero lya fayiro eririwo ku bulambe"
-
-#~ msgid "Remove the bookmark '%s'"
-#~ msgstr "Jjamu obulambe '%s'"
-
-#~ msgid "Remove the selected bookmark"
-#~ msgstr "Jjamu obulambe obulondeddwa"
-
-#~ msgid "_Location:"
-#~ msgstr "_Endagiriro:"
-
-#~ msgid "_Search:"
-#~ msgstr "_Noonya:"
-
-#~ msgid "Type a file name"
-#~ msgstr "Wandiika erinnya lya fayiro"
-
-#~ msgid "_Places"
-#~ msgstr "_Ebifo"
-
-#~ msgid "Search"
-#~ msgstr "Noonya"
-
-#~ msgid "Recently Used"
-#~ msgstr "Kikozeseddwa Emabangako"
-
-#~ msgid "Desktop"
-#~ msgstr "Sikulini"
-
-#~ msgid "File System"
-#~ msgstr "Sisitimu ya Fayiro"
-
-#~ msgid "Remove"
-#~ msgstr "Jjamu"
-
-#~ msgid "Rename..."
-#~ msgstr "Kyuusa erinnya..."
-
-#~ msgid "Name"
-#~ msgstr "Erinnya"
-
-#~ msgid "Modified"
-#~ msgstr "Kikyuusiddwamu"
-
-#~ msgid "%H:%M"
-#~ msgstr "%H:%M"
-
-#~ msgid "Today at %H:%M"
-#~ msgstr "Olwaleero ku %H:%M"
-
-#~ msgid "Yesterday at %H:%M"
-#~ msgstr "Eggulo ku %H:%M"
-
-#~ msgid "Show _Hidden Files"
-#~ msgstr "Laga _Fayiro Ezikwekeddwa"
-
-#~ msgid "Show _Size Column"
-#~ msgstr "Laga _Ekipimo ky'ennyiriri mu Buwanvu"
-
-#~ msgid "_Add to Bookmarks"
-#~ msgstr "_Gatta ku Bulambe"
-
-#~ msgid "Select which types of files are shown"
-#~ msgstr "Londa ekyikka kya fayiro eziragiddwa"
-
-#~ msgid "_Name:"
-#~ msgstr "_Erinnya:"
-
-#~ msgid "Save in _folder:"
-#~ msgstr "Tereka mu _terekero lya fayiro:"
-
-#~ msgid "_Browse for other folders"
-#~ msgstr "_Noonya amaterekero ga fayiro amalala"
-
-#~ msgid "Create Fo_lder"
-#~ msgstr "Tonda Ete_rekero lya fayiro"
-
-#~ msgid "Type name of new folder"
-#~ msgstr "Wandiika erinnya ly'eterekero lya fayiro epya"
-
-#~ msgid "_Family:"
-#~ msgstr "_Ekikka:"
-
-#~ msgid "_Style:"
-#~ msgstr "_Endabika:"
-
-#~ msgid "Si_ze:"
-#~ msgstr "Ek_ipimo:"
-
-#~ msgid "_Preview:"
-#~ msgstr "_Sooka olabe:"
-
-#~ msgid "abcdefghijk ABCDEFGHIJK"
-#~ msgstr "abcdefghijk ABCDEFGHIJK"
+msgstr "Op"

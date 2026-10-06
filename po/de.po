@@ -285,7 +285,7 @@ msgstr "Standardschriften benutzen"
 
 #: ../share/virtaal/virtaal.ui.h:52
 msgid "<b>Fonts</b>"
-msgstr "Standardschriftarten verwenden"
+msgstr "<b>Schriften</b>"
 
 #. l10n: This tab label refers to the general preferences
 #: ../share/virtaal/virtaal.ui.h:54

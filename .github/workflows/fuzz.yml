@@ -63,10 +63,9 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install pygobject
-          pip install pyenchant
 
       - name: Install virtaal
-        run: pip install .
+        run: pip install .[spellcheck]
 
       - name: Fuzz
         run: |
@@ -110,10 +109,10 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
-          pip install pyenchant
 
       - name: Install virtaal
-        run: pip install .
+        # --ignore-installed: see ci.yml's test-macos.
+        run: pip install --ignore-installed .[spellcheck]
 
       - name: Fuzz
         run: |

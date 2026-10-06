@@ -14,7 +14,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Virtaal 1.0.0-beta2\n"
-"X-POOTLE-MTIME: 1389931379.000000\n"
 
 # Chinese translators:
 # 保留 劉書源 2009-12-13 提示：Virtaal作者群認为软件名稱不一定要維持原文，如果翻成中文效果更好，那也不介意将名子翻成中文。我對此沒什麼主意，其他中文譯者看到這段留言就自己評估吧。

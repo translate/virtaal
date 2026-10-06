@@ -82,24 +82,14 @@ def test_textbox_shortcuts_use_control_on_every_platform(description, accelerato
     assert shortcuts[description] == accelerator
 
 
-ARABIC_INDIC_DIGITS = '٠١٢٣٤٥٦٧٨٩'
-
-
-def _with_digits(monkeypatch, digits):
-    import builtins
-    real = builtins._
-    monkeypatch.setattr(builtins, '_', lambda s: digits if s == '0123456789' else real(s))
-    from virtaal.common import pan_app
-    monkeypatch.setattr(pan_app, 'ui_language', 'en')
-
-
-@pytest.mark.parametrize('digits, expected', [
-    ('0123456789', '_2'),
-    (ARABIC_INDIC_DIGITS, '_٢'),
+@pytest.mark.parametrize('lang, expected', [
+    ('en', '_2'),
+    ('ar_EG', '_٢'),
 ])
-def test_page_numbers_use_the_ui_languages_digits(monkeypatch, digits, expected):
+def test_page_numbers_use_the_ui_languages_digits(monkeypatch, lang, expected):
     # GTK titles the pages of a long section itself, as it adds them.
-    _with_digits(monkeypatch, digits)
+    from virtaal.common import pan_app
+    monkeypatch.setattr(pan_app, 'ui_language', lang)
     window = ShortcutsWindow.__new__(ShortcutsWindow)
     stack = Gtk.Stack()
     stack.connect('add', window._on_page_added)

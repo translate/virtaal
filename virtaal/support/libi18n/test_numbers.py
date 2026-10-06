@@ -5,54 +5,63 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-import builtins
-
 import pytest
 
 from virtaal.common import pan_app
-from virtaal.support.libi18n.numbers import cldr_digits, localise_digits
-
-ARABIC_INDIC = '٠١٢٣٤٥٦٧٨٩'
-BENGALI = '০১২৩৪৫৬৭৮৯'
-
-
-def _translate_digits(monkeypatch, translation):
-    monkeypatch.setattr(builtins, '_', lambda s: translation if s == '0123456789' else s)
+from virtaal.support.libi18n.numbers import (
+    format_number,
+    format_percent,
+    localise_digits,
+    ui_locale,
+)
 
 
-@pytest.mark.parametrize('translation, expected', [
-    (ARABIC_INDIC, 'Page ١٢'),
-    # A translation that isn't exactly ten digits is ignored.
-    ('0-9', 'Page 12'),
+@pytest.mark.parametrize('lang, expected', [
+    ('pt_BR', 'pt_BR'),
+    ('zh_CN', 'zh_Hans_CN'),
+    ('sr@latin', 'sr_Latn'),
+    ('ca@valencia', 'ca_ES_VALENCIA'),
+    # Babel doesn't know Acholi; the pseudo-translation locales aren't real.
+    ('ach', 'root'),
+    ('pseudo-source', 'root'),
 ])
-def test_localise_digits_uses_the_translated_digits(monkeypatch, translation, expected):
-    _translate_digits(monkeypatch, translation)
-    monkeypatch.setattr(pan_app, 'ui_language', 'bn')
-
-    assert localise_digits('Page 12') == expected
+def test_ui_locale(lang, expected):
+    assert str(ui_locale(lang)) == expected
 
 
 @pytest.mark.parametrize('lang, expected', [
     ('en', 'Page 12'),
+    ('ar', 'Page 12'),
+    ('ar_EG', 'Page ١٢'),
+    ('fa', 'Page ۱۲'),
     ('bn_IN', 'Page ১২'),
-    ('pseudo-source', 'Page 12'),
 ])
-def test_localise_digits_falls_back_to_cldr_when_untranslated(monkeypatch, lang, expected):
-    _translate_digits(monkeypatch, '0123456789')
+def test_localise_digits_uses_the_default_numbering_system(monkeypatch, lang, expected):
     monkeypatch.setattr(pan_app, 'ui_language', lang)
 
     assert localise_digits('Page 12') == expected
 
 
 @pytest.mark.parametrize('lang, expected', [
-    ('bn', BENGALI),
-    # CLDR's default for Arabic is 0-9, but Egyptian Arabic's isn't.
-    ('ar', '0123456789'),
-    ('ar_EG', ARABIC_INDIC),
-    ('ar_EG@foo', ARABIC_INDIC),
-    # Devanagari-script Kashmiri uses 0-9, unlike Kashmiri.
-    ('ks_Deva_IN', '0123456789'),
-    ('', '0123456789'),
+    ('en', '1,234,567'),
+    ('de', '1.234.567'),
+    ('fa', '۱٬۲۳۴٬۵۶۷'),
+    ('pseudo-source', '1,234,567'),
 ])
-def test_cldr_digits(lang, expected):
-    assert cldr_digits(lang) == expected
+def test_format_number(monkeypatch, lang, expected):
+    monkeypatch.setattr(pan_app, 'ui_language', lang)
+
+    assert format_number(1234567) == expected
+
+
+@pytest.mark.parametrize('lang, fraction, decimals, expected', [
+    ('en', 0.205, 1, '20.5%'),
+    ('de', 0.205, 1, '20,5\xa0%'),
+    ('tr', 0.205, 1, '%20,5'),
+    ('bn_IN', 0.205, 1, '২০.৫%'),
+    ('en', 1, 0, '100%'),
+])
+def test_format_percent(monkeypatch, lang, fraction, decimals, expected):
+    monkeypatch.setattr(pan_app, 'ui_language', lang)
+
+    assert format_percent(fraction, decimals) == expected

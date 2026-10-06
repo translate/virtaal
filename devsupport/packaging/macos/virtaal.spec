@@ -38,6 +38,9 @@ from virtaal.support.libi18n.lite import (  # noqa: E402
 sys.path.insert(0, str(PACKAGING))
 from generate_info_plist import bundle_localizations, document_types  # noqa: E402
 
+sys.path.insert(0, str(ROOT / "devsupport" / "packaging"))
+import babel_data  # noqa: E402
+
 COPYRIGHT = "Copyright 2007-2026 Translate. GNU General Public License."
 
 # translate-toolkit ships its own small data directory (translate/share/ -
@@ -156,6 +159,7 @@ a = Analysis(  # noqa: F821
     ),
     noarchive=False,
 )
+a.datas = babel_data.trim(a.datas, str(ROOT / "po"))
 
 a.datas = [entry for entry in a.datas if not is_unused_catalog(entry[0])]
 

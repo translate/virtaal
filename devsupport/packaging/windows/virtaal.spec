@@ -43,6 +43,9 @@ from virtaal.support.libi18n.lite import (  # noqa: E402
     read_linguas,
 )
 
+sys.path.insert(0, str(ROOT / "devsupport" / "packaging"))
+import babel_data  # noqa: E402
+
 # translate-toolkit ships its own small data directory (translate/share/ -
 # langmodels/, the ngram language-model files translate.lang.identify.
 # LanguageIdentifier needs for auto-detection, plus stoplist-en) that
@@ -209,6 +212,7 @@ a = Analysis(  # noqa: F821
     ],
     noarchive=False,
 )
+a.datas = babel_data.trim(a.datas, str(ROOT / "po"))
 
 a.datas = [entry for entry in a.datas if not is_unused_catalog(entry[0])]
 

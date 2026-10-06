@@ -55,6 +55,16 @@ this check has already moved once (from a step inside the `test` job's
 python-3.13 leg, to its own `appdata-screenshots` job as of PR #3848) and
 may move again.
 
+Quicker per-run signal: the stale-image artifacts are uploaded only on a
+mismatch, so their presence alone says which set drifted:
+
+```
+gh api repos/translate/virtaal/actions/runs/<run-id>/artifacts -q '.artifacts[].name' | grep screenshots
+```
+
+Pass `-R translate/virtaal` to every `gh run` command here - from a fork
+checkout `gh` can resolve the default repo to the fork, which has no runs.
+
 Also worth checking on `main` itself, not just open PRs - a merge can
 introduce drift that no one's PR-time run caught (e.g. a change to a
 different branch that touches rendered UI, merged after the screenshot
@@ -103,6 +113,13 @@ tell you which of those two this is. The generation script fails hard
 
 Open this as its own PR/commit rather than folding it into unrelated work in
 progress - it's an independent, mechanical refresh.
+
+Name the cause in the commit message: `git log -1 -- docs/_static/<img>`
+gives the last refresh date, then `git log --since=<that date> --
+virtaal/plugins/<area> virtaal/views` usually turns up the commit that
+changed the render (e.g. #4037: autocomplete style from #3917, TM popup
+width from c0767f7e). No matching commit is a hint the capture is
+nondeterministic - run the checksum comparison above.
 
 A change of a pixel or two is still real drift - zoom the differing
 region (crop and upscale both images, side by side) to see what moved

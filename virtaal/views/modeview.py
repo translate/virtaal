@@ -88,7 +88,7 @@ class ModeView(GObjectWrapper, BaseView):
         self.context_box = Gtk.Box(spacing=3)
         self.context_box.pack_start(lbl_context, False, False, 0)
         self.context_box.pack_start(self.cmb_context, False, False, 0)
-        self.context_box.set_valign(Gtk.Align.CENTER)
+        self.context_box.set_valign(Gtk.Align.START)
         self.context_box.set_margin_end(6)
         top_bar.pack_end(self.context_box, False, False, 0)
 

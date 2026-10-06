@@ -10,7 +10,8 @@
 msgids they came from, using the pseudo-source catalogs
 generate_pseudo_translation.py wrote.
 
-A tag (gtk:, glib:, spell:, mac:, iso:) marks where a translated message starts; the
+A tag (gtk:, glib:, spell:, mac:, iso:, or gtk!: and so on for a
+message its lite template lacks) marks where a translated message starts; the
 msgid of that domain with the most literal text matching there - printf
 conversions as wildcards, ending at a word boundary - is the one shown. Text with a
 tag but no matching msgid is reported as unresolved.
@@ -33,7 +34,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 # iso: covers both language and country names.
 DOMAINS = {"gtk30": "gtk:", "glib20": "glib:", "gtkspell3": "spell:", "gtk-mac-integration": "mac:", "iso639-3": "iso:", "iso3166-1": "iso:"}
-TAG_RE = re.compile(r"(?:vt|gtk|glib|iso|spell|mac):")
+TAG_RE = re.compile(r"(?:vt|gtk|glib|iso|spell|mac)!?:")
 # The harvest records labels without their Pango markup.
 MARKUP_RE = re.compile(r"<[^>]+>")
 PRINTF_RE = re.compile(r"%(?:\d+\$)?[-+ #0']*\d*(?:\.\d+)?[hlLqjzt]*[diouxXeEfFgGcspa]|%%")
@@ -87,7 +88,7 @@ def resolve_text(text, catalogs):
     several msgctxts - or (domain, None) for a tag nothing matches."""
     found = []
     for tag_match in TAG_RE.finditer(text):
-        tag = tag_match.group()
+        tag = tag_match.group().replace("!", "")
         domains = [d for d, t in DOMAINS.items() if t == tag and d in catalogs]
         if not domains:
             continue

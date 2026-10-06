@@ -181,11 +181,10 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install pygobject==3.58.0
-          pip install pyenchant
 
       - name: Install virtaal
         # No `.[test]` extras here - this job never runs pytest.
-        run: pip install .
+        run: pip install .[spellcheck]
 
       - name: Generate and check AppData screenshots
         id: screenshots
@@ -375,14 +374,13 @@ jobs:
           # pip install pygobject only succeeds with GTK3 headers
           # already present, which apt provides here.
           pip install pygobject==3.58.0
-          pip install pyenchant
 
       - name: Install virtaal
         # Not `python setup.py install` - unreliable about where it
         # puts the script.
         run: |
           # shellcheck disable=SC2102  # .[test] is pip extras syntax, not a glob range
-          pip install .[test]
+          pip install .[test,spellcheck]
 
       - name: Compile-check all Python files
         run: find . -name "*.py" -exec python -m py_compile {} +
@@ -654,7 +652,7 @@ jobs:
           pip install setuptools==84.0.0 wheel==0.48.0 pycairo==1.29.1 pygobject==3.58.0 python-Levenshtein pycurl lxml diff_match_patch cheroot pyinstaller==6.22.3
 
       - name: Install virtaal
-        run: pip install .
+        run: pip install .[spellcheck]
 
       - name: Build self-contained bundle
         shell: pwsh
@@ -893,16 +891,13 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
-          # GTK3/PyGObject need no separate pip install here (unlike
-          # Linux) - the --system-site-packages venv above already sees
-          # Homebrew's brew-installed `gi` module directly.
-          pip install pyenchant
 
       - name: Install virtaal
-        # .[test] pulls in pyproject.toml's declared dependencies
-        # (pycurl, lxml, diff_match_patch, python-Levenshtein, cheroot)
-        # plus pytest, in one step instead of eight separate ones.
-        run: pip install .[test]
+        # GTK3/PyGObject need no pip install here (unlike Linux) - the
+        # --system-site-packages venv above sees Homebrew's `gi` directly.
+        # --ignore-installed keeps every other dependency in the venv at
+        # pyproject.toml's version instead of reusing Homebrew's copy.
+        run: pip install --ignore-installed .[test,spellcheck]
 
       - name: Compile-check all Python files
         run: find . -name "*.py" -exec python -m py_compile {} +
@@ -993,10 +988,11 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
-          pip install setuptools==84.0.0 wheel==0.48.0 pyenchant pyinstaller==6.22.3
+          pip install setuptools==84.0.0 wheel==0.48.0 pyinstaller==6.22.3 dmgbuild==1.6.7
 
       - name: Install virtaal
-        run: pip install .
+        # --ignore-installed: see test-macos.
+        run: pip install --ignore-installed .[spellcheck]
 
       - name: Build self-contained .app bundle
         env:

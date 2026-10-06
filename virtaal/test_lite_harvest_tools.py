@@ -154,3 +154,50 @@ def test_write_template_starts_a_new_domain(templates, tmp_path, monkeypatch):
     text = open(path, encoding="utf-8").read()
     assert '"Project-Id-Version: gtk-mac-integration lite\\n"' in text
     assert 'msgid "Quit %s"' in text
+
+
+@pytest.fixture
+def lite_catalogs(tmp_path, monkeypatch):
+    module = _load("update_lite_catalogs")
+    monkeypatch.setattr(module, "LITE_DIR", str(tmp_path))
+    monkeypatch.setattr(module, "LINGUAS", str(tmp_path / "LINGUAS-lite"))
+    (tmp_path / "mac").mkdir()
+    (tmp_path / "mac" / "mac.pot").write_text(
+        'msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-8\\n"\n\n'
+        'msgid "Quit %s"\nmsgstr ""\n\nmsgid "Show All"\nmsgstr ""\n', encoding="utf-8")
+    return module, tmp_path / "mac"
+
+
+def test_lite_catalog_is_retired_when_upstream_translates_everything(lite_catalogs):
+    module, domain_dir = lite_catalogs
+    (domain_dir / "fr.po").write_text('msgid "Show All"\nmsgstr "Tout"\n', encoding="utf-8")
+
+    translated = module.update("mac", "fr", {("", "Quit %s"): "Quitter %s", ("", "Show All"): "Tout afficher"})
+
+    assert translated == 0
+    assert not (domain_dir / "fr.po").exists()
+
+
+def test_lite_catalog_keeps_its_translations_and_fills_in_upstreams(lite_catalogs):
+    from translate.storage import factory
+
+    module, domain_dir = lite_catalogs
+    (domain_dir / "af.po").write_text(
+        'msgid ""\nmsgstr ""\n"Language: af\\n"\n\nmsgid "Show All"\nmsgstr "Wys alles"\n', encoding="utf-8")
+
+    translated = module.update("mac", "af", {("", "Quit %s"): "Verlaat %s"})
+
+    targets = {str(u.source): str(u.target) for u in factory.getobject(str(domain_dir / "af.po")).units
+               if not u.isheader()}
+    assert translated == 2
+    assert targets == {"Quit %s": "Verlaat %s", "Show All": "Wys alles"}
+
+
+def test_linguas_lists_only_lite_catalogs_that_translate_something(lite_catalogs):
+    module, domain_dir = lite_catalogs
+    linguas = domain_dir.parent / "LINGUAS-lite"
+    linguas.write_text("gtk30/zu\nmac/old\n", encoding="utf-8")
+
+    module.write_linguas({"mac": ["af"]})
+
+    assert linguas.read_text(encoding="utf-8") == "gtk30/zu\nmac/af\n"

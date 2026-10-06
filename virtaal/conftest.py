@@ -84,6 +84,18 @@ def _is_testscaffolding_subclass(cls):
     )
 
 
+# Leaked real toplevels crash an xdist worker natively on macOS (no
+# Python traceback); a fresh process per test avoids it.
+_ISOLATED_FILES = {"test_popupwidgetbutton.py"}
+
+
+def _isolate(item):
+    cls = getattr(item, "cls", None)
+    if cls is not None and _is_testscaffolding_subclass(cls):
+        return True
+    return item.path.name in _ISOLATED_FILES
+
+
 def _make_report(item, when, passed, output=""):
     if passed:
         call = runner.CallInfo.from_call(lambda: None, when)
@@ -108,11 +120,11 @@ def pytest_runtest_protocol(item, nextitem):
     verified empirically, not assumed. A genuinely fresh subprocess
     (re-exec, not fork) has no such inherited state, so each
     TestScaffolding test runs as its own `pytest <nodeid>` child
-    process on macOS only; other platforms are unaffected."""
+    process on macOS only; other platforms are unaffected. So does
+    every test in _ISOLATED_FILES."""
     if sys.platform != "darwin" or os.environ.get("_VIRTAAL_TESTSCAFFOLDING_ISOLATED"):
         return None
-    cls = getattr(item, "cls", None)
-    if cls is None or not _is_testscaffolding_subclass(cls):
+    if not _isolate(item):
         return None
 
     ihook = item.ihook

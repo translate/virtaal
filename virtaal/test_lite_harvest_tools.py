@@ -144,3 +144,13 @@ def test_write_template_replaces_where_a_message_was_seen(templates, tmp_path, m
 
     text = open(path, encoding="utf-8").read()
     assert "#. Help->About\n#. Seen in: menus\nmsgid" in text
+
+
+def test_write_template_starts_a_new_domain(templates, tmp_path, monkeypatch):
+    monkeypatch.setattr(templates, "LITE_DIR", str(tmp_path))
+
+    path = templates.write_template("gtk-mac-integration", {"Quit %s": set()})
+
+    text = open(path, encoding="utf-8").read()
+    assert '"Project-Id-Version: gtk-mac-integration lite\\n"' in text
+    assert 'msgid "Quit %s"' in text

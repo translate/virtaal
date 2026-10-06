@@ -135,6 +135,15 @@ now-renamed string's old translation got carried onto the wrong
 entry via a fuzzy/TM match). Root-causing this way turns "this looks
 wrong" into a precise, explainable fix rather than a guess.
 
+## Fixing an entry: is its msgid still current?
+
+Before fixing a translation, check its msgid is in the current
+`po/virtaal.pot` (`grep -c '^msgid "<string>"$' po/virtaal.pot`). A
+catalog last synced against an older pot keeps entries for msgids that
+have since been reworded; gettext never looks them up, so a fix there
+changes nothing users see (#4034's ko tutorial fix). Such a catalog
+needs `msgmerge` against the current pot first.
+
 ## Precedent: does the target language actually treat this string as translatable?
 
 Don't assume from first principles (e.g. "acronyms should never be

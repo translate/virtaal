@@ -16,6 +16,7 @@ did nothing, no error.
 """
 
 import ctypes
+import os
 import sys
 from types import SimpleNamespace
 from urllib.parse import quote
@@ -1248,14 +1249,15 @@ def test_setup_key_bindings_registers_keyboard_shortcuts(monkeypatch, is_mac, ke
     assert ("<Virtaal>/Help/Shortcuts", key, mods) in calls
 
 
-def test_setup_osx_help_menu_gives_osxapp_the_help_menu_item():
+def test_setup_osx_help_menu_gives_osxapp_the_help_menu_item(monkeypatch):
     view = SimpleNamespace(gui=SimpleNamespace(get_object=lambda name: name))
     calls = []
     osxapp = SimpleNamespace(set_help_menu=lambda item: calls.append(item))
+    monkeypatch.setattr(mainview, '_set_native_help_menu', lambda: calls.append('native'))
 
     MainView._setup_osx_help_menu(view, osxapp)
 
-    assert calls == ["menuitem_help"]
+    assert calls == ["menuitem_help", "native"]
 
 
 def _fake_objc(monkeypatch, objects):
@@ -1271,6 +1273,37 @@ def _fake_objc(monkeypatch, objects):
     monkeypatch.setattr(mainview, '_objc_class', lambda name: name)
     monkeypatch.setattr(mainview, '_objc_sel', lambda name: 'sel:' + name)
     return calls
+
+
+_GTKOSX_MENUBAR = {
+    ('NSApplication', 'sharedApplication'): 'nsapp',
+    ('nsapp', 'mainMenu'): 'menubar',
+    ('menubar', 'respondsToSelector:'): True,
+    ('menubar', 'helpMenu'): 'help item',
+    ('help item', 'submenu'): 'help menu',
+}
+
+
+def test_set_native_help_menu_designates_the_help_items_submenu(monkeypatch):
+    calls = _fake_objc(monkeypatch, _GTKOSX_MENUBAR)
+
+    mainview._set_native_help_menu()
+
+    assert ('nsapp', 'setHelpMenu:', 'help menu') in calls
+
+
+@pytest.mark.parametrize('missing', [
+    ('nsapp', 'mainMenu'),
+    ('menubar', 'respondsToSelector:'),
+    ('menubar', 'helpMenu'),
+    ('help item', 'submenu'),
+], ids=['no menubar', 'not gtk-mac-integration', 'no help item', 'no submenu'])
+def test_set_native_help_menu_leaves_appkit_alone_without_a_help_menu(monkeypatch, missing):
+    calls = _fake_objc(monkeypatch, {k: v for k, v in _GTKOSX_MENUBAR.items() if k != missing})
+
+    mainview._set_native_help_menu()
+
+    assert not [c for c in calls if c[1] == 'setHelpMenu:']
 
 
 def test_note_recent_document_hands_appkit_a_file_url(monkeypatch):
@@ -1292,6 +1325,53 @@ def test_objc_send_round_trips_through_the_real_runtime():
                                    b"Hulp", argtypes=[ctypes.c_char_p])
 
     assert ctypes.string_at(mainview._objc_send(nsstring, "UTF8String")) == b"Hulp"
+
+
+_FRESH_PROCESS_HELP_MENU = """
+import ctypes
+import gi
+gi.require_version('Gtk', '3.0')
+gi.require_version('GtkosxApplication', '1.0')
+from gi.repository import Gtk, GtkosxApplication
+from virtaal.views import mainview
+osxapp = GtkosxApplication.Application()
+window = Gtk.Window()
+menubar = Gtk.MenuBar()
+window.add(menubar)
+for title in ('Fichier', 'Aide'):
+    item = Gtk.MenuItem(label=title)
+    submenu = Gtk.Menu()
+    submenu.append(Gtk.MenuItem(label='x'))
+    item.set_submenu(submenu)
+    menubar.append(item)
+window.show_all()
+osxapp.set_menu_bar(menubar)
+osxapp.set_help_menu(menubar.get_children()[-1])
+nsapp = mainview._objc_send(mainview._objc_class('NSApplication'), 'sharedApplication')
+print(mainview._objc_send(nsapp, 'helpMenu'))
+mainview._set_native_help_menu()
+title = mainview._objc_send(mainview._objc_send(nsapp, 'helpMenu'), 'title')
+print(ctypes.string_at(mainview._objc_send(title, 'UTF8String')).decode())
+"""
+
+
+@pytest.mark.skipif(not platform.is_mac, reason="AppKit's Help menu is macOS-only")
+def test_set_native_help_menu_reaches_appkit_whatever_the_menus_title():
+    # Real AppKit and gtk-mac-integration, in a fresh process so its
+    # menubar can't leak into other tests.
+    try:
+        gi.require_version('GtkosxApplication', '1.0')
+    except ValueError:
+        pytest.skip('gtk-mac-integration not installed')
+    import subprocess
+    repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    env = dict(os.environ, PYTHONPATH=repo_root)
+
+    result = subprocess.run([sys.executable, '-c', _FRESH_PROCESS_HELP_MENU],
+                            env=env, capture_output=True, text=True, check=True, timeout=60)
+
+    # gtk-mac-integration alone never designates it.
+    assert result.stdout.split() == ['None', 'Aide']
 
 
 # show_template_update_notice(): dismissable "Update from Template" stats

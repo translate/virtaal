@@ -82,6 +82,20 @@ def _note_recent_document(path):
     _objc_send(shared, "noteNewRecentDocumentURL:", url, restype=None)
 
 
+def _set_native_help_menu():
+    """GtkosxApplication.set_help_menu() never tells AppKit, which then
+        only adds its search field to a menu titled with its own "Help"."""
+    nsapp = _objc_send(_objc_class("NSApplication"), "sharedApplication")
+    menubar = _objc_send(nsapp, "mainMenu")
+    if not menubar or not _objc_send(menubar, "respondsToSelector:", _objc_sel("helpMenu"),
+                                     restype=ctypes.c_bool):
+        return
+    item = _objc_send(menubar, "helpMenu")
+    submenu = _objc_send(item, "submenu") if item else None
+    if submenu:
+        _objc_send(nsapp, "setHelpMenu:", submenu, restype=None)
+
+
 def fill_dialog(dialog, title='', message='', markup=''):
     if title:
         dialog.set_title(title)
@@ -311,10 +325,8 @@ class MainView(BaseView):
             logging.debug("GtkosxApplication not found (brew install gtk-mac-integration for native macOS menu-bar integration). Expect zero integration with the Mac desktop.")
 
     def _setup_osx_help_menu(self, osxapp):
-        # Also unlocks macOS's native Help-menu search field, but only
-        # when this menu's title matches the Mac's system display
-        # language's own word for "Help" - not virtaal's UI language.
         osxapp.set_help_menu(self.gui.get_object("menuitem_help"))
+        _set_native_help_menu()
 
     def _detect_windows_is_dark(self):
         # AppsUseLightTheme: 0 means dark, 1 (or absent) means light.

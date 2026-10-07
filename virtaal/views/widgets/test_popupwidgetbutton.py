@@ -29,6 +29,14 @@ def _make_button(**kwargs):
     return window, btn
 
 
+def _run_pending_show(btn):
+    """Run the frame-by-frame wait for the button to settle, without frames."""
+    if btn._show_tick_id:
+        btn.remove_tick_callback(btn._show_tick_id)
+        while btn._show_tick_id:
+            btn._on_show_tick(btn, None)
+
+
 def test_init_uses_the_given_popup_pos_in_ltr():
     _, btn = _make_button(popup_pos=POS_NE_SE)
 
@@ -58,6 +66,7 @@ def test_init_falls_back_to_the_rtl_default_for_an_unmapped_pos():
 def test_focus_out_event_hides_the_popup_by_default():
     _, btn = _make_button()
     btn.show_popup()
+    _run_pending_show(btn)
     assert btn.is_popup_visible
 
     btn.emit('focus-out-event', Gdk.Event.new(Gdk.EventType.FOCUS_CHANGE))
@@ -68,6 +77,7 @@ def test_focus_out_event_hides_the_popup_by_default():
 def test_sticky_button_ignores_focus_out_event():
     _, btn = _make_button(sticky=True)
     btn.show_popup()
+    _run_pending_show(btn)
 
     btn.emit('focus-out-event', Gdk.Event.new(Gdk.EventType.FOCUS_CHANGE))
 
@@ -78,6 +88,7 @@ def test_main_window_focus_out_also_hides_the_popup():
     main_window = Gtk.Window()
     _, btn = _make_button(main_window=main_window)
     btn.show_popup()
+    _run_pending_show(btn)
 
     main_window.emit('focus-out-event', Gdk.Event.new(Gdk.EventType.FOCUS_CHANGE))
 
@@ -93,6 +104,7 @@ def _key_event(keyval):
 def test_escape_key_hides_a_visible_popup_and_consumes_the_event():
     _, btn = _make_button()
     btn.show_popup()
+    _run_pending_show(btn)
 
     handled = btn._on_key_press_event(btn, _key_event(Gdk.KEY_Escape))
 
@@ -111,6 +123,7 @@ def test_escape_key_is_ignored_when_the_popup_is_already_hidden():
 def test_other_keys_are_ignored():
     _, btn = _make_button()
     btn.show_popup()
+    _run_pending_show(btn)
 
     handled = btn._on_key_press_event(btn, _key_event(Gdk.KEY_a))
 
@@ -122,6 +135,7 @@ def test_toggled_true_shows_the_popup():
     _, btn = _make_button()
 
     btn.set_active(True)
+    _run_pending_show(btn)
 
     assert btn.is_popup_visible
 
@@ -129,6 +143,7 @@ def test_toggled_true_shows_the_popup():
 def test_toggled_false_hides_the_popup():
     _, btn = _make_button()
     btn.set_active(True)
+    _run_pending_show(btn)
 
     btn.set_active(False)
 
@@ -147,6 +162,7 @@ def test_set_update_popup_geometry_func_stores_the_function():
 def test_hide_popup_deactivates_the_button():
     _, btn = _make_button()
     btn.set_active(True)
+    _run_pending_show(btn)
 
     btn.hide_popup()
 
@@ -157,6 +173,7 @@ def test_show_popup_activates_the_button():
     _, btn = _make_button()
 
     btn.show_popup()
+    _run_pending_show(btn)
 
     assert btn.get_active()
 
@@ -164,7 +181,8 @@ def test_show_popup_activates_the_button():
 def test_do_show_popup_connects_the_toplevel_button_press_handler():
     _, btn = _make_button()
 
-    btn._do_show_popup()
+    btn.set_active(True)
+    _run_pending_show(btn)
 
     assert btn._parent_button_press_id is not None
     assert btn.popup.props.visible
@@ -311,3 +329,105 @@ def test_calculate_popup_xy_center_above_centers_horizontally_and_flips_vertical
     result = PopupWidgetButton.calculate_popup_xy(fake_self, POPUP_ALLOC, BTN_ALLOC, BTN_WINDOW_XY)
 
     assert result == (95, 180)
+
+
+def test_update_popup_shows_only_while_active_with_visible_content():
+    _, btn = _make_button()
+    content = btn.popup.get_child()
+    content.hide()
+
+    btn.show_popup()
+    _run_pending_show(btn)
+    assert not btn.is_popup_visible
+
+    content.show()
+    btn.update_popup()
+    _run_pending_show(btn)
+    assert btn.is_popup_visible
+
+    content.hide()
+    btn.update_popup()
+    _run_pending_show(btn)
+    assert not btn.is_popup_visible
+    assert btn.get_active()
+
+    btn.hide_popup()
+    content.show()
+    btn.update_popup()
+    _run_pending_show(btn)
+    assert not btn.is_popup_visible
+
+
+def test_update_popup_before_the_button_has_a_window():
+    # A unit's checks can update while the unit editor is being rebuilt.
+    btn = PopupWidgetButton(widget=Gtk.Label(label='content'))
+    btn.set_active(True)
+    _run_pending_show(btn)
+
+    btn.update_popup()
+    _run_pending_show(btn)
+
+    assert btn.is_popup_visible
+
+
+def test_a_content_size_change_places_the_popup_again_once(monkeypatch):
+    # A tree view's new rows only count towards its size once measured.
+    from virtaal.views.widgets import popupwidgetbutton
+    _, btn = _make_button()
+    btn.set_active(True)
+    _run_pending_show(btn)
+    btn._place_popup()
+    scheduled = []
+    monkeypatch.setattr(popupwidgetbutton.GLib, 'idle_add', lambda func: scheduled.append(func) or 1)
+
+    btn.popup.emit('check-resize')
+    btn.popup.emit('check-resize')
+
+    assert scheduled == [btn._place_popup]
+
+
+def test_a_content_size_change_while_hidden_does_nothing(monkeypatch):
+    from virtaal.views.widgets import popupwidgetbutton
+    _, btn = _make_button()
+    scheduled = []
+    monkeypatch.setattr(popupwidgetbutton.GLib, 'idle_add', lambda func: scheduled.append(func) or 1)
+
+    btn.popup.emit('check-resize')
+
+    assert scheduled == []
+
+
+def test_the_popup_waits_for_the_button_to_stop_moving():
+    # Its row may still be scrolling into place.
+    _, btn = _make_button()
+    btn.set_active(True)
+    btn.remove_tick_callback(btn._show_tick_id)
+
+    btn._on_show_tick(btn, None)
+    btn._last_position = 'somewhere else'
+    btn._on_show_tick(btn, None)
+    assert not btn.is_popup_visible
+
+    btn._on_show_tick(btn, None)
+    assert btn.is_popup_visible
+
+
+def test_the_popup_shows_anyway_once_the_wait_runs_out():
+    _, btn = _make_button()
+    btn.set_active(True)
+    btn.remove_tick_callback(btn._show_tick_id)
+    btn._ticks_left = 1
+
+    btn._on_show_tick(btn, None)
+
+    assert btn.is_popup_visible
+
+
+def test_releasing_the_button_cancels_a_pending_show():
+    _, btn = _make_button()
+    btn.set_active(True)
+
+    btn.set_active(False)
+
+    assert btn._show_tick_id is None
+    assert not btn.is_popup_visible

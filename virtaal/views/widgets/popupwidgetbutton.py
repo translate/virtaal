@@ -10,7 +10,7 @@ PopupWidgetButton: Extends a C{Gtk.ToggleButton} to show a given widget in a
 pop-up window.
 """
 
-from gi.repository import Gdk, GObject, Gtk
+from gi.repository import Gdk, GLib, GObject, Gtk
 
 # XXX: Kudo's to Toms Bauģis <toms.baugis at gmail.com> who wrote the
 #      ActivityEntry widget for the hamster-applet project. A lot of this
@@ -41,6 +41,9 @@ _rtl_pos_map = {
         POS_NW_SW: POS_NE_SE,
 }
 
+# Frames to wait for the button to stop moving before showing the pop-up anyway.
+MAX_SHOW_TICKS = 10
+
 
 class PopupWidgetButton(Gtk.ToggleButton):
     """Extends a C{Gtk.ToggleButton} to show a given widget in a pop-up window."""
@@ -66,6 +69,8 @@ class PopupWidgetButton(Gtk.ToggleButton):
             self.popup_pos = _rtl_pos_map.get(popup_pos, POS_NE_SE)
         self._parent_button_press_id = None
         self._update_popup_geometry_func = None
+        self._place_popup_id = None
+        self._show_tick_id = None
 
         # Create pop-up window
         self.popup = Gtk.Window(type=Gtk.WindowType.POPUP)
@@ -73,6 +78,7 @@ class PopupWidgetButton(Gtk.ToggleButton):
         self.popup.add(widget)
         self.popup.show_all()
         self.popup.hide()
+        self.popup.connect('check-resize', self._on_popup_check_resize)
 
         self.connect('draw', self._on_expose)
 
@@ -120,17 +126,50 @@ class PopupWidgetButton(Gtk.ToggleButton):
         if self._parent_button_press_id and self.get_toplevel().handler_is_connected(self._parent_button_press_id):
             self.get_toplevel().disconnect(self._parent_button_press_id)
             self._parent_button_press_id = None
-        self.popup.hide()
+        self.update_popup()
         self.emit('hidden')
 
     def _do_show_popup(self):
         if not self._parent_button_press_id and self.get_toplevel():
             self._parent_button_press_id = self.get_toplevel().connect('button-press-event', self._on_focus_out_event)
-        self.popup.present()
-        self._update_popup_geometry()
+        self.update_popup()
         self.emit('shown')
 
+    def update_popup(self):
+        """Show the pop-up while the button is active and its widget is
+            visible, otherwise hide it."""
+        if self.get_active() and self.popup.get_child().get_visible():
+            if self.popup.props.visible:
+                self._update_popup_geometry()
+            elif not self._show_tick_id:
+                # Once the button stops moving (its row may still be scrolling
+                # into place), so it shows once, in place.
+                self._last_position = None
+                self._ticks_left = MAX_SHOW_TICKS
+                self._show_tick_id = self.add_tick_callback(self._on_show_tick)
+        else:
+            if self._show_tick_id:
+                self.remove_tick_callback(self._show_tick_id)
+                self._show_tick_id = None
+            self.popup.hide()
+
+    def _on_show_tick(self, _widget, _frame_clock):
+        window = self.get_window()
+        position = window and (window.get_origin()[1:], self.get_allocation().y)
+        self._ticks_left -= 1
+        if self._ticks_left > 0 and (not position or position != self._last_position):
+            self._last_position = position
+            return GLib.SOURCE_CONTINUE
+        self._show_tick_id = None
+        self._update_popup_geometry()
+        self.popup.present()
+        return GLib.SOURCE_REMOVE
+
     def _update_popup_geometry(self):
+        # Until the button has a window there's nothing to place it by;
+        # its next draw does.
+        if self.get_window() is None:
+            return
         self.popup.set_size_request(-1, -1)
         requisition = self.popup.get_preferred_size()[1]
         width = requisition.width
@@ -152,6 +191,7 @@ class PopupWidgetButton(Gtk.ToggleButton):
 
         popup_alloc.width, popup_alloc.height = width, height
         x, y = self.calculate_popup_xy(popup_alloc, btn_alloc, btn_window_xy)
+        self.popup.move(x, y)
         self.popup.get_window().get_toplevel().move_resize(x, y, width, height)
 
 
@@ -163,6 +203,16 @@ class PopupWidgetButton(Gtk.ToggleButton):
         if event.keyval == Gdk.KEY_Escape and self.popup.props.visible:
             self.hide_popup()
             return True
+        return False
+
+    def _on_popup_check_resize(self, popup):
+        # The widget's size changed: place the pop-up again, after this layout.
+        if popup.props.visible and not self._place_popup_id:
+            self._place_popup_id = GLib.idle_add(self._place_popup)
+
+    def _place_popup(self):
+        self._place_popup_id = None
+        self._update_popup_geometry()
         return False
 
     def _on_toggled(self, button):

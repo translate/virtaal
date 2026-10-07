@@ -24,6 +24,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from translate.storage import factory
 
 from virtaal.__version__ import ver as virtaal_version
+from virtaal.support.libi18n.lite import read_linguas
+
+ROOT = Path(__file__).resolve().parents[3]
+
+# LINGUAS codes whose plain "_" -> "-" form AppKit doesn't match to the
+# user's language setting.
+APPLE_LOCALIZATIONS = {"ca@valencia": "ca-ES-valencia"}
 
 
 def document_types():
@@ -39,6 +46,14 @@ def document_types():
             "CFBundleTypeRole": "Editor",
         })
     return types
+
+
+def bundle_localizations(languages):
+    """CFBundleLocalizations: without it AppKit runs the app in English
+    whatever the user's language, so its own menu items, and the Help
+    menu's search field, never localize."""
+    return ["en"] + sorted(
+        {APPLE_LOCALIZATIONS.get(lang, lang.replace("_", "-")) for lang in languages} - {"en"})
 
 
 def build_plist():
@@ -61,6 +76,7 @@ def build_plist():
         "LSApplicationCategoryType": "public.app-category.productivity",
         "NSHighResolutionCapable": True,
         "CFBundleDocumentTypes": document_types(),
+        "CFBundleLocalizations": bundle_localizations(read_linguas(ROOT / "po" / "LINGUAS")),
     }
 
 

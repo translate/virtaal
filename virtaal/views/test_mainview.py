@@ -15,6 +15,7 @@ which is never returned by a real click - clicking Open/Save silently
 did nothing, no error.
 """
 
+import ctypes
 import sys
 from types import SimpleNamespace
 from urllib.parse import quote
@@ -1255,6 +1256,42 @@ def test_setup_osx_help_menu_gives_osxapp_the_help_menu_item():
     MainView._setup_osx_help_menu(view, osxapp)
 
     assert calls == ["menuitem_help"]
+
+
+def _fake_objc(monkeypatch, objects):
+    """objects maps (receiver, selector) to the reply; calls records
+    every message sent."""
+    calls = []
+
+    def send(receiver, selector, *args, argtypes=None, restype=None):
+        calls.append((receiver, selector) + args)
+        return objects.get((receiver, selector))
+
+    monkeypatch.setattr(mainview, '_objc_send', send)
+    monkeypatch.setattr(mainview, '_objc_class', lambda name: name)
+    monkeypatch.setattr(mainview, '_objc_sel', lambda name: 'sel:' + name)
+    return calls
+
+
+def test_note_recent_document_hands_appkit_a_file_url(monkeypatch):
+    calls = _fake_objc(monkeypatch, {
+        ('NSString', 'stringWithUTF8String:'): 'nsstring',
+        ('NSURL', 'fileURLWithPath:'): 'url',
+        ('NSDocumentController', 'sharedDocumentController'): 'controller',
+    })
+
+    mainview._note_recent_document('/tmp/af.po')
+
+    assert calls[0] == ('NSString', 'stringWithUTF8String:', b'/tmp/af.po')
+    assert calls[-1] == ('controller', 'noteNewRecentDocumentURL:', 'url')
+
+
+@pytest.mark.skipif(not platform.is_mac, reason="the Objective-C runtime is macOS-only")
+def test_objc_send_round_trips_through_the_real_runtime():
+    nsstring = mainview._objc_send(mainview._objc_class("NSString"), "stringWithUTF8String:",
+                                   b"Hulp", argtypes=[ctypes.c_char_p])
+
+    assert ctypes.string_at(mainview._objc_send(nsstring, "UTF8String")) == b"Hulp"
 
 
 # show_template_update_notice(): dismissable "Update from Template" stats

@@ -11,7 +11,7 @@ import locale
 import logging
 import os
 import subprocess
-from functools import cached_property
+from functools import cache, cached_property
 
 from gi.repository import Gdk, Gtk
 
@@ -42,6 +42,31 @@ def _set_document_edited(gdk_window, edited):
     objc.objc_msgSend(ctypes.c_void_p(nswindow_ptr), sel, edited)
 
 
+@cache
+def _objc_runtime():
+    objc = ctypes.CDLL(ctypes.util.find_library("objc"))
+    objc.sel_registerName.restype = ctypes.c_void_p
+    objc.sel_registerName.argtypes = [ctypes.c_char_p]
+    objc.objc_getClass.restype = ctypes.c_void_p
+    objc.objc_getClass.argtypes = [ctypes.c_char_p]
+    return objc
+
+
+def _objc_sel(name):
+    return _objc_runtime().sel_registerName(name.encode())
+
+
+def _objc_class(name):
+    return _objc_runtime().objc_getClass(name.encode())
+
+
+def _objc_send(receiver, selector, *args, argtypes=None, restype=ctypes.c_void_p):
+    f = ctypes.CDLL(None).objc_msgSend
+    f.restype = restype
+    f.argtypes = [ctypes.c_void_p, ctypes.c_void_p] + (argtypes or [ctypes.c_void_p] * len(args))
+    return f(receiver, _objc_sel(selector), *args)
+
+
 def _note_recent_document(path):
     """Feeds macOS's own document-tracking, independent of
         GtkosxApplication (works even without gtk-mac-integration
@@ -50,26 +75,11 @@ def _note_recent_document(path):
         icons, and AppKit re-reads this list live on every right-click.
         Clicking an entry re-delivers it through the same
         NSApplicationOpenFile signal a Finder double-click uses."""
-    objc = ctypes.CDLL(ctypes.util.find_library("objc"))
-    objc.sel_registerName.restype = ctypes.c_void_p
-    objc.sel_registerName.argtypes = [ctypes.c_char_p]
-    objc.objc_getClass.restype = ctypes.c_void_p
-    objc.objc_getClass.argtypes = [ctypes.c_char_p]
-
-    def sel(name):
-        return objc.sel_registerName(name.encode())
-
-    def send(receiver, selector, *args, argtypes=None, restype=ctypes.c_void_p):
-        f = ctypes.CDLL(None).objc_msgSend
-        f.restype = restype
-        f.argtypes = [ctypes.c_void_p, ctypes.c_void_p] + (argtypes or [ctypes.c_void_p] * len(args))
-        return f(receiver, selector, *args)
-
-    nsstring = send(objc.objc_getClass(b"NSString"), sel("stringWithUTF8String:"),
-                    path.encode(), argtypes=[ctypes.c_char_p])
-    url = send(objc.objc_getClass(b"NSURL"), sel("fileURLWithPath:"), nsstring)
-    shared = send(objc.objc_getClass(b"NSDocumentController"), sel("sharedDocumentController"))
-    send(shared, sel("noteNewRecentDocumentURL:"), url, restype=None)
+    nsstring = _objc_send(_objc_class("NSString"), "stringWithUTF8String:",
+                          path.encode(), argtypes=[ctypes.c_char_p])
+    url = _objc_send(_objc_class("NSURL"), "fileURLWithPath:", nsstring)
+    shared = _objc_send(_objc_class("NSDocumentController"), "sharedDocumentController")
+    _objc_send(shared, "noteNewRecentDocumentURL:", url, restype=None)
 
 
 def fill_dialog(dialog, title='', message='', markup=''):

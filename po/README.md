@@ -44,6 +44,14 @@ messages (fuzzy ones don't count; English variants are exempt):
 po/update-linguas.py --cut-off 1.0.0
 ```
 
+To see where each translation stands before then - the ones a few
+strings short that could make it, and the ones with few to spare that
+new strings could push under - which CI also shows in its job summary:
+
+```sh
+po/update-linguas.py --report
+```
+
 ## Lite versions
 
 For languages with no upstream translations of certain packages we

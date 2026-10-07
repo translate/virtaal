@@ -122,6 +122,13 @@ jobs:
           done
           exit $status
 
+      - name: Report release threshold standing
+        # Each shipped translation against po/update-linguas.py's
+        # threshold, the ones that could make it or slip called out -
+        # informational (job summary only), since nothing is cut until
+        # --cut-off at the final release.
+        run: python po/update-linguas.py --report
+
       - name: Update translations
         run: ./maketranslations
 

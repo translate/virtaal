@@ -217,6 +217,12 @@ would - the checks above are what to *do*, not a template for what to
 implies the queue action already happened, and queueing is the
 maintainer's own call, not something to promise on their behalf.
 
+For a submission that passes, keep the comment to a one-line thanks
+(confirmed 2026-10-07, #4067): no language nits (a stray traditional
+character, a debatable word choice) and no quoted examples of what was
+fixed. Give those to the maintainer in your own report instead; only
+put something in the public comment if it actually blocks the merge.
+
 ## Fixing an issue directly
 
 `maintainerCanModify` (`gh pr view N --json maintainerCanModify`) lets

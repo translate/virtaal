@@ -221,3 +221,37 @@ def test_saving_adds_a_missing_language_header(tmp_path, monkeypatch):
     header = _save_po(tmp_path, monkeypatch, b'', "de")
 
     assert header["Language"] == "de"
+
+
+# Slovenian with Virtaal's form count (4) but a different form order.
+_SL_PLURAL_FORMS = "nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);"
+
+
+def test_saving_keeps_the_files_plural_forms_for_the_same_number_of_forms(tmp_path, monkeypatch):
+    header = _save_po(tmp_path, monkeypatch,
+                      b'"Language: sl\\n"\n"Plural-Forms: ' + _SL_PLURAL_FORMS.encode() + b'\\n"\n', "sl")
+
+    assert header["Plural-Forms"] == _SL_PLURAL_FORMS
+
+
+def test_saving_replaces_plural_forms_for_a_different_number_of_forms(tmp_path, monkeypatch):
+    header = _save_po(tmp_path, monkeypatch, b'"Language: sl\\n"\n"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n', "sl")
+
+    assert header["Plural-Forms"].startswith("nplurals=4;")
+
+
+def test_saving_adds_missing_plural_forms(tmp_path, monkeypatch):
+    header = _save_po(tmp_path, monkeypatch, b'', "pt_BR")
+
+    assert header["Plural-Forms"] == "nplurals=2; plural=(n > 1);"
+
+
+def test_changing_language_writes_the_new_languages_plural_forms(tmp_path):
+    path = tmp_path / "de.po"
+    path.write_bytes(b'msgid ""\nmsgstr ""\n"Language: de\\n"\n"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n'
+                     b'\nmsgid "Hello"\nmsgstr "Hallo"\n')
+    model = StoreModel(str(path), _FakeController())
+
+    model.set_target_language("fr")
+
+    assert model._trans_store.getheaderplural() == ("2", "(n > 1)")

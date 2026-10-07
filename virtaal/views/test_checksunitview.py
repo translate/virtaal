@@ -99,3 +99,11 @@ def test_new_rows_after_a_clean_unit_are_measured(monkeypatch):
     _update(view, {'printf': 'Different printf variables'})
 
     assert resized == [True]
+
+
+def test_the_button_has_no_tooltip_repeating_its_label():
+    view = _make_view()
+
+    _update(view, {'xmltags': 'Different XML tags'})
+
+    assert view.btn_checks.get_tooltip_text() is None

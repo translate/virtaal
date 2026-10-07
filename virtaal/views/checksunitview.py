@@ -96,7 +96,6 @@ class ChecksUnitView(BaseView):
             # We want an empty button, but this causes a bug where subsequent
             # updates don't show, so we set it to an invisible character
             self.lbl_btnchecks.set_text("\u202a")
-            self.btn_checks.set_tooltip_text("")
             # The button stays pressed, unseen, with nothing to pop up.
             self.btn_checks.set_opacity(0)
             self.popup_content.hide()
@@ -113,7 +112,6 @@ class ChecksUnitView(BaseView):
             names.append(testname)
 
         name_str = self._listsep.join(names)
-        self.btn_checks.set_tooltip_text(name_str)
         self.lbl_btnchecks.set_text(name_str)
         self.btn_checks.set_opacity(1)
         self.popup_content.show()

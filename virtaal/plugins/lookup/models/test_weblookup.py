@@ -10,6 +10,7 @@ from gi.repository import Gtk
 
 from virtaal.plugins.lookup.models import weblookup
 from virtaal.plugins.lookup.models.weblookup import (
+    BUILTIN_PREFIX,
     LookupModel,
     WebLookupAddDialog,
     WebLookupConfigDialog,
@@ -201,30 +202,93 @@ def test_quote_toggle_updates_the_underlying_url_dict():
     assert dialog.urldata[0]['quoted'] is True
 
 
-def test_save_urldata_keys_by_id_not_the_translatable_display_name(monkeypatch, tmp_path):
-    # display_name is translated for the menu - it must not also be
-    # the saved config's own section name, or a translated UI language
-    # renders the built-in look-ups unrecognisable on the next load.
-    monkeypatch.setattr(weblookup.pan_app, 'get_config_dir', lambda: str(tmp_path))
+def test_save_urldata_keeps_only_a_builtins_enabled_state(monkeypatch, tmp_path):
+    # Everything else about a built-in comes from the code on load -
+    # saving its translated display_name froze it in that language
+    # (#3621).
     model = _model(monkeypatch, tmp_path)
-    # Simulates a translated UI - display_name in Arabic, as if a
-    # translator had rendered "Google" into Arabic script.
-    model.URLDATA = [dict(u) for u in type(model).URLDATA]
     for u in model.URLDATA:
-        if u['id'] == 'google':
+        if u['id'] == 'virtaal-google':
             u['display_name'] = 'ﺝﻮﺠﻟ'
+            u['enabled'] = False
 
     model.destroy()
 
     saved = weblookup.pan_app.load_config(model.urldata_file)
-    assert 'google' in saved
-    assert saved['google']['display_name'] == 'ﺝﻮﺠﻟ'
+    assert saved['virtaal-google'] == {'id': 'virtaal-google', 'enabled': 'False'}
+
+
+def test_every_builtin_id_is_in_the_reserved_namespace():
+    assert all(u['id'].startswith(BUILTIN_PREFIX) for u in LookupModel.URLDATA)
+
+
+def test_load_urldata_takes_a_builtins_name_and_url_from_the_code(monkeypatch, tmp_path):
+    # A save made under another UI language (or before a URL change)
+    # mustn't freeze either - only enabled is the user's.
+    monkeypatch.setattr(weblookup.pan_app, 'get_config_dir', lambda: str(tmp_path))
+    (tmp_path / 'weblookup.ini').write_text(
+        '[virtaal-google]\nid = virtaal-google\ndisplay_name = ﺝﻮﺠﻟ\n'
+        'url = http://old.example.com/?q=%(query)s\nquoted = False\nenabled = False\n', encoding='utf-8')
+
+    model = LookupModel('weblookup', controller=None)
+
+    google = next(u for u in model.URLDATA if u['id'] == 'virtaal-google')
+    default = next(u for u in LookupModel.URLDATA if u['id'] == 'virtaal-google')
+    assert google == dict(default, enabled=False)
+
+
+def test_load_urldata_migrates_a_beta3_bare_builtin_id(monkeypatch, tmp_path):
+    monkeypatch.setattr(weblookup.pan_app, 'get_config_dir', lambda: str(tmp_path))
+    (tmp_path / 'weblookup.ini').write_text(
+        '[google]\nid = google\ndisplay_name = ﺝﻮﺠﻟ\n'
+        'url = http://www.google.com/search?q=%(query)s\nquoted = True\nenabled = False\n', encoding='utf-8')
+
+    model = LookupModel('weblookup', controller=None)
+
+    assert [u['id'] for u in model.URLDATA] == [u['id'] for u in LookupModel.URLDATA]
+    google = next(u for u in model.URLDATA if u['id'] == 'virtaal-google')
+    assert google['display_name'] == 'Google'
+    assert google['enabled'] is False
+
+
+def test_load_urldata_keeps_a_beta3_custom_entry_that_shared_a_builtins_id(monkeypatch, tmp_path):
+    # A user's own "Google" with its own URL got id "google" in beta3 -
+    # it's theirs, not the built-in.
+    monkeypatch.setattr(weblookup.pan_app, 'get_config_dir', lambda: str(tmp_path))
+    (tmp_path / 'weblookup.ini').write_text(
+        '[google]\nid = google\ndisplay_name = Google\n'
+        'url = https://www.google.co.za/search?q=%(query)s\nquoted = False\nenabled = True\n')
+
+    model = LookupModel('weblookup', controller=None)
+
+    ids = [u['id'] for u in model.URLDATA]
+    assert 'virtaal-google' in ids
+    custom = next(u for u in model.URLDATA if u['id'] == 'google')
+    assert custom['url'] == 'https://www.google.co.za/search?q=%(query)s'
+
+
+def test_load_urldata_resolves_a_pre_id_save_by_its_url(monkeypatch, tmp_path):
+    # Before ids, the section was the display_name - translated, if the
+    # UI was. The URL still identifies the built-in.
+    monkeypatch.setattr(weblookup.pan_app, 'get_config_dir', lambda: str(tmp_path))
+    (tmp_path / 'weblookup.ini').write_text(
+        '[ﺝﻮﺠﻟ]\ndisplay_name = ﺝﻮﺠﻟ\nurl = http://www.google.com/search?q=%(query)s\nquoted = True\n', encoding='utf-8')
+
+    model = LookupModel('weblookup', controller=None)
+
+    assert [u['id'] for u in model.URLDATA] == [u['id'] for u in LookupModel.URLDATA]
+
+
+def test_load_urldata_drops_a_builtin_no_longer_in_the_code(monkeypatch, tmp_path):
+    monkeypatch.setattr(weblookup.pan_app, 'get_config_dir', lambda: str(tmp_path))
+    (tmp_path / 'weblookup.ini').write_text('[virtaal-gone]\nid = virtaal-gone\nenabled = True\n')
+
+    model = LookupModel('weblookup', controller=None)
+
+    assert 'virtaal-gone' not in [u['id'] for u in model.URLDATA]
 
 
 def test_load_urldata_resolves_a_legacy_saves_id_by_display_name(monkeypatch, tmp_path):
-    # A save from before 'id' existed only has display_name - matching
-    # it against the current defaults' own display_name recovers the
-    # right id instead of treating it as a separate custom entry.
     monkeypatch.setattr(weblookup.pan_app, 'get_config_dir', lambda: str(tmp_path))
     (tmp_path / 'weblookup.ini').write_text(
         '[Google]\ndisplay_name = Google\nurl = http://www.google.com/search?q=%(query)s\nquoted = True\nenabled = True\n')
@@ -232,7 +296,7 @@ def test_load_urldata_resolves_a_legacy_saves_id_by_display_name(monkeypatch, tm
     model = LookupModel('weblookup', controller=None)
 
     google = next(u for u in model.URLDATA if u['display_name'] == 'Google')
-    assert google['id'] == 'google'
+    assert google['id'] == 'virtaal-google'
 
 
 def test_configure_saves_immediately_rather_than_waiting_for_destroy(monkeypatch, tmp_path):
@@ -257,4 +321,5 @@ def test_configure_saves_immediately_rather_than_waiting_for_destroy(monkeypatch
     model.configure(parent)
 
     reloaded = weblookup.pan_app.load_config(model.urldata_file)
-    assert 'Only' in reloaded
+    assert 'only' in reloaded
+

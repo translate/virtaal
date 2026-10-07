@@ -397,6 +397,7 @@ def _make_move_view(cursor_move, monkeypatch, timeout_calls=None):
         ),
         _waiting_for_row_change=0,
         _pending_move_offset=0,
+        _pending_move_advances=False,
         _move_throttle_id=None,
     )
     view._apply_pending_move = lambda: StoreTreeView._apply_pending_move(view)
@@ -412,17 +413,45 @@ def test_keyboard_move_moves_the_cursor_by_the_given_offset(monkeypatch):
     assert calls == [5]
 
 
-def test_a_move_landing_on_the_same_unit_finishes_and_reloads_it(monkeypatch):
-    # Happens at the first or last unit outside search and checks, and
-    # when the navigation list has a single unit.
+def _make_stuck_move_view(monkeypatch):
+    # The cursor can't move: at the first or last unit outside search and
+    # checks, or when the navigation list has a single unit.
     view = _make_move_view(lambda offset: None, monkeypatch, timeout_calls=[])
     view.view.cursor.move = lambda offset: None
     finished = []
     view.view.controller.main_controller = SimpleNamespace(
         unit_controller=SimpleNamespace(finish_current_unit=lambda: finished.append('finish')))
     view.refresh_current_row = lambda: finished.append('refresh')
+    return view, finished
+
+
+def test_an_advance_landing_on_the_same_unit_finishes_and_reloads_it(monkeypatch):
+    view, finished = _make_stuck_move_view(monkeypatch)
+
+    StoreTreeView._keyboard_move(view, 1, advance=True)
+
+    assert finished == ['finish', 'refresh']
+    assert view._pending_move_advances is False
+
+
+def test_a_navigation_key_that_cannot_move_does_nothing(monkeypatch):
+    # Reloading the unit here made the editor jitter (#4087).
+    view, finished = _make_stuck_move_view(monkeypatch)
 
     StoreTreeView._keyboard_move(view, 1)
+    StoreTreeView._keyboard_move(view, -1)
+
+    assert finished == []
+
+
+def test_an_advance_within_a_throttled_burst_still_finishes_the_unit(monkeypatch):
+    view, finished = _make_stuck_move_view(monkeypatch)
+    view._move_throttle_id = 'throttle-id'  # a burst is under way
+
+    StoreTreeView._keyboard_move(view, 1)
+    StoreTreeView._keyboard_move(view, 1, advance=True)
+    assert finished == []
+    StoreTreeView._on_move_throttle(view)
 
     assert finished == ['finish', 'refresh']
 
@@ -504,6 +533,7 @@ def _make_jump_view(indices, index):
         ),
         _waiting_for_row_change=0,
         _pending_move_offset=0,
+        _pending_move_advances=False,
         refresh_current_row=lambda: finished.append('refresh'),
     )
     return view, cursor, finished
@@ -521,13 +551,13 @@ def test_keyboard_jump_moves_to_the_ends_of_the_navigation_list():
     assert finished == []
 
 
-def test_keyboard_jump_to_the_unit_already_there_finishes_it():
+def test_keyboard_jump_to_the_unit_already_there_does_nothing():
     view, cursor, finished = _make_jump_view([2, 5, 8], 8)
 
     StoreTreeView._keyboard_jump(view, last=True)
 
     assert cursor.index == 8
-    assert finished == ['finish', 'refresh']
+    assert finished == []
 
 
 def test_keyboard_jump_from_a_visited_unit():
@@ -542,10 +572,12 @@ def test_keyboard_jump_from_a_visited_unit():
 def test_keyboard_jump_drops_moves_waiting_for_the_throttle():
     view, cursor, _finished = _make_jump_view([2, 5, 8], 5)
     view._pending_move_offset = 3
+    view._pending_move_advances = True
 
     StoreTreeView._keyboard_jump(view, last=False)
 
     assert view._pending_move_offset == 0
+    assert view._pending_move_advances is False
     assert cursor.index == 2
 
 
@@ -629,16 +661,16 @@ def test_on_button_press_does_nothing_extra_when_the_row_is_unchanged():
 
 def test_on_cell_edited_advances_when_told_to():
     calls = []
-    view = SimpleNamespace(_keyboard_move=lambda offset: calls.append(offset) or True)
+    view = SimpleNamespace(_keyboard_move=lambda offset, advance: calls.append((offset, advance)) or True)
 
     result = StoreTreeView._on_cell_edited(view, None, None, True, None, None)
 
-    assert calls == [1]
+    assert calls == [(1, True)]
     assert result is True
 
 
 def test_on_cell_edited_stays_put_without_advancing():
-    view = SimpleNamespace(_keyboard_move=lambda offset: (_ for _ in ()).throw(AssertionError()))
+    view = SimpleNamespace(_keyboard_move=lambda offset, advance: (_ for _ in ()).throw(AssertionError()))
 
     assert StoreTreeView._on_cell_edited(view, None, None, False, None, None) is True
 

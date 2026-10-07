@@ -664,6 +664,11 @@ jobs:
           VIRTAAL_BUILD_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
         run: devsupport\packaging\windows\build_standalone.ps1
 
+      - name: Report lite coverage
+        # Same report as build-macos-app's, against the gvsbuild GTK
+        # catalogs this bundle ships.
+        run: python devsupport\pseudo-translation\report_lite_coverage.py --host "Windows (gvsbuild)"
+
       - name: Azure login
         if: env.WINDOWS_SIGNING == 'true'
         uses: azure/login@v3
@@ -993,6 +998,15 @@ jobs:
           # is one a human can actually compare against their checkout.
           VIRTAAL_BUILD_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
         run: devsupport/packaging/macos/build_standalone.sh
+
+      - name: Report lite coverage
+        # Library strings each shipped language would still show in
+        # English, from the Homebrew catalogs this build bundles. Never
+        # fails on gaps - one aggregate ::warning:: and a job-summary
+        # table instead. arm64 only: both legs use the same Homebrew
+        # catalogs, so the Intel leg would repeat the same warning.
+        if: matrix.arch == 'arm64'
+        run: build/standalone-venv/bin/python3 devsupport/pseudo-translation/report_lite_coverage.py --host "macOS (Homebrew)"
 
       - name: Import Developer ID certificate
         if: env.MACOS_SIGNING == 'true'

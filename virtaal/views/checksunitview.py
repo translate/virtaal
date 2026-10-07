@@ -29,6 +29,7 @@ class ChecksUnitView(BaseView):
 
         self.popup_content = self._create_popup_content()
         self._create_checks_button(self.popup_content, main_window)
+        self.popup_content.hide()
         self._create_menu_item()
         main_controller.store_controller.connect('store-closed', self._on_store_closed)
         main_controller.store_controller.connect('store-loaded', self._on_store_loaded)
@@ -55,11 +56,6 @@ class ChecksUnitView(BaseView):
         frame = Gtk.Frame()
         frame.set_shadow_type(Gtk.ShadowType.ETCHED_IN)
         frame.add(vb)
-
-        self.lbl_empty = Gtk.Label(label='<i>' + _('No issues') + '</i>')
-        self.lbl_empty.set_use_markup(True)
-        self.lbl_empty.hide()
-        vb.pack_start(self.lbl_empty, True, True, 0)
 
         self.lst_checks = Gtk.ListStore(str, str)
         self.tvw_checks = Gtk.TreeView()
@@ -98,10 +94,13 @@ class ChecksUnitView(BaseView):
         self._prev_failures = failures
         if not failures:
             # We want an empty button, but this causes a bug where subsequent
-            # updates don't show, so we set it to a non-breaking space
+            # updates don't show, so we set it to an invisible character
             self.lbl_btnchecks.set_text("\u202a")
-            self._show_empty_label()
             self.btn_checks.set_tooltip_text("")
+            # The button stays pressed, unseen, with nothing to pop up.
+            self.btn_checks.set_opacity(0)
+            self.popup_content.hide()
+            self.btn_checks.update_popup()
             return
 
         self.lst_checks.clear()
@@ -116,15 +115,11 @@ class ChecksUnitView(BaseView):
         name_str = self._listsep.join(names)
         self.btn_checks.set_tooltip_text(name_str)
         self.lbl_btnchecks.set_text(name_str)
-        self._show_treeview()
-
-    def _show_empty_label(self):
-        self.tvw_checks.hide()
-        self.lbl_empty.show()
-
-    def _show_treeview(self):
-        self.lbl_empty.hide()
-        self.tvw_checks.show_all()
+        self.btn_checks.set_opacity(1)
+        self.popup_content.show()
+        self.btn_checks.update_popup()
+        # Rows changed while the pop-up was hidden aren't measured until asked.
+        self.tvw_checks.queue_resize()
 
     def update_geometry(self, popup, popup_alloc, btn_alloc, btn_window_xy, geom):
         x, y, width, height = geom

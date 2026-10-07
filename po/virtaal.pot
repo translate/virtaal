@@ -2152,10 +2152,6 @@ msgid "Checks: %(checker_name)s"
 msgstr ""
 
 #: virtaal/views/checksunitview.py
-msgid "No issues"
-msgstr ""
-
-#: virtaal/views/checksunitview.py
 msgid "Quality Check"
 msgstr ""
 

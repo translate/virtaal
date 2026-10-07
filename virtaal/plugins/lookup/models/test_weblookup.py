@@ -323,3 +323,71 @@ def test_configure_saves_immediately_rather_than_waiting_for_destroy(monkeypatch
     reloaded = weblookup.pan_app.load_config(model.urldata_file)
     assert 'only' in reloaded
 
+
+# Built-ins are locked to enable/disable
+
+def _builtin():
+    return dict(LookupModel.URLDATA[0])
+
+
+def _custom():
+    return {'id': 'mine', 'display_name': 'Mine', 'url': 'http://example.com', 'quoted': False, 'enabled': True}
+
+
+def test_quote_toggle_is_ignored_on_a_builtin():
+    dialog = WebLookupConfigDialog(parent=None)
+    dialog.urldata = [_builtin()]
+    before = dialog.urldata[0]['quoted']
+
+    dialog._on_quote_toggled(None, '0')
+
+    assert dialog.urldata[0]['quoted'] is before
+
+
+def test_remove_is_insensitive_for_a_builtin_and_sensitive_for_a_custom_entry():
+    dialog = WebLookupConfigDialog(parent=None)
+    dialog.urldata = [_builtin(), _custom()]
+    selection = dialog.tvw_urls.get_selection()
+
+    selection.select_path('0')
+    builtin_sensitive = dialog.btn_url_remove.get_sensitive()
+    selection.select_path('1')
+    custom_sensitive = dialog.btn_url_remove.get_sensitive()
+
+    assert (builtin_sensitive, custom_sensitive) == (False, True)
+
+
+def test_remove_never_removes_a_builtin():
+    # Removing one came back on the next start anyway - disabling is
+    # how it's hidden.
+    dialog = WebLookupConfigDialog(parent=None)
+    dialog.urldata = [_builtin()]
+    dialog.tvw_urls.get_selection().select_path('0')
+
+    dialog._on_remove_clicked(None)
+
+    assert len(dialog.urldata) == 1
+
+
+def test_remove_removes_a_custom_entry():
+    dialog = WebLookupConfigDialog(parent=None)
+    dialog.urldata = [_builtin(), _custom()]
+    dialog.tvw_urls.get_selection().select_path('1')
+
+    dialog._on_remove_clicked(None)
+
+    assert [u['id'] for u in dialog.urldata] == [LookupModel.URLDATA[0]['id']]
+
+
+def test_quote_cell_is_insensitive_only_on_a_builtin_row():
+    dialog = WebLookupConfigDialog(parent=None)
+    dialog.urldata = [_builtin(), _custom()]
+    cell = Gtk.CellRendererToggle()
+    model = dialog.lst_urls
+    sensitive = []
+
+    for row in model:
+        dialog._lock_builtin_cell(None, cell, model, row.iter)
+        sensitive.append(cell.get_sensitive())
+
+    assert sensitive == [False, True]

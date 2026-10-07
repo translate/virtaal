@@ -24,6 +24,18 @@ def test_nplurals_spinner_has_a_real_range():
     assert dialog.nplurals == 3
 
 
+
+def test_plural_note_does_not_stretch_the_dialog():
+    # The note under the plural fields set the dialog's width, so a long
+    # translation of it widened the whole dialog.
+    dialog = LanguageAddDialog()
+    note = dialog.gui.get_object('label8')
+    natural_width = dialog.dialog.get_preferred_width().natural_width
+
+    note.set_text(note.get_text() * 6)
+
+    assert dialog.dialog.get_preferred_width().natural_width < natural_width * 1.25
+
 def test_nplurals_setter_accepts_a_value():
     """_set_nplurals() was missing its value parameter entirely - the
     nplurals property setter raised TypeError on any assignment,

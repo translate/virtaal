@@ -58,13 +58,15 @@ by 2026-10-03, and only 5 actually fit its scope.
   stays open until packaged-build signing is in place, so near-misses
   of that scope go here too. Not `l10n`-labelled features for
   translators' own content (TM mnemonics, term capitalisation).
-- **1.1.0** - the TM/MT feature cluster, and the default home for
-  anything user-facing that doesn't fit a bugfix release.
-- **Backlog** - not user-facing: dev-only behaviour unrelated to
-  localisation, asset automation, and code cleanup.
+- **1.1.0** - the TM/MT feature cluster and the UI around it.
+- **Backlog** - features on the development horizon not tied to TM/MT
+  (e.g. #2025, greying out unselectable workflow states), plus dev-only
+  behaviour unrelated to localisation, asset automation, and code
+  cleanup.
 
 When pruning, the rule Dwayne gave: TM-related or potentially
-user-impacting -> 1.1.0, otherwise -> Backlog. An issue with an open PR
+user-impacting -> 1.1.0, otherwise -> Backlog. A UI feature unrelated
+to TM/MT is still Backlog. An issue with an open PR
 still moves; the PR is unaffected. A milestone edit is a plain
 `gh issue edit <n> --milestone <title>` and needs no comment.
 
@@ -75,6 +77,10 @@ a pre-1.0 (PyGTK2/Python 2) version as needing fresh verification, not
 as still describing current behaviour - `unconfirmed` almost always
 belongs alongside the type label for these, even when the report itself
 reads as clear and credible.
+
+Read the current code from `upstream/main` (`git show
+upstream/main:<path>`), not the local checkout - it is often a feature
+branch several commits behind.
 
 ## The Bugzilla-import category
 

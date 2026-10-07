@@ -277,7 +277,10 @@ class WebLookupConfigDialog:
         col = Gtk.TreeViewColumn(_('Quote Query'))
         col.pack_start(cell, True)
         col.add_attribute(cell, 'active', self.COL_QUOTE)
+        col.set_cell_data_func(cell, self._lock_builtin_cell)
         self.tvw_urls.append_column(col)
+
+        self.tvw_urls.get_selection().connect('changed', self._on_selection_changed)
 
     def _init_widgets(self):
         self.btn_url_add.connect('clicked', self._on_add_clicked)
@@ -309,6 +312,9 @@ class WebLookupConfigDialog:
 
 
     # SIGNAL HANDLERS #
+    def _lock_builtin_cell(self, column, cell, model, it, data=None):
+        cell.set_sensitive(not is_builtin(model[it][self.COL_DATA]))
+
     def _on_add_clicked(self, button):
         url = self.add_dialog.run()
         if url is None:
@@ -316,10 +322,14 @@ class WebLookupConfigDialog:
         self.lst_urls.append((url['enabled'], url['display_name'], url['url'], url['quoted'], url))
 
     def _on_remove_clicked(self, button):
-        selected = self.tvw_urls.get_selection().get_selected()
-        if not selected or not selected[1]:
+        model, it = self.tvw_urls.get_selection().get_selected()
+        if it is None or is_builtin(model[it][self.COL_DATA]):
             return
-        selected[0].remove(selected[1])
+        model.remove(it)
+
+    def _on_selection_changed(self, selection):
+        model, it = selection.get_selected()
+        self.btn_url_remove.set_sensitive(it is not None and not is_builtin(model[it][self.COL_DATA]))
 
     def _on_enabled_toggled(self, cell, path):
         new_value = not self.lst_urls[path][self.COL_ENABLED]
@@ -327,6 +337,8 @@ class WebLookupConfigDialog:
         self.lst_urls[path][self.COL_DATA]['enabled'] = new_value
 
     def _on_quote_toggled(self, cell, path):
+        if is_builtin(self.lst_urls[path][self.COL_DATA]):
+            return
         new_value = not self.lst_urls[path][self.COL_QUOTE]
         self.lst_urls[path][self.COL_QUOTE] = new_value
         self.lst_urls[path][self.COL_DATA]['quoted'] = new_value

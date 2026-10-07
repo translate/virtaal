@@ -22,11 +22,15 @@ hard gate - not just a warning.
 
 ## Is the language actually built?
 
-`setup.py` only builds languages listed in `po/LINGUAS`. A new
-`po/<lang>.po` that isn't listed there passes every check here and
-still never ships: zh_CN merged in #3626 and only reached users after
-#4030 added it. For a new language, confirm the PR adds it to
-`po/LINGUAS` too.
+`setup.py` only builds languages listed in `po/LINGUAS`, and every
+`po/*.po` belongs there unless `po/LINGUAS-excluded` lists it with a
+reason (#4032 - before that, zh_CN merged in #3626 and never shipped
+until #4030 listed it). For a new language, the PR should run
+`po/update-linguas.py`, which adds it; pre-commit's `check-linguas`
+fails otherwise. Translations below 50% aren't refused at review: they
+ship through the release candidates and are only cut, into
+`po/LINGUAS-excluded`, by `po/update-linguas.py --cut-off <version>`
+when the final release is made.
 
 ## Coverage against the *current* pot, not the file's own header
 

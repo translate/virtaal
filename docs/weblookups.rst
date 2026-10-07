@@ -36,39 +36,39 @@ performed against search engines.
 Bing
 ----
 
-Use Microsoft's `Bing <http://bing.com>`_ search engine.
+Use Microsoft's `Bing <https://bing.com>`_ search engine.
 
 - quote: yes
 
 ::
 
-    http://www.bing.com/search?q=%(query)s
+    https://www.bing.com/search?q=%(query)s
 
 .. _weblookups#google:
 
 Google
 ------
 
-Use the `Google <http://google.com>`_ search engine.
+Use the `Google <https://google.com>`_ search engine.
 
 - quote: yes
 
 ::
 
-    http://www.google.com/search?q=%(query)s
+    https://www.google.com/search?q=%(query)s
 
 .. _weblookups#yahoo:
 
 Yahoo
 -----
 
-Use the `Yahoo <http://yahoo.com>`_ search engine.
+Use the `Yahoo <https://yahoo.com>`_ search engine.
 
 - quote: yes
 
 ::
 
-    http://search.yahoo.com/search?p=%(query)s
+    https://search.yahoo.com/search?p=%(query)s
 
 .. _weblookups#dictionaries:
 
@@ -83,13 +83,13 @@ domain dictionaries.  Not limited to English dictionaries.
 Wiktionary
 ----------
 
-- `Wiktionary <http://wiktionary.org/>`_
+- `Wiktionary <https://wiktionary.org/>`_
 - language: various
 - quote: no
 
 ::
 
-    http://%(querylang)s.wiktionary.org/wiki/%(query)s
+    https://%(querylang)s.wiktionary.org/wiki/%(query)s
 
 .. _weblookups#dict.org:
 
@@ -155,7 +155,7 @@ the query will ask the correct language version of Wikipedia.
 Wikipedia
 ---------
 
-The `Wikipedia <http://wikipedia.org>`_ encyclopaedia provides over 3 million
+The `Wikipedia <https://wikipedia.org>`_ encyclopaedia provides over 3 million
 English articles for you to query.  The query will also work on any of the many
 Wikipedia in other language encyclopaedias.
 
@@ -163,7 +163,7 @@ Wikipedia in other language encyclopaedias.
 
 ::
 
-    http://%(querylang)s.wikipedia.org/wiki/%(query)s
+    https://%(querylang)s.wikipedia.org/wiki/%(query)s
 
 .. _weblookups#wordnet:
 

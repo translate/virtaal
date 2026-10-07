@@ -23,6 +23,10 @@ BUILTIN_PREFIX = 'virtaal-'
 def is_builtin(urlinfo):
     return urlinfo.get('id', '').startswith(BUILTIN_PREFIX)
 
+
+def _without_scheme(url):
+    return url.split('://', 1)[-1]
+
 from gi.repository import GLib, Gtk, Pango
 
 from virtaal.common import pan_app
@@ -46,21 +50,21 @@ class LookupModel(BaseLookupModel):
         {
             'id': 'virtaal-google',
             'display_name': _('Google'),
-            'url': 'http://www.google.com/search?q=%(query)s',
+            'url': 'https://www.google.com/search?q=%(query)s',
             'quoted': True,
             'enabled': True,
         },
         {
             'id': 'virtaal-wikipedia',
             'display_name': _('Wikipedia'),
-            'url': 'http://%(querylang)s.wikipedia.org/wiki/%(query)s',
+            'url': 'https://%(querylang)s.wikipedia.org/wiki/%(query)s',
             'quoted': False,
             'enabled': True,
         },
         {
             'id': 'virtaal-wiktionary',
             'display_name': _('Wiktionary'),
-            'url': 'http://%(querylang)s.wiktionary.org/wiki/%(query)s',
+            'url': 'https://%(querylang)s.wiktionary.org/wiki/%(query)s',
             'quoted': False,
             'enabled': True,
         },
@@ -71,14 +75,14 @@ class LookupModel(BaseLookupModel):
         {
             'id': 'virtaal-bing',
             'display_name': _('Bing'),
-            'url': 'http://www.bing.com/search?q=%(query)s',
+            'url': 'https://www.bing.com/search?q=%(query)s',
             'quoted': True,
             'enabled': False,
         },
         {
             'id': 'virtaal-yahoo',
             'display_name': _('Yahoo'),
-            'url': 'http://search.yahoo.com/search?p=%(query)s',
+            'url': 'https://search.yahoo.com/search?p=%(query)s',
             'quoted': True,
             'enabled': False,
         },
@@ -136,12 +140,13 @@ class LookupModel(BaseLookupModel):
         """The built-in id a saved entry belongs to, or C{None} if custom.
 
             A bare id (1.0.0-beta3: C{google}) or no id (older) only
-            counts if the URL is still the built-in's own."""
+            counts if the URL is still the built-in's own, over either
+            http or https."""
         saved_id = saved.get('id')
         if saved_id in defaults:
             return saved_id
         for d in defaults.values():
-            if saved.get('url') != d['url']:
+            if _without_scheme(saved.get('url', '')) != _without_scheme(d['url']):
                 continue
             if saved_id is None or BUILTIN_PREFIX + saved_id == d['id']:
                 return d['id']

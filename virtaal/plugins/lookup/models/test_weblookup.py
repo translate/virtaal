@@ -251,6 +251,24 @@ def test_load_urldata_migrates_a_beta3_bare_builtin_id(monkeypatch, tmp_path):
     assert google['enabled'] is False
 
 
+def test_every_builtin_url_is_https():
+    assert all(u['url'].startswith('https://') for u in LookupModel.URLDATA)
+
+
+def test_load_urldata_migrates_a_beta3_http_url_to_the_current_https_one(monkeypatch, tmp_path):
+    # beta3 shipped the built-ins over http.
+    monkeypatch.setattr(weblookup.pan_app, 'get_config_dir', lambda: str(tmp_path))
+    (tmp_path / 'weblookup.ini').write_text(
+        '[bing]\nid = bing\ndisplay_name = Bing\n'
+        'url = http://www.bing.com/search?q=%(query)s\nquoted = True\nenabled = True\n')
+
+    model = LookupModel('weblookup', controller=None)
+
+    bing = [u for u in model.URLDATA if u['display_name'] == 'Bing']
+    assert [(u['id'], u['url'], u['enabled']) for u in bing] == [
+        ('virtaal-bing', 'https://www.bing.com/search?q=%(query)s', True)]
+
+
 def test_load_urldata_keeps_a_beta3_custom_entry_that_shared_a_builtins_id(monkeypatch, tmp_path):
     # A user's own "Google" with its own URL got id "google" in beta3 -
     # it's theirs, not the built-in.

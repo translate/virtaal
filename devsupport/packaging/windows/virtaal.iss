@@ -60,7 +60,7 @@ ChangesAssociations=yes
 #include "installer-strings.iss"
 
 [Tasks]
-Name: "fileassoc"; Description: "Associate Virtaal with translation file types (.po, .xlf, .tmx, ...)"; Flags: unchecked
+Name: "fileassoc"; Description: "{cm:FileAssocTask}"; Flags: unchecked
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
@@ -75,13 +75,8 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#MyAppName}}"; Flags: nowait postinstall skipifsilent
 
 ; One ProgID per format (not one shared ProgID for all 12 extensions) -
-; each gets its own label. Labels follow the same convention
-; share/mime/packages/virtaal-mimetype.xml.in already uses on Linux
-; (translatable file -> "XXX Translation File", TM -> "XXX Translation
-; Memory", compiled -> "XXX Message File") - the 5 formats both lists
-; cover are localised via {cm:...} (installer-strings.iss, above); the
-; other 7 have no existing translation to reuse and stay hardcoded
-; English literals.
+; each gets its own label, the same file-type name Virtaal's Open dialog
+; uses, localised via {cm:...} (installer-strings.iss, above).
 ;
 ; All gated on the "fileassoc" task and under HKCU (per-user, no
 ; elevation) rather than HKCR (machine-wide) - see the file header.
@@ -92,7 +87,7 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#MyAppName}}
 ; factory.supported_files() is NOT auto-enumerated here) - excludes a
 ; few rarely-used extensions likely to clash with other software.
 [Registry]
-Root: HKCU; Subkey: "Software\Classes\Virtaal.PoFile"; ValueType: string; ValueName: ""; ValueData: "PO Translation File"; Tasks: fileassoc; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\Virtaal.PoFile"; ValueType: string; ValueName: ""; ValueData: "{cm:PoFileType}"; Tasks: fileassoc; Flags: uninsdeletekey
 Root: HKCU; Subkey: "Software\Classes\Virtaal.PoFile\DefaultIcon"; ValueType: string; ValueData: "{app}\share\icons\x-translation.ico"; Tasks: fileassoc
 Root: HKCU; Subkey: "Software\Classes\Virtaal.PoFile\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: fileassoc
 Root: HKCU; Subkey: "Software\Classes\.po"; ValueType: string; ValueData: "Virtaal.PoFile"; Tasks: fileassoc; Flags: uninsdeletevalue
@@ -103,12 +98,12 @@ Root: HKCU; Subkey: "Software\Classes\Virtaal.XliffFile\shell\open\command"; Val
 Root: HKCU; Subkey: "Software\Classes\.xlf"; ValueType: string; ValueData: "Virtaal.XliffFile"; Tasks: fileassoc; Flags: uninsdeletevalue
 Root: HKCU; Subkey: "Software\Classes\.xliff"; ValueType: string; ValueData: "Virtaal.XliffFile"; Tasks: fileassoc; Flags: uninsdeletevalue
 
-Root: HKCU; Subkey: "Software\Classes\Virtaal.SdlXliffFile"; ValueType: string; ValueName: ""; ValueData: "SDL XLIFF Translation File"; Tasks: fileassoc; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\Virtaal.SdlXliffFile"; ValueType: string; ValueName: ""; ValueData: "{cm:SdlXliffFileType}"; Tasks: fileassoc; Flags: uninsdeletekey
 Root: HKCU; Subkey: "Software\Classes\Virtaal.SdlXliffFile\DefaultIcon"; ValueType: string; ValueData: "{app}\share\icons\x-translation.ico"; Tasks: fileassoc
 Root: HKCU; Subkey: "Software\Classes\Virtaal.SdlXliffFile\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: fileassoc
 Root: HKCU; Subkey: "Software\Classes\.sdlxliff"; ValueType: string; ValueData: "Virtaal.SdlXliffFile"; Tasks: fileassoc; Flags: uninsdeletevalue
 
-Root: HKCU; Subkey: "Software\Classes\Virtaal.GettextMoFile"; ValueType: string; ValueName: ""; ValueData: "Gettext Message File"; Tasks: fileassoc; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\Virtaal.GettextMoFile"; ValueType: string; ValueName: ""; ValueData: "{cm:MoFileType}"; Tasks: fileassoc; Flags: uninsdeletekey
 Root: HKCU; Subkey: "Software\Classes\Virtaal.GettextMoFile\DefaultIcon"; ValueType: string; ValueData: "{app}\share\icons\x-translation.ico"; Tasks: fileassoc
 Root: HKCU; Subkey: "Software\Classes\Virtaal.GettextMoFile\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: fileassoc
 Root: HKCU; Subkey: "Software\Classes\.mo"; ValueType: string; ValueData: "Virtaal.GettextMoFile"; Tasks: fileassoc; Flags: uninsdeletevalue
@@ -134,7 +129,7 @@ Root: HKCU; Subkey: "Software\Classes\Virtaal.QphFile\DefaultIcon"; ValueType: s
 Root: HKCU; Subkey: "Software\Classes\Virtaal.QphFile\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: fileassoc
 Root: HKCU; Subkey: "Software\Classes\.qph"; ValueType: string; ValueData: "Virtaal.QphFile"; Tasks: fileassoc; Flags: uninsdeletevalue
 
-Root: HKCU; Subkey: "Software\Classes\Virtaal.FluentFile"; ValueType: string; ValueName: ""; ValueData: "Fluent Translation File"; Tasks: fileassoc; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\Virtaal.FluentFile"; ValueType: string; ValueName: ""; ValueData: "{cm:FluentFileType}"; Tasks: fileassoc; Flags: uninsdeletekey
 Root: HKCU; Subkey: "Software\Classes\Virtaal.FluentFile\DefaultIcon"; ValueType: string; ValueData: "{app}\share\icons\x-translation.ico"; Tasks: fileassoc
 Root: HKCU; Subkey: "Software\Classes\Virtaal.FluentFile\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Tasks: fileassoc
 Root: HKCU; Subkey: "Software\Classes\.ftl"; ValueType: string; ValueData: "Virtaal.FluentFile"; Tasks: fileassoc; Flags: uninsdeletevalue
@@ -144,7 +139,7 @@ Root: HKCU; Subkey: "Software\Classes\.ftl"; ValueType: string; ValueData: "Virt
 ; default association, via SystemFileAssociations (Windows' own
 ; mechanism for a right-click/"Open with" action that doesn't touch
 ; whatever already owns the extension's default).
-Root: HKCU; Subkey: "Software\Classes\SystemFileAssociations\.ts\shell\VirtaalEdit"; ValueType: string; ValueName: ""; ValueData: "Edit with Virtaal"; Tasks: fileassoc; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\SystemFileAssociations\.ts\shell\VirtaalEdit"; ValueType: string; ValueName: ""; ValueData: "{cm:EditWithVirtaal}"; Tasks: fileassoc; Flags: uninsdeletekey
 ; A verb's own icon is a plain "Icon" value on the verb key itself, not
 ; a DefaultIcon subkey (that convention is for a ProgID's icon, not a
 ; verb's) - the previous DefaultIcon subkey here was never read.

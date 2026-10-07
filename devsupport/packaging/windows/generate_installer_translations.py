@@ -14,10 +14,9 @@ missing from both INNO_LANGUAGES and NO_INNO_LANGUAGE is an error, so a
 newly shipped translation forces a decision about its installer
 language.
 
-[CustomMessages] only covers strings that are also its:translate="yes"
-in share/mime/packages/virtaal-mimetype.xml.in - those are already
-translated across po/*.po. Virtaal's other installer-only strings stay
-hardcoded English.
+[CustomMessages] holds virtaal.iss's own strings, translated from
+po/*.po. Each msgid must be in po/virtaal.pot - the installer-only
+ones are listed in devsupport/tmp_strings.py.
 
 Usage: generate_installer_translations.py OUTPUT_PATH
 """
@@ -89,14 +88,19 @@ NO_INNO_LANGUAGE = {
     "oc",
 }
 
-# CustomMessages key -> msgid, for the strings shared with
-# share/mime/packages/virtaal-mimetype.xml.in.
+# CustomMessages key -> msgid.
 MESSAGE_KEY_TO_MSGID = {
-    "TmxFileType": "TMX Translation Memory",
-    "TbxFileType": "TBX Glossary",
-    "QmFileType": "Qt Message File",
-    "QphFileType": "Qt Phrase Book",
+    "FileAssocTask": "Associate Virtaal with translation file types (.po, .xlf, .tmx, ...)",
+    "EditWithVirtaal": "Edit with Virtaal",
+    "PoFileType": "Gettext PO file",
+    "MoFileType": "Gettext MO file",
     "XliffFileType": "XLIFF Translation File",
+    "SdlXliffFileType": "SDL XLIFF Translation File",
+    "QmFileType": "Qt Message File",
+    "TbxFileType": "TBX Glossary",
+    "TmxFileType": "TMX Translation Memory",
+    "QphFileType": "Qt Phrase Book",
+    "FluentFileType": "Fluent file",
 }
 
 

@@ -524,6 +524,18 @@ msgid "XLIFF Translation File"
 msgstr ""
 
 #: devsupport/tmp_strings.py
+msgid "SDL XLIFF Translation File"
+msgstr ""
+
+#: devsupport/tmp_strings.py
+msgid "Associate Virtaal with translation file types (.po, .xlf, .tmx, ...)"
+msgstr ""
+
+#: devsupport/tmp_strings.py
+msgid "Edit with Virtaal"
+msgstr ""
+
+#: devsupport/tmp_strings.py
 msgid "usage: "
 msgstr ""
 

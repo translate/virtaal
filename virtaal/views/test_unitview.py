@@ -864,6 +864,20 @@ def test_layout_update_states_hides_the_state_widget_without_any_state_names():
     assert widget.hidden == [True]
 
 
+def test_layout_update_states_names_the_icon_only_state_buttons():
+    # The arrow buttons have no label, so GTK gives them no accessible name
+    view = UnitView.__new__(UnitView)
+    view._widgets = {'state': None, 'vbox_right': Gtk.VBox()}
+    view.controller = SimpleNamespace(get_unit_state_names=lambda: {})
+    view.unit = SimpleNamespace(STATE=True)
+
+    view._layout_update_states()
+
+    statenav = view._widgets['state']
+    assert statenav.btn_back.get_accessible().get_name() == 'Previous state'
+    assert statenav.btn_forward.get_accessible().get_name() == 'Next state'
+
+
 def test_advance_workflow_state_does_nothing_without_a_stateful_unit():
     view = UnitView.__new__(UnitView)
     view.unit = SimpleNamespace(STATE=False)

@@ -99,7 +99,11 @@ that differ.
 Before committing, check the render is deterministic: download the same
 artifact from two or three recent runs and compare checksums. If they
 agree, the committed image is simply out of date; if they don't,
-refreshing will just move the warning to the next run.
+refreshing will just move the warning to the next run. A run whose render
+matched uploads no artifact at all, so also count how many recent runs
+flagged the image: one stale run among clean ones is a flake. Known flake:
+welcome.png's Recent Files order (#4080) - a diff that only reorders those
+three files isn't drift.
 
 Before committing, actually *look* at old vs. new side by side (the Read
 tool renders a PNG directly; there's no guarantee a system Python here has

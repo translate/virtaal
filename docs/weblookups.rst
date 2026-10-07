@@ -10,6 +10,12 @@ you would like to search for in Wikipedia, before web lookups you would have
 copied and pasted the text.  With web lookups, select the text, right click,
 and then select the web lookup.
 
+Virtaal comes with Google, Wikipedia and Wiktionary enabled, and Bing and
+Yahoo disabled. The *Web Look-ups* dialog can enable or disable these built-in
+look-ups but not remove them, and Virtaal keeps their names and URLs up to
+date. Look-ups you add yourself can be removed. Each needs its own name, and
+names starting with "virtaal-" are reserved.
+
 Below are user contributed web-lookup queries that you can add to Virtaal.  If
 you have others that you think could be useful then please add them to the
 list.

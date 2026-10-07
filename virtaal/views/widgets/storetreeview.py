@@ -56,6 +56,7 @@ class StoreTreeView(Gtk.TreeView):
 
         # Throttles rapid key-repeat navigation - see _keyboard_move() (#3805).
         self._pending_move_offset = 0
+        self._pending_move_advances = False
         self._move_throttle_id = None
 
         # id(unit) of every row StoreCellRenderer last gave an estimated
@@ -304,7 +305,10 @@ class StoreTreeView(Gtk.TreeView):
         self.get_model()._current_editable = editable
         return 'rebuilt'
 
-    def _keyboard_move(self, offset):
+    def _keyboard_move(self, offset, advance=False):
+        """Move the cursor C{offset} units.
+            @param advance: The move comes from Enter, so finish the current
+            unit even when there is no unit to move to."""
         if not self.view.controller.get_store():
             return
 
@@ -317,6 +321,7 @@ class StoreTreeView(Gtk.TreeView):
             return True
 
         self._pending_move_offset += offset
+        self._pending_move_advances = self._pending_move_advances or advance
         if self._move_throttle_id is None:
             # First move of a burst applies immediately; further
             # repeats only accumulate until the next tick (#3805).
@@ -327,11 +332,13 @@ class StoreTreeView(Gtk.TreeView):
 
     def _apply_pending_move(self):
         offset, self._pending_move_offset = self._pending_move_offset, 0
+        advance, self._pending_move_advances = self._pending_move_advances, False
         old_index = self.view.cursor.index
         self.view.cursor.move(offset)
-        if offset and old_index >= 0 and self.view.cursor.index == old_index:
-            # At the first or last unit, or a navigation list of one: finish
-            # the unit anyway, so its workflow state is applied.
+        if advance and offset and old_index >= 0 and self.view.cursor.index == old_index:
+            # Enter at the first or last unit, or in a navigation list of
+            # one: finish the unit anyway, so its workflow state is
+            # applied. A plain navigation key there does nothing (#4087).
             self.view.controller.main_controller.unit_controller.finish_current_unit()
             self.refresh_current_row()
 
@@ -365,12 +372,8 @@ class StoreTreeView(Gtk.TreeView):
             return True
         # Replaces any repeats still waiting for the next throttle tick.
         self._pending_move_offset = 0
-        old_index = cursor.index
+        self._pending_move_advances = False
         cursor.index = cursor.indices[-1] if last else cursor.indices[0]
-        if old_index >= 0 and cursor.index == old_index:
-            # Already there: finish the unit anyway, as a move would.
-            self.view.controller.main_controller.unit_controller.finish_current_unit()
-            self.refresh_current_row()
         return True
 
     def _move_first(self, _accel_group, _acceleratable, _keyval, _modifier):
@@ -406,7 +409,7 @@ class StoreTreeView(Gtk.TreeView):
 
     def _on_cell_edited(self, _cell, _path_string, must_advance, _modified, _model):
         if must_advance:
-            return self._keyboard_move(1)
+            return self._keyboard_move(1, advance=True)
         return True
 
     def on_configure_event(self, widget, event, *_user_args):

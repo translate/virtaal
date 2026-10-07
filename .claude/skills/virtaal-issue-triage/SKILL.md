@@ -151,6 +151,15 @@ its own concrete evidence, not a guess:
   this session's own recent PRs/RELEASE-BLOCKERS.md before assuming an
   old report is still open - two closures this sweep were reports of
   the exact same bug just fixed hours earlier.
+- **A fix merged without a closing keyword**: a follow-up PR can fix
+  an issue without `Closes #N`, leaving it open. Search history for
+  the identifier the issue names, not its number
+  (`git log upstream/main -S <identifier> -- <file>`), then
+  `gh pr list --state all --search <sha>` for the PR. Confirm with the
+  issue's own repro on main, plus a control: revert just the fix line
+  and check it fails with the reported message. Close citing the PR.
+  translate/virtaal#3768 (2026-10-07) stayed open two weeks after #3810
+  fixed it.
 - **Actually reproduce it against current code, live**: for a report
   describing a specific technical failure mode (a parsing bug, a
   round-trip corruption), write the smallest real reproduction against

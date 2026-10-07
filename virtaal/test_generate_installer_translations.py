@@ -40,6 +40,15 @@ def test_vendored_files_match_the_mapping(gen):
     assert vendored == set(gen.INNO_LANGUAGES.values())
 
 
+def test_every_message_is_in_the_pot(gen):
+    # A msgid missing from the POT never gets translated, silently
+    # leaving that installer string in English.
+    from translate.storage import pypo
+    pot = pypo.pofile((gen.REPO_ROOT / "po" / "virtaal.pot").read_bytes())
+    msgids = {unit.source for unit in pot.units}
+    assert set(gen.MESSAGE_KEY_TO_MSGID.values()) <= msgids
+
+
 def test_unmapped_code_is_an_error(gen):
     with pytest.raises(ValueError, match="xx"):
         gen.installer_languages(["de", "xx"])

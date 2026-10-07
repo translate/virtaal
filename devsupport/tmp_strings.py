@@ -29,6 +29,11 @@ _("WiX Localization File")
 _("Wordfast Translation Memory")
 _("XLIFF Translation File")
 
+# Windows installer only (devsupport/packaging/windows/virtaal.iss).
+_("SDL XLIFF Translation File")
+_("Associate Virtaal with translation file types (.po, .xlf, .tmx, ...)")
+_("Edit with Virtaal")
+
 # Argparse strings
 _("usage: ")
 _("positional arguments")

@@ -108,3 +108,53 @@ def test_page_numbers_use_the_ui_languages_digits(monkeypatch, digits, expected)
     stack.add_titled(page, 'page2', '_2')
 
     assert stack.child_get_property(page, 'title') == expected
+
+
+@pytest.mark.parametrize('accelerator, expected', [
+    ('<Meta>o', [['⌘', 'O']]),
+    ('<Meta><Shift>s', [['⇧', '⌘', 'S']]),
+    ('<Control><Shift>Return', [['⌃', '⇧', '↩']]),
+    ('<Alt>Left', [['⌥', '←']]),
+    ('<Shift>Tab', [['⇧', '⇥']]),
+    ('Escape', [['⎋']]),
+    ('<Meta>f F3', [['⌘', 'F'], ['F3']]),
+])
+def test_mac_keycaps_use_apple_symbols_and_order(accelerator, expected):
+    assert shortcutswindow.mac_keycaps(accelerator) == expected
+
+
+def test_mac_keycaps_reject_an_unparseable_accelerator():
+    assert shortcutswindow.mac_keycaps('<Meta>o <Bogus>') is None
+
+
+def _keycap_texts(window):
+    rows = []
+    for label in shortcutswindow._shortcut_labels(window):
+        rows.append([child.get_text() for child in label.get_children()])
+    return rows
+
+
+def test_mac_window_relabels_every_row_including_search_copies(monkeypatch):
+    monkeypatch.setattr(platform, 'is_mac', True)
+    parent = Gtk.Window()
+
+    window = ShortcutsWindow(parent)
+    rows = _keycap_texts(window)
+
+    n_shortcuts = sum(len(group) for _title, group in SHORTCUT_GROUPS)
+    assert len(rows) == 2 * n_shortcuts
+    assert ['⇥'] in rows
+    assert not any('+' in row or 'Shift' in row for row in rows)
+    window.destroy()
+    parent.destroy()
+
+
+def test_other_platforms_keep_gtks_own_labels(monkeypatch):
+    monkeypatch.setattr(platform, 'is_mac', False)
+    parent = Gtk.Window()
+
+    window = ShortcutsWindow(parent)
+
+    assert ['Shift', '+', 'Tab'] in _keycap_texts(window)
+    window.destroy()
+    parent.destroy()

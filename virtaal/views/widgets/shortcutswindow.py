@@ -5,7 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-from gi.repository import Gtk
+from gi.repository import Gdk, Gtk
 
 from virtaal.common.platform import platform
 from virtaal.support.libi18n.numbers import localise_digits
@@ -68,6 +68,73 @@ SHORTCUT_GROUPS = [
 ]
 
 
+# Apple's modifier order and key symbols, as macOS menus show them.
+MAC_MODIFIERS = [
+    (Gdk.ModifierType.CONTROL_MASK, "\u2303"),
+    (Gdk.ModifierType.MOD1_MASK, "\u2325"),
+    (Gdk.ModifierType.SHIFT_MASK, "\u21e7"),
+    (Gdk.ModifierType.META_MASK, "\u2318"),
+]
+MAC_KEYS = {
+    Gdk.KEY_Return: "\u21a9",
+    Gdk.KEY_Tab: "\u21e5",
+    Gdk.KEY_Escape: "\u238b",
+    Gdk.KEY_BackSpace: "\u232b",
+    Gdk.KEY_Delete: "\u2326",
+    Gdk.KEY_Left: "\u2190",
+    Gdk.KEY_Up: "\u2191",
+    Gdk.KEY_Right: "\u2192",
+    Gdk.KEY_Down: "\u2193",
+    Gdk.KEY_Page_Up: "\u21de",
+    Gdk.KEY_Page_Down: "\u21df",
+    Gdk.KEY_Home: "\u2196",
+    Gdk.KEY_End: "\u2198",
+}
+
+
+def mac_keycaps(accelerator):
+    """The keycap labels for each of C{accelerator}'s space-separated
+        alternatives, or None if one doesn't parse."""
+    combos = []
+    for part in accelerator.split():
+        key, mods = Gtk.accelerator_parse(part)
+        if not key:
+            return None
+        caps = [symbol for mask, symbol in MAC_MODIFIERS if mods & mask]
+        caps.append(MAC_KEYS.get(key) or Gtk.accelerator_get_label(key, 0))
+        combos.append(caps)
+    return combos
+
+
+def _shortcut_labels(widget):
+    if isinstance(widget, Gtk.ShortcutLabel):
+        yield widget
+    elif isinstance(widget, Gtk.Container):
+        children = []
+        widget.forall(children.append)
+        for child in children:
+            yield from _shortcut_labels(child)
+
+
+def use_mac_keycaps(widget):
+    """Relabel every shortcut under C{widget} with macOS key symbols."""
+    for label in _shortcut_labels(widget):
+        combos = mac_keycaps(label.get_accelerator())
+        if combos is None:
+            continue
+        for child in label.get_children():
+            child.destroy()
+        for i, caps in enumerate(combos):
+            if i:
+                separator = Gtk.Label(label="/", visible=True)
+                separator.get_style_context().add_class("dim-label")
+                label.add(separator)
+            for cap in caps:
+                keycap = Gtk.Label(label=cap, visible=True)
+                keycap.get_style_context().add_class("keycap")
+                label.add(keycap)
+
+
 class ShortcutsWindow(Gtk.ShortcutsWindow):
     """A native GTK shortcuts-overview window, built from SHORTCUT_GROUPS,
         reachable from Help > Keyboard Shortcuts."""
@@ -83,6 +150,9 @@ class ShortcutsWindow(Gtk.ShortcutsWindow):
             section.add(group)
         self._localise_page_numbers(section)
         self.add(section)
+        if platform.is_mac:
+            # After add(): that's when GTK copies every row for search.
+            use_mac_keycaps(self)
         self.show()
 
     def _localise_page_numbers(self, section):

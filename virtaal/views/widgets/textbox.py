@@ -113,6 +113,8 @@ class TextBox(Gtk.TextView):
         self.selected_elem_index = None
         self._suggestion = None
         self._completion_popup = None
+        # The tag table is shared (search highlight, gtkspell): remove only ours.
+        self._placeable_tags = []
         self.undo_controller = main_controller.undo_controller
 
         self.__connect_default_handlers()
@@ -271,6 +273,7 @@ class TextBox(Gtk.TextView):
                             not colors_equal(elem.gui_info.fg, placeablesguiinfo.StringElemGUI.fg) or \
                             not colors_equal(elem.gui_info.bg, placeablesguiinfo.StringElemGUI.bg):
                         self.buffer.get_tag_table().add(tag)
+                        self._placeable_tags.append(tag)
                         start_iter = self.buffer.get_iter_at_offset(tag_start)
                         end_iter = self.buffer.get_iter_at_offset(tag_end)
                         self.buffer.apply_tag(tag, start_iter, end_iter)
@@ -279,6 +282,12 @@ class TextBox(Gtk.TextView):
             for sub, index in elem.gui_info.iter_sub_with_index():
                 if isinstance(sub, StringElem):
                     self.apply_gui_info(sub, offset=index+offset)
+
+    def _remove_placeable_tags(self):
+        tagtable = self.buffer.get_tag_table()
+        for tag in self._placeable_tags:
+            tagtable.remove(tag)
+        self._placeable_tags = []
 
     def get_cursor_position(self):
         return self.buffer.props.cursor_position
@@ -494,6 +503,7 @@ class TextBox(Gtk.TextView):
             if self.selected_elem_index is not None and not (0 <= offset < len(filtered_elems)):
                 # Clear selection when we go past the first or last placeable
                 self.select_elem(None)
+                self._remove_placeable_tags()
                 self.apply_gui_info(self.elem)
                 return
             return self.select_elem(elem=filtered_elems[offset % len(filtered_elems)])
@@ -519,6 +529,7 @@ class TextBox(Gtk.TextView):
         else:
             elem.gui_info.fg = current_theme['selected_placeable_fg']
             elem.gui_info.bg = current_theme['selected_placeable_bg']
+        self._remove_placeable_tags()
         self.apply_gui_info(self.elem, include_subtree=False)
         self.apply_gui_info(self.elem)
         self.apply_gui_info(elem, include_subtree=False)
@@ -574,13 +585,7 @@ class TextBox(Gtk.TextView):
         self.buffer.handler_unblock_by_func(self._on_insert_text)
         self.buffer.handler_unblock_by_func(self._on_insert_text_after)
 
-        tagtable = self.buffer.get_tag_table()
-        def remtag(tag, data):
-            tagtable.remove(tag)
-        # Left disabled: calling tagtable.foreach(remtag) here segfaults
-        # GTK (tag removal during foreach), not just a "for now" fix.
-        # See #3791 for a real fix (remove tags in a separate pass).
-        #tagtable.foreach(remtag)
+        self._remove_placeable_tags()
         # At this point we have a tree of string elements with GUI info.
         self.apply_gui_info(self.elem)
 

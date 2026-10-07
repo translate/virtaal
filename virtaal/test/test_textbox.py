@@ -8,7 +8,7 @@
 from types import SimpleNamespace
 
 import pytest
-from gi.repository import Gdk
+from gi.repository import Gdk, Gtk
 from test_scaffolding import TestScaffolding
 from translate.storage import factory
 from translate.storage.placeables import general
@@ -129,6 +129,45 @@ class TestTextBox(TestScaffolding):
         textbox.select_elem(elem=foreign)  # must not raise
 
         assert textbox.selected_elem is None
+
+    def test_set_text_does_not_accumulate_placeable_tags(self):
+        textbox = self._target_for('%s files copied')
+        tagtable = textbox.buffer.get_tag_table()
+        textbox.set_text('%s files copied')
+        size = tagtable.get_size()
+        assert size > 0
+
+        for _ in range(5):
+            textbox.set_text('%s files copied')
+
+        assert tagtable.get_size() == size
+
+    def test_set_text_keeps_tags_added_by_others(self):
+        textbox = self._target_for('%s files copied')
+        tagtable = textbox.buffer.get_tag_table()
+        other = Gtk.TextTag(name='search_highlight')
+        tagtable.add(other)
+        try:
+            textbox.set_text('%s files copied')
+
+            assert tagtable.lookup('search_highlight') is other
+        finally:
+            tagtable.remove(other)
+
+    def test_select_elem_does_not_accumulate_placeable_tags(self):
+        textbox = self._target_for('%s files copied')
+        tagtable = textbox.buffer.get_tag_table()
+        count = len(textbox.selectable_elems())
+        textbox.select_elem(offset=0)
+        size = tagtable.get_size()
+
+        for _ in range(3):
+            textbox.select_elem(offset=0)
+            # Past the last placeable: clears the selection and re-applies.
+            textbox.select_elem(offset=count)
+            textbox.select_elem(offset=0)
+
+        assert tagtable.get_size() == size
 
     def test_move_elem_selection_selects_via_the_selector_textbox(self):
         textbox = self._target_for('%s files copied')

@@ -34,7 +34,7 @@ changed=("$@")
 # whole-repo check for this - real ast-based call detection, not a
 # grep heuristic, and it already respects POTFILES.skip - so an entry
 # it flags is a hard fail, not just a note.
-# .ui/.glade files aren't checked here (translatable="yes" attributes,
+# .ui files aren't checked here (translatable="yes" attributes,
 # not _()/N_()/ngettext() calls - a different check, not implemented).
 coverage_output=$(python3 po/check-potfiles-coverage.py) || {
     echo "File(s) have gettext markers (_()/N_()/ngettext()/C_()) but aren't listed in po/POTFILES.in or po/POTFILES.skip - their strings won't be extracted for translation:" >&2

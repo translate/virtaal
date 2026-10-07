@@ -18,7 +18,7 @@ __all__ = ['COL_ENABLED', 'COL_NAME', 'COL_DESC', 'COL_DATA', 'COL_WIDGET', 'Sel
 COL_ENABLED, COL_NAME, COL_DESC, COL_DATA, COL_WIDGET = range(5)
 
 
-# Coordinate and test this value with the size of PreferencesDlg in the glade
+# Coordinate and test this value with the size of PreferencesDlg in the virtaal.ui
 # file as well as the size of SelectDialog all over (e.g. TMView)
 DEFAULT_WIDTH = 450
 

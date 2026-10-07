@@ -325,7 +325,7 @@ def _putenv(name, value):
 
 def fix_locale(lang=None):
     """This fixes some strange issues to ensure locale and gettext works
-    correctly, also within glade, even with a non-default locale passed as
+    correctly, also within GtkBuilder, even with a non-default locale passed as
     parameter."""
     if platform.is_windows:
         lang = lang or _getlang()

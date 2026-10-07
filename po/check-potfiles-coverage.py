@@ -18,7 +18,7 @@
     exits 1 if any are found; exits 0 (silently) otherwise.
 
     Scope matches the intltool-update --maintain-based check this
-    replaces: .py files only. .ui/.glade files (translatable="yes"
+    replaces: .py files only. .ui files (translatable="yes"
     attributes, not function calls) were never covered by that check
     either - a real but separate gap, not attempted here."""
 

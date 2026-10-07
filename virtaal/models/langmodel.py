@@ -17,6 +17,13 @@ from .basemodel import BaseModel
 
 gettext_lang = tr_lang(ui_language)
 
+
+def same_language(code, langcode):
+    """Whether a file's own language C{code} (e.g. "en-US") is the language
+        Virtaal knows as C{langcode} (e.g. "en")."""
+    return bool(code) and LanguageModel(code).code == langcode
+
+
 class LanguageModel(BaseModel):
     """
     A simple container for language information for use by the C{LanguageController}

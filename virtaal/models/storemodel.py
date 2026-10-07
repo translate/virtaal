@@ -11,6 +11,7 @@ from virtaal.common import pan_app
 from virtaal.support import qm_compat  # noqa: F401 - applies its patch on import
 
 from .basemodel import BaseModel
+from .langmodel import same_language
 
 
 def fix_indexes(stats, valid_units=None):
@@ -76,7 +77,8 @@ class StoreModel(BaseModel):
             return candidate
 
     def set_source_language(self, langcode):
-        self._trans_store.setsourcelanguage(langcode)
+        if not same_language(self._trans_store.getsourcelanguage(), langcode):
+            self._trans_store.setsourcelanguage(langcode)
 
     def get_target_language(self):
         """Return the current store's target language."""
@@ -88,7 +90,8 @@ class StoreModel(BaseModel):
             return candidate
 
     def set_target_language(self, langcode):
-        self._trans_store.settargetlanguage(langcode)
+        if not same_language(self._trans_store.gettargetlanguage(), langcode):
+            self._trans_store.settargetlanguage(langcode)
 
     def get_store_type(self):
         return self._trans_store.Name
@@ -326,7 +329,8 @@ class StoreModel(BaseModel):
             if team:
                 header_updates["Language-Team"] = team
             target_lang = self.controller.main_controller.lang_controller.target_lang
-            header_updates["Language"] = target_lang.code
+            if not same_language(self._trans_store.parseheader().get("Language"), target_lang.code):
+                header_updates["Language"] = target_lang.code
             project_code = self.controller.main_controller.checks_controller.code
             if project_code:
                 header_updates["X-Project-Style"] = project_code

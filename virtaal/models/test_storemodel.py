@@ -150,3 +150,74 @@ def test_get_live_stats_totals_counts_unsaved_changes(tmp_path):
     assert model.get_stats_totals() == saved
     assert 'empty' not in live
     assert live['unreviewed'] == {'units': 2, 'sourcewords': 2, 'targetwords': 3}
+
+
+_XLIFF = b'''<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+<file original="x" source-language="en-US" target-language="en-GB" datatype="plaintext"><body>
+<trans-unit id="1"><source>Color</source><target>Colour</target></trans-unit>
+</body></file></xliff>
+'''
+
+
+def _xliff_model(tmp_path):
+    path = tmp_path / "regional.xlf"
+    path.write_bytes(_XLIFF)
+    return StoreModel(str(path), _FakeController())
+
+
+def test_a_regional_language_code_is_kept_for_the_same_language(tmp_path):
+    # Virtaal knows en-US only as "en"; the file's own code stays.
+    model = _xliff_model(tmp_path)
+
+    model.set_source_language("en")
+    model.set_target_language("en_GB")
+
+    assert model._trans_store.getsourcelanguage() == "en-US"
+    assert model._trans_store.gettargetlanguage() == "en-GB"
+
+
+def test_a_different_language_replaces_the_files_code(tmp_path):
+    model = _xliff_model(tmp_path)
+
+    model.set_source_language("de")
+    model.set_target_language("af")
+
+    assert model._trans_store.getsourcelanguage() == "de"
+    assert model._trans_store.gettargetlanguage() == "af"
+
+
+class _SavingController(_FakeController):
+    def __init__(self, target_lang):
+        from types import SimpleNamespace
+
+        from virtaal.models.langmodel import LanguageModel
+        self.main_controller = SimpleNamespace(
+            get_translator_name=lambda: None,
+            get_translator_email=lambda: None,
+            get_translator_team=lambda: None,
+            lang_controller=SimpleNamespace(target_lang=LanguageModel(target_lang)),
+            checks_controller=SimpleNamespace(code=None))
+
+
+def _save_po(tmp_path, monkeypatch, header, target_lang):
+    from virtaal.common import pan_app
+    monkeypatch.setattr(pan_app.settings, 'write', lambda: None)
+    path = tmp_path / "header.po"
+    path.write_bytes(b'msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-8\\n"\n'
+                     + header + b'\nmsgid "Hello"\nmsgstr "Hallo"\n')
+    model = StoreModel(str(path), _SavingController(target_lang))
+    model.save_file()
+    return StoreModel(str(path), _FakeController())._trans_store.parseheader()
+
+
+def test_saving_keeps_a_regional_language_header(tmp_path, monkeypatch):
+    header = _save_po(tmp_path, monkeypatch, b'"Language: de_CH\\n"\n', "de")
+
+    assert header["Language"] == "de_CH"
+
+
+def test_saving_adds_a_missing_language_header(tmp_path, monkeypatch):
+    header = _save_po(tmp_path, monkeypatch, b'', "de")
+
+    assert header["Language"] == "de"

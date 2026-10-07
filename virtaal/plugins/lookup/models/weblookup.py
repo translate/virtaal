@@ -14,6 +14,15 @@ def _slugify(display_name):
         never asked for one directly - "My Site" -> "my_site"."""
     return display_name.strip().lower().replace(' ', '_')
 
+
+# Reserved for built-in look-ups, whose name and URL always come from
+# the code - only their enabled state is saved.
+BUILTIN_PREFIX = 'virtaal-'
+
+
+def is_builtin(urlinfo):
+    return urlinfo.get('id', '').startswith(BUILTIN_PREFIX)
+
 from gi.repository import GLib, Gtk, Pango
 
 from virtaal.common import pan_app
@@ -35,21 +44,21 @@ class LookupModel(BaseLookupModel):
 
     URLDATA = [
         {
-            'id': 'google',
+            'id': 'virtaal-google',
             'display_name': _('Google'),
             'url': 'http://www.google.com/search?q=%(query)s',
             'quoted': True,
             'enabled': True,
         },
         {
-            'id': 'wikipedia',
+            'id': 'virtaal-wikipedia',
             'display_name': _('Wikipedia'),
             'url': 'http://%(querylang)s.wikipedia.org/wiki/%(query)s',
             'quoted': False,
             'enabled': True,
         },
         {
-            'id': 'wiktionary',
+            'id': 'virtaal-wiktionary',
             'display_name': _('Wiktionary'),
             'url': 'http://%(querylang)s.wiktionary.org/wiki/%(query)s',
             'quoted': False,
@@ -60,14 +69,14 @@ class LookupModel(BaseLookupModel):
         # checkbox away instead of needing to know the URL to add it
         # by hand.
         {
-            'id': 'bing',
+            'id': 'virtaal-bing',
             'display_name': _('Bing'),
             'url': 'http://www.bing.com/search?q=%(query)s',
             'quoted': True,
             'enabled': False,
         },
         {
-            'id': 'yahoo',
+            'id': 'virtaal-yahoo',
             'display_name': _('Yahoo'),
             'url': 'http://search.yahoo.com/search?p=%(query)s',
             'quoted': True,
@@ -77,9 +86,8 @@ class LookupModel(BaseLookupModel):
     """A list of dictionaries containing data about each URL:
     * C{id}: A stable, untranslated identifier - used as the saved
         config's own key instead of C{display_name}, which changes
-        with the UI language. Absent on a user's own custom entry,
-        whose C{display_name} is untranslated free text anyway and
-        so already stable enough to serve as its own id.
+        with the UI language. A built-in's starts with C{BUILTIN_PREFIX};
+        a user's own custom entry's is derived from its name.
     * C{display_name}: The name that will be shown in the context menu
     * C{url}: The actual URL that will be queried. See below for template
         variables.
@@ -107,24 +115,37 @@ class LookupModel(BaseLookupModel):
         self._load_urldata()
 
     def _load_urldata(self):
-        urls = list(pan_app.load_config(self.urldata_file).values())
-        if urls:
-            # A save from before 'id' existed has none - resolve it by
-            # matching its own (untranslated, at the time) display_name
-            # against the current defaults'. A genuinely custom entry
-            # matches nothing here and gets one derived the same way a
-            # newly-added one would.
-            display_to_id = {d['display_name']: d['id'] for d in type(self).URLDATA}
-            for u in urls:
-                if 'quoted' in u:
-                    u['quoted'] = u['quoted'] == 'True'
-                # A saved entry from before this key existed has no
-                # 'enabled' value - default it to enabled.
-                u['enabled'] = u.get('enabled', 'True') == 'True'
-                u.setdefault('id', display_to_id.get(u['display_name'], _slugify(u['display_name'])))
-            saved_ids = {u['id'] for u in urls}
-            urls += [u for u in type(self).URLDATA if u['id'] not in saved_ids]
-            self.URLDATA = urls
+        defaults = {d['id']: d for d in type(self).URLDATA}
+        enabled = {}
+        custom = []
+        for u in pan_app.load_config(self.urldata_file).values():
+            u['enabled'] = u.get('enabled', 'True') == 'True'
+            builtin_id = self._builtin_id(u, defaults)
+            if builtin_id:
+                enabled[builtin_id] = u['enabled']
+            # A virtaal- id matching no default was dropped from the code.
+            elif not is_builtin(u):
+                u['quoted'] = u.get('quoted') == 'True'
+                u.setdefault('id', _slugify(u['display_name']))
+                custom.append(u)
+        builtins = [dict(d, enabled=enabled.get(d['id'], d['enabled'])) for d in type(self).URLDATA]
+        self.URLDATA = builtins + custom
+
+    @staticmethod
+    def _builtin_id(saved, defaults):
+        """The built-in id a saved entry belongs to, or C{None} if custom.
+
+            A bare id (1.0.0-beta3: C{google}) or no id (older) only
+            counts if the URL is still the built-in's own."""
+        saved_id = saved.get('id')
+        if saved_id in defaults:
+            return saved_id
+        for d in defaults.values():
+            if saved.get('url') != d['url']:
+                continue
+            if saved_id is None or BUILTIN_PREFIX + saved_id == d['id']:
+                return d['id']
+        return None
 
 
     # METHODS #
@@ -162,8 +183,13 @@ class LookupModel(BaseLookupModel):
     def _save_urldata(self):
         # Keyed by id, not display_name - the section name must stay
         # stable across a UI language change, unlike the translated
-        # display_name.
-        config = dict([ (u.get('id', u['display_name']), u) for u in self.URLDATA ])
+        # display_name. A built-in only saves what the user controls.
+        config = {}
+        for u in self.URLDATA:
+            if is_builtin(u):
+                config[u['id']] = {'id': u['id'], 'enabled': u['enabled']}
+            else:
+                config[u.get('id', _slugify(u['display_name']))] = u
         pan_app.save_config(self.urldata_file, config)
 
     def destroy(self):

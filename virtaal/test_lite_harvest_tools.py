@@ -196,8 +196,18 @@ def test_lite_catalog_keeps_its_translations_and_fills_in_upstreams(lite_catalog
 
     targets = {str(u.source): str(u.target) for u in factory.getobject(str(domain_dir / "af.po")).units
                if not u.isheader()}
-    assert translated == 2
+    # Only "Show All" fills a gap: upstream already has "Quit %s".
+    assert translated == 1
     assert targets == {"Quit %s": "Verlaat %s", "Show All": "Wys alles"}
+
+
+def test_lite_catalog_filling_no_gap_is_kept_but_counts_nothing(lite_catalogs):
+    module, domain_dir = lite_catalogs
+
+    translated = module.update("mac", "ja", {("", "Quit %s"): "%s を終了"})
+
+    assert translated == 0
+    assert (domain_dir / "ja.po").exists()
 
 
 def test_lite_catalog_keeps_fuzzy_work_and_translator_comments(lite_catalogs):

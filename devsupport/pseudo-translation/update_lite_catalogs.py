@@ -17,9 +17,10 @@ Virtaal's UI languages (po/*.po):
 A lite catalog is merged into the library's own when shipped, the
 library's translation winning, so only its gaps take effect; the
 pre-filled messages cover a build host with an older library catalog.
-po/LINGUAS-lite lists the lite catalogs that translate anything, for
-the languages Virtaal ships (po/LINGUAS, see po/update-linguas.py);
-the others' lite catalogs are kept for when their translation ships.
+po/LINGUAS-lite lists the lite catalogs that fill a gap - translate a
+message the library's own catalog doesn't - for the languages Virtaal
+ships (po/LINGUAS, see po/update-linguas.py). The rest are kept for
+when they fill one, or their language ships.
 """
 
 import argparse
@@ -103,8 +104,9 @@ def _new_catalog(lang):
 
 def update(domain, lang, upstream):
     """Applies the rule to po/lite/<domain>/<lang>.po given the library's
-        own translations; returns how many messages it translates (0 when
-        it isn't needed)."""
+        own translations; returns how many messages it translates that
+        the library's own doesn't (0 when it isn't needed, or fills no
+        gap yet)."""
     template = factory.getobject(os.path.join(LITE_DIR, domain, domain + ".pot"))
     messages = [unit for unit in template.units if not unit.isheader()]
     path = os.path.join(LITE_DIR, domain, lang + ".po")
@@ -121,7 +123,7 @@ def update(domain, lang, upstream):
     store = _new_catalog(lang)
     if existing and existing.header():
         store.units = [existing.header()]
-    translated = 0
+    fills = 0
     for message in messages:
         unit = store.addsourceunit(message.source)
         unit.setcontext(message.getcontext())
@@ -133,7 +135,7 @@ def update(domain, lang, upstream):
         target = lite.get(_key(message)) or upstream.get(_key(message))
         if target:
             unit.target = target
-            translated += 1
+            fills += not upstream.get(_key(message))
         elif before is not None and before.isfuzzy() and before.target:
             # Unfinished work: kept, still fuzzy, so it doesn't ship.
             unit.target = before.target
@@ -142,7 +144,7 @@ def update(domain, lang, upstream):
         store.units.extend(unit for unit in existing.units if unit.isobsolete())
     with open(path, "wb") as f:
         store.serialize(f)
-    return translated
+    return fills
 
 
 def write_linguas(shipped):
@@ -170,10 +172,10 @@ def main():
             sys.exit("%s isn't installed - can't read its own translations" % domain)
         shipped[domain] = []
         for lang in ui_languages():
-            translated = update(domain, lang, upstream_translations(domain, lang, upstream_dir))
-            if translated and lang in languages:
+            fills = update(domain, lang, upstream_translations(domain, lang, upstream_dir))
+            if fills and lang in languages:
                 shipped[domain].append(lang)
-        print("%s: %d lite catalogs translate something (upstream: %s)"
+        print("%s: %d lite catalogs fill a gap (upstream: %s)"
               % (domain, len(shipped[domain]), upstream_dir))
     write_linguas(shipped)
 

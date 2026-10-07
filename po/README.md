@@ -94,3 +94,15 @@ anything, for the languages in `LINGUAS`):
 ```sh
 python devsupport/pseudo-translation/update_lite_catalogs.py gtk30 glib20 gtkspell3 gtk-mac-integration
 ```
+
+To see which library messages each shipped language would still show
+in English (neither the library nor a shipped lite catalog translates
+them), against this machine's installed catalogs:
+
+```sh
+python devsupport/pseudo-translation/report_lite_coverage.py
+```
+
+CI runs it after the macOS and Windows builds, against the catalogs
+each bundles: a table in the job summary and one non-blocking warning.
+To fill a gap, translate `po/lite/<domain>/<lang>.po`.

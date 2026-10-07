@@ -35,7 +35,7 @@ from virtaal.support.libi18n.lite import (  # noqa: E402
 )
 
 sys.path.insert(0, str(PACKAGING))
-from generate_info_plist import document_types  # noqa: E402
+from generate_info_plist import bundle_localizations, document_types  # noqa: E402
 
 COPYRIGHT = "Copyright 2007-2026 Translate. GNU General Public License."
 
@@ -201,5 +201,6 @@ app = BUNDLE(  # noqa: F821
         "NSHighResolutionCapable": True,
         "NSPrincipalClass": "NSApplication",
         "CFBundleDocumentTypes": document_types(),
+        "CFBundleLocalizations": bundle_localizations(LANGUAGES),
     },
 )

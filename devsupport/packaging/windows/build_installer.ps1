@@ -27,6 +27,7 @@ $version = & python -c "from virtaal.__version__ import ver; print(ver)"
 New-Item -ItemType Directory -Force -Path dist\installer | Out-Null
 
 & python devsupport\packaging\windows\generate_installer_translations.py devsupport\packaging\windows\installer-strings.iss
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 & iscc "/DMyAppVersion=$version" devsupport\packaging\windows\virtaal.iss
 

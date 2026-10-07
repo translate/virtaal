@@ -30,7 +30,9 @@ PACKAGING = ROOT / "devsupport" / "packaging" / "macos"
 
 sys.path.insert(0, str(ROOT))
 from virtaal.__version__ import ver as virtaal_version  # noqa: E402
-from virtaal.support.libi18n.lite import mismatched_catalogs  # noqa: E402
+from virtaal.support.libi18n.lite import (  # noqa: E402
+    bundle_languages, expected_catalogs, missing_catalogs, mismatched_catalogs, read_linguas,
+)
 
 sys.path.insert(0, str(PACKAGING))
 from generate_info_plist import document_types  # noqa: E402
@@ -54,6 +56,11 @@ COPYRIGHT = "Copyright 2007-2026 Translate. GNU General Public License."
 import translate  # noqa: E402
 TRANSLATE_SHARE = Path(translate.__file__).parent / "share"
 
+# The UI languages this build ships; the gi hooks bundle GTK's and GLib's
+# own catalogs for these (and the languages gettext falls back to for
+# them) only, not for every language the libraries translate.
+LANGUAGES = read_linguas(ROOT / "po" / "LINGUAS")
+
 mo_files = [
     (str(p), str(Path("share", "locale") / p.relative_to(ROOT / "mo").parent / "LC_MESSAGES"))
     for p in (ROOT / "mo").rglob("*.mo")
@@ -76,6 +83,7 @@ except (OSError, subprocess.CalledProcessError):
 gtkmac_mo_files = [
     (str(p), str(Path("share", "locale") / p.relative_to(_gtkmac_locale_dir).parent))
     for p in (_gtkmac_locale_dir.rglob("*.mo") if _gtkmac_locale_dir and _gtkmac_locale_dir.is_dir() else [])
+    if p.relative_to(_gtkmac_locale_dir).parts[0] in bundle_languages(LANGUAGES)
 ]
 
 # build_standalone.sh stages this (Intel builds only) from an old,
@@ -125,6 +133,7 @@ a = Analysis(  # noqa: F821
                 # whatever the hook guesses.
                 "GtkosxApplication": "1.0",
             },
+            "languages": bundle_languages(LANGUAGES),
         },
     },
     # devsupport isn't needed at runtime in a frozen build - its one
@@ -148,6 +157,11 @@ a = Analysis(  # noqa: F821
 _mismatched = mismatched_catalogs(a.datas, mo_files)
 if _mismatched:
     raise SystemExit("Bundled another copy instead of Virtaal's catalog: %r" % _mismatched)
+# Every shipped language has its virtaal.mo, and GTK's and GLib's
+# catalogs wherever this host's libraries or a lite catalog provide one.
+_missing = missing_catalogs(a.datas, expected_catalogs(LANGUAGES, mo_files))
+if _missing:
+    raise SystemExit("Shipped languages missing catalogs: %r" % _missing)
 
 pyz = PYZ(a.pure, a.zipped_data)  # noqa: F821
 

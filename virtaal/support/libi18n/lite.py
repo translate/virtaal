@@ -133,6 +133,49 @@ def mismatched_catalogs(datas, mo_files):
             and os.path.normpath(source) != os.path.normpath(ours[os.path.normpath(dest)])]
 
 
+def read_linguas(path):
+    """The languages a LINGUAS file lists, comments aside."""
+    with open(path, encoding="utf-8") as f:
+        return [line.split("#")[0].strip() for line in f if line.split("#")[0].strip()]
+
+
+def bundle_languages(languages):
+    """The locale directories a frozen build bundles library catalogs
+    from: each language, and the one gettext falls back to for it (pt
+    for pt_BR, sr for sr@latin)."""
+    return sorted(set(languages) | {re.split(r"[_@]", lang)[0] for lang in languages})
+
+
+def _destination(lang, domain):
+    return os.path.normpath(os.path.join("share", "locale", lang, "LC_MESSAGES", domain + ".mo"))
+
+
+def expected_catalogs(languages, mo_files, domains=("gtk30", "glib20")):
+    """The catalogs (destinations, as a PyInstaller datas TOC names them)
+    a frozen build of languages must bundle: virtaal.mo for each, and
+    each of domains' catalogs where this build host's library has one
+    for that exact language or mo_files merges a lite one."""
+    ours = {os.path.normpath(os.path.join(dest_dir, os.path.basename(source))) for source, dest_dir in mo_files}
+    upstream = {domain: library_locale_dir(LIBRARY_NAMESPACES[domain]) for domain in domains}
+    expected = set()
+    for lang in languages:
+        expected.add(_destination(lang, "virtaal"))
+        for domain in domains:
+            dest = _destination(lang, domain)
+            locale_dir = upstream[domain]
+            if dest in ours or (locale_dir and os.path.isfile(
+                    os.path.join(locale_dir, lang, "LC_MESSAGES", domain + ".mo"))):
+                expected.add(dest)
+    return expected
+
+
+def missing_catalogs(datas, expected):
+    """The expected_catalogs() destinations a PyInstaller datas TOC
+    ((destination, source, typecode) entries) lacks."""
+    bundled = {os.path.normpath(dest) for dest, _source, _typecode in datas}
+    return sorted(expected - bundled)
+
+
 def merge(upstream_mo, lite_po, out_mo):
     """Writes out_mo: upstream_mo's messages (if it exists) with
     lite_po's translations (if it exists) filling only what upstream

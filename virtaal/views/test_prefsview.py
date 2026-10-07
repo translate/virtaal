@@ -137,6 +137,19 @@ def test_placeables_page_scrolled_window_propagates_natural_width():
     assert view._widgets['scrwnd_placeables'].get_property('propagate-natural-width')
 
 
+def test_placeables_description_does_not_widen_the_dialog():
+    # A long translation of the description (French is about 1.5 times
+    # the English) set the whole dialog's width.
+    gui = BaseView.load_builder_file(["virtaal", "virtaal.ui"], root='PreferencesDlg', domain="virtaal")
+    dialog = gui.get_object('PreferencesDlg')
+    label = gui.get_object('label19')
+    natural_width = dialog.get_preferred_width().natural_width
+
+    label.set_text(label.get_text() * 3)
+
+    assert dialog.get_preferred_width().natural_width == natural_width
+
+
 def test_plugins_page_scrolled_window_is_not_focusable():
     # The .ui file marks it focusable, which swallows Tab/Down meant
     # for the list inside it.

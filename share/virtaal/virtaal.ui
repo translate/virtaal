@@ -2835,7 +2835,7 @@ If you are translating from English to French then French would be your translat
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
+                    <property name="top_attach">2</property>
                   </packing>
                 </child>
                 <child>
@@ -2866,6 +2866,20 @@ If you are translating from English to French then French would be your translat
                     <property name="secondary_icon_sensitive">True</property>
                     <property name="hexpand">True</property>
                     <property name="vexpand">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="lbl_url_name_error">
+                    <property name="can_focus">False</property>
+                    <property name="no_show_all">True</property>
+                    <property name="xalign">0</property>
+                    <property name="wrap">True</property>
+                    <property name="margin-start">2</property>
+                    <property name="margin-end">2</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>

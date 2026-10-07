@@ -12,7 +12,7 @@ from urllib import parse
 def _slugify(display_name):
     """A stable id derived from a user's own typed name, so they're
         never asked for one directly - "My Site" -> "my_site"."""
-    return display_name.strip().lower().replace(' ', '_')
+    return '_'.join(display_name.split()).lower()
 
 
 # Reserved for built-in look-ups, whose name and URL always come from
@@ -316,7 +316,7 @@ class WebLookupConfigDialog:
         cell.set_sensitive(not is_builtin(model[it][self.COL_DATA]))
 
     def _on_add_clicked(self, button):
-        url = self.add_dialog.run()
+        url = self.add_dialog.run({u['id'] for u in self.urldata if 'id' in u})
         if url is None:
             return
         self.lst_urls.append((url['enabled'], url['display_name'], url['url'], url['quoted'], url))
@@ -355,6 +355,7 @@ class WebLookupAddDialog:
             domain='virtaal'
         )
         self._get_widgets()
+        self.taken_ids = set()
 
         if isinstance(parent, Gtk.Window):
             self.dialog.set_transient_for(parent)
@@ -364,7 +365,7 @@ class WebLookupAddDialog:
         self.ent_url.connect('changed', self._on_field_changed)
 
     def _get_widgets(self):
-        widget_names = ('btn_url_cancel', 'btn_url_ok', 'cbtn_url_quote', 'ent_url_name', 'ent_url')
+        widget_names = ('btn_url_cancel', 'btn_url_ok', 'cbtn_url_quote', 'ent_url_name', 'ent_url', 'lbl_url_name_error')
 
         for name in widget_names:
             setattr(self, name, self.gui.get_object(name))
@@ -373,7 +374,10 @@ class WebLookupAddDialog:
 
 
     # METHODS #
-    def run(self):
+    def run(self, taken_ids=()):
+        """@param taken_ids: Ids already in use - a name deriving one of
+            these (or a reserved built-in one) can't be added."""
+        self.taken_ids = set(taken_ids)
         self.ent_url.set_text('')
         self.ent_url_name.set_text('')
         self.cbtn_url_quote.set_active(False)
@@ -407,6 +411,17 @@ class WebLookupAddDialog:
         self._update_ok_sensitivity()
 
     def _update_ok_sensitivity(self):
+        error = self._name_error(_slugify(self.ent_url_name.get_text()))
+        self.lbl_url_name_error.set_text(error)
+        self.lbl_url_name_error.set_visible(bool(error))
         self.btn_url_ok.set_sensitive(
-            bool(self.ent_url_name.get_text()) and bool(self.ent_url.get_text())
+            bool(self.ent_url_name.get_text().strip()) and bool(self.ent_url.get_text()) and not error
         )
+
+    def _name_error(self, url_id):
+        if url_id.startswith(BUILTIN_PREFIX):
+            #l10n: "virtaal-" is a literal prefix - leave it untranslated
+            return _('Names starting with "virtaal-" are reserved.')
+        if url_id in self.taken_ids:
+            return _('A web look-up with this name already exists.')
+        return ''

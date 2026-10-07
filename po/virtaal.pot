@@ -1428,6 +1428,15 @@ msgstr ""
 msgid "Quote Query"
 msgstr ""
 
+#. l10n: "virtaal-" is a literal prefix - leave it untranslated
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "Names starting with \"virtaal-\" are reserved."
+msgstr ""
+
+#: virtaal/plugins/lookup/models/weblookup.py
+msgid "A web look-up with this name already exists."
+msgstr ""
+
 #: virtaal/plugins/migration.py
 msgid "Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal."
 msgstr ""

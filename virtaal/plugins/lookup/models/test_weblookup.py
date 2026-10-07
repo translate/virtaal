@@ -43,7 +43,7 @@ def test_reopening_the_dialog_does_not_duplicate_button_handlers():
     calls = []
 
     class _FakeAddDialog:
-        def run(self):
+        def run(self, taken_ids=()):
             calls.append('add')
             return None
 
@@ -367,6 +367,51 @@ def test_remove_never_removes_a_builtin():
     dialog._on_remove_clicked(None)
 
     assert len(dialog.urldata) == 1
+
+
+def test_slugify_collapses_whitespace():
+    assert weblookup._slugify(' My   Site ') == 'my_site'
+
+
+@pytest.mark.parametrize('name, taken, ok', [
+    ('My Site', set(), True),
+    ('Virtaal-Google', set(), False),
+    ('bing ', {'bing'}, False),
+    ('My  site', {'my_site'}, False),
+    ('Google', {'virtaal-google'}, True),
+])
+def test_add_dialog_rejects_a_reserved_or_taken_name(monkeypatch, name, taken, ok):
+    monkeypatch.setattr(weblookup.GLib, 'idle_add', lambda func, *args: func(*args))
+    dialog = WebLookupAddDialog(parent=None)
+    seen = {}
+
+    def _type_and_confirm():
+        dialog.ent_url_name.set_text(name)
+        dialog.ent_url.set_text('http://example.com/?q=%(query)s')
+        seen['ok'] = dialog.btn_url_ok.get_sensitive()
+        seen['error'] = dialog.lbl_url_name_error.get_visible()
+        return Gtk.ResponseType.CANCEL
+    monkeypatch.setattr(dialog.dialog, 'run', _type_and_confirm)
+
+    dialog.run(taken)
+
+    assert seen == {'ok': ok, 'error': not ok}
+
+
+def test_config_dialog_passes_existing_ids_to_the_add_dialog():
+    dialog = WebLookupConfigDialog(parent=None)
+    dialog.urldata = [_builtin(), _custom()]
+    received = []
+
+    class _FakeAddDialog:
+        def run(self, taken_ids=()):
+            received.append(set(taken_ids))
+            return None
+
+    dialog.add_dialog = _FakeAddDialog()
+    dialog._on_add_clicked(None)
+
+    assert received == [{LookupModel.URLDATA[0]['id'], 'mine'}]
 
 
 def test_remove_removes_a_custom_entry():

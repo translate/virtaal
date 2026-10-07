@@ -11,7 +11,7 @@ from virtaal.common import pan_app
 from virtaal.support import qm_compat  # noqa: F401 - applies its patch on import
 
 from .basemodel import BaseModel
-from .langmodel import same_language
+from .langmodel import LanguageModel, same_language
 
 
 def fix_indexes(stats, valid_units=None):
@@ -92,6 +92,10 @@ class StoreModel(BaseModel):
     def set_target_language(self, langcode):
         if not same_language(self._trans_store.gettargetlanguage(), langcode):
             self._trans_store.settargetlanguage(langcode)
+            from translate.storage.poheader import poheader
+            lang = LanguageModel(langcode)
+            if isinstance(self._trans_store, poheader) and lang.plural:
+                self._trans_store.updateheaderplural(lang.nplurals, lang.plural)
 
     def get_store_type(self):
         return self._trans_store.Name
@@ -336,7 +340,8 @@ class StoreModel(BaseModel):
                 header_updates["X-Project-Style"] = project_code
             self._trans_store.updateheader(add=True, **header_updates)
 
-            plural = target_lang.plural
-            nplurals = target_lang.nplurals
-            if plural:
-                self._trans_store.updateheaderplural(nplurals, plural)
+            # A file's own equation for as many forms as the editor shows
+            # stays: its msgstr order follows that equation.
+            file_nplurals, file_plural = self._trans_store.getheaderplural()
+            if target_lang.plural and (file_plural is None or file_nplurals != str(target_lang.nplurals)):
+                self._trans_store.updateheaderplural(target_lang.nplurals, target_lang.plural)

@@ -32,6 +32,13 @@ ship through the release candidates and are only cut, into
 `po/LINGUAS-excluded`, by `po/update-linguas.py --cut-off <version>`
 when the final release is made.
 
+A new language also needs a Windows installer decision in
+`devsupport/packaging/windows/generate_installer_translations.py`:
+map it to an Inno Setup `.isl` vendored unmodified from
+jrsoftware/issrc (check its dialect - Inno's Occitan is Aranese), or
+list it in `NO_INNO_LANGUAGE`. The installer build and
+`virtaal/test_generate_installer_translations.py` fail otherwise.
+
 ## Coverage against the *current* pot, not the file's own header
 
 A submission's `POT-Creation-Date`/location-comment style can look

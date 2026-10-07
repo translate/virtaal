@@ -77,6 +77,28 @@ def test_coverage_counts_translated_messages_not_fuzzy_ones(linguas):
 
 
 @needs_gettext
+def test_standing_counts_strings_over_or_under_the_threshold(linguas):
+    assert linguas.standing(["de", "en_ZA", "vi"]) == ({"de": 0, "vi": -1}, 4)
+
+
+@needs_gettext
+def test_report_calls_out_who_could_make_it_and_who_could_slip(linguas, tmp_path, monkeypatch, capsys):
+    monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(tmp_path / "summary.md"))
+
+    assert _run(linguas, monkeypatch, "--report") == 0
+
+    out = capsys.readouterr().out
+    summary, _, details = out.partition("<details>")
+    assert "| Could make it | vi (1 string needed) |" in summary
+    assert "| Could slip | de (0 to spare) |" in summary
+    assert "| Further off | - |" in summary
+    assert "| de | 50% | +0 | could slip |" in details
+    assert "ach" not in out
+    assert "## Release threshold" in (tmp_path / "summary.md").read_text(encoding="utf-8")
+    assert (tmp_path / "LINGUAS").read_text(encoding="utf-8") == "de\n"
+
+
+@needs_gettext
 def test_cut_off_excludes_below_threshold_with_coverage_as_reason(linguas, tmp_path, monkeypatch):
     assert _run(linguas, monkeypatch, "--cut-off", "1.0.0") == 0
 

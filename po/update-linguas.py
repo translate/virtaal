@@ -35,6 +35,9 @@ LINGUAS = PO_DIR / 'LINGUAS'
 EXCLUDED = PO_DIR / 'LINGUAS-excluded'
 TEMPLATE = PO_DIR / 'virtaal.pot'
 THRESHOLD = 50
+# --report's bands, in strings: could make it, could slip.
+REACHABLE = 60
+AT_RISK = 20
 
 
 def excluded():
@@ -64,8 +67,8 @@ def _statistics(po):
             for n, kind in re.findall(rb'(\d+) (translated|fuzzy|untranslated)', result.stderr)}
 
 
-def coverage(po_path, total):
-    """Percentage of the template's messages po_path translates, as
+def translated(po_path):
+    """How many of the template's messages po_path translates, as
         msgmerge sees it."""
     with tempfile.TemporaryDirectory() as tmp:
         merged = os.path.join(tmp, 'merged.po')
@@ -75,14 +78,73 @@ def coverage(po_path, total):
             sys.exit('msgmerge failed: %s' % result.stderr.decode(errors='replace'))
         with open(merged, 'rb') as f:
             merged = f.read()
-    return 100 * _statistics(merged).get('translated', 0) / total
+    return _statistics(merged).get('translated', 0)
+
+
+def standing(langs):
+    """{lang: strings over (+) or under (-) THRESHOLD} of langs, English
+        variants aside, and the template's message count."""
+    total = sum(_statistics(TEMPLATE.read_bytes()).values())
+    needed = -(-THRESHOLD * total // 100)  # ceil: the fewest that reach it
+    return {lang: translated(PO_DIR / (lang + '.po')) - needed
+            for lang in langs if not lang.startswith('en_')}, total
 
 
 def below_threshold(langs):
     """{lang: percent} of langs, English variants aside, under THRESHOLD."""
-    total = sum(_statistics(TEMPLATE.read_bytes()).values())
-    percents = {lang: coverage(PO_DIR / (lang + '.po'), total) for lang in langs if not lang.startswith('en_')}
-    return {lang: percent for lang, percent in percents.items() if percent < THRESHOLD}
+    margins, total = standing(langs)
+    needed = -(-THRESHOLD * total // 100)
+    return {lang: 100 * (margin + needed) / total for lang, margin in margins.items() if margin < 0}
+
+
+def _named(langs, counts, unit):
+    """"lg (7 strings needed), cgg (11), bg and vi (23)": langs in order,
+        those sharing a count named together, unit only on the first."""
+    groups = []
+    for lang in langs:
+        if groups and groups[-1][1] == counts[lang]:
+            groups[-1][0].append(lang)
+        else:
+            groups.append(([lang], counts[lang]))
+    parts = []
+    for names, count in groups:
+        named = names[0] if len(names) == 1 else ', '.join(names[:-1]) + ' and ' + names[-1]
+        first = unit % count if count != 1 else unit.replace('strings', 'string') % count
+        parts.append('%s (%s)' % (named, first if not parts else count))
+    return ', '.join(parts) or '-'
+
+
+def report(langs):
+    """Markdown: who could make THRESHOLD and who could slip under it,
+        with every translation's numbers in a collapsible section."""
+    margins, total = standing(langs)
+    needed = -(-THRESHOLD * total // 100)
+    shortfall = {lang: -margin for lang, margin in margins.items()}
+
+    reach = sorted((lang for lang, m in margins.items() if -REACHABLE <= m < 0), key=lambda lang: -margins[lang])
+    slip = sorted((lang for lang, m in margins.items() if 0 <= m < AT_RISK), key=lambda lang: margins[lang])
+    far = sorted((lang for lang, m in margins.items() if m < -REACHABLE), key=lambda lang: -margins[lang])
+    group = dict.fromkeys(reach, 'could make it')
+    group.update(dict.fromkeys(slip, 'could slip'))
+    group.update(dict.fromkeys(far, 'further off'))
+
+    lines = ['## Release threshold', '',
+             'A final release needs %d of %d strings (%d%%, `po/update-linguas.py --cut-off`).'
+             % (needed, total, THRESHOLD), '',
+             '| Group | Languages |', '|---|---|',
+             '| Could make it | %s |' % _named(reach, shortfall, '%d strings needed'),
+             '| Could slip | %s |' % _named(slip, margins, '%d to spare'),
+             '| Further off | %s |' % _named(far, shortfall, 'needs %d'),
+             '', '<details><summary>Every shipped translation</summary>', '',
+             'Could make it: under the threshold by at most %d strings. Could slip: at most %d strings '
+             'over it - new strings in virtaal.pot dilute coverage until the rc1 string freeze. '
+             'Fuzzy translations don\'t count; English variants always ship.' % (REACHABLE, AT_RISK - 1), '',
+             '| Language | Coverage | Over (+) / under (-) | Group |', '|---|---|---|---|']
+    lines += ['| %s | %d%% | %+d | %s |' % (lang, 100 * (margins[lang] + needed) // total, margins[lang],
+                                           group.get(lang, 'safe'))
+              for lang in sorted(margins)]
+    lines += ['', '</details>', '']
+    return '\n'.join(lines)
 
 
 def cut_off(version):
@@ -100,7 +162,18 @@ def main():
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--check', action='store_true', help="report differences, don't write")
     group.add_argument('--cut-off', metavar='VERSION', help='exclude translations below the threshold')
+    group.add_argument('--report', action='store_true',
+                       help='where each shipped translation stands against the threshold (Markdown)')
     args = parser.parse_args()
+
+    if args.report:
+        skip = excluded()
+        text = report([lang for lang in catalogs() if lang not in skip])
+        print(text)
+        if os.environ.get('GITHUB_STEP_SUMMARY'):
+            with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as f:
+                f.write(text + '\n')
+        return 0
 
     if args.cut_off:
         cut_off(args.cut_off)

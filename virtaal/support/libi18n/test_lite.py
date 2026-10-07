@@ -6,6 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import gettext
+import os
 
 from virtaal.support.libi18n import lite
 
@@ -97,6 +98,41 @@ def test_mismatched_catalogs_flags_another_copy_at_our_destination():
     assert lite.mismatched_catalogs([ours, other], mo_files) == []
     assert lite.mismatched_catalogs([gtks, other], mo_files) == [
         ("share/locale/zu/LC_MESSAGES/gtk30.mo", gtks[1], "/repo/mo/zu/gtk30.mo")]
+
+
+def test_read_linguas_skips_comments_and_blank_lines(tmp_path):
+    (tmp_path / "LINGUAS").write_text("# shipped\naf\n\nzu  # Zulu\n", encoding="utf-8")
+
+    assert lite.read_linguas(tmp_path / "LINGUAS") == ["af", "zu"]
+
+
+def test_bundle_languages_adds_what_gettext_falls_back_to():
+    assert lite.bundle_languages(["pt_BR", "sr@latin", "de"]) == ["de", "pt", "pt_BR", "sr", "sr@latin"]
+
+
+def _dest(lang, domain):
+    return os.path.normpath("share/locale/%s/LC_MESSAGES/%s.mo" % (lang, domain))
+
+
+def test_expected_catalogs_follow_the_hosts_libraries_and_our_lite_catalogs(tmp_path, monkeypatch):
+    upstream = tmp_path / "gtk" / "share" / "locale"
+    (upstream / "de" / "LC_MESSAGES").mkdir(parents=True)
+    (upstream / "de" / "LC_MESSAGES" / "gtk30.mo").write_bytes(b"")
+    monkeypatch.setattr(lite, "library_locale_dir", lambda ns: str(upstream) if ns == "Gtk" else None)
+    mo_files = [("/repo/mo/zu/gtk30.mo", os.path.join("share", "locale", "zu", "LC_MESSAGES"))]
+
+    expected = lite.expected_catalogs(["de", "ff", "zu"], mo_files)
+
+    assert expected == {_dest("de", "virtaal"), _dest("ff", "virtaal"), _dest("zu", "virtaal"),
+                        _dest("de", "gtk30"), _dest("zu", "gtk30")}
+
+
+def test_missing_catalogs_lists_expected_destinations_not_bundled():
+    datas = [(_dest("de", "virtaal"), "/repo/mo/de/virtaal.mo", "DATA"),
+             (_dest("de", "gtk30"), "/opt/gtk/de/gtk30.mo", "DATA")]
+    expected = {_dest("de", "virtaal"), _dest("de", "gtk30"), _dest("zu", "virtaal"), _dest("de", "glib20")}
+
+    assert lite.missing_catalogs(datas, expected) == sorted([_dest("de", "glib20"), _dest("zu", "virtaal")])
 
 
 def test_library_locale_dir_is_none_for_a_missing_library():

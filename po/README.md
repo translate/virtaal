@@ -96,8 +96,8 @@ python devsupport/pseudo-translation/write_lite_templates.py --merge resolved-*.
 ```
 
 and to apply the rule above against the libraries' installed catalogs
-(also updating `LINGUAS-lite`, the lite catalogs that translate
-anything, for the languages in `LINGUAS`):
+(also updating `LINGUAS-lite`, the lite catalogs that fill a gap - translate
+a message the library doesn't - for the languages in `LINGUAS`):
 
 ```sh
 python devsupport/pseudo-translation/update_lite_catalogs.py gtk30 glib20 gtkspell3 gtk-mac-integration

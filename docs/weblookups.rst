@@ -96,50 +96,50 @@ Wiktionary
 dict.org
 --------
 
-- `dict.org <http://dict.org/>`_
+- `dict.org <https://dict.org/>`_
 - quote: no
 
 ::
 
-    http://www.dict.org/bin/Dict?Form=Dict2&Database=*&Query=%(query)s
+    https://www.dict.org/bin/Dict?Form=Dict2&Database=*&Query=%(query)s
 
 .. _weblookups#thefreedict:
 
 TheFreeDict
 -----------
 
-- `TheFreeDict <http://www.thefreedictionary.com/>`_
+- `TheFreeDict <https://www.thefreedictionary.com/>`_
 - quote: no
 
 ::
 
-    http://www.thefreedictionary.com/%(query)s
+    https://www.thefreedictionary.com/%(query)s
 
 .. _weblookups#yourdictionary.com:
 
 YourDictionary.com
 ------------------
 
-- `YourDictionary.com <http://www.yourdictionary.com/>`_
+- `YourDictionary.com <https://www.yourdictionary.com/>`_
 - language: English
 - quote: no
 
 ::
 
-    http://www.yourdictionary.com/%(query)s
+    https://www.yourdictionary.com/%(query)s
 
 .. _weblookups#google_translate:
 
 Google Translate
 ----------------
 
-- `Google Translate <http://translate.google.com/>`_
+- `Google Translate <https://translate.google.com/>`_
 - language: various
 - quote: no
 
 ::
 
-    http://translate.google.com/?sl=%(querylang)s&tl=%(nonquerylang)s&text=%(query)s
+    https://translate.google.com/?sl=%(querylang)s&tl=%(nonquerylang)s&text=%(query)s
 
 .. _weblookups#general:
 
@@ -155,9 +155,8 @@ the query will ask the correct language version of Wikipedia.
 Wikipedia
 ---------
 
-The `Wikipedia <https://wikipedia.org>`_ encyclopaedia provides over 3 million
-English articles for you to query.  The query will also work on any of the many
-Wikipedia in other language encyclopaedias.
+The `Wikipedia <https://wikipedia.org>`_ encyclopaedia, queried in the
+language of the selected text.
 
 - quote: no
 
@@ -170,50 +169,43 @@ Wikipedia in other language encyclopaedias.
 WordNet
 -------
 
-- `WordNet <http://wordnet.princeton.edu/>`_
+- `WordNet <https://wordnet.princeton.edu/>`_
 - quote: no
 
 ::
 
-    http://wordnetweb.princeton.edu/perl/webwn?s=%(query)s&sub=Search+WordNet&o2=&o0=1&o7=&o5=&o1=1&o6=&o4=&o3=&h=
+    https://wordnetweb.princeton.edu/perl/webwn?s=%(query)s&sub=Search+WordNet&o2=&o0=1&o7=&o5=&o1=1&o6=&o4=&o3=&h=
 
 .. _weblookups#termium:
 
 Termium
 -------
 
-- `Termium <http://www.btb.termiumplus.gc.ca/>`_
+- `Termium <https://www.btb.termiumplus.gc.ca/>`_
 - quote: no
 
 ::
 
-    http://btb.termiumplus.gc.ca/tpv2alpha/alpha-eng.html?lang=eng&i=1&srchtxt=%(query)s&index=ent&go=Find
+    https://btb.termiumplus.gc.ca/tpv2alpha/alpha-eng.html?lang=eng&i=1&srchtxt=%(query)s&index=ent&go=Find
 
-.. _weblookups#microsoft_terminology:
+.. _weblookups#termic:
 
-Microsoft Terminology
----------------------
+termic
+------
 
-The Microsoft website contains information on a lot of their terms and
-translations. It is not currently possible to define a single URL that will
-work for all languages, since the language codes their site expects should
-contain a country code in addition to the language code, which is not usually
-the case in Virtaal. But it should still be easy to write a URL for your
-language specifically. Here are a few examples for different languages. Note
-how a country code is always added to the language code at the end of the URL.
-
+- `termic <https://termic.me/>`_ searches Microsoft's terminology and
+  translation memories.
+- language: various
 - quote: no
 
-Afrikaans ::
+termic needs a language code with a country, such as ``fr_fr``, which Virtaal
+doesn't provide, so write the target language into the URL yourself. English
+to French::
 
-    http://www.microsoft.com/Language/en-US/Search.aspx?sString=%(query)s&langID=af-za
+    https://termic.me/?q=%(query)s&sl=en_us&tl=fr_fr
 
-French ::
-
-    http://www.microsoft.com/Language/en-US/Search.aspx?sString=%(query)s&langID=fr-fr
-
-Similarly use 'pt-pt' for (Iberian) Portuguese, 'pt-br' for Brazilian
-Portuguese, 'sw-TZ' for Swahili, etc.
+Similarly use ``pt_br`` for Brazilian Portuguese, ``de_de`` for German, and so
+on - termic's language menu lists the rest.
 
 .. _weblookups#language_specific:
 

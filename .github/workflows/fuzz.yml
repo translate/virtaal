@@ -44,7 +44,11 @@ jobs:
         run: |
           # A stale/broken package-index mirror snapshot happens often
           # enough on GitHub-hosted Ubuntu runners to just retry.
-          for i in 1 2 3; do sudo apt-get update && break || sleep 10; done
+          # A mirror can also stall rather than fail; bound each attempt so
+          # the retry gets a chance before the job timeout.
+          echo 'Acquire::Retries "3"; Acquire::http::Timeout "30"; Acquire::https::Timeout "30";' \
+            | sudo tee /etc/apt/apt.conf.d/99ci-timeouts >/dev/null
+          for i in 1 2 3; do timeout 120 sudo apt-get update && break || sleep 10; done
           sudo apt-get install -y \
             gdb \
             gir1.2-gtk-3.0 \

@@ -106,6 +106,8 @@ class UnitController(BaseController):
             method, never records another undo-able act."""
         self.current_unit._current_state = state
         self.current_unit._state_sticky = sticky
+        # Leaving the unit only commits its state when it's modified.
+        self.current_unit._modified = True
         self.view.update_state(self._unit_state_names[state])
         self.view.update_state_style(state)
 

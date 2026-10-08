@@ -298,3 +298,11 @@ def test_every_cli_option_is_documented_in_docs_cli_options_rst():
         f"bin/virtaal accepts {missing} but docs/cli_options.rst doesn't "
         "mention it - see #3777"
     )
+
+
+@pytest.mark.parametrize('option', ['--pseudo-translation', '--pseudo-translation-bidi',
+                                    '--pseudo-translation-source', '--profile'])
+def test_developer_options_are_accepted_but_left_out_of_help(option):
+    parser = cli.build_parser()
+    assert option not in parser.format_help()
+    assert option in parser._option_string_actions

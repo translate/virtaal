@@ -9,6 +9,7 @@ import functools
 import json
 import os
 import signal
+import socket
 import subprocess
 import sys
 import threading
@@ -27,8 +28,20 @@ def _start_server(db_path, port):
     run = functools.partial(app.rest.run, host='localhost', port=port, server='cheroot', quiet=True)
     thread = threading.Thread(target=run, daemon=True)
     thread.start()
-    time.sleep(0.5)  # give cheroot a moment to actually bind before the first request
+    _wait_for_port(port)
     return app
+
+
+def _wait_for_port(port, timeout=10):
+    """Wait until the server on C{port} accepts connections."""
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        try:
+            socket.create_connection(('localhost', port), timeout=1).close()
+            return
+        except OSError:
+            time.sleep(0.05)
+    pytest.fail('nothing accepted connections on port %d within %ds' % (port, timeout))
 
 
 def _request(port, method, path, data=None):
@@ -297,14 +310,8 @@ def test_main_serves_over_http_as_the_subprocess_localtm_spawns(tmp_path):
     ]
     proc = subprocess.Popen(command, env=os.environ.copy())
     try:
-        for _ in range(50):
-            try:
-                _request(port, 'PUT', '/tmserver/en/fr/unit/owl', json.dumps({'source': 'owl', 'target': 'hibou'}))
-                break
-            except (urllib.error.URLError, ConnectionError):
-                time.sleep(0.1)
-        else:
-            pytest.fail('tmserver subprocess never came up')
+        _wait_for_port(port)
+        _request(port, 'PUT', '/tmserver/en/fr/unit/owl', json.dumps({'source': 'owl', 'target': 'hibou'}))
 
         status, body = _request(port, 'GET', '/tmserver/en/fr/unit/owl')
 

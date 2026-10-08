@@ -44,6 +44,14 @@ FIXTURE = REPO_ROOT / "devsupport" / "screenshots" / "content" / "docs" / "quali
 # Run last: they replace or close the open file.
 LAST_ITEMS = ("mnu_tutorial", "mnu_close")
 SKIP_ITEMS = ("mnu_quit",)
+# Online sources make runs depend on the network; local TM, current file
+# and local terminology stay.
+OFFLINE_PLUGINS = """\
+[tm]
+disabled_models = _dummytm,remotetm,apertium,google_translate,moses,amagama
+[terminology]
+disabled_models = autoterm,pontoon
+"""
 MARKUP_RE = re.compile(r"<[^>]+>")
 
 
@@ -207,6 +215,8 @@ def run(output):
     from virtaal.main import Virtaal
 
     pan_app.settings.plugin_state["spellchecker"] = "enabled"
+    with open(os.path.join(pan_app.get_config_dir(), "plugins.ini"), "w", encoding="utf-8") as f:
+        f.write(OFFLINE_PLUGINS)
     force_light_theme()
 
     workdir = tempfile.mkdtemp(prefix="virtaal-harvest-")

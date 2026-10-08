@@ -13,6 +13,7 @@ from test_scaffolding import TestScaffolding
 from translate.storage import factory, workflow
 
 from virtaal.controllers.placeablescontroller import PlaceablesController
+from virtaal.views.theme import current_theme
 
 
 class TestUnitController(TestScaffolding):
@@ -239,6 +240,42 @@ class TestUnitController(TestScaffolding):
         view.load_unit(fuzzy_unit)
 
         assert calls and calls[-1] is not None
+
+    def _translated_unit(self):
+        from translate.storage import pypo
+        unit = pypo.pofile().addsourceunit("State style test string")
+        unit.target = "State style test string, translated"
+        self.unit_controller.load_unit(unit)
+        return unit
+
+    def test_picking_a_state_restyles_the_editor_straight_away(self, monkeypatch):
+        # The saved state, which load_unit() styles from, only changes when
+        # the unit is left.
+        self._translated_unit()
+        calls = []
+        monkeypatch.setattr(self.unit_controller.view, '_set_background', calls.append)
+
+        self.unit_controller.set_current_state(workflow.StateEnum.NEEDS_WORK, from_user=True)
+
+        assert calls == [current_theme['fuzzy_row_bg']]
+
+    def test_an_automatic_state_change_restyles_the_editor(self, monkeypatch):
+        self._translated_unit()
+        calls = []
+        monkeypatch.setattr(self.unit_controller.view, '_set_background', calls.append)
+
+        self.unit_controller.set_current_state(workflow.StateEnum.UNREVIEWED)
+
+        assert calls == [None]
+
+    def test_undoing_a_state_pick_restyles_the_editor(self, monkeypatch):
+        self._translated_unit()
+        calls = []
+        monkeypatch.setattr(self.unit_controller.view, '_set_background', calls.append)
+
+        self.unit_controller.restore_state(workflow.StateEnum.NEEDS_WORK, False)
+
+        assert calls == [current_theme['fuzzy_row_bg']]
 
     def test_loading_a_non_fuzzy_unit_clears_the_editor_background(self, monkeypatch):
         units = self.trans_store.getunits()

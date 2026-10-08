@@ -30,6 +30,7 @@ import re
 import shutil
 import sys
 import tempfile
+import traceback
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -308,17 +309,27 @@ def run(output):
         Gtk.main_quit()
 
     gen = driver()
+    failed = []
 
     def step():
+        # An exception reaching Virtaal's handler opens a crash dialog,
+        # which waits for input no headless run can give.
         try:
             next(gen)
         except StopIteration:
+            return GLib.SOURCE_REMOVE
+        except Exception:
+            traceback.print_exc()
+            failed.append(True)
+            Gtk.main_quit()
             return GLib.SOURCE_REMOVE
         return GLib.SOURCE_CONTINUE
 
     GLib.timeout_add(150, step)
     app.run()
     shutil.rmtree(workdir, ignore_errors=True)
+    if failed:
+        sys.exit("Harvest failed; nothing written")
 
     with open(output, "w", encoding="utf-8") as f:
         json.dump({"strings": harvest.strings}, f, ensure_ascii=False, indent=1)

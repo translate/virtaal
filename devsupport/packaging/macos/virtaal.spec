@@ -111,13 +111,18 @@ datas = [
 if _bundle_enchant:
     datas.append((str(ENCHANT_INTEL_DIR), "share/enchant_intel"))
 
+
+def _not_test(name):
+    leaf = name.rpartition(".")[2]
+    return not (leaf.startswith("test_") or leaf == "conftest")
+
 a = Analysis(  # noqa: F821
     [str(ROOT / "bin" / "virtaal")],
     pathex=[str(ROOT)],
     binaries=[],
     datas=datas,
     hiddenimports=(
-        collect_submodules("virtaal")
+        collect_submodules("virtaal", filter=_not_test)
         + collect_submodules("translate.storage")
         + (collect_submodules("enchant") if _bundle_enchant else [])
     ),

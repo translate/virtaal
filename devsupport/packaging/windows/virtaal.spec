@@ -164,6 +164,11 @@ if ENCHANT_DATA is not None and ENCHANT_DATA.is_dir():
             continue
         datas.append((str(p), str(Path("enchant/data") / p.relative_to(ENCHANT_DATA).parent)))
 
+
+def _not_test(name):
+    leaf = name.rpartition(".")[2]
+    return not (leaf.startswith("test_") or leaf == "conftest")
+
 a = Analysis(  # noqa: F821
     [str(ROOT / "bin" / "virtaal")],
     pathex=[str(ROOT)],
@@ -174,7 +179,7 @@ a = Analysis(  # noqa: F821
     # filtering above - see that file's own docstring.
     hookspath=[str(ROOT / "devsupport" / "packaging" / "windows" / "pyinstaller-hooks")],
     hiddenimports=(
-        collect_submodules("virtaal")
+        collect_submodules("virtaal", filter=_not_test)
         + collect_submodules("translate.storage")
         + collect_submodules("enchant")
     ),

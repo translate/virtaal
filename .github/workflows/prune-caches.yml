@@ -1,0 +1,43 @@
+name: Prune unreachable caches
+
+# A cache is only restorable from its own ref, its PR's base or the
+# default branch. Merge-queue branches never run again and closed PRs'
+# refs rarely do, so their caches just push useful ones out of the
+# repo's 10 GB quota.
+
+on:
+  schedule:
+    - cron: "41 3 * * *" # 03:41 UTC daily
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  pull-requests: read
+
+jobs:
+  prune:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Delete merge-queue and closed-PR caches
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          open=$(gh pr list --state open --limit 1000 --json number --jq '.[].number')
+          gh api --paginate "repos/$GH_REPO/actions/caches?per_page=100" \
+            --jq '.actions_caches[] | "\(.id) \(.size_in_bytes) \(.ref)"' |
+          while read -r id size ref; do
+            case $ref in
+              refs/heads/gh-readonly-queue/*) ;;
+              refs/pull/*)
+                pr=${ref#refs/pull/}
+                pr=${pr%%/*}
+                if grep -qx "$pr" <<<"$open"; then continue; fi
+                ;;
+              *) continue ;;
+            esac
+            echo "Deleting $ref ($((size / 1048576)) MB)"
+            gh api -X DELETE "repos/$GH_REPO/actions/caches/$id"
+          done

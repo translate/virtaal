@@ -12,6 +12,7 @@ The colors are kept as strings so that the can easily be interpolated into
 pango markup. A different solution is likely to be better in the long run."""
 
 from gi.repository import Gdk, Gtk
+from translate.storage.workflow import StateEnum
 
 INVERSE = False
 """Whether we are currently in an inverse type of theme (lite text on dark
@@ -100,6 +101,30 @@ _inverse_theme = {
 }
 
 current_theme = _default_theme.copy()
+
+# A unit's style by its workflow state: each entry covers states from its
+# lower StateEnum bound up to, not including, its upper one, and names the
+# theme key for each style property. States no entry covers get no style.
+STATE_STYLES = [
+    (StateEnum.NEEDS_WORK, StateEnum.UNREVIEWED, {'background': 'fuzzy_row_bg'}),
+]
+
+
+def state_style(state_n):
+    """The style for workflow state C{state_n}, as property -> colour."""
+    for low, high, style in STATE_STYLES:
+        if low <= state_n < high:
+            return {prop: current_theme[key] for prop, key in style.items()}
+    return {}
+
+
+def unit_style(unit):
+    """The style for C{unit}'s saved state. A format without workflow
+        states is styled as needing work when it's fuzzy."""
+    if unit.STATE:
+        return state_style(unit.get_state_n())
+    return state_style(StateEnum.NEEDS_WORK) if unit.isfuzzy() else {}
+
 
 def set_default():
     global INVERSE

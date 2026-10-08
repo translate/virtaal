@@ -168,11 +168,11 @@ def _blank_pixel(fuzzy, flags):
     """Paint into a fresh transparent surface and return its first
     pixel - non-zero means something was actually painted there."""
     renderer = StoreCellRenderer(None)
-    renderer.unit = SimpleNamespace(isfuzzy=lambda: fuzzy)
+    renderer.unit = SimpleNamespace(STATE={}, isfuzzy=lambda: fuzzy)
     surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, 10, 10)
     cr = cairo.Context(surface)
 
-    renderer._paint_fuzzy_background_if_selected(cr, _rectangle(), flags)
+    renderer._paint_state_background_if_selected(cr, _rectangle(), flags)
 
     surface.flush()
     return bytes(surface.get_data()[:4])
@@ -325,7 +325,7 @@ def _renderer_for_unit(source, target):
         ),
         _treeview=SimpleNamespace(mark_row_estimated=lambda unit: None, mark_row_measured_exactly=lambda unit: None),
     ))
-    renderer.unit = SimpleNamespace(isfuzzy=lambda: False, source=source, target=target)
+    renderer.unit = SimpleNamespace(STATE={}, isfuzzy=lambda: False, source=source, target=target)
     return renderer
 
 
@@ -355,7 +355,7 @@ def test_compute_cell_height_right_aligns_for_rtl():
 # _row_needs_exact_height() / _unit_index() - the estimate/exact split #
 
 def _fake_unit():
-    return SimpleNamespace(isfuzzy=lambda: False)
+    return SimpleNamespace(STATE={}, isfuzzy=lambda: False)
 
 
 def _fake_treeview(visible_start, visible_end, model=None):
@@ -506,7 +506,7 @@ def _renderer_for_bulk_store(store, index, visible_start=0, visible_end=5):
 
 
 def test_compute_cell_height_uses_the_cheap_estimate_far_outside_the_viewport():
-    store = [SimpleNamespace(isfuzzy=lambda: False, source=f's{i}', target=f't{i}') for i in range(200)]
+    store = [SimpleNamespace(STATE={}, isfuzzy=lambda: False, source=f's{i}', target=f't{i}') for i in range(200)]
     renderer, marks = _renderer_for_bulk_store(store, index=100)
     textview = Gtk.TextView()
 
@@ -519,7 +519,7 @@ def test_compute_cell_height_uses_the_cheap_estimate_far_outside_the_viewport():
 
 
 def test_compute_cell_height_uses_a_real_layout_within_the_viewport():
-    store = [SimpleNamespace(isfuzzy=lambda: False, source=f's{i}', target=f't{i}') for i in range(200)]
+    store = [SimpleNamespace(STATE={}, isfuzzy=lambda: False, source=f's{i}', target=f't{i}') for i in range(200)]
     renderer, marks = _renderer_for_bulk_store(store, index=2)
     textview = Gtk.TextView()
 
@@ -632,7 +632,7 @@ def _renderer_with_view(is_resizing=False):
         ),
     )
     renderer = StoreCellRenderer(view)
-    renderer.unit = SimpleNamespace(isfuzzy=lambda: False, source='src', target='tgt')
+    renderer.unit = SimpleNamespace(STATE={}, isfuzzy=lambda: False, source='src', target='tgt')
     return renderer
 
 
@@ -722,7 +722,7 @@ def test_set_unit_clears_the_cached_height():
     renderer = StoreCellRenderer(None)
     renderer._cached_height = 999
 
-    renderer.unit = SimpleNamespace(isfuzzy=lambda: False)
+    renderer.unit = SimpleNamespace(STATE={}, isfuzzy=lambda: False)
 
     assert renderer._cached_height is None
 
@@ -730,16 +730,16 @@ def test_set_unit_clears_the_cached_height():
 def test_set_unit_marks_the_cell_background_for_a_fuzzy_unit():
     renderer = StoreCellRenderer(None)
 
-    renderer.unit = SimpleNamespace(isfuzzy=lambda: True)
+    renderer.unit = SimpleNamespace(STATE={}, isfuzzy=lambda: True)
 
     assert renderer.props.cell_background_set is True
 
 
 def test_set_unit_clears_the_cell_background_for_a_non_fuzzy_unit():
     renderer = StoreCellRenderer(None)
-    renderer.unit = SimpleNamespace(isfuzzy=lambda: True)
+    renderer.unit = SimpleNamespace(STATE={}, isfuzzy=lambda: True)
 
-    renderer.unit = SimpleNamespace(isfuzzy=lambda: False)
+    renderer.unit = SimpleNamespace(STATE={}, isfuzzy=lambda: False)
 
     assert renderer.props.cell_background_set is False
 
@@ -785,7 +785,7 @@ def test_do_render_forces_a_real_layout_for_a_row_do_get_size_only_estimated(mon
     monkeypatch.setattr(
         Gtk, 'render_layout',
         lambda context, cr, x, y, layout: paints.append(layout))
-    store = [SimpleNamespace(isfuzzy=lambda: False, source=f's{i}', target=f't{i}') for i in range(200)]
+    store = [SimpleNamespace(STATE={}, isfuzzy=lambda: False, source=f's{i}', target=f't{i}') for i in range(200)]
     renderer, _marks = _renderer_for_bulk_store(store, index=100)  # outside the fake viewport
     widget = _toplevel_widget()
 

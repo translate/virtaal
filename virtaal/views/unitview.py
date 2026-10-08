@@ -18,7 +18,7 @@ from virtaal.common.platform import platform
 
 from . import rendering
 from .baseview import BaseView
-from .theme import current_theme
+from .theme import unit_style
 from .widgets.listnav import ListNavigator
 from .widgets.textbox import TextBox
 
@@ -303,7 +303,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         #logging.debug('emit("target-focused", focused_target_n=%d)' % (self._focused_target_n))
         self.emit('target-focused', self._focused_target_n)
 
-    def _set_fuzzy_background(self, color):
+    def _set_background(self, color):
         """Highlight (or clear, if C{color} is C{None}) this unit's
             background - override_background_color() is deprecated."""
         style = self.get_style_context()
@@ -332,10 +332,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             src.select_elem(elem=None)
 
         self.unit = unit
-        if unit.isfuzzy():
-            self._set_fuzzy_background(current_theme['fuzzy_row_bg'])
-        else:
-            self._set_fuzzy_background(None)
+        self._set_background(unit_style(unit).get('background'))
         self.disable_signals(['modified', 'insert-text', 'delete-text'])
         self._update_editor_gui()
         self.enable_signals(['modified', 'insert-text', 'delete-text'])

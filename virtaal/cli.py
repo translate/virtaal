@@ -94,13 +94,11 @@ def build_parser():
                          help=_("enable debugging features"))
     pseudo_group = parser.add_mutually_exclusive_group()
     pseudo_group.add_argument("--pseudo-translation", dest="pseudo_translation", action="store_true", default=False,
-                         help=_("use a synthetic pseudo-translation for every UI string "
-                                 "(see devsupport/pseudo-translation/generate_pseudo_translation.py)"))
-    pseudo_group.add_argument("--pseudo-translation-bidi", dest="pseudo_translation_bidi", action="store_true", default=False,
-                         help=_("like --pseudo-translation, but also simulates a right-to-left UI layout"))
-    pseudo_group.add_argument("--pseudo-translation-source", dest="pseudo_translation_source", action="store_true", default=False,
-                         help=_("like --pseudo-translation, but prefixes every string with the catalog "
-                                 "it comes from (e.g. \"vt:\" for Virtaal's own, \"gtk:\" for GTK's)"))
+                              help=argparse.SUPPRESS)
+    pseudo_group.add_argument("--pseudo-translation-bidi", dest="pseudo_translation_bidi", action="store_true",
+                              default=False, help=argparse.SUPPRESS)
+    pseudo_group.add_argument("--pseudo-translation-source", dest="pseudo_translation_source", action="store_true",
+                              default=False, help=argparse.SUPPRESS)
     pseudo_group.add_argument("--lang", dest="lang", metavar=_("LANG"),
                          help=_("override the UI language for this run (e.g. \"fr\"; "
                                  "\"en\" for the untranslated source strings; \"system\" "
@@ -108,9 +106,7 @@ def build_parser():
                                  "Preferences setting"))
     # Profiling does not make sense in packaged versions.  Set to True to disable profiling.
     if not packaged:
-        parser.add_argument("-P", "--profile", dest="profile", metavar=_("PROFILE"),
-                             #l10n: 'profiling' refers to performance testing
-                             help=_("perform profiling, storing the result to the supplied filename."))
+        parser.add_argument("-P", "--profile", dest="profile", help=argparse.SUPPRESS)
     # nargs='?' makes this genuinely optional and means argparse itself
     # rejects more than one positional argument (with its own
     # "unrecognized arguments" error).

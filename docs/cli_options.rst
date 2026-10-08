@@ -36,6 +36,24 @@ from the command line::
    Enable debugging features, and turn on debug-level logging (see
    :option:`--log`).
 
+.. option:: --lang <language>
+
+   Override the UI language for this run, without changing the saved
+   Preferences setting. Mutually exclusive with the pseudo-translation
+   options. ``<language>`` is one of:
+
+   - a language code (e.g. ``fr``) - Virtaal must have a translation for it
+     (see :doc:`localising_virtaal`).
+   - ``en`` - Virtaal's own untranslated source strings.
+   - ``system`` - the OS's own default locale, ignoring the saved
+     Preferences setting.
+
+Developer options
+=================
+
+These are for developing Virtaal itself, so :option:`--help` doesn't list
+them.
+
 .. option:: --pseudo-translation
 
    Wrap every translatable UI string in brackets (e.g. ``[Save]``), using a
@@ -56,18 +74,6 @@ from the command line::
    Virtaal's own, ``gtk:`` for GTK's, ``glib:`` for GLib's and ``iso:``
    for language and country names (e.g. ``gtk:_Open``). A string with no prefix isn't translatable. Mutually
    exclusive with the other pseudo-translation options and :option:`--lang`.
-
-.. option:: --lang <language>
-
-   Override the UI language for this run, without changing the saved
-   Preferences setting. Mutually exclusive with the pseudo-translation
-   options. ``<language>`` is one of:
-
-   - a language code (e.g. ``fr``) - Virtaal must have a translation for it
-     (see :doc:`localising_virtaal`).
-   - ``en`` - Virtaal's own untranslated source strings.
-   - ``system`` - the OS's own default locale, ignoring the saved
-     Preferences setting.
 
 .. option:: -P <filename>, --profile <filename>
 

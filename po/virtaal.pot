@@ -725,22 +725,6 @@ msgid "enable debugging features"
 msgstr ""
 
 #: virtaal/cli.py
-msgid ""
-"use a synthetic pseudo-translation for every UI string (see devsupport/"
-"pseudo-translation/generate_pseudo_translation.py)"
-msgstr ""
-
-#: virtaal/cli.py
-msgid "like --pseudo-translation, but also simulates a right-to-left UI layout"
-msgstr ""
-
-#: virtaal/cli.py
-msgid ""
-"like --pseudo-translation, but prefixes every string with the catalog it "
-"comes from (e.g. \"vt:\" for Virtaal's own, \"gtk:\" for GTK's)"
-msgstr ""
-
-#: virtaal/cli.py
 msgid "LANG"
 msgstr ""
 
@@ -749,15 +733,6 @@ msgid ""
 "override the UI language for this run (e.g. \"fr\"; \"en\" for the "
 "untranslated source strings; \"system\" for the OS's own default), without "
 "changing the saved Preferences setting"
-msgstr ""
-
-#: virtaal/cli.py
-msgid "PROFILE"
-msgstr ""
-
-#. l10n: 'profiling' refers to performance testing
-#: virtaal/cli.py
-msgid "perform profiling, storing the result to the supplied filename."
 msgstr ""
 
 #: virtaal/cli.py

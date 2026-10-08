@@ -546,8 +546,7 @@ jobs:
         run: pip install .
 
       - name: Compile-check all Python files
-        run: |
-          Get-ChildItem -Recurse -Filter *.py | ForEach-Object { python -m py_compile $_.FullName }
+        run: python -m compileall -q .
 
       - name: Smoke test the GTK3 import
         # Cheap, fast canary isolating GTK3 DLL/typelib loading from

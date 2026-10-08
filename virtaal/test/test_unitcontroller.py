@@ -191,6 +191,21 @@ class TestUnitController(TestScaffolding):
         assert test_unit._state_sticky is True
         assert self.undo_controller.model.undo_stack == []
 
+    def test_a_restored_state_is_committed_when_the_unit_is_left(self):
+        # Undoing a state pick on a unit that was left and loaded again
+        # (Ctrl+Enter on the last unit reloads it): nothing else marks it
+        # modified, and only a modified unit's state is committed.
+        from translate.storage import pypo
+        fuzzy_unit = pypo.pofile().addsourceunit("Fuzzy test string")
+        fuzzy_unit.target = "Fuzzy test string, translated"
+        fuzzy_unit.markfuzzy(True)
+        self.unit_controller.load_unit(fuzzy_unit)
+
+        self.unit_controller.restore_state(workflow.StateEnum.UNREVIEWED, False)
+        self.unit_controller._unit_done(None, fuzzy_unit)
+
+        assert not fuzzy_unit.isfuzzy()
+
     def test_correct_empty_state_attaches_state_after_to_the_undo_entry(self):
         # translate/virtaal#1886: the text-change entry an edit already
         # pushed must learn what the automatic correction changed the

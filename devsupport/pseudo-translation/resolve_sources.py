@@ -10,17 +10,18 @@
 msgids they came from, using the pseudo-source catalogs
 generate_pseudo_translation.py wrote.
 
-A tag (gtk:, glib:, spell:, mac:, iso:, or gtk!: and so on for a
+A tag (vt:, gtk:, glib:, spell:, mac:, iso:, or gtk!: and so on for a
 message its lite template lacks) marks where a translated message starts; the
 msgid of that domain with the most literal text matching there - printf
 conversions as wildcards, ending at a word boundary - is the one shown. Text with a
 tag but no matching msgid is reported as unresolved.
 
-Writes JSON: {domain: [{"original", "screens", "within"}, ...],
+Writes JSON: {domain: [{"original", "screens", "within", "shown"}, ...],
 "unresolved": [...]}, with "original" as stored in a .mo file (msgctxt
 before \\x04, msgid_plural after \\0). Strings only ever seen inside
 GTK's own file chooser are flagged by "within" ("FileChooser"): Windows and macOS show
-the OS's file dialog instead.
+the OS's file dialog instead. "shown" is false for a message only ever
+seen in a hidden widget.
 """
 
 import argparse
@@ -33,7 +34,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 # iso: covers both language and country names.
-DOMAINS = {"gtk30": "gtk:", "glib20": "glib:", "gtkspell3": "spell:", "gtk-mac-integration": "mac:", "iso639-3": "iso:", "iso3166-1": "iso:"}
+DOMAINS = {"virtaal": "vt:", "gtk30": "gtk:", "glib20": "glib:", "gtkspell3": "spell:", "gtk-mac-integration": "mac:", "iso639-3": "iso:", "iso3166-1": "iso:"}
 TAG_RE = re.compile(r"(?:vt|gtk|glib|iso|spell|mac)!?:")
 # The harvest records labels without their Pango markup.
 MARKUP_RE = re.compile(r"<[^>]+>")
@@ -109,7 +110,7 @@ def resolve_text(text, catalogs):
 
 
 def resolve(harvest, catalogs):
-    seen = collections.defaultdict(lambda: {"screens": set(), "within": set(), "windows": set()})
+    seen = collections.defaultdict(lambda: {"screens": set(), "within": set(), "windows": set(), "shown": False})
     unresolved = set()
     for record in harvest["strings"]:
         for domain, original in resolve_text(record["text"], catalogs):
@@ -120,10 +121,12 @@ def resolve(harvest, catalogs):
             entry["screens"].add(record["screen"].split(" > ")[0])
             entry["within"].add(record.get("within") or "")
             entry["windows"].add(record.get("window") or "")
+            entry["shown"] = entry["shown"] or record.get("shown", True)
     result = collections.defaultdict(list)
     for (domain, original), entry in sorted(seen.items()):
         result[domain].append({"original": original, "screens": sorted(entry["screens"]),
-                               "within": sorted(entry["within"]), "windows": sorted(entry["windows"])})
+                               "within": sorted(entry["within"]), "windows": sorted(entry["windows"]),
+                               "shown": entry["shown"]})
     result["unresolved"] = sorted(unresolved)
     return result
 

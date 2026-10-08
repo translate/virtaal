@@ -96,6 +96,24 @@ def test_load_catalogs_matches_msgids_without_their_markup(resolve, tmp_path):
     assert resolve.resolve_text("spell:(no suggestions)", catalogs) == [("gtkspell3", "<i>(no suggestions)</i>")]
 
 
+def test_resolve_text_resolves_virtaals_own_strings(resolve):
+    assert resolve.resolve_text("vt:_Find…", _catalogs(resolve, "virtaal", ["_Find…"])) == [("virtaal", "_Find…")]
+
+
+@pytest.mark.parametrize("shown, expected", [
+    ([False], False),
+    ([False, True], True),
+])
+def test_resolve_marks_a_message_shown_if_any_sighting_was(resolve, shown, expected):
+    # A dialog built ahead of being opened is walked while still hidden.
+    harvest = {"strings": [{"text": "vt:Settings", "screen": "step %d" % i, "shown": s}
+                           for i, s in enumerate(shown)]}
+
+    result = resolve.resolve(harvest, _catalogs(resolve, "virtaal", ["Settings"]))
+
+    assert result["virtaal"][0]["shown"] is expected
+
+
 def test_resolve_text_reports_a_tag_nothing_matches(resolve):
     assert resolve.resolve_text("gtk:Unknown", _catalogs(resolve, "gtk30", ["_Save"])) == [("gtk30", None)]
 

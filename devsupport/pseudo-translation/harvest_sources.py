@@ -17,8 +17,10 @@ toplevel window - widgets, menus and submenus, tooltips, combo entries,
 column titles, window titles and accelerator labels. A dialog's run() returns Cancel at once
 instead of blocking; native file choosers and links don't open.
 
-Writes JSON: {"strings": [{"text", "screen", "widget"}, ...]}. See
-resolve_sources.py for mapping the tagged strings back to msgids.
+Writes JSON: {"strings": [{"text", "screen", "widget", "shown", ...}, ...]}.
+"shown" is false for text in a hidden widget, e.g. a dialog built ahead
+of being opened. See resolve_sources.py for mapping the tagged strings
+back to msgids.
 """
 
 import argparse
@@ -50,20 +52,22 @@ class Harvest:
         self.strings = []
         self.seen = set()
 
-    def add(self, text, screen, widget, within, window=""):
+    def add(self, text, screen, widget, within, window="", shown=True):
         if not text or not text.strip():
             return
         text = MARKUP_RE.sub("", text) if "<" in text else text
-        key = (text, screen)
+        key = (text, screen, shown)
         if key not in self.seen:
             self.seen.add(key)
             self.strings.append({"text": text, "screen": screen, "widget": type(widget).__name__,
-                                 "within": within, "window": window})
+                                 "within": within, "window": window, "shown": shown})
 
-    def walk(self, widget, screen, visited, within="", window=""):
+    def walk(self, widget, screen, visited, within="", window="", shown=True):
         """within: the nearest enclosing GTK-built composite that matters
             for where a string comes from, e.g. "FileChooser" (only shown on
-            Linux - Windows and macOS use the OS's own dialog)."""
+            Linux - Windows and macOS use the OS's own dialog).
+            shown: whether every widget above this one is visible. A
+            submenu counts as shown when its menu item is."""
         from gi.repository import Gtk
         # Keyed by id() but holding the widget: a PyGObject wrapper from
         # forall() is temporary, and once collected its id() can be
@@ -76,7 +80,8 @@ class Harvest:
                 within = composite.__name__
         if isinstance(widget, Gtk.Window) and not window:
             window = "%s %r" % (type(widget).__name__, widget.get_title())
-        add = lambda text: self.add(text, screen, widget, within, window)  # noqa: E731
+        shown = shown and (widget.get_visible() or isinstance(widget, Gtk.Menu))
+        add = lambda text: self.add(text, screen, widget, within, window, shown)  # noqa: E731
 
         if isinstance(widget, Gtk.Window):
             add(widget.get_title())
@@ -104,21 +109,25 @@ class Harvest:
         if isinstance(widget, Gtk.ShortcutsGroup):
             add(widget.get_property("title"))
         if isinstance(widget, Gtk.MenuItem) and widget.get_submenu() is not None:
-            self.walk(widget.get_submenu(), screen, visited, within, window)
+            self.walk(widget.get_submenu(), screen, visited, within, window, shown)
         for attached in Gtk.Menu.get_for_attach_widget(widget):
-            self.walk(attached, screen, visited, within, window)
+            self.walk(attached, screen, visited, within, window, shown and attached.get_visible())
         if isinstance(widget, Gtk.Container):
             children = []
             widget.forall(children.append)
             for child in children:
-                self.walk(child, screen, visited, within, window)
+                self.walk(child, screen, visited, within, window, shown)
 
     def walk_toplevels(self, screen, extra=()):
         """extra: widgets outside any toplevel, e.g. the menu bar macOS's
             native menu integration takes out of the main window."""
         from gi.repository import Gtk
+        # Visible windows first: a menu reached through its item counts as
+        # shown, but not through the hidden popup window that also holds it.
+        toplevels = Gtk.Window.list_toplevels()
         visited = {}
-        for widget in list(Gtk.Window.list_toplevels()) + list(extra):
+        for widget in ([w for w in toplevels if w.get_visible()] + list(extra)
+                       + [w for w in toplevels if not w.get_visible()]):
             self.walk(widget, screen, visited)
 
 

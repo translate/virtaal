@@ -98,6 +98,7 @@ class UnitController(BaseController):
             self.current_unit._state_sticky = True
         else:
             self.view.update_state(self._unit_state_names[newstate])
+        self.view.update_state_style(newstate)
 
     def restore_state(self, state, sticky):
         """Reapply a state/stickiness pair from an undo/redo of a
@@ -106,6 +107,7 @@ class UnitController(BaseController):
         self.current_unit._current_state = state
         self.current_unit._state_sticky = sticky
         self.view.update_state(self._unit_state_names[state])
+        self.view.update_state_style(state)
 
     def load_unit(self, unit):
         if self.current_unit and self.current_unit is unit:

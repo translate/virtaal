@@ -18,7 +18,7 @@ from virtaal.common.platform import platform
 
 from . import rendering
 from .baseview import BaseView
-from .theme import unit_style
+from .theme import state_style, unit_style
 from .widgets.listnav import ListNavigator
 from .widgets.textbox import TextBox
 
@@ -739,6 +739,10 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
     def update_state(self, newstate):
         """Update it without emitting any signals or recreating anything."""
         self._widgets['state'].select_by_name(newstate)
+
+    def update_state_style(self, state_n):
+        """Style the unit for its current, not yet saved, workflow state."""
+        self._set_background(state_style(state_n).get('background'))
 
     # EVENT HANDLERS #
     def _on_state_changed(self, listnav, newstate):

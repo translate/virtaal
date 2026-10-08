@@ -32,11 +32,14 @@ pytest-xdist worker-crash risk, not this file's own concern), so don't
 expect them to show up in _seen_messages.
 """
 
+import builtins
 import gettext
+import json
 import os
 import subprocess
 import sys
 import tempfile
+import warnings
 from pathlib import Path
 
 import pytest
@@ -68,7 +71,20 @@ def _load_allowlist():
 
 def pytest_warning_recorded(warning_message, when, nodeid, location):
     if issubclass(warning_message.category, _WATCHED_CATEGORIES):
-        _seen_messages.add(str(warning_message.message))
+        message = str(warning_message.message)
+        _seen_messages.add(message)
+        path = os.environ.get(_REPORTS_ENV)
+        if path:
+            # An isolated subprocess hands its warnings back to the
+            # parent, which re-records them (see _run_group).
+            with open(path, "a", encoding="utf-8") as f:
+                f.write(json.dumps({
+                    "warning": message,
+                    "category": warning_message.category.__name__,
+                    "filename": warning_message.filename,
+                    "lineno": warning_message.lineno,
+                    "nodeid": nodeid,
+                }) + "\n")
 
 
 def _is_testscaffolding_subclass(cls):
@@ -85,15 +101,62 @@ def _is_testscaffolding_subclass(cls):
 
 
 # Leaked real toplevels crash an xdist worker natively on macOS (no
-# Python traceback); a fresh process per test avoids it.
+# Python traceback); a fresh process per file avoids it.
 _ISOLATED_FILES = {"test_popupwidgetbutton.py"}
 
+_CHILD_ENV = "_VIRTAAL_TESTSCAFFOLDING_ISOLATED"
+_REPORTS_ENV = "_VIRTAAL_ISOLATED_REPORTS"
 
-def _isolate(item):
+_config = None
+_isolated_reports = {}
+
+
+def _isolation_group(item):
+    """The tests that share one fresh subprocess on macOS: a whole
+    TestScaffolding class (setup_class builds its one MainController),
+    or a whole _ISOLATED_FILES file. None if the test runs in-process."""
+    path = item.nodeid.split("::", 1)[0]
     cls = getattr(item, "cls", None)
     if cls is not None and _is_testscaffolding_subclass(cls):
-        return True
-    return item.path.name in _ISOLATED_FILES
+        return f"{path}::{cls.__name__}"
+    if item.path.name in _ISOLATED_FILES:
+        return path
+    return None
+
+
+def _child_nodeid(item, group):
+    # Under `--dist loadgroup` xdist appends "@<group>" to the nodeid.
+    return item.nodeid.removesuffix("@" + group)
+
+
+def _isolating():
+    return sys.platform == "darwin" and not os.environ.get(_CHILD_ENV)
+
+
+def pytest_configure(config):
+    global _config
+    _config = config
+
+
+@pytest.hookimpl(tryfirst=True)
+def pytest_collection_modifyitems(session, config, items):
+    if not _isolating():
+        return
+    for item in items:
+        group = _isolation_group(item)
+        if group is not None:
+            # Keeps a group on one worker under `--dist loadgroup`;
+            # the subprocess enforces the per-test timeout itself.
+            item.add_marker(pytest.mark.xdist_group(group))
+            item.add_marker(pytest.mark.timeout(0))
+
+
+def pytest_runtest_logreport(report):
+    path = os.environ.get(_REPORTS_ENV)
+    if path:
+        data = _config.hook.pytest_report_to_serializable(config=_config, report=report)
+        with open(path, "a", encoding="utf-8") as f:
+            f.write(json.dumps({"report": data}) + "\n")
 
 
 def _make_report(item, when, passed, output=""):
@@ -108,6 +171,72 @@ def _make_report(item, when, passed, output=""):
     return runner.pytest_runtest_makereport(item, call)
 
 
+def _run_group(item, group):
+    """Run every collected test in `group` in one fresh pytest
+    subprocess, storing each test's own reports in _isolated_reports."""
+    members = [i for i in item.session.items if _isolation_group(i) == group]
+    nodeids = [_child_nodeid(i, group) for i in members]
+    # A per-invocation --basetemp, not pytest's shared default
+    # (/tmp/pytest-of-<user>/): concurrent xdist workers each spawning
+    # their own subprocess otherwise race on that shared root's
+    # pytest-current symlink retention/cleanup.
+    with tempfile.TemporaryDirectory(prefix="virtaal-testscaffolding-isolated-") as tmp:
+        reports_path = os.path.join(tmp, "reports.jsonl")
+        try:
+            proc = subprocess.run(
+                [
+                    sys.executable, "-m", "pytest",
+                    "-p", "no:cacheprovider",
+                    "--basetemp", os.path.join(tmp, "basetemp"),
+                    "-q", *nodeids,
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60 + 30 * len(nodeids),
+                cwd=str(Path(__file__).resolve().parent.parent),
+                env={**os.environ, _CHILD_ENV: "1", _REPORTS_ENV: reports_path},
+            )
+            output = proc.stdout + proc.stderr
+        except subprocess.TimeoutExpired as e:
+            output = f"{e}\n{e.stdout or ''}{e.stderr or ''}"
+        lines = []
+        if os.path.exists(reports_path):
+            with open(reports_path, encoding="utf-8") as f:
+                lines = [json.loads(line) for line in f]
+
+    by_nodeid = {}
+    for line in lines:
+        if "warning" in line:
+            category = getattr(builtins, line["category"])
+            item.ihook.pytest_warning_recorded.call_historic(kwargs={
+                "warning_message": warnings.WarningMessage(
+                    category(line["warning"]), category, line["filename"], line["lineno"]
+                ),
+                "when": "runtest",
+                "nodeid": line["nodeid"],
+                "location": None,
+            })
+            continue
+        report = item.config.hook.pytest_report_from_serializable(
+            config=item.config, data=line["report"]
+        )
+        if isinstance(report.longrepr, list):
+            # A skip's (path, lineno, reason); JSON turned it into a list.
+            report.longrepr = tuple(report.longrepr)
+        by_nodeid.setdefault(report.nodeid, []).append(report)
+    for member in members:
+        reports = by_nodeid.get(_child_nodeid(member, group), [])
+        for report in reports:
+            report.nodeid = member.nodeid
+        if not any(r.when == "teardown" for r in reports):
+            # The subprocess died or hung before this test finished.
+            reports = [
+                _make_report(member, when, when != "call", output)
+                for when in ("setup", "call", "teardown")
+            ]
+        _isolated_reports[member.nodeid] = reports
+
+
 @pytest.hookimpl(tryfirst=True)
 def pytest_runtest_protocol(item, nextitem):
     """TestScaffolding builds a real MainController(), which on macOS
@@ -116,46 +245,25 @@ def pytest_runtest_protocol(item, nextitem):
     Running two of these in the same process hangs (second
     construction fights the singleton); running them via
     pytest-xdist's normal in-process model or via fork-based isolation
-    (pytest-forked) both hit real, unfixable native crashes/hangs -
-    verified empirically, not assumed. A genuinely fresh subprocess
-    (re-exec, not fork) has no such inherited state, so each
-    TestScaffolding test runs as its own `pytest <nodeid>` child
-    process on macOS only; other platforms are unaffected. So does
-    every test in _ISOLATED_FILES."""
-    if sys.platform != "darwin" or os.environ.get("_VIRTAAL_TESTSCAFFOLDING_ISOLATED"):
+    (pytest-forked) both hit real, unfixable native crashes/hangs.
+    A genuinely fresh subprocess (re-exec, not fork) has no such
+    inherited state, so on macOS each TestScaffolding class - one
+    MainController, as setup_class builds it - runs as its own
+    `pytest` child process, as does each _ISOLATED_FILES file. The
+    first test of a group runs the whole group; the rest replay its
+    stored reports. Other platforms are unaffected."""
+    if not _isolating():
         return None
-    if not _isolate(item):
+    group = _isolation_group(item)
+    if group is None:
         return None
 
     ihook = item.ihook
     ihook.pytest_runtest_logstart(nodeid=item.nodeid, location=item.location)
-
-    # A per-invocation --basetemp, not pytest's shared default
-    # (/tmp/pytest-of-<user>/): concurrent xdist workers each spawning
-    # their own subprocess otherwise race on that shared root's
-    # pytest-current symlink retention/cleanup, surfacing as a rare
-    # FileNotFoundError in an unrelated test - confirmed live under
-    # -n auto on the full suite.
-    with tempfile.TemporaryDirectory(prefix="virtaal-testscaffolding-isolated-") as basetemp:
-        proc = subprocess.run(
-            [
-                sys.executable, "-m", "pytest",
-                "-p", "no:cacheprovider",
-                "--basetemp", basetemp,
-                "-q", item.nodeid,
-            ],
-            capture_output=True,
-            text=True,
-            cwd=str(Path(__file__).resolve().parent.parent),
-            env={**os.environ, "_VIRTAAL_TESTSCAFFOLDING_ISOLATED": "1"},
-        )
-    passed = proc.returncode == 0
-    output = proc.stdout + proc.stderr
-
-    for when in ("setup", "call", "teardown"):
-        report = _make_report(item, when, passed if when == "call" else True, output)
+    if item.nodeid not in _isolated_reports:
+        _run_group(item, group)
+    for report in _isolated_reports.pop(item.nodeid):
         ihook.pytest_runtest_logreport(report=report)
-
     item.session._setupstate.teardown_exact(nextitem)
     ihook.pytest_runtest_logfinish(nodeid=item.nodeid, location=item.location)
     return True

@@ -916,7 +916,7 @@ jobs:
         # A test whose worker crashes outright (an intermittent native GTK
         # crash on macOS) is rerun once; --rerun-except ".*" keeps every
         # ordinary failure from being rerun.
-        run: pytest -rvxs -n auto --reruns 1 --rerun-except ".*" --cov=virtaal --cov-report=xml virtaal
+        run: pytest -rvxs -n auto --dist loadgroup --reruns 1 --rerun-except ".*" --cov=virtaal --cov-report=xml virtaal
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7

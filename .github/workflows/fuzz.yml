@@ -41,26 +41,20 @@ jobs:
           python-version: "3.x"
 
       - name: Install system dependencies
-        run: |
-          # A stale/broken package-index mirror snapshot happens often
-          # enough on GitHub-hosted Ubuntu runners to just retry.
-          # A mirror can also stall rather than fail; bound each attempt so
-          # the retry gets a chance before the job timeout.
-          echo 'Acquire::Retries "3"; Acquire::http::Timeout "30"; Acquire::https::Timeout "30";' \
-            | sudo tee /etc/apt/apt.conf.d/99ci-timeouts >/dev/null
-          for i in 1 2 3; do timeout 120 sudo apt-get update && break || sleep 10; done
-          sudo apt-get install -y \
-            gdb \
-            gir1.2-gtk-3.0 \
-            gir1.2-gtkspell3-3.0 \
-            gobject-introspection \
-            libcairo2-dev \
-            libenchant-2-dev \
-            libgirepository-2.0-dev \
-            libglib2.0-dev \
-            libgnutls28-dev \
-            pkg-config \
-            python3-dev \
+        uses: $/.github/actions/apt-install
+        with:
+          packages: >-
+            gdb
+            gir1.2-gtk-3.0
+            gir1.2-gtkspell3-3.0
+            gobject-introspection
+            libcairo2-dev
+            libenchant-2-dev
+            libgirepository-2.0-dev
+            libglib2.0-dev
+            libgnutls28-dev
+            pkg-config
+            python3-dev
             xvfb
 
       - name: Install Python dependencies

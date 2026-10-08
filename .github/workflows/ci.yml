@@ -57,15 +57,9 @@ jobs:
       - name: Install system dependencies
         # gettext (xgettext/msgmerge/msgcat): po/check-pot-freshness.sh
         # needs these to check po/virtaal.pot against po/POTFILES.in.
-        run: |
-          # A stale/broken package-index mirror snapshot happens often
-          # enough on GitHub-hosted Ubuntu runners to just retry.
-          # A mirror can also stall rather than fail; bound each attempt so
-          # the retry gets a chance before the job timeout.
-          echo 'Acquire::Retries "3"; Acquire::http::Timeout "30"; Acquire::https::Timeout "30";' \
-            | sudo tee /etc/apt/apt.conf.d/99ci-timeouts >/dev/null
-          for i in 1 2 3; do timeout 120 sudo apt-get update && break || sleep 10; done
-          sudo apt-get install -y gettext
+        uses: $/.github/actions/apt-install
+        with:
+          packages: gettext
 
       - name: Install prek
         # Drop-in, Rust-based pre-commit replacement - same
@@ -110,15 +104,9 @@ jobs:
           cache-dependency-path: pyproject.toml
 
       - name: Install system dependencies
-        run: |
-          # A stale/broken package-index mirror snapshot happens often
-          # enough on GitHub-hosted Ubuntu runners to just retry.
-          # A mirror can also stall rather than fail; bound each attempt so
-          # the retry gets a chance before the job timeout.
-          echo 'Acquire::Retries "3"; Acquire::http::Timeout "30"; Acquire::https::Timeout "30";' \
-            | sudo tee /etc/apt/apt.conf.d/99ci-timeouts >/dev/null
-          for i in 1 2 3; do timeout 120 sudo apt-get update && break || sleep 10; done
-          sudo apt-get install -y gettext
+        uses: $/.github/actions/apt-install
+        with:
+          packages: gettext
 
       - name: Install Python dependencies
         run: |
@@ -174,32 +162,26 @@ jobs:
       - name: Install system dependencies
         # `test`'s package list plus the window manager, input driver,
         # image tools and fonts the screenshots need.
-        run: |
-          # A stale/broken package-index mirror snapshot happens often
-          # enough on GitHub-hosted Ubuntu runners to just retry.
-          # A mirror can also stall rather than fail; bound each attempt so
-          # the retry gets a chance before the job timeout.
-          echo 'Acquire::Retries "3"; Acquire::http::Timeout "30"; Acquire::https::Timeout "30";' \
-            | sudo tee /etc/apt/apt.conf.d/99ci-timeouts >/dev/null
-          for i in 1 2 3; do timeout 120 sudo apt-get update && break || sleep 10; done
-          sudo apt-get install -y \
-            at-spi2-core \
-            gir1.2-gtk-3.0 \
-            gir1.2-gtkspell3-3.0 \
-            gobject-introspection \
-            hunspell-en-us \
-            libcairo2-dev \
-            libcurl4-gnutls-dev \
-            libenchant-2-dev \
-            libgirepository-2.0-dev \
-            libglib2.0-dev \
-            libgnutls28-dev \
-            pkg-config \
-            python3-dev \
-            xvfb \
-            openbox \
-            xdotool \
-            imagemagick \
+        uses: $/.github/actions/apt-install
+        with:
+          packages: >-
+            at-spi2-core
+            gir1.2-gtk-3.0
+            gir1.2-gtkspell3-3.0
+            gobject-introspection
+            hunspell-en-us
+            libcairo2-dev
+            libcurl4-gnutls-dev
+            libenchant-2-dev
+            libgirepository-2.0-dev
+            libglib2.0-dev
+            libgnutls28-dev
+            pkg-config
+            python3-dev
+            xvfb
+            openbox
+            xdotool
+            imagemagick
             fonts-lohit-beng-bengali
 
       - name: Install Python dependencies
@@ -368,28 +350,22 @@ jobs:
           cache-dependency-path: pyproject.toml
 
       - name: Install system dependencies
-        run: |
-          # A stale/broken package-index mirror snapshot happens often
-          # enough on GitHub-hosted Ubuntu runners to just retry.
-          # A mirror can also stall rather than fail; bound each attempt so
-          # the retry gets a chance before the job timeout.
-          echo 'Acquire::Retries "3"; Acquire::http::Timeout "30"; Acquire::https::Timeout "30";' \
-            | sudo tee /etc/apt/apt.conf.d/99ci-timeouts >/dev/null
-          for i in 1 2 3; do timeout 120 sudo apt-get update && break || sleep 10; done
-          sudo apt-get install -y \
-            at-spi2-core \
-            gir1.2-gtk-3.0 \
-            gir1.2-gtkspell3-3.0 \
-            gobject-introspection \
-            hunspell-en-us \
-            libcairo2-dev \
-            libcurl4-gnutls-dev \
-            libenchant-2-dev \
-            libgirepository-2.0-dev \
-            libglib2.0-dev \
-            libgnutls28-dev \
-            pkg-config \
-            python3-dev \
+        uses: $/.github/actions/apt-install
+        with:
+          packages: >-
+            at-spi2-core
+            gir1.2-gtk-3.0
+            gir1.2-gtkspell3-3.0
+            gobject-introspection
+            hunspell-en-us
+            libcairo2-dev
+            libcurl4-gnutls-dev
+            libenchant-2-dev
+            libgirepository-2.0-dev
+            libglib2.0-dev
+            libgnutls28-dev
+            pkg-config
+            python3-dev
             xvfb
 
       - name: Install Python dependencies
@@ -1213,15 +1189,17 @@ jobs:
       - uses: actions/checkout@v7
 
       - name: Install flatpak and flatpak-builder
+        uses: $/.github/actions/apt-install
+        with:
+          packages: >-
+            flatpak
+            flatpak-builder
+            gettext
+            xvfb
+            appstream
+
+      - name: Add the Flathub remote
         run: |
-          # A stale/broken package-index mirror snapshot happens often
-          # enough on GitHub-hosted Ubuntu runners to just retry.
-          # A mirror can also stall rather than fail; bound each attempt so
-          # the retry gets a chance before the job timeout.
-          echo 'Acquire::Retries "3"; Acquire::http::Timeout "30"; Acquire::https::Timeout "30";' \
-            | sudo tee /etc/apt/apt.conf.d/99ci-timeouts >/dev/null
-          for i in 1 2 3; do timeout 120 sudo apt-get update && break || sleep 10; done
-          sudo apt-get install -y flatpak flatpak-builder gettext xvfb appstream
           flatpak remote-add --if-not-exists --user flathub \
             https://dl.flathub.org/repo/flathub.flatpakrepo
 

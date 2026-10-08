@@ -12,7 +12,7 @@ from translate.lang import factory
 
 from virtaal.common import pan_app
 from virtaal.views import markup, rendering
-from virtaal.views.theme import current_theme, str_to_rgba
+from virtaal.views.theme import current_theme, str_to_rgba, unit_style
 
 from .storetreemodel import StoreTreeModel
 
@@ -166,8 +166,9 @@ class StoreCellRenderer(Gtk.CellRenderer):
         return self.__unit
 
     def _set_unit(self, value):
-        if value.isfuzzy():
-            self.props.cell_background = current_theme['fuzzy_row_bg']
+        background = unit_style(value).get('background')
+        if background:
+            self.props.cell_background = background
             self.props.cell_background_set = True
         else:
             self.props.cell_background_set = False
@@ -254,17 +255,18 @@ class StoreCellRenderer(Gtk.CellRenderer):
             self._editor_modified_id = editor.connect("modified", self._on_modified)
         return editor
 
-    def _paint_fuzzy_background_if_selected(self, cr, background_area, flags):
+    def _paint_state_background_if_selected(self, cr, background_area, flags):
         """GTK only honours cell_background while a row isn't selected -
             the theme's own selection highlight otherwise unconditionally
-            replaces it, hiding the fuzzy indicator on exactly the rows a
+            replaces it, hiding the state's background on exactly the rows a
             translator is most likely to have selected."""
-        if self.unit is None or not self.unit.isfuzzy():
+        background = self.unit and unit_style(self.unit).get('background')
+        if not background:
             return
         if not flags & Gtk.CellRendererState.SELECTED:
             return
 
-        rgba = str_to_rgba(current_theme['fuzzy_row_bg'])
+        rgba = str_to_rgba(background)
         cr.save()
         cr.set_source_rgba(rgba.red, rgba.green, rgba.blue, rgba.alpha)
         cr.rectangle(background_area.x, background_area.y, background_area.width, background_area.height)
@@ -304,7 +306,7 @@ class StoreCellRenderer(Gtk.CellRenderer):
         cr.restore()
 
     def _clear_last_row_padding(self, cr, treeview, background_area):
-        """GTK fills the whole row, scroll padding too, with a fuzzy row's
+        """GTK fills the whole row, scroll padding too, with a styled row's
             background; the padding isn't part of the unit."""
         if not self.props.cell_background_set:
             return
@@ -325,7 +327,7 @@ class StoreCellRenderer(Gtk.CellRenderer):
         if background_area is not None:
             self._clear_last_row_padding(window, widget, background_area)
         if not self.editable:
-            self._paint_fuzzy_background_if_selected(window, background_area, flags)
+            self._paint_state_background_if_selected(window, background_area, flags)
         # Also for the editable row, under its editor.
         self._paint_gaps(window, widget, background_area)
         if self.editable:
@@ -344,7 +346,7 @@ class StoreCellRenderer(Gtk.CellRenderer):
             target_x += width/2
         else:
             source_x += (width/2) + 10
-        # NORMAL regardless of selection - _paint_fuzzy_background_if_selected()
+        # NORMAL regardless of selection - _paint_state_background_if_selected()
         # already handles the selected-row background, text shouldn't also
         # pick up a "selected" style on top of it.
         style_context = widget.get_style_context()

@@ -5,7 +5,11 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+from types import SimpleNamespace
+
+import pytest
 from gi.repository import Gtk
+from translate.storage.workflow import StateEnum
 
 from virtaal.views import theme
 from virtaal.views.theme import set_widget_bg_color, set_widget_fg_color
@@ -112,3 +116,40 @@ def test_update_style_detects_a_light_theme():
         assert theme.INVERSE is False
     finally:
         settings.set_property('gtk-application-prefer-dark-theme', original)
+
+
+@pytest.mark.parametrize('state_n, styled', [
+    (StateEnum.EMPTY, False),
+    (StateEnum.NEEDS_WORK, True),
+    (StateEnum.REJECTED, True),
+    (StateEnum.NEEDS_REVIEW, True),
+    (StateEnum.UNREVIEWED - 1, True),
+    (StateEnum.UNREVIEWED, False),
+    (StateEnum.FINAL, False),
+])
+def test_state_style_covers_the_states_needing_work(state_n, styled):
+    expected = {'background': theme.current_theme['fuzzy_row_bg']} if styled else {}
+
+    assert theme.state_style(state_n) == expected
+
+
+def test_state_style_follows_the_current_theme(monkeypatch):
+    monkeypatch.setitem(theme.current_theme, 'fuzzy_row_bg', '#123456')
+
+    assert theme.state_style(StateEnum.NEEDS_WORK) == {'background': '#123456'}
+
+
+def test_unit_style_uses_the_saved_state():
+    from translate.storage import pypo
+    unit = pypo.pofile().addsourceunit('Open')
+    unit.target = 'Maak oop'
+    unit.markfuzzy(True)
+
+    assert theme.unit_style(unit) == theme.state_style(StateEnum.NEEDS_WORK)
+
+
+@pytest.mark.parametrize('fuzzy, styled', [(True, True), (False, False)])
+def test_unit_style_of_a_format_without_states_follows_fuzzy(fuzzy, styled):
+    unit = SimpleNamespace(STATE={}, isfuzzy=lambda: fuzzy)
+
+    assert bool(theme.unit_style(unit)) is styled

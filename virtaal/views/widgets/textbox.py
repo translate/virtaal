@@ -101,6 +101,7 @@ class TextBox(Gtk.TextView):
         @param selector_textbox: The text box in which placeable selection
             (@see{select_elem}) should happen. Optional."""
         super().__init__()
+        self.set_input_hints(self.get_input_hints() | Gtk.InputHints.NO_EMOJI)
         self.buffer = self.get_buffer()
         self.elem = None
         self.main_controller = main_controller

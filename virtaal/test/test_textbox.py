@@ -396,6 +396,11 @@ class TestTextBox(TestScaffolding):
 
         assert textbox.selected_elem is None
 
+    def test_init_leaves_insert_emoji_out_of_the_context_menu(self):
+        textbox = TextBox(self.main_controller)
+
+        assert textbox.get_input_hints() & Gtk.InputHints.NO_EMOJI
+
     def test_get_stringelem_returns_none_without_an_elem(self):
         textbox = TextBox(self.main_controller)
 

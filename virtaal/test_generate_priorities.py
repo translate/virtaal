@@ -150,6 +150,19 @@ def test_drift_separates_level_one_from_the_rest(gen):
     assert other == [("virtaal", "Settings", "2", "3")]
 
 
+@pytest.mark.parametrize("key, shown", [
+    ("<b>%d</b>", "`<b>%d</b>`"),
+    ("Stock label\x04_Open", "`Stock label | _Open`"),
+    ("Save?\nYes", "`Save?\\nYes`"),
+    ("`code`", "`` `code` ``"),
+])
+def test_report_shows_messages_as_typed(gen, key, shown):
+    # The report is Markdown: markup in a message would render.
+    text, _annotations = gen.report([("virtaal", key, "1", "?")], [])
+
+    assert "- virtaal: %s (1 -> ?)" % shown in text
+
+
 def test_report_warns_only_for_level_one(gen):
     _text, annotations = gen.report([("virtaal", "New menu item", "?", "1")], [("virtaal", "Settings", "2", "3")])
 

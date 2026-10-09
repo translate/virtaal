@@ -6,6 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import importlib.util
+import json
 import os
 import shutil
 
@@ -149,3 +150,34 @@ def test_cut_off_counts_the_libraries_level_one_too(linguas, tmp_path, monkeypat
     assert _run(linguas, monkeypatch, "--cut-off", "1.1.0") == 0
 
     assert linguas.excluded()["de"] == "level 1 incomplete at 1.1.0 (1 core, 1 other strings missing)"
+
+
+@needs_gettext
+def test_progress_writes_each_translations_standing(linguas, tmp_path, monkeypatch):
+    (tmp_path / "virtaal.priorities.yaml").write_text(
+        "domains:\n  virtaal:\n    '1': [One]\n    1~: [Two, Three]\n    '2': [Four]\n"
+        "  gtk30:\n    '1': [_Open]\n", encoding="utf-8")
+    monkeypatch.setattr(linguas, "library_gaps", lambda: {"de": (1, 0)})
+
+    assert _run(linguas, monkeypatch, "--progress", str(tmp_path / "progress.json")) == 0
+
+    data = json.loads((tmp_path / "progress.json").read_text(encoding="utf-8"))
+    assert data["totals"] == {"core": 2, "rest": 2, "level2": 1, "level3": 0}
+    languages = {lang["code"]: lang for lang in data["languages"]}
+    assert set(languages) == {"de", "fr", "vi"}
+    assert languages["de"] == {
+        "code": "de", "name": "German", "endonym": "Deutsch",
+        "core_missing": 1, "rest_missing": 1, "needed": 1,
+        "level2_missing": 1, "level3_missing": 0, "ships": "50%",
+    }
+    assert (languages["fr"]["core_missing"], languages["fr"]["ships"]) == (1, "50%")
+
+
+@pytest.mark.parametrize("lang, names", [
+    ("pt_BR", ("Portuguese (Brazil)", "português (Brasil)")),
+    ("sr@latin", ("Serbian (Latin)", "srpski (latinica)")),
+    ("son", ("Songhai languages", "Songhai languages")),
+    ("xqz", ("xqz", "xqz")),
+])
+def test_names_come_from_cldr_then_iso_639(linguas, lang, names):
+    assert linguas._names(lang) == names

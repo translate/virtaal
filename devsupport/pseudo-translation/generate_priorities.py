@@ -279,8 +279,16 @@ def drift(committed, candidate):
     return level_one, other
 
 
+def _code(text):
+    """text as a Markdown code span, so markup in a message shows as
+    typed."""
+    fence = "`" * (max((len(run) for run in re.findall("`+", text)), default=0) + 1)
+    pad = " " if text.startswith("`") or text.endswith("`") else ""
+    return fence + pad + text + pad + fence
+
+
 def _describe(changes, limit=20):
-    lines = ["- %s: %s (%s -> %s)" % (domain, key.replace("\x04", " | "), before, after)
+    lines = ["- %s: %s (%s -> %s)" % (domain, _code(key.replace("\x04", " | ").replace("\n", "\\n")), before, after)
              for domain, key, before, after in changes[:limit]]
     if len(changes) > limit:
         lines.append("- ... and %d more" % (len(changes) - limit))

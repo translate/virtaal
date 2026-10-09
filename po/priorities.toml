@@ -83,6 +83,8 @@ msgids = [
     "Save",
     "Save As…",
     "The current file has been modified.\nDo you want to save your changes?",
+    # The current file's own label on its suggestions.
+    "This file",
 ]
 
 [[override]]

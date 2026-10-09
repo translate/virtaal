@@ -68,6 +68,17 @@ def test_library_locale_dir_is_none_for_a_namespace_this_platform_lacks(generato
     assert generator.library_locale_dir("GtkosxApplication") is None
 
 
+@pytest.mark.parametrize("code", ["pseudo", "pseudo-bidi", "fa", "pseudo-source", "pseudo-priority"])
+def test_a_pseudo_locale_keeps_urls_working(generator, tmp_path, code):
+    # A tagged or rewritten URL is no longer a link.
+    url = "https://docs.translatehouse.org/projects/localization-guide/en/"
+    mo = generator.generate_locale(code, str(tmp_path))
+    translation = gettext.GNUTranslations(open(mo, "rb"))
+
+    assert translation.gettext(url) == url
+    assert translation.gettext("Translation memory") != "Translation memory"
+
+
 def test_tag_messages_leaves_gtks_text_direction_untranslated(generator):
     # GTK reads this message's translation as the UI's text direction.
     assert generator.tag_messages(["default:LTR"], "gtk:") == {}

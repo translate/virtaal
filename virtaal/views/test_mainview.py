@@ -1219,6 +1219,20 @@ def test_setup_key_bindings_leaves_preferences_alone_on_mac(monkeypatch):
     assert not any(path == "<Virtaal>/Edit/Preferences" for path, key, mods in calls)
 
 
+@pytest.mark.parametrize('is_mac', [True, False])
+def test_setup_key_bindings_registers_close(monkeypatch, is_mac):
+    # Without it, Ctrl+W in a target is GTK's delete-word-backward
+    # instead of File > Close.
+    monkeypatch.setattr(platform, 'is_mac', is_mac)
+    calls = []
+    monkeypatch.setattr(Gtk.AccelMap, 'add_entry', lambda path, key, mods: calls.append((path, key, mods)))
+    view = _real_view_for_key_bindings()
+
+    MainView._setup_key_bindings(view)
+
+    assert ("<Virtaal>/File/Close", Gdk.KEY_w, Gdk.ModifierType.CONTROL_MASK) in calls
+
+
 @pytest.mark.parametrize('is_mac, mods', [
     (True, Gdk.ModifierType.META_MASK | Gdk.ModifierType.MOD2_MASK | Gdk.ModifierType.SHIFT_MASK),
     (False, Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK),

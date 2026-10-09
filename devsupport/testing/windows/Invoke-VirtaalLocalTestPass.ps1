@@ -188,6 +188,9 @@ function Invoke-VirtaalCheck {
         return
     }
     Write-Host "[TESTING] #$($script:currentCheckNumber) $Name"
+    # The app keeps its last few launches in these logs; a check's log
+    # assertions should only see its own.
+    Clear-VirtaalLogs
     $t = $null
     try {
         . $Body
@@ -444,6 +447,9 @@ if (-not $SkipCommitCheck) {
     }
     $expectedCommit = $gitOutput
     Write-Host "Verifying installed build matches checkout commit $expectedCommit ..."
+    # The app keeps its last few launches in these logs, across
+    # uninstalls; clear them so the only commit in them is this call's.
+    Clear-VirtaalLogs
     Start-Process -FilePath $install.ExePath -ArgumentList "--version" -Wait | Out-Null
     Start-Sleep -Milliseconds 500
     $verLogs = Get-VirtaalLogs

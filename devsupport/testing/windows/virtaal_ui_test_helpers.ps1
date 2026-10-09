@@ -446,6 +446,15 @@ function Write-VirtaalLogs {
     $logs.Stderr | ForEach-Object { Write-Host $_ }
 }
 
+function Clear-VirtaalLogs {
+    <#
+    .SYNOPSIS
+    Deletes the frozen build's stdout/stderr logs, so the next
+    Get-VirtaalLogs only sees launches made after this call.
+    #>
+    Remove-Item "$env:APPDATA\Virtaal\stdout_virtaal.log", "$env:APPDATA\Virtaal\stderr_virtaal.log" -Force -ErrorAction SilentlyContinue
+}
+
 function Assert-VirtaalLogsClean {
     <#
     .SYNOPSIS

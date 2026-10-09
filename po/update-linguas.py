@@ -10,13 +10,16 @@
     every po/<lang>.po not in po/LINGUAS-excluded - so a translation is
     only ever left out on purpose, with a reason.
 
-    --cut-off VERSION applies the release threshold, when cutting a final
-    release: each shipped translation covering less than THRESHOLD
-    percent of the current po/virtaal.pot's messages (fuzzy ones don't
-    count) is added to po/LINGUAS-excluded, its coverage as the reason.
-    English variants (en_*) are exempt - they only translate what
-    differs from the source. Translators get the release candidates
-    (rc1, then a translations-only rc2) to catch up first.
+    --cut-off VERSION applies the release rule, when cutting a final
+    release: a shipped translation needs all of level 1 in
+    po/virtaal.priorities.yaml - every core message, and all but
+    LEVEL_ONE_TOLERANCE of the rest (fuzzy ones don't count). Before
+    FIFTY_PERCENT_UNTIL, translating THRESHOLD percent of
+    po/virtaal.pot's messages also ships it. Any other is added to
+    po/LINGUAS-excluded, with what it's missing as the reason. English
+    variants (en_*) are exempt - they only translate what differs from
+    the source. Translators get the release candidates (rc1, then a
+    translations-only rc2) to catch up first.
 
     With --check, changes nothing: prints how po/LINGUAS differs from the
     rule and exits 1 if it does. Uses gettext's own tools only, so the
@@ -25,6 +28,7 @@
 import argparse
 import os
 import re
+import struct
 import subprocess
 import sys
 import tempfile
@@ -34,10 +38,13 @@ PO_DIR = Path(__file__).resolve().parent
 LINGUAS = PO_DIR / 'LINGUAS'
 EXCLUDED = PO_DIR / 'LINGUAS-excluded'
 TEMPLATE = PO_DIR / 'virtaal.pot'
+PRIORITIES = PO_DIR / 'virtaal.priorities.yaml'
+LEVEL_ONE_TOLERANCE = 3
+# THRESHOLD percent also ships a translation in releases before this.
+FIFTY_PERCENT_UNTIL = (1, 1)
 THRESHOLD = 50
-# --report's bands, in strings: could make it, could slip.
-REACHABLE = 60
-AT_RISK = 20
+# --report's band, in level-1 strings needed: could make it.
+REACHABLE = 30
 
 
 def excluded():
@@ -90,11 +97,86 @@ def standing(langs):
             for lang in langs if not lang.startswith('en_')}, total
 
 
-def below_threshold(langs):
-    """{lang: percent} of langs, English variants aside, under THRESHOLD."""
-    margins, total = standing(langs)
-    needed = -(-THRESHOLD * total // 100)
-    return {lang: 100 * (margin + needed) / total for lang, margin in margins.items() if margin < 0}
+def _mo_keys(mo):
+    """The messages a compiled catalog (bytes) has, as msgctxt\x04msgid
+        without any plural."""
+    order = '<' if struct.unpack('<I', mo[:4])[0] == 0x950412de else '>'
+    _revision, count, originals = struct.unpack(order + 'III', mo[4:16])
+    keys = set()
+    for i in range(count):
+        length, offset = struct.unpack(order + 'II', mo[originals + 8 * i:originals + 8 * i + 8])
+        key = mo[offset:offset + length].decode('utf-8').split('\0')[0]
+        if key:
+            keys.add(key)
+    return keys
+
+
+def _compiled_keys(*commands):
+    """The messages msgfmt keeps (translated, not fuzzy) of the catalog
+        the commands make, each run as command + [output]."""
+    with tempfile.TemporaryDirectory() as tmp:
+        path = os.path.join(tmp, 'messages.po')
+        for command in commands:
+            result = subprocess.run(command + [path], capture_output=True)
+            if result.returncode:
+                sys.exit('%s failed: %s' % (command[0], result.stderr.decode(errors='replace')))
+        mo = os.path.join(tmp, 'messages.mo')
+        result = subprocess.run(['msgfmt', '-o', mo, path], capture_output=True)
+        if result.returncode:
+            sys.exit('msgfmt failed: %s' % result.stderr.decode(errors='replace'))
+        with open(mo, 'rb') as f:
+            return _mo_keys(f.read())
+
+
+def template_keys():
+    return _compiled_keys(['msgen', str(TEMPLATE), '-o'])
+
+
+def translated_keys(po_path):
+    return _compiled_keys(['msgmerge', '--quiet', '--no-fuzzy-matching', str(po_path), str(TEMPLATE), '-o'])
+
+
+def level_one():
+    """(core, rest): virtaal.pot's level-1 messages, as
+        po/virtaal.priorities.yaml has them."""
+    import yaml
+    with open(PRIORITIES, encoding='utf-8') as f:
+        levels = yaml.safe_load(f)['domains']['virtaal']
+    current = template_keys()
+    return set(levels.get('1', [])) & current, set(levels.get('1~', [])) & current
+
+
+def readiness(langs):
+    """{lang: (core missing, rest missing, strings over (+) or under (-)
+        THRESHOLD)} of langs, English variants aside."""
+    core, rest = level_one()
+    margins, _total = standing(langs)
+    result = {}
+    for lang in margins:
+        have = translated_keys(PO_DIR / (lang + '.po'))
+        result[lang] = (len(core - have), len(rest - have), margins[lang])
+    return result
+
+
+def _needed(core_missing, rest_missing):
+    """The level-1 strings a translation still needs."""
+    return core_missing + max(0, rest_missing - LEVEL_ONE_TOLERANCE)
+
+
+def _version(version):
+    match = re.match(r'(\d+)\.(\d+)', version)
+    return (int(match.group(1)), int(match.group(2))) if match else (0, 0)
+
+
+def ships(state, version=None):
+    """Which rule ships a translation with readiness() state: 'level 1',
+        '50%' (before FIFTY_PERCENT_UNTIL), or None."""
+    core_missing, rest_missing, margin = state
+    if _needed(core_missing, rest_missing) == 0:
+        return 'level 1'
+    if margin >= 0 and (version is None or _version(version) < FIFTY_PERCENT_UNTIL):
+        return '50%'
+    return None
 
 
 def _named(langs, counts, unit):
@@ -115,55 +197,66 @@ def _named(langs, counts, unit):
 
 
 def report(langs):
-    """Markdown: who could make THRESHOLD and who could slip under it,
-        with every translation's numbers in a collapsible section."""
-    margins, total = standing(langs)
-    needed = -(-THRESHOLD * total // 100)
-    shortfall = {lang: -margin for lang, margin in margins.items()}
-
-    reach = sorted((lang for lang, m in margins.items() if -REACHABLE <= m < 0), key=lambda lang: -margins[lang])
-    slip = sorted((lang for lang, m in margins.items() if 0 <= m < AT_RISK), key=lambda lang: margins[lang])
-    far = sorted((lang for lang, m in margins.items() if m < -REACHABLE), key=lambda lang: -margins[lang])
-    group = dict.fromkeys(reach, 'could make it')
-    group.update(dict.fromkeys(slip, 'could slip'))
+    """Markdown: who has level 1, who ships on 50% only, who could make
+        level 1, with every translation's numbers in a collapsible
+        section."""
+    states = readiness(langs)
+    core, rest = level_one()
+    needed = {lang: _needed(c, r) for lang, (c, r, _m) in states.items()}
+    ready = sorted(lang for lang in states if ships(states[lang]) == 'level 1')
+    fifty = sorted((lang for lang in states if ships(states[lang]) == '50%'), key=lambda lang: needed[lang])
+    reach = sorted((lang for lang in states if not ships(states[lang]) and needed[lang] <= REACHABLE),
+                   key=lambda lang: needed[lang])
+    far = sorted((lang for lang in states if not ships(states[lang]) and needed[lang] > REACHABLE),
+                 key=lambda lang: needed[lang])
+    group = dict.fromkeys(ready, 'level 1')
+    group.update(dict.fromkeys(fifty, '50% only'))
+    group.update(dict.fromkeys(reach, 'could make it'))
     group.update(dict.fromkeys(far, 'further off'))
 
-    lines = ['## Release threshold', '',
-             'A final release needs %d of %d strings (%d%%, `po/update-linguas.py --cut-off`).'
-             % (needed, total, THRESHOLD), '',
+    lines = ['## Release readiness', '',
+             'A final release ships a translation with all of level 1: the %d core strings, and all but %d of'
+             ' the other %d (`po/update-linguas.py --cut-off`). Until %d.%d.0, translating %d%% of all strings'
+             ' also ships it.' % (len(core), LEVEL_ONE_TOLERANCE, len(rest), *FIFTY_PERCENT_UNTIL, THRESHOLD), '',
              '| Group | Languages |', '|---|---|',
-             '| Could make it | %s |' % _named(reach, shortfall, '%d strings needed'),
-             '| Could slip | %s |' % _named(slip, margins, '%d to spare'),
-             '| Further off | %s |' % _named(far, shortfall, 'needs %d'),
+             '| Level 1 | %s |' % (', '.join(ready) or '-'),
+             '| 50%% only, until %d.%d.0 | %s |' % (*FIFTY_PERCENT_UNTIL, _named(fifty, needed, '%d level-1 strings needed')),
+             '| Could make level 1 | %s |' % _named(reach, needed, '%d strings needed'),
+             '| Further off | %s |' % _named(far, needed, 'needs %d'),
              '', '<details><summary>Every shipped translation</summary>', '',
-             'Could make it: under the threshold by at most %d strings. Could slip: at most %d strings '
-             'over it - new strings in virtaal.pot dilute coverage until the rc1 string freeze. '
-             'Fuzzy translations don\'t count; English variants always ship.' % (REACHABLE, AT_RISK - 1), '',
-             '| Language | Coverage | Over (+) / under (-) | Group |', '|---|---|---|---|']
-    lines += ['| %s | %d%% | %+d | %s |' % (lang, 100 * (margins[lang] + needed) // total, margins[lang],
-                                           group.get(lang, 'safe'))
-              for lang in sorted(margins)]
+             'Strings needed counts core strings missing, and the rest missing beyond %d. Could make it: at'
+             ' most %d needed. Fuzzy translations don\'t count; English variants always ship.'
+             % (LEVEL_ONE_TOLERANCE, REACHABLE), '',
+             '| Language | Core missing | Rest missing | Needed | %d%% over (+) / under (-) | Group |' % THRESHOLD,
+             '|---|---|---|---|---|---|']
+    lines += ['| %s | %d | %d | %d | %+d | %s |' % (lang, c, r, needed[lang], m, group[lang])
+              for lang, (c, r, m) in sorted(states.items())]
     lines += ['', '</details>', '']
     return '\n'.join(lines)
 
 
 def cut_off(version):
-    """Excludes the shipped translations below THRESHOLD, from version on."""
+    """Excludes the shipped translations the release rule doesn't ship,
+        from version on."""
     skip = excluded()
-    cut = below_threshold([lang for lang in catalogs() if lang not in skip])
+    states = readiness([lang for lang in catalogs() if lang not in skip])
     with open(EXCLUDED, 'a', encoding='utf-8') as f:
-        for lang, percent in sorted(cut.items()):
-            f.write('%s  # below %d%% at %s (%d%%)\n' % (lang, THRESHOLD, version, percent))
-            print('excluded %s (%d%%)' % (lang, percent))
+        for lang, state in sorted(states.items()):
+            if ships(state, version):
+                continue
+            core_missing, rest_missing, _margin = state
+            f.write('%s  # level 1 incomplete at %s (%d core, %d other strings missing)\n'
+                    % (lang, version, core_missing, rest_missing))
+            print('excluded %s (%d core, %d other strings missing)' % (lang, core_missing, rest_missing))
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--check', action='store_true', help="report differences, don't write")
-    group.add_argument('--cut-off', metavar='VERSION', help='exclude translations below the threshold')
+    group.add_argument('--cut-off', metavar='VERSION', help="exclude translations the release rule doesn't ship")
     group.add_argument('--report', action='store_true',
-                       help='where each shipped translation stands against the threshold (Markdown)')
+                       help='where each shipped translation stands against the release rule (Markdown)')
     args = parser.parse_args()
 
     if args.report:

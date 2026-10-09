@@ -114,6 +114,9 @@ jobs:
           # The docs extra's own pins, without building virtaal itself.
           python -c "import tomllib; print('\n'.join(tomllib.load(open('pyproject.toml', 'rb'))['project']['optional-dependencies']['docs']))" > "$RUNNER_TEMP/docs-requirements.txt"
           pip install -r "$RUNNER_TEMP/docs-requirements.txt"
+          # update-linguas.py --report reads po/virtaal.priorities.yaml.
+          python -c "import tomllib; print(next(d for d in tomllib.load(open('pyproject.toml', 'rb'))['project']['dependencies'] if d.startswith('PyYAML')))" > "$RUNNER_TEMP/yaml-requirement.txt"
+          pip install -r "$RUNNER_TEMP/yaml-requirement.txt"
 
       - name: Check translation catalogs
         # -c fails on real errors (mismatched printf-style placeholders,
@@ -125,9 +128,9 @@ jobs:
           done
           exit $status
 
-      - name: Report release threshold standing
+      - name: Report release readiness
         # Each shipped translation against po/update-linguas.py's
-        # threshold, the ones that could make it or slip called out -
+        # release rule, with the level-1 strings it still needs -
         # informational (job summary only), since nothing is cut until
         # --cut-off at the final release.
         run: python po/update-linguas.py --report

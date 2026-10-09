@@ -13,10 +13,6 @@ priorities:
 - id: '3'
   name: Level 3
 domains:
-  glib20:
-    '2':
-    - "format-size\x04%.1f %s"
-    - kB
   gtk-mac-integration:
     '1':
     - About %s
@@ -76,29 +72,29 @@ domains:
     - Artwork by
     - C_redits
     - Created by
-    - Font Family
-    - No Fonts Found
     - No Results Found
     - Open '%s'
-    - Pick a Font
-    - Preview text
     - Search Results
     - Search Shortcuts
-    - Search font name
     - Shortcuts
-    - Size
+    - "Stock label\x04_Add"
     - "Stock label\x04_Cancel"
     - Translated by
     - Try a different search
     - _Cancel
     - _License
-    - _Select
     - "keyboard label\x04Escape"
     - "keyboard label\x04Tab"
     '3':
-    - "Stock label\x04_Add"
+    - Font Family
+    - No Fonts Found
+    - Pick a Font
+    - Preview text
+    - Search font name
+    - Size
     - "Stock label\x04_Remove"
     - _Remove
+    - _Select
   gtkspell3:
     1~:
     - <i>(no suggestions)</i>
@@ -238,13 +234,17 @@ domains:
     - Amagama
     - Choose a Translation File
     - Current File
+    - Default
     - Description
+    - Highlighting and insertion of placeables
     - Ignore All
     - Local TM
     - Look-up "%(selection)s"
     - Machine translation
+    - Many plugins and options for customization
     - Matches
     - Quality Check
+    - Quality checks
     - Replace
     - Replace _All
     - Replace with
@@ -255,16 +255,19 @@ domains:
     - Spelling
     - Starting capitalization
     - TM Source
+    - Terminology assistance
     - 'The current file has been modified.
 
       Do you want to save your changes?'
     - This file
+    - Translation memory
     - You selected the currently open file for opening. Do you want to reload the file?
     - _Case sensitive
+    - _New Language Pair…
     - _Regular expression
     '2':
     - '%(language)s - %(endonym)s'
-    - (100%)
+    - (%s)
     - <b>Fonts</b>
     - <b>Language</b>
     - '<b>Strings</b> (total):'
@@ -272,6 +275,7 @@ domains:
     - '<b>Words</b> (total):'
     - Accelerators
     - Acronyms
+    - Add Term
     - Add a term to the local terminology file
     - An accelerator key is a key on your keyboard that you can press to quickly access a menu or function. It is also called a hot key, access key or mnemonic. In program interfaces they are shown as an underlined letter in the text label. In the translatable text they are marked using some character like the underscore here, but other characters are used for this as well. In this case the accelerator key is "f" since the underscore is before this letter and it means that this accelerator could be triggered by pressing Alt+F.
     - And another kind of accelerator.
@@ -285,6 +289,7 @@ domains:
     - Blank
     - Brackets
     - C++ RC File
+    - C_omments
     - CamelCase
     - Capitals
     - Check spelling and provide suggestions
@@ -297,7 +302,6 @@ domains:
     - Copy the source, if nothing is selected
     - Copyright © 2007-2026 Zuza Software Foundation
     - Ctrl+%(number_key)d
-    - Default
     - Don't translate words
     - Double quotes
     - Double spaces
@@ -432,6 +436,7 @@ domains:
     - Saved file
     - Select next placeable
     - Select previous placeable
+    - Settings
     - Short
     - Should Virtaal try to import settings and data from other applications?
     - Show file properties and statistics
@@ -460,7 +465,7 @@ domains:
     - 'Team:'
     - TermBase eXchange
     - Terminology Help
-    - Terminology assistance
+    - 'Terminology _file:'
     - Terminology suggestions
     - The International Development Research Centre
     - The correct use of capital letters are important in many languages. Translate this message with careful attention to write "Virtaal" with a capital letter.
@@ -539,7 +544,10 @@ domains:
     - XML tags
     - XML tags, such as <b> and </i>
     - You can maintain a local terminology file to help you translate consistently. To add a term, select a word (or words), press Ctrl+T and fill in the details for the new term. Select the text below and add a term for it.
+    - _OK
     - _Save
+    - _Source term — %(langname)s
+    - _Target term — %(langname)s
     - printf()
     - translator-credits
     '3':
@@ -548,9 +556,6 @@ domains:
 
 
       Try saving to a different location.'
-    - (%04.1f%%)
-    - (0%)
-    - 0123456789
     - <b>Language Information</b>
     - <b>Options</b>
     - <b>Original</b>
@@ -560,7 +565,6 @@ domains:
     - A web look-up with this name already exists.
     - Add Files
     - Add Missing Language
-    - Add Term
     - Add URL
     - After
     - All Checks
@@ -570,7 +574,6 @@ domains:
     - Before
     - Bing
     - CONFIG
-    - C_omments
     - Can only export Gettext PO files
     - Change
     - Change Language Pair
@@ -632,7 +635,6 @@ domains:
     - File Updated
     - Google Translate
     - Header information
-    - Highlighting and insertion of placeables
     - 'ISO code:'
     - Identical entry already exists.
     - LANG
@@ -650,7 +652,6 @@ domains:
     - Logs
     - Look up synonyms for the selected word
     - Look-up the selected text on a web site
-    - Many plugins and options for customization
     - Moses
     - Mozilla Pontoon
     - Names starting with "virtaal-" are reserved.
@@ -677,7 +678,6 @@ domains:
     - Previous translations you have made
     - Project Type
     - Put queries in quotes
-    - Quality checks
     - Quote Query
     - Rejected
     - 'Rejected:'
@@ -698,13 +698,11 @@ domains:
     - Select the sources of terminology suggestions
     - Select the sources that should be queried for translation memory
     - Selected localization terminology
-    - Settings
     - Show Lo_gs
     - Source and target language are the same.
     - Spaces
     - Synonyms
     - Terminology Files
-    - 'Terminology _file:'
     - 'The <b>Original</b> is the language from which you are translating, also called the source language.
 
 
@@ -718,7 +716,6 @@ domains:
     - This might not affect your current work, but if it keeps happening, reporting it helps get it fixed.
     - Total
     - Translated units from the currently open file
-    - Translation memory
     - URL
     - 'URL:'
     - 'Unable to load %(filename)s:
@@ -739,10 +736,6 @@ domains:
     - _Cancel
     - _Close
     - _Discard
-    - _New Language Pair…
-    - _OK
-    - _Source term — %(langname)s
-    - _Target term — %(langname)s
     - enable debugging features
     - options
     - override the UI language for this run (e.g. "fr"; "en" for the untranslated source strings; "system" for the OS's own default), without changing the saved Preferences setting

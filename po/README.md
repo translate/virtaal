@@ -79,6 +79,31 @@ what Virtaal shows now. CI runs it on every change: when anything
 differs, its translation-priorities artifact has the level-1 update to
 commit with the change, and the whole file for a string freeze.
 
+### Translation packs
+
+A translation pack is one language's catalog cut down to what users see
+most, for a translator to finish first: `<lang>-level1.po` (level 1) and
+`<lang>-level2.po` (levels 1 and 2), with the priority file, zipped.
+With `--libraries`, it also holds `<domain>-<lang>-level1.po` (and
+`-level2`) for GTK and the other libraries, and for language names: only
+the messages neither the library's catalog on this host nor its lite
+catalog translates. Run that where Virtaal runs:
+
+```sh
+po/level-pack.py zu --libraries     # or --all; written to dist/level-packs/
+```
+
+CI builds every language's pack on the macOS build (the
+translation-packs artifact), and each release candidate has them all as
+a release asset. To take one back from a translator, merge it - only the
+messages it translates change. A library one goes into its lite catalog;
+then update `LINGUAS-lite` (see Lite versions below):
+
+```sh
+po/level-pack.py --merge zu zu-level1.po
+po/level-pack.py --merge zu gtk30-zu-level1.po
+```
+
 ## Lite versions
 
 For languages with no upstream translations of certain packages we

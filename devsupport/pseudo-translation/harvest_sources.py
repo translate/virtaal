@@ -317,6 +317,16 @@ def run(output):
         mode_controller.select_default_mode()
         yield from settle()
 
+        # The status bar's language pair menu and the dialog it opens.
+        lang_view = main_controller.lang_controller.view
+        lang_view.popupbutton.set_active(True)
+        yield from settle(3)
+        visit("language pair menu")
+        lang_view.menu.popdown()
+        current_screen[0] = "language pair menu"
+        lang_view.other_item.activate()
+        yield from settle()
+
         # Every terminology and look-up source, enabled or not.
         for name in ("terminology", "lookup"):
             plugin = main_controller.plugin_controller.plugins.get(name)

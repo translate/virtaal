@@ -1090,6 +1090,21 @@ jobs:
         if: matrix.arch == 'arm64'
         run: build/standalone-venv/bin/python3 devsupport/pseudo-translation/report_lite_coverage.py --host "macOS (Homebrew)"
 
+      - name: Build translation packs
+        # Each language's level 1, and levels 1 and 2, to translate first
+        # (see po/README.md), with the GTK and other library messages
+        # these Homebrew catalogs leave in English.
+        if: matrix.arch == 'arm64'
+        run: build/standalone-venv/bin/python3 po/level-pack.py --all --libraries
+
+      - name: Upload translation packs
+        if: matrix.arch == 'arm64'
+        uses: actions/upload-artifact@v7
+        with:
+          name: translation-packs
+          path: dist/level-packs/
+          retention-days: 30
+
       - name: Import Developer ID certificate
         if: env.MACOS_SIGNING == 'true'
         env:
@@ -1432,6 +1447,18 @@ jobs:
           mv release-assets/arm64/Virtaal.dmg release-assets/Virtaal-macos-arm64.dmg
           mv release-assets/x86_64/Virtaal.dmg release-assets/Virtaal-macos-x86_64.dmg
           rmdir release-assets/arm64 release-assets/x86_64
+
+      - name: Download translation packs (release candidates)
+        # Translators are called on at each release candidate.
+        if: contains(github.ref_name, '-rc')
+        uses: actions/download-artifact@v8
+        with:
+          name: translation-packs
+          path: translation-packs
+
+      - name: Zip translation packs (release candidates)
+        if: contains(github.ref_name, '-rc')
+        run: (cd translation-packs && zip -q "$GITHUB_WORKSPACE/release-assets/virtaal-translation-packs-$GITHUB_REF_NAME.zip" *.zip)
 
       - name: Create GitHub Release
         env:

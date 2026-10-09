@@ -31,7 +31,8 @@ PACKAGING = ROOT / "devsupport" / "packaging" / "macos"
 sys.path.insert(0, str(ROOT))
 from virtaal.__version__ import ver as virtaal_version  # noqa: E402
 from virtaal.support.libi18n.lite import (  # noqa: E402
-    bundle_languages, expected_catalogs, missing_catalogs, mismatched_catalogs, read_linguas,
+    bundle_languages, expected_catalogs, is_unused_catalog, missing_catalogs, mismatched_catalogs,
+    read_linguas,
 )
 
 sys.path.insert(0, str(PACKAGING))
@@ -155,6 +156,8 @@ a = Analysis(  # noqa: F821
     ),
     noarchive=False,
 )
+
+a.datas = [entry for entry in a.datas if not is_unused_catalog(entry[0])]
 
 # PyInstaller keeps the first datas entry for a destination: our merged
 # lite catalogs, listed in datas above, must beat the copies GTK's and

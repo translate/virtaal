@@ -142,7 +142,7 @@ def test_is_unused_catalog_drops_unread_library_and_pycountry_domains():
     unused = [_dest("de", "atk10"), _dest("de", "gdk-pixbuf"), _dest("zu", "gtkspell3"),
               pycountry("de", "iso3166-2"), pycountry("de", "iso4217"), pycountry("de", "iso15924")]
     used = [_dest("de", "gtk30"), _dest("de", "glib20"), _dest("de", "virtaal"),
-            pycountry("hi", "iso639-3"), pycountry("hi", "iso3166-1"),
+            pycountry("hi", "iso639-3"), pycountry("de", "iso639-5"), pycountry("hi", "iso3166-1"),
             os.path.normpath("pycountry/databases/iso4217.json")]
 
     assert [d for d in unused + used if lite.is_unused_catalog(d)] == unused

@@ -110,6 +110,15 @@ def test_tr_lang_translates_the_country_too():
     assert tr_lang('de')('Portuguese (Brazil)') == 'Portugiesisch (Brasilien)'
 
 
+def test_tr_lang_names_a_language_family_by_its_code():
+    # Songhai is an ISO 639-5 family, with no ISO 639-3 entry.
+    assert tr_lang('de')('Songhai languages', 'son') == 'Songhai-Sprachen'
+
+
+def test_tr_lang_keeps_an_untranslated_family_in_english():
+    assert tr_lang('xx')('Songhai languages', 'son') == 'Songhay'
+
+
 def test_gettext_country_falls_back_to_iso_3166_without_pycountry(monkeypatch):
     monkeypatch.setattr(translate_compat, 'pycountry', None)
 
@@ -137,6 +146,13 @@ def test_virtaals_own_catalog_fills_what_pycountrys_lacks(tmp_path, monkeypatch)
     _install_catalog(tmp_path, 'xx', 'iso639-3', {'Zulu': 'isiZulu'})
 
     assert gettext_lang('xx')('Zulu') == 'isiZulu'
+
+
+def test_virtaals_own_catalog_names_a_language_family(tmp_path, monkeypatch):
+    monkeypatch.setattr(platform, 'locale_dir', str(tmp_path))
+    _install_catalog(tmp_path, 'xx', 'iso639-5', {'Songhai languages': 'Songhai'})
+
+    assert tr_lang('xx')('Songhai languages', 'son') == 'Songhai'
 
 
 def test_shipped_language_name_lite_catalogs_are_read(tmp_path, monkeypatch):

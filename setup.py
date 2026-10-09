@@ -69,7 +69,7 @@ if os.name == 'nt' or sys.platform == 'darwin':
         app, lang = lang.rstrip().split('/')
         po_filename = path.join('po', 'lite', app, lang + '.po')
         mo_filename = path.join('mo', lang, app + '.mo')
-        # iso639-3 has no GI library: language names already fall back
+        # iso639-3 and iso639-5 have no GI library: language names fall back
         # to Virtaal's own catalog at runtime (translate_compat).
         namespace = lite.LIBRARY_NAMESPACES.get(app)
         upstream_dir = lite.library_locale_dir(namespace) if namespace else None

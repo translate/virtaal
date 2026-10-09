@@ -1,0 +1,48 @@
+name: Translation update
+description: Send a translation of Virtaal, or part of one
+title: "[LANG] Translation update"
+labels: ["l10n"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for translating Virtaal. [Translate Virtaal](https://virtaal.translatehouse.org/translate.html) shows how far each language is and has the translation packs to start from: level 1 first, then level 2.
+
+        GitHub doesn't accept .po files here, so put your files in a .zip and attach that.
+
+  - type: input
+    id: language
+    attributes:
+      label: Language
+      description: Its name and code, as on the Translate Virtaal page.
+      placeholder: e.g. Afrikaans (af)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: contents
+    attributes:
+      label: What are you sending?
+      options:
+        - A level 1 pack
+        - A level 2 pack
+        - The whole translation (po/LANG.po)
+        - Something else (say below)
+    validations:
+      required: true
+
+  - type: textarea
+    id: files
+    attributes:
+      label: Your translation
+      description: Drag the .zip into this box, or click here and paste it.
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Anything the reviewer should know, such as terms you chose or messages you weren't sure of.
+    validations:
+      required: false

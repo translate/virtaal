@@ -120,11 +120,16 @@ class LanguageController(BaseController):
         if not store:
             return None
 
-        if not self.lang_identifier:
-            from translate.lang.identify import LanguageIdentifier
-            self.lang_identifier = LanguageIdentifier()
-        srccode = self.lang_identifier.identify_source_lang(store.get_units())
-        tgtcode = self.lang_identifier.identify_target_lang(store.get_units())
+        srccode = store.get_source_language()
+        tgtcode = store.get_target_language()
+        if not (srccode and tgtcode):
+            if not self.lang_identifier:
+                from translate.lang.identify import LanguageIdentifier
+                self.lang_identifier = LanguageIdentifier()
+            if not srccode:
+                srccode = self.lang_identifier.identify_source_lang(store.get_units())
+            if not tgtcode:
+                tgtcode = self.lang_identifier.identify_target_lang(store.get_units())
         srclang = tgtlang = None
         if srccode:
             srclang = LanguageModel(srccode)

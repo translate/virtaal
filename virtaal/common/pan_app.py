@@ -524,7 +524,7 @@ def get_available_ui_languages():
         except OSError:
             continue
         for code in entries:
-            if code in ('pseudo', 'pseudo-bidi', 'pseudo-source'):
+            if code in ('pseudo', 'pseudo-bidi', 'pseudo-source', 'pseudo-priority'):
                 continue
             mo_names = ('virtaal.mo', os.path.join('LC_MESSAGES', 'virtaal.mo'))
             if any(os.path.isfile(os.path.join(localedir, code, mo_name)) for mo_name in mo_names):

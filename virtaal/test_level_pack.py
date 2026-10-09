@@ -150,3 +150,15 @@ def test_a_returned_library_pack_goes_into_its_lite_catalog(lite, tmp_path):
     assert 'msgid "Shift"\nmsgstr "Shifu"' in catalog
     assert 'msgid "Home"' in catalog
     assert 'msgstr "_Datei"' in (tmp_path / "de.po").read_text(encoding="utf-8")
+
+
+def test_a_returned_language_family_pack_starts_its_lite_catalog(lite, tmp_path):
+    returned = tmp_path / "iso639-5-zu-level2.po"
+    returned.write_text(HEADER.replace("de", "zu") + '\nmsgid "Songhai languages"\nmsgstr "isiSonghai"\n',
+                        encoding="utf-8")
+
+    lite.merge("zu", returned)
+
+    catalog = (tmp_path / "lite" / "iso639-5" / "zu.po").read_text(encoding="utf-8")
+    assert 'msgid "Songhai languages"\nmsgstr "isiSonghai"' in catalog
+    assert "Songhai" not in (tmp_path / "zu.po").read_text(encoding="utf-8")

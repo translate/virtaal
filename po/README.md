@@ -52,6 +52,29 @@ new strings could push under - which CI also shows in its job summary:
 po/update-linguas.py --report
 ```
 
+## Translation priorities
+
+`virtaal.priorities.yaml` gives each message a level, from what Virtaal
+shows on screen: level 1 is the welcome screen, menus and editing a
+file (with "1" the core: the welcome screen and menus), level 2 settings
+and screens seen once, level 3 the rest, and "x" messages translators
+are never asked for. A message the file doesn't list is newer than it.
+GTK's and the other libraries' messages Virtaal shows are listed too.
+`priorities.toml` holds the rules, and explains them.
+
+It's made from the same harvest as the lite templates (see below; Linux
+needs a real locale such as `LANG=en_US.UTF-8`), in full at each string
+freeze:
+
+```sh
+python devsupport/pseudo-translation/harvest_sources.py harvest.json
+python devsupport/pseudo-translation/generate_priorities.py harvest.json
+```
+
+Between string freezes only level 1 changes, with the change that
+causes it (`--level1-only`). `--check` shows how the file differs from
+what Virtaal shows now.
+
 ## Lite versions
 
 For languages with no upstream translations of certain packages we

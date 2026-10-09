@@ -1,0 +1,122 @@
+# Rules for each message's translation priority, which
+# devsupport/pseudo-translation/generate_priorities.py applies to what
+# harvest_sources.py saw, writing po/virtaal.priorities.yaml.
+#
+#   1   core: the welcome screen and the menus. A release needs all of it.
+#   1~  the rest of level 1: editing a file, suggestions, message dialogs.
+#   2   settings, and screens seen once.
+#   3   everything else.
+#   x   never asked of translators.
+#
+# A message missing from the generated file is "?": it's newer than the
+# file.
+#
+# Patterns are regular expressions, searched for in the harvest's screen,
+# window and within, with catalog tags such as "vt:" removed.
+
+# Each place a message was seen on screen takes the priority of the first
+# rule that matches it. A message takes the most important of those.
+[[seen]]
+# GTK's own file chooser: Linux only. Windows and macOS show the OS's.
+priority = "3"
+within = "^FileChooser$"
+
+[[seen]]
+priority = "1"
+screen = "^welcome screen$"
+# On macOS the menu bar is outside any window.
+window = "^Window ('Virtaal'|None)$"
+
+[[seen]]
+# Quality check names, in the Quality Checks mode's menu.
+priority = "2"
+screen = "^mode QualityCheck menu$"
+
+[[seen]]
+priority = "2"
+window = "virtaal_tutorial\\.po|New Language Pair|'Settings'|'Virtaal Preferences'|'Properties'|^FontChooserDialog|^ShortcutsWindow|^AboutDialog"
+
+[[seen]]
+# The main window with the harvest's file open (titled with the file's
+# name, and " - Virtaal" on some platforms), its menus and popups.
+priority = "1~"
+window = "^(Window '(quality-checks\\.po|Virtaal)( - Virtaal)?'|Window None|TMWindow|MessageDialog)"
+
+[[seen]]
+priority = "3"
+
+# Tooltips are seen less than labels: seen in a tooltip counts at most
+# as this priority.
+[tooltips]
+priority = "2"
+
+# Messages never seen, by the file virtaal.pot says they come from. The
+# first match wins; anything else is 3.
+[[unseen]]
+priority = "2"
+file = "^(virtaal/support/tutorial\\.py|virtaal/plugins/migration\\.py|virtaal/controllers/checkscontroller\\.py|share/(mime|metainfo|applications)/|devsupport/tmp_strings\\.py)"
+
+# Messages the harvest can't show, at the priority they'd have: each one
+# replaces whatever priority the rules above gave it.
+[[override]]
+# Native file dialogs, the save prompt, what the suggestions window and
+# the spelling menu draw themselves, and other platforms' window title.
+priority = "1~"
+msgids = [
+    "%(match_quality)s%%",
+    "%(modified_marker)s%(current_file)s - Virtaal",
+    "<i>(no suggestions)</i>",
+    "Add \"%s\" to Dictionary",
+    "All Files",
+    "All Supported Files",
+    "Choose a Translation File",
+    "Ignore All",
+    "Machine translation",
+    "Save",
+    "Save As…",
+    "The current file has been modified.\nDo you want to save your changes?",
+]
+
+[[override]]
+# The Windows installer and command-line help, in tmp_strings.py with
+# the file type names.
+priority = "3"
+msgids = [
+    "Associate Virtaal with translation file types (.po, .xlf, .tmx, ...)",
+    "Edit with Virtaal",
+    "SDL XLIFF Translation File",
+    "options",
+    "positional arguments",
+    "show program's version number and exit",
+    "show this help message and exit",
+    "usage: ",
+]
+
+# Language and country names come from these rules, not from what the
+# harvest saw: which ones matter depends on the translator, and the
+# harvest's own file is no guide. Any other name isn't listed.
+[names]
+# Almost always the source language.
+english = "1"
+# The languages in po/LINGUAS, and the countries of their variants
+# (en_GB, pt_BR, ...).
+supported = "2"
+# Languages of wider communication.
+wider = { priority = "2", languages = ["ar", "de", "en", "es", "fr", "hi", "ja", "pt", "ru", "sw", "zh"] }
+
+# Never asked of translators: names and addresses a missing translation
+# shows correctly anyway.
+[x]
+msgids = [
+    "%",
+    "Drupal",
+    "GNOME",
+    "Google",
+    "KDE",
+    "LibreOffice",
+    "Mozilla",
+    "Virtaal",
+    "Wikipedia",
+    "Wiktionary",
+]
+patterns = ["^https?://"]

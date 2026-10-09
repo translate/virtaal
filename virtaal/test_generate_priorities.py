@@ -1,0 +1,179 @@
+#
+# Copyright (C) Virtaal contributors.
+#
+# This file is part of Virtaal. It is distributed under the GPL2 or
+# later license. See the LICENSE file for a copy of the license and
+# the AUTHORS.md file for copyright and authorship information.
+
+import importlib.util
+import os
+
+import pytest
+
+TOOLS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                         "devsupport", "pseudo-translation")
+
+RULES = {
+    "seen": [
+        {"priority": "3", "within": "^FileChooser$"},
+        {"priority": "1", "screen": "^welcome screen$", "window": "^Window ('Virtaal'|None)$"},
+        {"priority": "2", "window": "'Settings'"},
+        {"priority": "1~", "window": "^Window 'Virtaal'"},
+        {"priority": "3"},
+    ],
+    "unseen": [{"priority": "2", "file": "^virtaal/support/tutorial\\.py"}],
+    "override": [{"priority": "1~", "msgids": ["Choose a Translation File"]}],
+    "x": {"msgids": ["GNOME"], "patterns": ["^https?://"]},
+}
+
+
+@pytest.fixture(scope="module")
+def gen():
+    spec = importlib.util.spec_from_file_location("generate_priorities",
+                                                  os.path.join(TOOLS_DIR, "generate_priorities.py"))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _catalogs(gen, domain, originals):
+    resolve = gen._resolver()
+    return {domain: [(original, form, resolve.msgid_pattern(form))
+                     for original in originals for form in original.rpartition("\x04")[2].split("\0")]}
+
+
+def _record(text, screen="welcome screen", window="Window 'vt:Virtaal'", within="", shown=True):
+    return {"text": text, "screen": screen, "window": window, "within": within, "shown": shown}
+
+
+@pytest.mark.parametrize("screen, window, within, expected", [
+    ("welcome screen", "Window 'vt:Virtaal'", "Menu", "1"),
+    ("file open", "Window 'vt:Virtaal'", "", "1~"),
+    ("mnu_prefs > vt:Settings", "Dialog 'vt:Settings'", "", "2"),
+    ("welcome screen", "FileChooserDialog None", "FileChooser", "3"),
+    ("mnu_about", "AboutDialog None", "", "3"),
+])
+def test_sighting_takes_the_first_matching_rule(gen, screen, window, within, expected):
+    assert gen.sighting_level(RULES, screen, window, within) == expected
+
+
+def test_a_message_takes_its_lowest_level_and_ignores_hidden_sightings(gen):
+    harvest = {"strings": [
+        _record("vt:_Find…", screen="file open"),
+        _record("vt:_Find…"),
+        _record("vt:Settings", shown=False),
+    ]}
+    catalogs = _catalogs(gen, "virtaal", ["_Find…", "Settings"])
+
+    assert gen.seen_levels([harvest], catalogs, RULES) == {"virtaal": {"_Find…": "1"}}
+
+
+def test_tooltips_count_at_most_as_their_priority(gen):
+    rules = dict(RULES, tooltips={"priority": "2"})
+    harvest = {"strings": [
+        dict(_record("vt:Move one step forward"), tooltip=True),
+        dict(_record("vt:Add Term", window="Dialog 'vt:Add Term'"), tooltip=True),
+        dict(_record("vt:_Find…"), tooltip=True),
+        _record("vt:_Find…"),
+    ]}
+    catalogs = _catalogs(gen, "virtaal", ["Move one step forward", "Add Term", "_Find…"])
+
+    assert gen.seen_levels([harvest], catalogs, rules) == {
+        "virtaal": {"Move one step forward": "2", "Add Term": "3", "_Find…": "1"}}
+
+
+def test_a_plural_is_keyed_by_its_singular(gen):
+    harvest = {"strings": [_record("vt:1 unit", screen="file open")]}
+    catalogs = _catalogs(gen, "virtaal", ["%d unit\0%d units"])
+
+    assert gen.seen_levels([harvest], catalogs, RULES) == {"virtaal": {"%d unit": "1~"}}
+
+
+def test_unseen_messages_take_their_files_level(gen):
+    messages = {
+        "Brackets": ["virtaal/controllers/checkscontroller.py"],
+        "Welcome to the tutorial": ["virtaal/support/tutorial.py"],
+        "usage: ": ["virtaal/cli.py"],
+    }
+    levels = gen.assign({"virtaal": {"Brackets": "1~"}}, messages, RULES)["virtaal"]
+
+    assert levels == {"Brackets": "1~", "Welcome to the tutorial": "2", "usage: ": "3"}
+
+
+def test_overrides_replace_the_level_and_x_replaces_everything(gen):
+    messages = {"Choose a Translation File": ["virtaal/views/mainview.py"],
+                "GNOME": ["virtaal/controllers/checkscontroller.py"],
+                "https://example.org": ["virtaal/views/mainview.py"]}
+    levels = gen.assign({"virtaal": {"GNOME": "1~"}}, messages, RULES)["virtaal"]
+
+    assert levels == {"Choose a Translation File": "1~", "GNOME": "x", "https://example.org": "x"}
+
+
+def test_language_and_country_names_come_from_the_rules_not_the_harvest(gen):
+    # The harvest's own language pair (English to Afrikaans) is no guide.
+    rules = {"names": {"english": "1", "supported": "2", "wider": {"priority": "2", "languages": ["fr", "sw"]}}}
+    levels = {"iso639-3": {"Afrikaans": "1~", "English": "1~"}, "iso3166-1": {"Lesotho": "2"}, "virtaal": {"_Find…": "1"}}
+
+    # Named as Virtaal looks them up: "Portuguese (Brazil)" is two
+    # messages, "Catalan; Valencian (Valencia)" just Catalan, and Songhai
+    # and Swahili have no catalog entry Virtaal would find.
+    assert gen.apply_names(levels, rules, ["zu", "pt_BR", "zh_TW", "ca@valencia", "son"]) == {
+        "virtaal": {"_Find…": "1"},
+        "iso639-3": {"Zulu": "2", "Portuguese": "2", "Chinese": "2", "Catalan": "2", "French": "2", "English": "1"},
+        "iso3166-1": {"Brazil": "2", "Taiwan": "2"},
+    }
+
+
+def test_file_round_trip(gen):
+    levels = {"virtaal": {"_Find…": "1", "Brackets": "1~", "GNOME": "x"}, "gtk30": {"_Open": "1"}}
+    data = gen.to_file(levels, "2026-10-09")
+
+    assert data["domains"]["virtaal"] == {"1": ["_Find…"], "1~": ["Brackets"], "x": ["GNOME"]}
+    assert gen.from_file(data) == levels
+
+
+def test_level1_refresh_touches_only_level_one(gen):
+    committed = {"virtaal": {"_Find…": "1", "Settings": "2", "Gone": "1~", "Old": "3"}}
+    candidate = {"virtaal": {"_Find…": "2", "Settings": "3", "New menu item": "1", "Old": "2"}}
+
+    assert gen.level1_refresh(committed, candidate) == {
+        "virtaal": {"_Find…": "2", "Settings": "2", "New menu item": "1", "Old": "3"}}
+
+
+def test_drift_separates_level_one_from_the_rest(gen):
+    committed = {"virtaal": {"_Find…": "1", "Settings": "2", "Same": "3"}}
+    candidate = {"virtaal": {"_Find…": "1~", "Settings": "3", "Same": "3", "New menu item": "1"}}
+
+    level_one, other = gen.drift(committed, candidate)
+
+    assert level_one == [("virtaal", "New menu item", "?", "1"), ("virtaal", "_Find…", "1", "1~")]
+    assert other == [("virtaal", "Settings", "2", "3")]
+
+
+def test_report_warns_only_for_level_one(gen):
+    _text, annotations = gen.report([("virtaal", "New menu item", "?", "1")], [("virtaal", "Settings", "2", "3")])
+
+    assert annotations[0].startswith("::warning::Level-1 priorities are out of date")
+    assert annotations[1].startswith("::notice::")
+    assert gen.report([], [])[1] == []
+
+
+def test_the_rules_name_only_messages_virtaal_pot_has(gen):
+    pytest.importorskip("tomllib")
+    assert gen.stale_rules(gen.load_rules(), gen.template_messages()) == []
+
+
+def test_the_rules_language_codes_are_known(gen):
+    pytest.importorskip("tomllib")
+    assert gen.apply_names({}, gen.load_rules(), gen.read_linguas())["iso639-3"]["English"] == "1"
+
+
+def test_written_file_says_its_generated_and_reads_back(gen, tmp_path):
+    # YAML 1.1 reads a bare No as false and 1 as a number.
+    levels = {"virtaal": {"Stock label\x04_Open": "1", "No": "1~", "Öffnen": "2", "%": "x"}}
+    path = tmp_path / "virtaal.priorities.yaml"
+
+    gen.write_file(str(path), gen.to_file(levels, "2026-10-09"))
+
+    assert path.read_text(encoding="utf-8").startswith("# Generated by")
+    assert gen.from_file(gen.read_file(str(path))) == levels

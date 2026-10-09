@@ -33,6 +33,8 @@ translation:
   strings and language names too, from the same catalogs as
   pseudo-source.
 
+A message that is just a URL stays untranslated in each, so links work.
+
 Compiled straight into the active environment's own share/locale/ by
 default (so bin/virtaal's --pseudo-translation* options work with no
 separate install step) - pass --localedir to write
@@ -40,6 +42,7 @@ somewhere else instead, e.g. a frozen build's own share/locale/.
 """
 import argparse
 import os
+import re
 import struct
 import sys
 import tempfile
@@ -150,17 +153,26 @@ def lite_template_keys(domain):
             for unit in units if not unit.isheader()}
 
 
+URL_RE = re.compile(r"^(https?|ftp|mailto):\S*$")
+
+
+def _untranslated(msgid):
+    """Whether a pseudo translation leaves msgid alone: GTK reads its
+    "default:LTR" message as the text direction, and a tagged URL is no
+    longer a link."""
+    return msgid == "default:LTR" or bool(URL_RE.match(msgid))
+
+
 def tag_messages(originals, tag, lite=None):
     """{original: translation}, every form of every msgid prefixed with
     tag - or, given lite (lite_template_keys()), with tag marked "!"
-    ("gtk!:") for a message the lite template lacks. GTK reads its
-    "default:LTR" message as the text direction, so that stays
-    untranslated."""
+    ("gtk!:") for a message the lite template lacks. See _untranslated()
+    for what stays untranslated."""
     gap_tag = tag[:-1] + "!:"
     messages = {}
     for original in originals:
         msgid = original.rpartition("\x04")[2]
-        if msgid != "default:LTR":
+        if not _untranslated(msgid):
             prefix = gap_tag if lite is not None and original.split("\0")[0] not in lite else tag
             messages[original] = "\0".join(prefix + form for form in msgid.split("\0"))
     return messages
@@ -169,12 +181,12 @@ def tag_messages(originals, tag, lite=None):
 def tag_by_level(originals, levels):
     """{original: translation}, every form of every msgid prefixed with
     its level in levels ({msgctxt\\x04msgid: level}) - "1:", "2:", ... -
-    or "?:" if levels lacks it. GTK's "default:LTR" stays untranslated,
-    as in tag_messages()."""
+    or "?:" if levels lacks it. What _untranslated() names stays
+    untranslated."""
     messages = {}
     for original in originals:
         msgid = original.rpartition("\x04")[2]
-        if msgid != "default:LTR":
+        if not _untranslated(msgid):
             prefix = levels.get(original.split("\0")[0], "?") + ":"
             messages[original] = "\0".join(prefix + form for form in msgid.split("\0"))
     return messages
@@ -250,18 +262,30 @@ def fullest_catalog(locale_dirs, domain):
     return max(candidates, key=_mo_count, default=None)
 
 
+def _keep_untranslated(path):
+    """Clears path's translation of each message _untranslated() names."""
+    from translate.storage import po
+    store = po.pofile.parsefile(path)
+    for unit in store.units:
+        if not unit.isheader() and _untranslated(unit.source):
+            unit.target = ""
+    store.savefile(path)
+
+
 def _generate_virtaal_mo(code, mo_dir):
     potfile = os.path.join(_repo_root(), "po", "virtaal.pot")
-    with tempfile.NamedTemporaryFile(suffix=".po") as tmp_po:
-        with open(potfile, "rb") as infile:
+    # A directory, not a NamedTemporaryFile: Windows can't reopen one by name.
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_po = os.path.join(tmp, "virtaal.po")
+        with open(potfile, "rb") as infile, open(tmp_po, "wb") as outfile:
             if code == "pseudo-source":
-                podebug.convertpo(infile, tmp_po, None, format=VIRTAAL_TAG)
+                podebug.convertpo(infile, outfile, None, format=VIRTAAL_TAG)
             else:
-                podebug.convertpo(infile, tmp_po, None, rewritestyle=LOCALES[code])
-        tmp_po.flush()
+                podebug.convertpo(infile, outfile, None, rewritestyle=LOCALES[code])
+        _keep_untranslated(tmp_po)
 
         mo_path = os.path.join(mo_dir, "virtaal.mo")
-        with open(tmp_po.name, "rb") as compile_in, open(mo_path, "w") as compile_out:
+        with open(tmp_po, "rb") as compile_in, open(mo_path, "w") as compile_out:
             convertmo(compile_in, compile_out, None)
         return mo_path
 

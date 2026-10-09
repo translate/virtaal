@@ -4,24 +4,28 @@
 Virtaal 1.0.0
 *************
 
-This page currently describes `v1.0.0-beta3
-<https://github.com/translate/virtaal/releases/tag/v1.0.0-beta3>`_ - it'll
-be updated as later betas and the final 1.0.0 ship.
+.. This page is the human-readable release story: what we set out to do
+   and how we did it, not a line-by-line changelog. Keep it short and
+   readable by someone who has never opened an issue tracker. The full
+   list of individual fixes lives in the commit history / GitHub
+   releases page - link to that, don't duplicate it here.
 
-Virtaal is back after being dormant since 2020, ported from Python 2/GTK2
-to Python 3/GTK3 - a rewrite of most of the application's internals with
-no intended change to the day-to-day translating experience.
+Virtaal is back. After being dormant since 2020, it's been rebuilt from
+the ground up on Python 3 and GTK 3, and is once again a maintained,
+actively-developed translation tool.
 
 Getting it
 ==========
-- Windows installer, macOS ``.dmg`` (Intel and Apple Silicon), and a
-  Flatpak build for Linux - see :ref:`Installation <index#installation>`.
+Windows installer, macOS ``.dmg`` (Intel and Apple Silicon), and a
+Flatpak build for Linux - see :ref:`Installation <index#installation>`.
 
 .. warning::
-   macOS and Windows binaries are currently unsigned - Gatekeeper/
-   SmartScreen will warn on first launch. This is expected:
+   macOS and Windows builds are code-signed, but may still trigger a
+   Gatekeeper/SmartScreen warning on first launch - macOS builds
+   aren't notarized yet, and a newly-signed Windows certificate takes
+   time to build up SmartScreen's own reputation. This is expected:
 
-   - **macOS**: don't double-click the app on first launch - it'll
+   - **macOS**: don't double-click the app on first launch - it may
      refuse to open at all ("Apple could not verify... is free of
      malware"), with no way past that dialog itself. Instead,
      right-click (or Control-click) ``Virtaal.app`` in Finder and
@@ -30,67 +34,128 @@ Getting it
      works from then on.
 
      If it instead says *"Virtaal is damaged and can't be opened"*,
-     that's Gatekeeper's stricter response to a completely unsigned
-     app - the right-click-Open trick above won't clear it. Open
+     that's Gatekeeper's stricter response to a build it can't verify
+     yet - the right-click-Open trick above won't clear it. Open
      Terminal and run::
 
         xattr -cr /path/to/Virtaal.app
 
      then double-click normally.
-   - **Windows**: the installer shows a blue "Windows protected your
-     PC" screen. Click **More info**, then **Run anyway**.
+   - **Windows**: the installer may show a blue "Windows protected
+     your PC" screen. Click **More info**, then **Run anyway**.
 
-Highlights
-==========
-- Full Python 3 / GTK 3 port.
-- Native file-open/save dialogs on macOS and Windows.
-- macOS keyboard shortcuts now use Cmd instead of Ctrl throughout.
-- Virtaal remembers its window position and size between runs.
-- Spell checking works in the frozen Windows and macOS Intel builds.
-- Windows file-association handling fixed, including per-format icons
-  and ``.ts`` (Qt Linguist vs. MPEG Transport Stream) disambiguation.
-- HTTP requests (terminology/TM lookups, dictionary and autocorrect
-  downloads) now time out instead of hanging indefinitely.
-- A right-click thesaurus look-up plugin; right-click "Add Term..." for
-  a selected word or phrase; look-ups no longer require selecting a
-  word first.
-- Help > Show Logs, and a crash dialog with a one-click bug-report
-  button on uncaught exceptions.
-- Real OS keyboard focus on macOS across most dialogs (Preferences,
-  Add Term, Add Missing Language, Save/Discard/Cancel, and more);
-  Preferences also opens via Cmd+, and is titled "Settings" to match
-  the system convention.
-- Several crash fixes: adding a language with a non-ASCII code,
-  Replace All on XLIFF/TMX/TS files, File > Update, a corrupt config
-  file, and TM matching on non-ASCII text.
-- The Web Look-ups dialog no longer duplicates its own columns and
-  buttons (each click firing once per time the dialog had ever been
-  opened) when reopened.
-- Preferences' Plug-ins/Placeables lists and the Select Look-up
-  Services dialog: a plugin's "Configure..." button is no longer
-  hidden by a too-narrow column, arrow-key navigation no longer steals
-  keyboard focus into a row, and a toggle no longer risks a 100%-CPU
-  hang or loses your place in a scrolled list.
-- Fixed: Virtaal's own interface translations failed to load at all in
-  a frozen build, regardless of the selected UI language.
-- A Preferences UI language selector, and a :option:`virtaal --lang`
-  command-line flag to override it for one run.
-- Redo (Ctrl+Shift+Z), alongside the existing Undo.
-- The Windows installer now offers many more UI languages, matching
-  Inno Setup's own bundled set instead of a hand-maintained subset.
-- TM matches no longer show a garbage quality percentage (e.g. over
-  100%).
-- A web look-up can now be disabled without deleting it; a plugin's
-  Configure dialog changes are saved immediately, not just on quit.
-- Fixed a hang when quitting while a modal dialog is still open, and a
-  crash rendering a TM match with no quality score.
-- New Chinese (Simplified) translation; updated Brazilian Portuguese.
-- Ctrl+P now opens Preferences on Windows/Linux (macOS keeps Cmd+,).
+What we set out to do
+======================
+A handful of things drove this release, in order of priority:
 
-Known issues
-============
-- No spell checking in the frozen macOS Apple Silicon build.
-- Some complex scripts (e.g. Amharic) may not render correctly in the
-  frozen Windows build.
-- Selecting "Incomplete" from the Navigation combo right after launch
-  can fail to switch modes; selecting any other mode works.
+1. **Don't break the translating experience translators already know.**
+   Virtaal's appeal has always been that it gets out of the way and
+   lets you translate - a rewrite of its internals was never licence to
+   also rewrite its workflow.
+2. **Port to a modern windowing system** before the old one disappears
+   from under us entirely, and use that as the moment to bring the rest
+   of the engine (Python itself included) up to date too.
+3. **First-class builds on every platform** - Windows, macOS and Linux
+   should each get a real, native-feeling installer, not one platform
+   treated as primary and the others as an afterthought.
+4. **Seamless download of resources when you need them** - dictionaries,
+   autocorrect rules and similar data shouldn't have to be bundled
+   upfront or hunted down by hand; Virtaal should fetch what a given
+   language needs, on demand, and stay out of your way while doing it.
+5. **Make it feel like it belongs on your computer**, not like a
+   cross-platform app that merely runs there.
+6. **Make it something you can trust with your work** - it shouldn't
+   lose translations, corrupt files, or leave you guessing why it froze.
+
+How we met them
+================
+
+Same Virtaal, modern engine
+----------------------------
+The move from Python 2/GTK 2 to Python 3/GTK 3 touched almost every file
+in the codebase, but day-to-day translating - opening a file, moving
+between units, matching against translation memory, running quality
+checks, spell-checking - works the same way it always has. If you used
+Virtaal before 2020, you don't need to relearn anything; the windowing
+system underneath changed, the tool you sit down to use didn't.
+
+First-class on every platform
+-------------------------------
+All three platforms now get a real, proper build: a Windows installer
+with correct file associations and icons, native macOS ``.app``/``.dmg``
+builds for both Apple Silicon and Intel, and a Flatpak for Linux -
+built, tested and shipped from the same CI pipeline rather than one
+platform being the "real" build and the others best-effort ports.
+
+Resources arrive when you need them
+--------------------------------------
+Dictionaries, autocorrect rules and similar per-language data are
+fetched automatically the first time you need them for a given
+language, rather than needing to be bundled for every language upfront
+or tracked down and installed by hand. Once fetched, they're cached, so
+you only pay that download cost once per language.
+
+Feels native on your platform
+-------------------------------
+Rather than a single cross-platform look, Virtaal now leans into each
+OS's own conventions: real native Open/Save dialogs instead of GTK's own
+file picker, macOS keyboard shortcuts (Cmd instead of Ctrl) throughout,
+a title bar that follows each platform's own naming and "unsaved
+changes" conventions, a populated macOS Dock menu with recent files,
+light/dark theme switching that follows your system live instead of
+only at startup, and file-manager integration (icons, double-click to
+open, "Open With") for every format Virtaal handles on Windows and
+Linux alike. Numbers, counts and percentages throughout the interface
+now follow your UI language's own conventions too, instead of always
+being shown the English way.
+
+Built to be trusted
+---------------------
+A sustained focus on correctness and crash-hardening runs through this
+release: fixes for several ways Virtaal could previously crash outright
+(corrupt settings files, certain file formats, specific edit sequences),
+a more careful undo/redo model so navigating around no longer muddies
+what "undo" actually undoes, read-only files are now handled safely
+instead of inviting a crash on save, and network requests (translation
+memory, terminology, dictionary downloads) now fail cleanly with a
+timeout instead of hanging Virtaal indefinitely. There's also a built-in
+crash dialog with a one-click bug report button for whatever we haven't
+caught yet.
+
+Easier to use in your own language
+------------------------------------
+Virtaal's own interface can now be switched independently of your
+system language, from Preferences or via a command-line flag - and a
+long-standing bug that silently broke interface translations in the
+installed build entirely is fixed. The Windows installer also now
+offers substantially more UI languages to choose from during setup.
+Behind the scenes, a new priority system focuses translators and
+reviewers on what actually matters most - what you see as a file
+opens, menus, everyday messages - ahead of rarely-seen text, and you
+can follow any language's own progress live at
+`virtaal.translatehouse.org/translate.html
+<https://virtaal.translatehouse.org/translate.html>`_.
+
+Known limitations
+==================
+Nothing release-blocking, but worth knowing about:
+
+- No spell checking in the Apple Silicon macOS build (the Intel build
+  has it) - the underlying spell-check library has no ready-made build
+  for that platform yet.
+- A small number of complex scripts (e.g. Amharic) may not render
+  correctly in the Windows build, most likely a font-coverage gap
+  rather than a deeper text-handling issue.
+- Devanagari-script UI languages (e.g. Nepali) are unreadable in the
+  macOS build's own window - boxes instead of characters, a macOS
+  font-fallback gap. The native menu bar is unaffected.
+- Occasionally, selecting "Incomplete" from the navigation dropdown
+  right after launch doesn't switch modes on the first try - selecting
+  it again, or picking any other mode first, works.
+
+Full changelog
+================
+This page deliberately leaves out the hundreds of smaller fixes,
+internal refactors, and test/CI improvements that went into getting
+here. For the complete, unabridged list, see the `commit history and
+releases on GitHub <https://github.com/translate/virtaal/releases>`_.

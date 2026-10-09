@@ -222,7 +222,10 @@ def _generate_virtaal_mo(code, mo_dir):
 
 def _generate_library_mos(mo_dir, localedir):
     for domain, (tag, namespace) in LIBRARY_SOURCES.items():
-        source = fullest_catalog([library_locale_dir(namespace), localedir], domain)
+        library_dir = library_locale_dir(namespace)
+        # Ubuntu moves translations out to language packs.
+        langpack_dir = library_dir and os.path.join(os.path.dirname(library_dir), "locale-langpack")
+        source = fullest_catalog([library_dir, langpack_dir, localedir], domain)
         if source is None:
             print("No installed %s catalog found, skipping it" % domain, file=sys.stderr)
             continue

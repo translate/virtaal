@@ -326,7 +326,7 @@ def test_init_gui_wires_the_default_fonts_button(monkeypatch):
 
 
 def test_init_font_gui_previews_both_fonts_with_the_whole_language_pair(monkeypatch):
-    monkeypatch.setattr(prefsview, 'tr_lang', lambda code: (lambda name: f'{name} [{code}]'))
+    monkeypatch.setattr(prefsview, 'tr_lang', lambda code: (lambda name, lang_code=None: f'{name} [{code}]'))
     monkeypatch.setattr(prefsview.platform, 'is_windows', False)
     source_lang = SimpleNamespace(code='fr')
     target_lang = SimpleNamespace(code='am')
@@ -361,7 +361,7 @@ def test_init_font_gui_leaves_the_default_preview_for_an_unknown_language_code(m
 
 def test_pair_preview_text_rtl(monkeypatch):
     monkeypatch.setattr(prefsview.platform, 'is_windows', False)
-    monkeypatch.setattr(prefsview, 'tr_lang', lambda code: (lambda name: name))
+    monkeypatch.setattr(prefsview, 'tr_lang', lambda code: (lambda name, lang_code=None: name))
     view = PreferencesView.__new__(PreferencesView)
     view._widgets = {'fbtn_target': Gtk.Button()}
     view._widgets['fbtn_target'].set_direction(Gtk.TextDirection.RTL)
@@ -373,7 +373,7 @@ def test_pair_preview_text_rtl(monkeypatch):
 
 def test_pair_preview_text_ltr_default(monkeypatch):
     monkeypatch.setattr(prefsview.platform, 'is_windows', False)
-    monkeypatch.setattr(prefsview, 'tr_lang', lambda code: (lambda name: name))
+    monkeypatch.setattr(prefsview, 'tr_lang', lambda code: (lambda name, lang_code=None: name))
     view = PreferencesView.__new__(PreferencesView)
     view._widgets = {'fbtn_target': Gtk.Button()}
     view._widgets['fbtn_target'].set_direction(Gtk.TextDirection.LTR)
@@ -385,7 +385,7 @@ def test_pair_preview_text_ltr_default(monkeypatch):
 
 def test_pair_preview_text_uses_french_quotes_on_windows(monkeypatch):
     monkeypatch.setattr(prefsview.platform, 'is_windows', True)
-    monkeypatch.setattr(prefsview, 'tr_lang', lambda code: (lambda name: name))
+    monkeypatch.setattr(prefsview, 'tr_lang', lambda code: (lambda name, lang_code=None: name))
     view = PreferencesView.__new__(PreferencesView)
     view._widgets = {'fbtn_target': Gtk.Button()}
     view._widgets['fbtn_target'].set_direction(Gtk.TextDirection.LTR)

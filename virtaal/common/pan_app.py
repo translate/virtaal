@@ -537,7 +537,7 @@ def get_available_ui_languages():
 
     def display_name(code):
         name = _english_language_name(code)
-        return translate_name(name) if name else code
+        return translate_name(name, code) if name else code
 
     result = [(code, display_name(code)) for code in codes]
     result.sort(key=lambda pair: pair[1])
@@ -586,7 +586,7 @@ def get_language_endonym(code):
     name = _english_language_name(code)
     if name is None:
         return _CLDR_ENDONYMS.get(code)
-    endonym = tr_lang(code)(name)
+    endonym = tr_lang(code)(name, code)
     if endonym == _fix_language_name(name) and not code.startswith('en'):
         return _CLDR_ENDONYMS.get(code)
     return endonym

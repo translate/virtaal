@@ -185,3 +185,24 @@ def test_forceunicode_decodes_bytes_using_their_own_encoding_attribute():
 
 def test_forceunicode_stringifies_a_stringelem():
     assert forceunicode(StringElem('elem text')) == 'elem text'
+
+
+def test_tr_lang_looks_a_language_up_by_its_code_first():
+    # translate-toolkit's "Nepali" and "Panjabi; Punjabi" aren't the
+    # catalog's names; "Nepali (macrolanguage)" and "Panjabi" are.
+    f = tr_lang('fr')
+
+    assert f('Nepali', 'ne') == 'Népalais'
+    assert f('Panjabi; Punjabi', 'pa') == 'Pendjabi'
+
+
+def test_tr_lang_counts_a_translation_spelled_like_its_name():
+    assert tr_lang('de')('Pedi; Sepedi; Northern Sotho', 'nso') == 'Pedi'
+
+
+def test_tr_lang_falls_back_to_the_name_when_the_code_isnt_translated():
+    assert tr_lang('af')('Pedi; Sepedi; Northern Sotho', 'nso') == 'Northern Sotho'
+
+
+def test_tr_lang_by_code_keeps_a_dialects_country():
+    assert tr_lang('de')('Portuguese (Brazil)', 'pt_BR') == 'Portugiesisch (Brasilien)'

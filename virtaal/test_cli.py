@@ -143,7 +143,7 @@ def _stub_pseudo_generator(monkeypatch):
 
     def fake_module_from_spec(spec):
         module = type('M', (), {})()
-        module.generate_locale = lambda code, localedir=None: calls.append(code)
+        module.generate_locale = lambda code, localedir=None, priorities=None: calls.append(code)
         return module
 
     monkeypatch.setattr(importlib.util, 'spec_from_file_location', fake_spec_from_file_location)
@@ -183,6 +183,17 @@ def test_pseudo_translation_source_regenerates_its_locale_and_switches_to_it(mon
 
     assert generated == ['pseudo-source']
     assert switched == ['pseudo-source']
+
+
+def test_pseudo_translation_priority_regenerates_its_locale_and_switches_to_it(monkeypatch):
+    generated = _stub_pseudo_generator(monkeypatch)
+    switched = []
+    monkeypatch.setattr(pan_app, 'set_ui_language', lambda lang: switched.append(lang))
+
+    _run_cli(monkeypatch, ['virtaal', '--pseudo-translation-priority'])
+
+    assert generated == ['pseudo-priority']
+    assert switched == ['pseudo-priority']
 
 
 def test_pseudo_translation_with_no_matching_locale_is_a_fatal_argument_error(monkeypatch):
@@ -301,7 +312,8 @@ def test_every_cli_option_is_documented_in_docs_cli_options_rst():
 
 
 @pytest.mark.parametrize('option', ['--pseudo-translation', '--pseudo-translation-bidi',
-                                    '--pseudo-translation-source', '--profile'])
+                                    '--pseudo-translation-source', '--pseudo-translation-priority',
+                                    '--priorities', '--profile'])
 def test_developer_options_are_accepted_but_left_out_of_help(option):
     parser = cli.build_parser()
     assert option not in parser.format_help()

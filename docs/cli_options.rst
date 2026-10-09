@@ -75,6 +75,21 @@ them.
    for language and country names (e.g. ``gtk:_Open``). A string with no prefix isn't translatable. Mutually
    exclusive with the other pseudo-translation options and :option:`--lang`.
 
+.. option:: --pseudo-translation-priority
+
+   Prefix every UI string with its translation priority from
+   ``po/virtaal.priorities.yaml`` (see ``po/README.md``): ``1:`` for the
+   core of level 1, ``1~:`` for the rest of it, ``2:``, ``3:``, ``x:`` for
+   one translators are never asked for, and ``?:`` for one the file
+   doesn't list (e.g. ``1:_Open``). Mutually exclusive with the other
+   pseudo-translation options and :option:`--lang`.
+
+.. option:: --priorities <filename>
+
+   The priority file :option:`--pseudo-translation-priority` reads, instead
+   of ``po/virtaal.priorities.yaml`` - for checking one before it's
+   committed.
+
 .. option:: -P <filename>, --profile <filename>
 
    Perform profiling, storing the result to the supplied filename in

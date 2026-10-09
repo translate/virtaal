@@ -99,6 +99,8 @@ def build_parser():
                               default=False, help=argparse.SUPPRESS)
     pseudo_group.add_argument("--pseudo-translation-source", dest="pseudo_translation_source", action="store_true",
                               default=False, help=argparse.SUPPRESS)
+    pseudo_group.add_argument("--pseudo-translation-priority", dest="pseudo_translation_priority", action="store_true",
+                              default=False, help=argparse.SUPPRESS)
     pseudo_group.add_argument("--lang", dest="lang", metavar=_("LANG"),
                          help=_("override the UI language for this run (e.g. \"fr\"; "
                                  "\"en\" for the untranslated source strings; \"system\" "
@@ -110,6 +112,7 @@ def build_parser():
     # nargs='?' makes this genuinely optional and means argparse itself
     # rejects more than one positional argument (with its own
     # "unrecognized arguments" error).
+    parser.add_argument("--priorities", dest="priorities", metavar="FILE", help=argparse.SUPPRESS)
     parser.add_argument("translation_file", nargs="?", default=None)
     return parser
 
@@ -162,6 +165,8 @@ def _set_pseudo_translation(options, parser):
         lang = 'pseudo-bidi'
     elif options.pseudo_translation_source:
         lang = 'pseudo-source'
+    elif getattr(options, 'pseudo_translation_priority', False):
+        lang = 'pseudo-priority'
     elif options.pseudo_translation:
         lang = 'pseudo'
     else:
@@ -174,7 +179,7 @@ def _set_pseudo_translation(options, parser):
         spec = importlib.util.spec_from_file_location('generate_pseudo_translation', generator_path)
         generator = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(generator)
-        generator.generate_locale(lang)
+        generator.generate_locale(lang, priorities=getattr(options, 'priorities', None))
     try:
         pan_app.set_ui_language(lang)
     except OSError:

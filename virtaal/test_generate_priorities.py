@@ -114,12 +114,14 @@ def test_language_and_country_names_come_from_the_rules_not_the_harvest(gen):
     rules = {"names": {"english": "1", "supported": "2", "wider": {"priority": "2", "languages": ["fr", "sw"]}}}
     levels = {"iso639-3": {"Afrikaans": "1~", "English": "1~"}, "iso3166-1": {"Lesotho": "2"}, "virtaal": {"_Find…": "1"}}
 
-    # Named as Virtaal looks them up: "Portuguese (Brazil)" is two
-    # messages, "Catalan; Valencian (Valencia)" just Catalan, and Songhai
-    # and Swahili have no catalog entry Virtaal would find.
+    # Named as Virtaal looks them up: by the catalog's own name for the
+    # code first ("Swahili (macrolanguage)"), then translate-toolkit's;
+    # "Portuguese (Brazil)" is two messages, "Catalan; Valencian
+    # (Valencia)" just Catalan, and Songhai has no catalog entry.
     assert gen.apply_names(levels, rules, ["zu", "pt_BR", "zh_TW", "ca@valencia", "son"]) == {
         "virtaal": {"_Find…": "1"},
-        "iso639-3": {"Zulu": "2", "Portuguese": "2", "Chinese": "2", "Catalan": "2", "French": "2", "English": "1"},
+        "iso639-3": {"Zulu": "2", "Portuguese": "2", "Chinese": "2", "Catalan": "2", "French": "2",
+                     "Swahili (macrolanguage)": "2", "English": "1"},
         "iso3166-1": {"Brazil": "2", "Taiwan": "2"},
     }
 

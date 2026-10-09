@@ -109,3 +109,42 @@ Prerelease section gates all of that on this decision explicitly.
 See the `commit-style` skill's "Merge policy" section - a
 `--force-with-lease` push silently drops a PR from a GitHub merge
 queue, and re-enqueuing needs the new commit's CI to be green first.
+
+## Maintaining the human-readable release notes
+
+`docs/releases/1.0.0.rst` and its GitHub-release-body counterpart
+`docs/releases/1.0.0-github-notes.md` are a short, hand-written story
+(what we set out to do / how we met it), not the generated changelog -
+keep them in sync by hand on every edit, same content in RST vs.
+GitHub-flavoured Markdown.
+
+**Rebasing a long-stale draft of this file risks silently dropping
+real content, not just hitting conflict markers.** A commit that
+rewrites a whole prose section (replacing a bullet list with a
+narrative, say) only produces a *visible* conflict where its diff
+hunks happen to textually overlap another commit's small, targeted
+edit to the same file - if the small edit landed just outside that
+overlap, or the rewrite's patch applies "cleanly" by coincidence, it
+can be clean-merged right out of the result with no marker, no
+warning. Before trusting a rebase of a page like this across a real
+gap, enumerate every commit that touched the file in between
+(`git log <old-base>..<new-base> --oneline -- <path>`) and check each
+one's content actually survived into the merged result - not just that
+`git rebase --continue` reported success.
+
+**Verify real-world facts before asserting them, don't carry forward a
+stale premise.** This page makes concrete claims (code-signing status,
+which known limitations still apply, what's shipped vs. deferred) that
+drift as the project moves - e.g. a warning box that said "binaries are
+currently unsigned" stayed in a long-stale draft after signing
+actually shipped on both platforms. Check current project memory/state
+for anything the page asserts before republishing it, and word
+around what's genuinely unverified (e.g. "may still warn" rather than
+a flat "no longer warns") instead of guessing confidently either way -
+see the `verify-external-tool-behavior` skill for the general version
+of this discipline.
+
+**Verify the page renders, not just that pre-commit's hooks pass** -
+`sphinx -b html -q docs <scratch-dir>` and check for zero warnings;
+pre-commit's own hooks (trailing-whitespace, codespell) don't catch
+broken RST syntax or a dead cross-reference.

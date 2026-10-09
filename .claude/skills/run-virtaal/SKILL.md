@@ -178,8 +178,9 @@ might be using the machine concurrently (see `macos-ui-automation-safety`).
 
 **Preferences lives under the "Python" app menu, not Edit** - macOS's
 native menu bar puts it where `mainview.py`'s `osxapp.insert_app_menu_item`
-moved it, labelled "Settings…" (the system's own standard relabelling of
-"Preferences…"), not under Virtaal's own Edit menu:
+moved it, labelled with Virtaal's own translatable "Settings…" (#4133), not
+under Virtaal's own Edit menu. Under a translated UI the label is translated
+too, so click it by its translation or by position (item 3 of menu 1):
 
 ```applescript
 tell application "System Events"

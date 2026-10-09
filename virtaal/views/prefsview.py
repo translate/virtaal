@@ -5,7 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-from gi.repository import Gdk, GLib, GObject, Gtk, Pango
+from gi.repository import GLib, GObject, Gtk, Pango
 from translate.lang.data import languages as toolkit_langs
 
 from virtaal.common import GObjectWrapper, pan_app
@@ -29,7 +29,6 @@ class PreferencesView(BaseView, GObjectWrapper):
         GObjectWrapper.__init__(self)
         self.controller = controller
         self._widgets = {}
-        self._setup_key_bindings()
         self._setup_menu_item()
 
     def _get_widgets(self):
@@ -146,12 +145,6 @@ class PreferencesView(BaseView, GObjectWrapper):
         self._widgets['scrwnd_plugins'].add(self.plugins_select)
         self._widgets['scrwnd_plugins'].show_all()
 
-    def _setup_key_bindings(self):
-        # Comma, not "p" - Cmd+, is the macOS system convention for
-        # Preferences, translated from Ctrl+, the same way every other
-        # accelerator here relies on GtkosxApplication's Ctrl->Cmd mapping.
-        Gtk.AccelMap.add_entry("<Virtaal>/Edit/Preferences", Gdk.KEY_comma, Gdk.ModifierType.CONTROL_MASK)
-
     def _setup_menu_item(self):
         mainview = self.controller.main_controller.view
         menu_edit = mainview.gui.get_object('menu_edit')
@@ -166,16 +159,6 @@ class PreferencesView(BaseView, GObjectWrapper):
         mnu_prefs.set_accel_path("<Virtaal>/Edit/Preferences")
         mnu_prefs.connect('activate', self._show_preferences)
         mainview.sync_menubar()
-
-        # Preferences is moved into macOS's native App Menu (see
-        # mainview.py's insert_app_menu_item()), which never picks up a
-        # key equivalent from accel_path/AccelMap the way the regular
-        # menu bar does - so the Ctrl-then-Quartz-translates-to-Cmd
-        # convention every other shortcut here relies on never fires.
-        # Real Cmd+comma arrives as META_MASK|MOD2_MASK, not
-        # CONTROL_MASK - bind that directly instead.
-        accel_group.connect(Gdk.KEY_comma, Gdk.ModifierType.META_MASK | Gdk.ModifierType.MOD2_MASK,
-                             Gtk.AccelFlags.VISIBLE, self._show_preferences)
 
     # ACCESSORS #
     def _get_font_data(self):

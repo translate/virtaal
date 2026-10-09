@@ -8,7 +8,7 @@
 from types import SimpleNamespace
 
 import pytest
-from gi.repository import Gdk, Gtk
+from gi.repository import Gtk
 
 from virtaal.views import baseview, prefsview
 from virtaal.views.baseview import BaseView
@@ -230,19 +230,6 @@ class _FakeMainView:
 
     def sync_menubar(self):
         self.synced += 1
-
-
-def test_setup_key_bindings_registers_the_accelerator(monkeypatch):
-    # Asserting against the real (global, process-wide) Gtk.AccelMap here
-    # is order-dependent - other tests/production code touch the same
-    # entry - so check the call instead of the resulting global state.
-    calls = []
-    monkeypatch.setattr(prefsview.Gtk.AccelMap, 'add_entry', lambda *a: calls.append(a))
-    view = PreferencesView.__new__(PreferencesView)
-
-    view._setup_key_bindings()
-
-    assert calls == [("<Virtaal>/Edit/Preferences", Gdk.KEY_comma, Gdk.ModifierType.CONTROL_MASK)]
 
 
 def test_setup_menu_item_creates_an_accel_group_when_none_exists(monkeypatch):

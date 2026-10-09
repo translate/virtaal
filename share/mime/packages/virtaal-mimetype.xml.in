@@ -1,14 +1,12 @@
 <?xml version="1.0"?>
 <!--
-This file contains all translation related formats, even those not yet
-supported by Virtaal.
+Only translation formats that Virtaal opens and shared-mime-info doesn't
+define.
 
 Naming convention:
 * TM -> XXX Translation Memory
 * Translatable file -> XXX Translation File
-* Translation template file -> XXX Translation Template
 * Compiled translations -> XXXX Message File
-* Other files (dual use) -> Traditional name: Java Properties File, INI File, Windows Resource File
 * Use Title Case
 
 See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-latest.html
@@ -49,13 +47,6 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
     </magic>
   </mime-type>
 
-  <!-- Qt Linguist is copied from the standard DB but is yuck there -->
-  <mime-type type="application/x-linguist">
-    <sub-class-of type="application/xml"/>
-    <comment its:translate="yes">Qt Linguist Translation File</comment>
-    <glob pattern="*.ts"/>
-  </mime-type>
-
   <mime-type type="application/x-qm">
     <comment its:translate="yes">Qt Message File</comment>
     <glob pattern="*.qm"/>
@@ -67,94 +58,6 @@ See: http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spe
     <magic priority="50">
       <match value="&lt;QPH&gt;" type="string" offset="0:256"/>
     </magic>
-  </mime-type>
-
-  <mime-type type="text/x-ini">
-    <sub-class-of type="text/plain"/>
-    <comment its:translate="yes">INI File</comment>
-    <acronym its:translate="yes">INI</acronym>
-    <expanded-acronym its:translate="yes">Initialization</expanded-acronym>
-    <glob pattern="*.ini"/>
-    <!-- <alias type="application/textedit"/> -->
-    <alias type="zz-application/zz-winassoc-ini"/>
-  </mime-type>
-
-  <mime-type type="text/x-properties">
-    <sub-class-of type="text/plain"/>
-    <comment its:translate="yes">Java Properties File</comment>
-    <glob pattern="*.properties"/>
-  </mime-type>
-
-  <mime-type type="text/x-sdf">
-    <sub-class-of type="text/tab-separated-values"/>
-    <comment its:translate="yes">OpenOffice.org Translation File</comment>
-    <glob pattern="*.sdf"/>
-  </mime-type>
-
-  <mime-type type="application/x-xliff+xml">
-    <sub-class-of type="application/xml"/>
-    <comment its:translate="yes">XLIFF Translation File</comment>
-    <acronym its:translate="yes">XLIFF</acronym>
-    <expanded-acronym its:translate="yes">XML Localization Interchange File Format</expanded-acronym>
-    <glob pattern="*.xlf"/>
-    <glob pattern="*.xliff"/>
-    <magic priority="80">
-      <match value="&lt;xliff" type="string" offset="0:256"/>
-    </magic>
-    <root-XML namespaceURI='urn:oasis:names:tc:xliff:document:1.' localName='xliff'/>
-    <alias type="application/x-xliff"/>
-  </mime-type>
-
-  <mime-type type="text/x-rc">
-    <sub-class-of type="text/x-csrc"/>
-    <comment its:translate="yes">C++ RC File</comment>
-    <acronym its:translate="yes">RC</acronym>
-    <expanded-acronym its:translate="yes">Resource Compiler</expanded-acronym>
-    <glob pattern="*.rc"/>
-  </mime-type>
-
-  <mime-type type="text/x-msg">
-    <sub-class-of type="text/x-tcl"/>
-    <comment its:translate="yes">Tcl Translation File</comment>
-    <glob pattern="*.msg"/>
-    <magic priority="50">
-      <match value="::msgcat::mcset" type="string" offset="0:160"/>
-    </magic>
-  </mime-type>
-
-  <mime-type type="application/x-javascript-msg">
-    <sub-class-of type="application/javascript"/>
-    <comment its:translate="yes">JavaScript error message file</comment>
-    <glob pattern="*.msg"/>
-    <magic priority="50">
-      <match value="MSG_DEF(" type="string" offset="0:2560"/>
-    </magic>
-  </mime-type>
-
-  <mime-type type="text/x-gettext-translation-template">
-    <sub-class-of type="text/plain"/>
-    <comment its:translate="yes">Gettext Translation Template</comment>
-    <glob pattern="*.pot"/>
-    <magic priority="50">
-      <match value="msgid" type="string" offset="0:256"/>
-      <match value="msgstr" type="string" offset="0:256"/>
-      <match value="msgctxt" type="string" offset="0:256"/>
-    </magic>
-  </mime-type>
-
-  <mime-type type="application/x-ttx">
-    <sub-class-of type="application/xml"/>
-    <comment its:translate="yes">Trados Tag Editor</comment>
-    <glob pattern="*.ttx"/>
-    <magic priority="50">
-      <match value="&lt;TRADOStag" type="string" offset="0:256"/>
-    </magic>
-  </mime-type>
-
-  <mime-type type="application/x-strings">
-    <sub-class-of type="text/plain"/>
-    <comment its:translate="yes">OS X Strings File</comment>
-    <glob pattern="*.strings"/>
   </mime-type>
 
   <mime-type type="text/x-utx">

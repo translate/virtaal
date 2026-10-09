@@ -29,6 +29,9 @@ def coverage(tmp_path, monkeypatch):
     (po_dir / "lite" / "gtk30" / "gtk30.pot").write_text(TEMPLATE, encoding="utf-8")
     (po_dir / "LINGUAS").write_text("af\nen_GB\npt_BR\nzu\n", encoding="utf-8")
     (po_dir / "LINGUAS-lite").write_text("gtk30/zu\niso_639/zu\n", encoding="utf-8")
+    (po_dir / "virtaal.priorities.yaml").write_text(
+        "domains:\n  gtk30:\n    '1': [Open]\n    1~: [\"Stock label\\x04_Close\", byte]\n"
+        "  iso639-3:\n    '1': [English]\n", encoding="utf-8")
     # Upstream: pt covers everything (pt_BR falls back to it), af half.
     everything = {"Open": "Abrir", "Stock label\x04_Close": "_Fechar", "byte\0bytes": "byte\0bytes"}
     lite.write_mo(str(upstream / "pt" / "LC_MESSAGES" / "gtk30.mo"), everything)
@@ -42,6 +45,7 @@ def coverage(tmp_path, monkeypatch):
     monkeypatch.setattr(module, "LITE_DIR", str(po_dir / "lite"))
     monkeypatch.setattr(lite, "LIBRARY_NAMESPACES", {"gtk30": "Gtk", "gtkspell3": "GtkSpell"})
     monkeypatch.setattr(lite, "library_locale_dir", lambda ns: str(upstream) if ns == "Gtk" else None)
+    monkeypatch.setattr(module, "_name_translated", lambda lite, lang, name: lang != "af")
     return module, lite
 
 
@@ -88,3 +92,19 @@ def test_main_stays_quiet_outside_github_actions(coverage, monkeypatch, capsys):
     assert module.main(["--host", "Windows (gvsbuild)"]) == 0
 
     assert "::warning" not in capsys.readouterr().out
+
+
+def test_level_one_gaps_count_core_and_rest_with_language_names(coverage):
+    module, lite = coverage
+
+    # af: _Close and byte (rest), English (core); zu: byte; pt_BR nothing.
+    assert module.level_one_gaps(lite) == {"af": (1, 2), "zu": (0, 1)}
+
+
+def test_markdown_leads_with_the_level_one_gaps(coverage):
+    module, lite = coverage
+    report, skipped = module.missing(lite)
+
+    text = module.markdown(report, skipped, "macOS (Homebrew)", module.level_one_gaps(lite, report))
+
+    assert "Level 1 (the release rule, `po/update-linguas.py --cut-off`): af (3 strings), zu (1)." in text

@@ -2,17 +2,37 @@
 # devsupport/pseudo-translation/generate_priorities.py applies to what
 # harvest_sources.py saw, writing po/virtaal.priorities.yaml.
 #
-#   1   core: the welcome screen and the menus. A release needs all of it.
-#   1~  the rest of level 1: editing a file, suggestions, message dialogs.
-#   2   settings, and screens seen once.
-#   3   everything else.
-#   x   never asked of translators.
-#
 # A message missing from the generated file is "?": it's newer than the
 # file.
 #
 # Patterns are regular expressions, searched for in the harvest's screen,
 # window and within, with catalog tags such as "vt:" removed.
+
+# The priorities, by name. order ranks them, most important first.
+[priorities."1"]
+name = "Level 1 core"
+order = 1
+description = "The welcome screen and the menus. A release needs all of it."
+
+[priorities."1~"]
+name = "Level 1"
+order = 2
+description = "The rest of level 1: editing a file, suggestions, message dialogs."
+
+[priorities."2"]
+name = "Level 2"
+order = 3
+description = "Settings, and screens seen once."
+
+[priorities."3"]
+name = "Level 3"
+order = 4
+description = "Everything else."
+
+[priorities.x]
+name = "Never asked"
+order = 5
+description = "Not asked of translators."
 
 # Each place a message was seen on screen takes the priority of the first
 # rule that matches it. A message takes the most important of those.

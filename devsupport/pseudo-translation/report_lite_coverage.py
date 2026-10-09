@@ -115,6 +115,48 @@ def missing(lite=None):
     return report, skipped
 
 
+def _priorities():
+    import yaml
+    with open(os.path.join(PO_DIR, "virtaal.priorities.yaml"), encoding="utf-8") as f:
+        return yaml.safe_load(f)["domains"]
+
+
+def _name_translated(lite, lang, name):
+    """Whether pycountry's language-name catalog, or Virtaal's lite one,
+        translates name for lang."""
+    import pycountry
+    upstream = gettext.find("iso639-3", pycountry.LOCALES_DIR, [lang])
+    if upstream and lite.read_mo(upstream).get(name):
+        return True
+    lite_po = os.path.join(LITE_DIR, "iso639-3", lang + ".po")
+    return bool(os.path.isfile(lite_po) and lite.read_lite_po(lite_po).get(name))
+
+
+def level_one_gaps(lite=None, report=None):
+    """{lang: (core, rest)}: how many of po/virtaal.priorities.yaml's
+        level-1 library messages and language names each shipped language
+        shows in English on this host."""
+    lite = lite or _lite_module()
+    report = report if report is not None else missing(lite)[0]
+    domains = _priorities()
+    gaps = {}
+
+    def add(lang, core, rest):
+        before = gaps.get(lang, (0, 0))
+        gaps[lang] = (before[0] + core, before[1] + rest)
+
+    for domain, langs in report.items():
+        core, rest = set(domains.get(domain, {}).get("1", [])), set(domains.get(domain, {}).get("1~", []))
+        for lang, keys in langs.items():
+            keys = {key.split("\0")[0] for key in keys}
+            add(lang, len(keys & core), len(keys & rest))
+    names = domains.get("iso639-3", {})
+    for lang in shipped_languages():
+        add(lang, sum(not _name_translated(lite, lang, name) for name in names.get("1", [])),
+            sum(not _name_translated(lite, lang, name) for name in names.get("1~", [])))
+    return {lang: counts for lang, counts in gaps.items() if counts != (0, 0)}
+
+
 def _shown(key):
     context, _, msgid = key.rpartition("\x04")
     text = msgid.split("\0")[0].replace("\n", "\\n")
@@ -141,12 +183,17 @@ def _named(langs):
     return ", ".join(parts)
 
 
-def markdown(report, skipped, host):
-    """A one-row-per-library summary, every gap in a collapsible section."""
+def markdown(report, skipped, host, level_one=None):
+    """A one-row-per-library summary, every gap in a collapsible section.
+        level_one: level_one_gaps(), for the release rule's line."""
     lines = ["## Lite coverage - %s" % host, "",
              "Library strings each shipped language would still show in English: neither the library's"
-             " catalog on this build host nor a shipped lite catalog translates them.", "",
-             "| Library | Languages with gaps |", "|---|---|"]
+             " catalog on this build host nor a shipped lite catalog translates them.", ""]
+    if level_one is not None:
+        counts = {lang: core + rest for lang, (core, rest) in level_one.items()}
+        lines += ["Level 1 (the release rule, `po/update-linguas.py --cut-off`): %s." % (
+            _named({lang: [None] * count for lang, count in counts.items()}) or "nothing missing"), ""]
+    lines += ["| Library | Languages with gaps |", "|---|---|"]
     for domain, langs in sorted(report.items(), key=lambda item: list(LABELS).index(item[0])):
         label = "%s (%d strings)" % (LABELS.get(domain, domain), len(template_keys(domain)))
         lines.append("| %s | %s |" % (label, _named(langs) if langs else "none"))
@@ -172,8 +219,9 @@ def main(argv=None):
     parser.add_argument("--host", default={"Darwin": "macOS"}.get(platform.system(), platform.system()),
                         help='this build host, as the report names it (e.g. "macOS (Homebrew)")')
     args = parser.parse_args(argv)
-    report, skipped = missing()
-    text = markdown(report, skipped, args.host)
+    lite = _lite_module()
+    report, skipped = missing(lite)
+    text = markdown(report, skipped, args.host, level_one_gaps(lite, report))
     print(text)
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary:

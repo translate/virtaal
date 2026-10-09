@@ -493,6 +493,7 @@ class MainView(BaseView):
         for path, key in (
             ("<Virtaal>/File/Open", Gdk.KEY_o),
             ("<Virtaal>/File/Save", Gdk.KEY_s),
+            ("<Virtaal>/File/Close", Gdk.KEY_w),
         ):
             Gtk.AccelMap.add_entry(path, key, Gdk.ModifierType.CONTROL_MASK)
         if not platform.is_mac:

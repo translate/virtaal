@@ -195,6 +195,18 @@ def test_toggled_inactive_closes_the_menu(monkeypatch):
     assert calls == ['popdown']
 
 
+def test_toggled_handlers_fill_the_menu_before_it_opens(monkeypatch):
+    # A menu filled after it opens keeps its old size and opens scrolled.
+    button = PopupMenuButton()
+    calls = []
+    monkeypatch.setattr(button, 'popup', lambda: calls.append('popup'))
+    button.connect('toggled', lambda b: calls.append('fill'))
+
+    button.set_active(True)
+
+    assert calls == ['fill', 'popup']
+
+
 
 # close_on_enter() #
 

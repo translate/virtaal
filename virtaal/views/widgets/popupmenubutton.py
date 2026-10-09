@@ -59,7 +59,7 @@ class PopupMenuButton(Gtk.ToggleButton):
         else:
             self.menu_pos = _rtl_pos_map.get(menu_pos, POS_SE_NE)
 
-        self.connect('toggled', self._on_toggled)
+        self.connect_after('toggled', self._on_toggled)
 
 
     # ACCESSORS #

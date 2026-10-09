@@ -27,10 +27,11 @@ hard gate - not just a warning.
 reason (#4032 - before that, zh_CN merged in #3626 and never shipped
 until #4030 listed it). For a new language, the PR should run
 `po/update-linguas.py`, which adds it; pre-commit's `check-linguas`
-fails otherwise. Translations below 50% aren't refused at review: they
+fails otherwise. Incomplete translations aren't refused at review: they
 ship through the release candidates and are only cut, into
 `po/LINGUAS-excluded`, by `po/update-linguas.py --cut-off <version>`
-when the final release is made.
+when the final release is made - unless they have all of level 1
+(`po/virtaal.priorities.yaml`), or 50% before 1.1.0.
 
 A new language also needs a Windows installer decision in
 `devsupport/packaging/windows/generate_installer_translations.py`:

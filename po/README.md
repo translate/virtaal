@@ -36,17 +36,19 @@ po/update-linguas.py
 pre-commit checks `LINGUAS` against the rule.
 
 Translators get the release candidates (rc1 starts the string freeze,
-rc2 is translations only) to catch up on new strings. When cutting the
-final release, exclude the translations below 50% of `virtaal.pot`'s
-messages (fuzzy ones don't count; English variants are exempt):
+rc2 is translations only) to catch up on new strings. A final release
+ships a translation with all of level 1 (see Translation priorities
+below): every core message, and all but 3 of the rest. Before 1.1.0,
+translating 50% of `virtaal.pot`'s messages also ships it. Fuzzy
+translations don't count, and English variants are exempt. When
+cutting the final release, exclude the rest:
 
 ```sh
 po/update-linguas.py --cut-off 1.0.0
 ```
 
-To see where each translation stands before then - the ones a few
-strings short that could make it, and the ones with few to spare that
-new strings could push under - which CI also shows in its job summary:
+To see where each translation stands before then, and the level-1
+strings each one still needs - which CI also shows in its job summary:
 
 ```sh
 po/update-linguas.py --report

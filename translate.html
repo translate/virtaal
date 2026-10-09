@@ -1,0 +1,170 @@
+---
+layout: default
+title: Translate
+---
+<style>
+  .levels { width: 100%; }
+  .levels th, .levels td { padding: 6px 8px; vertical-align: middle; border-top: 1px solid #ddd; text-align: left; }
+  .levels .endonym { color: #777; }
+  .levels .code { color: #999; font-size: 85%; }
+  .bar { position: relative; height: 16px; min-width: 90px; background: #eee; border-radius: 3px; overflow: hidden; }
+  .bar span { display: block; height: 100%; background: #5bb75b; }
+  .bar.partial span { background: #f0ad4e; }
+  .bar.low span { background: #da4f49; }
+  .count { font-size: 85%; color: #555; white-space: nowrap; }
+  .status { white-space: nowrap; }
+  .ships { color: #468847; font-weight: bold; }
+  .fifty { color: #c09853; }
+  #progress-error { display: none; }
+</style>
+
+<div class="container content">
+  <h2>Translate Virtaal</h2>
+  <p>Virtaal ships a language once its <strong>level 1</strong> is
+    translated: what everyone sees, from the welcome screen and menus to
+    editing a file. Level 2 is settings and screens seen once, level 3
+    everything else. Translate level 1 first and your language ships in
+    the next release.</p>
+
+  <ol>
+    <li>Download your language's translation pack. <code>LANG-level1.po</code>
+      is level 1, <code>LANG-level2.po</code> levels 1 and 2. Files such
+      as <code>gtk30-LANG-level1.po</code> hold toolkit messages your
+      system doesn't translate yet.</li>
+    <li>Translate it, in Virtaal or any PO editor.</li>
+    <li>Zip it and send it with the
+      <a href="{{ site.gh_url }}/issues/new?template=translation_update.yml">Translation update</a>
+      form.</li>
+  </ol>
+
+  <p>
+    <a class="btn btn-success" id="release-packs" href="{{ site.gh_url }}/releases">Translation packs
+      <span id="release-packs-tag"></span></a>
+    <a class="btn" id="ci-packs" href="{{ site.gh_url }}/actions" style="display: none">Newest packs
+      (GitHub sign-in needed)</a>
+  </p>
+
+  <h3>Where each language stands</h3>
+  <p id="progress-summary">Loading…</p>
+  <p class="alert" id="progress-error">The progress data couldn't be loaded. See the
+    <a href="{{ site.gh_url }}/tree/translation-progress">translation-progress branch</a>.</p>
+
+  <table class="levels" id="progress-table">
+    <thead>
+      <tr>
+        <th>Language</th>
+        <th>Level 1: core</th>
+        <th>Level 1: the rest</th>
+        <th>Level 2</th>
+        <th>Level 3</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script>
+(function () {
+  var REPO = "translate/virtaal";
+  var DATA = "https://raw.githubusercontent.com/" + REPO + "/translation-progress/progress.json";
+
+  function el(tag, text, cls) {
+    var node = document.createElement(tag);
+    if (text !== undefined) node.textContent = text;
+    if (cls) node.className = cls;
+    return node;
+  }
+
+  function bar(missing, total) {
+    var cell = el("td");
+    if (!total) return cell;
+    var have = Math.max(0, total - missing);
+    var share = have / total;
+    var outer = el("div", undefined, "bar" + (share === 1 ? "" : share >= 0.5 ? " partial" : " low"));
+    var inner = el("span");
+    inner.style.width = (100 * share).toFixed(1) + "%";
+    outer.appendChild(inner);
+    outer.title = have + " of " + total + " translated";
+    cell.appendChild(outer);
+    cell.appendChild(el("div", missing ? missing + " to go" : "done", "count"));
+    return cell;
+  }
+
+  function status(lang, data) {
+    var cell = el("td", undefined, "status");
+    if (lang.ships === "level 1") {
+      cell.appendChild(el("span", "Ships", "ships"));
+    } else if (lang.needed) {
+      cell.appendChild(el("span", lang.needed + " level-1 message" + (lang.needed === 1 ? "" : "s") + " to go"));
+      if (lang.ships === "50%") {
+        cell.appendChild(el("div", "Ships on 50% until " + data.fifty_percent_until + ".0", "fifty"));
+      }
+    }
+    return cell;
+  }
+
+  function render(data) {
+    var tbody = document.querySelector("#progress-table tbody");
+    var langs = data.languages.slice().sort(function (a, b) {
+      return a.needed - b.needed || a.name.localeCompare(b.name);
+    });
+    langs.forEach(function (lang) {
+      var row = el("tr");
+      var name = el("td");
+      name.appendChild(el("strong", lang.name));
+      if (lang.endonym && lang.endonym !== lang.name) {
+        name.appendChild(document.createTextNode(" "));
+        name.appendChild(el("span", lang.endonym, "endonym"));
+      }
+      name.appendChild(document.createTextNode(" "));
+      name.appendChild(el("span", lang.code, "code"));
+      row.appendChild(name);
+      row.appendChild(bar(lang.core_missing, data.totals.core));
+      row.appendChild(bar(lang.rest_missing, data.totals.rest));
+      row.appendChild(bar(lang.level2_missing, data.totals.level2));
+      row.appendChild(bar(lang.level3_missing, data.totals.level3));
+      row.appendChild(status(lang, data));
+      tbody.appendChild(row);
+    });
+    var ready = langs.filter(function (lang) { return lang.ships === "level 1"; }).length;
+    document.getElementById("progress-summary").textContent =
+      ready + " of " + langs.length + " languages have level 1. Level 1 is " + data.totals.core +
+      " core messages, all needed, and " + data.totals.rest + " more, of which " + data.tolerance +
+      " may be missing. Updated " + data.generated.slice(0, 10) + ".";
+    if (data.packs) {
+      var ci = document.getElementById("ci-packs");
+      ci.href = data.packs;
+      ci.style.display = "";
+    }
+  }
+
+  fetch(DATA, { cache: "no-cache" })
+    .then(function (response) {
+      if (!response.ok) throw new Error(response.status);
+      return response.json();
+    })
+    .then(render)
+    .catch(function () {
+      document.getElementById("progress-summary").style.display = "none";
+      document.getElementById("progress-error").style.display = "block";
+    });
+
+  // The newest release with packs attached: release candidates have them.
+  fetch("https://api.github.com/repos/" + REPO + "/releases?per_page=20")
+    .then(function (response) { return response.ok ? response.json() : []; })
+    .then(function (releases) {
+      for (var i = 0; i < releases.length; i++) {
+        var assets = releases[i].assets || [];
+        for (var j = 0; j < assets.length; j++) {
+          if (/^virtaal-translation-packs-.*\.zip$/.test(assets[j].name)) {
+            document.getElementById("release-packs").href = assets[j].browser_download_url;
+            document.getElementById("release-packs-tag").textContent = "(" + releases[i].tag_name + ")";
+            return;
+          }
+        }
+      }
+    })
+    .catch(function () {});
+})();
+</script>

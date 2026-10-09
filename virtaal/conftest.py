@@ -283,7 +283,7 @@ def _force_english_translations():
     LanguageModel(...).name - untouched by the patch above since it
     bypasses the builtin _() entirely."""
     gettext.NullTranslations().install()
-    langmodel.gettext_lang = lambda name: name
+    langmodel.gettext_lang = lambda name, code=None: name
 
 
 @pytest.fixture(autouse=True, scope="session")

@@ -79,7 +79,7 @@ class LanguageModel(BaseModel):
                         self.plural = ""
                         return
 
-        self.name = gettext_lang(self.languages[langcode][0])
+        self.name = gettext_lang(self.languages[langcode][0], langcode)
         self.code = langcode
         self.nplurals = self.languages[langcode][1]
         self.plural = self.languages[langcode][2]

@@ -487,7 +487,7 @@ msgstr ""
 msgid "Qt .qm file"
 msgstr ""
 
-#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+#: devsupport/tmp_strings.py
 msgid "Qt Linguist Translation File"
 msgstr ""
 
@@ -519,7 +519,7 @@ msgstr ""
 msgid "Wordfast Translation Memory"
 msgstr ""
 
-#: devsupport/tmp_strings.py share/mime/packages/virtaal-mimetype.xml.in
+#: devsupport/tmp_strings.py
 msgid "XLIFF Translation File"
 msgstr ""
 
@@ -634,66 +634,6 @@ msgstr ""
 
 #: share/mime/packages/virtaal-mimetype.xml.in
 msgid "Qt Message File"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "INI File"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "INI"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "Initialization"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "Java Properties File"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "OpenOffice.org Translation File"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "XLIFF"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "XML Localization Interchange File Format"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "C++ RC File"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "RC"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "Resource Compiler"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "Tcl Translation File"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "JavaScript error message file"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "Gettext Translation Template"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "Trados Tag Editor"
-msgstr ""
-
-#: share/mime/packages/virtaal-mimetype.xml.in
-msgid "OS X Strings File"
 msgstr ""
 
 #: share/mime/packages/virtaal-mimetype.xml.in

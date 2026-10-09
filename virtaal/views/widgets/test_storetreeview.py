@@ -48,7 +48,7 @@ def _make_view(column_width, cursor, is_resizing=False):
         set_cursor=lambda *args, **kwargs: calls.append((args, kwargs)),
         _restart_editing=lambda path, column: calls.append(((path, column), {'start_editing': True})),
         is_resizing=is_resizing,
-        _schedule_revalidate_visible_estimated_rows=lambda: None,
+        schedule_revalidate_visible_estimated_rows=lambda: None,
     )
     return view, column, calls
 
@@ -343,7 +343,7 @@ def test_vadjustment_notify_connects_scrolling_to_revalidation():
     vadjustment.emit('value-changed')
 
     # Deferred via GLib.idle_add(), not run synchronously from the
-    # signal handler - see _schedule_revalidate_visible_estimated_rows().
+    # signal handler - see schedule_revalidate_visible_estimated_rows().
     assert calls == []
     while Gtk.events_pending():
         Gtk.main_iteration()
@@ -355,9 +355,9 @@ def test_schedule_revalidate_visible_estimated_rows_coalesces_repeat_calls():
     calls = []
     view._revalidate_visible_estimated_rows = lambda: calls.append(True)
 
-    view._schedule_revalidate_visible_estimated_rows()
-    view._schedule_revalidate_visible_estimated_rows()
-    view._schedule_revalidate_visible_estimated_rows()
+    view.schedule_revalidate_visible_estimated_rows()
+    view.schedule_revalidate_visible_estimated_rows()
+    view.schedule_revalidate_visible_estimated_rows()
     while Gtk.events_pending():
         Gtk.main_iteration()
 

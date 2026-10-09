@@ -337,7 +337,10 @@ class StoreCellRenderer(Gtk.CellRenderer):
         if self.source_layout is None or self.target_layout is None:
             # A row being painted is visible by definition, even if the
             # cached viewport do_get_size() just used said otherwise.
+            # GTK still holds the estimated height, so leave the row
+            # marked estimated for the revalidation to correct.
             self._compute_exact_height(widget, width)
+            self.view._treeview.schedule_revalidate_visible_estimated_rows()
         x = cell_area.x + x_offset
         y = cell_area.y + y_offset
         source_x = x
@@ -385,6 +388,7 @@ class StoreCellRenderer(Gtk.CellRenderer):
                     rendering.get_target_font_description())
             return max(source_height, target_height) + self.ROW_PADDING
 
+        treeview.mark_row_measured_exactly(self.unit)
         return self._compute_exact_height(widget, width)
 
     def _compute_exact_height(self, widget, width):
@@ -404,7 +408,6 @@ class StoreCellRenderer(Gtk.CellRenderer):
             self.target_layout.set_alignment(Pango.Alignment.RIGHT)
         _layout_width, source_height = self.source_layout.get_pixel_size()
         _layout_width, target_height = self.target_layout.get_pixel_size()
-        self.view._treeview.mark_row_measured_exactly(self.unit)
         return max(source_height, target_height) + self.ROW_PADDING
 
     def _row_needs_exact_height(self, treeview, store):

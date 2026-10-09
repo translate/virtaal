@@ -61,7 +61,7 @@ window = "^FontChooserDialog"
 
 [[seen]]
 # Quality check names, in the Quality Checks mode's menu.
-priority = "2"
+priority = "1~"
 screen = "^mode QualityCheck menu$"
 
 [[seen]]
@@ -85,8 +85,13 @@ priority = "2"
 # Messages never seen, by the file virtaal.pot says they come from. The
 # first match wins; anything else is 3.
 [[unseen]]
+# Quality check and checker names.
+priority = "1~"
+file = "^virtaal/controllers/checkscontroller\\.py"
+
+[[unseen]]
 priority = "2"
-file = "^(virtaal/support/tutorial\\.py|virtaal/plugins/migration\\.py|virtaal/controllers/checkscontroller\\.py|share/(mime|metainfo|applications)/|devsupport/tmp_strings\\.py)"
+file = "^(virtaal/support/tutorial\\.py|virtaal/plugins/migration\\.py|share/(mime|metainfo|applications)/|devsupport/tmp_strings\\.py)"
 
 # Messages the harvest can't show, at the priority they'd have: each one
 # replaces whatever priority the rules above gave it. One with a domain

@@ -85,12 +85,12 @@ else - see `macos-ui-automation-safety` for why this check isn't optional.
 
 ## Driving native macOS fullscreen
 
-Virtaal hides its own View > Fullscreen menu item on macOS deliberately
-(`mainview.py`'s own comment: macOS already provides native fullscreen, and
-the app's GDK-level one has no way back to the menu bar). That means the
-*only* way to test real fullscreen behaviour is the system's native
-mechanism - via the window's `AXFullScreenButton`, not a menu click and not
-raw coordinates (the button's on-screen position isn't worth hardcoding):
+Virtaal hides its own View > Full Screen item on macOS, since AppKit adds
+its own "Enter Full Screen" (Fn+F) to the View menu. GDK's `fullscreen()`
+is the same native fullscreen there. F11 never reaches Virtaal on macOS -
+F11 and Fn+F11 are both Show Desktop. To drive it from a script, click the
+window's `AXFullScreenButton`, not raw coordinates (the button's on-screen
+position isn't worth hardcoding):
 
 ```applescript
 tell application "System Events"
@@ -140,7 +140,8 @@ value to reuse blind.
 ## Revealing the fullscreen menu bar
 
 Hovering the mouse to the top of the screen reveals the menu bar in native
-fullscreen - this needs a real `kCGEventMouseMoved`, not a click (see
+fullscreen. It should hold File/Edit/View/Navigation/Help - an empty bar
+means the menus were moved out of the GtkMenuBar (#3785) - this needs a real `kCGEventMouseMoved`, not a click (see
 `macos-ui-automation-safety`). Once in fullscreen, the app covers the entire
 display, so a screenshot at this point genuinely only shows Virtaal's own
 content - but scope it to the top strip anyway rather than the whole screen,

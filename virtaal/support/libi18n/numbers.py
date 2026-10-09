@@ -11,6 +11,7 @@ symbols, with the digits of the locale's default numbering system."""
 import copy
 
 from babel import Locale, UnknownLocaleError
+from babel.units import format_unit
 
 from virtaal.support.libi18n.cldr_numbering_systems import DIGITS
 
@@ -56,3 +57,20 @@ def format_percent(fraction, decimals=1):
     pattern = copy.copy(locale.percent_formats[None])
     pattern.frac_prec = (decimals, decimals)
     return localise_digits(pattern.apply(fraction, locale, numbering_system="default"), locale)
+
+
+def format_size(size):
+    """A file size of size bytes in the UI language, in decimal units like
+        GLib.format_size: bytes below 1,000, then kB, MB, GB or TB with
+        one decimal place. CLDR's short unit names, because many
+        locales lack the long ones."""
+    locale = ui_locale()
+    if size < 1000:
+        text = format_unit(size, "digital-byte", "short", locale=locale, numbering_system="default")
+    else:
+        for unit in ("kilobyte", "megabyte", "gigabyte", "terabyte"):
+            size /= 1000
+            if size < 1000:
+                break
+        text = format_unit(size, "digital-" + unit, "short", "#,##0.0", locale, numbering_system="default")
+    return localise_digits(text, locale)

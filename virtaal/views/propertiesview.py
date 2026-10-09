@@ -10,7 +10,7 @@ import logging
 from gi.repository import GLib, Gtk
 
 from virtaal.common import GObjectWrapper
-from virtaal.support.libi18n.numbers import format_number, format_percent
+from virtaal.support.libi18n.numbers import format_number, format_percent, format_size
 
 from .baseview import BaseView
 
@@ -244,7 +244,7 @@ class PropertiesView(BaseView, GObjectWrapper):
             self._widgets['lbl_location'].set_tooltip_text(filename)
         file_size = self.data.get('file_size', 0)
         if file_size:
-            self._widgets['lbl_filesize'].set_text(GLib.format_size(file_size))
+            self._widgets['lbl_filesize'].set_text(format_size(file_size))
 
 
     # EVENT HANDLERS #

@@ -101,3 +101,16 @@ def test_fullest_catalog_picks_the_most_messages_and_skips_pseudo_locales(tmp_pa
 
 def test_fullest_catalog_is_none_without_a_catalog(tmp_path, generator):
     assert generator.fullest_catalog([str(tmp_path)], "gtk30") is None
+
+
+def test_library_catalogs_are_found_in_ubuntus_language_packs(tmp_path, generator, monkeypatch):
+    share = tmp_path / "share"
+    (share / "locale").mkdir(parents=True)
+    _catalog(share / "locale-langpack", generator, {"_Open": "_Öffnen"}, lang="de")
+    monkeypatch.setattr(generator, "library_locale_dir", lambda namespace: str(share / "locale"))
+    mo_dir = tmp_path / "pseudo-source"
+    mo_dir.mkdir()
+
+    generator._generate_library_mos(str(mo_dir), None)
+
+    assert generator.read_mo_originals(str(mo_dir / "gtk30.mo")) == ["_Open"]

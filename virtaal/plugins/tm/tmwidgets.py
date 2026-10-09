@@ -8,6 +8,7 @@
 
 from gi.repository import Gdk, GObject, Gtk, Pango
 
+from virtaal.support.libi18n.numbers import format_percent
 from virtaal.views import markup, rendering
 
 
@@ -178,9 +179,7 @@ class TMWindow(Gtk.Window):
         if match_data.get('quality', None) is not None:
             quality = int(match_data['quality'])
             cell_renderer.set_property('value', quality)
-            #l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
-            cell_renderer.set_property('text', _("%(match_quality)s%%") % \
-                    {"match_quality": quality})
+            cell_renderer.set_property('text', format_percent(quality / 100, decimals=0))
             return
         cell_renderer.set_property('value', 0)
         #l10n: This indicates a suggestion from machine translation. It is displayed instead of the match percentage.

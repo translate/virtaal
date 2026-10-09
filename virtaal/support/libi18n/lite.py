@@ -133,6 +133,26 @@ def mismatched_catalogs(datas, mo_files):
             and os.path.normpath(source) != os.path.normpath(ours[os.path.normpath(dest)])]
 
 
+# Catalogs a frozen build never reads: atk10 (GTK3 has no accessibility
+# bridge on Windows or macOS), gdk-pixbuf (image loader errors),
+# gtkspell3 (GtkSpell isn't bundled), and every pycountry domain except
+# the language and country names translate_compat translates.
+UNUSED_DOMAINS = ("atk10", "gdk-pixbuf", "gtkspell3")
+PYCOUNTRY_DOMAINS = ("iso639-3", "iso3166-1")
+
+
+def is_unused_catalog(dest):
+    """Whether a PyInstaller datas destination is a catalog a frozen
+    build never reads."""
+    parts = os.path.normpath(dest).split(os.sep)
+    if not parts[-1].endswith(".mo"):
+        return False
+    domain = parts[-1][:-len(".mo")]
+    if parts[0] == "pycountry":
+        return domain not in PYCOUNTRY_DOMAINS
+    return domain in UNUSED_DOMAINS
+
+
 def read_linguas(path):
     """The languages a LINGUAS file lists, comments aside."""
     with open(path, encoding="utf-8") as f:

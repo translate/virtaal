@@ -135,5 +135,18 @@ def test_missing_catalogs_lists_expected_destinations_not_bundled():
     assert lite.missing_catalogs(datas, expected) == sorted([_dest("de", "glib20"), _dest("zu", "virtaal")])
 
 
+def test_is_unused_catalog_drops_unread_library_and_pycountry_domains():
+    def pycountry(lang, domain):
+        return os.path.normpath("pycountry/locales/%s/LC_MESSAGES/%s.mo" % (lang, domain))
+
+    unused = [_dest("de", "atk10"), _dest("de", "gdk-pixbuf"), _dest("zu", "gtkspell3"),
+              pycountry("de", "iso3166-2"), pycountry("de", "iso4217"), pycountry("de", "iso15924")]
+    used = [_dest("de", "gtk30"), _dest("de", "glib20"), _dest("de", "virtaal"),
+            pycountry("hi", "iso639-3"), pycountry("hi", "iso3166-1"),
+            os.path.normpath("pycountry/databases/iso4217.json")]
+
+    assert [d for d in unused + used if lite.is_unused_catalog(d)] == unused
+
+
 def test_library_locale_dir_is_none_for_a_missing_library():
     assert lite.library_locale_dir("NoSuchNamespace") is None

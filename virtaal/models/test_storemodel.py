@@ -255,3 +255,79 @@ def test_changing_language_writes_the_new_languages_plural_forms(tmp_path):
     model.set_target_language("fr")
 
     assert model._trans_store.getheaderplural() == ("2", "(n > 1)")
+
+
+_CHECKS_PO = """msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\\n"
+
+msgid "Open the file."
+msgstr "Maak die l\u00eaer oop"
+
+msgid "Close"
+msgstr "Maak toe"
+"""
+
+
+def _checks_model(tmp_path):
+    path = tmp_path / "checks.po"
+    path.write_text(_CHECKS_PO, encoding="utf-8")
+    model = StoreModel(str(path), _FakeController())
+    model._update_header = lambda: None
+    return model
+
+
+def test_update_checks_includes_unsaved_edits(tmp_path):
+    # The stats cache is keyed on the file on disk (#3988).
+    from translate.filters import checks
+    model = _checks_model(tmp_path)
+    assert model.update_checks(checker=checks.StandardChecker()) == {'check-endpunc': [0]}
+    model[0].target = "Maak die l\u00eaer oop."
+    model[1].target = "Maak toe."
+    model.update_unit_checks(0)
+    model.update_unit_checks(1)
+
+    assert model.update_checks() == {'check-endpunc': [1]}
+
+
+def test_update_unit_checks_moves_a_unit_between_failing_checks(tmp_path):
+    from translate.filters import checks
+    model = _checks_model(tmp_path)
+    model.update_checks(checker=checks.StandardChecker())
+
+    model[0].target = "Maak die l\u00eaer oop."
+    assert model.update_unit_checks(0) is True
+    assert model.checks == {}
+
+    model[1].target = "Maak toe."
+    assert model.update_unit_checks(1) is True
+    assert model.checks == {'check-endpunc': [1]}
+
+
+def test_update_unit_checks_reports_no_change_for_the_same_failures(tmp_path):
+    from translate.filters import checks
+    model = _checks_model(tmp_path)
+    model.update_checks(checker=checks.StandardChecker())
+
+    assert model.update_unit_checks(0) is False
+    assert model.checks == {'check-endpunc': [0]}
+
+
+def test_update_unit_checks_before_any_checks_only_marks_the_unit(tmp_path):
+    model = _checks_model(tmp_path)
+
+    assert model.update_unit_checks(0) is False
+    assert model.checks is None
+
+
+def test_save_file_forgets_the_edited_units(tmp_path):
+    from translate.filters import checks
+    model = _checks_model(tmp_path)
+    model.update_checks(checker=checks.StandardChecker())
+    model[0].target = "Maak die l\u00eaer oop."
+    model.update_unit_checks(0)
+
+    model.save_file()
+
+    assert model._edited_units == set()
+    assert model.update_checks() == {}

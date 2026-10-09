@@ -42,11 +42,14 @@ class QualityCheckMode(BaseMode):
 
 
     # METHODS #
-    def _prepare_stats(self, keep_selected=False):
+    def _prepare_stats(self, keep_selected=False, recheck=True):
         """Refresh the per-check failure stats.
             @param keep_selected: Keep selected checks listed even once they
-                have no failures left, so they can still be deselected."""
-        self.store_controller.update_store_checks(checker=self.main_controller.checks_controller.get_checker())
+                have no failures left, so they can still be deselected.
+            @param recheck: Rebuild the store's checks rather than use the
+                ones it already has."""
+        if recheck:
+            self.store_controller.update_store_checks(checker=self.main_controller.checks_controller.get_checker())
         self.stats = self.store_controller.get_store_checks()
         if not keep_selected:
             # A currently selected check might disappear if the style changes:
@@ -63,8 +66,8 @@ class QualityCheckMode(BaseMode):
     def selected(self):
         self._prepare_stats()
         self._checker_set_id = self.main_controller.checks_controller.connect('checker-set', self._on_checker_set)
-        # redo stats on save to refresh navigation controls
         self._store_saved_id = self.store_controller.connect('store-saved', self._on_store_saved)
+        self._checks_changed_id = self.store_controller.connect('checks-changed', self._on_checks_changed)
 
         self._add_widgets()
         self._update_button_label()
@@ -75,7 +78,9 @@ class QualityCheckMode(BaseMode):
             self.main_controller.checks_controller.disconnect(self._checker_set_id)
             self._checker_set_id = None
             self.store_controller.disconnect(self._store_saved_id)
-            self.store_saved_id = None
+            self._store_saved_id = None
+            self.store_controller.disconnect(self._checks_changed_id)
+            self._checks_changed_id = None
 
     def update_indices(self):
         if not self.storecursor or not self.storecursor.model:
@@ -169,9 +174,14 @@ class QualityCheckMode(BaseMode):
         self.update_indices()
 
     def _on_store_saved(self, store_controller):
-        # Refresh the counts only: the units under review stay until the
-        # selection changes.
-        self._prepare_stats(keep_selected=True)
+        self._refresh_counts(recheck=True)
+
+    def _on_checks_changed(self, store_controller):
+        self._refresh_counts(recheck=False)
+
+    def _refresh_counts(self, recheck):
+        # The units under review stay until the selection changes.
+        self._prepare_stats(keep_selected=True, recheck=recheck)
         self._create_menu_entries(self.btn_popup.menu)
         self._update_button_label()
 

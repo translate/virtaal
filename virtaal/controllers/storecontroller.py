@@ -25,6 +25,8 @@ class StoreController(BaseController):
         'store-closed': (GObject.SignalFlags.RUN_FIRST, None, ()),
         # The workflow state stats (store.stats) changed.
         'stats-changed': (GObject.SignalFlags.RUN_FIRST, None, ()),
+        # The quality check failures (store.checks) changed.
+        'checks-changed': (GObject.SignalFlags.RUN_FIRST, None, ()),
     }
 
     # INITIALIZERS #
@@ -432,11 +434,12 @@ class StoreController(BaseController):
     def _on_target_lang_changed(self, _sender, langcode):
         self.store.set_target_language(langcode)
 
-    def _unit_done(self, _unit_controller, unit, _modified):
-        self.update_unit_stats(unit)
+    def _unit_done(self, _unit_controller, unit, modified):
+        self.update_unit_stats(unit, modified)
 
-    def update_unit_stats(self, unit):
-        """Move C{unit} to the stats lists for its current state."""
+    def update_unit_stats(self, unit, modified=True):
+        """Move C{unit} to the stats lists for its current state and, if
+            C{modified}, recheck it."""
         if self.store is None or not self.store.stats:
             return
         if self.cursor and self.cursor.deref() is unit:
@@ -447,6 +450,8 @@ class StoreController(BaseController):
                 return
         if self.store.update_unit_stats(index):
             self.emit('stats-changed')
+        if modified and self.store.update_unit_checks(index):
+            self.emit('checks-changed')
 
     def _unit_modified(self, emitter, unit):
         # Guard against a late "modified" signal from a just-closed or

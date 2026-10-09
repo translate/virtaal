@@ -26,6 +26,12 @@ translation:
   strings are taken from their own installed catalogs; one its lite
   template (po/lite/<domain>/) lacks is marked "!" ("gtk!:Open"), a
   gap in lite coverage.
+- pseudo-priority: every string prefixed with its translation priority
+  from po/virtaal.priorities.yaml ("1:_Open", "1~:Search", "2:Settings",
+  "3:", "x:" for one translators are never asked for), and "?:" for one
+  the file doesn't list - for checking the priorities by eye. Library
+  strings and language names too, from the same catalogs as
+  pseudo-source.
 
 Compiled straight into the active environment's own share/locale/ by
 default (so bin/virtaal's --pseudo-translation* options work with no
@@ -64,6 +70,7 @@ LOCALES = {
     "pseudo-bidi": "bidi",
     "fa": "flipped",
     "pseudo-source": None,
+    "pseudo-priority": None,
 }
 
 # pseudo-source's tag for Virtaal's own catalog, and for each library
@@ -158,6 +165,44 @@ def tag_messages(originals, tag, lite=None):
     return messages
 
 
+def tag_by_level(originals, levels):
+    """{original: translation}, every form of every msgid prefixed with
+    its level in levels ({msgctxt\\x04msgid: level}) - "1:", "2:", ... -
+    or "?:" if levels lacks it. GTK's "default:LTR" stays untranslated,
+    as in tag_messages()."""
+    messages = {}
+    for original in originals:
+        msgid = original.rpartition("\x04")[2]
+        if msgid != "default:LTR":
+            prefix = levels.get(original.split("\0")[0], "?") + ":"
+            messages[original] = "\0".join(prefix + form for form in msgid.split("\0"))
+    return messages
+
+
+def read_levels(path=None):
+    """{domain: {key: level}} from a priority file (default
+    po/virtaal.priorities.yaml)."""
+    import yaml
+    path = path or os.path.join(_repo_root(), "po", "virtaal.priorities.yaml")
+    with open(path, encoding="utf-8") as f:
+        domains = yaml.safe_load(f)["domains"]
+    return {domain: {key: level for level, keys in by_level.items() for key in keys}
+            for domain, by_level in domains.items()}
+
+
+def _template_originals():
+    """po/virtaal.pot's messages, as read_mo_originals() gives them."""
+    from translate.storage import po
+    template = po.pofile.parsefile(os.path.join(_repo_root(), "po", "virtaal.pot"))
+    originals = []
+    for unit in template.units:
+        if unit.isheader() or unit.isobsolete():
+            continue
+        prefix = unit.getcontext() + "\x04" if unit.getcontext() else ""
+        originals.append(prefix + ("\0".join(unit.source.strings) if unit.hasplural() else str(unit.source)))
+    return originals
+
+
 def library_locale_dir(namespace):
     """pycountry's locale directory, or share/locale/ under the install
     prefix of a GI namespace's typelib, or None."""
@@ -220,7 +265,8 @@ def _generate_virtaal_mo(code, mo_dir):
         return mo_path
 
 
-def _generate_library_mos(mo_dir, localedir):
+def _generate_library_mos(mo_dir, localedir, levels=None):
+    """levels: read_levels(), to tag by level instead of by catalog."""
     for domain, (tag, namespace) in LIBRARY_SOURCES.items():
         library_dir = library_locale_dir(namespace)
         # Ubuntu moves translations out to language packs.
@@ -229,19 +275,28 @@ def _generate_library_mos(mo_dir, localedir):
         if source is None:
             print("No installed %s catalog found, skipping it" % domain, file=sys.stderr)
             continue
+        originals = read_mo_originals(source)
         write_mo(os.path.join(mo_dir, domain + ".mo"),
-                 tag_messages(read_mo_originals(source), tag, lite_template_keys(domain)))
+                 tag_by_level(originals, levels.get(domain, {})) if levels is not None
+                 else tag_messages(originals, tag, lite_template_keys(domain)))
 
 
-def generate_locale(code, localedir=None):
+def generate_locale(code, localedir=None, priorities=None):
     """(re)generates a single pseudo-translation locale's virtaal.mo
     from the current po/virtaal.pot - plus LIBRARY_SOURCES catalogs for
-    pseudo-source - returning the virtaal.mo path written. Cheap enough
-    to call on every launch - see bin/virtaal's --pseudo-translation*
-    handling."""
+    pseudo-source and pseudo-priority - returning the virtaal.mo path
+    written. priorities: the priority file pseudo-priority reads (default
+    po/virtaal.priorities.yaml). Cheap enough to call on every launch -
+    see bin/virtaal's --pseudo-translation* handling."""
     localedir = localedir or os.path.join(sys.prefix, "share", "locale")
     mo_dir = os.path.join(localedir, code, "LC_MESSAGES")
     os.makedirs(mo_dir, exist_ok=True)
+    if code == "pseudo-priority":
+        levels = read_levels(priorities)
+        _generate_library_mos(mo_dir, localedir, levels)
+        mo_path = os.path.join(mo_dir, "virtaal.mo")
+        write_mo(mo_path, tag_by_level(_template_originals(), levels.get("virtaal", {})))
+        return mo_path
     if code == "pseudo-source":
         _generate_library_mos(mo_dir, localedir)
     return _generate_virtaal_mo(code, mo_dir)

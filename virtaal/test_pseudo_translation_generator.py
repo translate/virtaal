@@ -114,3 +114,28 @@ def test_library_catalogs_are_found_in_ubuntus_language_packs(tmp_path, generato
     generator._generate_library_mos(str(mo_dir), None)
 
     assert generator.read_mo_originals(str(mo_dir / "gtk30.mo")) == ["_Open"]
+
+
+def test_tag_by_level_prefixes_each_message_with_its_priority(generator):
+    levels = {"_Open": "1", "Stock label\x04_Cancel": "1~", "%u byte": "2"}
+
+    assert generator.tag_by_level(["_Open", "Stock label\x04_Cancel", "%u byte\0%u bytes", "Unlisted",
+                                   "default:LTR"], levels) == {
+        "_Open": "1:_Open",
+        "Stock label\x04_Cancel": "1~:_Cancel",
+        "%u byte\0%u bytes": "2:%u byte\x002:%u bytes",
+        "Unlisted": "?:Unlisted",
+    }
+
+
+def test_pseudo_level_tags_virtaals_catalog_from_the_priority_file(tmp_path, generator, monkeypatch):
+    priorities = tmp_path / "priorities.yaml"
+    priorities.write_text("domains:\n  virtaal:\n    '1': [_File]\n    '2': [Settings]\n", encoding="utf-8")
+    monkeypatch.setattr(generator, "library_locale_dir", lambda namespace: None)
+
+    generator.generate_locale("pseudo-priority", str(tmp_path), str(priorities))
+
+    t = gettext.translation("virtaal", str(tmp_path), languages=["pseudo-priority"])
+    assert t.gettext("_File") == "1:_File"
+    assert t.gettext("Settings") == "2:Settings"
+    assert t.gettext("Add Term") == "?:Add Term"

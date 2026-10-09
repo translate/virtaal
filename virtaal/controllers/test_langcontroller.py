@@ -216,6 +216,14 @@ def test_get_detected_langs_returns_none_without_a_store(monkeypatch, tmp_path):
     assert controller.get_detected_langs() is None
 
 
+def _store(srccode=None, tgtcode=None):
+    return SimpleNamespace(
+        get_units=lambda: [],
+        get_source_language=lambda: srccode,
+        get_target_language=lambda: tgtcode,
+    )
+
+
 class _FakeIdentifier:
     def identify_source_lang(self, units):
         return 'fr'
@@ -226,13 +234,36 @@ class _FakeIdentifier:
 
 def test_get_detected_langs_builds_language_models_from_identified_codes(monkeypatch, tmp_path):
     controller, main_controller = _make_controller(monkeypatch, tmp_path)
-    main_controller.store_controller.store = SimpleNamespace(get_units=lambda: [])
+    main_controller.store_controller.store = _store()
     monkeypatch.setattr('translate.lang.identify.LanguageIdentifier', _FakeIdentifier)
 
     srclang, tgtlang = controller.get_detected_langs()
 
     assert srclang.code == 'fr'
     assert tgtlang.code == 'af'
+
+
+def test_get_detected_langs_prefers_the_declared_langs_over_a_guess(monkeypatch, tmp_path):
+    controller, main_controller = _make_controller(monkeypatch, tmp_path)
+    main_controller.store_controller.store = _store('de', 'zu')
+    monkeypatch.setattr('translate.lang.identify.LanguageIdentifier', _FakeIdentifier)
+
+    srclang, tgtlang = controller.get_detected_langs()
+
+    assert srclang.code == 'de'
+    assert tgtlang.code == 'zu'
+    assert controller.lang_identifier is None
+
+
+def test_get_detected_langs_guesses_only_the_undeclared_lang(monkeypatch, tmp_path):
+    controller, main_controller = _make_controller(monkeypatch, tmp_path)
+    main_controller.store_controller.store = _store(tgtcode='zu')
+    monkeypatch.setattr('translate.lang.identify.LanguageIdentifier', _FakeIdentifier)
+
+    srclang, tgtlang = controller.get_detected_langs()
+
+    assert srclang.code == 'fr'
+    assert tgtlang.code == 'zu'
 
 
 class _FakeUnidentifiableIdentifier:
@@ -245,7 +276,7 @@ class _FakeUnidentifiableIdentifier:
 
 def test_get_detected_langs_returns_none_for_unidentified_codes(monkeypatch, tmp_path):
     controller, main_controller = _make_controller(monkeypatch, tmp_path)
-    main_controller.store_controller.store = SimpleNamespace(get_units=lambda: [])
+    main_controller.store_controller.store = _store()
     monkeypatch.setattr('translate.lang.identify.LanguageIdentifier', _FakeUnidentifiableIdentifier)
 
     srclang, tgtlang = controller.get_detected_langs()

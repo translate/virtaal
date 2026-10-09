@@ -2708,7 +2708,7 @@ menuitem_edit = Gtk.MenuItem(label='Edit')
 menu_edit = Gtk.Menu()
 menuitem_edit.set_submenu(menu_edit)
 menubar.append(menuitem_edit)
-mnu_prefs = Gtk.MenuItem(label='Preferences')
+mnu_prefs = Gtk.ImageMenuItem(label='gtk-preferences', use_stock=True)
 mnu_prefs.set_accel_path('<Virtaal>/Edit/Preferences')
 menu_edit.append(mnu_prefs)
 window.show_all()
@@ -2747,4 +2747,34 @@ def test_preferences_shows_its_key_equivalent_in_the_native_app_menu():
                             env=env, capture_output=True, text=True, check=True, timeout=60)
 
     # NSEventModifierFlagCommand; virtaal.accel maps Preferences to <Meta>comma
-    assert result.stdout.split('\n')[:3] == ["'Preferences'", "','", str(1 << 20)]
+    assert result.stdout.split('\n')[:3] == ["'Settings…'", "','", str(1 << 20)]
+
+
+def test_macos_integration_titles_preferences_settings_in_the_app_menu(monkeypatch):
+    # macOS renames only an English "Preferences" app-menu item, so a
+    # translated UI kept GTK's stock label (#4132).
+    from unittest import mock
+
+    titles = []
+    mnu_prefs = Gtk.ImageMenuItem(label='gtk-preferences', use_stock=True)
+
+    class FakeApplication:
+        def insert_app_menu_item(self, item, index):
+            if item is mnu_prefs:
+                titles.append(item.get_label())
+
+        def __getattr__(self, name):
+            return lambda *args: None
+
+    monkeypatch.setattr(gi, 'require_version', lambda *args: None)
+    monkeypatch.setattr(gi.repository, 'GtkosxApplication',
+                        mock.Mock(Application=FakeApplication), raising=False)
+    monkeypatch.setattr(mainview, 'rebind_library_domain', lambda domain: None)
+    monkeypatch.setattr(Gtk.AccelMap, 'load', lambda path: None)
+    view = mock.Mock()
+    view.gui.get_object.side_effect = lambda name: mnu_prefs if name == 'mnu_prefs' else mock.Mock()
+
+    mainview.MainView._setup_macos_integration(view)
+
+    assert titles == ["Settings…"]
+    assert not mnu_prefs.get_property('use-stock')

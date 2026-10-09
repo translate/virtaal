@@ -17,6 +17,14 @@ domains:
     '2':
     - "format-size\x04%.1f %s"
     - kB
+  gtk-mac-integration:
+    '1':
+    - About %s
+    - Hide %s
+    - Hide Others
+    - Quit %s
+    - Services
+    - Show All
   gtk30:
     '1':
     - Cu_t
@@ -53,6 +61,7 @@ domains:
     - "keyboard label\x04Right"
     - "keyboard label\x04Shift"
     - "keyboard label\x04Up"
+    - "recent menu label\x04_%d. %s"
     1~:
     - Select _All
     - "Stock label\x04Select _All"
@@ -62,7 +71,6 @@ domains:
     - _Delete
     - _No
     - _Yes
-    - "recent menu label\x04_%d. %s"
     '2':
     - About %s
     - Artwork by
@@ -157,6 +165,8 @@ domains:
     - Zulu
   virtaal:
     '1':
+    - '%(modified_marker)s%(current_file)s'
+    - <b>%s</b>
     - <b><big>Getting Started</big></b>
     - <b><big>Support</big></b>
     - <u>Cheat Sheet</u>
@@ -169,21 +179,33 @@ domains:
     - <u>Report a Bug</u>
     - <u>Tutorial</u>
     - Add _Term…
+    - All
+    - 'Checks: %(checker_name)s'
+    - 'Conte_xt:'
     - Find Ne_xt
     - Find Pre_vious
+    - Incomplete
     - Keyboard _Shortcuts
     - More…
+    - 'N_avigation:'
+    - Needs work
     - Next Unit
     - Next Unit and Advance State
     - Next Unit and Reverse State
+    - None
     - P_age Up
     - P_revious Placeable
+    - Quality Checks
     - Re_vert to Saved
     - Report a _Bug
+    - Search
     - Suggestions for This _Unit
     - Terminology _Files…
     - Transfer From Source
+    - Translated
     - Translation _Suggestions
+    - Untranslated
+    - Workflow
     - _Edit
     - _Export
     - _File
@@ -206,39 +228,28 @@ domains:
     - _View
     1~:
     - '%(match_quality)s%%'
-    - '%(modified_marker)s%(current_file)s'
     - '%(modified_marker)s%(current_file)s - Virtaal'
-    - <b>%s</b>
     - <b><big>Recent Files</big></b>
     - <i>(no suggestions)</i>
     - Add "%s" to Dictionary
     - Add Term "%(selection)s"…
-    - All
     - All Files
     - All Supported Files
     - Amagama
-    - 'Checks: %(checker_name)s'
     - Choose a Translation File
-    - 'Conte_xt:'
     - Current File
     - Description
     - Ignore All
-    - Incomplete
-    - Local Translation Memory
+    - Local TM
     - Look-up "%(selection)s"
     - Machine translation
     - Matches
-    - 'N_avigation:'
-    - Needs work
-    - None
     - Quality Check
-    - Quality Checks
     - Replace
     - Replace _All
     - Replace with
     - Save
     - Save As…
-    - Search
     - Select Checks
     - Select States
     - Spelling
@@ -247,9 +258,7 @@ domains:
     - 'The current file has been modified.
 
       Do you want to save your changes?'
-    - Translated
-    - Untranslated
-    - Workflow
+    - This file
     - You selected the currently open file for opening. Do you want to reload the file?
     - _Case sensitive
     - _Regular expression
@@ -635,7 +644,7 @@ domains:
     - Loading '%s'…
     - Loading thesaurus…
     - Local Files
-    - Local TM
+    - Local Translation Memory
     - Local terminology files
     - Localization Terminology
     - Logs
@@ -705,7 +714,6 @@ domains:
 
       If you are translating from English to French then French would be your translation or target language.'
     - Thesaurus
-    - This file
     - This file is read-only.
     - This might not affect your current work, but if it keeps happening, reporting it helps get it fixed.
     - Total

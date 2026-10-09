@@ -73,7 +73,9 @@ python devsupport/pseudo-translation/generate_priorities.py harvest.json
 
 Between string freezes only level 1 changes, with the change that
 causes it (`--level1-only`). `--check` shows how the file differs from
-what Virtaal shows now.
+what Virtaal shows now. CI runs it on every change: when anything
+differs, its translation-priorities artifact has the level-1 update to
+commit with the change, and the whole file for a string freeze.
 
 ## Lite versions
 

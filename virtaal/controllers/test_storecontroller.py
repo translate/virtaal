@@ -671,13 +671,14 @@ def test_compare_stats_shows_before_and_after_counts():
 
 # event handlers #
 
-def test_on_controller_registered_wires_up_lang_signals_once():
+def test_on_controller_registered_wires_up_lang_signals():
     controller = _controller()
     disconnected = []
 
     class _MainController:
         def __init__(self):
             self.lang_controller = SimpleNamespace(connections=[])
+            self.checks_controller = object()  # already registered
 
         def disconnect(self, handler_id):
             disconnected.append(handler_id)
@@ -698,11 +699,33 @@ def test_on_controller_registered_wires_up_lang_signals_once():
     ]
 
 
+def test_on_controller_registered_stays_connected_until_the_checks_controller():
+    controller = _controller()
+    disconnected = []
+    connections = []
+    main_controller = SimpleNamespace(
+        lang_controller=SimpleNamespace(connect=lambda sig, cb: None),
+        checks_controller=None,
+        disconnect=disconnected.append,
+    )
+    controller._controller_register_id = 'reg-id'
+
+    controller._on_controller_registered(main_controller, main_controller.lang_controller)
+    assert disconnected == []
+
+    main_controller.checks_controller = SimpleNamespace(connect=lambda sig, cb: connections.append((sig, cb)))
+    controller._on_controller_registered(main_controller, main_controller.checks_controller)
+
+    assert connections == [('unit-checked', controller._on_unit_checked)]
+    assert disconnected == ['reg-id']
+
+
 def test_on_controller_registered_ignores_other_controllers():
     controller = _controller()
 
     class _MainController:
         lang_controller = object()
+        checks_controller = object()
 
         def disconnect(self, handler_id):
             raise AssertionError("must not disconnect for an unrelated controller")
@@ -842,6 +865,59 @@ def test_unit_done_without_a_state_change_emits_nothing():
     controller._unit_done(None, units[0], False)
 
     assert emitted == []
+
+
+class _CheckedStore(_StatsStore):
+    checker = object()
+
+    def get_checker(self):
+        return self.checker
+
+    def update_unit_checks(self, index, failures=None):
+        self.rechecked.append((index, failures))
+        return self.checks_changed
+
+
+def _unit_checked_controller(units, cursor_unit, checks_changed=True):
+    controller, emitted = _unit_done_controller(units, cursor_unit=cursor_unit)
+    controller.store = _CheckedStore(units, False, checks_changed)
+    return controller, emitted
+
+
+def test_unit_checked_passes_a_modified_units_failures_on_and_emits_checks_changed():
+    unit = SimpleNamespace(_modified=True)
+    controller, emitted = _unit_checked_controller([unit], unit)
+
+    controller._on_unit_checked(None, unit, controller.store.checker, {'endpunc': 'msg'})
+
+    assert controller.store.rechecked == [(0, {'endpunc': 'msg'})]
+    assert emitted == ['checks']
+
+
+def test_unit_checked_ignores_a_unit_without_unsaved_typing():
+    # The checker also runs on arriving at a unit.
+    unit = SimpleNamespace(_modified=False)
+    controller, emitted = _unit_checked_controller([unit], unit)
+
+    controller._on_unit_checked(None, unit, controller.store.checker, {})
+
+    assert controller.store.rechecked == []
+    assert emitted == []
+
+
+def test_unit_checked_ignores_failures_from_another_checker():
+    unit = SimpleNamespace(_modified=True)
+    controller, emitted = _unit_checked_controller([unit], unit)
+
+    controller._on_unit_checked(None, unit, object(), {})
+
+    assert controller.store.rechecked == []
+
+
+def test_unit_checked_with_no_file_open_does_nothing():
+    controller = _controller()
+
+    controller._on_unit_checked(None, SimpleNamespace(_modified=True), None, {})  # must not raise
 
 
 def test_unit_done_with_no_file_open_does_nothing():

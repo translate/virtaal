@@ -241,17 +241,21 @@ class StoreModel(BaseModel):
         self.checks = checks
         return self.checks
 
-    def update_unit_checks(self, index):
+    def update_unit_checks(self, index, failures=None):
         """Recheck the unit at C{index}, which may have unsaved changes.
+            @param failures: The unit's failures from C{self.get_checker()},
+                if already known.
             @returns: Whether its check failures changed."""
         self._edited_units.add(index)
         if self.checks is None:
             return False
-        return self._recheck_unit(self.checks, index)
+        return self._recheck_unit(self.checks, index, failures)
 
-    def _recheck_unit(self, checks, index):
+    def _recheck_unit(self, checks, index, failures=None):
         from bisect import insort
-        wanted = {'check-' + name for name in self._checker.run_filters(self[index])}
+        if failures is None:
+            failures = self._checker.run_filters(self[index])
+        wanted = {'check-' + name for name in failures}
         current = {key for key, indices in checks.items() if index in indices}
         if current == wanted:
             return False

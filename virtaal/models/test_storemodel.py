@@ -331,3 +331,12 @@ def test_save_file_forgets_the_edited_units(tmp_path):
 
     assert model._edited_units == set()
     assert model.update_checks() == {}
+
+
+def test_update_unit_checks_uses_failures_it_is_given(tmp_path):
+    from translate.filters import checks
+    model = _checks_model(tmp_path)
+    model.update_checks(checker=checks.StandardChecker())
+
+    assert model.update_unit_checks(1, {'printf': 'msg'}) is True
+    assert model.checks == {'check-endpunc': [0], 'check-printf': [1]}

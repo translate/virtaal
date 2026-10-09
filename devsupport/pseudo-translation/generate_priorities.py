@@ -14,9 +14,9 @@ in po/priorities.toml (which also explains the levels).
 
 writes the whole file, from every platform's harvest. With --level1-only
 only level 1 is updated from the harvest, and the rest of the committed
-file is kept. With --check nothing is written: it reports how the
-committed file differs from the harvest, and --refresh writes the
-level-1 update to a file to commit.
+file is kept. With --check the committed file is left alone: it reports
+how it differs from the harvest, --refresh writes the level-1 update to
+a file to commit, and --full the whole file, for a string freeze.
 
 Needs the pseudo-source catalogs the harvest ran with (--localedir).
 """
@@ -308,6 +308,11 @@ def report(level_one, other):
     return "\n".join(lines) + "\n", annotations
 
 
+def _pot_date():
+    from translate.storage import po
+    return po.pofile.parsefile(TEMPLATE).parseheader().get("POT-Creation-Date", "")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("harvests", nargs="+", metavar="HARVEST", help="harvest_sources.py's JSON output")
@@ -317,6 +322,7 @@ def main():
     group.add_argument("--level1-only", action="store_true", help="update only level 1 of the committed file")
     group.add_argument("--check", action="store_true", help="report how the committed file differs; write nothing")
     parser.add_argument("--refresh", metavar="PATH", help="with --check, write the level-1 update here")
+    parser.add_argument("--full", metavar="PATH", help="with --check, write the whole file here (for a string freeze)")
     args = parser.parse_args()
 
     harvests = []
@@ -331,9 +337,7 @@ def main():
     candidate = assign(seen, messages, rules, read_linguas())
 
     if not (args.level1_only or args.check):
-        from translate.storage import po
-        pot_date = po.pofile.parsefile(TEMPLATE).parseheader().get("POT-Creation-Date", "")
-        write_file(OUTPUT, to_file(candidate, pot_date))
+        write_file(OUTPUT, to_file(candidate, _pot_date()))
         return
 
     committed_file = read_file(OUTPUT)
@@ -354,6 +358,8 @@ def main():
             f.write(text)
     if args.refresh and level_one:
         write_file(args.refresh, refreshed)
+    if args.full and (level_one or other):
+        write_file(args.full, to_file(candidate, _pot_date()))
 
 
 if __name__ == "__main__":

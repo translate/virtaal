@@ -91,10 +91,12 @@ domains:
     - Shortcuts
     - "Stock label\x04_Add"
     - "Stock label\x04_Cancel"
+    - "Stock label\x04_OK"
     - Translated by
     - Try a different search
     - _Cancel
     - _License
+    - _OK
     - "keyboard label\x04Escape"
     - "keyboard label\x04Tab"
     '3':
@@ -177,6 +179,9 @@ domains:
     - Ukrainian
     - Vietnamese
     - Zulu
+  iso639-5:
+    '2':
+    - Songhai languages
   virtaal:
     '1':
     - '%(modified_marker)s%(current_file)s'
@@ -215,6 +220,7 @@ domains:
     - Re_vert to Saved
     - Report a _Bug
     - Search
+    - Settings…
     - Suggestions for This _Unit
     - Terminology _Files…
     - Transfer From Source
@@ -328,11 +334,14 @@ domains:
     - (%s)
     - <b>Fonts</b>
     - <b>Language</b>
+    - <b>Original</b>
     - '<b>Strings</b> (total):'
+    - <b>Translation</b>
     - <b>Translator Information</b>
     - '<b>Words</b> (total):'
     - Add Term
     - Add a term to the local terminology file
+    - After
     - An accelerator key is a key on your keyboard that you can press to quickly access a menu or function. It is also called a hot key, access key or mnemonic. In program interfaces they are shown as an underlined letter in the text label. In the translatable text they are marked using some character like the underscore here, but other characters are used for this as well. In this case the accelerator key is "f" since the underscore is before this letter and it means that this accelerator could be triggered by pressing Alt+F.
     - And another kind of accelerator.
     - Application command line options, such as --help, -h and -I
@@ -342,14 +351,16 @@ domains:
     - Automatically complete long words while you type
     - Automatically correct text while you type
     - Base translation store
-    - C++ RC File
+    - Before
     - C_omments
     - CamelCase
     - Capitals
+    - Change
     - Check spelling and provide suggestions
     - Click to move to a specific state in the workflow
     - Close the current file
     - Close the search bar and return to normal editing
+    - Code
     - Comma Separated Value
     - Command Line Options
     - Copy the source, if nothing is selected
@@ -364,18 +375,16 @@ domains:
     - Entity references, such as &amp; and &#169;
     - External Look-up
     - File Names
+    - File Updated
     - 'File size:'
     - 'File type:'
     - Fluent file
     - General
     - Gettext MO file
     - Gettext PO file
-    - Gettext Translation Template
     - Global
     - Haiku catkeys file
     - Hide translation suggestions, if shown
-    - INI
-    - INI File
     - If the source will remain mostly or completely unchanged it is convenient to copy the entire source string with Ctrl+Shift+V. Here is almost nothing to translate, so just press Ctrl+Shift+V and make corrections if necessary.
     - If you have created any terminology in the previous entries you may now see some of the words with a green background (or other color depending on your theme). This means that Virtaal has terminology suggestions for that word. Use Alt+Right to select the highlighted word, and then press Alt+Down. If only one suggestion is provided then Alt+Down just copies the suggestion to the translation field. But if several suggestions are available Alt+Down shows a suggestion list which you can navigate using Down and Up keys. Once you have selected the desired suggestion press Enter to copy it to the translation field.
     - If you translated the previous message you should see a window with that translation and a percentage indicating how similar the source strings (English) are. It is Virtaal's translation memory at work. Press Ctrl+1 to copy the suggested translation to the current translation. Remember to always review suggestions before you use them.
@@ -391,11 +400,8 @@ domains:
     - In this message, "%(name)s" is a placeholder (variable). Note that the 's' is part of the variable, and the whole variable from '%' to the 's' should appear unchanged somewhere in your translation. These type of variables give you an idea of what they will contain. In this case, it will contain a name.
     - 'In this message, "%d" refers again to the number of files, but note how the "(s)" is used to show that we don''t know how many it will be. This is often hard to translate well. If you encounter this in software translation, you might want to hear from developers if this can be avoided. Read more about this and decide how to do it in your language: http://docs.translatehouse.org/projects/localization-guide/en/latest/guide/translation/plurals.html'
     - In this message, "%s" is a placeholder (variable) that represents a file name. Make sure your translation contains %s somewhere. When this message is used, the %s will be replaced with a file name e.g. 'The file will be saved as example.odt'.  Note that "%s" does not refer to a percentage.
-    - Initialization
     - Insert the selected placeable
     - Integer numbers and decimal fractions
-    - Java Properties File
-    - JavaScript error message file
     - Jump to the "Navigation:" mode selector
     - Jump to the language-pair selector
     - Language
@@ -426,12 +432,11 @@ domains:
     - Name
     - 'Name:'
     - Navigation
+    - New Language Pair
     - Nothing migrated
     - Numbers
-    - OS X Strings File
     - OmegaT Glossary
     - Open a file
-    - OpenOffice.org Translation File
     - Paths referring to file locations
     - Perform look-ups on selected text
     - Placeables
@@ -456,13 +461,11 @@ domains:
     - Quality checks while you type
     - Quality checks with customization for many languages
     - Quit Virtaal
-    - RC
     - Recognised placeables include special symbols, numbers, variable placeholders, acronyms and many more. Move to each one with Alt+Right and transfer it down with Alt+Down.
     - Recognized elements don't need to be typed
     - Redo the last undone change
     - Replace the translation with the source
     - Report a bug on GitHub
-    - Resource Compiler
     - Save the current file
     - Save the current file under a new name
     - Saved file
@@ -486,12 +489,19 @@ domains:
     - TMX
     - TMX Translation Memory
     - 'Target text:'
-    - Tcl Translation File
     - 'Team:'
     - TermBase eXchange
     - Terminology Help
     - 'Terminology _file:'
     - Terminology suggestions
+    - 'The <b>Original</b> is the language from which you are translating, also called the source language.
+
+
+      If you are translating from English to French then English would be your original or source language.'
+    - 'The <b>Translation</b> is the language into which you are translating, also called the target language.
+
+
+      If you are translating from English to French then French would be your translation or target language.'
     - The International Development Research Centre
     - The correct use of capital letters are important in many languages. Translate this message with careful attention to write "Virtaal" with a capital letter.
     - The e-mail address stored in the file header
@@ -524,7 +534,7 @@ domains:
     - This translation contains an ambiguous word - it has two possible meanings. Make sure you can see the context information showing that this is a verb (an action as in "click here to view it").
     - This tutorial will show you some of the things you might want to pay attention to while translating software programs. It will help you to avoid some problems and produce translations of a higher quality.
     - Toggle fullscreen mode
-    - Trados Tag Editor
+    - Total
     - Trados Translation Memory
     - Translate
     - Translate this slightly longer message. If a spell checker is available, spelling mistakes are indicated similarly to word processors. Make sure the correct language is selected in the bottom right of the window.
@@ -558,13 +568,12 @@ domains:
     - Wordfast Translation Memory
     - Words containing uppercase letters only
     - Words with internal capitalization, such as some brand names and WikiWords
-    - XLIFF
     - XLIFF Translation File
     - XML Entities
-    - XML Localization Interchange File Format
     - XML Tags
     - XML tags, such as <b> and </i>
     - You can maintain a local terminology file to help you translate consistently. To add a term, select a word (or words), press Ctrl+T and fill in the details for the new term. Select the text below and add a term for it.
+    - _Add Missing Language…
     - _OK
     - _Source term — %(langname)s
     - _Target term — %(langname)s
@@ -577,29 +586,23 @@ domains:
       Try saving to a different location.'
     - <b>Language Information</b>
     - <b>Options</b>
-    - <b>Original</b>
-    - <b>Translation</b>
     - '?'
     - A translation memory server
     - A web look-up with this name already exists.
     - Add Files
     - Add Missing Language
     - Add URL
-    - After
     - All Checks
     - All States
     - Apertium
     - Associate Virtaal with translation file types (.po, .xlf, .tmx, ...)
-    - Before
     - Bing
     - CONFIG
     - Can only export Gettext PO files
-    - Change
     - Change Language Pair
     - Checking for thesaurus…
     - Choose a PO Template File
     - Close
-    - Code
     - Community localization terminology from Mozilla Pontoon
     - Configure…
     - 'Could not export file.
@@ -651,7 +654,6 @@ domains:
     - Export failed
     - Extendable
     - File
-    - File Updated
     - Google Translate
     - Header information
     - 'ISO code:'
@@ -677,7 +679,6 @@ domains:
     - Needs review
     - 'Needs review:'
     - 'Needs work:'
-    - New Language Pair
     - Next state
     - No translation found for language '%(lang)s'
     - 'Number of plurals:'
@@ -722,18 +723,9 @@ domains:
     - Spaces
     - Synonyms
     - Terminology Files
-    - 'The <b>Original</b> is the language from which you are translating, also called the source language.
-
-
-      If you are translating from English to French then English would be your original or source language.'
-    - 'The <b>Translation</b> is the language into which you are translating, also called the target language.
-
-
-      If you are translating from English to French then French would be your translation or target language.'
     - Thesaurus
     - This file is read-only.
     - This might not affect your current work, but if it keeps happening, reporting it helps get it fixed.
-    - Total
     - Translated units from the currently open file
     - URL
     - 'URL:'
@@ -751,7 +743,6 @@ domains:
     - Web Look-ups
     - Yahoo
     - 'Your settings file could not be read, so Virtaal started with default settings. The old file was kept at: %s'
-    - _Add Missing Language…
     - _Close
     - enable debugging features
     - options

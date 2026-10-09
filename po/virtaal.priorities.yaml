@@ -208,7 +208,6 @@ domains:
     - '%(match_quality)s%%'
     - '%(modified_marker)s%(current_file)s'
     - '%(modified_marker)s%(current_file)s - Virtaal'
-    - <b>%d</b>
     - <b>%s</b>
     - <b><big>Recent Files</big></b>
     - <i>(no suggestions)</i>

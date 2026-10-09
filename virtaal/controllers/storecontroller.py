@@ -424,9 +424,14 @@ class StoreController(BaseController):
     # EVENT HANDLERS #
     def _on_controller_registered(self, main_controller, controller):
         if controller is main_controller.lang_controller:
+            controller.connect('source-lang-changed', self._on_source_lang_changed)
+            controller.connect('target-lang-changed', self._on_target_lang_changed)
+        elif controller is main_controller.checks_controller:
+            controller.connect('unit-checked', self._on_unit_checked)
+        else:
+            return
+        if main_controller.lang_controller and main_controller.checks_controller:
             main_controller.disconnect(self._controller_register_id)
-            main_controller.lang_controller.connect('source-lang-changed', self._on_source_lang_changed)
-            main_controller.lang_controller.connect('target-lang-changed', self._on_target_lang_changed)
 
     def _on_source_lang_changed(self, _sender, langcode):
         self.store.set_source_language(langcode)
@@ -442,15 +447,27 @@ class StoreController(BaseController):
             C{modified}, recheck it."""
         if self.store is None or not self.store.stats:
             return
-        if self.cursor and self.cursor.deref() is unit:
-            index = self.cursor.index
-        else:
-            index = next((i for i, u in enumerate(self.store.get_units()) if u is unit), None)
-            if index is None:
-                return
+        index = self._unit_index(unit)
+        if index is None:
+            return
         if self.store.update_unit_stats(index):
             self.emit('stats-changed')
         if modified and self.store.update_unit_checks(index):
+            self.emit('checks-changed')
+
+    def _unit_index(self, unit):
+        if self.cursor and self.cursor.deref() is unit:
+            return self.cursor.index
+        return next((i for i, u in enumerate(self.store.get_units()) if u is unit), None)
+
+    def _on_unit_checked(self, _checks_controller, unit, checker, failures):
+        # Keep store.checks in step with the checks shown while typing.
+        if self.store is None or not getattr(unit, '_modified', False):
+            return
+        if checker is not self.store.get_checker():
+            return
+        index = self._unit_index(unit)
+        if index is not None and self.store.update_unit_checks(index, failures):
             self.emit('checks-changed')
 
     def _unit_modified(self, emitter, unit):

@@ -58,6 +58,13 @@ by 2026-10-03, and only 5 actually fit its scope.
   stays open until packaged-build signing is in place, so near-misses
   of that scope go here too. Not `l10n`-labelled features for
   translators' own content (TM mnemonics, term capitalisation).
+  Also small, user-visible bugs pulled forward on request: a
+  regression new since the last tag (#3990, from #3948), silent loss
+  of a change (#3841), wrong information shown (#3988), and a bug with
+  a ready PR (#2020/#3929). Check `git merge-base --is-ancestor <fix>
+  v1.0.0-betaN` against upstream's tags (`git ls-remote --tags
+  upstream`; local tags here are scratch) to tell a regression from an
+  old bug.
 - **1.1.0** - the TM/MT feature cluster and the UI around it.
 - **Backlog** - features on the development horizon not tied to TM/MT
   (e.g. #2025, greying out unselectable workflow states), plus dev-only

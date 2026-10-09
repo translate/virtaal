@@ -41,6 +41,7 @@ def linguas(tmp_path, monkeypatch):
     monkeypatch.setattr(module, "TEMPLATE", tmp_path / "virtaal.pot")
     monkeypatch.setattr(module, "PRIORITIES", tmp_path / "virtaal.priorities.yaml")
     monkeypatch.setattr(module, "LEVEL_ONE_TOLERANCE", 1)
+    monkeypatch.setattr(module, "library_gaps", lambda: {})
     (tmp_path / "virtaal.priorities.yaml").write_text(
         "domains:\n  virtaal:\n    '1': [One]\n    1~: [Two, Three, Gone]\n", encoding="utf-8")
     (tmp_path / "virtaal.pot").write_text(TEMPLATE, encoding="utf-8")
@@ -119,7 +120,7 @@ def test_report_groups_translations_by_the_rule_that_ships_them(linguas, tmp_pat
     assert "| 50% only, until 1.1.0 | fr (1 level-1 string needed) |" in summary
     assert "| Could make level 1 | vi (1 string needed) |" in summary
     assert "| fr | 1 | 0 | 1 | +1 | 50% only |" in details
-    assert "ach" not in out
+    assert "| ach |" not in out and "ach (" not in out
     assert "## Release readiness" in (tmp_path / "summary.md").read_text(encoding="utf-8")
     assert (tmp_path / "LINGUAS").read_text(encoding="utf-8") == "de\n"
 
@@ -137,3 +138,14 @@ def test_from_1_1_0_only_level_1_ships(linguas, tmp_path, monkeypatch):
     assert _run(linguas, monkeypatch, "--cut-off", "1.1.0") == 0
 
     assert set(linguas.excluded()) == {"ach", "fr", "vi"}
+
+
+@needs_gettext
+def test_cut_off_counts_the_libraries_level_one_too(linguas, tmp_path, monkeypatch):
+    # de has all of Virtaal's level 1, but GTK on this host shows a core
+    # message of it in English.
+    monkeypatch.setattr(linguas, "library_gaps", lambda: {"de": (1, 0)})
+
+    assert _run(linguas, monkeypatch, "--cut-off", "1.1.0") == 0
+
+    assert linguas.excluded()["de"] == "level 1 incomplete at 1.1.0 (1 core, 1 other strings missing)"

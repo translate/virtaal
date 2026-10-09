@@ -41,7 +41,7 @@ TEMPLATE = PO_DIR / 'virtaal.pot'
 PRIORITIES = PO_DIR / 'virtaal.priorities.yaml'
 LINGUAS = PO_DIR / 'LINGUAS'
 LITE_DIR = PO_DIR / 'lite'
-LANGUAGE_NAMES = 'iso639-3'
+LANGUAGE_NAMES = ('iso639-3', 'iso639-5')
 OUT = PO_DIR.parent / 'dist' / 'level-packs'
 # Each pack level: the priority levels it holds.
 PACK_LEVELS = {1: ('1', '1~'), 2: ('1', '1~', '2')}
@@ -76,11 +76,12 @@ def library_gaps():
     for domain, langs in report.items():
         for lang, keys in langs.items():
             gaps.setdefault(lang, {})[domain] = {key.split('\0')[0] for key in keys}
-    names = {key for level in PACK_LEVELS for key in level_keys(level, LANGUAGE_NAMES)}
-    for lang in coverage.shipped_languages():
-        missing = {name for name in names if not coverage._name_translated(lite, lang, name)}
-        if missing:
-            gaps.setdefault(lang, {})[LANGUAGE_NAMES] = missing
+    for domain in LANGUAGE_NAMES:
+        names = {key for level in PACK_LEVELS for key in level_keys(level, domain)}
+        for lang in coverage.shipped_languages():
+            missing = {name for name in names if not coverage._name_translated(lite, lang, name, domain)}
+            if missing:
+                gaps.setdefault(lang, {})[domain] = missing
     return gaps
 
 
@@ -162,7 +163,7 @@ def merge_target(lang, returned):
         domain: po/lite/<domain>/<lang>.po for <domain>-<lang>-level*.po,
         else po/<lang>.po."""
     match = re.match(r'(.+)-%s-level\d+\.po$' % re.escape(lang), returned.name)
-    if match and (LITE_DIR / match.group(1)).is_dir():
+    if match and ((LITE_DIR / match.group(1)).is_dir() or match.group(1) in LANGUAGE_NAMES):
         return LITE_DIR / match.group(1) / (lang + '.po'), match.group(1)
     return PO_DIR / (lang + '.po'), None
 
@@ -174,6 +175,7 @@ def merge(lang, returned):
     from translate.storage import po
     target_path, domain = merge_target(lang, returned)
     if domain and not target_path.is_file():
+        target_path.parent.mkdir(exist_ok=True)
         _new_catalog(domain, lang, target_path)
     with tempfile.TemporaryDirectory() as tmp:
         # A real file: Windows' msgfmt takes no null device.

@@ -45,7 +45,7 @@ def coverage(tmp_path, monkeypatch):
     monkeypatch.setattr(module, "LITE_DIR", str(po_dir / "lite"))
     monkeypatch.setattr(lite, "LIBRARY_NAMESPACES", {"gtk30": "Gtk", "gtkspell3": "GtkSpell"})
     monkeypatch.setattr(lite, "library_locale_dir", lambda ns: str(upstream) if ns == "Gtk" else None)
-    monkeypatch.setattr(module, "_name_translated", lambda lite, lang, name: lang != "af")
+    monkeypatch.setattr(module, "_name_translated", lambda lite, lang, name, domain="iso639-3": lang != "af")
     return module, lite
 
 

@@ -121,14 +121,14 @@ def _priorities():
         return yaml.safe_load(f)["domains"]
 
 
-def _name_translated(lite, lang, name):
-    """Whether pycountry's language-name catalog, or Virtaal's lite one,
-        translates name for lang."""
+def _name_translated(lite, lang, name, domain="iso639-3"):
+    """Whether pycountry's language (or language family) name catalog,
+        or Virtaal's lite one, translates name for lang."""
     import pycountry
-    upstream = gettext.find("iso639-3", pycountry.LOCALES_DIR, [lang])
+    upstream = gettext.find(domain, pycountry.LOCALES_DIR, [lang])
     if upstream and lite.read_mo(upstream).get(name):
         return True
-    lite_po = os.path.join(LITE_DIR, "iso639-3", lang + ".po")
+    lite_po = os.path.join(LITE_DIR, domain, lang + ".po")
     return bool(os.path.isfile(lite_po) and lite.read_lite_po(lite_po).get(name))
 
 
@@ -150,10 +150,11 @@ def level_one_gaps(lite=None, report=None):
         for lang, keys in langs.items():
             keys = {key.split("\0")[0] for key in keys}
             add(lang, len(keys & core), len(keys & rest))
-    names = domains.get("iso639-3", {})
-    for lang in shipped_languages():
-        add(lang, sum(not _name_translated(lite, lang, name) for name in names.get("1", [])),
-            sum(not _name_translated(lite, lang, name) for name in names.get("1~", [])))
+    for domain in ("iso639-3", "iso639-5"):
+        names = domains.get(domain, {})
+        for lang in shipped_languages():
+            add(lang, sum(not _name_translated(lite, lang, name, domain) for name in names.get("1", [])),
+                sum(not _name_translated(lite, lang, name, domain) for name in names.get("1~", [])))
     return {lang: counts for lang, counts in gaps.items() if counts != (0, 0)}
 
 

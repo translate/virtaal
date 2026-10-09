@@ -83,6 +83,7 @@ LIBRARY_SOURCES = {
     "gtkspell3": ("spell:", "GtkSpell"),
     "gtk-mac-integration": ("mac:", "GtkosxApplication"),
     "iso639-3": ("iso:", "pycountry"),
+    "iso639-5": ("iso:", "pycountry"),
     "iso3166-1": ("iso:", "pycountry"),
 }
 

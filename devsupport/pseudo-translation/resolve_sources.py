@@ -34,7 +34,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 # iso: covers both language and country names.
-DOMAINS = {"virtaal": "vt:", "gtk30": "gtk:", "glib20": "glib:", "gtkspell3": "spell:", "gtk-mac-integration": "mac:", "iso639-3": "iso:", "iso3166-1": "iso:"}
+DOMAINS = {"virtaal": "vt:", "gtk30": "gtk:", "glib20": "glib:", "gtkspell3": "spell:", "gtk-mac-integration": "mac:", "iso639-3": "iso:", "iso639-5": "iso:", "iso3166-1": "iso:"}
 TAG_RE = re.compile(r"(?:vt|gtk|glib|iso|spell|mac)!?:")
 # The harvest records labels without their Pango markup.
 MARKUP_RE = re.compile(r"<[^>]+>")

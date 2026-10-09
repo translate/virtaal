@@ -2681,6 +2681,19 @@ def test_sync_menubar_reinserts_preferences_into_the_app_menu():
     assert calls == ['sync_menubar', (mnu_prefs, 2)]
 
 
+@pytest.mark.parametrize('accel_file', ['share/virtaal/virtaal.accel', 'devsupport/mac-bundle/virtaal.accel'])
+def test_accel_file_shortcuts_all_parse(accel_file):
+    # Gtk.AccelMap.load() silently maps an unparsable shortcut, such as
+    # "<Meta>," instead of "<Meta>comma", to no key at all (#3751).
+    import re
+    repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    with open(os.path.join(repo_root, accel_file), encoding='utf-8') as f:
+        entries = re.findall(r'^\(gtk_accel_path "([^"]+)" "([^"]+)"\)', f.read(), re.MULTILINE)
+
+    assert entries
+    assert [path for path, accel in entries if Gtk.accelerator_parse(accel)[0] == 0] == []
+
+
 _FRESH_PROCESS_PREFS_KEY_EQUIVALENT = """
 import ctypes
 from unittest import mock
@@ -2733,5 +2746,5 @@ def test_preferences_shows_its_key_equivalent_in_the_native_app_menu():
     result = subprocess.run([sys.executable, '-c', _FRESH_PROCESS_PREFS_KEY_EQUIVALENT],
                             env=env, capture_output=True, text=True, check=True, timeout=60)
 
-    # NSEventModifierFlagCommand; virtaal.accel maps Preferences to <Meta>,
+    # NSEventModifierFlagCommand; virtaal.accel maps Preferences to <Meta>comma
     assert result.stdout.split('\n')[:3] == ["'Preferences'", "','", str(1 << 20)]

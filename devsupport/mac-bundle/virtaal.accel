@@ -10,7 +10,7 @@
 (gtk_accel_path "<Virtaal>/File/Properties" "<Mod5>Return")
 
 ; Edit Menu
-(gtk_accel_path "<Virtaal>/Edit/Preferences" "<Meta>,")
+(gtk_accel_path "<Virtaal>/Edit/Preferences" "<Meta>comma")
 (gtk_accel_path "<Virtaal>/Edit/Cut" "<Meta>x")
 (gtk_accel_path "<Virtaal>/Edit/Copy" "<Meta>c")
 (gtk_accel_path "<Virtaal>/Edit/Paste" "<Meta>v")

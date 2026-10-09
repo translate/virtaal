@@ -43,6 +43,7 @@ def _catalogs(resolve, domain, originals):
     ("Open '%s'", "Open 'af.po'", True),
     ("%.1f KB", "1.5 KB", True),
     ("100%% done", "100% done", True),
+    ("Ctrl+%(number_key)d", "Ctrl+1", True),
     # Ends at a word boundary, so composite strings resolve.
     ("_Save", "_Saved", False),
     ("_Save", "_Save", True),

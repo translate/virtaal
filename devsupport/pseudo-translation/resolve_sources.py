@@ -38,7 +38,7 @@ DOMAINS = {"virtaal": "vt:", "gtk30": "gtk:", "glib20": "glib:", "gtkspell3": "s
 TAG_RE = re.compile(r"(?:vt|gtk|glib|iso|spell|mac)!?:")
 # The harvest records labels without their Pango markup.
 MARKUP_RE = re.compile(r"<[^>]+>")
-PRINTF_RE = re.compile(r"%(?:\d+\$)?[-+ #0']*\d*(?:\.\d+)?[hlLqjzt]*[diouxXeEfFgGcspa]|%%")
+PRINTF_RE = re.compile(r"%(?:\d+\$|\(\w+\))?[-+ #0']*\d*(?:\.\d+)?[hlLqjzt]*[diouxXeEfFgGcspa]|%%")
 
 
 def _generator():

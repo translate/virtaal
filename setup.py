@@ -94,11 +94,6 @@ if sys.platform not in ('win32', 'darwin'):
         (path.join(TARGET_DATA_DIR, "applications"), glob(path.join(SOURCE_DATA_DIR, "applications", "*.desktop"))),
         (path.join(TARGET_DATA_DIR, "metainfo"), glob(path.join(SOURCE_DATA_DIR, "metainfo", "*.metainfo.xml"))),
     ])
-    for size in ("16x16", "24x24", "32x32", "48x48", "64x64", "128x128", "scalable"):
-        data_files.append(
-            (path.join(TARGET_DATA_DIR, "icons", "hicolor", size, "mimetypes"),
-             glob(path.join(SOURCE_DATA_DIR, "icons", "hicolor", size, "mimetypes", "*.*")))
-        )
     # App icon itself, so `Icon=io.github.translate.Virtaal` in
     # io.github.translate.Virtaal.desktop.in resolves via the hicolor
     # theme instead of falling back to a generic icon - no scalable/

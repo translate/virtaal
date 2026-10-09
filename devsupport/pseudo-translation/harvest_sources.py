@@ -22,7 +22,7 @@ instead of blocking; native file choosers and links don't open.
 
 Writes JSON: {"strings": [{"text", "screen", "widget", "shown", ...}, ...]}.
 "shown" is false for text in a hidden widget, e.g. a dialog built ahead
-of being opened. See resolve_sources.py for mapping the tagged strings
+of being opened; "tooltip" is true for a tooltip's text. See resolve_sources.py for mapping the tagged strings
 back to msgids.
 """
 
@@ -64,15 +64,18 @@ class Harvest:
         self.strings = []
         self.seen = set()
 
-    def add(self, text, screen, widget, within, window="", shown=True):
+    def add(self, text, screen, widget, within, window="", shown=True, tooltip=False):
         if not text or not text.strip():
             return
         text = MARKUP_RE.sub("", text) if "<" in text else text
-        key = (text, screen, shown)
+        key = (text, screen, shown, tooltip)
         if key not in self.seen:
             self.seen.add(key)
-            self.strings.append({"text": text, "screen": screen, "widget": type(widget).__name__,
-                                 "within": within, "window": window, "shown": shown})
+            record = {"text": text, "screen": screen, "widget": type(widget).__name__,
+                      "within": within, "window": window, "shown": shown}
+            if tooltip:
+                record["tooltip"] = True
+            self.strings.append(record)
 
     def walk(self, widget, screen, visited, within="", window="", shown=True):
         """within: the nearest enclosing GTK-built composite that matters
@@ -95,7 +98,7 @@ class Harvest:
         if isinstance(widget, Gtk.Window) and not window:
             window = "%s %r" % (type(widget).__name__, widget.get_title())
         shown = shown and (widget.get_visible() or isinstance(widget, Gtk.Menu))
-        add = lambda text: self.add(text, screen, widget, within, window, shown)  # noqa: E731
+        add = lambda text, tooltip=False: self.add(text, screen, widget, within, window, shown, tooltip)  # noqa: E731
 
         if isinstance(widget, Gtk.Window):
             add(widget.get_title())
@@ -107,7 +110,7 @@ class Harvest:
             found, key = Gtk.AccelMap.lookup_entry(widget.get_accel_path())
             if found and key.accel_key:
                 add(Gtk.accelerator_get_label(key.accel_key, key.accel_mods))
-        add(widget.get_tooltip_text())
+        add(widget.get_tooltip_text(), tooltip=True)
         if isinstance(widget, Gtk.Entry):
             add(widget.get_placeholder_text())
         if isinstance(widget, Gtk.TreeView):
@@ -115,7 +118,7 @@ class Harvest:
                 add(column.get_title())
             if widget.get_tooltip_column() >= 0 and widget.get_model() is not None:
                 for row in widget.get_model():
-                    add(row[widget.get_tooltip_column()])
+                    add(row[widget.get_tooltip_column()], tooltip=True)
         if isinstance(widget, SelectView) and widget.get_model() is not None:
             # Each row's name and description, drawn by a cell renderer.
             for row in widget.get_model():

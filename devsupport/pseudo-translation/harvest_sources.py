@@ -285,8 +285,10 @@ def run(output):
         if tm and tm.controller.plugin_controller.plugins and unit is not None:
             backends = tm.controller.plugin_controller
             off = tm.default_config["disabled_models"].split(",") + ["basetmmodel"]
-            sources = [backends.get_plugin_info(name)["display_name"]
-                       for name in backends._find_plugin_names() if name not in off]
+            # Named as a real match is: a model's short name ("Local TM"),
+            # else its display name.
+            models = [backends._get_plugin_class(name) for name in backends._find_plugin_names() if name not in off]
+            sources = [getattr(model, "shortname", None) or model.display_name for model in models]
             tm.controller.send_tm_query(unit)
             query = tm.controller.current_query
             tm.controller.accept_response(next(iter(backends.plugins.values())), query, [

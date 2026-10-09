@@ -11,7 +11,7 @@ records every piece of UI text it can find, with the catalog its tag
 names (vt:, gtk:, glib:, spell:, mac:, iso:) or none.
 
 Shows the suggestions window with a match from each TM source that's on
-by default.
+by default, and selects each mode and opens its menu.
 Opens the text boxes' context menus, including the spelling menu on a
 misspelled word, then activates every menu item in turn (except Quit),
 opening each dialog it leads to. After each step it walks every
@@ -289,6 +289,20 @@ def run(output):
                 harvest.add(row[0]["tmsource"], "tm suggestions", tmwindow.treeview, "",
                             "%s %r" % (type(tmwindow).__name__, tmwindow.get_title()))
             tm.controller.view.hide()
+
+        mode_controller = main_controller.mode_controller
+        for name, mode in sorted(mode_controller.modes.items()):
+            if mode.is_available():
+                mode_controller.select_mode(mode)
+                yield from settle()
+                visit("mode %s" % name)
+                if hasattr(mode, "btn_popup"):
+                    mode.btn_popup.popup()
+                    yield from settle(3)
+                    visit("mode %s menu" % name)
+                    mode.btn_popup.menu.popdown()
+        mode_controller.select_default_mode()
+        yield from settle()
 
         unit_view = main_controller.unit_controller.view
         for role, textbox in (("source", unit_view.sources[0]), ("target", unit_view.targets[0])):

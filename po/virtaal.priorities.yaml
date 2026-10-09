@@ -6,12 +6,24 @@ pot-creation-date: 2026-10-07 08:48+0100
 priorities:
 - id: '1'
   name: Level 1 core
+  order: 1
+  description: The welcome screen and the menus. A release needs all of it.
 - id: 1~
   name: Level 1
+  order: 2
+  description: 'The rest of level 1: editing a file, suggestions, message dialogs.'
 - id: '2'
   name: Level 2
+  order: 3
+  description: Settings, and screens seen once.
 - id: '3'
   name: Level 3
+  order: 4
+  description: Everything else.
+- id: x
+  name: Never asked
+  order: 5
+  description: Not asked of translators.
 domains:
   gtk-mac-integration:
     '1':

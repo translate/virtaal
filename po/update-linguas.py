@@ -24,12 +24,18 @@
     the source. Translators get the release candidates (rc1, then a
     translations-only rc2) to catch up first.
 
+    --progress FILE writes each shipped translation's standing as JSON,
+    for the "Translate Virtaal" page: level 1 as --cut-off counts it,
+    and Virtaal's own levels 2 and 3.
+
     With --check, changes nothing: prints how po/LINGUAS differs from the
     rule and exits 1 if it does. Uses gettext's own tools only, so the
     pre-commit job needs no Python packages."""
 
 import argparse
+import datetime
 import importlib.util
+import json
 import os
 import re
 import struct
@@ -257,6 +263,79 @@ def report(langs):
     return '\n'.join(lines)
 
 
+def _levels():
+    """{domain: {priority: [key, ...]}} from po/virtaal.priorities.yaml."""
+    import yaml
+    with open(PRIORITIES, encoding='utf-8') as f:
+        return yaml.safe_load(f)['domains']
+
+
+# CLDR's locale for a gettext @variant.
+CLDR_VARIANTS = {'latin': '_Latn', 'valencia': '_ES_VALENCIA'}
+
+
+def _names(lang):
+    """(English name, endonym) of lang, from CLDR, else ISO 639's name
+        for both, else lang itself. A variant CLDR doesn't name is added
+        as is."""
+    code, _at, variant = lang.partition('@')
+    if variant in CLDR_VARIANTS:
+        code, variant = code + CLDR_VARIANTS[variant], ''
+    try:
+        from babel import Locale
+        locale = Locale.parse(code)
+        names = locale.english_name, locale.display_name
+    except Exception:
+        try:
+            import pycountry
+            found = pycountry.languages.get(alpha_3=code) or pycountry.language_families.get(alpha_3=code)
+        except (ImportError, LookupError):
+            found = None
+        if found is None:
+            return lang, lang
+        names = found.name, found.name
+    return tuple('%s (%s)' % (name, variant) if variant else name for name in names)
+
+
+def progress(langs, libraries=None):
+    """Each translation's standing, for --progress: level 1 as readiness()
+        counts it, and how many of Virtaal's level 2 and 3 messages it
+        lacks."""
+    domains = _levels()
+    current = template_keys()
+    level = {priority: set(domains['virtaal'].get(priority, [])) & current for priority in ('2', '3')}
+    states = readiness(langs, libraries)
+    languages = []
+    for lang, state in sorted(states.items()):
+        core_missing, rest_missing, _margin = state
+        have = translated_keys(PO_DIR / (lang + '.po'))
+        name, endonym = _names(lang)
+        languages.append({
+            'code': lang, 'name': name, 'endonym': endonym,
+            'core_missing': core_missing, 'rest_missing': rest_missing,
+            'needed': _needed(core_missing, rest_missing),
+            'level2_missing': len(level['2'] - have), 'level3_missing': len(level['3'] - have),
+            'ships': ships(state),
+        })
+    core, rest = level_one()
+
+    def library_total(priority):
+        return sum(len(keys.get(priority, [])) for domain, keys in domains.items()
+                   if domain != 'virtaal') if libraries is not None else 0
+
+    return {
+        'format': 1,
+        'generated': datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+        'commit': os.environ.get('GITHUB_SHA', ''),
+        'tolerance': LEVEL_ONE_TOLERANCE,
+        'fifty_percent_until': '%d.%d' % FIFTY_PERCENT_UNTIL,
+        'libraries': libraries is not None,
+        'totals': {'core': len(core) + library_total('1'), 'rest': len(rest) + library_total('1~'),
+                   'level2': len(level['2']), 'level3': len(level['3'])},
+        'languages': languages,
+    }
+
+
 def cut_off(version):
     """Excludes the shipped translations the release rule doesn't ship,
         from version on."""
@@ -279,7 +358,17 @@ def main():
     group.add_argument('--cut-off', metavar='VERSION', help="exclude translations the release rule doesn't ship")
     group.add_argument('--report', action='store_true',
                        help='where each shipped translation stands against the release rule (Markdown)')
+    group.add_argument('--progress', metavar='FILE',
+                       help="write each shipped translation's standing, with this host's library gaps, as JSON")
     args = parser.parse_args()
+
+    if args.progress:
+        skip = excluded()
+        data = progress([lang for lang in catalogs() if lang not in skip], library_gaps())
+        with open(args.progress, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=1)
+            f.write('\n')
+        return 0
 
     if args.report:
         skip = excluded()

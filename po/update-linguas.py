@@ -16,7 +16,10 @@
     LEVEL_ONE_TOLERANCE of the rest (fuzzy ones don't count). Before
     FIFTY_PERCENT_UNTIL, translating THRESHOLD percent of
     po/virtaal.pot's messages also ships it. Any other is added to
-    po/LINGUAS-excluded, with what it's missing as the reason. English
+    po/LINGUAS-excluded, with what it's missing as the reason. Level 1
+    includes GTK's and the other libraries' messages, as this host's
+    catalogs and the lite ones translate them, so run it where Virtaal
+    runs. --report counts Virtaal's own messages only. English
     variants (en_*) are exempt - they only translate what differs from
     the source. Translators get the release candidates (rc1, then a
     translations-only rc2) to catch up first.
@@ -26,6 +29,7 @@
     pre-commit job needs no Python packages."""
 
 import argparse
+import importlib.util
 import os
 import re
 import struct
@@ -146,15 +150,32 @@ def level_one():
     return set(levels.get('1', [])) & current, set(levels.get('1~', [])) & current
 
 
-def readiness(langs):
+def library_gaps():
+    """{lang: (core, rest)}: the level-1 messages of GTK and the other
+        libraries, and language names, this host shows in English (see
+        devsupport/pseudo-translation/report_lite_coverage.py)."""
+    path = PO_DIR.parent / 'devsupport' / 'pseudo-translation' / 'report_lite_coverage.py'
+    spec = importlib.util.spec_from_file_location('report_lite_coverage', path)
+    module = importlib.util.module_from_spec(spec)
+    try:
+        spec.loader.exec_module(module)
+        return module.level_one_gaps()
+    except ImportError as e:
+        sys.exit("--cut-off counts the libraries' level-1 messages on this host, which needs Virtaal's own"
+                 " environment: %s" % e)
+
+
+def readiness(langs, libraries=None):
     """{lang: (core missing, rest missing, strings over (+) or under (-)
-        THRESHOLD)} of langs, English variants aside."""
+        THRESHOLD)} of langs, English variants aside. libraries:
+        library_gaps(), added to Virtaal's own."""
     core, rest = level_one()
     margins, _total = standing(langs)
     result = {}
     for lang in margins:
         have = translated_keys(PO_DIR / (lang + '.po'))
-        result[lang] = (len(core - have), len(rest - have), margins[lang])
+        library_core, library_rest = (libraries or {}).get(lang, (0, 0))
+        result[lang] = (len(core - have) + library_core, len(rest - have) + library_rest, margins[lang])
     return result
 
 
@@ -217,7 +238,8 @@ def report(langs):
     lines = ['## Release readiness', '',
              'A final release ships a translation with all of level 1: the %d core strings, and all but %d of'
              ' the other %d (`po/update-linguas.py --cut-off`). Until %d.%d.0, translating %d%% of all strings'
-             ' also ships it.' % (len(core), LEVEL_ONE_TOLERANCE, len(rest), *FIFTY_PERCENT_UNTIL, THRESHOLD), '',
+             ' also ships it. Counted here: Virtaal\'s own strings; GTK\'s are in each build\'s Lite coverage'
+             ' report.' % (len(core), LEVEL_ONE_TOLERANCE, len(rest), *FIFTY_PERCENT_UNTIL, THRESHOLD), '',
              '| Group | Languages |', '|---|---|',
              '| Level 1 | %s |' % (', '.join(ready) or '-'),
              '| 50%% only, until %d.%d.0 | %s |' % (*FIFTY_PERCENT_UNTIL, _named(fifty, needed, '%d level-1 strings needed')),
@@ -239,7 +261,7 @@ def cut_off(version):
     """Excludes the shipped translations the release rule doesn't ship,
         from version on."""
     skip = excluded()
-    states = readiness([lang for lang in catalogs() if lang not in skip])
+    states = readiness([lang for lang in catalogs() if lang not in skip], library_gaps())
     with open(EXCLUDED, 'a', encoding='utf-8') as f:
         for lang, state in sorted(states.items()):
             if ships(state, version):

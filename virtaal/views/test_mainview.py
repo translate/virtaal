@@ -2663,3 +2663,75 @@ def test_macos_integration_rebinds_its_catalog_before_building_the_app_menu(monk
     mainview.MainView._setup_macos_integration(view)
 
     assert calls[:3] == ['Application', ('rebind', b'gtk-mac-integration'), 'set_menu_bar']
+
+
+def test_sync_menubar_reinserts_preferences_into_the_app_menu():
+    # The resync skips app-menu items, so Preferences' key equivalent
+    # would stay as it was when first inserted (#3751).
+    calls = []
+    mnu_prefs = object()
+    view = MainView.__new__(MainView)
+    view._osxapp = SimpleNamespace(
+        sync_menubar=lambda: calls.append('sync_menubar'),
+        insert_app_menu_item=lambda item, index: calls.append((item, index)))
+    view.gui = SimpleNamespace(get_object={'mnu_prefs': mnu_prefs}.get)
+
+    view.sync_menubar()
+
+    assert calls == ['sync_menubar', (mnu_prefs, 2)]
+
+
+_FRESH_PROCESS_PREFS_KEY_EQUIVALENT = """
+import ctypes
+from unittest import mock
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+from virtaal.views import mainview
+window = Gtk.Window()
+menubar = Gtk.MenuBar()
+window.add(menubar)
+menuitem_edit = Gtk.MenuItem(label='Edit')
+menu_edit = Gtk.Menu()
+menuitem_edit.set_submenu(menu_edit)
+menubar.append(menuitem_edit)
+mnu_prefs = Gtk.MenuItem(label='Preferences')
+mnu_prefs.set_accel_path('<Virtaal>/Edit/Preferences')
+menu_edit.append(mnu_prefs)
+window.show_all()
+objects = {'menu_edit': menu_edit, 'mnu_prefs': mnu_prefs}
+view = mock.Mock(menubar=menubar, main_window=window)
+view.gui.get_object.side_effect = lambda name: objects.get(name, Gtk.MenuItem())
+mainview.MainView._setup_macos_integration(view)
+# What undocontroller and prefsview do after startup.
+menu_edit.set_accel_group(Gtk.AccelGroup())
+mnu_prefs.set_accel_path('<Virtaal>/Edit/Preferences')
+mainview.MainView.sync_menubar(view)
+nsapp = mainview._objc_send(mainview._objc_class('NSApplication'), 'sharedApplication')
+app_menu = mainview._objc_send(mainview._objc_send(mainview._objc_send(nsapp, 'mainMenu'),
+    'itemAtIndex:', 0, argtypes=[ctypes.c_long]), 'submenu')
+item = mainview._objc_send(app_menu, 'itemAtIndex:', 2, argtypes=[ctypes.c_long])
+for selector in ('title', 'keyEquivalent'):
+    value = mainview._objc_send(item, selector)
+    print(repr(ctypes.string_at(mainview._objc_send(value, 'UTF8String')).decode()))
+print(mainview._objc_send(item, 'keyEquivalentModifierMask', restype=ctypes.c_ulong))
+"""
+
+
+@pytest.mark.skipif(not platform.is_mac, reason="AppKit's app menu is macOS-only")
+def test_preferences_shows_its_key_equivalent_in_the_native_app_menu():
+    # Real AppKit and gtk-mac-integration, in a fresh process so its
+    # menubar can't leak into other tests.
+    try:
+        gi.require_version('GtkosxApplication', '1.0')
+    except ValueError:
+        pytest.skip('gtk-mac-integration not installed')
+    import subprocess
+    repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    env = dict(os.environ, PYTHONPATH=repo_root)
+
+    result = subprocess.run([sys.executable, '-c', _FRESH_PROCESS_PREFS_KEY_EQUIVALENT],
+                            env=env, capture_output=True, text=True, check=True, timeout=60)
+
+    # NSEventModifierFlagCommand; virtaal.accel maps Preferences to <Meta>,
+    assert result.stdout.split('\n')[:3] == ["'Preferences'", "','", str(1 << 20)]

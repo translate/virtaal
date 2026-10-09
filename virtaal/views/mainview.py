@@ -642,6 +642,9 @@ class MainView(BaseView):
         osxapp = getattr(self, '_osxapp', None)
         if osxapp is not None:
             osxapp.sync_menubar()
+            # The resync skips app-menu items; reinserting rereads the key
+            # equivalent of Preferences, whose accel group keeps changing.
+            osxapp.insert_app_menu_item(self.gui.get_object("mnu_prefs"), 2)
 
     def set_saveable(self, value):
         # Repeatedly doing all of this is unnecessary, and can make the window

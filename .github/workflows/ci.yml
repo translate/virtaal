@@ -1105,6 +1105,20 @@ jobs:
           path: dist/level-packs/
           retention-days: 30
 
+      - name: Write translation progress
+        # Each shipped translation against the release rule, counting
+        # these catalogs' library gaps, for the "Translate Virtaal" page.
+        if: matrix.arch == 'arm64'
+        run: build/standalone-venv/bin/python3 po/update-linguas.py --progress dist/translation-progress.json
+
+      - name: Upload translation progress
+        if: matrix.arch == 'arm64'
+        uses: actions/upload-artifact@v7
+        with:
+          name: translation-progress
+          path: dist/translation-progress.json
+          retention-days: 30
+
       - name: Import Developer ID certificate
         if: env.MACOS_SIGNING == 'true'
         env:
@@ -1252,6 +1266,67 @@ jobs:
     timeout-minutes: 1
     steps:
       - run: echo "test-macos and build-macos-app both passed"
+
+  publish-translation-progress:
+    # The "Translate Virtaal" page on gh-pages reads progress.json from
+    # the translation-progress branch. A branch of its own, like
+    # download-stats: gh-pages only takes changes by PR.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build-macos-app
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    concurrency:
+      group: translation-progress
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: translation-progress
+          path: ${{ runner.temp }}/progress
+
+      - name: Switch to (or create) the translation-progress branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin translation-progress >/dev/null 2>&1; then
+            git fetch origin translation-progress
+            git checkout translation-progress
+          else
+            git checkout --orphan translation-progress
+            git rm -rf . >/dev/null
+          fi
+
+      - name: Commit the progress if it changed
+        env:
+          PACKS: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python3 - "$RUNNER_TEMP/progress/translation-progress.json" <<'EOF'
+          # Rewritten when the standing changes, and weekly so the packs
+          # link stays within the artifacts' 30 days.
+          import datetime, json, os, sys
+          new = json.load(open(sys.argv[1], encoding="utf-8"))
+          new["packs"] = os.environ["PACKS"]
+          try:
+              old = json.load(open("progress.json", encoding="utf-8"))
+          except FileNotFoundError:
+              old = {"generated": "1970-01-01T00:00:00Z"}
+          volatile = ("generated", "commit", "packs")
+          same = ({k: v for k, v in old.items() if k not in volatile}
+                  == {k: v for k, v in new.items() if k not in volatile})
+          age = datetime.datetime.now(datetime.timezone.utc) - datetime.datetime.fromisoformat(old["generated"])
+          if not same or age > datetime.timedelta(days=7):
+              with open("progress.json", "w", encoding="utf-8") as f:
+                  json.dump(new, f, ensure_ascii=False, indent=1)
+                  f.write("\n")
+          EOF
+          git add progress.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Translation progress at ${GITHUB_SHA::8}"
+          git push origin translation-progress
 
   build-flatpak:
     # flatpak-builder is Linux-only - this is the only place the

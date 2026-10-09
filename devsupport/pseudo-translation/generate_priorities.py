@@ -125,22 +125,23 @@ def _catalog_msgids(domain):
 
 def name_msgids(code, languages, countries):
     """([language msgid ...], country msgid or None) Virtaal looks up to
-    name code - translate_compat.tr_lang() over translate-toolkit's names
-    - keeping those pycountry's catalogs have."""
+    name code - translate_compat.tr_lang(): the catalog's own name for the
+    code first, then translate-toolkit's name - keeping those pycountry's
+    catalogs have."""
     import pycountry
     from translate.lang import data
 
     from virtaal.support import translate_compat
+    base = code.split("@")[0].split("_")[0]
+    language = pycountry.languages.get(alpha_2=base) if len(base) == 2 else pycountry.languages.get(alpha_3=base)
+    candidates = [language.name] if language else []
     name = data.languages.get(code, (None,))[0]
     country = None
-    if name is None:
-        language = pycountry.languages.get(alpha_2=code) if len(code) == 2 else pycountry.languages.get(alpha_3=code)
-        candidates = [language.name] if language else []
-    else:
+    if name is not None:
         match = translate_compat.dialect_name_re.match(name)
         if match and match.group(2) != "macrolanguage":
             name, country = match.groups()
-        candidates = [name, translate_compat._fix_language_name(name)]
+        candidates += [name, translate_compat._fix_language_name(name)]
     return ([m for m in dict.fromkeys(candidates) if m in languages],
             country if country in countries else None)
 

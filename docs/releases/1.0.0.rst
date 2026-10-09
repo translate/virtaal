@@ -20,10 +20,12 @@ Windows installer, macOS ``.dmg`` (Intel and Apple Silicon), and a
 Flatpak build for Linux - see :ref:`Installation <index#installation>`.
 
 .. warning::
-   macOS and Windows binaries are currently unsigned - Gatekeeper/
-   SmartScreen will warn on first launch. This is expected:
+   macOS and Windows builds are code-signed, but may still trigger a
+   Gatekeeper/SmartScreen warning on first launch - macOS builds
+   aren't notarized yet, and a newly-signed Windows certificate takes
+   time to build up SmartScreen's own reputation. This is expected:
 
-   - **macOS**: don't double-click the app on first launch - it'll
+   - **macOS**: don't double-click the app on first launch - it may
      refuse to open at all ("Apple could not verify... is free of
      malware"), with no way past that dialog itself. Instead,
      right-click (or Control-click) ``Virtaal.app`` in Finder and
@@ -32,15 +34,15 @@ Flatpak build for Linux - see :ref:`Installation <index#installation>`.
      works from then on.
 
      If it instead says *"Virtaal is damaged and can't be opened"*,
-     that's Gatekeeper's stricter response to a completely unsigned
-     app - the right-click-Open trick above won't clear it. Open
+     that's Gatekeeper's stricter response to a build it can't verify
+     yet - the right-click-Open trick above won't clear it. Open
      Terminal and run::
 
         xattr -cr /path/to/Virtaal.app
 
      then double-click normally.
-   - **Windows**: the installer shows a blue "Windows protected your
-     PC" screen. Click **More info**, then **Run anyway**.
+   - **Windows**: the installer may show a blue "Windows protected
+     your PC" screen. Click **More info**, then **Run anyway**.
 
 What we set out to do
 ======================
@@ -99,9 +101,13 @@ Rather than a single cross-platform look, Virtaal now leans into each
 OS's own conventions: real native Open/Save dialogs instead of GTK's own
 file picker, macOS keyboard shortcuts (Cmd instead of Ctrl) throughout,
 a title bar that follows each platform's own naming and "unsaved
-changes" conventions, a populated macOS Dock menu with recent files, and
+changes" conventions, a populated macOS Dock menu with recent files,
 light/dark theme switching that follows your system live instead of
-only at startup.
+only at startup, and file-manager integration (icons, double-click to
+open, "Open With") for every format Virtaal handles on Windows and
+Linux alike. Numbers, counts and percentages throughout the interface
+now follow your UI language's own conventions too, instead of always
+being shown the English way.
 
 Built to be trusted
 ---------------------
@@ -123,6 +129,12 @@ system language, from Preferences or via a command-line flag - and a
 long-standing bug that silently broke interface translations in the
 installed build entirely is fixed. The Windows installer also now
 offers substantially more UI languages to choose from during setup.
+Behind the scenes, a new priority system focuses translators and
+reviewers on what actually matters most - what you see as a file
+opens, menus, everyday messages - ahead of rarely-seen text, and you
+can follow any language's own progress live at
+`virtaal.translatehouse.org/translate.html
+<https://virtaal.translatehouse.org/translate.html>`_.
 
 Known limitations
 ==================
@@ -134,6 +146,9 @@ Nothing release-blocking, but worth knowing about:
 - A small number of complex scripts (e.g. Amharic) may not render
   correctly in the Windows build, most likely a font-coverage gap
   rather than a deeper text-handling issue.
+- Devanagari-script UI languages (e.g. Nepali) are unreadable in the
+  macOS build's own window - boxes instead of characters, a macOS
+  font-fallback gap. The native menu bar is unaffected.
 - Occasionally, selecting "Incomplete" from the navigation dropdown
   right after launch doesn't switch modes on the first try - selecting
   it again, or picking any other mode first, works.

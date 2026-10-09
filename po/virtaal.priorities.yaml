@@ -182,6 +182,7 @@ domains:
     - '%(modified_marker)s%(current_file)s'
     - <b>%s</b>
     - <b><big>Getting Started</big></b>
+    - <b><big>Recent Files</big></b>
     - <b><big>Support</big></b>
     - <u>Cheat Sheet</u>
     - <u>Features</u>
@@ -196,6 +197,7 @@ domains:
     - All
     - 'Checks: %(checker_name)s'
     - 'Conte_xt:'
+    - Default
     - Find Ne_xt
     - Find Pre_vious
     - Incomplete
@@ -242,26 +244,50 @@ domains:
     - _View
     1~:
     - '%(modified_marker)s%(current_file)s - Virtaal'
-    - <b><big>Recent Files</big></b>
     - <i>(no suggestions)</i>
+    - Accelerators
+    - Acronyms
     - Add "%s" to Dictionary
     - Add Term "%(selection)s"…
     - All Files
     - All Supported Files
     - Amagama
+    - Blank
+    - Brackets
     - Choose a Translation File
+    - Compendium conflict
     - Current File
-    - Default
     - Description
+    - Don't translate words
+    - Double quotes
+    - Double spaces
+    - Ending punctuation
+    - Ending whitespace
+    - Escapes
+    - File paths
+    - Functions
+    - Fuzzy
+    - GConf values
     - Highlighting and insertion of placeables
     - Ignore All
     - Local TM
+    - Long
     - Look-up "%(selection)s"
     - Machine translation
     - Many plugins and options for customization
     - Matches
+    - Must translate words
+    - Newlines
+    - Number of plurals
+    - Number of sentences
+    - Old KDE comment
+    - Options
+    - Placeholders
+    - Punctuation spacing
+    - Pure punctuation
     - Quality Check
     - Quality checks
+    - Repeated word
     - Replace
     - Replace _All
     - Replace with
@@ -269,19 +295,34 @@ domains:
     - Save As…
     - Select Checks
     - Select States
+    - Short
+    - Simple capitalization
+    - Simple plural(s)
+    - Single quotes
     - Spelling
     - Starting capitalization
+    - Starting punctuation
+    - Starting whitespace
     - TM Source
+    - Tabs
     - Terminology assistance
     - 'The current file has been modified.
 
       Do you want to save your changes?'
     - This file
     - Translation memory
+    - Translator credits
+    - Unchanged
+    - Valid characters
+    - XML tags
     - You selected the currently open file for opening. Do you want to reload the file?
+    - _Cancel
     - _Case sensitive
+    - _Discard
     - _New Language Pair…
     - _Regular expression
+    - _Save
+    - printf()
     '2':
     - '%(language)s - %(endonym)s'
     - (%s)
@@ -290,8 +331,6 @@ domains:
     - '<b>Strings</b> (total):'
     - <b>Translator Information</b>
     - '<b>Words</b> (total):'
-    - Accelerators
-    - Acronyms
     - Add Term
     - Add a term to the local terminology file
     - An accelerator key is a key on your keyboard that you can press to quickly access a menu or function. It is also called a hot key, access key or mnemonic. In program interfaces they are shown as an underlined letter in the text label. In the translatable text they are marked using some character like the underscore here, but other characters are used for this as well. In this case the accelerator key is "f" since the underscore is before this letter and it means that this accelerator could be triggered by pressing Alt+F.
@@ -303,8 +342,6 @@ domains:
     - Automatically complete long words while you type
     - Automatically correct text while you type
     - Base translation store
-    - Blank
-    - Brackets
     - C++ RC File
     - C_omments
     - CamelCase
@@ -315,32 +352,21 @@ domains:
     - Close the search bar and return to normal editing
     - Comma Separated Value
     - Command Line Options
-    - Compendium conflict
     - Copy the source, if nothing is selected
     - Copyright © 2007-2026 Zuza Software Foundation
     - Ctrl+%(number_key)d
-    - Don't translate words
-    - Double quotes
-    - Double spaces
     - E-mail
     - 'E-mail address:'
     - E-mail addresses
     - Easy access to recent files and documentation
     - Enabled
-    - Ending punctuation
-    - Ending whitespace
     - Enter a new line
     - Entity references, such as &amp; and &#169;
-    - Escapes
     - External Look-up
     - File Names
-    - File paths
     - 'File size:'
     - 'File type:'
     - Fluent file
-    - Functions
-    - Fuzzy
-    - GConf values
     - General
     - Gettext MO file
     - Gettext PO file
@@ -377,7 +403,6 @@ domains:
     - 'Location:'
     - Lokalize settings
     - 'Lokalize''s Translation Memory: %(database_name)s'
-    - Long
     - Migrate settings from KBabel, Lokalize and/or Poedit to Virtaal.
     - Migration Assistant
     - Migration completed
@@ -398,27 +423,20 @@ domains:
     - Moving focus
     - Mozilla .lang
     - Mozilla Corporation
-    - Must translate words
     - Name
     - 'Name:'
     - Navigation
-    - Newlines
     - Nothing migrated
-    - Number of plurals
-    - Number of sentences
     - Numbers
     - OS X Strings File
-    - Old KDE comment
     - OmegaT Glossary
     - Open a file
     - OpenOffice.org Translation File
-    - Options
     - Paths referring to file locations
     - Perform look-ups on selected text
     - Placeables
     - Placeables are special parts of the text that can be automatically highlighted and easily inserted into the translation.
     - Placeables are special parts of the text, like the © symbol, that can be automatically highlighted and easily inserted into the translation. Select the © with Alt+Right and transfer it to the target with Alt+Down.
-    - Placeholders
     - Placeholders (Java)
     - Placeholders (Python)
     - Placeholders (Qt)
@@ -431,8 +449,6 @@ domains:
     - Poedit settings
     - Properties
     - Punctuation
-    - Punctuation spacing
-    - Pure punctuation
     - Qt .qm file
     - Qt Linguist Translation File
     - Qt Message File
@@ -444,7 +460,6 @@ domains:
     - Recognised placeables include special symbols, numbers, variable placeholders, acronyms and many more. Move to each one with Alt+Right and transfer it down with Alt+Down.
     - Recognized elements don't need to be typed
     - Redo the last undone change
-    - Repeated word
     - Replace the translation with the source
     - Report a bug on GitHub
     - Resource Compiler
@@ -454,29 +469,22 @@ domains:
     - Select next placeable
     - Select previous placeable
     - Settings
-    - Short
     - Should Virtaal try to import settings and data from other applications?
     - Show file properties and statistics
     - Show preferences dialog
     - Show this Keyboard Shortcuts window
     - Show translation suggestions for this unit
     - Show/Hide checks
-    - Simple capitalization
-    - Simple plural(s)
-    - Single quotes
     - 'Some features:'
     - Some of the advice will only be relevant to some languages. For example, if your language does not use the Latin alphabet, some of the advice might not be relevant to translation in your language. For many languages there are established translation rules.
     - 'Source text:'
     - Spell Checker
-    - Starting punctuation
-    - Starting whitespace
     - Symbols and less frequently used punctuation marks
     - System default
     - TBX
     - TBX Glossary
     - TMX
     - TMX Translation Memory
-    - Tabs
     - 'Target text:'
     - Tcl Translation File
     - 'Team:'
@@ -527,19 +535,16 @@ domains:
     - Translation memory suggestions
     - Translation reuse (translation memory)
     - Translation tool to help a human translator translate files into other languages
-    - Translator credits
     - Turn translation suggestions on or off
     - URLs
     - URLs, hostnames and IP addresses
     - UTX
     - UTX Dictionary
-    - Unchanged
     - Undo the last change
     - Units
     - Universal Terminology eXchange
     - Use _Default Fonts
     - Use the first translation suggestion
-    - Valid characters
     - Virtaal Preferences
     - Virtaal Translation Tool
     - Virtaal is a program for doing translation.
@@ -558,14 +563,11 @@ domains:
     - XML Entities
     - XML Localization Interchange File Format
     - XML Tags
-    - XML tags
     - XML tags, such as <b> and </i>
     - You can maintain a local terminology file to help you translate consistently. To add a term, select a word (or words), press Ctrl+T and fill in the details for the new term. Select the text below and add a term for it.
     - _OK
-    - _Save
     - _Source term — %(langname)s
     - _Target term — %(langname)s
-    - printf()
     - translator-credits
     '3':
     - '"alt" Attributes'
@@ -750,9 +752,7 @@ domains:
     - Yahoo
     - 'Your settings file could not be read, so Virtaal started with default settings. The old file was kept at: %s'
     - _Add Missing Language...
-    - _Cancel
     - _Close
-    - _Discard
     - enable debugging features
     - options
     - override the UI language for this run (e.g. "fr"; "en" for the untranslated source strings; "system" for the OS's own default), without changing the saved Preferences setting

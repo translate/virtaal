@@ -2133,6 +2133,11 @@ msgstr ""
 msgid "_OK"
 msgstr ""
 
+#. l10n: macOS app menu item that opens the Preferences dialog
+#: virtaal/views/mainview.py
+msgid "Settings…"
+msgstr ""
+
 #: virtaal/views/mainview.py
 msgid "Error"
 msgstr ""

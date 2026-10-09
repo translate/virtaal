@@ -309,6 +309,10 @@ class MainView(BaseView):
             # Move the preferences menu item
             osxapp.insert_app_menu_item(Gtk.SeparatorMenuItem(), 1)
             mnu_prefs = self.gui.get_object("mnu_prefs")
+            # macOS renames only an English "Preferences" to "Settings…".
+            mnu_prefs.set_property('use-stock', False)
+            #l10n: macOS app menu item that opens the Preferences dialog
+            mnu_prefs.set_label(_("Settings…"))
             osxapp.insert_app_menu_item(mnu_prefs, 2)
             self.gui.get_object("separator_mnu_edit_3").hide()
             self._setup_osx_help_menu(osxapp)

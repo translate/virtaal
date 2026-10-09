@@ -112,9 +112,15 @@ msgids = [
 ]
 
 [[override]]
-# The language pair's and the checker's menus in the status bar.
+# The language pair's menu in the status bar.
 priority = "1~"
-msgids = ["Default", "_New Language Pair…"]
+msgids = ["_New Language Pair…"]
+
+[[override]]
+# The status bar's checker, and the welcome screen's recent files once
+# there are some.
+priority = "1"
+msgids = ["Default", "<b><big>Recent Files</big></b>"]
 
 [[override]]
 # The welcome screen's feature list.

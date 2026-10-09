@@ -76,7 +76,6 @@ file = "^(virtaal/support/tutorial\\.py|virtaal/plugins/migration\\.py|virtaal/c
 # the spelling menu draw themselves, and other platforms' window title.
 priority = "1~"
 msgids = [
-    "%(match_quality)s%%",
     "%(modified_marker)s%(current_file)s - Virtaal",
     "<i>(no suggestions)</i>",
     "Add \"%s\" to Dictionary",

@@ -229,7 +229,6 @@ domains:
     - _Update from Template
     - _View
     1~:
-    - '%(match_quality)s%%'
     - '%(modified_marker)s%(current_file)s - Virtaal'
     - <b><big>Recent Files</big></b>
     - <i>(no suggestions)</i>

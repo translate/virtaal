@@ -7,8 +7,10 @@
 
 from types import SimpleNamespace
 
+import pytest
 from gi.repository import Gdk, Gtk
 
+from virtaal.common import pan_app
 from virtaal.plugins.tm.tmwidgets import TMSourceColRenderer, TMWindow
 
 
@@ -27,10 +29,19 @@ def _percent(match_data):
     return cell_renderer.properties
 
 
-def test_percent_data_func_shows_the_exact_quality_within_range():
+@pytest.mark.parametrize('lang, expected', [
+    ('en', '75%'),
+    ('fr', '75\u00a0%'),
+    ('tr', '%75'),
+    ('bn_IN', '৭৫%'),
+])
+def test_percent_data_func_shows_the_quality_as_the_ui_language_writes_it(monkeypatch, lang, expected):
+    monkeypatch.setattr(pan_app, 'ui_language', lang)
+
     properties = _percent({'quality': 75, 'source': 'a', 'target': 'b'})
+
     assert properties['value'] == 75
-    assert properties['text'] == '75%'
+    assert properties['text'] == expected
 
 
 def test_percent_data_func_shows_a_question_mark_for_a_match_with_no_quality():

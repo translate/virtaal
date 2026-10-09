@@ -1725,12 +1725,6 @@ msgstr ""
 msgid "TM Source"
 msgstr ""
 
-#. l10n: This message allows you to customize the appearance of the match percentage. Most languages can probably leave it unchanged.
-#: virtaal/plugins/tm/tmwidgets.py
-#, python-format
-msgid "%(match_quality)s%%"
-msgstr ""
-
 #. l10n: This indicates a suggestion from machine translation. It is displayed instead of the match percentage.
 #: virtaal/plugins/tm/tmwidgets.py
 msgid "?"

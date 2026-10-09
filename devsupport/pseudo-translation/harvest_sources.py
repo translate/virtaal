@@ -10,6 +10,8 @@
 records every piece of UI text it can find, with the catalog its tag
 names (vt:, gtk:, glib:, spell:, mac:, iso:) or none.
 
+Shows the suggestions window with a match from each TM source that's on
+by default.
 Opens the text boxes' context menus, including the spelling menu on a
 misspelled word, then activates every menu item in turn (except Quit),
 opening each dialog it leads to. After each step it walks every
@@ -108,6 +110,9 @@ class Harvest:
         if isinstance(widget, Gtk.TreeView):
             for column in widget.get_columns():
                 add(column.get_title())
+            if widget.get_tooltip_column() >= 0 and widget.get_model() is not None:
+                for row in widget.get_model():
+                    add(row[widget.get_tooltip_column()])
         if isinstance(widget, Gtk.ComboBox) and widget.get_model() is not None:
             for row in widget.get_model():
                 for value in row:
@@ -260,6 +265,30 @@ def run(output):
         main_controller.open_file(testfile)
         yield from settle()
         visit("file open")
+
+        # The suggestions window, fed one fixed match per TM source that's
+        # on by default, so no TM is needed. A source's name is drawn by a
+        # cell renderer, so it's recorded here.
+        tm = main_controller.plugin_controller.plugins.get("tm")
+        unit = main_controller.unit_controller.current_unit
+        if tm and tm.controller.plugin_controller.plugins and unit is not None:
+            backends = tm.controller.plugin_controller
+            off = tm.default_config["disabled_models"].split(",") + ["basetmmodel"]
+            sources = [backends.get_plugin_info(name)["display_name"]
+                       for name in backends._find_plugin_names() if name not in off]
+            tm.controller.send_tm_query(unit)
+            query = tm.controller.current_query
+            tm.controller.accept_response(next(iter(backends.plugins.values())), query, [
+                {"source": query, "target": "Harvest match %d" % i, "quality": 90 - i, "tmsource": source}
+                for i, source in enumerate(sources)])
+            tm.controller.view.show(force=True)
+            yield from settle()
+            visit("tm suggestions")
+            tmwindow = tm.controller.view.tmwindow
+            for row in tmwindow.liststore:
+                harvest.add(row[0]["tmsource"], "tm suggestions", tmwindow.treeview, "",
+                            "%s %r" % (type(tmwindow).__name__, tmwindow.get_title()))
+            tm.controller.view.hide()
 
         unit_view = main_controller.unit_controller.view
         for role, textbox in (("source", unit_view.sources[0]), ("target", unit_view.targets[0])):

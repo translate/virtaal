@@ -54,6 +54,12 @@ strings each one still needs - which CI also shows in its job summary:
 po/update-linguas.py --report
 ```
 
+Translators see the same on [Translate
+Virtaal](https://virtaal.translatehouse.org/translate.html), with the
+packs to start from. The macOS build writes it with `--progress FILE`,
+counting its library gaps, and each main push publishes that to the
+`translation-progress` branch, which the page reads.
+
 ## Translation priorities
 
 `virtaal.priorities.yaml` gives each message a level, from what Virtaal
@@ -97,7 +103,8 @@ po/level-pack.py zu --libraries     # or --all; written to dist/level-packs/
 
 CI builds every language's pack on the macOS build (the
 translation-packs artifact), and each release candidate has them all as
-a release asset. To take one back from a translator, merge it - only the
+a release asset. Translators send theirs back zipped, with the
+Translation update issue form. To take one back, merge it - only the
 messages it translates change. A library one goes into its lite catalog;
 then update `LINGUAS-lite` (see Lite versions below):
 

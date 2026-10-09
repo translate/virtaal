@@ -241,7 +241,10 @@ function Wait-VirtaalPopup {
     $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
     while ((Get-Date) -lt $deadline) {
         $fg = [VirtaalWin32]::GetForegroundWindow()
-        if ($fg -ne [IntPtr]::Zero -and $fg -ne $Instance.Hwnd) {
+        $owner = [uint32]0
+        [void][VirtaalWin32]::GetWindowThreadProcessId($fg, [ref]$owner)
+        # Only Virtaal's own windows - not whatever took focus instead.
+        if ($fg -ne [IntPtr]::Zero -and $fg -ne $Instance.Hwnd -and $owner -eq $Instance.Process.Id) {
             # Extra pause here specifically (not just at the end of every
             # Send-* call) so a human watching with Set-VirtaalHumanDelay
             # on actually gets to see the dialog appear before whatever
@@ -424,6 +427,10 @@ function Send-VirtaalKeys {
     param([Parameter(Mandatory)]$Instance, [Parameter(Mandatory)][string]$Keys, [int]$SettleMs = 200)
     [VirtaalWin32]::SetForegroundWindow($Instance.Hwnd) | Out-Null
     Start-Sleep -Milliseconds 300
+    $fg = [VirtaalWin32]::GetForegroundWindow()
+    if ($fg -ne $Instance.Hwnd) {
+        Write-Host "::warning::Virtaal isn't the foreground window before sending '$Keys' - focus is on `"$(Get-VirtaalWindowText $fg)`""
+    }
     [System.Windows.Forms.SendKeys]::SendWait($Keys)
     Start-Sleep -Milliseconds $SettleMs
     Wait-VirtaalForHuman

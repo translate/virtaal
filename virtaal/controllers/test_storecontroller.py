@@ -765,11 +765,13 @@ def test_unit_modified_marks_the_store_modified():
 # _unit_done() #
 
 class _StatsStore:
-    def __init__(self, units, changed):
+    def __init__(self, units, changed, checks_changed=False):
         self.units = units
         self.stats = {'total': list(range(len(units)))}
         self.changed = changed
+        self.checks_changed = checks_changed
         self.updated = []
+        self.rechecked = []
 
     def get_units(self):
         return self.units
@@ -778,13 +780,18 @@ class _StatsStore:
         self.updated.append(index)
         return self.changed
 
+    def update_unit_checks(self, index):
+        self.rechecked.append(index)
+        return self.checks_changed
 
-def _unit_done_controller(units, changed=True, cursor_unit=None):
+
+def _unit_done_controller(units, changed=True, cursor_unit=None, checks_changed=False):
     controller = _controller()
-    controller.store = _StatsStore(units, changed)
+    controller.store = _StatsStore(units, changed, checks_changed)
     controller.cursor = SimpleNamespace(deref=lambda: cursor_unit, index=0)
     emitted = []
     controller.connect('stats-changed', lambda c: emitted.append(True))
+    controller.connect('checks-changed', lambda c: emitted.append('checks'))
     return controller, emitted
 
 
@@ -805,6 +812,27 @@ def test_unit_done_finds_a_unit_the_cursor_already_left():
     controller._unit_done(None, units[1], True)
 
     assert controller.store.updated == [1]
+
+
+def test_unit_done_rechecks_the_unit_and_emits_checks_changed():
+    units = [object(), object()]
+    controller, emitted = _unit_done_controller(units, changed=False, cursor_unit=units[1], checks_changed=True)
+    controller.cursor.index = 1
+
+    controller._unit_done(None, units[1], True)
+
+    assert controller.store.rechecked == [1]
+    assert emitted == ['checks']
+
+
+def test_unit_done_does_not_recheck_an_unmodified_unit():
+    units = [object()]
+    controller, emitted = _unit_done_controller(units, changed=False, cursor_unit=units[0], checks_changed=True)
+
+    controller._unit_done(None, units[0], False)
+
+    assert controller.store.rechecked == []
+    assert emitted == []
 
 
 def test_unit_done_without_a_state_change_emits_nothing():

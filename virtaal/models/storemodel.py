@@ -155,6 +155,10 @@ class StoreModel(BaseModel):
         from translate.storage import factory
         self._trans_store = factory.getobject(fileobj)
         self.filename = filename
+        self._checker = None
+        self.checks = None
+        # Indices of units that may differ from the file on disk.
+        self._edited_units = set()
         self.update_stats(filename=filename)
         #self._correct_header(self._trans_store)
         self.nplurals = self._compute_nplurals(self._trans_store)
@@ -168,6 +172,7 @@ class StoreModel(BaseModel):
         else:
             self._trans_store.savefile(filename)
         self.filename = filename
+        self._edited_units = set()
         self.update_stats(filename=filename)
 
     def update_stats(self, filename=None):
@@ -229,8 +234,34 @@ class StoreModel(BaseModel):
 
         from virtaal.support import statsdb
         errors = statsdb.StatsCache().filechecks(filename, checker, self._trans_store)
-        self.checks = fix_indexes(errors, self._valid_units)
+        # The stats cache only knows the file on disk.
+        checks = fix_indexes(errors, self._valid_units)
+        for index in self._edited_units:
+            self._recheck_unit(checks, index)
+        self.checks = checks
         return self.checks
+
+    def update_unit_checks(self, index):
+        """Recheck the unit at C{index}, which may have unsaved changes.
+            @returns: Whether its check failures changed."""
+        self._edited_units.add(index)
+        if self.checks is None:
+            return False
+        return self._recheck_unit(self.checks, index)
+
+    def _recheck_unit(self, checks, index):
+        from bisect import insort
+        wanted = {'check-' + name for name in self._checker.run_filters(self[index])}
+        current = {key for key, indices in checks.items() if index in indices}
+        if current == wanted:
+            return False
+        for key in current - wanted:
+            checks[key].remove(index)
+            if not checks[key]:
+                del checks[key]
+        for key in wanted - current:
+            insort(checks.setdefault(key, []), index)
+        return True
 
     def update_file(self, filename):
         # Adapted from Document.__init__()
@@ -256,6 +287,8 @@ class StoreModel(BaseModel):
         self._trans_store.savefile(tempfilename)
         self.update_stats(filename=tempfilename)
         os.remove(tempfilename)
+        self.checks = None
+        self._edited_units = set(range(len(self)))
 
         self.controller.compare_stats(oldstats, self.stats)
 

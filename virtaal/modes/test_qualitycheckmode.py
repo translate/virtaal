@@ -7,6 +7,7 @@
 
 from types import SimpleNamespace
 
+import pytest
 from gi.repository import Gtk
 
 from virtaal.modes.qualitycheckmode import QualityCheckMode
@@ -267,6 +268,30 @@ def test_on_store_saved_refreshes_the_menu_but_keeps_the_units_under_review():
     assert items[0].get_active() is True
 
 
+# _on_checks_changed() #
+
+def test_on_checks_changed_uses_the_stores_checks_without_rebuilding_them():
+    cursor = SimpleNamespace(model=[object()] * 3, indices=[0, 2])
+    btn = _button_with_checks()
+    mode = _mode(
+        filter_checks=['brackets'],
+        btn_popup=btn,
+        store_controller=SimpleNamespace(
+            update_store_checks=lambda checker: pytest.fail('rebuilt the checks'),
+            get_store_checks=lambda: {'brackets': [2]},
+            cursor=cursor,
+        ),
+        main_controller=SimpleNamespace(
+            checks_controller=SimpleNamespace(get_checker=lambda: None, get_check_name=lambda c: 'Brackets')
+        ),
+    )
+
+    mode._on_checks_changed(None)
+
+    assert cursor.indices == [0, 2]
+    assert [i.get_label() for i in btn.menu.get_children()] == ['Brackets (1)']
+
+
 # unselected() #
 
 def test_unselected_disconnects_the_tracked_signals():
@@ -274,6 +299,7 @@ def test_unselected_disconnects_the_tracked_signals():
     mode = _mode(
         _checker_set_id=1,
         _store_saved_id=2,
+        _checks_changed_id=3,
         main_controller=SimpleNamespace(
             checks_controller=SimpleNamespace(disconnect=lambda i: disconnected.append(('checker', i)))
         ),
@@ -282,7 +308,7 @@ def test_unselected_disconnects_the_tracked_signals():
 
     mode.unselected()
 
-    assert disconnected == [('checker', 1), ('store', 2)]
+    assert disconnected == [('checker', 1), ('store', 2), ('store', 3)]
     assert mode._checker_set_id is None
 
 

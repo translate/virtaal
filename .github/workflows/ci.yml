@@ -273,6 +273,85 @@ jobs:
           path: docs-screenshot-artifacts/
           retention-days: 30
 
+  translation-priorities:
+    # po/virtaal.priorities.yaml's level 1 has to match what Virtaal shows,
+    # so a change to it lands with the change that causes it: download the
+    # translation-priorities artifact and commit its level-1 file. A
+    # warning until it proves reliable, then a required check (#4102).
+    # Levels 2 and 3 are only noted; they're updated in full at each
+    # string freeze.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Install system dependencies
+        # appdata-screenshots' packages for running Virtaal, plus a GTK
+        # catalog to take GTK's messages from (any language), and an
+        # Afrikaans dictionary for the spelling menu.
+        uses: $/.github/actions/apt-install
+        with:
+          packages: >-
+            at-spi2-core
+            gir1.2-gtk-3.0
+            gir1.2-gtkspell3-3.0
+            gobject-introspection
+            hunspell-af
+            language-pack-gnome-de-base
+            libcairo2-dev
+            libcurl4-gnutls-dev
+            libenchant-2-dev
+            libgirepository-2.0-dev
+            libglib2.0-dev
+            libgnutls28-dev
+            pkg-config
+            python3-dev
+            xvfb
+            openbox
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pygobject==3.58.0
+
+      - name: Install virtaal
+        run: pip install .[spellcheck]
+
+      - name: Check translation priorities
+        # GTK's own messages need a real locale: glibc ignores LANGUAGE
+        # under C.UTF-8. generate_priorities.py names languages with
+        # Virtaal's own code, which needs a display too.
+        run: |
+          sudo locale-gen en_US.UTF-8
+          export LANG=en_US.UTF-8
+          mkdir -p priorities-artifact/level-1 priorities-artifact/full
+          xvfb-run -a --server-args="-screen 0 1024x768x24" bash -c '
+            openbox --sm-disable &
+            sleep 1
+            python3 devsupport/pseudo-translation/harvest_sources.py harvest.json &&
+            python3 devsupport/pseudo-translation/generate_priorities.py --check \
+              --refresh priorities-artifact/level-1/virtaal.priorities.yaml \
+              --full priorities-artifact/full/virtaal.priorities.yaml harvest.json
+          '
+
+      - name: Upload the updated file (only when out of date)
+        # level-1/: commit with the change that caused it. full/: commit at
+        # a string freeze.
+        if: hashFiles('priorities-artifact/**') != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: translation-priorities
+          path: priorities-artifact/
+          retention-days: 30
+
   code-smell:
     # Advisory only - deliberately not in core-checks' `needs:` below, and
     # never fails on its own findings, so nothing here can block a merge.

@@ -41,14 +41,14 @@ Add-Type -AssemblyName System.Drawing
 # make the failure obvious.
 $existingVirtaalWin32 = ([System.Management.Automation.PSTypeName]'VirtaalWin32').Type
 if ($existingVirtaalWin32) {
-    $requiredMethods = @('GetWindowRect', 'SetForegroundWindow', 'GetForegroundWindow', 'GetWindowTextLength', 'GetWindowText', 'SetCursorPos', 'mouse_event')
+    $requiredMethods = @('GetWindowRect', 'SetForegroundWindow', 'GetForegroundWindow', 'GetWindowTextLength', 'GetWindowText', 'SetCursorPos', 'mouse_event', 'FindWindowEx', 'GetWindowThreadProcessId', 'IsWindowVisible')
     $existingMethodNames = @($existingVirtaalWin32.GetMethods() | ForEach-Object { $_.Name })
     $missingMethods = @($requiredMethods | Where-Object { $existingMethodNames -notcontains $_ })
     if ($missingMethods) {
         throw "This PowerShell session already has an older VirtaalWin32 type loaded (missing: $($missingMethods -join ', ')) from before virtaal_ui_test_helpers.ps1 was last updated - a .NET type can't be redefined in the same process once compiled, so this session can't recover on its own. Close this PowerShell window, open a new one, and re-run."
     }
 } else {
-    Add-Type -TypeDefinition 'using System; using System.Runtime.InteropServices; using System.Text; public class VirtaalWin32 { [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect); [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr hWnd); [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow(); [DllImport("user32.dll")] public static extern int GetWindowTextLength(IntPtr hWnd); [DllImport("user32.dll", CharSet = CharSet.Auto)] public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount); [DllImport("user32.dll")] public static extern bool SetCursorPos(int X, int Y); [DllImport("user32.dll")] public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, UIntPtr dwExtraInfo); public struct RECT { public int Left; public int Top; public int Right; public int Bottom; } }'
+    Add-Type -TypeDefinition 'using System; using System.Runtime.InteropServices; using System.Text; public class VirtaalWin32 { [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect); [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr hWnd); [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow(); [DllImport("user32.dll")] public static extern int GetWindowTextLength(IntPtr hWnd); [DllImport("user32.dll", CharSet = CharSet.Auto)] public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount); [DllImport("user32.dll")] public static extern bool SetCursorPos(int X, int Y); [DllImport("user32.dll")] public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, UIntPtr dwExtraInfo); [DllImport("user32.dll", CharSet = CharSet.Auto)] public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow); [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId); [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr hWnd); public struct RECT { public int Left; public int Top; public int Right; public int Bottom; } }'
 }
 
 # Runs fast (no extra pauses) by default - everything here already has
@@ -83,6 +83,26 @@ function Set-VirtaalAppDebugLog {
 }
 function Wait-VirtaalForHuman {
     if ($script:VirtaalHumanDelayMs -gt 0) { Start-Sleep -Milliseconds $script:VirtaalHumanDelayMs }
+}
+
+function Find-VirtaalMainWindow {
+    <#
+    .SYNOPSIS
+    The process's visible top-level window whose title ends in
+    "Virtaal", or [IntPtr]::Zero. Not Process.MainWindowHandle: that can
+    be the TM suggestions popup, an untitled top-level window of the
+    same process.
+    #>
+    param([Parameter(Mandatory)][int]$ProcessId)
+    $hwnd = [IntPtr]::Zero
+    while (($hwnd = [VirtaalWin32]::FindWindowEx([IntPtr]::Zero, $hwnd, [NullString]::Value, [NullString]::Value)) -ne [IntPtr]::Zero) {
+        $owner = [uint32]0
+        [void][VirtaalWin32]::GetWindowThreadProcessId($hwnd, [ref]$owner)
+        if ($owner -eq $ProcessId -and [VirtaalWin32]::IsWindowVisible($hwnd) -and (Get-VirtaalWindowText $hwnd) -match 'Virtaal$') {
+            return $hwnd
+        }
+    }
+    return [IntPtr]::Zero
 }
 
 function Start-VirtaalTest {
@@ -134,11 +154,8 @@ function Start-VirtaalTest {
     $hwnd = [IntPtr]::Zero
     $deadline = (Get-Date).AddSeconds($HandleTimeoutSeconds)
     while ((Get-Date) -lt $deadline) {
-        $proc.Refresh()
-        if ($proc.MainWindowHandle -ne [IntPtr]::Zero) {
-            $hwnd = $proc.MainWindowHandle
-            break
-        }
+        $hwnd = Find-VirtaalMainWindow $proc.Id
+        if ($hwnd -ne [IntPtr]::Zero) { break }
         Start-Sleep -Milliseconds 500
     }
     if ($hwnd -eq [IntPtr]::Zero) {

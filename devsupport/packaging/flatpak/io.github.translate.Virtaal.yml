@@ -37,13 +37,16 @@ modules:
         --prefix=${FLATPAK_DEST} .
       # Two calls, not one: the mimetype package keeps the plain
       # "virtaal" target name, while the desktop file and metainfo are
-      # already named after the app id in the source tree.
+      # already named after the app id in the source tree. flatpak only
+      # exports a mimetype package named after the app id.
       - ./maketranslations
       - ./maketranslations io.github.translate.Virtaal
       - install -Dm644 share/applications/io.github.translate.Virtaal.desktop
         ${FLATPAK_DEST}/share/applications/io.github.translate.Virtaal.desktop
       - install -Dm644 share/metainfo/io.github.translate.Virtaal.metainfo.xml
         ${FLATPAK_DEST}/share/metainfo/io.github.translate.Virtaal.metainfo.xml
+      - install -Dm644 share/mime/packages/virtaal-mimetype.xml
+        ${FLATPAK_DEST}/share/mime/packages/io.github.translate.Virtaal.xml
     sources:
       - type: dir
         path: ../../..

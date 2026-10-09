@@ -167,6 +167,12 @@ domain = "gtk-mac-integration"
 msgids = ["About %s", "Hide %s", "Hide Others", "Quit %s", "Services", "Show All"]
 
 [[override]]
+# Virtaal's own item in macOS's app menu.
+priority = "1"
+domain = "virtaal"
+msgids = ["Settings…"]
+
+[[override]]
 # The Windows installer and command-line help, in tmp_strings.py with
 # the file type names.
 priority = "3"

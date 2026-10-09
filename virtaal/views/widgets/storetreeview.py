@@ -131,7 +131,7 @@ class StoreTreeView(Gtk.TreeView):
             path, editcol = self.get_cursor()
             if path is not None:
                 self._restart_editing(path, editcol or self.get_columns()[0])
-        self._schedule_revalidate_visible_estimated_rows()
+        self.schedule_revalidate_visible_estimated_rows()
 
     def _on_vadjustment_notify(self, _widget, _pspec):
         # Only assigned once this treeview is inside a Gtk.ScrolledWindow
@@ -141,7 +141,7 @@ class StoreTreeView(Gtk.TreeView):
             vadjustment.connect('value-changed', self._on_vscroll)
 
     def _on_vscroll(self, _adjustment):
-        self._schedule_revalidate_visible_estimated_rows()
+        self.schedule_revalidate_visible_estimated_rows()
 
     def mark_row_estimated(self, unit):
         self._estimated_unit_ids.add(id(unit))
@@ -160,7 +160,7 @@ class StoreTreeView(Gtk.TreeView):
         size-allocate or scroll."""
         return self._visible_range_cache
 
-    def _schedule_revalidate_visible_estimated_rows(self):
+    def schedule_revalidate_visible_estimated_rows(self):
         # Deferred, not run synchronously from the caller - this can
         # change a row's height via model.row_changed(), and so this
         # treeview's own total content height, mutating the very

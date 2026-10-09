@@ -488,6 +488,7 @@ def _renderer_for_bulk_store(store, index, visible_start=0, visible_end=5):
         get_model=lambda: None,
         mark_row_estimated=lambda unit: marks.append(('estimated', unit)),
         mark_row_measured_exactly=lambda unit: marks.append(('exact', unit)),
+        schedule_revalidate_visible_estimated_rows=lambda: marks.append(('revalidate',)),
     )
     renderer = StoreCellRenderer(SimpleNamespace(
         controller=SimpleNamespace(
@@ -618,6 +619,7 @@ def _renderer_with_view(is_resizing=False):
         get_model=lambda: None,
         mark_row_estimated=lambda unit: None,
         mark_row_measured_exactly=lambda unit: None,
+        schedule_revalidate_visible_estimated_rows=lambda: None,
     )
     view = SimpleNamespace(
         _treeview=treeview,
@@ -794,6 +796,20 @@ def test_do_render_forces_a_real_layout_for_a_row_do_get_size_only_estimated(mon
     assert renderer.source_layout is not None
     assert renderer.target_layout is not None
     assert paints == [renderer.source_layout, renderer.target_layout]
+
+
+def test_do_render_leaves_a_row_do_get_size_only_estimated_for_revalidation(monkeypatch):
+    # GTK still holds the estimated height, which can be a line short
+    # (#3990) - only the revalidation's row_changed() makes it re-query.
+    monkeypatch.setattr(Gtk, 'render_layout', lambda context, cr, x, y, layout: None)
+    store = [SimpleNamespace(STATE={}, isfuzzy=lambda: False, source=f's{i}', target=f't{i}') for i in range(200)]
+    renderer, marks = _renderer_for_bulk_store(store, index=100)  # outside the fake viewport
+    widget = _toplevel_widget()
+
+    renderer.do_render(object(), widget, _rectangle(200, 50), _rectangle(200, 50), Gtk.CellRendererState(0))
+
+    assert ('exact', store[100]) not in marks
+    assert marks[-1] == ('revalidate',)
 
 
 # _on_editor_done() / _on_modified() #

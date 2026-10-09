@@ -123,6 +123,11 @@ domain = "virtaal"
 msgids = ["_Cancel", "_Discard", "_Save"]
 
 [[override]]
+# Update from Template's summary.
+priority = "2"
+msgids = ["After", "Before", "Change", "File Updated", "Total"]
+
+[[override]]
 # The language pair's menu in the status bar.
 priority = "1~"
 msgids = ["_New Language Pair…"]

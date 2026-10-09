@@ -11,7 +11,8 @@ records every piece of UI text it can find, with the catalog its tag
 names (vt:, gtk:, glib:, spell:, mac:, iso:) or none.
 
 Shows the suggestions window with a match from each TM source that's on
-by default, and selects each mode and opens its menu.
+by default, selects each mode and opens its menu, and opens the
+terminology and look-up source lists.
 Opens the text boxes' context menus, including the spelling menu on a
 misspelled word, then activates every menu item in turn (except Quit),
 opening each dialog it leads to. After each step it walks every
@@ -80,6 +81,8 @@ class Harvest:
             shown: whether every widget above this one is visible. A
             submenu counts as shown when its menu item is."""
         from gi.repository import Gtk
+
+        from virtaal.views.widgets.selectview import SelectView
         # Keyed by id() but holding the widget: a PyGObject wrapper from
         # forall() is temporary, and once collected its id() can be
         # reused by another widget's, which would then be skipped.
@@ -113,6 +116,11 @@ class Harvest:
             if widget.get_tooltip_column() >= 0 and widget.get_model() is not None:
                 for row in widget.get_model():
                     add(row[widget.get_tooltip_column()])
+        if isinstance(widget, SelectView) and widget.get_model() is not None:
+            # Each row's name and description, drawn by a cell renderer.
+            for row in widget.get_model():
+                add(row[1])
+                add(row[2])
         if isinstance(widget, Gtk.ComboBox) and widget.get_model() is not None:
             for row in widget.get_model():
                 for value in row:
@@ -303,6 +311,14 @@ def run(output):
                     mode.btn_popup.menu.popdown()
         mode_controller.select_default_mode()
         yield from settle()
+
+        # Every terminology and look-up source, enabled or not.
+        for name in ("terminology", "lookup"):
+            plugin = main_controller.plugin_controller.plugins.get(name)
+            if plugin:
+                current_screen[0] = "%s sources" % name
+                plugin.controller.view.select_backends(main_window)
+                yield from settle()
 
         unit_view = main_controller.unit_controller.view
         for role, textbox in (("source", unit_view.sources[0]), ("target", unit_view.targets[0])):

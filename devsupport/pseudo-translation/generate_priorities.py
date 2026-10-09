@@ -205,16 +205,22 @@ def assign(seen, messages, rules, linguas=()):
                              if any(re.search(rule["file"], name) for name in files)), "3")
     levels["virtaal"] = virtaal
     levels = apply_names(levels, rules, linguas)
-    overrides = {msgid: rule["priority"] for rule in rules.get("override", []) for msgid in rule["msgids"]}
-    return {domain: {key: "x" if is_x(rules, key) else overrides.get(key.rpartition("\x04")[2], level)
-                     for key, level in keys.items()}
-            for domain, keys in levels.items()}
+    overrides = {msgid: rule["priority"] for rule in rules.get("override", []) if "domain" not in rule
+                 for msgid in rule["msgids"]}
+    levels = {domain: {key: "x" if is_x(rules, key) else overrides.get(key.rpartition("\x04")[2], level)
+                       for key, level in keys.items()}
+              for domain, keys in levels.items()}
+    for rule in rules.get("override", []):
+        if "domain" in rule:
+            levels.setdefault(rule["domain"], {}).update(dict.fromkeys(rule["msgids"], rule["priority"]))
+    return levels
 
 
 def stale_rules(rules, messages):
     """The msgids po/priorities.toml names that virtaal.pot no longer has."""
     msgids = {key.rpartition("\x04")[2] for key in messages}
-    named = rules.get("x", {}).get("msgids", []) + [m for rule in rules.get("override", []) for m in rule["msgids"]]
+    named = rules.get("x", {}).get("msgids", []) + [m for rule in rules.get("override", []) if "domain" not in rule
+                                                    for m in rule["msgids"]]
     return sorted(m for m in named if m not in msgids)
 
 

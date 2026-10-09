@@ -28,6 +28,13 @@ screen = "^welcome screen$"
 window = "^Window ('Virtaal'|None)$"
 
 [[seen]]
+# The main window as a file opens, and its menus: what a translator sees
+# first.
+priority = "1"
+screen = "^file open$"
+window = "^Window ('(quality-checks\\.po|Virtaal)( - Virtaal)?'|None)$"
+
+[[seen]]
 # Quality check names, in the Quality Checks mode's menu.
 priority = "2"
 screen = "^mode QualityCheck menu$"
@@ -37,8 +44,8 @@ priority = "2"
 window = "virtaal_tutorial\\.po|New Language Pair|'Settings'|'Virtaal Preferences'|'Properties'|^FontChooserDialog|^ShortcutsWindow|^AboutDialog"
 
 [[seen]]
-# The main window with the harvest's file open (titled with the file's
-# name, and " - Virtaal" on some platforms), its menus and popups.
+# The main window once working in a file (titled with the file's name,
+# and " - Virtaal" on some platforms), its menus and popups.
 priority = "1~"
 window = "^(Window '(quality-checks\\.po|Virtaal)( - Virtaal)?'|Window None|TMWindow|MessageDialog)"
 
@@ -57,7 +64,8 @@ priority = "2"
 file = "^(virtaal/support/tutorial\\.py|virtaal/plugins/migration\\.py|virtaal/controllers/checkscontroller\\.py|share/(mime|metainfo|applications)/|devsupport/tmp_strings\\.py)"
 
 # Messages the harvest can't show, at the priority they'd have: each one
-# replaces whatever priority the rules above gave it.
+# replaces whatever priority the rules above gave it. One with a domain
+# adds its msgids to that domain even if the harvest never saw them.
 [[override]]
 # Native file dialogs, the save prompt, what the suggestions window and
 # the spelling menu draw themselves, and other platforms' window title.
@@ -76,6 +84,17 @@ msgids = [
     "Save As…",
     "The current file has been modified.\nDo you want to save your changes?",
 ]
+
+[[override]]
+# The state button's menu, seen as a file opens.
+priority = "1"
+msgids = ["Needs work", "Translated", "Untranslated"]
+
+[[override]]
+# macOS's app menu, which the harvest can't see.
+priority = "1"
+domain = "gtk-mac-integration"
+msgids = ["About %s", "Hide %s", "Hide Others", "Quit %s", "Services", "Show All"]
 
 [[override]]
 # The Windows installer and command-line help, in tmp_strings.py with

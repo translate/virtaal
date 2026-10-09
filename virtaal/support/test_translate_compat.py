@@ -6,6 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import locale
+import os
 
 from translate.storage.placeables import StringElem
 
@@ -136,6 +137,22 @@ def test_virtaals_own_catalog_fills_what_pycountrys_lacks(tmp_path, monkeypatch)
     _install_catalog(tmp_path, 'xx', 'iso639-3', {'Zulu': 'isiZulu'})
 
     assert gettext_lang('xx')('Zulu') == 'isiZulu'
+
+
+def test_shipped_language_name_lite_catalogs_are_read(tmp_path, monkeypatch):
+    # setup.py compiles each po/LINGUAS-lite entry to <domain>.mo, so a
+    # domain gettext_lang() doesn't look up is never read.
+    from virtaal.support.libi18n import lite
+    po_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'po')
+    monkeypatch.setattr(platform, 'locale_dir', str(tmp_path))
+    entries = [line.split('/') for line in lite.read_linguas(os.path.join(po_dir, 'LINGUAS-lite'))]
+    names = [(domain, lang) for domain, lang in entries if domain not in lite.LIBRARY_NAMESPACES]
+    assert names
+    for domain, lang in names:
+        po_file = os.path.join(po_dir, 'lite', domain, lang + '.po')
+        lite.merge(None, po_file, str(tmp_path / lang / 'LC_MESSAGES' / (domain + '.mo')))
+        messages = lite.read_lite_po(po_file)
+        assert any(gettext_lang(lang)(name) == messages[name] != name for name in messages if name)
 
 
 def test_pycountrys_catalog_wins_over_virtaals_own(tmp_path, monkeypatch):

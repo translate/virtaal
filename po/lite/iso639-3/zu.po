@@ -19,7 +19,7 @@ msgstr "isiBhunu"
 msgid "English"
 msgstr "isiNgisi"
 
-msgid "Sotho"
+msgid "Sotho, Southern"
 msgstr "isiSuthu"
 
 msgid "Swazi"

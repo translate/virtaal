@@ -274,6 +274,19 @@ gh api graphql -f query='{ repository(owner: "translate", name: "virtaal") { iss
 A null `closer` is a manual close: read the closing comment, and check
 `git log upstream/main` for when the fix it cites actually landed.
 
+To check every closed issue's milestone at once (~760, under two
+minutes), page the same query over all closed issues. `--paginate`
+only advances a variable named exactly `$endCursor`; any other name
+re-fetches page 1 forever with no error:
+
+```
+gh api graphql --paginate --jq '.data.repository.issues.nodes[]' -f query='query($endCursor: String) { repository(owner: "translate", name: "virtaal") { issues(states: CLOSED, first: 100, after: $endCursor) { pageInfo { hasNextPage endCursor } nodes { number title stateReason milestone { title } timelineItems(itemTypes: [CLOSED_EVENT], last: 1) { nodes { ... on ClosedEvent { closer { __typename ... on PullRequest { number merged mergedAt } } } } } } } } }'
+```
+
+Dedupe by number (paging repeats a few). A merged PR with `mergedAt`
+after 2013-05-31 on an issue not milestoned 1.0.0 is a candidate;
+then check 1.0.1's closed manual closes the same way.
+
 **`gh issue list --milestone` lags a just-made milestone edit** - two
 issues edited seconds earlier were missing from the list. Check
 `gh issue view N --json milestone` or the milestone's own

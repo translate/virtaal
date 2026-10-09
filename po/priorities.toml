@@ -112,6 +112,12 @@ msgids = [
 ]
 
 [[override]]
+# The save prompt's buttons: Virtaal's own, not GTK's.
+priority = "1~"
+domain = "virtaal"
+msgids = ["_Cancel", "_Discard", "_Save"]
+
+[[override]]
 # The language pair's menu in the status bar.
 priority = "1~"
 msgids = ["_New Language Pair…"]

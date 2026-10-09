@@ -50,7 +50,9 @@ by 2026-10-03, and only 5 actually fit its scope.
   Backlog, an old 0.x one). Includes a manual close whose fix landed
   this cycle, or that the py3/GTK3 rewrite or new packaging resolved.
   Not duplicates, questions, notabug, unreproducible, upstream fixes,
-  or fixes from years ago.
+  or fixes already released in 0.7.1 (2013-05-31) or earlier. A fix
+  merged after 0.7.1 never shipped, so it is 1.0.0 however old (#3266,
+  fixed by PR #3269 in 2017).
 - **1.0.1** - crashes (including a disabled path that used to
   segfault), installation problems, problems in packaged builds and
   their build tooling, and localisation of Virtaal itself (UI

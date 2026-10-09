@@ -2404,7 +2404,8 @@ def test_set_statusbar_message_pushes_a_non_empty_message():
 # both use Gtk.Widget.reparent(), a real deprecated GTK call with no
 # replacement short of rebuilding the menu bar, out of scope here #
 
-def test_on_fullscreen_enters_fullscreen_and_shows_the_app_icon():
+def test_on_fullscreen_enters_fullscreen_and_shows_the_app_icon(monkeypatch):
+    monkeypatch.setattr(platform, 'is_mac', False)
     calls = []
     view = MainView.__new__(MainView)
     view.main_window = SimpleNamespace(
@@ -2419,7 +2420,8 @@ def test_on_fullscreen_enters_fullscreen_and_shows_the_app_icon():
     assert calls == ['fullscreen', 'status-hide', 'show-app-icon', 'menubar-hide']
 
 
-def test_on_fullscreen_leaves_fullscreen_and_hides_the_app_icon():
+def test_on_fullscreen_leaves_fullscreen_and_hides_the_app_icon(monkeypatch):
+    monkeypatch.setattr(platform, 'is_mac', False)
     calls = []
     view = MainView.__new__(MainView)
     view.main_window = SimpleNamespace(
@@ -2433,6 +2435,23 @@ def test_on_fullscreen_leaves_fullscreen_and_hides_the_app_icon():
 
     assert calls == ['unfullscreen', 'status-show', 'hide-app-icon', 'menubar-show']
 
+
+
+@pytest.mark.parametrize('active, expected', [(True, ['fullscreen']), (False, ['unfullscreen'])])
+def test_on_fullscreen_on_macos_leaves_the_menu_bar_alone(monkeypatch, active, expected):
+    monkeypatch.setattr(platform, 'is_mac', True)
+    calls = []
+    view = MainView.__new__(MainView)
+    view.main_window = SimpleNamespace(
+        fullscreen=lambda: calls.append('fullscreen'), unfullscreen=lambda: calls.append('unfullscreen'))
+    view.status_bar = SimpleNamespace(hide=lambda: calls.append('status-hide'), show=lambda: calls.append('status-show'))
+    view.menubar = SimpleNamespace(hide=lambda: calls.append('menubar-hide'), show=lambda: calls.append('menubar-show'))
+    view.show_app_icon = lambda: calls.append('show-app-icon')
+    view.hide_app_icon = lambda: calls.append('hide-app-icon')
+
+    view._on_fullscreen(SimpleNamespace(get_active=lambda: active))
+
+    assert calls == expected
 
 # trivial menu/signal delegators #
 

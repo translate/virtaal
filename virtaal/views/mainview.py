@@ -300,11 +300,7 @@ class MainView(BaseView):
             mnu_quit.hide()
             self.gui.get_object("separator_mnu_file_2").hide()
             # macOS already adds its own native "Enter Full Screen" to
-            # every resizable window - our own GDK-level fullscreen()
-            # is a different mechanism (no real fullscreen Space,
-            # Esc/mouse-to-top-of-screen native affordances not
-            # engaged) and can leave the window with no way back to
-            # the menu bar. Hide it here, keep only the native one.
+            # every resizable window's View menu.
             self.gui.get_object("mnu_fullscreen").hide()
             # Move the about menu item
             mnu_about = self.gui.get_object("mnu_about")
@@ -1338,6 +1334,14 @@ class MainView(BaseView):
         self.controller.revert_file()
 
     def _on_fullscreen(self, widget=None):
+        if platform.is_mac:
+            # Moving the menus into the app button empties the native
+            # menu bar.
+            if widget.get_active():
+                self.main_window.fullscreen()
+            else:
+                self.main_window.unfullscreen()
+            return
         if widget.get_active():
             self.main_window.fullscreen()
             self.status_bar.hide()

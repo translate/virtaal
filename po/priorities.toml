@@ -35,13 +35,18 @@ screen = "^file open$"
 window = "^Window ('(quality-checks\\.po|Virtaal)( - Virtaal)?'|None)$"
 
 [[seen]]
+# GTK's font chooser, from Preferences.
+priority = "3"
+window = "^FontChooserDialog"
+
+[[seen]]
 # Quality check names, in the Quality Checks mode's menu.
 priority = "2"
 screen = "^mode QualityCheck menu$"
 
 [[seen]]
 priority = "2"
-window = "virtaal_tutorial\\.po|New Language Pair|'Settings'|'Virtaal Preferences'|'Properties'|^FontChooserDialog|^ShortcutsWindow|^AboutDialog"
+window = "virtaal_tutorial\\.po|New Language Pair|'Add Term'|'Settings'|'Virtaal Preferences'|'Properties'|^ShortcutsWindow|^AboutDialog"
 
 [[seen]]
 # The main window once working in a file (titled with the file's name,
@@ -86,6 +91,28 @@ msgids = [
     # The current file's own label on its suggestions.
     "This file",
 ]
+
+[[override]]
+# The language pair's and the checker's menus in the status bar.
+priority = "1~"
+msgids = ["Default", "_New Language Pair…"]
+
+[[override]]
+# The welcome screen's feature list.
+priority = "1~"
+msgids = [
+    "Translation memory",
+    "Terminology assistance",
+    "Quality checks",
+    "Machine translation",
+    "Highlighting and insertion of placeables",
+    "Many plugins and options for customization",
+]
+
+[[override]]
+# macOS's title for Preferences, and the New Language Pair dialog's OK.
+priority = "2"
+msgids = ["Settings", "_OK"]
 
 [[override]]
 # The state button's menu, seen as a file opens.

@@ -751,7 +751,7 @@ domains:
     - Web Look-ups
     - Yahoo
     - 'Your settings file could not be read, so Virtaal started with default settings. The old file was kept at: %s'
-    - _Add Missing Language...
+    - _Add Missing Language…
     - _Close
     - enable debugging features
     - options

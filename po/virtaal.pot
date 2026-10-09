@@ -94,7 +94,7 @@ msgid "<b>Translation</b>"
 msgstr ""
 
 #: share/virtaal/virtaal.ui
-msgid "_Add Missing Language..."
+msgid "_Add Missing Language…"
 msgstr ""
 
 #: share/virtaal/virtaal.ui

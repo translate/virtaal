@@ -276,3 +276,8 @@ A null `closer` is a manual close: read the closing comment, and check
 issues edited seconds earlier were missing from the list. Check
 `gh issue view N --json milestone` or the milestone's own
 `open_issues` count before re-editing.
+
+**`gh pr edit --milestone` fails** with a "Projects (classic) is being
+deprecated" GraphQL error. Set a PR's milestone through the issues
+API, by milestone number:
+`gh api -X PATCH repos/translate/virtaal/issues/N -F milestone=11`.

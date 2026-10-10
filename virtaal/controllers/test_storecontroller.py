@@ -52,6 +52,7 @@ def _controller():
     controller.store = None
     controller._tempfiles = []
     controller.handler_ids = {}
+    controller._loading_store = False
     return controller
 
 
@@ -751,6 +752,45 @@ def test_on_target_lang_changed_updates_the_store():
     controller._on_target_lang_changed(None, 'af')
 
     assert calls == ['af']
+
+
+def _lang_controller(changed):
+    controller = _controller()
+    modified = []
+    controller.set_modified = modified.append
+    controller.store = SimpleNamespace(set_source_language=lambda code: changed,
+                                       set_target_language=lambda code: changed)
+    return controller, modified
+
+
+@pytest.mark.parametrize('handler', ['_on_source_lang_changed', '_on_target_lang_changed'])
+def test_a_language_change_marks_the_file_modified(handler):
+    # #3841
+    controller, modified = _lang_controller(changed=True)
+
+    getattr(controller, handler)(None, 'af')
+
+    assert modified == [True]
+
+
+@pytest.mark.parametrize('handler', ['_on_source_lang_changed', '_on_target_lang_changed'])
+def test_a_language_the_file_already_has_does_not_mark_it_modified(handler):
+    controller, modified = _lang_controller(changed=False)
+
+    getattr(controller, handler)(None, 'af')
+
+    assert modified == []
+
+
+@pytest.mark.parametrize('handler', ['_on_source_lang_changed', '_on_target_lang_changed'])
+def test_filling_in_a_files_languages_on_open_does_not_mark_it_modified(handler):
+    # Opening a file with no language header fills it in from the current pair.
+    controller, modified = _lang_controller(changed=True)
+    controller.connect('store-loaded', lambda c: getattr(c, handler)(None, 'af'))
+
+    controller._emit_store_loaded()
+
+    assert modified == []
 
 
 # _unit_modified() #

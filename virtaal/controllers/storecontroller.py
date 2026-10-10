@@ -40,6 +40,7 @@ class StoreController(BaseController):
         self.cursor = None
         self.handler_ids = {}
         self._modified = False
+        self._loading_store = False
         self.project = None
         self.store = None
         self._tempfiles = []
@@ -261,7 +262,15 @@ class StoreController(BaseController):
         self.view.load_store(self.store)
         self.view.show()
 
-        self.emit('store-loaded')
+        self._emit_store_loaded()
+
+    def _emit_store_loaded(self):
+        # Languages filled in on load (see LanguageController) aren't user edits.
+        self._loading_store = True
+        try:
+            self.emit('store-loaded')
+        finally:
+            self._loading_store = False
 
     def save_file(self, filename=None):
         self.unit_controller.prepare_for_save()
@@ -434,10 +443,12 @@ class StoreController(BaseController):
             main_controller.disconnect(self._controller_register_id)
 
     def _on_source_lang_changed(self, _sender, langcode):
-        self.store.set_source_language(langcode)
+        if self.store.set_source_language(langcode) and not self._loading_store:
+            self.set_modified(True)
 
     def _on_target_lang_changed(self, _sender, langcode):
-        self.store.set_target_language(langcode)
+        if self.store.set_target_language(langcode) and not self._loading_store:
+            self.set_modified(True)
 
     def _unit_done(self, _unit_controller, unit, modified):
         self.update_unit_stats(unit, modified)

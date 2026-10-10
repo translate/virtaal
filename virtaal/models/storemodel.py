@@ -77,8 +77,11 @@ class StoreModel(BaseModel):
             return candidate
 
     def set_source_language(self, langcode):
-        if not same_language(self._trans_store.getsourcelanguage(), langcode):
-            self._trans_store.setsourcelanguage(langcode)
+        """Returns whether the file's language changed."""
+        if same_language(self._trans_store.getsourcelanguage(), langcode):
+            return False
+        self._trans_store.setsourcelanguage(langcode)
+        return True
 
     def get_target_language(self):
         """Return the current store's target language."""
@@ -90,12 +93,15 @@ class StoreModel(BaseModel):
             return candidate
 
     def set_target_language(self, langcode):
-        if not same_language(self._trans_store.gettargetlanguage(), langcode):
-            self._trans_store.settargetlanguage(langcode)
-            from translate.storage.poheader import poheader
-            lang = LanguageModel(langcode)
-            if isinstance(self._trans_store, poheader) and lang.plural:
-                self._trans_store.updateheaderplural(lang.nplurals, lang.plural)
+        """Returns whether the file's language changed."""
+        if same_language(self._trans_store.gettargetlanguage(), langcode):
+            return False
+        self._trans_store.settargetlanguage(langcode)
+        from translate.storage.poheader import poheader
+        lang = LanguageModel(langcode)
+        if isinstance(self._trans_store, poheader) and lang.plural:
+            self._trans_store.updateheaderplural(lang.nplurals, lang.plural)
+        return True
 
     def get_store_type(self):
         return self._trans_store.Name

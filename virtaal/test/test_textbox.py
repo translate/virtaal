@@ -379,6 +379,34 @@ class TestTextBox(TestScaffolding):
         )
         assert textbox.get_text() == original_text
 
+    def test_undo_removes_a_typed_placeable_one_keystroke_at_a_time(self, monkeypatch):
+        # #4167: typing "s" turns the "%s" just typed into a non-editable
+        # placeable, which each keystroke's undo must still be able to cut.
+        calls = self._capture_idle_add(monkeypatch)
+        textbox = self._target_for('%s files copied')
+        original_text = textbox.get_text()
+        textbox.set_text('')
+        self.undo_controller.model.clear()
+        texts = []
+        try:
+            for char in 'Oop %s':
+                textbox.buffer.insert_interactive_at_cursor(char, -1, True)
+                for call in calls:
+                    call()
+                calls.clear()
+            assert any(
+                isinstance(e, general.PythonFormattingPlaceable) for e in textbox.elem.depth_first()
+            )
+
+            while (undo_info := self.undo_controller.model.pop()) is not None:
+                undo_info['action'](undo_info['unit'])
+                textbox.refresh(update=True)
+                texts.append(textbox.get_text())
+        finally:
+            textbox.set_text(original_text)
+
+        assert texts == ['Oop %', 'Oop ', 'Oop', 'Oo', 'O', '']
+
     def test_insert_translation_groups_a_selection_replace_into_one_undo_step(self):
         textbox = self._target_for('%s files copied')
         self.undo_controller.model.clear()

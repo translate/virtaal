@@ -7,7 +7,7 @@
 
 from types import SimpleNamespace
 
-from translate.storage.placeables import StringElem
+from translate.storage.placeables import StringElem, general, parse
 
 from virtaal.controllers import undocontroller as undocontroller_module
 from virtaal.controllers.undocontroller import UndoController
@@ -768,3 +768,27 @@ def test_undo_and_redo_recheck_the_current_unit():
 
     controller._on_redo_activated()
     assert checked == [unit, unit]
+
+
+def _parsed(text):
+    elem = StringElem([parse(StringElem(text), general.parsers)])
+    elem.prune()
+    return elem
+
+
+def test_unlock_partly_covered_leaves_lets_delete_range_cut_into_a_placeable():
+    elem = _parsed('Oop %s')
+
+    undocontroller_module._unlock_partly_covered_leaves(elem, 5, 6)
+    elem.delete_range(5, 6)
+
+    assert str(elem) == 'Oop %'
+
+
+def test_unlock_partly_covered_leaves_keeps_a_fully_covered_placeable():
+    elem = _parsed('Oop %s')
+    placeable = elem.sub[-1]
+
+    undocontroller_module._unlock_partly_covered_leaves(elem, 3, 6)
+
+    assert elem.sub[-1] is placeable

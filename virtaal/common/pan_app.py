@@ -353,6 +353,9 @@ class Settings:
             if not os.path.isfile(self.filename):
                 raise Exception
 
+        # The class dicts are defaults; each instance reads into its own copy.
+        for section in self.sections:
+            setattr(self, section, dict(getattr(Settings, section)))
         self.language["targetlang"] = data.simplify_to_common(get_locale_lang())
         self.config = ConfigParser.RawConfigParser()
         self.config_recovery_backup = None

@@ -618,6 +618,22 @@ def test_settings_raises_for_a_missing_explicit_filename(tmp_path):
         pan_app.Settings(str(tmp_path / 'does-not-exist.ini'))
 
 
+def test_settings_instances_do_not_share_values(tmp_path):
+    # #3826: --config must not inherit the default config's values.
+    real = tmp_path / 'real.ini'
+    real.write_text('[translator]\nname = Real Name\n[language]\nuilang = af\n'
+                    '[installed_assets]\nautocorrect.af = abc\n')
+    isolated = tmp_path / 'isolated.ini'
+    isolated.write_text('')
+
+    pan_app.Settings(str(real))
+    settings = pan_app.Settings(str(isolated))
+
+    assert settings.translator['name'] != 'Real Name'
+    assert settings.language['uilang'] == ''
+    assert settings.installed_assets == {}
+
+
 def test_settings_write_creates_the_config_directory_if_missing(tmp_path):
     seed = tmp_path / 'seed.ini'
     seed.write_text('')

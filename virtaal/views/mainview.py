@@ -145,6 +145,25 @@ class EntryDialog(Gtk.Dialog):
     def set_title(self, title):
         super().set_title(title)
 
+# Pango doesn't fall back from macOS's system UI font to these scripts (#4107).
+MACOS_UI_FONT_FALLBACKS = (
+    'Kohinoor Devanagari',
+    'Kohinoor Gujarati',
+    'Kohinoor Telugu',
+    'Mukta Mahee',  # Gurmukhi
+    'Malayalam Sangam MN',
+    'Oriya Sangam MN',
+    'Tamil Sangam MN',
+)
+
+
+def with_macos_font_fallbacks(font_name):
+    from gi.repository import Pango
+    desc = Pango.FontDescription.from_string(font_name)
+    desc.set_family(','.join([desc.get_family(), *MACOS_UI_FONT_FALLBACKS]))
+    return desc.to_string()
+
+
 # XXX: This class is based on main_window.py:Virtaal from the pre-MVC days (Virtaal 0.2).
 class MainView(BaseView):
     """The view containing the main window and menus."""
@@ -157,6 +176,12 @@ class MainView(BaseView):
         self.controller = controller
         self.modified = False
         self._tooltip_fg_provider = None
+
+        if platform.is_mac:
+            settings = Gtk.Settings.get_default()
+            font_name = settings.get_property('gtk-font-name')
+            if font_name:
+                settings.set_property('gtk-font-name', with_macos_font_fallbacks(font_name))
 
         if platform.is_windows:
             # Make sure that rule-hints are shown in Windows

@@ -295,6 +295,7 @@ def test_destroy_tears_down_the_view_and_all_registered_signals():
     unit_controller = SimpleNamespace(view=SimpleNamespace(disconnect=lambda sid: calls.append(('target', sid))))
     controller.main_controller = SimpleNamespace(
         store_controller=store_controller, mode_controller=mode_controller, unit_controller=unit_controller,
+        lang_controller=SimpleNamespace(disconnect=lambda sid: calls.append(('lang', sid))),
     )
     controller._store_loaded_id = 'store-id'
     controller._cursor_changed_id = 'cursor-id'
@@ -302,13 +303,15 @@ def test_destroy_tears_down_the_view_and_all_registered_signals():
     controller._context_selected_id = 'context-id'
     controller._target_focused_id = 'target-id'
     controller._completion_toggled_id = 'completion-id'
+    controller._lang_changed_ids = ['source-id', 'target-id']
     controller.plugin_controller = SimpleNamespace(shutdown=lambda: calls.append('shutdown'))
 
     controller.destroy()
 
     assert calls == [
         'hide', 'destroy', ('store', 'store-id'), ('cursor', 'cursor-id'),
-        ('mode', 'mode-id'), ('mode', 'context-id'), ('target', 'target-id'), ('target', 'completion-id'),
+        ('mode', 'mode-id'), ('mode', 'context-id'), ('target', 'target-id'),
+        ('lang', 'source-id'), ('lang', 'target-id'), ('target', 'completion-id'),
         'shutdown',
     ]
 
@@ -562,6 +565,45 @@ def test_a_context_change_without_a_file_does_nothing():
     controller.start_query = lambda: pytest.fail('must not query')
 
     controller._on_context_selected(None, 1)
+
+
+def test_connect_plugin_subscribes_to_language_changes():
+    controller = _bare_controller()
+    lang_controller = SimpleNamespace(connect=lambda signal, handler: 'sig-' + signal)
+    controller.main_controller = SimpleNamespace(
+        store_controller=_fake_store_controller(), mode_controller=None, lang_controller=lang_controller)
+
+    controller._connect_plugin()
+
+    assert controller._lang_changed_ids == ['sig-source-lang-changed', 'sig-target-lang-changed']
+
+
+@pytest.mark.parametrize('summoned, queries, updates', [
+    (False, [], [True]),
+    (True, [True], []),  # asked for with F9
+])
+def test_a_language_change_clears_the_suggestions_and_queries_again(summoned, queries, updates):
+    calls = []
+    controller = _bare_controller(storecursor=object())
+    controller.view = SimpleNamespace(summoned=summoned, clear=lambda: calls.append('clear'))
+    controller.start_query = lambda: queries.remove(True) or calls.append('query')
+    controller.update_suggestions = lambda: updates.remove(True) or calls.append('update')
+
+    controller._on_lang_changed(None, 'de')
+
+    assert calls[0] == 'clear' and len(calls) == 2
+    assert queries == [] and updates == []
+
+
+def test_a_language_change_without_a_file_only_clears():
+    calls = []
+    controller = _bare_controller(storecursor=None)
+    controller.view = SimpleNamespace(clear=lambda: calls.append('clear'))
+    controller.update_suggestions = lambda: pytest.fail('must not query')
+
+    controller._on_lang_changed(None, 'de')
+
+    assert calls == ['clear']
 
 
 def test_on_mode_selected_updates_the_view_geometry():

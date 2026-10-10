@@ -601,13 +601,17 @@ class SearchMode(BaseMode):
         self.controller.select_mode(self)
 
     def _on_close_search(self, *args):
-        """Escape leaves Search mode and returns to the default mode.
+        """Escape leaves Search mode for the mode used before it.
             This accelerator is always registered (see _setup_key_bindings()),
             not just while Search is the active mode, so guard on that here -
             otherwise Escape would do this from *any* mode."""
         if self.controller.current_mode is not self:
             return False
-        self.controller.select_default_mode()
+        previous = self.controller.previous_mode
+        if previous is None or previous is self:
+            self.controller.select_default_mode()
+        else:
+            self.controller.select_mode(previous)
         return True
 
     def _set_search_bg(self, color):

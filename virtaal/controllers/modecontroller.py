@@ -48,6 +48,7 @@ class ModeController(BaseController):
         self.view.connect('context-selected', self._on_context_selected)
 
         self.current_mode = None
+        self.previous_mode = None
         self.view.select_mode(self.modenames[self.default_mode_name])
 
         store_controller = self.main_controller.store_controller
@@ -102,6 +103,8 @@ class ModeController(BaseController):
         if self.current_mode:
             self.view.remove_mode_widgets(self.current_mode.widgets)
             self.current_mode.unselected()
+        if mode is not self.current_mode:
+            self.previous_mode = self.current_mode
 
         self.current_mode = mode
         self._ignore_mode_change = True

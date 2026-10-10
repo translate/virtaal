@@ -2061,6 +2061,10 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
+#: virtaal/views/checksunitview.py virtaal/views/widgets/welcomescreen.py
+msgid "Quality checks"
+msgstr ""
+
 #: virtaal/views/langview.py
 msgid "_New Language Pair…"
 msgstr ""
@@ -2540,10 +2544,6 @@ msgstr ""
 
 #: virtaal/views/widgets/welcomescreen.py
 msgid "Translation memory"
-msgstr ""
-
-#: virtaal/views/widgets/welcomescreen.py
-msgid "Quality checks"
 msgstr ""
 
 #: virtaal/views/widgets/welcomescreen.py

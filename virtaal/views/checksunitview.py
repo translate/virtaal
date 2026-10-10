@@ -120,8 +120,11 @@ class ChecksUnitView(BaseView):
             # We want an empty button, but this causes a bug where subsequent
             # updates don't show, so we set it to an invisible character
             self.lbl_btnchecks.set_text("\u202a")
-            # The button stays pressed, unseen, with nothing to pop up.
+            # The button stays pressed, unseen, with nothing to pop up, and
+            # out of the focus chain.
             self.btn_checks.set_opacity(0)
+            self.btn_checks.set_can_focus(False)
+            self.btn_checks.get_accessible().set_name(_("Quality checks"))
             self.popup_content.hide()
             self.btn_checks.update_popup()
             return
@@ -142,7 +145,9 @@ class ChecksUnitView(BaseView):
 
         name_str = self._listsep.join(names)
         self.lbl_btnchecks.set_text(name_str)
+        self.btn_checks.get_accessible().set_name(name_str)
         self.btn_checks.set_opacity(1)
+        self.btn_checks.set_can_focus(True)
         self.popup_content.show()
         self.btn_checks.update_popup()
 

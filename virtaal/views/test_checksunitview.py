@@ -70,6 +70,20 @@ def test_no_failures_pops_up_nothing_but_keeps_the_button_pressed():
     assert view.btn_checks.get_opacity() == 1
 
 
+def test_the_unseen_button_is_named_and_out_of_the_focus_chain():
+    view = _make_view()
+    _update(view, {'xmltags': 'Different XML tags'})
+    _update(view, {})
+
+    assert not view.btn_checks.get_can_focus()
+    assert view.btn_checks.get_accessible().get_name() == 'Quality checks'
+
+    _update(view, {'xmltags': 'Different XML tags', 'urls': 'Different URLs'})
+
+    assert view.btn_checks.get_can_focus()
+    assert view.btn_checks.get_accessible().get_name() == view.lbl_btnchecks.get_text()
+
+
 def test_pressing_the_button_before_any_failures_pops_up_nothing():
     view = _make_view()
 

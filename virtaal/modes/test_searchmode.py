@@ -408,14 +408,24 @@ def test_on_close_search_ignores_a_call_when_not_the_current_mode():
     assert mode._on_close_search() is False
 
 
-def test_on_close_search_returns_to_the_default_mode():
+def test_on_close_search_returns_to_the_default_mode_without_a_previous_one():
     mode = SearchMode.__new__(SearchMode)
-    mode.controller = SimpleNamespace(current_mode=mode)
+    mode.controller = SimpleNamespace(current_mode=mode, previous_mode=None)
     calls = []
     mode.controller.select_default_mode = lambda: calls.append(True)
 
     assert mode._on_close_search() is True
     assert calls == [True]
+
+
+def test_on_close_search_returns_to_the_mode_used_before_searching():
+    mode = SearchMode.__new__(SearchMode)
+    incomplete = object()
+    selected = []
+    mode.controller = SimpleNamespace(current_mode=mode, previous_mode=incomplete, select_mode=selected.append)
+
+    assert mode._on_close_search() is True
+    assert selected == [incomplete]
 
 
 # _on_replace_clicked() #

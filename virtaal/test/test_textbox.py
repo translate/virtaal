@@ -758,10 +758,25 @@ class TestTextBox(TestScaffolding):
         textbox = self._target_for('%s files copied')
         toggled = []
         handler_id = self.unit_controller.view.connect(
-            'completion-popup-toggled', lambda view, showing: toggled.append(showing))
+            'editor-popup-toggled', lambda view, showing: toggled.append(showing))
         try:
             popup = self._open_candidates(monkeypatch, textbox)
             popup.dismiss()
+        finally:
+            self.unit_controller.view.disconnect(handler_id)
+
+        assert toggled == [True, False]
+
+    def test_unit_view_signals_when_a_context_menu_opens_and_closes(self):
+        textbox = self._target_for('%s files copied')
+        toggled = []
+        handler_id = self.unit_controller.view.connect(
+            'editor-popup-toggled', lambda view, showing: toggled.append(showing))
+        try:
+            menu = Gtk.Menu()
+            textbox.emit('populate-popup', menu)
+            menu.show()
+            menu.hide()
         finally:
             self.unit_controller.view.disconnect(handler_id)
 

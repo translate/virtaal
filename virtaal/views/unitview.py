@@ -44,7 +44,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         'targets-created':(GObject.SignalFlags.RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'sources-created':(GObject.SignalFlags.RUN_FIRST, None, (TYPE_PYOBJECT,)),
         'target-focused': (GObject.SignalFlags.RUN_FIRST, None, (int,)),
-        'completion-popup-toggled': (GObject.SignalFlags.RUN_FIRST, None, (bool,)),
+        'editor-popup-toggled': (GObject.SignalFlags.RUN_FIRST, None, (bool,)),
         'textview-language-changed': (GObject.SignalFlags.RUN_FIRST, None, (TYPE_PYOBJECT, TYPE_PYOBJECT)),
     }
     __gproperties__ = {
@@ -467,14 +467,18 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         textbox.connect('text-inserted', self._on_target_insert_text, index)
         textbox.connect('text-deleted', self._on_target_delete_range, index)
         textbox.connect('changed', self._on_target_changed, index)
-        textbox.completion_popup.connect('show', self._on_completion_popup_toggled, True)
-        textbox.completion_popup.connect('hide', self._on_completion_popup_toggled, False)
+        textbox.completion_popup.connect('show', self._on_popup_toggled, True)
+        textbox.completion_popup.connect('hide', self._on_popup_toggled, False)
 
         self._widgets['vbox_targets'].pack_start(target, True, True, 0)
         self.targets.append(textbox)
 
-    def _on_completion_popup_toggled(self, popup, showing):
-        self.emit('completion-popup-toggled', showing)
+    def _on_popup_toggled(self, popup, showing):
+        self.emit('editor-popup-toggled', showing)
+
+    def _on_populate_popup(self, textbox, menu):
+        self._on_popup_toggled(menu, True)
+        menu.connect('hide', self._on_popup_toggled, False)
 
     def _on_target_key_pressed(self, textbox, event, eventname, next_textbox):
         if not eventname:
@@ -532,6 +536,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         textbox.set_text(text or '')
         textbox.connect('focus-in-event', self._on_textbox_focused)
         textbox.connect('focus-out-event', self._on_textbox_unfocused)
+        textbox.connect('populate-popup', self._on_populate_popup)
         textbox.get_buffer().connect(
             'notify::has-selection', lambda *args: self._update_edit_menu_sensitivity())
 

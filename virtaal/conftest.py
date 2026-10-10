@@ -33,12 +33,15 @@ expect them to show up in _seen_messages.
 """
 
 import builtins
+import faulthandler
 import gettext
 import json
 import os
+import signal
 import subprocess
 import sys
 import tempfile
+import time
 import warnings
 from pathlib import Path
 
@@ -106,8 +109,14 @@ _ISOLATED_FILES = {"test_popupwidgetbutton.py"}
 
 _CHILD_ENV = "_VIRTAAL_TESTSCAFFOLDING_ISOLATED"
 _REPORTS_ENV = "_VIRTAAL_ISOLATED_REPORTS"
+_STACKS_ENV = "_VIRTAAL_ISOLATED_STACKS"
+
+# Each test in the subprocess has its own pytest-timeout; this bounds
+# its start-up and exit too, well inside the CI job's own timeout.
+_GROUP_TIMEOUT = 120
 
 _config = None
+_stacks_file = None
 _isolated_reports = {}
 
 
@@ -134,8 +143,12 @@ def _isolating():
 
 
 def pytest_configure(config):
-    global _config
+    global _config, _stacks_file
     _config = config
+    path = os.environ.get(_STACKS_ENV)
+    if path:
+        _stacks_file = open(path, "w", encoding="utf-8")
+        faulthandler.register(signal.SIGUSR1, file=_stacks_file, all_threads=True)
 
 
 @pytest.hookimpl(tryfirst=True)
@@ -171,6 +184,25 @@ def _make_report(item, when, passed, output=""):
     return runner.pytest_runtest_makereport(item, call)
 
 
+def _communicate(proc, timeout, stacks_path):
+    """The subprocess's output, and whether it outlived `timeout` - if
+    so it is killed, and the output ends with every thread's stack."""
+    try:
+        stdout, stderr = proc.communicate(timeout=timeout)
+        return stdout + stderr, False
+    except subprocess.TimeoutExpired:
+        pass
+    proc.send_signal(signal.SIGUSR1)
+    time.sleep(1)
+    proc.kill()
+    stdout, stderr = proc.communicate()
+    stacks = ""
+    if os.path.exists(stacks_path):
+        with open(stacks_path, encoding="utf-8") as f:
+            stacks = f.read()
+    return f"Timed out after {timeout}s\n{stdout}{stderr}\nStacks:\n{stacks}", True
+
+
 def _run_group(item, group):
     """Run every collected test in `group` in one fresh pytest
     subprocess, storing each test's own reports in _isolated_reports."""
@@ -182,23 +214,26 @@ def _run_group(item, group):
     # pytest-current symlink retention/cleanup.
     with tempfile.TemporaryDirectory(prefix="virtaal-testscaffolding-isolated-") as tmp:
         reports_path = os.path.join(tmp, "reports.jsonl")
-        try:
-            proc = subprocess.run(
-                [
-                    sys.executable, "-m", "pytest",
-                    "-p", "no:cacheprovider",
-                    "--basetemp", os.path.join(tmp, "basetemp"),
-                    "-q", *nodeids,
-                ],
-                capture_output=True,
-                text=True,
-                timeout=60 + 30 * len(nodeids),
-                cwd=str(Path(__file__).resolve().parent.parent),
-                env={**os.environ, _CHILD_ENV: "1", _REPORTS_ENV: reports_path},
-            )
-            output = proc.stdout + proc.stderr
-        except subprocess.TimeoutExpired as e:
-            output = f"{e}\n{e.stdout or ''}{e.stderr or ''}"
+        stacks_path = os.path.join(tmp, "stacks.txt")
+        proc = subprocess.Popen(
+            [
+                sys.executable, "-m", "pytest",
+                "-p", "no:cacheprovider",
+                "--basetemp", os.path.join(tmp, "basetemp"),
+                "-q", *nodeids,
+            ],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            cwd=str(Path(__file__).resolve().parent.parent),
+            env={
+                **os.environ,
+                _CHILD_ENV: "1",
+                _REPORTS_ENV: reports_path,
+                _STACKS_ENV: stacks_path,
+            },
+        )
+        output, timed_out = _communicate(proc, _GROUP_TIMEOUT, stacks_path)
         lines = []
         if os.path.exists(reports_path):
             with open(reports_path, encoding="utf-8") as f:
@@ -224,17 +259,33 @@ def _run_group(item, group):
             # A skip's (path, lineno, reason); JSON turned it into a list.
             report.longrepr = tuple(report.longrepr)
         by_nodeid.setdefault(report.nodeid, []).append(report)
+    unfinished = False
     for member in members:
         reports = by_nodeid.get(_child_nodeid(member, group), [])
         for report in reports:
             report.nodeid = member.nodeid
         if not any(r.when == "teardown" for r in reports):
             # The subprocess died or hung before this test finished.
+            unfinished = True
             reports = [
                 _make_report(member, when, when != "call", output)
                 for when in ("setup", "call", "teardown")
             ]
         _isolated_reports[member.nodeid] = reports
+    if timed_out and not unfinished:
+        # Every test passed, so only a warning shows where it hung.
+        _warn_hung(item, f"{group}: subprocess hung after its tests finished\n{output}")
+
+
+def _warn_hung(item, message):
+    item.ihook.pytest_warning_recorded.call_historic(kwargs={
+        "warning_message": warnings.WarningMessage(
+            UserWarning(message), UserWarning, __file__, 0
+        ),
+        "when": "runtest",
+        "nodeid": item.nodeid,
+        "location": None,
+    })
 
 
 @pytest.hookimpl(tryfirst=True)

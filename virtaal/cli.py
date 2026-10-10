@@ -153,11 +153,13 @@ def _set_logging(options, parser):
 
 
 def _set_config(options, parser):
+    if options.config is None:
+        return
     try:
-        if options.config is not None:
-            pan_app.settings = pan_app.Settings(path.abspath(options.config))
+        pan_app.settings = pan_app.Settings(path.abspath(options.config))
     except Exception:
         parser.error(_("Could not read configuration file '%(filename)s'") % {"filename": options.config})
+    pan_app.install_saved_ui_language()
 
 
 def _set_pseudo_translation(options, parser):

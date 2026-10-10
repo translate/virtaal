@@ -66,6 +66,8 @@ def test_config_switches_the_active_settings_file(monkeypatch, tmp_path):
             created.append(filename)
 
     monkeypatch.setattr(pan_app, 'Settings', _FakeSettings)
+    installed = []
+    monkeypatch.setattr(pan_app, 'install_saved_ui_language', lambda: installed.append(pan_app.settings))
     config_file = tmp_path / 'virtaal.ini'
     config_file.write_text('')
 
@@ -73,6 +75,8 @@ def test_config_switches_the_active_settings_file(monkeypatch, tmp_path):
 
     assert created == [str(config_file)]
     assert isinstance(pan_app.settings, _FakeSettings)
+    # #3826: the UI language comes from the --config file, not the default one.
+    assert installed == [pan_app.settings]
 
 
 def test_an_unreadable_config_file_is_a_fatal_argument_error(monkeypatch, tmp_path):

@@ -68,6 +68,9 @@ if [ "$(uname -m)" = "x86_64" ]; then
     curl -sL -o /tmp/pyenchant-2.0.0-mac.whl \
         "https://files.pythonhosted.org/packages/4f/c5/5c18df3c5dbf2ce1e6fc8b0fcce1a5dfe7c4ec5ab33b76722fcca9cbfff5/pyenchant-2.0.0-py2.py3.cp27.cp32.cp33.cp34.cp35.cp36.pp27.pp33.pp35-none-macosx_10_6_intel.macosx_10_9_intel.whl"
     mkdir -p build/enchant_intel
+    # libiconv.2.dylib is skipped: nothing links it (libglib/libintl use
+    # /usr/lib/libiconv.2.dylib) and it has no LC_VERSION_MIN_MACOSX,
+    # which notarization rejects.
     # en_US (traditional software source language) and en_GB (checks.po's
     # own target language) - everything else comes via download
     # (dictionary_source.py), not bundled.
@@ -76,6 +79,7 @@ if [ "$(uname -m)" = "x86_64" ]; then
         'enchant/share/enchant/myspell/en_US.dic' \
         'enchant/share/enchant/myspell/en_GB.aff' \
         'enchant/share/enchant/myspell/en_GB.dic' \
+        -x 'enchant/lib/libiconv.2.dylib' \
         -d build/enchant_intel
     rm /tmp/pyenchant-2.0.0-mac.whl
 fi

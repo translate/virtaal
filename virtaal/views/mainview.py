@@ -905,6 +905,48 @@ class MainView(BaseView):
             return text
         return None
 
+    def show_translator_dialog(self, name='', email='', team=''):
+        """Asks for the translator details stored in a file's header.
+            @returns: (name, email, team), or C{None} if cancelled."""
+        dialog = Gtk.Dialog(title=_('Header information'), transient_for=self._top_window, modal=True)
+        dialog.add_button(_("_Cancel"), Gtk.ResponseType.CANCEL)
+        dialog.add_button(_("_OK"), Gtk.ResponseType.OK)
+        dialog.set_default_response(Gtk.ResponseType.OK)
+
+        grid = Gtk.Grid(row_spacing=6, column_spacing=12, border_width=12)
+        fields = (
+            # l10n: This label is for the name of the translator
+            (_("Name:"), _("The name stored in the file header"), name),
+            (_("E-mail address:"), _("The e-mail address stored in the file header"), email),
+            (_("Team:"), _("The team information stored in the file header. "
+                           "This can be an e-mail address or a URL, for example."), team),
+        )
+        entries = []
+        for row, (text, tooltip, value) in enumerate(fields):
+            label = Gtk.Label(label=text, xalign=0)
+            entry = Gtk.Entry(text=value or '', activates_default=True, hexpand=True, width_chars=30)
+            entry.set_tooltip_text(tooltip)
+            label.set_mnemonic_widget(entry)
+            grid.attach(label, 0, row, 1, 1)
+            grid.attach(entry, 1, row, 1, 1)
+            entries.append(entry)
+        dialog.get_content_area().add(grid)
+        grid.show_all()
+        next((e for e in entries if not e.get_text()), entries[0]).grab_focus()
+
+        old_top = self._top_window
+        self._top_window = dialog
+        response = dialog.run()
+        details = tuple(entry.get_text() for entry in entries)
+        dialog.destroy()
+        from gi.repository import GLib
+        GLib.idle_add(old_top.present)
+        self._top_window = old_top
+
+        if response == Gtk.ResponseType.OK:
+            return details
+        return None
+
     def show_open_dialog(self, title='', chooser=None):
         """@returns: The selected file name and URI if the OK button was clicked.
             C{None} otherwise."""

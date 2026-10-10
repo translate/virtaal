@@ -2818,3 +2818,43 @@ def test_macos_ui_font_renders_indic_scripts(text):
     layout.set_font_description(Pango.FontDescription.from_string(
         mainview.with_macos_font_fallbacks('.AppleSystemUIFont 13')))
     assert layout.get_unknown_glyphs_count() == 0
+
+
+# show_translator_dialog() #
+
+def _run_translator_dialog(monkeypatch, response, typed=None, **details):
+    from gi.repository import GLib
+    monkeypatch.setattr(GLib, 'idle_add', lambda func, *args: None)
+    seen = {}
+
+    def run(dialog):
+        entries = [w for w in dialog.get_content_area().get_children()[0].get_children()
+                   if isinstance(w, Gtk.Entry)][::-1]
+        seen['texts'] = [e.get_text() for e in entries]
+        seen['focus'] = next(i for i, e in enumerate(entries) if e.is_focus())
+        for entry, text in zip(entries, typed or []):
+            if text is not None:
+                entry.set_text(text)
+        return response
+    monkeypatch.setattr(Gtk.Dialog, 'run', run)
+    view = MainView.__new__(MainView)
+    top_window = Gtk.Window()
+    view._top_window = top_window
+    result = view.show_translator_dialog(**details)
+    assert view._top_window is top_window
+    return result, seen
+
+
+def test_translator_dialog_asks_for_all_three_details_at_once(monkeypatch):
+    result, seen = _run_translator_dialog(
+        monkeypatch, Gtk.ResponseType.OK, typed=[None, 'd@example.com', 'af'], name='Dwayne', email='', team='')
+
+    assert seen['texts'] == ['Dwayne', '', '']
+    assert seen['focus'] == 1  # the first empty field
+    assert result == ('Dwayne', 'd@example.com', 'af')
+
+
+def test_translator_dialog_returns_nothing_when_cancelled(monkeypatch):
+    result, _seen = _run_translator_dialog(monkeypatch, Gtk.ResponseType.CANCEL, typed=['X', 'Y', 'Z'])
+
+    assert result is None

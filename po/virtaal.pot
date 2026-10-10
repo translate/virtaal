@@ -232,30 +232,30 @@ msgstr ""
 msgid "Virtaal Preferences"
 msgstr ""
 
-#: share/virtaal/virtaal.ui
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
 msgid "The name stored in the file header"
 msgstr ""
 
 #. l10n: This label is for the name of the translator
-#: share/virtaal/virtaal.ui
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
 msgid "Name:"
 msgstr ""
 
-#: share/virtaal/virtaal.ui
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
 msgid "The e-mail address stored in the file header"
 msgstr ""
 
-#: share/virtaal/virtaal.ui
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
 msgid "E-mail address:"
 msgstr ""
 
-#: share/virtaal/virtaal.ui
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
 msgid ""
 "The team information stored in the file header. This can be an e-mail "
 "address or a URL, for example."
 msgstr ""
 
-#: share/virtaal/virtaal.ui
+#: share/virtaal/virtaal.ui virtaal/views/mainview.py
 msgid "Team:"
 msgstr ""
 
@@ -897,22 +897,6 @@ msgstr ""
 
 #: virtaal/controllers/checkscontroller.py
 msgid "Drupal"
-msgstr ""
-
-#: virtaal/controllers/maincontroller.py
-msgid "Header information"
-msgstr ""
-
-#: virtaal/controllers/maincontroller.py
-msgid "Please enter your name"
-msgstr ""
-
-#: virtaal/controllers/maincontroller.py
-msgid "Please enter your e-mail address"
-msgstr ""
-
-#: virtaal/controllers/maincontroller.py
-msgid "Please enter your team's information"
 msgstr ""
 
 #: virtaal/controllers/maincontroller.py
@@ -2136,6 +2120,10 @@ msgstr ""
 
 #: virtaal/views/mainview.py
 msgid "Please enter the plural equation to use"
+msgstr ""
+
+#: virtaal/views/mainview.py
+msgid "Header information"
 msgstr ""
 
 #: virtaal/views/mainview.py

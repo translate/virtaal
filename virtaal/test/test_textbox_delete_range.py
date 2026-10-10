@@ -58,12 +58,12 @@ class TestTextBoxDeleteRange(TestScaffolding):
     # non-editable, fragile, a widget only at its start (idx=11, len=2
     # - the widget plus the literal "\n").
 
-    def test_newline_delete_at_a_removes_the_placeable_and_the_preceding_char(self):
+    def test_newline_delete_at_a_removes_the_whole_placeable(self):
         textbox = self._target(self.po_store, 0)
 
         result = _delete_at(textbox, 11, key_is_delete=True)
 
-        assert result == 'First line\nSecond line.'
+        assert result == 'First line.Second line.'
 
     def test_newline_backspace_at_a_only_removes_the_preceding_char(self):
         textbox = self._target(self.po_store, 0)
@@ -79,12 +79,12 @@ class TestTextBoxDeleteRange(TestScaffolding):
 
         assert result == 'First line.Second line.'
 
-    def test_newline_backspace_at_b_is_invisible(self):
+    def test_newline_backspace_at_b_removes_the_whole_placeable(self):
         textbox = self._target(self.po_store, 0)
 
         result = _delete_at(textbox, 12, key_is_delete=False)
 
-        assert result == 'First line.\nSecond line.'
+        assert result == 'First line.Second line.'
 
     def test_newline_delete_at_d_only_removes_the_following_char(self):
         textbox = self._target(self.po_store, 0)
@@ -106,12 +106,12 @@ class TestTextBoxDeleteRange(TestScaffolding):
     # coincides with 'b' in the elif chain (has_start_widget is
     # checked before the plain end-of-length check).
 
-    def test_x_delete_at_a_removes_the_placeable_and_the_preceding_char(self):
+    def test_x_delete_at_a_removes_the_whole_placeable(self):
         textbox = self._target(self.xliff_store, 1)
 
         result = _delete_at(textbox, 12, key_is_delete=True)
 
-        assert result == 'A line breaafter it.'
+        assert result == 'A line breakafter it.'
 
     def test_x_backspace_at_a_only_removes_the_preceding_char(self):
         textbox = self._target(self.xliff_store, 1)
@@ -138,12 +138,12 @@ class TestTextBoxDeleteRange(TestScaffolding):
     # <g>here</g> to continue."): editable, widgets at both ends
     # (idx=6, len=6). Positions: a=6, b=7, c=11, d=12.
 
-    def test_g_delete_at_a_removes_the_placeable_and_the_preceding_char(self):
+    def test_g_delete_at_a_removes_the_whole_placeable(self):
         textbox = self._target(self.xliff_store, 0)
 
         result = _delete_at(textbox, 6, key_is_delete=True)
 
-        assert result == 'Clickhere to continue.'
+        assert result == 'Click  to continue.'
 
     def test_g_backspace_at_a_only_removes_the_preceding_char(self):
         textbox = self._target(self.xliff_store, 0)
@@ -187,12 +187,12 @@ class TestTextBoxDeleteRange(TestScaffolding):
 
         assert result == 'Click hereto continue.'
 
-    def test_g_backspace_at_d_removes_the_placeable_and_the_last_content_char(self):
+    def test_g_backspace_at_d_removes_the_whole_placeable(self):
         textbox = self._target(self.xliff_store, 0)
 
         result = _delete_at(textbox, 12, key_is_delete=False)
 
-        assert result == 'Click her to continue.'
+        assert result == 'Click  to continue.'
 
     # Deletions with no placeable boundary involved at all - the
     # ordinary fallback path, unaffected by any of the above.

@@ -705,13 +705,6 @@ class TextBox(Gtk.TextView):
                     end_offset = start_elem_offset + start_elem_len
                     done = True
 
-                    # A specific case needs extra attention: a newline with
-                    # a starting widget
-                    if start_iter.backward_visible_cursor_position():
-                        start_anchor = start_iter.get_child_anchor()
-                        if start_anchor:
-                            start_anchor.get_widgets()[0].hide()
-
             elif not start_elem.iseditable and position in ('b', 'c'):
                 # "*Nothing" fields
                 if start_elem.isfragile:
@@ -779,6 +772,10 @@ class TextBox(Gtk.TextView):
                 start_iter, start_elem, start_elem_offset, start_elem_len, cursor_pos,
                 key_is_delete, start_offset, end_offset,
             )
+            if deleted:
+                # Make GTK delete the whole placeable, widgets included.
+                start_iter.set_offset(start_offset)
+                end_iter.set_offset(end_offset)
 
         #logging.debug('%s[%d] >===> %s[%d]' % (repr(start_elem), start_offset, repr(end_elem), end_offset))
 

@@ -5,6 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import time
 from types import SimpleNamespace
 
 import pytest
@@ -271,3 +272,38 @@ def test_spare_width_goes_to_the_matches_not_the_tm_source_column():
 
     assert tmwindow.tvc_match.get_expand() is True
     assert tmwindow.tvc_tm_source.get_expand() is False
+
+
+def test_update_geometry_shrinks_back_when_the_target_narrows():
+    # #4149: after fullscreen and back, the Matches column kept its
+    # fullscreen width.
+    window, _source, target = _make_source_and_target('top')
+    tmwindow = TMWindow(_fake_view())
+    tmwindow.view.get_target_width = lambda: target.get_parent().get_allocation().width
+    tmwindow.liststore.append([{'quality': 90, 'tmsource': 'Current file', 'query_str': 'query',
+                                'source': 'source text', 'target': 'target text'}, 'match'])
+    tmwindow.show_all()
+    _process_events()
+
+    def update_at(window_width):
+        window.resize(window_width, WINDOW_HEIGHT)
+        for _ in range(100):
+            _process_events()
+            if target.get_parent().get_allocation().width == window_width:
+                break
+            time.sleep(0.01)
+        tmwindow.update_geometry(target)
+        for _ in range(10):
+            _process_events()
+            time.sleep(0.01)
+        return tmwindow.get_window().get_width(), tmwindow.tvc_match.get_width()
+
+    update_at(400)
+    wide_width, wide_match_width = update_at(900)
+    width, match_width = update_at(400)
+
+    assert width < wide_width - 400
+    assert match_width < wide_match_width - 400
+
+    tmwindow.destroy()
+    window.destroy()

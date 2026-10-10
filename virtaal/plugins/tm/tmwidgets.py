@@ -94,6 +94,8 @@ class TMWindow(Gtk.Window):
         gdkwin = widget.get_window(Gtk.TextWindowType.WIDGET)
         if gdkwin is None:
             return
+        # An AUTOSIZE column keeps its widest width until re-measured.
+        self.tvc_match.queue_resize()
         vscrollbar = self.scrolled_window.get_vscrollbar()
         scrollbar_width = vscrollbar.props.visible and vscrollbar.get_allocation().width + 1 or 0
 

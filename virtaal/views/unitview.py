@@ -339,6 +339,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
         for i in range(len(self.targets)):
             self.targets[i]._source_text = unit.source # FIXME: Find a better way to do this!
+            self.targets[i]._opened_height = None
         self.select_first_placeables()
 
         self._modified = False

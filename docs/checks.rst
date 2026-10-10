@@ -32,6 +32,19 @@ information about the possible error.
 You can also read the detailed descriptions of the
 :ref:`pofilter checks <toolkit:pofilter_tests>`.
 
+.. _checks#msgfmt:
+
+msgfmt
+------
+For PO files, Virtaal also reports what ``msgfmt -c`` would, in GNU
+gettext's own words: format strings that don't match the source (going by
+the ``c-format``, ``python-format`` and other flags), plural forms that
+don't fit the header's ``Plural-Forms``, translations that don't start or
+end with a newline like the source, and problems in the header. A file
+with such a problem won't compile with ``msgfmt -c``.
+
+Unlike ``msgfmt``, Virtaal also checks fuzzy translations.
+
 .. _checks#quality_checks_navigation_mode:
 
 Quality Checks Navigation Mode

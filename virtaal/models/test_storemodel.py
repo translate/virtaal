@@ -202,9 +202,7 @@ class _SavingController(_FakeController):
 
         from virtaal.models.langmodel import LanguageModel
         self.main_controller = SimpleNamespace(
-            get_translator_name=lambda: None,
-            get_translator_email=lambda: None,
-            get_translator_team=lambda: None,
+            get_translator_details=lambda: (None, None, None),
             lang_controller=SimpleNamespace(target_lang=LanguageModel(target_lang)),
             checks_controller=SimpleNamespace(code=None))
 

@@ -623,51 +623,33 @@ def test_binary_export_shows_an_error_and_returns_false_on_a_generic_exception()
     assert controller.calls['error'] is not None
 
 
-# get_translator_name()/email()/team() #
+# get_translator_details() #
 
-def test_get_translator_name_returns_the_configured_name(monkeypatch):
-    monkeypatch.setattr(pan_app.settings, 'translator', {'name': 'Dwayne'})
+def test_get_translator_details_returns_the_configured_details(monkeypatch):
+    monkeypatch.setattr(pan_app.settings, 'translator', {'name': 'Dwayne', 'email': 'd@example.com', 'team': 'af'})
     controller = MainController.__new__(MainController)
+    controller.view = SimpleNamespace(show_translator_dialog=lambda *args: pytest.fail('must not ask'))
 
-    assert controller.get_translator_name() == 'Dwayne'
+    assert controller.get_translator_details() == ('Dwayne', 'd@example.com', 'af')
 
 
-def test_get_translator_name_prompts_when_not_configured(monkeypatch):
-    monkeypatch.setattr(pan_app.settings, 'translator', {'name': ''})
+def test_get_translator_details_asks_once_for_all_three_when_any_is_missing(monkeypatch):
+    monkeypatch.setattr(pan_app.settings, 'translator', {'name': 'Dwayne', 'email': '', 'team': ''})
     controller = MainController.__new__(MainController)
-    controller.view = SimpleNamespace(show_input_dialog=lambda title, message: 'entered')
+    asked = []
+    controller.view = SimpleNamespace(
+        show_translator_dialog=lambda *args: asked.append(args) or ('Dwayne', 'd@example.com', 'af'))
 
-    assert controller.get_translator_name() == 'entered'
+    assert controller.get_translator_details() == ('Dwayne', 'd@example.com', 'af')
+    assert asked == [('Dwayne', '', '')]
 
 
-def test_get_translator_email_returns_the_configured_email(monkeypatch):
-    monkeypatch.setattr(pan_app.settings, 'translator', {'email': 'translator@example.com'})
+def test_get_translator_details_keeps_what_is_known_when_cancelled(monkeypatch):
+    monkeypatch.setattr(pan_app.settings, 'translator', {'name': 'Dwayne', 'email': '', 'team': ''})
     controller = MainController.__new__(MainController)
+    controller.view = SimpleNamespace(show_translator_dialog=lambda *args: None)
 
-    assert controller.get_translator_email() == 'translator@example.com'
-
-
-def test_get_translator_email_prompts_when_not_configured(monkeypatch):
-    monkeypatch.setattr(pan_app.settings, 'translator', {'email': ''})
-    controller = MainController.__new__(MainController)
-    controller.view = SimpleNamespace(show_input_dialog=lambda title, message: 'entered@example.com')
-
-    assert controller.get_translator_email() == 'entered@example.com'
-
-
-def test_get_translator_team_returns_the_configured_team(monkeypatch):
-    monkeypatch.setattr(pan_app.settings, 'translator', {'team': 'af'})
-    controller = MainController.__new__(MainController)
-
-    assert controller.get_translator_team() == 'af'
-
-
-def test_get_translator_team_prompts_when_not_configured(monkeypatch):
-    monkeypatch.setattr(pan_app.settings, 'translator', {'team': ''})
-    controller = MainController.__new__(MainController)
-    controller.view = SimpleNamespace(show_input_dialog=lambda title, message: 'Team Zed')
-
-    assert controller.get_translator_team() == 'Team Zed'
+    assert controller.get_translator_details() == ('Dwayne', '', '')
 
 
 # trivial delegators #
@@ -680,13 +662,6 @@ def test_select_unit_delegates_to_the_store_controller():
     controller.select_unit('a-unit', force=True)
 
     assert calls == [('a-unit', True)]
-
-
-def test_show_input_delegates_to_the_view():
-    controller = MainController.__new__(MainController)
-    controller.view = SimpleNamespace(show_input_dialog=lambda title, message: (title, message))
-
-    assert controller.show_input('T', 'M') == ('T', 'M')
 
 
 def test_show_prompt_delegates_to_the_view():

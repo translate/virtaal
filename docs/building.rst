@@ -39,6 +39,13 @@ The remaining Python packages above are all declared in ``pyproject.toml`` and
 installed automatically by ``pip install .`` - only GTK3/PyGObject/cairo
 and pycairo need installing separately first.
 
+Optionally, GNU gettext's libgettextpo, for the :ref:`msgfmt check
+<checks#msgfmt>` - without it, that check is left out:
+
+- Linux: ``libgettextpo0`` or similar
+- macOS: Homebrew's ``gettext``, already installed with ``gtk+3``
+- Windows: ``gettextpo.dll``, part of gvsbuild's GTK3 build
+
 .. _building#optional_packages:
 
 Optional Packages

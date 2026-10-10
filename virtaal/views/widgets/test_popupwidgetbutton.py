@@ -236,14 +236,45 @@ def test_do_show_popup_emits_shown():
     assert calls == [True]
 
 
-def test_on_expose_updates_the_popup_geometry(monkeypatch):
+def test_a_redraw_places_a_visible_popup_only_once_the_button_moved(monkeypatch):
+    # Placing it on every redraw kept macOS re-placing it every frame (#4170).
+    _, btn = _make_button()
+    btn.set_active(True)
+    _run_pending_show(btn)
+    calls = []
+    monkeypatch.setattr(btn, '_update_popup_geometry', lambda: calls.append(True))
+
+    btn._on_expose(btn, None)
+    assert calls == []
+
+    btn._placed_anchor = None
+    btn._on_expose(btn, None)
+    assert calls == [True]
+
+
+def test_a_redraw_never_places_a_hidden_popup(monkeypatch):
     _, btn = _make_button()
     calls = []
     monkeypatch.setattr(btn, '_update_popup_geometry', lambda: calls.append(True))
 
     btn._on_expose(btn, None)
 
-    assert calls == [True]
+    assert calls == []
+
+
+def test_placing_again_leaves_the_size_request_alone(monkeypatch):
+    # Clearing and setting it each time resized the pop-up, which placed it again.
+    _, btn = _make_button()
+    btn.set_update_popup_geometry_func(lambda popup, a, b, c, defaults: defaults[:2] + (40, 30))
+    btn.set_active(True)
+    _run_pending_show(btn)
+    requests = []
+    monkeypatch.setattr(btn.popup, 'set_size_request', lambda w, h: requests.append((w, h)))
+
+    btn._update_popup_geometry()
+    btn._update_popup_geometry()
+
+    assert requests == []
 
 
 def test_update_popup_geometry_uses_the_custom_geometry_func_when_set():
@@ -431,3 +462,20 @@ def test_releasing_the_button_cancels_a_pending_show():
 
     assert btn._show_tick_id is None
     assert not btn.is_popup_visible
+
+
+def test_placing_resizes_the_window_itself_when_its_content_grew():
+    # macOS kept laying the content out at the window's old size (#4170).
+    window, btn = _make_button()
+    btn.set_active(True)
+    _run_pending_show(btn)
+    btn.popup.get_child().set_text('content\nwith\nmore\nlines')
+    resized = []
+    original = btn.popup.resize
+    btn.popup.resize = lambda w, h: (resized.append((w, h)), original(w, h))
+
+    btn._update_popup_geometry()
+    btn._update_popup_geometry()
+
+    natural = btn.popup.get_child().get_preferred_size()[1]
+    assert resized[0] == (natural.width, natural.height)

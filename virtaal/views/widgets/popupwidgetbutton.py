@@ -71,6 +71,7 @@ class PopupWidgetButton(Gtk.ToggleButton):
         self._update_popup_geometry_func = None
         self._place_popup_id = None
         self._show_tick_id = None
+        self._placed_anchor = None
 
         # Create pop-up window
         self.popup = Gtk.Window(type=Gtk.WindowType.POPUP)
@@ -170,10 +171,12 @@ class PopupWidgetButton(Gtk.ToggleButton):
         # its next draw does.
         if self.get_window() is None:
             return
-        self.popup.set_size_request(-1, -1)
-        requisition = self.popup.get_preferred_size()[1]
+        # The content's own size: the pop-up's would include any size
+        # request set below, and clearing that each time resizes it.
+        requisition = self.popup.get_child().get_preferred_size()[1]
         width = requisition.width
         height = requisition.height
+        request = (-1, -1)
 
         x, y = -1, -1
         popup_alloc = self.popup.get_allocation()
@@ -187,11 +190,18 @@ class PopupWidgetButton(Gtk.ToggleButton):
             )
             if new_width != width or new_height != height:
                 width, height = new_width, new_height
-                self.popup.set_size_request(width, height)
+                request = (width, height)
+        if tuple(self.popup.get_size_request()) != request:
+            self.popup.set_size_request(*request)
 
+        self._placed_anchor = self._anchor()
         popup_alloc.width, popup_alloc.height = width, height
         x, y = self.calculate_popup_xy(popup_alloc, btn_alloc, btn_window_xy)
         self.popup.move(x, y)
+        # The GtkWindow's own size too: on macOS it otherwise keeps laying its
+        # content out at the old size, cutting off rows added since.
+        if tuple(self.popup.get_size()) != (width, height):
+            self.popup.resize(width, height)
         self.popup.get_window().get_toplevel().move_resize(x, y, width, height)
 
 
@@ -221,8 +231,16 @@ class PopupWidgetButton(Gtk.ToggleButton):
         else:
             self._do_hide_popup()
 
+    def _anchor(self):
+        window = self.get_window()
+        alloc = self.get_allocation()
+        return window and (tuple(window.get_origin()[1:]), alloc.x, alloc.y, alloc.width, alloc.height)
+
     def _on_expose(self, widget, event):
-        self._update_popup_geometry()
+        # Follow the button when it moves, not on every redraw: on macOS
+        # moving the pop-up redraws the button again.
+        if self.popup.props.visible and self._anchor() != self._placed_anchor:
+            self._update_popup_geometry()
 
 
 if __name__ == '__main__':

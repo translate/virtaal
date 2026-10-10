@@ -107,3 +107,60 @@ def test_the_button_has_no_tooltip_repeating_its_label():
     _update(view, {'xmltags': 'Different XML tags'})
 
     assert view.btn_checks.get_tooltip_text() is None
+
+
+def _geometry(view, button_y, natural_height, top):
+    view._top_limit = lambda: top
+    view._unscrolled_height = lambda height: height
+    return view.update_geometry(None, None, None, SimpleNamespace(x=0, y=button_y), (0, 0, 100, natural_height))
+
+
+def test_the_popup_keeps_its_height_when_it_fits_above_the_button():
+    view = _make_view()
+
+    assert _geometry(view, button_y=500, natural_height=200, top=100)[3] == 200
+
+
+def test_the_popup_is_no_taller_than_the_room_above_the_button():
+    # The screen clipped its top off on macOS (#4170); the list scrolls instead.
+    view = _make_view()
+
+    assert _geometry(view, button_y=250, natural_height=200, top=100)[3] == 150
+    assert _geometry(view, button_y=120, natural_height=200, top=100)[3] == view.MIN_HEIGHT
+
+
+def test_the_list_scrolls_only_while_the_popup_is_capped():
+    # A scrollbar's minimum length made a one-row pop-up taller than its row.
+    view = _make_view()
+
+    _geometry(view, button_y=250, natural_height=200, top=100)
+    assert view._scrolled.get_policy()[1] == Gtk.PolicyType.AUTOMATIC
+
+    _geometry(view, button_y=500, natural_height=200, top=100)
+    assert view._scrolled.get_policy()[1] == Gtk.PolicyType.NEVER
+
+
+def test_the_scrollbar_doesnt_count_towards_the_popups_height():
+    # Its minimum length kept a one-row pop-up capped, with a gap below (#4170).
+    view = _make_view()
+    view._scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+    _update(view, {'printf': 'Missing printf variable: %s'})
+    scrolled = view._scrolled.get_preferred_height()[1]
+    tree = view.tvw_checks.get_preferred_height()[1]
+
+    assert view._unscrolled_height(100) == 100 - scrolled + tree
+
+
+def test_a_scrolling_popup_shows_only_whole_rows():
+    view = _make_view()
+    _update(view, {'check%d' % i: 'Description %d' % i for i in range(6)})
+    view._top_limit = lambda: 0
+    tree = view.tvw_checks.get_preferred_height()[1]
+    header = view.tvw_checks.get_column(0).get_button().get_preferred_height()[1]
+    row = (tree - header) / 6
+    natural = tree + 10
+
+    height = view.update_geometry(None, None, None, SimpleNamespace(x=0, y=int(natural - row * 2.5)),
+                                  (0, 0, 100, natural))[3]
+
+    assert height == int(natural - row * 3)

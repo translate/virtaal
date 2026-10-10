@@ -2792,3 +2792,29 @@ def test_macos_integration_titles_preferences_settings_in_the_app_menu(monkeypat
 
     assert titles == ["Settings…"]
     assert not mnu_prefs.get_property('use-stock')
+
+
+# macOS UI font fallbacks #
+
+def test_macos_font_fallbacks_keep_the_size_and_style():
+    font = mainview.with_macos_font_fallbacks('.AppleSystemUIFont Bold 13')
+
+    assert font.startswith('.AppleSystemUIFont,Kohinoor Devanagari,')
+    assert font.endswith(' Bold 13')
+
+
+@pytest.mark.skipif(not platform.is_mac, reason="macOS system UI font")
+@pytest.mark.parametrize('text', ['सबै', 'ਸਾਰੇ', 'అన్నీ', 'ગુજરાતી', 'தமிழ்', 'മലയാളം', 'ଓଡ଼ିଆ'])
+def test_macos_ui_font_renders_indic_scripts(text):
+    # #4107: Pango finds no font for these from .AppleSystemUIFont alone.
+    import cairo
+    gi.require_version('PangoCairo', '1.0')
+    from gi.repository import Pango, PangoCairo
+    layout = PangoCairo.create_layout(cairo.Context(cairo.ImageSurface(cairo.FORMAT_ARGB32, 1, 1)))
+    layout.set_text(text, -1)
+
+    layout.set_font_description(Pango.FontDescription.from_string('.AppleSystemUIFont 13'))
+    assert layout.get_unknown_glyphs_count() > 0
+    layout.set_font_description(Pango.FontDescription.from_string(
+        mainview.with_macos_font_fallbacks('.AppleSystemUIFont 13')))
+    assert layout.get_unknown_glyphs_count() == 0

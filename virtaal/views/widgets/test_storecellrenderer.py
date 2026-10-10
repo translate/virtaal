@@ -943,3 +943,192 @@ def test_clear_last_row_padding_leaves_other_rows_alone(fuzzy, padding):
     renderer._clear_last_row_padding(cr, _padding_treeview(), SimpleNamespace(x=0, y=50, width=300, height=140))
 
     assert cr.rectangles == []
+
+
+# Growing the editing row while typing (#4182) #
+
+def test_compute_optimal_height_textview_keeps_the_source_estimate_after_the_first_keystroke():
+    textview = _realized_textview('')
+    textview._source_text = 'Line one\nline two\nline three\nline four\nline five'
+    textview._opened_height = None
+    compute_optimal_height(textview, 200)
+    opened_height = textview.get_parent().get_size_request()[1]
+
+    textview.get_buffer().set_text('a')
+    compute_optimal_height(textview, 200)
+
+    assert textview.get_parent().get_size_request()[1] == opened_height
+
+
+def test_compute_optimal_height_textview_grows_and_shrinks_with_typed_lines():
+    textview = _realized_textview('Maak')
+    textview._opened_height = None
+    compute_optimal_height(textview, 200)
+    opened_height = textview.get_parent().get_size_request()[1]
+
+    textview.get_buffer().set_text('Maak\nx\ny\nz')
+    compute_optimal_height(textview, 200)
+    grown_height = textview.get_parent().get_size_request()[1]
+    textview.get_buffer().set_text('Maak')
+    compute_optimal_height(textview, 200)
+
+    assert grown_height > opened_height
+    assert textview.get_parent().get_size_request()[1] == opened_height
+
+
+def test_compute_optimal_height_textview_remeasures_the_opened_height_at_a_new_width():
+    textview = _realized_textview('A sentence long enough to wrap at a narrow width.')
+    textview._opened_height = None
+    compute_optimal_height(textview, 100)
+    narrow_height = textview.get_parent().get_size_request()[1]
+
+    compute_optimal_height(textview, 1000)
+
+    assert textview.get_parent().get_size_request()[1] < narrow_height
+
+
+def _regrow_renderer(monkeypatch, measured, editor_height=100, is_resizing=False):
+    renderer = _renderer_with_view(is_resizing=is_resizing)
+    resizes = []
+    column = SimpleNamespace(queue_resize=lambda: resizes.append(True))
+    renderer.view._treeview.get_cursor = lambda: ('path', column)
+    renderer.view._treeview.scroll_to_cell = lambda *args: resizes.append(('scroll',) + args)
+    renderer.view._treeview.get_toplevel = lambda: SimpleNamespace(
+        get_allocation=lambda: SimpleNamespace(width=400))
+    renderer.view._treeview.get_columns = lambda: [column]
+    renderer._editor_height = editor_height
+    monkeypatch.setattr(renderer, '_measure_editor', lambda *_args: measured)
+    return renderer, resizes
+
+
+def test_regrow_editor_row_resizes_and_keeps_the_row_in_view_when_its_height_changed(monkeypatch):
+    renderer, resizes = _regrow_renderer(monkeypatch, measured=122)
+    column = renderer.view._treeview.get_columns()[0]
+
+    renderer._regrow_editor_row(SimpleNamespace(targets=[]))
+
+    assert resizes == [True, ('scroll', 'path', column, False, 0, 0)]
+
+
+def test_regrow_editor_row_leaves_an_unchanged_height_alone(monkeypatch):
+    renderer, resizes = _regrow_renderer(monkeypatch, measured=100)
+
+    renderer._regrow_editor_row(SimpleNamespace(targets=[]))
+
+    assert resizes == []
+
+
+def test_regrow_editor_row_waits_for_a_window_resize_to_settle(monkeypatch):
+    renderer, resizes = _regrow_renderer(monkeypatch, measured=122, is_resizing=True)
+
+    renderer._regrow_editor_row(SimpleNamespace(targets=[]))
+
+    assert resizes == []
+
+
+def test_regrow_editor_row_needs_a_measured_editing_row(monkeypatch):
+    renderer, resizes = _regrow_renderer(monkeypatch, measured=122, editor_height=None)
+
+    renderer._regrow_editor_row(SimpleNamespace(targets=[]))
+
+    assert resizes == []
+
+
+def test_a_target_buffer_change_schedules_one_regrow_per_burst_of_edits(monkeypatch):
+    renderer = _renderer_with_view()
+    scheduled = []
+    monkeypatch.setattr(
+        'virtaal.views.widgets.storecellrenderer.GLib.idle_add',
+        lambda func, *args: scheduled.append((func, args)))
+    target = Gtk.TextView()
+    editor = SimpleNamespace(targets=[target])
+    renderer._watch_target_buffers(editor)
+    renderer._watch_target_buffers(editor)
+
+    target.get_buffer().set_text('a')
+    target.get_buffer().set_text('ab')
+
+    assert scheduled == [(renderer._regrow_editor_row, (editor,))]
+
+
+def test_a_target_whose_height_changed_gets_its_scroll_refreshed_once(monkeypatch):
+    renderer = _renderer_with_view()
+    scheduled = []
+    monkeypatch.setattr(
+        'virtaal.views.widgets.storecellrenderer.GLib.idle_add',
+        lambda func, *args: scheduled.append((func, args)))
+    target = SimpleNamespace()
+
+    renderer._on_target_size_allocate(target, SimpleNamespace(height=41))
+    renderer._on_target_size_allocate(target, SimpleNamespace(height=41))
+    renderer._on_target_size_allocate(target, SimpleNamespace(height=63))
+
+    assert scheduled == [(renderer._refresh_target_scroll, (target,))] * 2
+
+
+def test_refresh_target_scroll_ends_a_running_scroll_animation_then_resizes():
+    # GtkTextView skips its scroll-page update on an allocation while the
+    # adjustment animates; set_value() is what ends the animation.
+    calls = []
+    adjustment = SimpleNamespace(get_value=lambda: 20, set_value=lambda value: calls.append(('set_value', value)))
+    target = SimpleNamespace(
+        get_parent=lambda: SimpleNamespace(get_vadjustment=lambda: adjustment),
+        queue_resize=lambda: calls.append('queue_resize'))
+
+    StoreCellRenderer._refresh_target_scroll(target)
+
+    assert calls == [('set_value', 20), 'queue_resize']
+
+
+def _editor_with_target(text):
+    """A real editor box holding one target TextView in a ScrolledWindow,
+    shaped like UnitView for _measure_editor() and check_editor_height()."""
+    win = Gtk.OffscreenWindow()
+    editor = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+    scrolled = Gtk.ScrolledWindow()
+    target = Gtk.TextView()
+    target.get_buffer().set_text(text)
+    scrolled.add(target)
+    editor.add(scrolled)
+    win.add(editor)
+    win.show_all()
+    editor.targets = [target]
+    editor._widgets = {'notes': {}, 'sources': [], 'targets': [target]}
+    editor._test_parent_refs = (win,)
+    return editor
+
+
+def test_measure_editor_grows_with_the_targets_lines():
+    renderer = _renderer_with_view()
+    editor = _editor_with_target('Maak')
+    widget = _toplevel_widget()
+    one_line = renderer._measure_editor(editor, widget, 300)
+
+    editor.targets[0].get_buffer().set_text('Maak\ntwee\ndrie\nvier')
+
+    assert renderer._measure_editor(editor, widget, 300) > one_line
+
+
+def test_do_get_size_records_the_editing_rows_height():
+    renderer = _renderer_with_view()
+    renderer.editable = True
+    editor = _editor_with_target('Maak')
+    renderer.view.get_unit_celleditor = lambda unit: editor
+    widget = _toplevel_widget()
+
+    _x, _y, _width, height = renderer.do_get_size(widget, None)
+
+    assert renderer._editor_height == renderer._cached_height == height
+
+
+def test_do_start_editing_watches_the_target_buffers_once():
+    renderer = _renderer_with_view()
+    editor = _editor_with_target('Maak')
+    editor.connect = lambda *args: 1
+    renderer.view.get_unit_celleditor = lambda unit: editor
+    cell_area = SimpleNamespace(width=300, height=50)
+
+    renderer.do_start_editing(None, None, None, None, cell_area, 0)
+    renderer.do_start_editing(None, None, None, None, cell_area, 0)
+
+    assert renderer._watched_buffers == {editor.targets[0].get_buffer()}

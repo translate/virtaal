@@ -7,7 +7,7 @@
 
 import functools
 
-from gi.repository import GObject, Gtk, Pango
+from gi.repository import GLib, GObject, Gtk, Pango
 from translate.lang import factory
 
 from virtaal.common import pan_app
@@ -79,6 +79,12 @@ def gtk_textview_compute_optimal_height(widget, width):
         # A third is small enough to avoid ballooning, large enough to
         # be mostly safe.
         h += child.get_preferred_height()[1] // 3
+    # Don't shrink below the height the unit opened with, e.g. the source
+    # estimate on the first keystroke. UnitView.load_unit() resets it.
+    if hasattr(widget, '_opened_height'):
+        if widget._opened_height is None or widget._opened_height[0] != width:
+            widget._opened_height = (width, h)
+        h = max(h, widget._opened_height[1])
     if h == 0:
         # No idea why this bug happens, but it often happens for the first unit
         # directly after the file is opened. For now we try to guess a more
@@ -154,6 +160,9 @@ class StoreCellRenderer(Gtk.CellRenderer):
         # cache, only ever consulted mid-resize, invalidated below on
         # any unit change so it can never leak between rows.
         self._cached_height = None
+        self._editor_height = None
+        self._regrow_scheduled = False
+        self._watched_buffers = set()
         # store identity/length -> {id(unit): index}, rebuilt only when
         # the store itself changes.
         self._index_cache = None
@@ -209,18 +218,9 @@ class StoreCellRenderer(Gtk.CellRenderer):
                 height = self._cached_height
             else:
                 editor = self.view.get_unit_celleditor(self.unit)
-                editor.set_size_request(width, -1)
-                editor.show()
-                # fixme: this will make vbox_editor width too large
-                compute_optimal_height(editor, width)
-                parent_height = widget.get_allocation().height
-                if parent_height < -1:
-                    parent_height = widget.get_preferred_size()[1].height
-                if parent_height > 0:
-                    self.check_editor_height(editor, width, parent_height)
-                height = editor.get_preferred_size()[1].height
-                height += self.ROW_PADDING
+                height = self._measure_editor(editor, widget, width)
                 self._cached_height = height
+                self._editor_height = height
         else:
             # Same reasoning as the editable branch above - real Pango
             # measurement (two fresh layouts, source and target) on
@@ -245,6 +245,34 @@ class StoreCellRenderer(Gtk.CellRenderer):
             y_offset += extra_padding / 2
         return 0, y_offset, width, height
 
+    def _measure_editor(self, editor, widget, width):
+        editor.set_size_request(width, -1)
+        editor.show()
+        # fixme: this will make vbox_editor width too large
+        compute_optimal_height(editor, width)
+        parent_height = widget.get_allocation().height
+        if parent_height < -1:
+            parent_height = widget.get_preferred_size()[1].height
+        if parent_height > 0:
+            self.check_editor_height(editor, width, parent_height)
+        return editor.get_preferred_size()[1].height + self.ROW_PADDING
+
+    def _regrow_editor_row(self, editor):
+        # row_changed() would end the edit.
+        self._regrow_scheduled = False
+        treeview = self.view._treeview
+        if self._editor_height is None or treeview.is_resizing:
+            return GLib.SOURCE_REMOVE
+        width = max(treeview.get_toplevel().get_allocation().width - 32, -1)
+        if self._measure_editor(editor, treeview, width) != self._editor_height:
+            column = treeview.get_columns()[0]
+            column.queue_resize()
+            # Else GTK keeps a grown last row's editor over the row above.
+            path, _column = treeview.get_cursor()
+            if path is not None:
+                treeview.scroll_to_cell(path, column, False, 0, 0)
+        return GLib.SOURCE_REMOVE
+
     def do_start_editing(self, _event, tree_view, path, _bg_area, cell_area, _flags):
         """Initialize and return the editor widget."""
         editor = self.view.get_unit_celleditor(self.unit)
@@ -253,6 +281,7 @@ class StoreCellRenderer(Gtk.CellRenderer):
             self._editor_editing_done_id = editor.connect("editing-done", self._on_editor_done)
         if not getattr(self, '_editor_modified_id', None):
             self._editor_modified_id = editor.connect("modified", self._on_modified)
+        self._watch_target_buffers(editor)
         return editor
 
     def _paint_state_background_if_selected(self, cr, background_area, flags):
@@ -518,3 +547,32 @@ class StoreCellRenderer(Gtk.CellRenderer):
 
     def _on_modified(self, widget):
         self.emit("modified")
+
+    def _watch_target_buffers(self, editor):
+        # Not the editor's "modified": undo and redo block its signals.
+        for target in editor.targets:
+            buffer = target.get_buffer()
+            if buffer not in self._watched_buffers:
+                self._watched_buffers.add(buffer)
+                buffer.connect("changed", self._on_target_buffer_changed, editor)
+                target.connect("size-allocate", self._on_target_size_allocate)
+
+    def _on_target_size_allocate(self, target, allocation):
+        if getattr(target, '_regrow_height', None) == allocation.height:
+            return
+        target._regrow_height = allocation.height
+        GLib.idle_add(self._refresh_target_scroll, target)
+
+    @staticmethod
+    def _refresh_target_scroll(target):
+        # GtkTextView skips its scroll-page update while a scroll animates,
+        # as one does after a newline. set_value() ends the animation.
+        adjustment = target.get_parent().get_vadjustment()
+        adjustment.set_value(adjustment.get_value())
+        target.queue_resize()
+        return GLib.SOURCE_REMOVE
+
+    def _on_target_buffer_changed(self, _buffer, editor):
+        if not self._regrow_scheduled:
+            self._regrow_scheduled = True
+            GLib.idle_add(self._regrow_editor_row, editor)

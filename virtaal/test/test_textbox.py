@@ -318,6 +318,22 @@ class TestTextBox(TestScaffolding):
         assert textbox.get_text() == '%(count)s files renamedx'
         assert textbox.buffer.props.cursor_position == len('%(count)s files renamedx')
 
+    def test_place_cursor_scrolls_once_line_heights_are_known(self, monkeypatch):
+        # #4151: after a newline rebuilds the buffer, scroll_to_iter() used
+        # estimated line heights and left the cursor off screen by a
+        # different amount on each press. The insert mark is scrolled to
+        # only once the lines are measured.
+        textbox = self._target_for('%(count)s files renamed')
+        textbox.set_text('%(count)s files renamed')
+        scrolled = []
+        monkeypatch.setattr(textbox, 'scroll_to_iter', lambda *a: pytest.fail('scroll_to_iter'))
+        monkeypatch.setattr(textbox, 'scroll_mark_onscreen', scrolled.append)
+
+        textbox.place_cursor(3)
+
+        assert scrolled == [textbox.buffer.get_insert()]
+        assert textbox.buffer.props.cursor_position == 3
+
     def test_plain_keystroke_still_emits_changed(self, monkeypatch):
         # set_text() is the only other place that emits 'changed' - the
         # unit-level listener that commits the edit into unit.target relies

@@ -19,7 +19,6 @@ from .baseview import BaseView
 class ChecksUnitView(BaseView):
     """The unit specific view for quality checks."""
 
-    COL_CHECKNAME, COL_DESC = range(2)
     # Room for the heading, a row and a scrollbar.
     MIN_HEIGHT = 80
 
@@ -54,36 +53,51 @@ class ChecksUnitView(BaseView):
         self.mnu_checks.connect('activate', self._on_activated)
 
     def _create_popup_content(self):
-        vb = Gtk.VBox()
+        vb = Gtk.VBox(spacing=4, border_width=6)
         frame = Gtk.Frame()
         frame.set_shadow_type(Gtk.ShadowType.ETCHED_IN)
         frame.add(vb)
 
-        self.lst_checks = Gtk.ListStore(str, str)
-        self.tvw_checks = Gtk.TreeView()
-        name_column = Gtk.TreeViewColumn(_('Quality Check'), Gtk.CellRendererText(), text=self.COL_CHECKNAME)
-        name_column.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
-        self.tvw_checks.append_column(name_column)
-
-        description_renderer = Gtk.CellRendererText()
-        # description_renderer.set_property('wrap-mode', Pango.WrapMode.WORD_CHAR)
-        description_column = Gtk.TreeViewColumn(_('Description'), description_renderer, text=self.COL_DESC)
-        description_column.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
-        self.tvw_checks.append_column(description_column)
-        self.tvw_checks.set_model(self.lst_checks)
-        self.tvw_checks.get_selection().set_mode(Gtk.SelectionMode.NONE)
+        # Labels, unlike TreeView rows, wrap to the pop-up's width and are
+        # measured as soon as they are added.
+        self._name_group = Gtk.SizeGroup(mode=Gtk.SizeGroupMode.HORIZONTAL)
+        self.check_rows = []
+        header = [self._make_label(title) for title in (_('Quality Check'), _('Description'))]
+        attrs = Pango.AttrList()
+        attrs.insert(Pango.attr_weight_new(Pango.Weight.BOLD))
+        for label in header:
+            label.get_style_context().add_class('dim-label')
+            label.set_attributes(attrs)
+        vb.pack_start(self._make_row(*header), False, False, 0)
 
         # Scrolls when there isn't room for every row (see update_geometry),
-        # with a scrollbar that shows there are more.
+        # under the heading, with a scrollbar that shows there are more.
+        self.box_checks = Gtk.VBox(spacing=4)
         self._scrolled = scrolled = Gtk.ScrolledWindow()
         scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.NEVER)
         scrolled.set_propagate_natural_width(True)
         scrolled.set_propagate_natural_height(True)
         scrolled.set_overlay_scrolling(False)
-        scrolled.add(self.tvw_checks)
+        scrolled.add(self.box_checks)
         vb.pack_start(scrolled, True, True, 0)
+        vb.show_all()
 
         return frame
+
+    def _make_row(self, name_label, desc_label):
+        row = Gtk.HBox(spacing=12)
+        self._name_group.add_widget(name_label)
+        row.pack_start(name_label, False, False, 0)
+        row.pack_start(desc_label, True, True, 0)
+        return row
+
+    @staticmethod
+    def _make_label(text, wrap=False):
+        label = Gtk.Label(label=text, xalign=0, yalign=0)
+        if wrap:
+            label.set_line_wrap(True)
+            label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        return label
 
 
     # METHODS #
@@ -112,22 +126,25 @@ class ChecksUnitView(BaseView):
             self.btn_checks.update_popup()
             return
 
-        self.lst_checks.clear()
+        for name_label, desc_label in self.check_rows:
+            name_label.get_parent().destroy()
+        self.check_rows = []
         nice_name = self.controller.get_check_name
         sorted_failures = sorted(failures.items(), key=lambda x: locale.strxfrm(nice_name(x[0])))
         names = []
         for testname, desc in sorted_failures:
             testname = nice_name(testname)
-            self.lst_checks.append([testname, desc])
+            labels = (self._make_label(testname), self._make_label(desc, wrap=True))
+            self.check_rows.append(labels)
+            self.box_checks.pack_start(self._make_row(*labels), False, False, 0)
             names.append(testname)
+        self.box_checks.show_all()
 
         name_str = self._listsep.join(names)
         self.lbl_btnchecks.set_text(name_str)
         self.btn_checks.set_opacity(1)
         self.popup_content.show()
         self.btn_checks.update_popup()
-        # Rows changed while the pop-up was hidden aren't measured until asked.
-        self.tvw_checks.queue_resize()
 
     def update_geometry(self, popup, popup_alloc, btn_alloc, btn_window_xy, geom):
         x, y, width, height = geom
@@ -135,7 +152,11 @@ class ChecksUnitView(BaseView):
         textbox = self.controller.main_controller.unit_controller.view.sources[0]
         alloc = textbox.get_allocation()
 
-        width = min(width, int(alloc.width * 1.3))
+        max_width = int(alloc.width * 1.3)
+        if width > max_width and self._limit_descriptions(max_width - width):
+            size = popup.get_child().get_preferred_size()[1]
+            width, height = size.width, size.height
+        width = min(width, max_width)
         # It opens above the button: no taller than the room up to the top
         # of the screen, which clips it (macOS).
         height = self._unscrolled_height(height)
@@ -152,19 +173,38 @@ class ChecksUnitView(BaseView):
 
     def _whole_rows(self, height, natural):
         """height, less any part of a row it would cut off."""
-        rows = len(self.lst_checks)
-        tree = self.tvw_checks.get_preferred_height()[1]
-        header = self.tvw_checks.get_column(0).get_button().get_preferred_height()[1]
-        if not rows or tree <= header:
-            return height
-        row = (tree - header) / rows
-        fixed = natural - tree + header
-        return int(fixed + max(1, int((height - fixed) // row)) * row)
+        fixed = natural - self.box_checks.get_preferred_height()[1]
+        spacing = self.box_checks.get_spacing()
+        used = 0
+        for shown, row in enumerate(self.box_checks.get_children()):
+            row_height = row.get_preferred_height()[1] + (spacing if shown else 0)
+            if shown and fixed + used + row_height > height:
+                break
+            used += row_height
+        return fixed + used if used else height
 
     def _unscrolled_height(self, height):
         """The pop-up's height without a scrollbar's minimum length,
             which would keep a short list's pop-up looking too tall."""
-        return height - self._scrolled.get_preferred_height()[1] + self.tvw_checks.get_preferred_height()[1]
+        return height - self._scrolled.get_preferred_height()[1] + self.box_checks.get_preferred_height()[1]
+
+    def _limit_descriptions(self, change):
+        """Wrap the descriptions change pixels narrower (a negative
+            number). Returns whether that changed their wrapping."""
+        labels = [desc_label for name_label, desc_label in self.check_rows]
+        if not labels:
+            return False
+        widest = max(label.get_preferred_width()[1] for label in labels)
+        # A label's maximum width in characters is measured with these
+        # same metrics.
+        metrics = labels[0].get_pango_context().get_metrics(None, None)
+        char_width = max(metrics.get_approximate_char_width(), metrics.get_approximate_digit_width()) / Pango.SCALE
+        chars = max(int((widest + change) / char_width), 10)
+        if all(label.get_max_width_chars() == chars for label in labels):
+            return False
+        for label in labels:
+            label.set_max_width_chars(chars)
+        return True
 
     def _top_limit(self):
         window = self.controller.main_controller.view.main_window.get_window()

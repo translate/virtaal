@@ -59,7 +59,10 @@ class PopupWidgetButton(Gtk.ToggleButton):
         if not sticky:
             self.connect('focus-out-event', self._on_focus_out_event)
         if main_window:
-            main_window.connect('focus-out-event', self._on_focus_out_event)
+            # Hidden while the main window isn't focused, then back.
+            main_window.connect('focus-out-event', self._on_main_window_focus_changed, False)
+            main_window.connect('focus-in-event', self._on_main_window_focus_changed, True)
+        self._main_window_focused = True
         self.connect('key-press-event', self._on_key_press_event)
         self.connect('toggled', self._on_toggled)
 
@@ -139,7 +142,7 @@ class PopupWidgetButton(Gtk.ToggleButton):
     def update_popup(self):
         """Show the pop-up while the button is active and its widget is
             visible, otherwise hide it."""
-        if self.get_active() and self.popup.get_child().get_visible():
+        if self.get_active() and self.popup.get_child().get_visible() and self._main_window_focused:
             if self.popup.props.visible:
                 self._update_popup_geometry()
             elif not self._show_tick_id:
@@ -208,6 +211,11 @@ class PopupWidgetButton(Gtk.ToggleButton):
     # EVENT HANDLERS #
     def _on_focus_out_event(self, window, event):
         self.hide_popup()
+
+    def _on_main_window_focus_changed(self, window, event, focused):
+        self._main_window_focused = focused
+        self.update_popup()
+        return False
 
     def _on_key_press_event(self, window, event):
         if event.keyval == Gdk.KEY_Escape and self.popup.props.visible:

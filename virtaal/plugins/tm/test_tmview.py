@@ -7,6 +7,7 @@
 
 from types import SimpleNamespace
 
+import pytest
 from gi.repository import Gdk, GObject, Gtk
 
 from virtaal.common import GObjectWrapper
@@ -638,14 +639,22 @@ def test_grab_notify_shadowed_by_a_popup_menu_does_not_hide(monkeypatch):
 
 # remaining trivial event handlers #
 
-def test_on_hide_tm_hides_the_window():
+def test_on_hide_tm_hides_the_window_and_takes_the_key():
     view = TMView.__new__(TMView)
+    view.isvisible = True
     hidden = []
     view.hide = lambda: hidden.append(1)
 
-    view._on_hide_tm(None, None, None, None)
-
+    assert view._on_hide_tm(None, None, None, None) is True
     assert hidden == [1]
+
+
+def test_on_hide_tm_leaves_escape_alone_when_nothing_is_shown():
+    view = TMView.__new__(TMView)
+    view.isvisible = False
+    view.hide = lambda: pytest.fail('nothing to hide')
+
+    assert view._on_hide_tm(None, None, None, None) is False
 
 
 def test_on_row_activated_selects_the_matched_row():

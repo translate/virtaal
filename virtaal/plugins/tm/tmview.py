@@ -313,7 +313,11 @@ class TMView(BaseView, GObjectWrapper):
         return GLib.SOURCE_REMOVE
 
     def _on_hide_tm(self, accel_group, acceleratable, keyval, modifier):
+        # Escape is shared with Search: leave it alone when there's nothing to hide.
+        if not self.isvisible:
+            return False
         self.hide()
+        return True
 
     def _on_row_activated(self, treeview, path, column):
         """Called when a TM match is selected in the TM window."""

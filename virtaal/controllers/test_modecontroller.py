@@ -85,6 +85,16 @@ def test_select_mode_selects_an_available_mode():
     assert (selected, emitted) == (['incomplete'], ['incomplete'])
 
 
+def test_select_mode_remembers_the_mode_it_replaced():
+    controller, selected, emitted = _selecting_controller(default=True, incomplete=True, search=True)
+    controller.select_mode(controller.modes['incomplete'])
+
+    controller.select_mode(controller.modes['search'])
+    controller.select_mode(controller.modes['search'])
+
+    assert controller.previous_mode.name == 'incomplete'
+
+
 def test_select_mode_selects_the_default_mode_instead_of_an_unavailable_one():
     # Selecting Incomplete with nothing incomplete used to re-enter
     # select_mode() from the mode's own selected() (#3763).

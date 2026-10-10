@@ -447,6 +447,46 @@ class TestTextBox(TestScaffolding):
 
         assert textbox.get_text() == original_text
 
+    def test_undo_restores_deleted_newlines_where_they_were(self, monkeypatch):
+        # #4176: typing builds nested elements, so a deleted newline's
+        # parent need not start at offset 0.
+        calls = self._capture_idle_add(monkeypatch)
+        textbox = self._target_for('%s files copied')
+        original_text = textbox.get_text()
+        textbox.set_text('Maak')
+        textbox.place_cursor(len('Maak'))
+        self.undo_controller.model.clear()
+
+        def run_idle():
+            for call in calls:
+                call()
+            calls.clear()
+
+        texts = []
+        try:
+            for char in '\nxx\nyy\n':
+                textbox.buffer.insert_interactive_at_cursor(char, -1, True)
+                run_idle()
+            assert str(textbox.elem) == 'Maak\nxx\nyy\n'
+            for _ in range(7):
+                cursor = textbox.buffer.get_iter_at_mark(textbox.buffer.get_insert())
+                textbox.buffer.backspace(cursor, True, True)
+                run_idle()
+            assert str(textbox.elem) == 'Maak'
+
+            for _ in range(7):
+                undo_info = self.undo_controller.model.pop()
+                undo_info['action'](undo_info['unit'])
+                textbox.refresh(update=True)
+                texts.append(str(textbox.elem))
+        finally:
+            textbox.set_text(original_text)
+
+        assert texts == [
+            'Maak\n', 'Maak\nx', 'Maak\nxx', 'Maak\nxx\n',
+            'Maak\nxx\ny', 'Maak\nxx\nyy', 'Maak\nxx\nyy\n',
+        ]
+
     def test_loading_a_unit_selects_its_first_placeable(self):
         # So that Alt+Down inserts it without Alt+Right first (#3963).
         target = self._target_for('Click <a>here</a> to continue.')

@@ -1,0 +1,1214 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gettext-tools 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-10 13:25+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+"Language: it\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/format-awk.c:518
+#: src/format-boost.c:630
+#: src/format-c++-brace.c:943
+#: src/format-elisp.c:358
+#: src/format-gcc-internal.c:783
+#: src/format-go.c:583
+#: src/format-java-printf.c:559
+#: src/format-javascript.c:380
+#: src/format-kde.c:215
+#: src/format-librep.c:322
+#: src/format-lua.c:226
+#: src/format-modula2.c:197
+#: src/format-ocaml.c:901
+#: src/format-pascal.c:379
+#: src/format-perl.c:587
+#: src/format-php.c:360
+#: src/format-qt.c:171
+#: src/format-rust.c:495
+#: src/format-sh-printf.c:471
+#: src/format-smalltalk.c:146
+#: src/format-tcl.c:397
+#, c-format
+msgid ""
+"a format specification for argument %zu, as in '%s', doesn't exist in '%s'"
+msgstr ""
+"una specifica di formato per l'argomento %zu, come in \"%s\", non esiste in "
+"\"%s\""
+
+#: src/format-awk.c:530
+#: src/format-boost.c:642
+#: src/format-c++-brace.c:955
+#: src/format-elisp.c:370
+#: src/format-gcc-internal.c:795
+#: src/format-go.c:595
+#: src/format-java-printf.c:571
+#: src/format-javascript.c:392
+#: src/format-kde.c:227
+#: src/format-librep.c:334
+#: src/format-lua.c:234
+#: src/format-modula2.c:205
+#: src/format-ocaml.c:913
+#: src/format-pascal.c:391
+#: src/format-perl.c:599
+#: src/format-php.c:372
+#: src/format-qt.c:167
+#: src/format-rust.c:507
+#: src/format-sh-printf.c:483
+#: src/format-smalltalk.c:142
+#: src/format-tcl.c:409
+#, c-format
+msgid "a format specification for argument %zu doesn't exist in '%s'"
+msgstr "una specifica di formato per l'argomento %zu non esiste in \"%s\""
+
+#: src/format-awk.c:554
+#: src/format-boost.c:666
+#: src/format-c.c:148
+#: src/format-elisp.c:394
+#: src/format-gcc-internal.c:819
+#: src/format-gfc-internal.c:353
+#: src/format-go.c:619
+#: src/format-java-printf.c:595
+#: src/format-javascript.c:419
+#: src/format-librep.c:358
+#: src/format-lua.c:248
+#: src/format-modula2.c:219
+#: src/format-ocaml.c:946
+#: src/format-pascal.c:415
+#: src/format-perl.c:623
+#: src/format-php.c:396
+#: src/format-python.c:547
+#: src/format-ruby.c:965
+#: src/format-sh-printf.c:507
+#: src/format-tcl.c:433
+#, c-format
+msgid ""
+"format specifications in '%s' and '%s' for argument %zu are not the same"
+msgstr ""
+"le specifiche di formato in \"%s\" e \"%s\" per l'argomento %zu non "
+"corrispondono"
+
+#: src/format-boost.c:452
+#, c-format
+msgid "The directive number %zu starts with | but does not end with |."
+msgstr "La direttiva numero %zu inizia con | ma non termina con |."
+
+#: src/format.c:160
+#, c-format
+msgid "'%s' is not a valid %s format string, unlike '%s'. Reason: %s"
+msgstr ""
+"\"%s\" non è una stringa di formato %s valida, diversamente da \"%s\". "
+"Motivo: %s"
+
+#: src/format-c++-brace.c:252
+#, c-format
+msgid "In the directive number %zu, the arg-id is too large."
+msgstr "Nella direttiva numero %zu, id-arg è troppo grande."
+
+#: src/format-c++-brace.c:368
+#: src/format-c++-brace.c:463
+#, c-format
+msgid "In the directive number %zu, the width's arg-id is too large."
+msgstr "Nella direttiva numero %zu, l'id-arg della larghezza è troppo grande."
+
+#: src/format-c++-brace.c:423
+#, c-format
+msgid ""
+"In the directive number %zu, the width's arg-id is not terminated through '}"
+"'."
+msgstr ""
+"Nella direttiva numero %zu, l'id-arg della larghezza non termina con \"}\"."
+
+#: src/format-c++-brace.c:518
+#, c-format
+msgid ""
+"In the directive number %zu, the precision's arg-id is not terminated "
+"through '}'."
+msgstr ""
+"Nella direttiva numero %zu, l'id-arg della precisione non termina con \"}\"."
+
+#: src/format-c++-brace.c:580
+#, c-format
+msgid ""
+"In the directive number %zu, the character '%c' is not a standard type "
+"specifier."
+msgstr ""
+"Nella direttiva numero %zu, il carattere \"%c\" non è uno specificatore di "
+"tipo standard."
+
+#: src/format-c++-brace.c:581
+#, c-format
+msgid ""
+"The character that terminates the directive number %zu is not a standard "
+"type specifier."
+msgstr ""
+"Il carattere che termina la direttiva numero %zu non è uno specificatore di "
+"tipo standard."
+
+#: src/format-c++-brace.c:589
+#, c-format
+msgid ""
+"In the directive number %zu, the sign specification is incompatible with the "
+"type specifier '%c'."
+msgstr ""
+"Nella direttiva numero %zu, la specifica del segno è incompatibile con lo "
+"specificatore di tipo \"%c\"."
+
+#: src/format-c++-brace.c:597
+#, c-format
+msgid ""
+"In the directive number %zu, the '#' option is incompatible with the type "
+"specifier '%c'."
+msgstr ""
+"Nella direttiva numero %zu, l'opzione \"#\" è incompatibile con lo "
+"specificatore di tipo \"%c\"."
+
+#: src/format-c++-brace.c:605
+#, c-format
+msgid ""
+"In the directive number %zu, the '0' option is incompatible with the type "
+"specifier '%c'."
+msgstr ""
+"Nella direttiva numero %zu, l'opzione \"0\" è incompatibile con lo "
+"specificatore di tipo \"%c\"."
+
+#: src/format-c++-brace.c:613
+#, c-format
+msgid ""
+"In the directive number %zu, the precision specification is incompatible "
+"with the type specifier '%c'."
+msgstr ""
+"Nella direttiva numero %zu, la specifica della precisione è incompatibile "
+"con lo specificatore di tipo \"%c\"."
+
+#: src/format-c++-brace.c:621
+#, c-format
+msgid ""
+"In the directive number %zu, the 'L' option is incompatible with the type "
+"specifier '%c'."
+msgstr ""
+"Nella direttiva numero %zu, l'opzione \"L\" è incompatibile con lo "
+"specificatore di tipo \"%c\"."
+
+#: src/format-c++-brace.c:722
+#, c-format
+msgid ""
+"The directive number %zu, with all of its options, is not applicable to any "
+"type."
+msgstr ""
+"La direttiva numero %zu, con tutte le sue opzioni, non è applicabile ad "
+"alcun tipo."
+
+#: src/format-c++-brace.c:734
+#, c-format
+msgid "The string ends in the middle of the directive number %zu."
+msgstr "La stringa termina a metà della direttiva numero %zu."
+
+#: src/format-c++-brace.c:742
+#, c-format
+msgid "The directive number %zu is not terminated through '}'."
+msgstr "La direttiva numero %zu non viene terminata con \"}\"."
+
+#: src/format-c++-brace.c:764
+#: src/format-csharp.c:155
+#: src/format-java.c:344
+msgid ""
+"The string starts in the middle of a directive: found '}' without matching '"
+"{'."
+msgstr ""
+"La stringa inizia nel mezzo di una direttiva: trovata \"}\" senza "
+"corrispondente \"{\"."
+
+#: src/format-c++-brace.c:765
+#: src/format-csharp.c:156
+#, c-format
+msgid "The string contains a lone '}' after directive number %zu."
+msgstr "La stringa contiene una \"}\" solitaria dopo la direttiva numero %zu."
+
+#: src/format-c++-brace.c:984
+#, c-format
+msgid ""
+"The format specification for argument %zu in '%s' is applicable to the types "
+"%s, but the format specification for argument %zu in '%s' is not."
+msgstr ""
+"La specifica del formato per l'argomento %zu in \"%s\" è applicabile ai tipi "
+"%s, ma la specifica del formato per l'argomento %zu in \"%s\" non lo è."
+
+#: src/format-c++-brace.c:997
+#, c-format
+msgid ""
+"The format specification for argument %zu in '%s' uses a different "
+"presentation than the format specification for argument %zu in '%s'."
+msgstr ""
+"La specifica del formato per l'argomento %zu in '%s' usa una presentazione "
+"diversa rispetto alla specifica del formato per l'argomento %zu in \"%s\"."
+
+#: src/format-c.c:35
+#, c-format
+msgid ""
+"In the directive number %zu, the token after '<' is not the name of a format "
+"specifier macro. The valid macro names are listed in ISO C 99 section 7.8.1."
+msgstr ""
+"Nella direttiva numero %zu, il termine dopo \"<\" non è il nome di una macro "
+"di specifica di formato. I nomi di macro validi sono elencati nella sezione "
+"7.8.1 dell'ISO C 99."
+
+#: src/format-c.c:38
+#, c-format
+msgid ""
+"In the directive number %zu, the token after '<' is not followed by '>'."
+msgstr ""
+"Nella direttiva numero %zu, il termine dopo \"<\" non è seguito da \">\"."
+
+#: src/format-c.c:41
+#, c-format
+msgid "In the directive number %zu, the argument size specifier is invalid."
+msgstr ""
+"Nella direttiva numero %zu, lo specificatore della dimensione dell'argomento "
+"non è valido."
+
+#: src/format-c.c:44
+#: src/format-gfc-internal.c:274
+#, c-format
+msgid ""
+"The string refers to argument number %zu but ignores argument number %zu."
+msgstr ""
+"La stringa fa riferimento all'argomento numero %zu ma ignora l'argomento "
+"numero %zu."
+
+#: src/format-c.c:138
+#: src/format-csharp.c:201
+#: src/format-gfc-internal.c:343
+#: src/format-python.c:534
+#: src/format-qt-plural.c:109
+#: src/format-ruby.c:955
+#, c-format
+msgid "number of format specifications in '%s' and '%s' does not match"
+msgstr "il numero di specifiche di formato in \"%s\" e \"%s\" non corrisponde"
+
+#: src/format-csharp.c:82
+#: src/format-java.c:203
+#, c-format
+msgid "In the directive number %zu, '{' is not followed by an argument number."
+msgstr ""
+"Nella direttiva numero %zu, \"{\" non è seguita da un numero di argomento."
+
+#: src/format-csharp.c:103
+#, c-format
+msgid "In the directive number %zu, ',' is not followed by a number."
+msgstr "Nella direttiva numero %zu, \",\" non è seguita da un numero."
+
+#: src/format-csharp.c:124
+#: src/format-java.c:185
+msgid ""
+"The string ends in the middle of a directive: found '{' without matching '}'."
+msgstr ""
+"La stringa termina nel mezzo di una direttiva: trovata \"{\" senza la \"}\" "
+"corrispondente."
+
+#: src/format-csharp.c:133
+#, c-format
+msgid ""
+"The directive number %zu ends with an invalid character '%c' instead of '}'."
+msgstr ""
+"La direttiva numero %zu termina con il carattere non valido \"%c\" invece di "
+"\"}\"."
+
+#: src/format-csharp.c:134
+#, c-format
+msgid "The directive number %zu ends with an invalid character instead of '}'."
+msgstr ""
+"La direttiva numero %zu termina con un carattere non valido invece di \"}\"."
+
+#: src/format-d.c:1651
+#, c-format
+msgid ""
+"In the directive number %zu, the first argument number is greater than the "
+"second argument number."
+msgstr ""
+"Nella direttiva numero %zu, il numero del primo argomento è maggiore del "
+"numero del secondo argomento."
+
+#: src/format-d.c:1654
+#, c-format
+msgid ""
+"In the directive number %zu, the compound specifier consumes a variable "
+"number of arguments."
+msgstr ""
+"Nella direttiva numero %zu, lo specificatore composito richiede un numero "
+"variabile di argomenti."
+
+#: src/format-d.c:1657
+#, c-format
+msgid ""
+"In the directive number %zu, the compound specifier consumes %zu arguments."
+msgstr ""
+"Nella direttiva numero %zu, lo specificatore composito richiede %zu "
+"argomenti."
+
+#: src/format-d.c:1660
+msgid "Found '%|' outside of '%(...%)'."
+msgstr "Trovato \"%|\" al di fuori di \"%(...%)\"."
+
+#: src/format-d.c:1663
+msgid "The string ends in the middle of a compound specifier."
+msgstr "La stringa termina nel mezzo di uno specificatore composito."
+
+#: src/format-d.c:1666
+#, c-format
+msgid ""
+"In the directive number %zu, there is an invalid directive in the delimiter "
+"part of a compound specifier."
+msgstr ""
+"Nella direttiva numero %zu, c'è una direttiva non valida nella parte "
+"delimitatrice di un specificatore composito."
+
+#: src/format-d.c:1669
+#: src/format-ocaml.c:768
+#, c-format
+msgid "Found '%%%c' without matching '%%%c'."
+msgstr "Trovato \"%%%c\" senza il corrispondente \"%%%c\"."
+
+#: src/format-d.c:1672
+#, c-format
+msgid ""
+"The directive number %zu references an argument after the last argument."
+msgstr ""
+"La direttiva numero %zu si riferisce a un argomento successivo all'ultimo."
+
+#: src/format-d.c:1676
+#: src/format-lisp.c:3419
+#: src/format-scheme.c:3341
+msgid "The string refers to some argument in incompatible ways."
+msgstr "La stringa fa riferimento ad alcuni argomenti in modi incompatibili."
+
+#: src/format-d.c:2246
+#: src/format-lisp.c:3462
+#: src/format-scheme.c:3384
+#, c-format
+msgid "format specifications in '%s' and '%s' are not equivalent"
+msgstr "le specifiche di formato in \"%s\" e \"%s\" non sono equivalenti"
+
+#: src/format-d.c:2263
+#: src/format-lisp.c:3479
+#: src/format-scheme.c:3401
+#, c-format
+msgid "format specifications in '%s' are not a subset of those in '%s'"
+msgstr ""
+"le specifiche di formato in \"%s\" non sono un sottoinsieme di quelle in "
+"\"%s\""
+
+#: src/format-gcc-internal.c:228
+#, c-format
+msgid ""
+"The directive number %zu opens a quote group, but the previous one is not "
+"terminated."
+msgstr ""
+"La direttiva numero %zu apre un gruppo di citazioni, ma quello precedente "
+"non è terminato."
+
+#: src/format-gcc-internal.c:238
+#: src/format-gcc-internal.c:248
+#: src/format-gcc-internal.c:258
+#, c-format
+msgid "The directive number %zu does not match a preceding '%%%c'."
+msgstr "La direttiva numero %zu non corrisponde a un \"%%%c\" precedente."
+
+#: src/format-gcc-internal.c:344
+#, c-format
+msgid "In the directive number %zu, the flags combination is invalid."
+msgstr "Nella direttiva numero %zu, la combinazione dei flag non è valida."
+
+#: src/format-gcc-internal.c:385
+#, c-format
+msgid "In the directive number %zu, a precision is not allowed before '%c'."
+msgstr ""
+"Nella direttiva numero %zu, la precisione non è ammessa prima di \"%c\"."
+
+#: src/format-gcc-internal.c:426
+#, c-format
+msgid ""
+"In the directive number %zu, the argument number for the precision must be "
+"equal to %zu."
+msgstr ""
+"Nella direttiva numero %zu, il numero di argomenti per la precisione deve "
+"essere uguale a %zu."
+
+#: src/format-gcc-internal.c:490
+#, c-format
+msgid ""
+"In the directive number %zu, a precision specification is not allowed before "
+"'%c'."
+msgstr ""
+"Nella direttiva numero %zu, la specifica di precisione non è ammessa prima "
+"di \"%c\"."
+
+#: src/format-gcc-internal.c:498
+#, c-format
+msgid "In the directive number %zu, the precision specification is invalid."
+msgstr "Nella direttiva numero %zu, la specifica di precisione non è valida."
+
+#: src/format-gcc-internal.c:524
+#, c-format
+msgid ""
+"The directive number %zu opens a color group, but the previous one is not "
+"terminated."
+msgstr ""
+"La direttiva numero %zu apre un gruppo di colori, ma quello precedente non è "
+"terminato."
+
+#: src/format-gcc-internal.c:535
+#, c-format
+msgid ""
+"The directive number %zu opens a URL group, but the previous one is not "
+"terminated."
+msgstr ""
+"La direttiva numero %zu apre un gruppo di URL, ma quello precedente non è "
+"terminato."
+
+#: src/format-gcc-internal.c:663
+#, c-format
+msgid "The quote group opened by the directive number %zu is not terminated."
+msgstr ""
+"Il gruppo di citazioni aperto dalla direttiva numero %zu non viene terminato."
+
+#: src/format-gcc-internal.c:668
+#, c-format
+msgid "The color group opened by the directive number %zu is not terminated."
+msgstr ""
+"Il gruppo di colori aperto dalla direttiva numero %zu non viene terminato."
+
+#: src/format-gcc-internal.c:673
+#, c-format
+msgid "The URL group opened by the directive number %zu is not terminated."
+msgstr "Il gruppo di URL aperto dalla direttiva numero %zu non viene terminato."
+
+#: src/format-gcc-internal.c:840
+#, c-format
+msgid "'%s' uses %%m but '%s' doesn't"
+msgstr "\"%s\" usa %%m ma \"%s\" non lo usa"
+
+#: src/format-gcc-internal.c:844
+#, c-format
+msgid "'%s' does not use %%m but '%s' uses %%m"
+msgstr "\"%s\" non usa %%m ma \"%s\" usa %%m"
+
+#: src/format-gcc-internal.c:857
+#: src/format-gfc-internal.c:365
+#, c-format
+msgid "'%s' uses %%C but '%s' doesn't"
+msgstr "\"%s\" usa %%C ma \"%s\" non lo usa"
+
+#: src/format-gcc-internal.c:861
+#: src/format-gfc-internal.c:369
+#, c-format
+msgid "'%s' does not use %%C but '%s' uses %%C"
+msgstr "\"%s\" non usa %%C ma \"%s\" usa %%C"
+
+#: src/format-go.c:115
+#: src/format-rust.c:172
+#, c-format
+msgid "In the directive number %zu, the argument number is too large."
+msgstr "Nella direttiva numero %zu, il numero dell'argomento è troppo grande."
+
+#: src/format-go.c:221
+#, c-format
+msgid "In the directive number %zu, the width is too large."
+msgstr "Nella direttiva numero %zu, la larghezza è troppo grande."
+
+#: src/format-go.c:326
+#, c-format
+msgid "In the directive number %zu, the precision is too large."
+msgstr "Nella direttiva numero %zu, la precisione è troppo grande."
+
+#: src/format-invalid.h:23
+msgid "The string ends in the middle of a directive."
+msgstr "La stringa termina nel mezzo di una direttiva."
+
+#: src/format-invalid.h:26
+msgid ""
+"The string refers to arguments both through absolute argument numbers and "
+"through unnumbered argument specifications."
+msgstr ""
+"La stringa fa riferimento ad argomenti attraverso specifiche di argomento "
+"sia con numero che senza numero."
+
+#: src/format-invalid.h:29
+#, c-format
+msgid "In the directive number %zu, the precision is missing."
+msgstr "Nella direttiva numero %zu, manca la precisione."
+
+#: src/format-invalid.h:32
+#, c-format
+msgid ""
+"In the directive number %zu, the argument number 0 is not a positive integer."
+msgstr ""
+"Nella direttiva numero %zu, l'argomento numero 0 non è un intero positivo."
+
+#: src/format-invalid.h:34
+#, c-format
+msgid ""
+"In the directive number %zu, the width's argument number 0 is not a positive "
+"integer."
+msgstr ""
+"Nella direttiva numero %zu, la larghezza dell'argomento numero 0 non è un "
+"intero positivo."
+
+#: src/format-invalid.h:36
+#, c-format
+msgid ""
+"In the directive number %zu, the precision's argument number 0 is not a "
+"positive integer."
+msgstr ""
+"Nella direttiva numero %zu, la precisione dell'argomento numero 0 non è un "
+"intero positivo."
+
+#: src/format-invalid.h:40
+#, c-format
+msgid ""
+"In the directive number %zu, the character '%c' is not a valid conversion "
+"specifier."
+msgstr ""
+"Nella direttiva numero %zu, il carattere \"%c\" non è uno specificatore di "
+"conversione valido."
+
+#: src/format-invalid.h:41
+#, c-format
+msgid ""
+"The character that terminates the directive number %zu is not a valid "
+"conversion specifier."
+msgstr ""
+"Il carattere che termina la direttiva numero %zu non è uno specificatore di "
+"conversione valido."
+
+#: src/format-invalid.h:44
+#, c-format
+msgid ""
+"In the directive number %zu, the flag '%c' is invalid for the conversion "
+"'%c'."
+msgstr ""
+"Nella direttiva numero %zu, il flag \"%c\" non è valido per la conversione "
+"\"%c\"."
+
+#: src/format-invalid.h:47
+#, c-format
+msgid "The string refers to argument number %zu in incompatible ways."
+msgstr ""
+"La stringa fa riferimento all'argomento numero %zu in modi incompatibili."
+
+#: src/format-java.c:238
+#, c-format
+msgid ""
+"In the directive number %zu, the substring \"%s\" is not a valid date/time "
+"style."
+msgstr ""
+"Nella direttiva numero %zu, la sottostringa \"%s\" non è uno stile di data/"
+"ora valido."
+
+#: src/format-java.c:249
+#: src/format-java.c:283
+#: src/format-java.c:312
+#, c-format
+msgid "In the directive number %zu, \"%s\" is not followed by a comma."
+msgstr "Nella direttiva numero %zu, \"%s\" non è seguito da una virgola."
+
+#: src/format-java.c:272
+#, c-format
+msgid ""
+"In the directive number %zu, the substring \"%s\" is not a valid number "
+"style."
+msgstr ""
+"Nella direttiva numero %zu, la sottostringa \"%s\" non è uno stile di numero "
+"valido."
+
+#: src/format-java.c:321
+#, c-format
+msgid ""
+"In the directive number %zu, the argument number is not followed by a comma "
+"and one of \"%s\", \"%s\", \"%s\", \"%s\"."
+msgstr ""
+"Nella direttiva numero %zu, il numero di argomento non è seguito da una "
+"virgola e da uno tra \"%s\", \"%s\", \"%s\", \"%s\"."
+
+#: src/format-java.c:566
+#, c-format
+msgid "In the directive number %zu, a choice contains no number."
+msgstr "Nella direttiva numero %zu, una scelta non contiene alcun numero."
+
+#: src/format-java.c:577
+#, c-format
+msgid ""
+"In the directive number %zu, a choice contains a number that is not followed "
+"by '<', '#' or '%s'."
+msgstr ""
+"Nella direttiva numero %zu, una scelta contiene un numero non seguito da "
+"\"<\", \"#\" o \"%s\"."
+
+#: src/format-java.c:738
+#, c-format
+msgid ""
+"a format specification for argument {%zu}, as in '%s', doesn't exist in '%s'"
+msgstr ""
+"una specifica di formato per l'argomento {%zu}, come in \"%s\", non esiste "
+"in \"%s\""
+
+#: src/format-java.c:750
+#, c-format
+msgid "a format specification for argument {%zu} doesn't exist in '%s'"
+msgstr "una specifica di formato per l'argomento {%zu} non esiste in \"%s\""
+
+#: src/format-java.c:774
+#, c-format
+msgid ""
+"format specifications in '%s' and '%s' for argument {%zu} are not the same"
+msgstr ""
+"le specifiche di formato in \"%s\" e \"%s\" per l'argomento {%zu} non "
+"corrispondono"
+
+#: src/format-java-printf.c:131
+#, c-format
+msgid ""
+"In the directive number %zu, the reference to the argument of the previous "
+"directive is invalid."
+msgstr ""
+"Nella direttiva numero %zu, il riferimento all'argomento della direttiva "
+"precedente non è valido."
+
+#: src/format-java-printf.c:134
+#, c-format
+msgid ""
+"In the directive number %zu, a width is invalid for the conversion '%c'."
+msgstr ""
+"Nella direttiva numero %zu, una larghezza non è valida per la conversione "
+"\"%c\"."
+
+#: src/format-java-printf.c:137
+#, c-format
+msgid ""
+"In the directive number %zu, a precision is invalid for the conversion '%c'."
+msgstr ""
+"Nella direttiva numero %zu, una precisione non è valida per la conversione "
+"\"%c\"."
+
+#: src/format-java-printf.c:141
+#, c-format
+msgid ""
+"In the directive number %zu, for the conversion '%c', the character '%c' is "
+"not a valid conversion suffix."
+msgstr ""
+"Nella direttiva numero %zu, per la conversione \"%c\", il carattere \"%c\" "
+"non è un suffisso di conversione valido."
+
+#: src/format-java-printf.c:142
+#, c-format
+msgid ""
+"The character that terminates the directive number %zu, for the conversion "
+"'%c', is not a valid conversion suffix."
+msgstr ""
+"Il carattere che termina la direttiva numero %zu, per la conversione \"%c\", "
+"non è un suffisso di conversione valido."
+
+#: src/format-kde.c:149
+#, c-format
+msgid ""
+"The string refers to argument number %zu but ignores the arguments %zu and "
+"%zu."
+msgstr ""
+"La stringa fa riferimento all'argomento numero %zu ma ignora gli argomenti "
+"numero %zu e %zu."
+
+#: src/format-kde.c:236
+#: src/format-rust.c:516
+#, c-format
+msgid ""
+"a format specification for arguments %zu and %zu doesn't exist in '%s', only "
+"one argument may be ignored"
+msgstr ""
+"una specifica di formato per gli argomenti %zu e %zu non esiste in \"%s\", "
+"solo un argomento può essere ignorato"
+
+#: src/format-kde-kuit.c:251
+#: src/format-kde-kuit.c:272
+#: src/format-kde-kuit.c:282
+#, c-format
+msgid "error while parsing: %s"
+msgstr "errore durante l'analisi: %s"
+
+#: src/format-lisp.c:2335
+#: src/format-lisp.c:2347
+#: src/format-scheme.c:2361
+#: src/format-scheme.c:2373
+#, c-format
+msgid ""
+"In the directive number %zu, parameter %zu is of type '%s' but a parameter "
+"of type '%s' is expected."
+msgstr ""
+"Nella direttiva numero %zu, il parametro %zu è di tipo \"%s\" ma è atteso un "
+"parametro di tipo \"%s\"."
+
+#: src/format-lisp.c:2370
+#: src/format-scheme.c:2396
+#, c-format
+msgid ""
+"In the directive number %zu, too many parameters are given; expected at most "
+"%zu parameter."
+msgid_plural ""
+"In the directive number %zu, too many parameters are given; expected at most "
+"%zu parameters."
+msgstr[0] ""
+"Nella direttiva numero %zu, sono indicati troppi parametri; previsto %zu "
+"parametro al massimo."
+msgstr[1] ""
+"Nella direttiva numero %zu, sono indicati troppi parametri; previsti %zu "
+"parametri al massimo."
+
+#: src/format-lisp.c:2492
+#: src/format-scheme.c:2494
+#, c-format
+msgid "In the directive number %zu, '%c' is not followed by a digit."
+msgstr "Nella direttiva numero %zu, \"%c\" non è seguito da una cifra."
+
+#: src/format-lisp.c:2734
+#: src/format-scheme.c:2751
+#, c-format
+msgid "In the directive number %zu, the argument %d is negative."
+msgstr "Nella direttiva numero %zu, l'argomento %d è negativo."
+
+#: src/format-lisp.c:2803
+msgid "The string ends in the middle of a ~/.../ directive."
+msgstr "La stringa termina nel mezzo di una direttiva ~/.../."
+
+#: src/format-lisp.c:2841
+#: src/format-lisp.c:3097
+#: src/format-lisp.c:3214
+#: src/format-lisp.c:3274
+#: src/format-lisp.c:3386
+#: src/format-scheme.c:2837
+#: src/format-scheme.c:3093
+#: src/format-scheme.c:3210
+#: src/format-scheme.c:3308
+#, c-format
+msgid "Found '~%c' without matching '~%c'."
+msgstr "Trovato \"~%c\" senza il corrispondente \"~%c\"."
+
+#: src/format-lisp.c:2861
+#: src/format-scheme.c:2857
+#, c-format
+msgid "In the directive number %zu, both the @ and the : modifiers are given."
+msgstr ""
+"Nella direttiva numero %zu, entrambi i modificatori @ e : sono stati "
+"indicati."
+
+#: src/format-lisp.c:2970
+#: src/format-scheme.c:2966
+#, c-format
+msgid ""
+"In the directive number %zu, '~:[' is not followed by two clauses, separated "
+"by '~;'."
+msgstr ""
+"Nella direttiva numero %zu, \"~:[\" non è seguito da due espressioni, "
+"separate da \"~;\"."
+
+#: src/format-lisp.c:3315
+#: src/format-scheme.c:3251
+#, c-format
+msgid "In the directive number %zu, '~;' is used in an invalid position."
+msgstr "Nella direttiva numero %zu, \"~;\" è usato in una posizione non valida."
+
+#: src/format-ocaml.c:562
+#: src/format-ocaml.c:661
+#, c-format
+msgid "Found '%s' without matching '%s'."
+msgstr "Trovato \"%s\" senza il corrispondente \"%s\"."
+
+#: src/format-perl-brace.c:194
+#: src/format-python-brace.c:555
+#: src/format-python.c:486
+#: src/format-ruby.c:910
+#: src/format-rust.c:461
+#: src/format-sh.c:295
+#, c-format
+msgid "a format specification for argument '%s' doesn't exist in '%s'"
+msgstr "una specifica di formato per l'argomento \"%s\" non esiste in \"%s\""
+
+#: src/format-perl.c:426
+#, c-format
+msgid ""
+"In the directive number %zu, the size specifier is incompatible with the "
+"conversion specifier '%c'."
+msgstr ""
+"Nella direttiva %zu, lo specificatore di dimensione è incompatibile con lo "
+"specificatore di conversione \"%c\"."
+
+#: src/format-python-brace.c:192
+#, c-format
+msgid "In the directive number %zu, '%c' cannot start a getattr argument."
+msgstr ""
+"Nella direttiva numero %zu, \"%c\" non può iniziare un argomento di getattr."
+
+#: src/format-python-brace.c:194
+#, c-format
+msgid ""
+"In the directive number %zu, a getattr argument starts with a character that "
+"is not alphabetical or underscore."
+msgstr ""
+"Nella direttiva numero %zu, un argomento getattr non inizia con un carattere "
+"alfanumerico o di sottolineatura."
+
+#: src/format-python-brace.c:216
+#, c-format
+msgid "In the directive number %zu, '%c' cannot start a getitem argument."
+msgstr ""
+"Nella direttiva numero %zu, \"%c\" non può iniziare un argomenti di getitem."
+
+#: src/format-python-brace.c:218
+#, c-format
+msgid ""
+"In the directive number %zu, a getitem argument starts with a character that "
+"is not alphanumerical or underscore."
+msgstr ""
+"Nella direttiva numero %zu, un argomento getitem non inizia con un carattere "
+"alfanumerico o di sottolineatura."
+
+#: src/format-python-brace.c:228
+#, c-format
+msgid "In the directive number %zu, there is an unterminated getitem argument."
+msgstr "Nella direttiva numero %zu, c'è un argomento di getitem non terminato."
+
+#: src/format-python-brace.c:251
+#, c-format
+msgid "In the directive number %zu, '%c' cannot start a field name."
+msgstr ""
+"Nella direttiva numero %zu, \"%c\" non può iniziare il nome di un campo."
+
+#: src/format-python-brace.c:253
+#, c-format
+msgid ""
+"In the directive number %zu, a field name starts with a character that is "
+"not alphanumerical or underscore."
+msgstr ""
+"Nella direttiva numero %zu, un nome di campo non inizia con un carattere "
+"alfanumerico o di sottolineatura."
+
+#: src/format-python-brace.c:266
+#, c-format
+msgid ""
+"In the directive number %zu, no more nesting is allowed in a format "
+"specifier."
+msgstr ""
+"Nella direttiva numero %zu, non è consentita alcuna ulteriore nidificazione "
+"in uno specificatore di formato."
+
+#: src/format-python-brace.c:302
+#: src/format-python-brace.c:355
+#: src/format-rust.c:261
+#: src/format-rust.c:318
+#, c-format
+msgid "The directive number %zu is unterminated."
+msgstr "La direttiva numero %zu non viene terminata."
+
+#: src/format-python-brace.c:372
+#: src/format-python-brace.c:389
+msgid ""
+"The string refers to arguments both through absolute argument numbers and "
+"through unnamed argument specifications."
+msgstr ""
+"La stringa fa riferimento agli argomenti sia attraverso numeri assoluti che "
+"attraverso specifiche di argomento senza nome."
+
+#: src/format-python-brace.c:543
+#: src/format-python.c:474
+#: src/format-ruby.c:898
+#: src/format-rust.c:449
+#: src/format-sh.c:283
+#, c-format
+msgid ""
+"a format specification for argument '%s', as in '%s', doesn't exist in '%s'"
+msgstr ""
+"una specifica di formato per l'argomento \"%s\", come in \"%s\", non esiste "
+"in \"%s\""
+
+#: src/format-python.c:112
+#: src/format-ruby.c:129
+msgid ""
+"The string refers to arguments both through argument names and through "
+"unnamed argument specifications."
+msgstr ""
+"La stringa fa riferimento ad argomenti attraverso specifiche di argomento "
+"sia con nome che senza nome."
+
+#: src/format-python.c:358
+#: src/format-ruby.c:782
+#, c-format
+msgid "The string refers to the argument named '%s' in incompatible ways."
+msgstr ""
+"La stringa fa riferimento all'argomento chiamato \"%s\" in modi "
+"incompatibili."
+
+#: src/format-python.c:441
+#, c-format
+msgid ""
+"format specifications in '%s' expect a mapping, those in '%s' expect a tuple"
+msgstr ""
+"le specifiche di formato in \"%s\" prevedono una mappatura, quelle in \"%s\" "
+"prevedono una tupla"
+
+#: src/format-python.c:449
+#, c-format
+msgid ""
+"format specifications in '%s' expect a tuple, those in '%s' expect a mapping"
+msgstr ""
+"le specifiche di formato in \"%s\" prevedono una tupla, quelle in \"%s\" "
+"prevedono una mappatura"
+
+#: src/format-python.c:513
+#: src/format-ruby.c:934
+#, c-format
+msgid ""
+"format specifications in '%s' and '%s' for argument '%s' are not the same"
+msgstr ""
+"le specifiche di formato in \"%s\" e \"%s\" per l'argomento \"%s\" non "
+"corrispondono"
+
+#: src/format-qt.c:148
+#, c-format
+msgid ""
+"'%s' is a simple format string, but '%s' is not: it contains an 'L' flag or "
+"a double-digit argument number"
+msgstr ""
+"\"%s\" è una stringa di formato semplice, ma \"%s\" non lo è: contiene un "
+"flag \"L\" o un argomento numerico a due cifre"
+
+#: src/format-ruby.c:132
+#, c-format
+msgid "In the directive number %zu, two names are given for the same argument."
+msgstr ""
+"Nella direttiva numero %zu, sono indicati due nomi per lo stesso argomento."
+
+#: src/format-ruby.c:135
+#, c-format
+msgid ""
+"In the directive number %zu, two numbers are given for the same argument."
+msgstr ""
+"Nella direttiva numero %zu, sono indicati due numeri per lo stesso argomento."
+
+#: src/format-ruby.c:138
+#, c-format
+msgid "In the directive number %zu, a flag is given after the width."
+msgstr "Nella direttiva numero %zu, viene indicato un flag dopo la lunghezza."
+
+#: src/format-ruby.c:141
+#, c-format
+msgid "In the directive number %zu, a flag is given after the precision."
+msgstr "Nella direttiva numero %zu, viene indicato un flag dopo la precisione."
+
+#: src/format-ruby.c:144
+#, c-format
+msgid "In the directive number %zu, the width is given after the precision."
+msgstr ""
+"Nella direttiva numero %zu, la larghezza viene indicata dopo la precisione."
+
+#: src/format-ruby.c:147
+#, c-format
+msgid "In the directive number %zu, a width is given twice."
+msgstr "Nella direttiva numero %zu, la larghezza viene indicata due volte."
+
+#: src/format-ruby.c:150
+#, c-format
+msgid "In the directive number %zu, a precision is given twice."
+msgstr "Nella direttiva numero %zu, la precisione viene indicata due volte."
+
+#: src/format-ruby.c:865
+#, c-format
+msgid ""
+"format specifications in '%s' expect a hash table, those in '%s' expect "
+"individual arguments"
+msgstr ""
+"le specifiche di formato in \"%s\" prevedono una tabella hash, quelle in "
+"\"%s\" prevedono argomenti individuali"
+
+#: src/format-ruby.c:873
+#, c-format
+msgid ""
+"format specifications in '%s' expect individual arguments, those in '%s' "
+"expect a hash table"
+msgstr ""
+"le specifiche di formato in \"%s\" prevedono argomenti individuali, quelle "
+"in \"%s\" prevedono una tabella hash"
+
+#: src/format-sh.c:77
+msgid "The string refers to a shell variable with a non-ASCII name."
+msgstr ""
+"La stringa fa riferimento a una variabile della shell con un nome non ASCII."
+
+#: src/format-sh.c:79
+msgid ""
+"The string refers to a shell variable with complex shell brace syntax. This "
+"syntax is unsupported here due to security reasons."
+msgstr ""
+"La stringa fa riferimento a una variabile della shell con una sintassi {} "
+"complessa. Per motivi di sicurezza questa sintassi non è supportata."
+
+#: src/format-sh.c:81
+msgid ""
+"The string refers to a shell variable whose value may be different inside "
+"shell functions."
+msgstr ""
+"La stringa fa riferimento a una variabile della shell il cui valore può "
+"essere diverso all'interno delle funzioni della shell."
+
+#: src/format-sh.c:83
+msgid "The string refers to a shell variable with an empty name."
+msgstr "La stringa fa riferimento a una variabile della shell con nome vuoto."
+
+#: src/format-sh-printf.c:335
+msgid "The string ends in the middle of an escape sequence."
+msgstr "La stringa termina nel mezzo di una sequenza di escape."
+
+#: src/format-sh-printf.c:345
+#, c-format
+msgid "The escape sequence '%c%c' is unsupported (not in POSIX)."
+msgstr "La sequenza di escape \"%c%c\" non è supportata (non in POSIX)."
+
+#: src/format-sh-printf.c:346
+#, c-format
+msgid "The escape sequence '%c%c' is invalid."
+msgstr "La sequenza di escape \"%c%c\" non è valida."
+
+#: src/format-sh-printf.c:347
+msgid "This escape sequence is invalid."
+msgstr "La sequenza di escape non è valida."
+
+#: src/format-smalltalk.c:88
+#, c-format
+msgid ""
+"In the directive number %zu, the character '%c' is not a digit between 1 and "
+"9."
+msgstr ""
+"Nella direttiva numero %zu, il carattere \"%c\" non è una cifra tra 1 e 9."
+
+#: src/format-smalltalk.c:89
+#, c-format
+msgid ""
+"The character that terminates the directive number %zu is not a digit "
+"between 1 and 9."
+msgstr ""
+"Il carattere che termina la direttiva numero %zu non è una cifra tra 1 e 9."
+
+#: src/msgl-check.c:110
+msgid "plural expression can produce division by zero"
+msgstr "l'espressione plurale può produrre una divisione per zero"
+
+#: src/msgl-check.c:113
+msgid "plural expression can produce integer overflow"
+msgstr "l'espressione plurale può produrre un overflow di interi"
+
+#: src/msgl-check.c:116
+msgid "plural expression can produce stack overflow"
+msgstr "l'espressione plurale può produrre un overflow dello stack"
+
+#: src/msgl-check.c:130
+msgid "plural expression can produce negative values"
+msgstr "l'espressione plurale può produrre valori negativi"
+
+#: src/msgl-check.c:137
+#, c-format
+msgid "nplurals = %lu but plural expression can produce values as large as %lu"
+msgstr "nplurals = %lu, ma l'espressione plurale può produrre valori fino a %lu"
+
+#: src/msgl-check.c:212
+#, c-format
+msgid "Try using the following, valid for %s:"
+msgstr "Provare ad usare quanto segue, valido per %s:"
+
+#: src/msgl-check.c:297
+#: src/msgl-check.c:321
+msgid "message catalog has plural form translations"
+msgstr "il catalogo dei messaggi contiene traduzioni di forme plurali"
+
+#: src/msgl-check.c:299
+msgid "but header entry lacks a \"plural=EXPRESSION\" attribute"
+msgstr "ma l'intestazione non contiene un attributo \"plural=ESPRESSIONE\""
+
+#: src/msgl-check.c:323
+msgid "but header entry lacks a \"nplurals=INTEGER\" attribute"
+msgstr "ma l'intestazione non contiene un attributo \"nplurals=INTERO\""
+
+#: src/msgl-check.c:356
+msgid "invalid nplurals value"
+msgstr "valore di nplurals non valido"
+
+#: src/msgl-check.c:383
+msgid "invalid plural expression"
+msgstr "espressione plurale non valida"
+
+#: src/msgl-check.c:415
+#: src/msgl-check.c:431
+#, c-format
+msgid "nplurals = %lu"
+msgstr "nplurals = %lu"
+
+#: src/msgl-check.c:417
+#, c-format
+msgid "but some messages have only one plural form"
+msgid_plural "but some messages have only %lu plural forms"
+msgstr[0] "tuttavia alcuni messaggi hanno solo una forma plurale"
+msgstr[1] "tuttavia alcuni messaggi hanno solo %lu forme plurali"
+
+#: src/msgl-check.c:433
+#, c-format
+msgid "but some messages have one plural form"
+msgid_plural "but some messages have %lu plural forms"
+msgstr[0] "tuttavia alcuni messaggi hanno una forma plurale"
+msgstr[1] "tuttavia alcuni messaggi hanno %lu forme plurali"
+
+#: src/msgl-check.c:457
+msgid ""
+"message catalog has plural form translations, but lacks a header entry with "
+"\"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\""
+msgstr ""
+"il catalogo di messaggi contiene traduzioni di forme plurali, ma "
+"l'intestazione non contiene \"Plural-Forms: nplurals=INTERO; "
+"plural=ESPRESSIONE;\""
+
+#: src/msgl-check.c:560
+msgid "'msgid' and 'msgid_plural' entries do not both begin with '\\n'"
+msgstr "le voci \"msgid\" e \"msgid_plural\" non iniziano entrambe con \"\\n\""
+
+#: src/msgl-check.c:569
+#, c-format
+msgid "'msgid' and 'msgstr[%u]' entries do not both begin with '\\n'"
+msgstr "le voci \"msgid\" e \"msgstr[%u]\" non iniziano entrambe con \"\\n\""
+
+#: src/msgl-check.c:585
+msgid "'msgid' and 'msgstr' entries do not both begin with '\\n'"
+msgstr "le voci \"msgid\" e \"msgstr\" non iniziano entrambe con \"\\n\""
+
+#: src/msgl-check.c:603
+msgid "'msgid' and 'msgid_plural' entries do not both end with '\\n'"
+msgstr "le voci \"msgid\" e \"msgid_plural\" non finiscono entrambe con \"\\n\""
+
+#: src/msgl-check.c:612
+#, c-format
+msgid "'msgid' and 'msgstr[%u]' entries do not both end with '\\n'"
+msgstr "le voci \"msgid\" e \"msgstr[%u]\" non finiscono entrambe con \"\\n\""
+
+#: src/msgl-check.c:628
+msgid "'msgid' and 'msgstr' entries do not both end with '\\n'"
+msgstr "le voci \"msgid\" e \"msgstr\" non finiscono entrambe con \"\\n\""
+
+#: src/msgl-check.c:765
+#, c-format
+msgid "header field '%s' still has the initial default value\n"
+msgstr ""
+"il campo \"%s\" dell'intestazione ha ancora il valore iniziale predefinito\n"
+
+#: src/msgl-check.c:782
+#, c-format
+msgid "header field '%s' missing in header\n"
+msgstr "campo \"%s\" mancante nell'intestazione\n"

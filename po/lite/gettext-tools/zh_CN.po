@@ -1,0 +1,1054 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gettext-tools 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-10 13:25+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+"Language: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: src/format-awk.c:518
+#: src/format-boost.c:630
+#: src/format-c++-brace.c:943
+#: src/format-elisp.c:358
+#: src/format-gcc-internal.c:783
+#: src/format-go.c:583
+#: src/format-java-printf.c:559
+#: src/format-javascript.c:380
+#: src/format-kde.c:215
+#: src/format-librep.c:322
+#: src/format-lua.c:226
+#: src/format-modula2.c:197
+#: src/format-ocaml.c:901
+#: src/format-pascal.c:379
+#: src/format-perl.c:587
+#: src/format-php.c:360
+#: src/format-qt.c:171
+#: src/format-rust.c:495
+#: src/format-sh-printf.c:471
+#: src/format-smalltalk.c:146
+#: src/format-tcl.c:397
+#, c-format
+msgid ""
+"a format specification for argument %zu, as in '%s', doesn't exist in '%s'"
+msgstr "参数\"%zu\"（如同\"%s\"）的格式指定在\"%s\"中不存在"
+
+#: src/format-awk.c:530
+#: src/format-boost.c:642
+#: src/format-c++-brace.c:955
+#: src/format-elisp.c:370
+#: src/format-gcc-internal.c:795
+#: src/format-go.c:595
+#: src/format-java-printf.c:571
+#: src/format-javascript.c:392
+#: src/format-kde.c:227
+#: src/format-librep.c:334
+#: src/format-lua.c:234
+#: src/format-modula2.c:205
+#: src/format-ocaml.c:913
+#: src/format-pascal.c:391
+#: src/format-perl.c:599
+#: src/format-php.c:372
+#: src/format-qt.c:167
+#: src/format-rust.c:507
+#: src/format-sh-printf.c:483
+#: src/format-smalltalk.c:142
+#: src/format-tcl.c:409
+#, c-format
+msgid "a format specification for argument %zu doesn't exist in '%s'"
+msgstr "参数 %zu 的格式指定符在“%s”中不存在"
+
+#: src/format-awk.c:554
+#: src/format-boost.c:666
+#: src/format-c.c:148
+#: src/format-elisp.c:394
+#: src/format-gcc-internal.c:819
+#: src/format-gfc-internal.c:353
+#: src/format-go.c:619
+#: src/format-java-printf.c:595
+#: src/format-javascript.c:419
+#: src/format-librep.c:358
+#: src/format-lua.c:248
+#: src/format-modula2.c:219
+#: src/format-ocaml.c:946
+#: src/format-pascal.c:415
+#: src/format-perl.c:623
+#: src/format-php.c:396
+#: src/format-python.c:547
+#: src/format-ruby.c:965
+#: src/format-sh-printf.c:507
+#: src/format-tcl.c:433
+#, c-format
+msgid ""
+"format specifications in '%s' and '%s' for argument %zu are not the same"
+msgstr "参数 %3$zu 的指定格式在“%1$s”和“%2$s”中不同"
+
+#: src/format-boost.c:452
+#, c-format
+msgid "The directive number %zu starts with | but does not end with |."
+msgstr "第 %zu 条指令以“|”开始但并不以“|”结束。"
+
+#: src/format.c:160
+#, c-format
+msgid "'%s' is not a valid %s format string, unlike '%s'. Reason: %s"
+msgstr "不像“%3$s”，“%1$s”不是有效的 %2$s 格式字符串。原因: %4$s"
+
+#: src/format-c++-brace.c:252
+#, c-format
+msgid "In the directive number %zu, the arg-id is too large."
+msgstr "第 %zu 条指令中，参数 ID 过大。"
+
+#: src/format-c++-brace.c:368
+#: src/format-c++-brace.c:463
+#, c-format
+msgid "In the directive number %zu, the width's arg-id is too large."
+msgstr "第 %zu 条指令中，宽度的参数 ID 过大。"
+
+#: src/format-c++-brace.c:423
+#, c-format
+msgid ""
+"In the directive number %zu, the width's arg-id is not terminated through '}"
+"'."
+msgstr "第 %zu 条指令中，宽度的参数 ID 没有使用“}”结尾。"
+
+#: src/format-c++-brace.c:518
+#, c-format
+msgid ""
+"In the directive number %zu, the precision's arg-id is not terminated "
+"through '}'."
+msgstr "第 %zu 条指令中，精度的参数 ID 没有使用“}”结尾。"
+
+#: src/format-c++-brace.c:580
+#, c-format
+msgid ""
+"In the directive number %zu, the character '%c' is not a standard type "
+"specifier."
+msgstr "第 %zu 条指令中，字符“%c”不是有效的标准类型指定符。"
+
+#: src/format-c++-brace.c:581
+#, c-format
+msgid ""
+"The character that terminates the directive number %zu is not a standard "
+"type specifier."
+msgstr "终止第 %zu 条指令的字符不是有效的标准类型指定符。"
+
+#: src/format-c++-brace.c:589
+#, c-format
+msgid ""
+"In the directive number %zu, the sign specification is incompatible with the "
+"type specifier '%c'."
+msgstr "第 %zu 条指令中，符号指定符与类型指定符“%c”不兼容。"
+
+#: src/format-c++-brace.c:597
+#, c-format
+msgid ""
+"In the directive number %zu, the '#' option is incompatible with the type "
+"specifier '%c'."
+msgstr "第 %zu 条指令中，“#”选项与类型指定符“%c”不兼容。"
+
+#: src/format-c++-brace.c:605
+#, c-format
+msgid ""
+"In the directive number %zu, the '0' option is incompatible with the type "
+"specifier '%c'."
+msgstr "第 %zu 条指令中，“0”选项与类型指定符“%c”不兼容。"
+
+#: src/format-c++-brace.c:613
+#, c-format
+msgid ""
+"In the directive number %zu, the precision specification is incompatible "
+"with the type specifier '%c'."
+msgstr "第 %zu 条指令中，精度指定符与类型指定符“%c”不兼容。"
+
+#: src/format-c++-brace.c:621
+#, c-format
+msgid ""
+"In the directive number %zu, the 'L' option is incompatible with the type "
+"specifier '%c'."
+msgstr "第 %zu 条指令中，“L”选项与类型指定符“%c”不兼容。"
+
+#: src/format-c++-brace.c:722
+#, c-format
+msgid ""
+"The directive number %zu, with all of its options, is not applicable to any "
+"type."
+msgstr "第 %zu 条指令，以及其所有选项，不可应用于任何类型。"
+
+#: src/format-c++-brace.c:734
+#, c-format
+msgid "The string ends in the middle of the directive number %zu."
+msgstr "字符串在第 %zu 条指令中间结束。"
+
+#: src/format-c++-brace.c:742
+#, c-format
+msgid "The directive number %zu is not terminated through '}'."
+msgstr "第 %zu 条指令没有使用“}”结束。"
+
+#: src/format-c++-brace.c:764
+#: src/format-csharp.c:155
+#: src/format-java.c:344
+msgid ""
+"The string starts in the middle of a directive: found '}' without matching '"
+"{'."
+msgstr "指令中间开始字符串：发现了“}”但没有匹配的“{”。"
+
+#: src/format-c++-brace.c:765
+#: src/format-csharp.c:156
+#, c-format
+msgid "The string contains a lone '}' after directive number %zu."
+msgstr "第 %zu 条指令之后的字符串包含独立的“}”。"
+
+#: src/format-c++-brace.c:984
+#, c-format
+msgid ""
+"The format specification for argument %zu in '%s' is applicable to the types "
+"%s, but the format specification for argument %zu in '%s' is not."
+msgstr ""
+"第 %zu 个参数（在“%s”内）的格式指定符可应用于类型 %s，但第 %zu 个参数（在“%s”"
+"内）的格式指定符不可应用。"
+
+#: src/format-c++-brace.c:997
+#, c-format
+msgid ""
+"The format specification for argument %zu in '%s' uses a different "
+"presentation than the format specification for argument %zu in '%s'."
+msgstr ""
+"第 %zu 个参数（在“%s”内）的格式指定符相较第 %zu 个参数（在“%s”内）的格式指定"
+"符使用了不同的展示方式。"
+
+#: src/format-c.c:35
+#, c-format
+msgid ""
+"In the directive number %zu, the token after '<' is not the name of a format "
+"specifier macro. The valid macro names are listed in ISO C 99 section 7.8.1."
+msgstr ""
+"第 %zu 条指令中，“<”后的记号并不是格式指定符宏的名称。有效的宏名列在 ISO C "
+"99 章节 7.8.1 中。"
+
+#: src/format-c.c:38
+#, c-format
+msgid ""
+"In the directive number %zu, the token after '<' is not followed by '>'."
+msgstr "第 %zu 条指令中，没有与“<”匹配的“>”。"
+
+#: src/format-c.c:41
+#, c-format
+msgid "In the directive number %zu, the argument size specifier is invalid."
+msgstr "第 %zu 条指令中，参数大小的指定无效。"
+
+#: src/format-c.c:44
+#: src/format-gfc-internal.c:274
+#, c-format
+msgid ""
+"The string refers to argument number %zu but ignores argument number %zu."
+msgstr "字符串引用了第 %zu 个参数但是却忽略了第 %zu 个参数。"
+
+#: src/format-c.c:138
+#: src/format-csharp.c:201
+#: src/format-gfc-internal.c:343
+#: src/format-python.c:534
+#: src/format-qt-plural.c:109
+#: src/format-ruby.c:955
+#, c-format
+msgid "number of format specifications in '%s' and '%s' does not match"
+msgstr "“%s”和“%s”中的指定格式数量不匹配"
+
+#: src/format-csharp.c:82
+#: src/format-java.c:203
+#, c-format
+msgid "In the directive number %zu, '{' is not followed by an argument number."
+msgstr "第 %zu 条指令中，“{”后没有参数编号。"
+
+#: src/format-csharp.c:103
+#, c-format
+msgid "In the directive number %zu, ',' is not followed by a number."
+msgstr "第 %zu 条指令中，“,”后没有参数编号。"
+
+#: src/format-csharp.c:124
+#: src/format-java.c:185
+msgid ""
+"The string ends in the middle of a directive: found '{' without matching '}'."
+msgstr "指令中间字符串发生中断：发现了“{”但没有匹配的“}”。"
+
+#: src/format-csharp.c:133
+#, c-format
+msgid ""
+"The directive number %zu ends with an invalid character '%c' instead of '}'."
+msgstr "第 %zu 条指令中以无效的字符“%c”而非“}”结束。"
+
+#: src/format-csharp.c:134
+#, c-format
+msgid "The directive number %zu ends with an invalid character instead of '}'."
+msgstr "第 %zu 条指令以无效的字符而非“}”结束。"
+
+#: src/format-d.c:1651
+#, c-format
+msgid ""
+"In the directive number %zu, the first argument number is greater than the "
+"second argument number."
+msgstr "第 %zu 条指令中，第一个参数的数字比第二个参数的数字大。"
+
+#: src/format-d.c:1654
+#, c-format
+msgid ""
+"In the directive number %zu, the compound specifier consumes a variable "
+"number of arguments."
+msgstr "第 %zu 条指令中，组合指定符消耗可变数量的参数。"
+
+#: src/format-d.c:1657
+#, c-format
+msgid ""
+"In the directive number %zu, the compound specifier consumes %zu arguments."
+msgstr "第 %zu 条指令中，组合指定符消耗 %zu 个参数。"
+
+#: src/format-d.c:1660
+msgid "Found '%|' outside of '%(...%)'."
+msgstr "在“%(...%)”之外发现了“%|”。"
+
+#: src/format-d.c:1663
+msgid "The string ends in the middle of a compound specifier."
+msgstr "字符串于组合指定符中间结束。"
+
+#: src/format-d.c:1666
+#, c-format
+msgid ""
+"In the directive number %zu, there is an invalid directive in the delimiter "
+"part of a compound specifier."
+msgstr "第 %zu 条指令中，在组合指定符的分隔符部分存在无效的指令。"
+
+#: src/format-d.c:1669
+#: src/format-ocaml.c:768
+#, c-format
+msgid "Found '%%%c' without matching '%%%c'."
+msgstr "发现了“%%%c”但没有匹配的“%%%c”。"
+
+#: src/format-d.c:1672
+#, c-format
+msgid ""
+"The directive number %zu references an argument after the last argument."
+msgstr "第 %zu 条指令引用了最后一个参数之后的参数。"
+
+#: src/format-d.c:1676
+#: src/format-lisp.c:3419
+#: src/format-scheme.c:3341
+msgid "The string refers to some argument in incompatible ways."
+msgstr "字符串引用某些参数的方式不兼容。"
+
+#: src/format-d.c:2246
+#: src/format-lisp.c:3462
+#: src/format-scheme.c:3384
+#, c-format
+msgid "format specifications in '%s' and '%s' are not equivalent"
+msgstr "“%s”和“%s”中的格式指定符不等效"
+
+#: src/format-d.c:2263
+#: src/format-lisp.c:3479
+#: src/format-scheme.c:3401
+#, c-format
+msgid "format specifications in '%s' are not a subset of those in '%s'"
+msgstr "“%s”中的格式指定符不是“%s”格式指定符的子集"
+
+#: src/format-gcc-internal.c:228
+#, c-format
+msgid ""
+"The directive number %zu opens a quote group, but the previous one is not "
+"terminated."
+msgstr "第 %zu 条指令打开了一个引用组，但上一个尚未终止。"
+
+#: src/format-gcc-internal.c:238
+#: src/format-gcc-internal.c:248
+#: src/format-gcc-internal.c:258
+#, c-format
+msgid "The directive number %zu does not match a preceding '%%%c'."
+msgstr ""
+
+#: src/format-gcc-internal.c:344
+#, c-format
+msgid "In the directive number %zu, the flags combination is invalid."
+msgstr ""
+
+#: src/format-gcc-internal.c:385
+#, c-format
+msgid "In the directive number %zu, a precision is not allowed before '%c'."
+msgstr ""
+
+#: src/format-gcc-internal.c:426
+#, c-format
+msgid ""
+"In the directive number %zu, the argument number for the precision must be "
+"equal to %zu."
+msgstr ""
+
+#: src/format-gcc-internal.c:490
+#, c-format
+msgid ""
+"In the directive number %zu, a precision specification is not allowed before "
+"'%c'."
+msgstr ""
+
+#: src/format-gcc-internal.c:498
+#, c-format
+msgid "In the directive number %zu, the precision specification is invalid."
+msgstr ""
+
+#: src/format-gcc-internal.c:524
+#, c-format
+msgid ""
+"The directive number %zu opens a color group, but the previous one is not "
+"terminated."
+msgstr ""
+
+#: src/format-gcc-internal.c:535
+#, c-format
+msgid ""
+"The directive number %zu opens a URL group, but the previous one is not "
+"terminated."
+msgstr ""
+
+#: src/format-gcc-internal.c:663
+#, c-format
+msgid "The quote group opened by the directive number %zu is not terminated."
+msgstr ""
+
+#: src/format-gcc-internal.c:668
+#, c-format
+msgid "The color group opened by the directive number %zu is not terminated."
+msgstr ""
+
+#: src/format-gcc-internal.c:673
+#, c-format
+msgid "The URL group opened by the directive number %zu is not terminated."
+msgstr ""
+
+#: src/format-gcc-internal.c:840
+#, c-format
+msgid "'%s' uses %%m but '%s' doesn't"
+msgstr "“%s”使用了 %%m，但“%s”没有使用"
+
+#: src/format-gcc-internal.c:844
+#, c-format
+msgid "'%s' does not use %%m but '%s' uses %%m"
+msgstr "“%s”没有使用 %%m，但“%s”要用 %%m"
+
+#: src/format-gcc-internal.c:857
+#: src/format-gfc-internal.c:365
+#, c-format
+msgid "'%s' uses %%C but '%s' doesn't"
+msgstr "“%s”要用 %%C，但“%s”没有"
+
+#: src/format-gcc-internal.c:861
+#: src/format-gfc-internal.c:369
+#, c-format
+msgid "'%s' does not use %%C but '%s' uses %%C"
+msgstr "“%s”没有使用 %%C，但“%s”要用 %%C"
+
+#: src/format-go.c:115
+#: src/format-rust.c:172
+#, c-format
+msgid "In the directive number %zu, the argument number is too large."
+msgstr "第 %zu 条指令中，参数数字过大。"
+
+#: src/format-go.c:221
+#, c-format
+msgid "In the directive number %zu, the width is too large."
+msgstr "第 %zu 条指令中，参数 ID 过大。"
+
+#: src/format-go.c:326
+#, c-format
+msgid "In the directive number %zu, the precision is too large."
+msgstr "第 %zu 条指令中，指定的精度过大。"
+
+#: src/format-invalid.h:23
+msgid "The string ends in the middle of a directive."
+msgstr "字符串于指令中间结束。"
+
+#: src/format-invalid.h:26
+msgid ""
+"The string refers to arguments both through absolute argument numbers and "
+"through unnumbered argument specifications."
+msgstr "字符串同时使用两种方式引用了参数：绝对参数编号和未编号参数指定符。"
+
+#: src/format-invalid.h:29
+#, c-format
+msgid "In the directive number %zu, the precision is missing."
+msgstr "第 %zu 条指令中，缺失指定的精度。"
+
+#: src/format-invalid.h:32
+#, c-format
+msgid ""
+"In the directive number %zu, the argument number 0 is not a positive integer."
+msgstr "第 %zu 条指令中，第 0 个参数不是正整数。"
+
+#: src/format-invalid.h:34
+#, c-format
+msgid ""
+"In the directive number %zu, the width's argument number 0 is not a positive "
+"integer."
+msgstr "第 %zu 条指令中，宽度的第 0 个参数不是正整数。"
+
+#: src/format-invalid.h:36
+#, c-format
+msgid ""
+"In the directive number %zu, the precision's argument number 0 is not a "
+"positive integer."
+msgstr "第 %zu 条指令中，精度的第 0 个参数不是正整数。"
+
+#: src/format-invalid.h:40
+#, c-format
+msgid ""
+"In the directive number %zu, the character '%c' is not a valid conversion "
+"specifier."
+msgstr "第 %zu 条指令中，字符“%c”不是有效的对话指定符。"
+
+#: src/format-invalid.h:41
+#, c-format
+msgid ""
+"The character that terminates the directive number %zu is not a valid "
+"conversion specifier."
+msgstr "终止第 %zu 条指令的字符不是有效的转换指示符。"
+
+#: src/format-invalid.h:44
+#, c-format
+msgid ""
+"In the directive number %zu, the flag '%c' is invalid for the conversion "
+"'%c'."
+msgstr "第 %zu 条指令中，标志“%c”对于对话“%c”无效。"
+
+#: src/format-invalid.h:47
+#, c-format
+msgid "The string refers to argument number %zu in incompatible ways."
+msgstr "字符串引用第 %zu 个参数的方法不兼容。"
+
+#: src/format-java.c:238
+#, c-format
+msgid ""
+"In the directive number %zu, the substring \"%s\" is not a valid date/time "
+"style."
+msgstr "第 %zu 条指令中，子字符串“%s”不是有效的日期/时间风格。"
+
+#: src/format-java.c:249
+#: src/format-java.c:283
+#: src/format-java.c:312
+#, c-format
+msgid "In the directive number %zu, \"%s\" is not followed by a comma."
+msgstr "第 %zu 条指令中，“%s”后面没有逗号。"
+
+#: src/format-java.c:272
+#, c-format
+msgid ""
+"In the directive number %zu, the substring \"%s\" is not a valid number "
+"style."
+msgstr "第 %zu 条指令中，子字符串“%s”不是有效的数字格式。"
+
+#: src/format-java.c:321
+#, c-format
+msgid ""
+"In the directive number %zu, the argument number is not followed by a comma "
+"and one of \"%s\", \"%s\", \"%s\", \"%s\"."
+msgstr "第 %zu 条指令中，参数编号后面没有逗号和“%s”、“%s”、“%s”、“%s”之一。"
+
+#: src/format-java.c:566
+#, c-format
+msgid "In the directive number %zu, a choice contains no number."
+msgstr "第 %zu 条指令中，选择不包含数字。"
+
+#: src/format-java.c:577
+#, c-format
+msgid ""
+"In the directive number %zu, a choice contains a number that is not followed "
+"by '<', '#' or '%s'."
+msgstr "第 %zu 条指令中，选择包含的数字后面没有“<”、“#”或“%s”。"
+
+#: src/format-java.c:738
+#, c-format
+msgid ""
+"a format specification for argument {%zu}, as in '%s', doesn't exist in '%s'"
+msgstr "参数{%zu}（如同\"%s\"）的格式指定在\"%s\"中不存在"
+
+#: src/format-java.c:750
+#, c-format
+msgid "a format specification for argument {%zu} doesn't exist in '%s'"
+msgstr "参数 {%zu} 中未在“%s”中找到"
+
+#: src/format-java.c:774
+#, c-format
+msgid ""
+"format specifications in '%s' and '%s' for argument {%zu} are not the same"
+msgstr "参数 {%3$zu} 在“%1$s”和“%2$s”中的格式指定不相同"
+
+#: src/format-java-printf.c:131
+#, c-format
+msgid ""
+"In the directive number %zu, the reference to the argument of the previous "
+"directive is invalid."
+msgstr "第 %zu 条指令中，对先前指令参数的引用无效。"
+
+#: src/format-java-printf.c:134
+#, c-format
+msgid ""
+"In the directive number %zu, a width is invalid for the conversion '%c'."
+msgstr "第 %zu 条指令中，宽度对会话“%c”无效。"
+
+#: src/format-java-printf.c:137
+#, c-format
+msgid ""
+"In the directive number %zu, a precision is invalid for the conversion '%c'."
+msgstr "第 %zu 条指令中，精度对会话“%c”无效。"
+
+#: src/format-java-printf.c:141
+#, c-format
+msgid ""
+"In the directive number %zu, for the conversion '%c', the character '%c' is "
+"not a valid conversion suffix."
+msgstr "第 %zu 条指令中，对于会话“%c”，字符“%c”不是有效的对话后缀。"
+
+#: src/format-java-printf.c:142
+#, c-format
+msgid ""
+"The character that terminates the directive number %zu, for the conversion "
+"'%c', is not a valid conversion suffix."
+msgstr "终止第 %zu 条指令的字符对会话“%c”不是有效的转换后缀。"
+
+#: src/format-kde.c:149
+#, c-format
+msgid ""
+"The string refers to argument number %zu but ignores the arguments %zu and "
+"%zu."
+msgstr "字符串引用了第 %zu 个参数但是却忽略了第 %zu 个和第 %zu 个参数。"
+
+#: src/format-kde.c:236
+#: src/format-rust.c:516
+#, c-format
+msgid ""
+"a format specification for arguments %zu and %zu doesn't exist in '%s', only "
+"one argument may be ignored"
+msgstr "参数 %zu 和%zu 的格式定义在“%s”中不存在，仅可忽略一个参数"
+
+#: src/format-kde-kuit.c:251
+#: src/format-kde-kuit.c:272
+#: src/format-kde-kuit.c:282
+#, c-format
+msgid "error while parsing: %s"
+msgstr "错误，正处理: %s"
+
+#: src/format-lisp.c:2335
+#: src/format-lisp.c:2347
+#: src/format-scheme.c:2361
+#: src/format-scheme.c:2373
+#, c-format
+msgid ""
+"In the directive number %zu, parameter %zu is of type '%s' but a parameter "
+"of type '%s' is expected."
+msgstr "第 %zu 条指令中，第 %zu 个参数类型为“%s”，但应为“%s”。"
+
+#: src/format-lisp.c:2370
+#: src/format-scheme.c:2396
+#, c-format
+msgid ""
+"In the directive number %zu, too many parameters are given; expected at most "
+"%zu parameter."
+msgid_plural ""
+"In the directive number %zu, too many parameters are given; expected at most "
+"%zu parameters."
+msgstr[0] "第 %zu 条指令中，给出的参数太多；最多只需要 %zu 个参数。"
+
+#: src/format-lisp.c:2492
+#: src/format-scheme.c:2494
+#, c-format
+msgid "In the directive number %zu, '%c' is not followed by a digit."
+msgstr "第 %zu 条指令中，“%c”后面没有数字。"
+
+#: src/format-lisp.c:2734
+#: src/format-scheme.c:2751
+#, c-format
+msgid "In the directive number %zu, the argument %d is negative."
+msgstr "第 %zu 条指令中，参数 %d 为负数。"
+
+#: src/format-lisp.c:2803
+msgid "The string ends in the middle of a ~/.../ directive."
+msgstr "字符串在 ~/.../ 指令中间中断。"
+
+#: src/format-lisp.c:2841
+#: src/format-lisp.c:3097
+#: src/format-lisp.c:3214
+#: src/format-lisp.c:3274
+#: src/format-lisp.c:3386
+#: src/format-scheme.c:2837
+#: src/format-scheme.c:3093
+#: src/format-scheme.c:3210
+#: src/format-scheme.c:3308
+#, c-format
+msgid "Found '~%c' without matching '~%c'."
+msgstr "发现了“~%c”但没有匹配的“~%c”。"
+
+#: src/format-lisp.c:2861
+#: src/format-scheme.c:2857
+#, c-format
+msgid "In the directive number %zu, both the @ and the : modifiers are given."
+msgstr "第 %zu 条指令中，同时给出了 @ 和 : 修饰符。"
+
+#: src/format-lisp.c:2970
+#: src/format-scheme.c:2966
+#, c-format
+msgid ""
+"In the directive number %zu, '~:[' is not followed by two clauses, separated "
+"by '~;'."
+msgstr "第 %zu 条指令中，“~:[”后面没有两个用“~;”分隔的子句。"
+
+#: src/format-lisp.c:3315
+#: src/format-scheme.c:3251
+#, c-format
+msgid "In the directive number %zu, '~;' is used in an invalid position."
+msgstr "第 %zu 条指令中，“~;”的位置无效。"
+
+#: src/format-ocaml.c:562
+#: src/format-ocaml.c:661
+#, c-format
+msgid "Found '%s' without matching '%s'."
+msgstr ""
+
+#: src/format-perl-brace.c:194
+#: src/format-python-brace.c:555
+#: src/format-python.c:486
+#: src/format-ruby.c:910
+#: src/format-rust.c:461
+#: src/format-sh.c:295
+#, c-format
+msgid "a format specification for argument '%s' doesn't exist in '%s'"
+msgstr "参数“%s”的格式指定符未在“%s”中找到"
+
+#: src/format-perl.c:426
+#, c-format
+msgid ""
+"In the directive number %zu, the size specifier is incompatible with the "
+"conversion specifier '%c'."
+msgstr "第 %zu 条指令中，大小指定符与转换指定符“%c”不兼容。"
+
+#: src/format-python-brace.c:192
+#, c-format
+msgid "In the directive number %zu, '%c' cannot start a getattr argument."
+msgstr "第 %zu 条指令中，“%c”不可以getattr 参数开始。"
+
+#: src/format-python-brace.c:194
+#, c-format
+msgid ""
+"In the directive number %zu, a getattr argument starts with a character that "
+"is not alphabetical or underscore."
+msgstr "第 %zu 条指令中，一个 getattr 参数起始位置使用了非字母、数字或下划线的字符。"
+
+#: src/format-python-brace.c:216
+#, c-format
+msgid "In the directive number %zu, '%c' cannot start a getitem argument."
+msgstr "第 %zu 条指令中，“%c”不可以getitem 参数开始。"
+
+#: src/format-python-brace.c:218
+#, c-format
+msgid ""
+"In the directive number %zu, a getitem argument starts with a character that "
+"is not alphanumerical or underscore."
+msgstr "第 %zu 条指令中，一个 getitem 参数起始位置使用了非字母、数字或下划线的字符。"
+
+#: src/format-python-brace.c:228
+#, c-format
+msgid "In the directive number %zu, there is an unterminated getitem argument."
+msgstr "第 %zu 条指令中，存在未终止的 getitem 参数。"
+
+#: src/format-python-brace.c:251
+#, c-format
+msgid "In the directive number %zu, '%c' cannot start a field name."
+msgstr "第 %zu 条指令中，“%c”不可以field name 开始。"
+
+#: src/format-python-brace.c:253
+#, c-format
+msgid ""
+"In the directive number %zu, a field name starts with a character that is "
+"not alphanumerical or underscore."
+msgstr "第 %zu 条指令中，字段名称起始位置使用了非字母、数字或下划线的字符。"
+
+#: src/format-python-brace.c:266
+#, c-format
+msgid ""
+"In the directive number %zu, no more nesting is allowed in a format "
+"specifier."
+msgstr "第 %zu 条指令中，格式定义中不允许过多嵌套。"
+
+#: src/format-python-brace.c:302
+#: src/format-python-brace.c:355
+#: src/format-rust.c:261
+#: src/format-rust.c:318
+#, c-format
+msgid "The directive number %zu is unterminated."
+msgstr "第 %zu 条指令未终止。"
+
+#: src/format-python-brace.c:372
+#: src/format-python-brace.c:389
+msgid ""
+"The string refers to arguments both through absolute argument numbers and "
+"through unnamed argument specifications."
+msgstr ""
+
+#: src/format-python-brace.c:543
+#: src/format-python.c:474
+#: src/format-ruby.c:898
+#: src/format-rust.c:449
+#: src/format-sh.c:283
+#, c-format
+msgid ""
+"a format specification for argument '%s', as in '%s', doesn't exist in '%s'"
+msgstr "参数\"%s\"(如同\"%s\")的格式指定在\"%s\"中不存在"
+
+#: src/format-python.c:112
+#: src/format-ruby.c:129
+msgid ""
+"The string refers to arguments both through argument names and through "
+"unnamed argument specifications."
+msgstr "字符串同时使用两种方式引用了参数：通过参数名称和未命名参数指定符。"
+
+#: src/format-python.c:358
+#: src/format-ruby.c:782
+#, c-format
+msgid "The string refers to the argument named '%s' in incompatible ways."
+msgstr "字符串对名为“%s”的参数引用方式不兼容。"
+
+#: src/format-python.c:441
+#, c-format
+msgid ""
+"format specifications in '%s' expect a mapping, those in '%s' expect a tuple"
+msgstr "“%s”中的格式指定符需要映射，而“%s”中的格式指定符需要元组"
+
+#: src/format-python.c:449
+#, c-format
+msgid ""
+"format specifications in '%s' expect a tuple, those in '%s' expect a mapping"
+msgstr "“%s”中的格式指定符需要元组，而“%s”中的格式指定符需要映射"
+
+#: src/format-python.c:513
+#: src/format-ruby.c:934
+#, c-format
+msgid ""
+"format specifications in '%s' and '%s' for argument '%s' are not the same"
+msgstr "“%s”和“%s”中对参数“%s”的格式指定不同"
+
+#: src/format-qt.c:148
+#, c-format
+msgid ""
+"'%s' is a simple format string, but '%s' is not: it contains an 'L' flag or "
+"a double-digit argument number"
+msgstr "'%s' 仅仅是个格式字符串，但‘%s’不是：它包含一个‘L’标记或是一个两位数的参数值"
+
+#: src/format-ruby.c:132
+#, c-format
+msgid "In the directive number %zu, two names are given for the same argument."
+msgstr "第 %zu 条指令中，为相同参数给出了两个名称。"
+
+#: src/format-ruby.c:135
+#, c-format
+msgid ""
+"In the directive number %zu, two numbers are given for the same argument."
+msgstr "第 %zu 条指令中，为相同参数给出了两个数字。"
+
+#: src/format-ruby.c:138
+#, c-format
+msgid "In the directive number %zu, a flag is given after the width."
+msgstr "第 %zu 条指令中，标志在宽度之后给出。"
+
+#: src/format-ruby.c:141
+#, c-format
+msgid "In the directive number %zu, a flag is given after the precision."
+msgstr "第 %zu 条指令中，标志在精度之后给出。"
+
+#: src/format-ruby.c:144
+#, c-format
+msgid "In the directive number %zu, the width is given after the precision."
+msgstr "第 %zu 条指令中，宽度在精度之后给出。"
+
+#: src/format-ruby.c:147
+#, c-format
+msgid "In the directive number %zu, a width is given twice."
+msgstr "第 %zu 条指令中，宽度信息给定了两次。"
+
+#: src/format-ruby.c:150
+#, c-format
+msgid "In the directive number %zu, a precision is given twice."
+msgstr "第 %zu 条指令中，精度信息给定了两次。"
+
+#: src/format-ruby.c:865
+#, c-format
+msgid ""
+"format specifications in '%s' expect a hash table, those in '%s' expect "
+"individual arguments"
+msgstr "“%s”中的格式指定符需要散列表，而“%s”中的格式指定符需要独立参数"
+
+#: src/format-ruby.c:873
+#, c-format
+msgid ""
+"format specifications in '%s' expect individual arguments, those in '%s' "
+"expect a hash table"
+msgstr "“%s”中的格式指定符需要独立参数，而“%s”中的格式指定符需要散列表"
+
+#: src/format-sh.c:77
+msgid "The string refers to a shell variable with a non-ASCII name."
+msgstr "字符串以非 ASCII 名称引用 shell 变量。"
+
+#: src/format-sh.c:79
+msgid ""
+"The string refers to a shell variable with complex shell brace syntax. This "
+"syntax is unsupported here due to security reasons."
+msgstr "字符串引用的 shell 变量中大括号语法过于复杂。为安全起见，此语法不被支持。"
+
+#: src/format-sh.c:81
+msgid ""
+"The string refers to a shell variable whose value may be different inside "
+"shell functions."
+msgstr "字符串引用的 shell 变量值可能在 shell 函数中有所不同。"
+
+#: src/format-sh.c:83
+msgid "The string refers to a shell variable with an empty name."
+msgstr "字符串以空名称引用 shell 变量。"
+
+#: src/format-sh-printf.c:335
+msgid "The string ends in the middle of an escape sequence."
+msgstr "字符串在某个转义序列中中止。"
+
+#: src/format-sh-printf.c:345
+#, c-format
+msgid "The escape sequence '%c%c' is unsupported (not in POSIX)."
+msgstr "不支持转义序列“%c%c”（不在 POSIX 中）。"
+
+#: src/format-sh-printf.c:346
+#, c-format
+msgid "The escape sequence '%c%c' is invalid."
+msgstr "转义序列“%c%c”无效。"
+
+#: src/format-sh-printf.c:347
+msgid "This escape sequence is invalid."
+msgstr "该转义序列无效。"
+
+#: src/format-smalltalk.c:88
+#, c-format
+msgid ""
+"In the directive number %zu, the character '%c' is not a digit between 1 and "
+"9."
+msgstr ""
+
+#: src/format-smalltalk.c:89
+#, c-format
+msgid ""
+"The character that terminates the directive number %zu is not a digit "
+"between 1 and 9."
+msgstr ""
+
+#: src/msgl-check.c:110
+msgid "plural expression can produce division by zero"
+msgstr "复数表达式可能导致被零除"
+
+#: src/msgl-check.c:113
+msgid "plural expression can produce integer overflow"
+msgstr "复数表达式可能引起整数溢出"
+
+#: src/msgl-check.c:116
+msgid "plural expression can produce stack overflow"
+msgstr "复数表达式可能引起栈溢出"
+
+#: src/msgl-check.c:130
+msgid "plural expression can produce negative values"
+msgstr "复数表达式可能导致负值"
+
+#: src/msgl-check.c:137
+#, c-format
+msgid "nplurals = %lu but plural expression can produce values as large as %lu"
+msgstr "nplurals = %lu，但复数表达式的最大值可能等于 %lu"
+
+#: src/msgl-check.c:212
+#, c-format
+msgid "Try using the following, valid for %s:"
+msgstr "请尝试使用下面的，对 %s 是有效的："
+
+#: src/msgl-check.c:297
+#: src/msgl-check.c:321
+msgid "message catalog has plural form translations"
+msgstr "消息库有复数形式的翻译"
+
+#: src/msgl-check.c:299
+msgid "but header entry lacks a \"plural=EXPRESSION\" attribute"
+msgstr "但是文件头项中缺少“plural=表达式”属性"
+
+#: src/msgl-check.c:323
+msgid "but header entry lacks a \"nplurals=INTEGER\" attribute"
+msgstr "但是文件头项中缺少“nplural=整数”属性"
+
+#: src/msgl-check.c:356
+msgid "invalid nplurals value"
+msgstr "nplurals 值无效"
+
+#: src/msgl-check.c:383
+msgid "invalid plural expression"
+msgstr "plural 表达式无效"
+
+#: src/msgl-check.c:415
+#: src/msgl-check.c:431
+#, c-format
+msgid "nplurals = %lu"
+msgstr "nplurals = %lu"
+
+#: src/msgl-check.c:417
+#, c-format
+msgid "but some messages have only one plural form"
+msgid_plural "but some messages have only %lu plural forms"
+msgstr[0] "但是某些消息只有 %lu 种复数形式"
+
+#: src/msgl-check.c:433
+#, c-format
+msgid "but some messages have one plural form"
+msgid_plural "but some messages have %lu plural forms"
+msgstr[0] "但是某些消息有 %lu 种复数形式"
+
+#: src/msgl-check.c:457
+msgid ""
+"message catalog has plural form translations, but lacks a header entry with "
+"\"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\""
+msgstr ""
+"翻译库包含复数形式的翻译，但缺少以下的文件头项：\n"
+"“Plural-Forms: nplurals=<整数>; plural=<表达式>;”"
+
+#: src/msgl-check.c:560
+msgid "'msgid' and 'msgid_plural' entries do not both begin with '\\n'"
+msgstr "“msgid”和“msgid_plural”项并非都以“\\n”开始"
+
+#: src/msgl-check.c:569
+#, c-format
+msgid "'msgid' and 'msgstr[%u]' entries do not both begin with '\\n'"
+msgstr "“msgid”和“msgstr[%u]”项并非都以“\\n”开始"
+
+#: src/msgl-check.c:585
+msgid "'msgid' and 'msgstr' entries do not both begin with '\\n'"
+msgstr "“msgid”和“msgstr”项并非都以“\\n”开始"
+
+#: src/msgl-check.c:603
+msgid "'msgid' and 'msgid_plural' entries do not both end with '\\n'"
+msgstr "“msgid”和“msgid_plural”项并非都以“\\n”结束"
+
+#: src/msgl-check.c:612
+#, c-format
+msgid "'msgid' and 'msgstr[%u]' entries do not both end with '\\n'"
+msgstr "“msgid”和“msgstr[%u]”项并非都以“\\n”结束"
+
+#: src/msgl-check.c:628
+msgid "'msgid' and 'msgstr' entries do not both end with '\\n'"
+msgstr "“msgid”和“msgstr”项并非都以“\\n”结束"
+
+#: src/msgl-check.c:765
+#, c-format
+msgid "header field '%s' still has the initial default value\n"
+msgstr "文件头“%s”仍然是默认值未改变\n"
+
+#: src/msgl-check.c:782
+#, c-format
+msgid "header field '%s' missing in header\n"
+msgstr "头部缺少文件头“%s”\n"

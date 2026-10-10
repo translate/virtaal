@@ -45,7 +45,9 @@ class _XErrorHandler(ctypes.Structure):
     ]
 
 
-_LIBRARY_NAMES = ('libgettextpo.0.dylib', 'libgettextpo.dylib', 'libgettextpo-0.dll', 'libgettextpo.so.0')
+# Homebrew, gvsbuild, MSYS2, Linux.
+_LIBRARY_NAMES = ('libgettextpo.0.dylib', 'libgettextpo.dylib', 'gettextpo.dll', 'libgettextpo-0.dll',
+                  'libgettextpo.so.0')
 
 _SIGNATURES = {
     'po_file_create': ([], ctypes.c_void_p),
@@ -68,8 +70,8 @@ _load_attempted = False
 
 
 def _library_candidates():
-    # A frozen build's own copy first: find_library() only searches
-    # system paths, so it could pick up e.g. Homebrew's instead.
+    # A frozen build uses only its own copy. A system one (e.g. Homebrew's)
+    # links another libintl, which never sees Virtaal bind gettext-tools.
     if platform.is_frozen and platform.bundle_dir:
         for directory in (platform.bundle_dir,
                           os.path.join(platform.bundle_dir, '_internal'),
@@ -78,6 +80,7 @@ def _library_candidates():
                 path = os.path.join(directory, name)
                 if os.path.isfile(path):
                     yield path
+        return
     found = ctypes.util.find_library('gettextpo')
     if found:
         yield found
@@ -93,7 +96,10 @@ def _load_library():
     for name in _library_candidates():
         try:
             lib = ctypes.CDLL(name)
-        except OSError:
+        except OSError as e:
+            # A bundled copy that doesn't load is a packaging bug. PyInstaller
+            # replaces the loader's own error, keeping it as the cause.
+            (logging.warning if platform.is_frozen else logging.debug)('Could not load %s: %s', name, e.__cause__ or e)
             continue
         try:
             for funcname, (argtypes, restype) in _SIGNATURES.items():
@@ -104,6 +110,7 @@ def _load_library():
             logging.debug('%s lacks %s', name, e)
             continue
         _lib = lib
+        _lib.path = name
         return _lib
     logging.debug('libgettextpo not found; msgfmt checks disabled')
     return None
@@ -276,3 +283,36 @@ class MsgfmtCheck:
         header = store.header() if store is not None else None
         self._checker.set_header(header.target if header is not None else '')
         return '\n'.join(self._checker.check_unit(unit)) or None
+
+
+def self_check(lang):
+    """The library loaded and the msgfmt check's message for a broken
+        c-format unit, with the UI in lang - for checking a frozen build:
+
+        virtaal --run-module virtaal.support.gettextpo [<output file>]
+    """
+    from translate.storage import po
+
+    from virtaal.common import pan_app
+    try:
+        pan_app.set_ui_language(lang)
+    except FileNotFoundError:
+        # No virtaal catalog for lang, e.g. a Flatpak without its locale
+        # extension: msgfmt's message stays English.
+        pass
+    if not available():
+        return None, None
+    store = po.pofile.parsestring(b'msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-8\\n"\n\n'
+                                  b'#, c-format\nmsgid "Hello %s"\nmsgstr "Hallo"\n')
+    return _lib.path, MsgfmtCheck().check(store.units[-1])
+
+
+if __name__ == '__main__':
+    import sys
+    path, message = self_check('de')
+    result = 'library: %s\nmessage: %s\n' % (path, message)
+    if len(sys.argv) > 1:
+        with open(sys.argv[1], 'w', encoding='utf-8') as f:
+            f.write(result)
+    else:
+        sys.stdout.write(result)

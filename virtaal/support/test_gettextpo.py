@@ -106,7 +106,7 @@ def test_msgfmt_check_applies_to_po_only():
     assert not gettextpo.MsgfmtCheck.applies_to(ts2.tsfile())
 
 
-def test_bundled_library_is_preferred(tmp_path, monkeypatch):
+def test_bundled_library_only(tmp_path, monkeypatch):
     from virtaal.common.platform import Platform
     bundle_dir = tmp_path / "Contents" / "MacOS"
     bundle_dir.mkdir(parents=True)
@@ -116,4 +116,4 @@ def test_bundled_library_is_preferred(tmp_path, monkeypatch):
     monkeypatch.setattr(gettextpo, 'platform',
                         Platform(sys_platform='darwin', frozen=True, executable=str(bundle_dir / "virtaal")))
 
-    assert next(gettextpo._library_candidates()) == str(frameworks / "libgettextpo.0.dylib")
+    assert list(gettextpo._library_candidates()) == [str(frameworks / "libgettextpo.0.dylib")]

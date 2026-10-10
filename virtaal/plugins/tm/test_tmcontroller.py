@@ -301,14 +301,14 @@ def test_destroy_tears_down_the_view_and_all_registered_signals():
     controller._mode_selected_id = 'mode-id'
     controller._context_selected_id = 'context-id'
     controller._target_focused_id = 'target-id'
-    controller._completion_toggled_id = 'completion-id'
+    controller._popup_toggled_id = 'popup-id'
     controller.plugin_controller = SimpleNamespace(shutdown=lambda: calls.append('shutdown'))
 
     controller.destroy()
 
     assert calls == [
         'hide', 'destroy', ('store', 'store-id'), ('cursor', 'cursor-id'),
-        ('mode', 'mode-id'), ('mode', 'context-id'), ('target', 'target-id'), ('target', 'completion-id'),
+        ('mode', 'mode-id'), ('mode', 'context-id'), ('target', 'target-id'), ('target', 'popup-id'),
         'shutdown',
     ]
 
@@ -398,7 +398,7 @@ def test_start_query_uses_the_cached_unit_when_already_set(monkeypatch):
     controller.start_query()
 
     assert controller._target_focused_id == 'sig-target-focused'
-    assert controller._completion_toggled_id == 'sig-completion-popup-toggled'
+    assert controller._popup_toggled_id == 'sig-editor-popup-toggled'
     assert scheduled and scheduled[0][0] == TMController.QUERY_DELAY
 
 
@@ -574,14 +574,14 @@ def test_on_mode_selected_updates_the_view_geometry():
     assert calls == [True]
 
 
-def test_completion_popup_toggled_suspends_and_resumes_the_view():
-    # The TM window and the completion list would otherwise overlap.
+def test_editor_popup_toggled_suspends_and_resumes_the_view():
+    # The TM window would otherwise cover the completion list or a context menu.
     controller = _bare_controller()
     calls = []
     controller.view = SimpleNamespace(suspend=lambda: calls.append('suspend'), resume=lambda: calls.append('resume'))
 
-    controller._on_completion_popup_toggled(None, True)
-    controller._on_completion_popup_toggled(None, False)
+    controller._on_editor_popup_toggled(None, True)
+    controller._on_editor_popup_toggled(None, False)
 
     assert calls == ['suspend', 'resume']
 

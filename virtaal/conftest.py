@@ -110,6 +110,8 @@ _ISOLATED_FILES = {"test_popupwidgetbutton.py"}
 _CHILD_ENV = "_VIRTAAL_TESTSCAFFOLDING_ISOLATED"
 _REPORTS_ENV = "_VIRTAAL_ISOLATED_REPORTS"
 _STACKS_ENV = "_VIRTAAL_ISOLATED_STACKS"
+# Set by CI; devsupport/testing/stack_watchdog.py reads it.
+_STACKS_DIR_ENV = "VIRTAAL_STACKS_DIR"
 
 # Each test in the subprocess has its own pytest-timeout; this bounds
 # its start-up and exit too, well inside the CI job's own timeout.
@@ -146,6 +148,8 @@ def pytest_configure(config):
     global _config, _stacks_file
     _config = config
     path = os.environ.get(_STACKS_ENV)
+    if not path and os.environ.get(_STACKS_DIR_ENV):
+        path = os.path.join(os.environ[_STACKS_DIR_ENV], f"{os.getpid()}.txt")
     if path:
         _stacks_file = open(path, "w", encoding="utf-8")
         faulthandler.register(signal.SIGUSR1, file=_stacks_file, all_threads=True)

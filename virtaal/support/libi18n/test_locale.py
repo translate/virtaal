@@ -27,6 +27,20 @@ from virtaal.support.libi18n.locale import (
 )
 
 
+@pytest.fixture(autouse=True)
+def _restore_locale_env():
+    # fix_locale() writes os.environ itself, and monkeypatch.delenv() of an
+    # unset variable records nothing to restore. A leaked LANGUAGE=af made
+    # GTK label keys in Afrikaans in later tests (#4135).
+    saved = {name: os.environ.get(name) for name in ('LANG', 'LC_ALL', 'LANGUAGE')}
+    yield
+    for name, value in saved.items():
+        if value is None:
+            os.environ.pop(name, None)
+        else:
+            os.environ[name] = value
+
+
 def test_isofromlangid_maps_a_known_langid():
     assert _isofromlangid(1033) == 'en'  # English - United States
 

@@ -58,6 +58,12 @@ class TMController(BaseController):
             self._context_selected_id = self.main_controller.mode_controller.connect(
                 'context-selected', self._on_context_selected)
 
+        lang_controller = getattr(self.main_controller, 'lang_controller', None)
+        if lang_controller is not None:
+            self._lang_changed_ids = [
+                lang_controller.connect(signal, self._on_lang_changed)
+                for signal in ('source-lang-changed', 'target-lang-changed')]
+
     def _load_models(self):
         from virtaal.controllers.plugincontroller import PluginController
 
@@ -136,6 +142,8 @@ class TMController(BaseController):
             self.main_controller.mode_controller.disconnect(self._context_selected_id)
         if getattr(self, '_target_focused_id', None):
             self.main_controller.unit_controller.view.disconnect(self._target_focused_id)
+        for signal_id in getattr(self, '_lang_changed_ids', []):
+            self.main_controller.lang_controller.disconnect(signal_id)
         if getattr(self, '_completion_toggled_id', None):
             self.main_controller.unit_controller.view.disconnect(self._completion_toggled_id)
 
@@ -239,6 +247,16 @@ class TMController(BaseController):
         if getattr(self.view, 'summoned', False) or (
                 self.view.active and unit is not None and not unit.istranslated()):
             self.start_query()
+
+    def _on_lang_changed(self, lang_controller, code):
+        # The suggestions on screen are for the previous language pair.
+        self.view.clear()
+        if not self.storecursor:
+            return
+        if self.view.summoned:
+            self.start_query()
+        else:
+            self.update_suggestions()
 
     def _on_mode_selected(self, modecontroller, mode):
         self.view.update_geometry()

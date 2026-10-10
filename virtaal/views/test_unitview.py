@@ -17,7 +17,7 @@ from gi.repository import Gdk, Gtk
 from translate.misc.multistring import multistring
 from translate.storage.placeables.strelem import StringElem
 
-from virtaal.views.unitview import UnitView
+from virtaal.views.unitview import UnitView, _NotesView
 
 
 class _FakeParent:
@@ -794,7 +794,7 @@ def test_create_workflow_liststore_returns_an_empty_store_without_a_workflow():
 
 # _layout_update_notes() #
 
-def test_layout_update_notes_truncates_a_long_translator_comment():
+def test_layout_update_notes_shows_a_long_translator_comment_in_full():
     view = UnitView.__new__(UnitView)
     label = SimpleNamespace(texts=[])
     label.set_text = label.texts.append
@@ -806,7 +806,29 @@ def test_layout_update_notes_truncates_a_long_translator_comment():
 
     view._layout_update_notes('translator')
 
-    assert label.texts == [long_comment[:200] + '...']
+    assert label.texts == [long_comment]
+
+
+def test_notes_scroll_once_taller_than_the_line_limit():
+    notes = _NotesView()
+    window = Gtk.OffscreenWindow()
+    window.set_size_request(300, -1)
+    window.add(notes)
+    notes.set_text('One line.')
+    window.show_all()
+    _minimum, short = notes.get_preferred_height_for_width(300)
+    _minimum, one_line = notes.label.get_preferred_height_for_width(300)
+    assert short == one_line  # not padded to the scrollbar's height
+
+    notes.set_text('\n'.join('Line %d.' % i for i in range(20)))
+    _minimum, tall = notes.get_preferred_height_for_width(300)
+    _minimum, unclipped = notes.label.get_preferred_height_for_width(300)
+
+    assert short < tall < unclipped
+    assert tall == notes.max_height()
+    line_height = notes.label.create_pango_layout('X').get_pixel_size()[1]
+    assert tall % line_height  # a part line shows there is more
+    window.destroy()
 
 
 # _layout_update_sources() / _layout_update_targets() - unit-is-None branch #

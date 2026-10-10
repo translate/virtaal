@@ -79,6 +79,29 @@ STATES = [
 STATE_NAMES = [name for name, *_rest in STATES]
 
 
+def _write_recent_files(GLib):
+    """Give the isolated HOME a few recent files, newest first.
+    Gtk.RecentManager.add_item() is asynchronous and stores whole seconds,
+    so back-to-back adds tie and the Welcome Screen's order varies."""
+    bookmarks = GLib.BookmarkFile()
+    newest = GLib.DateTime.new_utc(2026, 1, 1, 12, 0, 0)
+    for age, (recent_file, mime_type) in enumerate((
+        (TESTFILES / "workflow.ts", "application/x-linguist"),
+        (TESTFILES / "workflow.xlf", "application/x-xliff+xml"),
+        (REPO_ROOT / "po" / "af.po", "text/x-gettext-translation"),
+    )):
+        uri = recent_file.as_uri()
+        when = newest.add_minutes(-age)
+        bookmarks.set_mime_type(uri, mime_type)
+        bookmarks.add_application(uri, "virtaal", "virtaal %u")
+        bookmarks.set_added_date_time(uri, when)
+        bookmarks.set_modified_date_time(uri, when)
+        bookmarks.set_visited_date_time(uri, when)
+    data_dir = Path(GLib.get_user_data_dir())
+    data_dir.mkdir(parents=True, exist_ok=True)
+    bookmarks.to_file(str(data_dir / "recently-used.xbel"))
+
+
 def _run(out_dir):
     """Drive a real Virtaal window through STATES, capturing each to
     out_dir. Runs Gtk.main() - blocks until the driver below quits it."""
@@ -87,6 +110,8 @@ def _run(out_dir):
     gi.require_version("Gtk", "3.0")
     gi.require_version("Gdk", "3.0")
     from gi.repository import Gdk, GLib, Gtk
+
+    _write_recent_files(GLib)
 
     from virtaal.common import pan_app
     from virtaal.main import Virtaal
@@ -99,18 +124,6 @@ def _run(out_dir):
     # dictionary for every fixture's target language.
     pan_app.settings.plugin_state["spellchecker"] = "disabled"
     force_light_theme()
-
-    # The Welcome Screen's "Recent Files" reads Gtk.RecentManager, which
-    # starts genuinely empty under the isolated HOME above - pre-populate
-    # it so that list isn't blank, with a few different formats for
-    # variety (matching the range the hand-captured original showed).
-    recent_manager = Gtk.RecentManager.get_default()
-    for recent_file in (
-        TESTFILES / "workflow.ts",
-        TESTFILES / "workflow.xlf",
-        REPO_ROOT / "po" / "af.po",
-    ):
-        recent_manager.add_item(recent_file.as_uri())
 
     _first_name, first_source, _first_index, _first_crop = STATES[0]
     app = Virtaal(str(first_source) if first_source else "")

@@ -7,7 +7,7 @@
 
 import locale
 
-from gi.repository import Gtk, Pango
+from gi.repository import Gdk, Gtk, Pango
 from translate.lang import factory as lang_factory
 
 from virtaal.common.pan_app import ui_language
@@ -20,6 +20,8 @@ class ChecksUnitView(BaseView):
     """The unit specific view for quality checks."""
 
     COL_CHECKNAME, COL_DESC = range(2)
+    # Room for the heading, a row and a scrollbar.
+    MIN_HEIGHT = 80
 
     # INITIALIZERS #
     def __init__(self, controller):
@@ -71,7 +73,15 @@ class ChecksUnitView(BaseView):
         self.tvw_checks.set_model(self.lst_checks)
         self.tvw_checks.get_selection().set_mode(Gtk.SelectionMode.NONE)
 
-        vb.pack_start(self.tvw_checks, True, True, 0)
+        # Scrolls when there isn't room for every row (see update_geometry),
+        # with a scrollbar that shows there are more.
+        self._scrolled = scrolled = Gtk.ScrolledWindow()
+        scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.NEVER)
+        scrolled.set_propagate_natural_width(True)
+        scrolled.set_propagate_natural_height(True)
+        scrolled.set_overlay_scrolling(False)
+        scrolled.add(self.tvw_checks)
+        vb.pack_start(scrolled, True, True, 0)
 
         return frame
 
@@ -125,9 +135,43 @@ class ChecksUnitView(BaseView):
         textbox = self.controller.main_controller.unit_controller.view.sources[0]
         alloc = textbox.get_allocation()
 
-        if width > alloc.width * 1.3:
-            return x, y, int(alloc.width * 1.3), height
-        return geom
+        width = min(width, int(alloc.width * 1.3))
+        # It opens above the button: no taller than the room up to the top
+        # of the screen, which clips it (macOS).
+        height = self._unscrolled_height(height)
+        room = btn_window_xy.y - self._top_limit()
+        scrolls = height > room
+        if scrolls:
+            height = self._whole_rows(max(room, self.MIN_HEIGHT), height)
+        # Only while it scrolls: a scrollbar's minimum length would
+        # otherwise make a short list's pop-up taller than its rows.
+        policy = Gtk.PolicyType.AUTOMATIC if scrolls else Gtk.PolicyType.NEVER
+        if self._scrolled.get_policy()[1] != policy:
+            self._scrolled.set_policy(Gtk.PolicyType.NEVER, policy)
+        return x, y, width, height
+
+    def _whole_rows(self, height, natural):
+        """height, less any part of a row it would cut off."""
+        rows = len(self.lst_checks)
+        tree = self.tvw_checks.get_preferred_height()[1]
+        header = self.tvw_checks.get_column(0).get_button().get_preferred_height()[1]
+        if not rows or tree <= header:
+            return height
+        row = (tree - header) / rows
+        fixed = natural - tree + header
+        return int(fixed + max(1, int((height - fixed) // row)) * row)
+
+    def _unscrolled_height(self, height):
+        """The pop-up's height without a scrollbar's minimum length,
+            which would keep a short list's pop-up looking too tall."""
+        return height - self._scrolled.get_preferred_height()[1] + self.tvw_checks.get_preferred_height()[1]
+
+    def _top_limit(self):
+        window = self.controller.main_controller.view.main_window.get_window()
+        if window is None:
+            return 0
+        monitor = Gdk.Display.get_default().get_monitor_at_window(window)
+        return monitor.get_workarea().y if monitor else 0
 
 
     # EVENT HANDLERS #

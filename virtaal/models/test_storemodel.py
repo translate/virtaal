@@ -187,6 +187,15 @@ def test_a_different_language_replaces_the_files_code(tmp_path):
     assert model._trans_store.gettargetlanguage() == "af"
 
 
+def test_set_language_reports_whether_the_file_changed(tmp_path):
+    model = _xliff_model(tmp_path)
+
+    assert model.set_source_language("de") is True
+    assert model.set_source_language("de") is False
+    assert model.set_target_language("af") is True
+    assert model.set_target_language("af") is False
+
+
 class _SavingController(_FakeController):
     def __init__(self, target_lang):
         from types import SimpleNamespace

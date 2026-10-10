@@ -144,7 +144,11 @@ def test_other_platforms_keep_gtks_own_labels(monkeypatch):
     parent = Gtk.Window()
 
     window = ShortcutsWindow(parent)
+    rows = [[child.get_text() for child in label.get_children()]
+            for label in shortcutswindow._shortcut_labels(window)
+            if label.get_accelerator() == '<Shift>Tab']
 
-    assert ['Shift', '+', 'Tab'] in _keycap_texts(window)
+    # The row and its search copy.
+    assert rows == [['Shift', '+', 'Tab']] * 2
     window.destroy()
     parent.destroy()

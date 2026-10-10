@@ -84,15 +84,20 @@ def test_sticky_button_ignores_focus_out_event():
     assert btn.is_popup_visible
 
 
-def test_main_window_focus_out_also_hides_the_popup():
+def test_main_window_focus_out_hides_the_popup_until_focus_returns():
+    # The button stays pressed, so the pop-up comes back (#4172).
     main_window = Gtk.Window()
     _, btn = _make_button(main_window=main_window)
     btn.show_popup()
     _run_pending_show(btn)
 
     main_window.emit('focus-out-event', Gdk.Event.new(Gdk.EventType.FOCUS_CHANGE))
-
     assert not btn.is_popup_visible
+    assert btn.get_active()
+
+    main_window.emit('focus-in-event', Gdk.Event.new(Gdk.EventType.FOCUS_CHANGE))
+    _run_pending_show(btn)
+    assert btn.is_popup_visible
 
 
 def _key_event(keyval):

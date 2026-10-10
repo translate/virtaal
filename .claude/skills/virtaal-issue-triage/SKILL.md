@@ -195,6 +195,28 @@ In every case, the close comment cites the concrete evidence (a commit,
 a grep result, an actual test run) - never a bare "fixed" or "no
 longer applicable" with nothing to check it against.
 
+## Reviewing every issue under one label
+
+"Are these all still valid and implementable?" for a label (done for
+machine-translations and translation-memory, 2026-10-10):
+
+- Read every body and comment in one GraphQL batch (see Batch
+  mechanics), then check each concrete claim against `upstream/main`.
+  Issue text written last month can still be wrong: #3661/#3662 said
+  "fill in the FIXME stub", but tm.db has no column recording a unit's
+  store, so the real fix needs a schema change.
+- Report in groups: close (with the evidence), merge (which survives),
+  valid-small, valid-medium, and work several issues share. Change
+  nothing until Dwayne approves the list.
+- On approval: close obsolete ones as "not planned" with the evidence;
+  correct a wrong cause in a comment rather than editing the original
+  body; cross-link issues that share a fix.
+- `gh issue close --reason` takes only completed or "not planned". For
+  a duplicate, add the `duplicate` label, close as "not planned", and
+  leave a one-line note on the surviving issue.
+- Work that belongs to the amaGama server goes on `translate/amagama`
+  (see `virtaal-issue-filing`).
+
 ## `gh issue list` silently caps at 30
 
 **Always pass `--limit` explicitly** (500 comfortably covers this
@@ -245,6 +267,11 @@ done
 Q="$Q } }"
 gh api graphql -f query="$Q"
 ```
+
+Two more zsh traps in these loops: a bare `==` word (`echo ==`) is
+`=cmd` expansion and fails with "= not found", so quote separators;
+and an unquoted `?` in a `gh api` path (`.../milestones?state=all`)
+is a glob, so quote the whole path.
 
 Ranking a batch of unlabeled issues to work through: sort by comment
 count (a real, if crude, signal of engagement/severity) - the same

@@ -57,6 +57,17 @@ def test_python_format():
     assert "naam" in problems[0]
 
 
+def test_lisp_format_with_a_huge_count_is_not_checked():
+    # gettext 1.0 builds a list as long as the count: 10000000 needs over 1 GB.
+    assert check(b'#, lisp-format\nmsgid "~{~1@*~D~}"\nmsgstr "~{~10000000@*~D~}"\n') == []
+    assert check(b'#, scheme-format\nmsgid "~{~10000000*~D~}"\nmsgstr "~{~1*~D~}"\n') == []
+    assert check(b'#, lisp-format\nmsgid "~D files"\nmsgstr "~A"\n')
+
+
+def test_a_huge_number_is_checked_in_other_formats():
+    assert check(b'#, c-format\nmsgid "%d of 1000000"\nmsgstr "1000000"\n')
+
+
 def test_fuzzy_is_checked():
     assert check(b'#, fuzzy, c-format\nmsgid "Hello %s"\nmsgstr "Hallo"\n')
 

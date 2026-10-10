@@ -16,6 +16,7 @@ import ctypes
 import ctypes.util
 import logging
 import os
+import re
 
 from translate.filters.decorators import Category
 
@@ -132,6 +133,10 @@ def _strings(multistring):
     return [str(s) for s in strings]
 
 
+# Far beyond any real format string; 10000000 needs over 1 GB.
+_HUGE_NUMBER = re.compile(r'[0-9]{6,}')
+
+
 def _unit_flags(unit):
     flags = []
     for comment in getattr(unit, 'typecomments', []):
@@ -236,6 +241,16 @@ class MsgfmtChecker:
                 lib.po_message_set_format(message, _encode(format_type), int(is_format))
         return message
 
+    @staticmethod
+    def _hangs(unit):
+        """Whether gettext 1.0 would run out of memory checking unit: its
+            Lisp and Scheme parsers build a list as long as the count of a
+            ~N@* or ~N* inside ~{...~}."""
+        flags = _unit_flags(unit)
+        if 'lisp-format' not in flags and 'scheme-format' not in flags:
+            return False
+        return any(_HUGE_NUMBER.search(s) for s in _strings(unit.source) + _strings(unit.target))
+
     def check_unit(self, unit):
         """The problems ``msgfmt -c`` reports for unit, as strings.
 
@@ -243,6 +258,8 @@ class MsgfmtChecker:
         if unit.isheader():
             self.set_header(_strings(unit.target)[0])
         elif not any(_strings(unit.target)):
+            return []
+        if self._hangs(unit):
             return []
         if self._file is None:
             self.set_header('')

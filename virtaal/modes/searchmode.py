@@ -93,8 +93,8 @@ class SearchMode(BaseMode):
         Gtk.AccelMap.add_entry("<Virtaal>/Edit/Search: Next", Gdk.KEY_G, Gdk.ModifierType.CONTROL_MASK)
         Gtk.AccelMap.add_entry("<Virtaal>/Edit/Search: Previous", Gdk.KEY_G,
                                Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK)
-        # tmview.py has its own global Escape accelerator ("Hide TM") -
-        # both fire when relevant, deliberately (see _on_close_search()).
+        # tmview.py's Escape ("Hide TM") is tried first and only takes the
+        # key while suggestions are showing.
         Gtk.AccelMap.add_entry("<Virtaal>/Edit/Search: Close", Gdk.KEY_Escape, 0)
 
         self.accel_group = Gtk.AccelGroup()

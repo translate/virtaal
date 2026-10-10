@@ -42,6 +42,7 @@ class ListNavigator(Gtk.HBox):
         tvw.set_model(lst)
         tvw.set_headers_visible(False)
         tvw.get_selection().connect('changed', self._on_selection_changed)
+        tvw.connect('button-release-event', self._on_item_clicked)
 
         return tvw, lst
 
@@ -174,7 +175,14 @@ class ListNavigator(Gtk.HBox):
             elif keyval == Gdk.KEY_Down and self.btn_popup.is_popup_visible:
                 self.move_state(1)
                 return True
+            elif keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter) and self.btn_popup.is_popup_visible:
+                self.btn_popup.hide_popup()
+                return True
 
+        return False
+
+    def _on_item_clicked(self, treeview, event):
+        self.btn_popup.hide_popup()
         return False
 
     def _on_selection_changed(self, selection):

@@ -222,7 +222,7 @@ def _repo_root():
 
 def _ensure_dev_library_catalogs(lang, localedir):
     """A dev checkout's version of setup.py's lite step: for each
-        library (GTK, GLib, gtkspell, gtk-mac-integration), its own
+        library (GTK, GLib, gtkspell, gtk-mac-integration, gettext-tools), its own
         installed catalog for C{lang} merged with Virtaal's lite one
         from C{po/lite/}, into C{localedir} - where
         bind_libintl_posix() then points that library. Rebuilt when
@@ -231,9 +231,9 @@ def _ensure_dev_library_catalogs(lang, localedir):
     import logging
 
     from virtaal.support.libi18n import lite
-    for domain, namespace in lite.LIBRARY_NAMESPACES.items():
+    for domain in lite.LIBRARY_DOMAINS:
         lite_po = os.path.join(_repo_root(), 'po', 'lite', domain, lang + '.po')
-        upstream_dir = lite.library_locale_dir(namespace)
+        upstream_dir = lite.upstream_locale_dir(domain)
         upstream_mo = os.path.join(upstream_dir, lang, 'LC_MESSAGES', domain + '.mo') if upstream_dir else None
         sources = [p for p in (lite_po, upstream_mo) if p and os.path.isfile(p)]
         if not sources:

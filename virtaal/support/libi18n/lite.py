@@ -29,6 +29,9 @@ LIBRARY_NAMESPACES = {
     "gtkspell3": "GtkSpell",
     "gtk-mac-integration": "GtkosxApplication",
 }
+# libgettextpo's messages (the "msgfmt" check), which isn't a GI library.
+GETTEXT_TOOLS = "gettext-tools"
+LIBRARY_DOMAINS = tuple(LIBRARY_NAMESPACES) + (GETTEXT_TOOLS,)
 
 
 def library_locale_dir(namespace):
@@ -51,6 +54,33 @@ def library_locale_dir(namespace):
         locale_dir = os.path.join(path, "share", "locale")
         if os.path.isdir(locale_dir):
             return locale_dir
+    return None
+
+
+def _libintl_default_dir(domain):
+    """Where libintl looks for domain's catalogs unless told
+        otherwise, or None."""
+    import ctypes
+    import ctypes.util
+    try:
+        name = ctypes.util.find_library("intl")
+        libintl = ctypes.CDLL(name) if name else ctypes.CDLL(None)
+        bindtextdomain = libintl.bindtextdomain
+    except (OSError, AttributeError):
+        return None
+    bindtextdomain.restype = ctypes.c_char_p
+    bindtextdomain.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
+    path = bindtextdomain(domain.encode("ascii"), None)
+    return os.fsdecode(path) if path else None
+
+
+def upstream_locale_dir(domain):
+    """share/locale/ holding a library domain's own catalogs on this
+        host, or None."""
+    if domain in LIBRARY_NAMESPACES:
+        return library_locale_dir(LIBRARY_NAMESPACES[domain])
+    if domain == GETTEXT_TOOLS:
+        return _libintl_default_dir(domain)
     return None
 
 

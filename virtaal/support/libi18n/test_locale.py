@@ -343,6 +343,8 @@ def test_fix_libintl_passes_bytes_not_str_to_bindtextdomain(monkeypatch):
     assert calls == [
         ('bindtextdomain', b'virtaal', expected_dir),
         ('bind_textdomain_codeset', b'virtaal', b'UTF-8'),
+        ('bindtextdomain', b'gettext-tools', expected_dir),
+        ('bind_textdomain_codeset', b'gettext-tools', b'UTF-8'),
     ]
 
 

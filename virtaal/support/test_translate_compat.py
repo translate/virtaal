@@ -162,7 +162,7 @@ def test_shipped_language_name_lite_catalogs_are_read(tmp_path, monkeypatch):
     po_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'po')
     monkeypatch.setattr(platform, 'locale_dir', str(tmp_path))
     entries = [line.split('/') for line in lite.read_linguas(os.path.join(po_dir, 'LINGUAS-lite'))]
-    names = [(domain, lang) for domain, lang in entries if domain not in lite.LIBRARY_NAMESPACES]
+    names = [(domain, lang) for domain, lang in entries if domain not in lite.LIBRARY_DOMAINS]
     assert names
     for domain, lang in names:
         po_file = os.path.join(po_dir, 'lite', domain, lang + '.po')

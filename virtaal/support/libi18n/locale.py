@@ -354,8 +354,10 @@ def fix_libintl(main_dir):
     # then reads only up to its first embedded null byte - "virtaal"
     # arrives there as just "v".
     locale_dir = locale_dir.encode(sys.getfilesystemencoding())
-    libintl.bindtextdomain(b"virtaal", locale_dir)
-    libintl.bind_textdomain_codeset(b"virtaal", b"UTF-8")
+    # libgettextpo (the msgfmt check) never binds its own domain.
+    for domain in (b"virtaal", b"gettext-tools"):
+        libintl.bindtextdomain(domain, locale_dir)
+        libintl.bind_textdomain_codeset(domain, b"UTF-8")
     del libintl
 
 
@@ -377,10 +379,11 @@ def _bundled_macos_libintl(bundle_dir):
     return None
 
 
-# GTK's and GLib's own gettext domains. Outside Windows each library
-# binds its domain to its own locale directory (GTK on macOS: the main
-# bundle's, Python.app's in a dev checkout), never Virtaal's.
-LIBRARY_DOMAINS = (b"gtk30", b"glib20")
+# GTK's, GLib's and libgettextpo's own gettext domains. Outside Windows
+# GTK and GLib bind theirs to their own locale directory (GTK on macOS:
+# the main bundle's, Python.app's in a dev checkout), never Virtaal's;
+# libgettextpo binds none.
+LIBRARY_DOMAINS = (b"gtk30", b"glib20", b"gettext-tools")
 
 # Each library's own binding, restored when Virtaal has no catalog.
 _library_default_dirs = {}

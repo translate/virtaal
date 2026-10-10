@@ -56,6 +56,31 @@ A real public release/tag push is outward-facing and hard to walk
 back - confirm with Dwayne before pushing the tag itself, even if
 everything else (CI green, checklist clean) is ready.
 
+## Reading the macOS build logs
+
+The tagged commit's `build-macos-app` jobs can pass and still log a
+warning that matters. Expected and harmless (baseline 2026-10-10):
+
+- `Failed to collect submodules for 'virtaal.plugins._ipython_console'`
+  (no IPython) - frozen builds skip `_`-prefixed plugins anyway
+  (`plugincontroller.py`).
+- `Hidden import "gi._option" not found` - PyInstaller's gi hook asks for
+  a module current PyGObject no longer has.
+- GSettings `Paths starting with "/system/" are deprecated` - Homebrew's
+  GNOME schemas.
+- arm64 only: the lite-coverage `N shipped language(s) show ... in
+  English` annotation.
+
+**Treat as real:** PyInstaller's `Found one or more binaries with invalid
+or incompatible macOS SDK version`. The binary has no
+`LC_BUILD_VERSION`/`LC_VERSION_MIN_MACOSX`, and notarization rejects it
+("uses an SDK older than the 10.9 SDK") even though signing passes. Check
+it with `otool -l <dylib> | grep -A4 -E 'LC_BUILD_VERSION|LC_VERSION_MIN'`,
+and check what loads it with `otool -L` on its neighbours before
+rebuilding it. #4173 found the Intel enchant wheel's `libiconv.2.dylib`
+was unused (everything loads `/usr/lib/libiconv.2.dylib`), so it was
+dropped instead.
+
 ## After tagging: things that don't happen automatically
 
 None of these are wired to the tag push - each is a separate, manual

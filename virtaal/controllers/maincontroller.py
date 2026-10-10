@@ -69,32 +69,14 @@ class MainController(BaseController):
         """C{self.store_controller.get_store_filename()}"""
         return self.store_controller.get_store_filename()
 
-    def get_translator_name(self):
-        name = pan_app.settings.translator["name"]
-        if not name:
-            return self.show_input(
-                title=_('Header information'),
-                msg=_('Please enter your name')
-            )
-        return name
-
-    def get_translator_email(self):
-        email = pan_app.settings.translator["email"]
-        if not email:
-            return self.show_input(
-                title=_('Header information'),
-                msg=_('Please enter your e-mail address')
-            )
-        return email
-
-    def get_translator_team(self):
-        team = pan_app.settings.translator["team"]
-        if not team:
-            return self.show_input(
-                title=_('Header information'),
-                msg=_("Please enter your team's information")
-            )
-        return team
+    def get_translator_details(self):
+        """The translator's name, e-mail address and team, asking for all
+            three in one dialog if any is missing."""
+        translator = pan_app.settings.translator
+        details = (translator["name"], translator["email"], translator["team"])
+        if all(details):
+            return details
+        return self.view.show_translator_dialog(*details) or details
 
     def set_saveable(self, value):
         self.view.set_saveable(value)
@@ -394,10 +376,6 @@ class MainController(BaseController):
     def show_error(self, msg, parent=None):
         """Shortcut for C{self.view.show_error_dialog()}"""
         return self.view.show_error_dialog(message=msg, parent=parent)
-
-    def show_input(self, title='', msg=''):
-        """Shortcut for C{self.view.show_input_dialog()}"""
-        return self.view.show_input_dialog(title=title, message=msg)
 
     def show_prompt(self, title='', msg='', parent=None):
         """Shortcut for C{self.view.show_prompt_dialog()}"""

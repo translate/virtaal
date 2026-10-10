@@ -53,9 +53,7 @@ def _model_with_translator_info(tmp_path, name, email):
     model = StoreModel(str(path), controller=None)
     model.controller = SimpleNamespace(
         main_controller=SimpleNamespace(
-            get_translator_name=lambda: name,
-            get_translator_email=lambda: email,
-            get_translator_team=lambda: None,
+            get_translator_details=lambda: (name, email, None),
             lang_controller=SimpleNamespace(
                 target_lang=SimpleNamespace(code='fr', plural=None, nplurals=None)),
             checks_controller=SimpleNamespace(code=None),

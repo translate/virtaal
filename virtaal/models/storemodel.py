@@ -352,9 +352,7 @@ class StoreModel(BaseModel):
         # It makes sure that, if we are working with a PO file, that all header info is present.
         from translate.storage.poheader import poheader, tzstring
         if isinstance(self._trans_store, poheader):
-            name = self.controller.main_controller.get_translator_name()
-            email = self.controller.main_controller.get_translator_email()
-            team = self.controller.main_controller.get_translator_team()
+            name, email, team = self.controller.main_controller.get_translator_details()
             if name:
                 pan_app.settings.translator["name"] = name
             if email:

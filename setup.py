@@ -69,10 +69,9 @@ if os.name == 'nt' or sys.platform == 'darwin':
         app, lang = lang.rstrip().split('/')
         po_filename = path.join('po', 'lite', app, lang + '.po')
         mo_filename = path.join('mo', lang, app + '.mo')
-        # iso639-3 and iso639-5 have no GI library: language names fall back
+        # iso639-3 and iso639-5 have no library: language names fall back
         # to Virtaal's own catalog at runtime (translate_compat).
-        namespace = lite.LIBRARY_NAMESPACES.get(app)
-        upstream_dir = lite.library_locale_dir(namespace) if namespace else None
+        upstream_dir = lite.upstream_locale_dir(app)
         upstream_mo = path.join(upstream_dir, lang, 'LC_MESSAGES', app + '.mo') if upstream_dir else None
 
         lite.merge(upstream_mo, po_filename, mo_filename)

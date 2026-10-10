@@ -150,3 +150,20 @@ def test_is_unused_catalog_drops_unread_library_and_pycountry_domains():
 
 def test_library_locale_dir_is_none_for_a_missing_library():
     assert lite.library_locale_dir("NoSuchNamespace") is None
+
+
+def test_upstream_locale_dir_of_a_gi_library(monkeypatch):
+    monkeypatch.setattr(lite, "library_locale_dir", lambda namespace: "/gi/" + namespace)
+
+    assert lite.upstream_locale_dir("gtk30") == "/gi/Gtk"
+
+
+def test_upstream_locale_dir_of_gettext_tools_is_where_libintl_looks():
+    expected = lite._libintl_default_dir("gettext-tools")
+
+    assert lite.upstream_locale_dir("gettext-tools") == expected
+    assert expected is None or os.path.isabs(expected)
+
+
+def test_upstream_locale_dir_of_a_domain_without_a_library():
+    assert lite.upstream_locale_dir("iso639-3") is None

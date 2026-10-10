@@ -289,6 +289,25 @@ def test_ensure_dev_library_catalogs_leaves_nothing_behind_on_a_failed_merge(tmp
     assert os.listdir(localedir / 'xx' / 'LC_MESSAGES') == []
 
 
+def test_ensure_dev_library_catalogs_builds_gettext_tools_from_lite_alone(tmp_path, monkeypatch):
+    # The macOS and Windows builds' libgettextpo comes without catalogs.
+    from virtaal.support.libi18n import lite
+    monkeypatch.setattr(lite, 'upstream_locale_dir', lambda domain: None)
+    repo_root = tmp_path / 'repo'
+    (repo_root / 'po' / 'lite' / 'gettext-tools').mkdir(parents=True)
+    (repo_root / 'po' / 'lite' / 'gettext-tools' / 'xx.po').write_text(
+        'msgid ""\nmsgstr "Content-Type: text/plain; charset=UTF-8\\n"\n\n'
+        'msgid "invalid plural expression"\nmsgstr "Lite plural"\n', encoding='utf-8')
+    monkeypatch.setattr(pan_app, '_repo_root', lambda: str(repo_root))
+    localedir = tmp_path / 'localedir'
+
+    pan_app._ensure_dev_library_catalogs('xx', str(localedir))
+
+    import gettext
+    catalog = gettext.translation('gettext-tools', str(localedir), languages=['xx'])
+    assert catalog.gettext('invalid plural expression') == 'Lite plural'
+
+
 def test_ensure_dev_library_catalogs_skips_a_library_with_no_catalog_at_all(tmp_path, monkeypatch):
     from virtaal.support.libi18n import lite
     monkeypatch.setattr(lite, 'library_locale_dir', lambda namespace: None)

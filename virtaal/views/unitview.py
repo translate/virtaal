@@ -8,7 +8,7 @@
 import logging
 import re
 
-from gi.repository import Gdk, GLib, GObject, Gtk
+from gi.repository import Gdk, GLib, GObject, Gtk, Pango
 from gi.repository.GObject import TYPE_PYOBJECT
 from translate.lang import factory
 from translate.misc.multistring import multistring
@@ -28,6 +28,35 @@ def _get_focused_widget(widgets):
         if textview.is_focus():
             return textview
     return None
+
+
+class _NotesView(Gtk.ScrolledWindow):
+    """A unit's notes, scrolling once they are taller than MAX_LINES."""
+
+    MAX_LINES = 5
+
+    def __init__(self):
+        super().__init__()
+        self.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        self.set_propagate_natural_height(True)
+        self.set_overlay_scrolling(False)
+
+        self.label = Gtk.Label(xalign=0)
+        self.label.set_line_wrap(True)
+        self.label.set_justify(Gtk.Justification.FILL)
+        self.label.set_property('selectable', True)
+        self.add(self.label)
+        self.get_child().set_shadow_type(Gtk.ShadowType.NONE)
+
+        metrics = self.label.get_pango_context().get_metrics(None, None)
+        line_height = (metrics.get_ascent() + metrics.get_descent()) / Pango.SCALE
+        self.set_max_content_height(int(line_height * self.MAX_LINES))
+
+    def get_text(self):
+        return self.label.get_text()
+
+    def set_text(self, text):
+        self.label.set_text(text)
 
 
 class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
@@ -410,8 +439,8 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             - A C{Gtk.TextView} for each source
             - A C{Gtk.TextView} for each target
             - A C{ListNavigator} for the unit states
-            - A C{Gtk.Label} for programmer notes
-            - A C{Gtk.Label} for translator notes
+            - A L{_NotesView} for programmer notes
+            - A L{_NotesView} for translator notes
             - A C{Gtk.Label} for context info"""
         # We assume a unit exists, otherwise none of this makes sense:
         self._layout_update_notes('programmer')
@@ -553,32 +582,19 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
     def _layout_update_notes(self, origin):
         if origin not in self._widgets['notes']:
-            label = Gtk.Label()
-            label.set_line_wrap(True)
-            label.set_justify(Gtk.Justification.FILL)
-            label.set_property('selectable', True)
-
-            self._widgets['vbox_middle'].pack_start(label, True, True, 0)
+            notes = _NotesView()
+            self._widgets['vbox_middle'].pack_start(notes, True, True, 0)
             if origin == 'programmer':
-                self._widgets['vbox_middle'].reorder_child(label, 0)
+                self._widgets['vbox_middle'].reorder_child(notes, 0)
             elif origin == 'translator':
-                self._widgets['vbox_middle'].reorder_child(label, 4)
+                self._widgets['vbox_middle'].reorder_child(notes, 4)
 
-            self._widgets['notes'][origin] = label
+            self._widgets['notes'][origin] = notes
 
         note_text = self.unit.getnotes(origin) or ""
 
         if origin == "programmer" and len(note_text) < 15 and self.unit is not None and self.unit.getlocations():
             note_text += "  " + " ".join(self.unit.getlocations()[:3])
-
-        # FIXME: This is a temporary quick fix (to bug 1145) to ensure that
-        # excessive translator comments don't cover the whole display.
-        # The labels used for displaying these comments (programmer- as well as
-        # translator comments) should be displayed in a scrollable widget with
-        # proper size limitations.
-        TEXT_LIMIT = 200
-        if origin == "translator" and len(note_text) > TEXT_LIMIT:
-            note_text = note_text[:TEXT_LIMIT] + '...'
 
         self._widgets['notes'][origin].set_text(note_text)
 

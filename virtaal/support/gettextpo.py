@@ -153,6 +153,8 @@ class MsgfmtChecker:
     Holds an in-memory PO file with only the store's header, so plurals
     are checked against its Plural-Forms."""
 
+    REBUILD_AFTER = 1000
+
     def __init__(self):
         self._lib = _load_library()
         if self._lib is None:
@@ -160,6 +162,7 @@ class MsgfmtChecker:
         self._file = None
         self._iterator = None
         self._header = None
+        self._checked = 0
         self._message = None
         self._problems = None
 
@@ -185,6 +188,7 @@ class MsgfmtChecker:
         if header == self._header and self._file:
             return
         self._free()
+        self._checked = 0
         lib = self._lib
         self._header = header
         self._file = lib.po_file_create()
@@ -264,16 +268,25 @@ class MsgfmtChecker:
         if self._file is None:
             self.set_header('')
 
-        # Not inserted into our file, which would keep it alive with the
-        # file. libgettextpo has no po_message_free(), so it leaks.
         self._message = self._make_message(unit)
         self._problems = []
         try:
             self._lib.po_message_check_all(self._message, self._iterator, ctypes.byref(self._handler))
             return self._problems
         finally:
+            self._own(self._message)
             self._message = None
             self._problems = None
+
+    def _own(self, message):
+        """Hand a checked message to our file, which frees it: libgettextpo
+            has no po_message_free(). The checks only read the file's
+            header, so the file is rebuilt from that now and then."""
+        self._lib.po_message_insert(self._iterator, message)
+        self._checked += 1
+        if self._checked >= self.REBUILD_AFTER:
+            header, self._header = self._header, None
+            self.set_header(header)
 
 
 

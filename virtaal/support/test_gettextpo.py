@@ -153,3 +153,20 @@ def test_reference_file_gets_the_noted_messages():
         expected = re.sub(r" \(the translation holds [^)]*\)", "", unit.getnotes('developer'))
         assert expected.startswith(prefix)
         assert (check.check(unit) or '').replace('\n', ' / ') == expected[len(prefix):], str(unit.source)
+
+
+def test_checked_messages_are_freed_with_the_rebuilt_file(monkeypatch):
+    # libgettextpo has no po_message_free(): each message goes into the
+    # checker's file, which is freed and rebuilt from its header.
+    monkeypatch.setattr(gettextpo.MsgfmtChecker, 'REBUILD_AFTER', 3)
+    store = po.pofile.parsestring(HEADER + b'#, c-format\nmsgid "Hello %s"\nmsgstr "Hallo"\n')
+    checker = gettextpo.MsgfmtChecker()
+    checker.set_header(store.header().target)
+    frees = []
+    original = checker._free
+    checker._free = lambda: (frees.append(True), original())
+
+    for _ in range(7):
+        assert checker.check_unit(store.units[-1])
+
+    assert len(frees) == 2

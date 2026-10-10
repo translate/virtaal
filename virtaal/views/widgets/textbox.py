@@ -696,7 +696,7 @@ class TextBox(Gtk.TextView):
                         (position == 'd' and (has_end_widget or not start_elem.iseditable)):
                     deleted = start_elem.copy()
                     parent = self.elem.get_parent_elem(start_elem)
-                    index = parent.elem_offset(start_elem)
+                    index = self.elem.elem_offset(start_elem)
                     self.elem.delete_elem(start_elem)
 
                     self.refresh_cursor_pos = start_elem_offset
@@ -716,7 +716,7 @@ class TextBox(Gtk.TextView):
                 if start_elem.isfragile:
                     deleted = start_elem.copy()
                     parent = self.elem.get_parent_elem(start_elem)
-                    index = parent.elem_offset(start_elem)
+                    index = self.elem.elem_offset(start_elem)
                     self.elem.delete_elem(start_elem)
 
                     self.refresh_cursor_pos = start_elem_offset

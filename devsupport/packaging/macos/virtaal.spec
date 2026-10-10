@@ -84,6 +84,25 @@ try:
     _gtkmac_locale_dir = Path(_gtkmac_prefix) / "share" / "locale"
 except (OSError, subprocess.CalledProcessError):
     _gtkmac_locale_dir = None
+# libgettextpo, for the msgfmt check (virtaal/support/gettextpo.py). Loaded
+# with ctypes, so nothing else pulls it in.
+try:
+    _gettext_prefix = subprocess.run(
+        ["brew", "--prefix", "gettext"], capture_output=True, text=True, check=True,
+    ).stdout.strip()
+except (OSError, subprocess.CalledProcessError):
+    _gettext_prefix = ""
+GETTEXTPO = Path(_gettext_prefix) / "lib" / "libgettextpo.0.dylib"
+if not GETTEXTPO.is_file():
+    raise SystemExit("libgettextpo not found: %s" % GETTEXTPO)
+# And the Homebrew libraries it links, which it looks for at the top of
+# Frameworks/. On Intel nothing else puts these there: pycurl's own
+# libunistring goes in its .dylibs/, and the libintl there is an older one
+# (without gl_get_setlocale_null_lock) unless it's this one.
+GETTEXTPO_DEPS = [Path(line.split()[0]) for line in subprocess.run(
+    ["otool", "-L", str(GETTEXTPO)], capture_output=True, text=True, check=True,
+).stdout.splitlines()[2:] if line.split()[0].startswith(("/opt/homebrew/", "/usr/local/"))]
+
 gtkmac_mo_files = [
     (str(p), str(Path("share", "locale") / p.relative_to(_gtkmac_locale_dir).parent))
     for p in (_gtkmac_locale_dir.rglob("*.mo") if _gtkmac_locale_dir and _gtkmac_locale_dir.is_dir() else [])
@@ -123,7 +142,7 @@ def _not_test(name):
 a = Analysis(  # noqa: F821
     [str(ROOT / "bin" / "virtaal")],
     pathex=[str(ROOT)],
-    binaries=[],
+    binaries=[(str(GETTEXTPO), ".")] + [(str(dep), ".") for dep in GETTEXTPO_DEPS],
     datas=datas,
     hiddenimports=(
         collect_submodules("virtaal", filter=_not_test)

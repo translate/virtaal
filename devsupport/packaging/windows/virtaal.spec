@@ -145,6 +145,12 @@ gio_modules_dir = GTK_ROOT / "lib" / "gio" / "modules"
 binaries = []
 if gio_modules_dir.is_dir():
     binaries.append((str(gio_modules_dir), "lib/gio/modules"))
+# libgettextpo, for the msgfmt check (virtaal/support/gettextpo.py). Loaded
+# with ctypes, so nothing else pulls it in.
+GETTEXTPO = GTK_ROOT / "bin" / "gettextpo.dll"
+if not GETTEXTPO.is_file():
+    raise SystemExit("libgettextpo not found: %s" % GETTEXTPO)
+binaries.append((str(GETTEXTPO), "."))
 
 datas = [
     (str(ROOT / "share" / "virtaal"), "share/virtaal"),

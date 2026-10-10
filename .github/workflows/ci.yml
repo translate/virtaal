@@ -746,6 +746,19 @@ jobs:
           VIRTAAL_BUILD_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
         run: devsupport\packaging\windows\build_standalone.ps1
 
+      - name: Verify the bundled msgfmt check
+        # The bundled libgettextpo translating through the bundled
+        # gettext-tools catalog. virtaal.exe has no console, so it writes
+        # to a file.
+        shell: pwsh
+        run: |
+          $out = "$env:RUNNER_TEMP\gettextpo.txt"
+          Start-Process -Wait -FilePath dist\virtaal\virtaal.exe -ArgumentList "--run-module", "virtaal.support.gettextpo", $out
+          $result = Get-Content $out -Encoding utf8
+          $result
+          if (-not ($result -match '^library: .*\\dist\\virtaal\\')) { throw "Not the bundled libgettextpo" }
+          if (-not ($result -match '^message: die Anzahl der Formatspezifikationen')) { throw "msgfmt's message isn't translated" }
+
       - name: Report lite coverage
         # Same report as build-macos-app's, against the gvsbuild GTK
         # catalogs this bundle ships.
@@ -1183,6 +1196,15 @@ jobs:
             exit 1
           fi
 
+      - name: Verify the bundled msgfmt check
+        # The bundled libgettextpo, not Homebrew's, translating through
+        # the bundled gettext-tools catalog.
+        run: |
+          dist/Virtaal.app/Contents/MacOS/virtaal --run-module virtaal.support.gettextpo /tmp/gettextpo.txt
+          cat /tmp/gettextpo.txt
+          grep -q "^library: .*/Virtaal.app/" /tmp/gettextpo.txt
+          grep -q "^message: die Anzahl der Formatspezifikationen" /tmp/gettextpo.txt
+
       - name: Notarize the bundle
         if: env.MACOS_NOTARIZING == 'true'
         env:
@@ -1425,6 +1447,16 @@ jobs:
           xvfb-run -a --server-args="-screen 0 1024x768x24" \
             flatpak-builder --run build-dir io.github.translate.Virtaal.yml \
             virtaal --version
+
+      - name: Smoke test - the msgfmt check's library loads
+        working-directory: devsupport/packaging/flatpak
+        # The runtime's libgettextpo. Its message stays English: the
+        # runner's C locale makes glibc ignore the language.
+        run: |
+          xvfb-run -a --server-args="-screen 0 1024x768x24" \
+            flatpak-builder --run build-dir io.github.translate.Virtaal.yml \
+            virtaal --run-module virtaal.support.gettextpo | tee gettextpo.txt
+          grep -q "^library: lib" gettextpo.txt
 
   linux:
     # Endpoint standing in for `test` + `build-flatpak`, which now run

@@ -210,6 +210,30 @@ def test_popup_key_press_down_moves_forward_when_popup_visible():
     assert _selected_name(navigator) == 'two'
 
 
+def test_popup_key_press_enter_closes_the_popup():
+    navigator = _make_navigator(['one', 'two', 'three'])
+    navigator.btn_popup.set_active(True)
+    navigator.btn_popup.popup.show()
+    navigator._on_popup_key_press_event(navigator.btn_popup, _key_event(Gdk.KEY_Down))
+    assert navigator.btn_popup.get_active()
+
+    handled = navigator._on_popup_key_press_event(navigator.btn_popup, _key_event(Gdk.KEY_Return))
+
+    assert handled is True
+    assert not navigator.btn_popup.get_active()
+    assert _selected_name(navigator) == 'two'
+
+
+def test_clicking_a_state_closes_the_popup():
+    navigator = _make_navigator(['one', 'two', 'three'])
+    navigator.btn_popup.set_active(True)
+    event = Gdk.Event.new(Gdk.EventType.BUTTON_RELEASE)
+
+    navigator.tvw_items.emit('button-release-event', event)
+
+    assert not navigator.btn_popup.get_active()
+
+
 def test_popup_key_press_up_ignored_when_popup_not_visible():
     navigator = _make_navigator(['one', 'two', 'three'], select_name='two')
     navigator.btn_popup.popup.hide()

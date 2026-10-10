@@ -1,0 +1,771 @@
+# A PO file to review the msgfmt quality check in Virtaal.
+# Each unit gets one of the messages libgettextpo's po_message_check_all()
+# reports, which are what msgfmt -c reports; its comment has the message
+# gettext 1.0 gives. Made by checking candidate units against libgettextpo
+# 1.0: correct translations with one mistake added.
+# 
+# gettext numbers Python brace and Rust directives from 0 when it reports
+# an unterminated or invalid directive, and from 1 otherwise.
+# 
+# The header gets "header field '%s' still has the initial default value".
+# 
+# Not shown, since they need a different header:
+# - plural expression can produce division by zero
+# - plural expression can produce integer overflow
+# - plural expression can produce stack overflow
+# - plural expression can produce negative values
+# - nplurals = %lu but plural expression can produce values as large as %lu
+# - Try using the following, valid for %s:
+# - message catalog has plural form translations
+# - but header entry lacks a "plural=EXPRESSION" attribute
+# - but header entry lacks a "nplurals=INTEGER" attribute
+# - invalid nplurals value
+# - invalid plural expression
+# - message catalog has plural form translations, but lacks a header entry with "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;"
+# - header field '%s' missing in header
+# 
+# Not reached:
+# - In the directive number %zu, the compound specifier consumes a variable number of arguments.
+# - The directive number %zu references an argument after the last argument.
+# - In the directive number %zu, the substring "%s" is not a valid date/time style.
+# - The character that terminates the directive number %zu, for the conversion '%c', is not a valid conversion suffix.
+msgid ""
+msgstr ""
+"Project-Id-Version: Virtaal msgfmt check reference\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-10 14:55+0100\n"
+"PO-Revision-Date: 2026-10-10 12:00+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+"Language: af\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Expected 'msgfmt': 'msgid' and 'msgid_plural' entries do not both begin with '\n'
+msgid ""
+"\n"
+"One"
+msgid_plural "Many"
+msgstr[0] ""
+"\n"
+"Een"
+msgstr[1] ""
+"\n"
+"Baie"
+
+#. Expected 'msgfmt': 'msgid' and 'msgid_plural' entries do not both end with '\n'
+msgid "One\n"
+msgid_plural "Many"
+msgstr[0] "Een\n"
+msgstr[1] "Baie\n"
+
+#. Expected 'msgfmt': 'msgid' and 'msgstr' entries do not both begin with '\n'
+msgid ""
+"\n"
+"Line"
+msgstr "Line"
+
+#. Expected 'msgfmt': 'msgid' and 'msgstr' entries do not both end with '\n'
+msgid "Line\n"
+msgstr "Line"
+
+#. Expected 'msgfmt': 'msgid' and 'msgstr[1]' entries do not both begin with '\n'
+msgid "One"
+msgid_plural "Many"
+msgstr[0] "Een"
+msgstr[1] ""
+"\n"
+"Baie"
+
+#. Expected 'msgfmt': 'msgid' and 'msgstr[1]' entries do not both end with '\n'
+msgid "One"
+msgid_plural "Many"
+msgstr[0] "Een"
+msgstr[1] "Baie\n"
+
+#. Expected 'msgfmt': nplurals = 2 but some messages have 3 plural forms
+msgid "One file"
+msgid_plural "%d files"
+msgstr[0] "Een lêer"
+msgstr[1] "%d lêers"
+msgstr[2] "Meer lêers"
+
+# Virtaal adds the missing msgstr[1] when it opens the file, so only msgfmt
+# reports this one.
+#. Expected 'msgfmt': nplurals = 2 but some messages have only one plural form
+msgid "One file"
+msgid_plural "%d files"
+msgstr[0] "Een lêer"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Boost format string, unlike 'msgid'. Reason: The directive number 2 starts with | but does not end with |.
+#, boost-format
+msgid "Saved %1% files"
+msgstr "%1% %|99T  lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C++ format string, unlike 'msgid'. Reason: In the directive number 1, the arg-id is too large.
+#, c++-format
+msgid "Saved {} files"
+msgstr "{99999999999999999999} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C++ format string, unlike 'msgid'. Reason: In the directive number 1, the character 'l' is not a standard type specifier.
+#, c++-format
+msgid "Saved {} files"
+msgstr "{: lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C++ format string, unlike 'msgid'. Reason: In the directive number 1, the precision's arg-id is not terminated through '}'.
+#, c++-format
+msgid "Progress: {:.1f}%"
+msgstr "Vordering: {:.{f}%"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C++ format string, unlike 'msgid'. Reason: In the directive number 1, the width's arg-id is not terminated through '}'.
+#, c++-format
+msgid "Progress: {:.1f}%"
+msgstr "Vorderin{: {:.1f}%"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C++ format string, unlike 'msgid'. Reason: In the directive number 1, the width's arg-id is too large.
+#, c++-format
+msgid "Width {:{}}"
+msgstr "Wydte {:{99999999999999999999}}"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C++ format string, unlike 'msgid'. Reason: In the directive number 2, the '#' option is incompatible with the type specifier 's'.
+#, c++-format
+msgid "Saved {} files"
+msgstr "{} {:#s} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C++ format string, unlike 'msgid'. Reason: In the directive number 2, the '0' option is incompatible with the type specifier 'p'.
+#, c++-format
+msgid "Saved {} files"
+msgstr "{} {:0p} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C++ format string, unlike 'msgid'. Reason: In the directive number 2, the 'L' option is incompatible with the type specifier 'p'.
+#, c++-format
+msgid "Saved {} files"
+msgstr "{} {:Lp} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C++ format string, unlike 'msgid'. Reason: In the directive number 2, the precision specification is incompatible with the type specifier 'B'.
+#, c++-format
+msgid "Saved {} files"
+msgstr "{} {:.9B} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C++ format string, unlike 'msgid'. Reason: In the directive number 2, the sign specification is incompatible with the type specifier 'p'.
+#, c++-format
+msgid "Saved {} files"
+msgstr "{} {:-p} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C++ format string, unlike 'msgid'. Reason: The character that terminates the directive number 1 is not a standard type specifier. (the translation holds a tab)
+#, c++-format
+msgid "Progress: {:.1f}%"
+msgstr "Vordering: {:\t.1f}%"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C++ format string, unlike 'msgid'. Reason: The directive number 1 is not terminated through '}'.
+#, c++-format
+msgid "Saved {} files"
+msgstr "{%} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C++ format string, unlike 'msgid'. Reason: The directive number 2, with all of its options, is not applicable to any type.
+#, c++-format
+msgid "Saved {} files"
+msgstr "{} {:.9Ls} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C++ format string, unlike 'msgid'. Reason: The string contains a lone '}' after directive number 1.
+#, c++-format
+msgid "Saved {} files"
+msgstr "%} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C++ format string, unlike 'msgid'. Reason: The string ends in the middle of the directive number 2.
+#, c++-format
+msgid "Saved {} files"
+msgstr "{} lêers gestoo{"
+
+#. Expected 'msgfmt': The format specification for argument 1 in 'msgid' is applicable to the types [float, string, pointer], but the format specification for argument 1 in 'msgstr' is not.
+#, c++-format
+msgid "Copied {0} of {1} files"
+msgstr "{0} {0:d}vw{1:c} van {1} lêers gekopieer"
+
+#. Expected 'msgfmt': The format specification for argument 1 in 'msgstr' uses a different presentation than the format specification for argument 1 in 'msgid'.
+#, c++-format
+msgid "Initial: {:c}"
+msgstr "Voorletter: {:b}"
+
+#. Expected 'msgfmt': a format specification for argument 1 doesn't exist in 'msgstr'
+#, c++-format
+msgid "Saved {} files"
+msgstr "}} lêers gestoor"
+
+#. Expected 'msgfmt': a format specification for argument 2, as in 'msgstr', doesn't exist in 'msgid'
+#, c++-format
+msgid "Saved {} files"
+msgstr "{} {:0e} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C format string, unlike 'msgid'. Reason: In the directive number 1, the argument number 0 is not a positive integer.
+#, c-format
+msgid "Saved %d files"
+msgstr "%0$d lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C format string, unlike 'msgid'. Reason: In the directive number 1, the character '{' is not a valid conversion specifier.
+#, c-format
+msgid "Saved %d files"
+msgstr "%{d lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C format string, unlike 'msgid'. Reason: In the directive number 1, the token after '<' is not followed by '>'.
+#, c-format
+msgid "Size: %<PRIu64> bytes"
+msgstr "Grootte: %<PRIu164> grepe"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C format string, unlike 'msgid'. Reason: In the directive number 1, the token after '<' is not the name of a format specifier macro. The valid macro names are listed in ISO C 99 section 7.8.1.
+#, c-format
+msgid "Saved %d files"
+msgstr "%<d lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C format string, unlike 'msgid'. Reason: In the directive number 2, the argument size specifier is invalid.
+#, c-format
+msgid "Saved %d files"
+msgstr "%d %#tF lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C format string, unlike 'msgid'. Reason: In the directive number 2, the precision's argument number 0 is not a positive integer.
+#, c-format
+msgid "Saved %d files"
+msgstr "%d %1$#.*0$s lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C format string, unlike 'msgid'. Reason: In the directive number 2, the width's argument number 0 is not a positive integer.
+#, c-format
+msgid "Saved %d files"
+msgstr "%d %2$*0$.*1$g lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C format string, unlike 'msgid'. Reason: The character that terminates the directive number 1 is not a valid conversion specifier.
+#, c-format
+msgid "Saved %d files"
+msgstr "%# lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C format string, unlike 'msgid'. Reason: The string ends in the middle of a directive.
+#, c-format
+msgid "Saved %d files"
+msgstr "%d lêers gestoo%"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C format string, unlike 'msgid'. Reason: The string refers to argument number 1 in incompatible ways.
+#, c-format
+msgid "File %1$s is in %2$s"
+msgstr "L%1$er %1$s is in %2$s"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C format string, unlike 'msgid'. Reason: The string refers to argument number 2 but ignores argument number 1.
+#, c-format
+msgid "Saved %d files"
+msgstr "%2$d lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C format string, unlike 'msgid'. Reason: The string refers to arguments both through absolute argument numbers and through unnumbered argument specifications.
+#, c-format
+msgid "Saved %d files"
+msgstr "%d l%1$ers gestoor"
+
+#. Expected 'msgfmt': format specifications in 'msgid' and 'msgstr' for argument 1 are not the same
+#, c-format
+msgid "Saved %d files"
+msgstr "%ad lêers gestoor"
+
+#. Expected 'msgfmt': number of format specifications in 'msgid' and 'msgstr' does not match
+#, c-format
+msgid "Saved %d files"
+msgstr "%%d lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C# format string, unlike 'msgid'. Reason: In the directive number 1, ',' is not followed by a number.
+#, csharp-format
+msgid "Saved {0} files"
+msgstr "{0,} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C# format string, unlike 'msgid'. Reason: The directive number 1 ends with an invalid character '$' instead of '}'.
+#, csharp-format
+msgid "Saved {0} files"
+msgstr "{0$0} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid C# format string, unlike 'msgid'. Reason: The directive number 1 ends with an invalid character instead of '}'. (the translation holds a tab)
+#, csharp-format
+msgid "Saved {0} files"
+msgstr "{0\t} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid D format string, unlike 'msgid'. Reason: Found '%(' without matching '%)'.
+#, d-format
+msgid "Saved %d files"
+msgstr "%(d lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid D format string, unlike 'msgid'. Reason: Found '%|' outside of '%(...%)'.
+#, d-format
+msgid "Saved %d files"
+msgstr "%|d lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid D format string, unlike 'msgid'. Reason: In the directive number 1, the first argument number is greater than the second argument number.
+#, d-format
+msgid "x %1$s %2$s %3$s"
+msgstr "y %3:1$s"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid D format string, unlike 'msgid'. Reason: In the directive number 2, the compound specifier consumes 0 arguments.
+#, d-format
+msgid "Saved %d files"
+msgstr "%d %(def%) lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid D format string, unlike 'msgid'. Reason: In the directive number 2, there is an invalid directive in the delimiter part of a compound specifier.
+#, d-format
+msgid "Items: %(%s, %)"
+msgstr "Items: %(%s, %|1$4x|,%|2$c|,%|1$p| %)"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid D format string, unlike 'msgid'. Reason: The string ends in the middle of a compound specifier.
+#, d-format
+msgid "Items: %(%s, %)"
+msgstr "Items: %(%s, %|)"
+
+#. Expected 'msgfmt': 'msgid' does not use %C but 'msgstr' uses %C
+#, gcc-internal-format
+msgid "cannot open %qs"
+msgstr "kan %Cuvw nie %qs oopmaak nie"
+
+#. Expected 'msgfmt': 'msgid' does not use %m but 'msgstr' uses %m
+#, gcc-internal-format
+msgid "cannot open %qs"
+msgstr "kan nie %qs oo%maak nie"
+
+#. Expected 'msgfmt': 'msgid' uses %C but 'msgstr' doesn't
+#, gcc-internal-format
+msgid "%C here"
+msgstr "%%C hier"
+
+#. Expected 'msgfmt': 'msgid' uses %m but 'msgstr' doesn't
+#, gcc-internal-format
+msgid "%s: %m"
+msgstr "%s:%%m"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid GCC internal format string, unlike 'msgid'. Reason: In the directive number 1, a precision is not allowed before ','.
+#, gcc-internal-format
+msgid "cannot open %qs"
+msgstr "kan %.4,*?g nie %qs oopmaak nie"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid GCC internal format string, unlike 'msgid'. Reason: In the directive number 1, a precision specification is not allowed before 'x'.
+#, gcc-internal-format
+msgid "cannot open %qs"
+msgstr "kan %1$.*x nie %qs oopmaak nie"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid GCC internal format string, unlike 'msgid'. Reason: In the directive number 1, the argument number for the precision must be equal to 2.
+#, gcc-internal-format
+msgid "cannot open %qs"
+msgstr "kan %3$.*1$*2$g nie %qs oopmaak nie"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid GCC internal format string, unlike 'msgid'. Reason: In the directive number 1, the flags combination is invalid.
+#, gcc-internal-format
+msgid "cannot open %qs"
+msgstr "kan %llli nie %qs oopmaak nie"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid GCC internal format string, unlike 'msgid'. Reason: In the directive number 1, the precision specification is invalid.
+#, gcc-internal-format
+msgid "cannot open %qs"
+msgstr "kan nie %.qs oopmaak nie"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid GCC internal format string, unlike 'msgid'. Reason: The URL group opened by the directive number 1 is not terminated.
+#, gcc-internal-format
+msgid "cannot open %qs"
+msgstr "kan nie %{qs oopmaak nie"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid GCC internal format string, unlike 'msgid'. Reason: The color group opened by the directive number 1 is not terminated.
+#, gcc-internal-format
+msgid "cannot open %qs"
+msgstr "kan %r nie %qs oopmaak nie"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid GCC internal format string, unlike 'msgid'. Reason: The directive number 1 does not match a preceding '%{'.
+#, gcc-internal-format
+msgid "cannot open %qs"
+msgstr "kan nie %}qs oopmaak nie"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid GCC internal format string, unlike 'msgid'. Reason: The directive number 2 opens a URL group, but the previous one is not terminated.
+#, gcc-internal-format
+msgid "see %{the manual%} for %qs"
+msgstr "sien %{die handleiding%{ vir %qs"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid GCC internal format string, unlike 'msgid'. Reason: The directive number 2 opens a color group, but the previous one is not terminated.
+#, gcc-internal-format
+msgid "see %rnote%R for %qs"
+msgstr "sien %r %rnote%R vir %qs"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid GCC internal format string, unlike 'msgid'. Reason: The directive number 2 opens a quote group, but the previous one is not terminated.
+#, gcc-internal-format
+msgid "cannot open %qs"
+msgstr "kan %<zoo>cvw%<foo>u nie %qs oopmaak nie"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid GCC internal format string, unlike 'msgid'. Reason: The quote group opened by the directive number 1 is not terminated.
+#, gcc-internal-format
+msgid "cannot open %qs"
+msgstr "kan nie %<qs oopmaak nie"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Go format string, unlike 'msgid'. Reason: In the directive number 1, the precision is too large.
+#, go-format
+msgid "Progress: %6.2f%%"
+msgstr "Vordering: %6.999999999999999999992f%%"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Go format string, unlike 'msgid'. Reason: In the directive number 1, the width is too large.
+#, go-format
+msgid "Saved %d files"
+msgstr "%99999999999999999999d lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Go format string, unlike 'msgid'. Reason: In the directive number 2, the argument number is too large.
+#, go-format
+msgid "Saved %d files"
+msgstr "%d %[1000001]d lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Java MessageFormat format string, unlike 'msgid'. Reason: In the directive number 1, "date" is not followed by a comma.
+#, java-format
+msgid "Modified on {0,date,short}"
+msgstr "Gewysig op {0,date%,short}"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Java MessageFormat format string, unlike 'msgid'. Reason: In the directive number 1, '{' is not followed by an argument number.
+#, java-format
+msgid "Saved {0} files"
+msgstr "{%0} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Java MessageFormat format string, unlike 'msgid'. Reason: In the directive number 1, a choice contains a number that is not followed by '<', '#' or '\u2264'.
+#, java-format
+msgid ""
+"There {0,choice,0#are no files|1#is one file|1<are {0,number,integer} files}."
+msgstr ""
+"Daar {0,choice,\\#is geen lêers nie|1#is een lêer|1<is {0,number,integer} "
+"lêers}."
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Java MessageFormat format string, unlike 'msgid'. Reason: In the directive number 1, a choice contains no number.
+#, java-format
+msgid ""
+"There {0,choice,0#are no files|1#is one file|1<are {0,number,integer} files}."
+msgstr ""
+"Daar {0,choice,<0#is geen lêers nie|1#is een lêer|1<is {0,number,integer} "
+"lêers}."
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Java MessageFormat format string, unlike 'msgid'. Reason: In the directive number 1, the argument number is not followed by a comma and one of "time", "date", "number", "choice".
+#, java-format
+msgid "Saved {0} files"
+msgstr "{0$0} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Java MessageFormat format string, unlike 'msgid'. Reason: In the directive number 2, the substring "#0;" is not a valid number style.
+#, java-format
+msgid "Saved {0} files"
+msgstr "{0} {1,number,#0;} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Java MessageFormat format string, unlike 'msgid'. Reason: The string ends in the middle of a directive: found '{' without matching '}'.
+#, java-format
+msgid "Saved {0} files"
+msgstr "{{0} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Java MessageFormat format string, unlike 'msgid'. Reason: The string starts in the middle of a directive: found '}' without matching '{'.
+#, java-format
+msgid "Saved {0} files"
+msgstr "%0} lêers gestoor"
+
+#. Expected 'msgfmt': a format specification for argument {0} doesn't exist in 'msgstr'
+#, java-format
+msgid "Saved {0} files"
+msgstr "'{0} lêers gestoor"
+
+#. Expected 'msgfmt': a format specification for argument {1}, as in 'msgstr', doesn't exist in 'msgid'
+#, java-format
+msgid "Saved {0} files"
+msgstr "{0} {1,date,x'y} lêers gestoor"
+
+#. Expected 'msgfmt': format specifications in 'msgid' and 'msgstr' for argument {0} are not the same
+#, java-format
+msgid "Saved {0} files"
+msgstr "{0} {0,choice,x} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Java printf format string, unlike 'msgid'. Reason: In the directive number 1, the flag '#' is invalid for the conversion 'd'.
+#, java-printf-format
+msgid "Saved %d files"
+msgstr "%#d lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Java printf format string, unlike 'msgid'. Reason: In the directive number 1, the precision is missing.
+#, java-printf-format
+msgid "Saved %d files"
+msgstr "%.d lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Java printf format string, unlike 'msgid'. Reason: In the directive number 1, the reference to the argument of the previous directive is invalid.
+#, java-printf-format
+msgid "Saved %d files"
+msgstr "%<d lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Java printf format string, unlike 'msgid'. Reason: In the directive number 2, a precision is invalid for the conversion 'o'.
+#, java-printf-format
+msgid "Saved %d files"
+msgstr "%d %.2o lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Java printf format string, unlike 'msgid'. Reason: In the directive number 2, a width is invalid for the conversion 'n'.
+#, java-printf-format
+msgid "Saved %d files"
+msgstr "%d %5n lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Java printf format string, unlike 'msgid'. Reason: In the directive number 2, for the conversion 't', the character 'o' is not a valid conversion suffix.
+#, java-printf-format
+msgid "Saved %d files"
+msgstr "%d lêers ge%toor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid KDE KUIT format string, unlike 'msgid'. Reason: The string refers to argument number 11 but ignores the arguments 1 and 2.
+#, kde-kuit-format
+msgid "Saved <filename>%1</filename>"
+msgstr "<filename>%11</filename> gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid KDE KUIT format string, unlike 'msgid'. Reason: error while parsing: element is closed
+#, kde-kuit-format
+msgid "Saved <filename>%1</filename>"
+msgstr "%filename>%1</filename> gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Lisp format string, unlike 'msgid'. Reason: Found '~|' without matching '~}'.
+#, lisp-format
+msgid "Saved ~D files"
+msgstr "~{D lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Lisp format string, unlike 'msgid'. Reason: In the directive number 1, '-' is not followed by a digit.
+#, lisp-format
+msgid "Saved ~D files"
+msgstr "~-D lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Lisp format string, unlike 'msgid'. Reason: In the directive number 1, '~;' is used in an invalid position.
+#, lisp-format
+msgid "Saved ~D files"
+msgstr "~;D lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Lisp format string, unlike 'msgid'. Reason: In the directive number 1, both the @ and the : modifiers are given.
+#, lisp-format
+msgid "~@[Error: ~A~]"
+msgstr "~:@[Fout: ~A~]"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Lisp format string, unlike 'msgid'. Reason: In the directive number 2, parameter 2 is of type 'character' but a parameter of type 'integer' is expected.
+#, lisp-format
+msgid "Saved ~D files"
+msgstr "~D ~,'*S lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Lisp format string, unlike 'msgid'. Reason: In the directive number 2, too many parameters are given; expected at most 1 parameter.
+#, lisp-format
+msgid "Saved ~D files"
+msgstr "~D ~v,5% lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Lisp format string, unlike 'msgid'. Reason: In the directive number 4, '~:[' is not followed by two clauses, separated by '~;'.
+#, lisp-format
+msgid "Saved ~D files"
+msgstr "~D ~:[~D~]~C lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Lisp format string, unlike 'msgid'. Reason: The string ends in the middle of a ~/.../ directive.
+#, lisp-format
+msgid "Saved ~D files"
+msgstr "~/D lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Lisp format string, unlike 'msgid'. Reason: The string refers to some argument in incompatible ways.
+#, lisp-format
+msgid "Saved ~D files"
+msgstr "~D ~{~S~}~:*~F lêers gestoor"
+
+#. Expected 'msgfmt': format specifications in 'msgid' and 'msgstr' are not equivalent
+#, lisp-format
+msgid "Saved ~D files"
+msgstr "%D lêers gestoor"
+
+#. Expected 'msgfmt': format specifications in 'msgstr[0]' are not a subset of those in 'msgid_plural'
+#, lisp-format
+msgid "~D"
+msgid_plural "~D"
+msgstr[0] "~D ~A"
+msgstr[1] "~D"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Perl format string, unlike 'msgid'. Reason: In the directive number 2, the size specifier is incompatible with the conversion specifier 'g'.
+#, perl-format
+msgid "Saved %d files"
+msgstr "%d %hg lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Python brace format string, unlike 'msgid'. Reason: In the directive number 0, '%' cannot start a field name.
+#, python-brace-format
+msgid "Saved {count} files"
+msgstr "{%count} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Python brace format string, unlike 'msgid'. Reason: In the directive number 0, '}' cannot start a getattr argument.
+#, python-brace-format
+msgid "Saved {count} files"
+msgstr "{coun.} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Python brace format string, unlike 'msgid'. Reason: In the directive number 0, '}' cannot start a getitem argument.
+#, python-brace-format
+msgid "Saved {count} files"
+msgstr "{coun[} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Python brace format string, unlike 'msgid'. Reason: In the directive number 0, a field name starts with a character that is not alphanumerical or underscore. (the translation holds a tab)
+#, python-brace-format
+msgid "Saved {count} files"
+msgstr "{\tcount} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Python brace format string, unlike 'msgid'. Reason: In the directive number 0, a getattr argument starts with a character that is not alphabetical or underscore. (the translation holds a tab)
+#, python-brace-format
+msgid "Hello {user.name}"
+msgstr "Hallo {user.\tname}"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Python brace format string, unlike 'msgid'. Reason: In the directive number 0, a getitem argument starts with a character that is not alphanumerical or underscore. (the translation holds a tab)
+#, python-brace-format
+msgid "First item: {items[0]}"
+msgstr "Eerste item: {items[\t0]}"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Python brace format string, unlike 'msgid'. Reason: In the directive number 0, there is an unterminated getitem argument.
+#, python-brace-format
+msgid "Saved {count} files"
+msgstr "{c[ount} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Python brace format string, unlike 'msgid'. Reason: In the directive number 1, no more nesting is allowed in a format specifier.
+#, python-brace-format
+msgid "Saved {count} files"
+msgstr "{count} {value:{foo:0}} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Python brace format string, unlike 'msgid'. Reason: The directive number 0 is unterminated.
+#, python-brace-format
+msgid "Saved {count} files"
+msgstr "{:count} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Python brace format string, unlike 'msgid'. Reason: The string refers to arguments both through absolute argument numbers and through unnamed argument specifications.
+#, python-brace-format
+msgid "Saved {count} files"
+msgstr "{count} {1},{} lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Python format string, unlike 'msgid'. Reason: The string refers to arguments both through argument names and through unnamed argument specifications.
+#, python-format
+msgid "Saved %(count)d files"
+msgstr "%(count)*d lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Python format string, unlike 'msgid'. Reason: The string refers to the argument named 'size' in incompatible ways.
+#, python-format
+msgid "%(name)s is %(size)d bytes"
+msgstr "%(size)x grepe in %(name)s (%(size)s)"
+
+#. Expected 'msgfmt': a format specification for argument '%count', as in 'msgstr', doesn't exist in 'msgid'
+#, python-format
+msgid "Saved %(count)d files"
+msgstr "%(%count)d lêers gestoor"
+
+#. Expected 'msgfmt': a format specification for argument 'count' doesn't exist in 'msgstr'
+#, python-format
+msgid "Saved %(count)d files"
+msgstr "%%(count)d lêers gestoor"
+
+#. Expected 'msgfmt': format specifications in 'msgid' and 'msgstr' for argument 'count' are not the same
+#, python-format
+msgid "Saved %(count)d files"
+msgstr "%(count)%d lêers gestoor"
+
+#. Expected 'msgfmt': format specifications in 'msgid' expect a mapping, those in 'msgstr' expect a tuple
+#, python-format
+msgid "Saved %(count)d files"
+msgstr "%.count)d lêers gestoor"
+
+#. Expected 'msgfmt': format specifications in 'msgid' expect a tuple, those in 'msgstr' expect a mapping
+#, python-format
+msgid "Cannot open %s"
+msgstr "Kan nie %(a) %s oopmaak nie"
+
+#. Expected 'msgfmt': 'msgid' is a simple format string, but 'msgstr' is not: it contains an 'L' flag or a double-digit argument number
+#, qt-format
+msgid "Saved %1 files"
+msgstr "%01 lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Ruby format string, unlike 'msgid'. Reason: In the directive number 1, a flag is given after the precision.
+#, ruby-format
+msgid "%<name>s has %<size>d bytes"
+msgstr "%<name>. het %<size>d grepe"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Ruby format string, unlike 'msgid'. Reason: In the directive number 1, a width is given twice.
+#, ruby-format
+msgid "Cannot open %s"
+msgstr "Kan %2*g nie %s oopmaak nie"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Ruby format string, unlike 'msgid'. Reason: In the directive number 1, the width is given after the precision.
+#, ruby-format
+msgid "Cannot open %s"
+msgstr "Kan %.**g nie %s oopmaak nie"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Ruby format string, unlike 'msgid'. Reason: In the directive number 1, two names are given for the same argument.
+#, ruby-format
+msgid "%<name>s has %<size>d bytes"
+msgstr "%<name>{s het %<size>d grepe"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Ruby format string, unlike 'msgid'. Reason: In the directive number 1, two numbers are given for the same argument.
+#, ruby-format
+msgid "Saved %1$d of %2$d files"
+msgstr "%1$1$d van %2$d lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Ruby format string, unlike 'msgid'. Reason: In the directive number 2, a precision is given twice.
+#, ruby-format
+msgid "Saved %{count} files"
+msgstr "%{count} %.4.2d lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Ruby format string, unlike 'msgid'. Reason: In the directive number 3, a flag is given after the width.
+#, ruby-format
+msgid "Saved %{count} files"
+msgstr "%{count} %2%1%3 lêers gestoor"
+
+#. Expected 'msgfmt': format specifications in 'msgid' expect a hash table, those in 'msgstr' expect individual arguments
+#, ruby-format
+msgid "Saved %{count} files"
+msgstr "%.count} lêers gestoor"
+
+#. Expected 'msgfmt': format specifications in 'msgid' expect individual arguments, those in 'msgstr' expect a hash table
+#, ruby-format
+msgid "Saved %d files"
+msgstr "%{count} lêers gestoor"
+
+#. Expected 'msgfmt': a format specification for arguments 1 and 2 doesn't exist in 'msgstr[0]', only one argument may be ignored
+#, rust-format
+msgid "{} {} {}"
+msgid_plural "{} {} {}"
+msgstr[0] "x"
+msgstr[1] "{} {} {}"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Scheme format string, unlike 'msgid'. Reason: In the directive number 3, the argument -1 is negative.
+#, scheme-format
+msgid "~D files, ~D folders; ~0@*~D files"
+msgstr "~D lêers, ~D vouers; ~-1@*~D lêers"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Shell format string, unlike 'msgid'. Reason: The string refers to a shell variable whose value may be different inside shell functions.
+#, sh-format
+msgid "Cannot open $file"
+msgstr "Ka$ nie $file oopmaak nie"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Shell format string, unlike 'msgid'. Reason: The string refers to a shell variable with a non-ASCII name.
+#, sh-format
+msgid "Cannot open $file"
+msgstr "Kan ${�} nie $file oopmaak nie"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Shell format string, unlike 'msgid'. Reason: The string refers to a shell variable with an empty name.
+#, sh-format
+msgid "Cannot open $file"
+msgstr "Kan ${} nie $file oopmaak nie"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Shell format string, unlike 'msgid'. Reason: The string refers to a shell variable with complex shell brace syntax. This syntax is unsupported here due to security reasons.
+#, sh-format
+msgid "Cannot open $file"
+msgstr "Kan ${tmpdir-/tmp} nie $file oopmaak nie"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Shell printf format string, unlike 'msgid'. Reason: The escape sequence '\%' is invalid.
+#, sh-printf-format
+msgid "Saved %d files"
+msgstr "\\%d lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Shell printf format string, unlike 'msgid'. Reason: The escape sequence '\c' is unsupported (not in POSIX).
+#, sh-printf-format
+msgid "Saved %d files\\n"
+msgstr "%d lêers gestoor\\c"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Shell printf format string, unlike 'msgid'. Reason: The string ends in the middle of an escape sequence.
+#, sh-printf-format
+msgid "Saved %d files"
+msgstr "%d lêers gestoo\\"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid Shell printf format string, unlike 'msgid'. Reason: This escape sequence is invalid.
+#, sh-printf-format
+msgid "Saved %d files"
+msgstr "%d \\êers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid YCP format string, unlike 'msgid'. Reason: In the directive number 1, the character '{' is not a digit between 1 and 9.
+#, ycp-format
+msgid "Saved %1 files"
+msgstr "%{1 lêers gestoor"
+
+#. Expected 'msgfmt': 'msgstr' is not a valid YCP format string, unlike 'msgid'. Reason: The character that terminates the directive number 1 is not a digit between 1 and 9. (the translation holds a tab)
+#, ycp-format
+msgid "Saved %1 files"
+msgstr "%\t1 lêers gestoor"

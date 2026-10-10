@@ -5,6 +5,10 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import ctypes
+import os
+import re
+
 import pytest
 from translate.storage import po
 
@@ -117,3 +121,24 @@ def test_bundled_library_only(tmp_path, monkeypatch):
                         Platform(sys_platform='darwin', frozen=True, executable=str(bundle_dir / "virtaal")))
 
     assert list(gettextpo._library_candidates()) == [str(frameworks / "libgettextpo.0.dylib")]
+
+
+REFERENCE = os.path.join(os.path.dirname(__file__), '..', '..', 'devsupport', 'testfiles', 'msgfmt.po')
+
+
+def _gettext_version():
+    return ctypes.c_int.in_dll(gettextpo._load_library(), 'libgettextpo_version').value
+
+
+def test_reference_file_gets_the_noted_messages():
+    # devsupport/testfiles/msgfmt.po notes gettext 1.0's messages; other
+    # versions word, and sometimes judge, them differently.
+    if _gettext_version() >> 8 != 0x0100:
+        pytest.skip("libgettextpo isn't gettext 1.0")
+    store = po.pofile.parsefile(REFERENCE)
+    check = gettextpo.MsgfmtCheck()
+    prefix = "Expected 'msgfmt': "
+    for unit in store.units[1:]:
+        expected = re.sub(r" \(the translation holds [^)]*\)", "", unit.getnotes('developer'))
+        assert expected.startswith(prefix)
+        assert (check.check(unit) or '').replace('\n', ' / ') == expected[len(prefix):], str(unit.source)

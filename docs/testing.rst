@@ -33,6 +33,8 @@ Real translation files for manual testing live under
 directly:
 
 * ``checks.po`` - exercises most quality checks.
+* ``msgfmt.po`` - one unit for each message of the msgfmt check, the
+  message noted on it.
 * ``plurals.po``/``plurals-zero.po`` - nplurals=3 and nplurals=1
   respectively.
 * ``workflow.po``/``workflow.xliff`` - between the two, covers five of

@@ -5,6 +5,8 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+from types import SimpleNamespace
+
 from translate.storage.placeables import StringElem
 
 from virtaal.controllers import undocontroller as undocontroller_module
@@ -748,3 +750,21 @@ def test_init_disables_undo_redo_immediately():
 
     assert undo_calls[-1] is False
     assert redo_calls[-1] is False
+
+
+def test_undo_and_redo_recheck_the_current_unit():
+    # Undo disables the unit view's signals, so no unit-modified starts
+    # the usual recheck (#4166).
+    textbox = _FakeTextbox('a')
+    unit = _FakeUnit()
+    controller = _make_controller(textbox, unit)
+    checked = []
+    controller.main_controller.checks_controller = SimpleNamespace(check_unit=checked.append)
+
+    controller.push_current_text(textbox)
+    textbox.elem.sub = StringElem('ab').sub
+    controller._on_undo_activated()
+    assert checked == [unit]
+
+    controller._on_redo_activated()
+    assert checked == [unit, unit]

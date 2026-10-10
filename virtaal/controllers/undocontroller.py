@@ -431,6 +431,13 @@ class UndoController(BaseController):
         if unit is not None:
             self.main_controller.store_controller.update_unit_stats(unit)
 
+        # Nor does undo/redo start the checks' recheck, which unit-modified
+        # does (#4166).
+        checks_controller = getattr(self.main_controller, 'checks_controller', None)
+        if current_unit is not None and checks_controller is not None:
+            self._flush_pending_refresh()
+            checks_controller.check_unit(current_unit)
+
         self._update_sensitivity()
 
     @if_enabled

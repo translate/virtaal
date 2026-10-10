@@ -496,14 +496,24 @@ def _has_real_translation():
     return bool(_(''))
 
 
-settings = Settings()
+def install_saved_ui_language():
+    """Install the UI language saved in settings, or the OS's own if none.
+    Called again by bin/virtaal's --config once it replaces settings."""
+    global ui_language, has_ui_translation
+    saved = settings.language["uilang"]
+    if saved:
+        _install_explicit_ui_language(saved, [saved, get_locale_lang()], fallback=True)
+    else:
+        _install_system_ui_language()
+    has_ui_translation = _has_real_translation()
+    if has_ui_translation:
+        ui_language = saved or get_locale_lang()
+    else:
+        ui_language = 'en'
 
-ui_language = settings.language["uilang"]
-if ui_language:
-    locale_lang = get_locale_lang()
-    _install_explicit_ui_language(ui_language, [ui_language, locale_lang], fallback=True)
-else:
-    _install_system_ui_language()
+
+settings = Settings()
+install_saved_ui_language()
 
 
 def get_available_ui_languages():
@@ -635,13 +645,6 @@ main_dir = platform.bundle_dir or os.path.dirname(sys.argv[0])
 
 if platform.is_windows and platform.is_frozen:
     fix_libintl(main_dir)
-
-has_ui_translation = _has_real_translation()
-if has_ui_translation:
-    # If this is true, we have a translated interface
-    ui_language = ui_language or get_locale_lang()
-else:
-    ui_language = 'en'
 
 
 def get_abs_data_filename(path_parts, basedirs=None):

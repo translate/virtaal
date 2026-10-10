@@ -136,6 +136,12 @@ Currently we translate lite versions for:
 - gtkspell - <http://translationproject.org/domain/gtkspell.html>
 - GLib - <http://l10n.gnome.org/module/glib/>
 - gtk-mac-integration (macOS app menu) - <https://l10n.gnome.org/module/gtk-mac-integration/>
+- gettext-tools (msgfmt check messages) - <https://translationproject.org/domain/gettext-tools.html>
+
+gettext-tools is the exception to the rule above: the macOS and Windows
+builds' libgettextpo comes without any catalogs, so its lite catalogs
+are copies of gettext's own translations. See
+[lite/gettext-tools/README.md](lite/gettext-tools/README.md).
 
 The GTK, GLib and gtkspell templates hold what Virtaal really shows,
 found by running it under `--pseudo-translation-source`. The macOS app

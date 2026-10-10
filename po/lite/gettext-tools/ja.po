@@ -1,0 +1,1086 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gettext-tools 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-10 13:25+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: src/format-awk.c:518
+#: src/format-boost.c:630
+#: src/format-c++-brace.c:943
+#: src/format-elisp.c:358
+#: src/format-gcc-internal.c:783
+#: src/format-go.c:583
+#: src/format-java-printf.c:559
+#: src/format-javascript.c:380
+#: src/format-kde.c:215
+#: src/format-librep.c:322
+#: src/format-lua.c:226
+#: src/format-modula2.c:197
+#: src/format-ocaml.c:901
+#: src/format-pascal.c:379
+#: src/format-perl.c:587
+#: src/format-php.c:360
+#: src/format-qt.c:171
+#: src/format-rust.c:495
+#: src/format-sh-printf.c:471
+#: src/format-smalltalk.c:146
+#: src/format-tcl.c:397
+#, c-format
+msgid ""
+"a format specification for argument %zu, as in '%s', doesn't exist in '%s'"
+msgstr "引数 %zu に対する形式指定が '%s' のように '%s' に存在しません"
+
+#: src/format-awk.c:530
+#: src/format-boost.c:642
+#: src/format-c++-brace.c:955
+#: src/format-elisp.c:370
+#: src/format-gcc-internal.c:795
+#: src/format-go.c:595
+#: src/format-java-printf.c:571
+#: src/format-javascript.c:392
+#: src/format-kde.c:227
+#: src/format-librep.c:334
+#: src/format-lua.c:234
+#: src/format-modula2.c:205
+#: src/format-ocaml.c:913
+#: src/format-pascal.c:391
+#: src/format-perl.c:599
+#: src/format-php.c:372
+#: src/format-qt.c:167
+#: src/format-rust.c:507
+#: src/format-sh-printf.c:483
+#: src/format-smalltalk.c:142
+#: src/format-tcl.c:409
+#, c-format
+msgid "a format specification for argument %zu doesn't exist in '%s'"
+msgstr "引数 %zu に対する形式指定が '%s' に存在しません"
+
+#: src/format-awk.c:554
+#: src/format-boost.c:666
+#: src/format-c.c:148
+#: src/format-elisp.c:394
+#: src/format-gcc-internal.c:819
+#: src/format-gfc-internal.c:353
+#: src/format-go.c:619
+#: src/format-java-printf.c:595
+#: src/format-javascript.c:419
+#: src/format-librep.c:358
+#: src/format-lua.c:248
+#: src/format-modula2.c:219
+#: src/format-ocaml.c:946
+#: src/format-pascal.c:415
+#: src/format-perl.c:623
+#: src/format-php.c:396
+#: src/format-python.c:547
+#: src/format-ruby.c:965
+#: src/format-sh-printf.c:507
+#: src/format-tcl.c:433
+#, c-format
+msgid ""
+"format specifications in '%s' and '%s' for argument %zu are not the same"
+msgstr "'%s' と '%s' での引数 %zu に対する形式指定が同じではありません"
+
+#: src/format-boost.c:452
+#, c-format
+msgid "The directive number %zu starts with | but does not end with |."
+msgstr "命令番号 %zu が, | で始まっていますが | で終わっていません."
+
+#: src/format.c:160
+#, c-format
+msgid "'%s' is not a valid %s format string, unlike '%s'. Reason: %s"
+msgstr "'%s' は正しい %s 形式の文字列ではなく, '%s' とは違います. 理由: %s"
+
+#: src/format-c++-brace.c:252
+#, c-format
+msgid "In the directive number %zu, the arg-id is too large."
+msgstr "命令番号 %zu では, arg-id が大き過ぎます."
+
+#: src/format-c++-brace.c:368
+#: src/format-c++-brace.c:463
+#, c-format
+msgid "In the directive number %zu, the width's arg-id is too large."
+msgstr "命令番号 %zu では, 幅の arg-id が大き過ぎます."
+
+#: src/format-c++-brace.c:423
+#, c-format
+msgid ""
+"In the directive number %zu, the width's arg-id is not terminated through '}"
+"'."
+msgstr "命令番号 %zu では, 幅の arg-id が '}' で終端されていません."
+
+#: src/format-c++-brace.c:518
+#, c-format
+msgid ""
+"In the directive number %zu, the precision's arg-id is not terminated "
+"through '}'."
+msgstr "命令番号 %zu では, その精度の arg-id が '}' で終端されていません."
+
+#: src/format-c++-brace.c:580
+#, c-format
+msgid ""
+"In the directive number %zu, the character '%c' is not a standard type "
+"specifier."
+msgstr "命令番号 %zu では, 文字 '%c' は標準型指定子ではありません."
+
+#: src/format-c++-brace.c:581
+#, c-format
+msgid ""
+"The character that terminates the directive number %zu is not a standard "
+"type specifier."
+msgstr "命令番号 %zu を終端する文字が標準型指定子ではありません."
+
+#: src/format-c++-brace.c:589
+#, c-format
+msgid ""
+"In the directive number %zu, the sign specification is incompatible with the "
+"type specifier '%c'."
+msgstr "命令番号 %zu では, 符号指定が型指定子 '%c' と互換ではありません."
+
+#: src/format-c++-brace.c:597
+#, c-format
+msgid ""
+"In the directive number %zu, the '#' option is incompatible with the type "
+"specifier '%c'."
+msgstr "命令番号 %zu では, '#' オプションが型指定子 '%c' と互換ではありません."
+
+#: src/format-c++-brace.c:605
+#, c-format
+msgid ""
+"In the directive number %zu, the '0' option is incompatible with the type "
+"specifier '%c'."
+msgstr "命令番号 %zu では, '0' オプションが型指定子 '%c' と互換ではありません."
+
+#: src/format-c++-brace.c:613
+#, c-format
+msgid ""
+"In the directive number %zu, the precision specification is incompatible "
+"with the type specifier '%c'."
+msgstr "命令番号 %zu では, 精度指定が型指定子 '%c' と互換ではありません."
+
+#: src/format-c++-brace.c:621
+#, c-format
+msgid ""
+"In the directive number %zu, the 'L' option is incompatible with the type "
+"specifier '%c'."
+msgstr "命令番号 %zu では, 'L' オプションが型指定子 '%c' と互換ではありません."
+
+#: src/format-c++-brace.c:722
+#, c-format
+msgid ""
+"The directive number %zu, with all of its options, is not applicable to any "
+"type."
+msgstr "命令番号 %zu は, そのすべてのオプションが, どの型にも適用できません."
+
+#: src/format-c++-brace.c:734
+#, c-format
+msgid "The string ends in the middle of the directive number %zu."
+msgstr "文字列が命令番号 %zu の途中で終わっています."
+
+#: src/format-c++-brace.c:742
+#, c-format
+msgid "The directive number %zu is not terminated through '}'."
+msgstr "命令番号 %zu が '}' で終端していません."
+
+#: src/format-c++-brace.c:764
+#: src/format-csharp.c:155
+#: src/format-java.c:344
+msgid ""
+"The string starts in the middle of a directive: found '}' without matching '"
+"{'."
+msgstr "文字列は命令の途中から始まっています: '}' と '{' が一致していません."
+
+#: src/format-c++-brace.c:765
+#: src/format-csharp.c:156
+#, c-format
+msgid "The string contains a lone '}' after directive number %zu."
+msgstr "文字列が命令番号 %zu のあとに閉じていない '}' を含んでいます."
+
+#: src/format-c++-brace.c:984
+#, c-format
+msgid ""
+"The format specification for argument %zu in '%s' is applicable to the types "
+"%s, but the format specification for argument %zu in '%s' is not."
+msgstr ""
+"引数 %zu ('%s' 内) に対する形式指定は型 %s に適用可能ですが, 引数 %zu ('%s' "
+"内) に対する形式指定はそうではありません."
+
+#: src/format-c++-brace.c:997
+#, c-format
+msgid ""
+"The format specification for argument %zu in '%s' uses a different "
+"presentation than the format specification for argument %zu in '%s'."
+msgstr ""
+"引数 %zu ('%s' 内) に対する形式指定は引数 %zu ('%s' 内) の形式指定とは異なる"
+"表示を使用しています."
+
+#: src/format-c.c:35
+#, c-format
+msgid ""
+"In the directive number %zu, the token after '<' is not the name of a format "
+"specifier macro. The valid macro names are listed in ISO C 99 section 7.8.1."
+msgstr ""
+"命令番号 %zu では, '<' の後のトークンは形式記述子マクロ名ではありません. 正し"
+"いマクロ名は ISO C 99 の 7.8.1 節に一覧があります."
+
+#: src/format-c.c:38
+#, c-format
+msgid ""
+"In the directive number %zu, the token after '<' is not followed by '>'."
+msgstr "命令番号 %zu では, '<' の後のトークンの後に '>' が来ることはありません."
+
+#: src/format-c.c:41
+#, c-format
+msgid "In the directive number %zu, the argument size specifier is invalid."
+msgstr "命令番号 %zu では, その引数サイズ指定子は無効です."
+
+#: src/format-c.c:44
+#: src/format-gfc-internal.c:274
+#, c-format
+msgid ""
+"The string refers to argument number %zu but ignores argument number %zu."
+msgstr "文字列は引数番号 %zu を参照していますが引数番号 %zu を無視しています."
+
+#: src/format-c.c:138
+#: src/format-csharp.c:201
+#: src/format-gfc-internal.c:343
+#: src/format-python.c:534
+#: src/format-qt-plural.c:109
+#: src/format-ruby.c:955
+#, c-format
+msgid "number of format specifications in '%s' and '%s' does not match"
+msgstr "'%s' と '%s' で指定した形式の数が合っていません"
+
+#: src/format-csharp.c:82
+#: src/format-java.c:203
+#, c-format
+msgid "In the directive number %zu, '{' is not followed by an argument number."
+msgstr "命令番号 %zu では, '{' の後に引数の数が来ることはありません."
+
+#: src/format-csharp.c:103
+#, c-format
+msgid "In the directive number %zu, ',' is not followed by a number."
+msgstr "命令番号 %zu では, ',' の後に数字が来ることはありません."
+
+#: src/format-csharp.c:124
+#: src/format-java.c:185
+msgid ""
+"The string ends in the middle of a directive: found '{' without matching '}'."
+msgstr "文字列は命令の途中で終わっています: '{' と '}' が一致していません."
+
+#: src/format-csharp.c:133
+#, c-format
+msgid ""
+"The directive number %zu ends with an invalid character '%c' instead of '}'."
+msgstr "命令番号 %zu が, '}' の代わりに不正な文字 '%c' で終わっています."
+
+#: src/format-csharp.c:134
+#, c-format
+msgid "The directive number %zu ends with an invalid character instead of '}'."
+msgstr "命令番号 %zu が, '}' の代わりに不正な文字で終わっています."
+
+#: src/format-d.c:1651
+#, c-format
+msgid ""
+"In the directive number %zu, the first argument number is greater than the "
+"second argument number."
+msgstr "命令番号 %zu では, 最初の引数の数が2番目の引数の数より大きいです."
+
+#: src/format-d.c:1654
+#, c-format
+msgid ""
+"In the directive number %zu, the compound specifier consumes a variable "
+"number of arguments."
+msgstr "命令番号 %zu では, 複合指定子は可変数の引数を使用します."
+
+#: src/format-d.c:1657
+#, c-format
+msgid ""
+"In the directive number %zu, the compound specifier consumes %zu arguments."
+msgstr "命令番号 %zu では, 複合指定子は %zu の引数を使用します."
+
+#: src/format-d.c:1660
+msgid "Found '%|' outside of '%(...%)'."
+msgstr "'%|' が '%(...%)' の外にあります."
+
+#: src/format-d.c:1663
+msgid "The string ends in the middle of a compound specifier."
+msgstr "文字列は複合指定子の途中で終わっています."
+
+#: src/format-d.c:1666
+#, c-format
+msgid ""
+"In the directive number %zu, there is an invalid directive in the delimiter "
+"part of a compound specifier."
+msgstr "命令番号 %zu では, 複合指定子の区切り部分に無効な命令があります."
+
+#: src/format-d.c:1669
+#: src/format-ocaml.c:768
+#, c-format
+msgid "Found '%%%c' without matching '%%%c'."
+msgstr "'%%%c' が '%%%c' に一致していません."
+
+#: src/format-d.c:1672
+#, c-format
+msgid ""
+"The directive number %zu references an argument after the last argument."
+msgstr "命令番号 %zu は最後の引数の後の引数を参照しています."
+
+#: src/format-d.c:1676
+#: src/format-lisp.c:3419
+#: src/format-scheme.c:3341
+msgid "The string refers to some argument in incompatible ways."
+msgstr "文字列は非互換な方法で引数を参照しています."
+
+#: src/format-d.c:2246
+#: src/format-lisp.c:3462
+#: src/format-scheme.c:3384
+#, c-format
+msgid "format specifications in '%s' and '%s' are not equivalent"
+msgstr "'%s' と '%s' での形式指定が等しくありません"
+
+#: src/format-d.c:2263
+#: src/format-lisp.c:3479
+#: src/format-scheme.c:3401
+#, c-format
+msgid "format specifications in '%s' are not a subset of those in '%s'"
+msgstr "'%s' での形式指定が '%s' でのサブセットではありません"
+
+#: src/format-gcc-internal.c:228
+#, c-format
+msgid ""
+"The directive number %zu opens a quote group, but the previous one is not "
+"terminated."
+msgstr ""
+"命令番号 %zu が引用符グループを開いていますが, その前のグループが終端されてい"
+"ません."
+
+#: src/format-gcc-internal.c:238
+#: src/format-gcc-internal.c:248
+#: src/format-gcc-internal.c:258
+#, c-format
+msgid "The directive number %zu does not match a preceding '%%%c'."
+msgstr "命令番号 %zu が先行する '%%%c' と一致しません."
+
+#: src/format-gcc-internal.c:344
+#, c-format
+msgid "In the directive number %zu, the flags combination is invalid."
+msgstr "命令番号 %zu では, そのフラグの組み合わせは無効です."
+
+#: src/format-gcc-internal.c:385
+#, c-format
+msgid "In the directive number %zu, a precision is not allowed before '%c'."
+msgstr "命令番号 %zu では, '%c' の前に精度が来ることはありません."
+
+#: src/format-gcc-internal.c:426
+#, c-format
+msgid ""
+"In the directive number %zu, the argument number for the precision must be "
+"equal to %zu."
+msgstr "命令番号 %zu では, 精度の引数値は %zu と等しくなくてはなりません."
+
+#: src/format-gcc-internal.c:490
+#, c-format
+msgid ""
+"In the directive number %zu, a precision specification is not allowed before "
+"'%c'."
+msgstr "命令番号 %zu では, '%c' の前に精度指定が来ることはありません."
+
+#: src/format-gcc-internal.c:498
+#, c-format
+msgid "In the directive number %zu, the precision specification is invalid."
+msgstr "命令番号 %zu では, その精度指定は無効です."
+
+#: src/format-gcc-internal.c:524
+#, c-format
+msgid ""
+"The directive number %zu opens a color group, but the previous one is not "
+"terminated."
+msgstr ""
+"命令番号 %zu が色グループを開いていますが, その前のグループが終端されていませ"
+"ん."
+
+#: src/format-gcc-internal.c:535
+#, c-format
+msgid ""
+"The directive number %zu opens a URL group, but the previous one is not "
+"terminated."
+msgstr ""
+"命令番号 %zu が URL グループを開いていますが, その前のグループが終端されてい"
+"ません."
+
+#: src/format-gcc-internal.c:663
+#, c-format
+msgid "The quote group opened by the directive number %zu is not terminated."
+msgstr "命令番号 %zu によって開かれた引用グループが終端されていません."
+
+#: src/format-gcc-internal.c:668
+#, c-format
+msgid "The color group opened by the directive number %zu is not terminated."
+msgstr "命令番号 %zu によって開かれた色グループが終端されていません."
+
+#: src/format-gcc-internal.c:673
+#, c-format
+msgid "The URL group opened by the directive number %zu is not terminated."
+msgstr "命令番号 %zu によって開かれた URL グループが終端されていません."
+
+#: src/format-gcc-internal.c:840
+#, c-format
+msgid "'%s' uses %%m but '%s' doesn't"
+msgstr "'%s' は %%m を使いますが '%s' は使いません"
+
+#: src/format-gcc-internal.c:844
+#, c-format
+msgid "'%s' does not use %%m but '%s' uses %%m"
+msgstr "'%s' は %%m を使いませんが '%s' は %%m を使います"
+
+#: src/format-gcc-internal.c:857
+#: src/format-gfc-internal.c:365
+#, c-format
+msgid "'%s' uses %%C but '%s' doesn't"
+msgstr "'%s' は %%C を使いますが '%s' は使いません"
+
+#: src/format-gcc-internal.c:861
+#: src/format-gfc-internal.c:369
+#, c-format
+msgid "'%s' does not use %%C but '%s' uses %%C"
+msgstr "'%s' は %%C を使いませんが '%s' は %%C を使います"
+
+#: src/format-go.c:115
+#: src/format-rust.c:172
+#, c-format
+msgid "In the directive number %zu, the argument number is too large."
+msgstr "命令番号 %zu では, 引数の数が大き過ぎます."
+
+#: src/format-go.c:221
+#, c-format
+msgid "In the directive number %zu, the width is too large."
+msgstr "命令番号 %zu では, 幅が大き過ぎます."
+
+#: src/format-go.c:326
+#, c-format
+msgid "In the directive number %zu, the precision is too large."
+msgstr "命令番号 %zu では, 精度が大き過ぎます."
+
+#: src/format-invalid.h:23
+msgid "The string ends in the middle of a directive."
+msgstr "文字列が命令の途中で終わっています."
+
+#: src/format-invalid.h:26
+msgid ""
+"The string refers to arguments both through absolute argument numbers and "
+"through unnumbered argument specifications."
+msgstr ""
+"文字列は, 番号付けされた引数も, 番号付けされていない引数も, どちらの引数も参"
+"照しています."
+
+#: src/format-invalid.h:29
+#, c-format
+msgid "In the directive number %zu, the precision is missing."
+msgstr "命令番号 %zu に精度がありません."
+
+#: src/format-invalid.h:32
+#, c-format
+msgid ""
+"In the directive number %zu, the argument number 0 is not a positive integer."
+msgstr "命令番号 %zu では, 引数番号 0 が正の整数ではありません."
+
+#: src/format-invalid.h:34
+#, c-format
+msgid ""
+"In the directive number %zu, the width's argument number 0 is not a positive "
+"integer."
+msgstr "命令番号 %zu では, 幅の引数番号 0 が正の整数ではありません."
+
+#: src/format-invalid.h:36
+#, c-format
+msgid ""
+"In the directive number %zu, the precision's argument number 0 is not a "
+"positive integer."
+msgstr "命令番号 %zu では, 精度の引数番号 0 が正の整数ではありません."
+
+#: src/format-invalid.h:40
+#, c-format
+msgid ""
+"In the directive number %zu, the character '%c' is not a valid conversion "
+"specifier."
+msgstr "命令番号 %zu では, 文字 '%c' は正しい変換記述子ではありません."
+
+#: src/format-invalid.h:41
+#, c-format
+msgid ""
+"The character that terminates the directive number %zu is not a valid "
+"conversion specifier."
+msgstr "命令番号 %zu の終端文字は正しい変換記述子ではありません."
+
+#: src/format-invalid.h:44
+#, c-format
+msgid ""
+"In the directive number %zu, the flag '%c' is invalid for the conversion "
+"'%c'."
+msgstr "命令番号 %zu では, フラグ '%c' は変換 '%c' に対して無効です."
+
+#: src/format-invalid.h:47
+#, c-format
+msgid "The string refers to argument number %zu in incompatible ways."
+msgstr "文字列が非互換な方法で引数番号 %zu を参照しています."
+
+#: src/format-java.c:238
+#, c-format
+msgid ""
+"In the directive number %zu, the substring \"%s\" is not a valid date/time "
+"style."
+msgstr "命令番号 %zu では, サブ文字列 \"%s\" が正しい日付や時刻の形式ではありません."
+
+#: src/format-java.c:249
+#: src/format-java.c:283
+#: src/format-java.c:312
+#, c-format
+msgid "In the directive number %zu, \"%s\" is not followed by a comma."
+msgstr "命令番号 %zu では, \"%s\" の後にカンマが来ることはありません."
+
+#: src/format-java.c:272
+#, c-format
+msgid ""
+"In the directive number %zu, the substring \"%s\" is not a valid number "
+"style."
+msgstr "命令番号 %zu では, サブ文字列 \"%s\" は正しい数値の形式ではありません."
+
+#: src/format-java.c:321
+#, c-format
+msgid ""
+"In the directive number %zu, the argument number is not followed by a comma "
+"and one of \"%s\", \"%s\", \"%s\", \"%s\"."
+msgstr ""
+"命令番号 %zu では, 引数の数の後にカンマや \"%s\", \"%s\", \"%s\", \"%s\" が来"
+"ることはありません."
+
+#: src/format-java.c:566
+#, c-format
+msgid "In the directive number %zu, a choice contains no number."
+msgstr "命令番号 %zu では, 選択肢に数値がありません."
+
+#: src/format-java.c:577
+#, c-format
+msgid ""
+"In the directive number %zu, a choice contains a number that is not followed "
+"by '<', '#' or '%s'."
+msgstr ""
+"命令番号 %zu では, 選択肢に数値があり, '<', '#' や '%s' がその後にくることは"
+"ありません."
+
+#: src/format-java.c:738
+#, c-format
+msgid ""
+"a format specification for argument {%zu}, as in '%s', doesn't exist in '%s'"
+msgstr "引数 {%zu} に対する形式指定が '%s' のように '%s' に存在しません"
+
+#: src/format-java.c:750
+#, c-format
+msgid "a format specification for argument {%zu} doesn't exist in '%s'"
+msgstr "引数 {%zu} に対する形式指定が '%s' に存在しません"
+
+#: src/format-java.c:774
+#, c-format
+msgid ""
+"format specifications in '%s' and '%s' for argument {%zu} are not the same"
+msgstr "'%s' と '%s' での引数 {%zu} に対する形式指定が同じではありません"
+
+#: src/format-java-printf.c:131
+#, c-format
+msgid ""
+"In the directive number %zu, the reference to the argument of the previous "
+"directive is invalid."
+msgstr "命令番号 %zu では, その前の命令の引数への参照は無効です."
+
+#: src/format-java-printf.c:134
+#, c-format
+msgid ""
+"In the directive number %zu, a width is invalid for the conversion '%c'."
+msgstr "命令番号 %zu では, 変換 '%c' に対して幅が無効です."
+
+#: src/format-java-printf.c:137
+#, c-format
+msgid ""
+"In the directive number %zu, a precision is invalid for the conversion '%c'."
+msgstr "命令番号 %zu では, 変換 '%c' に対して精度が無効です."
+
+#: src/format-java-printf.c:141
+#, c-format
+msgid ""
+"In the directive number %zu, for the conversion '%c', the character '%c' is "
+"not a valid conversion suffix."
+msgstr ""
+"命令番号 %zu では, 変換 '%c' に対して, 文字 '%c' は正しい変換拡張子ではありま"
+"せん."
+
+#: src/format-java-printf.c:142
+#, c-format
+msgid ""
+"The character that terminates the directive number %zu, for the conversion "
+"'%c', is not a valid conversion suffix."
+msgstr ""
+"命令番号 %zu の終端文字は, 変換 '%c' に対して, 正しい変換拡張子ではありませ"
+"ん."
+
+#: src/format-kde.c:149
+#, c-format
+msgid ""
+"The string refers to argument number %zu but ignores the arguments %zu and "
+"%zu."
+msgstr "文字列は引数番号 %zu を参照していますが引数 %zu と %zu を無視しています."
+
+#: src/format-kde.c:236
+#: src/format-rust.c:516
+#, c-format
+msgid ""
+"a format specification for arguments %zu and %zu doesn't exist in '%s', only "
+"one argument may be ignored"
+msgstr ""
+"引数 %zu と %zu に対する形式指定が '%s' に存在せず, 1つの引数だけが無視されて"
+"いるかもしれません"
+
+#: src/format-kde-kuit.c:251
+#: src/format-kde-kuit.c:272
+#: src/format-kde-kuit.c:282
+#, c-format
+msgid "error while parsing: %s"
+msgstr "構文解析中のエラー: %s"
+
+#: src/format-lisp.c:2335
+#: src/format-lisp.c:2347
+#: src/format-scheme.c:2361
+#: src/format-scheme.c:2373
+#, c-format
+msgid ""
+"In the directive number %zu, parameter %zu is of type '%s' but a parameter "
+"of type '%s' is expected."
+msgstr ""
+"命令番号 %zu では, パラメータ %zu は '%s' 型ですが '%s' 型のパラメータは想定"
+"されていません."
+
+#: src/format-lisp.c:2370
+#: src/format-scheme.c:2396
+#, c-format
+msgid ""
+"In the directive number %zu, too many parameters are given; expected at most "
+"%zu parameter."
+msgid_plural ""
+"In the directive number %zu, too many parameters are given; expected at most "
+"%zu parameters."
+msgstr[0] ""
+"命令番号 %zu では, 指定されたパラメータが多過ぎます: パラメータは最大でも "
+"%zu 個です."
+
+#: src/format-lisp.c:2492
+#: src/format-scheme.c:2494
+#, c-format
+msgid "In the directive number %zu, '%c' is not followed by a digit."
+msgstr "命令番号 %zu では, '%c' の後に数値が来ることはありません."
+
+#: src/format-lisp.c:2734
+#: src/format-scheme.c:2751
+#, c-format
+msgid "In the directive number %zu, the argument %d is negative."
+msgstr "命令番号 %zu では, 引数 %d は負です."
+
+#: src/format-lisp.c:2803
+msgid "The string ends in the middle of a ~/.../ directive."
+msgstr "文字列は ~/.../ 命令の途中で終わっています."
+
+#: src/format-lisp.c:2841
+#: src/format-lisp.c:3097
+#: src/format-lisp.c:3214
+#: src/format-lisp.c:3274
+#: src/format-lisp.c:3386
+#: src/format-scheme.c:2837
+#: src/format-scheme.c:3093
+#: src/format-scheme.c:3210
+#: src/format-scheme.c:3308
+#, c-format
+msgid "Found '~%c' without matching '~%c'."
+msgstr "'~%c' が '~%c' に一致していません."
+
+#: src/format-lisp.c:2861
+#: src/format-scheme.c:2857
+#, c-format
+msgid "In the directive number %zu, both the @ and the : modifiers are given."
+msgstr "命令番号 %zu では, @ と : の両方の修飾子が指定されています."
+
+#: src/format-lisp.c:2970
+#: src/format-scheme.c:2966
+#, c-format
+msgid ""
+"In the directive number %zu, '~:[' is not followed by two clauses, separated "
+"by '~;'."
+msgstr "命令番号 %zu では, '~:[' の後に '~;' で分けられた 2つの節がありません."
+
+#: src/format-lisp.c:3315
+#: src/format-scheme.c:3251
+#, c-format
+msgid "In the directive number %zu, '~;' is used in an invalid position."
+msgstr "命令番号 %zu では, '~;' は不正な場所で使われています."
+
+#: src/format-ocaml.c:562
+#: src/format-ocaml.c:661
+#, c-format
+msgid "Found '%s' without matching '%s'."
+msgstr "'%s' が '%s' に一致していません."
+
+#: src/format-perl-brace.c:194
+#: src/format-python-brace.c:555
+#: src/format-python.c:486
+#: src/format-ruby.c:910
+#: src/format-rust.c:461
+#: src/format-sh.c:295
+#, c-format
+msgid "a format specification for argument '%s' doesn't exist in '%s'"
+msgstr "引数 '%s' に対する形式指定が '%s' に存在しません"
+
+#: src/format-perl.c:426
+#, c-format
+msgid ""
+"In the directive number %zu, the size specifier is incompatible with the "
+"conversion specifier '%c'."
+msgstr "命令番号 %zu では, サイズ指定は変換指定 '%c' と互換ではありません."
+
+#: src/format-python-brace.c:192
+#, c-format
+msgid "In the directive number %zu, '%c' cannot start a getattr argument."
+msgstr "命令番号 %zu では, '%c' は getattr 引数を始めることができません."
+
+#: src/format-python-brace.c:194
+#, c-format
+msgid ""
+"In the directive number %zu, a getattr argument starts with a character that "
+"is not alphabetical or underscore."
+msgstr ""
+"命令番号 %zu では, getattr 引数は英字でもアンダースコアでもない文字で始まりま"
+"す."
+
+#: src/format-python-brace.c:216
+#, c-format
+msgid "In the directive number %zu, '%c' cannot start a getitem argument."
+msgstr "命令番号 %zu では, '%c' で getitem 引数を始めることができません."
+
+#: src/format-python-brace.c:218
+#, c-format
+msgid ""
+"In the directive number %zu, a getitem argument starts with a character that "
+"is not alphanumerical or underscore."
+msgstr ""
+"命令番号 %zu では, getitem 引数は英数字でもアンダースコアでもない文字で始まり"
+"ます."
+
+#: src/format-python-brace.c:228
+#, c-format
+msgid "In the directive number %zu, there is an unterminated getitem argument."
+msgstr "命令番号 %zu では, 未終端の getitem 引数があります."
+
+#: src/format-python-brace.c:251
+#, c-format
+msgid "In the directive number %zu, '%c' cannot start a field name."
+msgstr "命令番号 %zu では, '%c' でフィールド名を始めることができません."
+
+#: src/format-python-brace.c:253
+#, c-format
+msgid ""
+"In the directive number %zu, a field name starts with a character that is "
+"not alphanumerical or underscore."
+msgstr ""
+"命令番号 %zu では, フィールド名は英数字でもアンダースコアでもない文字で始まり"
+"ます."
+
+#: src/format-python-brace.c:266
+#, c-format
+msgid ""
+"In the directive number %zu, no more nesting is allowed in a format "
+"specifier."
+msgstr "命令番号 %zu では, 形式識別子でこれ以上のネストはできません."
+
+#: src/format-python-brace.c:302
+#: src/format-python-brace.c:355
+#: src/format-rust.c:261
+#: src/format-rust.c:318
+#, c-format
+msgid "The directive number %zu is unterminated."
+msgstr "命令番号 %zu が終端していません."
+
+#: src/format-python-brace.c:372
+#: src/format-python-brace.c:389
+msgid ""
+"The string refers to arguments both through absolute argument numbers and "
+"through unnamed argument specifications."
+msgstr "文字列が絶対引数番号と名前なし引数指定の両方を使って引数を参照しています."
+
+#: src/format-python-brace.c:543
+#: src/format-python.c:474
+#: src/format-ruby.c:898
+#: src/format-rust.c:449
+#: src/format-sh.c:283
+#, c-format
+msgid ""
+"a format specification for argument '%s', as in '%s', doesn't exist in '%s'"
+msgstr "引数 '%s' に対する形式指定が '%s' のように '%s' に存在しません"
+
+#: src/format-python.c:112
+#: src/format-ruby.c:129
+msgid ""
+"The string refers to arguments both through argument names and through "
+"unnamed argument specifications."
+msgstr "文字列は, 名前のある引数も, 名前なしの引数も, どちらの引数も参照しています."
+
+#: src/format-python.c:358
+#: src/format-ruby.c:782
+#, c-format
+msgid "The string refers to the argument named '%s' in incompatible ways."
+msgstr "文字列は非互換な方法で引数名 '%s' を参照しています."
+
+#: src/format-python.c:441
+#, c-format
+msgid ""
+"format specifications in '%s' expect a mapping, those in '%s' expect a tuple"
+msgstr "'%s' での形式指定はマッピングですが, '%s' ではタプル (tuple) です"
+
+#: src/format-python.c:449
+#, c-format
+msgid ""
+"format specifications in '%s' expect a tuple, those in '%s' expect a mapping"
+msgstr "'%s' での形式指定はタプル (tuple) ですが, '%s' ではマッピングです"
+
+#: src/format-python.c:513
+#: src/format-ruby.c:934
+#, c-format
+msgid ""
+"format specifications in '%s' and '%s' for argument '%s' are not the same"
+msgstr "'%s' と '%s' での引数 '%s' に対する形式指定が同じではありません"
+
+#: src/format-qt.c:148
+#, c-format
+msgid ""
+"'%s' is a simple format string, but '%s' is not: it contains an 'L' flag or "
+"a double-digit argument number"
+msgstr ""
+"'%s' は単純な形式文字列ですが, '%s' は違います. 'L' フラグか 2桁の数値引数を"
+"含みます"
+
+#: src/format-ruby.c:132
+#, c-format
+msgid "In the directive number %zu, two names are given for the same argument."
+msgstr "命令番号 %zu では, 同じ引数に対して2つの名前が与えられます."
+
+#: src/format-ruby.c:135
+#, c-format
+msgid ""
+"In the directive number %zu, two numbers are given for the same argument."
+msgstr "命令番号 %zu では, 同じ引数に対して2つの数字が与えられます."
+
+#: src/format-ruby.c:138
+#, c-format
+msgid "In the directive number %zu, a flag is given after the width."
+msgstr "命令番号 %zu では, 幅の後にフラグが与えられます."
+
+#: src/format-ruby.c:141
+#, c-format
+msgid "In the directive number %zu, a flag is given after the precision."
+msgstr "命令番号 %zu では, 精度の後にフラグが与えられます."
+
+#: src/format-ruby.c:144
+#, c-format
+msgid "In the directive number %zu, the width is given after the precision."
+msgstr "命令番号 %zu では, 精度の後に幅が与えられます."
+
+#: src/format-ruby.c:147
+#, c-format
+msgid "In the directive number %zu, a width is given twice."
+msgstr "命令番号 %zu では, 幅が2回与えられます."
+
+#: src/format-ruby.c:150
+#, c-format
+msgid "In the directive number %zu, a precision is given twice."
+msgstr "命令番号 %zu では, 精度が2回与えられます."
+
+#: src/format-ruby.c:865
+#, c-format
+msgid ""
+"format specifications in '%s' expect a hash table, those in '%s' expect "
+"individual arguments"
+msgstr "'%s' での形式指定はハッシュテーブルですが, '%s' では個別の引数です"
+
+#: src/format-ruby.c:873
+#, c-format
+msgid ""
+"format specifications in '%s' expect individual arguments, those in '%s' "
+"expect a hash table"
+msgstr "'%s' での形式指定は個別の引数ですが, '%s' ではハッシュテーブルです"
+
+#: src/format-sh.c:77
+msgid "The string refers to a shell variable with a non-ASCII name."
+msgstr "文字列は名前がアスキーでないシェル変数を参照しています."
+
+#: src/format-sh.c:79
+msgid ""
+"The string refers to a shell variable with complex shell brace syntax. This "
+"syntax is unsupported here due to security reasons."
+msgstr ""
+"文字列は複雑なシェル括弧の文法を使ったシェル変数を参照しています. この文法は"
+"ここではセキュリティ上の理由で実装されていません."
+
+#: src/format-sh.c:81
+msgid ""
+"The string refers to a shell variable whose value may be different inside "
+"shell functions."
+msgstr "文字列はシェル関数内で異なる可能性のある値を持ったシェル変数を参照しています."
+
+#: src/format-sh.c:83
+msgid "The string refers to a shell variable with an empty name."
+msgstr "文字列は名前が空のシェル変数を参照しています."
+
+#: src/format-sh-printf.c:335
+msgid "The string ends in the middle of an escape sequence."
+msgstr "文字列がエスケープシーケンスの途中で終わっています."
+
+#: src/format-sh-printf.c:345
+#, c-format
+msgid "The escape sequence '%c%c' is unsupported (not in POSIX)."
+msgstr "エスケープシーケンス '%c%c' は未実装 (POSIX にない)."
+
+#: src/format-sh-printf.c:346
+#, c-format
+msgid "The escape sequence '%c%c' is invalid."
+msgstr "エスケープシーケンス '%c%c' は無効."
+
+#: src/format-sh-printf.c:347
+msgid "This escape sequence is invalid."
+msgstr "このエスケープ シーケンスは無効."
+
+#: src/format-smalltalk.c:88
+#, c-format
+msgid ""
+"In the directive number %zu, the character '%c' is not a digit between 1 and "
+"9."
+msgstr "命令番号 %zu では, 文字 '%c' が 1 から 9 の間の数字ではありません."
+
+#: src/format-smalltalk.c:89
+#, c-format
+msgid ""
+"The character that terminates the directive number %zu is not a digit "
+"between 1 and 9."
+msgstr "命令番号 %zu の終端文字が 1 から 9 の間の数字ではありません."
+
+#: src/msgl-check.c:110
+msgid "plural expression can produce division by zero"
+msgstr "複数表現がゼロ割りを起こす可能性があります"
+
+#: src/msgl-check.c:113
+msgid "plural expression can produce integer overflow"
+msgstr "複数表現が整数あふれを起こす可能性があります"
+
+#: src/msgl-check.c:116
+msgid "plural expression can produce stack overflow"
+msgstr "複数表現がスタックオーバーフローを起こす可能性があります"
+
+#: src/msgl-check.c:130
+msgid "plural expression can produce negative values"
+msgstr "複数表現が負の値を生成する可能性があります"
+
+#: src/msgl-check.c:137
+#, c-format
+msgid "nplurals = %lu but plural expression can produce values as large as %lu"
+msgstr "nplurals = %lu ですが複数表現が %lu と同じ程度の値を生成する可能性があります"
+
+#: src/msgl-check.c:212
+#, c-format
+msgid "Try using the following, valid for %s:"
+msgstr "%s にとって有効な, 次を使ってみてください:"
+
+#: src/msgl-check.c:297
+#: src/msgl-check.c:321
+msgid "message catalog has plural form translations"
+msgstr "メッセージカタログに複数形の翻訳があります"
+
+#: src/msgl-check.c:299
+msgid "but header entry lacks a \"plural=EXPRESSION\" attribute"
+msgstr "しかしヘッダエントリに \"plural=EXPRESSION\" 属性がありません"
+
+#: src/msgl-check.c:323
+msgid "but header entry lacks a \"nplurals=INTEGER\" attribute"
+msgstr "しかしヘッダエントリに \"nplurals=INTEGER\" 属性がありません"
+
+#: src/msgl-check.c:356
+msgid "invalid nplurals value"
+msgstr "不正な nplurals の値"
+
+#: src/msgl-check.c:383
+msgid "invalid plural expression"
+msgstr "不正な複数 (plural) 表現"
+
+#: src/msgl-check.c:415
+#: src/msgl-check.c:431
+#, c-format
+msgid "nplurals = %lu"
+msgstr "nplurals = %lu"
+
+#: src/msgl-check.c:417
+#, c-format
+msgid "but some messages have only one plural form"
+msgid_plural "but some messages have only %lu plural forms"
+msgstr[0] "しかしいくつかのメッセージには %lu 個だけ複数形があります"
+
+#: src/msgl-check.c:433
+#, c-format
+msgid "but some messages have one plural form"
+msgid_plural "but some messages have %lu plural forms"
+msgstr[0] "しかしいくつかのメッセージには %lu 個の複数形があります"
+
+#: src/msgl-check.c:457
+msgid ""
+"message catalog has plural form translations, but lacks a header entry with "
+"\"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\""
+msgstr ""
+"メッセージカタログには複数形の翻訳があります. しかし \"Plural-Forms: "
+"nplurals=INTEGER; plural=EXPRESSION;\" というヘッダエントリがありません"
+
+#: src/msgl-check.c:560
+msgid "'msgid' and 'msgid_plural' entries do not both begin with '\\n'"
+msgstr "'msgid' と 'msgid_plural' のエントリがどちらも '\\n' で始まっていません"
+
+#: src/msgl-check.c:569
+#, c-format
+msgid "'msgid' and 'msgstr[%u]' entries do not both begin with '\\n'"
+msgstr "'msgid' と 'msgstr[%u]' のエントリがどちらも '\\n' で始まっていません"
+
+#: src/msgl-check.c:585
+msgid "'msgid' and 'msgstr' entries do not both begin with '\\n'"
+msgstr "'msgid' と 'msgstr' のエントリがどちらも '\\n' で始まっていません"
+
+#: src/msgl-check.c:603
+msgid "'msgid' and 'msgid_plural' entries do not both end with '\\n'"
+msgstr "'msgid' と 'msgid_plural' のエントリがどちらも '\\n' で終わっていません"
+
+#: src/msgl-check.c:612
+#, c-format
+msgid "'msgid' and 'msgstr[%u]' entries do not both end with '\\n'"
+msgstr "'msgid' と 'msgstr[%u]' のエントリがどちらも '\\n' で終わっていません"
+
+#: src/msgl-check.c:628
+msgid "'msgid' and 'msgstr' entries do not both end with '\\n'"
+msgstr "'msgid' と 'msgstr' のエントリがどちらも '\\n' で終わっていません"
+
+#: src/msgl-check.c:765
+#, c-format
+msgid "header field '%s' still has the initial default value\n"
+msgstr "ヘッダ情報 '%s' が初期標準値のままです\n"
+
+#: src/msgl-check.c:782
+#, c-format
+msgid "header field '%s' missing in header\n"
+msgstr "ヘッダ情報 '%s' がヘッダの中にありません\n"

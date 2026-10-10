@@ -1,0 +1,1138 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gettext-tools 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-10 13:25+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.19.18\n"
+"Language: bg\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/format-awk.c:518
+#: src/format-boost.c:630
+#: src/format-c++-brace.c:943
+#: src/format-elisp.c:358
+#: src/format-gcc-internal.c:783
+#: src/format-go.c:583
+#: src/format-java-printf.c:559
+#: src/format-javascript.c:380
+#: src/format-kde.c:215
+#: src/format-librep.c:322
+#: src/format-lua.c:226
+#: src/format-modula2.c:197
+#: src/format-ocaml.c:901
+#: src/format-pascal.c:379
+#: src/format-perl.c:587
+#: src/format-php.c:360
+#: src/format-qt.c:171
+#: src/format-rust.c:495
+#: src/format-sh-printf.c:471
+#: src/format-smalltalk.c:146
+#: src/format-tcl.c:397
+#, c-format
+msgid ""
+"a format specification for argument %zu, as in '%s', doesn't exist in '%s'"
+msgstr "указаният формат за аргумент %zu, както е в '%s', не съществува за '%s'"
+
+#: src/format-awk.c:530
+#: src/format-boost.c:642
+#: src/format-c++-brace.c:955
+#: src/format-elisp.c:370
+#: src/format-gcc-internal.c:795
+#: src/format-go.c:595
+#: src/format-java-printf.c:571
+#: src/format-javascript.c:392
+#: src/format-kde.c:227
+#: src/format-librep.c:334
+#: src/format-lua.c:234
+#: src/format-modula2.c:205
+#: src/format-ocaml.c:913
+#: src/format-pascal.c:391
+#: src/format-perl.c:599
+#: src/format-php.c:372
+#: src/format-qt.c:167
+#: src/format-rust.c:507
+#: src/format-sh-printf.c:483
+#: src/format-smalltalk.c:142
+#: src/format-tcl.c:409
+#, c-format
+msgid "a format specification for argument %zu doesn't exist in '%s'"
+msgstr "указаният формат за аргумент %zu не съществува за '%s'"
+
+#: src/format-awk.c:554
+#: src/format-boost.c:666
+#: src/format-c.c:148
+#: src/format-elisp.c:394
+#: src/format-gcc-internal.c:819
+#: src/format-gfc-internal.c:353
+#: src/format-go.c:619
+#: src/format-java-printf.c:595
+#: src/format-javascript.c:419
+#: src/format-librep.c:358
+#: src/format-lua.c:248
+#: src/format-modula2.c:219
+#: src/format-ocaml.c:946
+#: src/format-pascal.c:415
+#: src/format-perl.c:623
+#: src/format-php.c:396
+#: src/format-python.c:547
+#: src/format-ruby.c:965
+#: src/format-sh-printf.c:507
+#: src/format-tcl.c:433
+#, c-format
+msgid ""
+"format specifications in '%s' and '%s' for argument %zu are not the same"
+msgstr "не са еднакви указаните формати при '%s' и при '%s' за аргумент %zu"
+
+#: src/format-boost.c:452
+#, c-format
+msgid "The directive number %zu starts with | but does not end with |."
+msgstr "Директива номер %zu започва с |, но не завършва с |."
+
+#: src/format.c:160
+#, c-format
+msgid "'%s' is not a valid %s format string, unlike '%s'. Reason: %s"
+msgstr "'%s' е неправилен %s форматиращ низ, за разлика от '%s'. Причина: %s"
+
+#: src/format-c++-brace.c:252
+#, c-format
+msgid "In the directive number %zu, the arg-id is too large."
+msgstr "При директива номер %zu, аргумента е твърде голям."
+
+#: src/format-c++-brace.c:368
+#: src/format-c++-brace.c:463
+#, c-format
+msgid "In the directive number %zu, the width's arg-id is too large."
+msgstr "При директива номер %zu, ширината е твърде голяма."
+
+#: src/format-c++-brace.c:423
+#, c-format
+msgid ""
+"In the directive number %zu, the width's arg-id is not terminated through '}"
+"'."
+msgstr "При директива номер %zu, ширината не е затворена с '}'."
+
+#: src/format-c++-brace.c:518
+#, c-format
+msgid ""
+"In the directive number %zu, the precision's arg-id is not terminated "
+"through '}'."
+msgstr "При директива номер %zu, точността не е затворена с '}'."
+
+#: src/format-c++-brace.c:580
+#, c-format
+msgid ""
+"In the directive number %zu, the character '%c' is not a standard type "
+"specifier."
+msgstr "При директива номер %zu, знакът '%c' не задава стандартен тип."
+
+#: src/format-c++-brace.c:581
+#, c-format
+msgid ""
+"The character that terminates the directive number %zu is not a standard "
+"type specifier."
+msgstr "Знакът, който прекратява директива номер %zu, не задава стандартен тип."
+
+#: src/format-c++-brace.c:589
+#, c-format
+msgid ""
+"In the directive number %zu, the sign specification is incompatible with the "
+"type specifier '%c'."
+msgstr ""
+"При директива номер %zu, задаването на знак не е съвместимо със зададения "
+"стандартен тип '%c'."
+
+#: src/format-c++-brace.c:597
+#, c-format
+msgid ""
+"In the directive number %zu, the '#' option is incompatible with the type "
+"specifier '%c'."
+msgstr ""
+"При директива номер %zu, опцията '#' не е съвместимо със зададения "
+"стандартен тип '%c'."
+
+#: src/format-c++-brace.c:605
+#, c-format
+msgid ""
+"In the directive number %zu, the '0' option is incompatible with the type "
+"specifier '%c'."
+msgstr ""
+"При директива номер %zu, опцията '0' не е съвместимо със зададения "
+"стандартен тип '%c'."
+
+#: src/format-c++-brace.c:613
+#, c-format
+msgid ""
+"In the directive number %zu, the precision specification is incompatible "
+"with the type specifier '%c'."
+msgstr ""
+"При директива номер %zu, зададената точност не е съвместима със зададения "
+"стандартен тип '%c'."
+
+#: src/format-c++-brace.c:621
+#, c-format
+msgid ""
+"In the directive number %zu, the 'L' option is incompatible with the type "
+"specifier '%c'."
+msgstr ""
+"При директива номер %zu, опцията 'L' не е съвместимо със зададения "
+"стандартен тип '%c'."
+
+#: src/format-c++-brace.c:722
+#, c-format
+msgid ""
+"The directive number %zu, with all of its options, is not applicable to any "
+"type."
+msgstr ""
+"При директива номер %zu, заедно с всичките опции, не са приложими за нито "
+"един тип."
+
+#: src/format-c++-brace.c:734
+#, c-format
+msgid "The string ends in the middle of the directive number %zu."
+msgstr "Низът завършва по средата на директива номер %zu."
+
+#: src/format-c++-brace.c:742
+#, c-format
+msgid "The directive number %zu is not terminated through '}'."
+msgstr "Директива номер %zu не е завършена с '}'."
+
+#: src/format-c++-brace.c:764
+#: src/format-csharp.c:155
+#: src/format-java.c:344
+msgid ""
+"The string starts in the middle of a directive: found '}' without matching '"
+"{'."
+msgstr "Низът започва по средата на директива : намерено '}' без съответен '{'."
+
+#: src/format-c++-brace.c:765
+#: src/format-csharp.c:156
+#, c-format
+msgid "The string contains a lone '}' after directive number %zu."
+msgstr "Низът съдържа самотен '}' след директива номер %zu."
+
+#: src/format-c++-brace.c:984
+#, c-format
+msgid ""
+"The format specification for argument %zu in '%s' is applicable to the types "
+"%s, but the format specification for argument %zu in '%s' is not."
+msgstr ""
+"Указаният формат за аргумент %zu в '%s', е приложим за видовете %s, но "
+"указаният формат за аргумент %zu в '%s' не е."
+
+#: src/format-c++-brace.c:997
+#, c-format
+msgid ""
+"The format specification for argument %zu in '%s' uses a different "
+"presentation than the format specification for argument %zu in '%s'."
+msgstr ""
+"Указаният формат за аргумент %zu в '%s', използва различно представяне "
+"спрямо указаният формат за аргумент %zu в '%s'."
+
+#: src/format-c.c:35
+#, c-format
+msgid ""
+"In the directive number %zu, the token after '<' is not the name of a format "
+"specifier macro. The valid macro names are listed in ISO C 99 section 7.8.1."
+msgstr ""
+"При директива номер %zu, частта след '<' не е име на форматиращ макрос. "
+"Правилните имена на макроси са изброени в ИСО Си 99 дял 7.8.1."
+
+#: src/format-c.c:38
+#, c-format
+msgid ""
+"In the directive number %zu, the token after '<' is not followed by '>'."
+msgstr "В директива номер %zu, частта след '<' не е завършена с '>'."
+
+#: src/format-c.c:41
+#, c-format
+msgid "In the directive number %zu, the argument size specifier is invalid."
+msgstr "При директива номер %zu, аргумента задаващ размера не е правилен."
+
+#: src/format-c.c:44
+#: src/format-gfc-internal.c:274
+#, c-format
+msgid ""
+"The string refers to argument number %zu but ignores argument number %zu."
+msgstr ""
+"Низът указва към аргумент номер %zu, но пренебрегва аргумент номер  %zu."
+
+#: src/format-c.c:138
+#: src/format-csharp.c:201
+#: src/format-gfc-internal.c:343
+#: src/format-python.c:534
+#: src/format-qt-plural.c:109
+#: src/format-ruby.c:955
+#, c-format
+msgid "number of format specifications in '%s' and '%s' does not match"
+msgstr "не съвпада указания брой на формати при '%s' и при '%s'"
+
+#: src/format-csharp.c:82
+#: src/format-java.c:203
+#, c-format
+msgid "In the directive number %zu, '{' is not followed by an argument number."
+msgstr "При директива номер %zu, '{' не е последван от номер на аргумент."
+
+#: src/format-csharp.c:103
+#, c-format
+msgid "In the directive number %zu, ',' is not followed by a number."
+msgstr "При директива номер %zu, ',' не е последван от число."
+
+#: src/format-csharp.c:124
+#: src/format-java.c:185
+msgid ""
+"The string ends in the middle of a directive: found '{' without matching '}'."
+msgstr ""
+"Низът завършва по средата на директивата: намерено '{' без съответен '}'."
+
+#: src/format-csharp.c:133
+#, c-format
+msgid ""
+"The directive number %zu ends with an invalid character '%c' instead of '}'."
+msgstr "Директива номер %zu завършва с неправилен знак '%c' вместо '}'."
+
+#: src/format-csharp.c:134
+#, c-format
+msgid "The directive number %zu ends with an invalid character instead of '}'."
+msgstr "Директива номер %zu завършва с неправилен знак вместо '}'."
+
+#: src/format-d.c:1651
+#, c-format
+msgid ""
+"In the directive number %zu, the first argument number is greater than the "
+"second argument number."
+msgstr "При директива номер %zu, първият аргумент е по-голям от втория."
+
+#: src/format-d.c:1654
+#, c-format
+msgid ""
+"In the directive number %zu, the compound specifier consumes a variable "
+"number of arguments."
+msgstr "При директива номер %zu, съставната използва променлив брой аргументи."
+
+#: src/format-d.c:1657
+#, c-format
+msgid ""
+"In the directive number %zu, the compound specifier consumes %zu arguments."
+msgstr "При директива номер %zu, съставната използва %zu аргументи."
+
+#: src/format-d.c:1660
+msgid "Found '%|' outside of '%(...%)'."
+msgstr "Намерен '%|' извън '%(...%)'."
+
+#: src/format-d.c:1663
+msgid "The string ends in the middle of a compound specifier."
+msgstr "Низът завършва по средата на съставната."
+
+#: src/format-d.c:1666
+#, c-format
+msgid ""
+"In the directive number %zu, there is an invalid directive in the delimiter "
+"part of a compound specifier."
+msgstr ""
+"При директива номер %zu, има неправилна директива в разделящата част на "
+"съставната."
+
+#: src/format-d.c:1669
+#: src/format-ocaml.c:768
+#, c-format
+msgid "Found '%%%c' without matching '%%%c'."
+msgstr "Намерен '%%%c' без съответен '%%%c'."
+
+#: src/format-d.c:1672
+#, c-format
+msgid ""
+"The directive number %zu references an argument after the last argument."
+msgstr "При директива номер %zu се указва аргумент след последния."
+
+#: src/format-d.c:1676
+#: src/format-lisp.c:3419
+#: src/format-scheme.c:3341
+msgid "The string refers to some argument in incompatible ways."
+msgstr "Низът указва към някои аргументи по несъвместими начини."
+
+#: src/format-d.c:2246
+#: src/format-lisp.c:3462
+#: src/format-scheme.c:3384
+#, c-format
+msgid "format specifications in '%s' and '%s' are not equivalent"
+msgstr "не са равностойни указаните формати при '%s' и при '%s'"
+
+#: src/format-d.c:2263
+#: src/format-lisp.c:3479
+#: src/format-scheme.c:3401
+#, c-format
+msgid "format specifications in '%s' are not a subset of those in '%s'"
+msgstr "указаните формати при '%s' не са подмножество на тези при '%s'"
+
+#: src/format-gcc-internal.c:228
+#, c-format
+msgid ""
+"The directive number %zu opens a quote group, but the previous one is not "
+"terminated."
+msgstr ""
+"При директива номер %zu, отваря нови кавички, но предишните не са затворени."
+
+#: src/format-gcc-internal.c:238
+#: src/format-gcc-internal.c:248
+#: src/format-gcc-internal.c:258
+#, c-format
+msgid "The directive number %zu does not match a preceding '%%%c'."
+msgstr "Директива номер %zu не съвпада с предходен '%%%c'."
+
+#: src/format-gcc-internal.c:344
+#, c-format
+msgid "In the directive number %zu, the flags combination is invalid."
+msgstr "При директива номер %zu, комбинацията от флагове не е правилна."
+
+#: src/format-gcc-internal.c:385
+#, c-format
+msgid "In the directive number %zu, a precision is not allowed before '%c'."
+msgstr "При директива номер %zu, точност не е разрешена преди '%c'."
+
+#: src/format-gcc-internal.c:426
+#, c-format
+msgid ""
+"In the directive number %zu, the argument number for the precision must be "
+"equal to %zu."
+msgstr ""
+"При директива номер %zu, числото за точност трябва да бъде равно на %zu."
+
+#: src/format-gcc-internal.c:490
+#, c-format
+msgid ""
+"In the directive number %zu, a precision specification is not allowed before "
+"'%c'."
+msgstr ""
+"При директива номер %zu, указването на точност не е разрешено преди '%c'."
+
+#: src/format-gcc-internal.c:498
+#, c-format
+msgid "In the directive number %zu, the precision specification is invalid."
+msgstr "При директива номер %zu, точността не се зададена правилно."
+
+#: src/format-gcc-internal.c:524
+#, c-format
+msgid ""
+"The directive number %zu opens a color group, but the previous one is not "
+"terminated."
+msgstr ""
+"При директива номер %zu, отваря \"цветна\"-група, но предишната не е "
+"затворена."
+
+#: src/format-gcc-internal.c:535
+#, c-format
+msgid ""
+"The directive number %zu opens a URL group, but the previous one is not "
+"terminated."
+msgstr ""
+"При директива номер %zu, отваря \"адресна\"-група, но предишната не е "
+"затворена."
+
+#: src/format-gcc-internal.c:663
+#, c-format
+msgid "The quote group opened by the directive number %zu is not terminated."
+msgstr "Кавичките, отворени от директива номер %zu, не са затворени."
+
+#: src/format-gcc-internal.c:668
+#, c-format
+msgid "The color group opened by the directive number %zu is not terminated."
+msgstr "\"Цветната\"-група, отворена от директива номер %zu, не е затворена."
+
+#: src/format-gcc-internal.c:673
+#, c-format
+msgid "The URL group opened by the directive number %zu is not terminated."
+msgstr "\"Адресната\"-група, отворена от директива номер %zu, не е затворена."
+
+#: src/format-gcc-internal.c:840
+#, c-format
+msgid "'%s' uses %%m but '%s' doesn't"
+msgstr "'%s' използва %%m, а '%s' не"
+
+#: src/format-gcc-internal.c:844
+#, c-format
+msgid "'%s' does not use %%m but '%s' uses %%m"
+msgstr "'%s' не използва %%m, а '%s' използва %%m"
+
+#: src/format-gcc-internal.c:857
+#: src/format-gfc-internal.c:365
+#, c-format
+msgid "'%s' uses %%C but '%s' doesn't"
+msgstr "'%s' използва %%C, но '%s' не"
+
+#: src/format-gcc-internal.c:861
+#: src/format-gfc-internal.c:369
+#, c-format
+msgid "'%s' does not use %%C but '%s' uses %%C"
+msgstr "'%s' не използва %%C, но '%s' използва %%C"
+
+#: src/format-go.c:115
+#: src/format-rust.c:172
+#, c-format
+msgid "In the directive number %zu, the argument number is too large."
+msgstr "При директива номер %zu, аргумента е твърде голям."
+
+#: src/format-go.c:221
+#, c-format
+msgid "In the directive number %zu, the width is too large."
+msgstr "При директива номер %zu, ширината е твърде голяма."
+
+#: src/format-go.c:326
+#, c-format
+msgid "In the directive number %zu, the precision is too large."
+msgstr "При директива номер %zu, точността е твърде голяма."
+
+#: src/format-invalid.h:23
+msgid "The string ends in the middle of a directive."
+msgstr "Низът завършва по средата на директива."
+
+#: src/format-invalid.h:26
+msgid ""
+"The string refers to arguments both through absolute argument numbers and "
+"through unnumbered argument specifications."
+msgstr ""
+"Низът указва аргументи и чрез номер на аргумент, и чрез неномерирано "
+"задаване на аргумент."
+
+#: src/format-invalid.h:29
+#, c-format
+msgid "In the directive number %zu, the precision is missing."
+msgstr "При директива номер %zu, не е зададена точността."
+
+#: src/format-invalid.h:32
+#, c-format
+msgid ""
+"In the directive number %zu, the argument number 0 is not a positive integer."
+msgstr "При директива номер %zu, аргумент номер 0 не е цяло положително число."
+
+#: src/format-invalid.h:34
+#, c-format
+msgid ""
+"In the directive number %zu, the width's argument number 0 is not a positive "
+"integer."
+msgstr ""
+"При директива номер %zu, ширината за аргумент номер 0 не е цяло положително "
+"число."
+
+#: src/format-invalid.h:36
+#, c-format
+msgid ""
+"In the directive number %zu, the precision's argument number 0 is not a "
+"positive integer."
+msgstr ""
+"При директива номер %zu, точността за аргумент номер 0 не е цяло положително "
+"число."
+
+#: src/format-invalid.h:40
+#, c-format
+msgid ""
+"In the directive number %zu, the character '%c' is not a valid conversion "
+"specifier."
+msgstr "При директива номер %zu, знакът '%c' не е валиден за превръщане."
+
+#: src/format-invalid.h:41
+#, c-format
+msgid ""
+"The character that terminates the directive number %zu is not a valid "
+"conversion specifier."
+msgstr ""
+"Знакът, който прекратява директива номер %zu, не е валиден за превръщане."
+
+#: src/format-invalid.h:44
+#, c-format
+msgid ""
+"In the directive number %zu, the flag '%c' is invalid for the conversion "
+"'%c'."
+msgstr "При директива номер %zu не е правилен знака '%c'за превръщане '%c'."
+
+#: src/format-invalid.h:47
+#, c-format
+msgid "The string refers to argument number %zu in incompatible ways."
+msgstr "Низът указва към аргумент с номер %zu по несъвместим начин."
+
+#: src/format-java.c:238
+#, c-format
+msgid ""
+"In the directive number %zu, the substring \"%s\" is not a valid date/time "
+"style."
+msgstr "При директива номер %zu, низът \"%s\" не е правилен за дата/час."
+
+#: src/format-java.c:249
+#: src/format-java.c:283
+#: src/format-java.c:312
+#, c-format
+msgid "In the directive number %zu, \"%s\" is not followed by a comma."
+msgstr "При директива номер %zu, \"%s\" не е последван от запетая."
+
+#: src/format-java.c:272
+#, c-format
+msgid ""
+"In the directive number %zu, the substring \"%s\" is not a valid number "
+"style."
+msgstr "При директива номер %zu, низът \"%s\" не е правилен за число."
+
+#: src/format-java.c:321
+#, c-format
+msgid ""
+"In the directive number %zu, the argument number is not followed by a comma "
+"and one of \"%s\", \"%s\", \"%s\", \"%s\"."
+msgstr ""
+"При директива номер %zu, номера на аргумент не е последван от запетая или "
+"някой от \"%s\", \"%s\", \"%s\", \"%s\"."
+
+#: src/format-java.c:566
+#, c-format
+msgid "In the directive number %zu, a choice contains no number."
+msgstr "При директива номер %zu, избора е без число."
+
+#: src/format-java.c:577
+#, c-format
+msgid ""
+"In the directive number %zu, a choice contains a number that is not followed "
+"by '<', '#' or '%s'."
+msgstr ""
+"При директива номер %zu, избора съдържа число, което не е последвано от '<', "
+"'#' или '%s'."
+
+#: src/format-java.c:738
+#, c-format
+msgid ""
+"a format specification for argument {%zu}, as in '%s', doesn't exist in '%s'"
+msgstr ""
+"указаният формат за аргумент {%zu}, както е при '%s', не съществува в '%s'"
+
+#: src/format-java.c:750
+#, c-format
+msgid "a format specification for argument {%zu} doesn't exist in '%s'"
+msgstr "указаният формат за аргумент {%zu} не съществува в '%s'"
+
+#: src/format-java.c:774
+#, c-format
+msgid ""
+"format specifications in '%s' and '%s' for argument {%zu} are not the same"
+msgstr "не са еднакви указаните формати при '%s' и при '%s' за аргумент {%zu}"
+
+#: src/format-java-printf.c:131
+#, c-format
+msgid ""
+"In the directive number %zu, the reference to the argument of the previous "
+"directive is invalid."
+msgstr ""
+"При директива номер %zu има неправилна препратката към аргумент от предишна "
+"директива."
+
+#: src/format-java-printf.c:134
+#, c-format
+msgid ""
+"In the directive number %zu, a width is invalid for the conversion '%c'."
+msgstr "При директива номер %zu не е правилна ширината за превръщане '%c'."
+
+#: src/format-java-printf.c:137
+#, c-format
+msgid ""
+"In the directive number %zu, a precision is invalid for the conversion '%c'."
+msgstr "При директива номер %zu не e правилна точността за превръщане '%c'."
+
+#: src/format-java-printf.c:141
+#, c-format
+msgid ""
+"In the directive number %zu, for the conversion '%c', the character '%c' is "
+"not a valid conversion suffix."
+msgstr ""
+"При директива номер %zu и превръщане '%c', знакът '%c' не е с правилна "
+"наставка за превръщане."
+
+#: src/format-java-printf.c:142
+#, c-format
+msgid ""
+"The character that terminates the directive number %zu, for the conversion "
+"'%c', is not a valid conversion suffix."
+msgstr ""
+"Знакът, който прекратява директива номер %zu и превръщане '%c, не е с "
+"правилна наставка за превръщане."
+
+#: src/format-kde.c:149
+#, c-format
+msgid ""
+"The string refers to argument number %zu but ignores the arguments %zu and "
+"%zu."
+msgstr ""
+"Низът указва към аргумент номер %zu, но пренебрегва аргументи %zu и %zu."
+
+#: src/format-kde.c:236
+#: src/format-rust.c:516
+#, c-format
+msgid ""
+"a format specification for arguments %zu and %zu doesn't exist in '%s', only "
+"one argument may be ignored"
+msgstr ""
+"указаният формат за аргументи %zu и %zu, не съществува за '%s' и само един "
+"от аргументите може да бъде пренебрегнат"
+
+#: src/format-kde-kuit.c:251
+#: src/format-kde-kuit.c:272
+#: src/format-kde-kuit.c:282
+#, c-format
+msgid "error while parsing: %s"
+msgstr "грешка при разбор: %s"
+
+#: src/format-lisp.c:2335
+#: src/format-lisp.c:2347
+#: src/format-scheme.c:2361
+#: src/format-scheme.c:2373
+#, c-format
+msgid ""
+"In the directive number %zu, parameter %zu is of type '%s' but a parameter "
+"of type '%s' is expected."
+msgstr ""
+"При директива номер %zu, параметър %zu е от тип '%s', но се очаква параметър "
+"от тип '%s'."
+
+#: src/format-lisp.c:2370
+#: src/format-scheme.c:2396
+#, c-format
+msgid ""
+"In the directive number %zu, too many parameters are given; expected at most "
+"%zu parameter."
+msgid_plural ""
+"In the directive number %zu, too many parameters are given; expected at most "
+"%zu parameters."
+msgstr[0] ""
+"При директива номер %zu, са зададени твърде много параметри, а се очаква най-"
+"много%zu параметър."
+msgstr[1] ""
+"При директива номер %zu, са зададени твърде много параметри, а се очаква най-"
+"много%zu параметри."
+
+#: src/format-lisp.c:2492
+#: src/format-scheme.c:2494
+#, c-format
+msgid "In the directive number %zu, '%c' is not followed by a digit."
+msgstr "При директива номер %zu, '%c' не е последван от цифра."
+
+#: src/format-lisp.c:2734
+#: src/format-scheme.c:2751
+#, c-format
+msgid "In the directive number %zu, the argument %d is negative."
+msgstr "При директива номер %zu, аргумента %d е отрицателен."
+
+#: src/format-lisp.c:2803
+msgid "The string ends in the middle of a ~/.../ directive."
+msgstr "Низът завършва по средата на ~/.../ директива."
+
+#: src/format-lisp.c:2841
+#: src/format-lisp.c:3097
+#: src/format-lisp.c:3214
+#: src/format-lisp.c:3274
+#: src/format-lisp.c:3386
+#: src/format-scheme.c:2837
+#: src/format-scheme.c:3093
+#: src/format-scheme.c:3210
+#: src/format-scheme.c:3308
+#, c-format
+msgid "Found '~%c' without matching '~%c'."
+msgstr "Намерен '~%c' без съответен '~%c'."
+
+#: src/format-lisp.c:2861
+#: src/format-scheme.c:2857
+#, c-format
+msgid "In the directive number %zu, both the @ and the : modifiers are given."
+msgstr "При директива номер %zu, са зададени и @, и :."
+
+#: src/format-lisp.c:2970
+#: src/format-scheme.c:2966
+#, c-format
+msgid ""
+"In the directive number %zu, '~:[' is not followed by two clauses, separated "
+"by '~;'."
+msgstr ""
+"При директива номер %zu, '~:[' не е последван от две клаузи , разделен от "
+"'~;'."
+
+#: src/format-lisp.c:3315
+#: src/format-scheme.c:3251
+#, c-format
+msgid "In the directive number %zu, '~;' is used in an invalid position."
+msgstr "При директива номер %zu, '~;' е използван на неправилно място."
+
+#: src/format-ocaml.c:562
+#: src/format-ocaml.c:661
+#, c-format
+msgid "Found '%s' without matching '%s'."
+msgstr ""
+
+#: src/format-perl-brace.c:194
+#: src/format-python-brace.c:555
+#: src/format-python.c:486
+#: src/format-ruby.c:910
+#: src/format-rust.c:461
+#: src/format-sh.c:295
+#, c-format
+msgid "a format specification for argument '%s' doesn't exist in '%s'"
+msgstr "указаният формат за аргумент '%s' не съществува при '%s'"
+
+#: src/format-perl.c:426
+#, c-format
+msgid ""
+"In the directive number %zu, the size specifier is incompatible with the "
+"conversion specifier '%c'."
+msgstr "При директива номер %zu, размерът не е съвместим с превръщането '%c'."
+
+#: src/format-python-brace.c:192
+#, c-format
+msgid "In the directive number %zu, '%c' cannot start a getattr argument."
+msgstr "При директива номер %zu, с '%c' не може да се започне getattr аргумент."
+
+#: src/format-python-brace.c:194
+#, c-format
+msgid ""
+"In the directive number %zu, a getattr argument starts with a character that "
+"is not alphabetical or underscore."
+msgstr ""
+"При директива номер %zu, getattr аргумент започва със знак, който не е буква "
+"или подчертаване."
+
+#: src/format-python-brace.c:216
+#, c-format
+msgid "In the directive number %zu, '%c' cannot start a getitem argument."
+msgstr "При директива номер %zu, с '%c' не може да се започне getitem аргумент."
+
+#: src/format-python-brace.c:218
+#, c-format
+msgid ""
+"In the directive number %zu, a getitem argument starts with a character that "
+"is not alphanumerical or underscore."
+msgstr ""
+"При директива номер %zu, getitem аргумент започва със знак, който не е буква "
+"или подчертаване."
+
+#: src/format-python-brace.c:228
+#, c-format
+msgid "In the directive number %zu, there is an unterminated getitem argument."
+msgstr "При директива номер %zu, не е завършен getitem аргумент."
+
+#: src/format-python-brace.c:251
+#, c-format
+msgid "In the directive number %zu, '%c' cannot start a field name."
+msgstr "При директива номер %zu, с '%c' не може да се започне име на поле."
+
+#: src/format-python-brace.c:253
+#, c-format
+msgid ""
+"In the directive number %zu, a field name starts with a character that is "
+"not alphanumerical or underscore."
+msgstr ""
+"При директива номер %zu, името на полето започва със знак, който не е буква, "
+"цифра или подчертаване."
+
+#: src/format-python-brace.c:266
+#, c-format
+msgid ""
+"In the directive number %zu, no more nesting is allowed in a format "
+"specifier."
+msgstr ""
+"При директива номер %zu, не са разререни повече влагания при указание за "
+"формат."
+
+#: src/format-python-brace.c:302
+#: src/format-python-brace.c:355
+#: src/format-rust.c:261
+#: src/format-rust.c:318
+#, c-format
+msgid "The directive number %zu is unterminated."
+msgstr "Директива номер %zu не е завършена."
+
+#: src/format-python-brace.c:372
+#: src/format-python-brace.c:389
+msgid ""
+"The string refers to arguments both through absolute argument numbers and "
+"through unnamed argument specifications."
+msgstr ""
+"Низът указва аргументи и чрез номер на аргумент, и чрез безименно задаване "
+"на аргумент."
+
+#: src/format-python-brace.c:543
+#: src/format-python.c:474
+#: src/format-ruby.c:898
+#: src/format-rust.c:449
+#: src/format-sh.c:283
+#, c-format
+msgid ""
+"a format specification for argument '%s', as in '%s', doesn't exist in '%s'"
+msgstr ""
+"указаният формат за аргумент '%s', като при '%s', не съществува при '%s'"
+
+#: src/format-python.c:112
+#: src/format-ruby.c:129
+msgid ""
+"The string refers to arguments both through argument names and through "
+"unnamed argument specifications."
+msgstr ""
+"Низът указва към аргументи и чрез име на аргумент, и чрез безименно задаване "
+"на аргументи."
+
+#: src/format-python.c:358
+#: src/format-ruby.c:782
+#, c-format
+msgid "The string refers to the argument named '%s' in incompatible ways."
+msgstr "Низът указва към аргумент с име '%s' по несъвместими начини."
+
+#: src/format-python.c:441
+#, c-format
+msgid ""
+"format specifications in '%s' expect a mapping, those in '%s' expect a tuple"
+msgstr ""
+"указаните формати при '%s' очакват изобразяване, а тази при '%s' очакват "
+"последователност"
+
+#: src/format-python.c:449
+#, c-format
+msgid ""
+"format specifications in '%s' expect a tuple, those in '%s' expect a mapping"
+msgstr ""
+"указаните формати при '%s' очакват последователност, а тази при '%s' очакват "
+"изобразяване"
+
+#: src/format-python.c:513
+#: src/format-ruby.c:934
+#, c-format
+msgid ""
+"format specifications in '%s' and '%s' for argument '%s' are not the same"
+msgstr "не са еднакви указаните формати при '%s' и при '%s' за аргумент %s"
+
+#: src/format-qt.c:148
+#, c-format
+msgid ""
+"'%s' is a simple format string, but '%s' is not: it contains an 'L' flag or "
+"a double-digit argument number"
+msgstr ""
+"'%s' е обикновен низ за формат, но '%s' не е: той съдържа 'L' флаг или "
+"аргумент за число с плаваща запетая с двойна точност"
+
+#: src/format-ruby.c:132
+#, c-format
+msgid "In the directive number %zu, two names are given for the same argument."
+msgstr "При директива номер %zu са подадени две имена за един и същи аргумент."
+
+#: src/format-ruby.c:135
+#, c-format
+msgid ""
+"In the directive number %zu, two numbers are given for the same argument."
+msgstr "При директива номер %zu са подадени две числа за един и същи аргумент."
+
+#: src/format-ruby.c:138
+#, c-format
+msgid "In the directive number %zu, a flag is given after the width."
+msgstr "При директива номер %zu е зададен флаг след ширината."
+
+#: src/format-ruby.c:141
+#, c-format
+msgid "In the directive number %zu, a flag is given after the precision."
+msgstr "При директива номер %zu е зададен флаг след точността."
+
+#: src/format-ruby.c:144
+#, c-format
+msgid "In the directive number %zu, the width is given after the precision."
+msgstr "При директива номер %zu, ширината е зададена след точността."
+
+#: src/format-ruby.c:147
+#, c-format
+msgid "In the directive number %zu, a width is given twice."
+msgstr "При директива номер %zu ширината е зададена два пъти."
+
+#: src/format-ruby.c:150
+#, c-format
+msgid "In the directive number %zu, a precision is given twice."
+msgstr "При директива номер %zu точността е зададена два пъти."
+
+#: src/format-ruby.c:865
+#, c-format
+msgid ""
+"format specifications in '%s' expect a hash table, those in '%s' expect "
+"individual arguments"
+msgstr ""
+"указаните формати при '%s' очакват хеш-таблица, а тази при '%s' очакват "
+"аргументи"
+
+#: src/format-ruby.c:873
+#, c-format
+msgid ""
+"format specifications in '%s' expect individual arguments, those in '%s' "
+"expect a hash table"
+msgstr ""
+"указаните формати при '%s' очакват аргументи, а тази при '%s' очакват хеш-"
+"таблица"
+
+#: src/format-sh.c:77
+msgid "The string refers to a shell variable with a non-ASCII name."
+msgstr "Низът указва към променлива от обкръжението, която не е с ASCII име."
+
+#: src/format-sh.c:79
+msgid ""
+"The string refers to a shell variable with complex shell brace syntax. This "
+"syntax is unsupported here due to security reasons."
+msgstr ""
+"Низът указва към променлива от обкръжението, чрез сложен израз в скоби. Това "
+"не се поддържа от съображения за сигурност."
+
+#: src/format-sh.c:81
+msgid ""
+"The string refers to a shell variable whose value may be different inside "
+"shell functions."
+msgstr ""
+"Низът указва към променлива от обкръжението, чиято стойност може да е "
+"различна в функции на обвивката."
+
+#: src/format-sh.c:83
+msgid "The string refers to a shell variable with an empty name."
+msgstr "Низът указва към променлива от обкръжението с \"празно\" име."
+
+#: src/format-sh-printf.c:335
+msgid "The string ends in the middle of an escape sequence."
+msgstr "Низът завършва по средата на управляваща последователност."
+
+#: src/format-sh-printf.c:345
+#, c-format
+msgid "The escape sequence '%c%c' is unsupported (not in POSIX)."
+msgstr "Управляваща последователност '%c%c' не се поддържа (не е POSIX)."
+
+#: src/format-sh-printf.c:346
+#, c-format
+msgid "The escape sequence '%c%c' is invalid."
+msgstr "Неправилна управляваща последователност '%c%c'."
+
+#: src/format-sh-printf.c:347
+msgid "This escape sequence is invalid."
+msgstr "Неправилна управляваща последователност."
+
+#: src/format-smalltalk.c:88
+#, c-format
+msgid ""
+"In the directive number %zu, the character '%c' is not a digit between 1 and "
+"9."
+msgstr "При директива номер %zu, знакът '%c' не е цифра между 1 и 9."
+
+#: src/format-smalltalk.c:89
+#, c-format
+msgid ""
+"The character that terminates the directive number %zu is not a digit "
+"between 1 and 9."
+msgstr "Знакът, който прекратява директива номер %zu, не е число между 1 и 9."
+
+#: src/msgl-check.c:110
+msgid "plural expression can produce division by zero"
+msgstr "в израза за множествено число може да получи деление на нула"
+
+#: src/msgl-check.c:113
+msgid "plural expression can produce integer overflow"
+msgstr "в израза за множествено число може да получи целочислено препълване"
+
+#: src/msgl-check.c:116
+msgid "plural expression can produce stack overflow"
+msgstr "в израза за множествено число може да получи препълване на стека"
+
+#: src/msgl-check.c:130
+msgid "plural expression can produce negative values"
+msgstr "израза за множествено число може да върне отрицателна стойност"
+
+#: src/msgl-check.c:137
+#, c-format
+msgid "nplurals = %lu but plural expression can produce values as large as %lu"
+msgstr ""
+"nplurals = %lu, но израза за множествено число може да върне стойност по-"
+"голяма от %lu"
+
+#: src/msgl-check.c:212
+#, c-format
+msgid "Try using the following, valid for %s:"
+msgstr "Да се опита следното, правилно за  %s:"
+
+#: src/msgl-check.c:297
+#: src/msgl-check.c:321
+msgid "message catalog has plural form translations"
+msgstr "каталогът със съобщенията съдържа преводи за множествено число"
+
+#: src/msgl-check.c:299
+msgid "but header entry lacks a \"plural=EXPRESSION\" attribute"
+msgstr "но в заглавния блок липсва запис \"plural=ИЗРАЗ\""
+
+#: src/msgl-check.c:323
+msgid "but header entry lacks a \"nplurals=INTEGER\" attribute"
+msgstr "но в заглавния блок липсва запис \"nplurals=ЦЯЛО\""
+
+#: src/msgl-check.c:356
+msgid "invalid nplurals value"
+msgstr "неправилна стойност за nplurals"
+
+#: src/msgl-check.c:383
+msgid "invalid plural expression"
+msgstr "неправилен израз за множествено число"
+
+#: src/msgl-check.c:415
+#: src/msgl-check.c:431
+#, c-format
+msgid "nplurals = %lu"
+msgstr "nplurals = %lu"
+
+#: src/msgl-check.c:417
+#, c-format
+msgid "but some messages have only one plural form"
+msgid_plural "but some messages have only %lu plural forms"
+msgstr[0] "но някой съобщения съдържат само една форма за множествено число"
+msgstr[1] "но някой съобщения съдържат само %lu форми за множествено число"
+
+#: src/msgl-check.c:433
+#, c-format
+msgid "but some messages have one plural form"
+msgid_plural "but some messages have %lu plural forms"
+msgstr[0] "но някой съобщения съдържат една форма за множествено число"
+msgstr[1] "но някой съобщения съдържат %lu форми за множествено число"
+
+#: src/msgl-check.c:457
+msgid ""
+"message catalog has plural form translations, but lacks a header entry with "
+"\"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\""
+msgstr ""
+"каталогът със съобщения съдържа форми за множествено число, но липсва "
+"заглавен запис с \"Plural-Forms: nplurals=ЦЯЛО; plural=ИЗРАЗ;\""
+
+#: src/msgl-check.c:560
+msgid "'msgid' and 'msgid_plural' entries do not both begin with '\\n'"
+msgstr "и двата записа, 'msgid' и 'msgid_plural', не започват с '\\n'"
+
+#: src/msgl-check.c:569
+#, c-format
+msgid "'msgid' and 'msgstr[%u]' entries do not both begin with '\\n'"
+msgstr "и двата записа, 'msgid' и 'msgstr[%u]', не започват с '\\n'"
+
+#: src/msgl-check.c:585
+msgid "'msgid' and 'msgstr' entries do not both begin with '\\n'"
+msgstr "и двата записа, 'msgid' и '`msgstr', не започват с '\\n'"
+
+#: src/msgl-check.c:603
+msgid "'msgid' and 'msgid_plural' entries do not both end with '\\n'"
+msgstr "и двата записа, 'msgid' и 'msgid_plural', не завършват с '\\n'"
+
+#: src/msgl-check.c:612
+#, c-format
+msgid "'msgid' and 'msgstr[%u]' entries do not both end with '\\n'"
+msgstr "и двата записа, 'msgid' и 'msgstr[%u]', не завършват с '\\n'"
+
+#: src/msgl-check.c:628
+msgid "'msgid' and 'msgstr' entries do not both end with '\\n'"
+msgstr "и двата записа, 'msgid' и 'msgstr', не завършват с '\\n'"
+
+#: src/msgl-check.c:765
+#, c-format
+msgid "header field '%s' still has the initial default value\n"
+msgstr "все още заглавното поле '%s' е с началната стойност по подразбиране\n"
+
+#: src/msgl-check.c:782
+#, c-format
+msgid "header field '%s' missing in header\n"
+msgstr "в заглавния блок липсва поле '%s'\n"

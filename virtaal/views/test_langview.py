@@ -193,6 +193,17 @@ def test_create_dialogs_builds_both_dialogs():
     assert view.add_dialog.dialog.get_transient_for() is view.select_dialog.dialog
 
 
+def test_create_dialogs_wires_the_edit_button_to_on_editlang_clicked(monkeypatch):
+    calls = []
+    monkeypatch.setattr(LanguageView, '_on_editlang_clicked', lambda self, button: calls.append(button))
+    view = _make_view()
+
+    view._create_dialogs()
+    view.select_dialog.btn_edit.emit('clicked')
+
+    assert len(calls) == 1
+
+
 def test_create_dialogs_wires_the_add_button_to_on_addlang_clicked(monkeypatch):
     calls = []
     monkeypatch.setattr(LanguageView, '_on_addlang_clicked', lambda self, button: calls.append(button))
@@ -268,6 +279,90 @@ def test_on_addlang_clicked_registers_a_new_language():
     finally:
         LanguageModel.languages.clear()
         LanguageModel.languages.update(original_languages)
+
+
+# _on_editlang_clicked() #
+
+_UK_PLURAL = 'n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2'
+
+
+def _fake_edit_dialog(run_result=True, nplurals=4, plural=_UK_PLURAL):
+    dialog = SimpleNamespace(nplurals=nplurals, plural=plural, edited=[])
+
+    def run_edit(*language):
+        dialog.edited.append(language)
+        return run_result
+    dialog.run_edit = run_edit
+    return dialog
+
+
+def _editing_view(target_code, selected='uk', **dialog_kwargs):
+    LanguageModel('uk')  # LanguageModel.languages populates lazily on first real use
+    view = _make_view(target_lang=LanguageModel(target_code))
+    view.add_dialog = _fake_edit_dialog(**dialog_kwargs)
+    view.select_dialog = SimpleNamespace(get_selected_target_lang=lambda: selected)
+    return view
+
+
+def _reloaded(view):
+    """The controller's target_lang setter reloads a language given by code."""
+    return isinstance(view.controller.target_lang, str)
+
+
+@pytest.fixture
+def restore_languages():
+    original_languages = dict(LanguageModel.languages)
+    yield
+    LanguageModel.languages.clear()
+    LanguageModel.languages.update(original_languages)
+
+
+def test_on_editlang_clicked_ignores_a_language_it_does_not_know(restore_languages):
+    view = _editing_view('af', selected='zzunknown')
+
+    view._on_editlang_clicked(None)
+
+    assert view.add_dialog.edited == []
+
+
+def test_on_editlang_clicked_offers_the_selected_languages_plural_information(restore_languages):
+    view = _editing_view('af', run_result=False)
+
+    view._on_editlang_clicked(None)
+
+    name, nplurals, plural = LanguageModel.languages['uk']
+    assert view.add_dialog.edited == [(name, 'uk', nplurals, plural)]
+
+
+def test_on_editlang_clicked_overrides_the_languages_plural_information(restore_languages):
+    # #3197: GNOME's Ukrainian has a fourth form.
+    view = _editing_view('af')
+
+    view._on_editlang_clicked(None)
+
+    assert LanguageModel('uk').nplurals == 4
+    assert LanguageModel('uk').plural == _UK_PLURAL
+    assert view.controller.new_langs == ['uk']
+    assert not _reloaded(view)  # not the target language
+
+
+def test_on_editlang_clicked_reloads_an_edited_target_language(restore_languages):
+    view = _editing_view('uk')
+
+    view._on_editlang_clicked(None)
+
+    assert view.controller.target_lang == 'uk'
+
+
+def test_on_editlang_clicked_keeps_the_language_when_cancelled(restore_languages):
+    view = _editing_view('uk', run_result=False)
+    before = LanguageModel.languages['uk']
+
+    view._on_editlang_clicked(None)
+
+    assert LanguageModel.languages['uk'] == before
+    assert view.controller.new_langs == []
+    assert not _reloaded(view)
 
 
 # _on_button_toggled() #

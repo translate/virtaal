@@ -1162,3 +1162,29 @@ def test_on_textbox_unfocused_recomputes_edit_menu_sensitivity():
     view._on_textbox_unfocused(None, None)
 
     assert calls == ['unfocused']
+
+
+# update_plural_forms() #
+
+def _plural_forms_view(unit):
+    view = UnitView.__new__(UnitView)
+    view._enabled_signals = set()
+    view.unit = unit
+    view.laid_out = []
+    view._layout_update_targets = lambda: view.laid_out.append(True)
+    return view
+
+
+def test_update_plural_forms_lays_out_a_plural_units_targets_again():
+    view = _plural_forms_view(SimpleNamespace(hasplural=lambda: True))
+
+    assert view.update_plural_forms() is True
+    assert view.laid_out == [True]
+
+
+@pytest.mark.parametrize('unit', [None, SimpleNamespace(hasplural=lambda: False)])
+def test_update_plural_forms_leaves_other_units_alone(unit):
+    view = _plural_forms_view(unit)
+
+    assert view.update_plural_forms() is False
+    assert view.laid_out == []

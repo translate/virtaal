@@ -127,3 +127,22 @@ def test_run_shows_before_presenting():
     dialog.run()
 
     assert dialog.dialog.calls == ['show', 'present']
+
+
+def test_run_edit_prefills_the_language_and_fixes_its_name_and_code():
+    dialog = LanguageAddDialog()
+    seen = []
+
+    def run(clear=True):
+        seen.append((clear, dialog.dialog.get_title(), dialog.ent_langname.get_sensitive(),
+                     dialog.ent_langcode.get_sensitive(), dialog.langname, dialog.langcode,
+                     dialog.nplurals, dialog.plural))
+        return True
+    dialog.run = run
+
+    assert dialog.run_edit('Ukrainian', 'uk', 3, 'n%10==1 ? 0 : 1')
+
+    assert seen == [(False, 'Edit Language', False, False, 'Ukrainian', 'uk', 3, 'n%10==1 ? 0 : 1')]
+    # Adding a language afterwards gets the add dialog back.
+    assert dialog.dialog.get_title() == 'Add Missing Language'
+    assert dialog.ent_langname.get_sensitive() and dialog.ent_langcode.get_sensitive()

@@ -1008,16 +1008,13 @@ jobs:
         # no display server at all without one. Coverage collected here
         # too, not just on Linux's test (3.13) - see test-windows's own
         # comment for why.
-        # A test whose worker crashes outright (an intermittent native GTK
-        # crash on macOS) is rerun once; --rerun-except ".*" keeps every
-        # ordinary failure from being rerun.
         # A run that stalls instead of failing (#4162) has its stacks
         # dumped and is killed well before the job's own timeout.
         run: |
           export VIRTAAL_STACKS_DIR="$RUNNER_TEMP/stacks"
           mkdir -p "$VIRTAAL_STACKS_DIR"
           python devsupport/testing/stack_watchdog.py 150 -- \
-            pytest -rvxs -n auto --dist loadgroup --reruns 1 --rerun-except ".*" --cov=virtaal --cov-report=xml virtaal
+            pytest -rvxs -n auto --dist loadgroup --cov=virtaal --cov-report=xml virtaal
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7

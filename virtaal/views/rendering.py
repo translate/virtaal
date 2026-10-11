@@ -8,6 +8,42 @@
 from gi.repository import Gtk, Pango
 
 from virtaal.common import pan_app
+from virtaal.common.platform import platform
+
+# Scripts Pango finds no font for from the platform's own fonts: from
+# macOS's system UI font (#4107), and from any font on Windows, where
+# Pango only falls back to a fixed list of families (#4208).
+MACOS_FONT_FALLBACKS = (
+    'Kohinoor Devanagari',
+    'Kohinoor Gujarati',
+    'Kohinoor Telugu',
+    'Mukta Mahee',  # Gurmukhi
+    'Malayalam Sangam MN',
+    'Oriya Sangam MN',
+    'Tamil Sangam MN',
+)
+WINDOWS_FONT_FALLBACKS = (
+    'Ebrima',  # Ethiopic
+)
+
+
+def font_fallbacks():
+    if platform.is_mac:
+        return MACOS_FONT_FALLBACKS
+    if platform.is_windows:
+        return WINDOWS_FONT_FALLBACKS
+    return ()
+
+
+def with_font_fallbacks(font_name):
+    """C{font_name} with the platform's fallback families after its own."""
+    fallbacks = font_fallbacks()
+    if not fallbacks:
+        return font_name
+    desc = Pango.FontDescription.from_string(font_name)
+    desc.set_family(','.join([desc.get_family(), *fallbacks]))
+    return desc.to_string()
+
 
 _font_descriptions = {}
 
@@ -20,7 +56,8 @@ def set_widget_font(widget, font_desc):
         properties instead."""
     size = font_desc.get_size() / Pango.SCALE
     unit = 'px' if font_desc.get_size_is_absolute() else 'pt'
-    css = '* { font-family: "%s"; font-size: %s%s; }' % (font_desc.get_family(), size, unit)
+    families = ', '.join('"%s"' % family for family in (font_desc.get_family() or '').split(','))
+    css = '* { font-family: %s; font-size: %s%s; }' % (families, size, unit)
     provider = Gtk.CssProvider()
     provider.load_from_data(css.encode())
     widget.get_style_context().add_provider(provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
@@ -29,7 +66,7 @@ def get_font_description(code):
     """Provide a Pango.FontDescription and keep it for reuse."""
     global _font_descriptions
     if not code in _font_descriptions:
-        _font_descriptions[code] = Pango.FontDescription(code)
+        _font_descriptions[code] = Pango.FontDescription(with_font_fallbacks(code))
     return _font_descriptions[code]
 
 def get_source_font_description():

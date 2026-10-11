@@ -8,6 +8,7 @@
 import logging
 import os
 import os.path
+import re
 
 from gi.repository import GLib
 
@@ -20,6 +21,14 @@ from virtaal.support.libi18n.locale import rebind_library_domain
 def _gtkspell_text(msgid):
     """gtkspell's own translation of msgid, kept out of virtaal.pot."""
     return GLib.dgettext('gtkspell3', msgid)
+
+
+def _is_dictionary_entry(label):
+    """Whether a gtkspell menu item changes only the dictionary, not the text."""
+    if label == _gtkspell_text('Ignore All'):
+        return True
+    add = re.escape(_gtkspell_text('Add "%s" to Dictionary')).replace('%s', '.*')
+    return re.fullmatch(add, label) is not None
 
 
 class Plugin(BasePlugin):
@@ -201,6 +210,7 @@ class Plugin(BasePlugin):
             #TODO: unload plugin
 
     def _on_populate_popup(self, textbox, menu):
+        editable = textbox.get_editable()
         _entries_above_separator = False
         for item in menu:
             if item.get_name() == 'GtkSeparatorMenuItem':
@@ -209,6 +219,10 @@ class Plugin(BasePlugin):
                 break
 
             label = item.get_property('label')
+
+            if not editable and not _is_dictionary_entry(label):
+                menu.remove(item)
+                continue
 
             # We don't want a language selector - we have our own
             if label == _gtkspell_text('Languages'):

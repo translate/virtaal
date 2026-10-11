@@ -347,3 +347,10 @@ def test_update_unit_checks_uses_failures_it_is_given(tmp_path):
 
     assert model.update_unit_checks(1, {'printf': 'msg'}) is True
     assert model.checks == {'check-endpunc': [0], 'check-printf': [1]}
+
+
+def test_len_is_zero_without_a_store():
+    model = StoreModel.__new__(StoreModel)
+    model._trans_store = None
+
+    assert len(model) == 0

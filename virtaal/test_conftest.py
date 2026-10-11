@@ -152,14 +152,20 @@ def test_a_hung_subprocess_is_killed_with_its_stacks(tmp_path):
 def test_child_dumps_its_stacks_on_sigusr1(tmp_path, monkeypatch, pytestconfig):
     stacks_path = tmp_path / "stacks.txt"
     monkeypatch.setenv(conftest._STACKS_ENV, str(stacks_path))
+    monkeypatch.delenv(conftest._STACKS_DIR_ENV, raising=False)
+    original = conftest._stacks_file
     monkeypatch.setattr(conftest, "_stacks_file", None)
 
     conftest.pytest_configure(pytestconfig)
     try:
         os.kill(os.getpid(), signal.SIGUSR1)
     finally:
-        faulthandler.unregister(signal.SIGUSR1)
         conftest._stacks_file.close()
+        # Keep this worker's own CI dump (VIRTAAL_STACKS_DIR) working.
+        if original is not None:
+            faulthandler.register(signal.SIGUSR1, file=original, all_threads=True)
+        else:
+            faulthandler.unregister(signal.SIGUSR1)
 
     # Not this test's own frame: faulthandler dumps at most 100 threads,
     # newest first, and a long-lived xdist worker can have more.
@@ -181,3 +187,4 @@ def test_warn_hung_records_a_user_warning_with_the_message():
     assert kwargs["warning_message"].category is UserWarning
     assert str(kwargs["warning_message"].message) == "hung here"
     assert kwargs["nodeid"] == "a.py::test_b"
+

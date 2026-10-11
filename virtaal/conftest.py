@@ -42,6 +42,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import traceback
 import warnings
 from pathlib import Path
 
@@ -153,6 +154,31 @@ def pytest_configure(config):
     if path:
         _stacks_file = open(path, "w", encoding="utf-8")
         faulthandler.register(signal.SIGUSR1, file=_stacks_file, all_threads=True)
+    if os.environ.get(_STACKS_DIR_ENV):
+        # faulthandler dumps at most 100 threads, which can leave out
+        # the main one.
+        signal.signal(signal.SIGUSR2, _dump_main_thread)
+
+
+def _dump_main_thread(signum, frame):
+    path = os.path.join(os.environ[_STACKS_DIR_ENV], f"{os.getpid()}-main.txt")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("Main thread (most recent call last):\n")
+        f.write("".join(traceback.format_stack(frame)))
+        dsession = _config.pluginmanager.getplugin("dsession") if _config else None
+        sched = getattr(dsession, "sched", None)
+        if sched is not None:
+            f.write(_describe_schedule(sched))
+
+
+def _describe_schedule(sched):
+    """Which tests each xdist worker still has, and what is queued."""
+    lines = ["xdist scheduler:"]
+    for node, work in getattr(sched, "assigned_work", {}).items():
+        pending = [nodeid for unit in work.values() for nodeid, done in unit.items() if not done]
+        lines.append(f"  {node.gateway.id} shutting_down={node.shutting_down} pending={pending}")
+    lines.append(f"  queued: {list(getattr(sched, 'workqueue', {}))}")
+    return "\n".join(lines) + "\n"
 
 
 @pytest.hookimpl(tryfirst=True)

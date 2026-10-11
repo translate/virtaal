@@ -345,7 +345,7 @@ def test_fix_menu_removes_an_exact_languages_match():
     menu = _menu_with('Languages')
     plugin = Plugin.__new__(Plugin)
 
-    plugin._on_populate_popup(textbox=None, menu=menu)
+    plugin._on_populate_popup(textbox=Gtk.TextView(), menu=menu)
 
     assert menu.get_children() == []
 
@@ -359,7 +359,7 @@ def test_fix_menu_removes_a_translated_languages_item(monkeypatch):
     menu = _menu_with('Ignore All', 'Tale')
     plugin = Plugin.__new__(Plugin)
 
-    plugin._on_populate_popup(textbox=None, menu=menu)
+    plugin._on_populate_popup(textbox=Gtk.TextView(), menu=menu)
 
     assert [item.get_property('label') for item in menu.get_children()] == ['Ignore All']
 
@@ -371,7 +371,7 @@ def test_fix_menu_keeps_a_label_that_is_only_a_substring_of_languages():
     menu = _menu_with('an')
     plugin = Plugin.__new__(Plugin)
 
-    plugin._on_populate_popup(textbox=None, menu=menu)
+    plugin._on_populate_popup(textbox=Gtk.TextView(), menu=menu)
 
     assert len(menu.get_children()) == 1
 
@@ -380,7 +380,7 @@ def test_fix_menu_stops_at_the_first_separator():
     menu = _menu_with('Ignore All', None, 'Languages')
     plugin = Plugin.__new__(Plugin)
 
-    plugin._on_populate_popup(textbox=None, menu=menu)
+    plugin._on_populate_popup(textbox=Gtk.TextView(), menu=menu)
 
     # The separator had real entries before it, so it's kept, and
     # everything after it - including "Languages" - is never reached.
@@ -390,11 +390,58 @@ def test_fix_menu_stops_at_the_first_separator():
     assert remaining[2].get_property('label') == 'Languages'
 
 
+def _read_only_textview():
+    textview = Gtk.TextView()
+    textview.set_editable(False)
+    return textview
+
+
+def test_fix_menu_offers_no_suggestions_for_read_only_source_text(monkeypatch):
+    from virtaal.plugins import spellchecker
+    monkeypatch.setattr(spellchecker.GLib, 'dgettext', lambda domain, msgid: msgid)
+    # gtkspell's items come before the text view's own, up to a separator
+    menu = _menu_with('The', 'More...', 'Add "virtaal" to Dictionary', 'Ignore All', 'Languages', None, 'Copy')
+    plugin = Plugin.__new__(Plugin)
+
+    plugin._on_populate_popup(textbox=_read_only_textview(), menu=menu)
+
+    assert [item.get_label() for item in menu.get_children()] == [
+        'Add "virtaal" to Dictionary',
+        'Ignore All',
+        '',
+        'Copy',
+    ]
+
+
+def test_fix_menu_keeps_translated_dictionary_items_for_read_only_text(monkeypatch):
+    from virtaal.plugins import spellchecker
+    translations = {'Ignore All': 'Ignoreer almal', 'Add "%s" to Dictionary': 'Voeg "%s" by die woordeboek'}
+    monkeypatch.setattr(spellchecker.GLib, 'dgettext', lambda domain, msgid: translations.get(msgid, msgid))
+    menu = _menu_with('The', 'Voeg "virtaal" by die woordeboek', 'Ignoreer almal', None, 'Copy')
+    plugin = Plugin.__new__(Plugin)
+
+    plugin._on_populate_popup(textbox=_read_only_textview(), menu=menu)
+
+    assert [item.get_label() for item in menu.get_children()][:2] == [
+        'Voeg "virtaal" by die woordeboek',
+        'Ignoreer almal',
+    ]
+
+
+def test_fix_menu_keeps_suggestions_for_editable_text():
+    menu = _menu_with('The', 'More...', None, 'Ignore All')
+    plugin = Plugin.__new__(Plugin)
+
+    plugin._on_populate_popup(textbox=Gtk.TextView(), menu=menu)
+
+    assert [item.get_property('label') for item in menu.get_children()][:2] == ['The', 'More...']
+
+
 def test_fix_menu_removes_a_leading_separator_with_nothing_before_it():
     menu = _menu_with(None, 'Ignore All')
     plugin = Plugin.__new__(Plugin)
 
-    plugin._on_populate_popup(textbox=None, menu=menu)
+    plugin._on_populate_popup(textbox=Gtk.TextView(), menu=menu)
 
     remaining = menu.get_children()
     assert len(remaining) == 1

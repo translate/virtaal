@@ -17,7 +17,7 @@ from gi.repository import Gdk, Gtk
 from translate.misc.multistring import multistring
 from translate.storage.placeables.strelem import StringElem
 
-from virtaal.views.unitview import UnitView, _NotesView
+from virtaal.views.unitview import UnitView, _NotesView, _programmer_notes
 
 
 class _FakeParent:
@@ -807,6 +807,40 @@ def test_layout_update_notes_shows_a_long_translator_comment_in_full():
     view._layout_update_notes('translator')
 
     assert label.texts == [long_comment]
+
+
+_XLIFF_NOTES = b'''<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+<file original="a" source-language="en" datatype="plaintext"><body>
+<trans-unit id="1"><source>Title</source><note>Blub</note></trans-unit>
+<trans-unit id="2"><source>Save</source>
+  <note from="description">Button label</note>
+  <note from="translator">Checked</note>
+  <note from="programmer">Toolbar</note>
+</trans-unit>
+</body></file></xliff>'''
+
+
+def test_programmer_notes_include_xliff_notes_with_no_or_another_origin():
+    # #2076: Angular's i18n extraction writes notes like these.
+    from translate.storage import xliff
+    units = xliff.xlifffile.parsestring(_XLIFF_NOTES).units
+
+    assert _programmer_notes(units[0]) == 'Blub'
+    assert _programmer_notes(units[1]) == 'Button label\nToolbar'
+
+
+def test_programmer_notes_leave_out_po_translator_comments():
+    from translate.storage import pypo
+    unit = pypo.pofile.parsestring(b'# Checked\n#. Toolbar\nmsgid "Save"\nmsgstr ""\n').units[0]
+
+    assert _programmer_notes(unit) == 'Toolbar'
+
+
+def test_programmer_notes_keep_notes_of_a_format_without_origins():
+    unit = SimpleNamespace(getnotes=lambda origin=None: 'Toolbar')
+
+    assert _programmer_notes(unit) == 'Toolbar'
 
 
 def test_notes_scroll_once_taller_than_the_line_limit():

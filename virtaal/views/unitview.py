@@ -31,6 +31,16 @@ def _get_focused_widget(widgets):
     return None
 
 
+def _programmer_notes(unit):
+    """Every note but the translator's, so that notes with no or another
+        origin (XLIFF's from="description") show above the source too."""
+    programmer = set((unit.getnotes('programmer') or '').splitlines())
+    translator = set((unit.getnotes('translator') or '').splitlines())
+    return '\n'.join(
+        line for line in (unit.getnotes() or '').splitlines()
+        if line in programmer or line not in translator)
+
+
 class _NotesView(Gtk.ScrolledWindow):
     """A unit's notes, scrolling once they are taller than MAX_LINES.
         The half line shows there is more, as the overlay scrollbar only
@@ -612,7 +622,10 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
             self._widgets['notes'][origin] = notes
 
-        note_text = self.unit.getnotes(origin) or ""
+        if origin == 'programmer':
+            note_text = _programmer_notes(self.unit)
+        else:
+            note_text = self.unit.getnotes(origin) or ""
 
         if origin == "programmer" and len(note_text) < 15 and self.unit is not None and self.unit.getlocations():
             note_text += "  " + " ".join(self.unit.getlocations()[:3])

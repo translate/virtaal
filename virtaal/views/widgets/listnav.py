@@ -31,16 +31,20 @@ class ListNavigator(Gtk.HBox):
     # INITIALIZERS #
     def __init__(self):
         super().__init__()
+        self.unselectable = []
+        self._should_emit_changed = True
         self._init_widgets()
 
     def _init_treeview(self):
         tvw = Gtk.TreeView()
-        tvw.append_column(Gtk.TreeViewColumn(
-            "State", Gtk.CellRendererText(), text=self.COL_DISPLAY
-        ))
+        renderer = Gtk.CellRendererText()
+        column = Gtk.TreeViewColumn("State", renderer, text=self.COL_DISPLAY)
+        column.set_cell_data_func(renderer, self._render_item)
+        tvw.append_column(column)
         lst = Gtk.ListStore(str, object)
         tvw.set_model(lst)
         tvw.set_headers_visible(False)
+        tvw.get_selection().set_select_function(self._may_select)
         tvw.get_selection().connect('changed', self._on_selection_changed)
         tvw.connect('button-release-event', self._on_item_clicked)
 
@@ -76,6 +80,19 @@ class ListNavigator(Gtk.HBox):
         self.btn_back.set_tooltip_text(backward)
         self.set_tooltip_text(default)
         self.btn_forward.set_tooltip_text(forward)
+
+    def _is_selectable(self, model, itr):
+        return model.get_value(itr, self.COL_DISPLAY) not in self.unselectable
+
+    def _render_item(self, column, renderer, model, itr, data=None):
+        renderer.set_property('sensitive', self._is_selectable(model, itr))
+
+    def _may_select(self, selection, model, path, currently_selected, data=None):
+        # Unselectable rows (e.g. "Untranslated") can only be selected
+        # internally, to show the current state, but can always be left.
+        if currently_selected or not self._should_emit_changed:
+            return True
+        return self._is_selectable(model, model.get_iter(path))
 
     # METHODS #
     def move_state(self, offset):
@@ -182,7 +199,10 @@ class ListNavigator(Gtk.HBox):
         return False
 
     def _on_item_clicked(self, treeview, event):
-        self.btn_popup.hide_popup()
+        hit = treeview.get_path_at_pos(int(event.x), int(event.y))
+        model = treeview.get_model()
+        if hit is None or self._is_selectable(model, model.get_iter(hit[0])):
+            self.btn_popup.hide_popup()
         return False
 
     def _on_selection_changed(self, selection):
@@ -194,18 +214,11 @@ class ListNavigator(Gtk.HBox):
 
         self.btn_popup.set_label(selected_name)
 
-        # If setting to "untranslated" internally (when we don't want to emit
-        # the changed event), we can allow the unselectable ones, since we are
-        # in control:
-        if self._should_emit_changed and selected_name in self.unselectable:
-            selection.select_iter(model.iter_next(itr))
-            return
-        # Disable back/forward buttons if the first/last item was selected
-        # TODO: disable btn_back if the previous can't be selected (like untranslated)
-        isfirst = selected_value == model.get_value(model[0].iter, self.COL_VALUE)
-        islast  = selected_value == model.get_value(model[len(model)-1].iter, self.COL_VALUE)
-        self.btn_back.set_sensitive(not isfirst)
-        self.btn_forward.set_sensitive(not islast)
+        # Back/forward only where there's a selectable neighbour.
+        index = model.get_path(itr)[0]
+        self.btn_back.set_sensitive(index > 0 and self._is_selectable(model, model[index - 1].iter))
+        self.btn_forward.set_sensitive(
+            index < len(model) - 1 and self._is_selectable(model, model[index + 1].iter))
 
         if self._should_emit_changed:
             self.emit('selection-changed', selected_value)

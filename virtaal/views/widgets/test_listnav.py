@@ -115,7 +115,7 @@ def test_move_state_can_move_past_an_unselectable_row_once_already_there(monkeyp
     # unselectable row - it doesn't stop the caller stepping further once
     # already there (e.g. via select_by_name()).
     navigator = _make_navigator(['one', 'skip', 'three'], unselectable=['skip'])
-    navigator.tvw_items.set_cursor(1)
+    navigator.select_by_name('skip')
 
     navigator.move_state(1)
 
@@ -293,14 +293,61 @@ def test_selection_changed_enables_both_buttons_in_the_middle():
     assert navigator.btn_forward.get_sensitive()
 
 
-def test_selection_changed_skips_over_an_unselectable_row_when_emitting():
+def test_an_unselectable_row_cannot_be_picked():
     navigator = ListNavigator()
-    model = _make_model(['one', 'skip', 'three'])
-    navigator.set_model(model, unselectable=['skip'])
+    model = _make_model(['skip', 'two', 'three'])
+    navigator.set_model(model, unselectable=['skip'], select_name='two')
+    emitted = []
+    navigator.connect('selection-changed', lambda nav, value: emitted.append(value.name))
 
-    navigator.tvw_items.get_selection().select_iter(model[1].iter)
+    navigator.tvw_items.get_selection().select_iter(model[0].iter)
 
-    assert _selected_name(navigator) == 'three'
+    assert _selected_name(navigator) == 'two'
+    assert emitted == []
+
+
+def test_an_unselectable_row_can_still_show_the_current_state():
+    navigator = _make_navigator(['skip', 'two'], unselectable=['skip'], select_name='two')
+
+    navigator.select_by_name('skip')
+
+    assert _selected_name(navigator) == 'skip'
+
+
+def test_unselectable_rows_are_greyed_out():
+    navigator = _make_navigator(['skip', 'two'], unselectable=['skip'])
+    column = navigator.tvw_items.get_column(0)
+    renderer = column.get_cells()[0]
+    model = navigator.tvw_items.get_model()
+
+    sensitive = []
+    for row in model:
+        column.cell_set_cell_data(model, row.iter, False, False)
+        sensitive.append(renderer.get_property('sensitive'))
+
+    assert sensitive == [False, True]
+
+
+@pytest.mark.parametrize('selected, back, forward', [
+    ('two', False, True),  # "skip" before it can't be picked
+    ('three', True, False),
+    ('skip', False, True),
+])
+def test_back_and_forward_need_a_selectable_neighbour(selected, back, forward):
+    navigator = _make_navigator(['skip', 'two', 'three'], unselectable=['skip'], select_name=selected)
+
+    assert navigator.btn_back.get_sensitive() is back
+    assert navigator.btn_forward.get_sensitive() is forward
+
+
+def test_clicking_an_unselectable_state_keeps_the_popup_open():
+    navigator = _make_navigator(['skip', 'two'], unselectable=['skip'], select_name='two')
+    navigator.btn_popup.set_active(True)
+    navigator.tvw_items.get_path_at_pos = lambda x, y: (Gtk.TreePath(0), None, 0, 0)
+
+    navigator._on_item_clicked(navigator.tvw_items, SimpleNamespace(x=1, y=1))
+
+    assert navigator.btn_popup.get_active()
 
 
 def test_selection_changed_emits_selection_changed_with_the_selected_value():

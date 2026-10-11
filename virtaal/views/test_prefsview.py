@@ -355,7 +355,7 @@ def test_pair_preview_text_rtl(monkeypatch):
 
     result = view._pair_preview_text(SimpleNamespace(code='en'), SimpleNamespace(code='ar'))
 
-    assert result == '‫English ← ‫Arabic'
+    assert result == '\u202bEnglish ← \u202bArabic'
 
 
 def test_pair_preview_text_ltr_default(monkeypatch):

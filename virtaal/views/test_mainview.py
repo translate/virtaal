@@ -2679,20 +2679,55 @@ def test_macos_integration_rebinds_its_catalog_before_building_the_app_menu(monk
     assert calls[:3] == ['Application', ('rebind', b'gtk-mac-integration'), 'set_menu_bar']
 
 
-def test_sync_menubar_reinserts_preferences_into_the_app_menu():
-    # The resync skips app-menu items, so Preferences' key equivalent
-    # would stay as it was when first inserted (#3751).
-    calls = []
-    mnu_prefs = object()
+def _menubar_view(monkeypatch, calls):
+    monkeypatch.setattr(mainview, '_set_native_return_key',
+                        lambda title, modifiers: calls.append((title, modifiers)))
     view = MainView.__new__(MainView)
     view._osxapp = SimpleNamespace(
         sync_menubar=lambda: calls.append('sync_menubar'),
         insert_app_menu_item=lambda item, index: calls.append((item, index)))
-    view.gui = SimpleNamespace(get_object={'mnu_prefs': mnu_prefs}.get)
+    objects = {'mnu_prefs': object()}
+    for item_id, label in (('mnu_state_advance', 'Next Unit and _Advance State'),
+                           ('mnu_state_reverse', 'Next Unit and Reverse State')):
+        objects[item_id] = Gtk.MenuItem.new_with_mnemonic(label)
+    view.gui = SimpleNamespace(get_object=objects.get)
+    return view, objects
+
+
+def test_sync_menubar_reinserts_preferences_into_the_app_menu(monkeypatch):
+    # The resync skips app-menu items, so Preferences' key equivalent
+    # would stay as it was when first inserted (#3751).
+    calls = []
+    view, objects = _menubar_view(monkeypatch, calls)
 
     view.sync_menubar()
 
-    assert calls == ['sync_menubar', (mnu_prefs, 2)]
+    assert calls[0] == 'sync_menubar'
+    assert calls[-1] == (objects['mnu_prefs'], 2)
+
+
+def test_sync_menubar_sets_return_key_equivalents_for_the_state_items_only(monkeypatch):
+    # gtk-mac-integration can't map Return; Next Unit's plain Return is
+    # left out so entries keep it (#3993).
+    calls = []
+    view, _objects = _menubar_view(monkeypatch, calls)
+
+    view.sync_menubar()
+
+    control, shift = mainview.NS_CONTROL_KEY_MASK, mainview.NS_SHIFT_KEY_MASK
+    assert calls[1:3] == [('Next Unit and Advance State', control),
+                          ('Next Unit and Reverse State', control | shift)]
+
+
+def test_sync_menubar_skips_state_items_without_a_label(monkeypatch):
+    calls = []
+    view, objects = _menubar_view(monkeypatch, calls)
+    objects['mnu_state_advance'] = Gtk.MenuItem()
+    objects['mnu_state_reverse'] = Gtk.MenuItem(label='')
+
+    view.sync_menubar()
+
+    assert calls == ['sync_menubar', (objects['mnu_prefs'], 2)]
 
 
 @pytest.mark.parametrize('accel_file', ['share/virtaal/virtaal.accel', 'devsupport/mac-bundle/virtaal.accel'])

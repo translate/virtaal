@@ -96,6 +96,37 @@ def _set_native_help_menu():
         _objc_send(nsapp, "setHelpMenu:", submenu, restype=None)
 
 
+def _find_native_menu_item(menu, title):
+    for i in range(_objc_send(menu, "numberOfItems", restype=ctypes.c_long)):
+        item = _objc_send(menu, "itemAtIndex:", i, argtypes=[ctypes.c_long])
+        item_title = _objc_send(_objc_send(item, "title"), "UTF8String", restype=ctypes.c_char_p)
+        if item_title and item_title.decode() == title:
+            return item
+        submenu = _objc_send(item, "submenu")
+        if submenu:
+            found = _find_native_menu_item(submenu, title)
+            if found:
+                return found
+    return None
+
+
+NS_SHIFT_KEY_MASK = 1 << 17
+NS_CONTROL_KEY_MASK = 1 << 18
+
+
+def _set_native_return_key(title, modifiers):
+    """gtk-mac-integration has no key equivalent for Return, so the
+        native menu shows no shortcut for an item bound to it (#3993)."""
+    nsapp = _objc_send(_objc_class("NSApplication"), "sharedApplication")
+    menubar = _objc_send(nsapp, "mainMenu")
+    item = _find_native_menu_item(menubar, title) if menubar else None
+    if not item:
+        return
+    key = _objc_send(_objc_class("NSString"), "stringWithUTF8String:", b"\r", argtypes=[ctypes.c_char_p])
+    _objc_send(item, "setKeyEquivalent:", key, restype=None)
+    _objc_send(item, "setKeyEquivalentModifierMask:", modifiers, argtypes=[ctypes.c_ulong], restype=None)
+
+
 def fill_dialog(dialog, title='', message='', markup=''):
     if title:
         dialog.set_title(title)
@@ -672,6 +703,15 @@ class MainView(BaseView):
         osxapp = getattr(self, '_osxapp', None)
         if osxapp is not None:
             osxapp.sync_menubar()
+            # The native menu takes a key equivalent before GTK sees the
+            # key, so plain Return (Next Unit) is left out: it would stop
+            # Return working in every entry.
+            for item_id, modifiers in (
+                    ('mnu_state_advance', NS_CONTROL_KEY_MASK),
+                    ('mnu_state_reverse', NS_CONTROL_KEY_MASK | NS_SHIFT_KEY_MASK)):
+                label = self.gui.get_object(item_id).get_child()
+                if isinstance(label, Gtk.Label) and label.get_text():
+                    _set_native_return_key(label.get_text(), modifiers)
             # The resync skips app-menu items; reinserting rereads the key
             # equivalent of Preferences, whose accel group keeps changing.
             osxapp.insert_app_menu_item(self.gui.get_object("mnu_prefs"), 2)

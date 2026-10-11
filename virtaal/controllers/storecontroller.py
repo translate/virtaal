@@ -377,6 +377,11 @@ class StoreController(BaseController):
             self.open_file(filename, uri=uri)
             return
 
+        from translate.storage import factory
+        template = factory.getobject(filename)
+        if not any(unit.istranslatable() for unit in template.units):
+            raise ValueError('The file contains nothing to translate.')
+
         # Let's entirely clear things in the view to ensure that no signals
         # are still attached to old models before we start changing things. See
         # bug 1854.

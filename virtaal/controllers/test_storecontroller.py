@@ -595,7 +595,7 @@ def test_update_file_opens_a_new_file_when_none_is_open():
     assert opened == [("new.po", "file:///new.po")]
 
 
-def test_update_file_replaces_the_cursor_on_an_already_open_store():
+def test_update_file_replaces_the_cursor_on_an_already_open_store(tmp_path):
     # Regression: this method did "from cursor import Cursor" (missing the
     # leading dot) - a real, always-broken ModuleNotFoundError whenever a
     # store was already open, silently swallowed by MainController.update_file's
@@ -619,7 +619,9 @@ def test_update_file_replaces_the_cursor_on_an_already_open_store():
     emitted = []
     controller.connect('store-loaded', lambda *_: emitted.append(True))
 
-    controller.update_file("updated.po")
+    template = tmp_path / "updated.pot"
+    template.write_text('msgid "Open"\nmsgstr ""\n')
+    controller.update_file(str(template))
 
     assert controller._modified is True
     assert saveable_calls == [True]
@@ -629,6 +631,19 @@ def test_update_file_replaces_the_cursor_on_an_already_open_store():
     assert controller.cursor.model is controller.store
     assert shown == [None, controller.store, 'shown']
     assert emitted == [True]
+
+
+def test_update_file_refuses_a_template_with_nothing_to_translate(tmp_path):
+    template = tmp_path / "empty.pot"
+    template.write_text('msgid ""\nmsgstr ""\n"Content-Type: text/plain; charset=UTF-8\\n"\n')
+    controller = _controller()
+    store = controller.store = SimpleNamespace(update_file=lambda filename: pytest.fail("store updated"))
+    controller._view = SimpleNamespace(load_store=lambda store: pytest.fail("view cleared"))
+
+    with pytest.raises(ValueError, match='nothing to translate'):
+        controller.update_file(str(template))
+
+    assert controller.store is store
 
 
 # update_store_checks() #

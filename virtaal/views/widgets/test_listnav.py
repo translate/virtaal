@@ -372,3 +372,13 @@ def test_select_by_name_does_not_emit_selection_changed():
     navigator.select_by_name('two')
 
     assert calls == []
+
+
+def test_set_unselectable_greys_new_rows_and_updates_the_arrows():
+    navigator = _make_navigator(['skip', 'two', 'three'], unselectable=['skip'], select_name='two')
+    assert navigator.btn_forward.get_sensitive()
+
+    navigator.set_unselectable(['skip', 'three'])
+
+    assert not navigator.btn_forward.get_sensitive()
+    assert not navigator.btn_back.get_sensitive()

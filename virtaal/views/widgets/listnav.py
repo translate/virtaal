@@ -147,6 +147,16 @@ class ListNavigator(Gtk.HBox):
             self.tvw_items.scroll_to_cell(select_path, use_align=True, row_align=0.4)
         self._should_emit_changed = True
 
+    def set_unselectable(self, unselectable):
+        """Change which rows are greyed out and can't be picked."""
+        if unselectable == self.unselectable:
+            return
+        self.unselectable = unselectable
+        self.tvw_items.queue_draw()
+        model, itr = self.tvw_items.get_selection().get_selected()
+        if model and itr:
+            self._update_arrows(model, itr)
+
     def set_parent_window(self, wnd_parent):
         self.btn_popup.popup.set_transient_for(wnd_parent)
 
@@ -205,6 +215,13 @@ class ListNavigator(Gtk.HBox):
             self.btn_popup.hide_popup()
         return False
 
+    def _update_arrows(self, model, itr):
+        # Back/forward only where there's a selectable neighbour.
+        index = model.get_path(itr)[0]
+        self.btn_back.set_sensitive(index > 0 and self._is_selectable(model, model[index - 1].iter))
+        self.btn_forward.set_sensitive(
+            index < len(model) - 1 and self._is_selectable(model, model[index + 1].iter))
+
     def _on_selection_changed(self, selection):
         model, itr = selection.get_selected()
         if not model or not itr:
@@ -214,11 +231,7 @@ class ListNavigator(Gtk.HBox):
 
         self.btn_popup.set_label(selected_name)
 
-        # Back/forward only where there's a selectable neighbour.
-        index = model.get_path(itr)[0]
-        self.btn_back.set_sensitive(index > 0 and self._is_selectable(model, model[index - 1].iter))
-        self.btn_forward.set_sensitive(
-            index < len(model) - 1 and self._is_selectable(model, model[index + 1].iter))
+        self._update_arrows(model, itr)
 
         if self._should_emit_changed:
             self.emit('selection-changed', selected_value)

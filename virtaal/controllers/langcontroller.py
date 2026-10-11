@@ -115,6 +115,13 @@ class LanguageController(BaseController):
 
 
     # METHODS #
+    def get_target_nplurals(self):
+        """The number of plural forms to edit: the open file's own when it
+            declares them, else the target language's."""
+        store = self.main_controller.store_controller.get_store()
+        declared = store and store.get_declared_nplurals()
+        return declared or self.target_lang.nplurals or self.main_controller.store_controller.get_nplurals()
+
     def get_detected_langs(self):
         store = self.main_controller.store_controller.store
         if not store:
@@ -196,4 +203,3 @@ class LanguageController(BaseController):
         srclang = store_controller.store.get_source_language() or self.source_lang.code
         tgtlang = store_controller.store.get_target_language() or self.target_lang.code
         self.set_language_pair(srclang, tgtlang)
-        self.target_lang.nplurals = self.target_lang.nplurals or store_controller.get_nplurals()

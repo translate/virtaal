@@ -413,10 +413,12 @@ def test_on_store_loaded_creates_the_view_and_sets_the_language_pair(monkeypatch
     created = []
     monkeypatch.setattr('virtaal.views.langview.LanguageView',
                          lambda c: created.append(c) or _FakeLanguageView(c))
-    main_controller.store_controller.store = SimpleNamespace(
+    store = main_controller.store_controller.store = SimpleNamespace(
         get_source_language=lambda: 'fr',
         get_target_language=lambda: 'zzunknown',
+        get_declared_nplurals=lambda: None,
     )
+    main_controller.store_controller.get_store = lambda: store
     main_controller.store_controller.get_nplurals = lambda: 4
 
     controller._on_store_loaded(main_controller.store_controller)
@@ -425,7 +427,7 @@ def test_on_store_loaded_creates_the_view_and_sets_the_language_pair(monkeypatch
     assert controller.view.shown
     assert controller.source_lang.code == 'fr'
     assert controller.target_lang.code == 'zzunknown'
-    assert controller.target_lang.nplurals == 4
+    assert controller.get_target_nplurals() == 4
 
 
 def test_on_store_loaded_reuses_an_existing_view(monkeypatch, tmp_path):
@@ -456,3 +458,26 @@ def test_on_store_loaded_falls_back_to_the_current_source_lang(monkeypatch, tmp_
     controller._on_store_loaded(main_controller.store_controller)
 
     assert controller.source_lang.code == 'en'
+
+
+# get_target_nplurals() #
+
+def _with_store(main_controller, declared):
+    store = SimpleNamespace(get_declared_nplurals=lambda: declared)
+    main_controller.store_controller.get_store = lambda: store
+    main_controller.store_controller.get_nplurals = lambda: declared or 0
+
+
+def test_target_nplurals_follow_the_files_plural_forms(monkeypatch, tmp_path):
+    # #3197: GNOME's Ukrainian has 4 forms, translate-toolkit's 3.
+    controller, main_controller = _make_controller(monkeypatch, tmp_path, _FakeSettings(targetlang='uk'))
+    _with_store(main_controller, 4)
+
+    assert controller.get_target_nplurals() == 4
+
+
+def test_target_nplurals_follow_the_language_without_plural_forms(monkeypatch, tmp_path):
+    controller, main_controller = _make_controller(monkeypatch, tmp_path, _FakeSettings(targetlang='uk'))
+    _with_store(main_controller, None)
+
+    assert controller.get_target_nplurals() == 3

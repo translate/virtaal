@@ -241,10 +241,16 @@ def test_saving_keeps_the_files_plural_forms_for_the_same_number_of_forms(tmp_pa
     assert header["Plural-Forms"] == _SL_PLURAL_FORMS
 
 
-def test_saving_replaces_plural_forms_for_a_different_number_of_forms(tmp_path, monkeypatch):
-    header = _save_po(tmp_path, monkeypatch, b'"Language: sl\\n"\n"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n', "sl")
+# GNOME's Ukrainian, one form more than translate-toolkit's (#3197).
+_UK_PLURAL_FORMS = ("nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : "
+                    "n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;")
+_UK_HEADER = b'"Plural-Forms: ' + _UK_PLURAL_FORMS.encode() + b'\\n"\n'
 
-    assert header["Plural-Forms"].startswith("nplurals=4;")
+
+def test_saving_keeps_the_files_plural_forms_for_a_different_number_of_forms(tmp_path, monkeypatch):
+    header = _save_po(tmp_path, monkeypatch, b'"Language: uk\\n"\n' + _UK_HEADER, "uk")
+
+    assert header["Plural-Forms"] == _UK_PLURAL_FORMS
 
 
 def test_saving_adds_missing_plural_forms(tmp_path, monkeypatch):
@@ -262,6 +268,36 @@ def test_changing_language_writes_the_new_languages_plural_forms(tmp_path):
     model.set_target_language("fr")
 
     assert model._trans_store.getheaderplural() == ("2", "(n > 1)")
+
+
+def test_changing_language_updates_the_plural_count(tmp_path):
+    path = tmp_path / "de.po"
+    path.write_bytes(b'msgid ""\nmsgstr ""\n"Language: de\\n"\n"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n'
+                     b'\nmsgid "Hello"\nmsgstr "Hallo"\n')
+    model = StoreModel(str(path), _FakeController())
+
+    model.set_target_language("sl")
+
+    assert model.get_declared_nplurals() == 4
+
+
+def test_setting_the_language_keeps_plural_forms_declared_without_one(tmp_path):
+    path = tmp_path / "uk.po"
+    path.write_bytes(b'msgid ""\nmsgstr ""\n' + _UK_HEADER + b'\nmsgid "Hello"\nmsgstr "Pryvit"\n')
+    model = StoreModel(str(path), _FakeController())
+
+    assert model.set_target_language("uk") is True
+
+    assert model._trans_store.parseheader()["Plural-Forms"] == _UK_PLURAL_FORMS
+    assert model.get_declared_nplurals() == 4
+
+
+def test_declared_nplurals_ignores_a_templates_placeholder(tmp_path):
+    path = tmp_path / "template.pot"
+    path.write_bytes(b'msgid ""\nmsgstr ""\n"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\\n"\n'
+                     b'\nmsgid "Hello"\nmsgstr ""\n')
+
+    assert StoreModel(str(path), _FakeController()).get_declared_nplurals() is None
 
 
 _CHECKS_PO = """msgid ""

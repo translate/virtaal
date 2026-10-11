@@ -1016,7 +1016,7 @@ jobs:
         run: |
           export VIRTAAL_STACKS_DIR="$RUNNER_TEMP/stacks"
           mkdir -p "$VIRTAAL_STACKS_DIR"
-          python devsupport/testing/stack_watchdog.py 300 -- \
+          python devsupport/testing/stack_watchdog.py 150 -- \
             pytest -rvxs -n auto --dist loadgroup --reruns 1 --rerun-except ".*" --cov=virtaal --cov-report=xml virtaal
 
       - name: Upload coverage to Codecov

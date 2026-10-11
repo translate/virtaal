@@ -137,21 +137,18 @@ exclude = ["virtaal.test"]
 builtins = ["_"]
 
 [tool.ruff.lint]
-# F (pyflakes: unused imports/variables, undefined names), UP
-# (pyupgrade: obsolete py2-compat patterns like super(Cls, self)), and
-# I (isort: import sorting/grouping). Deliberately not the default
-# style/whitespace rule families - that's ruff format's job, not
-# enabled yet.
-select = ["F", "I", "UP"]
+# F (pyflakes), I (isort), UP (pyupgrade), W (pycodestyle warnings,
+# e.g. invalid escape sequences), PGH (blanket noqa, mistyped mock
+# assertions), INT (formatting inside _(), which defeats the catalog
+# lookup) and PLE (pylint errors). Layout is left to ruff format,
+# not enabled yet.
+select = ["F", "I", "UP", "W", "PGH", "INT", "PLE"]
 ignore = [
-    # %-format -> f-string: 198 sites, needs real per-call
-    # verification (escaping/argument-shape can change), not a
-    # mechanical rename - same "known, not fixed yet" treatment as
-    # devsupport/known-deprecation-warnings.txt.
+    # %-format -> f-string: each call needs checking (escaping,
+    # argument shape), not a mechanical rename.
     "UP031",
-    # unused-variable: 42 sites, needs per-site judgement (some are
-    # genuinely dead, some computed for a side effect) rather than a
-    # blind removal.
+    # unused-variable: some are dead, some computed for a side
+    # effect - needs per-site judgement.
     "F841",
 ]
 

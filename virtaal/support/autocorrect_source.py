@@ -28,9 +28,9 @@ one directory has no such risk.
 import json
 import logging
 import os
-import urllib.request
 from urllib.error import HTTPError, URLError
 
+from virtaal.support import proxy
 from virtaal.support.dictionary_source import candidate_folders
 
 CONTENTS_URL = 'https://api.github.com/repos/LibreOffice/core/contents/extras/source/autocorr/lang'
@@ -66,7 +66,7 @@ def find_document_list_folder(locale_code, folders):
 # --- Network I/O - thin, replaceable wrappers around the pure logic above ---
 
 def _get(url):
-    with urllib.request.urlopen(url, timeout=10) as response:
+    with proxy.urlopen(url, timeout=10) as response:
         return response.read()
 
 

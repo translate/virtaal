@@ -935,6 +935,47 @@ def test_on_key_press_event_resets_must_advance_for_a_non_enter_key():
     assert view.must_advance is False
 
 
+# _unselectable_states() #
+
+_STATE_NAMES = {0: 'Untranslated', 30: 'Needs work', 80: 'Needs review', 100: 'Translated', 120: 'Reviewed'}
+
+
+def _states_view(target, plural=False):
+    view = UnitView.__new__(UnitView)
+    view.controller = SimpleNamespace(get_unit_state_names=lambda: _STATE_NAMES)
+    view.unit = SimpleNamespace(hasplural=lambda: plural, target=target)
+    return view
+
+
+@pytest.mark.parametrize('target, plural, unselectable', [
+    ('', False, ['Untranslated', 'Translated', 'Reviewed']),
+    (None, False, ['Untranslated', 'Translated', 'Reviewed']),
+    ('Oop', False, ['Untranslated']),
+    (SimpleNamespace(strings=['een', '']), True, ['Untranslated', 'Translated', 'Reviewed']),
+    (SimpleNamespace(strings=['een', 'twee']), True, ['Untranslated']),
+])
+def test_an_empty_target_cant_be_translated_or_reviewed(target, plural, unselectable):
+    # Needs work/Needs review stay available, e.g. XLIFF needs-translation.
+    assert _states_view(target, plural)._unselectable_states() == unselectable
+
+
+def test_typing_updates_which_states_can_be_picked():
+    view = _states_view('')
+    view.unit.STATE = {0: (0, 30)}
+    tb = _FakeTextbox()
+    tb.elem = None
+    tb.get_text = lambda: 'Oop'
+    updates = []
+    view._widgets = {'targets': [tb], 'state': SimpleNamespace(set_unselectable=updates.append)}
+    view.controller.main_controller = SimpleNamespace(
+        lang_controller=SimpleNamespace(target_lang=SimpleNamespace(nplurals=1)))
+    view.modified = lambda: None
+
+    view._on_target_changed(None, 0)
+
+    assert updates == [['Untranslated']]
+
+
 # _on_target_changed() #
 
 def test_on_target_changed_writes_a_plain_string_target_and_marks_modified():
@@ -943,7 +984,7 @@ def test_on_target_changed_writes_a_plain_string_target_and_marks_modified():
     tb.elem = None
     tb.get_text = lambda: 'hello'
     view._widgets = {'targets': [tb]}
-    view.unit = SimpleNamespace(hasplural=lambda: False, target=None)
+    view.unit = SimpleNamespace(STATE={}, hasplural=lambda: False, target=None)
     view.controller = SimpleNamespace(main_controller=SimpleNamespace(
         lang_controller=SimpleNamespace(target_lang=SimpleNamespace(nplurals=1))))
     modified_calls = []
@@ -961,7 +1002,7 @@ def test_on_target_changed_raises_for_a_nonzero_index_on_a_non_plural_unit():
     tb.elem = None
     tb.get_text = lambda: 'hello'
     view._widgets = {'targets': [None, tb]}
-    view.unit = SimpleNamespace(hasplural=lambda: False)
+    view.unit = SimpleNamespace(STATE={}, hasplural=lambda: False)
     view.controller = SimpleNamespace(main_controller=SimpleNamespace(
         lang_controller=SimpleNamespace(target_lang=SimpleNamespace(nplurals=1))))
     view.modified = lambda: None
@@ -976,7 +1017,7 @@ def test_on_target_changed_pads_and_writes_a_plural_target():
     tb.elem = None
     tb.get_text = lambda: 'two'
     view._widgets = {'targets': [None, tb]}
-    view.unit = SimpleNamespace(hasplural=lambda: True, target=SimpleNamespace(strings=['one']))
+    view.unit = SimpleNamespace(STATE={}, hasplural=lambda: True, target=SimpleNamespace(strings=['one']))
     view.controller = SimpleNamespace(main_controller=SimpleNamespace(
         lang_controller=SimpleNamespace(target_lang=SimpleNamespace(nplurals=3))))
     modified_calls = []
@@ -994,7 +1035,7 @@ def test_on_target_changed_writes_a_placeable_element_and_marks_modified():
     tb = _FakeTextbox()
     tb.elem = elem
     view._widgets = {'targets': [tb]}
-    view.unit = SimpleNamespace(hasplural=lambda: False, rich_target=[None])
+    view.unit = SimpleNamespace(STATE={}, hasplural=lambda: False, rich_target=[None])
     view.controller = SimpleNamespace(main_controller=SimpleNamespace(
         lang_controller=SimpleNamespace(target_lang=SimpleNamespace(nplurals=1))))
     modified_calls = []
@@ -1012,7 +1053,7 @@ def test_on_target_changed_pads_a_plural_rich_target_before_writing_the_element(
     tb = _FakeTextbox()
     tb.elem = elem
     view._widgets = {'targets': [None, tb]}
-    view.unit = SimpleNamespace(hasplural=lambda: True, rich_target=['one'])
+    view.unit = SimpleNamespace(STATE={}, hasplural=lambda: True, rich_target=['one'])
     view.controller = SimpleNamespace(main_controller=SimpleNamespace(
         lang_controller=SimpleNamespace(target_lang=SimpleNamespace(nplurals=3))))
     modified_calls = []

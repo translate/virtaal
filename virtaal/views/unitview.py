@@ -12,6 +12,7 @@ from gi.repository import Gdk, GLib, GObject, Gtk
 from gi.repository.GObject import TYPE_PYOBJECT
 from translate.lang import factory
 from translate.misc.multistring import multistring
+from translate.storage.workflow import StateEnum
 
 from virtaal.common import GObjectWrapper
 from virtaal.common.platform import platform
@@ -723,16 +724,28 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             return
         state_name = state_names[self.unit.get_state_id()]
 
-        unselectable = state_names.get(0, None)
-        if unselectable:
-            unselectable = [unselectable]
-
         self._widgets['state'].set_model(
             self._create_workflow_liststore(),
-            unselectable=unselectable,
+            unselectable=self._unselectable_states(),
             select_name=state_name,
         )
         self._widgets['state'].show_all()
+
+    def _unselectable_states(self):
+        """Untranslated follows the target text, and an empty target
+            can't be translated or reviewed (XLIFF 2 requires a
+            translation past its initial state)."""
+        state_names = self.controller.get_unit_state_names()
+        unselectable = [state_names[StateEnum.EMPTY]]
+        if self._target_is_empty():
+            unselectable += [name for state, name in state_names.items() if state >= StateEnum.UNREVIEWED]
+        return unselectable
+
+    def _target_is_empty(self):
+        target = self.unit.target
+        if self.unit.hasplural():
+            return min((len(s) for s in getattr(target, 'strings', [target or ''])), default=0) == 0
+        return not target
 
     def advance_workflow_state(self, offset):
         """Move the current unit's workflow state one step forward
@@ -798,6 +811,8 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             else:
                 raise IndexError()
 
+        if self.unit.STATE and self._widgets['state']:
+            self._widgets['state'].set_unselectable(self._unselectable_states())
         self.modified()
 
     def _on_target_insert_text(self, textbox, ins_text, offset, elem, target_num):

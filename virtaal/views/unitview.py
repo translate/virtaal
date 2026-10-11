@@ -409,6 +409,16 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
     def show(self):
         super().show()
 
+    def update_plural_forms(self):
+        """Show a target box for each plural form the target language has now.
+            @returns: Whether the boxes were laid out again."""
+        if self.unit is None or not self.unit.hasplural():
+            return False
+        self.disable_signals(['modified', 'insert-text', 'delete-text'])
+        self._layout_update_targets()
+        self.enable_signals(['modified', 'insert-text', 'delete-text'])
+        return True
+
     def update_languages(self):
         srclang = self.controller.main_controller.lang_controller.source_lang.code
         tgtlang = self.controller.main_controller.lang_controller.target_lang.code

@@ -491,3 +491,33 @@ msgstr ""
         assert test_unit.isfuzzy() is not was_fuzzy
         assert self.unit_controller.current_unit is test_unit
         assert test_unit._modified is False
+
+
+def _change_language(old_nplurals, new_nplurals):
+    from types import SimpleNamespace
+
+    from virtaal.controllers.unitcontroller import UnitController
+    controller = UnitController.__new__(UnitController)
+    controller.nplurals = old_nplurals
+    calls = []
+    controller.view = SimpleNamespace(
+        update_languages=lambda: calls.append('languages'),
+        update_plural_forms=lambda: calls.append('plural forms') or True)
+    treeview = SimpleNamespace(refresh_current_row=lambda: calls.append('row'))
+    controller.main_controller = SimpleNamespace(
+        store_controller=SimpleNamespace(view=SimpleNamespace(_treeview=treeview)))
+    controller._on_language_changed(SimpleNamespace(get_target_nplurals=lambda: new_nplurals), 'uk')
+    return controller, calls
+
+
+def test_language_change_shows_a_new_number_of_plural_forms():
+    controller, calls = _change_language(3, 4)
+
+    assert controller.nplurals == 4
+    assert calls == ['languages', 'plural forms', 'row']
+
+
+def test_language_change_keeps_the_same_number_of_plural_forms():
+    controller, calls = _change_language(3, 3)
+
+    assert calls == ['languages']

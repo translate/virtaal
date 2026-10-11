@@ -37,7 +37,7 @@ class LanguageSelectDialog:
 
     def _get_widgets(self):
         """Load the GtkBuilder file and get the widgets we would like to use."""
-        widget_names = ('btn_add', 'btn_cancel', 'btn_ok', 'tvw_sourcelang', 'tvw_targetlang')
+        widget_names = ('btn_add', 'btn_cancel', 'btn_edit', 'btn_ok', 'tvw_sourcelang', 'tvw_targetlang')
 
         for name in widget_names:
             setattr(self, name, self.gui.get_object(name))

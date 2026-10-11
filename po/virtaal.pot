@@ -98,6 +98,10 @@ msgid "_Add Missing Language…"
 msgstr ""
 
 #: share/virtaal/virtaal.ui
+msgid "_Edit Translation Language…"
+msgstr ""
+
+#: share/virtaal/virtaal.ui
 msgid "_File"
 msgstr ""
 
@@ -2318,6 +2322,10 @@ msgstr ""
 #. l10n: Rather than translating, fill in the names of the translators
 #: virtaal/views/widgets/aboutdialog.py
 msgid "translator-credits"
+msgstr ""
+
+#: virtaal/views/widgets/langadddialog.py
+msgid "Edit Language"
 msgstr ""
 
 #: virtaal/views/widgets/langadddialog.py

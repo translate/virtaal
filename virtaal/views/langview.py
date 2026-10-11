@@ -35,6 +35,7 @@ class LanguageView(BaseView):
         langs.sort(key=lambda x: locale.strxfrm(x.name))
         self.select_dialog = LanguageSelectDialog(langs, parent=self.controller.main_controller.view.main_window)
         self.select_dialog.btn_add.connect('clicked', self._on_addlang_clicked)
+        self.select_dialog.btn_edit.connect('clicked', self._on_editlang_clicked)
 
         self.add_dialog = LanguageAddDialog(parent=self.select_dialog.dialog)
 
@@ -157,6 +158,22 @@ class LanguageView(BaseView):
         langs = [LanguageModel(lc) for lc in LanguageModel.languages]
         langs.sort(key=lambda x: locale.strxfrm(x.name))
         self.select_dialog.update_languages(langs)
+
+    def _on_editlang_clicked(self, button):
+        """Override the plural information of the selected target language,
+            for files that don't declare their own."""
+        code = self.select_dialog.get_selected_target_lang()
+        if code not in LanguageModel.languages:
+            return
+        name, nplurals, plural = LanguageModel.languages[code]
+        if not self.add_dialog.run_edit(name, code, nplurals, plural):
+            return
+
+        LanguageModel.languages[code] = (name, self.add_dialog.nplurals, self.add_dialog.plural)
+        if code not in self.controller.new_langs:
+            self.controller.new_langs.append(code)
+        if code == self.controller.target_lang.code:
+            self.controller.target_lang = code
 
     def _on_button_toggled(self, popupbutton):
         if not popupbutton.get_active():

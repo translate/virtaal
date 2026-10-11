@@ -27,6 +27,7 @@ class LanguageAddDialog:
         )
 
         self._get_widgets()
+        self._add_title = self.dialog.get_title()
         if isinstance(parent, Gtk.Widget):
             self.dialog.set_transient_for(parent)
             self.dialog.set_icon(parent.get_toplevel().get_icon())
@@ -88,6 +89,21 @@ class LanguageAddDialog:
         if transient_for is not None:
             GLib.idle_add(transient_for.present)
         return response
+
+    def run_edit(self, name, code, nplurals, plural):
+        """Edit a known language's plural information; its name and code
+            stay as they are."""
+        self.clear()
+        self.langname, self.langcode, self.nplurals, self.plural = name, code, nplurals, plural
+        self.dialog.set_title(_('Edit Language'))
+        for entry in (self.ent_langname, self.ent_langcode):
+            entry.set_sensitive(False)
+        try:
+            return self.run(clear=False)
+        finally:
+            self.dialog.set_title(self._add_title)
+            for entry in (self.ent_langname, self.ent_langcode):
+                entry.set_sensitive(True)
 
     def check_input_sanity(self):
         # TODO: Add more sanity checks

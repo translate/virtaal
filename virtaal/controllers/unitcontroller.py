@@ -246,9 +246,13 @@ class UnitController(BaseController):
             self._on_parsers_changed(controller)
 
     def _on_language_changed(self, lang_controller, langcode):
-        self.nplurals = lang_controller.get_target_nplurals()
+        nplurals = lang_controller.get_target_nplurals()
+        plurals_changed = nplurals != getattr(self, 'nplurals', None)
+        self.nplurals = nplurals
         if hasattr(self, 'view'):
             self.view.update_languages()
+            if plurals_changed and self.view.update_plural_forms():
+                self.main_controller.store_controller.view._treeview.refresh_current_row()
 
     def _on_parsers_changed(self, placeables_controller):
         if self.current_unit:

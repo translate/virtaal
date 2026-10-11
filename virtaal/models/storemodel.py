@@ -56,7 +56,7 @@ class StoreModel(BaseModel):
 
     def __len__(self):
         if not self._trans_store:
-            return -1
+            return 0
         return len(self._valid_units)
 
 

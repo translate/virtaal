@@ -5,6 +5,7 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import builtins
 import os
 import tempfile
 from types import SimpleNamespace
@@ -300,7 +301,14 @@ def test_do_save_file_shows_an_error_dialog_on_oserror():
     assert len(errors) == 1
 
 
-def test_do_save_file_shows_an_error_dialog_on_a_generic_exception():
+def _translate_only(monkeypatch, msgid):
+    """Install a _() that translates only msgid, so a lookup made after
+    substituting into it stays untranslated."""
+    monkeypatch.setattr(builtins, '_', lambda s: 'T:' + s if s == msgid else s, raising=False)
+
+
+def test_do_save_file_shows_an_error_dialog_on_a_generic_exception(monkeypatch):
+    _translate_only(monkeypatch, "Could not save file.\n\n%(error_message)s")
     controller = _controller_for_save(save_raises=ValueError('unexpected'))
     errors = []
     controller.view = SimpleNamespace(show_error_dialog=lambda message, parent=None: errors.append(message))
@@ -308,7 +316,7 @@ def test_do_save_file_shows_an_error_dialog_on_a_generic_exception():
     result = controller.save_file(filename='explicit.po')
 
     assert result is False
-    assert len(errors) == 1
+    assert errors == ['T:Could not save file.\n\nunexpected']
 
 
 def test_close_file_closes_directly_when_not_modified():
@@ -614,13 +622,14 @@ def test_binary_export_falls_back_to_the_store_filename_without_a_bundle_filenam
     assert controller.calls['export'] == ['fallback.mo']
 
 
-def test_binary_export_shows_an_error_and_returns_false_on_a_generic_exception():
+def test_binary_export_shows_an_error_and_returns_false_on_a_generic_exception(monkeypatch):
+    _translate_only(monkeypatch, "Could not export file.\n\n%(error_message)s")
     controller = _controller_for_export('translations/af.po', raises=ValueError('boom'))
 
     result = controller.binary_export()
 
     assert result is False
-    assert controller.calls['error'] is not None
+    assert controller.calls['error'] == 'T:Could not export file.\n\nboom'
 
 
 # get_translator_details() #

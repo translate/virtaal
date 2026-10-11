@@ -276,7 +276,7 @@ class MainController(BaseController):
             import logging
             logging.exception('MainController.save_file(filename="%s")' % (filename))
             self.show_error(
-                _("Could not save file.\n\n%(error_message)s" % {'error_message': str(exc)})
+                _("Could not save file.\n\n%(error_message)s") % {'error_message': str(exc)}
             )
         return False
 
@@ -310,7 +310,7 @@ class MainController(BaseController):
             import logging
             logging.exception('MainController.binary_export(filename="%s")' % (filename))
             self.show_error(
-                _("Could not export file.\n\n%(error_message)s" % {'error_message': str(exc)})
+                _("Could not export file.\n\n%(error_message)s") % {'error_message': str(exc)}
             )
         return False
 

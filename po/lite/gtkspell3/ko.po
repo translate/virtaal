@@ -15,17 +15,17 @@ msgstr ""
 
 #. Seen in: menus
 msgid "<i>(no suggestions)</i>"
-msgstr ""
+msgstr "<i>(제안 없음)</i>"
 
 #. + Add to Dictionary
 #. Seen in: menus
 msgid "Add \"%s\" to Dictionary"
-msgstr ""
+msgstr "%s을(를) 사전에 추가"
 
 #. - Ignore All
 #. Seen in: menus
 msgid "Ignore All"
-msgstr ""
+msgstr "모두 무시"
 
 msgid "More..."
 msgstr ""

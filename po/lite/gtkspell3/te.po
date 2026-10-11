@@ -15,7 +15,7 @@ msgstr ""
 
 #. Seen in: menus
 msgid "<i>(no suggestions)</i>"
-msgstr ""
+msgstr "<i>(సూచనలు లేవు)</i>"
 
 #. + Add to Dictionary
 #. Seen in: menus
@@ -25,7 +25,7 @@ msgstr ""
 #. - Ignore All
 #. Seen in: menus
 msgid "Ignore All"
-msgstr ""
+msgstr "అన్నీ విస్మరించు"
 
 msgid "More..."
 msgstr ""

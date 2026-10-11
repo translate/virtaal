@@ -114,7 +114,7 @@ class PreferencesView(BaseView, GObjectWrapper):
         # Same arrow/RTL/Windows convention as LanguageView's own
         # language-pair label (langview.py's _get_display_string).
         if self._widgets['fbtn_target'].get_direction() == Gtk.TextDirection.RTL:
-            return '‫%s ← ‫%s' % (source_name, target_name)
+            return '\u202b%s ← \u202b%s' % (source_name, target_name)
         if platform.is_windows:
             return '%s » %s' % (source_name, target_name)
         return '%s → %s' % (source_name, target_name)

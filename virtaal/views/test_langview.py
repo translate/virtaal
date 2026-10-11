@@ -65,7 +65,7 @@ def test_get_display_string_rtl(monkeypatch):
 
     result = view._get_display_string(_fake_lang('English'), _fake_lang('Arabic'))
 
-    assert result == '‫English ← ‫Arabic'
+    assert result == '\u202bEnglish ← \u202bArabic'
 
 
 def test_get_display_string_ltr_default(monkeypatch):

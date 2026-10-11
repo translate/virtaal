@@ -865,6 +865,13 @@ def test_notes_scroll_once_taller_than_the_line_limit():
     window.destroy()
 
 
+def test_notes_are_indented_secondary_text():
+    notes = _NotesView()
+
+    assert notes.label.get_style_context().has_class('dim-label')
+    assert notes.get_margin_start() == _NotesView.INDENT
+
+
 # _layout_update_sources() / _layout_update_targets() - unit-is-None branch #
 
 def test_layout_update_sources_hides_extra_boxes_when_no_unit_is_loaded():

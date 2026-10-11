@@ -47,13 +47,16 @@ class _NotesView(Gtk.ScrolledWindow):
         appears while scrolling or hovering."""
 
     MAX_LINES = 4.5
+    INDENT = 12
 
     def __init__(self):
         super().__init__()
         self.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         self.set_propagate_natural_height(True)
+        self.set_margin_start(self.INDENT)
 
         self.label = Gtk.Label(xalign=0, yalign=0)
+        self.label.get_style_context().add_class('dim-label')
         self.label.set_line_wrap(True)
         self.label.set_justify(Gtk.Justification.FILL)
         self.label.set_property('selectable', True)

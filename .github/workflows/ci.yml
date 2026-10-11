@@ -359,7 +359,7 @@ jobs:
     # Advisory only - deliberately not in core-checks' `needs:` below, and
     # never fails on its own findings, so nothing here can block a merge.
     # Complements the blocking pre-commit ruff-check hook (pyproject.toml's
-    # [tool.ruff.lint] select = F/I/UP only): flags complexity/structural
+    # [tool.ruff.lint] select): flags complexity/structural
     # smells ruff can catch but that hook doesn't select, plus duplicated
     # code blocks, which ruff has no rule for at all.
     runs-on: ubuntu-24.04

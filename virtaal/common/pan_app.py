@@ -706,7 +706,7 @@ def save_config(filename, config, section=None):
             if C{section} was specified. Otherwise, if C{section} is not
             specified, it should be a 2D-dictionary representing the entire
             configuration file."""
-    parser = ConfigParser.ConfigParser()
+    parser = ConfigParser.RawConfigParser()
     _read_ini_recovering(parser, filename)
 
     if section:

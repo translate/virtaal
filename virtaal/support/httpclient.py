@@ -13,14 +13,9 @@ import certifi
 import pycurl
 from gi.repository import GLib, GObject
 
-try:
-    import libproxy
-    proxy_factory = libproxy.ProxyFactory()
-except ImportError:
-    libproxy = None
-
 from virtaal.common.gobjectwrapper import GObjectWrapper
 from virtaal.common.platform import platform
+from virtaal.support import proxy as proxy_settings
 
 __all__ = ['HTTPClient', 'HTTPRequest', 'RESTRequest']
 
@@ -125,24 +120,10 @@ class HTTPRequest(GObjectWrapper):
             self.curl.setopt(pycurl.FOLLOWLOCATION, 1)
 
     def _configure_proxy(self):
-        if libproxy:
-            for proxy in proxy_factory.getProxies(self.url):
-                # https://github.com/libproxy/libproxy/issues/65
-                if proxy.startswith("b'"):
-                    proxy = proxy[2:-1]
-                # if we connect to localhost (localtm) with proxy specifically
-                # set to direct://, libcurl connects fine, but then asks
-                #   GET http://localhost:55555/unit/en/af/whatever
-                # instead of
-                #   GET /unit/en/af/whatever
-                # and it doesn't work. We have to set it specifically to ""
-                # though, otherwise it seems to fall back to environment
-                # variables.
-                if proxy == "direct://":
-                    proxy = ""
-                self.curl.setopt(pycurl.PROXY, proxy)
-                #only use the first one
-                break
+        # '' connects directly: libcurl would otherwise use the proxy
+        # environment variables, and ask the local TM server for full URLs.
+        if proxy_settings.uses_desktop_proxy() and (proxy := proxy_settings.desktop_proxy(self.url)) is not None:
+            self.curl.setopt(pycurl.PROXY, proxy)
         else:
             # Proxy: let's be careful to isolate the protocol to ensure that we
             # support the case where http and https might use different proxies

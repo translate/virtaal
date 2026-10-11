@@ -34,7 +34,7 @@ if not packaged:
     # We can't meaningfully report on these, and we build our own windows
     # version, so let's leave this out for the benefit of startup time.
     from virtaal.support import depcheck
-    optional_modules = ['enchant', 'gtkspell', 'libproxy']
+    optional_modules = ['enchant', 'gtkspell']
     error_messages = {
         'translate':  'Translate Toolkit >= %s is required for Virtaal to function.' % str(depcheck.MIN_TRANSLATE_VERSION),
         'gtk':        'Gtk >= %s and PyGTK is required for Virtaal to function.' % str(depcheck.MIN_GTK_VERSION),
@@ -45,7 +45,6 @@ if not packaged:
         'wsgiref':    'WSGIRef is required for Virtaal to function.',
         'enchant':    'Enchant not installed: Spell checking will not work.',
         'gtkspell':   'GtkSpell not installed: Spell checking will not work.',
-        'libproxy':   'libproxy is not installed: it improves support for network proxies on Linux.',
         'diff_match_patch': 'diff_match_patch is not installed: it is required for TM functionality.',
     }
 

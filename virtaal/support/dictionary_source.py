@@ -29,10 +29,11 @@ network connection.
 import json
 import logging
 import os
-import urllib.request
 from urllib.error import HTTPError, URLError
 
 from lxml import etree
+
+from virtaal.support import proxy
 
 TREE_URL = 'https://api.github.com/repos/LibreOffice/dictionaries/git/trees/master?recursive=1'
 RAW_BASE = 'https://raw.githubusercontent.com/LibreOffice/dictionaries/master/'
@@ -178,7 +179,7 @@ def find_dictionary(locale_code, folders, fetch_xcu, dict_format='DICT_SPELL'):
 # --- Network I/O - thin, replaceable wrappers around the pure logic above ---
 
 def _get(url):
-    with urllib.request.urlopen(url, timeout=10) as response:
+    with proxy.urlopen(url, timeout=10) as response:
         return response.read()
 
 

@@ -188,3 +188,39 @@ def test_warn_hung_records_a_user_warning_with_the_message():
     assert str(kwargs["warning_message"].message) == "hung here"
     assert kwargs["nodeid"] == "a.py::test_b"
 
+
+
+def test_main_thread_dump_includes_the_xdist_schedule(tmp_path, monkeypatch):
+    monkeypatch.setenv(conftest._STACKS_DIR_ENV, str(tmp_path))
+    class Node:
+        gateway = SimpleNamespace(id="gw0")
+        shutting_down = False
+
+    node = Node()
+    sched = SimpleNamespace(
+        assigned_work={node: {"a.py": {"a.py::test_done": True, "a.py::test_stuck": False}}},
+        workqueue={"b.py": {}},
+    )
+    monkeypatch.setattr(conftest, "_config", SimpleNamespace(
+        pluginmanager=SimpleNamespace(getplugin=lambda name: SimpleNamespace(sched=sched))
+    ))
+
+    conftest._dump_main_thread(None, sys._getframe())
+
+    dump = (tmp_path / f"{os.getpid()}-main.txt").read_text()
+    assert "test_main_thread_dump_includes_the_xdist_schedule" in dump
+    assert "gw0 shutting_down=False pending=['a.py::test_stuck']" in dump
+    assert "queued: ['b.py']" in dump
+
+
+def test_main_thread_dump_without_xdist_has_only_the_stack(tmp_path, monkeypatch):
+    monkeypatch.setenv(conftest._STACKS_DIR_ENV, str(tmp_path))
+    monkeypatch.setattr(conftest, "_config", SimpleNamespace(
+        pluginmanager=SimpleNamespace(getplugin=lambda name: None)
+    ))
+
+    conftest._dump_main_thread(None, sys._getframe())
+
+    dump = (tmp_path / f"{os.getpid()}-main.txt").read_text()
+    assert "test_main_thread_dump_without_xdist_has_only_the_stack" in dump
+    assert "xdist scheduler" not in dump

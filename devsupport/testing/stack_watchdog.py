@@ -12,8 +12,9 @@ dump every thread's stack in each of its pytest processes, then kill it.
     stack_watchdog.py <seconds> -- <command> [args...]
 
 Each pytest process writes its stacks on SIGUSR1 to
-$VIRTAAL_STACKS_DIR/<pid>.txt (virtaal/conftest.py). CI's test-macos
-uses this for runs that stall instead of failing (#4162).
+$VIRTAAL_STACKS_DIR/<pid>.txt, and its main thread on SIGUSR2 to
+<pid>-main.txt (virtaal/conftest.py). CI's test-macos uses this for
+runs that stall instead of failing (#4162).
 """
 
 import glob
@@ -46,12 +47,15 @@ def descendants(pid):
 def dump_and_kill(proc, stacks_dir):
     pids = [proc.pid, *descendants(proc.pid)]
     subprocess.run(["ps", "-o", "pid,ppid,stat,etime,command", "-p", ",".join(map(str, pids))])
-    for pid in pids:
-        try:
-            os.kill(pid, signal.SIGUSR1)
-        except ProcessLookupError:
-            pass
-    time.sleep(3)
+    # SIGUSR1: every thread, from faulthandler; SIGUSR2: the main
+    # thread, and in the controller the xdist scheduler's state.
+    for signum in (signal.SIGUSR1, signal.SIGUSR2):
+        for pid in pids:
+            try:
+                os.kill(pid, signum)
+            except ProcessLookupError:
+                pass
+        time.sleep(2)
     for path in sorted(glob.glob(os.path.join(stacks_dir, "*.txt"))):
         with open(path, encoding="utf-8") as f:
             stacks = f.read()

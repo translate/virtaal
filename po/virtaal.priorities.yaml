@@ -207,7 +207,6 @@ domains:
     - Find Pre_vious
     - Incomplete
     - Keyboard _Shortcuts
-    - More…
     - 'N_avigation:'
     - Needs work
     - Next Unit
@@ -250,10 +249,8 @@ domains:
     - _View
     1~:
     - '%(modified_marker)s%(current_file)s - Virtaal'
-    - <i>(no suggestions)</i>
     - Accelerators
     - Acronyms
-    - Add "%s" to Dictionary
     - Add Term "%(selection)s"…
     - All Files
     - All Supported Files
@@ -275,7 +272,6 @@ domains:
     - Fuzzy
     - GConf values
     - Highlighting and insertion of placeables
-    - Ignore All
     - Local TM
     - Long
     - Look-up "%(selection)s"

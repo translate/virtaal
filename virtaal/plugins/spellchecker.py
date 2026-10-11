@@ -8,7 +8,6 @@
 import logging
 import os
 import os.path
-import re
 
 from gi.repository import GLib
 
@@ -17,7 +16,10 @@ from virtaal.common.platform import platform
 from virtaal.controllers.baseplugin import BasePlugin, PluginUnsupported
 from virtaal.support.libi18n.locale import rebind_library_domain
 
-_dict_add_re = re.compile('Add "(.*)" to Dictionary')
+
+def _gtkspell_text(msgid):
+    """gtkspell's own translation of msgid, kept out of virtaal.pot."""
+    return GLib.dgettext('gtkspell3', msgid)
 
 
 class Plugin(BasePlugin):
@@ -208,28 +210,8 @@ class Plugin(BasePlugin):
 
             label = item.get_property('label')
 
-            # For some reason the i18n of gtkspell doesn't work on Windows, so
-            # we intervene.
-            if label == "<i>(no suggestions)</i>":
-                #l10n: This refers to spell checking
-                item.set_property('label', _("<i>(no suggestions)</i>"))
-
-            if label == "Ignore All":
-                #l10n: This refers to spell checking
-                item.set_property('label', _("Ignore All"))
-
-            if label == "More...":
-                #l10n: This refers to spelling suggestions
-                item.set_property('label', _("More…"))
-
-            m = _dict_add_re.match(label)
-            if m:
-                word = m.group(1)
-                #l10n: This refers to the spell checking dictionary
-                item.set_property('label', _('Add "%s" to Dictionary') % word)
-
             # We don't want a language selector - we have our own
-            if label == GLib.dgettext('gtkspell3', 'Languages'):
+            if label == _gtkspell_text('Languages'):
                 menu.remove(item)
                 if not _entries_above_separator:
                     continue

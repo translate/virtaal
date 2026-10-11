@@ -30,7 +30,7 @@ from gi.repository import GLib, Gtk
 from virtaal.common import SignalTracker
 from virtaal.common.platform import platform
 from virtaal.controllers.baseplugin import PluginUnsupported
-from virtaal.plugins.spellchecker import Plugin, _dict_add_re
+from virtaal.plugins.spellchecker import Plugin
 
 
 class _FakeEnchant:
@@ -86,18 +86,6 @@ def _fake_gtkspell(existing=None, get_from_text_view_raises=None):
 
     _Checker.get_from_text_view = staticmethod(get_from_text_view)
     return SimpleNamespace(Checker=_Checker), created
-
-
-def test_dict_add_re_matches_gtkspell_suggestion():
-    """_dict_add_re extracts the word from GtkSpell's context-menu label
-    ('Add "x" to Dictionary'), which _on_populate_popup() then re-translates."""
-    m = _dict_add_re.match('Add "virtaal" to Dictionary')
-    assert m is not None
-    assert m.group(1) == "virtaal"
-
-
-def test_dict_add_re_no_match_on_unrelated_label():
-    assert _dict_add_re.match("Ignore All") is None
 
 
 @pytest.mark.parametrize("language,expected", [("pt", "pt_PT"), ("de", "de_DE")])
@@ -351,26 +339,6 @@ def _menu_with(*labels_or_separator):
         item = Gtk.SeparatorMenuItem() if label is None else Gtk.MenuItem(label=label)
         menu.append(item)
     return menu
-
-
-def test_fix_menu_translates_known_gtkspell_labels(monkeypatch):
-    # NullTranslations (installed for every test) makes _() an identity
-    # function, so a translated and untranslated label are the same
-    # string - marking _() distinctly is the only way to tell the
-    # branch actually ran.
-    monkeypatch.setattr('builtins._', lambda s: s + '!!')
-    menu = _menu_with('<i>(no suggestions)</i>', 'Ignore All', 'More...', 'Add "virtaal" to Dictionary')
-    plugin = Plugin.__new__(Plugin)
-
-    plugin._on_populate_popup(textbox=None, menu=menu)
-
-    labels = [item.get_property('label') for item in menu]
-    assert labels == [
-        '<i>(no suggestions)</i>!!',
-        'Ignore All!!',
-        'More…!!',
-        'Add "virtaal" to Dictionary!!',
-    ]
 
 
 def test_fix_menu_removes_an_exact_languages_match():

@@ -97,17 +97,14 @@ file = "^(virtaal/support/tutorial\\.py|virtaal/plugins/migration\\.py|share/(mi
 # replaces whatever priority the rules above gave it. One with a domain
 # adds its msgids to that domain even if the harvest never saw them.
 [[override]]
-# Native file dialogs, the save prompt, what the suggestions window and
-# the spelling menu draw themselves, and other platforms' window title.
+# Native file dialogs, the save prompt, what the suggestions window
+# draws itself, and other platforms' window title.
 priority = "1~"
 msgids = [
     "%(modified_marker)s%(current_file)s - Virtaal",
-    "<i>(no suggestions)</i>",
-    "Add \"%s\" to Dictionary",
     "All Files",
     "All Supported Files",
     "Choose a Translation File",
-    "Ignore All",
     "Machine translation",
     "Save",
     "Save As…",
@@ -115,6 +112,12 @@ msgids = [
     # The current file's own label on its suggestions.
     "This file",
 ]
+
+[[override]]
+# The spelling menu.
+priority = "1~"
+domain = "gtkspell3"
+msgids = ["<i>(no suggestions)</i>", "Add \"%s\" to Dictionary", "Ignore All"]
 
 [[override]]
 # The save prompt's buttons: Virtaal's own, not GTK's.

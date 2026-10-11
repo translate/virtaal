@@ -5,7 +5,6 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
-import functools
 import json
 import os
 import signal
@@ -19,15 +18,29 @@ import urllib.request
 from urllib.parse import quote
 
 import pytest
+from cheroot import wsgi
 
 from virtaal.support import tmserver
 
+_servers = []
+
+
+@pytest.fixture(autouse=True)
+def _stop_servers():
+    yield
+    while _servers:
+        _servers.pop().stop()
+
 
 def _start_server(db_path, port):
+    # The same cheroot server application.rest.run(server='cheroot')
+    # builds, but one the test can stop.
     app = tmserver.TMServer(str(db_path), None)
-    run = functools.partial(app.rest.run, host='localhost', port=port, server='cheroot', quiet=True)
-    thread = threading.Thread(target=run, daemon=True)
-    thread.start()
+    server = wsgi.Server(('localhost', port), app.rest)
+    # stop() waits for the serve loop's next wake-up, every 0.5s by default.
+    server.expiration_interval = 0.01
+    threading.Thread(target=server.start, daemon=True).start()
+    _servers.append(server)
     _wait_for_port(port)
     return app
 

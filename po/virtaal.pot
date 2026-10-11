@@ -1393,31 +1393,6 @@ msgstr ""
 msgid "Check spelling and provide suggestions"
 msgstr ""
 
-#. l10n: This refers to spell checking
-#: virtaal/plugins/spellchecker.py
-msgid "<i>(no suggestions)</i>"
-msgstr ""
-
-#. l10n: This refers to spell checking
-#: virtaal/plugins/spellchecker.py
-msgid "Ignore All"
-msgstr ""
-
-#. l10n: This refers to spelling suggestions
-#: virtaal/plugins/spellchecker.py
-msgid "More…"
-msgstr ""
-
-#. l10n: This refers to the spell checking dictionary
-#: virtaal/plugins/spellchecker.py
-#, python-format
-msgid "Add \"%s\" to Dictionary"
-msgstr ""
-
-#: virtaal/plugins/spellchecker.py
-msgid "Languages"
-msgstr ""
-
 #: virtaal/plugins/terminology/__init__.py
 msgid "Terminology Help"
 msgstr ""

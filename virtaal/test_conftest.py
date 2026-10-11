@@ -13,6 +13,7 @@ import subprocess
 import sys
 import textwrap
 import warnings
+from collections import OrderedDict
 from types import SimpleNamespace
 
 import pytest
@@ -224,3 +225,61 @@ def test_main_thread_dump_without_xdist_has_only_the_stack(tmp_path, monkeypatch
     dump = (tmp_path / f"{os.getpid()}-main.txt").read_text()
     assert "test_main_thread_dump_without_xdist_has_only_the_stack" in dump
     assert "xdist scheduler" not in dump
+
+
+def test_a_crashed_workers_finished_groups_are_not_queued_again():
+    from xdist.scheduler.loadscope import LoadScopeScheduling
+
+    conftest._requeue_only_unfinished_work()
+    sched = LoadScopeScheduling.__new__(LoadScopeScheduling)
+    class Node:
+        shutting_down = True
+
+    node, other = Node(), Node()
+    sched.assigned_work = {
+        node: {
+            "done.py": {"done.py::test_a": True, "done.py::test_b": True},
+            "crashed.py": {"crashed.py::test_a": True, "crashed.py::test_b": False},
+        },
+        other: {},
+    }
+    sched.workqueue = OrderedDict()
+
+    crashitem = sched.remove_node(node)
+
+    assert crashitem == "crashed.py::test_b"
+    assert list(sched.workqueue) == ["crashed.py"]
+
+
+def test_the_xdist_requeue_fix_is_applied_once():
+    from xdist.scheduler.loadscope import LoadScopeScheduling
+
+    conftest._requeue_only_unfinished_work()
+    patched = LoadScopeScheduling.remove_node
+    conftest._requeue_only_unfinished_work()
+
+    assert LoadScopeScheduling.remove_node is patched
+
+
+def test_the_xdist_requeue_fix_is_skipped_without_xdist(monkeypatch):
+    from xdist.scheduler.loadscope import LoadScopeScheduling
+
+    remove_node = LoadScopeScheduling.remove_node
+    monkeypatch.setitem(sys.modules, "xdist", None)
+
+    conftest._requeue_only_unfinished_work()
+
+    assert LoadScopeScheduling.remove_node is remove_node
+
+
+def test_the_xdist_requeue_fix_is_skipped_once_xdist_has_it(monkeypatch):
+    import xdist
+    from xdist.scheduler.loadscope import LoadScopeScheduling
+
+    monkeypatch.setattr(LoadScopeScheduling, "remove_node", lambda self, node: None)
+    unpatched = LoadScopeScheduling.remove_node
+    monkeypatch.setattr(xdist, "__version__", "3.9.0")
+
+    conftest._requeue_only_unfinished_work()
+
+    assert LoadScopeScheduling.remove_node is unpatched

@@ -148,6 +148,7 @@ def _isolating():
 def pytest_configure(config):
     global _config, _stacks_file
     _config = config
+    _requeue_only_unfinished_work()
     path = os.environ.get(_STACKS_ENV)
     if not path and os.environ.get(_STACKS_DIR_ENV):
         path = os.path.join(os.environ[_STACKS_DIR_ENV], f"{os.getpid()}.txt")
@@ -158,6 +159,32 @@ def pytest_configure(config):
         # faulthandler dumps at most 100 threads, which can leave out
         # the main one.
         signal.signal(signal.SIGUSR2, _dump_main_thread)
+
+
+def _requeue_only_unfinished_work():
+    """pytest-xdist 3.8.0 puts a crashed worker's finished groups back
+    on the queue too. Its replacement is then sent one with no tests,
+    never reports, and is never given more work, so the run hangs
+    (#4162, pytest-dev/pytest-xdist#1323, fixed after 3.8.0)."""
+    try:
+        import xdist
+        from xdist.scheduler import loadscope
+    except ImportError:
+        return
+    if tuple(int(part) for part in xdist.__version__.split(".")[:3]) > (3, 8, 0):
+        return
+    remove_node = loadscope.LoadScopeScheduling.remove_node
+    if getattr(remove_node, "_virtaal_requeue_fix", False):
+        return
+
+    def remove_unfinished_node(self, node):
+        workload = self.assigned_work.get(node, {})
+        for scope in [scope for scope, unit in workload.items() if all(unit.values())]:
+            del workload[scope]
+        return remove_node(self, node)
+
+    remove_unfinished_node._virtaal_requeue_fix = True
+    loadscope.LoadScopeScheduling.remove_node = remove_unfinished_node
 
 
 def _dump_main_thread(signum, frame):

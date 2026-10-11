@@ -719,7 +719,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         nplurals = 1
         if self.unit.hasplural():
             num_unit_targets = len(self.unit.target.strings)
-            nplurals = self.controller.main_controller.lang_controller.target_lang.nplurals
+            nplurals = self.controller.main_controller.lang_controller.get_target_nplurals()
 
         visible_sources = [src for src in self.sources if src.props.visible]
 
@@ -834,7 +834,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
 
     def _on_target_changed(self, buffer, index):
         tgt = self.targets[index]
-        nplurals = self.controller.main_controller.lang_controller.target_lang.nplurals
+        nplurals = self.controller.main_controller.lang_controller.get_target_nplurals()
         if tgt.elem is not None:
             rich_target = self.unit.rich_target
             if self.unit.hasplural() and len(rich_target) < nplurals:

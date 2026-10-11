@@ -94,13 +94,17 @@ class StoreModel(BaseModel):
 
     def set_target_language(self, langcode):
         """Returns whether the file's language changed."""
-        if same_language(self._trans_store.gettargetlanguage(), langcode):
+        old_langcode = self._trans_store.gettargetlanguage()
+        if same_language(old_langcode, langcode):
             return False
         self._trans_store.settargetlanguage(langcode)
         from translate.storage.poheader import poheader
         lang = LanguageModel(langcode)
-        if isinstance(self._trans_store, poheader) and lang.plural:
+        # Plural forms declared without a language are taken to be this one's.
+        if isinstance(self._trans_store, poheader) and lang.plural and (
+                old_langcode or self.get_declared_nplurals() is None):
             self._trans_store.updateheaderplural(lang.nplurals, lang.plural)
+            self.nplurals = self._compute_nplurals(self._trans_store)
         return True
 
     def get_store_type(self):
@@ -309,6 +313,14 @@ class StoreModel(BaseModel):
         self._correct_header(self._trans_store)
         self.nplurals = self._compute_nplurals(self._trans_store)
 
+    def get_declared_nplurals(self):
+        """The number of plural forms the file's own Plural-Forms header
+            declares, or C{None}."""
+        from translate.storage.poheader import poheader
+        if isinstance(self._trans_store, poheader):
+            return self.nplurals
+        return None
+
     def _compute_nplurals(self, store):
         # Copied as-is from Document._compute_nplurals()
         # FIXME this needs to be pushed back into the stores, we don't want to import each format
@@ -381,8 +393,7 @@ class StoreModel(BaseModel):
                 header_updates["X-Project-Style"] = project_code
             self._trans_store.updateheader(add=True, **header_updates)
 
-            # A file's own equation for as many forms as the editor shows
-            # stays: its msgstr order follows that equation.
-            file_nplurals, file_plural = self._trans_store.getheaderplural()
-            if target_lang.plural and (file_plural is None or file_nplurals != str(target_lang.nplurals)):
+            # A file's own plural forms stay: its msgstr order follows them.
+            if target_lang.plural and self.get_declared_nplurals() is None:
                 self._trans_store.updateheaderplural(target_lang.nplurals, target_lang.plural)
+                self.nplurals = self._compute_nplurals(self._trans_store)

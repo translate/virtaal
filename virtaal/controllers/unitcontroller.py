@@ -115,7 +115,7 @@ class UnitController(BaseController):
         if self.current_unit and self.current_unit is unit:
             return self.view
         self.current_unit = unit
-        self.nplurals = self.main_controller.lang_controller.target_lang.nplurals
+        self.nplurals = self.main_controller.lang_controller.get_target_nplurals()
 
         unit._modified = False
         if not unit.STATE:
@@ -246,7 +246,7 @@ class UnitController(BaseController):
             self._on_parsers_changed(controller)
 
     def _on_language_changed(self, lang_controller, langcode):
-        self.nplurals = lang_controller.target_lang.nplurals
+        self.nplurals = lang_controller.get_target_nplurals()
         if hasattr(self, 'view'):
             self.view.update_languages()
 

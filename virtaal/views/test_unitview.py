@@ -77,11 +77,11 @@ def _make_view(source_forms, target):
     }
     view.unit = _FakeUnit(target)
 
-    class _FakeLang:
-        nplurals = len(target.strings) if isinstance(target, multistring) else 1
+    nplurals = len(target.strings) if isinstance(target, multistring) else 1
 
     class _FakeLangController:
-        target_lang = _FakeLang()
+        def get_target_nplurals(self):
+            return nplurals
 
     class _FakeMainController:
         lang_controller = _FakeLangController()
@@ -1031,7 +1031,7 @@ def test_typing_updates_which_states_can_be_picked():
     updates = []
     view._widgets = {'targets': [tb], 'state': SimpleNamespace(set_unselectable=updates.append)}
     view.controller.main_controller = SimpleNamespace(
-        lang_controller=SimpleNamespace(target_lang=SimpleNamespace(nplurals=1)))
+        lang_controller=SimpleNamespace(get_target_nplurals=lambda: 1))
     view.modified = lambda: None
 
     view._on_target_changed(None, 0)
@@ -1049,7 +1049,7 @@ def test_on_target_changed_writes_a_plain_string_target_and_marks_modified():
     view._widgets = {'targets': [tb]}
     view.unit = SimpleNamespace(STATE={}, hasplural=lambda: False, target=None)
     view.controller = SimpleNamespace(main_controller=SimpleNamespace(
-        lang_controller=SimpleNamespace(target_lang=SimpleNamespace(nplurals=1))))
+        lang_controller=SimpleNamespace(get_target_nplurals=lambda: 1)))
     modified_calls = []
     view.modified = lambda: modified_calls.append(True)
 
@@ -1067,7 +1067,7 @@ def test_on_target_changed_raises_for_a_nonzero_index_on_a_non_plural_unit():
     view._widgets = {'targets': [None, tb]}
     view.unit = SimpleNamespace(STATE={}, hasplural=lambda: False)
     view.controller = SimpleNamespace(main_controller=SimpleNamespace(
-        lang_controller=SimpleNamespace(target_lang=SimpleNamespace(nplurals=1))))
+        lang_controller=SimpleNamespace(get_target_nplurals=lambda: 1)))
     view.modified = lambda: None
 
     with pytest.raises(IndexError):
@@ -1082,7 +1082,7 @@ def test_on_target_changed_pads_and_writes_a_plural_target():
     view._widgets = {'targets': [None, tb]}
     view.unit = SimpleNamespace(STATE={}, hasplural=lambda: True, target=SimpleNamespace(strings=['one']))
     view.controller = SimpleNamespace(main_controller=SimpleNamespace(
-        lang_controller=SimpleNamespace(target_lang=SimpleNamespace(nplurals=3))))
+        lang_controller=SimpleNamespace(get_target_nplurals=lambda: 3)))
     modified_calls = []
     view.modified = lambda: modified_calls.append(True)
 
@@ -1100,7 +1100,7 @@ def test_on_target_changed_writes_a_placeable_element_and_marks_modified():
     view._widgets = {'targets': [tb]}
     view.unit = SimpleNamespace(STATE={}, hasplural=lambda: False, rich_target=[None])
     view.controller = SimpleNamespace(main_controller=SimpleNamespace(
-        lang_controller=SimpleNamespace(target_lang=SimpleNamespace(nplurals=1))))
+        lang_controller=SimpleNamespace(get_target_nplurals=lambda: 1)))
     modified_calls = []
     view.modified = lambda: modified_calls.append(True)
 
@@ -1118,7 +1118,7 @@ def test_on_target_changed_pads_a_plural_rich_target_before_writing_the_element(
     view._widgets = {'targets': [None, tb]}
     view.unit = SimpleNamespace(STATE={}, hasplural=lambda: True, rich_target=['one'])
     view.controller = SimpleNamespace(main_controller=SimpleNamespace(
-        lang_controller=SimpleNamespace(target_lang=SimpleNamespace(nplurals=3))))
+        lang_controller=SimpleNamespace(get_target_nplurals=lambda: 3)))
     modified_calls = []
     view.modified = lambda: modified_calls.append(True)
 

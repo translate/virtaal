@@ -1004,3 +1004,11 @@ def test_set_ui_language_system_tolerates_an_unsupported_locale(monkeypatch):
     # an untranslated passthrough _, so this matches the "no real
     # catalog" case: 'en', not the raw locale code.
     assert pan_app.ui_language == 'en'
+
+
+def test_save_config_keeps_a_percent_sign(tmp_path):
+    # Plural expressions in langs.ini, e.g. n%10==1 (#3197).
+    path = str(tmp_path / 'langs.ini')
+    pan_app.save_config(path, {'uk': {'plural': 'n%10==1 ? 0 : 1'}})
+
+    assert pan_app.load_config(path, 'uk') == {'plural': 'n%10==1 ? 0 : 1'}

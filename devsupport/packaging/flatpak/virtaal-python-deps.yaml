@@ -70,8 +70,10 @@ modules:
   - name: python3-lxml
     buildsystem: simple
     build-commands:
+      # The GNOME SDK has lxml and the Platform doesn't: without
+      # --ignore-installed pip installs nothing.
       - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
-        --prefix=${FLATPAK_DEST} "lxml" --no-build-isolation
+        --prefix=${FLATPAK_DEST} "lxml" --no-build-isolation --ignore-installed
     sources:
       - *id001
   - name: python3-python-Levenshtein

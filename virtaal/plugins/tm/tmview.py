@@ -46,6 +46,9 @@ class TMView(BaseView, GObjectWrapper):
         # or resize - see _on_configure_mainwindow().
         self._mainwindow_geometry = None
         self._move_settle_id = None
+        # The unit editor's last allocation - see _on_editor_size_allocate().
+        self._editor = None
+        self._editor_allocation = None
 
         self._signal_tracker.connect(self.tmwindow.treeview, 'row-activated', self._on_row_activated)
         self._signal_tracker.connect(
@@ -213,6 +216,7 @@ class TMView(BaseView, GObjectWrapper):
         if not self._may_show_tmwindow:
             self._should_show_tmwindow = True
             return
+        self._follow_editor()
         # Position before mapping, or it first appears where it last was.
         selected = self._get_selected_unit_view()
         if selected is not None:
@@ -232,6 +236,24 @@ class TMView(BaseView, GObjectWrapper):
 
         GLib.idle_add(update)
 
+    def _follow_editor(self):
+        editor = self.controller.main_controller.unit_controller.view._widgets.get('vbox_editor')
+        if editor is None or editor is self._editor:
+            return
+        self._editor = editor
+        self._signal_tracker.connect(editor, 'size-allocate', self._on_editor_size_allocate)
+
+    def _selected_target_in_view(self):
+        selected = self._get_selected_unit_view()
+        scrolled = self.controller.main_controller.store_controller.view.parent_widget
+        if selected is None or not selected.get_mapped():
+            return False
+        position = selected.translate_coordinates(scrolled, 0, 0)
+        if position is None:
+            return False
+        top = position[1]
+        return top + selected.get_allocated_height() > 0 and top < scrolled.get_allocated_height()
+
     def _get_selected_unit_view(self):
         n = self.controller.main_controller.unit_controller.view.focused_target_n
         if n is None:
@@ -241,6 +263,15 @@ class TMView(BaseView, GObjectWrapper):
 
 
     # EVENT HANDLERS #
+    def _on_editor_size_allocate(self, editor, allocation):
+        # The target grows and shrinks while typing.
+        geometry = (allocation.y, allocation.height)
+        if geometry == self._editor_allocation:
+            return
+        self._editor_allocation = geometry
+        if self.isvisible:
+            self.update_geometry()
+
     def _on_grab_notify_mainwindow(self, widget, was_grabbed):
         # A same-app modal dialog or menu takes a GTK grab without
         # moving real WM focus off the main window, so is-active can't
@@ -348,7 +379,12 @@ class TMView(BaseView, GObjectWrapper):
         self.mnu_summon.set_sensitive(True)
 
     def _on_store_view_scroll(self, *args):
-        if self.isvisible:
+        # The list also scrolls to keep a growing target in view.
+        if not self.isvisible:
+            return
+        if self._selected_target_in_view():
+            self.update_geometry()
+        else:
             self.hide()
 
     def _on_toggle_show_tm(self, *args):

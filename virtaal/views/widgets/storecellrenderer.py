@@ -44,7 +44,7 @@ def gtk_container_compute_optimal_height(widget, width):
 @compute_optimal_height.register(Gtk.Grid)
 def gtk_table_compute_optimal_height(widget, width):
     for child in widget.get_children():
-        if child.props.name != "vbox_middle":
+        if child.props.name not in ("vbox_middle", "vbox_below"):
             continue
         # width / 2 because we use half of the available width
         compute_optimal_height(child, width / 2)

@@ -2669,6 +2669,7 @@ If you are translating from English to French then French would be your translat
               <object class="GtkVBox" id="vbox_middle">
                 <property name="name">vbox_middle</property>
                 <property name="visible">True</property>
+                <property name="valign">end</property>
                 <property name="can_focus">False</property>
                 <child>
                   <placeholder/>
@@ -2682,7 +2683,7 @@ If you are translating from English to French then French would be your translat
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
+                    <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
@@ -2704,27 +2705,25 @@ If you are translating from English to French then French would be your translat
                     <property name="position">3</property>
                   </packing>
                 </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <object class="GtkVBox" id="vbox_options">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <placeholder/>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">5</property>
-                  </packing>
-                </child>
               </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">0</property>
+                <property name="width">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVBox" id="vbox_below">
+                <property name="name">vbox_below</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
                 <property name="width">2</property>
               </packing>
             </child>

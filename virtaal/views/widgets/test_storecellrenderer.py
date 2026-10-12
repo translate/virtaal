@@ -209,18 +209,22 @@ def test_compute_optimal_height_invisible_container_is_a_noop():
     assert label.get_size_request() == (-1, -1)
 
 
-def test_compute_optimal_height_grid_only_recomputes_its_vbox_middle_child():
+def test_compute_optimal_height_grid_only_recomputes_its_middle_column_children():
     grid = Gtk.Grid()
     middle = Gtk.Label(label='middle')
     middle.set_name('vbox_middle')
+    below = Gtk.Label(label='below')
+    below.set_name('vbox_below')
     other = Gtk.Label(label='other')
     other.set_name('not_middle')
     grid.attach(middle, 0, 0, 1, 1)
+    grid.attach(below, 0, 1, 1, 1)
     grid.attach(other, 1, 0, 1, 1)
 
     compute_optimal_height(grid, 200)
 
     assert middle.get_size_request()[0] == 100  # width / 2
+    assert below.get_size_request()[0] == 100
     assert other.get_size_request() == (-1, -1)
 
 

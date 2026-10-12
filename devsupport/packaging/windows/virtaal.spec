@@ -175,6 +175,13 @@ if ENCHANT_DATA is not None and ENCHANT_DATA.is_dir():
         datas.append((str(p), str(Path("enchant/data") / p.relative_to(ENCHANT_DATA).parent)))
 
 
+# lxml modules nothing imports; PyInstaller's lxml hook collects them all.
+UNUSED_LXML = [
+    "lxml.objectify", "lxml.sax", "lxml.builder", "lxml.html.builder", "lxml.html.diff",
+    "lxml.html._difflib", "lxml.html._diffcommand", "lxml.isoschematron",
+]
+
+
 def _not_test(name):
     leaf = name.rpartition(".")[2]
     return not (leaf.startswith("test_") or leaf == "conftest")
@@ -219,7 +226,7 @@ a = Analysis(  # noqa: F821
     # dead weight here either way).
     excludes=[
         "FixTk", "tcl", "tk", "_tkinter", "tkinter", "Tkinter", "devsupport",
-    ],
+    ] + UNUSED_LXML,
     noarchive=False,
 )
 a.datas = babel_data.trim(a.datas, str(ROOT / "po"))

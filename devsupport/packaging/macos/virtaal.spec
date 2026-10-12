@@ -135,6 +135,13 @@ if _bundle_enchant:
     datas.append((str(ENCHANT_INTEL_DIR), "share/enchant_intel"))
 
 
+# lxml modules nothing imports; PyInstaller's lxml hook collects them all.
+UNUSED_LXML = [
+    "lxml.objectify", "lxml.sax", "lxml.builder", "lxml.html.builder", "lxml.html.diff",
+    "lxml.html._difflib", "lxml.html._diffcommand", "lxml.isoschematron",
+]
+
+
 def _not_test(name):
     leaf = name.rpartition(".")[2]
     return not (leaf.startswith("test_") or leaf == "conftest")
@@ -173,6 +180,7 @@ a = Analysis(  # noqa: F821
     # off in virtaal/cli.py.
     excludes=(
         ["FixTk", "tcl", "tk", "_tkinter", "tkinter", "Tkinter", "devsupport"]
+        + UNUSED_LXML
         # No bundled dylib for this build (arm64, or staging failed) -
         # exclude enchant rather than let it fall through to Homebrew's
         # own copy (this CI job installs it) and crash: two separate

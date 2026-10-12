@@ -173,9 +173,11 @@ PYCOUNTRY_DOMAINS = ("iso639-3", "iso639-5", "iso3166-1")
 
 
 def is_unused_catalog(dest):
-    """Whether a PyInstaller datas destination is a catalog a frozen
-    build never reads."""
+    """Whether a PyInstaller datas destination is a catalog or pycountry
+    database a frozen build never reads."""
     parts = os.path.normpath(dest).split(os.sep)
+    if parts[:2] == ["pycountry", "databases"] and parts[-1].endswith(".json"):
+        return parts[-1][:-len(".json")] not in PYCOUNTRY_DOMAINS
     if not parts[-1].endswith(".mo"):
         return False
     domain = parts[-1][:-len(".mo")]

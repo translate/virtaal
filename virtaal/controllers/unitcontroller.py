@@ -15,6 +15,22 @@ from virtaal.common import GObjectWrapper
 from .basecontroller import BaseController
 
 
+def _filled_forms(unit):
+    """Whether any, and whether every, form of the unit's target has text."""
+    forms = unit.target.strings if unit.hasplural() else [unit.target]
+    filled = [bool(form) for form in forms]
+    return any(filled), all(filled)
+
+
+def _partial_state(unit):
+    """The state for a plural with only some forms translated: the
+        format's lowest state between untranslated and translated, or
+        None if it has none. Without fuzzy, PO counts it translated and
+        msgfmt compiles the empty forms as blank strings."""
+    states = [s for s in unit.STATE if workflow.StateEnum.EMPTY < s < workflow.StateEnum.UNREVIEWED]
+    return min(states) if states else None
+
+
 class UnitController(BaseController):
     """Controller for unit-based operations."""
 
@@ -96,6 +112,7 @@ class UnitController(BaseController):
         if from_user:
             # No need to update the GUI, and we should make the choice sticky
             self.current_unit._state_sticky = True
+            self.current_unit._auto_partial = False
         else:
             self.view.update_state(self._unit_state_names[newstate])
         self.view.update_state_style(newstate)
@@ -163,7 +180,7 @@ class UnitController(BaseController):
 
     def _unit_done(self, widget, unit):
         if unit._modified and unit.STATE:
-            if len(unit.target) != 0 and unit._current_state == workflow.StateEnum.EMPTY and not unit._state_sticky:
+            if _filled_forms(unit)[0] and unit._current_state == workflow.StateEnum.EMPTY and not unit._state_sticky:
                 # Oops! The user entered a translation, but the timer didn't
                 # expire yet, so let's mark it fuzzy to be safe. We don't know
                 # exactly what kind of fuzzy the format supports, so let's use
@@ -189,24 +206,31 @@ class UnitController(BaseController):
         self._correct_empty_state(unit)
 
     def _correct_empty_state(self, unit):
-        """Move a unit between EMPTY and UNREVIEWED based on its
-        actual target content right now - the automatic half of
-        workflow-state tracking, as opposed to a deliberate user pick
-        (see set_current_state()'s own from_user/_state_sticky)."""
-        if unit.hasplural():
-            target_len = min([len(s) for s in unit.target.strings])
-        else:
-            target_len = len(unit.target)
-        empty_state = unit._current_state == workflow.StateEnum.EMPTY
+        """Move a unit between EMPTY, a partly translated plural's state
+        and UNREVIEWED based on its actual target content right now -
+        the automatic half of workflow-state tracking, as opposed to a
+        deliberate user pick (see set_current_state()'s own
+        from_user/_state_sticky)."""
+        some, every = _filled_forms(unit)
+        state = unit._current_state
+        partial_state = _partial_state(unit)
+        # Only a partial state set here is cleared again; a fuzzy from the
+        # file stays.
+        auto_partial = getattr(unit, '_auto_partial', False) and state == partial_state
         newstate = None
-        if target_len and empty_state:
-            newstate = workflow.StateEnum.UNREVIEWED
-        elif not target_len and not empty_state:
+        if every:
+            if state == workflow.StateEnum.EMPTY or auto_partial:
+                newstate = workflow.StateEnum.UNREVIEWED
+        elif some:
+            if state == workflow.StateEnum.EMPTY or state >= workflow.StateEnum.UNREVIEWED:
+                newstate = partial_state if partial_state is not None else workflow.StateEnum.EMPTY
+        elif state != workflow.StateEnum.EMPTY:
             newstate = workflow.StateEnum.EMPTY
-        if newstate is None:
+        if newstate is None or newstate == state:
             return
 
         self.set_current_state(newstate)
+        unit._auto_partial = newstate == partial_state
         undo_controller = getattr(self.main_controller, 'undo_controller', None)
         if undo_controller:
             undo_controller.model.attach_state_after(unit, newstate)

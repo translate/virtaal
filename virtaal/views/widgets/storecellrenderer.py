@@ -15,6 +15,7 @@ from virtaal.views import markup, rendering
 from virtaal.views.theme import current_theme, str_to_rgba, unit_style
 
 from .storetreemodel import StoreTreeModel
+from .wayland import is_wayland
 
 
 @functools.singledispatch
@@ -107,6 +108,14 @@ def gtk_label_compute_optimal_height(widget, width):
         widget.set_size_request(width, h)
 
 
+
+def _content_width(window):
+    """The window's width without the shadow it draws around itself on
+        Wayland, which its allocation includes."""
+    if is_wayland() and isinstance(window, Gtk.Window):
+        return window.get_size()[0]
+    return window.get_allocation().width
+
 class StoreCellRenderer(Gtk.CellRenderer):
     """
     Cell renderer for a unit based on the C{UnitRenderer} class from Virtaal's
@@ -195,7 +204,7 @@ class StoreCellRenderer(Gtk.CellRenderer):
         return getattr(self, pspec.name)
 
     def do_get_size(self, widget, _cell_area):
-        width = widget.get_toplevel().get_allocation().width - 32
+        width = _content_width(widget.get_toplevel()) - 32
         if width < -1:
             width = -1
         treeview = self.view._treeview
@@ -263,7 +272,7 @@ class StoreCellRenderer(Gtk.CellRenderer):
         treeview = self.view._treeview
         if self._editor_height is None or treeview.is_resizing:
             return GLib.SOURCE_REMOVE
-        width = max(treeview.get_toplevel().get_allocation().width - 32, -1)
+        width = max(_content_width(treeview.get_toplevel()) - 32, -1)
         if self._measure_editor(editor, treeview, width) != self._editor_height:
             column = treeview.get_columns()[0]
             column.queue_resize()

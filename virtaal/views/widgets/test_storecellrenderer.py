@@ -14,6 +14,7 @@ from translate.storage.placeables import StringElem
 
 from virtaal.views import rendering
 from virtaal.views.placeablesguiinfo import NewlineGUI
+from virtaal.views.widgets import storecellrenderer
 from virtaal.views.widgets.storecellrenderer import (
     StoreCellRenderer,
     compute_optimal_height,
@@ -1132,3 +1133,25 @@ def test_do_start_editing_watches_the_target_buffers_once():
     renderer.do_start_editing(None, None, None, None, cell_area, 0)
 
     assert renderer._watched_buffers == {editor.targets[0].get_buffer()}
+
+
+# _content_width() #
+
+class _Window(Gtk.Window):
+    def get_allocation(self):
+        return SimpleNamespace(width=848)
+
+    def get_size(self):
+        return (796, 544)
+
+
+def test_content_width_leaves_out_the_wayland_shadow(monkeypatch):
+    monkeypatch.setattr(storecellrenderer, 'is_wayland', lambda: True)
+
+    assert storecellrenderer._content_width(_Window()) == 796
+
+
+def test_content_width_is_the_allocation_elsewhere(monkeypatch):
+    monkeypatch.setattr(storecellrenderer, 'is_wayland', lambda: False)
+
+    assert storecellrenderer._content_width(_Window()) == 848

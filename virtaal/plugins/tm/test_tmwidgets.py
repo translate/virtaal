@@ -84,9 +84,10 @@ def _process_events():
 WINDOW_HEIGHT = 700
 
 
-def _make_source_and_target(position, height=WINDOW_HEIGHT):
+def _make_source_and_target(position, height=WINDOW_HEIGHT, comment=None):
     """Source and target, each in its own ScrolledWindow as in the real unit
-    view, pinned to the 'top' or 'bottom' of the window by a filler."""
+    view, pinned to the 'top' or 'bottom' of the window by a filler, and
+    an optional translator comment below the target."""
     window = Gtk.Window()
     window.set_decorated(False)
     vbox = Gtk.VBox()
@@ -104,6 +105,11 @@ def _make_source_and_target(position, height=WINDOW_HEIGHT):
         vbox.pack_start(Gtk.Label(), True, True, 0)
     vbox.pack_start(source_scrolled, False, False, 0)
     vbox.pack_start(target_scrolled, False, False, 0)
+    if comment is not None:
+        label = Gtk.Label(label=comment)
+        label.set_size_request(-1, 40)
+        vbox.pack_start(label, False, False, 0)
+        target.below_widgets = (label,)
     if position == 'top':
         vbox.pack_start(Gtk.Label(), True, True, 0)
     window.add(vbox)
@@ -179,6 +185,53 @@ def test_update_geometry_pops_down_when_there_is_room_below():
 
     top, _ = _popup_span(tmwindow)
     assert top >= _bottom(target)
+
+    tmwindow.destroy()
+    window.destroy()
+
+
+def test_update_geometry_pops_down_below_the_translator_comment():
+    window, _source, target = _make_source_and_target('top', comment='A translator comment')
+    tmwindow = _make_tmwindow_with_matches()
+
+    tmwindow.update_geometry(target)
+    _process_events()
+
+    top, _ = _popup_span(tmwindow)
+    assert top >= _bottom(target) + 40
+
+    tmwindow.destroy()
+    window.destroy()
+
+
+def test_update_geometry_skips_below_widgets_that_are_not_shown():
+    # A plural unit's first form anchors below the last form and the
+    # comment row; either can be missing.
+    window, _source, target = _make_source_and_target('top', comment='A translator comment')
+    target.below_widgets = (Gtk.Label(), target.below_widgets[0])
+    tmwindow = _make_tmwindow_with_matches()
+
+    tmwindow.update_geometry(target)
+    _process_events()
+
+    top, _ = _popup_span(tmwindow)
+    assert top >= _bottom(target) + 40
+
+    tmwindow.destroy()
+    window.destroy()
+
+
+def test_update_geometry_ignores_a_hidden_translator_comment():
+    window, _source, target = _make_source_and_target('top', comment='')
+    target.below_widgets[0].hide()
+    _process_events()
+    tmwindow = _make_tmwindow_with_matches()
+
+    tmwindow.update_geometry(target)
+    _process_events()
+
+    top, _ = _popup_span(tmwindow)
+    assert _bottom(target) <= top < _bottom(target) + 40
 
     tmwindow.destroy()
     window.destroy()

@@ -756,6 +756,10 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
                 # source regardless of plural count (e.g. .qm's single
                 # "%n ..." source) still fall back to it.
                 self.targets[i].selector_textbox = visible_sources[min(i, len(visible_sources) - 1)]
+                # The TM suggestions go below the last target and the
+                # translator comment, whichever target is focused.
+                last_target = self.targets[min(nplurals, self.MAX_TARGETS) - 1]
+                self.targets[i].below_widgets = (last_target.get_parent(), self._widgets['vbox_below'])
                 #logging.debug('Showing target #%d: %s' % (i, self.targets[i]))
             else:
                 # outside plural range

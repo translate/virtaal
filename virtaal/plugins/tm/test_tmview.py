@@ -33,6 +33,8 @@ def _tmview(liststore=None, isvisible=False, active=True, may_show=True, target=
     view._should_show_tmwindow = False
     view._mainwindow_geometry = None
     view._move_settle_id = None
+    view._editor = None
+    view._editor_allocation = None
     if liststore is None:
         liststore = Gtk.ListStore(GObject.TYPE_PYOBJECT, GObject.TYPE_STRING)
     view.tmwindow = SimpleNamespace(
@@ -40,12 +42,18 @@ def _tmview(liststore=None, isvisible=False, active=True, may_show=True, target=
         show_all=lambda: None, hide=lambda: None, update_geometry=lambda widget: None,
         get_child=lambda: SimpleNamespace(show_all=lambda: None), realize=lambda: None)
     unit_view = SimpleNamespace(
-        focused_target_n=None if target is None else 0, targets=[target])
+        focused_target_n=None if target is None else 0, targets=[target], _widgets={})
     view.controller = SimpleNamespace(main_controller=SimpleNamespace(
         unit_controller=SimpleNamespace(view=unit_view)))
     view.mnu_suggestions = SimpleNamespace(get_active=lambda: active)
     view.summoned = False
     return view
+
+
+
+def _process_events():
+    while Gtk.events_pending():
+        Gtk.main_iteration()
 
 
 # select_match_index(): Ctrl+n shortcut navigation into the TM list
@@ -456,14 +464,56 @@ def test_suggestions_wait_for_focus_if_the_window_isnt_active_when_it_settles(mo
 
 # _on_store_view_scroll() / _on_toggle_show_tm()
 
-def test_store_view_scroll_hides_a_visible_window():
+def test_store_view_scroll_hides_a_visible_window_once_the_target_is_out_of_view():
     view = _tmview(isvisible=True)
     hidden = []
     view.hide = lambda: hidden.append(1)
+    view._selected_target_in_view = lambda: False
 
     view._on_store_view_scroll()
 
     assert hidden == [1]
+
+
+def test_store_view_scroll_moves_the_window_while_the_target_is_in_view():
+    # The list scrolls to keep a target that grows while typing in view.
+    view = _tmview(isvisible=True)
+    calls = []
+    view.hide = lambda: calls.append('hide')
+    view.update_geometry = lambda: calls.append('geometry')
+    view._selected_target_in_view = lambda: True
+
+    view._on_store_view_scroll()
+
+    assert calls == ['geometry']
+
+
+def test_selected_target_in_view_follows_the_list_scroll_position():
+    target = Gtk.TextView()
+    target.set_size_request(200, 30)
+    content = Gtk.VBox()
+    content.pack_start(target, False, False, 0)
+    filler = Gtk.Label()
+    filler.set_size_request(-1, 1000)
+    content.pack_start(filler, False, False, 0)
+    scrolled = Gtk.ScrolledWindow()
+    scrolled.set_size_request(200, 100)
+    scrolled.add(content)
+    window = Gtk.OffscreenWindow()
+    window.add(scrolled)
+    window.show_all()
+    _process_events()
+    view = _tmview(isvisible=True, target=target)
+    view.controller.main_controller.store_controller = SimpleNamespace(view=SimpleNamespace(parent_widget=scrolled))
+
+    assert view._selected_target_in_view()
+
+    scrolled.get_vadjustment().set_value(500)
+    _process_events()
+
+    assert not view._selected_target_in_view()
+
+    window.destroy()
 
 
 def test_store_view_scroll_does_nothing_when_already_hidden():
@@ -844,3 +894,40 @@ def test_clear_drops_a_pending_show():
     view._on_mainwindow_focus_gained()
 
     assert shown == []
+
+
+# _on_editor_size_allocate(): the target grows and shrinks while typing
+
+def test_editor_size_change_moves_the_visible_window():
+    view = _tmview(isvisible=True)
+    calls = []
+    view.update_geometry = lambda: calls.append('geometry')
+
+    view._on_editor_size_allocate(None, SimpleNamespace(y=10, height=40))
+    view._on_editor_size_allocate(None, SimpleNamespace(y=10, height=40))
+    view._on_editor_size_allocate(None, SimpleNamespace(y=10, height=30))
+
+    assert calls == ['geometry', 'geometry']
+
+
+def test_editor_size_change_leaves_a_hidden_window_alone():
+    view = _tmview(isvisible=False)
+    calls = []
+    view.update_geometry = lambda: calls.append('geometry')
+
+    view._on_editor_size_allocate(None, SimpleNamespace(y=10, height=40))
+
+    assert calls == []
+
+
+def test_show_follows_the_unit_editor_once():
+    view = _tmview()
+    editor = Gtk.Box()
+    view.controller.main_controller.unit_controller.view._widgets['vbox_editor'] = editor
+    view._signal_tracker = SimpleNamespace(connected=[])
+    view._signal_tracker.connect = lambda widget, signal, handler: view._signal_tracker.connected.append((widget, signal))
+
+    view._follow_editor()
+    view._follow_editor()
+
+    assert view._signal_tracker.connected == [(editor, 'size-allocate')]

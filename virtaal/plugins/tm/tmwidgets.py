@@ -133,6 +133,12 @@ class TMWindow(Gtk.Window):
         # window doesn't necessarily fill it. Fall back to the monitor's
         # workarea if the frame isn't available.
         below_y = origin.y + widget_alloc.height + 2
+        for below_widget in getattr(widget, 'below_widgets', ()):
+            if not below_widget.get_mapped():
+                continue
+            below_bottom = below_widget.translate_coordinates(widget, 0, below_widget.get_allocated_height())
+            if below_bottom is not None:
+                below_y = max(below_y, origin.y + below_bottom[1] + 2)
         above_bottom = above_origin.y - 2
         y = below_y
 

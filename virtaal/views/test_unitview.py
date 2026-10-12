@@ -74,6 +74,7 @@ def _make_view(source_forms, target):
     view._widgets = {
         'sources': [_FakeTextbox() for _ in source_forms],
         'targets': [_FakeTextbox() for _ in range(UnitView.MAX_TARGETS)],
+        'vbox_below': object(),
     }
     view.unit = _FakeUnit(target)
 
@@ -111,6 +112,18 @@ def test_targets_fall_back_to_the_single_source_when_there_is_only_one():
 
     assert view.targets[0].selector_textbox is view.sources[0]
     assert view.targets[1].selector_textbox is view.sources[0]
+
+
+def test_every_target_anchors_tm_suggestions_below_the_last_target_and_the_comment():
+    view = _make_view(
+        ['%d file', '%d files'],
+        multistring(['form 0', 'form 1']))
+    last_parent = _FakeParent()
+    view.targets[1].get_parent = lambda: last_parent
+    view._layout_update_targets()
+
+    assert view.targets[0].below_widgets == (last_parent, view._widgets['vbox_below'])
+    assert view.targets[1].below_widgets == (last_parent, view._widgets['vbox_below'])
 
 
 class _FakeMenuWidget:

@@ -62,6 +62,17 @@ mismatch, so their presence alone says which set drifted:
 gh api repos/translate/virtaal/actions/runs/<run-id>/artifacts -q '.artifacts[].name' | grep screenshots
 ```
 
+Across recent runs, with the branch so `main` stands out:
+
+```
+for id in $(gh run list -R translate/virtaal --workflow=ci.yml --limit 20 --json databaseId -q '.[].databaseId'); do
+  a=$(gh api repos/translate/virtaal/actions/runs/$id/artifacts -q '.artifacts[].name' | grep screenshots | tr '\n' ' ')
+  echo "$id $(gh run view -R translate/virtaal $id --json headBranch -q .headBranch) | $a"
+done
+```
+
+Every run flagged, `main` included, is drift (2026-10-12: all 20 runs).
+
 Pass `-R translate/virtaal` to every `gh run` command here - from a fork
 checkout `gh` can resolve the default repo to the fork, which has no runs.
 
@@ -122,7 +133,10 @@ Name the cause in the commit message: `git log -1 -- docs/_static/<img>`
 gives the last refresh date, then `git log --since=<that date> --
 virtaal/plugins/<area> virtaal/views` usually turns up the commit that
 changed the render (e.g. #4037: autocomplete style from #3917, TM popup
-width from c0767f7e). No matching commit is a hint the capture is
+width from c0767f7e). That log can run to dozens of commits; first find
+which widget moved and what the fixture puts there, then grep the subjects.
+In #4234 the moved line was a `#:` location, shown as a unit note, so the
+cause was the notes restyle (e2cd64dd, f3dd7ab6). No matching commit is a hint the capture is
 nondeterministic - run the checksum comparison above.
 
 A change of a pixel or two is still real drift - zoom the differing

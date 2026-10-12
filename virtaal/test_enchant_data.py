@@ -14,10 +14,12 @@ PACKAGING_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__f
 IMPORTS = {
     "libenchant-2.dll": ["libglib-2.0-0.dll", "KERNEL32.dll"],
     "enchant_hunspell.dll": ["libenchant-2.dll", "libhunspell-1.7-0.dll"],
+    "enchant_nuspell.dll": ["libenchant-2.dll", "libicuuc72.dll"],
     "libglib-2.0-0.dll": ["libintl-8.dll"],
     "libhunspell-1.7-0.dll": ["libstdc++-6.dll"],
     "libintl-8.dll": [],
     "libstdc++-6.dll": [],
+    "libicuuc72.dll": [],
     "tcl86.dll": [],
 }
 
@@ -42,14 +44,14 @@ def _imports(path):
     return IMPORTS[path.name]
 
 
-def test_needed_dlls_follows_imports_from_enchant_and_its_backends(tmp_path):
+def test_needed_dlls_follows_imports_from_enchant_and_the_bundled_backends(tmp_path):
     needed = _enchant_data().needed_dlls(_mingw(tmp_path), _imports)
 
     assert needed == {"libenchant-2.dll", "libglib-2.0-0.dll", "libintl-8.dll",
                       "libhunspell-1.7-0.dll", "libstdc++-6.dll"}
 
 
-def test_trim_drops_unloaded_dlls_and_static_libraries(tmp_path):
+def test_trim_drops_other_backends_unloaded_dlls_and_static_libraries(tmp_path):
     bin_dir = os.path.join("enchant", "data", "mingw64", "bin")
     lib_dir = os.path.join("enchant", "data", "mingw64", "lib", "enchant-2")
     toc = [
@@ -57,6 +59,8 @@ def test_trim_drops_unloaded_dlls_and_static_libraries(tmp_path):
         (os.path.join(bin_dir, "libintl-8.dll"), "/src", "BINARY"),
         (os.path.join(bin_dir, "tcl86.dll"), "/src", "BINARY"),
         (os.path.join(lib_dir, "enchant_hunspell.dll"), "/src", "BINARY"),
+        (os.path.join(lib_dir, "enchant_nuspell.dll"), "/src", "BINARY"),
+        (os.path.join(bin_dir, "libicuuc72.dll"), "/src", "BINARY"),
         (os.path.join(lib_dir, "enchant_hunspell.a"), "/src", "DATA"),
         (os.path.join(lib_dir, "enchant_hunspell.dll.a"), "/src", "DATA"),
         (os.path.join(lib_dir, "enchant_hunspell.la"), "/src", "DATA"),

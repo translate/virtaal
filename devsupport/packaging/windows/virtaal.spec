@@ -180,8 +180,12 @@ def _not_test(name):
     return not (leaf.startswith("test_") or leaf == "conftest")
 
 
-def _not_enchant_checker(name):
-    return not name.startswith("enchant.checker")
+def _not_enchant_dialog(name):
+    return name not in (
+        "enchant.checker.CmdLineChecker",
+        "enchant.checker.GtkSpellCheckerDialog",
+        "enchant.checker.wxSpellCheckerDialog",
+    )
 
 a = Analysis(  # noqa: F821
     [str(ROOT / "bin" / "virtaal")],
@@ -195,7 +199,7 @@ a = Analysis(  # noqa: F821
     hiddenimports=(
         collect_submodules("virtaal", filter=_not_test)
         + collect_submodules("translate.storage")
-        + collect_submodules("enchant", filter=_not_enchant_checker)
+        + collect_submodules("enchant", filter=_not_enchant_dialog)
     ),
     # Keep enchant's .py files loose on disk, not archived - its
     # __file__-relative data lookup above needs a real path.
@@ -225,6 +229,10 @@ a = Analysis(  # noqa: F821
 a.datas = babel_data.trim(a.datas, str(ROOT / "po"))
 
 a.datas = [entry for entry in a.datas if not is_unused_catalog(entry[0])]
+
+# The Toolkit's spelling check imports enchant.checker.
+if not any(Path(entry[0]) == Path("enchant", "checker", "__init__.py") for entry in a.datas):
+    raise SystemExit("enchant.checker isn't bundled")
 
 # PyInstaller keeps the first datas entry for a destination: our merged
 # lite catalogs, listed in datas above, must beat the copies GTK's and

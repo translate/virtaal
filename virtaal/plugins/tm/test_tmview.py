@@ -657,6 +657,16 @@ def test_on_hide_tm_leaves_escape_alone_when_nothing_is_shown():
     assert view._on_hide_tm(None, None, None, None) is False
 
 
+def test_on_hide_tm_closes_a_popup_over_the_suggestions_first(monkeypatch):
+    from virtaal.views.widgets.popupwidgetbutton import PopupWidgetButton
+    monkeypatch.setattr(PopupWidgetButton, 'hide_open_popup', classmethod(lambda cls: True))
+    view = TMView.__new__(TMView)
+    view.isvisible = True
+    view.hide = lambda: pytest.fail('the suggestions stay until the next Escape')
+
+    assert view._on_hide_tm(None, None, None, None) is True
+
+
 def test_on_row_activated_selects_the_matched_row():
     view = _tmview()
     view.tmwindow.liststore.append([{'source': 'picked'}, ''])

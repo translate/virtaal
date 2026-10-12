@@ -5,8 +5,10 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import weakref
 from types import SimpleNamespace
 
+import pytest
 from gi.repository import Gdk, Gtk
 
 from virtaal.views.widgets.popupwidgetbutton import (
@@ -516,3 +518,27 @@ def test_popup_has_no_parent_elsewhere(monkeypatch):
     _run_pending_show(btn)
 
     assert btn.popup.get_transient_for() is None
+
+
+# hide_open_popup() #
+
+@pytest.fixture
+def own_buttons(monkeypatch):
+    # Only the buttons this test makes, not ones other tests left behind.
+    monkeypatch.setattr(PopupWidgetButton, '_instances', weakref.WeakSet())
+
+
+def test_hide_open_popup_hides_a_showing_popup(own_buttons):
+    _, btn = _make_button()
+    btn.set_active(True)
+    _run_pending_show(btn)
+
+    assert PopupWidgetButton.hide_open_popup() is True
+    assert not btn.is_popup_visible
+    assert not btn.get_active()
+
+
+def test_hide_open_popup_reports_when_none_is_showing(own_buttons):
+    _make_button()
+
+    assert PopupWidgetButton.hide_open_popup() is False

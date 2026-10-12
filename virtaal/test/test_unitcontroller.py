@@ -206,6 +206,74 @@ class TestUnitController(TestScaffolding):
 
         assert not fuzzy_unit.isfuzzy()
 
+    def _plural_unit(self, fuzzy=False):
+        from translate.storage import pypo
+        store = pypo.pofile.parsestring(
+            b'msgid ""\nmsgstr ""\n"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n\n'
+            + (b'#, fuzzy\n' if fuzzy else b'')
+            + b'msgid "One file"\nmsgid_plural "%d files"\n'
+            + (b'msgstr[0] "1"\nmsgstr[1] ""\n' if fuzzy else b'msgstr[0] ""\nmsgstr[1] ""\n'))
+        unit = [u for u in store.units if not u.isheader()][0]
+        self.unit_controller.load_unit(unit)
+        return unit
+
+    def _type(self, unit, forms):
+        """Edit the target and let the state timer run."""
+        unit.target = forms
+        unit._modified = True
+        self.unit_controller._correct_empty_state(unit)
+
+    def test_a_partly_translated_plural_needs_work_while_typing(self):
+        # #4237: a plural with an empty form compiles to a blank string
+        # unless it's fuzzy.
+        unit = self._plural_unit()
+
+        self._type(unit, ['1', ''])
+
+        assert unit._current_state == workflow.StateEnum.NEEDS_WORK
+
+    def test_filling_every_form_moves_an_automatic_needs_work_to_translated(self):
+        unit = self._plural_unit()
+        self._type(unit, ['1', ''])
+
+        self._type(unit, ['1', '2'])
+
+        assert unit._current_state == workflow.StateEnum.UNREVIEWED
+
+    def test_emptying_a_form_of_a_translated_plural_makes_it_need_work(self):
+        unit = self._plural_unit()
+        self._type(unit, ['1', '2'])
+
+        self._type(unit, ['1', ''])
+
+        assert unit._current_state == workflow.StateEnum.NEEDS_WORK
+
+    def test_filling_every_form_keeps_a_fuzzy_from_the_file(self):
+        unit = self._plural_unit(fuzzy=True)
+
+        self._type(unit, ['1', '2'])
+
+        assert unit._current_state == workflow.StateEnum.NEEDS_WORK
+
+    def test_filling_every_form_keeps_a_picked_needs_work(self):
+        unit = self._plural_unit()
+        self._type(unit, ['1', ''])
+        self.unit_controller.set_current_state(workflow.StateEnum.NEEDS_WORK, from_user=True)
+
+        self._type(unit, ['1', '2'])
+
+        assert unit._current_state == workflow.StateEnum.NEEDS_WORK
+
+    def test_a_partly_translated_plural_left_before_the_timer_is_fuzzy(self):
+        unit = self._plural_unit()
+        unit.target = ['1', '']
+        unit._modified = True
+
+        self.unit_controller._unit_done(None, unit)
+
+        assert unit.isfuzzy()
+        assert unit.target.strings == ['1', '']
+
     def test_correct_empty_state_attaches_state_after_to_the_undo_entry(self):
         # translate/virtaal#1886: the text-change entry an edit already
         # pushed must learn what the automatic correction changed the

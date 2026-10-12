@@ -32,6 +32,9 @@ def gtk_widget_compute_optimal_height(widget, width):
 def gtk_container_compute_optimal_height(widget, width):
     if not widget.props.visible:
         return
+    # A label inside gets the width left inside the margins, or its size
+    # request would widen the editor by them.
+    width -= widget.get_margin_start() + widget.get_margin_end()
     for child in widget.get_children():
         if not child.props.visible:
             continue

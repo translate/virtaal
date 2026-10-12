@@ -11,6 +11,7 @@ from gi.repository import Gdk, GLib, GObject, Gtk
 
 from virtaal.common import GObjectWrapper, SignalTracker
 from virtaal.views.baseview import BaseView
+from virtaal.views.widgets.wayland import set_popup_parent
 
 from .tmwidgets import TMWindow
 
@@ -38,6 +39,7 @@ class TMView(BaseView, GObjectWrapper):
 
         self.tmwindow = TMWindow(self)
         main_window = self.controller.main_controller.view.main_window
+        set_popup_parent(self.tmwindow, main_window)
         self._may_show_tmwindow = main_window.props.is_active # is it allowed to display now (application is in focus)?
         # The main window's last geometry, and the timer that ends a move
         # or resize - see _on_configure_mainwindow().

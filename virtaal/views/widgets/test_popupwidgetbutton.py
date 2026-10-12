@@ -484,3 +484,35 @@ def test_placing_resizes_the_window_itself_when_its_content_grew():
 
     natural = btn.popup.get_child().get_preferred_size()[1]
     assert resized[0] == (natural.width, natural.height)
+
+
+# Wayland (#4219) #
+
+def test_init_leaves_the_popup_unmapped():
+    # A popup mapped before it has a parent opens as a window of its own on
+    # Wayland.
+    btn = PopupWidgetButton(widget=Gtk.Label(label='content'))
+
+    assert btn.popup.get_realized()
+    assert not btn.popup.get_mapped()
+    assert btn.popup.get_child().get_visible()
+
+
+def test_popup_gets_the_buttons_window_as_parent_on_wayland(monkeypatch):
+    monkeypatch.setattr('virtaal.views.widgets.wayland.is_wayland', lambda: True)
+    window, btn = _make_button()
+
+    btn.set_active(True)
+    _run_pending_show(btn)
+
+    assert btn.popup.get_transient_for() is window
+
+
+def test_popup_has_no_parent_elsewhere(monkeypatch):
+    monkeypatch.setattr('virtaal.views.widgets.wayland.is_wayland', lambda: False)
+    _, btn = _make_button()
+
+    btn.set_active(True)
+    _run_pending_show(btn)
+
+    assert btn.popup.get_transient_for() is None

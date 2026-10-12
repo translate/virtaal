@@ -10,6 +10,7 @@ from types import SimpleNamespace
 import pytest
 from test_scaffolding import TestScaffolding
 
+from virtaal.common.platform import platform
 from virtaal.models.storemodel import StoreModel
 
 
@@ -21,8 +22,16 @@ class TestStoreModel(TestScaffolding):
         assert self.model.get_filename() == self.testfile[1]
 
 
-def test_load_file_raises_for_a_nonexistent_path(tmp_path):
-    with pytest.raises(OSError, match='The file does not exist.'):
+def test_load_file_raises_for_a_nonexistent_path(tmp_path, monkeypatch):
+    monkeypatch.setattr(platform, 'is_flatpak', False)
+    with pytest.raises(OSError, match='^The file does not exist.$'):
+        StoreModel(str(tmp_path / 'missing.po'), controller=None)
+
+
+def test_load_file_mentions_the_sandbox_for_an_unreachable_path_in_flatpak(tmp_path, monkeypatch):
+    # translate/virtaal#4222: a file outside the sandbox looks missing.
+    monkeypatch.setattr(platform, 'is_flatpak', True)
+    with pytest.raises(OSError, match='Flatpak sandbox. Open it with File > Open'):
         StoreModel(str(tmp_path / 'missing.po'), controller=None)
 
 

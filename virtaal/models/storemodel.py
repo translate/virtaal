@@ -8,6 +8,7 @@
 import os
 
 from virtaal.common import pan_app
+from virtaal.common.platform import platform
 from virtaal.support import qm_compat  # noqa: F401 - applies its patch on import
 
 from .basemodel import BaseModel
@@ -150,9 +151,11 @@ class StoreModel(BaseModel):
         filename = fileobj
         if isinstance(filename, str):
             if not os.path.exists(filename):
-                raise OSError('The file does not exist.')
+                if platform.is_flatpak:
+                    raise OSError(_("The file does not exist, or Virtaal can't reach it from its Flatpak sandbox. Open it with File > Open or from your file manager."))
+                raise OSError(_('The file does not exist.'))
             if not os.path.isfile(filename):
-                raise OSError('Not a valid file.')
+                raise OSError(_('Not a valid file.'))
         else:
             # Try and determine the file name of the file object
             filename = getattr(fileobj, 'name', None)

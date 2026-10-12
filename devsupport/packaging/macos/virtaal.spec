@@ -139,6 +139,10 @@ def _not_test(name):
     leaf = name.rpartition(".")[2]
     return not (leaf.startswith("test_") or leaf == "conftest")
 
+
+def _not_enchant_checker(name):
+    return not name.startswith("enchant.checker")
+
 a = Analysis(  # noqa: F821
     [str(ROOT / "bin" / "virtaal")],
     pathex=[str(ROOT)],
@@ -147,7 +151,7 @@ a = Analysis(  # noqa: F821
     hiddenimports=(
         collect_submodules("virtaal", filter=_not_test)
         + collect_submodules("translate.storage")
-        + (collect_submodules("enchant") if _bundle_enchant else [])
+        + (collect_submodules("enchant", filter=_not_enchant_checker) if _bundle_enchant else [])
     ),
     hooksconfig={
         "gi": {

@@ -870,6 +870,7 @@ def test_notes_are_indented_secondary_text():
 
     assert notes.label.get_style_context().has_class('dim-label')
     assert notes.get_margin_start() == _NotesView.INDENT
+    assert notes.get_margin_end() == _NotesView.INDENT
 
 
 # _layout_update_sources() / _layout_update_targets() - unit-is-None branch #

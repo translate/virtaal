@@ -1155,3 +1155,18 @@ def test_content_width_is_the_allocation_elsewhere(monkeypatch):
     monkeypatch.setattr(storecellrenderer, 'is_wayland', lambda: False)
 
     assert storecellrenderer._content_width(_Window()) == 848
+
+
+def test_compute_optimal_height_leaves_out_a_containers_margins():
+    # The unit's notes are indented both sides; their label must fit
+    # inside, or it widens the editor.
+    box = Gtk.Box()
+    box.set_margin_start(12)
+    box.set_margin_end(12)
+    label = Gtk.Label(label='A note')
+    box.add(label)
+    box.show_all()
+
+    compute_optimal_height(box, 300)
+
+    assert label.get_size_request()[0] == 276

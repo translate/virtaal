@@ -54,6 +54,7 @@ class _NotesView(Gtk.ScrolledWindow):
         self.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         self.set_propagate_natural_height(True)
         self.set_margin_start(self.INDENT)
+        self.set_margin_end(self.INDENT)
 
         self.label = Gtk.Label(xalign=0, yalign=0)
         self.label.get_style_context().add_class('dim-label')

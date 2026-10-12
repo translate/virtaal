@@ -1432,6 +1432,11 @@ jobs:
           flatpak-builder --user --install-deps-from=flathub --force-clean \
             --repo=repo build-dir io.github.translate.Virtaal.yml
 
+      - name: Check every Python dependency is in the app
+        # Smoke tests run in the SDK, which can provide a package the
+        # app is missing.
+        run: python3 devsupport/packaging/flatpak/check_flatpak_deps_sync.py --installed devsupport/packaging/flatpak/build-dir/files
+
       - name: Validate the installed metainfo
         working-directory: devsupport/packaging/flatpak
         # The real, translated file as flatpak-builder actually installed

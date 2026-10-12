@@ -70,7 +70,34 @@ def flatpak_module_names(text):
     return re.findall(r'^  - name:\s*(\S+)\s*$', text, re.MULTILINE)
 
 
+def installed_names(app_dir):
+    """The packages with metadata in an app's own site-packages.
+        Distribution names in dist-info directories use '_' for '-'."""
+    return {normalize(path.name.split('-', 1)[0])
+            for path in Path(app_dir).glob('lib/python3*/site-packages/*.dist-info')}
+
+
+def check_installed(app_dir):
+    """Every dependency must be in the app itself: pip skips one the SDK
+        already has, and the runtime Platform may not have it."""
+    deps = dict.fromkeys(pyproject_dependency_names(PYPROJECT.read_text(encoding='utf-8')))
+    installed = installed_names(app_dir)
+    missing = [dep for dep in deps if normalize(dep) not in installed]
+    if missing:
+        print('pyproject.toml dependencies not installed in %s:' % app_dir)
+        for dep in missing:
+            print(' - %s' % dep)
+        print()
+        print('pip leaves out a package the SDK already provides; give its module')
+        print('--ignore-installed in %s.' % DEPS_YAML.relative_to(REPO_ROOT))
+        return 1
+    print('All %d pyproject.toml dependencies are installed in %s.' % (len(deps), app_dir))
+    return 0
+
+
 def main():
+    if sys.argv[1:2] == ['--installed']:
+        return check_installed(sys.argv[2])
     pyproject_deps = pyproject_dependency_names(PYPROJECT.read_text(encoding='utf-8'))
     module_names = flatpak_module_names(DEPS_YAML.read_text(encoding='utf-8'))
     known = set()

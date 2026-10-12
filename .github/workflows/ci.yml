@@ -927,9 +927,9 @@ jobs:
     # depended on by core-checks - see that job's own comment. No `if:
     # always()` needed: `release` doesn't override the default `needs:`
     # skip propagation, so if either job fails, this one is simply
-    # skipped too, and `release` skips right along with it. The
-    # `linux`/`macos` endpoints mirror this same shape for their own
-    # platform.
+    # skipped too, and `release` skips right along with it. The `linux`
+    # endpoint mirrors this same shape; `macos` doesn't (see its own
+    # comment).
     needs: [test-windows, build-windows-installer]
     runs-on: ubuntu-24.04
     timeout-minutes: 1
@@ -1283,14 +1283,22 @@ jobs:
           rm -f "$RUNNER_TEMP/AuthKey.p8"
 
   macos:
-    # Endpoint standing in for `test-macos` + `build-macos-app` (both
-    # architecture legs) - see the `windows` endpoint's own comment for
-    # why no `if: always()` is needed here.
+    # Endpoint standing in for `test-macos` + `build-macos-app`, and the
+    # required check for both: the build matrix's legs differ between
+    # pull requests and the merge queue, so the legs can't be required
+    # by name. `if: always()` so a failed leg fails this job instead of
+    # skipping it, which a required check would count as passing.
     needs: [test-macos, build-macos-app]
+    if: always()
     runs-on: ubuntu-24.04
     timeout-minutes: 1
     steps:
-      - run: echo "test-macos and build-macos-app both passed"
+      - name: Fail if test-macos or any build-macos-app leg failed
+        run: |
+          if [ "${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') || contains(needs.*.result, 'skipped') }}" = "true" ]; then
+            echo "::error::test-macos or build-macos-app did not succeed."
+            exit 1
+          fi
 
   publish-translation-progress:
     # The "Translate Virtaal" page on gh-pages reads progress.json from

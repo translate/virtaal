@@ -809,6 +809,18 @@ def test_layout_update_notes_shows_a_long_translator_comment_in_full():
     assert label.texts == [long_comment]
 
 
+def test_layout_update_notes_puts_the_translator_comment_below_the_targets_row():
+    # The state buttons follow the bottom of the targets' grid row.
+    view = UnitView.__new__(UnitView)
+    view._widgets = {'notes': {}, 'vbox_middle': Gtk.VBox(), 'vbox_below': Gtk.VBox()}
+    view.unit = SimpleNamespace(getnotes=lambda origin: 'Comment', getlocations=lambda: [])
+
+    view._layout_update_notes('translator')
+
+    assert view._widgets['notes']['translator'].get_parent() is view._widgets['vbox_below']
+    assert view._widgets['vbox_middle'].get_children() == []
+
+
 _XLIFF_NOTES = b'''<?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
 <file original="a" source-language="en" datatype="plaintext"><body>
@@ -1189,3 +1201,34 @@ def test_update_plural_forms_leaves_other_units_alone(unit):
 
     assert view.update_plural_forms() is False
     assert view.laid_out == []
+
+
+def test_the_targets_end_level_with_the_state_buttons_on_a_one_line_unit():
+    # The right-hand column (checks button, state buttons) is taller than
+    # a one-line unit, so the grid stretches the middle column.
+    builder = Gtk.Builder()
+    builder.add_objects_from_file('share/virtaal/virtaal.ui', ['UnitEditor'])
+    grid = builder.get_object('tbl_editor')
+    grid.get_parent().remove(grid)
+    for name, height in (('vbox_sources', 21), ('vbox_targets', 21), ('vbox_right', 70)):
+        child = Gtk.Label()
+        child.set_size_request(-1, height)
+        builder.get_object(name).pack_start(child, False, False, 0)
+    window = Gtk.OffscreenWindow()
+    window.add(grid)
+    window.show_all()
+    while Gtk.events_pending():
+        Gtk.main_iteration()
+
+    def bottom(name):
+        alloc = builder.get_object(name).get_allocation()
+        return alloc.y + alloc.height
+
+    assert bottom('vbox_targets') == bottom('vbox_right')
+    # The space goes above the source: neither stretches, or the source
+    # would shrink back as the target grows.
+    assert builder.get_object('vbox_sources').get_allocated_height() == 21
+    assert builder.get_object('vbox_targets').get_allocated_height() == 21
+    assert bottom('vbox_sources') == builder.get_object('vbox_targets').get_allocation().y
+
+    window.destroy()

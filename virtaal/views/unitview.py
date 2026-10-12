@@ -453,7 +453,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         if not getattr(self, '_widgets', None):
             self._widgets = {}
 
-        widget_names = ('vbox_editor', 'vbox_middle', 'vbox_sources', 'vbox_targets', 'vbox_options', 'vbox_right')
+        widget_names = ('vbox_editor', 'vbox_middle', 'vbox_below', 'vbox_sources', 'vbox_targets', 'vbox_right')
 
         for name in widget_names:
             self._widgets[name] = self.gui.get_object(name)
@@ -628,11 +628,13 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
     def _layout_update_notes(self, origin):
         if origin not in self._widgets['notes']:
             notes = _NotesView()
-            self._widgets['vbox_middle'].pack_start(notes, True, True, 0)
-            if origin == 'programmer':
+            if origin == 'translator':
+                # Below the grid row with the targets, so the state
+                # buttons stay level with the target.
+                self._widgets['vbox_below'].pack_start(notes, True, True, 0)
+            else:
+                self._widgets['vbox_middle'].pack_start(notes, False, True, 0)
                 self._widgets['vbox_middle'].reorder_child(notes, 0)
-            elif origin == 'translator':
-                self._widgets['vbox_middle'].reorder_child(notes, 4)
 
             self._widgets['notes'][origin] = notes
 
@@ -697,7 +699,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             label.set_line_wrap(True)
             label.set_justify(Gtk.Justification.FILL)
             label.set_property('selectable', True)
-            self._widgets['vbox_middle'].pack_start(label, True, True, 0)
+            self._widgets['vbox_middle'].pack_start(label, False, True, 0)
             self._widgets['vbox_middle'].reorder_child(label, 2)
             self._widgets['context_info'] = label
 

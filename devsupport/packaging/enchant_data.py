@@ -12,6 +12,7 @@ mostly other programs' DLLs plus static libraries."""
 from pathlib import Path
 
 ENCHANT_DLL = "libenchant-2.dll"
+BACKENDS = ("enchant_hunspell.dll",)
 
 
 def pe_imports(path):
@@ -25,11 +26,11 @@ def pe_imports(path):
 
 def needed_dlls(mingw_dir, imports=pe_imports):
     """Lower-cased names of the DLLs in mingw_dir/bin that libenchant
-        and its backends load, directly or not."""
+        and the bundled backends load, directly or not."""
     mingw_dir = Path(mingw_dir)
     available = {p.name.lower(): p for p in (mingw_dir / "bin").glob("*.dll")}
     needed = {ENCHANT_DLL}
-    todo = [mingw_dir / "bin" / ENCHANT_DLL] + sorted((mingw_dir / "lib" / "enchant-2").glob("*.dll"))
+    todo = [mingw_dir / "bin" / ENCHANT_DLL] + [mingw_dir / "lib" / "enchant-2" / name for name in BACKENDS]
     while todo:
         for name in imports(todo.pop()):
             name = name.lower()
@@ -40,8 +41,8 @@ def needed_dlls(mingw_dir, imports=pe_imports):
 
 
 def trim(toc, mingw_dir, imports=pe_imports):
-    """PyInstaller binaries or datas without the enchant DLLs nothing
-        loads and its static libraries."""
+    """PyInstaller binaries or datas without the enchant backends not
+        bundled, the DLLs nothing loads and the static libraries."""
     keep = needed_dlls(mingw_dir, imports)
     trimmed = []
     for entry in toc:
@@ -50,6 +51,8 @@ def trim(toc, mingw_dir, imports=pe_imports):
             if dest.suffix in (".a", ".la"):
                 continue
             if dest.parent.name == "bin" and dest.suffix.lower() == ".dll" and dest.name.lower() not in keep:
+                continue
+            if dest.parent.name == "enchant-2" and dest.name not in BACKENDS:
                 continue
         trimmed.append(entry)
     return trimmed

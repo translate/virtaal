@@ -1043,14 +1043,16 @@ jobs:
     # bundle isn't attempted - every dependency would need to be built
     # as a fat binary from source, which Homebrew doesn't support -
     # building both architectures separately is the practical fix.
+    #
+    # Pull requests build arm64 only: the Intel runner is the slowest in
+    # CI. The merge queue, main and tags build both.
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - runner: macos-latest
-            arch: arm64
-          - runner: macos-26-intel
-            arch: x86_64
+        include: >-
+          ${{ fromJSON(github.event_name == 'pull_request'
+          && '[{"runner": "macos-latest", "arch": "arm64"}]'
+          || '[{"runner": "macos-latest", "arch": "arm64"}, {"runner": "macos-26-intel", "arch": "x86_64"}]') }}
     runs-on: ${{ matrix.runner }}
     # Notarization alone can take 5-15 minutes per submission.
     timeout-minutes: 45

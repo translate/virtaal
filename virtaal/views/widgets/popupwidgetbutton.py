@@ -12,6 +12,8 @@ pop-up window.
 
 from gi.repository import Gdk, GLib, GObject, Gtk
 
+from .wayland import set_popup_parent
+
 # XXX: Kudo's to Toms Bauģis <toms.baugis at gmail.com> who wrote the
 #      ActivityEntry widget for the hamster-applet project. A lot of this
 #      class's signal handling is based on his example.
@@ -80,8 +82,8 @@ class PopupWidgetButton(Gtk.ToggleButton):
         self.popup = Gtk.Window(type=Gtk.WindowType.POPUP)
         self.popup.set_size_request(0,0)
         self.popup.add(widget)
-        self.popup.show_all()
-        self.popup.hide()
+        widget.show_all()
+        self.popup.realize()
         self.popup.connect('check-resize', self._on_popup_check_resize)
 
         self.connect('draw', self._on_expose)
@@ -165,6 +167,9 @@ class PopupWidgetButton(Gtk.ToggleButton):
             self._last_position = position
             return GLib.SOURCE_CONTINUE
         self._show_tick_id = None
+        toplevel = self.get_toplevel()
+        if isinstance(toplevel, Gtk.Window):
+            set_popup_parent(self.popup, toplevel)
         self._update_popup_geometry()
         self.popup.present()
         return GLib.SOURCE_REMOVE

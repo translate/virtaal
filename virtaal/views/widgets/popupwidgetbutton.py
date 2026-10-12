@@ -10,6 +10,8 @@ PopupWidgetButton: Extends a C{Gtk.ToggleButton} to show a given widget in a
 pop-up window.
 """
 
+import weakref
+
 from gi.repository import Gdk, GLib, GObject, Gtk
 
 from .wayland import set_popup_parent
@@ -56,8 +58,11 @@ class PopupWidgetButton(Gtk.ToggleButton):
     }
 
     # INITIALIZERS #
+    _instances = weakref.WeakSet()
+
     def __init__(self, widget, label='Pop-up', popup_pos=POS_NW_SW, main_window=None, sticky=False):
         super().__init__(label=label)
+        self._instances.add(self)
         if not sticky:
             self.connect('focus-out-event', self._on_focus_out_event)
         if main_window:
@@ -124,6 +129,16 @@ class PopupWidgetButton(Gtk.ToggleButton):
 
     def hide_popup(self):
         self.set_active(False)
+
+    @classmethod
+    def hide_open_popup(cls):
+        """Hide a pop-up that is showing, for an Escape that would otherwise
+            go to something under it. Returns whether one was hidden."""
+        for button in list(cls._instances):
+            if button.popup.props.visible:
+                button.hide_popup()
+                return True
+        return False
 
     def show_popup(self):
         self.set_active(True)

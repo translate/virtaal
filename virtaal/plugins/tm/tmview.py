@@ -11,6 +11,7 @@ from gi.repository import Gdk, GLib, GObject, Gtk
 
 from virtaal.common import GObjectWrapper, SignalTracker
 from virtaal.views.baseview import BaseView
+from virtaal.views.widgets.popupwidgetbutton import PopupWidgetButton
 from virtaal.views.widgets.wayland import set_popup_parent
 
 from .tmwidgets import TMWindow
@@ -315,6 +316,10 @@ class TMView(BaseView, GObjectWrapper):
         return GLib.SOURCE_REMOVE
 
     def _on_hide_tm(self, accel_group, acceleratable, keyval, modifier):
+        # This accelerator runs before the focused widget sees Escape: close
+        # a pop-up opened over the suggestions first.
+        if PopupWidgetButton.hide_open_popup():
+            return True
         # Escape is shared with Search: leave it alone when there's nothing to hide.
         if not self.isvisible:
             return False

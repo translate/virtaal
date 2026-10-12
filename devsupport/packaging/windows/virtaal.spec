@@ -45,6 +45,7 @@ from virtaal.support.libi18n.lite import (  # noqa: E402
 
 sys.path.insert(0, str(ROOT / "devsupport" / "packaging"))
 import babel_data  # noqa: E402
+import enchant_data  # noqa: E402
 
 # translate-toolkit ships its own small data directory (translate/share/ -
 # langmodels/, the ngram language-model files translate.lang.identify.
@@ -230,6 +231,9 @@ a = Analysis(  # noqa: F821
     noarchive=False,
 )
 a.datas = babel_data.trim(a.datas, str(ROOT / "po"))
+if ENCHANT_DATA is not None and ENCHANT_DATA.is_dir():
+    a.binaries = enchant_data.trim(a.binaries, ENCHANT_DATA / "mingw64")
+    a.datas = enchant_data.trim(a.datas, ENCHANT_DATA / "mingw64")
 
 a.datas = [entry for entry in a.datas if not is_unused_catalog(entry[0])]
 

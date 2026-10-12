@@ -1088,6 +1088,19 @@ jobs:
           path: ~/Library/Caches/pip
           key: pip-${{ runner.os }}-${{ matrix.arch }}-${{ hashFiles('pyproject.toml') }}
 
+      - name: Hash the libraries PyInstaller will collect
+        id: bincache
+        run: echo "hash=$(brew list --versions | shasum -a 256 | cut -c1-16)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache PyInstaller's processed binaries
+        # Entries are reused only when the source binary's digest matches.
+        # No restore-keys, so a version change starts an empty cache
+        # rather than growing the old one.
+        uses: actions/cache@v6
+        with:
+          path: ~/Library/Application Support/pyinstaller
+          key: pyinstaller-${{ runner.os }}-${{ matrix.arch }}-${{ steps.bincache.outputs.hash }}-${{ hashFiles('pyproject.toml', 'devsupport/packaging/macos/build_standalone.sh') }}
+
       - name: Build self-contained .app bundle
         env:
           # actions/checkout on a pull_request event checks out GitHub's

@@ -1137,6 +1137,20 @@ msgstr ""
 msgid "Reviewed"
 msgstr ""
 
+#: virtaal/models/storemodel.py
+msgid ""
+"The file does not exist, or Virtaal can't reach it from its Flatpak sandbox. "
+"Open it with File > Open or from your file manager."
+msgstr ""
+
+#: virtaal/models/storemodel.py
+msgid "The file does not exist."
+msgstr ""
+
+#: virtaal/models/storemodel.py
+msgid "Not a valid file."
+msgstr ""
+
 #. l10n: Context: show every unit, not only the matching ones
 #: virtaal/modes/defaultmode.py virtaal/views/modeview.py
 msgid "All"

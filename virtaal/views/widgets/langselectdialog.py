@@ -7,7 +7,7 @@
 
 import locale
 
-from gi.repository import GLib, GObject, Gtk
+from gi.repository import Gdk, GLib, GObject, Gtk
 
 from virtaal.views.baseview import BaseView
 
@@ -46,6 +46,8 @@ class LanguageSelectDialog:
 
         self.btn_ok.connect('clicked', lambda *args: self.dialog.response(Gtk.ResponseType.OK))
         self.btn_cancel.connect('clicked', lambda *args: self.dialog.response(Gtk.ResponseType.CANCEL))
+        for treeview in (self.tvw_sourcelang, self.tvw_targetlang):
+            treeview.connect('row-activated', self._on_row_activated)
 
     def _init_treeviews(self):
         # The .ui file marks these focusable, swallowing Tab/Down meant
@@ -158,6 +160,13 @@ class LanguageSelectDialog:
         else:
             self._select_lang(self.tvw_targetlang, getattr(self, 'curr_tgtlang', 'en'))
 
+    def _on_row_activated(self, treeview, path, column):
+        # Enter accepts; a double-click only picks one half of the pair.
+        event = Gtk.get_current_event()
+        if event is not None and event.type != Gdk.EventType.KEY_PRESS:
+            return
+        self.dialog.response(Gtk.ResponseType.OK)
+
     def _select_lang(self, treeview, langcode):
         model = treeview.get_model()
         i = model.get_iter_first()
@@ -170,5 +179,5 @@ class LanguageSelectDialog:
             return
 
         path = model.get_path(i)
-        treeview.get_selection().select_iter(i)
+        treeview.set_cursor(path)
         treeview.scroll_to_cell(path)

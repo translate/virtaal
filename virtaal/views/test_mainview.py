@@ -2365,6 +2365,39 @@ def test_busy_draws_the_message_before_the_body_runs(monkeypatch):
         view.main_window.destroy()
 
 
+def test_show_progress_shows_a_progress_cursor_and_message_until_hidden():
+    view = _view_for_busy()
+    try:
+        view.show_progress("Loading 'af.xlf'…")
+
+        assert view.main_window.get_window().get_cursor() is not None
+        assert _statusbar_text(view.status_bar) == "Loading 'af.xlf'…"
+
+        view.hide_progress()
+
+        assert view.main_window.get_window().get_cursor() is None
+        assert _statusbar_text(view.status_bar) == ''
+    finally:
+        view.main_window.destroy()
+
+
+def test_busy_during_progress_restores_the_progress_cursor_and_message():
+    view = _view_for_busy()
+    try:
+        view.show_progress('Loading one')
+        progress_cursor = view.main_window.get_window().get_cursor()
+
+        with view.busy('Loading two'):
+            assert _statusbar_text(view.status_bar) == 'Loading two'
+
+        assert view.main_window.get_window().get_cursor() is progress_cursor
+        assert _statusbar_text(view.status_bar) == 'Loading one'
+        view.hide_progress()
+        assert _statusbar_text(view.status_bar) == ''
+    finally:
+        view.main_window.destroy()
+
+
 def test_wait_for_draw_returns_at_once_for_a_widget_that_cannot_draw():
     start = time.monotonic()
 

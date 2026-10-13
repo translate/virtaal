@@ -11,6 +11,7 @@ virtaal/controllers/prefscontroller.py
 virtaal/controllers/storecontroller.py
 virtaal/controllers/unitcontroller.py
 virtaal/controllers/welcomescreencontroller.py
+virtaal/main.py
 virtaal/models/storemodel.py
 virtaal/modes/defaultmode.py
 virtaal/modes/qualitycheckmode.py

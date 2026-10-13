@@ -767,6 +767,18 @@ class TextBox(Gtk.TextView):
         self.add_default_gui_info(self.elem)
         return text == str(self.elem) and length == self.elem.gui_info.length()
 
+    def _delete_inside_widget_leaf(self, leaf, start, end):
+        """Delete tree range [start, end) from the content of C{leaf}, a
+            placeable shown with widgets (<g>). Unlike delete_range(), this
+            keeps the placeable when all of its content goes."""
+        leaf_offset = self.elem.elem_offset(leaf)
+        text = str(leaf)
+        local_start, local_end = start - leaf_offset, end - leaf_offset
+        if not 0 <= local_start <= local_end <= len(text):
+            return self.elem.delete_range(start, end)
+        leaf.sub = [text[:local_start] + text[local_end:]]
+        return StringElem(text[local_start:local_end]), leaf, local_start
+
     def _reparse_at(self, tree_offset):
         """Reparse the plain leaves either side of C{tree_offset} after an
             edit there. @returns: Whether new placeables were found."""
@@ -845,7 +857,12 @@ class TextBox(Gtk.TextView):
             if unlock_partly_covered_leaves(self.elem, start_tree_offset, end_tree_offset):
                 self.add_default_gui_info(self.elem)
                 structural = True
-            deleted, parent, index = self.elem.delete_range(start_tree_offset, end_tree_offset)
+            if start_elem is end_elem and start_elem.isleaf() and start_elem.iseditable and \
+                    (start_elem.gui_info.has_start_widget() or start_elem.gui_info.has_end_widget()):
+                deleted, parent, index = self._delete_inside_widget_leaf(
+                    start_elem, start_tree_offset, end_tree_offset)
+            else:
+                deleted, parent, index = self.elem.delete_range(start_tree_offset, end_tree_offset)
 
             if index is not None:
                 parent_offset = self.elem.elem_offset(parent)

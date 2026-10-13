@@ -896,6 +896,10 @@ msgid "KDE"
 msgstr ""
 
 #: virtaal/controllers/checkscontroller.py
+msgid "Qt"
+msgstr ""
+
+#: virtaal/controllers/checkscontroller.py
 msgid "GNOME"
 msgstr ""
 

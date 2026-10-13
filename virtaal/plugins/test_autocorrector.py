@@ -283,13 +283,11 @@ class _FakeElem:
         gui_info bridges GUI text-buffer offsets and "tree" (logical
         string) offsets. treeindex_to_iter() is routed through a real
         Gtk.TextBuffer so the deferred correction can really run."""
-    def __init__(self, text, gui_to_tree_index, tree_to_gui_index, buf):
+    def __init__(self, text, gui_to_tree_index, buf):
         self._text = text
         self._gui_to_tree = gui_to_tree_index
-        self._tree_to_gui = tree_to_gui_index
         self.gui_info = SimpleNamespace(
             gui_to_tree_index=lambda cursorpos: self._gui_to_tree,
-            tree_to_gui_index=lambda tree_index: self._tree_to_gui,
             treeindex_to_iter=lambda index, start_at=None: buf.get_iter_at_offset(index),
         )
 
@@ -319,7 +317,7 @@ def test_on_insert_text_does_nothing_without_a_match(monkeypatch, tmp_path):
                          lambda *a, **k: pytest.fail('must not correct without a match'))
     buf = Gtk.TextBuffer()
     buf.set_text('nothing correctable ')
-    elem = _FakeElem('nothing correctable', gui_to_tree_index=20, tree_to_gui_index=0, buf=buf)
+    elem = _FakeElem('nothing correctable', gui_to_tree_index=20, buf=buf)
 
     corrector._on_insert_text(SimpleNamespace(), text=' ', cursorpos=99, elem=elem)
 
@@ -337,7 +335,7 @@ def test_on_insert_text_schedules_and_applies_a_correction(monkeypatch, tmp_path
     monkeypatch.setattr('virtaal.plugins.autocorrector.GLib.idle_add', scheduled.append)
     buf = Gtk.TextBuffer()
     buf.set_text('Ek adt ')
-    elem = _FakeElem('Ek adt', gui_to_tree_index=6, tree_to_gui_index=3, buf=buf)
+    elem = _FakeElem('Ek adt', gui_to_tree_index=6, buf=buf)
     refresh_calls = []
     textbox = SimpleNamespace(buffer=buf, refresh=lambda: refresh_calls.append('refreshed'))
 

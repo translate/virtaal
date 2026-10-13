@@ -91,3 +91,12 @@ def test_selecting_a_language_moves_the_cursor_to_it():
     assert dialog.get_selected_source_lang() == 'zu'
     assert dialog.tvw_sourcelang.get_cursor()[0].get_indices() == [2]
 
+
+def test_select_target_lang_leaves_the_source_list_alone():
+    dialog = LanguageSelectDialog(languages=_langs('af', 'nl', 'zu'))
+
+    dialog.select_target_lang('zu')
+
+    assert dialog.get_selected_target_lang() == 'zu'
+    assert dialog.get_selected_source_lang() == ''
+    assert dialog.tvw_targetlang.get_cursor()[0].get_indices() == [2]

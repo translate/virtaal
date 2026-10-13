@@ -158,6 +158,7 @@ class LanguageView(BaseView):
         langs = [LanguageModel(lc) for lc in LanguageModel.languages]
         langs.sort(key=lambda x: locale.strxfrm(x.name))
         self.select_dialog.update_languages(langs)
+        self.select_dialog.select_target_lang(code)
 
     def _on_editlang_clicked(self, button):
         """Override the plural information of the selected target language,

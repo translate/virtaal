@@ -229,11 +229,14 @@ def _fake_add_dialog(run_result=True, error=None, langname='Klingon', langcode='
 
 
 def _fake_select_dialog():
-    return SimpleNamespace(
+    dialog = SimpleNamespace(
         dialog=Gtk.Window(),
         clear_langs=lambda: None,
         update_languages=lambda langs: None,
+        selected_target=[],
     )
+    dialog.select_target_lang = dialog.selected_target.append
+    return dialog
 
 
 def test_on_addlang_clicked_does_nothing_when_cancelled():
@@ -276,6 +279,7 @@ def test_on_addlang_clicked_registers_a_new_language():
 
         assert LanguageModel.languages['tlh'] == ('Klingon', 2, 'n != 1')
         assert view.controller.new_langs == ['tlh']
+        assert view.select_dialog.selected_target == ['tlh']
     finally:
         LanguageModel.languages.clear()
         LanguageModel.languages.update(original_languages)

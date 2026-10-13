@@ -194,6 +194,40 @@ class TestTextBoxDeleteRange(TestScaffolding):
 
         assert result == 'Click  to continue.'
 
+    # Selections spanning several elements, where delete_range() returns
+    # no index: the cursor stays at the selection start even with
+    # widgets before it (#4249).
+
+    def _delete_selection(self, textbox, start_offset, end_offset):
+        textbox.refresh_cursor_pos = -1
+        buf = textbox.buffer
+        buf.place_cursor(buf.get_iter_at_offset(end_offset))
+        buf.delete(buf.get_iter_at_offset(start_offset), buf.get_iter_at_offset(end_offset))
+
+    def test_g_selection_into_following_text_keeps_the_cursor_at_its_start(self):
+        textbox = self._target(self.xliff_store, 0)
+
+        self._delete_selection(textbox, 9, 15)  # "re</g> to"
+
+        assert textbox.get_text() == 'Click he continue.'
+        assert textbox.refresh_cursor_pos == 9
+
+    def test_bx_ex_selection_into_following_text_keeps_the_cursor_at_its_start(self):
+        textbox = self._target(self.xliff_store, 2)  # "Some <bx/>bold<ex/> text."
+
+        self._delete_selection(textbox, 8, 14)  # from inside "bold" into "text."
+
+        assert textbox.get_text() == 'Some boxt.'
+        assert textbox.refresh_cursor_pos == 8
+
+    def test_selection_starting_before_any_widget_keeps_the_cursor_at_its_start(self):
+        textbox = self._target(self.xliff_store, 0)
+
+        self._delete_selection(textbox, 2, 9)  # "ick<g>he"
+
+        assert textbox.get_text() == 'Clre to continue.'
+        assert textbox.refresh_cursor_pos == 2
+
     # Deletions with no placeable boundary involved at all - the
     # ordinary fallback path, unaffected by any of the above.
 

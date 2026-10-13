@@ -788,10 +788,8 @@ class TextBox(Gtk.TextView):
                 parent_offset = self.elem.elem_offset(parent)
                 if parent_offset < 0:
                     parent_offset = 0
-                self.refresh_cursor_pos = start_offset
                 index = parent_offset + index
-            else:
-                self.refresh_cursor_pos = self.elem.gui_info.tree_to_gui_index(start_offset)
+            self.refresh_cursor_pos = start_offset
 
         if index is None:
             index = start_offset

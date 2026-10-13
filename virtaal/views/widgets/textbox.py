@@ -5,6 +5,8 @@
 # later license. See the LICENSE file for a copy of the license and
 # the AUTHORS.md file for copyright and authorship information.
 
+import logging
+
 from gi.repository import Gdk, GLib, Gtk
 from gi.repository.GObject import SignalFlags
 from translate.storage.placeables import StringElem
@@ -32,6 +34,28 @@ def colors_equal(a, b):
         b = x
 
     return a.equal(b)
+
+
+def unlock_partly_covered_leaves(elem, start, end):
+    """Make each non-editable leaf that [start, end) only partly covers
+        plain text, since the toolkit refuses to edit inside one. Every
+        such leaf with text is parsed from the text (%s, &amp;, a newline),
+        so a reparse recognises whatever is left of it. With start == end,
+        this unlocks a leaf that offset falls strictly inside of.
+        @returns: Whether any leaf was unlocked."""
+    unlocked = False
+    for leaf in elem.flatten():
+        if leaf.iseditable:
+            continue
+        leaf_start = elem.elem_offset(leaf)
+        leaf_end = leaf_start + len(leaf)
+        if start < leaf_end and leaf_start < end and not (start <= leaf_start and leaf_end <= end):
+            parent = elem.get_parent_elem(leaf)
+            if parent is None:
+                continue
+            parent.sub = [StringElem(str(leaf)) if sub is leaf else sub for sub in parent.sub]
+            unlocked = True
+    return unlocked
 
 
 _suggestion_provider = None
@@ -108,6 +132,7 @@ class TextBox(Gtk.TextView):
         self.placeables_controller = main_controller.placeables_controller
         self.refresh_cursor_pos = -1
         self._structural_change_pending = False
+        self._render_pending = False
         self.elem_before_edit = None
         self.role = role
         self.selector_textbox = selector_textbox or self
@@ -618,9 +643,14 @@ class TextBox(Gtk.TextView):
             return
         if self.undo_controller.model.recording:
             self.undo_controller.record_stop()
+        # A typed placeable's widgets only reach the buffer in the deferred refresh.
+        if self.elem is not None and not self._structural_change_pending and \
+                not self._render_pending and not self._matches_tree(self.get_text(), self.buffer.get_char_count()):
+            logging.warning('Target text out of step with its placeables: %r', self.elem)
+            self._structural_change_pending = True
         if self._structural_change_pending:
             self._structural_change_pending = False
-            self.refresh()
+            self.refresh(update=True)
         elif self.refresh_cursor_pos >= 0:
             # No structure changed, so the buffer already matches self.elem -
             # skip the rebuild, just keep the cursor onscreen. set_text()
@@ -731,6 +761,28 @@ class TextBox(Gtk.TextView):
 
         return done, deleted, parent, index, start_offset, end_offset
 
+    def _matches_tree(self, text, length):
+        """Whether a buffer with C{text} and C{length} positions (text and
+            widgets) shows self.elem as it is now."""
+        self.add_default_gui_info(self.elem)
+        return text == str(self.elem) and length == self.elem.gui_info.length()
+
+    def _reparse_at(self, tree_offset):
+        """Reparse the plain leaves either side of C{tree_offset} after an
+            edit there. @returns: Whether new placeables were found."""
+        parsers = self.placeables_controller.get_parsers_for_textbox(self)
+        found = False
+        for offset in sorted({max(tree_offset - 1, 0), tree_offset}):
+            leaf = self.elem.elem_at_offset(offset)
+            if leaf is None or type(leaf) is not StringElem or not leaf.isleaf():
+                continue
+            elem_parse(leaf, parsers)
+            if not leaf.isleaf():
+                leaf.gui_info = None
+                self.add_default_gui_info(leaf)
+                found = True
+        return found
+
     def _on_delete_range(self, buffer, start_iter, end_iter):
         if self.elem is None:
             return
@@ -775,31 +827,49 @@ class TextBox(Gtk.TextView):
                 start_iter, start_elem, start_elem_offset, start_elem_len, cursor_pos,
                 key_is_delete, start_offset, end_offset,
             )
-            if deleted:
+            if deleted is not None:
                 # Make GTK delete the whole placeable, widgets included.
                 start_iter.set_offset(start_offset)
                 end_iter.set_offset(end_offset)
+            elif done:
+                # Nothing to delete here: GTK mustn't delete the widget either.
+                buffer.stop_emission_by_name('delete-range')
+                return
 
         #logging.debug('%s[%d] >===> %s[%d]' % (repr(start_elem), start_offset, repr(end_elem), end_offset))
 
+        structural = False
         if not done:
             start_tree_offset = self.elem.gui_info.gui_to_tree_index(start_offset)
             end_tree_offset = self.elem.gui_info.gui_to_tree_index(end_offset)
+            if unlock_partly_covered_leaves(self.elem, start_tree_offset, end_tree_offset):
+                self.add_default_gui_info(self.elem)
+                structural = True
             deleted, parent, index = self.elem.delete_range(start_tree_offset, end_tree_offset)
 
             if index is not None:
                 parent_offset = self.elem.elem_offset(parent)
                 if parent_offset < 0:
-                    parent_offset = 0
-                index = parent_offset + index
+                    # prune() merged the leaf it was deleted from into a sibling.
+                    index = start_tree_offset
+                else:
+                    index = parent_offset + index
             self.refresh_cursor_pos = start_offset
 
         if index is None:
             index = start_offset
 
-        if deleted:
+        if deleted is not None:
             self.elem.prune()
-            self._structural_change_pending = True
+            if not done and self._reparse_at(start_tree_offset):
+                structural = True
+            # The tree may lose more than GTK deletes (a whole fragile
+            # placeable), or the deletion may change which placeables
+            # there are: the buffer then needs rebuilding from the tree.
+            remaining = self.get_text(None, start_iter) + self.get_text(end_iter, None)
+            remaining_len = self.buffer.get_char_count() - (end_iter.get_offset() - start_iter.get_offset())
+            if structural or not self._matches_tree(remaining, remaining_len):
+                self._structural_change_pending = True
             self.elem_before_edit = before
             self.emit(
                 'text-deleted', deleted, parent, index,
@@ -815,6 +885,9 @@ class TextBox(Gtk.TextView):
         buff_offset = iter.get_offset()
         gui_info = self.elem.gui_info
         tree_offset = gui_info.gui_to_tree_index(buff_offset)
+        unlocked = unlock_partly_covered_leaves(self.elem, tree_offset, tree_offset)
+        if unlocked:
+            self.add_default_gui_info(self.elem)
         left = gui_info.elem_at_offset(buff_offset-1)
         right = gui_info.elem_at_offset(buff_offset)
 
@@ -826,29 +899,12 @@ class TextBox(Gtk.TextView):
         #    repr(left), repr(right)
         #))
 
-        succeeded = False
-        if not (left is None and right is None) and (left is not right or not str(left)):
+        inside = self._insert_inside_placeable(iter, ins_text)
+        succeeded = bool(inside)
+        if inside is None and not (left is None and right is None) and (left is not right or not str(left)):
             succeeded = self.elem.insert_between(left, right, ins_text)
             #logging.debug('self.elem.insert_between(%s, %s, "%s"): %s' % (repr(left), repr(right), ins_text, succeeded))
-        if not succeeded and left is not None and left is right and left.isleaf():
-            # This block handles the special case where a the cursor is just
-            # inside a leaf element with a closing widget. In this case both
-            # left and right will point to the element in question, but it
-            # need not be empty to be a leaf. Because the cursor is still
-            # "inside" the element, we want to append to this leaf in stead
-            # of after it, which is what StringElem.insert() will do, seeing
-            # as the position before and after the widget is the same to in
-            # the context of StringElem.
-            anchor = iter.get_child_anchor()
-            if anchor:
-                widgets = anchor.get_widgets()
-                left_widgets = left.gui_info.widgets
-                if len(widgets) > 0 and len(left_widgets) > 1 and \
-                        widgets[0] is left_widgets[1] and \
-                        iter.get_offset() == self.elem.gui_info.length() - 1:
-                    succeeded = left.insert(len(left), ins_text)
-                    #logging.debug('%s.insert(len(%s), "%s")' % (repr(left), repr(left), ins_text))
-        if not succeeded:
+        if not succeeded and inside is None:
             succeeded = self.elem.insert(tree_offset, ins_text)
             #logging.debug('self.elem.insert(%d, "%s"): %s' % (tree_offset, ins_text, succeeded))
 
@@ -859,16 +915,47 @@ class TextBox(Gtk.TextView):
                 cursor_pos = self.buffer.props.cursor_position
             cursor_pos += len(ins_text)
             self.refresh_cursor_pos = cursor_pos
-            self._live_insert_pending = tree_offset
+            self._live_insert_pending = (tree_offset, unlocked)
             #logging.debug('text-inserted: %s@%d of %s' % (ins_text, iter.get_offset(), repr(self.elem)))
             self.elem_before_edit = before
             self.emit('text-inserted', ins_text, buff_offset, self.elem)
+        else:
+            # GTK still inserts the text: rebuild the buffer from the tree.
+            self._structural_change_pending = True
+
+    def _insert_inside_placeable(self, itr, text):
+        """Insert C{text} into the paired placeable (<g>) whose opening
+            widget is just before C{itr} or closing widget just after it:
+            the tree can't tell those positions from just outside it.
+            @returns: None if C{itr} isn't at either, else whether the
+            text was inserted."""
+        gui_info = self.elem.gui_info
+        offset = itr.get_offset()
+        for widget_offset, widget_index in ((offset, 1), (offset - 1, 0)):
+            if widget_offset < 0:
+                continue
+            anchor = self.buffer.get_iter_at_offset(widget_offset).get_child_anchor()
+            if anchor is None:
+                continue
+            elem = gui_info.elem_at_offset(widget_offset)
+            if elem is None or len(elem.gui_info.widgets) < 2 or \
+                    not any(w is elem.gui_info.widgets[widget_index] for w in anchor.get_widgets()):
+                continue
+            if not elem.iseditable:
+                return False
+            if elem.isleaf():
+                content = str(elem)
+                elem.sub = [content + text if widget_index else text + content]
+                return True
+            return elem.insert(len(elem) if widget_index else 0, text)
+        return None
 
     def _on_insert_text_after(self, buffer, iter, ins_text, length):
-        tree_offset = getattr(self, '_live_insert_pending', None)
+        pending = getattr(self, '_live_insert_pending', None)
         self._live_insert_pending = None
-        if tree_offset is None or self.elem is None:
+        if pending is None or self.elem is None:
             return
+        tree_offset, unlocked = pending
 
         affected_leaf = self.elem.elem_at_offset(tree_offset)
         if affected_leaf is None:
@@ -880,10 +967,9 @@ class TextBox(Gtk.TextView):
         plain_len = len(str(affected_leaf))
         elem_parse(affected_leaf, self.placeables_controller.get_parsers_for_textbox(self))
 
-        if affected_leaf.isleaf():
+        if affected_leaf.isleaf() and not unlocked:
             return
 
-        self._structural_change_pending = True
         affected_leaf.gui_info = None
         self.add_default_gui_info(affected_leaf)
 
@@ -894,7 +980,9 @@ class TextBox(Gtk.TextView):
         self.refresh_cursor_pos = target_cursor_pos
 
         scheduled_elem = self.elem
+        self._render_pending = True
         def do_refresh():
+            self._render_pending = False
             if self.elem is scheduled_elem:
                 self.refresh(update=True)
                 self.place_cursor(target_cursor_pos)

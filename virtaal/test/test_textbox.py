@@ -11,12 +11,16 @@ import pytest
 from gi.repository import Gdk, Gtk
 from test_scaffolding import TestScaffolding
 from translate.storage import factory
-from translate.storage.placeables import general
+from translate.storage.placeables import general, parse
 from translate.storage.placeables.strelem import StringElem
 
 from virtaal.controllers.placeablescontroller import PlaceablesController
 from virtaal.views.widgets import textbox as textbox_module
-from virtaal.views.widgets.textbox import TextBox, colors_equal
+from virtaal.views.widgets.textbox import (
+    TextBox,
+    colors_equal,
+    unlock_partly_covered_leaves,
+)
 
 PLACEABLES_PO = "devsupport/testfiles/placeables.po"
 
@@ -61,6 +65,30 @@ def test_colors_equal_mixing_rgba_and_string():
     a = Gdk.RGBA()
     a.parse('#ff0000')
     assert colors_equal(a, '#ff0000')
+
+
+def _parsed(text):
+    elem = StringElem([parse(StringElem(text), general.parsers)])
+    elem.prune()
+    return elem
+
+
+def test_unlock_partly_covered_leaves_lets_delete_range_cut_into_a_placeable():
+    elem = _parsed('Oop %s')
+
+    unlock_partly_covered_leaves(elem, 5, 6)
+    elem.delete_range(5, 6)
+
+    assert str(elem) == 'Oop %'
+
+
+def test_unlock_partly_covered_leaves_keeps_a_fully_covered_placeable():
+    elem = _parsed('Oop %s')
+    placeable = elem.sub[-1]
+
+    unlock_partly_covered_leaves(elem, 3, 6)
+
+    assert elem.sub[-1] is placeable
 
 
 class TestTextBox(TestScaffolding):
@@ -363,8 +391,10 @@ class TestTextBox(TestScaffolding):
 
         textbox.buffer.insert_interactive_at_cursor('\n', -1, True)
 
+        assert refresh_calls == []  # deferred: rebuilding inside insert-text crashes gtkspell
+        assert len(calls) == 1
+        calls[0]()
         assert refresh_calls == [1]
-        assert len(calls) == 1  # the idle_add-deferred do_refresh, unaffected
 
     def test_undo_reverts_a_live_recognized_placeable(self, monkeypatch):
         # Exercises the exact undo_action closure _on_unit_insert_text

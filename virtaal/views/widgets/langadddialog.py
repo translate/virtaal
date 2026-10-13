@@ -7,7 +7,9 @@
 
 
 from gi.repository import GLib, Gtk
+from translate.lang import data
 
+from virtaal.models.langmodel import LanguageModel
 from virtaal.views.baseview import BaseView
 
 
@@ -15,6 +17,8 @@ class LanguageAddDialog:
     """
     Represents and manages an instance of the dialog used for adding a language.
     """
+
+    _editing = False
 
     # INITIALIZERS #
     def __init__(self, parent=None):
@@ -32,7 +36,8 @@ class LanguageAddDialog:
             self.dialog.set_transient_for(parent)
             self.dialog.set_icon(parent.get_toplevel().get_icon())
 
-        self.ent_langcode.connect('changed', self._on_langcode_changed)
+        self.ent_langname.connect('changed', self._on_input_changed)
+        self.ent_langcode.connect('changed', self._on_input_changed)
         self._update_ok_sensitivity()
 
     def _get_widgets(self):
@@ -93,6 +98,7 @@ class LanguageAddDialog:
     def run_edit(self, name, code, nplurals, plural):
         """Edit a known language's plural information; its name and code
             stay as they are."""
+        self._editing = True
         self.clear()
         self.langname, self.langcode, self.nplurals, self.plural = name, code, nplurals, plural
         self.dialog.set_title(_('Edit Language'))
@@ -101,12 +107,18 @@ class LanguageAddDialog:
         try:
             return self.run(clear=False)
         finally:
+            self._editing = False
             self.dialog.set_title(self._add_title)
             for entry in (self.ent_langname, self.ent_langcode):
                 entry.set_sensitive(True)
 
     def check_input_sanity(self):
-        # TODO: Add more sanity checks
+        if self._editing:
+            return ''
+
+        if not self.langname.strip():
+            return _('Enter a language name.')
+
         code = self.langcode
         if not code.isascii():
             return _('Language code must be an ASCII string.')
@@ -114,12 +126,20 @@ class LanguageAddDialog:
         if len(code) < 2:
             return _('Language code must be at least 2 characters long.')
 
+        if any(c.isspace() for c in code):
+            return _('Language code must not contain spaces.')
+
+        if data.normalize_code(code) in {data.normalize_code(c) for c in LanguageModel.languages}:
+            return _('Language code %s is already used.') % code
+
         return ''
 
 
     # EVENT HANDLERS #
-    def _on_langcode_changed(self, entry):
+    def _on_input_changed(self, entry):
         self._update_ok_sensitivity()
 
     def _update_ok_sensitivity(self):
-        self.btn_add_ok.set_sensitive(not self.check_input_sanity())
+        err = self.check_input_sanity()
+        self.btn_add_ok.set_sensitive(not err)
+        self.btn_add_ok.set_tooltip_text(err or None)

@@ -259,15 +259,6 @@ def test_on_addlang_clicked_shows_an_error_for_invalid_input():
     assert 'tlh' not in LanguageModel.languages
 
 
-def test_on_addlang_clicked_rejects_an_already_used_code():
-    LanguageModel('en')  # LanguageModel.languages populates lazily on first real use
-    view = _make_view()
-    view.add_dialog = _fake_add_dialog(langcode='en')  # already a real language
-
-    with pytest.raises(Exception, match='already used'):
-        view._on_addlang_clicked(None)
-
-
 def test_on_addlang_clicked_registers_a_new_language():
     original_languages = dict(LanguageModel.languages)
     try:

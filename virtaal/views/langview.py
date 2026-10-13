@@ -147,9 +147,6 @@ class LanguageView(BaseView):
         nplurals = self.add_dialog.nplurals
         plural = self.add_dialog.plural
 
-        if self.add_dialog.langcode in LanguageModel.languages:
-            raise Exception('Language code %s already used.' % (code))
-
         LanguageModel.languages[code] = (name, nplurals, plural)
         self.controller.new_langs.append(code)
 

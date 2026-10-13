@@ -8,8 +8,10 @@
 import gi
 
 gi.require_version('Gtk', '3.0')
+import pytest
 from gi.repository import Gtk
 
+from virtaal.models.langmodel import LanguageModel
 from virtaal.views.widgets.langadddialog import LanguageAddDialog
 
 
@@ -48,8 +50,10 @@ def test_nplurals_setter_accepts_a_value():
     assert dialog.sbtn_nplurals.get_value() == 3
 
 
-def _dialog_with_langcode(code):
+def _dialog_with_langcode(code, name='Mmoqish'):
     dialog = LanguageAddDialog.__new__(LanguageAddDialog)
+    dialog.ent_langname = Gtk.Entry()
+    dialog.ent_langname.set_text(name)
     dialog.ent_langcode = Gtk.Entry()
     dialog.ent_langcode.set_text(code)
     return dialog
@@ -65,7 +69,35 @@ def test_check_input_sanity_rejects_a_non_ascii_langcode():
 
 
 def test_check_input_sanity_accepts_an_ascii_langcode():
-    dialog = _dialog_with_langcode('en')
+    dialog = _dialog_with_langcode('qmm')
+
+    assert dialog.check_input_sanity() == ''
+
+
+def test_check_input_sanity_requires_a_name():
+    dialog = _dialog_with_langcode('qmm', name=' ')
+
+    assert dialog.check_input_sanity() != ''
+
+
+def test_check_input_sanity_rejects_a_langcode_with_a_space():
+    dialog = _dialog_with_langcode('q m')
+
+    assert dialog.check_input_sanity() != ''
+
+
+@pytest.mark.parametrize('code', ['af', 'AF', 'pt-BR'])
+def test_check_input_sanity_rejects_a_langcode_already_used(code):
+    LanguageModel('en')  # LanguageModel.languages populates lazily on first real use
+    dialog = _dialog_with_langcode(code)
+
+    assert dialog.check_input_sanity() != ''
+
+
+def test_check_input_sanity_accepts_an_existing_language_being_edited():
+    LanguageModel('en')
+    dialog = _dialog_with_langcode('af')
+    dialog._editing = True
 
     assert dialog.check_input_sanity() == ''
 
@@ -92,6 +124,8 @@ class _FakeDialog:
 
 def _dialog_with_ok_button(code=''):
     dialog = LanguageAddDialog.__new__(LanguageAddDialog)
+    dialog.ent_langname = Gtk.Entry()
+    dialog.ent_langname.set_text('Mmoqish')
     dialog.ent_langcode = Gtk.Entry()
     dialog.ent_langcode.set_text(code)
     dialog.btn_add_ok = Gtk.Button()
@@ -107,11 +141,18 @@ def test_ok_button_is_insensitive_for_a_too_short_langcode():
 
 def test_ok_button_becomes_sensitive_once_the_langcode_is_valid():
     dialog = _dialog_with_ok_button()
-    dialog.ent_langcode.connect('changed', dialog._on_langcode_changed)
+    dialog.ent_langcode.connect('changed', dialog._on_input_changed)
 
-    dialog.ent_langcode.set_text('en')
+    dialog.ent_langcode.set_text('qmm')
 
     assert dialog.btn_add_ok.get_sensitive() is True
+    assert dialog.btn_add_ok.get_tooltip_text() is None
+
+
+def test_insensitive_ok_button_says_why():
+    dialog = _dialog_with_ok_button('e')
+
+    assert dialog.btn_add_ok.get_tooltip_text() == dialog.check_input_sanity()
 
 
 def test_run_shows_before_presenting():
@@ -122,6 +163,7 @@ def test_run_shows_before_presenting():
     dialog.dialog = _FakeDialog()
     dialog.clear = lambda: None
     dialog.btn_add_ok = Gtk.Button()
+    dialog.ent_langname = Gtk.Entry()
     dialog.ent_langcode = Gtk.Entry()
 
     dialog.run()

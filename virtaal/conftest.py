@@ -409,6 +409,14 @@ def _isolate_stats_cache(tmp_path_factory):
     statsdb.StatsCache.defaultfile = str(tmp_path_factory.mktemp("stats") / "stats.db")
 
 
+@pytest.fixture(autouse=True)
+def _no_stats_cache_fill(monkeypatch):
+    """Opening a file would otherwise start a child process filling the
+    stats cache. test_statsworker.py tests the real one."""
+    from virtaal.support import statsworker
+    monkeypatch.setattr(statsworker, 'fill_in_background', lambda filename: None)
+
+
 def pytest_sessionfinish(session, exitstatus):
     allowed_prefixes = _load_allowlist()
     unexpected = [

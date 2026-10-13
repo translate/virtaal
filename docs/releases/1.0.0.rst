@@ -19,30 +19,12 @@ Getting it
 Windows installer, macOS ``.dmg`` (Intel and Apple Silicon), and a
 Flatpak build for Linux - see :ref:`Installation <index#installation>`.
 
-.. warning::
-   macOS and Windows builds are code-signed, but may still trigger a
-   Gatekeeper/SmartScreen warning on first launch - macOS builds
-   aren't notarized yet, and a newly-signed Windows certificate takes
-   time to build up SmartScreen's own reputation. This is expected:
-
-   - **macOS**: don't double-click the app on first launch - it may
-     refuse to open at all ("Apple could not verify... is free of
-     malware"), with no way past that dialog itself. Instead,
-     right-click (or Control-click) ``Virtaal.app`` in Finder and
-     choose **Open** from the menu - the dialog that appears this time
-     has an **Open** button. Only needed once; a normal double-click
-     works from then on.
-
-     If it instead says *"Virtaal is damaged and can't be opened"*,
-     that's Gatekeeper's stricter response to a build it can't verify
-     yet - the right-click-Open trick above won't clear it. Open
-     Terminal and run::
-
-        xattr -cr /path/to/Virtaal.app
-
-     then double-click normally.
-   - **Windows**: the installer may show a blue "Windows protected
-     your PC" screen. Click **More info**, then **Run anyway**.
+.. note::
+   The macOS builds are signed and notarized by Apple, and the Windows
+   installer is signed by Translate House Ltd. Windows may still show a
+   blue "Windows protected your PC" screen for a while, until
+   SmartScreen recognises the new certificate: click **More info**, then
+   **Run anyway**.
 
 What we set out to do
 ======================
@@ -143,15 +125,6 @@ Nothing release-blocking, but worth knowing about:
 - No spell checking in the Apple Silicon macOS build (the Intel build
   has it) - the underlying spell-check library has no ready-made build
   for that platform yet.
-- A small number of complex scripts (e.g. Amharic) may not render
-  correctly in the Windows build, most likely a font-coverage gap
-  rather than a deeper text-handling issue.
-- Devanagari-script UI languages (e.g. Nepali) are unreadable in the
-  macOS build's own window - boxes instead of characters, a macOS
-  font-fallback gap. The native menu bar is unaffected.
-- Occasionally, selecting "Incomplete" from the navigation dropdown
-  right after launch doesn't switch modes on the first try - selecting
-  it again, or picking any other mode first, works.
 
 Full changelog
 ================

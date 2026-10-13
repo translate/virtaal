@@ -202,3 +202,23 @@ def test_enter_in_any_field_activates_ok():
 
     for entry in (dialog.ent_langname, dialog.ent_langcode, dialog.ent_plural, dialog.sbtn_nplurals):
         assert entry.get_activates_default()
+
+
+def test_run_focuses_the_language_name(monkeypatch):
+    dialog = LanguageAddDialog()
+    monkeypatch.setattr(dialog.dialog, 'run', lambda: Gtk.ResponseType.CANCEL)
+    dialog.ent_plural.grab_focus()
+
+    dialog.run()
+
+    assert dialog.dialog.get_focus() is dialog.ent_langname
+
+
+def test_run_edit_focuses_the_first_plural_field(monkeypatch):
+    # The name and code can't be edited there.
+    dialog = LanguageAddDialog()
+    monkeypatch.setattr(dialog.dialog, 'run', lambda: Gtk.ResponseType.CANCEL)
+
+    dialog.run_edit('Afrikaans', 'af', 2, '(n != 1)')
+
+    assert dialog.dialog.get_focus() is dialog.sbtn_nplurals

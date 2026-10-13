@@ -6,6 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import faulthandler
+import gc
 import json
 import os
 import signal
@@ -25,6 +26,11 @@ from virtaal import conftest
 def _read_lines(path):
     with open(path, encoding="utf-8") as f:
         return [json.loads(line) for line in f]
+
+
+def test_the_cyclic_collector_is_off():
+    # Left on, it can free a GTK window from a background thread (#4242).
+    assert not gc.isenabled()
 
 
 def test_child_writes_each_report_for_the_parent(tmp_path, monkeypatch, pytestconfig):

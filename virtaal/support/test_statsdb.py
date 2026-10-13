@@ -210,3 +210,35 @@ def test_close_closes_every_cached_connection_and_clears_the_registry(tmp_path):
         assert statsdb.StatsCache._caches == {}
     finally:
         statsdb.StatsCache._caches = original_caches
+
+
+def test_a_second_connection_to_an_empty_database_keeps_it(tmp_path, monkeypatch):
+    # As another process sees a database no file has been cached in yet.
+    path = tmp_path / "stats.db"
+    statsdb.StatsCache(str(path))
+    monkeypatch.setattr(statsdb.StatsCache, '_caches', {})
+    po_file = tmp_path / "af.po"
+    po_file.write_text('msgid "Hello"\nmsgstr "Hallo"\n')
+
+    stats = statsdb.StatsCache(str(path)).filestatestats(str(po_file))
+
+    assert stats['translated'] == [0]
+    assert path.exists()
+
+
+def test_a_database_from_an_older_toolkit_is_recreated(tmp_path, monkeypatch):
+    path = tmp_path / "stats.db"
+    po_file = tmp_path / "af.po"
+    po_file.write_text('msgid "Hello"\nmsgstr "Hallo"\n')
+    cache = statsdb.StatsCache(str(path))
+    cache.filestatestats(str(po_file))
+    cache.cur.execute("UPDATE files SET toolkitbuild=0")
+    cache.con.commit()
+    cache.con.close()
+    monkeypatch.setattr(statsdb.StatsCache, '_caches', {})
+
+    cache = statsdb.StatsCache(str(path))
+
+    cache.cur.execute("SELECT count(*) FROM files")
+    assert cache.cur.fetchone()[0] == 0
+

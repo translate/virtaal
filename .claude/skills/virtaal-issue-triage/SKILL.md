@@ -194,6 +194,17 @@ its own concrete evidence, not a guess:
   round-trip bug, verified by actually serializing and re-parsing the
   problem characters through the current library, not by reading the
   fix code and assuming.
+- **An enhancement someone says already works**: run the feature's
+  real data path on a throwaway input in `.venv/bin/python` with
+  `PYTHONPATH=.` (system python3 has no `translate`), covering each
+  input shape a user might have, not just the one in the old comment.
+  translate/virtaal#1780 (2026-10-13), a terminology placeable with
+  several translations: `terminologymatcher` +
+  `TerminologyPlaceable.parse` on temporary PO files showed a choice
+  list from `msgctxt` units, from a repeated msgid without `msgctxt`
+  (`msgfmt` rejects that, Virtaal reads it), and from two terminology
+  files. The reporter's semicolon-joined `msgstr` was their own
+  workaround, not a format to document. Closed as completed.
 - **An asset request (icon/image), by rendering and comparing**: for a
   report asking for an icon/image deliverable, check the actual asset
   tree against the specific thing asked for (sizes present, theme

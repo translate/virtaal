@@ -11,6 +11,7 @@ import locale
 import logging
 import os
 import subprocess
+from contextlib import contextmanager
 from functools import cache, cached_property
 
 from gi.repository import Gdk, Gtk
@@ -65,6 +66,32 @@ def _objc_send(receiver, selector, *args, argtypes=None, restype=ctypes.c_void_p
     f.restype = restype
     f.argtypes = [ctypes.c_void_p, ctypes.c_void_p] + (argtypes or [ctypes.c_void_p] * len(args))
     return f(receiver, _objc_sel(selector), *args)
+
+
+def _wait_for_draw(widget, timeout=300):
+    """Run the main loop until C{widget} has drawn and 50ms more, so the
+        frame reaches the screen before the caller blocks the main loop;
+        at most C{timeout} ms."""
+    # Not "while Gtk.events_pending()": inside a native macOS menu's
+    # action it reports nothing pending, and nothing is drawn.
+    if not widget.is_drawable():
+        return
+    from gi.repository import GLib
+    loop = GLib.MainLoop()
+
+    def on_draw(*args):
+        widget.disconnect(handler)
+        sources.append(GLib.timeout_add(50, loop.quit))
+        return False
+    handler = widget.connect_after('draw', on_draw)
+    sources = [GLib.timeout_add(timeout, loop.quit)]
+    widget.queue_draw()
+    loop.run()
+    if widget.handler_is_connected(handler):
+        widget.disconnect(handler)
+    for source in sources:
+        if GLib.MainContext.default().find_source_by_id(source):
+            GLib.source_remove(source)
 
 
 def _note_recent_document(path):
@@ -755,6 +782,22 @@ class MainView(BaseView):
     def set_statusbar_message(self, msg):
         self.status_bar.pop(self.statusbar_context_id)
         self.status_bar.push(self.statusbar_context_id, msg)
+
+    @contextmanager
+    def busy(self, msg):
+        """Show a wait cursor and C{msg} in the status bar while the
+            body blocks the main loop."""
+        gdk_window = self.main_window.get_window()
+        if gdk_window is not None:
+            gdk_window.set_cursor(Gdk.Cursor.new_from_name(gdk_window.get_display(), 'wait'))
+        self.status_bar.push(self.statusbar_context_id, msg)
+        _wait_for_draw(self.status_bar)
+        try:
+            yield
+        finally:
+            if gdk_window is not None:
+                gdk_window.set_cursor(None)
+            self.status_bar.pop(self.statusbar_context_id)
 
 
     # METHODS #

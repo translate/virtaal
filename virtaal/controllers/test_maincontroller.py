@@ -6,6 +6,7 @@
 # the AUTHORS.md file for copyright and authorship information.
 
 import builtins
+import contextlib
 import os
 import tempfile
 from types import SimpleNamespace
@@ -16,6 +17,10 @@ from gi.repository import GLib, Gtk
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.common.platform import platform
 from virtaal.controllers.maincontroller import MainController
+
+
+def _not_busy(msg):
+    return contextlib.nullcontext()
 
 
 def test_open_file_gives_up_instead_of_hanging_forever(monkeypatch):
@@ -59,7 +64,7 @@ def test_open_file_shows_a_translated_error_message_on_failure():
     controller._placeables_controller = object()
     controller._store_controller = SimpleNamespace(is_modified=lambda: False, open_file=raise_missing, store=None)
     errors = []
-    controller.view = SimpleNamespace(show_error_dialog=lambda message, parent=None: errors.append(message))
+    controller.view = SimpleNamespace(busy=_not_busy, show_error_dialog=lambda message, parent=None: errors.append(message))
 
     result = controller.open_file('missing.po')
 
@@ -134,7 +139,7 @@ def test_open_file_with_no_filename_actually_opens_the_chosen_one(monkeypatch):
         store=None,
     )
     controller._mode_controller = SimpleNamespace(refresh_mode=lambda: None)
-    controller.view = SimpleNamespace(open_file=lambda: controller.open_file('chosen.po'))
+    controller.view = SimpleNamespace(busy=_not_busy, open_file=lambda: controller.open_file('chosen.po'))
 
     controller.open_file(None)
 
@@ -384,8 +389,26 @@ def _controller_for_open_file(is_modified=False, store=None):
         open_file=lambda filename, uri, forget_dir=False: None,
     )
     controller._mode_controller = SimpleNamespace(refresh_mode=lambda: None)
-    controller.view = SimpleNamespace()
+    controller.view = SimpleNamespace(busy=_not_busy)
     return controller
+
+
+def test_open_file_loads_the_file_while_the_view_shows_it_is_busy():
+    calls = []
+    controller = _controller_for_open_file()
+
+    @contextlib.contextmanager
+    def busy(msg):
+        calls.append(('busy', msg))
+        yield
+        calls.append('idle')
+
+    controller.view.busy = busy
+    controller._store_controller.open_file = lambda filename, uri, forget_dir=False: calls.append('opened')
+    controller._mode_controller.refresh_mode = lambda: calls.append('refreshed')
+
+    assert controller.open_file('/home/user/af.xlf') is True
+    assert calls == [('busy', "Loading 'af.xlf'…"), 'opened', 'refreshed', 'idle']
 
 
 def test_open_file_returns_false_when_the_user_cancels_the_save_prompt():

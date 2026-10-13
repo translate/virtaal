@@ -246,9 +246,6 @@ class StringElemGUI:
 
         return offset
 
-    def tree_to_gui_index(self, index):
-        return self.treeindex_to_iter(index).get_offset()
-
     def treeindex_to_iter(self, index, start_at=None):
         """Convert the tree index to a gtk iterator. The optional start_at
         indicates a reference point (index, iter) from where to start looking,

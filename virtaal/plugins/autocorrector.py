@@ -224,7 +224,7 @@ class AutoCorrector:
                     buffer.insert(end_iter, replacement)
                     self.main_controller.undo_controller.record_stop()
 
-                    newcursorpos = elem.gui_info.tree_to_gui_index(reprange[0]) + len(replacement) + len(text)
+                    newcursorpos = elem.gui_info.treeindex_to_iter(reprange[0]).get_offset() + len(replacement) + len(text)
                     def refresh():
                         textbox.refresh_cursor_pos = newcursorpos
                         textbox.refresh()

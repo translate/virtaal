@@ -197,10 +197,10 @@ class TestRealPlaceableRendering(TestScaffolding):
 
         assert textbox.elem.gui_info.gui_to_tree_index(5) == 5
 
-    def test_tree_to_gui_index_roundtrips_through_treeindex_to_iter(self):
+    def test_treeindex_to_iter_matches_when_there_are_no_widgets(self):
         textbox = self._target_for(self.po_store, '%s files copied')
 
-        assert textbox.elem.gui_info.tree_to_gui_index(3) == 3
+        assert textbox.elem.gui_info.treeindex_to_iter(3).get_offset() == 3
 
     def test_iter_sub_with_index_yields_each_child_with_its_offset(self):
         textbox = self._target_for(self.po_store, '%s files copied')

@@ -20,6 +20,31 @@ them updated in place as things change, and never cite them by name in
 a commit message or PR body (same rule as any local `PLAN-*.md`/
 `FEATURE-*.md`, see the `commit-style` skill).
 
+## Before tagging: prepare the release on main
+
+Nothing bumps the version for you - the tag name and the version
+Virtaal reports are independent. Skip this and the release ships builds
+that call themselves the previous version (rc1 was nearly tagged with
+`ver = "1.0.0-beta3"` and a `virtaal-1.0.0-beta3-setup.exe`). Land a
+"Prepare <version>" PR (precedent: `152d7414`, #4268) that:
+
+- sets `ver` in `virtaal/__version__.py`;
+- updates `po/virtaal.pot`'s `Project-Id-Version` header to match, in
+  the same commit - the pot-freshness check reads `__version__.py`;
+- adds a `<release>` at the top of
+  `share/metainfo/io.github.translate.Virtaal.metainfo.xml.in`'s
+  `<releases>` (`1.0.0~rc1` style, tag-day date). Its URL 404s until the
+  tag exists; `check_metainfo_urls.py` only warns for the newest one.
+
+For an rc (string freeze): also refresh `po/virtaal.priorities.yaml`
+in full from `main`'s latest `translation-priorities` artifact, as its
+own PR, after the last string-changing PR. For the final release:
+remove the release-candidate notice at the top of
+`docs/releases/1.0.0-github-notes.md`.
+
+Tag only `main`'s tip once all of these are merged and its CI run is
+green (next section).
+
 ## Tag mechanics
 
 Pushing a `v*` tag to `translate/virtaal` triggers `ci.yml`'s `release`
@@ -112,6 +137,12 @@ step, easy to forget:
   got pushed to `dwaynebailey/virtaal`, not `translate/virtaal` - diff
   `git ls-remote --tags upstream` against `git ls-remote --tags origin`
   before assuming upstream's tag list is complete.
+- **Translation packs on an rc release.** The release job attaches only
+  the installers. Download the `translation-packs` artifact (one zip per
+  language) from the tagged commit's CI run and upload the zips with
+  `gh release upload <tag> --repo translate/virtaal <zips>` - translators
+  are pointed at them. rc1 also starts the string freeze: any msgid
+  change after it needs Dwayne's explicit go-ahead.
 - **When 1.0.0 itself (not a beta/rc) ships**: the 12 historic SourceForge
   releases (`0.2` through `0.7.1`, backstopped 2026-09-11 with their
   original SourceForge files as assets) were all created with

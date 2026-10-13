@@ -10,21 +10,9 @@ from translate.storage.placeables import StringElem
 
 from virtaal.common import GObjectWrapper, pan_app
 from virtaal.common.platform import platform
+from virtaal.views.widgets.textbox import unlock_partly_covered_leaves
 
 from .basecontroller import BaseController
-
-
-def _unlock_partly_covered_leaves(elem, start, end):
-    """Make each non-editable leaf that [start, end) only partly covers
-        plain text, since delete_range() refuses to cut into one."""
-    for leaf in elem.flatten():
-        if leaf.iseditable:
-            continue
-        leaf_start = elem.elem_offset(leaf)
-        leaf_end = leaf_start + len(leaf)
-        if start < leaf_end and leaf_start < end and not (start <= leaf_start and leaf_end <= end):
-            parent = elem.get_parent_elem(leaf)
-            parent.sub = [StringElem(str(leaf)) if sub is leaf else sub for sub in parent.sub]
 
 
 class UndoController(BaseController):
@@ -519,7 +507,7 @@ class UndoController(BaseController):
             else:
                 tree_offset = elem.gui_info.gui_to_tree_index(offset)
                 #logging.debug('(undo) %s.delete_range(%d, %d)' % (repr(elem), tree_offset, tree_offset+len_ins_text))
-                _unlock_partly_covered_leaves(elem, tree_offset, tree_offset+len_ins_text)
+                unlock_partly_covered_leaves(elem, tree_offset, tree_offset+len_ins_text)
                 elem.delete_range(tree_offset, tree_offset+len_ins_text)
             elem.prune()
 

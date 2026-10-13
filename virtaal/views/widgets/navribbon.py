@@ -168,11 +168,14 @@ class NavRibbon(Gtk.DrawingArea):
             # new controller has no store yet either way.
             return
         try:
-            checks = store_controller.get_store_checks()
-        except (AttributeError, ValueError):
             # store.checks isn't computed until QualityCheckMode first
-            # runs (mode selection or a save) - stats alone are still
-            # worth showing meanwhile, just without check failures yet.
+            # runs (mode selection or a save) - get_store_checks()
+            # returns None rather than raising for that case, so a
+            # brand-new file (the common case) needs its own guard,
+            # not just the except below. Stats alone are still worth
+            # showing meanwhile, just without check failures yet.
+            checks = store_controller.get_store_checks() or {}
+        except (AttributeError, ValueError):
             checks = {}
 
         failing = set()

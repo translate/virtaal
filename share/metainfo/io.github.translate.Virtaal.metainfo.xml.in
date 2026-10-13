@@ -51,6 +51,9 @@
   <name>Translate</name>
  </developer>
  <releases>
+  <release version="1.0.0~rc1" date="2026-10-13" type="development">
+   <url>https://github.com/translate/virtaal/releases/tag/v1.0.0-rc1</url>
+  </release>
   <release version="1.0.0~beta3" date="2026-09-24" type="development">
    <url>https://github.com/translate/virtaal/releases/tag/v1.0.0-beta3</url>
   </release>

@@ -2351,6 +2351,10 @@ def test_busy_draws_the_message_before_the_body_runs(monkeypatch):
     # Recent Files on macOS: a native menu action, where
     # Gtk.events_pending() reports nothing to draw.
     monkeypatch.setattr(Gtk, 'events_pending', lambda: False)
+    # This is the window's first draw, which can take seconds on a CI
+    # runner - longer than busy()'s 300ms cap.
+    wait_for_draw = mainview._wait_for_draw
+    monkeypatch.setattr(mainview, '_wait_for_draw', lambda widget: wait_for_draw(widget, timeout=30000))
     view = _view_for_busy()
     view.main_window.add(view.status_bar)
     view.main_window.show_all()

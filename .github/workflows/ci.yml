@@ -1471,9 +1471,10 @@ jobs:
         # it, not the source template - catches a launchable/icon/id
         # mismatch that only shows up post-build, not just AppStream
         # schema errors the .in template alone could already fail on.
+        # --no-net: the URLs are checked in docs-and-translations.
         run: |
           metainfo=$(find build-dir/files/share/metainfo -name '*.metainfo.xml')
-          appstreamcli validate --pedantic --explain "$metainfo"
+          appstreamcli validate --no-net --pedantic --explain "$metainfo"
 
       - name: Smoke test - the built app actually runs
         working-directory: devsupport/packaging/flatpak

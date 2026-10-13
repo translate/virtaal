@@ -252,6 +252,27 @@ confirmed 2026-09-12 case: two separate Virtaal issues, filed years
 apart, both root-caused to the same one upstream GTK bug, itself
 RESOLVED FIXED - closed both off that single piece of evidence).
 
+## Integration requests that name another tool
+
+An old "integrate tool X" request (Pology, a spellchecker, an MT
+service) hinges on whether X is alive and shippable now. Check four
+things separately, because they disagree:
+
+- **Commit activity** - the repo may have moved (Pology: KDE SVN →
+  `invent.kde.org/sdk/pology`). GitLab's API needs no auth:
+  `curl -s "https://invent.kde.org/api/v4/projects/sdk%2Fpology/repository/commits?per_page=8"`
+- **Releases/tags** - `.../repository/tags`. Pology (2026-10-13):
+  commits in Sept 2026 but last tag v0.12 from 2014.
+- **PyPI** - `curl -s https://pypi.org/pypi/<name>/json`. Not on PyPI
+  means pinning a git commit or vendoring, which fits badly with
+  exact pins.
+- **Licence** - Virtaal is GPL-2.0-or-later; a GPLv3 dependency is
+  compatible but makes a bundling build GPLv3.
+
+Then separate the reporter's underlying need from the tool; often part
+of it is already covered (#1849: Quality checks navigation covered the
+"show only failing entries" half; team terminology rules were the gap).
+
 ## Batch mechanics
 
 Fetching many issue bodies at once (title + body, to actually read

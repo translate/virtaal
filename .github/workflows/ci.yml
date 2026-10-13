@@ -1021,6 +1021,18 @@ jobs:
           python devsupport/testing/stack_watchdog.py 150 -- \
             pytest -rvxs -n auto --dist loadgroup --cov=virtaal --cov-report=xml virtaal
 
+      - name: Collect macOS crash reports
+        if: failure()
+        run: cp ~/Library/Logs/DiagnosticReports/*.ips "$RUNNER_TEMP/stacks/" 2>/dev/null || true
+
+      - name: Upload crash reports and stacks
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-macos-crash-reports
+          path: ${{ runner.temp }}/stacks
+          if-no-files-found: ignore
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7
         with:

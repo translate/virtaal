@@ -344,6 +344,16 @@ class UndoController(BaseController):
         GLib.idle_add(refresh)
 
 
+    def _take_elem_before_edit(self, target_num):
+        """The copy of the target's tree its text box kept from just before
+            the edit being recorded. Undoing restores it: replaying the edit
+            backwards by offset can't tell inside a placeable from beside it."""
+        textbox = self.unit_controller.view.targets[target_num]
+        before = getattr(textbox, 'elem_before_edit', None)
+        textbox.elem_before_edit = None
+        return before
+
+
     # EVENT HANDLERS #
     def _on_store_loaded_closed(self, storecontroller):
         self.model.clear()
@@ -455,10 +465,14 @@ class UndoController(BaseController):
 
     @if_enabled
     def _on_unit_delete_text(self, unit_controller, unit, deleted, parent, offset, cursor_pos, elem, target_num):
+        before = self._take_elem_before_edit(target_num)
         def undo_action(unit):
             #logging.debug('(undo) %s.insert(%d, "%s")' % (repr(elem), offset, deleted))
             if parent is None:
                 elem.sub = deleted.sub
+                return
+            if before is not None:
+                elem.sub = before.copy().sub
                 return
             if isinstance(deleted, StringElem):
                 try:
@@ -494,7 +508,11 @@ class UndoController(BaseController):
         #logging.debug('_on_unit_insert_text(ins_text="%r", offset=%d, elem=%s, target_n=%d)' % (ins_text, offset, repr(elem), target_num))
         len_ins_text = len(ins_text) # remember, since ins_text might change
 
+        before = self._take_elem_before_edit(target_num)
         def undo_action(unit):
+            if before is not None:
+                elem.sub = before.copy().sub
+                return
             if isinstance(ins_text, StringElem) and hasattr(ins_text, 'gui_info') and ins_text.gui_info.widgets:
                 # Only for elements with representation widgets
                 elem.delete_elem(ins_text)

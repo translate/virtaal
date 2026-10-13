@@ -108,6 +108,7 @@ class TextBox(Gtk.TextView):
         self.placeables_controller = main_controller.placeables_controller
         self.refresh_cursor_pos = -1
         self._structural_change_pending = False
+        self.elem_before_edit = None
         self.role = role
         self.selector_textbox = selector_textbox or self
         self.selector_textboxes = [selector_textbox or self]
@@ -330,6 +331,7 @@ class TextBox(Gtk.TextView):
         if isinstance(translation, StringElem):
             self.add_default_gui_info(translation)
             insert_offset = self.elem.gui_info.gui_to_tree_index(cursor_pos)
+            self.elem_before_edit = self.elem.copy()
             self.elem.insert(insert_offset, translation)
             self.elem.prune()
 
@@ -732,6 +734,7 @@ class TextBox(Gtk.TextView):
     def _on_delete_range(self, buffer, start_iter, end_iter):
         if self.elem is None:
             return
+        before = self.elem.copy()
 
         cursor_pos = self.refresh_cursor_pos
         if cursor_pos < 0:
@@ -797,6 +800,7 @@ class TextBox(Gtk.TextView):
         if deleted:
             self.elem.prune()
             self._structural_change_pending = True
+            self.elem_before_edit = before
             self.emit(
                 'text-deleted', deleted, parent, index,
                 self.buffer.props.cursor_position, self.elem
@@ -807,6 +811,7 @@ class TextBox(Gtk.TextView):
             return
 
         ins_text = forceunicode(ins_text[:length])
+        before = self.elem.copy()
         buff_offset = iter.get_offset()
         gui_info = self.elem.gui_info
         tree_offset = gui_info.gui_to_tree_index(buff_offset)
@@ -856,6 +861,7 @@ class TextBox(Gtk.TextView):
             self.refresh_cursor_pos = cursor_pos
             self._live_insert_pending = tree_offset
             #logging.debug('text-inserted: %s@%d of %s' % (ins_text, iter.get_offset(), repr(self.elem)))
+            self.elem_before_edit = before
             self.emit('text-inserted', ins_text, buff_offset, self.elem)
 
     def _on_insert_text_after(self, buffer, iter, ins_text, length):

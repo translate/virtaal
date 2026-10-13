@@ -169,6 +169,13 @@ its own concrete evidence, not a guess:
   and check it fails with the reported message. Close citing the PR.
   translate/virtaal#3768 (2026-10-07) stayed open two weeks after #3810
   fixed it.
+  A UI-behaviour report ("draws, then jumps into place") names no
+  identifier. Read the history of the widget it describes
+  (`git log upstream/main -- <widget file>`) and look for tests named
+  after the symptom. A PR that closed sibling issues about the same
+  widget may have fixed this one too: #4085 closed #1914 and #1827
+  (checks popup) and also fixed #1847, which stayed open until
+  2026-10-13.
 - **Actually reproduce it against current code, live**: for a report
   describing a specific technical failure mode (a parsing bug, a
   round-trip corruption), write the smallest real reproduction against

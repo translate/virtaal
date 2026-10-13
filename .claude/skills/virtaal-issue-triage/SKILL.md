@@ -161,6 +161,16 @@ its own concrete evidence, not a guess:
   0.2, so it never answered the scroll-only ask. Closed as covered by
   the navigation shortcuts, with the scroll-only part declined in the
   comment.
+- **A side effect of the GTK3 port**: some old requests came true
+  during the port without anyone naming them, so neither `--grep` nor
+  the issue's own wording finds the commit. Find the widget code the
+  request is about and `git log upstream/main -S <constant>` its
+  current setting. translate/virtaal#378 (2026-10-13, "no scrollbars
+  in source/target boxes when they fit"): `-S "PolicyType.EXTERNAL"`
+  found b3df02eb (2019), which removed those scrollbars for good. Say
+  in the close comment if the shipped behaviour goes further than the
+  ask (here: never a scrollbar; a unit taller than the window scrolls
+  the store view instead).
 - **A dependency/plugin fully removed**: if the report is scoped to a
   library that's since been dropped entirely (`grep -rl
   <libraryname> virtaal/` returning nothing), the issue no longer

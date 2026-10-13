@@ -92,7 +92,7 @@ class TestUnitController(TestScaffolding):
 
     def _assert_initial_cursor_position(self, text, expected_marked):
         """expected_marked is text with a '|' inserted at the offset
-        _get_editing_start_pos() is expected to place the cursor at."""
+        _get_editing_start_tree_offset() returns."""
         if not getattr(self.main_controller, 'placeables_controller', None):
             PlaceablesController(self.main_controller)
 
@@ -101,7 +101,7 @@ class TestUnitController(TestScaffolding):
         target = view.targets[0]
         target.set_text(text)
 
-        pos = view._get_editing_start_pos(target.elem)
+        pos = view._get_editing_start_tree_offset(target.elem)
 
         assert text[:pos] + '|' + text[pos:] == expected_marked
 
@@ -134,6 +134,18 @@ class TestUnitController(TestScaffolding):
         actual (still slightly awkward) behaviour, not asserting it's
         fixed - it isn't, and it isn't a bug in this function either."""
         self._assert_initial_cursor_position("%B", "%|B")
+
+    def test_initial_cursor_is_a_buffer_offset_past_a_leading_pilcrow(self):
+        # The buffer has the pilcrow widget before the line break.
+        if not getattr(self.main_controller, 'placeables_controller', None):
+            PlaceablesController(self.main_controller)
+        view = self.unit_controller.load_unit(self.trans_store.getunits()[1])
+        target = view.targets[0]
+        target.set_text("\nSome text")
+
+        pos = view._get_editing_start_pos(target)
+
+        assert target.buffer.get_iter_at_offset(pos).get_char() == 'S'
 
     def test_advance_workflow_state_on_a_freshly_loaded_unit(self):
         """load_unit() left the state-nav widget's own selection

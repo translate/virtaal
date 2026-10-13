@@ -253,6 +253,8 @@ class StringElemGUI:
         buffer = self.textbox.buffer
         if index == 0:
             return buffer.get_start_iter()
+        if index >= len(self.elem) and self.elem is self.textbox.elem:
+            return buffer.get_end_iter()
 
         if self.elem.isleaf() and len(self.widgets) == 0:
             return buffer.get_iter_at_offset(index)

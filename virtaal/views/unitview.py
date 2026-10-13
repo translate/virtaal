@@ -339,7 +339,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         undocontroller.push_current_text(textbox)
         textbox.set_text(tgt)
 
-        textbox.refresh_cursor_pos = self._get_editing_start_pos(textbox.elem)
+        textbox.refresh_cursor_pos = self._get_editing_start_pos(textbox)
         textbox.refresh()
 
         return False
@@ -355,7 +355,7 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
         textbox.grab_focus()
 
         text = textbox.get_text()
-        translation_start = self._get_editing_start_pos(textbox.elem)
+        translation_start = self._get_editing_start_pos(textbox)
         textbox.buffer.place_cursor(textbox.buffer.get_iter_at_offset(translation_start))
 
         self._focused_target_n = self.targets.index(textbox)
@@ -434,12 +434,21 @@ class UnitView(Gtk.EventBox, GObjectWrapper, Gtk.CellEditable, BaseView):
             rendering.set_widget_font(textview, rendering.get_target_font_description())
             textview.get_pango_context().set_font_description(rendering.get_target_font_description())
 
-    def _get_editing_start_pos(self, elem):
+    def _get_editing_start_pos(self, textbox):
+        """The buffer offset where editing C{textbox} should start: after
+            any leading markup, punctuation and placeables."""
+        elem = textbox.elem
         if not elem:
             return 0
+        tree_offset = self._get_editing_start_tree_offset(elem)
+        if getattr(elem, 'gui_info', None) is None:
+            return tree_offset
+        return elem.gui_info.treeindex_to_iter(tree_offset).get_offset()
+
+    def _get_editing_start_tree_offset(self, elem):
         translation_start = self.first_word_re.match(str(elem)).span()[1]
         start_elem = elem.elem_at_offset(translation_start)
-        if not start_elem.iseditable:
+        if start_elem is not None and not start_elem.iseditable:
             flattened = elem.flatten()
             start_index = flattened.index(start_elem)
             if start_index == len(flattened)-1:

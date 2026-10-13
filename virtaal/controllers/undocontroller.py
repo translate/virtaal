@@ -473,11 +473,15 @@ class UndoController(BaseController):
                     elem.insert(offset, deleted)
                 elem.prune()
 
+        # Redoing re-deletes the range - cursor lands where it starts. The
+        # text box has that as a buffer offset; offset is a tree offset.
+        redo_cursorpos = self.unit_controller.view.targets[target_num].refresh_cursor_pos
+        if redo_cursorpos < 0:
+            redo_cursorpos = offset
         data = {
             'action': undo_action,
             'cursorpos': cursor_pos,
-            # Redoing re-deletes the range - cursor lands where it starts.
-            'redo_cursorpos': offset,
+            'redo_cursorpos': redo_cursorpos,
             'targetn': target_num,
             'unit': unit,
         }
@@ -495,6 +499,7 @@ class UndoController(BaseController):
     def _on_unit_insert_text(self, unit_controller, unit, ins_text, offset, elem, target_num):
         #logging.debug('_on_unit_insert_text(ins_text="%r", offset=%d, elem=%s, target_n=%d)' % (ins_text, offset, repr(elem), target_num))
         len_ins_text = len(ins_text) # remember, since ins_text might change
+        gui_len = ins_text.gui_info.length() if getattr(ins_text, 'gui_info', None) else len_ins_text
 
         before = self._take_elem_before_edit(target_num)
         def undo_action(unit):
@@ -517,7 +522,7 @@ class UndoController(BaseController):
             'targetn': target_num,
             'cursorpos': offset,
             # Redoing re-inserts ins_text - cursor lands right after it.
-            'redo_cursorpos': offset + len_ins_text,
+            'redo_cursorpos': offset + gui_len,
         }
         if unit.STATE:
             data['state_before'] = unit._current_state

@@ -202,6 +202,15 @@ class TestRealPlaceableRendering(TestScaffolding):
 
         assert textbox.elem.gui_info.treeindex_to_iter(3).get_offset() == 3
 
+    def test_treeindex_to_iter_at_the_end_is_the_buffer_end(self):
+        # A search match ending the text is highlighted to its last char.
+        for store, text in ((self.po_store, '%s files copied'),
+                            (self.po_store, 'First line.\nSecond line.'),
+                            (self.xliff_store, 'Click here to continue.')):
+            textbox = self._target_for(store, text)
+
+            assert textbox.elem.gui_info.treeindex_to_iter(len(textbox.elem)).is_end()
+
     def test_iter_sub_with_index_yields_each_child_with_its_offset(self):
         textbox = self._target_for(self.po_store, '%s files copied')
 

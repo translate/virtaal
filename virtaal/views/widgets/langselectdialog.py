@@ -167,6 +167,10 @@ class LanguageSelectDialog:
             return
         self.dialog.response(Gtk.ResponseType.OK)
 
+    def select_target_lang(self, langcode):
+        self._select_lang(self.tvw_targetlang, langcode)
+        self.tvw_targetlang.grab_focus()
+
     def _select_lang(self, treeview, langcode):
         model = treeview.get_model()
         i = model.get_iter_first()

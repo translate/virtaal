@@ -203,6 +203,20 @@ def test_open_startup_file_hides_the_loading_notice_and_defers_load_extras_on_su
     assert deferred == [(v._load_extras, ())]
 
 
+def test_open_startup_file_keeps_the_loading_notice_up_while_the_file_loads():
+    # The load repaints the window before it blocks (MainView.busy()).
+    v = Virtaal.__new__(Virtaal)
+    calls = []
+    v._open_with_file = lambda filename: calls.append('opened') or True
+    v.main_controller = SimpleNamespace(
+        view=SimpleNamespace(hide_loading_notice=lambda: calls.append('hidden')))
+    v.defer = lambda func, *args: None
+
+    v._open_startup_file('some.po')
+
+    assert calls == ['opened', 'hidden']
+
+
 def test_open_startup_file_shows_the_welcome_screen_and_failure_notice_with_the_reason_on_failure():
     v = Virtaal.__new__(Virtaal)
     v._open_with_file = lambda filename: False

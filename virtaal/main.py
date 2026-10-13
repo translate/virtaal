@@ -144,8 +144,9 @@ class Virtaal:
 
     def _open_startup_file(self, startupfile):
         main_controller = self.main_controller
+        opened = self._open_with_file(startupfile)
         main_controller.view.hide_loading_notice()
-        if not self._open_with_file(startupfile):
+        if not opened:
             main_controller.welcomescreen_controller.activate()
             main_controller.view.show_startup_open_failure_notice(
                 startupfile, main_controller.last_open_error)

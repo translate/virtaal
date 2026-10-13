@@ -42,6 +42,8 @@
             </child>
             <child>
               <object class="GtkButton" id="btn_add_ok">
+                <property name="can_default">True</property>
+                <property name="has_default">True</property>
                 <property name="label">gtk-ok</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -114,6 +116,7 @@
                         </child>
                         <child>
                           <object class="GtkEntry" id="ent_langname">
+                            <property name="activates_default">True</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="primary_icon_activatable">False</property>
@@ -127,6 +130,7 @@
                         </child>
                         <child>
                           <object class="GtkEntry" id="ent_langcode">
+                            <property name="activates_default">True</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="max_length">100</property>
@@ -168,6 +172,7 @@
                         </child>
                         <child>
                           <object class="GtkEntry" id="ent_plural">
+                            <property name="activates_default">True</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="primary_icon_activatable">False</property>
@@ -195,6 +200,7 @@
                         </child>
                         <child>
                           <object class="GtkSpinButton" id="sbtn_nplurals">
+                            <property name="activates_default">True</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="primary_icon_activatable">False</property>

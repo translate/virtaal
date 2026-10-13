@@ -146,3 +146,17 @@ def test_run_edit_prefills_the_language_and_fixes_its_name_and_code():
     # Adding a language afterwards gets the add dialog back.
     assert dialog.dialog.get_title() == 'Add Missing Language'
     assert dialog.ent_langname.get_sensitive() and dialog.ent_langcode.get_sensitive()
+
+
+def test_ok_is_the_default_button():
+    dialog = LanguageAddDialog()
+
+    assert dialog.dialog.get_default_widget() is dialog.btn_add_ok
+
+
+def test_enter_in_any_field_activates_ok():
+    # OK stays insensitive until the code is valid, so Enter can't add a bad one.
+    dialog = LanguageAddDialog()
+
+    for entry in (dialog.ent_langname, dialog.ent_langcode, dialog.ent_plural, dialog.sbtn_nplurals):
+        assert entry.get_activates_default()
